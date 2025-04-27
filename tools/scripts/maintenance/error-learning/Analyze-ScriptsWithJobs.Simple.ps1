@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Version simplifiée pour analyser plusieurs scripts PowerShell en parallèle avec Jobs PowerShell.
+    Version simplifiÃ©e pour analyser plusieurs scripts PowerShell en parallÃ¨le avec Jobs PowerShell.
 .DESCRIPTION
-    Ce script utilise des Jobs PowerShell pour analyser plusieurs scripts PowerShell simultanément.
+    Ce script utilise des Jobs PowerShell pour analyser plusieurs scripts PowerShell simultanÃ©ment.
     Compatible avec PowerShell 5.1.
 #>
 
@@ -19,10 +19,10 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorLearningSystem.psm1"
 Import-Module $modulePath -Force
 
-# Initialiser le système
+# Initialiser le systÃ¨me
 Initialize-ErrorLearningSystem
 
-# Vérifier que les chemins existent et convertir en chemins absolus
+# VÃ©rifier que les chemins existent et convertir en chemins absolus
 $validPaths = @()
 foreach ($path in $ScriptPaths) {
     # Convertir en chemin absolu
@@ -35,37 +35,37 @@ foreach ($path in $ScriptPaths) {
         $validPaths += $absolutePath
     }
     else {
-        Write-Warning "Le chemin spécifié n'existe pas : $absolutePath"
+        Write-Warning "Le chemin spÃ©cifiÃ© n'existe pas : $absolutePath"
     }
 }
 
 if ($validPaths.Count -eq 0) {
-    Write-Error "Aucun script valide à analyser."
+    Write-Error "Aucun script valide Ã  analyser."
     exit 1
 }
 
-Write-Host "Analyse de $($validPaths.Count) scripts en parallèle (MaxJobs: $MaxJobs)..."
+Write-Host "Analyse de $($validPaths.Count) scripts en parallÃ¨le (MaxJobs: $MaxJobs)..."
 
-# Définir les patterns d'erreurs courantes
+# DÃ©finir les patterns d'erreurs courantes
 $errorPatterns = @(
     @{
         Name = "HardcodedPath"
         Pattern = '(?<!\\)["''](?:[A-Z]:\\|\\\\)[^"'']*["'']'
-        Description = "Chemin codé en dur détecté"
+        Description = "Chemin codÃ© en dur dÃ©tectÃ©"
     },
     @{
         Name = "NoErrorHandling"
         Pattern = '(?<!try\s*\{\s*)(?:Get-Content|Set-Content)(?!\s*-ErrorAction)'
-        Description = "Absence de gestion d'erreurs détecté"
+        Description = "Absence de gestion d'erreurs dÃ©tectÃ©"
     },
     @{
         Name = "WriteHostUsage"
         Pattern = 'Write-Host'
-        Description = "Utilisation de Write-Host détecté"
+        Description = "Utilisation de Write-Host dÃ©tectÃ©"
     }
 )
 
-# Créer un script block pour l'analyse d'un script
+# CrÃ©er un script block pour l'analyse d'un script
 $scriptBlock = {
     param($scriptPath, $patterns)
 
@@ -84,10 +84,10 @@ $scriptBlock = {
 
             if ($regexMatches.Count -gt 0) {
                 foreach ($match in $regexMatches) {
-                    # Trouver le numéro de ligne
+                    # Trouver le numÃ©ro de ligne
                     $lineNumber = ($scriptContent.Substring(0, $match.Index).Split("`n")).Length
 
-                    # Créer un objet pour l'erreur détectée
+                    # CrÃ©er un objet pour l'erreur dÃ©tectÃ©e
                     $issue = [PSCustomObject]@{
                         Name = $pattern.Name
                         Description = $pattern.Description
@@ -100,7 +100,7 @@ $scriptBlock = {
             }
         }
 
-        # Créer un objet de résultat pour ce script
+        # CrÃ©er un objet de rÃ©sultat pour ce script
         $scriptResult = [PSCustomObject]@{
             ScriptPath = $scriptPath
             IssuesCount = $scriptIssues.Count
@@ -108,7 +108,7 @@ $scriptBlock = {
             Success = $true
         }
 
-        Write-Host "Analyse terminée pour $scriptPath. Erreurs détectées : $($scriptIssues.Count)"
+        Write-Host "Analyse terminÃ©e pour $scriptPath. Erreurs dÃ©tectÃ©es : $($scriptIssues.Count)"
 
         return $scriptResult
     }
@@ -118,16 +118,16 @@ $scriptBlock = {
     }
 }
 
-# Créer un tableau pour stocker les résultats
+# CrÃ©er un tableau pour stocker les rÃ©sultats
 $results = @()
 
-# Créer un tableau pour stocker les jobs
+# CrÃ©er un tableau pour stocker les jobs
 $jobs = @()
 
 # Traiter les scripts par lots
 $scriptIndex = 0
 while ($scriptIndex -lt $validPaths.Count) {
-    # Vérifier le nombre de jobs en cours d'exécution
+    # VÃ©rifier le nombre de jobs en cours d'exÃ©cution
     $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
 
     # Si nous avons atteint le nombre maximum de jobs, attendre qu'un job se termine
@@ -136,12 +136,12 @@ while ($scriptIndex -lt $validPaths.Count) {
         $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
     }
 
-    # Démarrer un nouveau job
+    # DÃ©marrer un nouveau job
     $scriptPath = $validPaths[$scriptIndex]
     $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath, $errorPatterns
     $jobs += $job
 
-    # Incrémenter l'index
+    # IncrÃ©menter l'index
     $scriptIndex++
 }
 
@@ -149,7 +149,7 @@ while ($scriptIndex -lt $validPaths.Count) {
 Write-Host "Attente de la fin de tous les jobs..."
 $jobs | Wait-Job | Out-Null
 
-# Récupérer les résultats
+# RÃ©cupÃ©rer les rÃ©sultats
 foreach ($job in $jobs) {
     $jobResult = Receive-Job -Job $job
     if ($jobResult) {
@@ -158,18 +158,18 @@ foreach ($job in $jobs) {
     Remove-Job -Job $job
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé de l'analyse :"
-Write-Host "  Scripts analysés : $($results.Count)"
-Write-Host "  Total des problèmes détectés : $(($results | Measure-Object -Property IssuesCount -Sum).Sum)"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© de l'analyse :"
+Write-Host "  Scripts analysÃ©s : $($results.Count)"
+Write-Host "  Total des problÃ¨mes dÃ©tectÃ©s : $(($results | Measure-Object -Property IssuesCount -Sum).Sum)"
 
-# Afficher les scripts avec le plus de problèmes
+# Afficher les scripts avec le plus de problÃ¨mes
 $topIssueScripts = $results | Sort-Object -Property IssuesCount -Descending | Select-Object -First 3
 if ($topIssueScripts.Count -gt 0) {
-    Write-Host "`nTop 3 des scripts avec le plus de problèmes :"
+    Write-Host "`nTop 3 des scripts avec le plus de problÃ¨mes :"
     foreach ($script in $topIssueScripts) {
-        Write-Host "  $($script.ScriptPath) : $($script.IssuesCount) problèmes"
+        Write-Host "  $($script.ScriptPath) : $($script.IssuesCount) problÃ¨mes"
     }
 }
 
-Write-Host "`nAnalyse terminée."
+Write-Host "`nAnalyse terminÃ©e."

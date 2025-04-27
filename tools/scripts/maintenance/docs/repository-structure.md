@@ -1,84 +1,84 @@
-# Structure du dépôt
+﻿# Structure du dÃ©pÃ´t
 
-Ce document décrit la structure standardisée du dépôt.
+Ce document dÃ©crit la structure standardisÃ©e du dÃ©pÃ´t.
 
-## Structure des répertoires
+## Structure des rÃ©pertoires
 
 ```
 EMAIL_SENDER_1/
-├── scripts/                      # Scripts PowerShell et Python
-│   ├── roadmap/                  # Scripts pour la gestion des roadmaps
-│   │   ├── core/                 # Fonctionnalités de base
-│   │   ├── journal/              # Gestion du journal
-│   │   ├── management/           # Gestion des tâches
-│   │   ├── tests/                # Tests unitaires
-│   │   ├── utils/                # Utilitaires
-│   │   └── docs/                 # Documentation
-│   ├── roadmap-parser/           # Module de parsing de roadmap
-│   │   ├── modes/                # Modes opérationnels
-│   │   │   ├── debug/            # Mode de débogage
-│   │   │   ├── test/             # Mode de test
-│   │   │   ├── archi/            # Mode d'architecture
-│   │   │   ├── check/            # Mode de vérification
-│   │   │   ├── gran/             # Mode de granularisation
-│   │   │   ├── dev-r/            # Mode de développement roadmap
-│   │   │   ├── review/           # Mode de revue
-│   │   │   └── opti/             # Mode d'optimisation
-│   │   ├── core/                 # Fonctionnalités de base
-│   │   │   ├── parser/           # Parseurs de roadmap
-│   │   │   ├── model/            # Modèles de données
-│   │   │   ├── converter/        # Convertisseurs de format
-│   │   │   └── structure/        # Gestion de structure
-│   │   ├── utils/                # Utilitaires
-│   │   │   ├── encoding/         # Gestion d'encodage
-│   │   │   ├── export/           # Export vers différents formats
-│   │   │   ├── import/           # Import depuis différents formats
-│   │   │   └── helpers/          # Fonctions d'aide
-│   │   ├── analysis/             # Outils d'analyse
-│   │   │   ├── dependencies/     # Analyse de dépendances
-│   │   │   ├── performance/      # Analyse de performance
-│   │   │   ├── validation/       # Validation de roadmap
-│   │   │   └── reporting/        # Génération de rapports
-│   │   ├── tests/                # Tests
-│   │   │   ├── unit/             # Tests unitaires
-│   │   │   ├── integration/      # Tests d'intégration
-│   │   │   ├── performance/      # Tests de performance
-│   │   │   └── validation/       # Tests de validation
-│   │   └── docs/                 # Documentation
-│   │       ├── examples/         # Exemples d'utilisation
-│   │       ├── guides/           # Guides d'utilisation
-│   │       └── api/              # Documentation de l'API
-│   └── maintenance/              # Scripts de maintenance
-│       ├── organize/             # Scripts d'organisation
-│       ├── cleanup/              # Scripts de nettoyage
-│       ├── migrate/              # Scripts de migration
-│       ├── docs/                 # Documentation
-│       ├── backups/              # Sauvegardes
-│       └── logs/                 # Journaux
-├── docs/                         # Documentation
-│   └── guides/                   # Guides d'utilisation
-│       ├── best-practices/       # Bonnes pratiques
-│       ├── core/                 # Documentation du core
-│       ├── git/                  # Documentation Git
-│       ├── installation/         # Documentation d'installation
-│       ├── mcp/                  # Documentation MCP
-│       ├── methodologies/        # Documentation des méthodologies
-│       ├── n8n/                  # Documentation n8n
-│       ├── powershell/           # Documentation PowerShell
-│       ├── python/               # Documentation Python
-│       ├── tools/                # Documentation des outils
-│       └── troubleshooting/      # Dépannage
-├── Roadmap/                      # Roadmaps
-│   └── mes-plans/                # Plans personnalisés
-├── templates/                    # Templates
-│   └── reports/                  # Templates de rapports
-├── _templates/                   # Templates Hygen
-│   ├── roadmap/                  # Templates pour roadmap
-│   ├── roadmap-parser/           # Templates pour roadmap-parser
-│   └── maintenance/              # Templates pour maintenance
-├── n8n/                          # Workflows n8n
-├── all-workflows/                # Tous les workflows
-└── mcp/                          # Serveurs MCP
+â”œâ”€â”€ scripts/                      # Scripts PowerShell et Python
+â”‚   â”œâ”€â”€ roadmap/                  # Scripts pour la gestion des roadmaps
+â”‚   â”‚   â”œâ”€â”€ core/                 # FonctionnalitÃ©s de base
+â”‚   â”‚   â”œâ”€â”€ journal/              # Gestion du journal
+â”‚   â”‚   â”œâ”€â”€ management/           # Gestion des tÃ¢ches
+â”‚   â”‚   â”œâ”€â”€ tests/                # Tests unitaires
+â”‚   â”‚   â”œâ”€â”€ utils/                # Utilitaires
+â”‚   â”‚   â””â”€â”€ docs/                 # Documentation
+â”‚   â”œâ”€â”€ roadmap-parser/           # Module de parsing de roadmap
+â”‚   â”‚   â”œâ”€â”€ modes/                # Modes opÃ©rationnels
+â”‚   â”‚   â”‚   â”œâ”€â”€ debug/            # Mode de dÃ©bogage
+â”‚   â”‚   â”‚   â”œâ”€â”€ test/             # Mode de test
+â”‚   â”‚   â”‚   â”œâ”€â”€ archi/            # Mode d'architecture
+â”‚   â”‚   â”‚   â”œâ”€â”€ check/            # Mode de vÃ©rification
+â”‚   â”‚   â”‚   â”œâ”€â”€ gran/             # Mode de granularisation
+â”‚   â”‚   â”‚   â”œâ”€â”€ dev-r/            # Mode de dÃ©veloppement roadmap
+â”‚   â”‚   â”‚   â”œâ”€â”€ review/           # Mode de revue
+â”‚   â”‚   â”‚   â””â”€â”€ opti/             # Mode d'optimisation
+â”‚   â”‚   â”œâ”€â”€ core/                 # FonctionnalitÃ©s de base
+â”‚   â”‚   â”‚   â”œâ”€â”€ parser/           # Parseurs de roadmap
+â”‚   â”‚   â”‚   â”œâ”€â”€ model/            # ModÃ¨les de donnÃ©es
+â”‚   â”‚   â”‚   â”œâ”€â”€ converter/        # Convertisseurs de format
+â”‚   â”‚   â”‚   â””â”€â”€ structure/        # Gestion de structure
+â”‚   â”‚   â”œâ”€â”€ utils/                # Utilitaires
+â”‚   â”‚   â”‚   â”œâ”€â”€ encoding/         # Gestion d'encodage
+â”‚   â”‚   â”‚   â”œâ”€â”€ export/           # Export vers diffÃ©rents formats
+â”‚   â”‚   â”‚   â”œâ”€â”€ import/           # Import depuis diffÃ©rents formats
+â”‚   â”‚   â”‚   â””â”€â”€ helpers/          # Fonctions d'aide
+â”‚   â”‚   â”œâ”€â”€ analysis/             # Outils d'analyse
+â”‚   â”‚   â”‚   â”œâ”€â”€ dependencies/     # Analyse de dÃ©pendances
+â”‚   â”‚   â”‚   â”œâ”€â”€ performance/      # Analyse de performance
+â”‚   â”‚   â”‚   â”œâ”€â”€ validation/       # Validation de roadmap
+â”‚   â”‚   â”‚   â””â”€â”€ reporting/        # GÃ©nÃ©ration de rapports
+â”‚   â”‚   â”œâ”€â”€ tests/                # Tests
+â”‚   â”‚   â”‚   â”œâ”€â”€ unit/             # Tests unitaires
+â”‚   â”‚   â”‚   â”œâ”€â”€ integration/      # Tests d'intÃ©gration
+â”‚   â”‚   â”‚   â”œâ”€â”€ performance/      # Tests de performance
+â”‚   â”‚   â”‚   â””â”€â”€ validation/       # Tests de validation
+â”‚   â”‚   â””â”€â”€ docs/                 # Documentation
+â”‚   â”‚       â”œâ”€â”€ examples/         # Exemples d'utilisation
+â”‚   â”‚       â”œâ”€â”€ guides/           # Guides d'utilisation
+â”‚   â”‚       â””â”€â”€ api/              # Documentation de l'API
+â”‚   â””â”€â”€ maintenance/              # Scripts de maintenance
+â”‚       â”œâ”€â”€ organize/             # Scripts d'organisation
+â”‚       â”œâ”€â”€ cleanup/              # Scripts de nettoyage
+â”‚       â”œâ”€â”€ migrate/              # Scripts de migration
+â”‚       â”œâ”€â”€ docs/                 # Documentation
+â”‚       â”œâ”€â”€ backups/              # Sauvegardes
+â”‚       â””â”€â”€ logs/                 # Journaux
+â”œâ”€â”€ docs/                         # Documentation
+â”‚   â””â”€â”€ guides/                   # Guides d'utilisation
+â”‚       â”œâ”€â”€ best-practices/       # Bonnes pratiques
+â”‚       â”œâ”€â”€ core/                 # Documentation du core
+â”‚       â”œâ”€â”€ git/                  # Documentation Git
+â”‚       â”œâ”€â”€ installation/         # Documentation d'installation
+â”‚       â”œâ”€â”€ mcp/                  # Documentation MCP
+â”‚       â”œâ”€â”€ methodologies/        # Documentation des mÃ©thodologies
+â”‚       â”œâ”€â”€ n8n/                  # Documentation n8n
+â”‚       â”œâ”€â”€ powershell/           # Documentation PowerShell
+â”‚       â”œâ”€â”€ python/               # Documentation Python
+â”‚       â”œâ”€â”€ tools/                # Documentation des outils
+â”‚       â””â”€â”€ troubleshooting/      # DÃ©pannage
+â”œâ”€â”€ Roadmap/                      # Roadmaps
+â”‚   â””â”€â”€ mes-plans/                # Plans personnalisÃ©s
+â”œâ”€â”€ templates/                    # Templates
+â”‚   â””â”€â”€ reports/                  # Templates de rapports
+â”œâ”€â”€ _templates/                   # Templates Hygen
+â”‚   â”œâ”€â”€ roadmap/                  # Templates pour roadmap
+â”‚   â”œâ”€â”€ roadmap-parser/           # Templates pour roadmap-parser
+â”‚   â””â”€â”€ maintenance/              # Templates pour maintenance
+â”œâ”€â”€ n8n/                          # Workflows n8n
+â”œâ”€â”€ all-workflows/                # Tous les workflows
+â””â”€â”€ mcp/                          # Serveurs MCP
 ```
 
 ## Conventions de nommage
@@ -102,39 +102,39 @@ EMAIL_SENDER_1/
 
 ## Organisation des modes
 
-Les modes opérationnels sont organisés dans le dossier `scripts/roadmap-parser/modes`, avec un sous-dossier pour chaque mode :
+Les modes opÃ©rationnels sont organisÃ©s dans le dossier `scripts/roadmap-parser/modes`, avec un sous-dossier pour chaque mode :
 
-- **DEBUG** : Mode de débogage pour identifier et résoudre les problèmes
-- **TEST** : Mode de test pour valider les fonctionnalités
-- **ARCHI** : Mode d'architecture pour analyser et améliorer la structure
-- **CHECK** : Mode de vérification pour valider l'état d'avancement
-- **GRAN** : Mode de granularisation pour décomposer les tâches complexes
-- **DEV-R** : Mode de développement roadmap pour implémenter les tâches
-- **REVIEW** : Mode de revue pour analyser la qualité du code
-- **OPTI** : Mode d'optimisation pour améliorer les performances
+- **DEBUG** : Mode de dÃ©bogage pour identifier et rÃ©soudre les problÃ¨mes
+- **TEST** : Mode de test pour valider les fonctionnalitÃ©s
+- **ARCHI** : Mode d'architecture pour analyser et amÃ©liorer la structure
+- **CHECK** : Mode de vÃ©rification pour valider l'Ã©tat d'avancement
+- **GRAN** : Mode de granularisation pour dÃ©composer les tÃ¢ches complexes
+- **DEV-R** : Mode de dÃ©veloppement roadmap pour implÃ©menter les tÃ¢ches
+- **REVIEW** : Mode de revue pour analyser la qualitÃ© du code
+- **OPTI** : Mode d'optimisation pour amÃ©liorer les performances
 
 Chaque mode a son propre script principal (`<mode>-mode.ps1`) et peut avoir des scripts auxiliaires et des tests.
 
 ## Maintenance
 
-Les scripts de maintenance sont organisés dans le dossier `scripts/maintenance`, avec des sous-dossiers pour chaque type de maintenance :
+Les scripts de maintenance sont organisÃ©s dans le dossier `scripts/maintenance`, avec des sous-dossiers pour chaque type de maintenance :
 
 - **organize/** : Scripts pour organiser les fichiers et dossiers
 - **cleanup/** : Scripts pour nettoyer les fichiers inutiles
-- **migrate/** : Scripts pour migrer des fichiers d'un répertoire à un autre
+- **migrate/** : Scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre
 - **docs/** : Documentation sur la maintenance
-- **backups/** : Sauvegardes créées avant les opérations de maintenance
-- **logs/** : Journaux des opérations de maintenance
+- **backups/** : Sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance
+- **logs/** : Journaux des opÃ©rations de maintenance
 
 ## Utilisation de Hygen
 
-Le projet utilise [Hygen](https://www.hygen.io/) pour générer des scripts et des templates. Les templates Hygen sont organisés dans le dossier `_templates`, avec des sous-dossiers pour chaque type de template :
+Le projet utilise [Hygen](https://www.hygen.io/) pour gÃ©nÃ©rer des scripts et des templates. Les templates Hygen sont organisÃ©s dans le dossier `_templates`, avec des sous-dossiers pour chaque type de template :
 
 - **roadmap/** : Templates pour roadmap
 - **roadmap-parser/** : Templates pour roadmap-parser
 - **maintenance/** : Templates pour maintenance
 
-Pour générer un nouveau script, utilisez la commande suivante :
+Pour gÃ©nÃ©rer un nouveau script, utilisez la commande suivante :
 
 ```bash
 hygen <type> <action>

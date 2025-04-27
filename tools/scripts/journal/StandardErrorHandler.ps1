@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Framework standardisé pour la gestion des erreurs dans les scripts PowerShell.
+    Framework standardisÃ© pour la gestion des erreurs dans les scripts PowerShell.
 
 .DESCRIPTION
-    Ce script fournit un ensemble de fonctions pour gérer les erreurs de manière cohérente
-    dans tous les scripts PowerShell. Il inclut des fonctionnalités pour capturer, journaliser,
-    catégoriser et gérer les erreurs, ainsi que pour fournir des informations de débogage.
+    Ce script fournit un ensemble de fonctions pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente
+    dans tous les scripts PowerShell. Il inclut des fonctionnalitÃ©s pour capturer, journaliser,
+    catÃ©goriser et gÃ©rer les erreurs, ainsi que pour fournir des informations de dÃ©bogage.
 
 .EXAMPLE
     . .\StandardErrorHandler.ps1
     try {
-        # Code qui peut générer une erreur
+        # Code qui peut gÃ©nÃ©rer une erreur
         $result = 1 / 0
     }
     catch {
@@ -20,12 +20,12 @@
     }
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Définir les niveaux de sévérité des erreurs
+# DÃ©finir les niveaux de sÃ©vÃ©ritÃ© des erreurs
 enum ErrorSeverity {
     Debug = 0
     Information = 1
@@ -35,7 +35,7 @@ enum ErrorSeverity {
     Fatal = 5
 }
 
-# Définir les catégories d'erreurs
+# DÃ©finir les catÃ©gories d'erreurs
 enum ErrorCategory {
     Uncategorized = 0
     Validation = 1
@@ -64,7 +64,7 @@ enum ErrorCategory {
     Custom = 99
 }
 
-# Fonction pour créer un objet d'information d'erreur
+# Fonction pour crÃ©er un objet d'information d'erreur
 function New-ErrorInfo {
     [CmdletBinding()]
     param (
@@ -100,7 +100,7 @@ function New-ErrorInfo {
         "Unknown caller"
     }
     
-    # Créer l'objet d'information d'erreur
+    # CrÃ©er l'objet d'information d'erreur
     $errorInfo = [PSCustomObject]@{
         Timestamp = Get-Date
         ErrorId = [Guid]::NewGuid().ToString()
@@ -122,7 +122,7 @@ function New-ErrorInfo {
     return $errorInfo
 }
 
-# Fonction pour écrire les informations d'erreur dans un journal
+# Fonction pour Ã©crire les informations d'erreur dans un journal
 function Write-ErrorLog {
     [CmdletBinding()]
     param (
@@ -139,18 +139,18 @@ function Write-ErrorLog {
         [switch]$SendNotification
     )
     
-    # Déterminer le chemin du journal
+    # DÃ©terminer le chemin du journal
     if ([string]::IsNullOrEmpty($LogPath)) {
         $LogPath = Join-Path -Path $env:TEMP -ChildPath "ErrorLog.json"
     }
     
-    # Créer le dossier du journal si nécessaire
+    # CrÃ©er le dossier du journal si nÃ©cessaire
     $logDirectory = Split-Path -Path $LogPath -Parent
     if (-not (Test-Path -Path $logDirectory -PathType Container)) {
         New-Item -Path $logDirectory -ItemType Directory -Force | Out-Null
     }
     
-    # Formater l'entrée de journal
+    # Formater l'entrÃ©e de journal
     $logEntry = [PSCustomObject]@{
         Timestamp = $ErrorInfo.Timestamp
         ErrorId = $ErrorInfo.ErrorId
@@ -166,19 +166,19 @@ function Write-ErrorLog {
         SuggestedAction = $ErrorInfo.SuggestedAction
     }
     
-    # Convertir l'entrée en JSON
+    # Convertir l'entrÃ©e en JSON
     $jsonEntry = ConvertTo-Json -InputObject $logEntry -Depth 10
     
-    # Ajouter l'entrée au fichier journal
+    # Ajouter l'entrÃ©e au fichier journal
     try {
         Add-Content -Path $LogPath -Value $jsonEntry -Encoding UTF8
-        Write-Verbose "Erreur journalisée dans '$LogPath'"
+        Write-Verbose "Erreur journalisÃ©e dans '$LogPath'"
     }
     catch {
-        Write-Warning "Impossible d'écrire dans le journal des erreurs: $_"
+        Write-Warning "Impossible d'Ã©crire dans le journal des erreurs: $_"
     }
     
-    # Écrire dans le journal des événements Windows si demandé
+    # Ã‰crire dans le journal des Ã©vÃ©nements Windows si demandÃ©
     if ($AppendToEventLog) {
         try {
             $eventLogMessage = "[$($ErrorInfo.Severity)] $($ErrorInfo.Category): $($ErrorInfo.Message)`nSource: $($ErrorInfo.Source)`nScript: $($ErrorInfo.ScriptName):$($ErrorInfo.LineNumber)`nID: $($ErrorInfo.ErrorId)"
@@ -193,17 +193,17 @@ function Write-ErrorLog {
             }
             
             Write-EventLog -LogName "Application" -Source "PowerShell" -EventId 1000 -EntryType $eventLogEntryType -Message $eventLogMessage -ErrorAction Stop
-            Write-Verbose "Erreur écrite dans le journal des événements Windows"
+            Write-Verbose "Erreur Ã©crite dans le journal des Ã©vÃ©nements Windows"
         }
         catch {
-            Write-Warning "Impossible d'écrire dans le journal des événements Windows: $_"
+            Write-Warning "Impossible d'Ã©crire dans le journal des Ã©vÃ©nements Windows: $_"
         }
     }
     
-    # Envoyer une notification si demandé
+    # Envoyer une notification si demandÃ©
     if ($SendNotification) {
         try {
-            # Cette fonction peut être personnalisée pour envoyer des notifications par e-mail, SMS, etc.
+            # Cette fonction peut Ãªtre personnalisÃ©e pour envoyer des notifications par e-mail, SMS, etc.
             Send-ErrorNotification -ErrorInfo $ErrorInfo
         }
         catch {
@@ -214,7 +214,7 @@ function Write-ErrorLog {
     return $logEntry
 }
 
-# Fonction pour envoyer des notifications d'erreur (à personnaliser selon les besoins)
+# Fonction pour envoyer des notifications d'erreur (Ã  personnaliser selon les besoins)
 function Send-ErrorNotification {
     [CmdletBinding()]
     param (
@@ -222,13 +222,13 @@ function Send-ErrorNotification {
         [PSCustomObject]$ErrorInfo
     )
     
-    # Cette fonction est un placeholder qui peut être personnalisée pour envoyer des notifications
+    # Cette fonction est un placeholder qui peut Ãªtre personnalisÃ©e pour envoyer des notifications
     # par e-mail, SMS, webhook, etc.
     
-    Write-Verbose "Notification d'erreur envoyée pour l'erreur ID: $($ErrorInfo.ErrorId)"
+    Write-Verbose "Notification d'erreur envoyÃ©e pour l'erreur ID: $($ErrorInfo.ErrorId)"
 }
 
-# Fonction pour afficher les détails d'une erreur
+# Fonction pour afficher les dÃ©tails d'une erreur
 function Show-ErrorDetails {
     [CmdletBinding()]
     param (
@@ -249,7 +249,7 @@ function Show-ErrorDetails {
         return ConvertTo-Json -InputObject $ErrorInfo -Depth 10
     }
     
-    # Déterminer la couleur en fonction de la sévérité
+    # DÃ©terminer la couleur en fonction de la sÃ©vÃ©ritÃ©
     $severityColor = switch ($ErrorInfo.Severity) {
         ([ErrorSeverity]::Debug) { "Gray" }
         ([ErrorSeverity]::Information) { "White" }
@@ -261,11 +261,11 @@ function Show-ErrorDetails {
     }
     
     # Afficher les informations d'erreur
-    Write-Host "=== Détails de l'erreur ===" -ForegroundColor $severityColor
+    Write-Host "=== DÃ©tails de l'erreur ===" -ForegroundColor $severityColor
     Write-Host "ID: $($ErrorInfo.ErrorId)" -ForegroundColor $severityColor
     Write-Host "Timestamp: $($ErrorInfo.Timestamp)" -ForegroundColor $severityColor
-    Write-Host "Sévérité: $($ErrorInfo.Severity)" -ForegroundColor $severityColor
-    Write-Host "Catégorie: $($ErrorInfo.Category)" -ForegroundColor $severityColor
+    Write-Host "SÃ©vÃ©ritÃ©: $($ErrorInfo.Severity)" -ForegroundColor $severityColor
+    Write-Host "CatÃ©gorie: $($ErrorInfo.Category)" -ForegroundColor $severityColor
     Write-Host "Source: $($ErrorInfo.Source)" -ForegroundColor $severityColor
     Write-Host "Message: $($ErrorInfo.Message)" -ForegroundColor $severityColor
     Write-Host "Type d'exception: $($ErrorInfo.ExceptionType)" -ForegroundColor $severityColor
@@ -273,11 +273,11 @@ function Show-ErrorDetails {
     Write-Host "Appelant: $($ErrorInfo.CallerInfo)" -ForegroundColor $severityColor
     
     if (-not [string]::IsNullOrEmpty($ErrorInfo.AdditionalInfo)) {
-        Write-Host "Informations supplémentaires: $($ErrorInfo.AdditionalInfo)" -ForegroundColor $severityColor
+        Write-Host "Informations supplÃ©mentaires: $($ErrorInfo.AdditionalInfo)" -ForegroundColor $severityColor
     }
     
     if (-not [string]::IsNullOrEmpty($ErrorInfo.SuggestedAction)) {
-        Write-Host "Action suggérée: $($ErrorInfo.SuggestedAction)" -ForegroundColor "Cyan"
+        Write-Host "Action suggÃ©rÃ©e: $($ErrorInfo.SuggestedAction)" -ForegroundColor "Cyan"
     }
     
     if ($IncludeStackTrace) {
@@ -293,7 +293,7 @@ function Show-ErrorDetails {
     }
 }
 
-# Fonction pour analyser une erreur et suggérer des actions
+# Fonction pour analyser une erreur et suggÃ©rer des actions
 function Get-ErrorAnalysis {
     [CmdletBinding()]
     param (
@@ -309,72 +309,72 @@ function Get-ErrorAnalysis {
         Severity = $ErrorInfo.Severity
     }
     
-    # Analyser l'erreur en fonction de son type et de sa catégorie
+    # Analyser l'erreur en fonction de son type et de sa catÃ©gorie
     switch ($ErrorInfo.ExceptionType) {
         "System.IO.FileNotFoundException" {
-            $analysis.PossibleCauses += "Le fichier spécifié n'existe pas ou n'est pas accessible."
-            $analysis.SuggestedActions += "Vérifiez que le chemin du fichier est correct et que le fichier existe."
-            $analysis.SuggestedActions += "Vérifiez les permissions d'accès au fichier."
+            $analysis.PossibleCauses += "Le fichier spÃ©cifiÃ© n'existe pas ou n'est pas accessible."
+            $analysis.SuggestedActions += "VÃ©rifiez que le chemin du fichier est correct et que le fichier existe."
+            $analysis.SuggestedActions += "VÃ©rifiez les permissions d'accÃ¨s au fichier."
             $analysis.References += "https://docs.microsoft.com/en-us/dotnet/api/system.io.filenotfoundexception"
         }
         "System.UnauthorizedAccessException" {
-            $analysis.PossibleCauses += "Accès refusé au fichier ou à la ressource."
-            $analysis.SuggestedActions += "Vérifiez les permissions d'accès à la ressource."
-            $analysis.SuggestedActions += "Exécutez le script avec des privilèges élevés si nécessaire."
+            $analysis.PossibleCauses += "AccÃ¨s refusÃ© au fichier ou Ã  la ressource."
+            $analysis.SuggestedActions += "VÃ©rifiez les permissions d'accÃ¨s Ã  la ressource."
+            $analysis.SuggestedActions += "ExÃ©cutez le script avec des privilÃ¨ges Ã©levÃ©s si nÃ©cessaire."
             $analysis.References += "https://docs.microsoft.com/en-us/dotnet/api/system.unauthorizedaccessexception"
         }
         "System.Net.WebException" {
-            $analysis.PossibleCauses += "Erreur de connexion réseau ou de requête HTTP."
-            $analysis.SuggestedActions += "Vérifiez la connectivité réseau."
-            $analysis.SuggestedActions += "Vérifiez que l'URL est correcte et accessible."
-            $analysis.SuggestedActions += "Vérifiez les paramètres de proxy et les certificats SSL."
+            $analysis.PossibleCauses += "Erreur de connexion rÃ©seau ou de requÃªte HTTP."
+            $analysis.SuggestedActions += "VÃ©rifiez la connectivitÃ© rÃ©seau."
+            $analysis.SuggestedActions += "VÃ©rifiez que l'URL est correcte et accessible."
+            $analysis.SuggestedActions += "VÃ©rifiez les paramÃ¨tres de proxy et les certificats SSL."
             $analysis.References += "https://docs.microsoft.com/en-us/dotnet/api/system.net.webexception"
         }
         "System.Management.Automation.CommandNotFoundException" {
-            $analysis.PossibleCauses += "La commande ou le module PowerShell spécifié n'existe pas ou n'est pas chargé."
-            $analysis.SuggestedActions += "Vérifiez que le module est installé et importé."
-            $analysis.SuggestedActions += "Vérifiez l'orthographe de la commande."
+            $analysis.PossibleCauses += "La commande ou le module PowerShell spÃ©cifiÃ© n'existe pas ou n'est pas chargÃ©."
+            $analysis.SuggestedActions += "VÃ©rifiez que le module est installÃ© et importÃ©."
+            $analysis.SuggestedActions += "VÃ©rifiez l'orthographe de la commande."
             $analysis.References += "https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/cmdlet-overview"
         }
         default {
-            # Analyse basée sur la catégorie d'erreur
+            # Analyse basÃ©e sur la catÃ©gorie d'erreur
             switch ($ErrorInfo.Category) {
                 ([ErrorCategory]::Encoding) {
-                    $analysis.PossibleCauses += "Problème d'encodage de caractères."
-                    $analysis.SuggestedActions += "Vérifiez l'encodage du fichier (UTF-8 avec BOM pour les scripts PowerShell)."
+                    $analysis.PossibleCauses += "ProblÃ¨me d'encodage de caractÃ¨res."
+                    $analysis.SuggestedActions += "VÃ©rifiez l'encodage du fichier (UTF-8 avec BOM pour les scripts PowerShell)."
                     $analysis.SuggestedActions += "Utilisez les outils de normalisation d'encodage."
                 }
                 ([ErrorCategory]::Validation) {
-                    $analysis.PossibleCauses += "Les données d'entrée ne respectent pas les critères de validation."
-                    $analysis.SuggestedActions += "Vérifiez le format et la validité des données d'entrée."
+                    $analysis.PossibleCauses += "Les donnÃ©es d'entrÃ©e ne respectent pas les critÃ¨res de validation."
+                    $analysis.SuggestedActions += "VÃ©rifiez le format et la validitÃ© des donnÃ©es d'entrÃ©e."
                 }
                 ([ErrorCategory]::Configuration) {
                     $analysis.PossibleCauses += "Erreur dans la configuration de l'application ou du script."
-                    $analysis.SuggestedActions += "Vérifiez les fichiers de configuration et les paramètres."
+                    $analysis.SuggestedActions += "VÃ©rifiez les fichiers de configuration et les paramÃ¨tres."
                 }
                 ([ErrorCategory]::Timeout) {
-                    $analysis.PossibleCauses += "L'opération a dépassé le délai d'attente maximal."
-                    $analysis.SuggestedActions += "Augmentez le délai d'attente ou optimisez l'opération."
-                    $analysis.SuggestedActions += "Vérifiez la disponibilité des ressources externes."
+                    $analysis.PossibleCauses += "L'opÃ©ration a dÃ©passÃ© le dÃ©lai d'attente maximal."
+                    $analysis.SuggestedActions += "Augmentez le dÃ©lai d'attente ou optimisez l'opÃ©ration."
+                    $analysis.SuggestedActions += "VÃ©rifiez la disponibilitÃ© des ressources externes."
                 }
                 default {
-                    $analysis.PossibleCauses += "Cause indéterminée."
+                    $analysis.PossibleCauses += "Cause indÃ©terminÃ©e."
                     $analysis.SuggestedActions += "Examinez le message d'erreur et la trace de la pile pour plus d'informations."
                 }
             }
         }
     }
     
-    # Ajouter des suggestions génériques si aucune suggestion spécifique n'a été trouvée
+    # Ajouter des suggestions gÃ©nÃ©riques si aucune suggestion spÃ©cifique n'a Ã©tÃ© trouvÃ©e
     if ($analysis.SuggestedActions.Count -eq 0) {
         $analysis.SuggestedActions += "Consultez la documentation pour plus d'informations sur cette erreur."
-        $analysis.SuggestedActions += "Recherchez des solutions en ligne pour le message d'erreur spécifique."
+        $analysis.SuggestedActions += "Recherchez des solutions en ligne pour le message d'erreur spÃ©cifique."
     }
     
     return $analysis
 }
 
-# Fonction pour tester si une erreur correspond à un modèle spécifique
+# Fonction pour tester si une erreur correspond Ã  un modÃ¨le spÃ©cifique
 function Test-ErrorPattern {
     [CmdletBinding()]
     param (
@@ -399,27 +399,27 @@ function Test-ErrorPattern {
     
     $matchesPattern = $true
     
-    # Vérifier le modèle de message
+    # VÃ©rifier le modÃ¨le de message
     if (-not [string]::IsNullOrEmpty($MessagePattern)) {
         $matchesPattern = $matchesPattern -and ($ErrorInfo.Message -match $MessagePattern)
     }
     
-    # Vérifier le type d'exception
+    # VÃ©rifier le type d'exception
     if (-not [string]::IsNullOrEmpty($ExceptionType)) {
         $matchesPattern = $matchesPattern -and ($ErrorInfo.ExceptionType -match $ExceptionType)
     }
     
-    # Vérifier la catégorie
+    # VÃ©rifier la catÃ©gorie
     if ($Category -ne [ErrorCategory]::Uncategorized) {
         $matchesPattern = $matchesPattern -and ($ErrorInfo.Category -eq $Category)
     }
     
-    # Vérifier le modèle de source
+    # VÃ©rifier le modÃ¨le de source
     if (-not [string]::IsNullOrEmpty($SourcePattern)) {
         $matchesPattern = $matchesPattern -and ($ErrorInfo.Source -match $SourcePattern)
     }
     
-    # Vérifier le modèle de nom de script
+    # VÃ©rifier le modÃ¨le de nom de script
     if (-not [string]::IsNullOrEmpty($ScriptNamePattern)) {
         $matchesPattern = $matchesPattern -and ($ErrorInfo.ScriptName -match $ScriptNamePattern)
     }
@@ -427,7 +427,7 @@ function Test-ErrorPattern {
     return $matchesPattern
 }
 
-# Fonction pour récupérer les erreurs du journal
+# Fonction pour rÃ©cupÃ©rer les erreurs du journal
 function Get-ErrorLogs {
     [CmdletBinding()]
     param (
@@ -456,12 +456,12 @@ function Get-ErrorLogs {
         [int]$MaxResults = 0
     )
     
-    # Déterminer le chemin du journal
+    # DÃ©terminer le chemin du journal
     if ([string]::IsNullOrEmpty($LogPath)) {
         $LogPath = Join-Path -Path $env:TEMP -ChildPath "ErrorLog.json"
     }
     
-    # Vérifier si le fichier journal existe
+    # VÃ©rifier si le fichier journal existe
     if (-not (Test-Path -Path $LogPath -PathType Leaf)) {
         Write-Warning "Le fichier journal '$LogPath' n'existe pas."
         return @()
@@ -482,7 +482,7 @@ function Get-ErrorLogs {
             }
         }
         
-        # Filtrer les entrées
+        # Filtrer les entrÃ©es
         $filteredEntries = $logEntries | Where-Object {
             $matchesFilter = $true
             
@@ -497,7 +497,7 @@ function Get-ErrorLogs {
                 $matchesFilter = $matchesFilter -and ($entryTime -le $EndTime)
             }
             
-            # Filtrer par sévérité
+            # Filtrer par sÃ©vÃ©ritÃ©
             $entrySeverity = [Enum]::Parse([ErrorSeverity], $_.Severity)
             $matchesFilter = $matchesFilter -and ($entrySeverity -ge $MinimumSeverity)
             
@@ -519,7 +519,7 @@ function Get-ErrorLogs {
             return $matchesFilter
         }
         
-        # Limiter le nombre de résultats si demandé
+        # Limiter le nombre de rÃ©sultats si demandÃ©
         if ($MaxResults -gt 0 -and $filteredEntries.Count -gt $MaxResults) {
             $filteredEntries = $filteredEntries | Select-Object -First $MaxResults
         }
@@ -561,11 +561,11 @@ function Get-ErrorStatistics {
         [switch]$IncludeTimeline
     )
     
-    # Récupérer les erreurs du journal
+    # RÃ©cupÃ©rer les erreurs du journal
     $errors = Get-ErrorLogs -LogPath $LogPath -StartTime $StartTime -EndTime $EndTime
     
     if ($errors.Count -eq 0) {
-        Write-Warning "Aucune erreur trouvée dans le journal."
+        Write-Warning "Aucune erreur trouvÃ©e dans le journal."
         return $null
     }
     
@@ -578,7 +578,7 @@ function Get-ErrorStatistics {
             "Depuis $StartTime"
         }
         elseif ($PSBoundParameters.ContainsKey('EndTime')) {
-            "Jusqu'à $EndTime"
+            "Jusqu'Ã  $EndTime"
         }
         else {
             "Toutes les erreurs"
@@ -596,13 +596,13 @@ function Get-ErrorStatistics {
         $statistics.MostCommonSources = $sourceGroups | Select-Object -Property Name, Count
     }
     
-    # Grouper par catégorie
+    # Grouper par catÃ©gorie
     if ($GroupByCategory) {
         $categoryGroups = $errors | Group-Object -Property Category | Sort-Object -Property Count -Descending
         $statistics.MostCommonCategories = $categoryGroups | Select-Object -Property Name, Count
     }
     
-    # Grouper par sévérité
+    # Grouper par sÃ©vÃ©ritÃ©
     if ($GroupBySeverity) {
         $severityGroups = $errors | Group-Object -Property Severity | Sort-Object -Property Name
         $statistics.SeverityDistribution = $severityGroups | Select-Object -Property Name, Count
@@ -614,7 +614,7 @@ function Get-ErrorStatistics {
         $statistics.MostCommonScripts = $scriptGroups | Select-Object -Property Name, Count
     }
     
-    # Créer une timeline
+    # CrÃ©er une timeline
     if ($IncludeTimeline) {
         # Convertir les timestamps en objets DateTime
         $errorsWithDateTime = $errors | ForEach-Object {

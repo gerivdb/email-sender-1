@@ -1,63 +1,63 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un objet vers un format sérialisé.
+    Convertit un objet vers un format sÃ©rialisÃ©.
 
 .DESCRIPTION
-    La fonction ConvertTo-SerializedFormat convertit un objet vers un format sérialisé.
-    Elle prend en charge différents formats de sérialisation et peut être utilisée pour
+    La fonction ConvertTo-SerializedFormat convertit un objet vers un format sÃ©rialisÃ©.
+    Elle prend en charge diffÃ©rents formats de sÃ©rialisation et peut Ãªtre utilisÃ©e pour
     convertir les objets du module RoadmapParser.
 
 .PARAMETER InputObject
-    L'objet à sérialiser.
+    L'objet Ã  sÃ©rialiser.
 
 .PARAMETER Format
-    Le format de sérialisation. Valeurs possibles :
-    - Json : Sérialise l'objet en JSON
-    - Xml : Sérialise l'objet en XML
-    - Csv : Sérialise l'objet en CSV
-    - Yaml : Sérialise l'objet en YAML
-    - Psd1 : Sérialise l'objet en fichier de données PowerShell
-    - Base64 : Sérialise l'objet en chaîne Base64
-    - Clixml : Sérialise l'objet en CLIXML
-    - Binary : Sérialise l'objet en format binaire
-    - Custom : Utilise un format personnalisé
+    Le format de sÃ©rialisation. Valeurs possibles :
+    - Json : SÃ©rialise l'objet en JSON
+    - Xml : SÃ©rialise l'objet en XML
+    - Csv : SÃ©rialise l'objet en CSV
+    - Yaml : SÃ©rialise l'objet en YAML
+    - Psd1 : SÃ©rialise l'objet en fichier de donnÃ©es PowerShell
+    - Base64 : SÃ©rialise l'objet en chaÃ®ne Base64
+    - Clixml : SÃ©rialise l'objet en CLIXML
+    - Binary : SÃ©rialise l'objet en format binaire
+    - Custom : Utilise un format personnalisÃ©
 
 .PARAMETER CustomFormat
-    Le format personnalisé à utiliser pour la sérialisation.
-    Utilisé uniquement lorsque Format est "Custom".
+    Le format personnalisÃ© Ã  utiliser pour la sÃ©rialisation.
+    UtilisÃ© uniquement lorsque Format est "Custom".
 
 .PARAMETER Depth
-    La profondeur maximale de sérialisation pour les objets imbriqués.
+    La profondeur maximale de sÃ©rialisation pour les objets imbriquÃ©s.
 
 .PARAMETER Encoding
-    L'encodage à utiliser pour la sérialisation.
+    L'encodage Ã  utiliser pour la sÃ©rialisation.
 
 .PARAMETER FilePath
-    Le chemin du fichier où enregistrer le résultat de la sérialisation.
-    Si spécifié, le résultat sera enregistré dans le fichier au lieu d'être retourné.
+    Le chemin du fichier oÃ¹ enregistrer le rÃ©sultat de la sÃ©rialisation.
+    Si spÃ©cifiÃ©, le rÃ©sultat sera enregistrÃ© dans le fichier au lieu d'Ãªtre retournÃ©.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la sérialisation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la sÃ©rialisation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la sérialisation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la sÃ©rialisation.
 
 .EXAMPLE
     ConvertTo-SerializedFormat -InputObject $object -Format Json
-    Sérialise l'objet en JSON.
+    SÃ©rialise l'objet en JSON.
 
 .EXAMPLE
     ConvertTo-SerializedFormat -InputObject $object -Format Xml -FilePath "C:\temp\object.xml" -ThrowOnFailure
-    Sérialise l'objet en XML et enregistre le résultat dans le fichier spécifié, et lève une exception si la sérialisation échoue.
+    SÃ©rialise l'objet en XML et enregistre le rÃ©sultat dans le fichier spÃ©cifiÃ©, et lÃ¨ve une exception si la sÃ©rialisation Ã©choue.
 
 .OUTPUTS
-    [string] La représentation sérialisée de l'objet, ou $null si la sérialisation a échoué et que ThrowOnFailure n'est pas spécifié.
+    [string] La reprÃ©sentation sÃ©rialisÃ©e de l'objet, ou $null si la sÃ©rialisation a Ã©chouÃ© et que ThrowOnFailure n'est pas spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function ConvertTo-SerializedFormat {
     [CmdletBinding()]
@@ -89,11 +89,11 @@ function ConvertTo-SerializedFormat {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la sérialisation
+    # Initialiser le rÃ©sultat de la sÃ©rialisation
     $result = $null
     $serializationSucceeded = $false
 
-    # Effectuer la sérialisation selon le format
+    # Effectuer la sÃ©rialisation selon le format
     try {
         switch ($Format) {
             "Json" {
@@ -101,7 +101,7 @@ function ConvertTo-SerializedFormat {
                 $serializationSucceeded = $true
             }
             "Xml" {
-                # Utiliser Export-Clixml pour la sérialisation XML
+                # Utiliser Export-Clixml pour la sÃ©rialisation XML
                 if ($null -eq $InputObject) {
                     $result = "<null />"
                 } else {
@@ -127,8 +127,8 @@ function ConvertTo-SerializedFormat {
                 if ($null -eq $InputObject) {
                     $result = "--- {}"
                 } else {
-                    # PowerShell ne dispose pas de convertisseur YAML intégré
-                    # Nous utilisons une approche simplifiée ici
+                    # PowerShell ne dispose pas de convertisseur YAML intÃ©grÃ©
+                    # Nous utilisons une approche simplifiÃ©e ici
                     $json = ConvertTo-Json -InputObject $InputObject -Depth $Depth
                     $yamlLines = @("---")
 
@@ -220,10 +220,10 @@ function ConvertTo-SerializedFormat {
             }
             "Custom" {
                 if ([string]::IsNullOrEmpty($CustomFormat)) {
-                    throw "Le paramètre CustomFormat est requis lorsque le format est Custom."
+                    throw "Le paramÃ¨tre CustomFormat est requis lorsque le format est Custom."
                 }
 
-                # Utiliser une fonction personnalisée pour la sérialisation
+                # Utiliser une fonction personnalisÃ©e pour la sÃ©rialisation
                 $scriptBlock = [scriptblock]::Create($CustomFormat)
                 $result = & $scriptBlock $InputObject
                 $serializationSucceeded = $true
@@ -232,11 +232,11 @@ function ConvertTo-SerializedFormat {
     } catch {
         $serializationSucceeded = $false
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "Impossible de sérialiser l'objet en format $Format : $_"
+            $ErrorMessage = "Impossible de sÃ©rialiser l'objet en format $Format : $_"
         }
     }
 
-    # Gérer l'échec de la sérialisation
+    # GÃ©rer l'Ã©chec de la sÃ©rialisation
     if (-not $serializationSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage
@@ -246,7 +246,7 @@ function ConvertTo-SerializedFormat {
         }
     }
 
-    # Enregistrer le résultat dans un fichier si spécifié
+    # Enregistrer le rÃ©sultat dans un fichier si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($FilePath) -and $serializationSucceeded) {
         try {
             if ($Format -eq "Binary") {
@@ -256,9 +256,9 @@ function ConvertTo-SerializedFormat {
             }
         } catch {
             if ($ThrowOnFailure) {
-                throw "Impossible d'enregistrer le résultat dans le fichier '$FilePath' : $_"
+                throw "Impossible d'enregistrer le rÃ©sultat dans le fichier '$FilePath' : $_"
             } else {
-                Write-Warning "Impossible d'enregistrer le résultat dans le fichier '$FilePath' : $_"
+                Write-Warning "Impossible d'enregistrer le rÃ©sultat dans le fichier '$FilePath' : $_"
             }
         }
     }

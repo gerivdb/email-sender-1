@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère des fichiers d'échantillon malformés ou incomplets pour les tests de détection de format.
+    GÃ©nÃ¨re des fichiers d'Ã©chantillon malformÃ©s ou incomplets pour les tests de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script génère des fichiers d'échantillon intentionnellement malformés ou incomplets
-    pour tester la robustesse des algorithmes de détection de format. Il crée des variations
+    Ce script gÃ©nÃ¨re des fichiers d'Ã©chantillon intentionnellement malformÃ©s ou incomplets
+    pour tester la robustesse des algorithmes de dÃ©tection de format. Il crÃ©e des variations
     de fichiers existants en les tronquant, en corrompant leur structure, ou en modifiant
-    leur contenu de manière à les rendre difficiles à identifier.
+    leur contenu de maniÃ¨re Ã  les rendre difficiles Ã  identifier.
 
 .PARAMETER SourceDirectory
-    Le répertoire contenant les fichiers d'échantillon sources.
-    Par défaut, utilise le répertoire 'samples' dans le répertoire du script.
+    Le rÃ©pertoire contenant les fichiers d'Ã©chantillon sources.
+    Par dÃ©faut, utilise le rÃ©pertoire 'samples' dans le rÃ©pertoire du script.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les fichiers d'échantillon malformés seront enregistrés.
-    Par défaut, utilise le répertoire 'malformed_samples' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les fichiers d'Ã©chantillon malformÃ©s seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'malformed_samples' dans le rÃ©pertoire du script.
 
 .PARAMETER Force
-    Indique si les fichiers existants doivent être remplacés.
+    Indique si les fichiers existants doivent Ãªtre remplacÃ©s.
 
 .EXAMPLE
     .\Generate-MalformedSamples.ps1 -OutputDirectory "D:\Samples\Malformed" -Force
@@ -41,7 +41,7 @@ param(
     [switch]$Force
 )
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -49,7 +49,7 @@ function New-DirectoryIfNotExists {
     
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $Path"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $Path"
     }
 }
 
@@ -72,7 +72,7 @@ function New-TruncatedFile {
     $truncatedContent = $content.Substring(0, $newLength)
     Set-Content -Path $DestinationPath -Value $truncatedContent -Encoding UTF8 -Force
     
-    Write-Verbose "Fichier tronqué créé : $DestinationPath (gardé $PercentageToKeep% du contenu)"
+    Write-Verbose "Fichier tronquÃ© crÃ©Ã© : $DestinationPath (gardÃ© $PercentageToKeep% du contenu)"
 }
 
 # Fonction pour corrompre un fichier binaire
@@ -100,7 +100,7 @@ function New-CorruptedBinaryFile {
     
     [System.IO.File]::WriteAllBytes($DestinationPath, $bytes)
     
-    Write-Verbose "Fichier binaire corrompu créé : $DestinationPath (corrompu $CorruptionPercentage% du contenu)"
+    Write-Verbose "Fichier binaire corrompu crÃ©Ã© : $DestinationPath (corrompu $CorruptionPercentage% du contenu)"
 }
 
 # Fonction pour corrompre un fichier texte
@@ -130,10 +130,10 @@ function New-CorruptedTextFile {
     $corruptedContent = New-Object System.String ($chars)
     Set-Content -Path $DestinationPath -Value $corruptedContent -Encoding UTF8 -Force
     
-    Write-Verbose "Fichier texte corrompu créé : $DestinationPath (corrompu $CorruptionPercentage% du contenu)"
+    Write-Verbose "Fichier texte corrompu crÃ©Ã© : $DestinationPath (corrompu $CorruptionPercentage% du contenu)"
 }
 
-# Fonction pour créer un fichier avec un en-tête incorrect
+# Fonction pour crÃ©er un fichier avec un en-tÃªte incorrect
 function New-IncorrectHeaderFile {
     param (
         [string]$SourcePath,
@@ -146,10 +146,10 @@ function New-IncorrectHeaderFile {
     
     Set-Content -Path $DestinationPath -Value $incorrectContent -Encoding UTF8 -Force
     
-    Write-Verbose "Fichier avec en-tête incorrect créé : $DestinationPath"
+    Write-Verbose "Fichier avec en-tÃªte incorrect crÃ©Ã© : $DestinationPath"
 }
 
-# Fonction pour créer un fichier avec une extension incorrecte
+# Fonction pour crÃ©er un fichier avec une extension incorrecte
 function New-IncorrectExtensionFile {
     param (
         [string]$SourcePath,
@@ -159,10 +159,10 @@ function New-IncorrectExtensionFile {
     
     Copy-Item -Path $SourcePath -Destination $DestinationPath -Force
     
-    Write-Verbose "Fichier avec extension incorrecte créé : $DestinationPath"
+    Write-Verbose "Fichier avec extension incorrecte crÃ©Ã© : $DestinationPath"
 }
 
-# Fonction pour créer un fichier hybride (mélange de deux formats)
+# Fonction pour crÃ©er un fichier hybride (mÃ©lange de deux formats)
 function New-HybridFile {
     param (
         [string]$SourcePath1,
@@ -184,21 +184,21 @@ function New-HybridFile {
     
     Set-Content -Path $DestinationPath -Value $hybridContent -Encoding UTF8 -Force
     
-    Write-Verbose "Fichier hybride créé : $DestinationPath (mélange de $SourcePath1 et $SourcePath2)"
+    Write-Verbose "Fichier hybride crÃ©Ã© : $DestinationPath (mÃ©lange de $SourcePath1 et $SourcePath2)"
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le répertoire source existe
+    # VÃ©rifier si le rÃ©pertoire source existe
     if (-not (Test-Path -Path $SourceDirectory -PathType Container)) {
-        Write-Error "Le répertoire source '$SourceDirectory' n'existe pas."
+        Write-Error "Le rÃ©pertoire source '$SourceDirectory' n'existe pas."
         return
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     New-DirectoryIfNotExists -Path $OutputDirectory
     
-    # Créer des sous-répertoires pour organiser les échantillons
+    # CrÃ©er des sous-rÃ©pertoires pour organiser les Ã©chantillons
     $truncatedDir = Join-Path -Path $OutputDirectory -ChildPath "truncated"
     $corruptedDir = Join-Path -Path $OutputDirectory -ChildPath "corrupted"
     $incorrectHeaderDir = Join-Path -Path $OutputDirectory -ChildPath "incorrect_header"
@@ -211,28 +211,28 @@ function Main {
     New-DirectoryIfNotExists -Path $incorrectExtensionDir
     New-DirectoryIfNotExists -Path $hybridDir
     
-    # Récupérer les fichiers d'échantillon
+    # RÃ©cupÃ©rer les fichiers d'Ã©chantillon
     $formatSamplesDir = Join-Path -Path $SourceDirectory -ChildPath "formats"
     if (-not (Test-Path -Path $formatSamplesDir -PathType Container)) {
-        Write-Error "Le répertoire des formats '$formatSamplesDir' n'existe pas."
+        Write-Error "Le rÃ©pertoire des formats '$formatSamplesDir' n'existe pas."
         return
     }
     
     $sampleFiles = Get-ChildItem -Path $formatSamplesDir -File
     
     if ($sampleFiles.Count -eq 0) {
-        Write-Error "Aucun fichier d'échantillon trouvé dans le répertoire '$formatSamplesDir'."
+        Write-Error "Aucun fichier d'Ã©chantillon trouvÃ© dans le rÃ©pertoire '$formatSamplesDir'."
         return
     }
     
-    Write-Host "Génération de fichiers malformés à partir de $($sampleFiles.Count) fichiers d'échantillon..." -ForegroundColor Yellow
+    Write-Host "GÃ©nÃ©ration de fichiers malformÃ©s Ã  partir de $($sampleFiles.Count) fichiers d'Ã©chantillon..." -ForegroundColor Yellow
     
-    # Générer des fichiers tronqués
+    # GÃ©nÃ©rer des fichiers tronquÃ©s
     foreach ($file in $sampleFiles) {
         $baseName = $file.BaseName
         $extension = $file.Extension
         
-        # Créer des fichiers tronqués à différents pourcentages
+        # CrÃ©er des fichiers tronquÃ©s Ã  diffÃ©rents pourcentages
         foreach ($percentage in @(25, 50, 75)) {
             $truncatedFileName = "${baseName}_truncated_${percentage}${extension}"
             $truncatedFilePath = Join-Path -Path $truncatedDir -ChildPath $truncatedFileName
@@ -242,7 +242,7 @@ function Main {
             }
         }
         
-        # Créer des fichiers corrompus
+        # CrÃ©er des fichiers corrompus
         foreach ($percentage in @(5, 10, 20)) {
             $corruptedFileName = "${baseName}_corrupted_${percentage}${extension}"
             $corruptedFilePath = Join-Path -Path $corruptedDir -ChildPath $corruptedFileName
@@ -257,7 +257,7 @@ function Main {
             }
         }
         
-        # Créer des fichiers avec en-tête incorrect
+        # CrÃ©er des fichiers avec en-tÃªte incorrect
         if ($extension -ne ".bin" -and $extension -ne ".txt") {
             $incorrectHeaders = @{
                 ".json" = "// This is a JavaScript comment\n"
@@ -281,7 +281,7 @@ function Main {
             }
         }
         
-        # Créer des fichiers avec extension incorrecte
+        # CrÃ©er des fichiers avec extension incorrecte
         $incorrectExtensions = @{
             ".json" = ".js"
             ".js" = ".json"
@@ -306,7 +306,7 @@ function Main {
         }
     }
     
-    # Créer des fichiers hybrides (mélanges de formats)
+    # CrÃ©er des fichiers hybrides (mÃ©langes de formats)
     $hybridPairs = @(
         @{Source1 = "sample.json"; Source2 = "sample.js"; Output = "json_js_hybrid.txt"; Percentage = 70},
         @{Source1 = "sample.xml"; Source2 = "sample.html"; Output = "xml_html_hybrid.txt"; Percentage = 60},
@@ -326,13 +326,13 @@ function Main {
             }
         }
         else {
-            Write-Warning "Impossible de créer le fichier hybride '$($pair.Output)' : un ou plusieurs fichiers sources n'existent pas."
+            Write-Warning "Impossible de crÃ©er le fichier hybride '$($pair.Output)' : un ou plusieurs fichiers sources n'existent pas."
         }
     }
     
-    Write-Host "Génération de fichiers malformés terminée." -ForegroundColor Green
-    Write-Host "Fichiers générés dans le répertoire : $OutputDirectory" -ForegroundColor Green
+    Write-Host "GÃ©nÃ©ration de fichiers malformÃ©s terminÃ©e." -ForegroundColor Green
+    Write-Host "Fichiers gÃ©nÃ©rÃ©s dans le rÃ©pertoire : $OutputDirectory" -ForegroundColor Green
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

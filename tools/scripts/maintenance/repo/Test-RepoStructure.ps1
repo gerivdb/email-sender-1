@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Valide la structure du dépôt selon le standard défini
+    Valide la structure du dÃ©pÃ´t selon le standard dÃ©fini
 .DESCRIPTION
-    Ce script vérifie que la structure du dépôt est conforme au standard défini
-    dans le document RepoStructureStandard.md. Il génère un rapport de conformité
-    et peut suggérer des corrections.
+    Ce script vÃ©rifie que la structure du dÃ©pÃ´t est conforme au standard dÃ©fini
+    dans le document RepoStructureStandard.md. Il gÃ©nÃ¨re un rapport de conformitÃ©
+    et peut suggÃ©rer des corrections.
 .PARAMETER Path
-    Chemin du dépôt à valider
+    Chemin du dÃ©pÃ´t Ã  valider
 .PARAMETER ReportPath
-    Chemin où générer le rapport de conformité
+    Chemin oÃ¹ gÃ©nÃ©rer le rapport de conformitÃ©
 .PARAMETER Fix
-    Indique si le script doit tenter de corriger les problèmes détectés
+    Indique si le script doit tenter de corriger les problÃ¨mes dÃ©tectÃ©s
 .EXAMPLE
     .\Test-RepoStructure.ps1 -Path "D:\Repos\EMAIL_SENDER_1"
 .NOTES
@@ -32,7 +32,7 @@ param(
     [switch]$Fix
 )
 
-# Définition des dossiers principaux attendus
+# DÃ©finition des dossiers principaux attendus
 $mainFolders = @(
     "scripts",
     "modules",
@@ -48,7 +48,7 @@ $mainFolders = @(
     "Roadmap"
 )
 
-# Définition des sous-dossiers attendus
+# DÃ©finition des sous-dossiers attendus
 $subFolders = @{
     "scripts" = @(
         "scripts\analysis",
@@ -78,7 +78,7 @@ $subFolders = @{
     )
 }
 
-# Fonction pour vérifier l'existence d'un dossier
+# Fonction pour vÃ©rifier l'existence d'un dossier
 function Test-FolderExists {
     param (
         [string]$FolderPath
@@ -88,7 +88,7 @@ function Test-FolderExists {
     return Test-Path -Path $fullPath -PathType Container
 }
 
-# Fonction pour créer un dossier s'il n'existe pas
+# Fonction pour crÃ©er un dossier s'il n'existe pas
 function Create-FolderIfNotExists {
     param (
         [string]$FolderPath
@@ -102,7 +102,7 @@ function Create-FolderIfNotExists {
     return $false
 }
 
-# Fonction pour vérifier les conventions de nommage des fichiers
+# Fonction pour vÃ©rifier les conventions de nommage des fichiers
 function Test-FileNamingConventions {
     param (
         [string]$FolderPath,
@@ -120,15 +120,15 @@ function Test-FileNamingConventions {
             
             switch ($Convention) {
                 "PascalCase" {
-                    # Vérifier le format PascalCase (Verbe-Nom.ps1)
+                    # VÃ©rifier le format PascalCase (Verbe-Nom.ps1)
                     $isCompliant = $file.Name -match '^[A-Z][a-z0-9]+(-[A-Z][a-z0-9]+)*\.(ps1|psm1)$'
                 }
                 "snake_case" {
-                    # Vérifier le format snake_case
+                    # VÃ©rifier le format snake_case
                     $isCompliant = $file.Name -match '^[a-z0-9_]+\.(py|sh)$'
                 }
                 "kebab-case" {
-                    # Vérifier le format kebab-case
+                    # VÃ©rifier le format kebab-case
                     $isCompliant = $file.Name -match '^[a-z0-9]+(-[a-z0-9]+)*\.(cmd|bat|json|yaml|yml)$'
                 }
             }
@@ -144,7 +144,7 @@ function Test-FileNamingConventions {
     return @()
 }
 
-# Initialiser les résultats
+# Initialiser les rÃ©sultats
 $results = @{
     MissingMainFolders = @()
     MissingSubFolders = @()
@@ -154,7 +154,7 @@ $results = @{
     CreatedFolders = @()
 }
 
-# Vérifier les dossiers principaux
+# VÃ©rifier les dossiers principaux
 foreach ($folder in $mainFolders) {
     if (-not (Test-FolderExists -FolderPath $folder)) {
         $results.MissingMainFolders += $folder
@@ -168,7 +168,7 @@ foreach ($folder in $mainFolders) {
     }
 }
 
-# Vérifier les sous-dossiers
+# VÃ©rifier les sous-dossiers
 foreach ($mainFolder in $subFolders.Keys) {
     foreach ($subFolder in $subFolders[$mainFolder]) {
         if (-not (Test-FolderExists -FolderPath $subFolder)) {
@@ -184,28 +184,28 @@ foreach ($mainFolder in $subFolders.Keys) {
     }
 }
 
-# Vérifier les conventions de nommage
+# VÃ©rifier les conventions de nommage
 $results.NonCompliantPowerShellFiles = Test-FileNamingConventions -FolderPath "scripts" -Pattern "*.ps1" -Convention "PascalCase"
 $results.NonCompliantPythonFiles = Test-FileNamingConventions -FolderPath "scripts" -Pattern "*.py" -Convention "snake_case"
 $results.NonCompliantBatchFiles = Test-FileNamingConventions -FolderPath "scripts" -Pattern "*.cmd" -Convention "kebab-case"
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $reportContent = @"
-# Rapport de Validation de Structure du Dépôt
+# Rapport de Validation de Structure du DÃ©pÃ´t
 
 Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 Chemin: $Path
 
-## Résumé
+## RÃ©sumÃ©
 
 - Dossiers principaux manquants: $($results.MissingMainFolders.Count)
 - Sous-dossiers manquants: $($results.MissingSubFolders.Count)
 - Fichiers PowerShell non conformes: $($results.NonCompliantPowerShellFiles.Count)
 - Fichiers Python non conformes: $($results.NonCompliantPythonFiles.Count)
 - Fichiers Batch non conformes: $($results.NonCompliantBatchFiles.Count)
-- Dossiers créés (si Fix=True): $($results.CreatedFolders.Count)
+- Dossiers crÃ©Ã©s (si Fix=True): $($results.CreatedFolders.Count)
 
-## Détails
+## DÃ©tails
 
 ### Dossiers principaux manquants
 
@@ -247,10 +247,10 @@ $(if ($results.NonCompliantBatchFiles.Count -eq 0) {
     $results.NonCompliantBatchFiles | ForEach-Object { "- $($_.FullName)" } | Out-String
 })
 
-### Dossiers créés
+### Dossiers crÃ©Ã©s
 
 $(if ($results.CreatedFolders.Count -eq 0) {
-    "Aucun dossier créé."
+    "Aucun dossier crÃ©Ã©."
 } else {
     $results.CreatedFolders | ForEach-Object { "- $_" } | Out-String
 })
@@ -260,12 +260,12 @@ $(if ($results.CreatedFolders.Count -eq 0) {
 $(if ($results.MissingMainFolders.Count -eq 0 -and $results.MissingSubFolders.Count -eq 0 -and 
       $results.NonCompliantPowerShellFiles.Count -eq 0 -and $results.NonCompliantPythonFiles.Count -eq 0 -and 
       $results.NonCompliantBatchFiles.Count -eq 0) {
-    "La structure du dépôt est conforme au standard défini."
+    "La structure du dÃ©pÃ´t est conforme au standard dÃ©fini."
 } else {
     if (-not $Fix) {
-        "Exécutez le script avec le paramètre -Fix pour corriger automatiquement les problèmes de structure."
+        "ExÃ©cutez le script avec le paramÃ¨tre -Fix pour corriger automatiquement les problÃ¨mes de structure."
     } else {
-        "Certains problèmes ont été corrigés automatiquement. Vérifiez le rapport pour plus de détails."
+        "Certains problÃ¨mes ont Ã©tÃ© corrigÃ©s automatiquement. VÃ©rifiez le rapport pour plus de dÃ©tails."
     }
     
     if ($results.NonCompliantPowerShellFiles.Count -gt 0 -or $results.NonCompliantPythonFiles.Count -gt 0 -or 
@@ -275,7 +275,7 @@ $(if ($results.MissingMainFolders.Count -eq 0 -and $results.MissingSubFolders.Co
 })
 "@
 
-# Créer le dossier de rapport s'il n'existe pas
+# CrÃ©er le dossier de rapport s'il n'existe pas
 $reportDir = Split-Path -Path $ReportPath -Parent
 if (-not (Test-Path -Path $reportDir -PathType Container)) {
     New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
@@ -285,15 +285,15 @@ if (-not (Test-Path -Path $reportDir -PathType Container)) {
 $reportFullPath = Join-Path -Path $Path -ChildPath $ReportPath
 Set-Content -Path $reportFullPath -Value $reportContent -Encoding UTF8
 
-# Afficher un résumé
-Write-Host "Validation de la structure du dépôt terminée." -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "Validation de la structure du dÃ©pÃ´t terminÃ©e." -ForegroundColor Green
 Write-Host "Dossiers principaux manquants: $($results.MissingMainFolders.Count)" -ForegroundColor $(if ($results.MissingMainFolders.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "Sous-dossiers manquants: $($results.MissingSubFolders.Count)" -ForegroundColor $(if ($results.MissingSubFolders.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "Fichiers PowerShell non conformes: $($results.NonCompliantPowerShellFiles.Count)" -ForegroundColor $(if ($results.NonCompliantPowerShellFiles.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "Fichiers Python non conformes: $($results.NonCompliantPythonFiles.Count)" -ForegroundColor $(if ($results.NonCompliantPythonFiles.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "Fichiers Batch non conformes: $($results.NonCompliantBatchFiles.Count)" -ForegroundColor $(if ($results.NonCompliantBatchFiles.Count -eq 0) { "Green" } else { "Yellow" })
-Write-Host "Dossiers créés: $($results.CreatedFolders.Count)" -ForegroundColor $(if ($results.CreatedFolders.Count -eq 0) { "Green" } else { "Yellow" })
-Write-Host "Rapport généré: $reportFullPath" -ForegroundColor Cyan
+Write-Host "Dossiers crÃ©Ã©s: $($results.CreatedFolders.Count)" -ForegroundColor $(if ($results.CreatedFolders.Count -eq 0) { "Green" } else { "Yellow" })
+Write-Host "Rapport gÃ©nÃ©rÃ©: $reportFullPath" -ForegroundColor Cyan
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

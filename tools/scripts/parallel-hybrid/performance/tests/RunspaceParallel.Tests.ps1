@@ -1,7 +1,7 @@
-Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
-    Context "Traitement parallèle avec Runspaces" {
+﻿Describe "Tests de parallÃ©lisme avec Runspaces pour PowerShell 5.1" {
+    Context "Traitement parallÃ¨le avec Runspaces" {
         BeforeAll {
-            # Fonction pour exécuter un traitement en mode séquentiel
+            # Fonction pour exÃ©cuter un traitement en mode sÃ©quentiel
             function Invoke-SequentialProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -21,7 +21,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Fonction pour exécuter un traitement en mode parallèle avec Runspaces
+            # Fonction pour exÃ©cuter un traitement en mode parallÃ¨le avec Runspaces
             function Invoke-RunspaceParallelProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -36,14 +36,14 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 
                 $results = @()
                 
-                # Créer un pool de runspaces
+                # CrÃ©er un pool de runspaces
                 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
                 $runspacePool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
                 $runspacePool.Open()
                 
                 $runspaces = @()
                 
-                # Créer et démarrer les runspaces
+                # CrÃ©er et dÃ©marrer les runspaces
                 foreach ($item in $Items) {
                     $powershell = [powershell]::Create().AddScript({
                         param($item, $scriptBlock)
@@ -59,7 +59,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                     }
                 }
                 
-                # Récupérer les résultats
+                # RÃ©cupÃ©rer les rÃ©sultats
                 foreach ($runspace in $runspaces) {
                     $result = $runspace.Powershell.EndInvoke($runspace.AsyncResult)
                     $results += $result
@@ -73,10 +73,10 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testItems = 1..20
             
-            # Créer un scriptblock de traitement
+            # CrÃ©er un scriptblock de traitement
             $processItem = {
                 param($item)
                 Start-Sleep -Milliseconds ($item * 10)
@@ -84,44 +84,44 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
             }
         }
         
-        It "Le traitement parallèle avec Runspaces est plus rapide que le traitement séquentiel" {
-            # Mesurer le temps d'exécution du traitement séquentiel
+        It "Le traitement parallÃ¨le avec Runspaces est plus rapide que le traitement sÃ©quentiel" {
+            # Mesurer le temps d'exÃ©cution du traitement sÃ©quentiel
             $sequentialStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $sequentialResults = Invoke-SequentialProcessing -Items $testItems -ProcessItem $processItem
             $sequentialStopwatch.Stop()
             $sequentialTime = $sequentialStopwatch.Elapsed.TotalMilliseconds
             
-            # Mesurer le temps d'exécution du traitement parallèle
+            # Mesurer le temps d'exÃ©cution du traitement parallÃ¨le
             $parallelStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $parallelResults = Invoke-RunspaceParallelProcessing -Items $testItems -ProcessItem $processItem
             $parallelStopwatch.Stop()
             $parallelTime = $parallelStopwatch.Elapsed.TotalMilliseconds
             
-            # Afficher les résultats
-            Write-Host "Temps séquentiel : $sequentialTime ms"
-            Write-Host "Temps parallèle : $parallelTime ms"
-            Write-Host "Amélioration : $(($sequentialTime - $parallelTime) / $sequentialTime * 100)%"
+            # Afficher les rÃ©sultats
+            Write-Host "Temps sÃ©quentiel : $sequentialTime ms"
+            Write-Host "Temps parallÃ¨le : $parallelTime ms"
+            Write-Host "AmÃ©lioration : $(($sequentialTime - $parallelTime) / $sequentialTime * 100)%"
             
-            # Vérifier que le traitement parallèle est plus rapide
+            # VÃ©rifier que le traitement parallÃ¨le est plus rapide
             $parallelTime | Should -BeLessThan $sequentialTime
             
-            # Vérifier que les résultats sont identiques (après tri)
+            # VÃ©rifier que les rÃ©sultats sont identiques (aprÃ¨s tri)
             $sortedSequentialResults = $sequentialResults | Sort-Object
             $sortedParallelResults = $parallelResults | Sort-Object
             $sortedSequentialResults | Should -Be $sortedParallelResults
         }
         
-        It "Le traitement parallèle avec Runspaces gère correctement les erreurs" {
-            # Créer un scriptblock qui génère des erreurs pour certains éléments
+        It "Le traitement parallÃ¨le avec Runspaces gÃ¨re correctement les erreurs" {
+            # CrÃ©er un scriptblock qui gÃ©nÃ¨re des erreurs pour certains Ã©lÃ©ments
             $errorProcessItem = {
                 param($item)
                 if ($item % 3 -eq 0) {
-                    throw "Erreur pour l'élément $item"
+                    throw "Erreur pour l'Ã©lÃ©ment $item"
                 }
                 return $item * 2
             }
             
-            # Fonction pour exécuter un traitement en mode parallèle avec gestion des erreurs
+            # Fonction pour exÃ©cuter un traitement en mode parallÃ¨le avec gestion des erreurs
             function Invoke-RunspaceParallelProcessingWithErrorHandling {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -136,14 +136,14 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 
                 $results = @()
                 
-                # Créer un pool de runspaces
+                # CrÃ©er un pool de runspaces
                 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
                 $runspacePool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
                 $runspacePool.Open()
                 
                 $runspaces = @()
                 
-                # Créer et démarrer les runspaces
+                # CrÃ©er et dÃ©marrer les runspaces
                 foreach ($item in $Items) {
                     $powershell = [powershell]::Create().AddScript({
                         param($item, $scriptBlock)
@@ -175,7 +175,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                     }
                 }
                 
-                # Récupérer les résultats
+                # RÃ©cupÃ©rer les rÃ©sultats
                 foreach ($runspace in $runspaces) {
                     $result = $runspace.Powershell.EndInvoke($runspace.AsyncResult)
                     $results += $result
@@ -189,28 +189,28 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Exécuter le traitement parallèle avec gestion des erreurs
+            # ExÃ©cuter le traitement parallÃ¨le avec gestion des erreurs
             $results = Invoke-RunspaceParallelProcessingWithErrorHandling -Items $testItems -ProcessItem $errorProcessItem
             
-            # Vérifier que les résultats sont corrects
+            # VÃ©rifier que les rÃ©sultats sont corrects
             $results.Count | Should -Be $testItems.Count
             
-            # Vérifier que les erreurs sont correctement gérées
+            # VÃ©rifier que les erreurs sont correctement gÃ©rÃ©es
             $successfulResults = $results | Where-Object { $_.Success }
             $failedResults = $results | Where-Object { -not $_.Success }
             
             $successfulResults.Count | Should -Be ($testItems.Count - [Math]::Floor($testItems.Count / 3))
             $failedResults.Count | Should -Be [Math]::Floor($testItems.Count / 3)
             
-            # Vérifier que les éléments qui ont échoué sont bien ceux divisibles par 3
+            # VÃ©rifier que les Ã©lÃ©ments qui ont Ã©chouÃ© sont bien ceux divisibles par 3
             foreach ($failedResult in $failedResults) {
                 $failedResult.Item % 3 | Should -Be 0
-                $failedResult.ErrorMessage | Should -Match "Erreur pour l'élément $($failedResult.Item)"
+                $failedResult.ErrorMessage | Should -Match "Erreur pour l'Ã©lÃ©ment $($failedResult.Item)"
             }
         }
         
-        It "Le traitement parallèle avec Runspaces peut être configuré avec différentes limites de parallélisme" {
-            # Fonction pour mesurer les performances avec différentes limites de parallélisme
+        It "Le traitement parallÃ¨le avec Runspaces peut Ãªtre configurÃ© avec diffÃ©rentes limites de parallÃ©lisme" {
+            # Fonction pour mesurer les performances avec diffÃ©rentes limites de parallÃ©lisme
             function Measure-ParallelPerformance {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -241,18 +241,18 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Mesurer les performances avec différentes limites de parallélisme
+            # Mesurer les performances avec diffÃ©rentes limites de parallÃ©lisme
             $throttleLimits = @(1, 2, 5, 10)
             $performanceResults = Measure-ParallelPerformance -Items $testItems -ProcessItem $processItem -ThrottleLimits $throttleLimits
             
-            # Afficher les résultats
-            Write-Host "Performances avec différentes limites de parallélisme :"
+            # Afficher les rÃ©sultats
+            Write-Host "Performances avec diffÃ©rentes limites de parallÃ©lisme :"
             foreach ($result in $performanceResults) {
-                Write-Host "  Limite: $($result.ThrottleLimit), Temps: $($result.ExecutionTimeMs) ms, Débit: $($result.ItemsPerMs) éléments/ms"
+                Write-Host "  Limite: $($result.ThrottleLimit), Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
             }
             
-            # Vérifier que les performances s'améliorent avec l'augmentation de la limite de parallélisme
-            # (jusqu'à un certain point)
+            # VÃ©rifier que les performances s'amÃ©liorent avec l'augmentation de la limite de parallÃ©lisme
+            # (jusqu'Ã  un certain point)
             $singleThreadPerformance = $performanceResults[0].ExecutionTimeMs
             $multiThreadPerformance = ($performanceResults | Where-Object { $_.ThrottleLimit -gt 1 } | Measure-Object -Property ExecutionTimeMs -Minimum).Minimum
             
@@ -260,9 +260,9 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
         }
     }
     
-    Context "Traitement de fichiers en parallèle avec Runspaces" {
+    Context "Traitement de fichiers en parallÃ¨le avec Runspaces" {
         BeforeAll {
-            # Fonction pour créer des fichiers de test
+            # Fonction pour crÃ©er des fichiers de test
             function New-TestFiles {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -288,13 +288,13 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                     $fileName = "test_file_$i.txt"
                     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
                     
-                    # Générer une taille aléatoire entre MinSize et MaxSize
+                    # GÃ©nÃ©rer une taille alÃ©atoire entre MinSize et MaxSize
                     $fileSize = Get-Random -Minimum $MinSize -Maximum $MaxSize
                     
-                    # Générer le contenu du fichier
+                    # GÃ©nÃ©rer le contenu du fichier
                     $content = "A" * $fileSize
                     
-                    # Créer le fichier
+                    # CrÃ©er le fichier
                     Set-Content -Path $filePath -Value $content | Out-Null
                     
                     $filePaths += $filePath
@@ -303,7 +303,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $filePaths
             }
             
-            # Fonction pour traiter des fichiers en mode séquentiel
+            # Fonction pour traiter des fichiers en mode sÃ©quentiel
             function Invoke-SequentialFileProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -325,7 +325,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Fonction pour traiter des fichiers en mode parallèle avec Runspaces
+            # Fonction pour traiter des fichiers en mode parallÃ¨le avec Runspaces
             function Invoke-RunspaceParallelFileProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -337,14 +337,14 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 
                 $results = @()
                 
-                # Créer un pool de runspaces
+                # CrÃ©er un pool de runspaces
                 $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
                 $runspacePool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
                 $runspacePool.Open()
                 
                 $runspaces = @()
                 
-                # Créer et démarrer les runspaces
+                # CrÃ©er et dÃ©marrer les runspaces
                 foreach ($filePath in $FilePaths) {
                     $powershell = [powershell]::Create().AddScript({
                         param($filePath)
@@ -366,7 +366,7 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                     }
                 }
                 
-                # Récupérer les résultats
+                # RÃ©cupÃ©rer les rÃ©sultats
                 foreach ($runspace in $runspaces) {
                     $result = $runspace.Powershell.EndInvoke($runspace.AsyncResult)
                     $results += $result
@@ -380,36 +380,36 @@ Describe "Tests de parallélisme avec Runspaces pour PowerShell 5.1" {
                 return $results
             }
             
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testDir = Join-Path -Path $TestDrive -ChildPath "FileProcessingTests"
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
             
-            # Créer des fichiers de test
+            # CrÃ©er des fichiers de test
             $testFiles = New-TestFiles -OutputPath $testDir -FileCount 20
         }
         
-        It "Le traitement de fichiers en parallèle avec Runspaces est plus rapide que le traitement séquentiel" {
-            # Mesurer le temps d'exécution du traitement séquentiel
+        It "Le traitement de fichiers en parallÃ¨le avec Runspaces est plus rapide que le traitement sÃ©quentiel" {
+            # Mesurer le temps d'exÃ©cution du traitement sÃ©quentiel
             $sequentialStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $sequentialResults = Invoke-SequentialFileProcessing -FilePaths $testFiles
             $sequentialStopwatch.Stop()
             $sequentialTime = $sequentialStopwatch.Elapsed.TotalMilliseconds
             
-            # Mesurer le temps d'exécution du traitement parallèle
+            # Mesurer le temps d'exÃ©cution du traitement parallÃ¨le
             $parallelStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $parallelResults = Invoke-RunspaceParallelFileProcessing -FilePaths $testFiles
             $parallelStopwatch.Stop()
             $parallelTime = $parallelStopwatch.Elapsed.TotalMilliseconds
             
-            # Afficher les résultats
-            Write-Host "Temps séquentiel : $sequentialTime ms"
-            Write-Host "Temps parallèle : $parallelTime ms"
-            Write-Host "Amélioration : $(($sequentialTime - $parallelTime) / $sequentialTime * 100)%"
+            # Afficher les rÃ©sultats
+            Write-Host "Temps sÃ©quentiel : $sequentialTime ms"
+            Write-Host "Temps parallÃ¨le : $parallelTime ms"
+            Write-Host "AmÃ©lioration : $(($sequentialTime - $parallelTime) / $sequentialTime * 100)%"
             
-            # Vérifier que le traitement parallèle est plus rapide
+            # VÃ©rifier que le traitement parallÃ¨le est plus rapide
             $parallelTime | Should -BeLessThan $sequentialTime
             
-            # Vérifier que les résultats sont identiques (après tri par chemin de fichier)
+            # VÃ©rifier que les rÃ©sultats sont identiques (aprÃ¨s tri par chemin de fichier)
             $sortedSequentialResults = $sequentialResults | Sort-Object -Property FilePath
             $sortedParallelResults = $parallelResults | Sort-Object -Property FilePath
             

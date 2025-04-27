@@ -1,27 +1,27 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script d'intégration pour TestOmnibus.
+    Script d'intÃ©gration pour TestOmnibus.
 
 .DESCRIPTION
-    Ce script permet d'intégrer les tests unitaires des scripts de test de pull requests
-    dans le système TestOmnibus pour une exécution automatisée et des rapports centralisés.
+    Ce script permet d'intÃ©grer les tests unitaires des scripts de test de pull requests
+    dans le systÃ¨me TestOmnibus pour une exÃ©cution automatisÃ©e et des rapports centralisÃ©s.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les rapports de tests.
-    Par défaut: "reports\pr-testing"
+    Le chemin oÃ¹ enregistrer les rapports de tests.
+    Par dÃ©faut: "reports\pr-testing"
 
 .PARAMETER DetailedReport
-    Indique s'il faut générer un rapport détaillé.
-    Par défaut: $true
+    Indique s'il faut gÃ©nÃ©rer un rapport dÃ©taillÃ©.
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\TestOmnibus-Integration.ps1
-    Exécute les tests et génère un rapport dans le dossier par défaut.
+    ExÃ©cute les tests et gÃ©nÃ¨re un rapport dans le dossier par dÃ©faut.
 
 .EXAMPLE
     .\TestOmnibus-Integration.ps1 -OutputPath "D:\Reports\PR-Testing" -DetailedReport $true
-    Exécute les tests et génère un rapport détaillé dans le dossier spécifié.
+    ExÃ©cute les tests et gÃ©nÃ¨re un rapport dÃ©taillÃ© dans le dossier spÃ©cifiÃ©.
 
 .NOTES
     Version: 1.0
@@ -38,49 +38,49 @@ param(
     [bool]$DetailedReport = $true
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $testScriptPath = Join-Path -Path $scriptPath -ChildPath "Test-PRScripts.ps1"
 $outputPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath $OutputPath
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $outputPath)) {
     New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
 }
 
-# Fonction pour exécuter les tests et capturer les résultats
+# Fonction pour exÃ©cuter les tests et capturer les rÃ©sultats
 function Invoke-PRTests {
     param(
         [string]$TestScriptPath,
         [string]$OutputPath
     )
 
-    Write-Host "Exécution des tests unitaires pour les scripts de test de pull requests..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests unitaires pour les scripts de test de pull requests..." -ForegroundColor Cyan
 
     # Pas besoin de fichier temporaire car nous capturons directement la sortie
 
-    # Exécuter les tests et capturer la sortie
+    # ExÃ©cuter les tests et capturer la sortie
     $startTime = Get-Date
     $output = & powershell -ExecutionPolicy Bypass -File $TestScriptPath *>&1
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalSeconds
 
-    # Extraire les résultats
+    # Extraire les rÃ©sultats
     $totalTests = 0
     $passedTests = 0
     $failedTests = 0
 
     foreach ($line in $output) {
-        if ($line -match "Tests exécutés: (\d+)") {
+        if ($line -match "Tests exÃ©cutÃ©s: (\d+)") {
             $totalTests = [int]$matches[1]
-        } elseif ($line -match "Tests réussis: (\d+)") {
+        } elseif ($line -match "Tests rÃ©ussis: (\d+)") {
             $passedTests = [int]$matches[1]
-        } elseif ($line -match "Tests échoués: (\d+)") {
+        } elseif ($line -match "Tests Ã©chouÃ©s: (\d+)") {
             $failedTests = [int]$matches[1]
         }
     }
 
-    # Créer l'objet de résultats
+    # CrÃ©er l'objet de rÃ©sultats
     $results = [PSCustomObject]@{
         TestSuite   = "PR-Testing"
         TotalTests  = $totalTests
@@ -95,7 +95,7 @@ function Invoke-PRTests {
     return $results
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-TestReport {
     param(
         [PSCustomObject]$Results,
@@ -103,12 +103,12 @@ function New-TestReport {
         [bool]$DetailedReport
     )
 
-    Write-Host "Génération du rapport de tests..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration du rapport de tests..." -ForegroundColor Cyan
 
-    # Créer le chemin du rapport
+    # CrÃ©er le chemin du rapport
     $reportPath = Join-Path -Path $OutputPath -ChildPath "PR-Testing-Report-$(Get-Date -Format 'yyyyMMdd-HHmmss').html"
 
-    # Définir le contenu HTML
+    # DÃ©finir le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -186,35 +186,35 @@ function New-TestReport {
 <body>
     <div class="container">
         <h1>Rapport de tests - PR-Testing</h1>
-        <div class="timestamp">Généré le $($Results.Timestamp)</div>
+        <div class="timestamp">GÃ©nÃ©rÃ© le $($Results.Timestamp)</div>
 
         <div class="summary">
             <div class="summary-item">
-                <h3>Tests exécutés</h3>
+                <h3>Tests exÃ©cutÃ©s</h3>
                 <p>$($Results.TotalTests)</p>
             </div>
             <div class="summary-item">
-                <h3>Tests réussis</h3>
+                <h3>Tests rÃ©ussis</h3>
                 <p class="success">$($Results.PassedTests)</p>
             </div>
             <div class="summary-item">
-                <h3>Tests échoués</h3>
+                <h3>Tests Ã©chouÃ©s</h3>
                 <p class="danger">$($Results.FailedTests)</p>
             </div>
             <div class="summary-item">
-                <h3>Taux de réussite</h3>
+                <h3>Taux de rÃ©ussite</h3>
                 <p class="$(if ($Results.SuccessRate -ge 90) { 'success' } elseif ($Results.SuccessRate -ge 70) { 'warning' } else { 'danger' })">$($Results.SuccessRate)%</p>
             </div>
             <div class="summary-item">
-                <h3>Durée</h3>
+                <h3>DurÃ©e</h3>
                 <p>$($Results.Duration) s</p>
             </div>
         </div>
 
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
 "@
 
-    # Ajouter les résultats détaillés si demandé
+    # Ajouter les rÃ©sultats dÃ©taillÃ©s si demandÃ©
     if ($DetailedReport) {
         $htmlContent += @"
         <div class="output">
@@ -223,7 +223,7 @@ $($Results.Output -join "`n")
 "@
     } else {
         $htmlContent += @"
-        <p>Pour voir les résultats détaillés, exécutez le script avec le paramètre -DetailedReport $true.</p>
+        <p>Pour voir les rÃ©sultats dÃ©taillÃ©s, exÃ©cutez le script avec le paramÃ¨tre -DetailedReport $true.</p>
 "@
     }
 
@@ -239,20 +239,20 @@ $($Results.Output -join "`n")
     return $reportPath
 }
 
-# Fonction pour intégrer les résultats dans TestOmnibus
+# Fonction pour intÃ©grer les rÃ©sultats dans TestOmnibus
 function Register-TestOmnibusResults {
     param(
         [PSCustomObject]$Results,
         [string]$ReportPath
     )
 
-    Write-Host "Enregistrement des résultats dans TestOmnibus..." -ForegroundColor Cyan
+    Write-Host "Enregistrement des rÃ©sultats dans TestOmnibus..." -ForegroundColor Cyan
 
-    # Vérifier si TestOmnibus est disponible
+    # VÃ©rifier si TestOmnibus est disponible
     $testOmnibusPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath "TestOmnibus\Register-TestResults.ps1"
 
     if (Test-Path -Path $testOmnibusPath) {
-        # Créer l'objet de résultats pour TestOmnibus
+        # CrÃ©er l'objet de rÃ©sultats pour TestOmnibus
         $testOmnibusResults = [PSCustomObject]@{
             TestSuite    = "PR-Testing"
             Category     = "UnitTests"
@@ -266,34 +266,34 @@ function Register-TestOmnibusResults {
             Tags         = @("PR", "Testing", "UnitTests")
         }
 
-        # Enregistrer les résultats
+        # Enregistrer les rÃ©sultats
         & $testOmnibusPath -TestResults $testOmnibusResults
 
-        Write-Host "Résultats enregistrés dans TestOmnibus." -ForegroundColor Green
+        Write-Host "RÃ©sultats enregistrÃ©s dans TestOmnibus." -ForegroundColor Green
     } else {
-        Write-Warning "TestOmnibus n'est pas disponible. Les résultats n'ont pas été enregistrés."
+        Write-Warning "TestOmnibus n'est pas disponible. Les rÃ©sultats n'ont pas Ã©tÃ© enregistrÃ©s."
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-PRTests -TestScriptPath $testScriptPath -OutputPath $outputPath
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $reportPath = New-TestReport -Results $results -OutputPath $outputPath -DetailedReport $DetailedReport
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($results.TotalTests)" -ForegroundColor White
-Write-Host "  Tests réussis: $($results.PassedTests)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($results.FailedTests)" -ForegroundColor Red
-Write-Host "  Taux de réussite: $($results.SuccessRate)%" -ForegroundColor $(if ($results.SuccessRate -ge 90) { "Green" } elseif ($results.SuccessRate -ge 70) { "Yellow" } else { "Red" })
-Write-Host "  Durée: $($results.Duration) secondes" -ForegroundColor White
-Write-Host "`nRapport généré: $reportPath" -ForegroundColor Green
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalTests)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($results.PassedTests)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedTests)" -ForegroundColor Red
+Write-Host "  Taux de rÃ©ussite: $($results.SuccessRate)%" -ForegroundColor $(if ($results.SuccessRate -ge 90) { "Green" } elseif ($results.SuccessRate -ge 70) { "Yellow" } else { "Red" })
+Write-Host "  DurÃ©e: $($results.Duration) secondes" -ForegroundColor White
+Write-Host "`nRapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 
-# Intégrer les résultats dans TestOmnibus
+# IntÃ©grer les rÃ©sultats dans TestOmnibus
 Register-TestOmnibusResults -Results $results -ReportPath $reportPath
 
-# Retourner un code de sortie en fonction des résultats
+# Retourner un code de sortie en fonction des rÃ©sultats
 if ($results.FailedTests -gt 0) {
     exit 1
 } else {

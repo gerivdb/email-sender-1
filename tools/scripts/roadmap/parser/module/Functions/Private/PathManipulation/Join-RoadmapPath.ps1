@@ -1,52 +1,52 @@
-<#
+﻿<#
 .SYNOPSIS
     Joint plusieurs chemins en un seul.
 
 .DESCRIPTION
     La fonction Join-RoadmapPath joint plusieurs chemins en un seul.
-    Elle prend en charge différentes options de jointure et peut être utilisée pour
+    Elle prend en charge diffÃ©rentes options de jointure et peut Ãªtre utilisÃ©e pour
     joindre les chemins du module RoadmapParser.
 
 .PARAMETER Path
     Le chemin de base.
 
 .PARAMETER ChildPath
-    Les chemins enfants à joindre au chemin de base.
+    Les chemins enfants Ã  joindre au chemin de base.
 
 .PARAMETER JoinType
-    Le type de jointure à effectuer. Valeurs possibles :
+    Le type de jointure Ã  effectuer. Valeurs possibles :
     - Simple : Jointure simple (utilise [System.IO.Path]::Combine)
-    - Normalized : Jointure normalisée (normalise les chemins avant de les joindre)
-    - Relative : Jointure relative (crée un chemin relatif)
-    - Absolute : Jointure absolue (crée un chemin absolu)
-    - Unix : Jointure Unix (utilise des séparateurs Unix)
-    - Windows : Jointure Windows (utilise des séparateurs Windows)
-    - UNC : Jointure UNC (crée un chemin UNC)
-    - URL : Jointure URL (crée un chemin URL)
-    - Custom : Jointure personnalisée
+    - Normalized : Jointure normalisÃ©e (normalise les chemins avant de les joindre)
+    - Relative : Jointure relative (crÃ©e un chemin relatif)
+    - Absolute : Jointure absolue (crÃ©e un chemin absolu)
+    - Unix : Jointure Unix (utilise des sÃ©parateurs Unix)
+    - Windows : Jointure Windows (utilise des sÃ©parateurs Windows)
+    - UNC : Jointure UNC (crÃ©e un chemin UNC)
+    - URL : Jointure URL (crÃ©e un chemin URL)
+    - Custom : Jointure personnalisÃ©e
 
 .PARAMETER CustomJoin
-    La fonction de jointure personnalisée à utiliser.
-    Utilisé uniquement lorsque JoinType est "Custom".
+    La fonction de jointure personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque JoinType est "Custom".
 
 .PARAMETER Separator
-    Le séparateur à utiliser pour la jointure.
-    Par défaut, c'est le séparateur de répertoire du système.
+    Le sÃ©parateur Ã  utiliser pour la jointure.
+    Par dÃ©faut, c'est le sÃ©parateur de rÃ©pertoire du systÃ¨me.
 
 .PARAMETER NormalizePaths
-    Indique si les chemins doivent être normalisés avant la jointure.
-    Par défaut, c'est $false.
+    Indique si les chemins doivent Ãªtre normalisÃ©s avant la jointure.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ResolveRelativePaths
-    Indique si les chemins relatifs doivent être résolus.
-    Par défaut, c'est $false.
+    Indique si les chemins relatifs doivent Ãªtre rÃ©solus.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la jointure.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la jointure.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la jointure.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la jointure.
 
 .EXAMPLE
     Join-RoadmapPath -Path "C:\folder" -ChildPath "file.txt"
@@ -62,7 +62,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Join-RoadmapPath {
     [CmdletBinding()]
@@ -98,16 +98,16 @@ function Join-RoadmapPath {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la jointure
+    # Initialiser le rÃ©sultat de la jointure
     $result = $null
     $joinSucceeded = $false
 
     # Effectuer la jointure selon le type
     try {
-        # Préparer le chemin initial
+        # PrÃ©parer le chemin initial
         $workingPath = $Path.Trim()
 
-        # Préparer les chemins enfants
+        # PrÃ©parer les chemins enfants
         $workingChildPaths = $ChildPath | ForEach-Object { $_.Trim() }
 
         # Effectuer la jointure selon le type
@@ -148,7 +148,7 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "Relative" {
-                # Créer un chemin relatif
+                # CrÃ©er un chemin relatif
                 if ([string]::IsNullOrEmpty($workingPath)) {
                     $workingPath = "."
                 }
@@ -169,7 +169,7 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "Absolute" {
-                # Créer un chemin absolu
+                # CrÃ©er un chemin absolu
                 if ([string]::IsNullOrEmpty($workingPath)) {
                     $workingPath = [System.IO.Path]::GetFullPath(".")
                 } elseif (-not [System.IO.Path]::IsPathRooted($workingPath)) {
@@ -190,12 +190,12 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "Unix" {
-                # Créer un chemin Unix
+                # CrÃ©er un chemin Unix
                 if ([string]::IsNullOrEmpty($workingPath)) {
                     $workingPath = "."
                 }
 
-                # Convertir les séparateurs Windows en séparateurs Unix
+                # Convertir les sÃ©parateurs Windows en sÃ©parateurs Unix
                 $unixPath = $workingPath.Replace([System.IO.Path]::DirectorySeparatorChar, '/')
                 $unixChildPaths = $workingChildPaths | ForEach-Object { $_.Replace([System.IO.Path]::DirectorySeparatorChar, '/') }
 
@@ -215,18 +215,18 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "Windows" {
-                # Créer un chemin Windows
+                # CrÃ©er un chemin Windows
                 if ([string]::IsNullOrEmpty($workingPath)) {
                     $workingPath = "."
                 }
 
-                # Vérifier si c'est un chemin Unix
+                # VÃ©rifier si c'est un chemin Unix
                 if ($workingPath -match '^/([a-zA-Z])(/|$)') {
                     $driveLetter = $matches[1].ToUpper()
                     $remainingPath = $workingPath.Substring(3)  # Supprimer "/c/"
                     $windowsPath = "${driveLetter}:\" + $remainingPath.Replace('/', '\')
                 } else {
-                    # Convertir les séparateurs Unix en séparateurs Windows
+                    # Convertir les sÃ©parateurs Unix en sÃ©parateurs Windows
                     $windowsPath = $workingPath.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
                 }
 
@@ -244,12 +244,12 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "UNC" {
-                # Créer un chemin UNC
+                # CrÃ©er un chemin UNC
                 if ([string]::IsNullOrEmpty($workingPath)) {
-                    throw "Le chemin de base ne peut pas être vide pour la jointure UNC."
+                    throw "Le chemin de base ne peut pas Ãªtre vide pour la jointure UNC."
                 }
 
-                # Vérifier si le chemin est déjà un chemin UNC
+                # VÃ©rifier si le chemin est dÃ©jÃ  un chemin UNC
                 if ($workingPath -match '^\\\\') {
                     $uncPath = $workingPath
                 } else {
@@ -274,16 +274,16 @@ function Join-RoadmapPath {
                 $joinSucceeded = $true
             }
             "URL" {
-                # Créer un chemin URL
+                # CrÃ©er un chemin URL
                 if ([string]::IsNullOrEmpty($workingPath)) {
                     $workingPath = "."
                 }
 
-                # Convertir les séparateurs Windows en séparateurs URL
+                # Convertir les sÃ©parateurs Windows en sÃ©parateurs URL
                 $urlPath = $workingPath.Replace([System.IO.Path]::DirectorySeparatorChar, '/')
                 $urlChildPaths = $workingChildPaths | ForEach-Object { $_.Replace([System.IO.Path]::DirectorySeparatorChar, '/') }
 
-                # Vérifier si le chemin est déjà un chemin URL
+                # VÃ©rifier si le chemin est dÃ©jÃ  un chemin URL
                 if ($urlPath -match '^(file|http|https|ftp)://') {
                     # Ne rien faire
                 } else {
@@ -313,7 +313,7 @@ function Join-RoadmapPath {
             }
             "Custom" {
                 if ($null -eq $CustomJoin) {
-                    throw "Le paramètre CustomJoin est requis lorsque le type de jointure est Custom."
+                    throw "Le paramÃ¨tre CustomJoin est requis lorsque le type de jointure est Custom."
                 } else {
                     $result = & $CustomJoin $workingPath $workingChildPaths
                 }
@@ -322,12 +322,12 @@ function Join-RoadmapPath {
             }
         }
 
-        # Normaliser les chemins si demandé
+        # Normaliser les chemins si demandÃ©
         if ($NormalizePaths -and $JoinType -ne "Normalized" -and $JoinType -ne "Absolute") {
             $result = [System.IO.Path]::GetFullPath($result)
         }
 
-        # Résoudre les chemins relatifs si demandé
+        # RÃ©soudre les chemins relatifs si demandÃ©
         if ($ResolveRelativePaths -and -not [System.IO.Path]::IsPathRooted($result)) {
             $result = [System.IO.Path]::GetFullPath($result)
         }
@@ -338,7 +338,7 @@ function Join-RoadmapPath {
         }
     }
 
-    # Gérer l'échec de la jointure
+    # GÃ©rer l'Ã©chec de la jointure
     if (-not $joinSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

@@ -1,66 +1,66 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Connecte les rapports d'analyse aux plateformes Git (GitHub/GitLab).
 
 .DESCRIPTION
-    Ce script permet de publier les résultats d'analyse de pull requests
+    Ce script permet de publier les rÃ©sultats d'analyse de pull requests
     directement sur GitHub ou GitLab, en ajoutant des commentaires et
-    des vérifications de statut.
+    des vÃ©rifications de statut.
 
 .PARAMETER InputPath
-    Le chemin du fichier JSON contenant les résultats d'analyse.
+    Le chemin du fichier JSON contenant les rÃ©sultats d'analyse.
 
 .PARAMETER Platform
-    La plateforme Git à utiliser.
+    La plateforme Git Ã  utiliser.
     Valeurs possibles: "GitHub", "GitLab"
-    Par défaut: "GitHub"
+    Par dÃ©faut: "GitHub"
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt local.
-    Par défaut: le répertoire de travail actuel
+    Le chemin du dÃ©pÃ´t local.
+    Par dÃ©faut: le rÃ©pertoire de travail actuel
 
 .PARAMETER PullRequestNumber
-    Le numéro de la pull request à mettre à jour.
-    Si non spécifié, il sera extrait des données d'analyse.
+    Le numÃ©ro de la pull request Ã  mettre Ã  jour.
+    Si non spÃ©cifiÃ©, il sera extrait des donnÃ©es d'analyse.
 
 .PARAMETER CommentStyle
-    Le style de commentaire à utiliser.
+    Le style de commentaire Ã  utiliser.
     Valeurs possibles: "Summary", "Detailed", "Inline"
-    Par défaut: "Summary"
+    Par dÃ©faut: "Summary"
 
 .PARAMETER AddStatusCheck
-    Indique s'il faut ajouter une vérification de statut à la pull request.
-    Par défaut: $true
+    Indique s'il faut ajouter une vÃ©rification de statut Ã  la pull request.
+    Par dÃ©faut: $true
 
 .PARAMETER FailOnError
-    Indique si la vérification de statut doit échouer en cas d'erreurs.
-    Par défaut: $true
+    Indique si la vÃ©rification de statut doit Ã©chouer en cas d'erreurs.
+    Par dÃ©faut: $true
 
 .PARAMETER FailOnWarning
-    Indique si la vérification de statut doit échouer en cas d'avertissements.
-    Par défaut: $false
+    Indique si la vÃ©rification de statut doit Ã©chouer en cas d'avertissements.
+    Par dÃ©faut: $false
 
 .PARAMETER ReportUrl
     L'URL du rapport complet, si disponible.
-    Par défaut: ""
+    Par dÃ©faut: ""
 
 .EXAMPLE
     .\Connect-ReportToGitPlatform.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -CommentStyle "Inline"
-    Publie les résultats d'analyse sur GitHub avec des commentaires en ligne.
+    Publie les rÃ©sultats d'analyse sur GitHub avec des commentaires en ligne.
 
 .EXAMPLE
     .\Connect-ReportToGitPlatform.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -Platform "GitLab" -FailOnWarning $true
-    Publie les résultats d'analyse sur GitLab avec une vérification de statut qui échoue en cas d'avertissements.
+    Publie les rÃ©sultats d'analyse sur GitLab avec une vÃ©rification de statut qui Ã©choue en cas d'avertissements.
 
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-29
     
-    Prérequis: 
-    - GitHub CLI (gh) ou GitLab CLI (glab) doit être installé et configuré
-    - L'utilisateur doit être authentifié avec les droits nécessaires
+    PrÃ©requis: 
+    - GitHub CLI (gh) ou GitLab CLI (glab) doit Ãªtre installÃ© et configurÃ©
+    - L'utilisateur doit Ãªtre authentifiÃ© avec les droits nÃ©cessaires
 #>
 
 [CmdletBinding()]
@@ -95,34 +95,34 @@ param(
     [string]$ReportUrl = ""
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputPath)) {
-    Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
     exit 1
 }
 
-# Charger les données d'analyse
+# Charger les donnÃ©es d'analyse
 try {
     $analysisData = Get-Content -Path $InputPath -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement des données d'analyse: $_"
+    Write-Error "Erreur lors du chargement des donnÃ©es d'analyse: $_"
     exit 1
 }
 
-# Extraire le numéro de pull request si non spécifié
+# Extraire le numÃ©ro de pull request si non spÃ©cifiÃ©
 if ($PullRequestNumber -eq 0) {
     $PullRequestNumber = $analysisData.PullRequest.Number
 }
 
 if ($PullRequestNumber -eq 0) {
-    Write-Error "Numéro de pull request non spécifié et non trouvé dans les données d'analyse."
+    Write-Error "NumÃ©ro de pull request non spÃ©cifiÃ© et non trouvÃ© dans les donnÃ©es d'analyse."
     exit 1
 }
 
 # Extraire les informations de base
 $totalIssues = $analysisData.TotalIssues
 
-# Extraire tous les problèmes
+# Extraire tous les problÃ¨mes
 $issues = @()
 foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 }) {
     foreach ($issue in $result.Issues) {
@@ -138,12 +138,12 @@ foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Is
     }
 }
 
-# Compter les problèmes par sévérité
+# Compter les problÃ¨mes par sÃ©vÃ©ritÃ©
 $errorCount = ($issues | Where-Object { $_.Severity -eq "Error" }).Count
 $warningCount = ($issues | Where-Object { $_.Severity -eq "Warning" }).Count
 $infoCount = ($issues | Where-Object { $_.Severity -eq "Information" }).Count
 
-# Déterminer le statut global
+# DÃ©terminer le statut global
 $status = "success"
 if ($errorCount -gt 0 -and $FailOnError) {
     $status = "failure"
@@ -151,11 +151,11 @@ if ($errorCount -gt 0 -and $FailOnError) {
     $status = "failure"
 }
 
-# Changer de répertoire vers le dépôt
+# Changer de rÃ©pertoire vers le dÃ©pÃ´t
 Push-Location -Path $RepositoryPath
 
 try {
-    # Vérifier que la plateforme CLI est installée
+    # VÃ©rifier que la plateforme CLI est installÃ©e
     $cliCommand = switch ($Platform) {
         "GitHub" { "gh" }
         "GitLab" { "glab" }
@@ -166,13 +166,13 @@ try {
         exit 1
     }
     
-    # Générer le commentaire en fonction du style choisi
+    # GÃ©nÃ©rer le commentaire en fonction du style choisi
     $comment = switch ($CommentStyle) {
         "Summary" {
             $summaryComment = @"
 ## Rapport d'analyse de code
 
-### Résumé
+### RÃ©sumÃ©
 - **Erreurs**: $errorCount
 - **Avertissements**: $warningCount
 - **Informations**: $infoCount
@@ -181,13 +181,13 @@ try {
 "@
             
             if ($status -eq "failure") {
-                $summaryComment += "⚠️ **Des problèmes ont été détectés qui nécessitent votre attention.**`n`n"
+                $summaryComment += "âš ï¸ **Des problÃ¨mes ont Ã©tÃ© dÃ©tectÃ©s qui nÃ©cessitent votre attention.**`n`n"
             } else {
-                $summaryComment += "✅ **Aucun problème critique détecté.**`n`n"
+                $summaryComment += "âœ… **Aucun problÃ¨me critique dÃ©tectÃ©.**`n`n"
             }
             
             if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) {
-                $summaryComment += "📊 [Voir le rapport complet]($ReportUrl)`n`n"
+                $summaryComment += "ðŸ“Š [Voir le rapport complet]($ReportUrl)`n`n"
             }
             
             $summaryComment
@@ -196,7 +196,7 @@ try {
             $detailedComment = @"
 ## Rapport d'analyse de code
 
-### Résumé
+### RÃ©sumÃ©
 - **Erreurs**: $errorCount
 - **Avertissements**: $warningCount
 - **Informations**: $infoCount
@@ -205,19 +205,19 @@ try {
 "@
             
             if ($status -eq "failure") {
-                $detailedComment += "⚠️ **Des problèmes ont été détectés qui nécessitent votre attention.**`n`n"
+                $detailedComment += "âš ï¸ **Des problÃ¨mes ont Ã©tÃ© dÃ©tectÃ©s qui nÃ©cessitent votre attention.**`n`n"
             } else {
-                $detailedComment += "✅ **Aucun problème critique détecté.**`n`n"
+                $detailedComment += "âœ… **Aucun problÃ¨me critique dÃ©tectÃ©.**`n`n"
             }
             
             if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) {
-                $detailedComment += "📊 [Voir le rapport complet]($ReportUrl)`n`n"
+                $detailedComment += "ðŸ“Š [Voir le rapport complet]($ReportUrl)`n`n"
             }
             
-            # Ajouter les problèmes critiques
+            # Ajouter les problÃ¨mes critiques
             if ($errorCount -gt 0) {
                 $detailedComment += "### Erreurs critiques`n`n"
-                $detailedComment += "| Fichier | Ligne | Message | Règle |`n"
+                $detailedComment += "| Fichier | Ligne | Message | RÃ¨gle |`n"
                 $detailedComment += "|---------|-------|---------|-------|`n"
                 
                 foreach ($issue in ($issues | Where-Object { $_.Severity -eq "Error" } | Select-Object -First 10)) {
@@ -234,7 +234,7 @@ try {
             # Ajouter les avertissements
             if ($warningCount -gt 0) {
                 $detailedComment += "### Avertissements`n`n"
-                $detailedComment += "| Fichier | Ligne | Message | Règle |`n"
+                $detailedComment += "| Fichier | Ligne | Message | RÃ¨gle |`n"
                 $detailedComment += "|---------|-------|---------|-------|`n"
                 
                 foreach ($issue in ($issues | Where-Object { $_.Severity -eq "Warning" } | Select-Object -First 10)) {
@@ -251,22 +251,22 @@ try {
             $detailedComment
         }
         "Inline" {
-            # Pour les commentaires en ligne, nous utiliserons un commentaire de résumé
-            # et ajouterons des commentaires individuels pour chaque problème
+            # Pour les commentaires en ligne, nous utiliserons un commentaire de rÃ©sumÃ©
+            # et ajouterons des commentaires individuels pour chaque problÃ¨me
             @"
 ## Rapport d'analyse de code
 
-### Résumé
+### RÃ©sumÃ©
 - **Erreurs**: $errorCount
 - **Avertissements**: $warningCount
 - **Informations**: $infoCount
 - **Total**: $totalIssues
 
-$(if ($status -eq "failure") { "⚠️ **Des problèmes ont été détectés qui nécessitent votre attention.**" } else { "✅ **Aucun problème critique détecté.**" })
+$(if ($status -eq "failure") { "âš ï¸ **Des problÃ¨mes ont Ã©tÃ© dÃ©tectÃ©s qui nÃ©cessitent votre attention.**" } else { "âœ… **Aucun problÃ¨me critique dÃ©tectÃ©.**" })
 
-$(if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) { "📊 [Voir le rapport complet]($ReportUrl)" })
+$(if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) { "ðŸ“Š [Voir le rapport complet]($ReportUrl)" })
 
-*Note: Des commentaires individuels ont été ajoutés pour chaque problème.*
+*Note: Des commentaires individuels ont Ã©tÃ© ajoutÃ©s pour chaque problÃ¨me.*
 "@
         }
     }
@@ -274,10 +274,10 @@ $(if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) { "📊 [Voir le rapport co
     # Publier le commentaire sur la plateforme
     switch ($Platform) {
         "GitHub" {
-            # Ajouter un commentaire à la PR
+            # Ajouter un commentaire Ã  la PR
             $comment | gh pr comment $PullRequestNumber --body-file -
             
-            # Ajouter des commentaires en ligne si demandé
+            # Ajouter des commentaires en ligne si demandÃ©
             if ($CommentStyle -eq "Inline") {
                 $reviewComments = @()
                 
@@ -297,28 +297,28 @@ $(if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) { "📊 [Voir le rapport co
                 }
             }
             
-            # Ajouter une vérification de statut si demandé
+            # Ajouter une vÃ©rification de statut si demandÃ©
             if ($AddStatusCheck) {
                 $statusTitle = "Analyse de code"
                 $statusSummary = switch ($status) {
-                    "success" { "Aucun problème critique détecté." }
-                    "failure" { "Des problèmes ont été détectés qui nécessitent votre attention." }
-                    default { "Analyse de code terminée." }
+                    "success" { "Aucun problÃ¨me critique dÃ©tectÃ©." }
+                    "failure" { "Des problÃ¨mes ont Ã©tÃ© dÃ©tectÃ©s qui nÃ©cessitent votre attention." }
+                    default { "Analyse de code terminÃ©e." }
                 }
                 
                 # Obtenir le SHA du dernier commit de la PR
                 $prDetails = gh pr view $PullRequestNumber --json headRefOid | ConvertFrom-Json
                 $commitSha = $prDetails.headRefOid
                 
-                # Créer une vérification de statut
+                # CrÃ©er une vÃ©rification de statut
                 gh api repos/:owner/:repo/statuses/$commitSha -f state=$status -f context="$statusTitle" -f description="$statusSummary" -f target_url="$ReportUrl"
             }
         }
         "GitLab" {
-            # Ajouter un commentaire à la PR (appelée MR dans GitLab)
+            # Ajouter un commentaire Ã  la PR (appelÃ©e MR dans GitLab)
             $comment | glab mr note $PullRequestNumber --message-file -
             
-            # Ajouter des commentaires en ligne si demandé
+            # Ajouter des commentaires en ligne si demandÃ©
             if ($CommentStyle -eq "Inline") {
                 foreach ($issue in $issues) {
                     if ($issue.Severity -in @("Error", "Warning")) {
@@ -328,36 +328,36 @@ $(if (-not [string]::IsNullOrWhiteSpace($ReportUrl)) { "📊 [Voir le rapport co
                 }
             }
             
-            # Ajouter une vérification de statut si demandé
+            # Ajouter une vÃ©rification de statut si demandÃ©
             if ($AddStatusCheck) {
                 $statusName = "analyse-de-code"
                 $statusDescription = switch ($status) {
-                    "success" { "Aucun problème critique détecté." }
-                    "failure" { "Des problèmes ont été détectés qui nécessitent votre attention." }
-                    default { "Analyse de code terminée." }
+                    "success" { "Aucun problÃ¨me critique dÃ©tectÃ©." }
+                    "failure" { "Des problÃ¨mes ont Ã©tÃ© dÃ©tectÃ©s qui nÃ©cessitent votre attention." }
+                    default { "Analyse de code terminÃ©e." }
                 }
                 
                 # Obtenir le SHA du dernier commit de la MR
                 $mrDetails = glab mr view $PullRequestNumber --json sha | ConvertFrom-Json
                 $commitSha = $mrDetails.sha
                 
-                # Créer une vérification de statut
+                # CrÃ©er une vÃ©rification de statut
                 glab api projects/:id/statuses/$commitSha -f state=$status -f name="$statusName" -f description="$statusDescription" -f target_url="$ReportUrl"
             }
         }
     }
     
-    Write-Host "Rapport connecté avec succès à $Platform" -ForegroundColor Green
+    Write-Host "Rapport connectÃ© avec succÃ¨s Ã  $Platform" -ForegroundColor Green
     Write-Host "  Pull Request: #$PullRequestNumber" -ForegroundColor White
     Write-Host "  Style de commentaire: $CommentStyle" -ForegroundColor White
-    Write-Host "  Vérification de statut: $AddStatusCheck" -ForegroundColor White
+    Write-Host "  VÃ©rification de statut: $AddStatusCheck" -ForegroundColor White
     Write-Host "  Statut: $status" -ForegroundColor White
     
     return $true
 } catch {
-    Write-Error "Erreur lors de la connexion du rapport à $Platform : $($_.ToString())"
+    Write-Error "Erreur lors de la connexion du rapport Ã  $Platform : $($_.ToString())"
     return $false
 } finally {
-    # Revenir au répertoire précédent
+    # Revenir au rÃ©pertoire prÃ©cÃ©dent
     Pop-Location
 }

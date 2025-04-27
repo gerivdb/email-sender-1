@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module d'optimisation des TTL pour le cache prédictif.
+    Module d'optimisation des TTL pour le cache prÃ©dictif.
 .DESCRIPTION
-    Ajuste dynamiquement les durées de vie (TTL) des éléments du cache
+    Ajuste dynamiquement les durÃ©es de vie (TTL) des Ã©lÃ©ments du cache
     en fonction des patterns d'utilisation.
 .NOTES
     Version: 1.0
@@ -32,21 +32,21 @@ class TTLOptimizer {
         $this.UpdateTTLRules()
     }
     
-    # Optimiser le TTL pour une clé
+    # Optimiser le TTL pour une clÃ©
     [int] OptimizeTTL([string]$key, [int]$currentTTL) {
-        # Si nous avons une règle spécifique pour cette clé
+        # Si nous avons une rÃ¨gle spÃ©cifique pour cette clÃ©
         if ($this.TTLRules.ContainsKey($key)) {
             return $this.TTLRules[$key]
         }
         
-        # Sinon, essayer de trouver une règle basée sur un pattern
+        # Sinon, essayer de trouver une rÃ¨gle basÃ©e sur un pattern
         foreach ($pattern in $this.TTLRules.Keys) {
             if ($pattern.Contains("*") -and ($key -like $pattern)) {
                 return $this.TTLRules[$pattern]
             }
         }
         
-        # Si nous avons des données d'accès pour cette clé
+        # Si nous avons des donnÃ©es d'accÃ¨s pour cette clÃ©
         $keyStats = $this.UsageCollector.GetKeyAccessStats($key)
         if ($keyStats -ne $null) {
             return $this.CalculateOptimalTTL($keyStats, $currentTTL)
@@ -56,7 +56,7 @@ class TTLOptimizer {
         return $currentTTL
     }
     
-    # Calculer le TTL optimal pour une clé
+    # Calculer le TTL optimal pour une clÃ©
     [int] CalculateOptimalTTL([PSCustomObject]$keyStats, [int]$currentTTL) {
         # Facteurs d'optimisation
         $frequencyFactor = $this.CalculateFrequencyFactor($keyStats.TotalAccesses)
@@ -75,35 +75,35 @@ class TTLOptimizer {
         # Limiter aux bornes
         $optimalTTL = [Math]::Max($this.MinimumTTL, [Math]::Min($this.MaximumTTL, $optimalTTL))
         
-        # Mettre à jour le pattern d'accès
+        # Mettre Ã  jour le pattern d'accÃ¨s
         $this.UpdateAccessPattern($keyStats.Key, $optimalTTL)
         
         return $optimalTTL
     }
     
-    # Calculer le facteur de fréquence
+    # Calculer le facteur de frÃ©quence
     [double] CalculateFrequencyFactor([int]$accessCount) {
-        # Normaliser le nombre d'accès (0.0-1.0)
-        # Plus d'accès = TTL plus long
+        # Normaliser le nombre d'accÃ¨s (0.0-1.0)
+        # Plus d'accÃ¨s = TTL plus long
         return [Math]::Min(1.0, $accessCount / 100.0)
     }
     
-    # Calculer le facteur de récence
+    # Calculer le facteur de rÃ©cence
     [double] CalculateRecencyFactor([datetime]$lastAccess) {
         $now = Get-Date
         $hoursSinceLastAccess = ($now - $lastAccess).TotalHours
         
-        # Décroissance exponentielle: plus récent = TTL plus long
+        # DÃ©croissance exponentielle: plus rÃ©cent = TTL plus long
         return [Math]::Exp(-0.1 * $hoursSinceLastAccess)
     }
     
-    # Calculer le facteur de stabilité
+    # Calculer le facteur de stabilitÃ©
     [double] CalculateStabilityFactor([double]$hitRatio) {
-        # Plus le ratio de hits est élevé, plus le TTL est long
+        # Plus le ratio de hits est Ã©levÃ©, plus le TTL est long
         return $hitRatio
     }
     
-    # Mettre à jour le pattern d'accès pour une clé
+    # Mettre Ã  jour le pattern d'accÃ¨s pour une clÃ©
     [void] UpdateAccessPattern([string]$key, [int]$ttl) {
         if (-not $this.KeyAccessPatterns.ContainsKey($key)) {
             $this.KeyAccessPatterns[$key] = @{
@@ -119,29 +119,29 @@ class TTLOptimizer {
         $pattern.AccessCount++
         $pattern.LastAccess = Get-Date
         
-        # Limiter l'historique à 10 entrées
+        # Limiter l'historique Ã  10 entrÃ©es
         if ($pattern.TTLHistory.Count -gt 10) {
             $pattern.TTLHistory = $pattern.TTLHistory | Select-Object -Last 10
         }
     }
     
-    # Mettre à jour les règles de TTL
+    # Mettre Ã  jour les rÃ¨gles de TTL
     [void] UpdateTTLRules() {
         $now = Get-Date
         
-        # Vérifier si une mise à jour est nécessaire
+        # VÃ©rifier si une mise Ã  jour est nÃ©cessaire
         if (($now - $this.LastRuleUpdate).TotalSeconds -lt $this.RuleUpdateInterval) {
             return
         }
         
         try {
-            # Récupérer les clés les plus accédées
-            $mostAccessedKeys = $this.UsageCollector.GetMostAccessedKeys(50, 1440)  # 50 clés les plus accédées dans les dernières 24h
+            # RÃ©cupÃ©rer les clÃ©s les plus accÃ©dÃ©es
+            $mostAccessedKeys = $this.UsageCollector.GetMostAccessedKeys(50, 1440)  # 50 clÃ©s les plus accÃ©dÃ©es dans les derniÃ¨res 24h
             
-            # Analyser les patterns d'accès
+            # Analyser les patterns d'accÃ¨s
             $keyGroups = $this.AnalyzeAccessPatterns($mostAccessedKeys)
             
-            # Mettre à jour les règles
+            # Mettre Ã  jour les rÃ¨gles
             foreach ($group in $keyGroups.Keys) {
                 $keys = $keyGroups[$group]
                 
@@ -169,15 +169,15 @@ class TTLOptimizer {
             $this.LastRuleUpdate = $now
         }
         catch {
-            Write-Warning "Erreur lors de la mise à jour des règles de TTL: $_"
+            Write-Warning "Erreur lors de la mise Ã  jour des rÃ¨gles de TTL: $_"
         }
     }
     
-    # Analyser les patterns d'accès
+    # Analyser les patterns d'accÃ¨s
     [hashtable] AnalyzeAccessPatterns([array]$keys) {
         $patterns = @{}
         
-        # Regrouper les clés par pattern
+        # Regrouper les clÃ©s par pattern
         foreach ($keyStats in $keys) {
             $key = $keyStats.Key
             $pattern = $this.DetectKeyPattern($key)
@@ -192,14 +192,14 @@ class TTLOptimizer {
         return $patterns
     }
     
-    # Détecter le pattern d'une clé
+    # DÃ©tecter le pattern d'une clÃ©
     [string] DetectKeyPattern([string]$key) {
         # Exemples de patterns:
         # - "User:123" -> "User:*"
         # - "Config:App:Setting" -> "Config:App:*"
         # - "Data:2023-04-12:Stats" -> "Data:*:Stats"
         
-        # Détecter les patterns courants
+        # DÃ©tecter les patterns courants
         if ($key -match "^([^:]+):(\d+)$") {
             # Pattern: Type:ID
             return "$($Matches[1]):*"
@@ -213,15 +213,15 @@ class TTLOptimizer {
             return "$($Matches[1]):*:$($Matches[3])"
         }
         
-        # Si aucun pattern n'est détecté, retourner la clé elle-même
+        # Si aucun pattern n'est dÃ©tectÃ©, retourner la clÃ© elle-mÃªme
         return $key
     }
     
-    # Obtenir le TTL optimal pour une clé et un pattern d'accès
+    # Obtenir le TTL optimal pour une clÃ© et un pattern d'accÃ¨s
     [int] GetOptimalTTL([string]$key, [PSCustomObject]$accessPattern) {
-        # Si nous avons un pattern d'accès
+        # Si nous avons un pattern d'accÃ¨s
         if ($accessPattern -ne $null) {
-            # Calculer la moyenne des TTL récents
+            # Calculer la moyenne des TTL rÃ©cents
             $ttlHistory = $accessPattern.TTLHistory
             if ($ttlHistory.Count -gt 0) {
                 $avgTTL = ($ttlHistory | Measure-Object -Average).Average
@@ -262,17 +262,17 @@ class TTLOptimizer {
     }
 }
 
-# Fonctions exportées
+# Fonctions exportÃ©es
 
 <#
 .SYNOPSIS
-    Crée un nouvel optimiseur de TTL.
+    CrÃ©e un nouvel optimiseur de TTL.
 .DESCRIPTION
-    Crée un nouvel optimiseur de TTL pour ajuster dynamiquement les durées de vie des éléments du cache.
+    CrÃ©e un nouvel optimiseur de TTL pour ajuster dynamiquement les durÃ©es de vie des Ã©lÃ©ments du cache.
 .PARAMETER BaseCache
-    Cache de base à utiliser.
+    Cache de base Ã  utiliser.
 .PARAMETER UsageCollector
-    Collecteur d'utilisation à utiliser.
+    Collecteur d'utilisation Ã  utiliser.
 .EXAMPLE
     $optimizer = New-TTLOptimizer -BaseCache $cache -UsageCollector $collector
 #>
@@ -291,28 +291,28 @@ function New-TTLOptimizer {
         return [TTLOptimizer]::new($BaseCache, $UsageCollector)
     }
     catch {
-        Write-Error "Erreur lors de la création de l'optimiseur de TTL: $_"
+        Write-Error "Erreur lors de la crÃ©ation de l'optimiseur de TTL: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Configure les paramètres de l'optimiseur de TTL.
+    Configure les paramÃ¨tres de l'optimiseur de TTL.
 .DESCRIPTION
-    Configure les paramètres de l'optimiseur de TTL comme les poids des facteurs et les limites de TTL.
+    Configure les paramÃ¨tres de l'optimiseur de TTL comme les poids des facteurs et les limites de TTL.
 .PARAMETER TTLOptimizer
-    Optimiseur de TTL à configurer.
+    Optimiseur de TTL Ã  configurer.
 .PARAMETER MinimumTTL
     TTL minimum en secondes.
 .PARAMETER MaximumTTL
     TTL maximum en secondes.
 .PARAMETER FrequencyWeight
-    Poids du facteur de fréquence.
+    Poids du facteur de frÃ©quence.
 .PARAMETER RecencyWeight
-    Poids du facteur de récence.
+    Poids du facteur de rÃ©cence.
 .PARAMETER StabilityWeight
-    Poids du facteur de stabilité.
+    Poids du facteur de stabilitÃ©.
 .EXAMPLE
     Set-TTLOptimizerParameters -TTLOptimizer $optimizer -MinimumTTL 300 -MaximumTTL 43200
 #>
@@ -339,7 +339,7 @@ function Set-TTLOptimizerParameters {
     )
     
     try {
-        # Mettre à jour les paramètres
+        # Mettre Ã  jour les paramÃ¨tres
         if ($PSBoundParameters.ContainsKey('MinimumTTL')) {
             $TTLOptimizer.MinimumTTL = $MinimumTTL
         }
@@ -360,10 +360,10 @@ function Set-TTLOptimizerParameters {
             $TTLOptimizer.StabilityWeight = $StabilityWeight
         }
         
-        # Vérifier que les poids somment à 1
+        # VÃ©rifier que les poids somment Ã  1
         $totalWeight = $TTLOptimizer.FrequencyWeight + $TTLOptimizer.RecencyWeight + $TTLOptimizer.StabilityWeight
         if ([Math]::Abs($totalWeight - 1.0) -gt 0.001) {
-            Write-Warning "La somme des poids ($totalWeight) n'est pas égale à 1. Les résultats peuvent être incohérents."
+            Write-Warning "La somme des poids ($totalWeight) n'est pas Ã©gale Ã  1. Les rÃ©sultats peuvent Ãªtre incohÃ©rents."
         }
         
         return $true

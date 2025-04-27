@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Version simplifiée de TestOmnibus pour tester l'intégration.
+    Version simplifiÃ©e de TestOmnibus pour tester l'intÃ©gration.
 .DESCRIPTION
-    Ce script est une version simplifiée de TestOmnibus qui permet de tester
-    l'intégration avec le Système d'Optimisation Proactive.
+    Ce script est une version simplifiÃ©e de TestOmnibus qui permet de tester
+    l'intÃ©gration avec le SystÃ¨me d'Optimisation Proactive.
 .PARAMETER Path
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration.
 .EXAMPLE
@@ -25,7 +25,7 @@ param (
     [string]$ConfigPath
 )
 
-# Définir l'encodage de la console en UTF-8
+# DÃ©finir l'encodage de la console en UTF-8
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 
@@ -65,7 +65,7 @@ if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
     }
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $config.OutputPath)) {
     New-Item -Path $config.OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -74,38 +74,38 @@ if (-not (Test-Path -Path $config.OutputPath)) {
 $testFiles = Get-ChildItem -Path $Path -Filter "*.Tests.ps1" -Recurse
 
 if ($testFiles.Count -eq 0) {
-    Write-Warning "Aucun fichier de test trouvé dans: $Path"
+    Write-Warning "Aucun fichier de test trouvÃ© dans: $Path"
     return
 }
 
-Write-Host "Exécution de $($testFiles.Count) tests avec $($config.MaxThreads) threads..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution de $($testFiles.Count) tests avec $($config.MaxThreads) threads..." -ForegroundColor Cyan
 
-# Préparer les résultats
+# PrÃ©parer les rÃ©sultats
 $results = @()
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 foreach ($testFile in $testFiles) {
-    Write-Host "Exécution du test: $($testFile.Name)" -ForegroundColor Yellow
+    Write-Host "ExÃ©cution du test: $($testFile.Name)" -ForegroundColor Yellow
 
     $startTime = Get-Date
     $success = $true
     $errorMessage = ""
 
     try {
-        # Simuler l'exécution du test
+        # Simuler l'exÃ©cution du test
         if ($testFile.Name -match "Failing") {
-            # Simuler un échec
+            # Simuler un Ã©chec
             $success = $false
-            $errorMessage = "Test échoué"
-            Write-Host "  - Échec" -ForegroundColor Red
+            $errorMessage = "Test Ã©chouÃ©"
+            Write-Host "  - Ã‰chec" -ForegroundColor Red
         } elseif ($testFile.Name -match "Slow") {
             # Simuler un test lent
             Start-Sleep -Seconds 2
-            Write-Host "  - Succès (lent)" -ForegroundColor Green
+            Write-Host "  - SuccÃ¨s (lent)" -ForegroundColor Green
         } else {
-            # Simuler un succès
+            # Simuler un succÃ¨s
             Start-Sleep -Milliseconds 100
-            Write-Host "  - Succès" -ForegroundColor Green
+            Write-Host "  - SuccÃ¨s" -ForegroundColor Green
         }
     } catch {
         $success = $false
@@ -116,7 +116,7 @@ foreach ($testFile in $testFiles) {
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalMilliseconds
 
-    # Ajouter le résultat
+    # Ajouter le rÃ©sultat
     $result = [PSCustomObject]@{
         Name         = $testFile.Name -replace "\.Tests\.ps1", ""
         Path         = $testFile.FullName
@@ -130,13 +130,13 @@ foreach ($testFile in $testFiles) {
     $results += $result
 }
 
-# Générer un rapport XML
+# GÃ©nÃ©rer un rapport XML
 $resultsPath = Join-Path -Path $config.OutputPath -ChildPath "results.xml"
 $results | Export-Clixml -Path $resultsPath -Force
 
-Write-Host "Résultats des tests sauvegardés: $resultsPath" -ForegroundColor Green
+Write-Host "RÃ©sultats des tests sauvegardÃ©s: $resultsPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($config.GenerateHtmlReport) {
     $reportPath = Join-Path -Path $config.OutputPath -ChildPath "report.html"
 
@@ -267,24 +267,24 @@ if ($config.GenerateHtmlReport) {
 </html>
 "@
 
-    # Utiliser UTF-8 avec BOM pour éviter les problèmes d'encodage
+    # Utiliser UTF-8 avec BOM pour Ã©viter les problÃ¨mes d'encodage
     $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
     [System.IO.File]::WriteAllText($reportPath, $html, $utf8WithBom)
 
-    Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $successCount = ($results | Where-Object { $_.Success } | Measure-Object).Count
 $failureCount = ($results | Where-Object { -not $_.Success } | Measure-Object).Count
 $totalDuration = ($results | Measure-Object -Property Duration -Sum).Sum
 
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  - Tests exécutés: $($results.Count)" -ForegroundColor White
-Write-Host "  - Tests réussis: $successCount" -ForegroundColor Green
-Write-Host "  - Tests échoués: $failureCount" -ForegroundColor Red
-Write-Host "  - Durée totale: $([math]::Round($totalDuration, 2)) ms" -ForegroundColor White
-Write-Host "  - Threads utilisés: $($config.MaxThreads)" -ForegroundColor White
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  - Tests exÃ©cutÃ©s: $($results.Count)" -ForegroundColor White
+Write-Host "  - Tests rÃ©ussis: $successCount" -ForegroundColor Green
+Write-Host "  - Tests Ã©chouÃ©s: $failureCount" -ForegroundColor Red
+Write-Host "  - DurÃ©e totale: $([math]::Round($totalDuration, 2)) ms" -ForegroundColor White
+Write-Host "  - Threads utilisÃ©s: $($config.MaxThreads)" -ForegroundColor White
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

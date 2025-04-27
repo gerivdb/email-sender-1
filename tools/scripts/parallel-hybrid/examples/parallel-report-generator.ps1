@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Générateur de rapports parallélisé avec l'architecture hybride.
+    GÃ©nÃ©rateur de rapports parallÃ©lisÃ© avec l'architecture hybride.
 .DESCRIPTION
-    Ce script utilise l'architecture hybride PowerShell-Python pour générer
-    efficacement des rapports à partir de données volumineuses.
+    Ce script utilise l'architecture hybride PowerShell-Python pour gÃ©nÃ©rer
+    efficacement des rapports Ã  partir de donnÃ©es volumineuses.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -33,7 +33,7 @@ param(
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le script Python de génération de rapports
+# CrÃ©er le script Python de gÃ©nÃ©ration de rapports
 $pythonScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "report_generator.py"
 if (-not (Test-Path -Path $pythonScriptPath)) {
     $pythonScript = @"
@@ -51,22 +51,22 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 def generate_summary_report(data, output_path):
-    """Génère un rapport de synthèse."""
+    """GÃ©nÃ¨re un rapport de synthÃ¨se."""
     try:
-        # Convertir les données en DataFrame
+        # Convertir les donnÃ©es en DataFrame
         df = pd.DataFrame(data)
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         os.makedirs(output_path, exist_ok=True)
         
-        # Générer des statistiques de base
+        # GÃ©nÃ©rer des statistiques de base
         summary = {
             "total_records": len(df),
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "metrics": {}
         }
         
-        # Calculer des statistiques pour chaque colonne numérique
+        # Calculer des statistiques pour chaque colonne numÃ©rique
         for column in df.select_dtypes(include=['number']).columns:
             summary["metrics"][column] = {
                 "min": df[column].min(),
@@ -76,17 +76,17 @@ def generate_summary_report(data, output_path):
                 "std": df[column].std()
             }
         
-        # Générer un graphique de synthèse
+        # GÃ©nÃ©rer un graphique de synthÃ¨se
         plt.figure(figsize=(10, 6))
         
-        # Utiliser la première colonne numérique pour le graphique
+        # Utiliser la premiÃ¨re colonne numÃ©rique pour le graphique
         numeric_columns = df.select_dtypes(include=['number']).columns
         if len(numeric_columns) > 0:
             column = numeric_columns[0]
             df[column].hist(bins=20)
             plt.title(f'Distribution de {column}')
             plt.xlabel(column)
-            plt.ylabel('Fréquence')
+            plt.ylabel('FrÃ©quence')
             plt.grid(True, alpha=0.3)
             
             # Enregistrer le graphique
@@ -96,7 +96,7 @@ def generate_summary_report(data, output_path):
             
             summary["chart_path"] = chart_path
         
-        # Enregistrer le rapport de synthèse
+        # Enregistrer le rapport de synthÃ¨se
         summary_path = os.path.join(output_path, "summary_report.json")
         with open(summary_path, 'w', encoding='utf-8') as f:
             json.dump(summary, f, ensure_ascii=False, indent=2)
@@ -115,25 +115,25 @@ def generate_summary_report(data, output_path):
         }
 
 def generate_detailed_report(data, output_path):
-    """Génère un rapport détaillé."""
+    """GÃ©nÃ¨re un rapport dÃ©taillÃ©."""
     try:
-        # Convertir les données en DataFrame
+        # Convertir les donnÃ©es en DataFrame
         df = pd.DataFrame(data)
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         os.makedirs(output_path, exist_ok=True)
         
-        # Générer un rapport HTML détaillé
+        # GÃ©nÃ©rer un rapport HTML dÃ©taillÃ©
         html_path = os.path.join(output_path, "detailed_report.html")
         
-        # Créer un rapport HTML avec des styles
+        # CrÃ©er un rapport HTML avec des styles
         html_content = f"""
         <!DOCTYPE html>
         <html lang="fr">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Rapport détaillé</title>
+            <title>Rapport dÃ©taillÃ©</title>
             <style>
                 body {{
                     font-family: Arial, sans-serif;
@@ -165,11 +165,11 @@ def generate_detailed_report(data, output_path):
             </style>
         </head>
         <body>
-            <h1>Rapport détaillé</h1>
-            <p>Date de génération : {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
+            <h1>Rapport dÃ©taillÃ©</h1>
+            <p>Date de gÃ©nÃ©ration : {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
             <p>Nombre d'enregistrements : {len(df)}</p>
             
-            <h2>Aperçu des données</h2>
+            <h2>AperÃ§u des donnÃ©es</h2>
             {df.head(20).to_html()}
             
             <h2>Statistiques descriptives</h2>
@@ -182,7 +182,7 @@ def generate_detailed_report(data, output_path):
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
         
-        # Générer des graphiques pour chaque colonne numérique
+        # GÃ©nÃ©rer des graphiques pour chaque colonne numÃ©rique
         chart_paths = []
         
         for column in df.select_dtypes(include=['number']).columns:
@@ -190,7 +190,7 @@ def generate_detailed_report(data, output_path):
             plt.hist(df[column], bins=20)
             plt.title(f'Distribution de {column}')
             plt.xlabel(column)
-            plt.ylabel('Fréquence')
+            plt.ylabel('FrÃ©quence')
             plt.grid(True, alpha=0.3)
             
             # Enregistrer le graphique
@@ -214,22 +214,22 @@ def generate_detailed_report(data, output_path):
         }
 
 def generate_metrics_report(data, output_path):
-    """Génère un rapport de métriques."""
+    """GÃ©nÃ¨re un rapport de mÃ©triques."""
     try:
-        # Convertir les données en DataFrame
+        # Convertir les donnÃ©es en DataFrame
         df = pd.DataFrame(data)
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         os.makedirs(output_path, exist_ok=True)
         
-        # Calculer des métriques avancées
+        # Calculer des mÃ©triques avancÃ©es
         metrics = {
             "record_count": len(df),
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "columns": {}
         }
         
-        # Calculer des métriques pour chaque colonne
+        # Calculer des mÃ©triques pour chaque colonne
         for column in df.columns:
             column_metrics = {
                 "type": str(df[column].dtype),
@@ -237,7 +237,7 @@ def generate_metrics_report(data, output_path):
                 "null_percentage": df[column].isnull().mean() * 100
             }
             
-            # Métriques spécifiques aux colonnes numériques
+            # MÃ©triques spÃ©cifiques aux colonnes numÃ©riques
             if df[column].dtype.kind in 'ifc':
                 column_metrics.update({
                     "min": df[column].min(),
@@ -249,7 +249,7 @@ def generate_metrics_report(data, output_path):
                     "kurtosis": df[column].kurt()
                 })
             
-            # Métriques spécifiques aux colonnes de texte
+            # MÃ©triques spÃ©cifiques aux colonnes de texte
             elif df[column].dtype == 'object':
                 column_metrics.update({
                     "unique_count": df[column].nunique(),
@@ -259,10 +259,10 @@ def generate_metrics_report(data, output_path):
             
             metrics["columns"][column] = column_metrics
         
-        # Générer un graphique de corrélation
+        # GÃ©nÃ©rer un graphique de corrÃ©lation
         plt.figure(figsize=(10, 8))
         
-        # Calculer la matrice de corrélation pour les colonnes numériques
+        # Calculer la matrice de corrÃ©lation pour les colonnes numÃ©riques
         numeric_df = df.select_dtypes(include=['number'])
         if not numeric_df.empty:
             corr_matrix = numeric_df.corr()
@@ -278,7 +278,7 @@ def generate_metrics_report(data, output_path):
             
             metrics["correlation_chart"] = chart_path
         
-        # Enregistrer le rapport de métriques
+        # Enregistrer le rapport de mÃ©triques
         metrics_path = os.path.join(output_path, "metrics_report.json")
         with open(metrics_path, 'w', encoding='utf-8') as f:
             json.dump(metrics, f, ensure_ascii=False, indent=2)
@@ -297,10 +297,10 @@ def generate_metrics_report(data, output_path):
         }
 
 def generate_reports(data, output_path, report_types):
-    """Génère plusieurs types de rapports en parallèle."""
+    """GÃ©nÃ¨re plusieurs types de rapports en parallÃ¨le."""
     results = []
     
-    # Générer chaque type de rapport demandé
+    # GÃ©nÃ©rer chaque type de rapport demandÃ©
     for report_type in report_types:
         if report_type.lower() == "summary":
             result = generate_summary_report(data, output_path)
@@ -320,38 +320,38 @@ def generate_reports(data, output_path, report_types):
 
 def main():
     """Fonction principale."""
-    parser = argparse.ArgumentParser(description='Générateur de rapports parallélisé')
-    parser.add_argument('--input', required=True, help='Fichier JSON contenant les données')
-    parser.add_argument('--output', required=True, help='Répertoire de sortie pour les rapports')
-    parser.add_argument('--report-types', required=True, help='Types de rapports à générer (séparés par des virgules)')
+    parser = argparse.ArgumentParser(description='GÃ©nÃ©rateur de rapports parallÃ©lisÃ©')
+    parser.add_argument('--input', required=True, help='Fichier JSON contenant les donnÃ©es')
+    parser.add_argument('--output', required=True, help='RÃ©pertoire de sortie pour les rapports')
+    parser.add_argument('--report-types', required=True, help='Types de rapports Ã  gÃ©nÃ©rer (sÃ©parÃ©s par des virgules)')
     
     args = parser.parse_args()
     
-    # Charger les données
+    # Charger les donnÃ©es
     try:
         with open(args.input, 'r', encoding='utf-8') as f:
             data = json.load(f)
     except Exception as e:
-        print(f"Erreur lors de la lecture du fichier d'entrée : {e}", file=sys.stderr)
+        print(f"Erreur lors de la lecture du fichier d'entrÃ©e : {e}", file=sys.stderr)
         sys.exit(1)
     
     # Convertir les types de rapports en liste
     report_types = args.report_types.split(',')
     
-    # Générer les rapports
+    # GÃ©nÃ©rer les rapports
     try:
         results = generate_reports(data, args.output, report_types)
     except Exception as e:
-        print(f"Erreur lors de la génération des rapports : {e}", file=sys.stderr)
+        print(f"Erreur lors de la gÃ©nÃ©ration des rapports : {e}", file=sys.stderr)
         sys.exit(1)
     
-    # Écrire les résultats
+    # Ã‰crire les rÃ©sultats
     try:
         results_path = os.path.join(args.output, "report_results.json")
         with open(results_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"Erreur lors de l'écriture des résultats : {e}", file=sys.stderr)
+        print(f"Erreur lors de l'Ã©criture des rÃ©sultats : {e}", file=sys.stderr)
         sys.exit(1)
     
     sys.exit(0)
@@ -361,10 +361,10 @@ if __name__ == '__main__':
 "@
     
     $pythonScript | Out-File -FilePath $pythonScriptPath -Encoding utf8
-    Write-Host "Script Python de génération de rapports créé : $pythonScriptPath" -ForegroundColor Green
+    Write-Host "Script Python de gÃ©nÃ©ration de rapports crÃ©Ã© : $pythonScriptPath" -ForegroundColor Green
 }
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     [CmdletBinding()]
     param(
@@ -375,12 +375,12 @@ function New-TestData {
         [int]$RecordCount = 1000
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # Générer des données aléatoires
+    # GÃ©nÃ©rer des donnÃ©es alÃ©atoires
     $data = @()
     
     for ($i = 1; $i -le $RecordCount; $i++) {
@@ -397,11 +397,11 @@ function New-TestData {
         $data += $record
     }
     
-    # Enregistrer les données
+    # Enregistrer les donnÃ©es
     $dataPath = Join-Path -Path $OutputPath -ChildPath "test_data.json"
     $data | ConvertTo-Json | Out-File -FilePath $dataPath -Encoding utf8
     
-    Write-Host "Données de test générées : $dataPath" -ForegroundColor Green
+    Write-Host "DonnÃ©es de test gÃ©nÃ©rÃ©es : $dataPath" -ForegroundColor Green
     
     return $dataPath
 }
@@ -426,18 +426,18 @@ function Start-ReportGeneration {
         [switch]$OpenReports
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # Vérifier si le fichier de données existe
+    # VÃ©rifier si le fichier de donnÃ©es existe
     if (-not (Test-Path -Path $DataPath)) {
-        Write-Host "Fichier de données non trouvé. Génération de données de test..." -ForegroundColor Yellow
+        Write-Host "Fichier de donnÃ©es non trouvÃ©. GÃ©nÃ©ration de donnÃ©es de test..." -ForegroundColor Yellow
         $DataPath = New-TestData -OutputPath (Split-Path -Parent $DataPath) -RecordCount 1000
     }
     
-    # Charger les données
+    # Charger les donnÃ©es
     $data = Get-Content -Path $DataPath -Raw | ConvertFrom-Json
     
     # Configuration du cache
@@ -453,24 +453,24 @@ function Start-ReportGeneration {
         }
     }
     
-    # Générer les rapports en parallèle
-    Write-Host "Génération des rapports en parallèle..." -ForegroundColor Cyan
+    # GÃ©nÃ©rer les rapports en parallÃ¨le
+    Write-Host "GÃ©nÃ©ration des rapports en parallÃ¨le..." -ForegroundColor Cyan
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
     $results = Invoke-HybridParallelTask `
         -PythonScript $pythonScriptPath `
         -InputData $data `
-        -BatchSize $data.Count `  # Traiter toutes les données en une seule fois
+        -BatchSize $data.Count `  # Traiter toutes les donnÃ©es en une seule fois
         -CacheConfig $cacheConfig `
         -AdditionalArguments @{
             report_types = $ReportTypes -join ","
         }
     
     $stopwatch.Stop()
-    Write-Host "Génération terminée en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
+    Write-Host "GÃ©nÃ©ration terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
     
-    # Afficher un résumé
-    Write-Host "`nRapports générés :" -ForegroundColor Yellow
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRapports gÃ©nÃ©rÃ©s :" -ForegroundColor Yellow
     foreach ($result in $results) {
         if ($result.error) {
             Write-Host "  $($result.type) : Erreur - $($result.error)" -ForegroundColor Red
@@ -478,7 +478,7 @@ function Start-ReportGeneration {
         else {
             Write-Host "  $($result.type) : $($result.path)" -ForegroundColor Green
             
-            # Ouvrir les rapports si demandé
+            # Ouvrir les rapports si demandÃ©
             if ($OpenReports) {
                 Start-Process $result.path
             }
@@ -488,7 +488,7 @@ function Start-ReportGeneration {
     return $results
 }
 
-# Exécuter la génération de rapports
+# ExÃ©cuter la gÃ©nÃ©ration de rapports
 try {
     $results = Start-ReportGeneration `
         -DataPath (Join-Path -Path $DataPath -ChildPath "test_data.json") `
@@ -497,8 +497,8 @@ try {
         -UseCache:$UseCache `
         -OpenReports:$OpenReports
     
-    Write-Host "`nGénération de rapports terminée avec succès !" -ForegroundColor Green
+    Write-Host "`nGÃ©nÃ©ration de rapports terminÃ©e avec succÃ¨s !" -ForegroundColor Green
 }
 catch {
-    Write-Error "Erreur lors de la génération des rapports : $_"
+    Write-Error "Erreur lors de la gÃ©nÃ©ration des rapports : $_"
 }

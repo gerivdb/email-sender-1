@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Intègre TestOmnibus avec SonarQube.
+    IntÃ¨gre TestOmnibus avec SonarQube.
 .DESCRIPTION
-    Ce script intègre TestOmnibus avec SonarQube en générant des rapports au format
+    Ce script intÃ¨gre TestOmnibus avec SonarQube en gÃ©nÃ©rant des rapports au format
     compatible avec SonarQube et en les publiant sur un serveur SonarQube.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER SourcePath
-    Chemin vers les fichiers source à analyser.
+    Chemin vers les fichiers source Ã  analyser.
 .PARAMETER SonarQubeUrl
     L'URL du serveur SonarQube.
 .PARAMETER SonarQubeToken
     Le token d'authentification SonarQube.
 .PARAMETER ProjectKey
-    La clé du projet SonarQube.
+    La clÃ© du projet SonarQube.
 .PARAMETER ProjectName
     Le nom du projet SonarQube.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'analyse.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse.
 .PARAMETER SimulationMode
-    Active le mode simulation (ne tente pas réellement de se connecter à SonarQube).
+    Active le mode simulation (ne tente pas rÃ©ellement de se connecter Ã  SonarQube).
 .EXAMPLE
     .\Integrate-SonarQube.ps1 -TestPath "D:\Tests" -SourcePath "D:\Source" -SonarQubeUrl "http://sonarqube.example.com" -SonarQubeToken "token" -ProjectKey "testomnibus" -ProjectName "TestOmnibus"
 .EXAMPLE
@@ -57,7 +57,7 @@ param (
     [switch]$SimulationMode
 )
 
-# Vérifier que les chemins existent
+# VÃ©rifier que les chemins existent
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
@@ -68,42 +68,42 @@ if (-not (Test-Path -Path $SourcePath)) {
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Vérifier si SonarScanner est installé
+# VÃ©rifier si SonarScanner est installÃ©
 $sonarScannerInstalled = $false
 try {
     $sonarScannerVersion = & sonar-scanner --version 2>&1
     if ($LASTEXITCODE -eq 0) {
         $sonarScannerInstalled = $true
-        Write-Host "SonarScanner est installé: $sonarScannerVersion" -ForegroundColor Green
+        Write-Host "SonarScanner est installÃ©: $sonarScannerVersion" -ForegroundColor Green
     }
 }
 catch {
-    Write-Warning "SonarScanner n'est pas installé."
+    Write-Warning "SonarScanner n'est pas installÃ©."
 }
 
-# Installer SonarScanner si nécessaire
+# Installer SonarScanner si nÃ©cessaire
 if (-not $sonarScannerInstalled) {
     Write-Host "Installation de SonarScanner..." -ForegroundColor Cyan
     
-    # Vérifier si Chocolatey est installé
+    # VÃ©rifier si Chocolatey est installÃ©
     $chocoInstalled = $false
     try {
         $chocoVersion = & choco --version 2>&1
         if ($LASTEXITCODE -eq 0) {
             $chocoInstalled = $true
-            Write-Host "Chocolatey est installé: $chocoVersion" -ForegroundColor Green
+            Write-Host "Chocolatey est installÃ©: $chocoVersion" -ForegroundColor Green
         }
     }
     catch {
-        Write-Warning "Chocolatey n'est pas installé."
+        Write-Warning "Chocolatey n'est pas installÃ©."
     }
     
-    # Installer Chocolatey si nécessaire
+    # Installer Chocolatey si nÃ©cessaire
     if (-not $chocoInstalled) {
         Write-Host "Installation de Chocolatey..." -ForegroundColor Cyan
         try {
@@ -112,7 +112,7 @@ if (-not $sonarScannerInstalled) {
             Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
             
             $chocoInstalled = $true
-            Write-Host "Chocolatey installé avec succès." -ForegroundColor Green
+            Write-Host "Chocolatey installÃ© avec succÃ¨s." -ForegroundColor Green
         }
         catch {
             Write-Error "Erreur lors de l'installation de Chocolatey: $_"
@@ -125,11 +125,11 @@ if (-not $sonarScannerInstalled) {
         try {
             & choco install sonarscanner-msbuild-net46 -y
             
-            # Vérifier si l'installation a réussi
+            # VÃ©rifier si l'installation a rÃ©ussi
             $sonarScannerVersion = & sonar-scanner --version 2>&1
             if ($LASTEXITCODE -eq 0) {
                 $sonarScannerInstalled = $true
-                Write-Host "SonarScanner installé avec succès: $sonarScannerVersion" -ForegroundColor Green
+                Write-Host "SonarScanner installÃ© avec succÃ¨s: $sonarScannerVersion" -ForegroundColor Green
             }
             else {
                 Write-Warning "Erreur lors de l'installation de SonarScanner."
@@ -141,7 +141,7 @@ if (-not $sonarScannerInstalled) {
     }
 }
 
-# Fonction pour convertir les résultats de TestOmnibus au format SonarQube
+# Fonction pour convertir les rÃ©sultats de TestOmnibus au format SonarQube
 function Convert-TestOmnibusToSonarQube {
     [CmdletBinding()]
     param (
@@ -153,31 +153,31 @@ function Convert-TestOmnibusToSonarQube {
     )
     
     try {
-        # Charger les résultats de TestOmnibus
+        # Charger les rÃ©sultats de TestOmnibus
         $results = Import-Clixml -Path $ResultsPath
         
-        # Créer le document XML pour les résultats des tests
+        # CrÃ©er le document XML pour les rÃ©sultats des tests
         $xmlDoc = New-Object System.Xml.XmlDocument
         $xmlDeclaration = $xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", $null)
         $xmlDoc.AppendChild($xmlDeclaration) | Out-Null
         
-        # Créer l'élément racine
+        # CrÃ©er l'Ã©lÃ©ment racine
         $testExecutionsElement = $xmlDoc.CreateElement("testExecutions")
         $testExecutionsElement.SetAttribute("version", "1")
         $xmlDoc.AppendChild($testExecutionsElement) | Out-Null
         
-        # Créer un élément pour le fichier de test
+        # CrÃ©er un Ã©lÃ©ment pour le fichier de test
         $fileElement = $xmlDoc.CreateElement("file")
         $fileElement.SetAttribute("path", "TestOmnibus")
         $testExecutionsElement.AppendChild($fileElement) | Out-Null
         
-        # Ajouter les résultats des tests
+        # Ajouter les rÃ©sultats des tests
         foreach ($result in $results) {
             $testCaseElement = $xmlDoc.CreateElement("testCase")
             $testCaseElement.SetAttribute("name", $result.Name)
             $testCaseElement.SetAttribute("duration", [math]::Round($result.Duration / 1000, 3))
             
-            # Ajouter les détails d'échec si le test a échoué
+            # Ajouter les dÃ©tails d'Ã©chec si le test a Ã©chouÃ©
             if (-not $result.Success) {
                 $failureElement = $xmlDoc.CreateElement("failure")
                 $failureElement.SetAttribute("message", $result.ErrorMessage)
@@ -194,12 +194,12 @@ function Convert-TestOmnibusToSonarQube {
         return $testResultsPath
     }
     catch {
-        Write-Error "Erreur lors de la conversion des résultats au format SonarQube: $_"
+        Write-Error "Erreur lors de la conversion des rÃ©sultats au format SonarQube: $_"
         return $null
     }
 }
 
-# Fonction pour créer le fichier de configuration SonarQube
+# Fonction pour crÃ©er le fichier de configuration SonarQube
 function New-SonarQubeConfig {
     [CmdletBinding()]
     param (
@@ -229,7 +229,7 @@ function New-SonarQubeConfig {
     )
     
     try {
-        # Créer le fichier de configuration
+        # CrÃ©er le fichier de configuration
         $configPath = Join-Path -Path $OutputPath -ChildPath "sonar-project.properties"
         
         $configContent = @"
@@ -258,13 +258,13 @@ sonar.login=$SonarQubeToken
         return $configPath
     }
     catch {
-        Write-Error "Erreur lors de la création du fichier de configuration SonarQube: $_"
+        Write-Error "Erreur lors de la crÃ©ation du fichier de configuration SonarQube: $_"
         return $null
     }
 }
 
-# Exécuter TestOmnibus
-Write-Host "Exécution de TestOmnibus..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus
+Write-Host "ExÃ©cution de TestOmnibus..." -ForegroundColor Cyan
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
 if (-not (Test-Path -Path $testOmnibusPath)) {
@@ -272,90 +272,90 @@ if (-not (Test-Path -Path $testOmnibusPath)) {
     return 1
 }
 
-# Exécuter TestOmnibus
+# ExÃ©cuter TestOmnibus
 $testOmnibusParams = @{
     Path = $TestPath
 }
 
 $result = & $testOmnibusPath @testOmnibusParams
 
-# Vérifier si des résultats ont été générés
+# VÃ©rifier si des rÃ©sultats ont Ã©tÃ© gÃ©nÃ©rÃ©s
 $resultsPath = Join-Path -Path (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results") -ChildPath "results.xml"
 if (-not (Test-Path -Path $resultsPath)) {
-    Write-Error "Aucun résultat n'a été généré par TestOmnibus."
+    Write-Error "Aucun rÃ©sultat n'a Ã©tÃ© gÃ©nÃ©rÃ© par TestOmnibus."
     return 1
 }
 
-# Vérifier si un fichier de couverture a été généré
+# VÃ©rifier si un fichier de couverture a Ã©tÃ© gÃ©nÃ©rÃ©
 $coveragePath = Join-Path -Path (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results") -ChildPath "coverage.xml"
 if (-not (Test-Path -Path $coveragePath)) {
-    Write-Warning "Aucun fichier de couverture n'a été généré par TestOmnibus."
+    Write-Warning "Aucun fichier de couverture n'a Ã©tÃ© gÃ©nÃ©rÃ© par TestOmnibus."
     $coveragePath = $null
 }
 
-# Convertir les résultats au format SonarQube
-Write-Host "Conversion des résultats au format SonarQube..." -ForegroundColor Cyan
+# Convertir les rÃ©sultats au format SonarQube
+Write-Host "Conversion des rÃ©sultats au format SonarQube..." -ForegroundColor Cyan
 $sonarQubeTestResultsPath = Convert-TestOmnibusToSonarQube -ResultsPath $resultsPath -OutputPath $OutputPath
 
 if (-not $sonarQubeTestResultsPath) {
-    Write-Error "Erreur lors de la conversion des résultats au format SonarQube."
+    Write-Error "Erreur lors de la conversion des rÃ©sultats au format SonarQube."
     return 1
 }
 
-Write-Host "Résultats SonarQube générés: $sonarQubeTestResultsPath" -ForegroundColor Green
+Write-Host "RÃ©sultats SonarQube gÃ©nÃ©rÃ©s: $sonarQubeTestResultsPath" -ForegroundColor Green
 
-# Créer le fichier de configuration SonarQube
-Write-Host "Création du fichier de configuration SonarQube..." -ForegroundColor Cyan
+# CrÃ©er le fichier de configuration SonarQube
+Write-Host "CrÃ©ation du fichier de configuration SonarQube..." -ForegroundColor Cyan
 $sonarQubeConfigPath = New-SonarQubeConfig -OutputPath $OutputPath -SonarQubeUrl $SonarQubeUrl -SonarQubeToken $SonarQubeToken -ProjectKey $ProjectKey -ProjectName $ProjectName -SourcePath $SourcePath -TestResultsPath $sonarQubeTestResultsPath -CoveragePath $coveragePath
 
 if (-not $sonarQubeConfigPath) {
-    Write-Error "Erreur lors de la création du fichier de configuration SonarQube."
+    Write-Error "Erreur lors de la crÃ©ation du fichier de configuration SonarQube."
     return 1
 }
 
-Write-Host "Fichier de configuration SonarQube créé: $sonarQubeConfigPath" -ForegroundColor Green
+Write-Host "Fichier de configuration SonarQube crÃ©Ã©: $sonarQubeConfigPath" -ForegroundColor Green
 
-# Exécuter SonarScanner
-Write-Host "Exécution de SonarScanner..." -ForegroundColor Cyan
+# ExÃ©cuter SonarScanner
+Write-Host "ExÃ©cution de SonarScanner..." -ForegroundColor Cyan
 
 try {
-    # Vérifier si le mode simulation est activé
+    # VÃ©rifier si le mode simulation est activÃ©
     if ($SimulationMode) {
-        # Simuler l'exécution de SonarScanner
-        Write-Host "Mode simulation activé. Aucune analyse SonarQube ne sera effectuée." -ForegroundColor Yellow
-        Write-Host "La commande suivante serait exécutée:" -ForegroundColor Yellow
+        # Simuler l'exÃ©cution de SonarScanner
+        Write-Host "Mode simulation activÃ©. Aucune analyse SonarQube ne sera effectuÃ©e." -ForegroundColor Yellow
+        Write-Host "La commande suivante serait exÃ©cutÃ©e:" -ForegroundColor Yellow
         Write-Host "sonar-scanner -Dproject.settings=$sonarQubeConfigPath" -ForegroundColor Yellow
-        Write-Host "Simulation réussie." -ForegroundColor Green
+        Write-Host "Simulation rÃ©ussie." -ForegroundColor Green
     }
     else {
-        # Exécuter SonarScanner
+        # ExÃ©cuter SonarScanner
         if ($sonarScannerInstalled) {
-            # Changer le répertoire courant pour l'exécution de SonarScanner
+            # Changer le rÃ©pertoire courant pour l'exÃ©cution de SonarScanner
             $currentDirectory = Get-Location
             Set-Location -Path $OutputPath
             
-            # Exécuter SonarScanner
+            # ExÃ©cuter SonarScanner
             & sonar-scanner -Dproject.settings=$sonarQubeConfigPath
             
-            # Restaurer le répertoire courant
+            # Restaurer le rÃ©pertoire courant
             Set-Location -Path $currentDirectory
             
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "Analyse SonarQube terminée avec succès." -ForegroundColor Green
+                Write-Host "Analyse SonarQube terminÃ©e avec succÃ¨s." -ForegroundColor Green
                 Write-Host "URL du projet: $SonarQubeUrl/dashboard?id=$ProjectKey" -ForegroundColor Cyan
             }
             else {
-                Write-Error "Erreur lors de l'exécution de SonarScanner."
+                Write-Error "Erreur lors de l'exÃ©cution de SonarScanner."
                 return 1
             }
         }
         else {
-            Write-Warning "SonarScanner n'est pas installé. Impossible d'exécuter l'analyse SonarQube."
+            Write-Warning "SonarScanner n'est pas installÃ©. Impossible d'exÃ©cuter l'analyse SonarQube."
         }
     }
 }
 catch {
-    Write-Error "Erreur lors de l'exécution de SonarScanner: $_"
+    Write-Error "Erreur lors de l'exÃ©cution de SonarScanner: $_"
     return 1
 }
 

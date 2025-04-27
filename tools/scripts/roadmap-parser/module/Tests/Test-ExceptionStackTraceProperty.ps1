@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation de la propriété StackTrace de System.Exception.
+    Tests pour valider la documentation de la propriÃ©tÃ© StackTrace de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation de la propriété StackTrace de System.Exception.
+    fournies dans la documentation de la propriÃ©tÃ© StackTrace de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,24 +14,24 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la propriété StackTrace de System.Exception" {
-    Context "Caractéristiques de base de la propriété StackTrace" {
-        It "Devrait être en lecture seule" {
+# DÃ©finir les tests
+Describe "Tests de la propriÃ©tÃ© StackTrace de System.Exception" {
+    Context "CaractÃ©ristiques de base de la propriÃ©tÃ© StackTrace" {
+        It "Devrait Ãªtre en lecture seule" {
             $exception = [System.Exception]::new("Message de test")
             { $exception.StackTrace = "Nouvelle pile d'appels" } | Should -Throw
         }
         
-        It "Devrait être null pour une exception nouvellement créée" {
+        It "Devrait Ãªtre null pour une exception nouvellement crÃ©Ã©e" {
             $exception = [System.Exception]::new("Message de test")
             $exception.StackTrace | Should -BeNullOrEmpty
         }
         
-        It "Devrait être initialisée lorsque l'exception est levée" {
+        It "Devrait Ãªtre initialisÃ©e lorsque l'exception est levÃ©e" {
             $stackTrace = $null
             try {
                 throw [System.Exception]::new("Message de test")
@@ -43,7 +43,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
             $stackTrace | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait contenir des informations sur la méthode appelante" {
+        It "Devrait contenir des informations sur la mÃ©thode appelante" {
             $stackTrace = $null
             try {
                 throw [System.Exception]::new("Message de test")
@@ -57,7 +57,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
     }
     
     Context "Exemples de la documentation" {
-        It "Exemple 1: Devrait accéder à la propriété StackTrace d'une exception" {
+        It "Exemple 1: Devrait accÃ©der Ã  la propriÃ©tÃ© StackTrace d'une exception" {
             $stackTrace = $null
             
             function Test-StackTraceExample {
@@ -75,7 +75,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
             $stackTrace | Should -Match "System.Int32.Parse"
         }
         
-        It "Exemple 2: Devrait préserver la pile d'appels lors de la relance d'une exception" {
+        It "Exemple 2: Devrait prÃ©server la pile d'appels lors de la relance d'une exception" {
             $outerStackTrace = $null
             $innerStackTrace = $null
             
@@ -107,7 +107,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
             $outerStackTrace | Should -Match "Test-InnerFunction"
         }
         
-        It "Exemple 3: Devrait accéder à la pile d'appels PowerShell avec Get-PSCallStack" {
+        It "Exemple 3: Devrait accÃ©der Ã  la pile d'appels PowerShell avec Get-PSCallStack" {
             $exceptionStackTrace = $null
             $psCallStack = $null
             
@@ -135,8 +135,8 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
         }
     }
     
-    Context "Différences entre StackTrace et Get-PSCallStack" {
-        It "StackTrace devrait contenir des informations sur les méthodes .NET" {
+    Context "DiffÃ©rences entre StackTrace et Get-PSCallStack" {
+        It "StackTrace devrait contenir des informations sur les mÃ©thodes .NET" {
             $stackTrace = $null
             
             try {
@@ -164,7 +164,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
     }
     
     Context "Bonnes pratiques" {
-        It "Devrait préserver la pile d'appels d'origine lors de la relance sans paramètre" {
+        It "Devrait prÃ©server la pile d'appels d'origine lors de la relance sans paramÃ¨tre" {
             $originalStackTrace = $null
             $rethrowStackTrace = $null
             
@@ -194,7 +194,7 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
             $rethrowStackTrace | Should -Match "Test-InnerRethrow"
         }
         
-        It "Devrait créer une nouvelle pile d'appels lors de la création d'une nouvelle exception" {
+        It "Devrait crÃ©er une nouvelle pile d'appels lors de la crÃ©ation d'une nouvelle exception" {
             $originalStackTrace = $null
             $newExceptionStackTrace = $null
             
@@ -226,5 +226,5 @@ Describe "Tests de la propriété StackTrace de System.Exception" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

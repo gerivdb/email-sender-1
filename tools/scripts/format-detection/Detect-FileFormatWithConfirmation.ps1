@@ -1,47 +1,47 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte le format d'un fichier avec confirmation utilisateur pour les cas ambigus.
+    DÃ©tecte le format d'un fichier avec confirmation utilisateur pour les cas ambigus.
 
 .DESCRIPTION
-    Ce script détecte le format d'un fichier en utilisant des algorithmes avancés et gère
-    les cas ambigus en demandant une confirmation à l'utilisateur. Il peut également afficher
-    les résultats détaillés avec les scores de confiance et exporter les résultats dans
-    différents formats.
+    Ce script dÃ©tecte le format d'un fichier en utilisant des algorithmes avancÃ©s et gÃ¨re
+    les cas ambigus en demandant une confirmation Ã  l'utilisateur. Il peut Ã©galement afficher
+    les rÃ©sultats dÃ©taillÃ©s avec les scores de confiance et exporter les rÃ©sultats dans
+    diffÃ©rents formats.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser.
+    Le chemin du fichier Ã  analyser.
 
 .PARAMETER AmbiguityThreshold
-    Le seuil de différence de score en dessous duquel deux formats sont considérés comme ambigus.
-    Par défaut, la valeur est de 20 (si la différence entre les deux meilleurs scores est inférieure à 20).
+    Le seuil de diffÃ©rence de score en dessous duquel deux formats sont considÃ©rÃ©s comme ambigus.
+    Par dÃ©faut, la valeur est de 20 (si la diffÃ©rence entre les deux meilleurs scores est infÃ©rieure Ã  20).
 
 .PARAMETER AutoResolve
-    Indique si le script doit tenter de résoudre automatiquement les cas ambigus sans intervention utilisateur.
-    Par défaut, cette option est désactivée.
+    Indique si le script doit tenter de rÃ©soudre automatiquement les cas ambigus sans intervention utilisateur.
+    Par dÃ©faut, cette option est dÃ©sactivÃ©e.
 
 .PARAMETER RememberChoices
-    Indique si le script doit mémoriser les choix de l'utilisateur pour des cas similaires.
-    Par défaut, cette option est activée.
+    Indique si le script doit mÃ©moriser les choix de l'utilisateur pour des cas similaires.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER ShowDetails
-    Indique si le script doit afficher les détails des résultats de détection.
-    Par défaut, cette option est activée.
+    Indique si le script doit afficher les dÃ©tails des rÃ©sultats de dÃ©tection.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER ExportFormat
-    Le format d'exportation des résultats (JSON ou HTML). Par défaut, aucune exportation n'est effectuée.
+    Le format d'exportation des rÃ©sultats (JSON ou HTML). Par dÃ©faut, aucune exportation n'est effectuÃ©e.
 
 .PARAMETER OutputPath
-    Le chemin du fichier de sortie pour l'exportation. Par défaut, utilise le même nom que le fichier d'entrée
-    avec l'extension appropriée.
+    Le chemin du fichier de sortie pour l'exportation. Par dÃ©faut, utilise le mÃªme nom que le fichier d'entrÃ©e
+    avec l'extension appropriÃ©e.
 
 .EXAMPLE
     .\Detect-FileFormatWithConfirmation.ps1 -FilePath "C:\path\to\file.txt"
-    Détecte le format du fichier spécifié et gère les cas ambigus avec confirmation utilisateur.
+    DÃ©tecte le format du fichier spÃ©cifiÃ© et gÃ¨re les cas ambigus avec confirmation utilisateur.
 
 .EXAMPLE
     .\Detect-FileFormatWithConfirmation.ps1 -FilePath "C:\path\to\file.txt" -AutoResolve -ExportFormat HTML
-    Détecte le format du fichier, résout automatiquement les cas ambigus et exporte les résultats au format HTML.
+    DÃ©tecte le format du fichier, rÃ©sout automatiquement les cas ambigus et exporte les rÃ©sultats au format HTML.
 
 .NOTES
     Auteur: Augment Agent
@@ -72,7 +72,7 @@ param (
     [string]$OutputPath = ""
 )
 
-# Importer les scripts nécessaires
+# Importer les scripts nÃ©cessaires
 $handleAmbiguousScript = "$PSScriptRoot\analysis\Handle-AmbiguousFormats.ps1"
 $showResultsScript = "$PSScriptRoot\analysis\Show-FormatDetectionResults.ps1"
 
@@ -82,30 +82,30 @@ if (-not (Test-Path -Path $handleAmbiguousScript)) {
 }
 
 if (-not (Test-Path -Path $showResultsScript)) {
-    Write-Error "Le script d'affichage des résultats '$showResultsScript' n'existe pas."
+    Write-Error "Le script d'affichage des rÃ©sultats '$showResultsScript' n'existe pas."
     exit 1
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         exit 1
     }
     
-    # Exécuter le script de gestion des cas ambigus
+    # ExÃ©cuter le script de gestion des cas ambigus
     $result = & $handleAmbiguousScript -FilePath $FilePath -AmbiguityThreshold $AmbiguityThreshold -AutoResolve:$AutoResolve -RememberChoices:$RememberChoices
     
-    # Afficher les détails si demandé
+    # Afficher les dÃ©tails si demandÃ©
     if ($ShowDetails) {
         & $showResultsScript -FilePath $FilePath -DetectionResult $result -ExportFormat $ExportFormat -OutputPath $OutputPath
     }
     else {
-        # Afficher uniquement le format détecté
-        Write-Host "Format détecté pour '$([System.IO.Path]::GetFileName($FilePath))': $($result.DetectedFormat) (Confiance: $($result.ConfidenceScore)%)" -ForegroundColor Green
+        # Afficher uniquement le format dÃ©tectÃ©
+        Write-Host "Format dÃ©tectÃ© pour '$([System.IO.Path]::GetFileName($FilePath))': $($result.DetectedFormat) (Confiance: $($result.ConfidenceScore)%)" -ForegroundColor Green
         
-        # Exporter les résultats si demandé
+        # Exporter les rÃ©sultats si demandÃ©
         if ($ExportFormat -ne "") {
             & $showResultsScript -FilePath $FilePath -DetectionResult $result -ExportFormat $ExportFormat -OutputPath $OutputPath -ShowAllFormats:$false
         }
@@ -114,6 +114,6 @@ function Main {
     return $result
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 $result = Main
 return $result

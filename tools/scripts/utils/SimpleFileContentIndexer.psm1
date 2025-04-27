@@ -1,4 +1,4 @@
-#
+﻿#
 # Module SimpleFileContentIndexer
 # Compatible avec PowerShell 5.1 et PowerShell 7
 #
@@ -11,7 +11,7 @@ $script:persistIndices = $false
 $script:maxConcurrentIndexing = 4
 $script:enableIncrementalIndexing = $true
 
-# Fonction pour créer un nouvel indexeur
+# Fonction pour crÃ©er un nouvel indexeur
 function New-FileContentIndexer {
     [CmdletBinding()]
     param(
@@ -36,7 +36,7 @@ function New-FileContentIndexer {
     $script:fileIndices = @{}
     $script:symbolMap = @{}
 
-    # Créer et retourner un objet indexeur
+    # CrÃ©er et retourner un objet indexeur
     $indexer = [PSCustomObject]@{
         IndexPath                 = $IndexPath
         PersistIndices            = $PersistIndices
@@ -45,7 +45,7 @@ function New-FileContentIndexer {
         PSTypeName                = "FileContentIndexer"
     }
 
-    # Ajouter des méthodes à l'indexeur
+    # Ajouter des mÃ©thodes Ã  l'indexeur
     $indexer | Add-Member -MemberType ScriptMethod -Name "GetFileIndices" -Value {
         return $script:fileIndices
     }
@@ -73,7 +73,7 @@ function New-FileIndex {
         [string]$FilePath
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier n'existe pas: $FilePath"
         return $null
@@ -82,7 +82,7 @@ function New-FileIndex {
     # Obtenir l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
-    # Créer un objet index
+    # CrÃ©er un objet index
     $index = [PSCustomObject]@{
         FilePath         = $FilePath
         IndexedAt        = Get-Date
@@ -123,7 +123,7 @@ function New-FileIndex {
     # Ajouter l'index au dictionnaire
     $script:fileIndices[$FilePath] = $index
 
-    # Mettre à jour la carte des symboles
+    # Mettre Ã  jour la carte des symboles
     foreach ($symbol in $index.Symbols.Keys) {
         if (-not $script:symbolMap.ContainsKey($symbol)) {
             $script:symbolMap[$symbol] = @{}
@@ -131,12 +131,12 @@ function New-FileIndex {
         $script:symbolMap[$symbol][$FilePath] = $index.Symbols[$symbol]
     }
 
-    # Persister l'index si demandé
+    # Persister l'index si demandÃ©
     if ($script:persistIndices -and $script:indexPath) {
         $indexFileName = [System.IO.Path]::GetFileNameWithoutExtension($FilePath) + "_index.xml"
         $indexFilePath = Join-Path -Path $script:indexPath -ChildPath $indexFileName
 
-        # Créer le répertoire s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire s'il n'existe pas
         if (-not (Test-Path -Path $script:indexPath)) {
             New-Item -Path $script:indexPath -ItemType Directory -Force | Out-Null
         }
@@ -148,7 +148,7 @@ function New-FileIndex {
     return $index
 }
 
-# Fonction pour indexer un fichier de manière incrémentale
+# Fonction pour indexer un fichier de maniÃ¨re incrÃ©mentale
 function New-IncrementalFileIndex {
     [CmdletBinding()]
     param(
@@ -165,12 +165,12 @@ function New-IncrementalFileIndex {
         [string]$NewContent
     )
 
-    # Vérifier que l'indexation incrémentale est activée
+    # VÃ©rifier que l'indexation incrÃ©mentale est activÃ©e
     if (-not $script:enableIncrementalIndexing) {
         return New-FileIndex -Indexer $Indexer -FilePath $FilePath
     }
 
-    # Créer un objet index partiel
+    # CrÃ©er un objet index partiel
     $index = [PSCustomObject]@{
         FilePath         = $FilePath
         IndexedAt        = Get-Date
@@ -187,11 +187,11 @@ function New-IncrementalFileIndex {
         ChangedFunctions = @()
     }
 
-    # Trouver les lignes modifiées
+    # Trouver les lignes modifiÃ©es
     $oldLines = $OldContent -split "`n"
     $newLines = $NewContent -split "`n"
 
-    # Utiliser un algorithme simple pour détecter les lignes modifiées
+    # Utiliser un algorithme simple pour dÃ©tecter les lignes modifiÃ©es
     $changedLines = @()
     $maxLines = [Math]::Max($oldLines.Count, $newLines.Count)
 
@@ -200,7 +200,7 @@ function New-IncrementalFileIndex {
         $newLine = if ($i -lt $newLines.Count) { $newLines[$i] } else { $null }
 
         if ($oldLine -ne $newLine) {
-            $changedLines += $i + 1  # Lignes numérotées à partir de 1
+            $changedLines += $i + 1  # Lignes numÃ©rotÃ©es Ã  partir de 1
         }
     }
 
@@ -220,7 +220,7 @@ function New-IncrementalFileIndex {
     # Ajouter l'index au dictionnaire
     $script:fileIndices[$FilePath] = $index
 
-    # Mettre à jour la carte des symboles
+    # Mettre Ã  jour la carte des symboles
     foreach ($symbol in $index.Symbols.Keys) {
         if (-not $script:symbolMap.ContainsKey($symbol)) {
             $script:symbolMap[$symbol] = @{}
@@ -231,7 +231,7 @@ function New-IncrementalFileIndex {
     return $index
 }
 
-# Fonction pour indexer plusieurs fichiers en parallèle
+# Fonction pour indexer plusieurs fichiers en parallÃ¨le
 function New-ParallelFileIndices {
     [CmdletBinding()]
     param(
@@ -242,15 +242,15 @@ function New-ParallelFileIndices {
         [string[]]$FilePaths
     )
 
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $results = @{}
 
-    # Méthode simple et compatible avec toutes les versions
+    # MÃ©thode simple et compatible avec toutes les versions
     foreach ($filePath in $FilePaths) {
         # Indexer le fichier
         $index = New-FileIndex -Indexer $Indexer -FilePath $filePath
 
-        # Ajouter le résultat
+        # Ajouter le rÃ©sultat
         $results[$filePath] = $index
     }
 
@@ -268,7 +268,7 @@ function Add-PowerShellIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Expressions régulières pour trouver les fonctions, classes et variables
+    # Expressions rÃ©guliÃ¨res pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)function\s+([a-z0-9_-]+)'
     $classRegex = '(?i)class\s+([a-z0-9_-]+)'
     $variableRegex = '(?i)\$([a-z0-9_]+)\s*='
@@ -286,7 +286,7 @@ function Add-PowerShellIndex {
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
 
-        # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
+        # VÃ©rifier si cette fonction a Ã©tÃ© modifiÃ©e (pour l'indexation incrÃ©mentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
@@ -326,7 +326,7 @@ function Add-PythonIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Expressions régulières pour trouver les fonctions, classes et variables
+    # Expressions rÃ©guliÃ¨res pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)def\s+([a-z0-9_]+)'
     $classRegex = '(?i)class\s+([a-z0-9_]+)'
     $variableRegex = '(?i)([a-z0-9_]+)\s*='
@@ -344,7 +344,7 @@ function Add-PythonIndex {
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
 
-        # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
+        # VÃ©rifier si cette fonction a Ã©tÃ© modifiÃ©e (pour l'indexation incrÃ©mentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
@@ -366,7 +366,7 @@ function Add-PythonIndex {
         $variableName = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
 
-        # Ignorer les mots-clés Python
+        # Ignorer les mots-clÃ©s Python
         $pythonKeywords = @("if", "else", "elif", "for", "while", "try", "except", "finally", "with", "as", "def", "class", "return", "import", "from")
         if ($pythonKeywords -notcontains $variableName) {
             $Index.Variables += $variableName
@@ -388,7 +388,7 @@ function Add-JavaScriptIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Expressions régulières pour trouver les fonctions, classes et variables
+    # Expressions rÃ©guliÃ¨res pour trouver les fonctions, classes et variables
     $functionRegex = '(?i)function\s+([a-z0-9_$]+)|([a-z0-9_$]+)\s*=\s*function'
     $classRegex = '(?i)class\s+([a-z0-9_$]+)'
     $variableRegex = '(?i)(let|var|const)\s+([a-z0-9_$]+)\s*='
@@ -406,7 +406,7 @@ function Add-JavaScriptIndex {
         $Index.Functions += $functionName
         $Index.Symbols[$functionName] = $lineNumber
 
-        # Vérifier si cette fonction a été modifiée (pour l'indexation incrémentale)
+        # VÃ©rifier si cette fonction a Ã©tÃ© modifiÃ©e (pour l'indexation incrÃ©mentale)
         if ($IncrementalMode -and $Index.ChangedLines -contains $lineNumber) {
             $Index.ChangedFunctions += $functionName
         }
@@ -446,7 +446,7 @@ function Add-HTMLIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Expressions régulières pour trouver les balises et les identifiants
+    # Expressions rÃ©guliÃ¨res pour trouver les balises et les identifiants
     $tagRegex = '<([a-z][a-z0-9]*)\b[^>]*>'
     $idRegex = 'id=["'']([a-z0-9_-]+)["'']'
     $classRegex = 'class=["'']([a-z0-9_\s-]+)["'']'
@@ -479,7 +479,7 @@ function Add-HTMLIndex {
         $className = $match.Groups[1].Value
         $lineNumber = $content.Substring(0, $match.Index).Split("`n").Count
 
-        # Séparer les classes multiples
+        # SÃ©parer les classes multiples
         $classNames = $className -split '\s+'
         foreach ($name in $classNames) {
             $Index.Symbols["class:$name"] = $lineNumber
@@ -500,14 +500,14 @@ function Add-CSSIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Expressions régulières pour trouver les sélecteurs
+    # Expressions rÃ©guliÃ¨res pour trouver les sÃ©lecteurs
     $selectorRegex = '([.#]?[a-z0-9_-]+)\s*\{'
 
     # Analyser le contenu
     $content = $Index.Content
     $lineNumber = 0
 
-    # Trouver les sélecteurs
+    # Trouver les sÃ©lecteurs
     $selectorMatches = [regex]::Matches($content, $selectorRegex)
     foreach ($match in $selectorMatches) {
         $selectorName = $match.Groups[1].Value
@@ -519,7 +519,7 @@ function Add-CSSIndex {
     return $Index
 }
 
-# Fonction pour indexer un fichier générique
+# Fonction pour indexer un fichier gÃ©nÃ©rique
 function Add-GenericIndex {
     [CmdletBinding()]
     param(
@@ -530,7 +530,7 @@ function Add-GenericIndex {
         [bool]$IncrementalMode = $false
     )
 
-    # Pour les fichiers génériques, nous indexons simplement les lignes
+    # Pour les fichiers gÃ©nÃ©riques, nous indexons simplement les lignes
     for ($i = 0; $i -lt $Index.Lines.Count; $i++) {
         $lineNumber = $i + 1
         $Index.Symbols["line:$lineNumber"] = $lineNumber
@@ -539,7 +539,7 @@ function Add-GenericIndex {
     return $Index
 }
 
-# Fonction pour créer un nouvel indexeur de contenu de fichier
+# Fonction pour crÃ©er un nouvel indexeur de contenu de fichier
 function New-FileContentIndexer {
     [CmdletBinding()]
     param(
@@ -564,7 +564,7 @@ function New-FileContentIndexer {
     $script:fileIndices = @{}
     $script:symbolMap = @{}
 
-    # Créer et retourner un objet indexeur
+    # CrÃ©er et retourner un objet indexeur
     $indexer = [PSCustomObject]@{
         IndexPath                 = $IndexPath
         PersistIndices            = $PersistIndices
@@ -573,7 +573,7 @@ function New-FileContentIndexer {
         PSTypeName                = "FileContentIndexer"
     }
 
-    # Ajouter des méthodes à l'indexeur
+    # Ajouter des mÃ©thodes Ã  l'indexeur
     $indexer | Add-Member -MemberType ScriptMethod -Name "GetFileIndices" -Value {
         return $script:fileIndices
     }

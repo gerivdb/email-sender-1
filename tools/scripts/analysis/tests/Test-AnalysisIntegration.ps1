@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script de test pour vérifier l'intégration avec des outils d'analyse tiers.
+    Script de test pour vÃ©rifier l'intÃ©gration avec des outils d'analyse tiers.
 .DESCRIPTION
-    Ce script teste l'intégration avec des outils d'analyse tiers en exécutant
-    une analyse sur un fichier de test, puis en convertissant les résultats
-    vers différents formats et en vérifiant que les fichiers de sortie sont générés.
+    Ce script teste l'intÃ©gration avec des outils d'analyse tiers en exÃ©cutant
+    une analyse sur un fichier de test, puis en convertissant les rÃ©sultats
+    vers diffÃ©rents formats et en vÃ©rifiant que les fichiers de sortie sont gÃ©nÃ©rÃ©s.
 #>
 
 [CmdletBinding()]
 param ()
 
-# Définir les chemins des scripts à tester
+# DÃ©finir les chemins des scripts Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $startCodeAnalysisPath = Join-Path -Path $scriptRoot -ChildPath "Start-CodeAnalysis.ps1"
 $integrateThirdPartyToolsPath = Join-Path -Path $scriptRoot -ChildPath "Integrate-ThirdPartyTools.ps1"
 $fixHtmlReportEncodingPath = Join-Path -Path $scriptRoot -ChildPath "Fix-HtmlReportEncoding.ps1"
 
-# Vérifier que les scripts existent
+# VÃ©rifier que les scripts existent
 $scriptsToCheck = @(
     $startCodeAnalysisPath,
     $integrateThirdPartyToolsPath,
@@ -31,7 +31,7 @@ foreach ($script in $scriptsToCheck) {
     }
 }
 
-# Créer un fichier PowerShell de test avec des erreurs connues
+# CrÃ©er un fichier PowerShell de test avec des erreurs connues
 $testScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "test_script.ps1"
 $testScriptContent = @'
 # Test script with known issues
@@ -57,11 +57,11 @@ function Test-Function {
 # Missing BOM encoding
 '@
 
-# Écrire le contenu du fichier de test
+# Ã‰crire le contenu du fichier de test
 Set-Content -Path $testScriptPath -Value $testScriptContent -Force
-Write-Host "Fichier de test créé: '$testScriptPath'" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: '$testScriptPath'" -ForegroundColor Green
 
-# Exécuter l'analyse de code
+# ExÃ©cuter l'analyse de code
 $resultsDir = Join-Path -Path $PSScriptRoot -ChildPath "results"
 if (-not (Test-Path -Path $resultsDir -PathType Container)) {
     New-Item -Path $resultsDir -ItemType Directory -Force | Out-Null
@@ -70,21 +70,21 @@ if (-not (Test-Path -Path $resultsDir -PathType Container)) {
 $outputPath = Join-Path -Path $resultsDir -ChildPath "test-analysis-results.json"
 $htmlPath = Join-Path -Path $resultsDir -ChildPath "test-analysis-results.html"
 
-Write-Host "Exécution de l'analyse de code..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution de l'analyse de code..." -ForegroundColor Cyan
 & $startCodeAnalysisPath -Path $testScriptPath -Tools PSScriptAnalyzer, TodoAnalyzer -OutputPath $outputPath -GenerateHtmlReport
 
-# Vérifier que les fichiers de sortie ont été générés
+# VÃ©rifier que les fichiers de sortie ont Ã©tÃ© gÃ©nÃ©rÃ©s
 if (Test-Path -Path $outputPath -PathType Leaf) {
-    Write-Host "Fichier de résultats JSON généré: '$outputPath'" -ForegroundColor Green
+    Write-Host "Fichier de rÃ©sultats JSON gÃ©nÃ©rÃ©: '$outputPath'" -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de résultats JSON n'a pas été généré."
+    Write-Error "Le fichier de rÃ©sultats JSON n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
     return
 }
 
 if (Test-Path -Path $htmlPath -PathType Leaf) {
-    Write-Host "Fichier de rapport HTML généré: '$htmlPath'" -ForegroundColor Green
+    Write-Host "Fichier de rapport HTML gÃ©nÃ©rÃ©: '$htmlPath'" -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de rapport HTML n'a pas été généré."
+    Write-Error "Le fichier de rapport HTML n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
     return
 }
 
@@ -92,24 +92,24 @@ if (Test-Path -Path $htmlPath -PathType Leaf) {
 Write-Host "Correction de l'encodage du rapport HTML..." -ForegroundColor Cyan
 & $fixHtmlReportEncodingPath -Path $htmlPath
 
-# Intégrer les résultats avec différents outils tiers
+# IntÃ©grer les rÃ©sultats avec diffÃ©rents outils tiers
 $formats = @("GitHub", "SonarQube", "AzureDevOps")
 foreach ($format in $formats) {
     $formatOutputPath = Join-Path -Path $resultsDir -ChildPath "test-analysis-results-$format.json"
     
-    Write-Host "Conversion des résultats vers le format $format..." -ForegroundColor Cyan
+    Write-Host "Conversion des rÃ©sultats vers le format $format..." -ForegroundColor Cyan
     if ($format -eq "SonarQube") {
         & $integrateThirdPartyToolsPath -Path $outputPath -Tool $format -OutputPath $formatOutputPath -ProjectKey "test-project"
     } else {
         & $integrateThirdPartyToolsPath -Path $outputPath -Tool $format -OutputPath $formatOutputPath
     }
     
-    # Vérifier que le fichier de sortie a été généré
+    # VÃ©rifier que le fichier de sortie a Ã©tÃ© gÃ©nÃ©rÃ©
     if (Test-Path -Path $formatOutputPath -PathType Leaf) {
-        Write-Host "Fichier de résultats $format généré: '$formatOutputPath'" -ForegroundColor Green
+        Write-Host "Fichier de rÃ©sultats $format gÃ©nÃ©rÃ©: '$formatOutputPath'" -ForegroundColor Green
     } else {
-        Write-Error "Le fichier de résultats $format n'a pas été généré."
+        Write-Error "Le fichier de rÃ©sultats $format n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
     }
 }
 
-Write-Host "`nTests d'intégration terminés avec succès!" -ForegroundColor Green
+Write-Host "`nTests d'intÃ©gration terminÃ©s avec succÃ¨s!" -ForegroundColor Green

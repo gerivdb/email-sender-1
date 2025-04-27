@@ -1,8 +1,8 @@
-{
+﻿{
   "categories": [
     {
       "name": "Maintenance",
-      "description": "Scripts de maintenance du système",
+      "description": "Scripts de maintenance du systÃ¨me",
       "patterns": [
         "maintenance",
         "cleanup",
@@ -13,7 +13,7 @@
       "subCategories": [
         {
           "name": "Repository",
-          "description": "Scripts de maintenance du dépôt",
+          "description": "Scripts de maintenance du dÃ©pÃ´t",
           "patterns": [
             "repo",
             "repository",
@@ -77,7 +77,7 @@
     },
     {
       "name": "Workflow",
-      "description": "Scripts liés aux workflows",
+      "description": "Scripts liÃ©s aux workflows",
       "patterns": [
         "workflow",
         "process",
@@ -152,7 +152,7 @@
     },
     {
       "name": "API",
-      "description": "Scripts liés aux API",
+      "description": "Scripts liÃ©s aux API",
       "patterns": [
         "api",
         "rest",
@@ -162,14 +162,14 @@
       "subCategories": [
         {
           "name": "N8N",
-          "description": "Scripts liés à l'API N8N",
+          "description": "Scripts liÃ©s Ã  l'API N8N",
           "patterns": [
             "n8n"
           ]
         },
         {
           "name": "Google",
-          "description": "Scripts liés aux API Google",
+          "description": "Scripts liÃ©s aux API Google",
           "patterns": [
             "google",
             "gmail",
@@ -180,7 +180,7 @@
     },
     {
       "name": "Documentation",
-      "description": "Scripts de génération de documentation",
+      "description": "Scripts de gÃ©nÃ©ration de documentation",
       "patterns": [
         "doc",
         "documentation",
@@ -190,7 +190,7 @@
     },
     {
       "name": "Roadmap",
-      "description": "Scripts liés à la roadmap",
+      "description": "Scripts liÃ©s Ã  la roadmap",
       "patterns": [
         "roadmap",
         "plan",
@@ -199,7 +199,7 @@
     },
     {
       "name": "Journal",
-      "description": "Scripts liés au journal de bord",
+      "description": "Scripts liÃ©s au journal de bord",
       "patterns": [
         "journal",
         "log",

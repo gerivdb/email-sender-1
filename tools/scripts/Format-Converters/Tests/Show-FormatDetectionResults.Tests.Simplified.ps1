@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Show-FormatDetectionResults.
+    Tests unitaires simplifiÃ©s pour la fonction Show-FormatDetectionResults.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Show-FormatDetectionResults du module Format-Converters.
 
 .NOTES
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -25,19 +25,19 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
-# Note: L'objet de résultat de détection est créé dans le bloc BeforeAll
+# Note: L'objet de rÃ©sultat de dÃ©tection est crÃ©Ã© dans le bloc BeforeAll
 
 # Tests Pester
 Describe "Fonction Show-FormatDetectionResults (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatDetectionResultsTests_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer un objet de résultat de détection pour les tests
+        # CrÃ©er un objet de rÃ©sultat de dÃ©tection pour les tests
         $script:testDetectionResult = [PSCustomObject]@{
             FilePath = "test.json"
             DetectedFormat = "JSON"
@@ -52,7 +52,7 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
             )
         }
 
-        # Créer une fonction simplifiée Show-FormatDetectionResults pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Show-FormatDetectionResults pour les tests
         function global:Show-FormatDetectionResults {
             [CmdletBinding()]
             param (
@@ -73,19 +73,19 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
                 [string]$OutputPath
             )
 
-            # Afficher les résultats
-            Write-Host "Résultats de détection de format pour '$FilePath'"
+            # Afficher les rÃ©sultats
+            Write-Host "RÃ©sultats de dÃ©tection de format pour '$FilePath'"
             Write-Host "Taille du fichier : $((Get-Item -Path $FilePath -ErrorAction SilentlyContinue).Length) octets"
             Write-Host "Type de fichier : Texte"
-            Write-Host "Format détecté: $($DetectionResult.DetectedFormat)"
+            Write-Host "Format dÃ©tectÃ©: $($DetectionResult.DetectedFormat)"
             Write-Host "Score de confiance: $($DetectionResult.Score)%"
-            Write-Host "Critères correspondants:"
+            Write-Host "CritÃ¨res correspondants:"
 
             if ($ShowAllFormats) {
                 Write-Host ""
-                Write-Host "Tous les formats détectés:"
+                Write-Host "Tous les formats dÃ©tectÃ©s:"
                 foreach ($format in $DetectionResult.AllFormats) {
-                    Write-Host "  - $($format.Format) (Score: $($format.Score)%, Priorité: $($format.Priority))"
+                    Write-Host "  - $($format.Format) (Score: $($format.Score)%, PrioritÃ©: $($format.Priority))"
                 }
             }
 
@@ -115,11 +115,11 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Résultats de détection de format</title>
+    <title>RÃ©sultats de dÃ©tection de format</title>
 </head>
 <body>
-    <h1>Résultats de détection de format pour '$FilePath'</h1>
-    <p>Format détecté: $($DetectionResult.DetectedFormat)</p>
+    <h1>RÃ©sultats de dÃ©tection de format pour '$FilePath'</h1>
+    <p>Format dÃ©tectÃ©: $($DetectionResult.DetectedFormat)</p>
     <p>Score de confiance: $($DetectionResult.Score)%</p>
 </body>
 </html>
@@ -129,25 +129,25 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
                 }
 
                 Write-Host ""
-                Write-Host "Résultats exportés au format $ExportFormat : $OutputPath"
+                Write-Host "RÃ©sultats exportÃ©s au format $ExportFormat : $OutputPath"
             }
 
             return $DetectionResult
         }
     }
 
-    Context "Affichage des résultats" {
-        It "Affiche les résultats de base sans erreur" {
+    Context "Affichage des rÃ©sultats" {
+        It "Affiche les rÃ©sultats de base sans erreur" {
             { Show-FormatDetectionResults -FilePath "test.json" -DetectionResult $testDetectionResult } | Should -Not -Throw
         }
 
-        It "Affiche tous les formats détectés avec l'option -ShowAllFormats" {
+        It "Affiche tous les formats dÃ©tectÃ©s avec l'option -ShowAllFormats" {
             { Show-FormatDetectionResults -FilePath "test.json" -DetectionResult $testDetectionResult -ShowAllFormats } | Should -Not -Throw
         }
     }
 
-    Context "Exportation des résultats" {
-        It "Exporte les résultats au format JSON" {
+    Context "Exportation des rÃ©sultats" {
+        It "Exporte les rÃ©sultats au format JSON" {
             $outputPath = Join-Path -Path $testTempDir -ChildPath "results.json"
 
             Show-FormatDetectionResults -FilePath "test.json" -DetectionResult $testDetectionResult -ExportFormat "JSON" -OutputPath $outputPath
@@ -158,7 +158,7 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
             $exportedContent.DetectedFormat | Should -Be "JSON"
         }
 
-        It "Exporte les résultats au format CSV" {
+        It "Exporte les rÃ©sultats au format CSV" {
             $outputPath = Join-Path -Path $testTempDir -ChildPath "results.csv"
 
             Show-FormatDetectionResults -FilePath "test.json" -DetectionResult $testDetectionResult -ExportFormat "CSV" -OutputPath $outputPath
@@ -169,7 +169,7 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
             $exportedContent[0].Format | Should -Be "JSON"
         }
 
-        It "Exporte les résultats au format HTML" {
+        It "Exporte les rÃ©sultats au format HTML" {
             $outputPath = Join-Path -Path $testTempDir -ChildPath "results.html"
 
             Show-FormatDetectionResults -FilePath "test.json" -DetectionResult $testDetectionResult -ExportFormat "HTML" -OutputPath $outputPath
@@ -177,13 +177,13 @@ Describe "Fonction Show-FormatDetectionResults (Simplified)" {
             Test-Path -Path $outputPath -PathType Leaf | Should -Be $true
             $exportedContent = Get-Content -Path $outputPath -Raw
             $exportedContent | Should -Not -BeNullOrEmpty
-            $exportedContent | Should -Match "Format détecté: JSON"
+            $exportedContent | Should -Match "Format dÃ©tectÃ©: JSON"
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

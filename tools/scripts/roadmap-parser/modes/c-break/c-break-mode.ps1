@@ -1,139 +1,139 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour le mode C-BREAK qui permet de détecter et corriger les dépendances circulaires dans un projet.
+    Script pour le mode C-BREAK qui permet de dÃ©tecter et corriger les dÃ©pendances circulaires dans un projet.
 
 .DESCRIPTION
-    Ce script implémente le mode C-BREAK qui permet de détecter et corriger les dépendances circulaires
+    Ce script implÃ©mente le mode C-BREAK qui permet de dÃ©tecter et corriger les dÃ©pendances circulaires
     dans un projet en analysant les relations entre les fichiers et modules.
     Il fait partie de la suite d'outils RoadmapParser pour la gestion de roadmaps.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à traiter.
+    Chemin vers le fichier de roadmap Ã  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (optionnel). Si non spécifié, toutes les tâches seront traitées.
+    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les fichiers de sortie. Par défaut, les fichiers sont générés dans le répertoire courant.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie. Par dÃ©faut, les fichiers sont gÃ©nÃ©rÃ©s dans le rÃ©pertoire courant.
 
 .PARAMETER ConfigFile
-    Chemin vers un fichier de configuration personnalisé. Si non spécifié, la configuration par défaut sera utilisée.
+    Chemin vers un fichier de configuration personnalisÃ©. Si non spÃ©cifiÃ©, la configuration par dÃ©faut sera utilisÃ©e.
 
 .PARAMETER LogLevel
-    Niveau de journalisation à utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
-    Par défaut, le niveau est INFO.
+    Niveau de journalisation Ã  utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
+    Par dÃ©faut, le niveau est INFO.
 
 .PARAMETER ProjectPath
-    Chemin vers le répertoire du projet à analyser.
+    Chemin vers le rÃ©pertoire du projet Ã  analyser.
 
 .PARAMETER IncludePatterns
-    Tableau de motifs d'inclusion pour les fichiers à analyser (ex: "*.ps1", "*.py").
+    Tableau de motifs d'inclusion pour les fichiers Ã  analyser (ex: "*.ps1", "*.py").
 
 .PARAMETER ExcludePatterns
-    Tableau de motifs d'exclusion pour les fichiers à ignorer (ex: "*.test.ps1", "*node_modules*").
+    Tableau de motifs d'exclusion pour les fichiers Ã  ignorer (ex: "*.test.ps1", "*node_modules*").
 
 .PARAMETER DetectionAlgorithm
-    Algorithme à utiliser pour la détection des cycles. Les valeurs possibles sont : DFS, TARJAN, JOHNSON.
-    Par défaut, l'algorithme est TARJAN.
+    Algorithme Ã  utiliser pour la dÃ©tection des cycles. Les valeurs possibles sont : DFS, TARJAN, JOHNSON.
+    Par dÃ©faut, l'algorithme est TARJAN.
 
 .PARAMETER MaxDepth
-    Profondeur maximale d'analyse des dépendances. Par défaut, la profondeur est 10.
+    Profondeur maximale d'analyse des dÃ©pendances. Par dÃ©faut, la profondeur est 10.
 
 .PARAMETER AutoFix
-    Indique si les dépendances circulaires détectées doivent être corrigées automatiquement.
+    Indique si les dÃ©pendances circulaires dÃ©tectÃ©es doivent Ãªtre corrigÃ©es automatiquement.
 
 .PARAMETER GenerateGraph
-    Indique si un graphe des dépendances doit être généré.
+    Indique si un graphe des dÃ©pendances doit Ãªtre gÃ©nÃ©rÃ©.
 
 .PARAMETER GraphFormat
-    Format du graphe à générer. Les valeurs possibles sont : DOT, MERMAID, PLANTUML, JSON.
-    Par défaut, le format est DOT.
+    Format du graphe Ã  gÃ©nÃ©rer. Les valeurs possibles sont : DOT, MERMAID, PLANTUML, JSON.
+    Par dÃ©faut, le format est DOT.
 
 .EXAMPLE
     .\c-break-mode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.3.1.3" -OutputPath "output" -ProjectPath "project" -IncludePatterns "*.ps1" -DetectionAlgorithm "TARJAN" -GenerateGraph $true
 
-    Traite la tâche 1.3.1.3 du fichier roadmap.md, analyse les dépendances circulaires dans le répertoire "project" pour les fichiers PowerShell,
-    utilise l'algorithme de Tarjan pour la détection, génère un graphe des dépendances et produit des rapports dans le répertoire "output".
+    Traite la tÃ¢che 1.3.1.3 du fichier roadmap.md, analyse les dÃ©pendances circulaires dans le rÃ©pertoire "project" pour les fichiers PowerShell,
+    utilise l'algorithme de Tarjan pour la dÃ©tection, gÃ©nÃ¨re un graphe des dÃ©pendances et produit des rapports dans le rÃ©pertoire "output".
 
 .EXAMPLE
     .\c-break-mode.ps1 -FilePath "roadmap.md" -ProjectPath "project" -IncludePatterns "*.ps1","*.py" -ExcludePatterns "*node_modules*" -AutoFix $true
 
-    Traite toutes les tâches du fichier roadmap.md, analyse les dépendances circulaires dans le répertoire "project" pour les fichiers PowerShell et Python,
-    exclut les fichiers dans les répertoires node_modules, et corrige automatiquement les dépendances circulaires détectées.
+    Traite toutes les tÃ¢ches du fichier roadmap.md, analyse les dÃ©pendances circulaires dans le rÃ©pertoire "project" pour les fichiers PowerShell et Python,
+    exclut les fichiers dans les rÃ©pertoires node_modules, et corrige automatiquement les dÃ©pendances circulaires dÃ©tectÃ©es.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap à traiter.")]
+    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap Ã  traiter.")]
     [ValidateNotNullOrEmpty()]
     [string]$FilePath,
 
-    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tâche à traiter (optionnel).")]
+    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tÃ¢che Ã  traiter (optionnel).")]
     [string]$TaskIdentifier,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin où seront générés les fichiers de sortie.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.")]
     [string]$OutputPath = (Get-Location).Path,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisé.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisÃ©.")]
     [string]$ConfigFile,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation à utiliser.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation Ã  utiliser.")]
     [ValidateSet("ERROR", "WARNING", "INFO", "VERBOSE", "DEBUG")]
     [string]$LogLevel = "INFO",
 
-    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le répertoire du projet à analyser.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃ©pertoire du projet Ã  analyser.")]
     [ValidateScript({
             if (-not (Test-Path -Path $_ -PathType Container)) {
-                throw "Le chemin du projet n'existe pas ou n'est pas un répertoire : $_"
+                throw "Le chemin du projet n'existe pas ou n'est pas un rÃ©pertoire : $_"
             }
             return $true
         })]
     [string]$ProjectPath,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Motifs d'inclusion pour les fichiers à analyser.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Motifs d'inclusion pour les fichiers Ã  analyser.")]
     [ValidateNotNullOrEmpty()]
     [string[]]$IncludePatterns = @("*.ps1", "*.py", "*.js", "*.ts", "*.cs", "*.java"),
 
-    [Parameter(Mandatory = $false, HelpMessage = "Motifs d'exclusion pour les fichiers à ignorer.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Motifs d'exclusion pour les fichiers Ã  ignorer.")]
     [string[]]$ExcludePatterns = @("*node_modules*", "*venv*", "*__pycache__*", "*.test.*", "*.spec.*"),
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin spécifique dans le projet où commencer l'analyse. Par défaut, analyse tout le projet.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin spÃ©cifique dans le projet oÃ¹ commencer l'analyse. Par dÃ©faut, analyse tout le projet.")]
     [ValidateScript({
             if ($_ -and -not (Test-Path -Path (Join-Path -Path $ProjectPath -ChildPath $_) -ErrorAction SilentlyContinue)) {
-                throw "Le chemin de départ relatif n'existe pas dans le projet : $_"
+                throw "Le chemin de dÃ©part relatif n'existe pas dans le projet : $_"
             }
             return $true
         })]
     [string]$StartPath = "",
 
-    [Parameter(Mandatory = $false, HelpMessage = "Algorithme à utiliser pour la détection des cycles.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Algorithme Ã  utiliser pour la dÃ©tection des cycles.")]
     [ValidateSet("DFS", "TARJAN", "JOHNSON")]
     [string]$DetectionAlgorithm = "TARJAN",
 
-    [Parameter(Mandatory = $false, HelpMessage = "Profondeur maximale d'analyse des dépendances.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Profondeur maximale d'analyse des dÃ©pendances.")]
     [ValidateRange(1, 100)]
     [int]$MaxDepth = 10,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Niveau de détail minimum pour considérer un cycle comme significatif (1-5).")]
+    [Parameter(Mandatory = $false, HelpMessage = "Niveau de dÃ©tail minimum pour considÃ©rer un cycle comme significatif (1-5).")]
     [ValidateRange(1, 5)]
     [int]$MinimumCycleSeverity = 1,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si les dépendances circulaires détectées doivent être corrigées automatiquement.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si les dÃ©pendances circulaires dÃ©tectÃ©es doivent Ãªtre corrigÃ©es automatiquement.")]
     [bool]$AutoFix = $false,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Stratégie de correction à utiliser lorsque AutoFix est activé.")]
+    [Parameter(Mandatory = $false, HelpMessage = "StratÃ©gie de correction Ã  utiliser lorsque AutoFix est activÃ©.")]
     [ValidateSet("INTERFACE_EXTRACTION", "DEPENDENCY_INVERSION", "MEDIATOR", "ABSTRACTION_LAYER", "AUTO")]
     [string]$FixStrategy = "AUTO",
 
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si un graphe des dépendances doit être généré.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si un graphe des dÃ©pendances doit Ãªtre gÃ©nÃ©rÃ©.")]
     [bool]$GenerateGraph = $false,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Format du graphe à générer.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Format du graphe Ã  gÃ©nÃ©rer.")]
     [ValidateSet("DOT", "MERMAID", "PLANTUML", "JSON")]
     [string]$GraphFormat = "DOT"
 )
@@ -144,9 +144,9 @@ param(
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "module"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module RoadmapParser est introuvable à l'emplacement : $modulePath"
+    Write-Error "Le module RoadmapParser est introuvable Ã  l'emplacement : $modulePath"
     exit 1
 }
 
@@ -154,9 +154,9 @@ if (-not (Test-Path -Path $modulePath)) {
 $commonFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\CommonFunctions.ps1"
 if (Test-Path -Path $commonFunctionsPath) {
     . $commonFunctionsPath
-    Write-Host "Fonctions communes importées." -ForegroundColor Green
+    Write-Host "Fonctions communes importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions communes est introuvable à l'emplacement : $commonFunctionsPath"
+    Write-Error "Le fichier de fonctions communes est introuvable Ã  l'emplacement : $commonFunctionsPath"
     exit 1
 }
 
@@ -164,9 +164,9 @@ if (Test-Path -Path $commonFunctionsPath) {
 $loggingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\LoggingFunctions.ps1"
 if (Test-Path -Path $loggingFunctionsPath) {
     . $loggingFunctionsPath
-    Write-Host "Fonctions de journalisation importées." -ForegroundColor Green
+    Write-Host "Fonctions de journalisation importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de journalisation est introuvable à l'emplacement : $loggingFunctionsPath"
+    Write-Error "Le fichier de fonctions de journalisation est introuvable Ã  l'emplacement : $loggingFunctionsPath"
     exit 1
 }
 
@@ -177,9 +177,9 @@ Set-LoggingLevel -Level $LogLevel
 $validationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ValidationFunctions.ps1"
 if (Test-Path -Path $validationFunctionsPath) {
     . $validationFunctionsPath
-    Write-Host "Fonctions de validation importées." -ForegroundColor Green
+    Write-Host "Fonctions de validation importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de validation est introuvable à l'emplacement : $validationFunctionsPath"
+    Write-Error "Le fichier de fonctions de validation est introuvable Ã  l'emplacement : $validationFunctionsPath"
     exit 1
 }
 
@@ -187,9 +187,9 @@ if (Test-Path -Path $validationFunctionsPath) {
 $errorHandlingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ErrorHandlingFunctions.ps1"
 if (Test-Path -Path $errorHandlingFunctionsPath) {
     . $errorHandlingFunctionsPath
-    Write-Host "Fonctions de gestion des erreurs importées." -ForegroundColor Green
+    Write-Host "Fonctions de gestion des erreurs importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable à l'emplacement : $errorHandlingFunctionsPath"
+    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable Ã  l'emplacement : $errorHandlingFunctionsPath"
     exit 1
 }
 
@@ -197,9 +197,9 @@ if (Test-Path -Path $errorHandlingFunctionsPath) {
 $configurationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ConfigurationFunctions.ps1"
 if (Test-Path -Path $configurationFunctionsPath) {
     . $configurationFunctionsPath
-    Write-Host "Fonctions de configuration importées." -ForegroundColor Green
+    Write-Host "Fonctions de configuration importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de configuration est introuvable à l'emplacement : $configurationFunctionsPath"
+    Write-Error "Le fichier de fonctions de configuration est introuvable Ã  l'emplacement : $configurationFunctionsPath"
     exit 1
 }
 
@@ -207,10 +207,10 @@ if (Test-Path -Path $configurationFunctionsPath) {
 $modeFunctionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapCycleDetection.ps1"
 if (Test-Path -Path $modeFunctionPath) {
     . $modeFunctionPath
-    Write-Host "Fonction Invoke-RoadmapCycleDetection importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapCycleDetection importÃ©e." -ForegroundColor Green
 } else {
-    Write-LogError "Le fichier de fonction du mode est introuvable à l'emplacement : $modeFunctionPath"
-    Write-LogError "Veuillez créer ce fichier avant d'utiliser le mode C-BREAK."
+    Write-LogError "Le fichier de fonction du mode est introuvable Ã  l'emplacement : $modeFunctionPath"
+    Write-LogError "Veuillez crÃ©er ce fichier avant d'utiliser le mode C-BREAK."
     exit 1
 }
 
@@ -219,63 +219,63 @@ $config = Get-DefaultConfiguration
 if ($ConfigFile -and (Test-Path -Path $ConfigFile)) {
     $customConfig = Get-Configuration -ConfigFile $ConfigFile
     $config = Merge-Configuration -DefaultConfig $config -CustomConfig $customConfig
-    Write-LogInfo "Configuration personnalisée chargée depuis : $ConfigFile"
+    Write-LogInfo "Configuration personnalisÃ©e chargÃ©e depuis : $ConfigFile"
 } else {
-    Write-LogInfo "Configuration par défaut utilisée."
+    Write-LogInfo "Configuration par dÃ©faut utilisÃ©e."
 }
 
 #endregion
 
-#region Validation des entrées
+#region Validation des entrÃ©es
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 Assert-ValidFile -FilePath $FilePath -FileType ".md" -ParameterName "FilePath" -ErrorMessage "Le fichier de roadmap est introuvable ou n'est pas un fichier Markdown : $FilePath"
 
-# Vérifier si le répertoire du projet existe
-Assert-ValidDirectory -DirectoryPath $ProjectPath -ParameterName "ProjectPath" -ErrorMessage "Le répertoire du projet est introuvable : $ProjectPath"
+# VÃ©rifier si le rÃ©pertoire du projet existe
+Assert-ValidDirectory -DirectoryPath $ProjectPath -ParameterName "ProjectPath" -ErrorMessage "Le rÃ©pertoire du projet est introuvable : $ProjectPath"
 
-# Vérifier si le répertoire de sortie existe, sinon le créer
+# VÃ©rifier si le rÃ©pertoire de sortie existe, sinon le crÃ©er
 if (-not (Test-Path -Path $OutputPath)) {
-    if ($PSCmdlet.ShouldProcess($OutputPath, "Créer le répertoire de sortie")) {
+    if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃ©er le rÃ©pertoire de sortie")) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "Répertoire de sortie créé : $OutputPath"
+        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
     } else {
-        Write-LogWarning "Création du répertoire de sortie annulée : $OutputPath"
+        Write-LogWarning "CrÃ©ation du rÃ©pertoire de sortie annulÃ©e : $OutputPath"
         exit 0
     }
 }
 
-# Vérifier si l'identifiant de tâche est valide
+# VÃ©rifier si l'identifiant de tÃ¢che est valide
 if ($TaskIdentifier) {
-    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tâche n'est pas valide : $TaskIdentifier. Il doit être au format 'X.Y.Z'."
+    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tÃ¢che n'est pas valide : $TaskIdentifier. Il doit Ãªtre au format 'X.Y.Z'."
 }
 
 #endregion
 
 #region Traitement principal
 
-Write-LogInfo "Début du traitement du mode C-BREAK."
+Write-LogInfo "DÃ©but du traitement du mode C-BREAK."
 Write-LogInfo "Fichier de roadmap : $FilePath"
 if ($TaskIdentifier) {
-    Write-LogInfo "Tâche à traiter : $TaskIdentifier"
+    Write-LogInfo "TÃ¢che Ã  traiter : $TaskIdentifier"
 } else {
-    Write-LogInfo "Toutes les tâches seront traitées."
+    Write-LogInfo "Toutes les tÃ¢ches seront traitÃ©es."
 }
-Write-LogInfo "Répertoire du projet : $ProjectPath"
+Write-LogInfo "RÃ©pertoire du projet : $ProjectPath"
 if ($StartPath) {
-    Write-LogInfo "Chemin de départ dans le projet : $StartPath"
+    Write-LogInfo "Chemin de dÃ©part dans le projet : $StartPath"
 }
-Write-LogInfo "Répertoire de sortie : $OutputPath"
+Write-LogInfo "RÃ©pertoire de sortie : $OutputPath"
 Write-LogInfo "Filtres d'inclusion : $($IncludePatterns -join ', ')"
 Write-LogInfo "Filtres d'exclusion : $($ExcludePatterns -join ', ')"
-Write-LogInfo "Algorithme de détection : $DetectionAlgorithm"
+Write-LogInfo "Algorithme de dÃ©tection : $DetectionAlgorithm"
 Write-LogInfo "Profondeur maximale d'analyse : $MaxDepth"
-Write-LogInfo "Sévérité minimale des cycles : $MinimumCycleSeverity"
-Write-LogInfo "Correction automatique : $($AutoFix ? 'Activée' : 'Désactivée')"
+Write-LogInfo "SÃ©vÃ©ritÃ© minimale des cycles : $MinimumCycleSeverity"
+Write-LogInfo "Correction automatique : $($AutoFix ? 'ActivÃ©e' : 'DÃ©sactivÃ©e')"
 if ($AutoFix) {
-    Write-LogInfo "Stratégie de correction : $FixStrategy"
+    Write-LogInfo "StratÃ©gie de correction : $FixStrategy"
 }
-Write-LogInfo "Génération de graphe : $($GenerateGraph ? 'Activée' : 'Désactivée')"
+Write-LogInfo "GÃ©nÃ©ration de graphe : $($GenerateGraph ? 'ActivÃ©e' : 'DÃ©sactivÃ©e')"
 if ($GenerateGraph) {
     Write-LogInfo "Format du graphe : $GraphFormat"
 }
@@ -302,29 +302,29 @@ try {
         $params.TaskIdentifier = $TaskIdentifier
     }
 
-    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapCycleDetection", "Exécuter avec les paramètres spécifiés")) {
+    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapCycleDetection", "ExÃ©cuter avec les paramÃ¨tres spÃ©cifiÃ©s")) {
         $result = Invoke-WithErrorHandling -Action {
             Invoke-RoadmapCycleDetection @params
-        } -ErrorMessage "Une erreur s'est produite lors de l'exécution du mode C-BREAK." -ExitOnError $false
+        } -ErrorMessage "Une erreur s'est produite lors de l'exÃ©cution du mode C-BREAK." -ExitOnError $false
 
-        # Traiter les résultats
+        # Traiter les rÃ©sultats
         if ($result) {
-            Write-LogInfo "Traitement terminé avec succès."
+            Write-LogInfo "Traitement terminÃ© avec succÃ¨s."
 
-            # Afficher un résumé des résultats
-            Write-Host "`nRésumé des résultats :" -ForegroundColor Yellow
-            Write-Host "  - Nombre de fichiers analysés : $($result.FilesAnalyzed)" -ForegroundColor Green
-            Write-Host "  - Nombre de cycles détectés : $($result.CyclesDetected)" -ForegroundColor $(if ($result.CyclesDetected -eq 0) { "Green" } else { "Red" })
+            # Afficher un rÃ©sumÃ© des rÃ©sultats
+            Write-Host "`nRÃ©sumÃ© des rÃ©sultats :" -ForegroundColor Yellow
+            Write-Host "  - Nombre de fichiers analysÃ©s : $($result.FilesAnalyzed)" -ForegroundColor Green
+            Write-Host "  - Nombre de cycles dÃ©tectÃ©s : $($result.CyclesDetected)" -ForegroundColor $(if ($result.CyclesDetected -eq 0) { "Green" } else { "Red" })
 
             if ($AutoFix) {
-                Write-Host "  - Nombre de cycles corrigés : $($result.CyclesFixed)" -ForegroundColor $(if ($result.CyclesFixed -eq $result.CyclesDetected) { "Green" } else { "Yellow" })
+                Write-Host "  - Nombre de cycles corrigÃ©s : $($result.CyclesFixed)" -ForegroundColor $(if ($result.CyclesFixed -eq $result.CyclesDetected) { "Green" } else { "Yellow" })
             }
 
-            # Afficher les cycles détectés
+            # Afficher les cycles dÃ©tectÃ©s
             if ($result.Cycles -and $result.Cycles.Count -gt 0) {
-                Write-Host "`nCycles de dépendances détectés :" -ForegroundColor Red
+                Write-Host "`nCycles de dÃ©pendances dÃ©tectÃ©s :" -ForegroundColor Red
                 foreach ($cycle in $result.Cycles) {
-                    Write-Host "  - Cycle de $($cycle.Length) fichiers (Sévérité: $($cycle.Severity)):" -ForegroundColor Red
+                    Write-Host "  - Cycle de $($cycle.Length) fichiers (SÃ©vÃ©ritÃ©: $($cycle.Severity)):" -ForegroundColor Red
                     for ($i = 0; $i -lt $cycle.Files.Count - 1; $i++) {
                         $sourceFile = Split-Path -Leaf $cycle.Files[$i]
                         $targetFile = Split-Path -Leaf $cycle.Files[$i + 1]
@@ -333,26 +333,26 @@ try {
                 }
             }
 
-            # Indiquer les fichiers générés
+            # Indiquer les fichiers gÃ©nÃ©rÃ©s
             if ($result.OutputFiles -and $result.OutputFiles.Count -gt 0) {
-                Write-Host "`nFichiers générés :" -ForegroundColor Yellow
+                Write-Host "`nFichiers gÃ©nÃ©rÃ©s :" -ForegroundColor Yellow
                 foreach ($file in $result.OutputFiles) {
                     Write-Host "  - $file" -ForegroundColor Gray
                 }
             }
 
-            # Mettre à jour la roadmap si une tâche a été spécifiée
+            # Mettre Ã  jour la roadmap si une tÃ¢che a Ã©tÃ© spÃ©cifiÃ©e
             if ($TaskIdentifier -and $result.Success) {
-                if ($PSCmdlet.ShouldProcess("Update-RoadmapTask", "Mettre à jour l'état de la tâche $TaskIdentifier")) {
+                if ($PSCmdlet.ShouldProcess("Update-RoadmapTask", "Mettre Ã  jour l'Ã©tat de la tÃ¢che $TaskIdentifier")) {
                     Update-RoadmapTask -FilePath $FilePath -TaskIdentifier $TaskIdentifier -Completed $true -BackupFile $true
-                    Write-LogInfo "Tâche $TaskIdentifier marquée comme complétée dans la roadmap."
+                    Write-LogInfo "TÃ¢che $TaskIdentifier marquÃ©e comme complÃ©tÃ©e dans la roadmap."
                 }
             }
         } else {
-            Write-LogWarning "Aucun résultat n'a été retourné par la fonction Invoke-RoadmapCycleDetection."
+            Write-LogWarning "Aucun rÃ©sultat n'a Ã©tÃ© retournÃ© par la fonction Invoke-RoadmapCycleDetection."
         }
     } else {
-        Write-LogWarning "Exécution de Invoke-RoadmapCycleDetection annulée."
+        Write-LogWarning "ExÃ©cution de Invoke-RoadmapCycleDetection annulÃ©e."
     }
 } catch {
     Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du mode C-BREAK." -ExitOnError $true
@@ -362,5 +362,5 @@ Write-LogInfo "Fin du traitement du mode C-BREAK."
 
 #endregion
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $result

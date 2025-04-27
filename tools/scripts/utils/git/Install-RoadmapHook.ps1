@@ -1,16 +1,16 @@
-# Script pour installer un hook Git qui met à jour automatiquement la roadmap
+﻿# Script pour installer un hook Git qui met Ã  jour automatiquement la roadmap
 
-# Importer le module de mise à jour de la roadmap
+# Importer le module de mise Ã  jour de la roadmap
 $updaterPath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapUpdater.ps1"
 if (Test-Path -Path $updaterPath) {
     . $updaterPath
 }
 else {
-    Write-Error "Le module de mise à jour de la roadmap est introuvable: $updaterPath"
+    Write-Error "Le module de mise Ã  jour de la roadmap est introuvable: $updaterPath"
     exit 1
 }
 
-# Fonction pour obtenir le chemin du dépôt Git
+# Fonction pour obtenir le chemin du dÃ©pÃ´t Git
 
 
 
@@ -35,12 +35,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -49,24 +49,24 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
     # Script principal
-# Script pour installer un hook Git qui met à jour automatiquement la roadmap
+# Script pour installer un hook Git qui met Ã  jour automatiquement la roadmap
 
-# Importer le module de mise à jour de la roadmap
+# Importer le module de mise Ã  jour de la roadmap
 $updaterPath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapUpdater.ps1"
 if (Test-Path -Path $updaterPath) {
     . $updaterPath
 }
 else {
-    Write-Error "Le module de mise à jour de la roadmap est introuvable: $updaterPath"
+    Write-Error "Le module de mise Ã  jour de la roadmap est introuvable: $updaterPath"
     exit 1
 }
 
-# Fonction pour obtenir le chemin du dépôt Git
+# Fonction pour obtenir le chemin du dÃ©pÃ´t Git
 function Get-GitRepositoryPath {
     $currentPath = Get-Location
     
@@ -91,11 +91,11 @@ function Get-GitRepositoryPath {
 
 # Fonction pour installer le hook pre-commit
 function Install-PreCommitHook {
-    # Obtenir le chemin du dépôt Git
+    # Obtenir le chemin du dÃ©pÃ´t Git
     $repoPath = Get-GitRepositoryPath
     
     if (-not $repoPath) {
-        Write-Error "Aucun dépôt Git trouvé."
+        Write-Error "Aucun dÃ©pÃ´t Git trouvÃ©."
         return $false
     }
     
@@ -103,7 +103,7 @@ function Install-PreCommitHook {
     $hooksPath = Join-Path -Path $repoPath -ChildPath ".git\hooks"
     $preCommitPath = Join-Path -Path $hooksPath -ChildPath "pre-commit"
     
-    # Créer le dossier hooks s'il n'existe pas
+    # CrÃ©er le dossier hooks s'il n'existe pas
     if (-not (Test-Path -Path $hooksPath)) {
         New-Item -Path $hooksPath -ItemType Directory -Force | Out-Null
     }
@@ -112,26 +112,26 @@ function Install-PreCommitHook {
     $hookContent = @"
 #!/bin/sh
 #
-# Pre-commit hook pour mettre à jour automatiquement la roadmap
+# Pre-commit hook pour mettre Ã  jour automatiquement la roadmap
 #
 
 # Chemin relatif du script PowerShell
 SCRIPT_PATH="ProjectManagement/Roadmap/RoadmapUpdater.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if [ -f "\$SCRIPT_PATH" ]; then
-    echo "Mise à jour de la roadmap..."
+    echo "Mise Ã  jour de la roadmap..."
     powershell.exe -ExecutionPolicy Bypass -File "\$SCRIPT_PATH" -Command "Update-Roadmap"
     
-    # Vérifier si la roadmap a été modifiée
+    # VÃ©rifier si la roadmap a Ã©tÃ© modifiÃ©e
     if git diff --quiet -- "Roadmap\roadmap_perso.md"; then
         echo "Aucune modification de la roadmap."
     else
-        echo "La roadmap a été mise à jour. Ajout des modifications au commit..."
+        echo "La roadmap a Ã©tÃ© mise Ã  jour. Ajout des modifications au commit..."
         git add "Roadmap\roadmap_perso.md"
     fi
 else
-    echo "Script de mise à jour de la roadmap introuvable: \$SCRIPT_PATH"
+    echo "Script de mise Ã  jour de la roadmap introuvable: \$SCRIPT_PATH"
     exit 1
 fi
 
@@ -141,22 +141,22 @@ exit 0
     # Enregistrer le hook
     $hookContent | Set-Content -Path $preCommitPath -Encoding ASCII
     
-    # Rendre le hook exécutable
+    # Rendre le hook exÃ©cutable
     if ($IsLinux -or $IsMacOS) {
         chmod +x $preCommitPath
     }
     
-    Write-Host "Hook pre-commit installé avec succès dans: $preCommitPath"
+    Write-Host "Hook pre-commit installÃ© avec succÃ¨s dans: $preCommitPath"
     return $true
 }
 
 # Fonction pour installer le hook post-merge
 function Install-PostMergeHook {
-    # Obtenir le chemin du dépôt Git
+    # Obtenir le chemin du dÃ©pÃ´t Git
     $repoPath = Get-GitRepositoryPath
     
     if (-not $repoPath) {
-        Write-Error "Aucun dépôt Git trouvé."
+        Write-Error "Aucun dÃ©pÃ´t Git trouvÃ©."
         return $false
     }
     
@@ -164,7 +164,7 @@ function Install-PostMergeHook {
     $hooksPath = Join-Path -Path $repoPath -ChildPath ".git\hooks"
     $postMergePath = Join-Path -Path $hooksPath -ChildPath "post-merge"
     
-    # Créer le dossier hooks s'il n'existe pas
+    # CrÃ©er le dossier hooks s'il n'existe pas
     if (-not (Test-Path -Path $hooksPath)) {
         New-Item -Path $hooksPath -ItemType Directory -Force | Out-Null
     }
@@ -173,27 +173,27 @@ function Install-PostMergeHook {
     $hookContent = @"
 #!/bin/sh
 #
-# Post-merge hook pour mettre à jour automatiquement la roadmap
+# Post-merge hook pour mettre Ã  jour automatiquement la roadmap
 #
 
 # Chemin relatif du script PowerShell
 SCRIPT_PATH="ProjectManagement/Roadmap/RoadmapUpdater.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if [ -f "\$SCRIPT_PATH" ]; then
-    echo "Mise à jour de la roadmap après fusion..."
+    echo "Mise Ã  jour de la roadmap aprÃ¨s fusion..."
     powershell.exe -ExecutionPolicy Bypass -File "\$SCRIPT_PATH" -Command "Update-Roadmap"
     
-    # Vérifier si la roadmap a été modifiée
+    # VÃ©rifier si la roadmap a Ã©tÃ© modifiÃ©e
     if git diff --quiet -- "Roadmap\roadmap_perso.md"; then
         echo "Aucune modification de la roadmap."
     else
-        echo "La roadmap a été mise à jour. Création d'un nouveau commit..."
+        echo "La roadmap a Ã©tÃ© mise Ã  jour. CrÃ©ation d'un nouveau commit..."
         git add "Roadmap\roadmap_perso.md"
-        git commit -m "Mise à jour automatique de la roadmap après fusion"
+        git commit -m "Mise Ã  jour automatique de la roadmap aprÃ¨s fusion"
     fi
 else
-    echo "Script de mise à jour de la roadmap introuvable: \$SCRIPT_PATH"
+    echo "Script de mise Ã  jour de la roadmap introuvable: \$SCRIPT_PATH"
     exit 1
 fi
 
@@ -203,26 +203,26 @@ exit 0
     # Enregistrer le hook
     $hookContent | Set-Content -Path $postMergePath -Encoding ASCII
     
-    # Rendre le hook exécutable
+    # Rendre le hook exÃ©cutable
     if ($IsLinux -or $IsMacOS) {
         chmod +x $postMergePath
     }
     
-    Write-Host "Hook post-merge installé avec succès dans: $postMergePath"
+    Write-Host "Hook post-merge installÃ© avec succÃ¨s dans: $postMergePath"
     return $true
 }
 
 # Installer les hooks
-Write-Host "Installation des hooks Git pour la mise à jour automatique de la roadmap..."
+Write-Host "Installation des hooks Git pour la mise Ã  jour automatique de la roadmap..."
 $preCommitInstalled = Install-PreCommitHook
 $postMergeInstalled = Install-PostMergeHook
 
 if ($preCommitInstalled -and $postMergeInstalled) {
-    Write-Host "Installation terminée avec succès."
-    Write-Host "La roadmap sera automatiquement mise à jour avant chaque commit et après chaque fusion."
+    Write-Host "Installation terminÃ©e avec succÃ¨s."
+    Write-Host "La roadmap sera automatiquement mise Ã  jour avant chaque commit et aprÃ¨s chaque fusion."
 }
 else {
-    Write-Host "L'installation a échoué."
+    Write-Host "L'installation a Ã©chouÃ©."
 }
 
 }
@@ -232,5 +232,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

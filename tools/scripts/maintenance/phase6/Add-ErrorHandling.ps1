@@ -1,4 +1,4 @@
-# Script pour ajouter la gestion d'erreurs aux scripts PowerShell
+﻿# Script pour ajouter la gestion d'erreurs aux scripts PowerShell
 # Ce script ajoute des blocs try/catch aux scripts PowerShell qui n'en ont pas
 
 [CmdletBinding()]
@@ -28,7 +28,7 @@ function Write-Log {
     
     Write-Host $logEntry
     
-    # Créer le répertoire de logs si nécessaire
+    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -37,19 +37,19 @@ function Write-Log {
     Add-Content -Path $LogFilePath -Value $logEntry -Encoding UTF8
 }
 
-# Fonction pour identifier les scripts nécessitant une gestion d'erreurs
+# Fonction pour identifier les scripts nÃ©cessitant une gestion d'erreurs
 function Find-ScriptsNeedingErrorHandling {
     param (
         [string]$Directory
     )
     
-    Write-Log "Recherche des scripts nécessitant une gestion d'erreurs dans $Directory"
+    Write-Log "Recherche des scripts nÃ©cessitant une gestion d'erreurs dans $Directory"
     
     $results = @()
     
-    # Récupérer tous les scripts PowerShell dans le répertoire
+    # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
     $scripts = Get-ChildItem -Path $Directory -Recurse -File -Filter "*.ps1" | Where-Object { -not $_.FullName.Contains(".bak") }
-    Write-Log "Nombre de scripts trouvés : $($scripts.Count)"
+    Write-Log "Nombre de scripts trouvÃ©s : $($scripts.Count)"
     
     foreach ($script in $scripts) {
         Write-Verbose "Analyse du script : $($script.FullName)"
@@ -62,11 +62,11 @@ function Find-ScriptsNeedingErrorHandling {
             continue
         }
         
-        # Vérifier la gestion d'erreurs
+        # VÃ©rifier la gestion d'erreurs
         $hasTryCatch = $content -match "try\s*{" -and $content -match "catch\s*{"
         $hasErrorActionPreference = $content -match "\`$ErrorActionPreference\s*=\s*['""]Stop['""]"
         
-        # Vérifier la présence de commandes critiques
+        # VÃ©rifier la prÃ©sence de commandes critiques
         $hasCriticalCommands = $content -match "Remove-Item|Set-Content|Add-Content|New-Item|Copy-Item|Move-Item|Rename-Item|Invoke-WebRequest|Invoke-RestMethod|Start-Process|Stop-Process"
         
         # Si le script n'a pas de gestion d'erreurs mais contient des commandes critiques
@@ -78,7 +78,7 @@ function Find-ScriptsNeedingErrorHandling {
     return $results
 }
 
-# Fonction pour ajouter des blocs try/catch à un script
+# Fonction pour ajouter des blocs try/catch Ã  un script
 function Add-TryCatchBlocks {
     param (
         [string]$Path,
@@ -86,30 +86,30 @@ function Add-TryCatchBlocks {
         [switch]$AddLogging
     )
     
-    Write-Verbose "Ajout de blocs try/catch à $Path"
+    Write-Verbose "Ajout de blocs try/catch Ã  $Path"
     
-    # Créer une sauvegarde si demandé
+    # CrÃ©er une sauvegarde si demandÃ©
     if ($CreateBackup) {
         $backupPath = "$Path.bak"
         Copy-Item -Path $Path -Destination $backupPath -Force
-        Write-Verbose "Sauvegarde créée : $backupPath"
+        Write-Verbose "Sauvegarde crÃ©Ã©e : $backupPath"
     }
     
     # Lire le contenu du script
     $content = Get-Content -Path $Path -Raw
     
-    # Extraire les paramètres et l'en-tête du script
+    # Extraire les paramÃ¨tres et l'en-tÃªte du script
     $paramMatch = [regex]::Match($content, "(?s)^.*?param\s*\((.*?)\)", [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $param = if ($paramMatch.Success) { $paramMatch.Value } else { "" }
     
-    # Extraire le contenu principal du script (après les paramètres)
+    # Extraire le contenu principal du script (aprÃ¨s les paramÃ¨tres)
     $mainContent = if ($paramMatch.Success) { $content.Substring($paramMatch.Length) } else { $content }
     
-    # Extraire l'en-tête du script (commentaires et déclarations)
+    # Extraire l'en-tÃªte du script (commentaires et dÃ©clarations)
     $headerMatch = [regex]::Match($content, "(?s)^(.*?)(?:param|function|#>)", [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $header = if ($headerMatch.Success) { $headerMatch.Groups[1].Value } else { "" }
     
-    # Fonction de journalisation à ajouter si demandé
+    # Fonction de journalisation Ã  ajouter si demandÃ©
     $loggingFunction = if ($AddLogging) {
         @"
 # Fonction de journalisation
@@ -130,12 +130,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose `$logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         `$logDir = Split-Path -Path `$PSScriptRoot -Parent
         `$logPath = Join-Path -Path `$logDir -ChildPath "logs\`$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         `$logDirPath = Split-Path -Path `$logPath -Parent
         if (-not (Test-Path -Path `$logDirPath -PathType Container)) {
             New-Item -Path `$logDirPath -ItemType Directory -Force | Out-Null
@@ -144,7 +144,7 @@ function Write-Log {
         Add-Content -Path `$logPath -Value `$logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 "@
@@ -169,11 +169,11 @@ catch {
 }
 finally {
     # Nettoyage final
-    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"Exécution du script terminée.`"" } else { "Write-Verbose `"Exécution du script terminée.`"" })
+    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"ExÃ©cution du script terminÃ©e.`"" } else { "Write-Verbose `"ExÃ©cution du script terminÃ©e.`"" })
 }
 "@
     
-    # Écrire le nouveau contenu dans le fichier
+    # Ã‰crire le nouveau contenu dans le fichier
     Set-Content -Path $Path -Value $newContent -Encoding UTF8
     
     return $true
@@ -181,12 +181,12 @@ finally {
 
 # Fonction principale
 function Start-ErrorHandlingImplementation {
-    Write-Log "Démarrage de l'implémentation de la gestion d'erreurs"
+    Write-Log "DÃ©marrage de l'implÃ©mentation de la gestion d'erreurs"
     
-    # Trouver les scripts nécessitant une gestion d'erreurs
+    # Trouver les scripts nÃ©cessitant une gestion d'erreurs
     $scriptsNeedingErrorHandling = Find-ScriptsNeedingErrorHandling -Directory $ScriptsDirectory
     
-    Write-Log "Nombre de scripts nécessitant une gestion d'erreurs : $($scriptsNeedingErrorHandling.Count)"
+    Write-Log "Nombre de scripts nÃ©cessitant une gestion d'erreurs : $($scriptsNeedingErrorHandling.Count)"
     
     $results = @{
         Total = $scriptsNeedingErrorHandling.Count
@@ -203,21 +203,21 @@ function Start-ErrorHandlingImplementation {
             $success = Add-TryCatchBlocks -Path $scriptPath -CreateBackup:$CreateBackup -AddLogging:$AddLogging
             
             if ($success) {
-                Write-Log "Gestion d'erreurs ajoutée avec succès à : $scriptPath" -Level "INFO"
+                Write-Log "Gestion d'erreurs ajoutÃ©e avec succÃ¨s Ã  : $scriptPath" -Level "INFO"
                 $results.Succeeded++
                 $results.Details += [PSCustomObject]@{
                     Path = $scriptPath
                     Status = "Success"
-                    Message = "Gestion d'erreurs ajoutée avec succès"
+                    Message = "Gestion d'erreurs ajoutÃ©e avec succÃ¨s"
                 }
             }
             else {
-                Write-Log "Échec de l'ajout de la gestion d'erreurs à : $scriptPath" -Level "ERROR"
+                Write-Log "Ã‰chec de l'ajout de la gestion d'erreurs Ã  : $scriptPath" -Level "ERROR"
                 $results.Failed++
                 $results.Details += [PSCustomObject]@{
                     Path = $scriptPath
                     Status = "Failed"
-                    Message = "Échec de l'ajout de la gestion d'erreurs"
+                    Message = "Ã‰chec de l'ajout de la gestion d'erreurs"
                 }
             }
         }
@@ -232,21 +232,21 @@ function Start-ErrorHandlingImplementation {
         }
     }
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $reportPath = Join-Path -Path (Split-Path -Parent $LogFilePath) -ChildPath "error_handling_report.json"
     $results | ConvertTo-Json -Depth 3 | Set-Content -Path $reportPath -Encoding UTF8
     
-    Write-Log "Rapport généré : $reportPath"
+    Write-Log "Rapport gÃ©nÃ©rÃ© : $reportPath"
     
-    # Afficher un résumé
-    Write-Host "`nRésumé de l'implémentation de la gestion d'erreurs :" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de l'implÃ©mentation de la gestion d'erreurs :" -ForegroundColor Cyan
     Write-Host "----------------------------------------" -ForegroundColor Cyan
-    Write-Host "Scripts analysés : $($results.Total)" -ForegroundColor White
-    Write-Host "Améliorations réussies : $($results.Succeeded)" -ForegroundColor Green
-    Write-Host "Échecs : $($results.Failed)" -ForegroundColor Red
+    Write-Host "Scripts analysÃ©s : $($results.Total)" -ForegroundColor White
+    Write-Host "AmÃ©liorations rÃ©ussies : $($results.Succeeded)" -ForegroundColor Green
+    Write-Host "Ã‰checs : $($results.Failed)" -ForegroundColor Red
     
     return $results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-ErrorHandlingImplementation

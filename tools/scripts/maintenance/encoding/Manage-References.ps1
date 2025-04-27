@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Gère les références dans les scripts suite à la réorganisation.
+    GÃ¨re les rÃ©fÃ©rences dans les scripts suite Ã  la rÃ©organisation.
 .DESCRIPTION
-    Ce script orchestre le processus de détection et de mise à jour des références brisées
-    dans les scripts suite à la réorganisation. Il permet de détecter les références brisées,
-    de les analyser et de les mettre à jour automatiquement ou manuellement.
+    Ce script orchestre le processus de dÃ©tection et de mise Ã  jour des rÃ©fÃ©rences brisÃ©es
+    dans les scripts suite Ã  la rÃ©organisation. Il permet de dÃ©tecter les rÃ©fÃ©rences brisÃ©es,
+    de les analyser et de les mettre Ã  jour automatiquement ou manuellement.
 .PARAMETER Action
-    Action à effectuer. Valeurs possibles: detect, update, all.
-    - detect: Détecte les références brisées.
-    - update: Met à jour les références brisées.
+    Action Ã  effectuer. Valeurs possibles: detect, update, all.
+    - detect: DÃ©tecte les rÃ©fÃ©rences brisÃ©es.
+    - update: Met Ã  jour les rÃ©fÃ©rences brisÃ©es.
     - all: Effectue les deux actions.
 .PARAMETER ScriptsPath
-    Chemin du dossier contenant les scripts à analyser. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER AutoApply
     Applique automatiquement les modifications sans demander de confirmation.
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Manage-References.ps1 -Action detect
-    Détecte les références brisées dans les scripts.
+    DÃ©tecte les rÃ©fÃ©rences brisÃ©es dans les scripts.
 .EXAMPLE
     .\Manage-References.ps1 -Action update -AutoApply
-    Met à jour automatiquement les références brisées.
+    Met Ã  jour automatiquement les rÃ©fÃ©rences brisÃ©es.
 .EXAMPLE
     .\Manage-References.ps1 -Action all -AutoApply
-    Détecte et met à jour automatiquement les références brisées.
+    DÃ©tecte et met Ã  jour automatiquement les rÃ©fÃ©rences brisÃ©es.
 #>
 
 param (
@@ -36,7 +36,7 @@ param (
     [switch]$ShowDetails
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -58,112 +58,112 @@ function Write-Log {
 
     Write-Host $FormattedMessage -ForegroundColor $Color
 
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "..\..\D"
     Add-Content -Path $LogFile -Value $FormattedMessage
 }
 
-# Fonction pour détecter les références brisées
+# Fonction pour dÃ©tecter les rÃ©fÃ©rences brisÃ©es
 function Find-BrokenReferences {
     param (
         [string]$ScriptsPath
     )
 
-    Write-Log "Démarrage de la détection des références brisées..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des rÃ©fÃ©rences brisÃ©es..." -Level "TITLE"
 
     $DetectScript = "..\..\D"
     $OutputPath = "..\..\D"
 
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $DetectScript)) {
-        Write-Log "Le script de détection n'existe pas: $DetectScript" -Level "ERROR"
+        Write-Log "Le script de dÃ©tection n'existe pas: $DetectScript" -Level "ERROR"
         return $false
     }
 
-    # Exécuter le script de détection
+    # ExÃ©cuter le script de dÃ©tection
     $VerboseParam = if ($ShowDetails) { "-Verbose" } else { "" }
     $Command = "& '$DetectScript' -ScriptsPath '$ScriptsPath' -OutputPath '$OutputPath' $VerboseParam"
 
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
 
     try {
         Invoke-Expression $Command
 
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath) {
             $Report = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
             $BrokenCount = $Report.BrokenReferences.Count
 
-            Write-Log "Détection terminée avec succès" -Level "SUCCESS"
-            Write-Log "Nombre de références brisées trouvées: $BrokenCount" -Level "INFO"
+            Write-Log "DÃ©tection terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+            Write-Log "Nombre de rÃ©fÃ©rences brisÃ©es trouvÃ©es: $BrokenCount" -Level "INFO"
 
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de détection: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de dÃ©tection: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour mettre à jour les références brisées
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences brisÃ©es
 function Update-BrokenReferences {
     param (
         [switch]$AutoApply
     )
 
-    Write-Log "Démarrage de la mise à jour des références brisées..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la mise Ã  jour des rÃ©fÃ©rences brisÃ©es..." -Level "TITLE"
 
     $UpdateScript = "..\..\D"
     $InputPath = "..\..\D"
     $OutputPath = "..\..\D"
 
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $UpdateScript)) {
-        Write-Log "Le script de mise à jour n'existe pas: $UpdateScript" -Level "ERROR"
+        Write-Log "Le script de mise Ã  jour n'existe pas: $UpdateScript" -Level "ERROR"
         return $false
     }
 
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath)) {
-        Write-Log "Le fichier d'entrée n'existe pas: $InputPath" -Level "ERROR"
-        Write-Log "Exécutez d'abord l'action 'detect' pour générer le rapport." -Level "ERROR"
+        Write-Log "Le fichier d'entrÃ©e n'existe pas: $InputPath" -Level "ERROR"
+        Write-Log "ExÃ©cutez d'abord l'action 'detect' pour gÃ©nÃ©rer le rapport." -Level "ERROR"
         return $false
     }
 
-    # Exécuter le script de mise à jour
+    # ExÃ©cuter le script de mise Ã  jour
     $AutoApplyParam = if ($AutoApply) { "-AutoApply" } else { "" }
     $VerboseParam = if ($ShowDetails) { "-Verbose" } else { "" }
     $Command = "& '$UpdateScript' -InputPath '$InputPath' -OutputPath '$OutputPath' $AutoApplyParam $VerboseParam"
 
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
 
     try {
         Invoke-Expression $Command
 
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath) {
             $Report = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
             $UpdateCount = ($Report.Updates | Where-Object { $_.Applied } | Measure-Object).Count
             $TotalUpdates = $Report.Updates.Count
 
-            Write-Log "Mise à jour terminée avec succès" -Level "SUCCESS"
-            Write-Log "Nombre de mises à jour proposées: $TotalUpdates" -Level "INFO"
+            Write-Log "Mise Ã  jour terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+            Write-Log "Nombre de mises Ã  jour proposÃ©es: $TotalUpdates" -Level "INFO"
             if ($AutoApply) {
-                Write-Log "Nombre de mises à jour appliquées: $UpdateCount" -Level "SUCCESS"
+                Write-Log "Nombre de mises Ã  jour appliquÃ©es: $UpdateCount" -Level "SUCCESS"
             } else {
-                Write-Log "Pour appliquer les mises à jour, exécutez la commande avec -AutoApply" -Level "WARNING"
+                Write-Log "Pour appliquer les mises Ã  jour, exÃ©cutez la commande avec -AutoApply" -Level "WARNING"
             }
 
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de mise à jour: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de mise Ã  jour: $_" -Level "ERROR"
         return $false
     }
 }
@@ -177,14 +177,14 @@ function Start-ReferenceManagement {
         [switch]$Verbose
     )
 
-    Write-Log "=== Gestion des références ===" -Level "TITLE"
+    Write-Log "=== Gestion des rÃ©fÃ©rences ===" -Level "TITLE"
     Write-Log "Action: $Action" -Level "INFO"
     Write-Log "Dossier des scripts: $ScriptsPath" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
 
     $Success = $true
 
-    # Exécuter l'action demandée
+    # ExÃ©cuter l'action demandÃ©e
     switch ($Action) {
         "detect" {
             $Success = Find-BrokenReferences -ScriptsPath $ScriptsPath
@@ -200,16 +200,16 @@ function Start-ReferenceManagement {
         }
     }
 
-    # Afficher un message de résultat
+    # Afficher un message de rÃ©sultat
     if ($Success) {
-        Write-Log "Opération terminée avec succès" -Level "SUCCESS"
+        Write-Log "OpÃ©ration terminÃ©e avec succÃ¨s" -Level "SUCCESS"
     } else {
-        Write-Log "Opération terminée avec des erreurs" -Level "ERROR"
+        Write-Log "OpÃ©ration terminÃ©e avec des erreurs" -Level "ERROR"
     }
 
     return $Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-ReferenceManagement -Action $Action -ScriptsPath $ScriptsPath -AutoApply:$AutoApply -ShowDetails:$ShowDetails
 

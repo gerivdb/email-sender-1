@@ -1,6 +1,6 @@
-# find-project-files.ps1
+﻿# find-project-files.ps1
 # Script pour rechercher des fichiers dans le projet
-# Ce script fournit des fonctionnalités avancées de recherche de fichiers
+# Ce script fournit des fonctionnalitÃ©s avancÃ©es de recherche de fichiers
 
 # Importer le module Path-Manager
 $PathManagerModule = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "tools\path-utils\Path-Manager.psm1"

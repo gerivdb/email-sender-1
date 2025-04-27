@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour la fonctionnalité de gestion des erreurs avancée du système d'apprentissage des erreurs.
+    Tests unitaires pour la fonctionnalitÃ© de gestion des erreurs avancÃ©e du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour la fonctionnalité de gestion des erreurs avancée du système d'apprentissage des erreurs.
+    Ce script contient des tests unitaires pour la fonctionnalitÃ© de gestion des erreurs avancÃ©e du systÃ¨me d'apprentissage des erreurs.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
-Describe "Tests de gestion des erreurs avancée" {
+# DÃ©finir les tests Pester
+Describe "Tests de gestion des erreurs avancÃ©e" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "AdvancedErrorHandlingTests"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
         New-Item -Path $script:testRoot -ItemType Directory -Force | Out-Null
         
-        # Définir les fonctions de gestion des erreurs avancée
+        # DÃ©finir les fonctions de gestion des erreurs avancÃ©e
         function New-ErrorReport {
             [CmdletBinding()]
             param (
@@ -37,12 +37,12 @@ Describe "Tests de gestion des erreurs avancée" {
             )
             
             try {
-                # Créer le dossier de sortie s'il n'existe pas
+                # CrÃ©er le dossier de sortie s'il n'existe pas
                 if (-not (Test-Path -Path $OutputPath)) {
                     New-Item -Path $OutputPath -ItemType Directory -Force -ErrorAction Stop | Out-Null
                 }
                 
-                # Générer un ID unique pour l'erreur
+                # GÃ©nÃ©rer un ID unique pour l'erreur
                 $errorId = [guid]::NewGuid().ToString()
                 
                 # Extraire les informations de l'erreur
@@ -75,7 +75,7 @@ Describe "Tests de gestion des erreurs avancée" {
                 return $errorInfo
             }
             catch {
-                Write-Error "Erreur lors de la création du rapport d'erreur: $_"
+                Write-Error "Erreur lors de la crÃ©ation du rapport d'erreur: $_"
                 return $null
             }
         }
@@ -100,17 +100,17 @@ Describe "Tests de gestion des erreurs avancée" {
             )
             
             try {
-                # Vérifier que le dossier des rapports d'erreur existe
+                # VÃ©rifier que le dossier des rapports d'erreur existe
                 if (-not (Test-Path -Path $ErrorReportsPath)) {
                     Write-Warning "Le dossier des rapports d'erreur '$ErrorReportsPath' n'existe pas."
                     return $null
                 }
                 
-                # Récupérer tous les fichiers de rapport d'erreur
+                # RÃ©cupÃ©rer tous les fichiers de rapport d'erreur
                 $errorFiles = Get-ChildItem -Path $ErrorReportsPath -Filter "*.json" -File
                 
                 if ($errorFiles.Count -eq 0) {
-                    Write-Warning "Aucun rapport d'erreur trouvé dans le dossier '$ErrorReportsPath'."
+                    Write-Warning "Aucun rapport d'erreur trouvÃ© dans le dossier '$ErrorReportsPath'."
                     return $null
                 }
                 
@@ -124,7 +124,7 @@ Describe "Tests de gestion des erreurs avancée" {
                         $errorReport.Timestamp = [DateTime]::Parse($errorReport.Timestamp)
                     }
                     
-                    # Filtrer par catégorie
+                    # Filtrer par catÃ©gorie
                     if ($Category -and $errorReport.Category -ne $Category) {
                         continue
                     }
@@ -152,7 +152,7 @@ Describe "Tests de gestion des erreurs avancée" {
                     RecentErrors = @()
                 }
                 
-                # Erreurs par catégorie
+                # Erreurs par catÃ©gorie
                 $errorReports | Group-Object -Property Category | ForEach-Object {
                     $statistics.ErrorsByCategory[$_.Name] = $_.Count
                 }
@@ -175,13 +175,13 @@ Describe "Tests de gestion des erreurs avancée" {
                     }
                 }
                 
-                # Erreurs récentes
+                # Erreurs rÃ©centes
                 $statistics.RecentErrors = $errorReports | Sort-Object -Property Timestamp -Descending | Select-Object -First 5
                 
                 return $statistics
             }
             catch {
-                Write-Error "Erreur lors de la récupération des statistiques d'erreur: $_"
+                Write-Error "Erreur lors de la rÃ©cupÃ©ration des statistiques d'erreur: $_"
                 return $null
             }
         }
@@ -203,17 +203,17 @@ Describe "Tests de gestion des erreurs avancée" {
             )
             
             try {
-                # Vérifier que le dossier des rapports d'erreur existe
+                # VÃ©rifier que le dossier des rapports d'erreur existe
                 if (-not (Test-Path -Path $ErrorReportsPath)) {
                     Write-Warning "Le dossier des rapports d'erreur '$ErrorReportsPath' n'existe pas."
                     return $null
                 }
                 
-                # Récupérer tous les fichiers de rapport d'erreur
+                # RÃ©cupÃ©rer tous les fichiers de rapport d'erreur
                 $errorFiles = Get-ChildItem -Path $ErrorReportsPath -Filter "*.json" -File
                 
                 if ($errorFiles.Count -eq 0) {
-                    Write-Warning "Aucun rapport d'erreur trouvé dans le dossier '$ErrorReportsPath'."
+                    Write-Warning "Aucun rapport d'erreur trouvÃ© dans le dossier '$ErrorReportsPath'."
                     return $null
                 }
                 
@@ -224,7 +224,7 @@ Describe "Tests de gestion des erreurs avancée" {
                     $errorReports += $errorReport
                 }
                 
-                # Calculer la similarité entre les messages d'erreur
+                # Calculer la similaritÃ© entre les messages d'erreur
                 $similarErrors = @()
                 foreach ($report in $errorReports) {
                     $similarityScore = Get-StringSimilarity -String1 $ErrorMessage -String2 $report.Message
@@ -241,7 +241,7 @@ Describe "Tests de gestion des erreurs avancée" {
                     }
                 }
                 
-                # Trier les erreurs par score de similarité
+                # Trier les erreurs par score de similaritÃ©
                 $similarErrors = $similarErrors | Sort-Object -Property SimilarityScore -Descending | Select-Object -First $MaxResults
                 
                 return $similarErrors
@@ -263,14 +263,14 @@ Describe "Tests de gestion des erreurs avancée" {
             )
             
             try {
-                # Fonction simplifiée pour calculer la similarité entre deux chaînes
-                # Dans un environnement réel, on utiliserait un algorithme plus sophistiqué
+                # Fonction simplifiÃ©e pour calculer la similaritÃ© entre deux chaÃ®nes
+                # Dans un environnement rÃ©el, on utiliserait un algorithme plus sophistiquÃ©
                 
-                # Convertir les chaînes en minuscules
+                # Convertir les chaÃ®nes en minuscules
                 $s1 = $String1.ToLower()
                 $s2 = $String2.ToLower()
                 
-                # Calculer la distance de Levenshtein simplifiée
+                # Calculer la distance de Levenshtein simplifiÃ©e
                 $maxLength = [Math]::Max($s1.Length, $s2.Length)
                 if ($maxLength -eq 0) {
                     return 100
@@ -285,21 +285,21 @@ Describe "Tests de gestion des erreurs avancée" {
                     }
                 }
                 
-                # Calculer le score de similarité
+                # Calculer le score de similaritÃ©
                 $similarityScore = ($commonChars / $maxLength) * 100
                 
                 return [Math]::Round($similarityScore, 2)
             }
             catch {
-                Write-Error "Erreur lors du calcul de la similarité entre les chaînes: $_"
+                Write-Error "Erreur lors du calcul de la similaritÃ© entre les chaÃ®nes: $_"
                 return 0
             }
         }
     }
     
     Context "Fonction New-ErrorReport" {
-        It "Devrait créer un rapport d'erreur" {
-            # Créer une erreur factice
+        It "Devrait crÃ©er un rapport d'erreur" {
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -308,17 +308,17 @@ Describe "Tests de gestion des erreurs avancée" {
                 $null
             )
             
-            # Créer un rapport d'erreur
+            # CrÃ©er un rapport d'erreur
             $errorReport = New-ErrorReport -ErrorRecord $errorRecord -Source "TestSource" -Category "TestCategory"
             
-            # Vérifier que le rapport a été créé correctement
+            # VÃ©rifier que le rapport a Ã©tÃ© crÃ©Ã© correctement
             $errorReport | Should -Not -BeNullOrEmpty
             $errorReport.ErrorId | Should -Not -BeNullOrEmpty
             $errorReport.Source | Should -Be "TestSource"
             $errorReport.Category | Should -Be "TestCategory"
             $errorReport.Message | Should -Be "Erreur de test"
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             $errorFilePath = Join-Path -Path (Join-Path -Path $script:testRoot -ChildPath "ErrorReports") -ChildPath "$($errorReport.ErrorId).json"
             Test-Path -Path $errorFilePath | Should -BeTrue
         }
@@ -326,13 +326,13 @@ Describe "Tests de gestion des erreurs avancée" {
     
     Context "Fonction Get-ErrorStatistics" {
         BeforeEach {
-            # Créer plusieurs rapports d'erreur
+            # CrÃ©er plusieurs rapports d'erreur
             $errorReportsPath = Join-Path -Path $script:testRoot -ChildPath "ErrorReports"
             if (-not (Test-Path -Path $errorReportsPath)) {
                 New-Item -Path $errorReportsPath -ItemType Directory -Force | Out-Null
             }
             
-            # Créer des erreurs factices
+            # CrÃ©er des erreurs factices
             $errorCategories = @("Syntax", "Runtime", "Logic")
             $errorSources = @("Script1", "Script2", "Script3")
             
@@ -352,11 +352,11 @@ Describe "Tests de gestion des erreurs avancée" {
             }
         }
         
-        It "Devrait récupérer les statistiques d'erreur" {
-            # Récupérer les statistiques d'erreur
+        It "Devrait rÃ©cupÃ©rer les statistiques d'erreur" {
+            # RÃ©cupÃ©rer les statistiques d'erreur
             $statistics = Get-ErrorStatistics
             
-            # Vérifier que les statistiques ont été récupérées correctement
+            # VÃ©rifier que les statistiques ont Ã©tÃ© rÃ©cupÃ©rÃ©es correctement
             $statistics | Should -Not -BeNullOrEmpty
             $statistics.TotalErrors | Should -Be 10
             $statistics.ErrorsByCategory.Count | Should -Be 3
@@ -365,11 +365,11 @@ Describe "Tests de gestion des erreurs avancée" {
             $statistics.RecentErrors | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait filtrer les statistiques par catégorie" {
-            # Récupérer les statistiques d'erreur filtrées par catégorie
+        It "Devrait filtrer les statistiques par catÃ©gorie" {
+            # RÃ©cupÃ©rer les statistiques d'erreur filtrÃ©es par catÃ©gorie
             $statistics = Get-ErrorStatistics -Category "Syntax"
             
-            # Vérifier que les statistiques ont été filtrées correctement
+            # VÃ©rifier que les statistiques ont Ã©tÃ© filtrÃ©es correctement
             $statistics | Should -Not -BeNullOrEmpty
             $statistics.TotalErrors | Should -BeGreaterThan 0
             $statistics.TotalErrors | Should -BeLessOrEqual 10
@@ -378,10 +378,10 @@ Describe "Tests de gestion des erreurs avancée" {
         }
         
         It "Devrait filtrer les statistiques par source" {
-            # Récupérer les statistiques d'erreur filtrées par source
+            # RÃ©cupÃ©rer les statistiques d'erreur filtrÃ©es par source
             $statistics = Get-ErrorStatistics -Source "Script1"
             
-            # Vérifier que les statistiques ont été filtrées correctement
+            # VÃ©rifier que les statistiques ont Ã©tÃ© filtrÃ©es correctement
             $statistics | Should -Not -BeNullOrEmpty
             $statistics.TotalErrors | Should -BeGreaterThan 0
             $statistics.TotalErrors | Should -BeLessOrEqual 10
@@ -392,7 +392,7 @@ Describe "Tests de gestion des erreurs avancée" {
     
     Context "Fonction Find-SimilarErrors" {
         BeforeEach {
-            # Créer plusieurs rapports d'erreur
+            # CrÃ©er plusieurs rapports d'erreur
             $errorReportsPath = Join-Path -Path $script:testRoot -ChildPath "ErrorReports"
             if (-not (Test-Path -Path $errorReportsPath)) {
                 New-Item -Path $errorReportsPath -ItemType Directory -Force | Out-Null
@@ -402,18 +402,18 @@ Describe "Tests de gestion des erreurs avancée" {
                 Remove-Item -Path (Join-Path -Path $errorReportsPath -ChildPath "*") -Force
             }
             
-            # Créer des erreurs factices avec des messages similaires
+            # CrÃ©er des erreurs factices avec des messages similaires
             $errorMessages = @(
-                "Impossible de trouver le chemin d'accès 'C:\config.txt'",
-                "Impossible de trouver le chemin d'accès 'C:\data.txt'",
-                "Impossible de trouver le chemin d'accès 'D:\logs\app.log'",
-                "Erreur de syntaxe près de 'if ('",
-                "Erreur de syntaxe près de 'foreach ('",
-                "La variable '$data' est utilisée mais n'a pas été définie",
-                "La variable '$config' est utilisée mais n'a pas été définie",
-                "Accès refusé au fichier 'C:\Windows\System32\config.sys'",
-                "Accès refusé au fichier 'C:\Windows\System32\drivers\etc\hosts'",
-                "Le service 'WinRM' n'a pas pu être démarré"
+                "Impossible de trouver le chemin d'accÃ¨s 'C:\config.txt'",
+                "Impossible de trouver le chemin d'accÃ¨s 'C:\data.txt'",
+                "Impossible de trouver le chemin d'accÃ¨s 'D:\logs\app.log'",
+                "Erreur de syntaxe prÃ¨s de 'if ('",
+                "Erreur de syntaxe prÃ¨s de 'foreach ('",
+                "La variable '$data' est utilisÃ©e mais n'a pas Ã©tÃ© dÃ©finie",
+                "La variable '$config' est utilisÃ©e mais n'a pas Ã©tÃ© dÃ©finie",
+                "AccÃ¨s refusÃ© au fichier 'C:\Windows\System32\config.sys'",
+                "AccÃ¨s refusÃ© au fichier 'C:\Windows\System32\drivers\etc\hosts'",
+                "Le service 'WinRM' n'a pas pu Ãªtre dÃ©marrÃ©"
             )
             
             for ($i = 0; $i -lt $errorMessages.Count; $i++) {
@@ -431,28 +431,28 @@ Describe "Tests de gestion des erreurs avancée" {
         
         It "Devrait trouver des erreurs similaires" {
             # Rechercher des erreurs similaires
-            $similarErrors = Find-SimilarErrors -ErrorMessage "Impossible de trouver le chemin d'accès 'C:\temp\file.txt'"
+            $similarErrors = Find-SimilarErrors -ErrorMessage "Impossible de trouver le chemin d'accÃ¨s 'C:\temp\file.txt'"
             
-            # Vérifier que des erreurs similaires ont été trouvées
+            # VÃ©rifier que des erreurs similaires ont Ã©tÃ© trouvÃ©es
             $similarErrors | Should -Not -BeNullOrEmpty
             $similarErrors.Count | Should -BeGreaterThan 0
             $similarErrors[0].SimilarityScore | Should -BeGreaterThan 70
         }
         
-        It "Devrait limiter le nombre de résultats" {
-            # Rechercher des erreurs similaires avec une limite de résultats
+        It "Devrait limiter le nombre de rÃ©sultats" {
+            # Rechercher des erreurs similaires avec une limite de rÃ©sultats
             $similarErrors = Find-SimilarErrors -ErrorMessage "Erreur de syntaxe" -MaxResults 2
             
-            # Vérifier que le nombre de résultats est limité
+            # VÃ©rifier que le nombre de rÃ©sultats est limitÃ©
             $similarErrors | Should -Not -BeNullOrEmpty
             $similarErrors.Count | Should -BeLessOrEqual 2
         }
         
-        It "Devrait filtrer les résultats par score de similarité" {
-            # Rechercher des erreurs similaires avec un score de similarité minimum élevé
+        It "Devrait filtrer les rÃ©sultats par score de similaritÃ©" {
+            # Rechercher des erreurs similaires avec un score de similaritÃ© minimum Ã©levÃ©
             $similarErrors = Find-SimilarErrors -ErrorMessage "Erreur de syntaxe" -MinSimilarityScore 90
             
-            # Vérifier que les résultats sont filtrés par score de similarité
+            # VÃ©rifier que les rÃ©sultats sont filtrÃ©s par score de similaritÃ©
             if ($similarErrors) {
                 $similarErrors[0].SimilarityScore | Should -BeGreaterOrEqual 90
             }
@@ -460,42 +460,42 @@ Describe "Tests de gestion des erreurs avancée" {
     }
     
     Context "Fonction Get-StringSimilarity" {
-        It "Devrait calculer la similarité entre deux chaînes identiques" {
-            # Calculer la similarité entre deux chaînes identiques
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes identiques" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes identiques
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Test string"
             
-            # Vérifier que le score est de 100%
+            # VÃ©rifier que le score est de 100%
             $similarityScore | Should -Be 100
         }
         
-        It "Devrait calculer la similarité entre deux chaînes différentes" {
-            # Calculer la similarité entre deux chaînes différentes
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes diffÃ©rentes" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes diffÃ©rentes
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Test strong"
             
-            # Vérifier que le score est inférieur à 100%
+            # VÃ©rifier que le score est infÃ©rieur Ã  100%
             $similarityScore | Should -BeLessThan 100
             $similarityScore | Should -BeGreaterThan 0
         }
         
-        It "Devrait calculer la similarité entre deux chaînes complètement différentes" {
-            # Calculer la similarité entre deux chaînes complètement différentes
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes complÃ¨tement diffÃ©rentes" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes complÃ¨tement diffÃ©rentes
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Completely different"
             
-            # Vérifier que le score est faible
+            # VÃ©rifier que le score est faible
             $similarityScore | Should -BeLessThan 50
         }
         
-        It "Devrait gérer les chaînes vides" {
-            # Calculer la similarité avec une chaîne vide
+        It "Devrait gÃ©rer les chaÃ®nes vides" {
+            # Calculer la similaritÃ© avec une chaÃ®ne vide
             $similarityScore = Get-StringSimilarity -String1 "" -String2 ""
             
-            # Vérifier que le score est de 100%
+            # VÃ©rifier que le score est de 100%
             $similarityScore | Should -Be 100
         }
     }
     
     AfterAll {
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }

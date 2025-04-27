@@ -1,4 +1,4 @@
-# Module manifest for module 'RoadmapModel'
+﻿# Module manifest for module 'RoadmapModel'
 @{
     # Script module or binary module file associated with this manifest.
     RootModule = 'RoadmapModel.psm1'
@@ -19,7 +19,7 @@
     Copyright = '(c) 2023. All rights reserved.'
     
     # Description of the functionality provided by this module
-    Description = 'Module pour représenter le modèle objet de la roadmap'
+    Description = 'Module pour reprÃ©senter le modÃ¨le objet de la roadmap'
     
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.1'

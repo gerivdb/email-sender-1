@@ -1,5 +1,5 @@
-# Module de détection des problèmes pour le Script Manager
-# Ce module détecte les problèmes potentiels dans les scripts
+﻿# Module de dÃ©tection des problÃ¨mes pour le Script Manager
+# Ce module dÃ©tecte les problÃ¨mes potentiels dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: analysis, problems, scripts
@@ -7,15 +7,15 @@
 function Find-CodeProblems {
     <#
     .SYNOPSIS
-        Détecte les problèmes potentiels dans un script
+        DÃ©tecte les problÃ¨mes potentiels dans un script
     .DESCRIPTION
-        Analyse le contenu d'un script pour détecter les problèmes courants
+        Analyse le contenu d'un script pour dÃ©tecter les problÃ¨mes courants
     .PARAMETER Content
-        Contenu du script à analyser
+        Contenu du script Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .PARAMETER Path
-        Chemin du script (utilisé pour des vérifications contextuelles)
+        Chemin du script (utilisÃ© pour des vÃ©rifications contextuelles)
     .EXAMPLE
         Find-CodeProblems -Content $scriptContent -ScriptType "PowerShell" -Path "C:\Scripts\MyScript.ps1"
     #>
@@ -32,12 +32,12 @@ function Find-CodeProblems {
         [string]$Path
     )
     
-    # Initialiser le tableau des problèmes
+    # Initialiser le tableau des problÃ¨mes
     $Problems = @()
     
-    # Vérifications communes à tous les types de scripts
+    # VÃ©rifications communes Ã  tous les types de scripts
     
-    # Vérifier les lignes trop longues
+    # VÃ©rifier les lignes trop longues
     $Lines = $Content -split "`n"
     $LongLines = @()
     for ($i = 0; $i -lt $Lines.Count; $i++) {
@@ -54,19 +54,19 @@ function Find-CodeProblems {
         $Problems += [PSCustomObject]@{
             Type = "Style"
             Severity = "Low"
-            Message = "Lignes trop longues (> 120 caractères)"
-            Details = "$($LongLines.Count) lignes dépassent la longueur recommandée"
+            Message = "Lignes trop longues (> 120 caractÃ¨res)"
+            Details = "$($LongLines.Count) lignes dÃ©passent la longueur recommandÃ©e"
             Locations = $LongLines | ForEach-Object {
                 [PSCustomObject]@{
                     LineNumber = $_.LineNumber
-                    Description = "Ligne de $($_.Length) caractères: $($_.Line)"
+                    Description = "Ligne de $($_.Length) caractÃ¨res: $($_.Line)"
                 }
             }
-            Recommendation = "Limiter la longueur des lignes à 120 caractères maximum"
+            Recommendation = "Limiter la longueur des lignes Ã  120 caractÃ¨res maximum"
         }
     }
     
-    # Vérifier les chemins absolus
+    # VÃ©rifier les chemins absolus
     $AbsolutePathMatches = [regex]::Matches($Content, "([A-Z]:\\|/(?:etc|usr|var|opt|home))")
     $AbsolutePaths = @()
     foreach ($Match in $AbsolutePathMatches) {
@@ -82,7 +82,7 @@ function Find-CodeProblems {
             Type = "Portability"
             Severity = "Medium"
             Message = "Utilisation de chemins absolus"
-            Details = "$($AbsolutePaths.Count) chemins absolus détectés"
+            Details = "$($AbsolutePaths.Count) chemins absolus dÃ©tectÃ©s"
             Locations = $AbsolutePaths | ForEach-Object {
                 [PSCustomObject]@{
                     LineNumber = $_.LineNumber
@@ -93,10 +93,10 @@ function Find-CodeProblems {
         }
     }
     
-    # Vérifications spécifiques au type de script
+    # VÃ©rifications spÃ©cifiques au type de script
     switch ($ScriptType) {
         "PowerShell" {
-            # Vérifier l'utilisation de $null à gauche des comparaisons
+            # VÃ©rifier l'utilisation de $null Ã  gauche des comparaisons
             $NullComparisonMatches = [regex]::Matches($Content, "if\s*\(\s*(\$\w+)\s*-eq\s*\$null\s*\)")
             $NullComparisons = @()
             foreach ($Match in $NullComparisonMatches) {
@@ -111,19 +111,19 @@ function Find-CodeProblems {
                 $Problems += [PSCustomObject]@{
                     Type = "BestPractice"
                     Severity = "Medium"
-                    Message = "Comparaisons avec `$null du mauvais côté"
+                    Message = "Comparaisons avec `$null du mauvais cÃ´tÃ©"
                     Details = "$($NullComparisons.Count) comparaisons incorrectes avec `$null"
                     Locations = $NullComparisons | ForEach-Object {
                         [PSCustomObject]@{
                             LineNumber = $_.LineNumber
-                            Description = "Variable $($_.Variable) comparée à `$null du mauvais côté"
+                            Description = "Variable $($_.Variable) comparÃ©e Ã  `$null du mauvais cÃ´tÃ©"
                         }
                     }
-                    Recommendation = "Placer `$null à gauche des comparaisons: if (`$null -eq `$variable)"
+                    Recommendation = "Placer `$null Ã  gauche des comparaisons: if (`$null -eq `$variable)"
                 }
             }
             
-            # Vérifier l'utilisation de Write-Host sans couleur
+            # VÃ©rifier l'utilisation de Write-Host sans couleur
             $WriteHostMatches = [regex]::Matches($Content, "Write-Host\s+[^-]+(?!-ForegroundColor)")
             $WriteHosts = @()
             foreach ($Match in $WriteHostMatches) {
@@ -139,18 +139,18 @@ function Find-CodeProblems {
                     Type = "Style"
                     Severity = "Low"
                     Message = "Utilisation de Write-Host sans couleur"
-                    Details = "$($WriteHosts.Count) appels à Write-Host sans spécifier de couleur"
+                    Details = "$($WriteHosts.Count) appels Ã  Write-Host sans spÃ©cifier de couleur"
                     Locations = $WriteHosts | ForEach-Object {
                         [PSCustomObject]@{
                             LineNumber = $_.LineNumber
                             Description = "Commande: $($_.Command)"
                         }
                     }
-                    Recommendation = "Utiliser -ForegroundColor pour améliorer la lisibilité des messages"
+                    Recommendation = "Utiliser -ForegroundColor pour amÃ©liorer la lisibilitÃ© des messages"
                 }
             }
             
-            # Vérifier l'utilisation de paramètres switch avec valeur par défaut
+            # VÃ©rifier l'utilisation de paramÃ¨tres switch avec valeur par dÃ©faut
             $SwitchDefaultMatches = [regex]::Matches($Content, "\[switch\]\$(\w+)\s*=\s*\$true")
             $SwitchDefaults = @()
             foreach ($Match in $SwitchDefaultMatches) {
@@ -165,19 +165,19 @@ function Find-CodeProblems {
                 $Problems += [PSCustomObject]@{
                     Type = "BestPractice"
                     Severity = "Medium"
-                    Message = "Paramètres switch avec valeur par défaut `$true"
-                    Details = "$($SwitchDefaults.Count) paramètres switch avec valeur par défaut `$true"
+                    Message = "ParamÃ¨tres switch avec valeur par dÃ©faut `$true"
+                    Details = "$($SwitchDefaults.Count) paramÃ¨tres switch avec valeur par dÃ©faut `$true"
                     Locations = $SwitchDefaults | ForEach-Object {
                         [PSCustomObject]@{
                             LineNumber = $_.LineNumber
-                            Description = "Paramètre: $($_.Parameter)"
+                            Description = "ParamÃ¨tre: $($_.Parameter)"
                         }
                     }
-                    Recommendation = "Ne pas définir de valeur par défaut pour les paramètres switch"
+                    Recommendation = "Ne pas dÃ©finir de valeur par dÃ©faut pour les paramÃ¨tres switch"
                 }
             }
             
-            # Vérifier l'encodage du fichier (si c'est un fichier PowerShell)
+            # VÃ©rifier l'encodage du fichier (si c'est un fichier PowerShell)
             if ($Path -match "\.ps1$") {
                 try {
                     $FileContent = Get-Content -Path $Path -Raw -Encoding Byte
@@ -188,14 +188,14 @@ function Find-CodeProblems {
                             Type = "Encoding"
                             Severity = "High"
                             Message = "Fichier PowerShell sans BOM UTF-8"
-                            Details = "Le fichier n'est pas encodé en UTF-8 avec BOM"
+                            Details = "Le fichier n'est pas encodÃ© en UTF-8 avec BOM"
                             Locations = @(
                                 [PSCustomObject]@{
                                     LineNumber = 0
                                     Description = "Encodage du fichier"
                                 }
                             )
-                            Recommendation = "Enregistrer le fichier en UTF-8 avec BOM pour éviter les problèmes d'encodage avec PowerShell"
+                            Recommendation = "Enregistrer le fichier en UTF-8 avec BOM pour Ã©viter les problÃ¨mes d'encodage avec PowerShell"
                         }
                     }
                 } catch {
@@ -204,7 +204,7 @@ function Find-CodeProblems {
             }
         }
         "Python" {
-            # Vérifier l'utilisation de print au lieu de logging
+            # VÃ©rifier l'utilisation de print au lieu de logging
             $PrintMatches = [regex]::Matches($Content, "print\s*\(")
             $LoggingImport = $Content -match "import\s+logging"
             $Prints = @()
@@ -221,7 +221,7 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Low"
                     Message = "Utilisation de print au lieu de logging"
-                    Details = "$($Prints.Count) appels à print sans utilisation du module logging"
+                    Details = "$($Prints.Count) appels Ã  print sans utilisation du module logging"
                     Locations = $Prints | ForEach-Object {
                         [PSCustomObject]@{
                             LineNumber = $_.LineNumber
@@ -232,7 +232,7 @@ function Find-CodeProblems {
                 }
             }
             
-            # Vérifier l'utilisation de except sans type d'exception spécifié
+            # VÃ©rifier l'utilisation de except sans type d'exception spÃ©cifiÃ©
             $BareExceptMatches = [regex]::Matches($Content, "except\s*:")
             $BareExcepts = @()
             foreach ($Match in $BareExceptMatches) {
@@ -248,19 +248,19 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Medium"
                     Message = "Utilisation de except sans type d'exception"
-                    Details = "$($BareExcepts.Count) blocs except sans type d'exception spécifié"
+                    Details = "$($BareExcepts.Count) blocs except sans type d'exception spÃ©cifiÃ©"
                     Locations = $BareExcepts | ForEach-Object {
                         [PSCustomObject]@{
                             LineNumber = $_.LineNumber
                             Description = "Commande: $($_.Command)"
                         }
                     }
-                    Recommendation = "Spécifier le type d'exception à capturer: except ExceptionType:"
+                    Recommendation = "SpÃ©cifier le type d'exception Ã  capturer: except ExceptionType:"
                 }
             }
         }
         "Batch" {
-            # Vérifier l'utilisation de ECHO sans OFF
+            # VÃ©rifier l'utilisation de ECHO sans OFF
             $EchoOffMissing = -not ($Content -match "@ECHO OFF")
             
             if ($EchoOffMissing) {
@@ -268,18 +268,18 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Low"
                     Message = "Absence de @ECHO OFF"
-                    Details = "Le script ne désactive pas l'affichage des commandes"
+                    Details = "Le script ne dÃ©sactive pas l'affichage des commandes"
                     Locations = @(
                         [PSCustomObject]@{
                             LineNumber = 1
-                            Description = "Début du script"
+                            Description = "DÃ©but du script"
                         }
                     )
-                    Recommendation = "Ajouter @ECHO OFF au début du script pour désactiver l'affichage des commandes"
+                    Recommendation = "Ajouter @ECHO OFF au dÃ©but du script pour dÃ©sactiver l'affichage des commandes"
                 }
             }
             
-            # Vérifier l'utilisation de SETLOCAL
+            # VÃ©rifier l'utilisation de SETLOCAL
             $SetlocalMissing = -not ($Content -match "SETLOCAL")
             
             if ($SetlocalMissing) {
@@ -287,19 +287,19 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Medium"
                     Message = "Absence de SETLOCAL"
-                    Details = "Le script ne limite pas la portée des variables"
+                    Details = "Le script ne limite pas la portÃ©e des variables"
                     Locations = @(
                         [PSCustomObject]@{
                             LineNumber = 1
-                            Description = "Début du script"
+                            Description = "DÃ©but du script"
                         }
                     )
-                    Recommendation = "Ajouter SETLOCAL au début du script pour limiter la portée des variables"
+                    Recommendation = "Ajouter SETLOCAL au dÃ©but du script pour limiter la portÃ©e des variables"
                 }
             }
         }
         "Shell" {
-            # Vérifier l'utilisation de #!/bin/bash ou #!/bin/sh
+            # VÃ©rifier l'utilisation de #!/bin/bash ou #!/bin/sh
             $ShebangMissing = -not ($Content -match "^#!/bin/(bash|sh)")
             
             if ($ShebangMissing) {
@@ -307,18 +307,18 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Medium"
                     Message = "Absence de shebang"
-                    Details = "Le script ne spécifie pas l'interpréteur à utiliser"
+                    Details = "Le script ne spÃ©cifie pas l'interprÃ©teur Ã  utiliser"
                     Locations = @(
                         [PSCustomObject]@{
                             LineNumber = 1
-                            Description = "Début du script"
+                            Description = "DÃ©but du script"
                         }
                     )
-                    Recommendation = "Ajouter #!/bin/bash ou #!/bin/sh en première ligne du script"
+                    Recommendation = "Ajouter #!/bin/bash ou #!/bin/sh en premiÃ¨re ligne du script"
                 }
             }
             
-            # Vérifier l'utilisation de set -e
+            # VÃ©rifier l'utilisation de set -e
             $SetEMissing = -not ($Content -match "set -e")
             
             if ($SetEMissing) {
@@ -326,14 +326,14 @@ function Find-CodeProblems {
                     Type = "BestPractice"
                     Severity = "Medium"
                     Message = "Absence de set -e"
-                    Details = "Le script ne s'arrête pas en cas d'erreur"
+                    Details = "Le script ne s'arrÃªte pas en cas d'erreur"
                     Locations = @(
                         [PSCustomObject]@{
                             LineNumber = 1
-                            Description = "Début du script"
+                            Description = "DÃ©but du script"
                         }
                     )
-                    Recommendation = "Ajouter set -e au début du script pour qu'il s'arrête en cas d'erreur"
+                    Recommendation = "Ajouter set -e au dÃ©but du script pour qu'il s'arrÃªte en cas d'erreur"
                 }
             }
         }

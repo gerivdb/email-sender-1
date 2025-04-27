@@ -1,4 +1,4 @@
-# Module de suivi d'utilisation pour le Script Manager
+﻿# Module de suivi d'utilisation pour le Script Manager
 # Ce module suit l'utilisation des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -13,7 +13,7 @@ function Initialize-UsageTracker {
     .PARAMETER Inventory
         Objet d'inventaire des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer les données d'utilisation
+        Chemin oÃ¹ enregistrer les donnÃ©es d'utilisation
     .EXAMPLE
         Initialize-UsageTracker -Inventory $inventory -OutputPath "monitoring"
     #>
@@ -26,7 +26,7 @@ function Initialize-UsageTracker {
         [string]$OutputPath
     )
     
-    # Créer le dossier de suivi d'utilisation
+    # CrÃ©er le dossier de suivi d'utilisation
     $UsagePath = Join-Path -Path $OutputPath -ChildPath "usage"
     if (-not (Test-Path -Path $UsagePath)) {
         New-Item -ItemType Directory -Path $UsagePath -Force | Out-Null
@@ -34,14 +34,14 @@ function Initialize-UsageTracker {
     
     Write-Host "Initialisation du suivi d'utilisation..." -ForegroundColor Cyan
     
-    # Créer le fichier de données d'utilisation
+    # CrÃ©er le fichier de donnÃ©es d'utilisation
     $UsageDataPath = Join-Path -Path $UsagePath -ChildPath "usage_data.json"
     $UsageData = @{
         LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         Scripts = @()
     }
     
-    # Initialiser les données d'utilisation pour chaque script
+    # Initialiser les donnÃ©es d'utilisation pour chaque script
     foreach ($Script in $Inventory.Scripts) {
         $UsageData.Scripts += [PSCustomObject]@{
             Path = $Script.Path
@@ -55,27 +55,27 @@ function Initialize-UsageTracker {
         }
     }
     
-    # Enregistrer les données d'utilisation
+    # Enregistrer les donnÃ©es d'utilisation
     $UsageData | ConvertTo-Json -Depth 10 | Set-Content -Path $UsageDataPath
     
-    Write-Host "  Données d'utilisation initialisées: $UsageDataPath" -ForegroundColor Green
+    Write-Host "  DonnÃ©es d'utilisation initialisÃ©es: $UsageDataPath" -ForegroundColor Green
     
-    # Créer le script de suivi d'utilisation
+    # CrÃ©er le script de suivi d'utilisation
     $UsageScriptPath = Join-Path -Path $UsagePath -ChildPath "Track-ScriptUsage.ps1"
     $UsageScriptContent = @"
 <#
 .SYNOPSIS
     Suit l'utilisation d'un script
 .DESCRIPTION
-    Enregistre l'exécution d'un script et ses performances
+    Enregistre l'exÃ©cution d'un script et ses performances
 .PARAMETER ScriptPath
-    Chemin du script exécuté
+    Chemin du script exÃ©cutÃ©
 .PARAMETER ExecutionTime
-    Temps d'exécution en millisecondes
+    Temps d'exÃ©cution en millisecondes
 .PARAMETER Status
-    Statut de l'exécution (Success, Error)
+    Statut de l'exÃ©cution (Success, Error)
 .PARAMETER UsageDataPath
-    Chemin vers le fichier de données d'utilisation
+    Chemin vers le fichier de donnÃ©es d'utilisation
 .EXAMPLE
     .\Track-ScriptUsage.ps1 -ScriptPath "scripts\myscript.ps1" -ExecutionTime 1500 -Status "Success" -UsageDataPath "monitoring\usage\usage_data.json"
 #>
@@ -95,25 +95,25 @@ param (
     [string]`$UsageDataPath
 )
 
-# Vérifier si le fichier de données d'utilisation existe
+# VÃ©rifier si le fichier de donnÃ©es d'utilisation existe
 if (-not (Test-Path -Path `$UsageDataPath)) {
-    Write-Error "Fichier de données d'utilisation non trouvé: `$UsageDataPath"
+    Write-Error "Fichier de donnÃ©es d'utilisation non trouvÃ©: `$UsageDataPath"
     exit 1
 }
 
-# Charger les données d'utilisation
+# Charger les donnÃ©es d'utilisation
 try {
     `$UsageData = Get-Content -Path `$UsageDataPath -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement des données d'utilisation: `$_"
+    Write-Error "Erreur lors du chargement des donnÃ©es d'utilisation: `$_"
     exit 1
 }
 
-# Trouver le script dans les données d'utilisation
+# Trouver le script dans les donnÃ©es d'utilisation
 `$ScriptData = `$UsageData.Scripts | Where-Object { `$_.Path -eq `$ScriptPath }
 
 if (-not `$ScriptData) {
-    # Le script n'existe pas dans les données d'utilisation, l'ajouter
+    # Le script n'existe pas dans les donnÃ©es d'utilisation, l'ajouter
     `$ScriptName = Split-Path -Leaf `$ScriptPath
     `$ScriptType = switch -Regex (`$ScriptName) {
         "\.ps1`$" { "PowerShell" }
@@ -137,53 +137,53 @@ if (-not `$ScriptData) {
     `$UsageData.Scripts += `$ScriptData
 }
 
-# Mettre à jour les données d'utilisation
+# Mettre Ã  jour les donnÃ©es d'utilisation
 `$Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 `$ScriptData.ExecutionCount += 1
 `$ScriptData.LastExecution = `$Timestamp
 `$ScriptData.TotalExecutionTime += `$ExecutionTime
 `$ScriptData.AverageExecutionTime = `$ScriptData.TotalExecutionTime / `$ScriptData.ExecutionCount
 
-# Ajouter l'exécution à l'historique
+# Ajouter l'exÃ©cution Ã  l'historique
 `$Execution = [PSCustomObject]@{
     Timestamp = `$Timestamp
     ExecutionTime = `$ExecutionTime
     Status = `$Status
 }
 
-# Limiter l'historique à 100 exécutions
+# Limiter l'historique Ã  100 exÃ©cutions
 `$ScriptData.Executions += `$Execution
 if (`$ScriptData.Executions.Count -gt 100) {
     `$ScriptData.Executions = `$ScriptData.Executions | Select-Object -Last 100
 }
 
-# Mettre à jour la date de dernière mise à jour
+# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
 `$UsageData.LastUpdate = `$Timestamp
 
-# Enregistrer les données d'utilisation
+# Enregistrer les donnÃ©es d'utilisation
 `$UsageData | ConvertTo-Json -Depth 10 | Set-Content -Path `$UsageDataPath
 
-Write-Host "Utilisation du script enregistrée: `$ScriptPath" -ForegroundColor Green
+Write-Host "Utilisation du script enregistrÃ©e: `$ScriptPath" -ForegroundColor Green
 "@
     
     Set-Content -Path $UsageScriptPath -Value $UsageScriptContent
     
-    Write-Host "  Script de suivi d'utilisation créé: $UsageScriptPath" -ForegroundColor Green
+    Write-Host "  Script de suivi d'utilisation crÃ©Ã©: $UsageScriptPath" -ForegroundColor Green
     
-    # Créer le wrapper PowerShell pour suivre l'utilisation
+    # CrÃ©er le wrapper PowerShell pour suivre l'utilisation
     $WrapperScriptPath = Join-Path -Path $UsagePath -ChildPath "Invoke-ScriptWithTracking.ps1"
     $WrapperScriptContent = @"
 <#
 .SYNOPSIS
-    Exécute un script avec suivi d'utilisation
+    ExÃ©cute un script avec suivi d'utilisation
 .DESCRIPTION
-    Exécute un script et suit son utilisation (temps d'exécution, statut)
+    ExÃ©cute un script et suit son utilisation (temps d'exÃ©cution, statut)
 .PARAMETER ScriptPath
-    Chemin du script à exécuter
+    Chemin du script Ã  exÃ©cuter
 .PARAMETER Arguments
-    Arguments à passer au script
+    Arguments Ã  passer au script
 .PARAMETER UsageDataPath
-    Chemin vers le fichier de données d'utilisation
+    Chemin vers le fichier de donnÃ©es d'utilisation
 .EXAMPLE
     .\Invoke-ScriptWithTracking.ps1 -ScriptPath "scripts\myscript.ps1" -Arguments "-Param1 Value1" -UsageDataPath "monitoring\usage\usage_data.json"
 #>
@@ -199,15 +199,15 @@ param (
     [string]`$UsageDataPath
 )
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path `$ScriptPath)) {
-    Write-Error "Script non trouvé: `$ScriptPath"
+    Write-Error "Script non trouvÃ©: `$ScriptPath"
     exit 1
 }
 
-# Vérifier si le fichier de données d'utilisation existe
+# VÃ©rifier si le fichier de donnÃ©es d'utilisation existe
 if (-not (Test-Path -Path `$UsageDataPath)) {
-    Write-Error "Fichier de données d'utilisation non trouvé: `$UsageDataPath"
+    Write-Error "Fichier de donnÃ©es d'utilisation non trouvÃ©: `$UsageDataPath"
     exit 1
 }
 
@@ -215,21 +215,21 @@ if (-not (Test-Path -Path `$UsageDataPath)) {
 `$UsageTrackerPath = Join-Path -Path (Split-Path -Parent `$UsageDataPath) -ChildPath "Track-ScriptUsage.ps1"
 
 if (-not (Test-Path -Path `$UsageTrackerPath)) {
-    Write-Error "Script de suivi d'utilisation non trouvé: `$UsageTrackerPath"
+    Write-Error "Script de suivi d'utilisation non trouvÃ©: `$UsageTrackerPath"
     exit 1
 }
 
-# Démarrer le chronomètre
+# DÃ©marrer le chronomÃ¨tre
 `$Stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-# Exécuter le script
+# ExÃ©cuter le script
 try {
-    # Déterminer comment exécuter le script selon son type
+    # DÃ©terminer comment exÃ©cuter le script selon son type
     `$Extension = [System.IO.Path]::GetExtension(`$ScriptPath).ToLower()
     
     switch (`$Extension) {
         ".ps1" {
-            # Exécuter le script PowerShell
+            # ExÃ©cuter le script PowerShell
             if ([string]::IsNullOrWhiteSpace(`$Arguments)) {
                 & `$ScriptPath
             } else {
@@ -237,7 +237,7 @@ try {
             }
         }
         ".py" {
-            # Exécuter le script Python
+            # ExÃ©cuter le script Python
             if ([string]::IsNullOrWhiteSpace(`$Arguments)) {
                 python `$ScriptPath
             } else {
@@ -245,7 +245,7 @@ try {
             }
         }
         ".cmd" {
-            # Exécuter le script Batch
+            # ExÃ©cuter le script Batch
             if ([string]::IsNullOrWhiteSpace(`$Arguments)) {
                 cmd /c `$ScriptPath
             } else {
@@ -253,7 +253,7 @@ try {
             }
         }
         ".bat" {
-            # Exécuter le script Batch
+            # ExÃ©cuter le script Batch
             if ([string]::IsNullOrWhiteSpace(`$Arguments)) {
                 cmd /c `$ScriptPath
             } else {
@@ -261,7 +261,7 @@ try {
             }
         }
         ".sh" {
-            # Exécuter le script Shell
+            # ExÃ©cuter le script Shell
             if ([string]::IsNullOrWhiteSpace(`$Arguments)) {
                 bash `$ScriptPath
             } else {
@@ -276,11 +276,11 @@ try {
     
     `$Status = "Success"
 } catch {
-    Write-Error "Erreur lors de l'exécution du script: `$_"
+    Write-Error "Erreur lors de l'exÃ©cution du script: `$_"
     `$Status = "Error"
 }
 
-# Arrêter le chronomètre
+# ArrÃªter le chronomÃ¨tre
 `$Stopwatch.Stop()
 `$ExecutionTime = [int]`$Stopwatch.ElapsedMilliseconds
 
@@ -290,7 +290,7 @@ try {
     
     Set-Content -Path $WrapperScriptPath -Value $WrapperScriptContent
     
-    Write-Host "  Script wrapper créé: $WrapperScriptPath" -ForegroundColor Green
+    Write-Host "  Script wrapper crÃ©Ã©: $WrapperScriptPath" -ForegroundColor Green
     
     return [PSCustomObject]@{
         UsagePath = $UsagePath
@@ -303,13 +303,13 @@ try {
 function Get-ScriptUsageStats {
     <#
     .SYNOPSIS
-        Récupère les statistiques d'utilisation des scripts
+        RÃ©cupÃ¨re les statistiques d'utilisation des scripts
     .DESCRIPTION
-        Charge et analyse les données d'utilisation des scripts
+        Charge et analyse les donnÃ©es d'utilisation des scripts
     .PARAMETER UsageDataPath
-        Chemin vers le fichier de données d'utilisation
+        Chemin vers le fichier de donnÃ©es d'utilisation
     .PARAMETER TopCount
-        Nombre de scripts les plus utilisés à retourner
+        Nombre de scripts les plus utilisÃ©s Ã  retourner
     .EXAMPLE
         Get-ScriptUsageStats -UsageDataPath "monitoring\usage\usage_data.json" -TopCount 10
     #>
@@ -322,17 +322,17 @@ function Get-ScriptUsageStats {
         [int]$TopCount = 0
     )
     
-    # Vérifier si le fichier de données d'utilisation existe
+    # VÃ©rifier si le fichier de donnÃ©es d'utilisation existe
     if (-not (Test-Path -Path $UsageDataPath)) {
-        Write-Error "Fichier de données d'utilisation non trouvé: $UsageDataPath"
+        Write-Error "Fichier de donnÃ©es d'utilisation non trouvÃ©: $UsageDataPath"
         return $null
     }
     
-    # Charger les données d'utilisation
+    # Charger les donnÃ©es d'utilisation
     try {
         $UsageData = Get-Content -Path $UsageDataPath -Raw | ConvertFrom-Json
     } catch {
-        Write-Error "Erreur lors du chargement des données d'utilisation: $_"
+        Write-Error "Erreur lors du chargement des donnÃ©es d'utilisation: $_"
         return $null
     }
     
@@ -341,14 +341,14 @@ function Get-ScriptUsageStats {
     $TotalExecutionTime = ($UsageData.Scripts | Measure-Object -Property TotalExecutionTime -Sum).Sum
     $AverageExecutionTime = if ($TotalExecutions -gt 0) { $TotalExecutionTime / $TotalExecutions } else { 0 }
     
-    # Obtenir les scripts les plus utilisés
+    # Obtenir les scripts les plus utilisÃ©s
     $TopScripts = $UsageData.Scripts | Sort-Object -Property ExecutionCount -Descending
     
     if ($TopCount -gt 0) {
         $TopScripts = $TopScripts | Select-Object -First $TopCount
     }
     
-    # Créer l'objet de statistiques
+    # CrÃ©er l'objet de statistiques
     $Stats = [PSCustomObject]@{
         LastUpdate = $UsageData.LastUpdate
         TotalScripts = $UsageData.Scripts.Count

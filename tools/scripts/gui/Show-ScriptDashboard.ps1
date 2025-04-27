@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tableau de bord unifié pour la gestion des scripts
+    Tableau de bord unifiÃ© pour la gestion des scripts
 .DESCRIPTION
     Interface graphique WPF combinant l'inventaire, les statistiques et l'analyse des scripts
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .EXAMPLE
     .\Show-ScriptDashboard.ps1 -Path "C:\Scripts"
 .NOTES
@@ -20,11 +20,11 @@ param(
     [string]$Path = (Get-Location).Path
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Définir l'interface XAML simplifiée
+# DÃ©finir l'interface XAML simplifiÃ©e
 [xml]$xaml = @"
 <Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -50,7 +50,7 @@ Import-Module $modulePath -Force
                         <ComboBox x:Name="cmbFilterLanguage" Width="120" Margin="5" />
                         
                         <Button x:Name="btnApplyFilters" Content="Filtrer" Margin="5" Padding="10,5" />
-                        <Button x:Name="btnUpdateInventory" Content="Mettre à jour" Margin="5" Padding="10,5" />
+                        <Button x:Name="btnUpdateInventory" Content="Mettre Ã  jour" Margin="5" Padding="10,5" />
                     </StackPanel>
                     
                     <!-- Liste des scripts -->
@@ -58,7 +58,7 @@ Import-Module $modulePath -Force
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nom" Binding="{Binding FileName}" Width="200" />
                             <DataGridTextColumn Header="Langage" Binding="{Binding Language}" Width="100" />
-                            <DataGridTextColumn Header="Catégorie" Binding="{Binding Category}" Width="120" />
+                            <DataGridTextColumn Header="CatÃ©gorie" Binding="{Binding Category}" Width="120" />
                             <DataGridTextColumn Header="Auteur" Binding="{Binding Author}" Width="100" />
                             <DataGridTextColumn Header="Lignes" Binding="{Binding LineCount}" Width="60" />
                         </DataGrid.Columns>
@@ -72,8 +72,8 @@ Import-Module $modulePath -Force
                 </Grid>
             </TabItem>
             
-            <!-- Onglet Similarité -->
-            <TabItem Header="Similarité">
+            <!-- Onglet SimilaritÃ© -->
+            <TabItem Header="SimilaritÃ©">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -98,12 +98,12 @@ Import-Module $modulePath -Force
                         <Button x:Name="btnAnalyze" Content="Analyser" Margin="5" Padding="10,5" />
                     </StackPanel>
                     
-                    <!-- Résultats de similarité -->
+                    <!-- RÃ©sultats de similaritÃ© -->
                     <DataGrid Grid.Row="1" x:Name="dgSimilarity" Margin="5" AutoGenerateColumns="False" IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Script 1" Binding="{Binding Script1}" Width="200" />
                             <DataGridTextColumn Header="Script 2" Binding="{Binding Script2}" Width="200" />
-                            <DataGridTextColumn Header="Similarité" Binding="{Binding Similarity}" Width="80" />
+                            <DataGridTextColumn Header="SimilaritÃ©" Binding="{Binding Similarity}" Width="80" />
                             <DataGridTemplateColumn Header="Visualisation" Width="200">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -134,14 +134,14 @@ Import-Module $modulePath -Force
                     
                     <!-- Actions -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-                        <Button x:Name="btnGenerateStats" Content="Générer Statistiques" Margin="5" Padding="10,5" />
+                        <Button x:Name="btnGenerateStats" Content="GÃ©nÃ©rer Statistiques" Margin="5" Padding="10,5" />
                         <Button x:Name="btnOpenStatsReport" Content="Ouvrir Rapport Complet" Margin="5" Padding="10,5" />
                     </StackPanel>
                     
-                    <!-- Résumé des statistiques -->
+                    <!-- RÃ©sumÃ© des statistiques -->
                     <ScrollViewer Grid.Row="1" Margin="5">
                         <StackPanel x:Name="statsPanel">
-                            <TextBlock Text="Cliquez sur 'Générer Statistiques' pour afficher les informations" 
+                            <TextBlock Text="Cliquez sur 'GÃ©nÃ©rer Statistiques' pour afficher les informations" 
                                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
                         </StackPanel>
                     </ScrollViewer>
@@ -156,7 +156,7 @@ Import-Module $modulePath -Force
 $reader = [System.Xml.XmlNodeReader]::new($xaml)
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
-# Récupérer les éléments de l'interface
+# RÃ©cupÃ©rer les Ã©lÃ©ments de l'interface
 $txtFilterName = $window.FindName("txtFilterName")
 $cmbFilterLanguage = $window.FindName("cmbFilterLanguage")
 $btnApplyFilters = $window.FindName("btnApplyFilters")
@@ -183,7 +183,7 @@ function Load-Scripts {
         [string]$languageFilter = ""
     )
     
-    # Récupérer les scripts
+    # RÃ©cupÃ©rer les scripts
     $scripts = Get-ScriptInventory
     
     # Appliquer les filtres
@@ -195,44 +195,44 @@ function Load-Scripts {
         $scripts = $scripts | Where-Object { $_.Language -eq $languageFilter }
     }
     
-    # Mettre à jour la liste
+    # Mettre Ã  jour la liste
     $dgScripts.ItemsSource = $scripts
 }
 
-# Fonction pour analyser la similarité
+# Fonction pour analyser la similaritÃ©
 function Analyze-Similarity {
     param (
         [string]$algorithm,
         [int]$threshold
     )
     
-    # Vérifier que le module TextSimilarity est disponible
+    # VÃ©rifier que le module TextSimilarity est disponible
     $textSimilarityPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\TextSimilarity.psm1"
     if (-not (Test-Path $textSimilarityPath)) {
-        [System.Windows.MessageBox]::Show("Module TextSimilarity non trouvé: $textSimilarityPath", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Module TextSimilarity non trouvÃ©: $textSimilarityPath", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
     Import-Module $textSimilarityPath -Force
     
-    # Récupérer les scripts
+    # RÃ©cupÃ©rer les scripts
     $scripts = Get-ScriptInventory
     
     if ($scripts.Count -lt 2) {
-        [System.Windows.MessageBox]::Show("Pas assez de scripts pour analyser la similarité.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Pas assez de scripts pour analyser la similaritÃ©.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
-    # Analyser la similarité (version simplifiée pour l'interface)
+    # Analyser la similaritÃ© (version simplifiÃ©e pour l'interface)
     $results = @()
-    $scriptCount = [Math]::Min($scripts.Count, 10) # Limiter à 10 scripts pour l'interface
+    $scriptCount = [Math]::Min($scripts.Count, 10) # Limiter Ã  10 scripts pour l'interface
     
     for ($i = 0; $i -lt $scriptCount; $i++) {
         for ($j = $i + 1; $j -lt $scriptCount; $j++) {
             $script1 = $scripts[$i]
             $script2 = $scripts[$j]
             
-            # Calculer la similarité
+            # Calculer la similaritÃ©
             $similarity = 0
             
             if (Get-Command -Name Get-ContentSimilarity -ErrorAction SilentlyContinue) {
@@ -242,7 +242,7 @@ function Analyze-Similarity {
                 $similarity = Get-Random -Minimum 50 -Maximum 100
             }
             
-            # Si la similarité dépasse le seuil, ajouter aux résultats
+            # Si la similaritÃ© dÃ©passe le seuil, ajouter aux rÃ©sultats
             if ($similarity -ge $threshold) {
                 $results += [PSCustomObject]@{
                     Script1 = $script1.FileName
@@ -255,17 +255,17 @@ function Analyze-Similarity {
         }
     }
     
-    # Mettre à jour la liste
+    # Mettre Ã  jour la liste
     $dgSimilarity.ItemsSource = $results
 }
 
-# Fonction pour générer des statistiques simples
+# Fonction pour gÃ©nÃ©rer des statistiques simples
 function Generate-Statistics {
-    # Récupérer les scripts
+    # RÃ©cupÃ©rer les scripts
     $scripts = Get-ScriptInventory
     
     if ($scripts.Count -eq 0) {
-        [System.Windows.MessageBox]::Show("Aucun script trouvé.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Aucun script trouvÃ©.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
@@ -302,9 +302,9 @@ function Generate-Statistics {
         $statsPanel.Children.Add($languageItem)
     }
     
-    # Distribution par catégorie
+    # Distribution par catÃ©gorie
     $categoryTitle = New-Object System.Windows.Controls.TextBlock
-    $categoryTitle.Text = "Distribution par catégorie:"
+    $categoryTitle.Text = "Distribution par catÃ©gorie:"
     $categoryTitle.FontWeight = "Bold"
     $categoryTitle.Margin = New-Object System.Windows.Thickness(0, 10, 0, 5)
     $statsPanel.Children.Add($categoryTitle)
@@ -335,29 +335,29 @@ function Generate-Statistics {
     }
 }
 
-# Événement: Mise à jour du seuil de similarité
+# Ã‰vÃ©nement: Mise Ã  jour du seuil de similaritÃ©
 $sliderThreshold.Add_ValueChanged({
     $value = [Math]::Round($sliderThreshold.Value)
     $txtThreshold.Text = "$value%"
 })
 
-# Événement: Mise à jour de l'inventaire
+# Ã‰vÃ©nement: Mise Ã  jour de l'inventaire
 $btnUpdateInventory.Add_Click({
     Update-ScriptInventory -Path $Path
     Load-Scripts
 })
 
-# Événement: Appliquer les filtres
+# Ã‰vÃ©nement: Appliquer les filtres
 $btnApplyFilters.Add_Click({
     Load-Scripts -nameFilter $txtFilterName.Text -languageFilter $cmbFilterLanguage.SelectedItem
 })
 
-# Événement: Export CSV
+# Ã‰vÃ©nement: Export CSV
 $btnExportCSV.Add_Click({
     $scripts = $dgScripts.ItemsSource
     
     if (-not $scripts -or $scripts.Count -eq 0) {
-        [System.Windows.MessageBox]::Show("Aucun script à exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Aucun script Ã  exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
@@ -370,10 +370,10 @@ $btnExportCSV.Add_Click({
     $outputPath = Join-Path -Path $reportsDir -ChildPath "script_inventory_$timestamp.csv"
     
     $scripts | Export-Csv -Path $outputPath -NoTypeInformation -Encoding UTF8
-    [System.Windows.MessageBox]::Show("Rapport exporté: $outputPath", "Export terminé", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
+    [System.Windows.MessageBox]::Show("Rapport exportÃ©: $outputPath", "Export terminÃ©", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information)
 })
 
-# Événement: Export HTML
+# Ã‰vÃ©nement: Export HTML
 $btnExportHTML.Add_Click({
     $reportsDir = Join-Path -Path $Path -ChildPath "reports"
     if (-not (Test-Path $reportsDir)) {
@@ -385,14 +385,14 @@ $btnExportHTML.Add_Click({
     
     Export-ScriptInventory -Path $outputPath -Format "HTML"
     
-    $result = [System.Windows.MessageBox]::Show("Rapport exporté: $outputPath. Voulez-vous l'ouvrir?", "Export terminé", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Question)
+    $result = [System.Windows.MessageBox]::Show("Rapport exportÃ©: $outputPath. Voulez-vous l'ouvrir?", "Export terminÃ©", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Question)
     
     if ($result -eq [System.Windows.MessageBoxResult]::Yes) {
         Start-Process $outputPath
     }
 })
 
-# Événement: Analyser la similarité
+# Ã‰vÃ©nement: Analyser la similaritÃ©
 $btnAnalyze.Add_Click({
     $algorithm = $cmbAlgorithm.SelectedItem.Content
     $threshold = [Math]::Round($sliderThreshold.Value)
@@ -400,12 +400,12 @@ $btnAnalyze.Add_Click({
     Analyze-Similarity -algorithm $algorithm -threshold $threshold
 })
 
-# Événement: Exporter le rapport de similarité
+# Ã‰vÃ©nement: Exporter le rapport de similaritÃ©
 $btnExportSimilarity.Add_Click({
     $results = $dgSimilarity.ItemsSource
     
     if (-not $results -or $results.Count -eq 0) {
-        [System.Windows.MessageBox]::Show("Aucun résultat à exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Aucun rÃ©sultat Ã  exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
@@ -417,23 +417,23 @@ $btnExportSimilarity.Add_Click({
         
         Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$analyzeScript`" -Path `"$Path`" -Algorithm $algorithm -SimilarityThreshold $threshold -OutputFormat HTML"
     } else {
-        [System.Windows.MessageBox]::Show("Script d'analyse de similarité non trouvé: $analyzeScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Script d'analyse de similaritÃ© non trouvÃ©: $analyzeScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
     }
 })
 
-# Événement: Générer les statistiques
+# Ã‰vÃ©nement: GÃ©nÃ©rer les statistiques
 $btnGenerateStats.Add_Click({
     Generate-Statistics
 })
 
-# Événement: Ouvrir le rapport de statistiques complet
+# Ã‰vÃ©nement: Ouvrir le rapport de statistiques complet
 $btnOpenStatsReport.Add_Click({
     $statisticsScript = Join-Path -Path $PSScriptRoot -ChildPath "Show-ScriptStatistics.ps1"
     
     if (Test-Path $statisticsScript) {
         Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$statisticsScript`" -Path `"$Path`" -OutputFormat HTML"
     } else {
-        [System.Windows.MessageBox]::Show("Script de statistiques non trouvé: $statisticsScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Script de statistiques non trouvÃ©: $statisticsScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
     }
 })
 
@@ -451,5 +451,5 @@ foreach ($language in $languages) {
 # Charger les scripts
 Load-Scripts
 
-# Afficher la fenêtre
+# Afficher la fenÃªtre
 $window.ShowDialog() | Out-Null

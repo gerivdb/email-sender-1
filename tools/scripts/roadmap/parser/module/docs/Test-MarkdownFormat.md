@@ -1,4 +1,4 @@
-# Test-MarkdownFormat
+﻿# Test-MarkdownFormat
 
 ## SYNOPSIS
 
@@ -12,16 +12,16 @@ Valide le format d'un fichier markdown pour s'assurer qu'il est compatible avec 
 ```n
 ## DESCRIPTION
 
-La fonction Test-MarkdownFormat vérifie qu'un fichier markdown respecte le format attendu
-pour être correctement traité par les fonctions de conversion en roadmap.
-Elle effectue diverses vérifications comme la présence d'un titre, la structure des sections,
-le format des tâches, etc.
+La fonction Test-MarkdownFormat vÃ©rifie qu'un fichier markdown respecte le format attendu
+pour Ãªtre correctement traitÃ© par les fonctions de conversion en roadmap.
+Elle effectue diverses vÃ©rifications comme la prÃ©sence d'un titre, la structure des sections,
+le format des tÃ¢ches, etc.
 
 ## PARAMETERS
 
 ### -FilePath
 
-Chemin du fichier markdown à valider.
+Chemin du fichier markdown Ã  valider.
 
 `yaml
 Type: String
@@ -37,7 +37,7 @@ Accept wildcard characters: false
 
 ### -Strict
 
-Indique si la validation doit être stricte (erreur en cas de non-conformité) ou souple (avertissements).
+Indique si la validation doit Ãªtre stricte (erreur en cas de non-conformitÃ©) ou souple (avertissements).
 
 `yaml
 Type: SwitchParameter
@@ -57,13 +57,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant le résultat de la validation avec les éventuels problèmes détectés.
+[PSCustomObject] ReprÃ©sentant le rÃ©sultat de la validation avec les Ã©ventuels problÃ¨mes dÃ©tectÃ©s.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -71,7 +71,7 @@ Date de création: 2023-07-10
 
 `powershell
 Test-MarkdownFormat -FilePath ".\roadmap.md"
-Valide le format du fichier roadmap.md avec des avertissements pour les non-conformités.
+Valide le format du fichier roadmap.md avec des avertissements pour les non-conformitÃ©s.
 `
 
     
@@ -80,7 +80,7 @@ Valide le format du fichier roadmap.md avec des avertissements pour les non-conf
 
 `powershell
 Test-MarkdownFormat -FilePath ".\roadmap.md" -Strict
-Valide le format du fichier roadmap.md et génère des erreurs pour les non-conformités.
+Valide le format du fichier roadmap.md et gÃ©nÃ¨re des erreurs pour les non-conformitÃ©s.
 `
 
     

@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-FormatRoadmapText.ps1
 #
 # Script pour tester la fonction Format-RoadmapText
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\StringManipulation\Format-RoadmapText.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,7 +18,7 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-Write-Host "Début des tests de la fonction Format-RoadmapText..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Format-RoadmapText..." -ForegroundColor Cyan
 
 # Test 1: Formatage de base
 Write-Host "`nTest 1: Formatage de base" -ForegroundColor Cyan
@@ -49,10 +49,10 @@ foreach ($testCase in $testCases) {
 
     $result = Format-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -66,10 +66,10 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 2: Formatage avancé
-Write-Host "`nTest 2: Formatage avancé" -ForegroundColor Cyan
+# Test 2: Formatage avancÃ©
+Write-Host "`nTest 2: Formatage avancÃ©" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = "hello world"; FormatType = "Indent"; IndentLevel = 1; Expected = "    hello world"; Description = "Indent (niveau 1)" }
@@ -80,7 +80,7 @@ $testCases = @(
     @{ Text = "hello"; FormatType = "Align"; Length = 10; Alignment = "Left"; Expected = "hello     "; Description = "Align (gauche)" }
     @{ Text = "hello"; FormatType = "Align"; Length = 10; Alignment = "Right"; Expected = "     hello"; Description = "Align (droite)" }
     @{ Text = "hello"; FormatType = "Align"; Length = 10; Alignment = "Center"; Expected = "  hello   "; Description = "Align (centre)" }
-    @{ Text = "hello world"; FormatType = "Align"; Length = 15; Alignment = "Justify"; Expected = "hello     world"; Description = "Align (justifié)" }
+    @{ Text = "hello world"; FormatType = "Align"; Length = 15; Alignment = "Justify"; Expected = "hello     world"; Description = "Align (justifiÃ©)" }
     @{ Text = "hello {0}"; FormatType = "Custom"; CustomFormat = "world"; Expected = "hello world"; Description = "Custom" }
 )
 
@@ -115,7 +115,7 @@ foreach ($testCase in $testCases) {
 
     $result = Format-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     if ($testCase.FormatType -eq "Wrap") {
@@ -127,7 +127,7 @@ foreach ($testCase in $testCases) {
         $success = $result -eq $testCase.Expected
     }
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -141,10 +141,10 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 3: Gestion des cas spéciaux
-Write-Host "`nTest 3: Gestion des cas spéciaux" -ForegroundColor Cyan
+# Test 3: Gestion des cas spÃ©ciaux
+Write-Host "`nTest 3: Gestion des cas spÃ©ciaux" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = ""; FormatType = "Capitalize"; Expected = ""; Description = "Texte vide" }
@@ -170,7 +170,7 @@ foreach ($testCase in $testCases) {
 
     $result = Format-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     if ($testCase.Description -eq "Texte avec sauts de ligne" -or $testCase.Description -eq "Indentation avec sauts de ligne") {
@@ -182,7 +182,7 @@ foreach ($testCase in $testCases) {
         $success = $result -eq $testCase.Expected
     }
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -196,7 +196,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 4: Gestion des erreurs
 Write-Host "`nTest 4: Gestion des erreurs" -ForegroundColor Cyan
@@ -223,10 +223,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -236,13 +236,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Format-RoadmapText terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Format-RoadmapText terminÃ©s." -ForegroundColor Cyan

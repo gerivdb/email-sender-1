@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les références brisées dans les scripts suite à la réorganisation.
+    DÃ©tecte les rÃ©fÃ©rences brisÃ©es dans les scripts suite Ã  la rÃ©organisation.
 .DESCRIPTION
     Ce script analyse tous les scripts du projet pour identifier les chemins de fichiers
-    qui ne correspondent plus à la nouvelle structure de dossiers. Il génère un rapport
-    des références à mettre à jour.
+    qui ne correspondent plus Ã  la nouvelle structure de dossiers. Il gÃ©nÃ¨re un rapport
+    des rÃ©fÃ©rences Ã  mettre Ã  jour.
 .PARAMETER ScriptsPath
-    Chemin du dossier contenant les scripts à analyser. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par défaut: ..\..\D
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: ..\..\D
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Detect-BrokenReferences-Fixed.ps1
-    Analyse tous les scripts dans le dossier scripts et génère un rapport.
+    Analyse tous les scripts dans le dossier scripts et gÃ©nÃ¨re un rapport.
 .EXAMPLE
     .\Detect-BrokenReferences-Fixed.ps1 -ScriptsPath "D:\scripts" -OutputPath "D:\rapport.json"
-    Analyse tous les scripts dans le dossier D:\scripts et génère un rapport dans D:\rapport.json.
+    Analyse tous les scripts dans le dossier D:\scripts et gÃ©nÃ¨re un rapport dans D:\rapport.json.
 #>
 
 param (
@@ -25,7 +25,7 @@ param (
     [switch]$Verbose
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -47,7 +47,7 @@ function Write-Log {
 
     Write-Host $FormattedMessage -ForegroundColor $Color
 
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "..\..\D"
     Add-Content -Path $LogFile -Value $FormattedMessage
 }
@@ -77,7 +77,7 @@ function Get-FilePaths {
     $Content = Get-Content -Path $FilePath -Raw
     $Paths = @()
 
-    # Modèles de recherche pour les chemins de fichiers
+    # ModÃ¨les de recherche pour les chemins de fichiers
     $Patterns = @(
         # Chemins entre guillemets
         '["'']((?:\.{1,2}\\|[a-zA-Z]:\\|\\\\|scripts\\|manager\\|maintenance\\|workflow\\|api\\|core\\|utils\\|docs\\|setup\\|journal\\|email\\|testing\\|mcp\\|python\\)[^"'']*\.[a-zA-Z0-9]+)[''"]',
@@ -120,7 +120,7 @@ function Get-FilePaths {
     return $Paths
 }
 
-# Fonction pour vérifier si un chemin existe
+# Fonction pour vÃ©rifier si un chemin existe
 function Test-PathExists {
     param (
         [string]$Path,
@@ -128,7 +128,7 @@ function Test-PathExists {
         [string]$ScriptPath
     )
 
-    # Vérifier si le chemin est vide
+    # VÃ©rifier si le chemin est vide
     if ([string]::IsNullOrWhiteSpace($Path)) {
         return $false
     }
@@ -148,7 +148,7 @@ function Test-PathExists {
         return $true
     }
 
-    # Chemins relatifs à la racine du projet
+    # Chemins relatifs Ã  la racine du projet
     $FullPath = Join-Path -Path $BasePath -ChildPath $Path
     if (Test-Path -Path $FullPath -ErrorAction SilentlyContinue) {
         return $true
@@ -177,29 +177,29 @@ function Find-BrokenReferences {
         [string]$OutputPath
     )
 
-    Write-Log "Démarrage de la détection des références brisées..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des rÃ©fÃ©rences brisÃ©es..." -Level "TITLE"
     Write-Log "Dossier des scripts: $ScriptsPath" -Level "INFO"
     Write-Log "Fichier de sortie: $OutputPath" -Level "INFO"
 
-    # Vérifier si le dossier des scripts existe
+    # VÃ©rifier si le dossier des scripts existe
     if (-not (Test-Path -Path $ScriptsPath)) {
         Write-Log "Le dossier des scripts n'existe pas: $ScriptsPath" -Level "ERROR"
         return
     }
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "SUCCESS"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "SUCCESS"
     }
 
     # Obtenir tous les fichiers de script
     $ScriptFiles = Get-ScriptFiles -Path $ScriptsPath
     $TotalFiles = $ScriptFiles.Count
-    Write-Log "Nombre de fichiers à analyser: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de fichiers Ã  analyser: $TotalFiles" -Level "INFO"
 
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalFiles = $TotalFiles
@@ -211,7 +211,7 @@ function Find-BrokenReferences {
     foreach ($File in $ScriptFiles) {
         $FileCounter++
         $Progress = [math]::Round(($FileCounter / $TotalFiles) * 100)
-        Write-Progress -Activity "Analyse des références" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "Analyse des rÃ©fÃ©rences" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
 
         if ($Verbose) {
             Write-Log "Analyse du fichier: $($File.FullName)" -Level "INFO"
@@ -220,7 +220,7 @@ function Find-BrokenReferences {
         # Obtenir les chemins de fichiers
         $Paths = Get-FilePaths -FilePath $File.FullName
 
-        # Vérifier chaque chemin
+        # VÃ©rifier chaque chemin
         foreach ($Path in $Paths) {
             if (-not (Test-PathExists -Path $Path -BasePath (Split-Path -Path $ScriptsPath -Parent) -ScriptPath $File.FullName)) {
                 $BrokenReference = [PSCustomObject]@{
@@ -229,7 +229,7 @@ function Find-BrokenReferences {
                     LineNumbers = @()
                 }
 
-                # Trouver les numéros de ligne où la référence apparaît
+                # Trouver les numÃ©ros de ligne oÃ¹ la rÃ©fÃ©rence apparaÃ®t
                 $Content = Get-Content -Path $File.FullName
                 for ($i = 0; $i -lt $Content.Length; $i++) {
                     if ($Content[$i] -match [regex]::Escape($Path)) {
@@ -240,27 +240,27 @@ function Find-BrokenReferences {
                 $Results.BrokenReferences += $BrokenReference
 
                 if ($Verbose) {
-                    Write-Log "  Référence brisée trouvée: $Path" -Level "WARNING"
+                    Write-Log "  RÃ©fÃ©rence brisÃ©e trouvÃ©e: $Path" -Level "WARNING"
                 }
             }
         }
     }
 
-    Write-Progress -Activity "Analyse des références" -Completed
+    Write-Progress -Activity "Analyse des rÃ©fÃ©rences" -Completed
 
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
 
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $BrokenCount = $Results.BrokenReferences.Count
-    Write-Log "Analyse terminée" -Level "SUCCESS"
-    Write-Log "Nombre total de fichiers analysés: $TotalFiles" -Level "INFO"
-    Write-Log "Nombre de références brisées trouvées: $BrokenCount" -Level "WARNING"
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "Analyse terminÃ©e" -Level "SUCCESS"
+    Write-Log "Nombre total de fichiers analysÃ©s: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de rÃ©fÃ©rences brisÃ©es trouvÃ©es: $BrokenCount" -Level "WARNING"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
 
     return $Results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Find-BrokenReferences -ScriptsPath $ScriptsPath -OutputPath $OutputPath
 

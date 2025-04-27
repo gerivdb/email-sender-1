@@ -1,74 +1,74 @@
-<#
+﻿<#
 .SYNOPSIS
-    Formate un texte selon différentes options.
+    Formate un texte selon diffÃ©rentes options.
 
 .DESCRIPTION
-    La fonction Format-RoadmapText formate un texte selon différentes options.
-    Elle prend en charge différents types de formatage et peut être utilisée pour
+    La fonction Format-RoadmapText formate un texte selon diffÃ©rentes options.
+    Elle prend en charge diffÃ©rents types de formatage et peut Ãªtre utilisÃ©e pour
     formater les textes du module RoadmapParser.
 
 .PARAMETER Text
-    Le texte à formater.
+    Le texte Ã  formater.
 
 .PARAMETER FormatType
-    Le type de formatage à appliquer. Valeurs possibles :
-    - Capitalize : Met en majuscule la première lettre de chaque mot
+    Le type de formatage Ã  appliquer. Valeurs possibles :
+    - Capitalize : Met en majuscule la premiÃ¨re lettre de chaque mot
     - UpperCase : Met tout le texte en majuscules
     - LowerCase : Met tout le texte en minuscules
-    - TitleCase : Met en majuscule la première lettre de chaque mot, en respectant certaines règles
-    - SentenceCase : Met en majuscule la première lettre de chaque phrase
-    - CamelCase : Met en minuscule la première lettre et en majuscule la première lettre des mots suivants
-    - PascalCase : Met en majuscule la première lettre de chaque mot, sans espaces
+    - TitleCase : Met en majuscule la premiÃ¨re lettre de chaque mot, en respectant certaines rÃ¨gles
+    - SentenceCase : Met en majuscule la premiÃ¨re lettre de chaque phrase
+    - CamelCase : Met en minuscule la premiÃ¨re lettre et en majuscule la premiÃ¨re lettre des mots suivants
+    - PascalCase : Met en majuscule la premiÃ¨re lettre de chaque mot, sans espaces
     - SnakeCase : Remplace les espaces par des underscores et met tout en minuscules
     - KebabCase : Remplace les espaces par des tirets et met tout en minuscules
-    - Trim : Supprime les espaces au début et à la fin du texte
-    - TrimStart : Supprime les espaces au début du texte
-    - TrimEnd : Supprime les espaces à la fin du texte
+    - Trim : Supprime les espaces au dÃ©but et Ã  la fin du texte
+    - TrimStart : Supprime les espaces au dÃ©but du texte
+    - TrimEnd : Supprime les espaces Ã  la fin du texte
     - Indent : Indente chaque ligne du texte
-    - Truncate : Tronque le texte à une longueur spécifiée
-    - Pad : Complète le texte avec des caractères pour atteindre une longueur spécifiée
-    - Wrap : Enveloppe le texte à une largeur spécifiée
-    - Align : Aligne le texte (gauche, droite, centre, justifié)
-    - Custom : Utilise un format personnalisé
+    - Truncate : Tronque le texte Ã  une longueur spÃ©cifiÃ©e
+    - Pad : ComplÃ¨te le texte avec des caractÃ¨res pour atteindre une longueur spÃ©cifiÃ©e
+    - Wrap : Enveloppe le texte Ã  une largeur spÃ©cifiÃ©e
+    - Align : Aligne le texte (gauche, droite, centre, justifiÃ©)
+    - Custom : Utilise un format personnalisÃ©
 
 .PARAMETER CustomFormat
-    Le format personnalisé à utiliser pour le formatage.
-    Utilisé uniquement lorsque FormatType est "Custom".
+    Le format personnalisÃ© Ã  utiliser pour le formatage.
+    UtilisÃ© uniquement lorsque FormatType est "Custom".
 
 .PARAMETER Length
-    La longueur à utiliser pour les types de formatage qui en ont besoin (Truncate, Pad, Wrap).
+    La longueur Ã  utiliser pour les types de formatage qui en ont besoin (Truncate, Pad, Wrap).
 
 .PARAMETER PadCharacter
-    Le caractère à utiliser pour le remplissage avec le type de formatage "Pad".
-    Par défaut, c'est un espace.
+    Le caractÃ¨re Ã  utiliser pour le remplissage avec le type de formatage "Pad".
+    Par dÃ©faut, c'est un espace.
 
 .PARAMETER IndentLevel
-    Le niveau d'indentation à utiliser avec le type de formatage "Indent".
-    Par défaut, c'est 1.
+    Le niveau d'indentation Ã  utiliser avec le type de formatage "Indent".
+    Par dÃ©faut, c'est 1.
 
 .PARAMETER IndentChar
-    Le caractère à utiliser pour l'indentation avec le type de formatage "Indent".
-    Par défaut, c'est un espace.
+    Le caractÃ¨re Ã  utiliser pour l'indentation avec le type de formatage "Indent".
+    Par dÃ©faut, c'est un espace.
 
 .PARAMETER Alignment
-    L'alignement à utiliser avec le type de formatage "Align".
+    L'alignement Ã  utiliser avec le type de formatage "Align".
     Valeurs possibles : Left, Right, Center, Justify.
-    Par défaut, c'est "Left".
+    Par dÃ©faut, c'est "Left".
 
 .PARAMETER PreserveLineBreaks
-    Indique si les sauts de ligne doivent être préservés lors du formatage.
-    Par défaut, c'est $true.
+    Indique si les sauts de ligne doivent Ãªtre prÃ©servÃ©s lors du formatage.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER Culture
-    La culture à utiliser pour le formatage.
-    Par défaut, c'est la culture actuelle.
+    La culture Ã  utiliser pour le formatage.
+    Par dÃ©faut, c'est la culture actuelle.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec du formatage.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec du formatage.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec du formatage.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec du formatage.
 
 .EXAMPLE
     Format-RoadmapText -Text "hello world" -FormatType Capitalize
@@ -79,12 +79,12 @@
     Indente le texte "hello world" avec 2 tabulations.
 
 .OUTPUTS
-    [string] Le texte formaté.
+    [string] Le texte formatÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Format-RoadmapText {
     [CmdletBinding()]
@@ -129,7 +129,7 @@ function Format-RoadmapText {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat du formatage
+    # Initialiser le rÃ©sultat du formatage
     $result = $Text
     $formattingSucceeded = $false
 
@@ -170,7 +170,7 @@ function Format-RoadmapText {
                     $textInfo = $Culture.TextInfo
                     $result = $textInfo.ToTitleCase($Text.ToLower())
                     
-                    # Appliquer des règles supplémentaires pour le TitleCase
+                    # Appliquer des rÃ¨gles supplÃ©mentaires pour le TitleCase
                     $smallWords = @("a", "an", "and", "as", "at", "but", "by", "for", "if", "in", "nor", "of", "on", "or", "the", "to", "up", "yet")
                     $words = $result -split '\s+'
                     
@@ -191,7 +191,7 @@ function Format-RoadmapText {
                     $textInfo = $Culture.TextInfo
                     $result = $textInfo.ToLower($Text)
                     
-                    # Mettre en majuscule la première lettre de chaque phrase
+                    # Mettre en majuscule la premiÃ¨re lettre de chaque phrase
                     $sentences = [regex]::Split($result, '(?<=[.!?])\s+')
                     
                     for ($i = 0; $i -lt $sentences.Count; $i++) {
@@ -300,7 +300,7 @@ function Format-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = ""
                 } elseif (-not $PSBoundParameters.ContainsKey('Length')) {
-                    throw "Le paramètre Length est requis pour le type de formatage Truncate."
+                    throw "Le paramÃ¨tre Length est requis pour le type de formatage Truncate."
                 } else {
                     if ($Text.Length -le $Length) {
                         $result = $Text
@@ -314,7 +314,7 @@ function Format-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = [string]::new($PadCharacter, $Length)
                 } elseif (-not $PSBoundParameters.ContainsKey('Length')) {
-                    throw "Le paramètre Length est requis pour le type de formatage Pad."
+                    throw "Le paramÃ¨tre Length est requis pour le type de formatage Pad."
                 } else {
                     $result = $Text.PadRight($Length, $PadCharacter)
                 }
@@ -324,7 +324,7 @@ function Format-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = ""
                 } elseif (-not $PSBoundParameters.ContainsKey('Length')) {
-                    throw "Le paramètre Length est requis pour le type de formatage Wrap."
+                    throw "Le paramÃ¨tre Length est requis pour le type de formatage Wrap."
                 } else {
                     $lines = @()
                     $words = $Text -split '\s+'
@@ -353,7 +353,7 @@ function Format-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = ""
                 } elseif (-not $PSBoundParameters.ContainsKey('Length')) {
-                    throw "Le paramètre Length est requis pour le type de formatage Align."
+                    throw "Le paramÃ¨tre Length est requis pour le type de formatage Align."
                 } else {
                     if ($PreserveLineBreaks) {
                         $lines = $Text -split "`r`n|`r|`n"
@@ -458,9 +458,9 @@ function Format-RoadmapText {
             }
             "Custom" {
                 if ([string]::IsNullOrEmpty($CustomFormat)) {
-                    throw "Le paramètre CustomFormat est requis lorsque le type de formatage est Custom."
+                    throw "Le paramÃ¨tre CustomFormat est requis lorsque le type de formatage est Custom."
                 } else {
-                    # Utiliser le format personnalisé pour formater le texte
+                    # Utiliser le format personnalisÃ© pour formater le texte
                     $result = $Text -f $CustomFormat
                 }
                 $formattingSucceeded = $true
@@ -473,7 +473,7 @@ function Format-RoadmapText {
         }
     }
 
-    # Gérer l'échec du formatage
+    # GÃ©rer l'Ã©chec du formatage
     if (-not $formattingSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

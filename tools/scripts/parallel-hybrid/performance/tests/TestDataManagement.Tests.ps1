@@ -1,7 +1,7 @@
-Describe "Gestion des données de test" {
-    Context "Validation des chemins de données" {
+﻿Describe "Gestion des donnÃ©es de test" {
+    Context "Validation des chemins de donnÃ©es" {
         BeforeAll {
-            # Fonction pour valider un chemin de données
+            # Fonction pour valider un chemin de donnÃ©es
             function Test-DataPath {
                 param (
                     [string]$Path,
@@ -24,7 +24,7 @@ Describe "Gestion des données de test" {
                 return $true
             }
 
-            # Créer des répertoires et fichiers de test
+            # CrÃ©er des rÃ©pertoires et fichiers de test
             $testRootDir = Join-Path -Path $TestDrive -ChildPath "TestData"
             $testSubDir = Join-Path -Path $testRootDir -ChildPath "SubDir"
             $testFile = Join-Path -Path $testRootDir -ChildPath "test.txt"
@@ -40,14 +40,14 @@ Describe "Gestion des données de test" {
             $result | Should -Be $true
         }
 
-        It "Valide correctement un chemin de répertoire" {
-            # Tester un chemin de répertoire
+        It "Valide correctement un chemin de rÃ©pertoire" {
+            # Tester un chemin de rÃ©pertoire
             $result = Test-DataPath -Path $testRootDir -MustExist -MustBeDirectory
             $result | Should -Be $true
         }
 
-        It "Rejette correctement un chemin de fichier quand un répertoire est requis" {
-            # Tester un chemin de fichier quand un répertoire est requis
+        It "Rejette correctement un chemin de fichier quand un rÃ©pertoire est requis" {
+            # Tester un chemin de fichier quand un rÃ©pertoire est requis
             $result = Test-DataPath -Path $testFile -MustExist -MustBeDirectory
             $result | Should -Be $false
         }
@@ -66,9 +66,9 @@ Describe "Gestion des données de test" {
         }
     }
 
-    Context "Génération de données de test" {
+    Context "GÃ©nÃ©ration de donnÃ©es de test" {
         BeforeAll {
-            # Fonction pour générer des fichiers de test
+            # Fonction pour gÃ©nÃ©rer des fichiers de test
             function New-TestFiles {
                 param (
                     [string]$OutputPath,
@@ -87,13 +87,13 @@ Describe "Gestion des données de test" {
                     $fileName = "test_file_$i.txt"
                     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
 
-                    # Générer une taille aléatoire entre MinSize et MaxSize
+                    # GÃ©nÃ©rer une taille alÃ©atoire entre MinSize et MaxSize
                     $fileSize = Get-Random -Minimum $MinSize -Maximum $MaxSize
 
-                    # Générer le contenu du fichier
+                    # GÃ©nÃ©rer le contenu du fichier
                     $content = "A" * $fileSize
 
-                    # Créer le fichier
+                    # CrÃ©er le fichier
                     Set-Content -Path $filePath -Value $content | Out-Null
 
                     $generatedFiles += $filePath
@@ -102,34 +102,34 @@ Describe "Gestion des données de test" {
                 return $generatedFiles
             }
 
-            # Créer un répertoire de test
+            # CrÃ©er un rÃ©pertoire de test
             $testOutputDir = Join-Path -Path $TestDrive -ChildPath "GeneratedData"
         }
 
-        It "Génère correctement le nombre de fichiers spécifié" {
-            # Générer des fichiers de test
+        It "GÃ©nÃ¨re correctement le nombre de fichiers spÃ©cifiÃ©" {
+            # GÃ©nÃ©rer des fichiers de test
             $fileCount = 5
             $generatedFiles = New-TestFiles -OutputPath $testOutputDir -FileCount $fileCount
 
-            # Vérifier que le nombre de fichiers est correct
+            # VÃ©rifier que le nombre de fichiers est correct
             $generatedFiles.Count | Should -Be $fileCount
 
-            # Vérifier que les fichiers existent
+            # VÃ©rifier que les fichiers existent
             foreach ($file in $generatedFiles) {
                 Test-Path -Path $file | Should -Be $true
             }
         }
 
-        It "Génère des fichiers avec la taille spécifiée" {
-            # Générer des fichiers de test avec une taille fixe
+        It "GÃ©nÃ¨re des fichiers avec la taille spÃ©cifiÃ©e" {
+            # GÃ©nÃ©rer des fichiers de test avec une taille fixe
             $fileCount = 3
             $fileSize = 2KB
             $generatedFiles = New-TestFiles -OutputPath $testOutputDir -FileCount $fileCount -MinSize ($fileSize - 1) -MaxSize ($fileSize + 1)
 
-            # Vérifier que les fichiers ont une taille proche de celle spécifiée
+            # VÃ©rifier que les fichiers ont une taille proche de celle spÃ©cifiÃ©e
             foreach ($file in $generatedFiles) {
                 $actualSize = (Get-Item -Path $file).Length
-                # Utiliser une marge d'erreur plus large pour tenir compte des différences de taille
+                # Utiliser une marge d'erreur plus large pour tenir compte des diffÃ©rences de taille
                 $actualSize | Should -BeGreaterOrEqual ($fileSize - 100)
                 $actualSize | Should -BeLessOrEqual ($fileSize + 100)
             }
@@ -154,7 +154,7 @@ Describe "Gestion des données de test" {
                     $Path = Join-Path -Path $BasePath -ChildPath $Path
                 }
 
-                # Normaliser le chemin (résoudre les .. et .)
+                # Normaliser le chemin (rÃ©soudre les .. et .)
                 try {
                     $normalizedPath = [System.IO.Path]::GetFullPath($Path)
                     return $normalizedPath
@@ -164,7 +164,7 @@ Describe "Gestion des données de test" {
                 }
             }
 
-            # Créer des répertoires de test
+            # CrÃ©er des rÃ©pertoires de test
             $testRootDir = Join-Path -Path $TestDrive -ChildPath "TestRoot"
             $testSubDir = Join-Path -Path $testRootDir -ChildPath "SubDir"
 

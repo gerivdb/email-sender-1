@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour générer un tableau de bord de qualité du code.
+    Script pour gÃ©nÃ©rer un tableau de bord de qualitÃ© du code.
 .DESCRIPTION
-    Ce script génère un tableau de bord HTML de qualité du code basé sur les erreurs collectées.
+    Ce script gÃ©nÃ¨re un tableau de bord HTML de qualitÃ© du code basÃ© sur les erreurs collectÃ©es.
 #>
 
 [CmdletBinding()]
@@ -18,15 +18,15 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorLearningSystem.psm1"
 Import-Module $modulePath -Force
 
-# Initialiser le système
+# Initialiser le systÃ¨me
 Initialize-ErrorLearningSystem
 
-# Définir le chemin de sortie par défaut
+# DÃ©finir le chemin de sortie par dÃ©faut
 if (-not $OutputPath) {
     $OutputPath = Join-Path -Path $PSScriptRoot -ChildPath "dashboard\error-dashboard.html"
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 $dashboardDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $dashboardDir)) {
     New-Item -Path $dashboardDir -ItemType Directory -Force | Out-Null
@@ -39,7 +39,7 @@ $categories = $analysisResult.Statistics.CategorizedErrors
 $lastUpdate = $analysisResult.Statistics.LastUpdate
 $recentErrors = $analysisResult.Errors
 
-# Préparer les données pour les graphiques
+# PrÃ©parer les donnÃ©es pour les graphiques
 $categoryData = @()
 foreach ($category in $categories.Keys) {
     $count = $categories[$category]
@@ -51,10 +51,10 @@ foreach ($category in $categories.Keys) {
     }
 }
 
-# Trier les catégories par nombre d'erreurs (décroissant)
+# Trier les catÃ©gories par nombre d'erreurs (dÃ©croissant)
 $categoryData = $categoryData | Sort-Object -Property Count -Descending
 
-# Préparer les données pour le tableau des erreurs récentes
+# PrÃ©parer les donnÃ©es pour le tableau des erreurs rÃ©centes
 $errorTableRows = ""
 foreach ($error in $recentErrors) {
     $errorTableRows += @"
@@ -67,7 +67,7 @@ foreach ($error in $recentErrors) {
 "@
 }
 
-# Générer le contenu HTML
+# GÃ©nÃ©rer le contenu HTML
 $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -163,7 +163,7 @@ $htmlContent = @"
     <div class="container">
         <div class="header">
             <h1>Tableau de bord des erreurs PowerShell</h1>
-            <p>Dernière mise à jour : $lastUpdate</p>
+            <p>DerniÃ¨re mise Ã  jour : $lastUpdate</p>
         </div>
 
         <div class="stats">
@@ -173,29 +173,29 @@ $htmlContent = @"
             </div>
             <div class="stat-card">
                 <div class="stat-value">$($categoryData.Count)</div>
-                <div class="stat-label">Catégories</div>
+                <div class="stat-label">CatÃ©gories</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value">$($recentErrors.Count)</div>
-                <div class="stat-label">Erreurs récentes</div>
+                <div class="stat-label">Erreurs rÃ©centes</div>
             </div>
         </div>
 
         <div class="card">
-            <h2 class="card-title">Répartition des erreurs par catégorie</h2>
+            <h2 class="card-title">RÃ©partition des erreurs par catÃ©gorie</h2>
             <div class="chart-container">
                 <canvas id="categoryChart"></canvas>
             </div>
         </div>
 
         <div class="card">
-            <h2 class="card-title">Erreurs récentes</h2>
+            <h2 class="card-title">Erreurs rÃ©centes</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Date</th>
                         <th>Source</th>
-                        <th>Catégorie</th>
+                        <th>CatÃ©gorie</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -206,12 +206,12 @@ $htmlContent = @"
         </div>
 
         <div class="footer">
-            <p>Généré par le système d'apprentissage des erreurs PowerShell</p>
+            <p>GÃ©nÃ©rÃ© par le systÃ¨me d'apprentissage des erreurs PowerShell</p>
         </div>
     </div>
 
     <script>
-        // Graphique des catégories
+        // Graphique des catÃ©gories
         const categoryCtx = document.getElementById('categoryChart').getContext('2d');
         const categoryChart = new Chart(categoryCtx, {
             type: 'bar',
@@ -245,9 +245,9 @@ $htmlContent = @"
 
 # Enregistrer le fichier HTML
 $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8
-Write-Host "Tableau de bord généré : $OutputPath"
+Write-Host "Tableau de bord gÃ©nÃ©rÃ© : $OutputPath"
 
-# Ouvrir dans le navigateur si demandé
+# Ouvrir dans le navigateur si demandÃ©
 if ($OpenInBrowser) {
     Start-Process $OutputPath
 }

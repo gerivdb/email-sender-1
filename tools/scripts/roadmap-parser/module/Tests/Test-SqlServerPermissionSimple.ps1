@@ -1,13 +1,13 @@
-# Test simplifié pour la fonction Analyze-SqlServerPermission
+﻿# Test simplifiÃ© pour la fonction Analyze-SqlServerPermission
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 . "$PSScriptRoot\..\Functions\Public\Analyze-SqlServerPermission.ps1"
 
-# Créer un dossier temporaire pour les rapports
+# CrÃ©er un dossier temporaire pour les rapports
 $TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
 New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
 
-# Mock pour Invoke-Sqlcmd - Rôles serveur
+# Mock pour Invoke-Sqlcmd - RÃ´les serveur
 function Invoke-Sqlcmd {
     param (
         [Parameter(Mandatory = $false)]
@@ -167,58 +167,58 @@ function Import-Module {
 # Tester la fonction
 Write-Host "Test de la fonction Analyze-SqlServerPermission..." -ForegroundColor Cyan
 
-# Définir la variable d'environnement pour le test
+# DÃ©finir la variable d'environnement pour le test
 $env:PESTER_TEST_RUN = $true
 
 # Test de base
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
-# Vérifier les résultats
-Write-Host "`nVérification des résultats..." -ForegroundColor Cyan
+# VÃ©rifier les rÃ©sultats
+Write-Host "`nVÃ©rification des rÃ©sultats..." -ForegroundColor Cyan
 
-# Vérifier les propriétés de base
+# VÃ©rifier les propriÃ©tÃ©s de base
 if ($result -and $result.ServerInstance -eq "localhost\SQLEXPRESS") {
     Write-Host "- ServerInstance: OK" -ForegroundColor Green
 } else {
-    Write-Host "- ServerInstance: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerInstance: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerRoles -and $result.ServerRoles.Count -gt 0) {
     Write-Host "- ServerRoles: OK (Count: $($result.ServerRoles.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerRoles: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerRoles: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerPermissions -and $result.ServerPermissions.Count -gt 0) {
     Write-Host "- ServerPermissions: OK (Count: $($result.ServerPermissions.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerPermissions: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerPermissions: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerLogins -and $result.ServerLogins.Count -gt 0) {
     Write-Host "- ServerLogins: OK (Count: $($result.ServerLogins.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerLogins: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerLogins: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.PermissionAnomalies -and $result.PermissionAnomalies.Count -gt 0) {
     Write-Host "- PermissionAnomalies: OK (Count: $($result.PermissionAnomalies.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'anomalies
+    # VÃ©rifier les types d'anomalies
     $anomalyTypes = $result.PermissionAnomalies | Group-Object -Property AnomalyType | Select-Object -ExpandProperty Name
-    Write-Host "  Types d'anomalies détectés: $($anomalyTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'anomalies dÃ©tectÃ©s: $($anomalyTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- PermissionAnomalies: ÉCHEC" -ForegroundColor Red
+    Write-Host "- PermissionAnomalies: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport
+# Test de gÃ©nÃ©ration de rapport
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.html"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "HTML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport HTML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport HTML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: Ã‰CHEC" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -226,4 +226,4 @@ if (Test-Path -Path $TempFolder) {
     Remove-Item -Path $TempFolder -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host "`nTests terminés." -ForegroundColor Cyan
+Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan

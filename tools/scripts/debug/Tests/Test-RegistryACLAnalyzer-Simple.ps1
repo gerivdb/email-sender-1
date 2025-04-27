@@ -1,10 +1,10 @@
-# Test simple pour RegistryACLAnalyzer.ps1
-# Importer le module à tester
+﻿# Test simple pour RegistryACLAnalyzer.ps1
+# Importer le module Ã  tester
 $scriptPath = Split-Path -Parent $PSCommandPath
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "RegistryACLAnalyzer.ps1"
 . $modulePath
 
-# Fonction pour afficher les résultats des tests
+# Fonction pour afficher les rÃ©sultats des tests
 function Test-Result {
     param (
         [string]$TestName,
@@ -18,9 +18,9 @@ function Test-Result {
         $valid = & $ValidationScript $result
 
         if ($valid) {
-            Write-Host "  RÉUSSI: $TestName" -ForegroundColor Green
+            Write-Host "  RÃ‰USSI: $TestName" -ForegroundColor Green
         } else {
-            Write-Host "  ÉCHEC: $TestName - Validation échouée" -ForegroundColor Red
+            Write-Host "  Ã‰CHEC: $TestName - Validation Ã©chouÃ©e" -ForegroundColor Red
         }
     } catch {
         Write-Host "  ERREUR: $TestName - $($_.Exception.Message)" -ForegroundColor Red
@@ -29,7 +29,7 @@ function Test-Result {
     return $result
 }
 
-# Test 1: Get-RegistryPermission sur une clé de registre existante
+# Test 1: Get-RegistryPermission sur une clÃ© de registre existante
 $result1 = Test-Result -TestName "Get-RegistryPermission sur HKLM:\SOFTWARE" -TestScript {
     Get-RegistryPermission -Path "HKLM:\SOFTWARE" -Recurse $false
 } -ValidationScript {
@@ -37,23 +37,23 @@ $result1 = Test-Result -TestName "Get-RegistryPermission sur HKLM:\SOFTWARE" -Te
     return $r -and $r.Count -gt 0 -and $r[0].Path -eq "HKLM:\SOFTWARE"
 }
 
-# Test 2: Get-RegistryPermission avec récursivité limitée
-$result2 = Test-Result -TestName "Get-RegistryPermission avec récursivité limitée" -TestScript {
+# Test 2: Get-RegistryPermission avec rÃ©cursivitÃ© limitÃ©e
+$result2 = Test-Result -TestName "Get-RegistryPermission avec rÃ©cursivitÃ© limitÃ©e" -TestScript {
     Get-RegistryPermission -Path "HKCU:\Software\Microsoft" -Recurse $true
 } -ValidationScript {
     param($r)
     return $r -and $r.Count -gt 1
 }
 
-# Test 3: Get-RegistryPermission avec filtrage des permissions héritées
-$result3 = Test-Result -TestName "Get-RegistryPermission avec filtrage des permissions héritées" -TestScript {
+# Test 3: Get-RegistryPermission avec filtrage des permissions hÃ©ritÃ©es
+$result3 = Test-Result -TestName "Get-RegistryPermission avec filtrage des permissions hÃ©ritÃ©es" -TestScript {
     Get-RegistryPermission -Path "HKCU:\Software" -Recurse $false -IncludeInherited $false
 } -ValidationScript {
     param($r)
     return $r -and (-not ($r | Where-Object { $_.IsInherited -eq $true }))
 }
 
-# Test 4: Get-RegistryPermissionInheritance sur une clé de registre existante
+# Test 4: Get-RegistryPermissionInheritance sur une clÃ© de registre existante
 $result4 = Test-Result -TestName "Get-RegistryPermissionInheritance sur HKLM:\SOFTWARE" -TestScript {
     Get-RegistryPermissionInheritance -Path "HKLM:\SOFTWARE" -Recurse $false
 } -ValidationScript {
@@ -61,15 +61,15 @@ $result4 = Test-Result -TestName "Get-RegistryPermissionInheritance sur HKLM:\SO
     return $r -and $r.Path -eq "HKLM:\SOFTWARE" -and $r.InheritanceEnabled -ne $null
 }
 
-# Test 5: Get-RegistryPermissionInheritance avec récursivité limitée
-$result5 = Test-Result -TestName "Get-RegistryPermissionInheritance avec récursivité limitée" -TestScript {
+# Test 5: Get-RegistryPermissionInheritance avec rÃ©cursivitÃ© limitÃ©e
+$result5 = Test-Result -TestName "Get-RegistryPermissionInheritance avec rÃ©cursivitÃ© limitÃ©e" -TestScript {
     Get-RegistryPermissionInheritance -Path "HKCU:\Software\Microsoft" -Recurse $true
 } -ValidationScript {
     param($r)
     return $r -and $r.Count -gt 1
 }
 
-# Test 6: Get-RegistryOwnershipInfo sur une clé de registre existante
+# Test 6: Get-RegistryOwnershipInfo sur une clÃ© de registre existante
 $result6 = Test-Result -TestName "Get-RegistryOwnershipInfo sur HKLM:\SOFTWARE" -TestScript {
     Get-RegistryOwnershipInfo -Path "HKLM:\SOFTWARE" -Recurse $false
 } -ValidationScript {
@@ -77,15 +77,15 @@ $result6 = Test-Result -TestName "Get-RegistryOwnershipInfo sur HKLM:\SOFTWARE" 
     return $r -and $r.Path -eq "HKLM:\SOFTWARE" -and $r.Owner -ne $null
 }
 
-# Test 7: Get-RegistryOwnershipInfo avec récursivité limitée
-$result7 = Test-Result -TestName "Get-RegistryOwnershipInfo avec récursivité limitée" -TestScript {
+# Test 7: Get-RegistryOwnershipInfo avec rÃ©cursivitÃ© limitÃ©e
+$result7 = Test-Result -TestName "Get-RegistryOwnershipInfo avec rÃ©cursivitÃ© limitÃ©e" -TestScript {
     Get-RegistryOwnershipInfo -Path "HKCU:\Software\Microsoft" -Recurse $true
 } -ValidationScript {
     param($r)
     return $r -and $r.Count -gt 1
 }
 
-# Test 8: Find-RegistryPermissionAnomaly sur une clé de registre existante
+# Test 8: Find-RegistryPermissionAnomaly sur une clÃ© de registre existante
 $result8 = Test-Result -TestName "Find-RegistryPermissionAnomaly sur HKLM:\SOFTWARE" -TestScript {
     Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -Recurse $false
 } -ValidationScript {
@@ -93,8 +93,8 @@ $result8 = Test-Result -TestName "Find-RegistryPermissionAnomaly sur HKLM:\SOFTW
     return $r -ne $null
 }
 
-# Test 9: Find-RegistryPermissionAnomaly avec récursivité limitée
-$result9 = Test-Result -TestName "Find-RegistryPermissionAnomaly avec récursivité limitée" -TestScript {
+# Test 9: Find-RegistryPermissionAnomaly avec rÃ©cursivitÃ© limitÃ©e
+$result9 = Test-Result -TestName "Find-RegistryPermissionAnomaly avec rÃ©cursivitÃ© limitÃ©e" -TestScript {
     Find-RegistryPermissionAnomaly -Path "HKCU:\Software\Microsoft" -Recurse $true
 } -ValidationScript {
     param($r)
@@ -130,13 +130,13 @@ $result13 = Test-Result -TestName "Repair-RegistryPermissionAnomaly avec WhatIf"
     Repair-RegistryPermissionAnomaly -Path "HKCU:\Software" -AnomalyType "All" -WhatIf
 } -ValidationScript {
     param($r)
-    # Si aucune anomalie n'est trouvée, la fonction retourne $null, ce qui est OK
-    # Si des anomalies sont trouvées, la fonction retourne un tableau d'objets
+    # Si aucune anomalie n'est trouvÃ©e, la fonction retourne $null, ce qui est OK
+    # Si des anomalies sont trouvÃ©es, la fonction retourne un tableau d'objets
     return $r -eq $null -or $r -is [array]
 }
 
-# Test 14: Compare-RegistryPermission entre deux clés de registre
-$result14 = Test-Result -TestName "Compare-RegistryPermission entre deux clés de registre" -TestScript {
+# Test 14: Compare-RegistryPermission entre deux clÃ©s de registre
+$result14 = Test-Result -TestName "Compare-RegistryPermission entre deux clÃ©s de registre" -TestScript {
     Compare-RegistryPermission -ReferencePath "HKLM:\SOFTWARE\Microsoft" -DifferencePath "HKLM:\SOFTWARE\Classes" -IncludeInherited $true
 } -ValidationScript {
     param($r)
@@ -168,4 +168,4 @@ $result16 = Test-Result -TestName "Import-RegistryPermission avec WhatIf" -TestS
 # Nettoyer les fichiers temporaires
 Remove-Item -Path $tempFolder -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "Tests terminés."
+Write-Host "Tests terminÃ©s."

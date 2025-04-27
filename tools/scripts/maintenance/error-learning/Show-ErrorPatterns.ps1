@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Affiche les patterns d'erreurs inédits dans une interface utilisateur simple.
+    Affiche les patterns d'erreurs inÃ©dits dans une interface utilisateur simple.
 .DESCRIPTION
-    Ce script affiche les patterns d'erreurs inédits dans une interface utilisateur simple,
+    Ce script affiche les patterns d'erreurs inÃ©dits dans une interface utilisateur simple,
     permettant de les visualiser, les valider et les explorer.
 .PARAMETER DatabasePath
-    Chemin vers la base de données d'erreurs.
+    Chemin vers la base de donnÃ©es d'erreurs.
 .PARAMETER OnlyInedited
-    Ne montrer que les patterns d'erreurs inédits.
+    Ne montrer que les patterns d'erreurs inÃ©dits.
 .EXAMPLE
     .\Show-ErrorPatterns.ps1 -OnlyInedited
 .NOTES
@@ -30,7 +30,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorPatternAnalyzer.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module ErrorPatternAnalyzer non trouvé: $modulePath"
+    Write-Error "Module ErrorPatternAnalyzer non trouvÃ©: $modulePath"
     exit 1
 }
 
@@ -48,14 +48,14 @@ function Show-ErrorPatternDetails {
     Write-Host "=== $($Pattern.Name) ===" -ForegroundColor Cyan
     Write-Host "ID: $($Pattern.Id)"
     Write-Host "Description: $($Pattern.Description)"
-    Write-Host "Première occurrence: $($Pattern.FirstOccurrence)"
-    Write-Host "Dernière occurrence: $($Pattern.LastOccurrence)"
+    Write-Host "PremiÃ¨re occurrence: $($Pattern.FirstOccurrence)"
+    Write-Host "DerniÃ¨re occurrence: $($Pattern.LastOccurrence)"
     Write-Host "Occurrences: $($Pattern.Occurrences)"
-    Write-Host "Inédit: $($Pattern.IsInedited)"
+    Write-Host "InÃ©dit: $($Pattern.IsInedited)"
     Write-Host "Statut de validation: $($Pattern.ValidationStatus)"
     Write-Host ""
     
-    Write-Host "Caractéristiques:" -ForegroundColor Yellow
+    Write-Host "CaractÃ©ristiques:" -ForegroundColor Yellow
     Write-Host "  Type d'exception: $($Pattern.Features.ExceptionType)"
     Write-Host "  ID d'erreur: $($Pattern.Features.ErrorId)"
     Write-Host "  Contexte: $($Pattern.Features.ScriptContext)"
@@ -79,13 +79,13 @@ function Show-ErrorPatternDetails {
     }
     
     if ($Pattern.RelatedPatterns.Count -gt 0) {
-        Write-Host "Patterns liés:" -ForegroundColor Yellow
+        Write-Host "Patterns liÃ©s:" -ForegroundColor Yellow
         
         foreach ($relatedPattern in $Pattern.RelatedPatterns) {
             $related = Get-ErrorPattern -PatternId $relatedPattern.PatternId
             
             if ($related) {
-                Write-Host "  $($related.Name) ($($relatedPattern.Relationship), Similarité: $([Math]::Round($relatedPattern.Similarity * 100, 2))%)"
+                Write-Host "  $($related.Name) ($($relatedPattern.Relationship), SimilaritÃ©: $([Math]::Round($relatedPattern.Similarity * 100, 2))%)"
             }
         }
         
@@ -98,8 +98,8 @@ function Show-ErrorPatternDetails {
     Write-Host "  [D] Marquer comme doublon"
     Write-Host "  [E] Modifier la description"
     Write-Host "  [N] Modifier le nom"
-    Write-Host "  [T] Basculer le statut 'inédit'"
-    Write-Host "  [R] Retour à la liste"
+    Write-Host "  [T] Basculer le statut 'inÃ©dit'"
+    Write-Host "  [R] Retour Ã  la liste"
     Write-Host ""
     
     $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown").Character.ToString().ToUpper()
@@ -107,24 +107,24 @@ function Show-ErrorPatternDetails {
     switch ($key) {
         "V" {
             Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus "Valid"
-            Write-Host "Pattern validé." -ForegroundColor Green
+            Write-Host "Pattern validÃ©." -ForegroundColor Green
             Start-Sleep -Seconds 1
         }
         "I" {
             Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus "Invalid"
-            Write-Host "Pattern invalidé." -ForegroundColor Yellow
+            Write-Host "Pattern invalidÃ©." -ForegroundColor Yellow
             Start-Sleep -Seconds 1
         }
         "D" {
             Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus "Duplicate"
-            Write-Host "Pattern marqué comme doublon." -ForegroundColor Yellow
+            Write-Host "Pattern marquÃ© comme doublon." -ForegroundColor Yellow
             Start-Sleep -Seconds 1
         }
         "E" {
             $description = Read-Host "Nouvelle description"
             if ($description) {
                 Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus $Pattern.ValidationStatus -Description $description
-                Write-Host "Description mise à jour." -ForegroundColor Green
+                Write-Host "Description mise Ã  jour." -ForegroundColor Green
                 Start-Sleep -Seconds 1
             }
         }
@@ -132,13 +132,13 @@ function Show-ErrorPatternDetails {
             $name = Read-Host "Nouveau nom"
             if ($name) {
                 Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus $Pattern.ValidationStatus -Name $name
-                Write-Host "Nom mis à jour." -ForegroundColor Green
+                Write-Host "Nom mis Ã  jour." -ForegroundColor Green
                 Start-Sleep -Seconds 1
             }
         }
         "T" {
             Confirm-ErrorPattern -PatternId $Pattern.Id -ValidationStatus $Pattern.ValidationStatus -IsInedited:(-not $Pattern.IsInedited)
-            Write-Host "Statut 'inédit' basculé." -ForegroundColor Green
+            Write-Host "Statut 'inÃ©dit' basculÃ©." -ForegroundColor Green
             Start-Sleep -Seconds 1
         }
         "R" {
@@ -150,7 +150,7 @@ function Show-ErrorPatternDetails {
         }
     }
     
-    # Rafraîchir le pattern
+    # RafraÃ®chir le pattern
     $refreshedPattern = Get-ErrorPattern -PatternId $Pattern.Id -IncludeExamples
     Show-ErrorPatternDetails -Pattern $refreshedPattern
 }
@@ -171,7 +171,7 @@ function Show-ErrorPatternList {
     
     if ($patterns.Count -eq 0) {
         Clear-Host
-        Write-Host "Aucun pattern d'erreur trouvé." -ForegroundColor Yellow
+        Write-Host "Aucun pattern d'erreur trouvÃ©." -ForegroundColor Yellow
         Write-Host ""
         Write-Host "Appuyez sur une touche pour quitter..."
         $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") | Out-Null
@@ -187,7 +187,7 @@ function Show-ErrorPatternList {
     while ($continue) {
         Clear-Host
         Write-Host "=== Patterns d'erreur ===" -ForegroundColor Cyan
-        Write-Host "Utilisez les flèches haut/bas pour naviguer, Entrée pour sélectionner, Q pour quitter."
+        Write-Host "Utilisez les flÃ¨ches haut/bas pour naviguer, EntrÃ©e pour sÃ©lectionner, Q pour quitter."
         Write-Host "Page $($pageIndex + 1)/$([Math]::Ceiling($patterns.Count / $pageSize))" -ForegroundColor Gray
         Write-Host ""
         
@@ -215,14 +215,14 @@ function Show-ErrorPatternList {
         $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         
         switch ($key.VirtualKeyCode) {
-            38 {  # Flèche haut
+            38 {  # FlÃ¨che haut
                 $selectedIndex = [Math]::Max($selectedIndex - 1, 0)
                 
                 if ($selectedIndex -lt $startIndex) {
                     $pageIndex = [Math]::Max($pageIndex - 1, 0)
                 }
             }
-            40 {  # Flèche bas
+            40 {  # FlÃ¨che bas
                 $selectedIndex = [Math]::Min($selectedIndex + 1, $patterns.Count - 1)
                 
                 if ($selectedIndex -gt $endIndex) {
@@ -237,7 +237,7 @@ function Show-ErrorPatternList {
                 $pageIndex = [Math]::Min($pageIndex + 1, [Math]::Ceiling($patterns.Count / $pageSize) - 1)
                 $selectedIndex = $pageIndex * $pageSize
             }
-            13 {  # Entrée
+            13 {  # EntrÃ©e
                 Show-ErrorPatternDetails -Pattern $patterns[$selectedIndex]
             }
             81 {  # Q
@@ -247,5 +247,5 @@ function Show-ErrorPatternList {
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 Show-ErrorPatternList -OnlyInedited:$OnlyInedited

@@ -1,5 +1,5 @@
-# Script pour mettre à jour les références à la roadmap dans les scripts existants
-# Ce script remplace les références directes au fichier "Roadmap\roadmap_perso.md" par des appels au script centralisé
+﻿# Script pour mettre Ã  jour les rÃ©fÃ©rences Ã  la roadmap dans les scripts existants
+# Ce script remplace les rÃ©fÃ©rences directes au fichier "Roadmap\roadmap_perso.md" par des appels au script centralisÃ©
 
 param (
     [Parameter(Mandatory = $false)]
@@ -37,7 +37,7 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Créer le répertoire de logs si nécessaire
+    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -47,19 +47,19 @@ function Write-Log {
 }
 
 try {
-    # Fonction pour trouver les scripts qui font référence à "Roadmap\roadmap_perso.md"
+    # Fonction pour trouver les scripts qui font rÃ©fÃ©rence Ã  "Roadmap\roadmap_perso.md"
     function Find-RoadmapReferences {
         param (
             [string]$Directory
         )
         
-        Write-Log "Recherche des scripts faisant référence à "Roadmap\roadmap_perso.md" dans $Directory"
+        Write-Log "Recherche des scripts faisant rÃ©fÃ©rence Ã  "Roadmap\roadmap_perso.md" dans $Directory"
         
         $results = @()
         
-        # Récupérer tous les scripts PowerShell dans le répertoire
+        # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
         $scripts = Get-ChildItem -Path $Directory -Recurse -File -Filter "*.ps1" | Where-Object { -not $_.FullName.Contains(".bak") }
-        Write-Log "Nombre de scripts trouvés : $($scripts.Count)"
+        Write-Log "Nombre de scripts trouvÃ©s : $($scripts.Count)"
         
         foreach ($script in $scripts) {
             Write-Verbose "Analyse du script : $($script.FullName)"
@@ -72,7 +72,7 @@ try {
                 continue
             }
             
-            # Vérifier les références à "Roadmap\roadmap_perso.md"
+            # VÃ©rifier les rÃ©fÃ©rences Ã  "Roadmap\roadmap_perso.md"
             if ($content -match "roadmap_perso\.md") {
                 $results += $script.FullName
             }
@@ -81,7 +81,7 @@ try {
         return $results
     }
 
-    # Fonction pour mettre à jour les références à "Roadmap\roadmap_perso.md" dans un script
+    # Fonction pour mettre Ã  jour les rÃ©fÃ©rences Ã  "Roadmap\roadmap_perso.md" dans un script
     function Update-RoadmapReference {
         param (
             [string]$Path,
@@ -89,22 +89,22 @@ try {
             [switch]$WhatIf
         )
         
-        Write-Verbose "Mise à jour des références à "Roadmap\roadmap_perso.md" dans $Path"
+        Write-Verbose "Mise Ã  jour des rÃ©fÃ©rences Ã  "Roadmap\roadmap_perso.md" dans $Path"
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$Path.bak"
             Copy-Item -Path $Path -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée : $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e : $backupPath"
         }
         
         # Lire le contenu du script
         $content = Get-Content -Path $Path -Raw
         
-        # Vérifier si le script importe déjà Get-RoadmapPath.ps1
+        # VÃ©rifier si le script importe dÃ©jÃ  Get-RoadmapPath.ps1
         $importsRoadmapPath = $content -match "Get-RoadmapPath\.ps1"
         
-        # Remplacer les références directes à "Roadmap\roadmap_perso.md"
+        # Remplacer les rÃ©fÃ©rences directes Ã  "Roadmap\roadmap_perso.md"
         $newContent = $content
         
         # 1. Remplacer les chemins relatifs simples
@@ -113,10 +113,10 @@ try {
         # 2. Remplacer les chemins avec Join-Path
         $newContent = $newContent -replace 'Join-Path\s+-Path\s+[^-]+\s+-ChildPath\s+[''"]roadmap_perso\.md[''"]', '(& (Join-Path -Path $PSScriptRoot -ChildPath "..\..\utils\roadmap\Get-RoadmapPath.ps1"))'
         
-        # 3. Remplacer les paramètres par défaut
+        # 3. Remplacer les paramÃ¨tres par dÃ©faut
         $newContent = $newContent -replace '\[string\]\$RoadmapPath\s*=\s*[''"]roadmap_perso\.md[''"]', '[string]$RoadmapPath = (& (Join-Path -Path $PSScriptRoot -ChildPath "..\..\utils\roadmap\Get-RoadmapPath.ps1"))'
         
-        # Ajouter l'importation de Get-RoadmapPath.ps1 si nécessaire
+        # Ajouter l'importation de Get-RoadmapPath.ps1 si nÃ©cessaire
         if (-not $importsRoadmapPath -and $newContent -ne $content) {
             $importStatement = @"
 # Importer le module de gestion de la roadmap
@@ -130,7 +130,7 @@ else {
 
 "@
             
-            # Trouver l'endroit où insérer l'importation
+            # Trouver l'endroit oÃ¹ insÃ©rer l'importation
             $paramMatch = [regex]::Match($newContent, "(?s)^.*?param\s*\((.*?)\)", [System.Text.RegularExpressions.RegexOptions]::Singleline)
             if ($paramMatch.Success) {
                 $newContent = $newContent.Insert($paramMatch.Length, "`n$importStatement")
@@ -139,43 +139,43 @@ else {
             }
         }
         
-        # Écrire le nouveau contenu dans le fichier si des modifications ont été apportées
+        # Ã‰crire le nouveau contenu dans le fichier si des modifications ont Ã©tÃ© apportÃ©es
         if ($newContent -ne $content) {
             if (-not $WhatIf) {
                 Set-Content -Path $Path -Value $newContent -Encoding UTF8
                 return $true
             } else {
-                Write-Log "WhatIf: Le script $Path serait mis à jour" -Level "INFO"
+                Write-Log "WhatIf: Le script $Path serait mis Ã  jour" -Level "INFO"
                 return $false
             }
         } else {
-            Write-Verbose "Aucune modification nécessaire pour $Path"
+            Write-Verbose "Aucune modification nÃ©cessaire pour $Path"
             return $false
         }
     }
 
     # Fonction principale
     function Start-RoadmapReferencesUpdate {
-        Write-Log "Démarrage de la mise à jour des références à la roadmap"
+        Write-Log "DÃ©marrage de la mise Ã  jour des rÃ©fÃ©rences Ã  la roadmap"
         
-        # Vérifier si le répertoire utils\roadmap existe
+        # VÃ©rifier si le rÃ©pertoire utils\roadmap existe
         $roadmapUtilsDir = Join-Path -Path $ScriptsDirectory -ChildPath "utils\roadmap"
         if (-not (Test-Path -Path $roadmapUtilsDir -PathType Container)) {
             New-Item -Path $roadmapUtilsDir -ItemType Directory -Force | Out-Null
-            Write-Log "Répertoire utils\roadmap créé" -Level "INFO"
+            Write-Log "RÃ©pertoire utils\roadmap crÃ©Ã©" -Level "INFO"
         }
         
-        # Vérifier si le script Get-RoadmapPath.ps1 existe
+        # VÃ©rifier si le script Get-RoadmapPath.ps1 existe
         $roadmapPathScript = Join-Path -Path $roadmapUtilsDir -ChildPath "Get-RoadmapPath.ps1"
         if (-not (Test-Path -Path $roadmapPathScript -PathType Leaf)) {
-            Write-Log "Le script Get-RoadmapPath.ps1 n'existe pas. Veuillez le créer d'abord." -Level "ERROR"
+            Write-Log "Le script Get-RoadmapPath.ps1 n'existe pas. Veuillez le crÃ©er d'abord." -Level "ERROR"
             return
         }
         
-        # Trouver les scripts qui font référence à "Roadmap\roadmap_perso.md"
+        # Trouver les scripts qui font rÃ©fÃ©rence Ã  "Roadmap\roadmap_perso.md"
         $scriptsWithReferences = Find-RoadmapReferences -Directory $ScriptsDirectory
         
-        Write-Log "Nombre de scripts faisant référence à "Roadmap\roadmap_perso.md" : $($scriptsWithReferences.Count)"
+        Write-Log "Nombre de scripts faisant rÃ©fÃ©rence Ã  "Roadmap\roadmap_perso.md" : $($scriptsWithReferences.Count)"
         
         $results = @{
             Total = $scriptsWithReferences.Count
@@ -184,7 +184,7 @@ else {
             Details = @()
         }
         
-        # Mettre à jour les références dans les scripts
+        # Mettre Ã  jour les rÃ©fÃ©rences dans les scripts
         foreach ($script in $scriptsWithReferences) {
             Write-Log "Traitement du script : $script"
             
@@ -192,12 +192,12 @@ else {
                 $success = Update-RoadmapReference -Path $script -CreateBackup:$CreateBackup -WhatIf:$WhatIf
                 
                 if ($success) {
-                    Write-Log "Références mises à jour avec succès dans : $script" -Level "INFO"
+                    Write-Log "RÃ©fÃ©rences mises Ã  jour avec succÃ¨s dans : $script" -Level "INFO"
                     $results.Succeeded++
                     $results.Details += [PSCustomObject]@{
                         Path = $script
                         Status = "Success"
-                        Message = "Références mises à jour avec succès"
+                        Message = "RÃ©fÃ©rences mises Ã  jour avec succÃ¨s"
                     }
                 }
                 else {
@@ -206,15 +206,15 @@ else {
                         $results.Details += [PSCustomObject]@{
                             Path = $script
                             Status = "WhatIf"
-                            Message = "Le script serait mis à jour"
+                            Message = "Le script serait mis Ã  jour"
                         }
                     } else {
-                        Write-Log "Aucune modification nécessaire pour : $script" -Level "INFO"
+                        Write-Log "Aucune modification nÃ©cessaire pour : $script" -Level "INFO"
                         $results.Succeeded++
                         $results.Details += [PSCustomObject]@{
                             Path = $script
                             Status = "NoChange"
-                            Message = "Aucune modification nécessaire"
+                            Message = "Aucune modification nÃ©cessaire"
                         }
                     }
                 }
@@ -230,23 +230,23 @@ else {
             }
         }
         
-        # Générer un rapport
+        # GÃ©nÃ©rer un rapport
         $reportPath = Join-Path -Path (Split-Path -Parent $LogFilePath) -ChildPath "roadmap_references_report.json"
         $results | ConvertTo-Json -Depth 3 | Set-Content -Path $reportPath -Encoding UTF8
         
-        Write-Log "Rapport généré : $reportPath"
+        Write-Log "Rapport gÃ©nÃ©rÃ© : $reportPath"
         
-        # Afficher un résumé
-        Write-Host "`nRésumé de la mise à jour des références à la roadmap :" -ForegroundColor Cyan
+        # Afficher un rÃ©sumÃ©
+        Write-Host "`nRÃ©sumÃ© de la mise Ã  jour des rÃ©fÃ©rences Ã  la roadmap :" -ForegroundColor Cyan
         Write-Host "----------------------------------------" -ForegroundColor Cyan
-        Write-Host "Scripts analysés : $($results.Total)" -ForegroundColor White
-        Write-Host "Mises à jour réussies : $($results.Succeeded)" -ForegroundColor Green
-        Write-Host "Échecs : $($results.Failed)" -ForegroundColor Red
+        Write-Host "Scripts analysÃ©s : $($results.Total)" -ForegroundColor White
+        Write-Host "Mises Ã  jour rÃ©ussies : $($results.Succeeded)" -ForegroundColor Green
+        Write-Host "Ã‰checs : $($results.Failed)" -ForegroundColor Red
         
         return $results
     }
 
-    # Exécuter la fonction principale
+    # ExÃ©cuter la fonction principale
     Start-RoadmapReferencesUpdate
 }
 catch {
@@ -255,5 +255,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

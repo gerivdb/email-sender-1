@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests et génère des rapports pour les fonctionnalités de détection de format.
+    ExÃ©cute tous les tests et gÃ©nÃ¨re des rapports pour les fonctionnalitÃ©s de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et génère des rapports de test et de couverture
-    de code pour les fonctionnalités de détection de format développées dans le cadre de la
+    Ce script exÃ©cute tous les tests unitaires et gÃ©nÃ¨re des rapports de test et de couverture
+    de code pour les fonctionnalitÃ©s de dÃ©tection de format dÃ©veloppÃ©es dans le cadre de la
     section 2.1.2 de la roadmap.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les rapports seront enregistrés. Par défaut, 'reports'.
+    Le rÃ©pertoire oÃ¹ les rapports seront enregistrÃ©s. Par dÃ©faut, 'reports'.
 
 .PARAMETER GenerateHtmlReports
-    Indique si des rapports HTML doivent être générés en plus des rapports XML.
+    Indique si des rapports HTML doivent Ãªtre gÃ©nÃ©rÃ©s en plus des rapports XML.
 
 .EXAMPLE
     .\Run-AllTests.ps1 -GenerateHtmlReports
@@ -32,18 +32,18 @@ param(
     [switch]$GenerateHtmlReports
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputDirectory -PathType Container)) {
     New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé : $OutputDirectory" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $OutputDirectory" -ForegroundColor Green
 }
 
 # Chemins des rapports
 $testResultsPath = Join-Path -Path $OutputDirectory -ChildPath "TestResults.xml"
 $codeCoveragePath = Join-Path -Path $OutputDirectory -ChildPath "CodeCoverage.xml"
 
-# Exécuter les tests unitaires
-Write-Host "`nExécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests unitaires
+Write-Host "`nExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $unitTestsScript = Join-Path -Path $PSScriptRoot -ChildPath "Run-UnitTests.ps1"
 if (Test-Path -Path $unitTestsScript -PathType Leaf) {
     $params = @{
@@ -60,8 +60,8 @@ else {
     Write-Warning "Le script de tests unitaires n'existe pas : $unitTestsScript"
 }
 
-# Générer le rapport de couverture de code
-Write-Host "`nGénération du rapport de couverture de code..." -ForegroundColor Cyan
+# GÃ©nÃ©rer le rapport de couverture de code
+Write-Host "`nGÃ©nÃ©ration du rapport de couverture de code..." -ForegroundColor Cyan
 $codeCoverageScript = Join-Path -Path $PSScriptRoot -ChildPath "Get-CodeCoverage.ps1"
 if (Test-Path -Path $codeCoverageScript -PathType Leaf) {
     $params = @{
@@ -78,16 +78,16 @@ else {
     Write-Warning "Le script de couverture de code n'existe pas : $codeCoverageScript"
 }
 
-# Afficher un résumé global
-Write-Host "`nRésumé global des tests :" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ© global
+Write-Host "`nRÃ©sumÃ© global des tests :" -ForegroundColor Cyan
 if ($testResults) {
-    Write-Host "  Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-    Write-Host "  Tests réussis  : $($testResults.PassedCount)" -ForegroundColor Green
-    Write-Host "  Tests échoués  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
-    Write-Host "  Tests ignorés  : $($testResults.SkippedCount)" -ForegroundColor Yellow
+    Write-Host "  Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+    Write-Host "  Tests rÃ©ussis  : $($testResults.PassedCount)" -ForegroundColor Green
+    Write-Host "  Tests Ã©chouÃ©s  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
+    Write-Host "  Tests ignorÃ©s  : $($testResults.SkippedCount)" -ForegroundColor Yellow
 }
 else {
-    Write-Host "  Aucun résultat de test disponible." -ForegroundColor Yellow
+    Write-Host "  Aucun rÃ©sultat de test disponible." -ForegroundColor Yellow
 }
 
 if ($coverageResults) {
@@ -95,15 +95,15 @@ if ($coverageResults) {
     $coveredCommands = $coverageResults.NumberOfCommandsExecuted
     $coveragePercent = if ($totalCommands -gt 0) { [Math]::Round(($coveredCommands / $totalCommands) * 100, 2) } else { 0 }
 
-    Write-Host "`nRésumé de la couverture de code :" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sumÃ© de la couverture de code :" -ForegroundColor Cyan
     Write-Host "  Pourcentage de couverture : $coveragePercent%" -ForegroundColor $(if ($coveragePercent -ge 80) { "Green" } elseif ($coveragePercent -ge 50) { "Yellow" } else { "Red" })
 }
 else {
-    Write-Host "`n  Aucun résultat de couverture disponible." -ForegroundColor Yellow
+    Write-Host "`n  Aucun rÃ©sultat de couverture disponible." -ForegroundColor Yellow
 }
 
-# Afficher les chemins des rapports générés
-Write-Host "`nRapports générés :" -ForegroundColor Cyan
+# Afficher les chemins des rapports gÃ©nÃ©rÃ©s
+Write-Host "`nRapports gÃ©nÃ©rÃ©s :" -ForegroundColor Cyan
 if (Test-Path -Path $testResultsPath -PathType Leaf) {
     Write-Host "  Rapport de test : $testResultsPath" -ForegroundColor White
 

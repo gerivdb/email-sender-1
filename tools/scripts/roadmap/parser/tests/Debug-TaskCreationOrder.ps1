@@ -1,38 +1,38 @@
-# Debug-TaskCreationOrder.ps1
-# Script pour déboguer l'ordre de création des tâches et des dépendances
+﻿# Debug-TaskCreationOrder.ps1
+# Script pour dÃ©boguer l'ordre de crÃ©ation des tÃ¢ches et des dÃ©pendances
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test simple
+# CrÃ©er un fichier markdown de test simple
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "debug-order.md"
 $testMarkdown = @"
 # Debug Order
 
-## Tâches
+## TÃ¢ches
 
-- [ ] **A** Tâche A
-- [ ] **B** Tâche B @depends:A
-- [ ] **C** Tâche C @depends:B
+- [ ] **A** TÃ¢che A
+- [ ] **B** TÃ¢che B @depends:A
+- [ ] **C** TÃ¢che C @depends:B
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
     # Simuler le traitement du fichier
     $content = Get-Content -Path $testMarkdownPath -Raw
     $lines = $content -split "`r?`n"
     
-    # Créer un dictionnaire pour stocker les tâches
+    # CrÃ©er un dictionnaire pour stocker les tÃ¢ches
     $tasks = @{}
     
-    # Première passe : créer toutes les tâches
-    Write-Host "`nPremière passe : création des tâches" -ForegroundColor Cyan
+    # PremiÃ¨re passe : crÃ©er toutes les tÃ¢ches
+    Write-Host "`nPremiÃ¨re passe : crÃ©ation des tÃ¢ches" -ForegroundColor Cyan
     
     foreach ($line in $lines) {
         if ($line -match '^\s*[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$') {
@@ -47,13 +47,13 @@ try {
                     DependsOn = @()
                 }
                 
-                Write-Host "  Tâche créée: $id - $title" -ForegroundColor Green
+                Write-Host "  TÃ¢che crÃ©Ã©e: $id - $title" -ForegroundColor Green
             }
         }
     }
     
-    # Deuxième passe : traiter les dépendances
-    Write-Host "`nDeuxième passe : traitement des dépendances" -ForegroundColor Cyan
+    # DeuxiÃ¨me passe : traiter les dÃ©pendances
+    Write-Host "`nDeuxiÃ¨me passe : traitement des dÃ©pendances" -ForegroundColor Cyan
     
     foreach ($line in $lines) {
         if ($line -match '^\s*[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$') {
@@ -67,31 +67,31 @@ try {
                     $tasks[$id].DependsOn += $dependsOn
                     $tasks[$dependsOn].Dependencies += $id
                     
-                    Write-Host "  Dépendance ajoutée: $id dépend de $dependsOn" -ForegroundColor Yellow
+                    Write-Host "  DÃ©pendance ajoutÃ©e: $id dÃ©pend de $dependsOn" -ForegroundColor Yellow
                 } else {
-                    Write-Host "  Dépendance non trouvée: $dependsOn pour la tâche $id" -ForegroundColor Red
+                    Write-Host "  DÃ©pendance non trouvÃ©e: $dependsOn pour la tÃ¢che $id" -ForegroundColor Red
                 }
             }
         }
     }
     
-    # Afficher les tâches et leurs dépendances
-    Write-Host "`nTâches et dépendances:" -ForegroundColor Cyan
+    # Afficher les tÃ¢ches et leurs dÃ©pendances
+    Write-Host "`nTÃ¢ches et dÃ©pendances:" -ForegroundColor Cyan
     
     foreach ($id in $tasks.Keys) {
         $task = $tasks[$id]
-        Write-Host "  Tâche: $($task.Id) - $($task.Title)" -ForegroundColor Green
+        Write-Host "  TÃ¢che: $($task.Id) - $($task.Title)" -ForegroundColor Green
         
         if ($task.DependsOn.Count -gt 0) {
-            Write-Host "    Dépend de: $($task.DependsOn -join ', ')" -ForegroundColor Yellow
+            Write-Host "    DÃ©pend de: $($task.DependsOn -join ', ')" -ForegroundColor Yellow
         }
         
         if ($task.Dependencies.Count -gt 0) {
-            Write-Host "    Dépendances: $($task.Dependencies -join ', ')" -ForegroundColor Yellow
+            Write-Host "    DÃ©pendances: $($task.Dependencies -join ', ')" -ForegroundColor Yellow
         }
     }
     
-    Write-Host "`nTest terminé." -ForegroundColor Green
+    Write-Host "`nTest terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors du test: $_" -ForegroundColor Red
@@ -101,6 +101,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

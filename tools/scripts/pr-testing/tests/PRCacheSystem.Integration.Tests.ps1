@@ -1,34 +1,34 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration pour le système de cache d'analyse des pull requests.
+    Tests d'intÃ©gration pour le systÃ¨me de cache d'analyse des pull requests.
 .DESCRIPTION
-    Ce fichier contient des tests d'intégration pour le système complet de cache d'analyse
-    des pull requests, vérifiant l'interaction entre les différents composants.
+    Ce fichier contient des tests d'intÃ©gration pour le systÃ¨me complet de cache d'analyse
+    des pull requests, vÃ©rifiant l'interaction entre les diffÃ©rents composants.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Requires: Pester v5.0+, PRAnalysisCache.psm1
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemins des scripts à tester
+# Chemins des scripts Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 $initializePath = Join-Path -Path $PSScriptRoot -ChildPath "..\Initialize-PRCachePersistence.ps1"
 $validityPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Test-PRCacheValidity.ps1"
 $updatePath = Join-Path -Path $PSScriptRoot -ChildPath "..\Update-PRCacheSelectively.ps1"
 $statisticsPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Get-PRCacheStatistics.ps1"
 
-# Vérifier que tous les scripts existent
+# VÃ©rifier que tous les scripts existent
 $scripts = @($modulePath, $initializePath, $validityPath, $updatePath, $statisticsPath)
 foreach ($script in $scripts) {
     if (-not (Test-Path -Path $script)) {
-        throw "Script non trouvé: $script"
+        throw "Script non trouvÃ©: $script"
     }
 }
 
@@ -38,12 +38,12 @@ Import-Module $modulePath -Force
 # Variables globales pour les tests
 $script:testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCacheIntegration"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 BeforeAll {
-    # Créer le répertoire de cache de test
+    # CrÃ©er le rÃ©pertoire de cache de test
     New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
-    # Fonction pour exécuter les scripts avec des paramètres
+    # Fonction pour exÃ©cuter les scripts avec des paramÃ¨tres
     function Invoke-InitializeScript {
         param(
             [string]$CachePath,
@@ -142,37 +142,37 @@ BeforeAll {
 
 Describe "PRCache System Integration Tests" {
     Context "End-to-End Workflow" {
-        It "Exécute un flux de travail complet avec tous les composants" {
-            # Étape 1: Initialiser le cache
+        It "ExÃ©cute un flux de travail complet avec tous les composants" {
+            # Ã‰tape 1: Initialiser le cache
             $cache = Invoke-InitializeScript -CachePath $script:testCachePath -Force
             $cache | Should -Not -BeNullOrEmpty
 
-            # Vérifier que le cache a été initialisé correctement
+            # VÃ©rifier que le cache a Ã©tÃ© initialisÃ© correctement
             Test-Path -Path (Join-Path -Path $script:testCachePath -ChildPath "cache_config.json") | Should -Be $true
 
-            # Étape 2: Ajouter des éléments au cache
+            # Ã‰tape 2: Ajouter des Ã©lÃ©ments au cache
             $cache.SetItem("PR:42:File:script1.ps1", "Content1", (New-TimeSpan -Hours 1))
             $cache.SetItem("PR:42:File:script2.ps1", "Content2", (New-TimeSpan -Hours 1))
             $cache.SetItem("PR:43:File:script1.ps1", "Content3", (New-TimeSpan -Hours 1))
 
-            # Vérifier que les éléments ont été ajoutés
+            # VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© ajoutÃ©s
             $cache.GetItem("PR:42:File:script1.ps1") | Should -Be "Content1"
             $cache.GetItem("PR:42:File:script2.ps1") | Should -Be "Content2"
             $cache.GetItem("PR:43:File:script1.ps1") | Should -Be "Content3"
 
-            # Étape 3: Tester la validité du cache
+            # Ã‰tape 3: Tester la validitÃ© du cache
             $validityResult = Invoke-ValidityScript -CachePath $script:testCachePath
             $validityResult | Should -Not -BeNullOrEmpty
             $validityResult.IsValid | Should -Be $true
 
-            # Étape 4: Mettre à jour sélectivement le cache
+            # Ã‰tape 4: Mettre Ã  jour sÃ©lectivement le cache
             Invoke-UpdateScript -CachePath $script:testCachePath -Pattern "PR:42:*" -Force
 
-            # Vérifier que les éléments sont toujours accessibles
-            $cache.GetItem("PR:42:File:script1.ps1") | Should -BeNullOrEmpty # Devrait être supprimé par la mise à jour
-            $cache.GetItem("PR:43:File:script1.ps1") | Should -Be "Content3" # Ne devrait pas être affecté
+            # VÃ©rifier que les Ã©lÃ©ments sont toujours accessibles
+            $cache.GetItem("PR:42:File:script1.ps1") | Should -BeNullOrEmpty # Devrait Ãªtre supprimÃ© par la mise Ã  jour
+            $cache.GetItem("PR:43:File:script1.ps1") | Should -Be "Content3" # Ne devrait pas Ãªtre affectÃ©
 
-            # Étape 5: Obtenir les statistiques du cache
+            # Ã‰tape 5: Obtenir les statistiques du cache
             $statsResult = Invoke-StatisticsScript -CachePath $script:testCachePath
             $statsResult | Should -Not -BeNullOrEmpty
             $statsResult.Name | Should -Be "PRAnalysisCache"
@@ -180,12 +180,12 @@ Describe "PRCache System Integration Tests" {
     }
 
     Context "Performance Tests" {
-        It "Gère efficacement un grand nombre d'éléments" {
+        It "GÃ¨re efficacement un grand nombre d'Ã©lÃ©ments" {
             # Initialiser le cache
             $cache = Invoke-InitializeScript -CachePath $script:testCachePath -MaxMemoryItems 1000 -Force
             $cache | Should -Not -BeNullOrEmpty
 
-            # Ajouter un grand nombre d'éléments
+            # Ajouter un grand nombre d'Ã©lÃ©ments
             $itemCount = 100
             $startTime = Get-Date
 
@@ -196,13 +196,13 @@ Describe "PRCache System Integration Tests" {
             $endTime = Get-Date
             $duration = ($endTime - $startTime).TotalSeconds
 
-            Write-Host "Temps pour ajouter $itemCount éléments: $duration secondes"
+            Write-Host "Temps pour ajouter $itemCount Ã©lÃ©ments: $duration secondes"
 
-            # Vérifier que les éléments ont été ajoutés
+            # VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© ajoutÃ©s
             $cache.GetItem("TestKey1") | Should -Be "TestValue1"
             $cache.GetItem("TestKey$itemCount") | Should -Be "TestValue$itemCount"
 
-            # Mesurer le temps d'accès
+            # Mesurer le temps d'accÃ¨s
             $startTime = Get-Date
 
             for ($i = 1; $i -le $itemCount; $i++) {
@@ -212,7 +212,7 @@ Describe "PRCache System Integration Tests" {
             $endTime = Get-Date
             $duration = ($endTime - $startTime).TotalSeconds
 
-            Write-Host "Temps pour accéder à $itemCount éléments: $duration secondes"
+            Write-Host "Temps pour accÃ©der Ã  $itemCount Ã©lÃ©ments: $duration secondes"
 
             # Obtenir les statistiques
             $statsResult = Invoke-StatisticsScript -CachePath $script:testCachePath
@@ -222,12 +222,12 @@ Describe "PRCache System Integration Tests" {
     }
 
     Context "Error Recovery" {
-        It "Récupère d'un cache corrompu" {
+        It "RÃ©cupÃ¨re d'un cache corrompu" {
             # Initialiser le cache
             $cache = Invoke-InitializeScript -CachePath $script:testCachePath -Force
             $cache | Should -Not -BeNullOrEmpty
 
-            # Ajouter des éléments au cache
+            # Ajouter des Ã©lÃ©ments au cache
             $cache.SetItem("TestKey1", "TestValue1", (New-TimeSpan -Hours 1))
             $cache.SetItem("TestKey2", "TestValue2", (New-TimeSpan -Hours 1))
 
@@ -235,17 +235,17 @@ Describe "PRCache System Integration Tests" {
             $corruptedFile = Join-Path -Path $script:testCachePath -ChildPath "$($cache.NormalizeKey("TestKey1")).xml"
             Set-Content -Path $corruptedFile -Value "Invalid XML Content"
 
-            # Vérifier que l'élément corrompu n'est pas accessible
+            # VÃ©rifier que l'Ã©lÃ©ment corrompu n'est pas accessible
             $cache.GetItem("TestKey1") | Should -BeNullOrEmpty
 
-            # Vérifier que l'élément non corrompu est toujours accessible
+            # VÃ©rifier que l'Ã©lÃ©ment non corrompu est toujours accessible
             $cache.GetItem("TestKey2") | Should -Be "TestValue2"
 
-            # Réinitialiser le cache
+            # RÃ©initialiser le cache
             $cache = Invoke-InitializeScript -CachePath $script:testCachePath -Force
             $cache | Should -Not -BeNullOrEmpty
 
-            # Vérifier que le cache est à nouveau valide
+            # VÃ©rifier que le cache est Ã  nouveau valide
             $validityResult = Invoke-ValidityScript -CachePath $script:testCachePath
             $validityResult | Should -Not -BeNullOrEmpty
             $validityResult.IsValid | Should -Be $true

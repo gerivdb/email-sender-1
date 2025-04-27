@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse les scripts PowerShell pour identifier les problèmes de gestion d'erreurs.
+    Analyse les scripts PowerShell pour identifier les problÃ¨mes de gestion d'erreurs.
 .DESCRIPTION
-    Ce script analyse les scripts PowerShell existants pour identifier les problèmes
-    de gestion d'erreurs et suggérer des améliorations.
+    Ce script analyse les scripts PowerShell existants pour identifier les problÃ¨mes
+    de gestion d'erreurs et suggÃ©rer des amÃ©liorations.
 .EXAMPLE
     . .\ScriptAnalyzer.ps1
     Analyze-ScriptErrorHandling -Path "C:\path\to\script.ps1"
@@ -26,67 +26,67 @@ function Analyze-ScriptErrorHandling {
     )
     
     begin {
-        # Définir les modèles à rechercher
+        # DÃ©finir les modÃ¨les Ã  rechercher
         $patterns = @{
             MissingTryCatch = @{
                 Pattern = '(?<!try\s*{[^}]*?)(?<!\$ErrorActionPreference\s*=\s*[''"]SilentlyContinue[''"]\s*)(New-Item|Remove-Item|Set-Content|Add-Content|Copy-Item|Move-Item|Rename-Item|Invoke-WebRequest|Invoke-RestMethod|Start-Process|Stop-Process)'
-                Description = "Commande potentiellement risquée sans bloc try/catch"
+                Description = "Commande potentiellement risquÃ©e sans bloc try/catch"
                 Severity = "High"
-                Suggestion = "Entourer cette commande d'un bloc try/catch pour gérer les erreurs potentielles."
+                Suggestion = "Entourer cette commande d'un bloc try/catch pour gÃ©rer les erreurs potentielles."
             }
             ErrorActionPreference = @{
                 Pattern = '\$ErrorActionPreference\s*=\s*[''"]Stop[''"]'
-                Description = "Définition de ErrorActionPreference à Stop"
+                Description = "DÃ©finition de ErrorActionPreference Ã  Stop"
                 Severity = "Info"
-                Suggestion = "Cette configuration est bonne pour la gestion d'erreurs, mais assurez-vous d'avoir des blocs try/catch appropriés."
+                Suggestion = "Cette configuration est bonne pour la gestion d'erreurs, mais assurez-vous d'avoir des blocs try/catch appropriÃ©s."
             }
             MissingErrorVariable = @{
                 Pattern = '(?<!-ErrorVariable\s+\w+\s*)(?<!-ev\s+\w+\s*)(New-Item|Remove-Item|Set-Content|Add-Content|Copy-Item|Move-Item|Rename-Item|Invoke-WebRequest|Invoke-RestMethod)'
-                Description = "Commande sans paramètre ErrorVariable"
+                Description = "Commande sans paramÃ¨tre ErrorVariable"
                 Severity = "Medium"
-                Suggestion = "Ajouter le paramètre -ErrorVariable pour capturer les erreurs spécifiques à cette commande."
+                Suggestion = "Ajouter le paramÃ¨tre -ErrorVariable pour capturer les erreurs spÃ©cifiques Ã  cette commande."
             }
             WriteError = @{
                 Pattern = 'Write-Error'
                 Description = "Utilisation de Write-Error"
                 Severity = "Info"
-                Suggestion = "Considérer l'utilisation de throw pour les erreurs critiques ou d'un système de journalisation centralisé."
+                Suggestion = "ConsidÃ©rer l'utilisation de throw pour les erreurs critiques ou d'un systÃ¨me de journalisation centralisÃ©."
             }
             ThrowStatement = @{
                 Pattern = 'throw'
                 Description = "Utilisation de throw"
                 Severity = "Info"
-                Suggestion = "Bon pour signaler des erreurs critiques, mais assurez-vous qu'elles sont capturées à un niveau supérieur."
+                Suggestion = "Bon pour signaler des erreurs critiques, mais assurez-vous qu'elles sont capturÃ©es Ã  un niveau supÃ©rieur."
             }
             TryCatchBlock = @{
                 Pattern = 'try\s*{[^}]*?}\s*catch\s*{'
-                Description = "Bloc try/catch trouvé"
+                Description = "Bloc try/catch trouvÃ©"
                 Severity = "Info"
-                Suggestion = "Vérifier que le bloc catch gère correctement l'erreur (journalisation, nettoyage, etc.)."
+                Suggestion = "VÃ©rifier que le bloc catch gÃ¨re correctement l'erreur (journalisation, nettoyage, etc.)."
             }
             EmptyCatchBlock = @{
                 Pattern = 'catch\s*{\s*}'
                 Description = "Bloc catch vide"
                 Severity = "High"
-                Suggestion = "Les blocs catch vides masquent les erreurs sans les gérer. Ajoutez au moins une journalisation."
+                Suggestion = "Les blocs catch vides masquent les erreurs sans les gÃ©rer. Ajoutez au moins une journalisation."
             }
             FinallyBlock = @{
                 Pattern = 'finally\s*{'
-                Description = "Bloc finally trouvé"
+                Description = "Bloc finally trouvÃ©"
                 Severity = "Info"
-                Suggestion = "Bon pour le nettoyage des ressources, indépendamment des erreurs."
+                Suggestion = "Bon pour le nettoyage des ressources, indÃ©pendamment des erreurs."
             }
             TestPath = @{
                 Pattern = 'Test-Path'
-                Description = "Vérification d'existence de chemin"
+                Description = "VÃ©rification d'existence de chemin"
                 Severity = "Info"
-                Suggestion = "Bonne pratique pour éviter les erreurs lors de l'accès aux fichiers."
+                Suggestion = "Bonne pratique pour Ã©viter les erreurs lors de l'accÃ¨s aux fichiers."
             }
             ErrorLog = @{
                 Pattern = '(Write-Log|Log-Error|Add-Log)'
                 Description = "Journalisation d'erreur potentielle"
                 Severity = "Info"
-                Suggestion = "Vérifier que les erreurs importantes sont correctement journalisées."
+                Suggestion = "VÃ©rifier que les erreurs importantes sont correctement journalisÃ©es."
             }
         }
         
@@ -94,7 +94,7 @@ function Analyze-ScriptErrorHandling {
     }
     
     process {
-        # Obtenir la liste des fichiers à analyser
+        # Obtenir la liste des fichiers Ã  analyser
         $files = if (Test-Path -Path $Path -PathType Container) {
             Get-ChildItem -Path $Path -Filter "*.ps1" -Recurse:$Recurse
         }
@@ -112,7 +112,7 @@ function Analyze-ScriptErrorHandling {
             # Lire le contenu du fichier
             $content = Get-Content -Path $file.FullName -Raw
             
-            # Initialiser les résultats pour ce fichier
+            # Initialiser les rÃ©sultats pour ce fichier
             $fileResult = [PSCustomObject]@{
                 FilePath = $file.FullName
                 FileName = $file.Name
@@ -127,7 +127,7 @@ function Analyze-ScriptErrorHandling {
                 Recommendations = @()
             }
             
-            # Analyser le contenu avec chaque modèle
+            # Analyser le contenu avec chaque modÃ¨le
             foreach ($patternName in $patterns.Keys) {
                 $pattern = $patterns[$patternName]
                 
@@ -135,10 +135,10 @@ function Analyze-ScriptErrorHandling {
                 $matches = [regex]::Matches($content, $pattern.Pattern)
                 
                 foreach ($match in $matches) {
-                    # Trouver le numéro de ligne
+                    # Trouver le numÃ©ro de ligne
                     $lineNumber = ($content.Substring(0, $match.Index).Split("`n")).Length
                     
-                    # Extraire la ligne complète
+                    # Extraire la ligne complÃ¨te
                     $lines = $content.Split("`n")
                     $line = if ($lineNumber -le $lines.Length) { $lines[$lineNumber - 1].Trim() } else { "" }
                     
@@ -155,14 +155,14 @@ function Analyze-ScriptErrorHandling {
                     $fileResult.Issues += $issue
                     $fileResult.TotalIssues++
                     
-                    # Mettre à jour les compteurs de sévérité
+                    # Mettre Ã  jour les compteurs de sÃ©vÃ©ritÃ©
                     switch ($pattern.Severity) {
                         "High" { $fileResult.HighSeverityIssues++ }
                         "Medium" { $fileResult.MediumSeverityIssues++ }
                         "Info" { $fileResult.InfoIssues++ }
                     }
                     
-                    # Mettre à jour les indicateurs
+                    # Mettre Ã  jour les indicateurs
                     if ($patternName -eq "TryCatchBlock") {
                         $fileResult.HasTryCatch = $true
                         $fileResult.HasErrorHandling = $true
@@ -173,17 +173,17 @@ function Analyze-ScriptErrorHandling {
                 }
             }
             
-            # Générer des recommandations
+            # GÃ©nÃ©rer des recommandations
             if ($fileResult.HighSeverityIssues -gt 0) {
-                $fileResult.Recommendations += "Priorité élevée: Corriger les $($fileResult.HighSeverityIssues) problèmes de sévérité élevée."
+                $fileResult.Recommendations += "PrioritÃ© Ã©levÃ©e: Corriger les $($fileResult.HighSeverityIssues) problÃ¨mes de sÃ©vÃ©ritÃ© Ã©levÃ©e."
             }
             
             if (-not $fileResult.HasTryCatch) {
-                $fileResult.Recommendations += "Ajouter des blocs try/catch pour les opérations critiques."
+                $fileResult.Recommendations += "Ajouter des blocs try/catch pour les opÃ©rations critiques."
             }
             
             if (-not $fileResult.HasErrorHandling) {
-                $fileResult.Recommendations += "Implémenter une stratégie de gestion d'erreurs (try/catch, ErrorActionPreference, journalisation)."
+                $fileResult.Recommendations += "ImplÃ©menter une stratÃ©gie de gestion d'erreurs (try/catch, ErrorActionPreference, journalisation)."
             }
             
             if ($fileResult.Issues | Where-Object { $_.Pattern -eq "EmptyCatchBlock" }) {
@@ -191,7 +191,7 @@ function Analyze-ScriptErrorHandling {
             }
             
             if (($fileResult.Issues | Where-Object { $_.Pattern -eq "MissingErrorVariable" }).Count -gt 0) {
-                $fileResult.Recommendations += "Ajouter des paramètres -ErrorVariable aux commandes critiques pour une meilleure gestion des erreurs."
+                $fileResult.Recommendations += "Ajouter des paramÃ¨tres -ErrorVariable aux commandes critiques pour une meilleure gestion des erreurs."
             }
             
             $results += $fileResult
@@ -199,7 +199,7 @@ function Analyze-ScriptErrorHandling {
     }
     
     end {
-        # Générer un rapport si demandé
+        # GÃ©nÃ©rer un rapport si demandÃ©
         if ($GenerateReport) {
             $reportPath = Join-Path -Path (Get-Location).Path -ChildPath "ErrorHandlingAnalysisReport.html"
             
@@ -226,27 +226,27 @@ function Analyze-ScriptErrorHandling {
 <body>
     <h1>Rapport d'analyse de gestion d'erreurs</h1>
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Fichiers analysés: $($results.Count)</p>
-        <p>Problèmes de sévérité élevée: $($results | Measure-Object -Property HighSeverityIssues -Sum | Select-Object -ExpandProperty Sum)</p>
-        <p>Problèmes de sévérité moyenne: $($results | Measure-Object -Property MediumSeverityIssues -Sum | Select-Object -ExpandProperty Sum)</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Fichiers analysÃ©s: $($results.Count)</p>
+        <p>ProblÃ¨mes de sÃ©vÃ©ritÃ© Ã©levÃ©e: $($results | Measure-Object -Property HighSeverityIssues -Sum | Select-Object -ExpandProperty Sum)</p>
+        <p>ProblÃ¨mes de sÃ©vÃ©ritÃ© moyenne: $($results | Measure-Object -Property MediumSeverityIssues -Sum | Select-Object -ExpandProperty Sum)</p>
         <p>Informations: $($results | Measure-Object -Property InfoIssues -Sum | Select-Object -ExpandProperty Sum)</p>
     </div>
     
-    <h2>Détails par fichier</h2>
+    <h2>DÃ©tails par fichier</h2>
     
 $(foreach ($result in $results) {
 @"
     <div class="file-section">
         <h3>$($result.FileName)</h3>
         <p>Chemin: $($result.FilePath)</p>
-        <p>Total des problèmes: $($result.TotalIssues)</p>
+        <p>Total des problÃ¨mes: $($result.TotalIssues)</p>
         
-        <h4>Problèmes identifiés</h4>
+        <h4>ProblÃ¨mes identifiÃ©s</h4>
         <table>
             <tr>
                 <th>Ligne</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Description</th>
                 <th>Code</th>
                 <th>Suggestion</th>
@@ -288,7 +288,7 @@ $(foreach ($recommendation in $result.Recommendations) {
 "@
             
             Set-Content -Path $reportPath -Value $reportContent
-            Write-Host "Rapport généré: $reportPath"
+            Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath"
         }
         
         return $results
@@ -314,22 +314,22 @@ function Add-ErrorHandlingToScript {
         [switch]$WhatIf
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-Error "Le fichier '$Path' n'existe pas."
         return $false
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $OutputPath = $Path
     }
     
-    # Créer une sauvegarde si demandé
+    # CrÃ©er une sauvegarde si demandÃ©
     if ($Backup) {
         $backupPath = "$Path.bak"
         Copy-Item -Path $Path -Destination $backupPath -Force
-        Write-Verbose "Sauvegarde créée: $backupPath"
+        Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
     }
     
     # Lire le contenu du script
@@ -339,14 +339,14 @@ function Add-ErrorHandlingToScript {
     $analysis = Analyze-ScriptErrorHandling -Path $Path
     
     if ($analysis.TotalIssues -eq 0) {
-        Write-Verbose "Aucun problème de gestion d'erreurs détecté dans le script."
+        Write-Verbose "Aucun problÃ¨me de gestion d'erreurs dÃ©tectÃ© dans le script."
         return $true
     }
     
-    # Modifications à apporter
+    # Modifications Ã  apporter
     $modifications = @()
     
-    # Ajouter une section de configuration de gestion d'erreurs au début du script
+    # Ajouter une section de configuration de gestion d'erreurs au dÃ©but du script
     if (-not ($content -match '\$ErrorActionPreference\s*=\s*[''"]Stop[''"]')) {
         $errorConfigSection = @"
 
@@ -356,10 +356,10 @@ function Add-ErrorHandlingToScript {
 
 "@
         
-        # Trouver l'endroit où insérer la configuration
+        # Trouver l'endroit oÃ¹ insÃ©rer la configuration
         $insertPosition = 0
         
-        # Chercher après les commentaires initiaux et les déclarations param
+        # Chercher aprÃ¨s les commentaires initiaux et les dÃ©clarations param
         if ($content -match '(?s)^(#[^\n]*\n)+') {
             $insertPosition = $matches[0].Length
         }
@@ -376,7 +376,7 @@ function Add-ErrorHandlingToScript {
         }
     }
     
-    # Ajouter une fonction de journalisation si demandé
+    # Ajouter une fonction de journalisation si demandÃ©
     if ($AddLogging -and -not ($content -match 'function\s+Write-Log')) {
         $loggingFunction = @"
 
@@ -406,21 +406,21 @@ function Write-Log {
         "DEBUG" { Write-Verbose `$logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         Add-Content -Path `$LogFilePath -Value `$logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 
 "@
         
-        # Trouver l'endroit où insérer la fonction de journalisation
+        # Trouver l'endroit oÃ¹ insÃ©rer la fonction de journalisation
         $insertPosition = 0
         
-        # Chercher après les commentaires initiaux, les déclarations param et la configuration
+        # Chercher aprÃ¨s les commentaires initiaux, les dÃ©clarations param et la configuration
         if ($content -match '(?s)^(#[^\n]*\n)+\s*(param\s*\([^\)]+\))?\s*(\$ErrorActionPreference\s*=\s*[\'"]Stop[\'"])?\s*') {
             $insertPosition = $matches[0].Length
         }
@@ -433,15 +433,15 @@ function Write-Log {
         }
     }
     
-    # Entourer les commandes risquées de blocs try/catch
+    # Entourer les commandes risquÃ©es de blocs try/catch
     $riskyCommands = $analysis.Issues | Where-Object { $_.Pattern -eq "MissingTryCatch" }
     
     foreach ($command in $riskyCommands) {
-        # Extraire la ligne complète
+        # Extraire la ligne complÃ¨te
         $lines = $content.Split("`n")
         $line = $lines[$command.LineNumber - 1]
         
-        # Vérifier si la ligne n'est pas déjà dans un bloc try/catch
+        # VÃ©rifier si la ligne n'est pas dÃ©jÃ  dans un bloc try/catch
         $isInTryCatch = $false
         
         for ($i = $command.LineNumber - 2; $i -ge 0; $i--) {
@@ -466,7 +466,7 @@ ${indentation}try {
 $line
 ${indentation}}
 ${indentation}catch {
-${indentation}    $(if ($AddLogging) { "Write-Log -Level ERROR -Message `"Erreur lors de l'exécution de la commande: `$_`"" } else { "Write-Error `"Erreur lors de l'exécution de la commande: `$_`"" })
+${indentation}    $(if ($AddLogging) { "Write-Log -Level ERROR -Message `"Erreur lors de l'exÃ©cution de la commande: `$_`"" } else { "Write-Error `"Erreur lors de l'exÃ©cution de la commande: `$_`"" })
 ${indentation}}
 "@
             
@@ -475,7 +475,7 @@ ${indentation}}
                 LineNumber = $command.LineNumber
                 OldContent = $line
                 NewContent = $tryCatchBlock
-                Description = "Ajout d'un bloc try/catch autour de la commande risquée"
+                Description = "Ajout d'un bloc try/catch autour de la commande risquÃ©e"
             }
         }
     }
@@ -484,7 +484,7 @@ ${indentation}}
     $emptyCatches = $analysis.Issues | Where-Object { $_.Pattern -eq "EmptyCatchBlock" }
     
     foreach ($emptyCatch in $emptyCatches) {
-        # Extraire la ligne complète
+        # Extraire la ligne complÃ¨te
         $lines = $content.Split("`n")
         $line = $lines[$emptyCatch.LineNumber - 1]
         
@@ -510,7 +510,7 @@ ${indentation}}
     
     # Appliquer les modifications si ce n'est pas un test
     if (-not $WhatIf) {
-        # Trier les modifications par position/ligne (en ordre décroissant pour éviter les décalages)
+        # Trier les modifications par position/ligne (en ordre dÃ©croissant pour Ã©viter les dÃ©calages)
         $sortedModifications = $modifications | Sort-Object -Property @{
             Expression = { if ($_.Type -eq "Insert") { $_.Position } else { $_.LineNumber } }
             Descending = $true
@@ -530,22 +530,22 @@ ${indentation}}
             }
         }
         
-        # Écrire le contenu modifié
+        # Ã‰crire le contenu modifiÃ©
         Set-Content -Path $OutputPath -Value $modifiedContent
         
-        Write-Verbose "Script modifié avec $($modifications.Count) améliorations de gestion d'erreurs."
+        Write-Verbose "Script modifiÃ© avec $($modifications.Count) amÃ©liorations de gestion d'erreurs."
         return $true
     }
     else {
-        # Afficher les modifications prévues
-        Write-Host "Modifications prévues pour le script '$Path':"
+        # Afficher les modifications prÃ©vues
+        Write-Host "Modifications prÃ©vues pour le script '$Path':"
         
         foreach ($mod in $modifications) {
             Write-Host "- $($mod.Description)"
             
             if ($mod.Type -eq "Insert") {
                 Write-Host "  Position: $($mod.Position)"
-                Write-Host "  Contenu à insérer:"
+                Write-Host "  Contenu Ã  insÃ©rer:"
                 Write-Host $mod.Content
             }
             elseif ($mod.Type -eq "Replace") {

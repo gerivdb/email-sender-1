@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Test d'intégration pour les fonctions de points d'arrêt.
+    Test d'intÃ©gration pour les fonctions de points d'arrÃªt.
 
 .DESCRIPTION
-    Ce script effectue un test d'intégration pour les fonctions de points d'arrêt
-    du module RoadmapParser. Il vérifie que toutes les fonctions fonctionnent ensemble.
+    Ce script effectue un test d'intÃ©gration pour les fonctions de points d'arrÃªt
+    du module RoadmapParser. Il vÃ©rifie que toutes les fonctions fonctionnent ensemble.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Public"
@@ -23,25 +23,25 @@ $invokeActionPath = Join-Path -Path $functionsPath -ChildPath "Invoke-RoadmapBre
 $writeLogPath = Join-Path -Path $functionsPath -ChildPath "Write-RoadmapBreakpointLog.ps1"
 $setTimedBreakpointPath = Join-Path -Path $functionsPath -ChildPath "Set-RoadmapTimedBreakpoint.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $setBreakpointPath)) {
-    throw "Le fichier Set-RoadmapBreakpoint.ps1 est introuvable à l'emplacement : $setBreakpointPath"
+    throw "Le fichier Set-RoadmapBreakpoint.ps1 est introuvable Ã  l'emplacement : $setBreakpointPath"
 }
 
 if (-not (Test-Path -Path $testConditionPath)) {
-    throw "Le fichier Test-RoadmapBreakpointCondition.ps1 est introuvable à l'emplacement : $testConditionPath"
+    throw "Le fichier Test-RoadmapBreakpointCondition.ps1 est introuvable Ã  l'emplacement : $testConditionPath"
 }
 
 if (-not (Test-Path -Path $invokeActionPath)) {
-    throw "Le fichier Invoke-RoadmapBreakpointAction.ps1 est introuvable à l'emplacement : $invokeActionPath"
+    throw "Le fichier Invoke-RoadmapBreakpointAction.ps1 est introuvable Ã  l'emplacement : $invokeActionPath"
 }
 
 if (-not (Test-Path -Path $writeLogPath)) {
-    throw "Le fichier Write-RoadmapBreakpointLog.ps1 est introuvable à l'emplacement : $writeLogPath"
+    throw "Le fichier Write-RoadmapBreakpointLog.ps1 est introuvable Ã  l'emplacement : $writeLogPath"
 }
 
 if (-not (Test-Path -Path $setTimedBreakpointPath)) {
-    throw "Le fichier Set-RoadmapTimedBreakpoint.ps1 est introuvable à l'emplacement : $setTimedBreakpointPath"
+    throw "Le fichier Set-RoadmapTimedBreakpoint.ps1 est introuvable Ã  l'emplacement : $setTimedBreakpointPath"
 }
 
 # Importer les fonctions
@@ -50,13 +50,13 @@ if (-not (Test-Path -Path $setTimedBreakpointPath)) {
 . $invokeActionPath
 . $setBreakpointPath
 . $setTimedBreakpointPath
-Write-Host "Fonctions importées." -ForegroundColor Green
+Write-Host "Fonctions importÃ©es." -ForegroundColor Green
 
 # Initialiser les compteurs de tests
 $totalTests = 0
 $passedTests = 0
 
-# Remplacer temporairement Invoke-RoadmapBreakpointAction pour éviter l'interaction utilisateur
+# Remplacer temporairement Invoke-RoadmapBreakpointAction pour Ã©viter l'interaction utilisateur
 $originalInvokeAction = Get-Item function:Invoke-RoadmapBreakpointAction
 $actionCalled = $false
 $actionBreakpoint = $null
@@ -70,16 +70,16 @@ function Invoke-RoadmapBreakpointAction {
         [hashtable]$AdditionalInfo
     )
     
-    # Simuler l'exécution de l'action
+    # Simuler l'exÃ©cution de l'action
     $script:actionCalled = $true
     $script:actionBreakpoint = $Breakpoint
     
-    Write-Host "  Action simulée pour le point d'arrêt $($Breakpoint.Id)" -ForegroundColor Gray
+    Write-Host "  Action simulÃ©e pour le point d'arrÃªt $($Breakpoint.Id)" -ForegroundColor Gray
     Write-Host "  Message : $($Breakpoint.Message)" -ForegroundColor Gray
     Write-Host "  Action : $($Breakpoint.Action)" -ForegroundColor Gray
 }
 
-# Remplacer temporairement Start-Sleep pour accélérer le test
+# Remplacer temporairement Start-Sleep pour accÃ©lÃ©rer le test
 $originalStartSleep = Get-Item function:Start-Sleep
 
 function Start-Sleep {
@@ -92,31 +92,31 @@ function Start-Sleep {
     )
     
     # Ne rien faire, juste simuler l'attente
-    Write-Host "  Attente simulée de $Seconds secondes et $Milliseconds millisecondes" -ForegroundColor Gray
+    Write-Host "  Attente simulÃ©e de $Seconds secondes et $Milliseconds millisecondes" -ForegroundColor Gray
 }
 
-# Test 1: Scénario d'intégration - Point d'arrêt conditionnel
+# Test 1: ScÃ©nario d'intÃ©gration - Point d'arrÃªt conditionnel
 $totalTests++
-Write-Host "`nTest 1: Scénario d'intégration - Point d'arrêt conditionnel" -ForegroundColor Cyan
+Write-Host "`nTest 1: ScÃ©nario d'intÃ©gration - Point d'arrÃªt conditionnel" -ForegroundColor Cyan
 try {
-    # Réinitialiser les variables de suivi
+    # RÃ©initialiser les variables de suivi
     $script:actionCalled = $false
     $script:actionBreakpoint = $null
     
-    # Créer une variable pour la condition
+    # CrÃ©er une variable pour la condition
     $testVar = 5
     
-    # Appeler la fonction avec une condition qui évalue à true
-    $breakpoint = Set-RoadmapBreakpoint -Condition { $testVar -gt 3 } -Action Log -Message "La variable est supérieure à 3" -Category "TestIntegration" -PassThru
+    # Appeler la fonction avec une condition qui Ã©value Ã  true
+    $breakpoint = Set-RoadmapBreakpoint -Condition { $testVar -gt 3 } -Action Log -Message "La variable est supÃ©rieure Ã  3" -Category "TestIntegration" -PassThru
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($breakpoint -and $breakpoint.Id -and $script:actionCalled -and $script:actionBreakpoint.Id -eq $breakpoint.Id) {
-        Write-Host "  Réussi : Le point d'arrêt conditionnel a été correctement créé et l'action a été exécutée." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : Le point d'arrÃªt conditionnel a Ã©tÃ© correctement crÃ©Ã© et l'action a Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : Le point d'arrêt conditionnel n'a pas été correctement créé ou l'action n'a pas été exécutée." -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : Le point d'arrÃªt conditionnel n'a pas Ã©tÃ© correctement crÃ©Ã© ou l'action n'a pas Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Red
         Write-Host "  Breakpoint : $($breakpoint | ConvertTo-Json)" -ForegroundColor Red
-        Write-Host "  Action appelée : $actionCalled" -ForegroundColor Red
+        Write-Host "  Action appelÃ©e : $actionCalled" -ForegroundColor Red
         if ($script:actionBreakpoint) {
             Write-Host "  Action breakpoint ID : $($script:actionBreakpoint.Id)" -ForegroundColor Red
         }
@@ -125,25 +125,25 @@ try {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 2: Scénario d'intégration - Point d'arrêt temporisé
+# Test 2: ScÃ©nario d'intÃ©gration - Point d'arrÃªt temporisÃ©
 $totalTests++
-Write-Host "`nTest 2: Scénario d'intégration - Point d'arrêt temporisé" -ForegroundColor Cyan
+Write-Host "`nTest 2: ScÃ©nario d'intÃ©gration - Point d'arrÃªt temporisÃ©" -ForegroundColor Cyan
 try {
-    # Réinitialiser les variables de suivi
+    # RÃ©initialiser les variables de suivi
     $script:actionCalled = $false
     $script:actionBreakpoint = $null
     
     # Appeler la fonction
-    $breakpoint = Set-RoadmapTimedBreakpoint -Seconds 2 -Action Log -Message "2 secondes se sont écoulées" -Category "TestIntegration" -PassThru
+    $breakpoint = Set-RoadmapTimedBreakpoint -Seconds 2 -Action Log -Message "2 secondes se sont Ã©coulÃ©es" -Category "TestIntegration" -PassThru
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($breakpoint -and $breakpoint.Id -and $script:actionCalled -and $script:actionBreakpoint.Id -eq $breakpoint.Id) {
-        Write-Host "  Réussi : Le point d'arrêt temporisé a été correctement créé et l'action a été exécutée." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : Le point d'arrÃªt temporisÃ© a Ã©tÃ© correctement crÃ©Ã© et l'action a Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : Le point d'arrêt temporisé n'a pas été correctement créé ou l'action n'a pas été exécutée." -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : Le point d'arrÃªt temporisÃ© n'a pas Ã©tÃ© correctement crÃ©Ã© ou l'action n'a pas Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Red
         Write-Host "  Breakpoint : $($breakpoint | ConvertTo-Json)" -ForegroundColor Red
-        Write-Host "  Action appelée : $actionCalled" -ForegroundColor Red
+        Write-Host "  Action appelÃ©e : $actionCalled" -ForegroundColor Red
         if ($script:actionBreakpoint) {
             Write-Host "  Action breakpoint ID : $($script:actionBreakpoint.Id)" -ForegroundColor Red
         }
@@ -152,40 +152,40 @@ try {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 3: Scénario d'intégration - Évaluation de condition avec variables
+# Test 3: ScÃ©nario d'intÃ©gration - Ã‰valuation de condition avec variables
 $totalTests++
-Write-Host "`nTest 3: Scénario d'intégration - Évaluation de condition avec variables" -ForegroundColor Cyan
+Write-Host "`nTest 3: ScÃ©nario d'intÃ©gration - Ã‰valuation de condition avec variables" -ForegroundColor Cyan
 try {
-    # Définir des variables pour le test
+    # DÃ©finir des variables pour le test
     $vars = @{
         "count" = 10
         "threshold" = 5
     }
     
-    # Évaluer la condition
+    # Ã‰valuer la condition
     $result = Test-RoadmapBreakpointCondition -Condition '$count -gt $threshold' -Variables $vars
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($result -eq $true) {
-        Write-Host "  Réussi : La condition a été correctement évaluée avec les variables fournies." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : La condition a Ã©tÃ© correctement Ã©valuÃ©e avec les variables fournies." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : La condition n'a pas été correctement évaluée avec les variables fournies." -ForegroundColor Red
-        Write-Host "  Résultat : $result" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : La condition n'a pas Ã©tÃ© correctement Ã©valuÃ©e avec les variables fournies." -ForegroundColor Red
+        Write-Host "  RÃ©sultat : $result" -ForegroundColor Red
     }
 } catch {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 4: Scénario d'intégration - Point d'arrêt avec action personnalisée
+# Test 4: ScÃ©nario d'intÃ©gration - Point d'arrÃªt avec action personnalisÃ©e
 $totalTests++
-Write-Host "`nTest 4: Scénario d'intégration - Point d'arrêt avec action personnalisée" -ForegroundColor Cyan
+Write-Host "`nTest 4: ScÃ©nario d'intÃ©gration - Point d'arrÃªt avec action personnalisÃ©e" -ForegroundColor Cyan
 try {
-    # Réinitialiser les variables de suivi
+    # RÃ©initialiser les variables de suivi
     $script:actionCalled = $false
     $script:actionBreakpoint = $null
     
-    # Variable pour suivre l'exécution de l'action personnalisée
+    # Variable pour suivre l'exÃ©cution de l'action personnalisÃ©e
     $customActionExecuted = $false
     
     # Restaurer temporairement la fonction originale pour ce test
@@ -201,38 +201,38 @@ try {
             [hashtable]$AdditionalInfo
         )
         
-        # Simuler l'exécution de l'action
+        # Simuler l'exÃ©cution de l'action
         $script:actionCalled = $true
         $script:actionBreakpoint = $Breakpoint
         
-        # Exécuter l'action personnalisée si c'est le cas
+        # ExÃ©cuter l'action personnalisÃ©e si c'est le cas
         if ($Breakpoint.Action -eq "Custom" -and $Breakpoint.CustomAction) {
             try {
                 & $Breakpoint.CustomAction -Breakpoint $Breakpoint -AdditionalInfo $AdditionalInfo
             } catch {
-                Write-Host "  Erreur lors de l'exécution de l'action personnalisée : $_" -ForegroundColor Red
+                Write-Host "  Erreur lors de l'exÃ©cution de l'action personnalisÃ©e : $_" -ForegroundColor Red
             }
         }
     }
     
-    # Appeler la fonction avec une action personnalisée
+    # Appeler la fonction avec une action personnalisÃ©e
     $breakpoint = Set-RoadmapBreakpoint -Condition $true -Action Custom -CustomAction {
         param($Breakpoint, $AdditionalInfo)
         $script:customActionExecuted = $true
-    } -Message "Action personnalisée" -Category "TestIntegration" -PassThru
+    } -Message "Action personnalisÃ©e" -Category "TestIntegration" -PassThru
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($breakpoint -and $breakpoint.Id -and $script:actionCalled -and $script:actionBreakpoint.Id -eq $breakpoint.Id -and $customActionExecuted) {
-        Write-Host "  Réussi : Le point d'arrêt avec action personnalisée a été correctement créé et l'action a été exécutée." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : Le point d'arrÃªt avec action personnalisÃ©e a Ã©tÃ© correctement crÃ©Ã© et l'action a Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : Le point d'arrêt avec action personnalisée n'a pas été correctement créé ou l'action n'a pas été exécutée." -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : Le point d'arrÃªt avec action personnalisÃ©e n'a pas Ã©tÃ© correctement crÃ©Ã© ou l'action n'a pas Ã©tÃ© exÃ©cutÃ©e." -ForegroundColor Red
         Write-Host "  Breakpoint : $($breakpoint | ConvertTo-Json)" -ForegroundColor Red
-        Write-Host "  Action appelée : $actionCalled" -ForegroundColor Red
-        Write-Host "  Action personnalisée exécutée : $customActionExecuted" -ForegroundColor Red
+        Write-Host "  Action appelÃ©e : $actionCalled" -ForegroundColor Red
+        Write-Host "  Action personnalisÃ©e exÃ©cutÃ©e : $customActionExecuted" -ForegroundColor Red
     }
     
-    # Restaurer la fonction modifiée pour les autres tests
+    # Restaurer la fonction modifiÃ©e pour les autres tests
     function Invoke-RoadmapBreakpointAction {
         param (
             [Parameter(Mandatory = $true, Position = 0)]
@@ -242,11 +242,11 @@ try {
             [hashtable]$AdditionalInfo
         )
         
-        # Simuler l'exécution de l'action
+        # Simuler l'exÃ©cution de l'action
         $script:actionCalled = $true
         $script:actionBreakpoint = $Breakpoint
         
-        Write-Host "  Action simulée pour le point d'arrêt $($Breakpoint.Id)" -ForegroundColor Gray
+        Write-Host "  Action simulÃ©e pour le point d'arrÃªt $($Breakpoint.Id)" -ForegroundColor Gray
         Write-Host "  Message : $($Breakpoint.Message)" -ForegroundColor Gray
         Write-Host "  Action : $($Breakpoint.Action)" -ForegroundColor Gray
     }
@@ -258,17 +258,17 @@ try {
 Set-Item function:Invoke-RoadmapBreakpointAction -Value $originalInvokeAction.ScriptBlock
 Set-Item function:Start-Sleep -Value $originalStartSleep.ScriptBlock
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

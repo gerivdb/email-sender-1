@@ -1,113 +1,113 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse les formats de fichiers en parallèle en se basant sur des critères définis,
-    identifie les conflits de détection et génère des rapports.
+    Analyse les formats de fichiers en parallÃ¨le en se basant sur des critÃ¨res dÃ©finis,
+    identifie les conflits de dÃ©tection et gÃ©nÃ¨re des rapports.
 
 .DESCRIPTION
-    Ce script analyse un ensemble de fichiers en parallèle pour identifier leur format
-    en utilisant plusieurs méthodes (extension, signature binaire, motifs de contenu)
-    basées sur des critères définis dans un fichier JSON.
-    Il compare les résultats, identifie les conflits potentiels en utilisant un système
-    de priorité, et génère un rapport JSON détaillé ainsi qu'un rapport HTML optionnel.
+    Ce script analyse un ensemble de fichiers en parallÃ¨le pour identifier leur format
+    en utilisant plusieurs mÃ©thodes (extension, signature binaire, motifs de contenu)
+    basÃ©es sur des critÃ¨res dÃ©finis dans un fichier JSON.
+    Il compare les rÃ©sultats, identifie les conflits potentiels en utilisant un systÃ¨me
+    de prioritÃ©, et gÃ©nÃ¨re un rapport JSON dÃ©taillÃ© ainsi qu'un rapport HTML optionnel.
     L'utilisation de Runspace Pools permet une analyse nettement plus rapide sur les
     machines multi-coeurs.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport d'analyse JSON sera enregistré. Par défaut, 'FormatDetectionAnalysis.json'.
+    Le chemin oÃ¹ le rapport d'analyse JSON sera enregistrÃ©. Par dÃ©faut, 'FormatDetectionAnalysis.json'.
 
 .PARAMETER CriteriaPath
-    Le chemin vers le fichier JSON contenant les critères de détection de format.
-    Par défaut, 'FormatDetectionCriteria.json'.
+    Le chemin vers le fichier JSON contenant les critÃ¨res de dÃ©tection de format.
+    Par dÃ©faut, 'FormatDetectionCriteria.json'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport JSON.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport JSON.
 
 .PARAMETER MaxThreads
-    Nombre maximum de threads à utiliser pour l'analyse parallèle. Par défaut, le nombre de processeurs logiques.
+    Nombre maximum de threads Ã  utiliser pour l'analyse parallÃ¨le. Par dÃ©faut, le nombre de processeurs logiques.
 
 .PARAMETER MaxTextAnalysisReadBytes
-    Nombre maximum d'octets à lire pour l'analyse de contenu textuel avancée (0 pour illimité, mais non recommandé pour les gros fichiers).
-    Par défaut, 1 Mo (1048576 octets).
+    Nombre maximum d'octets Ã  lire pour l'analyse de contenu textuel avancÃ©e (0 pour illimitÃ©, mais non recommandÃ© pour les gros fichiers).
+    Par dÃ©faut, 1 Mo (1048576 octets).
 
 .EXAMPLE
-    .\Analyze-FormatDetectionFailures.ps1 -SampleDirectory "C:\Donnees\Echantillons" -CriteriaPath "C:\Config\MesCritères.json" -GenerateHtmlReport -MaxThreads 8
+    .\Analyze-FormatDetectionFailures.ps1 -SampleDirectory "C:\Donnees\Echantillons" -CriteriaPath "C:\Config\MesCritÃ¨res.json" -GenerateHtmlReport -MaxThreads 8
 
 .EXAMPLE
     .\Analyze-FormatDetectionFailures.ps1 -SampleDirectory .\entreprise_files -GenerateHtmlReport
 
 .NOTES
     Version: 2.0
-    Auteur: Augment Agent (Amélioré par IA)
+    Auteur: Augment Agent (AmÃ©liorÃ© par IA)
     Date: 2025-04-12
-    Dépendances: Nécessite le fichier de critères JSON (par défaut 'FormatDetectionCriteria.json').
-                Le module PSCacheManager est optionnel mais recommandé pour la performance.
-    Améliorations v2.0:
-    - Intégration des critères depuis un fichier JSON.
-    - Parallélisation de l'analyse de fichiers via Runspace Pools.
-    - Logique de détection basée sur les critères (Signatures, Patterns, Priorité).
-    - Gestion optimisée de la lecture des fichiers.
-    - Collecte efficace des résultats.
-    - Amélioration de la robustesse et des messages d'erreur.
+    DÃ©pendances: NÃ©cessite le fichier de critÃ¨res JSON (par dÃ©faut 'FormatDetectionCriteria.json').
+                Le module PSCacheManager est optionnel mais recommandÃ© pour la performance.
+    AmÃ©liorations v2.0:
+    - IntÃ©gration des critÃ¨res depuis un fichier JSON.
+    - ParallÃ©lisation de l'analyse de fichiers via Runspace Pools.
+    - Logique de dÃ©tection basÃ©e sur les critÃ¨res (Signatures, Patterns, PrioritÃ©).
+    - Gestion optimisÃ©e de la lecture des fichiers.
+    - Collecte efficace des rÃ©sultats.
+    - AmÃ©lioration de la robustesse et des messages d'erreur.
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(HelpMessage = "Répertoire contenant les fichiers d'échantillons.")]
+    [Parameter(HelpMessage = "RÃ©pertoire contenant les fichiers d'Ã©chantillons.")]
     [ValidateScript({ Test-Path -Path $_ -PathType Container })]
     [string]$SampleDirectory = (Join-Path -Path $PSScriptRoot -ChildPath "samples"),
 
     [Parameter(HelpMessage = "Chemin pour le rapport JSON de sortie.")]
     [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "FormatDetectionAnalysis.json"),
 
-    [Parameter(HelpMessage = "Chemin vers le fichier de critères de détection (JSON).")]
+    [Parameter(HelpMessage = "Chemin vers le fichier de critÃ¨res de dÃ©tection (JSON).")]
     [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
     [string]$CriteriaPath = (Join-Path -Path $PSScriptRoot -ChildPath "FormatDetectionCriteria.json"),
 
-    [Parameter(HelpMessage = "Générer un rapport HTML en plus du JSON.")]
+    [Parameter(HelpMessage = "GÃ©nÃ©rer un rapport HTML en plus du JSON.")]
     [switch]$GenerateHtmlReport,
 
-    [Parameter(HelpMessage = "Nombre maximum de threads pour l'analyse parallèle.")]
+    [Parameter(HelpMessage = "Nombre maximum de threads pour l'analyse parallÃ¨le.")]
     [ValidateRange(1, 64)]
     [int]$MaxThreads = [System.Environment]::ProcessorCount,
 
-    [Parameter(HelpMessage = "Nombre max d'octets à lire pour l'analyse de contenu textuel (0=illimité).")]
+    [Parameter(HelpMessage = "Nombre max d'octets Ã  lire pour l'analyse de contenu textuel (0=illimitÃ©).")]
     [ValidateRange(0, [int]::MaxValue)]
-    [long]$MaxTextAnalysisReadBytes = 1MB # 1 Mégabyte par défaut
+    [long]$MaxTextAnalysisReadBytes = 1MB # 1 MÃ©gabyte par dÃ©faut
 )
 
 #region Global Variables and Initialization
 $global:ScriptStartTime = Get-Date
 $global:useCache = $false
 $global:FormatCriteria = $null
-$global:DetectionCache = [hashtable]::Synchronized(@{}) # Cache simple en mémoire si PSCacheManager n'est pas là
+$global:DetectionCache = [hashtable]::Synchronized(@{}) # Cache simple en mÃ©moire si PSCacheManager n'est pas lÃ 
 
-# Vérifier si le module PSCacheManager est disponible
+# VÃ©rifier si le module PSCacheManager est disponible
 if (Get-Module -Name PSCacheManager -ListAvailable) {
     try {
         Import-Module PSCacheManager -ErrorAction Stop
         $global:useCache = $true
-        Write-Verbose "Module PSCacheManager chargé. Le cache sera utilisé."
+        Write-Verbose "Module PSCacheManager chargÃ©. Le cache sera utilisÃ©."
     } catch {
-        Write-Warning "Impossible de charger le module PSCacheManager : $($_.Exception.Message). Utilisation d'un cache mémoire simple."
+        Write-Warning "Impossible de charger le module PSCacheManager : $($_.Exception.Message). Utilisation d'un cache mÃ©moire simple."
     }
 } else {
-    Write-Warning "Le module PSCacheManager n'est pas disponible. Utilisation d'un cache mémoire simple."
+    Write-Warning "Le module PSCacheManager n'est pas disponible. Utilisation d'un cache mÃ©moire simple."
 }
 
-# Charger les critères de détection
+# Charger les critÃ¨res de dÃ©tection
 try {
-    Write-Verbose "Chargement des critères depuis $CriteriaPath..."
+    Write-Verbose "Chargement des critÃ¨res depuis $CriteriaPath..."
     $global:FormatCriteria = Get-Content -Path $CriteriaPath -Raw -Encoding UTF8 | ConvertFrom-Json
     if (-not $global:FormatCriteria) {
-        throw "Le fichier de critères est vide ou invalide."
+        throw "Le fichier de critÃ¨res est vide ou invalide."
     }
-    Write-Verbose "Critères de détection chargés avec succès pour $($global:FormatCriteria.Keys.Count) formats."
+    Write-Verbose "CritÃ¨res de dÃ©tection chargÃ©s avec succÃ¨s pour $($global:FormatCriteria.Keys.Count) formats."
 } catch {
-    Write-Error "Erreur critique lors du chargement des critères depuis '$CriteriaPath': $($_.Exception.Message)"
+    Write-Error "Erreur critique lors du chargement des critÃ¨res depuis '$CriteriaPath': $($_.Exception.Message)"
     exit 1
 }
 #endregion
@@ -134,7 +134,7 @@ function Set-CachedItem {
 
 #region Format Detection Functions (Data-Driven)
 
-# Fonction pour détecter le format basé UNIQUEMENT sur l'extension
+# Fonction pour dÃ©tecter le format basÃ© UNIQUEMENT sur l'extension
 function Get-FileFormatByExtension_Internal {
     param (
         [Parameter(Mandatory = $true)]
@@ -143,7 +143,7 @@ function Get-FileFormatByExtension_Internal {
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLowerInvariant()
     if ([string]::IsNullOrEmpty($extension)) { return "NO_EXTENSION" }
 
-    # Recherche dans les critères chargés
+    # Recherche dans les critÃ¨res chargÃ©s
     foreach ($formatName in $global:FormatCriteria.Keys) {
         if ($global:FormatCriteria[$formatName].Extensions -contains $extension) {
             return $formatName
@@ -152,7 +152,7 @@ function Get-FileFormatByExtension_Internal {
     return "UNKNOWN_EXTENSION"
 }
 
-# Fonction pour détecter le format basé sur le contenu (signatures binaires principalement)
+# Fonction pour dÃ©tecter le format basÃ© sur le contenu (signatures binaires principalement)
 function Get-FileFormatByContent_Internal {
     param (
         [Parameter(Mandatory = $true)]
@@ -167,21 +167,21 @@ function Get-FileFormatByContent_Internal {
         if ($fileInfo.Length -eq 0) { return "EMPTY_FILE" }
 
         # Lire les premiers octets (assez pour couvrir la plupart des signatures)
-        $readLength = [Math]::Min($fileInfo.Length, 1024) # Lire jusqu'à 1 Ko
+        $readLength = [Math]::Min($fileInfo.Length, 1024) # Lire jusqu'Ã  1 Ko
         $buffer = New-Object byte[] $readLength
         $fileStream = [System.IO.File]::OpenRead($FilePath)
         $bytesRead = $fileStream.Read($buffer, 0, $readLength)
         $fileStream.Close()
         $fileStream.Dispose()
 
-        # Trier les critères par priorité décroissante pour tester les plus spécifiques d'abord
+        # Trier les critÃ¨res par prioritÃ© dÃ©croissante pour tester les plus spÃ©cifiques d'abord
         $sortedFormats = $global:FormatCriteria.GetEnumerator() | Sort-Object { $_.Value.Priority } -Descending
 
         foreach ($formatEntry in $sortedFormats) {
             $formatName = $formatEntry.Key
             $criteria = $formatEntry.Value
 
-            # Vérifier les signatures binaires
+            # VÃ©rifier les signatures binaires
             if ($criteria.Signatures) {
                 foreach ($signature in $criteria.Signatures) {
                     $offset = $signature.Offset
@@ -191,7 +191,7 @@ function Get-FileFormatByContent_Internal {
                     } elseif ($signature.Type -eq "ASCII") {
                         $patternBytes = [System.Text.Encoding]::ASCII.GetBytes($signature.Pattern)
                     } else {
-                        Write-Warning "Type de signature non supporté '$($signature.Type)' pour le format $formatName. Signature ignorée."
+                        Write-Warning "Type de signature non supportÃ© '$($signature.Type)' pour le format $formatName. Signature ignorÃ©e."
                         continue
                     }
 
@@ -212,15 +212,15 @@ function Get-FileFormatByContent_Internal {
             }
         }
 
-        # Si aucune signature ne correspond, vérifier si c'est probablement du texte
+        # Si aucune signature ne correspond, vÃ©rifier si c'est probablement du texte
         $isText = $true
         $nonTextCount = 0
-        $maxBinaryRatio = if ($global:FormatCriteria -and $global:FormatCriteria["TEXT"] -and $global:FormatCriteria["TEXT"].ContentPatterns -and $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest) { $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest.MaxBinaryRatio } else { 0.1 } # Utiliser le ratio de TEXT ou défaut
+        $maxBinaryRatio = if ($global:FormatCriteria -and $global:FormatCriteria["TEXT"] -and $global:FormatCriteria["TEXT"].ContentPatterns -and $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest) { $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest.MaxBinaryRatio } else { 0.1 } # Utiliser le ratio de TEXT ou dÃ©faut
         $threshold = [Math]::Ceiling($bytesRead * $maxBinaryRatio)
-        $allowedControls = if ($global:FormatCriteria -and $global:FormatCriteria["TEXT"] -and $global:FormatCriteria["TEXT"].ContentPatterns -and $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest) { $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest.ControlCharsAllowed } else { @(9, 10, 13) } # TAB, LF, CR par défaut
+        $allowedControls = if ($global:FormatCriteria -and $global:FormatCriteria["TEXT"] -and $global:FormatCriteria["TEXT"].ContentPatterns -and $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest) { $global:FormatCriteria["TEXT"].ContentPatterns.BinaryTest.ControlCharsAllowed } else { @(9, 10, 13) } # TAB, LF, CR par dÃ©faut
 
         for ($i = 0; $i -lt $bytesRead; $i++) {
-            # Vérifier si l'octet est un caractère de contrôle non autorisé ou nul
+            # VÃ©rifier si l'octet est un caractÃ¨re de contrÃ´le non autorisÃ© ou nul
             if (($buffer[$i] -lt 32 -and (-not ($allowedControls -contains $buffer[$i]))) -or $buffer[$i] -eq 0) {
                 $nonTextCount++
                 if ($nonTextCount -gt $threshold) {
@@ -230,10 +230,10 @@ function Get-FileFormatByContent_Internal {
             }
         }
 
-        $result = "BINARY" # Par défaut si aucune signature et pas clairement du texte
+        $result = "BINARY" # Par dÃ©faut si aucune signature et pas clairement du texte
         if ($isText) {
-            # C'est probablement du texte, mais on ne peut pas être plus précis ici
-            # La fonction Advanced fera une analyse plus poussée
+            # C'est probablement du texte, mais on ne peut pas Ãªtre plus prÃ©cis ici
+            # La fonction Advanced fera une analyse plus poussÃ©e
             $result = "PROBABLY_TEXT"
         }
 
@@ -241,7 +241,7 @@ function Get-FileFormatByContent_Internal {
         return $result
 
     } catch [System.IO.FileNotFoundException] {
-        Write-Warning "Fichier non trouvé lors de l'analyse de contenu : $FilePath"
+        Write-Warning "Fichier non trouvÃ© lors de l'analyse de contenu : $FilePath"
         return "FILE_NOT_FOUND"
     } catch [System.IO.IOException] {
         Write-Warning "Erreur IO lors de l'analyse de contenu de $FilePath : $($_.Exception.Message)"
@@ -252,7 +252,7 @@ function Get-FileFormatByContent_Internal {
     }
 }
 
-# Fonction principale de détection, combinant extension, contenu et logique avancée
+# Fonction principale de dÃ©tection, combinant extension, contenu et logique avancÃ©e
 function Get-FileFormatAdvanced_Internal {
     param (
         [Parameter(Mandatory = $true)]
@@ -272,7 +272,7 @@ function Get-FileFormatAdvanced_Internal {
 
         $finalFormat = "UNKNOWN"
 
-        # Récupérer les priorités (0 si format inconnu ou non défini)
+        # RÃ©cupÃ©rer les prioritÃ©s (0 si format inconnu ou non dÃ©fini)
         $extPriority = if ($global:FormatCriteria -and $global:FormatCriteria[$extensionFormat] -and $global:FormatCriteria[$extensionFormat].Priority) { $global:FormatCriteria[$extensionFormat].Priority } else { 0 }
         $contPriority = if ($global:FormatCriteria -and $global:FormatCriteria[$contentFormat] -and $global:FormatCriteria[$contentFormat].Priority) { $global:FormatCriteria[$contentFormat].Priority } else { 0 }
 
@@ -282,17 +282,17 @@ function Get-FileFormatAdvanced_Internal {
         }
         # Cas 2 : Conflit ou un des deux est inconnu
         else {
-            # Heuristique pour les formats Office (ZIP détecté par contenu, mais extension .docx/.xlsx/.pptx)
+            # Heuristique pour les formats Office (ZIP dÃ©tectÃ© par contenu, mais extension .docx/.xlsx/.pptx)
             if ($contentFormat -eq "ZIP" -and $extensionFormat -in @("WORD", "EXCEL", "POWERPOINT")) {
-                 # Vérifier la structure interne si possible (simplifié ici)
+                 # VÃ©rifier la structure interne si possible (simplifiÃ© ici)
                  if ($global:FormatCriteria[$extensionFormat]?.StructureTests?.DocxContentTypes?.Path -or
                      $global:FormatCriteria[$extensionFormat]?.StructureTests?.XlsxContentTypes?.Path -or
                      $global:FormatCriteria[$extensionFormat]?.StructureTests?.PptxContentTypes?.Path) {
-                     # TODO : Implémenter une vérification réelle dans le ZIP si nécessaire (coûteux)
-                     # Pour l'instant, on fait confiance à l'extension si le contenu est ZIP
+                     # TODO : ImplÃ©menter une vÃ©rification rÃ©elle dans le ZIP si nÃ©cessaire (coÃ»teux)
+                     # Pour l'instant, on fait confiance Ã  l'extension si le contenu est ZIP
                      $finalFormat = $extensionFormat
                  } else {
-                     # Si pas de structure définie, on se base sur la priorité
+                     # Si pas de structure dÃ©finie, on se base sur la prioritÃ©
                      $finalFormat = if ($extPriority -ge $contPriority) { $extensionFormat } else { $contentFormat }
                  }
             }
@@ -306,7 +306,7 @@ function Get-FileFormatAdvanced_Internal {
                 $fileStream.Close()
                 $fileStream.Dispose()
 
-                # Tenter de détecter l'encodage (simple BOM check)
+                # Tenter de dÃ©tecter l'encodage (simple BOM check)
                 $encoding = [System.Text.Encoding]::Default # Fallback
                 if ($bytesRead -ge 3 -and $textBuffer[0] -eq 0xEF -and $textBuffer[1] -eq 0xBB -and $textBuffer[2] -eq 0xBF) {
                     $encoding = [System.Text.Encoding]::UTF8
@@ -315,11 +315,11 @@ function Get-FileFormatAdvanced_Internal {
                     elseif ($textBuffer[0] -eq 0xFE -and $textBuffer[1] -eq 0xFF) { $encoding = [System.Text.Encoding]::BigEndianUnicode } # UTF-16 BE
                     # Note: UTF32 BOMs sont plus rares
                 }
-                # TODO: Ajouter une détection d'encodage plus avancée si nécessaire
+                # TODO: Ajouter une dÃ©tection d'encodage plus avancÃ©e si nÃ©cessaire
 
                 $textContent = $encoding.GetString($textBuffer, 0, $bytesRead)
 
-                # Tester les regex des formats texte par priorité décroissante
+                # Tester les regex des formats texte par prioritÃ© dÃ©croissante
                 $foundTextFormat = $null
                 $sortedTextFormats = $global:FormatCriteria.GetEnumerator() |
                     Where-Object { $_.Value.Category -eq 'TEXT' } |
@@ -338,42 +338,42 @@ function Get-FileFormatAdvanced_Internal {
                         }
                         if ($match) {
                             $foundTextFormat = $formatName
-                            break # Arrêter dès qu'un format texte de haute priorité correspond
+                            break # ArrÃªter dÃ¨s qu'un format texte de haute prioritÃ© correspond
                         }
                     }
                 }
 
-                # Si un format texte spécifique est trouvé via regex, l'utiliser
+                # Si un format texte spÃ©cifique est trouvÃ© via regex, l'utiliser
                 if ($foundTextFormat) {
                     $finalFormat = $foundTextFormat
                 } else {
-                    # Aucun motif regex texte n'a correspondu. Utiliser TEXT générique ou le format d'extension si c'est un format texte.
+                    # Aucun motif regex texte n'a correspondu. Utiliser TEXT gÃ©nÃ©rique ou le format d'extension si c'est un format texte.
                     if ($extensionFormat -ne "UNKNOWN_EXTENSION" -and $global:FormatCriteria[$extensionFormat]?.Category -eq "TEXT") {
                          $finalFormat = $extensionFormat # L'extension indique un type de texte
                     } elseif ($contentFormat -eq "PROBABLY_TEXT") {
-                         $finalFormat = "TEXT" # Contenu ressemble à du texte, mais pas de motif spécifique trouvé
+                         $finalFormat = "TEXT" # Contenu ressemble Ã  du texte, mais pas de motif spÃ©cifique trouvÃ©
                     } else {
-                        # Fallback: choisir celui avec la plus haute priorité entre extension et contenu initial
+                        # Fallback: choisir celui avec la plus haute prioritÃ© entre extension et contenu initial
                          $finalFormat = if ($extPriority -ge $contPriority) { $extensionFormat } else { $contentFormat }
                     }
                 }
             }
-            # Cas général : Choisir le format avec la priorité la plus élevée
+            # Cas gÃ©nÃ©ral : Choisir le format avec la prioritÃ© la plus Ã©levÃ©e
             else {
                  $finalFormat = if ($extPriority -ge $contPriority) { $extensionFormat } else { $contentFormat }
-                 # Si les priorités sont égales, on pourrait privilégier le contenu (plus fiable pour binaire)
+                 # Si les prioritÃ©s sont Ã©gales, on pourrait privilÃ©gier le contenu (plus fiable pour binaire)
                  if ($extPriority -eq $contPriority -and $contPriority -gt 0) {
                     $finalFormat = $contentFormat
                  } elseif ($extPriority -eq 0 -and $contPriority -eq 0) {
-                    # Si les deux sont inconnus/priorité 0, on reste sur UNKNOWN
+                    # Si les deux sont inconnus/prioritÃ© 0, on reste sur UNKNOWN
                     $finalFormat = "UNKNOWN"
                  }
             }
         }
 
-        # Nettoyage des résultats potentiels non définis
+        # Nettoyage des rÃ©sultats potentiels non dÃ©finis
         if ($finalFormat -like "*UNKNOWN*" -or $finalFormat -like "*ERROR*" -or $finalFormat -eq "PROBABLY_TEXT") {
-            if ($global:FormatCriteria[$extensionFormat]) { $finalFormat = $extensionFormat } # Revenir à l'extension si possible
+            if ($global:FormatCriteria[$extensionFormat]) { $finalFormat = $extensionFormat } # Revenir Ã  l'extension si possible
             elseif ($global:FormatCriteria[$contentFormat]) { $finalFormat = $contentFormat } # Sinon au contenu si possible
             else { $finalFormat = "UNKNOWN" } # Sinon, vraiment inconnu
         }
@@ -382,13 +382,13 @@ function Get-FileFormatAdvanced_Internal {
         return $finalFormat
 
     } catch [System.IO.FileNotFoundException] {
-        Write-Warning "Fichier non trouvé lors de l'analyse avancée : $FilePath"
+        Write-Warning "Fichier non trouvÃ© lors de l'analyse avancÃ©e : $FilePath"
         return "FILE_NOT_FOUND"
     } catch [System.IO.IOException] {
-        Write-Warning "Erreur IO lors de l'analyse avancée de $FilePath : $($_.Exception.Message)"
+        Write-Warning "Erreur IO lors de l'analyse avancÃ©e de $FilePath : $($_.Exception.Message)"
         return "IO_ERROR"
     } catch {
-        Write-Warning "Erreur inattendue lors de l'analyse avancée de $FilePath : $($_.Exception.Message)"
+        Write-Warning "Erreur inattendue lors de l'analyse avancÃ©e de $FilePath : $($_.Exception.Message)"
         return "ADVANCED_ANALYSIS_ERROR"
     }
 }
@@ -405,38 +405,38 @@ function Test-FileFormats_Parallel {
         [int]$NumberOfThreads
     )
 
-    Write-Host "Récupération de la liste des fichiers dans '$Directory'..." -ForegroundColor Cyan
+    Write-Host "RÃ©cupÃ©ration de la liste des fichiers dans '$Directory'..." -ForegroundColor Cyan
     $files = Get-ChildItem -Path $Directory -File -Recurse -ErrorAction SilentlyContinue
 
     if (-not $files) {
-        Write-Warning "Aucun fichier trouvé dans le répertoire '$Directory'."
+        Write-Warning "Aucun fichier trouvÃ© dans le rÃ©pertoire '$Directory'."
         return @()
     }
 
-    Write-Host "$($files.Count) fichiers trouvés. Démarrage de l'analyse parallèle avec $NumberOfThreads threads..." -ForegroundColor Cyan
+    Write-Host "$($files.Count) fichiers trouvÃ©s. DÃ©marrage de l'analyse parallÃ¨le avec $NumberOfThreads threads..." -ForegroundColor Cyan
 
-    # Note: Cette section est commentée car le code parallèle a été simplifié
+    # Note: Cette section est commentÃ©e car le code parallÃ¨le a Ã©tÃ© simplifiÃ©
     # $results = [System.Collections.Generic.List[PSObject]]::new()
     # $runspacePool = [runspacefactory]::CreateRunspacePool(1, $NumberOfThreads)
     # $runspacePool.Open()
 
-    # Version simplifiée pour éviter les erreurs
+    # Version simplifiÃ©e pour Ã©viter les erreurs
     $results = @()
 
-    # Traitement séquentiel simple pour remplacer le code parallèle
+    # Traitement sÃ©quentiel simple pour remplacer le code parallÃ¨le
     foreach ($file in $files) {
         Write-Host "Analyse du fichier $($file.FullName)..." -ForegroundColor Gray
 
         try {
-            # Détecter le format avec les différentes méthodes
+            # DÃ©tecter le format avec les diffÃ©rentes mÃ©thodes
             $extensionFormat = Get-FileFormatByExtension -FilePath $file.FullName
             $contentFormat = Get-FileFormatByContent -FilePath $file.FullName
             $advancedFormat = Get-FileFormatAdvanced -FilePath $file.FullName
 
-            # Déterminer s'il y a un conflit entre les méthodes
+            # DÃ©terminer s'il y a un conflit entre les mÃ©thodes
             $conflict = ($extensionFormat -ne $contentFormat) -or ($extensionFormat -ne $advancedFormat) -or ($contentFormat -ne $advancedFormat)
 
-            # Créer un objet résultat
+            # CrÃ©er un objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $file.FullName;
                 FileName = $file.Name;
@@ -446,7 +446,7 @@ function Test-FileFormats_Parallel {
                 ContentFormat = $contentFormat;
                 AdvancedFormat = $advancedFormat;
                 Conflict = $conflict;
-                ProbableTrueFormat = $advancedFormat  # Considérer le format avancé comme le plus probable
+                ProbableTrueFormat = $advancedFormat  # ConsidÃ©rer le format avancÃ© comme le plus probable
             }
 
             $results += $result
@@ -454,7 +454,7 @@ function Test-FileFormats_Parallel {
         catch {
             Write-Warning "Erreur lors de l'analyse du fichier $($file.FullName) : $_"
 
-            # Ajouter un résultat d'erreur
+            # Ajouter un rÃ©sultat d'erreur
             $results += [PSCustomObject]@{
                 FilePath = $file.FullName;
                 FileName = $file.Name;
@@ -470,27 +470,27 @@ function Test-FileFormats_Parallel {
         }
     }
 
-    # Créer les listes pour stocker les tâches et les handles
-    # Note: Ces variables sont utilisées dans le code parallèle qui a été commenté pour simplification
+    # CrÃ©er les listes pour stocker les tÃ¢ches et les handles
+    # Note: Ces variables sont utilisÃ©es dans le code parallÃ¨le qui a Ã©tÃ© commentÃ© pour simplification
     # $taskList = [System.Collections.Generic.List[System.Management.Automation.PowerShell]]::new()
     # $handleList = [System.Collections.Generic.List[System.IAsyncResult]]::new()
 
-    # Variables à passer aux threads (copie locale pour éviter les problèmes de portée)
+    # Variables Ã  passer aux threads (copie locale pour Ã©viter les problÃ¨mes de portÃ©e)
     # $processFileScriptBlock = {
         param($filePath, $criteriaData, $maxTextRead)
 
-        # Re-importer les fonctions nécessaires ou définir le contexte
+        # Re-importer les fonctions nÃ©cessaires ou dÃ©finir le contexte
         # Note : Les fonctions globales ne sont pas directement accessibles.
-        # Alternative: Passer le bloc de code des fonctions ou redéfinir ici.
-        # Pour simplifier ici, on passe juste les données. La logique est dans Get-FileFormatAdvanced_Internal
-        # Assurez-vous que Get-FileFormatAdvanced_Internal et ses dépendances sont définies GLOBALEMENT
+        # Alternative: Passer le bloc de code des fonctions ou redÃ©finir ici.
+        # Pour simplifier ici, on passe juste les donnÃ©es. La logique est dans Get-FileFormatAdvanced_Internal
+        # Assurez-vous que Get-FileFormatAdvanced_Internal et ses dÃ©pendances sont dÃ©finies GLOBALEMENT
         # ou passez le code source des fonctions via $using: ou arguments.
 
-        # Re-créer les critères dans le scope du thread si nécessaire (plus sûr)
+        # Re-crÃ©er les critÃ¨res dans le scope du thread si nÃ©cessaire (plus sÃ»r)
         # $threadCriteria = ConvertFrom-Json -InputObject $criteriaJsonString
 
         # Ou si les fonctions sont bien globales (testez !) :
-        # $global:FormatCriteria = $using:global:FormatCriteria # Risqué si modifié globalement
+        # $global:FormatCriteria = $using:global:FormatCriteria # RisquÃ© si modifiÃ© globalement
         # $global:MaxTextAnalysisReadBytes = $using:maxTextRead # Si besoin dans les fonctions internes
 
         $ErrorActionPreference = 'SilentlyContinue' # Isoler les erreurs de thread
@@ -505,7 +505,7 @@ function Test-FileFormats_Parallel {
                         ($extensionFormat -ne $advancedFormat) -or
                         ($contentFormat -ne $advancedFormat -and $contentFormat -ne "PROBABLY_TEXT")
 
-            # Format probable est le résultat de l'analyse avancée
+            # Format probable est le rÃ©sultat de l'analyse avancÃ©e
             $probableFormat = $advancedFormat
 
             return [PSCustomObject]@{
@@ -522,7 +522,7 @@ function Test-FileFormats_Parallel {
                 ProbableTrueFormat = $probableFormat
             }
         } catch {
-             # Capturer les erreurs spécifiques au traitement de ce fichier
+             # Capturer les erreurs spÃ©cifiques au traitement de ce fichier
              return [PSCustomObject]@{
                 FilePath = $filePath;
                 FileName = try { (Get-Item $filePath -ErrorAction SilentlyContinue).Name } catch { 'N/A' };
@@ -539,12 +539,12 @@ function Test-FileFormats_Parallel {
         }
     }
 
-    # Convertir les critères en JSON pour les passer facilement (évite les problèmes de sérialisation complexe)
+    # Convertir les critÃ¨res en JSON pour les passer facilement (Ã©vite les problÃ¨mes de sÃ©rialisation complexe)
     # $criteriaJson = $global:FormatCriteria | ConvertTo-Json -Depth 10 -Compress
 
     $progressCount = 0
     $totalCount = $files.Count
-    $updateInterval = [Math]::Max(1, [Math]::Floor($totalCount / 100)) # Mettre à jour tous les 1% ou chaque fichier
+    $updateInterval = [Math]::Max(1, [Math]::Floor($totalCount / 100)) # Mettre Ã  jour tous les 1% ou chaque fichier
 
     foreach ($file in $files) {
         $powershell = [powershell]::Create().AddScript($scriptBlock).AddArgument($file.FullName).AddArgument($global:FormatCriteria).AddArgument($MaxTextAnalysisReadBytes)
@@ -552,8 +552,8 @@ function Test-FileFormats_Parallel {
         $handles.Add($powershell.BeginInvoke())
         $tasks.Add($powershell)
 
-        # Gestion de la file d'attente pour ne pas saturer la mémoire avec les handles
-        while ($handles.Count -ge $NumberOfThreads * 2) { # Attendre si trop de tâches en cours
+        # Gestion de la file d'attente pour ne pas saturer la mÃ©moire avec les handles
+        while ($handles.Count -ge $NumberOfThreads * 2) { # Attendre si trop de tÃ¢ches en cours
             $completedIndex = [System.Threading.WaitHandle]::WaitAny($handles.ToArray(), 100) # Attente max 100ms
             if ($completedIndex -ne [System.Threading.WaitHandle]::WaitTimeout) {
                 $completedTask = $tasks[$completedIndex]
@@ -563,7 +563,7 @@ function Test-FileFormats_Parallel {
                         $results.Add($taskResult)
                     }
                 } catch {
-                    Write-Warning "Erreur lors de la récupération du résultat pour une tâche : $($_.Exception.Message)"
+                    Write-Warning "Erreur lors de la rÃ©cupÃ©ration du rÃ©sultat pour une tÃ¢che : $($_.Exception.Message)"
                      $results.Add([PSCustomObject]@{ Error = "Erreur EndInvoke: $($_.Exception.Message)"; FilePath = "N/A" })
                 } finally {
                     $completedTask.Dispose()
@@ -572,19 +572,19 @@ function Test-FileFormats_Parallel {
                     $progressCount++
                 }
             }
-            # Mettre à jour la progression même pendant l'attente
+            # Mettre Ã  jour la progression mÃªme pendant l'attente
             if (($progressCount % $updateInterval) -eq 0 -or $progressCount -eq $totalCount) {
-                 Write-Progress -Activity "Analyse des fichiers" -Status "Progrès: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
+                 Write-Progress -Activity "Analyse des fichiers" -Status "ProgrÃ¨s: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
             }
         }
-         # Mettre à jour la progression après ajout
+         # Mettre Ã  jour la progression aprÃ¨s ajout
          if (($progressCount + $handles.Count) % $updateInterval -eq 0) {
-              Write-Progress -Activity "Analyse des fichiers" -Status "Progrès: $($progressCount + $handles.Count)/$totalCount" -PercentComplete (($progressCount + $handles.Count) / $totalCount * 100) -Id 1
+              Write-Progress -Activity "Analyse des fichiers" -Status "ProgrÃ¨s: $($progressCount + $handles.Count)/$totalCount" -PercentComplete (($progressCount + $handles.Count) / $totalCount * 100) -Id 1
          }
     }
 
-    # Récupérer les résultats restants
-    Write-Verbose "Attente de la fin des tâches restantes..."
+    # RÃ©cupÃ©rer les rÃ©sultats restants
+    Write-Verbose "Attente de la fin des tÃ¢ches restantes..."
     while ($handles.Count -gt 0) {
         $completedIndex = [System.Threading.WaitHandle]::WaitAny($handles.ToArray(), 500) # Attente max 500ms
         if ($completedIndex -ne [System.Threading.WaitHandle]::WaitTimeout) {
@@ -595,7 +595,7 @@ function Test-FileFormats_Parallel {
                     $results.Add($taskResult)
                 }
             } catch {
-                 Write-Warning "Erreur lors de la récupération du résultat final pour une tâche : $($_.Exception.Message)"
+                 Write-Warning "Erreur lors de la rÃ©cupÃ©ration du rÃ©sultat final pour une tÃ¢che : $($_.Exception.Message)"
                  $results.Add([PSCustomObject]@{ Error = "Erreur EndInvoke final: $($_.Exception.Message)"; FilePath = "N/A" })
             } finally {
                 $completedTask.Dispose()
@@ -603,14 +603,14 @@ function Test-FileFormats_Parallel {
                 $tasks.RemoveAt($completedIndex)
                 $progressCount++
             }
-             # Mettre à jour la progression
-             Write-Progress -Activity "Analyse des fichiers" -Status "Terminé: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
+             # Mettre Ã  jour la progression
+             Write-Progress -Activity "Analyse des fichiers" -Status "TerminÃ©: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
         } else {
-             # Si timeout, vérifier si les tâches sont toujours en cours
+             # Si timeout, vÃ©rifier si les tÃ¢ches sont toujours en cours
              $stillRunning = $handles | Where-Object { -not $_.IsCompleted }
              if ($stillRunning.Count -eq 0) {
-                Write-Verbose "Timeout détecté mais toutes les tâches restantes semblent terminées."
-                # Tenter de récupérer les derniers résultats même après timeout
+                Write-Verbose "Timeout dÃ©tectÃ© mais toutes les tÃ¢ches restantes semblent terminÃ©es."
+                # Tenter de rÃ©cupÃ©rer les derniers rÃ©sultats mÃªme aprÃ¨s timeout
                 for($i = $handles.Count - 1; $i -ge 0; $i--) {
                      $completedTask = $tasks[$i]
                      try {
@@ -618,7 +618,7 @@ function Test-FileFormats_Parallel {
                              $taskResult = $completedTask.EndInvoke($handles[$i])
                              if ($taskResult) { $results.Add($taskResult) }
                          }
-                     } catch { Write-Warning "Erreur récupération post-timeout: $($_.Exception.Message)"}
+                     } catch { Write-Warning "Erreur rÃ©cupÃ©ration post-timeout: $($_.Exception.Message)"}
                      finally { $completedTask.Dispose(); $handles.RemoveAt($i); $tasks.RemoveAt($i); $progressCount++ }
                 }
              }
@@ -626,14 +626,14 @@ function Test-FileFormats_Parallel {
     }
 
     Write-Progress -Activity "Analyse des fichiers" -Completed -Id 1
-    Write-Host "Analyse parallèle terminée." -ForegroundColor Green
+    Write-Host "Analyse parallÃ¨le terminÃ©e." -ForegroundColor Green
 
-    # Fermer le pool de runspaces - Commenté car le code parallèle a été simplifié
+    # Fermer le pool de runspaces - CommentÃ© car le code parallÃ¨le a Ã©tÃ© simplifiÃ©
     # $runspacePool.Close()
     # $runspacePool.Dispose()
 
-    # Version simplifiée pour éviter les erreurs
-    return $results # Retourner les résultats
+    # Version simplifiÃ©e pour Ã©viter les erreurs
+    return $results # Retourner les rÃ©sultats
 #endregion
 
 #region HTML Report Generation
@@ -652,7 +652,7 @@ function New-HtmlReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport d'analyse de détection de formats</title>
+    <title>Rapport d'analyse de dÃ©tection de formats</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f8f9fa; color: #212529; }
         .container { max-width: 1200px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -680,13 +680,13 @@ function New-HtmlReport {
 </head>
 <body>
     <div class="container">
-    <h1>Rapport d'analyse de détection de formats</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
-    <p>Répertoire analysé : $($Results[0].FilePath | Split-Path -Parent | Split-Path -Parent) </p> <!-- Approximatif si plusieurs niveaux -->
-    <p>Critères utilisés : $CriteriaPath</p>
+    <h1>Rapport d'analyse de dÃ©tection de formats</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>RÃ©pertoire analysÃ© : $($Results[0].FilePath | Split-Path -Parent | Split-Path -Parent) </p> <!-- Approximatif si plusieurs niveaux -->
+    <p>CritÃ¨res utilisÃ©s : $CriteriaPath</p>
 "@
 
-    # Filtrer les résultats valides pour les stats
+    # Filtrer les rÃ©sultats valides pour les stats
     $validResults = $Results | Where-Object { -not $_.Error }
     $errorResults = $Results | Where-Object { $_.Error }
 
@@ -698,24 +698,24 @@ function New-HtmlReport {
     $conflictPercent = if ($analyzedFiles -gt 0) { [Math]::Round(($conflictFiles / $analyzedFiles) * 100, 2) } else { 0 }
     $errorPercent = if ($totalFiles -gt 0) { [Math]::Round(($errorFiles / $totalFiles) * 100, 2) } else { 0 }
 
-    # Compter les formats détectés (ProbableTrueFormat)
+    # Compter les formats dÃ©tectÃ©s (ProbableTrueFormat)
     $formatCounts = $validResults | Group-Object -Property ProbableTrueFormat | Select-Object @{N = 'Format'; E = { $_.Name } }, Count
 
-    # Trier les formats par fréquence
+    # Trier les formats par frÃ©quence
     $sortedFormats = $formatCounts | Sort-Object -Property Count -Descending
 
-    # Générer les données pour le graphique
-    $formatLabels = $sortedFormats | ForEach-Object { "'$($_.Format -replace "'", "\'")'" } # Échapper les apostrophes
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique
+    $formatLabels = $sortedFormats | ForEach-Object { "'$($_.Format -replace "'", "\'")'" } # Ã‰chapper les apostrophes
     $formatValues = $sortedFormats | ForEach-Object { $_.Count }
 
     $htmlSummary = @"
     <div class="summary">
-        <h2>Résumé de l'analyse</h2>
-        <p>Nombre total de fichiers trouvés : $totalFiles</p>
-        <p>Nombre de fichiers analysés avec succès : $analyzedFiles</p>
+        <h2>RÃ©sumÃ© de l'analyse</h2>
+        <p>Nombre total de fichiers trouvÃ©s : $totalFiles</p>
+        <p>Nombre de fichiers analysÃ©s avec succÃ¨s : $analyzedFiles</p>
         <p>Nombre de fichiers en erreur : $errorFiles ($errorPercent%)</p>
-        <p>Nombre de fichiers avec conflits de détection : $conflictFiles ($conflictPercent% des analysés)</p>
-        <h3>Distribution des formats probables (sur fichiers analysés)</h3>
+        <p>Nombre de fichiers avec conflits de dÃ©tection : $conflictFiles ($conflictPercent% des analysÃ©s)</p>
+        <h3>Distribution des formats probables (sur fichiers analysÃ©s)</h3>
         <div class="chart-container">
             <canvas id="formatsChart"></canvas>
         </div>
@@ -724,7 +724,7 @@ function New-HtmlReport {
     <script>
         const ctx = document.getElementById('formatsChart').getContext('2d');
         new Chart(ctx, {
-            type: 'bar', // 'pie' ou 'doughnut' peuvent aussi être intéressants
+            type: 'bar', // 'pie' ou 'doughnut' peuvent aussi Ãªtre intÃ©ressants
             data: {
                 labels: [$($formatLabels -join ', ')],
                 datasets: [{
@@ -734,7 +734,7 @@ function New-HtmlReport {
                         'rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(75, 192, 192, 0.6)',
                         'rgba(255, 206, 86, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)',
                         'rgba(99, 255, 132, 0.6)'
-                        ], // Couleurs variées
+                        ], // Couleurs variÃ©es
                     borderColor: [
                         'rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)',
                         'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',
@@ -746,10 +746,10 @@ function New-HtmlReport {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } }, // Cacher la légende si beaucoup de formats
+                plugins: { legend: { display: false } }, // Cacher la lÃ©gende si beaucoup de formats
                 scales: {
                     y: { beginAtZero: true, title: { display: true, text: 'Nombre de fichiers' } },
-                    x: { title: { display: true, text: 'Format Détecté (Probable)' } }
+                    x: { title: { display: true, text: 'Format DÃ©tectÃ© (Probable)' } }
                 }
             }
         });
@@ -783,7 +783,7 @@ function New-HtmlReport {
     $htmlConflicts = ""
     if ($conflictFiles -gt 0) {
         $htmlConflicts = @"
-    <h2 class="conflict">Fichiers avec conflits de détection ($conflictFiles)</h2>
+    <h2 class="conflict">Fichiers avec conflits de dÃ©tection ($conflictFiles)</h2>
     <table>
         <tr>
             <th>Fichier</th>
@@ -807,9 +807,9 @@ function New-HtmlReport {
         $htmlConflicts += "</table>"
     }
 
-    # Section de tous les fichiers analysés
+    # Section de tous les fichiers analysÃ©s
     $htmlAllFiles = @"
-    <h2>Détail des fichiers analysés ($analyzedFiles)</h2>
+    <h2>DÃ©tail des fichiers analysÃ©s ($analyzedFiles)</h2>
     <table>
         <tr>
             <th>Fichier</th>
@@ -847,7 +847,7 @@ function New-HtmlReport {
 
     $htmlFooter = @"
     <div class="footer">
-        Analyse effectuée par le script Analyze-FormatDetectionFailures.ps1 (v2.0)
+        Analyse effectuÃ©e par le script Analyze-FormatDetectionFailures.ps1 (v2.0)
     </div>
     </div> <!-- /container -->
 </body>
@@ -860,9 +860,9 @@ function New-HtmlReport {
     # Enregistrer le rapport HTML
     try {
         $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Host "Rapport HTML généré avec succès : $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s : $OutputPath" -ForegroundColor Green
     } catch {
-        Write-Error "Impossible d'écrire le rapport HTML sur '$OutputPath': $($_.Exception.Message)"
+        Write-Error "Impossible d'Ã©crire le rapport HTML sur '$OutputPath': $($_.Exception.Message)"
     }
 }
 
@@ -870,42 +870,42 @@ function New-HtmlReport {
 
 #region Main Execution Logic
 
-# Vérifier si le répertoire d'échantillons existe (paramètre validé, mais re-vérifier avant l'opération principale)
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe (paramÃ¨tre validÃ©, mais re-vÃ©rifier avant l'opÃ©ration principale)
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
-    Write-Error "Le répertoire d'échantillons '$SampleDirectory' n'existe pas ou n'est pas accessible."
-    # Optionnel: Créer le répertoire si souhaité
-    # if ($PSCmdlet.ShouldProcess($SampleDirectory, "Créer le répertoire d'échantillons")) {
+    Write-Error "Le rÃ©pertoire d'Ã©chantillons '$SampleDirectory' n'existe pas ou n'est pas accessible."
+    # Optionnel: CrÃ©er le rÃ©pertoire si souhaitÃ©
+    # if ($PSCmdlet.ShouldProcess($SampleDirectory, "CrÃ©er le rÃ©pertoire d'Ã©chantillons")) {
     #     New-Item -Path $SampleDirectory -ItemType Directory -Force | Out-Null
-    #     Write-Host "Le répertoire d'échantillons a été créé : $SampleDirectory" -ForegroundColor Yellow
-    #     Write-Host "Veuillez y placer des fichiers d'échantillon pour l'analyse." -ForegroundColor Yellow
+    #     Write-Host "Le rÃ©pertoire d'Ã©chantillons a Ã©tÃ© crÃ©Ã© : $SampleDirectory" -ForegroundColor Yellow
+    #     Write-Host "Veuillez y placer des fichiers d'Ã©chantillon pour l'analyse." -ForegroundColor Yellow
     # }
     exit 1
 }
 
-# Analyser les fichiers en parallèle
-if ($PSCmdlet.ShouldProcess($SampleDirectory, "Analyser les formats de fichiers (parallèle)")) {
+# Analyser les fichiers en parallÃ¨le
+if ($PSCmdlet.ShouldProcess($SampleDirectory, "Analyser les formats de fichiers (parallÃ¨le)")) {
     $results = Test-FileFormats_Parallel -Directory $SampleDirectory -NumberOfThreads $MaxThreads
 
     if ($null -eq $results -or $results.Count -eq 0) {
-        Write-Host "Aucun résultat d'analyse à rapporter." -ForegroundColor Yellow
+        Write-Host "Aucun rÃ©sultat d'analyse Ã  rapporter." -ForegroundColor Yellow
         exit 0
     }
 
-    # Enregistrer les résultats au format JSON
+    # Enregistrer les rÃ©sultats au format JSON
     try {
         $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Host "Rapport JSON généré avec succès : $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport JSON gÃ©nÃ©rÃ© avec succÃ¨s : $OutputPath" -ForegroundColor Green
     } catch {
-        Write-Error "Impossible d'écrire le rapport JSON sur '$OutputPath': $($_.Exception.Message)"
+        Write-Error "Impossible d'Ã©crire le rapport JSON sur '$OutputPath': $($_.Exception.Message)"
     }
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtmlReport) {
         $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         New-HtmlReport -Results $results -OutputPath $htmlOutputPath
     }
 
-    # Afficher un résumé final
+    # Afficher un rÃ©sumÃ© final
     $endTime = Get-Date
     $duration = New-TimeSpan -Start $global:ScriptStartTime -End $endTime
 
@@ -915,12 +915,12 @@ if ($PSCmdlet.ShouldProcess($SampleDirectory, "Analyser les formats de fichiers 
     $conflictCount = ($validResults | Where-Object { $_.Conflict }).Count
     $totalCount = $results.Count
 
-    Write-Host "`n--- Résumé Final de l'Analyse ---" -ForegroundColor Cyan
-    Write-Host " Temps total d'exécution : $($duration.ToString('g'))" -ForegroundColor White
-    Write-Host " Fichiers trouvés au total : $totalCount" -ForegroundColor White
-    Write-Host " Fichiers analysés        : $analyzedCount" -ForegroundColor White
-    Write-Host " Erreurs rencontrées      : $errorFilesCount" -ForegroundColor $(if ($errorFilesCount -gt 0) { 'Red' } else { 'Green' })
-    Write-Host " Conflits détectés        : $conflictCount" -ForegroundColor $(if ($conflictCount -gt 0) { 'Yellow' } else { 'Green' })
+    Write-Host "`n--- RÃ©sumÃ© Final de l'Analyse ---" -ForegroundColor Cyan
+    Write-Host " Temps total d'exÃ©cution : $($duration.ToString('g'))" -ForegroundColor White
+    Write-Host " Fichiers trouvÃ©s au total : $totalCount" -ForegroundColor White
+    Write-Host " Fichiers analysÃ©s        : $analyzedCount" -ForegroundColor White
+    Write-Host " Erreurs rencontrÃ©es      : $errorFilesCount" -ForegroundColor $(if ($errorFilesCount -gt 0) { 'Red' } else { 'Green' })
+    Write-Host " Conflits dÃ©tectÃ©s        : $conflictCount" -ForegroundColor $(if ($conflictCount -gt 0) { 'Yellow' } else { 'Green' })
 
     if ($conflictCount -gt 0) {
         $conflictsByProbableFormat = $validResults | Where-Object { $_.Conflict } | Group-Object -Property ProbableTrueFormat | Sort-Object -Property Count -Descending
@@ -930,7 +930,7 @@ if ($PSCmdlet.ShouldProcess($SampleDirectory, "Analyser les formats de fichiers 
         }
     }
     if ($errorFilesCount -gt 0) {
-         Write-Host "`n Vérifiez le rapport HTML ou JSON pour le détail des erreurs." -ForegroundColor Red
+         Write-Host "`n VÃ©rifiez le rapport HTML ou JSON pour le dÃ©tail des erreurs." -ForegroundColor Red
     }
 
     Write-Host "--- Fin de l'analyse ---" -ForegroundColor Cyan

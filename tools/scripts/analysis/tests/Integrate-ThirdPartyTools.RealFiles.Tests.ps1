@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le script Integrate-ThirdPartyTools.ps1 avec des fichiers réels.
+    Tests unitaires pour le script Integrate-ThirdPartyTools.ps1 avec des fichiers rÃ©els.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le script Integrate-ThirdPartyTools.ps1
-    qui intègre les résultats d'analyse de code avec des outils tiers.
-    Ces tests utilisent des fichiers temporaires réels au lieu de mocker les fonctions système.
+    qui intÃ¨gre les rÃ©sultats d'analyse de code avec des outils tiers.
+    Ces tests utilisent des fichiers temporaires rÃ©els au lieu de mocker les fonctions systÃ¨me.
 #>
 
 # Importer le module Pester si disponible
@@ -19,21 +19,21 @@ $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     Import-Module -Name $testHelpersPath -Force
 } else {
-    throw "Le module TestHelpers.psm1 n'existe pas à l'emplacement: $testHelpersPath"
+    throw "Le module TestHelpers.psm1 n'existe pas Ã  l'emplacement: $testHelpersPath"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Integrate-ThirdPartyTools.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script Integrate-ThirdPartyTools.ps1 n'existe pas à l'emplacement: $scriptPath"
+    throw "Le script Integrate-ThirdPartyTools.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
 }
 
-Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
+Describe "Script Integrate-ThirdPartyTools avec fichiers rÃ©els" {
     BeforeAll {
-        # Créer un environnement de test
+        # CrÃ©er un environnement de test
         $testEnv = New-TestEnvironment -TestName "IntegrateThirdPartyToolsRealTests"
 
-        # Créer un fichier JSON de test avec des résultats d'analyse
+        # CrÃ©er un fichier JSON de test avec des rÃ©sultats d'analyse
         $testJsonContent = @"
 [
   {
@@ -59,7 +59,7 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
     "Severity": "Information",
     "Message": "TODO: Add more robust error handling",
     "Category": "Documentation",
-    "Suggestion": "Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.",
+    "Suggestion": "RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.",
     "OriginalObject": null
   },
   {
@@ -81,18 +81,18 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
         Set-Content -Path $testJsonPath -Value $testJsonContent -Encoding UTF8
     }
 
-    Context "Paramètres et validation" {
-        It "Lève une exception si le chemin n'existe pas" {
+    Context "ParamÃ¨tres et validation" {
+        It "LÃ¨ve une exception si le chemin n'existe pas" {
             # Act & Assert
             { & $scriptPath -Path "C:\chemin\inexistant" -Tool "GitHub" } | Should -Throw
         }
 
-        It "Lève une exception si ProjectKey est manquant pour SonarQube" {
+        It "LÃ¨ve une exception si ProjectKey est manquant pour SonarQube" {
             # Arrange
             $testJsonPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "test-results.json"
 
             # Act & Assert
-            # Note: Nous devons capturer la sortie d'erreur pour vérifier qu'une erreur est générée
+            # Note: Nous devons capturer la sortie d'erreur pour vÃ©rifier qu'une erreur est gÃ©nÃ©rÃ©e
             $errorOutput = & $scriptPath -Path $testJsonPath -Tool "SonarQube" 2>&1
             $errorOutput | Should -Not -BeNullOrEmpty
             $errorOutput | Should -Match "ProjectKey est requis"
@@ -100,7 +100,7 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
     }
 
     Context "Conversion vers GitHub format" {
-        It "Convertit les résultats vers le format GitHub" {
+        It "Convertit les rÃ©sultats vers le format GitHub" {
             # Arrange
             $testJsonPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "test-results.json"
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "github-results.json"
@@ -120,7 +120,7 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
     }
 
     Context "Conversion vers SonarQube format" {
-        It "Convertit les résultats vers le format SonarQube" {
+        It "Convertit les rÃ©sultats vers le format SonarQube" {
             # Arrange
             $testJsonPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "test-results.json"
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "sonarqube-results.json"
@@ -140,7 +140,7 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
     }
 
     Context "Conversion vers AzureDevOps format" {
-        It "Convertit les résultats vers le format AzureDevOps" {
+        It "Convertit les rÃ©sultats vers le format AzureDevOps" {
             # Arrange
             $testJsonPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "test-results.json"
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "azuredevops-results.json"
@@ -159,14 +159,14 @@ Describe "Script Integrate-ThirdPartyTools avec fichiers réels" {
         }
     }
 
-    Context "Envoi des résultats à l'API" {
-        It "Génère une erreur si l'API n'est pas accessible" {
+    Context "Envoi des rÃ©sultats Ã  l'API" {
+        It "GÃ©nÃ¨re une erreur si l'API n'est pas accessible" {
             # Arrange
             $testJsonPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "test-results.json"
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "sonarqube-api-results.json"
 
             # Act & Assert
-            # Note: Nous ne pouvons pas tester l'envoi réel à l'API, mais nous pouvons vérifier que le fichier est créé
+            # Note: Nous ne pouvons pas tester l'envoi rÃ©el Ã  l'API, mais nous pouvons vÃ©rifier que le fichier est crÃ©Ã©
             & $scriptPath -Path $testJsonPath -Tool "SonarQube" -OutputPath $outputPath -ProjectKey "test-project" -ApiKey "test-api-key" -ApiUrl "https://sonarqube.example.com"
 
             # Assert

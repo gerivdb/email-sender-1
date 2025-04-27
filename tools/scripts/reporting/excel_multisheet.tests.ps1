@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module de gestion des feuilles multiples Excel.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module excel_multisheet.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers les modules à tester
+# Chemin vers les modules Ã  tester
 $ExporterPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_exporter.ps1"
 $MultiSheetPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_multisheet.ps1"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Excel MultiSheet Module Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "excel_multisheet_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
         
-        # Importer les modules à tester
+        # Importer les modules Ã  tester
         . $ExporterPath
         . $MultiSheetPath
         
-        # Créer un exporteur Excel
+        # CrÃ©er un exporteur Excel
         $script:Exporter = New-ExcelExporter
     }
     
@@ -56,11 +56,11 @@ Describe "Excel MultiSheet Module Tests" {
     
     Context "Split-ExcelDataToSheets function" {
         It "Should split data by category" {
-            # Créer un classeur de test
+            # CrÃ©er un classeur de test
             $WorkbookPath = Join-Path -Path $script:TestDir -ChildPath "split_by_category_test.xlsx"
             $WorkbookId = New-ExcelWorkbook -Exporter $script:Exporter -Path $WorkbookPath
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "John Doe"
@@ -89,7 +89,7 @@ Describe "Excel MultiSheet Module Tests" {
                 }
             )
             
-            # Répartir les données par catégorie
+            # RÃ©partir les donnÃ©es par catÃ©gorie
             $Result = Split-ExcelDataToSheets -Exporter $script:Exporter -WorkbookId $WorkbookId -Data $TestData -Strategy "ByCategory" -CategoryProperty "Department"
             
             $Result | Should -Not -BeNullOrEmpty
@@ -98,7 +98,7 @@ Describe "Excel MultiSheet Module Tests" {
             $Result["HR"] | Should -Not -BeNullOrEmpty
             $Result["Finance"] | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $WorkbookPath | Should -Be $true
             
             # Cleanup
@@ -106,11 +106,11 @@ Describe "Excel MultiSheet Module Tests" {
         }
         
         It "Should split data by size" {
-            # Créer un classeur de test
+            # CrÃ©er un classeur de test
             $WorkbookPath = Join-Path -Path $script:TestDir -ChildPath "split_by_size_test.xlsx"
             $WorkbookId = New-ExcelWorkbook -Exporter $script:Exporter -Path $WorkbookPath
             
-            # Créer des données de test (20 éléments)
+            # CrÃ©er des donnÃ©es de test (20 Ã©lÃ©ments)
             $TestData = 1..20 | ForEach-Object {
                 [PSCustomObject]@{
                     ID = $_
@@ -119,7 +119,7 @@ Describe "Excel MultiSheet Module Tests" {
                 }
             }
             
-            # Répartir les données par taille (10 éléments par feuille)
+            # RÃ©partir les donnÃ©es par taille (10 Ã©lÃ©ments par feuille)
             $Result = Split-ExcelDataToSheets -Exporter $script:Exporter -WorkbookId $WorkbookId -Data $TestData -Strategy "BySize" -MaxRowsPerSheet 10 -SheetPrefix "Page"
             
             $Result | Should -Not -BeNullOrEmpty
@@ -127,7 +127,7 @@ Describe "Excel MultiSheet Module Tests" {
             $Result["Page1"] | Should -Not -BeNullOrEmpty
             $Result["Page2"] | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $WorkbookPath | Should -Be $true
             
             # Cleanup
@@ -137,24 +137,24 @@ Describe "Excel MultiSheet Module Tests" {
     
     Context "Add-ExcelTableOfContents function" {
         It "Should create a table of contents" {
-            # Créer un classeur de test avec plusieurs feuilles
+            # CrÃ©er un classeur de test avec plusieurs feuilles
             $WorkbookPath = Join-Path -Path $script:TestDir -ChildPath "toc_test.xlsx"
             $SheetNames = @("Data", "Charts", "Summary")
             
             $Result = New-ExcelMultiSheetWorkbook -Exporter $script:Exporter -Path $WorkbookPath -SheetNames $SheetNames
             
-            # Créer une table des matières
+            # CrÃ©er une table des matiÃ¨res
             $Descriptions = @{
-                $Result.Worksheets["Data"] = "Données brutes"
+                $Result.Worksheets["Data"] = "DonnÃ©es brutes"
                 $Result.Worksheets["Charts"] = "Graphiques et visualisations"
-                $Result.Worksheets["Summary"] = "Résumé des résultats"
+                $Result.Worksheets["Summary"] = "RÃ©sumÃ© des rÃ©sultats"
             }
             
             $TocSheetId = Add-ExcelTableOfContents -Exporter $script:Exporter -WorkbookId $Result.WorkbookId -TocSheetName "Contents" -IncludeDescription $true -Descriptions $Descriptions
             
             $TocSheetId | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $WorkbookPath | Should -Be $true
             
             # Cleanup
@@ -163,6 +163,6 @@ Describe "Excel MultiSheet Module Tests" {
     }
 }
 
-# Ne pas exécuter les tests automatiquement à la fin du script
-# Pour exécuter les tests, utilisez la commande suivante :
+# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
+# Pour exÃ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\excel_multisheet.tests.ps1 -Output Detailed

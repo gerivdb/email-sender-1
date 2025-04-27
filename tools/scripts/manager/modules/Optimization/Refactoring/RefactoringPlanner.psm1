@@ -1,5 +1,5 @@
-# Module de planification de refactoring pour le Script Manager
-# Ce module planifie les opérations de refactoring
+﻿# Module de planification de refactoring pour le Script Manager
+# Ce module planifie les opÃ©rations de refactoring
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, refactoring, planning
@@ -7,13 +7,13 @@
 function New-RefactoringPlan {
     <#
     .SYNOPSIS
-        Crée un plan de refactoring pour un script
+        CrÃ©e un plan de refactoring pour un script
     .DESCRIPTION
-        Analyse les suggestions et crée un plan de refactoring
+        Analyse les suggestions et crÃ©e un plan de refactoring
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestions
-        Suggestions d'amélioration pour le script
+        Suggestions d'amÃ©lioration pour le script
     .EXAMPLE
         New-RefactoringPlan -Script $script -Suggestions $suggestions
     #>
@@ -26,7 +26,7 @@ function New-RefactoringPlan {
         [array]$Suggestions
     )
 
-    # Créer un objet pour stocker le plan
+    # CrÃ©er un objet pour stocker le plan
     $Plan = [PSCustomObject]@{
         ScriptPath = $Script.Path
         ScriptName = $Script.Name
@@ -44,7 +44,7 @@ function New-RefactoringPlan {
         return $Plan
     }
 
-    # Trier les suggestions par sévérité et auto-corrigeabilité
+    # Trier les suggestions par sÃ©vÃ©ritÃ© et auto-corrigeabilitÃ©
     $SortedSuggestions = $Suggestions | Sort-Object -Property {
         switch ($_.Severity) {
             "High" { 0 }
@@ -54,7 +54,7 @@ function New-RefactoringPlan {
         }
     }, { if ($_.AutoFixable) { 0 } else { 1 } }
 
-    # Créer les opérations de refactoring
+    # CrÃ©er les opÃ©rations de refactoring
     foreach ($Suggestion in $SortedSuggestions) {
         $Operation = Create-RefactoringOperation -Script $Script -Suggestion $Suggestion -Content $Content
 
@@ -63,13 +63,13 @@ function New-RefactoringPlan {
         }
     }
 
-    # Déterminer les dépendances entre opérations
+    # DÃ©terminer les dÃ©pendances entre opÃ©rations
     $Plan.Dependencies = Find-OperationDependencies -Operations $Plan.Operations
 
-    # Estimer la complexité du refactoring
+    # Estimer la complexitÃ© du refactoring
     $Plan.EstimatedComplexity = Estimate-RefactoringComplexity -Operations $Plan.Operations
 
-    # Déterminer la priorité du refactoring
+    # DÃ©terminer la prioritÃ© du refactoring
     $Plan.Priority = Determine-RefactoringPriority -Script $Script -Suggestions $Suggestions
 
     return $Plan
@@ -78,13 +78,13 @@ function New-RefactoringPlan {
 function Create-RefactoringOperation {
     <#
     .SYNOPSIS
-        Crée une opération de refactoring
+        CrÃ©e une opÃ©ration de refactoring
     .DESCRIPTION
-        Crée une opération de refactoring basée sur une suggestion
+        CrÃ©e une opÃ©ration de refactoring basÃ©e sur une suggestion
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestion
-        Suggestion d'amélioration
+        Suggestion d'amÃ©lioration
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -102,7 +102,7 @@ function Create-RefactoringOperation {
         [string]$Content
     )
 
-    # Créer un objet pour stocker l'opération
+    # CrÃ©er un objet pour stocker l'opÃ©ration
     $Operation = [PSCustomObject]@{
         Type = $Suggestion.Type
         Category = $Suggestion.Category
@@ -117,7 +117,7 @@ function Create-RefactoringOperation {
         EstimatedImpact = "Low"
     }
 
-    # Définir la transformation selon le type de suggestion
+    # DÃ©finir la transformation selon le type de suggestion
     switch ($Suggestion.Type) {
         "Quality" {
             $Operation.Transformation = Create-QualityTransformation -Script $Script -Suggestion $Suggestion -Content $Content
@@ -148,11 +148,11 @@ function Create-RefactoringOperation {
 function Find-OperationDependencies {
     <#
     .SYNOPSIS
-        Trouve les dépendances entre opérations de refactoring
+        Trouve les dÃ©pendances entre opÃ©rations de refactoring
     .DESCRIPTION
-        Analyse les opérations pour déterminer leurs dépendances
+        Analyse les opÃ©rations pour dÃ©terminer leurs dÃ©pendances
     .PARAMETER Operations
-        Opérations de refactoring
+        OpÃ©rations de refactoring
     .EXAMPLE
         Find-OperationDependencies -Operations $operations
     #>
@@ -162,10 +162,10 @@ function Find-OperationDependencies {
         [array]$Operations
     )
 
-    # Créer un tableau pour stocker les dépendances
+    # CrÃ©er un tableau pour stocker les dÃ©pendances
     $Dependencies = @()
 
-    # Parcourir les opérations
+    # Parcourir les opÃ©rations
     for ($i = 0; $i -lt $Operations.Count; $i++) {
         $Operation1 = $Operations[$i]
 
@@ -176,7 +176,7 @@ function Find-OperationDependencies {
 
             $Operation2 = $Operations[$j]
 
-            # Vérifier si les opérations se chevauchent
+            # VÃ©rifier si les opÃ©rations se chevauchent
             if ($Operation1.LineNumbers -and $Operation2.LineNumbers) {
                 $Overlap = $false
 
@@ -188,7 +188,7 @@ function Find-OperationDependencies {
                 }
 
                 if ($Overlap) {
-                    # Déterminer l'ordre des opérations
+                    # DÃ©terminer l'ordre des opÃ©rations
                     $FirstOperation = if ($Operation1.Severity -eq "High" -or ($Operation1.Severity -eq "Medium" -and $Operation2.Severity -eq "Low")) {
                         $i
                     } else {
@@ -205,7 +205,7 @@ function Find-OperationDependencies {
                 }
             }
 
-            # Vérifier les dépendances logiques
+            # VÃ©rifier les dÃ©pendances logiques
             if ($Operation1.Type -eq "AntiPattern" -and $Operation2.Type -eq "Quality" -and $Operation1.Category -eq $Operation2.Category) {
                 $Dependencies += [PSCustomObject]@{
                     FirstOperation = $i
@@ -222,11 +222,11 @@ function Find-OperationDependencies {
 function Estimate-RefactoringComplexity {
     <#
     .SYNOPSIS
-        Estime la complexité du refactoring
+        Estime la complexitÃ© du refactoring
     .DESCRIPTION
-        Analyse les opérations pour estimer la complexité globale du refactoring
+        Analyse les opÃ©rations pour estimer la complexitÃ© globale du refactoring
     .PARAMETER Operations
-        Opérations de refactoring
+        OpÃ©rations de refactoring
     .EXAMPLE
         Estimate-RefactoringComplexity -Operations $operations
     #>
@@ -236,15 +236,15 @@ function Estimate-RefactoringComplexity {
         [array]$Operations
     )
 
-    # Compter les opérations par sévérité
+    # Compter les opÃ©rations par sÃ©vÃ©ritÃ©
     $HighCount = ($Operations | Where-Object { $_.Severity -eq "High" } | Measure-Object).Count
     $MediumCount = ($Operations | Where-Object { $_.Severity -eq "Medium" } | Measure-Object).Count
     $LowCount = ($Operations | Where-Object { $_.Severity -eq "Low" } | Measure-Object).Count
 
-    # Compter les opérations auto-corrigeables
+    # Compter les opÃ©rations auto-corrigeables
     $AutoFixableCount = ($Operations | Where-Object { $_.AutoFixable -eq $true } | Measure-Object).Count
 
-    # Estimer la complexité
+    # Estimer la complexitÃ©
     if ($HighCount -gt 3 -or ($HighCount -gt 0 -and $MediumCount -gt 5)) {
         return "High"
     } elseif ($HighCount -gt 0 -or $MediumCount -gt 3 -or ($MediumCount -gt 0 -and $LowCount -gt 5)) {
@@ -257,13 +257,13 @@ function Estimate-RefactoringComplexity {
 function Determine-RefactoringPriority {
     <#
     .SYNOPSIS
-        Détermine la priorité du refactoring
+        DÃ©termine la prioritÃ© du refactoring
     .DESCRIPTION
-        Analyse le script et les suggestions pour déterminer la priorité du refactoring
+        Analyse le script et les suggestions pour dÃ©terminer la prioritÃ© du refactoring
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestions
-        Suggestions d'amélioration
+        Suggestions d'amÃ©lioration
     .EXAMPLE
         Determine-RefactoringPriority -Script $script -Suggestions $suggestions
     #>
@@ -276,17 +276,17 @@ function Determine-RefactoringPriority {
         [array]$Suggestions
     )
 
-    # Compter les suggestions par sévérité
+    # Compter les suggestions par sÃ©vÃ©ritÃ©
     $HighCount = ($Suggestions | Where-Object { $_.Severity -eq "High" } | Measure-Object).Count
     $MediumCount = ($Suggestions | Where-Object { $_.Severity -eq "Medium" } | Measure-Object).Count
 
-    # Vérifier si le script a des problèmes critiques
+    # VÃ©rifier si le script a des problÃ¨mes critiques
     $HasCriticalProblems = $Script.Problems | Where-Object { $_.Severity -eq "Critical" }
 
-    # Vérifier si le script est utilisé par d'autres scripts
+    # VÃ©rifier si le script est utilisÃ© par d'autres scripts
     $IsUsedByOthers = $Script.UsedBy -and $Script.UsedBy.Count -gt 0
 
-    # Déterminer la priorité
+    # DÃ©terminer la prioritÃ©
     if ($HasCriticalProblems -or $HighCount -gt 2 -or ($IsUsedByOthers -and $HighCount -gt 0)) {
         return "High"
     } elseif ($HighCount -gt 0 -or $MediumCount -gt 3 -or $IsUsedByOthers) {
@@ -299,13 +299,13 @@ function Determine-RefactoringPriority {
 function Create-QualityTransformation {
     <#
     .SYNOPSIS
-        Crée une transformation pour une suggestion de qualité
+        CrÃ©e une transformation pour une suggestion de qualitÃ©
     .DESCRIPTION
-        Crée une transformation basée sur une suggestion de qualité
+        CrÃ©e une transformation basÃ©e sur une suggestion de qualitÃ©
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestion
-        Suggestion d'amélioration
+        Suggestion d'amÃ©lioration
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -323,7 +323,7 @@ function Create-QualityTransformation {
         [string]$Content
     )
 
-    # Créer un objet pour stocker la transformation
+    # CrÃ©er un objet pour stocker la transformation
     $Transformation = [PSCustomObject]@{
         Type = "Quality"
         Description = $Suggestion.Recommendation
@@ -332,7 +332,7 @@ function Create-QualityTransformation {
         LineNumbers = $Suggestion.LineNumbers
     }
 
-    # Définir la transformation selon le titre de la suggestion
+    # DÃ©finir la transformation selon le titre de la suggestion
     switch -Regex ($Suggestion.Title) {
         "Ratio de commentaires faible" {
             $Transformation.Type = "AddComments"
@@ -342,9 +342,9 @@ function Create-QualityTransformation {
             $Transformation.Type = "SplitLines"
             $Transformation.Description = "Diviser les longues lignes en plusieurs lignes plus courtes"
         }
-        "Complexité élevée" {
+        "ComplexitÃ© Ã©levÃ©e" {
             $Transformation.Type = "ExtractMethod"
-            $Transformation.Description = "Extraire des parties du code dans des méthodes séparées"
+            $Transformation.Description = "Extraire des parties du code dans des mÃ©thodes sÃ©parÃ©es"
         }
         "Script monolithique" {
             $Transformation.Type = "Modularize"
@@ -352,11 +352,11 @@ function Create-QualityTransformation {
         }
         "Trop de lignes vides" {
             $Transformation.Type = "RemoveEmptyLines"
-            $Transformation.Description = "Réduire le nombre de lignes vides"
+            $Transformation.Description = "RÃ©duire le nombre de lignes vides"
         }
         "Pas assez de lignes vides" {
             $Transformation.Type = "AddEmptyLines"
-            $Transformation.Description = "Ajouter des lignes vides pour séparer les sections logiques"
+            $Transformation.Description = "Ajouter des lignes vides pour sÃ©parer les sections logiques"
         }
         default {
             $Transformation.Type = "Manual"
@@ -370,13 +370,13 @@ function Create-QualityTransformation {
 function Create-AntiPatternTransformation {
     <#
     .SYNOPSIS
-        Crée une transformation pour une suggestion d'anti-pattern
+        CrÃ©e une transformation pour une suggestion d'anti-pattern
     .DESCRIPTION
-        Crée une transformation basée sur une suggestion d'anti-pattern
+        CrÃ©e une transformation basÃ©e sur une suggestion d'anti-pattern
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestion
-        Suggestion d'amélioration
+        Suggestion d'amÃ©lioration
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -394,7 +394,7 @@ function Create-AntiPatternTransformation {
         [string]$Content
     )
 
-    # Créer un objet pour stocker la transformation
+    # CrÃ©er un objet pour stocker la transformation
     $Transformation = [PSCustomObject]@{
         Type = "AntiPattern"
         Description = $Suggestion.Recommendation
@@ -403,7 +403,7 @@ function Create-AntiPatternTransformation {
         LineNumbers = $Suggestion.LineNumbers
     }
 
-    # Définir la transformation selon le type d'anti-pattern
+    # DÃ©finir la transformation selon le type d'anti-pattern
     switch ($Suggestion.Type) {
         "DeadCode" {
             $Transformation.Type = "RemoveCode"
@@ -411,35 +411,35 @@ function Create-AntiPatternTransformation {
         }
         "DuplicateCode" {
             $Transformation.Type = "ExtractMethod"
-            $Transformation.Description = "Extraire le code dupliqué dans une fonction réutilisable"
+            $Transformation.Description = "Extraire le code dupliquÃ© dans une fonction rÃ©utilisable"
         }
         "MagicNumber" {
             $Transformation.Type = "ExtractConstant"
-            $Transformation.Description = "Remplacer les nombres magiques par des constantes nommées"
+            $Transformation.Description = "Remplacer les nombres magiques par des constantes nommÃ©es"
         }
         "LongMethod" {
             $Transformation.Type = "SplitMethod"
-            $Transformation.Description = "Diviser la méthode en plusieurs méthodes plus petites"
+            $Transformation.Description = "Diviser la mÃ©thode en plusieurs mÃ©thodes plus petites"
         }
         "DeepNesting" {
             $Transformation.Type = "ReduceNesting"
-            $Transformation.Description = "Réduire la profondeur d'imbrication"
+            $Transformation.Description = "RÃ©duire la profondeur d'imbrication"
         }
         "GlobalVariable" {
             $Transformation.Type = "ParameterizeVariable"
-            $Transformation.Description = "Passer les variables en paramètres aux fonctions"
+            $Transformation.Description = "Passer les variables en paramÃ¨tres aux fonctions"
         }
         "HardcodedPath" {
             $Transformation.Type = "ExtractPath"
-            $Transformation.Description = "Remplacer les chemins codés en dur par des variables"
+            $Transformation.Description = "Remplacer les chemins codÃ©s en dur par des variables"
         }
         "CatchAll" {
             $Transformation.Type = "SpecifyException"
-            $Transformation.Description = "Spécifier les exceptions à capturer"
+            $Transformation.Description = "SpÃ©cifier les exceptions Ã  capturer"
         }
         "NoErrorHandling" {
             $Transformation.Type = "AddErrorHandling"
-            $Transformation.Description = "Ajouter des blocs try-catch pour gérer les erreurs"
+            $Transformation.Description = "Ajouter des blocs try-catch pour gÃ©rer les erreurs"
         }
         default {
             $Transformation.Type = "Manual"
@@ -453,13 +453,13 @@ function Create-AntiPatternTransformation {
 function Create-TypeSpecificTransformation {
     <#
     .SYNOPSIS
-        Crée une transformation pour une suggestion spécifique au type
+        CrÃ©e une transformation pour une suggestion spÃ©cifique au type
     .DESCRIPTION
-        Crée une transformation basée sur une suggestion spécifique au type de script
+        CrÃ©e une transformation basÃ©e sur une suggestion spÃ©cifique au type de script
     .PARAMETER Script
-        Script à refactorer
+        Script Ã  refactorer
     .PARAMETER Suggestion
-        Suggestion d'amélioration
+        Suggestion d'amÃ©lioration
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -477,7 +477,7 @@ function Create-TypeSpecificTransformation {
         [string]$Content
     )
 
-    # Créer un objet pour stocker la transformation
+    # CrÃ©er un objet pour stocker la transformation
     $Transformation = [PSCustomObject]@{
         Type = "TypeSpecific"
         Description = $Suggestion.Recommendation
@@ -486,25 +486,25 @@ function Create-TypeSpecificTransformation {
         LineNumbers = $Suggestion.LineNumbers
     }
 
-    # Définir la transformation selon le titre de la suggestion et le type de script
+    # DÃ©finir la transformation selon le titre de la suggestion et le type de script
     switch ($Script.Type) {
         "PowerShell" {
             switch -Regex ($Suggestion.Title) {
-                "Comparaison avec \`$null du mauvais côté" {
+                "Comparaison avec \`$null du mauvais cÃ´tÃ©" {
                     $Transformation.Type = "FixNullComparison"
-                    $Transformation.Description = "Placer `$null à gauche des comparaisons"
+                    $Transformation.Description = "Placer `$null Ã  gauche des comparaisons"
                 }
-                "Verbes non approuvés" {
+                "Verbes non approuvÃ©s" {
                     $Transformation.Type = "RenameFunction"
-                    $Transformation.Description = "Renommer les fonctions avec des verbes approuvés"
+                    $Transformation.Description = "Renommer les fonctions avec des verbes approuvÃ©s"
                 }
                 "Write-Host sans couleur" {
                     $Transformation.Type = "AddForegroundColor"
-                    $Transformation.Description = "Ajouter le paramètre -ForegroundColor aux appels à Write-Host"
+                    $Transformation.Description = "Ajouter le paramÃ¨tre -ForegroundColor aux appels Ã  Write-Host"
                 }
-                "Paramètre switch avec valeur par défaut" {
+                "ParamÃ¨tre switch avec valeur par dÃ©faut" {
                     $Transformation.Type = "FixSwitchParameter"
-                    $Transformation.Description = "Supprimer la valeur par défaut des paramètres switch"
+                    $Transformation.Description = "Supprimer la valeur par dÃ©faut des paramÃ¨tres switch"
                 }
                 default {
                     $Transformation.Type = "Manual"
@@ -518,9 +518,9 @@ function Create-TypeSpecificTransformation {
                     $Transformation.Type = "ReplaceWithLogging"
                     $Transformation.Description = "Remplacer print() par logging.info()"
                 }
-                "Bloc except générique" {
+                "Bloc except gÃ©nÃ©rique" {
                     $Transformation.Type = "SpecifyException"
-                    $Transformation.Description = "Spécifier le type d'exception à capturer"
+                    $Transformation.Description = "SpÃ©cifier le type d'exception Ã  capturer"
                 }
                 "Absence de if __name__ == main" {
                     $Transformation.Type = "AddMainGuard"
@@ -540,15 +540,15 @@ function Create-TypeSpecificTransformation {
             switch -Regex ($Suggestion.Title) {
                 "Absence de @ECHO OFF" {
                     $Transformation.Type = "AddEchoOff"
-                    $Transformation.Description = "Ajouter @ECHO OFF au début du script"
+                    $Transformation.Description = "Ajouter @ECHO OFF au dÃ©but du script"
                 }
                 "Absence de SETLOCAL" {
                     $Transformation.Type = "AddSetlocal"
-                    $Transformation.Description = "Ajouter SETLOCAL au début du script"
+                    $Transformation.Description = "Ajouter SETLOCAL au dÃ©but du script"
                 }
-                "Absence de vérification des erreurs" {
+                "Absence de vÃ©rification des erreurs" {
                     $Transformation.Type = "AddErrorCheck"
-                    $Transformation.Description = "Ajouter des vérifications IF %ERRORLEVEL% NEQ 0"
+                    $Transformation.Description = "Ajouter des vÃ©rifications IF %ERRORLEVEL% NEQ 0"
                 }
                 default {
                     $Transformation.Type = "Manual"
@@ -560,17 +560,17 @@ function Create-TypeSpecificTransformation {
             switch -Regex ($Suggestion.Title) {
                 "Absence de shebang" {
                     $Transformation.Type = "AddShebang"
-                    $Transformation.Description = "Ajouter #!/bin/bash en première ligne du script"
+                    $Transformation.Description = "Ajouter #!/bin/bash en premiÃ¨re ligne du script"
                 }
                 "Absence de set -e" {
                     $Transformation.Type = "AddSetE"
-                    $Transformation.Description = "Ajouter set -e au début du script"
+                    $Transformation.Description = "Ajouter set -e au dÃ©but du script"
                 }
                 "Utilisation de \[ \] au lieu de \[\[ \]\]" {
                     $Transformation.Type = "ReplaceTestOperator"
                     $Transformation.Description = "Remplacer [ ] par [[ ]]"
                 }
-                "Variables non entourées de guillemets" {
+                "Variables non entourÃ©es de guillemets" {
                     $Transformation.Type = "QuoteVariables"
                     $Transformation.Description = "Entourer les variables de guillemets"
                 }
@@ -592,11 +592,11 @@ function Create-TypeSpecificTransformation {
 function Estimate-OperationImpact {
     <#
     .SYNOPSIS
-        Estime l'impact d'une opération de refactoring
+        Estime l'impact d'une opÃ©ration de refactoring
     .DESCRIPTION
-        Analyse l'opération pour estimer son impact sur le code
+        Analyse l'opÃ©ration pour estimer son impact sur le code
     .PARAMETER Operation
-        Opération de refactoring
+        OpÃ©ration de refactoring
     .EXAMPLE
         Estimate-OperationImpact -Operation $operation
     #>

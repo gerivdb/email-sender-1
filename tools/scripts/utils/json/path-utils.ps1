@@ -1,4 +1,4 @@
-# path-utils.ps1
+﻿# path-utils.ps1
 # Script d'utilitaires pour la gestion des chemins dans PowerShell
 
 # Importer le module Path-Manager
@@ -21,38 +21,38 @@ function Remove-PathAccents {
     
     # Remplacer les caracteres accentues
     $result = $Path
-    $result = $result -replace "é", "e"
-    $result = $result -replace "è", "e"
-    $result = $result -replace "ê", "e"
-    $result = $result -replace "ë", "e"
-    $result = $result -replace "à", "a"
-    $result = $result -replace "â", "a"
-    $result = $result -replace "ä", "a"
-    $result = $result -replace "î", "i"
-    $result = $result -replace "ï", "i"
-    $result = $result -replace "ô", "o"
-    $result = $result -replace "ö", "o"
-    $result = $result -replace "ù", "u"
-    $result = $result -replace "û", "u"
-    $result = $result -replace "ü", "u"
-    $result = $result -replace "ÿ", "y"
-    $result = $result -replace "ç", "c"
-    $result = $result -replace "É", "E"
-    $result = $result -replace "È", "E"
-    $result = $result -replace "Ê", "E"
-    $result = $result -replace "Ë", "E"
-    $result = $result -replace "À", "A"
-    $result = $result -replace "Â", "A"
-    $result = $result -replace "Ä", "A"
-    $result = $result -replace "Î", "I"
-    $result = $result -replace "Ï", "I"
-    $result = $result -replace "Ô", "O"
-    $result = $result -replace "Ö", "O"
-    $result = $result -replace "Ù", "U"
-    $result = $result -replace "Û", "U"
-    $result = $result -replace "Ü", "U"
-    $result = $result -replace "Ÿ", "Y"
-    $result = $result -replace "Ç", "C"
+    $result = $result -replace "Ã©", "e"
+    $result = $result -replace "Ã¨", "e"
+    $result = $result -replace "Ãª", "e"
+    $result = $result -replace "Ã«", "e"
+    $result = $result -replace "Ã ", "a"
+    $result = $result -replace "Ã¢", "a"
+    $result = $result -replace "Ã¤", "a"
+    $result = $result -replace "Ã®", "i"
+    $result = $result -replace "Ã¯", "i"
+    $result = $result -replace "Ã´", "o"
+    $result = $result -replace "Ã¶", "o"
+    $result = $result -replace "Ã¹", "u"
+    $result = $result -replace "Ã»", "u"
+    $result = $result -replace "Ã¼", "u"
+    $result = $result -replace "Ã¿", "y"
+    $result = $result -replace "Ã§", "c"
+    $result = $result -replace "Ã‰", "E"
+    $result = $result -replace "Ãˆ", "E"
+    $result = $result -replace "ÃŠ", "E"
+    $result = $result -replace "Ã‹", "E"
+    $result = $result -replace "Ã€", "A"
+    $result = $result -replace "Ã‚", "A"
+    $result = $result -replace "Ã„", "A"
+    $result = $result -replace "ÃŽ", "I"
+    $result = $result -replace "Ã", "I"
+    $result = $result -replace "Ã”", "O"
+    $result = $result -replace "Ã–", "O"
+    $result = $result -replace "Ã™", "U"
+    $result = $result -replace "Ã›", "U"
+    $result = $result -replace "Ãœ", "U"
+    $result = $result -replace "Å¸", "Y"
+    $result = $result -replace "Ã‡", "C"
     
     return $result
 }
@@ -87,7 +87,7 @@ function Test-PathAccents {
     )
     
     # Utiliser une expression reguliere simple pour detecter les caracteres accentues
-    return $Path -match "[éèêëàâäîïôöùûüÿçÉÈÊËÀÂÄÎÏÔÖÙÛÜŸÇ]"
+    return $Path -match "[Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã®Ã¯Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§Ã‰ÃˆÃŠÃ‹Ã€Ã‚Ã„ÃŽÃÃ”Ã–Ã™Ã›ÃœÅ¸Ã‡]"
 }
 
 # Fonction pour verifier si un chemin contient des espaces

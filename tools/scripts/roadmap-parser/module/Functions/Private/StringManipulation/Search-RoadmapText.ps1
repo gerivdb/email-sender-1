@@ -1,82 +1,82 @@
-<#
+﻿<#
 .SYNOPSIS
     Recherche un motif dans un texte.
 
 .DESCRIPTION
     La fonction Search-RoadmapText recherche un motif dans un texte.
-    Elle prend en charge différents types de recherche et peut être utilisée pour
+    Elle prend en charge diffÃ©rents types de recherche et peut Ãªtre utilisÃ©e pour
     rechercher des motifs dans les textes du module RoadmapParser.
 
 .PARAMETER Text
     Le texte dans lequel effectuer la recherche.
 
 .PARAMETER Pattern
-    Le motif à rechercher.
+    Le motif Ã  rechercher.
 
 .PARAMETER SearchType
-    Le type de recherche à effectuer. Valeurs possibles :
-    - Simple : Recherche simple (sensible à la casse)
-    - CaseInsensitive : Recherche insensible à la casse
-    - Regex : Recherche par expression régulière
-    - Wildcard : Recherche avec caractères génériques
+    Le type de recherche Ã  effectuer. Valeurs possibles :
+    - Simple : Recherche simple (sensible Ã  la casse)
+    - CaseInsensitive : Recherche insensible Ã  la casse
+    - Regex : Recherche par expression rÃ©guliÃ¨re
+    - Wildcard : Recherche avec caractÃ¨res gÃ©nÃ©riques
     - WholeWord : Recherche de mots entiers
-    - StartsWith : Recherche au début du texte
-    - EndsWith : Recherche à la fin du texte
+    - StartsWith : Recherche au dÃ©but du texte
+    - EndsWith : Recherche Ã  la fin du texte
     - Contains : Recherche dans tout le texte
-    - Exact : Recherche exacte (égalité)
-    - Custom : Recherche personnalisée
+    - Exact : Recherche exacte (Ã©galitÃ©)
+    - Custom : Recherche personnalisÃ©e
 
 .PARAMETER CustomSearch
-    La fonction de recherche personnalisée à utiliser.
-    Utilisé uniquement lorsque SearchType est "Custom".
+    La fonction de recherche personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque SearchType est "Custom".
 
 .PARAMETER IncludeLineNumbers
-    Indique si les numéros de ligne doivent être inclus dans les résultats.
-    Par défaut, c'est $false.
+    Indique si les numÃ©ros de ligne doivent Ãªtre inclus dans les rÃ©sultats.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER IncludeContext
-    Indique si le contexte (lignes avant et après) doit être inclus dans les résultats.
-    Par défaut, c'est $false.
+    Indique si le contexte (lignes avant et aprÃ¨s) doit Ãªtre inclus dans les rÃ©sultats.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ContextLines
-    Le nombre de lignes de contexte à inclure avant et après chaque correspondance.
-    Par défaut, c'est 2.
+    Le nombre de lignes de contexte Ã  inclure avant et aprÃ¨s chaque correspondance.
+    Par dÃ©faut, c'est 2.
 
 .PARAMETER MaxResults
-    Le nombre maximum de résultats à retourner.
-    Par défaut, c'est 0 (tous les résultats).
+    Le nombre maximum de rÃ©sultats Ã  retourner.
+    Par dÃ©faut, c'est 0 (tous les rÃ©sultats).
 
 .PARAMETER Culture
-    La culture à utiliser pour la recherche.
-    Par défaut, c'est la culture actuelle.
+    La culture Ã  utiliser pour la recherche.
+    Par dÃ©faut, c'est la culture actuelle.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la recherche.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la recherche.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la recherche.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la recherche.
 
 .EXAMPLE
     Search-RoadmapText -Text "Hello World" -Pattern "world" -SearchType CaseInsensitive
-    Recherche "world" dans "Hello World" de manière insensible à la casse.
+    Recherche "world" dans "Hello World" de maniÃ¨re insensible Ã  la casse.
 
 .EXAMPLE
     Search-RoadmapText -Text "Hello World" -Pattern "^Hello" -SearchType Regex
     Recherche le motif regex "^Hello" dans "Hello World".
 
 .OUTPUTS
-    [PSCustomObject[]] Les résultats de la recherche, avec les propriétés suivantes :
+    [PSCustomObject[]] Les rÃ©sultats de la recherche, avec les propriÃ©tÃ©s suivantes :
     - Match : Le texte correspondant
-    - Index : L'index de début de la correspondance
+    - Index : L'index de dÃ©but de la correspondance
     - Length : La longueur de la correspondance
-    - LineNumber : Le numéro de ligne (si IncludeLineNumbers est $true)
+    - LineNumber : Le numÃ©ro de ligne (si IncludeLineNumbers est $true)
     - Context : Le contexte (si IncludeContext est $true)
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Search-RoadmapText {
     [CmdletBinding()]
@@ -117,7 +117,7 @@ function Search-RoadmapText {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser les résultats de la recherche
+    # Initialiser les rÃ©sultats de la recherche
     $results = @()
     $searchSucceeded = $false
 
@@ -215,7 +215,7 @@ function Search-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $results = @()
                 } else {
-                    # Créer un motif regex pour les mots entiers
+                    # CrÃ©er un motif regex pour les mots entiers
                     $regexPattern = "\b" + [regex]::Escape($Pattern) + "\b"
                     $regex = [regex]$regexPattern
                     $matches = $regex.Matches($Text)
@@ -307,7 +307,7 @@ function Search-RoadmapText {
             }
             "Custom" {
                 if ($null -eq $CustomSearch) {
-                    throw "Le paramètre CustomSearch est requis lorsque le type de recherche est Custom."
+                    throw "Le paramÃ¨tre CustomSearch est requis lorsque le type de recherche est Custom."
                 } else {
                     $results = & $CustomSearch $Text $Pattern
                 }
@@ -315,7 +315,7 @@ function Search-RoadmapText {
             }
         }
 
-        # Ajouter les numéros de ligne si demandé
+        # Ajouter les numÃ©ros de ligne si demandÃ©
         if ($IncludeLineNumbers -and $results.Count -gt 0) {
             $lines = $Text -split "`r`n|`r|`n"
             $lineStartIndices = @(0)
@@ -339,11 +339,11 @@ function Search-RoadmapText {
             }
         }
 
-        # Ajouter le contexte si demandé
+        # Ajouter le contexte si demandÃ©
         if ($IncludeContext -and $results.Count -gt 0) {
             $lines = $Text -split "`r`n|`r|`n"
 
-            # S'assurer que les numéros de ligne sont inclus
+            # S'assurer que les numÃ©ros de ligne sont inclus
             $hasLineNumbers = $true
             foreach ($result in $results) {
                 if (-not ($result.PSObject.Properties.Name -contains "LineNumber")) {
@@ -391,7 +391,7 @@ function Search-RoadmapText {
             }
         }
 
-        # Limiter le nombre de résultats si demandé
+        # Limiter le nombre de rÃ©sultats si demandÃ©
         if ($MaxResults -gt 0 -and $results.Count -gt $MaxResults) {
             $results = $results | Select-Object -First $MaxResults
         }
@@ -402,7 +402,7 @@ function Search-RoadmapText {
         }
     }
 
-    # Gérer l'échec de la recherche
+    # GÃ©rer l'Ã©chec de la recherche
     if (-not $searchSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

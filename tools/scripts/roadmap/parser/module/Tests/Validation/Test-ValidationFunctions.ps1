@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-ValidationFunctions.ps1
 #
 # Script pour tester les fonctions de validation
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $validationPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation"
 
-# Créer les répertoires s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires s'ils n'existent pas
 if (-not (Test-Path -Path $validationPath)) {
     New-Item -Path $validationPath -ItemType Directory -Force | Out-Null
 }
@@ -21,16 +21,16 @@ if (-not (Test-Path -Path $validationPath)) {
 . "$validationPath\Test-Custom.ps1"
 . "$modulePath\Functions\Public\Test-RoadmapInput.ps1"
 
-Write-Host "Début des tests des fonctions de validation..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests des fonctions de validation..." -ForegroundColor Cyan
 
 # Test 1: Test-DataType
 Write-Host "`nTest 1: Test-DataType" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "Chaîne valide" }
+    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "ChaÃ®ne valide" }
     @{ Value = 42; Type = "Integer"; Expected = $true; Description = "Entier valide" }
-    @{ Value = 3.14; Type = "Decimal"; Expected = $true; Description = "Décimal valide" }
-    @{ Value = $true; Type = "Boolean"; Expected = $true; Description = "Booléen valide" }
+    @{ Value = 3.14; Type = "Decimal"; Expected = $true; Description = "DÃ©cimal valide" }
+    @{ Value = $true; Type = "Boolean"; Expected = $true; Description = "BoolÃ©en valide" }
     @{ Value = (Get-Date); Type = "DateTime"; Expected = $true; Description = "DateTime valide" }
     @{ Value = @(1, 2, 3); Type = "Array"; Expected = $true; Description = "Tableau valide" }
     @{ Value = @{ Key = "Value" }; Type = "Hashtable"; Expected = $true; Description = "Hashtable valide" }
@@ -38,13 +38,13 @@ $testCases = @(
     @{ Value = { Write-Host "Test" }; Type = "ScriptBlock"; Expected = $true; Description = "ScriptBlock valide" }
     @{ Value = $null; Type = "Null"; Expected = $true; Description = "Null valide" }
     @{ Value = "Not null"; Type = "NotNull"; Expected = $true; Description = "NotNull valide" }
-    @{ Value = ""; Type = "Empty"; Expected = $true; Description = "Chaîne vide valide" }
-    @{ Value = "Not empty"; Type = "NotEmpty"; Expected = $true; Description = "Chaîne non vide valide" }
+    @{ Value = ""; Type = "Empty"; Expected = $true; Description = "ChaÃ®ne vide valide" }
+    @{ Value = "Not empty"; Type = "NotEmpty"; Expected = $true; Description = "ChaÃ®ne non vide valide" }
     @{ Value = 42; Type = "String"; Expected = $false; Description = "Entier invalide pour String" }
-    @{ Value = "Hello"; Type = "Integer"; Expected = $false; Description = "Chaîne invalide pour Integer" }
+    @{ Value = "Hello"; Type = "Integer"; Expected = $false; Description = "ChaÃ®ne invalide pour Integer" }
     @{ Value = $null; Type = "NotNull"; Expected = $false; Description = "Null invalide pour NotNull" }
-    @{ Value = "Not empty"; Type = "Empty"; Expected = $false; Description = "Chaîne non vide invalide pour Empty" }
-    @{ Value = ""; Type = "NotEmpty"; Expected = $false; Description = "Chaîne vide invalide pour NotEmpty" }
+    @{ Value = "Not empty"; Type = "Empty"; Expected = $false; Description = "ChaÃ®ne non vide invalide pour Empty" }
+    @{ Value = ""; Type = "NotEmpty"; Expected = $false; Description = "ChaÃ®ne vide invalide pour NotEmpty" }
 )
 
 $successCount = 0
@@ -52,7 +52,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-DataType -Value $testCase.Value -Type $testCase.Type
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -64,7 +64,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Test-Format
 Write-Host "`nTest 2: Test-Format" -ForegroundColor Cyan
@@ -73,18 +73,18 @@ $testCases = @(
     @{ Value = "user@example.com"; Format = "Email"; Expected = $true; Description = "Email valide" }
     @{ Value = "https://www.example.com"; Format = "URL"; Expected = $true; Description = "URL valide" }
     @{ Value = "192.168.1.1"; Format = "IPAddress"; Expected = $true; Description = "Adresse IP valide" }
-    @{ Value = "123-456-7890"; Format = "PhoneNumber"; Expected = $true; Description = "Numéro de téléphone valide" }
+    @{ Value = "123-456-7890"; Format = "PhoneNumber"; Expected = $true; Description = "NumÃ©ro de tÃ©lÃ©phone valide" }
     @{ Value = "12345"; Format = "ZipCode"; Expected = $true; Description = "Code postal valide" }
     @{ Value = "01/01/2023"; Format = "Date"; Expected = $true; Description = "Date valide" }
     @{ Value = "12:34:56"; Format = "Time"; Expected = $true; Description = "Heure valide" }
     @{ Value = "01/01/2023 12:34:56"; Format = "DateTime"; Expected = $true; Description = "DateTime valide" }
     @{ Value = "123e4567-e89b-12d3-a456-426614174000"; Format = "Guid"; Expected = $true; Description = "GUID valide" }
-    @{ Value = "C:\Windows\System32"; Format = "DirectoryPath"; Expected = $true; Description = "Chemin de répertoire valide" }
-    @{ Value = "abc123"; Format = "Custom"; Pattern = "^[a-z]+[0-9]+$"; Expected = $true; Description = "Format personnalisé valide" }
+    @{ Value = "C:\Windows\System32"; Format = "DirectoryPath"; Expected = $true; Description = "Chemin de rÃ©pertoire valide" }
+    @{ Value = "abc123"; Format = "Custom"; Pattern = "^[a-z]+[0-9]+$"; Expected = $true; Description = "Format personnalisÃ© valide" }
     @{ Value = "invalid@"; Format = "Email"; Expected = $false; Description = "Email invalide" }
     @{ Value = "not a url"; Format = "URL"; Expected = $false; Description = "URL invalide" }
     @{ Value = "300.400.500.600"; Format = "IPAddress"; Expected = $false; Description = "Adresse IP invalide" }
-    @{ Value = "123abc"; Format = "Custom"; Pattern = "^[0-9]+$"; Expected = $false; Description = "Format personnalisé invalide" }
+    @{ Value = "123abc"; Format = "Custom"; Pattern = "^[0-9]+$"; Expected = $false; Description = "Format personnalisÃ© invalide" }
 )
 
 $successCount = 0
@@ -101,7 +101,7 @@ foreach ($testCase in $testCases) {
     }
     
     $result = Test-Format @params
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -113,20 +113,20 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 3: Test-Range
 Write-Host "`nTest 3: Test-Range" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Value = 42; Min = 0; Max = 100; Expected = $true; Description = "Valeur dans la plage" }
-    @{ Value = 0; Min = 0; Max = 100; Expected = $true; Description = "Valeur égale à la borne inférieure" }
-    @{ Value = 100; Min = 0; Max = 100; Expected = $true; Description = "Valeur égale à la borne supérieure" }
-    @{ Value = -1; Min = 0; Max = 100; Expected = $false; Description = "Valeur inférieure à la borne inférieure" }
-    @{ Value = 101; Min = 0; Max = 100; Expected = $false; Description = "Valeur supérieure à la borne supérieure" }
-    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "Chaîne de longueur valide" }
-    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "Chaîne trop courte" }
-    @{ Value = "Hello World!"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "Chaîne trop longue" }
+    @{ Value = 0; Min = 0; Max = 100; Expected = $true; Description = "Valeur Ã©gale Ã  la borne infÃ©rieure" }
+    @{ Value = 100; Min = 0; Max = 100; Expected = $true; Description = "Valeur Ã©gale Ã  la borne supÃ©rieure" }
+    @{ Value = -1; Min = 0; Max = 100; Expected = $false; Description = "Valeur infÃ©rieure Ã  la borne infÃ©rieure" }
+    @{ Value = 101; Min = 0; Max = 100; Expected = $false; Description = "Valeur supÃ©rieure Ã  la borne supÃ©rieure" }
+    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "ChaÃ®ne de longueur valide" }
+    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "ChaÃ®ne trop courte" }
+    @{ Value = "Hello World!"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "ChaÃ®ne trop longue" }
     @{ Value = @(1, 2, 3); MinCount = 1; MaxCount = 5; Expected = $true; Description = "Tableau de taille valide" }
     @{ Value = @(); MinCount = 1; MaxCount = 5; Expected = $false; Description = "Tableau vide" }
     @{ Value = @(1, 2, 3, 4, 5, 6); MinCount = 1; MaxCount = 5; Expected = $false; Description = "Tableau trop grand" }
@@ -148,7 +148,7 @@ foreach ($testCase in $testCases) {
     if ($testCase.ContainsKey("MaxCount")) { $params["MaxCount"] = $testCase.MaxCount }
     
     $result = Test-Range @params
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -160,7 +160,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 4: Test-Custom
 Write-Host "`nTest 4: Test-Custom" -ForegroundColor Cyan
@@ -187,7 +187,7 @@ foreach ($testCase in $testCases) {
     }
     
     $result = Test-Custom @params
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -199,24 +199,24 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 5: Test-RoadmapInput
 Write-Host "`nTest 5: Test-RoadmapInput" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "Chaîne valide" }
+    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "ChaÃ®ne valide" }
     @{ Value = 42; Type = "Integer"; Expected = $true; Description = "Entier valide" }
     @{ Value = "user@example.com"; Format = "Email"; Expected = $true; Description = "Email valide" }
     @{ Value = "invalid@"; Format = "Email"; Expected = $false; Description = "Email invalide" }
     @{ Value = 42; Min = 0; Max = 100; Expected = $true; Description = "Valeur dans la plage" }
     @{ Value = 101; Min = 0; Max = 100; Expected = $false; Description = "Valeur hors de la plage" }
-    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "Chaîne de longueur valide" }
-    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "Chaîne trop courte" }
+    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "ChaÃ®ne de longueur valide" }
+    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "ChaÃ®ne trop courte" }
     @{ Value = 42; ValidationFunction = { param($val) $val -gt 0 -and $val -lt 100 }; Expected = $true; Description = "Fonction de validation valide" }
     @{ Value = -1; ValidationFunction = { param($val) $val -gt 0 -and $val -lt 100 }; Expected = $false; Description = "Fonction de validation invalide" }
-    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 5; MaxLength = 50; Expected = $true; Description = "Validation combinée valide" }
-    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 20; MaxLength = 50; Expected = $false; Description = "Validation combinée invalide" }
+    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 5; MaxLength = 50; Expected = $true; Description = "Validation combinÃ©e valide" }
+    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 20; MaxLength = 50; Expected = $false; Description = "Validation combinÃ©e invalide" }
 )
 
 $successCount = 0
@@ -240,7 +240,7 @@ foreach ($testCase in $testCases) {
     if ($testCase.ContainsKey("ValidationScript")) { $params["ValidationScript"] = $testCase.ValidationScript }
     
     $result = Test-RoadmapInput @params
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -252,7 +252,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 6: Test-RoadmapInput avec ThrowOnFailure
 Write-Host "`nTest 6: Test-RoadmapInput avec ThrowOnFailure" -ForegroundColor Cyan
@@ -261,7 +261,7 @@ $testCases = @(
     @{ Value = "user@example.com"; Format = "Email"; ThrowOnFailure = $true; ShouldThrow = $false; Description = "Email valide ne devrait pas lever d'exception" }
     @{ Value = "invalid@"; Format = "Email"; ThrowOnFailure = $true; ShouldThrow = $true; Description = "Email invalide devrait lever une exception" }
     @{ Value = 42; Type = "Integer"; ThrowOnFailure = $true; ShouldThrow = $false; Description = "Entier valide ne devrait pas lever d'exception" }
-    @{ Value = "Hello"; Type = "Integer"; ThrowOnFailure = $true; ShouldThrow = $true; Description = "Chaîne invalide pour Integer devrait lever une exception" }
+    @{ Value = "Hello"; Type = "Integer"; ThrowOnFailure = $true; ShouldThrow = $true; Description = "ChaÃ®ne invalide pour Integer devrait lever une exception" }
 )
 
 $successCount = 0
@@ -284,7 +284,7 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
     
-    $status = if ($exceptionThrown -eq $testCase.ShouldThrow) { "Réussi" } else { "Échoué" }
+    $status = if ($exceptionThrown -eq $testCase.ShouldThrow) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($exceptionThrown -eq $testCase.ShouldThrow) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -296,12 +296,12 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 7: Test-RoadmapInput avec message d'erreur personnalisé
-Write-Host "`nTest 7: Test-RoadmapInput avec message d'erreur personnalisé" -ForegroundColor Cyan
+# Test 7: Test-RoadmapInput avec message d'erreur personnalisÃ©
+Write-Host "`nTest 7: Test-RoadmapInput avec message d'erreur personnalisÃ©" -ForegroundColor Cyan
 
-$customErrorMessage = "Message d'erreur personnalisé"
+$customErrorMessage = "Message d'erreur personnalisÃ©"
 $exceptionMessage = $null
 
 try {
@@ -311,11 +311,11 @@ try {
 }
 
 if ($exceptionMessage -eq $customErrorMessage) {
-    Write-Host "  Message d'erreur personnalisé: Réussi" -ForegroundColor Green
+    Write-Host "  Message d'erreur personnalisÃ©: RÃ©ussi" -ForegroundColor Green
 } else {
-    Write-Host "  Message d'erreur personnalisé: Échoué" -ForegroundColor Red
+    Write-Host "  Message d'erreur personnalisÃ©: Ã‰chouÃ©" -ForegroundColor Red
     Write-Host "  Message attendu: $customErrorMessage" -ForegroundColor Red
-    Write-Host "  Message reçu: $exceptionMessage" -ForegroundColor Red
+    Write-Host "  Message reÃ§u: $exceptionMessage" -ForegroundColor Red
 }
 
-Write-Host "`nTests des fonctions de validation terminés." -ForegroundColor Cyan
+Write-Host "`nTests des fonctions de validation terminÃ©s." -ForegroundColor Cyan

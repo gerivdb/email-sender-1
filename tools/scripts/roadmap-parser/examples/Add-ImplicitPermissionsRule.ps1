@@ -1,24 +1,24 @@
-# Add-ImplicitPermissionsRule.ps1
-# Ajoute une règle pour détecter les comptes avec des permissions héritées ou implicites
+﻿# Add-ImplicitPermissionsRule.ps1
+# Ajoute une rÃ¨gle pour dÃ©tecter les comptes avec des permissions hÃ©ritÃ©es ou implicites
 
-# Chemin du script d'ajout de règle
+# Chemin du script d'ajout de rÃ¨gle
 $addRuleScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\scripts\Add-SqlPermissionRule.ps1"
 
-# Chemin de la fonction de vérification
+# Chemin de la fonction de vÃ©rification
 $checkFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "CheckFunctions\Check-ImplicitPermissions.ps1"
 
-# Paramètres de la règle
+# ParamÃ¨tres de la rÃ¨gle
 $params = @{
     RuleId = "SVR-013"
     Name = "ImplicitPermissions"
-    Description = "Détecte les comptes avec des permissions héritées ou implicites"
+    Description = "DÃ©tecte les comptes avec des permissions hÃ©ritÃ©es ou implicites"
     RuleType = "Server"
     Severity = "Moyenne"
     CheckFunctionPath = $checkFunctionPath
 }
 
-# Ajouter la règle
+# Ajouter la rÃ¨gle
 & $addRuleScriptPath @params -WhatIf
 
-# Pour ajouter réellement la règle, exécutez la commande suivante :
+# Pour ajouter rÃ©ellement la rÃ¨gle, exÃ©cutez la commande suivante :
 # & $addRuleScriptPath @params

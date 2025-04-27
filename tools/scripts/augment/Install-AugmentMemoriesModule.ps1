@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Script d'installation du module AugmentMemoriesManager.
 
 .DESCRIPTION
     Ce script installe le module AugmentMemoriesManager dans le dossier des modules PowerShell
-    de l'utilisateur et exécute les tests pour vérifier son bon fonctionnement.
+    de l'utilisateur et exÃ©cute les tests pour vÃ©rifier son bon fonctionnement.
 
 .NOTES
     Version: 1.0
@@ -21,28 +21,28 @@ param (
     [switch]$Force
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptRoot = $PSScriptRoot
 $moduleName = "AugmentMemoriesManager"
 $modulePath = Join-Path -Path $scriptRoot -ChildPath "$moduleName.ps1"
 $moduleDestination = Join-Path -Path $env:USERPROFILE -ChildPath "Documents\WindowsPowerShell\Modules\$moduleName"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module $moduleName.ps1 non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module $moduleName.ps1 non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
-# Créer le dossier de destination si nécessaire
+# CrÃ©er le dossier de destination si nÃ©cessaire
 if (-not (Test-Path -Path $moduleDestination)) {
-    Write-Host "Création du dossier de destination: $moduleDestination" -ForegroundColor Cyan
+    Write-Host "CrÃ©ation du dossier de destination: $moduleDestination" -ForegroundColor Cyan
     New-Item -Path $moduleDestination -ItemType Directory -Force | Out-Null
 }
 elseif ((Test-Path -Path "$moduleDestination\$moduleName.ps1") -and -not $Force) {
-    Write-Warning "Le module $moduleName existe déjà à l'emplacement: $moduleDestination"
+    Write-Warning "Le module $moduleName existe dÃ©jÃ  Ã  l'emplacement: $moduleDestination"
     $confirmation = Read-Host "Voulez-vous le remplacer? (O/N)"
     if ($confirmation -ne "O") {
-        Write-Host "Installation annulée." -ForegroundColor Yellow
+        Write-Host "Installation annulÃ©e." -ForegroundColor Yellow
         exit 0
     }
 }
@@ -51,38 +51,38 @@ elseif ((Test-Path -Path "$moduleDestination\$moduleName.ps1") -and -not $Force)
 Write-Host "Copie du module $moduleName vers: $moduleDestination" -ForegroundColor Cyan
 Copy-Item -Path $modulePath -Destination "$moduleDestination\$moduleName.ps1" -Force
 
-# Créer le fichier de manifeste
+# CrÃ©er le fichier de manifeste
 $manifestPath = "$moduleDestination\$moduleName.psd1"
-Write-Host "Création du manifeste de module: $manifestPath" -ForegroundColor Cyan
+Write-Host "CrÃ©ation du manifeste de module: $manifestPath" -ForegroundColor Cyan
 
 $manifestParams = @{
     Path              = $manifestPath
     RootModule        = "$moduleName.ps1"
     ModuleVersion     = "1.0.0"
     Author            = "Augment Agent"
-    Description       = "Module de gestion des MEMORIES d'Augment avec fonctionnalités d'automate d'état et de segmentation proactive."
+    Description       = "Module de gestion des MEMORIES d'Augment avec fonctionnalitÃ©s d'automate d'Ã©tat et de segmentation proactive."
     PowerShellVersion = "5.1"
     FunctionsToExport = @("Move-NextTask", "Split-LargeInput", "Update-AugmentMemories", "Export-MemoriesToVSCode", "Invoke-MemoriesManagerTests")
 }
 
 New-ModuleManifest @manifestParams
 
-# Exécuter les tests si demandé
+# ExÃ©cuter les tests si demandÃ©
 if (-not $SkipTests) {
-    Write-Host "Exécution des tests du module..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests du module..." -ForegroundColor Cyan
     
-    # Vérifier si Pester est installé
+    # VÃ©rifier si Pester est installÃ©
     if (-not (Get-Module -ListAvailable -Name Pester)) {
-        Write-Warning "Module Pester non trouvé. Installation en cours..."
+        Write-Warning "Module Pester non trouvÃ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
     
     # Importer le module
     Import-Module $moduleName -Force
     
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     Invoke-MemoriesManagerTests
 }
 
-Write-Host "Installation du module $moduleName terminée avec succès." -ForegroundColor Green
-Write-Host "Pour utiliser le module, exécutez: Import-Module $moduleName" -ForegroundColor Green
+Write-Host "Installation du module $moduleName terminÃ©e avec succÃ¨s." -ForegroundColor Green
+Write-Host "Pour utiliser le module, exÃ©cutez: Import-Module $moduleName" -ForegroundColor Green

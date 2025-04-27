@@ -1,10 +1,10 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     . $PSScriptRoot/property_identification.ps1
 }
 
-Describe "Fonctions d'identification des propriétés" {
-    Context "Détection des accesseurs" {
+Describe "Fonctions d'identification des propriÃ©tÃ©s" {
+    Context "DÃ©tection des accesseurs" {
         It "Should detect property accessors" {
             $propertyInfo = [System.String].GetProperty("Length")
             $accessors = Get-PropertyAccessors -Property $propertyInfo
@@ -34,7 +34,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should detect explicit interface accessors" {
-            # Utiliser une classe qui implémente explicitement une interface
+            # Utiliser une classe qui implÃ©mente explicitement une interface
             $listType = [System.Collections.Generic.List`1[System.String]]
             $explicitAccessors = Get-TypeExplicitInterfaceAccessors -Type $listType
             
@@ -42,7 +42,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
     }
     
-    Context "Vérification des niveaux d'accès" {
+    Context "VÃ©rification des niveaux d'accÃ¨s" {
         It "Should get property access levels" {
             $propertyInfo = [System.String].GetProperty("Length")
             $accessLevels = Get-PropertyAccessLevels -Property $propertyInfo
@@ -53,7 +53,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should detect asymmetric accessors" {
-            # Créer une classe avec des accesseurs asymétriques pour le test
+            # CrÃ©er une classe avec des accesseurs asymÃ©triques pour le test
             $code = @"
             public class TestClass {
                 private string _name;
@@ -76,7 +76,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should get mixed access properties" {
-            # Créer une classe avec des propriétés à accès mixte pour le test
+            # CrÃ©er une classe avec des propriÃ©tÃ©s Ã  accÃ¨s mixte pour le test
             $code = @"
             public class TestClassMixed {
                 private string _name;
@@ -97,7 +97,7 @@ Describe "Fonctions d'identification des propriétés" {
     
     Context "Analyse des attributs" {
         It "Should detect serialization attributes" {
-            # Créer une classe avec des attributs de sérialisation pour le test
+            # CrÃ©er une classe avec des attributs de sÃ©rialisation pour le test
             $code = @"
             using System;
             using System.Xml.Serialization;
@@ -122,7 +122,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should analyze validation attributes" {
-            # Créer une classe avec des attributs de validation pour le test
+            # CrÃ©er une classe avec des attributs de validation pour le test
             $code = @"
             using System;
             using System.ComponentModel.DataAnnotations;
@@ -148,7 +148,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should process custom attributes" {
-            # Créer une classe avec des attributs personnalisés pour le test
+            # CrÃ©er une classe avec des attributs personnalisÃ©s pour le test
             $code = @"
             using System;
             
@@ -177,7 +177,7 @@ Describe "Fonctions d'identification des propriétés" {
         }
         
         It "Should categorize properties by attributes" {
-            # Utiliser la classe de test avec différents attributs
+            # Utiliser la classe de test avec diffÃ©rents attributs
             $categorizedProperties = Get-TypePropertiesByAttributes -Type ([TestSerializable])
             
             $categorizedProperties | Should -Not -BeNullOrEmpty
@@ -185,28 +185,28 @@ Describe "Fonctions d'identification des propriétés" {
         }
     }
     
-    Context "Propriétés auto-implémentées" {
+    Context "PropriÃ©tÃ©s auto-implÃ©mentÃ©es" {
         BeforeAll {
-            # Créer des classes de test avec différents types de propriétés
+            # CrÃ©er des classes de test avec diffÃ©rents types de propriÃ©tÃ©s
             $code = @"
             using System;
             using System.Runtime.CompilerServices;
             
             public class TestAutoImplemented {
-                // Propriété auto-implémentée
+                // PropriÃ©tÃ© auto-implÃ©mentÃ©e
                 public string Name { get; set; }
                 
-                // Propriété explicite
+                // PropriÃ©tÃ© explicite
                 private int _age;
                 public int Age {
                     get { return _age; }
                     set { _age = value; }
                 }
                 
-                // Propriété en lecture seule
+                // PropriÃ©tÃ© en lecture seule
                 public string Id { get; } = Guid.NewGuid().ToString();
                 
-                // Propriété avec attribut d'inlining
+                // PropriÃ©tÃ© avec attribut d'inlining
                 private bool _active;
                 public bool Active {
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -224,7 +224,7 @@ Describe "Fonctions d'identification des propriétés" {
             $backingFields | Should -Not -BeNullOrEmpty
             $backingFields.Count | Should -BeGreaterThan 0
             
-            # Vérifier qu'au moins une propriété auto-implémentée est détectée
+            # VÃ©rifier qu'au moins une propriÃ©tÃ© auto-implÃ©mentÃ©e est dÃ©tectÃ©e
             $autoImplemented = $backingFields | Where-Object { $_.IsAutoImplemented }
             $autoImplemented | Should -Not -BeNullOrEmpty
         }
@@ -248,11 +248,11 @@ Describe "Fonctions d'identification des propriétés" {
             
             $optimizations | Should -Not -BeNullOrEmpty
             
-            # Vérifier qu'au moins une propriété avec AggressiveInlining est détectée
+            # VÃ©rifier qu'au moins une propriÃ©tÃ© avec AggressiveInlining est dÃ©tectÃ©e
             $inlinedProperty = $optimizations | Where-Object { $_.HasAggressiveInlining }
             $inlinedProperty | Should -Not -BeNullOrEmpty
             
-            # Vérifier qu'au moins une propriété en lecture seule est détectée
+            # VÃ©rifier qu'au moins une propriÃ©tÃ© en lecture seule est dÃ©tectÃ©e
             $readOnlyProperty = $optimizations | Where-Object { $_.IsReadOnly }
             $readOnlyProperty | Should -Not -BeNullOrEmpty
         }

@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Test spécifique pour la détection des références circulaires dans Inspect-Variable.
+    Test spÃ©cifique pour la dÃ©tection des rÃ©fÃ©rences circulaires dans Inspect-Variable.
 
 .DESCRIPTION
-    Ce script teste spécifiquement la détection des références circulaires
+    Ce script teste spÃ©cifiquement la dÃ©tection des rÃ©fÃ©rences circulaires
     dans la fonction Inspect-Variable.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Inspect-Variable.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Inspect-Variable.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Inspect-Variable.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
-Write-Host "Fonction Inspect-Variable importée depuis : $functionPath" -ForegroundColor Green
+Write-Host "Fonction Inspect-Variable importÃ©e depuis : $functionPath" -ForegroundColor Green
 
-# Créer un objet avec une référence circulaire
+# CrÃ©er un objet avec une rÃ©fÃ©rence circulaire
 $parent = [PSCustomObject]@{
     Name = "Parent"
 }
@@ -36,53 +36,53 @@ $child = [PSCustomObject]@{
 }
 $parent | Add-Member -MemberType NoteProperty -Name "Child" -Value $child
 
-# Test 1: Détection des références circulaires avec CircularReferenceHandling=Mark
-Write-Host "`nTest 1: Détection des références circulaires avec CircularReferenceHandling=Mark" -ForegroundColor Cyan
+# Test 1: DÃ©tection des rÃ©fÃ©rences circulaires avec CircularReferenceHandling=Mark
+Write-Host "`nTest 1: DÃ©tection des rÃ©fÃ©rences circulaires avec CircularReferenceHandling=Mark" -ForegroundColor Cyan
 $result = Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Mark"
 
-# Vérifier si la référence circulaire est détectée
+# VÃ©rifier si la rÃ©fÃ©rence circulaire est dÃ©tectÃ©e
 $circularRefDetected = $false
 
-# Afficher la structure complète de l'objet pour le débogage
-Write-Host "  Structure complète de l'objet:" -ForegroundColor Yellow
+# Afficher la structure complÃ¨te de l'objet pour le dÃ©bogage
+Write-Host "  Structure complÃ¨te de l'objet:" -ForegroundColor Yellow
 Write-Host "  $($result | ConvertTo-Json -Depth 10)" -ForegroundColor Yellow
 
-# Vérifier si Child existe
+# VÃ©rifier si Child existe
 if ($result.Properties -and $result.Properties.ContainsKey("Child")) {
     Write-Host "  Child existe" -ForegroundColor Yellow
     $child = $result.Properties["Child"]
 
-    # Afficher les propriétés de Child
-    Write-Host "  Propriétés de Child:" -ForegroundColor Yellow
+    # Afficher les propriÃ©tÃ©s de Child
+    Write-Host "  PropriÃ©tÃ©s de Child:" -ForegroundColor Yellow
     foreach ($key in $child.Keys) {
         Write-Host "    $key = $($child[$key])" -ForegroundColor Yellow
     }
 
-    # Vérifier si Child.Properties existe
+    # VÃ©rifier si Child.Properties existe
     if ($child.Properties) {
         Write-Host "  Child.Properties existe" -ForegroundColor Yellow
 
-        # Vérifier si Parent existe dans Child.Properties
+        # VÃ©rifier si Parent existe dans Child.Properties
         if ($child.Properties.ContainsKey("Parent")) {
             Write-Host "  Child.Properties.Parent existe" -ForegroundColor Yellow
             $parentRef = $child.Properties["Parent"]
 
-            # Afficher les propriétés de Parent
-            Write-Host "  Propriétés de Parent:" -ForegroundColor Yellow
+            # Afficher les propriÃ©tÃ©s de Parent
+            Write-Host "  PropriÃ©tÃ©s de Parent:" -ForegroundColor Yellow
             foreach ($key in $parentRef.Keys) {
                 Write-Host "    $key = $($parentRef[$key])" -ForegroundColor Yellow
             }
 
-            # Vérifier si IsCircularReference existe
+            # VÃ©rifier si IsCircularReference existe
             if ($parentRef.ContainsKey("IsCircularReference") -and $parentRef.IsCircularReference) {
                 $circularRefDetected = $true
-                Write-Host "  Référence circulaire détectée correctement!" -ForegroundColor Green
+                Write-Host "  RÃ©fÃ©rence circulaire dÃ©tectÃ©e correctement!" -ForegroundColor Green
                 Write-Host "  IsCircularReference = $($parentRef.IsCircularReference)" -ForegroundColor Green
                 Write-Host "  CircularPath = $($parentRef.CircularPath)" -ForegroundColor Green
                 Write-Host "  CurrentPath = $($parentRef.CurrentPath)" -ForegroundColor Green
             } else {
-                Write-Host "  Référence circulaire non détectée." -ForegroundColor Red
-                Write-Host "  Propriétés disponibles: $($parentRef | Format-List | Out-String)" -ForegroundColor Red
+                Write-Host "  RÃ©fÃ©rence circulaire non dÃ©tectÃ©e." -ForegroundColor Red
+                Write-Host "  PropriÃ©tÃ©s disponibles: $($parentRef | Format-List | Out-String)" -ForegroundColor Red
             }
         } else {
             Write-Host "  Child.Properties.Parent n'existe pas" -ForegroundColor Red
@@ -91,25 +91,25 @@ if ($result.Properties -and $result.Properties.ContainsKey("Child")) {
         Write-Host "  Child.Properties n'existe pas" -ForegroundColor Red
     }
 } else {
-    Write-Host "  Child n'existe pas dans les propriétés" -ForegroundColor Red
+    Write-Host "  Child n'existe pas dans les propriÃ©tÃ©s" -ForegroundColor Red
 }
 
 # Test 2: Exception avec CircularReferenceHandling=Throw
 Write-Host "`nTest 2: Exception avec CircularReferenceHandling=Throw" -ForegroundColor Cyan
 try {
     $result = Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Throw"
-    Write-Host "  Échec: Aucune exception n'a été levée" -ForegroundColor Red
+    Write-Host "  Ã‰chec: Aucune exception n'a Ã©tÃ© levÃ©e" -ForegroundColor Red
     $exceptionThrown = $false
 } catch {
-    Write-Host "  Exception levée correctement: $_" -ForegroundColor Green
+    Write-Host "  Exception levÃ©e correctement: $_" -ForegroundColor Green
     $exceptionThrown = $true
 }
 
-# Test 3: Ignorer les références circulaires avec CircularReferenceHandling=Ignore
-Write-Host "`nTest 3: Ignorer les références circulaires avec CircularReferenceHandling=Ignore" -ForegroundColor Cyan
+# Test 3: Ignorer les rÃ©fÃ©rences circulaires avec CircularReferenceHandling=Ignore
+Write-Host "`nTest 3: Ignorer les rÃ©fÃ©rences circulaires avec CircularReferenceHandling=Ignore" -ForegroundColor Cyan
 $result = Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Ignore"
 
-# Vérifier que la référence circulaire est ignorée
+# VÃ©rifier que la rÃ©fÃ©rence circulaire est ignorÃ©e
 $circularRefIgnored = $false
 if ($result.Properties -and
     $result.Properties["Child"] -and
@@ -119,20 +119,20 @@ if ($result.Properties -and
     $parentRef = $result.Properties["Child"].Properties["Parent"]
     if (-not $parentRef.IsCircularReference) {
         $circularRefIgnored = $true
-        Write-Host "  Référence circulaire ignorée correctement!" -ForegroundColor Green
+        Write-Host "  RÃ©fÃ©rence circulaire ignorÃ©e correctement!" -ForegroundColor Green
     } else {
-        Write-Host "  Référence circulaire non ignorée." -ForegroundColor Red
+        Write-Host "  RÃ©fÃ©rence circulaire non ignorÃ©e." -ForegroundColor Red
     }
 } else {
     Write-Host "  Structure de l'objet incorrecte:" -ForegroundColor Red
     Write-Host "  $($result | ConvertTo-Json -Depth 10)" -ForegroundColor Red
 }
 
-# Test 4: Désactiver la détection des références circulaires
-Write-Host "`nTest 4: Désactiver la détection des références circulaires" -ForegroundColor Cyan
+# Test 4: DÃ©sactiver la dÃ©tection des rÃ©fÃ©rences circulaires
+Write-Host "`nTest 4: DÃ©sactiver la dÃ©tection des rÃ©fÃ©rences circulaires" -ForegroundColor Cyan
 $result = Inspect-Variable -InputObject $parent -Format "Object" -DetectCircularReferences $false
 
-# Vérifier que la détection des références circulaires est désactivée
+# VÃ©rifier que la dÃ©tection des rÃ©fÃ©rences circulaires est dÃ©sactivÃ©e
 $circularRefDisabled = $false
 if ($result.Properties -and
     $result.Properties["Child"] -and
@@ -142,27 +142,27 @@ if ($result.Properties -and
     $parentRef = $result.Properties["Child"].Properties["Parent"]
     if (-not $parentRef.IsCircularReference) {
         $circularRefDisabled = $true
-        Write-Host "  Détection des références circulaires désactivée correctement!" -ForegroundColor Green
+        Write-Host "  DÃ©tection des rÃ©fÃ©rences circulaires dÃ©sactivÃ©e correctement!" -ForegroundColor Green
     } else {
-        Write-Host "  Détection des références circulaires non désactivée." -ForegroundColor Red
+        Write-Host "  DÃ©tection des rÃ©fÃ©rences circulaires non dÃ©sactivÃ©e." -ForegroundColor Red
     }
 } else {
     Write-Host "  Structure de l'objet incorrecte:" -ForegroundColor Red
     Write-Host "  $($result | ConvertTo-Json -Depth 10)" -ForegroundColor Red
 }
 
-# Résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Test 1 (Détection): $(if ($circularRefDetected) { "Réussi" } else { "Échoué" })" -ForegroundColor $(if ($circularRefDetected) { "Green" } else { "Red" })
-Write-Host "  Test 2 (Exception): $(if ($exceptionThrown) { "Réussi" } else { "Échoué" })" -ForegroundColor $(if ($exceptionThrown) { "Green" } else { "Red" })
-Write-Host "  Test 3 (Ignorer): $(if ($circularRefIgnored) { "Réussi" } else { "Échoué" })" -ForegroundColor $(if ($circularRefIgnored) { "Green" } else { "Red" })
-Write-Host "  Test 4 (Désactiver): $(if ($circularRefDisabled) { "Réussi" } else { "Échoué" })" -ForegroundColor $(if ($circularRefDisabled) { "Green" } else { "Red" })
+# RÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Test 1 (DÃ©tection): $(if ($circularRefDetected) { "RÃ©ussi" } else { "Ã‰chouÃ©" })" -ForegroundColor $(if ($circularRefDetected) { "Green" } else { "Red" })
+Write-Host "  Test 2 (Exception): $(if ($exceptionThrown) { "RÃ©ussi" } else { "Ã‰chouÃ©" })" -ForegroundColor $(if ($exceptionThrown) { "Green" } else { "Red" })
+Write-Host "  Test 3 (Ignorer): $(if ($circularRefIgnored) { "RÃ©ussi" } else { "Ã‰chouÃ©" })" -ForegroundColor $(if ($circularRefIgnored) { "Green" } else { "Red" })
+Write-Host "  Test 4 (DÃ©sactiver): $(if ($circularRefDisabled) { "RÃ©ussi" } else { "Ã‰chouÃ©" })" -ForegroundColor $(if ($circularRefDisabled) { "Green" } else { "Red" })
 
-# Résultat global
+# RÃ©sultat global
 if ($circularRefDetected -and $exceptionThrown -and $circularRefIgnored -and $circularRefDisabled) {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

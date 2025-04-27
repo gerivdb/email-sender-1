@@ -1,1 +1,1 @@
-This is a simple ASCII text file.
+﻿This is a simple ASCII text file.

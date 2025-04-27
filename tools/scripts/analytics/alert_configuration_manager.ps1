@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de configuration des alertes basées sur les seuils.
+    Script de configuration des alertes basÃ©es sur les seuils.
 .DESCRIPTION
-    Configure les alertes pour les différents KPIs en fonction des seuils définis.
+    Configure les alertes pour les diffÃ©rents KPIs en fonction des seuils dÃ©finis.
 .PARAMETER ThresholdsPath
     Chemin vers les fichiers de seuils d'alerte.
 .PARAMETER OutputPath
-    Chemin où les configurations d'alerte seront sauvegardées.
+    Chemin oÃ¹ les configurations d'alerte seront sauvegardÃ©es.
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
 #>
@@ -65,9 +65,9 @@ function Import-AlertThresholds {
     try {
         $Thresholds = @{}
         
-        # Vérifier si le répertoire existe
+        # VÃ©rifier si le rÃ©pertoire existe
         if (-not (Test-Path -Path $ThresholdsPath)) {
-            Write-Log -Message "Répertoire des seuils d'alerte non trouvé: $ThresholdsPath" -Level "Error"
+            Write-Log -Message "RÃ©pertoire des seuils d'alerte non trouvÃ©: $ThresholdsPath" -Level "Error"
             return $null
         }
         
@@ -78,7 +78,7 @@ function Import-AlertThresholds {
             $ThresholdType = $File.BaseName -replace "_alert_thresholds$", ""
             $ThresholdContent = Get-Content -Path $File.FullName -Raw | ConvertFrom-Json
             
-            Write-Log -Message "Seuils d'alerte chargés: $($File.Name) avec $($ThresholdContent.kpis.Count) KPIs" -Level "Info"
+            Write-Log -Message "Seuils d'alerte chargÃ©s: $($File.Name) avec $($ThresholdContent.kpis.Count) KPIs" -Level "Info"
             $Thresholds[$ThresholdType] = $ThresholdContent
         }
         
@@ -89,7 +89,7 @@ function Import-AlertThresholds {
     }
 }
 
-# Fonction pour générer les configurations d'alerte
+# Fonction pour gÃ©nÃ©rer les configurations d'alerte
 function Get-AlertConfigurations {
     [CmdletBinding()]
     param (
@@ -97,7 +97,7 @@ function Get-AlertConfigurations {
         [hashtable]$Thresholds
     )
     
-    Write-Log -Message "Génération des configurations d'alerte" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration des configurations d'alerte" -Level "Info"
     
     try {
         $AlertConfigurations = @{
@@ -120,7 +120,7 @@ function Get-AlertConfigurations {
             alert_groups = @()
         }
         
-        # Créer les groupes d'alerte par type de KPI
+        # CrÃ©er les groupes d'alerte par type de KPI
         foreach ($ThresholdType in $Thresholds.Keys) {
             $AlertGroup = @{
                 id = "$($ThresholdType)_alerts"
@@ -133,7 +133,7 @@ function Get-AlertConfigurations {
             foreach ($Kpi in $Thresholds[$ThresholdType].kpis) {
                 $AlertId = "$($Kpi.id)_alert"
                 
-                # Créer l'alerte
+                # CrÃ©er l'alerte
                 $Alert = @{
                     id = $AlertId
                     name = "Alerte $($Kpi.name)"
@@ -148,24 +148,24 @@ function Get-AlertConfigurations {
                     notification_channels = @("email")
                     cooldown_period = 300 # 5 minutes
                     evaluation_period = 60 # 1 minute
-                    evaluation_count = 3 # 3 évaluations consécutives
+                    evaluation_count = 3 # 3 Ã©valuations consÃ©cutives
                     enabled = $true
                 }
                 
-                # Ajouter l'alerte à la liste globale
+                # Ajouter l'alerte Ã  la liste globale
                 $AlertConfigurations.alerts += $Alert
                 
                 # Ajouter l'ID de l'alerte au groupe
                 $AlertGroup.alerts += $AlertId
             }
             
-            # Ajouter le groupe à la liste des groupes
+            # Ajouter le groupe Ã  la liste des groupes
             $AlertConfigurations.alert_groups += $AlertGroup
         }
         
         return $AlertConfigurations
     } catch {
-        Write-Log -Message "Erreur lors de la génération des configurations d'alerte: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration des configurations d'alerte: $_" -Level "Error"
         return $null
     }
 }
@@ -184,7 +184,7 @@ function Export-AlertConfigurations {
     Write-Log -Message "Exportation des configurations d'alerte vers $OutputPath" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputPath)) {
             New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
         }
@@ -193,7 +193,7 @@ function Export-AlertConfigurations {
         $OutputFile = Join-Path -Path $OutputPath -ChildPath "alert_configurations.json"
         $AlertConfigurations | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputFile -Encoding UTF8
         
-        Write-Log -Message "Configurations d'alerte exportées: $OutputFile" -Level "Info"
+        Write-Log -Message "Configurations d'alerte exportÃ©es: $OutputFile" -Level "Info"
         
         return $true
     } catch {
@@ -202,7 +202,7 @@ function Export-AlertConfigurations {
     }
 }
 
-# Fonction pour générer la documentation des configurations d'alerte
+# Fonction pour gÃ©nÃ©rer la documentation des configurations d'alerte
 function Export-AlertConfigurationsDocumentation {
     [CmdletBinding()]
     param (
@@ -213,15 +213,15 @@ function Export-AlertConfigurationsDocumentation {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Génération de la documentation des configurations d'alerte" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration de la documentation des configurations d'alerte" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputPath)) {
             New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
         }
         
-        # Créer le fichier de documentation
+        # CrÃ©er le fichier de documentation
         $DocumentationPath = Join-Path -Path $OutputPath -ChildPath "alert_configurations_documentation.md"
         
         $Documentation = @"
@@ -229,11 +229,11 @@ function Export-AlertConfigurationsDocumentation {
 
 ## Introduction
 
-Ce document décrit les configurations d'alerte définies pour les différents indicateurs clés de performance (KPIs) du système. Ces configurations déterminent comment et quand les alertes sont déclenchées, ainsi que les canaux de notification utilisés.
+Ce document dÃ©crit les configurations d'alerte dÃ©finies pour les diffÃ©rents indicateurs clÃ©s de performance (KPIs) du systÃ¨me. Ces configurations dÃ©terminent comment et quand les alertes sont dÃ©clenchÃ©es, ainsi que les canaux de notification utilisÃ©s.
 
 ## Canaux de notification
 
-Les alertes peuvent être envoyées via les canaux de notification suivants :
+Les alertes peuvent Ãªtre envoyÃ©es via les canaux de notification suivants :
 
 "@
         
@@ -262,7 +262,7 @@ Les alertes peuvent être envoyées via les canaux de notification suivants :
 
 ## Groupes d'alerte
 
-Les alertes sont organisées en groupes pour faciliter leur gestion :
+Les alertes sont organisÃ©es en groupes pour faciliter leur gestion :
 
 "@
         
@@ -282,7 +282,7 @@ Les alertes sont organisées en groupes pour faciliter leur gestion :
 
 ## Configurations d'alerte
 
-Chaque KPI peut avoir une ou plusieurs alertes configurées :
+Chaque KPI peut avoir une ou plusieurs alertes configurÃ©es :
 
 "@
         
@@ -299,37 +299,37 @@ Chaque KPI peut avoir une ou plusieurs alertes configurées :
   - Avertissement : $($Alert.thresholds.warning)
   - Critique : $($Alert.thresholds.critical)
 - **Inverse** : $($Alert.inverse)
-- **Période d'évaluation** : $($Alert.evaluation_period) secondes
-- **Nombre d'évaluations** : $($Alert.evaluation_count)
-- **Période de refroidissement** : $($Alert.cooldown_period) secondes
+- **PÃ©riode d'Ã©valuation** : $($Alert.evaluation_period) secondes
+- **Nombre d'Ã©valuations** : $($Alert.evaluation_count)
+- **PÃ©riode de refroidissement** : $($Alert.cooldown_period) secondes
 - **Canaux de notification** : $($Alert.notification_channels -join ", ")
-- **Activé** : $($Alert.enabled)
+- **ActivÃ©** : $($Alert.enabled)
 "@
         }
         
         $Documentation += @"
 
-## Logique de déclenchement
+## Logique de dÃ©clenchement
 
-Les alertes sont déclenchées selon la logique suivante :
+Les alertes sont dÃ©clenchÃ©es selon la logique suivante :
 
-1. La valeur du KPI est évaluée à intervalles réguliers (période d'évaluation)
-2. Si la valeur dépasse le seuil pendant un nombre consécutif d'évaluations, l'alerte est déclenchée
-3. Après le déclenchement d'une alerte, aucune nouvelle alerte n'est déclenchée pendant la période de refroidissement
-4. Pour les KPIs inversés, l'alerte est déclenchée lorsque la valeur est inférieure au seuil
+1. La valeur du KPI est Ã©valuÃ©e Ã  intervalles rÃ©guliers (pÃ©riode d'Ã©valuation)
+2. Si la valeur dÃ©passe le seuil pendant un nombre consÃ©cutif d'Ã©valuations, l'alerte est dÃ©clenchÃ©e
+3. AprÃ¨s le dÃ©clenchement d'une alerte, aucune nouvelle alerte n'est dÃ©clenchÃ©e pendant la pÃ©riode de refroidissement
+4. Pour les KPIs inversÃ©s, l'alerte est dÃ©clenchÃ©e lorsque la valeur est infÃ©rieure au seuil
 
-## Dernière mise à jour
+## DerniÃ¨re mise Ã  jour
 
-Date de la dernière mise à jour : $(Get-Date -Format "yyyy-MM-dd")
+Date de la derniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd")
 "@
         
         # Sauvegarder la documentation
         $Documentation | Out-File -FilePath $DocumentationPath -Encoding UTF8
         
-        Write-Log -Message "Documentation générée: $DocumentationPath" -Level "Info"
+        Write-Log -Message "Documentation gÃ©nÃ©rÃ©e: $DocumentationPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération de la documentation: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration de la documentation: $_" -Level "Error"
         return $false
     }
 }
@@ -345,7 +345,7 @@ function Start-AlertConfigurationManager {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Début de la configuration des alertes" -Level "Info"
+    Write-Log -Message "DÃ©but de la configuration des alertes" -Level "Info"
     
     # 1. Charger les seuils d'alerte
     $Thresholds = Import-AlertThresholds -ThresholdsPath $ThresholdsPath
@@ -355,11 +355,11 @@ function Start-AlertConfigurationManager {
         return $false
     }
     
-    # 2. Générer les configurations d'alerte
+    # 2. GÃ©nÃ©rer les configurations d'alerte
     $AlertConfigurations = Get-AlertConfigurations -Thresholds $Thresholds
     
     if (-not $AlertConfigurations) {
-        Write-Log -Message "Impossible de générer les configurations d'alerte" -Level "Error"
+        Write-Log -Message "Impossible de gÃ©nÃ©rer les configurations d'alerte" -Level "Error"
         return $false
     }
     
@@ -371,24 +371,24 @@ function Start-AlertConfigurationManager {
         return $false
     }
     
-    # 4. Générer la documentation
+    # 4. GÃ©nÃ©rer la documentation
     $DocumentationResult = Export-AlertConfigurationsDocumentation -AlertConfigurations $AlertConfigurations -OutputPath $OutputPath
     
     if (-not $DocumentationResult) {
-        Write-Log -Message "Impossible de générer la documentation des configurations d'alerte" -Level "Warning"
+        Write-Log -Message "Impossible de gÃ©nÃ©rer la documentation des configurations d'alerte" -Level "Warning"
     }
     
-    Write-Log -Message "Configuration des alertes terminée avec succès" -Level "Info"
+    Write-Log -Message "Configuration des alertes terminÃ©e avec succÃ¨s" -Level "Info"
     return $true
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-AlertConfigurationManager -ThresholdsPath $ThresholdsPath -OutputPath $OutputPath
 
 if ($Result) {
-    Write-Log -Message "Configuration des alertes réussie" -Level "Info"
+    Write-Log -Message "Configuration des alertes rÃ©ussie" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec de la configuration des alertes" -Level "Error"
+    Write-Log -Message "Ã‰chec de la configuration des alertes" -Level "Error"
     return 1
 }

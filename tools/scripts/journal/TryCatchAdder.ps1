@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Ajoute automatiquement des blocs try/catch aux scripts PowerShell.
 .DESCRIPTION
     Ce script ajoute automatiquement des blocs try/catch aux scripts PowerShell
-    existants pour améliorer leur gestion d'erreurs.
+    existants pour amÃ©liorer leur gestion d'erreurs.
 .EXAMPLE
     . .\TryCatchAdder.ps1
     Add-TryCatchBlocks -Path "C:\path\to\script.ps1" -CreateBackup
@@ -15,7 +15,7 @@ if (Test-Path -Path $analyzerPath) {
     . $analyzerPath
 }
 else {
-    Write-Error "Le module d'analyse de scripts est requis mais introuvable à l'emplacement: $analyzerPath"
+    Write-Error "Le module d'analyse de scripts est requis mais introuvable Ã  l'emplacement: $analyzerPath"
     return
 }
 
@@ -39,7 +39,7 @@ function Add-TryCatchBlocks {
     )
     
     process {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-Error "Le fichier '$Path' n'existe pas."
             return $false
@@ -74,13 +74,13 @@ function Add-TryCatchToDirectory {
         [switch]$WhatIf
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path -PathType Container)) {
-        Write-Error "Le répertoire '$Path' n'existe pas."
+        Write-Error "Le rÃ©pertoire '$Path' n'existe pas."
         return $null
     }
     
-    # Obtenir la liste des fichiers à traiter
+    # Obtenir la liste des fichiers Ã  traiter
     $files = Get-ChildItem -Path $Path -Filter $Filter -File -Recurse:$Recurse
     
     $results = @{
@@ -95,11 +95,11 @@ function Add-TryCatchToDirectory {
         Write-Verbose "Traitement du fichier: $($file.FullName)"
         
         try {
-            # Analyser le script pour voir s'il a besoin d'améliorations
+            # Analyser le script pour voir s'il a besoin d'amÃ©liorations
             $analysis = Analyze-ScriptErrorHandling -Path $file.FullName
             
             if ($analysis.TotalIssues -eq 0) {
-                Write-Verbose "Aucun problème de gestion d'erreurs détecté dans le script: $($file.FullName)"
+                Write-Verbose "Aucun problÃ¨me de gestion d'erreurs dÃ©tectÃ© dans le script: $($file.FullName)"
                 $results.SkippedFiles++
                 $results.Details += [PSCustomObject]@{
                     FilePath = $file.FullName
@@ -132,7 +132,7 @@ function Add-TryCatchToDirectory {
                 $results.Details += [PSCustomObject]@{
                     FilePath = $file.FullName
                     Status = "Failed"
-                    Error = "Échec de l'ajout des blocs try/catch"
+                    Error = "Ã‰chec de l'ajout des blocs try/catch"
                 }
             }
         }
@@ -169,34 +169,34 @@ function Add-MainTryCatchWrapper {
     )
     
     process {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-Error "Le fichier '$Path' n'existe pas."
             return $false
         }
         
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         if ([string]::IsNullOrEmpty($OutputPath)) {
             $OutputPath = $Path
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$Path.bak"
             Copy-Item -Path $Path -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée: $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
         }
         
         # Lire le contenu du script
         $content = Get-Content -Path $Path -Raw
         
-        # Vérifier si le script a déjà un bloc try/catch principal
+        # VÃ©rifier si le script a dÃ©jÃ  un bloc try/catch principal
         if ($content -match '(?s)^try\s*{.*}\s*catch\s*{.*}(\s*finally\s*{.*})?$') {
-            Write-Verbose "Le script a déjà un bloc try/catch principal."
+            Write-Verbose "Le script a dÃ©jÃ  un bloc try/catch principal."
             return $true
         }
         
-        # Ajouter une fonction de journalisation si demandé
+        # Ajouter une fonction de journalisation si demandÃ©
         $loggingFunction = ""
         if ($AddLogging -and -not ($content -match 'function\s+Write-Log')) {
             $loggingFunction = @"
@@ -227,19 +227,19 @@ function Write-Log {
         "DEBUG" { Write-Verbose `$logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         Add-Content -Path `$LogFilePath -Value `$logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 
 "@
         }
         
-        # Extraire les commentaires et les déclarations param au début du script
+        # Extraire les commentaires et les dÃ©clarations param au dÃ©but du script
         $header = ""
         if ($content -match '(?s)^(#[^\n]*\n)+') {
             $header = $matches[0]
@@ -271,21 +271,21 @@ catch {
 }
 finally {
     # Nettoyage final
-    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"Exécution du script terminée.`"" } else { "Write-Verbose `"Exécution du script terminée.`"" })
+    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"ExÃ©cution du script terminÃ©e.`"" } else { "Write-Verbose `"ExÃ©cution du script terminÃ©e.`"" })
 }
 "@
         
         # Appliquer les modifications si ce n'est pas un test
         if (-not $WhatIf) {
             Set-Content -Path $OutputPath -Value $newContent
-            Write-Verbose "Bloc try/catch principal ajouté au script."
+            Write-Verbose "Bloc try/catch principal ajoutÃ© au script."
             return $true
         }
         else {
-            # Afficher les modifications prévues
-            Write-Host "Modifications prévues pour le script '$Path':"
+            # Afficher les modifications prÃ©vues
+            Write-Host "Modifications prÃ©vues pour le script '$Path':"
             Write-Host "- Ajout d'un bloc try/catch principal"
-            Write-Host "- Configuration de ErrorActionPreference à 'Stop'"
+            Write-Host "- Configuration de ErrorActionPreference Ã  'Stop'"
             if ($AddLogging) {
                 Write-Host "- Ajout d'une fonction de journalisation"
             }

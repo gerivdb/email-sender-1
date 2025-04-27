@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les paramètres du script c-break-mode.ps1.
+    Tests unitaires pour les paramÃ¨tres du script c-break-mode.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour valider les paramètres du script c-break-mode.ps1.
-    Il utilise le framework Pester pour exécuter les tests.
+    Ce script contient des tests unitaires pour valider les paramÃ¨tres du script c-break-mode.ps1.
+    Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .EXAMPLE
     Invoke-Pester -Path ".\Test-CBreakModeParameters.ps1"
@@ -12,29 +12,29 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "c-break-mode.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testProjectPath = Join-Path -Path $env:TEMP -ChildPath "CBreakModeTests"
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "CBreakModeTestsOutput"
 $testRoadmapPath = Join-Path -Path $testProjectPath -ChildPath "test-roadmap.md"
 
 # Variables pour les chemins de test
 
-# Exécuter les tests
-Describe "Tests des paramètres du script c-break-mode.ps1" {
+# ExÃ©cuter les tests
+Describe "Tests des paramÃ¨tres du script c-break-mode.ps1" {
     BeforeAll {
-        # Créer les répertoires de test
+        # CrÃ©er les rÃ©pertoires de test
         if (-not (Test-Path -Path $testProjectPath)) {
             New-Item -Path $testProjectPath -ItemType Directory -Force | Out-Null
         }
@@ -43,7 +43,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
         }
 
-        # Créer un fichier roadmap de test
+        # CrÃ©er un fichier roadmap de test
         @"
 # Test Roadmap
 
@@ -52,7 +52,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
 - [ ] **1.2** Test Subtask 2
 "@ | Out-File -FilePath $testRoadmapPath -Encoding UTF8
 
-        # Créer quelques fichiers de test dans le répertoire du projet
+        # CrÃ©er quelques fichiers de test dans le rÃ©pertoire du projet
         $testFiles = @(
             "file1.ps1",
             "file2.ps1",
@@ -85,29 +85,29 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
         }
     }
 
-    Context "Validation des paramètres obligatoires" {
-        It "Devrait échouer si FilePath n'est pas spécifié" {
+    Context "Validation des paramÃ¨tres obligatoires" {
+        It "Devrait Ã©chouer si FilePath n'est pas spÃ©cifiÃ©" {
             $scriptBlock = {
                 & $scriptPath -ProjectPath $testProjectPath -WhatIf
             }
             $scriptBlock | Should -Throw
         }
 
-        It "Devrait échouer si ProjectPath n'est pas spécifié" {
+        It "Devrait Ã©chouer si ProjectPath n'est pas spÃ©cifiÃ©" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -WhatIf
             }
             $scriptBlock | Should -Throw
         }
 
-        It "Devrait échouer si FilePath n'existe pas" {
+        It "Devrait Ã©chouer si FilePath n'existe pas" {
             $scriptBlock = {
                 & $scriptPath -FilePath "chemin/inexistant.md" -ProjectPath $testProjectPath -WhatIf
             }
             $scriptBlock | Should -Throw
         }
 
-        It "Devrait échouer si ProjectPath n'existe pas" {
+        It "Devrait Ã©chouer si ProjectPath n'existe pas" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath "chemin/inexistant" -WhatIf
             }
@@ -115,29 +115,29 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
         }
     }
 
-    Context "Validation des paramètres optionnels" {
-        It "Devrait accepter les paramètres par défaut" {
+    Context "Validation des paramÃ¨tres optionnels" {
+        It "Devrait accepter les paramÃ¨tres par dÃ©faut" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -WhatIf
             }
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait accepter un OutputPath personnalisé" {
+        It "Devrait accepter un OutputPath personnalisÃ©" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -OutputPath $testOutputPath -WhatIf
             }
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait accepter des IncludePatterns personnalisés" {
+        It "Devrait accepter des IncludePatterns personnalisÃ©s" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -IncludePatterns "*.ps1" -WhatIf
             }
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait accepter des ExcludePatterns personnalisés" {
+        It "Devrait accepter des ExcludePatterns personnalisÃ©s" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -ExcludePatterns "*test*" -WhatIf
             }
@@ -151,7 +151,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un StartPath invalide" {
+        It "Devrait Ã©chouer avec un StartPath invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -StartPath "dossier/inexistant" -WhatIf
             }
@@ -165,7 +165,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un DetectionAlgorithm invalide" {
+        It "Devrait Ã©chouer avec un DetectionAlgorithm invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -DetectionAlgorithm "INVALID" -WhatIf
             }
@@ -179,7 +179,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un MaxDepth invalide" {
+        It "Devrait Ã©chouer avec un MaxDepth invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -MaxDepth 0 -WhatIf
             }
@@ -193,14 +193,14 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un MinimumCycleSeverity invalide" {
+        It "Devrait Ã©chouer avec un MinimumCycleSeverity invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -MinimumCycleSeverity 6 -WhatIf
             }
             $scriptBlock | Should -Throw
         }
 
-        It "Devrait accepter AutoFix à true" {
+        It "Devrait accepter AutoFix Ã  true" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -AutoFix $true -WhatIf
             }
@@ -214,14 +214,14 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un FixStrategy invalide" {
+        It "Devrait Ã©chouer avec un FixStrategy invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -AutoFix $true -FixStrategy "INVALID" -WhatIf
             }
             $scriptBlock | Should -Throw
         }
 
-        It "Devrait accepter GenerateGraph à true" {
+        It "Devrait accepter GenerateGraph Ã  true" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -GenerateGraph $true -WhatIf
             }
@@ -235,7 +235,7 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
             $scriptBlock | Should -Not -Throw
         }
 
-        It "Devrait échouer avec un GraphFormat invalide" {
+        It "Devrait Ã©chouer avec un GraphFormat invalide" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath -ProjectPath $testProjectPath -GenerateGraph $true -GraphFormat "INVALID" -WhatIf
             }
@@ -243,8 +243,8 @@ Describe "Tests des paramètres du script c-break-mode.ps1" {
         }
     }
 
-    Context "Combinaisons de paramètres" {
-        It "Devrait accepter une combinaison complète de paramètres valides" {
+    Context "Combinaisons de paramÃ¨tres" {
+        It "Devrait accepter une combinaison complÃ¨te de paramÃ¨tres valides" {
             $scriptBlock = {
                 & $scriptPath -FilePath $testRoadmapPath `
                     -ProjectPath $testProjectPath `

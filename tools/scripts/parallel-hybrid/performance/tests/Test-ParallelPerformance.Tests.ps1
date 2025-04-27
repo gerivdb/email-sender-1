@@ -1,11 +1,11 @@
-BeforeAll {
-    # Aucune fonction à définir pour ce test
+﻿BeforeAll {
+    # Aucune fonction Ã  dÃ©finir pour ce test
 }
 
 Describe "Test-ParallelPerformance" {
     Context "Mesure des performances" {
         BeforeAll {
-            # Créer un script de test simple
+            # CrÃ©er un script de test simple
             $testScriptPath = Join-Path -Path $TestDrive -ChildPath "TestScript.ps1"
             @"
 param(
@@ -16,30 +16,30 @@ param(
 Start-Sleep -Seconds `$SleepTime
 
 if (`$ShouldFail) {
-    throw "Échec simulé pour les tests"
+    throw "Ã‰chec simulÃ© pour les tests"
 }
 
-return "Succès"
+return "SuccÃ¨s"
 "@ | Set-Content -Path $testScriptPath
         }
 
-        It "Mesure correctement le temps d'exécution d'un script" {
-            # Simuler la mesure d'une exécution simple
+        It "Mesure correctement le temps d'exÃ©cution d'un script" {
+            # Simuler la mesure d'une exÃ©cution simple
             $startTime = Get-Date
             $result = & $testScriptPath -SleepTime 1
             $endTime = Get-Date
             $elapsedTime = ($endTime - $startTime).TotalSeconds
 
-            # Vérifier que le temps écoulé est d'environ 1 seconde (avec une marge d'erreur)
+            # VÃ©rifier que le temps Ã©coulÃ© est d'environ 1 seconde (avec une marge d'erreur)
             $elapsedTime | Should -BeGreaterThan 0.9
             $elapsedTime | Should -BeLessThan 1.5
 
-            # Vérifier que le résultat est correct
-            $result | Should -Be "Succès"
+            # VÃ©rifier que le rÃ©sultat est correct
+            $result | Should -Be "SuccÃ¨s"
         }
 
-        It "Capture correctement les erreurs lors de l'exécution d'un script" {
-            # Simuler une exécution qui échoue
+        It "Capture correctement les erreurs lors de l'exÃ©cution d'un script" {
+            # Simuler une exÃ©cution qui Ã©choue
             $errorMessage = $null
             $errorRecord = $null
             $success = $false
@@ -54,16 +54,16 @@ return "Succès"
                 $success = $false
             }
 
-            # Vérifier que l'erreur est capturée correctement
+            # VÃ©rifier que l'erreur est capturÃ©e correctement
             $success | Should -Be $false
-            $errorMessage | Should -Be "Échec simulé pour les tests"
+            $errorMessage | Should -Be "Ã‰chec simulÃ© pour les tests"
             $errorRecord | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context "Formatage des données pour les graphiques" {
+    Context "Formatage des donnÃ©es pour les graphiques" {
         BeforeAll {
-            # Créer des données de test pour simuler les résultats de performance
+            # CrÃ©er des donnÃ©es de test pour simuler les rÃ©sultats de performance
             $validDetailedResults = @(
                 [PSCustomObject]@{
                     Iteration = 1
@@ -89,26 +89,26 @@ return "Succès"
             )
         }
 
-        It "Formate correctement les données pour JavaScript" {
-            # Définir la fonction de formatage
+        It "Formate correctement les donnÃ©es pour JavaScript" {
+            # DÃ©finir la fonction de formatage
             $jsData = { param($data) ($data | ConvertTo-Json -Compress -Depth 1) }
 
-            # Appeler la fonction avec les données de test
-            $jsLabels = & $jsData -data ($validDetailedResults | ForEach-Object { "Itération $($_.Iteration)" })
+            # Appeler la fonction avec les donnÃ©es de test
+            $jsLabels = & $jsData -data ($validDetailedResults | ForEach-Object { "ItÃ©ration $($_.Iteration)" })
             $jsExecTimes = & $jsData -data ($validDetailedResults | ForEach-Object { [Math]::Round($_.ExecutionTimeS, 5) })
 
-            # Vérifier que les données sont formatées correctement
+            # VÃ©rifier que les donnÃ©es sont formatÃ©es correctement
             $jsLabels | Should -Not -BeNullOrEmpty
             $jsExecTimes | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les données sont au format JSON
+            # VÃ©rifier que les donnÃ©es sont au format JSON
             { $jsLabels | ConvertFrom-Json } | Should -Not -Throw
             { $jsExecTimes | ConvertFrom-Json } | Should -Not -Throw
 
-            # Vérifier le contenu des données
+            # VÃ©rifier le contenu des donnÃ©es
             $labelsArray = $jsLabels | ConvertFrom-Json
             $labelsArray.Count | Should -Be 3
-            $labelsArray[0] | Should -Be "Itération 1"
+            $labelsArray[0] | Should -Be "ItÃ©ration 1"
 
             $execTimesArray = $jsExecTimes | ConvertFrom-Json
             $execTimesArray.Count | Should -Be 3
@@ -118,7 +118,7 @@ return "Succès"
 
     Context "Calcul des statistiques" {
         BeforeAll {
-            # Créer des données de test pour simuler les résultats de performance
+            # CrÃ©er des donnÃ©es de test pour simuler les rÃ©sultats de performance
             $testResults = @(
                 [PSCustomObject]@{
                     Iteration = 1
@@ -147,8 +147,8 @@ return "Succès"
             )
         }
 
-        It "Calcule correctement les moyennes des métriques" {
-            # Filtrer les résultats réussis
+        It "Calcule correctement les moyennes des mÃ©triques" {
+            # Filtrer les rÃ©sultats rÃ©ussis
             $successfulResults = $testResults | Where-Object { $_.Success }
 
             # Calculer les moyennes
@@ -157,20 +157,20 @@ return "Succès"
             $avgWorkingSet = ($successfulResults | Measure-Object -Property WorkingSetMB -Average).Average
             $avgPrivateMemory = ($successfulResults | Measure-Object -Property PrivateMemoryMB -Average).Average
 
-            # Vérifier que les moyennes sont calculées correctement
+            # VÃ©rifier que les moyennes sont calculÃ©es correctement
             $avgExecTime | Should -Be 4.85
             $avgCpuTime | Should -Be 4.5
             $avgWorkingSet | Should -Be 165
             $avgPrivateMemory | Should -Be 130
         }
 
-        It "Calcule correctement le taux de succès" {
-            # Calculer le taux de succès
+        It "Calcule correctement le taux de succÃ¨s" {
+            # Calculer le taux de succÃ¨s
             $successCount = ($testResults | Where-Object { $_.Success }).Count
             $totalCount = $testResults.Count
             $successRate = [Math]::Round(($successCount / $totalCount) * 100, 1)
 
-            # Vérifier que le taux de succès est calculé correctement
+            # VÃ©rifier que le taux de succÃ¨s est calculÃ© correctement
             $successRate | Should -Be 66.7
         }
     }

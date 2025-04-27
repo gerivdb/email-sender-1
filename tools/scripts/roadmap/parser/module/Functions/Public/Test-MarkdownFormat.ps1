@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
     Valide le format d'un fichier markdown pour s'assurer qu'il est compatible avec le parser de roadmap.
 
 .DESCRIPTION
-    La fonction Test-MarkdownFormat vérifie qu'un fichier markdown respecte le format attendu
-    pour être correctement traité par les fonctions de conversion en roadmap.
-    Elle effectue diverses vérifications comme la présence d'un titre, la structure des sections,
-    le format des tâches, etc.
+    La fonction Test-MarkdownFormat vÃ©rifie qu'un fichier markdown respecte le format attendu
+    pour Ãªtre correctement traitÃ© par les fonctions de conversion en roadmap.
+    Elle effectue diverses vÃ©rifications comme la prÃ©sence d'un titre, la structure des sections,
+    le format des tÃ¢ches, etc.
 
 .PARAMETER FilePath
-    Chemin du fichier markdown à valider.
+    Chemin du fichier markdown Ã  valider.
 
 .PARAMETER Strict
-    Indique si la validation doit être stricte (erreur en cas de non-conformité) ou souple (avertissements).
+    Indique si la validation doit Ãªtre stricte (erreur en cas de non-conformitÃ©) ou souple (avertissements).
 
 .EXAMPLE
     Test-MarkdownFormat -FilePath ".\roadmap.md"
-    Valide le format du fichier roadmap.md avec des avertissements pour les non-conformités.
+    Valide le format du fichier roadmap.md avec des avertissements pour les non-conformitÃ©s.
 
 .EXAMPLE
     Test-MarkdownFormat -FilePath ".\roadmap.md" -Strict
-    Valide le format du fichier roadmap.md et génère des erreurs pour les non-conformités.
+    Valide le format du fichier roadmap.md et gÃ©nÃ¨re des erreurs pour les non-conformitÃ©s.
 
 .OUTPUTS
-    [PSCustomObject] Représentant le résultat de la validation avec les éventuels problèmes détectés.
+    [PSCustomObject] ReprÃ©sentant le rÃ©sultat de la validation avec les Ã©ventuels problÃ¨mes dÃ©tectÃ©s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Test-MarkdownFormat {
     [CmdletBinding()]
@@ -41,12 +41,12 @@ function Test-MarkdownFormat {
         [switch]$Strict
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         IsValid    = $true
         Errors     = [System.Collections.ArrayList]::new()
@@ -68,14 +68,14 @@ function Test-MarkdownFormat {
     $lines = $content -split "`r?`n"
     $result.Statistics.TotalLines = $lines.Count
 
-    # Expressions régulières pour la validation
+    # Expressions rÃ©guliÃ¨res pour la validation
     $titleRegex = [regex]::new('^#\s+.+$')
     $sectionRegex = [regex]::new('^##\s+.+$')
     $taskRegex = [regex]::new('^\s*[-*+]\s+(?:\[[ xX~!]\])?\s*(?:\*\*([^*]+)\*\*)?\s*.*$')
     $taskWithCheckboxRegex = [regex]::new('^\s*[-*+]\s+\[[ xX~!]\]\s*.*$')
     $taskWithIdRegex = [regex]::new('^\s*[-*+]\s+(?:\[[ xX~!]\])?\s*\*\*([^*]+)\*\*\s*.*$')
 
-    # Vérifier la présence d'un titre
+    # VÃ©rifier la prÃ©sence d'un titre
     $hasTitle = $false
     foreach ($line in $lines) {
         if ($titleRegex.IsMatch($line)) {
@@ -86,7 +86,7 @@ function Test-MarkdownFormat {
     }
 
     if (-not $hasTitle) {
-        $message = "Le fichier ne contient pas de titre (ligne commençant par #)."
+        $message = "Le fichier ne contient pas de titre (ligne commenÃ§ant par #)."
         if ($Strict) {
             $result.IsValid = $false
             $result.Errors.Add($message) | Out-Null
@@ -96,7 +96,7 @@ function Test-MarkdownFormat {
         }
     }
 
-    # Vérifier la présence de sections
+    # VÃ©rifier la prÃ©sence de sections
     $hasSections = $false
     foreach ($line in $lines) {
         if ($sectionRegex.IsMatch($line)) {
@@ -106,7 +106,7 @@ function Test-MarkdownFormat {
     }
 
     if (-not $hasSections) {
-        $message = "Le fichier ne contient pas de sections (lignes commençant par ##)."
+        $message = "Le fichier ne contient pas de sections (lignes commenÃ§ant par ##)."
         if ($Strict) {
             $result.IsValid = $false
             $result.Errors.Add($message) | Out-Null
@@ -116,21 +116,21 @@ function Test-MarkdownFormat {
         }
     }
 
-    # Vérifier le format des tâches
+    # VÃ©rifier le format des tÃ¢ches
     $lineNumber = 0
     foreach ($line in $lines) {
         $lineNumber++
 
-        # Vérifier si la ligne est une tâche
+        # VÃ©rifier si la ligne est une tÃ¢che
         if ($line -match '^\s*[-*+]\s+') {
             $result.Statistics.TaskCount++
 
-            # Vérifier si la tâche a une case à cocher
+            # VÃ©rifier si la tÃ¢che a une case Ã  cocher
             if ($taskWithCheckboxRegex.IsMatch($line)) {
                 $result.Statistics.TaskWithCheckboxCount++
             } else {
                 $result.Statistics.TaskWithoutCheckboxCount++
-                $message = "La tâche à la ligne $lineNumber n'a pas de case à cocher."
+                $message = "La tÃ¢che Ã  la ligne $lineNumber n'a pas de case Ã  cocher."
                 if ($Strict) {
                     $result.IsValid = $false
                     $result.Errors.Add($message) | Out-Null
@@ -140,12 +140,12 @@ function Test-MarkdownFormat {
                 }
             }
 
-            # Vérifier si la tâche a un identifiant
+            # VÃ©rifier si la tÃ¢che a un identifiant
             if ($taskWithIdRegex.IsMatch($line)) {
                 $result.Statistics.TaskWithIdCount++
             } else {
                 $result.Statistics.TaskWithoutIdCount++
-                $message = "La tâche à la ligne $lineNumber n'a pas d'identifiant."
+                $message = "La tÃ¢che Ã  la ligne $lineNumber n'a pas d'identifiant."
                 if ($Strict) {
                     $result.IsValid = $false
                     $result.Errors.Add($message) | Out-Null
@@ -155,9 +155,9 @@ function Test-MarkdownFormat {
                 }
             }
 
-            # Vérifier le format général de la tâche
+            # VÃ©rifier le format gÃ©nÃ©ral de la tÃ¢che
             if (-not $taskRegex.IsMatch($line)) {
-                $message = "La tâche à la ligne $lineNumber ne respecte pas le format attendu."
+                $message = "La tÃ¢che Ã  la ligne $lineNumber ne respecte pas le format attendu."
                 if ($Strict) {
                     $result.IsValid = $false
                     $result.Errors.Add($message) | Out-Null
@@ -169,9 +169,9 @@ function Test-MarkdownFormat {
         }
     }
 
-    # Vérifier qu'il y a au moins une tâche
+    # VÃ©rifier qu'il y a au moins une tÃ¢che
     if ($result.Statistics.TaskCount -eq 0) {
-        $message = "Le fichier ne contient aucune tâche."
+        $message = "Le fichier ne contient aucune tÃ¢che."
         if ($Strict) {
             $result.IsValid = $false
             $result.Errors.Add($message) | Out-Null

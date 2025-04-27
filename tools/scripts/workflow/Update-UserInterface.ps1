@@ -1,28 +1,28 @@
-# Script de mise à jour de l'interface utilisateur
-# Ce script met à jour l'interface utilisateur pour inclure les formats XML et HTML
+﻿# Script de mise Ã  jour de l'interface utilisateur
+# Ce script met Ã  jour l'interface utilisateur pour inclure les formats XML et HTML
 
 # Chemins des modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $parentPath = Split-Path -Parent $scriptPath
 $uiPath = Join-Path -Path (Split-Path -Parent $parentPath) -ChildPath "UI"
 
-# Vérifier si le dossier UI existe
+# VÃ©rifier si le dossier UI existe
 if (-not (Test-Path -Path $uiPath)) {
     Write-Error "Le dossier UI n'existe pas: $uiPath"
     exit 1
 }
 
-# Créer le dossier XML_HTML dans le dossier UI s'il n'existe pas
+# CrÃ©er le dossier XML_HTML dans le dossier UI s'il n'existe pas
 $xmlHtmlUiPath = Join-Path -Path $uiPath -ChildPath "XML_HTML"
 if (-not (Test-Path -Path $xmlHtmlUiPath)) {
     New-Item -Path $xmlHtmlUiPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer le fichier de configuration UI pour XML
+# CrÃ©er le fichier de configuration UI pour XML
 $xmlUiConfig = @"
 {
     "formatName": "XML",
-    "formatDescription": "Format XML structuré",
+    "formatDescription": "Format XML structurÃ©",
     "fileExtensions": [".xml"],
     "icon": "xml-icon.png",
     "actions": [
@@ -55,8 +55,8 @@ $xmlUiConfig = @"
             "requiresOutput": true
         },
         {
-            "name": "Générer un schéma XSD",
-            "description": "Générer un schéma XSD à partir du fichier XML",
+            "name": "GÃ©nÃ©rer un schÃ©ma XSD",
+            "description": "GÃ©nÃ©rer un schÃ©ma XSD Ã  partir du fichier XML",
             "command": "New-XsdSchemaFromXml -XmlPath '{0}' -SchemaPath '{1}'",
             "outputExtension": ".xsd",
             "requiresOutput": true
@@ -70,8 +70,8 @@ $xmlUiConfig = @"
             "requiresOutput": false
         },
         {
-            "name": "Vue formatée",
-            "description": "Afficher le fichier XML formaté",
+            "name": "Vue formatÃ©e",
+            "description": "Afficher le fichier XML formatÃ©",
             "command": "Show-XmlFormatted -XmlPath '{0}'",
             "requiresOutput": false
         }
@@ -82,7 +82,7 @@ $xmlUiConfig = @"
 $xmlUiConfigPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "xml-ui-config.json"
 Set-Content -Path $xmlUiConfigPath -Value $xmlUiConfig -Encoding UTF8
 
-# Créer le fichier de configuration UI pour HTML
+# CrÃ©er le fichier de configuration UI pour HTML
 $htmlUiConfig = @"
 {
     "formatName": "HTML",
@@ -106,7 +106,7 @@ $htmlUiConfig = @"
         },
         {
             "name": "Sanitiser",
-            "description": "Sanitiser le fichier HTML pour supprimer les éléments dangereux",
+            "description": "Sanitiser le fichier HTML pour supprimer les Ã©lÃ©ments dangereux",
             "command": "Import-HtmlFile -FilePath '{0}' -Sanitize | Export-HtmlFile -FilePath '{1}'",
             "outputExtension": ".html",
             "requiresOutput": true
@@ -132,11 +132,11 @@ $htmlUiConfig = @"
 $htmlUiConfigPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "html-ui-config.json"
 Set-Content -Path $htmlUiConfigPath -Value $htmlUiConfig -Encoding UTF8
 
-# Créer les icônes pour XML et HTML
+# CrÃ©er les icÃ´nes pour XML et HTML
 $xmlIconPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "xml-icon.png"
 $htmlIconPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "html-icon.png"
 
-# Fonction pour créer une icône simple (en base64)
+# Fonction pour crÃ©er une icÃ´ne simple (en base64)
 function Create-SimpleIcon {
     param (
         [string]$IconPath,
@@ -147,18 +147,18 @@ function Create-SimpleIcon {
     [System.IO.File]::WriteAllBytes($IconPath, $bytes)
 }
 
-# Icône XML en base64 (exemple simple)
+# IcÃ´ne XML en base64 (exemple simple)
 $xmlIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHtSURBVDjLjZM9T9tQFIYpQ5eOMBKlW6eWIQPK0q1bF0bQqSNDSnFiR+7H5kNeCNFYcvwRKdRbUxMJhaQkJHaIQ8wSipqyZMnSXzB2iENs6P3AUZQQpJ7p6viec85z3/fqaAAc/OPzUKfT8TQaDQfRtFqtMx5rGo2GXa/XC7Vara/X6z/8fn/M6/W+Fwofu8jRaDSSyKFQKCuqVCpwOp0oFossEAi8yGQyH0Qwjxg0JxIJ9Pt9OBwOVKtVFolEEA6H4fP5Uq+9BmeSyaQNiEQi1xqNBqxWK0qlEgvZbDasVqtgAGbXwYkktVwuY7lcIhaLwWw2o1gsMgYUCgUGYDwZKJfLByqVCgxpauVyGQxZLBbVAMwmjQBKpRJLJ5NJZDIZdeK9zzxAPp9nAIlEQh3A/JwB2WyWpSeTCdbrdZjNZtUAzCaNAFgqnU6zQCAAm82GbrfLAJiDDWA+aVzTND2bzTIAZrfbVQPMJ40A6IY5T8vl8oNqtQoGwODxZKAerDvRtNvtL7VajTVbr9dhtVrZ/csAjB535pMmAXSrXq+/y+VySOg0m80MgMGZ3y+Ax5PBEc9NJtM7l8uFTCbDGGCz2dhd5TUweeZMJpNZwWP8/9PpAMZH7+8+6V8E14/EXzq5dAAAAABJRU5ErkJggg=="
 Create-SimpleIcon -IconPath $xmlIconPath -Base64Icon $xmlIconBase64
 
-# Icône HTML en base64 (exemple simple)
+# IcÃ´ne HTML en base64 (exemple simple)
 $htmlIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHtSURBVDjLjZM9T9tQFIYpQ5eOMBKlW6eWIQPK0q1bF0bQqSNDSnFiR+7H5kNeCNFYcvwRKdRbUxMJhaQkJHaIQ8wSipqyZMnSXzB2iENs6P3AUZQQpJ7p6viec85z3/fqaAAc/OPzUKfT8TQaDQfRtFqtMx5rGo2GXa/XC7Vara/X6z/8fn/M6/W+Fwofu8jRaDSSyKFQKCuqVCpwOp0oFossEAi8yGQyH0Qwjxg0JxIJ9Pt9OBwOVKtVFolEEA6H4fP5Uq+9BmeSyaQNiEQi1xqNBqxWK0qlEgvZbDasVqtgAGbXwYkktVwuY7lcIhaLwWw2o1gsMgYUCgUGYDwZKJfLByqVCgxpauVyGQxZLBbVAMwmjQBKpRJLJ5NJZDIZdeK9zzxAPp9nAIlEQh3A/JwB2WyWpSeTCdbrdZjNZtUAzCaNAFgqnU6zQCAAm82GbrfLAJiDDWA+aVzTND2bzTIAZrfbVQPMJ40A6IY5T8vl8oNqtQoGwODxZKAerDvRtNvtL7VajTVbr9dhtVrZ/csAjB535pMmAXSrXq+/y+VySOg0m80MgMGZ3y+Ax5PBEc9NJtM7l8uFTCbDGGCz2dhd5TUweeZMJpNZwWP8/9PpAMZH7+8+6V8E14/EXzq5dAAAAABJRU5ErkJggg=="
 Create-SimpleIcon -IconPath $htmlIconPath -Base64Icon $htmlIconBase64
 
-# Créer le script d'intégration UI
+# CrÃ©er le script d'intÃ©gration UI
 $uiIntegrationScript = @"
-# Script d'intégration UI pour les formats XML et HTML
-# Ce script est exécuté au démarrage de l'interface utilisateur
+# Script d'intÃ©gration UI pour les formats XML et HTML
+# Ce script est exÃ©cutÃ© au dÃ©marrage de l'interface utilisateur
 
 # Importer les configurations UI
 `$scriptPath = Split-Path -Parent `$MyInvocation.MyCommand.Path
@@ -206,7 +206,7 @@ Export-ModuleMember -Function Register-XmlHtmlFormatsInUI
 $uiIntegrationScriptPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "XML_HTML_UI_Integration.ps1"
 Set-Content -Path $uiIntegrationScriptPath -Value $uiIntegrationScript -Encoding UTF8
 
-# Créer les fonctions d'affichage pour XML et HTML
+# CrÃ©er les fonctions d'affichage pour XML et HTML
 $viewFunctionsScript = @"
 # Fonctions d'affichage pour XML et HTML
 # Ce script fournit des fonctions pour afficher les fichiers XML et HTML
@@ -228,7 +228,7 @@ function Show-XmlTree {
         `$xmlDoc = New-Object System.Xml.XmlDocument
         `$xmlDoc.Load(`$XmlPath)
         
-        # Créer une fenêtre pour afficher l'arborescence
+        # CrÃ©er une fenÃªtre pour afficher l'arborescence
         Add-Type -AssemblyName System.Windows.Forms
         
         `$form = New-Object System.Windows.Forms.Form
@@ -240,7 +240,7 @@ function Show-XmlTree {
         `$treeView.Dock = "Fill"
         `$treeView.PathSeparator = "/"
         
-        # Fonction récursive pour ajouter des nœuds à l'arborescence
+        # Fonction rÃ©cursive pour ajouter des nÅ“uds Ã  l'arborescence
         function Add-XmlNodeToTree {
             param (
                 [System.Xml.XmlNode]`$XmlNode,
@@ -276,20 +276,20 @@ function Show-XmlTree {
             }
         }
         
-        # Ajouter le nœud racine
+        # Ajouter le nÅ“ud racine
         `$rootNode = New-Object System.Windows.Forms.TreeNode(`$xmlDoc.DocumentElement.Name)
         [void]`$treeView.Nodes.Add(`$rootNode)
         
-        # Ajouter les nœuds enfants
+        # Ajouter les nÅ“uds enfants
         Add-XmlNodeToTree -XmlNode `$xmlDoc.DocumentElement -TreeNode `$rootNode
         
-        # Développer le nœud racine
+        # DÃ©velopper le nÅ“ud racine
         `$rootNode.Expand()
         
-        # Ajouter l'arborescence à la fenêtre
+        # Ajouter l'arborescence Ã  la fenÃªtre
         `$form.Controls.Add(`$treeView)
         
-        # Afficher la fenêtre
+        # Afficher la fenÃªtre
         [void]`$form.ShowDialog()
     }
     catch {
@@ -297,7 +297,7 @@ function Show-XmlTree {
     }
 }
 
-# Fonction pour afficher un fichier XML formaté
+# Fonction pour afficher un fichier XML formatÃ©
 function Show-XmlFormatted {
     param (
         [Parameter(Mandatory = `$true)]
@@ -327,11 +327,11 @@ function Show-XmlFormatted {
         
         `$formattedXml = `$stringWriter.ToString()
         
-        # Créer une fenêtre pour afficher le XML formaté
+        # CrÃ©er une fenÃªtre pour afficher le XML formatÃ©
         Add-Type -AssemblyName System.Windows.Forms
         
         `$form = New-Object System.Windows.Forms.Form
-        `$form.Text = "Vue formatée XML - `$XmlPath"
+        `$form.Text = "Vue formatÃ©e XML - `$XmlPath"
         `$form.Size = New-Object System.Drawing.Size(800, 600)
         `$form.StartPosition = "CenterScreen"
         
@@ -343,10 +343,10 @@ function Show-XmlFormatted {
         `$textBox.Text = `$formattedXml
         `$textBox.Dock = "Fill"
         
-        # Ajouter la zone de texte à la fenêtre
+        # Ajouter la zone de texte Ã  la fenÃªtre
         `$form.Controls.Add(`$textBox)
         
-        # Afficher la fenêtre
+        # Afficher la fenÃªtre
         [void]`$form.ShowDialog()
     }
     catch {
@@ -370,7 +370,7 @@ function Show-HtmlStructure {
         # Importer le fichier HTML
         `$htmlDoc = Import-HtmlFile -FilePath `$HtmlPath
         
-        # Créer une fenêtre pour afficher la structure
+        # CrÃ©er une fenÃªtre pour afficher la structure
         Add-Type -AssemblyName System.Windows.Forms
         
         `$form = New-Object System.Windows.Forms.Form
@@ -382,7 +382,7 @@ function Show-HtmlStructure {
         `$treeView.Dock = "Fill"
         `$treeView.PathSeparator = "/"
         
-        # Fonction récursive pour ajouter des nœuds à l'arborescence
+        # Fonction rÃ©cursive pour ajouter des nÅ“uds Ã  l'arborescence
         function Add-HtmlNodeToTree {
             param (
                 [HtmlAgilityPack.HtmlNode]`$HtmlNode,
@@ -418,20 +418,20 @@ function Show-HtmlStructure {
             }
         }
         
-        # Ajouter le nœud racine
+        # Ajouter le nÅ“ud racine
         `$rootNode = New-Object System.Windows.Forms.TreeNode("html")
         [void]`$treeView.Nodes.Add(`$rootNode)
         
-        # Ajouter les nœuds enfants
+        # Ajouter les nÅ“uds enfants
         Add-HtmlNodeToTree -HtmlNode `$htmlDoc.DocumentNode -TreeNode `$rootNode
         
-        # Développer le nœud racine
+        # DÃ©velopper le nÅ“ud racine
         `$rootNode.Expand()
         
-        # Ajouter l'arborescence à la fenêtre
+        # Ajouter l'arborescence Ã  la fenÃªtre
         `$form.Controls.Add(`$treeView)
         
-        # Afficher la fenêtre
+        # Afficher la fenÃªtre
         [void]`$form.ShowDialog()
     }
     catch {
@@ -446,6 +446,6 @@ Export-ModuleMember -Function Show-XmlTree, Show-XmlFormatted, Show-HtmlStructur
 $viewFunctionsScriptPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "XML_HTML_ViewFunctions.ps1"
 Set-Content -Path $viewFunctionsScriptPath -Value $viewFunctionsScript -Encoding UTF8
 
-Write-Host "Mise à jour de l'interface utilisateur terminée avec succès!" -ForegroundColor Green
+Write-Host "Mise Ã  jour de l'interface utilisateur terminÃ©e avec succÃ¨s!" -ForegroundColor Green
 Write-Host "Les formats XML et HTML sont maintenant disponibles dans l'interface utilisateur." -ForegroundColor Green
-Write-Host "Chemin d'intégration UI: $xmlHtmlUiPath" -ForegroundColor Cyan
+Write-Host "Chemin d'intÃ©gration UI: $xmlHtmlUiPath" -ForegroundColor Cyan

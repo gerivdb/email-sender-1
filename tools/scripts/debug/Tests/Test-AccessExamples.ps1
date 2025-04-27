@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les exemples de débogage des scénarios courants d'accès refusé.
+    Tests unitaires pour les exemples de dÃ©bogage des scÃ©narios courants d'accÃ¨s refusÃ©.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour valider les exemples de débogage
-    des scénarios courants d'accès refusé.
+    Ce script contient des tests unitaires pour valider les exemples de dÃ©bogage
+    des scÃ©narios courants d'accÃ¨s refusÃ©.
 .NOTES
     Auteur: Augment Code
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Certains tests pourraient ne pas fonctionner correctement."
+    Write-Warning "Le module Pester n'est pas installÃ©. Certains tests pourraient ne pas fonctionner correctement."
 }
 
-# Importer le script à tester
+# Importer le script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\AccessExamples.ps1"
 . $scriptPath
 
 Describe "Debug-SystemFileAccess" {
     BeforeAll {
-        # Créer un fichier temporaire pour simuler un fichier système protégé
+        # CrÃ©er un fichier temporaire pour simuler un fichier systÃ¨me protÃ©gÃ©
         $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
         $protectedFile = Join-Path -Path $tempDir -ChildPath "protected.dat"
         Set-Content -Path $protectedFile -Value "Protected content"
 
-        # Simuler un fichier protégé en retirant les permissions
+        # Simuler un fichier protÃ©gÃ© en retirant les permissions
         $acl = Get-Acl -Path $protectedFile
         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
         $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
@@ -44,14 +44,14 @@ Describe "Debug-SystemFileAccess" {
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    It "Devrait détecter un fichier inexistant" {
+    It "Devrait dÃ©tecter un fichier inexistant" {
         $result = Debug-SystemFileAccess -FilePath "C:\CheMin_Qui_Nexiste_Pas_12345"
         $result.FileExists | Should -Be $false
-        $result.Recommendations | Should -Contain "Vérifiez que le chemin du fichier est correct."
+        $result.Recommendations | Should -Contain "VÃ©rifiez que le chemin du fichier est correct."
     }
 
     It "Devrait analyser les permissions d'un fichier existant" {
-        # Mock pour éviter de réellement tester les privilèges système
+        # Mock pour Ã©viter de rÃ©ellement tester les privilÃ¨ges systÃ¨me
         Mock -CommandName Test-PathPermissions -MockWith {
             return [PSCustomObject]@{
                 Path = $Path
@@ -101,7 +101,7 @@ Describe "Debug-SystemFileAccess" {
         Mock -CommandName Edit-ProtectedFile -MockWith {
             return [PSCustomObject]@{
                 Success = $true
-                Message = "Le fichier a été modifié avec succès."
+                Message = "Le fichier a Ã©tÃ© modifiÃ© avec succÃ¨s."
                 OriginalPath = $Path
                 TempPath = "C:\Temp\file.tmp"
             }
@@ -114,14 +114,14 @@ Describe "Debug-SystemFileAccess" {
 }
 
 Describe "Debug-RegistryKeyAccess" {
-    It "Devrait détecter une clé de registre inexistante" {
+    It "Devrait dÃ©tecter une clÃ© de registre inexistante" {
         $result = Debug-RegistryKeyAccess -RegistryPath "HKLM:\CleDeRegistre_Qui_Nexiste_Pas_12345"
         $result.KeyExists | Should -Be $false
-        $result.Recommendations | Should -Contain "Vérifiez que le chemin de la clé de registre est correct."
+        $result.Recommendations | Should -Contain "VÃ©rifiez que le chemin de la clÃ© de registre est correct."
     }
 
-    It "Devrait analyser l'accès à une clé de registre existante" {
-        # Mock pour éviter de réellement tester les privilèges système
+    It "Devrait analyser l'accÃ¨s Ã  une clÃ© de registre existante" {
+        # Mock pour Ã©viter de rÃ©ellement tester les privilÃ¨ges systÃ¨me
         Mock -CommandName Debug-UnauthorizedAccessException -MockWith {
             return [PSCustomObject]@{
                 Success = $false
@@ -144,7 +144,7 @@ Describe "Debug-RegistryKeyAccess" {
 
         Mock -CommandName Start-ElevatedProcess -MockWith { return 0 }
 
-        # Mock pour simuler l'existence de la clé de registre
+        # Mock pour simuler l'existence de la clÃ© de registre
         Mock -CommandName Test-Path -MockWith { return $true }
 
         $result = Debug-RegistryKeyAccess -RegistryPath "HKLM:\SECURITY\Policy"
@@ -154,13 +154,13 @@ Describe "Debug-RegistryKeyAccess" {
 }
 
 Describe "Debug-NetworkAccess" {
-    It "Devrait détecter un chemin réseau invalide" {
+    It "Devrait dÃ©tecter un chemin rÃ©seau invalide" {
         $result = Debug-NetworkAccess -NetworkPath "chemin_invalide"
         $result.Recommendations | Should -Contain "Utilisez un chemin UNC valide au format \\server\share\..."
     }
 
-    It "Devrait analyser un chemin réseau valide" {
-        # Mock pour éviter de réellement tester les connexions réseau
+    It "Devrait analyser un chemin rÃ©seau valide" {
+        # Mock pour Ã©viter de rÃ©ellement tester les connexions rÃ©seau
         Mock -CommandName Test-Connection -MockWith { return $true }
 
         Mock -CommandName Test-Path -MockWith { return $true }
@@ -175,7 +175,7 @@ Describe "Debug-NetworkAccess" {
             }
         }
 
-        # Mock pour simuler une connexion TCP réussie
+        # Mock pour simuler une connexion TCP rÃ©ussie
         Mock -CommandName New-Object -ParameterFilter { $TypeName -eq "System.Net.Sockets.TcpClient" } -MockWith {
             return [PSCustomObject]@{
                 BeginConnect = { return [PSCustomObject]@{
@@ -195,21 +195,21 @@ Describe "Debug-NetworkAccess" {
         $result.Server | Should -Be "server"
         $result.Share | Should -Be "share"
         $result.PathExists | Should -Be $true
-        $result.DirectAccessResult | Should -Be "Succès"
+        $result.DirectAccessResult | Should -Be "SuccÃ¨s"
     }
 }
 
 Describe "Debug-DatabaseAccess" {
-    It "Devrait vérifier les paramètres obligatoires" {
+    It "Devrait vÃ©rifier les paramÃ¨tres obligatoires" {
         { Debug-DatabaseAccess } | Should -Throw
         { Debug-DatabaseAccess -ServerInstance "localhost" } | Should -Throw
     }
 
-    It "Devrait analyser une connexion à une base de données" {
-        # Mock pour éviter de réellement tester les connexions SQL
+    It "Devrait analyser une connexion Ã  une base de donnÃ©es" {
+        # Mock pour Ã©viter de rÃ©ellement tester les connexions SQL
         Mock -CommandName Test-Connection -MockWith { return $true }
 
-        # Mock pour simuler une connexion TCP réussie
+        # Mock pour simuler une connexion TCP rÃ©ussie
         Mock -CommandName New-Object -ParameterFilter { $TypeName -eq "System.Net.Sockets.TcpClient" } -MockWith {
             return [PSCustomObject]@{
                 BeginConnect = { return [PSCustomObject]@{
@@ -222,7 +222,7 @@ Describe "Debug-DatabaseAccess" {
             }
         }
 
-        # Mock pour simuler une connexion SQL réussie
+        # Mock pour simuler une connexion SQL rÃ©ussie
         Mock -CommandName New-Object -ParameterFilter { $TypeName -eq "System.Data.SqlClient.SqlConnection" } -MockWith {
             return [PSCustomObject]@{
                 Open = {}
@@ -256,7 +256,7 @@ Describe "Debug-DatabaseAccess" {
         # Mock pour simuler l'installation du module SqlServer
         Mock -CommandName Get-Module -MockWith { return $true }
 
-        # Mock pour simuler un processus élevé
+        # Mock pour simuler un processus Ã©levÃ©
         Mock -CommandName Start-ElevatedProcess -MockWith { return 0 }
 
         $result = Debug-DatabaseAccess -ServerInstance "localhost\SQLEXPRESS" -Database "TestDB" -IntegratedSecurity
@@ -266,5 +266,5 @@ Describe "Debug-DatabaseAccess" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Verbose

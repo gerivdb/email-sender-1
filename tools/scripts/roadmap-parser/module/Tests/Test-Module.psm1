@@ -1,4 +1,4 @@
-# Importer toutes les fonctions du script Analyze-SqlServerPermission.ps1
+﻿# Importer toutes les fonctions du script Analyze-SqlServerPermission.ps1
 . "$PSScriptRoot\..\Functions\Public\Analyze-SqlServerPermission.ps1"
 
 # Exporter les fonctions

@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-ResolveRoadmapPath.ps1
 #
 # Script pour tester la fonction Resolve-RoadmapPath
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\PathManipulation\Resolve-RoadmapPath.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,12 +18,12 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-Write-Host "Début des tests de la fonction Resolve-RoadmapPath..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Resolve-RoadmapPath..." -ForegroundColor Cyan
 
-# Test 1: Résolution de base
-Write-Host "`nTest 1: Résolution de base" -ForegroundColor Cyan
+# Test 1: RÃ©solution de base
+Write-Host "`nTest 1: RÃ©solution de base" -ForegroundColor Cyan
 
-# Obtenir le répertoire courant
+# Obtenir le rÃ©pertoire courant
 $testCases = @(
     @{ Path = "file.txt"; ResolutionType = "FullPath"; Expected = Join-Path -Path "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1" -ChildPath "file.txt"; Description = "Chemin relatif simple" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "FullPath"; Expected = "C:\folder\file.txt"; Description = "Chemin absolu Windows" }
@@ -41,10 +41,10 @@ foreach ($testCase in $testCases) {
 
     $result = Resolve-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -53,21 +53,21 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 2: Résolution de parties de chemin
-Write-Host "`nTest 2: Résolution de parties de chemin" -ForegroundColor Cyan
+# Test 2: RÃ©solution de parties de chemin
+Write-Host "`nTest 2: RÃ©solution de parties de chemin" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Path = "C:\folder\file.txt"; ResolutionType = "FileName"; Expected = "file.txt"; Description = "Nom de fichier" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "FileNameWithoutExtension"; Expected = "file"; Description = "Nom de fichier sans extension" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "Extension"; Expected = ".txt"; Description = "Extension" }
-    @{ Path = "C:\folder\file.txt"; ResolutionType = "DirectoryName"; Expected = "C:\folder"; Description = "Nom de répertoire" }
+    @{ Path = "C:\folder\file.txt"; ResolutionType = "DirectoryName"; Expected = "C:\folder"; Description = "Nom de rÃ©pertoire" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "ParentPath"; Expected = "C:\folder"; Description = "Chemin parent" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "RootPath"; Expected = "C:\"; Description = "Chemin racine" }
     @{ Path = "C:\folder\file.txt"; ResolutionType = "PathRoot"; Expected = "C:\"; Description = "Racine du chemin" }
@@ -84,10 +84,10 @@ foreach ($testCase in $testCases) {
 
     $result = Resolve-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -96,15 +96,15 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 3: Résolution de chemins spéciaux
-Write-Host "`nTest 3: Résolution de chemins spéciaux" -ForegroundColor Cyan
+# Test 3: RÃ©solution de chemins spÃ©ciaux
+Write-Host "`nTest 3: RÃ©solution de chemins spÃ©ciaux" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Path = "subfolder"; ResolutionType = "TempPath"; Expected = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "subfolder"; Description = "Chemin temporaire avec sous-dossier" }
@@ -121,10 +121,10 @@ foreach ($testCase in $testCases) {
 
     $result = Resolve-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -133,8 +133,8 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
@@ -148,17 +148,17 @@ $result = Resolve-RoadmapPath @params
 $tempPath = [System.IO.Path]::GetTempPath()
 $success = $result -like "$tempPath*" -and $result -ne $tempPath -and $result -like "*test*"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Chemin aléatoire: $status" -ForegroundColor $color
+Write-Host "  Chemin alÃ©atoire: $status" -ForegroundColor $color
 
 if ($success) {
     $successCount++
 } else {
     $failureCount++
-    Write-Host "    Résultat attendu: Chemin temporaire avec nom aléatoire contenant 'test'" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Chemin temporaire avec nom alÃ©atoire contenant 'test'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
 }
 
 # Test pour EnvironmentPath
@@ -173,7 +173,7 @@ $result = Resolve-RoadmapPath @params
 $expected = Join-Path -Path ([System.Environment]::GetEnvironmentVariable($envVar)) -ChildPath "test"
 $success = $result -eq $expected
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Chemin d'environnement: $status" -ForegroundColor $color
@@ -182,19 +182,19 @@ if ($success) {
     $successCount++
 } else {
     $failureCount++
-    Write-Host "    Résultat attendu: '$expected'" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: '$expected'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 4: Résolution personnalisée
-Write-Host "`nTest 4: Résolution personnalisée" -ForegroundColor Cyan
+# Test 4: RÃ©solution personnalisÃ©e
+Write-Host "`nTest 4: RÃ©solution personnalisÃ©e" -ForegroundColor Cyan
 
 $customResolution = {
     param($Path)
 
-    # Exemple : Ajouter un préfixe "custom:" au chemin
+    # Exemple : Ajouter un prÃ©fixe "custom:" au chemin
     return "custom:$Path"
 }
 
@@ -203,23 +203,23 @@ $result = Resolve-RoadmapPath -Path "C:\folder\file.txt" -ResolutionType "Custom
 $expected = "custom:C:\folder\file.txt"
 $success = $result -eq $expected
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résolution personnalisée: $status" -ForegroundColor $color
+Write-Host "  RÃ©solution personnalisÃ©e: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: '$expected'" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: '$expected'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
 }
 
-# Test 5: Création de chemins
-Write-Host "`nTest 5: Création de chemins" -ForegroundColor Cyan
+# Test 5: CrÃ©ation de chemins
+Write-Host "`nTest 5: CrÃ©ation de chemins" -ForegroundColor Cyan
 
 $testDir = Join-Path -Path $env:TEMP -ChildPath "RoadmapParserTest_$([Guid]::NewGuid().ToString())"
 $testFile = Join-Path -Path $testDir -ChildPath "test.txt"
 
-# Test pour la création d'un répertoire
+# Test pour la crÃ©ation d'un rÃ©pertoire
 $params = @{
     Path              = $testDir
     ResolutionType    = "FullPath"
@@ -229,16 +229,16 @@ $params = @{
 $result = Resolve-RoadmapPath @params
 $success = Test-Path -Path $testDir -PathType Container
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Création de répertoire: $status" -ForegroundColor $color
+Write-Host "  CrÃ©ation de rÃ©pertoire: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Le répertoire '$testDir' n'a pas été créé" -ForegroundColor Red
+    Write-Host "    Le rÃ©pertoire '$testDir' n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
 }
 
-# Test pour la création d'un fichier
+# Test pour la crÃ©ation d'un fichier
 $params = @{
     Path              = $testFile
     ResolutionType    = "FullPath"
@@ -248,16 +248,16 @@ $params = @{
 $result = Resolve-RoadmapPath @params
 $success = Test-Path -Path $testFile -PathType Leaf
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Création de fichier: $status" -ForegroundColor $color
+Write-Host "  CrÃ©ation de fichier: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Le fichier '$testFile' n'a pas été créé" -ForegroundColor Red
+    Write-Host "    Le fichier '$testFile' n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
 }
 
-# Nettoyer les fichiers et répertoires de test
+# Nettoyer les fichiers et rÃ©pertoires de test
 Remove-Item -Path $testFile -Force -ErrorAction SilentlyContinue
 Remove-Item -Path $testDir -Force -ErrorAction SilentlyContinue
 
@@ -269,7 +269,7 @@ $testCases = @(
     @{ Test = "Resolve-RoadmapPath avec variable d'environnement inexistante"; Function = { Resolve-RoadmapPath -Path "C:\folder\file.txt" -ResolutionType "EnvironmentPath" -EnvironmentVariable "NONEXISTENT_VAR_$([Guid]::NewGuid().ToString())" -ThrowOnFailure }; ShouldThrow = $true; Description = "EnvironmentPath avec variable inexistante" }
     @{ Test = "Resolve-RoadmapPath sans CustomResolution pour Custom"; Function = { Resolve-RoadmapPath -Path "C:\folder\file.txt" -ResolutionType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Custom sans CustomResolution" }
     @{ Test = "Resolve-RoadmapPath avec erreur sans ThrowOnFailure"; Function = {
-            # Ce test est censé générer un warning, c'est normal
+            # Ce test est censÃ© gÃ©nÃ©rer un warning, c'est normal
             Write-Host "Note: Le warning suivant est attendu dans le cadre du test:" -ForegroundColor Yellow
             $result = Resolve-RoadmapPath -Path "C:\folder\file.txt" -ResolutionType "EnvironmentPath"
             return $result
@@ -289,10 +289,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -302,13 +302,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Resolve-RoadmapPath terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Resolve-RoadmapPath terminÃ©s." -ForegroundColor Cyan

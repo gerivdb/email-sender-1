@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Version simplifiée du script de test de charge pour les fonctions PowerShell.
+    Version simplifiÃ©e du script de test de charge pour les fonctions PowerShell.
 .DESCRIPTION
-    Ce script exécute des tests de charge simplifiés pour simuler l'utilisation
+    Ce script exÃ©cute des tests de charge simplifiÃ©s pour simuler l'utilisation
     de fonctions PowerShell sous charge.
 .PARAMETER Duration
-    Durée du test en secondes.
+    DurÃ©e du test en secondes.
 .PARAMETER Concurrency
-    Nombre d'exécutions concurrentes.
+    Nombre d'exÃ©cutions concurrentes.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats du test.
+    Chemin du fichier de sortie pour les rÃ©sultats du test.
 .EXAMPLE
     .\Simple-PRLoadTest.ps1 -Duration 10 -Concurrency 2 -OutputPath "load_test_results.json"
 .NOTES
@@ -40,9 +40,9 @@ param (
     [int]$SamplingInterval = 5
 )
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
-    # Générer des données aléatoires
+    # GÃ©nÃ©rer des donnÃ©es alÃ©atoires
     $data = @{
         Labels     = @("Label1", "Label2", "Label3", "Label4", "Label5")
         Values     = @(
@@ -102,13 +102,13 @@ function Invoke-DummyFunction {
         Summary         = "Processed $($Data.Labels.Count) items"
     }
 
-    # Simuler un délai
+    # Simuler un dÃ©lai
     Start-Sleep -Milliseconds (Get-Random -Minimum 50 -Maximum 200)
 
     return $result
 }
 
-# Fonction pour exécuter un test de stabilité
+# Fonction pour exÃ©cuter un test de stabilitÃ©
 function Start-StabilityTest {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -118,10 +118,10 @@ function Start-StabilityTest {
         [string]$OutputPath
     )
 
-    Write-Host "`nDémarrage du test de stabilité..." -ForegroundColor Cyan
-    Write-Host "  Durée totale: $Duration secondes"
-    Write-Host "  Concurrence: $Concurrency exécutions simultanées"
-    Write-Host "  Intervalle d'échantillonnage: $SamplingInterval secondes"
+    Write-Host "`nDÃ©marrage du test de stabilitÃ©..." -ForegroundColor Cyan
+    Write-Host "  DurÃ©e totale: $Duration secondes"
+    Write-Host "  Concurrence: $Concurrency exÃ©cutions simultanÃ©es"
+    Write-Host "  Intervalle d'Ã©chantillonnage: $SamplingInterval secondes"
 
     $startTime = Get-Date
     $endTime = $startTime.AddSeconds($Duration)
@@ -131,16 +131,16 @@ function Start-StabilityTest {
     $iteration = 1
 
     while ((Get-Date) -lt $endTime) {
-        Write-Host "Exécution de l'échantillon $iteration..." -ForegroundColor Yellow
+        Write-Host "ExÃ©cution de l'Ã©chantillon $iteration..." -ForegroundColor Yellow
 
-        # Exécuter un test de charge court pour cet échantillon
+        # ExÃ©cuter un test de charge court pour cet Ã©chantillon
         $sampleOutputPath = "$($OutputPath.TrimEnd('.json'))_sample_$iteration.json"
         $sampleDuration = [Math]::Min($SamplingInterval * 0.8, 5) # 80% de l'intervalle ou max 5 secondes
 
-        # Utiliser la fonction Main pour exécuter un test de charge
+        # Utiliser la fonction Main pour exÃ©cuter un test de charge
         $sampleResults = Main -Duration $sampleDuration -Concurrency $Concurrency -OutputPath $sampleOutputPath
 
-        # Ajouter les résultats de l'échantillon
+        # Ajouter les rÃ©sultats de l'Ã©chantillon
         $samples += [PSCustomObject]@{
             Iteration         = $iteration
             Timestamp         = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -150,12 +150,12 @@ function Start-StabilityTest {
             ErrorRate         = if ($sampleResults.TotalRequests -gt 0) { $sampleResults.ErrorCount / $sampleResults.TotalRequests * 100 } else { 0 }
         }
 
-        # Attendre jusqu'au prochain échantillon
+        # Attendre jusqu'au prochain Ã©chantillon
         $now = Get-Date
         if ($now -lt $nextSampleTime) {
             $waitTime = ($nextSampleTime - $now).TotalSeconds
             if ($waitTime -gt 0) {
-                Write-Host "Attente de $([Math]::Round($waitTime, 1)) secondes jusqu'au prochain échantillon..." -ForegroundColor Gray
+                Write-Host "Attente de $([Math]::Round($waitTime, 1)) secondes jusqu'au prochain Ã©chantillon..." -ForegroundColor Gray
                 Start-Sleep -Seconds ([Math]::Floor($waitTime))
             }
         }
@@ -164,7 +164,7 @@ function Start-StabilityTest {
         $nextSampleTime = $nextSampleTime.AddSeconds($SamplingInterval)
     }
 
-    # Analyser les résultats de stabilité
+    # Analyser les rÃ©sultats de stabilitÃ©
     $stabilityResults = @{
         StartTime        = $startTime.ToString("yyyy-MM-dd HH:mm:ss")
         EndTime          = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
@@ -183,24 +183,24 @@ function Start-StabilityTest {
         }
     }
 
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $stabilityResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
 
-    # Afficher un résumé
-    Write-Host "`nRésumé du test de stabilité:" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© du test de stabilitÃ©:" -ForegroundColor Cyan
     Write-Host "==========================" -ForegroundColor Cyan
-    Write-Host "Durée totale: $Duration secondes"
-    Write-Host "Nombre d'échantillons: $($samples.Count)"
+    Write-Host "DurÃ©e totale: $Duration secondes"
+    Write-Host "Nombre d'Ã©chantillons: $($samples.Count)"
     Write-Host "`nPerformances moyennes:" -ForegroundColor Yellow
-    Write-Host "  Requêtes par seconde: $([Math]::Round($stabilityResults.Summary.AvgRequestsPerSecond, 2))"
-    Write-Host "  Temps de réponse moyen: $([Math]::Round($stabilityResults.Summary.AvgResponseTime, 2)) ms"
+    Write-Host "  RequÃªtes par seconde: $([Math]::Round($stabilityResults.Summary.AvgRequestsPerSecond, 2))"
+    Write-Host "  Temps de rÃ©ponse moyen: $([Math]::Round($stabilityResults.Summary.AvgResponseTime, 2)) ms"
     Write-Host "  P95 moyen: $([Math]::Round($stabilityResults.Summary.AvgP95ResponseTime, 2)) ms"
     Write-Host "  Taux d'erreur moyen: $([Math]::Round($stabilityResults.Summary.AvgErrorRate, 2))%"
 
-    Write-Host "`nStabilité:" -ForegroundColor Yellow
+    Write-Host "`nStabilitÃ©:" -ForegroundColor Yellow
     Write-Host "  Min RPS: $([Math]::Round($stabilityResults.Summary.MinRequestsPerSecond, 2))"
     Write-Host "  Max RPS: $([Math]::Round($stabilityResults.Summary.MaxRequestsPerSecond, 2))"
-    Write-Host "  Écart type RPS: $([Math]::Round($stabilityResults.Summary.StdDevRequestsPerSecond, 2))"
+    Write-Host "  Ã‰cart type RPS: $([Math]::Round($stabilityResults.Summary.StdDevRequestsPerSecond, 2))"
     Write-Host "  Coefficient de variation: $([Math]::Round($stabilityResults.Summary.StdDevRequestsPerSecond / $stabilityResults.Summary.AvgRequestsPerSecond * 100, 2))%"
 
     return $stabilityResults
@@ -212,30 +212,30 @@ function Main {
     param()
 
     if ($StabilityTest) {
-        Write-Verbose "Démarrage du test de stabilité..."
-        Write-Verbose "  Durée: $StabilityDuration secondes"
-        Write-Verbose "  Concurrence: $Concurrency exécutions simultanées"
-        Write-Verbose "  Intervalle d'échantillonnage: $SamplingInterval secondes"
+        Write-Verbose "DÃ©marrage du test de stabilitÃ©..."
+        Write-Verbose "  DurÃ©e: $StabilityDuration secondes"
+        Write-Verbose "  Concurrence: $Concurrency exÃ©cutions simultanÃ©es"
+        Write-Verbose "  Intervalle d'Ã©chantillonnage: $SamplingInterval secondes"
 
         return Start-StabilityTest -Duration $StabilityDuration -Concurrency $Concurrency -SamplingInterval $SamplingInterval -OutputPath $OutputPath
     } else {
-        Write-Verbose "Démarrage du test de charge simplifié..."
-        Write-Verbose "  Durée: $Duration secondes"
-        Write-Verbose "  Concurrence: $Concurrency exécutions simultanées"
+        Write-Verbose "DÃ©marrage du test de charge simplifiÃ©..."
+        Write-Verbose "  DurÃ©e: $Duration secondes"
+        Write-Verbose "  Concurrence: $Concurrency exÃ©cutions simultanÃ©es"
 
-        # Vérifier que le répertoire de sortie existe
+        # VÃ©rifier que le rÃ©pertoire de sortie existe
         $outputDir = Split-Path -Path $OutputPath -Parent
         if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
-            if ($PSCmdlet.ShouldProcess($outputDir, "Créer le répertoire")) {
+            if ($PSCmdlet.ShouldProcess($outputDir, "CrÃ©er le rÃ©pertoire")) {
                 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
             }
         }
 
-        # Générer les données de test
+        # GÃ©nÃ©rer les donnÃ©es de test
         $testData = New-TestData
-        Write-Verbose "Données de test générées"
+        Write-Verbose "DonnÃ©es de test gÃ©nÃ©rÃ©es"
 
-        # Initialiser les résultats
+        # Initialiser les rÃ©sultats
         $results = @{
             StartTime     = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             Duration      = $Duration
@@ -250,7 +250,7 @@ function Main {
             Performance   = @()
         }
 
-        # Démarrer la surveillance des performances
+        # DÃ©marrer la surveillance des performances
         $processId = $PID  # Stocker la valeur de $PID dans une variable normale
         $monitorJob = Start-Job -ScriptBlock {
             param ($ProcessId, $Duration, $Interval)
@@ -278,19 +278,19 @@ function Main {
             return $performance
         } -ArgumentList $processId, $Duration, 1
 
-        # Démarrer le test de charge
+        # DÃ©marrer le test de charge
         $startTime = Get-Date
         $endTime = $startTime.AddSeconds($Duration)
         $responseTimes = @()
         $jobs = @()
 
-        Write-Verbose "Exécution du test de charge jusqu'à $(Get-Date -Date $endTime -Format "HH:mm:ss")..."
+        Write-Verbose "ExÃ©cution du test de charge jusqu'Ã  $(Get-Date -Date $endTime -Format "HH:mm:ss")..."
 
         while ((Get-Date) -lt $endTime) {
-            # Vérifier le nombre de jobs en cours
+            # VÃ©rifier le nombre de jobs en cours
             $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
 
-            # Démarrer de nouveaux jobs si nécessaire
+            # DÃ©marrer de nouveaux jobs si nÃ©cessaire
             while ($runningJobs.Count -lt $Concurrency -and (Get-Date) -lt $endTime) {
                 $jobStartTime = Get-Date
                 $job = Start-Job -ScriptBlock {
@@ -304,7 +304,7 @@ function Main {
                             Summary         = "Processed $($TestData.Labels.Count) items"
                         }
 
-                        # Simuler un délai
+                        # Simuler un dÃ©lai
                         Start-Sleep -Milliseconds (Get-Random -Minimum 50 -Maximum 200)
 
                         return @{
@@ -327,7 +327,7 @@ function Main {
                 $runningJobs = $jobs | Where-Object { $_.Job.State -eq "Running" }
             }
 
-            # Vérifier les jobs terminés
+            # VÃ©rifier les jobs terminÃ©s
             $completedJobs = $jobs | Where-Object { $_.Job.State -eq "Completed" -and -not $_.Processed }
 
             foreach ($jobInfo in $completedJobs) {
@@ -352,11 +352,11 @@ function Main {
                     $results.MaxResponseMs = $responseTime
                 }
 
-                # Marquer le job comme traité
+                # Marquer le job comme traitÃ©
                 $jobInfo | Add-Member -MemberType NoteProperty -Name "Processed" -Value $true -Force
             }
 
-            # Attendre un peu avant de vérifier à nouveau
+            # Attendre un peu avant de vÃ©rifier Ã  nouveau
             Start-Sleep -Milliseconds 100
         }
 
@@ -388,7 +388,7 @@ function Main {
         # Nettoyer les jobs
         $jobs | ForEach-Object { Remove-Job -Job $_.Job -Force }
 
-        # Récupérer les données de performance
+        # RÃ©cupÃ©rer les donnÃ©es de performance
         $results.Performance = Receive-Job -Job $monitorJob -Wait
         Remove-Job -Job $monitorJob -Force
 
@@ -405,7 +405,7 @@ function Main {
             $results.StandardDeviation = [Math]::Sqrt(($responseTimes | ForEach-Object { [Math]::Pow($_ - $results.AvgResponseMs, 2) } | Measure-Object -Average).Average)
         }
 
-        # Ajouter des informations système
+        # Ajouter des informations systÃ¨me
         $results.System = @{
             PSVersion      = $PSVersionTable.PSVersion.ToString()
             OS             = [System.Environment]::OSVersion.VersionString
@@ -413,29 +413,29 @@ function Main {
             Memory         = [Math]::Round((Get-CimInstance -ClassName Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2)
         }
 
-        # Enregistrer les résultats
-        if ($PSCmdlet.ShouldProcess($OutputPath, "Enregistrer les résultats du test de charge")) {
+        # Enregistrer les rÃ©sultats
+        if ($PSCmdlet.ShouldProcess($OutputPath, "Enregistrer les rÃ©sultats du test de charge")) {
             $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-            Write-Verbose "Résultats du test de charge enregistrés dans $OutputPath"
+            Write-Verbose "RÃ©sultats du test de charge enregistrÃ©s dans $OutputPath"
         }
 
-        # Afficher un résumé
-        Write-Host "`nRésumé du test de charge:" -ForegroundColor Cyan
+        # Afficher un rÃ©sumÃ©
+        Write-Host "`nRÃ©sumÃ© du test de charge:" -ForegroundColor Cyan
         Write-Host "=========================" -ForegroundColor Cyan
 
-        Write-Host "`nMétriques générales:" -ForegroundColor Yellow
-        Write-Host "  Durée totale: $($results.TotalExecTime) secondes"
-        Write-Host "  Requêtes totales: $($results.TotalRequests)"
-        Write-Host "  Requêtes réussies: $($results.SuccessCount)"
-        Write-Host "  Requêtes en erreur: $($results.ErrorCount)"
-        Write-Host "  Requêtes par seconde: $([Math]::Round($results.RequestsPerSecond, 2))"
+        Write-Host "`nMÃ©triques gÃ©nÃ©rales:" -ForegroundColor Yellow
+        Write-Host "  DurÃ©e totale: $($results.TotalExecTime) secondes"
+        Write-Host "  RequÃªtes totales: $($results.TotalRequests)"
+        Write-Host "  RequÃªtes rÃ©ussies: $($results.SuccessCount)"
+        Write-Host "  RequÃªtes en erreur: $($results.ErrorCount)"
+        Write-Host "  RequÃªtes par seconde: $([Math]::Round($results.RequestsPerSecond, 2))"
 
-        Write-Host "`nTemps de réponse:" -ForegroundColor Yellow
+        Write-Host "`nTemps de rÃ©ponse:" -ForegroundColor Yellow
         Write-Host "  Minimum: $([Math]::Round($results.MinResponseMs, 2)) ms"
         Write-Host "  Maximum: $([Math]::Round($results.MaxResponseMs, 2)) ms"
         Write-Host "  Moyenne: $([Math]::Round($results.AvgResponseMs, 2)) ms"
-        Write-Host "  Médiane: $([Math]::Round($results.MedianResponseMs, 2)) ms"
-        Write-Host "  Écart type: $([Math]::Round($results.StandardDeviation, 2)) ms"
+        Write-Host "  MÃ©diane: $([Math]::Round($results.MedianResponseMs, 2)) ms"
+        Write-Host "  Ã‰cart type: $([Math]::Round($results.StandardDeviation, 2)) ms"
 
         Write-Host "`nPercentiles:" -ForegroundColor Yellow
         Write-Host "  P90: $([Math]::Round($results.P90ResponseMs, 2)) ms"
@@ -447,5 +447,5 @@ function Main {
 
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

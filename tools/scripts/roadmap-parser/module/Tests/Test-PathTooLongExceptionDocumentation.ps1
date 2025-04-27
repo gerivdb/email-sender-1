@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour valider la documentation de PathTooLongException et ses limites.
 
@@ -14,37 +14,37 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests de la documentation de PathTooLongException et ses limites" {
     Context "PathTooLongException" {
-        It "Devrait être une sous-classe de IOException" {
+        It "Devrait Ãªtre une sous-classe de IOException" {
             [System.IO.PathTooLongException] | Should -BeOfType [System.Type]
             [System.IO.PathTooLongException].IsSubclassOf([System.IO.IOException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un message" {
+        It "Devrait permettre de spÃ©cifier un message" {
             $exception = [System.IO.PathTooLongException]::new("Message de test")
             $exception.Message | Should -Be "Message de test"
         }
         
-        It "Exemple 1: Devrait créer un chemin trop long" {
+        It "Exemple 1: Devrait crÃ©er un chemin trop long" {
             function Create-LongPath {
                 param (
                     [int]$Length = 300
                 )
                 
-                # Créer un chemin de base dans le répertoire temporaire
+                # CrÃ©er un chemin de base dans le rÃ©pertoire temporaire
                 $basePath = [System.IO.Path]::GetTempPath()
                 
-                # Calculer la longueur nécessaire pour le nom de fichier
+                # Calculer la longueur nÃ©cessaire pour le nom de fichier
                 $baseLength = $basePath.Length
-                $fileNameLength = $Length - $baseLength - 1  # -1 pour le séparateur
+                $fileNameLength = $Length - $baseLength - 1  # -1 pour le sÃ©parateur
                 
-                # Créer un nom de fichier de la longueur requise
+                # CrÃ©er un nom de fichier de la longueur requise
                 $fileName = "A" * $fileNameLength + ".txt"
                 
                 # Construire le chemin complet
@@ -58,7 +58,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                 }
             }
             
-            # Créer un chemin qui dépasse la limite standard de Windows (260 caractères)
+            # CrÃ©er un chemin qui dÃ©passe la limite standard de Windows (260 caractÃ¨res)
             $result = Create-LongPath -Length 300
             
             $result.Length | Should -Be 300
@@ -66,14 +66,14 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
             $result.FileNameLength | Should -BeGreaterThan 0
         }
         
-        It "Exemple 2: Devrait gérer la tentative d'accès à un fichier avec un chemin trop long" {
+        It "Exemple 2: Devrait gÃ©rer la tentative d'accÃ¨s Ã  un fichier avec un chemin trop long" {
             function Access-LongPath {
                 param (
                     [string]$FilePath
                 )
                 
                 try {
-                    # Tenter de créer le fichier
+                    # Tenter de crÃ©er le fichier
                     [System.IO.File]::WriteAllText($FilePath, "Test content")
                     return "Success"
                 } catch [System.IO.PathTooLongException] {
@@ -83,13 +83,13 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                 }
             }
             
-            # Créer un chemin trop long
+            # CrÃ©er un chemin trop long
             $basePath = [System.IO.Path]::GetTempPath()
             $fileName = "A" * 260 + ".txt"  # Garantit un chemin trop long
             $longPath = [System.IO.Path]::Combine($basePath, $fileName)
             
-            # Le test peut échouer si le chemin temporaire est très court
-            # ou si le système supporte les chemins longs
+            # Le test peut Ã©chouer si le chemin temporaire est trÃ¨s court
+            # ou si le systÃ¨me supporte les chemins longs
             $result = Access-LongPath -FilePath $longPath
             $result | Should -BeIn @("PathTooLong", "OtherError")
         }
@@ -101,7 +101,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                     [int]$MaxLength = 259
                 )
                 
-                # Si le chemin est déjà assez court, le retourner tel quel
+                # Si le chemin est dÃ©jÃ  assez court, le retourner tel quel
                 if ($LongPath.Length -le $MaxLength) {
                     return @{
                         Path = $LongPath
@@ -109,14 +109,14 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                     }
                 }
                 
-                # Décomposer le chemin
+                # DÃ©composer le chemin
                 $directory = [System.IO.Path]::GetDirectoryName($LongPath)
                 $fileName = [System.IO.Path]::GetFileName($LongPath)
                 $extension = [System.IO.Path]::GetExtension($LongPath)
                 $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($LongPath)
                 
                 # Calculer la longueur maximale pour le nom de fichier
-                $maxFileNameLength = $MaxLength - $directory.Length - $extension.Length - 1  # -1 pour le séparateur
+                $maxFileNameLength = $MaxLength - $directory.Length - $extension.Length - 1  # -1 pour le sÃ©parateur
                 
                 # Si le nom de fichier est trop long, le tronquer
                 if ($fileNameWithoutExt.Length > $maxFileNameLength) {
@@ -131,7 +131,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                     }
                 }
                 
-                # Si le problème n'est pas le nom de fichier, retourner le chemin original
+                # Si le problÃ¨me n'est pas le nom de fichier, retourner le chemin original
                 return @{
                     Path = $LongPath
                     Shortened = $false
@@ -139,7 +139,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                 }
             }
             
-            # Créer un chemin avec un nom de fichier très long
+            # CrÃ©er un chemin avec un nom de fichier trÃ¨s long
             $basePath = [System.IO.Path]::GetTempPath()
             $fileName = "A" * 260 + ".txt"
             $longPath = [System.IO.Path]::Combine($basePath, $fileName)
@@ -152,7 +152,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
         }
     }
     
-    Context "Prévention des PathTooLongException" {
+    Context "PrÃ©vention des PathTooLongException" {
         It "Technique 1: Devrait valider la longueur du chemin" {
             function Validate-PathLength {
                 param (
@@ -195,7 +195,7 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                 }
             }
             
-            # Créer un scénario où le chemin relatif est plus court
+            # CrÃ©er un scÃ©nario oÃ¹ le chemin relatif est plus court
             $basePath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "BaseDir")
             $targetPath = [System.IO.Path]::Combine($basePath, "SubDir", "test.txt")
             
@@ -205,23 +205,23 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
             $result.RelativePath | Should -Be "SubDir\test.txt"
         }
         
-        It "Technique 4: Devrait utiliser le préfixe \\?\ sous Windows" {
+        It "Technique 4: Devrait utiliser le prÃ©fixe \\?\ sous Windows" {
             function Use-ExtendedLengthPath {
                 param (
                     [string]$Path
                 )
                 
-                # Vérifier si le chemin est déjà préfixé
+                # VÃ©rifier si le chemin est dÃ©jÃ  prÃ©fixÃ©
                 if ($Path.StartsWith("\\?\")) {
                     return $Path
                 }
                 
-                # Convertir en chemin absolu si ce n'est pas déjà le cas
+                # Convertir en chemin absolu si ce n'est pas dÃ©jÃ  le cas
                 if (-not [System.IO.Path]::IsPathRooted($Path)) {
                     $Path = [System.IO.Path]::GetFullPath($Path)
                 }
                 
-                # Ajouter le préfixe
+                # Ajouter le prÃ©fixe
                 $extendedPath = "\\?\" + $Path
                 
                 return $extendedPath
@@ -232,15 +232,15 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
             $extendedPath = Use-ExtendedLengthPath -Path $path
             $extendedPath | Should -Be "\\?\C:\Windows\System32\notepad.exe"
             
-            # Test avec un chemin déjà préfixé
+            # Test avec un chemin dÃ©jÃ  prÃ©fixÃ©
             $prefixedPath = "\\?\C:\Windows\System32\notepad.exe"
             $result = Use-ExtendedLengthPath -Path $prefixedPath
             $result | Should -Be $prefixedPath
         }
     }
     
-    Context "Débogage des PathTooLongException" {
-        It "Devrait fournir des informations de débogage utiles" {
+    Context "DÃ©bogage des PathTooLongException" {
+        It "Devrait fournir des informations de dÃ©bogage utiles" {
             function Debug-PathTooLongException {
                 param (
                     [string]$Path
@@ -265,13 +265,13 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
                     $result.LongComponents = $longComponents
                 }
                 
-                # Vérifier si le préfixe \\?\ pourrait aider
+                # VÃ©rifier si le prÃ©fixe \\?\ pourrait aider
                 $result.CouldUseLongPathPrefix = (-not $Path.StartsWith("\\?\") -and $Path.Length -gt 259 -and $Path.Length -lt 32767)
                 
                 return $result
             }
             
-            # Créer un chemin avec des composants longs
+            # CrÃ©er un chemin avec des composants longs
             $longComponent = "VeryLongDirectoryNameForTesting" * 2
             $path = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), $longComponent, "test.txt")
             
@@ -286,5 +286,5 @@ Describe "Tests de la documentation de PathTooLongException et ses limites" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte automatiquement l'encodage d'un fichier.
+    DÃ©tecte automatiquement l'encodage d'un fichier.
 
 .DESCRIPTION
-    Ce script analyse un fichier pour déterminer son encodage (UTF-8, UTF-8 avec BOM, ASCII, etc.).
-    Il utilise plusieurs méthodes pour détecter l'encodage avec précision.
+    Ce script analyse un fichier pour dÃ©terminer son encodage (UTF-8, UTF-8 avec BOM, ASCII, etc.).
+    Il utilise plusieurs mÃ©thodes pour dÃ©tecter l'encodage avec prÃ©cision.
 
 .PARAMETER FilePath
-    Chemin du fichier à analyser.
+    Chemin du fichier Ã  analyser.
 
 .EXAMPLE
     .\EncodingDetector.ps1 -FilePath "C:\path\to\file.ps1"
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
@@ -43,10 +43,10 @@ function Get-FileEncoding {
     )
     
     try {
-        # Lire les premiers octets du fichier pour détecter les BOM (Byte Order Mark)
+        # Lire les premiers octets du fichier pour dÃ©tecter les BOM (Byte Order Mark)
         $bytes = [System.IO.File]::ReadAllBytes($Path)
         
-        # Vérifier les différents BOM
+        # VÃ©rifier les diffÃ©rents BOM
         if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
             return @{
                 Encoding = "UTF-8 with BOM"
@@ -85,8 +85,8 @@ function Get-FileEncoding {
             }
         }
         
-        # Si aucun BOM n'est détecté, essayer de déterminer l'encodage par analyse du contenu
-        # Vérifier si le fichier contient des caractères nuls (indicateur de UTF-16/UTF-32)
+        # Si aucun BOM n'est dÃ©tectÃ©, essayer de dÃ©terminer l'encodage par analyse du contenu
+        # VÃ©rifier si le fichier contient des caractÃ¨res nuls (indicateur de UTF-16/UTF-32)
         $containsNulls = $false
         for ($i = 0; $i -lt [Math]::Min($bytes.Length, 1000); $i++) {
             if ($bytes[$i] -eq 0) {
@@ -96,7 +96,7 @@ function Get-FileEncoding {
         }
         
         if ($containsNulls) {
-            # Vérifier le modèle des octets nuls pour distinguer UTF-16 et UTF-32
+            # VÃ©rifier le modÃ¨le des octets nuls pour distinguer UTF-16 et UTF-32
             $pattern = 0
             for ($i = 0; $i -lt [Math]::Min($bytes.Length, 100); $i += 2) {
                 if ($i + 1 -lt $bytes.Length -and $bytes[$i] -eq 0 -and $bytes[$i + 1] -ne 0) {
@@ -125,17 +125,17 @@ function Get-FileEncoding {
             }
         }
         
-        # Vérifier si le fichier est valide en UTF-8
+        # VÃ©rifier si le fichier est valide en UTF-8
         $isValidUtf8 = $true
         $i = 0
         while ($i -lt $bytes.Length) {
-            # Vérifier les séquences UTF-8 valides
+            # VÃ©rifier les sÃ©quences UTF-8 valides
             if ($bytes[$i] -lt 0x80) {
-                # Caractère ASCII (0xxxxxxx)
+                # CaractÃ¨re ASCII (0xxxxxxx)
                 $i++
             }
             elseif ($bytes[$i] -ge 0xC0 -and $bytes[$i] -le 0xDF) {
-                # Séquence de 2 octets (110xxxxx 10xxxxxx)
+                # SÃ©quence de 2 octets (110xxxxx 10xxxxxx)
                 if ($i + 1 -ge $bytes.Length -or ($bytes[$i + 1] -lt 0x80 -or $bytes[$i + 1] -gt 0xBF)) {
                     $isValidUtf8 = $false
                     break
@@ -143,7 +143,7 @@ function Get-FileEncoding {
                 $i += 2
             }
             elseif ($bytes[$i] -ge 0xE0 -and $bytes[$i] -le 0xEF) {
-                # Séquence de 3 octets (1110xxxx 10xxxxxx 10xxxxxx)
+                # SÃ©quence de 3 octets (1110xxxx 10xxxxxx 10xxxxxx)
                 if ($i + 2 -ge $bytes.Length -or 
                     ($bytes[$i + 1] -lt 0x80 -or $bytes[$i + 1] -gt 0xBF) -or 
                     ($bytes[$i + 2] -lt 0x80 -or $bytes[$i + 2] -gt 0xBF)) {
@@ -153,7 +153,7 @@ function Get-FileEncoding {
                 $i += 3
             }
             elseif ($bytes[$i] -ge 0xF0 -and $bytes[$i] -le 0xF7) {
-                # Séquence de 4 octets (11110xxx 10xxxxxx 10xxxxxx 10xxxxxx)
+                # SÃ©quence de 4 octets (11110xxx 10xxxxxx 10xxxxxx 10xxxxxx)
                 if ($i + 3 -ge $bytes.Length -or 
                     ($bytes[$i + 1] -lt 0x80 -or $bytes[$i + 1] -gt 0xBF) -or 
                     ($bytes[$i + 2] -lt 0x80 -or $bytes[$i + 2] -gt 0xBF) -or 
@@ -164,7 +164,7 @@ function Get-FileEncoding {
                 $i += 4
             }
             else {
-                # Séquence invalide
+                # SÃ©quence invalide
                 $isValidUtf8 = $false
                 break
             }
@@ -179,7 +179,7 @@ function Get-FileEncoding {
         }
         
         # Si ce n'est pas UTF-8 valide, supposer que c'est ASCII ou une autre encodage 8 bits
-        # Vérifier si tous les octets sont dans la plage ASCII
+        # VÃ©rifier si tous les octets sont dans la plage ASCII
         $isAscii = $true
         foreach ($byte in $bytes) {
             if ($byte -gt 127) {
@@ -204,7 +204,7 @@ function Get-FileEncoding {
         }
     }
     catch {
-        Write-Error "Erreur lors de la détection de l'encodage: $_"
+        Write-Error "Erreur lors de la dÃ©tection de l'encodage: $_"
         return $null
     }
 }
@@ -217,7 +217,7 @@ function Test-EncodingForSpecialCharacters {
     
     try {
         $content = [System.IO.File]::ReadAllText($Path, $Encoding)
-        $specialChars = [regex]::Matches($content, '[àáâäæãåāèéêëēėęîïíīįìôöòóœøōõûüùúū]')
+        $specialChars = [regex]::Matches($content, '[Ã Ã¡Ã¢Ã¤Ã¦Ã£Ã¥ÄÃ¨Ã©ÃªÃ«Ä“Ä—Ä™Ã®Ã¯Ã­Ä«Ä¯Ã¬Ã´Ã¶Ã²Ã³Å“Ã¸ÅÃµÃ»Ã¼Ã¹ÃºÅ«]')
         
         return @{
             SpecialCharCount = $specialChars.Count
@@ -226,7 +226,7 @@ function Test-EncodingForSpecialCharacters {
         }
     }
     catch {
-        Write-Warning "Erreur lors de la vérification des caractères spéciaux avec l'encodage $($Encoding.WebName): $_"
+        Write-Warning "Erreur lors de la vÃ©rification des caractÃ¨res spÃ©ciaux avec l'encodage $($Encoding.WebName): $_"
         return @{
             SpecialCharCount = 0
             HasSpecialChars = $false
@@ -269,10 +269,10 @@ function Get-FileEncodingInfo {
     return $result
 }
 
-# Exécution principale
+# ExÃ©cution principale
 $result = Get-FileEncodingInfo -Path $FilePath
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 $result | Format-List
 
 # Retourner l'objet pour une utilisation dans d'autres scripts

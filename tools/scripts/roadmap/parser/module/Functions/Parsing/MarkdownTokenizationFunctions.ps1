@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions pour la tokenization de fichiers markdown.
 
 .DESCRIPTION
     Ce module contient des fonctions pour tokenizer et analyser des fichiers markdown,
-    avec une attention particulière pour les roadmaps et les listes de tâches.
+    avec une attention particuliÃ¨re pour les roadmaps et les listes de tÃ¢ches.
 
 .NOTES
     Version:        1.0
@@ -12,27 +12,27 @@
     Creation Date:  2023-08-18
 #>
 
-#region Types de tokens et énumérations
+#region Types de tokens et Ã©numÃ©rations
 
 <#
 .SYNOPSIS
-    Énumération des types de tokens markdown.
+    Ã‰numÃ©ration des types de tokens markdown.
 
 .DESCRIPTION
-    Cette énumération définit les différents types de tokens qui peuvent être
+    Cette Ã©numÃ©ration dÃ©finit les diffÃ©rents types de tokens qui peuvent Ãªtre
     reconnus dans un document markdown.
 #>
 enum MarkdownTokenType {
-    # Éléments de structure
+    # Ã‰lÃ©ments de structure
     Header              # Titre (# Titre)
     Paragraph           # Paragraphe de texte
     BlankLine           # Ligne vide
     HorizontalRule      # Ligne horizontale (---, ***, ___)
 
-    # Listes et tâches
-    UnorderedListItem   # Élément de liste non ordonnée (-, *, +)
-    OrderedListItem     # Élément de liste ordonnée (1., 2., etc.)
-    TaskItem            # Élément de tâche (- [ ] Tâche)
+    # Listes et tÃ¢ches
+    UnorderedListItem   # Ã‰lÃ©ment de liste non ordonnÃ©e (-, *, +)
+    OrderedListItem     # Ã‰lÃ©ment de liste ordonnÃ©e (1., 2., etc.)
+    TaskItem            # Ã‰lÃ©ment de tÃ¢che (- [ ] TÃ¢che)
 
     # Formatage de texte
     Bold                # Texte en gras (**texte** ou __texte__)
@@ -40,18 +40,18 @@ enum MarkdownTokenType {
     Code                # Code inline (`code`)
     CodeBlock           # Bloc de code (```code```)
 
-    # Liens et références
+    # Liens et rÃ©fÃ©rences
     Link                # Lien ([texte](url))
     Image               # Image (![alt](url))
-    Reference           # Référence ([texte][ref])
+    Reference           # RÃ©fÃ©rence ([texte][ref])
 
-    # Éléments spécifiques aux roadmaps
-    TaskId              # Identifiant de tâche (1.2.3, **1.2.3**, etc.)
-    TaskStatus          # Statut de tâche ([ ], [x], etc.)
-    TaskAssignment      # Assignation de tâche (@personne)
-    TaskTag             # Tag de tâche (#tag)
-    TaskPriority        # Priorité de tâche (!priorité)
-    TaskDate            # Date de tâche (date:2023-08-18)
+    # Ã‰lÃ©ments spÃ©cifiques aux roadmaps
+    TaskId              # Identifiant de tÃ¢che (1.2.3, **1.2.3**, etc.)
+    TaskStatus          # Statut de tÃ¢che ([ ], [x], etc.)
+    TaskAssignment      # Assignation de tÃ¢che (@personne)
+    TaskTag             # Tag de tÃ¢che (#tag)
+    TaskPriority        # PrioritÃ© de tÃ¢che (!prioritÃ©)
+    TaskDate            # Date de tÃ¢che (date:2023-08-18)
 
     # Autres
     Comment             # Commentaire (<!-- commentaire -->)
@@ -63,23 +63,23 @@ enum MarkdownTokenType {
 
 <#
 .SYNOPSIS
-    Classe représentant un token markdown.
+    Classe reprÃ©sentant un token markdown.
 
 .DESCRIPTION
-    Cette classe définit la structure d'un token markdown, avec son type,
-    sa valeur, sa position dans le document, et d'autres propriétés utiles.
+    Cette classe dÃ©finit la structure d'un token markdown, avec son type,
+    sa valeur, sa position dans le document, et d'autres propriÃ©tÃ©s utiles.
 #>
 class MarkdownToken {
     [MarkdownTokenType]$Type        # Type de token
     [string]$Value                  # Valeur textuelle du token
-    [int]$LineNumber                # Numéro de ligne dans le document
-    [int]$StartPosition             # Position de début dans la ligne
+    [int]$LineNumber                # NumÃ©ro de ligne dans le document
+    [int]$StartPosition             # Position de dÃ©but dans la ligne
     [int]$EndPosition               # Position de fin dans la ligne
     [int]$IndentationLevel          # Niveau d'indentation
-    [MarkdownToken[]]$Children      # Tokens enfants (pour les tokens imbriqués)
-    [hashtable]$Metadata            # Métadonnées supplémentaires
+    [MarkdownToken[]]$Children      # Tokens enfants (pour les tokens imbriquÃ©s)
+    [hashtable]$Metadata            # MÃ©tadonnÃ©es supplÃ©mentaires
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     MarkdownToken() {
         $this.Type = [MarkdownTokenType]::Unknown
         $this.Value = ""
@@ -91,7 +91,7 @@ class MarkdownToken {
         $this.Metadata = @{}
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     MarkdownToken([MarkdownTokenType]$type, [string]$value, [int]$lineNumber, [int]$startPosition, [int]$endPosition) {
         $this.Type = $type
         $this.Value = $value
@@ -115,17 +115,17 @@ class MarkdownToken {
         $this.Metadata = @{}
     }
 
-    # Méthode pour ajouter un token enfant
+    # MÃ©thode pour ajouter un token enfant
     [void] AddChild([MarkdownToken]$child) {
         $this.Children += $child
     }
 
-    # Méthode pour ajouter une métadonnée
+    # MÃ©thode pour ajouter une mÃ©tadonnÃ©e
     [void] AddMetadata([string]$key, [object]$value) {
         $this.Metadata[$key] = $value
     }
 
-    # Méthode pour obtenir une représentation textuelle du token
+    # MÃ©thode pour obtenir une reprÃ©sentation textuelle du token
     [string] ToString() {
         return "[$($this.Type)] Line $($this.LineNumber): $($this.Value)"
     }
@@ -137,13 +137,13 @@ class MarkdownToken {
 
 <#
 .SYNOPSIS
-    Tokenize une chaîne de texte markdown.
+    Tokenize une chaÃ®ne de texte markdown.
 
 .DESCRIPTION
-    Cette fonction analyse une chaîne de texte markdown et la convertit en une liste de tokens.
+    Cette fonction analyse une chaÃ®ne de texte markdown et la convertit en une liste de tokens.
 
 .PARAMETER MarkdownText
-    Chaîne de texte markdown à analyser.
+    ChaÃ®ne de texte markdown Ã  analyser.
 
 .EXAMPLE
     $tokens = ConvertFrom-MarkdownToTokens -MarkdownText "# Titre`n`nParagraphe"
@@ -160,7 +160,7 @@ function ConvertFrom-MarkdownToTokens {
     )
 
     try {
-        # Vérifier si le texte est null ou vide
+        # VÃ©rifier si le texte est null ou vide
         if ($null -eq $MarkdownText -or [string]::IsNullOrEmpty($MarkdownText)) {
             return @()
         }
@@ -178,7 +178,7 @@ function ConvertFrom-MarkdownToTokens {
             # Tokenizer la ligne
             $lineTokens = Get-MarkdownLineTokens -Line $line -LineNumber ($lineNumber + 1)
 
-            # Ajouter les tokens de la ligne à la liste globale
+            # Ajouter les tokens de la ligne Ã  la liste globale
             $tokens += $lineTokens
         }
 
@@ -200,7 +200,7 @@ function ConvertFrom-MarkdownToTokens {
     Cette fonction lit un fichier markdown et le convertit en une liste de tokens.
 
 .PARAMETER FilePath
-    Chemin vers le fichier markdown à analyser.
+    Chemin vers le fichier markdown Ã  analyser.
 
 .EXAMPLE
     $tokens = ConvertFrom-MarkdownFileToTokens -FilePath "roadmap.md"
@@ -216,7 +216,7 @@ function ConvertFrom-MarkdownFileToTokens {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Error "Le fichier '$FilePath' n'existe pas ou n'est pas un fichier."
             return @()
@@ -248,10 +248,10 @@ function ConvertFrom-MarkdownFileToTokens {
     Cette fonction analyse une ligne de texte markdown et la convertit en une liste de tokens.
 
 .PARAMETER Line
-    Ligne de texte markdown à analyser.
+    Ligne de texte markdown Ã  analyser.
 
 .PARAMETER LineNumber
-    Numéro de la ligne dans le document.
+    NumÃ©ro de la ligne dans le document.
 
 .EXAMPLE
     $lineTokens = Get-MarkdownLineTokens -Line "# Titre" -LineNumber 1
@@ -273,7 +273,7 @@ function Get-MarkdownLineTokens {
         # Initialiser la liste des tokens
         $tokens = @()
 
-        # Vérifier si la ligne est null
+        # VÃ©rifier si la ligne est null
         if ($null -eq $Line) {
             $Line = ""
         }
@@ -305,12 +305,12 @@ function Get-MarkdownLineTokens {
             return $tokens
         }
 
-        # Élément de liste non ordonnée
+        # Ã‰lÃ©ment de liste non ordonnÃ©e
         if ($Line -match '^\s*(-|\*|\+)\s+(.+)$') {
             $marker = $matches[1]
             $content = $matches[2].Trim()
 
-            # Vérifier s'il s'agit d'une tâche
+            # VÃ©rifier s'il s'agit d'une tÃ¢che
             if ($content -match '^\[([ xX])\]\s+(.+)$') {
                 $status = $matches[1]
                 $taskContent = $matches[2].Trim()
@@ -319,7 +319,7 @@ function Get-MarkdownLineTokens {
                 $token.AddMetadata("Status", $status)
                 $token.AddMetadata("Marker", $marker)
 
-                # Extraire l'identifiant de tâche s'il existe
+                # Extraire l'identifiant de tÃ¢che s'il existe
                 if ($taskContent -match '^(\*\*[0-9.]+\*\*|\([0-9.]+\)|[0-9.]+)\s+(.+)$') {
                     $taskId = $matches[1].Trim('*', '(', ')')
                     $taskDescription = $matches[2].Trim()
@@ -327,7 +327,7 @@ function Get-MarkdownLineTokens {
                     $token.Value = $taskDescription
                     $token.AddMetadata("TaskId", $taskId)
 
-                    # Ajouter un token spécifique pour l'identifiant
+                    # Ajouter un token spÃ©cifique pour l'identifiant
                     $idToken = [MarkdownToken]::new([MarkdownTokenType]::TaskId, $taskId, $LineNumber, 0, $matches[1].Length, $indentationLevel)
                     $token.AddChild($idToken)
                 }
@@ -339,7 +339,7 @@ function Get-MarkdownLineTokens {
                         $assignment = $match.Groups[1].Value
                         $assignments += $assignment
 
-                        # Ajouter un token spécifique pour l'assignation
+                        # Ajouter un token spÃ©cifique pour l'assignation
                         $assignmentToken = [MarkdownToken]::new([MarkdownTokenType]::TaskAssignment, $assignment, $LineNumber, $match.Index, $match.Index + $match.Length, $indentationLevel)
                         $token.AddChild($assignmentToken)
                     }
@@ -354,7 +354,7 @@ function Get-MarkdownLineTokens {
                         $tag = $match.Groups[1].Value
                         $tags += $tag
 
-                        # Ajouter un token spécifique pour le tag
+                        # Ajouter un token spÃ©cifique pour le tag
                         $tagToken = [MarkdownToken]::new([MarkdownTokenType]::TaskTag, $tag, $LineNumber, $match.Index, $match.Index + $match.Length, $indentationLevel)
                         $token.AddChild($tagToken)
                     }
@@ -364,7 +364,7 @@ function Get-MarkdownLineTokens {
 
                 $tokens += $token
             } else {
-                # Liste non ordonnée standard
+                # Liste non ordonnÃ©e standard
                 $token = [MarkdownToken]::new([MarkdownTokenType]::UnorderedListItem, $content, $LineNumber, 0, $Line.Length, $indentationLevel)
                 $token.AddMetadata("Marker", $marker)
                 $tokens += $token
@@ -373,7 +373,7 @@ function Get-MarkdownLineTokens {
             return $tokens
         }
 
-        # Élément de liste ordonnée
+        # Ã‰lÃ©ment de liste ordonnÃ©e
         if ($Line -match '^\s*([0-9]+\.)\s+(.+)$') {
             $marker = $matches[1]
             $content = $matches[2].Trim()
@@ -432,7 +432,7 @@ function Get-MarkdownLineTokens {
             return $tokens
         }
 
-        # Si aucun des patterns précédents ne correspond, considérer comme un paragraphe
+        # Si aucun des patterns prÃ©cÃ©dents ne correspond, considÃ©rer comme un paragraphe
         $token = [MarkdownToken]::new([MarkdownTokenType]::Paragraph, $Line.Trim(), $LineNumber, 0, $Line.Length, $indentationLevel)
         $tokens += $token
 
@@ -449,10 +449,10 @@ function Get-MarkdownLineTokens {
 
 .DESCRIPTION
     Cette fonction calcule le niveau d'indentation d'une ligne en comptant
-    les espaces et les tabulations au début de la ligne.
+    les espaces et les tabulations au dÃ©but de la ligne.
 
 .PARAMETER Line
-    Ligne de texte à analyser.
+    Ligne de texte Ã  analyser.
 
 .EXAMPLE
     $indentationLevel = Get-IndentationLevel -Line "    - Item"
@@ -474,7 +474,7 @@ function Get-IndentationLevel {
             return 0
         }
 
-        # Compter les espaces et les tabulations au début de la ligne
+        # Compter les espaces et les tabulations au dÃ©but de la ligne
         $match = [regex]::Match($Line, '^\s+')
 
         if ($match.Success) {
@@ -501,11 +501,11 @@ function Get-IndentationLevel {
     Construit l'arbre des tokens markdown.
 
 .DESCRIPTION
-    Cette fonction construit l'arbre des tokens markdown en gérant les imbrications
-    basées sur les niveaux d'indentation.
+    Cette fonction construit l'arbre des tokens markdown en gÃ©rant les imbrications
+    basÃ©es sur les niveaux d'indentation.
 
 .PARAMETER Tokens
-    Liste des tokens à organiser en arbre.
+    Liste des tokens Ã  organiser en arbre.
 
 .EXAMPLE
     $tokenTree = Build-MarkdownTokenTree -Tokens $tokens
@@ -536,28 +536,28 @@ function Build-MarkdownTokenTree {
         for ($i = 0; $i -lt $Tokens.Count; $i++) {
             $token = $Tokens[$i]
 
-            # Si la pile est vide, ajouter le token à la liste des racines
+            # Si la pile est vide, ajouter le token Ã  la liste des racines
             if ($parentStack.Count -eq 0) {
                 $rootTokens += $token
                 $parentStack.Push($token)
                 continue
             }
 
-            # Récupérer le token parent actuel
+            # RÃ©cupÃ©rer le token parent actuel
             $parent = $parentStack.Peek()
 
-            # Si le token courant a un niveau d'indentation supérieur au parent,
+            # Si le token courant a un niveau d'indentation supÃ©rieur au parent,
             # l'ajouter comme enfant du parent
             if ($token.IndentationLevel -gt $parent.IndentationLevel) {
                 $parent.AddChild($token)
                 $parentStack.Push($token)
             }
-            # Si le token courant a le même niveau d'indentation que le parent,
-            # remonter d'un niveau dans la pile et ajouter le token comme frère du parent
+            # Si le token courant a le mÃªme niveau d'indentation que le parent,
+            # remonter d'un niveau dans la pile et ajouter le token comme frÃ¨re du parent
             elseif ($token.IndentationLevel -eq $parent.IndentationLevel) {
                 $parentStack.Pop() | Out-Null
 
-                # Si la pile est vide, ajouter le token à la liste des racines
+                # Si la pile est vide, ajouter le token Ã  la liste des racines
                 if ($parentStack.Count -eq 0) {
                     $rootTokens += $token
                 } else {
@@ -568,24 +568,24 @@ function Build-MarkdownTokenTree {
 
                 $parentStack.Push($token)
             }
-            # Si le token courant a un niveau d'indentation inférieur au parent,
-            # remonter dans la pile jusqu'à trouver un parent de niveau inférieur ou égal
+            # Si le token courant a un niveau d'indentation infÃ©rieur au parent,
+            # remonter dans la pile jusqu'Ã  trouver un parent de niveau infÃ©rieur ou Ã©gal
             else {
                 while ($parentStack.Count -gt 0 -and $token.IndentationLevel -lt $parentStack.Peek().IndentationLevel) {
                     $parentStack.Pop() | Out-Null
                 }
 
-                # Si la pile est vide, ajouter le token à la liste des racines
+                # Si la pile est vide, ajouter le token Ã  la liste des racines
                 if ($parentStack.Count -eq 0) {
                     $rootTokens += $token
                 } else {
-                    # Sinon, vérifier si le nouveau parent a le même niveau d'indentation
+                    # Sinon, vÃ©rifier si le nouveau parent a le mÃªme niveau d'indentation
                     $newParent = $parentStack.Peek()
 
                     if ($token.IndentationLevel -eq $newParent.IndentationLevel) {
                         $parentStack.Pop() | Out-Null
 
-                        # Si la pile est vide, ajouter le token à la liste des racines
+                        # Si la pile est vide, ajouter le token Ã  la liste des racines
                         if ($parentStack.Count -eq 0) {
                             $rootTokens += $token
                         } else {
@@ -615,11 +615,11 @@ function Build-MarkdownTokenTree {
     Valide un arbre de tokens markdown.
 
 .DESCRIPTION
-    Cette fonction valide un arbre de tokens markdown en vérifiant la cohérence
+    Cette fonction valide un arbre de tokens markdown en vÃ©rifiant la cohÃ©rence
     des imbrications et des relations parent-enfant.
 
 .PARAMETER Tokens
-    Arbre de tokens à valider.
+    Arbre de tokens Ã  valider.
 
 .EXAMPLE
     $validationResult = Test-MarkdownTokenTree -Tokens $tokenTree
@@ -635,45 +635,45 @@ function Test-MarkdownTokenTree {
     )
 
     try {
-        # Initialiser le résultat de validation
+        # Initialiser le rÃ©sultat de validation
         $validationResult = [PSCustomObject]@{
             IsValid  = $true
             Errors   = @()
             Warnings = @()
         }
 
-        # Si la liste des tokens est null ou vide, retourner un résultat valide
+        # Si la liste des tokens est null ou vide, retourner un rÃ©sultat valide
         if ($null -eq $Tokens -or $Tokens.Count -eq 0) {
             return $validationResult
         }
 
-        # Fonction récursive pour valider un token et ses enfants
+        # Fonction rÃ©cursive pour valider un token et ses enfants
         function Test-Token {
             param(
                 [MarkdownToken]$Token,
                 [ref]$ValidationResult
             )
 
-            # Vérifier si le token est valide
+            # VÃ©rifier si le token est valide
             if ($null -eq $Token) {
                 $ValidationResult.Value.IsValid = $false
-                $ValidationResult.Value.Errors += "Token null détecté."
+                $ValidationResult.Value.Errors += "Token null dÃ©tectÃ©."
                 return
             }
 
-            # Vérifier si le type de token est valide
+            # VÃ©rifier si le type de token est valide
             if ($Token.Type -eq [MarkdownTokenType]::Unknown) {
-                $ValidationResult.Value.Warnings += "Token de type inconnu à la ligne $($Token.LineNumber): $($Token.Value)"
+                $ValidationResult.Value.Warnings += "Token de type inconnu Ã  la ligne $($Token.LineNumber): $($Token.Value)"
             }
 
-            # Vérifier la cohérence des enfants
+            # VÃ©rifier la cohÃ©rence des enfants
             foreach ($child in $Token.Children) {
-                # Vérifier si le niveau d'indentation de l'enfant est supérieur à celui du parent
+                # VÃ©rifier si le niveau d'indentation de l'enfant est supÃ©rieur Ã  celui du parent
                 if ($child.IndentationLevel -le $Token.IndentationLevel) {
-                    $ValidationResult.Value.Warnings += "Niveau d'indentation incohérent: l'enfant à la ligne $($child.LineNumber) a un niveau d'indentation inférieur ou égal à son parent à la ligne $($Token.LineNumber)."
+                    $ValidationResult.Value.Warnings += "Niveau d'indentation incohÃ©rent: l'enfant Ã  la ligne $($child.LineNumber) a un niveau d'indentation infÃ©rieur ou Ã©gal Ã  son parent Ã  la ligne $($Token.LineNumber)."
                 }
 
-                # Valider récursivement l'enfant
+                # Valider rÃ©cursivement l'enfant
                 Test-Token -Token $child -ValidationResult $ValidationResult
             }
         }

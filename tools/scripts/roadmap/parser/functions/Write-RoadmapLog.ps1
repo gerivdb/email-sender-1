@@ -1,47 +1,47 @@
-<#
+﻿<#
 .SYNOPSIS
-    Écrit un message de journal pour le module RoadmapParser.
+    Ã‰crit un message de journal pour le module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Write-RoadmapLog écrit un message de journal pour le module RoadmapParser.
-    Elle prend en charge différents niveaux de journalisation et peut écrire dans un fichier,
+    La fonction Write-RoadmapLog Ã©crit un message de journal pour le module RoadmapParser.
+    Elle prend en charge diffÃ©rents niveaux de journalisation et peut Ã©crire dans un fichier,
     dans la console, ou les deux.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER Level
     Le niveau de journalisation. Valeurs possibles : Debug, Info, Warning, Error, Fatal.
-    Par défaut : Info.
+    Par dÃ©faut : Info.
 
 .PARAMETER Category
-    La catégorie du message. Permet de regrouper les messages par catégorie.
-    Par défaut : General.
+    La catÃ©gorie du message. Permet de regrouper les messages par catÃ©gorie.
+    Par dÃ©faut : General.
 
 .PARAMETER Exception
-    L'exception associée au message, le cas échéant.
+    L'exception associÃ©e au message, le cas Ã©chÃ©ant.
 
 .PARAMETER FilePath
-    Le chemin du fichier de journal. Si non spécifié, le journal sera écrit uniquement dans la console.
+    Le chemin du fichier de journal. Si non spÃ©cifiÃ©, le journal sera Ã©crit uniquement dans la console.
 
 .PARAMETER NoConsole
-    Indique si le message ne doit pas être affiché dans la console.
+    Indique si le message ne doit pas Ãªtre affichÃ© dans la console.
 
 .PARAMETER AdditionalInfo
-    Informations supplémentaires à inclure dans le message de journal.
+    Informations supplÃ©mentaires Ã  inclure dans le message de journal.
 
 .EXAMPLE
     Write-RoadmapLog -Message "Traitement du fichier roadmap.md" -Level Info -Category "Parsing"
-    Écrit un message d'information dans la console.
+    Ã‰crit un message d'information dans la console.
 
 .EXAMPLE
     Write-RoadmapLog -Message "Erreur lors de l'ouverture du fichier" -Level Error -Category "IO" -Exception $_ -FilePath ".\logs\roadmap-parser.log"
-    Écrit un message d'erreur dans la console et dans un fichier, avec les détails de l'exception.
+    Ã‰crit un message d'erreur dans la console et dans un fichier, avec les dÃ©tails de l'exception.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-15
+    Date de crÃ©ation: 2023-07-15
 #>
 function Write-RoadmapLog {
     [CmdletBinding()]
@@ -69,11 +69,11 @@ function Write-RoadmapLog {
         [System.Collections.Hashtable]$AdditionalInfo
     )
 
-    # Créer le message de journal formaté
+    # CrÃ©er le message de journal formatÃ©
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] [$Category] $Message"
 
-    # Ajouter les informations supplémentaires
+    # Ajouter les informations supplÃ©mentaires
     if ($AdditionalInfo -and $AdditionalInfo.Count -gt 0) {
         $logMessage += "`nAdditional Information:"
         foreach ($key in $AdditionalInfo.Keys) {
@@ -81,9 +81,9 @@ function Write-RoadmapLog {
         }
     }
 
-    # Ajouter les détails de l'exception
+    # Ajouter les dÃ©tails de l'exception
     if ($Exception) {
-        # Vérifier si c'est une exception personnalisée avec une méthode GetDetailedMessage
+        # VÃ©rifier si c'est une exception personnalisÃ©e avec une mÃ©thode GetDetailedMessage
         if ($Exception.PSObject.Methods.Name -contains "GetDetailedMessage") {
             $logMessage += "`nException Details: $($Exception.GetDetailedMessage())"
         } else {
@@ -97,7 +97,7 @@ function Write-RoadmapLog {
         }
     }
 
-    # Écrire dans la console si demandé
+    # Ã‰crire dans la console si demandÃ©
     if (-not $NoConsole) {
         switch ($Level) {
             "Debug" {
@@ -118,10 +118,10 @@ function Write-RoadmapLog {
         }
     }
 
-    # Écrire dans le fichier si spécifié
+    # Ã‰crire dans le fichier si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($FilePath)) {
         try {
-            # Créer le répertoire parent si nécessaire
+            # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
             $logDir = Split-Path -Path $FilePath -Parent
             if (-not [string]::IsNullOrEmpty($logDir) -and -not (Test-Path -Path $logDir)) {
                 New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -130,7 +130,7 @@ function Write-RoadmapLog {
             # Ajouter le message au fichier
             $logMessage | Out-File -FilePath $FilePath -Append -Encoding UTF8
         } catch {
-            Write-Error "Erreur lors de l'écriture dans le fichier de journal '$FilePath': $_"
+            Write-Error "Erreur lors de l'Ã©criture dans le fichier de journal '$FilePath': $_"
         }
     }
 }

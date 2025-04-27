@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions de configuration.
 
@@ -9,10 +9,10 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-16
+    Date de crÃ©ation: 2023-08-16
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
@@ -23,11 +23,11 @@ Import-Module $moduleTestPath -Force
 
 Describe "Configuration Functions" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "RoadmapParserTests_$(Get-Random)"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier de configuration JSON de test
+        # CrÃ©er un fichier de configuration JSON de test
         $testJsonConfig = @{
             General = @{
                 LogLevel     = "INFO"
@@ -54,7 +54,7 @@ Describe "Configuration Functions" {
         $testJsonFile = Join-Path -Path $testDir -ChildPath "config.json"
         $testJsonConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testJsonFile -Encoding UTF8
 
-        # Créer une configuration incomplète pour les tests
+        # CrÃ©er une configuration incomplÃ¨te pour les tests
         $testIncompleteConfig = @{
             General = @{
                 LogLevel = "INFO"
@@ -69,7 +69,7 @@ Describe "Configuration Functions" {
     }
 
     AfterAll {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }
@@ -220,7 +220,7 @@ Describe "Configuration Functions" {
         It "Should validate a complete configuration" {
             $config = Get-Configuration -ConfigFile $testJsonFile
 
-            # Créer des règles de validation personnalisées pour ce test
+            # CrÃ©er des rÃ¨gles de validation personnalisÃ©es pour ce test
             $customRules = @{
                 "General"          = @{
                     Type     = "Hashtable"

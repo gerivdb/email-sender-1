@@ -1,24 +1,24 @@
-# Add-InactiveAccountsRule.ps1
-# Ajoute une règle pour détecter les comptes inactifs
+﻿# Add-InactiveAccountsRule.ps1
+# Ajoute une rÃ¨gle pour dÃ©tecter les comptes inactifs
 
-# Chemin du script d'ajout de règle
+# Chemin du script d'ajout de rÃ¨gle
 $addRuleScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\scripts\Add-SqlPermissionRule.ps1"
 
-# Chemin de la fonction de vérification
+# Chemin de la fonction de vÃ©rification
 $checkFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "CheckFunctions\Check-InactiveAccounts.ps1"
 
-# Paramètres de la règle
+# ParamÃ¨tres de la rÃ¨gle
 $params = @{
     RuleId = "SVR-009"
     Name = "InactiveAccounts"
-    Description = "Détecte les comptes SQL qui sont inactifs ou qui n'ont jamais été utilisés"
+    Description = "DÃ©tecte les comptes SQL qui sont inactifs ou qui n'ont jamais Ã©tÃ© utilisÃ©s"
     RuleType = "Server"
     Severity = "Moyenne"
     CheckFunctionPath = $checkFunctionPath
 }
 
-# Ajouter la règle
+# Ajouter la rÃ¨gle
 & $addRuleScriptPath @params -WhatIf
 
-# Pour ajouter réellement la règle, exécutez la commande suivante :
+# Pour ajouter rÃ©ellement la rÃ¨gle, exÃ©cutez la commande suivante :
 # & $addRuleScriptPath @params

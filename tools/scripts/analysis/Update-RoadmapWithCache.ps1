@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Met à jour la roadmap avec les nouvelles fonctionnalités de cache.
+    Met Ã  jour la roadmap avec les nouvelles fonctionnalitÃ©s de cache.
 .DESCRIPTION
-    Ce script met à jour la roadmap complète avec les nouvelles fonctionnalités de cache
-    que nous avons développées pour améliorer les performances des analyses de code.
+    Ce script met Ã  jour la roadmap complÃ¨te avec les nouvelles fonctionnalitÃ©s de cache
+    que nous avons dÃ©veloppÃ©es pour amÃ©liorer les performances des analyses de code.
 .PARAMETER RoadmapPath
-    Chemin du fichier roadmap à mettre à jour.
+    Chemin du fichier roadmap Ã  mettre Ã  jour.
 .EXAMPLE
     .\Update-RoadmapWithCache.ps1 -RoadmapPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 .NOTES
@@ -19,7 +19,7 @@ param(
     [string]$RoadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 )
 
-# Vérifier que le fichier roadmap existe
+# VÃ©rifier que le fichier roadmap existe
 if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
     Write-Error "Le fichier roadmap n'existe pas: $RoadmapPath"
     exit 1
@@ -28,12 +28,12 @@ if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
 # Lire le contenu du fichier roadmap
 $roadmapContent = Get-Content -Path $RoadmapPath -Raw
 
-# Définir le motif pour trouver la section "D. Mise en cache des résultats"
-$sectionPattern = "(?s)(#### D\. Mise en cache des résultats.*?)(\n+#### [E-Z]\.|\Z)"
+# DÃ©finir le motif pour trouver la section "D. Mise en cache des rÃ©sultats"
+$sectionPattern = "(?s)(#### D\. Mise en cache des rÃ©sultats.*?)(\n+#### [E-Z]\.|\Z)"
 
-# Vérifier si la section existe
+# VÃ©rifier si la section existe
 if (-not ($roadmapContent -match $sectionPattern)) {
-    Write-Error "La section 'D. Mise en cache des résultats' n'a pas été trouvée dans le fichier roadmap."
+    Write-Error "La section 'D. Mise en cache des rÃ©sultats' n'a pas Ã©tÃ© trouvÃ©e dans le fichier roadmap."
     exit 1
 }
 
@@ -41,47 +41,47 @@ if (-not ($roadmapContent -match $sectionPattern)) {
 $existingSection = $matches[1]
 $afterSection = $matches[2]
 
-# Définir les nouvelles sous-sections à ajouter
+# DÃ©finir les nouvelles sous-sections Ã  ajouter
 $newSubsections = @"
 
-  - [x] Intégrer le cache dans les outils d'analyse de code
-    - [x] Développer `Invoke-CachedPSScriptAnalyzer.ps1` pour l'analyse avec PSScriptAnalyzer
-    - [x] Créer `Start-CachedAnalysis.ps1` comme wrapper pour l'analyse avec cache
-    - [x] Implémenter des tests de performance avec `Test-CachedPSScriptAnalyzer.ps1`
+  - [x] IntÃ©grer le cache dans les outils d'analyse de code
+    - [x] DÃ©velopper `Invoke-CachedPSScriptAnalyzer.ps1` pour l'analyse avec PSScriptAnalyzer
+    - [x] CrÃ©er `Start-CachedAnalysis.ps1` comme wrapper pour l'analyse avec cache
+    - [x] ImplÃ©menter des tests de performance avec `Test-CachedPSScriptAnalyzer.ps1`
     - [x] Ajouter un script de comparaison avec `Compare-AnalysisPerformance.ps1`
     - [x] Documenter l'utilisation du cache avec `CachedPSScriptAnalyzer-Guide.md`
   
   - [x] Optimiser les performances d'analyse avec le cache
-    - [x] Implémenter la génération de clés de cache basées sur le contenu et les paramètres
-    - [x] Ajouter la détection automatique des modifications de fichiers
-    - [x] Optimiser la sérialisation des résultats d'analyse
-    - [x] Améliorer les performances avec un taux d'accélération de 5x pour les analyses répétées
+    - [x] ImplÃ©menter la gÃ©nÃ©ration de clÃ©s de cache basÃ©es sur le contenu et les paramÃ¨tres
+    - [x] Ajouter la dÃ©tection automatique des modifications de fichiers
+    - [x] Optimiser la sÃ©rialisation des rÃ©sultats d'analyse
+    - [x] AmÃ©liorer les performances avec un taux d'accÃ©lÃ©ration de 5x pour les analyses rÃ©pÃ©tÃ©es
 "@
 
-# Vérifier si les nouvelles sous-sections sont déjà présentes
-if ($existingSection -match [regex]::Escape("Intégrer le cache dans les outils d'analyse de code")) {
-    Write-Host "Les nouvelles sous-sections sont déjà présentes dans la roadmap." -ForegroundColor Yellow
+# VÃ©rifier si les nouvelles sous-sections sont dÃ©jÃ  prÃ©sentes
+if ($existingSection -match [regex]::Escape("IntÃ©grer le cache dans les outils d'analyse de code")) {
+    Write-Host "Les nouvelles sous-sections sont dÃ©jÃ  prÃ©sentes dans la roadmap." -ForegroundColor Yellow
     exit 0
 }
 
-# Ajouter les nouvelles sous-sections à la fin de la section existante
+# Ajouter les nouvelles sous-sections Ã  la fin de la section existante
 $updatedSection = $existingSection + $newSubsections
 
-# Mettre à jour le contenu de la roadmap
+# Mettre Ã  jour le contenu de la roadmap
 $updatedRoadmapContent = $roadmapContent -replace [regex]::Escape($existingSection), $updatedSection
 
 # Sauvegarder une copie de sauvegarde du fichier roadmap original
 $backupPath = "$RoadmapPath.bak"
 Copy-Item -Path $RoadmapPath -Destination $backupPath -Force
-Write-Host "Copie de sauvegarde créée: $backupPath" -ForegroundColor Green
+Write-Host "Copie de sauvegarde crÃ©Ã©e: $backupPath" -ForegroundColor Green
 
-# Écrire le contenu mis à jour dans le fichier roadmap
+# Ã‰crire le contenu mis Ã  jour dans le fichier roadmap
 Set-Content -Path $RoadmapPath -Value $updatedRoadmapContent -Encoding UTF8
-Write-Host "Roadmap mise à jour avec succès: $RoadmapPath" -ForegroundColor Green
+Write-Host "Roadmap mise Ã  jour avec succÃ¨s: $RoadmapPath" -ForegroundColor Green
 
-# Afficher un résumé des modifications
-Write-Host "`nRésumé des modifications:" -ForegroundColor Cyan
-Write-Host "- Ajout de 2 nouvelles sous-sections à la section 'D. Mise en cache des résultats'" -ForegroundColor White
-Write-Host "- Ajout de 9 nouvelles tâches complétées" -ForegroundColor White
-Write-Host "`nPour plus de détails, consultez le fichier:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ© des modifications
+Write-Host "`nRÃ©sumÃ© des modifications:" -ForegroundColor Cyan
+Write-Host "- Ajout de 2 nouvelles sous-sections Ã  la section 'D. Mise en cache des rÃ©sultats'" -ForegroundColor White
+Write-Host "- Ajout de 9 nouvelles tÃ¢ches complÃ©tÃ©es" -ForegroundColor White
+Write-Host "`nPour plus de dÃ©tails, consultez le fichier:" -ForegroundColor Cyan
 Write-Host "scripts\analysis\docs\CACHE_ROADMAP_UPDATE.md" -ForegroundColor White

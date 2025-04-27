@@ -1,72 +1,72 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la validité d'un chemin de fichier ou de répertoire selon différents critères.
+    Teste la validitÃ© d'un chemin de fichier ou de rÃ©pertoire selon diffÃ©rents critÃ¨res.
 
 .DESCRIPTION
-    La fonction Test-PathValidity teste la validité d'un chemin de fichier ou de répertoire selon différents critères.
-    Elle prend en charge différents types de tests et peut être utilisée pour
+    La fonction Test-PathValidity teste la validitÃ© d'un chemin de fichier ou de rÃ©pertoire selon diffÃ©rents critÃ¨res.
+    Elle prend en charge diffÃ©rents types de tests et peut Ãªtre utilisÃ©e pour
     valider les chemins du module RoadmapParser.
 
 .PARAMETER Path
-    Le chemin à tester.
+    Le chemin Ã  tester.
 
 .PARAMETER TestType
-    Le type de test à effectuer. Valeurs possibles :
-    - Exists : Vérifie si le chemin existe
-    - IsFile : Vérifie si le chemin est un fichier
-    - IsDirectory : Vérifie si le chemin est un répertoire
-    - IsReadable : Vérifie si le chemin est lisible
-    - IsWritable : Vérifie si le chemin est modifiable
-    - IsHidden : Vérifie si le chemin est caché
-    - IsRooted : Vérifie si le chemin est absolu
-    - IsRelative : Vérifie si le chemin est relatif
-    - IsValid : Vérifie si le chemin est valide
-    - HasExtension : Vérifie si le chemin a une extension
-    - HasParent : Vérifie si le chemin a un parent
-    - MatchesPattern : Vérifie si le chemin correspond à un motif
-    - Custom : Utilise un test personnalisé
+    Le type de test Ã  effectuer. Valeurs possibles :
+    - Exists : VÃ©rifie si le chemin existe
+    - IsFile : VÃ©rifie si le chemin est un fichier
+    - IsDirectory : VÃ©rifie si le chemin est un rÃ©pertoire
+    - IsReadable : VÃ©rifie si le chemin est lisible
+    - IsWritable : VÃ©rifie si le chemin est modifiable
+    - IsHidden : VÃ©rifie si le chemin est cachÃ©
+    - IsRooted : VÃ©rifie si le chemin est absolu
+    - IsRelative : VÃ©rifie si le chemin est relatif
+    - IsValid : VÃ©rifie si le chemin est valide
+    - HasExtension : VÃ©rifie si le chemin a une extension
+    - HasParent : VÃ©rifie si le chemin a un parent
+    - MatchesPattern : VÃ©rifie si le chemin correspond Ã  un motif
+    - Custom : Utilise un test personnalisÃ©
 
 .PARAMETER CustomTest
-    La fonction de test personnalisée à utiliser.
-    Utilisé uniquement lorsque TestType est "Custom".
+    La fonction de test personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque TestType est "Custom".
 
 .PARAMETER Pattern
-    Le motif à utiliser pour le test de type MatchesPattern.
+    Le motif Ã  utiliser pour le test de type MatchesPattern.
 
 .PARAMETER Extension
-    L'extension à vérifier pour le test de type HasExtension.
-    Si non spécifié, vérifie simplement si le chemin a une extension.
+    L'extension Ã  vÃ©rifier pour le test de type HasExtension.
+    Si non spÃ©cifiÃ©, vÃ©rifie simplement si le chemin a une extension.
 
 .PARAMETER IgnoreCase
-    Indique si la casse doit être ignorée lors du test.
-    Par défaut, c'est $false.
+    Indique si la casse doit Ãªtre ignorÃ©e lors du test.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER Recurse
-    Indique si le test doit être récursif pour les répertoires.
-    Par défaut, c'est $false.
+    Indique si le test doit Ãªtre rÃ©cursif pour les rÃ©pertoires.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec du test.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec du test.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec du test.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec du test.
 
 .EXAMPLE
     Test-PathValidity -Path "C:\folder\file.txt" -TestType Exists
-    Vérifie si le fichier "C:\folder\file.txt" existe.
+    VÃ©rifie si le fichier "C:\folder\file.txt" existe.
 
 .EXAMPLE
     Test-PathValidity -Path "C:\folder" -TestType IsDirectory
-    Vérifie si "C:\folder" est un répertoire.
+    VÃ©rifie si "C:\folder" est un rÃ©pertoire.
 
 .OUTPUTS
-    [bool] Le résultat du test.
+    [bool] Le rÃ©sultat du test.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Test-PathValidity {
     [CmdletBinding()]
@@ -106,9 +106,9 @@ function Test-PathValidity {
     $privatePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Private\PathManipulation"
     $testPath = Join-Path -Path $privatePath -ChildPath "Test-RoadmapPath.ps1"
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $testPath)) {
-        $errorMsg = "Le fichier Test-RoadmapPath.ps1 est introuvable à l'emplacement : $testPath"
+        $errorMsg = "Le fichier Test-RoadmapPath.ps1 est introuvable Ã  l'emplacement : $testPath"
         if ($ThrowOnFailure) {
             throw $errorMsg
         } else {

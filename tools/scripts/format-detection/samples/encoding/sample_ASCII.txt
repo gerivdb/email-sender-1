@@ -1,4 +1,4 @@
-=== Test de d??tection d'encodage ===
+﻿=== Test de d??tection d'encodage ===
 
 == Texte latin (ASCII) ==
 The quick brown fox jumps over the lazy dog.

@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
     Initialise la structure de maintenance pour le projet EMAIL_SENDER_1.
 
 .DESCRIPTION
-    Ce script crée la structure de dossiers et les fichiers nécessaires pour la maintenance du projet.
-    Il génère les dossiers organize, cleanup, migrate et docs, ainsi que les README correspondants.
+    Ce script crÃ©e la structure de dossiers et les fichiers nÃ©cessaires pour la maintenance du projet.
+    Il gÃ©nÃ¨re les dossiers organize, cleanup, migrate et docs, ainsi que les README correspondants.
 
 .PARAMETER Force
-    Si spécifié, le script écrase les fichiers existants sans demander de confirmation.
+    Si spÃ©cifiÃ©, le script Ã©crase les fichiers existants sans demander de confirmation.
 
 .EXAMPLE
     .\init-maintenance.ps1
@@ -18,7 +18,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -26,10 +26,10 @@ param (
     [switch]$Force
 )
 
-# Définir le répertoire de base
+# DÃ©finir le rÃ©pertoire de base
 $baseDir = $PSScriptRoot
 
-# Définir les dossiers à créer
+# DÃ©finir les dossiers Ã  crÃ©er
 $folders = @(
     "organize",
     "cleanup",
@@ -39,53 +39,53 @@ $folders = @(
     "logs"
 )
 
-# Créer les dossiers
+# CrÃ©er les dossiers
 foreach ($folder in $folders) {
     $folderPath = Join-Path -Path $baseDir -ChildPath $folder
 
     if (-not (Test-Path -Path $folderPath)) {
-        if ($PSCmdlet.ShouldProcess($folderPath, "Créer le dossier")) {
+        if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier")) {
             New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-            Write-Host "Dossier créé : $folderPath" -ForegroundColor Green
+            Write-Host "Dossier crÃ©Ã© : $folderPath" -ForegroundColor Green
         }
     } else {
-        Write-Host "Le dossier existe déjà : $folderPath" -ForegroundColor Gray
+        Write-Host "Le dossier existe dÃ©jÃ  : $folderPath" -ForegroundColor Gray
     }
 }
 
-# Créer le README principal
+# CrÃ©er le README principal
 $readmePath = Join-Path -Path $baseDir -ChildPath "README.md"
 $readmeContent = @'
 # Scripts de maintenance pour EMAIL_SENDER_1
 
-Ce répertoire contient des scripts pour la maintenance du projet EMAIL_SENDER_1.
+Ce rÃ©pertoire contient des scripts pour la maintenance du projet EMAIL_SENDER_1.
 
 ## Structure
 
 - **organize/** - Scripts pour organiser les fichiers et dossiers
 - **cleanup/** - Scripts pour nettoyer les fichiers inutiles
-- **migrate/** - Scripts pour migrer des fichiers d'un répertoire à un autre
+- **migrate/** - Scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre
 - **docs/** - Documentation sur la maintenance
-- **backups/** - Sauvegardes créées avant les opérations de maintenance
-- **logs/** - Journaux des opérations de maintenance
+- **backups/** - Sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance
+- **logs/** - Journaux des opÃ©rations de maintenance
 
 ## Utilisation avec Hygen
 
-Ce projet utilise [Hygen](https://www.hygen.io/) pour générer des scripts de maintenance.
+Ce projet utilise [Hygen](https://www.hygen.io/) pour gÃ©nÃ©rer des scripts de maintenance.
 
-### Génération de scripts d'organisation
+### GÃ©nÃ©ration de scripts d'organisation
 
 ```bash
 hygen maintenance organize
 ```
 
-### Génération de scripts de nettoyage
+### GÃ©nÃ©ration de scripts de nettoyage
 
 ```bash
 hygen maintenance cleanup
 ```
 
-### Génération de scripts de migration
+### GÃ©nÃ©ration de scripts de migration
 
 ```bash
 hygen maintenance migrate
@@ -93,11 +93,11 @@ hygen maintenance migrate
 
 ## Bonnes pratiques
 
-1. Toujours exécuter les scripts en mode simulation (`-DryRun`) avant de les exécuter réellement
-2. Créer des sauvegardes avant d'effectuer des opérations potentiellement destructives
-3. Journaliser toutes les actions effectuées
-4. Tester les scripts dans un environnement de développement avant de les utiliser en production
-5. Documenter les scripts et leurs fonctionnalités
+1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement
+2. CrÃ©er des sauvegardes avant d'effectuer des opÃ©rations potentiellement destructives
+3. Journaliser toutes les actions effectuÃ©es
+4. Tester les scripts dans un environnement de dÃ©veloppement avant de les utiliser en production
+5. Documenter les scripts et leurs fonctionnalitÃ©s
 
 ## Auteur
 
@@ -105,20 +105,20 @@ Maintenance Team
 '@
 
 if (-not (Test-Path -Path $readmePath) -or $Force) {
-    if ($PSCmdlet.ShouldProcess($readmePath, "Créer le README")) {
+    if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er le README")) {
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Host "README créé : $readmePath" -ForegroundColor Green
+        Write-Host "README crÃ©Ã© : $readmePath" -ForegroundColor Green
     }
 } else {
-    Write-Host "Le README existe déjà : $readmePath" -ForegroundColor Gray
+    Write-Host "Le README existe dÃ©jÃ  : $readmePath" -ForegroundColor Gray
 }
 
-# Créer les README pour chaque dossier
+# CrÃ©er les README pour chaque dossier
 $folderReadmes = @{
     "organize" = @'
 # Scripts d'organisation
 
-Ce répertoire contient des scripts pour organiser les fichiers et dossiers du projet.
+Ce rÃ©pertoire contient des scripts pour organiser les fichiers et dossiers du projet.
 
 ## Utilisation avec Hygen
 
@@ -128,15 +128,15 @@ hygen maintenance organize
 
 ## Bonnes pratiques
 
-1. Toujours exécuter les scripts en mode simulation (`-DryRun`) avant de les exécuter réellement
-2. Créer des sauvegardes avant d'effectuer des opérations potentiellement destructives
-3. Journaliser toutes les actions effectuées
+1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement
+2. CrÃ©er des sauvegardes avant d'effectuer des opÃ©rations potentiellement destructives
+3. Journaliser toutes les actions effectuÃ©es
 '@
 
     "cleanup"  = @'
 # Scripts de nettoyage
 
-Ce répertoire contient des scripts pour nettoyer les fichiers inutiles du projet.
+Ce rÃ©pertoire contient des scripts pour nettoyer les fichiers inutiles du projet.
 
 ## Utilisation avec Hygen
 
@@ -149,15 +149,15 @@ hygen maintenance cleanup
 - **temp** : Fichiers temporaires (*.tmp, *.temp, ~*, *.cache)
 - **logs** : Fichiers de journalisation (*.log, *.log.*, *_log_*, *.trace)
 - **backups** : Fichiers de sauvegarde (*.bak, *.backup, *_backup_*, *.old)
-- **duplicates** : Fichiers dupliqués (*_copy*.*, *_copie*.*, * - Copy*.*, * - Copie*.*)
+- **duplicates** : Fichiers dupliquÃ©s (*_copy*.*, *_copie*.*, * - Copy*.*, * - Copie*.*)
 - **empty** : Dossiers vides
-- **custom** : Motif personnalisé
+- **custom** : Motif personnalisÃ©
 '@
 
     "migrate"  = @'
 # Scripts de migration
 
-Ce répertoire contient des scripts pour migrer des fichiers d'un répertoire à un autre.
+Ce rÃ©pertoire contient des scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre.
 
 ## Utilisation avec Hygen
 
@@ -167,33 +167,33 @@ hygen maintenance migrate
 
 ## Bonnes pratiques
 
-1. Toujours exécuter les scripts en mode simulation (`-DryRun`) avant de les exécuter réellement
-2. Créer des sauvegardes avant d'effectuer des opérations potentiellement destructives
-3. Journaliser toutes les actions effectuées
-4. Tester les scripts de rollback après une migration réussie
+1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement
+2. CrÃ©er des sauvegardes avant d'effectuer des opÃ©rations potentiellement destructives
+3. Journaliser toutes les actions effectuÃ©es
+4. Tester les scripts de rollback aprÃ¨s une migration rÃ©ussie
 '@
 
     "docs"     = @'
 # Documentation de maintenance
 
-Ce répertoire contient la documentation sur la maintenance du projet.
+Ce rÃ©pertoire contient la documentation sur la maintenance du projet.
 
 ## Contenu
 
-- Procédures de maintenance
-- Guides de dépannage
+- ProcÃ©dures de maintenance
+- Guides de dÃ©pannage
 - Bonnes pratiques
-- Historique des opérations de maintenance
+- Historique des opÃ©rations de maintenance
 '@
 
     "backups"  = @'
 # Sauvegardes de maintenance
 
-Ce répertoire contient les sauvegardes créées avant les opérations de maintenance.
+Ce rÃ©pertoire contient les sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance.
 
 ## Nomenclature
 
-Les sauvegardes suivent généralement le format suivant :
+Les sauvegardes suivent gÃ©nÃ©ralement le format suivant :
 - `backup_<type>_<date>_<heure>.zip`
 
 Exemple : `backup_cleanup_20230815_123045.zip`
@@ -202,11 +202,11 @@ Exemple : `backup_cleanup_20230815_123045.zip`
     "logs"     = @'
 # Journaux de maintenance
 
-Ce répertoire contient les journaux des opérations de maintenance.
+Ce rÃ©pertoire contient les journaux des opÃ©rations de maintenance.
 
 ## Nomenclature
 
-Les journaux suivent généralement le format suivant :
+Les journaux suivent gÃ©nÃ©ralement le format suivant :
 - `<type>_<date>_<heure>.log`
 
 Exemple : `cleanup_20230815_123045.log`
@@ -217,13 +217,13 @@ foreach ($folder in $folders) {
     $readmePath = Join-Path -Path (Join-Path -Path $baseDir -ChildPath $folder) -ChildPath "README.md"
 
     if (-not (Test-Path -Path $readmePath) -or $Force) {
-        if ($PSCmdlet.ShouldProcess($readmePath, "Créer le README")) {
+        if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er le README")) {
             Set-Content -Path $readmePath -Value $folderReadmes[$folder] -Encoding UTF8
-            Write-Host "README créé : $readmePath" -ForegroundColor Green
+            Write-Host "README crÃ©Ã© : $readmePath" -ForegroundColor Green
         }
     } else {
-        Write-Host "Le README existe déjà : $readmePath" -ForegroundColor Gray
+        Write-Host "Le README existe dÃ©jÃ  : $readmePath" -ForegroundColor Gray
     }
 }
 
-Write-Host "Initialisation de la structure de maintenance terminée." -ForegroundColor Cyan
+Write-Host "Initialisation de la structure de maintenance terminÃ©e." -ForegroundColor Cyan

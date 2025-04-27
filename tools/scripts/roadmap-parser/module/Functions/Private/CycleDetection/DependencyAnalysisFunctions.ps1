@@ -36,51 +36,50 @@ function Get-PowerShellDependencies {
         # Initialiser le tableau des dépendances
         $dependencies = @()
         
-        # Rechercher les instructions d'importation
-        $importMatches = [regex]::Matches($content, '(?i)(Import-Module|\.|\.\.|&|\. \$PSScriptRoot\\|\. \$PSScriptRoot/|Invoke-Expression)\s+(?:["'']?([^"'';\r\n]+)["'']?)')
-        $dotSourceMatches = [regex]::Matches($content, '(?i)\.\s+(?:["'']?([^"'';\r\n]+)["'']?)')
-        $requireMatches = [regex]::Matches($content, '(?i)#Requires\s+-Modules\s+(?:["'']?([^"'';\r\n]+)["'']?)')
+        # Rechercher les instructions . (dot sourcing)
+        $dotMatches = [regex]::Matches($content, '(?m)^\s*\.\s+["''](.*?)["'']')
         
-        # Traiter les correspondances d'importation
+        foreach ($match in $dotMatches) {
+            $path = $match.Groups[1].Value
+            
+            # Convertir le chemin relatif en chemin absolu
+            if (-not [System.IO.Path]::IsPathRooted($path)) {
+                $directory = [System.IO.Path]::GetDirectoryName($FilePath)
+                $path = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
+            }
+            
+            # Vérifier si le fichier existe
+            if (Test-Path -Path $path -PathType Leaf) {
+                $dependencies += $path
+            }
+            # Si le fichier n'existe pas, essayer d'ajouter l'extension .ps1
+            elseif (Test-Path -Path "$path.ps1" -PathType Leaf) {
+                $dependencies += "$path.ps1"
+            }
+        }
+        
+        # Rechercher les instructions Import-Module
+        $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+(?:-Name\s+)?["''](.*?)["'']')
+        
         foreach ($match in $importMatches) {
-            $importPath = $match.Groups[2].Value.Trim()
-            
-            # Ignorer les importations de modules système
-            if ($importPath -match '^[A-Za-z0-9]+$') {
-                continue
-            }
-            
-            # Résoudre le chemin complet
-            $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $importPath -ProjectRoot $ProjectRoot
-            
-            if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                $dependencies += $resolvedPath
-            }
-        }
-        
-        # Traiter les correspondances de dot sourcing
-        foreach ($match in $dotSourceMatches) {
-            $importPath = $match.Groups[1].Value.Trim()
-            
-            # Résoudre le chemin complet
-            $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $importPath -ProjectRoot $ProjectRoot
-            
-            if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                $dependencies += $resolvedPath
-            }
-        }
-        
-        # Traiter les correspondances de #Requires
-        foreach ($match in $requireMatches) {
-            $moduleName = $match.Groups[1].Value.Trim()
-            
-            # Ignorer les modules système
-            if ($moduleName -match '^[A-Za-z0-9]+$') {
-                continue
-            }
+            $moduleName = $match.Groups[1].Value
             
             # Rechercher le module dans le projet
-            $moduleFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "$moduleName.ps*" -File
+            $moduleFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "$moduleName.psm1" -File
+            
+            foreach ($moduleFile in $moduleFiles) {
+                $dependencies += $moduleFile.FullName
+            }
+        }
+        
+        # Rechercher les instructions using module
+        $usingMatches = [regex]::Matches($content, '(?m)^\s*using\s+module\s+["''](.*?)["'']')
+        
+        foreach ($match in $usingMatches) {
+            $moduleName = $match.Groups[1].Value
+            
+            # Rechercher le module dans le projet
+            $moduleFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "$moduleName.psm1" -File
             
             foreach ($moduleFile in $moduleFiles) {
                 $dependencies += $moduleFile.FullName
@@ -120,37 +119,41 @@ function Get-PythonDependencies {
         # Initialiser le tableau des dépendances
         $dependencies = @()
         
-        # Rechercher les instructions d'importation
-        $importMatches = [regex]::Matches($content, '(?m)^\s*(?:from\s+([.\w]+)\s+import|import\s+([.\w]+))')
+        # Rechercher les instructions import
+        $importMatches = [regex]::Matches($content, '(?m)^\s*import\s+([A-Za-z0-9_.]+)')
         
-        # Traiter les correspondances
         foreach ($match in $importMatches) {
-            $moduleName = if ($match.Groups[1].Success) { $match.Groups[1].Value } else { $match.Groups[2].Value }
+            $moduleName = $match.Groups[1].Value
             
-            # Ignorer les modules système
-            if ($moduleName -match '^[A-Za-z0-9]+$') {
-                continue
+            # Rechercher le module dans le projet
+            $moduleFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "$moduleName.py" -File
+            
+            foreach ($moduleFile in $moduleFiles) {
+                $dependencies += $moduleFile.FullName
+            }
+        }
+        
+        # Rechercher les instructions from ... import
+        $fromMatches = [regex]::Matches($content, '(?m)^\s*from\s+([A-Za-z0-9_.]+)\s+import')
+        
+        foreach ($match in $fromMatches) {
+            $moduleName = $match.Groups[1].Value
+            
+            # Rechercher le module dans le projet
+            $moduleFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "$moduleName.py" -File
+            
+            foreach ($moduleFile in $moduleFiles) {
+                $dependencies += $moduleFile.FullName
             }
             
-            # Convertir le nom du module en chemin relatif
-            $relativePath = $moduleName -replace '\.', [IO.Path]::DirectorySeparatorChar
+            # Rechercher également les packages
+            $packagePath = $moduleName.Replace(".", [System.IO.Path]::DirectorySeparatorChar)
+            $initFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "__init__.py" -File | Where-Object {
+                $_.DirectoryName -like "*$packagePath"
+            }
             
-            # Rechercher les fichiers correspondants
-            $possiblePaths = @(
-                "$relativePath.py",
-                "$relativePath/__init__.py",
-                "$relativePath.pyd",
-                "$relativePath.pyo",
-                "$relativePath.pyc"
-            )
-            
-            foreach ($path in $possiblePaths) {
-                $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $path -ProjectRoot $ProjectRoot
-                
-                if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                    $dependencies += $resolvedPath
-                    break
-                }
+            foreach ($initFile in $initFiles) {
+                $dependencies += $initFile.FullName
             }
         }
         
@@ -187,51 +190,62 @@ function Get-JavaScriptDependencies {
         # Initialiser le tableau des dépendances
         $dependencies = @()
         
-        # Rechercher les instructions d'importation
-        $importMatches = [regex]::Matches($content, '(?m)(?:import\s+(?:.+\s+from\s+)?["'']([^"'']+)["'']|require\s*\(\s*["'']([^"'']+)["'']\s*\))')
+        # Rechercher les instructions import
+        $importMatches = [regex]::Matches($content, '(?m)^\s*import\s+.*?from\s+["''](.*?)["'']')
         
-        # Traiter les correspondances
         foreach ($match in $importMatches) {
-            $importPath = if ($match.Groups[1].Success) { $match.Groups[1].Value } else { $match.Groups[2].Value }
+            $path = $match.Groups[1].Value
             
-            # Ignorer les modules npm
-            if (-not $importPath.StartsWith('.') -and -not $importPath.StartsWith('/')) {
-                continue
-            }
-            
-            # Ajouter les extensions possibles si nécessaire
-            if (-not $importPath.Contains('.')) {
-                $possibleExtensions = @('.js', '.jsx', '.ts', '.tsx', '.json')
+            # Ignorer les modules externes
+            if ($path.StartsWith(".")) {
+                # Convertir le chemin relatif en chemin absolu
+                $directory = [System.IO.Path]::GetDirectoryName($FilePath)
+                $absolutePath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
                 
-                foreach ($ext in $possibleExtensions) {
-                    $pathWithExt = "$importPath$ext"
-                    $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $pathWithExt -ProjectRoot $ProjectRoot
-                    
-                    if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                        $dependencies += $resolvedPath
-                        break
-                    }
+                # Vérifier si le fichier existe
+                if (Test-Path -Path $absolutePath -PathType Leaf) {
+                    $dependencies += $absolutePath
                 }
-                
-                # Vérifier s'il s'agit d'un répertoire avec un fichier index
-                $indexFiles = @('index.js', 'index.jsx', 'index.ts', 'index.tsx')
-                
-                foreach ($indexFile in $indexFiles) {
-                    $indexPath = "$importPath/$indexFile"
-                    $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $indexPath -ProjectRoot $ProjectRoot
+                # Si le fichier n'existe pas, essayer d'ajouter les extensions
+                else {
+                    $extensions = @(".js", ".jsx", ".ts", ".tsx")
                     
-                    if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                        $dependencies += $resolvedPath
-                        break
+                    foreach ($ext in $extensions) {
+                        if (Test-Path -Path "$absolutePath$ext" -PathType Leaf) {
+                            $dependencies += "$absolutePath$ext"
+                            break
+                        }
                     }
                 }
             }
-            else {
-                # Le chemin a déjà une extension
-                $resolvedPath = Resolve-DependencyPath -BasePath (Split-Path -Parent $FilePath) -DependencyPath $importPath -ProjectRoot $ProjectRoot
+        }
+        
+        # Rechercher les instructions require
+        $requireMatches = [regex]::Matches($content, '(?m)require\s*\(\s*["''](.*?)["'']\s*\)')
+        
+        foreach ($match in $requireMatches) {
+            $path = $match.Groups[1].Value
+            
+            # Ignorer les modules externes
+            if ($path.StartsWith(".")) {
+                # Convertir le chemin relatif en chemin absolu
+                $directory = [System.IO.Path]::GetDirectoryName($FilePath)
+                $absolutePath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
                 
-                if ($resolvedPath -and (Test-Path -Path $resolvedPath -PathType Leaf)) {
-                    $dependencies += $resolvedPath
+                # Vérifier si le fichier existe
+                if (Test-Path -Path $absolutePath -PathType Leaf) {
+                    $dependencies += $absolutePath
+                }
+                # Si le fichier n'existe pas, essayer d'ajouter les extensions
+                else {
+                    $extensions = @(".js", ".jsx", ".ts", ".tsx")
+                    
+                    foreach ($ext in $extensions) {
+                        if (Test-Path -Path "$absolutePath$ext" -PathType Leaf) {
+                            $dependencies += "$absolutePath$ext"
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -330,22 +344,13 @@ function Get-JavaDependencies {
         # Rechercher les instructions import
         $importMatches = [regex]::Matches($content, '(?m)^\s*import\s+([A-Za-z0-9_.]+)(?:\.\*)?;')
         
-        # Traiter les correspondances
         foreach ($match in $importMatches) {
-            $packageName = $match.Groups[1].Value
+            $package = $match.Groups[1].Value
             
-            # Ignorer les packages système
-            if ($packageName -match '^java\.' -or $packageName -match '^javax\.') {
-                continue
-            }
-            
-            # Convertir le nom du package en chemin relatif
-            $relativePath = $packageName -replace '\.', [IO.Path]::DirectorySeparatorChar
-            
-            # Rechercher les fichiers correspondants
+            # Rechercher les fichiers qui définissent ce package
+            $packagePath = $package.Replace(".", [System.IO.Path]::DirectorySeparatorChar)
             $files = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "*.java" -File | Where-Object {
-                $fileContent = Get-Content -Path $_.FullName -Raw
-                $fileContent -match "package\s+$([regex]::Escape($packageName))"
+                $_.DirectoryName -like "*$packagePath"
             }
             
             foreach ($file in $files) {
@@ -364,61 +369,7 @@ function Get-JavaDependencies {
     }
 }
 
-# Fonction pour résoudre le chemin d'une dépendance
-function Resolve-DependencyPath {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$BasePath,
-        
-        [Parameter(Mandatory = $true)]
-        [string]$DependencyPath,
-        
-        [Parameter(Mandatory = $true)]
-        [string]$ProjectRoot
-    )
-    
-    try {
-        # Normaliser les chemins
-        $BasePath = $BasePath.Replace('/', '\')
-        $DependencyPath = $DependencyPath.Replace('/', '\')
-        $ProjectRoot = $ProjectRoot.Replace('/', '\')
-        
-        # Vérifier si le chemin est absolu
-        if ([System.IO.Path]::IsPathRooted($DependencyPath)) {
-            # Vérifier si le chemin est dans le projet
-            if ($DependencyPath.StartsWith($ProjectRoot)) {
-                return $DependencyPath
-            }
-            return $null
-        }
-        
-        # Résoudre le chemin relatif
-        $resolvedPath = $null
-        
-        # Gérer les chemins relatifs avec .. et .
-        if ($DependencyPath.StartsWith('..') -or $DependencyPath.StartsWith('.')) {
-            $resolvedPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($BasePath, $DependencyPath))
-        }
-        else {
-            # Essayer de résoudre par rapport à la racine du projet
-            $resolvedPath = [System.IO.Path]::Combine($ProjectRoot, $DependencyPath)
-        }
-        
-        # Vérifier si le chemin résolu est dans le projet
-        if ($resolvedPath -and $resolvedPath.StartsWith($ProjectRoot)) {
-            return $resolvedPath
-        }
-        
-        return $null
-    }
-    catch {
-        Write-Error "Erreur lors de la résolution du chemin de dépendance : $_"
-        return $null
-    }
-}
-
-# Fonction principale pour analyser les dépendances d'un fichier
+# Fonction pour analyser les dépendances d'un fichier
 function Get-FileDependencies {
     [CmdletBinding()]
     param(
@@ -436,7 +387,7 @@ function Get-FileDependencies {
             return @()
         }
         
-        # Déterminer le type de fichier
+        # Obtenir l'extension du fichier
         $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
         
         # Analyser les dépendances en fonction du type de fichier
@@ -468,7 +419,7 @@ function Get-FileDependencies {
     }
 }
 
-# Fonction pour construire un graphe de dépendances
+# Fonction pour construire le graphe de dépendances
 function Build-DependencyGraph {
     [CmdletBinding()]
     param(
@@ -490,21 +441,58 @@ function Build-DependencyGraph {
         foreach ($file in $Files) {
             $filePath = $file.FullName
             
-            # Vérifier si le fichier est déjà dans le graphe
+            # Initialiser l'entrée dans le graphe
             if (-not $graph.ContainsKey($filePath)) {
                 $graph[$filePath] = @()
             }
             
-            # Analyser les dépendances du fichier
+            # Obtenir les dépendances directes
             $dependencies = Get-FileDependencies -FilePath $filePath -ProjectRoot $ProjectRoot
             
             # Ajouter les dépendances au graphe
-            $graph[$filePath] = $dependencies
+            foreach ($dependency in $dependencies) {
+                if ($dependency -ne $filePath) {
+                    $graph[$filePath] += $dependency
+                }
+            }
         }
         
-        # Limiter la profondeur du graphe si nécessaire
+        # Limiter la profondeur des dépendances
         if ($MaxDepth -gt 0) {
-            $graph = Limit-GraphDepth -Graph $graph -MaxDepth $MaxDepth
+            $visited = @{}
+            
+            function Limit-Depth {
+                param(
+                    [Parameter(Mandatory = $true)]
+                    [string]$Node,
+                    
+                    [Parameter(Mandatory = $true)]
+                    [int]$Depth
+                )
+                
+                # Marquer le nœud comme visité
+                $visited[$Node] = $true
+                
+                # Si la profondeur maximale est atteinte, arrêter
+                if ($Depth -ge $MaxDepth) {
+                    return
+                }
+                
+                # Parcourir les dépendances
+                if ($graph.ContainsKey($Node)) {
+                    foreach ($dependency in $graph[$Node]) {
+                        if (-not $visited.ContainsKey($dependency)) {
+                            Limit-Depth -Node $dependency -Depth ($Depth + 1)
+                        }
+                    }
+                }
+            }
+            
+            # Limiter la profondeur pour chaque nœud
+            foreach ($node in $graph.Keys) {
+                $visited = @{}
+                Limit-Depth -Node $node -Depth 0
+            }
         }
         
         return $graph
@@ -512,68 +500,6 @@ function Build-DependencyGraph {
     catch {
         Write-Error "Erreur lors de la construction du graphe de dépendances : $_"
         return @{}
-    }
-}
-
-# Fonction pour limiter la profondeur du graphe
-function Limit-GraphDepth {
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Graph,
-        
-        [Parameter(Mandatory = $true)]
-        [int]$MaxDepth
-    )
-    
-    try {
-        # Initialiser le graphe limité
-        $limitedGraph = @{}
-        
-        # Parcourir chaque nœud du graphe
-        foreach ($node in $Graph.Keys) {
-            # Initialiser le graphe limité pour ce nœud
-            $limitedGraph[$node] = @()
-            
-            # Parcourir les dépendances avec une profondeur limitée
-            $visited = @{}
-            $queue = New-Object System.Collections.Queue
-            $queue.Enqueue(@{Node = $node; Depth = 0})
-            
-            while ($queue.Count -gt 0) {
-                $current = $queue.Dequeue()
-                $currentNode = $current.Node
-                $currentDepth = $current.Depth
-                
-                # Marquer le nœud comme visité
-                $visited[$currentNode] = $true
-                
-                # Ajouter les dépendances directes au graphe limité
-                if ($currentNode -ne $node) {
-                    $limitedGraph[$node] += $currentNode
-                }
-                
-                # Continuer si la profondeur maximale n'est pas atteinte
-                if ($currentDepth -lt $MaxDepth) {
-                    # Parcourir les dépendances du nœud courant
-                    foreach ($dependency in $Graph[$currentNode]) {
-                        # Vérifier si la dépendance existe dans le graphe
-                        if ($Graph.ContainsKey($dependency) -and -not $visited.ContainsKey($dependency)) {
-                            $queue.Enqueue(@{Node = $dependency; Depth = $currentDepth + 1})
-                        }
-                    }
-                }
-            }
-            
-            # Éliminer les doublons
-            $limitedGraph[$node] = $limitedGraph[$node] | Select-Object -Unique
-        }
-        
-        return $limitedGraph
-    }
-    catch {
-        Write-Error "Erreur lors de la limitation de la profondeur du graphe : $_"
-        return $Graph
     }
 }
 

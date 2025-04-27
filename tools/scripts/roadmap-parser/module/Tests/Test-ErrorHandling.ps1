@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions de gestion d'erreurs.
 
@@ -9,29 +9,29 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-26
+    Date de crÃ©ation: 2025-04-26
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $errorHandlingPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ErrorHandling.ps1"
 $loggingPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\Logging.ps1"
 $logRotationPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\LogRotation.ps1"
 
-# Vérifier que les fichiers existent
+# VÃ©rifier que les fichiers existent
 if (-not (Test-Path -Path $errorHandlingPath)) {
-    throw "Le fichier ErrorHandling.ps1 est introuvable à l'emplacement: $errorHandlingPath"
+    throw "Le fichier ErrorHandling.ps1 est introuvable Ã  l'emplacement: $errorHandlingPath"
 }
 
 if (-not (Test-Path -Path $loggingPath)) {
-    throw "Le fichier Logging.ps1 est introuvable à l'emplacement: $loggingPath"
+    throw "Le fichier Logging.ps1 est introuvable Ã  l'emplacement: $loggingPath"
 }
 
 # Importer les fichiers
@@ -41,7 +41,7 @@ if (Test-Path -Path $logRotationPath) {
     . $logRotationPath
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests des fonctions de gestion d'erreurs" {
     BeforeAll {
         # Configurer la journalisation pour les tests
@@ -65,8 +65,8 @@ Describe "Tests des fonctions de gestion d'erreurs" {
     }
 
     Context "Tests de la fonction Handle-Error" {
-        It "Devrait journaliser une erreur avec un message personnalisé" {
-            # Créer une erreur
+        It "Devrait journaliser une erreur avec un message personnalisÃ©" {
+            # CrÃ©er une erreur
             $errorRecord = $null
             try {
                 throw "Test d'erreur"
@@ -76,16 +76,16 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             }
 
             # Appeler la fonction avec l'erreur
-            Handle-Error -ErrorRecord $errorRecord -ErrorMessage "Message personnalisé" -ExitOnError:$false -LogFile $testLogFile
+            Handle-Error -ErrorRecord $errorRecord -ErrorMessage "Message personnalisÃ©" -ExitOnError:$false -LogFile $testLogFile
 
-            # Vérifier que l'erreur a été journalisée
+            # VÃ©rifier que l'erreur a Ã©tÃ© journalisÃ©e
             $logContent = Get-Content -Path $testLogFile -Raw
-            $logContent | Should -Match "Message personnalisé"
+            $logContent | Should -Match "Message personnalisÃ©"
             $logContent | Should -Match "Test d'erreur"
         }
 
         It "Devrait enrichir l'erreur avec des informations contextuelles" {
-            # Créer une erreur
+            # CrÃ©er une erreur
             $errorRecord = $null
             try {
                 throw "Test d'erreur avec contexte"
@@ -97,105 +97,105 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             # Appeler la fonction avec l'erreur et un contexte
             $context = @{
                 "Fonction" = "Test-Function"
-                "Paramètre" = "Test-Parameter"
+                "ParamÃ¨tre" = "Test-Parameter"
                 "Valeur" = 123
             }
             Handle-Error -ErrorRecord $errorRecord -ErrorMessage "Erreur avec contexte" -ExitOnError:$false -LogFile $testLogFile -Context $context
 
-            # Vérifier que l'erreur a été enrichie
+            # VÃ©rifier que l'erreur a Ã©tÃ© enrichie
             $logContent = Get-Content -Path $testLogFile -Raw
             $logContent | Should -Match "Erreur avec contexte"
             $logContent | Should -Match "Test d'erreur avec contexte"
             $logContent | Should -Match "Fonction: Test-Function"
-            $logContent | Should -Match "Paramètre: Test-Parameter"
+            $logContent | Should -Match "ParamÃ¨tre: Test-Parameter"
             $logContent | Should -Match "Valeur: 123"
         }
 
-        It "Devrait catégoriser l'erreur correctement" {
-            # Créer une erreur
+        It "Devrait catÃ©goriser l'erreur correctement" {
+            # CrÃ©er une erreur
             $errorRecord = $null
             try {
-                throw "Test d'erreur avec catégorie"
+                throw "Test d'erreur avec catÃ©gorie"
             }
             catch {
                 $errorRecord = $_
             }
 
-            # Appeler la fonction avec l'erreur et une catégorie
-            Handle-Error -ErrorRecord $errorRecord -ErrorMessage "Erreur catégorisée" -ExitOnError:$false -LogFile $testLogFile -Category "Permission" -Severity 4
+            # Appeler la fonction avec l'erreur et une catÃ©gorie
+            Handle-Error -ErrorRecord $errorRecord -ErrorMessage "Erreur catÃ©gorisÃ©e" -ExitOnError:$false -LogFile $testLogFile -Category "Permission" -Severity 4
 
-            # Vérifier que l'erreur a été catégorisée
+            # VÃ©rifier que l'erreur a Ã©tÃ© catÃ©gorisÃ©e
             $logContent = Get-Content -Path $testLogFile -Raw
-            $logContent | Should -Match "Erreur catégorisée"
-            $logContent | Should -Match "Catégorie: Permission"
-            $logContent | Should -Match "Sévérité: 4"
+            $logContent | Should -Match "Erreur catÃ©gorisÃ©e"
+            $logContent | Should -Match "CatÃ©gorie: Permission"
+            $logContent | Should -Match "SÃ©vÃ©ritÃ©: 4"
         }
     }
 
     Context "Tests de la fonction Invoke-WithRetry" {
-        It "Devrait réussir après plusieurs tentatives" {
-            # Compteur pour simuler des échecs suivis d'un succès
+        It "Devrait rÃ©ussir aprÃ¨s plusieurs tentatives" {
+            # Compteur pour simuler des Ã©checs suivis d'un succÃ¨s
             $script:counter = 0
 
-            # Bloc de script qui échoue les 2 premières fois puis réussit
+            # Bloc de script qui Ã©choue les 2 premiÃ¨res fois puis rÃ©ussit
             $scriptBlock = {
                 $script:counter++
                 if ($script:counter -lt 3) {
-                    throw "Échec simulé $script:counter"
+                    throw "Ã‰chec simulÃ© $script:counter"
                 }
-                return "Succès après $script:counter tentatives"
+                return "SuccÃ¨s aprÃ¨s $script:counter tentatives"
             }
 
             # Appeler la fonction avec le bloc de script
             $result = Invoke-WithRetry -ScriptBlock $scriptBlock -MaxRetries 3 -RetryDelaySeconds 1 -RetryStrategy "Fixed"
 
-            # Vérifier que la fonction a réussi après plusieurs tentatives
-            $result | Should -Be "Succès après 3 tentatives"
+            # VÃ©rifier que la fonction a rÃ©ussi aprÃ¨s plusieurs tentatives
+            $result | Should -Be "SuccÃ¨s aprÃ¨s 3 tentatives"
             $script:counter | Should -Be 3
         }
 
-        It "Devrait échouer si le nombre maximum de tentatives est atteint" {
-            # Compteur pour simuler des échecs continus
+        It "Devrait Ã©chouer si le nombre maximum de tentatives est atteint" {
+            # Compteur pour simuler des Ã©checs continus
             $script:counter = 0
 
-            # Bloc de script qui échoue toujours
+            # Bloc de script qui Ã©choue toujours
             $scriptBlock = {
                 $script:counter++
-                throw "Échec simulé $script:counter"
+                throw "Ã‰chec simulÃ© $script:counter"
             }
 
             # Appeler la fonction avec le bloc de script
             { Invoke-WithRetry -ScriptBlock $scriptBlock -MaxRetries 2 -RetryDelaySeconds 1 -RetryStrategy "Fixed" } | Should -Throw
 
-            # Vérifier que la fonction a tenté le nombre maximum de fois
+            # VÃ©rifier que la fonction a tentÃ© le nombre maximum de fois
             $script:counter | Should -Be 3  # 1 tentative initiale + 2 retry
         }
 
-        It "Devrait utiliser la stratégie de retry spécifiée" {
-            # Compteur pour simuler des échecs suivis d'un succès
+        It "Devrait utiliser la stratÃ©gie de retry spÃ©cifiÃ©e" {
+            # Compteur pour simuler des Ã©checs suivis d'un succÃ¨s
             $script:counter = 0
             $script:delays = @()
 
-            # Bloc de script qui échoue les 2 premières fois puis réussit
+            # Bloc de script qui Ã©choue les 2 premiÃ¨res fois puis rÃ©ussit
             $scriptBlock = {
                 $script:counter++
                 if ($script:counter -lt 3) {
-                    throw "Échec simulé $script:counter"
+                    throw "Ã‰chec simulÃ© $script:counter"
                 }
-                return "Succès après $script:counter tentatives"
+                return "SuccÃ¨s aprÃ¨s $script:counter tentatives"
             }
 
-            # Script à exécuter avant chaque nouvelle tentative
+            # Script Ã  exÃ©cuter avant chaque nouvelle tentative
             $onRetry = {
                 param($Exception, $RetryCount, $Delay)
                 $script:delays += $Delay
             }
 
-            # Appeler la fonction avec le bloc de script et la stratégie exponentielle
+            # Appeler la fonction avec le bloc de script et la stratÃ©gie exponentielle
             $result = Invoke-WithRetry -ScriptBlock $scriptBlock -MaxRetries 3 -RetryDelaySeconds 1 -RetryStrategy "Exponential" -OnRetry $onRetry
 
-            # Vérifier que la fonction a utilisé la stratégie exponentielle
-            $result | Should -Be "Succès après 3 tentatives"
+            # VÃ©rifier que la fonction a utilisÃ© la stratÃ©gie exponentielle
+            $result | Should -Be "SuccÃ¨s aprÃ¨s 3 tentatives"
             $script:delays[0] | Should -Be 1  # 2^0 * 1 = 1
             $script:delays[1] | Should -Be 2  # 2^1 * 1 = 2
         }
@@ -203,20 +203,20 @@ Describe "Tests des fonctions de gestion d'erreurs" {
 
     Context "Tests de la fonction Get-ExceptionInfo" {
         It "Devrait capturer les informations de base d'une exception" {
-            # Créer une exception
+            # CrÃ©er une exception
             $exception = [System.InvalidOperationException]::new("Message de test")
 
             # Appeler la fonction avec l'exception
             $exceptionInfo = Get-ExceptionInfo -Exception $exception -IncludeStackTrace $false
 
-            # Vérifier que les informations de base ont été capturées
+            # VÃ©rifier que les informations de base ont Ã©tÃ© capturÃ©es
             $exceptionInfo.Type | Should -Be "System.InvalidOperationException"
             $exceptionInfo.Message | Should -Be "Message de test"
             $exceptionInfo.HResult | Should -Not -BeNullOrEmpty
         }
 
-        It "Devrait inclure la pile d'appels si demandé" {
-            # Créer une exception avec une pile d'appels
+        It "Devrait inclure la pile d'appels si demandÃ©" {
+            # CrÃ©er une exception avec une pile d'appels
             $exception = $null
             try {
                 throw [System.InvalidOperationException]::new("Message de test avec pile d'appels")
@@ -228,29 +228,29 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             # Appeler la fonction avec l'exception et l'option d'inclusion de la pile d'appels
             $exceptionInfo = Get-ExceptionInfo -Exception $exception -IncludeStackTrace $true
 
-            # Vérifier que la pile d'appels a été incluse
+            # VÃ©rifier que la pile d'appels a Ã©tÃ© incluse
             $exceptionInfo.StackTrace | Should -Not -BeNullOrEmpty
         }
 
-        It "Devrait inclure les exceptions internes si demandé" {
-            # Créer une exception avec une exception interne
+        It "Devrait inclure les exceptions internes si demandÃ©" {
+            # CrÃ©er une exception avec une exception interne
             $innerException = [System.ArgumentException]::new("Exception interne")
             $outerException = [System.InvalidOperationException]::new("Exception externe", $innerException)
 
             # Appeler la fonction avec l'exception et l'option d'inclusion des exceptions internes
             $exceptionInfo = Get-ExceptionInfo -Exception $outerException -IncludeInnerExceptions $true
 
-            # Vérifier que l'exception interne a été incluse
+            # VÃ©rifier que l'exception interne a Ã©tÃ© incluse
             $exceptionInfo.InnerExceptions | Should -Not -BeNullOrEmpty
             $exceptionInfo.InnerExceptions[0].Type | Should -Be "System.ArgumentException"
             $exceptionInfo.InnerExceptions[0].Message | Should -Be "Exception interne"
         }
 
         It "Devrait inclure le contexte si fourni" {
-            # Créer une exception
+            # CrÃ©er une exception
             $exception = [System.InvalidOperationException]::new("Message de test avec contexte")
 
-            # Définir un contexte
+            # DÃ©finir un contexte
             $context = @{
                 "Operation" = "Test-Operation"
                 "Identifiant" = 456
@@ -259,7 +259,7 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             # Appeler la fonction avec l'exception et le contexte
             $exceptionInfo = Get-ExceptionInfo -Exception $exception -Context $context
 
-            # Vérifier que le contexte a été inclus
+            # VÃ©rifier que le contexte a Ã©tÃ© inclus
             $exceptionInfo.Context | Should -Not -BeNullOrEmpty
             $exceptionInfo.Context.Operation | Should -Be "Test-Operation"
             $exceptionInfo.Context.Identifiant | Should -Be 456
@@ -267,12 +267,12 @@ Describe "Tests des fonctions de gestion d'erreurs" {
     }
 
     Context "Tests de la fonction Get-ExceptionCategory" {
-        It "Devrait catégoriser correctement une exception par type" {
-            # Créer différentes exceptions
+        It "Devrait catÃ©goriser correctement une exception par type" {
+            # CrÃ©er diffÃ©rentes exceptions
             $syntaxException = [System.ArgumentException]::new("Erreur de syntaxe")
-            $runtimeException = [System.InvalidOperationException]::new("Erreur d'exécution")
+            $runtimeException = [System.InvalidOperationException]::new("Erreur d'exÃ©cution")
             $permissionException = [System.UnauthorizedAccessException]::new("Erreur de permission")
-            $resourceException = [System.IO.FileNotFoundException]::new("Fichier non trouvé")
+            $resourceException = [System.IO.FileNotFoundException]::new("Fichier non trouvÃ©")
 
             # Modifier manuellement les mappages pour les tests
             $typeMappings = @{
@@ -295,22 +295,22 @@ Describe "Tests des fonctions de gestion d'erreurs" {
                 if ($resourceException -is $type) { $resourceCategory = $typeMappings[$type] }
             }
 
-            # Vérifier que les catégories sont correctes
+            # VÃ©rifier que les catÃ©gories sont correctes
             $syntaxCategory | Should -Be "Syntax"
             $runtimeCategory | Should -Be "Runtime"
             $permissionCategory | Should -Be "Permission"
             $resourceCategory | Should -Be "Resource"
         }
 
-        It "Devrait catégoriser correctement une exception par message" {
-            # Créer des exceptions avec des messages spécifiques
+        It "Devrait catÃ©goriser correctement une exception par message" {
+            # CrÃ©er des exceptions avec des messages spÃ©cifiques
             $permissionMessage = [System.Exception]::new("access denied for user")
             $configurationMessage = [System.Exception]::new("invalid configuration setting")
             $resourceMessage = [System.Exception]::new("file not found: test.txt")
             $dataMessage = [System.Exception]::new("database connection failed")
             $externalMessage = [System.Exception]::new("network timeout occurred")
 
-            # Définir manuellement les mappages de messages pour les tests
+            # DÃ©finir manuellement les mappages de messages pour les tests
             $messageMappings = @{
                 "access denied" = "Permission"
                 "permission denied" = "Permission"
@@ -346,7 +346,7 @@ Describe "Tests des fonctions de gestion d'erreurs" {
                 if ($externalMessage.Message -match $keyword) { $externalCategory = $messageMappings[$keyword]; break }
             }
 
-            # Vérifier que les catégories sont correctes
+            # VÃ©rifier que les catÃ©gories sont correctes
             $permissionCategory | Should -Be "Permission"
             $configurationCategory | Should -Be "Configuration"
             $resourceCategory | Should -Be "Resource"
@@ -354,26 +354,26 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             $externalCategory | Should -Be "External"
         }
 
-        It "Devrait utiliser la catégorie par défaut si aucune correspondance n'est trouvée" {
-            # Créer une exception sans correspondance
+        It "Devrait utiliser la catÃ©gorie par dÃ©faut si aucune correspondance n'est trouvÃ©e" {
+            # CrÃ©er une exception sans correspondance
             $unknownException = [System.Exception]::new("Message sans correspondance")
 
-            # Appeler la fonction avec l'exception et une catégorie par défaut personnalisée
+            # Appeler la fonction avec l'exception et une catÃ©gorie par dÃ©faut personnalisÃ©e
             $category = Get-ExceptionCategory -Exception $unknownException -DefaultCategory "Runtime"
 
-            # Vérifier que la catégorie par défaut a été utilisée
+            # VÃ©rifier que la catÃ©gorie par dÃ©faut a Ã©tÃ© utilisÃ©e
             $category | Should -Be "Runtime"
         }
     }
 
     Context "Tests de la fonction Get-ExceptionSeverity" {
-        It "Devrait déterminer correctement la sévérité d'une exception par type et catégorie" {
-            # Créer différentes exceptions
-            $highSeverityException = [System.Security.SecurityException]::new("Erreur de sécurité")
-            $mediumSeverityException = [System.UnauthorizedAccessException]::new("Accès non autorisé")
+        It "Devrait dÃ©terminer correctement la sÃ©vÃ©ritÃ© d'une exception par type et catÃ©gorie" {
+            # CrÃ©er diffÃ©rentes exceptions
+            $highSeverityException = [System.Security.SecurityException]::new("Erreur de sÃ©curitÃ©")
+            $mediumSeverityException = [System.UnauthorizedAccessException]::new("AccÃ¨s non autorisÃ©")
             $lowSeverityException = [System.IO.PathTooLongException]::new("Chemin trop long")
 
-            # Définir manuellement les sévérités par catégorie pour les tests
+            # DÃ©finir manuellement les sÃ©vÃ©ritÃ©s par catÃ©gorie pour les tests
             $categorySeverities = @{
                 "Permission" = 5
                 "Resource" = 4
@@ -388,22 +388,22 @@ Describe "Tests des fonctions de gestion d'erreurs" {
             # Simuler le comportement de la fonction
             $highSeverity = $categorySeverities["Permission"]
             $mediumSeverity = $categorySeverities["Permission"]
-            $lowSeverity = $categorySeverities["Resource"] - 3  # Simuler une sévérité plus basse
+            $lowSeverity = $categorySeverities["Resource"] - 3  # Simuler une sÃ©vÃ©ritÃ© plus basse
 
-            # Vérifier que les sévérités sont correctes
-            $highSeverity | Should -Be 5  # Sévérité élevée
-            $mediumSeverity | Should -Be 5  # Sévérité élevée pour Permission
-            $lowSeverity | Should -Be 1  # Sévérité faible
+            # VÃ©rifier que les sÃ©vÃ©ritÃ©s sont correctes
+            $highSeverity | Should -Be 5  # SÃ©vÃ©ritÃ© Ã©levÃ©e
+            $mediumSeverity | Should -Be 5  # SÃ©vÃ©ritÃ© Ã©levÃ©e pour Permission
+            $lowSeverity | Should -Be 1  # SÃ©vÃ©ritÃ© faible
         }
 
-        It "Devrait déterminer correctement la sévérité d'une exception par message" {
-            # Créer des exceptions avec des messages spécifiques
+        It "Devrait dÃ©terminer correctement la sÃ©vÃ©ritÃ© d'une exception par message" {
+            # CrÃ©er des exceptions avec des messages spÃ©cifiques
             $criticalMessage = [System.Exception]::new("critical error: system crash")
             $highMessage = [System.Exception]::new("error: operation failed")
             $mediumMessage = [System.Exception]::new("warning: potential problem detected")
             $lowMessage = [System.Exception]::new("notice: minor issue occurred")
 
-            # Définir manuellement les sévérités par mots-clés pour les tests
+            # DÃ©finir manuellement les sÃ©vÃ©ritÃ©s par mots-clÃ©s pour les tests
             $messageSeverities = @{
                 "critical error: system crash" = 5
                 "error: operation failed" = 4
@@ -413,28 +413,28 @@ Describe "Tests des fonctions de gestion d'erreurs" {
 
             # Simuler le comportement de la fonction
             $criticalSeverity = 5  # Critique
-            $highSeverity = 4      # Élevée
+            $highSeverity = 4      # Ã‰levÃ©e
             $mediumSeverity = 3    # Moyenne
             $lowSeverity = 2       # Faible
 
-            # Vérifier que les sévérités sont correctes
+            # VÃ©rifier que les sÃ©vÃ©ritÃ©s sont correctes
             $criticalSeverity | Should -Be 5  # Critique
-            $highSeverity | Should -Be 4  # Élevée
+            $highSeverity | Should -Be 4  # Ã‰levÃ©e
             $mediumSeverity | Should -Be 3  # Moyenne
             $lowSeverity | Should -Be 2  # Faible
         }
 
-        It "Devrait utiliser la sévérité par défaut si aucune correspondance n'est trouvée" {
-            # Créer une exception sans correspondance
-            $unknownException = [System.Exception]::new("Message sans correspondance de sévérité")
+        It "Devrait utiliser la sÃ©vÃ©ritÃ© par dÃ©faut si aucune correspondance n'est trouvÃ©e" {
+            # CrÃ©er une exception sans correspondance
+            $unknownException = [System.Exception]::new("Message sans correspondance de sÃ©vÃ©ritÃ©")
 
-            # Simuler l'appel de la fonction avec une sévérité par défaut personnalisée
+            # Simuler l'appel de la fonction avec une sÃ©vÃ©ritÃ© par dÃ©faut personnalisÃ©e
             $severity = 2
 
-            # Vérifier que la sévérité par défaut a été utilisée
+            # VÃ©rifier que la sÃ©vÃ©ritÃ© par dÃ©faut a Ã©tÃ© utilisÃ©e
             $severity | Should -Be 2
         }
     }
 }
 
-# Les tests seront exécutés par l'appel externe à Invoke-Pester
+# Les tests seront exÃ©cutÃ©s par l'appel externe Ã  Invoke-Pester

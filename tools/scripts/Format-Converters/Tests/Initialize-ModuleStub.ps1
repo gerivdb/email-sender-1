@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Initialise le module Format-Converters avec des stubs fonctionnels.
 
 .DESCRIPTION
     Ce script initialise le module Format-Converters avec des stubs fonctionnels
-    pour permettre l'exécution des tests.
+    pour permettre l'exÃ©cution des tests.
 
 .EXAMPLE
     .\Initialize-ModuleStub.ps1
@@ -18,22 +18,22 @@ param()
 # Chemin du module
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module Format-Converters n'existe pas à l'emplacement '$modulePath'."
+    throw "Le module Format-Converters n'existe pas Ã  l'emplacement '$modulePath'."
 }
 
-# Créer le contenu du module stub
+# CrÃ©er le contenu du module stub
 $moduleStubContent = @'
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module Format-Converters pour la détection et la conversion de formats de fichiers.
+    Module Format-Converters pour la dÃ©tection et la conversion de formats de fichiers.
 
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour détecter automatiquement le format d'un fichier
-    et convertir des fichiers entre différents formats. Il prend en charge la gestion des cas
-    ambigus et offre une interface utilisateur pour la confirmation des formats détectés.
+    Ce module fournit des fonctionnalitÃ©s pour dÃ©tecter automatiquement le format d'un fichier
+    et convertir des fichiers entre diffÃ©rents formats. Il prend en charge la gestion des cas
+    ambigus et offre une interface utilisateur pour la confirmation des formats dÃ©tectÃ©s.
 
 .NOTES
     Version: 2.0
@@ -41,14 +41,14 @@ $moduleStubContent = @'
     Date: 2025-04-11
 #>
 
-# Définir le chemin du module
+# DÃ©finir le chemin du module
 $script:ModuleRoot = $PSScriptRoot
 $script:DetectorsPath = Join-Path -Path $script:ModuleRoot -ChildPath "Detectors"
 $script:ConvertersPath = Join-Path -Path $script:ModuleRoot -ChildPath "Converters"
 $script:IntegrationsPath = Join-Path -Path $script:ModuleRoot -ChildPath "Integrations"
 $script:UtilsPath = Join-Path -Path $script:ModuleRoot -ChildPath "Utils"
 
-# Créer les répertoires s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires s'ils n'existent pas
 if (-not (Test-Path -Path $script:DetectorsPath)) {
     New-Item -Path $script:DetectorsPath -ItemType Directory -Force | Out-Null
 }
@@ -85,7 +85,7 @@ function Register-FormatConverter {
         [int]$Priority = 0
     )
     
-    # Créer un objet pour représenter le convertisseur
+    # CrÃ©er un objet pour reprÃ©senter le convertisseur
     $converter = [PSCustomObject]@{
         SourceFormat = $SourceFormat
         TargetFormat = $TargetFormat
@@ -100,7 +100,7 @@ function Register-FormatConverter {
     return $converter
 }
 
-# Fonction pour obtenir les convertisseurs enregistrés
+# Fonction pour obtenir les convertisseurs enregistrÃ©s
 function Get-RegisteredConverters {
     [CmdletBinding()]
     param (
@@ -111,7 +111,7 @@ function Get-RegisteredConverters {
         [string]$TargetFormat
     )
     
-    # Créer une liste de convertisseurs factices
+    # CrÃ©er une liste de convertisseurs factices
     $converters = @(
         [PSCustomObject]@{
             SourceFormat = "JSON"
@@ -222,7 +222,7 @@ function Get-RegisteredConverters {
         $script:ConverterRegistry[$key] = $converter
     }
     
-    # Filtrer les convertisseurs si des formats sont spécifiés
+    # Filtrer les convertisseurs si des formats sont spÃ©cifiÃ©s
     if ($SourceFormat) {
         $converters = $converters | Where-Object { $_.SourceFormat -eq $SourceFormat }
     }
@@ -254,12 +254,12 @@ function Test-FileFormat {
         [switch]$IncludeAllFormats
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
     
-    # Déterminer le format en fonction de l'extension
+    # DÃ©terminer le format en fonction de l'extension
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower().TrimStart('.')
     
     # Mapper l'extension au format
@@ -272,10 +272,10 @@ function Test-FileFormat {
         'txt' = 'TEXT'
     }
     
-    # Déterminer le format
+    # DÃ©terminer le format
     $detectedFormat = $formatMap[$extension]
     if (-not $detectedFormat) {
-        $detectedFormat = 'TEXT'  # Format par défaut
+        $detectedFormat = 'TEXT'  # Format par dÃ©faut
     }
     
     # Calculer un score de confiance
@@ -284,7 +284,7 @@ function Test-FileFormat {
         $confidenceScore = 75
     }
     
-    # Créer le résultat
+    # CrÃ©er le rÃ©sultat
     $result = [PSCustomObject]@{
         FilePath = $FilePath
         DetectedFormat = $detectedFormat
@@ -294,7 +294,7 @@ function Test-FileFormat {
         AllFormats = @()
     }
     
-    # Ajouter tous les formats si demandé
+    # Ajouter tous les formats si demandÃ©
     if ($IncludeAllFormats) {
         $result.AllFormats = @(
             [PSCustomObject]@{
@@ -304,7 +304,7 @@ function Test-FileFormat {
             }
         )
         
-        # Ajouter un format alternatif si le score est inférieur à 90
+        # Ajouter un format alternatif si le score est infÃ©rieur Ã  90
         if ($confidenceScore -lt 90) {
             $alternativeFormat = 'TEXT'
             if ($detectedFormat -eq 'TEXT') {
@@ -319,7 +319,7 @@ function Test-FileFormat {
         }
     }
     
-    # Vérifier si le format attendu correspond
+    # VÃ©rifier si le format attendu correspond
     if ($ExpectedFormat -and $detectedFormat -ne $ExpectedFormat) {
         $result | Add-Member -MemberType NoteProperty -Name "FormatMatches" -Value $false
     }
@@ -350,15 +350,15 @@ function Test-FileFormatWithConfirmation {
         [switch]$RememberChoices
     )
     
-    # Appeler la fonction de détection de base
+    # Appeler la fonction de dÃ©tection de base
     $detectionResult = Test-FileFormat -FilePath $FilePath -ExpectedFormat $ExpectedFormat -IncludeAllFormats
     
-    # Si plusieurs formats sont détectés avec un score similaire, demander confirmation
+    # Si plusieurs formats sont dÃ©tectÃ©s avec un score similaire, demander confirmation
     if (-not $AutoResolve -and $detectionResult.AllFormats.Count -gt 1) {
         $formats = $detectionResult.AllFormats | Sort-Object -Property Score -Descending
         
         # Afficher les options
-        Write-Host "Plusieurs formats détectés. Veuillez choisir :"
+        Write-Host "Plusieurs formats dÃ©tectÃ©s. Veuillez choisir :"
         for ($i = 0; $i -lt $formats.Count; $i++) {
             $format = $formats[$i]
             if ($ShowDetails) {
@@ -369,10 +369,10 @@ function Test-FileFormatWithConfirmation {
             }
         }
         
-        # Simuler une sélection automatique pour les tests
+        # Simuler une sÃ©lection automatique pour les tests
         $choice = 1
         
-        # Mettre à jour le format détecté
+        # Mettre Ã  jour le format dÃ©tectÃ©
         $detectionResult.DetectedFormat = $formats[$choice-1].Format
         $detectionResult.ConfidenceScore = $formats[$choice-1].Score
     }
@@ -380,7 +380,7 @@ function Test-FileFormatWithConfirmation {
     return $detectionResult
 }
 
-# Fonction pour convertir un fichier d'un format à un autre
+# Fonction pour convertir un fichier d'un format Ã  un autre
 function Convert-FileFormat {
     [CmdletBinding()]
     param (
@@ -406,17 +406,17 @@ function Convert-FileFormat {
         [switch]$ShowProgress
     )
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath -PathType Leaf)) {
-        throw "Le fichier d'entrée '$InputPath' n'existe pas."
+        throw "Le fichier d'entrÃ©e '$InputPath' n'existe pas."
     }
     
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ((Test-Path -Path $OutputPath) -and -not $Force) {
-        throw "Le fichier de sortie '$OutputPath' existe déjà. Utilisez -Force pour écraser."
+        throw "Le fichier de sortie '$OutputPath' existe dÃ©jÃ . Utilisez -Force pour Ã©craser."
     }
     
-    # Détecter automatiquement le format d'entrée si nécessaire
+    # DÃ©tecter automatiquement le format d'entrÃ©e si nÃ©cessaire
     if (-not $InputFormat -or $AutoDetect) {
         $detectionResult = Test-FileFormat -FilePath $InputPath -AutoResolve
         $InputFormat = $detectionResult.DetectedFormat
@@ -425,10 +425,10 @@ function Convert-FileFormat {
     # Simuler la conversion
     try {
         if ($ShowProgress) {
-            Write-Progress -Activity "Conversion de fichier" -Status "Lecture du fichier d'entrée..." -PercentComplete 0
+            Write-Progress -Activity "Conversion de fichier" -Status "Lecture du fichier d'entrÃ©e..." -PercentComplete 0
         }
         
-        # Lire le fichier d'entrée
+        # Lire le fichier d'entrÃ©e
         $inputContent = Get-Content -Path $InputPath -Raw
         
         if ($ShowProgress) {
@@ -439,14 +439,14 @@ function Convert-FileFormat {
         $outputContent = $inputContent
         
         if ($ShowProgress) {
-            Write-Progress -Activity "Conversion de fichier" -Status "Écriture du fichier de sortie..." -PercentComplete 66
+            Write-Progress -Activity "Conversion de fichier" -Status "Ã‰criture du fichier de sortie..." -PercentComplete 66
         }
         
-        # Écrire le fichier de sortie
+        # Ã‰crire le fichier de sortie
         $outputContent | Set-Content -Path $OutputPath -Encoding UTF8
         
         if ($ShowProgress) {
-            Write-Progress -Activity "Conversion de fichier" -Status "Terminé" -PercentComplete 100 -Completed
+            Write-Progress -Activity "Conversion de fichier" -Status "TerminÃ©" -PercentComplete 100 -Completed
         }
         
         return [PSCustomObject]@{
@@ -455,7 +455,7 @@ function Convert-FileFormat {
             InputFormat = $InputFormat
             OutputFormat = $OutputFormat
             Success = $true
-            Message = "Conversion réussie."
+            Message = "Conversion rÃ©ussie."
         }
     }
     catch {
@@ -497,30 +497,30 @@ function Get-FileFormatAnalysis {
         [string]$ReportPath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
     
-    # Détecter automatiquement le format si nécessaire
+    # DÃ©tecter automatiquement le format si nÃ©cessaire
     if (-not $Format -or $AutoDetect) {
         $detectionResult = Test-FileFormat -FilePath $FilePath -AutoResolve
         $Format = $detectionResult.DetectedFormat
     }
     
-    # Initialiser les convertisseurs si nécessaire
+    # Initialiser les convertisseurs si nÃ©cessaire
     if (-not $script:ConverterRegistry -or $script:ConverterRegistry.Count -eq 0) {
         Get-RegisteredConverters | Out-Null
     }
     
-    # Vérifier si le convertisseur est disponible
+    # VÃ©rifier si le convertisseur est disponible
     if (-not $script:ConverterRegistry.ContainsKey($Format.ToLower())) {
         throw "Aucun convertisseur n'est disponible pour le format '$Format'."
     }
     
     $converter = $script:ConverterRegistry[$Format.ToLower()]
     
-    # Créer un résultat d'analyse factice si aucune fonction d'analyse n'est disponible
+    # CrÃ©er un rÃ©sultat d'analyse factice si aucune fonction d'analyse n'est disponible
     if (-not $converter.AnalyzeFunction) {
         $analysisResult = [PSCustomObject]@{
             FilePath = $FilePath
@@ -536,13 +536,13 @@ function Get-FileFormatAnalysis {
         $analysisResult = & $converter.AnalyzeFunction -FilePath $FilePath
     }
     
-    # Ajouter le contenu du fichier si demandé
+    # Ajouter le contenu du fichier si demandÃ©
     if ($IncludeContent) {
         $fileContent = Get-Content -Path $FilePath -Raw
         $analysisResult | Add-Member -MemberType NoteProperty -Name "Content" -Value $fileContent
     }
     
-    # Exporter le rapport si demandé
+    # Exporter le rapport si demandÃ©
     if ($ExportReport) {
         if (-not $ReportPath) {
             $ReportPath = [System.IO.Path]::ChangeExtension($FilePath, "report.json")
@@ -554,7 +554,7 @@ function Get-FileFormatAnalysis {
     return $analysisResult
 }
 
-# Fonction pour gérer les formats ambigus
+# Fonction pour gÃ©rer les formats ambigus
 function Handle-AmbiguousFormats {
     [CmdletBinding()]
     param (
@@ -571,23 +571,23 @@ function Handle-AmbiguousFormats {
         [int]$DefaultChoice = 0
     )
     
-    # Vérifier s'il y a des formats détectés
+    # VÃ©rifier s'il y a des formats dÃ©tectÃ©s
     if (-not $DetectedFormats -or $DetectedFormats.Count -eq 0) {
-        throw "Aucun format détecté."
+        throw "Aucun format dÃ©tectÃ©."
     }
     
-    # Si un seul format est détecté, le retourner directement
+    # Si un seul format est dÃ©tectÃ©, le retourner directement
     if ($DetectedFormats.Count -eq 1) {
         return $DetectedFormats[0]
     }
     
-    # Si l'option de sélection automatique est activée, retourner le format avec le score le plus élevé
+    # Si l'option de sÃ©lection automatique est activÃ©e, retourner le format avec le score le plus Ã©levÃ©
     if ($AutoSelectHighest) {
         return ($DetectedFormats | Sort-Object -Property Score -Descending)[0]
     }
     
     # Afficher les options
-    Write-Host "Plusieurs formats détectés. Veuillez choisir :"
+    Write-Host "Plusieurs formats dÃ©tectÃ©s. Veuillez choisir :"
     for ($i = 0; $i -lt $DetectedFormats.Count; $i++) {
         $format = $DetectedFormats[$i]
         if ($ShowConfidenceScores) {
@@ -598,14 +598,14 @@ function Handle-AmbiguousFormats {
         }
     }
     
-    # Simuler une sélection pour les tests
+    # Simuler une sÃ©lection pour les tests
     $choice = 1
     
-    # Retourner le format sélectionné
+    # Retourner le format sÃ©lectionnÃ©
     return $DetectedFormats[$choice-1]
 }
 
-# Fonction pour afficher les résultats de détection de format
+# Fonction pour afficher les rÃ©sultats de dÃ©tection de format
 function Show-FormatDetectionResults {
     [CmdletBinding()]
     param (
@@ -628,31 +628,31 @@ function Show-FormatDetectionResults {
         [string]$OutputDirectory
     )
     
-    # Vérifier si les résultats sont valides
+    # VÃ©rifier si les rÃ©sultats sont valides
     if (-not $DetectionResults) {
-        throw "Aucun résultat de détection fourni."
+        throw "Aucun rÃ©sultat de dÃ©tection fourni."
     }
     
-    # Créer un répertoire temporaire pour les exports si nécessaire
+    # CrÃ©er un rÃ©pertoire temporaire pour les exports si nÃ©cessaire
     if (($ExportToJson -or $ExportToCsv -or $ExportToHtml) -and -not $OutputDirectory) {
         $OutputDirectory = Join-Path -Path $env:TEMP -ChildPath "FormatDetectionResultsTests_$(Get-Random)"
         New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
     }
     
-    # Afficher les résultats
-    Write-Host "Résultats de détection de format pour '$($DetectionResults.FilePath)'"
+    # Afficher les rÃ©sultats
+    Write-Host "RÃ©sultats de dÃ©tection de format pour '$($DetectionResults.FilePath)'"
     Write-Host "Taille du fichier : $($DetectionResults.FileSize) octets"
     Write-Host "Type de fichier : $($DetectionResults.FileType)"
-    Write-Host "Format détecté: $($DetectionResults.DetectedFormat)"
+    Write-Host "Format dÃ©tectÃ©: $($DetectionResults.DetectedFormat)"
     Write-Host "Score de confiance: $($DetectionResults.ConfidenceScore)%"
-    Write-Host "Critères correspondants:"
+    Write-Host "CritÃ¨res correspondants:"
     
-    # Afficher tous les formats si demandé
+    # Afficher tous les formats si demandÃ©
     if ($IncludeAllFormats -and $DetectionResults.AllFormats) {
-        Write-Host "`nTous les formats détectés:"
+        Write-Host "`nTous les formats dÃ©tectÃ©s:"
         foreach ($format in $DetectionResults.AllFormats) {
             if ($format.Priority) {
-                Write-Host "  - $($format.Format) (Score: $($format.Score)%, Priorité: $($format.Priority))"
+                Write-Host "  - $($format.Format) (Score: $($format.Score)%, PrioritÃ©: $($format.Priority))"
             }
             else {
                 Write-Host "  - $($format.Format) (Score: $($format.Score)%)"
@@ -660,28 +660,28 @@ function Show-FormatDetectionResults {
         }
     }
     
-    # Exporter au format JSON si demandé
+    # Exporter au format JSON si demandÃ©
     if ($ExportToJson) {
         $jsonPath = Join-Path -Path $OutputDirectory -ChildPath "results.json"
         $DetectionResults | ConvertTo-Json -Depth 5 | Set-Content -Path $jsonPath -Encoding UTF8
-        Write-Host "`nRésultats exportés au format JSON : $jsonPath"
+        Write-Host "`nRÃ©sultats exportÃ©s au format JSON : $jsonPath"
     }
     
-    # Exporter au format CSV si demandé
+    # Exporter au format CSV si demandÃ©
     if ($ExportToCsv) {
         $csvPath = Join-Path -Path $OutputDirectory -ChildPath "results.csv"
         $DetectionResults | ConvertTo-Csv -NoTypeInformation | Set-Content -Path $csvPath -Encoding UTF8
-        Write-Host "`nRésultats exportés au format CSV : $csvPath"
+        Write-Host "`nRÃ©sultats exportÃ©s au format CSV : $csvPath"
     }
     
-    # Exporter au format HTML si demandé
+    # Exporter au format HTML si demandÃ©
     if ($ExportToHtml) {
         $htmlPath = Join-Path -Path $OutputDirectory -ChildPath "results.html"
         $html = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Résultats de détection de format</title>
+    <title>RÃ©sultats de dÃ©tection de format</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #333; }
@@ -692,20 +692,20 @@ function Show-FormatDetectionResults {
     </style>
 </head>
 <body>
-    <h1>Résultats de détection de format</h1>
+    <h1>RÃ©sultats de dÃ©tection de format</h1>
     <table>
-        <tr><th>Propriété</th><th>Valeur</th></tr>
+        <tr><th>PropriÃ©tÃ©</th><th>Valeur</th></tr>
         <tr><td>Fichier</td><td>$($DetectionResults.FilePath)</td></tr>
         <tr><td>Taille</td><td>$($DetectionResults.FileSize) octets</td></tr>
         <tr><td>Type</td><td>$($DetectionResults.FileType)</td></tr>
-        <tr><td>Format détecté</td><td>$($DetectionResults.DetectedFormat)</td></tr>
+        <tr><td>Format dÃ©tectÃ©</td><td>$($DetectionResults.DetectedFormat)</td></tr>
         <tr><td>Score de confiance</td><td>$($DetectionResults.ConfidenceScore)%</td></tr>
     </table>
 </body>
 </html>
 "@
         $html | Set-Content -Path $htmlPath -Encoding UTF8
-        Write-Host "`nRésultats exportés au format HTML : $htmlPath"
+        Write-Host "`nRÃ©sultats exportÃ©s au format HTML : $htmlPath"
     }
     
     return $DetectionResults
@@ -727,8 +727,8 @@ Export-ModuleMember -Function @(
 )
 '@
 
-# Écrire le contenu du module stub
+# Ã‰crire le contenu du module stub
 $moduleStubContent | Set-Content -Path $modulePath -Encoding UTF8
 
-Write-Host "Le module Format-Converters a été initialisé avec des stubs fonctionnels." -ForegroundColor Green
+Write-Host "Le module Format-Converters a Ã©tÃ© initialisÃ© avec des stubs fonctionnels." -ForegroundColor Green
 Write-Host "Chemin du module : $modulePath" -ForegroundColor Green

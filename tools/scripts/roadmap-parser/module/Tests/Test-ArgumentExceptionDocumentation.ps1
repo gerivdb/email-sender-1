@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation d'ArgumentException et ses dérivées.
+    Tests pour valider la documentation d'ArgumentException et ses dÃ©rivÃ©es.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation d'ArgumentException et ses dérivées.
+    fournies dans la documentation d'ArgumentException et ses dÃ©rivÃ©es.
 
 .NOTES
     Version:        1.0
@@ -14,19 +14,19 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
+# DÃ©finir les tests
+Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
     Context "ArgumentException" {
-        It "Devrait avoir la propriété ParamName" {
+        It "Devrait avoir la propriÃ©tÃ© ParamName" {
             $exception = [System.ArgumentException]::new("Message de test", "TestParam")
             $exception.ParamName | Should -Be "TestParam"
         }
         
-        It "Devrait permettre de spécifier un message et un nom de paramètre" {
+        It "Devrait permettre de spÃ©cifier un message et un nom de paramÃ¨tre" {
             $exception = [System.ArgumentException]::new("Message de test", "TestParam")
             $exception.Message | Should -Match "Message de test"
             $exception.ParamName | Should -Be "TestParam"
@@ -64,7 +64,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 )
                 
                 if ($A -lt 0 -or $B -lt 0) {
-                    throw [System.ArgumentException]::new("Les nombres doivent être positifs", 
+                    throw [System.ArgumentException]::new("Les nombres doivent Ãªtre positifs", 
                         if ($A -lt 0) { "A" } else { "B" })
                 }
                 
@@ -77,7 +77,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Add-Numbers -A -5 -B 10
             }
             catch {
-                $_.Exception.Message | Should -Match "Les nombres doivent être positifs"
+                $_.Exception.Message | Should -Match "Les nombres doivent Ãªtre positifs"
                 $_.Exception.ParamName | Should -Be "A"
             }
             
@@ -87,7 +87,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Add-Numbers -A 5 -B -10
             }
             catch {
-                $_.Exception.Message | Should -Match "Les nombres doivent être positifs"
+                $_.Exception.Message | Should -Match "Les nombres doivent Ãªtre positifs"
                 $_.Exception.ParamName | Should -Be "B"
             }
             
@@ -96,33 +96,33 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
     }
     
     Context "ArgumentNullException" {
-        It "Devrait être une sous-classe d'ArgumentException" {
+        It "Devrait Ãªtre une sous-classe d'ArgumentException" {
             [System.ArgumentNullException] | Should -BeOfType [System.Type]
             [System.ArgumentNullException].IsSubclassOf([System.ArgumentException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un nom de paramètre" {
+        It "Devrait permettre de spÃ©cifier un nom de paramÃ¨tre" {
             $exception = [System.ArgumentNullException]::new("TestParam")
             $exception.ParamName | Should -Be "TestParam"
         }
         
-        It "Devrait permettre de spécifier un nom de paramètre et un message" {
+        It "Devrait permettre de spÃ©cifier un nom de paramÃ¨tre et un message" {
             $exception = [System.ArgumentNullException]::new("TestParam", "Message de test")
             $exception.ParamName | Should -Be "TestParam"
             $exception.Message | Should -Match "Message de test"
         }
         
-        It "Exemple 1: Devrait vérifier un paramètre null" {
+        It "Exemple 1: Devrait vÃ©rifier un paramÃ¨tre null" {
             function Process-Data {
                 param (
                     [object]$Data
                 )
                 
                 if ($null -eq $Data) {
-                    throw [System.ArgumentNullException]::new("Data", "Les données ne peuvent pas être nulles")
+                    throw [System.ArgumentNullException]::new("Data", "Les donnÃ©es ne peuvent pas Ãªtre nulles")
                 }
                 
-                return "Traitement de $($Data.GetType().Name) réussi"
+                return "Traitement de $($Data.GetType().Name) rÃ©ussi"
             }
             
             { Process-Data -Data $null } | Should -Throw -ExceptionType [System.ArgumentNullException]
@@ -131,14 +131,14 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Process-Data -Data $null
             }
             catch {
-                $_.Exception.Message | Should -Match "Les données ne peuvent pas être nulles"
+                $_.Exception.Message | Should -Match "Les donnÃ©es ne peuvent pas Ãªtre nulles"
                 $_.Exception.ParamName | Should -Be "Data"
             }
             
-            Process-Data -Data "Test" | Should -Be "Traitement de String réussi"
+            Process-Data -Data "Test" | Should -Be "Traitement de String rÃ©ussi"
         }
         
-        It "Exemple 2: Devrait vérifier une propriété null" {
+        It "Exemple 2: Devrait vÃ©rifier une propriÃ©tÃ© null" {
             function Process-User {
                 param (
                     [PSCustomObject]$User
@@ -149,10 +149,10 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 }
                 
                 if ($null -eq $User.Name) {
-                    throw [System.ArgumentNullException]::new("User.Name", "Le nom de l'utilisateur ne peut pas être null")
+                    throw [System.ArgumentNullException]::new("User.Name", "Le nom de l'utilisateur ne peut pas Ãªtre null")
                 }
                 
-                return "Utilisateur traité: $($User.Name)"
+                return "Utilisateur traitÃ©: $($User.Name)"
             }
             
             $userWithNullName = [PSCustomObject]@{
@@ -167,7 +167,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Process-User -User $userWithNullName
             }
             catch {
-                $_.Exception.Message | Should -Match "Le nom de l'utilisateur ne peut pas être null"
+                $_.Exception.Message | Should -Match "Le nom de l'utilisateur ne peut pas Ãªtre null"
                 $_.Exception.ParamName | Should -Be "User.Name"
             }
             
@@ -177,34 +177,34 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Email = "user@example.com"
             }
             
-            Process-User -User $validUser | Should -Be "Utilisateur traité: John Doe"
+            Process-User -User $validUser | Should -Be "Utilisateur traitÃ©: John Doe"
         }
     }
     
     Context "ArgumentOutOfRangeException" {
-        It "Devrait être une sous-classe d'ArgumentException" {
+        It "Devrait Ãªtre une sous-classe d'ArgumentException" {
             [System.ArgumentOutOfRangeException] | Should -BeOfType [System.Type]
             [System.ArgumentOutOfRangeException].IsSubclassOf([System.ArgumentException]) | Should -Be $true
         }
         
-        It "Devrait avoir les propriétés ParamName et ActualValue" {
+        It "Devrait avoir les propriÃ©tÃ©s ParamName et ActualValue" {
             $exception = [System.ArgumentOutOfRangeException]::new("TestParam", 42, "Message de test")
             $exception.ParamName | Should -Be "TestParam"
             $exception.ActualValue | Should -Be 42
             $exception.Message | Should -Match "Message de test"
         }
         
-        It "Exemple 1: Devrait vérifier une plage numérique" {
+        It "Exemple 1: Devrait vÃ©rifier une plage numÃ©rique" {
             function Set-Age {
                 param (
                     [int]$Age
                 )
                 
                 if ($Age -lt 0 -or $Age -gt 120) {
-                    throw [System.ArgumentOutOfRangeException]::new("Age", $Age, "L'âge doit être compris entre 0 et 120")
+                    throw [System.ArgumentOutOfRangeException]::new("Age", $Age, "L'Ã¢ge doit Ãªtre compris entre 0 et 120")
                 }
                 
-                return "Âge défini à $Age"
+                return "Ã‚ge dÃ©fini Ã  $Age"
             }
             
             { Set-Age -Age 150 } | Should -Throw -ExceptionType [System.ArgumentOutOfRangeException]
@@ -214,15 +214,15 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Set-Age -Age 150
             }
             catch {
-                $_.Exception.Message | Should -Match "L'âge doit être compris entre 0 et 120"
+                $_.Exception.Message | Should -Match "L'Ã¢ge doit Ãªtre compris entre 0 et 120"
                 $_.Exception.ParamName | Should -Be "Age"
                 $_.Exception.ActualValue | Should -Be 150
             }
             
-            Set-Age -Age 30 | Should -Be "Âge défini à 30"
+            Set-Age -Age 30 | Should -Be "Ã‚ge dÃ©fini Ã  30"
         }
         
-        It "Exemple 2: Devrait vérifier un index" {
+        It "Exemple 2: Devrait vÃ©rifier un index" {
             function Get-Element {
                 param (
                     [array]$Array,
@@ -231,7 +231,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 
                 if ($Index -lt 0 -or $Index -ge $Array.Length) {
                     throw [System.ArgumentOutOfRangeException]::new("Index", $Index, 
-                        "L'index doit être compris entre 0 et $($Array.Length - 1)")
+                        "L'index doit Ãªtre compris entre 0 et $($Array.Length - 1)")
                 }
                 
                 return $Array[$Index]
@@ -246,7 +246,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                 Get-Element -Array $array -Index 10
             }
             catch {
-                $_.Exception.Message | Should -Match "L'index doit être compris entre 0 et 4"
+                $_.Exception.Message | Should -Match "L'index doit Ãªtre compris entre 0 et 4"
                 $_.Exception.ParamName | Should -Be "Index"
                 $_.Exception.ActualValue | Should -Be 10
             }
@@ -274,7 +274,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                     [string]$PatternParam
                 )
                 
-                return "Tous les paramètres sont valides"
+                return "Tous les paramÃ¨tres sont valides"
             }
             
             { Test-ValidationAttributes -NotNullParam $null } | Should -Throw
@@ -283,12 +283,12 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
             { Test-ValidationAttributes -NotNullParam "Valid" -PatternParam "Invalid!" } | Should -Throw
             
             Test-ValidationAttributes -NotNullParam "Valid" -RangeParam 50 -OptionParam "Option1" -PatternParam "Valid123" | 
-                Should -Be "Tous les paramètres sont valides"
+                Should -Be "Tous les paramÃ¨tres sont valides"
         }
     }
     
     Context "Interception et gestion en PowerShell" {
-        It "Devrait intercepter spécifiquement les exceptions liées aux arguments" {
+        It "Devrait intercepter spÃ©cifiquement les exceptions liÃ©es aux arguments" {
             function Test-ExceptionHandling {
                 param (
                     [array]$Array,
@@ -313,7 +313,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
                     return "Erreur: Index hors limites ($Index)"
                 }
                 catch [System.ArgumentException] {
-                    return "Erreur d'argument générique"
+                    return "Erreur d'argument gÃ©nÃ©rique"
                 }
                 catch {
                     return "Erreur inconnue"
@@ -327,5 +327,5 @@ Describe "Tests de la documentation d'ArgumentException et ses dérivées" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

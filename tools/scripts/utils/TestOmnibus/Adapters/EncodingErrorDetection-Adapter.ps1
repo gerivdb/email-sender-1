@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Adaptateur TestOmnibus pour les tests de détection des erreurs d'encodage.
+    Adaptateur TestOmnibus pour les tests de dÃ©tection des erreurs d'encodage.
 .DESCRIPTION
-    Cet adaptateur permet d'exécuter les tests de détection des erreurs d'encodage
-    dans le cadre de TestOmnibus, en utilisant les mocks nécessaires.
+    Cet adaptateur permet d'exÃ©cuter les tests de dÃ©tection des erreurs d'encodage
+    dans le cadre de TestOmnibus, en utilisant les mocks nÃ©cessaires.
 .NOTES
     Auteur: Augment Agent
     Date: 2025-04-15
@@ -26,14 +26,14 @@ function Invoke-EncodingErrorDetectionTests {
         [switch]$ShowDetailedResults
     )
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Importer Pester si nécessaire
+    # Importer Pester si nÃ©cessaire
     if (-not (Get-Module -Name Pester -ListAvailable)) {
-        Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+        Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
 
@@ -45,21 +45,21 @@ function Invoke-EncodingErrorDetectionTests {
     $pesterConfig.TestResult.Enabled = $true
     $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "EncodingErrorDetection-TestResults.xml"
 
-    # Exécuter les tests
-    Write-Host "Exécution des tests de détection des erreurs d'encodage..." -ForegroundColor Cyan
+    # ExÃ©cuter les tests
+    Write-Host "ExÃ©cution des tests de dÃ©tection des erreurs d'encodage..." -ForegroundColor Cyan
     $results = Invoke-Pester -Configuration $pesterConfig
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtmlReport) {
         $reportPath = Join-Path -Path $OutputPath -ChildPath "EncodingErrorDetection-TestReport.html"
         
-        # Créer un rapport HTML simple
+        # CrÃ©er un rapport HTML simple
         $htmlReport = @"
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Rapport de tests - Détection des erreurs d'encodage</title>
+    <title>Rapport de tests - DÃ©tection des erreurs d'encodage</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #333; }
@@ -77,22 +77,22 @@ function Invoke-EncodingErrorDetectionTests {
     </style>
 </head>
 <body>
-    <h1>Rapport de tests - Détection des erreurs d'encodage</h1>
+    <h1>Rapport de tests - DÃ©tection des erreurs d'encodage</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés : $($results.TotalCount)</p>
-        <p>Tests réussis : <span class="success">$($results.PassedCount)</span></p>
-        <p>Tests échoués : <span class="failure">$($results.FailedCount)</span></p>
-        <p>Durée totale : $($results.Duration.TotalSeconds) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s : $($results.TotalCount)</p>
+        <p>Tests rÃ©ussis : <span class="success">$($results.PassedCount)</span></p>
+        <p>Tests Ã©chouÃ©s : <span class="failure">$($results.FailedCount)</span></p>
+        <p>DurÃ©e totale : $($results.Duration.TotalSeconds) secondes</p>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom du test</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
@@ -115,17 +115,17 @@ function Invoke-EncodingErrorDetectionTests {
 
         # Enregistrer le rapport HTML
         $htmlReport | Out-File -FilePath $reportPath -Encoding utf8
-        Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     }
 
-    # Afficher un résumé des résultats
-    Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-    Write-Host "Tests exécutés : $($results.TotalCount)" -ForegroundColor White
-    Write-Host "Tests réussis : $($results.PassedCount)" -ForegroundColor Green
-    Write-Host "Tests échoués : $($results.FailedCount)" -ForegroundColor Red
-    Write-Host "Durée totale : $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
+    Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+    Write-Host "Tests exÃ©cutÃ©s : $($results.TotalCount)" -ForegroundColor White
+    Write-Host "Tests rÃ©ussis : $($results.PassedCount)" -ForegroundColor Green
+    Write-Host "Tests Ã©chouÃ©s : $($results.FailedCount)" -ForegroundColor Red
+    Write-Host "DurÃ©e totale : $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return [PSCustomObject]@{
         Success     = $results.FailedCount -eq 0
         TestsRun    = $results.TotalCount

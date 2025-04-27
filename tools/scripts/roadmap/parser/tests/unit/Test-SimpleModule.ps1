@@ -1,4 +1,4 @@
-# Test-SimpleModule.ps1
+﻿# Test-SimpleModule.ps1
 # Script pour tester l'importation d'un module simple
 
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "SimpleModule.psm1"

@@ -1,6 +1,6 @@
-# Scripts d'organisation
+﻿# Scripts d'organisation
 
-Ce répertoire contient des scripts pour organiser les fichiers et dossiers du projet.
+Ce rÃ©pertoire contient des scripts pour organiser les fichiers et dossiers du projet.
 
 ## Utilisation avec Hygen
 
@@ -10,6 +10,6 @@ hygen maintenance organize
 
 ## Bonnes pratiques
 
-1. Toujours exécuter les scripts en mode simulation (`-DryRun`) avant de les exécuter réellement
-2. Créer des sauvegardes avant d'effectuer des opérations potentiellement destructives
-3. Journaliser toutes les actions effectuées
+1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement
+2. CrÃ©er des sauvegardes avant d'effectuer des opÃ©rations potentiellement destructives
+3. Journaliser toutes les actions effectuÃ©es

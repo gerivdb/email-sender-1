@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Initialize-PRCachePersistence.ps1.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour le script Initialize-PRCachePersistence.ps1
-    qui initialise un système de cache persistant pour l'analyse des pull requests.
+    qui initialise un systÃ¨me de cache persistant pour l'analyse des pull requests.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Requires: Pester v5.0+, PRAnalysisCache.psm1
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Initialize-PRCachePersistence.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Script Initialize-PRCachePersistence.ps1 non trouvé à l'emplacement: $scriptPath"
+    throw "Script Initialize-PRCachePersistence.ps1 non trouvÃ© Ã  l'emplacement: $scriptPath"
 }
 
 # Chemin du module de cache
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module PRAnalysisCache.psm1 non trouvé à l'emplacement: $modulePath"
+    throw "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $modulePath"
 }
 
 # Importer le module
@@ -39,12 +39,12 @@ Import-Module $modulePath -Force
 # Variables globales pour les tests
 $script:testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCachePersistence"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 BeforeAll {
-    # Créer le répertoire de cache de test
+    # CrÃ©er le rÃ©pertoire de cache de test
     New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
-    # Fonction pour exécuter le script avec des paramètres
+    # Fonction pour exÃ©cuter le script avec des paramÃ¨tres
     function Invoke-InitializeScript {
         param(
             [string]$CachePath,
@@ -71,14 +71,14 @@ BeforeAll {
 
 Describe "Initialize-PRCachePersistence Script Tests" {
     Context "Script Execution" {
-        It "Le script s'exécute sans erreur avec les paramètres par défaut" {
+        It "Le script s'exÃ©cute sans erreur avec les paramÃ¨tres par dÃ©faut" {
             # Act & Assert
             { Invoke-InitializeScript -CachePath $script:testCachePath } | Should -Not -Throw
         }
     }
 
     Context "Cache Initialization" {
-        It "Crée un nouveau cache si le répertoire n'existe pas" {
+        It "CrÃ©e un nouveau cache si le rÃ©pertoire n'existe pas" {
             # Arrange
             $newCachePath = Join-Path -Path $env:TEMP -ChildPath "NewCache"
             Remove-Item -Path $newCachePath -Recurse -Force -ErrorAction SilentlyContinue
@@ -92,12 +92,12 @@ Describe "Initialize-PRCachePersistence Script Tests" {
             Test-Path -Path (Join-Path -Path $newCachePath -ChildPath "cache_config.json") | Should -Be $true
         }
 
-        It "Utilise le cache existant si le répertoire existe déjà" {
+        It "Utilise le cache existant si le rÃ©pertoire existe dÃ©jÃ " {
             # Arrange
             $existingCachePath = Join-Path -Path $env:TEMP -ChildPath "ExistingCache"
             New-Item -Path $existingCachePath -ItemType Directory -Force | Out-Null
 
-            # Créer une configuration de cache
+            # CrÃ©er une configuration de cache
             $cacheConfig = @{
                 Name              = "PRAnalysisCache"
                 CachePath         = $existingCachePath
@@ -117,12 +117,12 @@ Describe "Initialize-PRCachePersistence Script Tests" {
             $cache | Should -Not -BeNullOrEmpty
         }
 
-        It "Réinitialise le cache existant si Force est spécifié" {
+        It "RÃ©initialise le cache existant si Force est spÃ©cifiÃ©" {
             # Arrange
             $resetCachePath = Join-Path -Path $env:TEMP -ChildPath "ResetCache"
             New-Item -Path $resetCachePath -ItemType Directory -Force | Out-Null
 
-            # Créer une configuration de cache
+            # CrÃ©er une configuration de cache
             $cacheConfig = @{
                 Name              = "PRAnalysisCache"
                 CachePath         = $resetCachePath
@@ -135,7 +135,7 @@ Describe "Initialize-PRCachePersistence Script Tests" {
 
             Set-Content -Path (Join-Path -Path $resetCachePath -ChildPath "cache_config.json") -Value $cacheConfig
 
-            # Créer quelques fichiers de cache
+            # CrÃ©er quelques fichiers de cache
             Set-Content -Path (Join-Path -Path $resetCachePath -ChildPath "test_key.xml") -Value "<cache item>"
 
             # Act
@@ -144,17 +144,17 @@ Describe "Initialize-PRCachePersistence Script Tests" {
             # Assert
             $cache | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $newConfig = Get-Content -Path (Join-Path -Path $resetCachePath -ChildPath "cache_config.json") | ConvertFrom-Json
             $newConfig.LastResetAt | Should -Not -Be $cacheConfig.LastResetAt
 
-            # Vérifier que les fichiers de cache ont été supprimés
+            # VÃ©rifier que les fichiers de cache ont Ã©tÃ© supprimÃ©s
             Test-Path -Path (Join-Path -Path $resetCachePath -ChildPath "test_key.xml") | Should -Be $false
         }
     }
 
     Context "Parameter Validation" {
-        It "Accepte des paramètres personnalisés" {
+        It "Accepte des paramÃ¨tres personnalisÃ©s" {
             # Arrange
             $customCachePath = Join-Path -Path $env:TEMP -ChildPath "CustomCache"
             Remove-Item -Path $customCachePath -Recurse -Force -ErrorAction SilentlyContinue
@@ -165,14 +165,14 @@ Describe "Initialize-PRCachePersistence Script Tests" {
             # Assert
             $cache | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la configuration a été créée avec les paramètres personnalisés
+            # VÃ©rifier que la configuration a Ã©tÃ© crÃ©Ã©e avec les paramÃ¨tres personnalisÃ©s
             $config = Get-Content -Path (Join-Path -Path $customCachePath -ChildPath "cache_config.json") | ConvertFrom-Json
             $config.MaxMemoryItems | Should -Be 2000
             $config.DefaultTTLSeconds | Should -Be 172800
             $config.EvictionPolicy | Should -Be "LFU"
         }
 
-        It "Valide la politique d'éviction" {
+        It "Valide la politique d'Ã©viction" {
             # Act & Assert
             { Invoke-InitializeScript -CachePath $script:testCachePath -EvictionPolicy "LRU" } | Should -Not -Throw
             { Invoke-InitializeScript -CachePath $script:testCachePath -EvictionPolicy "LFU" } | Should -Not -Throw

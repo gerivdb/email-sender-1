@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Réorganisation avancée des scripts du projet
+    RÃ©organisation avancÃ©e des scripts du projet
 .DESCRIPTION
-    Ce script implémente une réorganisation complète des scripts du projet
-    selon une structure hiérarchique claire et cohérente, en respectant
+    Ce script implÃ©mente une rÃ©organisation complÃ¨te des scripts du projet
+    selon une structure hiÃ©rarchique claire et cohÃ©rente, en respectant
     les principes SOLID, DRY et KISS.
 .PARAMETER AnalysisPath
-    Chemin du fichier d'analyse (par défaut : ..\D)
+    Chemin du fichier d'analyse (par dÃ©faut : ..\D)
 .PARAMETER AutoApply
-    Applique automatiquement la réorganisation
+    Applique automatiquement la rÃ©organisation
 .PARAMETER Verbose
-    Affiche des informations détaillées
+    Affiche des informations dÃ©taillÃ©es
 .EXAMPLE
     .\Reorganize-Scripts.ps1
-    Affiche le plan de réorganisation sans l'appliquer
+    Affiche le plan de rÃ©organisation sans l'appliquer
 .EXAMPLE
     .\Reorganize-Scripts.ps1 -AutoApply
-    Applique automatiquement la réorganisation
+    Applique automatiquement la rÃ©organisation
 #>
 
 param (
@@ -24,7 +24,7 @@ param (
     [switch]$AutoApply
 )
 
-# Définition des couleurs pour l'affichage
+# DÃ©finition des couleurs pour l'affichage
 $Colors = @{
     Title = "Cyan"
     Success = "Green"
@@ -35,7 +35,7 @@ $Colors = @{
     Path = "DarkYellow"
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -57,34 +57,34 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "..\D"
     Add-Content -Path $LogFile -Value $FormattedMessage
 }
 
-# Vérifier si le fichier d'analyse existe
+# VÃ©rifier si le fichier d'analyse existe
 if (-not (Test-Path -Path $AnalysisPath)) {
-    Write-Log "Fichier d'analyse non trouvé: $AnalysisPath" -Level "ERROR"
+    Write-Log "Fichier d'analyse non trouvÃ©: $AnalysisPath" -Level "ERROR"
     exit 1
 }
 
 # Charger l'analyse
 $Analysis = Get-Content -Path $AnalysisPath -Raw | ConvertFrom-Json
 
-# Afficher la bannière
-Write-Log "=== Réorganisation avancée des scripts ===" -Level "TITLE"
+# Afficher la banniÃ¨re
+Write-Log "=== RÃ©organisation avancÃ©e des scripts ===" -Level "TITLE"
 Write-Log "Fichier d'analyse: $AnalysisPath" -Level "INFO"
 Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
 Write-Log ""
 
-# Définir la nouvelle structure de dossiers
+# DÃ©finir la nouvelle structure de dossiers
 $FolderStructure = @{
     "core" = @{
-        "Description" = "Fonctionnalités essentielles et modules de base"
+        "Description" = "FonctionnalitÃ©s essentielles et modules de base"
         "SubFolders" = @{
-            "config" = "Configuration du système"
+            "config" = "Configuration du systÃ¨me"
             "logging" = "Journalisation et rapports"
-            "utils" = "Utilitaires génériques"
+            "utils" = "Utilitaires gÃ©nÃ©riques"
         }
     }
     "api" = @{
@@ -109,8 +109,8 @@ $FolderStructure = @{
         "SubFolders" = @{
             "cleanup" = "Nettoyage"
             "encoding" = "Gestion d'encodage"
-            "monitoring" = "Surveillance du système"
-            "repo" = "Maintenance du dépôt"
+            "monitoring" = "Surveillance du systÃ¨me"
+            "repo" = "Maintenance du dÃ©pÃ´t"
         }
     }
     "setup" = @{
@@ -122,31 +122,31 @@ $FolderStructure = @{
         }
     }
     "journal" = @{
-        "Description" = "Système de journal"
+        "Description" = "SystÃ¨me de journal"
         "SubFolders" = @{
-            "rag" = "Fonctionnalités RAG"
+            "rag" = "FonctionnalitÃ©s RAG"
             "web" = "Interface web"
             "analysis" = "Analyse des journaux"
-            "integrations" = "Intégrations avec d'autres systèmes"
+            "integrations" = "IntÃ©grations avec d'autres systÃ¨mes"
         }
     }
     "manager" = @{
-        "Description" = "Système de gestion des scripts"
+        "Description" = "SystÃ¨me de gestion des scripts"
         "SubFolders" = @{
             "modules" = "Modules du gestionnaire"
             "config" = "Configuration"
-            "data" = "Données générées"
+            "data" = "DonnÃ©es gÃ©nÃ©rÃ©es"
         }
     }
     "docs" = @{
         "Description" = "Documentation"
         "SubFolders" = @{
             "guides" = "Guides d'utilisation"
-            "references" = "Documentation de référence"
+            "references" = "Documentation de rÃ©fÃ©rence"
         }
     }
     "email" = @{
-        "Description" = "Fonctionnalités liées aux emails"
+        "Description" = "FonctionnalitÃ©s liÃ©es aux emails"
         "SubFolders" = @{
             "templates" = "Templates d'emails"
             "sending" = "Envoi d'emails"
@@ -157,7 +157,7 @@ $FolderStructure = @{
         "Description" = "Tests et validation"
         "SubFolders" = @{
             "unit" = "Tests unitaires"
-            "integration" = "Tests d'intégration"
+            "integration" = "Tests d'intÃ©gration"
             "performance" = "Tests de performance"
         }
     }
@@ -175,7 +175,7 @@ $FolderStructure = @{
         "SubFolders" = @{
             "config" = "Configuration MCP"
             "server" = "Serveurs MCP"
-            "integrations" = "Intégrations MCP"
+            "integrations" = "IntÃ©grations MCP"
         }
     }
     "python" = @{
@@ -187,56 +187,56 @@ $FolderStructure = @{
     }
 }
 
-# Créer les dossiers s'ils n'existent pas
+# CrÃ©er les dossiers s'ils n'existent pas
 function Create-FolderStructure {
     param (
         [string]$BasePath = "scripts"
     )
     
-    Write-Log "Création de la structure de dossiers..." -Level "INFO"
+    Write-Log "CrÃ©ation de la structure de dossiers..." -Level "INFO"
     
-    # Créer le dossier de base s'il n'existe pas
+    # CrÃ©er le dossier de base s'il n'existe pas
     if (-not (Test-Path -Path $BasePath)) {
         if ($AutoApply) {
             New-Item -ItemType Directory -Path $BasePath -Force | Out-Null
-            Write-Log "Dossier créé: $BasePath" -Level "SUCCESS"
+            Write-Log "Dossier crÃ©Ã©: $BasePath" -Level "SUCCESS"
         } else {
-            Write-Log "[SIMULATION] Dossier à créer: $BasePath" -Level "INFO"
+            Write-Log "[SIMULATION] Dossier Ã  crÃ©er: $BasePath" -Level "INFO"
         }
     }
     
-    # Créer les dossiers principaux et leurs sous-dossiers
+    # CrÃ©er les dossiers principaux et leurs sous-dossiers
     foreach ($MainFolder in $FolderStructure.Keys) {
         $MainFolderPath = Join-Path -Path $BasePath -ChildPath $MainFolder
         
         if (-not (Test-Path -Path $MainFolderPath)) {
             if ($AutoApply) {
                 New-Item -ItemType Directory -Path $MainFolderPath -Force | Out-Null
-                Write-Log "Dossier créé: $MainFolderPath" -Level "SUCCESS"
+                Write-Log "Dossier crÃ©Ã©: $MainFolderPath" -Level "SUCCESS"
             } else {
-                Write-Log "[SIMULATION] Dossier à créer: $MainFolderPath" -Level "INFO"
+                Write-Log "[SIMULATION] Dossier Ã  crÃ©er: $MainFolderPath" -Level "INFO"
             }
         }
         
-        # Créer les sous-dossiers
+        # CrÃ©er les sous-dossiers
         foreach ($SubFolder in $FolderStructure[$MainFolder].SubFolders.Keys) {
             $SubFolderPath = Join-Path -Path $MainFolderPath -ChildPath $SubFolder
             
             if (-not (Test-Path -Path $SubFolderPath)) {
                 if ($AutoApply) {
                     New-Item -ItemType Directory -Path $SubFolderPath -Force | Out-Null
-                    Write-Log "Sous-dossier créé: $SubFolderPath" -Level "SUCCESS"
+                    Write-Log "Sous-dossier crÃ©Ã©: $SubFolderPath" -Level "SUCCESS"
                 } else {
-                    Write-Log "[SIMULATION] Sous-dossier à créer: $SubFolderPath" -Level "INFO"
+                    Write-Log "[SIMULATION] Sous-dossier Ã  crÃ©er: $SubFolderPath" -Level "INFO"
                 }
             }
         }
     }
     
-    Write-Log "Structure de dossiers créée avec succès" -Level "SUCCESS"
+    Write-Log "Structure de dossiers crÃ©Ã©e avec succÃ¨s" -Level "SUCCESS"
 }
 
-# Fonction pour déterminer le dossier cible pour un script
+# Fonction pour dÃ©terminer le dossier cible pour un script
 function Get-TargetFolder {
     param (
         [string]$Category,
@@ -246,7 +246,7 @@ function Get-TargetFolder {
         [string]$ScriptType
     )
     
-    # Mapper les catégories aux dossiers principaux
+    # Mapper les catÃ©gories aux dossiers principaux
     $CategoryToMainFolder = @{
         "Email" = "email"
         "Documentation" = "docs"
@@ -267,7 +267,7 @@ function Get-TargetFolder {
         "Divers" = "utils"
     }
     
-    # Mapper les sous-catégories aux sous-dossiers
+    # Mapper les sous-catÃ©gories aux sous-dossiers
     $SubCategoryToSubFolder = @{
         "General" = ""
         "Repository" = "repo"
@@ -289,19 +289,19 @@ function Get-TargetFolder {
         "REST" = "external"
     }
     
-    # Déterminer le dossier principal
+    # DÃ©terminer le dossier principal
     $MainFolder = $CategoryToMainFolder[$Category]
     if (-not $MainFolder) {
         $MainFolder = "utils"
     }
     
-    # Déterminer le sous-dossier
+    # DÃ©terminer le sous-dossier
     $SubFolder = $SubCategoryToSubFolder[$SubCategory]
     if (-not $SubFolder) {
         $SubFolder = ""
     }
     
-    # Cas spéciaux basés sur le chemin ou le nom du fichier
+    # Cas spÃ©ciaux basÃ©s sur le chemin ou le nom du fichier
     if ($Path -match "python" -or $ScriptType -eq "Python") {
         if ($Path -match "journal") {
             $MainFolder = "python\journal"
@@ -435,20 +435,20 @@ function Get-TargetFolder {
     }
 }
 
-# Fonction pour créer un fichier README pour chaque dossier
+# Fonction pour crÃ©er un fichier README pour chaque dossier
 function Create-ReadmeFiles {
     param (
         [string]$BasePath = "scripts"
     )
     
-    Write-Log "Création des fichiers README..." -Level "INFO"
+    Write-Log "CrÃ©ation des fichiers README..." -Level "INFO"
     
-    # Créer le README principal
+    # CrÃ©er le README principal
     $MainReadmePath = Join-Path -Path $BasePath -ChildPath "README.md"
     $MainReadmeContent = @"
 # Scripts du projet
 
-Ce dossier contient tous les scripts du projet, organisés de manière hiérarchique selon leur fonction.
+Ce dossier contient tous les scripts du projet, organisÃ©s de maniÃ¨re hiÃ©rarchique selon leur fonction.
 
 ## Structure des dossiers
 
@@ -470,31 +470,31 @@ Ce dossier contient tous les scripts du projet, organisés de manière hiérarch
 
 ## Utilisation
 
-Pour gérer ces scripts, utilisez le système de gestion de scripts dans le dossier `manager`.
+Pour gÃ©rer ces scripts, utilisez le systÃ¨me de gestion de scripts dans le dossier `manager`.
 
 Exemple:
 ```powershell
 .\manager\ScriptManager.ps1 -Action inventory
 ```
 
-## Principes de développement
+## Principes de dÃ©veloppement
 
 Les scripts de ce projet suivent les principes suivants:
 
-- **SOLID**: Chaque script a une responsabilité unique et bien définie
-- **DRY** (Don't Repeat Yourself): Évite la duplication de code
-- **KISS** (Keep It Simple, Stupid): Privilégie les solutions simples et compréhensibles
-- **Clean Code**: Code lisible, bien commenté et facile à maintenir
+- **SOLID**: Chaque script a une responsabilitÃ© unique et bien dÃ©finie
+- **DRY** (Don't Repeat Yourself): Ã‰vite la duplication de code
+- **KISS** (Keep It Simple, Stupid): PrivilÃ©gie les solutions simples et comprÃ©hensibles
+- **Clean Code**: Code lisible, bien commentÃ© et facile Ã  maintenir
 "@
     
     if ($AutoApply) {
         Set-Content -Path $MainReadmePath -Value $MainReadmeContent
-        Write-Log "Fichier README principal créé: $MainReadmePath" -Level "SUCCESS"
+        Write-Log "Fichier README principal crÃ©Ã©: $MainReadmePath" -Level "SUCCESS"
     } else {
-        Write-Log "[SIMULATION] Fichier README principal à créer: $MainReadmePath" -Level "INFO"
+        Write-Log "[SIMULATION] Fichier README principal Ã  crÃ©er: $MainReadmePath" -Level "INFO"
     }
     
-    # Créer un README pour chaque dossier principal
+    # CrÃ©er un README pour chaque dossier principal
     foreach ($MainFolder in $FolderStructure.Keys) {
         $MainFolderPath = Join-Path -Path $BasePath -ChildPath $MainFolder
         $ReadmePath = Join-Path -Path $MainFolderPath -ChildPath "README.md"
@@ -516,12 +516,12 @@ $($FolderStructure[$MainFolder].Description)
         
         if ($AutoApply) {
             Set-Content -Path $ReadmePath -Value $ReadmeContent
-            Write-Log "Fichier README créé: $ReadmePath" -Level "SUCCESS"
+            Write-Log "Fichier README crÃ©Ã©: $ReadmePath" -Level "SUCCESS"
         } else {
-            Write-Log "[SIMULATION] Fichier README à créer: $ReadmePath" -Level "INFO"
+            Write-Log "[SIMULATION] Fichier README Ã  crÃ©er: $ReadmePath" -Level "INFO"
         }
         
-        # Créer un README pour chaque sous-dossier
+        # CrÃ©er un README pour chaque sous-dossier
         foreach ($SubFolder in $FolderStructure[$MainFolder].SubFolders.Keys) {
             $SubFolderPath = Join-Path -Path $MainFolderPath -ChildPath $SubFolder
             $SubReadmePath = Join-Path -Path $SubFolderPath -ChildPath "README.md"
@@ -536,25 +536,25 @@ Ce dossier fait partie de la section [$MainFolder](..) qui contient $($FolderStr
             
             if ($AutoApply) {
                 Set-Content -Path $SubReadmePath -Value $SubReadmeContent
-                Write-Log "Fichier README créé: $SubReadmePath" -Level "SUCCESS"
+                Write-Log "Fichier README crÃ©Ã©: $SubReadmePath" -Level "SUCCESS"
             } else {
-                Write-Log "[SIMULATION] Fichier README à créer: $SubReadmePath" -Level "INFO"
+                Write-Log "[SIMULATION] Fichier README Ã  crÃ©er: $SubReadmePath" -Level "INFO"
             }
         }
     }
     
-    Write-Log "Fichiers README créés avec succès" -Level "SUCCESS"
+    Write-Log "Fichiers README crÃ©Ã©s avec succÃ¨s" -Level "SUCCESS"
 }
 
-# Fonction pour réorganiser les scripts
+# Fonction pour rÃ©organiser les scripts
 function Reorganize-Scripts {
     param (
         [array]$Scripts
     )
     
-    Write-Log "Réorganisation des scripts..." -Level "INFO"
+    Write-Log "RÃ©organisation des scripts..." -Level "INFO"
     
-    # Créer un tableau pour stocker les résultats de la réorganisation
+    # CrÃ©er un tableau pour stocker les rÃ©sultats de la rÃ©organisation
     $ReorganizationResults = @()
     
     # Traiter chaque script
@@ -564,16 +564,16 @@ function Reorganize-Scripts {
     foreach ($Script in $Scripts) {
         $Counter++
         $Progress = [math]::Round(($Counter / $Total) * 100)
-        Write-Progress -Activity "Réorganisation des scripts" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "RÃ©organisation des scripts" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
         
-        # Déterminer le dossier cible
+        # DÃ©terminer le dossier cible
         $TargetFolder = Get-TargetFolder -Category $Script.Category -SubCategory $Script.SubCategory -Path $Script.Path -Name $Script.Name -ScriptType $Script.Type
         
-        # Déterminer le chemin source et le chemin cible
+        # DÃ©terminer le chemin source et le chemin cible
         $SourcePath = $Script.Path
         $TargetPath = Join-Path -Path $TargetFolder -ChildPath $Script.Name
         
-        # Créer un objet avec les résultats de la réorganisation
+        # CrÃ©er un objet avec les rÃ©sultats de la rÃ©organisation
         $ReorganizationResult = [PSCustomObject]@{
             Name = $Script.Name
             SourcePath = $SourcePath
@@ -585,47 +585,47 @@ function Reorganize-Scripts {
             Error = $null
         }
         
-        # Afficher les informations sur le déplacement
-        Write-Host "Déplacement de " -NoNewline
+        # Afficher les informations sur le dÃ©placement
+        Write-Host "DÃ©placement de " -NoNewline
         Write-Host $SourcePath -ForegroundColor $Colors.Path -NoNewline
         Write-Host " vers " -NoNewline
         Write-Host $TargetPath -ForegroundColor $Colors.Path
         
-        # Si AutoApply est activé, déplacer le script
+        # Si AutoApply est activÃ©, dÃ©placer le script
         if ($AutoApply) {
             try {
-                # Créer le dossier cible s'il n'existe pas
+                # CrÃ©er le dossier cible s'il n'existe pas
                 $TargetDir = Split-Path -Path $TargetPath -Parent
                 if (-not (Test-Path -Path $TargetDir)) {
                     New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
-                    Write-Log "  Dossier créé: $TargetDir" -Level "SUCCESS"
+                    Write-Log "  Dossier crÃ©Ã©: $TargetDir" -Level "SUCCESS"
                 }
                 
-                # Déplacer le script
+                # DÃ©placer le script
                 Move-Item -Path $SourcePath -Destination $TargetPath -Force
                 
-                # Mettre à jour l'objet de résultat
+                # Mettre Ã  jour l'objet de rÃ©sultat
                 $ReorganizationResult.Success = $true
                 
-                Write-Log "  Déplacement réussi" -Level "SUCCESS"
+                Write-Log "  DÃ©placement rÃ©ussi" -Level "SUCCESS"
             } catch {
-                # Mettre à jour l'objet de résultat
+                # Mettre Ã  jour l'objet de rÃ©sultat
                 $ReorganizationResult.Success = $false
                 $ReorganizationResult.Error = $_.Exception.Message
                 
                 Write-Log "  Erreur: $($_.Exception.Message)" -Level "ERROR"
             }
         } else {
-            Write-Log "  [SIMULATION] Le script ne sera pas déplacé" -Level "INFO"
+            Write-Log "  [SIMULATION] Le script ne sera pas dÃ©placÃ©" -Level "INFO"
         }
         
         # Ajouter l'objet au tableau
         $ReorganizationResults += $ReorganizationResult
     }
     
-    Write-Progress -Activity "Réorganisation des scripts" -Completed
+    Write-Progress -Activity "RÃ©organisation des scripts" -Completed
     
-    # Créer un objet avec les résultats de la réorganisation
+    # CrÃ©er un objet avec les rÃ©sultats de la rÃ©organisation
     $Reorganization = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $ReorganizationResults.Count
@@ -639,32 +639,32 @@ function Reorganize-Scripts {
     $OutputPath = "..\D"
     $Reorganization | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    Write-Log "Réorganisation terminée" -Level "SUCCESS"
+    Write-Log "RÃ©organisation terminÃ©e" -Level "SUCCESS"
     Write-Log "Nombre total de scripts: $($Reorganization.TotalScripts)" -Level "INFO"
-    Write-Log "Nombre de scripts déplacés avec succès: $($Reorganization.SuccessCount)" -Level "SUCCESS"
+    Write-Log "Nombre de scripts dÃ©placÃ©s avec succÃ¨s: $($Reorganization.SuccessCount)" -Level "SUCCESS"
     Write-Log "Nombre d'erreurs: $($Reorganization.ErrorCount)" -Level "WARNING"
     
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "INFO"
     
     return $Reorganization
 }
 
-# Exécuter la réorganisation
+# ExÃ©cuter la rÃ©organisation
 Create-FolderStructure
 Create-ReadmeFiles
 $Reorganization = Reorganize-Scripts -Scripts $Analysis.Scripts
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Log "" -Level "INFO"
-Write-Log "=== Résumé de la réorganisation ===" -Level "TITLE"
+Write-Log "=== RÃ©sumÃ© de la rÃ©organisation ===" -Level "TITLE"
 Write-Log "Nombre total de scripts: $($Reorganization.TotalScripts)" -Level "INFO"
-Write-Log "Nombre de scripts déplacés avec succès: $($Reorganization.SuccessCount)" -Level "SUCCESS"
+Write-Log "Nombre de scripts dÃ©placÃ©s avec succÃ¨s: $($Reorganization.SuccessCount)" -Level "SUCCESS"
 Write-Log "Nombre d'erreurs: $($Reorganization.ErrorCount)" -Level "WARNING"
 
-# Si AutoApply n'est pas activé, afficher un message pour expliquer comment appliquer les recommandations
+# Si AutoApply n'est pas activÃ©, afficher un message pour expliquer comment appliquer les recommandations
 if (-not $AutoApply) {
     Write-Log "" -Level "INFO"
-    Write-Log "Pour appliquer la réorganisation, exécutez la commande suivante:" -Level "WARNING"
+    Write-Log "Pour appliquer la rÃ©organisation, exÃ©cutez la commande suivante:" -Level "WARNING"
     Write-Log ".\Reorganize-Scripts.ps1 -AutoApply" -Level "INFO"
 }
 

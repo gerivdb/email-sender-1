@@ -1,11 +1,11 @@
-# Tests pour le module excel_chart_styles.ps1
+﻿# Tests pour le module excel_chart_styles.ps1
 
 # Importer Pester
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "excel_chart_styles.ps1"
 . $ModulePath
 
@@ -15,17 +15,17 @@ $ExporterPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_exporter.ps1"
 
 Describe "Excel Chart Styles Module" {
     BeforeAll {
-        # Créer un exporteur Excel pour les tests
+        # CrÃ©er un exporteur Excel pour les tests
         $script:Exporter = [ExcelExporter]::new()
 
-        # Créer un classeur de test
+        # CrÃ©er un classeur de test
         $script:WorkbookPath = Join-Path -Path $TestDrive -ChildPath "TestWorkbook.xlsx"
         $script:WorkbookId = New-ExcelWorkbook -Exporter $script:Exporter -Path $script:WorkbookPath
 
-        # Créer une feuille de test
+        # CrÃ©er une feuille de test
         $script:WorksheetId = Add-ExcelWorksheet -Exporter $script:Exporter -WorkbookId $script:WorkbookId -Name "TestSheet"
 
-        # Ajouter des données de test
+        # Ajouter des donnÃ©es de test
         $TestData = @(
             [PSCustomObject]@{
                 Category = "A"
@@ -55,7 +55,7 @@ Describe "Excel Chart Styles Module" {
 
         Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData
 
-        # Créer un graphique de test
+        # CrÃ©er un graphique de test
         $script:ChartName = "TestChart"
         New-ExcelLineChart -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -DataRange "A1:D5" -ChartName $script:ChartName -Title "Test Chart" -Position "F1:L15"
     }
@@ -151,7 +151,7 @@ Describe "Excel Chart Styles Module" {
             $Palette.IsBuiltIn | Should -Be $true
 
             $DefaultPalette = $Registry.GetPalette("NonExistent")
-            $DefaultPalette.Name | Should -Be "Office"  # Retourne la palette par défaut
+            $DefaultPalette.Name | Should -Be "Office"  # Retourne la palette par dÃ©faut
         }
 
         It "Should add and remove custom palettes" {
@@ -166,7 +166,7 @@ Describe "Excel Chart Styles Module" {
             $Result | Should -Be $true
             $Registry.Palettes.ContainsKey("Custom") | Should -Be $false
 
-            # Ne devrait pas pouvoir supprimer une palette prédéfinie
+            # Ne devrait pas pouvoir supprimer une palette prÃ©dÃ©finie
             $Result = $Registry.RemovePalette("Office")
             $Result | Should -Be $false
             $Registry.Palettes.ContainsKey("Office") | Should -Be $true
@@ -192,7 +192,7 @@ Describe "Excel Chart Styles Module" {
 
         It "Should return default palette for non-existent name" {
             $Palette = Get-ExcelColorPalette -Name "NonExistent"
-            $Palette.Name | Should -Be "Office"  # Retourne la palette par défaut
+            $Palette.Name | Should -Be "Office"  # Retourne la palette par dÃ©faut
         }
     }
 
@@ -206,7 +206,7 @@ Describe "Excel Chart Styles Module" {
             $Palette.Description | Should -Be "Test Description"
             $Palette.IsBuiltIn | Should -Be $false
 
-            # Vérifier que la palette a été ajoutée au registre
+            # VÃ©rifier que la palette a Ã©tÃ© ajoutÃ©e au registre
             $Global:ExcelColorPaletteRegistry.Palettes.ContainsKey("TestPalette") | Should -Be $true
         }
 
@@ -230,7 +230,7 @@ Describe "Excel Chart Styles Module" {
         }
 
         It "Should filter built-in palettes" {
-            # Créer une palette personnalisée pour le test
+            # CrÃ©er une palette personnalisÃ©e pour le test
             $Colors = @("#FF0000", "#00FF00", "#0000FF")
             New-ExcelColorPalette -Name "TestCustomPalette" -Colors $Colors
 
@@ -245,7 +245,7 @@ Describe "Excel Chart Styles Module" {
 
     Context "Remove-ExcelColorPalette function" {
         It "Should remove a custom palette" {
-            # Créer une palette personnalisée pour le test
+            # CrÃ©er une palette personnalisÃ©e pour le test
             $Colors = @("#FF0000", "#00FF00", "#0000FF")
             New-ExcelColorPalette -Name "PaletteToRemove" -Colors $Colors
 
@@ -430,7 +430,7 @@ Describe "Excel Chart Styles Module" {
             $Clone.Transparency | Should -Be $Original.Transparency
             $Clone.Smooth | Should -Be $Original.Smooth
             $Clone.Description | Should -Be $Original.Description
-            $Clone.IsBuiltIn | Should -Be $false  # Une copie n'est jamais un style prédéfini
+            $Clone.IsBuiltIn | Should -Be $false  # Une copie n'est jamais un style prÃ©dÃ©fini
         }
     }
 
@@ -449,7 +449,7 @@ Describe "Excel Chart Styles Module" {
             $Style.IsBuiltIn | Should -Be $true
 
             $DefaultStyle = $Registry.GetStyle("NonExistent")
-            $DefaultStyle.Description | Should -Be "Style par défaut"  # Retourne le style par défaut
+            $DefaultStyle.Description | Should -Be "Style par dÃ©faut"  # Retourne le style par dÃ©faut
         }
 
         It "Should add and remove custom styles" {
@@ -464,7 +464,7 @@ Describe "Excel Chart Styles Module" {
             $Result | Should -Be $true
             $Registry.Styles.ContainsKey("TestStyle") | Should -Be $false
 
-            # Ne devrait pas pouvoir supprimer un style prédéfini
+            # Ne devrait pas pouvoir supprimer un style prÃ©dÃ©fini
             $Result = $Registry.RemoveStyle("Default")
             $Result | Should -Be $false
             $Registry.Styles.ContainsKey("Default") | Should -Be $true
@@ -490,7 +490,7 @@ Describe "Excel Chart Styles Module" {
 
         It "Should return default style for non-existent name" {
             $Style = Get-ExcelLineStyle -Name "NonExistent"
-            $Style.Description | Should -Be "Style par défaut"  # Retourne le style par défaut
+            $Style.Description | Should -Be "Style par dÃ©faut"  # Retourne le style par dÃ©faut
         }
     }
 
@@ -504,7 +504,7 @@ Describe "Excel Chart Styles Module" {
             $Style.Description | Should -Be "Style de test"
             $Style.IsBuiltIn | Should -Be $false
 
-            # Vérifier que le style a été ajouté au registre
+            # VÃ©rifier que le style a Ã©tÃ© ajoutÃ© au registre
             $Global:ExcelLineStyleRegistry.Styles.ContainsKey("TestCustomStyle") | Should -Be $true
         }
 
@@ -522,7 +522,7 @@ Describe "Excel Chart Styles Module" {
         }
 
         It "Should filter built-in styles" {
-            # Créer un style personnalisé pour le test
+            # CrÃ©er un style personnalisÃ© pour le test
             New-ExcelLineStyle -Name "TestFilterStyle" -Width 2 -Style Dot -Color "#00FF00"
 
             $BuiltInStyles = Get-ExcelLineStyleList -BuiltInOnly
@@ -536,7 +536,7 @@ Describe "Excel Chart Styles Module" {
 
     Context "Remove-ExcelLineStyle function" {
         It "Should remove a custom line style" {
-            # Créer un style personnalisé pour le test
+            # CrÃ©er un style personnalisÃ© pour le test
             New-ExcelLineStyle -Name "StyleToRemove" -Width 2 -Style Solid -Color "#0000FF"
 
             $Result = Remove-ExcelLineStyle -Name "StyleToRemove"
@@ -587,10 +587,10 @@ Describe "Excel Chart Styles Module" {
 
         It "Should provide descriptions for marker styles" {
             $Description = [ExcelMarkerStyleConverter]::GetDescription([ExcelMarkerStyle]::Square)
-            $Description | Should -Be "Marqueur carré"
+            $Description | Should -Be "Marqueur carrÃ©"
 
             $Description = [ExcelMarkerStyleConverter]::GetDescription([ExcelMarkerStyle]::Star)
-            $Description | Should -Be "Marqueur en forme d'étoile"
+            $Description | Should -Be "Marqueur en forme d'Ã©toile"
         }
 
         It "Should list all available marker styles" {
@@ -618,7 +618,7 @@ Describe "Excel Chart Styles Module" {
             $Size = [ExcelMarkerStyleConverter]::GetPredefinedSize("Large")
             $Size | Should -Be 10
 
-            # Taille non existante devrait retourner la taille par défaut
+            # Taille non existante devrait retourner la taille par dÃ©faut
             $Size = [ExcelMarkerStyleConverter]::GetPredefinedSize("NonExistent")
             $Size | Should -Be [ExcelMarkerStyleConverter]::DefaultSize
         }
@@ -899,17 +899,17 @@ Describe "Excel Chart Styles Module" {
 
     Context "Set-ExcelChartDataPointMarkerStyle function" {
         It "Should apply a marker style to a specific data point" {
-            # Cette fonction peut échouer si le type de graphique ne supporte pas les points de données individuels
-            # Nous testons donc avec un try/catch pour éviter les échecs de test
+            # Cette fonction peut Ã©chouer si le type de graphique ne supporte pas les points de donnÃ©es individuels
+            # Nous testons donc avec un try/catch pour Ã©viter les Ã©checs de test
             try {
                 $Result = Set-ExcelChartDataPointMarkerStyle -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -ChartName $script:ChartName -SeriesIndex 0 -PointIndex 1 -MarkerStyle Star -Size 12
-                # Si la fonction réussit, vérifier le résultat
+                # Si la fonction rÃ©ussit, vÃ©rifier le rÃ©sultat
                 if ($Result -ne $null) {
                     $Result | Should -BeOfType [bool]
                 }
             } catch {
-                # Si la fonction échoue, ignorer le test
-                Write-Host "Le graphique de test ne supporte pas la personnalisation par point de données."
+                # Si la fonction Ã©choue, ignorer le test
+                Write-Host "Le graphique de test ne supporte pas la personnalisation par point de donnÃ©es."
             }
         }
     }

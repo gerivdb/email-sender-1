@@ -1,4 +1,4 @@
-#
+﻿#
 # Uninstall-Module.ps1
 #
 # Script to uninstall the RoadmapParser module

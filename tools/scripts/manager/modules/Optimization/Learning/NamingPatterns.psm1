@@ -1,5 +1,5 @@
-# Module d'apprentissage des modèles de nommage pour le Script Manager
-# Ce module apprend les modèles de nommage utilisés dans les scripts
+﻿# Module d'apprentissage des modÃ¨les de nommage pour le Script Manager
+# Ce module apprend les modÃ¨les de nommage utilisÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, learning, naming
@@ -7,11 +7,11 @@
 function Learn-NamingPatterns {
     <#
     .SYNOPSIS
-        Apprend les modèles de nommage utilisés dans les scripts
+        Apprend les modÃ¨les de nommage utilisÃ©s dans les scripts
     .DESCRIPTION
-        Analyse les scripts pour apprendre les modèles de nommage des variables, fonctions, etc.
+        Analyse les scripts pour apprendre les modÃ¨les de nommage des variables, fonctions, etc.
     .PARAMETER Scripts
-        Scripts à analyser
+        Scripts Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -26,7 +26,7 @@ function Learn-NamingPatterns {
         [string]$ScriptType
     )
     
-    # Créer un objet pour stocker les modèles de nommage
+    # CrÃ©er un objet pour stocker les modÃ¨les de nommage
     $NamingPatterns = [PSCustomObject]@{
         FunctionNames = @{}
         VariableNames = @{}
@@ -49,11 +49,11 @@ function Learn-NamingPatterns {
         # Ajouter les noms de variables
         $VariableNames += $Script.StaticAnalysis.Variables
         
-        # Lire le contenu du script pour extraire les paramètres
+        # Lire le contenu du script pour extraire les paramÃ¨tres
         $Content = Get-Content -Path $Script.Path -Raw -ErrorAction SilentlyContinue
         
         if ($null -ne $Content) {
-            # Extraire les paramètres selon le type de script
+            # Extraire les paramÃ¨tres selon le type de script
             switch ($ScriptType) {
                 "PowerShell" {
                     $ParamMatches = [regex]::Matches($Content, "param\s*\(\s*\[Parameter[^\)]*\]\s*\[([^\]]*)\]\s*\`$(\w+)")
@@ -84,13 +84,13 @@ function Learn-NamingPatterns {
     # Analyser les noms de variables
     $NamingPatterns.VariableNames = Analyze-NamingConvention -Names $VariableNames
     
-    # Analyser les noms de paramètres
+    # Analyser les noms de paramÃ¨tres
     $NamingPatterns.ParameterNames = Analyze-NamingConvention -Names $ParameterNames
     
-    # Déterminer le style de casse prédominant
+    # DÃ©terminer le style de casse prÃ©dominant
     $NamingPatterns.CaseStyle = Get-PredominantCaseStyle -FunctionNames $NamingPatterns.FunctionNames -VariableNames $NamingPatterns.VariableNames -ParameterNames $NamingPatterns.ParameterNames
     
-    # Analyser les préfixes et suffixes courants
+    # Analyser les prÃ©fixes et suffixes courants
     $NamingPatterns.Prefixes = Get-CommonPrefixes -Names ($FunctionNames + $VariableNames + $ParameterNames)
     $NamingPatterns.Suffixes = Get-CommonSuffixes -Names ($FunctionNames + $VariableNames + $ParameterNames)
     
@@ -100,11 +100,11 @@ function Learn-NamingPatterns {
 function Analyze-NamingConvention {
     <#
     .SYNOPSIS
-        Analyse la convention de nommage utilisée
+        Analyse la convention de nommage utilisÃ©e
     .DESCRIPTION
-        Analyse les noms pour déterminer la convention de nommage utilisée
+        Analyse les noms pour dÃ©terminer la convention de nommage utilisÃ©e
     .PARAMETER Names
-        Noms à analyser
+        Noms Ã  analyser
     .EXAMPLE
         Analyze-NamingConvention -Names $names
     #>
@@ -114,7 +114,7 @@ function Analyze-NamingConvention {
         [array]$Names
     )
     
-    # Créer un objet pour stocker les résultats
+    # CrÃ©er un objet pour stocker les rÃ©sultats
     $Results = [PSCustomObject]@{
         TotalCount = $Names.Count
         CamelCase = 0
@@ -125,7 +125,7 @@ function Analyze-NamingConvention {
         CommonWords = @{}
     }
     
-    # Si aucun nom, retourner les résultats vides
+    # Si aucun nom, retourner les rÃ©sultats vides
     if ($Names.Count -eq 0) {
         return $Results
     }
@@ -137,7 +137,7 @@ function Analyze-NamingConvention {
     foreach ($Name in $Names) {
         $TotalLength += $Name.Length
         
-        # Déterminer le style de casse
+        # DÃ©terminer le style de casse
         if ($Name -match "^[a-z][a-zA-Z0-9]*$") {
             $Results.CamelCase++
         } elseif ($Name -match "^[A-Z][a-zA-Z0-9]*$") {
@@ -163,7 +163,7 @@ function Analyze-NamingConvention {
     
     $Results.AverageLength = [math]::Round($TotalLength / $Names.Count, 1)
     
-    # Trier les mots par fréquence
+    # Trier les mots par frÃ©quence
     $SortedWords = $WordCounts.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 10
     
     foreach ($Word in $SortedWords) {
@@ -176,15 +176,15 @@ function Analyze-NamingConvention {
 function Get-PredominantCaseStyle {
     <#
     .SYNOPSIS
-        Détermine le style de casse prédominant
+        DÃ©termine le style de casse prÃ©dominant
     .DESCRIPTION
-        Analyse les résultats pour déterminer le style de casse le plus utilisé
+        Analyse les rÃ©sultats pour dÃ©terminer le style de casse le plus utilisÃ©
     .PARAMETER FunctionNames
-        Résultats de l'analyse des noms de fonctions
+        RÃ©sultats de l'analyse des noms de fonctions
     .PARAMETER VariableNames
-        Résultats de l'analyse des noms de variables
+        RÃ©sultats de l'analyse des noms de variables
     .PARAMETER ParameterNames
-        Résultats de l'analyse des noms de paramètres
+        RÃ©sultats de l'analyse des noms de paramÃ¨tres
     .EXAMPLE
         Get-PredominantCaseStyle -FunctionNames $functionNames -VariableNames $variableNames -ParameterNames $parameterNames
     #>
@@ -200,7 +200,7 @@ function Get-PredominantCaseStyle {
         [PSCustomObject]$ParameterNames
     )
     
-    # Créer un objet pour stocker les résultats
+    # CrÃ©er un objet pour stocker les rÃ©sultats
     $Results = [PSCustomObject]@{
         Functions = $null
         Variables = $null
@@ -208,7 +208,7 @@ function Get-PredominantCaseStyle {
         Overall = $null
     }
     
-    # Déterminer le style prédominant pour les fonctions
+    # DÃ©terminer le style prÃ©dominant pour les fonctions
     if ($FunctionNames.TotalCount -gt 0) {
         $MaxCount = [math]::Max($FunctionNames.CamelCase, [math]::Max($FunctionNames.PascalCase, [math]::Max($FunctionNames.SnakeCase, $FunctionNames.KebabCase)))
         
@@ -223,7 +223,7 @@ function Get-PredominantCaseStyle {
         }
     }
     
-    # Déterminer le style prédominant pour les variables
+    # DÃ©terminer le style prÃ©dominant pour les variables
     if ($VariableNames.TotalCount -gt 0) {
         $MaxCount = [math]::Max($VariableNames.CamelCase, [math]::Max($VariableNames.PascalCase, [math]::Max($VariableNames.SnakeCase, $VariableNames.KebabCase)))
         
@@ -238,7 +238,7 @@ function Get-PredominantCaseStyle {
         }
     }
     
-    # Déterminer le style prédominant pour les paramètres
+    # DÃ©terminer le style prÃ©dominant pour les paramÃ¨tres
     if ($ParameterNames.TotalCount -gt 0) {
         $MaxCount = [math]::Max($ParameterNames.CamelCase, [math]::Max($ParameterNames.PascalCase, [math]::Max($ParameterNames.SnakeCase, $ParameterNames.KebabCase)))
         
@@ -253,7 +253,7 @@ function Get-PredominantCaseStyle {
         }
     }
     
-    # Déterminer le style prédominant global
+    # DÃ©terminer le style prÃ©dominant global
     $TotalCamelCase = $FunctionNames.CamelCase + $VariableNames.CamelCase + $ParameterNames.CamelCase
     $TotalPascalCase = $FunctionNames.PascalCase + $VariableNames.PascalCase + $ParameterNames.PascalCase
     $TotalSnakeCase = $FunctionNames.SnakeCase + $VariableNames.SnakeCase + $ParameterNames.SnakeCase
@@ -277,11 +277,11 @@ function Get-PredominantCaseStyle {
 function Get-CommonPrefixes {
     <#
     .SYNOPSIS
-        Détermine les préfixes communs
+        DÃ©termine les prÃ©fixes communs
     .DESCRIPTION
-        Analyse les noms pour déterminer les préfixes communs
+        Analyse les noms pour dÃ©terminer les prÃ©fixes communs
     .PARAMETER Names
-        Noms à analyser
+        Noms Ã  analyser
     .EXAMPLE
         Get-CommonPrefixes -Names $names
     #>
@@ -291,10 +291,10 @@ function Get-CommonPrefixes {
         [array]$Names
     )
     
-    # Créer un dictionnaire pour stocker les préfixes
+    # CrÃ©er un dictionnaire pour stocker les prÃ©fixes
     $Prefixes = @{}
     
-    # Préfixes courants à rechercher
+    # PrÃ©fixes courants Ã  rechercher
     $CommonPrefixes = @(
         "Get", "Set", "New", "Remove", "Add", "Update", "Find", "Test",
         "Start", "Stop", "Enable", "Disable", "Import", "Export",
@@ -316,7 +316,7 @@ function Get-CommonPrefixes {
         }
     }
     
-    # Trier les préfixes par fréquence
+    # Trier les prÃ©fixes par frÃ©quence
     $SortedPrefixes = $Prefixes.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 5
     
     $Results = @{}
@@ -330,11 +330,11 @@ function Get-CommonPrefixes {
 function Get-CommonSuffixes {
     <#
     .SYNOPSIS
-        Détermine les suffixes communs
+        DÃ©termine les suffixes communs
     .DESCRIPTION
-        Analyse les noms pour déterminer les suffixes communs
+        Analyse les noms pour dÃ©terminer les suffixes communs
     .PARAMETER Names
-        Noms à analyser
+        Noms Ã  analyser
     .EXAMPLE
         Get-CommonSuffixes -Names $names
     #>
@@ -344,10 +344,10 @@ function Get-CommonSuffixes {
         [array]$Names
     )
     
-    # Créer un dictionnaire pour stocker les suffixes
+    # CrÃ©er un dictionnaire pour stocker les suffixes
     $Suffixes = @{}
     
-    # Suffixes courants à rechercher
+    # Suffixes courants Ã  rechercher
     $CommonSuffixes = @(
         "Count", "Index", "List", "Array", "Map", "Dict", "Set",
         "Handler", "Manager", "Controller", "Service", "Factory", "Builder",
@@ -369,7 +369,7 @@ function Get-CommonSuffixes {
         }
     }
     
-    # Trier les suffixes par fréquence
+    # Trier les suffixes par frÃ©quence
     $SortedSuffixes = $Suffixes.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 5
     
     $Results = @{}

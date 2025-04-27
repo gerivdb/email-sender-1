@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour les scripts de test de pull requests.
+    Tests unitaires simplifiÃ©s pour les scripts de test de pull requests.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement
-    des scripts de test de pull requests, sans utiliser Pester pour éviter les problèmes
-    de récursion.
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement
+    des scripts de test de pull requests, sans utiliser Pester pour Ã©viter les problÃ¨mes
+    de rÃ©cursion.
 
 .NOTES
     Version: 1.0
@@ -14,7 +14,7 @@
     Date: 2025-04-14
 #>
 
-# Définir les chemins des scripts à tester
+# DÃ©finir les chemins des scripts Ã  tester
 $scriptPaths = @{
     "New-TestRepository" = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "New-TestRepository.ps1"
     "New-TestPullRequest" = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "New-TestPullRequest-Fixed.ps1"
@@ -22,13 +22,13 @@ $scriptPaths = @{
     "Start-PRTestSuite" = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Start-PRTestSuite.ps1"
 }
 
-# Vérifier que les scripts existent
+# VÃ©rifier que les scripts existent
 foreach ($scriptName in $scriptPaths.Keys) {
     $scriptPath = $scriptPaths[$scriptName]
     if (-not (Test-Path -Path $scriptPath)) {
-        Write-Warning "Script $scriptName non trouvé: $scriptPath"
+        Write-Warning "Script $scriptName non trouvÃ©: $scriptPath"
     } else {
-        Write-Host "Script $scriptName trouvé: $scriptPath" -ForegroundColor Green
+        Write-Host "Script $scriptName trouvÃ©: $scriptPath" -ForegroundColor Green
     }
 }
 
@@ -36,7 +36,7 @@ foreach ($scriptName in $scriptPaths.Keys) {
 $testRepoPath = Join-Path -Path $env:TEMP -ChildPath "PR-Analysis-TestRepo-$(Get-Random)"
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "PR-Analysis-Reports-$(Get-Random)"
 
-# Créer le dossier de sortie pour les tests
+# CrÃ©er le dossier de sortie pour les tests
 New-Item -ItemType Directory -Path $testOutputPath -Force | Out-Null
 
 # Variables pour les statistiques
@@ -44,7 +44,7 @@ $totalTests = 0
 $passedTests = 0
 $failedTests = 0
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Condition {
     param (
         [string]$Name,
@@ -58,17 +58,17 @@ function Test-Condition {
     try {
         $result = & $Condition
         if ($result) {
-            Write-Host "  Résultat: Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©sultat: RÃ©ussi" -ForegroundColor Green
             $global:passedTests++
             return $true
         } else {
-            Write-Host "  Résultat: Échoué" -ForegroundColor Red
+            Write-Host "  RÃ©sultat: Ã‰chouÃ©" -ForegroundColor Red
             Write-Host "  $FailureMessage" -ForegroundColor Yellow
             $global:failedTests++
             return $false
         }
     } catch {
-        Write-Host "  Résultat: Erreur" -ForegroundColor Red
+        Write-Host "  RÃ©sultat: Erreur" -ForegroundColor Red
         Write-Host "  $_" -ForegroundColor Yellow
         $global:failedTests++
         return $false
@@ -84,7 +84,7 @@ function Test-NewTestRepository {
     function Copy-RepositoryStructure { param($SourcePath, $DestinationPath) return $true }
     function Set-GitBranches { param($Path) return $true }
     
-    # Charger le script avec les fonctions mockées
+    # Charger le script avec les fonctions mockÃ©es
     . $scriptPaths["New-TestRepository"]
     
     # Test 1: La fonction New-TestRepository existe
@@ -92,12 +92,12 @@ function Test-NewTestRepository {
         Get-Command -Name New-TestRepository -ErrorAction SilentlyContinue
     } -FailureMessage "La fonction New-TestRepository n'existe pas"
     
-    # Test 2: Initialize-GitRepository est appelé avec le bon chemin
-    Test-Condition -Name "Initialize-GitRepository est appelé avec le bon chemin" -Condition {
+    # Test 2: Initialize-GitRepository est appelÃ© avec le bon chemin
+    Test-Condition -Name "Initialize-GitRepository est appelÃ© avec le bon chemin" -Condition {
         $called = $false
         $calledPath = $null
         
-        # Redéfinir la fonction pour capturer les appels
+        # RedÃ©finir la fonction pour capturer les appels
         function Initialize-GitRepository {
             param($Path)
             $script:called = $true
@@ -105,12 +105,12 @@ function Test-NewTestRepository {
             return $true
         }
         
-        # Appeler la fonction à tester
+        # Appeler la fonction Ã  tester
         New-TestRepository -Path $testRepoPath
         
-        # Vérifier que la fonction a été appelée avec le bon chemin
+        # VÃ©rifier que la fonction a Ã©tÃ© appelÃ©e avec le bon chemin
         $called -and $calledPath -eq $testRepoPath
-    } -FailureMessage "Initialize-GitRepository n'a pas été appelé avec le bon chemin"
+    } -FailureMessage "Initialize-GitRepository n'a pas Ã©tÃ© appelÃ© avec le bon chemin"
 }
 
 # Tests pour New-TestPullRequest-Fixed.ps1
@@ -127,7 +127,7 @@ function Test-NewTestPullRequest {
     function Push-Changes { param($RepositoryPath, $BranchName) return $true }
     function New-GithubPullRequest { param($RepositoryPath, $BranchName, $BaseBranch, $Title, $Body) return $true }
     
-    # Charger le script avec les fonctions mockées
+    # Charger le script avec les fonctions mockÃ©es
     . $scriptPaths["New-TestPullRequest"]
     
     # Test 1: La fonction New-TestPullRequest existe
@@ -135,13 +135,13 @@ function Test-NewTestPullRequest {
         Get-Command -Name New-TestPullRequest -ErrorAction SilentlyContinue
     } -FailureMessage "La fonction New-TestPullRequest n'existe pas"
     
-    # Test 2: New-GitBranch est appelé avec les bons paramètres
-    Test-Condition -Name "New-GitBranch est appelé avec les bons paramètres" -Condition {
+    # Test 2: New-GitBranch est appelÃ© avec les bons paramÃ¨tres
+    Test-Condition -Name "New-GitBranch est appelÃ© avec les bons paramÃ¨tres" -Condition {
         $called = $false
         $calledRepo = $null
         $calledBranch = $null
         
-        # Redéfinir la fonction pour capturer les appels
+        # RedÃ©finir la fonction pour capturer les appels
         function New-GitBranch {
             param($RepositoryPath, $BranchName, $BaseBranch)
             $script:called = $true
@@ -150,13 +150,13 @@ function Test-NewTestPullRequest {
             return $true
         }
         
-        # Appeler la fonction à tester
+        # Appeler la fonction Ã  tester
         $testBranch = "feature/test-branch"
         New-TestPullRequest -RepositoryPath $testRepoPath -BranchName $testBranch
         
-        # Vérifier que la fonction a été appelée avec les bons paramètres
+        # VÃ©rifier que la fonction a Ã©tÃ© appelÃ©e avec les bons paramÃ¨tres
         $called -and $calledRepo -eq $testRepoPath -and $calledBranch -eq $testBranch
-    } -FailureMessage "New-GitBranch n'a pas été appelé avec les bons paramètres"
+    } -FailureMessage "New-GitBranch n'a pas Ã©tÃ© appelÃ© avec les bons paramÃ¨tres"
 }
 
 # Tests pour Measure-PRAnalysisPerformance.ps1
@@ -248,7 +248,7 @@ function Test-MeasurePRAnalysisPerformance {
         return $reportPath
     }
     
-    # Charger le script avec les fonctions mockées
+    # Charger le script avec les fonctions mockÃ©es
     . $scriptPaths["Measure-PRAnalysisPerformance"]
     
     # Test 1: La fonction Measure-PRAnalysisPerformance existe
@@ -262,13 +262,13 @@ function Test-MeasurePRAnalysisPerformance {
         $result -and $result.Number -eq 42 -and $result.Files.Count -eq 2
     } -FailureMessage "Get-PullRequestInfo ne retourne pas un objet valide"
     
-    # Test 3: New-PerformanceReport génère un rapport et retourne le chemin
-    Test-Condition -Name "New-PerformanceReport génère un rapport et retourne le chemin" -Condition {
+    # Test 3: New-PerformanceReport gÃ©nÃ¨re un rapport et retourne le chemin
+    Test-Condition -Name "New-PerformanceReport gÃ©nÃ¨re un rapport et retourne le chemin" -Condition {
         $prInfo = Get-PullRequestInfo -RepositoryPath $testRepoPath -PullRequestNumber 42
         $metrics = Invoke-PRAnalysis -PullRequestInfo $prInfo
         $result = New-PerformanceReport -Metrics $metrics -PullRequestInfo $prInfo -OutputPath $testOutputPath -DetailedReport $true
         $result -and (Test-Path -Path $result)
-    } -FailureMessage "New-PerformanceReport ne génère pas un rapport valide"
+    } -FailureMessage "New-PerformanceReport ne gÃ©nÃ¨re pas un rapport valide"
 }
 
 # Tests pour Start-PRTestSuite.ps1
@@ -295,7 +295,7 @@ function Test-StartPRTestSuite {
         return "global-report.md"
     }
     
-    # Charger le script avec les fonctions mockées
+    # Charger le script avec les fonctions mockÃ©es
     . $scriptPaths["Start-PRTestSuite"]
     
     # Test 1: La fonction Start-PRTestSuite existe
@@ -303,48 +303,48 @@ function Test-StartPRTestSuite {
         Get-Command -Name Start-PRTestSuite -ErrorAction SilentlyContinue
     } -FailureMessage "La fonction Start-PRTestSuite n'existe pas"
     
-    # Test 2: Initialize-TestRepository est appelé lorsque CreateRepository est true
-    Test-Condition -Name "Initialize-TestRepository est appelé lorsque CreateRepository est true" -Condition {
+    # Test 2: Initialize-TestRepository est appelÃ© lorsque CreateRepository est true
+    Test-Condition -Name "Initialize-TestRepository est appelÃ© lorsque CreateRepository est true" -Condition {
         $called = $false
         
-        # Redéfinir la fonction pour capturer les appels
+        # RedÃ©finir la fonction pour capturer les appels
         function Initialize-TestRepository {
             $script:called = $true
             return $true
         }
         
-        # Appeler la fonction à tester
+        # Appeler la fonction Ã  tester
         Start-PRTestSuite -RepositoryPath $testRepoPath -CreateRepository $true -RunAllTests $false -GenerateReport $false
         
-        # Vérifier que la fonction a été appelée
+        # VÃ©rifier que la fonction a Ã©tÃ© appelÃ©e
         $called
-    } -FailureMessage "Initialize-TestRepository n'a pas été appelé"
+    } -FailureMessage "Initialize-TestRepository n'a pas Ã©tÃ© appelÃ©"
 }
 
-# Exécuter tous les tests
+# ExÃ©cuter tous les tests
 function Run-AllTests {
-    Write-Host "`n=== Exécution de tous les tests ===" -ForegroundColor Cyan
+    Write-Host "`n=== ExÃ©cution de tous les tests ===" -ForegroundColor Cyan
     
-    # Exécuter les tests pour chaque script
+    # ExÃ©cuter les tests pour chaque script
     Test-NewTestRepository
     Test-NewTestPullRequest
     Test-MeasurePRAnalysisPerformance
     Test-StartPRTestSuite
     
-    # Afficher le résumé
-    Write-Host "`n=== Résumé des tests ===" -ForegroundColor Cyan
-    Write-Host "Tests exécutés: $totalTests" -ForegroundColor White
-    Write-Host "Tests réussis: $passedTests" -ForegroundColor Green
-    Write-Host "Tests échoués: $failedTests" -ForegroundColor Red
+    # Afficher le rÃ©sumÃ©
+    Write-Host "`n=== RÃ©sumÃ© des tests ===" -ForegroundColor Cyan
+    Write-Host "Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor White
+    Write-Host "Tests rÃ©ussis: $passedTests" -ForegroundColor Green
+    Write-Host "Tests Ã©chouÃ©s: $failedTests" -ForegroundColor Red
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $reportPath = Join-Path -Path $testOutputPath -ChildPath "TestResults.txt"
     Set-Content -Path $reportPath -Value "Rapport des tests - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n"
-    Add-Content -Path $reportPath -Value "Tests exécutés: $totalTests"
-    Add-Content -Path $reportPath -Value "Tests réussis: $passedTests"
-    Add-Content -Path $reportPath -Value "Tests échoués: $failedTests"
+    Add-Content -Path $reportPath -Value "Tests exÃ©cutÃ©s: $totalTests"
+    Add-Content -Path $reportPath -Value "Tests rÃ©ussis: $passedTests"
+    Add-Content -Path $reportPath -Value "Tests Ã©chouÃ©s: $failedTests"
     
-    Write-Host "`nRapport généré: $reportPath" -ForegroundColor Green
+    Write-Host "`nRapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
     
     # Nettoyer les dossiers de test
     if (Test-Path -Path $testOutputPath) {
@@ -352,5 +352,5 @@ function Run-AllTests {
     }
 }
 
-# Exécuter tous les tests
+# ExÃ©cuter tous les tests
 Run-AllTests

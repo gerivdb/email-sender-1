@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit les fonctions de mesure de performance pour le module RoadmapParser.
+    DÃ©finit les fonctions de mesure de performance pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script définit les fonctions de mesure de performance utilisées par le module RoadmapParser.
-    Il inclut des fonctions pour mesurer le temps d'exécution, l'utilisation de la mémoire et le comptage d'opérations.
+    Ce script dÃ©finit les fonctions de mesure de performance utilisÃ©es par le module RoadmapParser.
+    Il inclut des fonctions pour mesurer le temps d'exÃ©cution, l'utilisation de la mÃ©moire et le comptage d'opÃ©rations.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 
 # Importer le script des fonctions de journalisation
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $loggingFunctionsPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Logging\LoggingFunctions.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $loggingFunctionsPath)) {
-    throw "Le fichier LoggingFunctions.ps1 est introuvable à l'emplacement : $loggingFunctionsPath"
+    throw "Le fichier LoggingFunctions.ps1 est introuvable Ã  l'emplacement : $loggingFunctionsPath"
 }
 
 # Importer le script
@@ -38,7 +38,7 @@ $script:OperationCounters = @{}
 $script:OperationStatistics = @{}
 $script:OperationThresholds = @{}
 
-# Fichiers temporaires pour stocker les données de performance
+# Fichiers temporaires pour stocker les donnÃ©es de performance
 $script:PerformanceTimersFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapParser_PerformanceTimers.xml"
 $script:PerformanceStatisticsFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapParser_PerformanceStatistics.xml"
 $script:PerformanceThresholdsFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapParser_PerformanceThresholds.xml"
@@ -49,7 +49,7 @@ $script:OperationCountersFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapPar
 $script:OperationStatisticsFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapParser_OperationStatistics.xml"
 $script:OperationThresholdsFile = Join-Path -Path $env:TEMP -ChildPath "RoadmapParser_OperationThresholds.xml"
 
-# Fonctions pour sauvegarder et charger les données de performance
+# Fonctions pour sauvegarder et charger les donnÃ©es de performance
 
 # Fonction pour sauvegarder les timers dans un fichier
 function Save-PerformanceTimers {
@@ -105,7 +105,7 @@ function Import-PerformanceThresholds {
     }
 }
 
-# Fonction pour sauvegarder les instantanés de mémoire dans un fichier
+# Fonction pour sauvegarder les instantanÃ©s de mÃ©moire dans un fichier
 function Save-MemorySnapshots {
     if (Test-Path -Path $script:MemorySnapshotsFile) {
         $script:MemorySnapshots | Export-Clixml -Path $script:MemorySnapshotsFile -Force
@@ -114,7 +114,7 @@ function Save-MemorySnapshots {
     }
 }
 
-# Fonction pour charger les instantanés de mémoire depuis un fichier
+# Fonction pour charger les instantanÃ©s de mÃ©moire depuis un fichier
 function Import-MemorySnapshots {
     if (Test-Path -Path $script:MemorySnapshotsFile) {
         $script:MemorySnapshots = Import-Clixml -Path $script:MemorySnapshotsFile
@@ -123,7 +123,7 @@ function Import-MemorySnapshots {
     }
 }
 
-# Fonction pour sauvegarder les statistiques de mémoire dans un fichier
+# Fonction pour sauvegarder les statistiques de mÃ©moire dans un fichier
 function Save-MemoryStatistics {
     if (Test-Path -Path $script:MemoryStatisticsFile) {
         $script:MemoryStatistics | Export-Clixml -Path $script:MemoryStatisticsFile -Force
@@ -132,7 +132,7 @@ function Save-MemoryStatistics {
     }
 }
 
-# Fonction pour charger les statistiques de mémoire depuis un fichier
+# Fonction pour charger les statistiques de mÃ©moire depuis un fichier
 function Import-MemoryStatistics {
     if (Test-Path -Path $script:MemoryStatisticsFile) {
         $script:MemoryStatistics = Import-Clixml -Path $script:MemoryStatisticsFile
@@ -141,7 +141,7 @@ function Import-MemoryStatistics {
     }
 }
 
-# Fonction pour sauvegarder les seuils de mémoire dans un fichier
+# Fonction pour sauvegarder les seuils de mÃ©moire dans un fichier
 function Save-MemoryThresholds {
     if (Test-Path -Path $script:MemoryThresholdsFile) {
         $script:MemoryThresholds | Export-Clixml -Path $script:MemoryThresholdsFile -Force
@@ -150,7 +150,7 @@ function Save-MemoryThresholds {
     }
 }
 
-# Fonction pour charger les seuils de mémoire depuis un fichier
+# Fonction pour charger les seuils de mÃ©moire depuis un fichier
 function Import-MemoryThresholds {
     if (Test-Path -Path $script:MemoryThresholdsFile) {
         $script:MemoryThresholds = Import-Clixml -Path $script:MemoryThresholdsFile
@@ -159,7 +159,7 @@ function Import-MemoryThresholds {
     }
 }
 
-# Fonction pour sauvegarder les compteurs d'opérations dans un fichier
+# Fonction pour sauvegarder les compteurs d'opÃ©rations dans un fichier
 function Save-OperationCounters {
     if (Test-Path -Path $script:OperationCountersFile) {
         $script:OperationCounters | Export-Clixml -Path $script:OperationCountersFile -Force
@@ -168,7 +168,7 @@ function Save-OperationCounters {
     }
 }
 
-# Fonction pour charger les compteurs d'opérations depuis un fichier
+# Fonction pour charger les compteurs d'opÃ©rations depuis un fichier
 function Import-OperationCounters {
     if (Test-Path -Path $script:OperationCountersFile) {
         $script:OperationCounters = Import-Clixml -Path $script:OperationCountersFile
@@ -177,7 +177,7 @@ function Import-OperationCounters {
     }
 }
 
-# Fonction pour sauvegarder les statistiques d'opérations dans un fichier
+# Fonction pour sauvegarder les statistiques d'opÃ©rations dans un fichier
 function Save-OperationStatistics {
     if (Test-Path -Path $script:OperationStatisticsFile) {
         $script:OperationStatistics | Export-Clixml -Path $script:OperationStatisticsFile -Force
@@ -186,7 +186,7 @@ function Save-OperationStatistics {
     }
 }
 
-# Fonction pour charger les statistiques d'opérations depuis un fichier
+# Fonction pour charger les statistiques d'opÃ©rations depuis un fichier
 function Import-OperationStatistics {
     if (Test-Path -Path $script:OperationStatisticsFile) {
         $script:OperationStatistics = Import-Clixml -Path $script:OperationStatisticsFile
@@ -195,7 +195,7 @@ function Import-OperationStatistics {
     }
 }
 
-# Fonction pour sauvegarder les seuils d'opérations dans un fichier
+# Fonction pour sauvegarder les seuils d'opÃ©rations dans un fichier
 function Save-OperationThresholds {
     if (Test-Path -Path $script:OperationThresholdsFile) {
         $script:OperationThresholds | Export-Clixml -Path $script:OperationThresholdsFile -Force
@@ -204,7 +204,7 @@ function Save-OperationThresholds {
     }
 }
 
-# Fonction pour charger les seuils d'opérations depuis un fichier
+# Fonction pour charger les seuils d'opÃ©rations depuis un fichier
 function Import-OperationThresholds {
     if (Test-Path -Path $script:OperationThresholdsFile) {
         $script:OperationThresholds = Import-Clixml -Path $script:OperationThresholdsFile
@@ -219,23 +219,23 @@ function Import-OperationThresholds {
 
 .DESCRIPTION
     La fonction Set-PerformanceMeasurementConfiguration configure les options de mesure de performance.
-    Elle permet de définir les paramètres de mesure tels que l'activation, le niveau de journalisation, etc.
+    Elle permet de dÃ©finir les paramÃ¨tres de mesure tels que l'activation, le niveau de journalisation, etc.
 
 .PARAMETER Enabled
-    Indique si la mesure de performance est activée.
-    Par défaut, c'est $true.
+    Indique si la mesure de performance est activÃ©e.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER LogLevel
     Le niveau de journalisation pour les mesures de performance.
-    Par défaut, c'est LogLevelDebug.
+    Par dÃ©faut, c'est LogLevelDebug.
 
 .PARAMETER Category
-    La catégorie à utiliser pour la journalisation.
-    Par défaut, c'est "Performance".
+    La catÃ©gorie Ã  utiliser pour la journalisation.
+    Par dÃ©faut, c'est "Performance".
 
 .EXAMPLE
     Set-PerformanceMeasurementConfiguration -Enabled $true -LogLevel $LogLevelDebug
-    Configure la mesure de performance pour être activée, avec un niveau de débogage.
+    Configure la mesure de performance pour Ãªtre activÃ©e, avec un niveau de dÃ©bogage.
 
 .OUTPUTS
     [void]
@@ -256,7 +256,7 @@ function Set-PerformanceMeasurementConfiguration {
     # Valider le niveau de journalisation
     $script:PerformanceLogLevel = ConvertTo-LogLevel -Value $LogLevel
 
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     $script:PerformanceEnabled = $Enabled
     $script:PerformanceCategory = $Category
 }
@@ -267,7 +267,7 @@ function Set-PerformanceMeasurementConfiguration {
 
 .DESCRIPTION
     La fonction Get-PerformanceMeasurementConfiguration obtient la configuration de mesure de performance.
-    Elle retourne un objet contenant les paramètres de mesure actuels.
+    Elle retourne un objet contenant les paramÃ¨tres de mesure actuels.
 
 .EXAMPLE
     Get-PerformanceMeasurementConfiguration
@@ -294,23 +294,23 @@ function Get-PerformanceMeasurementConfiguration {
 
 <#
 .SYNOPSIS
-    Démarre un chronomètre pour mesurer le temps d'exécution.
+    DÃ©marre un chronomÃ¨tre pour mesurer le temps d'exÃ©cution.
 
 .DESCRIPTION
-    La fonction Start-PerformanceTimer démarre un chronomètre pour mesurer le temps d'exécution.
-    Elle crée un nouveau chronomètre ou réinitialise un chronomètre existant.
+    La fonction Start-PerformanceTimer dÃ©marre un chronomÃ¨tre pour mesurer le temps d'exÃ©cution.
+    Elle crÃ©e un nouveau chronomÃ¨tre ou rÃ©initialise un chronomÃ¨tre existant.
 
 .PARAMETER Name
-    Le nom du chronomètre.
-    Ce nom est utilisé pour identifier le chronomètre lors de l'arrêt ou de la réinitialisation.
+    Le nom du chronomÃ¨tre.
+    Ce nom est utilisÃ© pour identifier le chronomÃ¨tre lors de l'arrÃªt ou de la rÃ©initialisation.
 
 .PARAMETER Reset
-    Indique si le chronomètre doit être réinitialisé s'il existe déjà.
-    Par défaut, c'est $true.
+    Indique si le chronomÃ¨tre doit Ãªtre rÃ©initialisÃ© s'il existe dÃ©jÃ .
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Start-PerformanceTimer -Name "MaFonction"
-    Démarre un chronomètre nommé "MaFonction".
+    DÃ©marre un chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -325,18 +325,18 @@ function Start-PerformanceTimer {
         [switch]$Reset = $true
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
 
-    # Vérifier si le chronomètre existe déjà
+    # VÃ©rifier si le chronomÃ¨tre existe dÃ©jÃ 
     if ($script:PerformanceTimers.ContainsKey($Name) -and -not $Reset) {
-        Write-Log -Message "Le chronomètre '$Name' est déjà en cours d'exécution." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+        Write-Log -Message "Le chronomÃ¨tre '$Name' est dÃ©jÃ  en cours d'exÃ©cution." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
         return
     }
 
-    # Créer ou réinitialiser le chronomètre
+    # CrÃ©er ou rÃ©initialiser le chronomÃ¨tre
     $script:PerformanceTimers[$Name] = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Initialiser les statistiques si elles n'existent pas
@@ -351,30 +351,30 @@ function Start-PerformanceTimer {
         }
     }
 
-    Write-Log -Message "Chronomètre '$Name' démarré." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "ChronomÃ¨tre '$Name' dÃ©marrÃ©." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Arrête un chronomètre et enregistre le temps d'exécution.
+    ArrÃªte un chronomÃ¨tre et enregistre le temps d'exÃ©cution.
 
 .DESCRIPTION
-    La fonction Stop-PerformanceTimer arrête un chronomètre et enregistre le temps d'exécution.
-    Elle met à jour les statistiques pour le chronomètre spécifié.
+    La fonction Stop-PerformanceTimer arrÃªte un chronomÃ¨tre et enregistre le temps d'exÃ©cution.
+    Elle met Ã  jour les statistiques pour le chronomÃ¨tre spÃ©cifiÃ©.
 
 .PARAMETER Name
-    Le nom du chronomètre à arrêter.
+    Le nom du chronomÃ¨tre Ã  arrÃªter.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $true.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Stop-PerformanceTimer -Name "MaFonction"
-    Arrête le chronomètre nommé "MaFonction" et journalise le résultat.
+    ArrÃªte le chronomÃ¨tre nommÃ© "MaFonction" et journalise le rÃ©sultat.
 
 .OUTPUTS
-    [double] Le temps d'exécution en millisecondes.
+    [double] Le temps d'exÃ©cution en millisecondes.
 #>
 function Stop-PerformanceTimer {
     [CmdletBinding()]
@@ -387,23 +387,23 @@ function Stop-PerformanceTimer {
         [switch]$LogResult = $true
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return 0
     }
 
-    # Vérifier si le chronomètre existe
+    # VÃ©rifier si le chronomÃ¨tre existe
     if (-not $script:PerformanceTimers.ContainsKey($Name)) {
-        Write-Log -Message "Le chronomètre '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "Le chronomÃ¨tre '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return 0
     }
 
-    # Arrêter le chronomètre
+    # ArrÃªter le chronomÃ¨tre
     $stopwatch = $script:PerformanceTimers[$Name]
     $stopwatch.Stop()
     $elapsedMilliseconds = $stopwatch.Elapsed.TotalMilliseconds
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     $stats = $script:PerformanceStatistics[$Name]
     $stats.Count++
     $stats.TotalMilliseconds += $elapsedMilliseconds
@@ -412,15 +412,15 @@ function Stop-PerformanceTimer {
     $stats.LastMilliseconds = $elapsedMilliseconds
     $stats.AverageMilliseconds = $stats.TotalMilliseconds / $stats.Count
 
-    # Journaliser le résultat si demandé
+    # Journaliser le rÃ©sultat si demandÃ©
     if ($LogResult) {
-        $message = "Chronomètre '$Name' arrêté. Temps écoulé: $($elapsedMilliseconds.ToString("F2")) ms."
+        $message = "ChronomÃ¨tre '$Name' arrÃªtÃ©. Temps Ã©coulÃ©: $($elapsedMilliseconds.ToString("F2")) ms."
 
-        # Vérifier si un seuil est défini pour ce chronomètre
+        # VÃ©rifier si un seuil est dÃ©fini pour ce chronomÃ¨tre
         if ($script:PerformanceThresholds.ContainsKey($Name)) {
             $threshold = $script:PerformanceThresholds[$Name]
             if ($elapsedMilliseconds -gt $threshold) {
-                $message += " ATTENTION: Seuil de $threshold ms dépassé!"
+                $message += " ATTENTION: Seuil de $threshold ms dÃ©passÃ©!"
                 Write-Log -Message $message -Level $script:LogLevelWarning -Source $script:PerformanceCategory
             } else {
                 Write-Log -Message $message -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
@@ -430,24 +430,24 @@ function Stop-PerformanceTimer {
         }
     }
 
-    # Retourner le temps écoulé
+    # Retourner le temps Ã©coulÃ©
     return $elapsedMilliseconds
 }
 
 <#
 .SYNOPSIS
-    Réinitialise un chronomètre.
+    RÃ©initialise un chronomÃ¨tre.
 
 .DESCRIPTION
-    La fonction Reset-PerformanceTimer réinitialise un chronomètre.
-    Elle arrête le chronomètre s'il est en cours d'exécution et le redémarre.
+    La fonction Reset-PerformanceTimer rÃ©initialise un chronomÃ¨tre.
+    Elle arrÃªte le chronomÃ¨tre s'il est en cours d'exÃ©cution et le redÃ©marre.
 
 .PARAMETER Name
-    Le nom du chronomètre à réinitialiser.
+    Le nom du chronomÃ¨tre Ã  rÃ©initialiser.
 
 .EXAMPLE
     Reset-PerformanceTimer -Name "MaFonction"
-    Réinitialise le chronomètre nommé "MaFonction".
+    RÃ©initialise le chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -459,45 +459,45 @@ function Reset-PerformanceTimer {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
 
-    # Vérifier si le chronomètre existe
+    # VÃ©rifier si le chronomÃ¨tre existe
     if (-not $script:PerformanceTimers.ContainsKey($Name)) {
-        Write-Log -Message "Le chronomètre '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "Le chronomÃ¨tre '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return
     }
 
-    # Arrêter le chronomètre s'il est en cours d'exécution
+    # ArrÃªter le chronomÃ¨tre s'il est en cours d'exÃ©cution
     $stopwatch = $script:PerformanceTimers[$Name]
     if ($stopwatch.IsRunning) {
         $stopwatch.Stop()
     }
 
-    # Redémarrer le chronomètre
+    # RedÃ©marrer le chronomÃ¨tre
     $stopwatch.Reset()
     $stopwatch.Start()
 
-    Write-Log -Message "Chronomètre '$Name' réinitialisé." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "ChronomÃ¨tre '$Name' rÃ©initialisÃ©." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Obtient les statistiques de performance pour un chronomètre.
+    Obtient les statistiques de performance pour un chronomÃ¨tre.
 
 .DESCRIPTION
-    La fonction Get-PerformanceStatistics obtient les statistiques de performance pour un chronomètre.
-    Elle retourne un objet contenant les statistiques telles que le nombre d'exécutions, le temps total, etc.
+    La fonction Get-PerformanceStatistics obtient les statistiques de performance pour un chronomÃ¨tre.
+    Elle retourne un objet contenant les statistiques telles que le nombre d'exÃ©cutions, le temps total, etc.
 
 .PARAMETER Name
-    Le nom du chronomètre.
-    Si non spécifié, retourne les statistiques pour tous les chronomètres.
+    Le nom du chronomÃ¨tre.
+    Si non spÃ©cifiÃ©, retourne les statistiques pour tous les chronomÃ¨tres.
 
 .EXAMPLE
     Get-PerformanceStatistics -Name "MaFonction"
-    Obtient les statistiques pour le chronomètre nommé "MaFonction".
+    Obtient les statistiques pour le chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [PSCustomObject] Un objet contenant les statistiques de performance.
@@ -510,12 +510,12 @@ function Get-PerformanceStatistics {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return $null
     }
 
-    # Si un nom est spécifié, retourner les statistiques pour ce chronomètre
+    # Si un nom est spÃ©cifiÃ©, retourner les statistiques pour ce chronomÃ¨tre
     if ($Name) {
         if (-not $script:PerformanceStatistics.ContainsKey($Name)) {
             Write-Log -Message "Aucune statistique disponible pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
@@ -534,7 +534,7 @@ function Get-PerformanceStatistics {
         }
     }
 
-    # Sinon, retourner les statistiques pour tous les chronomètres
+    # Sinon, retourner les statistiques pour tous les chronomÃ¨tres
     $result = @()
     foreach ($key in $script:PerformanceStatistics.Keys) {
         $stats = $script:PerformanceStatistics[$key]
@@ -554,21 +554,21 @@ function Get-PerformanceStatistics {
 
 <#
 .SYNOPSIS
-    Définit un seuil de performance pour un chronomètre.
+    DÃ©finit un seuil de performance pour un chronomÃ¨tre.
 
 .DESCRIPTION
-    La fonction Set-PerformanceThreshold définit un seuil de performance pour un chronomètre.
-    Si le temps d'exécution dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-PerformanceThreshold dÃ©finit un seuil de performance pour un chronomÃ¨tre.
+    Si le temps d'exÃ©cution dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
-    Le nom du chronomètre.
+    Le nom du chronomÃ¨tre.
 
 .PARAMETER ThresholdMilliseconds
     Le seuil en millisecondes.
 
 .EXAMPLE
     Set-PerformanceThreshold -Name "MaFonction" -ThresholdMilliseconds 100
-    Définit un seuil de 100 ms pour le chronomètre nommé "MaFonction".
+    DÃ©finit un seuil de 100 ms pour le chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -583,43 +583,43 @@ function Set-PerformanceThreshold {
         [double]$ThresholdMilliseconds
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
 
-    # Définir le seuil
+    # DÃ©finir le seuil
     $script:PerformanceThresholds[$Name] = $ThresholdMilliseconds
 
-    Write-Log -Message "Seuil de performance pour '$Name' défini à $ThresholdMilliseconds ms." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "Seuil de performance pour '$Name' dÃ©fini Ã  $ThresholdMilliseconds ms." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Mesure le temps d'exécution d'un bloc de code.
+    Mesure le temps d'exÃ©cution d'un bloc de code.
 
 .DESCRIPTION
-    La fonction Measure-ExecutionTime mesure le temps d'exécution d'un bloc de code.
-    Elle démarre un chronomètre, exécute le bloc de code, puis arrête le chronomètre.
+    La fonction Measure-ExecutionTime mesure le temps d'exÃ©cution d'un bloc de code.
+    Elle dÃ©marre un chronomÃ¨tre, exÃ©cute le bloc de code, puis arrÃªte le chronomÃ¨tre.
 
 .PARAMETER Name
-    Le nom du chronomètre.
+    Le nom du chronomÃ¨tre.
 
 .PARAMETER ScriptBlock
-    Le bloc de code à exécuter.
+    Le bloc de code Ã  exÃ©cuter.
 
 .PARAMETER InputObject
-    L'objet à passer au bloc de code.
+    L'objet Ã  passer au bloc de code.
 
 .PARAMETER ArgumentList
-    Les arguments à passer au bloc de code.
+    Les arguments Ã  passer au bloc de code.
 
 .EXAMPLE
     Measure-ExecutionTime -Name "MaFonction" -ScriptBlock { Get-Process }
-    Mesure le temps d'exécution de la commande Get-Process.
+    Mesure le temps d'exÃ©cution de la commande Get-Process.
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant le résultat du bloc de code et le temps d'exécution.
+    [PSCustomObject] Un objet contenant le rÃ©sultat du bloc de code et le temps d'exÃ©cution.
 #>
 function Measure-ExecutionTime {
     [CmdletBinding()]
@@ -638,9 +638,9 @@ function Measure-ExecutionTime {
         [object[]]$ArgumentList
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
-        # Exécuter le bloc de code sans mesure
+        # ExÃ©cuter le bloc de code sans mesure
         if ($InputObject) {
             if ($ArgumentList) {
                 return $InputObject | & $ScriptBlock @ArgumentList
@@ -656,10 +656,10 @@ function Measure-ExecutionTime {
         }
     }
 
-    # Démarrer le chronomètre
+    # DÃ©marrer le chronomÃ¨tre
     Start-PerformanceTimer -Name $Name
 
-    # Exécuter le bloc de code
+    # ExÃ©cuter le bloc de code
     $result = $null
     try {
         if ($PSBoundParameters.ContainsKey('InputObject')) {
@@ -676,17 +676,17 @@ function Measure-ExecutionTime {
             }
         }
     } catch {
-        # Arrêter le chronomètre en cas d'erreur
+        # ArrÃªter le chronomÃ¨tre en cas d'erreur
         $elapsedMilliseconds = Stop-PerformanceTimer -Name $Name
 
         # Relancer l'erreur
         throw $_
     }
 
-    # Arrêter le chronomètre
+    # ArrÃªter le chronomÃ¨tre
     $elapsedMilliseconds = Stop-PerformanceTimer -Name $Name
 
-    # Retourner le résultat et le temps d'exécution
+    # Retourner le rÃ©sultat et le temps d'exÃ©cution
     return [PSCustomObject]@{
         Result              = $result
         ElapsedMilliseconds = $elapsedMilliseconds
@@ -695,23 +695,23 @@ function Measure-ExecutionTime {
 
 <#
 .SYNOPSIS
-    Prend un instantané de l'utilisation de la mémoire.
+    Prend un instantanÃ© de l'utilisation de la mÃ©moire.
 
 .DESCRIPTION
-    La fonction Start-MemorySnapshot prend un instantané de l'utilisation de la mémoire.
-    Elle enregistre l'utilisation actuelle de la mémoire pour une comparaison ultérieure.
+    La fonction Start-MemorySnapshot prend un instantanÃ© de l'utilisation de la mÃ©moire.
+    Elle enregistre l'utilisation actuelle de la mÃ©moire pour une comparaison ultÃ©rieure.
 
 .PARAMETER Name
-    Le nom de l'instantané.
-    Ce nom est utilisé pour identifier l'instantané lors de la comparaison.
+    Le nom de l'instantanÃ©.
+    Ce nom est utilisÃ© pour identifier l'instantanÃ© lors de la comparaison.
 
 .PARAMETER Reset
-    Indique si l'instantané doit être réinitialisé s'il existe déjà.
-    Par défaut, c'est $true.
+    Indique si l'instantanÃ© doit Ãªtre rÃ©initialisÃ© s'il existe dÃ©jÃ .
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Start-MemorySnapshot -Name "MaFonction"
-    Prend un instantané de l'utilisation de la mémoire nommé "MaFonction".
+    Prend un instantanÃ© de l'utilisation de la mÃ©moire nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -726,26 +726,26 @@ function Start-MemorySnapshot {
         [switch]$Reset = $true
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
 
-    # Charger les instantanés et les statistiques
+    # Charger les instantanÃ©s et les statistiques
     Import-MemorySnapshots
     Import-MemoryStatistics
 
-    # Vérifier si l'instantané existe déjà
+    # VÃ©rifier si l'instantanÃ© existe dÃ©jÃ 
     if ($script:MemorySnapshots.ContainsKey($Name) -and -not $Reset) {
-        Write-Log -Message "L'instantané de mémoire '$Name' existe déjà." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+        Write-Log -Message "L'instantanÃ© de mÃ©moire '$Name' existe dÃ©jÃ ." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
         return
     }
 
-    # Obtenir l'utilisation actuelle de la mémoire
+    # Obtenir l'utilisation actuelle de la mÃ©moire
     $process = Get-Process -Id $PID
     $memoryUsage = $process.WorkingSet64
 
-    # Créer ou réinitialiser l'instantané
+    # CrÃ©er ou rÃ©initialiser l'instantanÃ©
     $script:MemorySnapshots[$Name] = @{
         StartMemory = $memoryUsage
         EndMemory   = $null
@@ -766,38 +766,38 @@ function Start-MemorySnapshot {
         }
     }
 
-    # Sauvegarder les instantanés et les statistiques
+    # Sauvegarder les instantanÃ©s et les statistiques
     Save-MemorySnapshots
     Save-MemoryStatistics
 
-    Write-Log -Message "Instantané de mémoire '$Name' démarré. Mémoire initiale: $($memoryUsage / 1MB) MB." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "InstantanÃ© de mÃ©moire '$Name' dÃ©marrÃ©. MÃ©moire initiale: $($memoryUsage / 1MB) MB." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Arrête un instantané de mémoire et calcule l'utilisation de la mémoire.
+    ArrÃªte un instantanÃ© de mÃ©moire et calcule l'utilisation de la mÃ©moire.
 
 .DESCRIPTION
-    La fonction Stop-MemorySnapshot arrête un instantané de mémoire et calcule l'utilisation de la mémoire.
-    Elle met à jour les statistiques pour l'instantané spécifié.
+    La fonction Stop-MemorySnapshot arrÃªte un instantanÃ© de mÃ©moire et calcule l'utilisation de la mÃ©moire.
+    Elle met Ã  jour les statistiques pour l'instantanÃ© spÃ©cifiÃ©.
 
 .PARAMETER Name
-    Le nom de l'instantané à arrêter.
+    Le nom de l'instantanÃ© Ã  arrÃªter.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $true.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER ForceGC
-    Indique si le garbage collector doit être forcé avant de mesurer l'utilisation finale de la mémoire.
-    Par défaut, c'est $false.
+    Indique si le garbage collector doit Ãªtre forcÃ© avant de mesurer l'utilisation finale de la mÃ©moire.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Stop-MemorySnapshot -Name "MaFonction"
-    Arrête l'instantané de mémoire nommé "MaFonction" et journalise le résultat.
+    ArrÃªte l'instantanÃ© de mÃ©moire nommÃ© "MaFonction" et journalise le rÃ©sultat.
 
 .OUTPUTS
-    [double] L'utilisation de la mémoire en octets.
+    [double] L'utilisation de la mÃ©moire en octets.
 #>
 function Stop-MemorySnapshot {
     [CmdletBinding()]
@@ -813,41 +813,41 @@ function Stop-MemorySnapshot {
         [switch]$ForceGC = $false
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return 0
     }
 
-    # Charger les instantanés, les statistiques et les seuils
+    # Charger les instantanÃ©s, les statistiques et les seuils
     Import-MemorySnapshots
     Import-MemoryStatistics
     Import-MemoryThresholds
 
-    # Vérifier si l'instantané existe
+    # VÃ©rifier si l'instantanÃ© existe
     if (-not $script:MemorySnapshots.ContainsKey($Name)) {
-        Write-Log -Message "L'instantané de mémoire '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "L'instantanÃ© de mÃ©moire '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return 0
     }
 
-    # Forcer le garbage collector si demandé
+    # Forcer le garbage collector si demandÃ©
     if ($ForceGC) {
         [System.GC]::Collect()
         [System.GC]::WaitForPendingFinalizers()
         [System.GC]::Collect()
     }
 
-    # Obtenir l'utilisation actuelle de la mémoire
+    # Obtenir l'utilisation actuelle de la mÃ©moire
     $process = Get-Process -Id $PID
     $memoryUsage = $process.WorkingSet64
 
-    # Mettre à jour l'instantané
+    # Mettre Ã  jour l'instantanÃ©
     $snapshot = $script:MemorySnapshots[$Name]
     $snapshot.EndMemory = $memoryUsage
     $memoryDiff = $memoryUsage - $snapshot.StartMemory
-    $snapshot.MemoryUsed = [Math]::Max(0, $memoryDiff)  # Assurer que l'utilisation de la mémoire n'est jamais négative
+    $snapshot.MemoryUsed = [Math]::Max(0, $memoryDiff)  # Assurer que l'utilisation de la mÃ©moire n'est jamais nÃ©gative
     $snapshot.EndTime = Get-Date
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     $stats = $script:MemoryStatistics[$Name]
     $stats.Count++
     $stats.TotalBytes += $snapshot.MemoryUsed
@@ -856,21 +856,21 @@ function Stop-MemorySnapshot {
     $stats.LastBytes = $snapshot.MemoryUsed
     $stats.AverageBytes = $stats.TotalBytes / $stats.Count
 
-    # Sauvegarder les instantanés et les statistiques
+    # Sauvegarder les instantanÃ©s et les statistiques
     Save-MemorySnapshots
     Save-MemoryStatistics
 
-    # Journaliser le résultat si demandé
+    # Journaliser le rÃ©sultat si demandÃ©
     if ($LogResult) {
         $memoryUsedMB = $snapshot.MemoryUsed / 1MB
-        $message = "Instantané de mémoire '$Name' arrêté. Utilisation de la mémoire: $($memoryUsedMB.ToString("F2")) MB."
+        $message = "InstantanÃ© de mÃ©moire '$Name' arrÃªtÃ©. Utilisation de la mÃ©moire: $($memoryUsedMB.ToString("F2")) MB."
 
-        # Vérifier si un seuil est défini pour cet instantané
+        # VÃ©rifier si un seuil est dÃ©fini pour cet instantanÃ©
         if ($script:MemoryThresholds.ContainsKey($Name)) {
             $threshold = $script:MemoryThresholds[$Name]
             if ($snapshot.MemoryUsed -gt $threshold) {
                 $thresholdMB = $threshold / 1MB
-                $message += " ATTENTION: Seuil de $thresholdMB MB dépassé!"
+                $message += " ATTENTION: Seuil de $thresholdMB MB dÃ©passÃ©!"
                 Write-Log -Message $message -Level $script:LogLevelWarning -Source $script:PerformanceCategory
             } else {
                 Write-Log -Message $message -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
@@ -880,24 +880,24 @@ function Stop-MemorySnapshot {
         }
     }
 
-    # Retourner l'utilisation de la mémoire
+    # Retourner l'utilisation de la mÃ©moire
     return $snapshot.MemoryUsed
 }
 
 <#
 .SYNOPSIS
-    Réinitialise un instantané de mémoire.
+    RÃ©initialise un instantanÃ© de mÃ©moire.
 
 .DESCRIPTION
-    La fonction Reset-MemorySnapshot réinitialise un instantané de mémoire.
-    Elle arrête l'instantané s'il est en cours et le redémarre.
+    La fonction Reset-MemorySnapshot rÃ©initialise un instantanÃ© de mÃ©moire.
+    Elle arrÃªte l'instantanÃ© s'il est en cours et le redÃ©marre.
 
 .PARAMETER Name
-    Le nom de l'instantané à réinitialiser.
+    Le nom de l'instantanÃ© Ã  rÃ©initialiser.
 
 .EXAMPLE
     Reset-MemorySnapshot -Name "MaFonction"
-    Réinitialise l'instantané de mémoire nommé "MaFonction".
+    RÃ©initialise l'instantanÃ© de mÃ©moire nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -909,46 +909,46 @@ function Reset-MemorySnapshot {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
 
-    # Vérifier si l'instantané existe
+    # VÃ©rifier si l'instantanÃ© existe
     if (-not $script:MemorySnapshots.ContainsKey($Name)) {
-        Write-Log -Message "L'instantané de mémoire '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "L'instantanÃ© de mÃ©moire '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return
     }
 
-    # Arrêter l'instantané s'il est en cours
+    # ArrÃªter l'instantanÃ© s'il est en cours
     if ($null -eq $script:MemorySnapshots[$Name].EndMemory) {
         Stop-MemorySnapshot -Name $Name -LogResult:$false
     }
 
-    # Redémarrer l'instantané
+    # RedÃ©marrer l'instantanÃ©
     Start-MemorySnapshot -Name $Name -Reset
 
-    Write-Log -Message "Instantané de mémoire '$Name' réinitialisé." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "InstantanÃ© de mÃ©moire '$Name' rÃ©initialisÃ©." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Obtient les statistiques de mémoire pour un instantané.
+    Obtient les statistiques de mÃ©moire pour un instantanÃ©.
 
 .DESCRIPTION
-    La fonction Get-MemoryStatistics obtient les statistiques de mémoire pour un instantané.
-    Elle retourne un objet contenant les statistiques telles que le nombre d'exécutions, l'utilisation totale, etc.
+    La fonction Get-MemoryStatistics obtient les statistiques de mÃ©moire pour un instantanÃ©.
+    Elle retourne un objet contenant les statistiques telles que le nombre d'exÃ©cutions, l'utilisation totale, etc.
 
 .PARAMETER Name
-    Le nom de l'instantané.
-    Si non spécifié, retourne les statistiques pour tous les instantanés.
+    Le nom de l'instantanÃ©.
+    Si non spÃ©cifiÃ©, retourne les statistiques pour tous les instantanÃ©s.
 
 .EXAMPLE
     Get-MemoryStatistics -Name "MaFonction"
-    Obtient les statistiques pour l'instantané nommé "MaFonction".
+    Obtient les statistiques pour l'instantanÃ© nommÃ© "MaFonction".
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant les statistiques de mémoire.
+    [PSCustomObject] Un objet contenant les statistiques de mÃ©moire.
 #>
 function Get-MemoryStatistics {
     [CmdletBinding()]
@@ -958,7 +958,7 @@ function Get-MemoryStatistics {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return $null
     }
@@ -966,10 +966,10 @@ function Get-MemoryStatistics {
     # Charger les statistiques
     Import-MemoryStatistics
 
-    # Si un nom est spécifié, retourner les statistiques pour cet instantané
+    # Si un nom est spÃ©cifiÃ©, retourner les statistiques pour cet instantanÃ©
     if ($Name) {
         if (-not $script:MemoryStatistics.ContainsKey($Name)) {
-            Write-Log -Message "Aucune statistique de mémoire disponible pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+            Write-Log -Message "Aucune statistique de mÃ©moire disponible pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
             return $null
         }
 
@@ -990,7 +990,7 @@ function Get-MemoryStatistics {
         }
     }
 
-    # Sinon, retourner les statistiques pour tous les instantanés
+    # Sinon, retourner les statistiques pour tous les instantanÃ©s
     $result = @()
     foreach ($key in $script:MemoryStatistics.Keys) {
         $stats = $script:MemoryStatistics[$key]
@@ -1015,24 +1015,24 @@ function Get-MemoryStatistics {
 
 <#
 .SYNOPSIS
-    Définit un seuil de mémoire pour un instantané.
+    DÃ©finit un seuil de mÃ©moire pour un instantanÃ©.
 
 .DESCRIPTION
-    La fonction Set-MemoryThreshold définit un seuil de mémoire pour un instantané.
-    Si l'utilisation de la mémoire dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-MemoryThreshold dÃ©finit un seuil de mÃ©moire pour un instantanÃ©.
+    Si l'utilisation de la mÃ©moire dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
-    Le nom de l'instantané.
+    Le nom de l'instantanÃ©.
 
 .PARAMETER ThresholdBytes
     Le seuil en octets.
 
 .PARAMETER ThresholdMB
-    Le seuil en mégaoctets.
+    Le seuil en mÃ©gaoctets.
 
 .EXAMPLE
     Set-MemoryThreshold -Name "MaFonction" -ThresholdMB 100
-    Définit un seuil de 100 MB pour l'instantané nommé "MaFonction".
+    DÃ©finit un seuil de 100 MB pour l'instantanÃ© nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -1050,7 +1050,7 @@ function Set-MemoryThreshold {
         [double]$ThresholdMB
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
@@ -1058,57 +1058,57 @@ function Set-MemoryThreshold {
     # Charger les seuils
     Import-MemoryThresholds
 
-    # Convertir le seuil en octets si spécifié en MB
+    # Convertir le seuil en octets si spÃ©cifiÃ© en MB
     if ($PSBoundParameters.ContainsKey('ThresholdMB')) {
         $ThresholdBytes = $ThresholdMB * 1MB
     }
 
-    # Vérifier si le seuil est spécifié
+    # VÃ©rifier si le seuil est spÃ©cifiÃ©
     if (-not $PSBoundParameters.ContainsKey('ThresholdBytes') -and -not $PSBoundParameters.ContainsKey('ThresholdMB')) {
-        Write-Log -Message "Aucun seuil spécifié pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "Aucun seuil spÃ©cifiÃ© pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return
     }
 
-    # Définir le seuil
+    # DÃ©finir le seuil
     $script:MemoryThresholds[$Name] = $ThresholdBytes
 
     # Sauvegarder les seuils
     Save-MemoryThresholds
 
     $thresholdMB = $ThresholdBytes / 1MB
-    Write-Log -Message "Seuil de mémoire pour '$Name' défini à $($thresholdMB.ToString("F2")) MB." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "Seuil de mÃ©moire pour '$Name' dÃ©fini Ã  $($thresholdMB.ToString("F2")) MB." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Mesure l'utilisation de la mémoire d'un bloc de code.
+    Mesure l'utilisation de la mÃ©moire d'un bloc de code.
 
 .DESCRIPTION
-    La fonction Measure-MemoryUsage mesure l'utilisation de la mémoire d'un bloc de code.
-    Elle prend un instantané avant et après l'exécution du bloc de code, puis calcule la différence.
+    La fonction Measure-MemoryUsage mesure l'utilisation de la mÃ©moire d'un bloc de code.
+    Elle prend un instantanÃ© avant et aprÃ¨s l'exÃ©cution du bloc de code, puis calcule la diffÃ©rence.
 
 .PARAMETER Name
     Le nom de la mesure.
 
 .PARAMETER ScriptBlock
-    Le bloc de code à exécuter.
+    Le bloc de code Ã  exÃ©cuter.
 
 .PARAMETER InputObject
-    L'objet à passer au bloc de code.
+    L'objet Ã  passer au bloc de code.
 
 .PARAMETER ArgumentList
-    Les arguments à passer au bloc de code.
+    Les arguments Ã  passer au bloc de code.
 
 .PARAMETER ForceGC
-    Indique si le garbage collector doit être forcé avant de mesurer l'utilisation finale de la mémoire.
-    Par défaut, c'est $false.
+    Indique si le garbage collector doit Ãªtre forcÃ© avant de mesurer l'utilisation finale de la mÃ©moire.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Measure-MemoryUsage -Name "MaFonction" -ScriptBlock { Get-Process }
-    Mesure l'utilisation de la mémoire de la commande Get-Process.
+    Mesure l'utilisation de la mÃ©moire de la commande Get-Process.
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant le résultat du bloc de code et l'utilisation de la mémoire.
+    [PSCustomObject] Un objet contenant le rÃ©sultat du bloc de code et l'utilisation de la mÃ©moire.
 #>
 function Measure-MemoryUsage {
     [CmdletBinding()]
@@ -1130,9 +1130,9 @@ function Measure-MemoryUsage {
         [switch]$ForceGC = $false
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
-        # Exécuter le bloc de code sans mesure
+        # ExÃ©cuter le bloc de code sans mesure
         if ($PSBoundParameters.ContainsKey('InputObject')) {
             if ($PSBoundParameters.ContainsKey('ArgumentList')) {
                 return $InputObject | & $ScriptBlock @ArgumentList
@@ -1148,10 +1148,10 @@ function Measure-MemoryUsage {
         }
     }
 
-    # Démarrer l'instantané de mémoire
+    # DÃ©marrer l'instantanÃ© de mÃ©moire
     Start-MemorySnapshot -Name $Name
 
-    # Exécuter le bloc de code
+    # ExÃ©cuter le bloc de code
     $result = $null
     try {
         if ($PSBoundParameters.ContainsKey('InputObject')) {
@@ -1168,17 +1168,17 @@ function Measure-MemoryUsage {
             }
         }
     } catch {
-        # Arrêter l'instantané en cas d'erreur
+        # ArrÃªter l'instantanÃ© en cas d'erreur
         $memoryUsed = Stop-MemorySnapshot -Name $Name -ForceGC:$ForceGC
 
         # Relancer l'erreur
         throw $_
     }
 
-    # Arrêter l'instantané
+    # ArrÃªter l'instantanÃ©
     $memoryUsed = Stop-MemorySnapshot -Name $Name -ForceGC:$ForceGC
 
-    # Retourner le résultat et l'utilisation de la mémoire
+    # Retourner le rÃ©sultat et l'utilisation de la mÃ©moire
     return [PSCustomObject]@{
         Result          = $result
         MemoryUsedBytes = $memoryUsed
@@ -1188,27 +1188,27 @@ function Measure-MemoryUsage {
 
 <#
 .SYNOPSIS
-    Initialise un compteur d'opérations.
+    Initialise un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Initialize-OperationCounter initialise un compteur d'opérations.
-    Elle crée un nouveau compteur ou réinitialise un compteur existant.
+    La fonction Initialize-OperationCounter initialise un compteur d'opÃ©rations.
+    Elle crÃ©e un nouveau compteur ou rÃ©initialise un compteur existant.
 
 .PARAMETER Name
     Le nom du compteur.
-    Ce nom est utilisé pour identifier le compteur lors de l'incrémentation ou de la réinitialisation.
+    Ce nom est utilisÃ© pour identifier le compteur lors de l'incrÃ©mentation ou de la rÃ©initialisation.
 
 .PARAMETER Reset
-    Indique si le compteur doit être réinitialisé s'il existe déjà.
-    Par défaut, c'est $true.
+    Indique si le compteur doit Ãªtre rÃ©initialisÃ© s'il existe dÃ©jÃ .
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER InitialValue
     La valeur initiale du compteur.
-    Par défaut, c'est 0.
+    Par dÃ©faut, c'est 0.
 
 .EXAMPLE
     Initialize-OperationCounter -Name "MaFonction"
-    Initialise un compteur d'opérations nommé "MaFonction" avec une valeur initiale de 0.
+    Initialise un compteur d'opÃ©rations nommÃ© "MaFonction" avec une valeur initiale de 0.
 
 .OUTPUTS
     [void]
@@ -1226,7 +1226,7 @@ function Initialize-OperationCounter {
         [int]$InitialValue = 0
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
@@ -1235,13 +1235,13 @@ function Initialize-OperationCounter {
     Import-OperationCounters
     Import-OperationStatistics
 
-    # Vérifier si le compteur existe déjà
+    # VÃ©rifier si le compteur existe dÃ©jÃ 
     if ($script:OperationCounters.ContainsKey($Name) -and -not $Reset) {
-        Write-Log -Message "Le compteur d'opérations '$Name' existe déjà." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+        Write-Log -Message "Le compteur d'opÃ©rations '$Name' existe dÃ©jÃ ." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
         return
     }
 
-    # Créer ou réinitialiser le compteur
+    # CrÃ©er ou rÃ©initialiser le compteur
     $script:OperationCounters[$Name] = $InitialValue
 
     # Initialiser les statistiques si elles n'existent pas
@@ -1260,31 +1260,31 @@ function Initialize-OperationCounter {
     Save-OperationCounters
     Save-OperationStatistics
 
-    Write-Log -Message "Compteur d'opérations '$Name' initialisé à $InitialValue." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "Compteur d'opÃ©rations '$Name' initialisÃ© Ã  $InitialValue." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Incrémente un compteur d'opérations.
+    IncrÃ©mente un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Increment-OperationCounter incrémente un compteur d'opérations.
-    Elle crée le compteur s'il n'existe pas.
+    La fonction Increment-OperationCounter incrÃ©mente un compteur d'opÃ©rations.
+    Elle crÃ©e le compteur s'il n'existe pas.
 
 .PARAMETER Name
-    Le nom du compteur à incrémenter.
+    Le nom du compteur Ã  incrÃ©menter.
 
 .PARAMETER IncrementBy
-    La valeur à ajouter au compteur.
-    Par défaut, c'est 1.
+    La valeur Ã  ajouter au compteur.
+    Par dÃ©faut, c'est 1.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $false.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Increment-OperationCounter -Name "MaFonction"
-    Incrémente le compteur d'opérations nommé "MaFonction" de 1.
+    IncrÃ©mente le compteur d'opÃ©rations nommÃ© "MaFonction" de 1.
 
 .OUTPUTS
     [int] La nouvelle valeur du compteur.
@@ -1303,7 +1303,7 @@ function Increment-OperationCounter {
         [switch]$LogResult
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return 0
     }
@@ -1312,27 +1312,27 @@ function Increment-OperationCounter {
     Import-OperationCounters
     Import-OperationThresholds
 
-    # Vérifier si le compteur existe
+    # VÃ©rifier si le compteur existe
     if (-not $script:OperationCounters.ContainsKey($Name)) {
         # Initialiser le compteur
         Initialize-OperationCounter -Name $Name
     } else {
-        # Incrémenter le compteur
+        # IncrÃ©menter le compteur
         $script:OperationCounters[$Name] += $IncrementBy
 
         # Sauvegarder les compteurs
         Save-OperationCounters
     }
 
-    # Journaliser le résultat si demandé
+    # Journaliser le rÃ©sultat si demandÃ©
     if ($LogResult) {
-        $message = "Compteur d'opérations '$Name' incrémenté de $IncrementBy. Nouvelle valeur: $($script:OperationCounters[$Name])."
+        $message = "Compteur d'opÃ©rations '$Name' incrÃ©mentÃ© de $IncrementBy. Nouvelle valeur: $($script:OperationCounters[$Name])."
 
-        # Vérifier si un seuil est défini pour ce compteur
+        # VÃ©rifier si un seuil est dÃ©fini pour ce compteur
         if ($script:OperationThresholds.ContainsKey($Name)) {
             $threshold = $script:OperationThresholds[$Name]
             if ($script:OperationCounters[$Name] -gt $threshold) {
-                $message += " ATTENTION: Seuil de $threshold dépassé!"
+                $message += " ATTENTION: Seuil de $threshold dÃ©passÃ©!"
                 Write-Log -Message $message -Level $script:LogLevelWarning -Source $script:PerformanceCategory
             } else {
                 Write-Log -Message $message -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
@@ -1348,25 +1348,25 @@ function Increment-OperationCounter {
 
 <#
 .SYNOPSIS
-    Réinitialise un compteur d'opérations.
+    RÃ©initialise un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Reset-OperationCounter réinitialise un compteur d'opérations.
-    Elle met à jour les statistiques pour le compteur spécifié.
+    La fonction Reset-OperationCounter rÃ©initialise un compteur d'opÃ©rations.
+    Elle met Ã  jour les statistiques pour le compteur spÃ©cifiÃ©.
 
 .PARAMETER Name
-    Le nom du compteur à réinitialiser.
+    Le nom du compteur Ã  rÃ©initialiser.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $true.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Reset-OperationCounter -Name "MaFonction"
-    Réinitialise le compteur d'opérations nommé "MaFonction" et journalise le résultat.
+    RÃ©initialise le compteur d'opÃ©rations nommÃ© "MaFonction" et journalise le rÃ©sultat.
 
 .OUTPUTS
-    [int] La valeur du compteur avant la réinitialisation.
+    [int] La valeur du compteur avant la rÃ©initialisation.
 #>
 function Reset-OperationCounter {
     [CmdletBinding()]
@@ -1379,7 +1379,7 @@ function Reset-OperationCounter {
         [switch]$LogResult = $true
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return 0
     }
@@ -1388,16 +1388,16 @@ function Reset-OperationCounter {
     Import-OperationCounters
     Import-OperationStatistics
 
-    # Vérifier si le compteur existe
+    # VÃ©rifier si le compteur existe
     if (-not $script:OperationCounters.ContainsKey($Name)) {
-        Write-Log -Message "Le compteur d'opérations '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "Le compteur d'opÃ©rations '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return 0
     }
 
     # Obtenir la valeur actuelle du compteur
     $currentValue = $script:OperationCounters[$Name]
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     $stats = $script:OperationStatistics[$Name]
     $stats.Count++
     $stats.TotalOperations += $currentValue
@@ -1406,29 +1406,29 @@ function Reset-OperationCounter {
     $stats.LastOperations = $currentValue
     $stats.AverageOperations = $stats.TotalOperations / $stats.Count
 
-    # Réinitialiser le compteur
+    # RÃ©initialiser le compteur
     $script:OperationCounters[$Name] = 0
 
     # Sauvegarder les compteurs et les statistiques
     Save-OperationCounters
     Save-OperationStatistics
 
-    # Journaliser le résultat si demandé
+    # Journaliser le rÃ©sultat si demandÃ©
     if ($LogResult) {
-        $message = "Compteur d'opérations '$Name' réinitialisé. Valeur précédente: $currentValue."
+        $message = "Compteur d'opÃ©rations '$Name' rÃ©initialisÃ©. Valeur prÃ©cÃ©dente: $currentValue."
         Write-Log -Message $message -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
     }
 
-    # Retourner la valeur précédente du compteur
+    # Retourner la valeur prÃ©cÃ©dente du compteur
     return $currentValue
 }
 
 <#
 .SYNOPSIS
-    Obtient la valeur d'un compteur d'opérations.
+    Obtient la valeur d'un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Get-OperationCounter obtient la valeur d'un compteur d'opérations.
+    La fonction Get-OperationCounter obtient la valeur d'un compteur d'opÃ©rations.
     Elle retourne 0 si le compteur n'existe pas.
 
 .PARAMETER Name
@@ -1436,7 +1436,7 @@ function Reset-OperationCounter {
 
 .EXAMPLE
     Get-OperationCounter -Name "MaFonction"
-    Obtient la valeur du compteur d'opérations nommé "MaFonction".
+    Obtient la valeur du compteur d'opÃ©rations nommÃ© "MaFonction".
 
 .OUTPUTS
     [int] La valeur du compteur.
@@ -1449,7 +1449,7 @@ function Get-OperationCounter {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return 0
     }
@@ -1457,9 +1457,9 @@ function Get-OperationCounter {
     # Charger les compteurs
     Import-OperationCounters
 
-    # Vérifier si le compteur existe
+    # VÃ©rifier si le compteur existe
     if (-not $script:OperationCounters.ContainsKey($Name)) {
-        Write-Log -Message "Le compteur d'opérations '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+        Write-Log -Message "Le compteur d'opÃ©rations '$Name' n'existe pas." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
         return 0
     }
 
@@ -1469,22 +1469,22 @@ function Get-OperationCounter {
 
 <#
 .SYNOPSIS
-    Obtient les statistiques d'opérations pour un compteur.
+    Obtient les statistiques d'opÃ©rations pour un compteur.
 
 .DESCRIPTION
-    La fonction Get-OperationStatistics obtient les statistiques d'opérations pour un compteur.
-    Elle retourne un objet contenant les statistiques telles que le nombre d'exécutions, le total d'opérations, etc.
+    La fonction Get-OperationStatistics obtient les statistiques d'opÃ©rations pour un compteur.
+    Elle retourne un objet contenant les statistiques telles que le nombre d'exÃ©cutions, le total d'opÃ©rations, etc.
 
 .PARAMETER Name
     Le nom du compteur.
-    Si non spécifié, retourne les statistiques pour tous les compteurs.
+    Si non spÃ©cifiÃ©, retourne les statistiques pour tous les compteurs.
 
 .EXAMPLE
     Get-OperationStatistics -Name "MaFonction"
-    Obtient les statistiques pour le compteur nommé "MaFonction".
+    Obtient les statistiques pour le compteur nommÃ© "MaFonction".
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant les statistiques d'opérations.
+    [PSCustomObject] Un objet contenant les statistiques d'opÃ©rations.
 #>
 function Get-OperationStatistics {
     [CmdletBinding()]
@@ -1494,7 +1494,7 @@ function Get-OperationStatistics {
         [string]$Name
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return $null
     }
@@ -1502,10 +1502,10 @@ function Get-OperationStatistics {
     # Charger les statistiques
     Import-OperationStatistics
 
-    # Si un nom est spécifié, retourner les statistiques pour ce compteur
+    # Si un nom est spÃ©cifiÃ©, retourner les statistiques pour ce compteur
     if ($Name) {
         if (-not $script:OperationStatistics.ContainsKey($Name)) {
-            Write-Log -Message "Aucune statistique d'opérations disponible pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
+            Write-Log -Message "Aucune statistique d'opÃ©rations disponible pour '$Name'." -Level $script:LogLevelWarning -Source $script:PerformanceCategory
             return $null
         }
 
@@ -1543,21 +1543,21 @@ function Get-OperationStatistics {
 
 <#
 .SYNOPSIS
-    Définit un seuil d'opérations pour un compteur.
+    DÃ©finit un seuil d'opÃ©rations pour un compteur.
 
 .DESCRIPTION
-    La fonction Set-OperationThreshold définit un seuil d'opérations pour un compteur.
-    Si le nombre d'opérations dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-OperationThreshold dÃ©finit un seuil d'opÃ©rations pour un compteur.
+    Si le nombre d'opÃ©rations dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
     Le nom du compteur.
 
 .PARAMETER Threshold
-    Le seuil d'opérations.
+    Le seuil d'opÃ©rations.
 
 .EXAMPLE
     Set-OperationThreshold -Name "MaFonction" -Threshold 1000
-    Définit un seuil de 1000 opérations pour le compteur nommé "MaFonction".
+    DÃ©finit un seuil de 1000 opÃ©rations pour le compteur nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -1572,7 +1572,7 @@ function Set-OperationThreshold {
         [int]$Threshold
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
         return
     }
@@ -1580,34 +1580,34 @@ function Set-OperationThreshold {
     # Charger les seuils
     Import-OperationThresholds
 
-    # Définir le seuil
+    # DÃ©finir le seuil
     $script:OperationThresholds[$Name] = $Threshold
 
     # Sauvegarder les seuils
     Save-OperationThresholds
 
-    Write-Log -Message "Seuil d'opérations pour '$Name' défini à $Threshold." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
+    Write-Log -Message "Seuil d'opÃ©rations pour '$Name' dÃ©fini Ã  $Threshold." -Level $script:PerformanceLogLevel -Source $script:PerformanceCategory
 }
 
 <#
 .SYNOPSIS
-    Mesure le nombre d'opérations effectuées par un bloc de code.
+    Mesure le nombre d'opÃ©rations effectuÃ©es par un bloc de code.
 
 .DESCRIPTION
-    La fonction Measure-Operations mesure le nombre d'opérations effectuées par un bloc de code.
-    Elle initialise un compteur, exécute le bloc de code, puis réinitialise le compteur.
+    La fonction Measure-Operations mesure le nombre d'opÃ©rations effectuÃ©es par un bloc de code.
+    Elle initialise un compteur, exÃ©cute le bloc de code, puis rÃ©initialise le compteur.
 
 .PARAMETER Name
     Le nom du compteur.
 
 .PARAMETER ScriptBlock
-    Le bloc de code à exécuter.
+    Le bloc de code Ã  exÃ©cuter.
 
 .PARAMETER InputObject
-    L'objet à passer au bloc de code.
+    L'objet Ã  passer au bloc de code.
 
 .PARAMETER ArgumentList
-    Les arguments à passer au bloc de code.
+    Les arguments Ã  passer au bloc de code.
 
 .EXAMPLE
     Measure-Operations -Name "MaFonction" -ScriptBlock {
@@ -1615,10 +1615,10 @@ function Set-OperationThreshold {
             Increment-OperationCounter -Name "MaFonction"
         }
     }
-    Mesure le nombre d'opérations effectuées par le bloc de code.
+    Mesure le nombre d'opÃ©rations effectuÃ©es par le bloc de code.
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant le résultat du bloc de code et le nombre d'opérations.
+    [PSCustomObject] Un objet contenant le rÃ©sultat du bloc de code et le nombre d'opÃ©rations.
 #>
 function Measure-Operations {
     [CmdletBinding()]
@@ -1637,9 +1637,9 @@ function Measure-Operations {
         [object[]]$ArgumentList
     )
 
-    # Vérifier si la mesure de performance est activée
+    # VÃ©rifier si la mesure de performance est activÃ©e
     if (-not $script:PerformanceEnabled) {
-        # Exécuter le bloc de code sans mesure
+        # ExÃ©cuter le bloc de code sans mesure
         if ($PSBoundParameters.ContainsKey('InputObject')) {
             if ($PSBoundParameters.ContainsKey('ArgumentList')) {
                 return $InputObject | & $ScriptBlock @ArgumentList
@@ -1658,7 +1658,7 @@ function Measure-Operations {
     # Initialiser le compteur
     Initialize-OperationCounter -Name $Name -Reset
 
-    # Exécuter le bloc de code
+    # ExÃ©cuter le bloc de code
     $result = $null
     try {
         if ($PSBoundParameters.ContainsKey('InputObject')) {
@@ -1675,23 +1675,23 @@ function Measure-Operations {
             }
         }
     } catch {
-        # Obtenir le nombre d'opérations en cas d'erreur
+        # Obtenir le nombre d'opÃ©rations en cas d'erreur
         $operationCount = Get-OperationCounter -Name $Name
 
-        # Réinitialiser le compteur
+        # RÃ©initialiser le compteur
         Reset-OperationCounter -Name $Name -LogResult:$false
 
         # Relancer l'erreur
         throw $_
     }
 
-    # Obtenir le nombre d'opérations
+    # Obtenir le nombre d'opÃ©rations
     $operationCount = Get-OperationCounter -Name $Name
 
-    # Réinitialiser le compteur
+    # RÃ©initialiser le compteur
     Reset-OperationCounter -Name $Name
 
-    # Retourner le résultat et le nombre d'opérations
+    # Retourner le rÃ©sultat et le nombre d'opÃ©rations
     return [PSCustomObject]@{
         Result         = $result
         OperationCount = $operationCount

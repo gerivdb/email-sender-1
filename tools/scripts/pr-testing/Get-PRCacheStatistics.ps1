@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Obtient les statistiques du cache d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script récupère et affiche des statistiques détaillées sur l'utilisation
+    Ce script rÃ©cupÃ¨re et affiche des statistiques dÃ©taillÃ©es sur l'utilisation
     et les performances du cache d'analyse des pull requests.
 
 .PARAMETER CachePath
-    Le chemin du cache à analyser.
-    Par défaut: "cache\pr-analysis"
+    Le chemin du cache Ã  analyser.
+    Par dÃ©faut: "cache\pr-analysis"
 
 .PARAMETER OutputFormat
     Le format de sortie des statistiques.
     Valeurs possibles: "Console", "JSON", "CSV", "HTML"
-    Par défaut: "Console"
+    Par dÃ©faut: "Console"
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les statistiques si un format autre que Console est spécifié.
-    Par défaut: "reports\pr-analysis\cache_statistics.{extension}"
+    Le chemin oÃ¹ enregistrer les statistiques si un format autre que Console est spÃ©cifiÃ©.
+    Par dÃ©faut: "reports\pr-analysis\cache_statistics.{extension}"
 
 .EXAMPLE
     .\Get-PRCacheStatistics.ps1
@@ -26,7 +26,7 @@
 
 .EXAMPLE
     .\Get-PRCacheStatistics.ps1 -OutputFormat "HTML" -OutputPath "reports\cache_stats.html"
-    Génère un rapport HTML des statistiques du cache.
+    GÃ©nÃ¨re un rapport HTML des statistiques du cache.
 
 .NOTES
     Version: 1.0
@@ -52,7 +52,7 @@ $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\PRAnalysisCache.
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module PRAnalysisCache non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module PRAnalysisCache non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
@@ -65,29 +65,29 @@ function Get-CacheStats {
     )
 
     try {
-        # Résoudre le chemin complet du cache
+        # RÃ©soudre le chemin complet du cache
         $fullPath = $Path
         if (-not [System.IO.Path]::IsPathRooted($Path)) {
             $fullPath = Join-Path -Path $PWD -ChildPath $Path
         }
 
-        # Vérifier si le cache existe
+        # VÃ©rifier si le cache existe
         if (-not (Test-Path -Path $fullPath)) {
-            Write-Error "Le répertoire du cache n'existe pas: $fullPath"
+            Write-Error "Le rÃ©pertoire du cache n'existe pas: $fullPath"
             return $null
         }
 
-        # Créer le cache
+        # CrÃ©er le cache
         $cache = New-PRAnalysisCache -Name "PRAnalysisCache" -CachePath $fullPath
         if ($null -eq $cache) {
-            Write-Error "Impossible de créer le cache."
+            Write-Error "Impossible de crÃ©er le cache."
             return $null
         }
 
         # Obtenir les statistiques de base
         $baseStats = Get-PRCacheStatistics -Cache $cache
 
-        # Collecter des informations supplémentaires
+        # Collecter des informations supplÃ©mentaires
         $cacheConfigPath = Join-Path -Path $fullPath -ChildPath "cache_config.json"
         $cacheConfig = $null
         if (Test-Path -Path $cacheConfigPath) {
@@ -99,7 +99,7 @@ function Get-CacheStats {
         $totalSize = ($cacheFiles | Measure-Object -Property Length -Sum).Sum
         $fileCount = $cacheFiles.Count
 
-        # Créer l'objet de statistiques
+        # CrÃ©er l'objet de statistiques
         $stats = [PSCustomObject]@{
             Timestamp = Get-Date
             CachePath = $fullPath
@@ -129,7 +129,7 @@ function Get-CacheStats {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param(
@@ -228,7 +228,7 @@ function New-HtmlReport {
         <h1>Statistiques du Cache - Analyse PR</h1>
         
         <div class="section">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <div class="summary">
                 <p><strong>Chemin du cache:</strong> $($Stats.CachePath)</p>
                 <p><strong>Date du rapport:</strong> $($Stats.Timestamp)</p>
@@ -241,7 +241,7 @@ function New-HtmlReport {
                         </p>
                     </div>
                     <div class="metric">
-                        <h3>Éléments</h3>
+                        <h3>Ã‰lÃ©ments</h3>
                         <p>$($Stats.BaseStats.ItemCount)</p>
                     </div>
                     <div class="metric">
@@ -249,7 +249,7 @@ function New-HtmlReport {
                         <p>$($Stats.FileStats.TotalSizeMB) MB</p>
                     </div>
                     <div class="metric">
-                        <h3>Efficacité</h3>
+                        <h3>EfficacitÃ©</h3>
                         <p class="$(if ($Stats.PerformanceMetrics.EfficiencyScore -ge 80) { "good" } elseif ($Stats.PerformanceMetrics.EfficiencyScore -ge 50) { "warning" } else { "danger" })">
                             $($Stats.PerformanceMetrics.EfficiencyScore)%
                         </p>
@@ -259,12 +259,12 @@ function New-HtmlReport {
         </div>
         
         <div class="section">
-            <h2>Statistiques Détaillées</h2>
+            <h2>Statistiques DÃ©taillÃ©es</h2>
             
             <h3>Statistiques de Base</h3>
             <table>
                 <tr>
-                    <th>Métrique</th>
+                    <th>MÃ©trique</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -280,11 +280,11 @@ function New-HtmlReport {
                     <td>$($Stats.BaseStats.Misses)</td>
                 </tr>
                 <tr>
-                    <td>Éléments en Mémoire</td>
+                    <td>Ã‰lÃ©ments en MÃ©moire</td>
                     <td>$($Stats.BaseStats.ItemCount)</td>
                 </tr>
                 <tr>
-                    <td>Éléments sur Disque</td>
+                    <td>Ã‰lÃ©ments sur Disque</td>
                     <td>$($Stats.BaseStats.DiskItemCount)</td>
                 </tr>
                 <tr>
@@ -296,7 +296,7 @@ function New-HtmlReport {
             <h3>Statistiques des Fichiers</h3>
             <table>
                 <tr>
-                    <th>Métrique</th>
+                    <th>MÃ©trique</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -313,10 +313,10 @@ function New-HtmlReport {
                 </tr>
             </table>
             
-            <h3>Métriques de Performance</h3>
+            <h3>MÃ©triques de Performance</h3>
             <table>
                 <tr>
-                    <th>Métrique</th>
+                    <th>MÃ©trique</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -324,11 +324,11 @@ function New-HtmlReport {
                     <td>$($Stats.PerformanceMetrics.HitRatio)%</td>
                 </tr>
                 <tr>
-                    <td>Score d'Efficacité</td>
+                    <td>Score d'EfficacitÃ©</td>
                     <td>$($Stats.PerformanceMetrics.EfficiencyScore)%</td>
                 </tr>
                 <tr>
-                    <td>Efficacité d'Utilisation de la Mémoire</td>
+                    <td>EfficacitÃ© d'Utilisation de la MÃ©moire</td>
                     <td>$($Stats.PerformanceMetrics.MemoryUsageEfficiency)</td>
                 </tr>
             </table>
@@ -342,7 +342,7 @@ function New-HtmlReport {
             $html += @"
             <table>
                 <tr>
-                    <th>Paramètre</th>
+                    <th>ParamÃ¨tre</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -354,23 +354,23 @@ function New-HtmlReport {
                     <td>$($Stats.Config.CachePath)</td>
                 </tr>
                 <tr>
-                    <td>TTL par Défaut</td>
+                    <td>TTL par DÃ©faut</td>
                     <td>$($Stats.Config.DefaultTTLSeconds) secondes</td>
                 </tr>
                 <tr>
-                    <td>Éléments Maximum en Mémoire</td>
+                    <td>Ã‰lÃ©ments Maximum en MÃ©moire</td>
                     <td>$($Stats.Config.MaxMemoryItems)</td>
                 </tr>
                 <tr>
-                    <td>Politique d'Éviction</td>
+                    <td>Politique d'Ã‰viction</td>
                     <td>$($Stats.Config.EvictionPolicy)</td>
                 </tr>
                 <tr>
-                    <td>Créé le</td>
+                    <td>CrÃ©Ã© le</td>
                     <td>$($Stats.Config.CreatedAt)</td>
                 </tr>
                 <tr>
-                    <td>Dernière Réinitialisation</td>
+                    <td>DerniÃ¨re RÃ©initialisation</td>
                     <td>$($Stats.Config.LastResetAt)</td>
                 </tr>
             </table>
@@ -388,19 +388,19 @@ function New-HtmlReport {
             <h2>Recommandations</h2>
 "@
 
-        # Générer des recommandations
+        # GÃ©nÃ©rer des recommandations
         $recommendations = @()
         
         if ($Stats.PerformanceMetrics.HitRatio -lt 50) {
-            $recommendations += "Le ratio de hits est faible. Envisagez d'ajuster la durée de vie (TTL) des éléments du cache ou d'augmenter la taille du cache."
+            $recommendations += "Le ratio de hits est faible. Envisagez d'ajuster la durÃ©e de vie (TTL) des Ã©lÃ©ments du cache ou d'augmenter la taille du cache."
         }
         
         if ($Stats.PerformanceMetrics.EfficiencyScore -lt 50) {
-            $recommendations += "L'efficacité du cache est faible. Vérifiez les modèles d'accès et ajustez la stratégie de mise en cache."
+            $recommendations += "L'efficacitÃ© du cache est faible. VÃ©rifiez les modÃ¨les d'accÃ¨s et ajustez la stratÃ©gie de mise en cache."
         }
         
         if ($Stats.FileStats.TotalSizeMB -gt 1000) {
-            $recommendations += "La taille du cache est importante. Envisagez de nettoyer les éléments inutilisés ou d'ajuster la politique d'éviction."
+            $recommendations += "La taille du cache est importante. Envisagez de nettoyer les Ã©lÃ©ments inutilisÃ©s ou d'ajuster la politique d'Ã©viction."
         }
         
         if ($recommendations.Count -gt 0) {
@@ -417,7 +417,7 @@ function New-HtmlReport {
 "@
         } else {
             $html += @"
-            <p>Le cache fonctionne de manière optimale. Aucune recommandation particulière.</p>
+            <p>Le cache fonctionne de maniÃ¨re optimale. Aucune recommandation particuliÃ¨re.</p>
 "@
         }
 
@@ -430,12 +430,12 @@ function New-HtmlReport {
 
         return $html
     } catch {
-        Write-Error "Erreur lors de la génération du rapport HTML: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport HTML: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Collecter les statistiques
     $stats = Get-CacheStats -Path $CachePath
@@ -444,7 +444,7 @@ try {
         exit 1
     }
 
-    # Déterminer le chemin de sortie si nécessaire
+    # DÃ©terminer le chemin de sortie si nÃ©cessaire
     if ($OutputFormat -ne "Console" -and [string]::IsNullOrWhiteSpace($OutputPath)) {
         $extension = switch ($OutputFormat) {
             "JSON" { "json" }
@@ -455,7 +455,7 @@ try {
         $OutputPath = "reports\pr-analysis\cache_statistics.$extension"
     }
 
-    # Créer le répertoire de sortie si nécessaire
+    # CrÃ©er le rÃ©pertoire de sortie si nÃ©cessaire
     if ($OutputFormat -ne "Console") {
         $outputDir = Split-Path -Path $OutputPath -Parent
         if (-not (Test-Path -Path $outputDir)) {
@@ -463,7 +463,7 @@ try {
         }
     }
 
-    # Générer la sortie selon le format spécifié
+    # GÃ©nÃ©rer la sortie selon le format spÃ©cifiÃ©
     switch ($OutputFormat) {
         "Console" {
             # Afficher les statistiques dans la console
@@ -475,8 +475,8 @@ try {
             Write-Host "  Nom du Cache: $($stats.BaseStats.Name)" -ForegroundColor White
             Write-Host "  Hits: $($stats.BaseStats.Hits)" -ForegroundColor White
             Write-Host "  Misses: $($stats.BaseStats.Misses)" -ForegroundColor White
-            Write-Host "  Éléments en Mémoire: $($stats.BaseStats.ItemCount)" -ForegroundColor White
-            Write-Host "  Éléments sur Disque: $($stats.BaseStats.DiskItemCount)" -ForegroundColor White
+            Write-Host "  Ã‰lÃ©ments en MÃ©moire: $($stats.BaseStats.ItemCount)" -ForegroundColor White
+            Write-Host "  Ã‰lÃ©ments sur Disque: $($stats.BaseStats.DiskItemCount)" -ForegroundColor White
             Write-Host "  Ratio de Hits: $($stats.BaseStats.HitRatio)%" -ForegroundColor White
             
             Write-Host "`nStatistiques des Fichiers:" -ForegroundColor Yellow
@@ -484,29 +484,29 @@ try {
             Write-Host "  Taille Totale: $($stats.FileStats.TotalSizeMB) MB" -ForegroundColor White
             Write-Host "  Taille Moyenne des Fichiers: $($stats.FileStats.AverageFileSizeKB) KB" -ForegroundColor White
             
-            Write-Host "`nMétriques de Performance:" -ForegroundColor Yellow
+            Write-Host "`nMÃ©triques de Performance:" -ForegroundColor Yellow
             Write-Host "  Ratio de Hits: $($stats.PerformanceMetrics.HitRatio)%" -ForegroundColor White
-            Write-Host "  Score d'Efficacité: $($stats.PerformanceMetrics.EfficiencyScore)%" -ForegroundColor White
-            Write-Host "  Efficacité d'Utilisation de la Mémoire: $($stats.PerformanceMetrics.MemoryUsageEfficiency)" -ForegroundColor White
+            Write-Host "  Score d'EfficacitÃ©: $($stats.PerformanceMetrics.EfficiencyScore)%" -ForegroundColor White
+            Write-Host "  EfficacitÃ© d'Utilisation de la MÃ©moire: $($stats.PerformanceMetrics.MemoryUsageEfficiency)" -ForegroundColor White
             
             if ($null -ne $stats.Config) {
                 Write-Host "`nConfiguration du Cache:" -ForegroundColor Yellow
                 Write-Host "  Nom: $($stats.Config.Name)" -ForegroundColor White
                 Write-Host "  Chemin: $($stats.Config.CachePath)" -ForegroundColor White
-                Write-Host "  TTL par Défaut: $($stats.Config.DefaultTTLSeconds) secondes" -ForegroundColor White
-                Write-Host "  Éléments Maximum en Mémoire: $($stats.Config.MaxMemoryItems)" -ForegroundColor White
-                Write-Host "  Politique d'Éviction: $($stats.Config.EvictionPolicy)" -ForegroundColor White
-                Write-Host "  Créé le: $($stats.Config.CreatedAt)" -ForegroundColor White
-                Write-Host "  Dernière Réinitialisation: $($stats.Config.LastResetAt)" -ForegroundColor White
+                Write-Host "  TTL par DÃ©faut: $($stats.Config.DefaultTTLSeconds) secondes" -ForegroundColor White
+                Write-Host "  Ã‰lÃ©ments Maximum en MÃ©moire: $($stats.Config.MaxMemoryItems)" -ForegroundColor White
+                Write-Host "  Politique d'Ã‰viction: $($stats.Config.EvictionPolicy)" -ForegroundColor White
+                Write-Host "  CrÃ©Ã© le: $($stats.Config.CreatedAt)" -ForegroundColor White
+                Write-Host "  DerniÃ¨re RÃ©initialisation: $($stats.Config.LastResetAt)" -ForegroundColor White
             }
         }
         "JSON" {
-            # Générer un fichier JSON
+            # GÃ©nÃ©rer un fichier JSON
             $stats | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-            Write-Host "Statistiques du cache exportées au format JSON: $OutputPath" -ForegroundColor Green
+            Write-Host "Statistiques du cache exportÃ©es au format JSON: $OutputPath" -ForegroundColor Green
         }
         "CSV" {
-            # Générer un fichier CSV (version simplifiée)
+            # GÃ©nÃ©rer un fichier CSV (version simplifiÃ©e)
             $csvData = [PSCustomObject]@{
                 Timestamp = $stats.Timestamp
                 CachePath = $stats.CachePath
@@ -524,13 +524,13 @@ try {
             }
             
             $csvData | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
-            Write-Host "Statistiques du cache exportées au format CSV: $OutputPath" -ForegroundColor Green
+            Write-Host "Statistiques du cache exportÃ©es au format CSV: $OutputPath" -ForegroundColor Green
         }
         "HTML" {
-            # Générer un fichier HTML
+            # GÃ©nÃ©rer un fichier HTML
             $html = New-HtmlReport -Stats $stats
             Set-Content -Path $OutputPath -Value $html -Encoding UTF8
-            Write-Host "Statistiques du cache exportées au format HTML: $OutputPath" -ForegroundColor Green
+            Write-Host "Statistiques du cache exportÃ©es au format HTML: $OutputPath" -ForegroundColor Green
         }
     }
 

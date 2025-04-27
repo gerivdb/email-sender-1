@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de gestion des styles pour les graphiques Excel.
 .DESCRIPTION
-    Ce module fournit un registre centralisé pour stocker, gérer et appliquer
-    des styles prédéfinis aux graphiques Excel, incluant les styles de lignes,
-    marqueurs, couleurs, bordures et thèmes complets.
+    Ce module fournit un registre centralisÃ© pour stocker, gÃ©rer et appliquer
+    des styles prÃ©dÃ©finis aux graphiques Excel, incluant les styles de lignes,
+    marqueurs, couleurs, bordures et thÃ¨mes complets.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Vérifier si le module excel_chart_styles.ps1 est disponible
+# VÃ©rifier si le module excel_chart_styles.ps1 est disponible
 $StylesPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_chart_styles.ps1"
 if (-not (Test-Path -Path $StylesPath)) {
-    throw "Le module excel_chart_styles.ps1 est requis mais n'a pas été trouvé."
+    throw "Le module excel_chart_styles.ps1 est requis mais n'a pas Ã©tÃ© trouvÃ©."
 }
 
 # Importer le module excel_chart_styles.ps1
@@ -33,11 +33,11 @@ class IExcelStyle {
     [datetime]$CreatedDate
     [datetime]$ModifiedDate
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     IExcelStyle() {
         $this.Id = [Guid]::NewGuid().ToString()
         $this.Name = "Default Style"
-        $this.Description = "Style par défaut"
+        $this.Description = "Style par dÃ©faut"
         $this.Category = "General"
         $this.Tags = @()
         $this.IsBuiltIn = $false
@@ -73,7 +73,7 @@ class IExcelStyle {
         $this.ModifiedDate = [datetime]::Now
     }
 
-    # Méthode pour valider le style (à implémenter dans les classes dérivées)
+    # MÃ©thode pour valider le style (Ã  implÃ©menter dans les classes dÃ©rivÃ©es)
     [bool] Validate() {
         # Validation de base
         if ([string]::IsNullOrEmpty($this.Id) -or [string]::IsNullOrEmpty($this.Name)) {
@@ -82,17 +82,17 @@ class IExcelStyle {
         return $true
     }
 
-    # Méthode pour cloner le style (à implémenter dans les classes dérivées)
+    # MÃ©thode pour cloner le style (Ã  implÃ©menter dans les classes dÃ©rivÃ©es)
     [IExcelStyle] Clone() {
-        throw "La méthode Clone() doit être implémentée dans les classes dérivées."
+        throw "La mÃ©thode Clone() doit Ãªtre implÃ©mentÃ©e dans les classes dÃ©rivÃ©es."
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "$($this.Name) - $($this.Description)"
     }
 
-    # Méthode pour ajouter un tag
+    # MÃ©thode pour ajouter un tag
     [void] AddTag([string]$Tag) {
         if (-not [string]::IsNullOrEmpty($Tag) -and -not ($this.Tags -contains $Tag)) {
             $this.Tags += $Tag
@@ -100,7 +100,7 @@ class IExcelStyle {
         }
     }
 
-    # Méthode pour supprimer un tag
+    # MÃ©thode pour supprimer un tag
     [bool] RemoveTag([string]$Tag) {
         if ($this.Tags -contains $Tag) {
             $this.Tags = $this.Tags | Where-Object { $_ -ne $Tag }
@@ -110,12 +110,12 @@ class IExcelStyle {
         return $false
     }
 
-    # Méthode pour vérifier si le style a un tag spécifique
+    # MÃ©thode pour vÃ©rifier si le style a un tag spÃ©cifique
     [bool] HasTag([string]$Tag) {
         return $this.Tags -contains $Tag
     }
 
-    # Méthode pour mettre à jour les métadonnées
+    # MÃ©thode pour mettre Ã  jour les mÃ©tadonnÃ©es
     [void] UpdateMetadata([string]$Name, [string]$Description, [string]$Category) {
         if (-not [string]::IsNullOrEmpty($Name)) {
             $this.Name = $Name
@@ -134,11 +134,11 @@ class IExcelStyle {
 class ExcelLineStyle : IExcelStyle {
     [ExcelLineStyleConfig]$LineConfig
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelLineStyle() : base() {
         $this.LineConfig = [ExcelLineStyleConfig]::new()
         $this.Name = "Default Line Style"
-        $this.Description = "Style de ligne par défaut"
+        $this.Description = "Style de ligne par dÃ©faut"
         $this.Category = "Lines"
     }
 
@@ -146,7 +146,7 @@ class ExcelLineStyle : IExcelStyle {
     ExcelLineStyle([ExcelLineStyleConfig]$LineConfig) : base() {
         $this.LineConfig = $LineConfig
         $this.Name = "Custom Line Style"
-        $this.Description = "Style de ligne personnalisé"
+        $this.Description = "Style de ligne personnalisÃ©"
         $this.Category = "Lines"
     }
 
@@ -155,7 +155,7 @@ class ExcelLineStyle : IExcelStyle {
         $this.LineConfig = $LineConfig
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
         if (-not ([base]::Validate())) {
             return $false
@@ -168,7 +168,7 @@ class ExcelLineStyle : IExcelStyle {
         return $this.LineConfig.Validate()
     }
 
-    # Méthode pour cloner le style
+    # MÃ©thode pour cloner le style
     [IExcelStyle] Clone() {
         $Clone = [ExcelLineStyle]::new()
         $Clone.Id = [Guid]::NewGuid().ToString()
@@ -184,14 +184,14 @@ class ExcelLineStyle : IExcelStyle {
         return $Clone
     }
 
-    # Méthode pour appliquer le style à une série
+    # MÃ©thode pour appliquer le style Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -ne $this.LineConfig -and $null -ne $Series) {
             $this.LineConfig.ApplyToSeries($Series)
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "Line Style: $($this.Name) - $($this.LineConfig.ToString())"
     }
@@ -201,11 +201,11 @@ class ExcelLineStyle : IExcelStyle {
 class ExcelMarkerStyle : IExcelStyle {
     [ExcelMarkerConfig]$MarkerConfig
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelMarkerStyle() : base() {
         $this.MarkerConfig = [ExcelMarkerConfig]::new()
         $this.Name = "Default Marker Style"
-        $this.Description = "Style de marqueur par défaut"
+        $this.Description = "Style de marqueur par dÃ©faut"
         $this.Category = "Markers"
     }
 
@@ -213,7 +213,7 @@ class ExcelMarkerStyle : IExcelStyle {
     ExcelMarkerStyle([ExcelMarkerConfig]$MarkerConfig) : base() {
         $this.MarkerConfig = $MarkerConfig
         $this.Name = "Custom Marker Style"
-        $this.Description = "Style de marqueur personnalisé"
+        $this.Description = "Style de marqueur personnalisÃ©"
         $this.Category = "Markers"
     }
 
@@ -222,7 +222,7 @@ class ExcelMarkerStyle : IExcelStyle {
         $this.MarkerConfig = $MarkerConfig
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
         if (-not ([base]::Validate())) {
             return $false
@@ -235,7 +235,7 @@ class ExcelMarkerStyle : IExcelStyle {
         return $this.MarkerConfig.Validate()
     }
 
-    # Méthode pour cloner le style
+    # MÃ©thode pour cloner le style
     [IExcelStyle] Clone() {
         $Clone = [ExcelMarkerStyle]::new()
         $Clone.Id = [Guid]::NewGuid().ToString()
@@ -251,21 +251,21 @@ class ExcelMarkerStyle : IExcelStyle {
         return $Clone
     }
 
-    # Méthode pour appliquer le style à une série
+    # MÃ©thode pour appliquer le style Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -ne $this.MarkerConfig -and $null -ne $Series) {
             $this.MarkerConfig.ApplyToSeries($Series)
         }
     }
 
-    # Méthode pour appliquer le style à un point de données
+    # MÃ©thode pour appliquer le style Ã  un point de donnÃ©es
     [void] ApplyToDataPoint([object]$DataPoint) {
         if ($null -ne $this.MarkerConfig -and $null -ne $DataPoint) {
             $this.MarkerConfig.ApplyToDataPoint($DataPoint)
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "Marker Style: $($this.Name) - $($this.MarkerConfig.ToString())"
     }
@@ -275,11 +275,11 @@ class ExcelMarkerStyle : IExcelStyle {
 class ExcelBorderStyle : IExcelStyle {
     [ExcelBorderStyleConfig]$BorderConfig
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelBorderStyle() : base() {
         $this.BorderConfig = [ExcelBorderStyleConfig]::new()
         $this.Name = "Default Border Style"
-        $this.Description = "Style de bordure par défaut"
+        $this.Description = "Style de bordure par dÃ©faut"
         $this.Category = "Borders"
     }
 
@@ -287,7 +287,7 @@ class ExcelBorderStyle : IExcelStyle {
     ExcelBorderStyle([ExcelBorderStyleConfig]$BorderConfig) : base() {
         $this.BorderConfig = $BorderConfig
         $this.Name = "Custom Border Style"
-        $this.Description = "Style de bordure personnalisé"
+        $this.Description = "Style de bordure personnalisÃ©"
         $this.Category = "Borders"
     }
 
@@ -296,7 +296,7 @@ class ExcelBorderStyle : IExcelStyle {
         $this.BorderConfig = $BorderConfig
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
         if (-not ([base]::Validate())) {
             return $false
@@ -309,7 +309,7 @@ class ExcelBorderStyle : IExcelStyle {
         return $this.BorderConfig.Validate()
     }
 
-    # Méthode pour cloner le style
+    # MÃ©thode pour cloner le style
     [IExcelStyle] Clone() {
         $Clone = [ExcelBorderStyle]::new()
         $Clone.Id = [Guid]::NewGuid().ToString()
@@ -325,21 +325,21 @@ class ExcelBorderStyle : IExcelStyle {
         return $Clone
     }
 
-    # Méthode pour appliquer le style à un élément
+    # MÃ©thode pour appliquer le style Ã  un Ã©lÃ©ment
     [void] ApplyToElement([object]$Element) {
         if ($null -ne $this.BorderConfig -and $null -ne $Element) {
             $this.BorderConfig.ApplyToElement($Element)
         }
     }
 
-    # Méthode pour appliquer le style à une série
+    # MÃ©thode pour appliquer le style Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -ne $this.BorderConfig -and $null -ne $Series) {
             $this.BorderConfig.ApplyToSeries($Series)
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "Border Style: $($this.Name) - $($this.BorderConfig.ToString())"
     }
@@ -350,12 +350,12 @@ class ExcelColorStyle : IExcelStyle {
     [string]$Color
     [int]$Transparency
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelColorStyle() : base() {
         $this.Color = "#000000"
         $this.Transparency = 0
         $this.Name = "Default Color Style"
-        $this.Description = "Style de couleur par défaut"
+        $this.Description = "Style de couleur par dÃ©faut"
         $this.Category = "Colors"
     }
 
@@ -364,7 +364,7 @@ class ExcelColorStyle : IExcelStyle {
         $this.Color = $Color
         $this.Transparency = 0
         $this.Name = "Custom Color Style"
-        $this.Description = "Style de couleur personnalisé"
+        $this.Description = "Style de couleur personnalisÃ©"
         $this.Category = "Colors"
     }
 
@@ -374,7 +374,7 @@ class ExcelColorStyle : IExcelStyle {
         $this.Transparency = $Transparency
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
         if (-not ([base]::Validate())) {
             return $false
@@ -393,7 +393,7 @@ class ExcelColorStyle : IExcelStyle {
         return $true
     }
 
-    # Méthode pour cloner le style
+    # MÃ©thode pour cloner le style
     [IExcelStyle] Clone() {
         $Clone = [ExcelColorStyle]::new()
         $Clone.Id = [Guid]::NewGuid().ToString()
@@ -410,19 +410,19 @@ class ExcelColorStyle : IExcelStyle {
         return $Clone
     }
 
-    # Méthode pour appliquer la couleur à un élément
+    # MÃ©thode pour appliquer la couleur Ã  un Ã©lÃ©ment
     [void] ApplyToElement([object]$Element, [string]$PropertyName = "Color") {
         if ($null -eq $Element) {
             return
         }
 
-        # Vérifier si l'élément a la propriété spécifiée
+        # VÃ©rifier si l'Ã©lÃ©ment a la propriÃ©tÃ© spÃ©cifiÃ©e
         if ($Element.PSObject.Properties.Name -contains $PropertyName) {
-            # Si la propriété est un objet avec une méthode SetColor
+            # Si la propriÃ©tÃ© est un objet avec une mÃ©thode SetColor
             if ($Element.$PropertyName.PSObject.Methods.Name -contains "SetColor") {
                 $Element.$PropertyName.SetColor($this.Color)
             }
-            # Si la propriété est une chaîne
+            # Si la propriÃ©tÃ© est une chaÃ®ne
             elseif ($Element.$PropertyName -is [string]) {
                 $Element.$PropertyName = $this.Color
             }
@@ -434,27 +434,27 @@ class ExcelColorStyle : IExcelStyle {
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "Color Style: $($this.Name) - Color: $($this.Color), Transparency: $($this.Transparency)%"
     }
 }
 
-# Interface pour les styles combinés (thèmes)
+# Interface pour les styles combinÃ©s (thÃ¨mes)
 class ExcelCombinedStyle : IExcelStyle {
     [ExcelLineStyle]$LineStyle
     [ExcelMarkerStyle]$MarkerStyle
     [ExcelBorderStyle]$BorderStyle
     [ExcelColorStyle]$ColorStyle
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelCombinedStyle() : base() {
         $this.LineStyle = $null
         $this.MarkerStyle = $null
         $this.BorderStyle = $null
         $this.ColorStyle = $null
         $this.Name = "Default Combined Style"
-        $this.Description = "Style combiné par défaut"
+        $this.Description = "Style combinÃ© par dÃ©faut"
         $this.Category = "Combined"
     }
 
@@ -465,7 +465,7 @@ class ExcelCombinedStyle : IExcelStyle {
         $this.BorderStyle = $BorderStyle
         $this.ColorStyle = $ColorStyle
         $this.Name = "Custom Combined Style"
-        $this.Description = "Style combiné personnalisé"
+        $this.Description = "Style combinÃ© personnalisÃ©"
         $this.Category = "Combined"
     }
 
@@ -477,18 +477,18 @@ class ExcelCombinedStyle : IExcelStyle {
         $this.ColorStyle = $ColorStyle
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
         if (-not ([base]::Validate())) {
             return $false
         }
 
-        # Au moins un style doit être défini
+        # Au moins un style doit Ãªtre dÃ©fini
         if ($null -eq $this.LineStyle -and $null -eq $this.MarkerStyle -and $null -eq $this.BorderStyle -and $null -eq $this.ColorStyle) {
             return $false
         }
 
-        # Valider chaque style défini
+        # Valider chaque style dÃ©fini
         if ($null -ne $this.LineStyle -and -not $this.LineStyle.Validate()) {
             return $false
         }
@@ -508,7 +508,7 @@ class ExcelCombinedStyle : IExcelStyle {
         return $true
     }
 
-    # Méthode pour cloner le style
+    # MÃ©thode pour cloner le style
     [IExcelStyle] Clone() {
         $Clone = [ExcelCombinedStyle]::new()
         $Clone.Id = [Guid]::NewGuid().ToString()
@@ -539,7 +539,7 @@ class ExcelCombinedStyle : IExcelStyle {
         return $Clone
     }
 
-    # Méthode pour appliquer le style à une série
+    # MÃ©thode pour appliquer le style Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -eq $Series) {
             return
@@ -562,7 +562,7 @@ class ExcelCombinedStyle : IExcelStyle {
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         $Components = @()
 
@@ -597,14 +597,14 @@ class ExcelStyleRegistry {
     # Dictionnaire principal pour stocker tous les styles
     [System.Collections.Generic.Dictionary[string, IExcelStyle]] $Styles
 
-    # Dictionnaires spécialisés par type de style
+    # Dictionnaires spÃ©cialisÃ©s par type de style
     [System.Collections.Generic.Dictionary[string, ExcelLineStyle]] $LineStyles
     [System.Collections.Generic.Dictionary[string, ExcelMarkerStyle]] $MarkerStyles
     [System.Collections.Generic.Dictionary[string, ExcelBorderStyle]] $BorderStyles
     [System.Collections.Generic.Dictionary[string, ExcelColorStyle]] $ColorStyles
     [System.Collections.Generic.Dictionary[string, ExcelCombinedStyle]] $CombinedStyles
 
-    # Dictionnaire pour les catégories
+    # Dictionnaire pour les catÃ©gories
     [System.Collections.Generic.Dictionary[string, System.Collections.Generic.List[string]]] $Categories
 
     # Dictionnaire pour les tags
@@ -626,23 +626,23 @@ class ExcelStyleRegistry {
         $this.History = [System.Collections.Generic.Dictionary[string, System.Collections.Generic.Stack[IExcelStyle]]]::new()
     }
 
-    # Propriété pour obtenir le nombre total de styles
+    # PropriÃ©tÃ© pour obtenir le nombre total de styles
     [int] get_Count() {
         return $this.Styles.Count
     }
 
-    # Propriété pour vérifier si le registre est vide
+    # PropriÃ©tÃ© pour vÃ©rifier si le registre est vide
     [bool] get_IsEmpty() {
         return $this.Styles.Count -eq 0
     }
 
-    # Méthode pour ajouter un style au registre
+    # MÃ©thode pour ajouter un style au registre
     [bool] Add([IExcelStyle]$Style) {
         if ($null -eq $Style -or -not $Style.Validate()) {
             return $false
         }
 
-        # Vérifier si l'ID existe déjà
+        # VÃ©rifier si l'ID existe dÃ©jÃ 
         if ($this.Styles.ContainsKey($Style.Id)) {
             return $false
         }
@@ -650,7 +650,7 @@ class ExcelStyleRegistry {
         # Ajouter au dictionnaire principal
         $this.Styles.Add($Style.Id, $Style)
 
-        # Ajouter au dictionnaire spécialisé correspondant
+        # Ajouter au dictionnaire spÃ©cialisÃ© correspondant
         if ($Style -is [ExcelLineStyle]) {
             $this.LineStyles.Add($Style.Id, $Style)
         } elseif ($Style -is [ExcelMarkerStyle]) {
@@ -663,7 +663,7 @@ class ExcelStyleRegistry {
             $this.CombinedStyles.Add($Style.Id, $Style)
         }
 
-        # Ajouter à la catégorie
+        # Ajouter Ã  la catÃ©gorie
         if (-not [string]::IsNullOrEmpty($Style.Category)) {
             if (-not $this.Categories.ContainsKey($Style.Category)) {
                 $this.Categories.Add($Style.Category, [System.Collections.Generic.List[string]]::new())
@@ -684,7 +684,7 @@ class ExcelStyleRegistry {
         return $true
     }
 
-    # Méthode pour ajouter plusieurs styles au registre
+    # MÃ©thode pour ajouter plusieurs styles au registre
     [int] AddRange([IExcelStyle[]]$Styles) {
         $AddedCount = 0
 
@@ -697,7 +697,7 @@ class ExcelStyleRegistry {
         return $AddedCount
     }
 
-    # Méthode pour supprimer un style du registre par ID
+    # MÃ©thode pour supprimer un style du registre par ID
     [bool] Remove([string]$Id) {
         if (-not $this.Styles.ContainsKey($Id)) {
             return $false
@@ -705,7 +705,7 @@ class ExcelStyleRegistry {
 
         $Style = $this.Styles[$Id]
 
-        # Supprimer des dictionnaires spécialisés
+        # Supprimer des dictionnaires spÃ©cialisÃ©s
         if ($Style -is [ExcelLineStyle]) {
             $this.LineStyles.Remove($Id)
         } elseif ($Style -is [ExcelMarkerStyle]) {
@@ -718,11 +718,11 @@ class ExcelStyleRegistry {
             $this.CombinedStyles.Remove($Id)
         }
 
-        # Supprimer de la catégorie
+        # Supprimer de la catÃ©gorie
         if (-not [string]::IsNullOrEmpty($Style.Category) -and $this.Categories.ContainsKey($Style.Category)) {
             $this.Categories[$Style.Category].Remove($Id)
 
-            # Supprimer la catégorie si elle est vide
+            # Supprimer la catÃ©gorie si elle est vide
             if ($this.Categories[$Style.Category].Count -eq 0) {
                 $this.Categories.Remove($Style.Category)
             }
@@ -744,7 +744,7 @@ class ExcelStyleRegistry {
         return $this.Styles.Remove($Id)
     }
 
-    # Méthode pour supprimer plusieurs styles du registre par ID
+    # MÃ©thode pour supprimer plusieurs styles du registre par ID
     [int] RemoveRange([string[]]$Ids) {
         $RemovedCount = 0
 
@@ -757,7 +757,7 @@ class ExcelStyleRegistry {
         return $RemovedCount
     }
 
-    # Méthode pour mettre à jour un style existant
+    # MÃ©thode pour mettre Ã  jour un style existant
     [bool] Update([string]$Id, [IExcelStyle]$Style) {
         if (-not $this.Styles.ContainsKey($Id) -or $null -eq $Style -or -not $Style.Validate()) {
             return $false
@@ -773,39 +773,39 @@ class ExcelStyleRegistry {
         # Supprimer l'ancien style
         $this.Remove($Id)
 
-        # Ajouter le nouveau style avec le même ID
+        # Ajouter le nouveau style avec le mÃªme ID
         $Style.Id = $Id
         return $this.Add($Style)
     }
 
-    # Méthode pour vérifier si un style a un historique de modifications
+    # MÃ©thode pour vÃ©rifier si un style a un historique de modifications
     [bool] HasHistory([string]$Id) {
         return $this.History.ContainsKey($Id) -and $this.History[$Id].Count -gt 0
     }
 
-    # Méthode pour restaurer la version précédente d'un style
+    # MÃ©thode pour restaurer la version prÃ©cÃ©dente d'un style
     [bool] RestorePreviousVersion([string]$Id) {
         if (-not $this.HasHistory($Id)) {
             return $false
         }
 
-        # Récupérer la version précédente
+        # RÃ©cupÃ©rer la version prÃ©cÃ©dente
         $PreviousVersion = $this.History[$Id].Pop()
 
         # Supprimer la version actuelle
         $this.Remove($Id)
 
-        # Ajouter la version précédente
+        # Ajouter la version prÃ©cÃ©dente
         $PreviousVersion.Id = $Id
         return $this.Add($PreviousVersion)
     }
 
-    # Méthode pour vérifier si un style existe par ID
+    # MÃ©thode pour vÃ©rifier si un style existe par ID
     [bool] Contains([string]$Id) {
         return $this.Styles.ContainsKey($Id)
     }
 
-    # Méthode pour vérifier si un style existe par nom
+    # MÃ©thode pour vÃ©rifier si un style existe par nom
     [bool] ContainsByName([string]$Name) {
         foreach ($Style in $this.Styles.Values) {
             if ($Style.Name -eq $Name) {
@@ -815,7 +815,7 @@ class ExcelStyleRegistry {
         return $false
     }
 
-    # Méthode pour obtenir un style par ID
+    # MÃ©thode pour obtenir un style par ID
     [IExcelStyle] GetById([string]$Id) {
         if ($this.Styles.ContainsKey($Id)) {
             return $this.Styles[$Id]
@@ -823,7 +823,7 @@ class ExcelStyleRegistry {
         return $null
     }
 
-    # Méthode pour obtenir un style par nom
+    # MÃ©thode pour obtenir un style par nom
     [IExcelStyle] GetByName([string]$Name) {
         foreach ($Style in $this.Styles.Values) {
             if ($Style.Name -eq $Name) {
@@ -833,7 +833,7 @@ class ExcelStyleRegistry {
         return $null
     }
 
-    # Méthode pour obtenir tous les styles d'une catégorie
+    # MÃ©thode pour obtenir tous les styles d'une catÃ©gorie
     [IExcelStyle[]] GetByCategory([string]$Category) {
         $Result = @()
 
@@ -848,7 +848,7 @@ class ExcelStyleRegistry {
         return $Result
     }
 
-    # Méthode pour obtenir tous les styles avec un tag spécifique
+    # MÃ©thode pour obtenir tous les styles avec un tag spÃ©cifique
     [IExcelStyle[]] GetByTag([string]$Tag) {
         $Result = @()
 
@@ -863,7 +863,7 @@ class ExcelStyleRegistry {
         return $Result
     }
 
-    # Méthode pour obtenir tous les styles d'un type spécifique
+    # MÃ©thode pour obtenir tous les styles d'un type spÃ©cifique
     [IExcelStyle[]] GetByType([string]$TypeName) {
         $Result = @()
 
@@ -891,17 +891,17 @@ class ExcelStyleRegistry {
         return $Result
     }
 
-    # Méthode pour obtenir toutes les catégories
+    # MÃ©thode pour obtenir toutes les catÃ©gories
     [string[]] GetCategories() {
         return $this.Categories.Keys
     }
 
-    # Méthode pour obtenir tous les tags
+    # MÃ©thode pour obtenir tous les tags
     [string[]] GetTags() {
         return $this.Tags.Keys
     }
 
-    # Méthode pour vider le registre
+    # MÃ©thode pour vider le registre
     [void] Clear() {
         $this.Styles.Clear()
         $this.LineStyles.Clear()
@@ -914,12 +914,12 @@ class ExcelStyleRegistry {
         $this.History.Clear()
     }
 
-    # Méthode pour obtenir tous les styles
+    # MÃ©thode pour obtenir tous les styles
     [IExcelStyle[]] GetAll() {
         return $this.Styles.Values
     }
 
-    # Méthode pour rechercher des styles par critères
+    # MÃ©thode pour rechercher des styles par critÃ¨res
     [IExcelStyle[]] Search([hashtable]$Criteria) {
         $Result = @()
 
@@ -983,7 +983,7 @@ class ExcelStyleRegistry {
         return $Result
     }
 
-    # Méthode pour importer des styles depuis un autre registre
+    # MÃ©thode pour importer des styles depuis un autre registre
     [int] Import([ExcelStyleRegistry]$Registry) {
         if ($null -eq $Registry) {
             return 0
@@ -1002,10 +1002,10 @@ class ExcelStyleRegistrySingleton {
     static [ExcelStyleRegistry] $Instance
     static [bool] $Initialized = $false
 
-    # Constructeur privé
+    # Constructeur privÃ©
     hidden ExcelStyleRegistrySingleton() {}
 
-    # Méthode pour obtenir l'instance unique
+    # MÃ©thode pour obtenir l'instance unique
     static [ExcelStyleRegistry] GetInstance() {
         if (-not [ExcelStyleRegistrySingleton]::Initialized) {
             [ExcelStyleRegistrySingleton]::Instance = [ExcelStyleRegistry]::new()
@@ -1015,14 +1015,14 @@ class ExcelStyleRegistrySingleton {
         return [ExcelStyleRegistrySingleton]::Instance
     }
 
-    # Méthode pour réinitialiser l'instance
+    # MÃ©thode pour rÃ©initialiser l'instance
     static [void] Reset() {
         if ([ExcelStyleRegistrySingleton]::Initialized) {
             [ExcelStyleRegistrySingleton]::Instance.Clear()
         }
     }
 
-    # Méthode pour créer une nouvelle instance isolée
+    # MÃ©thode pour crÃ©er une nouvelle instance isolÃ©e
     static [ExcelStyleRegistry] CreateIsolatedInstance() {
         return [ExcelStyleRegistry]::new()
     }
@@ -1030,7 +1030,7 @@ class ExcelStyleRegistrySingleton {
 
 #endregion
 
-#region Fonctions d'accès au registre de styles
+#region Fonctions d'accÃ¨s au registre de styles
 
 <#
 .SYNOPSIS
@@ -1052,10 +1052,10 @@ function Get-ExcelStyleRegistry {
 
 <#
 .SYNOPSIS
-    Crée une nouvelle instance isolée du registre de styles Excel.
+    CrÃ©e une nouvelle instance isolÃ©e du registre de styles Excel.
 .DESCRIPTION
-    Cette fonction crée une nouvelle instance isolée du registre de styles Excel,
-    indépendante de l'instance singleton.
+    Cette fonction crÃ©e une nouvelle instance isolÃ©e du registre de styles Excel,
+    indÃ©pendante de l'instance singleton.
 .EXAMPLE
     $IsolatedRegistry = New-ExcelStyleRegistry
 .OUTPUTS
@@ -1070,9 +1070,9 @@ function New-ExcelStyleRegistry {
 
 <#
 .SYNOPSIS
-    Réinitialise le registre de styles Excel.
+    RÃ©initialise le registre de styles Excel.
 .DESCRIPTION
-    Cette fonction vide complètement le registre de styles Excel.
+    Cette fonction vide complÃ¨tement le registre de styles Excel.
 .EXAMPLE
     Reset-ExcelStyleRegistry
 #>
@@ -1089,12 +1089,12 @@ function Reset-ExcelStyleRegistry {
 .DESCRIPTION
     Cette fonction ajoute un style au registre de styles Excel.
 .PARAMETER Style
-    Le style à ajouter au registre.
+    Le style Ã  ajouter au registre.
 .EXAMPLE
     $Style = [ExcelLineStyle]::new()
     Add-ExcelStyle -Style $Style
 .OUTPUTS
-    System.Boolean - True si l'ajout a réussi, False sinon.
+    System.Boolean - True si l'ajout a rÃ©ussi, False sinon.
 #>
 function Add-ExcelStyle {
     [CmdletBinding()]
@@ -1115,11 +1115,11 @@ function Add-ExcelStyle {
 .DESCRIPTION
     Cette fonction supprime un style du registre de styles Excel.
 .PARAMETER Id
-    L'ID du style à supprimer.
+    L'ID du style Ã  supprimer.
 .EXAMPLE
     Remove-ExcelStyle -Id "12345678-1234-1234-1234-123456789012"
 .OUTPUTS
-    System.Boolean - True si la suppression a réussi, False sinon.
+    System.Boolean - True si la suppression a rÃ©ussi, False sinon.
 #>
 function Remove-ExcelStyle {
     [CmdletBinding()]
@@ -1138,13 +1138,13 @@ function Remove-ExcelStyle {
 .SYNOPSIS
     Obtient un style du registre de styles Excel par son ID.
 .DESCRIPTION
-    Cette fonction récupère un style du registre de styles Excel par son ID.
+    Cette fonction rÃ©cupÃ¨re un style du registre de styles Excel par son ID.
 .PARAMETER Id
-    L'ID du style à récupérer.
+    L'ID du style Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Style = Get-ExcelStyleById -Id "12345678-1234-1234-1234-123456789012"
 .OUTPUTS
-    IExcelStyle - Le style correspondant à l'ID spécifié, ou $null si aucun style n'est trouvé.
+    IExcelStyle - Le style correspondant Ã  l'ID spÃ©cifiÃ©, ou $null si aucun style n'est trouvÃ©.
 #>
 function Get-ExcelStyleById {
     [CmdletBinding()]
@@ -1163,13 +1163,13 @@ function Get-ExcelStyleById {
 .SYNOPSIS
     Obtient un style du registre de styles Excel par son nom.
 .DESCRIPTION
-    Cette fonction récupère un style du registre de styles Excel par son nom.
+    Cette fonction rÃ©cupÃ¨re un style du registre de styles Excel par son nom.
 .PARAMETER Name
-    Le nom du style à récupérer.
+    Le nom du style Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Style = Get-ExcelStyleByName -Name "Mon Style"
 .OUTPUTS
-    IExcelStyle - Le style correspondant au nom spécifié, ou $null si aucun style n'est trouvé.
+    IExcelStyle - Le style correspondant au nom spÃ©cifiÃ©, ou $null si aucun style n'est trouvÃ©.
 #>
 function Get-ExcelStyleByName {
     [CmdletBinding()]
@@ -1186,15 +1186,15 @@ function Get-ExcelStyleByName {
 
 <#
 .SYNOPSIS
-    Obtient tous les styles d'une catégorie spécifique.
+    Obtient tous les styles d'une catÃ©gorie spÃ©cifique.
 .DESCRIPTION
-    Cette fonction récupère tous les styles d'une catégorie spécifique du registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re tous les styles d'une catÃ©gorie spÃ©cifique du registre de styles Excel.
 .PARAMETER Category
-    La catégorie des styles à récupérer.
+    La catÃ©gorie des styles Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Styles = Get-ExcelStyleByCategory -Category "Lines"
 .OUTPUTS
-    IExcelStyle[] - Les styles correspondant à la catégorie spécifiée.
+    IExcelStyle[] - Les styles correspondant Ã  la catÃ©gorie spÃ©cifiÃ©e.
 #>
 function Get-ExcelStyleByCategory {
     [CmdletBinding()]
@@ -1211,15 +1211,15 @@ function Get-ExcelStyleByCategory {
 
 <#
 .SYNOPSIS
-    Obtient tous les styles avec un tag spécifique.
+    Obtient tous les styles avec un tag spÃ©cifique.
 .DESCRIPTION
-    Cette fonction récupère tous les styles avec un tag spécifique du registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re tous les styles avec un tag spÃ©cifique du registre de styles Excel.
 .PARAMETER Tag
-    Le tag des styles à récupérer.
+    Le tag des styles Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Styles = Get-ExcelStyleByTag -Tag "Business"
 .OUTPUTS
-    IExcelStyle[] - Les styles correspondant au tag spécifié.
+    IExcelStyle[] - Les styles correspondant au tag spÃ©cifiÃ©.
 #>
 function Get-ExcelStyleByTag {
     [CmdletBinding()]
@@ -1236,15 +1236,15 @@ function Get-ExcelStyleByTag {
 
 <#
 .SYNOPSIS
-    Obtient tous les styles d'un type spécifique.
+    Obtient tous les styles d'un type spÃ©cifique.
 .DESCRIPTION
-    Cette fonction récupère tous les styles d'un type spécifique du registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re tous les styles d'un type spÃ©cifique du registre de styles Excel.
 .PARAMETER Type
-    Le type des styles à récupérer (Line, Marker, Border, Color, Combined).
+    Le type des styles Ã  rÃ©cupÃ©rer (Line, Marker, Border, Color, Combined).
 .EXAMPLE
     $Styles = Get-ExcelStyleByType -Type "Line"
 .OUTPUTS
-    IExcelStyle[] - Les styles correspondant au type spécifié.
+    IExcelStyle[] - Les styles correspondant au type spÃ©cifiÃ©.
 #>
 function Get-ExcelStyleByType {
     [CmdletBinding()]
@@ -1262,11 +1262,11 @@ function Get-ExcelStyleByType {
 
 <#
 .SYNOPSIS
-    Recherche des styles selon des critères spécifiques.
+    Recherche des styles selon des critÃ¨res spÃ©cifiques.
 .DESCRIPTION
-    Cette fonction recherche des styles selon des critères spécifiques dans le registre de styles Excel.
+    Cette fonction recherche des styles selon des critÃ¨res spÃ©cifiques dans le registre de styles Excel.
 .PARAMETER Criteria
-    Les critères de recherche sous forme de hashtable.
+    Les critÃ¨res de recherche sous forme de hashtable.
 .EXAMPLE
     $Criteria = @{
         Name = "*Line*"
@@ -1277,7 +1277,7 @@ function Get-ExcelStyleByType {
     }
     $Styles = Search-ExcelStyle -Criteria $Criteria
 .OUTPUTS
-    IExcelStyle[] - Les styles correspondant aux critères spécifiés.
+    IExcelStyle[] - Les styles correspondant aux critÃ¨res spÃ©cifiÃ©s.
 #>
 function Search-ExcelStyle {
     [CmdletBinding()]
@@ -1292,13 +1292,13 @@ function Search-ExcelStyle {
 
 <#
 .SYNOPSIS
-    Obtient toutes les catégories de styles disponibles.
+    Obtient toutes les catÃ©gories de styles disponibles.
 .DESCRIPTION
-    Cette fonction récupère toutes les catégories de styles disponibles dans le registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re toutes les catÃ©gories de styles disponibles dans le registre de styles Excel.
 .EXAMPLE
     $Categories = Get-ExcelStyleCategory
 .OUTPUTS
-    string[] - Les catégories de styles disponibles.
+    string[] - Les catÃ©gories de styles disponibles.
 #>
 function Get-ExcelStyleCategory {
     [CmdletBinding()]
@@ -1312,7 +1312,7 @@ function Get-ExcelStyleCategory {
 .SYNOPSIS
     Obtient tous les tags de styles disponibles.
 .DESCRIPTION
-    Cette fonction récupère tous les tags de styles disponibles dans le registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re tous les tags de styles disponibles dans le registre de styles Excel.
 .EXAMPLE
     $Tags = Get-ExcelStyleTag
 .OUTPUTS
@@ -1330,7 +1330,7 @@ function Get-ExcelStyleTag {
 .SYNOPSIS
     Obtient tous les styles disponibles.
 .DESCRIPTION
-    Cette fonction récupère tous les styles disponibles dans le registre de styles Excel.
+    Cette fonction rÃ©cupÃ¨re tous les styles disponibles dans le registre de styles Excel.
 .EXAMPLE
     $AllStyles = Get-ExcelStyle
 .OUTPUTS
@@ -1346,18 +1346,18 @@ function Get-ExcelStyle {
 
 <#
 .SYNOPSIS
-    Met à jour un style existant dans le registre de styles Excel.
+    Met Ã  jour un style existant dans le registre de styles Excel.
 .DESCRIPTION
-    Cette fonction met à jour un style existant dans le registre de styles Excel.
+    Cette fonction met Ã  jour un style existant dans le registre de styles Excel.
 .PARAMETER Id
-    L'ID du style à mettre à jour.
+    L'ID du style Ã  mettre Ã  jour.
 .PARAMETER Style
-    Le nouveau style à utiliser pour la mise à jour.
+    Le nouveau style Ã  utiliser pour la mise Ã  jour.
 .EXAMPLE
     $NewStyle = [ExcelLineStyle]::new()
     Update-ExcelStyle -Id "12345678-1234-1234-1234-123456789012" -Style $NewStyle
 .OUTPUTS
-    System.Boolean - True si la mise à jour a réussi, False sinon.
+    System.Boolean - True si la mise Ã  jour a rÃ©ussi, False sinon.
 #>
 function Update-ExcelStyle {
     [CmdletBinding()]
@@ -1375,27 +1375,27 @@ function Update-ExcelStyle {
 
 <#
 .SYNOPSIS
-    Applique un style à une série de graphique Excel.
+    Applique un style Ã  une sÃ©rie de graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un style à une série de graphique Excel.
+    Cette fonction applique un style Ã  une sÃ©rie de graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER SeriesIndex
-    L'index de la série à modifier (0-basé).
+    L'index de la sÃ©rie Ã  modifier (0-basÃ©).
 .PARAMETER StyleId
-    L'ID du style à appliquer.
+    L'ID du style Ã  appliquer.
 .PARAMETER StyleName
-    Le nom du style à appliquer (alternative à StyleId).
+    Le nom du style Ã  appliquer (alternative Ã  StyleId).
 .EXAMPLE
     Set-ExcelChartSeriesStyle -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -SeriesIndex 0 -StyleId "12345678-1234-1234-1234-123456789012"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesStyle {
     [CmdletBinding(DefaultParameterSetName = "ById")]
@@ -1423,17 +1423,17 @@ function Set-ExcelChartSeriesStyle {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -1447,15 +1447,15 @@ function Set-ExcelChartSeriesStyle {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Vérifier que l'index de série est valide
+        # VÃ©rifier que l'index de sÃ©rie est valide
         if ($SeriesIndex -lt 0 -or $SeriesIndex -ge $Chart.Series.Count) {
-            throw "Index de série invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) séries."
+            throw "Index de sÃ©rie invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
         }
 
-        # Obtenir la série
+        # Obtenir la sÃ©rie
         $Series = $Chart.Series[$SeriesIndex]
 
         # Obtenir le style
@@ -1469,10 +1469,10 @@ function Set-ExcelChartSeriesStyle {
         }
 
         if ($null -eq $Style) {
-            throw "Style non trouvé: $($PSCmdlet.ParameterSetName -eq 'ById' ? $StyleId : $StyleName)"
+            throw "Style non trouvÃ©: $($PSCmdlet.ParameterSetName -eq 'ById' ? $StyleId : $StyleName)"
         }
 
-        # Appliquer le style à la série
+        # Appliquer le style Ã  la sÃ©rie
         if ($Style -is [ExcelLineStyle]) {
             $Style.ApplyToSeries($Series)
         } elseif ($Style -is [ExcelMarkerStyle]) {
@@ -1484,7 +1484,7 @@ function Set-ExcelChartSeriesStyle {
         } elseif ($Style -is [ExcelCombinedStyle]) {
             $Style.ApplyToSeries($Series)
         } else {
-            throw "Type de style non supporté: $($Style.GetType().Name)"
+            throw "Type de style non supportÃ©: $($Style.GetType().Name)"
         }
 
         # Sauvegarder le classeur

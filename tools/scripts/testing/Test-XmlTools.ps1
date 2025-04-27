@@ -1,4 +1,4 @@
-# Script de test pour les outils XML (détecteur et validateur)
+﻿# Script de test pour les outils XML (dÃ©tecteur et validateur)
 
 # Importer les modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -6,7 +6,7 @@ $implementationPath = Join-Path -Path $scriptPath -ChildPath "..\Implementation"
 $detectorPath = Join-Path -Path $implementationPath -ChildPath "XmlElementDetector.ps1"
 $validatorPath = Join-Path -Path $implementationPath -ChildPath "XmlValidator.ps1"
 
-# Créer le dossier de sortie des tests
+# CrÃ©er le dossier de sortie des tests
 $testOutputPath = Join-Path -Path $scriptPath -ChildPath "Output"
 if (-not (Test-Path -Path $testOutputPath)) {
     New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
@@ -17,14 +17,14 @@ Write-Host "Importation des modules XML..."
 . $detectorPath
 . $validatorPath
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-XmlToolsTests {
     # Compteurs de tests
     $totalTests = 0
     $passedTests = 0
     $failedTests = 0
     
-    # Fonction pour exécuter un test
+    # Fonction pour exÃ©cuter un test
     function Test-Case {
         param (
             [string]$Name,
@@ -36,19 +36,19 @@ function Invoke-XmlToolsTests {
         
         try {
             & $Test
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             $script:passedTests++
         }
         catch {
-            Write-Host "  Échoué: $_" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
             $script:failedTests++
         }
         
         Write-Host ""
     }
     
-    # Test 1: Détection des éléments XML
-    Test-Case -Name "Détection des éléments XML" -Test {
+    # Test 1: DÃ©tection des Ã©lÃ©ments XML
+    Test-Case -Name "DÃ©tection des Ã©lÃ©ments XML" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <roadmap title="Roadmap de test">
@@ -60,11 +60,11 @@ function Invoke-XmlToolsTests {
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
@@ -74,55 +74,55 @@ function Invoke-XmlToolsTests {
         $elements = Get-XmlElements -XmlContent $xmlContent
         
         if ($elements.Count -lt 10) {
-            throw "Nombre d'éléments détectés insuffisant: $($elements.Count)"
+            throw "Nombre d'Ã©lÃ©ments dÃ©tectÃ©s insuffisant: $($elements.Count)"
         }
         
         $rootElement = $elements | Where-Object { $_.Depth -eq 0 }
         if (-not $rootElement -or $rootElement.Name -ne "roadmap") {
-            throw "Élément racine incorrect: $($rootElement.Name)"
+            throw "Ã‰lÃ©ment racine incorrect: $($rootElement.Name)"
         }
         
         $sectionElement = $elements | Where-Object { $_.Name -eq "section" }
         if (-not $sectionElement) {
-            throw "Élément section non détecté"
+            throw "Ã‰lÃ©ment section non dÃ©tectÃ©"
         }
         
         $phaseElement = $elements | Where-Object { $_.Name -eq "phase" }
         if (-not $phaseElement) {
-            throw "Élément phase non détecté"
+            throw "Ã‰lÃ©ment phase non dÃ©tectÃ©"
         }
         
         $taskElements = $elements | Where-Object { $_.Name -eq "task" }
         if ($taskElements.Count -ne 2) {
-            throw "Nombre d'éléments task incorrect: $($taskElements.Count)"
+            throw "Nombre d'Ã©lÃ©ments task incorrect: $($taskElements.Count)"
         }
         
         $subtaskElements = $elements | Where-Object { $_.Name -eq "subtask" }
         if ($subtaskElements.Count -ne 2) {
-            throw "Nombre d'éléments subtask incorrect: $($subtaskElements.Count)"
+            throw "Nombre d'Ã©lÃ©ments subtask incorrect: $($subtaskElements.Count)"
         }
         
         $noteElement = $elements | Where-Object { $_.Name -eq "note" }
         if (-not $noteElement) {
-            throw "Élément note non détecté"
+            throw "Ã‰lÃ©ment note non dÃ©tectÃ©"
         }
         
-        # Générer un rapport de structure
+        # GÃ©nÃ©rer un rapport de structure
         $report = Get-XmlStructureReport -XmlContent $xmlContent
         $reportPath = Join-Path -Path $testOutputPath -ChildPath "xml_structure_report.txt"
         Set-Content -Path $reportPath -Value $report
         
-        # Générer un rapport de structure HTML
+        # GÃ©nÃ©rer un rapport de structure HTML
         $htmlReport = Get-XmlStructureReport -XmlContent $xmlContent -AsHtml
         $htmlReportPath = Join-Path -Path $testOutputPath -ChildPath "xml_structure_report.html"
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
         
-        Write-Host "  Rapport de structure généré: $reportPath"
-        Write-Host "  Rapport de structure HTML généré: $htmlReportPath"
+        Write-Host "  Rapport de structure gÃ©nÃ©rÃ©: $reportPath"
+        Write-Host "  Rapport de structure HTML gÃ©nÃ©rÃ©: $htmlReportPath"
     }
     
-    # Test 2: Validation XML bien formé
-    Test-Case -Name "Validation XML bien formé" -Test {
+    # Test 2: Validation XML bien formÃ©
+    Test-Case -Name "Validation XML bien formÃ©" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <roadmap title="Roadmap de test">
@@ -134,11 +134,11 @@ function Invoke-XmlToolsTests {
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
@@ -159,22 +159,22 @@ function Invoke-XmlToolsTests {
             throw "Encodage incorrect: $($result.Encoding)"
         }
         
-        # Générer un rapport de validation
+        # GÃ©nÃ©rer un rapport de validation
         $report = Get-XmlValidationReport -ValidationResult $result
         $reportPath = Join-Path -Path $testOutputPath -ChildPath "xml_validation_report.txt"
         Set-Content -Path $reportPath -Value $report
         
-        # Générer un rapport de validation HTML
+        # GÃ©nÃ©rer un rapport de validation HTML
         $htmlReport = Get-XmlValidationReport -ValidationResult $result -AsHtml
         $htmlReportPath = Join-Path -Path $testOutputPath -ChildPath "xml_validation_report.html"
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
         
-        Write-Host "  Rapport de validation généré: $reportPath"
-        Write-Host "  Rapport de validation HTML généré: $htmlReportPath"
+        Write-Host "  Rapport de validation gÃ©nÃ©rÃ©: $reportPath"
+        Write-Host "  Rapport de validation HTML gÃ©nÃ©rÃ©: $htmlReportPath"
     }
     
-    # Test 3: Validation XML mal formé
-    Test-Case -Name "Validation XML mal formé" -Test {
+    # Test 3: Validation XML mal formÃ©
+    Test-Case -Name "Validation XML mal formÃ©" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <roadmap title="Roadmap de test">
@@ -186,11 +186,11 @@ function Invoke-XmlToolsTests {
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
@@ -200,29 +200,29 @@ function Invoke-XmlToolsTests {
         $result = Test-XmlContent -XmlContent $xmlContent
         
         if ($result.IsValid) {
-            throw "Le XML mal formé a été validé comme valide"
+            throw "Le XML mal formÃ© a Ã©tÃ© validÃ© comme valide"
         }
         
         if ($result.Errors.Count -eq 0) {
-            throw "Aucune erreur détectée dans le XML mal formé"
+            throw "Aucune erreur dÃ©tectÃ©e dans le XML mal formÃ©"
         }
         
-        # Générer un rapport de validation
+        # GÃ©nÃ©rer un rapport de validation
         $report = Get-XmlValidationReport -ValidationResult $result
         $reportPath = Join-Path -Path $testOutputPath -ChildPath "xml_validation_error_report.txt"
         Set-Content -Path $reportPath -Value $report
         
-        # Générer un rapport de validation HTML
+        # GÃ©nÃ©rer un rapport de validation HTML
         $htmlReport = Get-XmlValidationReport -ValidationResult $result -AsHtml
         $htmlReportPath = Join-Path -Path $testOutputPath -ChildPath "xml_validation_error_report.html"
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
         
-        Write-Host "  Rapport de validation d'erreur généré: $reportPath"
-        Write-Host "  Rapport de validation d'erreur HTML généré: $htmlReportPath"
+        Write-Host "  Rapport de validation d'erreur gÃ©nÃ©rÃ©: $reportPath"
+        Write-Host "  Rapport de validation d'erreur HTML gÃ©nÃ©rÃ©: $htmlReportPath"
     }
     
-    # Test 4: Génération et validation de schéma XSD
-    Test-Case -Name "Génération et validation de schéma XSD" -Test {
+    # Test 4: GÃ©nÃ©ration et validation de schÃ©ma XSD
+    Test-Case -Name "GÃ©nÃ©ration et validation de schÃ©ma XSD" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <roadmap title="Roadmap de test">
@@ -234,52 +234,52 @@ function Invoke-XmlToolsTests {
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
 </roadmap>
 "@
         
-        # Créer un fichier XML temporaire
+        # CrÃ©er un fichier XML temporaire
         $xmlPath = Join-Path -Path $testOutputPath -ChildPath "test_schema.xml"
         Set-Content -Path $xmlPath -Value $xmlContent -Encoding UTF8
         
-        # Générer un schéma XSD
+        # GÃ©nÃ©rer un schÃ©ma XSD
         $schemaPath = Join-Path -Path $testOutputPath -ChildPath "test_schema.xsd"
         
         try {
             New-XsdSchemaFromXml -XmlPath $xmlPath -SchemaPath $schemaPath
             
             if (-not (Test-Path -Path $schemaPath)) {
-                throw "Le fichier de schéma XSD n'a pas été créé"
+                throw "Le fichier de schÃ©ma XSD n'a pas Ã©tÃ© crÃ©Ã©"
             }
             
-            Write-Host "  Schéma XSD généré: $schemaPath"
+            Write-Host "  SchÃ©ma XSD gÃ©nÃ©rÃ©: $schemaPath"
         }
         catch {
-            Write-Host "  Impossible de générer le schéma XSD: $_" -ForegroundColor Yellow
-            Write-Host "  Ce test est ignoré car la génération de schéma XSD n'est pas prise en charge dans cette version de PowerShell" -ForegroundColor Yellow
+            Write-Host "  Impossible de gÃ©nÃ©rer le schÃ©ma XSD: $_" -ForegroundColor Yellow
+            Write-Host "  Ce test est ignorÃ© car la gÃ©nÃ©ration de schÃ©ma XSD n'est pas prise en charge dans cette version de PowerShell" -ForegroundColor Yellow
             return
         }
         
-        # Valider le XML par rapport au schéma
+        # Valider le XML par rapport au schÃ©ma
         $result = Test-XmlFileAgainstSchema -XmlPath $xmlPath -SchemaPath $schemaPath
         
         if (-not $result.IsValid) {
-            throw "Le XML n'est pas valide par rapport au schéma: $($result.Errors[0])"
+            throw "Le XML n'est pas valide par rapport au schÃ©ma: $($result.Errors[0])"
         }
         
-        # Générer un rapport de validation
+        # GÃ©nÃ©rer un rapport de validation
         $report = Get-XmlValidationReport -ValidationResult $result
         $reportPath = Join-Path -Path $testOutputPath -ChildPath "xml_schema_validation_report.txt"
         Set-Content -Path $reportPath -Value $report
         
-        Write-Host "  Rapport de validation de schéma généré: $reportPath"
+        Write-Host "  Rapport de validation de schÃ©ma gÃ©nÃ©rÃ©: $reportPath"
     }
     
     # Test 5: Mapping XML vers Roadmap
@@ -295,11 +295,11 @@ function Invoke-XmlToolsTests {
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
@@ -312,7 +312,7 @@ function Invoke-XmlToolsTests {
         $report = $mappingResult.Report
         
         if (-not $mapping.RootElement -or $mapping.RootElement.Name -ne "roadmap") {
-            throw "Élément racine incorrect: $($mapping.RootElement.Name)"
+            throw "Ã‰lÃ©ment racine incorrect: $($mapping.RootElement.Name)"
         }
         
         if ($mapping.Sections.Count -ne 1) {
@@ -324,11 +324,11 @@ function Invoke-XmlToolsTests {
         }
         
         if ($mapping.Tasks.Count -ne 2) {
-            throw "Nombre de tâches incorrect: $($mapping.Tasks.Count)"
+            throw "Nombre de tÃ¢ches incorrect: $($mapping.Tasks.Count)"
         }
         
         if ($mapping.Subtasks.Count -ne 2) {
-            throw "Nombre de sous-tâches incorrect: $($mapping.Subtasks.Count)"
+            throw "Nombre de sous-tÃ¢ches incorrect: $($mapping.Subtasks.Count)"
         }
         
         if ($mapping.Notes.Count -ne 1) {
@@ -339,14 +339,14 @@ function Invoke-XmlToolsTests {
         $reportPath = Join-Path -Path $testOutputPath -ChildPath "xml_mapping_report.txt"
         Set-Content -Path $reportPath -Value $report
         
-        Write-Host "  Rapport de mapping généré: $reportPath"
+        Write-Host "  Rapport de mapping gÃ©nÃ©rÃ©: $reportPath"
     }
     
-    # Afficher le résumé des tests
-    Write-Host "Résumé des tests:" -ForegroundColor Yellow
+    # Afficher le rÃ©sumÃ© des tests
+    Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Yellow
     Write-Host "  Total: $totalTests" -ForegroundColor Cyan
-    Write-Host "  Réussis: $passedTests" -ForegroundColor Green
-    Write-Host "  Échoués: $failedTests" -ForegroundColor Red
+    Write-Host "  RÃ©ussis: $passedTests" -ForegroundColor Green
+    Write-Host "  Ã‰chouÃ©s: $failedTests" -ForegroundColor Red
     
     return @{
         TotalTests = $totalTests
@@ -355,12 +355,12 @@ function Invoke-XmlToolsTests {
     }
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests des outils XML..." -ForegroundColor Yellow
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests des outils XML..." -ForegroundColor Yellow
 $results = Invoke-XmlToolsTests
 
 # Afficher le chemin des fichiers de sortie
 Write-Host "Les fichiers de sortie des tests sont disponibles dans: $testOutputPath" -ForegroundColor Cyan
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

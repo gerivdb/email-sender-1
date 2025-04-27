@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de mise en cache prédictive et adaptative pour PowerShell.
+    Module de mise en cache prÃ©dictive et adaptative pour PowerShell.
 .DESCRIPTION
-    Étend le PSCacheManager avec des capacités de mise en cache prédictive et adaptative,
+    Ã‰tend le PSCacheManager avec des capacitÃ©s de mise en cache prÃ©dictive et adaptative,
     permettant d'optimiser proactivement le cache en fonction des patterns d'utilisation.
 .NOTES
     Version: 1.0
@@ -11,13 +11,13 @@
     Date: 12/04/2025
 #>
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 $PSCacheManagerPath = Join-Path -Path $PSScriptRoot -ChildPath "..\PSCacheManager.psm1"
 if (Test-Path -Path $PSCacheManagerPath) {
     Import-Module $PSCacheManagerPath -Force
 }
 else {
-    throw "Module PSCacheManager non trouvé à l'emplacement: $PSCacheManagerPath"
+    throw "Module PSCacheManager non trouvÃ© Ã  l'emplacement: $PSCacheManagerPath"
 }
 
 # Importer les sous-modules
@@ -36,24 +36,24 @@ foreach ($Module in $SubModules) {
         Import-Module $ModulePath -Force
     }
     else {
-        Write-Warning "Module $Module non trouvé à l'emplacement: $ModulePath"
+        Write-Warning "Module $Module non trouvÃ© Ã  l'emplacement: $ModulePath"
     }
 }
 
-# Classe principale pour le cache prédictif
+# Classe principale pour le cache prÃ©dictif
 class PredictiveCache {
-    # Propriétés de base
+    # PropriÃ©tÃ©s de base
     [CacheManager]$BaseCache
     [string]$Name
     [string]$UsageDatabasePath
     
-    # Options prédictives
+    # Options prÃ©dictives
     [bool]$PreloadEnabled = $true
     [bool]$AdaptiveTTLEnabled = $true
     [bool]$DependencyTrackingEnabled = $true
     [int]$PredictionHorizon = 3600  # Secondes (1 heure)
-    [double]$PreloadThreshold = 0.7  # Probabilité minimale pour précharger
-    [int]$MaxPreloadItems = 100  # Nombre maximum d'éléments à précharger
+    [double]$PreloadThreshold = 0.7  # ProbabilitÃ© minimale pour prÃ©charger
+    [int]$MaxPreloadItems = 100  # Nombre maximum d'Ã©lÃ©ments Ã  prÃ©charger
     
     # Composants
     [object]$UsageCollector
@@ -82,7 +82,7 @@ class PredictiveCache {
     
     # Initialiser les composants
     [void] InitializeComponents() {
-        # Ces composants seront implémentés dans leurs propres modules
+        # Ces composants seront implÃ©mentÃ©s dans leurs propres modules
         $this.UsageCollector = [PSCustomObject]@{
             DatabasePath = $this.UsageDatabasePath
             RecordAccess = { param($key, $hit) }
@@ -121,29 +121,29 @@ class PredictiveCache {
         }
     }
     
-    # Méthodes principales
+    # MÃ©thodes principales
     
-    # Obtenir un élément du cache
+    # Obtenir un Ã©lÃ©ment du cache
     [object] Get([string]$key) {
-        # Enregistrer l'accès
+        # Enregistrer l'accÃ¨s
         $startTime = Get-Date
         
-        # Vérifier dans le cache de base
+        # VÃ©rifier dans le cache de base
         $value = $this.BaseCache.Get($key)
         $hit = $null -ne $value
         
-        # Enregistrer l'accès dans le collecteur d'utilisation
+        # Enregistrer l'accÃ¨s dans le collecteur d'utilisation
         $this.UsageCollector.RecordAccess($key, $hit)
         
         if ($hit) {
-            # Mettre à jour les statistiques
+            # Mettre Ã  jour les statistiques
             if ($this.PreloadManager.IsPreloadCandidate($key)) {
                 $this.PredictionHits++
             }
             
-            # Mettre à jour les dépendances si activé
+            # Mettre Ã  jour les dÃ©pendances si activÃ©
             if ($this.DependencyTrackingEnabled) {
-                # Cette logique sera implémentée dans le DependencyManager
+                # Cette logique sera implÃ©mentÃ©e dans le DependencyManager
             }
             
             return $value
@@ -152,7 +152,7 @@ class PredictiveCache {
         # Si on arrive ici, c'est un miss
         $this.PredictionMisses++
         
-        # Précharger les éléments susceptibles d'être utilisés prochainement
+        # PrÃ©charger les Ã©lÃ©ments susceptibles d'Ãªtre utilisÃ©s prochainement
         if ($this.PreloadEnabled) {
             $this.TriggerPreload()
         }
@@ -160,37 +160,37 @@ class PredictiveCache {
         return $null
     }
     
-    # Définir un élément dans le cache
+    # DÃ©finir un Ã©lÃ©ment dans le cache
     [void] Set([string]$key, [object]$value, [int]$ttlSeconds = $null) {
-        # Optimiser le TTL si activé
+        # Optimiser le TTL si activÃ©
         if ($this.AdaptiveTTLEnabled -and $null -ne $ttlSeconds) {
             $optimizedTTL = $this.TTLOptimizer.OptimizeTTL($key, $ttlSeconds)
             $ttlSeconds = $optimizedTTL
             $this.TTLAdjustments++
         }
         
-        # Définir dans le cache de base
+        # DÃ©finir dans le cache de base
         $this.BaseCache.Set($key, $value, $ttlSeconds)
         
-        # Enregistrer l'opération
+        # Enregistrer l'opÃ©ration
         $this.UsageCollector.RecordSet($key, $value, $ttlSeconds)
         
-        # Mettre à jour le modèle de prédiction
+        # Mettre Ã  jour le modÃ¨le de prÃ©diction
         $this.PredictionEngine.UpdateModel()
     }
     
-    # Supprimer un élément du cache
+    # Supprimer un Ã©lÃ©ment du cache
     [void] Remove([string]$key) {
         # Supprimer du cache de base
         $this.BaseCache.Remove($key)
         
-        # Enregistrer l'éviction
+        # Enregistrer l'Ã©viction
         $this.UsageCollector.RecordEviction($key)
     }
     
-    # Déclencher le préchargement
+    # DÃ©clencher le prÃ©chargement
     [void] TriggerPreload() {
-        # Obtenir les prédictions
+        # Obtenir les prÃ©dictions
         $predictions = $this.PredictionEngine.PredictNextAccesses()
         
         # Filtrer selon le seuil
@@ -200,7 +200,7 @@ class PredictiveCache {
             $_.Key
         }
         
-        # Précharger
+        # PrÃ©charger
         if ($keysToPreload.Count -gt 0) {
             $this.PreloadManager.PreloadKeys($keysToPreload)
             $this.PreloadedItems += $keysToPreload.Count
@@ -209,19 +209,19 @@ class PredictiveCache {
     
     # Optimiser le cache
     [void] Optimize() {
-        # Mettre à jour l'heure de la dernière optimisation
+        # Mettre Ã  jour l'heure de la derniÃ¨re optimisation
         $this.LastOptimizationTime = Get-Date
         
         # Analyser les tendances
         $trends = $this.TrendAnalyzer.AnalyzeTrends($this.UsageCollector)
         
-        # Optimiser les stratégies
+        # Optimiser les stratÃ©gies
         $this.PreloadManager.OptimizePreloadStrategy()
         $this.TTLOptimizer.UpdateTTLRules()
         $this.PredictionEngine.UpdateModel()
         
-        # Nettoyer les données d'utilisation obsolètes
-        # (à implémenter)
+        # Nettoyer les donnÃ©es d'utilisation obsolÃ¨tes
+        # (Ã  implÃ©menter)
     }
     
     # Obtenir les statistiques
@@ -246,30 +246,30 @@ class PredictiveCache {
     }
 }
 
-# Fonctions exportées
+# Fonctions exportÃ©es
 
 <#
 .SYNOPSIS
-    Crée un nouveau cache prédictif.
+    CrÃ©e un nouveau cache prÃ©dictif.
 .DESCRIPTION
-    Crée un nouveau cache prédictif basé sur un cache PSCacheManager existant
-    ou en crée un nouveau.
+    CrÃ©e un nouveau cache prÃ©dictif basÃ© sur un cache PSCacheManager existant
+    ou en crÃ©e un nouveau.
 .PARAMETER Name
     Nom du cache.
 .PARAMETER UsageDatabase
-    Chemin vers la base de données d'utilisation.
+    Chemin vers la base de donnÃ©es d'utilisation.
 .PARAMETER BaseCache
-    Cache PSCacheManager existant à utiliser comme base.
+    Cache PSCacheManager existant Ã  utiliser comme base.
 .PARAMETER CachePath
-    Chemin vers le répertoire du cache disque.
+    Chemin vers le rÃ©pertoire du cache disque.
 .PARAMETER MaxMemoryItems
-    Nombre maximum d'éléments en mémoire.
+    Nombre maximum d'Ã©lÃ©ments en mÃ©moire.
 .PARAMETER DefaultTTLSeconds
-    Durée de vie par défaut des éléments en secondes.
+    DurÃ©e de vie par dÃ©faut des Ã©lÃ©ments en secondes.
 .PARAMETER EnableDiskCache
-    Indique si le cache disque est activé.
+    Indique si le cache disque est activÃ©.
 .PARAMETER EvictionPolicy
-    Politique d'éviction (LRU ou LFU).
+    Politique d'Ã©viction (LRU ou LFU).
 .EXAMPLE
     $cache = New-PredictiveCache -Name "ScriptCache" -UsageDatabase "C:\Cache\usage.db"
 .EXAMPLE
@@ -308,42 +308,42 @@ function New-PredictiveCache {
     )
     
     try {
-        # Créer ou utiliser un cache de base
+        # CrÃ©er ou utiliser un cache de base
         if ($PSCmdlet.ParameterSetName -eq 'NewCache') {
             $BaseCache = New-PSCache -Name $Name -CachePath $CachePath -MaxMemoryItems $MaxMemoryItems -DefaultTTLSeconds $DefaultTTLSeconds -EnableDiskCache $EnableDiskCache -EvictionPolicy $EvictionPolicy
         }
         
-        # Créer le cache prédictif
+        # CrÃ©er le cache prÃ©dictif
         $predictiveCache = [PredictiveCache]::new($BaseCache, $UsageDatabase)
         
         return $predictiveCache
     }
     catch {
-        Write-Error "Erreur lors de la création du cache prédictif: $_"
+        Write-Error "Erreur lors de la crÃ©ation du cache prÃ©dictif: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Configure les options du cache prédictif.
+    Configure les options du cache prÃ©dictif.
 .DESCRIPTION
-    Configure les options du cache prédictif comme le préchargement,
-    les TTL adaptatifs et le suivi des dépendances.
+    Configure les options du cache prÃ©dictif comme le prÃ©chargement,
+    les TTL adaptatifs et le suivi des dÃ©pendances.
 .PARAMETER Cache
-    Cache prédictif à configurer.
+    Cache prÃ©dictif Ã  configurer.
 .PARAMETER PreloadEnabled
-    Indique si le préchargement est activé.
+    Indique si le prÃ©chargement est activÃ©.
 .PARAMETER AdaptiveTTL
-    Indique si les TTL adaptatifs sont activés.
+    Indique si les TTL adaptatifs sont activÃ©s.
 .PARAMETER DependencyTracking
-    Indique si le suivi des dépendances est activé.
+    Indique si le suivi des dÃ©pendances est activÃ©.
 .PARAMETER PredictionHorizon
-    Horizon de prédiction en secondes.
+    Horizon de prÃ©diction en secondes.
 .PARAMETER PreloadThreshold
-    Seuil de probabilité pour le préchargement.
+    Seuil de probabilitÃ© pour le prÃ©chargement.
 .PARAMETER MaxPreloadItems
-    Nombre maximum d'éléments à précharger.
+    Nombre maximum d'Ã©lÃ©ments Ã  prÃ©charger.
 .EXAMPLE
     Set-PredictiveCacheOptions -Cache $cache -PreloadEnabled $true -AdaptiveTTL $true
 #>
@@ -373,7 +373,7 @@ function Set-PredictiveCacheOptions {
     )
     
     try {
-        # Mettre à jour les options
+        # Mettre Ã  jour les options
         if ($PSBoundParameters.ContainsKey('PreloadEnabled')) {
             $Cache.PreloadEnabled = $PreloadEnabled
         }
@@ -401,19 +401,19 @@ function Set-PredictiveCacheOptions {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la configuration du cache prédictif: $_"
+        Write-Error "Erreur lors de la configuration du cache prÃ©dictif: $_"
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Optimise le cache prédictif.
+    Optimise le cache prÃ©dictif.
 .DESCRIPTION
-    Déclenche une optimisation manuelle du cache prédictif,
-    analysant les tendances et ajustant les stratégies.
+    DÃ©clenche une optimisation manuelle du cache prÃ©dictif,
+    analysant les tendances et ajustant les stratÃ©gies.
 .PARAMETER Cache
-    Cache prédictif à optimiser.
+    Cache prÃ©dictif Ã  optimiser.
 .EXAMPLE
     Optimize-PredictiveCache -Cache $cache
 #>
@@ -429,19 +429,19 @@ function Optimize-PredictiveCache {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'optimisation du cache prédictif: $_"
+        Write-Error "Erreur lors de l'optimisation du cache prÃ©dictif: $_"
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Obtient les statistiques du cache prédictif.
+    Obtient les statistiques du cache prÃ©dictif.
 .DESCRIPTION
-    Récupère les statistiques détaillées du cache prédictif,
-    y compris les taux de succès des prédictions.
+    RÃ©cupÃ¨re les statistiques dÃ©taillÃ©es du cache prÃ©dictif,
+    y compris les taux de succÃ¨s des prÃ©dictions.
 .PARAMETER Cache
-    Cache prédictif dont on veut obtenir les statistiques.
+    Cache prÃ©dictif dont on veut obtenir les statistiques.
 .EXAMPLE
     Get-PredictiveCacheStatistics -Cache $cache
 #>
@@ -457,7 +457,7 @@ function Get-PredictiveCacheStatistics {
         return $Cache.GetStatistics()
     }
     catch {
-        Write-Error "Erreur lors de la récupération des statistiques du cache prédictif: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des statistiques du cache prÃ©dictif: $_"
         return $null
     }
 }

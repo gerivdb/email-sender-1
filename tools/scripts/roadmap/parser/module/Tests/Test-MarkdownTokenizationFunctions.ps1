@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions de tokenization markdown.
 
@@ -12,17 +12,17 @@
     Creation Date:  2023-08-18
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Créer un module temporaire pour les tests
+# CrÃ©er un module temporaire pour les tests
 $modulePath = (Split-Path -Parent $PSScriptRoot)
 $parsingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownParsingFunctions.ps1"
 $tokenizationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownTokenizationFunctions.ps1"
 
-# Vérifier que les fichiers existent
+# VÃ©rifier que les fichiers existent
 if (-not (Test-Path -Path $parsingFunctionsPath)) {
     throw "Le fichier de fonctions de parsing n'existe pas: $parsingFunctionsPath"
 }
@@ -34,7 +34,7 @@ if (-not (Test-Path -Path $tokenizationFunctionsPath)) {
 . $parsingFunctionsPath
 . $tokenizationFunctionsPath
 
-# Définir l'énumération MarkdownTokenType et la classe MarkdownToken
+# DÃ©finir l'Ã©numÃ©ration MarkdownTokenType et la classe MarkdownToken
 Add-Type -TypeDefinition @"
 using System;
 using System.Collections.Generic;
@@ -126,11 +126,11 @@ public class MarkdownToken {
 
 Describe "Markdown Tokenization Functions" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "MarkdownTokenizationTests_$(Get-Random)"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier markdown de test
+        # CrÃ©er un fichier markdown de test
         $markdownContent = @"
 # Test Markdown File
 
@@ -165,7 +165,7 @@ This is a test markdown file with various elements.
         $markdownFile = Join-Path -Path $testDir -ChildPath "test.md"
         $markdownContent | Out-File -FilePath $markdownFile -Encoding utf8
 
-        # Créer un fichier markdown de roadmap de test
+        # CrÃ©er un fichier markdown de roadmap de test
         $roadmapContent = @"
 # Roadmap
 
@@ -192,7 +192,7 @@ This is a test markdown file with various elements.
     }
 
     AfterAll {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }
@@ -426,28 +426,28 @@ Paragraph 1
             $tokens[0].Type | Should -Be ([MarkdownTokenType]::Header)
             $tokens[0].Value | Should -Be "Roadmap"
 
-            # Vérifier la structure de la roadmap
+            # VÃ©rifier la structure de la roadmap
             $featureTokens = $tokens | Where-Object { $_.Type -eq [MarkdownTokenType]::Header -and $_.Metadata["Level"] -eq 2 }
             $featureTokens.Count | Should -Be 2
             $featureTokens[0].Value | Should -Be "1. Feature 1"
             $featureTokens[1].Value | Should -Be "2. Feature 2"
 
-            # Vérifier les tâches
+            # VÃ©rifier les tÃ¢ches
             $taskTokens = $tokens | Where-Object { $_.Type -eq [MarkdownTokenType]::TaskItem }
             $taskTokens | Should -Not -BeNullOrEmpty
 
-            # Vérifier une tâche avec ID
+            # VÃ©rifier une tÃ¢che avec ID
             $taskWithId = $taskTokens | Where-Object { $_.Metadata.ContainsKey("TaskId") -and $_.Metadata["TaskId"] -eq "1.1" } | Select-Object -First 1
             $taskWithId | Should -Not -BeNullOrEmpty
             $taskWithId.Value | Should -Be "Task 1.1"
             $taskWithId.Metadata["Status"] | Should -Be " "
 
-            # Vérifier une tâche avec assignation
+            # VÃ©rifier une tÃ¢che avec assignation
             $taskWithAssignment = $taskTokens | Where-Object { $_.Metadata.ContainsKey("Assignments") } | Select-Object -First 1
             $taskWithAssignment | Should -Not -BeNullOrEmpty
             $taskWithAssignment.Metadata["Assignments"] | Should -Contain "john"
 
-            # Vérifier une tâche avec tag
+            # VÃ©rifier une tÃ¢che avec tag
             $taskWithTag = $taskTokens | Where-Object { $_.Metadata.ContainsKey("Tags") } | Select-Object -First 1
             $taskWithTag | Should -Not -BeNullOrEmpty
             $taskWithTag.Metadata["Tags"] | Should -Contain "important"

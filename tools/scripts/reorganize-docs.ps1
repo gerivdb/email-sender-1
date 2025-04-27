@@ -1,4 +1,4 @@
-# Script pour réorganiser les fichiers Markdown dans le dossier docs/guides
+﻿# Script pour rÃ©organiser les fichiers Markdown dans le dossier docs/guides
 
 # Fonction pour copier un fichier vers un dossier de destination
 function Copy-FileToDestination {
@@ -11,13 +11,13 @@ function Copy-FileToDestination {
     $destinationPath = Join-Path -Path $DestinationFolder -ChildPath $fileName
     
     Copy-Item -Path $SourcePath -Destination $destinationPath -Force
-    Write-Host "Copié: $SourcePath -> $destinationPath"
+    Write-Host "CopiÃ©: $SourcePath -> $destinationPath"
 }
 
 # Chemin de base
 $basePath = "docs/guides"
 
-# Fichiers à conserver à la racine
+# Fichiers Ã  conserver Ã  la racine
 $rootFiles = @(
     "index.md",
     "guidelines_index.md",
@@ -25,7 +25,7 @@ $rootFiles = @(
     "template.md"
 )
 
-# Déplacer les fichiers liés à PowerShell
+# DÃ©placer les fichiers liÃ©s Ã  PowerShell
 $powershellFiles = @(
     "powershell_best_practices.md",
     "powershell_execution.md",
@@ -39,7 +39,7 @@ foreach ($file in $powershellFiles) {
     }
 }
 
-# Déplacer les fichiers liés à Python
+# DÃ©placer les fichiers liÃ©s Ã  Python
 $pythonFiles = @(
     "python_best_practices.md"
 )
@@ -51,7 +51,7 @@ foreach ($file in $pythonFiles) {
     }
 }
 
-# Déplacer les fichiers liés à Git
+# DÃ©placer les fichiers liÃ©s Ã  Git
 $gitFiles = @(
     "GUIDE_BONNES_PRATIQUES_GIT.md",
     "GUIDE_GIT_GITHUB.md",
@@ -66,7 +66,7 @@ foreach ($file in $gitFiles) {
     }
 }
 
-# Déplacer les fichiers liés à MCP
+# DÃ©placer les fichiers liÃ©s Ã  MCP
 $mcpFiles = @(
     "GUIDE_MCP_GATEWAY.md",
     "GUIDE_MCP_FILESYSTEM.md",
@@ -88,7 +88,7 @@ foreach ($file in $mcpFiles) {
     }
 }
 
-# Déplacer les fichiers liés à n8n
+# DÃ©placer les fichiers liÃ©s Ã  n8n
 $n8nFiles = @(
     "DEMARRER_N8N_LOCAL.md",
     "GUIDE_DOSSIER_N8N.md"
@@ -101,7 +101,7 @@ foreach ($file in $n8nFiles) {
     }
 }
 
-# Déplacer les fichiers liés aux méthodologies
+# DÃ©placer les fichiers liÃ©s aux mÃ©thodologies
 $methodologiesFiles = @(
     "methodologies.md",
     "modes_fonctionnement.md",
@@ -118,7 +118,7 @@ foreach ($file in $methodologiesFiles) {
     }
 }
 
-# Déplacer les fichiers liés aux bonnes pratiques
+# DÃ©placer les fichiers liÃ©s aux bonnes pratiques
 $bestPracticesFiles = @(
     "erreurs_integrite.md",
     "optimisations.md",
@@ -133,7 +133,7 @@ foreach ($file in $bestPracticesFiles) {
     }
 }
 
-# Déplacer les fichiers liés à l'installation
+# DÃ©placer les fichiers liÃ©s Ã  l'installation
 $installationFiles = @(
     "GUIDE_INSTALLATION_COMPLET.md",
     "getting_started.md"
@@ -146,7 +146,7 @@ foreach ($file in $installationFiles) {
     }
 }
 
-# Déplacer les fichiers liés au dépannage
+# DÃ©placer les fichiers liÃ©s au dÃ©pannage
 $troubleshootingFiles = @(
     "instructions_test_integration.md"
 )
@@ -158,7 +158,7 @@ foreach ($file in $troubleshootingFiles) {
     }
 }
 
-# Déplacer les fichiers liés aux outils
+# DÃ©placer les fichiers liÃ©s aux outils
 $toolsFiles = @(
     "cycle_detection.md",
     "dependency_management.md",
@@ -177,7 +177,7 @@ foreach ($file in $toolsFiles) {
     }
 }
 
-# Déplacer les fichiers restants vers le dossier core
+# DÃ©placer les fichiers restants vers le dossier core
 $allFiles = Get-ChildItem -Path $basePath -Filter "*.md" | Select-Object -ExpandProperty Name
 $filesToMove = $allFiles | Where-Object { 
     ($rootFiles -notcontains $_) -and
@@ -200,4 +200,4 @@ foreach ($file in $filesToMove) {
     }
 }
 
-Write-Host "Réorganisation terminée !"
+Write-Host "RÃ©organisation terminÃ©e !"

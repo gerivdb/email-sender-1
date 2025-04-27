@@ -1,11 +1,11 @@
-# Script de test pour vérifier l'importation du module FileContentIndexer
+﻿# Script de test pour vÃ©rifier l'importation du module FileContentIndexer
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-testing\modules\FileContentIndexer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    Write-Error "Module FileContentIndexer non trouvé à l'emplacement: $moduleToTest"
+    Write-Error "Module FileContentIndexer non trouvÃ© Ã  l'emplacement: $moduleToTest"
     exit 1
 }
 
@@ -14,32 +14,32 @@ try {
     Write-Host "Tentative d'importation du module..." -ForegroundColor Cyan
     Import-Module $moduleToTest -Force -Verbose
     
-    # Vérifier si le module est importé
+    # VÃ©rifier si le module est importÃ©
     $module = Get-Module | Where-Object { $_.Path -eq $moduleToTest }
     if ($null -eq $module) {
-        Write-Error "Le module n'a pas été importé correctement."
+        Write-Error "Le module n'a pas Ã©tÃ© importÃ© correctement."
         exit 1
     }
     
-    Write-Host "Module importé avec succès!" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s!" -ForegroundColor Green
     
-    # Essayer de créer un indexeur
-    Write-Host "Tentative de création d'un indexeur..." -ForegroundColor Cyan
+    # Essayer de crÃ©er un indexeur
+    Write-Host "Tentative de crÃ©ation d'un indexeur..." -ForegroundColor Cyan
     $indexer = New-FileContentIndexer -IndexPath "$env:TEMP\TestIndex" -PersistIndices $false
     
     if ($null -eq $indexer) {
-        Write-Error "Impossible de créer un indexeur."
+        Write-Error "Impossible de crÃ©er un indexeur."
         exit 1
     }
     
-    Write-Host "Indexeur créé avec succès!" -ForegroundColor Green
+    Write-Host "Indexeur crÃ©Ã© avec succÃ¨s!" -ForegroundColor Green
     Write-Host "Type de l'indexeur: $($indexer.GetType().FullName)" -ForegroundColor Yellow
     
-    # Afficher les propriétés de l'indexeur
-    Write-Host "Propriétés de l'indexeur:" -ForegroundColor Cyan
+    # Afficher les propriÃ©tÃ©s de l'indexeur
+    Write-Host "PropriÃ©tÃ©s de l'indexeur:" -ForegroundColor Cyan
     $indexer | Format-List
     
-    Write-Host "Test réussi!" -ForegroundColor Green
+    Write-Host "Test rÃ©ussi!" -ForegroundColor Green
 } catch {
     Write-Error "Erreur lors du test: $_"
     exit 1

@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fusionne les scripts similaires pour éliminer les duplications.
+    Fusionne les scripts similaires pour Ã©liminer les duplications.
 .DESCRIPTION
-    Ce script utilise le rapport généré par Find-CodeDuplication.ps1 pour fusionner
-    les scripts similaires et éliminer les duplications de code. Il crée des fonctions
-    réutilisables pour le code dupliqué et met à jour les références.
+    Ce script utilise le rapport gÃ©nÃ©rÃ© par Find-CodeDuplication.ps1 pour fusionner
+    les scripts similaires et Ã©liminer les duplications de code. Il crÃ©e des fonctions
+    rÃ©utilisables pour le code dupliquÃ© et met Ã  jour les rÃ©fÃ©rences.
 .PARAMETER InputPath
-    Chemin du fichier de rapport généré par Find-CodeDuplication.ps1.
-    Par défaut: scripts\manager\data\duplication_report.json
+    Chemin du fichier de rapport gÃ©nÃ©rÃ© par Find-CodeDuplication.ps1.
+    Par dÃ©faut: scripts\manager\data\duplication_report.json
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport des fusions.
-    Par défaut: scripts\manager\data\merge_report.json
+    Par dÃ©faut: scripts\manager\data\merge_report.json
 .PARAMETER LibraryPath
-    Chemin du dossier où seront créées les bibliothèques de fonctions.
-    Par défaut: scripts\common\lib
+    Chemin du dossier oÃ¹ seront crÃ©Ã©es les bibliothÃ¨ques de fonctions.
+    Par dÃ©faut: scripts\common\lib
 .PARAMETER MinimumDuplicationCount
-    Nombre minimum de duplications pour créer une fonction réutilisable. Par défaut: 2
+    Nombre minimum de duplications pour crÃ©er une fonction rÃ©utilisable. Par dÃ©faut: 2
 .PARAMETER AutoApply
     Applique automatiquement les modifications sans demander de confirmation.
 .PARAMETER ShowDetails
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Merge-SimilarScripts.ps1
     Analyse le rapport et propose des fusions pour les scripts similaires.
@@ -37,7 +37,7 @@ param (
     [switch]$ShowDetails
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -59,12 +59,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\manager\data\script_merge.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour déterminer le type de script
+# Fonction pour dÃ©terminer le type de script
 function Get-ScriptType {
     param (
         [string]$FilePath
@@ -84,7 +84,7 @@ function Get-ScriptType {
     }
 }
 
-# Fonction pour générer un nom de fonction à partir d'un bloc de code
+# Fonction pour gÃ©nÃ©rer un nom de fonction Ã  partir d'un bloc de code
 function Get-FunctionName {
     param (
         [string]$BlockText,
@@ -92,10 +92,10 @@ function Get-FunctionName {
         [int]$Index
     )
     
-    # Extraire les mots clés du bloc de code
+    # Extraire les mots clÃ©s du bloc de code
     $Keywords = $BlockText -split "\W+" | Where-Object { $_ -match "^[a-zA-Z][a-zA-Z0-9_]*$" -and $_.Length -gt 3 }
     
-    # Filtrer les mots-clés réservés selon le type de script
+    # Filtrer les mots-clÃ©s rÃ©servÃ©s selon le type de script
     $ReservedKeywords = switch ($ScriptType) {
         "PowerShell" { @("function", "param", "begin", "process", "end", "if", "else", "elseif", "switch", "for", "foreach", "while", "do", "until", "break", "continue", "return", "throw", "try", "catch", "finally") }
         "Python" { @("def", "class", "if", "else", "elif", "for", "while", "try", "except", "finally", "with", "import", "from", "as", "return", "yield", "break", "continue", "pass", "raise", "global", "nonlocal") }
@@ -106,7 +106,7 @@ function Get-FunctionName {
     
     $FilteredKeywords = $Keywords | Where-Object { $ReservedKeywords -notcontains $_ }
     
-    # Générer un nom de fonction à partir des mots-clés
+    # GÃ©nÃ©rer un nom de fonction Ã  partir des mots-clÃ©s
     if ($FilteredKeywords.Count -gt 0) {
         $BaseName = ($FilteredKeywords | Select-Object -First 3) -join ""
     } else {
@@ -125,7 +125,7 @@ function Get-FunctionName {
     return $FunctionName
 }
 
-# Fonction pour créer une fonction à partir d'un bloc de code
+# Fonction pour crÃ©er une fonction Ã  partir d'un bloc de code
 function New-FunctionFromBlock {
     param (
         [string]$BlockText,
@@ -133,7 +133,7 @@ function New-FunctionFromBlock {
         [string]$ScriptType
     )
     
-    # Créer la fonction selon le type de script
+    # CrÃ©er la fonction selon le type de script
     $Function = switch ($ScriptType) {
         "PowerShell" {
 @"
@@ -149,7 +149,7 @@ $BlockText
 @"
 def $FunctionName():
     """
-    Fonction extraite pour éliminer la duplication de code.
+    Fonction extraite pour Ã©liminer la duplication de code.
     """
 $BlockText
 "@
@@ -174,7 +174,7 @@ $BlockText
     return $Function
 }
 
-# Fonction pour créer un appel de fonction
+# Fonction pour crÃ©er un appel de fonction
 function New-FunctionCall {
     param (
         [string]$FunctionName,
@@ -182,12 +182,12 @@ function New-FunctionCall {
         [string]$LibraryPath
     )
     
-    # Créer l'appel de fonction selon le type de script
+    # CrÃ©er l'appel de fonction selon le type de script
     $Call = switch ($ScriptType) {
         "PowerShell" {
             $RelativePath = "$LibraryPath\$FunctionName.ps1"
 @"
-# Appel de fonction extraite pour éliminer la duplication
+# Appel de fonction extraite pour Ã©liminer la duplication
 . "$RelativePath"
 $FunctionName
 "@
@@ -196,7 +196,7 @@ $FunctionName
             $RelativePath = "$LibraryPath/$($FunctionName).py"
             $ImportName = [System.IO.Path]::GetFileNameWithoutExtension($RelativePath).Replace("-", "_")
 @"
-# Appel de fonction extraite pour éliminer la duplication
+# Appel de fonction extraite pour Ã©liminer la duplication
 from $ImportName import $FunctionName
 $FunctionName()
 "@
@@ -204,14 +204,14 @@ $FunctionName()
         "Batch" {
             $RelativePath = "$LibraryPath\$FunctionName.cmd"
 @"
-:: Appel de fonction extraite pour éliminer la duplication
+:: Appel de fonction extraite pour Ã©liminer la duplication
 call "$RelativePath"
 "@
         }
         "Shell" {
             $RelativePath = "$LibraryPath/$FunctionName.sh"
 @"
-# Appel de fonction extraite pour éliminer la duplication
+# Appel de fonction extraite pour Ã©liminer la duplication
 source "$RelativePath"
 $FunctionName
 "@
@@ -225,7 +225,7 @@ $FunctionName
     }
 }
 
-# Fonction pour créer une bibliothèque de fonctions
+# Fonction pour crÃ©er une bibliothÃ¨que de fonctions
 function New-FunctionLibrary {
     param (
         [string]$FunctionName,
@@ -235,7 +235,7 @@ function New-FunctionLibrary {
         [switch]$Apply
     )
     
-    # Déterminer l'extension du fichier selon le type de script
+    # DÃ©terminer l'extension du fichier selon le type de script
     $Extension = switch ($ScriptType) {
         "PowerShell" { ".ps1" }
         "Python" { ".py" }
@@ -244,22 +244,22 @@ function New-FunctionLibrary {
         default { ".txt" }
     }
     
-    # Créer le chemin complet du fichier
+    # CrÃ©er le chemin complet du fichier
     $FilePath = Join-Path -Path $LibraryPath -ChildPath "$FunctionName$Extension"
     
-    # Créer le contenu du fichier selon le type de script
+    # CrÃ©er le contenu du fichier selon le type de script
     $Content = switch ($ScriptType) {
         "PowerShell" {
 @"
 <#
 .SYNOPSIS
-    Fonction extraite pour éliminer la duplication de code.
+    Fonction extraite pour Ã©liminer la duplication de code.
 .DESCRIPTION
-    Cette fonction a été créée automatiquement pour éliminer la duplication de code
-    détectée dans plusieurs scripts.
+    Cette fonction a Ã©tÃ© crÃ©Ã©e automatiquement pour Ã©liminer la duplication de code
+    dÃ©tectÃ©e dans plusieurs scripts.
 .NOTES
-    Généré automatiquement par Merge-SimilarScripts.ps1
-    Date de création: $(Get-Date -Format "yyyy-MM-dd")
+    GÃ©nÃ©rÃ© automatiquement par Merge-SimilarScripts.ps1
+    Date de crÃ©ation: $(Get-Date -Format "yyyy-MM-dd")
 #>
 
 $FunctionBody
@@ -270,13 +270,13 @@ $FunctionBody
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Fonction extraite pour éliminer la duplication de code.
+Fonction extraite pour Ã©liminer la duplication de code.
 
-Cette fonction a été créée automatiquement pour éliminer la duplication de code
-détectée dans plusieurs scripts.
+Cette fonction a Ã©tÃ© crÃ©Ã©e automatiquement pour Ã©liminer la duplication de code
+dÃ©tectÃ©e dans plusieurs scripts.
 
-Généré automatiquement par Merge-SimilarScripts.ps1
-Date de création: $(Get-Date -Format "yyyy-MM-dd")
+GÃ©nÃ©rÃ© automatiquement par Merge-SimilarScripts.ps1
+Date de crÃ©ation: $(Get-Date -Format "yyyy-MM-dd")
 """
 
 $FunctionBody
@@ -287,9 +287,9 @@ $FunctionBody
 @echo off
 ::-----------------------------------------------------------------------------
 :: Nom du script : $FunctionName$Extension
-:: Description   : Fonction extraite pour éliminer la duplication de code.
-:: Généré automatiquement par Merge-SimilarScripts.ps1
-:: Date de création : $(Get-Date -Format "yyyy-MM-dd")
+:: Description   : Fonction extraite pour Ã©liminer la duplication de code.
+:: GÃ©nÃ©rÃ© automatiquement par Merge-SimilarScripts.ps1
+:: Date de crÃ©ation : $(Get-Date -Format "yyyy-MM-dd")
 ::-----------------------------------------------------------------------------
 
 $FunctionBody
@@ -300,9 +300,9 @@ $FunctionBody
 #!/bin/bash
 #-----------------------------------------------------------------------------
 # Nom du script : $FunctionName$Extension
-# Description   : Fonction extraite pour éliminer la duplication de code.
-# Généré automatiquement par Merge-SimilarScripts.ps1
-# Date de création : $(Get-Date -Format "yyyy-MM-dd")
+# Description   : Fonction extraite pour Ã©liminer la duplication de code.
+# GÃ©nÃ©rÃ© automatiquement par Merge-SimilarScripts.ps1
+# Date de crÃ©ation : $(Get-Date -Format "yyyy-MM-dd")
 #-----------------------------------------------------------------------------
 
 $FunctionBody
@@ -311,17 +311,17 @@ $FunctionBody
         default { $FunctionBody }
     }
     
-    # Créer le fichier si demandé
+    # CrÃ©er le fichier si demandÃ©
     if ($Apply) {
-        # Créer le dossier s'il n'existe pas
+        # CrÃ©er le dossier s'il n'existe pas
         if (-not (Test-Path -Path $LibraryPath)) {
             New-Item -ItemType Directory -Path $LibraryPath -Force | Out-Null
-            Write-Log "Dossier de bibliothèque créé: $LibraryPath" -Level "SUCCESS"
+            Write-Log "Dossier de bibliothÃ¨que crÃ©Ã©: $LibraryPath" -Level "SUCCESS"
         }
         
-        # Créer le fichier
+        # CrÃ©er le fichier
         Set-Content -Path $FilePath -Value $Content
-        Write-Log "Bibliothèque de fonctions créée: $FilePath" -Level "SUCCESS"
+        Write-Log "BibliothÃ¨que de fonctions crÃ©Ã©e: $FilePath" -Level "SUCCESS"
     }
     
     return @{
@@ -346,15 +346,15 @@ function Update-ScriptWithFunctionCall {
         # Remplacer le bloc de code par l'appel de fonction
         $NewContent = $Content.Replace($BlockText, $FunctionCall)
         
-        # Appliquer les modifications si demandé
+        # Appliquer les modifications si demandÃ©
         if ($Apply) {
             Set-Content -Path $FilePath -Value $NewContent
-            Write-Log "Script mis à jour: $FilePath" -Level "SUCCESS"
+            Write-Log "Script mis Ã  jour: $FilePath" -Level "SUCCESS"
         }
         
         return $true
     } catch {
-        Write-Log "Erreur lors de la mise à jour du script $FilePath : $_" -Level "ERROR"
+        Write-Log "Erreur lors de la mise Ã  jour du script $FilePath : $_" -Level "ERROR"
         return $false
     }
 }
@@ -412,9 +412,9 @@ function Merge-Duplications {
             }
         }
         
-        # Vérifier s'il y a suffisamment de duplications
+        # VÃ©rifier s'il y a suffisamment de duplications
         if ($UniqueOccurrences.Count -ge $MinimumDuplicationCount) {
-            # Déterminer le type de script à partir du premier fichier
+            # DÃ©terminer le type de script Ã  partir du premier fichier
             $ScriptType = Get-ScriptType -FilePath $UniqueOccurrences[0].FilePath
             
             if ($ScriptType -eq "Unknown") {
@@ -422,19 +422,19 @@ function Merge-Duplications {
                 continue
             }
             
-            # Générer un nom de fonction
+            # GÃ©nÃ©rer un nom de fonction
             $FunctionName = Get-FunctionName -BlockText $Group.BlockText -ScriptType $ScriptType -Index $Index
             
-            # Créer la fonction
+            # CrÃ©er la fonction
             $Function = New-FunctionFromBlock -BlockText $Group.BlockText -FunctionName $FunctionName -ScriptType $ScriptType
             
-            # Créer l'appel de fonction
+            # CrÃ©er l'appel de fonction
             $FunctionCallInfo = New-FunctionCall -FunctionName $FunctionName -ScriptType $ScriptType -LibraryPath $LibraryPath
             
-            # Créer la bibliothèque de fonctions
+            # CrÃ©er la bibliothÃ¨que de fonctions
             $Library = New-FunctionLibrary -FunctionName $FunctionName -FunctionBody $Function -ScriptType $ScriptType -LibraryPath $LibraryPath -Apply:$Apply
             
-            # Mettre à jour les scripts
+            # Mettre Ã  jour les scripts
             $UpdatedFiles = @()
             foreach ($Occurrence in $UniqueOccurrences) {
                 $Updated = Update-ScriptWithFunctionCall -FilePath $Occurrence.FilePath -BlockText $Group.BlockText -FunctionCall $FunctionCallInfo.Call -Apply:$Apply
@@ -444,7 +444,7 @@ function Merge-Duplications {
                 }
             }
             
-            # Ajouter le résultat
+            # Ajouter le rÃ©sultat
             $Results += [PSCustomObject]@{
                 FunctionName = $FunctionName
                 ScriptType = $ScriptType
@@ -472,24 +472,24 @@ function Start-ScriptMerge {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la fusion des scripts similaires..." -Level "TITLE"
-    Write-Log "Fichier d'entrée: $InputPath" -Level "INFO"
-    Write-Log "Dossier de bibliothèque: $LibraryPath" -Level "INFO"
+    Write-Log "DÃ©marrage de la fusion des scripts similaires..." -Level "TITLE"
+    Write-Log "Fichier d'entrÃ©e: $InputPath" -Level "INFO"
+    Write-Log "Dossier de bibliothÃ¨que: $LibraryPath" -Level "INFO"
     Write-Log "Nombre minimum de duplications: $MinimumDuplicationCount" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath)) {
-        Write-Log "Le fichier d'entrée n'existe pas: $InputPath" -Level "ERROR"
-        Write-Log "Exécutez d'abord Find-CodeDuplication.ps1 pour générer le rapport." -Level "ERROR"
+        Write-Log "Le fichier d'entrÃ©e n'existe pas: $InputPath" -Level "ERROR"
+        Write-Log "ExÃ©cutez d'abord Find-CodeDuplication.ps1 pour gÃ©nÃ©rer le rapport." -Level "ERROR"
         return
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "SUCCESS"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "SUCCESS"
     }
     
     # Charger le rapport
@@ -504,7 +504,7 @@ function Start-ScriptMerge {
     Write-Log "Fusion des duplications entre fichiers..." -Level "INFO"
     $MergeResults = Merge-Duplications -Duplications $Report.InterFileDuplications -LibraryPath $LibraryPath -MinimumDuplicationCount $MinimumDuplicationCount -Apply:$AutoApply
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalMerges = $MergeResults.Count
@@ -515,20 +515,20 @@ function Start-ScriptMerge {
     
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
-    Write-Log "Fusion terminée" -Level "SUCCESS"
+    # Afficher un rÃ©sumÃ©
+    Write-Log "Fusion terminÃ©e" -Level "SUCCESS"
     Write-Log "Nombre total de fusions: $($Results.TotalMerges)" -Level "INFO"
     
     if ($AutoApply) {
-        Write-Log "Fusions appliquées" -Level "SUCCESS"
+        Write-Log "Fusions appliquÃ©es" -Level "SUCCESS"
     } else {
-        Write-Log "Pour appliquer les fusions, exécutez la commande avec -AutoApply" -Level "WARNING"
+        Write-Log "Pour appliquer les fusions, exÃ©cutez la commande avec -AutoApply" -Level "WARNING"
     }
     
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
     return $Results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-ScriptMerge -InputPath $InputPath -OutputPath $OutputPath -LibraryPath $LibraryPath -MinimumDuplicationCount $MinimumDuplicationCount -AutoApply:$AutoApply -ShowDetails:$ShowDetails

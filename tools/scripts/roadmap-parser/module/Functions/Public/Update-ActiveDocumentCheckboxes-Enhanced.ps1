@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour les cases à cocher dans le document actif pour les tâches implémentées et testées à 100%.
-    Version améliorée avec support UTF-8 avec BOM.
+    Met Ã  jour les cases Ã  cocher dans le document actif pour les tÃ¢ches implÃ©mentÃ©es et testÃ©es Ã  100%.
+    Version amÃ©liorÃ©e avec support UTF-8 avec BOM.
 
 .DESCRIPTION
-    Cette fonction analyse le document actif pour identifier les tâches qui ont été implémentées
-    et testées avec succès à 100%, puis coche automatiquement les cases correspondantes.
-    Cette version améliorée garantit que tous les fichiers sont enregistrés en UTF-8 avec BOM
-    et préserve correctement les caractères accentués et l'indentation.
+    Cette fonction analyse le document actif pour identifier les tÃ¢ches qui ont Ã©tÃ© implÃ©mentÃ©es
+    et testÃ©es avec succÃ¨s Ã  100%, puis coche automatiquement les cases correspondantes.
+    Cette version amÃ©liorÃ©e garantit que tous les fichiers sont enregistrÃ©s en UTF-8 avec BOM
+    et prÃ©serve correctement les caractÃ¨res accentuÃ©s et l'indentation.
 
 .PARAMETER DocumentPath
-    Chemin vers le document actif à mettre à jour.
+    Chemin vers le document actif Ã  mettre Ã  jour.
 
 .PARAMETER ImplementationResults
-    Résultats de l'implémentation des tâches (hashtable).
+    RÃ©sultats de l'implÃ©mentation des tÃ¢ches (hashtable).
 
 .PARAMETER TestResults
-    Résultats des tests des tâches (hashtable).
+    RÃ©sultats des tests des tÃ¢ches (hashtable).
 
 .EXAMPLE
     Update-ActiveDocumentCheckboxes-Enhanced -DocumentPath "document.md" -ImplementationResults $implResults -TestResults $testResults
@@ -24,8 +24,8 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.1
-    Date de création: 2023-09-15
-    Date de mise à jour: 2025-05-01 - Amélioration de l'encodage UTF-8 avec BOM
+    Date de crÃ©ation: 2023-09-15
+    Date de mise Ã  jour: 2025-05-01 - AmÃ©lioration de l'encodage UTF-8 avec BOM
 #>
 function Update-ActiveDocumentCheckboxes-Enhanced {
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -40,15 +40,15 @@ function Update-ActiveDocumentCheckboxes-Enhanced {
         [hashtable]$TestResults
     )
 
-    # Vérifier que le document existe
+    # VÃ©rifier que le document existe
     if (-not (Test-Path -Path $DocumentPath)) {
-        Write-Error "Le document spécifié n'existe pas : $DocumentPath"
+        Write-Error "Le document spÃ©cifiÃ© n'existe pas : $DocumentPath"
         return 0
     }
 
     try {
-        # Lire le contenu du document avec l'encodage approprié
-        # Utiliser [System.IO.File]::ReadAllLines pour garantir la détection correcte de l'encodage
+        # Lire le contenu du document avec l'encodage appropriÃ©
+        # Utiliser [System.IO.File]::ReadAllLines pour garantir la dÃ©tection correcte de l'encodage
         $content = [System.IO.File]::ReadAllLines($DocumentPath)
         $modified = $false
         $tasksUpdated = 0
@@ -57,35 +57,35 @@ function Update-ActiveDocumentCheckboxes-Enhanced {
         for ($i = 0; $i -lt $content.Count; $i++) {
             $line = $content[$i]
 
-            # Rechercher les lignes avec des cases à cocher non cochées
+            # Rechercher les lignes avec des cases Ã  cocher non cochÃ©es
             if ($line -match '^\s*-\s+\[\s*\]') {
-                # Extraire le texte de la tâche en préservant l'indentation
+                # Extraire le texte de la tÃ¢che en prÃ©servant l'indentation
                 $indentation = [regex]::Match($line, '^\s*').Value
                 $taskText = $line -replace '^\s*-\s+\[\s*\]\s*', ''
 
-                # Rechercher cette tâche dans les résultats d'implémentation et de tests
+                # Rechercher cette tÃ¢che dans les rÃ©sultats d'implÃ©mentation et de tests
                 $taskFound = $false
                 $taskComplete = $false
                 $matchedTaskId = $null
 
-                # Essayer de trouver l'ID de la tâche dans le texte
+                # Essayer de trouver l'ID de la tÃ¢che dans le texte
                 foreach ($taskId in $ImplementationResults.Keys) {
-                    # Échapper les caractères spéciaux dans l'ID de la tâche pour la regex
+                    # Ã‰chapper les caractÃ¨res spÃ©ciaux dans l'ID de la tÃ¢che pour la regex
                     $escapedTaskId = [regex]::Escape($taskId)
 
-                    # Vérifier différents formats possibles d'ID de tâche dans le texte
+                    # VÃ©rifier diffÃ©rents formats possibles d'ID de tÃ¢che dans le texte
                     if ($taskText -match "^\*\*$escapedTaskId\*\*" -or
                         $taskText -match "^$escapedTaskId\s" -or
                         $taskText -match "^$escapedTaskId$" -or
                         $taskText -match "\[$escapedTaskId\]" -or
                         $taskText -match "\($escapedTaskId\)" -or
-                        # Format spécifique pour les IDs longs
+                        # Format spÃ©cifique pour les IDs longs
                         $taskText -match "\*\*$escapedTaskId\*\*") {
 
                         $taskFound = $true
                         $matchedTaskId = $taskId
 
-                        # Vérifier si l'implémentation et les tests sont à 100%
+                        # VÃ©rifier si l'implÃ©mentation et les tests sont Ã  100%
                         $implementationResult = $ImplementationResults[$taskId]
                         $testResult = $TestResults[$taskId]
 
@@ -99,17 +99,17 @@ function Update-ActiveDocumentCheckboxes-Enhanced {
                     }
                 }
 
-                # Si aucun ID n'a été trouvé, essayer de faire correspondre par titre
+                # Si aucun ID n'a Ã©tÃ© trouvÃ©, essayer de faire correspondre par titre
                 if (-not $taskFound) {
                     foreach ($taskId in $ImplementationResults.Keys) {
                         $implementationResult = $ImplementationResults[$taskId]
 
-                        # Vérifier si le titre de la tâche correspond
+                        # VÃ©rifier si le titre de la tÃ¢che correspond
                         if ($implementationResult.TaskTitle -and $taskText -match [regex]::Escape($implementationResult.TaskTitle)) {
                             $taskFound = $true
                             $matchedTaskId = $taskId
 
-                            # Vérifier si l'implémentation et les tests sont à 100%
+                            # VÃ©rifier si l'implÃ©mentation et les tests sont Ã  100%
                             $testResult = $TestResults[$taskId]
 
                             if ($implementationResult.ImplementationComplete -and
@@ -123,45 +123,45 @@ function Update-ActiveDocumentCheckboxes-Enhanced {
                     }
                 }
 
-                # Si la tâche a été trouvée et est complète, mettre à jour la case à cocher
+                # Si la tÃ¢che a Ã©tÃ© trouvÃ©e et est complÃ¨te, mettre Ã  jour la case Ã  cocher
                 if ($taskFound -and $taskComplete) {
-                    # Mettre à jour la case à cocher en préservant l'indentation et le texte complet
+                    # Mettre Ã  jour la case Ã  cocher en prÃ©servant l'indentation et le texte complet
                     $newLine = $line -replace '^\s*-\s+\[\s*\]', "$indentation- [x]"
                     $content[$i] = $newLine
                     $modified = $true
                     $tasksUpdated++
 
-                    Write-Verbose "Case à cocher mise à jour pour la tâche : $taskText (ID: $matchedTaskId)"
+                    Write-Verbose "Case Ã  cocher mise Ã  jour pour la tÃ¢che : $taskText (ID: $matchedTaskId)"
                 }
             }
         }
 
-        # Enregistrer les modifications si nécessaire
-        if ($modified -and $PSCmdlet.ShouldProcess($DocumentPath, "Mettre à jour les cases à cocher")) {
+        # Enregistrer les modifications si nÃ©cessaire
+        if ($modified -and $PSCmdlet.ShouldProcess($DocumentPath, "Mettre Ã  jour les cases Ã  cocher")) {
             # Utiliser UTF-8 avec BOM pour l'enregistrement
             $utf8WithBom = New-Object System.Text.UTF8Encoding $true
             [System.IO.File]::WriteAllLines($DocumentPath, $content, $utf8WithBom)
 
-            # Vérifier que le fichier a bien été enregistré en UTF-8 avec BOM
+            # VÃ©rifier que le fichier a bien Ã©tÃ© enregistrÃ© en UTF-8 avec BOM
             $bytes = [System.IO.File]::ReadAllBytes($DocumentPath)
             $hasBOM = $bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF
 
             if (-not $hasBOM) {
-                Write-Warning "Le fichier n'a pas été correctement enregistré en UTF-8 avec BOM. Tentative de correction..."
+                Write-Warning "Le fichier n'a pas Ã©tÃ© correctement enregistrÃ© en UTF-8 avec BOM. Tentative de correction..."
                 # Forcer l'encodage UTF-8 avec BOM
                 $content = [System.IO.File]::ReadAllText($DocumentPath)
                 [System.IO.File]::WriteAllText($DocumentPath, $content, $utf8WithBom)
             }
 
-            Write-Output "$tasksUpdated cases à cocher mises à jour dans le document : $DocumentPath"
+            Write-Output "$tasksUpdated cases Ã  cocher mises Ã  jour dans le document : $DocumentPath"
         } else {
-            Write-Output "$tasksUpdated cases à cocher seraient mises à jour dans le document : $DocumentPath (mode simulation)"
+            Write-Output "$tasksUpdated cases Ã  cocher seraient mises Ã  jour dans le document : $DocumentPath (mode simulation)"
         }
 
         return $tasksUpdated
     }
     catch {
-        Write-Error "Erreur lors de la mise à jour des cases à cocher : $_"
+        Write-Error "Erreur lors de la mise Ã  jour des cases Ã  cocher : $_"
         return 0
     }
 }

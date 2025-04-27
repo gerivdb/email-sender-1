@@ -1,10 +1,10 @@
-#
+﻿#
 # RoadmapParserCore.psm1
 #
 # Fichier principal du module RoadmapParserCore (version minimale)
 #
 
-# Définir une fonction simple
+# DÃ©finir une fonction simple
 function ConvertFrom-MarkdownToRoadmap {
     [CmdletBinding()]
     param(

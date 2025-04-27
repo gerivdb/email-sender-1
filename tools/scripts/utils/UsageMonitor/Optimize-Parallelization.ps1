@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Optimise dynamiquement la parallélisation des scripts PowerShell.
+    Optimise dynamiquement la parallÃ©lisation des scripts PowerShell.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation collectées par le module UsageMonitor
-    et optimise dynamiquement la parallélisation des scripts PowerShell en fonction
-    de la charge système observée et des patterns d'utilisation.
+    Ce script analyse les donnÃ©es d'utilisation collectÃ©es par le module UsageMonitor
+    et optimise dynamiquement la parallÃ©lisation des scripts PowerShell en fonction
+    de la charge systÃ¨me observÃ©e et des patterns d'utilisation.
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration de parallélisation.
+    Chemin vers le fichier de configuration de parallÃ©lisation.
 .PARAMETER DatabasePath
-    Chemin vers le fichier de base de données d'utilisation.
+    Chemin vers le fichier de base de donnÃ©es d'utilisation.
 .PARAMETER Apply
-    Indique si les optimisations doivent être appliquées automatiquement.
+    Indique si les optimisations doivent Ãªtre appliquÃ©es automatiquement.
 .EXAMPLE
     .\Optimize-Parallelization.ps1 -Apply
 .NOTES
@@ -35,7 +35,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "UsageMonitor.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -58,7 +58,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour obtenir les informations système actuelles
+# Fonction pour obtenir les informations systÃ¨me actuelles
 function Get-SystemInfo {
     $computerInfo = Get-CimInstance -ClassName Win32_ComputerSystem
     $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
@@ -87,10 +87,10 @@ function Calculate-OptimalThreads {
     # Nombre de base de threads (nombre de processeurs logiques)
     $baseThreads = $SystemInfo.LogicalProcessors
     
-    # Facteur d'ajustement basé sur la charge CPU
+    # Facteur d'ajustement basÃ© sur la charge CPU
     $cpuFactor = 1 - ($SystemInfo.ProcessorLoadPercent / 100)
     
-    # Facteur d'ajustement basé sur la mémoire disponible
+    # Facteur d'ajustement basÃ© sur la mÃ©moire disponible
     $memoryFactor = $SystemInfo.AvailableMemoryPercent / 100
     
     # Calculer le nombre optimal de threads
@@ -99,7 +99,7 @@ function Calculate-OptimalThreads {
     return $optimalThreads
 }
 
-# Fonction pour analyser les dépendances entre les tâches
+# Fonction pour analyser les dÃ©pendances entre les tÃ¢ches
 function Analyze-TaskDependencies {
     param (
         [PSCustomObject]$UsageStats
@@ -107,14 +107,14 @@ function Analyze-TaskDependencies {
     
     $dependencies = @{}
     
-    # Analyser les scripts les plus utilisés
+    # Analyser les scripts les plus utilisÃ©s
     foreach ($scriptPath in $UsageStats.TopUsedScripts.Keys) {
         $metrics = $script:UsageDatabase.GetMetricsForScript($scriptPath)
         
-        # Identifier les scripts qui sont souvent exécutés ensemble
+        # Identifier les scripts qui sont souvent exÃ©cutÃ©s ensemble
         $executionTimes = $metrics | ForEach-Object { $_.StartTime }
         
-        # Rechercher d'autres scripts exécutés dans une fenêtre de temps proche
+        # Rechercher d'autres scripts exÃ©cutÃ©s dans une fenÃªtre de temps proche
         foreach ($otherScriptPath in $UsageStats.TopUsedScripts.Keys) {
             if ($scriptPath -eq $otherScriptPath) {
                 continue
@@ -143,7 +143,7 @@ function Analyze-TaskDependencies {
     return $dependencies
 }
 
-# Fonction pour générer une configuration de parallélisation optimisée
+# Fonction pour gÃ©nÃ©rer une configuration de parallÃ©lisation optimisÃ©e
 function Generate-ParallelizationConfig {
     param (
         [int]$OptimalThreads,
@@ -185,14 +185,14 @@ function Generate-ParallelizationConfig {
         }
     }
     
-    # Configurer les priorités des tâches
+    # Configurer les prioritÃ©s des tÃ¢ches
     $priority = 100
     foreach ($scriptPath in $UsageStats.TopUsedScripts.Keys) {
         $config.TaskPriorities[$scriptPath] = $priority
         $priority -= 10
     }
     
-    # Configurer les groupes de dépendances
+    # Configurer les groupes de dÃ©pendances
     $groupId = 1
     foreach ($scriptPath in $TaskDependencies.Keys) {
         $relatedScripts = $TaskDependencies[$scriptPath].Keys | Where-Object { $TaskDependencies[$scriptPath][$_] -gt 5 }
@@ -210,7 +210,7 @@ function Generate-ParallelizationConfig {
     return $config
 }
 
-# Fonction pour appliquer la configuration de parallélisation
+# Fonction pour appliquer la configuration de parallÃ©lisation
 function Apply-ParallelizationConfig {
     param (
         [hashtable]$Config,
@@ -220,34 +220,34 @@ function Apply-ParallelizationConfig {
     # Sauvegarder la configuration dans un fichier JSON
     $Config | ConvertTo-Json -Depth 5 | Out-File -FilePath $ConfigPath -Encoding utf8 -Force
     
-    Write-Log "Configuration de parallélisation sauvegardée: $ConfigPath" -Level "SUCCESS"
+    Write-Log "Configuration de parallÃ©lisation sauvegardÃ©e: $ConfigPath" -Level "SUCCESS"
     
     # Rechercher les scripts qui utilisent Invoke-OptimizedParallel
     $parallelScripts = Get-ChildItem -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -Filter "*.ps1" -Recurse |
         Where-Object { (Get-Content -Path $_.FullName -Raw) -match "Invoke-OptimizedParallel" }
     
-    Write-Log "Nombre de scripts utilisant la parallélisation trouvés: $($parallelScripts.Count)" -Level "INFO"
+    Write-Log "Nombre de scripts utilisant la parallÃ©lisation trouvÃ©s: $($parallelScripts.Count)" -Level "INFO"
     
     if ($Apply) {
         foreach ($script in $parallelScripts) {
             $scriptPath = $script.FullName
             $scriptName = $script.Name
             
-            Write-Log "Application de la configuration à: $scriptName" -Level "INFO"
+            Write-Log "Application de la configuration Ã : $scriptName" -Level "INFO"
             
             $content = Get-Content -Path $scriptPath -Raw
             
-            # Rechercher les appels à Invoke-OptimizedParallel
+            # Rechercher les appels Ã  Invoke-OptimizedParallel
             if ($content -match "Invoke-OptimizedParallel\s+(?:-ScriptBlock\s+)?(\`$\w+|\{[^}]+\})(?:\s+-InputObject\s+)?(\`$\w+)?(?:\s+-MaxThreads\s+)?(\d+)?") {
                 $currentMaxThreads = $matches[3]
                 
                 if ($currentMaxThreads) {
-                    # Remplacer le nombre de threads par une référence à la configuration
+                    # Remplacer le nombre de threads par une rÃ©fÃ©rence Ã  la configuration
                     $newContent = $content -replace "(-MaxThreads\s+)(\d+)", "`$1`$(`$parallelConfig.GlobalSettings.DefaultMaxThreads)"
                     
                     # Ajouter le code pour charger la configuration
                     $configLoader = @"
-# Charger la configuration de parallélisation
+# Charger la configuration de parallÃ©lisation
 `$parallelConfigPath = "$ConfigPath"
 `$parallelConfig = `$null
 if (Test-Path -Path `$parallelConfigPath) {
@@ -255,7 +255,7 @@ if (Test-Path -Path `$parallelConfigPath) {
         `$parallelConfig = Get-Content -Path `$parallelConfigPath -Raw | ConvertFrom-Json
     }
     catch {
-        Write-Warning "Impossible de charger la configuration de parallélisation: `$_"
+        Write-Warning "Impossible de charger la configuration de parallÃ©lisation: `$_"
         `$parallelConfig = [PSCustomObject]@{
             GlobalSettings = [PSCustomObject]@{
                 DefaultMaxThreads = [System.Environment]::ProcessorCount
@@ -275,66 +275,66 @@ else {
 
 "@
                     
-                    # Insérer le code de chargement de configuration au début du script
+                    # InsÃ©rer le code de chargement de configuration au dÃ©but du script
                     $newContent = $newContent -replace "(?<=^.*?(?:\r\n|\r|\n))", $configLoader
                     
-                    # Sauvegarder le script modifié
+                    # Sauvegarder le script modifiÃ©
                     Set-Content -Path $scriptPath -Value $newContent -Force
                     
-                    Write-Log "Configuration appliquée à: $scriptName" -Level "SUCCESS"
+                    Write-Log "Configuration appliquÃ©e Ã : $scriptName" -Level "SUCCESS"
                 }
                 else {
-                    Write-Log "Aucun paramètre MaxThreads trouvé dans: $scriptName" -Level "WARNING"
+                    Write-Log "Aucun paramÃ¨tre MaxThreads trouvÃ© dans: $scriptName" -Level "WARNING"
                 }
             }
             else {
-                Write-Log "Aucun appel à Invoke-OptimizedParallel trouvé dans: $scriptName" -Level "WARNING"
+                Write-Log "Aucun appel Ã  Invoke-OptimizedParallel trouvÃ© dans: $scriptName" -Level "WARNING"
             }
         }
     }
     else {
-        Write-Log "Mode simulation: la configuration n'a pas été appliquée aux scripts. Utilisez -Apply pour appliquer les modifications." -Level "WARNING"
+        Write-Log "Mode simulation: la configuration n'a pas Ã©tÃ© appliquÃ©e aux scripts. Utilisez -Apply pour appliquer les modifications." -Level "WARNING"
     }
 }
 
-# Point d'entrée principal
-Write-Log "Démarrage de l'optimisation de la parallélisation..." -Level "TITLE"
+# Point d'entrÃ©e principal
+Write-Log "DÃ©marrage de l'optimisation de la parallÃ©lisation..." -Level "TITLE"
 
-# Vérifier si le fichier de base de données existe
+# VÃ©rifier si le fichier de base de donnÃ©es existe
 if (-not (Test-Path -Path $DatabasePath)) {
-    Write-Log "Le fichier de base de données spécifié n'existe pas: $DatabasePath" -Level "ERROR"
+    Write-Log "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas: $DatabasePath" -Level "ERROR"
     exit 1
 }
 
-# Initialiser le moniteur d'utilisation avec la base de données spécifiée
+# Initialiser le moniteur d'utilisation avec la base de donnÃ©es spÃ©cifiÃ©e
 Initialize-UsageMonitor -DatabasePath $DatabasePath
-Write-Log "Base de données d'utilisation chargée: $DatabasePath" -Level "INFO"
+Write-Log "Base de donnÃ©es d'utilisation chargÃ©e: $DatabasePath" -Level "INFO"
 
-# Récupérer les statistiques d'utilisation
+# RÃ©cupÃ©rer les statistiques d'utilisation
 $usageStats = Get-ScriptUsageStatistics
-Write-Log "Statistiques d'utilisation récupérées" -Level "INFO"
+Write-Log "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -Level "INFO"
 
-# Obtenir les informations système
+# Obtenir les informations systÃ¨me
 $systemInfo = Get-SystemInfo
-Write-Log "Informations système récupérées:" -Level "INFO"
+Write-Log "Informations systÃ¨me rÃ©cupÃ©rÃ©es:" -Level "INFO"
 Write-Log "  - Processeurs logiques: $($systemInfo.LogicalProcessors)" -Level "INFO"
-Write-Log "  - Mémoire physique: $($systemInfo.PhysicalMemoryGB) GB" -Level "INFO"
+Write-Log "  - MÃ©moire physique: $($systemInfo.PhysicalMemoryGB) GB" -Level "INFO"
 Write-Log "  - Charge processeur: $($systemInfo.ProcessorLoadPercent)%" -Level "INFO"
-Write-Log "  - Mémoire disponible: $($systemInfo.AvailableMemoryPercent)%" -Level "INFO"
+Write-Log "  - MÃ©moire disponible: $($systemInfo.AvailableMemoryPercent)%" -Level "INFO"
 
 # Calculer le nombre optimal de threads
 $optimalThreads = Calculate-OptimalThreads -SystemInfo $systemInfo -UsageStats $usageStats
-Write-Log "Nombre optimal de threads calculé: $optimalThreads" -Level "INFO"
+Write-Log "Nombre optimal de threads calculÃ©: $optimalThreads" -Level "INFO"
 
-# Analyser les dépendances entre les tâches
+# Analyser les dÃ©pendances entre les tÃ¢ches
 $taskDependencies = Analyze-TaskDependencies -UsageStats $usageStats
-Write-Log "Dépendances entre les tâches analysées: $($taskDependencies.Count) scripts avec dépendances" -Level "INFO"
+Write-Log "DÃ©pendances entre les tÃ¢ches analysÃ©es: $($taskDependencies.Count) scripts avec dÃ©pendances" -Level "INFO"
 
-# Générer la configuration de parallélisation
+# GÃ©nÃ©rer la configuration de parallÃ©lisation
 $parallelizationConfig = Generate-ParallelizationConfig -OptimalThreads $optimalThreads -TaskDependencies $taskDependencies -UsageStats $usageStats
-Write-Log "Configuration de parallélisation générée" -Level "INFO"
+Write-Log "Configuration de parallÃ©lisation gÃ©nÃ©rÃ©e" -Level "INFO"
 
 # Appliquer la configuration
 Apply-ParallelizationConfig -Config $parallelizationConfig -ConfigPath $ConfigPath
 
-Write-Log "Optimisation de la parallélisation terminée." -Level "TITLE"
+Write-Log "Optimisation de la parallÃ©lisation terminÃ©e." -Level "TITLE"

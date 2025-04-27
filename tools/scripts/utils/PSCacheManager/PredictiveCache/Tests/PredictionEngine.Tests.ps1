@@ -1,41 +1,41 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module PredictionEngine.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module PredictionEngine
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour la base de données de test
+# CrÃ©er un chemin temporaire pour la base de donnÃ©es de test
 $testDatabasePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\PredictionEngine_Test.db"
 $testDatabaseDir = Split-Path -Path $testDatabasePath -Parent
 if (-not (Test-Path -Path $testDatabaseDir)) {
     New-Item -Path $testDatabaseDir -ItemType Directory -Force | Out-Null
 }
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force
 }
 
 Describe "PredictionEngine Module Tests" {
     BeforeAll {
-        # Créer un mock pour le UsageCollector
+        # CrÃ©er un mock pour le UsageCollector
         $mockUsageCollector = [PSCustomObject]@{
             GetMostAccessedKeys  = {
                 param($limit, $timeWindowMinutes)
@@ -115,7 +115,7 @@ Describe "PredictionEngine Module Tests" {
     Context "PredictionEngine Methods" {
         BeforeEach {
             $usageCollector = New-UsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
-            # Cette variable est utilisée dans chaque test de ce contexte
+            # Cette variable est utilisÃ©e dans chaque test de ce contexte
             $script:engine = New-PredictionEngine -UsageCollector $usageCollector -CacheName "TestCache"
         }
 
@@ -156,7 +156,7 @@ Describe "PredictionEngine Module Tests" {
     Context "Probability Calculation Methods" {
         BeforeEach {
             $usageCollector = New-UsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
-            # Cette variable est utilisée dans chaque test de ce contexte
+            # Cette variable est utilisÃ©e dans chaque test de ce contexte
             $script:engine = New-PredictionEngine -UsageCollector $usageCollector -CacheName "TestCache"
         }
 
@@ -164,7 +164,7 @@ Describe "PredictionEngine Module Tests" {
             # Arrange
             $lastAccess = (Get-Date).AddMinutes(-10)
 
-            # Act - Utilisation de la réflexion pour accéder à la méthode privée
+            # Act - Utilisation de la rÃ©flexion pour accÃ©der Ã  la mÃ©thode privÃ©e
             $recencyFactor = $engine.CalculateRecencyFactor($lastAccess)
 
             # Assert
@@ -182,7 +182,7 @@ Describe "PredictionEngine Module Tests" {
                 LastOccurrence    = (Get-Date).AddMinutes(-5)
             }
 
-            # Act - Utilisation de la réflexion pour accéder à la méthode privée
+            # Act - Utilisation de la rÃ©flexion pour accÃ©der Ã  la mÃ©thode privÃ©e
             $confidence = $engine.CalculateSequenceConfidence($sequence)
 
             # Assert

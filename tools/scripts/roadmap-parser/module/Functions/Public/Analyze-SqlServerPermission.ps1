@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse les permissions SQL Server au niveau serveur et base de données.
+    Analyse les permissions SQL Server au niveau serveur et base de donnÃ©es.
 
 .DESCRIPTION
-    Cette fonction analyse en détail les permissions SQL Server au niveau serveur et base de données,
-    y compris les rôles serveur, les rôles de base de données, les permissions explicites, et les identités associées.
+    Cette fonction analyse en dÃ©tail les permissions SQL Server au niveau serveur et base de donnÃ©es,
+    y compris les rÃ´les serveur, les rÃ´les de base de donnÃ©es, les permissions explicites, et les identitÃ©s associÃ©es.
 
 .PARAMETER ServerInstance
     Le nom de l'instance SQL Server (serveur\instance ou serveur).
 
 .PARAMETER Database
-    Le nom de la base de données à analyser. Si non spécifié, toutes les bases de données sont analysées.
+    Le nom de la base de donnÃ©es Ã  analyser. Si non spÃ©cifiÃ©, toutes les bases de donnÃ©es sont analysÃ©es.
 
 .PARAMETER Credential
-    Les informations d'identification à utiliser pour l'accès à la base de données.
-    Si non spécifié, l'authentification Windows est utilisée.
+    Les informations d'identification Ã  utiliser pour l'accÃ¨s Ã  la base de donnÃ©es.
+    Si non spÃ©cifiÃ©, l'authentification Windows est utilisÃ©e.
 
 .PARAMETER IncludeDatabaseLevel
-    Indique si l'analyse doit inclure les permissions au niveau base de données.
-    Par défaut: $true.
+    Indique si l'analyse doit inclure les permissions au niveau base de donnÃ©es.
+    Par dÃ©faut: $true.
 
 .PARAMETER OutputPath
-    Le chemin où exporter le rapport de permissions. Si non spécifié, aucun rapport n'est généré.
+    Le chemin oÃ¹ exporter le rapport de permissions. Si non spÃ©cifiÃ©, aucun rapport n'est gÃ©nÃ©rÃ©.
 
 .PARAMETER OutputFormat
-    Le format du rapport de permissions (HTML, CSV, JSON, XML). Par défaut: HTML.
+    Le format du rapport de permissions (HTML, CSV, JSON, XML). Par dÃ©faut: HTML.
 
 .EXAMPLE
     Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
@@ -43,7 +43,7 @@
     Analyze-SqlServerPermission -ServerInstance "SqlServer01" -Credential $cred -OutputFormat "JSON" -OutputPath "C:\Reports\SqlPermissions.json"
 
 .OUTPUTS
-    [PSCustomObject] avec des détails sur les permissions au niveau serveur et base de données
+    [PSCustomObject] avec des dÃ©tails sur les permissions au niveau serveur et base de donnÃ©es
 #>
 function Analyze-SqlServerPermission {
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -74,19 +74,19 @@ function Analyze-SqlServerPermission {
         [string[]]$RuleIds = @(),
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("All", "Élevée", "Moyenne", "Faible")]
+        [ValidateSet("All", "Ã‰levÃ©e", "Moyenne", "Faible")]
         [string]$Severity = "All"
     )
 
     begin {
-        Write-Verbose "Démarrage de l'analyse des permissions SQL Server pour l'instance: $ServerInstance"
+        Write-Verbose "DÃ©marrage de l'analyse des permissions SQL Server pour l'instance: $ServerInstance"
 
-        # Vérifier si le module SqlServer est installé
+        # VÃ©rifier si le module SqlServer est installÃ©
         if (-not (Get-Module -Name SqlServer -ListAvailable)) {
-            Write-Warning "Le module SqlServer n'est pas installé. Installation en cours..."
+            Write-Warning "Le module SqlServer n'est pas installÃ©. Installation en cours..."
             try {
                 if ($PSCmdlet.ShouldProcess("Module SqlServer", "Installation")) {
-                    # Dans un environnement de test, nous ne voulons pas réellement installer le module
+                    # Dans un environnement de test, nous ne voulons pas rÃ©ellement installer le module
                     if (-not $env:PESTER_TEST_RUN) {
                         Install-Module -Name SqlServer -Force -AllowClobber -Scope CurrentUser
                     }
@@ -99,7 +99,7 @@ function Analyze-SqlServerPermission {
 
         # Importer le module SqlServer
         try {
-            # Dans un environnement de test, nous ne voulons pas réellement importer le module
+            # Dans un environnement de test, nous ne voulons pas rÃ©ellement importer le module
             if (-not $env:PESTER_TEST_RUN) {
                 Import-Module -Name SqlServer -ErrorAction Stop
             }
@@ -111,7 +111,7 @@ function Analyze-SqlServerPermission {
 
     process {
         try {
-            # Créer les paramètres de connexion
+            # CrÃ©er les paramÃ¨tres de connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
             }
@@ -121,21 +121,21 @@ function Analyze-SqlServerPermission {
             }
 
             # Analyser les permissions au niveau serveur
-            Write-Verbose "Analyse des rôles serveur et des permissions..."
+            Write-Verbose "Analyse des rÃ´les serveur et des permissions..."
 
-            # 1. Obtenir les rôles serveur et leurs membres
+            # 1. Obtenir les rÃ´les serveur et leurs membres
             $serverRoles = Get-ServerRoles @sqlParams
 
             # 2. Obtenir les permissions explicites au niveau serveur
             $serverPermissions = Get-ServerPermissions @sqlParams
 
-            # 3. Obtenir les logins et leurs propriétés
+            # 3. Obtenir les logins et leurs propriÃ©tÃ©s
             $serverLogins = Get-ServerLogins @sqlParams
 
-            # 4. Détecter les anomalies de permissions au niveau serveur
+            # 4. DÃ©tecter les anomalies de permissions au niveau serveur
             $serverPermissionAnomalies = Find-PermissionAnomalies -ServerRoles $serverRoles -ServerPermissions $serverPermissions -ServerLogins $serverLogins -RuleIds $RuleIds -Severity $Severity
 
-            # Variables pour les permissions au niveau base de données
+            # Variables pour les permissions au niveau base de donnÃ©es
             $databaseRoles = @()
             $databasePermissions = @()
             $databaseUsers = @()
@@ -146,43 +146,43 @@ function Analyze-SqlServerPermission {
             $objectPermissions = @()
             $objectPermissionAnomalies = @()
 
-            # Analyser les permissions au niveau base de données si demandé
+            # Analyser les permissions au niveau base de donnÃ©es si demandÃ©
             if ($IncludeDatabaseLevel) {
-                Write-Verbose "Analyse des permissions au niveau base de données..."
+                Write-Verbose "Analyse des permissions au niveau base de donnÃ©es..."
 
-                # Obtenir la liste des bases de données à analyser
+                # Obtenir la liste des bases de donnÃ©es Ã  analyser
                 $databases = @()
                 if ($Database) {
-                    # Analyser une base de données spécifique
+                    # Analyser une base de donnÃ©es spÃ©cifique
                     $databases += $Database
                 } else {
-                    # Analyser toutes les bases de données
+                    # Analyser toutes les bases de donnÃ©es
                     $dbQuery = "SELECT name FROM sys.databases WHERE state = 0 AND name NOT IN ('master', 'tempdb', 'model', 'msdb')"
                     $databases = (Invoke-Sqlcmd @sqlParams -Query $dbQuery).name
                 }
 
                 foreach ($db in $databases) {
-                    Write-Verbose "Analyse de la base de données: $db"
+                    Write-Verbose "Analyse de la base de donnÃ©es: $db"
 
-                    # Créer les paramètres SQL avec la base de données
+                    # CrÃ©er les paramÃ¨tres SQL avec la base de donnÃ©es
                     $dbSqlParams = $sqlParams.Clone()
                     $dbSqlParams.Add("Database", $db)
 
-                    # 1. Obtenir les rôles de base de données et leurs membres
+                    # 1. Obtenir les rÃ´les de base de donnÃ©es et leurs membres
                     $dbRoles = Get-DatabaseRoles @dbSqlParams
                     foreach ($role in $dbRoles) {
                         $role | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $db
                     }
                     $databaseRoles += $dbRoles
 
-                    # 2. Obtenir les permissions explicites au niveau base de données
+                    # 2. Obtenir les permissions explicites au niveau base de donnÃ©es
                     $dbPermissions = Get-DatabasePermissions @dbSqlParams
                     foreach ($perm in $dbPermissions) {
                         $perm | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $db
                     }
                     $databasePermissions += $dbPermissions
 
-                    # 3. Obtenir les utilisateurs de base de données
+                    # 3. Obtenir les utilisateurs de base de donnÃ©es
                     $dbUsers = Get-DatabaseUsers @dbSqlParams
                     foreach ($user in $dbUsers) {
                         $user | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $db
@@ -190,23 +190,23 @@ function Analyze-SqlServerPermission {
                     $databaseUsers += $dbUsers
                 }
 
-                # 4. Détecter les anomalies de permissions au niveau base de données
+                # 4. DÃ©tecter les anomalies de permissions au niveau base de donnÃ©es
                 if ($databaseRoles.Count -gt 0 -or $databasePermissions.Count -gt 0 -or $databaseUsers.Count -gt 0) {
                     $databasePermissionAnomalies = Find-DatabasePermissionAnomalies -DatabaseRoles $databaseRoles -DatabasePermissions $databasePermissions -DatabaseUsers $databaseUsers -ServerLogins $serverLogins -RuleIds $RuleIds -Severity $Severity
                 }
 
-                # 5. Analyser les permissions au niveau objet si demandé
+                # 5. Analyser les permissions au niveau objet si demandÃ©
                 if ($IncludeObjectLevel) {
                     Write-Verbose "Analyse des permissions au niveau objet..."
 
                     foreach ($db in $databases) {
-                        Write-Verbose "Analyse des objets et permissions dans la base de données: $db"
+                        Write-Verbose "Analyse des objets et permissions dans la base de donnÃ©es: $db"
 
-                        # Créer les paramètres SQL avec la base de données
+                        # CrÃ©er les paramÃ¨tres SQL avec la base de donnÃ©es
                         $dbSqlParams = $sqlParams.Clone()
                         $dbSqlParams.Add("Database", $db)
 
-                        # 1. Obtenir les objets de base de données
+                        # 1. Obtenir les objets de base de donnÃ©es
                         $dbObjects = Get-DatabaseObjects @dbSqlParams
                         foreach ($objType in $dbObjects) {
                             $objType | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $db
@@ -220,7 +220,7 @@ function Analyze-SqlServerPermission {
                         }
                         $objectPermissions += $dbObjectPermissions
 
-                        # 3. Détecter les anomalies de permissions au niveau objet
+                        # 3. DÃ©tecter les anomalies de permissions au niveau objet
                         if ($dbObjectPermissions.Count -gt 0) {
                             $dbObjectAnomalies = Find-ObjectPermissionAnomalies -ObjectPermissions $dbObjectPermissions -DatabaseUsers $dbUsers -DatabaseName $db -RuleIds $RuleIds -Severity $Severity
                             $objectPermissionAnomalies += $dbObjectAnomalies
@@ -229,7 +229,7 @@ function Analyze-SqlServerPermission {
                 }
             }
 
-            # Créer l'objet de résultat
+            # CrÃ©er l'objet de rÃ©sultat
             $result = [PSCustomObject]@{
                 ServerInstance              = $ServerInstance
                 ServerRoles                 = $serverRoles
@@ -248,14 +248,14 @@ function Analyze-SqlServerPermission {
                 AnalysisDate                = Get-Date
             }
 
-            # Générer un rapport si demandé
+            # GÃ©nÃ©rer un rapport si demandÃ©
             if ($OutputPath) {
-                if ($PSCmdlet.ShouldProcess("Rapport de permissions", "Génération")) {
+                if ($PSCmdlet.ShouldProcess("Rapport de permissions", "GÃ©nÃ©ration")) {
                     Export-PermissionReport -PermissionData $result -OutputPath $OutputPath -OutputFormat $OutputFormat
                 }
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $result
         } catch {
             Write-Error "Erreur lors de l'analyse des permissions SQL Server: $($_.Exception.Message)"
@@ -263,7 +263,7 @@ function Analyze-SqlServerPermission {
     }
 
     end {
-        Write-Verbose "Analyse des permissions SQL Server terminée pour l'instance: $ServerInstance"
+        Write-Verbose "Analyse des permissions SQL Server terminÃ©e pour l'instance: $ServerInstance"
     }
 }
 
@@ -275,7 +275,7 @@ function Get-ServerRoles {
     )
 
     try {
-        # Requête pour obtenir les rôles serveur et leurs membres
+        # RequÃªte pour obtenir les rÃ´les serveur et leurs membres
         $query = @"
 SELECT
     SR.name AS RoleName,
@@ -290,10 +290,10 @@ WHERE SR.type = 'R'
 ORDER BY SR.name, SP.name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $roleMembers = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par rôle
+        # Organiser les rÃ©sultats par rÃ´le
         $roles = @{}
         foreach ($roleMember in $roleMembers) {
             $roleName = $roleMember.RoleName
@@ -325,7 +325,7 @@ ORDER BY SR.name, SP.name
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'obtention des rôles serveur: $($_.Exception.Message)"
+        Write-Error "Erreur lors de l'obtention des rÃ´les serveur: $($_.Exception.Message)"
         return @()
     }
 }
@@ -338,7 +338,7 @@ function Get-ServerPermissions {
     )
 
     try {
-        # Requête pour obtenir les permissions explicites au niveau serveur
+        # RequÃªte pour obtenir les permissions explicites au niveau serveur
         $query = @"
 SELECT
     SP.name AS GranteeName,
@@ -361,10 +361,10 @@ LEFT JOIN sys.server_principals SP2 ON SPerm.major_id = SP2.principal_id AND SPe
 ORDER BY SP.name, SPerm.permission_name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $permissions = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par utilisateur/login
+        # Organiser les rÃ©sultats par utilisateur/login
         $userPermissions = @{}
         foreach ($permission in $permissions) {
             $granteeName = $permission.GranteeName
@@ -411,7 +411,7 @@ function Get-ServerLogins {
     )
 
     try {
-        # Requête pour obtenir les logins et leurs propriétés
+        # RequÃªte pour obtenir les logins et leurs propriÃ©tÃ©s
         $query = @"
 SELECT
     SP.name AS LoginName,
@@ -431,7 +431,7 @@ WHERE SP.type IN ('S', 'U', 'G')
 ORDER BY SP.name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $logins = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
         # Convertir en tableau d'objets
@@ -468,7 +468,7 @@ function Get-DatabaseRoles {
     )
 
     try {
-        # Requête pour obtenir les rôles de base de données et leurs membres
+        # RequÃªte pour obtenir les rÃ´les de base de donnÃ©es et leurs membres
         $query = @"
 SELECT
     DP.name AS RoleName,
@@ -484,10 +484,10 @@ WHERE DP.type = 'R'
 ORDER BY DP.name, DPM.name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $roleMembers = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par rôle
+        # Organiser les rÃ©sultats par rÃ´le
         $roles = @{}
         foreach ($roleMember in $roleMembers) {
             $roleName = $roleMember.RoleName
@@ -519,7 +519,7 @@ ORDER BY DP.name, DPM.name
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'obtention des rôles de base de données: $($_.Exception.Message)"
+        Write-Error "Erreur lors de l'obtention des rÃ´les de base de donnÃ©es: $($_.Exception.Message)"
         return @()
     }
 }
@@ -532,7 +532,7 @@ function Get-DatabasePermissions {
     )
 
     try {
-        # Requête pour obtenir les permissions explicites au niveau base de données
+        # RequÃªte pour obtenir les permissions explicites au niveau base de donnÃ©es
         $query = @"
 SELECT
     DP.name AS GranteeName,
@@ -560,10 +560,10 @@ LEFT JOIN sys.schemas S ON DPerm.major_id = S.schema_id AND DPerm.class = 3
 ORDER BY DP.name, DPerm.permission_name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $permissions = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par utilisateur
+        # Organiser les rÃ©sultats par utilisateur
         $userPermissions = @{}
         foreach ($permission in $permissions) {
             $granteeName = $permission.GranteeName
@@ -597,7 +597,7 @@ ORDER BY DP.name, DPerm.permission_name
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'obtention des permissions de base de données: $($_.Exception.Message)"
+        Write-Error "Erreur lors de l'obtention des permissions de base de donnÃ©es: $($_.Exception.Message)"
         return @()
     }
 }
@@ -610,7 +610,7 @@ function Get-DatabaseUsers {
     )
 
     try {
-        # Requête pour obtenir les utilisateurs de base de données et leurs propriétés
+        # RequÃªte pour obtenir les utilisateurs de base de donnÃ©es et leurs propriÃ©tÃ©s
         $query = @"
 SELECT
     DP.name AS UserName,
@@ -626,7 +626,7 @@ WHERE DP.type IN ('S', 'U', 'G') AND DP.is_fixed_role = 0 AND DP.name NOT IN ('d
 ORDER BY DP.name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $users = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
         # Convertir en tableau d'objets
@@ -645,7 +645,7 @@ ORDER BY DP.name
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'obtention des utilisateurs de base de données: $($_.Exception.Message)"
+        Write-Error "Erreur lors de l'obtention des utilisateurs de base de donnÃ©es: $($_.Exception.Message)"
         return @()
     }
 }
@@ -674,22 +674,22 @@ function Find-DatabasePermissionAnomalies {
 
     $anomalies = @()
 
-    # Obtenir les règles de détection d'anomalies au niveau base de données
+    # Obtenir les rÃ¨gles de dÃ©tection d'anomalies au niveau base de donnÃ©es
     $rules = Get-SqlPermissionRules -RuleType "Database" -Severity $Severity
 
-    # Filtrer par ID de règle si spécifié
+    # Filtrer par ID de rÃ¨gle si spÃ©cifiÃ©
     if ($RuleIds.Count -gt 0) {
         $rules = $rules | Where-Object { $RuleIds -contains $_.RuleId }
     }
 
-    # Appliquer chaque règle
+    # Appliquer chaque rÃ¨gle
     foreach ($rule in $rules) {
-        Write-Verbose "Application de la règle $($rule.RuleId): $($rule.Name)"
+        Write-Verbose "Application de la rÃ¨gle $($rule.RuleId): $($rule.Name)"
 
-        # Exécuter la fonction de vérification de la règle
+        # ExÃ©cuter la fonction de vÃ©rification de la rÃ¨gle
         $ruleResults = & $rule.CheckFunction $DatabaseUsers $DatabaseRoles $DatabasePermissions $ServerLogins
 
-        # Ajouter les résultats à la liste des anomalies
+        # Ajouter les rÃ©sultats Ã  la liste des anomalies
         foreach ($result in $ruleResults) {
             $anomalies += [PSCustomObject]@{
                 AnomalyType       = $rule.Name
@@ -716,14 +716,14 @@ function Get-SqlPermissionRules {
         [string]$Severity = "All"
     )
 
-    # Définir les règles de détection d'anomalies
+    # DÃ©finir les rÃ¨gles de dÃ©tection d'anomalies
     $rules = @(
-        # Règles au niveau serveur
+        # RÃ¨gles au niveau serveur
         [PSCustomObject]@{
             RuleId        = "SVR001"
             RuleType      = "Server"
             Name          = "DisabledLoginWithPermissions"
-            Description   = "Détecte les logins désactivés qui possèdent encore des permissions"
+            Description   = "DÃ©tecte les logins dÃ©sactivÃ©s qui possÃ¨dent encore des permissions"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
@@ -735,8 +735,8 @@ function Get-SqlPermissionRules {
                     if ($hasPermissions -or $isRoleMember) {
                         $results += [PSCustomObject]@{
                             LoginName         = $login.LoginName
-                            Description       = "Le login désactivé possède des permissions ou est membre de rôles serveur"
-                            RecommendedAction = "Révoquer les permissions ou retirer des rôles serveur"
+                            Description       = "Le login dÃ©sactivÃ© possÃ¨de des permissions ou est membre de rÃ´les serveur"
+                            RecommendedAction = "RÃ©voquer les permissions ou retirer des rÃ´les serveur"
                         }
                     }
                 }
@@ -747,20 +747,20 @@ function Get-SqlPermissionRules {
             RuleId        = "SVR002"
             RuleType      = "Server"
             Name          = "HighPrivilegeAccount"
-            Description   = "Détecte les comptes avec des permissions élevées (sysadmin, securityadmin, serveradmin)"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte les comptes avec des permissions Ã©levÃ©es (sysadmin, securityadmin, serveradmin)"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
                 $highPrivilegeRoles = @("sysadmin", "securityadmin", "serveradmin")
                 $results = @()
                 foreach ($role in $ServerRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
                     foreach ($member in $role.Members) {
-                        # Exclure les comptes système
+                        # Exclure les comptes systÃ¨me
                         if (-not $member.MemberName.StartsWith("##")) {
                             $results += [PSCustomObject]@{
                                 LoginName         = $member.MemberName
-                                Description       = "Le login est membre du rôle serveur à privilèges élevés: $($role.RoleName)"
-                                RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                Description       = "Le login est membre du rÃ´le serveur Ã  privilÃ¨ges Ã©levÃ©s: $($role.RoleName)"
+                                RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                             }
                         }
                     }
@@ -772,7 +772,7 @@ function Get-SqlPermissionRules {
             RuleId        = "SVR003"
             RuleType      = "Server"
             Name          = "PasswordPolicyExempt"
-            Description   = "Détecte les comptes SQL exemptés de la politique de mot de passe"
+            Description   = "DÃ©tecte les comptes SQL exemptÃ©s de la politique de mot de passe"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
@@ -784,8 +784,8 @@ function Get-SqlPermissionRules {
                 foreach ($login in $sqlLoginsWithoutPolicy) {
                     $results += [PSCustomObject]@{
                         LoginName         = $login.LoginName
-                        Description       = "Le login SQL n'est pas soumis à la politique de mot de passe complète"
-                        RecommendedAction = "Activer la vérification de politique et d'expiration de mot de passe"
+                        Description       = "Le login SQL n'est pas soumis Ã  la politique de mot de passe complÃ¨te"
+                        RecommendedAction = "Activer la vÃ©rification de politique et d'expiration de mot de passe"
                     }
                 }
                 return $results
@@ -795,7 +795,7 @@ function Get-SqlPermissionRules {
             RuleId        = "SVR004"
             RuleType      = "Server"
             Name          = "LockedAccount"
-            Description   = "Détecte les comptes verrouillés"
+            Description   = "DÃ©tecte les comptes verrouillÃ©s"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
@@ -804,8 +804,8 @@ function Get-SqlPermissionRules {
                 foreach ($login in $lockedAccounts) {
                     $results += [PSCustomObject]@{
                         LoginName         = $login.LoginName
-                        Description       = "Le compte est verrouillé"
-                        RecommendedAction = "Déverrouiller le compte et investiguer la cause"
+                        Description       = "Le compte est verrouillÃ©"
+                        RecommendedAction = "DÃ©verrouiller le compte et investiguer la cause"
                     }
                 }
                 return $results
@@ -815,8 +815,8 @@ function Get-SqlPermissionRules {
             RuleId        = "SVR005"
             RuleType      = "Server"
             Name          = "ControlServerPermission"
-            Description   = "Détecte les comptes avec la permission CONTROL SERVER (équivalent à sysadmin)"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte les comptes avec la permission CONTROL SERVER (Ã©quivalent Ã  sysadmin)"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
                 $results = @()
@@ -826,12 +826,12 @@ function Get-SqlPermissionRules {
                     }
                 }
                 foreach ($permission in $controlServerPermissions) {
-                    # Exclure les comptes système
+                    # Exclure les comptes systÃ¨me
                     if (-not $permission.GranteeName.StartsWith("##")) {
                         $results += [PSCustomObject]@{
                             LoginName         = $permission.GranteeName
-                            Description       = "Le login possède la permission CONTROL SERVER (équivalent à sysadmin)"
-                            RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                            Description       = "Le login possÃ¨de la permission CONTROL SERVER (Ã©quivalent Ã  sysadmin)"
+                            RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                         }
                     }
                 }
@@ -842,8 +842,8 @@ function Get-SqlPermissionRules {
             RuleId        = "SVR006"
             RuleType      = "Server"
             Name          = "DefaultSaAccount"
-            Description   = "Détecte si le compte SA est activé et/ou a été renommé"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte si le compte SA est activÃ© et/ou a Ã©tÃ© renommÃ©"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ServerLogins, $ServerRoles, $ServerPermissions)
                 $results = @()
@@ -851,20 +851,20 @@ function Get-SqlPermissionRules {
                 if ($saAccount -and $saAccount.IsDisabled -eq 0) {
                     $results += [PSCustomObject]@{
                         LoginName         = "sa"
-                        Description       = "Le compte SA est activé"
-                        RecommendedAction = "Désactiver le compte SA ou le renommer pour des raisons de sécurité"
+                        Description       = "Le compte SA est activÃ©"
+                        RecommendedAction = "DÃ©sactiver le compte SA ou le renommer pour des raisons de sÃ©curitÃ©"
                     }
                 }
                 return $results
             }
         },
 
-        # Règles au niveau base de données
+        # RÃ¨gles au niveau base de donnÃ©es
         [PSCustomObject]@{
             RuleId        = "DB001"
             RuleType      = "Database"
             Name          = "OrphanedUser"
-            Description   = "Détecte les utilisateurs sans login associé (utilisateurs orphelins)"
+            Description   = "DÃ©tecte les utilisateurs sans login associÃ© (utilisateurs orphelins)"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
@@ -878,8 +878,8 @@ function Get-SqlPermissionRules {
                     $results += [PSCustomObject]@{
                         DatabaseName      = $user.DatabaseName
                         UserName          = $user.UserName
-                        Description       = "L'utilisateur de base de données n'a pas de login associé"
-                        RecommendedAction = "Supprimer l'utilisateur ou le réassocier à un login"
+                        Description       = "L'utilisateur de base de donnÃ©es n'a pas de login associÃ©"
+                        RecommendedAction = "Supprimer l'utilisateur ou le rÃ©associer Ã  un login"
                     }
                 }
                 return $results
@@ -889,7 +889,7 @@ function Get-SqlPermissionRules {
             RuleId        = "DB002"
             RuleType      = "Database"
             Name          = "DisabledLoginWithDatabaseUser"
-            Description   = "Détecte les utilisateurs de base de données associés à des logins désactivés"
+            Description   = "DÃ©tecte les utilisateurs de base de donnÃ©es associÃ©s Ã  des logins dÃ©sactivÃ©s"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
@@ -900,8 +900,8 @@ function Get-SqlPermissionRules {
                     $results += [PSCustomObject]@{
                         DatabaseName      = $user.DatabaseName
                         UserName          = $user.UserName
-                        Description       = "L'utilisateur est associé à un login désactivé: $($user.LoginName)"
-                        RecommendedAction = "Désactiver l'utilisateur de base de données ou réactiver le login"
+                        Description       = "L'utilisateur est associÃ© Ã  un login dÃ©sactivÃ©: $($user.LoginName)"
+                        RecommendedAction = "DÃ©sactiver l'utilisateur de base de donnÃ©es ou rÃ©activer le login"
                     }
                 }
                 return $results
@@ -911,21 +911,21 @@ function Get-SqlPermissionRules {
             RuleId        = "DB003"
             RuleType      = "Database"
             Name          = "HighPrivilegeDatabaseAccount"
-            Description   = "Détecte les utilisateurs avec des permissions élevées (db_owner, db_securityadmin)"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte les utilisateurs avec des permissions Ã©levÃ©es (db_owner, db_securityadmin)"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
                 $results = @()
                 $highPrivilegeRoles = @("db_owner", "db_securityadmin", "db_accessadmin")
                 foreach ($role in $DatabaseRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
                     foreach ($member in $role.Members) {
-                        # Exclure les comptes système
+                        # Exclure les comptes systÃ¨me
                         if (-not $member.MemberName.StartsWith("##") -and $member.MemberName -ne "dbo") {
                             $results += [PSCustomObject]@{
                                 DatabaseName      = $role.DatabaseName
                                 UserName          = $member.MemberName
-                                Description       = "L'utilisateur est membre du rôle de base de données à privilèges élevés: $($role.RoleName)"
-                                RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                Description       = "L'utilisateur est membre du rÃ´le de base de donnÃ©es Ã  privilÃ¨ges Ã©levÃ©s: $($role.RoleName)"
+                                RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                             }
                         }
                     }
@@ -937,8 +937,8 @@ function Get-SqlPermissionRules {
             RuleId        = "DB004"
             RuleType      = "Database"
             Name          = "ControlDatabasePermission"
-            Description   = "Détecte les utilisateurs avec la permission CONTROL sur la base de données"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte les utilisateurs avec la permission CONTROL sur la base de donnÃ©es"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
                 $results = @()
@@ -949,13 +949,13 @@ function Get-SqlPermissionRules {
                     }
                 }
                 foreach ($permission in $controlDatabasePermissions) {
-                    # Exclure les comptes système et dbo
+                    # Exclure les comptes systÃ¨me et dbo
                     if (-not $permission.GranteeName.StartsWith("##") -and $permission.GranteeName -ne "dbo") {
                         $results += [PSCustomObject]@{
                             DatabaseName      = $permission.DatabaseName
                             UserName          = $permission.GranteeName
-                            Description       = "L'utilisateur possède la permission CONTROL sur la base de données (équivalent à db_owner)"
-                            RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                            Description       = "L'utilisateur possÃ¨de la permission CONTROL sur la base de donnÃ©es (Ã©quivalent Ã  db_owner)"
+                            RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                         }
                     }
                 }
@@ -966,8 +966,8 @@ function Get-SqlPermissionRules {
             RuleId        = "DB005"
             RuleType      = "Database"
             Name          = "GuestUserPermissions"
-            Description   = "Détecte si l'utilisateur guest a des permissions explicites"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte si l'utilisateur guest a des permissions explicites"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
                 $results = @()
@@ -976,8 +976,8 @@ function Get-SqlPermissionRules {
                     $results += [PSCustomObject]@{
                         DatabaseName      = $permission.DatabaseName
                         UserName          = "guest"
-                        Description       = "L'utilisateur guest possède des permissions explicites"
-                        RecommendedAction = "Révoquer les permissions de l'utilisateur guest"
+                        Description       = "L'utilisateur guest possÃ¨de des permissions explicites"
+                        RecommendedAction = "RÃ©voquer les permissions de l'utilisateur guest"
                     }
                 }
                 return $results
@@ -987,8 +987,8 @@ function Get-SqlPermissionRules {
             RuleId        = "DB006"
             RuleType      = "Database"
             Name          = "PublicRoleExcessivePermissions"
-            Description   = "Détecte si le rôle public a des permissions excessives"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte si le rÃ´le public a des permissions excessives"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
                 $results = @()
@@ -1008,20 +1008,20 @@ function Get-SqlPermissionRules {
                     $results += [PSCustomObject]@{
                         DatabaseName      = $permission.DatabaseName
                         UserName          = "public"
-                        Description       = "Le rôle public possède des permissions potentiellement excessives: $permNames"
-                        RecommendedAction = "Révoquer les permissions excessives du rôle public"
+                        Description       = "Le rÃ´le public possÃ¨de des permissions potentiellement excessives: $permNames"
+                        RecommendedAction = "RÃ©voquer les permissions excessives du rÃ´le public"
                     }
                 }
                 return $results
             }
         },
 
-        # Règles au niveau objet
+        # RÃ¨gles au niveau objet
         [PSCustomObject]@{
             RuleId        = "OBJ001"
             RuleType      = "Object"
             Name          = "DisabledUserWithObjectPermissions"
-            Description   = "Détecte les utilisateurs désactivés avec des permissions sur des objets"
+            Description   = "DÃ©tecte les utilisateurs dÃ©sactivÃ©s avec des permissions sur des objets"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
@@ -1033,8 +1033,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName      = $DatabaseName
                             UserName          = $user.UserName
-                            Description       = "L'utilisateur désactivé possède des permissions sur $($userObjectPermissions.ObjectCount) objets"
-                            RecommendedAction = "Révoquer les permissions ou réactiver l'utilisateur si nécessaire"
+                            Description       = "L'utilisateur dÃ©sactivÃ© possÃ¨de des permissions sur $($userObjectPermissions.ObjectCount) objets"
+                            RecommendedAction = "RÃ©voquer les permissions ou rÃ©activer l'utilisateur si nÃ©cessaire"
                             AffectedObjects   = $userObjectPermissions.ObjectPermissions | ForEach-Object { $_.ObjectName }
                         }
                     }
@@ -1046,8 +1046,8 @@ function Get-SqlPermissionRules {
             RuleId        = "OBJ002"
             RuleType      = "Object"
             Name          = "GuestUserWithObjectPermissions"
-            Description   = "Détecte si l'utilisateur guest a des permissions sur des objets"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte si l'utilisateur guest a des permissions sur des objets"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
                 $results = @()
@@ -1056,8 +1056,8 @@ function Get-SqlPermissionRules {
                     $results += [PSCustomObject]@{
                         DatabaseName      = $DatabaseName
                         UserName          = "guest"
-                        Description       = "L'utilisateur guest possède des permissions sur $($guestObjectPermissions.ObjectCount) objets"
-                        RecommendedAction = "Révoquer les permissions de l'utilisateur guest"
+                        Description       = "L'utilisateur guest possÃ¨de des permissions sur $($guestObjectPermissions.ObjectCount) objets"
+                        RecommendedAction = "RÃ©voquer les permissions de l'utilisateur guest"
                         AffectedObjects   = $guestObjectPermissions.ObjectPermissions | ForEach-Object { $_.ObjectName }
                     }
                 }
@@ -1068,8 +1068,8 @@ function Get-SqlPermissionRules {
             RuleId        = "OBJ003"
             RuleType      = "Object"
             Name          = "ControlObjectPermission"
-            Description   = "Détecte les utilisateurs avec la permission CONTROL sur des objets"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte les utilisateurs avec la permission CONTROL sur des objets"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
                 $results = @()
@@ -1080,13 +1080,13 @@ function Get-SqlPermissionRules {
                         }
                     }
                     if ($controlObjects -and $controlObjects.Count -gt 0) {
-                        # Exclure les comptes système et dbo
+                        # Exclure les comptes systÃ¨me et dbo
                         if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                             $results += [PSCustomObject]@{
                                 DatabaseName      = $DatabaseName
                                 UserName          = $userPerm.GranteeName
-                                Description       = "L'utilisateur possède la permission CONTROL sur $($controlObjects.Count) objets"
-                                RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                Description       = "L'utilisateur possÃ¨de la permission CONTROL sur $($controlObjects.Count) objets"
+                                RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                                 AffectedObjects   = $controlObjects | ForEach-Object { $_.ObjectName }
                             }
                         }
@@ -1099,7 +1099,7 @@ function Get-SqlPermissionRules {
             RuleId        = "OBJ004"
             RuleType      = "Object"
             Name          = "ExcessiveTablePermissions"
-            Description   = "Détecte les utilisateurs avec des permissions excessives sur des tables"
+            Description   = "DÃ©tecte les utilisateurs avec des permissions excessives sur des tables"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
@@ -1114,13 +1114,13 @@ function Get-SqlPermissionRules {
                             }
                         }
                         if ($excessivePermTables -and $excessivePermTables.Count -gt 0) {
-                            # Exclure les comptes système et dbo
+                            # Exclure les comptes systÃ¨me et dbo
                             if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                                 $results += [PSCustomObject]@{
                                     DatabaseName      = $DatabaseName
                                     UserName          = $userPerm.GranteeName
-                                    Description       = "L'utilisateur possède des permissions potentiellement excessives sur $($excessivePermTables.Count) tables"
-                                    RecommendedAction = "Vérifier si ces permissions sont nécessaires"
+                                    Description       = "L'utilisateur possÃ¨de des permissions potentiellement excessives sur $($excessivePermTables.Count) tables"
+                                    RecommendedAction = "VÃ©rifier si ces permissions sont nÃ©cessaires"
                                     AffectedObjects   = $excessivePermTables | ForEach-Object { $_.ObjectName }
                                 }
                             }
@@ -1134,8 +1134,8 @@ function Get-SqlPermissionRules {
             RuleId        = "OBJ005"
             RuleType      = "Object"
             Name          = "PublicRoleObjectPermissions"
-            Description   = "Détecte si le rôle public a des permissions sur des objets sensibles"
-            Severity      = "Élevée"
+            Description   = "DÃ©tecte si le rÃ´le public a des permissions sur des objets sensibles"
+            Severity      = "Ã‰levÃ©e"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
                 $results = @()
@@ -1151,8 +1151,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName      = $DatabaseName
                             UserName          = "public"
-                            Description       = "Le rôle public possède des permissions sensibles sur $($sensitivePermissions.Count) objets"
-                            RecommendedAction = "Révoquer les permissions sensibles du rôle public"
+                            Description       = "Le rÃ´le public possÃ¨de des permissions sensibles sur $($sensitivePermissions.Count) objets"
+                            RecommendedAction = "RÃ©voquer les permissions sensibles du rÃ´le public"
                             AffectedObjects   = $sensitivePermissions | ForEach-Object { $_.ObjectName }
                         }
                     }
@@ -1164,7 +1164,7 @@ function Get-SqlPermissionRules {
             RuleId        = "OBJ006"
             RuleType      = "Object"
             Name          = "ConflictingPermissions"
-            Description   = "Détecte les utilisateurs avec des permissions conflictuelles (GRANT et DENY) sur les mêmes objets"
+            Description   = "DÃ©tecte les utilisateurs avec des permissions conflictuelles (GRANT et DENY) sur les mÃªmes objets"
             Severity      = "Moyenne"
             CheckFunction = {
                 param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
@@ -1188,8 +1188,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName      = $DatabaseName
                             UserName          = $userPerm.GranteeName
-                            Description       = "L'utilisateur possède des permissions conflictuelles (GRANT et DENY) sur $($conflictObjects.Count) objets"
-                            RecommendedAction = "Résoudre les conflits de permissions"
+                            Description       = "L'utilisateur possÃ¨de des permissions conflictuelles (GRANT et DENY) sur $($conflictObjects.Count) objets"
+                            RecommendedAction = "RÃ©soudre les conflits de permissions"
                             AffectedObjects   = $conflictObjects | ForEach-Object { "$($_.ObjectName) ($($_.PermissionName))" }
                         }
                     }
@@ -1199,7 +1199,7 @@ function Get-SqlPermissionRules {
         }
     )
 
-    # Filtrer les règles selon les paramètres
+    # Filtrer les rÃ¨gles selon les paramÃ¨tres
     if ($RuleType -ne "All") {
         $rules = $rules | Where-Object { $_.RuleType -eq $RuleType }
     }
@@ -1232,22 +1232,22 @@ function Find-PermissionAnomalies {
 
     $anomalies = @()
 
-    # Obtenir les règles de détection d'anomalies au niveau serveur
+    # Obtenir les rÃ¨gles de dÃ©tection d'anomalies au niveau serveur
     $rules = Get-SqlPermissionRules -RuleType "Server" -Severity $Severity
 
-    # Filtrer par ID de règle si spécifié
+    # Filtrer par ID de rÃ¨gle si spÃ©cifiÃ©
     if ($RuleIds.Count -gt 0) {
         $rules = $rules | Where-Object { $RuleIds -contains $_.RuleId }
     }
 
-    # Appliquer chaque règle
+    # Appliquer chaque rÃ¨gle
     foreach ($rule in $rules) {
-        Write-Verbose "Application de la règle $($rule.RuleId): $($rule.Name)"
+        Write-Verbose "Application de la rÃ¨gle $($rule.RuleId): $($rule.Name)"
 
-        # Exécuter la fonction de vérification de la règle
+        # ExÃ©cuter la fonction de vÃ©rification de la rÃ¨gle
         $ruleResults = & $rule.CheckFunction $ServerLogins $ServerRoles $ServerPermissions
 
-        # Ajouter les résultats à la liste des anomalies
+        # Ajouter les rÃ©sultats Ã  la liste des anomalies
         foreach ($result in $ruleResults) {
             $anomalies += [PSCustomObject]@{
                 AnomalyType       = $rule.Name
@@ -1271,7 +1271,7 @@ function Get-ObjectPermissions {
     )
 
     try {
-        # Requête pour obtenir les permissions explicites au niveau objet (tables, vues, procédures stockées, etc.)
+        # RequÃªte pour obtenir les permissions explicites au niveau objet (tables, vues, procÃ©dures stockÃ©es, etc.)
         $query = @"
 SELECT
     DP.name AS GranteeName,
@@ -1283,14 +1283,14 @@ SELECT
 FROM sys.database_permissions DPerm
 JOIN sys.database_principals DP ON DPerm.grantee_principal_id = DP.principal_id
 JOIN sys.objects O ON DPerm.major_id = O.object_id
-WHERE DPerm.class = 1  -- Objets (tables, vues, procédures stockées, etc.)
+WHERE DPerm.class = 1  -- Objets (tables, vues, procÃ©dures stockÃ©es, etc.)
 ORDER BY DP.name, O.name, DPerm.permission_name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $permissions = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par utilisateur/login et par objet
+        # Organiser les rÃ©sultats par utilisateur/login et par objet
         $userObjectPermissions = @{}
         foreach ($permission in $permissions) {
             $granteeName = $permission.GranteeName
@@ -1355,7 +1355,7 @@ function Get-DatabaseObjects {
     )
 
     try {
-        # Requête pour obtenir les objets de base de données (tables, vues, procédures stockées, etc.)
+        # RequÃªte pour obtenir les objets de base de donnÃ©es (tables, vues, procÃ©dures stockÃ©es, etc.)
         $query = @"
 SELECT
     OBJECT_SCHEMA_NAME(object_id) AS SchemaName,
@@ -1365,14 +1365,14 @@ SELECT
     modify_date AS ModifyDate,
     is_ms_shipped AS IsMsShipped
 FROM sys.objects
-WHERE type IN ('U', 'V', 'P', 'FN', 'IF', 'TF', 'TR')  -- Tables, vues, procédures stockées, fonctions, déclencheurs
+WHERE type IN ('U', 'V', 'P', 'FN', 'IF', 'TF', 'TR')  -- Tables, vues, procÃ©dures stockÃ©es, fonctions, dÃ©clencheurs
 ORDER BY type, SchemaName, name
 "@
 
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $objects = Invoke-Sqlcmd @sqlParams -Query $query -ErrorAction Stop
 
-        # Organiser les résultats par type d'objet
+        # Organiser les rÃ©sultats par type d'objet
         $objectsByType = @{}
         foreach ($obj in $objects) {
             $objectType = $obj.ObjectType
@@ -1404,7 +1404,7 @@ ORDER BY type, SchemaName, name
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'obtention des objets de base de données: $($_.Exception.Message)"
+        Write-Error "Erreur lors de l'obtention des objets de base de donnÃ©es: $($_.Exception.Message)"
         return @()
     }
 }
@@ -1430,22 +1430,22 @@ function Find-ObjectPermissionAnomalies {
 
     $anomalies = @()
 
-    # Obtenir les règles de détection d'anomalies au niveau objet
+    # Obtenir les rÃ¨gles de dÃ©tection d'anomalies au niveau objet
     $rules = Get-SqlPermissionRules -RuleType "Object" -Severity $Severity
 
-    # Filtrer par ID de règle si spécifié
+    # Filtrer par ID de rÃ¨gle si spÃ©cifiÃ©
     if ($RuleIds.Count -gt 0) {
         $rules = $rules | Where-Object { $RuleIds -contains $_.RuleId }
     }
 
-    # Appliquer chaque règle
+    # Appliquer chaque rÃ¨gle
     foreach ($rule in $rules) {
-        Write-Verbose "Application de la règle $($rule.RuleId): $($rule.Name)"
+        Write-Verbose "Application de la rÃ¨gle $($rule.RuleId): $($rule.Name)"
 
-        # Exécuter la fonction de vérification de la règle
+        # ExÃ©cuter la fonction de vÃ©rification de la rÃ¨gle
         $ruleResults = & $rule.CheckFunction $ObjectPermissions $DatabaseUsers $DatabaseName
 
-        # Ajouter les résultats à la liste des anomalies
+        # Ajouter les rÃ©sultats Ã  la liste des anomalies
         foreach ($result in $ruleResults) {
             $anomalies += [PSCustomObject]@{
                 AnomalyType       = $rule.Name
@@ -1479,7 +1479,7 @@ function Export-PermissionReport {
     try {
         switch ($OutputFormat) {
             "HTML" {
-                # Créer un rapport HTML
+                # CrÃ©er un rapport HTML
                 $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -1503,12 +1503,12 @@ function Export-PermissionReport {
     <div class="summary">
         <p><strong>Instance SQL Server:</strong> $($PermissionData.ServerInstance)</p>
         <p><strong>Date d'analyse:</strong> $($PermissionData.AnalysisDate)</p>
-        <p><strong>Nombre de rôles serveur:</strong> $($PermissionData.ServerRoles.Count)</p>
+        <p><strong>Nombre de rÃ´les serveur:</strong> $($PermissionData.ServerRoles.Count)</p>
         <p><strong>Nombre de logins:</strong> $($PermissionData.ServerLogins.Count)</p>
-        <p><strong>Nombre d'anomalies détectées au niveau serveur:</strong> $($PermissionData.ServerPermissionAnomalies.Count)</p>
-        <p><strong>Analyse au niveau base de données:</strong> $($PermissionData.IncludeDatabaseLevel)</p>
-        <p><strong>Nombre de bases de données analysées:</strong> $(($PermissionData.DatabaseRoles | Select-Object -Property DatabaseName -Unique).Count)</p>
-        <p><strong>Nombre d'anomalies détectées au niveau base de données:</strong> $($PermissionData.DatabasePermissionAnomalies.Count)</p>
+        <p><strong>Nombre d'anomalies dÃ©tectÃ©es au niveau serveur:</strong> $($PermissionData.ServerPermissionAnomalies.Count)</p>
+        <p><strong>Analyse au niveau base de donnÃ©es:</strong> $($PermissionData.IncludeDatabaseLevel)</p>
+        <p><strong>Nombre de bases de donnÃ©es analysÃ©es:</strong> $(($PermissionData.DatabaseRoles | Select-Object -Property DatabaseName -Unique).Count)</p>
+        <p><strong>Nombre d'anomalies dÃ©tectÃ©es au niveau base de donnÃ©es:</strong> $($PermissionData.DatabasePermissionAnomalies.Count)</p>
     </div>
 
     <h2>Anomalies de permissions au niveau serveur</h2>
@@ -1521,13 +1521,13 @@ function Export-PermissionReport {
             <th>Type d'anomalie</th>
             <th>Login</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
                     foreach ($anomaly in $PermissionData.ServerPermissionAnomalies) {
                         $severityClass = switch ($anomaly.Severity) {
-                            "Élevée" { "severity-high" }
+                            "Ã‰levÃ©e" { "severity-high" }
                             "Moyenne" { "severity-medium" }
                             default { "severity-low" }
                         }
@@ -1547,31 +1547,31 @@ function Export-PermissionReport {
 "@
                 } else {
                     $htmlReport += @"
-    <p>Aucune anomalie détectée au niveau serveur.</p>
+    <p>Aucune anomalie dÃ©tectÃ©e au niveau serveur.</p>
 "@
                 }
 
-                # Ajouter les anomalies au niveau base de données si l'analyse a été effectuée
+                # Ajouter les anomalies au niveau base de donnÃ©es si l'analyse a Ã©tÃ© effectuÃ©e
                 if ($PermissionData.IncludeDatabaseLevel) {
                     $htmlReport += @"
 
-    <h2>Anomalies de permissions au niveau base de données</h2>
+    <h2>Anomalies de permissions au niveau base de donnÃ©es</h2>
 "@
                     if ($PermissionData.DatabasePermissionAnomalies.Count -gt 0) {
                         $htmlReport += @"
     <table>
         <tr>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
                         foreach ($anomaly in $PermissionData.DatabasePermissionAnomalies) {
                             $severityClass = switch ($anomaly.Severity) {
-                                "Élevée" { "severity-high" }
+                                "Ã‰levÃ©e" { "severity-high" }
                                 "Moyenne" { "severity-medium" }
                                 default { "severity-low" }
                             }
@@ -1592,13 +1592,13 @@ function Export-PermissionReport {
 "@
                     } else {
                         $htmlReport += @"
-    <p>Aucune anomalie détectée au niveau base de données.</p>
+    <p>Aucune anomalie dÃ©tectÃ©e au niveau base de donnÃ©es.</p>
 "@
                     }
                 }
 
                 $htmlReport += @"
-    <h2>Rôles serveur</h2>
+    <h2>RÃ´les serveur</h2>
 "@
 
                 if ($PermissionData.ServerRoles.Count -gt 0) {
@@ -1609,8 +1609,8 @@ function Export-PermissionReport {
         <tr>
             <th>Nom du membre</th>
             <th>Type</th>
-            <th>Date de création</th>
-            <th>Désactivé</th>
+            <th>Date de crÃ©ation</th>
+            <th>DÃ©sactivÃ©</th>
         </tr>
 "@
                         foreach ($member in $role.Members) {
@@ -1629,7 +1629,7 @@ function Export-PermissionReport {
                     }
                 } else {
                     $htmlReport += @"
-    <p>Aucun rôle serveur trouvé.</p>
+    <p>Aucun rÃ´le serveur trouvÃ©.</p>
 "@
                 }
 
@@ -1643,10 +1643,10 @@ function Export-PermissionReport {
     <h3>$($grantee.GranteeName) ($($grantee.GranteeType)) - $($grantee.PermissionCount) permissions</h3>
     <table>
         <tr>
-            <th>Objet sécurisable</th>
+            <th>Objet sÃ©curisable</th>
             <th>Type d'objet</th>
             <th>Permission</th>
-            <th>État</th>
+            <th>Ã‰tat</th>
         </tr>
 "@
                         foreach ($permission in $grantee.Permissions) {
@@ -1665,7 +1665,7 @@ function Export-PermissionReport {
                     }
                 } else {
                     $htmlReport += @"
-    <p>Aucune permission explicite trouvée.</p>
+    <p>Aucune permission explicite trouvÃ©e.</p>
 "@
                 }
 
@@ -1675,12 +1675,12 @@ function Export-PermissionReport {
         <tr>
             <th>Nom du login</th>
             <th>Type</th>
-            <th>Date de création</th>
-            <th>Désactivé</th>
+            <th>Date de crÃ©ation</th>
+            <th>DÃ©sactivÃ©</th>
             <th>Dernier changement de mot de passe</th>
             <th>Jours avant expiration</th>
-            <th>Expiré</th>
-            <th>Verrouillé</th>
+            <th>ExpirÃ©</th>
+            <th>VerrouillÃ©</th>
         </tr>
 "@
                 foreach ($login in $PermissionData.ServerLogins) {
@@ -1701,19 +1701,19 @@ function Export-PermissionReport {
     </table>
 "@
 
-                # Ajouter les informations sur les bases de données si l'analyse a été effectuée
+                # Ajouter les informations sur les bases de donnÃ©es si l'analyse a Ã©tÃ© effectuÃ©e
                 if ($PermissionData.IncludeDatabaseLevel -and $PermissionData.DatabaseRoles.Count -gt 0) {
                     $htmlReport += @"
 
-    <h2>Rôles de base de données</h2>
+    <h2>RÃ´les de base de donnÃ©es</h2>
 "@
 
-                    # Regrouper par base de données
+                    # Regrouper par base de donnÃ©es
                     $databaseNames = $PermissionData.DatabaseRoles | Select-Object -Property DatabaseName -Unique | ForEach-Object { $_.DatabaseName }
 
                     foreach ($dbName in $databaseNames) {
                         $htmlReport += @"
-    <h3>Base de données: $dbName</h3>
+    <h3>Base de donnÃ©es: $dbName</h3>
 "@
 
                         $dbRoles = $PermissionData.DatabaseRoles | Where-Object { $_.DatabaseName -eq $dbName }
@@ -1725,8 +1725,8 @@ function Export-PermissionReport {
         <tr>
             <th>Nom du membre</th>
             <th>Type</th>
-            <th>Date de création</th>
-            <th>Désactivé</th>
+            <th>Date de crÃ©ation</th>
+            <th>DÃ©sactivÃ©</th>
         </tr>
 "@
                             foreach ($member in $role.Members) {
@@ -1747,12 +1747,12 @@ function Export-PermissionReport {
 
                     $htmlReport += @"
 
-    <h2>Permissions de base de données</h2>
+    <h2>Permissions de base de donnÃ©es</h2>
 "@
 
                     foreach ($dbName in $databaseNames) {
                         $htmlReport += @"
-    <h3>Base de données: $dbName</h3>
+    <h3>Base de donnÃ©es: $dbName</h3>
 "@
 
                         $dbPermissions = $PermissionData.DatabasePermissions | Where-Object { $_.DatabaseName -eq $dbName }
@@ -1763,10 +1763,10 @@ function Export-PermissionReport {
     <h4>$($grantee.GranteeName) ($($grantee.GranteeType)) - $($grantee.PermissionCount) permissions</h4>
     <table>
         <tr>
-            <th>Objet sécurisable</th>
+            <th>Objet sÃ©curisable</th>
             <th>Type d'objet</th>
             <th>Permission</th>
-            <th>État</th>
+            <th>Ã‰tat</th>
         </tr>
 "@
                                 foreach ($permission in $grantee.Permissions) {
@@ -1785,27 +1785,27 @@ function Export-PermissionReport {
                             }
                         } else {
                             $htmlReport += @"
-    <p>Aucune permission explicite trouvée pour cette base de données.</p>
+    <p>Aucune permission explicite trouvÃ©e pour cette base de donnÃ©es.</p>
 "@
                         }
                     }
 
                     $htmlReport += @"
 
-    <h2>Utilisateurs de base de données</h2>
+    <h2>Utilisateurs de base de donnÃ©es</h2>
 "@
 
                     foreach ($dbName in $databaseNames) {
                         $htmlReport += @"
-    <h3>Base de données: $dbName</h3>
+    <h3>Base de donnÃ©es: $dbName</h3>
     <table>
         <tr>
             <th>Nom de l'utilisateur</th>
             <th>Type</th>
-            <th>Login associé</th>
-            <th>Schéma par défaut</th>
-            <th>Date de création</th>
-            <th>Désactivé</th>
+            <th>Login associÃ©</th>
+            <th>SchÃ©ma par dÃ©faut</th>
+            <th>Date de crÃ©ation</th>
+            <th>DÃ©sactivÃ©</th>
         </tr>
 "@
 
@@ -1830,19 +1830,19 @@ function Export-PermissionReport {
                     }
                 }
 
-                # Ajouter les informations sur les objets et leurs permissions si l'analyse a été effectuée
+                # Ajouter les informations sur les objets et leurs permissions si l'analyse a Ã©tÃ© effectuÃ©e
                 if ($PermissionData.IncludeObjectLevel -and $PermissionData.ObjectPermissions.Count -gt 0) {
                     $htmlReport += @"
 
     <h2>Permissions au niveau objet</h2>
 "@
 
-                    # Regrouper par base de données
+                    # Regrouper par base de donnÃ©es
                     $databaseNames = $PermissionData.ObjectPermissions | Select-Object -Property DatabaseName -Unique | ForEach-Object { $_.DatabaseName }
 
                     foreach ($dbName in $databaseNames) {
                         $htmlReport += @"
-    <h3>Base de données: $dbName</h3>
+    <h3>Base de donnÃ©es: $dbName</h3>
 "@
 
                         $dbObjectPermissions = $PermissionData.ObjectPermissions | Where-Object { $_.DatabaseName -eq $dbName }
@@ -1874,7 +1874,7 @@ function Export-PermissionReport {
                             }
                         } else {
                             $htmlReport += @"
-    <p>Aucune permission au niveau objet trouvée pour cette base de données.</p>
+    <p>Aucune permission au niveau objet trouvÃ©e pour cette base de donnÃ©es.</p>
 "@
                         }
                     }
@@ -1887,17 +1887,17 @@ function Export-PermissionReport {
     <table>
         <tr>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
-            <th>Objets affectés</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
+            <th>Objets affectÃ©s</th>
         </tr>
 "@
                         foreach ($anomaly in $PermissionData.ObjectPermissionAnomalies) {
                             $severityClass = switch ($anomaly.Severity) {
-                                "Élevée" { "severity-high" }
+                                "Ã‰levÃ©e" { "severity-high" }
                                 "Moyenne" { "severity-medium" }
                                 default { "severity-low" }
                             }
@@ -1921,7 +1921,7 @@ function Export-PermissionReport {
                     } else {
                         $htmlReport += @"
     <h2>Anomalies de permissions au niveau objet</h2>
-    <p>Aucune anomalie détectée au niveau objet.</p>
+    <p>Aucune anomalie dÃ©tectÃ©e au niveau objet.</p>
 "@
                     }
                 }
@@ -1935,7 +1935,7 @@ function Export-PermissionReport {
                 $htmlReport | Out-File -FilePath $OutputPath -Encoding UTF8
             }
             "CSV" {
-                # Créer un rapport CSV pour chaque section
+                # CrÃ©er un rapport CSV pour chaque section
 
                 # Anomalies au niveau serveur
                 if ($PermissionData.ServerPermissionAnomalies.Count -gt 0) {
@@ -1943,13 +1943,13 @@ function Export-PermissionReport {
                     $PermissionData.ServerPermissionAnomalies | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                 }
 
-                # Anomalies au niveau base de données
+                # Anomalies au niveau base de donnÃ©es
                 if ($PermissionData.IncludeDatabaseLevel -and $PermissionData.DatabasePermissionAnomalies.Count -gt 0) {
                     $csvPath = [System.IO.Path]::ChangeExtension($OutputPath, "database_anomalies.csv")
                     $PermissionData.DatabasePermissionAnomalies | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                 }
 
-                # Rôles serveur
+                # RÃ´les serveur
                 $serverRolesFlat = @()
                 foreach ($role in $PermissionData.ServerRoles) {
                     foreach ($member in $role.Members) {
@@ -1986,9 +1986,9 @@ function Export-PermissionReport {
                 $csvPath = [System.IO.Path]::ChangeExtension($OutputPath, "server_logins.csv")
                 $PermissionData.ServerLogins | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
 
-                # Exporter les données de base de données si l'analyse a été effectuée
+                # Exporter les donnÃ©es de base de donnÃ©es si l'analyse a Ã©tÃ© effectuÃ©e
                 if ($PermissionData.IncludeDatabaseLevel) {
-                    # Rôles de base de données
+                    # RÃ´les de base de donnÃ©es
                     if ($PermissionData.DatabaseRoles.Count -gt 0) {
                         $databaseRolesFlat = @()
                         foreach ($role in $PermissionData.DatabaseRoles) {
@@ -2007,7 +2007,7 @@ function Export-PermissionReport {
                         $databaseRolesFlat | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                     }
 
-                    # Permissions de base de données
+                    # Permissions de base de donnÃ©es
                     if ($PermissionData.DatabasePermissions.Count -gt 0) {
                         $databasePermissionsFlat = @()
                         foreach ($grantee in $PermissionData.DatabasePermissions) {
@@ -2027,14 +2027,14 @@ function Export-PermissionReport {
                         $databasePermissionsFlat | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                     }
 
-                    # Utilisateurs de base de données
+                    # Utilisateurs de base de donnÃ©es
                     if ($PermissionData.DatabaseUsers.Count -gt 0) {
                         $csvPath = [System.IO.Path]::ChangeExtension($OutputPath, "database_users.csv")
                         $PermissionData.DatabaseUsers | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                     }
                 }
 
-                # Exporter les données au niveau objet si l'analyse a été effectuée
+                # Exporter les donnÃ©es au niveau objet si l'analyse a Ã©tÃ© effectuÃ©e
                 if ($PermissionData.IncludeObjectLevel) {
                     # Anomalies au niveau objet
                     if ($PermissionData.ObjectPermissionAnomalies.Count -gt 0) {
@@ -2042,7 +2042,7 @@ function Export-PermissionReport {
                         $PermissionData.ObjectPermissionAnomalies | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
                     }
 
-                    # Objets de base de données
+                    # Objets de base de donnÃ©es
                     if ($PermissionData.DatabaseObjects.Count -gt 0) {
                         $databaseObjectsFlat = @()
                         foreach ($objType in $PermissionData.DatabaseObjects) {
@@ -2087,19 +2087,19 @@ function Export-PermissionReport {
                 }
             }
             "JSON" {
-                # Créer un rapport JSON
+                # CrÃ©er un rapport JSON
                 $PermissionData | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
             }
             "XML" {
-                # Créer un rapport XML
+                # CrÃ©er un rapport XML
                 $PermissionData | Export-Clixml -Path $OutputPath -Encoding UTF8
             }
         }
 
-        Write-Verbose "Rapport de permissions exporté avec succès: $OutputPath"
+        Write-Verbose "Rapport de permissions exportÃ© avec succÃ¨s: $OutputPath"
     } catch {
         Write-Error "Erreur lors de l'exportation du rapport de permissions: $($_.Exception.Message)"
     }
 }
 
-# Pas besoin d'exporter la fonction ici, elle sera exportée par le module
+# Pas besoin d'exporter la fonction ici, elle sera exportÃ©e par le module

@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-MeasureRoadmapText.ps1
 #
 # Script pour tester la fonction Measure-RoadmapText
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\StringManipulation\Measure-RoadmapText.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,7 +18,7 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-Write-Host "Début des tests de la fonction Measure-RoadmapText..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Measure-RoadmapText..." -ForegroundColor Cyan
 
 # Test 1: Mesures de base
 Write-Host "`nTest 1: Mesures de base" -ForegroundColor Cyan
@@ -45,10 +45,10 @@ foreach ($testCase in $testCases) {
 
     $result = Measure-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -57,21 +57,21 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: $($testCase.Expected)" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: $($testCase.Expected)" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 2: Mesures avancées
-Write-Host "`nTest 2: Mesures avancées" -ForegroundColor Cyan
+# Test 2: Mesures avancÃ©es
+Write-Host "`nTest 2: Mesures avancÃ©es" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ MeasureType = "ReadingTime"; Expected = 3; Description = "ReadingTime" }  # 10 mots à 200 mots par minute = 3 secondes
-    @{ MeasureType = "ReadingLevel"; Description = "ReadingLevel" }  # Pas de valeur attendue précise, juste vérifier qu'il n'y a pas d'erreur
-    @{ MeasureType = "Sentiment"; Description = "Sentiment" }  # Pas de valeur attendue précise, juste vérifier qu'il n'y a pas d'erreur
-    @{ MeasureType = "Keywords"; Description = "Keywords" }  # Pas de valeur attendue précise, juste vérifier qu'il n'y a pas d'erreur
+    @{ MeasureType = "ReadingTime"; Expected = 3; Description = "ReadingTime" }  # 10 mots Ã  200 mots par minute = 3 secondes
+    @{ MeasureType = "ReadingLevel"; Description = "ReadingLevel" }  # Pas de valeur attendue prÃ©cise, juste vÃ©rifier qu'il n'y a pas d'erreur
+    @{ MeasureType = "Sentiment"; Description = "Sentiment" }  # Pas de valeur attendue prÃ©cise, juste vÃ©rifier qu'il n'y a pas d'erreur
+    @{ MeasureType = "Keywords"; Description = "Keywords" }  # Pas de valeur attendue prÃ©cise, juste vÃ©rifier qu'il n'y a pas d'erreur
 )
 
 $successCount = 0
@@ -85,7 +85,7 @@ foreach ($testCase in $testCases) {
 
     $result = Measure-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     if ($testCase.ContainsKey("Expected")) {
@@ -94,7 +94,7 @@ foreach ($testCase in $testCases) {
         $success = $null -ne $result
     }
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -104,15 +104,15 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ContainsKey("Expected")) {
-            Write-Host "    Résultat attendu: $($testCase.Expected)" -ForegroundColor Red
-            Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+            Write-Host "    RÃ©sultat attendu: $($testCase.Expected)" -ForegroundColor Red
+            Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
         } else {
-            Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+            Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 3: Mesures avec options
 Write-Host "`nTest 3: Mesures avec options" -ForegroundColor Cyan
@@ -124,7 +124,7 @@ $testCases = @(
     @{ MeasureType = "Lines"; IncludeEmptyLines = $false; Expected = 2; Description = "Lines sans lignes vides" }
     @{ MeasureType = "Characters"; IncludeWhitespace = $false; Expected = 22; Description = "Characters sans espaces" }
     @{ MeasureType = "Characters"; IncludePunctuation = $false; Expected = 29; Description = "Characters sans ponctuation" }
-    @{ MeasureType = "Frequency"; IgnoreCase = $true; Description = "Frequency insensible à la casse" }
+    @{ MeasureType = "Frequency"; IgnoreCase = $true; Description = "Frequency insensible Ã  la casse" }
 )
 
 $successCount = 0
@@ -154,7 +154,7 @@ foreach ($testCase in $testCases) {
 
     $result = Measure-RoadmapText @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     if ($testCase.ContainsKey("Expected")) {
@@ -163,7 +163,7 @@ foreach ($testCase in $testCases) {
         $success = $null -ne $result
     }
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -173,15 +173,15 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ContainsKey("Expected")) {
-            Write-Host "    Résultat attendu: $($testCase.Expected)" -ForegroundColor Red
-            Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+            Write-Host "    RÃ©sultat attendu: $($testCase.Expected)" -ForegroundColor Red
+            Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
         } else {
-            Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+            Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 4: Statistiques
 Write-Host "`nTest 4: Statistiques" -ForegroundColor Cyan
@@ -200,17 +200,17 @@ $result.AverageSentenceLength -gt 0 -and
 $result.ReadingTime -ge 0 -and
 $result.ReadingLevel -ne 0
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Statistiques: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
-# Test 5: Mesure personnalisée
-Write-Host "`nTest 5: Mesure personnalisée" -ForegroundColor Cyan
+# Test 5: Mesure personnalisÃ©e
+Write-Host "`nTest 5: Mesure personnalisÃ©e" -ForegroundColor Cyan
 
 $customMeasure = {
     param($Text)
@@ -224,23 +224,23 @@ $result = Measure-RoadmapText -Text "Hello World" -MeasureType Custom -CustomMea
 
 $success = $result -eq 3  # "Hello World" contient 3 voyelles (e, o, o)
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure personnalisée: $status" -ForegroundColor $color
+Write-Host "  Mesure personnalisÃ©e: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: 3" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: 3" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
 # Test 6: Gestion des erreurs
 Write-Host "`nTest 6: Gestion des erreurs" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Test = "Measure-RoadmapText sans CustomMeasure pour Custom"; Function = { Measure-RoadmapText -Text "Hello" -MeasureType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Mesure personnalisée sans CustomMeasure" }
+    @{ Test = "Measure-RoadmapText sans CustomMeasure pour Custom"; Function = { Measure-RoadmapText -Text "Hello" -MeasureType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Mesure personnalisÃ©e sans CustomMeasure" }
     @{ Test = "Measure-RoadmapText avec erreur sans ThrowOnFailure"; Function = {
-            # Ce test est censé générer un warning, c'est normal
+            # Ce test est censÃ© gÃ©nÃ©rer un warning, c'est normal
             Write-Host "Note: Le warning suivant est attendu dans le cadre du test:" -ForegroundColor Yellow
             $result = Measure-RoadmapText -Text "Hello" -MeasureType "Custom"
             return $result
@@ -260,10 +260,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -273,13 +273,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Measure-RoadmapText terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Measure-RoadmapText terminÃ©s." -ForegroundColor Cyan

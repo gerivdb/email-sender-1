@@ -1,67 +1,67 @@
-<#
+﻿<#
 .SYNOPSIS
     Remplace un motif dans un texte.
 
 .DESCRIPTION
     La fonction Replace-RoadmapText remplace un motif dans un texte.
-    Elle prend en charge différents types de remplacement et peut être utilisée pour
+    Elle prend en charge diffÃ©rents types de remplacement et peut Ãªtre utilisÃ©e pour
     remplacer des motifs dans les textes du module RoadmapParser.
 
 .PARAMETER Text
     Le texte dans lequel effectuer le remplacement.
 
 .PARAMETER Pattern
-    Le motif à rechercher.
+    Le motif Ã  rechercher.
 
 .PARAMETER Replacement
     Le texte de remplacement.
 
 .PARAMETER ReplaceType
-    Le type de remplacement à effectuer. Valeurs possibles :
-    - Simple : Remplacement simple (sensible à la casse)
-    - CaseInsensitive : Remplacement insensible à la casse
-    - Regex : Remplacement par expression régulière
-    - Wildcard : Remplacement avec caractères génériques
+    Le type de remplacement Ã  effectuer. Valeurs possibles :
+    - Simple : Remplacement simple (sensible Ã  la casse)
+    - CaseInsensitive : Remplacement insensible Ã  la casse
+    - Regex : Remplacement par expression rÃ©guliÃ¨re
+    - Wildcard : Remplacement avec caractÃ¨res gÃ©nÃ©riques
     - WholeWord : Remplacement de mots entiers
-    - FirstOccurrence : Remplacement de la première occurrence
-    - LastOccurrence : Remplacement de la dernière occurrence
+    - FirstOccurrence : Remplacement de la premiÃ¨re occurrence
+    - LastOccurrence : Remplacement de la derniÃ¨re occurrence
     - AllOccurrences : Remplacement de toutes les occurrences
-    - Custom : Remplacement personnalisé
+    - Custom : Remplacement personnalisÃ©
 
 .PARAMETER CustomReplace
-    La fonction de remplacement personnalisée à utiliser.
-    Utilisé uniquement lorsque ReplaceType est "Custom".
+    La fonction de remplacement personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque ReplaceType est "Custom".
 
 .PARAMETER MaxReplacements
-    Le nombre maximum de remplacements à effectuer.
-    Par défaut, c'est 0 (tous les remplacements).
+    Le nombre maximum de remplacements Ã  effectuer.
+    Par dÃ©faut, c'est 0 (tous les remplacements).
 
 .PARAMETER Culture
-    La culture à utiliser pour le remplacement.
-    Par défaut, c'est la culture actuelle.
+    La culture Ã  utiliser pour le remplacement.
+    Par dÃ©faut, c'est la culture actuelle.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec du remplacement.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec du remplacement.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec du remplacement.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec du remplacement.
 
 .EXAMPLE
     Replace-RoadmapText -Text "Hello World" -Pattern "world" -Replacement "Universe" -ReplaceType CaseInsensitive
-    Remplace "world" par "Universe" dans "Hello World" de manière insensible à la casse.
+    Remplace "world" par "Universe" dans "Hello World" de maniÃ¨re insensible Ã  la casse.
 
 .EXAMPLE
     Replace-RoadmapText -Text "Hello World" -Pattern "^Hello" -Replacement "Hi" -ReplaceType Regex
     Remplace le motif regex "^Hello" par "Hi" dans "Hello World".
 
 .OUTPUTS
-    [string] Le texte avec les remplacements effectués.
+    [string] Le texte avec les remplacements effectuÃ©s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Replace-RoadmapText {
     [CmdletBinding()]
@@ -97,7 +97,7 @@ function Replace-RoadmapText {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat du remplacement
+    # Initialiser le rÃ©sultat du remplacement
     $result = $Text
     $replaceSucceeded = $false
 
@@ -187,7 +187,7 @@ function Replace-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = $Text
                 } else {
-                    # Créer un motif regex pour les mots entiers
+                    # CrÃ©er un motif regex pour les mots entiers
                     $regexPattern = "\b" + [regex]::Escape($Pattern) + "\b"
                     $regex = [regex]$regexPattern
 
@@ -252,7 +252,7 @@ function Replace-RoadmapText {
             }
             "Custom" {
                 if ($null -eq $CustomReplace) {
-                    throw "Le paramètre CustomReplace est requis lorsque le type de remplacement est Custom."
+                    throw "Le paramÃ¨tre CustomReplace est requis lorsque le type de remplacement est Custom."
                 } else {
                     $result = & $CustomReplace $Text $Pattern $Replacement
                 }
@@ -266,7 +266,7 @@ function Replace-RoadmapText {
         }
     }
 
-    # Gérer l'échec du remplacement
+    # GÃ©rer l'Ã©chec du remplacement
     if (-not $replaceSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

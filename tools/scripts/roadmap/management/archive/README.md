@@ -1,11 +1,11 @@
-# Archive - Management
+﻿# Archive - Management
 
-Cette section contient les scripts liés à l'archivage des tâches dans la catégorie management.
+Cette section contient les scripts liÃ©s Ã  l'archivage des tÃ¢ches dans la catÃ©gorie management.
 
 ## Scripts disponibles
 
-- `Archive-CompletedTasks.ps1` - Archive les tâches complétées dans un fichier séparé
-- `Move-CompletedTasks.ps1` - Déplace les tâches complétées vers une section d'archive
+- `Archive-CompletedTasks.ps1` - Archive les tÃ¢ches complÃ©tÃ©es dans un fichier sÃ©parÃ©
+- `Move-CompletedTasks.ps1` - DÃ©place les tÃ¢ches complÃ©tÃ©es vers une section d'archive
 
 ## Utilisation
 
@@ -14,9 +14,9 @@ Cette section contient les scripts liés à l'archivage des tâches dans la cat�
 .\Archive-CompletedTasks.ps1 -RoadmapPath "Roadmap/roadmap_complete.md" -ArchivePath "Roadmap/archive.md"
 ```
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - `roadmap-parser` - Module principal de parsing de roadmap
 
 ## Tests

@@ -1,74 +1,74 @@
-<#
+﻿<#
 .SYNOPSIS
-    Formate une chaîne de caractères selon différentes options.
+    Formate une chaÃ®ne de caractÃ¨res selon diffÃ©rentes options.
 
 .DESCRIPTION
-    La fonction Format-RoadmapString formate une chaîne de caractères selon différentes options.
-    Elle combine les différentes fonctions de manipulation de chaînes et peut être utilisée pour
-    formater les chaînes de caractères du module RoadmapParser.
+    La fonction Format-RoadmapString formate une chaÃ®ne de caractÃ¨res selon diffÃ©rentes options.
+    Elle combine les diffÃ©rentes fonctions de manipulation de chaÃ®nes et peut Ãªtre utilisÃ©e pour
+    formater les chaÃ®nes de caractÃ¨res du module RoadmapParser.
 
 .PARAMETER Text
-    Le texte à formater.
+    Le texte Ã  formater.
 
 .PARAMETER FormatType
-    Le type de formatage à appliquer. Valeurs possibles :
-    - Capitalize : Met en majuscule la première lettre de chaque mot
+    Le type de formatage Ã  appliquer. Valeurs possibles :
+    - Capitalize : Met en majuscule la premiÃ¨re lettre de chaque mot
     - UpperCase : Met tout le texte en majuscules
     - LowerCase : Met tout le texte en minuscules
-    - TitleCase : Met en majuscule la première lettre de chaque mot, en respectant certaines règles
-    - SentenceCase : Met en majuscule la première lettre de chaque phrase
-    - CamelCase : Met en minuscule la première lettre et en majuscule la première lettre des mots suivants
-    - PascalCase : Met en majuscule la première lettre de chaque mot, sans espaces
+    - TitleCase : Met en majuscule la premiÃ¨re lettre de chaque mot, en respectant certaines rÃ¨gles
+    - SentenceCase : Met en majuscule la premiÃ¨re lettre de chaque phrase
+    - CamelCase : Met en minuscule la premiÃ¨re lettre et en majuscule la premiÃ¨re lettre des mots suivants
+    - PascalCase : Met en majuscule la premiÃ¨re lettre de chaque mot, sans espaces
     - SnakeCase : Remplace les espaces par des underscores et met tout en minuscules
     - KebabCase : Remplace les espaces par des tirets et met tout en minuscules
-    - Trim : Supprime les espaces au début et à la fin du texte
-    - TrimStart : Supprime les espaces au début du texte
-    - TrimEnd : Supprime les espaces à la fin du texte
+    - Trim : Supprime les espaces au dÃ©but et Ã  la fin du texte
+    - TrimStart : Supprime les espaces au dÃ©but du texte
+    - TrimEnd : Supprime les espaces Ã  la fin du texte
     - Indent : Indente chaque ligne du texte
-    - Truncate : Tronque le texte à une longueur spécifiée
-    - Pad : Complète le texte avec des caractères pour atteindre une longueur spécifiée
-    - Wrap : Enveloppe le texte à une largeur spécifiée
-    - Align : Aligne le texte (gauche, droite, centre, justifié)
-    - Custom : Utilise un format personnalisé
+    - Truncate : Tronque le texte Ã  une longueur spÃ©cifiÃ©e
+    - Pad : ComplÃ¨te le texte avec des caractÃ¨res pour atteindre une longueur spÃ©cifiÃ©e
+    - Wrap : Enveloppe le texte Ã  une largeur spÃ©cifiÃ©e
+    - Align : Aligne le texte (gauche, droite, centre, justifiÃ©)
+    - Custom : Utilise un format personnalisÃ©
 
 .PARAMETER CustomFormat
-    Le format personnalisé à utiliser pour le formatage.
-    Utilisé uniquement lorsque FormatType est "Custom".
+    Le format personnalisÃ© Ã  utiliser pour le formatage.
+    UtilisÃ© uniquement lorsque FormatType est "Custom".
 
 .PARAMETER Length
-    La longueur à utiliser pour les types de formatage qui en ont besoin (Truncate, Pad, Wrap).
+    La longueur Ã  utiliser pour les types de formatage qui en ont besoin (Truncate, Pad, Wrap).
 
 .PARAMETER PadCharacter
-    Le caractère à utiliser pour le remplissage avec le type de formatage "Pad".
-    Par défaut, c'est un espace.
+    Le caractÃ¨re Ã  utiliser pour le remplissage avec le type de formatage "Pad".
+    Par dÃ©faut, c'est un espace.
 
 .PARAMETER IndentLevel
-    Le niveau d'indentation à utiliser avec le type de formatage "Indent".
-    Par défaut, c'est 1.
+    Le niveau d'indentation Ã  utiliser avec le type de formatage "Indent".
+    Par dÃ©faut, c'est 1.
 
 .PARAMETER IndentChar
-    Le caractère à utiliser pour l'indentation avec le type de formatage "Indent".
-    Par défaut, c'est un espace.
+    Le caractÃ¨re Ã  utiliser pour l'indentation avec le type de formatage "Indent".
+    Par dÃ©faut, c'est un espace.
 
 .PARAMETER Alignment
-    L'alignement à utiliser avec le type de formatage "Align".
+    L'alignement Ã  utiliser avec le type de formatage "Align".
     Valeurs possibles : Left, Right, Center, Justify.
-    Par défaut, c'est "Left".
+    Par dÃ©faut, c'est "Left".
 
 .PARAMETER PreserveLineBreaks
-    Indique si les sauts de ligne doivent être préservés lors du formatage.
-    Par défaut, c'est $true.
+    Indique si les sauts de ligne doivent Ãªtre prÃ©servÃ©s lors du formatage.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER Culture
-    La culture à utiliser pour le formatage.
-    Par défaut, c'est la culture actuelle.
+    La culture Ã  utiliser pour le formatage.
+    Par dÃ©faut, c'est la culture actuelle.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec du formatage.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec du formatage.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec du formatage.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec du formatage.
 
 .EXAMPLE
     Format-RoadmapString -Text "hello world" -FormatType Capitalize
@@ -79,12 +79,12 @@
     Indente le texte "hello world" avec 2 tabulations.
 
 .OUTPUTS
-    [string] Le texte formaté.
+    [string] Le texte formatÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Format-RoadmapString {
     [CmdletBinding()]
@@ -134,9 +134,9 @@ function Format-RoadmapString {
     $privatePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Private\StringManipulation"
     $formatTextPath = Join-Path -Path $privatePath -ChildPath "Format-RoadmapText.ps1"
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $formatTextPath)) {
-        $errorMsg = "Le fichier Format-RoadmapText.ps1 est introuvable à l'emplacement : $formatTextPath"
+        $errorMsg = "Le fichier Format-RoadmapText.ps1 est introuvable Ã  l'emplacement : $formatTextPath"
         if ($ThrowOnFailure) {
             throw $errorMsg
         } else {

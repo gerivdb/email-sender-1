@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Met à jour la roadmap avec les améliorations implémentées.
+    Met Ã  jour la roadmap avec les amÃ©liorations implÃ©mentÃ©es.
 
 .DESCRIPTION
-    Ce script met à jour la roadmap avec les améliorations implémentées
-    pour la détection de format de fichiers.
+    Ce script met Ã  jour la roadmap avec les amÃ©liorations implÃ©mentÃ©es
+    pour la dÃ©tection de format de fichiers.
 
 .PARAMETER RoadmapPath
-    Le chemin vers le fichier de roadmap à mettre à jour.
-    Par défaut, utilise 'Roadmap/roadmap_perso.md'.
+    Le chemin vers le fichier de roadmap Ã  mettre Ã  jour.
+    Par dÃ©faut, utilise 'Roadmap/roadmap_perso.md'.
 
 .EXAMPLE
     .\Update-Roadmap.ps1 -RoadmapPath "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/Roadmap/roadmap_perso.md"
@@ -26,7 +26,7 @@ param(
     [string]$RoadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_perso.md"
 )
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
     Write-Error "Le fichier de roadmap $RoadmapPath n'existe pas."
     return
@@ -35,27 +35,27 @@ if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
 # Lire le contenu du fichier de roadmap
 $roadmapContent = Get-Content -Path $RoadmapPath -Raw
 
-# Définir les motifs de recherche et de remplacement
-$sectionPattern = '## 2\.1\.2 Implémentation des améliorations\s+- \[ \] Développer des algorithmes de détection plus robustes\s+- \[ \] Implémenter l''analyse de contenu basée sur des expressions régulières avancées\s+- \[ \] Ajouter la détection basée sur les signatures de format \(en-têtes, structure\)\s+- \[ \] Créer un système de score pour déterminer le format le plus probable\s+- \[ \] Implémenter la détection des encodages de caractères'
+# DÃ©finir les motifs de recherche et de remplacement
+$sectionPattern = '## 2\.1\.2 ImplÃ©mentation des amÃ©liorations\s+- \[ \] DÃ©velopper des algorithmes de dÃ©tection plus robustes\s+- \[ \] ImplÃ©menter l''analyse de contenu basÃ©e sur des expressions rÃ©guliÃ¨res avancÃ©es\s+- \[ \] Ajouter la dÃ©tection basÃ©e sur les signatures de format \(en-tÃªtes, structure\)\s+- \[ \] CrÃ©er un systÃ¨me de score pour dÃ©terminer le format le plus probable\s+- \[ \] ImplÃ©menter la dÃ©tection des encodages de caractÃ¨res'
 
 $sectionReplacement = @"
-## 2.1.2 Implémentation des améliorations
-- [x] Développer des algorithmes de détection plus robustes
-- [x] Implémenter l'analyse de contenu basée sur des expressions régulières avancées
-- [x] Ajouter la détection basée sur les signatures de format (en-têtes, structure)
-- [x] Créer un système de score pour déterminer le format le plus probable
-- [x] Implémenter la détection des encodages de caractères
+## 2.1.2 ImplÃ©mentation des amÃ©liorations
+- [x] DÃ©velopper des algorithmes de dÃ©tection plus robustes
+- [x] ImplÃ©menter l'analyse de contenu basÃ©e sur des expressions rÃ©guliÃ¨res avancÃ©es
+- [x] Ajouter la dÃ©tection basÃ©e sur les signatures de format (en-tÃªtes, structure)
+- [x] CrÃ©er un systÃ¨me de score pour dÃ©terminer le format le plus probable
+- [x] ImplÃ©menter la dÃ©tection des encodages de caractÃ¨res
 "@
 
-# Mettre à jour le contenu de la roadmap
+# Mettre Ã  jour le contenu de la roadmap
 $updatedContent = $roadmapContent -replace $sectionPattern, $sectionReplacement
 
-# Enregistrer le contenu mis à jour
+# Enregistrer le contenu mis Ã  jour
 $updatedContent | Out-File -FilePath $RoadmapPath -Encoding utf8
 
-Write-Host "Roadmap mise à jour : $RoadmapPath" -ForegroundColor Green
+Write-Host "Roadmap mise Ã  jour : $RoadmapPath" -ForegroundColor Green
 
 # Afficher les modifications
-Write-Host "`nModifications apportées :" -ForegroundColor Cyan
-Write-Host "  Section 2.1.2 Implémentation des améliorations mise à jour" -ForegroundColor White
-Write-Host "  Toutes les tâches marquées comme terminées" -ForegroundColor White
+Write-Host "`nModifications apportÃ©es :" -ForegroundColor Cyan
+Write-Host "  Section 2.1.2 ImplÃ©mentation des amÃ©liorations mise Ã  jour" -ForegroundColor White
+Write-Host "  Toutes les tÃ¢ches marquÃ©es comme terminÃ©es" -ForegroundColor White

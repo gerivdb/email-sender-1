@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests complets pour la fonction Inspect-Variable.
 
 .DESCRIPTION
     Ce script contient des tests complets pour la fonction Inspect-Variable
-    qui couvrent toutes les fonctionnalités de la fonction.
+    qui couvrent toutes les fonctionnalitÃ©s de la fonction.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Inspect-Variable.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Inspect-Variable.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Inspect-Variable.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
-Write-Host "Fonction Inspect-Variable importée depuis : $functionPath" -ForegroundColor Green
+Write-Host "Fonction Inspect-Variable importÃ©e depuis : $functionPath" -ForegroundColor Green
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Feature {
     param (
         [string]$Name,
@@ -36,10 +36,10 @@ function Test-Feature {
     Write-Host "`nTest: $Name" -ForegroundColor Cyan
     try {
         & $Test
-        Write-Host "  Réussi" -ForegroundColor Green
+        Write-Host "  RÃ©ussi" -ForegroundColor Green
         return $true
     } catch {
-        Write-Host "  Échoué: $_" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
         return $false
     }
 }
@@ -51,38 +51,38 @@ $passedTests = 0
 # Test 1: Types simples
 $totalTests++
 if (Test-Feature -Name "Inspect-Variable devrait traiter correctement les types simples" -Test {
-        # Chaîne
+        # ChaÃ®ne
         $string = "Hello, World!"
         $result = Inspect-Variable -InputObject $string -Format "Object"
         if ($result.Type -ne "System.String" -or $result.Value -ne $string) {
-            throw "Échec du test pour les chaînes"
+            throw "Ã‰chec du test pour les chaÃ®nes"
         }
 
         # Entier
         $int = 42
         $result = Inspect-Variable -InputObject $int -Format "Object"
         if ($result.Type -ne "System.Int32" -or $result.Value -ne $int) {
-            throw "Échec du test pour les entiers"
+            throw "Ã‰chec du test pour les entiers"
         }
 
-        # Booléen
+        # BoolÃ©en
         $bool = $true
         $result = Inspect-Variable -InputObject $bool -Format "Object"
         if ($result.Type -ne "System.Boolean" -or $result.Value -ne $bool) {
-            throw "Échec du test pour les booléens"
+            throw "Ã‰chec du test pour les boolÃ©ens"
         }
 
         # Date
         $date = Get-Date
         $result = Inspect-Variable -InputObject $date -Format "Object"
         if ($result.Type -ne "System.DateTime") {
-            throw "Échec du test pour les dates"
+            throw "Ã‰chec du test pour les dates"
         }
 
         # Null
         $result = Inspect-Variable -InputObject $null -Format "Object"
         if ($result.Type -ne "null") {
-            throw "Échec du test pour null"
+            throw "Ã‰chec du test pour null"
         }
     }) {
     $passedTests++
@@ -95,7 +95,7 @@ if (Test-Feature -Name "Inspect-Variable devrait traiter correctement les collec
         $array = @(1, 2, 3, 4, 5)
         $result = Inspect-Variable -InputObject $array -Format "Object"
         if ($result.Type -ne "System.Object[]" -or $result.Count -ne 5) {
-            throw "Échec du test pour les tableaux"
+            throw "Ã‰chec du test pour les tableaux"
         }
 
         # Hashtable
@@ -105,7 +105,7 @@ if (Test-Feature -Name "Inspect-Variable devrait traiter correctement les collec
         }
         $result = Inspect-Variable -InputObject $hash -Format "Object"
         if ($result.Type -ne "System.Collections.Hashtable" -or $result.Count -ne 2) {
-            throw "Échec du test pour les hashtables"
+            throw "Ã‰chec du test pour les hashtables"
         }
     }) {
     $passedTests++
@@ -122,15 +122,15 @@ if (Test-Feature -Name "Inspect-Variable devrait traiter correctement les objets
         }
         $result = Inspect-Variable -InputObject $obj -Format "Object"
         if ($result.Type -ne "System.Management.Automation.PSCustomObject") {
-            throw "Échec du test pour les PSCustomObject"
+            throw "Ã‰chec du test pour les PSCustomObject"
         }
 
-        # Vérifier que les propriétés sont présentes
+        # VÃ©rifier que les propriÃ©tÃ©s sont prÃ©sentes
         if (-not $result.Properties -or
             -not $result.Properties.ContainsKey("Name") -or
             -not $result.Properties.ContainsKey("Value") -or
             -not $result.Properties.ContainsKey("Active")) {
-            throw "Échec du test pour les propriétés des PSCustomObject"
+            throw "Ã‰chec du test pour les propriÃ©tÃ©s des PSCustomObject"
         }
     }) {
     $passedTests++
@@ -139,7 +139,7 @@ if (Test-Feature -Name "Inspect-Variable devrait traiter correctement les objets
 # Test 4: Limitation de profondeur
 $totalTests++
 if (Test-Feature -Name "Inspect-Variable devrait respecter la limitation de profondeur" -Test {
-        # Objet imbriqué
+        # Objet imbriquÃ©
         $obj = [PSCustomObject]@{
             Level1 = [PSCustomObject]@{
                 Level2 = [PSCustomObject]@{
@@ -150,37 +150,37 @@ if (Test-Feature -Name "Inspect-Variable devrait respecter la limitation de prof
             }
         }
 
-        # Profondeur limitée à 2
+        # Profondeur limitÃ©e Ã  2
         $result = Inspect-Variable -InputObject $obj -Format "Object" -MaxDepth 2
 
-        # Vérifier que Level3 n'est pas exploré
+        # VÃ©rifier que Level3 n'est pas explorÃ©
         if ($result.Properties.Level1.Properties.Level2.Properties) {
-            throw "La limitation de profondeur n'est pas respectée"
+            throw "La limitation de profondeur n'est pas respectÃ©e"
         }
     }) {
     $passedTests++
 }
 
-# Test 5: Filtrage des propriétés
+# Test 5: Filtrage des propriÃ©tÃ©s
 $totalTests++
-if (Test-Feature -Name "Inspect-Variable devrait filtrer les propriétés correctement" -Test {
-        # Objet avec propriétés internes
+if (Test-Feature -Name "Inspect-Variable devrait filtrer les propriÃ©tÃ©s correctement" -Test {
+        # Objet avec propriÃ©tÃ©s internes
         $obj = [PSCustomObject]@{
             Name          = "Test"
             Value         = 42
             _InternalProp = "Hidden"
         }
 
-        # Sans inclure les propriétés internes
+        # Sans inclure les propriÃ©tÃ©s internes
         $result = Inspect-Variable -InputObject $obj -Format "Object" -IncludeInternalProperties:$false
         if ($result.Properties.ContainsKey("_InternalProp")) {
-            throw "Les propriétés internes ne sont pas filtrées correctement"
+            throw "Les propriÃ©tÃ©s internes ne sont pas filtrÃ©es correctement"
         }
 
-        # Avec inclusion des propriétés internes
+        # Avec inclusion des propriÃ©tÃ©s internes
         $result = Inspect-Variable -InputObject $obj -Format "Object" -IncludeInternalProperties:$true
         if (-not $result.Properties.ContainsKey("_InternalProp")) {
-            throw "Les propriétés internes ne sont pas incluses correctement"
+            throw "Les propriÃ©tÃ©s internes ne sont pas incluses correctement"
         }
     }) {
     $passedTests++
@@ -188,7 +188,7 @@ if (Test-Feature -Name "Inspect-Variable devrait filtrer les propriétés correc
 
 # Test 6: Formats de sortie
 $totalTests++
-if (Test-Feature -Name "Inspect-Variable devrait supporter différents formats de sortie" -Test {
+if (Test-Feature -Name "Inspect-Variable devrait supporter diffÃ©rents formats de sortie" -Test {
         $obj = [PSCustomObject]@{
             Name  = "Test"
             Value = 42
@@ -197,7 +197,7 @@ if (Test-Feature -Name "Inspect-Variable devrait supporter différents formats d
         # Format texte
         $result = Inspect-Variable -InputObject $obj -Format "Text"
         if (-not ($result -is [string])) {
-            throw "Le format texte ne retourne pas une chaîne"
+            throw "Le format texte ne retourne pas une chaÃ®ne"
         }
 
         # Format objet
@@ -209,16 +209,16 @@ if (Test-Feature -Name "Inspect-Variable devrait supporter différents formats d
         # Format JSON
         $result = Inspect-Variable -InputObject $obj -Format "JSON"
         if (-not ($result -is [string]) -or -not $result.StartsWith("{")) {
-            throw "Le format JSON ne retourne pas une chaîne JSON valide"
+            throw "Le format JSON ne retourne pas une chaÃ®ne JSON valide"
         }
     }) {
     $passedTests++
 }
 
-# Test 7: Références circulaires
+# Test 7: RÃ©fÃ©rences circulaires
 $totalTests++
-if (Test-Feature -Name "Inspect-Variable devrait gérer les références circulaires" -Test {
-        # Créer un objet avec une référence circulaire
+if (Test-Feature -Name "Inspect-Variable devrait gÃ©rer les rÃ©fÃ©rences circulaires" -Test {
+        # CrÃ©er un objet avec une rÃ©fÃ©rence circulaire
         $parent = [PSCustomObject]@{
             Name = "Parent"
         }
@@ -231,15 +231,15 @@ if (Test-Feature -Name "Inspect-Variable devrait gérer les références circula
         # Test avec CircularReferenceHandling=Throw
         try {
             Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Throw"
-            throw "Aucune exception n'a été levée pour CircularReferenceHandling=Throw"
+            throw "Aucune exception n'a Ã©tÃ© levÃ©e pour CircularReferenceHandling=Throw"
         } catch {
-            if (-not $_.Exception.Message.Contains("Référence circulaire détectée")) {
+            if (-not $_.Exception.Message.Contains("RÃ©fÃ©rence circulaire dÃ©tectÃ©e")) {
                 throw "Exception incorrecte pour CircularReferenceHandling=Throw: $_"
             }
         }
 
-        # Considérer ce test comme réussi si l'exception est correctement levée
-        # Les autres tests de références circulaires sont trop dépendants de l'implémentation
+        # ConsidÃ©rer ce test comme rÃ©ussi si l'exception est correctement levÃ©e
+        # Les autres tests de rÃ©fÃ©rences circulaires sont trop dÃ©pendants de l'implÃ©mentation
     }) {
     $passedTests++
 }
@@ -247,23 +247,23 @@ if (Test-Feature -Name "Inspect-Variable devrait gérer les références circula
 # Test 8: Optimisation pour les objets volumineux
 $totalTests++
 if (Test-Feature -Name "Inspect-Variable devrait optimiser le traitement des objets volumineux" -Test {
-        # Créer un tableau volumineux
+        # CrÃ©er un tableau volumineux
         $largeArray = 1..1000
 
-        # Limiter le nombre d'éléments affichés
+        # Limiter le nombre d'Ã©lÃ©ments affichÃ©s
         $result = Inspect-Variable -InputObject $largeArray -Format "Object" -MaxArrayItems 10
 
-        # Vérifier que seuls les 10 premiers éléments sont inclus
+        # VÃ©rifier que seuls les 10 premiers Ã©lÃ©ments sont inclus
         if ($result.Items.Count -ne 10 -or -not $result.HasMore -or $result.TotalItems -ne 1000) {
-            throw "La limitation du nombre d'éléments ne fonctionne pas correctement"
+            throw "La limitation du nombre d'Ã©lÃ©ments ne fonctionne pas correctement"
         }
     }) {
     $passedTests++
 }
 
-# Test 9: Niveaux de détail
+# Test 9: Niveaux de dÃ©tail
 $totalTests++
-if (Test-Feature -Name "Inspect-Variable devrait respecter les niveaux de détail" -Test {
+if (Test-Feature -Name "Inspect-Variable devrait respecter les niveaux de dÃ©tail" -Test {
         # Objet complexe
         $obj = [PSCustomObject]@{
             Name   = "Test"
@@ -273,24 +273,24 @@ if (Test-Feature -Name "Inspect-Variable devrait respecter les niveaux de détai
             }
         }
 
-        # Niveau de détail Basic
+        # Niveau de dÃ©tail Basic
         $result = Inspect-Variable -InputObject $obj -Format "Object" -DetailLevel "Basic"
         if ($result.Properties) {
-            throw "Le niveau de détail Basic ne supprime pas les propriétés"
+            throw "Le niveau de dÃ©tail Basic ne supprime pas les propriÃ©tÃ©s"
         }
 
-        # Niveau de détail Standard
+        # Niveau de dÃ©tail Standard
         $result = Inspect-Variable -InputObject $obj -Format "Object" -DetailLevel "Standard"
         if (-not $result.Properties -or -not $result.Properties.ContainsKey("Nested") -or
             $result.Properties.Nested.Properties) {
-            throw "Le niveau de détail Standard ne limite pas correctement la profondeur des propriétés"
+            throw "Le niveau de dÃ©tail Standard ne limite pas correctement la profondeur des propriÃ©tÃ©s"
         }
 
-        # Niveau de détail Detailed
+        # Niveau de dÃ©tail Detailed
         $result = Inspect-Variable -InputObject $obj -Format "Object" -DetailLevel "Detailed"
         if (-not $result.Properties -or -not $result.Properties.ContainsKey("Nested") -or
             -not $result.Properties.Nested.Properties -or -not $result.Properties.Nested.Properties.ContainsKey("SubProp")) {
-            throw "Le niveau de détail Detailed n'inclut pas toutes les propriétés"
+            throw "Le niveau de dÃ©tail Detailed n'inclut pas toutes les propriÃ©tÃ©s"
         }
     }) {
     $passedTests++
@@ -299,18 +299,18 @@ if (Test-Feature -Name "Inspect-Variable devrait respecter les niveaux de détai
 # Test 10: Formatage des valeurs
 $totalTests++
 if (Test-Feature -Name "Inspect-Variable devrait formater correctement les valeurs" -Test {
-        # Valeur numérique
+        # Valeur numÃ©rique
         $number = 1234567.89
         $result = Inspect-Variable -InputObject $number -Format "Text"
         if (-not ($result -match "\[Type\] System\.Double") -or -not ($result -match "\[Value\] $number")) {
-            throw "Le formatage des valeurs numériques est incorrect"
+            throw "Le formatage des valeurs numÃ©riques est incorrect"
         }
 
-        # Chaîne longue
+        # ChaÃ®ne longue
         $longString = "a" * 200
         $result = Inspect-Variable -InputObject $longString -Format "Text" -DetailLevel "Standard"
         if (-not ($result -match "\.\.\.$")) {
-            throw "Le formatage des chaînes longues est incorrect"
+            throw "Le formatage des chaÃ®nes longues est incorrect"
         }
 
         # Date
@@ -323,17 +323,17 @@ if (Test-Feature -Name "Inspect-Variable devrait formater correctement les valeu
     $passedTests++
 }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis: $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
-Write-Host "  Tests échoués: $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis: $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+Write-Host "  Tests Ã©chouÃ©s: $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

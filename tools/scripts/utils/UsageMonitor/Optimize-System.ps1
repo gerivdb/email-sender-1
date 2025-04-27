@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script principal pour le système d'optimisation proactive basé sur l'usage.
+    Script principal pour le systÃ¨me d'optimisation proactive basÃ© sur l'usage.
 .DESCRIPTION
-    Ce script sert de point d'entrée pour toutes les fonctionnalités du système
-    d'optimisation proactive basé sur l'usage.
+    Ce script sert de point d'entrÃ©e pour toutes les fonctionnalitÃ©s du systÃ¨me
+    d'optimisation proactive basÃ© sur l'usage.
 .PARAMETER Action
-    Action à effectuer (Monitor, Analyze, OptimizeParallel, OptimizeCache, SuggestRefactoring, All).
+    Action Ã  effectuer (Monitor, Analyze, OptimizeParallel, OptimizeCache, SuggestRefactoring, All).
 .PARAMETER DatabasePath
-    Chemin vers le fichier de base de données d'utilisation.
+    Chemin vers le fichier de base de donnÃ©es d'utilisation.
 .PARAMETER OutputPath
-    Chemin où les rapports et configurations seront enregistrés.
+    Chemin oÃ¹ les rapports et configurations seront enregistrÃ©s.
 .PARAMETER Apply
-    Indique si les optimisations doivent être appliquées automatiquement.
+    Indique si les optimisations doivent Ãªtre appliquÃ©es automatiquement.
 .EXAMPLE
     .\Optimize-System.ps1 -Action Monitor
 .EXAMPLE
@@ -38,7 +38,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "UsageMonitor.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -61,105 +61,105 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour exécuter le monitoring
+# Fonction pour exÃ©cuter le monitoring
 function Start-Monitoring {
-    Write-Log "Démarrage du monitoring..." -Level "TITLE"
+    Write-Log "DÃ©marrage du monitoring..." -Level "TITLE"
     
     # Initialiser le moniteur d'utilisation
     Initialize-UsageMonitor -DatabasePath $DatabasePath
-    Write-Log "Moniteur d'utilisation initialisé avec la base de données: $DatabasePath" -Level "SUCCESS"
+    Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
     
-    # Exécuter le script d'exemple pour démontrer le monitoring
+    # ExÃ©cuter le script d'exemple pour dÃ©montrer le monitoring
     $examplePath = Join-Path -Path $PSScriptRoot -ChildPath "Example-Usage.ps1"
     if (Test-Path -Path $examplePath) {
-        Write-Log "Exécution du script d'exemple pour démontrer le monitoring..." -Level "INFO"
+        Write-Log "ExÃ©cution du script d'exemple pour dÃ©montrer le monitoring..." -Level "INFO"
         & $examplePath
     }
     else {
-        Write-Log "Script d'exemple non trouvé: $examplePath" -Level "WARNING"
+        Write-Log "Script d'exemple non trouvÃ©: $examplePath" -Level "WARNING"
     }
     
-    Write-Log "Monitoring terminé." -Level "TITLE"
+    Write-Log "Monitoring terminÃ©." -Level "TITLE"
 }
 
-# Fonction pour exécuter l'analyse
+# Fonction pour exÃ©cuter l'analyse
 function Start-Analysis {
-    Write-Log "Démarrage de l'analyse..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'analyse..." -Level "TITLE"
     
-    # Exécuter le script d'analyse
+    # ExÃ©cuter le script d'analyse
     $analyzePath = Join-Path -Path $PSScriptRoot -ChildPath "Analyze-UsageData.ps1"
     if (Test-Path -Path $analyzePath) {
-        Write-Log "Exécution du script d'analyse..." -Level "INFO"
+        Write-Log "ExÃ©cution du script d'analyse..." -Level "INFO"
         & $analyzePath -DatabasePath $DatabasePath -OutputPath $OutputPath -ReportFormat "HTML"
     }
     else {
-        Write-Log "Script d'analyse non trouvé: $analyzePath" -Level "ERROR"
+        Write-Log "Script d'analyse non trouvÃ©: $analyzePath" -Level "ERROR"
     }
     
-    Write-Log "Analyse terminée." -Level "TITLE"
+    Write-Log "Analyse terminÃ©e." -Level "TITLE"
 }
 
-# Fonction pour optimiser la parallélisation
+# Fonction pour optimiser la parallÃ©lisation
 function Start-ParallelOptimization {
-    Write-Log "Démarrage de l'optimisation de la parallélisation..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'optimisation de la parallÃ©lisation..." -Level "TITLE"
     
-    # Exécuter le script d'optimisation de la parallélisation
+    # ExÃ©cuter le script d'optimisation de la parallÃ©lisation
     $parallelPath = Join-Path -Path $PSScriptRoot -ChildPath "Optimize-Parallelization.ps1"
     if (Test-Path -Path $parallelPath) {
-        Write-Log "Exécution du script d'optimisation de la parallélisation..." -Level "INFO"
+        Write-Log "ExÃ©cution du script d'optimisation de la parallÃ©lisation..." -Level "INFO"
         $configPath = Join-Path -Path $OutputPath -ChildPath "parallelization_config.json"
         & $parallelPath -DatabasePath $DatabasePath -ConfigPath $configPath -Apply:$Apply
     }
     else {
-        Write-Log "Script d'optimisation de la parallélisation non trouvé: $parallelPath" -Level "ERROR"
+        Write-Log "Script d'optimisation de la parallÃ©lisation non trouvÃ©: $parallelPath" -Level "ERROR"
     }
     
-    Write-Log "Optimisation de la parallélisation terminée." -Level "TITLE"
+    Write-Log "Optimisation de la parallÃ©lisation terminÃ©e." -Level "TITLE"
 }
 
 # Fonction pour optimiser le cache
 function Start-CacheOptimization {
-    Write-Log "Démarrage de l'optimisation du cache..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'optimisation du cache..." -Level "TITLE"
     
-    # Exécuter le script d'optimisation du cache
+    # ExÃ©cuter le script d'optimisation du cache
     $cachePath = Join-Path -Path $PSScriptRoot -ChildPath "Optimize-Caching.ps1"
     if (Test-Path -Path $cachePath) {
-        Write-Log "Exécution du script d'optimisation du cache..." -Level "INFO"
+        Write-Log "ExÃ©cution du script d'optimisation du cache..." -Level "INFO"
         $configPath = Join-Path -Path $OutputPath -ChildPath "cache_config.json"
         & $cachePath -DatabasePath $DatabasePath -ConfigPath $configPath -Apply:$Apply
     }
     else {
-        Write-Log "Script d'optimisation du cache non trouvé: $cachePath" -Level "ERROR"
+        Write-Log "Script d'optimisation du cache non trouvÃ©: $cachePath" -Level "ERROR"
     }
     
-    Write-Log "Optimisation du cache terminée." -Level "TITLE"
+    Write-Log "Optimisation du cache terminÃ©e." -Level "TITLE"
 }
 
-# Fonction pour suggérer des refactorisations
+# Fonction pour suggÃ©rer des refactorisations
 function Start-RefactoringSuggestions {
-    Write-Log "Démarrage des suggestions de refactorisation..." -Level "TITLE"
+    Write-Log "DÃ©marrage des suggestions de refactorisation..." -Level "TITLE"
     
-    # Exécuter le script de suggestions de refactorisation
+    # ExÃ©cuter le script de suggestions de refactorisation
     $refactoringPath = Join-Path -Path $PSScriptRoot -ChildPath "Suggest-Refactoring.ps1"
     if (Test-Path -Path $refactoringPath) {
-        Write-Log "Exécution du script de suggestions de refactorisation..." -Level "INFO"
+        Write-Log "ExÃ©cution du script de suggestions de refactorisation..." -Level "INFO"
         $refactoringOutputPath = Join-Path -Path $OutputPath -ChildPath "Refactoring"
         & $refactoringPath -DatabasePath $DatabasePath -OutputPath $refactoringOutputPath
     }
     else {
-        Write-Log "Script de suggestions de refactorisation non trouvé: $refactoringPath" -Level "ERROR"
+        Write-Log "Script de suggestions de refactorisation non trouvÃ©: $refactoringPath" -Level "ERROR"
     }
     
-    Write-Log "Suggestions de refactorisation terminées." -Level "TITLE"
+    Write-Log "Suggestions de refactorisation terminÃ©es." -Level "TITLE"
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Exécuter l'action spécifiée
+# ExÃ©cuter l'action spÃ©cifiÃ©e
 switch ($Action) {
     "Monitor" {
         Start-Monitoring
@@ -185,4 +185,4 @@ switch ($Action) {
     }
 }
 
-Write-Log "Opération terminée avec succès." -Level "SUCCESS"
+Write-Log "OpÃ©ration terminÃ©e avec succÃ¨s." -Level "SUCCESS"

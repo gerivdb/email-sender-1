@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests simplifiés pour la fonction Get-FileFormatAnalysis.
+    Tests simplifiÃ©s pour la fonction Get-FileFormatAnalysis.
 
 .DESCRIPTION
-    Ce script contient des tests simplifiés pour la fonction Get-FileFormatAnalysis.
-    Il utilise des fichiers de test créés localement pour tester les fonctionnalités de base.
+    Ce script contient des tests simplifiÃ©s pour la fonction Get-FileFormatAnalysis.
+    Il utilise des fichiers de test crÃ©Ã©s localement pour tester les fonctionnalitÃ©s de base.
 
 .NOTES
     Version: 1.0
@@ -17,40 +17,40 @@
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 Import-Module -Name $modulePath -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $global:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
 New-Item -Path $global:testTempDir -ItemType Directory -Force | Out-Null
-Write-Host "Répertoire temporaire créé : $global:testTempDir"
+Write-Host "RÃ©pertoire temporaire crÃ©Ã© : $global:testTempDir"
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $global:jsonFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.json"
 $global:jsonContent = '{"name":"Test","version":"1.0.0"}'
 $global:jsonContent | Set-Content -Path $global:jsonFilePath -Encoding UTF8
-Write-Host "Fichier JSON créé : $global:jsonFilePath"
+Write-Host "Fichier JSON crÃ©Ã© : $global:jsonFilePath"
 
 $global:xmlFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.xml"
 $global:xmlContent = '<root><name>Test</name></root>'
 $global:xmlContent | Set-Content -Path $global:xmlFilePath -Encoding UTF8
-Write-Host "Fichier XML créé : $global:xmlFilePath"
+Write-Host "Fichier XML crÃ©Ã© : $global:xmlFilePath"
 
 $global:htmlFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.html"
 $global:htmlContent = '<html><body>Test</body></html>'
 $global:htmlContent | Set-Content -Path $global:htmlFilePath -Encoding UTF8
-Write-Host "Fichier HTML créé : $global:htmlFilePath"
+Write-Host "Fichier HTML crÃ©Ã© : $global:htmlFilePath"
 
 $global:csvFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.csv"
 $global:csvContent = 'Name,Value
 Test,1'
 $global:csvContent | Set-Content -Path $global:csvFilePath -Encoding UTF8
-Write-Host "Fichier CSV créé : $global:csvFilePath"
+Write-Host "Fichier CSV crÃ©Ã© : $global:csvFilePath"
 
 $global:textFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.txt"
 $global:textContent = 'This is a test file.'
 $global:textContent | Set-Content -Path $global:textFilePath -Encoding UTF8
-Write-Host "Fichier texte créé : $global:textFilePath"
+Write-Host "Fichier texte crÃ©Ã© : $global:textFilePath"
 
-# Vérifier que les fichiers existent
-Write-Host "Vérification des fichiers créés :"
+# VÃ©rifier que les fichiers existent
+Write-Host "VÃ©rification des fichiers crÃ©Ã©s :"
 Write-Host "JSON : $global:jsonFilePath - $(Test-Path -Path $global:jsonFilePath)"
 Write-Host "XML : $global:xmlFilePath - $(Test-Path -Path $global:xmlFilePath)"
 Write-Host "HTML : $global:htmlFilePath - $(Test-Path -Path $global:htmlFilePath)"
@@ -58,16 +58,16 @@ Write-Host "CSV : $global:csvFilePath - $(Test-Path -Path $global:csvFilePath)"
 Write-Host "Texte : $global:textFilePath - $(Test-Path -Path $global:textFilePath)"
 
 # Tests pour Get-FileFormatAnalysis
-Describe "Fonction Get-FileFormatAnalysis (Simplifiée)" {
-    Context "Analyse de fichiers avec format détecté" {
+Describe "Fonction Get-FileFormatAnalysis (SimplifiÃ©e)" {
+    Context "Analyse de fichiers avec format dÃ©tectÃ©" {
         It "Analyse correctement un fichier JSON" {
-            Write-Host "Début du test JSON"
+            Write-Host "DÃ©but du test JSON"
             Write-Host "jsonFilePath = $jsonFilePath"
             Write-Host "Existe = $(Test-Path -Path $jsonFilePath)"
 
             try {
                 $result = Get-FileFormatAnalysis -FilePath $jsonFilePath -Format "json"
-                Write-Host "Résultat = $result"
+                Write-Host "RÃ©sultat = $result"
                 $result | Should -Not -BeNullOrEmpty
                 $result.FilePath | Should -Be $jsonFilePath
                 $result.Format | Should -Be "JSON"
@@ -100,15 +100,15 @@ Describe "Fonction Get-FileFormatAnalysis (Simplifiée)" {
         }
     }
 
-    Context "Analyse de fichiers avec détection automatique" {
-        It "Détecte et analyse correctement un fichier JSON" {
+    Context "Analyse de fichiers avec dÃ©tection automatique" {
+        It "DÃ©tecte et analyse correctement un fichier JSON" {
             $result = Get-FileFormatAnalysis -FilePath $jsonFilePath -AutoDetect
             $result | Should -Not -BeNullOrEmpty
             $result.FilePath | Should -Be $jsonFilePath
             $result.Format | Should -Be "JSON"
         }
 
-        It "Détecte et analyse correctement un fichier XML" {
+        It "DÃ©tecte et analyse correctement un fichier XML" {
             $result = Get-FileFormatAnalysis -FilePath $xmlFilePath -AutoDetect
             $result | Should -Not -BeNullOrEmpty
             $result.FilePath | Should -Be $xmlFilePath
@@ -117,22 +117,22 @@ Describe "Fonction Get-FileFormatAnalysis (Simplifiée)" {
     }
 
     Context "Analyse avec inclusion du contenu" {
-        It "Inclut le contenu du fichier lorsque demandé" {
+        It "Inclut le contenu du fichier lorsque demandÃ©" {
             $result = Get-FileFormatAnalysis -FilePath $global:jsonFilePath -Format "json" -IncludeContent
             $result | Should -Not -BeNullOrEmpty
             $result.Content | Should -Not -BeNullOrEmpty
-            # Vérifier simplement que le contenu n'est pas vide
+            # VÃ©rifier simplement que le contenu n'est pas vide
             $result.Content.Length | Should -BeGreaterThan 0
         }
     }
 
     Context "Gestion des erreurs" {
-        It "Génère une erreur si le fichier n'existe pas" {
+        It "GÃ©nÃ¨re une erreur si le fichier n'existe pas" {
             $nonExistentFile = Join-Path -Path $testTempDir -ChildPath "non-existent.json"
             { Get-FileFormatAnalysis -FilePath $nonExistentFile -Format "json" } | Should -Throw
         }
 
-        It "Génère une erreur si le format n'est pas pris en charge" {
+        It "GÃ©nÃ¨re une erreur si le format n'est pas pris en charge" {
             { Get-FileFormatAnalysis -FilePath $jsonFilePath -Format "unsupported" } | Should -Throw
         }
     }
@@ -142,6 +142,6 @@ Describe "Fonction Get-FileFormatAnalysis (Simplifiée)" {
 AfterAll {
     if (Test-Path -Path $global:testTempDir) {
         Remove-Item -Path $global:testTempDir -Recurse -Force
-        Write-Host "Répertoire temporaire supprimé : $global:testTempDir"
+        Write-Host "RÃ©pertoire temporaire supprimÃ© : $global:testTempDir"
     }
 }

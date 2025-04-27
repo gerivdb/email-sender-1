@@ -1,7 +1,7 @@
-Describe "Fonctions communes des scripts de performance" {
+﻿Describe "Fonctions communes des scripts de performance" {
     Context "New-DirectoryIfNotExists" {
         BeforeAll {
-            # Définir la fonction à tester
+            # DÃ©finir la fonction Ã  tester
             function New-DirectoryIfNotExists {
                 [CmdletBinding(SupportsShouldProcess=$true)]
                 param(
@@ -10,7 +10,7 @@ Describe "Fonctions communes des scripts de performance" {
                 )
                 
                 if (-not (Test-Path -Path $Path -PathType Container)) {
-                    if ($PSCmdlet.ShouldProcess($Path, "Créer le répertoire pour $Purpose")) {
+                    if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le rÃ©pertoire pour $Purpose")) {
                         $null = New-Item -Path $Path -ItemType Directory -Force -ErrorAction Stop
                     }
                 }
@@ -18,47 +18,47 @@ Describe "Fonctions communes des scripts de performance" {
                 return (Resolve-Path -Path $Path).Path
             }
             
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testDir = Join-Path -Path $TestDrive -ChildPath "TestDir"
             $testSubDir = Join-Path -Path $testDir -ChildPath "SubDir"
             
-            # S'assurer que le répertoire de test n'existe pas
+            # S'assurer que le rÃ©pertoire de test n'existe pas
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
         }
         
-        It "Crée un répertoire s'il n'existe pas" {
-            # Appeler la fonction avec ShouldProcess forcé à $true
+        It "CrÃ©e un rÃ©pertoire s'il n'existe pas" {
+            # Appeler la fonction avec ShouldProcess forcÃ© Ã  $true
             $result = New-DirectoryIfNotExists -Path $testDir -Purpose "Test" -Confirm:$false
             
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $testDir | Should -Be $true
             
-            # Vérifier que la fonction retourne le chemin complet
+            # VÃ©rifier que la fonction retourne le chemin complet
             $result | Should -Not -BeNullOrEmpty
             $result | Should -Be (Resolve-Path -Path $testDir).Path
         }
         
-        It "Retourne le chemin existant si le répertoire existe déjà" {
-            # Créer le répertoire manuellement
+        It "Retourne le chemin existant si le rÃ©pertoire existe dÃ©jÃ " {
+            # CrÃ©er le rÃ©pertoire manuellement
             New-Item -Path $testSubDir -ItemType Directory -Force | Out-Null
             
-            # Appeler la fonction avec ShouldProcess forcé à $true
+            # Appeler la fonction avec ShouldProcess forcÃ© Ã  $true
             $result = New-DirectoryIfNotExists -Path $testSubDir -Purpose "Test" -Confirm:$false
             
-            # Vérifier que la fonction retourne le chemin complet
+            # VÃ©rifier que la fonction retourne le chemin complet
             $result | Should -Not -BeNullOrEmpty
             $result | Should -Be (Resolve-Path -Path $testSubDir).Path
         }
     }
     
-    Context "Formatage des données pour JavaScript" {
+    Context "Formatage des donnÃ©es pour JavaScript" {
         BeforeAll {
-            # Définir la fonction à tester
+            # DÃ©finir la fonction Ã  tester
             $jsData = { param($data) ($data | ConvertTo-Json -Compress -Depth 1) }
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testData = @(
                 [PSCustomObject]@{ Name = "Test1"; Value = 10 },
                 [PSCustomObject]@{ Name = "Test2"; Value = 20 },
@@ -66,14 +66,14 @@ Describe "Fonctions communes des scripts de performance" {
             )
         }
         
-        It "Formate correctement les données en JSON" {
-            # Appeler la fonction avec les données de test
+        It "Formate correctement les donnÃ©es en JSON" {
+            # Appeler la fonction avec les donnÃ©es de test
             $result = & $jsData -data $testData
             
-            # Vérifier que le résultat est une chaîne JSON valide
+            # VÃ©rifier que le rÃ©sultat est une chaÃ®ne JSON valide
             { $result | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que les données sont correctement formatées
+            # VÃ©rifier que les donnÃ©es sont correctement formatÃ©es
             $jsonData = $result | ConvertFrom-Json
             $jsonData.Count | Should -Be 3
             $jsonData[0].Name | Should -Be "Test1"
@@ -81,9 +81,9 @@ Describe "Fonctions communes des scripts de performance" {
         }
     }
     
-    Context "Tri des résultats avec plusieurs critères" {
+    Context "Tri des rÃ©sultats avec plusieurs critÃ¨res" {
         BeforeAll {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testResults = @(
                 [PSCustomObject]@{
                     BatchSize = 10
@@ -108,14 +108,14 @@ Describe "Fonctions communes des scripts de performance" {
             )
         }
         
-        It "Trie correctement par taux de succès décroissant puis par temps d'exécution" {
-            # Trier les résultats
+        It "Trie correctement par taux de succÃ¨s dÃ©croissant puis par temps d'exÃ©cution" {
+            # Trier les rÃ©sultats
             $sortedResults = $testResults | Sort-Object -Property @{Expression = 'SuccessRatePercent'; Descending = $true}, 'AverageExecutionTimeS'
             
-            # Vérifier que le premier élément a le taux de succès le plus élevé
+            # VÃ©rifier que le premier Ã©lÃ©ment a le taux de succÃ¨s le plus Ã©levÃ©
             $sortedResults[0].SuccessRatePercent | Should -Be 100
             
-            # Vérifier que parmi les éléments avec le même taux de succès, celui avec le temps d'exécution le plus court est en premier
+            # VÃ©rifier que parmi les Ã©lÃ©ments avec le mÃªme taux de succÃ¨s, celui avec le temps d'exÃ©cution le plus court est en premier
             $sortedResults[0].AverageExecutionTimeS | Should -Be 4.5
             $sortedResults[1].AverageExecutionTimeS | Should -Be 5.2
         }
@@ -123,7 +123,7 @@ Describe "Fonctions communes des scripts de performance" {
     
     Context "Calcul des statistiques" {
         BeforeAll {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testResults = @(
                 [PSCustomObject]@{
                     ExecutionTimeS = 5.2
@@ -149,8 +149,8 @@ Describe "Fonctions communes des scripts de performance" {
             )
         }
         
-        It "Calcule correctement les moyennes des métriques" {
-            # Filtrer les résultats réussis
+        It "Calcule correctement les moyennes des mÃ©triques" {
+            # Filtrer les rÃ©sultats rÃ©ussis
             $successfulResults = $testResults | Where-Object { $_.Success }
             
             # Calculer les moyennes
@@ -159,20 +159,20 @@ Describe "Fonctions communes des scripts de performance" {
             $avgWorkingSet = ($successfulResults | Measure-Object -Property WorkingSetMB -Average).Average
             $avgPrivateMemory = ($successfulResults | Measure-Object -Property PrivateMemoryMB -Average).Average
             
-            # Vérifier que les moyennes sont calculées correctement
+            # VÃ©rifier que les moyennes sont calculÃ©es correctement
             $avgExecTime | Should -Be 4.85
             $avgCpuTime | Should -Be 4.5
             $avgWorkingSet | Should -Be 165
             $avgPrivateMemory | Should -Be 130
         }
         
-        It "Calcule correctement le taux de succès" {
-            # Calculer le taux de succès
+        It "Calcule correctement le taux de succÃ¨s" {
+            # Calculer le taux de succÃ¨s
             $successCount = ($testResults | Where-Object { $_.Success }).Count
             $totalCount = $testResults.Count
             $successRate = [Math]::Round(($successCount / $totalCount) * 100, 1)
             
-            # Vérifier que le taux de succès est calculé correctement
+            # VÃ©rifier que le taux de succÃ¨s est calculÃ© correctement
             $successRate | Should -Be 66.7
         }
     }

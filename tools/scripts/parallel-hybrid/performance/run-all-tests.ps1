@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests de performance pour l'architecture hybride PowerShell-Python.
+    ExÃ©cute tous les tests de performance pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Ce script exécute tous les tests de performance pour l'architecture hybride PowerShell-Python
-    et génère un rapport global des résultats.
+    Ce script exÃ©cute tous les tests de performance pour l'architecture hybride PowerShell-Python
+    et gÃ©nÃ¨re un rapport global des rÃ©sultats.
 .PARAMETER OutputPath
-    Chemin vers le répertoire où les résultats seront enregistrés.
+    Chemin vers le rÃ©pertoire oÃ¹ les rÃ©sultats seront enregistrÃ©s.
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -24,12 +24,12 @@ param(
     [switch]$GenerateReport
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour exécuter un test de performance
+# Fonction pour exÃ©cuter un test de performance
 function Invoke-PerformanceTest {
     [CmdletBinding()]
     param(
@@ -46,7 +46,7 @@ function Invoke-PerformanceTest {
         [switch]$GenerateReport
     )
     
-    Write-Host "`n=== Exécution du test : $Name ===" -ForegroundColor Cyan
+    Write-Host "`n=== ExÃ©cution du test : $Name ===" -ForegroundColor Cyan
     
     $testOutputPath = Join-Path -Path $OutputPath -ChildPath $Name.Replace(" ", "_")
     if (-not (Test-Path -Path $testOutputPath)) {
@@ -56,12 +56,12 @@ function Invoke-PerformanceTest {
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
     try {
-        # Exécuter le script de test
+        # ExÃ©cuter le script de test
         $result = & $ScriptPath -OutputPath $testOutputPath -GenerateReport:$GenerateReport
         $success = $true
     }
     catch {
-        Write-Error "Erreur lors de l'exécution du test '$Name' : $_"
+        Write-Error "Erreur lors de l'exÃ©cution du test '$Name' : $_"
         $success = $false
         $result = $null
     }
@@ -69,8 +69,8 @@ function Invoke-PerformanceTest {
     $stopwatch.Stop()
     $executionTime = $stopwatch.Elapsed.TotalSeconds
     
-    Write-Host "Test '$Name' terminé en $executionTime secondes." -ForegroundColor Green
-    Write-Host "Résultats enregistrés dans : $testOutputPath" -ForegroundColor Green
+    Write-Host "Test '$Name' terminÃ© en $executionTime secondes." -ForegroundColor Green
+    Write-Host "RÃ©sultats enregistrÃ©s dans : $testOutputPath" -ForegroundColor Green
     
     return [PSCustomObject]@{
         Name = $Name
@@ -81,10 +81,10 @@ function Invoke-PerformanceTest {
     }
 }
 
-# Définir les tests à exécuter
+# DÃ©finir les tests Ã  exÃ©cuter
 $tests = @(
     @{
-        Name = "Benchmark général"
+        Name = "Benchmark gÃ©nÃ©ral"
         ScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "benchmark.ps1"
     },
     @{
@@ -92,7 +92,7 @@ $tests = @(
         ScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "optimize-batch-size.ps1"
     },
     @{
-        Name = "Optimisation de la mémoire"
+        Name = "Optimisation de la mÃ©moire"
         ScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "optimize-memory-usage.ps1"
     },
     @{
@@ -101,7 +101,7 @@ $tests = @(
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = @()
 
 foreach ($test in $tests) {
@@ -114,15 +114,15 @@ foreach ($test in $tests) {
     $results += $result
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $OutputPath -ChildPath "all_tests_results.json"
 $results | Select-Object -Property Name, ExecutionTime, Success, OutputPath | 
     ConvertTo-Json -Depth 5 | 
     Out-File -FilePath $resultsPath -Encoding utf8
 
-Write-Host "`nRésultats enregistrés : $resultsPath" -ForegroundColor Green
+Write-Host "`nRÃ©sultats enregistrÃ©s : $resultsPath" -ForegroundColor Green
 
-# Générer un rapport HTML global si demandé
+# GÃ©nÃ©rer un rapport HTML global si demandÃ©
 if ($GenerateReport) {
     $reportPath = Join-Path -Path $OutputPath -ChildPath "performance_report.html"
     
@@ -189,34 +189,34 @@ if ($GenerateReport) {
 </head>
 <body>
     <h1>Rapport de performance global</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de tests exécutés : $($results.Count)</p>
-        <p>Tests réussis : $($results | Where-Object { $_.Success } | Measure-Object).Count</p>
-        <p>Tests échoués : $($results | Where-Object { -not $_.Success } | Measure-Object).Count</p>
-        <p>Temps total d'exécution : $([Math]::Round(($results | Measure-Object -Property ExecutionTime -Sum).Sum, 2)) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de tests exÃ©cutÃ©s : $($results.Count)</p>
+        <p>Tests rÃ©ussis : $($results | Where-Object { $_.Success } | Measure-Object).Count</p>
+        <p>Tests Ã©chouÃ©s : $($results | Where-Object { -not $_.Success } | Measure-Object).Count</p>
+        <p>Temps total d'exÃ©cution : $([Math]::Round(($results | Measure-Object -Property ExecutionTime -Sum).Sum, 2)) secondes</p>
     </div>
     
-    <h2>Résultats par test</h2>
+    <h2>RÃ©sultats par test</h2>
     <table>
         <thead>
             <tr>
                 <th>Test</th>
-                <th>Temps d'exécution (s)</th>
+                <th>Temps d'exÃ©cution (s)</th>
                 <th>Statut</th>
-                <th>Rapport détaillé</th>
+                <th>Rapport dÃ©taillÃ©</th>
             </tr>
         </thead>
         <tbody>
 "@
     
     foreach ($result in $results) {
-        $status = $result.Success ? "<span class='success'>Succès</span>" : "<span class='failure'>Échec</span>"
+        $status = $result.Success ? "<span class='success'>SuccÃ¨s</span>" : "<span class='failure'>Ã‰chec</span>"
         $reportLink = ""
         
-        # Vérifier si un rapport HTML a été généré pour ce test
+        # VÃ©rifier si un rapport HTML a Ã©tÃ© gÃ©nÃ©rÃ© pour ce test
         $testReportPath = Join-Path -Path $result.OutputPath -ChildPath "$($result.Name.Replace(' ', '_').ToLower())_report.html"
         if (Test-Path -Path $testReportPath) {
             $relativePath = $testReportPath.Replace($OutputPath, ".").Replace("\", "/")
@@ -239,35 +239,35 @@ if ($GenerateReport) {
     
     <div class="recommendations">
         <h2>Recommandations</h2>
-        <p>Basées sur les résultats des tests de performance, voici les recommandations pour optimiser les performances de l'architecture hybride PowerShell-Python :</p>
+        <p>BasÃ©es sur les rÃ©sultats des tests de performance, voici les recommandations pour optimiser les performances de l'architecture hybride PowerShell-Python :</p>
         <ul>
-            <li><strong>Taille de lot optimale :</strong> Utiliser une taille de lot de 20 éléments pour le traitement parallèle.</li>
-            <li><strong>Gestion de la mémoire :</strong> Implémenter la technique de "Traitement par lots avec libération de mémoire" pour réduire l'empreinte mémoire.</li>
-            <li><strong>Optimisation des E/S :</strong> Utiliser la technique de "Mise en cache des fichiers" pour réduire les opérations d'E/S redondantes.</li>
-            <li><strong>Parallélisme :</strong> Limiter le nombre de processus parallèles à 2 fois le nombre de cœurs disponibles pour éviter la surcharge du système.</li>
+            <li><strong>Taille de lot optimale :</strong> Utiliser une taille de lot de 20 Ã©lÃ©ments pour le traitement parallÃ¨le.</li>
+            <li><strong>Gestion de la mÃ©moire :</strong> ImplÃ©menter la technique de "Traitement par lots avec libÃ©ration de mÃ©moire" pour rÃ©duire l'empreinte mÃ©moire.</li>
+            <li><strong>Optimisation des E/S :</strong> Utiliser la technique de "Mise en cache des fichiers" pour rÃ©duire les opÃ©rations d'E/S redondantes.</li>
+            <li><strong>ParallÃ©lisme :</strong> Limiter le nombre de processus parallÃ¨les Ã  2 fois le nombre de cÅ“urs disponibles pour Ã©viter la surcharge du systÃ¨me.</li>
         </ul>
     </div>
     
     <h2>Graphiques</h2>
     
-    <h3>Temps d'exécution par test</h3>
+    <h3>Temps d'exÃ©cution par test</h3>
     <div class="chart-container">
         <canvas id="timeChart"></canvas>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const tests = [$(($results | ForEach-Object { "'$($_.Name)'" }) -join ', ')];
         const executionTimes = [$(($results | ForEach-Object { [Math]::Round($_.ExecutionTime, 2) }) -join ', ')];
         
-        // Graphique des temps d'exécution
+        // Graphique des temps d'exÃ©cution
         const timeCtx = document.getElementById('timeChart').getContext('2d');
         new Chart(timeCtx, {
             type: 'bar',
             data: {
                 labels: tests,
                 datasets: [{
-                    label: 'Temps d\'exécution (s)',
+                    label: 'Temps d\'exÃ©cution (s)',
                     data: executionTimes,
                     backgroundColor: 'rgba(0, 120, 212, 0.7)',
                     borderColor: 'rgba(0, 120, 212, 1)',
@@ -293,11 +293,11 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport HTML global généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML global gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

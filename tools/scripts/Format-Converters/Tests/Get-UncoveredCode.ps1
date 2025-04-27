@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Identifie les parties du code non couvertes par les tests.
@@ -19,18 +19,18 @@ $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "For
 # Chemin des tests
 $testsPath = $PSScriptRoot
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module Format-Converters n'existe pas à l'emplacement : $modulePath"
+    Write-Error "Le module Format-Converters n'existe pas Ã  l'emplacement : $modulePath"
     exit 1
 }
 
-# Obtenir tous les fichiers de test réels
+# Obtenir tous les fichiers de test rÃ©els
 $testFiles = Get-ChildItem -Path $testsPath -Filter "*.Tests.ps1" | 
     Where-Object { $_.Name -notlike "*.Simplified.ps1" } |
     ForEach-Object { $_.FullName }
 
-# Exécuter les tests avec couverture de code
+# ExÃ©cuter les tests avec couverture de code
 Write-Host "Analyse de la couverture de code..." -ForegroundColor Cyan
 $results = Invoke-Pester -Path $testFiles -CodeCoverage $modulePath -PassThru
 
@@ -46,7 +46,7 @@ $functions = $functionMatches | ForEach-Object { $_.Groups[1].Value }
 # Analyser la couverture par fonction
 $functionCoverage = @{}
 foreach ($function in $functions) {
-    # Trouver les lignes de début et de fin de la fonction
+    # Trouver les lignes de dÃ©but et de fin de la fonction
     $functionPattern = "function\s+$function\s*{"
     $functionStartMatch = [regex]::Match($moduleContent, $functionPattern)
     if (-not $functionStartMatch.Success) {
@@ -80,11 +80,11 @@ foreach ($function in $functions) {
     }
 }
 
-# Trier les fonctions par couverture (de la plus basse à la plus haute)
+# Trier les fonctions par couverture (de la plus basse Ã  la plus haute)
 $sortedFunctions = $functionCoverage.GetEnumerator() | Sort-Object { $_.Value.CoveragePercent }
 
-# Afficher les résultats
-Write-Host "`nRésumé de la couverture par fonction :" -ForegroundColor Cyan
+# Afficher les rÃ©sultats
+Write-Host "`nRÃ©sumÃ© de la couverture par fonction :" -ForegroundColor Cyan
 Write-Host "=================================" -ForegroundColor Cyan
 
 $totalCoverage = [math]::Round(($results.CodeCoverage.NumberOfCommandsExecuted / $results.CodeCoverage.NumberOfCommandsAnalyzed) * 100, 2)
@@ -97,7 +97,7 @@ foreach ($function in $sortedFunctions) {
     }
 }
 
-Write-Host "`nFonctions avec une couverture moyenne (50% à 80%) :" -ForegroundColor Yellow
+Write-Host "`nFonctions avec une couverture moyenne (50% Ã  80%) :" -ForegroundColor Yellow
 foreach ($function in $sortedFunctions) {
     if ($function.Value.CoveragePercent -ge 50 -and $function.Value.CoveragePercent -lt 80) {
         Write-Host "  - $($function.Key): $($function.Value.CoveragePercent)% ($($function.Value.CoveredCommands)/$($function.Value.TotalCommands)) [Lignes $($function.Value.StartLine)-$($function.Value.EndLine)]" -ForegroundColor Yellow
@@ -111,7 +111,7 @@ foreach ($function in $sortedFunctions) {
     }
 }
 
-# Générer un rapport détaillé des lignes non couvertes
+# GÃ©nÃ©rer un rapport dÃ©taillÃ© des lignes non couvertes
 $uncoveredLines = $results.CodeCoverage.MissedCommands | Sort-Object Line
 
 Write-Host "`nLignes non couvertes :" -ForegroundColor Cyan
@@ -119,7 +119,7 @@ Write-Host "===================" -ForegroundColor Cyan
 
 $currentFunction = ""
 foreach ($line in $uncoveredLines) {
-    # Déterminer à quelle fonction appartient cette ligne
+    # DÃ©terminer Ã  quelle fonction appartient cette ligne
     $functionName = ($sortedFunctions | Where-Object { 
         $line.Line -ge $_.Value.StartLine -and $line.Line -le $_.Value.EndLine 
     } | Select-Object -First 1).Key
@@ -132,22 +132,22 @@ foreach ($line in $uncoveredLines) {
     Write-Host "  Ligne $($line.Line): $($line.Command)" -ForegroundColor Gray
 }
 
-# Suggérer des tests à ajouter
-Write-Host "`nSuggestions de tests à ajouter :" -ForegroundColor Cyan
+# SuggÃ©rer des tests Ã  ajouter
+Write-Host "`nSuggestions de tests Ã  ajouter :" -ForegroundColor Cyan
 Write-Host "============================" -ForegroundColor Cyan
 
 foreach ($function in ($sortedFunctions | Where-Object { $_.Value.CoveragePercent -lt 50 })) {
     Write-Host "`nFonction: $($function.Key)" -ForegroundColor Yellow
     
-    # Analyser les paramètres de la fonction
+    # Analyser les paramÃ¨tres de la fonction
     $functionContent = $moduleContent.Split("`n")[$function.Value.StartLine..($function.Value.StartLine + 20)]
     $paramMatches = [regex]::Matches(($functionContent -join "`n"), '\[Parameter.*?\]\s*\[([^\]]+)\]\$([A-Za-z0-9_]+)')
     
-    Write-Host "  Créer un test qui vérifie :" -ForegroundColor White
+    Write-Host "  CrÃ©er un test qui vÃ©rifie :" -ForegroundColor White
     Write-Host "    - Le comportement normal de la fonction" -ForegroundColor White
     
     if ($paramMatches.Count -gt 0) {
-        Write-Host "    - Les cas limites pour les paramètres suivants :" -ForegroundColor White
+        Write-Host "    - Les cas limites pour les paramÃ¨tres suivants :" -ForegroundColor White
         foreach ($param in $paramMatches) {
             $paramType = $param.Groups[1].Value
             $paramName = $param.Groups[2].Value
@@ -155,7 +155,7 @@ foreach ($function in ($sortedFunctions | Where-Object { $_.Value.CoveragePercen
         }
     }
     
-    # Vérifier s'il y a des conditions ou des boucles non couvertes
+    # VÃ©rifier s'il y a des conditions ou des boucles non couvertes
     $ifMatches = [regex]::Matches(($functionContent -join "`n"), 'if\s*\(([^)]+)\)')
     if ($ifMatches.Count -gt 0) {
         Write-Host "    - Les branches conditionnelles suivantes :" -ForegroundColor White
@@ -166,4 +166,4 @@ foreach ($function in ($sortedFunctions | Where-Object { $_.Value.CoveragePercen
     }
 }
 
-Write-Host "`nPour améliorer rapidement la couverture, concentrez-vous d'abord sur les fonctions avec le plus grand nombre de commandes non couvertes." -ForegroundColor Cyan
+Write-Host "`nPour amÃ©liorer rapidement la couverture, concentrez-vous d'abord sur les fonctions avec le plus grand nombre de commandes non couvertes." -ForegroundColor Cyan

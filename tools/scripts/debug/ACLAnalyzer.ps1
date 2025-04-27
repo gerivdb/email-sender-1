@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Outils d'analyse des listes de contrôle d'accès (ACL) pour les fichiers, dossiers, registre et autres ressources.
+    Outils d'analyse des listes de contrÃ´le d'accÃ¨s (ACL) pour les fichiers, dossiers, registre et autres ressources.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser, comparer et visualiser les listes de contrôle d'accès (ACL)
-    sur différentes ressources du système, y compris les fichiers, dossiers, clés de registre, partages réseau
-    et bases de données SQL Server.
+    Ce module fournit des fonctions pour analyser, comparer et visualiser les listes de contrÃ´le d'accÃ¨s (ACL)
+    sur diffÃ©rentes ressources du systÃ¨me, y compris les fichiers, dossiers, clÃ©s de registre, partages rÃ©seau
+    et bases de donnÃ©es SQL Server.
 
 .NOTES
     Nom du fichier : ACLAnalyzer.ps1
     Auteur        : Augment Code
     Version       : 1.0
-    Prérequis     : PowerShell 5.1 ou supérieur
+    PrÃ©requis     : PowerShell 5.1 ou supÃ©rieur
 #>
 
 #Requires -Version 5.1
@@ -23,23 +23,23 @@ function Get-NTFSPermission {
         Analyse les permissions NTFS d'un fichier ou dossier.
 
     .DESCRIPTION
-        Cette fonction analyse en détail les permissions NTFS d'un fichier ou dossier,
-        y compris les droits spécifiques, les héritages, et les identités associées.
+        Cette fonction analyse en dÃ©tail les permissions NTFS d'un fichier ou dossier,
+        y compris les droits spÃ©cifiques, les hÃ©ritages, et les identitÃ©s associÃ©es.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à analyser.
+        Le chemin du fichier ou dossier Ã  analyser.
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les dossiers.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les dossiers.
 
     .PARAMETER IncludeInherited
-        Indique si les permissions héritées doivent être incluses dans l'analyse.
+        Indique si les permissions hÃ©ritÃ©es doivent Ãªtre incluses dans l'analyse.
 
     .EXAMPLE
         Get-NTFSPermission -Path "C:\Data" -Recurse $false -IncludeInherited $true
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur les permissions NTFS.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur les permissions NTFS.
     #>
     [CmdletBinding()]
     param (
@@ -55,13 +55,13 @@ function Get-NTFSPermission {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
         }
 
-        # Fonction pour convertir les droits d'accès en chaîne lisible
+        # Fonction pour convertir les droits d'accÃ¨s en chaÃ®ne lisible
         function ConvertTo-ReadableRights {
             param (
                 [System.Security.AccessControl.FileSystemRights]$Rights
@@ -78,7 +78,7 @@ function Get-NTFSPermission {
                 "Write" = [System.Security.AccessControl.FileSystemRights]::Write
             }
 
-            # Droits spécifiques
+            # Droits spÃ©cifiques
             $specificRights = @{
                 "ListDirectory" = [System.Security.AccessControl.FileSystemRights]::ListDirectory
                 "ReadData" = [System.Security.AccessControl.FileSystemRights]::ReadData
@@ -99,15 +99,15 @@ function Get-NTFSPermission {
                 "Synchronize" = [System.Security.AccessControl.FileSystemRights]::Synchronize
             }
 
-            # Vérifier d'abord les droits de base
+            # VÃ©rifier d'abord les droits de base
             foreach ($right in $basicRights.Keys) {
                 if (($Rights -band $basicRights[$right]) -eq $basicRights[$right]) {
                     $readableRights += $right
-                    return $readableRights  # Si un droit de base est trouvé, on le retourne directement
+                    return $readableRights  # Si un droit de base est trouvÃ©, on le retourne directement
                 }
             }
 
-            # Si aucun droit de base n'est trouvé, vérifier les droits spécifiques
+            # Si aucun droit de base n'est trouvÃ©, vÃ©rifier les droits spÃ©cifiques
             foreach ($right in $specificRights.Keys) {
                 if (($Rights -band $specificRights[$right]) -eq $specificRights[$right]) {
                     $readableRights += $right
@@ -117,7 +117,7 @@ function Get-NTFSPermission {
             return $readableRights
         }
 
-        # Fonction pour convertir les flags d'héritage en chaîne lisible
+        # Fonction pour convertir les flags d'hÃ©ritage en chaÃ®ne lisible
         function ConvertTo-ReadableInheritanceFlags {
             param (
                 [System.Security.AccessControl.InheritanceFlags]$InheritanceFlags,
@@ -126,7 +126,7 @@ function Get-NTFSPermission {
 
             $inheritance = @()
 
-            # Flags d'héritage
+            # Flags d'hÃ©ritage
             if ($InheritanceFlags -band [System.Security.AccessControl.InheritanceFlags]::ContainerInherit) {
                 $inheritance += "Dossiers"
             }
@@ -141,7 +141,7 @@ function Get-NTFSPermission {
             }
 
             if ($PropagationFlags -band [System.Security.AccessControl.PropagationFlags]::InheritOnly) {
-                $inheritance += "Héritage uniquement"
+                $inheritance += "HÃ©ritage uniquement"
             }
 
             if ($inheritance.Count -eq 0) {
@@ -176,9 +176,9 @@ function Get-NTFSPermission {
             # Obtenir le type d'objet
             $objectType = Get-ObjectType -Path $Path
 
-            # Analyser chaque règle d'accès
+            # Analyser chaque rÃ¨gle d'accÃ¨s
             foreach ($accessRule in $acl.Access) {
-                # Ignorer les permissions héritées si demandé
+                # Ignorer les permissions hÃ©ritÃ©es si demandÃ©
                 if (-not $IncludeInherited -and $accessRule.IsInherited) {
                     continue
                 }
@@ -186,10 +186,10 @@ function Get-NTFSPermission {
                 # Convertir les droits en format lisible
                 $readableRights = ConvertTo-ReadableRights -Rights $accessRule.FileSystemRights
 
-                # Convertir les flags d'héritage en format lisible
+                # Convertir les flags d'hÃ©ritage en format lisible
                 $readableInheritance = ConvertTo-ReadableInheritanceFlags -InheritanceFlags $accessRule.InheritanceFlags -PropagationFlags $accessRule.PropagationFlags
 
-                # Créer un objet personnalisé pour cette règle d'accès
+                # CrÃ©er un objet personnalisÃ© pour cette rÃ¨gle d'accÃ¨s
                 $permissionInfo = [PSCustomObject]@{
                     Path = $Path
                     ObjectType = $objectType
@@ -199,35 +199,35 @@ function Get-NTFSPermission {
                     RightsRaw = $accessRule.FileSystemRights.ToString()
                     Inheritance = $readableInheritance
                     IsInherited = $accessRule.IsInherited
-                    InheritanceSource = if ($accessRule.IsInherited) { (Split-Path -Parent $Path) } else { "Directement assigné" }
+                    InheritanceSource = if ($accessRule.IsInherited) { (Split-Path -Parent $Path) } else { "Directement assignÃ©" }
                 }
 
                 $results += $permissionInfo
             }
 
-            # Ajouter des informations sur le propriétaire
+            # Ajouter des informations sur le propriÃ©taire
             $ownerInfo = [PSCustomObject]@{
                 Path = $Path
                 ObjectType = $objectType
                 IdentityReference = $acl.Owner
-                AccessControlType = "Propriétaire"
-                Rights = "Contrôle total (implicite)"
+                AccessControlType = "PropriÃ©taire"
+                Rights = "ContrÃ´le total (implicite)"
                 RightsRaw = "FullControl"
                 Inheritance = "N/A"
                 IsInherited = $false
-                InheritanceSource = "Propriétaire du système de fichiers"
+                InheritanceSource = "PropriÃ©taire du systÃ¨me de fichiers"
             }
 
             $results += $ownerInfo
 
-            # Si récursif est demandé et que c'est un dossier, analyser les sous-dossiers et fichiers
-            # Mais limiter la profondeur pour éviter les boucles infinies
+            # Si rÃ©cursif est demandÃ© et que c'est un dossier, analyser les sous-dossiers et fichiers
+            # Mais limiter la profondeur pour Ã©viter les boucles infinies
             if ($Recurse -and $objectType -eq "Dossier") {
-                # Limiter le nombre d'éléments à traiter
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter
                 $childItems = Get-ChildItem -Path $Path -Force | Select-Object -First 10
 
                 foreach ($childItem in $childItems) {
-                    # Éviter les liens symboliques qui pourraient créer des boucles
+                    # Ã‰viter les liens symboliques qui pourraient crÃ©er des boucles
                     if (($childItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne [System.IO.FileAttributes]::ReparsePoint) {
                         $childResults = Get-NTFSPermission -Path $childItem.FullName -Recurse $false -IncludeInherited $IncludeInherited
                         $results += $childResults
@@ -243,27 +243,27 @@ function Get-NTFSPermission {
     }
 }
 
-# Fonction pour détecter les anomalies dans les permissions NTFS
+# Fonction pour dÃ©tecter les anomalies dans les permissions NTFS
 function Find-NTFSPermissionAnomaly {
     <#
     .SYNOPSIS
-        Détecte les anomalies dans les permissions NTFS.
+        DÃ©tecte les anomalies dans les permissions NTFS.
 
     .DESCRIPTION
-        Cette fonction analyse les permissions NTFS et détecte les anomalies potentielles
+        Cette fonction analyse les permissions NTFS et dÃ©tecte les anomalies potentielles
         comme les permissions excessives, les conflits, ou les configurations dangereuses.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à analyser.
+        Le chemin du fichier ou dossier Ã  analyser.
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les dossiers.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les dossiers.
 
     .EXAMPLE
         Find-NTFSPermissionAnomaly -Path "C:\Data" -Recurse $true
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les anomalies détectées.
+        [PSCustomObject] avec des informations sur les anomalies dÃ©tectÃ©es.
     #>
     [CmdletBinding()]
     param (
@@ -276,25 +276,25 @@ function Find-NTFSPermissionAnomaly {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
         }
 
-        # Définir les groupes à risque élevé
+        # DÃ©finir les groupes Ã  risque Ã©levÃ©
         $highRiskGroups = @(
             "Everyone",
             "Tout le monde",
             "Authenticated Users",
-            "Utilisateurs authentifiés",
+            "Utilisateurs authentifiÃ©s",
             "Users",
             "Utilisateurs",
             "ANONYMOUS LOGON",
             "Connexion anonyme"
         )
 
-        # Définir les droits à risque élevé
+        # DÃ©finir les droits Ã  risque Ã©levÃ©
         $highRiskRights = @(
             "FullControl",
             "Modify",
@@ -314,12 +314,12 @@ function Find-NTFSPermissionAnomaly {
         try {
             $anomalies = @()
 
-            # Obtenir les permissions NTFS (limiter la récursivité pour éviter les boucles infinies)
+            # Obtenir les permissions NTFS (limiter la rÃ©cursivitÃ© pour Ã©viter les boucles infinies)
             if ($Recurse) {
-                # Limiter la profondeur de récursion
+                # Limiter la profondeur de rÃ©cursion
                 $permissions = Get-NTFSPermission -Path $Path -Recurse $false -IncludeInherited $true
 
-                # Traiter manuellement le premier niveau de récursion
+                # Traiter manuellement le premier niveau de rÃ©cursion
                 $childItems = Get-ChildItem -Path $Path -Force | Select-Object -First 10
                 foreach ($childItem in $childItems) {
                     if (($childItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne [System.IO.FileAttributes]::ReparsePoint) {
@@ -338,7 +338,7 @@ function Find-NTFSPermissionAnomaly {
                 $currentPath = $pathGroup.Name
                 $currentPermissions = $pathGroup.Group
 
-                # 1. Détecter les permissions à risque élevé pour des groupes à risque élevé
+                # 1. DÃ©tecter les permissions Ã  risque Ã©levÃ© pour des groupes Ã  risque Ã©levÃ©
                 foreach ($permission in $currentPermissions) {
                     if ($highRiskGroups -contains $permission.IdentityReference -and
                         $permission.AccessControlType -eq "Allow") {
@@ -349,17 +349,17 @@ function Find-NTFSPermissionAnomaly {
                             $anomalies += [PSCustomObject]@{
                                 Path = $currentPath
                                 AnomalyType = "HighRiskPermission"
-                                Severity = "Élevée"
-                                Description = "Permissions à risque élevé ($($riskyRights -join ', ')) accordées à un groupe à risque élevé ($($permission.IdentityReference))"
+                                Severity = "Ã‰levÃ©e"
+                                Description = "Permissions Ã  risque Ã©levÃ© ($($riskyRights -join ', ')) accordÃ©es Ã  un groupe Ã  risque Ã©levÃ© ($($permission.IdentityReference))"
                                 IdentityReference = $permission.IdentityReference
                                 Rights = $permission.Rights
-                                Recommendation = "Restreindre les permissions pour ce groupe ou utiliser un groupe plus spécifique"
+                                Recommendation = "Restreindre les permissions pour ce groupe ou utiliser un groupe plus spÃ©cifique"
                             }
                         }
                     }
                 }
 
-                # 2. Détecter les conflits de permissions (Allow vs Deny)
+                # 2. DÃ©tecter les conflits de permissions (Allow vs Deny)
                 $allowRules = $currentPermissions | Where-Object { $_.AccessControlType -eq "Allow" }
                 $denyRules = $currentPermissions | Where-Object { $_.AccessControlType -eq "Deny" }
 
@@ -373,17 +373,17 @@ function Find-NTFSPermissionAnomaly {
                                     Path = $currentPath
                                     AnomalyType = "PermissionConflict"
                                     Severity = "Moyenne"
-                                    Description = "Conflit de permissions pour $($allowRule.IdentityReference): les mêmes droits ($($commonRights.InputObject -join ', ')) sont à la fois autorisés et refusés"
+                                    Description = "Conflit de permissions pour $($allowRule.IdentityReference): les mÃªmes droits ($($commonRights.InputObject -join ', ')) sont Ã  la fois autorisÃ©s et refusÃ©s"
                                     IdentityReference = $allowRule.IdentityReference
                                     Rights = $commonRights.InputObject
-                                    Recommendation = "Résoudre le conflit en supprimant l'une des règles contradictoires"
+                                    Recommendation = "RÃ©soudre le conflit en supprimant l'une des rÃ¨gles contradictoires"
                                 }
                             }
                         }
                     }
                 }
 
-                # 3. Détecter les permissions redondantes
+                # 3. DÃ©tecter les permissions redondantes
                 $identityGroups = $currentPermissions | Group-Object -Property IdentityReference
 
                 foreach ($identityGroup in $identityGroups) {
@@ -396,17 +396,17 @@ function Find-NTFSPermissionAnomaly {
                                     Path = $currentPath
                                     AnomalyType = "RedundantPermission"
                                     Severity = "Faible"
-                                    Description = "Permissions redondantes pour $($identityGroup.Name) ($($typeGroup.Name)): $($typeGroup.Count) règles"
+                                    Description = "Permissions redondantes pour $($identityGroup.Name) ($($typeGroup.Name)): $($typeGroup.Count) rÃ¨gles"
                                     IdentityReference = $identityGroup.Name
                                     Rights = ($typeGroup.Group | ForEach-Object { $_.Rights }) -join ', '
-                                    Recommendation = "Consolider les règles redondantes en une seule règle"
+                                    Recommendation = "Consolider les rÃ¨gles redondantes en une seule rÃ¨gle"
                                 }
                             }
                         }
                     }
                 }
 
-                # 4. Détecter les héritages interrompus
+                # 4. DÃ©tecter les hÃ©ritages interrompus
                 $isFolder = (Get-Item -Path $currentPath -Force) -is [System.IO.DirectoryInfo]
 
                 if ($isFolder) {
@@ -421,10 +421,10 @@ function Find-NTFSPermissionAnomaly {
                                 Path = $currentPath
                                 AnomalyType = "InheritanceBreak"
                                 Severity = "Information"
-                                Description = "L'héritage des permissions est interrompu pour ce dossier"
+                                Description = "L'hÃ©ritage des permissions est interrompu pour ce dossier"
                                 IdentityReference = "N/A"
                                 Rights = "N/A"
-                                Recommendation = "Vérifier si l'interruption de l'héritage est intentionnelle"
+                                Recommendation = "VÃ©rifier si l'interruption de l'hÃ©ritage est intentionnelle"
                             }
                         }
                     }
@@ -434,32 +434,32 @@ function Find-NTFSPermissionAnomaly {
             return $anomalies
         }
         catch {
-            Write-Error "Erreur lors de la détection des anomalies de permissions NTFS pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de la dÃ©tection des anomalies de permissions NTFS pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour analyser l'héritage des permissions NTFS
+# Fonction pour analyser l'hÃ©ritage des permissions NTFS
 function Get-NTFSPermissionInheritance {
     <#
     .SYNOPSIS
-        Analyse l'héritage des permissions NTFS pour un fichier ou dossier.
+        Analyse l'hÃ©ritage des permissions NTFS pour un fichier ou dossier.
 
     .DESCRIPTION
-        Cette fonction analyse en détail l'héritage des permissions NTFS d'un fichier ou dossier,
-        y compris les sources d'héritage, les interruptions d'héritage, et les permissions explicites.
+        Cette fonction analyse en dÃ©tail l'hÃ©ritage des permissions NTFS d'un fichier ou dossier,
+        y compris les sources d'hÃ©ritage, les interruptions d'hÃ©ritage, et les permissions explicites.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à analyser.
+        Le chemin du fichier ou dossier Ã  analyser.
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les dossiers.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les dossiers.
 
     .EXAMPLE
         Get-NTFSPermissionInheritance -Path "C:\Data" -Recurse $false
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur l'héritage des permissions NTFS.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur l'hÃ©ritage des permissions NTFS.
     #>
     [CmdletBinding()]
     param (
@@ -478,7 +478,7 @@ function Get-NTFSPermissionInheritance {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
@@ -507,7 +507,7 @@ function Get-NTFSPermissionInheritance {
             return Split-Path -Parent $Path
         }
 
-        # Fonction pour vérifier si l'héritage est activé
+        # Fonction pour vÃ©rifier si l'hÃ©ritage est activÃ©
         function Test-InheritanceEnabled {
             param (
                 [System.Security.AccessControl.FileSystemSecurity]$Acl
@@ -519,7 +519,7 @@ function Get-NTFSPermissionInheritance {
 
     process {
         try {
-            # Vérifier si on a atteint la profondeur maximale
+            # VÃ©rifier si on a atteint la profondeur maximale
             if ($CurrentDepth -ge $MaxDepth) {
                 Write-Verbose "Profondeur maximale atteinte ($MaxDepth) pour le chemin '$Path'"
                 return @()
@@ -533,13 +533,13 @@ function Get-NTFSPermissionInheritance {
             # Obtenir le type d'objet
             $objectType = Get-ObjectType -Path $Path
 
-            # Vérifier si l'héritage est activé
+            # VÃ©rifier si l'hÃ©ritage est activÃ©
             $inheritanceEnabled = Test-InheritanceEnabled -Acl $acl
 
             # Obtenir le chemin parent
             $parentPath = Get-ParentPath -Path $Path
 
-            # Créer un objet pour les informations d'héritage
+            # CrÃ©er un objet pour les informations d'hÃ©ritage
             $inheritanceInfo = [PSCustomObject]@{
                 Path = $Path
                 ObjectType = $objectType
@@ -550,7 +550,7 @@ function Get-NTFSPermissionInheritance {
                 InheritanceBreakPoints = @()
             }
 
-            # Analyser chaque règle d'accès
+            # Analyser chaque rÃ¨gle d'accÃ¨s
             foreach ($accessRule in $acl.Access) {
                 $permissionInfo = [PSCustomObject]@{
                     IdentityReference = $accessRule.IdentityReference.Value
@@ -568,22 +568,22 @@ function Get-NTFSPermissionInheritance {
                 }
             }
 
-            # Vérifier s'il y a une interruption d'héritage
+            # VÃ©rifier s'il y a une interruption d'hÃ©ritage
             if (-not $inheritanceEnabled) {
                 $inheritanceInfo.InheritanceBreakPoints += $Path
             }
 
-            # Ajouter les informations d'héritage aux résultats
+            # Ajouter les informations d'hÃ©ritage aux rÃ©sultats
             $results += $inheritanceInfo
 
-            # Si récursif est demandé et que c'est un dossier, analyser les sous-dossiers et fichiers
+            # Si rÃ©cursif est demandÃ© et que c'est un dossier, analyser les sous-dossiers et fichiers
             # Mais seulement si on n'a pas atteint la profondeur maximale
             if ($Recurse -and $objectType -eq "Dossier" -and $CurrentDepth -lt $MaxDepth) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $childItems = Get-ChildItem -Path $Path -Force | Select-Object -First 10
 
                 foreach ($childItem in $childItems) {
-                    # Éviter les liens symboliques qui pourraient créer des boucles
+                    # Ã‰viter les liens symboliques qui pourraient crÃ©er des boucles
                     if (($childItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne [System.IO.FileAttributes]::ReparsePoint) {
                         $childResults = Get-NTFSPermissionInheritance -Path $childItem.FullName -Recurse $false -MaxDepth $MaxDepth -CurrentDepth ($CurrentDepth + 1)
                         $results += $childResults
@@ -594,32 +594,32 @@ function Get-NTFSPermissionInheritance {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de l'analyse de l'héritage des permissions NTFS pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de l'analyse de l'hÃ©ritage des permissions NTFS pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour analyser les propriétaires et groupes des fichiers et dossiers
+# Fonction pour analyser les propriÃ©taires et groupes des fichiers et dossiers
 function Get-NTFSOwnershipInfo {
     <#
     .SYNOPSIS
-        Analyse les propriétaires et groupes principaux des fichiers et dossiers.
+        Analyse les propriÃ©taires et groupes principaux des fichiers et dossiers.
 
     .DESCRIPTION
-        Cette fonction analyse en détail les propriétaires et groupes principaux des fichiers et dossiers,
+        Cette fonction analyse en dÃ©tail les propriÃ©taires et groupes principaux des fichiers et dossiers,
         y compris les SID, les domaines, et les types de comptes.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à analyser.
+        Le chemin du fichier ou dossier Ã  analyser.
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les dossiers.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les dossiers.
 
     .EXAMPLE
         Get-NTFSOwnershipInfo -Path "C:\Data" -Recurse $false
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur les propriétaires et groupes.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur les propriÃ©taires et groupes.
     #>
     [CmdletBinding()]
     param (
@@ -638,7 +638,7 @@ function Get-NTFSOwnershipInfo {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
@@ -658,7 +658,7 @@ function Get-NTFSOwnershipInfo {
             }
         }
 
-        # Fonction pour obtenir les informations détaillées sur un compte
+        # Fonction pour obtenir les informations dÃ©taillÃ©es sur un compte
         function Get-AccountInfo {
             param (
                 [string]$AccountName
@@ -672,7 +672,7 @@ function Get-NTFSOwnershipInfo {
                         $account = $sid.Translate([System.Security.Principal.NTAccount])
                         $accountName = $account.Value
                     } catch {
-                        $accountName = $AccountName  # Garder le SID si la traduction échoue
+                        $accountName = $AccountName  # Garder le SID si la traduction Ã©choue
                     }
                 }
 
@@ -685,11 +685,11 @@ function Get-NTFSOwnershipInfo {
                     $username = $AccountName
                 }
 
-                # Déterminer le type de compte
+                # DÃ©terminer le type de compte
                 $accountType = "Inconnu"
 
-                if ($username -eq "SYSTEM" -or $username -eq "Système") {
-                    $accountType = "Système"
+                if ($username -eq "SYSTEM" -or $username -eq "SystÃ¨me") {
+                    $accountType = "SystÃ¨me"
                 } elseif ($username -eq "Administrators" -or $username -eq "Administrateurs") {
                     $accountType = "Groupe d'administrateurs"
                 } elseif ($username -eq "Administrator" -or $username -eq "Administrateur") {
@@ -697,11 +697,11 @@ function Get-NTFSOwnershipInfo {
                 } elseif ($username -eq "Users" -or $username -eq "Utilisateurs") {
                     $accountType = "Groupe d'utilisateurs"
                 } elseif ($username -eq "Everyone" -or $username -eq "Tout le monde") {
-                    $accountType = "Groupe spécial"
+                    $accountType = "Groupe spÃ©cial"
                 } elseif ($domain -eq "NT AUTHORITY" -or $domain -eq "AUTORITE NT") {
-                    $accountType = "Compte système"
+                    $accountType = "Compte systÃ¨me"
                 } elseif ($domain -eq "BUILTIN") {
-                    $accountType = "Groupe intégré"
+                    $accountType = "Groupe intÃ©grÃ©"
                 } elseif ($domain -eq [Environment]::MachineName) {
                     $accountType = "Compte local"
                 } else {
@@ -727,7 +727,7 @@ function Get-NTFSOwnershipInfo {
 
     process {
         try {
-            # Vérifier si on a atteint la profondeur maximale
+            # VÃ©rifier si on a atteint la profondeur maximale
             if ($CurrentDepth -ge $MaxDepth) {
                 Write-Verbose "Profondeur maximale atteinte ($MaxDepth) pour le chemin '$Path'"
                 return @()
@@ -741,7 +741,7 @@ function Get-NTFSOwnershipInfo {
             # Obtenir le type d'objet
             $objectType = Get-ObjectType -Path $Path
 
-            # Obtenir les informations sur le propriétaire
+            # Obtenir les informations sur le propriÃ©taire
             $ownerInfo = Get-AccountInfo -AccountName $acl.Owner
 
             # Obtenir les informations sur le groupe principal (si disponible)
@@ -750,7 +750,7 @@ function Get-NTFSOwnershipInfo {
                 $groupInfo = Get-AccountInfo -AccountName $acl.Group
             }
 
-            # Créer un objet pour les informations de propriété
+            # CrÃ©er un objet pour les informations de propriÃ©tÃ©
             $ownershipInfo = [PSCustomObject]@{
                 Path = $Path
                 ObjectType = $objectType
@@ -763,12 +763,12 @@ function Get-NTFSOwnershipInfo {
                 Recommendations = @()
             }
 
-            # Vérifier si l'utilisateur actuel peut changer le propriétaire
+            # VÃ©rifier si l'utilisateur actuel peut changer le propriÃ©taire
             try {
                 $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
                 $currentUserInfo = Get-AccountInfo -AccountName $currentUser
 
-                # Vérifier si l'utilisateur actuel est le propriétaire ou un administrateur
+                # VÃ©rifier si l'utilisateur actuel est le propriÃ©taire ou un administrateur
                 $isOwner = $ownerInfo.FullName -eq $currentUserInfo.FullName
                 $isAdmin = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups |
                            Where-Object { $_.Value -match "S-1-5-32-544" } |
@@ -779,16 +779,16 @@ function Get-NTFSOwnershipInfo {
                 $ownershipInfo.CanChangeOwner = $false
             }
 
-            # Évaluer les risques de sécurité liés au propriétaire
-            if ($ownerInfo.AccountType -eq "Groupe spécial" -or
+            # Ã‰valuer les risques de sÃ©curitÃ© liÃ©s au propriÃ©taire
+            if ($ownerInfo.AccountType -eq "Groupe spÃ©cial" -or
                 $ownerInfo.Username -eq "Everyone" -or
                 $ownerInfo.Username -eq "Tout le monde" -or
                 $ownerInfo.Username -eq "Users" -or
                 $ownerInfo.Username -eq "Utilisateurs") {
 
                 $ownershipInfo.SecurityRisk = $true
-                $ownershipInfo.RiskLevel = "Élevé"
-                $ownershipInfo.Recommendations += "Changer le propriétaire pour un compte administrateur ou système"
+                $ownershipInfo.RiskLevel = "Ã‰levÃ©"
+                $ownershipInfo.Recommendations += "Changer le propriÃ©taire pour un compte administrateur ou systÃ¨me"
                 $ownershipInfo.RecommendedOwner = "Administrators"
             } elseif ($ownerInfo.AccountType -eq "Compte local" -and
                       $ownerInfo.Username -ne "Administrator" -and
@@ -796,21 +796,21 @@ function Get-NTFSOwnershipInfo {
 
                 $ownershipInfo.SecurityRisk = $true
                 $ownershipInfo.RiskLevel = "Moyen"
-                $ownershipInfo.Recommendations += "Vérifier si ce compte local devrait être propriétaire de cette ressource"
+                $ownershipInfo.Recommendations += "VÃ©rifier si ce compte local devrait Ãªtre propriÃ©taire de cette ressource"
                 $ownershipInfo.RecommendedOwner = "Administrators"
             }
 
-            # Ajouter les informations de propriété aux résultats
+            # Ajouter les informations de propriÃ©tÃ© aux rÃ©sultats
             $results += $ownershipInfo
 
-            # Si récursif est demandé et que c'est un dossier, analyser les sous-dossiers et fichiers
+            # Si rÃ©cursif est demandÃ© et que c'est un dossier, analyser les sous-dossiers et fichiers
             # Mais seulement si on n'a pas atteint la profondeur maximale
             if ($Recurse -and $objectType -eq "Dossier" -and $CurrentDepth -lt $MaxDepth) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $childItems = Get-ChildItem -Path $Path -Force | Select-Object -First 10
 
                 foreach ($childItem in $childItems) {
-                    # Éviter les liens symboliques qui pourraient créer des boucles
+                    # Ã‰viter les liens symboliques qui pourraient crÃ©er des boucles
                     if (($childItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne [System.IO.FileAttributes]::ReparsePoint) {
                         $childResults = Get-NTFSOwnershipInfo -Path $childItem.FullName -Recurse $false -MaxDepth $MaxDepth -CurrentDepth ($CurrentDepth + 1)
                         $results += $childResults
@@ -821,38 +821,38 @@ function Get-NTFSOwnershipInfo {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de l'analyse des propriétaires et groupes pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de l'analyse des propriÃ©taires et groupes pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour générer un rapport de permissions NTFS
+# Fonction pour gÃ©nÃ©rer un rapport de permissions NTFS
 function New-NTFSPermissionReport {
     <#
     .SYNOPSIS
-        Génère un rapport détaillé des permissions NTFS pour un fichier ou dossier.
+        GÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions NTFS pour un fichier ou dossier.
 
     .DESCRIPTION
-        Cette fonction génère un rapport détaillé des permissions NTFS pour un fichier ou dossier,
-        y compris les permissions, les héritages, les propriétaires, et les anomalies détectées.
+        Cette fonction gÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions NTFS pour un fichier ou dossier,
+        y compris les permissions, les hÃ©ritages, les propriÃ©taires, et les anomalies dÃ©tectÃ©es.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à analyser.
+        Le chemin du fichier ou dossier Ã  analyser.
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les dossiers.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les dossiers.
 
     .PARAMETER OutputFormat
         Le format de sortie du rapport (Text, CSV, HTML, JSON).
 
     .PARAMETER OutputPath
-        Le chemin où enregistrer le rapport. Si non spécifié, le rapport est affiché à l'écran.
+        Le chemin oÃ¹ enregistrer le rapport. Si non spÃ©cifiÃ©, le rapport est affichÃ© Ã  l'Ã©cran.
 
     .EXAMPLE
         New-NTFSPermissionReport -Path "C:\Data" -Recurse $true -OutputFormat "HTML" -OutputPath "C:\Reports\permissions.html"
 
     .OUTPUTS
-        Un rapport de permissions au format spécifié.
+        Un rapport de permissions au format spÃ©cifiÃ©.
     #>
     [CmdletBinding()]
     param (
@@ -872,13 +872,13 @@ function New-NTFSPermissionReport {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
         }
 
-        # Fonction pour générer un rapport au format texte
+        # Fonction pour gÃ©nÃ©rer un rapport au format texte
         function ConvertTo-TextReport {
             param (
                 [PSCustomObject]$Data
@@ -892,16 +892,16 @@ Chemin: $($Data.Path)
 Date d'analyse: $($Data.AnalysisDate)
 =======================================================================
 
-RÉSUMÉ
+RÃ‰SUMÃ‰
 -----------------------------------------------------------------------
-Nombre total d'objets analysés: $($Data.Summary.TotalObjects)
+Nombre total d'objets analysÃ©s: $($Data.Summary.TotalObjects)
 Fichiers: $($Data.Summary.Files)
 Dossiers: $($Data.Summary.Directories)
-Anomalies détectées: $($Data.Summary.Anomalies)
+Anomalies dÃ©tectÃ©es: $($Data.Summary.Anomalies)
 Niveau de risque global: $($Data.Summary.RiskLevel)
 =======================================================================
 
-DÉTAILS DES PERMISSIONS
+DÃ‰TAILS DES PERMISSIONS
 -----------------------------------------------------------------------
 "@
 
@@ -909,8 +909,8 @@ DÉTAILS DES PERMISSIONS
                 $report += @"
 
 Objet: $($item.Path) ($($item.ObjectType))
-Propriétaire: $($item.Owner.FullName) ($($item.Owner.AccountType))
-Héritage activé: $($item.InheritanceEnabled)
+PropriÃ©taire: $($item.Owner.FullName) ($($item.Owner.AccountType))
+HÃ©ritage activÃ©: $($item.InheritanceEnabled)
 
 Permissions explicites:
 "@
@@ -925,11 +925,11 @@ Permissions explicites:
 
                 $report += @"
 
-Permissions héritées:
+Permissions hÃ©ritÃ©es:
 "@
 
                 if ($item.InheritedPermissions.Count -eq 0) {
-                    $report += "  Aucune permission héritée`n"
+                    $report += "  Aucune permission hÃ©ritÃ©e`n"
                 } else {
                     foreach ($perm in $item.InheritedPermissions) {
                         $report += "  $($perm.IdentityReference) : $($perm.AccessControlType) $($perm.FileSystemRights)`n"
@@ -940,19 +940,19 @@ Permissions héritées:
             }
 
             $report += @"
-ANOMALIES DÉTECTÉES
+ANOMALIES DÃ‰TECTÃ‰ES
 -----------------------------------------------------------------------
 "@
 
             if ($Data.Anomalies.Count -eq 0) {
-                $report += "Aucune anomalie détectée.`n"
+                $report += "Aucune anomalie dÃ©tectÃ©e.`n"
             } else {
                 foreach ($anomaly in $Data.Anomalies) {
                     $report += @"
 
 Chemin: $($anomaly.Path)
 Type d'anomalie: $($anomaly.AnomalyType)
-Sévérité: $($anomaly.Severity)
+SÃ©vÃ©ritÃ©: $($anomaly.Severity)
 Description: $($anomaly.Description)
 Recommandation: $($anomaly.Recommendation)
 
@@ -969,7 +969,7 @@ FIN DU RAPPORT
             return $report
         }
 
-        # Fonction pour générer un rapport au format HTML
+        # Fonction pour gÃ©nÃ©rer un rapport au format HTML
         function ConvertTo-HtmlReport {
             param (
                 [PSCustomObject]$Data
@@ -1069,15 +1069,15 @@ FIN DU RAPPORT
         </div>
 
         <div class="summary">
-            <h2>Résumé</h2>
-            <p>Nombre total d'objets analysés: $($Data.Summary.TotalObjects)</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p>Nombre total d'objets analysÃ©s: $($Data.Summary.TotalObjects)</p>
             <p>Fichiers: $($Data.Summary.Files)</p>
             <p>Dossiers: $($Data.Summary.Directories)</p>
-            <p>Anomalies détectées: $($Data.Summary.Anomalies)</p>
+            <p>Anomalies dÃ©tectÃ©es: $($Data.Summary.Anomalies)</p>
             <p>Niveau de risque global: $($Data.Summary.RiskLevel)</p>
         </div>
 
-        <h2>Détails des permissions</h2>
+        <h2>DÃ©tails des permissions</h2>
 "@
 
             $htmlItems = ""
@@ -1085,8 +1085,8 @@ FIN DU RAPPORT
                 $htmlItems += @"
         <div class="item">
             <h3>$($item.Path) ($($item.ObjectType))</h3>
-            <p><strong>Propriétaire:</strong> $($item.Owner.FullName) ($($item.Owner.AccountType))</p>
-            <p><strong>Héritage activé:</strong> $($item.InheritanceEnabled)</p>
+            <p><strong>PropriÃ©taire:</strong> $($item.Owner.FullName) ($($item.Owner.AccountType))</p>
+            <p><strong>HÃ©ritage activÃ©:</strong> $($item.InheritanceEnabled)</p>
 
             <h4>Permissions explicites</h4>
 "@
@@ -1097,8 +1097,8 @@ FIN DU RAPPORT
                     $htmlItems += @"
             <table>
                 <tr>
-                    <th>Identité</th>
-                    <th>Type d'accès</th>
+                    <th>IdentitÃ©</th>
+                    <th>Type d'accÃ¨s</th>
                     <th>Droits</th>
                 </tr>
 "@
@@ -1118,17 +1118,17 @@ FIN DU RAPPORT
 
                 $htmlItems += @"
 
-            <h4>Permissions héritées</h4>
+            <h4>Permissions hÃ©ritÃ©es</h4>
 "@
 
                 if ($item.InheritedPermissions.Count -eq 0) {
-                    $htmlItems += "            <p>Aucune permission héritée</p>`n"
+                    $htmlItems += "            <p>Aucune permission hÃ©ritÃ©e</p>`n"
                 } else {
                     $htmlItems += @"
             <table>
                 <tr>
-                    <th>Identité</th>
-                    <th>Type d'accès</th>
+                    <th>IdentitÃ©</th>
+                    <th>Type d'accÃ¨s</th>
                     <th>Droits</th>
                 </tr>
 "@
@@ -1151,15 +1151,15 @@ FIN DU RAPPORT
 
             $htmlAnomalies = @"
 
-        <h2>Anomalies détectées</h2>
+        <h2>Anomalies dÃ©tectÃ©es</h2>
 "@
 
             if ($Data.Anomalies.Count -eq 0) {
-                $htmlAnomalies += "        <p>Aucune anomalie détectée.</p>`n"
+                $htmlAnomalies += "        <p>Aucune anomalie dÃ©tectÃ©e.</p>`n"
             } else {
                 foreach ($anomaly in $Data.Anomalies) {
                     $severityClass = "severity-info"
-                    if ($anomaly.Severity -eq "Élevée") {
+                    if ($anomaly.Severity -eq "Ã‰levÃ©e") {
                         $severityClass = "severity-high"
                     } elseif ($anomaly.Severity -eq "Moyenne") {
                         $severityClass = "severity-medium"
@@ -1171,7 +1171,7 @@ FIN DU RAPPORT
         <div class="anomaly $severityClass">
             <h3>$($anomaly.AnomalyType)</h3>
             <p><strong>Chemin:</strong> $($anomaly.Path)</p>
-            <p><strong>Sévérité:</strong> $($anomaly.Severity)</p>
+            <p><strong>SÃ©vÃ©ritÃ©:</strong> $($anomaly.Severity)</p>
             <p><strong>Description:</strong> $($anomaly.Description)</p>
             <p><strong>Recommandation:</strong> $($anomaly.Recommendation)</p>
         </div>
@@ -1182,7 +1182,7 @@ FIN DU RAPPORT
             $htmlFooter = @"
 
         <div class="footer">
-            <p>Rapport généré le $($Data.AnalysisDate) avec ACLAnalyzer</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $($Data.AnalysisDate) avec ACLAnalyzer</p>
         </div>
     </div>
 </body>
@@ -1195,7 +1195,7 @@ FIN DU RAPPORT
 
     process {
         try {
-            # Collecter les données pour le rapport
+            # Collecter les donnÃ©es pour le rapport
             $reportData = [PSCustomObject]@{
                 Path = $Path
                 AnalysisDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -1213,10 +1213,10 @@ FIN DU RAPPORT
             # Obtenir les permissions NTFS
             $permissions = Get-NTFSPermission -Path $Path -Recurse $Recurse -IncludeInherited $true
 
-            # Obtenir les informations d'héritage
+            # Obtenir les informations d'hÃ©ritage
             $inheritanceInfo = Get-NTFSPermissionInheritance -Path $Path -Recurse $Recurse
 
-            # Obtenir les informations de propriété
+            # Obtenir les informations de propriÃ©tÃ©
             $ownershipInfo = Get-NTFSOwnershipInfo -Path $Path -Recurse $Recurse
 
             # Obtenir les anomalies
@@ -1225,10 +1225,10 @@ FIN DU RAPPORT
             # Regrouper les permissions par chemin
             $permissionsByPath = $permissions | Group-Object -Property Path
 
-            # Regrouper les informations d'héritage par chemin
+            # Regrouper les informations d'hÃ©ritage par chemin
             $inheritanceByPath = $inheritanceInfo | Group-Object -Property Path
 
-            # Regrouper les informations de propriété par chemin
+            # Regrouper les informations de propriÃ©tÃ© par chemin
             $ownershipByPath = $ownershipInfo | Group-Object -Property Path
 
             # Combiner les informations pour chaque chemin
@@ -1277,7 +1277,7 @@ FIN DU RAPPORT
 
                 $reportData.Permissions += $itemInfo
 
-                # Mettre à jour les statistiques
+                # Mettre Ã  jour les statistiques
                 $reportData.Summary.TotalObjects++
                 if ($objectType -eq "Fichier") {
                     $reportData.Summary.Files++
@@ -1290,19 +1290,19 @@ FIN DU RAPPORT
             $reportData.Anomalies = $anomalies
             $reportData.Summary.Anomalies = $anomalies.Count
 
-            # Déterminer le niveau de risque global
-            $highRiskCount = ($anomalies | Where-Object { $_.Severity -eq "Élevée" }).Count
+            # DÃ©terminer le niveau de risque global
+            $highRiskCount = ($anomalies | Where-Object { $_.Severity -eq "Ã‰levÃ©e" }).Count
             $mediumRiskCount = ($anomalies | Where-Object { $_.Severity -eq "Moyenne" }).Count
 
             if ($highRiskCount -gt 0) {
-                $reportData.Summary.RiskLevel = "Élevé"
+                $reportData.Summary.RiskLevel = "Ã‰levÃ©"
             } elseif ($mediumRiskCount -gt 0) {
                 $reportData.Summary.RiskLevel = "Moyen"
             } else {
                 $reportData.Summary.RiskLevel = "Faible"
             }
 
-            # Générer le rapport au format demandé
+            # GÃ©nÃ©rer le rapport au format demandÃ©
             $reportContent = $null
 
             switch ($OutputFormat) {
@@ -1310,7 +1310,7 @@ FIN DU RAPPORT
                     $reportContent = ConvertTo-TextReport -Data $reportData
                 }
                 "CSV" {
-                    # Créer un tableau d'objets pour l'export CSV
+                    # CrÃ©er un tableau d'objets pour l'export CSV
                     $csvData = @()
 
                     foreach ($item in $reportData.Permissions) {
@@ -1340,13 +1340,13 @@ FIN DU RAPPORT
             # Enregistrer ou afficher le rapport
             if ($OutputPath) {
                 $reportContent | Out-File -FilePath $OutputPath -Encoding utf8
-                Write-Host "Rapport enregistré dans '$OutputPath'."
+                Write-Host "Rapport enregistrÃ© dans '$OutputPath'."
             } else {
                 return $reportContent
             }
         }
         catch {
-            Write-Error "Erreur lors de la génération du rapport de permissions NTFS pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de permissions NTFS pour '$Path': $($_.Exception.Message)"
         }
     }
 }
@@ -1355,18 +1355,18 @@ FIN DU RAPPORT
 function Repair-NTFSPermissionAnomaly {
     <#
     .SYNOPSIS
-        Corrige automatiquement les anomalies de permissions NTFS détectées.
+        Corrige automatiquement les anomalies de permissions NTFS dÃ©tectÃ©es.
 
     .DESCRIPTION
-        Cette fonction corrige automatiquement les anomalies de permissions NTFS détectées
+        Cette fonction corrige automatiquement les anomalies de permissions NTFS dÃ©tectÃ©es
         par la fonction Find-NTFSPermissionAnomaly, comme les permissions trop permissives,
-        les conflits, ou les héritages interrompus.
+        les conflits, ou les hÃ©ritages interrompus.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier à corriger.
+        Le chemin du fichier ou dossier Ã  corriger.
 
     .PARAMETER AnomalyType
-        Le type d'anomalie à corriger. Si non spécifié, toutes les anomalies seront corrigées.
+        Le type d'anomalie Ã  corriger. Si non spÃ©cifiÃ©, toutes les anomalies seront corrigÃ©es.
         Valeurs possibles : "HighRiskPermission", "PermissionConflict", "RedundantPermission", "InheritanceBreak".
 
     .PARAMETER WhatIf
@@ -1379,7 +1379,7 @@ function Repair-NTFSPermissionAnomaly {
         Repair-NTFSPermissionAnomaly -Path "C:\Data" -AnomalyType "HighRiskPermission" -WhatIf
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les corrections effectuées.
+        [PSCustomObject] avec des informations sur les corrections effectuÃ©es.
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param (
@@ -1396,7 +1396,7 @@ function Repair-NTFSPermissionAnomaly {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
@@ -1421,16 +1421,16 @@ function Repair-NTFSPermissionAnomaly {
         try {
             $results = @()
 
-            # Détecter les anomalies
+            # DÃ©tecter les anomalies
             $anomalies = Find-NTFSPermissionAnomaly -Path $Path
 
-            # Filtrer les anomalies par type si spécifié
+            # Filtrer les anomalies par type si spÃ©cifiÃ©
             if ($AnomalyType -ne "All") {
                 $anomalies = $anomalies | Where-Object { $_.AnomalyType -eq $AnomalyType }
             }
 
             if (-not $anomalies) {
-                Write-Host "Aucune anomalie à corriger pour le chemin '$Path'."
+                Write-Host "Aucune anomalie Ã  corriger pour le chemin '$Path'."
                 return
             }
 
@@ -1456,20 +1456,20 @@ function Repair-NTFSPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $itemAcl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver la règle à risque élevé
+                        # Trouver la rÃ¨gle Ã  risque Ã©levÃ©
                         $highRiskRule = $itemAcl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference -and
                             $_.FileSystemRights.ToString() -match $anomaly.Rights
                         }
 
                         if ($highRiskRule) {
-                            $correctionDescription = "Suppression de la permission à risque élevé pour $($anomaly.IdentityReference)"
+                            $correctionDescription = "Suppression de la permission Ã  risque Ã©levÃ© pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer la règle à risque élevé
+                                # Supprimer la rÃ¨gle Ã  risque Ã©levÃ©
                                 $itemAcl.RemoveAccessRule($highRiskRule)
 
-                                # Ajouter une règle plus restrictive si nécessaire
+                                # Ajouter une rÃ¨gle plus restrictive si nÃ©cessaire
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
                                     $identity,
@@ -1485,10 +1485,10 @@ function Repair-NTFSPermissionAnomaly {
                                 $correctionInfo.CorrectionApplied = $true
                                 $correctionInfo.CorrectionDescription = "$correctionDescription et ajout d'une permission plus restrictive (ReadAndExecute)"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règle à risque élevé non trouvée"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gle Ã  risque Ã©levÃ© non trouvÃ©e"
                         }
                     }
 
@@ -1496,21 +1496,21 @@ function Repair-NTFSPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $itemAcl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver les règles en conflit
+                        # Trouver les rÃ¨gles en conflit
                         $conflictRules = $itemAcl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference
                         }
 
                         if ($conflictRules) {
-                            $correctionDescription = "Résolution du conflit de permissions pour $($anomaly.IdentityReference)"
+                            $correctionDescription = "RÃ©solution du conflit de permissions pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer toutes les règles en conflit
+                                # Supprimer toutes les rÃ¨gles en conflit
                                 foreach ($rule in $conflictRules) {
                                     $itemAcl.RemoveAccessRule($rule)
                                 }
 
-                                # Ajouter une nouvelle règle consolidée
+                                # Ajouter une nouvelle rÃ¨gle consolidÃ©e
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
                                     $identity,
@@ -1524,12 +1524,12 @@ function Repair-NTFSPermissionAnomaly {
                                 Set-Acl -Path $anomaly.Path -AclObject $itemAcl
 
                                 $correctionInfo.CorrectionApplied = $true
-                                $correctionInfo.CorrectionDescription = "$correctionDescription en consolidant les règles"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription en consolidant les rÃ¨gles"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règles en conflit non trouvées"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gles en conflit non trouvÃ©es"
                         }
                     }
 
@@ -1537,7 +1537,7 @@ function Repair-NTFSPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $itemAcl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver les règles redondantes
+                        # Trouver les rÃ¨gles redondantes
                         $redundantRules = $itemAcl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference
                         }
@@ -1546,12 +1546,12 @@ function Repair-NTFSPermissionAnomaly {
                             $correctionDescription = "Consolidation des permissions redondantes pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer toutes les règles redondantes
+                                # Supprimer toutes les rÃ¨gles redondantes
                                 foreach ($rule in $redundantRules) {
                                     $itemAcl.RemoveAccessRule($rule)
                                 }
 
-                                # Déterminer les droits combinés
+                                # DÃ©terminer les droits combinÃ©s
                                 $combinedRights = [System.Security.AccessControl.FileSystemRights]::None
                                 foreach ($rule in $redundantRules) {
                                     if ($rule.AccessControlType -eq [System.Security.AccessControl.AccessControlType]::Allow) {
@@ -1559,7 +1559,7 @@ function Repair-NTFSPermissionAnomaly {
                                     }
                                 }
 
-                                # Ajouter une nouvelle règle consolidée
+                                # Ajouter une nouvelle rÃ¨gle consolidÃ©e
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
                                     $identity,
@@ -1573,12 +1573,12 @@ function Repair-NTFSPermissionAnomaly {
                                 Set-Acl -Path $anomaly.Path -AclObject $itemAcl
 
                                 $correctionInfo.CorrectionApplied = $true
-                                $correctionInfo.CorrectionDescription = "$correctionDescription en une seule règle"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription en une seule rÃ¨gle"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règles redondantes non trouvées"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gles redondantes non trouvÃ©es"
                         }
                     }
 
@@ -1586,17 +1586,17 @@ function Repair-NTFSPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $itemAcl = Get-Acl -Path $anomaly.Path
 
-                        $correctionDescription = "Réactivation de l'héritage des permissions"
+                        $correctionDescription = "RÃ©activation de l'hÃ©ritage des permissions"
 
                         if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                            # Réactiver l'héritage
-                            $itemAcl.SetAccessRuleProtection($false, $true)  # Activer l'héritage et conserver les règles existantes
+                            # RÃ©activer l'hÃ©ritage
+                            $itemAcl.SetAccessRuleProtection($false, $true)  # Activer l'hÃ©ritage et conserver les rÃ¨gles existantes
                             Set-Acl -Path $anomaly.Path -AclObject $itemAcl
 
                             $correctionInfo.CorrectionApplied = $true
                             $correctionInfo.CorrectionDescription = $correctionDescription
                         } else {
-                            $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                            $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                         }
                     }
 
@@ -1624,22 +1624,22 @@ function Compare-NTFSPermission {
 
     .DESCRIPTION
         Cette fonction compare les permissions NTFS entre deux chemins et identifie
-        les différences, comme les permissions manquantes, supplémentaires ou modifiées.
+        les diffÃ©rences, comme les permissions manquantes, supplÃ©mentaires ou modifiÃ©es.
 
     .PARAMETER ReferencePath
-        Le chemin de référence pour la comparaison.
+        Le chemin de rÃ©fÃ©rence pour la comparaison.
 
     .PARAMETER DifferencePath
-        Le chemin à comparer avec la référence.
+        Le chemin Ã  comparer avec la rÃ©fÃ©rence.
 
     .PARAMETER IncludeInherited
-        Indique si les permissions héritées doivent être incluses dans la comparaison.
+        Indique si les permissions hÃ©ritÃ©es doivent Ãªtre incluses dans la comparaison.
 
     .EXAMPLE
         Compare-NTFSPermission -ReferencePath "C:\Data\Reference" -DifferencePath "C:\Data\Target" -IncludeInherited $true
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différences de permissions.
+        [PSCustomObject] avec des informations sur les diffÃ©rences de permissions.
     #>
     [CmdletBinding()]
     param (
@@ -1656,14 +1656,14 @@ function Compare-NTFSPermission {
     )
 
     begin {
-        # Vérifier si les chemins existent
+        # VÃ©rifier si les chemins existent
         if (-not (Test-Path -Path $ReferencePath)) {
-            Write-Error "Le chemin de référence '$ReferencePath' n'existe pas."
+            Write-Error "Le chemin de rÃ©fÃ©rence '$ReferencePath' n'existe pas."
             return
         }
 
         if (-not (Test-Path -Path $DifferencePath)) {
-            Write-Error "Le chemin à comparer '$DifferencePath' n'existe pas."
+            Write-Error "Le chemin Ã  comparer '$DifferencePath' n'existe pas."
             return
         }
     }
@@ -1674,12 +1674,12 @@ function Compare-NTFSPermission {
             $referencePermissions = Get-NTFSPermission -Path $ReferencePath -Recurse $false -IncludeInherited $IncludeInherited
             $differencePermissions = Get-NTFSPermission -Path $DifferencePath -Recurse $false -IncludeInherited $IncludeInherited
 
-            # Créer des collections pour les différences
+            # CrÃ©er des collections pour les diffÃ©rences
             $missingPermissions = @()
             $additionalPermissions = @()
             $modifiedPermissions = @()
 
-            # Comparer les permissions de référence avec les permissions de différence
+            # Comparer les permissions de rÃ©fÃ©rence avec les permissions de diffÃ©rence
             foreach ($refPerm in $referencePermissions) {
                 $matchingPerm = $differencePermissions | Where-Object {
                     $_.IdentityReference -eq $refPerm.IdentityReference -and
@@ -1687,7 +1687,7 @@ function Compare-NTFSPermission {
                 }
 
                 if (-not $matchingPerm) {
-                    # Permission manquante dans le chemin de différence
+                    # Permission manquante dans le chemin de diffÃ©rence
                     $missingPermissions += [PSCustomObject]@{
                         IdentityReference = $refPerm.IdentityReference
                         AccessControlType = $refPerm.AccessControlType
@@ -1695,7 +1695,7 @@ function Compare-NTFSPermission {
                         IsInherited = $refPerm.IsInherited
                     }
                 } elseif ($matchingPerm.FileSystemRights -ne $refPerm.FileSystemRights) {
-                    # Permission modifiée
+                    # Permission modifiÃ©e
                     $modifiedPermissions += [PSCustomObject]@{
                         IdentityReference = $refPerm.IdentityReference
                         AccessControlType = $refPerm.AccessControlType
@@ -1706,7 +1706,7 @@ function Compare-NTFSPermission {
                 }
             }
 
-            # Trouver les permissions supplémentaires dans le chemin de différence
+            # Trouver les permissions supplÃ©mentaires dans le chemin de diffÃ©rence
             foreach ($diffPerm in $differencePermissions) {
                 $matchingPerm = $referencePermissions | Where-Object {
                     $_.IdentityReference -eq $diffPerm.IdentityReference -and
@@ -1714,7 +1714,7 @@ function Compare-NTFSPermission {
                 }
 
                 if (-not $matchingPerm) {
-                    # Permission supplémentaire dans le chemin de différence
+                    # Permission supplÃ©mentaire dans le chemin de diffÃ©rence
                     $additionalPermissions += [PSCustomObject]@{
                         IdentityReference = $diffPerm.IdentityReference
                         AccessControlType = $diffPerm.AccessControlType
@@ -1724,7 +1724,7 @@ function Compare-NTFSPermission {
                 }
             }
 
-            # Créer l'objet de résultat
+            # CrÃ©er l'objet de rÃ©sultat
             $result = [PSCustomObject]@{
                 ReferencePath = $ReferencePath
                 DifferencePath = $DifferencePath
@@ -1750,19 +1750,19 @@ function Export-NTFSPermission {
 
     .DESCRIPTION
         Cette fonction exporte les permissions NTFS d'un chemin vers un fichier JSON ou XML,
-        permettant de sauvegarder une configuration de sécurité pour une restauration ultérieure.
+        permettant de sauvegarder une configuration de sÃ©curitÃ© pour une restauration ultÃ©rieure.
 
     .PARAMETER Path
-        Le chemin du fichier ou dossier dont les permissions doivent être exportées.
+        Le chemin du fichier ou dossier dont les permissions doivent Ãªtre exportÃ©es.
 
     .PARAMETER OutputPath
-        Le chemin du fichier de sortie où les permissions seront exportées.
+        Le chemin du fichier de sortie oÃ¹ les permissions seront exportÃ©es.
 
     .PARAMETER Format
         Le format du fichier d'exportation. Valeurs possibles : "JSON", "XML", "CSV".
 
     .PARAMETER Recurse
-        Indique si l'exportation doit être récursive pour les dossiers.
+        Indique si l'exportation doit Ãªtre rÃ©cursive pour les dossiers.
 
     .EXAMPLE
         Export-NTFSPermission -Path "C:\Data" -OutputPath "C:\Backup\DataPermissions.json" -Format "JSON" -Recurse $true
@@ -1789,19 +1789,19 @@ function Export-NTFSPermission {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return
         }
 
-        # Vérifier si le dossier de sortie existe
+        # VÃ©rifier si le dossier de sortie existe
         $outputFolder = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $outputFolder)) {
             try {
                 New-Item -Path $outputFolder -ItemType Directory -Force | Out-Null
             } catch {
-                Write-Error "Impossible de créer le dossier de sortie '$outputFolder': $($_.Exception.Message)"
+                Write-Error "Impossible de crÃ©er le dossier de sortie '$outputFolder': $($_.Exception.Message)"
                 return
             }
         }
@@ -1812,7 +1812,7 @@ function Export-NTFSPermission {
             # Obtenir les permissions NTFS
             $permissions = Get-NTFSPermission -Path $Path -Recurse $Recurse -IncludeInherited $true
 
-            # Créer un objet d'exportation avec des métadonnées
+            # CrÃ©er un objet d'exportation avec des mÃ©tadonnÃ©es
             $exportObject = [PSCustomObject]@{
                 ExportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 SourcePath = $Path
@@ -1820,7 +1820,7 @@ function Export-NTFSPermission {
                 Permissions = $permissions
             }
 
-            # Exporter selon le format spécifié
+            # Exporter selon le format spÃ©cifiÃ©
             switch ($Format) {
                 "JSON" {
                     $exportObject | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
@@ -1829,7 +1829,7 @@ function Export-NTFSPermission {
                     $exportObject | Export-Clixml -Path $OutputPath -Encoding utf8
                 }
                 "CSV" {
-                    # Pour CSV, nous devons aplatir les données
+                    # Pour CSV, nous devons aplatir les donnÃ©es
                     $flatPermissions = @()
                     foreach ($perm in $permissions) {
                         $flatPerm = [PSCustomObject]@{
@@ -1848,7 +1848,7 @@ function Export-NTFSPermission {
                 }
             }
 
-            Write-Host "Permissions NTFS exportées avec succès vers '$OutputPath'."
+            Write-Host "Permissions NTFS exportÃ©es avec succÃ¨s vers '$OutputPath'."
             return $OutputPath
         }
         catch {
@@ -1861,18 +1861,18 @@ function Export-NTFSPermission {
 function Import-NTFSPermission {
     <#
     .SYNOPSIS
-        Importe les permissions NTFS depuis un fichier et les applique à un chemin.
+        Importe les permissions NTFS depuis un fichier et les applique Ã  un chemin.
 
     .DESCRIPTION
         Cette fonction importe les permissions NTFS depuis un fichier JSON, XML ou CSV
-        et les applique à un chemin spécifié, permettant de restaurer une configuration de sécurité.
+        et les applique Ã  un chemin spÃ©cifiÃ©, permettant de restaurer une configuration de sÃ©curitÃ©.
 
     .PARAMETER InputPath
-        Le chemin du fichier d'entrée contenant les permissions à importer.
+        Le chemin du fichier d'entrÃ©e contenant les permissions Ã  importer.
 
     .PARAMETER TargetPath
-        Le chemin du fichier ou dossier auquel les permissions doivent être appliquées.
-        Si non spécifié, le chemin source original sera utilisé.
+        Le chemin du fichier ou dossier auquel les permissions doivent Ãªtre appliquÃ©es.
+        Si non spÃ©cifiÃ©, le chemin source original sera utilisÃ©.
 
     .PARAMETER Format
         Le format du fichier d'importation. Valeurs possibles : "JSON", "XML", "CSV".
@@ -1887,7 +1887,7 @@ function Import-NTFSPermission {
         Import-NTFSPermission -InputPath "C:\Backup\DataPermissions.json" -TargetPath "D:\Data" -Format "JSON" -WhatIf
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les permissions appliquées.
+        [PSCustomObject] avec des informations sur les permissions appliquÃ©es.
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param (
@@ -1907,16 +1907,16 @@ function Import-NTFSPermission {
     )
 
     begin {
-        # Vérifier si le fichier d'entrée existe
+        # VÃ©rifier si le fichier d'entrÃ©e existe
         if (-not (Test-Path -Path $InputPath)) {
-            Write-Error "Le fichier d'entrée '$InputPath' n'existe pas."
+            Write-Error "Le fichier d'entrÃ©e '$InputPath' n'existe pas."
             return
         }
     }
 
     process {
         try {
-            # Importer les permissions selon le format spécifié
+            # Importer les permissions selon le format spÃ©cifiÃ©
             $importObject = $null
             switch ($Format) {
                 "JSON" {
@@ -1935,10 +1935,10 @@ function Import-NTFSPermission {
                 }
             }
 
-            # Déterminer le chemin cible
+            # DÃ©terminer le chemin cible
             $actualTargetPath = if ($TargetPath) { $TargetPath } else { $importObject.SourcePath }
 
-            # Vérifier si le chemin cible existe
+            # VÃ©rifier si le chemin cible existe
             if (-not (Test-Path -Path $actualTargetPath)) {
                 Write-Error "Le chemin cible '$actualTargetPath' n'existe pas."
                 return
@@ -1948,7 +1948,7 @@ function Import-NTFSPermission {
 
             # Appliquer les permissions
             foreach ($perm in $importObject.Permissions) {
-                # Déterminer le chemin relatif et le chemin cible complet
+                # DÃ©terminer le chemin relatif et le chemin cible complet
                 $relativePath = if ($perm.Path -eq $importObject.SourcePath) {
                     ""
                 } else {
@@ -1961,9 +1961,9 @@ function Import-NTFSPermission {
                     $actualTargetPath
                 }
 
-                # Vérifier si le chemin cible existe
+                # VÃ©rifier si le chemin cible existe
                 if (-not (Test-Path -Path $targetItemPath)) {
-                    Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignoré."
+                    Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignorÃ©."
                     continue
                 }
 
@@ -1976,7 +1976,7 @@ function Import-NTFSPermission {
                     Applied = $false
                 }
 
-                # Appliquer la permission si ce n'est pas une permission héritée
+                # Appliquer la permission si ce n'est pas une permission hÃ©ritÃ©e
                 if (-not $perm.IsInherited) {
                     $description = "Application de la permission '$($perm.FileSystemRights)' pour '$($perm.IdentityReference)' sur '$targetItemPath'"
 
@@ -1985,7 +1985,7 @@ function Import-NTFSPermission {
                             # Obtenir l'ACL actuelle
                             $acl = Get-Acl -Path $targetItemPath
 
-                            # Créer la règle d'accès
+                            # CrÃ©er la rÃ¨gle d'accÃ¨s
                             $identity = New-Object System.Security.Principal.NTAccount($perm.IdentityReference)
                             $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
                                 $identity,
@@ -1995,7 +1995,7 @@ function Import-NTFSPermission {
                                 $perm.AccessControlType
                             )
 
-                            # Ajouter la règle et appliquer l'ACL
+                            # Ajouter la rÃ¨gle et appliquer l'ACL
                             $acl.AddAccessRule($rule)
                             Set-Acl -Path $targetItemPath -AclObject $acl
 
@@ -2005,7 +2005,7 @@ function Import-NTFSPermission {
                         }
                     }
                 } else {
-                    $permissionInfo.Applied = "Ignoré (permission héritée)"
+                    $permissionInfo.Applied = "IgnorÃ© (permission hÃ©ritÃ©e)"
                 }
 
                 $results += $permissionInfo
@@ -2019,12 +2019,12 @@ function Import-NTFSPermission {
     }
 }
 
-# Exporter les fonctions si le script est importé comme module
+# Exporter les fonctions si le script est importÃ© comme module
 if ($MyInvocation.Line -match '^\. ') {
-    # Le script est sourcé directement, pas besoin d'exporter
+    # Le script est sourcÃ© directement, pas besoin d'exporter
 } elseif ($MyInvocation.MyCommand.Path -eq $null) {
-    # Le script est exécuté directement, pas besoin d'exporter
+    # Le script est exÃ©cutÃ© directement, pas besoin d'exporter
 } else {
-    # Le script est importé comme module, exporter les fonctions
+    # Le script est importÃ© comme module, exporter les fonctions
     Export-ModuleMember -Function Get-NTFSPermission, Find-NTFSPermissionAnomaly, Get-NTFSPermissionInheritance, Get-NTFSOwnershipInfo, New-NTFSPermissionReport, Repair-NTFSPermissionAnomaly, Compare-NTFSPermission, Export-NTFSPermission, Import-NTFSPermission
 }

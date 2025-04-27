@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Outils d'analyse des listes de contrôle d'accès (ACL) pour les clés de registre Windows.
+    Outils d'analyse des listes de contrÃ´le d'accÃ¨s (ACL) pour les clÃ©s de registre Windows.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser, comparer et visualiser les listes de contrôle d'accès (ACL)
-    sur les clés de registre Windows, permettant d'identifier les problèmes de sécurité potentiels.
+    Ce module fournit des fonctions pour analyser, comparer et visualiser les listes de contrÃ´le d'accÃ¨s (ACL)
+    sur les clÃ©s de registre Windows, permettant d'identifier les problÃ¨mes de sÃ©curitÃ© potentiels.
 
 .NOTES
     Nom du fichier : RegistryACLAnalyzer.ps1
     Auteur        : Augment Code
     Version       : 1.0
-    Prérequis     : PowerShell 5.1 ou supérieur
+    PrÃ©requis     : PowerShell 5.1 ou supÃ©rieur
 #>
 
 #Requires -Version 5.1
@@ -19,29 +19,29 @@
 function Get-RegistryPermission {
     <#
     .SYNOPSIS
-        Analyse les permissions d'une clé de registre.
+        Analyse les permissions d'une clÃ© de registre.
 
     .DESCRIPTION
-        Cette fonction analyse en détail les permissions d'une clé de registre,
-        y compris les droits spécifiques, les héritages, et les identités associées.
+        Cette fonction analyse en dÃ©tail les permissions d'une clÃ© de registre,
+        y compris les droits spÃ©cifiques, les hÃ©ritages, et les identitÃ©s associÃ©es.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à analyser (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  analyser (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les sous-clés.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .PARAMETER IncludeInherited
-        Indique si les permissions héritées doivent être incluses dans l'analyse.
+        Indique si les permissions hÃ©ritÃ©es doivent Ãªtre incluses dans l'analyse.
 
     .PARAMETER MaxDepth
-        Profondeur maximale de récursion pour éviter les boucles infinies.
+        Profondeur maximale de rÃ©cursion pour Ã©viter les boucles infinies.
 
     .EXAMPLE
         Get-RegistryPermission -Path "HKLM:\SOFTWARE\Microsoft" -Recurse $false -IncludeInherited $true
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur les permissions de registre.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur les permissions de registre.
     #>
     [CmdletBinding()]
     param (
@@ -63,13 +63,13 @@ function Get-RegistryPermission {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
         }
 
-        # Fonction pour convertir les droits d'accès en chaîne lisible
+        # Fonction pour convertir les droits d'accÃ¨s en chaÃ®ne lisible
         function ConvertTo-ReadableRegistryRights {
             param (
                 [System.Security.AccessControl.RegistryRights]$Rights
@@ -87,7 +87,7 @@ function Get-RegistryPermission {
                 "TakeOwnership" = [System.Security.AccessControl.RegistryRights]::TakeOwnership
             }
 
-            # Droits spécifiques
+            # Droits spÃ©cifiques
             $specificRights = @{
                 "QueryValues" = [System.Security.AccessControl.RegistryRights]::QueryValues
                 "SetValue" = [System.Security.AccessControl.RegistryRights]::SetValue
@@ -98,15 +98,15 @@ function Get-RegistryPermission {
                 "Delete" = [System.Security.AccessControl.RegistryRights]::Delete
             }
 
-            # Vérifier d'abord les droits de base
+            # VÃ©rifier d'abord les droits de base
             foreach ($right in $basicRights.Keys) {
                 if (($Rights -band $basicRights[$right]) -eq $basicRights[$right]) {
                     $readableRights += $right
-                    return $readableRights  # Si un droit de base est trouvé, on le retourne directement
+                    return $readableRights  # Si un droit de base est trouvÃ©, on le retourne directement
                 }
             }
 
-            # Si aucun droit de base n'est trouvé, vérifier les droits spécifiques
+            # Si aucun droit de base n'est trouvÃ©, vÃ©rifier les droits spÃ©cifiques
             foreach ($right in $specificRights.Keys) {
                 if (($Rights -band $specificRights[$right]) -eq $specificRights[$right]) {
                     $readableRights += $right
@@ -116,7 +116,7 @@ function Get-RegistryPermission {
             return $readableRights
         }
 
-        # Fonction pour convertir les flags d'héritage en chaîne lisible
+        # Fonction pour convertir les flags d'hÃ©ritage en chaÃ®ne lisible
         function ConvertTo-ReadableInheritanceFlags {
             param (
                 [System.Security.AccessControl.InheritanceFlags]$InheritanceFlags,
@@ -125,9 +125,9 @@ function Get-RegistryPermission {
 
             $inheritance = @()
 
-            # Flags d'héritage
+            # Flags d'hÃ©ritage
             if ($InheritanceFlags -band [System.Security.AccessControl.InheritanceFlags]::ContainerInherit) {
-                $inheritance += "Sous-clés"
+                $inheritance += "Sous-clÃ©s"
             }
 
             # Flags de propagation
@@ -136,7 +136,7 @@ function Get-RegistryPermission {
             }
 
             if ($PropagationFlags -band [System.Security.AccessControl.PropagationFlags]::InheritOnly) {
-                $inheritance += "Héritage uniquement"
+                $inheritance += "HÃ©ritage uniquement"
             }
 
             if ($inheritance.Count -eq 0) {
@@ -146,7 +146,7 @@ function Get-RegistryPermission {
             }
         }
 
-        # Fonction pour évaluer le niveau de risque d'une permission
+        # Fonction pour Ã©valuer le niveau de risque d'une permission
         function Get-PermissionRiskLevel {
             param (
                 [string]$IdentityReference,
@@ -156,20 +156,20 @@ function Get-RegistryPermission {
 
             $riskLevel = "Faible"
 
-            # Vérifier les identités à haut risque
+            # VÃ©rifier les identitÃ©s Ã  haut risque
             $highRiskIdentities = @(
-                "Everyone", "Tout le monde", "Users", "Utilisateurs", "Authenticated Users", "Utilisateurs authentifiés"
+                "Everyone", "Tout le monde", "Users", "Utilisateurs", "Authenticated Users", "Utilisateurs authentifiÃ©s"
             )
 
-            # Vérifier les permissions à haut risque
+            # VÃ©rifier les permissions Ã  haut risque
             $highRiskPermissions = @(
                 "FullControl", "WriteKey", "SetValue", "CreateSubKey", "Delete", "ChangePermissions", "TakeOwnership"
             )
 
-            # Évaluer le risque
+            # Ã‰valuer le risque
             if ($highRiskIdentities -contains $IdentityReference) {
                 if ($highRiskPermissions -contains $RegistryRights) {
-                    $riskLevel = "Élevé"
+                    $riskLevel = "Ã‰levÃ©"
                 } else {
                     $riskLevel = "Moyen"
                 }
@@ -177,7 +177,7 @@ function Get-RegistryPermission {
                 $riskLevel = "Moyen"
             }
 
-            # Les permissions héritées sont généralement moins risquées
+            # Les permissions hÃ©ritÃ©es sont gÃ©nÃ©ralement moins risquÃ©es
             if ($IsInherited -and $riskLevel -eq "Moyen") {
                 $riskLevel = "Faible"
             }
@@ -188,7 +188,7 @@ function Get-RegistryPermission {
 
     process {
         try {
-            # Vérifier si on a atteint la profondeur maximale
+            # VÃ©rifier si on a atteint la profondeur maximale
             if ($CurrentDepth -ge $MaxDepth) {
                 Write-Verbose "Profondeur maximale atteinte ($MaxDepth) pour le chemin '$Path'"
                 return @()
@@ -196,12 +196,12 @@ function Get-RegistryPermission {
 
             $results = @()
 
-            # Obtenir les ACL de la clé de registre
+            # Obtenir les ACL de la clÃ© de registre
             $acl = Get-Acl -Path $Path
 
-            # Analyser chaque règle d'accès
+            # Analyser chaque rÃ¨gle d'accÃ¨s
             foreach ($accessRule in $acl.Access) {
-                # Ignorer les permissions héritées si demandé
+                # Ignorer les permissions hÃ©ritÃ©es si demandÃ©
                 if (-not $IncludeInherited -and $accessRule.IsInherited) {
                     continue
                 }
@@ -209,13 +209,13 @@ function Get-RegistryPermission {
                 # Convertir les droits en format lisible
                 $readableRights = ConvertTo-ReadableRegistryRights -Rights $accessRule.RegistryRights
 
-                # Convertir les flags d'héritage en format lisible
+                # Convertir les flags d'hÃ©ritage en format lisible
                 $readableInheritance = ConvertTo-ReadableInheritanceFlags -InheritanceFlags $accessRule.InheritanceFlags -PropagationFlags $accessRule.PropagationFlags
 
-                # Évaluer le niveau de risque
+                # Ã‰valuer le niveau de risque
                 $riskLevel = Get-PermissionRiskLevel -IdentityReference $accessRule.IdentityReference.Value -RegistryRights ($readableRights -join ", ") -IsInherited $accessRule.IsInherited
 
-                # Créer un objet personnalisé pour cette règle d'accès
+                # CrÃ©er un objet personnalisÃ© pour cette rÃ¨gle d'accÃ¨s
                 $permissionInfo = [PSCustomObject]@{
                     Path = $Path
                     IdentityReference = $accessRule.IdentityReference.Value
@@ -224,31 +224,31 @@ function Get-RegistryPermission {
                     RightsRaw = $accessRule.RegistryRights.ToString()
                     Inheritance = $readableInheritance
                     IsInherited = $accessRule.IsInherited
-                    InheritanceSource = if ($accessRule.IsInherited) { (Split-Path -Parent $Path) } else { "Directement assigné" }
+                    InheritanceSource = if ($accessRule.IsInherited) { (Split-Path -Parent $Path) } else { "Directement assignÃ©" }
                     RiskLevel = $riskLevel
                 }
 
                 $results += $permissionInfo
             }
 
-            # Ajouter des informations sur le propriétaire
+            # Ajouter des informations sur le propriÃ©taire
             $ownerInfo = [PSCustomObject]@{
                 Path = $Path
                 IdentityReference = $acl.Owner
-                AccessControlType = "Propriétaire"
-                Rights = "Contrôle total (implicite)"
+                AccessControlType = "PropriÃ©taire"
+                Rights = "ContrÃ´le total (implicite)"
                 RightsRaw = "FullControl"
                 Inheritance = "N/A"
                 IsInherited = $false
-                InheritanceSource = "Propriétaire de la clé de registre"
+                InheritanceSource = "PropriÃ©taire de la clÃ© de registre"
                 RiskLevel = "Faible"
             }
 
             $results += $ownerInfo
 
-            # Si récursif est demandé, analyser les sous-clés
+            # Si rÃ©cursif est demandÃ©, analyser les sous-clÃ©s
             if ($Recurse -and $CurrentDepth -lt $MaxDepth) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $subKeys = Get-ChildItem -Path $Path -ErrorAction SilentlyContinue | Select-Object -First 10
 
                 foreach ($subKey in $subKeys) {
@@ -265,27 +265,27 @@ function Get-RegistryPermission {
     }
 }
 
-# Fonction pour analyser l'héritage des permissions de registre
+# Fonction pour analyser l'hÃ©ritage des permissions de registre
 function Get-RegistryPermissionInheritance {
     <#
     .SYNOPSIS
-        Analyse l'héritage des permissions d'une clé de registre.
+        Analyse l'hÃ©ritage des permissions d'une clÃ© de registre.
 
     .DESCRIPTION
-        Cette fonction analyse en détail l'héritage des permissions d'une clé de registre,
-        y compris les sources d'héritage, les interruptions d'héritage, et les permissions explicites.
+        Cette fonction analyse en dÃ©tail l'hÃ©ritage des permissions d'une clÃ© de registre,
+        y compris les sources d'hÃ©ritage, les interruptions d'hÃ©ritage, et les permissions explicites.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à analyser (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  analyser (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les sous-clés.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .EXAMPLE
         Get-RegistryPermissionInheritance -Path "HKLM:\SOFTWARE\Microsoft" -Recurse $false
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur l'héritage des permissions de registre.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur l'hÃ©ritage des permissions de registre.
     #>
     [CmdletBinding()]
     param (
@@ -304,7 +304,7 @@ function Get-RegistryPermissionInheritance {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
@@ -319,7 +319,7 @@ function Get-RegistryPermissionInheritance {
             return Split-Path -Parent $Path
         }
 
-        # Fonction pour vérifier si l'héritage est activé
+        # Fonction pour vÃ©rifier si l'hÃ©ritage est activÃ©
         function Test-InheritanceEnabled {
             param (
                 [System.Security.AccessControl.RegistrySecurity]$Acl
@@ -331,7 +331,7 @@ function Get-RegistryPermissionInheritance {
 
     process {
         try {
-            # Vérifier si on a atteint la profondeur maximale
+            # VÃ©rifier si on a atteint la profondeur maximale
             if ($CurrentDepth -ge $MaxDepth) {
                 Write-Verbose "Profondeur maximale atteinte ($MaxDepth) pour le chemin '$Path'"
                 return @()
@@ -339,16 +339,16 @@ function Get-RegistryPermissionInheritance {
 
             $results = @()
 
-            # Obtenir les ACL de la clé de registre
+            # Obtenir les ACL de la clÃ© de registre
             $acl = Get-Acl -Path $Path
 
-            # Vérifier si l'héritage est activé
+            # VÃ©rifier si l'hÃ©ritage est activÃ©
             $inheritanceEnabled = Test-InheritanceEnabled -Acl $acl
 
             # Obtenir le chemin parent
             $parentPath = Get-ParentPath -Path $Path
 
-            # Créer un objet pour les informations d'héritage
+            # CrÃ©er un objet pour les informations d'hÃ©ritage
             $inheritanceInfo = [PSCustomObject]@{
                 Path = $Path
                 InheritanceEnabled = $inheritanceEnabled
@@ -358,7 +358,7 @@ function Get-RegistryPermissionInheritance {
                 InheritanceBreakPoints = @()
             }
 
-            # Analyser chaque règle d'accès
+            # Analyser chaque rÃ¨gle d'accÃ¨s
             foreach ($accessRule in $acl.Access) {
                 $permissionInfo = [PSCustomObject]@{
                     IdentityReference = $accessRule.IdentityReference.Value
@@ -376,17 +376,17 @@ function Get-RegistryPermissionInheritance {
                 }
             }
 
-            # Vérifier s'il y a une interruption d'héritage
+            # VÃ©rifier s'il y a une interruption d'hÃ©ritage
             if (-not $inheritanceEnabled) {
                 $inheritanceInfo.InheritanceBreakPoints += $Path
             }
 
-            # Ajouter les informations d'héritage aux résultats
+            # Ajouter les informations d'hÃ©ritage aux rÃ©sultats
             $results += $inheritanceInfo
 
-            # Si récursif est demandé, analyser les sous-clés
+            # Si rÃ©cursif est demandÃ©, analyser les sous-clÃ©s
             if ($Recurse -and $CurrentDepth -lt $MaxDepth) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $subKeys = Get-ChildItem -Path $Path -ErrorAction SilentlyContinue | Select-Object -First 10
 
                 foreach ($subKey in $subKeys) {
@@ -398,32 +398,32 @@ function Get-RegistryPermissionInheritance {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de l'analyse de l'héritage des permissions de registre pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de l'analyse de l'hÃ©ritage des permissions de registre pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour analyser les propriétaires des clés de registre
+# Fonction pour analyser les propriÃ©taires des clÃ©s de registre
 function Get-RegistryOwnershipInfo {
     <#
     .SYNOPSIS
-        Analyse les propriétaires des clés de registre.
+        Analyse les propriÃ©taires des clÃ©s de registre.
 
     .DESCRIPTION
-        Cette fonction analyse en détail les propriétaires des clés de registre,
+        Cette fonction analyse en dÃ©tail les propriÃ©taires des clÃ©s de registre,
         y compris les SID, les domaines, et les types de comptes.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à analyser (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  analyser (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les sous-clés.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .EXAMPLE
         Get-RegistryOwnershipInfo -Path "HKLM:\SOFTWARE\Microsoft" -Recurse $false
 
     .OUTPUTS
-        [PSCustomObject] avec des informations détaillées sur les propriétaires des clés de registre.
+        [PSCustomObject] avec des informations dÃ©taillÃ©es sur les propriÃ©taires des clÃ©s de registre.
     #>
     [CmdletBinding()]
     param (
@@ -442,13 +442,13 @@ function Get-RegistryOwnershipInfo {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
         }
 
-        # Fonction pour obtenir les informations détaillées sur un compte
+        # Fonction pour obtenir les informations dÃ©taillÃ©es sur un compte
         function Get-AccountInfo {
             param (
                 [string]$AccountName
@@ -462,7 +462,7 @@ function Get-RegistryOwnershipInfo {
                         $account = $sid.Translate([System.Security.Principal.NTAccount])
                         $accountName = $account.Value
                     } catch {
-                        $accountName = $AccountName  # Garder le SID si la traduction échoue
+                        $accountName = $AccountName  # Garder le SID si la traduction Ã©choue
                     }
                 }
 
@@ -475,11 +475,11 @@ function Get-RegistryOwnershipInfo {
                     $username = $AccountName
                 }
 
-                # Déterminer le type de compte
+                # DÃ©terminer le type de compte
                 $accountType = "Inconnu"
 
-                if ($username -eq "SYSTEM" -or $username -eq "Système") {
-                    $accountType = "Système"
+                if ($username -eq "SYSTEM" -or $username -eq "SystÃ¨me") {
+                    $accountType = "SystÃ¨me"
                 } elseif ($username -eq "Administrators" -or $username -eq "Administrateurs") {
                     $accountType = "Groupe d'administrateurs"
                 } elseif ($username -eq "Administrator" -or $username -eq "Administrateur") {
@@ -487,11 +487,11 @@ function Get-RegistryOwnershipInfo {
                 } elseif ($username -eq "Users" -or $username -eq "Utilisateurs") {
                     $accountType = "Groupe d'utilisateurs"
                 } elseif ($username -eq "Everyone" -or $username -eq "Tout le monde") {
-                    $accountType = "Groupe spécial"
+                    $accountType = "Groupe spÃ©cial"
                 } elseif ($domain -eq "NT AUTHORITY" -or $domain -eq "AUTORITE NT") {
-                    $accountType = "Compte système"
+                    $accountType = "Compte systÃ¨me"
                 } elseif ($domain -eq "BUILTIN") {
-                    $accountType = "Groupe intégré"
+                    $accountType = "Groupe intÃ©grÃ©"
                 } elseif ($domain -eq [Environment]::MachineName) {
                     $accountType = "Compte local"
                 } else {
@@ -517,7 +517,7 @@ function Get-RegistryOwnershipInfo {
 
     process {
         try {
-            # Vérifier si on a atteint la profondeur maximale
+            # VÃ©rifier si on a atteint la profondeur maximale
             if ($CurrentDepth -ge $MaxDepth) {
                 Write-Verbose "Profondeur maximale atteinte ($MaxDepth) pour le chemin '$Path'"
                 return @()
@@ -525,10 +525,10 @@ function Get-RegistryOwnershipInfo {
 
             $results = @()
 
-            # Obtenir les ACL de la clé de registre
+            # Obtenir les ACL de la clÃ© de registre
             $acl = Get-Acl -Path $Path
 
-            # Obtenir les informations sur le propriétaire
+            # Obtenir les informations sur le propriÃ©taire
             $ownerInfo = Get-AccountInfo -AccountName $acl.Owner
 
             # Obtenir les informations sur le groupe principal (si disponible)
@@ -537,7 +537,7 @@ function Get-RegistryOwnershipInfo {
                 $groupInfo = Get-AccountInfo -AccountName $acl.Group
             }
 
-            # Créer un objet pour les informations de propriété
+            # CrÃ©er un objet pour les informations de propriÃ©tÃ©
             $ownershipInfo = [PSCustomObject]@{
                 Path = $Path
                 Owner = $ownerInfo
@@ -549,12 +549,12 @@ function Get-RegistryOwnershipInfo {
                 Recommendations = @()
             }
 
-            # Vérifier si l'utilisateur actuel peut changer le propriétaire
+            # VÃ©rifier si l'utilisateur actuel peut changer le propriÃ©taire
             try {
                 $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
                 $currentUserInfo = Get-AccountInfo -AccountName $currentUser
 
-                # Vérifier si l'utilisateur actuel est le propriétaire ou un administrateur
+                # VÃ©rifier si l'utilisateur actuel est le propriÃ©taire ou un administrateur
                 $isOwner = $ownerInfo.FullName -eq $currentUserInfo.FullName
                 $isAdmin = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups |
                            Where-Object { $_.Value -match "S-1-5-32-544" } |
@@ -565,16 +565,16 @@ function Get-RegistryOwnershipInfo {
                 $ownershipInfo.CanChangeOwner = $false
             }
 
-            # Évaluer les risques de sécurité liés au propriétaire
-            if ($ownerInfo.AccountType -eq "Groupe spécial" -or
+            # Ã‰valuer les risques de sÃ©curitÃ© liÃ©s au propriÃ©taire
+            if ($ownerInfo.AccountType -eq "Groupe spÃ©cial" -or
                 $ownerInfo.Username -eq "Everyone" -or
                 $ownerInfo.Username -eq "Tout le monde" -or
                 $ownerInfo.Username -eq "Users" -or
                 $ownerInfo.Username -eq "Utilisateurs") {
 
                 $ownershipInfo.SecurityRisk = $true
-                $ownershipInfo.RiskLevel = "Élevé"
-                $ownershipInfo.Recommendations += "Changer le propriétaire pour un compte administrateur ou système"
+                $ownershipInfo.RiskLevel = "Ã‰levÃ©"
+                $ownershipInfo.Recommendations += "Changer le propriÃ©taire pour un compte administrateur ou systÃ¨me"
                 $ownershipInfo.RecommendedOwner = "Administrators"
             } elseif ($ownerInfo.AccountType -eq "Compte local" -and
                       $ownerInfo.Username -ne "Administrator" -and
@@ -582,16 +582,16 @@ function Get-RegistryOwnershipInfo {
 
                 $ownershipInfo.SecurityRisk = $true
                 $ownershipInfo.RiskLevel = "Moyen"
-                $ownershipInfo.Recommendations += "Vérifier si ce compte local devrait être propriétaire de cette clé de registre"
+                $ownershipInfo.Recommendations += "VÃ©rifier si ce compte local devrait Ãªtre propriÃ©taire de cette clÃ© de registre"
                 $ownershipInfo.RecommendedOwner = "Administrators"
             }
 
-            # Ajouter les informations de propriété aux résultats
+            # Ajouter les informations de propriÃ©tÃ© aux rÃ©sultats
             $results += $ownershipInfo
 
-            # Si récursif est demandé, analyser les sous-clés
+            # Si rÃ©cursif est demandÃ©, analyser les sous-clÃ©s
             if ($Recurse -and $CurrentDepth -lt $MaxDepth) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $subKeys = Get-ChildItem -Path $Path -ErrorAction SilentlyContinue | Select-Object -First 10
 
                 foreach ($subKey in $subKeys) {
@@ -603,32 +603,32 @@ function Get-RegistryOwnershipInfo {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de l'analyse des propriétaires de clés de registre pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de l'analyse des propriÃ©taires de clÃ©s de registre pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour détecter les anomalies dans les permissions de registre
+# Fonction pour dÃ©tecter les anomalies dans les permissions de registre
 function Find-RegistryPermissionAnomaly {
     <#
     .SYNOPSIS
-        Détecte les anomalies dans les permissions de registre.
+        DÃ©tecte les anomalies dans les permissions de registre.
 
     .DESCRIPTION
-        Cette fonction analyse les permissions de registre et détecte les anomalies potentielles,
-        comme les permissions trop permissives, les conflits, ou les héritages interrompus.
+        Cette fonction analyse les permissions de registre et dÃ©tecte les anomalies potentielles,
+        comme les permissions trop permissives, les conflits, ou les hÃ©ritages interrompus.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à analyser (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  analyser (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER Recurse
-        Indique si l'analyse doit être récursive pour les sous-clés.
+        Indique si l'analyse doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .EXAMPLE
         Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE\Microsoft" -Recurse $false
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les anomalies détectées.
+        [PSCustomObject] avec des informations sur les anomalies dÃ©tectÃ©es.
     #>
     [CmdletBinding()]
     param (
@@ -641,7 +641,7 @@ function Find-RegistryPermissionAnomaly {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
@@ -656,22 +656,22 @@ function Find-RegistryPermissionAnomaly {
                 [bool]$InheritanceEnabled
             )
 
-            # Identités à haut risque
+            # IdentitÃ©s Ã  haut risque
             $highRiskIdentities = @(
-                "Everyone", "Tout le monde", "Users", "Utilisateurs", "Authenticated Users", "Utilisateurs authentifiés"
+                "Everyone", "Tout le monde", "Users", "Utilisateurs", "Authenticated Users", "Utilisateurs authentifiÃ©s"
             )
 
-            # Droits à haut risque
+            # Droits Ã  haut risque
             $highRiskRights = @(
                 "FullControl", "WriteKey", "SetValue", "CreateSubKey", "Delete", "ChangePermissions", "TakeOwnership"
             )
 
-            # Vérifier les permissions à haut risque
+            # VÃ©rifier les permissions Ã  haut risque
             if ($highRiskIdentities -contains $IdentityReference -and ($Rights | Where-Object { $highRiskRights -contains $_ })) {
                 return "HighRiskPermission"
             }
 
-            # Vérifier les interruptions d'héritage
+            # VÃ©rifier les interruptions d'hÃ©ritage
             if (-not $InheritanceEnabled) {
                 return "InheritanceBreak"
             }
@@ -687,37 +687,37 @@ function Find-RegistryPermissionAnomaly {
             # Obtenir les permissions de registre
             $permissions = Get-RegistryPermission -Path $Path -Recurse $false -IncludeInherited $true
 
-            # Obtenir les informations d'héritage
+            # Obtenir les informations d'hÃ©ritage
             $inheritanceInfo = Get-RegistryPermissionInheritance -Path $Path -Recurse $false
 
-            # Analyser chaque permission pour détecter les anomalies
+            # Analyser chaque permission pour dÃ©tecter les anomalies
             foreach ($permission in $permissions) {
-                # Ignorer le propriétaire
-                if ($permission.AccessControlType -eq "Propriétaire") {
+                # Ignorer le propriÃ©taire
+                if ($permission.AccessControlType -eq "PropriÃ©taire") {
                     continue
                 }
 
-                # Détecter le type d'anomalie
+                # DÃ©tecter le type d'anomalie
                 $anomalyType = Get-AnomalyType -IdentityReference $permission.IdentityReference -Rights $permission.Rights -IsInherited $permission.IsInherited -InheritanceEnabled $inheritanceInfo.InheritanceEnabled
 
                 if ($anomalyType) {
-                    # Créer un objet pour l'anomalie
+                    # CrÃ©er un objet pour l'anomalie
                     $anomalyInfo = [PSCustomObject]@{
                         Path = $permission.Path
                         AnomalyType = $anomalyType
                         IdentityReference = $permission.IdentityReference
                         Rights = $permission.Rights
                         IsInherited = $permission.IsInherited
-                        Severity = if ($anomalyType -eq "HighRiskPermission") { "Élevée" } else { "Moyenne" }
+                        Severity = if ($anomalyType -eq "HighRiskPermission") { "Ã‰levÃ©e" } else { "Moyenne" }
                         Description = switch ($anomalyType) {
-                            "HighRiskPermission" { "Permission à risque élevé accordée à '$($permission.IdentityReference)'" }
-                            "InheritanceBreak" { "Interruption d'héritage détectée" }
+                            "HighRiskPermission" { "Permission Ã  risque Ã©levÃ© accordÃ©e Ã  '$($permission.IdentityReference)'" }
+                            "InheritanceBreak" { "Interruption d'hÃ©ritage dÃ©tectÃ©e" }
                             default { "Anomalie inconnue" }
                         }
                         Recommendation = switch ($anomalyType) {
                             "HighRiskPermission" { "Restreindre les permissions pour '$($permission.IdentityReference)'" }
-                            "InheritanceBreak" { "Réactiver l'héritage des permissions" }
-                            default { "Vérifier manuellement les permissions" }
+                            "InheritanceBreak" { "RÃ©activer l'hÃ©ritage des permissions" }
+                            default { "VÃ©rifier manuellement les permissions" }
                         }
                     }
 
@@ -725,17 +725,17 @@ function Find-RegistryPermissionAnomaly {
                 }
             }
 
-            # Détecter les conflits de permissions
+            # DÃ©tecter les conflits de permissions
             $identities = $permissions | Select-Object -ExpandProperty IdentityReference -Unique
             foreach ($identity in $identities) {
                 $identityPermissions = $permissions | Where-Object { $_.IdentityReference -eq $identity }
 
-                # Vérifier s'il y a à la fois des permissions Allow et Deny pour la même identité
+                # VÃ©rifier s'il y a Ã  la fois des permissions Allow et Deny pour la mÃªme identitÃ©
                 $allowPermissions = $identityPermissions | Where-Object { $_.AccessControlType -eq "Allow" }
                 $denyPermissions = $identityPermissions | Where-Object { $_.AccessControlType -eq "Deny" }
 
                 if ($allowPermissions -and $denyPermissions) {
-                    # Créer un objet pour l'anomalie de conflit
+                    # CrÃ©er un objet pour l'anomalie de conflit
                     $conflictInfo = [PSCustomObject]@{
                         Path = $Path
                         AnomalyType = "PermissionConflict"
@@ -744,18 +744,18 @@ function Find-RegistryPermissionAnomaly {
                         IsInherited = $false
                         Severity = "Moyenne"
                         Description = "Conflit entre permissions Allow et Deny pour '$identity'"
-                        Recommendation = "Résoudre le conflit en supprimant les permissions redondantes"
+                        Recommendation = "RÃ©soudre le conflit en supprimant les permissions redondantes"
                     }
 
                     $results += $conflictInfo
                 }
 
-                # Vérifier s'il y a des permissions redondantes
+                # VÃ©rifier s'il y a des permissions redondantes
                 if ($identityPermissions.Count -gt 1) {
                     $explicitPermissions = $identityPermissions | Where-Object { -not $_.IsInherited }
 
                     if ($explicitPermissions.Count -gt 1) {
-                        # Créer un objet pour l'anomalie de redondance
+                        # CrÃ©er un objet pour l'anomalie de redondance
                         $redundantInfo = [PSCustomObject]@{
                             Path = $Path
                             AnomalyType = "RedundantPermission"
@@ -764,7 +764,7 @@ function Find-RegistryPermissionAnomaly {
                             IsInherited = $false
                             Severity = "Faible"
                             Description = "Permissions redondantes pour '$identity'"
-                            Recommendation = "Consolider les permissions en une seule règle"
+                            Recommendation = "Consolider les permissions en une seule rÃ¨gle"
                         }
 
                         $results += $redundantInfo
@@ -772,9 +772,9 @@ function Find-RegistryPermissionAnomaly {
                 }
             }
 
-            # Si récursif est demandé, analyser les sous-clés
+            # Si rÃ©cursif est demandÃ©, analyser les sous-clÃ©s
             if ($Recurse) {
-                # Limiter le nombre d'éléments à traiter pour éviter les boucles infinies
+                # Limiter le nombre d'Ã©lÃ©ments Ã  traiter pour Ã©viter les boucles infinies
                 $subKeys = Get-ChildItem -Path $Path -ErrorAction SilentlyContinue | Select-Object -First 10
 
                 foreach ($subKey in $subKeys) {
@@ -786,41 +786,41 @@ function Find-RegistryPermissionAnomaly {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de la détection des anomalies de permissions de registre pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de la dÃ©tection des anomalies de permissions de registre pour '$Path': $($_.Exception.Message)"
         }
     }
 }
 
-# Fonction pour générer un rapport des permissions de registre
+# Fonction pour gÃ©nÃ©rer un rapport des permissions de registre
 function New-RegistryPermissionReport {
     <#
     .SYNOPSIS
-        Génère un rapport détaillé des permissions de registre.
+        GÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions de registre.
 
     .DESCRIPTION
-        Cette fonction génère un rapport détaillé des permissions de registre,
-        y compris les anomalies détectées, les propriétaires, et les héritages.
+        Cette fonction gÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions de registre,
+        y compris les anomalies dÃ©tectÃ©es, les propriÃ©taires, et les hÃ©ritages.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à analyser (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  analyser (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER OutputFormat
         Le format du rapport. Valeurs possibles : "Text", "HTML", "JSON".
 
     .PARAMETER IncludeOwnership
-        Indique si les informations de propriété doivent être incluses dans le rapport.
+        Indique si les informations de propriÃ©tÃ© doivent Ãªtre incluses dans le rapport.
 
     .PARAMETER IncludeInheritance
-        Indique si les informations d'héritage doivent être incluses dans le rapport.
+        Indique si les informations d'hÃ©ritage doivent Ãªtre incluses dans le rapport.
 
     .PARAMETER IncludeAnomalies
-        Indique si les anomalies détectées doivent être incluses dans le rapport.
+        Indique si les anomalies dÃ©tectÃ©es doivent Ãªtre incluses dans le rapport.
 
     .EXAMPLE
         New-RegistryPermissionReport -Path "HKLM:\SOFTWARE\Microsoft" -OutputFormat "HTML"
 
     .OUTPUTS
-        [string] Le rapport généré dans le format spécifié.
+        [string] Le rapport gÃ©nÃ©rÃ© dans le format spÃ©cifiÃ©.
     #>
     [CmdletBinding()]
     param (
@@ -843,7 +843,7 @@ function New-RegistryPermissionReport {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
@@ -852,13 +852,13 @@ function New-RegistryPermissionReport {
 
     process {
         try {
-            # Collecter les données
+            # Collecter les donnÃ©es
             $permissions = Get-RegistryPermission -Path $Path -Recurse $false -IncludeInherited $true
             $ownershipInfo = if ($IncludeOwnership) { Get-RegistryOwnershipInfo -Path $Path -Recurse $false } else { $null }
             $inheritanceInfo = if ($IncludeInheritance) { Get-RegistryPermissionInheritance -Path $Path -Recurse $false } else { $null }
             $anomalies = if ($IncludeAnomalies) { Find-RegistryPermissionAnomaly -Path $Path -Recurse $false } else { $null }
 
-            # Créer l'objet de rapport
+            # CrÃ©er l'objet de rapport
             $reportData = [PSCustomObject]@{
                 ReportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 Path = $Path
@@ -868,7 +868,7 @@ function New-RegistryPermissionReport {
                 Anomalies = $anomalies
             }
 
-            # Générer le rapport selon le format spécifié
+            # GÃ©nÃ©rer le rapport selon le format spÃ©cifiÃ©
             switch ($OutputFormat) {
                 "Text" {
                     $report = @"
@@ -876,7 +876,7 @@ function New-RegistryPermissionReport {
 RAPPORT D'ANALYSE DES PERMISSIONS DE REGISTRE
 ==========================================================================
 Date du rapport: $($reportData.ReportDate)
-Chemin analysé: $($reportData.Path)
+Chemin analysÃ©: $($reportData.Path)
 ==========================================================================
 
 "@
@@ -890,24 +890,24 @@ PERMISSIONS:
                     foreach ($permission in $permissions) {
                         $report += @"
 
-Identité: $($permission.IdentityReference)
-Type d'accès: $($permission.AccessControlType)
+IdentitÃ©: $($permission.IdentityReference)
+Type d'accÃ¨s: $($permission.AccessControlType)
 Droits: $($permission.Rights -join ", ")
-Hérité: $($permission.IsInherited)
+HÃ©ritÃ©: $($permission.IsInherited)
 Niveau de risque: $($permission.RiskLevel)
 
 "@
                     }
 
-                    # Ajouter les informations de propriété si demandé
+                    # Ajouter les informations de propriÃ©tÃ© si demandÃ©
                     if ($IncludeOwnership -and $ownershipInfo) {
                         $report += @"
 
-PROPRIÉTÉ:
+PROPRIÃ‰TÃ‰:
 ----------------------------------------------------------
-Propriétaire: $($ownershipInfo.Owner.FullName)
+PropriÃ©taire: $($ownershipInfo.Owner.FullName)
 Type de compte: $($ownershipInfo.Owner.AccountType)
-Risque de sécurité: $($ownershipInfo.SecurityRisk)
+Risque de sÃ©curitÃ©: $($ownershipInfo.SecurityRisk)
 Niveau de risque: $($ownershipInfo.RiskLevel)
 
 "@
@@ -917,25 +917,25 @@ Niveau de risque: $($ownershipInfo.RiskLevel)
                         }
                     }
 
-                    # Ajouter les informations d'héritage si demandé
+                    # Ajouter les informations d'hÃ©ritage si demandÃ©
                     if ($IncludeInheritance -and $inheritanceInfo) {
                         $report += @"
 
-HÉRITAGE:
+HÃ‰RITAGE:
 ----------------------------------------------------------
-Héritage activé: $($inheritanceInfo.InheritanceEnabled)
+HÃ©ritage activÃ©: $($inheritanceInfo.InheritanceEnabled)
 Chemin parent: $($inheritanceInfo.ParentPath)
 Permissions explicites: $($inheritanceInfo.ExplicitPermissions.Count)
-Permissions héritées: $($inheritanceInfo.InheritedPermissions.Count)
+Permissions hÃ©ritÃ©es: $($inheritanceInfo.InheritedPermissions.Count)
 
 "@
                     }
 
-                    # Ajouter les anomalies si demandé
+                    # Ajouter les anomalies si demandÃ©
                     if ($IncludeAnomalies -and $anomalies -and $anomalies.Count -gt 0) {
                         $report += @"
 
-ANOMALIES DÉTECTÉES:
+ANOMALIES DÃ‰TECTÃ‰ES:
 ----------------------------------------------------------
 "@
 
@@ -943,8 +943,8 @@ ANOMALIES DÉTECTÉES:
                             $report += @"
 
 Type d'anomalie: $($anomaly.AnomalyType)
-Identité: $($anomaly.IdentityReference)
-Sévérité: $($anomaly.Severity)
+IdentitÃ©: $($anomaly.IdentityReference)
+SÃ©vÃ©ritÃ©: $($anomaly.Severity)
 Description: $($anomaly.Description)
 Recommandation: $($anomaly.Recommendation)
 
@@ -985,23 +985,23 @@ FIN DU RAPPORT
     <div class="header">
         <h1>Rapport d'analyse des permissions de registre</h1>
         <p>Date du rapport: $($reportData.ReportDate)</p>
-        <p>Chemin analysé: $($reportData.Path)</p>
+        <p>Chemin analysÃ©: $($reportData.Path)</p>
     </div>
 
     <h2>Permissions</h2>
     <table>
         <tr>
-            <th>Identité</th>
-            <th>Type d'accès</th>
+            <th>IdentitÃ©</th>
+            <th>Type d'accÃ¨s</th>
             <th>Droits</th>
-            <th>Hérité</th>
+            <th>HÃ©ritÃ©</th>
             <th>Niveau de risque</th>
         </tr>
 "@
 
                     foreach ($permission in $permissions) {
                         $riskClass = switch ($permission.RiskLevel) {
-                            "Élevé" { "risk-high" }
+                            "Ã‰levÃ©" { "risk-high" }
                             "Moyen" { "risk-medium" }
                             "Faible" { "risk-low" }
                             default { "" }
@@ -1022,22 +1022,22 @@ FIN DU RAPPORT
     </table>
 "@
 
-                    # Ajouter les informations de propriété si demandé
+                    # Ajouter les informations de propriÃ©tÃ© si demandÃ©
                     if ($IncludeOwnership -and $ownershipInfo) {
                         $ownerRiskClass = switch ($ownershipInfo.RiskLevel) {
-                            "Élevé" { "risk-high" }
+                            "Ã‰levÃ©" { "risk-high" }
                             "Moyen" { "risk-medium" }
                             "Faible" { "risk-low" }
                             default { "" }
                         }
 
                         $htmlReport += @"
-    <h2>Propriété</h2>
+    <h2>PropriÃ©tÃ©</h2>
     <table>
         <tr>
-            <th>Propriétaire</th>
+            <th>PropriÃ©taire</th>
             <th>Type de compte</th>
-            <th>Risque de sécurité</th>
+            <th>Risque de sÃ©curitÃ©</th>
             <th>Niveau de risque</th>
             <th>Recommandations</th>
         </tr>
@@ -1052,16 +1052,16 @@ FIN DU RAPPORT
 "@
                     }
 
-                    # Ajouter les informations d'héritage si demandé
+                    # Ajouter les informations d'hÃ©ritage si demandÃ©
                     if ($IncludeInheritance -and $inheritanceInfo) {
                         $htmlReport += @"
-    <h2>Héritage</h2>
+    <h2>HÃ©ritage</h2>
     <table>
         <tr>
-            <th>Héritage activé</th>
+            <th>HÃ©ritage activÃ©</th>
             <th>Chemin parent</th>
             <th>Permissions explicites</th>
-            <th>Permissions héritées</th>
+            <th>Permissions hÃ©ritÃ©es</th>
         </tr>
         <tr>
             <td>$($inheritanceInfo.InheritanceEnabled)</td>
@@ -1073,15 +1073,15 @@ FIN DU RAPPORT
 "@
                     }
 
-                    # Ajouter les anomalies si demandé
+                    # Ajouter les anomalies si demandÃ©
                     if ($IncludeAnomalies -and $anomalies -and $anomalies.Count -gt 0) {
                         $htmlReport += @"
-    <h2>Anomalies détectées</h2>
+    <h2>Anomalies dÃ©tectÃ©es</h2>
     <table>
         <tr>
             <th>Type d'anomalie</th>
-            <th>Identité</th>
-            <th>Sévérité</th>
+            <th>IdentitÃ©</th>
+            <th>SÃ©vÃ©ritÃ©</th>
             <th>Description</th>
             <th>Recommandation</th>
         </tr>
@@ -1089,7 +1089,7 @@ FIN DU RAPPORT
 
                         foreach ($anomaly in $anomalies) {
                             $anomalyRiskClass = switch ($anomaly.Severity) {
-                                "Élevée" { "risk-high" }
+                                "Ã‰levÃ©e" { "risk-high" }
                                 "Moyenne" { "risk-medium" }
                                 "Faible" { "risk-low" }
                                 default { "" }
@@ -1113,7 +1113,7 @@ FIN DU RAPPORT
 
                     $htmlReport += @"
     <div class="footer">
-        <p>Rapport généré par RegistryACLAnalyzer</p>
+        <p>Rapport gÃ©nÃ©rÃ© par RegistryACLAnalyzer</p>
     </div>
 </body>
 </html>
@@ -1128,7 +1128,7 @@ FIN DU RAPPORT
             }
         }
         catch {
-            Write-Error "Erreur lors de la génération du rapport de permissions de registre pour '$Path': $($_.Exception.Message)"
+            Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de permissions de registre pour '$Path': $($_.Exception.Message)"
         }
     }
 }
@@ -1137,18 +1137,18 @@ FIN DU RAPPORT
 function Repair-RegistryPermissionAnomaly {
     <#
     .SYNOPSIS
-        Corrige automatiquement les anomalies de permissions de registre détectées.
+        Corrige automatiquement les anomalies de permissions de registre dÃ©tectÃ©es.
 
     .DESCRIPTION
-        Cette fonction corrige automatiquement les anomalies de permissions de registre détectées
+        Cette fonction corrige automatiquement les anomalies de permissions de registre dÃ©tectÃ©es
         par la fonction Find-RegistryPermissionAnomaly, comme les permissions trop permissives,
-        les conflits, ou les héritages interrompus.
+        les conflits, ou les hÃ©ritages interrompus.
 
     .PARAMETER Path
-        Le chemin de la clé de registre à corriger (ex: "HKLM:\SOFTWARE\Microsoft").
+        Le chemin de la clÃ© de registre Ã  corriger (ex: "HKLM:\SOFTWARE\Microsoft").
 
     .PARAMETER AnomalyType
-        Le type d'anomalie à corriger. Si non spécifié, toutes les anomalies seront corrigées.
+        Le type d'anomalie Ã  corriger. Si non spÃ©cifiÃ©, toutes les anomalies seront corrigÃ©es.
         Valeurs possibles : "HighRiskPermission", "PermissionConflict", "RedundantPermission", "InheritanceBreak".
 
     .PARAMETER WhatIf
@@ -1161,7 +1161,7 @@ function Repair-RegistryPermissionAnomaly {
         Repair-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE\Microsoft" -AnomalyType "HighRiskPermission" -WhatIf
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les corrections effectuées.
+        [PSCustomObject] avec des informations sur les corrections effectuÃ©es.
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param (
@@ -1178,16 +1178,16 @@ function Repair-RegistryPermissionAnomaly {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
         }
 
-        # Vérifier si l'utilisateur a les privilèges d'administrateur
+        # VÃ©rifier si l'utilisateur a les privilÃ¨ges d'administrateur
         $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
         if (-not $isAdmin) {
-            Write-Warning "Cette fonction nécessite des privilèges d'administrateur pour fonctionner correctement."
+            Write-Warning "Cette fonction nÃ©cessite des privilÃ¨ges d'administrateur pour fonctionner correctement."
         }
     }
 
@@ -1195,16 +1195,16 @@ function Repair-RegistryPermissionAnomaly {
         try {
             $results = @()
 
-            # Détecter les anomalies
+            # DÃ©tecter les anomalies
             $anomalies = Find-RegistryPermissionAnomaly -Path $Path
 
-            # Filtrer les anomalies par type si spécifié
+            # Filtrer les anomalies par type si spÃ©cifiÃ©
             if ($AnomalyType -ne "All") {
                 $anomalies = $anomalies | Where-Object { $_.AnomalyType -eq $AnomalyType }
             }
 
             if (-not $anomalies) {
-                Write-Host "Aucune anomalie à corriger pour le chemin '$Path'."
+                Write-Host "Aucune anomalie Ã  corriger pour le chemin '$Path'."
                 return
             }
 
@@ -1224,21 +1224,21 @@ function Repair-RegistryPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $acl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver la règle à risque élevé
+                        # Trouver la rÃ¨gle Ã  risque Ã©levÃ©
                         $highRiskRule = $acl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference
                         }
 
                         if ($highRiskRule) {
-                            $correctionDescription = "Suppression de la permission à risque élevé pour $($anomaly.IdentityReference)"
+                            $correctionDescription = "Suppression de la permission Ã  risque Ã©levÃ© pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer la règle à risque élevé
+                                # Supprimer la rÃ¨gle Ã  risque Ã©levÃ©
                                 foreach ($rule in $highRiskRule) {
                                     $acl.RemoveAccessRule($rule)
                                 }
 
-                                # Ajouter une règle plus restrictive si nécessaire
+                                # Ajouter une rÃ¨gle plus restrictive si nÃ©cessaire
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.RegistryAccessRule(
                                     $identity,
@@ -1254,10 +1254,10 @@ function Repair-RegistryPermissionAnomaly {
                                 $correctionInfo.CorrectionApplied = $true
                                 $correctionInfo.CorrectionDescription = "$correctionDescription et ajout d'une permission plus restrictive (ReadKey)"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règle à risque élevé non trouvée"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gle Ã  risque Ã©levÃ© non trouvÃ©e"
                         }
                     }
 
@@ -1265,21 +1265,21 @@ function Repair-RegistryPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $acl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver les règles en conflit
+                        # Trouver les rÃ¨gles en conflit
                         $conflictRules = $acl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference
                         }
 
                         if ($conflictRules) {
-                            $correctionDescription = "Résolution du conflit de permissions pour $($anomaly.IdentityReference)"
+                            $correctionDescription = "RÃ©solution du conflit de permissions pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer toutes les règles en conflit
+                                # Supprimer toutes les rÃ¨gles en conflit
                                 foreach ($rule in $conflictRules) {
                                     $acl.RemoveAccessRule($rule)
                                 }
 
-                                # Ajouter une nouvelle règle consolidée
+                                # Ajouter une nouvelle rÃ¨gle consolidÃ©e
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.RegistryAccessRule(
                                     $identity,
@@ -1293,12 +1293,12 @@ function Repair-RegistryPermissionAnomaly {
                                 Set-Acl -Path $anomaly.Path -AclObject $acl
 
                                 $correctionInfo.CorrectionApplied = $true
-                                $correctionInfo.CorrectionDescription = "$correctionDescription en consolidant les règles"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription en consolidant les rÃ¨gles"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règles en conflit non trouvées"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gles en conflit non trouvÃ©es"
                         }
                     }
 
@@ -1306,7 +1306,7 @@ function Repair-RegistryPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $acl = Get-Acl -Path $anomaly.Path
 
-                        # Trouver les règles redondantes
+                        # Trouver les rÃ¨gles redondantes
                         $redundantRules = $acl.Access | Where-Object {
                             $_.IdentityReference.Value -eq $anomaly.IdentityReference
                         }
@@ -1315,15 +1315,15 @@ function Repair-RegistryPermissionAnomaly {
                             $correctionDescription = "Consolidation des permissions redondantes pour $($anomaly.IdentityReference)"
 
                             if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                                # Supprimer toutes les règles redondantes
+                                # Supprimer toutes les rÃ¨gles redondantes
                                 foreach ($rule in $redundantRules) {
                                     $acl.RemoveAccessRule($rule)
                                 }
 
-                                # Déterminer les droits combinés
+                                # DÃ©terminer les droits combinÃ©s
                                 $combinedRights = [System.Security.AccessControl.RegistryRights]::ReadKey
 
-                                # Ajouter une nouvelle règle consolidée
+                                # Ajouter une nouvelle rÃ¨gle consolidÃ©e
                                 $identity = New-Object System.Security.Principal.NTAccount($anomaly.IdentityReference)
                                 $newRule = New-Object System.Security.AccessControl.RegistryAccessRule(
                                     $identity,
@@ -1337,12 +1337,12 @@ function Repair-RegistryPermissionAnomaly {
                                 Set-Acl -Path $anomaly.Path -AclObject $acl
 
                                 $correctionInfo.CorrectionApplied = $true
-                                $correctionInfo.CorrectionDescription = "$correctionDescription en une seule règle"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription en une seule rÃ¨gle"
                             } else {
-                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                                $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                             }
                         } else {
-                            $correctionInfo.CorrectionDescription = "Règles redondantes non trouvées"
+                            $correctionInfo.CorrectionDescription = "RÃ¨gles redondantes non trouvÃ©es"
                         }
                     }
 
@@ -1350,17 +1350,17 @@ function Repair-RegistryPermissionAnomaly {
                         # Obtenir l'ACL actuelle du chemin de l'anomalie
                         $acl = Get-Acl -Path $anomaly.Path
 
-                        $correctionDescription = "Réactivation de l'héritage des permissions"
+                        $correctionDescription = "RÃ©activation de l'hÃ©ritage des permissions"
 
                         if ($Force -or $PSCmdlet.ShouldProcess($anomaly.Path, $correctionDescription)) {
-                            # Réactiver l'héritage
-                            $acl.SetAccessRuleProtection($false, $true)  # Activer l'héritage et conserver les règles existantes
+                            # RÃ©activer l'hÃ©ritage
+                            $acl.SetAccessRuleProtection($false, $true)  # Activer l'hÃ©ritage et conserver les rÃ¨gles existantes
                             Set-Acl -Path $anomaly.Path -AclObject $acl
 
                             $correctionInfo.CorrectionApplied = $true
                             $correctionInfo.CorrectionDescription = $correctionDescription
                         } else {
-                            $correctionInfo.CorrectionDescription = "$correctionDescription (non appliqué)"
+                            $correctionInfo.CorrectionDescription = "$correctionDescription (non appliquÃ©)"
                         }
                     }
 
@@ -1380,33 +1380,33 @@ function Repair-RegistryPermissionAnomaly {
     }
 }
 
-# Fonction pour comparer les permissions entre différentes clés de registre
+# Fonction pour comparer les permissions entre diffÃ©rentes clÃ©s de registre
 function Compare-RegistryPermission {
     <#
     .SYNOPSIS
-        Compare les permissions entre deux clés de registre.
+        Compare les permissions entre deux clÃ©s de registre.
 
     .DESCRIPTION
-        Cette fonction compare les permissions entre deux clés de registre et identifie
-        les différences, comme les permissions manquantes, supplémentaires ou modifiées.
+        Cette fonction compare les permissions entre deux clÃ©s de registre et identifie
+        les diffÃ©rences, comme les permissions manquantes, supplÃ©mentaires ou modifiÃ©es.
 
     .PARAMETER ReferencePath
-        Le chemin de la clé de registre de référence pour la comparaison.
+        Le chemin de la clÃ© de registre de rÃ©fÃ©rence pour la comparaison.
 
     .PARAMETER DifferencePath
-        Le chemin de la clé de registre à comparer avec la référence.
+        Le chemin de la clÃ© de registre Ã  comparer avec la rÃ©fÃ©rence.
 
     .PARAMETER IncludeInherited
-        Indique si les permissions héritées doivent être incluses dans la comparaison.
+        Indique si les permissions hÃ©ritÃ©es doivent Ãªtre incluses dans la comparaison.
 
     .PARAMETER Recurse
-        Indique si la comparaison doit être récursive pour les sous-clés.
+        Indique si la comparaison doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .EXAMPLE
         Compare-RegistryPermission -ReferencePath "HKLM:\SOFTWARE\Microsoft" -DifferencePath "HKLM:\SOFTWARE\Classes" -IncludeInherited $true
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différences de permissions.
+        [PSCustomObject] avec des informations sur les diffÃ©rences de permissions.
     #>
     [CmdletBinding()]
     param (
@@ -1426,14 +1426,14 @@ function Compare-RegistryPermission {
     )
 
     begin {
-        # Vérifier si les chemins existent
+        # VÃ©rifier si les chemins existent
         if (-not (Test-Path -Path $ReferencePath)) {
-            Write-Error "Le chemin de référence '$ReferencePath' n'existe pas."
+            Write-Error "Le chemin de rÃ©fÃ©rence '$ReferencePath' n'existe pas."
             return
         }
 
         if (-not (Test-Path -Path $DifferencePath)) {
-            Write-Error "Le chemin à comparer '$DifferencePath' n'existe pas."
+            Write-Error "Le chemin Ã  comparer '$DifferencePath' n'existe pas."
             return
         }
 
@@ -1472,16 +1472,16 @@ function Compare-RegistryPermission {
 
     process {
         try {
-            # Obtenir les permissions normalisées des deux chemins
+            # Obtenir les permissions normalisÃ©es des deux chemins
             $referencePermissions = Get-NormalizedPermissions -Path $ReferencePath -IncludeInherited $IncludeInherited -Recurse $Recurse
             $differencePermissions = Get-NormalizedPermissions -Path $DifferencePath -IncludeInherited $IncludeInherited -Recurse $Recurse
 
-            # Créer des collections pour les différences
+            # CrÃ©er des collections pour les diffÃ©rences
             $missingPermissions = @()
             $additionalPermissions = @()
             $modifiedPermissions = @()
 
-            # Comparer les permissions de référence avec les permissions de différence
+            # Comparer les permissions de rÃ©fÃ©rence avec les permissions de diffÃ©rence
             foreach ($refPerm in $referencePermissions) {
                 $matchingPerm = $differencePermissions | Where-Object {
                     $_.RelativePath -eq $refPerm.RelativePath -and
@@ -1490,7 +1490,7 @@ function Compare-RegistryPermission {
                 }
 
                 if (-not $matchingPerm) {
-                    # Permission manquante dans le chemin de différence
+                    # Permission manquante dans le chemin de diffÃ©rence
                     $missingPermissions += [PSCustomObject]@{
                         Path = $refPerm.RelativePath
                         IdentityReference = $refPerm.IdentityReference
@@ -1499,7 +1499,7 @@ function Compare-RegistryPermission {
                         IsInherited = $refPerm.IsInherited
                     }
                 } elseif ($refPerm.Rights -ne $matchingPerm.Rights) {
-                    # Permission modifiée
+                    # Permission modifiÃ©e
                     $modifiedPermissions += [PSCustomObject]@{
                         Path = $refPerm.RelativePath
                         IdentityReference = $refPerm.IdentityReference
@@ -1511,7 +1511,7 @@ function Compare-RegistryPermission {
                 }
             }
 
-            # Trouver les permissions supplémentaires dans le chemin de différence
+            # Trouver les permissions supplÃ©mentaires dans le chemin de diffÃ©rence
             foreach ($diffPerm in $differencePermissions) {
                 $matchingPerm = $referencePermissions | Where-Object {
                     $_.RelativePath -eq $diffPerm.RelativePath -and
@@ -1520,7 +1520,7 @@ function Compare-RegistryPermission {
                 }
 
                 if (-not $matchingPerm) {
-                    # Permission supplémentaire dans le chemin de différence
+                    # Permission supplÃ©mentaire dans le chemin de diffÃ©rence
                     $additionalPermissions += [PSCustomObject]@{
                         Path = $diffPerm.RelativePath
                         IdentityReference = $diffPerm.IdentityReference
@@ -1531,7 +1531,7 @@ function Compare-RegistryPermission {
                 }
             }
 
-            # Créer l'objet de résultat
+            # CrÃ©er l'objet de rÃ©sultat
             $result = [PSCustomObject]@{
                 ReferencePath = $ReferencePath
                 DifferencePath = $DifferencePath
@@ -1560,23 +1560,23 @@ function Compare-RegistryPermission {
 function Export-RegistryPermission {
     <#
     .SYNOPSIS
-        Exporte les permissions d'une clé de registre vers un fichier.
+        Exporte les permissions d'une clÃ© de registre vers un fichier.
 
     .DESCRIPTION
-        Cette fonction exporte les permissions d'une clé de registre vers un fichier JSON, XML ou CSV,
-        permettant de sauvegarder une configuration de sécurité pour une restauration ultérieure.
+        Cette fonction exporte les permissions d'une clÃ© de registre vers un fichier JSON, XML ou CSV,
+        permettant de sauvegarder une configuration de sÃ©curitÃ© pour une restauration ultÃ©rieure.
 
     .PARAMETER Path
-        Le chemin de la clé de registre dont les permissions doivent être exportées.
+        Le chemin de la clÃ© de registre dont les permissions doivent Ãªtre exportÃ©es.
 
     .PARAMETER OutputPath
-        Le chemin du fichier de sortie où les permissions seront exportées.
+        Le chemin du fichier de sortie oÃ¹ les permissions seront exportÃ©es.
 
     .PARAMETER Format
         Le format du fichier d'exportation. Valeurs possibles : "JSON", "XML", "CSV".
 
     .PARAMETER Recurse
-        Indique si l'exportation doit être récursive pour les sous-clés.
+        Indique si l'exportation doit Ãªtre rÃ©cursive pour les sous-clÃ©s.
 
     .EXAMPLE
         Export-RegistryPermission -Path "HKLM:\SOFTWARE\Microsoft" -OutputPath "C:\Backup\RegistryPermissions.json" -Format "JSON" -Recurse $true
@@ -1603,19 +1603,19 @@ function Export-RegistryPermission {
     )
 
     begin {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin de registre '$Path' n'existe pas."
             return
         }
 
-        # Vérifier si le dossier de sortie existe
+        # VÃ©rifier si le dossier de sortie existe
         $outputFolder = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $outputFolder)) {
             try {
                 New-Item -Path $outputFolder -ItemType Directory -Force | Out-Null
             } catch {
-                Write-Error "Impossible de créer le dossier de sortie '$outputFolder': $($_.Exception.Message)"
+                Write-Error "Impossible de crÃ©er le dossier de sortie '$outputFolder': $($_.Exception.Message)"
                 return
             }
         }
@@ -1626,10 +1626,10 @@ function Export-RegistryPermission {
             # Obtenir les permissions de registre
             $permissions = Get-RegistryPermission -Path $Path -Recurse $Recurse -IncludeInherited $true
 
-            # Obtenir les informations d'héritage
+            # Obtenir les informations d'hÃ©ritage
             $inheritanceInfo = Get-RegistryPermissionInheritance -Path $Path -Recurse $Recurse
 
-            # Créer un objet d'exportation avec des métadonnées
+            # CrÃ©er un objet d'exportation avec des mÃ©tadonnÃ©es
             $exportObject = [PSCustomObject]@{
                 ExportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 SourcePath = $Path
@@ -1638,7 +1638,7 @@ function Export-RegistryPermission {
                 InheritanceInfo = $inheritanceInfo
             }
 
-            # Exporter selon le format spécifié
+            # Exporter selon le format spÃ©cifiÃ©
             switch ($Format) {
                 "JSON" {
                     $exportObject | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
@@ -1647,7 +1647,7 @@ function Export-RegistryPermission {
                     $exportObject | Export-Clixml -Path $OutputPath -Encoding utf8
                 }
                 "CSV" {
-                    # Pour CSV, nous devons aplatir les données
+                    # Pour CSV, nous devons aplatir les donnÃ©es
                     $flatPermissions = @()
                     foreach ($perm in $permissions) {
                         $flatPerm = [PSCustomObject]@{
@@ -1664,7 +1664,7 @@ function Export-RegistryPermission {
                 }
             }
 
-            Write-Host "Permissions de registre exportées avec succès vers '$OutputPath'."
+            Write-Host "Permissions de registre exportÃ©es avec succÃ¨s vers '$OutputPath'."
             return $OutputPath
         }
         catch {
@@ -1677,18 +1677,18 @@ function Export-RegistryPermission {
 function Import-RegistryPermission {
     <#
     .SYNOPSIS
-        Importe les permissions de registre depuis un fichier et les applique à une clé de registre.
+        Importe les permissions de registre depuis un fichier et les applique Ã  une clÃ© de registre.
 
     .DESCRIPTION
         Cette fonction importe les permissions de registre depuis un fichier JSON, XML ou CSV
-        et les applique à une clé de registre spécifiée, permettant de restaurer une configuration de sécurité.
+        et les applique Ã  une clÃ© de registre spÃ©cifiÃ©e, permettant de restaurer une configuration de sÃ©curitÃ©.
 
     .PARAMETER InputPath
-        Le chemin du fichier d'entrée contenant les permissions à importer.
+        Le chemin du fichier d'entrÃ©e contenant les permissions Ã  importer.
 
     .PARAMETER TargetPath
-        Le chemin de la clé de registre à laquelle les permissions doivent être appliquées.
-        Si non spécifié, le chemin source original sera utilisé.
+        Le chemin de la clÃ© de registre Ã  laquelle les permissions doivent Ãªtre appliquÃ©es.
+        Si non spÃ©cifiÃ©, le chemin source original sera utilisÃ©.
 
     .PARAMETER Format
         Le format du fichier d'importation. Valeurs possibles : "JSON", "XML", "CSV".
@@ -1703,7 +1703,7 @@ function Import-RegistryPermission {
         Import-RegistryPermission -InputPath "C:\Backup\RegistryPermissions.json" -TargetPath "HKLM:\SOFTWARE\Test" -Format "JSON" -WhatIf
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les permissions appliquées.
+        [PSCustomObject] avec des informations sur les permissions appliquÃ©es.
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param (
@@ -1723,22 +1723,22 @@ function Import-RegistryPermission {
     )
 
     begin {
-        # Vérifier si le fichier d'entrée existe
+        # VÃ©rifier si le fichier d'entrÃ©e existe
         if (-not (Test-Path -Path $InputPath)) {
-            Write-Error "Le fichier d'entrée '$InputPath' n'existe pas."
+            Write-Error "Le fichier d'entrÃ©e '$InputPath' n'existe pas."
             return
         }
 
-        # Vérifier si l'utilisateur a les privilèges d'administrateur
+        # VÃ©rifier si l'utilisateur a les privilÃ¨ges d'administrateur
         $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
         if (-not $isAdmin) {
-            Write-Warning "Cette fonction nécessite des privilèges d'administrateur pour fonctionner correctement."
+            Write-Warning "Cette fonction nÃ©cessite des privilÃ¨ges d'administrateur pour fonctionner correctement."
         }
     }
 
     process {
         try {
-            # Importer les permissions selon le format spécifié
+            # Importer les permissions selon le format spÃ©cifiÃ©
             $importObject = $null
             switch ($Format) {
                 "JSON" {
@@ -1771,10 +1771,10 @@ function Import-RegistryPermission {
                 }
             }
 
-            # Déterminer le chemin cible
+            # DÃ©terminer le chemin cible
             $actualTargetPath = if ($TargetPath) { $TargetPath } else { $importObject.SourcePath }
 
-            # Vérifier si le chemin cible existe
+            # VÃ©rifier si le chemin cible existe
             if (-not (Test-Path -Path $actualTargetPath)) {
                 Write-Error "Le chemin cible '$actualTargetPath' n'existe pas."
                 return
@@ -1784,7 +1784,7 @@ function Import-RegistryPermission {
 
             # Appliquer les permissions
             foreach ($perm in $importObject.Permissions) {
-                # Déterminer le chemin relatif et le chemin cible complet
+                # DÃ©terminer le chemin relatif et le chemin cible complet
                 $relativePath = if ($perm.Path -eq $importObject.SourcePath) {
                     ""
                 } else {
@@ -1797,9 +1797,9 @@ function Import-RegistryPermission {
                     Join-Path -Path $actualTargetPath -ChildPath $relativePath
                 }
 
-                # Vérifier si le chemin cible existe
+                # VÃ©rifier si le chemin cible existe
                 if (-not (Test-Path -Path $targetItemPath)) {
-                    Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignoré."
+                    Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignorÃ©."
                     continue
                 }
 
@@ -1812,7 +1812,7 @@ function Import-RegistryPermission {
                     Applied = $false
                 }
 
-                # Appliquer la permission si ce n'est pas une permission héritée
+                # Appliquer la permission si ce n'est pas une permission hÃ©ritÃ©e
                 if (-not $perm.IsInherited) {
                     $description = "Application de la permission '$($perm.Rights -join ", ")' pour '$($perm.IdentityReference)' sur '$targetItemPath'"
 
@@ -1821,13 +1821,13 @@ function Import-RegistryPermission {
                             # Obtenir l'ACL actuelle
                             $acl = Get-Acl -Path $targetItemPath
 
-                            # Créer la règle d'accès
+                            # CrÃ©er la rÃ¨gle d'accÃ¨s
                             $identity = New-Object System.Security.Principal.NTAccount($perm.IdentityReference)
 
-                            # Déterminer les droits de registre
+                            # DÃ©terminer les droits de registre
                             $registryRights = [System.Security.AccessControl.RegistryRights]::ReadKey
 
-                            # Créer la règle d'accès
+                            # CrÃ©er la rÃ¨gle d'accÃ¨s
                             $rule = New-Object System.Security.AccessControl.RegistryAccessRule(
                                 $identity,
                                 $registryRights,
@@ -1836,7 +1836,7 @@ function Import-RegistryPermission {
                                 [System.Security.AccessControl.AccessControlType]::Allow
                             )
 
-                            # Ajouter la règle et appliquer l'ACL
+                            # Ajouter la rÃ¨gle et appliquer l'ACL
                             $acl.AddAccessRule($rule)
                             Set-Acl -Path $targetItemPath -AclObject $acl
 
@@ -1846,16 +1846,16 @@ function Import-RegistryPermission {
                         }
                     }
                 } else {
-                    $permissionInfo.Applied = "Ignoré (permission héritée)"
+                    $permissionInfo.Applied = "IgnorÃ© (permission hÃ©ritÃ©e)"
                 }
 
                 $results += $permissionInfo
             }
 
-            # Appliquer les informations d'héritage si disponibles
+            # Appliquer les informations d'hÃ©ritage si disponibles
             if ($importObject.InheritanceInfo) {
                 foreach ($inhInfo in $importObject.InheritanceInfo) {
-                    # Déterminer le chemin relatif et le chemin cible complet
+                    # DÃ©terminer le chemin relatif et le chemin cible complet
                     $relativePath = if ($inhInfo.Path -eq $importObject.SourcePath) {
                         ""
                     } else {
@@ -1868,9 +1868,9 @@ function Import-RegistryPermission {
                         Join-Path -Path $actualTargetPath -ChildPath $relativePath
                     }
 
-                    # Vérifier si le chemin cible existe
+                    # VÃ©rifier si le chemin cible existe
                     if (-not (Test-Path -Path $targetItemPath)) {
-                        Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignoré."
+                        Write-Warning "Le chemin cible '$targetItemPath' n'existe pas et sera ignorÃ©."
                         continue
                     }
 
@@ -1882,9 +1882,9 @@ function Import-RegistryPermission {
                     }
 
                     $description = if ($inhInfo.InheritanceEnabled) {
-                        "Activation de l'héritage des permissions sur '$targetItemPath'"
+                        "Activation de l'hÃ©ritage des permissions sur '$targetItemPath'"
                     } else {
-                        "Désactivation de l'héritage des permissions sur '$targetItemPath'"
+                        "DÃ©sactivation de l'hÃ©ritage des permissions sur '$targetItemPath'"
                     }
 
                     if ($Force -or $PSCmdlet.ShouldProcess($targetItemPath, $description)) {
@@ -1892,13 +1892,13 @@ function Import-RegistryPermission {
                             # Obtenir l'ACL actuelle
                             $acl = Get-Acl -Path $targetItemPath
 
-                            # Appliquer l'état d'héritage
+                            # Appliquer l'Ã©tat d'hÃ©ritage
                             $acl.SetAccessRuleProtection(-not $inhInfo.InheritanceEnabled, $true)
                             Set-Acl -Path $targetItemPath -AclObject $acl
 
                             $inheritanceInfo.Applied = $true
                         } catch {
-                            Write-Warning "Erreur lors de l'application de l'héritage sur '$targetItemPath': $($_.Exception.Message)"
+                            Write-Warning "Erreur lors de l'application de l'hÃ©ritage sur '$targetItemPath': $($_.Exception.Message)"
                         }
                     }
 
@@ -1914,12 +1914,12 @@ function Import-RegistryPermission {
     }
 }
 
-# Exporter les fonctions si le script est importé comme module
+# Exporter les fonctions si le script est importÃ© comme module
 if ($MyInvocation.Line -match '^\. ') {
-    # Le script est sourcé directement, pas besoin d'exporter
+    # Le script est sourcÃ© directement, pas besoin d'exporter
 } elseif ($MyInvocation.MyCommand.Path -eq $null) {
-    # Le script est exécuté directement, pas besoin d'exporter
+    # Le script est exÃ©cutÃ© directement, pas besoin d'exporter
 } else {
-    # Le script est importé comme module, exporter les fonctions
+    # Le script est importÃ© comme module, exporter les fonctions
     Export-ModuleMember -Function Get-RegistryPermission, Get-RegistryPermissionInheritance, Get-RegistryOwnershipInfo, Find-RegistryPermissionAnomaly, New-RegistryPermissionReport, Repair-RegistryPermissionAnomaly, Compare-RegistryPermission, Export-RegistryPermission, Import-RegistryPermission
 }

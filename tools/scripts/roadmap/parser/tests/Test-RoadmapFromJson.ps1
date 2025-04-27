@@ -1,7 +1,7 @@
-# Test-RoadmapFromJson.ps1
+﻿# Test-RoadmapFromJson.ps1
 # Script pour tester la fonction Import-RoadmapFromJson
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $extendedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapExtended.ps1"
 $exportFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\Export-RoadmapToJson.ps1"
 $importFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\Import-RoadmapFromJson.ps1"
@@ -10,13 +10,13 @@ $importFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\Imp
 . $exportFunctionPath
 . $importFunctionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test
+# CrÃ©er un fichier markdown de test
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 $testMarkdown = @"
 # Roadmap de Test
@@ -25,21 +25,21 @@ Ceci est une roadmap de test pour valider la fonction Import-RoadmapFromJson.
 
 ## Section 1
 
-- [ ] **1** Tâche 1
-  - [x] **1.1** Tâche 1.1
-  - [ ] **1.2** Tâche 1.2 @depends:1.1
-    - [~] **1.2.1** Tâche 1.2.1 @john #important
-    - [!] **1.2.2** Tâche 1.2.2 P1
+- [ ] **1** TÃ¢che 1
+  - [x] **1.1** TÃ¢che 1.1
+  - [ ] **1.2** TÃ¢che 1.2 @depends:1.1
+    - [~] **1.2.1** TÃ¢che 1.2.1 @john #important
+    - [!] **1.2.2** TÃ¢che 1.2.2 P1
 
 ## Section 2
 
-- [ ] **2** Tâche 2 @depends:1
-  - [ ] **2.1** Tâche 2.1 @date:2023-12-31
+- [ ] **2** TÃ¢che 2 @depends:1
+  - [ ] **2.1** TÃ¢che 2.1 @date:2023-12-31
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
     # Convertir le markdown en roadmap
@@ -49,50 +49,50 @@ try {
     $jsonPath = Join-Path -Path $testDir -ChildPath "roadmap.json"
     Export-RoadmapToJson -Roadmap $originalRoadmap -OutputPath $jsonPath -IncludeMetadata -IncludeDependencies -PrettyPrint
     
-    Write-Host "Roadmap exportée en JSON: $jsonPath" -ForegroundColor Green
+    Write-Host "Roadmap exportÃ©e en JSON: $jsonPath" -ForegroundColor Green
     
-    # Importer la roadmap à partir du JSON
+    # Importer la roadmap Ã  partir du JSON
     $importedRoadmap = Import-RoadmapFromJson -FilePath $jsonPath -DetectDependencies
     
-    # Vérifier l'importation
-    Write-Host "`nVérification de l'importation:" -ForegroundColor Cyan
+    # VÃ©rifier l'importation
+    Write-Host "`nVÃ©rification de l'importation:" -ForegroundColor Cyan
     Write-Host "Titre: $($importedRoadmap.Title)" -ForegroundColor Yellow
     Write-Host "Description: $($importedRoadmap.Description)" -ForegroundColor Yellow
     Write-Host "Nombre de sections: $($importedRoadmap.Sections.Count)" -ForegroundColor Yellow
-    Write-Host "Nombre de tâches: $($importedRoadmap.AllTasks.Count)" -ForegroundColor Yellow
+    Write-Host "Nombre de tÃ¢ches: $($importedRoadmap.AllTasks.Count)" -ForegroundColor Yellow
     
-    # Vérifier que les nombres correspondent
+    # VÃ©rifier que les nombres correspondent
     if ($importedRoadmap.Sections.Count -eq $originalRoadmap.Sections.Count) {
-        Write-Host "✓ Nombre de sections correct" -ForegroundColor Green
+        Write-Host "âœ“ Nombre de sections correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Nombre de sections incorrect" -ForegroundColor Red
+        Write-Host "âœ— Nombre de sections incorrect" -ForegroundColor Red
     }
     
     if ($importedRoadmap.AllTasks.Count -eq $originalRoadmap.AllTasks.Count) {
-        Write-Host "✓ Nombre de tâches correct" -ForegroundColor Green
+        Write-Host "âœ“ Nombre de tÃ¢ches correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Nombre de tâches incorrect" -ForegroundColor Red
+        Write-Host "âœ— Nombre de tÃ¢ches incorrect" -ForegroundColor Red
     }
     
-    # Vérifier les métadonnées
+    # VÃ©rifier les mÃ©tadonnÃ©es
     $task = $importedRoadmap.AllTasks["1.2.1"]
     if ($task -and $task.Metadata.Count -gt 0) {
-        Write-Host "✓ Métadonnées importées correctement" -ForegroundColor Green
-        Write-Host "Métadonnées de la tâche 1.2.1: $($task.Metadata.Keys -join ', ')" -ForegroundColor Yellow
+        Write-Host "âœ“ MÃ©tadonnÃ©es importÃ©es correctement" -ForegroundColor Green
+        Write-Host "MÃ©tadonnÃ©es de la tÃ¢che 1.2.1: $($task.Metadata.Keys -join ', ')" -ForegroundColor Yellow
     } else {
-        Write-Host "✗ Métadonnées non importées correctement" -ForegroundColor Red
+        Write-Host "âœ— MÃ©tadonnÃ©es non importÃ©es correctement" -ForegroundColor Red
     }
     
-    # Vérifier les dépendances
+    # VÃ©rifier les dÃ©pendances
     $task = $importedRoadmap.AllTasks["1.2"]
     if ($task -and $task.Dependencies.Count -gt 0) {
-        Write-Host "✓ Dépendances importées correctement" -ForegroundColor Green
-        Write-Host "La tâche 1.2 dépend de: $($task.Dependencies.Id -join ', ')" -ForegroundColor Yellow
+        Write-Host "âœ“ DÃ©pendances importÃ©es correctement" -ForegroundColor Green
+        Write-Host "La tÃ¢che 1.2 dÃ©pend de: $($task.Dependencies.Id -join ', ')" -ForegroundColor Yellow
     } else {
-        Write-Host "✗ Dépendances non importées correctement" -ForegroundColor Red
+        Write-Host "âœ— DÃ©pendances non importÃ©es correctement" -ForegroundColor Red
     }
     
-    Write-Host "`nTest terminé." -ForegroundColor Green
+    Write-Host "`nTest terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors du test: $_" -ForegroundColor Red
@@ -102,6 +102,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

@@ -1,31 +1,31 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests d'intégration simples pour le système d'apprentissage des erreurs PowerShell.
+    Tests d'intÃ©gration simples pour le systÃ¨me d'apprentissage des erreurs PowerShell.
 .DESCRIPTION
-    Ce script contient des tests d'intégration simples pour le système d'apprentissage des erreurs PowerShell.
+    Ce script contient des tests d'intÃ©gration simples pour le systÃ¨me d'apprentissage des erreurs PowerShell.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
-Describe "Tests d'intégration simples" {
+# DÃ©finir les tests Pester
+Describe "Tests d'intÃ©gration simples" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "SimpleIntegrationTests"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
         New-Item -Path $script:testRoot -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier de test
+        # CrÃ©er un fichier de test
         $testFilePath = Join-Path -Path $script:testRoot -ChildPath "test.txt"
         Set-Content -Path $testFilePath -Value "Test content"
     }
 
-    Context "Opérations de fichier" {
-        It "Devrait créer un fichier" {
+    Context "OpÃ©rations de fichier" {
+        It "Devrait crÃ©er un fichier" {
             $filePath = Join-Path -Path $script:testRoot -ChildPath "created.txt"
             Set-Content -Path $filePath -Value "Created content"
             Test-Path -Path $filePath | Should -BeTrue
@@ -52,7 +52,7 @@ Describe "Tests d'intégration simples" {
     }
 
     AfterAll {
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }

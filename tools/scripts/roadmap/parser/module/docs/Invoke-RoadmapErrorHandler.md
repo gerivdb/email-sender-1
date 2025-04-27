@@ -1,8 +1,8 @@
-# Invoke-RoadmapErrorHandler
+﻿# Invoke-RoadmapErrorHandler
 
 ## SYNOPSIS
 
-Gère les erreurs et les exceptions pour le module RoadmapParser.
+GÃ¨re les erreurs et les exceptions pour le module RoadmapParser.
 
 ## SYNTAX
 
@@ -13,15 +13,15 @@ Gère les erreurs et les exceptions pour le module RoadmapParser.
 ```n
 ## DESCRIPTION
 
-La fonction Invoke-RoadmapErrorHandler gère les erreurs et les exceptions pour le module RoadmapParser.
-Elle prend en charge différentes stratégies de récupération et peut journaliser les erreurs,
+La fonction Invoke-RoadmapErrorHandler gÃ¨re les erreurs et les exceptions pour le module RoadmapParser.
+Elle prend en charge diffÃ©rentes stratÃ©gies de rÃ©cupÃ©ration et peut journaliser les erreurs,
 les relancer, ou les ignorer selon les besoins.
 
 ## PARAMETERS
 
 ### -ErrorRecord
 
-L'enregistrement d'erreur à gérer.
+L'enregistrement d'erreur Ã  gÃ©rer.
 
 `yaml
 Type: ErrorRecord
@@ -53,8 +53,8 @@ Accept wildcard characters: false
 
 ### -Category
 
-La catégorie de l'erreur. Permet de regrouper les erreurs par catégorie.
-Par défaut : General.
+La catÃ©gorie de l'erreur. Permet de regrouper les erreurs par catÃ©gorie.
+Par dÃ©faut : General.
 
 `yaml
 Type: String
@@ -70,8 +70,8 @@ Accept wildcard characters: false
 
 ### -MaxRetryCount
 
-Le nombre maximum de tentatives de récupération. Utilisé uniquement avec ErrorAction = Retry.
-Par défaut : 3.
+Le nombre maximum de tentatives de rÃ©cupÃ©ration. UtilisÃ© uniquement avec ErrorAction = Retry.
+Par dÃ©faut : 3.
 
 `yaml
 Type: Int32
@@ -87,8 +87,8 @@ Accept wildcard characters: false
 
 ### -RetryDelaySeconds
 
-Le délai en secondes entre les tentatives de récupération. Utilisé uniquement avec ErrorAction = Retry.
-Par défaut : 1.
+Le dÃ©lai en secondes entre les tentatives de rÃ©cupÃ©ration. UtilisÃ© uniquement avec ErrorAction = Retry.
+Par dÃ©faut : 1.
 
 `yaml
 Type: Int32
@@ -104,7 +104,7 @@ Accept wildcard characters: false
 
 ### -LogFilePath
 
-Le chemin du fichier de journal. Si non spécifié, les erreurs seront journalisées uniquement dans la console.
+Le chemin du fichier de journal. Si non spÃ©cifiÃ©, les erreurs seront journalisÃ©es uniquement dans la console.
 
 `yaml
 Type: String
@@ -120,7 +120,7 @@ Accept wildcard characters: false
 
 ### -NoConsole
 
-Indique si les erreurs ne doivent pas être affichées dans la console.
+Indique si les erreurs ne doivent pas Ãªtre affichÃ©es dans la console.
 
 `yaml
 Type: SwitchParameter
@@ -136,7 +136,7 @@ Accept wildcard characters: false
 
 ### -AdditionalInfo
 
-Informations supplémentaires à inclure dans le message d'erreur.
+Informations supplÃ©mentaires Ã  inclure dans le message d'erreur.
 
 `yaml
 Type: Hashtable
@@ -152,8 +152,8 @@ Accept wildcard characters: false
 
 ### -ScriptBlock
 
-Le bloc de script à exécuter avec gestion des erreurs. Si spécifié, la fonction exécutera ce bloc
-et gérera les erreurs qui surviennent.
+Le bloc de script Ã  exÃ©cuter avec gestion des erreurs. Si spÃ©cifiÃ©, la fonction exÃ©cutera ce bloc
+et gÃ©rera les erreurs qui surviennent.
 
 `yaml
 Type: ScriptBlock
@@ -169,7 +169,7 @@ Accept wildcard characters: false
 
 ### -ScriptBlockParams
 
-Les paramètres à passer au bloc de script.
+Les paramÃ¨tres Ã  passer au bloc de script.
 
 `yaml
 Type: Hashtable
@@ -189,13 +189,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSObject] Le résultat du bloc de script si spécifié et exécuté avec succès.
+[PSObject] Le rÃ©sultat du bloc de script si spÃ©cifiÃ© et exÃ©cutÃ© avec succÃ¨s.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-15
+Date de crÃ©ation: 2023-07-15
 
 ## EXAMPLES
 
@@ -203,11 +203,11 @@ Date de création: 2023-07-15
 
 `powershell
 try {
-    # Code qui peut générer une erreur
+    # Code qui peut gÃ©nÃ©rer une erreur
 } catch {
     Invoke-RoadmapErrorHandler -ErrorRecord $_ -ErrorAction Stop -Category "Parsing" -LogFilePath ".\logs\roadmap-parser.log"
 }
-Gère une erreur en la journalisant et en la relançant.
+GÃ¨re une erreur en la journalisant et en la relanÃ§ant.
 `
 
     
@@ -216,7 +216,7 @@ Gère une erreur en la journalisant et en la relançant.
 
 `powershell
 Invoke-RoadmapErrorHandler -ScriptBlock { Get-Content -Path $filePath } -ErrorAction Retry -MaxRetryCount 5 -Category "IO" -LogFilePath ".\logs\roadmap-parser.log"
-Exécute un bloc de script avec gestion des erreurs, en réessayant jusqu'à 5 fois en cas d'échec.
+ExÃ©cute un bloc de script avec gestion des erreurs, en rÃ©essayant jusqu'Ã  5 fois en cas d'Ã©chec.
 `
 
     

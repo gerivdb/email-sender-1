@@ -1,82 +1,82 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour le script predic-mode.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires et d'intégration pour le script predic-mode.ps1
-    qui implémente le mode PREDIC pour anticiper les performances, détecter les anomalies
-    et analyser les tendances dans le comportement du système.
+    Ce script contient des tests unitaires et d'intÃ©gration pour le script predic-mode.ps1
+    qui implÃ©mente le mode PREDIC pour anticiper les performances, dÃ©tecter les anomalies
+    et analyser les tendances dans le comportement du systÃ¨me.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $projectRoot = Split-Path -Parent (Split-Path -Parent $modulePath)
 $predicModePath = Join-Path -Path $projectRoot -ChildPath "predic-mode.ps1"
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $invokePredicPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapPrediction.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $predicModePath)) {
-    Write-Warning "Le script predic-mode.ps1 est introuvable à l'emplacement : $predicModePath"
+    Write-Warning "Le script predic-mode.ps1 est introuvable Ã  l'emplacement : $predicModePath"
 }
 
 if (-not (Test-Path -Path $invokePredicPath)) {
-    Write-Warning "Le fichier Invoke-RoadmapPrediction.ps1 est introuvable à l'emplacement : $invokePredicPath"
+    Write-Warning "Le fichier Invoke-RoadmapPrediction.ps1 est introuvable Ã  l'emplacement : $invokePredicPath"
 }
 
 # Importer les fonctions si elles existent
 if (Test-Path -Path $invokePredicPath) {
     . $invokePredicPath
-    Write-Host "Fonction Invoke-RoadmapPrediction importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapPrediction importÃ©e." -ForegroundColor Green
 }
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
-# Créer un fichier de test avec une structure de roadmap simple
+# CrÃ©er un fichier de test avec une structure de roadmap simple
 @"
 # Roadmap de test
 
 ## Section 1
 
-- [ ] **1.1** Analyse prédictive
-  - [ ] **1.1.1** Développer les mécanismes de prédiction
-  - [ ] **1.1.2** Implémenter la détection d'anomalies
+- [ ] **1.1** Analyse prÃ©dictive
+  - [ ] **1.1.1** DÃ©velopper les mÃ©canismes de prÃ©diction
+  - [ ] **1.1.2** ImplÃ©menter la dÃ©tection d'anomalies
 - [ ] **1.2** Analyse de tendances
-  - [ ] **1.2.1** Développer les mécanismes d'analyse de tendances
-  - [ ] **1.2.2** Implémenter la génération de rapports prédictifs
+  - [ ] **1.2.1** DÃ©velopper les mÃ©canismes d'analyse de tendances
+  - [ ] **1.2.2** ImplÃ©menter la gÃ©nÃ©ration de rapports prÃ©dictifs
 
 ## Section 2
 
-- [ ] **2.1** Tests de prédiction
+- [ ] **2.1** Tests de prÃ©diction
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
 
-Write-Host "Fichier de roadmap créé : $testFilePath" -ForegroundColor Green
+Write-Host "Fichier de roadmap crÃ©Ã© : $testFilePath" -ForegroundColor Green
 
-# Créer des répertoires temporaires pour les tests
+# CrÃ©er des rÃ©pertoires temporaires pour les tests
 $testDataPath = Join-Path -Path $env:TEMP -ChildPath "TestData_$(Get-Random)"
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "TestOutput_$(Get-Random)"
 
-# Créer la structure des répertoires de test
+# CrÃ©er la structure des rÃ©pertoires de test
 New-Item -Path $testDataPath -ItemType Directory -Force | Out-Null
 New-Item -Path (Join-Path -Path $testDataPath -ChildPath "performance") -ItemType Directory -Force | Out-Null
 New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de données de performance pour les tests
+# CrÃ©er des fichiers de donnÃ©es de performance pour les tests
 $performanceDataPath = Join-Path -Path $testDataPath -ChildPath "performance\performance_data.csv"
 @"
 Date,ResponseTime,MemoryUsage,CPUUsage,ErrorCount
@@ -112,20 +112,20 @@ Date,ResponseTime,MemoryUsage,CPUUsage,ErrorCount
 2023-01-30,4.1,800,95,0
 "@ | Set-Content -Path $performanceDataPath -Encoding UTF8
 
-Write-Host "Données de performance créées : $performanceDataPath" -ForegroundColor Green
-Write-Host "Répertoire de sortie créé : $testOutputPath" -ForegroundColor Green
+Write-Host "DonnÃ©es de performance crÃ©Ã©es : $performanceDataPath" -ForegroundColor Green
+Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $testOutputPath" -ForegroundColor Green
 
 # Tests unitaires avec Pester
 Describe "Invoke-RoadmapPrediction" {
     BeforeEach {
-        # Préparation avant chaque test
+        # PrÃ©paration avant chaque test
     }
 
     AfterEach {
-        # Nettoyage après chaque test
+        # Nettoyage aprÃ¨s chaque test
     }
 
-    It "Devrait exécuter correctement avec des paramètres valides" {
+    It "Devrait exÃ©cuter correctement avec des paramÃ¨tres valides" {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapPrediction -DataPath $testDataPath -OutputPath $testOutputPath -PredictionHorizon 30
@@ -135,8 +135,8 @@ Describe "Invoke-RoadmapPrediction" {
         }
     }
 
-    It "Devrait lever une exception si le répertoire de données n'existe pas" {
-        # Appeler la fonction avec un répertoire inexistant
+    It "Devrait lever une exception si le rÃ©pertoire de donnÃ©es n'existe pas" {
+        # Appeler la fonction avec un rÃ©pertoire inexistant
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             { Invoke-RoadmapPrediction -DataPath "RepertoireInexistant" -OutputPath $testOutputPath -PredictionHorizon 30 } | Should -Throw
         } else {
@@ -144,28 +144,28 @@ Describe "Invoke-RoadmapPrediction" {
         }
     }
 
-    It "Devrait prédire l'évolution des métriques" {
-        # Appeler la fonction et vérifier les prédictions
+    It "Devrait prÃ©dire l'Ã©volution des mÃ©triques" {
+        # Appeler la fonction et vÃ©rifier les prÃ©dictions
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapPrediction -DataPath $testDataPath -OutputPath $testOutputPath -PredictionHorizon 30 -MetricName "ResponseTime"
             
-            # Vérifier que les prédictions sont générées
+            # VÃ©rifier que les prÃ©dictions sont gÃ©nÃ©rÃ©es
             $result.Predictions | Should -Not -BeNullOrEmpty
             $result.Predictions.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les prédictions contiennent la métrique spécifiée
+            # VÃ©rifier que les prÃ©dictions contiennent la mÃ©trique spÃ©cifiÃ©e
             $result.Predictions.ResponseTime | Should -Not -BeNullOrEmpty
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapPrediction n'est pas disponible"
         }
     }
 
-    It "Devrait détecter les anomalies" {
-        # Appeler la fonction et vérifier la détection d'anomalies
+    It "Devrait dÃ©tecter les anomalies" {
+        # Appeler la fonction et vÃ©rifier la dÃ©tection d'anomalies
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapPrediction -DataPath $testDataPath -OutputPath $testOutputPath -AnomalyDetection $true -AlertThreshold 0.95
             
-            # Vérifier que les anomalies sont détectées
+            # VÃ©rifier que les anomalies sont dÃ©tectÃ©es
             $result.Anomalies | Should -Not -BeNullOrEmpty
             $result.Anomalies.Count | Should -BeGreaterThan 0
         } else {
@@ -174,33 +174,33 @@ Describe "Invoke-RoadmapPrediction" {
     }
 
     It "Devrait analyser les tendances" {
-        # Appeler la fonction et vérifier l'analyse de tendances
+        # Appeler la fonction et vÃ©rifier l'analyse de tendances
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapPrediction -DataPath $testDataPath -OutputPath $testOutputPath -TrendAnalysis $true
             
-            # Vérifier que les tendances sont analysées
+            # VÃ©rifier que les tendances sont analysÃ©es
             $result.Trends | Should -Not -BeNullOrEmpty
             $result.Trends.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les tendances contiennent des informations sur la croissance
+            # VÃ©rifier que les tendances contiennent des informations sur la croissance
             $result.Trends.GrowthRate | Should -Not -BeNullOrEmpty
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapPrediction n'est pas disponible"
         }
     }
 
-    It "Devrait générer un rapport de prédiction" {
-        # Appeler la fonction et vérifier la génération du rapport
+    It "Devrait gÃ©nÃ©rer un rapport de prÃ©diction" {
+        # Appeler la fonction et vÃ©rifier la gÃ©nÃ©ration du rapport
         if (Get-Command -Name Invoke-RoadmapPrediction -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapPrediction -DataPath $testDataPath -OutputPath $testOutputPath -PredictionHorizon 30 -AnomalyDetection $true -TrendAnalysis $true
             
-            # Vérifier que le rapport est généré
+            # VÃ©rifier que le rapport est gÃ©nÃ©rÃ©
             $predictionReportPath = Join-Path -Path $testOutputPath -ChildPath "prediction_report.html"
             Test-Path -Path $predictionReportPath | Should -Be $true
             
-            # Vérifier que le contenu du rapport contient les informations attendues
+            # VÃ©rifier que le contenu du rapport contient les informations attendues
             $reportContent = Get-Content -Path $predictionReportPath -Raw
-            $reportContent | Should -Match "Prédictions"
+            $reportContent | Should -Match "PrÃ©dictions"
             $reportContent | Should -Match "Anomalies"
             $reportContent | Should -Match "Tendances"
         } else {
@@ -209,17 +209,17 @@ Describe "Invoke-RoadmapPrediction" {
     }
 }
 
-# Test d'intégration du script predic-mode.ps1
+# Test d'intÃ©gration du script predic-mode.ps1
 Describe "predic-mode.ps1 Integration" {
-    It "Devrait s'exécuter correctement avec des paramètres valides" {
+    It "Devrait s'exÃ©cuter correctement avec des paramÃ¨tres valides" {
         if (Test-Path -Path $predicModePath) {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $output = & $predicModePath -DataPath $testDataPath -OutputPath $testOutputPath -PredictionHorizon 30 -AnomalyDetection $true -TrendAnalysis $true
             
-            # Vérifier que le script s'est exécuté sans erreur
+            # VÃ©rifier que le script s'est exÃ©cutÃ© sans erreur
             $LASTEXITCODE | Should -Be 0
             
-            # Vérifier que les fichiers attendus existent
+            # VÃ©rifier que les fichiers attendus existent
             $predictionReportPath = Join-Path -Path $testOutputPath -ChildPath "prediction_report.html"
             Test-Path -Path $predictionReportPath | Should -Be $true
         } else {
@@ -231,22 +231,22 @@ Describe "predic-mode.ps1 Integration" {
 # Nettoyage
 if (Test-Path -Path $testFilePath) {
     Remove-Item -Path $testFilePath -Force
-    Write-Host "Fichier de roadmap supprimé." -ForegroundColor Gray
+    Write-Host "Fichier de roadmap supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testDataPath) {
     Remove-Item -Path $testDataPath -Recurse -Force
-    Write-Host "Répertoire de données supprimé." -ForegroundColor Gray
+    Write-Host "RÃ©pertoire de donnÃ©es supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testOutputPath) {
     Remove-Item -Path $testOutputPath -Recurse -Force
-    Write-Host "Répertoire de sortie supprimé." -ForegroundColor Gray
+    Write-Host "RÃ©pertoire de sortie supprimÃ©." -ForegroundColor Gray
 }
 
-# Exécuter les tests si Pester est disponible
+# ExÃ©cuter les tests si Pester est disponible
 if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
     Invoke-Pester -Path $MyInvocation.MyCommand.Path
 } else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
+    Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }

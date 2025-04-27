@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation d'IOException et ses caractéristiques.
+    Tests pour valider la documentation d'IOException et ses caractÃ©ristiques.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation d'IOException et ses caractéristiques.
+    fournies dans la documentation d'IOException et ses caractÃ©ristiques.
 
 .NOTES
     Version:        1.0
@@ -14,25 +14,25 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la documentation d'IOException et ses caractéristiques" {
+# DÃ©finir les tests
+Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
     Context "IOException" {
-        It "Devrait être une sous-classe de SystemException" {
+        It "Devrait Ãªtre une sous-classe de SystemException" {
             [System.IO.IOException] | Should -BeOfType [System.Type]
             [System.IO.IOException].IsSubclassOf([System.SystemException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un message et un HResult" {
+        It "Devrait permettre de spÃ©cifier un message et un HResult" {
             $exception = [System.IO.IOException]::new("Message de test", -2147024784)
             $exception.Message | Should -Be "Message de test"
             $exception.HResult | Should -Be -2147024784
         }
         
-        It "Exemple 1: Devrait gérer les erreurs de lecture de fichier" {
+        It "Exemple 1: Devrait gÃ©rer les erreurs de lecture de fichier" {
             function Read-FileWithIOExceptionHandling {
                 param (
                     [string]$FilePath
@@ -53,7 +53,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 }
             }
             
-            # Créer un fichier temporaire pour le test
+            # CrÃ©er un fichier temporaire pour le test
             $tempFile = [System.IO.Path]::GetTempFileName()
             [System.IO.File]::WriteAllText($tempFile, "Contenu de test")
             
@@ -67,7 +67,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
         }
         
-        It "Exemple 3: Devrait démontrer un fichier verrouillé par un autre processus" {
+        It "Exemple 3: Devrait dÃ©montrer un fichier verrouillÃ© par un autre processus" {
             function Test-LockedFile {
                 param (
                     [string]$FilePath
@@ -78,15 +78,15 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 $result = $false
                 
                 try {
-                    # Créer un fichier et le garder ouvert
+                    # CrÃ©er un fichier et le garder ouvert
                     $fileStream1 = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Create, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
                     
-                    # Tenter d'ouvrir le même fichier dans un autre flux
+                    # Tenter d'ouvrir le mÃªme fichier dans un autre flux
                     try {
                         $fileStream2 = [System.IO.FileStream]::new($FilePath, [System.IO.FileMode]::Open)
-                        $result = $false  # Si on arrive ici, le test a échoué
+                        $result = $false  # Si on arrive ici, le test a Ã©chouÃ©
                     } catch [System.IO.IOException] {
-                        $result = $true  # Si on attrape une IOException, le test a réussi
+                        $result = $true  # Si on attrape une IOException, le test a rÃ©ussi
                     }
                 } finally {
                     if ($fileStream1 -ne $null) { $fileStream1.Dispose() }
@@ -124,7 +124,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
             $result.IsDiskFull | Should -Be $true
         }
         
-        It "Exemple 5: Devrait gérer la copie de fichier avec IOException" {
+        It "Exemple 5: Devrait gÃ©rer la copie de fichier avec IOException" {
             function Copy-FileWithIOExceptionHandling {
                 param (
                     [string]$SourcePath,
@@ -141,11 +141,11 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 }
             }
             
-            # Créer un fichier temporaire pour le test
+            # CrÃ©er un fichier temporaire pour le test
             $sourceFile = [System.IO.Path]::GetTempFileName()
             $destinationFile = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "copied_file.tmp")
             
-            # Écrire du contenu dans le fichier source
+            # Ã‰crire du contenu dans le fichier source
             [System.IO.File]::WriteAllText($sourceFile, "Contenu de test")
             
             # Test avec des fichiers valides
@@ -160,7 +160,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
         }
     }
     
-    Context "Prévention des IOException" {
+    Context "PrÃ©vention des IOException" {
         It "Technique 1: Devrait utiliser des blocs try-catch-finally" {
             function Process-FileWithProperCleanup {
                 param (
@@ -177,7 +177,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 } catch [System.IO.IOException] {
                     $result = $false
                 } finally {
-                    # Vérifier que la ressource est bien nettoyée
+                    # VÃ©rifier que la ressource est bien nettoyÃ©e
                     if ($fileStream -ne $null) {
                         $fileStream.Dispose()
                     }
@@ -186,7 +186,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 return $result
             }
             
-            # Créer un fichier temporaire pour le test
+            # CrÃ©er un fichier temporaire pour le test
             $tempFile = [System.IO.Path]::GetTempFileName()
             
             # Test avec un fichier valide
@@ -199,20 +199,20 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
         }
         
-        It "Technique 3: Devrait vérifier les conditions préalables" {
+        It "Technique 3: Devrait vÃ©rifier les conditions prÃ©alables" {
             function Write-FileWithPreCheck {
                 param (
                     [string]$FilePath,
                     [string]$Content
                 )
                 
-                # Vérifier si le répertoire existe
+                # VÃ©rifier si le rÃ©pertoire existe
                 $directory = [System.IO.Path]::GetDirectoryName($FilePath)
                 if (-not [System.IO.Directory]::Exists($directory)) {
                     return "DirectoryNotFound"
                 }
                 
-                # Vérifier si le fichier est en lecture seule
+                # VÃ©rifier si le fichier est en lecture seule
                 if ([System.IO.File]::Exists($FilePath)) {
                     $fileInfo = [System.IO.FileInfo]::new($FilePath)
                     if ($fileInfo.IsReadOnly) {
@@ -220,7 +220,7 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                     }
                 }
                 
-                # Maintenant, tenter d'écrire dans le fichier
+                # Maintenant, tenter d'Ã©crire dans le fichier
                 try {
                     [System.IO.File]::WriteAllText($FilePath, $Content)
                     return "Success"
@@ -229,20 +229,20 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 }
             }
             
-            # Créer un fichier temporaire pour le test
+            # CrÃ©er un fichier temporaire pour le test
             $tempFile = [System.IO.Path]::GetTempFileName()
             
             # Test avec un fichier valide
             Write-FileWithPreCheck -FilePath $tempFile -Content "Test" | Should -Be "Success"
             
-            # Test avec un répertoire inexistant
+            # Test avec un rÃ©pertoire inexistant
             Write-FileWithPreCheck -FilePath "Z:\dossier_inexistant\fichier.txt" -Content "Test" | Should -Be "DirectoryNotFound"
             
             # Nettoyer
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
         }
         
-        It "Technique 5: Devrait implémenter des mécanismes de retry" {
+        It "Technique 5: Devrait implÃ©menter des mÃ©canismes de retry" {
             function Read-FileWithRetry {
                 param (
                     [string]$FilePath,
@@ -260,10 +260,10 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 while ($retryCount -lt $MaxRetries) {
                     try {
                         if ($retryCount -lt $FailureCondition.Invoke()) {
-                            throw [System.IO.IOException]::new("Erreur simulée pour le test")
+                            throw [System.IO.IOException]::new("Erreur simulÃ©e pour le test")
                         }
                         
-                        $result.Content = "Contenu simulé"
+                        $result.Content = "Contenu simulÃ©"
                         $result.Success = $true
                         return $result
                     } catch [System.IO.IOException] {
@@ -279,20 +279,20 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 return $result
             }
             
-            # Test avec échec puis succès après 2 tentatives
+            # Test avec Ã©chec puis succÃ¨s aprÃ¨s 2 tentatives
             $result1 = Read-FileWithRetry -FilePath "test.txt" -FailureCondition { 2 }
             $result1.Success | Should -Be $true
             $result1.RetryCount | Should -Be 2
             
-            # Test avec échec permanent (plus de tentatives que le maximum)
+            # Test avec Ã©chec permanent (plus de tentatives que le maximum)
             $result2 = Read-FileWithRetry -FilePath "test.txt" -MaxRetries 2 -FailureCondition { 3 }
             $result2.Success | Should -Be $false
             $result2.RetryCount | Should -Be 2
         }
     }
     
-    Context "Débogage des IOException" {
-        It "Devrait fournir des informations de débogage utiles" {
+    Context "DÃ©bogage des IOException" {
+        It "Devrait fournir des informations de dÃ©bogage utiles" {
             function Debug-IOException {
                 param (
                     [System.IO.IOException]$Exception
@@ -305,11 +305,11 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                     Interpretation = ""
                 }
                 
-                # Interpréter le code HResult
+                # InterprÃ©ter le code HResult
                 switch ($Exception.HResult) {
                     -2147024784 { $result.Interpretation = "Espace disque insuffisant" }
-                    -2147024864 { $result.Interpretation = "Le fichier est utilisé par un autre processus" }
-                    -2147024891 { $result.Interpretation = "Accès refusé" }
+                    -2147024864 { $result.Interpretation = "Le fichier est utilisÃ© par un autre processus" }
+                    -2147024891 { $result.Interpretation = "AccÃ¨s refusÃ©" }
                     -2147024893 { $result.Interpretation = "Chemin introuvable" }
                     -2147024894 { $result.Interpretation = "Fichier introuvable" }
                     default { $result.Interpretation = "Code d'erreur non reconnu" }
@@ -318,14 +318,14 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
                 return $result
             }
             
-            # Test avec différents codes HResult
+            # Test avec diffÃ©rents codes HResult
             $exception1 = [System.IO.IOException]::new("Disk full", -2147024784)
             $result1 = Debug-IOException -Exception $exception1
             $result1.Interpretation | Should -Be "Espace disque insuffisant"
             
             $exception2 = [System.IO.IOException]::new("File in use", -2147024864)
             $result2 = Debug-IOException -Exception $exception2
-            $result2.Interpretation | Should -Be "Le fichier est utilisé par un autre processus"
+            $result2.Interpretation | Should -Be "Le fichier est utilisÃ© par un autre processus"
             
             $exception3 = [System.IO.IOException]::new("Unknown error", -1)
             $result3 = Debug-IOException -Exception $exception3
@@ -334,5 +334,5 @@ Describe "Tests de la documentation d'IOException et ses caractéristiques" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

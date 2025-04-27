@@ -1,4 +1,4 @@
-# Test-Formatter.ps1
+﻿# Test-Formatter.ps1
 # Script de test pour le formatage de texte en format roadmap
 
 # Fonction pour detecter si une ligne est un titre de phase
@@ -52,7 +52,7 @@ function Format-LineByIndentation {
     }
     
     # Supprimer les puces ou numeros existants
-    $Line = $Line -replace "^[-*•]\s*", ""
+    $Line = $Line -replace "^[-*â€¢]\s*", ""
     $Line = $Line -replace "^\d+\.\s*", ""
     
     # Construire la ligne formatee

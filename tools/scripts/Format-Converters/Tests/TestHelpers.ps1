@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Fonctions d'aide pour les tests unitaires du module Format-Converters.
 
 .DESCRIPTION
     Ce script contient des fonctions d'aide pour les tests unitaires du module Format-Converters.
-    Il est utilisé par les scripts de test pour créer des fichiers de test, récupérer des chemins de fichiers, etc.
+    Il est utilisÃ© par les scripts de test pour crÃ©er des fichiers de test, rÃ©cupÃ©rer des chemins de fichiers, etc.
 
 .NOTES
     Version: 1.0
@@ -13,11 +13,11 @@
     Date: 2025-04-11
 #>
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
 New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test temporaires
+# Fonction pour crÃ©er des fichiers de test temporaires
 function New-TempTestFile {
     param (
         [string]$FileName,
@@ -26,11 +26,11 @@ function New-TempTestFile {
 
     $filePath = Join-Path -Path $script:testTempDir -ChildPath $FileName
     $Content | Set-Content -Path $filePath -Encoding UTF8
-    Write-Verbose "Fichier créé : $filePath"
+    Write-Verbose "Fichier crÃ©Ã© : $filePath"
     return $filePath
 }
 
-# Fonction pour récupérer le chemin d'un fichier de test statique
+# Fonction pour rÃ©cupÃ©rer le chemin d'un fichier de test statique
 function Get-TestFilePath {
     param(
         [Parameter(Mandatory = $true)]
@@ -54,7 +54,7 @@ function Remove-TestTempFiles {
     }
 }
 
-# Créer un objet de résultat de détection pour les tests
+# CrÃ©er un objet de rÃ©sultat de dÃ©tection pour les tests
 function New-TestDetectionResult {
     param (
         [string]$FilePath = "test.json",

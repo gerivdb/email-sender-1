@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fournit des fonctions de validation d'entrée pour les scripts PowerShell.
+    Fournit des fonctions de validation d'entrÃ©e pour les scripts PowerShell.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour valider différents types d'entrées
-    (chaînes, nombres, dates, chemins, etc.) afin de prévenir les erreurs
-    et d'améliorer la robustesse des scripts.
+    Ce script contient des fonctions pour valider diffÃ©rents types d'entrÃ©es
+    (chaÃ®nes, nombres, dates, chemins, etc.) afin de prÃ©venir les erreurs
+    et d'amÃ©liorer la robustesse des scripts.
 
 .EXAMPLE
     . .\InputValidator.ps1
     if (Test-StringNotNullOrEmpty -Value $inputString -Name "Nom d'utilisateur") {
-        # Traitement avec la chaîne valide
+        # Traitement avec la chaÃ®ne valide
     }
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Fonction pour valider qu'une chaîne n'est pas nulle ou vide
+# Fonction pour valider qu'une chaÃ®ne n'est pas nulle ou vide
 function Test-StringNotNullOrEmpty {
     [CmdletBinding()]
     param (
@@ -38,13 +38,13 @@ function Test-StringNotNullOrEmpty {
     $isValid = -not [string]::IsNullOrEmpty($Value)
     
     if (-not $isValid -and $ThrowOnFailure) {
-        throw "La valeur '$Name' ne peut pas être nulle ou vide."
+        throw "La valeur '$Name' ne peut pas Ãªtre nulle ou vide."
     }
     
     return $isValid
 }
 
-# Fonction pour valider qu'une chaîne correspond à un modèle regex
+# Fonction pour valider qu'une chaÃ®ne correspond Ã  un modÃ¨le regex
 function Test-StringPattern {
     [CmdletBinding()]
     param (
@@ -68,7 +68,7 @@ function Test-StringPattern {
     
     if ([string]::IsNullOrEmpty($Value)) {
         if ($ThrowOnFailure) {
-            throw "La valeur '$Name' ne peut pas être nulle ou vide."
+            throw "La valeur '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }
@@ -77,7 +77,7 @@ function Test-StringPattern {
     
     if (-not $isValid -and $ThrowOnFailure) {
         $message = if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            "La valeur '$Name' ($Value) ne correspond pas au modèle requis."
+            "La valeur '$Name' ($Value) ne correspond pas au modÃ¨le requis."
         }
         else {
             $ErrorMessage
@@ -110,7 +110,7 @@ function Test-NumberInRange {
         [switch]$ThrowOnFailure
     )
     
-    # Vérifier que la valeur est un nombre
+    # VÃ©rifier que la valeur est un nombre
     if (-not ($Value -is [int] -or $Value -is [long] -or $Value -is [double] -or $Value -is [decimal])) {
         if ($ThrowOnFailure) {
             throw "La valeur '$Name' ($Value) n'est pas un nombre."
@@ -122,7 +122,7 @@ function Test-NumberInRange {
     $isValid = $numericValue -ge $Min -and $numericValue -le $Max
     
     if (-not $isValid -and $ThrowOnFailure) {
-        throw "La valeur '$Name' ($Value) doit être comprise entre $Min et $Max."
+        throw "La valeur '$Name' ($Value) doit Ãªtre comprise entre $Min et $Max."
     }
     
     return $isValid
@@ -149,7 +149,7 @@ function Test-DateInRange {
         [switch]$ThrowOnFailure
     )
     
-    # Vérifier que la valeur est une date
+    # VÃ©rifier que la valeur est une date
     $date = $null
     $isDate = $false
     
@@ -177,7 +177,7 @@ function Test-DateInRange {
     $isValid = $date -ge $MinDate -and $date -le $MaxDate
     
     if (-not $isValid -and $ThrowOnFailure) {
-        throw "La date '$Name' ($date) doit être comprise entre $MinDate et $MaxDate."
+        throw "La date '$Name' ($date) doit Ãªtre comprise entre $MinDate et $MaxDate."
     }
     
     return $isValid
@@ -205,7 +205,7 @@ function Test-PathExists {
     
     if ([string]::IsNullOrEmpty($Path)) {
         if ($ThrowOnFailure) {
-            throw "Le chemin '$Name' ne peut pas être nul ou vide."
+            throw "Le chemin '$Name' ne peut pas Ãªtre nul ou vide."
         }
         return $false
     }
@@ -219,7 +219,7 @@ function Test-PathExists {
     if (-not $exists -and $ThrowOnFailure) {
         $typeText = switch ($PathType) {
             "File" { "fichier" }
-            "Directory" { "répertoire" }
+            "Directory" { "rÃ©pertoire" }
             default { "chemin" }
         }
         
@@ -253,7 +253,7 @@ function Test-ValueInSet {
     
     if ($null -eq $Value) {
         if ($ThrowOnFailure) {
-            throw "La valeur '$Name' ne peut pas être nulle."
+            throw "La valeur '$Name' ne peut pas Ãªtre nulle."
         }
         return $false
     }
@@ -267,7 +267,7 @@ function Test-ValueInSet {
     
     if (-not $isValid -and $ThrowOnFailure) {
         $validValuesText = $ValidValues -join ", "
-        throw "La valeur '$Name' ($Value) doit être l'une des valeurs suivantes: $validValuesText."
+        throw "La valeur '$Name' ($Value) doit Ãªtre l'une des valeurs suivantes: $validValuesText."
     }
     
     return $isValid
@@ -291,12 +291,12 @@ function Test-EmailAddress {
     
     if ([string]::IsNullOrEmpty($Email)) {
         if ($ThrowOnFailure) {
-            throw "L'adresse email '$Name' ne peut pas être nulle ou vide."
+            throw "L'adresse email '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }
     
-    # Modèle regex pour une validation basique d'email
+    # ModÃ¨le regex pour une validation basique d'email
     $pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     $isValid = $Email -match $pattern
     
@@ -329,12 +329,12 @@ function Test-Url {
     
     if ([string]::IsNullOrEmpty($Url)) {
         if ($ThrowOnFailure) {
-            throw "L'URL '$Name' ne peut pas être nulle ou vide."
+            throw "L'URL '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }
     
-    # Modèle regex pour une validation basique d'URL
+    # ModÃ¨le regex pour une validation basique d'URL
     $pattern = switch ($Protocol) {
         "Http" { "^http://[a-zA-Z0-9][-a-zA-Z0-9]*(\.[a-zA-Z0-9][-a-zA-Z0-9]*)+(/[^/]+)*/?$" }
         "Https" { "^https://[a-zA-Z0-9][-a-zA-Z0-9]*(\.[a-zA-Z0-9][-a-zA-Z0-9]*)+(/[^/]+)*/?$" }
@@ -373,7 +373,7 @@ function Test-Json {
     
     if ([string]::IsNullOrEmpty($Json)) {
         if ($ThrowOnFailure) {
-            throw "La chaîne JSON '$Name' ne peut pas être nulle ou vide."
+            throw "La chaÃ®ne JSON '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }
@@ -381,17 +381,17 @@ function Test-Json {
     try {
         $jsonObject = ConvertFrom-Json -InputObject $Json -ErrorAction Stop
         
-        # Valider le schéma si spécifié
+        # Valider le schÃ©ma si spÃ©cifiÃ©
         if (-not [string]::IsNullOrEmpty($Schema)) {
-            # Cette partie nécessiterait une bibliothèque de validation de schéma JSON
-            # Pour l'instant, nous nous contentons de vérifier que le JSON est valide
+            # Cette partie nÃ©cessiterait une bibliothÃ¨que de validation de schÃ©ma JSON
+            # Pour l'instant, nous nous contentons de vÃ©rifier que le JSON est valide
         }
         
         return $true
     }
     catch {
         if ($ThrowOnFailure) {
-            throw "La chaîne JSON '$Name' n'est pas valide: $_"
+            throw "La chaÃ®ne JSON '$Name' n'est pas valide: $_"
         }
         return $false
     }
@@ -418,7 +418,7 @@ function Test-Xml {
     
     if ([string]::IsNullOrEmpty($Xml)) {
         if ($ThrowOnFailure) {
-            throw "La chaîne XML '$Name' ne peut pas être nulle ou vide."
+            throw "La chaÃ®ne XML '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }
@@ -427,7 +427,7 @@ function Test-Xml {
         $xmlDocument = New-Object System.Xml.XmlDocument
         $xmlDocument.LoadXml($Xml)
         
-        # Valider le schéma si spécifié
+        # Valider le schÃ©ma si spÃ©cifiÃ©
         if (-not [string]::IsNullOrEmpty($SchemaPath) -and (Test-Path -Path $SchemaPath -PathType Leaf)) {
             $schemaReader = New-Object System.Xml.XmlTextReader($SchemaPath)
             $schema = [System.Xml.Schema.XmlSchema]::Read($schemaReader, $null)
@@ -439,7 +439,7 @@ function Test-Xml {
     }
     catch {
         if ($ThrowOnFailure) {
-            throw "La chaîne XML '$Name' n'est pas valide: $_"
+            throw "La chaÃ®ne XML '$Name' n'est pas valide: $_"
         }
         return $false
     }
@@ -463,7 +463,7 @@ function Test-Guid {
     
     if ([string]::IsNullOrEmpty($Value)) {
         if ($ThrowOnFailure) {
-            throw "La valeur GUID '$Name' ne peut pas être nulle ou vide."
+            throw "La valeur GUID '$Name' ne peut pas Ãªtre nulle ou vide."
         }
         return $false
     }

@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère des rapports à partir du journal de la roadmap.
+    GÃ©nÃ¨re des rapports Ã  partir du journal de la roadmap.
 .DESCRIPTION
-    Ce script génère des rapports détaillés à partir du journal de la roadmap
-    dans différents formats (Markdown, HTML, PDF).
+    Ce script gÃ©nÃ¨re des rapports dÃ©taillÃ©s Ã  partir du journal de la roadmap
+    dans diffÃ©rents formats (Markdown, HTML, PDF).
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -38,29 +38,29 @@ $statusPath = Join-Path -Path $journalRoot -ChildPath "status.json"
 $sectionsPath = Join-Path -Path $journalRoot -ChildPath "sections"
 $archivesPath = Join-Path -Path $journalRoot -ChildPath "archives"
 
-# Créer le dossier de rapports si nécessaire
+# CrÃ©er le dossier de rapports si nÃ©cessaire
 if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
 
-# Mettre à jour le statut global
+# Mettre Ã  jour le statut global
 $status = Get-RoadmapJournalStatus
 
 # Charger l'index
 $index = Get-Content -Path $indexPath -Raw | ConvertFrom-Json
 
-# Fonction pour récupérer toutes les entrées (actives et archivées)
+# Fonction pour rÃ©cupÃ©rer toutes les entrÃ©es (actives et archivÃ©es)
 function Get-AllEntries {
     $entries = @()
     
-    # Récupérer les entrées actives
+    # RÃ©cupÃ©rer les entrÃ©es actives
     foreach ($entryId in $index.entries.PSObject.Properties.Name) {
         $entryPath = $index.entries.$entryId
         $entry = Get-Content -Path $entryPath -Raw | ConvertFrom-Json
         $entries += $entry
     }
     
-    # Récupérer les entrées archivées si demandé
+    # RÃ©cupÃ©rer les entrÃ©es archivÃ©es si demandÃ©
     if ($IncludeArchived) {
         $archiveFolders = Get-ChildItem -Path $archivesPath -Directory
         
@@ -77,76 +77,76 @@ function Get-AllEntries {
     return $entries
 }
 
-# Fonction pour générer un rapport Markdown
+# Fonction pour gÃ©nÃ©rer un rapport Markdown
 function Generate-MarkdownReport {
     $entries = Get-AllEntries
     
-    # Trier les entrées par ID
+    # Trier les entrÃ©es par ID
     $entries = $entries | Sort-Object -Property id
     
-    # Générer le contenu Markdown
+    # GÃ©nÃ©rer le contenu Markdown
     $markdown = @"
 # Rapport de la Roadmap
 
-*Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")*
+*GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")*
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Progression globale**: $($status.globalProgress)%
-- **Total des tâches**: $($index.statistics.totalEntries)
-- **Tâches non commencées**: $($index.statistics.notStarted)
-- **Tâches en cours**: $($index.statistics.inProgress)
-- **Tâches terminées**: $($index.statistics.completed)
-- **Tâches bloquées**: $($index.statistics.blocked)
+- **Total des tÃ¢ches**: $($index.statistics.totalEntries)
+- **TÃ¢ches non commencÃ©es**: $($index.statistics.notStarted)
+- **TÃ¢ches en cours**: $($index.statistics.inProgress)
+- **TÃ¢ches terminÃ©es**: $($index.statistics.completed)
+- **TÃ¢ches bloquÃ©es**: $($index.statistics.blocked)
 
-## Tâches en retard
+## TÃ¢ches en retard
 
 $(
     if ($status.overdueTasks.Count -eq 0) {
-        "Aucune tâche en retard."
+        "Aucune tÃ¢che en retard."
     }
     else {
-        "| ID | Titre | Date d'échéance | Jours de retard |`n|---|-------|----------------|----------------|`n" +
+        "| ID | Titre | Date d'Ã©chÃ©ance | Jours de retard |`n|---|-------|----------------|----------------|`n" +
         ($status.overdueTasks | ForEach-Object {
             "| $($_.id) | $($_.title) | $($_.dueDate) | $($_.daysOverdue) |"
         })
     }
 )
 
-## Prochaines échéances
+## Prochaines Ã©chÃ©ances
 
 $(
     if ($status.upcomingDeadlines.Count -eq 0) {
-        "Aucune échéance à venir dans les 7 prochains jours."
+        "Aucune Ã©chÃ©ance Ã  venir dans les 7 prochains jours."
     }
     else {
-        "| ID | Titre | Date d'échéance | Jours restants |`n|---|-------|----------------|----------------|`n" +
+        "| ID | Titre | Date d'Ã©chÃ©ance | Jours restants |`n|---|-------|----------------|----------------|`n" +
         ($status.upcomingDeadlines | ForEach-Object {
             "| $($_.id) | $($_.title) | $($_.dueDate) | $($_.daysRemaining) |"
         })
     }
 )
 
-## Détail des tâches
+## DÃ©tail des tÃ¢ches
 
 "@
     
-    # Ajouter les détails de chaque tâche
+    # Ajouter les dÃ©tails de chaque tÃ¢che
     foreach ($entry in $entries) {
         $markdown += @"
 
 ### $($entry.id) $($entry.title)
 
 - **Statut**: $($entry.status)
-- **Créé le**: $([DateTime]::Parse($entry.createdAt).ToString("yyyy-MM-dd"))
-- **Mis à jour le**: $([DateTime]::Parse($entry.updatedAt).ToString("yyyy-MM-dd"))
+- **CrÃ©Ã© le**: $([DateTime]::Parse($entry.createdAt).ToString("yyyy-MM-dd"))
+- **Mis Ã  jour le**: $([DateTime]::Parse($entry.updatedAt).ToString("yyyy-MM-dd"))
 $(
     if ($entry.metadata.complexity) {
-        "- **Complexité**: $($entry.metadata.complexity)"
+        "- **ComplexitÃ©**: $($entry.metadata.complexity)"
     }
 )$(
     if ($entry.metadata.estimatedHours) {
-        "- **Temps estimé**: $($entry.metadata.estimatedHours) heures"
+        "- **Temps estimÃ©**: $($entry.metadata.estimatedHours) heures"
     }
 )$(
     if ($entry.metadata.progress) {
@@ -154,15 +154,15 @@ $(
     }
 )$(
     if ($entry.metadata.startDate) {
-        "- **Date de début**: $([DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd"))"
+        "- **Date de dÃ©but**: $([DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd"))"
     }
 )$(
     if ($entry.metadata.dueDate) {
-        "- **Date d'échéance**: $([DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd"))"
+        "- **Date d'Ã©chÃ©ance**: $([DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd"))"
     }
 )$(
     if ($entry.metadata.completionDate) {
-        "- **Date d'achèvement**: $([DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd"))"
+        "- **Date d'achÃ¨vement**: $([DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd"))"
     }
 )$(
     if ($entry.metadata.owner) {
@@ -174,11 +174,11 @@ $(
     }
 )$(
     if ($entry.subTasks -and $entry.subTasks.Count -gt 0) {
-        "`n**Sous-tâches**:`n" + ($entry.subTasks | ForEach-Object { "- $($_)" }) -join "`n"
+        "`n**Sous-tÃ¢ches**:`n" + ($entry.subTasks | ForEach-Object { "- $($_)" }) -join "`n"
     }
 )$(
     if ($entry.files -and $entry.files.Count -gt 0) {
-        "`n**Fichiers associés**:`n" + ($entry.files | ForEach-Object { "- $($_)" }) -join "`n"
+        "`n**Fichiers associÃ©s**:`n" + ($entry.files | ForEach-Object { "- $($_)" }) -join "`n"
     }
 )$(
     if ($entry.tags -and $entry.tags.Count -gt 0) {
@@ -193,21 +193,21 @@ $(
     $markdownPath = Join-Path -Path $OutputFolder -ChildPath "roadmap_report.md"
     $markdown | Out-File -FilePath $markdownPath -Encoding utf8 -Force
     
-    Write-Host "Rapport Markdown généré: $markdownPath" -ForegroundColor Green
+    Write-Host "Rapport Markdown gÃ©nÃ©rÃ©: $markdownPath" -ForegroundColor Green
     
     return $markdownPath
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-HtmlReport {
     $markdownPath = Generate-MarkdownReport
     
-    # Vérifier si le module MarkdownPS est installé
+    # VÃ©rifier si le module MarkdownPS est installÃ©
     if (-not (Get-Module -ListAvailable -Name MarkdownPS)) {
-        Write-Warning "Le module MarkdownPS n'est pas installé. Le rapport HTML sera généré sans mise en forme."
-        Write-Warning "Pour installer MarkdownPS, exécutez: Install-Module -Name MarkdownPS -Scope CurrentUser"
+        Write-Warning "Le module MarkdownPS n'est pas installÃ©. Le rapport HTML sera gÃ©nÃ©rÃ© sans mise en forme."
+        Write-Warning "Pour installer MarkdownPS, exÃ©cutez: Install-Module -Name MarkdownPS -Scope CurrentUser"
         
-        # Générer un HTML basique
+        # GÃ©nÃ©rer un HTML basique
         $markdown = Get-Content -Path $markdownPath -Raw
         $html = @"
 <!DOCTYPE html>
@@ -361,7 +361,7 @@ function Generate-HtmlReport {
         $htmlContent
     </div>
     <div class="footer">
-        <p>Généré par le système de journalisation de la roadmap EMAIL_SENDER_1</p>
+        <p>GÃ©nÃ©rÃ© par le systÃ¨me de journalisation de la roadmap EMAIL_SENDER_1</p>
     </div>
 </body>
 </html>
@@ -372,38 +372,38 @@ function Generate-HtmlReport {
     $htmlPath = Join-Path -Path $OutputFolder -ChildPath "roadmap_report.html"
     $html | Out-File -FilePath $htmlPath -Encoding utf8 -Force
     
-    Write-Host "Rapport HTML généré: $htmlPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -ForegroundColor Green
     
     return $htmlPath
 }
 
-# Fonction pour générer un rapport PDF
+# Fonction pour gÃ©nÃ©rer un rapport PDF
 function Generate-PdfReport {
     $htmlPath = Generate-HtmlReport
     
-    # Vérifier si wkhtmltopdf est installé
+    # VÃ©rifier si wkhtmltopdf est installÃ©
     $wkhtmltopdf = "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
     if (-not (Test-Path -Path $wkhtmltopdf)) {
-        Write-Warning "wkhtmltopdf n'est pas installé. Le rapport PDF ne sera pas généré."
-        Write-Warning "Pour installer wkhtmltopdf, téléchargez-le depuis https://wkhtmltopdf.org/downloads.html"
+        Write-Warning "wkhtmltopdf n'est pas installÃ©. Le rapport PDF ne sera pas gÃ©nÃ©rÃ©."
+        Write-Warning "Pour installer wkhtmltopdf, tÃ©lÃ©chargez-le depuis https://wkhtmltopdf.org/downloads.html"
         return $null
     }
     
-    # Générer le PDF
+    # GÃ©nÃ©rer le PDF
     $pdfPath = Join-Path -Path $OutputFolder -ChildPath "roadmap_report.pdf"
     & $wkhtmltopdf $htmlPath $pdfPath
     
     if (Test-Path -Path $pdfPath) {
-        Write-Host "Rapport PDF généré: $pdfPath" -ForegroundColor Green
+        Write-Host "Rapport PDF gÃ©nÃ©rÃ©: $pdfPath" -ForegroundColor Green
         return $pdfPath
     }
     else {
-        Write-Warning "Échec de la génération du rapport PDF."
+        Write-Warning "Ã‰chec de la gÃ©nÃ©ration du rapport PDF."
         return $null
     }
 }
 
-# Générer les rapports selon le format demandé
+# GÃ©nÃ©rer les rapports selon le format demandÃ©
 $reportPath = $null
 
 switch ($Format) {
@@ -421,14 +421,14 @@ switch ($Format) {
         $htmlPath = Generate-HtmlReport
         $pdfPath = Generate-PdfReport
         
-        # Utiliser le chemin HTML comme chemin de rapport par défaut
+        # Utiliser le chemin HTML comme chemin de rapport par dÃ©faut
         $reportPath = $htmlPath
     }
 }
 
-# Ouvrir le rapport si demandé
+# Ouvrir le rapport si demandÃ©
 if ($OpenReport -and $reportPath -and (Test-Path -Path $reportPath)) {
     Start-Process $reportPath
 }
 
-Write-Host "`nGénération des rapports terminée avec succès." -ForegroundColor Green
+Write-Host "`nGÃ©nÃ©ration des rapports terminÃ©e avec succÃ¨s." -ForegroundColor Green

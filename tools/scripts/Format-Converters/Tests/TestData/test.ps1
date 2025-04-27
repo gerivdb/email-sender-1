@@ -1,4 +1,4 @@
-function Test-Function {
+﻿function Test-Function {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]

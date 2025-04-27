@@ -1,16 +1,16 @@
-# Script pour sécuriser les communications réseau
+﻿# Script pour sÃ©curiser les communications rÃ©seau
 
-# Importer le module de sécurisation des entrées
+# Importer le module de sÃ©curisation des entrÃ©es
 $inputSanitizerPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "InputSanitizer.ps1"
 if (Test-Path -Path $inputSanitizerPath) {
     . $inputSanitizerPath
 }
 else {
-    Write-Error "Le module de sécurisation des entrées est introuvable: $inputSanitizerPath"
+    Write-Error "Le module de sÃ©curisation des entrÃ©es est introuvable: $inputSanitizerPath"
     return
 }
 
-# Fonction pour effectuer une requête web sécurisée
+# Fonction pour effectuer une requÃªte web sÃ©curisÃ©e
 function Invoke-SecureWebRequest {
     param (
         [Parameter(Mandatory = $true)]
@@ -39,18 +39,18 @@ function Invoke-SecureWebRequest {
         [int]$TimeoutSeconds = 30
     )
     
-    # Vérifier si l'URL est sécurisée
+    # VÃ©rifier si l'URL est sÃ©curisÃ©e
     if (-not (Test-SafeUrl -Url $Uri -AllowedDomains $AllowedDomains)) {
-        throw "URL non sécurisée: $Uri"
+        throw "URL non sÃ©curisÃ©e: $Uri"
     }
     
-    # Vérifier si le protocole est sécurisé
+    # VÃ©rifier si le protocole est sÃ©curisÃ©
     $uriObj = [System.Uri]$Uri
     if ($uriObj.Scheme -ne "https" -and -not $AllowInsecure) {
-        throw "Protocole non sécurisé: $($uriObj.Scheme). Utilisez HTTPS ou spécifiez -AllowInsecure."
+        throw "Protocole non sÃ©curisÃ©: $($uriObj.Scheme). Utilisez HTTPS ou spÃ©cifiez -AllowInsecure."
     }
     
-    # Vérifier le fichier de sortie si spécifié
+    # VÃ©rifier le fichier de sortie si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($OutFile)) {
         $outFileDir = Split-Path -Path $OutFile -Parent
         if (-not [string]::IsNullOrEmpty($outFileDir) -and -not (Test-Path -Path $outFileDir -PathType Container)) {
@@ -58,7 +58,7 @@ function Invoke-SecureWebRequest {
         }
     }
     
-    # Configurer les paramètres de la requête
+    # Configurer les paramÃ¨tres de la requÃªte
     $params = @{
         Uri = $Uri
         Method = $Method
@@ -66,12 +66,12 @@ function Invoke-SecureWebRequest {
         TimeoutSec = $TimeoutSeconds
     }
     
-    # Ajouter le corps si spécifié
+    # Ajouter le corps si spÃ©cifiÃ©
     if ($null -ne $Body) {
         $params.Body = $Body
     }
     
-    # Ajouter le fichier de sortie si spécifié
+    # Ajouter le fichier de sortie si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($OutFile)) {
         $params.OutFile = $OutFile
     }
@@ -81,13 +81,13 @@ function Invoke-SecureWebRequest {
         $params.UseBasicParsing = $true
     }
     
-    # Effectuer la requête
+    # Effectuer la requÃªte
     try {
         $response = Invoke-WebRequest @params
         return $response
     }
     catch {
-        throw "Erreur lors de la requête web: $_"
+        throw "Erreur lors de la requÃªte web: $_"
     }
 }
 
@@ -105,11 +105,11 @@ function Test-SSLCertificate {
     )
     
     try {
-        # Créer une connexion TCP
+        # CrÃ©er une connexion TCP
         $tcpClient = New-Object System.Net.Sockets.TcpClient
         $tcpClient.Connect($Hostname, $Port)
         
-        # Créer un flux SSL
+        # CrÃ©er un flux SSL
         $sslStream = New-Object System.Net.Security.SslStream($tcpClient.GetStream(), $false, {
             param($sender, $certificate, $chain, $sslPolicyErrors)
             return $true
@@ -128,12 +128,12 @@ function Test-SSLCertificate {
         # Convertir en certificat X509
         $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]$certificate
         
-        # Vérifier la validité du certificat
+        # VÃ©rifier la validitÃ© du certificat
         $now = [System.DateTime]::Now
         $expirationDate = $cert.NotAfter
         $daysUntilExpiration = ($expirationDate - $now).Days
         
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             Hostname = $Hostname
             Port = $Port
@@ -150,11 +150,11 @@ function Test-SSLCertificate {
         return $result
     }
     catch {
-        throw "Erreur lors de la vérification du certificat SSL: $_"
+        throw "Erreur lors de la vÃ©rification du certificat SSL: $_"
     }
 }
 
-# Fonction pour tester la connectivité réseau de manière sécurisée
+# Fonction pour tester la connectivitÃ© rÃ©seau de maniÃ¨re sÃ©curisÃ©e
 function Test-SecureNetworkConnectivity {
     param (
         [Parameter(Mandatory = $true)]
@@ -170,7 +170,7 @@ function Test-SecureNetworkConnectivity {
         [string[]]$AllowedTargets = @()
     )
     
-    # Vérifier si la cible est autorisée
+    # VÃ©rifier si la cible est autorisÃ©e
     if ($AllowedTargets.Count -gt 0) {
         $isAllowed = $false
         foreach ($allowedTarget in $AllowedTargets) {
@@ -181,11 +181,11 @@ function Test-SecureNetworkConnectivity {
         }
         
         if (-not $isAllowed) {
-            throw "Cible non autorisée: $Target"
+            throw "Cible non autorisÃ©e: $Target"
         }
     }
     
-    # Déterminer si la cible est une URL ou une adresse IP/nom d'hôte
+    # DÃ©terminer si la cible est une URL ou une adresse IP/nom d'hÃ´te
     $isUrl = $Target -match '^(http|https)://'
     
     if ($isUrl) {
@@ -223,7 +223,7 @@ function Test-SecureNetworkConnectivity {
         }
     }
     else {
-        # C'est une adresse IP ou un nom d'hôte
+        # C'est une adresse IP ou un nom d'hÃ´te
         if ($Port -eq 0) {
             # Utiliser Test-Connection (ping)
             try {
@@ -248,7 +248,7 @@ function Test-SecureNetworkConnectivity {
             }
         }
         else {
-            # Tester la connectivité TCP
+            # Tester la connectivitÃ© TCP
             try {
                 $tcpClient = New-Object System.Net.Sockets.TcpClient
                 $connectionTask = $tcpClient.ConnectAsync($Target, $Port)

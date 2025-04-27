@@ -1,4 +1,4 @@
-# Test-RoadmapReturnType
+﻿# Test-RoadmapReturnType
 
 ## SYNOPSIS
 
@@ -13,14 +13,14 @@ Valide les types de retour des fonctions du module RoadmapParser.
 ## DESCRIPTION
 
 La fonction Test-RoadmapReturnType valide les types de retour des fonctions
-du module RoadmapParser. Elle vérifie que les objets retournés par les fonctions
-ont la structure attendue et contiennent les propriétés requises.
+du module RoadmapParser. Elle vÃ©rifie que les objets retournÃ©s par les fonctions
+ont la structure attendue et contiennent les propriÃ©tÃ©s requises.
 
 ## PARAMETERS
 
 ### -Value
 
-L'objet à valider.
+L'objet Ã  valider.
 
 `yaml
 Type: Object
@@ -36,14 +36,14 @@ Accept wildcard characters: false
 
 ### -Type
 
-Le type de validation à effectuer. Valeurs possibles :
-- Roadmap : Vérifie que l'objet est une roadmap valide
-- Section : Vérifie que l'objet est une section valide
-- Task : Vérifie que l'objet est une tâche valide
-- ValidationResult : Vérifie que l'objet est un résultat de validation valide
-- DependencyResult : Vérifie que l'objet est un résultat de dépendance valide
-- JsonString : Vérifie que la chaîne est un JSON valide
-- Custom : Utilise une validation personnalisée
+Le type de validation Ã  effectuer. Valeurs possibles :
+- Roadmap : VÃ©rifie que l'objet est une roadmap valide
+- Section : VÃ©rifie que l'objet est une section valide
+- Task : VÃ©rifie que l'objet est une tÃ¢che valide
+- ValidationResult : VÃ©rifie que l'objet est un rÃ©sultat de validation valide
+- DependencyResult : VÃ©rifie que l'objet est un rÃ©sultat de dÃ©pendance valide
+- JsonString : VÃ©rifie que la chaÃ®ne est un JSON valide
+- Custom : Utilise une validation personnalisÃ©e
 
 `yaml
 Type: String
@@ -59,8 +59,8 @@ Accept wildcard characters: false
 
 ### -CustomValidation
 
-Une expression scriptblock pour une validation personnalisée.
-Utilisé uniquement lorsque Type est "Custom".
+Une expression scriptblock pour une validation personnalisÃ©e.
+UtilisÃ© uniquement lorsque Type est "Custom".
 
 `yaml
 Type: ScriptBlock
@@ -76,8 +76,8 @@ Accept wildcard characters: false
 
 ### -ErrorMessage
 
-Le message d'erreur à afficher en cas d'échec de la validation.
-Si non spécifié, un message par défaut sera utilisé.
+Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 `yaml
 Type: String
@@ -93,8 +93,8 @@ Accept wildcard characters: false
 
 ### -RequiredProperties
 
-Un tableau de noms de propriétés requises pour l'objet.
-Si non spécifié, les propriétés par défaut pour le type seront utilisées.
+Un tableau de noms de propriÃ©tÃ©s requises pour l'objet.
+Si non spÃ©cifiÃ©, les propriÃ©tÃ©s par dÃ©faut pour le type seront utilisÃ©es.
 
 `yaml
 Type: String[]
@@ -110,7 +110,7 @@ Accept wildcard characters: false
 
 ### -ThrowOnFailure
 
-Indique si une exception doit être levée en cas d'échec de la validation.
+Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 `yaml
 Type: SwitchParameter
@@ -130,13 +130,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[bool] Indique si la validation a réussi.
+[bool] Indique si la validation a rÃ©ussi.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -145,7 +145,7 @@ Date de création: 2023-07-10
 `powershell
 $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md"
 Test-RoadmapReturnType -Value $roadmap -Type Roadmap -ThrowOnFailure
-Vérifie que l'objet est une roadmap valide, et lève une exception si ce n'est pas le cas.
+VÃ©rifie que l'objet est une roadmap valide, et lÃ¨ve une exception si ce n'est pas le cas.
 `
 
     
@@ -155,7 +155,7 @@ Vérifie que l'objet est une roadmap valide, et lève une exception si ce n'est 
 `powershell
 $json = Export-RoadmapToJson -Roadmap $roadmap
 Test-RoadmapReturnType -Value $json -Type JsonString
-Vérifie que la chaîne est un JSON valide.
+VÃ©rifie que la chaÃ®ne est un JSON valide.
 `
 
     

@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse les cas d'échec de détection de format de fichiers.
+    Analyse les cas d'Ã©chec de dÃ©tection de format de fichiers.
 
 .DESCRIPTION
-    Ce script analyse un ensemble de fichiers pour identifier les cas où la détection automatique
-    de format échoue ou donne des résultats incorrects. Il compare les résultats de différentes
-    méthodes de détection et génère un rapport détaillé des problèmes identifiés.
+    Ce script analyse un ensemble de fichiers pour identifier les cas oÃ¹ la dÃ©tection automatique
+    de format Ã©choue ou donne des rÃ©sultats incorrects. Il compare les rÃ©sultats de diffÃ©rentes
+    mÃ©thodes de dÃ©tection et gÃ©nÃ¨re un rapport dÃ©taillÃ© des problÃ¨mes identifiÃ©s.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport d'analyse sera enregistré. Par défaut, 'FormatDetectionAnalysis.json'.
+    Le chemin oÃ¹ le rapport d'analyse sera enregistrÃ©. Par dÃ©faut, 'FormatDetectionAnalysis.json'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport JSON.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport JSON.
 
 .EXAMPLE
     .\Analyze-FormatDetectionFailures_Fixed.ps1 -SampleDirectory "C:\Samples" -GenerateHtmlReport
@@ -38,16 +38,16 @@ param(
     [switch]$GenerateHtmlReport
 )
 
-# Vérifier si le module PSCacheManager est disponible
+# VÃ©rifier si le module PSCacheManager est disponible
 if (-not (Get-Module -Name PSCacheManager -ListAvailable)) {
-    Write-Warning "Le module PSCacheManager n'est pas disponible. Les résultats ne seront pas mis en cache."
+    Write-Warning "Le module PSCacheManager n'est pas disponible. Les rÃ©sultats ne seront pas mis en cache."
     $useCache = $false
 } else {
     Import-Module PSCacheManager
     $useCache = $true
 }
 
-# Fonction pour détecter le format d'un fichier en utilisant uniquement l'extension
+# Fonction pour dÃ©tecter le format d'un fichier en utilisant uniquement l'extension
 function Get-FileFormatByExtension {
     param (
         [Parameter(Mandatory = $true)]
@@ -92,14 +92,14 @@ function Get-FileFormatByExtension {
     }
 }
 
-# Fonction pour détecter le format d'un fichier en analysant son contenu
+# Fonction pour dÃ©tecter le format d'un fichier en analysant son contenu
 function Get-FileFormatByContent {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         return "FILE_NOT_FOUND"
     }
@@ -121,7 +121,7 @@ function Get-FileFormatByContent {
         $bytesRead = $fileStream.Read($buffer, 0, 512)
         $fileStream.Close()
 
-        # Vérifier les signatures connues
+        # VÃ©rifier les signatures connues
 
         # JPEG
         if ($bytesRead -ge 3 -and $buffer[0] -eq 0xFF -and $buffer[1] -eq 0xD8 -and $buffer[2] -eq 0xFF) {
@@ -160,13 +160,13 @@ function Get-FileFormatByContent {
             $result = "EXECUTABLE"
         }
         else {
-            # Essayer de déterminer si c'est un fichier texte
+            # Essayer de dÃ©terminer si c'est un fichier texte
             $isText = $true
             $nonTextCount = 0
-            $threshold = [Math]::Min(512, $bytesRead) * 0.1  # 10% de tolérance
+            $threshold = [Math]::Min(512, $bytesRead) * 0.1  # 10% de tolÃ©rance
 
             for ($i = 0; $i -lt [Math]::Min(512, $bytesRead); $i++) {
-                # Vérifier si l'octet est un caractère de contrôle non autorisé dans un texte
+                # VÃ©rifier si l'octet est un caractÃ¨re de contrÃ´le non autorisÃ© dans un texte
                 if ($buffer[$i] -lt 9 -or ($buffer[$i] -gt 13 -and $buffer[$i] -lt 32) -or $buffer[$i] -eq 0) {
                     $nonTextCount++
                     if ($nonTextCount -gt $threshold) {
@@ -181,7 +181,7 @@ function Get-FileFormatByContent {
                 $encoding = [System.Text.Encoding]::UTF8
                 $text = $encoding.GetString($buffer, 0, [Math]::Min(512, $bytesRead))
 
-                # Vérifier XML/HTML
+                # VÃ©rifier XML/HTML
                 if ($text -match '^\s*<\?xml' -or $text -match '^\s*<!DOCTYPE' -or $text -match '^\s*<html' -or $text -match '<html.*>') {
                     if ($text -match '<html.*>' -or $text -match '<!DOCTYPE html') {
                         $result = "HTML"
@@ -189,31 +189,31 @@ function Get-FileFormatByContent {
                         $result = "XML"
                     }
                 }
-                # Vérifier JSON
+                # VÃ©rifier JSON
                 elseif ($text -match '^\s*[\{\[]') {
                     $result = "JSON"
                 }
-                # Vérifier CSV
+                # VÃ©rifier CSV
                 elseif ($text -match ',.*,.*,') {
                     $result = "CSV"
                 }
-                # Vérifier PowerShell
+                # VÃ©rifier PowerShell
                 elseif ($text -match 'function\s+\w+' -or $text -match '\$\w+' -or $text -match 'param\s*\(' -or $text -match 'Write-Host') {
                     $result = "POWERSHELL"
                 }
-                # Vérifier Batch
+                # VÃ©rifier Batch
                 elseif ($text -match '@echo off' -or $text -match 'set \w+=' -or $text -match 'goto \w+' -or $text -match 'if.*goto') {
                     $result = "BATCH"
                 }
-                # Vérifier Python
+                # VÃ©rifier Python
                 elseif ($text -match 'def\s+\w+\s*\(' -or $text -match 'import\s+\w+' -or $text -match 'class\s+\w+:') {
                     $result = "PYTHON"
                 }
-                # Vérifier JavaScript
+                # VÃ©rifier JavaScript
                 elseif ($text -match 'function\s+\w+\s*\(' -or $text -match 'var\s+\w+' -or $text -match 'const\s+\w+' -or $text -match 'let\s+\w+') {
                     $result = "JAVASCRIPT"
                 }
-                # Texte par défaut
+                # Texte par dÃ©faut
                 else {
                     $result = "TEXT"
                 }
@@ -222,7 +222,7 @@ function Get-FileFormatByContent {
             }
         }
 
-        # Mettre en cache le résultat si le cache est disponible
+        # Mettre en cache le rÃ©sultat si le cache est disponible
         if ($useCache) {
             Set-PSCacheItem -Key $cacheKey -Value $result -TTL 3600
         }
@@ -235,14 +235,14 @@ function Get-FileFormatByContent {
     }
 }
 
-# Fonction pour détecter le format d'un fichier en utilisant une approche avancée
+# Fonction pour dÃ©tecter le format d'un fichier en utilisant une approche avancÃ©e
 function Get-FileFormatAdvanced {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         return "FILE_NOT_FOUND"
     }
@@ -258,19 +258,19 @@ function Get-FileFormatAdvanced {
     }
 
     try {
-        # Obtenir le format basé sur l'extension
+        # Obtenir le format basÃ© sur l'extension
         $extensionFormat = Get-FileFormatByExtension -FilePath $FilePath
 
-        # Obtenir le format basé sur le contenu
+        # Obtenir le format basÃ© sur le contenu
         $contentFormat = Get-FileFormatByContent -FilePath $FilePath
 
-        # Analyse avancée pour les cas ambigus
+        # Analyse avancÃ©e pour les cas ambigus
         if ($extensionFormat -ne $contentFormat) {
-            # Cas spécifiques où le contenu est plus fiable
+            # Cas spÃ©cifiques oÃ¹ le contenu est plus fiable
             if ($contentFormat -in @("JPEG", "PNG", "GIF", "BMP", "PDF", "EXECUTABLE")) {
                 $result = $contentFormat
             }
-            # Cas spécifiques où l'extension est plus fiable
+            # Cas spÃ©cifiques oÃ¹ l'extension est plus fiable
             elseif ($extensionFormat -in @("WORD", "EXCEL", "POWERPOINT") -and $contentFormat -eq "ZIP") {
                 $result = $extensionFormat
             }
@@ -280,15 +280,15 @@ function Get-FileFormatAdvanced {
                 $content = Get-Content -Path $FilePath -Raw -ErrorAction SilentlyContinue
 
                 if ($null -ne $content) {
-                    # Vérifier CSV avec différents délimiteurs
+                    # VÃ©rifier CSV avec diffÃ©rents dÃ©limiteurs
                     if ($content -match '(?:\r\n|\r|\n)(?:[^,]*,){2,}[^,]*(?:\r\n|\r|\n)') {
                         $result = "CSV"
                     }
-                    # Vérifier TSV
+                    # VÃ©rifier TSV
                     elseif ($content -match '(?:\r\n|\r|\n)(?:[^\t]*\t){2,}[^\t]*(?:\r\n|\r|\n)') {
                         $result = "TSV"
                     }
-                    # Vérifier XML/HTML plus en profondeur
+                    # VÃ©rifier XML/HTML plus en profondeur
                     elseif ($content -match '<\?xml' -or $content -match '<!DOCTYPE' -or $content -match '<html' -or $content -match '</html>') {
                         if ($content -match '<html' -or $content -match '</html>' -or $content -match '<!DOCTYPE html') {
                             $result = "HTML"
@@ -296,47 +296,47 @@ function Get-FileFormatAdvanced {
                             $result = "XML"
                         }
                     }
-                    # Vérifier JSON plus en profondeur
+                    # VÃ©rifier JSON plus en profondeur
                     elseif (($content -match '^\s*[\{\[]' -and $content -match '[\}\]]\s*$') -or ($content -match '"[^"]*"\s*:')) {
                         $result = "JSON"
                     }
-                    # Vérifier PowerShell plus en profondeur
+                    # VÃ©rifier PowerShell plus en profondeur
                     elseif ($content -match 'function\s+\w+' -or $content -match '\$\w+' -or $content -match 'param\s*\(' -or $content -match 'Write-Host') {
                         $result = "POWERSHELL"
                     }
-                    # Vérifier Batch plus en profondeur
+                    # VÃ©rifier Batch plus en profondeur
                     elseif ($content -match '@echo off' -or $content -match 'set \w+=' -or $content -match 'goto \w+' -or $content -match 'if.*goto') {
                         $result = "BATCH"
                     }
-                    # Vérifier Python plus en profondeur
+                    # VÃ©rifier Python plus en profondeur
                     elseif ($content -match 'def\s+\w+\s*\(' -or $content -match 'import\s+\w+' -or $content -match 'class\s+\w+:') {
                         $result = "PYTHON"
                     }
-                    # Vérifier JavaScript plus en profondeur
+                    # VÃ©rifier JavaScript plus en profondeur
                     elseif ($content -match 'function\s+\w+\s*\(' -or $content -match 'var\s+\w+' -or $content -match 'const\s+\w+' -or $content -match 'let\s+\w+') {
                         $result = "JAVASCRIPT"
                     }
                     else {
-                        # Si aucun format spécifique n'est détecté, utiliser le format basé sur l'extension
+                        # Si aucun format spÃ©cifique n'est dÃ©tectÃ©, utiliser le format basÃ© sur l'extension
                         $result = $extensionFormat
                     }
                 }
                 else {
-                    # Si le contenu ne peut pas être lu comme du texte, utiliser le format basé sur le contenu
+                    # Si le contenu ne peut pas Ãªtre lu comme du texte, utiliser le format basÃ© sur le contenu
                     $result = $contentFormat
                 }
             }
             else {
-                # Dans les autres cas, privilégier le format basé sur le contenu
+                # Dans les autres cas, privilÃ©gier le format basÃ© sur le contenu
                 $result = $contentFormat
             }
         }
         else {
-            # Si les deux méthodes donnent le même résultat, utiliser ce résultat
+            # Si les deux mÃ©thodes donnent le mÃªme rÃ©sultat, utiliser ce rÃ©sultat
             $result = $extensionFormat
         }
 
-        # Mettre en cache le résultat si le cache est disponible
+        # Mettre en cache le rÃ©sultat si le cache est disponible
         if ($useCache) {
             Set-PSCacheItem -Key $cacheKey -Value $result -TTL 3600
         }
@@ -344,7 +344,7 @@ function Get-FileFormatAdvanced {
         return $result
     }
     catch {
-        Write-Error "Erreur lors de l'analyse avancée du fichier $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse avancÃ©e du fichier $FilePath : $_"
         return "ERROR"
     }
 }
@@ -356,13 +356,13 @@ function Test-FileFormats {
         [string]$Directory
     )
 
-    # Vérifier si le répertoire existe
+    # VÃ©rifier si le rÃ©pertoire existe
     if (-not (Test-Path -Path $Directory -PathType Container)) {
-        Write-Error "Le répertoire $Directory n'existe pas."
+        Write-Error "Le rÃ©pertoire $Directory n'existe pas."
         return $null
     }
 
-    # Récupérer tous les fichiers du répertoire (récursivement)
+    # RÃ©cupÃ©rer tous les fichiers du rÃ©pertoire (rÃ©cursivement)
     $files = Get-ChildItem -Path $Directory -File -Recurse
 
     Write-Host "Analyse de $($files.Count) fichiers..." -ForegroundColor Cyan
@@ -373,15 +373,15 @@ function Test-FileFormats {
         Write-Verbose "Analyse du fichier $($file.FullName)..."
 
         try {
-            # Détecter le format avec les différentes méthodes
+            # DÃ©tecter le format avec les diffÃ©rentes mÃ©thodes
             $extensionFormat = Get-FileFormatByExtension -FilePath $file.FullName
             $contentFormat = Get-FileFormatByContent -FilePath $file.FullName
             $advancedFormat = Get-FileFormatAdvanced -FilePath $file.FullName
 
-            # Déterminer s'il y a un conflit entre les méthodes
+            # DÃ©terminer s'il y a un conflit entre les mÃ©thodes
             $conflict = ($extensionFormat -ne $contentFormat) -or ($extensionFormat -ne $advancedFormat) -or ($contentFormat -ne $advancedFormat)
 
-            # Créer un objet résultat
+            # CrÃ©er un objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $file.FullName;
                 FileName = $file.Name;
@@ -391,7 +391,7 @@ function Test-FileFormats {
                 ContentFormat = $contentFormat;
                 AdvancedFormat = $advancedFormat;
                 Conflict = $conflict;
-                ProbableTrueFormat = $advancedFormat  # Considérer le format avancé comme le plus probable
+                ProbableTrueFormat = $advancedFormat  # ConsidÃ©rer le format avancÃ© comme le plus probable
             }
 
             $results += $result
@@ -399,7 +399,7 @@ function Test-FileFormats {
         catch {
             Write-Warning "Erreur lors de l'analyse du fichier $($file.FullName) : $_"
 
-            # Ajouter un résultat d'erreur
+            # Ajouter un rÃ©sultat d'erreur
             $results += [PSCustomObject]@{
                 FilePath = $file.FullName;
                 FileName = $file.Name;
@@ -418,7 +418,7 @@ function Test-FileFormats {
     return $results
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -434,7 +434,7 @@ function New-HtmlReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport d'analyse de détection de formats</title>
+    <title>Rapport d'analyse de dÃ©tection de formats</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -481,8 +481,8 @@ function New-HtmlReport {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Rapport d'analyse de détection de formats</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <h1>Rapport d'analyse de dÃ©tection de formats</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 "@
 
     # Calculer les statistiques
@@ -490,7 +490,7 @@ function New-HtmlReport {
     $conflictFiles = ($Results | Where-Object { $_.Conflict }).Count
     $conflictPercent = if ($totalFiles -gt 0) { [Math]::Round(($conflictFiles / $totalFiles) * 100, 2) } else { 0 }
 
-    # Compter les formats détectés
+    # Compter les formats dÃ©tectÃ©s
     $formatCounts = @{}
     foreach ($result in $Results) {
         $format = $result.ProbableTrueFormat
@@ -500,18 +500,18 @@ function New-HtmlReport {
         $formatCounts[$format]++
     }
 
-    # Trier les formats par fréquence
+    # Trier les formats par frÃ©quence
     $sortedFormats = $formatCounts.GetEnumerator() | Sort-Object -Property Value -Descending
 
-    # Générer les données pour le graphique
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique
     $formatLabels = $sortedFormats | ForEach-Object { "`"$($_.Key)`"" }
     $formatValues = $sortedFormats | ForEach-Object { $_.Value }
 
     $htmlSummary = @"
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre total de fichiers analysés : $totalFiles</p>
-        <p>Nombre de fichiers avec conflits de détection : $conflictFiles ($conflictPercent%)</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre total de fichiers analysÃ©s : $totalFiles</p>
+        <p>Nombre de fichiers avec conflits de dÃ©tection : $conflictFiles ($conflictPercent%)</p>
         <h3>Distribution des formats</h3>
         <div class="chart-container">
             <canvas id="formatsChart"></canvas>
@@ -556,14 +556,14 @@ function New-HtmlReport {
 "@
 
     $htmlConflicts = @"
-    <h2>Fichiers avec conflits de détection</h2>
+    <h2>Fichiers avec conflits de dÃ©tection</h2>
     <table>
         <tr>
             <th>Nom du fichier</th>
             <th>Extension</th>
             <th>Format par extension</th>
             <th>Format par contenu</th>
-            <th>Format avancé</th>
+            <th>Format avancÃ©</th>
             <th>Format probable</th>
         </tr>
 "@
@@ -584,7 +584,7 @@ function New-HtmlReport {
     $htmlConflicts += "</table>"
 
     $htmlAllFiles = @"
-    <h2>Tous les fichiers analysés</h2>
+    <h2>Tous les fichiers analysÃ©s</h2>
     <table>
         <tr>
             <th>Nom du fichier</th>
@@ -592,7 +592,7 @@ function New-HtmlReport {
             <th>Taille (octets)</th>
             <th>Format par extension</th>
             <th>Format par contenu</th>
-            <th>Format avancé</th>
+            <th>Format avancÃ©</th>
             <th>Conflit</th>
         </tr>
 "@
@@ -624,16 +624,16 @@ function New-HtmlReport {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8
 
-    Write-Host "Rapport HTML généré : $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 }
 
-# Vérifier si le répertoire d'échantillons existe
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
-    # Créer le répertoire d'échantillons
+    # CrÃ©er le rÃ©pertoire d'Ã©chantillons
     New-Item -Path $SampleDirectory -ItemType Directory -Force | Out-Null
 
-    Write-Host "Le répertoire d'échantillons a été créé : $SampleDirectory" -ForegroundColor Yellow
-    Write-Host "Veuillez y placer des fichiers d'échantillon pour l'analyse." -ForegroundColor Yellow
+    Write-Host "Le rÃ©pertoire d'Ã©chantillons a Ã©tÃ© crÃ©Ã© : $SampleDirectory" -ForegroundColor Yellow
+    Write-Host "Veuillez y placer des fichiers d'Ã©chantillon pour l'analyse." -ForegroundColor Yellow
     exit
 }
 
@@ -641,31 +641,31 @@ if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
 Write-Host "Analyse des fichiers dans $SampleDirectory..." -ForegroundColor Cyan
 $results = Test-FileFormats -Directory $SampleDirectory
 
-# Enregistrer les résultats au format JSON
+# Enregistrer les rÃ©sultats au format JSON
 $results | ConvertTo-Json -Depth 4 | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Rapport JSON généré : $OutputPath" -ForegroundColor Green
+Write-Host "Rapport JSON gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
     New-HtmlReport -Results $results -OutputPath $htmlOutputPath
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $totalFiles = $results.Count
 $conflictFiles = ($results | Where-Object { $_.Conflict }).Count
 $conflictPercent = if ($totalFiles -gt 0) { [Math]::Round(($conflictFiles / $totalFiles) * 100, 2) } else { 0 }
 
-Write-Host "`nRésumé de l'analyse :" -ForegroundColor Cyan
-Write-Host "  Nombre total de fichiers analysés : $totalFiles" -ForegroundColor White
-Write-Host "  Nombre de fichiers avec conflits de détection : $conflictFiles ($conflictPercent%)" -ForegroundColor $(if ($conflictFiles -gt 0) { "Yellow" } else { "Green" })
+Write-Host "`nRÃ©sumÃ© de l'analyse :" -ForegroundColor Cyan
+Write-Host "  Nombre total de fichiers analysÃ©s : $totalFiles" -ForegroundColor White
+Write-Host "  Nombre de fichiers avec conflits de dÃ©tection : $conflictFiles ($conflictPercent%)" -ForegroundColor $(if ($conflictFiles -gt 0) { "Yellow" } else { "Green" })
 
-# Afficher les formats les plus problématiques
+# Afficher les formats les plus problÃ©matiques
 if ($conflictFiles -gt 0) {
     $conflictsByExtension = $results | Where-Object { $_.Conflict } | Group-Object -Property Extension | Sort-Object -Property Count -Descending
 
-    Write-Host "`nExtensions les plus problématiques :" -ForegroundColor Yellow
+    Write-Host "`nExtensions les plus problÃ©matiques :" -ForegroundColor Yellow
     foreach ($group in $conflictsByExtension | Select-Object -First 5) {
         Write-Host "  $($group.Name): $($group.Count) fichiers" -ForegroundColor White
     }

@@ -1,5 +1,5 @@
-# Module de documentation des scripts pour le Script Manager
-# Ce module génère de la documentation pour chaque script
+﻿# Module de documentation des scripts pour le Script Manager
+# Ce module gÃ©nÃ¨re de la documentation pour chaque script
 # Author: Script Manager
 # Version: 1.0
 # Tags: documentation, scripts, manager
@@ -7,14 +7,14 @@
 function New-ScriptDocumentation {
     <#
     .SYNOPSIS
-        Génère la documentation pour chaque script
+        GÃ©nÃ¨re la documentation pour chaque script
     .DESCRIPTION
-        Analyse chaque script et génère un fichier de documentation avec
-        les informations sur le script, ses fonctions, paramètres et exemples
+        Analyse chaque script et gÃ©nÃ¨re un fichier de documentation avec
+        les informations sur le script, ses fonctions, paramÃ¨tres et exemples
     .PARAMETER Analysis
         Objet d'analyse des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer la documentation
+        Chemin oÃ¹ enregistrer la documentation
     .PARAMETER IncludeExamples
         Inclut des exemples d'utilisation dans la documentation
     .EXAMPLE
@@ -31,16 +31,16 @@ function New-ScriptDocumentation {
         [switch]$IncludeExamples
     )
     
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $Results = @()
     
-    # Créer le dossier de documentation des scripts
+    # CrÃ©er le dossier de documentation des scripts
     $ScriptsDocPath = Join-Path -Path $OutputPath -ChildPath "scripts"
     if (-not (Test-Path -Path $ScriptsDocPath)) {
         New-Item -ItemType Directory -Path $ScriptsDocPath -Force | Out-Null
     }
     
-    Write-Host "Génération de documentation pour $($Analysis.TotalScripts) scripts..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration de documentation pour $($Analysis.TotalScripts) scripts..." -ForegroundColor Cyan
     
     # Traiter chaque script
     $Counter = 0
@@ -51,24 +51,24 @@ function New-ScriptDocumentation {
         $Progress = [math]::Round(($Counter / $Total) * 100)
         Write-Progress -Activity "Documentation des scripts" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
         
-        # Créer le dossier pour le type de script
+        # CrÃ©er le dossier pour le type de script
         $ScriptTypeFolder = Join-Path -Path $ScriptsDocPath -ChildPath $Script.Type
         if (-not (Test-Path -Path $ScriptTypeFolder)) {
             New-Item -ItemType Directory -Path $ScriptTypeFolder -Force | Out-Null
         }
         
-        # Créer le nom du fichier de documentation
+        # CrÃ©er le nom du fichier de documentation
         $DocFileName = [System.IO.Path]::GetFileNameWithoutExtension($Script.Name) + ".md"
         $DocFilePath = Join-Path -Path $ScriptTypeFolder -ChildPath $DocFileName
         
-        # Générer le contenu de la documentation
+        # GÃ©nÃ©rer le contenu de la documentation
         $DocContent = Get-ScriptDocContent -Script $Script -IncludeExamples:$IncludeExamples
         
         # Enregistrer la documentation
         try {
             Set-Content -Path $DocFilePath -Value $DocContent
             
-            # Ajouter le résultat au tableau
+            # Ajouter le rÃ©sultat au tableau
             $Results += [PSCustomObject]@{
                 ScriptPath = $Script.Path
                 ScriptName = $Script.Name
@@ -77,9 +77,9 @@ function New-ScriptDocumentation {
                 Success = $true
             }
         } catch {
-            Write-Warning "Erreur lors de la création de la documentation pour $($Script.Path) : $_"
+            Write-Warning "Erreur lors de la crÃ©ation de la documentation pour $($Script.Path) : $_"
             
-            # Ajouter le résultat au tableau
+            # Ajouter le rÃ©sultat au tableau
             $Results += [PSCustomObject]@{
                 ScriptPath = $Script.Path
                 ScriptName = $Script.Name
@@ -93,7 +93,7 @@ function New-ScriptDocumentation {
     
     Write-Progress -Activity "Documentation des scripts" -Completed
     
-    Write-Host "Documentation générée pour $($Results | Where-Object { $_.Success } | Measure-Object).Count scripts" -ForegroundColor Green
+    Write-Host "Documentation gÃ©nÃ©rÃ©e pour $($Results | Where-Object { $_.Success } | Measure-Object).Count scripts" -ForegroundColor Green
     
     return $Results
 }
@@ -101,12 +101,12 @@ function New-ScriptDocumentation {
 function Get-ScriptDocContent {
     <#
     .SYNOPSIS
-        Génère le contenu de la documentation pour un script
+        GÃ©nÃ¨re le contenu de la documentation pour un script
     .DESCRIPTION
-        Crée un contenu de documentation adapté au script, incluant
-        les informations sur le script, ses fonctions, paramètres et exemples
+        CrÃ©e un contenu de documentation adaptÃ© au script, incluant
+        les informations sur le script, ses fonctions, paramÃ¨tres et exemples
     .PARAMETER Script
-        Objet script à documenter
+        Objet script Ã  documenter
     .PARAMETER IncludeExamples
         Inclut des exemples d'utilisation dans la documentation
     .EXAMPLE
@@ -137,7 +137,7 @@ function Get-ScriptDocContent {
         Tags = @()
     }
     
-    # Essayer d'extraire des métadonnées des commentaires
+    # Essayer d'extraire des mÃ©tadonnÃ©es des commentaires
     $CommentLines = (Get-Content -Path $Script.Path -TotalCount 20) -match "^#"
     foreach ($Line in $CommentLines) {
         if ($Line -match "^#\s*Description:?\s*(.+)$") {
@@ -151,21 +151,21 @@ function Get-ScriptDocContent {
         }
     }
     
-    # Si aucune description n'a été trouvée, utiliser la première ligne de commentaire
+    # Si aucune description n'a Ã©tÃ© trouvÃ©e, utiliser la premiÃ¨re ligne de commentaire
     if ([string]::IsNullOrWhiteSpace($ScriptInfo.Description) -and $CommentLines.Count -gt 0) {
         $ScriptInfo.Description = $CommentLines[0] -replace "^#\s*", ""
     }
     
-    # Générer la documentation des fonctions
+    # GÃ©nÃ©rer la documentation des fonctions
     $FunctionDocs = @()
     foreach ($Function in $ScriptInfo.Functions) {
-        # Essayer de trouver la définition de la fonction
+        # Essayer de trouver la dÃ©finition de la fonction
         $FunctionMatch = [regex]::Match($Content, "function\s+$([regex]::Escape($Function))\s*{([^}]*)}|function\s+$([regex]::Escape($Function))\s*\(([^)]*)\)")
         
         if ($FunctionMatch.Success) {
             $FunctionContent = $FunctionMatch.Value
             
-            # Essayer d'extraire les paramètres
+            # Essayer d'extraire les paramÃ¨tres
             $Parameters = @()
             $ParamMatches = [regex]::Matches($FunctionContent, "\[Parameter\([^\)]*\)\]\s*\[([^\]]*)\]\s*\$(\w+)")
             
@@ -214,7 +214,7 @@ function Get-ScriptDocContent {
         }
     }
     
-    # Générer des exemples d'utilisation
+    # GÃ©nÃ©rer des exemples d'utilisation
     $Examples = @()
     if ($IncludeExamples) {
         switch ($Script.Type) {
@@ -223,7 +223,7 @@ function Get-ScriptDocContent {
 ### Exemple d'utilisation basique
 
 ```powershell
-# Exécuter le script
+# ExÃ©cuter le script
 .\$($Script.Name)
 ```
 "@
@@ -248,7 +248,7 @@ $($FunctionDocs[0].Name) -Parameter Value
 ### Exemple d'utilisation basique
 
 ```python
-# Exécuter le script
+# ExÃ©cuter le script
 python $($Script.Name)
 ```
 "@
@@ -258,7 +258,7 @@ python $($Script.Name)
 ### Exemple d'utilisation basique
 
 ```batch
-# Exécuter le script
+# ExÃ©cuter le script
 $($Script.Name)
 ```
 "@
@@ -268,7 +268,7 @@ $($Script.Name)
 ### Exemple d'utilisation basique
 
 ```bash
-# Exécuter le script
+# ExÃ©cuter le script
 bash $($Script.Name)
 ```
 "@
@@ -276,11 +276,11 @@ bash $($Script.Name)
         }
     }
     
-    # Générer le contenu complet de la documentation
+    # GÃ©nÃ©rer le contenu complet de la documentation
     $DocContent = @"
 # $($Script.Name)
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 
 - **Nom:** $($Script.Name)
 - **Type:** $($Script.Type)
@@ -294,7 +294,7 @@ bash $($Script.Name)
 
 $($ScriptInfo.Description)
 
-## Dépendances
+## DÃ©pendances
 
 $($ScriptInfo.Dependencies -join ", ")
 
@@ -308,7 +308,7 @@ $($_.Synopsis)
 
 $($_.Description)
 
-#### Paramètres
+#### ParamÃ¨tres
 
 $($_.Parameters | ForEach-Object { "- **$($_.Name)** ($($_.Type))" } -join "`n")
 
@@ -325,7 +325,7 @@ $($_.Example)
 
 $($Examples -join "`n`n")
 
-## Problèmes potentiels
+## ProblÃ¨mes potentiels
 
 $($Script.Problems | ForEach-Object {
 @"
@@ -335,11 +335,11 @@ $($Script.Problems | ForEach-Object {
 "@
 } -join "`n")
 
-## Qualité du code
+## QualitÃ© du code
 
 - **Score:** $($Script.CodeQuality.Score)/$($Script.CodeQuality.MaxScore)
 - **Ratio de commentaires:** $([math]::Round($Script.CodeQuality.Metrics.CommentRatio * 100, 1))%
-- **Complexité:** $($Script.CodeQuality.Metrics.ComplexityScore)
+- **ComplexitÃ©:** $($Script.CodeQuality.Metrics.ComplexityScore)
 
 ## Recommandations
 
@@ -347,7 +347,7 @@ $($Script.CodeQuality.Recommendations -join "`n")
 
 ---
 
-*Documentation générée automatiquement par le Script Manager le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")*
+*Documentation gÃ©nÃ©rÃ©e automatiquement par le Script Manager le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")*
 "@
     
     return $DocContent

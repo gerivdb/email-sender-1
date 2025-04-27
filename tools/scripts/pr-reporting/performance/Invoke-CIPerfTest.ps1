@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de performance dans un environnement CI/CD.
+    ExÃ©cute des tests de performance dans un environnement CI/CD.
 .DESCRIPTION
-    Ce script est conçu pour être exécuté dans un pipeline CI/CD. Il exécute des tests
-    de performance, compare les résultats avec une référence, et fait échouer le build
-    si des régressions de performance sont détectées.
+    Ce script est conÃ§u pour Ãªtre exÃ©cutÃ© dans un pipeline CI/CD. Il exÃ©cute des tests
+    de performance, compare les rÃ©sultats avec une rÃ©fÃ©rence, et fait Ã©chouer le build
+    si des rÃ©gressions de performance sont dÃ©tectÃ©es.
 .PARAMETER BaselinePath
-    Chemin vers le fichier JSON de résultats de référence. Si non spécifié, le script
-    cherchera un fichier baseline.json dans le répertoire de sortie.
+    Chemin vers le fichier JSON de rÃ©sultats de rÃ©fÃ©rence. Si non spÃ©cifiÃ©, le script
+    cherchera un fichier baseline.json dans le rÃ©pertoire de sortie.
 .PARAMETER OutputDir
-    Répertoire où enregistrer les résultats des tests. Par défaut: "./perf-results".
+    RÃ©pertoire oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut: "./perf-results".
 .PARAMETER ThresholdPercent
-    Pourcentage d'augmentation du temps de réponse considéré comme une régression.
-    Par défaut: 10%.
+    Pourcentage d'augmentation du temps de rÃ©ponse considÃ©rÃ© comme une rÃ©gression.
+    Par dÃ©faut: 10%.
 .PARAMETER RpsThresholdPercent
-    Pourcentage de diminution des requêtes par seconde considéré comme une régression.
-    Par défaut: 10%.
+    Pourcentage de diminution des requÃªtes par seconde considÃ©rÃ© comme une rÃ©gression.
+    Par dÃ©faut: 10%.
 .PARAMETER TestDuration
-    Durée des tests en secondes. Par défaut: 30.
+    DurÃ©e des tests en secondes. Par dÃ©faut: 30.
 .PARAMETER Concurrency
-    Nombre d'exécutions concurrentes. Par défaut: 3.
+    Nombre d'exÃ©cutions concurrentes. Par dÃ©faut: 3.
 .PARAMETER UpdateBaseline
-    Si spécifié, met à jour le fichier de référence avec les résultats actuels.
+    Si spÃ©cifiÃ©, met Ã  jour le fichier de rÃ©fÃ©rence avec les rÃ©sultats actuels.
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .PARAMETER FailOnRegression
-    Si spécifié, fait échouer le script si des régressions sont détectées.
+    Si spÃ©cifiÃ©, fait Ã©chouer le script si des rÃ©gressions sont dÃ©tectÃ©es.
 .PARAMETER GitHubActions
-    Si spécifié, génère des annotations pour GitHub Actions.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re des annotations pour GitHub Actions.
 .PARAMETER AzureDevOps
-    Si spécifié, génère des annotations pour Azure DevOps.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re des annotations pour Azure DevOps.
 .EXAMPLE
     .\Invoke-CIPerfTest.ps1 -BaselinePath "baseline.json" -ThresholdPercent 5 -FailOnRegression
 .NOTES
@@ -75,7 +75,7 @@ param (
     [switch]$AzureDevOps
 )
 
-# Fonction pour créer une annotation GitHub Actions
+# Fonction pour crÃ©er une annotation GitHub Actions
 function Write-GitHubAnnotation {
     param (
         [string]$Type,
@@ -107,7 +107,7 @@ function Write-GitHubAnnotation {
     Write-Host $annotation
 }
 
-# Fonction pour créer une annotation Azure DevOps
+# Fonction pour crÃ©er une annotation Azure DevOps
 function Write-AzureDevOpsAnnotation {
     param (
         [string]$Type,
@@ -149,7 +149,7 @@ function Write-AzureDevOpsAnnotation {
     }
 }
 
-# Fonction pour écrire un message de log avec annotations CI/CD
+# Fonction pour Ã©crire un message de log avec annotations CI/CD
 function Write-CILog {
     param (
         [string]$Message,
@@ -179,7 +179,7 @@ function Write-CILog {
     }
 }
 
-# Fonction pour définir une variable de sortie GitHub Actions
+# Fonction pour dÃ©finir une variable de sortie GitHub Actions
 function Set-GitHubOutput {
     param (
         [string]$Name,
@@ -198,7 +198,7 @@ function Set-GitHubOutput {
     }
 }
 
-# Fonction pour définir une variable de sortie Azure DevOps
+# Fonction pour dÃ©finir une variable de sortie Azure DevOps
 function Set-AzureDevOpsVariable {
     param (
         [string]$Name,
@@ -212,7 +212,7 @@ function Set-AzureDevOpsVariable {
     Write-Host "##vso[task.setvariable variable=$Name;isOutput=true]$Value"
 }
 
-# Fonction pour définir une variable de sortie CI
+# Fonction pour dÃ©finir une variable de sortie CI
 function Set-CIVariable {
     param (
         [string]$Name,
@@ -225,15 +225,15 @@ function Set-CIVariable {
 
 # Fonction principale
 function Main {
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputDir)) {
-        if ($PSCmdlet.ShouldProcess($OutputDir, "Créer le répertoire")) {
+        if ($PSCmdlet.ShouldProcess($OutputDir, "CrÃ©er le rÃ©pertoire")) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
-            Write-CILog "Répertoire de sortie créé: $OutputDir"
+            Write-CILog "RÃ©pertoire de sortie crÃ©Ã©: $OutputDir"
         }
     }
     
-    # Définir les chemins des fichiers
+    # DÃ©finir les chemins des fichiers
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $currentResultsPath = Join-Path -Path $OutputDir -ChildPath "results_$timestamp.json"
     $summaryPath = Join-Path -Path $OutputDir -ChildPath "summary_$timestamp.md"
@@ -241,18 +241,18 @@ function Main {
     
     if (-not $BaselinePath) {
         $BaselinePath = Join-Path -Path $OutputDir -ChildPath "baseline.json"
-        Write-CILog "Aucun fichier de référence spécifié, utilisation de: $BaselinePath"
+        Write-CILog "Aucun fichier de rÃ©fÃ©rence spÃ©cifiÃ©, utilisation de: $BaselinePath"
     }
     
-    # Exécuter les tests de performance
-    Write-CILog "Exécution des tests de performance..."
-    Write-CILog "  Durée: $TestDuration secondes"
+    # ExÃ©cuter les tests de performance
+    Write-CILog "ExÃ©cution des tests de performance..."
+    Write-CILog "  DurÃ©e: $TestDuration secondes"
     Write-CILog "  Concurrence: $Concurrency"
     
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Simple-PRLoadTest.ps1"
     
     if (-not (Test-Path -Path $scriptPath)) {
-        Write-CILog "Script de test de performance non trouvé: $scriptPath" -Type "error"
+        Write-CILog "Script de test de performance non trouvÃ©: $scriptPath" -Type "error"
         exit 1
     }
     
@@ -260,31 +260,31 @@ function Main {
         & $scriptPath -Duration $TestDuration -Concurrency $Concurrency -OutputPath $currentResultsPath -Verbose
         
         if (-not (Test-Path -Path $currentResultsPath)) {
-            Write-CILog "Les tests de performance n'ont pas généré de résultats." -Type "error"
+            Write-CILog "Les tests de performance n'ont pas gÃ©nÃ©rÃ© de rÃ©sultats." -Type "error"
             exit 1
         }
         
-        Write-CILog "Tests de performance terminés. Résultats enregistrés: $currentResultsPath" -Type "success"
+        Write-CILog "Tests de performance terminÃ©s. RÃ©sultats enregistrÃ©s: $currentResultsPath" -Type "success"
     }
     catch {
-        Write-CILog "Erreur lors de l'exécution des tests de performance: $_" -Type "error"
+        Write-CILog "Erreur lors de l'exÃ©cution des tests de performance: $_" -Type "error"
         exit 1
     }
     
-    # Charger les résultats actuels
+    # Charger les rÃ©sultats actuels
     $currentResults = Get-Content -Path $currentResultsPath -Raw | ConvertFrom-Json
     
-    # Vérifier si un fichier de référence existe
+    # VÃ©rifier si un fichier de rÃ©fÃ©rence existe
     $hasBaseline = Test-Path -Path $BaselinePath
     $comparisonResults = $null
     
     if ($hasBaseline) {
-        Write-CILog "Comparaison avec le fichier de référence: $BaselinePath"
+        Write-CILog "Comparaison avec le fichier de rÃ©fÃ©rence: $BaselinePath"
         
         try {
             $baselineResults = Get-Content -Path $BaselinePath -Raw | ConvertFrom-Json
             
-            # Comparer les résultats
+            # Comparer les rÃ©sultats
             $avgResponseTimeDiff = ($currentResults.AvgResponseMs - $baselineResults.AvgResponseMs) / $baselineResults.AvgResponseMs * 100
             $p95ResponseTimeDiff = ($currentResults.P95ResponseMs - $baselineResults.P95ResponseMs) / $baselineResults.P95ResponseMs * 100
             $rpsCurrentValue = if ($currentResults.PSObject.Properties.Name -contains "RequestsPerSecond") { $currentResults.RequestsPerSecond } else { $currentResults.TotalRequests / $currentResults.TotalExecTime }
@@ -299,51 +299,51 @@ function Main {
                 Regressions = @()
             }
             
-            # Vérifier les régressions
+            # VÃ©rifier les rÃ©gressions
             if ($avgResponseTimeDiff -gt $ThresholdPercent) {
-                $message = "Régression détectée: Temps de réponse moyen augmenté de $([Math]::Round($avgResponseTimeDiff, 2))% (seuil: $ThresholdPercent%)"
+                $message = "RÃ©gression dÃ©tectÃ©e: Temps de rÃ©ponse moyen augmentÃ© de $([Math]::Round($avgResponseTimeDiff, 2))% (seuil: $ThresholdPercent%)"
                 Write-CILog $message -Type "warning"
                 $comparisonResults.Regressions += $message
                 $comparisonResults.HasRegression = $true
             }
             
             if ($p95ResponseTimeDiff -gt $ThresholdPercent) {
-                $message = "Régression détectée: P95 augmenté de $([Math]::Round($p95ResponseTimeDiff, 2))% (seuil: $ThresholdPercent%)"
+                $message = "RÃ©gression dÃ©tectÃ©e: P95 augmentÃ© de $([Math]::Round($p95ResponseTimeDiff, 2))% (seuil: $ThresholdPercent%)"
                 Write-CILog $message -Type "warning"
                 $comparisonResults.Regressions += $message
                 $comparisonResults.HasRegression = $true
             }
             
             if ($rpsDiff -lt -$RpsThresholdPercent) {
-                $message = "Régression détectée: Requêtes par seconde diminuées de $([Math]::Round(-$rpsDiff, 2))% (seuil: $RpsThresholdPercent%)"
+                $message = "RÃ©gression dÃ©tectÃ©e: RequÃªtes par seconde diminuÃ©es de $([Math]::Round(-$rpsDiff, 2))% (seuil: $RpsThresholdPercent%)"
                 Write-CILog $message -Type "warning"
                 $comparisonResults.Regressions += $message
                 $comparisonResults.HasRegression = $true
             }
             
             if (-not $comparisonResults.HasRegression) {
-                Write-CILog "Aucune régression détectée." -Type "success"
+                Write-CILog "Aucune rÃ©gression dÃ©tectÃ©e." -Type "success"
             }
         }
         catch {
-            Write-CILog "Erreur lors de la comparaison des résultats: $_" -Type "error"
+            Write-CILog "Erreur lors de la comparaison des rÃ©sultats: $_" -Type "error"
         }
     }
     else {
-        Write-CILog "Aucun fichier de référence trouvé. Impossible de détecter les régressions."
+        Write-CILog "Aucun fichier de rÃ©fÃ©rence trouvÃ©. Impossible de dÃ©tecter les rÃ©gressions."
     }
     
-    # Mettre à jour le fichier de référence si demandé
+    # Mettre Ã  jour le fichier de rÃ©fÃ©rence si demandÃ©
     if ($UpdateBaseline -or (-not $hasBaseline)) {
-        if ($PSCmdlet.ShouldProcess($BaselinePath, "Mettre à jour le fichier de référence")) {
+        if ($PSCmdlet.ShouldProcess($BaselinePath, "Mettre Ã  jour le fichier de rÃ©fÃ©rence")) {
             Copy-Item -Path $currentResultsPath -Destination $BaselinePath -Force
-            Write-CILog "Fichier de référence mis à jour: $BaselinePath" -Type "success"
+            Write-CILog "Fichier de rÃ©fÃ©rence mis Ã  jour: $BaselinePath" -Type "success"
         }
     }
     
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateReport) {
-        Write-CILog "Génération du rapport HTML..."
+        Write-CILog "GÃ©nÃ©ration du rapport HTML..."
         
         $reportScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "New-PerformanceReport.ps1"
         
@@ -356,66 +356,66 @@ function Main {
                     & $reportScriptPath -ResultsPath $currentResultsPath -OutputPath $reportPath -Title "Rapport de performance CI/CD"
                 }
                 
-                Write-CILog "Rapport HTML généré: $reportPath" -Type "success"
+                Write-CILog "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -Type "success"
             }
             catch {
-                Write-CILog "Erreur lors de la génération du rapport HTML: $_" -Type "error"
+                Write-CILog "Erreur lors de la gÃ©nÃ©ration du rapport HTML: $_" -Type "error"
             }
         }
         else {
-            Write-CILog "Script de génération de rapport non trouvé: $reportScriptPath" -Type "warning"
+            Write-CILog "Script de gÃ©nÃ©ration de rapport non trouvÃ©: $reportScriptPath" -Type "warning"
         }
     }
     
-    # Générer un résumé Markdown
+    # GÃ©nÃ©rer un rÃ©sumÃ© Markdown
     $summary = @"
-# Résumé des tests de performance
+# RÃ©sumÃ© des tests de performance
 
 Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 ## Configuration
 
-- Durée: $TestDuration secondes
+- DurÃ©e: $TestDuration secondes
 - Concurrence: $Concurrency
-- Seuil de régression (temps de réponse): $ThresholdPercent%
-- Seuil de régression (RPS): $RpsThresholdPercent%
+- Seuil de rÃ©gression (temps de rÃ©ponse): $ThresholdPercent%
+- Seuil de rÃ©gression (RPS): $RpsThresholdPercent%
 
-## Résultats actuels
+## RÃ©sultats actuels
 
-- Requêtes totales: $($currentResults.TotalRequests)
-- Requêtes par seconde: $([Math]::Round($currentResults.RequestsPerSecond, 2))
-- Temps de réponse moyen: $([Math]::Round($currentResults.AvgResponseMs, 2)) ms
+- RequÃªtes totales: $($currentResults.TotalRequests)
+- RequÃªtes par seconde: $([Math]::Round($currentResults.RequestsPerSecond, 2))
+- Temps de rÃ©ponse moyen: $([Math]::Round($currentResults.AvgResponseMs, 2)) ms
 - P95: $([Math]::Round($currentResults.P95ResponseMs, 2)) ms
 
 "@
 
     if ($comparisonResults) {
         $summary += @"
-## Comparaison avec la référence
+## Comparaison avec la rÃ©fÃ©rence
 
-- Différence de temps de réponse moyen: $([Math]::Round($comparisonResults.AvgResponseTimeDiff, 2))%
-- Différence de P95: $([Math]::Round($comparisonResults.P95ResponseTimeDiff, 2))%
-- Différence de requêtes par seconde: $([Math]::Round($comparisonResults.RpsDiff, 2))%
+- DiffÃ©rence de temps de rÃ©ponse moyen: $([Math]::Round($comparisonResults.AvgResponseTimeDiff, 2))%
+- DiffÃ©rence de P95: $([Math]::Round($comparisonResults.P95ResponseTimeDiff, 2))%
+- DiffÃ©rence de requÃªtes par seconde: $([Math]::Round($comparisonResults.RpsDiff, 2))%
 
 "@
 
         if ($comparisonResults.HasRegression) {
-            $summary += "## Régressions détectées\n\n"
+            $summary += "## RÃ©gressions dÃ©tectÃ©es\n\n"
             
             foreach ($regression in $comparisonResults.Regressions) {
                 $summary += "- $regression\n"
             }
         }
         else {
-            $summary += "## Aucune régression détectée\n"
+            $summary += "## Aucune rÃ©gression dÃ©tectÃ©e\n"
         }
     }
     
     $summary += @"
 
-## Fichiers générés
+## Fichiers gÃ©nÃ©rÃ©s
 
-- Résultats: $currentResultsPath
+- RÃ©sultats: $currentResultsPath
 "@
 
     if ($GenerateReport) {
@@ -425,9 +425,9 @@ Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     }
     
     $summary | Set-Content -Path $summaryPath -Encoding UTF8
-    Write-CILog "Résumé généré: $summaryPath"
+    Write-CILog "RÃ©sumÃ© gÃ©nÃ©rÃ©: $summaryPath"
     
-    # Définir les variables de sortie CI
+    # DÃ©finir les variables de sortie CI
     Set-CIVariable -Name "perf_test_results_path" -Value $currentResultsPath
     Set-CIVariable -Name "perf_test_summary_path" -Value $summaryPath
     
@@ -439,7 +439,7 @@ Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
         Set-CIVariable -Name "perf_test_has_regression" -Value "true"
         
         if ($FailOnRegression) {
-            Write-CILog "Des régressions de performance ont été détectées. Le pipeline a échoué." -Type "error"
+            Write-CILog "Des rÃ©gressions de performance ont Ã©tÃ© dÃ©tectÃ©es. Le pipeline a Ã©chouÃ©." -Type "error"
             exit 1
         }
     }
@@ -447,8 +447,8 @@ Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
         Set-CIVariable -Name "perf_test_has_regression" -Value "false"
     }
     
-    Write-CILog "Tests de performance CI/CD terminés avec succès." -Type "success"
+    Write-CILog "Tests de performance CI/CD terminÃ©s avec succÃ¨s." -Type "success"
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter le mode CHECK amélioré et mettre à jour les cases à cocher dans le document actif.
+    Script pour exÃ©cuter le mode CHECK amÃ©liorÃ© et mettre Ã  jour les cases Ã  cocher dans le document actif.
 
 .DESCRIPTION
-    Ce script est un wrapper pour le mode CHECK amélioré qui vérifie si les tâches sont 100% implémentées
-    et testées avec succès, puis met à jour automatiquement les cases à cocher dans le document actif.
-    Cette version améliorée garantit que tous les fichiers sont enregistrés en UTF-8 avec BOM.
+    Ce script est un wrapper pour le mode CHECK amÃ©liorÃ© qui vÃ©rifie si les tÃ¢ches sont 100% implÃ©mentÃ©es
+    et testÃ©es avec succÃ¨s, puis met Ã  jour automatiquement les cases Ã  cocher dans le document actif.
+    Cette version amÃ©liorÃ©e garantit que tous les fichiers sont enregistrÃ©s en UTF-8 avec BOM.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à vérifier.
-    Par défaut : "docs/plans/plan-modes-stepup.md"
+    Chemin vers le fichier de roadmap Ã  vÃ©rifier.
+    Par dÃ©faut : "docs/plans/plan-modes-stepup.md"
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à vérifier (par exemple, "1.2.3").
-    Si non spécifié, toutes les tâches seront vérifiées.
+    Identifiant de la tÃ¢che Ã  vÃ©rifier (par exemple, "1.2.3").
+    Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront vÃ©rifiÃ©es.
 
 .PARAMETER ActiveDocumentPath
-    Chemin vers le document actif à mettre à jour.
-    Si non spécifié, le script tentera de détecter automatiquement le document actif.
+    Chemin vers le document actif Ã  mettre Ã  jour.
+    Si non spÃ©cifiÃ©, le script tentera de dÃ©tecter automatiquement le document actif.
 
 .PARAMETER Force
-    Indique si les modifications doivent être appliquées sans confirmation.
+    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
 
 .EXAMPLE
     .\check-enhanced.ps1
@@ -31,8 +31,8 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.1
-    Date de création: 2023-09-15
-    Date de mise à jour: 2025-05-01 - Amélioration de l'encodage UTF-8 avec BOM
+    Date de crÃ©ation: 2023-09-15
+    Date de mise Ã  jour: 2025-05-01 - AmÃ©lioration de l'encodage UTF-8 avec BOM
 #>
 
 [CmdletBinding()]
@@ -50,7 +50,7 @@ param (
     [switch]$Force
 )
 
-# Déterminer le chemin du script check-mode-enhanced.ps1
+# DÃ©terminer le chemin du script check-mode-enhanced.ps1
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-parser\modes\check\check-mode-enhanced.ps1"
 
 # Si le chemin n'existe pas, essayer d'autres chemins
@@ -68,13 +68,13 @@ if (-not (Test-Path -Path $scriptPath)) {
     $scriptPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "roadmap-parser\modes\check\check-mode-enhanced.ps1"
 }
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script check-mode-enhanced.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script check-mode-enhanced.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Construire les paramètres pour le script check-mode-enhanced.ps1
+# Construire les paramÃ¨tres pour le script check-mode-enhanced.ps1
 $params = @{
     FilePath = $FilePath
     CheckActiveDocument = $true
@@ -82,7 +82,7 @@ $params = @{
     TestsPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests"
 }
 
-# Ajouter les paramètres optionnels s'ils sont spécifiés
+# Ajouter les paramÃ¨tres optionnels s'ils sont spÃ©cifiÃ©s
 if ($TaskIdentifier) {
     $params.Add("TaskIdentifier", $TaskIdentifier)
 }
@@ -95,27 +95,27 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Afficher les informations de démarrage
-Write-Host "Exécution du mode CHECK amélioré..." -ForegroundColor Cyan
+# Afficher les informations de dÃ©marrage
+Write-Host "ExÃ©cution du mode CHECK amÃ©liorÃ©..." -ForegroundColor Cyan
 Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Cyan
 if ($TaskIdentifier) {
-    Write-Host "Tâche à vérifier : $TaskIdentifier" -ForegroundColor Cyan
+    Write-Host "TÃ¢che Ã  vÃ©rifier : $TaskIdentifier" -ForegroundColor Cyan
 } else {
-    Write-Host "Vérification de toutes les tâches" -ForegroundColor Cyan
+    Write-Host "VÃ©rification de toutes les tÃ¢ches" -ForegroundColor Cyan
 }
 if ($ActiveDocumentPath) {
     Write-Host "Document actif : $ActiveDocumentPath" -ForegroundColor Cyan
 } else {
-    Write-Host "Détection automatique du document actif" -ForegroundColor Cyan
+    Write-Host "DÃ©tection automatique du document actif" -ForegroundColor Cyan
 }
 if ($Force) {
-    Write-Host "Mode force activé : les modifications seront appliquées sans confirmation" -ForegroundColor Yellow
+    Write-Host "Mode force activÃ© : les modifications seront appliquÃ©es sans confirmation" -ForegroundColor Yellow
 } else {
-    Write-Host "Mode simulation activé : les modifications ne seront pas appliquées" -ForegroundColor Gray
+    Write-Host "Mode simulation activÃ© : les modifications ne seront pas appliquÃ©es" -ForegroundColor Gray
 }
 
-# Exécuter le script check-mode-enhanced.ps1 avec les paramètres
+# ExÃ©cuter le script check-mode-enhanced.ps1 avec les paramÃ¨tres
 & $scriptPath @params
 
 # Afficher un message de fin
-Write-Host "`nExécution du mode CHECK amélioré terminée." -ForegroundColor Cyan
+Write-Host "`nExÃ©cution du mode CHECK amÃ©liorÃ© terminÃ©e." -ForegroundColor Cyan

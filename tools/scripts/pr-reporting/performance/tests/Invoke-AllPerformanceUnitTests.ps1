@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les scripts de performance.
+    ExÃ©cute tous les tests unitaires pour les scripts de performance.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les scripts de performance
+    Ce script exÃ©cute tous les tests unitaires pour les scripts de performance
     en utilisant le framework Pester.
 .PARAMETER TestName
-    Nom du test à exécuter. Si non spécifié, tous les tests seront exécutés.
+    Nom du test Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests seront exÃ©cutÃ©s.
 .EXAMPLE
     .\Invoke-AllPerformanceUnitTests.ps1
 .EXAMPLE
@@ -23,16 +23,16 @@ param (
     [string]$TestName
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
     exit 1
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Définir les chemins des tests
+# DÃ©finir les chemins des tests
 $testsPath = $PSScriptRoot
 $testFiles = @(
     "Invoke-PRPerformanceBenchmark.Tests.ps1",
@@ -43,12 +43,12 @@ $testFiles = @(
     "Invoke-AllPerformanceTests.Tests.ps1"
 )
 
-# Filtrer les tests si un nom spécifique est demandé
+# Filtrer les tests si un nom spÃ©cifique est demandÃ©
 if ($TestName) {
     $testFiles = $testFiles | Where-Object { $_ -like "*$TestName*.Tests.ps1" }
     
     if ($testFiles.Count -eq 0) {
-        Write-Error "Aucun test trouvé pour le nom: $TestName"
+        Write-Error "Aucun test trouvÃ© pour le nom: $TestName"
         exit 1
     }
 }
@@ -66,24 +66,24 @@ if ($testFiles.Count -lt 6) {
     $pesterConfig.Run.TestName = $testFiles -replace "\.Tests\.ps1$", ""
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests unitaires de performance:"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests unitaires de performance:"
 Write-Host "======================================="
-Write-Host "Tests exécutés: $($results.TotalCount)"
-Write-Host "Tests réussis: $($results.PassedCount)"
-Write-Host "Tests échoués: $($results.FailedCount)"
-Write-Host "Tests ignorés: $($results.SkippedCount)"
-Write-Host "Durée totale: $($results.Duration.TotalSeconds) secondes"
+Write-Host "Tests exÃ©cutÃ©s: $($results.TotalCount)"
+Write-Host "Tests rÃ©ussis: $($results.PassedCount)"
+Write-Host "Tests Ã©chouÃ©s: $($results.FailedCount)"
+Write-Host "Tests ignorÃ©s: $($results.SkippedCount)"
+Write-Host "DurÃ©e totale: $($results.Duration.TotalSeconds) secondes"
 Write-Host ""
 
-# Retourner un code de sortie en fonction des résultats
+# Retourner un code de sortie en fonction des rÃ©sultats
 if ($results.FailedCount -gt 0) {
-    Write-Host "Des tests ont échoué!" -ForegroundColor Red
+    Write-Host "Des tests ont Ã©chouÃ©!" -ForegroundColor Red
     exit 1
 } else {
-    Write-Host "Tous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 }

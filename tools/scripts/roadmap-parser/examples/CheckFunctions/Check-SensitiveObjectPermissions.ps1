@@ -1,17 +1,17 @@
-    param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
+﻿    param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
     $results = @()
     
-    # 1. Définir les modèles de noms d'objets sensibles
+    # 1. DÃ©finir les modÃ¨les de noms d'objets sensibles
     $sensitiveObjectPatterns = @(
-        # Données personnelles
+        # DonnÃ©es personnelles
         "*user*", "*customer*", "*client*", "*person*", "*employee*", "*member*",
-        # Données financières
+        # DonnÃ©es financiÃ¨res
         "*account*", "*payment*", "*credit*", "*debit*", "*transaction*", "*financial*", "*money*", "*salary*", "*invoice*",
-        # Données de sécurité
+        # DonnÃ©es de sÃ©curitÃ©
         "*password*", "*credential*", "*secret*", "*secure*", "*security*", "*auth*", "*token*", "*key*",
-        # Données médicales
+        # DonnÃ©es mÃ©dicales
         "*patient*", "*medical*", "*health*", "*clinical*", "*diagnosis*", "*treatment*",
-        # Données confidentielles
+        # DonnÃ©es confidentielles
         "*confidential*", "*private*", "*sensitive*", "*restricted*", "*internal*",
         # Audit et journalisation
         "*audit*", "*log*", "*trace*", "*monitor*"
@@ -29,16 +29,16 @@
                         ObjectType = $obj.ObjectType
                         Pattern = $pattern
                     }
-                    break  # Sortir de la boucle des patterns une fois qu'une correspondance est trouvée
+                    break  # Sortir de la boucle des patterns une fois qu'une correspondance est trouvÃ©e
                 }
             }
         }
     }
     
-    # Éliminer les doublons
+    # Ã‰liminer les doublons
     $sensitiveObjects = $sensitiveObjects | Sort-Object -Property ObjectName, ObjectType -Unique
     
-    # 3. Vérifier les permissions sur les objets sensibles
+    # 3. VÃ©rifier les permissions sur les objets sensibles
     foreach ($userPerm in $ObjectPermissions) {
         $userSensitiveObjects = @()
         
@@ -49,7 +49,7 @@
         }
         
         if ($userSensitiveObjects.Count -gt 0) {
-            # 3.1. Vérifier les permissions de modification sur les objets sensibles
+            # 3.1. VÃ©rifier les permissions de modification sur les objets sensibles
             $modifyPermObjects = $userSensitiveObjects | Where-Object {
                 $_.Permissions | Where-Object {
                     $_.PermissionName -in @("INSERT", "UPDATE", "DELETE", "ALTER", "CONTROL", "TAKE OWNERSHIP") -and
@@ -58,7 +58,7 @@
             }
             
             if ($modifyPermObjects -and $modifyPermObjects.Count -gt 0) {
-                # Exclure les comptes système, dbo et les comptes de service connus
+                # Exclure les comptes systÃ¨me, dbo et les comptes de service connus
                 if (-not $userPerm.GranteeName.StartsWith("##") -and 
                     $userPerm.GranteeName -ne "dbo" -and
                     -not $userPerm.GranteeName.EndsWith("_svc") -and
@@ -67,14 +67,14 @@
                     $results += [PSCustomObject]@{
                         DatabaseName = $DatabaseName
                         UserName = $userPerm.GranteeName
-                        Description = "L'utilisateur possède des permissions de modification sur $($modifyPermObjects.Count) objets sensibles"
-                        RecommendedAction = "Limiter les permissions aux opérations nécessaires (SELECT uniquement si possible)"
+                        Description = "L'utilisateur possÃ¨de des permissions de modification sur $($modifyPermObjects.Count) objets sensibles"
+                        RecommendedAction = "Limiter les permissions aux opÃ©rations nÃ©cessaires (SELECT uniquement si possible)"
                         AffectedObjects = $modifyPermObjects | ForEach-Object { "$($_.ObjectName) ($($_.ObjectType))" }
                     }
                 }
             }
             
-            # 3.2. Vérifier les permissions de lecture sur les objets très sensibles (mots de passe, données financières, etc.)
+            # 3.2. VÃ©rifier les permissions de lecture sur les objets trÃ¨s sensibles (mots de passe, donnÃ©es financiÃ¨res, etc.)
             $veryHighSensitivityPatterns = @("*password*", "*credential*", "*secret*", "*secure*", "*credit*", "*ssn*", "*social*security*", "*confidential*")
             $veryHighSensitivityObjects = $userSensitiveObjects | Where-Object {
                 $obj = $_
@@ -82,7 +82,7 @@
             }
             
             if ($veryHighSensitivityObjects -and $veryHighSensitivityObjects.Count -gt 0) {
-                # Exclure les comptes système, dbo et les comptes de service connus
+                # Exclure les comptes systÃ¨me, dbo et les comptes de service connus
                 if (-not $userPerm.GranteeName.StartsWith("##") -and 
                     $userPerm.GranteeName -ne "dbo" -and
                     -not $userPerm.GranteeName.EndsWith("_svc") -and
@@ -91,18 +91,18 @@
                     $results += [PSCustomObject]@{
                         DatabaseName = $DatabaseName
                         UserName = $userPerm.GranteeName
-                        Description = "L'utilisateur possède des permissions sur $($veryHighSensitivityObjects.Count) objets hautement sensibles"
-                        RecommendedAction = "Vérifier si cet accès est nécessaire et conforme aux politiques de sécurité et de confidentialité"
+                        Description = "L'utilisateur possÃ¨de des permissions sur $($veryHighSensitivityObjects.Count) objets hautement sensibles"
+                        RecommendedAction = "VÃ©rifier si cet accÃ¨s est nÃ©cessaire et conforme aux politiques de sÃ©curitÃ© et de confidentialitÃ©"
                         AffectedObjects = $veryHighSensitivityObjects | ForEach-Object { "$($_.ObjectName) ($($_.ObjectType))" }
                     }
                 }
             }
             
-            # 3.3. Vérifier les utilisateurs non-administratifs avec accès à de nombreux objets sensibles
-            $sensitivityThreshold = 10  # Seuil à partir duquel le nombre d'objets sensibles est considéré comme élevé
+            # 3.3. VÃ©rifier les utilisateurs non-administratifs avec accÃ¨s Ã  de nombreux objets sensibles
+            $sensitivityThreshold = 10  # Seuil Ã  partir duquel le nombre d'objets sensibles est considÃ©rÃ© comme Ã©levÃ©
             
             if ($userSensitiveObjects.Count -gt $sensitivityThreshold) {
-                # Exclure les comptes système, dbo, les comptes de service connus et les comptes administratifs
+                # Exclure les comptes systÃ¨me, dbo, les comptes de service connus et les comptes administratifs
                 if (-not $userPerm.GranteeName.StartsWith("##") -and 
                     $userPerm.GranteeName -ne "dbo" -and
                     -not $userPerm.GranteeName.EndsWith("_svc") -and
@@ -113,8 +113,8 @@
                     $results += [PSCustomObject]@{
                         DatabaseName = $DatabaseName
                         UserName = $userPerm.GranteeName
-                        Description = "L'utilisateur non-administratif possède des permissions sur un nombre élevé d'objets sensibles ($($userSensitiveObjects.Count) > $sensitivityThreshold)"
-                        RecommendedAction = "Vérifier si cet accès étendu est nécessaire ou s'il peut être limité"
+                        Description = "L'utilisateur non-administratif possÃ¨de des permissions sur un nombre Ã©levÃ© d'objets sensibles ($($userSensitiveObjects.Count) > $sensitivityThreshold)"
+                        RecommendedAction = "VÃ©rifier si cet accÃ¨s Ã©tendu est nÃ©cessaire ou s'il peut Ãªtre limitÃ©"
                         AffectedObjects = "Nombre total d'objets sensibles: $($userSensitiveObjects.Count)"
                     }
                 }

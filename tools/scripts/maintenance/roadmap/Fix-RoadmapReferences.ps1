@@ -1,15 +1,15 @@
-# Script pour mettre à jour les références aux fichiers roadmap supprimés
-# Ce script recherche et remplace toutes les références aux anciens chemins
+﻿# Script pour mettre Ã  jour les rÃ©fÃ©rences aux fichiers roadmap supprimÃ©s
+# Ce script recherche et remplace toutes les rÃ©fÃ©rences aux anciens chemins
 
 # Configuration de la gestion d'erreurs
 $ErrorActionPreference = 'Stop'
 $Error.Clear()
 
 try {
-    # Définir le nouveau chemin de la roadmap
+    # DÃ©finir le nouveau chemin de la roadmap
     $newRoadmapPath = "Roadmap\"Roadmap\roadmap_perso.md""
 
-    # Définir les anciens chemins à rechercher
+    # DÃ©finir les anciens chemins Ã  rechercher
     $oldPaths = @(
         ""Roadmap\roadmap_perso.md"",
         "md\"Roadmap\roadmap_perso.md"",
@@ -18,9 +18,9 @@ try {
         ""Roadmap\roadmap_perso.md""
     )
 
-    # Rechercher tous les fichiers dans le répertoire scripts
+    # Rechercher tous les fichiers dans le rÃ©pertoire scripts
     $scriptFiles = Get-ChildItem -Path "scripts" -Recurse -File -Include "*.ps1", "*.bat", "*.cmd", "*.py", "*.js", "*.json"
-    Write-Host "Nombre de fichiers trouvés: $($scriptFiles.Count)" -ForegroundColor Yellow
+    Write-Host "Nombre de fichiers trouvÃ©s: $($scriptFiles.Count)" -ForegroundColor Yellow
 
     # Compteurs pour le suivi
     $modifiedFiles = 0
@@ -36,10 +36,10 @@ try {
 
         # Rechercher et remplacer les anciens chemins
         foreach ($oldPath in $oldPaths) {
-            # Échapper les caractères spéciaux pour la regex
+            # Ã‰chapper les caractÃ¨res spÃ©ciaux pour la regex
             $escapedOldPath = [regex]::Escape($oldPath)
 
-            # Différentes façons dont le chemin pourrait être référencé
+            # DiffÃ©rentes faÃ§ons dont le chemin pourrait Ãªtre rÃ©fÃ©rencÃ©
             $patterns = @(
                 $escapedOldPath,
                 "`"$escapedOldPath`"",
@@ -73,40 +73,40 @@ try {
             }
         }
 
-        # Si des remplacements ont été effectués, écrire le nouveau contenu
+        # Si des remplacements ont Ã©tÃ© effectuÃ©s, Ã©crire le nouveau contenu
         if ($content -ne $originalContent) {
             Set-Content -Path $file.FullName -Value $content -NoNewline
-            Write-Host "Fichier mis à jour: $($file.FullName) ($replacementsInFile remplacements)" -ForegroundColor Green
+            Write-Host "Fichier mis Ã  jour: $($file.FullName) ($replacementsInFile remplacements)" -ForegroundColor Green
             $modifiedFiles++
         }
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de la mise à jour des références :" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la mise Ã  jour des rÃ©fÃ©rences :" -ForegroundColor Cyan
     Write-Host "----------------------------------------" -ForegroundColor Cyan
-    Write-Host "Fichiers analysés : $($scriptFiles.Count)" -ForegroundColor White
-    Write-Host "Fichiers modifiés : $modifiedFiles" -ForegroundColor Green
-    Write-Host "Remplacements effectués : $totalReplacements" -ForegroundColor Green
+    Write-Host "Fichiers analysÃ©s : $($scriptFiles.Count)" -ForegroundColor White
+    Write-Host "Fichiers modifiÃ©s : $modifiedFiles" -ForegroundColor Green
+    Write-Host "Remplacements effectuÃ©s : $totalReplacements" -ForegroundColor Green
 
-    # Mettre à jour le journal de développement
+    # Mettre Ã  jour le journal de dÃ©veloppement
     $journalPath = Join-Path -Path (Get-Location) -ChildPath "journal\development_log.md"
     if (Test-Path -Path $journalPath -PathType Leaf) {
         $journalEntry = @"
 
-## $(Get-Date -Format "yyyy-MM-dd") - Mise à jour des références à la roadmap
+## $(Get-Date -Format "yyyy-MM-dd") - Mise Ã  jour des rÃ©fÃ©rences Ã  la roadmap
 
-### Actions réalisées
-- Recherche et remplacement de toutes les références aux anciens chemins de la roadmap
-- Mise à jour de $modifiedFiles fichiers avec $totalReplacements remplacements
-- Standardisation de toutes les références vers le chemin unique: $newRoadmapPath
+### Actions rÃ©alisÃ©es
+- Recherche et remplacement de toutes les rÃ©fÃ©rences aux anciens chemins de la roadmap
+- Mise Ã  jour de $modifiedFiles fichiers avec $totalReplacements remplacements
+- Standardisation de toutes les rÃ©fÃ©rences vers le chemin unique: $newRoadmapPath
 
-### Problèmes résolus
-- Références obsolètes vers des fichiers roadmap supprimés
-- Incohérences dans les chemins utilisés pour accéder à la roadmap
+### ProblÃ¨mes rÃ©solus
+- RÃ©fÃ©rences obsolÃ¨tes vers des fichiers roadmap supprimÃ©s
+- IncohÃ©rences dans les chemins utilisÃ©s pour accÃ©der Ã  la roadmap
 "@
 
         Add-Content -Path $journalPath -Value $journalEntry -Encoding UTF8
-        Write-Host "Journal de développement mis à jour: $journalPath" -ForegroundColor Green
+        Write-Host "Journal de dÃ©veloppement mis Ã  jour: $journalPath" -ForegroundColor Green
     }
 }
 catch {

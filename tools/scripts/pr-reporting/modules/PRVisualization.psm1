@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module de visualisation pour les rapports d'analyse de pull requests.
 .DESCRIPTION
-    Fournit des fonctions pour générer des visualisations graphiques
-    des résultats d'analyse de pull requests.
+    Fournit des fonctions pour gÃ©nÃ©rer des visualisations graphiques
+    des rÃ©sultats d'analyse de pull requests.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-29
 #>
 
-# Fonction pour générer un graphique à barres en HTML/CSS
+# Fonction pour gÃ©nÃ©rer un graphique Ã  barres en HTML/CSS
 function New-PRBarChart {
     [CmdletBinding()]
     param(
@@ -19,7 +19,7 @@ function New-PRBarChart {
         [hashtable]$Data,
 
         [Parameter()]
-        [string]$Title = "Graphique à barres",
+        [string]$Title = "Graphique Ã  barres",
 
         [Parameter()]
         [int]$Width = 600,
@@ -37,10 +37,10 @@ function New-PRBarChart {
     <div class="pr-bar-chart">
 "@
 
-    # Vérifier si les données sont vides
+    # VÃ©rifier si les donnÃ©es sont vides
     if ($Data.Count -eq 0) {
         $html += @"
-    <div class="pr-no-data">Aucune donnée disponible</div>
+    <div class="pr-no-data">Aucune donnÃ©e disponible</div>
 "@
     } else {
         $maxValue = ($Data.Values | Measure-Object -Maximum).Maximum
@@ -131,7 +131,7 @@ function New-PRBarChart {
     return $html
 }
 
-# Fonction pour générer un graphique circulaire en HTML/CSS
+# Fonction pour gÃ©nÃ©rer un graphique circulaire en HTML/CSS
 function New-PRPieChart {
     [CmdletBinding()]
     param(
@@ -155,10 +155,10 @@ function New-PRPieChart {
         <div class="pr-pie-chart">
 "@
 
-    # Vérifier si les données sont vides
+    # VÃ©rifier si les donnÃ©es sont vides
     if ($Data.Count -eq 0) {
         $html += @"
-            <div class="pr-no-data">Aucune donnée disponible</div>
+            <div class="pr-no-data">Aucune donnÃ©e disponible</div>
 "@
     } else {
         $total = ($Data.Values | Measure-Object -Sum).Sum
@@ -172,7 +172,7 @@ function New-PRPieChart {
             $endAngle = $startAngle + $angle
             $color = $Colors[$i % $Colors.Count]
 
-            # Générer le segment de cercle avec CSS conic-gradient
+            # GÃ©nÃ©rer le segment de cercle avec CSS conic-gradient
             $html += @"
             <div class="pr-pie-slice" style="--start: ${startAngle}deg; --end: ${endAngle}deg; --color: $color;" data-value="$value" data-label="$key" data-percentage="$([Math]::Round($percentage, 1))%"></div>
 "@
@@ -188,10 +188,10 @@ function New-PRPieChart {
     <div class="pr-pie-legend">
 "@
 
-    # Vérifier si les données sont vides pour la légende
+    # VÃ©rifier si les donnÃ©es sont vides pour la lÃ©gende
     if ($Data.Count -eq 0) {
         $html += @"
-        <div class="pr-no-data">Aucune donnée disponible</div>
+        <div class="pr-no-data">Aucune donnÃ©e disponible</div>
 "@
     } else {
         $i = 0
@@ -282,7 +282,7 @@ function New-PRPieChart {
     return $html
 }
 
-# Fonction pour générer un graphique en ligne en HTML/CSS
+# Fonction pour gÃ©nÃ©rer un graphique en ligne en HTML/CSS
 function New-PRLineChart {
     [CmdletBinding()]
     param(
@@ -302,7 +302,7 @@ function New-PRLineChart {
         [string[]]$Colors = @("#4285F4", "#EA4335", "#FBBC05", "#34A853", "#FF6D01")
     )
 
-    # Vérifier si les données sont vides
+    # VÃ©rifier si les donnÃ©es sont vides
     if ($Data.Count -eq 0) {
         $html = @"
 <div class="pr-chart" style="width: ${Width}px; height: ${Height}px;">
@@ -325,7 +325,7 @@ function New-PRLineChart {
         </div>
 "@
     } else {
-        # Déterminer les valeurs min et max pour l'axe Y
+        # DÃ©terminer les valeurs min et max pour l'axe Y
         $allValues = @()
         foreach ($series in $Data.Values) {
             $allValues += $series.Values
@@ -339,7 +339,7 @@ function New-PRLineChart {
         $minValue = [Math]::Max(0, $minValue - ($range * 0.1))
         $maxValue = $maxValue + ($range * 0.1)
 
-        # Obtenir toutes les clés (étiquettes de l'axe X)
+        # Obtenir toutes les clÃ©s (Ã©tiquettes de l'axe X)
         $allKeys = @()
         foreach ($series in $Data.Values) {
             $allKeys += $series.Keys
@@ -352,7 +352,7 @@ function New-PRLineChart {
     <div class="pr-line-chart" style="height: $(${Height} - 100)px;">
 "@
 
-        # Générer les lignes de la grille
+        # GÃ©nÃ©rer les lignes de la grille
         $gridLines = 5
         for ($i = 0; $i -lt $gridLines; $i++) {
             $percentage = 100 - (($i / ($gridLines - 1)) * 100)
@@ -365,7 +365,7 @@ function New-PRLineChart {
 "@
         }
 
-        # Générer les séries
+        # GÃ©nÃ©rer les sÃ©ries
         $i = 0
         foreach ($seriesName in $Data.Keys) {
             $series = $Data[$seriesName]
@@ -375,7 +375,7 @@ function New-PRLineChart {
         <div class="pr-line-series" data-name="$seriesName">
 "@
 
-            # Générer les points
+            # GÃ©nÃ©rer les points
             foreach ($key in $uniqueKeys) {
                 if ($series.ContainsKey($key)) {
                     $value = $series[$key]
@@ -397,7 +397,7 @@ function New-PRLineChart {
         }
     }
 
-    # Générer l'axe X
+    # GÃ©nÃ©rer l'axe X
     $html += @"
     </div>
     <div class="pr-x-axis">
@@ -411,7 +411,7 @@ function New-PRLineChart {
 "@
     }
 
-    # Générer la légende
+    # GÃ©nÃ©rer la lÃ©gende
     $html += @"
     </div>
     <div class="pr-line-legend">
@@ -527,7 +527,7 @@ function New-PRLineChart {
     return $html
 }
 
-# Fonction pour générer une carte de chaleur en HTML/CSS
+# Fonction pour gÃ©nÃ©rer une carte de chaleur en HTML/CSS
 function New-PRHeatMap {
     [CmdletBinding()]
     param(
@@ -553,13 +553,13 @@ function New-PRHeatMap {
         [string]$HighColor = "#FF0000"
     )
 
-    # Vérifier si les données sont vides ou nulles
+    # VÃ©rifier si les donnÃ©es sont vides ou nulles
     if ($null -eq $Data -or $Data.GetLength(0) -eq 0 -or $Data.GetLength(1) -eq 0) {
         $html = @"
 <div class="pr-chart">
     <h3 class="pr-chart-title">$Title</h3>
     <div class="pr-heatmap">
-        <div class="pr-no-data">Aucune donnée disponible</div>
+        <div class="pr-no-data">Aucune donnÃ©e disponible</div>
     </div>
 </div>
 <style>
@@ -587,7 +587,7 @@ function New-PRHeatMap {
         return $html
     }
 
-    # Déterminer les valeurs min et max
+    # DÃ©terminer les valeurs min et max
     $minValue = [double]::MaxValue
     $maxValue = [double]::MinValue
 
@@ -607,7 +607,7 @@ function New-PRHeatMap {
         <div class="pr-heatmap-columns">
 "@
 
-    # Générer les étiquettes de colonnes
+    # GÃ©nÃ©rer les Ã©tiquettes de colonnes
     foreach ($label in $ColumnLabels) {
         $html += @"
             <div class="pr-heatmap-column-label" style="width: ${CellSize}px;">$label</div>
@@ -619,7 +619,7 @@ function New-PRHeatMap {
         <div class="pr-heatmap-rows">
 "@
 
-    # Générer les étiquettes de lignes
+    # GÃ©nÃ©rer les Ã©tiquettes de lignes
     foreach ($label in $RowLabels) {
         $html += @"
             <div class="pr-heatmap-row-label">$label</div>
@@ -631,7 +631,7 @@ function New-PRHeatMap {
         <div class="pr-heatmap-grid" style="grid-template-columns: repeat($($ColumnLabels.Count), ${CellSize}px); grid-template-rows: repeat($($RowLabels.Count), ${CellSize}px);">
 "@
 
-    # Générer les cellules
+    # GÃ©nÃ©rer les cellules
     for ($i = 0; $i -lt $Data.GetLength(0); $i++) {
         for ($j = 0; $j -lt $Data.GetLength(1); $j++) {
             $value = $Data[$i, $j]
@@ -749,7 +749,7 @@ function New-PRHeatMap {
     return $html
 }
 
-# Fonction utilitaire pour calculer une couleur dans un dégradé
+# Fonction utilitaire pour calculer une couleur dans un dÃ©gradÃ©
 function Get-ColorGradient {
     [CmdletBinding()]
     param(
@@ -763,7 +763,7 @@ function Get-ColorGradient {
         [double]$Intensity
     )
 
-    # Convertir les couleurs hexadécimales en composantes RGB
+    # Convertir les couleurs hexadÃ©cimales en composantes RGB
     $startR = [Convert]::ToInt32($StartColor.Substring(1, 2), 16)
     $startG = [Convert]::ToInt32($StartColor.Substring(3, 2), 16)
     $startB = [Convert]::ToInt32($StartColor.Substring(5, 2), 16)
@@ -772,12 +772,12 @@ function Get-ColorGradient {
     $endG = [Convert]::ToInt32($EndColor.Substring(3, 2), 16)
     $endB = [Convert]::ToInt32($EndColor.Substring(5, 2), 16)
 
-    # Calculer la couleur intermédiaire
+    # Calculer la couleur intermÃ©diaire
     $r = [Math]::Round($startR + ($endR - $startR) * $Intensity)
     $g = [Math]::Round($startG + ($endG - $startG) * $Intensity)
     $b = [Math]::Round($startB + ($endB - $startB) * $Intensity)
 
-    # Convertir en hexadécimal
+    # Convertir en hexadÃ©cimal
     return "#{0:X2}{1:X2}{2:X2}" -f [int]$r, [int]$g, [int]$b
 }
 

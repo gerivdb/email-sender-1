@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de prédiction pour le cache prédictif.
+    Module de prÃ©diction pour le cache prÃ©dictif.
 .DESCRIPTION
-    Implémente des algorithmes de prédiction pour anticiper les besoins futurs en cache.
+    ImplÃ©mente des algorithmes de prÃ©diction pour anticiper les besoins futurs en cache.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Classe pour le moteur de prédiction
+# Classe pour le moteur de prÃ©diction
 class PredictionEngine {
     [UsageCollector]$UsageCollector
     [string]$CacheName
@@ -19,7 +19,7 @@ class PredictionEngine {
     [hashtable]$SequencePredictions = @{}
     [datetime]$LastModelUpdate = [datetime]::MinValue
     [int]$ModelUpdateInterval = 300  # Secondes
-    [int]$MinimumDataPoints = 5  # Nombre minimum de points de données pour faire une prédiction
+    [int]$MinimumDataPoints = 5  # Nombre minimum de points de donnÃ©es pour faire une prÃ©diction
     
     # Constructeur
     PredictionEngine([UsageCollector]$usageCollector, [string]$cacheName) {
@@ -28,31 +28,31 @@ class PredictionEngine {
         $this.UpdateModel()
     }
     
-    # Mettre à jour le modèle de prédiction
+    # Mettre Ã  jour le modÃ¨le de prÃ©diction
     [void] UpdateModel() {
         $now = Get-Date
         
-        # Vérifier si une mise à jour est nécessaire
+        # VÃ©rifier si une mise Ã  jour est nÃ©cessaire
         if (($now - $this.LastModelUpdate).TotalSeconds -lt $this.ModelUpdateInterval) {
             return
         }
         
         try {
-            # Réinitialiser les probabilités
+            # RÃ©initialiser les probabilitÃ©s
             $this.KeyProbabilities = @{}
             $this.SequencePredictions = @{}
             
-            # Récupérer les données d'utilisation
-            $mostAccessedKeys = $this.UsageCollector.GetMostAccessedKeys(50, 60)  # 50 clés les plus accédées dans les 60 dernières minutes
-            $frequentSequences = $this.UsageCollector.GetFrequentSequences(30, 60)  # 30 séquences les plus fréquentes dans les 60 dernières minutes
+            # RÃ©cupÃ©rer les donnÃ©es d'utilisation
+            $mostAccessedKeys = $this.UsageCollector.GetMostAccessedKeys(50, 60)  # 50 clÃ©s les plus accÃ©dÃ©es dans les 60 derniÃ¨res minutes
+            $frequentSequences = $this.UsageCollector.GetFrequentSequences(30, 60)  # 30 sÃ©quences les plus frÃ©quentes dans les 60 derniÃ¨res minutes
             
-            # Calculer les probabilités pour les clés fréquemment accédées
+            # Calculer les probabilitÃ©s pour les clÃ©s frÃ©quemment accÃ©dÃ©es
             foreach ($keyStats in $mostAccessedKeys) {
                 $probability = $this.CalculateKeyProbability($keyStats)
                 $this.KeyProbabilities[$keyStats.Key] = $probability
             }
             
-            # Analyser les séquences pour les prédictions
+            # Analyser les sÃ©quences pour les prÃ©dictions
             foreach ($sequence in $frequentSequences) {
                 if ($sequence.SequenceCount -ge $this.MinimumDataPoints) {
                     if (-not $this.SequencePredictions.ContainsKey($sequence.FirstKey)) {
@@ -71,37 +71,37 @@ class PredictionEngine {
             $this.LastModelUpdate = $now
         }
         catch {
-            Write-Warning "Erreur lors de la mise à jour du modèle de prédiction: $_"
+            Write-Warning "Erreur lors de la mise Ã  jour du modÃ¨le de prÃ©diction: $_"
         }
     }
     
-    # Calculer la probabilité d'accès pour une clé
+    # Calculer la probabilitÃ© d'accÃ¨s pour une clÃ©
     [double] CalculateKeyProbability([PSCustomObject]$keyStats) {
         # Facteurs de base
-        $accessFactor = [Math]::Min(1.0, $keyStats.AccessCount / 100.0)  # Normalisé à 100 accès
+        $accessFactor = [Math]::Min(1.0, $keyStats.AccessCount / 100.0)  # NormalisÃ© Ã  100 accÃ¨s
         $hitRatioFactor = $keyStats.HitRatio
         $recencyFactor = $this.CalculateRecencyFactor($keyStats.LastAccess)
         
-        # Combinaison des facteurs (avec pondération)
+        # Combinaison des facteurs (avec pondÃ©ration)
         $probability = ($accessFactor * 0.5) + ($hitRatioFactor * 0.3) + ($recencyFactor * 0.2)
         
         return $probability
     }
     
-    # Calculer le facteur de récence
+    # Calculer le facteur de rÃ©cence
     [double] CalculateRecencyFactor([datetime]$lastAccess) {
         $now = Get-Date
         $minutesSinceLastAccess = ($now - $lastAccess).TotalMinutes
         
-        # Décroissance exponentielle: plus récent = plus probable
+        # DÃ©croissance exponentielle: plus rÃ©cent = plus probable
         return [Math]::Exp(-0.05 * $minutesSinceLastAccess)
     }
     
-    # Calculer la confiance dans une séquence
+    # Calculer la confiance dans une sÃ©quence
     [double] CalculateSequenceConfidence([PSCustomObject]$sequence) {
         # Facteurs de base
-        $countFactor = [Math]::Min(1.0, $sequence.SequenceCount / 20.0)  # Normalisé à 20 occurrences
-        $timeFactor = [Math]::Min(1.0, 5000.0 / [Math]::Max(100, $sequence.AvgTimeDifference))  # Favorise les séquences rapides
+        $countFactor = [Math]::Min(1.0, $sequence.SequenceCount / 20.0)  # NormalisÃ© Ã  20 occurrences
+        $timeFactor = [Math]::Min(1.0, 5000.0 / [Math]::Max(100, $sequence.AvgTimeDifference))  # Favorise les sÃ©quences rapides
         $recencyFactor = $this.CalculateRecencyFactor($sequence.LastOccurrence)
         
         # Combinaison des facteurs
@@ -110,20 +110,20 @@ class PredictionEngine {
         return $confidence
     }
     
-    # Prédire les prochains accès
+    # PrÃ©dire les prochains accÃ¨s
     [array] PredictNextAccesses() {
         $this.UpdateModel()
         $predictions = @()
         
         try {
-            # Récupérer les derniers accès
-            $recentAccesses = $this.UsageCollector.GetMostAccessedKeys(10, 5)  # 10 clés les plus accédées dans les 5 dernières minutes
+            # RÃ©cupÃ©rer les derniers accÃ¨s
+            $recentAccesses = $this.UsageCollector.GetMostAccessedKeys(10, 5)  # 10 clÃ©s les plus accÃ©dÃ©es dans les 5 derniÃ¨res minutes
             
-            # Prédictions basées sur les probabilités générales
+            # PrÃ©dictions basÃ©es sur les probabilitÃ©s gÃ©nÃ©rales
             foreach ($key in $this.KeyProbabilities.Keys) {
                 $probability = $this.KeyProbabilities[$key]
                 
-                # Ajouter à la liste des prédictions
+                # Ajouter Ã  la liste des prÃ©dictions
                 $predictions += [PSCustomObject]@{
                     Key = $key
                     Probability = $probability
@@ -131,7 +131,7 @@ class PredictionEngine {
                 }
             }
             
-            # Prédictions basées sur les séquences
+            # PrÃ©dictions basÃ©es sur les sÃ©quences
             foreach ($recentKey in $recentAccesses) {
                 $key = $recentKey.Key
                 
@@ -142,18 +142,18 @@ class PredictionEngine {
                         $sequenceInfo = $sequenceTargets[$targetKey]
                         $confidence = $sequenceInfo.Confidence
                         
-                        # Vérifier si cette clé est déjà dans les prédictions
+                        # VÃ©rifier si cette clÃ© est dÃ©jÃ  dans les prÃ©dictions
                         $existingPrediction = $predictions | Where-Object { $_.Key -eq $targetKey }
                         
                         if ($existingPrediction) {
-                            # Mettre à jour la probabilité si la confiance est plus élevée
+                            # Mettre Ã  jour la probabilitÃ© si la confiance est plus Ã©levÃ©e
                             if ($confidence -gt $existingPrediction.Probability) {
                                 $existingPrediction.Probability = $confidence
                                 $existingPrediction.Source = "SequenceAnalysis"
                             }
                         }
                         else {
-                            # Ajouter une nouvelle prédiction
+                            # Ajouter une nouvelle prÃ©diction
                             $predictions += [PSCustomObject]@{
                                 Key = $targetKey
                                 Probability = $confidence
@@ -164,17 +164,17 @@ class PredictionEngine {
                 }
             }
             
-            # Trier par probabilité décroissante
+            # Trier par probabilitÃ© dÃ©croissante
             $predictions = $predictions | Sort-Object -Property Probability -Descending
         }
         catch {
-            Write-Warning "Erreur lors de la prédiction des prochains accès: $_"
+            Write-Warning "Erreur lors de la prÃ©diction des prochains accÃ¨s: $_"
         }
         
         return $predictions
     }
     
-    # Calculer la probabilité pour une clé spécifique
+    # Calculer la probabilitÃ© pour une clÃ© spÃ©cifique
     [double] CalculateKeyProbability([string]$key) {
         $this.UpdateModel()
         
@@ -182,7 +182,7 @@ class PredictionEngine {
             return $this.KeyProbabilities[$key]
         }
         
-        # Si la clé n'est pas dans le modèle, récupérer ses statistiques
+        # Si la clÃ© n'est pas dans le modÃ¨le, rÃ©cupÃ©rer ses statistiques
         $keyStats = $this.UsageCollector.GetKeyAccessStats($key)
         
         if ($keyStats -ne $null) {
@@ -192,7 +192,7 @@ class PredictionEngine {
         return 0.0
     }
     
-    # Obtenir les prédictions pour une clé spécifique
+    # Obtenir les prÃ©dictions pour une clÃ© spÃ©cifique
     [array] GetPredictionsForKey([string]$key) {
         $this.UpdateModel()
         $predictions = @()
@@ -211,7 +211,7 @@ class PredictionEngine {
                 }
             }
             
-            # Trier par probabilité décroissante
+            # Trier par probabilitÃ© dÃ©croissante
             $predictions = $predictions | Sort-Object -Property Probability -Descending
         }
         
@@ -219,15 +219,15 @@ class PredictionEngine {
     }
 }
 
-# Fonctions exportées
+# Fonctions exportÃ©es
 
 <#
 .SYNOPSIS
-    Crée un nouveau moteur de prédiction.
+    CrÃ©e un nouveau moteur de prÃ©diction.
 .DESCRIPTION
-    Crée un nouveau moteur de prédiction pour anticiper les besoins futurs en cache.
+    CrÃ©e un nouveau moteur de prÃ©diction pour anticiper les besoins futurs en cache.
 .PARAMETER UsageCollector
-    Collecteur d'utilisation à utiliser.
+    Collecteur d'utilisation Ã  utiliser.
 .PARAMETER CacheName
     Nom du cache.
 .EXAMPLE
@@ -248,7 +248,7 @@ function New-PredictionEngine {
         return [PredictionEngine]::new($UsageCollector, $CacheName)
     }
     catch {
-        Write-Error "Erreur lors de la création du moteur de prédiction: $_"
+        Write-Error "Erreur lors de la crÃ©ation du moteur de prÃ©diction: $_"
         return $null
     }
 }

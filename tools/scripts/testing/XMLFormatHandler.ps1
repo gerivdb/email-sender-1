@@ -1,7 +1,7 @@
-# Module de gestion du format XML
-# Ce script implémente les fonctionnalités de base pour le support du format XML
+﻿# Module de gestion du format XML
+# Ce script implÃ©mente les fonctionnalitÃ©s de base pour le support du format XML
 
-# Définition de l'interface IFormatHandler (pour référence)
+# DÃ©finition de l'interface IFormatHandler (pour rÃ©fÃ©rence)
 # interface IFormatHandler {
 #     [bool] CanHandle([string]$formatName)
 #     [object] Parse([string]$content)
@@ -13,23 +13,23 @@
 
 # Configuration
 $XMLConfig = @{
-    # Paramètres par défaut pour le parsing XML
+    # ParamÃ¨tres par dÃ©faut pour le parsing XML
     DefaultXmlSettings = @{
         IgnoreComments = $true
         IgnoreWhitespace = $true
         IgnoreProcessingInstructions = $true
         MaxCharactersInDocument = 10MB
-        ProhibitDtd = $false  # Permet les DTD mais désactive les entités externes
+        ProhibitDtd = $false  # Permet les DTD mais dÃ©sactive les entitÃ©s externes
     }
     
-    # Paramètres par défaut pour la validation XML
+    # ParamÃ¨tres par dÃ©faut pour la validation XML
     DefaultValidationSettings = @{
         EnableSchemaValidation = $false
         SchemaPath = $null
         ValidationEventHandler = $null
     }
     
-    # Paramètres par défaut pour la génération XML
+    # ParamÃ¨tres par dÃ©faut pour la gÃ©nÃ©ration XML
     DefaultGenerationSettings = @{
         Indent = $true
         IndentChars = "  "
@@ -41,34 +41,34 @@ $XMLConfig = @{
 
 # Classe XMLFormatHandler
 class XMLFormatHandler {
-    # Propriétés
+    # PropriÃ©tÃ©s
     [hashtable]$XmlSettings
     [hashtable]$ValidationSettings
     [hashtable]$GenerationSettings
     
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     XMLFormatHandler() {
         $this.XmlSettings = $XMLConfig.DefaultXmlSettings.Clone()
         $this.ValidationSettings = $XMLConfig.DefaultValidationSettings.Clone()
         $this.GenerationSettings = $XMLConfig.DefaultGenerationSettings.Clone()
     }
     
-    # Constructeur avec paramètres
+    # Constructeur avec paramÃ¨tres
     XMLFormatHandler([hashtable]$xmlSettings, [hashtable]$validationSettings, [hashtable]$generationSettings) {
         $this.XmlSettings = $xmlSettings
         $this.ValidationSettings = $validationSettings
         $this.GenerationSettings = $generationSettings
     }
     
-    # Méthode pour vérifier si ce handler peut gérer un format donné
+    # MÃ©thode pour vÃ©rifier si ce handler peut gÃ©rer un format donnÃ©
     [bool] CanHandle([string]$formatName) {
         return $formatName -eq "xml" -or $formatName -eq "XML"
     }
     
-    # Méthode pour parser une chaîne XML
+    # MÃ©thode pour parser une chaÃ®ne XML
     [object] Parse([string]$content) {
         try {
-            # Créer un XmlReaderSettings avec les paramètres configurés
+            # CrÃ©er un XmlReaderSettings avec les paramÃ¨tres configurÃ©s
             $readerSettings = New-Object System.Xml.XmlReaderSettings
             $readerSettings.IgnoreComments = $this.XmlSettings.IgnoreComments
             $readerSettings.IgnoreWhitespace = $this.XmlSettings.IgnoreWhitespace
@@ -76,7 +76,7 @@ class XMLFormatHandler {
             $readerSettings.MaxCharactersInDocument = $this.XmlSettings.MaxCharactersInDocument
             $readerSettings.DtdProcessing = if ($this.XmlSettings.ProhibitDtd) { [System.Xml.DtdProcessing]::Prohibit } else { [System.Xml.DtdProcessing]::Parse }
             
-            # Configurer la validation si activée
+            # Configurer la validation si activÃ©e
             if ($this.ValidationSettings.EnableSchemaValidation -and $this.ValidationSettings.SchemaPath) {
                 $readerSettings.ValidationType = [System.Xml.ValidationType]::Schema
                 $schema = New-Object System.Xml.Schema.XmlSchemaSet
@@ -88,10 +88,10 @@ class XMLFormatHandler {
                 }
             }
             
-            # Créer un StringReader pour la chaîne XML
+            # CrÃ©er un StringReader pour la chaÃ®ne XML
             $stringReader = New-Object System.IO.StringReader($content)
             
-            # Créer un XmlReader avec les paramètres configurés
+            # CrÃ©er un XmlReader avec les paramÃ¨tres configurÃ©s
             $xmlReader = [System.Xml.XmlReader]::Create($stringReader, $readerSettings)
             
             # Charger le document XML
@@ -110,10 +110,10 @@ class XMLFormatHandler {
         }
     }
     
-    # Méthode pour parser un flux XML
+    # MÃ©thode pour parser un flux XML
     [object] Parse([System.IO.Stream]$stream) {
         try {
-            # Créer un XmlReaderSettings avec les paramètres configurés
+            # CrÃ©er un XmlReaderSettings avec les paramÃ¨tres configurÃ©s
             $readerSettings = New-Object System.Xml.XmlReaderSettings
             $readerSettings.IgnoreComments = $this.XmlSettings.IgnoreComments
             $readerSettings.IgnoreWhitespace = $this.XmlSettings.IgnoreWhitespace
@@ -121,7 +121,7 @@ class XMLFormatHandler {
             $readerSettings.MaxCharactersInDocument = $this.XmlSettings.MaxCharactersInDocument
             $readerSettings.DtdProcessing = if ($this.XmlSettings.ProhibitDtd) { [System.Xml.DtdProcessing]::Prohibit } else { [System.Xml.DtdProcessing]::Parse }
             
-            # Configurer la validation si activée
+            # Configurer la validation si activÃ©e
             if ($this.ValidationSettings.EnableSchemaValidation -and $this.ValidationSettings.SchemaPath) {
                 $readerSettings.ValidationType = [System.Xml.ValidationType]::Schema
                 $schema = New-Object System.Xml.Schema.XmlSchemaSet
@@ -133,7 +133,7 @@ class XMLFormatHandler {
                 }
             }
             
-            # Créer un XmlReader avec les paramètres configurés
+            # CrÃ©er un XmlReader avec les paramÃ¨tres configurÃ©s
             $xmlReader = [System.Xml.XmlReader]::Create($stream, $readerSettings)
             
             # Charger le document XML
@@ -151,10 +151,10 @@ class XMLFormatHandler {
         }
     }
     
-    # Méthode pour générer une chaîne XML à partir d'un objet
+    # MÃ©thode pour gÃ©nÃ©rer une chaÃ®ne XML Ã  partir d'un objet
     [string] Generate([object]$data) {
         try {
-            # Vérifier si l'objet est déjà un XmlDocument
+            # VÃ©rifier si l'objet est dÃ©jÃ  un XmlDocument
             if ($data -is [System.Xml.XmlDocument]) {
                 $xmlDoc = $data
             }
@@ -164,14 +164,14 @@ class XMLFormatHandler {
                 $rootElement = $xmlDoc.CreateElement("root")
                 $xmlDoc.AppendChild($rootElement) | Out-Null
                 
-                # Convertir l'objet en XML de manière récursive
+                # Convertir l'objet en XML de maniÃ¨re rÃ©cursive
                 $this.ConvertObjectToXml($xmlDoc, $rootElement, $data)
             }
             
-            # Créer un StringWriter pour stocker la sortie
+            # CrÃ©er un StringWriter pour stocker la sortie
             $stringWriter = New-Object System.IO.StringWriter
             
-            # Créer un XmlWriterSettings avec les paramètres configurés
+            # CrÃ©er un XmlWriterSettings avec les paramÃ¨tres configurÃ©s
             $writerSettings = New-Object System.Xml.XmlWriterSettings
             $writerSettings.Indent = $this.GenerationSettings.Indent
             $writerSettings.IndentChars = $this.GenerationSettings.IndentChars
@@ -179,10 +179,10 @@ class XMLFormatHandler {
             $writerSettings.OmitXmlDeclaration = $this.GenerationSettings.OmitXmlDeclaration
             $writerSettings.Encoding = [System.Text.Encoding]::GetEncoding($this.GenerationSettings.Encoding)
             
-            # Créer un XmlWriter avec les paramètres configurés
+            # CrÃ©er un XmlWriter avec les paramÃ¨tres configurÃ©s
             $xmlWriter = [System.Xml.XmlWriter]::Create($stringWriter, $writerSettings)
             
-            # Écrire le document XML
+            # Ã‰crire le document XML
             $xmlDoc.WriteTo($xmlWriter)
             
             # Fermer le writer
@@ -192,15 +192,15 @@ class XMLFormatHandler {
             return $stringWriter.ToString()
         }
         catch {
-            Write-Error "Erreur lors de la génération XML: $_"
+            Write-Error "Erreur lors de la gÃ©nÃ©ration XML: $_"
             throw
         }
     }
     
-    # Méthode pour écrire un objet XML dans un fichier
+    # MÃ©thode pour Ã©crire un objet XML dans un fichier
     [void] WriteToFile([object]$data, [string]$filePath) {
         try {
-            # Vérifier si l'objet est déjà un XmlDocument
+            # VÃ©rifier si l'objet est dÃ©jÃ  un XmlDocument
             if ($data -is [System.Xml.XmlDocument]) {
                 $xmlDoc = $data
             }
@@ -210,11 +210,11 @@ class XMLFormatHandler {
                 $rootElement = $xmlDoc.CreateElement("root")
                 $xmlDoc.AppendChild($rootElement) | Out-Null
                 
-                # Convertir l'objet en XML de manière récursive
+                # Convertir l'objet en XML de maniÃ¨re rÃ©cursive
                 $this.ConvertObjectToXml($xmlDoc, $rootElement, $data)
             }
             
-            # Créer un XmlWriterSettings avec les paramètres configurés
+            # CrÃ©er un XmlWriterSettings avec les paramÃ¨tres configurÃ©s
             $writerSettings = New-Object System.Xml.XmlWriterSettings
             $writerSettings.Indent = $this.GenerationSettings.Indent
             $writerSettings.IndentChars = $this.GenerationSettings.IndentChars
@@ -222,30 +222,30 @@ class XMLFormatHandler {
             $writerSettings.OmitXmlDeclaration = $this.GenerationSettings.OmitXmlDeclaration
             $writerSettings.Encoding = [System.Text.Encoding]::GetEncoding($this.GenerationSettings.Encoding)
             
-            # Créer un XmlWriter avec les paramètres configurés
+            # CrÃ©er un XmlWriter avec les paramÃ¨tres configurÃ©s
             $xmlWriter = [System.Xml.XmlWriter]::Create($filePath, $writerSettings)
             
-            # Écrire le document XML
+            # Ã‰crire le document XML
             $xmlDoc.WriteTo($xmlWriter)
             
             # Fermer le writer
             $xmlWriter.Close()
         }
         catch {
-            Write-Error "Erreur lors de l'écriture du fichier XML: $_"
+            Write-Error "Erreur lors de l'Ã©criture du fichier XML: $_"
             throw
         }
     }
     
-    # Méthode pour lire un fichier XML
+    # MÃ©thode pour lire un fichier XML
     [object] ReadFromFile([string]$filePath) {
         try {
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $filePath)) {
                 throw "Le fichier XML n'existe pas: $filePath"
             }
             
-            # Créer un XmlReaderSettings avec les paramètres configurés
+            # CrÃ©er un XmlReaderSettings avec les paramÃ¨tres configurÃ©s
             $readerSettings = New-Object System.Xml.XmlReaderSettings
             $readerSettings.IgnoreComments = $this.XmlSettings.IgnoreComments
             $readerSettings.IgnoreWhitespace = $this.XmlSettings.IgnoreWhitespace
@@ -253,7 +253,7 @@ class XMLFormatHandler {
             $readerSettings.MaxCharactersInDocument = $this.XmlSettings.MaxCharactersInDocument
             $readerSettings.DtdProcessing = if ($this.XmlSettings.ProhibitDtd) { [System.Xml.DtdProcessing]::Prohibit } else { [System.Xml.DtdProcessing]::Parse }
             
-            # Configurer la validation si activée
+            # Configurer la validation si activÃ©e
             if ($this.ValidationSettings.EnableSchemaValidation -and $this.ValidationSettings.SchemaPath) {
                 $readerSettings.ValidationType = [System.Xml.ValidationType]::Schema
                 $schema = New-Object System.Xml.Schema.XmlSchemaSet
@@ -265,7 +265,7 @@ class XMLFormatHandler {
                 }
             }
             
-            # Créer un XmlReader avec les paramètres configurés
+            # CrÃ©er un XmlReader avec les paramÃ¨tres configurÃ©s
             $xmlReader = [System.Xml.XmlReader]::Create($filePath, $readerSettings)
             
             # Charger le document XML
@@ -283,7 +283,7 @@ class XMLFormatHandler {
         }
     }
     
-    # Méthode privée pour convertir un objet en XML de manière récursive
+    # MÃ©thode privÃ©e pour convertir un objet en XML de maniÃ¨re rÃ©cursive
     hidden [void] ConvertObjectToXml([System.Xml.XmlDocument]$xmlDoc, [System.Xml.XmlElement]$parentElement, [object]$data) {
         # Si l'objet est null, ajouter un attribut xsi:nil="true"
         if ($null -eq $data) {
@@ -293,7 +293,7 @@ class XMLFormatHandler {
             return
         }
         
-        # Traiter différents types d'objets
+        # Traiter diffÃ©rents types d'objets
         switch ($data.GetType().Name) {
             # Types simples
             { $_ -in @("String", "Int32", "Int64", "Double", "Decimal", "Boolean", "DateTime", "Guid") } {
@@ -307,11 +307,11 @@ class XMLFormatHandler {
                 foreach ($propName in $properties) {
                     $propValue = if ($_ -eq "Hashtable") { $data[$propName] } else { $data.$propName }
                     
-                    # Créer un élément pour la propriété
+                    # CrÃ©er un Ã©lÃ©ment pour la propriÃ©tÃ©
                     $propElement = $xmlDoc.CreateElement($propName)
                     $parentElement.AppendChild($propElement) | Out-Null
                     
-                    # Convertir la valeur de la propriété de manière récursive
+                    # Convertir la valeur de la propriÃ©tÃ© de maniÃ¨re rÃ©cursive
                     $this.ConvertObjectToXml($xmlDoc, $propElement, $propValue)
                 }
             }
@@ -319,30 +319,30 @@ class XMLFormatHandler {
             # Array ou Collection
             { $_ -match "Array|Collection|List" } {
                 foreach ($item in $data) {
-                    # Créer un élément pour l'item
+                    # CrÃ©er un Ã©lÃ©ment pour l'item
                     $itemElement = $xmlDoc.CreateElement("item")
                     $parentElement.AppendChild($itemElement) | Out-Null
                     
-                    # Convertir l'item de manière récursive
+                    # Convertir l'item de maniÃ¨re rÃ©cursive
                     $this.ConvertObjectToXml($xmlDoc, $itemElement, $item)
                 }
             }
             
-            # Type par défaut
+            # Type par dÃ©faut
             default {
-                # Essayer de traiter comme un objet avec des propriétés
+                # Essayer de traiter comme un objet avec des propriÃ©tÃ©s
                 try {
                     foreach ($prop in $data.PSObject.Properties) {
-                        # Créer un élément pour la propriété
+                        # CrÃ©er un Ã©lÃ©ment pour la propriÃ©tÃ©
                         $propElement = $xmlDoc.CreateElement($prop.Name)
                         $parentElement.AppendChild($propElement) | Out-Null
                         
-                        # Convertir la valeur de la propriété de manière récursive
+                        # Convertir la valeur de la propriÃ©tÃ© de maniÃ¨re rÃ©cursive
                         $this.ConvertObjectToXml($xmlDoc, $propElement, $prop.Value)
                     }
                 }
                 catch {
-                    # Si tout échoue, convertir en chaîne
+                    # Si tout Ã©choue, convertir en chaÃ®ne
                     $parentElement.InnerText = $data.ToString()
                 }
             }
@@ -350,7 +350,7 @@ class XMLFormatHandler {
     }
 }
 
-# Fonction pour créer une nouvelle instance de XMLFormatHandler
+# Fonction pour crÃ©er une nouvelle instance de XMLFormatHandler
 function New-XMLFormatHandler {
     param (
         [Parameter(Mandatory = $false)]
@@ -363,16 +363,16 @@ function New-XMLFormatHandler {
         [hashtable]$GenerationSettings
     )
     
-    # Utiliser les paramètres fournis ou les valeurs par défaut
+    # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
     $xmlSettings = if ($XmlSettings) { $XmlSettings } else { $XMLConfig.DefaultXmlSettings.Clone() }
     $validationSettings = if ($ValidationSettings) { $ValidationSettings } else { $XMLConfig.DefaultValidationSettings.Clone() }
     $generationSettings = if ($GenerationSettings) { $GenerationSettings } else { $XMLConfig.DefaultGenerationSettings.Clone() }
     
-    # Créer et retourner une nouvelle instance
+    # CrÃ©er et retourner une nouvelle instance
     return [XMLFormatHandler]::new($xmlSettings, $validationSettings, $generationSettings)
 }
 
-# Fonction pour parser une chaîne XML
+# Fonction pour parser une chaÃ®ne XML
 function ConvertFrom-Xml {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -386,10 +386,10 @@ function ConvertFrom-Xml {
     )
     
     process {
-        # Créer un handler XML
+        # CrÃ©er un handler XML
         $handler = New-XMLFormatHandler -XmlSettings $XmlSettings -ValidationSettings $ValidationSettings
         
-        # Parser la chaîne XML
+        # Parser la chaÃ®ne XML
         return $handler.Parse($XmlString)
     }
 }
@@ -405,10 +405,10 @@ function ConvertTo-Xml {
     )
     
     process {
-        # Créer un handler XML
+        # CrÃ©er un handler XML
         $handler = New-XMLFormatHandler -GenerationSettings $GenerationSettings
         
-        # Générer le XML
+        # GÃ©nÃ©rer le XML
         return $handler.Generate($InputObject)
     }
 }
@@ -426,14 +426,14 @@ function Import-XmlFile {
         [hashtable]$ValidationSettings
     )
     
-    # Créer un handler XML
+    # CrÃ©er un handler XML
     $handler = New-XMLFormatHandler -XmlSettings $XmlSettings -ValidationSettings $ValidationSettings
     
     # Lire le fichier XML
     return $handler.ReadFromFile($FilePath)
 }
 
-# Fonction pour écrire un objet dans un fichier XML
+# Fonction pour Ã©crire un objet dans un fichier XML
 function Export-XmlFile {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -447,10 +447,10 @@ function Export-XmlFile {
     )
     
     process {
-        # Créer un handler XML
+        # CrÃ©er un handler XML
         $handler = New-XMLFormatHandler -GenerationSettings $GenerationSettings
         
-        # Écrire l'objet dans un fichier XML
+        # Ã‰crire l'objet dans un fichier XML
         $handler.WriteToFile($InputObject, $FilePath)
     }
 }

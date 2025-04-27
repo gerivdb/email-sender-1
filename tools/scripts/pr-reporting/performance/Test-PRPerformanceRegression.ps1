@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste les régressions de performance pour les modules de rapports PR.
+    Teste les rÃ©gressions de performance pour les modules de rapports PR.
 .DESCRIPTION
-    Ce script compare les résultats de benchmarks actuels avec des résultats précédents
-    pour détecter les régressions de performance. Il génère des alertes si les performances
-    se sont dégradées au-delà d'un seuil spécifié.
+    Ce script compare les rÃ©sultats de benchmarks actuels avec des rÃ©sultats prÃ©cÃ©dents
+    pour dÃ©tecter les rÃ©gressions de performance. Il gÃ©nÃ¨re des alertes si les performances
+    se sont dÃ©gradÃ©es au-delÃ  d'un seuil spÃ©cifiÃ©.
 .PARAMETER CurrentResults
-    Chemin vers le fichier de résultats de benchmark actuel.
+    Chemin vers le fichier de rÃ©sultats de benchmark actuel.
 .PARAMETER BaselineResults
-    Chemin vers le fichier de résultats de benchmark de référence.
+    Chemin vers le fichier de rÃ©sultats de benchmark de rÃ©fÃ©rence.
 .PARAMETER ThresholdPercent
-    Pourcentage d'augmentation du temps d'exécution considéré comme une régression. Par défaut: 10%.
+    Pourcentage d'augmentation du temps d'exÃ©cution considÃ©rÃ© comme une rÃ©gression. Par dÃ©faut: 10%.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de la comparaison. Par défaut: ".\regression_results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats de la comparaison. Par dÃ©faut: ".\regression_results.json".
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats de la comparaison.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats de la comparaison.
 .EXAMPLE
     .\Test-PRPerformanceRegression.ps1 -CurrentResults ".\current_results.json" -BaselineResults ".\baseline_results.json"
 .NOTES
@@ -42,25 +42,25 @@ param (
     [switch]$GenerateReport
 )
 
-# Vérifier que les fichiers de résultats existent
+# VÃ©rifier que les fichiers de rÃ©sultats existent
 if (-not (Test-Path -Path $CurrentResults)) {
-    throw "Le fichier de résultats actuel n'existe pas: $CurrentResults"
+    throw "Le fichier de rÃ©sultats actuel n'existe pas: $CurrentResults"
 }
 
 if (-not (Test-Path -Path $BaselineResults)) {
-    throw "Le fichier de résultats de référence n'existe pas: $BaselineResults"
+    throw "Le fichier de rÃ©sultats de rÃ©fÃ©rence n'existe pas: $BaselineResults"
 }
 
-# Charger les résultats
+# Charger les rÃ©sultats
 $current = Get-Content -Path $CurrentResults -Raw | ConvertFrom-Json
 $baseline = Get-Content -Path $BaselineResults -Raw | ConvertFrom-Json
 
-# Vérifier que les résultats ont le bon format
+# VÃ©rifier que les rÃ©sultats ont le bon format
 if (-not $current.Results -or -not $baseline.Results) {
-    throw "Format de fichier de résultats invalide. Assurez-vous que les fichiers ont été générés par Invoke-PRPerformanceBenchmark.ps1."
+    throw "Format de fichier de rÃ©sultats invalide. Assurez-vous que les fichiers ont Ã©tÃ© gÃ©nÃ©rÃ©s par Invoke-PRPerformanceBenchmark.ps1."
 }
 
-# Fonction pour comparer les résultats
+# Fonction pour comparer les rÃ©sultats
 function Compare-BenchmarkResults {
     param (
         [object]$Current,
@@ -70,28 +70,28 @@ function Compare-BenchmarkResults {
     
     $comparisons = @()
     
-    # Créer un dictionnaire des résultats de référence pour un accès rapide
+    # CrÃ©er un dictionnaire des rÃ©sultats de rÃ©fÃ©rence pour un accÃ¨s rapide
     $baselineDict = @{}
     foreach ($result in $Baseline.Results) {
         $key = "$($result.ModuleName).$($result.FunctionName)"
         $baselineDict[$key] = $result
     }
     
-    # Comparer chaque résultat actuel avec la référence
+    # Comparer chaque rÃ©sultat actuel avec la rÃ©fÃ©rence
     foreach ($result in $Current.Results) {
         $key = "$($result.ModuleName).$($result.FunctionName)"
         $baselineResult = $baselineDict[$key]
         
         if ($baselineResult) {
-            # Calculer la différence de performance
+            # Calculer la diffÃ©rence de performance
             $baselineAvg = $baselineResult.AverageMs
             $currentAvg = $result.AverageMs
             $diffPercent = ($currentAvg - $baselineAvg) / $baselineAvg * 100
             
-            # Déterminer s'il s'agit d'une régression
+            # DÃ©terminer s'il s'agit d'une rÃ©gression
             $isRegression = $diffPercent -gt $Threshold
             
-            # Créer un objet de comparaison
+            # CrÃ©er un objet de comparaison
             $comparison = [PSCustomObject]@{
                 ModuleName     = $result.ModuleName
                 FunctionName   = $result.FunctionName
@@ -106,17 +106,17 @@ function Compare-BenchmarkResults {
             $comparisons += $comparison
         }
         else {
-            Write-Warning "Aucun résultat de référence trouvé pour $key"
+            Write-Warning "Aucun rÃ©sultat de rÃ©fÃ©rence trouvÃ© pour $key"
         }
     }
     
     return $comparisons
 }
 
-# Comparer les résultats
+# Comparer les rÃ©sultats
 $comparisons = Compare-BenchmarkResults -Current $current -Baseline $baseline -Threshold $ThresholdPercent
 
-# Créer un objet de résultats
+# CrÃ©er un objet de rÃ©sultats
 $regressionResults = @{
     Timestamp        = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     CurrentTimestamp = $current.Timestamp
@@ -131,66 +131,66 @@ $regressionResults = @{
     }
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des régressions de performance:"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des rÃ©gressions de performance:"
 Write-Host "===================================="
 Write-Host "Date de la comparaison: $($regressionResults.Timestamp)"
-Write-Host "Résultats actuels: $($regressionResults.CurrentTimestamp)"
-Write-Host "Résultats de référence: $($regressionResults.BaselineTimestamp)"
-Write-Host "Seuil de régression: $ThresholdPercent%"
+Write-Host "RÃ©sultats actuels: $($regressionResults.CurrentTimestamp)"
+Write-Host "RÃ©sultats de rÃ©fÃ©rence: $($regressionResults.BaselineTimestamp)"
+Write-Host "Seuil de rÃ©gression: $ThresholdPercent%"
 Write-Host ""
-Write-Host "Fonctions testées: $($regressionResults.Summary.TotalFunctions)"
-Write-Host "Régressions détectées: $($regressionResults.Summary.Regressions)"
-Write-Host "Améliorations détectées: $($regressionResults.Summary.Improvements)"
+Write-Host "Fonctions testÃ©es: $($regressionResults.Summary.TotalFunctions)"
+Write-Host "RÃ©gressions dÃ©tectÃ©es: $($regressionResults.Summary.Regressions)"
+Write-Host "AmÃ©liorations dÃ©tectÃ©es: $($regressionResults.Summary.Improvements)"
 Write-Host "Pas de changement significatif: $($regressionResults.Summary.NoChange)"
 Write-Host ""
 
-# Afficher les régressions
+# Afficher les rÃ©gressions
 $regressions = $comparisons | Where-Object { $_.IsRegression } | Sort-Object -Property DiffPercent -Descending
 if ($regressions.Count -gt 0) {
-    Write-Host "Régressions détectées:" -ForegroundColor Red
+    Write-Host "RÃ©gressions dÃ©tectÃ©es:" -ForegroundColor Red
     foreach ($regression in $regressions) {
         Write-Host "  $($regression.ModuleName).$($regression.FunctionName):" -ForegroundColor Red
         Write-Host "    Avant: $([Math]::Round($regression.BaselineAvgMs, 2)) ms"
-        Write-Host "    Après: $([Math]::Round($regression.CurrentAvgMs, 2)) ms"
+        Write-Host "    AprÃ¨s: $([Math]::Round($regression.CurrentAvgMs, 2)) ms"
         Write-Host "    Diff: +$([Math]::Round($regression.DiffPercent, 2))%"
         Write-Host ""
     }
 }
 else {
-    Write-Host "Aucune régression détectée." -ForegroundColor Green
+    Write-Host "Aucune rÃ©gression dÃ©tectÃ©e." -ForegroundColor Green
 }
 
-# Afficher les améliorations
+# Afficher les amÃ©liorations
 $improvements = $comparisons | Where-Object { $_.DiffPercent -lt 0 } | Sort-Object -Property DiffPercent
 if ($improvements.Count -gt 0) {
-    Write-Host "Améliorations détectées:" -ForegroundColor Green
+    Write-Host "AmÃ©liorations dÃ©tectÃ©es:" -ForegroundColor Green
     foreach ($improvement in $improvements) {
         Write-Host "  $($improvement.ModuleName).$($improvement.FunctionName):" -ForegroundColor Green
         Write-Host "    Avant: $([Math]::Round($improvement.BaselineAvgMs, 2)) ms"
-        Write-Host "    Après: $([Math]::Round($improvement.CurrentAvgMs, 2)) ms"
+        Write-Host "    AprÃ¨s: $([Math]::Round($improvement.CurrentAvgMs, 2)) ms"
         Write-Host "    Diff: $([Math]::Round($improvement.DiffPercent, 2))%"
         Write-Host ""
     }
 }
 
-# Enregistrer les résultats dans un fichier JSON
+# Enregistrer les rÃ©sultats dans un fichier JSON
 $regressionResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Résultats enregistrés dans: $OutputPath"
+Write-Host "RÃ©sultats enregistrÃ©s dans: $OutputPath"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
     # Importer le module PRReportTemplates
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRReportTemplates.psm1"
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
         
-        # Créer un template HTML pour le rapport
+        # CrÃ©er un template HTML pour le rapport
         $htmlTemplate = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport de régression de performance</title>
+    <title>Rapport de rÃ©gression de performance</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -236,29 +236,29 @@ if ($GenerateReport) {
     </style>
 </head>
 <body>
-    <h1>Rapport de régression de performance</h1>
+    <h1>Rapport de rÃ©gression de performance</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Date de la comparaison: {{Timestamp}}</p>
-        <p>Résultats actuels: {{CurrentTimestamp}}</p>
-        <p>Résultats de référence: {{BaselineTimestamp}}</p>
-        <p>Seuil de régression: {{ThresholdPercent}}%</p>
-        <p>Fonctions testées: {{Summary.TotalFunctions}}</p>
-        <p>Régressions détectées: <span class="{{#if Summary.Regressions}}regression{{else}}no-change{{/if}}">{{Summary.Regressions}}</span></p>
-        <p>Améliorations détectées: <span class="improvement">{{Summary.Improvements}}</span></p>
+        <p>RÃ©sultats actuels: {{CurrentTimestamp}}</p>
+        <p>RÃ©sultats de rÃ©fÃ©rence: {{BaselineTimestamp}}</p>
+        <p>Seuil de rÃ©gression: {{ThresholdPercent}}%</p>
+        <p>Fonctions testÃ©es: {{Summary.TotalFunctions}}</p>
+        <p>RÃ©gressions dÃ©tectÃ©es: <span class="{{#if Summary.Regressions}}regression{{else}}no-change{{/if}}">{{Summary.Regressions}}</span></p>
+        <p>AmÃ©liorations dÃ©tectÃ©es: <span class="improvement">{{Summary.Improvements}}</span></p>
         <p>Pas de changement significatif: <span class="no-change">{{Summary.NoChange}}</span></p>
     </div>
     
     {{#if Regressions.length}}
-    <h2>Régressions</h2>
+    <h2>RÃ©gressions</h2>
     <table>
         <tr>
             <th>Module</th>
             <th>Fonction</th>
             <th>Avant (ms)</th>
-            <th>Après (ms)</th>
-            <th>Différence (%)</th>
+            <th>AprÃ¨s (ms)</th>
+            <th>DiffÃ©rence (%)</th>
         </tr>
         {{#each Regressions}}
         <tr>
@@ -271,18 +271,18 @@ if ($GenerateReport) {
         {{/each}}
     </table>
     {{else}}
-    <h2>Aucune régression détectée</h2>
+    <h2>Aucune rÃ©gression dÃ©tectÃ©e</h2>
     {{/if}}
     
     {{#if Improvements.length}}
-    <h2>Améliorations</h2>
+    <h2>AmÃ©liorations</h2>
     <table>
         <tr>
             <th>Module</th>
             <th>Fonction</th>
             <th>Avant (ms)</th>
-            <th>Après (ms)</th>
-            <th>Différence (%)</th>
+            <th>AprÃ¨s (ms)</th>
+            <th>DiffÃ©rence (%)</th>
         </tr>
         {{#each Improvements}}
         <tr>
@@ -302,8 +302,8 @@ if ($GenerateReport) {
             <th>Module</th>
             <th>Fonction</th>
             <th>Avant (ms)</th>
-            <th>Après (ms)</th>
-            <th>Différence (%)</th>
+            <th>AprÃ¨s (ms)</th>
+            <th>DiffÃ©rence (%)</th>
             <th>Statut</th>
         </tr>
         {{#each Comparisons}}
@@ -317,10 +317,10 @@ if ($GenerateReport) {
             </td>
             <td>
                 {{#if this.IsRegression}}
-                <span class="regression">Régression</span>
+                <span class="regression">RÃ©gression</span>
                 {{else}}
                 {{#if (lt this.DiffPercent 0)}}
-                <span class="improvement">Amélioration</span>
+                <span class="improvement">AmÃ©lioration</span>
                 {{else}}
                 <span class="no-change">Stable</span>
                 {{/if}}
@@ -333,18 +333,18 @@ if ($GenerateReport) {
 </html>
 "@
         
-        # Créer un répertoire temporaire pour le template
+        # CrÃ©er un rÃ©pertoire temporaire pour le template
         $tempDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceReport_$(Get-Random)"
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
         
-        # Créer le fichier de template
+        # CrÃ©er le fichier de template
         $templatePath = Join-Path -Path $tempDir -ChildPath "performance_report.html"
         Set-Content -Path $templatePath -Value $htmlTemplate -Encoding UTF8
         
         # Enregistrer le template
         Register-PRReportTemplate -Name "PerformanceReport" -Format "HTML" -TemplatePath $templatePath -Force | Out-Null
         
-        # Préparer les données pour le rapport
+        # PrÃ©parer les donnÃ©es pour le rapport
         $reportData = @{
             Timestamp        = $regressionResults.Timestamp
             CurrentTimestamp = $regressionResults.CurrentTimestamp
@@ -381,16 +381,16 @@ if ($GenerateReport) {
             }
         }
         
-        # Générer le rapport
+        # GÃ©nÃ©rer le rapport
         $reportPath = $OutputPath -replace "\.json$", ".html"
         New-PRReport -TemplateName "PerformanceReport" -Format "HTML" -Data $reportData -OutputPath $reportPath | Out-Null
         
         # Nettoyer les fichiers temporaires
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
         
-        Write-Host "Rapport HTML généré: $reportPath"
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath"
     }
     else {
-        Write-Warning "Module PRReportTemplates non trouvé. Le rapport HTML n'a pas été généré."
+        Write-Warning "Module PRReportTemplates non trouvÃ©. Le rapport HTML n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
     }
 }

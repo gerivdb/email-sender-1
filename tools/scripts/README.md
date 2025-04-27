@@ -1,6 +1,6 @@
-# Scripts du projet
+﻿# Scripts du projet
 
-Ce dossier contient tous les scripts du projet, organisés de manière hiérarchique selon leur fonction.
+Ce dossier contient tous les scripts du projet, organisÃ©s de maniÃ¨re hiÃ©rarchique selon leur fonction.
 
 ## Structure des dossiers
 
@@ -13,22 +13,22 @@ Scripts d'interaction avec les APIs
 
 ### core
 
-Fonctionnalités essentielles et modules de base
+FonctionnalitÃ©s essentielles et modules de base
 
-- **config**: Configuration du système
+- **config**: Configuration du systÃ¨me
 - **logging**: Journalisation et rapports
-- **utils**: Utilitaires génériques
+- **utils**: Utilitaires gÃ©nÃ©riques
 
 ### docs
 
 Documentation
 
 - **guides**: Guides d'utilisation
-- **references**: Documentation de référence
+- **references**: Documentation de rÃ©fÃ©rence
 
 ### email
 
-Fonctionnalités liées aux emails
+FonctionnalitÃ©s liÃ©es aux emails
 
 - **processing**: Traitement d'emails
 - **sending**: Envoi d'emails
@@ -36,11 +36,11 @@ Fonctionnalités liées aux emails
 
 ### journal
 
-Système de journal
+SystÃ¨me de journal
 
 - **analysis**: Analyse des journaux
-- **integrations**: Intégrations avec d'autres systèmes
-- **rag**: Fonctionnalités RAG
+- **integrations**: IntÃ©grations avec d'autres systÃ¨mes
+- **rag**: FonctionnalitÃ©s RAG
 - **web**: Interface web
 
 ### maintenance
@@ -49,15 +49,15 @@ Scripts de maintenance
 
 - **cleanup**: Nettoyage
 - **encoding**: Gestion d'encodage
-- **monitoring**: Surveillance du système
-- **repo**: Maintenance du dépôt
+- **monitoring**: Surveillance du systÃ¨me
+- **repo**: Maintenance du dÃ©pÃ´t
 
 ### manager
 
-Système de gestion des scripts
+SystÃ¨me de gestion des scripts
 
 - **config**: Configuration
-- **data**: Données générées
+- **data**: DonnÃ©es gÃ©nÃ©rÃ©es
 - **modules**: Modules du gestionnaire
 
 ### mcp
@@ -65,7 +65,7 @@ Système de gestion des scripts
 Model Context Protocol
 
 - **config**: Configuration MCP
-- **integrations**: Intégrations MCP
+- **integrations**: IntÃ©grations MCP
 - **server**: Serveurs MCP
 
 ### python
@@ -87,7 +87,7 @@ Scripts d'installation et configuration
 
 Tests et validation
 
-- **integration**: Tests d'intégration
+- **integration**: Tests d'intÃ©gration
 - **performance**: Tests de performance
 - **unit**: Tests unitaires
 
@@ -112,18 +112,18 @@ Gestion des workflows
 
 ## Utilisation
 
-Pour gérer ces scripts, utilisez le système de gestion de scripts dans le dossier manager.
+Pour gÃ©rer ces scripts, utilisez le systÃ¨me de gestion de scripts dans le dossier manager.
 
 Exemple:
 `powershell
 .\manager\ScriptManager.ps1 -Action inventory
 `
 
-## Principes de développement
+## Principes de dÃ©veloppement
 
 Les scripts de ce projet suivent les principes suivants:
 
-- **SOLID**: Chaque script a une responsabilité unique et bien définie
-- **DRY** (Don't Repeat Yourself): Évite la duplication de code
-- **KISS** (Keep It Simple, Stupid): Privilégie les solutions simples et compréhensibles
-- **Clean Code**: Code lisible, bien commenté et facile à maintenir
+- **SOLID**: Chaque script a une responsabilitÃ© unique et bien dÃ©finie
+- **DRY** (Don't Repeat Yourself): Ã‰vite la duplication de code
+- **KISS** (Keep It Simple, Stupid): PrivilÃ©gie les solutions simples et comprÃ©hensibles
+- **Clean Code**: Code lisible, bien commentÃ© et facile Ã  maintenir

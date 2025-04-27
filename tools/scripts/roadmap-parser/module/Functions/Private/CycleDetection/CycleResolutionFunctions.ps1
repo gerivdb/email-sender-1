@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Fonctions pour la résolution des dépendances circulaires.
+    Fonctions pour la résolution des cycles de dépendances.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour analyser et résoudre les dépendances circulaires
-    dans un projet, en utilisant différentes stratégies de refactoring.
+    Ce script contient des fonctions pour résoudre les cycles de dépendances
+    détectés dans un projet.
 
 .NOTES
     Auteur: RoadmapParser Team
@@ -12,406 +12,361 @@
     Date de création: 2025-04-25
 #>
 
-# Fonction pour identifier les points de rupture optimaux dans un cycle
-function Find-OptimalBreakPoints {
+# Fonction pour résoudre un cycle de dépendances
+function Resolve-DependencyCycle {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [hashtable]$Cycle,
+        [PSCustomObject]$Cycle,
+        
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Graph,
+        
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("REMOVE_EDGE", "EXTRACT_INTERFACE", "DEPENDENCY_INVERSION", "MEDIATOR")]
+        [string]$Strategy = "REMOVE_EDGE"
+    )
+    
+    try {
+        # Vérifier si le cycle est valide
+        if (-not $Cycle -or -not $Cycle.Files -or $Cycle.Files.Count -lt 2) {
+            Write-Warning "Cycle invalide ou incomplet."
+            return $false
+        }
+        
+        # Résoudre le cycle selon la stratégie spécifiée
+        switch ($Strategy) {
+            "REMOVE_EDGE" {
+                # Supprimer l'arête la moins importante du cycle
+                $result = Remove-CycleEdge -Cycle $Cycle -Graph $Graph
+                return $result
+            }
+            "EXTRACT_INTERFACE" {
+                # Extraire une interface pour briser le cycle
+                $result = Extract-Interface -Cycle $Cycle -Graph $Graph
+                return $result
+            }
+            "DEPENDENCY_INVERSION" {
+                # Appliquer le principe d'inversion de dépendance
+                $result = Apply-DependencyInversion -Cycle $Cycle -Graph $Graph
+                return $result
+            }
+            "MEDIATOR" {
+                # Introduire un médiateur pour briser le cycle
+                $result = Introduce-Mediator -Cycle $Cycle -Graph $Graph
+                return $result
+            }
+            default {
+                Write-Warning "Stratégie de résolution non reconnue : $Strategy"
+                return $false
+            }
+        }
+    }
+    catch {
+        Write-Error "Erreur lors de la résolution du cycle de dépendances : $_"
+        return $false
+    }
+}
+
+# Fonction pour supprimer l'arête la moins importante d'un cycle
+function Remove-CycleEdge {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]$Cycle,
         
         [Parameter(Mandatory = $true)]
         [hashtable]$Graph
     )
     
     try {
-        # Extraire les fichiers du cycle
-        $files = $Cycle.Files
+        # Trouver l'arête la moins importante du cycle
+        $minImportance = [double]::MaxValue
+        $edgeToRemove = $null
         
-        # Initialiser les résultats
-        $breakPoints = @()
-        
-        # Calculer le nombre de dépendances entrantes et sortantes pour chaque fichier
-        $dependencies = @{}
-        
-        foreach ($file in $files) {
-            if (-not $dependencies.ContainsKey($file)) {
-                $dependencies[$file] = @{
-                    Incoming = 0
-                    Outgoing = 0
-                }
-            }
+        for ($i = 0; $i -lt $Cycle.Files.Count - 1; $i++) {
+            $source = $Cycle.Files[$i]
+            $target = $Cycle.Files[$i + 1]
             
-            # Compter les dépendances sortantes
-            if ($Graph.ContainsKey($file)) {
-                $dependencies[$file].Outgoing = ($Graph[$file] | Where-Object { $files -contains $_ }).Count
-            }
+            # Calculer l'importance de l'arête (nombre de dépendances)
+            $importance = ($Graph[$source] | Where-Object { $_ -eq $target }).Count
             
-            # Compter les dépendances entrantes
-            foreach ($otherFile in $files) {
-                if ($otherFile -ne $file -and $Graph.ContainsKey($otherFile) -and $Graph[$otherFile] -contains $file) {
-                    $dependencies[$file].Incoming++
+            if ($importance -lt $minImportance) {
+                $minImportance = $importance
+                $edgeToRemove = @{
+                    Source = $source
+                    Target = $target
                 }
             }
         }
         
-        # Calculer le score pour chaque fichier
-        $scores = @{}
+        # Vérifier également la dernière arête du cycle
+        $source = $Cycle.Files[-1]
+        $target = $Cycle.Files[0]
+        $importance = ($Graph[$source] | Where-Object { $_ -eq $target }).Count
         
-        foreach ($file in $files) {
-            # Le score est basé sur le nombre de dépendances entrantes et sortantes
-            # Un score élevé indique un bon candidat pour la rupture
-            $incoming = $dependencies[$file].Incoming
-            $outgoing = $dependencies[$file].Outgoing
-            
-            # Favoriser les fichiers avec beaucoup de dépendances entrantes et peu de dépendances sortantes
-            $scores[$file] = $incoming - $outgoing
-        }
-        
-        # Trier les fichiers par score décroissant
-        $sortedFiles = $scores.GetEnumerator() | Sort-Object -Property Value -Descending
-        
-        # Sélectionner les meilleurs candidats
-        $topCandidates = $sortedFiles | Select-Object -First 3
-        
-        foreach ($candidate in $topCandidates) {
-            $file = $candidate.Key
-            $score = $candidate.Value
-            
-            # Déterminer les fichiers qui dépendent de ce fichier
-            $dependents = @()
-            foreach ($otherFile in $files) {
-                if ($otherFile -ne $file -and $Graph.ContainsKey($otherFile) -and $Graph[$otherFile] -contains $file) {
-                    $dependents += $otherFile
-                }
-            }
-            
-            # Déterminer les fichiers dont ce fichier dépend
-            $dependencies = @()
-            if ($Graph.ContainsKey($file)) {
-                $dependencies = $Graph[$file] | Where-Object { $files -contains $_ }
-            }
-            
-            # Ajouter le point de rupture
-            $breakPoints += @{
-                File = $file
-                Score = $score
-                Dependents = $dependents
-                Dependencies = $dependencies
-                Impact = $dependents.Count + $dependencies.Count
-                Recommendation = if ($score -gt 0) { "Élevée" } elseif ($score -eq 0) { "Moyenne" } else { "Faible" }
+        if ($importance -lt $minImportance) {
+            $minImportance = $importance
+            $edgeToRemove = @{
+                Source = $source
+                Target = $target
             }
         }
         
-        return $breakPoints
+        # Supprimer l'arête du graphe
+        if ($edgeToRemove) {
+            $Graph[$edgeToRemove.Source] = $Graph[$edgeToRemove.Source] | Where-Object { $_ -ne $edgeToRemove.Target }
+            
+            Write-Host "Arête supprimée : $($edgeToRemove.Source) -> $($edgeToRemove.Target)" -ForegroundColor Green
+            return $true
+        }
+        
+        Write-Warning "Aucune arête à supprimer trouvée dans le cycle."
+        return $false
     }
     catch {
-        Write-Error "Erreur lors de l'identification des points de rupture optimaux : $_"
-        return @()
+        Write-Error "Erreur lors de la suppression de l'arête du cycle : $_"
+        return $false
     }
 }
 
-# Fonction pour générer des suggestions de refactoring
-function Get-RefactoringStrategies {
+# Fonction pour extraire une interface
+function Extract-Interface {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [hashtable]$Cycle,
+        [PSCustomObject]$Cycle,
         
         [Parameter(Mandatory = $true)]
-        [hashtable]$Graph,
-        
-        [Parameter(Mandatory = $false)]
-        [ValidateSet("INTERFACE_EXTRACTION", "DEPENDENCY_INVERSION", "MEDIATOR", "ABSTRACTION_LAYER", "AUTO")]
-        [string]$Strategy = "AUTO"
+        [hashtable]$Graph
     )
     
     try {
-        # Extraire les fichiers du cycle
-        $files = $Cycle.Files
+        # Identifier le fichier le plus dépendant dans le cycle
+        $maxDependencies = 0
+        $fileToExtract = $null
         
-        # Trouver les points de rupture optimaux
-        $breakPoints = Find-OptimalBreakPoints -Cycle $Cycle -Graph $Graph
-        
-        # Initialiser les suggestions
-        $suggestions = @()
-        
-        # Déterminer les stratégies à appliquer
-        $strategies = @()
-        
-        if ($Strategy -eq "AUTO") {
-            # Utiliser toutes les stratégies
-            $strategies = @("INTERFACE_EXTRACTION", "DEPENDENCY_INVERSION", "MEDIATOR", "ABSTRACTION_LAYER")
-        }
-        else {
-            # Utiliser la stratégie spécifiée
-            $strategies = @($Strategy)
-        }
-        
-        # Générer des suggestions pour chaque point de rupture
-        foreach ($breakPoint in $breakPoints) {
-            $file = $breakPoint.File
-            $dependents = $breakPoint.Dependents
-            $dependencies = $breakPoint.Dependencies
+        foreach ($file in $Cycle.Files) {
+            $dependencies = 0
             
-            foreach ($strategy in $strategies) {
-                $suggestion = $null
-                
-                switch ($strategy) {
-                    "INTERFACE_EXTRACTION" {
-                        # Extraction d'interface
-                        $interfaceName = "I$([System.IO.Path]::GetFileNameWithoutExtension($file))"
-                        $interfaceFile = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($file), "$interfaceName$([System.IO.Path]::GetExtension($file))")
-                        
-                        $suggestion = @{
-                            Strategy = "Extraction d'interface"
-                            Description = "Extraire une interface $interfaceName à partir de $file et faire dépendre les clients de l'interface plutôt que de l'implémentation."
-                            Steps = @(
-                                "1. Créer une interface $interfaceName dans $interfaceFile",
-                                "2. Extraire les méthodes publiques de $file dans l'interface",
-                                "3. Faire implémenter l'interface par $file",
-                                "4. Modifier les dépendants pour utiliser l'interface plutôt que l'implémentation"
-                            )
-                            FilesToModify = @($file) + $dependents
-                            NewFiles = @($interfaceFile)
-                            Complexity = "Moyenne"
-                            Impact = $dependents.Count
-                        }
-                    }
-                    "DEPENDENCY_INVERSION" {
-                        # Inversion de dépendance
-                        $suggestion = @{
-                            Strategy = "Inversion de dépendance"
-                            Description = "Inverser la direction des dépendances en introduisant des abstractions."
-                            Steps = @(
-                                "1. Identifier les responsabilités de $file",
-                                "2. Créer des interfaces pour ces responsabilités",
-                                "3. Faire implémenter ces interfaces par $file",
-                                "4. Modifier les dépendances pour utiliser les interfaces"
-                            )
-                            FilesToModify = @($file) + $dependencies
-                            NewFiles = @()
-                            Complexity = "Élevée"
-                            Impact = $dependencies.Count
-                        }
-                    }
-                    "MEDIATOR" {
-                        # Pattern médiateur
-                        $mediatorName = "Mediator$([System.IO.Path]::GetFileNameWithoutExtension($file))"
-                        $mediatorFile = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($file), "$mediatorName$([System.IO.Path]::GetExtension($file))")
-                        
-                        $suggestion = @{
-                            Strategy = "Pattern médiateur"
-                            Description = "Introduire un médiateur pour gérer les interactions entre $file et ses dépendances."
-                            Steps = @(
-                                "1. Créer une classe médiateur $mediatorName dans $mediatorFile",
-                                "2. Déplacer la logique d'interaction de $file vers le médiateur",
-                                "3. Faire dépendre $file et ses dépendances du médiateur",
-                                "4. Éliminer les dépendances directes entre $file et ses dépendances"
-                            )
-                            FilesToModify = @($file) + $dependencies + $dependents
-                            NewFiles = @($mediatorFile)
-                            Complexity = "Élevée"
-                            Impact = $dependencies.Count + $dependents.Count
-                        }
-                    }
-                    "ABSTRACTION_LAYER" {
-                        # Couche d'abstraction
-                        $abstractionName = "Abstract$([System.IO.Path]::GetFileNameWithoutExtension($file))"
-                        $abstractionFile = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($file), "$abstractionName$([System.IO.Path]::GetExtension($file))")
-                        
-                        $suggestion = @{
-                            Strategy = "Couche d'abstraction"
-                            Description = "Introduire une couche d'abstraction entre $file et ses dépendances."
-                            Steps = @(
-                                "1. Créer une classe abstraite $abstractionName dans $abstractionFile",
-                                "2. Faire hériter $file de la classe abstraite",
-                                "3. Déplacer les méthodes communes vers la classe abstraite",
-                                "4. Modifier les dépendants pour utiliser la classe abstraite"
-                            )
-                            FilesToModify = @($file) + $dependents
-                            NewFiles = @($abstractionFile)
-                            Complexity = "Moyenne"
-                            Impact = $dependents.Count
-                        }
-                    }
-                }
-                
-                if ($suggestion) {
-                    $suggestions += $suggestion
+            foreach ($otherFile in $Cycle.Files) {
+                if ($file -ne $otherFile -and $Graph[$file] -contains $otherFile) {
+                    $dependencies++
                 }
             }
-        }
-        
-        # Trier les suggestions par impact décroissant
-        $sortedSuggestions = $suggestions | Sort-Object -Property Impact -Descending
-        
-        return $sortedSuggestions
-    }
-    catch {
-        Write-Error "Erreur lors de la génération des suggestions de refactoring : $_"
-        return @()
-    }
-}
-
-# Fonction pour appliquer une stratégie de refactoring
-function Apply-RefactoringStrategy {
-    [CmdletBinding(SupportsShouldProcess = $true)]
-    param(
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Cycle,
-        
-        [Parameter(Mandatory = $true)]
-        [hashtable]$Graph,
-        
-        [Parameter(Mandatory = $false)]
-        [ValidateSet("INTERFACE_EXTRACTION", "DEPENDENCY_INVERSION", "MEDIATOR", "ABSTRACTION_LAYER", "AUTO")]
-        [string]$Strategy = "AUTO"
-    )
-    
-    try {
-        # Générer des suggestions de refactoring
-        $suggestions = Get-RefactoringStrategies -Cycle $Cycle -Graph $Graph -Strategy $Strategy
-        
-        # Vérifier s'il y a des suggestions
-        if ($suggestions.Count -eq 0) {
-            Write-Warning "Aucune suggestion de refactoring n'a été générée."
-            return $false
-        }
-        
-        # Sélectionner la meilleure suggestion
-        $bestSuggestion = $suggestions[0]
-        
-        # Afficher la suggestion
-        Write-Host "Suggestion de refactoring :" -ForegroundColor Yellow
-        Write-Host "  - Stratégie : $($bestSuggestion.Strategy)" -ForegroundColor Green
-        Write-Host "  - Description : $($bestSuggestion.Description)" -ForegroundColor Green
-        Write-Host "  - Étapes :" -ForegroundColor Green
-        foreach ($step in $bestSuggestion.Steps) {
-            Write-Host "    - $step" -ForegroundColor Gray
-        }
-        Write-Host "  - Fichiers à modifier : $($bestSuggestion.FilesToModify.Count)" -ForegroundColor Green
-        Write-Host "  - Nouveaux fichiers : $($bestSuggestion.NewFiles.Count)" -ForegroundColor Green
-        Write-Host "  - Complexité : $($bestSuggestion.Complexity)" -ForegroundColor Green
-        Write-Host "  - Impact : $($bestSuggestion.Impact)" -ForegroundColor Green
-        
-        # Demander confirmation
-        if ($PSCmdlet.ShouldProcess("Appliquer la stratégie de refactoring $($bestSuggestion.Strategy)")) {
-            # Simuler l'application de la stratégie
-            Write-Host "Application de la stratégie de refactoring..." -ForegroundColor Yellow
             
-            # Simuler la création de nouveaux fichiers
-            foreach ($newFile in $bestSuggestion.NewFiles) {
-                Write-Host "  - Création du fichier : $newFile" -ForegroundColor Green
+            if ($dependencies -gt $maxDependencies) {
+                $maxDependencies = $dependencies
+                $fileToExtract = $file
             }
+        }
+        
+        if ($fileToExtract) {
+            # Simuler l'extraction d'une interface
+            $interfaceName = "I" + (Split-Path -Leaf $fileToExtract).Replace(".ps1", "").Replace(".psm1", "")
             
-            # Simuler la modification des fichiers existants
-            foreach ($file in $bestSuggestion.FilesToModify) {
-                Write-Host "  - Modification du fichier : $file" -ForegroundColor Green
+            Write-Host "Interface extraite : $interfaceName pour $fileToExtract" -ForegroundColor Green
+            
+            # Mettre à jour le graphe (simulation)
+            foreach ($file in $Cycle.Files) {
+                if ($file -ne $fileToExtract -and $Graph[$file] -contains $fileToExtract) {
+                    # Remplacer la dépendance directe par une dépendance à l'interface
+                    $Graph[$file] = $Graph[$file] | Where-Object { $_ -ne $fileToExtract }
+                    # Ajouter une dépendance simulée à l'interface
+                    # Dans un cas réel, il faudrait créer le fichier d'interface
+                }
             }
-            
-            Write-Host "Stratégie de refactoring appliquée avec succès." -ForegroundColor Green
             
             return $true
         }
         
+        Write-Warning "Aucun fichier approprié pour l'extraction d'interface trouvé dans le cycle."
         return $false
     }
     catch {
-        Write-Error "Erreur lors de l'application de la stratégie de refactoring : $_"
+        Write-Error "Erreur lors de l'extraction d'interface : $_"
         return $false
     }
 }
 
-# Fonction principale pour résoudre les dépendances circulaires
-function Resolve-DependencyCycles {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+# Fonction pour appliquer le principe d'inversion de dépendance
+function Apply-DependencyInversion {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
-        [array]$Cycles,
+        [PSCustomObject]$Cycle,
+        
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Graph
+    )
+    
+    try {
+        # Identifier les deux fichiers les plus fortement couplés dans le cycle
+        $maxCoupling = 0
+        $filePair = $null
+        
+        for ($i = 0; $i -lt $Cycle.Files.Count; $i++) {
+            $file1 = $Cycle.Files[$i]
+            $file2 = $Cycle.Files[($i + 1) % $Cycle.Files.Count]
+            
+            $coupling = 0
+            if ($Graph[$file1] -contains $file2) { $coupling++ }
+            if ($Graph[$file2] -contains $file1) { $coupling++ }
+            
+            if ($coupling -gt $maxCoupling) {
+                $maxCoupling = $coupling
+                $filePair = @{
+                    File1 = $file1
+                    File2 = $file2
+                }
+            }
+        }
+        
+        if ($filePair) {
+            # Simuler l'application du principe d'inversion de dépendance
+            $abstractionName = "Abstract" + (Split-Path -Leaf $filePair.File1).Replace(".ps1", "").Replace(".psm1", "")
+            
+            Write-Host "Principe d'inversion de dépendance appliqué entre $($filePair.File1) et $($filePair.File2)" -ForegroundColor Green
+            Write-Host "Abstraction créée : $abstractionName" -ForegroundColor Green
+            
+            # Mettre à jour le graphe (simulation)
+            if ($Graph[$filePair.File1] -contains $filePair.File2) {
+                $Graph[$filePair.File1] = $Graph[$filePair.File1] | Where-Object { $_ -ne $filePair.File2 }
+            }
+            
+            if ($Graph[$filePair.File2] -contains $filePair.File1) {
+                $Graph[$filePair.File2] = $Graph[$filePair.File2] | Where-Object { $_ -ne $filePair.File1 }
+            }
+            
+            return $true
+        }
+        
+        Write-Warning "Aucune paire de fichiers appropriée pour l'inversion de dépendance trouvée dans le cycle."
+        return $false
+    }
+    catch {
+        Write-Error "Erreur lors de l'application du principe d'inversion de dépendance : $_"
+        return $false
+    }
+}
+
+# Fonction pour introduire un médiateur
+function Introduce-Mediator {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]$Cycle,
+        
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Graph
+    )
+    
+    try {
+        # Créer un nom pour le médiateur
+        $mediatorName = "Mediator_" + (Get-Random)
+        
+        Write-Host "Médiateur introduit : $mediatorName pour le cycle de longueur $($Cycle.Files.Count)" -ForegroundColor Green
+        
+        # Mettre à jour le graphe (simulation)
+        for ($i = 0; $i -lt $Cycle.Files.Count; $i++) {
+            $file1 = $Cycle.Files[$i]
+            $file2 = $Cycle.Files[($i + 1) % $Cycle.Files.Count]
+            
+            if ($Graph[$file1] -contains $file2) {
+                $Graph[$file1] = $Graph[$file1] | Where-Object { $_ -ne $file2 }
+            }
+        }
+        
+        return $true
+    }
+    catch {
+        Write-Error "Erreur lors de l'introduction d'un médiateur : $_"
+        return $false
+    }
+}
+
+# Fonction pour résoudre tous les cycles dans un graphe
+function Resolve-AllDependencyCycles {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject[]]$Cycles,
         
         [Parameter(Mandatory = $true)]
         [hashtable]$Graph,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("INTERFACE_EXTRACTION", "DEPENDENCY_INVERSION", "MEDIATOR", "ABSTRACTION_LAYER", "AUTO")]
-        [string]$Strategy = "AUTO",
+        [ValidateSet("REMOVE_EDGE", "EXTRACT_INTERFACE", "DEPENDENCY_INVERSION", "MEDIATOR")]
+        [string]$Strategy = "REMOVE_EDGE",
         
         [Parameter(Mandatory = $false)]
-        [string]$OutputPath = (Get-Location).Path
+        [switch]$AutoFix
     )
     
     try {
-        # Initialiser les résultats
-        $results = @{
-            CyclesDetected = $Cycles.Count
-            CyclesFixed = 0
-            FixStrategy = $Strategy
-            FixedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-            FixDetails = @()
-        }
+        $resolvedCount = 0
+        $totalCycles = $Cycles.Count
         
-        # Parcourir les cycles
+        Write-Host "Résolution de $totalCycles cycles de dépendances..." -ForegroundColor Cyan
+        
         foreach ($cycle in $Cycles) {
-            Write-Host "Résolution du cycle : $($cycle.Description)" -ForegroundColor Yellow
+            Write-Host "Cycle $($resolvedCount + 1)/$totalCycles : $($cycle.Files.Count) fichiers" -ForegroundColor Yellow
             
-            # Appliquer la stratégie de refactoring
-            $success = Apply-RefactoringStrategy -Cycle $cycle -Graph $Graph -Strategy $Strategy
+            if ($AutoFix) {
+                $result = Resolve-DependencyCycle -Cycle $cycle -Graph $Graph -Strategy $Strategy
+                
+                if ($result) {
+                    $resolvedCount++
+                    Write-Host "  Résolu avec succès." -ForegroundColor Green
+                } else {
+                    Write-Host "  Échec de la résolution." -ForegroundColor Red
+                }
+            } else {
+                # Afficher les informations sur le cycle
+                Write-Host "  Fichiers impliqués :" -ForegroundColor Yellow
+                foreach ($file in $cycle.Files) {
+                    Write-Host "    - $file" -ForegroundColor Yellow
+                }
+                
+                Write-Host "  Sévérité : $($cycle.Severity)" -ForegroundColor Yellow
+                
+                if ($cycle.Description) {
+                    Write-Host "  Description : $($cycle.Description)" -ForegroundColor Yellow
+                }
+                
+                # Proposer des solutions
+                Write-Host "  Solutions possibles :" -ForegroundColor Cyan
+                Write-Host "    1. Supprimer une dépendance (REMOVE_EDGE)" -ForegroundColor Cyan
+                Write-Host "    2. Extraire une interface (EXTRACT_INTERFACE)" -ForegroundColor Cyan
+                Write-Host "    3. Appliquer l'inversion de dépendance (DEPENDENCY_INVERSION)" -ForegroundColor Cyan
+                Write-Host "    4. Introduire un médiateur (MEDIATOR)" -ForegroundColor Cyan
+            }
             
-            # Mettre à jour les résultats
-            if ($success) {
-                $results.CyclesFixed++
-                $results.FixDetails += @{
-                    Files = $cycle.Files
-                    Fixed = $true
-                    FixMethod = switch ($Strategy) {
-                        "INTERFACE_EXTRACTION" { "Extraction d'interface" }
-                        "DEPENDENCY_INVERSION" { "Inversion de dépendance" }
-                        "MEDIATOR" { "Application du pattern médiateur" }
-                        "ABSTRACTION_LAYER" { "Création d'une couche d'abstraction" }
-                        "AUTO" { "Stratégie automatique" }
-                    }
-                    Severity = $cycle.Severity
-                    Changes = @{
-                        FilesModified = $cycle.Files | ForEach-Object { Split-Path -Leaf $_ }
-                        LinesChanged = Get-Random -Minimum 5 -Maximum 20 # Simulé pour l'instant
-                    }
-                }
-            }
-            else {
-                $results.FixDetails += @{
-                    Files = $cycle.Files
-                    Fixed = $false
-                    FixMethod = "Non résolu"
-                    Severity = $cycle.Severity
-                    Changes = @{
-                        FilesModified = @()
-                        LinesChanged = 0
-                    }
-                }
-            }
+            Write-Host ""
         }
         
-        # Générer un rapport
-        $reportPath = Join-Path -Path $OutputPath -ChildPath "cycle_fix_report.json"
-        
-        if ($PSCmdlet.ShouldProcess($reportPath, "Générer le rapport de correction de cycles")) {
-            $results | ConvertTo-Json -Depth 10 | Out-File -FilePath $reportPath -Encoding UTF8
-            Write-Host "Rapport de correction de cycles généré : $reportPath" -ForegroundColor Green
+        if ($AutoFix) {
+            Write-Host "Résolution terminée. $resolvedCount/$totalCycles cycles résolus." -ForegroundColor Cyan
+        } else {
+            Write-Host "Analyse terminée. $totalCycles cycles détectés." -ForegroundColor Cyan
+            Write-Host "Pour résoudre automatiquement les cycles, utilisez le paramètre -AutoFix." -ForegroundColor Cyan
         }
         
-        return $results
+        return @{
+            TotalCycles = $totalCycles
+            ResolvedCycles = $resolvedCount
+            Graph = $Graph
+        }
     }
     catch {
-        Write-Error "Erreur lors de la résolution des dépendances circulaires : $_"
+        Write-Error "Erreur lors de la résolution des cycles de dépendances : $_"
         return @{
-            CyclesDetected = $Cycles.Count
-            CyclesFixed = 0
-            FixStrategy = $Strategy
-            FixedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-            FixDetails = @()
+            TotalCycles = $Cycles.Count
+            ResolvedCycles = $resolvedCount
+            Graph = $Graph
         }
     }
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Resolve-DependencyCycles
+Export-ModuleMember -Function Resolve-DependencyCycle, Remove-CycleEdge, Extract-Interface, Apply-DependencyInversion, Introduce-Mediator, Resolve-AllDependencyCycles

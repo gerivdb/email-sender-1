@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Corrige les fichiers de test réels.
+    Corrige les fichiers de test rÃ©els.
 
 .DESCRIPTION
-    Ce script corrige les problèmes courants dans les fichiers de test réels,
-    notamment les problèmes de liaison de paramètres.
+    Ce script corrige les problÃ¨mes courants dans les fichiers de test rÃ©els,
+    notamment les problÃ¨mes de liaison de paramÃ¨tres.
 
 .PARAMETER TestFile
-    Le fichier de test à corriger. Si non spécifié, tous les fichiers de test seront corrigés.
+    Le fichier de test Ã  corriger. Si non spÃ©cifiÃ©, tous les fichiers de test seront corrigÃ©s.
 
 .EXAMPLE
     .\Fix-TestFiles.ps1
@@ -25,7 +25,7 @@ param(
     [string]$TestFile
 )
 
-# Fonction pour réparer un fichier de test
+# Fonction pour rÃ©parer un fichier de test
 function Repair-TestFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -37,14 +37,14 @@ function Repair-TestFile {
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $tempDirCode = @'
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
-Write-Verbose "Répertoire temporaire créé : $testTempDir"
+Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $testTempDir"
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     [CmdletBinding()]
     param (
@@ -58,22 +58,22 @@ function New-TestFile {
         [string]$Directory = $testTempDir
     )
 
-    # Créer le répertoire s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire s'il n'existe pas
     if (-not (Test-Path -Path $Directory -PathType Container)) {
         New-Item -Path $Directory -ItemType Directory -Force | Out-Null
     }
 
-    # Créer le chemin complet du fichier
+    # CrÃ©er le chemin complet du fichier
     $filePath = Join-Path -Path $Directory -ChildPath $FileName
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $Content | Set-Content -Path $filePath -Encoding UTF8
 
     return $filePath
 }
 '@
 
-    # Ajouter le code de création de répertoire temporaire s'il n'existe pas déjà
+    # Ajouter le code de crÃ©ation de rÃ©pertoire temporaire s'il n'existe pas dÃ©jÃ 
     if (-not ($content -match "\`$testTempDir\s*=\s*Join-Path")) {
         $importModuleMatch = [regex]::Match($content, "Import-Module.*\r?\n")
         if ($importModuleMatch.Success) {
@@ -85,15 +85,15 @@ function New-TestFile {
         }
     }
 
-    # Corriger les problèmes de liaison de paramètres dans Get-FileFormatAnalysis.Tests.ps1
+    # Corriger les problÃ¨mes de liaison de paramÃ¨tres dans Get-FileFormatAnalysis.Tests.ps1
     if ($FilePath -like "*Get-FileFormatAnalysis.Tests.ps1") {
-        # Créer des fichiers de test au début du BeforeAll
+        # CrÃ©er des fichiers de test au dÃ©but du BeforeAll
         $beforeAllMatch = [regex]::Match($content, "BeforeAll\s*{")
         if ($beforeAllMatch.Success) {
             $insertPosition = $beforeAllMatch.Index + $beforeAllMatch.Length
             $testFilesCode = @'
 
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $jsonFilePath = New-TestFile -FileName "test.json" -Content '{"name":"Test","version":"1.0.0"}'
         $xmlFilePath = New-TestFile -FileName "test.xml" -Content '<root><name>Test</name></root>'
         $htmlFilePath = New-TestFile -FileName "test.html" -Content '<html><body>Test</body></html>'
@@ -102,7 +102,7 @@ function New-TestFile {
             $content = $content.Insert($insertPosition, $testFilesCode)
         }
 
-        # Remplacer les variables vides par les chemins de fichiers créés
+        # Remplacer les variables vides par les chemins de fichiers crÃ©Ã©s
         $content = $content -replace '\$jsonPath(?!\w)', '$jsonFilePath'
         $content = $content -replace '\$xmlPath(?!\w)', '$xmlFilePath'
         $content = $content -replace '\$htmlPath(?!\w)', '$htmlFilePath'
@@ -112,10 +112,10 @@ function New-TestFile {
     # Enregistrer les modifications
     $content | Set-Content -Path $FilePath -Encoding UTF8
 
-    Write-Host "Fichier corrigé : $FilePath" -ForegroundColor Green
+    Write-Host "Fichier corrigÃ© : $FilePath" -ForegroundColor Green
 }
 
-# Obtenir les fichiers de test à corriger
+# Obtenir les fichiers de test Ã  corriger
 $testFiles = @()
 
 if ($TestFile) {
@@ -134,10 +134,10 @@ else {
         ForEach-Object { $_.FullName }
 }
 
-# Réparer chaque fichier de test
+# RÃ©parer chaque fichier de test
 foreach ($file in $testFiles) {
     Repair-TestFile -FilePath $file
 }
 
-Write-Host "`nLes fichiers de test ont été corrigés." -ForegroundColor Green
-Write-Host "Exécutez les tests pour vérifier si les problèmes ont été résolus." -ForegroundColor Green
+Write-Host "`nLes fichiers de test ont Ã©tÃ© corrigÃ©s." -ForegroundColor Green
+Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green

@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Testeur de compatibilité pour les modules PowerShell.
+    Testeur de compatibilitÃ© pour les modules PowerShell.
 .DESCRIPTION
-    Vérifie la compatibilité des modules avec différentes versions de PowerShell.
+    VÃ©rifie la compatibilitÃ© des modules avec diffÃ©rentes versions de PowerShell.
 #>
 
-# Configuration du testeur de compatibilité
+# Configuration du testeur de compatibilitÃ©
 $script:CompatibilityTesterConfig = @{
     TestResultsPath = Join-Path -Path $env:TEMP -ChildPath "module-compatibility-tests"
     PowerShellVersions = @{
@@ -14,7 +14,7 @@ $script:CompatibilityTesterConfig = @{
     }
 }
 
-# Initialiser le testeur de compatibilité
+# Initialiser le testeur de compatibilitÃ©
 function Initialize-CompatibilityTester {
     [CmdletBinding()]
     param (
@@ -25,7 +25,7 @@ function Initialize-CompatibilityTester {
     if ($TestResultsPath) { $script:CompatibilityTesterConfig.TestResultsPath = $TestResultsPath }
     if ($PowerShellVersions) { $script:CompatibilityTesterConfig.PowerShellVersions = $PowerShellVersions }
     
-    # Créer le dossier de résultats
+    # CrÃ©er le dossier de rÃ©sultats
     if (-not (Test-Path -Path $script:CompatibilityTesterConfig.TestResultsPath)) {
         New-Item -Path $script:CompatibilityTesterConfig.TestResultsPath -ItemType Directory -Force | Out-Null
     }
@@ -33,7 +33,7 @@ function Initialize-CompatibilityTester {
     return $true
 }
 
-# Tester la compatibilité d'un module
+# Tester la compatibilitÃ© d'un module
 function Test-ModuleCompatibility {
     [CmdletBinding()]
     param (
@@ -47,7 +47,7 @@ function Test-ModuleCompatibility {
         [string[]]$PowerShellVersions = @()
     )
     
-    # Utiliser toutes les versions disponibles si non spécifiées
+    # Utiliser toutes les versions disponibles si non spÃ©cifiÃ©es
     if ($PowerShellVersions.Count -eq 0) {
         $PowerShellVersions = $script:CompatibilityTesterConfig.PowerShellVersions.Keys
     }
@@ -56,13 +56,13 @@ function Test-ModuleCompatibility {
     
     foreach ($psVersion in $PowerShellVersions) {
         if (-not $script:CompatibilityTesterConfig.PowerShellVersions.ContainsKey($psVersion)) {
-            Write-Warning "Version PowerShell '$psVersion' non configurée. Ignorée."
+            Write-Warning "Version PowerShell '$psVersion' non configurÃ©e. IgnorÃ©e."
             continue
         }
         
         $psExecutable = $script:CompatibilityTesterConfig.PowerShellVersions[$psVersion]
         
-        # Créer un script de test
+        # CrÃ©er un script de test
         $testScript = @"
 try {
     `$ErrorActionPreference = 'Stop'
@@ -89,7 +89,7 @@ catch {
         $testScriptPath = Join-Path -Path $script:CompatibilityTesterConfig.TestResultsPath -ChildPath "test-$ModuleName-$psVersion.ps1"
         Set-Content -Path $testScriptPath -Value $testScript
         
-        # Exécuter le test
+        # ExÃ©cuter le test
         try {
             $output = & $psExecutable -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $testScriptPath
             $result = $output | ConvertFrom-Json
@@ -101,7 +101,7 @@ catch {
                 ModuleName = $ModuleName
                 Version = $Version
                 PowerShellVersion = $psVersion
-                Error = "Erreur lors de l'exécution du test: $_"
+                Error = "Erreur lors de l'exÃ©cution du test: $_"
             }
         }
     }
@@ -109,7 +109,7 @@ catch {
     return $results
 }
 
-# Générer un rapport de compatibilité
+# GÃ©nÃ©rer un rapport de compatibilitÃ©
 function Get-CompatibilityReport {
     [CmdletBinding()]
     param (
@@ -145,7 +145,7 @@ function Get-CompatibilityReport {
         $report.Details[$psVersion] = $result
     }
     
-    # Calculer le score de compatibilité
+    # Calculer le score de compatibilitÃ©
     if ($TestResults.Count -gt 0) {
         $report.CompatibilityScore = ($report.CompatibleVersions.Count / $TestResults.Count) * 100
     }
@@ -153,7 +153,7 @@ function Get-CompatibilityReport {
     return $report
 }
 
-# Tester la compatibilité entre modules
+# Tester la compatibilitÃ© entre modules
 function Test-ModulesInteroperability {
     [CmdletBinding()]
     param (
@@ -167,16 +167,16 @@ function Test-ModulesInteroperability {
         [string]$PowerShellVersion = $PSVersionTable.PSVersion.ToString()
     )
     
-    # Vérifier si la version PowerShell est configurée
+    # VÃ©rifier si la version PowerShell est configurÃ©e
     if (-not $script:CompatibilityTesterConfig.PowerShellVersions.ContainsKey($PowerShellVersion)) {
-        Write-Warning "Version PowerShell '$PowerShellVersion' non configurée. Utilisation de la version actuelle."
+        Write-Warning "Version PowerShell '$PowerShellVersion' non configurÃ©e. Utilisation de la version actuelle."
         $psExecutable = "powershell.exe"
     }
     else {
         $psExecutable = $script:CompatibilityTesterConfig.PowerShellVersions[$PowerShellVersion]
     }
     
-    # Créer un script de test
+    # CrÃ©er un script de test
     $moduleImports = foreach ($module in $ModuleNames) {
         $versionParam = if ($Versions.ContainsKey($module)) { "-RequiredVersion '$($Versions[$module])'" } else { "" }
         "Import-Module -Name '$module' $versionParam -ErrorAction Stop"
@@ -215,7 +215,7 @@ $($ModuleNames | ForEach-Object { "            '$_'" } -join ",`n")
     $testScriptPath = Join-Path -Path $script:CompatibilityTesterConfig.TestResultsPath -ChildPath "interop-test-$([Guid]::NewGuid().ToString()).ps1"
     Set-Content -Path $testScriptPath -Value $testScript
     
-    # Exécuter le test
+    # ExÃ©cuter le test
     try {
         $output = & $psExecutable -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $testScriptPath
         $result = $output | ConvertFrom-Json
@@ -227,7 +227,7 @@ $($ModuleNames | ForEach-Object { "            '$_'" } -join ",`n")
             Modules = $ModuleNames
             Versions = $Versions
             PowerShellVersion = $PowerShellVersion
-            Error = "Erreur lors de l'exécution du test: $_"
+            Error = "Erreur lors de l'exÃ©cution du test: $_"
         }
     }
     finally {

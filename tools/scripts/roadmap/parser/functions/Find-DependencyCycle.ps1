@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les cycles de dépendances dans une roadmap.
+    DÃ©tecte les cycles de dÃ©pendances dans une roadmap.
 
 .DESCRIPTION
-    La fonction Find-DependencyCycle analyse une roadmap pour détecter les cycles de dépendances entre les tâches.
-    Elle utilise un algorithme de détection de cycle dans un graphe orienté.
+    La fonction Find-DependencyCycle analyse une roadmap pour dÃ©tecter les cycles de dÃ©pendances entre les tÃ¢ches.
+    Elle utilise un algorithme de dÃ©tection de cycle dans un graphe orientÃ©.
 
 .PARAMETER Roadmap
-    L'objet roadmap à analyser.
+    L'objet roadmap Ã  analyser.
 
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour la visualisation des cycles.
@@ -15,15 +15,15 @@
 .EXAMPLE
     $roadmap = ConvertFrom-MarkdownToRoadmapExtended -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
     Find-DependencyCycle -Roadmap $roadmap -OutputPath ".\cycles.md"
-    Détecte les cycles de dépendances dans la roadmap et génère une visualisation.
+    DÃ©tecte les cycles de dÃ©pendances dans la roadmap et gÃ©nÃ¨re une visualisation.
 
 .OUTPUTS
-    [PSCustomObject] Représentant les cycles de dépendances détectés.
+    [PSCustomObject] ReprÃ©sentant les cycles de dÃ©pendances dÃ©tectÃ©s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Find-DependencyCycle {
     [CmdletBinding()]
@@ -35,19 +35,19 @@ function Find-DependencyCycle {
         [string]$OutputPath
     )
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         Cycles        = [System.Collections.ArrayList]::new()
         Visualization = ""
     }
 
-    # Vérifier si la roadmap contient des tâches
+    # VÃ©rifier si la roadmap contient des tÃ¢ches
     if (-not $Roadmap.AllTasks -or $Roadmap.AllTasks.Count -eq 0) {
-        Write-Warning "La roadmap ne contient pas de tâches."
+        Write-Warning "La roadmap ne contient pas de tÃ¢ches."
         return $result
     }
 
-    # Fonction récursive pour détecter les cycles
+    # Fonction rÃ©cursive pour dÃ©tecter les cycles
     function Test-CycleInTask {
         param (
             [PSCustomObject]$Task,
@@ -57,7 +57,7 @@ function Find-DependencyCycle {
 
         if ($VisitedTasks.Contains($Task.Id)) {
             if ($Path.Contains($Task.Id)) {
-                # Cycle détecté
+                # Cycle dÃ©tectÃ©
                 $cycle = @()
                 $found = $false
 
@@ -92,7 +92,7 @@ function Find-DependencyCycle {
         return $null
     }
 
-    # Détecter les cycles pour chaque tâche
+    # DÃ©tecter les cycles pour chaque tÃ¢che
     foreach ($id in $Roadmap.AllTasks.Keys) {
         $task = $Roadmap.AllTasks[$id]
         $cycle = Test-CycleInTask -Task $task
@@ -100,7 +100,7 @@ function Find-DependencyCycle {
         if ($null -ne $cycle -and $cycle.Count -gt 0) {
             $cycleStr = $cycle -join " -> "
 
-            # Vérifier si ce cycle a déjà été détecté
+            # VÃ©rifier si ce cycle a dÃ©jÃ  Ã©tÃ© dÃ©tectÃ©
             $cycleExists = $false
             foreach ($existingCycle in $result.Cycles) {
                 if ($existingCycle.CycleString -eq $cycleStr) {
@@ -119,11 +119,11 @@ function Find-DependencyCycle {
         }
     }
 
-    # Générer une visualisation des cycles si demandé
+    # GÃ©nÃ©rer une visualisation des cycles si demandÃ©
     if ($result.Cycles.Count -gt 0) {
         $sb = [System.Text.StringBuilder]::new()
 
-        $sb.AppendLine("# Cycles de dépendances détectés") | Out-Null
+        $sb.AppendLine("# Cycles de dÃ©pendances dÃ©tectÃ©s") | Out-Null
         $sb.AppendLine("") | Out-Null
 
         $sb.AppendLine("## Liste des cycles") | Out-Null
@@ -140,7 +140,7 @@ function Find-DependencyCycle {
         $sb.AppendLine('```mermaid') | Out-Null
         $sb.AppendLine('graph TD') | Out-Null
 
-        # Ajouter les nœuds impliqués dans les cycles
+        # Ajouter les nÅ“uds impliquÃ©s dans les cycles
         $nodesInCycles = [System.Collections.Generic.HashSet[string]]::new()
         foreach ($cycle in $result.Cycles) {
             foreach ($node in $cycle.Nodes) {
@@ -157,14 +157,14 @@ function Find-DependencyCycle {
             }
         }
 
-        # Ajouter les relations de dépendance impliquées dans les cycles
+        # Ajouter les relations de dÃ©pendance impliquÃ©es dans les cycles
         foreach ($cycle in $result.Cycles) {
             for ($i = 0; $i -lt $cycle.Nodes.Count - 1; $i++) {
                 $sb.AppendLine("    $($cycle.Nodes[$i]) --> $($cycle.Nodes[$i+1])") | Out-Null
             }
         }
 
-        # Ajouter des styles pour les nœuds impliqués dans les cycles
+        # Ajouter des styles pour les nÅ“uds impliquÃ©s dans les cycles
         $sb.AppendLine("    classDef cycleNode fill:#f99,stroke:#f66,stroke-width:2px") | Out-Null
 
         foreach ($nodeId in $nodesInCycles) {
@@ -175,7 +175,7 @@ function Find-DependencyCycle {
 
         $result.Visualization = $sb.ToString()
 
-        # Écrire la visualisation dans un fichier si demandé
+        # Ã‰crire la visualisation dans un fichier si demandÃ©
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
             $result.Visualization | Out-File -FilePath $OutputPath -Encoding UTF8
         }

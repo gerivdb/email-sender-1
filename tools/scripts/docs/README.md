@@ -1,4 +1,4 @@
-# docs
+﻿# docs
 
 Documentation
 
@@ -10,5 +10,5 @@ Guides d'utilisation
 
 ### references
 
-Documentation de référence
+Documentation de rÃ©fÃ©rence
 

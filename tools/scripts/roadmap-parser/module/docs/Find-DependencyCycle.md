@@ -1,8 +1,8 @@
-# Find-DependencyCycle
+﻿# Find-DependencyCycle
 
 ## SYNOPSIS
 
-Détecte les cycles de dépendances dans une roadmap.
+DÃ©tecte les cycles de dÃ©pendances dans une roadmap.
 
 ## SYNTAX
 
@@ -12,14 +12,14 @@ Détecte les cycles de dépendances dans une roadmap.
 ```n
 ## DESCRIPTION
 
-La fonction Find-DependencyCycle analyse une roadmap pour détecter les cycles de dépendances entre les tâches.
-Elle utilise un algorithme de détection de cycle dans un graphe orienté.
+La fonction Find-DependencyCycle analyse une roadmap pour dÃ©tecter les cycles de dÃ©pendances entre les tÃ¢ches.
+Elle utilise un algorithme de dÃ©tection de cycle dans un graphe orientÃ©.
 
 ## PARAMETERS
 
 ### -Roadmap
 
-L'objet roadmap à analyser.
+L'objet roadmap Ã  analyser.
 
 `yaml
 Type: PSObject
@@ -55,13 +55,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant les cycles de dépendances détectés.
+[PSCustomObject] ReprÃ©sentant les cycles de dÃ©pendances dÃ©tectÃ©s.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -70,7 +70,7 @@ Date de création: 2023-07-10
 `powershell
 $roadmap = ConvertFrom-MarkdownToRoadmapExtended -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
 Find-DependencyCycle -Roadmap $roadmap -OutputPath ".\cycles.md"
-Détecte les cycles de dépendances dans la roadmap et génère une visualisation.
+DÃ©tecte les cycles de dÃ©pendances dans la roadmap et gÃ©nÃ¨re une visualisation.
 `
 
     

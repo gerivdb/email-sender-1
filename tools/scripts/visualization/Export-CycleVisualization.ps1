@@ -1,4 +1,4 @@
-# Fonction pour exporter une visualisation HTML des cycles de dependances
+﻿# Fonction pour exporter une visualisation HTML des cycles de dependances
 function Export-CycleVisualizationHTML {
     [CmdletBinding()]
     param (

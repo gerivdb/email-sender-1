@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des benchmarks de performance pour les modules de rapports PR.
+    ExÃ©cute des benchmarks de performance pour les modules de rapports PR.
 .DESCRIPTION
-    Ce script exécute des benchmarks standardisés pour mesurer les performances
-    des différentes fonctions des modules de rapports PR. Il génère des résultats
-    structurés qui peuvent être utilisés pour analyser les performances et détecter
-    les régressions.
+    Ce script exÃ©cute des benchmarks standardisÃ©s pour mesurer les performances
+    des diffÃ©rentes fonctions des modules de rapports PR. Il gÃ©nÃ¨re des rÃ©sultats
+    structurÃ©s qui peuvent Ãªtre utilisÃ©s pour analyser les performances et dÃ©tecter
+    les rÃ©gressions.
 .PARAMETER ModuleName
-    Nom du module à tester. Si non spécifié, tous les modules seront testés.
+    Nom du module Ã  tester. Si non spÃ©cifiÃ©, tous les modules seront testÃ©s.
 .PARAMETER FunctionName
-    Nom de la fonction à tester. Si non spécifié, toutes les fonctions du module seront testées.
+    Nom de la fonction Ã  tester. Si non spÃ©cifiÃ©, toutes les fonctions du module seront testÃ©es.
 .PARAMETER Iterations
-    Nombre d'itérations pour chaque test. Par défaut: 5.
+    Nombre d'itÃ©rations pour chaque test. Par dÃ©faut: 5.
 .PARAMETER DataSize
-    Taille des données de test (Small, Medium, Large). Par défaut: Medium.
+    Taille des donnÃ©es de test (Small, Medium, Large). Par dÃ©faut: Medium.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats. Par défaut: ".\benchmark_results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats. Par dÃ©faut: ".\benchmark_results.json".
 .PARAMETER IncludeDetails
-    Inclut les détails de chaque itération dans les résultats.
+    Inclut les dÃ©tails de chaque itÃ©ration dans les rÃ©sultats.
 .EXAMPLE
     .\Invoke-PRPerformanceBenchmark.ps1 -ModuleName "PRVisualization" -DataSize "Large"
 .NOTES
@@ -50,7 +50,7 @@ param (
     [switch]$IncludeDetails
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modules = @(
     "PRReportFilters",
@@ -58,7 +58,7 @@ $modules = @(
     "PRVisualization"
 )
 
-# Filtrer les modules si un module spécifique est demandé
+# Filtrer les modules si un module spÃ©cifique est demandÃ©
 if ($ModuleName) {
     $modules = $modules | Where-Object { $_ -eq $ModuleName }
 }
@@ -68,20 +68,20 @@ foreach ($module in $modules) {
     $modulePath = Join-Path -Path $modulesPath -ChildPath "$module.psm1"
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
-        Write-Verbose "Module importé: $module"
+        Write-Verbose "Module importÃ©: $module"
     }
     else {
-        Write-Error "Module non trouvé: $modulePath"
+        Write-Error "Module non trouvÃ©: $modulePath"
     }
 }
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     param (
         [string]$Size
     )
     
-    # Définir la taille des données en fonction du paramètre
+    # DÃ©finir la taille des donnÃ©es en fonction du paramÃ¨tre
     $count = switch ($Size) {
         "Small" { 10 }
         "Medium" { 100 }
@@ -89,7 +89,7 @@ function New-TestData {
         default { 100 }
     }
     
-    # Générer des données de test pour PRReportFilters
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRReportFilters
     $filterTestData = @()
     for ($i = 0; $i -lt $count; $i++) {
         $filterTestData += [PSCustomObject]@{
@@ -102,7 +102,7 @@ function New-TestData {
         }
     }
     
-    # Générer des données de test pour PRVisualization
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRVisualization
     $visualizationTestData = @()
     for ($i = 0; $i -lt $count; $i++) {
         $visualizationTestData += [PSCustomObject]@{
@@ -112,7 +112,7 @@ function New-TestData {
         }
     }
     
-    # Générer des données de test pour PRReportTemplates
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRReportTemplates
     $templateTestData = [PSCustomObject]@{
         title       = "Test Report"
         description = "This is a test report with $count items"
@@ -126,7 +126,7 @@ function New-TestData {
         }
     }
     
-    # Créer un template HTML de test
+    # CrÃ©er un template HTML de test
     $htmlTemplate = @"
 <!DOCTYPE html>
 <html>
@@ -145,11 +145,11 @@ function New-TestData {
 </html>
 "@
     
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceTest_$(Get-Random)"
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
     
-    # Créer le fichier de template
+    # CrÃ©er le fichier de template
     $templatePath = Join-Path -Path $testDir -ChildPath "template.html"
     Set-Content -Path $templatePath -Value $htmlTemplate -Encoding UTF8
     
@@ -167,7 +167,7 @@ function New-TestData {
     }
 }
 
-# Fonction pour exécuter un benchmark sur une fonction
+# Fonction pour exÃ©cuter un benchmark sur une fonction
 function Invoke-FunctionBenchmark {
     param (
         [string]$ModuleName,
@@ -176,7 +176,7 @@ function Invoke-FunctionBenchmark {
         [int]$Iterations
     )
     
-    Write-Host "Exécution du benchmark pour $ModuleName.$FunctionName avec $Iterations itérations..."
+    Write-Host "ExÃ©cution du benchmark pour $ModuleName.$FunctionName avec $Iterations itÃ©rations..."
     
     $results = @{
         ModuleName   = $ModuleName
@@ -189,7 +189,7 @@ function Invoke-FunctionBenchmark {
         Details      = @()
     }
     
-    # Préparer les paramètres pour la fonction
+    # PrÃ©parer les paramÃ¨tres pour la fonction
     $params = @{}
     
     switch ($ModuleName) {
@@ -285,24 +285,24 @@ function Invoke-FunctionBenchmark {
         }
     }
     
-    # Exécuter le benchmark
+    # ExÃ©cuter le benchmark
     for ($i = 0; $i -lt $Iterations; $i++) {
         $sw = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Exécuter la fonction avec les paramètres préparés
+            # ExÃ©cuter la fonction avec les paramÃ¨tres prÃ©parÃ©s
             & $FunctionName @params | Out-Null
             $success = $true
         }
         catch {
-            Write-Error "Erreur lors de l'exécution de $FunctionName : $_"
+            Write-Error "Erreur lors de l'exÃ©cution de $FunctionName : $_"
             $success = $false
         }
         
         $sw.Stop()
         $elapsedMs = $sw.ElapsedMilliseconds
         
-        # Enregistrer les détails de l'itération
+        # Enregistrer les dÃ©tails de l'itÃ©ration
         if ($IncludeDetails) {
             $results.Details += [PSCustomObject]@{
                 Iteration = $i + 1
@@ -311,7 +311,7 @@ function Invoke-FunctionBenchmark {
             }
         }
         
-        # Mettre à jour les statistiques
+        # Mettre Ã  jour les statistiques
         $results.TotalMs += $elapsedMs
         $results.MinMs = [Math]::Min($results.MinMs, $elapsedMs)
         $results.MaxMs = [Math]::Max($results.MaxMs, $elapsedMs)
@@ -323,7 +323,7 @@ function Invoke-FunctionBenchmark {
     return $results
 }
 
-# Fonction principale pour exécuter tous les benchmarks
+# Fonction principale pour exÃ©cuter tous les benchmarks
 function Invoke-AllBenchmarks {
     param (
         [string[]]$Modules,
@@ -336,10 +336,10 @@ function Invoke-AllBenchmarks {
     $testData = New-TestData -Size $DataSize
     
     foreach ($module in $Modules) {
-        # Obtenir toutes les fonctions exportées du module
+        # Obtenir toutes les fonctions exportÃ©es du module
         $functions = Get-Command -Module $module | Where-Object { $_.CommandType -eq "Function" }
         
-        # Filtrer les fonctions si un filtre est spécifié
+        # Filtrer les fonctions si un filtre est spÃ©cifiÃ©
         if ($FunctionFilter) {
             $functions = $functions | Where-Object { $_.Name -like "*$FunctionFilter*" }
         }
@@ -347,7 +347,7 @@ function Invoke-AllBenchmarks {
         foreach ($function in $functions) {
             $functionName = $function.Name
             
-            # Exécuter le benchmark pour cette fonction
+            # ExÃ©cuter le benchmark pour cette fonction
             $result = Invoke-FunctionBenchmark -ModuleName $module -FunctionName $functionName -TestData $testData -Iterations $Iterations
             
             if ($result) {
@@ -364,10 +364,10 @@ function Invoke-AllBenchmarks {
     return $allResults
 }
 
-# Exécuter les benchmarks
+# ExÃ©cuter les benchmarks
 $benchmarkResults = Invoke-AllBenchmarks -Modules $modules -FunctionFilter $FunctionName -Iterations $Iterations -DataSize $DataSize
 
-# Ajouter des métadonnées aux résultats
+# Ajouter des mÃ©tadonnÃ©es aux rÃ©sultats
 $results = @{
     Timestamp  = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     DataSize   = $DataSize
@@ -380,13 +380,13 @@ $results = @{
     Results    = $benchmarkResults
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des benchmarks:"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des benchmarks:"
 Write-Host "======================"
 Write-Host "Date: $($results.Timestamp)"
-Write-Host "Taille des données: $DataSize"
-Write-Host "Itérations: $Iterations"
-Write-Host "Système: PowerShell $($results.System.PSVersion) sur $($results.System.OS)"
+Write-Host "Taille des donnÃ©es: $DataSize"
+Write-Host "ItÃ©rations: $Iterations"
+Write-Host "SystÃ¨me: PowerShell $($results.System.PSVersion) sur $($results.System.OS)"
 Write-Host ""
 
 $benchmarkResults | ForEach-Object {
@@ -397,6 +397,6 @@ $benchmarkResults | ForEach-Object {
     Write-Host ""
 }
 
-# Enregistrer les résultats dans un fichier JSON
+# Enregistrer les rÃ©sultats dans un fichier JSON
 $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Résultats enregistrés dans: $OutputPath"
+Write-Host "RÃ©sultats enregistrÃ©s dans: $OutputPath"

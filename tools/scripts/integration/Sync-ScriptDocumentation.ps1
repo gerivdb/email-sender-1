@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Synchronise l'inventaire des scripts avec le système de documentation
+    Synchronise l'inventaire des scripts avec le systÃ¨me de documentation
 .DESCRIPTION
-    Ce script génère et met à jour la documentation à partir des métadonnées
+    Ce script gÃ©nÃ¨re et met Ã  jour la documentation Ã  partir des mÃ©tadonnÃ©es
     des scripts dans l'inventaire.
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .PARAMETER DocsPath
-    Chemin du répertoire de documentation
+    Chemin du rÃ©pertoire de documentation
 .PARAMETER UpdateExisting
-    Indique s'il faut mettre à jour la documentation existante
+    Indique s'il faut mettre Ã  jour la documentation existante
 .EXAMPLE
     .\Sync-ScriptDocumentation.ps1 -Path "C:\Scripts" -DocsPath "C:\Scripts\docs"
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
-    Tags: documentation, scripts, intégration
+    Tags: documentation, scripts, intÃ©gration
 #>
 
 [CmdletBinding()]
@@ -31,11 +31,11 @@ param(
     [switch]$UpdateExisting
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour générer la documentation d'un script
+# Fonction pour gÃ©nÃ©rer la documentation d'un script
 function New-ScriptDocumentation {
     param (
         [Parameter(Mandatory = $true)]
@@ -45,7 +45,7 @@ function New-ScriptDocumentation {
         [string]$OutputPath
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
@@ -54,7 +54,7 @@ function New-ScriptDocumentation {
     # Lire le contenu du script
     $content = Get-Content -Path $Script.FullPath -Raw -ErrorAction SilentlyContinue
     
-    # Extraire les fonctions et les paramètres
+    # Extraire les fonctions et les paramÃ¨tres
     $functions = @()
     $parameters = @()
     
@@ -65,7 +65,7 @@ function New-ScriptDocumentation {
             $functions += $match.Groups[1].Value
         }
         
-        # Extraire les paramètres PowerShell
+        # Extraire les paramÃ¨tres PowerShell
         $paramMatches = [regex]::Matches($content, 'param\s*\(\s*(?:\[Parameter.*?\])?\s*\[([^\]]+)\]\s*\$([A-Za-z0-9\-_]+)')
         foreach ($match in $paramMatches) {
             $paramType = $match.Groups[1].Value
@@ -87,20 +87,20 @@ function New-ScriptDocumentation {
         }
     }
     
-    # Générer le contenu de la documentation
+    # GÃ©nÃ©rer le contenu de la documentation
     $doc = @"
 # $($Script.FileName)
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 
 - **Nom du fichier**: $($Script.FileName)
 - **Chemin**: $($Script.FullPath)
 - **Langage**: $($Script.Language)
 - **Auteur**: $($Script.Author)
 - **Version**: $($Script.Version)
-- **Catégorie**: $($Script.Category)
-- **Sous-catégorie**: $($Script.SubCategory)
-- **Dernière modification**: $($Script.LastModified)
+- **CatÃ©gorie**: $($Script.Category)
+- **Sous-catÃ©gorie**: $($Script.SubCategory)
+- **DerniÃ¨re modification**: $($Script.LastModified)
 - **Nombre de lignes**: $($Script.LineCount)
 
 ## Description
@@ -124,11 +124,11 @@ $(foreach ($function in $functions) { "- `$function`" })
 "@
     }
     
-    # Ajouter les paramètres si disponibles
+    # Ajouter les paramÃ¨tres si disponibles
     if ($parameters.Count -gt 0) {
         $doc += @"
 
-## Paramètres
+## ParamÃ¨tres
 
 $(foreach ($parameter in $parameters) { "- `$parameter`" })
 
@@ -147,21 +147,21 @@ $(if ($content) { $content.Substring(0, [Math]::Min(500, $content.Length)) + (if
 ## Liens
 
 - [Voir le fichier complet]($($Script.FullPath))
-- [Retour à l'index](../index.md)
+- [Retour Ã  l'index](../index.md)
 
 ---
 
-*Documentation générée automatiquement le $(Get-Date -Format "yyyy-MM-dd") à $(Get-Date -Format "HH:mm:ss")*
+*Documentation gÃ©nÃ©rÃ©e automatiquement le $(Get-Date -Format "yyyy-MM-dd") Ã  $(Get-Date -Format "HH:mm:ss")*
 
 "@
 
-    # Écrire le fichier de documentation
+    # Ã‰crire le fichier de documentation
     Set-Content -Path $OutputPath -Value $doc -Encoding UTF8
     
     return $OutputPath
 }
 
-# Fonction pour générer l'index de la documentation
+# Fonction pour gÃ©nÃ©rer l'index de la documentation
 function New-DocumentationIndex {
     param (
         [Parameter(Mandatory = $true)]
@@ -171,29 +171,29 @@ function New-DocumentationIndex {
         [string]$OutputPath
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
     }
     
-    # Grouper les scripts par catégorie
+    # Grouper les scripts par catÃ©gorie
     $scriptsByCategory = $Scripts | Group-Object -Property Category
     
-    # Générer le contenu de l'index
+    # GÃ©nÃ©rer le contenu de l'index
     $index = @"
 # Index de la Documentation des Scripts
 
 ## Vue d'ensemble
 
-Cette documentation a été générée automatiquement à partir de l'inventaire des scripts.
-Elle contient des informations sur tous les scripts du projet, organisés par catégorie.
+Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement Ã  partir de l'inventaire des scripts.
+Elle contient des informations sur tous les scripts du projet, organisÃ©s par catÃ©gorie.
 
 - **Nombre total de scripts**: $($Scripts.Count)
-- **Nombre de catégories**: $($scriptsByCategory.Count)
-- **Date de génération**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- **Nombre de catÃ©gories**: $($scriptsByCategory.Count)
+- **Date de gÃ©nÃ©ration**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Scripts par catégorie
+## Scripts par catÃ©gorie
 
 "@
 
@@ -226,52 +226,52 @@ $(foreach ($script in ($Scripts | Sort-Object -Property LineCount -Descending | 
     "  - $($script.FileName) ($($script.LineCount) lignes)"
 })
 
-- **Scripts récemment modifiés**:
+- **Scripts rÃ©cemment modifiÃ©s**:
 $(foreach ($script in ($Scripts | Sort-Object -Property LastModified -Descending | Select-Object -First 5)) {
     "  - $($script.FileName) ($(Get-Date $script.LastModified -Format 'yyyy-MM-dd'))"
 })
 
 ---
 
-*Documentation générée automatiquement le $(Get-Date -Format "yyyy-MM-dd") à $(Get-Date -Format "HH:mm:ss")*
+*Documentation gÃ©nÃ©rÃ©e automatiquement le $(Get-Date -Format "yyyy-MM-dd") Ã  $(Get-Date -Format "HH:mm:ss")*
 
 "@
 
-    # Écrire le fichier d'index
+    # Ã‰crire le fichier d'index
     Set-Content -Path $OutputPath -Value $index -Encoding UTF8
     
     return $OutputPath
 }
 
-# Récupérer les scripts
-Write-Host "Récupération des scripts..." -ForegroundColor Cyan
+# RÃ©cupÃ©rer les scripts
+Write-Host "RÃ©cupÃ©ration des scripts..." -ForegroundColor Cyan
 $scripts = Get-ScriptInventory -Path $Path
 
-# Vérifier qu'il y a des scripts
+# VÃ©rifier qu'il y a des scripts
 if (-not $scripts -or $scripts.Count -eq 0) {
-    Write-Host "Aucun script trouvé dans le répertoire spécifié." -ForegroundColor Red
+    Write-Host "Aucun script trouvÃ© dans le rÃ©pertoire spÃ©cifiÃ©." -ForegroundColor Red
     exit
 }
 
-# Créer le répertoire de documentation s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de documentation s'il n'existe pas
 if (-not (Test-Path $DocsPath)) {
     New-Item -ItemType Directory -Path $DocsPath -Force | Out-Null
-    Write-Host "Répertoire de documentation créé: $DocsPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de documentation crÃ©Ã©: $DocsPath" -ForegroundColor Green
 }
 
-# Créer le répertoire pour les scripts
+# CrÃ©er le rÃ©pertoire pour les scripts
 $scriptsDocsPath = Join-Path -Path $DocsPath -ChildPath "scripts"
 if (-not (Test-Path $scriptsDocsPath)) {
     New-Item -ItemType Directory -Path $scriptsDocsPath -Force | Out-Null
 }
 
-# Générer la documentation pour chaque script
+# GÃ©nÃ©rer la documentation pour chaque script
 $docsGenerated = 0
 $docsUpdated = 0
 $docsSkipped = 0
 
 foreach ($script in $scripts) {
-    # Créer le répertoire pour la catégorie
+    # CrÃ©er le rÃ©pertoire pour la catÃ©gorie
     $categoryPath = Join-Path -Path $scriptsDocsPath -ChildPath $script.Category
     if (-not (Test-Path $categoryPath)) {
         New-Item -ItemType Directory -Path $categoryPath -Force | Out-Null
@@ -281,39 +281,39 @@ foreach ($script in $scripts) {
     $docFileName = $script.FileName.Replace('.', '_') + ".md"
     $docPath = Join-Path -Path $categoryPath -ChildPath $docFileName
     
-    # Vérifier si le fichier existe déjà
+    # VÃ©rifier si le fichier existe dÃ©jÃ 
     $fileExists = Test-Path $docPath
     
     if (-not $fileExists -or $UpdateExisting) {
-        # Générer la documentation
+        # GÃ©nÃ©rer la documentation
         New-ScriptDocumentation -Script $script -OutputPath $docPath | Out-Null
         
         if ($fileExists) {
             $docsUpdated++
-            Write-Host "Documentation mise à jour: $docPath" -ForegroundColor Yellow
+            Write-Host "Documentation mise Ã  jour: $docPath" -ForegroundColor Yellow
         } else {
             $docsGenerated++
-            Write-Host "Documentation générée: $docPath" -ForegroundColor Green
+            Write-Host "Documentation gÃ©nÃ©rÃ©e: $docPath" -ForegroundColor Green
         }
     } else {
         $docsSkipped++
-        Write-Host "Documentation existante ignorée: $docPath" -ForegroundColor Gray
+        Write-Host "Documentation existante ignorÃ©e: $docPath" -ForegroundColor Gray
     }
 }
 
-# Générer l'index
+# GÃ©nÃ©rer l'index
 $indexPath = Join-Path -Path $DocsPath -ChildPath "index.md"
 New-DocumentationIndex -Scripts $scripts -OutputPath $indexPath | Out-Null
-Write-Host "Index généré: $indexPath" -ForegroundColor Green
+Write-Host "Index gÃ©nÃ©rÃ©: $indexPath" -ForegroundColor Green
 
-# Afficher un résumé
-Write-Host "`nRésumé:" -ForegroundColor Cyan
-Write-Host "- Documentation générée pour $docsGenerated scripts" -ForegroundColor Green
-Write-Host "- Documentation mise à jour pour $docsUpdated scripts" -ForegroundColor Yellow
-Write-Host "- Documentation existante ignorée pour $docsSkipped scripts" -ForegroundColor Gray
-Write-Host "- Index généré avec $($scripts.Count) scripts" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ©:" -ForegroundColor Cyan
+Write-Host "- Documentation gÃ©nÃ©rÃ©e pour $docsGenerated scripts" -ForegroundColor Green
+Write-Host "- Documentation mise Ã  jour pour $docsUpdated scripts" -ForegroundColor Yellow
+Write-Host "- Documentation existante ignorÃ©e pour $docsSkipped scripts" -ForegroundColor Gray
+Write-Host "- Index gÃ©nÃ©rÃ© avec $($scripts.Count) scripts" -ForegroundColor Green
 
-# Demander à l'utilisateur s'il veut ouvrir l'index
+# Demander Ã  l'utilisateur s'il veut ouvrir l'index
 $openIndex = Read-Host "Voulez-vous ouvrir l'index de la documentation? (O/N)"
 if ($openIndex -eq "O" -or $openIndex -eq "o") {
     Start-Process $indexPath

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-SmartPartialAnalysis.
@@ -13,18 +13,18 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-SmartPartialAnalysis.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Start-SmartPartialAnalysis non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Start-SmartPartialAnalysis non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modulesToImport = @(
     "FileContentIndexer.psm1",
@@ -39,11 +39,11 @@ foreach ($module in $modulesToImport) {
     }
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SmartPartialAnalysisTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -61,7 +61,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @"
 # Test PowerShell Script
 Import-Module MyModule
@@ -131,7 +131,7 @@ function Test-PartialFileAnalysisFunction {
         [bool]$IncludeSymbolContext = $true
     )
     
-    # Charger le script à tester
+    # Charger le script Ã  tester
     . $scriptToTest
     
     # Appeler la fonction Invoke-PartialFileAnalysis
@@ -147,7 +147,7 @@ function Get-FileDiff {
         [string]$HeadBranch
     )
     
-    # Simuler des lignes modifiées
+    # Simuler des lignes modifiÃ©es
     return @(
         [PSCustomObject]@{
             LineNumber = 10
@@ -165,22 +165,22 @@ function Get-FileDiff {
 # Tests Pester
 Describe "Start-SmartPartialAnalysis Tests" {
     BeforeAll {
-        # Créer un analyseur pour les tests
+        # CrÃ©er un analyseur pour les tests
         $script:analyzer = New-SyntaxAnalyzer
         
-        # Créer un cache pour les tests
+        # CrÃ©er un cache pour les tests
         $script:cache = New-PRAnalysisCache -MaxMemoryItems 100
         
-        # Créer un objet de fichier pour les tests
+        # CrÃ©er un objet de fichier pour les tests
         $script:fileObject = [PSCustomObject]@{
             path = "test_partial.ps1"
             sha = "123456789abcdef"
         }
     }
     
-    Context "Invoke-PartialFileAnalysis avec métriques de performance" {
-        It "Collecte des métriques de performance" {
-            # Définir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
+    Context "Invoke-PartialFileAnalysis avec mÃ©triques de performance" {
+        It "Collecte des mÃ©triques de performance" {
+            # DÃ©finir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
             Set-Item -Path function:Global:Get-FileDiff -Value ${function:Get-FileDiff}
             
             $result = Test-PartialFileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -BaseBranch "main" -HeadBranch "feature" -Context 3
@@ -195,7 +195,7 @@ Describe "Start-SmartPartialAnalysis Tests" {
         }
         
         It "Utilise le contexte intelligent" {
-            # Définir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
+            # DÃ©finir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
             Set-Item -Path function:Global:Get-FileDiff -Value ${function:Get-FileDiff}
             
             $result = Test-PartialFileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -BaseBranch "main" -HeadBranch "feature" -Context 3 -UseIntelligentContext $true
@@ -204,8 +204,8 @@ Describe "Start-SmartPartialAnalysis Tests" {
             $result.ContextStrategy | Should -Be "Intelligent"
         }
         
-        It "Utilise le contexte standard quand demandé" {
-            # Définir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
+        It "Utilise le contexte standard quand demandÃ©" {
+            # DÃ©finir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
             Set-Item -Path function:Global:Get-FileDiff -Value ${function:Get-FileDiff}
             
             $result = Test-PartialFileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -BaseBranch "main" -HeadBranch "feature" -Context 3 -UseIntelligentContext $false
@@ -214,23 +214,23 @@ Describe "Start-SmartPartialAnalysis Tests" {
             $result.ContextStrategy | Should -Be "Standard"
         }
         
-        It "Utilise le cache pour améliorer les performances" {
-            # Définir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
+        It "Utilise le cache pour amÃ©liorer les performances" {
+            # DÃ©finir la fonction Get-FileDiff dans le scope global pour qu'elle soit accessible
             Set-Item -Path function:Global:Get-FileDiff -Value ${function:Get-FileDiff}
             
-            # Première analyse (sans cache)
+            # PremiÃ¨re analyse (sans cache)
             $startTime1 = [System.Diagnostics.Stopwatch]::StartNew()
             $result1 = Test-PartialFileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -BaseBranch "main" -HeadBranch "feature" -Context 3
             $startTime1.Stop()
             $time1 = $startTime1.ElapsedMilliseconds
             
-            # Deuxième analyse (avec cache)
+            # DeuxiÃ¨me analyse (avec cache)
             $startTime2 = [System.Diagnostics.Stopwatch]::StartNew()
             $result2 = Test-PartialFileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -BaseBranch "main" -HeadBranch "feature" -Context 3
             $startTime2.Stop()
             $time2 = $startTime2.ElapsedMilliseconds
             
-            # La deuxième analyse devrait être plus rapide
+            # La deuxiÃ¨me analyse devrait Ãªtre plus rapide
             $time2 | Should -BeLessThan $time1
             $result2.FromCache | Should -Be $true
         }
@@ -247,5 +247,5 @@ Describe "Start-SmartPartialAnalysis Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

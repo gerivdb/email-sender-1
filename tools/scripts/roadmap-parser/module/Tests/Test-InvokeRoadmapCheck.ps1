@@ -1,68 +1,68 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Invoke-RoadmapCheck.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour la fonction Invoke-RoadmapCheck
-    qui permet de vérifier si les tâches sélectionnées ont été implémentées à 100%
-    et testées avec succès à 100%.
+    qui permet de vÃ©rifier si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100%
+    et testÃ©es avec succÃ¨s Ã  100%.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $invokeCheckPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapCheck.ps1"
 $updateTaskPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Update-RoadmapTaskStatus.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $invokeCheckPath)) {
-    throw "Le fichier Invoke-RoadmapCheck.ps1 est introuvable à l'emplacement : $invokeCheckPath"
+    throw "Le fichier Invoke-RoadmapCheck.ps1 est introuvable Ã  l'emplacement : $invokeCheckPath"
 }
 
 if (-not (Test-Path -Path $updateTaskPath)) {
-    throw "Le fichier Update-RoadmapTaskStatus.ps1 est introuvable à l'emplacement : $updateTaskPath"
+    throw "Le fichier Update-RoadmapTaskStatus.ps1 est introuvable Ã  l'emplacement : $updateTaskPath"
 }
 
 # Importer les fonctions
 . $updateTaskPath
 . $invokeCheckPath
-Write-Host "Fonctions importées." -ForegroundColor Green
+Write-Host "Fonctions importÃ©es." -ForegroundColor Green
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
-# Créer un fichier de test avec une structure de roadmap simple
+# CrÃ©er un fichier de test avec une structure de roadmap simple
 @"
 # Roadmap de test
 
 ## Section 1
 
 - [ ] **1.1** Fonction d'inspection de variables
-  - [ ] **1.1.1** Développer la fonction d'affichage formaté des variables
-  - [ ] **1.1.2** Implémenter la fonction d'inspection d'objets complexes
-  - [ ] **1.1.3** Créer le mécanisme de limitation de profondeur d'inspection
+  - [ ] **1.1.1** DÃ©velopper la fonction d'affichage formatÃ© des variables
+  - [ ] **1.1.2** ImplÃ©menter la fonction d'inspection d'objets complexes
+  - [ ] **1.1.3** CrÃ©er le mÃ©canisme de limitation de profondeur d'inspection
 
 ## Section 2
 
-- [ ] **2.1** Autre tâche
+- [ ] **2.1** Autre tÃ¢che
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
 
-Write-Host "Fichier de roadmap créé : $testFilePath" -ForegroundColor Green
+Write-Host "Fichier de roadmap crÃ©Ã© : $testFilePath" -ForegroundColor Green
 
-# Créer des fichiers d'implémentation et de test fictifs pour simuler une implémentation complète
+# CrÃ©er des fichiers d'implÃ©mentation et de test fictifs pour simuler une implÃ©mentation complÃ¨te
 $testImplPath = Join-Path -Path $env:TEMP -ChildPath "TestImpl_$(Get-Random)"
 $testTestsPath = Join-Path -Path $env:TEMP -ChildPath "TestTests_$(Get-Random)"
 
-# Créer les répertoires
+# CrÃ©er les rÃ©pertoires
 New-Item -Path $testImplPath -ItemType Directory -Force | Out-Null
 New-Item -Path $testTestsPath -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers d'implémentation fictifs
+# CrÃ©er des fichiers d'implÃ©mentation fictifs
 @"
 function Inspect-Variable {
     param (
@@ -73,107 +73,107 @@ function Inspect-Variable {
         [string]`$Format = "Text"
     )
     
-    # Implémentation fictive pour les tests
+    # ImplÃ©mentation fictive pour les tests
     return "Inspection de variable"
 }
 "@ | Set-Content -Path (Join-Path -Path $testImplPath -ChildPath "Inspect-Variable.ps1") -Encoding UTF8
 
-# Créer des fichiers de test fictifs
+# CrÃ©er des fichiers de test fictifs
 @"
 # Test fictif pour Inspect-Variable
 Write-Host "Test de la fonction Inspect-Variable"
-Write-Host "Tous les tests ont réussi !"
+Write-Host "Tous les tests ont rÃ©ussi !"
 exit 0
 "@ | Set-Content -Path (Join-Path -Path $testTestsPath -ChildPath "Test-InspectVariable.ps1") -Encoding UTF8
 
-Write-Host "Fichiers d'implémentation et de test créés." -ForegroundColor Green
+Write-Host "Fichiers d'implÃ©mentation et de test crÃ©Ã©s." -ForegroundColor Green
 
 # Initialiser les compteurs de tests
 $totalTests = 0
 $passedTests = 0
 
-# Test 1: Vérifier une tâche avec implémentation et tests complets
+# Test 1: VÃ©rifier une tÃ¢che avec implÃ©mentation et tests complets
 $totalTests++
-Write-Host "`nTest 1: Vérifier une tâche avec implémentation et tests complets" -ForegroundColor Cyan
+Write-Host "`nTest 1: VÃ©rifier une tÃ¢che avec implÃ©mentation et tests complets" -ForegroundColor Cyan
 try {
     # Appeler la fonction
     $result = Invoke-RoadmapCheck -FilePath $testFilePath -TaskIdentifier "1.1" -ImplementationPath $testImplPath -TestsPath $testTestsPath -UpdateRoadmap $false -GenerateReport $false
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($result.ImplementedTasks -gt 0 -and $result.TestedTasks -gt 0) {
-        Write-Host "  Réussi : La fonction a correctement détecté l'implémentation et les tests." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : La fonction a correctement dÃ©tectÃ© l'implÃ©mentation et les tests." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : La fonction n'a pas correctement détecté l'implémentation et les tests." -ForegroundColor Red
-        Write-Host "  Résultat : $($result | ConvertTo-Json -Depth 3)" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : La fonction n'a pas correctement dÃ©tectÃ© l'implÃ©mentation et les tests." -ForegroundColor Red
+        Write-Host "  RÃ©sultat : $($result | ConvertTo-Json -Depth 3)" -ForegroundColor Red
     }
 } catch {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 2: Mettre à jour la roadmap
+# Test 2: Mettre Ã  jour la roadmap
 $totalTests++
-Write-Host "`nTest 2: Mettre à jour la roadmap" -ForegroundColor Cyan
+Write-Host "`nTest 2: Mettre Ã  jour la roadmap" -ForegroundColor Cyan
 try {
     # Appeler la fonction
     $result = Invoke-RoadmapCheck -FilePath $testFilePath -TaskIdentifier "1.1" -ImplementationPath $testImplPath -TestsPath $testTestsPath -UpdateRoadmap $true -GenerateReport $false
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $content = Get-Content -Path $testFilePath -Encoding UTF8
     $taskLine = $content | Where-Object { $_ -match ".*\b1\.1\b.*" }
     
     if ($taskLine -match "\[x\]") {
-        Write-Host "  Réussi : La tâche 1.1 a été marquée comme terminée." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : La tÃ¢che 1.1 a Ã©tÃ© marquÃ©e comme terminÃ©e." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : La tâche 1.1 n'a pas été marquée comme terminée." -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : La tÃ¢che 1.1 n'a pas Ã©tÃ© marquÃ©e comme terminÃ©e." -ForegroundColor Red
         Write-Host "  Ligne actuelle : $taskLine" -ForegroundColor Red
     }
 } catch {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 3: Générer un rapport
+# Test 3: GÃ©nÃ©rer un rapport
 $totalTests++
-Write-Host "`nTest 3: Générer un rapport" -ForegroundColor Cyan
+Write-Host "`nTest 3: GÃ©nÃ©rer un rapport" -ForegroundColor Cyan
 try {
     # Appeler la fonction
     $result = Invoke-RoadmapCheck -FilePath $testFilePath -TaskIdentifier "1.1" -ImplementationPath $testImplPath -TestsPath $testTestsPath -UpdateRoadmap $false -GenerateReport $true
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $reportPath = Join-Path -Path (Split-Path -Parent $testFilePath) -ChildPath "check_report_1.1.md"
     
     if (Test-Path -Path $reportPath) {
-        Write-Host "  Réussi : Le rapport a été généré." -ForegroundColor Green
+        Write-Host "  RÃ©ussi : Le rapport a Ã©tÃ© gÃ©nÃ©rÃ©." -ForegroundColor Green
         $passedTests++
         
         # Supprimer le rapport
         Remove-Item -Path $reportPath -Force
     } else {
-        Write-Host "  Échoué : Le rapport n'a pas été généré." -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©." -ForegroundColor Red
     }
 } catch {
     Write-Host "  Erreur : $_" -ForegroundColor Red
 }
 
-# Test 4: Tenter de vérifier une tâche inexistante
+# Test 4: Tenter de vÃ©rifier une tÃ¢che inexistante
 $totalTests++
-Write-Host "`nTest 4: Tenter de vérifier une tâche inexistante" -ForegroundColor Cyan
+Write-Host "`nTest 4: Tenter de vÃ©rifier une tÃ¢che inexistante" -ForegroundColor Cyan
 try {
     # Appeler la fonction
     $result = Invoke-RoadmapCheck -FilePath $testFilePath -TaskIdentifier "9.9" -ImplementationPath $testImplPath -TestsPath $testTestsPath -UpdateRoadmap $false -GenerateReport $false
     
-    Write-Host "  Échoué : La fonction n'a pas levé d'exception pour une tâche inexistante." -ForegroundColor Red
+    Write-Host "  Ã‰chouÃ© : La fonction n'a pas levÃ© d'exception pour une tÃ¢che inexistante." -ForegroundColor Red
 } catch {
-    if ($_.Exception.Message -match "non trouvée") {
-        Write-Host "  Réussi : La fonction a correctement levé une exception pour une tâche inexistante." -ForegroundColor Green
+    if ($_.Exception.Message -match "non trouvÃ©e") {
+        Write-Host "  RÃ©ussi : La fonction a correctement levÃ© une exception pour une tÃ¢che inexistante." -ForegroundColor Green
         $passedTests++
     } else {
-        Write-Host "  Échoué : La fonction a levé une exception inattendue : $_" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ© : La fonction a levÃ© une exception inattendue : $_" -ForegroundColor Red
     }
 }
 
-# Supprimer les fichiers et répertoires de test
+# Supprimer les fichiers et rÃ©pertoires de test
 if (Test-Path -Path $testFilePath) {
     Remove-Item -Path $testFilePath -Force
 }
@@ -186,19 +186,19 @@ if (Test-Path -Path $testTestsPath) {
     Remove-Item -Path $testTestsPath -Recurse -Force
 }
 
-Write-Host "`nFichiers et répertoires de test supprimés." -ForegroundColor Gray
+Write-Host "`nFichiers et rÃ©pertoires de test supprimÃ©s." -ForegroundColor Gray
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

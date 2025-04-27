@@ -1,4 +1,4 @@
-# mcp
+﻿# mcp
 
 Configuration MCP
 

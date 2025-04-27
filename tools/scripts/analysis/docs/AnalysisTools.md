@@ -1,8 +1,8 @@
-# Intégration avec des outils d'analyse tiers
+﻿# IntÃ©gration avec des outils d'analyse tiers
 
-Ce document décrit comment utiliser le système d'intégration avec des outils d'analyse tiers pour améliorer la couverture d'analyse de code dans le projet.
+Ce document dÃ©crit comment utiliser le systÃ¨me d'intÃ©gration avec des outils d'analyse tiers pour amÃ©liorer la couverture d'analyse de code dans le projet.
 
-## Table des matières
+## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
 2. [Outils pris en charge](#outils-pris-en-charge)
@@ -12,32 +12,32 @@ Ce document décrit comment utiliser le système d'intégration avec des outils 
    - [Analyse avec ESLint](#analyse-avec-eslint)
    - [Analyse avec Pylint](#analyse-avec-pylint)
    - [Analyse avec SonarQube](#analyse-avec-sonarqube)
-5. [Fusion des résultats](#fusion-des-résultats)
-6. [Système de plugins](#système-de-plugins)
-7. [Création de plugins personnalisés](#création-de-plugins-personnalisés)
-8. [Dépannage](#dépannage)
+5. [Fusion des rÃ©sultats](#fusion-des-rÃ©sultats)
+6. [SystÃ¨me de plugins](#systÃ¨me-de-plugins)
+7. [CrÃ©ation de plugins personnalisÃ©s](#crÃ©ation-de-plugins-personnalisÃ©s)
+8. [DÃ©pannage](#dÃ©pannage)
 
 ## Introduction
 
-Le système d'intégration avec des outils d'analyse tiers permet d'analyser le code source avec différents outils spécialisés (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) et de fusionner les résultats dans un format unifié. Cela permet d'avoir une vue d'ensemble de la qualité du code et de détecter des problèmes qui pourraient être manqués par un seul outil.
+Le systÃ¨me d'intÃ©gration avec des outils d'analyse tiers permet d'analyser le code source avec diffÃ©rents outils spÃ©cialisÃ©s (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) et de fusionner les rÃ©sultats dans un format unifiÃ©. Cela permet d'avoir une vue d'ensemble de la qualitÃ© du code et de dÃ©tecter des problÃ¨mes qui pourraient Ãªtre manquÃ©s par un seul outil.
 
 ## Outils pris en charge
 
-Le système prend en charge les outils d'analyse suivants :
+Le systÃ¨me prend en charge les outils d'analyse suivants :
 
 - **PSScriptAnalyzer** : Analyse des scripts PowerShell
 - **ESLint** : Analyse des fichiers JavaScript/TypeScript
 - **Pylint** : Analyse des fichiers Python
 - **SonarQube** : Analyse multi-langage avec SonarQube Scanner
 
-D'autres outils peuvent être ajoutés via le système de plugins.
+D'autres outils peuvent Ãªtre ajoutÃ©s via le systÃ¨me de plugins.
 
 ## Installation
 
-### Prérequis
+### PrÃ©requis
 
-- PowerShell 5.1 ou supérieur
-- Les outils d'analyse que vous souhaitez utiliser doivent être installés sur votre système
+- PowerShell 5.1 ou supÃ©rieur
+- Les outils d'analyse que vous souhaitez utiliser doivent Ãªtre installÃ©s sur votre systÃ¨me
 
 ### Installation des outils d'analyse
 
@@ -63,13 +63,13 @@ pip install pylint
 
 #### SonarQube Scanner
 
-Téléchargez et installez SonarQube Scanner depuis le site officiel : https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
+TÃ©lÃ©chargez et installez SonarQube Scanner depuis le site officiel : https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
 
 ## Utilisation
 
 ### Analyse avec PSScriptAnalyzer
 
-Pour analyser un fichier ou un répertoire avec PSScriptAnalyzer :
+Pour analyser un fichier ou un rÃ©pertoire avec PSScriptAnalyzer :
 
 ```powershell
 .\scripts\analysis\tools\Connect-PSScriptAnalyzer.ps1 -FilePath "chemin\vers\fichier.ps1" -OutputPath "resultats.json"
@@ -77,16 +77,16 @@ Pour analyser un fichier ou un répertoire avec PSScriptAnalyzer :
 
 Options disponibles :
 
-- `-FilePath` : Chemin du fichier ou du répertoire à analyser
-- `-IncludeRule` : Règles à inclure dans l'analyse
-- `-ExcludeRule` : Règles à exclure de l'analyse
-- `-Severity` : Sévérité des problèmes à inclure (Error, Warning, Information, All)
-- `-Recurse` : Analyser récursivement les sous-répertoires
-- `-OutputPath` : Chemin du fichier de sortie pour les résultats
+- `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
+- `-IncludeRule` : RÃ¨gles Ã  inclure dans l'analyse
+- `-ExcludeRule` : RÃ¨gles Ã  exclure de l'analyse
+- `-Severity` : SÃ©vÃ©ritÃ© des problÃ¨mes Ã  inclure (Error, Warning, Information, All)
+- `-Recurse` : Analyser rÃ©cursivement les sous-rÃ©pertoires
+- `-OutputPath` : Chemin du fichier de sortie pour les rÃ©sultats
 
 ### Analyse avec ESLint
 
-Pour analyser un fichier ou un répertoire avec ESLint :
+Pour analyser un fichier ou un rÃ©pertoire avec ESLint :
 
 ```powershell
 .\scripts\analysis\tools\Connect-ESLint.ps1 -FilePath "chemin\vers\fichier.js" -OutputPath "resultats.json"
@@ -94,14 +94,14 @@ Pour analyser un fichier ou un répertoire avec ESLint :
 
 Options disponibles :
 
-- `-FilePath` : Chemin du fichier ou du répertoire à analyser
+- `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
 - `-ConfigFile` : Chemin du fichier de configuration ESLint
-- `-Fix` : Corriger automatiquement les problèmes qui peuvent être corrigés
-- `-OutputPath` : Chemin du fichier de sortie pour les résultats
+- `-Fix` : Corriger automatiquement les problÃ¨mes qui peuvent Ãªtre corrigÃ©s
+- `-OutputPath` : Chemin du fichier de sortie pour les rÃ©sultats
 
 ### Analyse avec Pylint
 
-Pour analyser un fichier ou un répertoire avec Pylint :
+Pour analyser un fichier ou un rÃ©pertoire avec Pylint :
 
 ```powershell
 .\scripts\analysis\tools\Connect-Pylint.ps1 -FilePath "chemin\vers\fichier.py" -OutputPath "resultats.json"
@@ -109,11 +109,11 @@ Pour analyser un fichier ou un répertoire avec Pylint :
 
 Options disponibles :
 
-- `-FilePath` : Chemin du fichier ou du répertoire à analyser
+- `-FilePath` : Chemin du fichier ou du rÃ©pertoire Ã  analyser
 - `-ConfigFile` : Chemin du fichier de configuration Pylint
-- `-DisableRules` : Règles à désactiver lors de l'analyse
-- `-EnableRules` : Règles à activer lors de l'analyse
-- `-OutputPath` : Chemin du fichier de sortie pour les résultats
+- `-DisableRules` : RÃ¨gles Ã  dÃ©sactiver lors de l'analyse
+- `-EnableRules` : RÃ¨gles Ã  activer lors de l'analyse
+- `-OutputPath` : Chemin du fichier de sortie pour les rÃ©sultats
 
 ### Analyse avec SonarQube
 
@@ -125,17 +125,17 @@ Pour analyser un projet avec SonarQube Scanner :
 
 Options disponibles :
 
-- `-ProjectKey` : Clé du projet SonarQube
+- `-ProjectKey` : ClÃ© du projet SonarQube
 - `-ProjectName` : Nom du projet SonarQube
 - `-ProjectVersion` : Version du projet SonarQube
-- `-SourceDirectory` : Répertoire contenant les sources à analyser
-- `-SonarQubeUrl` : URL du serveur SonarQube (par défaut: http://localhost:9000)
+- `-SourceDirectory` : RÃ©pertoire contenant les sources Ã  analyser
+- `-SonarQubeUrl` : URL du serveur SonarQube (par dÃ©faut: http://localhost:9000)
 - `-Token` : Token d'authentification pour l'API SonarQube
-- `-OutputPath` : Chemin du fichier de sortie pour les résultats
+- `-OutputPath` : Chemin du fichier de sortie pour les rÃ©sultats
 
-## Fusion des résultats
+## Fusion des rÃ©sultats
 
-Pour fusionner les résultats de plusieurs analyses :
+Pour fusionner les rÃ©sultats de plusieurs analyses :
 
 ```powershell
 .\scripts\analysis\Merge-AnalysisResults.ps1 -InputPath "resultats1.json", "resultats2.json" -OutputPath "resultats-fusionnes.json" -RemoveDuplicates -GenerateHtmlReport
@@ -143,37 +143,37 @@ Pour fusionner les résultats de plusieurs analyses :
 
 Options disponibles :
 
-- `-InputPath` : Chemin du fichier ou des fichiers contenant les résultats d'analyse à fusionner
-- `-OutputPath` : Chemin du fichier de sortie pour les résultats fusionnés
-- `-RemoveDuplicates` : Supprimer les résultats en double
-- `-Severity` : Filtrer les résultats par sévérité (Error, Warning, Information, All)
-- `-ToolName` : Filtrer les résultats par outil d'analyse
-- `-Category` : Filtrer les résultats par catégorie
-- `-GenerateHtmlReport` : Générer un rapport HTML en plus du fichier JSON
+- `-InputPath` : Chemin du fichier ou des fichiers contenant les rÃ©sultats d'analyse Ã  fusionner
+- `-OutputPath` : Chemin du fichier de sortie pour les rÃ©sultats fusionnÃ©s
+- `-RemoveDuplicates` : Supprimer les rÃ©sultats en double
+- `-Severity` : Filtrer les rÃ©sultats par sÃ©vÃ©ritÃ© (Error, Warning, Information, All)
+- `-ToolName` : Filtrer les rÃ©sultats par outil d'analyse
+- `-Category` : Filtrer les rÃ©sultats par catÃ©gorie
+- `-GenerateHtmlReport` : GÃ©nÃ©rer un rapport HTML en plus du fichier JSON
 
-## Système de plugins
+## SystÃ¨me de plugins
 
-Le système de plugins permet d'étendre les fonctionnalités d'analyse avec des plugins personnalisés.
+Le systÃ¨me de plugins permet d'Ã©tendre les fonctionnalitÃ©s d'analyse avec des plugins personnalisÃ©s.
 
-### Enregistrement des plugins intégrés
+### Enregistrement des plugins intÃ©grÃ©s
 
-Pour enregistrer les connecteurs intégrés comme plugins :
+Pour enregistrer les connecteurs intÃ©grÃ©s comme plugins :
 
 ```powershell
 .\scripts\analysis\Register-AnalysisPlugin.ps1
 ```
 
-### Liste des plugins enregistrés
+### Liste des plugins enregistrÃ©s
 
-Pour afficher la liste des plugins enregistrés :
+Pour afficher la liste des plugins enregistrÃ©s :
 
 ```powershell
 .\scripts\analysis\Register-AnalysisPlugin.ps1 -ListPlugins
 ```
 
-### Activation/désactivation des plugins
+### Activation/dÃ©sactivation des plugins
 
-Pour activer ou désactiver un plugin :
+Pour activer ou dÃ©sactiver un plugin :
 
 ```powershell
 .\scripts\analysis\Register-AnalysisPlugin.ps1 -EnablePlugin "ESLint"
@@ -188,11 +188,11 @@ Pour exporter un plugin vers un fichier :
 .\scripts\analysis\Register-AnalysisPlugin.ps1 -ExportPlugin "ESLint" -OutputDirectory "chemin\vers\repertoire"
 ```
 
-## Création de plugins personnalisés
+## CrÃ©ation de plugins personnalisÃ©s
 
-Vous pouvez créer vos propres plugins pour intégrer d'autres outils d'analyse. Un plugin est un script PowerShell qui enregistre une fonction d'analyse avec le système de plugins.
+Vous pouvez crÃ©er vos propres plugins pour intÃ©grer d'autres outils d'analyse. Un plugin est un script PowerShell qui enregistre une fonction d'analyse avec le systÃ¨me de plugins.
 
-Exemple de plugin personnalisé :
+Exemple de plugin personnalisÃ© :
 
 ```powershell
 # MonPlugin.ps1
@@ -212,7 +212,7 @@ $analyzeFunction = {
     # Analyser le fichier avec votre outil
     $results = @()
     
-    # Créer un résultat unifié
+    # CrÃ©er un rÃ©sultat unifiÃ©
     $result = New-UnifiedAnalysisResult -ToolName "MonOutil" `
                                        -FilePath $FilePath `
                                        -Line 1 `
@@ -229,7 +229,7 @@ $analyzeFunction = {
 
 # Enregistrer le plugin
 Register-AnalysisPlugin -Name "MonPlugin" `
-                       -Description "Mon plugin personnalisé" `
+                       -Description "Mon plugin personnalisÃ©" `
                        -Version "1.0" `
                        -Author "Votre nom" `
                        -Language "Generic" `
@@ -245,13 +245,13 @@ Pour enregistrer votre plugin :
 .\scripts\analysis\Register-AnalysisPlugin.ps1 -Path "chemin\vers\MonPlugin.ps1"
 ```
 
-## Dépannage
+## DÃ©pannage
 
-### Problèmes courants
+### ProblÃ¨mes courants
 
 #### PSScriptAnalyzer n'est pas disponible
 
-Assurez-vous que PSScriptAnalyzer est installé :
+Assurez-vous que PSScriptAnalyzer est installÃ© :
 
 ```powershell
 Install-Module -Name PSScriptAnalyzer -Scope CurrentUser
@@ -259,7 +259,7 @@ Install-Module -Name PSScriptAnalyzer -Scope CurrentUser
 
 #### ESLint n'est pas disponible
 
-Vérifiez que ESLint est installé et accessible dans le PATH :
+VÃ©rifiez que ESLint est installÃ© et accessible dans le PATH :
 
 ```bash
 eslint --version
@@ -267,7 +267,7 @@ eslint --version
 
 #### Pylint n'est pas disponible
 
-Vérifiez que Pylint est installé et accessible dans le PATH :
+VÃ©rifiez que Pylint est installÃ© et accessible dans le PATH :
 
 ```bash
 pylint --version
@@ -275,23 +275,23 @@ pylint --version
 
 #### SonarQube Scanner n'est pas disponible
 
-Vérifiez que SonarQube Scanner est installé et accessible dans le PATH :
+VÃ©rifiez que SonarQube Scanner est installÃ© et accessible dans le PATH :
 
 ```bash
 sonar-scanner --version
 ```
 
-### Journalisation détaillée
+### Journalisation dÃ©taillÃ©e
 
-Pour obtenir des informations de débogage détaillées, utilisez le paramètre `-Verbose` :
+Pour obtenir des informations de dÃ©bogage dÃ©taillÃ©es, utilisez le paramÃ¨tre `-Verbose` :
 
 ```powershell
 .\scripts\analysis\tools\Connect-PSScriptAnalyzer.ps1 -FilePath "chemin\vers\fichier.ps1" -Verbose
 ```
 
-### Vérification des outils disponibles
+### VÃ©rification des outils disponibles
 
-Pour vérifier quels outils d'analyse sont disponibles sur votre système :
+Pour vÃ©rifier quels outils d'analyse sont disponibles sur votre systÃ¨me :
 
 ```powershell
 Import-Module -Name ".\scripts\analysis\modules\AnalysisTools.psm1"

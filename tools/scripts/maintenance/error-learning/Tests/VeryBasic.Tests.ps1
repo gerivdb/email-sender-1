@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests très basiques pour vérifier que Pester fonctionne correctement.
+    Tests trÃ¨s basiques pour vÃ©rifier que Pester fonctionne correctement.
 .DESCRIPTION
-    Ce script contient des tests très basiques pour vérifier que Pester fonctionne correctement.
+    Ce script contient des tests trÃ¨s basiques pour vÃ©rifier que Pester fonctionne correctement.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-Describe "Tests très basiques" {
+Describe "Tests trÃ¨s basiques" {
     It "Devrait additionner deux nombres" {
         1 + 1 | Should -Be 2
     }

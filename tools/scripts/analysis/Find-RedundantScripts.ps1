@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-Détecte les scripts redondants ou similaires dans le projet
+DÃ©tecte les scripts redondants ou similaires dans le projet
 
 .DESCRIPTION
 Ce script analyse le contenu des scripts pour :
-- Identifier les scripts similaires (similarité de Levenshtein)
-- Détecter les versions multiples du même script
-- Générer des recommandations de consolidation
+- Identifier les scripts similaires (similaritÃ© de Levenshtein)
+- DÃ©tecter les versions multiples du mÃªme script
+- GÃ©nÃ©rer des recommandations de consolidation
 #>
 
 param(
@@ -20,7 +20,7 @@ param(
 # Charger le module d'inventaire
 Import-Module $PSScriptRoot/../../modules/ScriptInventoryManager.psm1 -Force
 
-# Fonction pour calculer la similarité entre deux scripts
+# Fonction pour calculer la similaritÃ© entre deux scripts
 function Get-ScriptSimilarity {
     param(
         [string]$script1,
@@ -55,12 +55,12 @@ function Get-ScriptSimilarity {
         }
     }
 
-    # Calculer le pourcentage de similarité
+    # Calculer le pourcentage de similaritÃ©
     $similarity = (1 - ($distance / [Math]::Max($len1, $len2))) * 100
     return [Math]::Round($similarity, 2)
 }
 
-# Récupérer tous les scripts
+# RÃ©cupÃ©rer tous les scripts
 $allScripts = Get-ScriptInventory -ForceRescan
 $results = @()
 
@@ -70,13 +70,13 @@ for ($i = 0; $i -lt $allScripts.Count; $i++) {
         $script1 = $allScripts[$i]
         $script2 = $allScripts[$j]
 
-        # Vérifier si les noms sont similaires (version différente)
+        # VÃ©rifier si les noms sont similaires (version diffÃ©rente)
         $nameSimilar = $false
         if ($script1.FileName -replace 'v\d+', '' -eq $script2.FileName -replace 'v\d+', '') {
             $nameSimilar = $true
         }
 
-        # Calculer la similarité du contenu
+        # Calculer la similaritÃ© du contenu
         $similarity = Get-ScriptSimilarity -script1 $script1.FullPath -script2 $script2.FullPath
 
         if ($similarity -ge $SimilarityThreshold -or $nameSimilar) {
@@ -90,9 +90,9 @@ for ($i = 0; $i -lt $allScripts.Count; $i++) {
                 Script1Modified = $script1.LastModified
                 Script2Modified = $script2.LastModified
                 Recommendation  = if ($nameSimilar) {
-                    "Scripts avec même nom mais version différente - vérifier si version plus récente existe"
+                    "Scripts avec mÃªme nom mais version diffÃ©rente - vÃ©rifier si version plus rÃ©cente existe"
                 } else {
-                    "Scripts très similaires - considérer une fusion"
+                    "Scripts trÃ¨s similaires - considÃ©rer une fusion"
                 }
             }
 
@@ -101,7 +101,7 @@ for ($i = 0; $i -lt $allScripts.Count; $i++) {
     }
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 if (-not (Test-Path $OutputPath)) {
     New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
 }
@@ -136,12 +136,12 @@ switch ($ReportFormat) {
 </head>
 <body>
     <h1>Rapport de Scripts Redondants</h1>
-    <p>Généré le $(Get-Date) - Seuil de similarité: $SimilarityThreshold%</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date) - Seuil de similaritÃ©: $SimilarityThreshold%</p>
     <table>
         <tr>
             <th>Script 1</th>
             <th>Script 2</th>
-            <th>Similarité</th>
+            <th>SimilaritÃ©</th>
             <th>Recommandation</th>
         </tr>
 "@
@@ -150,8 +150,8 @@ switch ($ReportFormat) {
             $rowClass = if ($result.NameSimilar) { "name-sim" } elseif ($result.Similarity -ge 90) { "high-sim" }
             $html += @"
         <tr class="$rowClass">
-            <td>$($result.Script1) (modifié: $($result.Script1Modified))</td>
-            <td>$($result.Script2) (modifié: $($result.Script2Modified))</td>
+            <td>$($result.Script1) (modifiÃ©: $($result.Script1Modified))</td>
+            <td>$($result.Script2) (modifiÃ©: $($result.Script2Modified))</td>
             <td>$($result.Similarity)%</td>
             <td>$($result.Recommendation)</td>
         </tr>
@@ -168,5 +168,5 @@ switch ($ReportFormat) {
     }
 }
 
-Write-Host "Rapport généré: $reportFile"
+Write-Host "Rapport gÃ©nÃ©rÃ©: $reportFile"
 $results | Format-Table -AutoSize

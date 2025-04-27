@@ -1,27 +1,27 @@
-# Guide de test pour le système d'analyse de code
+﻿# Guide de test pour le systÃ¨me d'analyse de code
 
-Ce document explique comment tester le système d'analyse de code et comment résoudre les problèmes courants.
+Ce document explique comment tester le systÃ¨me d'analyse de code et comment rÃ©soudre les problÃ¨mes courants.
 
 ## Vue d'ensemble
 
-Le système d'analyse de code est testé à l'aide de deux approches complémentaires :
+Le systÃ¨me d'analyse de code est testÃ© Ã  l'aide de deux approches complÃ©mentaires :
 
-1. **Tests unitaires** : Tests qui vérifient le comportement de fonctions individuelles.
-2. **Tests d'intégration** : Tests qui vérifient le comportement du système dans son ensemble.
+1. **Tests unitaires** : Tests qui vÃ©rifient le comportement de fonctions individuelles.
+2. **Tests d'intÃ©gration** : Tests qui vÃ©rifient le comportement du systÃ¨me dans son ensemble.
 
 ## Tests unitaires
 
-Les tests unitaires sont écrits à l'aide du framework Pester et se trouvent dans le répertoire `scripts/analysis/tests`. Chaque script principal a un fichier de test correspondant avec le suffixe `.Tests.ps1`.
+Les tests unitaires sont Ã©crits Ã  l'aide du framework Pester et se trouvent dans le rÃ©pertoire `scripts/analysis/tests`. Chaque script principal a un fichier de test correspondant avec le suffixe `.Tests.ps1`.
 
-### Exécution des tests unitaires
+### ExÃ©cution des tests unitaires
 
-Pour exécuter tous les tests unitaires, utilisez le script `Run-AllTests.ps1` :
+Pour exÃ©cuter tous les tests unitaires, utilisez le script `Run-AllTests.ps1` :
 
 ```powershell
 .\scripts\analysis\tests\Run-AllTests.ps1
 ```
 
-Pour exécuter un test spécifique, utilisez Pester directement :
+Pour exÃ©cuter un test spÃ©cifique, utilisez Pester directement :
 
 ```powershell
 Invoke-Pester -Path ".\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1"
@@ -51,23 +51,23 @@ $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     Import-Module -Name $testHelpersPath -Force
 } else {
-    throw "Le module TestHelpers.psm1 n'existe pas à l'emplacement: $testHelpersPath"
+    throw "Le module TestHelpers.psm1 n'existe pas Ã  l'emplacement: $testHelpersPath"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "<nom-du-script>.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script <nom-du-script>.ps1 n'existe pas à l'emplacement: $scriptPath"
+    throw "Le script <nom-du-script>.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
 }
 
 Describe "Script <nom-du-script>" {
     BeforeAll {
-        # Créer un environnement de test
+        # CrÃ©er un environnement de test
         $testEnv = New-TestEnvironment -TestName "<nom-du-test>"
     }
     
-    Context "Paramètres et validation" {
-        It "Lève une exception si le chemin n'existe pas" {
+    Context "ParamÃ¨tres et validation" {
+        It "LÃ¨ve une exception si le chemin n'existe pas" {
             # Act & Assert
             { Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{ Path = "C:\chemin\inexistant" } } | Should -Throw
         }
@@ -81,99 +81,99 @@ Describe "Script <nom-du-script>" {
 
 Le module `TestHelpers.psm1` contient des fonctions d'aide pour les tests unitaires :
 
-- `New-TestEnvironment` : Crée un environnement de test avec des fichiers et des répertoires de test.
-- `Invoke-ScriptWithParams` : Exécute un script avec des paramètres.
-- `New-PSScriptAnalyzerMock` : Crée un mock pour PSScriptAnalyzer.
-- `New-UnifiedAnalysisResultMock` : Crée un mock pour New-UnifiedAnalysisResult.
+- `New-TestEnvironment` : CrÃ©e un environnement de test avec des fichiers et des rÃ©pertoires de test.
+- `Invoke-ScriptWithParams` : ExÃ©cute un script avec des paramÃ¨tres.
+- `New-PSScriptAnalyzerMock` : CrÃ©e un mock pour PSScriptAnalyzer.
+- `New-UnifiedAnalysisResultMock` : CrÃ©e un mock pour New-UnifiedAnalysisResult.
 
 ### Bonnes pratiques pour les tests unitaires
 
 1. **Utilisez des mocks** : Utilisez des mocks pour simuler le comportement des fonctions externes.
-2. **Isolez les tests** : Chaque test doit être indépendant des autres tests.
+2. **Isolez les tests** : Chaque test doit Ãªtre indÃ©pendant des autres tests.
 3. **Testez les cas limites** : Testez les cas limites et les cas d'erreur.
-4. **Utilisez des assertions claires** : Utilisez des assertions claires et précises.
+4. **Utilisez des assertions claires** : Utilisez des assertions claires et prÃ©cises.
 5. **Documentez les tests** : Documentez les tests pour expliquer ce qu'ils testent.
 
-### Problèmes courants avec les tests unitaires
+### ProblÃ¨mes courants avec les tests unitaires
 
-#### Problème : Impossible de mocker des fonctions système
+#### ProblÃ¨me : Impossible de mocker des fonctions systÃ¨me
 
-PowerShell 5.1 a des limitations pour mocker des fonctions système comme `[System.IO.File]::ReadAllBytes`. Pour contourner ce problème, vous pouvez :
+PowerShell 5.1 a des limitations pour mocker des fonctions systÃ¨me comme `[System.IO.File]::ReadAllBytes`. Pour contourner ce problÃ¨me, vous pouvez :
 
-1. Créer une fonction wrapper qui appelle la fonction système, puis mocker cette fonction wrapper.
-2. Utiliser des fichiers temporaires réels pour les tests.
+1. CrÃ©er une fonction wrapper qui appelle la fonction systÃ¨me, puis mocker cette fonction wrapper.
+2. Utiliser des fichiers temporaires rÃ©els pour les tests.
 
-#### Problème : Impossible de mocker des fonctions dans des modules
+#### ProblÃ¨me : Impossible de mocker des fonctions dans des modules
 
-PowerShell 5.1 a des limitations pour mocker des fonctions dans des modules. Pour contourner ce problème, vous pouvez :
+PowerShell 5.1 a des limitations pour mocker des fonctions dans des modules. Pour contourner ce problÃ¨me, vous pouvez :
 
 1. Importer le module dans le contexte de test avec `Import-Module -Force`.
 2. Utiliser `Mock -ModuleName` pour mocker des fonctions dans des modules.
 
-#### Problème : Les tests échouent avec des erreurs d'encodage
+#### ProblÃ¨me : Les tests Ã©chouent avec des erreurs d'encodage
 
-Les problèmes d'encodage sont courants avec PowerShell 5.1. Pour éviter ces problèmes, assurez-vous que :
+Les problÃ¨mes d'encodage sont courants avec PowerShell 5.1. Pour Ã©viter ces problÃ¨mes, assurez-vous que :
 
-1. Tous les fichiers PowerShell sont encodés en UTF-8 avec BOM.
-2. Les chaînes de caractères contenant des caractères spéciaux sont correctement échappées.
+1. Tous les fichiers PowerShell sont encodÃ©s en UTF-8 avec BOM.
+2. Les chaÃ®nes de caractÃ¨res contenant des caractÃ¨res spÃ©ciaux sont correctement Ã©chappÃ©es.
 
-## Tests d'intégration
+## Tests d'intÃ©gration
 
-Les tests d'intégration vérifient le comportement du système dans son ensemble. Ils sont écrits à l'aide du script `Test-AnalysisIntegration.ps1`.
+Les tests d'intÃ©gration vÃ©rifient le comportement du systÃ¨me dans son ensemble. Ils sont Ã©crits Ã  l'aide du script `Test-AnalysisIntegration.ps1`.
 
-### Exécution des tests d'intégration
+### ExÃ©cution des tests d'intÃ©gration
 
-Pour exécuter les tests d'intégration, utilisez le script `Test-AnalysisIntegration.ps1` :
+Pour exÃ©cuter les tests d'intÃ©gration, utilisez le script `Test-AnalysisIntegration.ps1` :
 
 ```powershell
 .\scripts\analysis\tests\Test-AnalysisIntegration.ps1 -TestDirectory ".\scripts" -OutputPath ".\results"
 ```
 
-### Structure des tests d'intégration
+### Structure des tests d'intÃ©gration
 
-Le script `Test-AnalysisIntegration.ps1` exécute une série de tests qui vérifient le comportement du système d'analyse de code dans son ensemble :
+Le script `Test-AnalysisIntegration.ps1` exÃ©cute une sÃ©rie de tests qui vÃ©rifient le comportement du systÃ¨me d'analyse de code dans son ensemble :
 
 1. Analyse d'un fichier avec PSScriptAnalyzer
 2. Analyse d'un fichier avec TodoAnalyzer
-3. Génération d'un rapport HTML
+3. GÃ©nÃ©ration d'un rapport HTML
 4. Correction de l'encodage du rapport HTML
-5. Intégration avec GitHub
-6. Intégration avec SonarQube
-7. Intégration avec Azure DevOps
-8. Analyse parallèle
+5. IntÃ©gration avec GitHub
+6. IntÃ©gration avec SonarQube
+7. IntÃ©gration avec Azure DevOps
+8. Analyse parallÃ¨le
 
-### Bonnes pratiques pour les tests d'intégration
+### Bonnes pratiques pour les tests d'intÃ©gration
 
-1. **Utilisez des données de test réalistes** : Utilisez des données de test qui ressemblent aux données réelles.
-2. **Testez le flux complet** : Testez le flux complet du système, de l'analyse à la génération de rapports.
-3. **Vérifiez les résultats** : Vérifiez que les résultats sont corrects et complets.
-4. **Nettoyez après les tests** : Nettoyez les fichiers temporaires après les tests.
+1. **Utilisez des donnÃ©es de test rÃ©alistes** : Utilisez des donnÃ©es de test qui ressemblent aux donnÃ©es rÃ©elles.
+2. **Testez le flux complet** : Testez le flux complet du systÃ¨me, de l'analyse Ã  la gÃ©nÃ©ration de rapports.
+3. **VÃ©rifiez les rÃ©sultats** : VÃ©rifiez que les rÃ©sultats sont corrects et complets.
+4. **Nettoyez aprÃ¨s les tests** : Nettoyez les fichiers temporaires aprÃ¨s les tests.
 
-### Problèmes courants avec les tests d'intégration
+### ProblÃ¨mes courants avec les tests d'intÃ©gration
 
-#### Problème : Les tests échouent avec des erreurs d'accès aux fichiers
+#### ProblÃ¨me : Les tests Ã©chouent avec des erreurs d'accÃ¨s aux fichiers
 
-Les erreurs d'accès aux fichiers sont courantes avec les tests d'intégration. Pour éviter ces problèmes, assurez-vous que :
+Les erreurs d'accÃ¨s aux fichiers sont courantes avec les tests d'intÃ©gration. Pour Ã©viter ces problÃ¨mes, assurez-vous que :
 
-1. Les fichiers temporaires sont créés dans un répertoire accessible.
-2. Les fichiers temporaires sont supprimés après les tests.
-3. Les fichiers ne sont pas verrouillés par d'autres processus.
+1. Les fichiers temporaires sont crÃ©Ã©s dans un rÃ©pertoire accessible.
+2. Les fichiers temporaires sont supprimÃ©s aprÃ¨s les tests.
+3. Les fichiers ne sont pas verrouillÃ©s par d'autres processus.
 
-#### Problème : Les tests échouent avec des erreurs d'API
+#### ProblÃ¨me : Les tests Ã©chouent avec des erreurs d'API
 
-Les erreurs d'API sont courantes avec les tests d'intégration qui utilisent des API externes. Pour éviter ces problèmes, vous pouvez :
+Les erreurs d'API sont courantes avec les tests d'intÃ©gration qui utilisent des API externes. Pour Ã©viter ces problÃ¨mes, vous pouvez :
 
 1. Utiliser des mocks pour simuler les API externes.
 2. Utiliser des API de test ou des environnements de test.
-3. Vérifier que les API sont accessibles avant d'exécuter les tests.
+3. VÃ©rifier que les API sont accessibles avant d'exÃ©cuter les tests.
 
 ## Tests de performance
 
-Les tests de performance vérifient les performances du système d'analyse de code. Ils sont écrits à l'aide du script `Test-PerformanceOptimization.ps1`.
+Les tests de performance vÃ©rifient les performances du systÃ¨me d'analyse de code. Ils sont Ã©crits Ã  l'aide du script `Test-PerformanceOptimization.ps1`.
 
-### Exécution des tests de performance
+### ExÃ©cution des tests de performance
 
-Pour exécuter les tests de performance, utilisez le script `Test-PerformanceOptimization.ps1` :
+Pour exÃ©cuter les tests de performance, utilisez le script `Test-PerformanceOptimization.ps1` :
 
 ```powershell
 .\scripts\analysis\tests\Test-PerformanceOptimization.ps1 -TestDirectory ".\scripts" -OutputPath ".\results" -NumberOfFiles 100 -MaxThreads 8
@@ -181,38 +181,38 @@ Pour exécuter les tests de performance, utilisez le script `Test-PerformanceOpt
 
 ### Structure des tests de performance
 
-Le script `Test-PerformanceOptimization.ps1` exécute une série de tests qui mesurent les performances du système d'analyse de code :
+Le script `Test-PerformanceOptimization.ps1` exÃ©cute une sÃ©rie de tests qui mesurent les performances du systÃ¨me d'analyse de code :
 
-1. Analyse séquentielle
-2. Analyse parallèle avec 2 threads
-3. Analyse parallèle avec 4 threads
-4. Analyse parallèle avec 8 threads
+1. Analyse sÃ©quentielle
+2. Analyse parallÃ¨le avec 2 threads
+3. Analyse parallÃ¨le avec 4 threads
+4. Analyse parallÃ¨le avec 8 threads
 
 ### Bonnes pratiques pour les tests de performance
 
-1. **Utilisez des données de test réalistes** : Utilisez des données de test qui ressemblent aux données réelles.
-2. **Exécutez les tests plusieurs fois** : Exécutez les tests plusieurs fois pour obtenir des résultats fiables.
-3. **Mesurez le temps d'exécution** : Mesurez le temps d'exécution pour chaque test.
-4. **Comparez les résultats** : Comparez les résultats pour identifier les goulots d'étranglement.
+1. **Utilisez des donnÃ©es de test rÃ©alistes** : Utilisez des donnÃ©es de test qui ressemblent aux donnÃ©es rÃ©elles.
+2. **ExÃ©cutez les tests plusieurs fois** : ExÃ©cutez les tests plusieurs fois pour obtenir des rÃ©sultats fiables.
+3. **Mesurez le temps d'exÃ©cution** : Mesurez le temps d'exÃ©cution pour chaque test.
+4. **Comparez les rÃ©sultats** : Comparez les rÃ©sultats pour identifier les goulots d'Ã©tranglement.
 
-### Problèmes courants avec les tests de performance
+### ProblÃ¨mes courants avec les tests de performance
 
-#### Problème : Les résultats varient considérablement
+#### ProblÃ¨me : Les rÃ©sultats varient considÃ©rablement
 
-Les résultats des tests de performance peuvent varier considérablement en fonction de la charge du système. Pour obtenir des résultats plus fiables, vous pouvez :
+Les rÃ©sultats des tests de performance peuvent varier considÃ©rablement en fonction de la charge du systÃ¨me. Pour obtenir des rÃ©sultats plus fiables, vous pouvez :
 
-1. Exécuter les tests plusieurs fois et calculer la moyenne.
-2. Exécuter les tests sur un système dédié.
+1. ExÃ©cuter les tests plusieurs fois et calculer la moyenne.
+2. ExÃ©cuter les tests sur un systÃ¨me dÃ©diÃ©.
 3. Fermer les applications inutiles pendant les tests.
 
-#### Problème : Les tests prennent trop de temps
+#### ProblÃ¨me : Les tests prennent trop de temps
 
-Les tests de performance peuvent prendre beaucoup de temps, surtout avec un grand nombre de fichiers. Pour réduire le temps d'exécution, vous pouvez :
+Les tests de performance peuvent prendre beaucoup de temps, surtout avec un grand nombre de fichiers. Pour rÃ©duire le temps d'exÃ©cution, vous pouvez :
 
-1. Réduire le nombre de fichiers à analyser.
-2. Utiliser un sous-ensemble représentatif des fichiers.
-3. Exécuter les tests en parallèle.
+1. RÃ©duire le nombre de fichiers Ã  analyser.
+2. Utiliser un sous-ensemble reprÃ©sentatif des fichiers.
+3. ExÃ©cuter les tests en parallÃ¨le.
 
 ## Conclusion
 
-Les tests sont essentiels pour garantir la qualité et la fiabilité du système d'analyse de code. En suivant les bonnes pratiques et en évitant les problèmes courants, vous pouvez créer des tests efficaces qui vous aideront à améliorer le système.
+Les tests sont essentiels pour garantir la qualitÃ© et la fiabilitÃ© du systÃ¨me d'analyse de code. En suivant les bonnes pratiques et en Ã©vitant les problÃ¨mes courants, vous pouvez crÃ©er des tests efficaces qui vous aideront Ã  amÃ©liorer le systÃ¨me.

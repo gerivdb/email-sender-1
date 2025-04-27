@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de gestion de la configuration pour les modes RoadmapParser.
 
 .DESCRIPTION
     Ce script contient des fonctions pour charger, fusionner et valider les configurations
-    utilisées par les différents modes de RoadmapParser.
+    utilisÃ©es par les diffÃ©rents modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 <#
 .SYNOPSIS
-    Retourne la configuration par défaut pour les modes RoadmapParser.
+    Retourne la configuration par dÃ©faut pour les modes RoadmapParser.
 
 .DESCRIPTION
-    Cette fonction retourne un objet contenant la configuration par défaut
+    Cette fonction retourne un objet contenant la configuration par dÃ©faut
     pour tous les modes de RoadmapParser.
 
 .EXAMPLE
@@ -31,7 +31,7 @@ function Get-DefaultConfiguration {
     param()
 
     $defaultConfig = @{
-        # Configuration générale
+        # Configuration gÃ©nÃ©rale
         General = @{
             LogLevel                 = "INFO"
             LogPath                  = "logs"
@@ -41,7 +41,7 @@ function Get-DefaultConfiguration {
             MaxConcurrentTasks       = 4
         }
 
-        # Configuration spécifique aux modes
+        # Configuration spÃ©cifique aux modes
         Modes   = @{
             # Mode ARCHI
             ARCHI     = @{
@@ -160,23 +160,23 @@ function Get-DefaultConfiguration {
 
 <#
 .SYNOPSIS
-    Charge une configuration à partir d'un fichier.
+    Charge une configuration Ã  partir d'un fichier.
 
 .DESCRIPTION
-    Cette fonction charge une configuration à partir d'un fichier JSON ou YAML.
-    Elle peut également détecter automatiquement le format du fichier si l'extension n'est pas spécifiée.
+    Cette fonction charge une configuration Ã  partir d'un fichier JSON ou YAML.
+    Elle peut Ã©galement dÃ©tecter automatiquement le format du fichier si l'extension n'est pas spÃ©cifiÃ©e.
 
 .PARAMETER ConfigFile
     Chemin vers le fichier de configuration.
 
 .PARAMETER Format
-    Format du fichier de configuration (Auto, JSON ou YAML). Par défaut, le format est détecté automatiquement.
+    Format du fichier de configuration (Auto, JSON ou YAML). Par dÃ©faut, le format est dÃ©tectÃ© automatiquement.
 
 .PARAMETER ApplyDefaults
-    Indique si les valeurs par défaut doivent être appliquées à la configuration chargée.
+    Indique si les valeurs par dÃ©faut doivent Ãªtre appliquÃ©es Ã  la configuration chargÃ©e.
 
 .PARAMETER Validate
-    Indique si la configuration chargée doit être validée.
+    Indique si la configuration chargÃ©e doit Ãªtre validÃ©e.
 
 .EXAMPLE
     $config = Get-Configuration -ConfigFile "config.json"
@@ -205,12 +205,12 @@ function Get-Configuration {
     )
 
     if (-not (Test-Path -Path $ConfigFile)) {
-        Write-Error "Le fichier de configuration est introuvable à l'emplacement : $ConfigFile"
+        Write-Error "Le fichier de configuration est introuvable Ã  l'emplacement : $ConfigFile"
         return $null
     }
 
     try {
-        # Déterminer le format du fichier
+        # DÃ©terminer le format du fichier
         if ($Format -eq "Auto") {
             $extension = [System.IO.Path]::GetExtension($ConfigFile).ToLower()
 
@@ -219,7 +219,7 @@ function Get-Configuration {
             } elseif ($extension -eq ".yaml" -or $extension -eq ".yml") {
                 $Format = "YAML"
             } else {
-                # Essayer de détecter le format en lisant le contenu du fichier
+                # Essayer de dÃ©tecter le format en lisant le contenu du fichier
                 $content = Get-Content -Path $ConfigFile -Raw
 
                 if ($content -match '^\s*{') {
@@ -227,7 +227,7 @@ function Get-Configuration {
                 } elseif ($content -match '^\s*---') {
                     $Format = "YAML"
                 } else {
-                    Write-Warning "Impossible de détecter automatiquement le format du fichier. Utilisation du format JSON par défaut."
+                    Write-Warning "Impossible de dÃ©tecter automatiquement le format du fichier. Utilisation du format JSON par dÃ©faut."
                     $Format = "JSON"
                 }
             }
@@ -244,7 +244,7 @@ function Get-Configuration {
                 }
             }
             "YAML" {
-                # Vérifier si le module PowerShell-Yaml est installé
+                # VÃ©rifier si le module PowerShell-Yaml est installÃ©
                 if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
                     Write-Error "Le module PowerShell-Yaml est requis pour charger des fichiers YAML. Installez-le avec : Install-Module -Name powershell-yaml -Force"
                     return $null
@@ -260,17 +260,17 @@ function Get-Configuration {
             }
         }
 
-        # Appliquer les valeurs par défaut si demandé
+        # Appliquer les valeurs par dÃ©faut si demandÃ©
         if ($ApplyDefaults) {
             $defaultConfig = Get-DefaultConfiguration
             $config = Merge-Configuration -DefaultConfig $defaultConfig -CustomConfig $config
         }
 
-        # Valider la configuration si demandé
+        # Valider la configuration si demandÃ©
         if ($Validate) {
             $isValid = Test-Configuration -Config $config
             if (-not $isValid) {
-                Write-Warning "La configuration chargée n'est pas valide. Utilisez Test-Configuration pour plus de détails."
+                Write-Warning "La configuration chargÃ©e n'est pas valide. Utilisez Test-Configuration pour plus de dÃ©tails."
             }
         }
 
@@ -286,27 +286,27 @@ function Get-Configuration {
     Fusionne deux configurations.
 
 .DESCRIPTION
-    Cette fonction fusionne une configuration personnalisée avec la configuration par défaut.
-    Les valeurs de la configuration personnalisée remplacent celles de la configuration par défaut.
-    Différentes stratégies de fusion peuvent être utilisées pour contrôler le comportement de fusion.
+    Cette fonction fusionne une configuration personnalisÃ©e avec la configuration par dÃ©faut.
+    Les valeurs de la configuration personnalisÃ©e remplacent celles de la configuration par dÃ©faut.
+    DiffÃ©rentes stratÃ©gies de fusion peuvent Ãªtre utilisÃ©es pour contrÃ´ler le comportement de fusion.
 
 .PARAMETER DefaultConfig
-    Configuration par défaut.
+    Configuration par dÃ©faut.
 
 .PARAMETER CustomConfig
-    Configuration personnalisée.
+    Configuration personnalisÃ©e.
 
 .PARAMETER Strategy
-    Stratégie de fusion à utiliser. Les valeurs possibles sont :
-    - Replace : Les valeurs de CustomConfig remplacent celles de DefaultConfig (par défaut)
-    - Append : Les valeurs de CustomConfig sont ajoutées à celles de DefaultConfig (pour les tableaux)
-    - KeepExisting : Les valeurs existantes dans DefaultConfig sont conservées si elles existent déjà
+    StratÃ©gie de fusion Ã  utiliser. Les valeurs possibles sont :
+    - Replace : Les valeurs de CustomConfig remplacent celles de DefaultConfig (par dÃ©faut)
+    - Append : Les valeurs de CustomConfig sont ajoutÃ©es Ã  celles de DefaultConfig (pour les tableaux)
+    - KeepExisting : Les valeurs existantes dans DefaultConfig sont conservÃ©es si elles existent dÃ©jÃ 
 
 .PARAMETER ExcludeSections
-    Sections à exclure de la fusion.
+    Sections Ã  exclure de la fusion.
 
 .PARAMETER IncludeSections
-    Sections à inclure dans la fusion. Si spécifié, seules ces sections seront fusionnées.
+    Sections Ã  inclure dans la fusion. Si spÃ©cifiÃ©, seules ces sections seront fusionnÃ©es.
 
 .EXAMPLE
     $mergedConfig = Merge-Configuration -DefaultConfig $defaultConfig -CustomConfig $customConfig
@@ -340,7 +340,7 @@ function Merge-Configuration {
     try {
         $mergedConfig = $DefaultConfig.Clone()
 
-        # Fonction récursive pour fusionner les hashtables
+        # Fonction rÃ©cursive pour fusionner les hashtables
         function Merge-Hashtable {
             param(
                 [hashtable]$Target,
@@ -354,13 +354,13 @@ function Merge-Configuration {
             foreach ($key in $Source.Keys) {
                 $keyPath = if ([string]::IsNullOrEmpty($CurrentPath)) { $key } else { "$CurrentPath.$key" }
 
-                # Vérifier si la section doit être exclue
+                # VÃ©rifier si la section doit Ãªtre exclue
                 if ($ExcludeSections -contains $keyPath) {
                     Write-Verbose "Section exclue de la fusion : $keyPath"
                     continue
                 }
 
-                # Vérifier si la section doit être incluse (si IncludeSections est spécifié)
+                # VÃ©rifier si la section doit Ãªtre incluse (si IncludeSections est spÃ©cifiÃ©)
                 if ($IncludeSections.Count -gt 0 -and -not ($IncludeSections -contains $keyPath) -and -not ($IncludeSections | Where-Object { $keyPath -like "$_*" })) {
                     Write-Verbose "Section non incluse dans la fusion : $keyPath"
                     continue
@@ -368,20 +368,20 @@ function Merge-Configuration {
 
                 if ($Target.ContainsKey($key)) {
                     if ($Target[$key] -is [hashtable] -and $Source[$key] -is [hashtable]) {
-                        # Fusion récursive des hashtables
+                        # Fusion rÃ©cursive des hashtables
                         Merge-Hashtable -Target $Target[$key] -Source $Source[$key] -CurrentPath $keyPath -Strategy $Strategy -ExcludeSections $ExcludeSections -IncludeSections $IncludeSections
                     } elseif ($Target[$key] -is [array] -and $Source[$key] -is [array] -and $Strategy -eq "Append") {
                         # Fusion des tableaux en mode Append
                         $Target[$key] = @($Target[$key]) + @($Source[$key]) | Select-Object -Unique
                     } elseif ($Strategy -eq "KeepExisting") {
                         # Ne rien faire, conserver la valeur existante
-                        Write-Verbose "Valeur existante conservée pour $keyPath : $($Target[$key])"
+                        Write-Verbose "Valeur existante conservÃ©e pour $keyPath : $($Target[$key])"
                     } else {
-                        # Remplacement de la valeur (stratégie par défaut)
+                        # Remplacement de la valeur (stratÃ©gie par dÃ©faut)
                         $Target[$key] = $Source[$key]
                     }
                 } else {
-                    # Ajout de la nouvelle clé
+                    # Ajout de la nouvelle clÃ©
                     $Target[$key] = $Source[$key]
                 }
             }
@@ -401,21 +401,21 @@ function Merge-Configuration {
     Valide une configuration.
 
 .DESCRIPTION
-    Cette fonction vérifie qu'une configuration contient toutes les clés requises
-    et que les valeurs sont du type attendu. Elle peut également valider des règles
-    personnalisées et vérifier les types de données.
+    Cette fonction vÃ©rifie qu'une configuration contient toutes les clÃ©s requises
+    et que les valeurs sont du type attendu. Elle peut Ã©galement valider des rÃ¨gles
+    personnalisÃ©es et vÃ©rifier les types de donnÃ©es.
 
 .PARAMETER Config
-    Configuration à valider.
+    Configuration Ã  valider.
 
 .PARAMETER ValidationRules
-    Règles de validation personnalisées sous forme de hashtable.
+    RÃ¨gles de validation personnalisÃ©es sous forme de hashtable.
 
 .PARAMETER SkipMissingKeys
-    Indique si les clés manquantes doivent être ignorées lors de la validation.
+    Indique si les clÃ©s manquantes doivent Ãªtre ignorÃ©es lors de la validation.
 
 .PARAMETER Detailed
-    Indique si un rapport de validation détaillé doit être généré.
+    Indique si un rapport de validation dÃ©taillÃ© doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     $isValid = Test-Configuration -Config $config
@@ -433,7 +433,7 @@ function Merge-Configuration {
     $isValid = Test-Configuration -Config $config -ValidationRules $customRules
 
 .OUTPUTS
-    System.Boolean ou System.Collections.Hashtable (si -Detailed est spécifié)
+    System.Boolean ou System.Collections.Hashtable (si -Detailed est spÃ©cifiÃ©)
 #>
 function Test-Configuration {
     [CmdletBinding()]
@@ -462,7 +462,7 @@ function Test-Configuration {
             InvalidValues = @()
         }
 
-        # Définir les règles de validation par défaut
+        # DÃ©finir les rÃ¨gles de validation par dÃ©faut
         $defaultRules = @{
             # Sections principales requises
             "General"                          = @{
@@ -478,7 +478,7 @@ function Test-Configuration {
                 Required = $true
             }
 
-            # Clés requises dans la section General
+            # ClÃ©s requises dans la section General
             "General.LogLevel"                 = @{
                 Type          = "String"
                 Required      = $true
@@ -499,7 +499,7 @@ function Test-Configuration {
                 DefaultValue = $true
             }
 
-            # Clés requises dans la section Paths
+            # ClÃ©s requises dans la section Paths
             "Paths.ModulePath"                 = @{
                 Type     = "String"
                 Required = $true
@@ -560,10 +560,10 @@ function Test-Configuration {
             }
         }
 
-        # Fusionner les règles par défaut avec les règles personnalisées
+        # Fusionner les rÃ¨gles par dÃ©faut avec les rÃ¨gles personnalisÃ©es
         $rules = Merge-Configuration -DefaultConfig $defaultRules -CustomConfig $ValidationRules
 
-        # Fonction récursive pour valider la configuration
+        # Fonction rÃ©cursive pour valider la configuration
         function Test-ConfigValue {
             param(
                 [hashtable]$Config,
@@ -573,48 +573,48 @@ function Test-Configuration {
 
             $localValid = $true
 
-            # Valider les règles pour le chemin actuel
+            # Valider les rÃ¨gles pour le chemin actuel
             foreach ($rulePath in $Rules.Keys) {
                 $rule = $Rules[$rulePath]
 
-                # Ignorer les règles qui ne commencent pas par le chemin actuel
+                # Ignorer les rÃ¨gles qui ne commencent pas par le chemin actuel
                 if ($CurrentPath -and -not $rulePath.StartsWith($CurrentPath)) {
                     continue
                 }
 
-                # Obtenir le chemin relatif à partir du chemin actuel
+                # Obtenir le chemin relatif Ã  partir du chemin actuel
                 $relativePath = if ($CurrentPath -and $rulePath.Length -gt $CurrentPath.Length) {
                     $rulePath.Substring($CurrentPath.Length + 1)
                 } else {
                     $rulePath
                 }
 
-                # Ignorer les règles qui contiennent des points (sous-chemins) à ce niveau
+                # Ignorer les rÃ¨gles qui contiennent des points (sous-chemins) Ã  ce niveau
                 if ($relativePath -and $relativePath.Contains(".")) {
                     continue
                 }
 
-                # Construire le chemin complet pour la valeur à valider
+                # Construire le chemin complet pour la valeur Ã  valider
                 $valuePath = if ($CurrentPath) { "$CurrentPath.$relativePath" } else { $relativePath }
 
-                # Obtenir la valeur à valider
+                # Obtenir la valeur Ã  valider
                 $value = Get-ConfigValue -Config $Config -Path $valuePath
 
-                # Vérifier si la valeur existe
+                # VÃ©rifier si la valeur existe
                 if ($null -eq $value) {
                     if ($rule.Required -and -not $SkipMissingKeys) {
                         $validationReport.MissingKeys += $valuePath
-                        $validationReport.Errors += "La clé requise '$valuePath' est manquante."
+                        $validationReport.Errors += "La clÃ© requise '$valuePath' est manquante."
                         $validationReport.IsValid = $false
                         $localValid = $false
-                        Write-Warning "La clé requise '$valuePath' est manquante."
+                        Write-Warning "La clÃ© requise '$valuePath' est manquante."
                     } elseif ($null -ne $rule.DefaultValue) {
-                        # Appliquer la valeur par défaut
+                        # Appliquer la valeur par dÃ©faut
                         Set-ConfigValue -Config $Config -Path $valuePath -Value $rule.DefaultValue
-                        Write-Verbose "Valeur par défaut appliquée pour '$valuePath' : $($rule.DefaultValue)"
+                        Write-Verbose "Valeur par dÃ©faut appliquÃ©e pour '$valuePath' : $($rule.DefaultValue)"
                     }
                 } else {
-                    # Vérifier le type de la valeur
+                    # VÃ©rifier le type de la valeur
                     $typeValid = Test-ConfigValueType -Value $value -ExpectedType $rule.Type
                     if (-not $typeValid) {
                         $validationReport.InvalidTypes += $valuePath
@@ -624,28 +624,28 @@ function Test-Configuration {
                         Write-Warning "La valeur de '$valuePath' n'est pas du type attendu ($($rule.Type))."
                     }
 
-                    # Vérifier les valeurs autorisées
+                    # VÃ©rifier les valeurs autorisÃ©es
                     if ($rule.AllowedValues -and $value -notin $rule.AllowedValues) {
                         $validationReport.InvalidValues += $valuePath
-                        $validationReport.Errors += "La valeur de '$valuePath' ($value) n'est pas autorisée. Valeurs autorisées : $($rule.AllowedValues -join ', ')"
+                        $validationReport.Errors += "La valeur de '$valuePath' ($value) n'est pas autorisÃ©e. Valeurs autorisÃ©es : $($rule.AllowedValues -join ', ')"
                         $validationReport.IsValid = $false
                         $localValid = $false
-                        Write-Warning "La valeur de '$valuePath' ($value) n'est pas autorisée. Valeurs autorisées : $($rule.AllowedValues -join ', ')"
+                        Write-Warning "La valeur de '$valuePath' ($value) n'est pas autorisÃ©e. Valeurs autorisÃ©es : $($rule.AllowedValues -join ', ')"
                     }
 
-                    # Vérifier les règles personnalisées
+                    # VÃ©rifier les rÃ¨gles personnalisÃ©es
                     if ($rule.Validator -is [scriptblock]) {
                         $validatorResult = & $rule.Validator $value
                         if (-not $validatorResult) {
                             $validationReport.InvalidValues += $valuePath
-                            $validationReport.Errors += "La valeur de '$valuePath' ($value) n'a pas passé la validation personnalisée."
+                            $validationReport.Errors += "La valeur de '$valuePath' ($value) n'a pas passÃ© la validation personnalisÃ©e."
                             $validationReport.IsValid = $false
                             $localValid = $false
-                            Write-Warning "La valeur de '$valuePath' ($value) n'a pas passé la validation personnalisée."
+                            Write-Warning "La valeur de '$valuePath' ($value) n'a pas passÃ© la validation personnalisÃ©e."
                         }
                     }
 
-                    # Si la valeur est un hashtable, valider récursivement
+                    # Si la valeur est un hashtable, valider rÃ©cursivement
                     if ($value -is [hashtable]) {
                         $subValid = Test-ConfigValue -Config $value -Rules $Rules -CurrentPath $valuePath
                         if (-not $subValid) {
@@ -658,7 +658,7 @@ function Test-Configuration {
             return $localValid
         }
 
-        # Fonction pour obtenir une valeur à partir d'un chemin
+        # Fonction pour obtenir une valeur Ã  partir d'un chemin
         function Get-ConfigValue {
             param(
                 [hashtable]$Config,
@@ -679,7 +679,7 @@ function Test-Configuration {
             return $current
         }
 
-        # Fonction pour définir une valeur à partir d'un chemin
+        # Fonction pour dÃ©finir une valeur Ã  partir d'un chemin
         function Set-ConfigValue {
             param(
                 [hashtable]$Config,
@@ -703,7 +703,7 @@ function Test-Configuration {
             $current[$parts[-1]] = $Value
         }
 
-        # Fonction pour vérifier le type d'une valeur
+        # Fonction pour vÃ©rifier le type d'une valeur
         function Test-ConfigValueType {
             param(
                 [object]$Value,
@@ -726,10 +726,10 @@ function Test-Configuration {
         # Valider la configuration
         $isValid = Test-ConfigValue -Config $Config -Rules $rules
 
-        # Mettre à jour le rapport de validation
+        # Mettre Ã  jour le rapport de validation
         $validationReport.IsValid = $isValid
 
-        # Retourner le résultat
+        # Retourner le rÃ©sultat
         if ($Detailed) {
             return $validationReport
         } else {
@@ -761,7 +761,7 @@ function Test-Configuration {
     Cette fonction sauvegarde une configuration dans un fichier JSON ou YAML.
 
 .PARAMETER Config
-    Configuration à sauvegarder.
+    Configuration Ã  sauvegarder.
 
 .PARAMETER ConfigFile
     Chemin vers le fichier de configuration.
@@ -789,7 +789,7 @@ function Save-Configuration {
         [string]$Format = "JSON"
     )
 
-    # Créer le répertoire parent s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire parent s'il n'existe pas
     $parentDir = Split-Path -Parent $ConfigFile
     if (-not [string]::IsNullOrEmpty($parentDir) -and -not (Test-Path -Path $parentDir)) {
         New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
@@ -800,7 +800,7 @@ function Save-Configuration {
             $Config | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
         }
         "YAML" {
-            # Vérifier si le module PowerShell-Yaml est installé
+            # VÃ©rifier si le module PowerShell-Yaml est installÃ©
             if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
                 throw "Le module PowerShell-Yaml est requis pour sauvegarder des fichiers YAML. Installez-le avec : Install-Module -Name powershell-yaml -Force"
             }
@@ -813,20 +813,20 @@ function Save-Configuration {
 
 <#
 .SYNOPSIS
-    Applique les valeurs par défaut à une configuration.
+    Applique les valeurs par dÃ©faut Ã  une configuration.
 
 .DESCRIPTION
-    Cette fonction applique les valeurs par défaut à une configuration incomplète.
-    Elle utilise les règles de validation pour déterminer les valeurs par défaut à appliquer.
+    Cette fonction applique les valeurs par dÃ©faut Ã  une configuration incomplÃ¨te.
+    Elle utilise les rÃ¨gles de validation pour dÃ©terminer les valeurs par dÃ©faut Ã  appliquer.
 
 .PARAMETER Config
-    Configuration à compléter.
+    Configuration Ã  complÃ©ter.
 
 .PARAMETER ValidationRules
-    Règles de validation personnalisées sous forme de hashtable.
+    RÃ¨gles de validation personnalisÃ©es sous forme de hashtable.
 
 .PARAMETER DefaultConfig
-    Configuration par défaut à utiliser. Si non spécifiée, la configuration par défaut du module est utilisée.
+    Configuration par dÃ©faut Ã  utiliser. Si non spÃ©cifiÃ©e, la configuration par dÃ©faut du module est utilisÃ©e.
 
 .EXAMPLE
     $completeConfig = Set-DefaultConfiguration -Config $config
@@ -856,12 +856,12 @@ function Set-DefaultConfiguration {
     )
 
     try {
-        # Utiliser la configuration par défaut du module si non spécifiée
+        # Utiliser la configuration par dÃ©faut du module si non spÃ©cifiÃ©e
         if ($null -eq $DefaultConfig) {
             $DefaultConfig = Get-DefaultConfiguration
         }
 
-        # Définir les règles de validation par défaut
+        # DÃ©finir les rÃ¨gles de validation par dÃ©faut
         $defaultRules = @{
             # Sections principales requises
             "General"                          = @{
@@ -880,7 +880,7 @@ function Set-DefaultConfiguration {
                 DefaultValue = $DefaultConfig.Paths
             }
 
-            # Clés requises dans la section General
+            # ClÃ©s requises dans la section General
             "General.LogLevel"                 = @{
                 Type         = "String"
                 Required     = $true
@@ -902,7 +902,7 @@ function Set-DefaultConfiguration {
                 DefaultValue = $DefaultConfig.General.BackupBeforeModification
             }
 
-            # Clés requises dans la section Paths
+            # ClÃ©s requises dans la section Paths
             "Paths.ModulePath"                 = @{
                 Type         = "String"
                 Required     = $true
@@ -920,7 +920,7 @@ function Set-DefaultConfiguration {
             }
         }
 
-        # Ajouter les règles pour chaque mode
+        # Ajouter les rÃ¨gles pour chaque mode
         foreach ($mode in $DefaultConfig.Modes.Keys) {
             $defaultRules["Modes.$mode"] = @{
                 Type         = "Hashtable"
@@ -929,10 +929,10 @@ function Set-DefaultConfiguration {
             }
         }
 
-        # Fusionner les règles par défaut avec les règles personnalisées
+        # Fusionner les rÃ¨gles par dÃ©faut avec les rÃ¨gles personnalisÃ©es
         $rules = Merge-Configuration -DefaultConfig $defaultRules -CustomConfig $ValidationRules
 
-        # Fonction pour obtenir une valeur à partir d'un chemin
+        # Fonction pour obtenir une valeur Ã  partir d'un chemin
         function Get-ConfigValue {
             param(
                 [hashtable]$Config,
@@ -953,7 +953,7 @@ function Set-DefaultConfiguration {
             return $current
         }
 
-        # Fonction pour définir une valeur à partir d'un chemin
+        # Fonction pour dÃ©finir une valeur Ã  partir d'un chemin
         function Set-ConfigValue {
             param(
                 [hashtable]$Config,
@@ -977,36 +977,36 @@ function Set-DefaultConfiguration {
             $current[$parts[-1]] = $Value
         }
 
-        # Appliquer les valeurs par défaut
+        # Appliquer les valeurs par dÃ©faut
         foreach ($rulePath in $rules.Keys) {
             $rule = $rules[$rulePath]
 
-            # Vérifier si la valeur existe
+            # VÃ©rifier si la valeur existe
             $value = Get-ConfigValue -Config $Config -Path $rulePath
 
             if ($null -eq $value -and $null -ne $rule.DefaultValue) {
-                # Appliquer la valeur par défaut
+                # Appliquer la valeur par dÃ©faut
                 Set-ConfigValue -Config $Config -Path $rulePath -Value $rule.DefaultValue
-                Write-Verbose "Valeur par défaut appliquée pour '$rulePath' : $($rule.DefaultValue)"
+                Write-Verbose "Valeur par dÃ©faut appliquÃ©e pour '$rulePath' : $($rule.DefaultValue)"
             }
         }
 
         return $Config
     } catch {
-        Write-Error "Erreur lors de l'application des valeurs par défaut : $_"
+        Write-Error "Erreur lors de l'application des valeurs par dÃ©faut : $_"
         return $Config
     }
 }
 
 <#
 .SYNOPSIS
-    Convertit une configuration en chaîne de caractères.
+    Convertit une configuration en chaÃ®ne de caractÃ¨res.
 
 .DESCRIPTION
-    Cette fonction convertit une configuration en chaîne de caractères au format JSON ou YAML.
+    Cette fonction convertit une configuration en chaÃ®ne de caractÃ¨res au format JSON ou YAML.
 
 .PARAMETER Config
-    Configuration à convertir.
+    Configuration Ã  convertir.
 
 .PARAMETER Format
     Format de sortie (JSON ou YAML).
@@ -1040,7 +1040,7 @@ function Convert-ConfigurationToString {
                 return $Config | ConvertTo-Json -Depth $Depth
             }
             "YAML" {
-                # Vérifier si le module PowerShell-Yaml est installé
+                # VÃ©rifier si le module PowerShell-Yaml est installÃ©
                 if (-not (Get-Module -ListAvailable -Name "powershell-yaml")) {
                     throw "Le module PowerShell-Yaml est requis pour convertir en YAML. Installez-le avec : Install-Module -Name powershell-yaml -Force"
                 }

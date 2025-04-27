@@ -1,18 +1,18 @@
-# Tests pour la fonction Analyze-SqlServerPermission
-# Nécessite Pester v5 ou supérieur
+﻿# Tests pour la fonction Analyze-SqlServerPermission
+# NÃ©cessite Pester v5 ou supÃ©rieur
 
 BeforeAll {
-    # Importer la fonction à tester
+    # Importer la fonction Ã  tester
     . "$PSScriptRoot\..\Functions\Public\Analyze-SqlServerPermission.ps1"
 
-    # Créer un dossier temporaire pour les rapports
+    # CrÃ©er un dossier temporaire pour les rapports
     $script:TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
     New-Item -Path $script:TempFolder -ItemType Directory -Force | Out-Null
 }
 
 Describe "Analyze-SqlServerPermission" {
     BeforeAll {
-        # Mock pour Invoke-Sqlcmd - Rôles serveur
+        # Mock pour Invoke-Sqlcmd - RÃ´les serveur
         Mock -CommandName Invoke-Sqlcmd -ParameterFilter { $Query -like "*sys.server_role_members*" } -MockWith {
             return @(
                 [PSCustomObject]@{
@@ -140,29 +140,29 @@ Describe "Analyze-SqlServerPermission" {
         Mock -CommandName Import-Module -MockWith { return $true }
     }
 
-    Context "Paramètres et validation" {
-        It "Devrait accepter un paramètre ServerInstance obligatoire" {
+    Context "ParamÃ¨tres et validation" {
+        It "Devrait accepter un paramÃ¨tre ServerInstance obligatoire" {
             (Get-Command Analyze-SqlServerPermission).Parameters['ServerInstance'].Attributes |
                 Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] } |
                 Select-Object -ExpandProperty Mandatory |
                 Should -Be $true
         }
 
-        It "Devrait accepter un paramètre Credential optionnel" {
+        It "Devrait accepter un paramÃ¨tre Credential optionnel" {
             (Get-Command Analyze-SqlServerPermission).Parameters['Credential'].Attributes |
                 Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] } |
                 Select-Object -ExpandProperty Mandatory |
                 Should -Be $false
         }
 
-        It "Devrait accepter un paramètre OutputPath optionnel" {
+        It "Devrait accepter un paramÃ¨tre OutputPath optionnel" {
             (Get-Command Analyze-SqlServerPermission).Parameters['OutputPath'].Attributes |
                 Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] } |
                 Select-Object -ExpandProperty Mandatory |
                 Should -Be $false
         }
 
-        It "Devrait accepter un paramètre OutputFormat optionnel avec des valeurs valides" {
+        It "Devrait accepter un paramÃ¨tre OutputFormat optionnel avec des valeurs valides" {
             $param = (Get-Command Analyze-SqlServerPermission).Parameters['OutputFormat']
             $param.Attributes |
                 Where-Object { $_ -is [System.Management.Automation.ParameterAttribute] } |
@@ -191,8 +191,8 @@ Describe "Analyze-SqlServerPermission" {
         }
     }
 
-    Context "Fonctionnalités de base" {
-        It "Devrait retourner un objet avec les propriétés attendues" {
+    Context "FonctionnalitÃ©s de base" {
+        It "Devrait retourner un objet avec les propriÃ©tÃ©s attendues" {
             $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
             $result | Should -Not -BeNullOrEmpty
@@ -204,32 +204,32 @@ Describe "Analyze-SqlServerPermission" {
             $result.AnalysisDate | Should -BeOfType [DateTime]
         }
 
-        It "Devrait détecter les anomalies de permissions" {
+        It "Devrait dÃ©tecter les anomalies de permissions" {
             $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
-            # Vérifier que les anomalies sont détectées
+            # VÃ©rifier que les anomalies sont dÃ©tectÃ©es
             $result.PermissionAnomalies | Should -Not -BeNullOrEmpty
 
-            # Vérifier la détection des comptes désactivés avec des permissions
+            # VÃ©rifier la dÃ©tection des comptes dÃ©sactivÃ©s avec des permissions
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "DisabledLoginWithPermissions" -and $_.LoginName -eq "SecurityUser" } | Should -Not -BeNullOrEmpty
 
-            # Vérifier la détection des comptes avec des privilèges élevés
+            # VÃ©rifier la dÃ©tection des comptes avec des privilÃ¨ges Ã©levÃ©s
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "HighPrivilegeAccount" -and $_.LoginName -eq "sa" } | Should -Not -BeNullOrEmpty
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "HighPrivilegeAccount" -and $_.LoginName -eq "DOMAIN\Administrator" } | Should -Not -BeNullOrEmpty
 
-            # Vérifier la détection des comptes avec des mots de passe expirés
+            # VÃ©rifier la dÃ©tection des comptes avec des mots de passe expirÃ©s
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "ExpiredPassword" -and $_.LoginName -eq "SecurityUser" } | Should -Not -BeNullOrEmpty
 
-            # Vérifier la détection des comptes verrouillés
+            # VÃ©rifier la dÃ©tection des comptes verrouillÃ©s
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "LockedAccount" -and $_.LoginName -eq "LockedUser" } | Should -Not -BeNullOrEmpty
 
-            # Vérifier la détection des permissions CONTROL SERVER
+            # VÃ©rifier la dÃ©tection des permissions CONTROL SERVER
             $result.PermissionAnomalies | Where-Object { $_.AnomalyType -eq "ControlServerPermission" -and $_.LoginName -eq "sa" } | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context "Génération de rapports" {
-        It "Devrait générer un rapport HTML" {
+    Context "GÃ©nÃ©ration de rapports" {
+        It "Devrait gÃ©nÃ©rer un rapport HTML" {
             $outputPath = Join-Path -Path $script:TempFolder -ChildPath "SqlPermissions.html"
 
             Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "HTML"
@@ -239,7 +239,7 @@ Describe "Analyze-SqlServerPermission" {
             Get-Content -Path $outputPath -Raw | Should -Match "Rapport de permissions SQL Server"
         }
 
-        It "Devrait générer des rapports CSV" {
+        It "Devrait gÃ©nÃ©rer des rapports CSV" {
             $outputPath = Join-Path -Path $script:TempFolder -ChildPath "SqlPermissions.csv"
 
             Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "CSV"
@@ -255,7 +255,7 @@ Describe "Analyze-SqlServerPermission" {
             Test-Path -Path $loginsPath | Should -Be $true
         }
 
-        It "Devrait générer un rapport JSON" {
+        It "Devrait gÃ©nÃ©rer un rapport JSON" {
             $outputPath = Join-Path -Path $script:TempFolder -ChildPath "SqlPermissions.json"
 
             Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "JSON"
@@ -266,7 +266,7 @@ Describe "Analyze-SqlServerPermission" {
             Get-Content -Path $outputPath -Raw | Should -Match "ServerPermissions"
         }
 
-        It "Devrait générer un rapport XML" {
+        It "Devrait gÃ©nÃ©rer un rapport XML" {
             $outputPath = Join-Path -Path $script:TempFolder -ChildPath "SqlPermissions.xml"
 
             Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "XML"
@@ -283,7 +283,7 @@ Describe "Analyze-SqlServerPermission" {
             }
         }
 
-        It "Devrait gérer les erreurs de connexion" {
+        It "Devrait gÃ©rer les erreurs de connexion" {
             { Analyze-SqlServerPermission -ServerInstance "invalid-server" -ErrorAction Stop } | Should -Throw
         }
     }

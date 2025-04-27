@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de journalisation pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce fichier contient des fonctions pour gérer la journalisation standardisée
-    dans le module RoadmapParser, incluant différents niveaux de journalisation
+    Ce fichier contient des fonctions pour gÃ©rer la journalisation standardisÃ©e
+    dans le module RoadmapParser, incluant diffÃ©rents niveaux de journalisation
     et formats de sortie.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-26
+    Date de crÃ©ation: 2025-04-26
 #>
 
 # Variables globales pour la configuration de journalisation
@@ -31,10 +31,10 @@ if (-not (Get-Variable -Name LoggingConfig -Scope Script -ErrorAction SilentlyCo
 
 <#
 .SYNOPSIS
-    Configure les paramètres de journalisation.
+    Configure les paramÃ¨tres de journalisation.
 
 .DESCRIPTION
-    Cette fonction permet de configurer les paramètres de journalisation pour le module.
+    Cette fonction permet de configurer les paramÃ¨tres de journalisation pour le module.
 
 .PARAMETER LogLevel
     Le niveau de journalisation (Debug, Info, Warning, Error, None).
@@ -46,10 +46,10 @@ if (-not (Get-Variable -Name LoggingConfig -Scope Script -ErrorAction SilentlyCo
     Le format des messages de journal.
 
 .PARAMETER ConsoleOutput
-    Indique si les messages doivent être affichés dans la console.
+    Indique si les messages doivent Ãªtre affichÃ©s dans la console.
 
 .PARAMETER FileOutput
-    Indique si les messages doivent être écrits dans un fichier.
+    Indique si les messages doivent Ãªtre Ã©crits dans un fichier.
 
 .PARAMETER IncludeTimestamp
     Indique si les messages doivent inclure un horodatage.
@@ -61,16 +61,16 @@ if (-not (Get-Variable -Name LoggingConfig -Scope Script -ErrorAction SilentlyCo
     La taille maximale du fichier de journal avant rotation.
 
 .PARAMETER EnableLogRotation
-    Indique si la rotation des fichiers de journal est activée.
+    Indique si la rotation des fichiers de journal est activÃ©e.
 
 .PARAMETER MaxLogFiles
-    Le nombre maximum de fichiers de journal à conserver.
+    Le nombre maximum de fichiers de journal Ã  conserver.
 
 .EXAMPLE
     Set-LoggingConfiguration -LogLevel "Info" -LogFile "C:\Logs\roadmap-parser.log" -FileOutput $true
 
 .NOTES
-    Cette fonction doit être appelée avant d'utiliser les fonctions de journalisation.
+    Cette fonction doit Ãªtre appelÃ©e avant d'utiliser les fonctions de journalisation.
 #>
 function Set-LoggingConfiguration {
     [CmdletBinding()]
@@ -107,7 +107,7 @@ function Set-LoggingConfiguration {
         [int]$MaxLogFiles
     )
 
-    # Mettre à jour les paramètres spécifiés
+    # Mettre Ã  jour les paramÃ¨tres spÃ©cifiÃ©s
     if ($PSBoundParameters.ContainsKey('LogLevel')) { $script:LoggingConfig.LogLevel = $LogLevel }
     if ($PSBoundParameters.ContainsKey('LogFile')) { $script:LoggingConfig.LogFile = $LogFile }
     if ($PSBoundParameters.ContainsKey('LogFormat')) { $script:LoggingConfig.LogFormat = $LogFormat }
@@ -119,18 +119,18 @@ function Set-LoggingConfiguration {
     if ($PSBoundParameters.ContainsKey('EnableLogRotation')) { $script:LoggingConfig.EnableLogRotation = $EnableLogRotation }
     if ($PSBoundParameters.ContainsKey('MaxLogFiles')) { $script:LoggingConfig.MaxLogFiles = $MaxLogFiles }
 
-    # Si FileOutput est activé, vérifier que LogFile est défini
+    # Si FileOutput est activÃ©, vÃ©rifier que LogFile est dÃ©fini
     if ($script:LoggingConfig.FileOutput -and -not $script:LoggingConfig.LogFile) {
-        Write-Warning "FileOutput est activé mais aucun fichier de journal n'est spécifié. La journalisation dans un fichier sera désactivée."
+        Write-Warning "FileOutput est activÃ© mais aucun fichier de journal n'est spÃ©cifiÃ©. La journalisation dans un fichier sera dÃ©sactivÃ©e."
         $script:LoggingConfig.FileOutput = $false
     }
 
-    # Si LogFile est défini, activer FileOutput par défaut
+    # Si LogFile est dÃ©fini, activer FileOutput par dÃ©faut
     if ($script:LoggingConfig.LogFile -and -not $PSBoundParameters.ContainsKey('FileOutput')) {
         $script:LoggingConfig.FileOutput = $true
     }
 
-    # Créer le répertoire du fichier de journal si nécessaire
+    # CrÃ©er le rÃ©pertoire du fichier de journal si nÃ©cessaire
     if ($script:LoggingConfig.FileOutput -and $script:LoggingConfig.LogFile) {
         $logDir = Split-Path -Path $script:LoggingConfig.LogFile -Parent
         if (-not [string]::IsNullOrEmpty($logDir) -and -not (Test-Path -Path $logDir)) {
@@ -138,7 +138,7 @@ function Set-LoggingConfiguration {
                 New-Item -Path $logDir -ItemType Directory -Force | Out-Null
             }
             catch {
-                Write-Warning "Impossible de créer le répertoire de journalisation: $logDir. La journalisation dans un fichier sera désactivée."
+                Write-Warning "Impossible de crÃ©er le rÃ©pertoire de journalisation: $logDir. La journalisation dans un fichier sera dÃ©sactivÃ©e."
                 $script:LoggingConfig.FileOutput = $false
             }
         }
@@ -147,31 +147,31 @@ function Set-LoggingConfiguration {
 
 <#
 .SYNOPSIS
-    Fonction interne pour écrire un message dans le journal.
+    Fonction interne pour Ã©crire un message dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message dans le journal selon la configuration définie.
+    Cette fonction Ã©crit un message dans le journal selon la configuration dÃ©finie.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER Level
     Le niveau de journalisation du message.
 
 .PARAMETER LogFile
-    Le fichier de journal à utiliser (remplace la configuration).
+    Le fichier de journal Ã  utiliser (remplace la configuration).
 
 .PARAMETER NoConsole
-    Indique si le message ne doit pas être affiché dans la console.
+    Indique si le message ne doit pas Ãªtre affichÃ© dans la console.
 
 .PARAMETER ForegroundColor
     La couleur du texte dans la console.
 
 .EXAMPLE
-    Write-Log -Message "Opération réussie" -Level "Info"
+    Write-Log -Message "OpÃ©ration rÃ©ussie" -Level "Info"
 
 .NOTES
-    Cette fonction est utilisée par les autres fonctions de journalisation.
+    Cette fonction est utilisÃ©e par les autres fonctions de journalisation.
 #>
 function Write-Log {
     [CmdletBinding()]
@@ -193,7 +193,7 @@ function Write-Log {
         [System.ConsoleColor]$ForegroundColor
     )
 
-    # Vérifier si le niveau de journalisation est suffisant
+    # VÃ©rifier si le niveau de journalisation est suffisant
     $levelPriority = @{
         "Debug" = 0
         "Info" = 1
@@ -206,7 +206,7 @@ function Write-Log {
         return
     }
 
-    # Préparer le message
+    # PrÃ©parer le message
     $timestamp = if ($script:LoggingConfig.IncludeTimestamp) {
         Get-Date -Format $script:LoggingConfig.TimestampFormat
     } else {
@@ -215,7 +215,7 @@ function Write-Log {
 
     $formattedMessage = $script:LoggingConfig.LogFormat -f $timestamp, $Level, $Message
 
-    # Écrire dans la console si activé
+    # Ã‰crire dans la console si activÃ©
     if ($script:LoggingConfig.ConsoleOutput -and -not $NoConsole) {
         if ($ForegroundColor) {
             Write-Host $formattedMessage -ForegroundColor $ForegroundColor
@@ -231,12 +231,12 @@ function Write-Log {
         }
     }
 
-    # Écrire dans le fichier si activé
+    # Ã‰crire dans le fichier si activÃ©
     if ($script:LoggingConfig.FileOutput) {
         $logFilePath = if ($LogFile) { $LogFile } else { $script:LoggingConfig.LogFile }
 
         if ($logFilePath) {
-            # Vérifier si la rotation des logs est nécessaire
+            # VÃ©rifier si la rotation des logs est nÃ©cessaire
             if ($script:LoggingConfig.EnableLogRotation -and (Test-Path -Path $logFilePath)) {
                 $logFileInfo = Get-Item -Path $logFilePath
                 if ($logFileInfo.Length -ge $script:LoggingConfig.MaxLogSize) {
@@ -255,12 +255,12 @@ function Write-Log {
                 }
             }
 
-            # Écrire le message dans le fichier
+            # Ã‰crire le message dans le fichier
             try {
                 Add-Content -Path $logFilePath -Value $formattedMessage -Encoding UTF8
             }
             catch {
-                Write-Warning "Impossible d'écrire dans le fichier de journal: $logFilePath. Erreur: $($_.Exception.Message)"
+                Write-Warning "Impossible d'Ã©crire dans le fichier de journal: $logFilePath. Erreur: $($_.Exception.Message)"
             }
         }
     }
@@ -268,16 +268,16 @@ function Write-Log {
 
 <#
 .SYNOPSIS
-    Écrit un message de débogage dans le journal.
+    Ã‰crit un message de dÃ©bogage dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message de niveau "Debug" dans le journal.
+    Cette fonction Ã©crit un message de niveau "Debug" dans le journal.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER LogFile
-    Le fichier de journal à utiliser (remplace la configuration).
+    Le fichier de journal Ã  utiliser (remplace la configuration).
 
 .EXAMPLE
     Write-LogDebug -Message "Valeur de la variable: $value"
@@ -309,22 +309,22 @@ function Write-LogDebug {
 
 <#
 .SYNOPSIS
-    Écrit un message d'information dans le journal.
+    Ã‰crit un message d'information dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message de niveau "Info" dans le journal.
+    Cette fonction Ã©crit un message de niveau "Info" dans le journal.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER LogFile
-    Le fichier de journal à utiliser (remplace la configuration).
+    Le fichier de journal Ã  utiliser (remplace la configuration).
 
 .EXAMPLE
-    Write-LogInfo -Message "Opération réussie"
+    Write-LogInfo -Message "OpÃ©ration rÃ©ussie"
 
 .NOTES
-    Cette fonction n'affiche les messages que si le niveau de journalisation est "Info" ou inférieur.
+    Cette fonction n'affiche les messages que si le niveau de journalisation est "Info" ou infÃ©rieur.
 #>
 function Write-LogInfo {
     [CmdletBinding()]
@@ -350,22 +350,22 @@ function Write-LogInfo {
 
 <#
 .SYNOPSIS
-    Écrit un message d'avertissement dans le journal.
+    Ã‰crit un message d'avertissement dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message de niveau "Warning" dans le journal.
+    Cette fonction Ã©crit un message de niveau "Warning" dans le journal.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER LogFile
-    Le fichier de journal à utiliser (remplace la configuration).
+    Le fichier de journal Ã  utiliser (remplace la configuration).
 
 .EXAMPLE
-    Write-LogWarning -Message "Opération réussie avec des avertissements"
+    Write-LogWarning -Message "OpÃ©ration rÃ©ussie avec des avertissements"
 
 .NOTES
-    Cette fonction n'affiche les messages que si le niveau de journalisation est "Warning" ou inférieur.
+    Cette fonction n'affiche les messages que si le niveau de journalisation est "Warning" ou infÃ©rieur.
 #>
 function Write-LogWarning {
     [CmdletBinding()]
@@ -392,22 +392,22 @@ function Write-LogWarning {
 
 <#
 .SYNOPSIS
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message de niveau "Error" dans le journal.
+    Cette fonction Ã©crit un message de niveau "Error" dans le journal.
 
 .PARAMETER Message
-    Le message à journaliser.
+    Le message Ã  journaliser.
 
 .PARAMETER LogFile
-    Le fichier de journal à utiliser (remplace la configuration).
+    Le fichier de journal Ã  utiliser (remplace la configuration).
 
 .EXAMPLE
-    Write-LogError -Message "Opération échouée: $($_.Exception.Message)"
+    Write-LogError -Message "OpÃ©ration Ã©chouÃ©e: $($_.Exception.Message)"
 
 .NOTES
-    Cette fonction n'affiche les messages que si le niveau de journalisation est "Error" ou inférieur.
+    Cette fonction n'affiche les messages que si le niveau de journalisation est "Error" ou infÃ©rieur.
 #>
 function Write-LogError {
     [CmdletBinding()]
@@ -443,7 +443,7 @@ function Write-LogError {
     $config = Get-LoggingConfiguration
 
 .NOTES
-    Utile pour vérifier la configuration actuelle avant de la modifier.
+    Utile pour vÃ©rifier la configuration actuelle avant de la modifier.
 #>
 function Get-LoggingConfiguration {
     [CmdletBinding()]
@@ -454,22 +454,22 @@ function Get-LoggingConfiguration {
 
 <#
 .SYNOPSIS
-    Crée un nouveau fichier de journal.
+    CrÃ©e un nouveau fichier de journal.
 
 .DESCRIPTION
-    Cette fonction crée un nouveau fichier de journal avec un en-tête.
+    Cette fonction crÃ©e un nouveau fichier de journal avec un en-tÃªte.
 
 .PARAMETER LogFile
-    Le chemin du fichier de journal à créer.
+    Le chemin du fichier de journal Ã  crÃ©er.
 
 .PARAMETER Header
-    L'en-tête à ajouter au fichier de journal.
+    L'en-tÃªte Ã  ajouter au fichier de journal.
 
 .EXAMPLE
-    New-LogFile -LogFile "C:\Logs\roadmap-parser.log" -Header "Session de journalisation démarrée le $(Get-Date)"
+    New-LogFile -LogFile "C:\Logs\roadmap-parser.log" -Header "Session de journalisation dÃ©marrÃ©e le $(Get-Date)"
 
 .NOTES
-    Cette fonction écrase le fichier s'il existe déjà.
+    Cette fonction Ã©crase le fichier s'il existe dÃ©jÃ .
 #>
 function New-LogFile {
     [CmdletBinding()]
@@ -478,26 +478,26 @@ function New-LogFile {
         [string]$LogFile,
 
         [Parameter(Mandatory = $false)]
-        [string]$Header = "=== Session de journalisation démarrée le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
+        [string]$Header = "=== Session de journalisation dÃ©marrÃ©e le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
     )
 
     try {
-        # Créer le répertoire si nécessaire
+        # CrÃ©er le rÃ©pertoire si nÃ©cessaire
         $logDir = Split-Path -Path $LogFile -Parent
         if (-not [string]::IsNullOrEmpty($logDir) -and -not (Test-Path -Path $logDir)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
 
-        # Créer le fichier avec l'en-tête
+        # CrÃ©er le fichier avec l'en-tÃªte
         Set-Content -Path $LogFile -Value $Header -Encoding UTF8
-        Write-LogInfo -Message "Nouveau fichier de journal créé: $LogFile" -LogFile $LogFile
+        Write-LogInfo -Message "Nouveau fichier de journal crÃ©Ã©: $LogFile" -LogFile $LogFile
         return $true
     }
     catch {
-        Write-Warning "Impossible de créer le fichier de journal: $LogFile. Erreur: $($_.Exception.Message)"
+        Write-Warning "Impossible de crÃ©er le fichier de journal: $LogFile. Erreur: $($_.Exception.Message)"
         return $false
     }
 }
 
-# Note: Les fonctions sont exportées lors de l'importation du module
+# Note: Les fonctions sont exportÃ©es lors de l'importation du module
 # Set-LoggingConfiguration, Write-LogDebug, Write-LogInfo, Write-LogWarning, Write-LogError, Get-LoggingConfiguration, New-LogFile

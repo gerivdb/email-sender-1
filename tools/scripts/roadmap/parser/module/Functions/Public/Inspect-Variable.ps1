@@ -1,52 +1,52 @@
-<#
+﻿<#
 .SYNOPSIS
-    Inspecte une variable PowerShell et affiche des informations détaillées sur son contenu et sa structure.
+    Inspecte une variable PowerShell et affiche des informations dÃ©taillÃ©es sur son contenu et sa structure.
 
 .DESCRIPTION
-    La fonction Inspect-Variable analyse une variable PowerShell et affiche des informations détaillées
-    sur son type, sa taille, sa structure et son contenu. Elle prend en charge différents niveaux de détail
-    et peut être utilisée pour déboguer des scripts ou comprendre la structure de données complexes.
+    La fonction Inspect-Variable analyse une variable PowerShell et affiche des informations dÃ©taillÃ©es
+    sur son type, sa taille, sa structure et son contenu. Elle prend en charge diffÃ©rents niveaux de dÃ©tail
+    et peut Ãªtre utilisÃ©e pour dÃ©boguer des scripts ou comprendre la structure de donnÃ©es complexes.
 
 .PARAMETER InputObject
-    La variable à inspecter. Peut être de n'importe quel type.
+    La variable Ã  inspecter. Peut Ãªtre de n'importe quel type.
 
 .PARAMETER DetailLevel
-    Le niveau de détail de l'inspection.
+    Le niveau de dÃ©tail de l'inspection.
     - Basic : Affiche uniquement le type et les informations de base.
-    - Standard : Affiche le type, la taille et un aperçu du contenu (par défaut).
-    - Detailed : Affiche toutes les informations disponibles, y compris la structure complète.
+    - Standard : Affiche le type, la taille et un aperÃ§u du contenu (par dÃ©faut).
+    - Detailed : Affiche toutes les informations disponibles, y compris la structure complÃ¨te.
 
 .PARAMETER MaxDepth
-    La profondeur maximale d'inspection pour les objets imbriqués. Par défaut, 3.
+    La profondeur maximale d'inspection pour les objets imbriquÃ©s. Par dÃ©faut, 3.
 
 .PARAMETER MaxArrayItems
-    Le nombre maximum d'éléments à afficher pour les tableaux. Par défaut, 10.
+    Le nombre maximum d'Ã©lÃ©ments Ã  afficher pour les tableaux. Par dÃ©faut, 10.
 
 .PARAMETER IncludeInternalProperties
-    Indique si les propriétés internes (commençant par un underscore) doivent être incluses.
+    Indique si les propriÃ©tÃ©s internes (commenÃ§ant par un underscore) doivent Ãªtre incluses.
 
 .PARAMETER PropertyFilter
-    Expression régulière pour filtrer les noms de propriétés. Seules les propriétés dont le nom correspond
-    à cette expression seront incluses. Par défaut, toutes les propriétés sont incluses.
+    Expression rÃ©guliÃ¨re pour filtrer les noms de propriÃ©tÃ©s. Seules les propriÃ©tÃ©s dont le nom correspond
+    Ã  cette expression seront incluses. Par dÃ©faut, toutes les propriÃ©tÃ©s sont incluses.
 
 .PARAMETER TypeFilter
-    Expression régulière pour filtrer les types de propriétés. Seules les propriétés dont le type correspond
-    à cette expression seront incluses. Par défaut, tous les types sont inclus.
+    Expression rÃ©guliÃ¨re pour filtrer les types de propriÃ©tÃ©s. Seules les propriÃ©tÃ©s dont le type correspond
+    Ã  cette expression seront incluses. Par dÃ©faut, tous les types sont inclus.
 
 .PARAMETER DetectCircularReferences
-    Indique si la détection des références circulaires doit être activée. Par défaut, $true.
+    Indique si la dÃ©tection des rÃ©fÃ©rences circulaires doit Ãªtre activÃ©e. Par dÃ©faut, $true.
 
 .PARAMETER CircularReferenceHandling
-    Indique comment gérer les références circulaires détectées.
-    - Ignore : Ignore les références circulaires (par défaut).
-    - Mark : Marque les références circulaires avec un message.
-    - Throw : Lève une exception en cas de référence circulaire.
+    Indique comment gÃ©rer les rÃ©fÃ©rences circulaires dÃ©tectÃ©es.
+    - Ignore : Ignore les rÃ©fÃ©rences circulaires (par dÃ©faut).
+    - Mark : Marque les rÃ©fÃ©rences circulaires avec un message.
+    - Throw : LÃ¨ve une exception en cas de rÃ©fÃ©rence circulaire.
 
 .PARAMETER Format
     Le format de sortie.
-    - Text : Sortie texte formatée (par défaut).
+    - Text : Sortie texte formatÃ©e (par dÃ©faut).
     - Object : Retourne un objet PowerShell.
-    - JSON : Retourne une chaîne JSON.
+    - JSON : Retourne une chaÃ®ne JSON.
 
 .EXAMPLE
     $myString = "Hello, World!"
@@ -62,19 +62,19 @@
         }
     }
     $complexObject | Inspect-Variable -DetailLevel Detailed
-    Inspecte l'objet complexe avec un niveau de détail élevé.
+    Inspecte l'objet complexe avec un niveau de dÃ©tail Ã©levÃ©.
 
 .EXAMPLE
     Get-Process | Select-Object -First 5 | Inspect-Variable -Format JSON
-    Inspecte les 5 premiers processus et retourne le résultat au format JSON.
+    Inspecte les 5 premiers processus et retourne le rÃ©sultat au format JSON.
 
 .OUTPUTS
-    [PSCustomObject] ou [string] selon le paramètre Format.
+    [PSCustomObject] ou [string] selon le paramÃ¨tre Format.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 function Inspect-Variable {
     [CmdletBinding()]
@@ -118,7 +118,7 @@ function Inspect-Variable {
     )
 
     begin {
-        # Table de hachage pour suivre les objets déjà visités (pour la détection des références circulaires)
+        # Table de hachage pour suivre les objets dÃ©jÃ  visitÃ©s (pour la dÃ©tection des rÃ©fÃ©rences circulaires)
         $script:visitedObjects = @{}
         # Fonction pour mesurer la taille approximative d'un objet
         function Get-ObjectSize {
@@ -132,13 +132,13 @@ function Inspect-Variable {
                     return 0
                 }
 
-                # Pour les types simples, utiliser la longueur de la représentation en chaîne
+                # Pour les types simples, utiliser la longueur de la reprÃ©sentation en chaÃ®ne
                 if ($Object -is [string]) {
                     return $Object.Length * 2 # Approximation pour UTF-16
                 } elseif ($Object -is [int] -or $Object -is [long]) {
                     return 8 # Taille d'un entier 64 bits
                 } elseif ($Object -is [bool]) {
-                    return 1 # Taille d'un booléen
+                    return 1 # Taille d'un boolÃ©en
                 } elseif ($Object -is [datetime]) {
                     return 8 # Taille d'un DateTime
                 } elseif ($Object -is [double] -or $Object -is [decimal]) {
@@ -168,7 +168,7 @@ function Inspect-Variable {
                     }
                     return $size
                 } else {
-                    # Pour les autres types, utiliser la sérialisation JSON comme approximation
+                    # Pour les autres types, utiliser la sÃ©rialisation JSON comme approximation
                     $json = $Object | ConvertTo-Json -Depth 1 -Compress
                     return $json.Length
                 }
@@ -191,7 +191,7 @@ function Inspect-Variable {
             $type = $Object.GetType()
             $typeName = $type.FullName
 
-            # Pour les collections, ajouter des informations sur le type d'élément
+            # Pour les collections, ajouter des informations sur le type d'Ã©lÃ©ment
             if ($type.IsGenericType) {
                 $genericArgs = $type.GetGenericArguments()
                 $genericArgsNames = $genericArgs | ForEach-Object { $_.FullName }
@@ -201,7 +201,7 @@ function Inspect-Variable {
             return $typeName
         }
 
-        # Fonction pour vérifier si une propriété correspond aux filtres
+        # Fonction pour vÃ©rifier si une propriÃ©tÃ© correspond aux filtres
         function Test-PropertyFilter {
             param (
                 [Parameter(Mandatory = $true)]
@@ -211,21 +211,21 @@ function Inspect-Variable {
                 [string]$PropertyType
             )
 
-            # Vérifier le filtre de nom de propriété
+            # VÃ©rifier le filtre de nom de propriÃ©tÃ©
             if (-not [string]::IsNullOrEmpty($PropertyFilter)) {
                 if ($PropertyName -notmatch $PropertyFilter) {
                     return $false
                 }
             }
 
-            # Vérifier le filtre de type de propriété
+            # VÃ©rifier le filtre de type de propriÃ©tÃ©
             if (-not [string]::IsNullOrEmpty($TypeFilter)) {
                 if ($PropertyType -notmatch $TypeFilter) {
                     return $false
                 }
             }
 
-            # Vérifier si c'est une propriété interne
+            # VÃ©rifier si c'est une propriÃ©tÃ© interne
             if (-not $IncludeInternalProperties -and $PropertyName.StartsWith('_')) {
                 return $false
             }
@@ -233,7 +233,7 @@ function Inspect-Variable {
             return $true
         }
 
-        # Fonction pour inspecter un objet de manière récursive
+        # Fonction pour inspecter un objet de maniÃ¨re rÃ©cursive
         function Inspect-ObjectRecursive {
             param (
                 [Parameter(Mandatory = $false)]
@@ -262,19 +262,19 @@ function Inspect-Variable {
                 }
             }
 
-            # Détection des références circulaires
+            # DÃ©tection des rÃ©fÃ©rences circulaires
             if ($DetectCircularReferences -and -not ($Object -is [string] -or $Object -is [ValueType])) {
                 $objectId = [System.Runtime.CompilerServices.RuntimeHelpers]::GetHashCode($Object)
 
-                # Vérifier si l'objet a déjà été visité
+                # VÃ©rifier si l'objet a dÃ©jÃ  Ã©tÃ© visitÃ©
                 if ($script:visitedObjects.ContainsKey($objectId)) {
                     $circularPath = $script:visitedObjects[$objectId]
 
-                    # Gérer la référence circulaire selon le mode choisi
+                    # GÃ©rer la rÃ©fÃ©rence circulaire selon le mode choisi
                     switch ($CircularReferenceHandling) {
                         "Ignore" {
                             # Continuer normalement
-                            # Mais on ajoute quand même l'information pour les tests
+                            # Mais on ajoute quand mÃªme l'information pour les tests
                             $result = @{
                                 Type  = Get-ObjectType -Object $Object
                                 Value = $Object.ToString()
@@ -285,25 +285,25 @@ function Inspect-Variable {
                         "Mark" {
                             return @{
                                 Type                = Get-ObjectType -Object $Object
-                                Value               = "Référence circulaire détectée! Chemin précédent: $circularPath"
+                                Value               = "RÃ©fÃ©rence circulaire dÃ©tectÃ©e! Chemin prÃ©cÃ©dent: $circularPath"
                                 IsCircularReference = $true
                                 CircularPath        = $circularPath
                                 CurrentPath         = $Path
                             }
                         }
                         "Throw" {
-                            throw "Référence circulaire détectée! Chemin actuel: $Path, Chemin précédent: $circularPath"
+                            throw "RÃ©fÃ©rence circulaire dÃ©tectÃ©e! Chemin actuel: $Path, Chemin prÃ©cÃ©dent: $circularPath"
                         }
                     }
                 } else {
-                    # Ajouter l'objet à la liste des objets visités
+                    # Ajouter l'objet Ã  la liste des objets visitÃ©s
                     $script:visitedObjects[$objectId] = $Path
                 }
             }
 
             $typeName = Get-ObjectType -Object $Object
 
-            # Traiter différemment selon le type
+            # Traiter diffÃ©remment selon le type
             if ($Object -is [string] -or $Object -is [int] -or $Object -is [long] -or
                 $Object -is [bool] -or $Object -is [datetime] -or $Object -is [double] -or
                 $Object -is [decimal] -or $Object -is [guid]) {
@@ -410,7 +410,7 @@ function Inspect-Variable {
                 $output += "$indentStr[Value] $valueStr`n"
             }
 
-            # Afficher les informations sur les références circulaires
+            # Afficher les informations sur les rÃ©fÃ©rences circulaires
             if ($Result.ContainsKey("IsCircularReference") -and $Result.IsCircularReference) {
                 $output += "$indentStr[CircularReference] True`n"
                 $output += "$indentStr[CircularPath] $($Result.CircularPath)`n"
@@ -442,7 +442,7 @@ function Inspect-Variable {
             return $output
         }
 
-        # Fonction pour formater la taille en unités lisibles
+        # Fonction pour formater la taille en unitÃ©s lisibles
         function Format-Size {
             param (
                 [Parameter(Mandatory = $true)]
@@ -462,15 +462,15 @@ function Inspect-Variable {
     }
 
     process {
-        # Réinitialiser la table des objets visités
+        # RÃ©initialiser la table des objets visitÃ©s
         $script:visitedObjects = @{}
 
         # Inspecter l'objet
         $result = Inspect-ObjectRecursive -Object $InputObject -CurrentDepth 1 -Path "InputObject"
 
-        # Filtrer les résultats selon le niveau de détail
+        # Filtrer les rÃ©sultats selon le niveau de dÃ©tail
         if ($DetailLevel -eq "Basic") {
-            # Supprimer les propriétés détaillées
+            # Supprimer les propriÃ©tÃ©s dÃ©taillÃ©es
             if ($result.ContainsKey("Properties")) {
                 $result.Remove("Properties")
             }
@@ -478,7 +478,7 @@ function Inspect-Variable {
                 $result.Remove("Items")
             }
         } elseif ($DetailLevel -eq "Standard") {
-            # Limiter la profondeur des propriétés
+            # Limiter la profondeur des propriÃ©tÃ©s
             if ($result.ContainsKey("Properties")) {
                 foreach ($key in @($result.Properties.Keys)) {
                     if ($result.Properties[$key].ContainsKey("Properties")) {
@@ -491,7 +491,7 @@ function Inspect-Variable {
             }
         }
 
-        # Formater la sortie selon le format demandé
+        # Formater la sortie selon le format demandÃ©
         switch ($Format) {
             "Text" {
                 return Format-InspectionResult -Result $result -Indent 0

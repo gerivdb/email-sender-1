@@ -1,33 +1,33 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Connecteur pour PSScriptAnalyzer permettant d'analyser des scripts PowerShell.
 
 .DESCRIPTION
     Ce script fournit une interface pour analyser des scripts PowerShell avec PSScriptAnalyzer
-    et convertir les résultats vers un format unifié. Il peut être utilisé comme un plugin
-    pour le système d'analyse ou comme un script autonome.
+    et convertir les rÃ©sultats vers un format unifiÃ©. Il peut Ãªtre utilisÃ© comme un plugin
+    pour le systÃ¨me d'analyse ou comme un script autonome.
 
 .PARAMETER FilePath
-    Chemin du fichier ou du répertoire à analyser.
+    Chemin du fichier ou du rÃ©pertoire Ã  analyser.
 
 .PARAMETER IncludeRule
-    Règles à inclure dans l'analyse. Si non spécifié, toutes les règles sont incluses.
+    RÃ¨gles Ã  inclure dans l'analyse. Si non spÃ©cifiÃ©, toutes les rÃ¨gles sont incluses.
 
 .PARAMETER ExcludeRule
-    Règles à exclure de l'analyse.
+    RÃ¨gles Ã  exclure de l'analyse.
 
 .PARAMETER Severity
-    Sévérité des problèmes à inclure dans l'analyse. Valeurs possibles: Error, Warning, Information, All.
+    SÃ©vÃ©ritÃ© des problÃ¨mes Ã  inclure dans l'analyse. Valeurs possibles: Error, Warning, Information, All.
 
 .PARAMETER Recurse
-    Analyser récursivement les sous-répertoires si FilePath est un répertoire.
+    Analyser rÃ©cursivement les sous-rÃ©pertoires si FilePath est un rÃ©pertoire.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats. Si non spécifié, les résultats sont affichés dans la console.
+    Chemin du fichier de sortie pour les rÃ©sultats. Si non spÃ©cifiÃ©, les rÃ©sultats sont affichÃ©s dans la console.
 
 .PARAMETER RegisterAsPlugin
-    Enregistrer ce connecteur comme un plugin dans le système d'analyse.
+    Enregistrer ce connecteur comme un plugin dans le systÃ¨me d'analyse.
 
 .EXAMPLE
     .\Connect-PSScriptAnalyzer.ps1 -FilePath "C:\Scripts\MyScript.ps1" -Severity Error, Warning
@@ -103,19 +103,19 @@ function Invoke-PSScriptAnalyzerAnalysis {
         [switch]$Recurse
     )
     
-    # Vérifier si PSScriptAnalyzer est disponible
+    # VÃ©rifier si PSScriptAnalyzer est disponible
     if (-not (Test-AnalysisTool -ToolName "PSScriptAnalyzer")) {
         Write-Error "PSScriptAnalyzer n'est pas disponible. Installez-le avec 'Install-Module -Name PSScriptAnalyzer'."
         return $null
     }
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $FilePath)) {
         Write-Error "Le chemin '$FilePath' n'existe pas."
         return $null
     }
     
-    # Préparer les paramètres pour l'analyse
+    # PrÃ©parer les paramÃ¨tres pour l'analyse
     $params = @{
         FilePath = $FilePath
         ReturnUnifiedFormat = $true
@@ -137,10 +137,10 @@ function Invoke-PSScriptAnalyzerAnalysis {
         $params["Recurse"] = $true
     }
     
-    # Exécuter l'analyse
+    # ExÃ©cuter l'analyse
     try {
         if (Test-Path -Path $FilePath -PathType Container) {
-            # Analyser un répertoire
+            # Analyser un rÃ©pertoire
             $results = Invoke-DirectoryAnalysis -DirectoryPath $FilePath -Include "*.ps1", "*.psm1", "*.psd1" -Recurse:$Recurse -ToolParameters @{
                 IncludeRule = $IncludeRule
                 ExcludeRule = $ExcludeRule
@@ -160,7 +160,7 @@ function Invoke-PSScriptAnalyzerAnalysis {
     }
 }
 
-# Enregistrer le plugin si demandé
+# Enregistrer le plugin si demandÃ©
 if ($RegisterAsPlugin) {
     $analyzeFunction = {
         param (
@@ -192,9 +192,9 @@ if ($RegisterAsPlugin) {
             $params["Recurse"] = $true
         }
         
-        # Exécuter l'analyse
+        # ExÃ©cuter l'analyse
         if (Test-Path -Path $FilePath -PathType Container) {
-            # Analyser un répertoire
+            # Analyser un rÃ©pertoire
             return Invoke-DirectoryAnalysis -DirectoryPath $FilePath -Include "*.ps1", "*.psm1", "*.psd1" -Recurse:$Recurse -ToolParameters @{
                 IncludeRule = $IncludeRule
                 ExcludeRule = $ExcludeRule
@@ -222,27 +222,27 @@ if ($RegisterAsPlugin) {
                            -Dependencies @("PSScriptAnalyzer") `
                            -Force
     
-    Write-Host "Plugin PSScriptAnalyzer enregistré avec succès." -ForegroundColor Green
+    Write-Host "Plugin PSScriptAnalyzer enregistrÃ© avec succÃ¨s." -ForegroundColor Green
     return
 }
 
-# Exécuter l'analyse si un chemin est spécifié
+# ExÃ©cuter l'analyse si un chemin est spÃ©cifiÃ©
 if ($FilePath) {
     $results = Invoke-PSScriptAnalyzerAnalysis -FilePath $FilePath -IncludeRule $IncludeRule -ExcludeRule $ExcludeRule -Severity $Severity -Recurse:$Recurse
     
-    # Afficher un résumé des résultats
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
     if ($null -ne $results) {
         $totalIssues = $results.Count
         $errorCount = ($results | Where-Object { $_.Severity -eq "Error" }).Count
         $warningCount = ($results | Where-Object { $_.Severity -eq "Warning" }).Count
         $infoCount = ($results | Where-Object { $_.Severity -eq "Information" }).Count
         
-        Write-Host "Analyse terminée avec $totalIssues problèmes détectés:" -ForegroundColor Cyan
+        Write-Host "Analyse terminÃ©e avec $totalIssues problÃ¨mes dÃ©tectÃ©s:" -ForegroundColor Cyan
         Write-Host "  - Erreurs: $errorCount" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Green" })
         Write-Host "  - Avertissements: $warningCount" -ForegroundColor $(if ($warningCount -gt 0) { "Yellow" } else { "Green" })
         Write-Host "  - Informations: $infoCount" -ForegroundColor "Blue"
         
-        # Afficher les résultats détaillés
+        # Afficher les rÃ©sultats dÃ©taillÃ©s
         if ($totalIssues -gt 0) {
             $results | ForEach-Object {
                 $severityColor = switch ($_.Severity) {
@@ -262,19 +262,19 @@ if ($FilePath) {
             }
         }
         
-        # Enregistrer les résultats dans un fichier si demandé
+        # Enregistrer les rÃ©sultats dans un fichier si demandÃ©
         if ($OutputPath) {
             try {
                 $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-                Write-Host "Résultats enregistrés dans '$OutputPath'." -ForegroundColor Green
+                Write-Host "RÃ©sultats enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
             }
             catch {
-                Write-Error "Erreur lors de l'enregistrement des résultats: $_"
+                Write-Error "Erreur lors de l'enregistrement des rÃ©sultats: $_"
             }
         }
     }
 }
 else {
-    Write-Host "Aucun chemin spécifié. Utilisez le paramètre -FilePath pour analyser un fichier ou un répertoire." -ForegroundColor Yellow
+    Write-Host "Aucun chemin spÃ©cifiÃ©. Utilisez le paramÃ¨tre -FilePath pour analyser un fichier ou un rÃ©pertoire." -ForegroundColor Yellow
     Write-Host "Exemple: .\Connect-PSScriptAnalyzer.ps1 -FilePath 'C:\Scripts\MyScript.ps1' -Severity Error, Warning" -ForegroundColor Yellow
 }

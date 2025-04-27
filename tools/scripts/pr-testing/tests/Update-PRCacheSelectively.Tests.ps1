@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Update-PRCacheSelectively.ps1.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour le script Update-PRCacheSelectively.ps1
-    qui met à jour ou invalide sélectivement des éléments du cache d'analyse des pull requests.
+    qui met Ã  jour ou invalide sÃ©lectivement des Ã©lÃ©ments du cache d'analyse des pull requests.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Requires: Pester v5.0+, PRAnalysisCache.psm1
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Update-PRCacheSelectively.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Script Update-PRCacheSelectively.ps1 non trouvé à l'emplacement: $scriptPath"
+    throw "Script Update-PRCacheSelectively.ps1 non trouvÃ© Ã  l'emplacement: $scriptPath"
 }
 
 # Chemin du module de cache
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module PRAnalysisCache.psm1 non trouvé à l'emplacement: $modulePath"
+    throw "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $modulePath"
 }
 
 # Importer le module
@@ -39,12 +39,12 @@ Import-Module $modulePath -Force
 # Variables globales pour les tests
 $script:testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCacheSelectively"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 BeforeAll {
-    # Créer le répertoire de cache de test
+    # CrÃ©er le rÃ©pertoire de cache de test
     New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
-    # Fonction pour exécuter le script avec des paramètres
+    # Fonction pour exÃ©cuter le script avec des paramÃ¨tres
     function Invoke-UpdateScript {
         param(
             [string]$CachePath,
@@ -77,11 +77,11 @@ BeforeAll {
         & $scriptPath @params
     }
 
-    # Créer un cache pour les tests
+    # CrÃ©er un cache pour les tests
     $script:cache = New-PRAnalysisCache
     $script:cache.DiskCachePath = $script:testCachePath
 
-    # Ajouter des éléments au cache avec des préfixes différents
+    # Ajouter des Ã©lÃ©ments au cache avec des prÃ©fixes diffÃ©rents
     $script:cache.SetItem("PR:42:File:script1.ps1", "Content1", (New-TimeSpan -Hours 1))
     $script:cache.SetItem("PR:42:File:script2.ps1", "Content2", (New-TimeSpan -Hours 1))
     $script:cache.SetItem("PR:42:File:module.psm1", "Module Content", (New-TimeSpan -Hours 1))
@@ -91,12 +91,12 @@ BeforeAll {
 
 Describe "Update-PRCacheSelectively Script Tests" {
     Context "Script Execution" {
-        It "Le script s'exécute sans erreur avec un modèle" {
+        It "Le script s'exÃ©cute sans erreur avec un modÃ¨le" {
             # Act & Assert
             { Invoke-UpdateScript -CachePath $script:testCachePath -Pattern "PR:42:*" -Force } | Should -Not -Throw
         }
 
-        It "Le script s'exécute sans erreur avec des clés spécifiques" {
+        It "Le script s'exÃ©cute sans erreur avec des clÃ©s spÃ©cifiques" {
             # Act & Assert
             { Invoke-UpdateScript -CachePath $script:testCachePath -Keys "PR:42:File:script1.ps1", "PR:42:File:script2.ps1" -Force } | Should -Not -Throw
         }
@@ -104,7 +104,7 @@ Describe "Update-PRCacheSelectively Script Tests" {
 
     Context "Pattern Matching" {
         BeforeEach {
-            # Recréer le cache pour chaque test
+            # RecrÃ©er le cache pour chaque test
             Remove-Item -Path $script:testCachePath -Recurse -Force -ErrorAction SilentlyContinue
             New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
@@ -118,20 +118,20 @@ Describe "Update-PRCacheSelectively Script Tests" {
             $script:cache.SetItem("PR:43:File:script3.ps1", "Content4", (New-TimeSpan -Hours 1))
         }
 
-        It "Met à jour les éléments correspondant au modèle" {
+        It "Met Ã  jour les Ã©lÃ©ments correspondant au modÃ¨le" {
             # Act
             Invoke-UpdateScript -CachePath $script:testCachePath -Pattern "PR:42:*" -Force
 
-            # Assert - Vérifier que les éléments ont été mis à jour (supprimés puis recréés)
+            # Assert - VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© mis Ã  jour (supprimÃ©s puis recrÃ©Ã©s)
             $diskCacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
-            $diskCacheFiles.Count | Should -Be 5 # Tous les fichiers devraient être présents
+            $diskCacheFiles.Count | Should -Be 5 # Tous les fichiers devraient Ãªtre prÃ©sents
         }
 
-        It "Supprime les éléments correspondant au modèle avec RemoveMatching" {
+        It "Supprime les Ã©lÃ©ments correspondant au modÃ¨le avec RemoveMatching" {
             # Act
             Invoke-UpdateScript -CachePath $script:testCachePath -Pattern "PR:42:*" -RemoveMatching -Force
 
-            # Assert - Vérifier que les éléments ont été supprimés
+            # Assert - VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© supprimÃ©s
             $diskCacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
             $diskCacheFiles.Count | Should -Be 2 # Seuls les fichiers PR:43:* devraient rester
 
@@ -142,7 +142,7 @@ Describe "Update-PRCacheSelectively Script Tests" {
 
     Context "Specific Keys" {
         BeforeEach {
-            # Recréer le cache pour chaque test
+            # RecrÃ©er le cache pour chaque test
             Remove-Item -Path $script:testCachePath -Recurse -Force -ErrorAction SilentlyContinue
             New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
@@ -156,22 +156,22 @@ Describe "Update-PRCacheSelectively Script Tests" {
             $script:cache.SetItem("PR:43:File:script3.ps1", "Content4", (New-TimeSpan -Hours 1))
         }
 
-        It "Met à jour les clés spécifiques" {
+        It "Met Ã  jour les clÃ©s spÃ©cifiques" {
             # Act
             Invoke-UpdateScript -CachePath $script:testCachePath -Keys "PR:42:File:script1.ps1", "PR:43:File:script3.ps1" -Force
 
-            # Assert - Vérifier que les éléments ont été mis à jour (supprimés puis recréés)
+            # Assert - VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© mis Ã  jour (supprimÃ©s puis recrÃ©Ã©s)
             $diskCacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
-            $diskCacheFiles.Count | Should -Be 5 # Tous les fichiers devraient être présents
+            $diskCacheFiles.Count | Should -Be 5 # Tous les fichiers devraient Ãªtre prÃ©sents
         }
 
-        It "Supprime les clés spécifiques avec RemoveMatching" {
+        It "Supprime les clÃ©s spÃ©cifiques avec RemoveMatching" {
             # Act
             Invoke-UpdateScript -CachePath $script:testCachePath -Keys "PR:42:File:script1.ps1", "PR:43:File:script3.ps1" -RemoveMatching -Force
 
-            # Assert - Vérifier que les éléments ont été supprimés
+            # Assert - VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© supprimÃ©s
             $diskCacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
-            $diskCacheFiles.Count | Should -Be 3 # Seuls les fichiers non spécifiés devraient rester
+            $diskCacheFiles.Count | Should -Be 3 # Seuls les fichiers non spÃ©cifiÃ©s devraient rester
 
             $fileNames = $diskCacheFiles | ForEach-Object { $_.Name }
             $fileNames -join "," | Should -Not -Match ($script:cache.NormalizeKey("PR:42:File:script1.ps1"))
@@ -180,7 +180,7 @@ Describe "Update-PRCacheSelectively Script Tests" {
     }
 
     Context "Force Parameter" {
-        It "Demande confirmation si Force n'est pas spécifié" {
+        It "Demande confirmation si Force n'est pas spÃ©cifiÃ©" {
             # Arrange - Mock de la fonction de confirmation
             Mock -CommandName Read-Host -MockWith { return "n" }
 
@@ -191,7 +191,7 @@ Describe "Update-PRCacheSelectively Script Tests" {
             Should -Invoke -CommandName Read-Host -Times 1
         }
 
-        It "Ne demande pas confirmation si Force est spécifié" {
+        It "Ne demande pas confirmation si Force est spÃ©cifiÃ©" {
             # Arrange - Mock de la fonction de confirmation
             Mock -CommandName Read-Host -MockWith { return "n" }
 

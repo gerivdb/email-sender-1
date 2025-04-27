@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
-    Système de journalisation centralisée pour les scripts PowerShell.
+    SystÃ¨me de journalisation centralisÃ©e pour les scripts PowerShell.
 
 .DESCRIPTION
-    Ce script fournit un système de journalisation centralisée pour les scripts PowerShell.
-    Il permet de journaliser des messages de différents niveaux (Debug, Info, Warning, Error, etc.)
-    dans différentes destinations (fichier, console, journal des événements Windows, etc.).
+    Ce script fournit un systÃ¨me de journalisation centralisÃ©e pour les scripts PowerShell.
+    Il permet de journaliser des messages de diffÃ©rents niveaux (Debug, Info, Warning, Error, etc.)
+    dans diffÃ©rentes destinations (fichier, console, journal des Ã©vÃ©nements Windows, etc.).
 
 .EXAMPLE
     . .\CentralizedLogger.ps1
     Initialize-Logger -LogFilePath "C:\Logs\MyScript.log" -LogLevel "Info" -IncludeTimestamp
-    Write-LogInfo "Démarrage du script"
-    Write-LogWarning "Attention: cette opération peut prendre du temps"
-    Write-LogError "Une erreur s'est produite: fichier non trouvé"
+    Write-LogInfo "DÃ©marrage du script"
+    Write-LogWarning "Attention: cette opÃ©ration peut prendre du temps"
+    Write-LogError "Une erreur s'est produite: fichier non trouvÃ©"
     Close-Logger
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Définir les niveaux de journalisation
+# DÃ©finir les niveaux de journalisation
 enum LogLevel {
     Debug = 0
     Verbose = 1
@@ -100,7 +100,7 @@ function Initialize-Logger {
         [int]$MaxLogFileCount = 5
     )
     
-    # Fermer le logger s'il est déjà initialisé
+    # Fermer le logger s'il est dÃ©jÃ  initialisÃ©
     if ($script:LoggerConfig.Initialized) {
         Close-Logger
     }
@@ -121,16 +121,16 @@ function Initialize-Logger {
     $script:LoggerConfig.MaxLogFileSizeMB = $MaxLogFileSizeMB
     $script:LoggerConfig.MaxLogFileCount = $MaxLogFileCount
     
-    # Initialiser le fichier journal si nécessaire
+    # Initialiser le fichier journal si nÃ©cessaire
     if ($script:LoggerConfig.LogToFile) {
         try {
-            # Créer le dossier du journal si nécessaire
+            # CrÃ©er le dossier du journal si nÃ©cessaire
             $logDirectory = Split-Path -Path $LogFilePath -Parent
             if (-not [string]::IsNullOrEmpty($logDirectory) -and -not (Test-Path -Path $logDirectory -PathType Container)) {
                 New-Item -Path $logDirectory -ItemType Directory -Force | Out-Null
             }
             
-            # Vérifier si le fichier journal existe et s'il dépasse la taille maximale
+            # VÃ©rifier si le fichier journal existe et s'il dÃ©passe la taille maximale
             if (Test-Path -Path $LogFilePath -PathType Leaf) {
                 $logFile = Get-Item -Path $LogFilePath
                 if ($logFile.Length -gt ($MaxLogFileSizeMB * 1MB)) {
@@ -146,7 +146,7 @@ function Initialize-Logger {
             
             $script:LoggerConfig.LogFileStream = New-Object System.IO.FileStream($LogFilePath, $fileMode, $fileAccess, $fileShare)
             
-            # Créer l'encodeur en fonction de l'encodage spécifié
+            # CrÃ©er l'encodeur en fonction de l'encodage spÃ©cifiÃ©
             $encoder = switch ($LogFileEncoding.ToUpper()) {
                 "UTF8" { New-Object System.Text.UTF8Encoding($true) }
                 "UTF8-NOBOM" { New-Object System.Text.UTF8Encoding($false) }
@@ -159,8 +159,8 @@ function Initialize-Logger {
             
             $script:LoggerConfig.LogFileStreamWriter = New-Object System.IO.StreamWriter($script:LoggerConfig.LogFileStream, $encoder)
             
-            # Écrire un en-tête dans le fichier journal
-            $headerText = "=== Session de journalisation démarrée le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
+            # Ã‰crire un en-tÃªte dans le fichier journal
+            $headerText = "=== Session de journalisation dÃ©marrÃ©e le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
             $script:LoggerConfig.LogFileStreamWriter.WriteLine($headerText)
             $script:LoggerConfig.LogFileStreamWriter.Flush()
         }
@@ -170,18 +170,18 @@ function Initialize-Logger {
         }
     }
     
-    # Initialiser le journal des événements Windows si nécessaire
+    # Initialiser le journal des Ã©vÃ©nements Windows si nÃ©cessaire
     if ($script:LoggerConfig.LogToEventLog) {
         try {
-            # Vérifier si la source existe, sinon la créer
+            # VÃ©rifier si la source existe, sinon la crÃ©er
             if (-not [System.Diagnostics.EventLog]::SourceExists($EventLogSource)) {
-                # Nécessite des privilèges administratifs
+                # NÃ©cessite des privilÃ¨ges administratifs
                 [System.Diagnostics.EventLog]::CreateEventSource($EventLogSource, $EventLogName)
-                Write-Verbose "Source de journal d'événements '$EventLogSource' créée."
+                Write-Verbose "Source de journal d'Ã©vÃ©nements '$EventLogSource' crÃ©Ã©e."
             }
         }
         catch {
-            Write-Warning "Impossible d'initialiser le journal des événements Windows: $_"
+            Write-Warning "Impossible d'initialiser le journal des Ã©vÃ©nements Windows: $_"
             $script:LoggerConfig.LogToEventLog = $false
         }
     }
@@ -189,7 +189,7 @@ function Initialize-Logger {
     $script:LoggerConfig.Initialized = $true
     
     # Journaliser l'initialisation
-    Write-LogInfo "Logger initialisé avec le niveau $LogLevel"
+    Write-LogInfo "Logger initialisÃ© avec le niveau $LogLevel"
 }
 
 # Fonction pour effectuer une rotation des fichiers journaux
@@ -204,13 +204,13 @@ function Rotate-LogFiles {
     )
     
     try {
-        # Supprimer le fichier journal le plus ancien si nécessaire
+        # Supprimer le fichier journal le plus ancien si nÃ©cessaire
         $oldestLogFile = "$LogFilePath.$MaxLogFileCount"
         if (Test-Path -Path $oldestLogFile -PathType Leaf) {
             Remove-Item -Path $oldestLogFile -Force
         }
         
-        # Déplacer les fichiers journaux existants
+        # DÃ©placer les fichiers journaux existants
         for ($i = $MaxLogFileCount - 1; $i -ge 1; $i--) {
             $currentLogFile = "$LogFilePath.$i"
             $nextLogFile = "$LogFilePath.$($i + 1)"
@@ -242,7 +242,7 @@ function Close-Logger {
     try {
         # Fermer le flux de fichier
         if ($null -ne $script:LoggerConfig.LogFileStreamWriter) {
-            $footerText = "=== Session de journalisation terminée le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
+            $footerText = "=== Session de journalisation terminÃ©e le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
             $script:LoggerConfig.LogFileStreamWriter.WriteLine($footerText)
             $script:LoggerConfig.LogFileStreamWriter.Flush()
             $script:LoggerConfig.LogFileStreamWriter.Close()
@@ -262,7 +262,7 @@ function Close-Logger {
     }
 }
 
-# Fonction interne pour écrire un message dans le journal
+# Fonction interne pour Ã©crire un message dans le journal
 function Write-LogMessage {
     [CmdletBinding()]
     param (
@@ -279,17 +279,17 @@ function Write-LogMessage {
         [int]$EventId = 0
     )
     
-    # Vérifier si le logger est initialisé
+    # VÃ©rifier si le logger est initialisÃ©
     if (-not $script:LoggerConfig.Initialized) {
         Initialize-Logger
     }
     
-    # Vérifier si le niveau de journalisation est suffisant
+    # VÃ©rifier si le niveau de journalisation est suffisant
     if ($Level -lt $script:LoggerConfig.LogLevel) {
         return
     }
     
-    # Déterminer la source si non spécifiée
+    # DÃ©terminer la source si non spÃ©cifiÃ©e
     if ([string]::IsNullOrEmpty($Source)) {
         $callStack = Get-PSCallStack | Select-Object -Skip 2 | Select-Object -First 1
         $Source = if ($callStack) {
@@ -301,7 +301,7 @@ function Write-LogMessage {
         }
     }
     
-    # Construire le message formaté
+    # Construire le message formatÃ©
     $formattedMessage = ""
     
     if ($script:LoggerConfig.IncludeTimestamp) {
@@ -341,11 +341,11 @@ function Write-LogMessage {
             $script:LoggerConfig.LogFileStreamWriter.Flush()
         }
         catch {
-            Write-Warning "Erreur lors de l'écriture dans le fichier journal: $_"
+            Write-Warning "Erreur lors de l'Ã©criture dans le fichier journal: $_"
         }
     }
     
-    # Journaliser dans le journal des événements Windows
+    # Journaliser dans le journal des Ã©vÃ©nements Windows
     if ($script:LoggerConfig.LogToEventLog) {
         try {
             $entryType = switch ($Level) {
@@ -376,12 +376,12 @@ function Write-LogMessage {
             Write-EventLog -LogName $script:LoggerConfig.EventLogName -Source $script:LoggerConfig.EventLogSource -EventId $eventId -EntryType $entryType -Message $formattedMessage
         }
         catch {
-            Write-Warning "Erreur lors de l'écriture dans le journal des événements Windows: $_"
+            Write-Warning "Erreur lors de l'Ã©criture dans le journal des Ã©vÃ©nements Windows: $_"
         }
     }
 }
 
-# Fonctions pour journaliser des messages de différents niveaux
+# Fonctions pour journaliser des messages de diffÃ©rents niveaux
 function Write-LogDebug {
     [CmdletBinding()]
     param (
@@ -508,7 +508,7 @@ function Get-LoggerConfig {
     return $script:LoggerConfig
 }
 
-# Fonction pour définir le niveau de journalisation
+# Fonction pour dÃ©finir le niveau de journalisation
 function Set-LogLevel {
     [CmdletBinding()]
     param (
@@ -517,7 +517,7 @@ function Set-LogLevel {
     )
     
     $script:LoggerConfig.LogLevel = $Level
-    Write-LogInfo "Niveau de journalisation défini à $Level"
+    Write-LogInfo "Niveau de journalisation dÃ©fini Ã  $Level"
 }
 
 # Exporter les fonctions

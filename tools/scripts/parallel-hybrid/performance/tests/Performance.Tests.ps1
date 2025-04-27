@@ -1,7 +1,7 @@
-Describe "Tests de performance" {
+﻿Describe "Tests de performance" {
     Context "Mesure des performances des fonctions" {
         BeforeAll {
-            # Fonction pour mesurer le temps d'exécution d'une fonction
+            # Fonction pour mesurer le temps d'exÃ©cution d'une fonction
             function Measure-ExecutionTime {
                 param (
                     [scriptblock]$ScriptBlock,
@@ -30,31 +30,31 @@ Describe "Tests de performance" {
                 return $stats
             }
 
-            # Fonction pour trier des résultats (version originale)
+            # Fonction pour trier des rÃ©sultats (version originale)
             function Sort-ResultsOriginal {
                 param (
                     [array]$Results
                 )
 
-                # Version originale avec syntaxe corrigée
-                # Utiliser un tri stable pour préserver l'ordre
+                # Version originale avec syntaxe corrigÃ©e
+                # Utiliser un tri stable pour prÃ©server l'ordre
                 $sorted = $Results | Sort-Object -Property SuccessRatePercent -Descending
                 return $sorted
             }
 
-            # Fonction pour trier des résultats (version améliorée)
+            # Fonction pour trier des rÃ©sultats (version amÃ©liorÃ©e)
             function Sort-ResultsImproved {
                 param (
                     [array]$Results
                 )
 
-                # Version améliorée avec syntaxe corrigée
-                # Utiliser la même logique que la version originale pour les tests
+                # Version amÃ©liorÃ©e avec syntaxe corrigÃ©e
+                # Utiliser la mÃªme logique que la version originale pour les tests
                 $sorted = $Results | Sort-Object -Property SuccessRatePercent -Descending
                 return $sorted
             }
 
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testResults = @()
             for ($i = 1; $i -le 1000; $i++) {
                 $testResults += [PSCustomObject]@{
@@ -66,7 +66,7 @@ Describe "Tests de performance" {
         }
 
         It "Compare les performances des fonctions de tri" {
-            # Définir la fonction Measure-ExecutionTime dans ce contexte
+            # DÃ©finir la fonction Measure-ExecutionTime dans ce contexte
             function Measure-ExecutionTime {
                 param (
                     [scriptblock]$ScriptBlock,
@@ -98,14 +98,14 @@ Describe "Tests de performance" {
             # Mesurer les performances de la version originale
             $originalStats = Measure-ExecutionTime -ScriptBlock ${function:Sort-ResultsOriginal} -Arguments @($testResults) -Iterations 10
 
-            # Mesurer les performances de la version améliorée
+            # Mesurer les performances de la version amÃ©liorÃ©e
             $improvedStats = Measure-ExecutionTime -ScriptBlock ${function:Sort-ResultsImproved} -Arguments @($testResults) -Iterations 10
 
             # Afficher les statistiques
-            Write-Host "Version originale: Moyenne = $($originalStats.AvgTimeMs) ms, Médiane = $($originalStats.MedianTimeMs) ms"
-            Write-Host "Version améliorée: Moyenne = $($improvedStats.AvgTimeMs) ms, Médiane = $($improvedStats.MedianTimeMs) ms"
+            Write-Host "Version originale: Moyenne = $($originalStats.AvgTimeMs) ms, MÃ©diane = $($originalStats.MedianTimeMs) ms"
+            Write-Host "Version amÃ©liorÃ©e: Moyenne = $($improvedStats.AvgTimeMs) ms, MÃ©diane = $($improvedStats.MedianTimeMs) ms"
 
-            # Vérifier que les deux fonctions produisent les mêmes résultats
+            # VÃ©rifier que les deux fonctions produisent les mÃªmes rÃ©sultats
             $originalSorted = Sort-ResultsOriginal -Results $testResults
             $improvedSorted = Sort-ResultsImproved -Results $testResults
 
@@ -116,9 +116,9 @@ Describe "Tests de performance" {
         }
     }
 
-    Context "Mesure des performances des opérations sur les fichiers" {
+    Context "Mesure des performances des opÃ©rations sur les fichiers" {
         BeforeAll {
-            # Fonction pour créer des fichiers de test
+            # Fonction pour crÃ©er des fichiers de test
             function New-TestFiles {
                 param (
                     [string]$OutputPath,
@@ -137,13 +137,13 @@ Describe "Tests de performance" {
                     $fileName = "test_file_$i.txt"
                     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
 
-                    # Générer une taille aléatoire entre MinSize et MaxSize
+                    # GÃ©nÃ©rer une taille alÃ©atoire entre MinSize et MaxSize
                     $fileSize = Get-Random -Minimum $MinSize -Maximum $MaxSize
 
-                    # Générer le contenu du fichier
+                    # GÃ©nÃ©rer le contenu du fichier
                     $content = "A" * $fileSize
 
-                    # Créer le fichier
+                    # CrÃ©er le fichier
                     Set-Content -Path $filePath -Value $content | Out-Null
 
                     $generatedFiles += $filePath
@@ -152,7 +152,7 @@ Describe "Tests de performance" {
                 return $generatedFiles
             }
 
-            # Fonction pour traiter des fichiers en série
+            # Fonction pour traiter des fichiers en sÃ©rie
             function Process-FilesSerial {
                 param (
                     [array]$Files
@@ -175,7 +175,7 @@ Describe "Tests de performance" {
                 return $results
             }
 
-            # Fonction pour traiter des fichiers en parallèle
+            # Fonction pour traiter des fichiers en parallÃ¨le
             function Process-FilesParallel {
                 param (
                     [array]$Files,
@@ -207,23 +207,23 @@ Describe "Tests de performance" {
                 return $results
             }
 
-            # Créer des fichiers de test
+            # CrÃ©er des fichiers de test
             $testDir = Join-Path -Path $TestDrive -ChildPath "PerformanceTest"
             $testFiles = New-TestFiles -OutputPath $testDir -FileCount 20 -MinSize 10KB -MaxSize 100KB
         }
 
-        It "Compare les performances du traitement en série et en parallèle" -Skip:(-not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
-            # Mesurer les performances du traitement en série
+        It "Compare les performances du traitement en sÃ©rie et en parallÃ¨le" -Skip:(-not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
+            # Mesurer les performances du traitement en sÃ©rie
             $serialStats = Measure-ExecutionTime -ScriptBlock ${function:Process-FilesSerial} -Arguments @($testFiles) -Iterations 3
 
-            # Mesurer les performances du traitement en parallèle
+            # Mesurer les performances du traitement en parallÃ¨le
             $parallelStats = Measure-ExecutionTime -ScriptBlock ${function:Process-FilesParallel} -Arguments @($testFiles) -Iterations 3
 
             # Afficher les statistiques
-            Write-Host "Traitement en série: Moyenne = $($serialStats.AvgTimeMs) ms, Médiane = $($serialStats.MedianTimeMs) ms"
-            Write-Host "Traitement en parallèle: Moyenne = $($parallelStats.AvgTimeMs) ms, Médiane = $($parallelStats.MedianTimeMs) ms"
+            Write-Host "Traitement en sÃ©rie: Moyenne = $($serialStats.AvgTimeMs) ms, MÃ©diane = $($serialStats.MedianTimeMs) ms"
+            Write-Host "Traitement en parallÃ¨le: Moyenne = $($parallelStats.AvgTimeMs) ms, MÃ©diane = $($parallelStats.MedianTimeMs) ms"
 
-            # Vérifier que les deux fonctions produisent des résultats similaires
+            # VÃ©rifier que les deux fonctions produisent des rÃ©sultats similaires
             $serialResults = Process-FilesSerial -Files $testFiles
             $parallelResults = Process-FilesParallel -Files $testFiles
 
@@ -233,7 +233,7 @@ Describe "Tests de performance" {
 
     Context "Mesure des performances des fonctions de formatage" {
         BeforeAll {
-            # Fonction pour formater des données en JSON (version originale)
+            # Fonction pour formater des donnÃ©es en JSON (version originale)
             function Format-JsonOriginal {
                 param (
                     [array]$Data
@@ -242,7 +242,7 @@ Describe "Tests de performance" {
                 return ($Data | ConvertTo-Json -Compress -Depth 1)
             }
 
-            # Fonction pour formater des données en JSON (version améliorée)
+            # Fonction pour formater des donnÃ©es en JSON (version amÃ©liorÃ©e)
             function Format-JsonImproved {
                 param (
                     [array]$Data
@@ -252,7 +252,7 @@ Describe "Tests de performance" {
                 return & $jsData -data $Data
             }
 
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testData = @()
             for ($i = 1; $i -le 1000; $i++) {
                 $testData += [PSCustomObject]@{
@@ -264,7 +264,7 @@ Describe "Tests de performance" {
         }
 
         It "Compare les performances des fonctions de formatage JSON" {
-            # Définir la fonction Measure-ExecutionTime dans ce contexte
+            # DÃ©finir la fonction Measure-ExecutionTime dans ce contexte
             function Measure-ExecutionTime {
                 param (
                     [scriptblock]$ScriptBlock,
@@ -296,14 +296,14 @@ Describe "Tests de performance" {
             # Mesurer les performances de la version originale
             $originalStats = Measure-ExecutionTime -ScriptBlock ${function:Format-JsonOriginal} -Arguments @($testData) -Iterations 10
 
-            # Mesurer les performances de la version améliorée
+            # Mesurer les performances de la version amÃ©liorÃ©e
             $improvedStats = Measure-ExecutionTime -ScriptBlock ${function:Format-JsonImproved} -Arguments @($testData) -Iterations 10
 
             # Afficher les statistiques
-            Write-Host "Version originale: Moyenne = $($originalStats.AvgTimeMs) ms, Médiane = $($originalStats.MedianTimeMs) ms"
-            Write-Host "Version améliorée: Moyenne = $($improvedStats.AvgTimeMs) ms, Médiane = $($improvedStats.MedianTimeMs) ms"
+            Write-Host "Version originale: Moyenne = $($originalStats.AvgTimeMs) ms, MÃ©diane = $($originalStats.MedianTimeMs) ms"
+            Write-Host "Version amÃ©liorÃ©e: Moyenne = $($improvedStats.AvgTimeMs) ms, MÃ©diane = $($improvedStats.MedianTimeMs) ms"
 
-            # Vérifier que les deux fonctions produisent les mêmes résultats
+            # VÃ©rifier que les deux fonctions produisent les mÃªmes rÃ©sultats
             $originalJson = Format-JsonOriginal -Data $testData
             $improvedJson = Format-JsonImproved -Data $testData
 

@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour les fonctions de détection de format.
+    Tests unitaires simplifiÃ©s pour les fonctions de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour valider le bon fonctionnement
-    des fonctions de détection de format développées dans le cadre de la
+    Ce script contient des tests unitaires simplifiÃ©s pour valider le bon fonctionnement
+    des fonctions de dÃ©tection de format dÃ©veloppÃ©es dans le cadre de la
     section 2.1.1 de la roadmap.
 
 .NOTES
@@ -14,7 +14,7 @@
     Date: 2025-04-11
 #>
 
-# Définir les fonctions à tester
+# DÃ©finir les fonctions Ã  tester
 function Get-FileFormatByExtension {
     param ([string]$FilePath)
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
@@ -54,68 +54,68 @@ function Get-FileFormatByContent {
     }
 }
 
-# Créer des fichiers d'échantillon pour les tests
+# CrÃ©er des fichiers d'Ã©chantillon pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "samples"
 if (-not (Test-Path -Path $testDir -PathType Container)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier texte
+# CrÃ©er un fichier texte
 $txtFile = Join-Path -Path $testDir -ChildPath "sample.txt"
 "Ceci est un fichier texte simple." | Out-File -FilePath $txtFile -Encoding utf8
 
-# Créer un fichier CSV
+# CrÃ©er un fichier CSV
 $csvFile = Join-Path -Path $testDir -ChildPath "sample.csv"
-"Nom,Prénom,Age`nDupont,Jean,42" | Out-File -FilePath $csvFile -Encoding utf8
+"Nom,PrÃ©nom,Age`nDupont,Jean,42" | Out-File -FilePath $csvFile -Encoding utf8
 
-# Créer un fichier XML
+# CrÃ©er un fichier XML
 $xmlFile = Join-Path -Path $testDir -ChildPath "sample.xml"
 "<?xml version=`"1.0`" encoding=`"UTF-8`"?>`n<racine><element>Contenu</element></racine>" | Out-File -FilePath $xmlFile -Encoding utf8
 
-# Créer un fichier JSON
+# CrÃ©er un fichier JSON
 $jsonFile = Join-Path -Path $testDir -ChildPath "sample.json"
-"{`"nom`": `"Dupont`", `"prénom`": `"Jean`", `"age`": 42}" | Out-File -FilePath $jsonFile -Encoding utf8
+"{`"nom`": `"Dupont`", `"prÃ©nom`": `"Jean`", `"age`": 42}" | Out-File -FilePath $jsonFile -Encoding utf8
 
-# Démarrer les tests Pester
-Describe "Tests de détection de format" {
+# DÃ©marrer les tests Pester
+Describe "Tests de dÃ©tection de format" {
     Context "Get-FileFormatByExtension" {
-        It "Détecte correctement le format TEXT pour un fichier .txt" {
+        It "DÃ©tecte correctement le format TEXT pour un fichier .txt" {
             Get-FileFormatByExtension -FilePath $txtFile | Should -Be "TEXT"
         }
         
-        It "Détecte correctement le format CSV pour un fichier .csv" {
+        It "DÃ©tecte correctement le format CSV pour un fichier .csv" {
             Get-FileFormatByExtension -FilePath $csvFile | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format XML pour un fichier .xml" {
+        It "DÃ©tecte correctement le format XML pour un fichier .xml" {
             Get-FileFormatByExtension -FilePath $xmlFile | Should -Be "XML"
         }
         
-        It "Détecte correctement le format JSON pour un fichier .json" {
+        It "DÃ©tecte correctement le format JSON pour un fichier .json" {
             Get-FileFormatByExtension -FilePath $jsonFile | Should -Be "JSON"
         }
     }
     
     Context "Get-FileFormatByContent" {
-        It "Détecte correctement le format TEXT pour un fichier texte" {
+        It "DÃ©tecte correctement le format TEXT pour un fichier texte" {
             Get-FileFormatByContent -FilePath $txtFile | Should -Be "TEXT"
         }
         
-        It "Détecte correctement le format CSV pour un fichier CSV" {
+        It "DÃ©tecte correctement le format CSV pour un fichier CSV" {
             Get-FileFormatByContent -FilePath $csvFile | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format XML pour un fichier XML" {
+        It "DÃ©tecte correctement le format XML pour un fichier XML" {
             Get-FileFormatByContent -FilePath $xmlFile | Should -Be "XML"
         }
         
-        It "Détecte correctement le format JSON pour un fichier JSON" {
+        It "DÃ©tecte correctement le format JSON pour un fichier JSON" {
             Get-FileFormatByContent -FilePath $jsonFile | Should -Be "JSON"
         }
     }
     
     AfterAll {
-        # Nettoyer les fichiers d'échantillon
+        # Nettoyer les fichiers d'Ã©chantillon
         Remove-Item -Path $txtFile -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $csvFile -Force -ErrorAction SilentlyContinue
         Remove-Item -Path $xmlFile -Force -ErrorAction SilentlyContinue

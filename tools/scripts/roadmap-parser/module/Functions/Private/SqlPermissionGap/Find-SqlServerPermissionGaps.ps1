@@ -1,15 +1,15 @@
-# Find-SqlServerPermissionGaps.ps1
-# Implémente l'algorithme de détection des permissions manquantes au niveau serveur
+﻿# Find-SqlServerPermissionGaps.ps1
+# ImplÃ©mente l'algorithme de dÃ©tection des permissions manquantes au niveau serveur
 
 <#
 .SYNOPSIS
-    Implémente l'algorithme de détection des permissions manquantes au niveau serveur SQL.
+    ImplÃ©mente l'algorithme de dÃ©tection des permissions manquantes au niveau serveur SQL.
 
 .DESCRIPTION
-    Ce fichier contient les fonctions nécessaires pour détecter les permissions manquantes
-    au niveau serveur SQL en comparant les permissions actuelles avec un modèle de référence.
-    Il utilise les fonctions de comparaison ensembliste pour identifier les écarts et
-    fournit des méthodes pour capturer les permissions actuelles directement depuis une
+    Ce fichier contient les fonctions nÃ©cessaires pour dÃ©tecter les permissions manquantes
+    au niveau serveur SQL en comparant les permissions actuelles avec un modÃ¨le de rÃ©fÃ©rence.
+    Il utilise les fonctions de comparaison ensembliste pour identifier les Ã©carts et
+    fournit des mÃ©thodes pour capturer les permissions actuelles directement depuis une
     instance SQL Server.
 
 .NOTES
@@ -18,7 +18,7 @@
     Creation Date:  2023-11-15
 #>
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $missingPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\SqlPermissionModels\MissingPermissionModel.ps1"
 . $missingPermissionModelPath
 
@@ -52,7 +52,7 @@ function Get-SqlServerPermissions {
     )
     
     try {
-        # Construire la chaîne de connexion
+        # Construire la chaÃ®ne de connexion
         $connectionString = "Server=$ServerInstance;"
         if ($UseIntegratedSecurity) {
             $connectionString += "Integrated Security=True;"
@@ -64,11 +64,11 @@ function Get-SqlServerPermissions {
             $connectionString += "User ID=$($Credential.UserName);Password=$($Credential.GetNetworkCredential().Password);"
         }
         
-        # Créer la connexion SQL
+        # CrÃ©er la connexion SQL
         $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
         $connection.Open()
         
-        # Requête SQL pour obtenir les permissions au niveau serveur
+        # RequÃªte SQL pour obtenir les permissions au niveau serveur
         $query = @"
 SELECT 
     p.state_desc AS PermissionState,
@@ -106,13 +106,13 @@ WHERE 1=1
             $query += " AND p.permission_name NOT IN ($permissionList)"
         }
         
-        # Exécuter la requête
+        # ExÃ©cuter la requÃªte
         $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
         $adapter = New-Object System.Data.SqlClient.SqlDataAdapter($command)
         $dataset = New-Object System.Data.DataSet
         $adapter.Fill($dataset) | Out-Null
         
-        # Convertir les résultats en objets PowerShell
+        # Convertir les rÃ©sultats en objets PowerShell
         $serverPermissions = @()
         foreach ($row in $dataset.Tables[0].Rows) {
             $permissionState = switch ($row.PermissionState) {
@@ -144,7 +144,7 @@ WHERE 1=1
     }
 }
 
-# Fonction pour détecter les permissions manquantes au niveau serveur
+# Fonction pour dÃ©tecter les permissions manquantes au niveau serveur
 function Find-SqlServerPermissionGaps {
     [CmdletBinding()]
     param (
@@ -188,12 +188,12 @@ function Find-SqlServerPermissionGaps {
         [switch]$GenerateFixScript = $false
     )
     
-    # Définir la carte de sévérité par défaut si non fournie
+    # DÃ©finir la carte de sÃ©vÃ©ritÃ© par dÃ©faut si non fournie
     if (-not $PSBoundParameters.ContainsKey("SeverityMap")) {
         $SeverityMap = @{
             "CONNECT SQL" = "Critique"
-            "ALTER ANY LOGIN" = "Élevée"
-            "CONTROL SERVER" = "Élevée"
+            "ALTER ANY LOGIN" = "Ã‰levÃ©e"
+            "CONTROL SERVER" = "Ã‰levÃ©e"
             "VIEW SERVER STATE" = "Moyenne"
             "VIEW ANY DATABASE" = "Moyenne"
             "DEFAULT" = "Moyenne"
@@ -201,7 +201,7 @@ function Find-SqlServerPermissionGaps {
     }
     
     try {
-        # Obtenir les permissions actuelles si le paramètre ServerInstance est fourni
+        # Obtenir les permissions actuelles si le paramÃ¨tre ServerInstance est fourni
         if ($PSCmdlet.ParameterSetName -eq "FromServer") {
             $params = @{
                 ServerInstance = $ServerInstance
@@ -231,13 +231,13 @@ function Find-SqlServerPermissionGaps {
             $CurrentPermissions = Get-SqlServerPermissions @params
         }
         
-        # Vérifier que le modèle de référence contient des permissions au niveau serveur
+        # VÃ©rifier que le modÃ¨le de rÃ©fÃ©rence contient des permissions au niveau serveur
         if (-not ($ReferenceModel.PSObject.Properties.Name -contains "ServerPermissions")) {
             Write-Warning "Reference model does not contain server permissions."
             return New-SqlMissingPermissionsSet -ServerInstance $ServerInstance -ModelName $ReferenceModel.ModelName
         }
         
-        # Filtrer les permissions de référence si nécessaire
+        # Filtrer les permissions de rÃ©fÃ©rence si nÃ©cessaire
         $referenceServerPermissions = $ReferenceModel.ServerPermissions
         
         if ($PSBoundParameters.ContainsKey("ExcludeLogins") -and $ExcludeLogins.Count -gt 0) {
@@ -256,7 +256,7 @@ function Find-SqlServerPermissionGaps {
             $referenceServerPermissions = $referenceServerPermissions | Where-Object { $IncludePermissions -contains $_.PermissionName }
         }
         
-        # Comparer les permissions actuelles avec le modèle de référence
+        # Comparer les permissions actuelles avec le modÃ¨le de rÃ©fÃ©rence
         $compareParams = @{
             ReferencePermissions = $referenceServerPermissions
             CurrentPermissions = $CurrentPermissions
@@ -267,7 +267,7 @@ function Find-SqlServerPermissionGaps {
         
         $missingPermissions = Compare-SqlServerPermissionSets @compareParams
         
-        # Ajouter des informations d'impact si demandé
+        # Ajouter des informations d'impact si demandÃ©
         if ($IncludeImpact) {
             foreach ($perm in $missingPermissions.ServerPermissions) {
                 if ([string]::IsNullOrEmpty($perm.Impact)) {
@@ -276,7 +276,7 @@ function Find-SqlServerPermissionGaps {
             }
         }
         
-        # Ajouter des recommandations si demandé
+        # Ajouter des recommandations si demandÃ©
         if ($IncludeRecommendations) {
             foreach ($perm in $missingPermissions.ServerPermissions) {
                 if ([string]::IsNullOrEmpty($perm.RecommendedAction)) {
@@ -285,7 +285,7 @@ function Find-SqlServerPermissionGaps {
             }
         }
         
-        # Générer un script de correction si demandé
+        # GÃ©nÃ©rer un script de correction si demandÃ©
         if ($GenerateFixScript) {
             $fixScript = $missingPermissions.GenerateFixScript()
             $missingPermissions | Add-Member -MemberType NoteProperty -Name "FixScript" -Value $fixScript
@@ -310,28 +310,28 @@ function Get-SqlServerPermissionImpact {
         [string]$LoginName
     )
     
-    # Définir les impacts par défaut pour les permissions courantes
+    # DÃ©finir les impacts par dÃ©faut pour les permissions courantes
     $impactMap = @{
-        "CONNECT SQL" = "Le login '$LoginName' ne peut pas se connecter au serveur SQL, ce qui empêche toute opération."
-        "VIEW SERVER STATE" = "Le login '$LoginName' ne peut pas voir l'état du serveur, ce qui limite la surveillance et le diagnostic."
-        "ALTER ANY LOGIN" = "Le login '$LoginName' ne peut pas gérer les logins, ce qui limite les capacités d'administration."
-        "CONTROL SERVER" = "Le login '$LoginName' n'a pas le contrôle complet du serveur, ce qui limite les capacités d'administration."
-        "VIEW ANY DATABASE" = "Le login '$LoginName' ne peut pas voir toutes les bases de données, ce qui limite la visibilité."
-        "ALTER ANY DATABASE" = "Le login '$LoginName' ne peut pas modifier les bases de données, ce qui limite les capacités d'administration."
-        "CREATE ANY DATABASE" = "Le login '$LoginName' ne peut pas créer de nouvelles bases de données."
-        "ALTER ANY CREDENTIAL" = "Le login '$LoginName' ne peut pas gérer les informations d'identification."
-        "ALTER RESOURCES" = "Le login '$LoginName' ne peut pas modifier les paramètres de ressources du serveur."
-        "SHUTDOWN" = "Le login '$LoginName' ne peut pas arrêter l'instance SQL Server."
-        "ALTER SETTINGS" = "Le login '$LoginName' ne peut pas modifier les paramètres de configuration du serveur."
-        "ALTER TRACE" = "Le login '$LoginName' ne peut pas contrôler les traces SQL Server."
+        "CONNECT SQL" = "Le login '$LoginName' ne peut pas se connecter au serveur SQL, ce qui empÃªche toute opÃ©ration."
+        "VIEW SERVER STATE" = "Le login '$LoginName' ne peut pas voir l'Ã©tat du serveur, ce qui limite la surveillance et le diagnostic."
+        "ALTER ANY LOGIN" = "Le login '$LoginName' ne peut pas gÃ©rer les logins, ce qui limite les capacitÃ©s d'administration."
+        "CONTROL SERVER" = "Le login '$LoginName' n'a pas le contrÃ´le complet du serveur, ce qui limite les capacitÃ©s d'administration."
+        "VIEW ANY DATABASE" = "Le login '$LoginName' ne peut pas voir toutes les bases de donnÃ©es, ce qui limite la visibilitÃ©."
+        "ALTER ANY DATABASE" = "Le login '$LoginName' ne peut pas modifier les bases de donnÃ©es, ce qui limite les capacitÃ©s d'administration."
+        "CREATE ANY DATABASE" = "Le login '$LoginName' ne peut pas crÃ©er de nouvelles bases de donnÃ©es."
+        "ALTER ANY CREDENTIAL" = "Le login '$LoginName' ne peut pas gÃ©rer les informations d'identification."
+        "ALTER RESOURCES" = "Le login '$LoginName' ne peut pas modifier les paramÃ¨tres de ressources du serveur."
+        "SHUTDOWN" = "Le login '$LoginName' ne peut pas arrÃªter l'instance SQL Server."
+        "ALTER SETTINGS" = "Le login '$LoginName' ne peut pas modifier les paramÃ¨tres de configuration du serveur."
+        "ALTER TRACE" = "Le login '$LoginName' ne peut pas contrÃ´ler les traces SQL Server."
     }
     
-    # Retourner l'impact spécifique ou un impact générique
+    # Retourner l'impact spÃ©cifique ou un impact gÃ©nÃ©rique
     if ($impactMap.ContainsKey($PermissionName)) {
         return $impactMap[$PermissionName]
     }
     else {
-        return "Le login '$LoginName' ne dispose pas de la permission '$PermissionName' au niveau serveur, ce qui peut limiter certaines fonctionnalités."
+        return "Le login '$LoginName' ne dispose pas de la permission '$PermissionName' au niveau serveur, ce qui peut limiter certaines fonctionnalitÃ©s."
     }
 }
 
@@ -346,32 +346,32 @@ function Get-SqlServerPermissionRecommendation {
         [string]$LoginName
     )
     
-    # Définir les recommandations par défaut pour les permissions courantes
+    # DÃ©finir les recommandations par dÃ©faut pour les permissions courantes
     $recommendationMap = @{
         "CONNECT SQL" = "Accorder la permission CONNECT SQL au login '$LoginName' pour permettre la connexion au serveur."
         "VIEW SERVER STATE" = "Accorder la permission VIEW SERVER STATE au login '$LoginName' pour permettre la surveillance et le diagnostic."
         "ALTER ANY LOGIN" = "Accorder la permission ALTER ANY LOGIN au login '$LoginName' pour permettre la gestion des logins."
-        "CONTROL SERVER" = "Accorder la permission CONTROL SERVER au login '$LoginName' avec précaution, car elle donne un contrôle complet du serveur."
-        "VIEW ANY DATABASE" = "Accorder la permission VIEW ANY DATABASE au login '$LoginName' pour permettre la visibilité de toutes les bases de données."
-        "ALTER ANY DATABASE" = "Accorder la permission ALTER ANY DATABASE au login '$LoginName' pour permettre la modification des bases de données."
-        "CREATE ANY DATABASE" = "Accorder la permission CREATE ANY DATABASE au login '$LoginName' pour permettre la création de nouvelles bases de données."
+        "CONTROL SERVER" = "Accorder la permission CONTROL SERVER au login '$LoginName' avec prÃ©caution, car elle donne un contrÃ´le complet du serveur."
+        "VIEW ANY DATABASE" = "Accorder la permission VIEW ANY DATABASE au login '$LoginName' pour permettre la visibilitÃ© de toutes les bases de donnÃ©es."
+        "ALTER ANY DATABASE" = "Accorder la permission ALTER ANY DATABASE au login '$LoginName' pour permettre la modification des bases de donnÃ©es."
+        "CREATE ANY DATABASE" = "Accorder la permission CREATE ANY DATABASE au login '$LoginName' pour permettre la crÃ©ation de nouvelles bases de donnÃ©es."
         "ALTER ANY CREDENTIAL" = "Accorder la permission ALTER ANY CREDENTIAL au login '$LoginName' pour permettre la gestion des informations d'identification."
-        "ALTER RESOURCES" = "Accorder la permission ALTER RESOURCES au login '$LoginName' pour permettre la modification des paramètres de ressources."
-        "SHUTDOWN" = "Accorder la permission SHUTDOWN au login '$LoginName' avec précaution, car elle permet d'arrêter l'instance SQL Server."
-        "ALTER SETTINGS" = "Accorder la permission ALTER SETTINGS au login '$LoginName' pour permettre la modification des paramètres de configuration."
-        "ALTER TRACE" = "Accorder la permission ALTER TRACE au login '$LoginName' pour permettre le contrôle des traces SQL Server."
+        "ALTER RESOURCES" = "Accorder la permission ALTER RESOURCES au login '$LoginName' pour permettre la modification des paramÃ¨tres de ressources."
+        "SHUTDOWN" = "Accorder la permission SHUTDOWN au login '$LoginName' avec prÃ©caution, car elle permet d'arrÃªter l'instance SQL Server."
+        "ALTER SETTINGS" = "Accorder la permission ALTER SETTINGS au login '$LoginName' pour permettre la modification des paramÃ¨tres de configuration."
+        "ALTER TRACE" = "Accorder la permission ALTER TRACE au login '$LoginName' pour permettre le contrÃ´le des traces SQL Server."
     }
     
-    # Retourner la recommandation spécifique ou une recommandation générique
+    # Retourner la recommandation spÃ©cifique ou une recommandation gÃ©nÃ©rique
     if ($recommendationMap.ContainsKey($PermissionName)) {
         return $recommendationMap[$PermissionName]
     }
     else {
-        return "Accorder la permission '$PermissionName' au login '$LoginName' au niveau serveur si cette fonctionnalité est nécessaire."
+        return "Accorder la permission '$PermissionName' au login '$LoginName' au niveau serveur si cette fonctionnalitÃ© est nÃ©cessaire."
     }
 }
 
-# Fonction pour générer un rapport de conformité des permissions au niveau serveur
+# Fonction pour gÃ©nÃ©rer un rapport de conformitÃ© des permissions au niveau serveur
 function New-SqlServerPermissionComplianceReport {
     [CmdletBinding()]
     param (
@@ -393,7 +393,7 @@ function New-SqlServerPermissionComplianceReport {
     )
     
     try {
-        # Calculer le score de conformité
+        # Calculer le score de conformitÃ©
         $totalPermissions = $ReferenceModel.ServerPermissions.Count
         $missingCount = $MissingPermissions.ServerPermissions.Count
         $complianceScore = if ($totalPermissions -gt 0) {
@@ -403,22 +403,22 @@ function New-SqlServerPermissionComplianceReport {
             100
         }
         
-        # Créer le rapport en fonction du format demandé
+        # CrÃ©er le rapport en fonction du format demandÃ©
         switch ($Format) {
             "Text" {
-                $report = "Rapport de conformité des permissions au niveau serveur`n"
+                $report = "Rapport de conformitÃ© des permissions au niveau serveur`n"
                 $report += "================================================`n`n"
                 $report += "Instance: $($MissingPermissions.ServerInstance)`n"
-                $report += "Modèle de référence: $($ReferenceModel.ModelName)`n"
+                $report += "ModÃ¨le de rÃ©fÃ©rence: $($ReferenceModel.ModelName)`n"
                 $report += "Date: $($MissingPermissions.ComparisonDate)`n`n"
                 
-                $report += "Score de conformité: $complianceScore%`n"
+                $report += "Score de conformitÃ©: $complianceScore%`n"
                 $report += "Permissions conformes: $($totalPermissions - $missingCount)/$totalPermissions`n"
                 $report += "Permissions manquantes: $missingCount/$totalPermissions`n`n"
                 
-                $report += "Répartition par sévérité:`n"
+                $report += "RÃ©partition par sÃ©vÃ©ritÃ©:`n"
                 $report += "- Critique: $($MissingPermissions.SeverityCounts['Critique'])`n"
-                $report += "- Élevée: $($MissingPermissions.SeverityCounts['Élevée'])`n"
+                $report += "- Ã‰levÃ©e: $($MissingPermissions.SeverityCounts['Ã‰levÃ©e'])`n"
                 $report += "- Moyenne: $($MissingPermissions.SeverityCounts['Moyenne'])`n"
                 $report += "- Faible: $($MissingPermissions.SeverityCounts['Faible'])`n`n"
                 
@@ -426,12 +426,12 @@ function New-SqlServerPermissionComplianceReport {
                     $report += "Permissions manquantes:`n"
                     foreach ($perm in $MissingPermissions.ServerPermissions) {
                         $report += "- $($perm.ToString())`n"
-                        $report += "  Sévérité: $($perm.Severity)`n"
+                        $report += "  SÃ©vÃ©ritÃ©: $($perm.Severity)`n"
                         if (-not [string]::IsNullOrEmpty($perm.Impact)) {
                             $report += "  Impact: $($perm.Impact)`n"
                         }
                         if (-not [string]::IsNullOrEmpty($perm.RecommendedAction)) {
-                            $report += "  Action recommandée: $($perm.RecommendedAction)`n"
+                            $report += "  Action recommandÃ©e: $($perm.RecommendedAction)`n"
                         }
                         $report += "`n"
                     }
@@ -449,7 +449,7 @@ function New-SqlServerPermissionComplianceReport {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport de conformité des permissions SQL Server</title>
+    <title>Rapport de conformitÃ© des permissions SQL Server</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2 { color: #0066cc; }
@@ -463,22 +463,22 @@ function New-SqlServerPermissionComplianceReport {
         th { background-color: #f2f2f2; }
         tr:nth-child(even) { background-color: #f9f9f9; }
         .severity-Critique { color: red; font-weight: bold; }
-        .severity-Élevée { color: orange; font-weight: bold; }
+        .severity-Ã‰levÃ©e { color: orange; font-weight: bold; }
         .severity-Moyenne { color: blue; }
         .severity-Faible { color: green; }
         pre { background-color: #f5f5f5; padding: 10px; border: 1px solid #ddd; overflow: auto; }
     </style>
 </head>
 <body>
-    <h1>Rapport de conformité des permissions SQL Server</h1>
+    <h1>Rapport de conformitÃ© des permissions SQL Server</h1>
     
     <div class="summary">
         <p><strong>Instance:</strong> $($MissingPermissions.ServerInstance)</p>
-        <p><strong>Modèle de référence:</strong> $($ReferenceModel.ModelName)</p>
+        <p><strong>ModÃ¨le de rÃ©fÃ©rence:</strong> $($ReferenceModel.ModelName)</p>
         <p><strong>Date:</strong> $($MissingPermissions.ComparisonDate)</p>
     </div>
     
-    <h2>Score de conformité</h2>
+    <h2>Score de conformitÃ©</h2>
     <div class="score $($complianceScore -ge 90 ? 'high' : ($complianceScore -ge 70 ? 'medium' : 'low'))">
         $complianceScore%
     </div>
@@ -486,10 +486,10 @@ function New-SqlServerPermissionComplianceReport {
     <p>Permissions conformes: $($totalPermissions - $missingCount)/$totalPermissions</p>
     <p>Permissions manquantes: $missingCount/$totalPermissions</p>
     
-    <h2>Répartition par sévérité</h2>
+    <h2>RÃ©partition par sÃ©vÃ©ritÃ©</h2>
     <ul>
         <li class="severity-Critique">Critique: $($MissingPermissions.SeverityCounts['Critique'])</li>
-        <li class="severity-Élevée">Élevée: $($MissingPermissions.SeverityCounts['Élevée'])</li>
+        <li class="severity-Ã‰levÃ©e">Ã‰levÃ©e: $($MissingPermissions.SeverityCounts['Ã‰levÃ©e'])</li>
         <li class="severity-Moyenne">Moyenne: $($MissingPermissions.SeverityCounts['Moyenne'])</li>
         <li class="severity-Faible">Faible: $($MissingPermissions.SeverityCounts['Faible'])</li>
     </ul>
@@ -502,10 +502,10 @@ function New-SqlServerPermissionComplianceReport {
         <tr>
             <th>Permission</th>
             <th>Login</th>
-            <th>État</th>
-            <th>Sévérité</th>
+            <th>Ã‰tat</th>
+            <th>SÃ©vÃ©ritÃ©</th>
             <th>Impact</th>
-            <th>Action recommandée</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
                     
@@ -542,7 +542,7 @@ function New-SqlServerPermissionComplianceReport {
             }
             "CSV" {
                 $report = "Instance,ModelName,ComparisonDate,ComplianceScore,TotalPermissions,MissingPermissions,CriticalCount,HighCount,MediumCount,LowCount`n"
-                $report += "$($MissingPermissions.ServerInstance),$($ReferenceModel.ModelName),$($MissingPermissions.ComparisonDate),$complianceScore,$totalPermissions,$missingCount,$($MissingPermissions.SeverityCounts['Critique']),$($MissingPermissions.SeverityCounts['Élevée']),$($MissingPermissions.SeverityCounts['Moyenne']),$($MissingPermissions.SeverityCounts['Faible'])`n`n"
+                $report += "$($MissingPermissions.ServerInstance),$($ReferenceModel.ModelName),$($MissingPermissions.ComparisonDate),$complianceScore,$totalPermissions,$missingCount,$($MissingPermissions.SeverityCounts['Critique']),$($MissingPermissions.SeverityCounts['Ã‰levÃ©e']),$($MissingPermissions.SeverityCounts['Moyenne']),$($MissingPermissions.SeverityCounts['Faible'])`n`n"
                 
                 if ($missingCount -gt 0) {
                     $report += "PermissionName,LoginName,PermissionState,Severity,Impact,RecommendedAction`n"
@@ -573,7 +573,7 @@ function New-SqlServerPermissionComplianceReport {
             }
         }
         
-        # Enregistrer le rapport si un chemin de sortie est spécifié
+        # Enregistrer le rapport si un chemin de sortie est spÃ©cifiÃ©
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
             $report | Out-File -FilePath $OutputPath -Encoding UTF8
         }

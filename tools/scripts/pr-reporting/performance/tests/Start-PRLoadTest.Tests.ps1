@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-PRLoadTest.ps1.
@@ -13,31 +13,31 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-PRLoadTest.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Start-PRLoadTest.ps1 non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Start-PRLoadTest.ps1 non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
 # Tests Pester
 Describe "Start-PRLoadTest Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testDir = Join-Path -Path $env:TEMP -ChildPath "PRLoadTestTests_$(Get-Random)"
         New-Item -Path $script:testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de sortie temporaire
+        # CrÃ©er un fichier de sortie temporaire
         $script:outputPath = Join-Path -Path $script:testDir -ChildPath "load_test_results.json"
         
-        # Créer un mock pour les modules
+        # CrÃ©er un mock pour les modules
         Mock Import-Module { } -ModuleName $scriptToTest
         
-        # Créer un mock pour les fonctions
+        # CrÃ©er un mock pour les fonctions
         Mock Get-Command { 
             return @(
                 [PSCustomObject]@{
@@ -51,11 +51,11 @@ Describe "Start-PRLoadTest Tests" {
             )
         } -ModuleName $scriptToTest
         
-        # Créer un mock pour l'exécution des fonctions
+        # CrÃ©er un mock pour l'exÃ©cution des fonctions
         Mock Test-Function1 { return "Test result 1" } -ModuleName $scriptToTest
         Mock Test-Function2 { return "Test result 2" } -ModuleName $scriptToTest
         
-        # Créer un mock pour Start-Job
+        # CrÃ©er un mock pour Start-Job
         Mock Start-Job { 
             return [PSCustomObject]@{
                 Id = 1
@@ -64,7 +64,7 @@ Describe "Start-PRLoadTest Tests" {
             }
         } -ModuleName $scriptToTest
         
-        # Créer un mock pour Receive-Job
+        # CrÃ©er un mock pour Receive-Job
         Mock Receive-Job { 
             return @(
                 [PSCustomObject]@{
@@ -78,10 +78,10 @@ Describe "Start-PRLoadTest Tests" {
             )
         } -ModuleName $scriptToTest
         
-        # Créer un mock pour Remove-Job
+        # CrÃ©er un mock pour Remove-Job
         Mock Remove-Job { } -ModuleName $scriptToTest
         
-        # Créer un mock pour Get-Process
+        # CrÃ©er un mock pour Get-Process
         Mock Get-Process { 
             return [PSCustomObject]@{
                 Id = $PID
@@ -95,79 +95,79 @@ Describe "Start-PRLoadTest Tests" {
         } -ModuleName $scriptToTest
     }
     
-    Context "Validation des paramètres" {
-        It "Accepte le paramètre ModuleName" {
+    Context "Validation des paramÃ¨tres" {
+        It "Accepte le paramÃ¨tre ModuleName" {
             { & $scriptToTest -ModuleName "PRVisualization" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre FunctionName" {
+        It "Accepte le paramÃ¨tre FunctionName" {
             { & $scriptToTest -FunctionName "New-PRBarChart" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre Duration" {
+        It "Accepte le paramÃ¨tre Duration" {
             { & $scriptToTest -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre Concurrency" {
+        It "Accepte le paramÃ¨tre Concurrency" {
             { & $scriptToTest -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre DataSize" {
+        It "Accepte le paramÃ¨tre DataSize" {
             { & $scriptToTest -DataSize "Small" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre OutputPath" {
+        It "Accepte le paramÃ¨tre OutputPath" {
             { & $scriptToTest -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre MonitorInterval" {
+        It "Accepte le paramÃ¨tre MonitorInterval" {
             { & $scriptToTest -Duration 1 -Concurrency 1 -MonitorInterval 2 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
     }
     
-    Context "Génération de données de test" {
-        It "Génère des données de test de taille Small" {
-            # Exécuter la fonction New-TestData avec la taille Small
+    Context "GÃ©nÃ©ration de donnÃ©es de test" {
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Small" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Small
             $testData = & $scriptToTest -DataSize "Small" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
         
-        It "Génère des données de test de taille Medium" {
-            # Exécuter la fonction New-TestData avec la taille Medium
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Medium" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Medium
             $testData = & $scriptToTest -DataSize "Medium" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
         
-        It "Génère des données de test de taille Large" {
-            # Exécuter la fonction New-TestData avec la taille Large
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Large" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Large
             $testData = & $scriptToTest -DataSize "Large" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
         
-        It "Génère des données de test de taille ExtraLarge" {
-            # Exécuter la fonction New-TestData avec la taille ExtraLarge
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille ExtraLarge" {
+            # ExÃ©cuter la fonction New-TestData avec la taille ExtraLarge
             $testData = & $scriptToTest -DataSize "ExtraLarge" -Duration 1 -Concurrency 1 -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
     }
     
-    Context "Exécution des tests de charge" {
-        It "Exécute les tests de charge pour toutes les fonctions" {
-            # Exécuter le script avec une durée et une concurrence minimales
+    Context "ExÃ©cution des tests de charge" {
+        It "ExÃ©cute les tests de charge pour toutes les fonctions" {
+            # ExÃ©cuter le script avec une durÃ©e et une concurrence minimales
             & $scriptToTest -Duration 1 -Concurrency 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty
@@ -178,14 +178,14 @@ Describe "Start-PRLoadTest Tests" {
             $results.System | Should -Not -BeNullOrEmpty
         }
         
-        It "Exécute les tests de charge pour un module spécifique" {
-            # Exécuter le script avec un module spécifique
+        It "ExÃ©cute les tests de charge pour un module spÃ©cifique" {
+            # ExÃ©cuter le script avec un module spÃ©cifique
             & $scriptToTest -ModuleName "PRVisualization" -Duration 1 -Concurrency 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty
@@ -196,14 +196,14 @@ Describe "Start-PRLoadTest Tests" {
             $results.System | Should -Not -BeNullOrEmpty
         }
         
-        It "Exécute les tests de charge pour une fonction spécifique" {
-            # Exécuter le script avec une fonction spécifique
+        It "ExÃ©cute les tests de charge pour une fonction spÃ©cifique" {
+            # ExÃ©cuter le script avec une fonction spÃ©cifique
             & $scriptToTest -FunctionName "New-PRBarChart" -Duration 1 -Concurrency 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty

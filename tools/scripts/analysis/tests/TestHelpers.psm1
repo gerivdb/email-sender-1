@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module d'aide pour les tests unitaires du système d'analyse de code.
+    Module d'aide pour les tests unitaires du systÃ¨me d'analyse de code.
 .DESCRIPTION
-    Ce module contient des fonctions d'aide pour les tests unitaires du système d'analyse de code.
+    Ce module contient des fonctions d'aide pour les tests unitaires du systÃ¨me d'analyse de code.
 #>
 
-# Fonction pour créer un environnement de test
+# Fonction pour crÃ©er un environnement de test
 function New-TestEnvironment {
     [CmdletBinding()]
     param (
@@ -14,11 +14,11 @@ function New-TestEnvironment {
         [string]$TestName = "DefaultTest"
     )
     
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $TestDrive -ChildPath $TestName
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
     
-    # Créer un fichier PowerShell de test avec des problèmes connus
+    # CrÃ©er un fichier PowerShell de test avec des problÃ¨mes connus
     $testPsPath = Join-Path -Path $testDir -ChildPath "test.ps1"
     $testPsContent = @'
 # Test script with known issues
@@ -45,13 +45,13 @@ function Test-Function {
 '@
     Set-Content -Path $testPsPath -Value $testPsContent -Encoding UTF8
     
-    # Créer un répertoire avec plusieurs fichiers pour tester l'analyse récursive
+    # CrÃ©er un rÃ©pertoire avec plusieurs fichiers pour tester l'analyse rÃ©cursive
     $subDir = Join-Path -Path $testDir -ChildPath "subdir"
     New-Item -Path $subDir -ItemType Directory -Force | Out-Null
     $testPs2Path = Join-Path -Path $subDir -ChildPath "test2.ps1"
     Set-Content -Path $testPs2Path -Value $testPsContent -Encoding UTF8
     
-    # Créer un fichier HTML pour tester la correction d'encodage
+    # CrÃ©er un fichier HTML pour tester la correction d'encodage
     $testHtmlPath = Join-Path -Path $testDir -ChildPath "test.html"
     $testHtmlContent = @'
 <!DOCTYPE html>
@@ -62,13 +62,13 @@ function Test-Function {
 </head>
 <body>
     <h1>Test HTML</h1>
-    <p>This is a test HTML file with special characters: éèêëàâäôöùûüÿç</p>
+    <p>This is a test HTML file with special characters: Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§</p>
 </body>
 </html>
 '@
     Set-Content -Path $testHtmlPath -Value $testHtmlContent -Encoding UTF8
     
-    # Créer un fichier JSON pour tester l'intégration avec des outils tiers
+    # CrÃ©er un fichier JSON pour tester l'intÃ©gration avec des outils tiers
     $testJsonPath = Join-Path -Path $testDir -ChildPath "test-results.json"
     $testJsonContent = @'
 [
@@ -95,7 +95,7 @@ function Test-Function {
         "Severity": "Information",
         "Message": "TODO: Add more robust error handling",
         "Category": "Documentation",
-        "Suggestion": "Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.",
+        "Suggestion": "RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.",
         "OriginalObject": null
     },
     {
@@ -115,13 +115,13 @@ function Test-Function {
 '@
     Set-Content -Path $testJsonPath -Value $testJsonContent -Encoding UTF8
     
-    # Créer un sous-répertoire pour les fichiers HTML
+    # CrÃ©er un sous-rÃ©pertoire pour les fichiers HTML
     $htmlDir = Join-Path -Path $testDir -ChildPath "html"
     New-Item -Path $htmlDir -ItemType Directory -Force | Out-Null
     $testHtml2Path = Join-Path -Path $htmlDir -ChildPath "test2.html"
     Set-Content -Path $testHtml2Path -Value $testHtmlContent -Encoding UTF8
     
-    # Créer un sous-répertoire pour les fichiers HTML récursifs
+    # CrÃ©er un sous-rÃ©pertoire pour les fichiers HTML rÃ©cursifs
     $htmlSubDir = Join-Path -Path $htmlDir -ChildPath "subdir"
     New-Item -Path $htmlSubDir -ItemType Directory -Force | Out-Null
     $testHtml3Path = Join-Path -Path $htmlSubDir -ChildPath "test3.html"
@@ -141,7 +141,7 @@ function Test-Function {
     }
 }
 
-# Fonction pour exécuter un script avec des paramètres
+# Fonction pour exÃ©cuter un script avec des paramÃ¨tres
 function Invoke-ScriptWithParams {
     [CmdletBinding()]
     param (
@@ -152,7 +152,7 @@ function Invoke-ScriptWithParams {
         [hashtable]$Parameters = @{}
     )
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         throw "Le script '$ScriptPath' n'existe pas."
     }
@@ -160,7 +160,7 @@ function Invoke-ScriptWithParams {
     # Construire la commande
     $command = "& '$ScriptPath'"
     
-    # Ajouter les paramètres
+    # Ajouter les paramÃ¨tres
     foreach ($key in $Parameters.Keys) {
         $value = $Parameters[$key]
         
@@ -182,19 +182,19 @@ function Invoke-ScriptWithParams {
         }
     }
     
-    # Créer un bloc de script à partir de la commande
+    # CrÃ©er un bloc de script Ã  partir de la commande
     $scriptBlock = [ScriptBlock]::Create($command)
     
-    # Exécuter le bloc de script
+    # ExÃ©cuter le bloc de script
     return & $scriptBlock
 }
 
-# Fonction pour créer un mock de PSScriptAnalyzer
+# Fonction pour crÃ©er un mock de PSScriptAnalyzer
 function New-PSScriptAnalyzerMock {
     [CmdletBinding()]
     param ()
     
-    # Créer un mock pour Invoke-ScriptAnalyzer
+    # CrÃ©er un mock pour Invoke-ScriptAnalyzer
     function Invoke-ScriptAnalyzer {
         [CmdletBinding()]
         param (
@@ -211,7 +211,7 @@ function New-PSScriptAnalyzerMock {
             [switch]$Recurse
         )
         
-        # Retourner des résultats simulés
+        # Retourner des rÃ©sultats simulÃ©s
         return @(
             [PSCustomObject]@{
                 ScriptPath = $Path
@@ -238,12 +238,12 @@ function New-PSScriptAnalyzerMock {
     Export-ModuleMember -Function Invoke-ScriptAnalyzer
 }
 
-# Fonction pour créer un mock de New-UnifiedAnalysisResult
+# Fonction pour crÃ©er un mock de New-UnifiedAnalysisResult
 function New-UnifiedAnalysisResultMock {
     [CmdletBinding()]
     param ()
     
-    # Créer un mock pour New-UnifiedAnalysisResult
+    # CrÃ©er un mock pour New-UnifiedAnalysisResult
     function New-UnifiedAnalysisResult {
         [CmdletBinding()]
         param (
@@ -278,7 +278,7 @@ function New-UnifiedAnalysisResultMock {
             [object]$OriginalObject
         )
         
-        # Retourner un objet simulé
+        # Retourner un objet simulÃ©
         return [PSCustomObject]@{
             ToolName = $ToolName
             FilePath = $FilePath

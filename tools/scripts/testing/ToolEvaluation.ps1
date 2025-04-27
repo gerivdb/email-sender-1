@@ -1,21 +1,21 @@
-# Script pour évaluer les outils d'analyse d'erreurs
+﻿# Script pour Ã©valuer les outils d'analyse d'erreurs
 
 # Configuration
 $EvalConfig = @{
-    # Dossier des résultats d'évaluation
+    # Dossier des rÃ©sultats d'Ã©valuation
     ResultsFolder = Join-Path -Path $env:TEMP -ChildPath "ToolEvaluation"
     
-    # Fichier de configuration des métriques
+    # Fichier de configuration des mÃ©triques
     MetricsFile = Join-Path -Path $env:TEMP -ChildPath "ToolEvaluation\metrics.json"
     
     # Fichier de feedback utilisateur
     FeedbackFile = Join-Path -Path $env:TEMP -ChildPath "ToolEvaluation\feedback.json"
     
-    # Dossier des tests automatisés
+    # Dossier des tests automatisÃ©s
     TestsFolder = Join-Path -Path $env:TEMP -ChildPath "ToolEvaluation\Tests"
 }
 
-# Fonction pour initialiser l'évaluation des outils
+# Fonction pour initialiser l'Ã©valuation des outils
 function Initialize-ToolEvaluation {
     param (
         [Parameter(Mandatory = $false)]
@@ -31,7 +31,7 @@ function Initialize-ToolEvaluation {
         [string]$TestsFolder = ""
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($ResultsFolder)) {
         $EvalConfig.ResultsFolder = $ResultsFolder
     }
@@ -48,39 +48,39 @@ function Initialize-ToolEvaluation {
         $EvalConfig.TestsFolder = $TestsFolder
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($EvalConfig.ResultsFolder, $EvalConfig.TestsFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
         }
     }
     
-    # Créer le fichier de métriques s'il n'existe pas
+    # CrÃ©er le fichier de mÃ©triques s'il n'existe pas
     if (-not (Test-Path -Path $EvalConfig.MetricsFile)) {
         $defaultMetrics = @{
             Metrics = @(
                 @{
-                    Name = "Précision"
-                    Description = "Pourcentage d'erreurs correctement identifiées"
+                    Name = "PrÃ©cision"
+                    Description = "Pourcentage d'erreurs correctement identifiÃ©es"
                     Weight = 0.3
                     Target = 0.9
                 },
                 @{
                     Name = "Rappel"
-                    Description = "Pourcentage d'erreurs détectées parmi toutes les erreurs"
+                    Description = "Pourcentage d'erreurs dÃ©tectÃ©es parmi toutes les erreurs"
                     Weight = 0.3
                     Target = 0.85
                 },
                 @{
-                    Name = "Temps d'exécution"
-                    Description = "Temps moyen d'exécution de l'analyse (en secondes)"
+                    Name = "Temps d'exÃ©cution"
+                    Description = "Temps moyen d'exÃ©cution de l'analyse (en secondes)"
                     Weight = 0.2
                     Target = 5
                     LowerIsBetter = $true
                 },
                 @{
                     Name = "Pertinence des suggestions"
-                    Description = "Évaluation de la pertinence des suggestions (1-5)"
+                    Description = "Ã‰valuation de la pertinence des suggestions (1-5)"
                     Weight = 0.2
                     Target = 4
                 }
@@ -91,7 +91,7 @@ function Initialize-ToolEvaluation {
         $defaultMetrics | ConvertTo-Json -Depth 5 | Set-Content -Path $EvalConfig.MetricsFile
     }
     
-    # Créer le fichier de feedback s'il n'existe pas
+    # CrÃ©er le fichier de feedback s'il n'existe pas
     if (-not (Test-Path -Path $EvalConfig.FeedbackFile)) {
         $defaultFeedback = @{
             Feedback = @()
@@ -104,19 +104,19 @@ function Initialize-ToolEvaluation {
     return $EvalConfig
 }
 
-# Fonction pour définir les métriques d'évaluation
+# Fonction pour dÃ©finir les mÃ©triques d'Ã©valuation
 function Set-EvaluationMetrics {
     param (
         [Parameter(Mandatory = $true)]
         [array]$Metrics
     )
     
-    # Vérifier si le fichier de métriques existe
+    # VÃ©rifier si le fichier de mÃ©triques existe
     if (-not (Test-Path -Path $EvalConfig.MetricsFile)) {
         Initialize-ToolEvaluation
     }
     
-    # Mettre à jour les métriques
+    # Mettre Ã  jour les mÃ©triques
     $metricsData = @{
         Metrics = $Metrics
         LastUpdate = Get-Date -Format "o"
@@ -146,15 +146,15 @@ function Add-UserFeedback {
         [hashtable]$MetricScores = @{}
     )
     
-    # Vérifier si le fichier de feedback existe
+    # VÃ©rifier si le fichier de feedback existe
     if (-not (Test-Path -Path $EvalConfig.FeedbackFile)) {
         Initialize-ToolEvaluation
     }
     
-    # Charger les données de feedback
+    # Charger les donnÃ©es de feedback
     $feedbackData = Get-Content -Path $EvalConfig.FeedbackFile -Raw | ConvertFrom-Json
     
-    # Créer le feedback
+    # CrÃ©er le feedback
     $feedback = @{
         ID = [Guid]::NewGuid().ToString()
         ToolName = $ToolName
@@ -169,13 +169,13 @@ function Add-UserFeedback {
     $feedbackData.Feedback += $feedback
     $feedbackData.LastUpdate = Get-Date -Format "o"
     
-    # Enregistrer les données
+    # Enregistrer les donnÃ©es
     $feedbackData | ConvertTo-Json -Depth 5 | Set-Content -Path $EvalConfig.FeedbackFile
     
     return $feedback
 }
 
-# Fonction pour créer un test automatisé
+# Fonction pour crÃ©er un test automatisÃ©
 function New-AutomatedTest {
     param (
         [Parameter(Mandatory = $true)]
@@ -197,19 +197,19 @@ function New-AutomatedTest {
         [string]$Description = ""
     )
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         Write-Error "Le script n'existe pas: $ScriptPath"
         return $null
     }
     
-    # Créer le dossier de test
+    # CrÃ©er le dossier de test
     $testFolder = Join-Path -Path $EvalConfig.TestsFolder -ChildPath $TestName
     if (-not (Test-Path -Path $testFolder)) {
         New-Item -Path $testFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le fichier de configuration du test
+    # CrÃ©er le fichier de configuration du test
     $testConfig = @{
         TestName = $TestName
         ToolName = $ToolName
@@ -225,35 +225,35 @@ function New-AutomatedTest {
     $configPath = Join-Path -Path $testFolder -ChildPath "config.json"
     $testConfig | ConvertTo-Json -Depth 5 | Set-Content -Path $configPath
     
-    # Créer le script de test
+    # CrÃ©er le script de test
     $testScriptContent = @"
-# Script de test automatisé pour $ToolName
+# Script de test automatisÃ© pour $ToolName
 # Test: $TestName
-# Créé le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+# CrÃ©Ã© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Charger la configuration du test
 `$configPath = Join-Path -Path `$PSScriptRoot -ChildPath "config.json"
 `$config = Get-Content -Path `$configPath -Raw | ConvertFrom-Json
 
-# Vérifier si le script à tester existe
+# VÃ©rifier si le script Ã  tester existe
 if (-not (Test-Path -Path `$config.ScriptPath)) {
-    Write-Error "Le script à tester n'existe pas: `$(`$config.ScriptPath)"
+    Write-Error "Le script Ã  tester n'existe pas: `$(`$config.ScriptPath)"
     exit 1
 }
 
-# Préparer les paramètres
+# PrÃ©parer les paramÃ¨tres
 `$parameters = @{}
 foreach (`$param in `$config.Parameters.PSObject.Properties) {
     `$parameters[`$param.Name] = `$param.Value
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 `$startTime = Get-Date
 try {
     # Charger le script
     . `$config.ScriptPath
     
-    # Exécuter la fonction principale avec les paramètres
+    # ExÃ©cuter la fonction principale avec les paramÃ¨tres
     `$scriptName = [System.IO.Path]::GetFileNameWithoutExtension(`$config.ScriptPath)
     `$mainFunction = Get-Command -Name `$scriptName -ErrorAction SilentlyContinue
     
@@ -261,7 +261,7 @@ try {
         `$result = & `$mainFunction @parameters
     }
     else {
-        # Essayer d'exécuter le script directement
+        # Essayer d'exÃ©cuter le script directement
         `$result = & `$config.ScriptPath @parameters
     }
     
@@ -276,7 +276,7 @@ catch {
 `$endTime = Get-Date
 `$executionTime = (`$endTime - `$startTime).TotalSeconds
 
-# Vérifier les résultats
+# VÃ©rifier les rÃ©sultats
 `$validationResults = @{}
 foreach (`$expected in `$config.ExpectedResults.PSObject.Properties) {
     `$expectedValue = `$expected.Value
@@ -295,7 +295,7 @@ foreach (`$expected in `$config.ExpectedResults.PSObject.Properties) {
     }
 }
 
-# Préparer les résultats du test
+# PrÃ©parer les rÃ©sultats du test
 `$testResult = @{
     TestName = `$config.TestName
     ToolName = `$config.ToolName
@@ -306,23 +306,23 @@ foreach (`$expected in `$config.ExpectedResults.PSObject.Properties) {
     ValidationResults = `$validationResults
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 `$resultsPath = Join-Path -Path `$PSScriptRoot -ChildPath "results.json"
 `$testResult | ConvertTo-Json -Depth 5 | Set-Content -Path `$resultsPath
 
-# Mettre à jour la configuration
+# Mettre Ã  jour la configuration
 `$config.LastRun = Get-Date -Format "o"
 `$config.Results += `$testResult
 `$config | ConvertTo-Json -Depth 5 | Set-Content -Path `$configPath
 
-# Afficher les résultats
-Write-Host "Test terminé: `$(`$config.TestName)"
-Write-Host "Succès: `$(`$success)"
+# Afficher les rÃ©sultats
+Write-Host "Test terminÃ©: `$(`$config.TestName)"
+Write-Host "SuccÃ¨s: `$(`$success)"
 if (-not `$success) {
     Write-Host "Erreur: `$error"
 }
-Write-Host "Temps d'exécution: `$executionTime secondes"
-Write-Host "Résultats de validation:"
+Write-Host "Temps d'exÃ©cution: `$executionTime secondes"
+Write-Host "RÃ©sultats de validation:"
 foreach (`$key in `$validationResults.Keys) {
     `$valid = if (`$validationResults[`$key].IsValid) { "Valide" } else { "Invalide" }
     Write-Host "  `$key: `$valid (Attendu: `$(`$validationResults[`$key].Expected), Obtenu: `$(`$validationResults[`$key].Actual))"
@@ -339,14 +339,14 @@ foreach (`$key in `$validationResults.Keys) {
     }
 }
 
-# Fonction pour exécuter un test automatisé
+# Fonction pour exÃ©cuter un test automatisÃ©
 function Invoke-AutomatedTest {
     param (
         [Parameter(Mandatory = $true)]
         [string]$TestName
     )
     
-    # Vérifier si le test existe
+    # VÃ©rifier si le test existe
     $testFolder = Join-Path -Path $EvalConfig.TestsFolder -ChildPath $TestName
     $testScriptPath = Join-Path -Path $testFolder -ChildPath "run-test.ps1"
     
@@ -355,28 +355,28 @@ function Invoke-AutomatedTest {
         return $null
     }
     
-    # Exécuter le test
+    # ExÃ©cuter le test
     try {
         & $testScriptPath
         
-        # Charger les résultats
+        # Charger les rÃ©sultats
         $resultsPath = Join-Path -Path $testFolder -ChildPath "results.json"
         if (Test-Path -Path $resultsPath) {
             $results = Get-Content -Path $resultsPath -Raw | ConvertFrom-Json
             return $results
         }
         else {
-            Write-Warning "Aucun résultat trouvé pour le test: $TestName"
+            Write-Warning "Aucun rÃ©sultat trouvÃ© pour le test: $TestName"
             return $null
         }
     }
     catch {
-        Write-Error "Erreur lors de l'exécution du test: $_"
+        Write-Error "Erreur lors de l'exÃ©cution du test: $_"
         return $null
     }
 }
 
-# Fonction pour exécuter tous les tests automatisés
+# Fonction pour exÃ©cuter tous les tests automatisÃ©s
 function Invoke-AllAutomatedTests {
     # Obtenir tous les tests
     $testFolders = Get-ChildItem -Path $EvalConfig.TestsFolder -Directory
@@ -392,7 +392,7 @@ function Invoke-AllAutomatedTests {
         }
     }
     
-    # Générer un rapport de résultats
+    # GÃ©nÃ©rer un rapport de rÃ©sultats
     $reportPath = Join-Path -Path $EvalConfig.ResultsFolder -ChildPath "test-report-$(Get-Date -Format 'yyyyMMdd-HHmmss').json"
     $reportData = @{
         Timestamp = Get-Date -Format "o"
@@ -408,7 +408,7 @@ function Invoke-AllAutomatedTests {
     return $reportData
 }
 
-# Fonction pour évaluer un outil d'analyse
+# Fonction pour Ã©valuer un outil d'analyse
 function Measure-AnalysisTool {
     param (
         [Parameter(Mandatory = $true)]
@@ -427,16 +427,16 @@ function Measure-AnalysisTool {
         [hashtable]$MetricOverrides = @{}
     )
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         Write-Error "Le script n'existe pas: $ScriptPath"
         return $null
     }
     
-    # Charger les métriques
+    # Charger les mÃ©triques
     $metricsData = Get-Content -Path $EvalConfig.MetricsFile -Raw | ConvertFrom-Json
     
-    # Préparer les résultats
+    # PrÃ©parer les rÃ©sultats
     $results = @{
         ToolName = $ToolName
         ScriptPath = $ScriptPath
@@ -448,13 +448,13 @@ function Measure-AnalysisTool {
         Error = $null
     }
     
-    # Exécuter l'outil
+    # ExÃ©cuter l'outil
     $startTime = Get-Date
     try {
         # Charger le script
         . $ScriptPath
         
-        # Exécuter la fonction principale avec les paramètres
+        # ExÃ©cuter la fonction principale avec les paramÃ¨tres
         $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($ScriptPath)
         $mainFunction = Get-Command -Name $scriptName -ErrorAction SilentlyContinue
         
@@ -462,7 +462,7 @@ function Measure-AnalysisTool {
             $toolResult = & $mainFunction @Parameters
         }
         else {
-            # Essayer d'exécuter le script directement
+            # Essayer d'exÃ©cuter le script directement
             $toolResult = & $ScriptPath @Parameters
         }
         
@@ -475,7 +475,7 @@ function Measure-AnalysisTool {
     $endTime = Get-Date
     $results.ExecutionTime = ($endTime - $startTime).TotalSeconds
     
-    # Évaluer les métriques
+    # Ã‰valuer les mÃ©triques
     $totalWeight = 0
     $weightedScore = 0
     
@@ -485,15 +485,15 @@ function Measure-AnalysisTool {
         $metricTarget = $metric.Target
         $lowerIsBetter = if ($metric.PSObject.Properties["LowerIsBetter"]) { $metric.LowerIsBetter } else { $false }
         
-        # Obtenir la valeur de la métrique
+        # Obtenir la valeur de la mÃ©trique
         $metricValue = if ($MetricOverrides.ContainsKey($metricName)) {
             $MetricOverrides[$metricName]
         }
-        elseif ($metricName -eq "Temps d'exécution") {
+        elseif ($metricName -eq "Temps d'exÃ©cution") {
             $results.ExecutionTime
         }
         else {
-            # Valeur par défaut
+            # Valeur par dÃ©faut
             0
         }
         
@@ -505,10 +505,10 @@ function Measure-AnalysisTool {
             if ($metricTarget -eq 0) { 0 } else { $metricValue / $metricTarget }
         }
         
-        # Limiter le score à 1
+        # Limiter le score Ã  1
         $score = [Math]::Min(1, $score)
         
-        # Ajouter la métrique aux résultats
+        # Ajouter la mÃ©trique aux rÃ©sultats
         $results.Metrics[$metricName] = @{
             Value = $metricValue
             Target = $metricTarget
@@ -517,7 +517,7 @@ function Measure-AnalysisTool {
             LowerIsBetter = $lowerIsBetter
         }
         
-        # Mettre à jour le score global
+        # Mettre Ã  jour le score global
         $totalWeight += $metricWeight
         $weightedScore += $score * $metricWeight
     }
@@ -527,18 +527,18 @@ function Measure-AnalysisTool {
         $results.OverallScore = $weightedScore / $totalWeight
     }
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $resultsPath = Join-Path -Path $EvalConfig.ResultsFolder -ChildPath "$ToolName-$(Get-Date -Format 'yyyyMMdd-HHmmss').json"
     $results | ConvertTo-Json -Depth 5 | Set-Content -Path $resultsPath
     
     return $results
 }
 
-# Fonction pour générer un rapport d'évaluation
+# Fonction pour gÃ©nÃ©rer un rapport d'Ã©valuation
 function New-EvaluationReport {
     param (
         [Parameter(Mandatory = $false)]
-        [string]$Title = "Rapport d'évaluation des outils d'analyse",
+        [string]$Title = "Rapport d'Ã©valuation des outils d'analyse",
         
         [Parameter(Mandatory = $false)]
         [string]$ToolName = "",
@@ -553,7 +553,7 @@ function New-EvaluationReport {
         [switch]$OpenOutput
     )
     
-    # Obtenir les résultats d'évaluation
+    # Obtenir les rÃ©sultats d'Ã©valuation
     $cutoffDate = (Get-Date).AddDays(-$Days)
     $resultFiles = Get-ChildItem -Path $EvalConfig.ResultsFolder -Filter "*.json" | Where-Object {
         $_.LastWriteTime -ge $cutoffDate -and
@@ -573,14 +573,14 @@ function New-EvaluationReport {
         ($ToolName -eq "" -or $_.ToolName -eq $ToolName)
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "EvaluationReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -688,13 +688,13 @@ function New-EvaluationReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
             <div class="summary-card">
-                <h3>Outils évalués</h3>
+                <h3>Outils Ã©valuÃ©s</h3>
                 <div class="summary-value">$($results.Count)</div>
             </div>
             
@@ -714,7 +714,7 @@ function New-EvaluationReport {
             </div>
         </div>
         
-        <h2>Résultats d'évaluation</h2>
+        <h2>RÃ©sultats d'Ã©valuation</h2>
         
         <table>
             <thead>
@@ -722,7 +722,7 @@ function New-EvaluationReport {
                     <th>Outil</th>
                     <th>Date</th>
                     <th>Score global</th>
-                    <th>Temps d'exécution</th>
+                    <th>Temps d'exÃ©cution</th>
                     <th>Statut</th>
                 </tr>
             </thead>
@@ -731,7 +731,7 @@ function New-EvaluationReport {
                     $timestamp = [DateTime]::Parse($result.Timestamp).ToString("yyyy-MM-dd HH:mm:ss")
                     $score = [Math]::Round($result.OverallScore * 100, 1)
                     $scoreClass = if ($score -ge 80) { "score-good" } elseif ($score -ge 60) { "score-medium" } else { "score-bad" }
-                    $status = if ($result.Success) { "Succès" } else { "Échec" }
+                    $status = if ($result.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
                     $statusClass = if ($result.Success) { "score-good" } else { "score-bad" }
                     
                     "<tr>
@@ -774,7 +774,7 @@ function New-EvaluationReport {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Période: $Days jours</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | PÃ©riode: $Days jours</p>
         </div>
     </div>
 </body>
@@ -784,7 +784,7 @@ function New-EvaluationReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }

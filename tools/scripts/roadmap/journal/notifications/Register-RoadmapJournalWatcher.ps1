@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Surveille les modifications de la roadmap et met à jour le journal.
+    Surveille les modifications de la roadmap et met Ã  jour le journal.
 .DESCRIPTION
     Ce script utilise FileSystemWatcher pour surveiller les modifications
-    du fichier de roadmap et met à jour automatiquement le journal.
+    du fichier de roadmap et met Ã  jour automatiquement le journal.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -33,12 +33,12 @@ $indexPath = Join-Path -Path $journalRoot -ChildPath "index.json"
 $metadataPath = Join-Path -Path $journalRoot -ChildPath "metadata.json"
 $logsPath = Join-Path -Path $journalRoot -ChildPath "logs"
 
-# Créer le dossier de logs si nécessaire
+# CrÃ©er le dossier de logs si nÃ©cessaire
 if (-not (Test-Path -Path $logsPath)) {
     New-Item -Path $logsPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour journaliser les événements
+# Fonction pour journaliser les Ã©vÃ©nements
 function Write-WatcherLog {
     param (
         [Parameter(Mandatory=$true)]
@@ -55,7 +55,7 @@ function Write-WatcherLog {
     $logFile = Join-Path -Path $logsPath -ChildPath "watcher_$(Get-Date -Format 'yyyy-MM-dd').log"
     Add-Content -Path $logFile -Value $logEntry -Encoding UTF8
     
-    # Afficher également dans la console
+    # Afficher Ã©galement dans la console
     switch ($Level) {
         "Info" { Write-Host $logEntry -ForegroundColor Gray }
         "Warning" { Write-Host $logEntry -ForegroundColor Yellow }
@@ -77,7 +77,7 @@ function Send-Notification {
             New-BurntToastNotification -Text "Roadmap Journal", $Message
         }
         else {
-            # Fallback pour les systèmes sans BurntToast
+            # Fallback pour les systÃ¨mes sans BurntToast
             [System.Windows.Forms.MessageBox]::Show($Message, "Roadmap Journal", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
         }
     }
@@ -91,23 +91,23 @@ function Sync-RoadmapWithJournal {
     )
     
     try {
-        # Vérifier si le fichier de roadmap existe
+        # VÃ©rifier si le fichier de roadmap existe
         if (-not (Test-Path -Path $RoadmapPath)) {
             Write-WatcherLog -Message "Le fichier de roadmap '$RoadmapPath' n'existe pas." -Level "Error"
             return $false
         }
         
-        # Exécuter le script de synchronisation
+        # ExÃ©cuter le script de synchronisation
         $syncScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Sync-RoadmapWithJournal.ps1"
         & $syncScriptPath -RoadmapPath $RoadmapPath -Direction "ToJournal" -CreateBackup
         
-        # Mettre à jour les métadonnées
+        # Mettre Ã  jour les mÃ©tadonnÃ©es
         $metadata = Get-Content -Path $metadataPath -Raw | ConvertFrom-Json
         $metadata.lastSync = (Get-Date).ToUniversalTime().ToString("o")
         $metadata | ConvertTo-Json -Depth 10 | Out-File -FilePath $metadataPath -Encoding utf8 -Force
         
-        Write-WatcherLog -Message "Synchronisation réussie avec le fichier '$RoadmapPath'." -Level "Info"
-        Send-Notification -Message "La roadmap a été synchronisée avec succès."
+        Write-WatcherLog -Message "Synchronisation rÃ©ussie avec le fichier '$RoadmapPath'." -Level "Info"
+        Send-Notification -Message "La roadmap a Ã©tÃ© synchronisÃ©e avec succÃ¨s."
         
         return $true
     }
@@ -118,7 +118,7 @@ function Sync-RoadmapWithJournal {
     }
 }
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
     Write-WatcherLog -Message "Le fichier de roadmap '$RoadmapPath' n'existe pas." -Level "Error"
     exit 1
@@ -129,7 +129,7 @@ $roadmapFullPath = (Get-Item $RoadmapPath).FullName
 $roadmapFolder = Split-Path -Path $roadmapFullPath -Parent
 $roadmapFileName = Split-Path -Path $roadmapFullPath -Leaf
 
-# Créer un FileSystemWatcher
+# CrÃ©er un FileSystemWatcher
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Path = $roadmapFolder
 $watcher.Filter = $roadmapFileName
@@ -141,17 +141,17 @@ $lastSyncTime = [DateTime]::MinValue
 $syncPending = $false
 $syncTimer = $null
 
-# Fonction pour gérer le throttling
+# Fonction pour gÃ©rer le throttling
 function Invoke-ThrottledSync {
     if (-not $syncPending) {
         $syncPending = $true
         
-        # Créer un timer pour retarder la synchronisation
+        # CrÃ©er un timer pour retarder la synchronisation
         $syncTimer = New-Object System.Timers.Timer
         $syncTimer.Interval = $ThrottleSeconds * 1000
         $syncTimer.AutoReset = $false
         
-        # Définir l'action à exécuter lorsque le timer expire
+        # DÃ©finir l'action Ã  exÃ©cuter lorsque le timer expire
         $action = {
             Sync-RoadmapWithJournal -RoadmapPath $roadmapFullPath
             $script:lastSyncTime = Get-Date
@@ -163,20 +163,20 @@ function Invoke-ThrottledSync {
     }
 }
 
-# Créer les gestionnaires d'événements
+# CrÃ©er les gestionnaires d'Ã©vÃ©nements
 $changeAction = {
     $path = $Event.SourceEventArgs.FullPath
     $changeType = $Event.SourceEventArgs.ChangeType
     $timeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     
-    Write-WatcherLog -Message "Modification détectée: $changeType - $path" -Level "Info"
+    Write-WatcherLog -Message "Modification dÃ©tectÃ©e: $changeType - $path" -Level "Info"
     
-    # Vérifier si nous devons throttler
+    # VÃ©rifier si nous devons throttler
     $now = Get-Date
     $timeSinceLastSync = $now - $script:lastSyncTime
     
     if ($timeSinceLastSync.TotalSeconds -ge $script:ThrottleSeconds) {
-        # Synchroniser immédiatement
+        # Synchroniser immÃ©diatement
         Sync-RoadmapWithJournal -RoadmapPath $path
         $script:lastSyncTime = $now
     }
@@ -191,9 +191,9 @@ $renameAction = {
     $changeType = $Event.SourceEventArgs.ChangeType
     $timeStamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     
-    Write-WatcherLog -Message "Renommage détecté: $changeType - $path" -Level "Info"
+    Write-WatcherLog -Message "Renommage dÃ©tectÃ©: $changeType - $path" -Level "Info"
     
-    # Mettre à jour le chemin surveillé si le fichier a été renommé
+    # Mettre Ã  jour le chemin surveillÃ© si le fichier a Ã©tÃ© renommÃ©
     if ($changeType -eq "Renamed") {
         $script:roadmapFullPath = $path
         $script:roadmapFolder = Split-Path -Path $path -Parent
@@ -202,35 +202,35 @@ $renameAction = {
         $script:watcher.Path = $script:roadmapFolder
         $script:watcher.Filter = $script:roadmapFileName
         
-        Write-WatcherLog -Message "Mise à jour du chemin surveillé: $path" -Level "Info"
+        Write-WatcherLog -Message "Mise Ã  jour du chemin surveillÃ©: $path" -Level "Info"
     }
 }
 
-# Enregistrer les gestionnaires d'événements
+# Enregistrer les gestionnaires d'Ã©vÃ©nements
 $changeEvent = Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $changeAction
 $renameEvent = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $renameAction
 
-# Afficher un message de démarrage
-Write-Host "Surveillance du fichier '$roadmapFullPath' démarrée." -ForegroundColor Green
-Write-Host "Appuyez sur Ctrl+C pour arrêter la surveillance." -ForegroundColor Yellow
+# Afficher un message de dÃ©marrage
+Write-Host "Surveillance du fichier '$roadmapFullPath' dÃ©marrÃ©e." -ForegroundColor Green
+Write-Host "Appuyez sur Ctrl+C pour arrÃªter la surveillance." -ForegroundColor Yellow
 
 # Effectuer une synchronisation initiale
 Sync-RoadmapWithJournal -RoadmapPath $roadmapFullPath
 $lastSyncTime = Get-Date
 
 try {
-    # Maintenir le script en cours d'exécution
+    # Maintenir le script en cours d'exÃ©cution
     while ($true) {
         Start-Sleep -Seconds 1
     }
 }
 finally {
-    # Nettoyer les ressources lors de l'arrêt
+    # Nettoyer les ressources lors de l'arrÃªt
     $watcher.EnableRaisingEvents = $false
     $watcher.Dispose()
     
     Unregister-Event -SourceIdentifier $changeEvent.Name
     Unregister-Event -SourceIdentifier $renameEvent.Name
     
-    Write-Host "Surveillance arrêtée." -ForegroundColor Green
+    Write-Host "Surveillance arrÃªtÃ©e." -ForegroundColor Green
 }

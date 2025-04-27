@@ -1,8 +1,8 @@
-# Test-RoadmapParameter
+﻿# Test-RoadmapParameter
 
 ## SYNOPSIS
 
-Valide les paramètres utilisés dans les fonctions du module RoadmapParser.
+Valide les paramÃ¨tres utilisÃ©s dans les fonctions du module RoadmapParser.
 
 ## SYNTAX
 
@@ -12,15 +12,15 @@ Valide les paramètres utilisés dans les fonctions du module RoadmapParser.
 ```n
 ## DESCRIPTION
 
-La fonction Test-RoadmapParameter valide les paramètres selon différentes règles
-et critères. Elle permet de s'assurer que les paramètres fournis aux fonctions
+La fonction Test-RoadmapParameter valide les paramÃ¨tres selon diffÃ©rentes rÃ¨gles
+et critÃ¨res. Elle permet de s'assurer que les paramÃ¨tres fournis aux fonctions
 du module RoadmapParser sont valides et conformes aux attentes.
 
 ## PARAMETERS
 
 ### -Value
 
-La valeur du paramètre à valider.
+La valeur du paramÃ¨tre Ã  valider.
 
 `yaml
 Type: Object
@@ -36,15 +36,15 @@ Accept wildcard characters: false
 
 ### -Type
 
-Le type de validation à effectuer. Valeurs possibles :
-- FilePath : Vérifie que le chemin de fichier existe et est accessible
-- DirectoryPath : Vérifie que le répertoire existe et est accessible
-- RoadmapObject : Vérifie que l'objet est une roadmap valide
-- TaskId : Vérifie que l'identifiant de tâche est valide
-- Status : Vérifie que le statut est valide
-- NonEmptyString : Vérifie que la chaîne n'est pas vide
-- PositiveInteger : Vérifie que l'entier est positif
-- Custom : Utilise une validation personnalisée
+Le type de validation Ã  effectuer. Valeurs possibles :
+- FilePath : VÃ©rifie que le chemin de fichier existe et est accessible
+- DirectoryPath : VÃ©rifie que le rÃ©pertoire existe et est accessible
+- RoadmapObject : VÃ©rifie que l'objet est une roadmap valide
+- TaskId : VÃ©rifie que l'identifiant de tÃ¢che est valide
+- Status : VÃ©rifie que le statut est valide
+- NonEmptyString : VÃ©rifie que la chaÃ®ne n'est pas vide
+- PositiveInteger : VÃ©rifie que l'entier est positif
+- Custom : Utilise une validation personnalisÃ©e
 
 `yaml
 Type: String
@@ -60,8 +60,8 @@ Accept wildcard characters: false
 
 ### -CustomValidation
 
-Une expression scriptblock pour une validation personnalisée.
-Utilisé uniquement lorsque Type est "Custom".
+Une expression scriptblock pour une validation personnalisÃ©e.
+UtilisÃ© uniquement lorsque Type est "Custom".
 
 `yaml
 Type: ScriptBlock
@@ -77,8 +77,8 @@ Accept wildcard characters: false
 
 ### -ErrorMessage
 
-Le message d'erreur à afficher en cas d'échec de la validation.
-Si non spécifié, un message par défaut sera utilisé.
+Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 `yaml
 Type: String
@@ -94,7 +94,7 @@ Accept wildcard characters: false
 
 ### -Roadmap
 
-L'objet roadmap à utiliser pour la validation (requis pour certains types de validation).
+L'objet roadmap Ã  utiliser pour la validation (requis pour certains types de validation).
 
 `yaml
 Type: PSObject
@@ -110,7 +110,7 @@ Accept wildcard characters: false
 
 ### -AllowNull
 
-Indique si la valeur null est autorisée.
+Indique si la valeur null est autorisÃ©e.
 
 `yaml
 Type: SwitchParameter
@@ -126,7 +126,7 @@ Accept wildcard characters: false
 
 ### -ThrowOnFailure
 
-Indique si une exception doit être levée en cas d'échec de la validation.
+Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 `yaml
 Type: SwitchParameter
@@ -146,13 +146,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[bool] Indique si la validation a réussi.
+[bool] Indique si la validation a rÃ©ussi.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -160,7 +160,7 @@ Date de création: 2023-07-10
 
 `powershell
 Test-RoadmapParameter -Value "C:\path\to\file.md" -Type FilePath -ThrowOnFailure
-Vérifie que le chemin de fichier existe et est accessible, et lève une exception si ce n'est pas le cas.
+VÃ©rifie que le chemin de fichier existe et est accessible, et lÃ¨ve une exception si ce n'est pas le cas.
 `
 
     
@@ -169,7 +169,7 @@ Vérifie que le chemin de fichier existe et est accessible, et lève une excepti
 
 `powershell
 Test-RoadmapParameter -Value "Task-123" -Type TaskId -Roadmap $roadmap
-Vérifie que l'identifiant de tâche existe dans la roadmap spécifiée.
+VÃ©rifie que l'identifiant de tÃ¢che existe dans la roadmap spÃ©cifiÃ©e.
 `
 
     

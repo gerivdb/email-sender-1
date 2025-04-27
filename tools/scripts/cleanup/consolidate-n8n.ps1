@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
     Script pour consolider tous les dossiers n8n en un seul.
 
 .DESCRIPTION
-    Ce script migre tous les workflows et données importantes des différents dossiers n8n
-    vers une structure unifiée, puis supprime les dossiers obsolètes.
+    Ce script migre tous les workflows et donnÃ©es importantes des diffÃ©rents dossiers n8n
+    vers une structure unifiÃ©e, puis supprime les dossiers obsolÃ¨tes.
 
 .PARAMETER Force
-    Force la suppression des dossiers obsolètes sans demander de confirmation.
+    Force la suppression des dossiers obsolÃ¨tes sans demander de confirmation.
 
 .EXAMPLE
     .\consolidate-n8n.ps1
@@ -19,7 +19,7 @@ param (
     [switch]$Force
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $rootPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 $n8nNewPath = Join-Path -Path $rootPath -ChildPath "n8n-new"
 $n8nPath = Join-Path -Path $rootPath -ChildPath "n8n"
@@ -56,13 +56,13 @@ function Copy-Files {
     
     if (-not (Test-Path -Path $DestinationPath)) {
         New-Item -Path $DestinationPath -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier de destination créé: $DestinationPath"
+        Write-Host "Dossier de destination crÃ©Ã©: $DestinationPath"
     }
     
     $files = Get-ChildItem -Path $SourcePath -Filter $Filter -File -Recurse:$Recurse
     
     if ($files.Count -eq 0) {
-        Write-Host "Aucun fichier à copier depuis '$SourcePath'."
+        Write-Host "Aucun fichier Ã  copier depuis '$SourcePath'."
         return
     }
     
@@ -77,23 +77,23 @@ function Copy-Files {
         }
         
         if ((Test-Path -Path $destinationFile) -and -not $Force) {
-            Write-Host "Le fichier '$relativePath' existe déjà dans la destination. Utilisez -Force pour le remplacer."
+            Write-Host "Le fichier '$relativePath' existe dÃ©jÃ  dans la destination. Utilisez -Force pour le remplacer."
             continue
         }
         
         try {
             Copy-Item -Path $file.FullName -Destination $destinationFile -Force:$Force
-            Write-Host "Copié: $relativePath -> $destinationFile"
+            Write-Host "CopiÃ©: $relativePath -> $destinationFile"
             $copiedCount++
         } catch {
             Write-Error "Erreur lors de la copie du fichier '$relativePath' : $_"
         }
     }
     
-    Write-Host "$copiedCount fichiers copiés."
+    Write-Host "$copiedCount fichiers copiÃ©s."
 }
 
-# Fonction pour créer un lien symbolique
+# Fonction pour crÃ©er un lien symbolique
 function New-SymbolicLink {
     param (
         [Parameter(Mandatory = $true)]
@@ -106,23 +106,23 @@ function New-SymbolicLink {
     $sourcePath = Join-Path -Path $rootPath -ChildPath $SourceFile
     
     if (Test-Path -Path $sourcePath) {
-        Write-Warning "Le fichier '$SourceFile' existe déjà. Il sera remplacé par un lien symbolique."
+        Write-Warning "Le fichier '$SourceFile' existe dÃ©jÃ . Il sera remplacÃ© par un lien symbolique."
         Remove-Item -Path $sourcePath -Force
     }
     
     try {
         New-Item -ItemType SymbolicLink -Path $sourcePath -Target $TargetFile -Force | Out-Null
-        Write-Host "Lien symbolique créé: $SourceFile -> $TargetFile"
+        Write-Host "Lien symbolique crÃ©Ã©: $SourceFile -> $TargetFile"
         return $true
     } catch {
-        Write-Error "Erreur lors de la création du lien symbolique '$SourceFile' : $_"
+        Write-Error "Erreur lors de la crÃ©ation du lien symbolique '$SourceFile' : $_"
         return $false
     }
 }
 
-# Étape 1: Migrer les workflows manquants
+# Ã‰tape 1: Migrer les workflows manquants
 Write-Host ""
-Write-Host "Étape 1: Migration des workflows manquants..."
+Write-Host "Ã‰tape 1: Migration des workflows manquants..."
 Write-Host "------------------------------------------------------------"
 
 # Copier les workflows de all-workflows vers n8n-new/workflows/archive
@@ -131,7 +131,7 @@ if (Test-Path -Path $allWorkflowsPath) {
     
     if (-not (Test-Path -Path $archiveWorkflowsPath)) {
         New-Item -Path $archiveWorkflowsPath -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier créé: $archiveWorkflowsPath"
+        Write-Host "Dossier crÃ©Ã©: $archiveWorkflowsPath"
     }
     
     Copy-Files -SourcePath $allWorkflowsPath -DestinationPath $archiveWorkflowsPath -Filter "*.json" -Recurse -Force:$Force
@@ -139,18 +139,18 @@ if (Test-Path -Path $allWorkflowsPath) {
     Write-Warning "Le dossier all-workflows n'existe pas."
 }
 
-# Étape 2: Migrer les données importantes
+# Ã‰tape 2: Migrer les donnÃ©es importantes
 Write-Host ""
-Write-Host "Étape 2: Migration des données importantes..."
+Write-Host "Ã‰tape 2: Migration des donnÃ©es importantes..."
 Write-Host "------------------------------------------------------------"
 
-# Copier les données de n8n-data vers n8n-new/data
+# Copier les donnÃ©es de n8n-data vers n8n-new/data
 if (Test-Path -Path $n8nDataPath) {
     $dataPath = Join-Path -Path $n8nNewPath -ChildPath "data"
     
     if (-not (Test-Path -Path $dataPath)) {
         New-Item -Path $dataPath -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier créé: $dataPath"
+        Write-Host "Dossier crÃ©Ã©: $dataPath"
     }
     
     # Copier les credentials
@@ -161,7 +161,7 @@ if (Test-Path -Path $n8nDataPath) {
         Copy-Files -SourcePath $credentialsSourcePath -DestinationPath $credentialsDestPath -Recurse -Force:$Force
     }
     
-    # Copier les données binaires
+    # Copier les donnÃ©es binaires
     $binaryDataSourcePath = Join-Path -Path $n8nDataPath -ChildPath "binaryData"
     $binaryDataDestPath = Join-Path -Path $dataPath -ChildPath "storage"
     
@@ -172,26 +172,26 @@ if (Test-Path -Path $n8nDataPath) {
     Write-Warning "Le dossier n8n-data n'existe pas."
 }
 
-# Étape 3: Renommer les dossiers
+# Ã‰tape 3: Renommer les dossiers
 Write-Host ""
-Write-Host "Étape 3: Renommage des dossiers..."
+Write-Host "Ã‰tape 3: Renommage des dossiers..."
 Write-Host "------------------------------------------------------------"
 
-# Vérifier si le dossier n8n existe
+# VÃ©rifier si le dossier n8n existe
 if (Test-Path -Path $n8nPath) {
-    # Vérifier si n8n-old existe déjà
+    # VÃ©rifier si n8n-old existe dÃ©jÃ 
     if (Test-Path -Path $n8nOldPath) {
-        Write-Host "Le dossier n8n-old existe déjà. Il sera supprimé."
+        Write-Host "Le dossier n8n-old existe dÃ©jÃ . Il sera supprimÃ©."
         Remove-Item -Path $n8nOldPath -Recurse -Force
     }
     
     # Renommer n8n en n8n-old
     try {
         Rename-Item -Path $n8nPath -NewName "n8n-old" -Force
-        Write-Host "Dossier n8n renommé en n8n-old."
+        Write-Host "Dossier n8n renommÃ© en n8n-old."
     } catch {
         Write-Error "Erreur lors du renommage du dossier n8n en n8n-old : $_"
-        Write-Host "Veuillez fermer toutes les applications qui pourraient utiliser ces dossiers et réessayer."
+        Write-Host "Veuillez fermer toutes les applications qui pourraient utiliser ces dossiers et rÃ©essayer."
         exit 1
     }
 }
@@ -199,19 +199,19 @@ if (Test-Path -Path $n8nPath) {
 # Renommer n8n-new en n8n
 try {
     Rename-Item -Path $n8nNewPath -NewName "n8n" -Force
-    Write-Host "Dossier n8n-new renommé en n8n."
+    Write-Host "Dossier n8n-new renommÃ© en n8n."
 } catch {
     Write-Error "Erreur lors du renommage du dossier n8n-new en n8n : $_"
-    Write-Host "Veuillez fermer toutes les applications qui pourraient utiliser ces dossiers et réessayer."
+    Write-Host "Veuillez fermer toutes les applications qui pourraient utiliser ces dossiers et rÃ©essayer."
     exit 1
 }
 
-# Étape 4: Nettoyer les fichiers .cmd à la racine
+# Ã‰tape 4: Nettoyer les fichiers .cmd Ã  la racine
 Write-Host ""
-Write-Host "Étape 4: Nettoyage des fichiers .cmd à la racine..."
+Write-Host "Ã‰tape 4: Nettoyage des fichiers .cmd Ã  la racine..."
 Write-Host "------------------------------------------------------------"
 
-# Créer des liens symboliques pour les fichiers .cmd à la racine
+# CrÃ©er des liens symboliques pour les fichiers .cmd Ã  la racine
 $cmdFiles = @{
     "install-n8n-local.cmd" = "n8n\cmd\install\install-n8n-local.cmd"
     "start-n8n-local.cmd" = "n8n\cmd\start\start-n8n-local.cmd"
@@ -224,9 +224,9 @@ foreach ($file in $cmdFiles.Keys) {
     New-SymbolicLink -SourceFile $file -TargetFile $targetFile
 }
 
-# Étape 5: Supprimer les dossiers obsolètes
+# Ã‰tape 5: Supprimer les dossiers obsolÃ¨tes
 Write-Host ""
-Write-Host "Étape 5: Suppression des dossiers obsolètes..."
+Write-Host "Ã‰tape 5: Suppression des dossiers obsolÃ¨tes..."
 Write-Host "------------------------------------------------------------"
 
 $obsoleteFolders = @(
@@ -239,16 +239,16 @@ $obsoleteFolders = @(
 )
 
 if (-not $Force) {
-    Write-Host "Les dossiers suivants seront supprimés :"
+    Write-Host "Les dossiers suivants seront supprimÃ©s :"
     foreach ($folder in $obsoleteFolders) {
         if (Test-Path -Path $folder) {
             Write-Host "- $folder"
         }
     }
     
-    $confirmation = Read-Host "Êtes-vous sûr de vouloir supprimer ces dossiers ? (O/N)"
+    $confirmation = Read-Host "ÃŠtes-vous sÃ»r de vouloir supprimer ces dossiers ? (O/N)"
     if ($confirmation -ne "O") {
-        Write-Host "Suppression annulée."
+        Write-Host "Suppression annulÃ©e."
         exit 0
     }
 }
@@ -257,7 +257,7 @@ foreach ($folder in $obsoleteFolders) {
     if (Test-Path -Path $folder) {
         try {
             Remove-Item -Path $folder -Recurse -Force
-            Write-Host "Dossier supprimé : $folder"
+            Write-Host "Dossier supprimÃ© : $folder"
         } catch {
             Write-Error "Erreur lors de la suppression du dossier '$folder' : $_"
         }
@@ -267,6 +267,6 @@ foreach ($folder in $obsoleteFolders) {
 }
 
 Write-Host ""
-Write-Host "Consolidation terminée."
-Write-Host "Tous les dossiers n8n ont été consolidés en un seul dossier : $n8nPath"
-Write-Host "Pour utiliser n8n, exécutez : .\n8n\cmd\start\start-n8n-local.cmd"
+Write-Host "Consolidation terminÃ©e."
+Write-Host "Tous les dossiers n8n ont Ã©tÃ© consolidÃ©s en un seul dossier : $n8nPath"
+Write-Host "Pour utiliser n8n, exÃ©cutez : .\n8n\cmd\start\start-n8n-local.cmd"

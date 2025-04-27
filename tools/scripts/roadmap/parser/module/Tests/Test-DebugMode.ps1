@@ -1,81 +1,81 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour le script debug-mode.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires et d'intégration pour le script debug-mode.ps1
-    qui implémente le mode DEBUG pour isoler, comprendre et corriger les anomalies dans le code.
+    Ce script contient des tests unitaires et d'intÃ©gration pour le script debug-mode.ps1
+    qui implÃ©mente le mode DEBUG pour isoler, comprendre et corriger les anomalies dans le code.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $projectRoot = Split-Path -Parent (Split-Path -Parent $modulePath)
 $debugModePath = Join-Path -Path $projectRoot -ChildPath "debug-mode.ps1"
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $invokeDebugPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapDebug.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $debugModePath)) {
-    Write-Warning "Le script debug-mode.ps1 est introuvable à l'emplacement : $debugModePath"
+    Write-Warning "Le script debug-mode.ps1 est introuvable Ã  l'emplacement : $debugModePath"
 }
 
 if (-not (Test-Path -Path $invokeDebugPath)) {
-    Write-Warning "Le fichier Invoke-RoadmapDebug.ps1 est introuvable à l'emplacement : $invokeDebugPath"
+    Write-Warning "Le fichier Invoke-RoadmapDebug.ps1 est introuvable Ã  l'emplacement : $invokeDebugPath"
 }
 
 # Importer les fonctions si elles existent
 if (Test-Path -Path $invokeDebugPath) {
     . $invokeDebugPath
-    Write-Host "Fonction Invoke-RoadmapDebug importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapDebug importÃ©e." -ForegroundColor Green
 }
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
-# Créer un fichier de test avec une structure de roadmap simple
+# CrÃ©er un fichier de test avec une structure de roadmap simple
 @"
 # Roadmap de test
 
 ## Section 1
 
 - [ ] **1.1** Correction de bugs
-  - [ ] **1.1.1** Corriger le bug de référence nulle
-  - [ ] **1.1.2** Résoudre le problème de performance
-- [ ] **1.2** Améliorations
+  - [ ] **1.1.1** Corriger le bug de rÃ©fÃ©rence nulle
+  - [ ] **1.1.2** RÃ©soudre le problÃ¨me de performance
+- [ ] **1.2** AmÃ©liorations
   - [ ] **1.2.1** Optimiser l'algorithme
-  - [ ] **1.2.2** Améliorer l'interface utilisateur
+  - [ ] **1.2.2** AmÃ©liorer l'interface utilisateur
 
 ## Section 2
 
-- [ ] **2.1** Tests de régression
+- [ ] **2.1** Tests de rÃ©gression
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
 
-Write-Host "Fichier de roadmap créé : $testFilePath" -ForegroundColor Green
+Write-Host "Fichier de roadmap crÃ©Ã© : $testFilePath" -ForegroundColor Green
 
-# Créer des répertoires temporaires pour les tests
+# CrÃ©er des rÃ©pertoires temporaires pour les tests
 $testModulePath = Join-Path -Path $env:TEMP -ChildPath "TestModule_$(Get-Random)"
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "TestOutput_$(Get-Random)"
 $testErrorLogPath = Join-Path -Path $env:TEMP -ChildPath "TestErrorLog_$(Get-Random).log"
 
-# Créer la structure du module de test
+# CrÃ©er la structure du module de test
 New-Item -Path $testModulePath -ItemType Directory -Force | Out-Null
 New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
-# Créer un fichier de code avec un bug pour les tests
+# CrÃ©er un fichier de code avec un bug pour les tests
 @"
 function Process-Data {
     param (
@@ -83,14 +83,14 @@ function Process-Data {
         [object]`$Data
     )
     
-    # Bug: Accès à une propriété sans vérifier si l'objet est null
+    # Bug: AccÃ¨s Ã  une propriÃ©tÃ© sans vÃ©rifier si l'objet est null
     `$result = `$Data.Value.ToString()
     
     return `$result
 }
 "@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "BuggyFunction.ps1") -Encoding UTF8
 
-# Créer un fichier de log d'erreur
+# CrÃ©er un fichier de log d'erreur
 @"
 [ERROR] 2023-08-15T10:15:30 - NullReferenceException in Process-Data: Object reference not set to an instance of an object.
    at Process-Data, D:\Path\To\BuggyFunction.ps1: line 8
@@ -101,21 +101,21 @@ Stack trace:
    at Main()
 "@ | Set-Content -Path $testErrorLogPath -Encoding UTF8
 
-Write-Host "Module de test créé : $testModulePath" -ForegroundColor Green
-Write-Host "Fichier de log d'erreur créé : $testErrorLogPath" -ForegroundColor Green
-Write-Host "Répertoire de sortie créé : $testOutputPath" -ForegroundColor Green
+Write-Host "Module de test crÃ©Ã© : $testModulePath" -ForegroundColor Green
+Write-Host "Fichier de log d'erreur crÃ©Ã© : $testErrorLogPath" -ForegroundColor Green
+Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $testOutputPath" -ForegroundColor Green
 
 # Tests unitaires avec Pester
 Describe "Invoke-RoadmapDebug" {
     BeforeEach {
-        # Préparation avant chaque test
+        # PrÃ©paration avant chaque test
     }
 
     AfterEach {
-        # Nettoyage après chaque test
+        # Nettoyage aprÃ¨s chaque test
     }
 
-    It "Devrait exécuter correctement avec des paramètres valides" {
+    It "Devrait exÃ©cuter correctement avec des paramÃ¨tres valides" {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapDebug -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapDebug -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath
@@ -135,11 +135,11 @@ Describe "Invoke-RoadmapDebug" {
     }
 
     It "Devrait identifier correctement l'origine de l'erreur" {
-        # Appeler la fonction et vérifier l'identification de l'erreur
+        # Appeler la fonction et vÃ©rifier l'identification de l'erreur
         if (Get-Command -Name Invoke-RoadmapDebug -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapDebug -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath
             
-            # Vérifier que l'origine de l'erreur est correctement identifiée
+            # VÃ©rifier que l'origine de l'erreur est correctement identifiÃ©e
             $result.ErrorOrigin | Should -Be "Process-Data"
             $result.ErrorType | Should -Be "NullReferenceException"
             $result.ErrorLine | Should -Be 8
@@ -148,16 +148,16 @@ Describe "Invoke-RoadmapDebug" {
         }
     }
 
-    It "Devrait générer un rapport de débogage" {
-        # Appeler la fonction et vérifier la génération du rapport
+    It "Devrait gÃ©nÃ©rer un rapport de dÃ©bogage" {
+        # Appeler la fonction et vÃ©rifier la gÃ©nÃ©ration du rapport
         if (Get-Command -Name Invoke-RoadmapDebug -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapDebug -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath -GeneratePatch $true
             
-            # Vérifier que le rapport est généré
+            # VÃ©rifier que le rapport est gÃ©nÃ©rÃ©
             $debugReportPath = Join-Path -Path $testOutputPath -ChildPath "debug_report.md"
             Test-Path -Path $debugReportPath | Should -Be $true
             
-            # Vérifier que le contenu du rapport contient les informations attendues
+            # VÃ©rifier que le contenu du rapport contient les informations attendues
             $reportContent = Get-Content -Path $debugReportPath -Raw
             $reportContent | Should -Match "NullReferenceException"
             $reportContent | Should -Match "Process-Data"
@@ -167,16 +167,16 @@ Describe "Invoke-RoadmapDebug" {
         }
     }
 
-    It "Devrait générer un patch correctif" {
-        # Appeler la fonction et vérifier la génération du patch
+    It "Devrait gÃ©nÃ©rer un patch correctif" {
+        # Appeler la fonction et vÃ©rifier la gÃ©nÃ©ration du patch
         if (Get-Command -Name Invoke-RoadmapDebug -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapDebug -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath -GeneratePatch $true
             
-            # Vérifier que le patch est généré
+            # VÃ©rifier que le patch est gÃ©nÃ©rÃ©
             $patchPath = Join-Path -Path $testOutputPath -ChildPath "fix_patch.ps1"
             Test-Path -Path $patchPath | Should -Be $true
             
-            # Vérifier que le contenu du patch contient la correction attendue
+            # VÃ©rifier que le contenu du patch contient la correction attendue
             $patchContent = Get-Content -Path $patchPath -Raw
             $patchContent | Should -Match "if \(`\$null -ne `\$Data\.Value\)"
         } else {
@@ -185,17 +185,17 @@ Describe "Invoke-RoadmapDebug" {
     }
 }
 
-# Test d'intégration du script debug-mode.ps1
+# Test d'intÃ©gration du script debug-mode.ps1
 Describe "debug-mode.ps1 Integration" {
-    It "Devrait s'exécuter correctement avec des paramètres valides" {
+    It "Devrait s'exÃ©cuter correctement avec des paramÃ¨tres valides" {
         if (Test-Path -Path $debugModePath) {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $output = & $debugModePath -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath -GeneratePatch $true
             
-            # Vérifier que le script s'est exécuté sans erreur
+            # VÃ©rifier que le script s'est exÃ©cutÃ© sans erreur
             $LASTEXITCODE | Should -Be 0
             
-            # Vérifier que les fichiers attendus existent
+            # VÃ©rifier que les fichiers attendus existent
             $debugReportPath = Join-Path -Path $testOutputPath -ChildPath "debug_report.md"
             Test-Path -Path $debugReportPath | Should -Be $true
             
@@ -210,27 +210,27 @@ Describe "debug-mode.ps1 Integration" {
 # Nettoyage
 if (Test-Path -Path $testFilePath) {
     Remove-Item -Path $testFilePath -Force
-    Write-Host "Fichier de roadmap supprimé." -ForegroundColor Gray
+    Write-Host "Fichier de roadmap supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testModulePath) {
     Remove-Item -Path $testModulePath -Recurse -Force
-    Write-Host "Module de test supprimé." -ForegroundColor Gray
+    Write-Host "Module de test supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testErrorLogPath) {
     Remove-Item -Path $testErrorLogPath -Force
-    Write-Host "Fichier de log d'erreur supprimé." -ForegroundColor Gray
+    Write-Host "Fichier de log d'erreur supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testOutputPath) {
     Remove-Item -Path $testOutputPath -Recurse -Force
-    Write-Host "Répertoire de sortie supprimé." -ForegroundColor Gray
+    Write-Host "RÃ©pertoire de sortie supprimÃ©." -ForegroundColor Gray
 }
 
-# Exécuter les tests si Pester est disponible
+# ExÃ©cuter les tests si Pester est disponible
 if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
     Invoke-Pester -Path $MyInvocation.MyCommand.Path
 } else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
+    Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }

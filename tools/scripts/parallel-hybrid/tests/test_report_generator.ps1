@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le générateur de rapports parallélisé.
+    Tests unitaires pour le gÃ©nÃ©rateur de rapports parallÃ©lisÃ©.
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
-    du générateur de rapports parallélisé utilisant l'architecture hybride.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
+    du gÃ©nÃ©rateur de rapports parallÃ©lisÃ© utilisant l'architecture hybride.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -13,22 +13,22 @@
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $reportGeneratorPath = Join-Path -Path $scriptPath -ChildPath "..\examples\parallel-report-generator.ps1"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 $testDataPath = Join-Path -Path $scriptPath -ChildPath "test_data"
 if (-not (Test-Path -Path $testDataPath)) {
     New-Item -Path $testDataPath -ItemType Directory -Force | Out-Null
     
-    # Générer des données de test simples
+    # GÃ©nÃ©rer des donnÃ©es de test simples
     $simpleData = @()
     for ($i = 1; $i -le 100; $i++) {
         $simpleData += @{
@@ -44,39 +44,39 @@ if (-not (Test-Path -Path $testDataPath)) {
     
     $simpleData | ConvertTo-Json | Out-File -FilePath (Join-Path -Path $testDataPath -ChildPath "simple_data.json") -Encoding utf8
     
-    # Générer des données de test complexes
+    # GÃ©nÃ©rer des donnÃ©es de test complexes
     $complexData = @{
         metadata = @{
-            title = "Données de test complexes"
-            description = "Jeu de données pour tester le générateur de rapports"
+            title = "DonnÃ©es de test complexes"
+            description = "Jeu de donnÃ©es pour tester le gÃ©nÃ©rateur de rapports"
             created = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
             version = "1.0"
         }
         categories = @(
             @{
                 id = "A"
-                name = "Catégorie A"
-                description = "Description de la catégorie A"
+                name = "CatÃ©gorie A"
+                description = "Description de la catÃ©gorie A"
             },
             @{
                 id = "B"
-                name = "Catégorie B"
-                description = "Description de la catégorie B"
+                name = "CatÃ©gorie B"
+                description = "Description de la catÃ©gorie B"
             },
             @{
                 id = "C"
-                name = "Catégorie C"
-                description = "Description de la catégorie C"
+                name = "CatÃ©gorie C"
+                description = "Description de la catÃ©gorie C"
             },
             @{
                 id = "D"
-                name = "Catégorie D"
-                description = "Description de la catégorie D"
+                name = "CatÃ©gorie D"
+                description = "Description de la catÃ©gorie D"
             },
             @{
                 id = "E"
-                name = "Catégorie E"
-                description = "Description de la catégorie E"
+                name = "CatÃ©gorie E"
+                description = "Description de la catÃ©gorie E"
             }
         )
         items = @()
@@ -109,25 +109,25 @@ if (-not (Test-Path -Path $testDataPath)) {
     $complexData | ConvertTo-Json -Depth 10 | Out-File -FilePath (Join-Path -Path $testDataPath -ChildPath "complex_data.json") -Encoding utf8
 }
 
-# Exécuter les tests
-Describe "Générateur de rapports parallélisé" {
+# ExÃ©cuter les tests
+Describe "GÃ©nÃ©rateur de rapports parallÃ©lisÃ©" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les résultats
+        # CrÃ©er un rÃ©pertoire temporaire pour les rÃ©sultats
         $outputPath = Join-Path -Path $testDataPath -ChildPath "reports"
         if (-not (Test-Path -Path $outputPath)) {
             New-Item -Path $outputPath -ItemType Directory -Force | Out-Null
         }
     }
     
-    Context "Génération de rapports simples" {
-        It "Devrait générer un rapport de synthèse" {
-            # Exécuter le générateur de rapports pour un rapport de synthèse
+    Context "GÃ©nÃ©ration de rapports simples" {
+        It "Devrait gÃ©nÃ©rer un rapport de synthÃ¨se" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports pour un rapport de synthÃ¨se
             $dataPath = Join-Path -Path $testDataPath -ChildPath "simple_data.json"
             
-            # Appeler le script de génération de rapports
+            # Appeler le script de gÃ©nÃ©ration de rapports
             $result = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes "Summary"
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -Be 1
             $result[0].type | Should -Be "summary"
@@ -136,15 +136,15 @@ Describe "Générateur de rapports parallélisé" {
         }
     }
     
-    Context "Génération de rapports détaillés" {
-        It "Devrait générer un rapport détaillé" {
-            # Exécuter le générateur de rapports pour un rapport détaillé
+    Context "GÃ©nÃ©ration de rapports dÃ©taillÃ©s" {
+        It "Devrait gÃ©nÃ©rer un rapport dÃ©taillÃ©" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports pour un rapport dÃ©taillÃ©
             $dataPath = Join-Path -Path $testDataPath -ChildPath "simple_data.json"
             
-            # Appeler le script de génération de rapports
+            # Appeler le script de gÃ©nÃ©ration de rapports
             $result = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes "Detailed"
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -Be 1
             $result[0].type | Should -Be "detailed"
@@ -153,15 +153,15 @@ Describe "Générateur de rapports parallélisé" {
         }
     }
     
-    Context "Génération de rapports de métriques" {
-        It "Devrait générer un rapport de métriques" {
-            # Exécuter le générateur de rapports pour un rapport de métriques
+    Context "GÃ©nÃ©ration de rapports de mÃ©triques" {
+        It "Devrait gÃ©nÃ©rer un rapport de mÃ©triques" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports pour un rapport de mÃ©triques
             $dataPath = Join-Path -Path $testDataPath -ChildPath "simple_data.json"
             
-            # Appeler le script de génération de rapports
+            # Appeler le script de gÃ©nÃ©ration de rapports
             $result = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes "Metrics"
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -Be 1
             $result[0].type | Should -Be "metrics"
@@ -170,41 +170,41 @@ Describe "Générateur de rapports parallélisé" {
         }
     }
     
-    Context "Génération de plusieurs types de rapports" {
-        It "Devrait générer plusieurs types de rapports en parallèle" {
-            # Exécuter le générateur de rapports pour tous les types de rapports
+    Context "GÃ©nÃ©ration de plusieurs types de rapports" {
+        It "Devrait gÃ©nÃ©rer plusieurs types de rapports en parallÃ¨le" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports pour tous les types de rapports
             $dataPath = Join-Path -Path $testDataPath -ChildPath "simple_data.json"
             
-            # Appeler le script de génération de rapports
+            # Appeler le script de gÃ©nÃ©ration de rapports
             $result = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes @("Summary", "Detailed", "Metrics")
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -Be 3  # Trois types de rapports
             $result | Where-Object { $_.type -eq "summary" } | Should -Not -BeNullOrEmpty
             $result | Where-Object { $_.type -eq "detailed" } | Should -Not -BeNullOrEmpty
             $result | Where-Object { $_.type -eq "metrics" } | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers existent
+            # VÃ©rifier que les fichiers existent
             foreach ($report in $result) {
                 Test-Path -Path $report.path | Should -Be $true
             }
         }
     }
     
-    Context "Génération de rapports avec données complexes" {
-        It "Devrait générer des rapports à partir de données complexes" {
-            # Exécuter le générateur de rapports avec des données complexes
+    Context "GÃ©nÃ©ration de rapports avec donnÃ©es complexes" {
+        It "Devrait gÃ©nÃ©rer des rapports Ã  partir de donnÃ©es complexes" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports avec des donnÃ©es complexes
             $dataPath = Join-Path -Path $testDataPath -ChildPath "complex_data.json"
             
-            # Appeler le script de génération de rapports
+            # Appeler le script de gÃ©nÃ©ration de rapports
             $result = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes @("Summary", "Detailed", "Metrics")
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -Be 3  # Trois types de rapports
             
-            # Vérifier que les fichiers existent
+            # VÃ©rifier que les fichiers existent
             foreach ($report in $result) {
                 Test-Path -Path $report.path | Should -Be $true
             }
@@ -212,8 +212,8 @@ Describe "Générateur de rapports parallélisé" {
     }
     
     Context "Utilisation du cache" {
-        It "Devrait être plus rapide avec le cache activé" {
-            # Exécuter le générateur de rapports sans cache
+        It "Devrait Ãªtre plus rapide avec le cache activÃ©" {
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports sans cache
             $dataPath = Join-Path -Path $testDataPath -ChildPath "simple_data.json"
             
             $stopwatch1 = [System.Diagnostics.Stopwatch]::StartNew()
@@ -221,33 +221,33 @@ Describe "Générateur de rapports parallélisé" {
             $stopwatch1.Stop()
             $timeWithoutCache = $stopwatch1.Elapsed.TotalSeconds
             
-            # Exécuter le générateur de rapports avec cache
+            # ExÃ©cuter le gÃ©nÃ©rateur de rapports avec cache
             $stopwatch2 = [System.Diagnostics.Stopwatch]::StartNew()
             $result2 = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes @("Summary", "Detailed", "Metrics") -UseCache
             $stopwatch2.Stop()
             $timeWithCache = $stopwatch2.Elapsed.TotalSeconds
             
-            # Vérifier que les résultats sont identiques
+            # VÃ©rifier que les rÃ©sultats sont identiques
             $result1.Count | Should -Be $result2.Count
             
-            # Exécuter une deuxième fois avec cache pour bénéficier du cache
+            # ExÃ©cuter une deuxiÃ¨me fois avec cache pour bÃ©nÃ©ficier du cache
             $stopwatch3 = [System.Diagnostics.Stopwatch]::StartNew()
             $result3 = & $reportGeneratorPath -DataPath $testDataPath -OutputPath $outputPath -ReportTypes @("Summary", "Detailed", "Metrics") -UseCache
             $stopwatch3.Stop()
             $timeWithCacheSecondRun = $stopwatch3.Elapsed.TotalSeconds
             
-            # La deuxième exécution avec cache devrait être plus rapide
-            # Note: Ce test peut échouer sur des systèmes très rapides ou si le cache n'est pas correctement implémenté
+            # La deuxiÃ¨me exÃ©cution avec cache devrait Ãªtre plus rapide
+            # Note: Ce test peut Ã©chouer sur des systÃ¨mes trÃ¨s rapides ou si le cache n'est pas correctement implÃ©mentÃ©
             Write-Host "Temps sans cache: $timeWithoutCache s"
-            Write-Host "Temps avec cache (1ère exécution): $timeWithCache s"
-            Write-Host "Temps avec cache (2ème exécution): $timeWithCacheSecondRun s"
+            Write-Host "Temps avec cache (1Ã¨re exÃ©cution): $timeWithCache s"
+            Write-Host "Temps avec cache (2Ã¨me exÃ©cution): $timeWithCacheSecondRun s"
             
-            # Vérifier que les résultats sont identiques
+            # VÃ©rifier que les rÃ©sultats sont identiques
             $result1.Count | Should -Be $result3.Count
         }
     }
     
     AfterAll {
-        # Nettoyer les fichiers temporaires si nécessaire
+        # Nettoyer les fichiers temporaires si nÃ©cessaire
     }
 }

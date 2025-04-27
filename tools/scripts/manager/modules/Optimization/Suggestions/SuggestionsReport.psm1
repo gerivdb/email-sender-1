@@ -1,5 +1,5 @@
-# Module de rapport de suggestions pour le Script Manager
-# Ce module génère des rapports HTML pour les suggestions d'amélioration
+﻿# Module de rapport de suggestions pour le Script Manager
+# Ce module gÃ©nÃ¨re des rapports HTML pour les suggestions d'amÃ©lioration
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, suggestions, report
@@ -7,13 +7,13 @@
 function New-SuggestionsReport {
     <#
     .SYNOPSIS
-        Génère un rapport HTML des suggestions d'amélioration
+        GÃ©nÃ¨re un rapport HTML des suggestions d'amÃ©lioration
     .DESCRIPTION
-        Crée un rapport HTML détaillé des suggestions d'amélioration pour les scripts
+        CrÃ©e un rapport HTML dÃ©taillÃ© des suggestions d'amÃ©lioration pour les scripts
     .PARAMETER Suggestions
-        Objet contenant les suggestions d'amélioration
+        Objet contenant les suggestions d'amÃ©lioration
     .PARAMETER OutputPath
-        Chemin où enregistrer le rapport HTML
+        Chemin oÃ¹ enregistrer le rapport HTML
     .EXAMPLE
         New-SuggestionsReport -Suggestions $suggestions -OutputPath "optimization\suggestions_report.html"
     #>
@@ -26,14 +26,14 @@ function New-SuggestionsReport {
         [string]$OutputPath
     )
     
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $HtmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de suggestions d'amélioration</title>
+    <title>Rapport de suggestions d'amÃ©lioration</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -218,13 +218,13 @@ function New-SuggestionsReport {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Rapport de suggestions d'amélioration</h1>
-            <div class="timestamp">Généré le $($Suggestions.Timestamp)</div>
+            <h1>Rapport de suggestions d'amÃ©lioration</h1>
+            <div class="timestamp">GÃ©nÃ©rÃ© le $($Suggestions.Timestamp)</div>
         </div>
         
         <div class="summary">
             <div class="summary-card">
-                <h3>Scripts analysés</h3>
+                <h3>Scripts analysÃ©s</h3>
                 <div class="value">$($Suggestions.TotalScripts)</div>
             </div>
             <div class="summary-card">
@@ -245,9 +245,9 @@ function New-SuggestionsReport {
         
         <div class="filters">
             <div class="filter active" data-filter="all">Tous</div>
-            <div class="filter" data-filter="high">Sévérité haute</div>
-            <div class="filter" data-filter="medium">Sévérité moyenne</div>
-            <div class="filter" data-filter="low">Sévérité basse</div>
+            <div class="filter" data-filter="high">SÃ©vÃ©ritÃ© haute</div>
+            <div class="filter" data-filter="medium">SÃ©vÃ©ritÃ© moyenne</div>
+            <div class="filter" data-filter="low">SÃ©vÃ©ritÃ© basse</div>
             <div class="filter" data-filter="auto-fixable">Auto-corrigeable</div>
         </div>
         
@@ -302,7 +302,7 @@ function New-SuggestionsReport {
         </div>
         
         <div class="footer">
-            <p>Généré par le Script Manager</p>
+            <p>GÃ©nÃ©rÃ© par le Script Manager</p>
         </div>
     </div>
     
@@ -375,7 +375,7 @@ function New-SuggestionsReport {
     # Enregistrer le rapport HTML
     Set-Content -Path $OutputPath -Value $HtmlContent
     
-    Write-Host "  Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "  Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 # Exporter les fonctions

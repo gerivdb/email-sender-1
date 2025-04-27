@@ -1,72 +1,72 @@
-<#
+﻿<#
 .SYNOPSIS
-    Résout un chemin en chemin absolu.
+    RÃ©sout un chemin en chemin absolu.
 
 .DESCRIPTION
-    La fonction Resolve-PathToAbsolute résout un chemin en chemin absolu.
-    Elle prend en charge différentes options de résolution et peut être utilisée pour
-    résoudre les chemins du module RoadmapParser.
+    La fonction Resolve-PathToAbsolute rÃ©sout un chemin en chemin absolu.
+    Elle prend en charge diffÃ©rentes options de rÃ©solution et peut Ãªtre utilisÃ©e pour
+    rÃ©soudre les chemins du module RoadmapParser.
 
 .PARAMETER Path
-    Le chemin à résoudre.
+    Le chemin Ã  rÃ©soudre.
 
 .PARAMETER ResolutionType
-    Le type de résolution à effectuer. Valeurs possibles :
-    - FullPath : Résout le chemin en chemin absolu complet
-    - RelativePath : Résout le chemin en chemin relatif par rapport à un chemin de base
-    - ParentPath : Résout le chemin parent
-    - FileName : Résout le nom de fichier
-    - FileNameWithoutExtension : Résout le nom de fichier sans extension
-    - Extension : Résout l'extension du fichier
-    - DirectoryName : Résout le nom du répertoire
-    - RootPath : Résout le chemin racine
-    - PathRoot : Résout la racine du chemin
-    - TempPath : Résout un chemin temporaire
-    - RandomPath : Résout un chemin aléatoire
-    - EnvironmentPath : Résout un chemin d'environnement
-    - Custom : Utilise une résolution personnalisée
+    Le type de rÃ©solution Ã  effectuer. Valeurs possibles :
+    - FullPath : RÃ©sout le chemin en chemin absolu complet
+    - RelativePath : RÃ©sout le chemin en chemin relatif par rapport Ã  un chemin de base
+    - ParentPath : RÃ©sout le chemin parent
+    - FileName : RÃ©sout le nom de fichier
+    - FileNameWithoutExtension : RÃ©sout le nom de fichier sans extension
+    - Extension : RÃ©sout l'extension du fichier
+    - DirectoryName : RÃ©sout le nom du rÃ©pertoire
+    - RootPath : RÃ©sout le chemin racine
+    - PathRoot : RÃ©sout la racine du chemin
+    - TempPath : RÃ©sout un chemin temporaire
+    - RandomPath : RÃ©sout un chemin alÃ©atoire
+    - EnvironmentPath : RÃ©sout un chemin d'environnement
+    - Custom : Utilise une rÃ©solution personnalisÃ©e
 
 .PARAMETER BasePath
-    Le chemin de base à utiliser pour la résolution de type RelativePath.
-    Par défaut, c'est le répertoire courant.
+    Le chemin de base Ã  utiliser pour la rÃ©solution de type RelativePath.
+    Par dÃ©faut, c'est le rÃ©pertoire courant.
 
 .PARAMETER CustomResolution
-    La fonction de résolution personnalisée à utiliser.
-    Utilisé uniquement lorsque ResolutionType est "Custom".
+    La fonction de rÃ©solution personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque ResolutionType est "Custom".
 
 .PARAMETER EnvironmentVariable
-    La variable d'environnement à utiliser pour la résolution de type EnvironmentPath.
+    La variable d'environnement Ã  utiliser pour la rÃ©solution de type EnvironmentPath.
 
 .PARAMETER CreateIfNotExists
-    Indique si le chemin doit être créé s'il n'existe pas.
-    Par défaut, c'est $false.
+    Indique si le chemin doit Ãªtre crÃ©Ã© s'il n'existe pas.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER Force
-    Indique si la résolution doit être forcée.
-    Par défaut, c'est $false.
+    Indique si la rÃ©solution doit Ãªtre forcÃ©e.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la résolution.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la rÃ©solution.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la résolution.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la rÃ©solution.
 
 .EXAMPLE
     Resolve-PathToAbsolute -Path ".\folder\file.txt"
-    Résout le chemin relatif ".\folder\file.txt" en chemin absolu complet.
+    RÃ©sout le chemin relatif ".\folder\file.txt" en chemin absolu complet.
 
 .EXAMPLE
     Resolve-PathToAbsolute -Path "C:\folder\file.txt" -ResolutionType FileName
-    Résout le nom de fichier "file.txt" à partir du chemin "C:\folder\file.txt".
+    RÃ©sout le nom de fichier "file.txt" Ã  partir du chemin "C:\folder\file.txt".
 
 .OUTPUTS
-    [string] Le chemin résolu.
+    [string] Le chemin rÃ©solu.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Resolve-PathToAbsolute {
     [CmdletBinding()]
@@ -106,9 +106,9 @@ function Resolve-PathToAbsolute {
     $privatePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Private\PathManipulation"
     $resolvePath = Join-Path -Path $privatePath -ChildPath "Resolve-RoadmapPath.ps1"
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $resolvePath)) {
-        $errorMsg = "Le fichier Resolve-RoadmapPath.ps1 est introuvable à l'emplacement : $resolvePath"
+        $errorMsg = "Le fichier Resolve-RoadmapPath.ps1 est introuvable Ã  l'emplacement : $resolvePath"
         if ($ThrowOnFailure) {
             throw $errorMsg
         } else {

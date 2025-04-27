@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires simplifiés pour les fonctionnalités de détection de format.
+    ExÃ©cute les tests unitaires simplifiÃ©s pour les fonctionnalitÃ©s de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute les tests unitaires simplifiés pour valider le bon fonctionnement
-    des fonctionnalités de détection de format et d'encodage.
+    Ce script exÃ©cute les tests unitaires simplifiÃ©s pour valider le bon fonctionnement
+    des fonctionnalitÃ©s de dÃ©tection de format et d'encodage.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport XML.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport XML.
 
 .EXAMPLE
     .\Run-SimplifiedTests.ps1 -GenerateHtmlReport
@@ -32,7 +32,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
         Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
     }
     catch {
-        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas être exécutés."
+        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas Ãªtre exÃ©cutÃ©s."
         return
     }
 }
@@ -48,20 +48,20 @@ $formatTestScript = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-d
 $outputDirectory = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-detection\tests\reports"
 $testResultsPath = Join-Path -Path $outputDirectory -ChildPath "SimplifiedTestResults.xml"
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $outputDirectory -PathType Container)) {
     New-Item -Path $outputDirectory -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé : $outputDirectory" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $outputDirectory" -ForegroundColor Green
 }
 
-# Générer les fichiers d'échantillon
+# GÃ©nÃ©rer les fichiers d'Ã©chantillon
 $generateSamplesScript = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-detection\tests\Generate-TestSamples.ps1"
 if (Test-Path -Path $generateSamplesScript -PathType Leaf) {
-    Write-Host "Génération des fichiers d'échantillon..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration des fichiers d'Ã©chantillon..." -ForegroundColor Cyan
     & $generateSamplesScript -Force
 }
 else {
-    Write-Warning "Le script de génération des échantillons n'existe pas : $generateSamplesScript"
+    Write-Warning "Le script de gÃ©nÃ©ration des Ã©chantillons n'existe pas : $generateSamplesScript"
 }
 
 # Configurer Pester
@@ -73,31 +73,31 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = $testResultsPath
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires simplifiés..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires simplifiÃ©s..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis  : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
-Write-Host "  Tests ignorés  : $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Tests non exécutés : $($testResults.NotRunCount)" -ForegroundColor Yellow
-Write-Host "  Durée totale   : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
+Write-Host "  Tests ignorÃ©s  : $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  Tests non exÃ©cutÃ©s : $($testResults.NotRunCount)" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale   : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($testResultsPath, "html")
     
-    # Générer un rapport HTML simple
+    # GÃ©nÃ©rer un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de tests unitaires simplifiés</title>
+    <title>Rapport de tests unitaires simplifiÃ©s</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -147,25 +147,25 @@ if ($GenerateHtmlReport) {
     </style>
 </head>
 <body>
-    <h1>Rapport de tests unitaires simplifiés</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <h1>Rapport de tests unitaires simplifiÃ©s</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés : $($testResults.TotalCount)</p>
-        <p>Tests réussis : <span class="passed">$($testResults.PassedCount)</span></p>
-        <p>Tests échoués : <span class="failed">$($testResults.FailedCount)</span></p>
-        <p>Tests ignorés : <span class="skipped">$($testResults.SkippedCount)</span></p>
-        <p>Tests non exécutés : <span class="skipped">$($testResults.NotRunCount)</span></p>
-        <p>Durée totale : $($testResults.Duration.TotalSeconds) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s : $($testResults.TotalCount)</p>
+        <p>Tests rÃ©ussis : <span class="passed">$($testResults.PassedCount)</span></p>
+        <p>Tests Ã©chouÃ©s : <span class="failed">$($testResults.FailedCount)</span></p>
+        <p>Tests ignorÃ©s : <span class="skipped">$($testResults.SkippedCount)</span></p>
+        <p>Tests non exÃ©cutÃ©s : <span class="skipped">$($testResults.NotRunCount)</span></p>
+        <p>DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes</p>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom du test</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
     
@@ -199,8 +199,8 @@ if ($GenerateHtmlReport) {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $htmlOutputPath -Encoding utf8
     
-    Write-Host "`nRapport HTML généré : $htmlOutputPath" -ForegroundColor Green
+    Write-Host "`nRapport HTML gÃ©nÃ©rÃ© : $htmlOutputPath" -ForegroundColor Green
 }
 
-# Retourner les résultats des tests
+# Retourner les rÃ©sultats des tests
 return $testResults

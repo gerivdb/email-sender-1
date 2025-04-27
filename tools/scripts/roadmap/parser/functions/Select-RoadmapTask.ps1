@@ -1,82 +1,82 @@
-<#
+﻿<#
 .SYNOPSIS
-    Sélectionne des tâches dans une roadmap selon différents critères.
+    SÃ©lectionne des tÃ¢ches dans une roadmap selon diffÃ©rents critÃ¨res.
 
 .DESCRIPTION
-    La fonction Select-RoadmapTask permet de sélectionner des tâches dans une roadmap
-    selon différents critères comme le statut, l'identifiant, le titre, les métadonnées, etc.
-    Elle retourne un tableau de tâches correspondant aux critères spécifiés.
+    La fonction Select-RoadmapTask permet de sÃ©lectionner des tÃ¢ches dans une roadmap
+    selon diffÃ©rents critÃ¨res comme le statut, l'identifiant, le titre, les mÃ©tadonnÃ©es, etc.
+    Elle retourne un tableau de tÃ¢ches correspondant aux critÃ¨res spÃ©cifiÃ©s.
 
 .PARAMETER Roadmap
-    L'objet roadmap contenant les tâches à sélectionner.
+    L'objet roadmap contenant les tÃ¢ches Ã  sÃ©lectionner.
 
 .PARAMETER Id
-    L'identifiant ou le modèle d'identifiant des tâches à sélectionner.
-    Accepte les caractères génériques (* et ?).
+    L'identifiant ou le modÃ¨le d'identifiant des tÃ¢ches Ã  sÃ©lectionner.
+    Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 .PARAMETER Title
-    Le titre ou le modèle de titre des tâches à sélectionner.
-    Accepte les caractères génériques (* et ?).
+    Le titre ou le modÃ¨le de titre des tÃ¢ches Ã  sÃ©lectionner.
+    Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 .PARAMETER Status
-    Le statut des tâches à sélectionner.
+    Le statut des tÃ¢ches Ã  sÃ©lectionner.
     Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked", "All".
 
 .PARAMETER Level
-    Le niveau hiérarchique des tâches à sélectionner.
-    0 = tâches de premier niveau, 1 = sous-tâches, etc.
+    Le niveau hiÃ©rarchique des tÃ¢ches Ã  sÃ©lectionner.
+    0 = tÃ¢ches de premier niveau, 1 = sous-tÃ¢ches, etc.
 
 .PARAMETER HasDependencies
-    Indique si les tâches sélectionnées doivent avoir des dépendances.
+    Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des dÃ©pendances.
 
 .PARAMETER HasDependentTasks
-    Indique si les tâches sélectionnées doivent avoir des tâches dépendantes.
+    Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des tÃ¢ches dÃ©pendantes.
 
 .PARAMETER HasMetadata
-    Indique si les tâches sélectionnées doivent avoir des métadonnées.
+    Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des mÃ©tadonnÃ©es.
 
 .PARAMETER MetadataKey
-    La clé de métadonnée que les tâches sélectionnées doivent avoir.
+    La clÃ© de mÃ©tadonnÃ©e que les tÃ¢ches sÃ©lectionnÃ©es doivent avoir.
 
 .PARAMETER MetadataValue
-    La valeur de métadonnée que les tâches sélectionnées doivent avoir.
+    La valeur de mÃ©tadonnÃ©e que les tÃ¢ches sÃ©lectionnÃ©es doivent avoir.
 
 .PARAMETER SectionTitle
-    Le titre ou le modèle de titre des sections dans lesquelles rechercher les tâches.
-    Accepte les caractères génériques (* et ?).
+    Le titre ou le modÃ¨le de titre des sections dans lesquelles rechercher les tÃ¢ches.
+    Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 .PARAMETER IncludeSubTasks
-    Indique si les sous-tâches des tâches correspondantes doivent être incluses dans les résultats.
+    Indique si les sous-tÃ¢ches des tÃ¢ches correspondantes doivent Ãªtre incluses dans les rÃ©sultats.
 
 .PARAMETER Flatten
-    Indique si les résultats doivent être aplatis (liste plate de tâches sans hiérarchie).
+    Indique si les rÃ©sultats doivent Ãªtre aplatis (liste plate de tÃ¢ches sans hiÃ©rarchie).
 
 .PARAMETER First
-    Nombre de tâches à retourner (prend les premières tâches correspondantes).
+    Nombre de tÃ¢ches Ã  retourner (prend les premiÃ¨res tÃ¢ches correspondantes).
 
 .PARAMETER Last
-    Nombre de tâches à retourner (prend les dernières tâches correspondantes).
+    Nombre de tÃ¢ches Ã  retourner (prend les derniÃ¨res tÃ¢ches correspondantes).
 
 .PARAMETER Skip
-    Nombre de tâches à ignorer avant de commencer à retourner des résultats.
+    Nombre de tÃ¢ches Ã  ignorer avant de commencer Ã  retourner des rÃ©sultats.
 
 .EXAMPLE
     $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
     Select-RoadmapTask -Roadmap $roadmap -Status "Complete"
-    Sélectionne toutes les tâches complétées dans la roadmap.
+    SÃ©lectionne toutes les tÃ¢ches complÃ©tÃ©es dans la roadmap.
 
 .EXAMPLE
     $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
     Select-RoadmapTask -Roadmap $roadmap -Id "1.*" -Status "Incomplete" -HasDependencies
-    Sélectionne toutes les tâches incomplètes dont l'identifiant commence par "1." et qui ont des dépendances.
+    SÃ©lectionne toutes les tÃ¢ches incomplÃ¨tes dont l'identifiant commence par "1." et qui ont des dÃ©pendances.
 
 .OUTPUTS
-    [PSCustomObject[]] Tableau de tâches correspondant aux critères spécifiés.
+    [PSCustomObject[]] Tableau de tÃ¢ches correspondant aux critÃ¨res spÃ©cifiÃ©s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Select-RoadmapTask {
     [CmdletBinding(DefaultParameterSetName = "Default")]
@@ -131,13 +131,13 @@ function Select-RoadmapTask {
         [int]$Skip = 0
     )
 
-    # Vérifier si la roadmap contient des tâches
+    # VÃ©rifier si la roadmap contient des tÃ¢ches
     if (-not $Roadmap.AllTasks -or $Roadmap.AllTasks.Count -eq 0) {
-        Write-Warning "La roadmap ne contient pas de tâches."
+        Write-Warning "La roadmap ne contient pas de tÃ¢ches."
         return @()
     }
 
-    # Fonction récursive pour filtrer les tâches
+    # Fonction rÃ©cursive pour filtrer les tÃ¢ches
     function Filter-Tasks {
         param (
             [PSCustomObject[]]$Tasks,
@@ -177,52 +177,52 @@ function Select-RoadmapTask {
                 }
             }
 
-            # Filtrer par présence de dépendances
+            # Filtrer par prÃ©sence de dÃ©pendances
             if ($HasDependencies) {
                 if (-not $task.Dependencies -or $task.Dependencies.Count -eq 0) {
                     $matchesFilter = $false
                 }
             }
 
-            # Filtrer par présence de tâches dépendantes
+            # Filtrer par prÃ©sence de tÃ¢ches dÃ©pendantes
             if ($HasDependentTasks) {
                 if (-not $task.DependentTasks -or $task.DependentTasks.Count -eq 0) {
                     $matchesFilter = $false
                 }
             }
 
-            # Filtrer par présence de métadonnées
+            # Filtrer par prÃ©sence de mÃ©tadonnÃ©es
             if ($HasMetadata) {
                 if (-not $task.Metadata -or $task.Metadata.Count -eq 0) {
                     $matchesFilter = $false
                 }
             }
 
-            # Filtrer par clé de métadonnée
+            # Filtrer par clÃ© de mÃ©tadonnÃ©e
             if (-not [string]::IsNullOrEmpty($MetadataKey)) {
                 if (-not $task.Metadata -or -not $task.Metadata.ContainsKey($MetadataKey)) {
                     $matchesFilter = $false
                 }
             }
 
-            # Filtrer par valeur de métadonnée
+            # Filtrer par valeur de mÃ©tadonnÃ©e
             if (-not [string]::IsNullOrEmpty($MetadataValue)) {
                 if (-not $task.Metadata -or -not $task.Metadata.Values.Contains($MetadataValue)) {
                     $matchesFilter = $false
                 }
             }
 
-            # Ajouter la tâche si elle correspond aux critères
+            # Ajouter la tÃ¢che si elle correspond aux critÃ¨res
             if ($matchesFilter) {
                 $filteredTasks.Add($task) | Out-Null
             }
 
-            # Traiter les sous-tâches si demandé
+            # Traiter les sous-tÃ¢ches si demandÃ©
             if ($ProcessSubTasks -and $task.SubTasks.Count -gt 0) {
                 $subTasksToProcess = $true
 
-                # Si la tâche correspond aux critères et qu'on veut inclure les sous-tâches,
-                # on ajoute toutes les sous-tâches sans filtrage
+                # Si la tÃ¢che correspond aux critÃ¨res et qu'on veut inclure les sous-tÃ¢ches,
+                # on ajoute toutes les sous-tÃ¢ches sans filtrage
                 if ($matchesFilter -and $IncludeSubTasks) {
                     $subTasksToProcess = $false
 
@@ -241,7 +241,7 @@ function Select-RoadmapTask {
                     Add-AllSubTasks -ParentTask $task -ResultList $filteredTasks
                 }
 
-                # Sinon, on filtre les sous-tâches normalement
+                # Sinon, on filtre les sous-tÃ¢ches normalement
                 if ($subTasksToProcess) {
                     $subTaskResults = Filter-Tasks -Tasks $task.SubTasks -ProcessSubTasks $true
                     if ($null -ne $subTaskResults -and $subTaskResults.Count -gt 0) {
@@ -256,7 +256,7 @@ function Select-RoadmapTask {
         return $filteredTasks
     }
 
-    # Filtrer les tâches par section
+    # Filtrer les tÃ¢ches par section
     $tasksToProcess = [System.Collections.ArrayList]::new()
 
     foreach ($section in $Roadmap.Sections) {
@@ -270,7 +270,7 @@ function Select-RoadmapTask {
         $tasksToProcess.AddRange($section.Tasks)
     }
 
-    # Filtrer les tâches selon les critères
+    # Filtrer les tÃ¢ches selon les critÃ¨res
     $filteredTasks = Filter-Tasks -Tasks $tasksToProcess
 
     # Convertir en tableau pour pouvoir utiliser Select-Object
@@ -287,23 +287,23 @@ function Select-RoadmapTask {
         $filteredTasksArray = $filteredTasksArray | Select-Object -Last $Last
     }
 
-    # Remplacer la liste filtrée par le tableau filtré
+    # Remplacer la liste filtrÃ©e par le tableau filtrÃ©
     $filteredTasks = $filteredTasksArray
 
-    # Aplatir les résultats si demandé
+    # Aplatir les rÃ©sultats si demandÃ©
     if ($Flatten) {
         return $filteredTasks
     } else {
-        # Reconstruire la hiérarchie
+        # Reconstruire la hiÃ©rarchie
         $result = [System.Collections.ArrayList]::new()
         $processedIds = [System.Collections.Generic.HashSet[string]]::new()
 
         foreach ($task in $filteredTasks) {
-            # Ne traiter que les tâches qui n'ont pas déjà été ajoutées
+            # Ne traiter que les tÃ¢ches qui n'ont pas dÃ©jÃ  Ã©tÃ© ajoutÃ©es
             if (-not $processedIds.Contains($task.Id)) {
                 $processedIds.Add($task.Id) | Out-Null
 
-                # Créer une copie de la tâche avec ses sous-tâches
+                # CrÃ©er une copie de la tÃ¢che avec ses sous-tÃ¢ches
                 $taskCopy = [PSCustomObject]@{
                     Id             = $task.Id
                     Title          = $task.Title
@@ -315,7 +315,7 @@ function Select-RoadmapTask {
                     Metadata       = $task.Metadata
                 }
 
-                # Ajouter les sous-tâches qui sont dans les résultats filtrés
+                # Ajouter les sous-tÃ¢ches qui sont dans les rÃ©sultats filtrÃ©s
                 function Add-FilteredSubTasks {
                     param (
                         [PSCustomObject]$OriginalTask,

@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Fonctions de base pour le module Format-Converters.
 
 .DESCRIPTION
     Ce script contient les fonctions de base pour le module Format-Converters,
-    notamment les fonctions pour enregistrer et récupérer les convertisseurs de format.
+    notamment les fonctions pour enregistrer et rÃ©cupÃ©rer les convertisseurs de format.
 
 .NOTES
     Version: 1.0
@@ -27,12 +27,12 @@ function Register-FormatConverter {
         [hashtable]$ConverterInfo
     )
 
-    # Vérifier que le format n'est pas déjà enregistré
+    # VÃ©rifier que le format n'est pas dÃ©jÃ  enregistrÃ©
     if ($script:FormatConverters.ContainsKey($Format)) {
-        Write-Warning "Le format '$Format' est déjà enregistré. Il sera remplacé."
+        Write-Warning "Le format '$Format' est dÃ©jÃ  enregistrÃ©. Il sera remplacÃ©."
     }
 
-    # Vérifier que les informations requises sont présentes
+    # VÃ©rifier que les informations requises sont prÃ©sentes
     $requiredKeys = @("Name", "Description", "Extensions")
     $missingKeys = $requiredKeys | Where-Object { -not $ConverterInfo.ContainsKey($_) }
 
@@ -43,10 +43,10 @@ function Register-FormatConverter {
     # Enregistrer le convertisseur
     $script:FormatConverters[$Format] = $ConverterInfo
 
-    Write-Verbose "Convertisseur de format '$Format' enregistré avec succès."
+    Write-Verbose "Convertisseur de format '$Format' enregistrÃ© avec succÃ¨s."
 }
 
-# Fonction pour récupérer les convertisseurs de format enregistrés
+# Fonction pour rÃ©cupÃ©rer les convertisseurs de format enregistrÃ©s
 function Get-RegisteredConverters {
     [CmdletBinding()]
     param()
@@ -54,7 +54,7 @@ function Get-RegisteredConverters {
     return $script:FormatConverters
 }
 
-# Fonction pour récupérer un convertisseur de format spécifique
+# Fonction pour rÃ©cupÃ©rer un convertisseur de format spÃ©cifique
 function Get-FormatConverter {
     [CmdletBinding()]
     param(
@@ -63,13 +63,13 @@ function Get-FormatConverter {
     )
 
     if (-not $script:FormatConverters.ContainsKey($Format)) {
-        throw "Le format '$Format' n'est pas enregistré."
+        throw "Le format '$Format' n'est pas enregistrÃ©."
     }
 
     return $script:FormatConverters[$Format]
 }
 
-# Fonction pour convertir un fichier d'un format à un autre
+# Fonction pour convertir un fichier d'un format Ã  un autre
 function Convert-FileFormat {
     [CmdletBinding()]
     param(
@@ -95,44 +95,44 @@ function Convert-FileFormat {
         [switch]$ShowProgress
     )
 
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath -PathType Leaf)) {
-        throw "Le fichier d'entrée '$InputPath' n'existe pas."
+        throw "Le fichier d'entrÃ©e '$InputPath' n'existe pas."
     }
 
-    # Vérifier si le fichier de sortie existe et si -Force n'est pas spécifié
+    # VÃ©rifier si le fichier de sortie existe et si -Force n'est pas spÃ©cifiÃ©
     if ((Test-Path -Path $OutputPath -PathType Leaf) -and -not $Force) {
-        throw "Le fichier de sortie '$OutputPath' existe déjà. Utilisez -Force pour l'écraser."
+        throw "Le fichier de sortie '$OutputPath' existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser."
     }
 
-    # Détecter le format d'entrée si nécessaire
+    # DÃ©tecter le format d'entrÃ©e si nÃ©cessaire
     if (-not $InputFormat -and $AutoDetect) {
         $detectionResult = Detect-FileFormat -FilePath $InputPath
         $InputFormat = $detectionResult.DetectedFormat
 
         if (-not $InputFormat) {
-            throw "Impossible de détecter le format du fichier d'entrée '$InputPath'."
+            throw "Impossible de dÃ©tecter le format du fichier d'entrÃ©e '$InputPath'."
         }
 
-        Write-Verbose "Format d'entrée détecté : $InputFormat"
+        Write-Verbose "Format d'entrÃ©e dÃ©tectÃ© : $InputFormat"
     }
 
-    # Vérifier que les formats d'entrée et de sortie sont enregistrés
+    # VÃ©rifier que les formats d'entrÃ©e et de sortie sont enregistrÃ©s
     if (-not $script:FormatConverters.ContainsKey($InputFormat.ToLower())) {
-        throw "Le format d'entrée '$InputFormat' n'est pas pris en charge."
+        throw "Le format d'entrÃ©e '$InputFormat' n'est pas pris en charge."
     }
 
     if (-not $script:FormatConverters.ContainsKey($OutputFormat.ToLower())) {
         throw "Le format de sortie '$OutputFormat' n'est pas pris en charge."
     }
 
-    # Récupérer les convertisseurs
+    # RÃ©cupÃ©rer les convertisseurs
     $inputConverter = $script:FormatConverters[$InputFormat.ToLower()]
     $outputConverter = $script:FormatConverters[$OutputFormat.ToLower()]
 
-    # Vérifier que les fonctions d'importation et d'exportation sont disponibles
+    # VÃ©rifier que les fonctions d'importation et d'exportation sont disponibles
     if (-not $inputConverter.ImportFunction) {
-        throw "Le format d'entrée '$InputFormat' ne prend pas en charge l'importation."
+        throw "Le format d'entrÃ©e '$InputFormat' ne prend pas en charge l'importation."
     }
 
     if (-not $outputConverter.ExportFunction) {
@@ -158,7 +158,7 @@ function Convert-FileFormat {
 
         # Afficher la progression
         if ($ShowProgress) {
-            Write-Progress -Activity "Conversion de fichier" -Status "Terminé" -PercentComplete 100
+            Write-Progress -Activity "Conversion de fichier" -Status "TerminÃ©" -PercentComplete 100
         }
 
         return [PSCustomObject]@{
@@ -167,7 +167,7 @@ function Convert-FileFormat {
             OutputPath = $OutputPath
             InputFormat = $InputFormat
             OutputFormat = $OutputFormat
-            Message = "Conversion réussie."
+            Message = "Conversion rÃ©ussie."
         }
     }
     catch {
@@ -205,32 +205,32 @@ function Get-FileFormatAnalysis {
         [string]$ReportPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
 
-    # Détecter le format si nécessaire
+    # DÃ©tecter le format si nÃ©cessaire
     if (-not $Format -and $AutoDetect) {
         $detectionResult = Detect-FileFormat -FilePath $FilePath
         $Format = $detectionResult.DetectedFormat
 
         if (-not $Format) {
-            throw "Impossible de détecter le format du fichier '$FilePath'."
+            throw "Impossible de dÃ©tecter le format du fichier '$FilePath'."
         }
 
-        Write-Verbose "Format détecté : $Format"
+        Write-Verbose "Format dÃ©tectÃ© : $Format"
     }
 
-    # Vérifier que le format est enregistré
+    # VÃ©rifier que le format est enregistrÃ©
     if (-not $script:FormatConverters.ContainsKey($Format.ToLower())) {
         throw "Le format '$Format' n'est pas pris en charge."
     }
 
-    # Récupérer le convertisseur
+    # RÃ©cupÃ©rer le convertisseur
     $converter = $script:FormatConverters[$Format.ToLower()]
 
-    # Vérifier que la fonction d'analyse est disponible
+    # VÃ©rifier que la fonction d'analyse est disponible
     if (-not $converter.AnalyzeFunction) {
         throw "Le format '$Format' ne prend pas en charge l'analyse."
     }
@@ -239,19 +239,19 @@ function Get-FileFormatAnalysis {
         # Analyser le fichier
         $result = & $converter.AnalyzeFunction $FilePath
 
-        # Ajouter le contenu si demandé
+        # Ajouter le contenu si demandÃ©
         if ($IncludeContent) {
             $result | Add-Member -MemberType NoteProperty -Name "Content" -Value (Get-Content -Path $FilePath -Raw)
         }
 
-        # Exporter le rapport si demandé
+        # Exporter le rapport si demandÃ©
         if ($ExportReport) {
             if (-not $ReportPath) {
                 $ReportPath = [System.IO.Path]::ChangeExtension($FilePath, "analysis.json")
             }
 
             $result | ConvertTo-Json -Depth 5 | Set-Content -Path $ReportPath -Encoding UTF8
-            Write-Verbose "Rapport d'analyse exporté : $ReportPath"
+            Write-Verbose "Rapport d'analyse exportÃ© : $ReportPath"
         }
 
         return $result

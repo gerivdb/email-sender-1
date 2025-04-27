@@ -1,29 +1,29 @@
-# Test-ContradictoryPermissionDetection.ps1
-# Tests unitaires pour les fonctions de détection des permissions contradictoires
+﻿# Test-ContradictoryPermissionDetection.ps1
+# Tests unitaires pour les fonctions de dÃ©tection des permissions contradictoires
 
 # Importer le module Pester
 Import-Module Pester -ErrorAction Stop
 
-# Importer le modèle de permissions contradictoires
+# Importer le modÃ¨le de permissions contradictoires
 $contradictoryPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\ContradictoryPermissionModel.ps1"
 if (Test-Path $contradictoryPermissionModelPath) {
     . $contradictoryPermissionModelPath
 } else {
-    Write-Warning "Le fichier ContradictoryPermissionModel.ps1 n'a pas été trouvé à l'emplacement: $contradictoryPermissionModelPath"
+    Write-Warning "Le fichier ContradictoryPermissionModel.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $contradictoryPermissionModelPath"
 }
 
-# Importer le fichier de détection des permissions contradictoires
+# Importer le fichier de dÃ©tection des permissions contradictoires
 $contradictoryPermissionDetectionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\ContradictoryPermissionDetection.ps1"
 if (Test-Path $contradictoryPermissionDetectionPath) {
     . $contradictoryPermissionDetectionPath
 } else {
-    Write-Warning "Le fichier ContradictoryPermissionDetection.ps1 n'a pas été trouvé à l'emplacement: $contradictoryPermissionDetectionPath"
+    Write-Warning "Le fichier ContradictoryPermissionDetection.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $contradictoryPermissionDetectionPath"
 }
 
 Describe "ContradictoryPermissionDetection" {
     Context "Find-SqlServerContradictoryPermission" {
         BeforeAll {
-            # Créer des données de test pour les permissions au niveau serveur
+            # CrÃ©er des donnÃ©es de test pour les permissions au niveau serveur
             $serverPermissionsData = @(
                 # Permissions sans contradiction
                 [PSCustomObject]@{
@@ -100,7 +100,7 @@ Describe "ContradictoryPermissionDetection" {
 
     Context "Find-SqlDatabaseContradictoryPermission" {
         BeforeAll {
-            # Créer des données de test pour les permissions au niveau base de données
+            # CrÃ©er des donnÃ©es de test pour les permissions au niveau base de donnÃ©es
             $dbPermissionsData = @(
                 # Permissions sans contradiction
                 [PSCustomObject]@{
@@ -183,7 +183,7 @@ Describe "ContradictoryPermissionDetection" {
 
     Context "Find-SqlObjectContradictoryPermission" {
         BeforeAll {
-            # Créer des données de test pour les permissions au niveau objet
+            # CrÃ©er des donnÃ©es de test pour les permissions au niveau objet
             $objPermissionsData = @(
                 # Permissions sans contradiction
                 [PSCustomObject]@{
@@ -289,7 +289,7 @@ Describe "ContradictoryPermissionDetection" {
 
     Context "Find-SqlContradictoryPermission" {
         BeforeAll {
-            # Mock des fonctions de détection
+            # Mock des fonctions de dÃ©tection
             Mock Find-SqlServerContradictoryPermission {
                 $serverContradictions = New-Object System.Collections.Generic.List[SqlServerContradictoryPermission]
                 $serverContradictions.Add((New-SqlServerContradictoryPermission -PermissionName "VIEW SERVER STATE" -LoginName "Login3" -ModelName $ModelName))

@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Test simplifié de la détection de format améliorée.
+    Test simplifiÃ© de la dÃ©tection de format amÃ©liorÃ©e.
 
 .DESCRIPTION
-    Ce script teste la détection de format améliorée sur un ensemble de fichiers
-    et génère un rapport des résultats. Version simplifiée sans parallélisme.
+    Ce script teste la dÃ©tection de format amÃ©liorÃ©e sur un ensemble de fichiers
+    et gÃ©nÃ¨re un rapport des rÃ©sultats. Version simplifiÃ©e sans parallÃ©lisme.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport d'analyse sera enregistré. Par défaut, 'SimpleFormatDetectionResults.json'.
+    Le chemin oÃ¹ le rapport d'analyse sera enregistrÃ©. Par dÃ©faut, 'SimpleFormatDetectionResults.json'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport JSON.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport JSON.
 
 .EXAMPLE
     .\Simple-FormatDetectionTest.ps1 -SampleDirectory "C:\Samples" -GenerateHtmlReport
@@ -37,20 +37,20 @@ param(
     [switch]$GenerateHtmlReport
 )
 
-# Importer le script de détection améliorée
+# Importer le script de dÃ©tection amÃ©liorÃ©e
 $detectionScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Improved-FormatDetection.ps1"
 if (-not (Test-Path -Path $detectionScriptPath -PathType Leaf)) {
-    Write-Error "Le script de détection améliorée $detectionScriptPath n'existe pas."
+    Write-Error "Le script de dÃ©tection amÃ©liorÃ©e $detectionScriptPath n'existe pas."
     return
 }
 
-# Vérifier si le répertoire d'échantillons existe
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
-    Write-Error "Le répertoire d'échantillons $SampleDirectory n'existe pas."
+    Write-Error "Le rÃ©pertoire d'Ã©chantillons $SampleDirectory n'existe pas."
     return
 }
 
-# Récupérer tous les fichiers du répertoire (récursivement)
+# RÃ©cupÃ©rer tous les fichiers du rÃ©pertoire (rÃ©cursivement)
 $files = Get-ChildItem -Path $SampleDirectory -File -Recurse
 
 Write-Host "Analyse de $($files.Count) fichiers..." -ForegroundColor Cyan
@@ -63,10 +63,10 @@ foreach ($file in $files) {
     Write-Progress -Activity "Analyse des fichiers" -Status "Fichier $i sur $($files.Count)" -PercentComplete (($i / $files.Count) * 100)
     
     try {
-        # Détecter le format du fichier
+        # DÃ©tecter le format du fichier
         $detectionResult = & $detectionScriptPath -FilePath $file.FullName -DetectEncoding -DetailedOutput
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         $result = [PSCustomObject]@{
             FilePath = $file.FullName;
             FileName = $file.Name;
@@ -84,7 +84,7 @@ foreach ($file in $files) {
     } catch {
         Write-Warning "Erreur lors de l'analyse du fichier $($file.FullName) : $_"
         
-        # Ajouter un résultat d'erreur
+        # Ajouter un rÃ©sultat d'erreur
         $results += [PSCustomObject]@{
             FilePath = $file.FullName;
             FileName = $file.Name;
@@ -103,12 +103,12 @@ foreach ($file in $files) {
 
 Write-Progress -Activity "Analyse des fichiers" -Completed
 
-# Enregistrer les résultats au format JSON
+# Enregistrer les rÃ©sultats au format JSON
 $results | ConvertTo-Json -Depth 4 | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Rapport JSON généré : $OutputPath" -ForegroundColor Green
+Write-Host "Rapport JSON gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
     
@@ -118,7 +118,7 @@ if ($GenerateHtmlReport) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de détection de format améliorée</title>
+    <title>Rapport de dÃ©tection de format amÃ©liorÃ©e</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -174,8 +174,8 @@ if ($GenerateHtmlReport) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Rapport de détection de format améliorée</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <h1>Rapport de dÃ©tection de format amÃ©liorÃ©e</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 "@
     
     # Calculer les statistiques
@@ -184,7 +184,7 @@ if ($GenerateHtmlReport) {
     $mediumConfidence = ($results | Where-Object { $_.ConfidenceScore -ge 50 -and $_.ConfidenceScore -lt 80 }).Count
     $lowConfidence = ($results | Where-Object { $_.ConfidenceScore -lt 50 }).Count
     
-    # Compter les formats détectés
+    # Compter les formats dÃ©tectÃ©s
     $formatCounts = @{}
     foreach ($result in $results) {
         $format = $result.DetectedFormat
@@ -194,18 +194,18 @@ if ($GenerateHtmlReport) {
         $formatCounts[$format]++
     }
     
-    # Trier les formats par fréquence
+    # Trier les formats par frÃ©quence
     $sortedFormats = $formatCounts.GetEnumerator() | Sort-Object -Property Value -Descending
     
-    # Générer les données pour le graphique
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique
     $formatLabels = $sortedFormats | ForEach-Object { "`"$($_.Key)`"" }
     $formatValues = $sortedFormats | ForEach-Object { $_.Value }
     
     $htmlSummary = @"
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre total de fichiers analysés : $totalFiles</p>
-        <p>Fichiers avec confiance élevée (>= 80%) : $highConfidence</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre total de fichiers analysÃ©s : $totalFiles</p>
+        <p>Fichiers avec confiance Ã©levÃ©e (>= 80%) : $highConfidence</p>
         <p>Fichiers avec confiance moyenne (50-79%) : $mediumConfidence</p>
         <p>Fichiers avec confiance faible (< 50%) : $lowConfidence</p>
         
@@ -253,15 +253,15 @@ if ($GenerateHtmlReport) {
 "@
     
     $htmlResults = @"
-    <h2>Résultats de détection</h2>
+    <h2>RÃ©sultats de dÃ©tection</h2>
     <table>
         <tr>
             <th>Nom du fichier</th>
             <th>Extension</th>
-            <th>Format détecté</th>
-            <th>Catégorie</th>
+            <th>Format dÃ©tectÃ©</th>
+            <th>CatÃ©gorie</th>
             <th>Confiance</th>
-            <th>Critères correspondants</th>
+            <th>CritÃ¨res correspondants</th>
             <th>Encodage</th>
         </tr>
 "@
@@ -303,22 +303,22 @@ if ($GenerateHtmlReport) {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $htmlOutputPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $htmlOutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlOutputPath" -ForegroundColor Green
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $totalFiles = $results.Count
 $highConfidence = ($results | Where-Object { $_.ConfidenceScore -ge 80 }).Count
 $mediumConfidence = ($results | Where-Object { $_.ConfidenceScore -ge 50 -and $_.ConfidenceScore -lt 80 }).Count
 $lowConfidence = ($results | Where-Object { $_.ConfidenceScore -lt 50 }).Count
 
-Write-Host "`nRésumé de l'analyse :" -ForegroundColor Cyan
-Write-Host "  Nombre total de fichiers analysés : $totalFiles" -ForegroundColor White
-Write-Host "  Fichiers avec confiance élevée (>= 80%) : $highConfidence" -ForegroundColor Green
+Write-Host "`nRÃ©sumÃ© de l'analyse :" -ForegroundColor Cyan
+Write-Host "  Nombre total de fichiers analysÃ©s : $totalFiles" -ForegroundColor White
+Write-Host "  Fichiers avec confiance Ã©levÃ©e (>= 80%) : $highConfidence" -ForegroundColor Green
 Write-Host "  Fichiers avec confiance moyenne (50-79%) : $mediumConfidence" -ForegroundColor Yellow
 Write-Host "  Fichiers avec confiance faible (< 50%) : $lowConfidence" -ForegroundColor Red
 
-# Afficher les formats les plus fréquents
+# Afficher les formats les plus frÃ©quents
 $formatCounts = @{}
 foreach ($result in $results) {
     $format = $result.DetectedFormat
@@ -330,7 +330,7 @@ foreach ($result in $results) {
 
 $sortedFormats = $formatCounts.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 5
 
-Write-Host "`nFormats les plus fréquents :" -ForegroundColor Cyan
+Write-Host "`nFormats les plus frÃ©quents :" -ForegroundColor Cyan
 foreach ($format in $sortedFormats) {
     Write-Host "  $($format.Key): $($format.Value) fichiers" -ForegroundColor White
 }

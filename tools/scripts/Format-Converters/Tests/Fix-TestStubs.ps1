@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Corrige les stubs dans les tests réels.
+    Corrige les stubs dans les tests rÃ©els.
 
 .DESCRIPTION
-    Ce script corrige les fonctions stub dans les tests réels pour qu'elles
+    Ce script corrige les fonctions stub dans les tests rÃ©els pour qu'elles
     retournent des valeurs valides au lieu de $null.
 
 .PARAMETER TestFile
-    Le fichier de test à corriger. Si non spécifié, tous les fichiers de test seront corrigés.
+    Le fichier de test Ã  corriger. Si non spÃ©cifiÃ©, tous les fichiers de test seront corrigÃ©s.
 
 .EXAMPLE
     .\Fix-TestStubs.ps1
@@ -39,7 +39,7 @@ function Fix-TestStubsInFile {
     
     # Corriger la fonction New-TestFile
     $newTestFileStub = @'
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     [CmdletBinding()]
     param (
@@ -53,15 +53,15 @@ function New-TestFile {
         [string]$Directory = $testTempDir
     )
     
-    # Créer le répertoire s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire s'il n'existe pas
     if (-not (Test-Path -Path $Directory -PathType Container)) {
         New-Item -Path $Directory -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le chemin complet du fichier
+    # CrÃ©er le chemin complet du fichier
     $filePath = Join-Path -Path $Directory -ChildPath $FileName
     
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $Content | Set-Content -Path $filePath -Encoding UTF8
     
     return $filePath
@@ -92,7 +92,7 @@ function Register-FormatConverter {
         [int]$Priority = 0
     )
     
-    # Créer un objet pour représenter le convertisseur
+    # CrÃ©er un objet pour reprÃ©senter le convertisseur
     $converter = [PSCustomObject]@{
         SourceFormat = $SourceFormat
         TargetFormat = $TargetFormat
@@ -122,7 +122,7 @@ function Get-RegisteredConverters {
         [string]$TargetFormat
     )
     
-    # Créer une liste de convertisseurs factices
+    # CrÃ©er une liste de convertisseurs factices
     $converters = @(
         [PSCustomObject]@{
             SourceFormat = "JSON"
@@ -144,7 +144,7 @@ function Get-RegisteredConverters {
         }
     )
     
-    # Filtrer les convertisseurs si des formats sont spécifiés
+    # Filtrer les convertisseurs si des formats sont spÃ©cifiÃ©s
     if ($SourceFormat) {
         $converters = $converters | Where-Object { $_.SourceFormat -eq $SourceFormat }
     }
@@ -165,10 +165,10 @@ function Get-RegisteredConverters {
     # Enregistrer les modifications
     $content | Set-Content -Path $FilePath -Encoding UTF8
     
-    Write-Host "Stubs corrigés dans le fichier : $FilePath" -ForegroundColor Green
+    Write-Host "Stubs corrigÃ©s dans le fichier : $FilePath" -ForegroundColor Green
 }
 
-# Obtenir les fichiers de test à corriger
+# Obtenir les fichiers de test Ã  corriger
 $testFiles = @()
 
 if ($TestFile) {
@@ -192,5 +192,5 @@ foreach ($file in $testFiles) {
     Fix-TestStubsInFile -FilePath $file
 }
 
-Write-Host "`nLes stubs ont été corrigés dans tous les fichiers de test." -ForegroundColor Green
-Write-Host "Exécutez les tests pour vérifier si les problèmes ont été résolus." -ForegroundColor Green
+Write-Host "`nLes stubs ont Ã©tÃ© corrigÃ©s dans tous les fichiers de test." -ForegroundColor Green
+Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green

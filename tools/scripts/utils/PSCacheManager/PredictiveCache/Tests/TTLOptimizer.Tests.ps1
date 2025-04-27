@@ -1,41 +1,41 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module TTLOptimizer.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module TTLOptimizer
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour la base de données de test
+# CrÃ©er un chemin temporaire pour la base de donnÃ©es de test
 $testDatabasePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\TTLOptimizer_Test.db"
 $testDatabaseDir = Split-Path -Path $testDatabasePath -Parent
 if (-not (Test-Path -Path $testDatabaseDir)) {
     New-Item -Path $testDatabaseDir -ItemType Directory -Force | Out-Null
 }
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force
 }
 
 Describe "TTLOptimizer Module Tests" {
     BeforeAll {
-        # Créer un mock pour le UsageCollector
+        # CrÃ©er un mock pour le UsageCollector
         $script:mockUsageCollector = [PSCustomObject]@{
             GetMostAccessedKeys = {
                 param($limit, $timeWindowMinutes)
@@ -72,7 +72,7 @@ Describe "TTLOptimizer Module Tests" {
             }
         }
 
-        # Créer un mock pour le CacheManager
+        # CrÃ©er un mock pour le CacheManager
         $script:mockCacheManager = [PSCustomObject]@{
             DefaultTTLSeconds = 3600
             Contains          = { param($key) return $false }
@@ -137,7 +137,7 @@ Describe "TTLOptimizer Module Tests" {
 
     Context "TTLOptimizer Methods" {
         BeforeEach {
-            # Cette variable est utilisée dans chaque test de ce contexte
+            # Cette variable est utilisÃ©e dans chaque test de ce contexte
             $script:optimizer = New-TTLOptimizer -BaseCache $mockCacheManager -UsageCollector $mockUsageCollector
         }
 
@@ -193,7 +193,7 @@ Describe "TTLOptimizer Module Tests" {
             foreach ($key in $keys) {
                 $pattern = $optimizer.DetectKeyPattern($key)
                 $pattern | Should -Not -BeNullOrEmpty
-                $pattern | Should -Match "\*"  # Le pattern devrait contenir un caractère générique
+                $pattern | Should -Match "\*"  # Le pattern devrait contenir un caractÃ¨re gÃ©nÃ©rique
             }
         }
 

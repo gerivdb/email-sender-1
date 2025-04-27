@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur TestOmnibus pour les tests du module ProactiveOptimization.
 .DESCRIPTION
-    Cet adaptateur permet d'exécuter les tests du module ProactiveOptimization
-    dans le cadre de TestOmnibus, en utilisant les mocks nécessaires.
+    Cet adaptateur permet d'exÃ©cuter les tests du module ProactiveOptimization
+    dans le cadre de TestOmnibus, en utilisant les mocks nÃ©cessaires.
 .NOTES
     Auteur: Augment Agent
     Date: 2025-04-12
@@ -26,7 +26,7 @@ function Invoke-ProactiveOptimizationTests {
         [switch]$ShowDetailedResults
     )
 
-    # Vérifier que le chemin des tests existe
+    # VÃ©rifier que le chemin des tests existe
     if (-not (Test-Path -Path $TestPath)) {
         Write-Error "Le chemin des tests n'existe pas: $TestPath"
         return @{
@@ -39,12 +39,12 @@ function Invoke-ProactiveOptimizationTests {
         }
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Exécuter les tests avec les mocks
+    # ExÃ©cuter les tests avec les mocks
     $mockScriptPath = Join-Path -Path $TestPath -ChildPath "Run-AllTestsWithMocks.ps1"
 
     if (-not (Test-Path -Path $mockScriptPath)) {
@@ -59,7 +59,7 @@ function Invoke-ProactiveOptimizationTests {
         }
     }
 
-    # Préparer les paramètres pour le script de mocks
+    # PrÃ©parer les paramÃ¨tres pour le script de mocks
     $params = @{}
 
     if ($ShowDetailedResults) {
@@ -70,33 +70,33 @@ function Invoke-ProactiveOptimizationTests {
         $params.Add("GenerateCodeCoverage", $true)
     }
 
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $startTime = Get-Date
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     try {
-        # Capturer la sortie du script pour éviter qu'elle n'encombre la console
+        # Capturer la sortie du script pour Ã©viter qu'elle n'encombre la console
         $output = & $mockScriptPath @params -ErrorAction Stop 2>&1
 
-        # Extraire les résultats de la sortie
+        # Extraire les rÃ©sultats de la sortie
         $testsRun = 0
         $testsPassed = 0
         $testsFailed = 0
         $testsSkipped = 0
 
         foreach ($line in $output) {
-            if ($line -match "Tests exécutés: (\d+)") {
+            if ($line -match "Tests exÃ©cutÃ©s: (\d+)") {
                 $testsRun = [int]$Matches[1]
-            } elseif ($line -match "Tests réussis: (\d+)") {
+            } elseif ($line -match "Tests rÃ©ussis: (\d+)") {
                 $testsPassed = [int]$Matches[1]
-            } elseif ($line -match "Tests échoués: (\d+)") {
+            } elseif ($line -match "Tests Ã©chouÃ©s: (\d+)") {
                 $testsFailed = [int]$Matches[1]
-            } elseif ($line -match "Tests ignorés: (\d+)") {
+            } elseif ($line -match "Tests ignorÃ©s: (\d+)") {
                 $testsSkipped = [int]$Matches[1]
             }
         }
 
-        # Créer un objet de résultats
+        # CrÃ©er un objet de rÃ©sultats
         $results = [PSCustomObject]@{
             TotalCount   = $testsRun
             PassedCount  = $testsPassed
@@ -105,10 +105,10 @@ function Invoke-ProactiveOptimizationTests {
             NotRunCount  = 0
         }
     } catch {
-        Write-Error "Erreur lors de l'exécution des tests: $_"
+        Write-Error "Erreur lors de l'exÃ©cution des tests: $_"
         return @{
             Success      = $false
-            ErrorMessage = "Erreur lors de l'exécution des tests: $_"
+            ErrorMessage = "Erreur lors de l'exÃ©cution des tests: $_"
             TestsRun     = 0
             TestsPassed  = 0
             TestsFailed  = 0
@@ -119,7 +119,7 @@ function Invoke-ProactiveOptimizationTests {
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalMilliseconds
 
-    # Utiliser les résultats déjà extraits ou les obtenir de l'objet de résultats
+    # Utiliser les rÃ©sultats dÃ©jÃ  extraits ou les obtenir de l'objet de rÃ©sultats
     if (-not $testsRun) {
         $testsRun = $results.TotalCount
         $testsPassed = $results.PassedCount
@@ -127,7 +127,7 @@ function Invoke-ProactiveOptimizationTests {
         $testsSkipped = $results.SkippedCount
     }
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtmlReport) {
         $reportScriptPath = Join-Path -Path $TestPath -ChildPath "Generate-TestReport.ps1"
 
@@ -136,10 +136,10 @@ function Invoke-ProactiveOptimizationTests {
         }
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return @{
         Success      = ($testsFailed -eq 0)
-        ErrorMessage = if ($testsFailed -gt 0) { "$testsFailed tests ont échoué" } else { "" }
+        ErrorMessage = if ($testsFailed -gt 0) { "$testsFailed tests ont Ã©chouÃ©" } else { "" }
         TestsRun     = $testsRun
         TestsPassed  = $testsPassed
         TestsFailed  = $testsFailed

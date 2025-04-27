@@ -1,4 +1,4 @@
-# Script pour tester les workflows n8n avec la nouvelle structure
+﻿# Script pour tester les workflows n8n avec la nouvelle structure
 
 Write-Host "=== Test des workflows n8n avec la nouvelle structure ===" -ForegroundColor Cyan
 

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour les fonctionnalités incrémentales du module FileContentIndexer.
+    Tests unitaires pour les fonctionnalitÃ©s incrÃ©mentales du module FileContentIndexer.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctionnalités d'indexation incrémentale
-    et parallèle du module FileContentIndexer en utilisant le framework Pester.
+    Ce script contient des tests unitaires pour les fonctionnalitÃ©s d'indexation incrÃ©mentale
+    et parallÃ¨le du module FileContentIndexer en utilisant le framework Pester.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -13,25 +13,25 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\FileContentIndexer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Module FileContentIndexer non trouvé à l'emplacement: $moduleToTest"
+    throw "Module FileContentIndexer non trouvÃ© Ã  l'emplacement: $moduleToTest"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $moduleToTest -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "FileContentIndexerIncrementalTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -49,7 +49,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @"
 # Test PowerShell Script
 Import-Module MyModule
@@ -95,12 +95,12 @@ $testPyScript = New-TestFile -Path "test.py" -Content $pyScriptContent
 # Tests Pester
 Describe "FileContentIndexer Incremental Tests" {
     BeforeAll {
-        # Créer un indexeur pour les tests
+        # CrÃ©er un indexeur pour les tests
         $script:indexer = New-FileContentIndexer -IndexPath $testDir -PersistIndices $true -MaxConcurrentIndexing 4 -EnableIncrementalIndexing $true
     }
 
-    Context "Constructeur avec paramètres supplémentaires" {
-        It "Crée un indexeur avec les paramètres supplémentaires" {
+    Context "Constructeur avec paramÃ¨tres supplÃ©mentaires" {
+        It "CrÃ©e un indexeur avec les paramÃ¨tres supplÃ©mentaires" {
             $indexer | Should -Not -BeNullOrEmpty
             $indexer.GetType().Name | Should -Be "FileContentIndexer"
             $indexer.MaxConcurrentIndexing | Should -Be 4
@@ -108,8 +108,8 @@ Describe "FileContentIndexer Incremental Tests" {
         }
     }
 
-    Context "Indexation parallèle" {
-        It "Indexe plusieurs fichiers en parallèle" {
+    Context "Indexation parallÃ¨le" {
+        It "Indexe plusieurs fichiers en parallÃ¨le" {
             $files = @($testPsScript, $testPyScript)
             $results = New-ParallelFileIndices -Indexer $indexer -FilePaths $files
 
@@ -122,8 +122,8 @@ Describe "FileContentIndexer Incremental Tests" {
         }
     }
 
-    Context "Indexation incrémentale" {
-        It "Indexe un fichier de manière incrémentale" {
+    Context "Indexation incrÃ©mentale" {
+        It "Indexe un fichier de maniÃ¨re incrÃ©mentale" {
             # Indexer le fichier original
             New-FileIndex -Indexer $indexer -FilePath $testPsScript | Out-Null
 
@@ -131,7 +131,7 @@ Describe "FileContentIndexer Incremental Tests" {
             $oldContent = $psScriptContent
             $newContent = $psScriptContent.Replace("Test-Function", "New-TestFunction").Replace("$testVariable", "$newVariable")
 
-            # Indexer de manière incrémentale
+            # Indexer de maniÃ¨re incrÃ©mentale
             $incrementalIndex = New-IncrementalFileIndex -Indexer $indexer -FilePath $testPsScript -OldContent $oldContent -NewContent $newContent
 
             $incrementalIndex | Should -Not -BeNullOrEmpty
@@ -141,7 +141,7 @@ Describe "FileContentIndexer Incremental Tests" {
             $incrementalIndex.ChangedFunctions | Should -Contain "New-TestFunction"
         }
 
-        It "Détecte correctement les lignes modifiées" {
+        It "DÃ©tecte correctement les lignes modifiÃ©es" {
             # Indexer le fichier original
             New-FileIndex -Indexer $indexer -FilePath $testPsScript | Out-Null
 
@@ -149,12 +149,12 @@ Describe "FileContentIndexer Incremental Tests" {
             $oldContent = $psScriptContent
             $newContent = $psScriptContent.Replace("# Test PowerShell Script", "# Modified PowerShell Script")
 
-            # Indexer de manière incrémentale
+            # Indexer de maniÃ¨re incrÃ©mentale
             $incrementalIndex = New-IncrementalFileIndex -Indexer $indexer -FilePath $testPsScript -OldContent $oldContent -NewContent $newContent
 
             $incrementalIndex | Should -Not -BeNullOrEmpty
             $incrementalIndex.ChangedLines.Count | Should -BeGreaterThan 0
-            $incrementalIndex.ChangedLines | Should -Contain 1  # La première ligne a été modifiée
+            $incrementalIndex.ChangedLines | Should -Contain 1  # La premiÃ¨re ligne a Ã©tÃ© modifiÃ©e
         }
     }
 
@@ -164,5 +164,5 @@ Describe "FileContentIndexer Incremental Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

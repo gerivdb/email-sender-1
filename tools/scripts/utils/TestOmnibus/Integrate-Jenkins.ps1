@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Intègre TestOmnibus avec Jenkins.
+    IntÃ¨gre TestOmnibus avec Jenkins.
 .DESCRIPTION
-    Ce script intègre TestOmnibus avec Jenkins en générant des rapports JUnit
+    Ce script intÃ¨gre TestOmnibus avec Jenkins en gÃ©nÃ©rant des rapports JUnit
     et en les publiant sur un serveur Jenkins.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER JenkinsUrl
     L'URL du serveur Jenkins.
 .PARAMETER JenkinsJob
@@ -15,9 +15,9 @@
 .PARAMETER JenkinsUser
     Le nom d'utilisateur Jenkins.
 .PARAMETER JenkinsResultsPath
-    Chemin où enregistrer les résultats Jenkins.
+    Chemin oÃ¹ enregistrer les rÃ©sultats Jenkins.
 .PARAMETER SimulationMode
-    Active le mode simulation (ne tente pas réellement de se connecter à Jenkins).
+    Active le mode simulation (ne tente pas rÃ©ellement de se connecter Ã  Jenkins).
 .EXAMPLE
     .\Integrate-Jenkins.ps1 -TestPath "D:\Tests" -JenkinsUrl "http://jenkins.example.com" -JenkinsJob "testomnibus" -JenkinsToken "token" -JenkinsUser "user"
 .EXAMPLE
@@ -52,18 +52,18 @@ param (
     [switch]$SimulationMode
 )
 
-# Vérifier que le chemin des tests existe
+# VÃ©rifier que le chemin des tests existe
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $JenkinsResultsPath)) {
     New-Item -Path $JenkinsResultsPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour convertir les résultats de TestOmnibus au format JUnit
+# Fonction pour convertir les rÃ©sultats de TestOmnibus au format JUnit
 function Convert-TestOmnibusToJUnit {
     [CmdletBinding()]
     param (
@@ -75,15 +75,15 @@ function Convert-TestOmnibusToJUnit {
     )
     
     try {
-        # Charger les résultats de TestOmnibus
+        # Charger les rÃ©sultats de TestOmnibus
         $results = Import-Clixml -Path $ResultsPath
         
-        # Créer le document XML
+        # CrÃ©er le document XML
         $xmlDoc = New-Object System.Xml.XmlDocument
         $xmlDeclaration = $xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", $null)
         $xmlDoc.AppendChild($xmlDeclaration) | Out-Null
         
-        # Créer l'élément racine
+        # CrÃ©er l'Ã©lÃ©ment racine
         $testSuiteElement = $xmlDoc.CreateElement("testsuite")
         $testSuiteElement.SetAttribute("name", "TestOmnibus")
         $testSuiteElement.SetAttribute("tests", $results.Count)
@@ -94,14 +94,14 @@ function Convert-TestOmnibusToJUnit {
         $testSuiteElement.SetAttribute("time", [math]::Round(($results | Measure-Object -Property Duration -Sum).Sum / 1000, 3))
         $xmlDoc.AppendChild($testSuiteElement) | Out-Null
         
-        # Ajouter les résultats des tests
+        # Ajouter les rÃ©sultats des tests
         foreach ($result in $results) {
             $testCaseElement = $xmlDoc.CreateElement("testcase")
             $testCaseElement.SetAttribute("name", $result.Name)
             $testCaseElement.SetAttribute("classname", "TestOmnibus")
             $testCaseElement.SetAttribute("time", [math]::Round($result.Duration / 1000, 3))
             
-            # Ajouter les détails d'échec si le test a échoué
+            # Ajouter les dÃ©tails d'Ã©chec si le test a Ã©chouÃ©
             if (-not $result.Success) {
                 $failureElement = $xmlDoc.CreateElement("failure")
                 $failureElement.SetAttribute("message", $result.ErrorMessage)
@@ -120,13 +120,13 @@ function Convert-TestOmnibusToJUnit {
         return $junitPath
     }
     catch {
-        Write-Error "Erreur lors de la conversion des résultats au format JUnit: $_"
+        Write-Error "Erreur lors de la conversion des rÃ©sultats au format JUnit: $_"
         return $null
     }
 }
 
-# Exécuter TestOmnibus
-Write-Host "Exécution de TestOmnibus..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus
+Write-Host "ExÃ©cution de TestOmnibus..." -ForegroundColor Cyan
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
 if (-not (Test-Path -Path $testOmnibusPath)) {
@@ -134,67 +134,67 @@ if (-not (Test-Path -Path $testOmnibusPath)) {
     return 1
 }
 
-# Exécuter TestOmnibus
+# ExÃ©cuter TestOmnibus
 $testOmnibusParams = @{
     Path = $TestPath
 }
 
 $result = & $testOmnibusPath @testOmnibusParams
 
-# Vérifier si des résultats ont été générés
+# VÃ©rifier si des rÃ©sultats ont Ã©tÃ© gÃ©nÃ©rÃ©s
 $resultsPath = Join-Path -Path (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results") -ChildPath "results.xml"
 if (-not (Test-Path -Path $resultsPath)) {
-    Write-Error "Aucun résultat n'a été généré par TestOmnibus."
+    Write-Error "Aucun rÃ©sultat n'a Ã©tÃ© gÃ©nÃ©rÃ© par TestOmnibus."
     return 1
 }
 
-# Convertir les résultats au format JUnit
-Write-Host "Conversion des résultats au format JUnit..." -ForegroundColor Cyan
+# Convertir les rÃ©sultats au format JUnit
+Write-Host "Conversion des rÃ©sultats au format JUnit..." -ForegroundColor Cyan
 $junitPath = Convert-TestOmnibusToJUnit -ResultsPath $resultsPath -JenkinsResultsPath $JenkinsResultsPath
 
 if (-not $junitPath) {
-    Write-Error "Erreur lors de la conversion des résultats au format JUnit."
+    Write-Error "Erreur lors de la conversion des rÃ©sultats au format JUnit."
     return 1
 }
 
-Write-Host "Résultats JUnit générés: $junitPath" -ForegroundColor Green
+Write-Host "RÃ©sultats JUnit gÃ©nÃ©rÃ©s: $junitPath" -ForegroundColor Green
 
-# Publier les résultats sur Jenkins
-Write-Host "Publication des résultats sur Jenkins..." -ForegroundColor Cyan
+# Publier les rÃ©sultats sur Jenkins
+Write-Host "Publication des rÃ©sultats sur Jenkins..." -ForegroundColor Cyan
 
 try {
-    # Vérifier si le mode simulation est activé
+    # VÃ©rifier si le mode simulation est activÃ©
     if ($SimulationMode) {
-        # Simuler l'envoi à Jenkins
-        Write-Host "Mode simulation activé. Aucune connexion réelle à Jenkins ne sera effectuée." -ForegroundColor Yellow
-        Write-Host "Les résultats seraient envoyés à $JenkinsUrl/job/$JenkinsJob/build" -ForegroundColor Yellow
-        Write-Host "Simulation réussie." -ForegroundColor Green
+        # Simuler l'envoi Ã  Jenkins
+        Write-Host "Mode simulation activÃ©. Aucune connexion rÃ©elle Ã  Jenkins ne sera effectuÃ©e." -ForegroundColor Yellow
+        Write-Host "Les rÃ©sultats seraient envoyÃ©s Ã  $JenkinsUrl/job/$JenkinsJob/build" -ForegroundColor Yellow
+        Write-Host "Simulation rÃ©ussie." -ForegroundColor Green
     }
     else {
-        # Créer une archive des résultats JUnit
+        # CrÃ©er une archive des rÃ©sultats JUnit
         $archivePath = Join-Path -Path $env:TEMP -ChildPath "jenkins-results.zip"
         Compress-Archive -Path "$JenkinsResultsPath\*" -DestinationPath $archivePath -Force
         
         # Construire l'URL de l'API Jenkins
         $apiUrl = "$JenkinsUrl/job/$JenkinsJob/build"
         
-        # Créer les informations d'authentification
+        # CrÃ©er les informations d'authentification
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $JenkinsUser, $JenkinsToken)))
         
-        # Créer les en-têtes de la requête
+        # CrÃ©er les en-tÃªtes de la requÃªte
         $headers = @{
             Authorization = "Basic $base64AuthInfo"
         }
         
-        # Envoyer la requête à Jenkins
+        # Envoyer la requÃªte Ã  Jenkins
         $jenkinsResponse = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Post -InFile $archivePath -ContentType "application/zip"
         
-        # Afficher des informations sur la réponse si nécessaire
+        # Afficher des informations sur la rÃ©ponse si nÃ©cessaire
         if ($jenkinsResponse) {
-            Write-Verbose "Réponse de Jenkins: $jenkinsResponse"
+            Write-Verbose "RÃ©ponse de Jenkins: $jenkinsResponse"
         }
         
-        Write-Host "Résultats publiés avec succès sur Jenkins." -ForegroundColor Green
+        Write-Host "RÃ©sultats publiÃ©s avec succÃ¨s sur Jenkins." -ForegroundColor Green
         
         # Supprimer l'archive temporaire
         if (Test-Path $archivePath) {
@@ -205,7 +205,7 @@ try {
     Write-Host "URL du job: $JenkinsUrl/job/$JenkinsJob" -ForegroundColor Cyan
 }
 catch {
-    Write-Error "Erreur lors de la publication des résultats sur Jenkins: $_"
+    Write-Error "Erreur lors de la publication des rÃ©sultats sur Jenkins: $_"
     return 1
 }
 

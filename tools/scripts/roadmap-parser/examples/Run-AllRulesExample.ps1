@@ -1,10 +1,10 @@
-# Run-AllRulesExample.ps1
-# Exemple d'utilisation du script pour exécuter toutes les règles de détection d'anomalies SQL Server
+﻿# Run-AllRulesExample.ps1
+# Exemple d'utilisation du script pour exÃ©cuter toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server
 
-# Chemin du script d'exécution de toutes les règles
+# Chemin du script d'exÃ©cution de toutes les rÃ¨gles
 $runAllRulesScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\scripts\Run-AllSqlPermissionRules.ps1"
 
-# Paramètres d'exécution
+# ParamÃ¨tres d'exÃ©cution
 $params = @{
     ServerInstance = "localhost\SQLEXPRESS"  # Remplacer par votre instance SQL Server
     OutputPath = "C:\Temp\SqlPermissionAnomaliesReport.html"
@@ -13,10 +13,10 @@ $params = @{
     Verbose = $true
 }
 
-# Exécuter toutes les règles
+# ExÃ©cuter toutes les rÃ¨gles
 & $runAllRulesScriptPath @params
 
-# Exemple avec envoi d'email (décommenter et modifier les paramètres pour utiliser)
+# Exemple avec envoi d'email (dÃ©commenter et modifier les paramÃ¨tres pour utiliser)
 <#
 $emailParams = @{
     ServerInstance = "localhost\SQLEXPRESS"

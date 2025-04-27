@@ -1,6 +1,6 @@
-# Test simplifié pour la fonction Analyze-SqlServerPermission avec analyse au niveau objet
+﻿# Test simplifiÃ© pour la fonction Analyze-SqlServerPermission avec analyse au niveau objet
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $scriptPath = "$PSScriptRoot\..\Functions\Public\Analyze-SqlServerPermission.ps1"
 if (Test-Path $scriptPath) {
     Write-Host "Chargement du script: $scriptPath" -ForegroundColor Green
@@ -10,16 +10,16 @@ if (Test-Path $scriptPath) {
     exit 1
 }
 
-# Vérifier que la fonction est bien importée
+# VÃ©rifier que la fonction est bien importÃ©e
 if (-not (Get-Command -Name Analyze-SqlServerPermission -ErrorAction SilentlyContinue)) {
-    Write-Error "La fonction Analyze-SqlServerPermission n'a pas été correctement importée."
+    Write-Error "La fonction Analyze-SqlServerPermission n'a pas Ã©tÃ© correctement importÃ©e."
     exit 1
 } else {
-    Write-Host "La fonction Analyze-SqlServerPermission a été correctement importée." -ForegroundColor Green
+    Write-Host "La fonction Analyze-SqlServerPermission a Ã©tÃ© correctement importÃ©e." -ForegroundColor Green
 
-    # Afficher les paramètres de la fonction
+    # Afficher les paramÃ¨tres de la fonction
     $cmdInfo = Get-Command -Name Analyze-SqlServerPermission
-    Write-Host "Paramètres de la fonction:" -ForegroundColor Cyan
+    Write-Host "ParamÃ¨tres de la fonction:" -ForegroundColor Cyan
     foreach ($param in $cmdInfo.Parameters.Keys) {
         if ($param -notin [System.Management.Automation.PSCmdlet]::CommonParameters) {
             Write-Host "  - $param" -ForegroundColor Gray
@@ -27,11 +27,11 @@ if (-not (Get-Command -Name Analyze-SqlServerPermission -ErrorAction SilentlyCon
     }
 }
 
-# Créer un dossier temporaire pour les rapports
+# CrÃ©er un dossier temporaire pour les rapports
 $TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
 New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
 
-# Mock pour Invoke-Sqlcmd - Rôles serveur
+# Mock pour Invoke-Sqlcmd - RÃ´les serveur
 function Invoke-Sqlcmd {
     param (
         [Parameter(Mandatory = $false)]
@@ -50,7 +50,7 @@ function Invoke-Sqlcmd {
         [string]$ErrorAction
     )
 
-    # Requête pour obtenir la liste des bases de données
+    # RequÃªte pour obtenir la liste des bases de donnÃ©es
     if ($Query -like "*sys.databases*") {
         return @(
             [PSCustomObject]@{
@@ -61,7 +61,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les rôles serveur
+    # RequÃªte pour obtenir les rÃ´les serveur
     elseif ($Query -like "*sys.server_role_members*") {
         return @(
             [PSCustomObject]@{
@@ -80,7 +80,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les permissions serveur
+    # RequÃªte pour obtenir les permissions serveur
     elseif ($Query -like "*sys.server_permissions*") {
         return @(
             [PSCustomObject]@{
@@ -101,7 +101,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les logins serveur
+    # RequÃªte pour obtenir les logins serveur
     elseif ($Query -like "*sys.server_principals*" -and $Query -like "*LOGINPROPERTY*") {
         return @(
             [PSCustomObject]@{
@@ -134,7 +134,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les rôles de base de données
+    # RequÃªte pour obtenir les rÃ´les de base de donnÃ©es
     elseif ($Query -like "*sys.database_role_members*") {
         return @(
             [PSCustomObject]@{
@@ -153,7 +153,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les permissions de base de données
+    # RequÃªte pour obtenir les permissions de base de donnÃ©es
     elseif ($Query -like "*sys.database_permissions*" -and $Query -notlike "*sys.objects*") {
         return @(
             [PSCustomObject]@{
@@ -174,7 +174,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les utilisateurs de base de données
+    # RequÃªte pour obtenir les utilisateurs de base de donnÃ©es
     elseif ($Query -like "*sys.database_principals*" -and $Query -notlike "*sys.database_role_members*") {
         return @(
             [PSCustomObject]@{
@@ -206,7 +206,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les objets de base de données
+    # RequÃªte pour obtenir les objets de base de donnÃ©es
     elseif ($Query -like "*sys.objects*" -and $Query -like "*OBJECT_SCHEMA_NAME*" -and $Query -notlike "*sys.database_permissions*") {
         return @(
             [PSCustomObject]@{
@@ -243,7 +243,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les permissions au niveau objet
+    # RequÃªte pour obtenir les permissions au niveau objet
     elseif ($Query -like "*sys.database_permissions*" -and $Query -like "*sys.objects*") {
         return @(
             [PSCustomObject]@{
@@ -321,10 +321,10 @@ function Import-Module {
 # Tester la fonction
 Write-Host "Test de la fonction Analyze-SqlServerPermission avec analyse au niveau objet..." -ForegroundColor Cyan
 
-# Définir la variable d'environnement pour le test
+# DÃ©finir la variable d'environnement pour le test
 $env:PESTER_TEST_RUN = $true
 
-# Créer une fonction de test qui utilise la fonction importée
+# CrÃ©er une fonction de test qui utilise la fonction importÃ©e
 function Test-AnalyzeSqlServerPermission {
     param (
         [string]$ServerInstance,
@@ -333,7 +333,7 @@ function Test-AnalyzeSqlServerPermission {
     )
 
     try {
-        # Appeler la fonction avec les paramètres fournis
+        # Appeler la fonction avec les paramÃ¨tres fournis
         $result = Analyze-SqlServerPermission -ServerInstance $ServerInstance -IncludeDatabaseLevel $IncludeDatabaseLevel -IncludeObjectLevel $IncludeObjectLevel
         return $result
     } catch {
@@ -345,63 +345,63 @@ function Test-AnalyzeSqlServerPermission {
 # Test avec analyse au niveau objet
 $result = Test-AnalyzeSqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -IncludeObjectLevel $true
 
-# Vérifier les résultats
-Write-Host "`nVérification des résultats..." -ForegroundColor Cyan
+# VÃ©rifier les rÃ©sultats
+Write-Host "`nVÃ©rification des rÃ©sultats..." -ForegroundColor Cyan
 
-# Vérifier les propriétés de base
+# VÃ©rifier les propriÃ©tÃ©s de base
 if ($result -and $result.ServerInstance -eq "localhost\SQLEXPRESS") {
     Write-Host "- ServerInstance: OK" -ForegroundColor Green
 } else {
-    Write-Host "- ServerInstance: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerInstance: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.IncludeObjectLevel -eq $true) {
     Write-Host "- IncludeObjectLevel: OK" -ForegroundColor Green
 } else {
-    Write-Host "- IncludeObjectLevel: ÉCHEC" -ForegroundColor Red
+    Write-Host "- IncludeObjectLevel: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.DatabaseObjects -and $result.DatabaseObjects.Count -gt 0) {
     Write-Host "- DatabaseObjects: OK (Count: $($result.DatabaseObjects.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'objets
+    # VÃ©rifier les types d'objets
     $objectTypes = $result.DatabaseObjects | ForEach-Object { $_.ObjectType } | Sort-Object -Unique
-    Write-Host "  Types d'objets détectés: $($objectTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'objets dÃ©tectÃ©s: $($objectTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- DatabaseObjects: ÉCHEC" -ForegroundColor Red
+    Write-Host "- DatabaseObjects: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ObjectPermissions -and $result.ObjectPermissions.Count -gt 0) {
     Write-Host "- ObjectPermissions: OK (Count: $($result.ObjectPermissions.Count))" -ForegroundColor Green
 
-    # Vérifier les utilisateurs avec des permissions
+    # VÃ©rifier les utilisateurs avec des permissions
     $users = $result.ObjectPermissions | ForEach-Object { $_.GranteeName } | Sort-Object -Unique
     Write-Host "  Utilisateurs avec des permissions sur des objets: $($users -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- ObjectPermissions: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ObjectPermissions: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ObjectPermissionAnomalies -and $result.ObjectPermissionAnomalies.Count -gt 0) {
     Write-Host "- ObjectPermissionAnomalies: OK (Count: $($result.ObjectPermissionAnomalies.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'anomalies
+    # VÃ©rifier les types d'anomalies
     $anomalyTypes = $result.ObjectPermissionAnomalies | Group-Object -Property AnomalyType | Select-Object -ExpandProperty Name
-    Write-Host "  Types d'anomalies détectés au niveau objet: $($anomalyTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'anomalies dÃ©tectÃ©s au niveau objet: $($anomalyTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- ObjectPermissionAnomalies: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ObjectPermissionAnomalies: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport
+# Test de gÃ©nÃ©ration de rapport
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlObjectPermissions.html"
 Test-AnalyzeSqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -IncludeObjectLevel $true | Export-PermissionReport -OutputPath $outputPath -OutputFormat "HTML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport HTML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport HTML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport CSV
+# Test de gÃ©nÃ©ration de rapport CSV
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlObjectPermissions.csv"
 Test-AnalyzeSqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -IncludeObjectLevel $true | Export-PermissionReport -OutputPath $outputPath -OutputFormat "CSV"
 
@@ -410,19 +410,19 @@ $objectAnomaliesPath = [System.IO.Path]::ChangeExtension($outputPath, "object_an
 $databaseObjectsPath = [System.IO.Path]::ChangeExtension($outputPath, "database_objects.csv")
 
 if ((Test-Path -Path $objectPermissionsPath) -or (Test-Path -Path $objectAnomaliesPath) -or (Test-Path -Path $databaseObjectsPath)) {
-    Write-Host "- Génération de rapport CSV: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport CSV: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport JSON
+# Test de gÃ©nÃ©ration de rapport JSON
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlObjectPermissions.json"
 Test-AnalyzeSqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -IncludeObjectLevel $true | Export-PermissionReport -OutputPath $outputPath -OutputFormat "JSON"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport JSON: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport JSON: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: Ã‰CHEC" -ForegroundColor Red
 }
 
 # Test sans analyse au niveau objet
@@ -431,7 +431,7 @@ $result = Test-AnalyzeSqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 if ($result -and $result.IncludeObjectLevel -eq $false -and $result.ObjectPermissions.Count -eq 0) {
     Write-Host "- Test sans analyse au niveau objet: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Test sans analyse au niveau objet: ÉCHEC" -ForegroundColor Red
+    Write-Host "- Test sans analyse au niveau objet: Ã‰CHEC" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -439,4 +439,4 @@ if (Test-Path -Path $TempFolder) {
     Remove-Item -Path $TempFolder -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host "`nTests terminés." -ForegroundColor Cyan
+Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan

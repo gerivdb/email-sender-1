@@ -1,5 +1,5 @@
-# Export-SqlPermissionsToPowerBI.ps1
-# Script pour exporter les données d'anomalies de permissions SQL Server vers Power BI
+﻿# Export-SqlPermissionsToPowerBI.ps1
+# Script pour exporter les donnÃ©es d'anomalies de permissions SQL Server vers Power BI
 
 [CmdletBinding()]
 param (
@@ -27,7 +27,7 @@ begin {
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\module" -Resolve
     Import-Module $modulePath -Force
 
-    # Paramètres de connexion SQL Server
+    # ParamÃ¨tres de connexion SQL Server
     $sqlParams = @{
         ServerInstance = $ServerInstance
         Database = "master"
@@ -37,13 +37,13 @@ begin {
         $sqlParams.Credential = $Credential
     }
 
-    # Créer le dossier de sortie si nécessaire
+    # CrÃ©er le dossier de sortie si nÃ©cessaire
     if (-not (Test-Path -Path $OutputFolder)) {
         New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
-        Write-Verbose "Dossier de sortie créé: $OutputFolder"
+        Write-Verbose "Dossier de sortie crÃ©Ã©: $OutputFolder"
     }
 
-    # Fonction pour générer un modèle Power BI
+    # Fonction pour gÃ©nÃ©rer un modÃ¨le Power BI
     function Generate-PowerBITemplate {
         param (
             [Parameter(Mandatory = $true)]
@@ -83,7 +83,7 @@ begin {
                             "z": 0,
                             "width": 640,
                             "height": 360,
-                            "config": "{\"name\":\"a731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"width\":640,\"height\":360,\"z\":0}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(TotalAnomalies)\"}],\"Series\":[{\"queryRef\":\"Severity\"}],\"XAxis\":[{\"queryRef\":\"ReportDate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Anomalies\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ReportDate\"},\"Name\":\"ReportDate\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"TotalAnomalies\"}},\"Function\":0},\"Name\":\"Sum(TotalAnomalies)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Évolution des anomalies par sévérité'\"}}}}}]}}}",
+                            "config": "{\"name\":\"a731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"width\":640,\"height\":360,\"z\":0}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(TotalAnomalies)\"}],\"Series\":[{\"queryRef\":\"Severity\"}],\"XAxis\":[{\"queryRef\":\"ReportDate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Anomalies\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"ReportDate\"},\"Name\":\"ReportDate\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"TotalAnomalies\"}},\"Function\":0},\"Name\":\"Sum(TotalAnomalies)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Ã‰volution des anomalies par sÃ©vÃ©ritÃ©'\"}}}}}]}}}",
                             "filters": []
                         },
                         {
@@ -92,7 +92,7 @@ begin {
                             "z": 1,
                             "width": 640,
                             "height": 360,
-                            "config": "{\"name\":\"b731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":0,\"width\":640,\"height\":360,\"z\":1}}],\"singleVisual\":{\"visualType\":\"pieChart\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(TotalAnomalies)\"}],\"Legend\":[{\"queryRef\":\"Severity\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Anomalies\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"TotalAnomalies\"}},\"Function\":0},\"Name\":\"Sum(TotalAnomalies)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Répartition des anomalies par sévérité'\"}}}}}]}}}",
+                            "config": "{\"name\":\"b731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":0,\"width\":640,\"height\":360,\"z\":1}}],\"singleVisual\":{\"visualType\":\"pieChart\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(TotalAnomalies)\"}],\"Legend\":[{\"queryRef\":\"Severity\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"Anomalies\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"TotalAnomalies\"}},\"Function\":0},\"Name\":\"Sum(TotalAnomalies)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'RÃ©partition des anomalies par sÃ©vÃ©ritÃ©'\"}}}}}]}}}",
                             "filters": []
                         },
                         {
@@ -101,7 +101,7 @@ begin {
                             "z": 2,
                             "width": 640,
                             "height": 360,
-                            "config": "{\"name\":\"c731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":360,\"width\":640,\"height\":360,\"z\":2}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(Count)\"}],\"Category\":[{\"queryRef\":\"RuleId\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"Rules\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"RuleId\"},\"Name\":\"RuleId\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Count\"}},\"Function\":0},\"Name\":\"Sum(Count)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Nombre d\\'anomalies par règle'\"}}}}}]}}}",
+                            "config": "{\"name\":\"c731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":360,\"width\":640,\"height\":360,\"z\":2}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(Count)\"}],\"Category\":[{\"queryRef\":\"RuleId\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"Rules\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"RuleId\"},\"Name\":\"RuleId\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Count\"}},\"Function\":0},\"Name\":\"Sum(Count)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Nombre d\\'anomalies par rÃ¨gle'\"}}}}}]}}}",
                             "filters": []
                         },
                         {
@@ -110,7 +110,7 @@ begin {
                             "z": 3,
                             "width": 640,
                             "height": 360,
-                            "config": "{\"name\":\"d731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":360,\"width\":640,\"height\":360,\"z\":3}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"RuleId\"},{\"queryRef\":\"Name\"},{\"queryRef\":\"Severity\"},{\"queryRef\":\"Count\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"Rules\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"RuleId\"},\"Name\":\"RuleId\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Name\"},\"Name\":\"Name\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Count\"},\"Name\":\"Count\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Détails des règles'\"}}}}}]}}}",
+                            "config": "{\"name\":\"d731e50c9ddf7c5c2905\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":360,\"width\":640,\"height\":360,\"z\":3}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"RuleId\"},{\"queryRef\":\"Name\"},{\"queryRef\":\"Severity\"},{\"queryRef\":\"Count\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"Rules\"}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"RuleId\"},\"Name\":\"RuleId\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Name\"},\"Name\":\"Name\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Severity\"},\"Name\":\"Severity\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"Count\"},\"Name\":\"Count\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'DÃ©tails des rÃ¨gles'\"}}}}}]}}}",
                             "filters": []
                         }
                     ]
@@ -122,35 +122,35 @@ begin {
 "@
 
         $templateJson | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Verbose "Modèle Power BI généré: $OutputPath"
+        Write-Verbose "ModÃ¨le Power BI gÃ©nÃ©rÃ©: $OutputPath"
     }
 }
 
 process {
     try {
-        Write-Verbose "Exportation des données d'anomalies SQL Server pour l'instance: $ServerInstance"
+        Write-Verbose "Exportation des donnÃ©es d'anomalies SQL Server pour l'instance: $ServerInstance"
 
-        # Analyser les permissions SQL Server avec toutes les règles
+        # Analyser les permissions SQL Server avec toutes les rÃ¨gles
         $analyzeParams = $sqlParams.Clone()
         $analyzeParams.IncludeObjectLevel = $IncludeObjectLevel
         $analyzeParams.ExcludeDatabases = $ExcludeDatabases
         $analyzeParams.OutputFormat = "JSON"
 
-        Write-Verbose "Exécution de l'analyse des permissions..."
+        Write-Verbose "ExÃ©cution de l'analyse des permissions..."
         $result = Analyze-SqlServerPermission @analyzeParams
 
-        Write-Verbose "Analyse terminée. Nombre total d'anomalies détectées: $($result.TotalAnomalies)"
+        Write-Verbose "Analyse terminÃ©e. Nombre total d'anomalies dÃ©tectÃ©es: $($result.TotalAnomalies)"
 
-        # Préparer les données pour l'exportation
+        # PrÃ©parer les donnÃ©es pour l'exportation
         $reportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         
-        # Données des anomalies par sévérité
+        # DonnÃ©es des anomalies par sÃ©vÃ©ritÃ©
         $anomaliesBySeverity = @(
             [PSCustomObject]@{
                 ReportDate = $reportDate
-                Severity = "Élevée"
+                Severity = "Ã‰levÃ©e"
                 TotalAnomalies = ($result.ServerAnomalies + $result.DatabaseAnomalies + $result.ObjectAnomalies | 
-                                 Where-Object { $_.Severity -eq "Élevée" }).Count
+                                 Where-Object { $_.Severity -eq "Ã‰levÃ©e" }).Count
             },
             [PSCustomObject]@{
                 ReportDate = $reportDate
@@ -166,7 +166,7 @@ process {
             }
         )
 
-        # Données des anomalies par règle
+        # DonnÃ©es des anomalies par rÃ¨gle
         $ruleStats = @{}
         
         # Compter les anomalies au niveau serveur
@@ -182,7 +182,7 @@ process {
             $ruleStats[$anomaly.RuleId].Count++
         }
 
-        # Compter les anomalies au niveau base de données
+        # Compter les anomalies au niveau base de donnÃ©es
         foreach ($anomaly in $result.DatabaseAnomalies) {
             if (-not $ruleStats.ContainsKey($anomaly.RuleId)) {
                 $ruleStats[$anomaly.RuleId] = @{
@@ -210,7 +210,7 @@ process {
 
         $ruleData = $ruleStats.Values | Sort-Object -Property Count -Descending
 
-        # Détails des anomalies
+        # DÃ©tails des anomalies
         $anomalyDetails = @()
         
         foreach ($anomaly in $result.ServerAnomalies) {
@@ -259,14 +259,14 @@ process {
             }
         }
 
-        # Créer le dossier de données si nécessaire
+        # CrÃ©er le dossier de donnÃ©es si nÃ©cessaire
         $dataFolder = Join-Path -Path $OutputFolder -ChildPath "Data"
         if (-not (Test-Path -Path $dataFolder)) {
             New-Item -Path $dataFolder -ItemType Directory -Force | Out-Null
-            Write-Verbose "Dossier de données créé: $dataFolder"
+            Write-Verbose "Dossier de donnÃ©es crÃ©Ã©: $dataFolder"
         }
 
-        # Exporter les données au format JSON
+        # Exporter les donnÃ©es au format JSON
         $anomaliesBySeverity | ConvertTo-Json -Depth 3 | 
             Out-File -FilePath (Join-Path -Path $dataFolder -ChildPath "Anomalies.json") -Encoding UTF8
         
@@ -276,7 +276,7 @@ process {
         $anomalyDetails | ConvertTo-Json -Depth 3 | 
             Out-File -FilePath (Join-Path -Path $dataFolder -ChildPath "AnomalyDetails.json") -Encoding UTF8
 
-        # Générer un fichier de données combiné pour Power BI
+        # GÃ©nÃ©rer un fichier de donnÃ©es combinÃ© pour Power BI
         $combinedData = [PSCustomObject]@{
             ServerInstance = $ServerInstance
             ReportDate = $reportDate
@@ -289,7 +289,7 @@ process {
         $combinedData | ConvertTo-Json -Depth 5 | 
             Out-File -FilePath (Join-Path -Path $dataFolder -ChildPath "SqlPermissionAnomalies.json") -Encoding UTF8
 
-        # Générer un modèle Power BI si demandé
+        # GÃ©nÃ©rer un modÃ¨le Power BI si demandÃ©
         if ($GenerateTemplate) {
             $templatePath = Join-Path -Path $OutputFolder -ChildPath "SqlPermissionAnomalies.pbit"
             Generate-PowerBITemplate -OutputPath $templatePath
@@ -306,6 +306,6 @@ process {
         }
     }
     catch {
-        Write-Error "Erreur lors de l'exportation des données d'anomalies: $_"
+        Write-Error "Erreur lors de l'exportation des donnÃ©es d'anomalies: $_"
     }
 }

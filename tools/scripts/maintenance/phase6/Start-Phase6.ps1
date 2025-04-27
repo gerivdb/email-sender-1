@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
-    Implémente la Phase 6 de la roadmap : correctifs prioritaires pour la gestion d'erreurs et la compatibilité.
+    ImplÃ©mente la Phase 6 de la roadmap : correctifs prioritaires pour la gestion d'erreurs et la compatibilitÃ©.
 
 .DESCRIPTION
-    Ce script implémente les correctifs prioritaires de la Phase 6 de la roadmap, notamment :
-    - Amélioration de la gestion d'erreurs dans les scripts existants
-    - Résolution des problèmes de compatibilité entre environnements
+    Ce script implÃ©mente les correctifs prioritaires de la Phase 6 de la roadmap, notamment :
+    - AmÃ©lioration de la gestion d'erreurs dans les scripts existants
+    - RÃ©solution des problÃ¨mes de compatibilitÃ© entre environnements
 
 .PARAMETER ScriptsDirectory
-    Le répertoire contenant les scripts à analyser et à corriger.
+    Le rÃ©pertoire contenant les scripts Ã  analyser et Ã  corriger.
 
 .PARAMETER CreateBackup
-    Indique s'il faut créer une sauvegarde des fichiers avant de les modifier.
+    Indique s'il faut crÃ©er une sauvegarde des fichiers avant de les modifier.
 
 .PARAMETER LogFilePath
-    Le chemin du fichier journal pour enregistrer les actions effectuées.
+    Le chemin du fichier journal pour enregistrer les actions effectuÃ©es.
 
 .EXAMPLE
     .\Start-Phase6.ps1 -ScriptsDirectory "..\..\scripts" -CreateBackup -LogFilePath "phase6_implementation.log"
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 09/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 09/04/2025
     Version: 1.0
 #>
 
@@ -37,7 +37,7 @@ param (
     [string]$LogFilePath = (Join-Path -Path $PSScriptRoot -ChildPath "phase6_implementation.log")
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 if (-not (Test-Path -Path $modulesPath -PathType Container)) {
     New-Item -Path $modulesPath -ItemType Directory -Force | Out-Null
@@ -52,7 +52,7 @@ $pathStandardizerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent 
 $osCommandWrappersPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "workflow\testing\OSCommandWrappers.ps1"
 $environmentCompatibilityTestPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "testing\EnvironmentCompatibilityTest.ps1"
 
-# Vérifier et importer les scripts utilitaires
+# VÃ©rifier et importer les scripts utilitaires
 $utilityScripts = @{
     "TryCatchAdder" = $tryCatchAdderPath
     "ScriptAnalyzer" = $scriptAnalyzerPath
@@ -77,9 +77,9 @@ if ($missingScripts.Count -gt 0) {
         Write-Warning "  - $script"
     }
     
-    $continue = Read-Host "Voulez-vous continuer malgré les scripts manquants ? (O/N)"
+    $continue = Read-Host "Voulez-vous continuer malgrÃ© les scripts manquants ? (O/N)"
     if ($continue -ne "O" -and $continue -ne "o") {
-        Write-Host "Opération annulée par l'utilisateur."
+        Write-Host "OpÃ©ration annulÃ©e par l'utilisateur."
         return
     }
 }
@@ -90,7 +90,7 @@ foreach ($scriptName in $utilityScripts.Keys) {
     if (Test-Path -Path $scriptPath -PathType Leaf) {
         try {
             . $scriptPath
-            Write-Verbose "Script $scriptName importé avec succès."
+            Write-Verbose "Script $scriptName importÃ© avec succÃ¨s."
         }
         catch {
             Write-Warning "Erreur lors de l'importation du script $scriptName : $_"
@@ -102,11 +102,11 @@ foreach ($scriptName in $utilityScripts.Keys) {
 if (Test-Path -Path $centralizedLoggerPath -PathType Leaf) {
     try {
         Initialize-Logger -LogFilePath $LogFilePath -LogLevel Info -IncludeTimestamp -IncludeSource -LogToConsole -LogToFile
-        Write-LogInfo "Phase 6 : Implémentation des correctifs prioritaires démarrée"
+        Write-LogInfo "Phase 6 : ImplÃ©mentation des correctifs prioritaires dÃ©marrÃ©e"
     }
     catch {
         Write-Warning "Erreur lors de l'initialisation du logger : $_"
-        # Fallback à une fonction de journalisation simple
+        # Fallback Ã  une fonction de journalisation simple
         function Write-Log {
             param (
                 [string]$Message,
@@ -120,12 +120,12 @@ if (Test-Path -Path $centralizedLoggerPath -PathType Leaf) {
             Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
         }
         
-        # Définir des alias pour les fonctions de journalisation
+        # DÃ©finir des alias pour les fonctions de journalisation
         Set-Alias -Name Write-LogInfo -Value Write-Log -Scope Script
         Set-Alias -Name Write-LogWarning -Value Write-Log -Scope Script
         Set-Alias -Name Write-LogError -Value Write-Log -Scope Script
         
-        Write-Log "Phase 6 : Implémentation des correctifs prioritaires démarrée"
+        Write-Log "Phase 6 : ImplÃ©mentation des correctifs prioritaires dÃ©marrÃ©e"
     }
 }
 else {
@@ -143,15 +143,15 @@ else {
         Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
     }
     
-    # Définir des alias pour les fonctions de journalisation
+    # DÃ©finir des alias pour les fonctions de journalisation
     Set-Alias -Name Write-LogInfo -Value Write-Log -Scope Script
     Set-Alias -Name Write-LogWarning -Value Write-Log -Scope Script
     Set-Alias -Name Write-LogError -Value Write-Log -Scope Script
     
-    Write-Log "Phase 6 : Implémentation des correctifs prioritaires démarrée"
+    Write-Log "Phase 6 : ImplÃ©mentation des correctifs prioritaires dÃ©marrÃ©e"
 }
 
-# Fonction pour analyser les scripts et identifier ceux qui nécessitent des améliorations
+# Fonction pour analyser les scripts et identifier ceux qui nÃ©cessitent des amÃ©liorations
 function Find-ScriptsNeedingImprovements {
     [CmdletBinding()]
     param (
@@ -162,16 +162,16 @@ function Find-ScriptsNeedingImprovements {
         [string[]]$FileExtensions = @(".ps1", ".psm1")
     )
     
-    Write-LogInfo "Recherche des scripts nécessitant des améliorations dans $Directory"
+    Write-LogInfo "Recherche des scripts nÃ©cessitant des amÃ©liorations dans $Directory"
     
     $results = @{
         ErrorHandling = @()
         Compatibility = @()
     }
     
-    # Récupérer tous les scripts PowerShell dans le répertoire
+    # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
     $scripts = Get-ChildItem -Path $Directory -Recurse -File | Where-Object { $FileExtensions -contains $_.Extension }
-    Write-LogInfo "Nombre de scripts trouvés : $($scripts.Count)"
+    Write-LogInfo "Nombre de scripts trouvÃ©s : $($scripts.Count)"
     
     foreach ($script in $scripts) {
         Write-Verbose "Analyse du script : $($script.FullName)"
@@ -184,15 +184,15 @@ function Find-ScriptsNeedingImprovements {
             continue
         }
         
-        # Vérifier la gestion d'erreurs
+        # VÃ©rifier la gestion d'erreurs
         $needsErrorHandling = -not ($content -match "try\s*{" -and $content -match "catch\s*{") -and
                              ($content -match "Remove-Item|Set-Content|Add-Content|New-Item|Copy-Item|Move-Item|Rename-Item|Invoke-WebRequest|Invoke-RestMethod|Start-Process|Stop-Process")
         
-        # Vérifier la compatibilité entre environnements
+        # VÃ©rifier la compatibilitÃ© entre environnements
         $needsCompatibility = $content -match "\\\\|C:\\|D:\\|\.exe|\.bat|\.cmd" -and
                              -not ($content -match "Join-Path|Split-Path|Test-Path.*-PathType|System\.IO\.Path")
         
-        # Ajouter le script aux résultats si nécessaire
+        # Ajouter le script aux rÃ©sultats si nÃ©cessaire
         if ($needsErrorHandling) {
             $results.ErrorHandling += $script.FullName
         }
@@ -205,7 +205,7 @@ function Find-ScriptsNeedingImprovements {
     return $results
 }
 
-# Fonction pour améliorer la gestion d'erreurs dans les scripts
+# Fonction pour amÃ©liorer la gestion d'erreurs dans les scripts
 function Update-ErrorHandling {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -219,7 +219,7 @@ function Update-ErrorHandling {
         [switch]$AddLogging
     )
     
-    Write-LogInfo "Amélioration de la gestion d'erreurs pour $($ScriptPaths.Count) scripts"
+    Write-LogInfo "AmÃ©lioration de la gestion d'erreurs pour $($ScriptPaths.Count) scripts"
     
     $results = @{
         Succeeded = 0
@@ -230,50 +230,50 @@ function Update-ErrorHandling {
     foreach ($scriptPath in $ScriptPaths) {
         Write-Verbose "Traitement du script : $scriptPath"
         
-        if ($PSCmdlet.ShouldProcess($scriptPath, "Améliorer la gestion d'erreurs")) {
+        if ($PSCmdlet.ShouldProcess($scriptPath, "AmÃ©liorer la gestion d'erreurs")) {
             try {
                 # Utiliser TryCatchAdder.ps1 si disponible
                 if (Test-Path -Path $tryCatchAdderPath -PathType Leaf) {
                     $success = Add-TryCatchBlocks -Path $scriptPath -CreateBackup:$CreateBackup -AddLogging:$AddLogging
                     
                     if ($success) {
-                        Write-LogInfo "Gestion d'erreurs améliorée pour : $scriptPath"
+                        Write-LogInfo "Gestion d'erreurs amÃ©liorÃ©e pour : $scriptPath"
                         $results.Succeeded++
                         $results.Details += [PSCustomObject]@{
                             Path = $scriptPath
                             Status = "Success"
-                            Message = "Gestion d'erreurs améliorée"
+                            Message = "Gestion d'erreurs amÃ©liorÃ©e"
                         }
                     }
                     else {
-                        Write-LogWarning "Échec de l'amélioration de la gestion d'erreurs pour : $scriptPath"
+                        Write-LogWarning "Ã‰chec de l'amÃ©lioration de la gestion d'erreurs pour : $scriptPath"
                         $results.Failed++
                         $results.Details += [PSCustomObject]@{
                             Path = $scriptPath
                             Status = "Failed"
-                            Message = "Échec de l'amélioration de la gestion d'erreurs"
+                            Message = "Ã‰chec de l'amÃ©lioration de la gestion d'erreurs"
                         }
                     }
                 }
                 else {
-                    # Implémentation manuelle si TryCatchAdder.ps1 n'est pas disponible
+                    # ImplÃ©mentation manuelle si TryCatchAdder.ps1 n'est pas disponible
                     $content = Get-Content -Path $scriptPath -Raw
                     
-                    # Créer une sauvegarde si demandé
+                    # CrÃ©er une sauvegarde si demandÃ©
                     if ($CreateBackup) {
                         $backupPath = "$scriptPath.bak"
                         Copy-Item -Path $scriptPath -Destination $backupPath -Force
-                        Write-Verbose "Sauvegarde créée : $backupPath"
+                        Write-Verbose "Sauvegarde crÃ©Ã©e : $backupPath"
                     }
                     
-                    # Ajouter ErrorActionPreference = 'Stop' au début du script
+                    # Ajouter ErrorActionPreference = 'Stop' au dÃ©but du script
                     if (-not ($content -match '\$ErrorActionPreference\s*=\s*[''"]Stop[''"]')) {
                         $content = "`$ErrorActionPreference = 'Stop'`n`n$content"
                     }
                     
                     # Entourer le script principal d'un bloc try/catch
                     if (-not ($content -match "try\s*{" -and $content -match "catch\s*{")) {
-                        # Extraire les commentaires et les déclarations param au début du script
+                        # Extraire les commentaires et les dÃ©clarations param au dÃ©but du script
                         $header = ""
                         if ($content -match '(?s)^(#[^\n]*\n)+') {
                             $header = $matches[0]
@@ -304,7 +304,7 @@ function Write-Log {
         [string]`$LogFilePath = "`$PSScriptRoot\logs\`$(Get-Date -Format 'yyyy-MM-dd').log"
     )
     
-    # Créer le dossier de logs si nécessaire
+    # CrÃ©er le dossier de logs si nÃ©cessaire
     `$logDir = Split-Path -Path `$LogFilePath -Parent
     if (-not (Test-Path -Path `$logDir -PathType Container)) {
         New-Item -Path `$logDir -ItemType Directory -Force | Out-Null
@@ -322,12 +322,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose `$logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         Add-Content -Path `$LogFilePath -Value `$logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 
@@ -352,34 +352,34 @@ catch {
 }
 finally {
     # Nettoyage final
-    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"Exécution du script terminée.`"" } else { "Write-Verbose `"Exécution du script terminée.`"" })
+    $(if ($AddLogging) { "Write-Log -Level INFO -Message `"ExÃ©cution du script terminÃ©e.`"" } else { "Write-Verbose `"ExÃ©cution du script terminÃ©e.`"" })
 }
 "@
                         
                         # Enregistrer le nouveau contenu
                         Set-Content -Path $scriptPath -Value $newContent
                         
-                        Write-LogInfo "Gestion d'erreurs améliorée pour : $scriptPath"
+                        Write-LogInfo "Gestion d'erreurs amÃ©liorÃ©e pour : $scriptPath"
                         $results.Succeeded++
                         $results.Details += [PSCustomObject]@{
                             Path = $scriptPath
                             Status = "Success"
-                            Message = "Gestion d'erreurs améliorée manuellement"
+                            Message = "Gestion d'erreurs amÃ©liorÃ©e manuellement"
                         }
                     }
                     else {
-                        Write-LogInfo "Le script possède déjà une gestion d'erreurs : $scriptPath"
+                        Write-LogInfo "Le script possÃ¨de dÃ©jÃ  une gestion d'erreurs : $scriptPath"
                         $results.Succeeded++
                         $results.Details += [PSCustomObject]@{
                             Path = $scriptPath
                             Status = "Skipped"
-                            Message = "Le script possède déjà une gestion d'erreurs"
+                            Message = "Le script possÃ¨de dÃ©jÃ  une gestion d'erreurs"
                         }
                     }
                 }
             }
             catch {
-                Write-LogError "Erreur lors de l'amélioration de la gestion d'erreurs pour $scriptPath : $_"
+                Write-LogError "Erreur lors de l'amÃ©lioration de la gestion d'erreurs pour $scriptPath : $_"
                 $results.Failed++
                 $results.Details += [PSCustomObject]@{
                     Path = $scriptPath
@@ -393,7 +393,7 @@ finally {
     return $results
 }
 
-# Fonction pour améliorer la compatibilité entre environnements
+# Fonction pour amÃ©liorer la compatibilitÃ© entre environnements
 function Update-EnvironmentCompatibility {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -404,7 +404,7 @@ function Update-EnvironmentCompatibility {
         [switch]$CreateBackup
     )
     
-    Write-LogInfo "Amélioration de la compatibilité entre environnements pour $($ScriptPaths.Count) scripts"
+    Write-LogInfo "AmÃ©lioration de la compatibilitÃ© entre environnements pour $($ScriptPaths.Count) scripts"
     
     $results = @{
         Succeeded = 0
@@ -415,39 +415,39 @@ function Update-EnvironmentCompatibility {
     foreach ($scriptPath in $ScriptPaths) {
         Write-Verbose "Traitement du script : $scriptPath"
         
-        if ($PSCmdlet.ShouldProcess($scriptPath, "Améliorer la compatibilité entre environnements")) {
+        if ($PSCmdlet.ShouldProcess($scriptPath, "AmÃ©liorer la compatibilitÃ© entre environnements")) {
             try {
                 # Utiliser PathStandardizer.ps1 si disponible
                 if (Test-Path -Path $pathStandardizerPath -PathType Leaf) {
-                    # Implémenter l'appel à PathStandardizer.ps1
-                    # Cette partie dépend de l'implémentation spécifique de PathStandardizer.ps1
+                    # ImplÃ©menter l'appel Ã  PathStandardizer.ps1
+                    # Cette partie dÃ©pend de l'implÃ©mentation spÃ©cifique de PathStandardizer.ps1
                     Write-Verbose "Utilisation de PathStandardizer.ps1 pour $scriptPath"
                 }
                 
-                # Implémentation manuelle
+                # ImplÃ©mentation manuelle
                 $content = Get-Content -Path $scriptPath -Raw
                 
-                # Créer une sauvegarde si demandé
+                # CrÃ©er une sauvegarde si demandÃ©
                 if ($CreateBackup) {
                     $backupPath = "$scriptPath.bak"
                     Copy-Item -Path $scriptPath -Destination $backupPath -Force
-                    Write-Verbose "Sauvegarde créée : $backupPath"
+                    Write-Verbose "Sauvegarde crÃ©Ã©e : $backupPath"
                 }
                 
                 # Remplacer les chemins absolus par des chemins relatifs
                 $newContent = $content
                 
-                # Remplacer les concaténations de chemins par Join-Path
+                # Remplacer les concatÃ©nations de chemins par Join-Path
                 $newContent = [regex]::Replace($newContent, '([''"][^''"\r\n]*[''"])\s*\+\s*[''"][\\\/]?([^''"\r\n]*)[''"]', '(Join-Path -Path $1 -ChildPath "$2")')
                 
                 # Remplacer les chemins absolus Windows par des chemins relatifs
                 $newContent = [regex]::Replace($newContent, '([''"])[A-Za-z]:\\([^''"\r\n]*)(["''])', '$1$2$3')
                 
-                # Ajouter une fonction d'environnement si elle n'existe pas déjà
+                # Ajouter une fonction d'environnement si elle n'existe pas dÃ©jÃ 
                 if (-not ($newContent -match "function Get-ScriptEnvironment" -or $newContent -match "function Test-Environment")) {
                     $environmentFunction = @"
 
-# Fonction pour détecter l'environnement d'exécution
+# Fonction pour dÃ©tecter l'environnement d'exÃ©cution
 function Get-ScriptEnvironment {
     [CmdletBinding()]
     param()
@@ -460,7 +460,7 @@ function Get-ScriptEnvironment {
         PathSeparator = [System.IO.Path]::DirectorySeparatorChar
     }
     
-    # Détecter le système d'exploitation
+    # DÃ©tecter le systÃ¨me d'exploitation
     if (`$PSVersionTable.PSVersion.Major -ge 6) {
         # PowerShell Core (6+)
         `$environment.IsWindows = `$IsWindows
@@ -486,7 +486,7 @@ function Get-NormalizedPath {
     # Obtenir l'environnement
     `$env = Get-ScriptEnvironment
     
-    # Normaliser les séparateurs de chemin
+    # Normaliser les sÃ©parateurs de chemin
     `$normalizedPath = `$Path.Replace('\', `$env.PathSeparator).Replace('/', `$env.PathSeparator)
     
     return `$normalizedPath
@@ -494,7 +494,7 @@ function Get-NormalizedPath {
 
 "@
                     
-                    # Ajouter la fonction au début du script après les commentaires et les déclarations param
+                    # Ajouter la fonction au dÃ©but du script aprÃ¨s les commentaires et les dÃ©clarations param
                     $header = ""
                     if ($newContent -match '(?s)^(#[^\n]*\n)+') {
                         $header = $matches[0]
@@ -513,16 +513,16 @@ function Get-NormalizedPath {
                 # Enregistrer le nouveau contenu
                 Set-Content -Path $scriptPath -Value $newContent
                 
-                Write-LogInfo "Compatibilité entre environnements améliorée pour : $scriptPath"
+                Write-LogInfo "CompatibilitÃ© entre environnements amÃ©liorÃ©e pour : $scriptPath"
                 $results.Succeeded++
                 $results.Details += [PSCustomObject]@{
                     Path = $scriptPath
                     Status = "Success"
-                    Message = "Compatibilité entre environnements améliorée"
+                    Message = "CompatibilitÃ© entre environnements amÃ©liorÃ©e"
                 }
             }
             catch {
-                Write-LogError "Erreur lors de l'amélioration de la compatibilité entre environnements pour $scriptPath : $_"
+                Write-LogError "Erreur lors de l'amÃ©lioration de la compatibilitÃ© entre environnements pour $scriptPath : $_"
                 $results.Failed++
                 $results.Details += [PSCustomObject]@{
                     Path = $scriptPath
@@ -550,44 +550,44 @@ function Start-Phase6 {
         [switch]$AddLogging
     )
     
-    Write-LogInfo "Démarrage de l'implémentation de la Phase 6"
-    Write-LogInfo "Répertoire des scripts : $ScriptsDirectory"
+    Write-LogInfo "DÃ©marrage de l'implÃ©mentation de la Phase 6"
+    Write-LogInfo "RÃ©pertoire des scripts : $ScriptsDirectory"
     
-    # Vérifier si le répertoire des scripts existe
+    # VÃ©rifier si le rÃ©pertoire des scripts existe
     if (-not (Test-Path -Path $ScriptsDirectory -PathType Container)) {
-        Write-LogError "Le répertoire des scripts n'existe pas : $ScriptsDirectory"
+        Write-LogError "Le rÃ©pertoire des scripts n'existe pas : $ScriptsDirectory"
         return $false
     }
     
-    # Trouver les scripts nécessitant des améliorations
+    # Trouver les scripts nÃ©cessitant des amÃ©liorations
     $scriptsNeedingImprovements = Find-ScriptsNeedingImprovements -Directory $ScriptsDirectory
     
-    Write-LogInfo "Nombre de scripts nécessitant une amélioration de la gestion d'erreurs : $($scriptsNeedingImprovements.ErrorHandling.Count)"
-    Write-LogInfo "Nombre de scripts nécessitant une amélioration de la compatibilité entre environnements : $($scriptsNeedingImprovements.Compatibility.Count)"
+    Write-LogInfo "Nombre de scripts nÃ©cessitant une amÃ©lioration de la gestion d'erreurs : $($scriptsNeedingImprovements.ErrorHandling.Count)"
+    Write-LogInfo "Nombre de scripts nÃ©cessitant une amÃ©lioration de la compatibilitÃ© entre environnements : $($scriptsNeedingImprovements.Compatibility.Count)"
     
-    # Améliorer la gestion d'erreurs
+    # AmÃ©liorer la gestion d'erreurs
     if ($scriptsNeedingImprovements.ErrorHandling.Count -gt 0) {
-        if ($PSCmdlet.ShouldProcess("$($scriptsNeedingImprovements.ErrorHandling.Count) scripts", "Améliorer la gestion d'erreurs")) {
+        if ($PSCmdlet.ShouldProcess("$($scriptsNeedingImprovements.ErrorHandling.Count) scripts", "AmÃ©liorer la gestion d'erreurs")) {
             $errorHandlingResults = Update-ErrorHandling -ScriptPaths $scriptsNeedingImprovements.ErrorHandling -CreateBackup:$CreateBackup -AddLogging:$AddLogging
-            Write-LogInfo "Amélioration de la gestion d'erreurs terminée : $($errorHandlingResults.Succeeded) réussites, $($errorHandlingResults.Failed) échecs"
+            Write-LogInfo "AmÃ©lioration de la gestion d'erreurs terminÃ©e : $($errorHandlingResults.Succeeded) rÃ©ussites, $($errorHandlingResults.Failed) Ã©checs"
         }
     }
     else {
-        Write-LogInfo "Aucun script ne nécessite d'amélioration de la gestion d'erreurs"
+        Write-LogInfo "Aucun script ne nÃ©cessite d'amÃ©lioration de la gestion d'erreurs"
     }
     
-    # Améliorer la compatibilité entre environnements
+    # AmÃ©liorer la compatibilitÃ© entre environnements
     if ($scriptsNeedingImprovements.Compatibility.Count -gt 0) {
-        if ($PSCmdlet.ShouldProcess("$($scriptsNeedingImprovements.Compatibility.Count) scripts", "Améliorer la compatibilité entre environnements")) {
+        if ($PSCmdlet.ShouldProcess("$($scriptsNeedingImprovements.Compatibility.Count) scripts", "AmÃ©liorer la compatibilitÃ© entre environnements")) {
             $compatibilityResults = Update-EnvironmentCompatibility -ScriptPaths $scriptsNeedingImprovements.Compatibility -CreateBackup:$CreateBackup
-            Write-LogInfo "Amélioration de la compatibilité entre environnements terminée : $($compatibilityResults.Succeeded) réussites, $($compatibilityResults.Failed) échecs"
+            Write-LogInfo "AmÃ©lioration de la compatibilitÃ© entre environnements terminÃ©e : $($compatibilityResults.Succeeded) rÃ©ussites, $($compatibilityResults.Failed) Ã©checs"
         }
     }
     else {
-        Write-LogInfo "Aucun script ne nécessite d'amélioration de la compatibilité entre environnements"
+        Write-LogInfo "Aucun script ne nÃ©cessite d'amÃ©lioration de la compatibilitÃ© entre environnements"
     }
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $report = [PSCustomObject]@{
         Date = Get-Date
         ScriptsDirectory = $ScriptsDirectory
@@ -608,14 +608,14 @@ function Start-Phase6 {
     # Enregistrer le rapport
     $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "phase6_report.json"
     $report | ConvertTo-Json -Depth 5 | Set-Content -Path $reportPath
-    Write-LogInfo "Rapport enregistré : $reportPath"
+    Write-LogInfo "Rapport enregistrÃ© : $reportPath"
     
-    Write-LogInfo "Implémentation de la Phase 6 terminée"
+    Write-LogInfo "ImplÃ©mentation de la Phase 6 terminÃ©e"
     
     return $report
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $result = Start-Phase6 -ScriptsDirectory $ScriptsDirectory -CreateBackup:$CreateBackup -AddLogging:$true
 
 # Fermer le logger
@@ -628,19 +628,19 @@ if (Test-Path -Path $centralizedLoggerPath -PathType Leaf) {
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'implémentation de la Phase 6 :" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'implÃ©mentation de la Phase 6 :" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
 Write-Host "Gestion d'erreurs :" -ForegroundColor Yellow
-Write-Host "  - Scripts analysés : $($result.ErrorHandling.Total)" -ForegroundColor White
-Write-Host "  - Améliorations réussies : $($result.ErrorHandling.Succeeded)" -ForegroundColor Green
-Write-Host "  - Échecs : $($result.ErrorHandling.Failed)" -ForegroundColor Red
+Write-Host "  - Scripts analysÃ©s : $($result.ErrorHandling.Total)" -ForegroundColor White
+Write-Host "  - AmÃ©liorations rÃ©ussies : $($result.ErrorHandling.Succeeded)" -ForegroundColor Green
+Write-Host "  - Ã‰checs : $($result.ErrorHandling.Failed)" -ForegroundColor Red
 
-Write-Host "`nCompatibilité entre environnements :" -ForegroundColor Yellow
-Write-Host "  - Scripts analysés : $($result.Compatibility.Total)" -ForegroundColor White
-Write-Host "  - Améliorations réussies : $($result.Compatibility.Succeeded)" -ForegroundColor Green
-Write-Host "  - Échecs : $($result.Compatibility.Failed)" -ForegroundColor Red
+Write-Host "`nCompatibilitÃ© entre environnements :" -ForegroundColor Yellow
+Write-Host "  - Scripts analysÃ©s : $($result.Compatibility.Total)" -ForegroundColor White
+Write-Host "  - AmÃ©liorations rÃ©ussies : $($result.Compatibility.Succeeded)" -ForegroundColor Green
+Write-Host "  - Ã‰checs : $($result.Compatibility.Failed)" -ForegroundColor Red
 
-Write-Host "`nRapport détaillé : $reportPath" -ForegroundColor Cyan
+Write-Host "`nRapport dÃ©taillÃ© : $reportPath" -ForegroundColor Cyan
 Write-Host "Journal : $LogFilePath" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan

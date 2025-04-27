@@ -1,45 +1,45 @@
-<#
+﻿<#
 .SYNOPSIS
-    Valide une valeur selon une fonction de validation personnalisée.
+    Valide une valeur selon une fonction de validation personnalisÃ©e.
 
 .DESCRIPTION
-    La fonction Test-Custom valide une valeur selon une fonction de validation personnalisée.
-    Elle permet de définir des règles de validation complexes et peut être utilisée pour
-    valider les entrées des fonctions du module RoadmapParser.
+    La fonction Test-Custom valide une valeur selon une fonction de validation personnalisÃ©e.
+    Elle permet de dÃ©finir des rÃ¨gles de validation complexes et peut Ãªtre utilisÃ©e pour
+    valider les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à valider.
+    La valeur Ã  valider.
 
 .PARAMETER ValidationFunction
-    La fonction de validation personnalisée à utiliser.
-    Cette fonction doit prendre un paramètre (la valeur à valider) et retourner un booléen.
+    La fonction de validation personnalisÃ©e Ã  utiliser.
+    Cette fonction doit prendre un paramÃ¨tre (la valeur Ã  valider) et retourner un boolÃ©en.
 
 .PARAMETER ValidationScript
-    Le script de validation personnalisé à utiliser.
-    Ce script doit prendre un paramètre (la valeur à valider) et retourner un booléen.
+    Le script de validation personnalisÃ© Ã  utiliser.
+    Ce script doit prendre un paramÃ¨tre (la valeur Ã  valider) et retourner un boolÃ©en.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la validation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la validation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 .EXAMPLE
     Test-Custom -Value 42 -ValidationFunction { param($val) $val -gt 0 -and $val -lt 100 }
-    Vérifie que la valeur 42 est positive et inférieure à 100.
+    VÃ©rifie que la valeur 42 est positive et infÃ©rieure Ã  100.
 
 .EXAMPLE
     Test-Custom -Value "Hello" -ValidationScript { param($val) $val.Length -gt 3 } -ThrowOnFailure
-    Vérifie que la chaîne "Hello" a une longueur supérieure à 3 caractères, et lève une exception si ce n'est pas le cas.
+    VÃ©rifie que la chaÃ®ne "Hello" a une longueur supÃ©rieure Ã  3 caractÃ¨res, et lÃ¨ve une exception si ce n'est pas le cas.
 
 .OUTPUTS
-    [bool] Indique si la validation a réussi.
+    [bool] Indique si la validation a rÃ©ussi.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function Test-Custom {
     [CmdletBinding(DefaultParameterSetName = "Function")]
@@ -61,7 +61,7 @@ function Test-Custom {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
     # Effectuer la validation selon le type de validation
@@ -74,14 +74,14 @@ function Test-Custom {
     } catch {
         $isValid = $false
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "Erreur lors de l'exécution de la validation personnalisée : $_"
+            $ErrorMessage = "Erreur lors de l'exÃ©cution de la validation personnalisÃ©e : $_"
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "La valeur ne correspond pas aux critères de validation personnalisés."
+            $ErrorMessage = "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
         }
 
         if ($ThrowOnFailure) {

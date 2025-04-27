@@ -1,4 +1,4 @@
-#
+﻿#
 # RoadmapParser.psm1
 #
 # Main module file for the RoadmapParser module
@@ -156,7 +156,7 @@ $publicFunctions = @(
     'Write-RoadmapError',
     'Write-RoadmapCritical',
     'Inspect-Variable',
-    # Points d'arrêt conditionnels
+    # Points d'arrÃªt conditionnels
     'Set-RoadmapBreakpoint',
     'Test-RoadmapBreakpointCondition',
     'Invoke-RoadmapBreakpointAction',

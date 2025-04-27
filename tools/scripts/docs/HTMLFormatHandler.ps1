@@ -1,10 +1,10 @@
-# Module de gestion du format HTML
-# Ce script implémente les fonctionnalités de base pour le support du format HTML
-# Nécessite HtmlAgilityPack (peut être installé via Install-Package HtmlAgilityPack)
+﻿# Module de gestion du format HTML
+# Ce script implÃ©mente les fonctionnalitÃ©s de base pour le support du format HTML
+# NÃ©cessite HtmlAgilityPack (peut Ãªtre installÃ© via Install-Package HtmlAgilityPack)
 
 # Configuration
 $HTMLConfig = @{
-    # Paramètres par défaut pour le parsing HTML
+    # ParamÃ¨tres par dÃ©faut pour le parsing HTML
     DefaultHtmlSettings = @{
         FixNestedTags = $true
         AutoCloseOnEnd = $true
@@ -12,7 +12,7 @@ $HTMLConfig = @{
         DefaultEncoding = "UTF-8"
     }
     
-    # Paramètres par défaut pour la sanitisation HTML
+    # ParamÃ¨tres par dÃ©faut pour la sanitisation HTML
     DefaultSanitizationSettings = @{
         EnableSanitization = $true
         AllowedTags = @("a", "b", "blockquote", "br", "code", "div", "em", "h1", "h2", "h3", 
@@ -21,7 +21,7 @@ $HTMLConfig = @{
         AllowedProtocols = @("http", "https", "mailto")
     }
     
-    # Paramètres par défaut pour la génération HTML
+    # ParamÃ¨tres par dÃ©faut pour la gÃ©nÃ©ration HTML
     DefaultGenerationSettings = @{
         Doctype = "<!DOCTYPE html>"
         Encoding = "UTF-8"
@@ -29,7 +29,7 @@ $HTMLConfig = @{
     }
 }
 
-# Fonction pour vérifier si HtmlAgilityPack est disponible
+# Fonction pour vÃ©rifier si HtmlAgilityPack est disponible
 function Test-HtmlAgilityPackAvailable {
     try {
         [Reflection.Assembly]::LoadWithPartialName("HtmlAgilityPack") | Out-Null
@@ -43,12 +43,12 @@ function Test-HtmlAgilityPackAvailable {
 # Fonction pour installer HtmlAgilityPack
 function Install-HtmlAgilityPack {
     if (Test-HtmlAgilityPackAvailable) {
-        Write-Host "HtmlAgilityPack est déjà installé."
+        Write-Host "HtmlAgilityPack est dÃ©jÃ  installÃ©."
         return $true
     }
     
     try {
-        # Vérifier si NuGet est disponible
+        # VÃ©rifier si NuGet est disponible
         $nuget = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
         
         if (-not $nuget) {
@@ -63,7 +63,7 @@ function Install-HtmlAgilityPack {
         # Charger l'assembly
         [Reflection.Assembly]::LoadWithPartialName("HtmlAgilityPack") | Out-Null
         
-        Write-Host "HtmlAgilityPack a été installé avec succès."
+        Write-Host "HtmlAgilityPack a Ã©tÃ© installÃ© avec succÃ¨s."
         return $true
     }
     catch {
@@ -72,24 +72,24 @@ function Install-HtmlAgilityPack {
     }
 }
 
-# Fonction pour créer un nouveau document HTML
+# Fonction pour crÃ©er un nouveau document HTML
 function New-HtmlDocument {
     param (
         [Parameter(Mandatory = $false)]
         [hashtable]$HtmlSettings
     )
     
-    # Vérifier si HtmlAgilityPack est disponible
+    # VÃ©rifier si HtmlAgilityPack est disponible
     if (-not (Test-HtmlAgilityPackAvailable)) {
         if (-not (Install-HtmlAgilityPack)) {
-            throw "HtmlAgilityPack n'est pas disponible et n'a pas pu être installé."
+            throw "HtmlAgilityPack n'est pas disponible et n'a pas pu Ãªtre installÃ©."
         }
     }
     
-    # Utiliser les paramètres fournis ou les valeurs par défaut
+    # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
     $settings = if ($HtmlSettings) { $HtmlSettings } else { $HTMLConfig.DefaultHtmlSettings.Clone() }
     
-    # Créer un document HTML
+    # CrÃ©er un document HTML
     $htmlDoc = New-Object HtmlAgilityPack.HtmlDocument
     
     # Configurer les options
@@ -101,7 +101,7 @@ function New-HtmlDocument {
     return $htmlDoc
 }
 
-# Fonction pour parser une chaîne HTML
+# Fonction pour parser une chaÃ®ne HTML
 function ConvertFrom-Html {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -118,13 +118,13 @@ function ConvertFrom-Html {
     )
     
     process {
-        # Créer un document HTML
+        # CrÃ©er un document HTML
         $htmlDoc = New-HtmlDocument -HtmlSettings $HtmlSettings
         
         # Charger le contenu HTML
         $htmlDoc.LoadHtml($HtmlString)
         
-        # Sanitiser le document si demandé
+        # Sanitiser le document si demandÃ©
         if ($Sanitize) {
             $htmlDoc = Invoke-HtmlSanitization -HtmlDocument $htmlDoc -SanitizationSettings $SanitizationSettings
         }
@@ -149,18 +149,18 @@ function Import-HtmlFile {
         [hashtable]$SanitizationSettings
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier HTML n'existe pas: $FilePath"
     }
     
-    # Créer un document HTML
+    # CrÃ©er un document HTML
     $htmlDoc = New-HtmlDocument -HtmlSettings $HtmlSettings
     
     # Charger le fichier HTML
     $htmlDoc.Load($FilePath)
     
-    # Sanitiser le document si demandé
+    # Sanitiser le document si demandÃ©
     if ($Sanitize) {
         $htmlDoc = Invoke-HtmlSanitization -HtmlDocument $htmlDoc -SanitizationSettings $SanitizationSettings
     }
@@ -179,44 +179,44 @@ function Invoke-HtmlSanitization {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($SanitizationSettings) { $SanitizationSettings } else { $HTMLConfig.DefaultSanitizationSettings.Clone() }
         
-        # Créer une copie du document
+        # CrÃ©er une copie du document
         $sanitizedDoc = New-Object HtmlAgilityPack.HtmlDocument
         $sanitizedDoc.LoadHtml($HtmlDocument.DocumentNode.OuterHtml)
         
-        # Obtenir tous les nœuds
+        # Obtenir tous les nÅ“uds
         $nodes = $sanitizedDoc.DocumentNode.SelectNodes("//*")
         
         if ($null -eq $nodes) {
             return $sanitizedDoc
         }
         
-        # Parcourir les nœuds en ordre inverse pour éviter les problèmes lors de la suppression
+        # Parcourir les nÅ“uds en ordre inverse pour Ã©viter les problÃ¨mes lors de la suppression
         for ($i = $nodes.Count - 1; $i -ge 0; $i--) {
             $node = $nodes[$i]
             
-            # Vérifier si le tag est autorisé
+            # VÃ©rifier si le tag est autorisÃ©
             if ($node.NodeType -eq [HtmlAgilityPack.HtmlNodeType]::Element -and 
                 $settings.AllowedTags -notcontains $node.Name.ToLower()) {
-                # Remplacer le nœud par son contenu
+                # Remplacer le nÅ“ud par son contenu
                 $node.ParentNode.ReplaceChild($sanitizedDoc.CreateTextNode($node.InnerText), $node)
                 continue
             }
             
-            # Vérifier les attributs
+            # VÃ©rifier les attributs
             if ($node.HasAttributes) {
                 $attributesToRemove = @()
                 
                 foreach ($attr in $node.Attributes) {
-                    # Vérifier si l'attribut est autorisé
+                    # VÃ©rifier si l'attribut est autorisÃ©
                     if ($settings.AllowedAttributes -notcontains $attr.Name.ToLower()) {
                         $attributesToRemove += $attr.Name
                         continue
                     }
                     
-                    # Vérifier les URLs dans les attributs href et src
+                    # VÃ©rifier les URLs dans les attributs href et src
                     if ($attr.Name -eq "href" -or $attr.Name -eq "src") {
                         $url = $attr.Value
                         $isValid = $false
@@ -234,7 +234,7 @@ function Invoke-HtmlSanitization {
                     }
                 }
                 
-                # Supprimer les attributs non autorisés
+                # Supprimer les attributs non autorisÃ©s
                 foreach ($attrName in $attributesToRemove) {
                     $node.Attributes.Remove($attrName)
                 }
@@ -245,7 +245,7 @@ function Invoke-HtmlSanitization {
     }
 }
 
-# Fonction pour exécuter une requête CSS sur un document HTML
+# Fonction pour exÃ©cuter une requÃªte CSS sur un document HTML
 function Invoke-CssQuery {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -257,14 +257,14 @@ function Invoke-CssQuery {
     
     process {
         try {
-            # Exécuter la requête CSS
+            # ExÃ©cuter la requÃªte CSS
             $nodes = $HtmlDocument.DocumentNode.SelectNodes($CssSelector)
             
-            # Retourner les nœuds trouvés
+            # Retourner les nÅ“uds trouvÃ©s
             return $nodes
         }
         catch {
-            Write-Error "Erreur lors de l'exécution de la requête CSS: $_"
+            Write-Error "Erreur lors de l'exÃ©cution de la requÃªte CSS: $_"
             throw
         }
     }
@@ -290,18 +290,18 @@ function ConvertTo-Xml {
     )
     
     process {
-        # Créer un document XML
+        # CrÃ©er un document XML
         $xmlDoc = New-Object System.Xml.XmlDocument
         
-        # Créer un nœud racine
+        # CrÃ©er un nÅ“ud racine
         $root = $xmlDoc.CreateElement("html")
         $xmlDoc.AppendChild($root) | Out-Null
         
-        # Fonction récursive pour convertir les nœuds HTML en nœuds XML
+        # Fonction rÃ©cursive pour convertir les nÅ“uds HTML en nÅ“uds XML
         function ConvertNode($htmlNode, $xmlParent) {
             switch ($htmlNode.NodeType) {
                 ([HtmlAgilityPack.HtmlNodeType]::Element) {
-                    # Créer un élément XML
+                    # CrÃ©er un Ã©lÃ©ment XML
                     $xmlElement = $xmlDoc.CreateElement($htmlNode.Name)
                     $xmlParent.AppendChild($xmlElement) | Out-Null
                     
@@ -312,13 +312,13 @@ function ConvertTo-Xml {
                         $xmlElement.Attributes.Append($xmlAttr) | Out-Null
                     }
                     
-                    # Traiter les nœuds enfants
+                    # Traiter les nÅ“uds enfants
                     foreach ($childNode in $htmlNode.ChildNodes) {
                         ConvertNode $childNode $xmlElement
                     }
                 }
                 ([HtmlAgilityPack.HtmlNodeType]::Text) {
-                    # Créer un nœud texte
+                    # CrÃ©er un nÅ“ud texte
                     $xmlText = $xmlDoc.CreateTextNode($htmlNode.InnerText)
                     $xmlParent.AppendChild($xmlText) | Out-Null
                 }
@@ -332,7 +332,7 @@ function ConvertTo-Xml {
     }
 }
 
-# Fonction pour générer un document HTML à partir d'un objet
+# Fonction pour gÃ©nÃ©rer un document HTML Ã  partir d'un objet
 function ConvertTo-Html {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -343,27 +343,27 @@ function ConvertTo-Html {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($GenerationSettings) { $GenerationSettings } else { $HTMLConfig.DefaultGenerationSettings.Clone() }
         
-        # Créer un document HTML
+        # CrÃ©er un document HTML
         $htmlDoc = New-HtmlDocument
         
-        # Créer un document HTML de base
+        # CrÃ©er un document HTML de base
         $html = $settings.Doctype + "`n<html><head><meta charset=`"" + $settings.Encoding + "`"></head><body></body></html>"
         $htmlDoc.LoadHtml($html)
         
-        # Obtenir le nœud body
+        # Obtenir le nÅ“ud body
         $bodyNode = $htmlDoc.DocumentNode.SelectSingleNode("//body")
         
-        # Fonction récursive pour convertir un objet en HTML
+        # Fonction rÃ©cursive pour convertir un objet en HTML
         function ConvertObjectToHtml($node, $obj) {
             # Si l'objet est null, ne rien faire
             if ($null -eq $obj) {
                 return
             }
             
-            # Traiter différents types d'objets
+            # Traiter diffÃ©rents types d'objets
             switch ($obj.GetType().Name) {
                 # Types simples
                 { $_ -in @("String", "Int32", "Int64", "Double", "Decimal", "Boolean", "DateTime", "Guid") } {
@@ -375,71 +375,71 @@ function ConvertTo-Html {
                 { $_ -in @("Hashtable", "PSCustomObject") } {
                     $properties = if ($_ -eq "Hashtable") { $obj.Keys } else { $obj.PSObject.Properties.Name }
                     
-                    # Créer une table HTML
+                    # CrÃ©er une table HTML
                     $table = $htmlDoc.CreateElement("table")
                     $node.AppendChild($table) | Out-Null
                     
                     foreach ($propName in $properties) {
                         $propValue = if ($_ -eq "Hashtable") { $obj[$propName] } else { $obj.$propName }
                         
-                        # Créer une ligne pour la propriété
+                        # CrÃ©er une ligne pour la propriÃ©tÃ©
                         $row = $htmlDoc.CreateElement("tr")
                         $table.AppendChild($row) | Out-Null
                         
-                        # Créer une cellule pour le nom de la propriété
+                        # CrÃ©er une cellule pour le nom de la propriÃ©tÃ©
                         $nameCell = $htmlDoc.CreateElement("th")
                         $nameCell.InnerHtml = $propName
                         $row.AppendChild($nameCell) | Out-Null
                         
-                        # Créer une cellule pour la valeur de la propriété
+                        # CrÃ©er une cellule pour la valeur de la propriÃ©tÃ©
                         $valueCell = $htmlDoc.CreateElement("td")
                         $row.AppendChild($valueCell) | Out-Null
                         
-                        # Convertir la valeur de la propriété de manière récursive
+                        # Convertir la valeur de la propriÃ©tÃ© de maniÃ¨re rÃ©cursive
                         ConvertObjectToHtml $valueCell $propValue
                     }
                 }
                 
                 # Array ou Collection
                 { $_ -match "Array|Collection|List" } {
-                    # Créer une liste HTML
+                    # CrÃ©er une liste HTML
                     $list = $htmlDoc.CreateElement("ul")
                     $node.AppendChild($list) | Out-Null
                     
                     foreach ($item in $obj) {
-                        # Créer un élément de liste pour l'item
+                        # CrÃ©er un Ã©lÃ©ment de liste pour l'item
                         $listItem = $htmlDoc.CreateElement("li")
                         $list.AppendChild($listItem) | Out-Null
                         
-                        # Convertir l'item de manière récursive
+                        # Convertir l'item de maniÃ¨re rÃ©cursive
                         ConvertObjectToHtml $listItem $item
                     }
                 }
                 
-                # Type par défaut
+                # Type par dÃ©faut
                 default {
-                    # Essayer de traiter comme un objet avec des propriétés
+                    # Essayer de traiter comme un objet avec des propriÃ©tÃ©s
                     try {
-                        # Créer une div pour l'objet
+                        # CrÃ©er une div pour l'objet
                         $div = $htmlDoc.CreateElement("div")
                         $node.AppendChild($div) | Out-Null
                         
                         foreach ($prop in $obj.PSObject.Properties) {
-                            # Créer un paragraphe pour la propriété
+                            # CrÃ©er un paragraphe pour la propriÃ©tÃ©
                             $p = $htmlDoc.CreateElement("p")
                             $div.AppendChild($p) | Out-Null
                             
-                            # Ajouter le nom de la propriété
+                            # Ajouter le nom de la propriÃ©tÃ©
                             $strong = $htmlDoc.CreateElement("strong")
                             $strong.InnerHtml = $prop.Name + ": "
                             $p.AppendChild($strong) | Out-Null
                             
-                            # Convertir la valeur de la propriété de manière récursive
+                            # Convertir la valeur de la propriÃ©tÃ© de maniÃ¨re rÃ©cursive
                             ConvertObjectToHtml $p $prop.Value
                         }
                     }
                     catch {
-                        # Si tout échoue, convertir en chaîne
+                        # Si tout Ã©choue, convertir en chaÃ®ne
                         $textNode = $htmlDoc.CreateTextNode($obj.ToString())
                         $node.AppendChild($textNode) | Out-Null
                     }
@@ -454,7 +454,7 @@ function ConvertTo-Html {
     }
 }
 
-# Fonction pour écrire un document HTML dans un fichier
+# Fonction pour Ã©crire un document HTML dans un fichier
 function Export-HtmlFile {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -468,7 +468,7 @@ function Export-HtmlFile {
     )
     
     process {
-        # Créer le répertoire parent si nécessaire
+        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
         $directory = Split-Path -Path $FilePath -Parent
         if (-not [string]::IsNullOrEmpty($directory) -and -not (Test-Path -Path $directory)) {
             New-Item -Path $directory -ItemType Directory -Force | Out-Null

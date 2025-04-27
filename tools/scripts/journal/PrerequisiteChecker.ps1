@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Vérifie les prérequis avant l'exécution des scripts.
+    VÃ©rifie les prÃ©requis avant l'exÃ©cution des scripts.
 
 .DESCRIPTION
-    Ce script vérifie que tous les prérequis nécessaires à l'exécution d'un script
-    sont présents (modules, commandes, versions, privilèges, etc.) et fournit des
-    recommandations pour résoudre les problèmes détectés.
+    Ce script vÃ©rifie que tous les prÃ©requis nÃ©cessaires Ã  l'exÃ©cution d'un script
+    sont prÃ©sents (modules, commandes, versions, privilÃ¨ges, etc.) et fournit des
+    recommandations pour rÃ©soudre les problÃ¨mes dÃ©tectÃ©s.
 
 .EXAMPLE
     . .\PrerequisiteChecker.ps1
@@ -22,21 +22,21 @@
     }
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Charger le module de détection d'environnement
+# Charger le module de dÃ©tection d'environnement
 $environmentDetectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "EnvironmentDetector.ps1"
 if (Test-Path -Path $environmentDetectorPath -PathType Leaf) {
     . $environmentDetectorPath
 }
 else {
-    Write-Warning "Le module de détection d'environnement n'a pas été trouvé. Certaines fonctionnalités peuvent ne pas fonctionner correctement."
+    Write-Warning "Le module de dÃ©tection d'environnement n'a pas Ã©tÃ© trouvÃ©. Certaines fonctionnalitÃ©s peuvent ne pas fonctionner correctement."
 }
 
-# Fonction pour vérifier si un module est disponible
+# Fonction pour vÃ©rifier si un module est disponible
 function Test-ModuleAvailable {
     [CmdletBinding()]
     param (
@@ -72,7 +72,7 @@ function Test-ModuleAvailable {
     }
 }
 
-# Fonction pour vérifier si une commande est disponible
+# Fonction pour vÃ©rifier si une commande est disponible
 function Test-CommandAvailable {
     [CmdletBinding()]
     param (
@@ -101,7 +101,7 @@ function Test-CommandAvailable {
     }
 }
 
-# Fonction pour vérifier si l'utilisateur a des privilèges administratifs
+# Fonction pour vÃ©rifier si l'utilisateur a des privilÃ¨ges administratifs
 function Test-AdminPrivileges {
     [CmdletBinding()]
     param ()
@@ -111,7 +111,7 @@ function Test-AdminPrivileges {
         Get-EnvironmentInfo
     }
     else {
-        # Créer un objet d'informations sur l'environnement minimal
+        # CrÃ©er un objet d'informations sur l'environnement minimal
         [PSCustomObject]@{
             IsWindows = $PSVersionTable.PSVersion.Major -lt 6 -or ($PSVersionTable.PSVersion.Major -ge 6 -and $IsWindows)
             IsLinux = $PSVersionTable.PSVersion.Major -ge 6 -and $IsLinux
@@ -120,7 +120,7 @@ function Test-AdminPrivileges {
     }
     
     if ($envInfo.IsWindows) {
-        # Vérifier les privilèges administratifs sous Windows
+        # VÃ©rifier les privilÃ¨ges administratifs sous Windows
         $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
         $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
         $isAdmin = $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -128,7 +128,7 @@ function Test-AdminPrivileges {
         return [PSCustomObject]@{
             IsAdmin = $isAdmin
             ElevationHint = if (-not $isAdmin) {
-                "Exécutez PowerShell en tant qu'administrateur pour obtenir les privilèges nécessaires."
+                "ExÃ©cutez PowerShell en tant qu'administrateur pour obtenir les privilÃ¨ges nÃ©cessaires."
             }
             else {
                 ""
@@ -136,13 +136,13 @@ function Test-AdminPrivileges {
         }
     }
     else {
-        # Vérifier les privilèges root sous Unix
+        # VÃ©rifier les privilÃ¨ges root sous Unix
         $isRoot = $env:USER -eq "root" -or (& id -u) -eq "0"
         
         return [PSCustomObject]@{
             IsAdmin = $isRoot
             ElevationHint = if (-not $isRoot) {
-                "Exécutez le script avec sudo pour obtenir les privilèges nécessaires."
+                "ExÃ©cutez le script avec sudo pour obtenir les privilÃ¨ges nÃ©cessaires."
             }
             else {
                 ""
@@ -151,7 +151,7 @@ function Test-AdminPrivileges {
     }
 }
 
-# Fonction pour vérifier la version de PowerShell
+# Fonction pour vÃ©rifier la version de PowerShell
 function Test-PowerShellVersion {
     [CmdletBinding()]
     param (
@@ -171,7 +171,7 @@ function Test-PowerShellVersion {
                 "Installez PowerShell Core depuis https://github.com/PowerShell/PowerShell/releases"
             }
             else {
-                "Mettez à jour PowerShell Core vers la version $MinimumVersion ou supérieure depuis https://github.com/PowerShell/PowerShell/releases"
+                "Mettez Ã  jour PowerShell Core vers la version $MinimumVersion ou supÃ©rieure depuis https://github.com/PowerShell/PowerShell/releases"
             }
         }
         else {
@@ -180,7 +180,7 @@ function Test-PowerShellVersion {
     }
 }
 
-# Fonction pour vérifier l'accès à un chemin
+# Fonction pour vÃ©rifier l'accÃ¨s Ã  un chemin
 function Test-PathAccess {
     [CmdletBinding()]
     param (
@@ -192,7 +192,7 @@ function Test-PathAccess {
         [string]$AccessType = "Read"
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     $exists = Test-Path -Path $Path -ErrorAction SilentlyContinue
     
     if (-not $exists) {
@@ -206,7 +206,7 @@ function Test-PathAccess {
         }
     }
     
-    # Vérifier les permissions de lecture
+    # VÃ©rifier les permissions de lecture
     $canRead = $false
     try {
         if (Test-Path -Path $Path -PathType Container) {
@@ -223,17 +223,17 @@ function Test-PathAccess {
         $canRead = $false
     }
     
-    # Vérifier les permissions d'écriture
+    # VÃ©rifier les permissions d'Ã©criture
     $canWrite = $false
     try {
         if (Test-Path -Path $Path -PathType Container) {
-            # C'est un dossier, essayer de créer un fichier temporaire
+            # C'est un dossier, essayer de crÃ©er un fichier temporaire
             $tempFile = Join-Path -Path $Path -ChildPath ([System.IO.Path]::GetRandomFileName())
             $null = New-Item -Path $tempFile -ItemType File -ErrorAction Stop
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
         }
         else {
-            # C'est un fichier, vérifier s'il est en lecture seule
+            # C'est un fichier, vÃ©rifier s'il est en lecture seule
             $item = Get-Item -Path $Path
             $canWrite = -not $item.IsReadOnly
         }
@@ -242,7 +242,7 @@ function Test-PathAccess {
         $canWrite = $false
     }
     
-    # Déterminer si les conditions d'accès sont remplies
+    # DÃ©terminer si les conditions d'accÃ¨s sont remplies
     $accessMet = switch ($AccessType) {
         "Read" { $canRead }
         "Write" { $canWrite }
@@ -250,16 +250,16 @@ function Test-PathAccess {
         default { $false }
     }
     
-    # Générer un indice pour résoudre les problèmes d'accès
+    # GÃ©nÃ©rer un indice pour rÃ©soudre les problÃ¨mes d'accÃ¨s
     $accessHint = if (-not $accessMet) {
         if (-not $canRead -and ($AccessType -eq "Read" -or $AccessType -eq "ReadWrite")) {
             "Vous n'avez pas les permissions de lecture pour '$Path'."
         }
         elseif (-not $canWrite -and ($AccessType -eq "Write" -or $AccessType -eq "ReadWrite")) {
-            "Vous n'avez pas les permissions d'écriture pour '$Path'."
+            "Vous n'avez pas les permissions d'Ã©criture pour '$Path'."
         }
         else {
-            "Vous n'avez pas les permissions nécessaires pour '$Path'."
+            "Vous n'avez pas les permissions nÃ©cessaires pour '$Path'."
         }
     }
     else {
@@ -276,7 +276,7 @@ function Test-PathAccess {
     }
 }
 
-# Fonction pour vérifier la connectivité réseau
+# Fonction pour vÃ©rifier la connectivitÃ© rÃ©seau
 function Test-NetworkConnectivity {
     [CmdletBinding()]
     param (
@@ -295,7 +295,7 @@ function Test-NetworkConnectivity {
         $responseTime = 0
         
         try {
-            # Déterminer si l'endpoint est une URL ou une adresse IP
+            # DÃ©terminer si l'endpoint est une URL ou une adresse IP
             if ($endpoint -match '^(http|https)://') {
                 # C'est une URL, utiliser Invoke-WebRequest
                 $startTime = [System.Diagnostics.Stopwatch]::StartNew()
@@ -304,7 +304,7 @@ function Test-NetworkConnectivity {
                 $isReachable = $response.StatusCode -eq 200
             }
             else {
-                # C'est une adresse IP ou un nom d'hôte, utiliser Test-Connection
+                # C'est une adresse IP ou un nom d'hÃ´te, utiliser Test-Connection
                 if (Get-Command -Name Test-Connection -ErrorAction SilentlyContinue) {
                     $pingResult = Test-Connection -ComputerName $endpoint -Count 1 -Quiet -TimeoutSeconds ($TimeoutMilliseconds / 1000)
                     $isReachable = $pingResult
@@ -337,7 +337,7 @@ function Test-NetworkConnectivity {
         AllEndpointsReachable = $allEndpointsReachable
         Results = $results
         ConnectivityHint = if (-not $allEndpointsReachable) {
-            "Certains points de terminaison ne sont pas accessibles. Vérifiez votre connexion réseau ou les paramètres de proxy."
+            "Certains points de terminaison ne sont pas accessibles. VÃ©rifiez votre connexion rÃ©seau ou les paramÃ¨tres de proxy."
         }
         else {
             ""
@@ -345,7 +345,7 @@ function Test-NetworkConnectivity {
     }
 }
 
-# Fonction principale pour vérifier tous les prérequis
+# Fonction principale pour vÃ©rifier tous les prÃ©requis
 function Test-Prerequisites {
     [CmdletBinding()]
     param (
@@ -364,7 +364,7 @@ function Test-Prerequisites {
         MissingPrerequisites = @()
     }
     
-    # Vérifier les modules
+    # VÃ©rifier les modules
     if ($Prerequisites.ContainsKey("Modules")) {
         foreach ($module in $Prerequisites.Modules) {
             $moduleName = $module
@@ -385,7 +385,7 @@ function Test-Prerequisites {
         }
     }
     
-    # Vérifier les commandes
+    # VÃ©rifier les commandes
     if ($Prerequisites.ContainsKey("Commands")) {
         foreach ($command in $Prerequisites.Commands) {
             $commandResult = Test-CommandAvailable -CommandName $command
@@ -398,7 +398,7 @@ function Test-Prerequisites {
         }
     }
     
-    # Vérifier la version de PowerShell
+    # VÃ©rifier la version de PowerShell
     if ($Prerequisites.ContainsKey("MinimumPSVersion")) {
         $psVersionResult = Test-PowerShellVersion -MinimumVersion ([version]$Prerequisites.MinimumPSVersion)
         $report.PowerShellVersionResult = $psVersionResult
@@ -409,18 +409,18 @@ function Test-Prerequisites {
         }
     }
     
-    # Vérifier les privilèges administratifs
+    # VÃ©rifier les privilÃ¨ges administratifs
     if ($Prerequisites.ContainsKey("RequireAdmin") -and $Prerequisites.RequireAdmin) {
         $adminResult = Test-AdminPrivileges
         $report.AdminPrivilegesResult = $adminResult
         
         if (-not $adminResult.IsAdmin) {
             $report.AllPrerequisitesMet = $false
-            $report.MissingPrerequisites += "Privilèges administratifs requis"
+            $report.MissingPrerequisites += "PrivilÃ¨ges administratifs requis"
         }
     }
     
-    # Vérifier l'accès aux chemins
+    # VÃ©rifier l'accÃ¨s aux chemins
     if ($Prerequisites.ContainsKey("Paths")) {
         foreach ($pathInfo in $Prerequisites.Paths) {
             $path = $pathInfo
@@ -436,12 +436,12 @@ function Test-Prerequisites {
             
             if (-not $pathResult.AccessMet) {
                 $report.AllPrerequisitesMet = $false
-                $report.MissingPrerequisites += "Accès au chemin: $path ($accessType)"
+                $report.MissingPrerequisites += "AccÃ¨s au chemin: $path ($accessType)"
             }
         }
     }
     
-    # Vérifier la connectivité réseau
+    # VÃ©rifier la connectivitÃ© rÃ©seau
     if ($Prerequisites.ContainsKey("NetworkEndpoints")) {
         $connectivityResult = Test-NetworkConnectivity -Endpoints $Prerequisites.NetworkEndpoints
         $report.NetworkConnectivityResult = $connectivityResult
@@ -449,14 +449,14 @@ function Test-Prerequisites {
         if (-not $connectivityResult.AllEndpointsReachable) {
             $report.AllPrerequisitesMet = $false
             $unreachableEndpoints = $connectivityResult.Results | Where-Object { -not $_.IsReachable } | ForEach-Object { $_.Endpoint }
-            $report.MissingPrerequisites += "Connectivité réseau: $($unreachableEndpoints -join ", ")"
+            $report.MissingPrerequisites += "ConnectivitÃ© rÃ©seau: $($unreachableEndpoints -join ", ")"
         }
     }
     
     return $report
 }
 
-# Fonction pour afficher un rapport de prérequis
+# Fonction pour afficher un rapport de prÃ©requis
 function Show-PrerequisiteReport {
     [CmdletBinding()]
     param (
@@ -467,14 +467,14 @@ function Show-PrerequisiteReport {
         [switch]$IncludeSuccessful
     )
     
-    Write-Host "=== Rapport de vérification des prérequis ===" -ForegroundColor Cyan
+    Write-Host "=== Rapport de vÃ©rification des prÃ©requis ===" -ForegroundColor Cyan
     
     if ($Report.AllPrerequisitesMet) {
-        Write-Host "Tous les prérequis sont satisfaits." -ForegroundColor Green
+        Write-Host "Tous les prÃ©requis sont satisfaits." -ForegroundColor Green
         return
     }
     
-    Write-Host "Certains prérequis ne sont pas satisfaits:" -ForegroundColor Yellow
+    Write-Host "Certains prÃ©requis ne sont pas satisfaits:" -ForegroundColor Yellow
     
     # Afficher les modules manquants
     if ($Report.ModuleResults.Count -gt 0) {
@@ -483,10 +483,10 @@ function Show-PrerequisiteReport {
             if (-not $module.Available -or -not $module.MinimumVersionMet) {
                 Write-Host "  [X] $($module.Name)" -ForegroundColor Red -NoNewline
                 if ($module.Version) {
-                    Write-Host " (version $($module.Version) installée)" -ForegroundColor Red
+                    Write-Host " (version $($module.Version) installÃ©e)" -ForegroundColor Red
                 }
                 else {
-                    Write-Host " (non installé)" -ForegroundColor Red
+                    Write-Host " (non installÃ©)" -ForegroundColor Red
                 }
                 Write-Host "      Installation: $($module.InstallCommand)" -ForegroundColor Yellow
             }
@@ -510,7 +510,7 @@ function Show-PrerequisiteReport {
         }
     }
     
-    # Afficher le résultat de la version PowerShell
+    # Afficher le rÃ©sultat de la version PowerShell
     if ($null -ne $Report.PowerShellVersionResult) {
         Write-Host "`nVersion PowerShell:" -ForegroundColor Cyan
         if (-not $Report.PowerShellVersionResult.VersionMet) {
@@ -522,35 +522,35 @@ function Show-PrerequisiteReport {
         }
     }
     
-    # Afficher le résultat des privilèges administratifs
+    # Afficher le rÃ©sultat des privilÃ¨ges administratifs
     if ($null -ne $Report.AdminPrivilegesResult) {
-        Write-Host "`nPrivilèges administratifs:" -ForegroundColor Cyan
+        Write-Host "`nPrivilÃ¨ges administratifs:" -ForegroundColor Cyan
         if (-not $Report.AdminPrivilegesResult.IsAdmin) {
-            Write-Host "  [X] Privilèges administratifs requis mais non disponibles" -ForegroundColor Red
+            Write-Host "  [X] PrivilÃ¨ges administratifs requis mais non disponibles" -ForegroundColor Red
             Write-Host "      $($Report.AdminPrivilegesResult.ElevationHint)" -ForegroundColor Yellow
         }
         elseif ($IncludeSuccessful) {
-            Write-Host "  [V] Privilèges administratifs disponibles" -ForegroundColor Green
+            Write-Host "  [V] PrivilÃ¨ges administratifs disponibles" -ForegroundColor Green
         }
     }
     
-    # Afficher les résultats d'accès aux chemins
+    # Afficher les rÃ©sultats d'accÃ¨s aux chemins
     if ($Report.PathAccessResults.Count -gt 0) {
-        Write-Host "`nAccès aux chemins:" -ForegroundColor Cyan
+        Write-Host "`nAccÃ¨s aux chemins:" -ForegroundColor Cyan
         foreach ($path in $Report.PathAccessResults) {
             if (-not $path.AccessMet) {
                 Write-Host "  [X] $($path.Path)" -ForegroundColor Red
                 Write-Host "      $($path.AccessHint)" -ForegroundColor Yellow
             }
             elseif ($IncludeSuccessful) {
-                Write-Host "  [V] $($path.Path) (Lecture: $($path.CanRead), Écriture: $($path.CanWrite))" -ForegroundColor Green
+                Write-Host "  [V] $($path.Path) (Lecture: $($path.CanRead), Ã‰criture: $($path.CanWrite))" -ForegroundColor Green
             }
         }
     }
     
-    # Afficher le résultat de la connectivité réseau
+    # Afficher le rÃ©sultat de la connectivitÃ© rÃ©seau
     if ($null -ne $Report.NetworkConnectivityResult) {
-        Write-Host "`nConnectivité réseau:" -ForegroundColor Cyan
+        Write-Host "`nConnectivitÃ© rÃ©seau:" -ForegroundColor Cyan
         if (-not $Report.NetworkConnectivityResult.AllEndpointsReachable) {
             Write-Host "  [X] Certains points de terminaison ne sont pas accessibles:" -ForegroundColor Red
             foreach ($endpoint in $Report.NetworkConnectivityResult.Results) {
@@ -563,18 +563,18 @@ function Show-PrerequisiteReport {
         elseif ($IncludeSuccessful) {
             Write-Host "  [V] Tous les points de terminaison sont accessibles:" -ForegroundColor Green
             foreach ($endpoint in $Report.NetworkConnectivityResult.Results) {
-                Write-Host "      - $($endpoint.Endpoint) (Temps de réponse: $($endpoint.ResponseTime) ms)" -ForegroundColor Green
+                Write-Host "      - $($endpoint.Endpoint) (Temps de rÃ©ponse: $($endpoint.ResponseTime) ms)" -ForegroundColor Green
             }
         }
     }
     
-    Write-Host "`nRésumé des prérequis manquants:" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sumÃ© des prÃ©requis manquants:" -ForegroundColor Cyan
     foreach ($missing in $Report.MissingPrerequisites) {
         Write-Host "  - $missing" -ForegroundColor Red
     }
 }
 
-# Fonction pour installer automatiquement les prérequis manquants
+# Fonction pour installer automatiquement les prÃ©requis manquants
 function Install-Prerequisites {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Medium")]
     param (
@@ -586,7 +586,7 @@ function Install-Prerequisites {
     )
     
     if ($Report.AllPrerequisitesMet) {
-        Write-Host "Tous les prérequis sont déjà satisfaits." -ForegroundColor Green
+        Write-Host "Tous les prÃ©requis sont dÃ©jÃ  satisfaits." -ForegroundColor Green
         return $true
     }
     
@@ -599,24 +599,24 @@ function Install-Prerequisites {
                 try {
                     Write-Host "Installation du module $($module.Name)..." -ForegroundColor Yellow
                     Invoke-Expression -Command $module.InstallCommand -ErrorAction Stop
-                    Write-Host "Module $($module.Name) installé avec succès." -ForegroundColor Green
+                    Write-Host "Module $($module.Name) installÃ© avec succÃ¨s." -ForegroundColor Green
                 }
                 catch {
-                    Write-Host "Échec de l'installation du module $($module.Name): $_" -ForegroundColor Red
+                    Write-Host "Ã‰chec de l'installation du module $($module.Name): $_" -ForegroundColor Red
                     $installationSuccessful = $false
                 }
             }
         }
     }
     
-    # Afficher des instructions pour les autres prérequis qui ne peuvent pas être installés automatiquement
+    # Afficher des instructions pour les autres prÃ©requis qui ne peuvent pas Ãªtre installÃ©s automatiquement
     if ($null -ne $Report.PowerShellVersionResult -and -not $Report.PowerShellVersionResult.VersionMet) {
-        Write-Host "`nPour mettre à jour PowerShell:" -ForegroundColor Yellow
+        Write-Host "`nPour mettre Ã  jour PowerShell:" -ForegroundColor Yellow
         Write-Host $Report.PowerShellVersionResult.UpgradeHint -ForegroundColor Cyan
     }
     
     if ($null -ne $Report.AdminPrivilegesResult -and -not $Report.AdminPrivilegesResult.IsAdmin) {
-        Write-Host "`nPour obtenir des privilèges administratifs:" -ForegroundColor Yellow
+        Write-Host "`nPour obtenir des privilÃ¨ges administratifs:" -ForegroundColor Yellow
         Write-Host $Report.AdminPrivilegesResult.ElevationHint -ForegroundColor Cyan
     }
     
@@ -629,13 +629,13 @@ function Install-Prerequisites {
     
     foreach ($path in $Report.PathAccessResults) {
         if (-not $path.AccessMet) {
-            Write-Host "`nPour résoudre les problèmes d'accès au chemin $($path.Path):" -ForegroundColor Yellow
+            Write-Host "`nPour rÃ©soudre les problÃ¨mes d'accÃ¨s au chemin $($path.Path):" -ForegroundColor Yellow
             Write-Host $path.AccessHint -ForegroundColor Cyan
         }
     }
     
     if ($null -ne $Report.NetworkConnectivityResult -and -not $Report.NetworkConnectivityResult.AllEndpointsReachable) {
-        Write-Host "`nPour résoudre les problèmes de connectivité réseau:" -ForegroundColor Yellow
+        Write-Host "`nPour rÃ©soudre les problÃ¨mes de connectivitÃ© rÃ©seau:" -ForegroundColor Yellow
         Write-Host $Report.NetworkConnectivityResult.ConnectivityHint -ForegroundColor Cyan
     }
     

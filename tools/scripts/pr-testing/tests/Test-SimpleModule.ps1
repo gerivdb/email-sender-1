@@ -1,11 +1,11 @@
-# Script de test pour le module simplifié
+﻿# Script de test pour le module simplifiÃ©
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "SimpleFileContentIndexer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    Write-Error "Module SimpleFileContentIndexer non trouvé à l'emplacement: $moduleToTest"
+    Write-Error "Module SimpleFileContentIndexer non trouvÃ© Ã  l'emplacement: $moduleToTest"
     exit 1
 }
 
@@ -14,27 +14,27 @@ try {
     Write-Host "Tentative d'importation du module..." -ForegroundColor Cyan
     Import-Module $moduleToTest -Force -Verbose
     
-    # Vérifier si le module est importé
+    # VÃ©rifier si le module est importÃ©
     $module = Get-Module | Where-Object { $_.Path -eq $moduleToTest }
     if ($null -eq $module) {
-        Write-Error "Le module n'a pas été importé correctement."
+        Write-Error "Le module n'a pas Ã©tÃ© importÃ© correctement."
         exit 1
     }
     
-    Write-Host "Module importé avec succès!" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s!" -ForegroundColor Green
     
-    # Essayer de créer un indexeur
-    Write-Host "Tentative de création d'un indexeur..." -ForegroundColor Cyan
+    # Essayer de crÃ©er un indexeur
+    Write-Host "Tentative de crÃ©ation d'un indexeur..." -ForegroundColor Cyan
     $indexer = New-SimpleFileContentIndexer -IndexPath "$env:TEMP\TestIndex" -PersistIndices $false
     
     if ($null -eq $indexer) {
-        Write-Error "Impossible de créer un indexeur."
+        Write-Error "Impossible de crÃ©er un indexeur."
         exit 1
     }
     
-    Write-Host "Indexeur créé avec succès!" -ForegroundColor Green
+    Write-Host "Indexeur crÃ©Ã© avec succÃ¨s!" -ForegroundColor Green
     
-    # Créer un fichier de test
+    # CrÃ©er un fichier de test
     $testFilePath = Join-Path -Path $env:TEMP -ChildPath "test_file.txt"
     "Ceci est un fichier de test" | Set-Content -Path $testFilePath
     
@@ -47,14 +47,14 @@ try {
         exit 1
     }
     
-    Write-Host "Fichier indexé avec succès!" -ForegroundColor Green
-    Write-Host "Propriétés de l'index:" -ForegroundColor Cyan
+    Write-Host "Fichier indexÃ© avec succÃ¨s!" -ForegroundColor Green
+    Write-Host "PropriÃ©tÃ©s de l'index:" -ForegroundColor Cyan
     $index | Format-List
     
     # Nettoyer
     Remove-Item -Path $testFilePath -Force
     
-    Write-Host "Test réussi!" -ForegroundColor Green
+    Write-Host "Test rÃ©ussi!" -ForegroundColor Green
 } catch {
     Write-Error "Erreur lors du test: $_"
     exit 1

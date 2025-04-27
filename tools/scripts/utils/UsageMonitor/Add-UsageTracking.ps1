@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
     Ajoute le suivi d'utilisation aux scripts PowerShell existants.
 .DESCRIPTION
     Ce script analyse les scripts PowerShell existants et ajoute automatiquement
-    le code nécessaire pour suivre leur utilisation avec le module UsageMonitor.
+    le code nÃ©cessaire pour suivre leur utilisation avec le module UsageMonitor.
 .PARAMETER Path
-    Chemin vers le script ou le répertoire de scripts à modifier.
+    Chemin vers le script ou le rÃ©pertoire de scripts Ã  modifier.
 .PARAMETER Recurse
-    Indique si les sous-répertoires doivent être traités récursivement.
+    Indique si les sous-rÃ©pertoires doivent Ãªtre traitÃ©s rÃ©cursivement.
 .PARAMETER CreateBackup
-    Indique si une sauvegarde des scripts originaux doit être créée.
+    Indique si une sauvegarde des scripts originaux doit Ãªtre crÃ©Ã©e.
 .PARAMETER Force
-    Force l'ajout du suivi d'utilisation même si le script contient déjà du code de suivi.
+    Force l'ajout du suivi d'utilisation mÃªme si le script contient dÃ©jÃ  du code de suivi.
 .EXAMPLE
     .\Add-UsageTracking.ps1 -Path "C:\Scripts" -Recurse -CreateBackup
 .NOTES
@@ -35,7 +35,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -58,7 +58,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Vérifier si un script utilise déjà le module UsageMonitor
+# VÃ©rifier si un script utilise dÃ©jÃ  le module UsageMonitor
 function Test-UsageMonitorUsage {
     param ([string]$ScriptContent)
     
@@ -67,14 +67,14 @@ function Test-UsageMonitorUsage {
             $ScriptContent -match "Stop-ScriptUsageTracking")
 }
 
-# Ajouter le code de suivi d'utilisation à un script
+# Ajouter le code de suivi d'utilisation Ã  un script
 function Add-UsageTrackingCode {
     param (
         [string]$ScriptPath,
         [string]$ScriptContent
     )
     
-    # Définir le code à ajouter
+    # DÃ©finir le code Ã  ajouter
     $usageMonitorImport = @"
 # Importer le module UsageMonitor
 try {
@@ -91,7 +91,7 @@ catch {
 "@
     
     $usageTrackingStart = @"
-# Démarrer le suivi d'utilisation
+# DÃ©marrer le suivi d'utilisation
 `$usageTrackingEnabled = `$false
 `$executionId = `$null
 try {
@@ -101,7 +101,7 @@ try {
     }
 }
 catch {
-    Write-Warning "Impossible de démarrer le suivi d'utilisation: `$_"
+    Write-Warning "Impossible de dÃ©marrer le suivi d'utilisation: `$_"
 }
 
 "@
@@ -124,13 +124,13 @@ catch {
 }
 "@
     
-    # Trouver la position pour insérer le code
+    # Trouver la position pour insÃ©rer le code
     $lines = $ScriptContent -split "`r`n|\r|\n"
     $insertImportAt = 0
     $insertStartAt = 0
     $insertEndAt = $lines.Count
     
-    # Trouver la position pour l'import (après les commentaires et les paramètres)
+    # Trouver la position pour l'import (aprÃ¨s les commentaires et les paramÃ¨tres)
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
         
@@ -139,9 +139,9 @@ catch {
             continue
         }
         
-        # Ignorer le bloc de paramètres
+        # Ignorer le bloc de paramÃ¨tres
         if ($line.Trim() -eq "param (" -or $line.Trim().StartsWith("[CmdletBinding(")) {
-            # Trouver la fin du bloc de paramètres
+            # Trouver la fin du bloc de paramÃ¨tres
             for ($j = $i; $j -lt $lines.Count; $j++) {
                 if ($lines[$j].Trim() -eq ")") {
                     $i = $j + 1
@@ -151,7 +151,7 @@ catch {
             continue
         }
         
-        # Première ligne de code trouvée
+        # PremiÃ¨re ligne de code trouvÃ©e
         $insertImportAt = $i
         $insertStartAt = $i
         break
@@ -168,15 +168,15 @@ catch {
     # Ajouter le code d'import
     $newContent += $usageMonitorImport -split "`r`n|\r|\n"
     
-    # Ajouter les lignes jusqu'au point d'insertion du début du suivi
+    # Ajouter les lignes jusqu'au point d'insertion du dÃ©but du suivi
     for ($i = $insertImportAt; $i -lt $insertStartAt; $i++) {
         $newContent += $lines[$i]
     }
     
-    # Ajouter le code de début de suivi
+    # Ajouter le code de dÃ©but de suivi
     $newContent += $usageTrackingStart -split "`r`n|\r|\n"
     
-    # Ajouter les lignes restantes jusqu'à la fin
+    # Ajouter les lignes restantes jusqu'Ã  la fin
     for ($i = $insertStartAt; $i -lt $insertEndAt; $i++) {
         $newContent += $lines[$i]
     }
@@ -199,29 +199,29 @@ function Process-Script {
         # Lire le contenu du script
         $content = Get-Content -Path $ScriptPath -Raw -ErrorAction Stop
         
-        # Vérifier si le script utilise déjà le module UsageMonitor
+        # VÃ©rifier si le script utilise dÃ©jÃ  le module UsageMonitor
         if (Test-UsageMonitorUsage -ScriptContent $content) {
             if (-not $Force) {
-                Write-Log "Le script utilise déjà le module UsageMonitor. Utilisez -Force pour remplacer." -Level "WARNING"
+                Write-Log "Le script utilise dÃ©jÃ  le module UsageMonitor. Utilisez -Force pour remplacer." -Level "WARNING"
                 return
             }
-            Write-Log "Le script utilise déjà le module UsageMonitor. Remplacement forcé." -Level "WARNING"
+            Write-Log "Le script utilise dÃ©jÃ  le module UsageMonitor. Remplacement forcÃ©." -Level "WARNING"
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$ScriptPath.bak"
             Copy-Item -Path $ScriptPath -Destination $backupPath -Force -ErrorAction Stop
-            Write-Log "Sauvegarde créée: $backupPath" -Level "SUCCESS"
+            Write-Log "Sauvegarde crÃ©Ã©e: $backupPath" -Level "SUCCESS"
         }
         
         # Ajouter le code de suivi d'utilisation
         $newContent = Add-UsageTrackingCode -ScriptPath $ScriptPath -ScriptContent $content
         
-        # Écrire le nouveau contenu dans le fichier
+        # Ã‰crire le nouveau contenu dans le fichier
         if ($PSCmdlet.ShouldProcess($ScriptPath, "Ajouter le suivi d'utilisation")) {
             Set-Content -Path $ScriptPath -Value $newContent -Force -ErrorAction Stop
-            Write-Log "Suivi d'utilisation ajouté avec succès." -Level "SUCCESS"
+            Write-Log "Suivi d'utilisation ajoutÃ© avec succÃ¨s." -Level "SUCCESS"
         }
     }
     catch {
@@ -229,12 +229,12 @@ function Process-Script {
     }
 }
 
-# Point d'entrée principal
-Write-Log "Démarrage de l'ajout du suivi d'utilisation..." -Level "TITLE"
+# Point d'entrÃ©e principal
+Write-Log "DÃ©marrage de l'ajout du suivi d'utilisation..." -Level "TITLE"
 
-# Vérifier si le chemin existe
+# VÃ©rifier si le chemin existe
 if (-not (Test-Path -Path $Path)) {
-    Write-Log "Le chemin spécifié n'existe pas: $Path" -Level "ERROR"
+    Write-Log "Le chemin spÃ©cifiÃ© n'existe pas: $Path" -Level "ERROR"
     exit 1
 }
 
@@ -245,11 +245,11 @@ if (Test-Path -Path $Path -PathType Leaf) {
         Process-Script -ScriptPath $Path
     }
     else {
-        Write-Log "Le fichier spécifié n'est pas un script PowerShell (.ps1 ou .psm1): $Path" -Level "ERROR"
+        Write-Log "Le fichier spÃ©cifiÃ© n'est pas un script PowerShell (.ps1 ou .psm1): $Path" -Level "ERROR"
     }
 }
 else {
-    # Traiter un répertoire
+    # Traiter un rÃ©pertoire
     $searchOptions = @{
         Path = $Path
         Filter = "*.ps1"
@@ -262,21 +262,21 @@ else {
     
     $scripts = Get-ChildItem @searchOptions
     
-    Write-Log "Nombre de scripts trouvés: $($scripts.Count)" -Level "INFO"
+    Write-Log "Nombre de scripts trouvÃ©s: $($scripts.Count)" -Level "INFO"
     
     foreach ($script in $scripts) {
         Process-Script -ScriptPath $script.FullName
     }
     
-    # Traiter également les fichiers .psm1
+    # Traiter Ã©galement les fichiers .psm1
     $searchOptions.Filter = "*.psm1"
     $modules = Get-ChildItem @searchOptions
     
-    Write-Log "Nombre de modules trouvés: $($modules.Count)" -Level "INFO"
+    Write-Log "Nombre de modules trouvÃ©s: $($modules.Count)" -Level "INFO"
     
     foreach ($module in $modules) {
         Process-Script -ScriptPath $module.FullName
     }
 }
 
-Write-Log "Traitement terminé." -Level "TITLE"
+Write-Log "Traitement terminÃ©." -Level "TITLE"

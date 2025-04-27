@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute les tests de gestion des compteurs de performance avec TestOmnibus.
+    ExÃ©cute les tests de gestion des compteurs de performance avec TestOmnibus.
 .DESCRIPTION
-    Ce script exécute les tests de gestion des compteurs de performance en utilisant
-    TestOmnibus et génère un rapport HTML des résultats.
+    Ce script exÃ©cute les tests de gestion des compteurs de performance en utilisant
+    TestOmnibus et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration de TestOmnibus.
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 .PARAMETER ShowDetailedResults
-    Indique si les résultats détaillés doivent être affichés.
+    Indique si les rÃ©sultats dÃ©taillÃ©s doivent Ãªtre affichÃ©s.
 .EXAMPLE
     .\Run-PerformanceCounterManagerTests.ps1 -GenerateHtmlReport
 .NOTES
@@ -30,7 +30,7 @@ param (
     [switch]$ShowDetailedResults
 )
 
-# Vérifier que le fichier de configuration existe
+# VÃ©rifier que le fichier de configuration existe
 if (-not (Test-Path -Path $ConfigPath)) {
     Write-Error "Le fichier de configuration n'existe pas: $ConfigPath"
     return 1
@@ -40,15 +40,15 @@ if (-not (Test-Path -Path $ConfigPath)) {
 $adapterPath = Join-Path -Path $PSScriptRoot -ChildPath "Adapters\PerformanceCounterManager-Adapter.ps1"
 
 if (-not (Test-Path -Path $adapterPath)) {
-    Write-Error "Adaptateur non trouvé: $adapterPath"
+    Write-Error "Adaptateur non trouvÃ©: $adapterPath"
     return 1
 }
 
 # Importer l'adaptateur
 . $adapterPath
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-PerformanceCounterManagerTests -GenerateHtmlReport:$GenerateHtmlReport -ShowDetailedResults:$ShowDetailedResults
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

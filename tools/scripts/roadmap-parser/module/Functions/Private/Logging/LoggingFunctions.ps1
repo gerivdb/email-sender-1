@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit les fonctions de journalisation pour le module RoadmapParser.
+    DÃ©finit les fonctions de journalisation pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script définit les fonctions de journalisation utilisées par le module RoadmapParser.
-    Il inclut des fonctions pour écrire des messages de journal à différents niveaux de journalisation.
+    Ce script dÃ©finit les fonctions de journalisation utilisÃ©es par le module RoadmapParser.
+    Il inclut des fonctions pour Ã©crire des messages de journal Ã  diffÃ©rents niveaux de journalisation.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 
 # Importer le script des niveaux de journalisation
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $loggingLevelsPath = Join-Path -Path $scriptPath -ChildPath "LoggingLevels.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $loggingLevelsPath)) {
-    throw "Le fichier LoggingLevels.ps1 est introuvable à l'emplacement : $loggingLevelsPath"
+    throw "Le fichier LoggingLevels.ps1 est introuvable Ã  l'emplacement : $loggingLevelsPath"
 }
 
 # Importer le script
 . $loggingLevelsPath
 
-# Définir les variables globales pour la configuration de la journalisation
+# DÃ©finir les variables globales pour la configuration de la journalisation
 $script:LoggingEnabled = $true
 $script:LoggingLevel = $script:LogLevelInformation
 $script:LoggingDestination = "Console"
@@ -44,64 +44,64 @@ $script:LoggingSourceName = "RoadmapParser"
 
 .DESCRIPTION
     La fonction Set-LoggingConfiguration configure la journalisation.
-    Elle permet de définir les paramètres de journalisation tels que le niveau, la destination, etc.
+    Elle permet de dÃ©finir les paramÃ¨tres de journalisation tels que le niveau, la destination, etc.
 
 .PARAMETER Enabled
-    Indique si la journalisation est activée.
-    Par défaut, c'est $true.
+    Indique si la journalisation est activÃ©e.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER Level
     Le niveau de journalisation.
-    Par défaut, c'est LogLevelInformation.
+    Par dÃ©faut, c'est LogLevelInformation.
 
 .PARAMETER Destination
     La destination de la journalisation. Valeurs possibles :
-    - Console : Écrit les messages dans la console
-    - File : Écrit les messages dans un fichier
-    - Both : Écrit les messages dans la console et dans un fichier
-    Par défaut, c'est "Console".
+    - Console : Ã‰crit les messages dans la console
+    - File : Ã‰crit les messages dans un fichier
+    - Both : Ã‰crit les messages dans la console et dans un fichier
+    Par dÃ©faut, c'est "Console".
 
 .PARAMETER FilePath
     Le chemin du fichier de journalisation.
-    Utilisé uniquement lorsque Destination est "File" ou "Both".
+    UtilisÃ© uniquement lorsque Destination est "File" ou "Both".
 
 .PARAMETER FileMaxSize
     La taille maximale du fichier de journalisation.
-    Utilisé uniquement lorsque Destination est "File" ou "Both".
-    Par défaut, c'est 10MB.
+    UtilisÃ© uniquement lorsque Destination est "File" ou "Both".
+    Par dÃ©faut, c'est 10MB.
 
 .PARAMETER FileMaxCount
-    Le nombre maximal de fichiers de journalisation à conserver.
-    Utilisé uniquement lorsque Destination est "File" ou "Both".
-    Par défaut, c'est 5.
+    Le nombre maximal de fichiers de journalisation Ã  conserver.
+    UtilisÃ© uniquement lorsque Destination est "File" ou "Both".
+    Par dÃ©faut, c'est 5.
 
 .PARAMETER Format
     Le format des messages de journalisation.
-    Par défaut, c'est "{0} {1} {2}".
+    Par dÃ©faut, c'est "{0} {1} {2}".
 
 .PARAMETER TimestampFormat
     Le format des horodatages.
-    Par défaut, c'est "yyyy-MM-dd HH:mm:ss".
+    Par dÃ©faut, c'est "yyyy-MM-dd HH:mm:ss".
 
 .PARAMETER IncludeTimestamp
-    Indique si les horodatages doivent être inclus dans les messages de journalisation.
-    Par défaut, c'est $true.
+    Indique si les horodatages doivent Ãªtre inclus dans les messages de journalisation.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER IncludeLevel
-    Indique si les niveaux de journalisation doivent être inclus dans les messages de journalisation.
-    Par défaut, c'est $true.
+    Indique si les niveaux de journalisation doivent Ãªtre inclus dans les messages de journalisation.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER IncludeSource
-    Indique si la source doit être incluse dans les messages de journalisation.
-    Par défaut, c'est $true.
+    Indique si la source doit Ãªtre incluse dans les messages de journalisation.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER SourceName
-    Le nom de la source à inclure dans les messages de journalisation.
-    Par défaut, c'est "RoadmapParser".
+    Le nom de la source Ã  inclure dans les messages de journalisation.
+    Par dÃ©faut, c'est "RoadmapParser".
 
 .EXAMPLE
     Set-LoggingConfiguration -Level $LogLevelDebug -Destination "File" -FilePath "C:\Logs\RoadmapParser.log"
-    Configure la journalisation pour écrire les messages de niveau Debug et supérieur dans un fichier.
+    Configure la journalisation pour Ã©crire les messages de niveau Debug et supÃ©rieur dans un fichier.
 
 .OUTPUTS
     [void]
@@ -152,10 +152,10 @@ function Set-LoggingConfiguration {
 
     # Valider la destination
     if ($Destination -in @("File", "Both") -and [string]::IsNullOrEmpty($FilePath)) {
-        throw "Le paramètre FilePath est requis lorsque Destination est 'File' ou 'Both'."
+        throw "Le paramÃ¨tre FilePath est requis lorsque Destination est 'File' ou 'Both'."
     }
 
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     $script:LoggingEnabled = $Enabled
     $script:LoggingDestination = $Destination
     $script:LoggingFilePath = $FilePath
@@ -175,7 +175,7 @@ function Set-LoggingConfiguration {
 
 .DESCRIPTION
     La fonction Get-LoggingConfiguration obtient la configuration de la journalisation.
-    Elle retourne un objet contenant les paramètres de journalisation actuels.
+    Elle retourne un objet contenant les paramÃ¨tres de journalisation actuels.
 
 .EXAMPLE
     Get-LoggingConfiguration
@@ -208,44 +208,44 @@ function Get-LoggingConfiguration {
 
 <#
 .SYNOPSIS
-    Écrit un message dans le journal.
+    Ã‰crit un message dans le journal.
 
 .DESCRIPTION
-    La fonction Write-Log écrit un message dans le journal.
-    Elle prend en charge différents niveaux de journalisation et destinations.
+    La fonction Write-Log Ã©crit un message dans le journal.
+    Elle prend en charge diffÃ©rents niveaux de journalisation et destinations.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
     Le niveau de journalisation du message.
-    Par défaut, c'est LogLevelInformation.
+    Par dÃ©faut, c'est LogLevelInformation.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Write-Log -Message "Ceci est un message d'information"
-    Écrit un message d'information dans le journal.
+    Ã‰crit un message d'information dans le journal.
 
 .EXAMPLE
     Write-Log -Message "Ceci est un message d'erreur" -Level $LogLevelError
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-Log {
     [CmdletBinding()]
@@ -274,7 +274,7 @@ function Write-Log {
         [string]$Category
     )
 
-    # Vérifier si la journalisation est activée
+    # VÃ©rifier si la journalisation est activÃ©e
     if (-not $script:LoggingEnabled) {
         if ($PassThru) {
             return $Message
@@ -285,7 +285,7 @@ function Write-Log {
     # Convertir le niveau de journalisation
     $logLevel = ConvertTo-LogLevel -Value $Level
 
-    # Vérifier si le niveau de journalisation est suffisant
+    # VÃ©rifier si le niveau de journalisation est suffisant
     if ($logLevel -lt $script:LoggingLevel) {
         if ($PassThru) {
             return $Message
@@ -293,7 +293,7 @@ function Write-Log {
         return
     }
 
-    # Construire le message formaté
+    # Construire le message formatÃ©
     $timestamp = if ($script:LoggingIncludeTimestamp) { Get-Date -Format $script:LoggingTimestampFormat } else { "" }
     $levelPrefix = if ($script:LoggingIncludeLevel) { Get-LogLevelPrefix -LogLevel $logLevel } else { "" }
     $sourcePrefix = if ($script:LoggingIncludeSource) { "[$Source] " } else { "" }
@@ -306,7 +306,7 @@ function Write-Log {
         $formattedMessage = "$formattedMessage`r`n$($Exception.GetType().FullName): $($Exception.Message)`r`n$($Exception.StackTrace)"
     }
 
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     if ($script:LoggingDestination -in @("Console", "Both")) {
         $color = Get-LogLevelColor -LogLevel $logLevel
 
@@ -317,15 +317,15 @@ function Write-Log {
         }
     }
 
-    # Écrire le message dans un fichier
+    # Ã‰crire le message dans un fichier
     if ($script:LoggingDestination -in @("File", "Both") -and -not [string]::IsNullOrEmpty($script:LoggingFilePath)) {
-        # Créer le répertoire du fichier de journalisation s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire du fichier de journalisation s'il n'existe pas
         $logDir = Split-Path -Parent $script:LoggingFilePath
         if (-not (Test-Path -Path $logDir -PathType Container)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
 
-        # Vérifier si le fichier de journalisation existe et s'il dépasse la taille maximale
+        # VÃ©rifier si le fichier de journalisation existe et s'il dÃ©passe la taille maximale
         if (Test-Path -Path $script:LoggingFilePath -PathType Leaf) {
             $logFile = Get-Item -Path $script:LoggingFilePath
 
@@ -354,7 +354,7 @@ function Write-Log {
             }
         }
 
-        # Écrire le message dans le fichier de journalisation
+        # Ã‰crire le message dans le fichier de journalisation
         if ($NoNewLine) {
             $formattedMessage | Out-File -FilePath $script:LoggingFilePath -Append -Encoding UTF8 -NoNewline
         } else {
@@ -362,7 +362,7 @@ function Write-Log {
         }
     }
 
-    # Retourner le message formaté si demandé
+    # Retourner le message formatÃ© si demandÃ©
     if ($PassThru) {
         return $formattedMessage
     }
@@ -370,36 +370,36 @@ function Write-Log {
 
 <#
 .SYNOPSIS
-    Écrit un message de débogage dans le journal.
+    Ã‰crit un message de dÃ©bogage dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogDebug écrit un message de débogage dans le journal.
+    La fonction Write-LogDebug Ã©crit un message de dÃ©bogage dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Debug.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
-    Write-LogDebug -Message "Ceci est un message de débogage"
-    Écrit un message de débogage dans le journal.
+    Write-LogDebug -Message "Ceci est un message de dÃ©bogage"
+    Ã‰crit un message de dÃ©bogage dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogDebug {
     [CmdletBinding()]
@@ -427,36 +427,36 @@ function Write-LogDebug {
 
 <#
 .SYNOPSIS
-    Écrit un message détaillé dans le journal.
+    Ã‰crit un message dÃ©taillÃ© dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogVerbose écrit un message détaillé dans le journal.
+    La fonction Write-LogVerbose Ã©crit un message dÃ©taillÃ© dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Verbose.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
-    Write-LogVerbose -Message "Ceci est un message détaillé"
-    Écrit un message détaillé dans le journal.
+    Write-LogVerbose -Message "Ceci est un message dÃ©taillÃ©"
+    Ã‰crit un message dÃ©taillÃ© dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogVerbose {
     [CmdletBinding()]
@@ -484,36 +484,36 @@ function Write-LogVerbose {
 
 <#
 .SYNOPSIS
-    Écrit un message d'information dans le journal.
+    Ã‰crit un message d'information dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogInformation écrit un message d'information dans le journal.
+    La fonction Write-LogInformation Ã©crit un message d'information dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Information.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Write-LogInformation -Message "Ceci est un message d'information"
-    Écrit un message d'information dans le journal.
+    Ã‰crit un message d'information dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogInformation {
     [CmdletBinding()]
@@ -541,36 +541,36 @@ function Write-LogInformation {
 
 <#
 .SYNOPSIS
-    Écrit un message d'avertissement dans le journal.
+    Ã‰crit un message d'avertissement dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogWarning écrit un message d'avertissement dans le journal.
+    La fonction Write-LogWarning Ã©crit un message d'avertissement dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Warning.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Write-LogWarning -Message "Ceci est un message d'avertissement"
-    Écrit un message d'avertissement dans le journal.
+    Ã‰crit un message d'avertissement dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogWarning {
     [CmdletBinding()]
@@ -598,36 +598,36 @@ function Write-LogWarning {
 
 <#
 .SYNOPSIS
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogError écrit un message d'erreur dans le journal.
+    La fonction Write-LogError Ã©crit un message d'erreur dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Error.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Write-LogError -Message "Ceci est un message d'erreur"
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogError {
     [CmdletBinding()]
@@ -655,36 +655,36 @@ function Write-LogError {
 
 <#
 .SYNOPSIS
-    Écrit un message critique dans le journal.
+    Ã‰crit un message critique dans le journal.
 
 .DESCRIPTION
-    La fonction Write-LogCritical écrit un message critique dans le journal.
+    La fonction Write-LogCritical Ã©crit un message critique dans le journal.
     Elle est un wrapper autour de Write-Log avec le niveau de journalisation Critical.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est la valeur de LoggingSourceName.
+    Par dÃ©faut, c'est la valeur de LoggingSourceName.
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Write-LogCritical -Message "Ceci est un message critique"
-    Écrit un message critique dans le journal.
+    Ã‰crit un message critique dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 #>
 function Write-LogCritical {
     [CmdletBinding()]

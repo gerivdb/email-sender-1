@@ -1,32 +1,32 @@
-function Find-SqlPermissionMissingGaps {
+﻿function Find-SqlPermissionMissingGaps {
     <#
     .SYNOPSIS
-        Détecte les permissions manquantes par rapport à un modèle de référence.
+        DÃ©tecte les permissions manquantes par rapport Ã  un modÃ¨le de rÃ©fÃ©rence.
     
     .DESCRIPTION
-        Cette fonction compare les permissions actuelles d'une instance SQL Server avec un modèle de référence
-        et identifie les permissions qui sont présentes dans le modèle mais absentes dans l'instance actuelle.
+        Cette fonction compare les permissions actuelles d'une instance SQL Server avec un modÃ¨le de rÃ©fÃ©rence
+        et identifie les permissions qui sont prÃ©sentes dans le modÃ¨le mais absentes dans l'instance actuelle.
     
     .PARAMETER CurrentPermissions
         Les permissions actuelles de l'instance SQL Server.
     
     .PARAMETER ReferenceModel
-        Le modèle de référence contenant les permissions attendues.
+        Le modÃ¨le de rÃ©fÃ©rence contenant les permissions attendues.
     
     .PARAMETER Level
         Le niveau de comparaison (Server, Database, Object).
     
     .PARAMETER ExcludeSystemObjects
-        Indique si les objets système doivent être exclus de la comparaison.
+        Indique si les objets systÃ¨me doivent Ãªtre exclus de la comparaison.
     
     .PARAMETER ExcludeSystemPrincipals
-        Indique si les principaux système doivent être exclus de la comparaison.
+        Indique si les principaux systÃ¨me doivent Ãªtre exclus de la comparaison.
     
     .EXAMPLE
         Find-SqlPermissionMissingGaps -CurrentPermissions $currentPerms -ReferenceModel $refModel -Level "Server"
     
     .NOTES
-        Cette fonction fait partie du module de détection d'écarts de permissions SQL Server.
+        Cette fonction fait partie du module de dÃ©tection d'Ã©carts de permissions SQL Server.
     #>
     [CmdletBinding()]
     param (
@@ -48,10 +48,10 @@ function Find-SqlPermissionMissingGaps {
     )
     
     begin {
-        # Initialiser le tableau des écarts
+        # Initialiser le tableau des Ã©carts
         $missingGaps = @()
         
-        # Fonction pour vérifier si un principal est un principal système
+        # Fonction pour vÃ©rifier si un principal est un principal systÃ¨me
         function Test-IsSystemPrincipal {
             param (
                 [string]$PrincipalName
@@ -63,7 +63,7 @@ function Find-SqlPermissionMissingGaps {
                    $PrincipalName -like "NT AUTHORITY\*"
         }
         
-        # Fonction pour vérifier si un objet est un objet système
+        # Fonction pour vÃ©rifier si un objet est un objet systÃ¨me
         function Test-IsSystemObject {
             param (
                 [string]$ObjectName,
@@ -84,12 +84,12 @@ function Find-SqlPermissionMissingGaps {
                 "Server" {
                     # Comparer les logins
                     foreach ($refLogin in $ReferenceModel.Logins) {
-                        # Ignorer les principaux système si demandé
+                        # Ignorer les principaux systÃ¨me si demandÃ©
                         if ($ExcludeSystemPrincipals -and (Test-IsSystemPrincipal -PrincipalName $refLogin.LoginName)) {
                             continue
                         }
                         
-                        # Vérifier si le login existe dans les permissions actuelles
+                        # VÃ©rifier si le login existe dans les permissions actuelles
                         $currentLogin = $CurrentPermissions.Logins | Where-Object { $_.LoginName -eq $refLogin.LoginName }
                         
                         if (-not $currentLogin) {
@@ -99,23 +99,23 @@ function Find-SqlPermissionMissingGaps {
                                 GapType = "MissingLogin"
                                 PrincipalName = $refLogin.LoginName
                                 PrincipalType = $refLogin.LoginType
-                                Description = "Le login '$($refLogin.LoginName)' est présent dans le modèle mais absent de l'instance actuelle"
-                                Severity = "Élevée"
-                                RecommendedAction = "Créer le login manquant avec les propriétés appropriées"
+                                Description = "Le login '$($refLogin.LoginName)' est prÃ©sent dans le modÃ¨le mais absent de l'instance actuelle"
+                                Severity = "Ã‰levÃ©e"
+                                RecommendedAction = "CrÃ©er le login manquant avec les propriÃ©tÃ©s appropriÃ©es"
                                 ReferenceDetails = $refLogin
                             }
                         }
                         else {
-                            # Vérifier les propriétés du login
+                            # VÃ©rifier les propriÃ©tÃ©s du login
                             if ($refLogin.LoginType -ne $currentLogin.LoginType) {
                                 $missingGaps += [PSCustomObject]@{
                                     Level = "Server"
                                     GapType = "LoginTypeMismatch"
                                     PrincipalName = $refLogin.LoginName
                                     PrincipalType = $refLogin.LoginType
-                                    Description = "Le type du login '$($refLogin.LoginName)' est différent (Modèle: $($refLogin.LoginType), Actuel: $($currentLogin.LoginType))"
+                                    Description = "Le type du login '$($refLogin.LoginName)' est diffÃ©rent (ModÃ¨le: $($refLogin.LoginType), Actuel: $($currentLogin.LoginType))"
                                     Severity = "Moyenne"
-                                    RecommendedAction = "Recréer le login avec le type correct"
+                                    RecommendedAction = "RecrÃ©er le login avec le type correct"
                                     ReferenceDetails = $refLogin
                                     CurrentDetails = $currentLogin
                                 }
@@ -127,51 +127,51 @@ function Find-SqlPermissionMissingGaps {
                                     GapType = "LoginStatusMismatch"
                                     PrincipalName = $refLogin.LoginName
                                     PrincipalType = $refLogin.LoginType
-                                    Description = "Le statut du login '$($refLogin.LoginName)' est différent (Modèle: $($refLogin.IsDisabled ? 'Désactivé' : 'Activé'), Actuel: $($currentLogin.IsDisabled ? 'Désactivé' : 'Activé'))"
+                                    Description = "Le statut du login '$($refLogin.LoginName)' est diffÃ©rent (ModÃ¨le: $($refLogin.IsDisabled ? 'DÃ©sactivÃ©' : 'ActivÃ©'), Actuel: $($currentLogin.IsDisabled ? 'DÃ©sactivÃ©' : 'ActivÃ©'))"
                                     Severity = "Moyenne"
-                                    RecommendedAction = "Modifier le statut du login pour correspondre au modèle"
+                                    RecommendedAction = "Modifier le statut du login pour correspondre au modÃ¨le"
                                     ReferenceDetails = $refLogin
                                     CurrentDetails = $currentLogin
                                 }
                             }
                         }
                         
-                        # Vérifier les rôles serveur
+                        # VÃ©rifier les rÃ´les serveur
                         foreach ($refRole in $ReferenceModel.ServerRoles) {
-                            # Vérifier si le login est membre du rôle dans le modèle
+                            # VÃ©rifier si le login est membre du rÃ´le dans le modÃ¨le
                             $isMemberInRef = $refRole.Members | Where-Object { $_.MemberName -eq $refLogin.LoginName }
                             
                             if ($isMemberInRef) {
-                                # Vérifier si le rôle existe dans les permissions actuelles
+                                # VÃ©rifier si le rÃ´le existe dans les permissions actuelles
                                 $currentRole = $CurrentPermissions.ServerRoles | Where-Object { $_.RoleName -eq $refRole.RoleName }
                                 
                                 if (-not $currentRole) {
-                                    # Le rôle est manquant
+                                    # Le rÃ´le est manquant
                                     $missingGaps += [PSCustomObject]@{
                                         Level = "Server"
                                         GapType = "MissingServerRole"
                                         PrincipalName = $refLogin.LoginName
                                         RoleName = $refRole.RoleName
-                                        Description = "Le rôle serveur '$($refRole.RoleName)' est présent dans le modèle mais absent de l'instance actuelle"
-                                        Severity = "Élevée"
-                                        RecommendedAction = "Créer le rôle serveur manquant"
+                                        Description = "Le rÃ´le serveur '$($refRole.RoleName)' est prÃ©sent dans le modÃ¨le mais absent de l'instance actuelle"
+                                        Severity = "Ã‰levÃ©e"
+                                        RecommendedAction = "CrÃ©er le rÃ´le serveur manquant"
                                         ReferenceDetails = $refRole
                                     }
                                 }
                                 else {
-                                    # Vérifier si le login est membre du rôle dans les permissions actuelles
+                                    # VÃ©rifier si le login est membre du rÃ´le dans les permissions actuelles
                                     $isMemberInCurrent = $currentRole.Members | Where-Object { $_.MemberName -eq $refLogin.LoginName }
                                     
                                     if (-not $isMemberInCurrent) {
-                                        # Le login n'est pas membre du rôle
+                                        # Le login n'est pas membre du rÃ´le
                                         $missingGaps += [PSCustomObject]@{
                                             Level = "Server"
                                             GapType = "MissingServerRoleMembership"
                                             PrincipalName = $refLogin.LoginName
                                             RoleName = $refRole.RoleName
-                                            Description = "Le login '$($refLogin.LoginName)' devrait être membre du rôle serveur '$($refRole.RoleName)'"
+                                            Description = "Le login '$($refLogin.LoginName)' devrait Ãªtre membre du rÃ´le serveur '$($refRole.RoleName)'"
                                             Severity = "Moyenne"
-                                            RecommendedAction = "Ajouter le login au rôle serveur"
+                                            RecommendedAction = "Ajouter le login au rÃ´le serveur"
                                             ReferenceDetails = $isMemberInRef
                                         }
                                     }
@@ -179,15 +179,15 @@ function Find-SqlPermissionMissingGaps {
                             }
                         }
                         
-                        # Vérifier les permissions explicites
+                        # VÃ©rifier les permissions explicites
                         foreach ($refPermission in $ReferenceModel.ServerPermissions) {
                             if ($refPermission.GranteeName -eq $refLogin.LoginName) {
-                                # Vérifier si la permission existe dans les permissions actuelles
+                                # VÃ©rifier si la permission existe dans les permissions actuelles
                                 $currentPermission = $CurrentPermissions.ServerPermissions | 
                                                     Where-Object { $_.GranteeName -eq $refLogin.LoginName }
                                 
                                 if (-not $currentPermission) {
-                                    # Aucune permission trouvée pour ce login
+                                    # Aucune permission trouvÃ©e pour ce login
                                     $missingGaps += [PSCustomObject]@{
                                         Level = "Server"
                                         GapType = "MissingServerPermissions"
@@ -199,7 +199,7 @@ function Find-SqlPermissionMissingGaps {
                                     }
                                 }
                                 else {
-                                    # Vérifier chaque permission individuelle
+                                    # VÃ©rifier chaque permission individuelle
                                     foreach ($refPerm in $refPermission.Permissions) {
                                         $matchingPerm = $currentPermission.Permissions | 
                                                         Where-Object { 
@@ -233,19 +233,19 @@ function Find-SqlPermissionMissingGaps {
                 }
                 
                 "Database" {
-                    # Comparer les utilisateurs de base de données
+                    # Comparer les utilisateurs de base de donnÃ©es
                     foreach ($refDb in $ReferenceModel.Databases) {
                         $currentDb = $CurrentPermissions.Databases | Where-Object { $_.DatabaseName -eq $refDb.DatabaseName }
                         
                         if (-not $currentDb) {
-                            # La base de données est manquante
+                            # La base de donnÃ©es est manquante
                             $missingGaps += [PSCustomObject]@{
                                 Level = "Database"
                                 GapType = "MissingDatabase"
                                 DatabaseName = $refDb.DatabaseName
-                                Description = "La base de données '$($refDb.DatabaseName)' est présente dans le modèle mais absente de l'instance actuelle"
-                                Severity = "Élevée"
-                                RecommendedAction = "Créer la base de données manquante"
+                                Description = "La base de donnÃ©es '$($refDb.DatabaseName)' est prÃ©sente dans le modÃ¨le mais absente de l'instance actuelle"
+                                Severity = "Ã‰levÃ©e"
+                                RecommendedAction = "CrÃ©er la base de donnÃ©es manquante"
                                 ReferenceDetails = $refDb
                             }
                             continue
@@ -253,12 +253,12 @@ function Find-SqlPermissionMissingGaps {
                         
                         # Comparer les utilisateurs
                         foreach ($refUser in $refDb.DatabaseUsers) {
-                            # Ignorer les principaux système si demandé
+                            # Ignorer les principaux systÃ¨me si demandÃ©
                             if ($ExcludeSystemPrincipals -and (Test-IsSystemPrincipal -PrincipalName $refUser.UserName)) {
                                 continue
                             }
                             
-                            # Vérifier si l'utilisateur existe dans les permissions actuelles
+                            # VÃ©rifier si l'utilisateur existe dans les permissions actuelles
                             $currentUser = $currentDb.DatabaseUsers | Where-Object { $_.UserName -eq $refUser.UserName }
                             
                             if (-not $currentUser) {
@@ -268,23 +268,23 @@ function Find-SqlPermissionMissingGaps {
                                     GapType = "MissingDatabaseUser"
                                     DatabaseName = $refDb.DatabaseName
                                     PrincipalName = $refUser.UserName
-                                    Description = "L'utilisateur '$($refUser.UserName)' est présent dans le modèle pour la base de données '$($refDb.DatabaseName)' mais absent de l'instance actuelle"
-                                    Severity = "Élevée"
-                                    RecommendedAction = "Créer l'utilisateur manquant avec les propriétés appropriées"
+                                    Description = "L'utilisateur '$($refUser.UserName)' est prÃ©sent dans le modÃ¨le pour la base de donnÃ©es '$($refDb.DatabaseName)' mais absent de l'instance actuelle"
+                                    Severity = "Ã‰levÃ©e"
+                                    RecommendedAction = "CrÃ©er l'utilisateur manquant avec les propriÃ©tÃ©s appropriÃ©es"
                                     ReferenceDetails = $refUser
                                 }
                             }
                             else {
-                                # Vérifier les propriétés de l'utilisateur
+                                # VÃ©rifier les propriÃ©tÃ©s de l'utilisateur
                                 if ($refUser.UserType -ne $currentUser.UserType) {
                                     $missingGaps += [PSCustomObject]@{
                                         Level = "Database"
                                         GapType = "DatabaseUserTypeMismatch"
                                         DatabaseName = $refDb.DatabaseName
                                         PrincipalName = $refUser.UserName
-                                        Description = "Le type de l'utilisateur '$($refUser.UserName)' est différent (Modèle: $($refUser.UserType), Actuel: $($currentUser.UserType))"
+                                        Description = "Le type de l'utilisateur '$($refUser.UserName)' est diffÃ©rent (ModÃ¨le: $($refUser.UserType), Actuel: $($currentUser.UserType))"
                                         Severity = "Moyenne"
-                                        RecommendedAction = "Recréer l'utilisateur avec le type correct"
+                                        RecommendedAction = "RecrÃ©er l'utilisateur avec le type correct"
                                         ReferenceDetails = $refUser
                                         CurrentDetails = $currentUser
                                     }
@@ -296,52 +296,52 @@ function Find-SqlPermissionMissingGaps {
                                         GapType = "DatabaseUserLoginMismatch"
                                         DatabaseName = $refDb.DatabaseName
                                         PrincipalName = $refUser.UserName
-                                        Description = "Le login associé à l'utilisateur '$($refUser.UserName)' est différent (Modèle: $($refUser.LoginName), Actuel: $($currentUser.LoginName))"
+                                        Description = "Le login associÃ© Ã  l'utilisateur '$($refUser.UserName)' est diffÃ©rent (ModÃ¨le: $($refUser.LoginName), Actuel: $($currentUser.LoginName))"
                                         Severity = "Moyenne"
-                                        RecommendedAction = "Recréer l'utilisateur avec le login correct"
+                                        RecommendedAction = "RecrÃ©er l'utilisateur avec le login correct"
                                         ReferenceDetails = $refUser
                                         CurrentDetails = $currentUser
                                     }
                                 }
                             }
                             
-                            # Vérifier les rôles de base de données
+                            # VÃ©rifier les rÃ´les de base de donnÃ©es
                             foreach ($refDbRole in $refDb.DatabaseRoles) {
-                                # Vérifier si l'utilisateur est membre du rôle dans le modèle
+                                # VÃ©rifier si l'utilisateur est membre du rÃ´le dans le modÃ¨le
                                 $isMemberInRef = $refDbRole.Members | Where-Object { $_.MemberName -eq $refUser.UserName }
                                 
                                 if ($isMemberInRef) {
-                                    # Vérifier si le rôle existe dans les permissions actuelles
+                                    # VÃ©rifier si le rÃ´le existe dans les permissions actuelles
                                     $currentDbRole = $currentDb.DatabaseRoles | Where-Object { $_.RoleName -eq $refDbRole.RoleName }
                                     
                                     if (-not $currentDbRole) {
-                                        # Le rôle est manquant
+                                        # Le rÃ´le est manquant
                                         $missingGaps += [PSCustomObject]@{
                                             Level = "Database"
                                             GapType = "MissingDatabaseRole"
                                             DatabaseName = $refDb.DatabaseName
                                             RoleName = $refDbRole.RoleName
-                                            Description = "Le rôle de base de données '$($refDbRole.RoleName)' est présent dans le modèle mais absent de l'instance actuelle"
-                                            Severity = "Élevée"
-                                            RecommendedAction = "Créer le rôle de base de données manquant"
+                                            Description = "Le rÃ´le de base de donnÃ©es '$($refDbRole.RoleName)' est prÃ©sent dans le modÃ¨le mais absent de l'instance actuelle"
+                                            Severity = "Ã‰levÃ©e"
+                                            RecommendedAction = "CrÃ©er le rÃ´le de base de donnÃ©es manquant"
                                             ReferenceDetails = $refDbRole
                                         }
                                     }
                                     else {
-                                        # Vérifier si l'utilisateur est membre du rôle dans les permissions actuelles
+                                        # VÃ©rifier si l'utilisateur est membre du rÃ´le dans les permissions actuelles
                                         $isMemberInCurrent = $currentDbRole.Members | Where-Object { $_.MemberName -eq $refUser.UserName }
                                         
                                         if (-not $isMemberInCurrent) {
-                                            # L'utilisateur n'est pas membre du rôle
+                                            # L'utilisateur n'est pas membre du rÃ´le
                                             $missingGaps += [PSCustomObject]@{
                                                 Level = "Database"
                                                 GapType = "MissingDatabaseRoleMembership"
                                                 DatabaseName = $refDb.DatabaseName
                                                 PrincipalName = $refUser.UserName
                                                 RoleName = $refDbRole.RoleName
-                                                Description = "L'utilisateur '$($refUser.UserName)' devrait être membre du rôle de base de données '$($refDbRole.RoleName)'"
+                                                Description = "L'utilisateur '$($refUser.UserName)' devrait Ãªtre membre du rÃ´le de base de donnÃ©es '$($refDbRole.RoleName)'"
                                                 Severity = "Moyenne"
-                                                RecommendedAction = "Ajouter l'utilisateur au rôle de base de données"
+                                                RecommendedAction = "Ajouter l'utilisateur au rÃ´le de base de donnÃ©es"
                                                 ReferenceDetails = $isMemberInRef
                                             }
                                         }
@@ -349,15 +349,15 @@ function Find-SqlPermissionMissingGaps {
                                 }
                             }
                             
-                            # Vérifier les permissions explicites
+                            # VÃ©rifier les permissions explicites
                             foreach ($refDbPermission in $refDb.DatabasePermissions) {
                                 if ($refDbPermission.GranteeName -eq $refUser.UserName) {
-                                    # Vérifier si la permission existe dans les permissions actuelles
+                                    # VÃ©rifier si la permission existe dans les permissions actuelles
                                     $currentDbPermission = $currentDb.DatabasePermissions | 
                                                         Where-Object { $_.GranteeName -eq $refUser.UserName }
                                     
                                     if (-not $currentDbPermission) {
-                                        # Aucune permission trouvée pour cet utilisateur
+                                        # Aucune permission trouvÃ©e pour cet utilisateur
                                         $missingGaps += [PSCustomObject]@{
                                             Level = "Database"
                                             GapType = "MissingDatabasePermissions"
@@ -365,12 +365,12 @@ function Find-SqlPermissionMissingGaps {
                                             PrincipalName = $refUser.UserName
                                             Description = "L'utilisateur '$($refUser.UserName)' n'a aucune permission explicite alors qu'il devrait en avoir"
                                             Severity = "Moyenne"
-                                            RecommendedAction = "Accorder les permissions manquantes à l'utilisateur"
+                                            RecommendedAction = "Accorder les permissions manquantes Ã  l'utilisateur"
                                             ReferenceDetails = $refDbPermission
                                         }
                                     }
                                     else {
-                                        # Vérifier chaque permission individuelle
+                                        # VÃ©rifier chaque permission individuelle
                                         foreach ($refDbPerm in $refDbPermission.Permissions) {
                                             $matchingDbPerm = $currentDbPermission.Permissions | 
                                                             Where-Object { 
@@ -393,7 +393,7 @@ function Find-SqlPermissionMissingGaps {
                                                     SecurableName = $refDbPerm.SecurableName
                                                     Description = "L'utilisateur '$($refUser.UserName)' devrait avoir la permission '$($refDbPerm.PermissionState) $($refDbPerm.PermissionName)' sur $($refDbPerm.SecurableType) '$($refDbPerm.SecurableName)'"
                                                     Severity = "Moyenne"
-                                                    RecommendedAction = "Accorder la permission manquante à l'utilisateur"
+                                                    RecommendedAction = "Accorder la permission manquante Ã  l'utilisateur"
                                                     ReferenceDetails = $refDbPerm
                                                 }
                                             }
@@ -411,33 +411,33 @@ function Find-SqlPermissionMissingGaps {
                         $currentDb = $CurrentPermissions.Databases | Where-Object { $_.DatabaseName -eq $refDb.DatabaseName }
                         
                         if (-not $currentDb) {
-                            # La base de données est manquante (déjà signalé au niveau Database)
+                            # La base de donnÃ©es est manquante (dÃ©jÃ  signalÃ© au niveau Database)
                             continue
                         }
                         
                         foreach ($refUser in $refDb.DatabaseUsers) {
-                            # Ignorer les principaux système si demandé
+                            # Ignorer les principaux systÃ¨me si demandÃ©
                             if ($ExcludeSystemPrincipals -and (Test-IsSystemPrincipal -PrincipalName $refUser.UserName)) {
                                 continue
                             }
                             
-                            # Vérifier si l'utilisateur existe dans les permissions actuelles
+                            # VÃ©rifier si l'utilisateur existe dans les permissions actuelles
                             $currentUser = $currentDb.DatabaseUsers | Where-Object { $_.UserName -eq $refUser.UserName }
                             
                             if (-not $currentUser) {
-                                # L'utilisateur est manquant (déjà signalé au niveau Database)
+                                # L'utilisateur est manquant (dÃ©jÃ  signalÃ© au niveau Database)
                                 continue
                             }
                             
-                            # Vérifier les permissions au niveau objet
+                            # VÃ©rifier les permissions au niveau objet
                             foreach ($refObjPerm in $refDb.ObjectPermissions) {
                                 if ($refObjPerm.GranteeName -eq $refUser.UserName) {
-                                    # Vérifier si l'utilisateur a des permissions d'objet dans les permissions actuelles
+                                    # VÃ©rifier si l'utilisateur a des permissions d'objet dans les permissions actuelles
                                     $currentObjPerm = $currentDb.ObjectPermissions | 
                                                     Where-Object { $_.GranteeName -eq $refUser.UserName }
                                     
                                     if (-not $currentObjPerm) {
-                                        # Aucune permission d'objet trouvée pour cet utilisateur
+                                        # Aucune permission d'objet trouvÃ©e pour cet utilisateur
                                         $missingGaps += [PSCustomObject]@{
                                             Level = "Object"
                                             GapType = "MissingObjectPermissions"
@@ -445,19 +445,19 @@ function Find-SqlPermissionMissingGaps {
                                             PrincipalName = $refUser.UserName
                                             Description = "L'utilisateur '$($refUser.UserName)' n'a aucune permission d'objet alors qu'il devrait en avoir"
                                             Severity = "Moyenne"
-                                            RecommendedAction = "Accorder les permissions d'objet manquantes à l'utilisateur"
+                                            RecommendedAction = "Accorder les permissions d'objet manquantes Ã  l'utilisateur"
                                             ReferenceDetails = $refObjPerm
                                         }
                                     }
                                     else {
-                                        # Vérifier chaque objet
+                                        # VÃ©rifier chaque objet
                                         foreach ($refObj in $refObjPerm.ObjectPermissions) {
-                                            # Ignorer les objets système si demandé
+                                            # Ignorer les objets systÃ¨me si demandÃ©
                                             if ($ExcludeSystemObjects -and (Test-IsSystemObject -ObjectName $refObj.ObjectName -SchemaName $refObj.SchemaName)) {
                                                 continue
                                             }
                                             
-                                            # Vérifier si l'objet existe dans les permissions actuelles
+                                            # VÃ©rifier si l'objet existe dans les permissions actuelles
                                             $currentObj = $currentObjPerm.ObjectPermissions | 
                                                         Where-Object { 
                                                             $_.ObjectName -eq $refObj.ObjectName -and 
@@ -482,7 +482,7 @@ function Find-SqlPermissionMissingGaps {
                                                 }
                                             }
                                             else {
-                                                # Vérifier chaque permission sur l'objet
+                                                # VÃ©rifier chaque permission sur l'objet
                                                 foreach ($refObjPermDetail in $refObj.Permissions) {
                                                     $matchingObjPerm = $currentObj.Permissions | 
                                                                     Where-Object { 
@@ -520,12 +520,12 @@ function Find-SqlPermissionMissingGaps {
             }
         }
         catch {
-            Write-Error "Erreur lors de la détection des permissions manquantes: $_"
+            Write-Error "Erreur lors de la dÃ©tection des permissions manquantes: $_"
         }
     }
     
     end {
-        # Retourner les écarts détectés
+        # Retourner les Ã©carts dÃ©tectÃ©s
         return $missingGaps
     }
 }

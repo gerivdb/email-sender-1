@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-CodeAnalysis.ps1.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le script Start-CodeAnalysis.ps1
-    qui analyse du code avec différents outils et génère des rapports.
+    qui analyse du code avec diffÃ©rents outils et gÃ©nÃ¨re des rapports.
 #>
 
 # Importer le module Pester si disponible
@@ -18,32 +18,32 @@ $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     Import-Module -Name $testHelpersPath -Force
 } else {
-    throw "Le module TestHelpers.psm1 n'existe pas à l'emplacement: $testHelpersPath"
+    throw "Le module TestHelpers.psm1 n'existe pas Ã  l'emplacement: $testHelpersPath"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Start-CodeAnalysis.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script Start-CodeAnalysis.ps1 n'existe pas à l'emplacement: $scriptPath"
+    throw "Le script Start-CodeAnalysis.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
 }
 
 Describe "Script Start-CodeAnalysis" {
     BeforeAll {
-        # Créer un environnement de test
+        # CrÃ©er un environnement de test
         $testEnv = New-TestEnvironment -TestName "CodeAnalysisTests"
         $testDir = $testEnv.TestDirectory
         $testPsPath = $testEnv.TestPsFile
         $testPs2Path = $testEnv.TestPs2File
 
-        # Créer un mock pour PSScriptAnalyzer
+        # CrÃ©er un mock pour PSScriptAnalyzer
         New-PSScriptAnalyzerMock | Import-Module -Force
 
-        # Créer un mock pour New-UnifiedAnalysisResult
+        # CrÃ©er un mock pour New-UnifiedAnalysisResult
         New-UnifiedAnalysisResultMock | Import-Module -Force
     }
 
-    Context "Paramètres et validation" {
-        It "Lève une exception si le chemin n'existe pas" {
+    Context "ParamÃ¨tres et validation" {
+        It "LÃ¨ve une exception si le chemin n'existe pas" {
             # Act & Assert
             { Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{ Path = "C:\chemin\inexistant" } } | Should -Throw
         }
@@ -83,7 +83,7 @@ Describe "Script Start-CodeAnalysis" {
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "todo-results.json"
 
             # Mock la fonction ConvertTo-Json pour qu'elle retourne un JSON valide
-            Mock ConvertTo-Json { return '[{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null}]' }
+            Mock ConvertTo-Json { return '[{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null}]' }
 
             # Mock la fonction Out-File pour qu'elle ne fasse rien
             Mock Out-File { }
@@ -92,7 +92,7 @@ Describe "Script Start-CodeAnalysis" {
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq $outputPath }
 
             # Mock la fonction Get-Content pour qu'elle retourne un JSON valide
-            Mock Get-Content { return '[{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null}]' }
+            Mock Get-Content { return '[{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null}]' }
 
             # Act
             Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{
@@ -106,7 +106,7 @@ Describe "Script Start-CodeAnalysis" {
             Should -Invoke Get-Content -ParameterFilter { $Path -eq $outputPath }
         }
 
-        It "Génère un rapport HTML si demandé" {
+        It "GÃ©nÃ¨re un rapport HTML si demandÃ©" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "html-results.json"
             $htmlPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "html-results.html"
@@ -137,8 +137,8 @@ Describe "Script Start-CodeAnalysis" {
         }
     }
 
-    Context "Analyse d'un répertoire" {
-        It "Analyse récursivement un répertoire avec le paramètre -Recurse" {
+    Context "Analyse d'un rÃ©pertoire" {
+        It "Analyse rÃ©cursivement un rÃ©pertoire avec le paramÃ¨tre -Recurse" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "dir-results.json"
 
@@ -174,7 +174,7 @@ Describe "Script Start-CodeAnalysis" {
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "all-results.json"
 
             # Mock la fonction ConvertTo-Json pour qu'elle retourne un JSON valide
-            Mock ConvertTo-Json { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null}]' }
+            Mock ConvertTo-Json { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null}]' }
 
             # Mock la fonction Out-File pour qu'elle ne fasse rien
             Mock Out-File { }
@@ -183,7 +183,7 @@ Describe "Script Start-CodeAnalysis" {
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq $outputPath }
 
             # Mock la fonction Get-Content pour qu'elle retourne un JSON valide
-            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null}]' }
+            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null}]' }
 
             # Act
             Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{
@@ -198,8 +198,8 @@ Describe "Script Start-CodeAnalysis" {
         }
     }
 
-    Context "Analyse parallèle" {
-        It "Analyse en parallèle avec le paramètre -UseParallel" {
+    Context "Analyse parallÃ¨le" {
+        It "Analyse en parallÃ¨le avec le paramÃ¨tre -UseParallel" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "parallel-results.json"
 

@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste la compatibilité PowerShell et génère un rapport.
+    Teste la compatibilitÃ© PowerShell et gÃ©nÃ¨re un rapport.
 .DESCRIPTION
-    Ce script détecte la version de PowerShell, vérifie la disponibilité de PowerShell 7,
-    teste la compatibilité des modules requis et génère un rapport détaillé.
+    Ce script dÃ©tecte la version de PowerShell, vÃ©rifie la disponibilitÃ© de PowerShell 7,
+    teste la compatibilitÃ© des modules requis et gÃ©nÃ¨re un rapport dÃ©taillÃ©.
 .PARAMETER ModulesToTest
-    Liste des modules à tester pour la compatibilité.
+    Liste des modules Ã  tester pour la compatibilitÃ©.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport de compatibilité.
+    Chemin oÃ¹ enregistrer le rapport de compatibilitÃ©.
 .PARAMETER CheckPowerShell7
-    Indique s'il faut vérifier la disponibilité de PowerShell 7.
+    Indique s'il faut vÃ©rifier la disponibilitÃ© de PowerShell 7.
 .EXAMPLE
     .\Test-PowerShellCompatibility.ps1 -ModulesToTest @('PSScriptAnalyzer', 'Pester')
 .NOTES
@@ -31,7 +31,7 @@ param(
     [switch]$CheckPowerShell7 = $true
 )
 
-# Fonction pour vérifier si PowerShell 7 est installé
+# Fonction pour vÃ©rifier si PowerShell 7 est installÃ©
 function Test-PowerShell7Installed {
     $ps7Paths = @(
         "${env:ProgramFiles}\PowerShell\7\pwsh.exe",
@@ -49,7 +49,7 @@ function Test-PowerShell7Installed {
         }
     }
     
-    # Vérifier si pwsh est dans le PATH
+    # VÃ©rifier si pwsh est dans le PATH
     try {
         $pwshInPath = Get-Command pwsh -ErrorAction SilentlyContinue
         if ($pwshInPath) {
@@ -71,7 +71,7 @@ function Test-PowerShell7Installed {
     }
 }
 
-# Fonction pour tester la compatibilité d'un module
+# Fonction pour tester la compatibilitÃ© d'un module
 function Test-ModuleCompatibility {
     param(
         [string]$ModuleName,
@@ -87,7 +87,7 @@ function Test-ModuleCompatibility {
         Issues = @()
     }
     
-    # Vérifier la compatibilité avec PowerShell 5
+    # VÃ©rifier la compatibilitÃ© avec PowerShell 5
     try {
         $modulePS5 = Get-Module -Name $ModuleName -ListAvailable -ErrorAction SilentlyContinue
         if ($modulePS5) {
@@ -95,14 +95,14 @@ function Test-ModuleCompatibility {
             $result.PS5Version = $modulePS5[0].Version.ToString()
         }
         else {
-            $result.Issues += "Module non trouvé pour PowerShell 5"
+            $result.Issues += "Module non trouvÃ© pour PowerShell 5"
         }
     }
     catch {
-        $result.Issues += "Erreur lors de la vérification pour PowerShell 5: $_"
+        $result.Issues += "Erreur lors de la vÃ©rification pour PowerShell 5: $_"
     }
     
-    # Vérifier la compatibilité avec PowerShell 7 si disponible
+    # VÃ©rifier la compatibilitÃ© avec PowerShell 7 si disponible
     if ($PowerShellPath) {
         try {
             $modulePS7 = & $PowerShellPath -Command "Get-Module -Name $ModuleName -ListAvailable -ErrorAction SilentlyContinue | Select-Object -First 1 | ForEach-Object { `$_.Version.ToString() }"
@@ -111,18 +111,18 @@ function Test-ModuleCompatibility {
                 $result.PS7Version = $modulePS7
             }
             else {
-                $result.Issues += "Module non trouvé pour PowerShell 7"
+                $result.Issues += "Module non trouvÃ© pour PowerShell 7"
             }
         }
         catch {
-            $result.Issues += "Erreur lors de la vérification pour PowerShell 7: $_"
+            $result.Issues += "Erreur lors de la vÃ©rification pour PowerShell 7: $_"
         }
     }
     
     return $result
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-CompatibilityReport {
     param(
         [hashtable]$CurrentPSInfo,
@@ -139,7 +139,7 @@ function New-CompatibilityReport {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport de compatibilité PowerShell</title>
+    <title>Rapport de compatibilitÃ© PowerShell</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2 { color: #0066cc; }
@@ -154,11 +154,11 @@ function New-CompatibilityReport {
     </style>
 </head>
 <body>
-    <h1>Rapport de compatibilité PowerShell</h1>
+    <h1>Rapport de compatibilitÃ© PowerShell</h1>
     <div class="info-box">
         <p><strong>Date du rapport:</strong> $reportDate</p>
         <p><strong>Ordinateur:</strong> $computerName</p>
-        <p><strong>Système d'exploitation:</strong> $($osInfo.Caption) $($osInfo.Version) $($osInfo.OSArchitecture)</p>
+        <p><strong>SystÃ¨me d'exploitation:</strong> $($osInfo.Caption) $($osInfo.Version) $($osInfo.OSArchitecture)</p>
     </div>
     
     <h2>Informations PowerShell</h2>
@@ -178,7 +178,7 @@ function New-CompatibilityReport {
     <h2>PowerShell 7</h2>
     <table>
         <tr>
-            <th>Installé</th>
+            <th>InstallÃ©</th>
             <th>Version</th>
             <th>Chemin</th>
         </tr>
@@ -189,7 +189,7 @@ function New-CompatibilityReport {
         </tr>
     </table>
     
-    <h2>Compatibilité des modules</h2>
+    <h2>CompatibilitÃ© des modules</h2>
     <table>
         <tr>
             <th>Module</th>
@@ -197,7 +197,7 @@ function New-CompatibilityReport {
             <th>PS 5 Version</th>
             <th>PS 7 Compatible</th>
             <th>PS 7 Version</th>
-            <th>Problèmes</th>
+            <th>ProblÃ¨mes</th>
         </tr>
 "@
 
@@ -226,21 +226,21 @@ function New-CompatibilityReport {
 
     if (-not $PS7Info.Installed) {
         $html += @"
-        <li class="warning">PowerShell 7 n'est pas installé. Envisagez d'installer PowerShell 7 pour une meilleure compatibilité et des performances améliorées.</li>
+        <li class="warning">PowerShell 7 n'est pas installÃ©. Envisagez d'installer PowerShell 7 pour une meilleure compatibilitÃ© et des performances amÃ©liorÃ©es.</li>
 "@
     }
 
     $incompatibleModules = $ModuleResults | Where-Object { -not $_.PS7Compatible }
     if ($incompatibleModules) {
         $html += @"
-        <li class="warning">Certains modules ne sont pas compatibles avec PowerShell 7. Envisagez de mettre à jour ces modules ou de trouver des alternatives compatibles.</li>
+        <li class="warning">Certains modules ne sont pas compatibles avec PowerShell 7. Envisagez de mettre Ã  jour ces modules ou de trouver des alternatives compatibles.</li>
 "@
     }
 
     $html += @"
     </ul>
     
-    <h2>Étapes suivantes</h2>
+    <h2>Ã‰tapes suivantes</h2>
     <ol>
 "@
 
@@ -251,9 +251,9 @@ function New-CompatibilityReport {
     }
 
     $html += @"
-        <li>Mettre à jour les modules incompatibles vers des versions compatibles avec PowerShell 7.</li>
-        <li>Tester vos scripts avec PowerShell 7 pour identifier les problèmes de compatibilité.</li>
-        <li>Refactoriser le code pour utiliser des fonctionnalités compatibles avec les deux versions si nécessaire.</li>
+        <li>Mettre Ã  jour les modules incompatibles vers des versions compatibles avec PowerShell 7.</li>
+        <li>Tester vos scripts avec PowerShell 7 pour identifier les problÃ¨mes de compatibilitÃ©.</li>
+        <li>Refactoriser le code pour utiliser des fonctionnalitÃ©s compatibles avec les deux versions si nÃ©cessaire.</li>
     </ol>
 </body>
 </html>
@@ -270,22 +270,22 @@ $currentPSInfo = @{
     Path = $PSHOME
 }
 
-# Vérifier si PowerShell 7 est installé
+# VÃ©rifier si PowerShell 7 est installÃ©
 $ps7Info = @{ Installed = $false; Path = $null; Version = $null }
 if ($CheckPowerShell7) {
     $ps7Info = Test-PowerShell7Installed
 }
 
-# Tester la compatibilité des modules
+# Tester la compatibilitÃ© des modules
 $moduleResults = @()
 foreach ($module in $ModulesToTest) {
     $moduleResults += Test-ModuleCompatibility -ModuleName $module -PowerShellPath $ps7Info.Path
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $reportPath = New-CompatibilityReport -CurrentPSInfo $currentPSInfo -PS7Info $ps7Info -ModuleResults $moduleResults -OutputPath $OutputPath
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Host "Informations PowerShell actuel:" -ForegroundColor Cyan
 Write-Host "  Version: $($currentPSInfo.Version)"
 Write-Host "  Edition: $($currentPSInfo.Edition)"
@@ -294,15 +294,15 @@ Write-Host ""
 
 Write-Host "PowerShell 7:" -ForegroundColor Cyan
 if ($ps7Info.Installed) {
-    Write-Host "  Installé: Oui"
+    Write-Host "  InstallÃ©: Oui"
     Write-Host "  Version: $($ps7Info.Version)"
     Write-Host "  Chemin: $($ps7Info.Path)"
 } else {
-    Write-Host "  Installé: Non"
+    Write-Host "  InstallÃ©: Non"
 }
 Write-Host ""
 
-Write-Host "Compatibilité des modules:" -ForegroundColor Cyan
+Write-Host "CompatibilitÃ© des modules:" -ForegroundColor Cyan
 foreach ($result in $moduleResults) {
     Write-Host "  $($result.ModuleName):"
     Write-Host "    PS5 Compatible: $($result.PS5Compatible)"
@@ -314,15 +314,15 @@ foreach ($result in $moduleResults) {
         Write-Host "    PS7 Version: $($result.PS7Version)"
     }
     if ($result.Issues.Count -gt 0) {
-        Write-Host "    Problèmes: $($result.Issues -join ", ")" -ForegroundColor Yellow
+        Write-Host "    ProblÃ¨mes: $($result.Issues -join ", ")" -ForegroundColor Yellow
     }
     Write-Host ""
 }
 
-Write-Host "Rapport généré: $reportPath" -ForegroundColor Green
+Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 Write-Host "Ouvrez ce fichier dans un navigateur pour voir le rapport complet."
 
-# Retourner un objet avec les résultats
+# Retourner un objet avec les rÃ©sultats
 return @{
     CurrentPSInfo = $currentPSInfo
     PS7Info = $ps7Info

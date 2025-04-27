@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Get-PRCacheStatistics.ps1.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour le script Get-PRCacheStatistics.ps1
-    qui récupère et affiche des statistiques détaillées sur l'utilisation et les performances du cache.
+    qui rÃ©cupÃ¨re et affiche des statistiques dÃ©taillÃ©es sur l'utilisation et les performances du cache.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Requires: Pester v5.0+, PRAnalysisCache.psm1
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Get-PRCacheStatistics.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Script Get-PRCacheStatistics.ps1 non trouvé à l'emplacement: $scriptPath"
+    throw "Script Get-PRCacheStatistics.ps1 non trouvÃ© Ã  l'emplacement: $scriptPath"
 }
 
 # Chemin du module de cache
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module PRAnalysisCache.psm1 non trouvé à l'emplacement: $modulePath"
+    throw "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $modulePath"
 }
 
 # Importer le module
@@ -39,12 +39,12 @@ Import-Module $modulePath -Force
 # Variables globales pour les tests
 $script:testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCacheStatistics"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 BeforeAll {
-    # Créer le répertoire de cache de test
+    # CrÃ©er le rÃ©pertoire de cache de test
     New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
 
-    # Fonction pour exécuter le script avec des paramètres
+    # Fonction pour exÃ©cuter le script avec des paramÃ¨tres
     function Invoke-StatisticsScript {
         param(
             [string]$CachePath,
@@ -64,22 +64,22 @@ BeforeAll {
         & $scriptPath @params
     }
 
-    # Créer un cache pour les tests
+    # CrÃ©er un cache pour les tests
     $script:cache = New-PRAnalysisCache
     $script:cache.DiskCachePath = $script:testCachePath
 
-    # Ajouter des éléments au cache
+    # Ajouter des Ã©lÃ©ments au cache
     $script:cache.SetItem("TestKey1", "TestValue1", (New-TimeSpan -Hours 1))
     $script:cache.SetItem("TestKey2", @{ "Name" = "Test Object"; "Value" = 42 }, (New-TimeSpan -Hours 1))
     $script:cache.SetItem("TestKey3", @(1, 2, 3, 4, 5), (New-TimeSpan -Hours 1))
 
-    # Simuler des accès au cache
+    # Simuler des accÃ¨s au cache
     $script:cache.GetItem("TestKey1")
     $script:cache.GetItem("TestKey1")
     $script:cache.GetItem("TestKey2")
     $script:cache.GetItem("NonExistentKey")
 
-    # Créer un fichier de configuration du cache
+    # CrÃ©er un fichier de configuration du cache
     $cacheConfig = @{
         Name              = "PRAnalysisCache"
         CachePath         = $script:testCachePath
@@ -95,14 +95,14 @@ BeforeAll {
 
 Describe "Get-PRCacheStatistics Script Tests" {
     Context "Script Execution" {
-        It "Le script s'exécute sans erreur avec les paramètres par défaut" {
+        It "Le script s'exÃ©cute sans erreur avec les paramÃ¨tres par dÃ©faut" {
             # Act & Assert
             { Invoke-StatisticsScript -CachePath $script:testCachePath } | Should -Not -Throw
         }
     }
 
     Context "Output Formats" {
-        It "Génère une sortie console par défaut" {
+        It "GÃ©nÃ¨re une sortie console par dÃ©faut" {
             # Act
             $result = Invoke-StatisticsScript -CachePath $script:testCachePath
 
@@ -110,7 +110,7 @@ Describe "Get-PRCacheStatistics Script Tests" {
             $result | Should -Not -BeNullOrEmpty
         }
 
-        It "Génère une sortie JSON" {
+        It "GÃ©nÃ¨re une sortie JSON" {
             # Arrange
             $jsonOutputPath = Join-Path -Path $env:TEMP -ChildPath "cache_stats.json"
 
@@ -124,7 +124,7 @@ Describe "Get-PRCacheStatistics Script Tests" {
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
         }
 
-        It "Génère une sortie CSV" {
+        It "GÃ©nÃ¨re une sortie CSV" {
             # Arrange
             $csvOutputPath = Join-Path -Path $env:TEMP -ChildPath "cache_stats.csv"
 
@@ -138,7 +138,7 @@ Describe "Get-PRCacheStatistics Script Tests" {
             { Import-Csv -Path $csvOutputPath } | Should -Not -Throw
         }
 
-        It "Génère une sortie HTML" {
+        It "GÃ©nÃ¨re une sortie HTML" {
             # Arrange
             $htmlOutputPath = Join-Path -Path $env:TEMP -ChildPath "cache_stats.html"
 
@@ -167,7 +167,7 @@ Describe "Get-PRCacheStatistics Script Tests" {
             $result.TotalSize | Should -BeGreaterThan 0
         }
 
-        It "Calcule correctement le taux de succès (hit ratio)" {
+        It "Calcule correctement le taux de succÃ¨s (hit ratio)" {
             # Act
             $result = Invoke-StatisticsScript -CachePath $script:testCachePath
 
@@ -180,7 +180,7 @@ Describe "Get-PRCacheStatistics Script Tests" {
     }
 
     Context "Error Handling" {
-        It "Gère correctement un chemin de cache inexistant" {
+        It "GÃ¨re correctement un chemin de cache inexistant" {
             # Arrange
             $nonExistentPath = Join-Path -Path $env:TEMP -ChildPath "NonExistentCache"
 

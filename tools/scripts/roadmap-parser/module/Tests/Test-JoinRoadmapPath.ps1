@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-JoinRoadmapPath.ps1
 #
 # Script pour tester la fonction Join-RoadmapPath
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\PathManipulation\Join-RoadmapPath.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,7 +18,7 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-Write-Host "Début des tests de la fonction Join-RoadmapPath..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Join-RoadmapPath..." -ForegroundColor Cyan
 
 # Test 1: Jointure simple
 Write-Host "`nTest 1: Jointure simple" -ForegroundColor Cyan
@@ -42,10 +42,10 @@ foreach ($testCase in $testCases) {
 
     $result = Join-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -54,18 +54,18 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 2: Jointure avec différents types
-Write-Host "`nTest 2: Jointure avec différents types" -ForegroundColor Cyan
+# Test 2: Jointure avec diffÃ©rents types
+Write-Host "`nTest 2: Jointure avec diffÃ©rents types" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Path = "C:\folder"; ChildPath = @("file.txt"); JoinType = "Normalized"; Expected = "C:\folder\file.txt"; Description = "Jointure normalisée" }
+    @{ Path = "C:\folder"; ChildPath = @("file.txt"); JoinType = "Normalized"; Expected = "C:\folder\file.txt"; Description = "Jointure normalisÃ©e" }
     @{ Path = "C:\folder"; ChildPath = @("file.txt"); JoinType = "Relative"; Expected = "C:\folder\file.txt"; Description = "Jointure relative" }
     @{ Path = ".\folder"; ChildPath = @("file.txt"); JoinType = "Absolute"; Expected = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\folder\file.txt"; Description = "Jointure absolue" }
     @{ Path = "C:\folder"; ChildPath = @("file.txt"); JoinType = "Unix"; Expected = "C:/folder/file.txt"; Description = "Jointure Unix" }
@@ -86,10 +86,10 @@ foreach ($testCase in $testCases) {
 
     $result = Join-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -98,19 +98,19 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 3: Jointure avec options
 Write-Host "`nTest 3: Jointure avec options" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Path = ".\folder"; ChildPath = @("file.txt"); JoinType = "Simple"; NormalizePaths = $true; Expected = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\folder\file.txt"; Description = "Normalisation des chemins" }
-    @{ Path = ".\folder"; ChildPath = @("file.txt"); JoinType = "Simple"; ResolveRelativePaths = $true; Expected = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\folder\file.txt"; Description = "Résolution des chemins relatifs" }
+    @{ Path = ".\folder"; ChildPath = @("file.txt"); JoinType = "Simple"; ResolveRelativePaths = $true; Expected = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\folder\file.txt"; Description = "RÃ©solution des chemins relatifs" }
 )
 
 $successCount = 0
@@ -133,10 +133,10 @@ foreach ($testCase in $testCases) {
 
     $result = Join-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -145,20 +145,20 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 4: Jointure personnalisée
-Write-Host "`nTest 4: Jointure personnalisée" -ForegroundColor Cyan
+# Test 4: Jointure personnalisÃ©e
+Write-Host "`nTest 4: Jointure personnalisÃ©e" -ForegroundColor Cyan
 
 $customJoin = {
     param($Path, $ChildPaths)
 
-    # Exemple : Ajouter un préfixe "custom:" au chemin
+    # Exemple : Ajouter un prÃ©fixe "custom:" au chemin
     $result = "custom:$Path"
 
     foreach ($childPath in $ChildPaths) {
@@ -175,25 +175,25 @@ $result = Join-RoadmapPath -Path "C:\folder" -ChildPath "file.txt" -JoinType "Cu
 $expected = "custom:C:\folder/file.txt"
 $success = $result -eq $expected
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Jointure personnalisée: $status" -ForegroundColor $color
+Write-Host "  Jointure personnalisÃ©e: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: '$expected'" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: '$expected'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
 }
 
 # Test 5: Gestion des erreurs
 Write-Host "`nTest 5: Gestion des erreurs" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Test = "Join-RoadmapPath sans CustomJoin pour Custom"; Function = { Join-RoadmapPath -Path "C:\folder" -ChildPath "file.txt" -JoinType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Jointure personnalisée sans CustomJoin" }
+    @{ Test = "Join-RoadmapPath sans CustomJoin pour Custom"; Function = { Join-RoadmapPath -Path "C:\folder" -ChildPath "file.txt" -JoinType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Jointure personnalisÃ©e sans CustomJoin" }
     @{ Test = "Join-RoadmapPath avec chemin vide pour UNC"; Function = { Join-RoadmapPath -Path "" -ChildPath "file.txt" -JoinType "UNC" -ThrowOnFailure }; ShouldThrow = $true; Description = "Jointure UNC avec chemin vide" }
     @{ Test = "Join-RoadmapPath avec chemin sans lettre de lecteur pour UNC"; Function = { Join-RoadmapPath -Path "folder" -ChildPath "file.txt" -JoinType "UNC" -ThrowOnFailure }; ShouldThrow = $true; Description = "Jointure UNC avec chemin sans lettre de lecteur" }
     @{ Test = "Join-RoadmapPath avec erreur sans ThrowOnFailure"; Function = {
-            # Ce test est censé générer un warning, c'est normal
+            # Ce test est censÃ© gÃ©nÃ©rer un warning, c'est normal
             Write-Host "Note: Le warning suivant est attendu dans le cadre du test:" -ForegroundColor Yellow
             $result = Join-RoadmapPath -Path "C:\folder" -ChildPath "file.txt" -JoinType "Custom"
             return $result
@@ -213,10 +213,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -226,13 +226,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Join-RoadmapPath terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Join-RoadmapPath terminÃ©s." -ForegroundColor Cyan

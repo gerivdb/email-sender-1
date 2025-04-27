@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le script de génération d'échantillons malformés.
+    Tests unitaires pour le script de gÃ©nÃ©ration d'Ã©chantillons malformÃ©s.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement du script
-    de génération d'échantillons malformés. Il utilise le framework Pester pour exécuter les tests.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement du script
+    de gÃ©nÃ©ration d'Ã©chantillons malformÃ©s. Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .EXAMPLE
     Invoke-Pester -Path .\MalformedSamples.Tests.ps1
-    Exécute les tests unitaires pour le script de génération d'échantillons malformés.
+    ExÃ©cute les tests unitaires pour le script de gÃ©nÃ©ration d'Ã©chantillons malformÃ©s.
 
 .NOTES
     Auteur: Augment Agent
@@ -18,7 +18,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -28,19 +28,19 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Chemins des scripts à tester
+# Chemins des scripts Ã  tester
 $scriptRoot = Split-Path -Parent $PSScriptRoot
 $generateMalformedScript = "$PSScriptRoot\Generate-MalformedSamples.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "MalformedSamplesTests_$(Get-Random)"
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer un répertoire source temporaire pour les tests
+# CrÃ©er un rÃ©pertoire source temporaire pour les tests
 $testSourceDir = Join-Path -Path $testTempDir -ChildPath "source"
 New-Item -Path $testSourceDir -ChildPath "formats" -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param (
         [string]$FileName,
@@ -53,7 +53,7 @@ function New-TestFile {
     return $filePath
 }
 
-# Créer des fichiers d'exemple pour les tests
+# CrÃ©er des fichiers d'exemple pour les tests
 $jsonContent = @"
 {
     "name": "Test",
@@ -80,45 +80,45 @@ $xmlPath = New-TestFile -FileName "sample.xml" -Content $xmlContent -Directory (
 $textPath = New-TestFile -FileName "sample.txt" -Content $textContent -Directory (Join-Path -Path $testSourceDir -ChildPath "formats")
 
 # Tests Pester
-Describe "Script de génération d'échantillons malformés" {
+Describe "Script de gÃ©nÃ©ration d'Ã©chantillons malformÃ©s" {
     BeforeAll {
-        # Créer un répertoire de sortie pour les tests
+        # CrÃ©er un rÃ©pertoire de sortie pour les tests
         $testOutputDir = Join-Path -Path $testTempDir -ChildPath "output"
         New-Item -Path $testOutputDir -ItemType Directory -Force | Out-Null
     }
     
     Context "Fonctions internes" {
-        It "La fonction New-DirectoryIfNotExists crée un répertoire s'il n'existe pas" {
-            # Créer un chemin de test
+        It "La fonction New-DirectoryIfNotExists crÃ©e un rÃ©pertoire s'il n'existe pas" {
+            # CrÃ©er un chemin de test
             $testPath = Join-Path -Path $testTempDir -ChildPath "test_directory"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $generateMalformedScript
                 New-DirectoryIfNotExists -Path $testPath
             }
             
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $testPath -PathType Container | Should -Be $true
         }
         
-        It "La fonction New-TruncatedFile crée un fichier tronqué" {
-            # Créer un fichier source
+        It "La fonction New-TruncatedFile crÃ©e un fichier tronquÃ©" {
+            # CrÃ©er un fichier source
             $sourceContent = "This is a test file with some content that will be truncated."
             $sourcePath = Join-Path -Path $testTempDir -ChildPath "source.txt"
             $sourceContent | Set-Content -Path $sourcePath -Encoding UTF8
             
-            # Créer un fichier de destination
+            # CrÃ©er un fichier de destination
             $destPath = Join-Path -Path $testTempDir -ChildPath "truncated.txt"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $generateMalformedScript
                 New-TruncatedFile -SourcePath $sourcePath -DestinationPath $destPath -PercentageToKeep 50
             }
             
-            # Vérifier que le fichier a été tronqué
+            # VÃ©rifier que le fichier a Ã©tÃ© tronquÃ©
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $destPath -PathType Leaf | Should -Be $true
             
@@ -131,22 +131,22 @@ Describe "Script de génération d'échantillons malformés" {
             $truncatedLength | Should -BeLessOrEqual ($originalLength * 0.6) # Tenir compte des arrondis
         }
         
-        It "La fonction New-CorruptedTextFile crée un fichier texte corrompu" {
-            # Créer un fichier source
+        It "La fonction New-CorruptedTextFile crÃ©e un fichier texte corrompu" {
+            # CrÃ©er un fichier source
             $sourceContent = "This is a test file with some content that will be corrupted."
             $sourcePath = Join-Path -Path $testTempDir -ChildPath "source_corrupt.txt"
             $sourceContent | Set-Content -Path $sourcePath -Encoding UTF8
             
-            # Créer un fichier de destination
+            # CrÃ©er un fichier de destination
             $destPath = Join-Path -Path $testTempDir -ChildPath "corrupted.txt"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $generateMalformedScript
                 New-CorruptedTextFile -SourcePath $sourcePath -DestinationPath $destPath -CorruptionPercentage 20
             }
             
-            # Vérifier que le fichier a été corrompu
+            # VÃ©rifier que le fichier a Ã©tÃ© corrompu
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $destPath -PathType Leaf | Should -Be $true
             
@@ -154,22 +154,22 @@ Describe "Script de génération d'échantillons malformés" {
             $corruptedContent | Should -Not -BeExactly $sourceContent
         }
         
-        It "La fonction New-IncorrectHeaderFile crée un fichier avec un en-tête incorrect" {
-            # Créer un fichier source
+        It "La fonction New-IncorrectHeaderFile crÃ©e un fichier avec un en-tÃªte incorrect" {
+            # CrÃ©er un fichier source
             $sourceContent = "Original header line\nThis is the content of the file."
             $sourcePath = Join-Path -Path $testTempDir -ChildPath "source_header.txt"
             $sourceContent | Set-Content -Path $sourcePath -Encoding UTF8
             
-            # Créer un fichier de destination
+            # CrÃ©er un fichier de destination
             $destPath = Join-Path -Path $testTempDir -ChildPath "incorrect_header.txt"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $generateMalformedScript
                 New-IncorrectHeaderFile -SourcePath $sourcePath -DestinationPath $destPath -IncorrectHeader "Modified header\n"
             }
             
-            # Vérifier que le fichier a un en-tête incorrect
+            # VÃ©rifier que le fichier a un en-tÃªte incorrect
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $destPath -PathType Leaf | Should -Be $true
             
@@ -178,8 +178,8 @@ Describe "Script de génération d'échantillons malformés" {
             $incorrectContent | Should -Match "Modified header"
         }
         
-        It "La fonction New-HybridFile crée un fichier hybride" {
-            # Créer deux fichiers sources
+        It "La fonction New-HybridFile crÃ©e un fichier hybride" {
+            # CrÃ©er deux fichiers sources
             $sourceContent1 = "This is the first source file."
             $sourceContent2 = "This is the second source file."
             $sourcePath1 = Join-Path -Path $testTempDir -ChildPath "source1.txt"
@@ -187,16 +187,16 @@ Describe "Script de génération d'échantillons malformés" {
             $sourceContent1 | Set-Content -Path $sourcePath1 -Encoding UTF8
             $sourceContent2 | Set-Content -Path $sourcePath2 -Encoding UTF8
             
-            # Créer un fichier de destination
+            # CrÃ©er un fichier de destination
             $destPath = Join-Path -Path $testTempDir -ChildPath "hybrid.txt"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $generateMalformedScript
                 New-HybridFile -SourcePath1 $sourcePath1 -SourcePath2 $sourcePath2 -DestinationPath $destPath -MixPercentage 50
             }
             
-            # Vérifier que le fichier hybride a été créé
+            # VÃ©rifier que le fichier hybride a Ã©tÃ© crÃ©Ã©
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $destPath -PathType Leaf | Should -Be $true
             
@@ -206,23 +206,23 @@ Describe "Script de génération d'échantillons malformés" {
         }
     }
     
-    Context "Exécution du script complet" {
-        It "Le script s'exécute sans erreur avec les paramètres par défaut" {
-            # Exécuter le script avec des paramètres minimaux
+    Context "ExÃ©cution du script complet" {
+        It "Le script s'exÃ©cute sans erreur avec les paramÃ¨tres par dÃ©faut" {
+            # ExÃ©cuter le script avec des paramÃ¨tres minimaux
             $scriptBlock = {
                 & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory (Join-Path -Path $testTempDir -ChildPath "output_default") -Force
             }
             
-            # Vérifier que le script s'exécute sans erreur
+            # VÃ©rifier que le script s'exÃ©cute sans erreur
             $scriptBlock | Should -Not -Throw
         }
         
-        It "Le script crée les sous-répertoires attendus" {
-            # Exécuter le script
+        It "Le script crÃ©e les sous-rÃ©pertoires attendus" {
+            # ExÃ©cuter le script
             $outputDir = Join-Path -Path $testTempDir -ChildPath "output_subdirs"
             & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory $outputDir -Force
             
-            # Vérifier que les sous-répertoires ont été créés
+            # VÃ©rifier que les sous-rÃ©pertoires ont Ã©tÃ© crÃ©Ã©s
             Test-Path -Path (Join-Path -Path $outputDir -ChildPath "truncated") -PathType Container | Should -Be $true
             Test-Path -Path (Join-Path -Path $outputDir -ChildPath "corrupted") -PathType Container | Should -Be $true
             Test-Path -Path (Join-Path -Path $outputDir -ChildPath "incorrect_header") -PathType Container | Should -Be $true
@@ -230,57 +230,57 @@ Describe "Script de génération d'échantillons malformés" {
             Test-Path -Path (Join-Path -Path $outputDir -ChildPath "hybrid") -PathType Container | Should -Be $true
         }
         
-        It "Le script génère des fichiers tronqués" {
-            # Exécuter le script
+        It "Le script gÃ©nÃ¨re des fichiers tronquÃ©s" {
+            # ExÃ©cuter le script
             $outputDir = Join-Path -Path $testTempDir -ChildPath "output_truncated"
             & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory $outputDir -Force
             
-            # Vérifier que des fichiers tronqués ont été créés
+            # VÃ©rifier que des fichiers tronquÃ©s ont Ã©tÃ© crÃ©Ã©s
             $truncatedFiles = Get-ChildItem -Path (Join-Path -Path $outputDir -ChildPath "truncated") -File
             $truncatedFiles.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les fichiers tronqués sont plus petits que les originaux
+            # VÃ©rifier que les fichiers tronquÃ©s sont plus petits que les originaux
             $jsonTruncated = $truncatedFiles | Where-Object { $_.Name -like "*sample.json*" } | Select-Object -First 1
             if ($jsonTruncated) {
                 $jsonTruncated.Length | Should -BeLessThan (Get-Item -Path $jsonPath).Length
             }
         }
         
-        It "Le script génère des fichiers corrompus" {
-            # Exécuter le script
+        It "Le script gÃ©nÃ¨re des fichiers corrompus" {
+            # ExÃ©cuter le script
             $outputDir = Join-Path -Path $testTempDir -ChildPath "output_corrupted"
             & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory $outputDir -Force
             
-            # Vérifier que des fichiers corrompus ont été créés
+            # VÃ©rifier que des fichiers corrompus ont Ã©tÃ© crÃ©Ã©s
             $corruptedFiles = Get-ChildItem -Path (Join-Path -Path $outputDir -ChildPath "corrupted") -File
             $corruptedFiles.Count | Should -BeGreaterThan 0
         }
         
-        It "Le script génère des fichiers avec extension incorrecte" {
-            # Exécuter le script
+        It "Le script gÃ©nÃ¨re des fichiers avec extension incorrecte" {
+            # ExÃ©cuter le script
             $outputDir = Join-Path -Path $testTempDir -ChildPath "output_extension"
             & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory $outputDir -Force
             
-            # Vérifier que des fichiers avec extension incorrecte ont été créés
+            # VÃ©rifier que des fichiers avec extension incorrecte ont Ã©tÃ© crÃ©Ã©s
             $incorrectExtFiles = Get-ChildItem -Path (Join-Path -Path $outputDir -ChildPath "incorrect_extension") -File
             $incorrectExtFiles.Count | Should -BeGreaterThan 0
         }
         
-        It "Le script génère des fichiers hybrides" {
-            # Exécuter le script
+        It "Le script gÃ©nÃ¨re des fichiers hybrides" {
+            # ExÃ©cuter le script
             $outputDir = Join-Path -Path $testTempDir -ChildPath "output_hybrid"
             & $generateMalformedScript -SourceDirectory $testSourceDir -OutputDirectory $outputDir -Force
             
-            # Vérifier que des fichiers hybrides ont été créés
+            # VÃ©rifier que des fichiers hybrides ont Ã©tÃ© crÃ©Ã©s
             $hybridFiles = Get-ChildItem -Path (Join-Path -Path $outputDir -ChildPath "hybrid") -File
             $hybridFiles.Count | Should -BeGreaterThan 0
         }
     }
 }
 
-# Nettoyer après les tests
+# Nettoyer aprÃ¨s les tests
 AfterAll {
-    # Supprimer le répertoire temporaire
+    # Supprimer le rÃ©pertoire temporaire
     if (Test-Path -Path $testTempDir) {
         Remove-Item -Path $testTempDir -Recurse -Force
     }

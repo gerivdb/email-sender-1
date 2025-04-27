@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les fonctions de verbosité configurable.
+    Tests unitaires pour les fonctions de verbositÃ© configurable.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctions de verbosité configurable
+    Ce script contient des tests unitaires pour les fonctions de verbositÃ© configurable
     du module RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-16
+    Date de crÃ©ation: 2023-08-16
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Chemin vers le module à tester
+# Chemin vers le module Ã  tester
 $modulePath = (Split-Path -Parent $PSScriptRoot)
 $functionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\VerbosityFunctions.ps1"
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . $functionsPath
 
 Describe "Verbosity Functions" {
@@ -46,30 +46,30 @@ Describe "Verbosity Functions" {
         }
 
         It "Should set and get the verbosity level" {
-            # Définir le niveau de verbosité
+            # DÃ©finir le niveau de verbositÃ©
             Set-VerbosityLevel -Level "Detailed"
 
-            # Vérifier que le niveau a été mis à jour
+            # VÃ©rifier que le niveau a Ã©tÃ© mis Ã  jour
             $level = Get-VerbosityLevel
             $level | Should -Be "Detailed"
         }
 
         It "Should set and get the verbosity format" {
-            # Définir le format de verbosité
+            # DÃ©finir le format de verbositÃ©
             $testFormat = "[{0}] [{1}] [{2}] Test: {3}"
             Set-VerbosityFormat -Level "Detailed" -Format $testFormat
 
-            # Vérifier que le format a été mis à jour
+            # VÃ©rifier que le format a Ã©tÃ© mis Ã  jour
             $format = Get-VerbosityFormat -Level "Detailed"
             $format | Should -Be $testFormat
         }
 
         It "Should set and get the verbosity categories" {
-            # Définir les catégories de verbosité
+            # DÃ©finir les catÃ©gories de verbositÃ©
             $testCategories = @("Error", "Warning", "Info", "Test")
             Set-VerbosityCategories -Level "Detailed" -Categories $testCategories
 
-            # Vérifier que les catégories ont été mises à jour
+            # VÃ©rifier que les catÃ©gories ont Ã©tÃ© mises Ã  jour
             $categories = Get-VerbosityCategories -Level "Detailed"
             $categories | Should -Be $testCategories
         }
@@ -77,46 +77,46 @@ Describe "Verbosity Functions" {
 
     Context "Verbosity Presets" {
         It "Should apply the 'Silent' preset" {
-            # Appliquer le préréglage
+            # Appliquer le prÃ©rÃ©glage
             Set-VerbosityPreset -PresetName "Silent"
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $config = Get-VerbosityConfig
             $config.Level | Should -Be $config.Presets["Silent"].Level
         }
 
         It "Should apply the 'Production' preset" {
-            # Appliquer le préréglage
+            # Appliquer le prÃ©rÃ©glage
             Set-VerbosityPreset -PresetName "Production"
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $config = Get-VerbosityConfig
             $config.Level | Should -Be $config.Presets["Production"].Level
         }
 
         It "Should apply the 'Development' preset" {
-            # Appliquer le préréglage
+            # Appliquer le prÃ©rÃ©glage
             Set-VerbosityPreset -PresetName "Development"
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $config = Get-VerbosityConfig
             $config.Level | Should -Be $config.Presets["Development"].Level
         }
 
         It "Should apply the 'Debugging' preset" {
-            # Appliquer le préréglage
+            # Appliquer le prÃ©rÃ©glage
             Set-VerbosityPreset -PresetName "Debugging"
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $config = Get-VerbosityConfig
             $config.Level | Should -Be $config.Presets["Debugging"].Level
         }
 
         It "Should apply the 'Diagnostic' preset" {
-            # Appliquer le préréglage
+            # Appliquer le prÃ©rÃ©glage
             Set-VerbosityPreset -PresetName "Diagnostic"
 
-            # Vérifier que la configuration a été mise à jour
+            # VÃ©rifier que la configuration a Ã©tÃ© mise Ã  jour
             $config = Get-VerbosityConfig
             $config.Level | Should -Be $config.Presets["Diagnostic"].Level
         }
@@ -128,7 +128,7 @@ Describe "Verbosity Functions" {
             Set-VerbosityLevel -Level "Normal"
             Set-VerbosityCategories -Level "Normal" -Categories @("Error", "Warning", "Info")
 
-            # Vérifier que les messages des catégories activées sont journalisés
+            # VÃ©rifier que les messages des catÃ©gories activÃ©es sont journalisÃ©s
             Should-LogByVerbosity -Category "Error" | Should -Be $true
             Should-LogByVerbosity -Category "Warning" | Should -Be $true
             Should-LogByVerbosity -Category "Info" | Should -Be $true
@@ -139,7 +139,7 @@ Describe "Verbosity Functions" {
             Set-VerbosityLevel -Level "Normal"
             Set-VerbosityCategories -Level "Normal" -Categories @("Error", "Warning", "Info")
 
-            # Vérifier que les messages des catégories désactivées ne sont pas journalisés
+            # VÃ©rifier que les messages des catÃ©gories dÃ©sactivÃ©es ne sont pas journalisÃ©s
             Should-LogByVerbosity -Category "Debug" | Should -Be $false
             Should-LogByVerbosity -Category "Trace" | Should -Be $false
         }
@@ -154,7 +154,7 @@ Describe "Verbosity Functions" {
             # Formater un message
             $message = Format-MessageByVerbosity -Message "Test message" -Level "Error"
 
-            # Vérifier le format
+            # VÃ©rifier le format
             $message | Should -Match "^\[Error\] Test message$"
         }
 
@@ -166,7 +166,7 @@ Describe "Verbosity Functions" {
             # Formater un message
             $message = Format-MessageByVerbosity -Message "Test message" -Level "Error"
 
-            # Vérifier le format (avec timestamp)
+            # VÃ©rifier le format (avec timestamp)
             $message | Should -Match "^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[Error\] Test message$"
         }
 
@@ -178,7 +178,7 @@ Describe "Verbosity Functions" {
             # Formater un message
             $message = Format-MessageByVerbosity -Message "Test message" -Level "Error" -Category "TestCategory"
 
-            # Vérifier le format (avec timestamp et catégorie)
+            # VÃ©rifier le format (avec timestamp et catÃ©gorie)
             $message | Should -Match "^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[Error\] \[TestCategory\] Test message$"
         }
 
@@ -190,7 +190,7 @@ Describe "Verbosity Functions" {
             # Formater un message
             $message = Format-MessageByVerbosity -Message "Test message" -Level "Error" -Category "TestCategory" -Source "TestSource"
 
-            # Vérifier le format (avec timestamp, catégorie et source)
+            # VÃ©rifier le format (avec timestamp, catÃ©gorie et source)
             $message | Should -Match "^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[Error\] \[TestCategory\] \[TestSource\] Test message$"
         }
 
@@ -202,18 +202,18 @@ Describe "Verbosity Functions" {
             # Formater un message
             $message = Format-MessageByVerbosity -Message "Test message" -Level "Error" -Category "TestCategory" -Source "TestSource" -Id "TEST001"
 
-            # Vérifier le format (avec timestamp, catégorie, source et ID)
+            # VÃ©rifier le format (avec timestamp, catÃ©gorie, source et ID)
             $message | Should -Match "^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[Error\] \[TestCategory\] \[TestSource\] \[TEST001\] Test message$"
         }
     }
 
     Context "Write-LogWithVerbosity" {
         BeforeEach {
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testDir = Join-Path -Path $TestDrive -ChildPath "logs"
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer un fichier de journal de test
+            # CrÃ©er un fichier de journal de test
             $testLogFile = Join-Path -Path $testDir -ChildPath "verbosity_test.log"
 
             # Configurer pour le test
@@ -225,7 +225,7 @@ Describe "Verbosity Functions" {
             # Journaliser un message
             Write-LogWithVerbosity -Message "Test message" -Level "Error" -Category "TestCategory" -Source "TestSource" -Id "TEST001" -LogFile $testLogFile
 
-            # Vérifier que le message a été journalisé
+            # VÃ©rifier que le message a Ã©tÃ© journalisÃ©
             $content = Get-Content -Path $testLogFile -Raw
             $content | Should -Not -BeNullOrEmpty
             $content | Should -Match "Test message"
@@ -236,15 +236,15 @@ Describe "Verbosity Functions" {
             Set-VerbosityLevel -Level "Minimal"
             Set-VerbosityCategories -Level "Minimal" -Categories @("Critical", "Error")
 
-            # Journaliser un message dans une catégorie désactivée
+            # Journaliser un message dans une catÃ©gorie dÃ©sactivÃ©e
             Write-LogWithVerbosity -Message "Test message" -Level "Info" -LogFile $testLogFile
 
-            # Vérifier que le message n'a pas été journalisé
+            # VÃ©rifier que le message n'a pas Ã©tÃ© journalisÃ©
             if (Test-Path -Path $testLogFile) {
                 $content = Get-Content -Path $testLogFile -Raw
                 $content | Should -Not -Match "Test message"
             } else {
-                # Le fichier n'a pas été créé, ce qui est aussi valide
+                # Le fichier n'a pas Ã©tÃ© crÃ©Ã©, ce qui est aussi valide
                 $true | Should -Be $true
             }
         }

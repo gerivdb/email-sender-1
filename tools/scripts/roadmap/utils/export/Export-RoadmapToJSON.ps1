@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
     Exporte une roadmap au format Markdown vers un fichier JSON.
 
 .DESCRIPTION
     Ce script analyse un fichier de roadmap au format Markdown et le convertit en JSON
-    pour faciliter le parsing automatique et l'intégration avec d'autres outils.
+    pour faciliter le parsing automatique et l'intÃ©gration avec d'autres outils.
 
 .PARAMETER MarkdownPath
     Chemin vers le fichier Markdown de la roadmap.
 
 .PARAMETER JsonPath
-    Chemin où le fichier JSON sera enregistré. Si non spécifié, le fichier sera enregistré
-    au même emplacement que le fichier Markdown avec l'extension .json.
+    Chemin oÃ¹ le fichier JSON sera enregistrÃ©. Si non spÃ©cifiÃ©, le fichier sera enregistrÃ©
+    au mÃªme emplacement que le fichier Markdown avec l'extension .json.
 
 .EXAMPLE
     .\Export-RoadmapToJSON.ps1 -MarkdownPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 
 .NOTES
-    Auteur: Équipe DevOps
+    Auteur: Ã‰quipe DevOps
     Date: 2025-04-20
     Version: 1.0.0
 #>
@@ -38,7 +38,7 @@ function ConvertFrom-Markdown {
         [string]$MarkdownPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $MarkdownPath)) {
         throw "Le fichier '$MarkdownPath' n'existe pas."
     }
@@ -70,7 +70,7 @@ function ConvertFrom-Markdown {
             name        = $sectionName
             description = ""
             responsible = ""
-            status      = "Non commencé"
+            status      = "Non commencÃ©"
             progress    = 0
             subsections = @()
         }
@@ -96,7 +96,7 @@ function ConvertFrom-Markdown {
                 tasks          = @()
             }
 
-            # Analyser les tâches (niveau 4)
+            # Analyser les tÃ¢ches (niveau 4)
             $taskPattern = "#### $subsectionId\.(\d+) (.+?)(?=\r?\n)"
             $taskMatches = [regex]::Matches($content, $taskPattern)
 
@@ -110,7 +110,7 @@ function ConvertFrom-Markdown {
                     complexity      = "Moyenne"
                     estimated_days  = 0
                     progress        = 0
-                    status          = "Non commencé"
+                    status          = "Non commencÃ©"
                     start_date      = ""
                     end_date        = ""
                     responsible     = ""
@@ -133,7 +133,7 @@ function ConvertFrom-Markdown {
 
 # Fonction principale
 try {
-    # Déterminer le chemin de sortie JSON
+    # DÃ©terminer le chemin de sortie JSON
     if (-not $JsonPath) {
         $JsonPath = [System.IO.Path]::ChangeExtension($MarkdownPath, "json")
     }
@@ -145,7 +145,7 @@ try {
     $jsonContent = $roadmapJson | ConvertTo-Json -Depth 10
     $jsonContent | Out-File -FilePath $JsonPath -Encoding UTF8
 
-    Write-Host "Roadmap exportée avec succès vers '$JsonPath'"
+    Write-Host "Roadmap exportÃ©e avec succÃ¨s vers '$JsonPath'"
 } catch {
     Write-Error "Erreur lors de l'exportation de la roadmap: $_"
 }

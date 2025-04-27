@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute les tests unitaires de maintenance avec TestOmnibus.
+    ExÃ©cute les tests unitaires de maintenance avec TestOmnibus.
 .DESCRIPTION
-    Ce script exécute les tests unitaires de maintenance configurés dans TestOmnibus
-    et génère un rapport des résultats.
+    Ce script exÃ©cute les tests unitaires de maintenance configurÃ©s dans TestOmnibus
+    et gÃ©nÃ¨re un rapport des rÃ©sultats.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration de TestOmnibus.
 .PARAMETER GenerateHtmlReport
-    Génère un rapport HTML des résultats.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .PARAMETER ShowDetailedResults
-    Affiche les résultats détaillés des tests.
+    Affiche les rÃ©sultats dÃ©taillÃ©s des tests.
 .EXAMPLE
     .\Run-MaintenanceTests.ps1 -GenerateHtmlReport
 .NOTES
@@ -30,7 +30,7 @@ param (
     [switch]$ShowDetailedResults
 )
 
-# Vérifier que le fichier de configuration existe
+# VÃ©rifier que le fichier de configuration existe
 if (-not (Test-Path -Path $ConfigPath)) {
     Write-Error "Le fichier de configuration n'existe pas: $ConfigPath"
     return 1
@@ -40,14 +40,14 @@ if (-not (Test-Path -Path $ConfigPath)) {
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
 if (-not (Test-Path -Path $testOmnibusPath)) {
-    Write-Error "TestOmnibus non trouvé: $testOmnibusPath"
+    Write-Error "TestOmnibus non trouvÃ©: $testOmnibusPath"
     return 1
 }
 
 # Charger la configuration
 $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 
-# Définir l'encodage de la console en UTF-8
+# DÃ©finir l'encodage de la console en UTF-8
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 
@@ -55,20 +55,20 @@ $OutputEncoding = [System.Text.UTF8Encoding]::new()
 $maintenanceModules = $config.TestModules | Where-Object { $_.Tags -contains "Maintenance" }
 
 if ($maintenanceModules.Count -eq 0) {
-    Write-Warning "Aucun module de maintenance trouvé dans la configuration."
+    Write-Warning "Aucun module de maintenance trouvÃ© dans la configuration."
     return 1
 }
 
-# Exécuter les tests pour chaque module de maintenance
+# ExÃ©cuter les tests pour chaque module de maintenance
 $results = @()
 
 foreach ($module in $maintenanceModules) {
-    Write-Host "Exécution des tests pour le module $($module.Name)..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests pour le module $($module.Name)..." -ForegroundColor Cyan
     
-    # Exécuter TestOmnibus pour ce module
+    # ExÃ©cuter TestOmnibus pour ce module
     $moduleResults = & $testOmnibusPath -Path $module.Path -ConfigPath $ConfigPath
     
-    # Ajouter les résultats à la liste
+    # Ajouter les rÃ©sultats Ã  la liste
     $results += [PSCustomObject]@{
         Module      = $module.Name
         Success     = $moduleResults.Success
@@ -79,30 +79,30 @@ foreach ($module in $maintenanceModules) {
     }
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests de maintenance:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests de maintenance:" -ForegroundColor Cyan
 $totalTests = ($results | Measure-Object -Property TestsRun -Sum).Sum
 $totalPassed = ($results | Measure-Object -Property TestsPassed -Sum).Sum
 $totalFailed = ($results | Measure-Object -Property TestsFailed -Sum).Sum
 $totalDuration = ($results | Measure-Object -Property Duration -Sum).Sum
 
-Write-Host "  Tests exécutés: $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis: $totalPassed" -ForegroundColor Green
-Write-Host "  Tests échoués: $totalFailed" -ForegroundColor Red
-Write-Host "  Durée totale: $([math]::Round($totalDuration / 1000, 2)) secondes" -ForegroundColor White
+Write-Host "  Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $totalPassed" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $totalFailed" -ForegroundColor Red
+Write-Host "  DurÃ©e totale: $([math]::Round($totalDuration / 1000, 2)) secondes" -ForegroundColor White
 
-# Afficher les résultats par module
-Write-Host "`nRésultats par module:" -ForegroundColor Cyan
+# Afficher les rÃ©sultats par module
+Write-Host "`nRÃ©sultats par module:" -ForegroundColor Cyan
 $results | ForEach-Object {
     $color = if ($_.Success) { "Green" } else { "Red" }
-    Write-Host "  $($_.Module): $($_.TestsPassed)/$($_.TestsRun) tests réussis" -ForegroundColor $color
+    Write-Host "  $($_.Module): $($_.TestsPassed)/$($_.TestsRun) tests rÃ©ussis" -ForegroundColor $color
 }
 
-# Générer un rapport HTML global si demandé
+# GÃ©nÃ©rer un rapport HTML global si demandÃ©
 if ($GenerateHtmlReport) {
     $reportPath = Join-Path -Path $config.OutputPath -ChildPath "MaintenanceTestReport.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -124,28 +124,28 @@ if ($GenerateHtmlReport) {
 <body>
     <h1>Rapport des tests de maintenance</h1>
     <div class="summary">
-        <p>Tests exécutés: $totalTests</p>
-        <p>Tests réussis: <span class="success">$totalPassed</span></p>
-        <p>Tests échoués: <span class="failure">$totalFailed</span></p>
-        <p>Durée totale: $([math]::Round($totalDuration / 1000, 2)) secondes</p>
+        <p>Tests exÃ©cutÃ©s: $totalTests</p>
+        <p>Tests rÃ©ussis: <span class="success">$totalPassed</span></p>
+        <p>Tests Ã©chouÃ©s: <span class="failure">$totalFailed</span></p>
+        <p>DurÃ©e totale: $([math]::Round($totalDuration / 1000, 2)) secondes</p>
     </div>
-    <h2>Résultats par module</h2>
+    <h2>RÃ©sultats par module</h2>
     <table>
         <tr>
             <th>Module</th>
-            <th>Tests exécutés</th>
-            <th>Tests réussis</th>
-            <th>Tests échoués</th>
-            <th>Durée (s)</th>
+            <th>Tests exÃ©cutÃ©s</th>
+            <th>Tests rÃ©ussis</th>
+            <th>Tests Ã©chouÃ©s</th>
+            <th>DurÃ©e (s)</th>
             <th>Statut</th>
         </tr>
 "@
 
     foreach ($result in $results) {
         $status = if ($result.Success) { 
-            "<span class='success'>Réussi</span>" 
+            "<span class='success'>RÃ©ussi</span>" 
         } else { 
-            "<span class='failure'>Échoué</span>" 
+            "<span class='failure'>Ã‰chouÃ©</span>" 
         }
         
         $htmlReport += @"
@@ -167,7 +167,7 @@ if ($GenerateHtmlReport) {
 "@
 
     $htmlReport | Out-File -FilePath $reportPath -Encoding utf8
-    Write-Host "`nRapport HTML des tests de maintenance généré: $reportPath" -ForegroundColor Green
+    Write-Host "`nRapport HTML des tests de maintenance gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 }
 
 # Retourner un code de sortie

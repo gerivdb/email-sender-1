@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le script d'optimisation des algorithmes de détection.
+    Tests unitaires pour le script d'optimisation des algorithmes de dÃ©tection.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement du script
-    d'optimisation des algorithmes de détection. Il utilise le framework Pester pour exécuter les tests.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement du script
+    d'optimisation des algorithmes de dÃ©tection. Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .EXAMPLE
     Invoke-Pester -Path .\OptimizeAlgorithms.Tests.ps1
-    Exécute les tests unitaires pour le script d'optimisation des algorithmes de détection.
+    ExÃ©cute les tests unitaires pour le script d'optimisation des algorithmes de dÃ©tection.
 
 .NOTES
     Auteur: Augment Agent
@@ -18,7 +18,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -28,21 +28,21 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Chemins des scripts à tester
+# Chemins des scripts Ã  tester
 $scriptRoot = Split-Path -Parent $PSScriptRoot
 $optimizeAlgorithmsScript = "$PSScriptRoot\Optimize-DetectionAlgorithms.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $optimizeAlgorithmsScript)) {
     Write-Error "Le script '$optimizeAlgorithmsScript' est manquant."
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "OptimizeAlgorithmsTests_$(Get-Random)"
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param (
         [string]$FileName,
@@ -55,7 +55,7 @@ function New-TestFile {
     return $filePath
 }
 
-# Créer un rapport de précision de test
+# CrÃ©er un rapport de prÃ©cision de test
 $accuracyReportContent = @"
 {
     "Metrics": {
@@ -187,7 +187,7 @@ $accuracyReportContent = @"
 
 $accuracyReportPath = New-TestFile -FileName "DetectionAccuracy.json" -Content $accuracyReportContent -Directory $testTempDir
 
-# Créer un fichier de critères de détection de test
+# CrÃ©er un fichier de critÃ¨res de dÃ©tection de test
 $criteriaContent = @"
 {
     "JSON": {
@@ -240,37 +240,37 @@ $criteriaContent = @"
 
 $criteriaPath = New-TestFile -FileName "FormatDetectionCriteria.json" -Content $criteriaContent -Directory $testTempDir
 
-# Créer un répertoire pour les rapports
+# CrÃ©er un rÃ©pertoire pour les rapports
 $testReportsDir = Join-Path -Path $testTempDir -ChildPath "reports"
 New-Item -Path $testReportsDir -ItemType Directory -Force | Out-Null
 
 # Tests Pester
-Describe "Script d'optimisation des algorithmes de détection" {
+Describe "Script d'optimisation des algorithmes de dÃ©tection" {
     Context "Fonctions internes" {
-        It "La fonction New-DirectoryIfNotExists crée un répertoire s'il n'existe pas" {
-            # Créer un chemin de test
+        It "La fonction New-DirectoryIfNotExists crÃ©e un rÃ©pertoire s'il n'existe pas" {
+            # CrÃ©er un chemin de test
             $testPath = Join-Path -Path $testTempDir -ChildPath "test_directory"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $optimizeAlgorithmsScript
                 New-DirectoryIfNotExists -Path $testPath
             }
             
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $testPath -PathType Container | Should -Be $true
         }
         
-        It "La fonction Get-AccuracyReport charge correctement le rapport de précision" {
-            # Exécuter la fonction via le script
+        It "La fonction Get-AccuracyReport charge correctement le rapport de prÃ©cision" {
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $optimizeAlgorithmsScript
                 $report = Get-AccuracyReport -Path $accuracyReportPath
                 return $report
             }
             
-            # Vérifier que le rapport a été chargé correctement
+            # VÃ©rifier que le rapport a Ã©tÃ© chargÃ© correctement
             $report = & $scriptBlock
             $report | Should -Not -BeNullOrEmpty
             $report.Metrics | Should -Not -BeNullOrEmpty
@@ -279,15 +279,15 @@ Describe "Script d'optimisation des algorithmes de détection" {
             $report.DetailedResults.Count | Should -Be 10
         }
         
-        It "La fonction Get-DetectionCriteria charge correctement les critères de détection" {
-            # Exécuter la fonction via le script
+        It "La fonction Get-DetectionCriteria charge correctement les critÃ¨res de dÃ©tection" {
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $optimizeAlgorithmsScript
                 $criteria = Get-DetectionCriteria -Path $criteriaPath
                 return $criteria
             }
             
-            # Vérifier que les critères ont été chargés correctement
+            # VÃ©rifier que les critÃ¨res ont Ã©tÃ© chargÃ©s correctement
             $criteria = & $scriptBlock
             $criteria | Should -Not -BeNullOrEmpty
             $criteria.JSON | Should -Not -BeNullOrEmpty
@@ -298,11 +298,11 @@ Describe "Script d'optimisation des algorithmes de détection" {
             $criteria.TEXT.Extensions | Should -Contain ".txt"
         }
         
-        It "La fonction Get-ProblematicCases identifie correctement les cas problématiques" {
+        It "La fonction Get-ProblematicCases identifie correctement les cas problÃ©matiques" {
             # Charger le rapport
             $report = Get-Content -Path $accuracyReportPath -Raw | ConvertFrom-Json
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 param($report)
                 . $optimizeAlgorithmsScript
@@ -310,7 +310,7 @@ Describe "Script d'optimisation des algorithmes de détection" {
                 return $cases
             }
             
-            # Vérifier que les cas problématiques ont été identifiés correctement
+            # VÃ©rifier que les cas problÃ©matiques ont Ã©tÃ© identifiÃ©s correctement
             $cases = & $scriptBlock -report $report
             $cases | Should -Not -BeNullOrEmpty
             $cases.Count | Should -Be 2
@@ -319,15 +319,15 @@ Describe "Script d'optimisation des algorithmes de détection" {
             $cases | Where-Object { $_.FilePath -eq "sample_corrupted_20.txt" } | Should -Not -BeNullOrEmpty
         }
         
-        It "La fonction Get-CaseAnalysis analyse correctement les cas problématiques" {
-            # Charger le rapport et les critères
+        It "La fonction Get-CaseAnalysis analyse correctement les cas problÃ©matiques" {
+            # Charger le rapport et les critÃ¨res
             $report = Get-Content -Path $accuracyReportPath -Raw | ConvertFrom-Json
             $criteria = Get-Content -Path $criteriaPath -Raw | ConvertFrom-Json
             
-            # Obtenir les cas problématiques
+            # Obtenir les cas problÃ©matiques
             $problematicCases = $report.DetailedResults | Where-Object { -not $_.IsCorrect }
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 param($cases, $criteria)
                 . $optimizeAlgorithmsScript
@@ -335,7 +335,7 @@ Describe "Script d'optimisation des algorithmes de détection" {
                 return $analysis
             }
             
-            # Vérifier que l'analyse a été effectuée correctement
+            # VÃ©rifier que l'analyse a Ã©tÃ© effectuÃ©e correctement
             $analysis = & $scriptBlock -cases $problematicCases -criteria $criteria
             $analysis | Should -Not -BeNullOrEmpty
             $analysis.Keys | Should -Contain "JSON"
@@ -345,11 +345,11 @@ Describe "Script d'optimisation des algorithmes de détection" {
             $analysis["JSON"].CommonPatterns | Should -Not -BeNullOrEmpty
         }
         
-        It "La fonction Optimize-Criteria optimise correctement les critères de détection" {
-            # Charger les critères
+        It "La fonction Optimize-Criteria optimise correctement les critÃ¨res de dÃ©tection" {
+            # Charger les critÃ¨res
             $criteria = Get-Content -Path $criteriaPath -Raw | ConvertFrom-Json
             
-            # Créer une analyse de test
+            # CrÃ©er une analyse de test
             $analysis = @{
                 "JSON" = @{
                     MisclassifiedAs = @{
@@ -371,7 +371,7 @@ Describe "Script d'optimisation des algorithmes de détection" {
                 }
             }
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 param($criteria, $analysis)
                 . $optimizeAlgorithmsScript
@@ -379,34 +379,34 @@ Describe "Script d'optimisation des algorithmes de détection" {
                 return $result
             }
             
-            # Vérifier que les critères ont été optimisés correctement
+            # VÃ©rifier que les critÃ¨res ont Ã©tÃ© optimisÃ©s correctement
             $result = & $scriptBlock -criteria $criteria -analysis $analysis
             $result | Should -Not -BeNullOrEmpty
             $result.OptimizedCriteria | Should -Not -BeNullOrEmpty
             $result.OptimizationLog | Should -Not -BeNullOrEmpty
             $result.OptimizationLog.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les critères ont été modifiés
+            # VÃ©rifier que les critÃ¨res ont Ã©tÃ© modifiÃ©s
             $originalJsonMinSize = $criteria.JSON.MinimumSize
             $optimizedJsonMinSize = $result.OptimizedCriteria.JSON.MinimumSize
             $optimizedJsonMinSize | Should -Not -Be $originalJsonMinSize
         }
     }
     
-    Context "Exécution du script complet" {
-        It "Le script s'exécute sans erreur avec les paramètres par défaut" {
-            # Créer un chemin de sortie pour les critères optimisés
+    Context "ExÃ©cution du script complet" {
+        It "Le script s'exÃ©cute sans erreur avec les paramÃ¨tres par dÃ©faut" {
+            # CrÃ©er un chemin de sortie pour les critÃ¨res optimisÃ©s
             $outputCriteriaPath = Join-Path -Path $testTempDir -ChildPath "OptimizedCriteria.json"
             
-            # Exécuter le script avec des paramètres minimaux
+            # ExÃ©cuter le script avec des paramÃ¨tres minimaux
             $scriptBlock = {
                 & $optimizeAlgorithmsScript -AccuracyReportPath $accuracyReportPath -CriteriaPath $criteriaPath -OutputCriteriaPath $outputCriteriaPath
             }
             
-            # Vérifier que le script s'exécute sans erreur
+            # VÃ©rifier que le script s'exÃ©cute sans erreur
             $scriptBlock | Should -Not -Throw
             
-            # Vérifier que le fichier de critères optimisés a été créé
+            # VÃ©rifier que le fichier de critÃ¨res optimisÃ©s a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $outputCriteriaPath -PathType Leaf | Should -Be $true
             
             $optimizedCriteria = Get-Content -Path $outputCriteriaPath -Raw | ConvertFrom-Json
@@ -416,29 +416,29 @@ Describe "Script d'optimisation des algorithmes de détection" {
             $optimizedCriteria.TEXT | Should -Not -BeNullOrEmpty
         }
         
-        It "Le script génère un rapport HTML lorsque demandé" {
-            # Créer un chemin de sortie pour les critères optimisés
+        It "Le script gÃ©nÃ¨re un rapport HTML lorsque demandÃ©" {
+            # CrÃ©er un chemin de sortie pour les critÃ¨res optimisÃ©s
             $outputCriteriaPath = Join-Path -Path $testTempDir -ChildPath "OptimizedCriteria2.json"
             $reportPath = Join-Path -Path $testReportsDir -ChildPath "OptimizationReport.html"
             
-            # Exécuter le script avec l'option de rapport HTML
+            # ExÃ©cuter le script avec l'option de rapport HTML
             & $optimizeAlgorithmsScript -AccuracyReportPath $accuracyReportPath -CriteriaPath $criteriaPath -OutputCriteriaPath $outputCriteriaPath -GenerateReport -ReportPath $reportPath
             
-            # Vérifier que le rapport HTML a été créé
+            # VÃ©rifier que le rapport HTML a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $reportPath -PathType Leaf | Should -Be $true
             
             $htmlContent = Get-Content -Path $reportPath -Raw
             $htmlContent | Should -Not -BeNullOrEmpty
             $htmlContent | Should -Match "<html"
             $htmlContent | Should -Match "</html>"
-            $htmlContent | Should -Match "Rapport d'optimisation des algorithmes de détection"
+            $htmlContent | Should -Match "Rapport d'optimisation des algorithmes de dÃ©tection"
         }
     }
 }
 
-# Nettoyer après les tests
+# Nettoyer aprÃ¨s les tests
 AfterAll {
-    # Supprimer le répertoire temporaire
+    # Supprimer le rÃ©pertoire temporaire
     if (Test-Path -Path $testTempDir) {
         Remove-Item -Path $testTempDir -Recurse -Force
     }

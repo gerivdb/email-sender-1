@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Affiche un tableau de bord de l'état de la roadmap.
+    Affiche un tableau de bord de l'Ã©tat de la roadmap.
 .DESCRIPTION
-    Ce script génère et affiche un tableau de bord avec des statistiques
-    sur l'état de la roadmap, les tâches en retard, et les prochaines échéances.
+    Ce script gÃ©nÃ¨re et affiche un tableau de bord avec des statistiques
+    sur l'Ã©tat de la roadmap, les tÃ¢ches en retard, et les prochaines Ã©chÃ©ances.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -29,13 +29,13 @@ $journalRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Roadmap\journal"
 $indexPath = Join-Path -Path $journalRoot -ChildPath "index.json"
 $statusPath = Join-Path -Path $journalRoot -ChildPath "status.json"
 
-# Mettre à jour le statut global
+# Mettre Ã  jour le statut global
 $status = Get-RoadmapJournalStatus
 
 # Charger l'index
 $index = Get-Content -Path $indexPath -Raw | ConvertFrom-Json
 
-# Fonction pour générer une barre de progression colorée
+# Fonction pour gÃ©nÃ©rer une barre de progression colorÃ©e
 function Get-ProgressBar {
     param (
         [Parameter(Mandatory=$true)]
@@ -65,7 +65,7 @@ function Get-ProgressBar {
 
 # Afficher le titre
 Write-Host "`n===== TABLEAU DE BORD DE LA ROADMAP =====" -ForegroundColor Cyan
-Write-Host "Dernière mise à jour: $($status.lastUpdated)" -ForegroundColor Gray
+Write-Host "DerniÃ¨re mise Ã  jour: $($status.lastUpdated)" -ForegroundColor Gray
 
 # Afficher la progression globale
 Write-Host "`n>> PROGRESSION GLOBALE" -ForegroundColor Cyan
@@ -74,40 +74,40 @@ Write-Host $progressBar.Text -ForegroundColor $progressBar.Color
 
 # Afficher les statistiques
 Write-Host "`n>> STATISTIQUES" -ForegroundColor Cyan
-Write-Host "Total des tâches: $($index.statistics.totalEntries)"
-Write-Host "Tâches non commencées: $($index.statistics.notStarted)" -ForegroundColor Gray
-Write-Host "Tâches en cours: $($index.statistics.inProgress)" -ForegroundColor Yellow
-Write-Host "Tâches terminées: $($index.statistics.completed)" -ForegroundColor Green
-Write-Host "Tâches bloquées: $($index.statistics.blocked)" -ForegroundColor Red
+Write-Host "Total des tÃ¢ches: $($index.statistics.totalEntries)"
+Write-Host "TÃ¢ches non commencÃ©es: $($index.statistics.notStarted)" -ForegroundColor Gray
+Write-Host "TÃ¢ches en cours: $($index.statistics.inProgress)" -ForegroundColor Yellow
+Write-Host "TÃ¢ches terminÃ©es: $($index.statistics.completed)" -ForegroundColor Green
+Write-Host "TÃ¢ches bloquÃ©es: $($index.statistics.blocked)" -ForegroundColor Red
 
-# Afficher les tâches en retard
-Write-Host "`n>> TÂCHES EN RETARD" -ForegroundColor Cyan
+# Afficher les tÃ¢ches en retard
+Write-Host "`n>> TÃ‚CHES EN RETARD" -ForegroundColor Cyan
 if ($status.overdueTasks.Count -eq 0) {
-    Write-Host "Aucune tâche en retard." -ForegroundColor Green
+    Write-Host "Aucune tÃ¢che en retard." -ForegroundColor Green
 }
 else {
     foreach ($task in $status.overdueTasks) {
         Write-Host "$($task.id): $($task.title)" -ForegroundColor Red
-        Write-Host "  Date d'échéance: $($task.dueDate) (En retard de $($task.daysOverdue) jours)" -ForegroundColor Red
+        Write-Host "  Date d'Ã©chÃ©ance: $($task.dueDate) (En retard de $($task.daysOverdue) jours)" -ForegroundColor Red
     }
 }
 
-# Afficher les prochaines échéances
-Write-Host "`n>> PROCHAINES ÉCHÉANCES" -ForegroundColor Cyan
+# Afficher les prochaines Ã©chÃ©ances
+Write-Host "`n>> PROCHAINES Ã‰CHÃ‰ANCES" -ForegroundColor Cyan
 if ($status.upcomingDeadlines.Count -eq 0) {
-    Write-Host "Aucune échéance à venir dans les 7 prochains jours." -ForegroundColor Gray
+    Write-Host "Aucune Ã©chÃ©ance Ã  venir dans les 7 prochains jours." -ForegroundColor Gray
 }
 else {
     foreach ($task in $status.upcomingDeadlines) {
         Write-Host "$($task.id): $($task.title)" -ForegroundColor Yellow
-        Write-Host "  Date d'échéance: $($task.dueDate) (Dans $($task.daysRemaining) jours)" -ForegroundColor Yellow
+        Write-Host "  Date d'Ã©chÃ©ance: $($task.dueDate) (Dans $($task.daysRemaining) jours)" -ForegroundColor Yellow
     }
 }
 
-# Afficher les tâches bloquées
-Write-Host "`n>> TÂCHES BLOQUÉES" -ForegroundColor Cyan
+# Afficher les tÃ¢ches bloquÃ©es
+Write-Host "`n>> TÃ‚CHES BLOQUÃ‰ES" -ForegroundColor Cyan
 if ($status.blockedTasks.Count -eq 0) {
-    Write-Host "Aucune tâche bloquée." -ForegroundColor Green
+    Write-Host "Aucune tÃ¢che bloquÃ©e." -ForegroundColor Green
 }
 else {
     foreach ($task in $status.blockedTasks) {
@@ -115,7 +115,7 @@ else {
     }
 }
 
-# Exporter en HTML si demandé
+# Exporter en HTML si demandÃ©
 if ($ExportToHtml) {
     $html = @"
 <!DOCTYPE html>
@@ -221,7 +221,7 @@ if ($ExportToHtml) {
 <body>
     <div class="dashboard-header">
         <h1>Tableau de bord de la Roadmap</h1>
-        <p>Dernière mise à jour: $($status.lastUpdated)</p>
+        <p>DerniÃ¨re mise Ã  jour: $($status.lastUpdated)</p>
     </div>
     
     <div class="dashboard-section">
@@ -246,36 +246,36 @@ if ($ExportToHtml) {
             <div class="stat-card">
                 <h3>Total</h3>
                 <div class="stat-value">$($index.statistics.totalEntries)</div>
-                <p>Tâches</p>
+                <p>TÃ¢ches</p>
             </div>
             <div class="stat-card">
-                <h3>Non commencées</h3>
+                <h3>Non commencÃ©es</h3>
                 <div class="stat-value" style="color: #7f8c8d;">$($index.statistics.notStarted)</div>
-                <p>Tâches</p>
+                <p>TÃ¢ches</p>
             </div>
             <div class="stat-card">
                 <h3>En cours</h3>
                 <div class="stat-value" style="color: #f39c12;">$($index.statistics.inProgress)</div>
-                <p>Tâches</p>
+                <p>TÃ¢ches</p>
             </div>
             <div class="stat-card">
-                <h3>Terminées</h3>
+                <h3>TerminÃ©es</h3>
                 <div class="stat-value" style="color: #2ecc71;">$($index.statistics.completed)</div>
-                <p>Tâches</p>
+                <p>TÃ¢ches</p>
             </div>
             <div class="stat-card">
-                <h3>Bloquées</h3>
+                <h3>BloquÃ©es</h3>
                 <div class="stat-value" style="color: #e74c3c;">$($index.statistics.blocked)</div>
-                <p>Tâches</p>
+                <p>TÃ¢ches</p>
             </div>
         </div>
     </div>
     
     <div class="dashboard-section">
-        <h2>Tâches en retard</h2>
+        <h2>TÃ¢ches en retard</h2>
         $(
             if ($status.overdueTasks.Count -eq 0) {
-                '<p style="color: #2ecc71;">Aucune tâche en retard.</p>'
+                '<p style="color: #2ecc71;">Aucune tÃ¢che en retard.</p>'
             }
             else {
                 '<ul class="task-list">'
@@ -283,7 +283,7 @@ if ($ExportToHtml) {
                     @"
                     <li class="task-item overdue">
                         <strong>$($task.id): $($task.title)</strong>
-                        <div class="task-meta">Date d'échéance: $($task.dueDate) (En retard de $($task.daysOverdue) jours)</div>
+                        <div class="task-meta">Date d'Ã©chÃ©ance: $($task.dueDate) (En retard de $($task.daysOverdue) jours)</div>
                     </li>
 "@
                 }
@@ -293,10 +293,10 @@ if ($ExportToHtml) {
     </div>
     
     <div class="dashboard-section">
-        <h2>Prochaines échéances</h2>
+        <h2>Prochaines Ã©chÃ©ances</h2>
         $(
             if ($status.upcomingDeadlines.Count -eq 0) {
-                '<p style="color: #7f8c8d;">Aucune échéance à venir dans les 7 prochains jours.</p>'
+                '<p style="color: #7f8c8d;">Aucune Ã©chÃ©ance Ã  venir dans les 7 prochains jours.</p>'
             }
             else {
                 '<ul class="task-list">'
@@ -304,7 +304,7 @@ if ($ExportToHtml) {
                     @"
                     <li class="task-item upcoming">
                         <strong>$($task.id): $($task.title)</strong>
-                        <div class="task-meta">Date d'échéance: $($task.dueDate) (Dans $($task.daysRemaining) jours)</div>
+                        <div class="task-meta">Date d'Ã©chÃ©ance: $($task.dueDate) (Dans $($task.daysRemaining) jours)</div>
                     </li>
 "@
                 }
@@ -314,10 +314,10 @@ if ($ExportToHtml) {
     </div>
     
     <div class="dashboard-section">
-        <h2>Tâches bloquées</h2>
+        <h2>TÃ¢ches bloquÃ©es</h2>
         $(
             if ($status.blockedTasks.Count -eq 0) {
-                '<p style="color: #2ecc71;">Aucune tâche bloquée.</p>'
+                '<p style="color: #2ecc71;">Aucune tÃ¢che bloquÃ©e.</p>'
             }
             else {
                 '<ul class="task-list">'
@@ -334,15 +334,15 @@ if ($ExportToHtml) {
     </div>
     
     <div class="footer">
-        <p>Généré par le système de journalisation de la roadmap EMAIL_SENDER_1</p>
+        <p>GÃ©nÃ©rÃ© par le systÃ¨me de journalisation de la roadmap EMAIL_SENDER_1</p>
     </div>
 </body>
 </html>
 "@
     
     $html | Out-File -FilePath $OutputPath -Encoding utf8
-    Write-Host "`nTableau de bord exporté en HTML: $OutputPath" -ForegroundColor Green
+    Write-Host "`nTableau de bord exportÃ© en HTML: $OutputPath" -ForegroundColor Green
     
-    # Ouvrir le fichier HTML dans le navigateur par défaut
+    # Ouvrir le fichier HTML dans le navigateur par dÃ©faut
     Start-Process $OutputPath
 }

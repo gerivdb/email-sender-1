@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit un seuil de mémoire pour un instantané.
+    DÃ©finit un seuil de mÃ©moire pour un instantanÃ©.
 
 .DESCRIPTION
-    La fonction Set-RoadmapMemoryThreshold définit un seuil de mémoire pour un instantané.
-    Si l'utilisation de la mémoire dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-RoadmapMemoryThreshold dÃ©finit un seuil de mÃ©moire pour un instantanÃ©.
+    Si l'utilisation de la mÃ©moire dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
-    Le nom de l'instantané.
+    Le nom de l'instantanÃ©.
 
 .PARAMETER ThresholdBytes
     Le seuil en octets.
 
 .PARAMETER ThresholdMB
-    Le seuil en mégaoctets.
+    Le seuil en mÃ©gaoctets.
 
 .EXAMPLE
     Set-RoadmapMemoryThreshold -Name "MaFonction" -ThresholdMB 100
-    Définit un seuil de 100 MB pour l'instantané nommé "MaFonction".
+    DÃ©finit un seuil de 100 MB pour l'instantanÃ© nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Set-RoadmapMemoryThreshold {
     [CmdletBinding()]
@@ -48,15 +48,15 @@ function Set-RoadmapMemoryThreshold {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction de seuil de mémoire
+    # Appeler la fonction de seuil de mÃ©moire
     $params = @{
         Name = $Name
     }

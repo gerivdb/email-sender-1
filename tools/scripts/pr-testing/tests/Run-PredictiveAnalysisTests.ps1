@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires pour le système d'analyse prédictive.
+    ExÃ©cute les tests unitaires pour le systÃ¨me d'analyse prÃ©dictive.
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour vérifier le bon fonctionnement
-    du système d'analyse prédictive.
+    Ce script exÃ©cute les tests unitaires pour vÃ©rifier le bon fonctionnement
+    du systÃ¨me d'analyse prÃ©dictive.
 .EXAMPLE
     .\Run-PredictiveAnalysisTests.ps1
 .NOTES
@@ -16,10 +16,10 @@
 [CmdletBinding()]
 param()
 
-# Obtenir le répertoire du script
+# Obtenir le rÃ©pertoire du script
 $scriptDir = $PSScriptRoot
 
-# Obtenir les scripts de test pour l'analyse prédictive
+# Obtenir les scripts de test pour l'analyse prÃ©dictive
 $testScripts = @(
     "Test-PredictiveAnalysisUnit.ps1",
     "Test-RiskScoreCalculation.ps1",
@@ -27,18 +27,18 @@ $testScripts = @(
 )
 
 # Afficher les informations sur les tests
-Write-Host "Tests unitaires pour le système d'analyse prédictive" -ForegroundColor Cyan
+Write-Host "Tests unitaires pour le systÃ¨me d'analyse prÃ©dictive" -ForegroundColor Cyan
 Write-Host "Nombre de scripts de test: $($testScripts.Count)" -ForegroundColor Cyan
 Write-Host ""
 
-# Exécuter chaque script de test
+# ExÃ©cuter chaque script de test
 $results = @()
 
 foreach ($script in $testScripts) {
     $scriptPath = Join-Path -Path $scriptDir -ChildPath $script
 
     if (Test-Path -Path $scriptPath) {
-        Write-Host "Exécution de $script..." -ForegroundColor Yellow
+        Write-Host "ExÃ©cution de $script..." -ForegroundColor Yellow
 
         $startTime = Get-Date
         & $scriptPath | Out-Null
@@ -55,30 +55,30 @@ foreach ($script in $testScripts) {
             ExitCode = $exitCode
         }
 
-        Write-Host "  Résultat: $(if ($success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
-        Write-Host "  Durée: $($duration.TotalSeconds) secondes" -ForegroundColor Gray
+        Write-Host "  RÃ©sultat: $(if ($success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
+        Write-Host "  DurÃ©e: $($duration.TotalSeconds) secondes" -ForegroundColor Gray
         Write-Host ""
     } else {
-        Write-Warning "Script non trouvé: $scriptPath"
+        Write-Warning "Script non trouvÃ©: $scriptPath"
     }
 }
 
-# Afficher un résumé des tests
+# Afficher un rÃ©sumÃ© des tests
 $successCount = ($results | Where-Object { $_.Success }).Count
 $failureCount = ($results | Where-Object { -not $_.Success }).Count
 $totalCount = $results.Count
 $totalSeconds = ($results | ForEach-Object { $_.Duration.TotalSeconds } | Measure-Object -Sum).Sum
 
-Write-Host "Résumé des tests:" -ForegroundColor Cyan
-Write-Host "  Scripts réussis: $successCount" -ForegroundColor Green
-Write-Host "  Scripts échoués: $failureCount" -ForegroundColor Red
+Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Scripts rÃ©ussis: $successCount" -ForegroundColor Green
+Write-Host "  Scripts Ã©chouÃ©s: $failureCount" -ForegroundColor Red
 Write-Host "  Total: $totalCount" -ForegroundColor White
-Write-Host "  Durée totale: $([Math]::Round($totalSeconds, 2)) secondes" -ForegroundColor Gray
+Write-Host "  DurÃ©e totale: $([Math]::Round($totalSeconds, 2)) secondes" -ForegroundColor Gray
 Write-Host ""
 
-# Afficher les détails des échecs
+# Afficher les dÃ©tails des Ã©checs
 if ($failureCount -gt 0) {
-    Write-Host "Détails des échecs:" -ForegroundColor Red
+    Write-Host "DÃ©tails des Ã©checs:" -ForegroundColor Red
 
     foreach ($result in $results | Where-Object { -not $_.Success }) {
         Write-Host "  $($result.Script) (Code de sortie: $($result.ExitCode))" -ForegroundColor Red
@@ -87,7 +87,7 @@ if ($failureCount -gt 0) {
     Write-Host ""
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 $success = $failureCount -eq 0
-Write-Host "Résultat global: $(if ($success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
+Write-Host "RÃ©sultat global: $(if ($success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
 exit $(if ($success) { 0 } else { 1 })

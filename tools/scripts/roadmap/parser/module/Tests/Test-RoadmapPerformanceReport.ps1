@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-RoadmapPerformanceReport.ps1
 #
-# Script pour tester la fonction de génération de rapports de performance
+# Script pour tester la fonction de gÃ©nÃ©ration de rapports de performance
 #
 
-# Importer les fonctions nécessaires
+# Importer les fonctions nÃ©cessaires
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $publicPath = Join-Path -Path $modulePath -ChildPath "Functions\Public"
@@ -25,12 +25,12 @@ $newPerformanceReportPath = Join-Path -Path $publicPath -ChildPath "New-RoadmapP
 . $addOperationCountPath
 . $newPerformanceReportPath
 
-Write-Host "Début des tests de génération de rapports de performance..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de gÃ©nÃ©ration de rapports de performance..." -ForegroundColor Cyan
 
-# Générer des données de test
-Write-Host "`nGénération de données de test..." -ForegroundColor Cyan
+# GÃ©nÃ©rer des donnÃ©es de test
+Write-Host "`nGÃ©nÃ©ration de donnÃ©es de test..." -ForegroundColor Cyan
 
-# Test de temps d'exécution
+# Test de temps d'exÃ©cution
 for ($i = 1; $i -le 5; $i++) {
     $result = Measure-RoadmapExecutionTime -Name "TestExecution" -ScriptBlock {
         param($sleepTime)
@@ -39,7 +39,7 @@ for ($i = 1; $i -le 5; $i++) {
     } -ArgumentList ($i * 50)
 }
 
-# Test d'utilisation de mémoire
+# Test d'utilisation de mÃ©moire
 for ($i = 1; $i -le 3; $i++) {
     $result = Measure-RoadmapMemoryUsage -Name "TestMemory" -ScriptBlock {
         param($size)
@@ -51,7 +51,7 @@ for ($i = 1; $i -le 3; $i++) {
     } -ArgumentList ($i * 500)
 }
 
-# Test de comptage d'opérations
+# Test de comptage d'opÃ©rations
 for ($i = 1; $i -le 4; $i++) {
     $result = Measure-RoadmapOperations -Name "TestOperations" -ScriptBlock {
         param($count)
@@ -62,31 +62,31 @@ for ($i = 1; $i -le 4; $i++) {
     } -ArgumentList ($i * 25)
 }
 
-# Test 1: Générer un rapport au format texte
-Write-Host "`nTest 1: Génération d'un rapport au format texte" -ForegroundColor Cyan
+# Test 1: GÃ©nÃ©rer un rapport au format texte
+Write-Host "`nTest 1: GÃ©nÃ©ration d'un rapport au format texte" -ForegroundColor Cyan
 $textReport = New-RoadmapPerformanceReport -Format Text
-Write-Host "Rapport texte généré avec succès. Extrait :"
+Write-Host "Rapport texte gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($textReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-# Test 2: Générer un rapport au format HTML
-Write-Host "`nTest 2: Génération d'un rapport au format HTML" -ForegroundColor Cyan
+# Test 2: GÃ©nÃ©rer un rapport au format HTML
+Write-Host "`nTest 2: GÃ©nÃ©ration d'un rapport au format HTML" -ForegroundColor Cyan
 $htmlReport = New-RoadmapPerformanceReport -Format HTML
-Write-Host "Rapport HTML généré avec succès. Extrait :"
+Write-Host "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($htmlReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-# Test 3: Générer un rapport au format JSON
-Write-Host "`nTest 3: Génération d'un rapport au format JSON" -ForegroundColor Cyan
+# Test 3: GÃ©nÃ©rer un rapport au format JSON
+Write-Host "`nTest 3: GÃ©nÃ©ration d'un rapport au format JSON" -ForegroundColor Cyan
 $jsonReport = New-RoadmapPerformanceReport -Format JSON
-Write-Host "Rapport JSON généré avec succès. Extrait :"
+Write-Host "Rapport JSON gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($jsonReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-# Test 4: Générer un rapport au format CSV
-Write-Host "`nTest 4: Génération d'un rapport au format CSV" -ForegroundColor Cyan
+# Test 4: GÃ©nÃ©rer un rapport au format CSV
+Write-Host "`nTest 4: GÃ©nÃ©ration d'un rapport au format CSV" -ForegroundColor Cyan
 $csvReport = New-RoadmapPerformanceReport -Format CSV
-Write-Host "Rapport CSV généré avec succès. Extrait :"
+Write-Host "Rapport CSV gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($csvReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
@@ -96,14 +96,14 @@ $tempFolder = [System.IO.Path]::GetTempPath()
 $tempFile = Join-Path -Path $tempFolder -ChildPath "performance_report.html"
 New-RoadmapPerformanceReport -Format HTML -OutputPath $tempFile
 $fileExists = Test-Path -Path $tempFile
-Write-Host "Rapport enregistré dans : $tempFile"
+Write-Host "Rapport enregistrÃ© dans : $tempFile"
 Write-Host "Le fichier existe : $fileExists"
 
-# Test 6: Générer un rapport avec des filtres
-Write-Host "`nTest 6: Génération d'un rapport avec des filtres" -ForegroundColor Cyan
+# Test 6: GÃ©nÃ©rer un rapport avec des filtres
+Write-Host "`nTest 6: GÃ©nÃ©ration d'un rapport avec des filtres" -ForegroundColor Cyan
 $filteredReport = New-RoadmapPerformanceReport -Format Text -TimerName "TestExecution" -IncludeMemoryUsage $false -IncludeOperations $false
-Write-Host "Rapport filtré généré avec succès. Extrait :"
+Write-Host "Rapport filtrÃ© gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($filteredReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-Write-Host "`nTests de génération de rapports de performance terminés." -ForegroundColor Cyan
+Write-Host "`nTests de gÃ©nÃ©ration de rapports de performance terminÃ©s." -ForegroundColor Cyan

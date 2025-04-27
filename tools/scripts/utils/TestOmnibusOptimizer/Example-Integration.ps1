@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Exemple d'utilisation du module TestOmnibusOptimizer.
 .DESCRIPTION
     Ce script montre comment utiliser le module TestOmnibusOptimizer pour
-    combiner les fonctionnalités de TestOmnibus et du Système d'Optimisation Proactive.
+    combiner les fonctionnalitÃ©s de TestOmnibus et du SystÃ¨me d'Optimisation Proactive.
 .EXAMPLE
     .\Example-Integration.ps1
 .NOTES
@@ -16,7 +16,7 @@
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "TestOmnibusOptimizer.psm1"
 Import-Module $modulePath -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $testPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "tests"
 $usageDataPath = Join-Path -Path $env:TEMP -ChildPath "UsageMonitor\usage_data.xml"
 $outputPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibusOptimizer\Reports"
@@ -25,33 +25,33 @@ $outputPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibusOptimizer\Reports
 $exampleUsageTestPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "PSCacheManager\Example-Usage.Tests.ps1"
 $exampleUsageUnitTestPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "PSCacheManager\Example-Usage.Unit.Tests.ps1"
 
-# Créer un répertoire temporaire pour les tests si nécessaire
+# CrÃ©er un rÃ©pertoire temporaire pour les tests si nÃ©cessaire
 if (-not (Test-Path -Path $testPath)) {
     New-Item -Path $testPath -ItemType Directory -Force | Out-Null
 }
 
-# Copier les fichiers de test dans le répertoire de tests
+# Copier les fichiers de test dans le rÃ©pertoire de tests
 if (Test-Path -Path $exampleUsageTestPath) {
-    Write-Host "Test Example-Usage.Tests.ps1 trouvé: $exampleUsageTestPath" -ForegroundColor Green
+    Write-Host "Test Example-Usage.Tests.ps1 trouvÃ©: $exampleUsageTestPath" -ForegroundColor Green
     Copy-Item -Path $exampleUsageTestPath -Destination $testPath -Force
-    Write-Host "Test Example-Usage.Tests.ps1 copié dans le répertoire de tests: $testPath" -ForegroundColor Green
+    Write-Host "Test Example-Usage.Tests.ps1 copiÃ© dans le rÃ©pertoire de tests: $testPath" -ForegroundColor Green
 }
 
 if (Test-Path -Path $exampleUsageUnitTestPath) {
-    Write-Host "Test Example-Usage.Unit.Tests.ps1 trouvé: $exampleUsageUnitTestPath" -ForegroundColor Green
+    Write-Host "Test Example-Usage.Unit.Tests.ps1 trouvÃ©: $exampleUsageUnitTestPath" -ForegroundColor Green
     Copy-Item -Path $exampleUsageUnitTestPath -Destination $testPath -Force
-    Write-Host "Test Example-Usage.Unit.Tests.ps1 copié dans le répertoire de tests: $testPath" -ForegroundColor Green
+    Write-Host "Test Example-Usage.Unit.Tests.ps1 copiÃ© dans le rÃ©pertoire de tests: $testPath" -ForegroundColor Green
 }
 
-# Vérifier si le répertoire de tests existe
+# VÃ©rifier si le rÃ©pertoire de tests existe
 if (-not (Test-Path -Path $testPath)) {
-    Write-Warning "Le répertoire de tests n'existe pas: $testPath"
-    Write-Host "Création d'un répertoire de tests de démonstration..." -ForegroundColor Cyan
+    Write-Warning "Le rÃ©pertoire de tests n'existe pas: $testPath"
+    Write-Host "CrÃ©ation d'un rÃ©pertoire de tests de dÃ©monstration..." -ForegroundColor Cyan
 
     $testPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibusOptimizer\DemoTests"
     New-Item -Path $testPath -ItemType Directory -Force | Out-Null
 
-    # Créer quelques tests de démonstration
+    # CrÃ©er quelques tests de dÃ©monstration
     $test1 = @"
 Describe "Test-SuccessfulFunction" {
     It "Should return true" {
@@ -93,13 +93,13 @@ Describe "Test-SlowFunction" {
     $test2 | Out-File -FilePath (Join-Path -Path $testPath -ChildPath "Test-FailingFunction.Tests.ps1") -Encoding utf8 -Force
     $test3 | Out-File -FilePath (Join-Path -Path $testPath -ChildPath "Test-SlowFunction.Tests.ps1") -Encoding utf8 -Force
 
-    Write-Host "Tests de démonstration créés dans: $testPath" -ForegroundColor Green
+    Write-Host "Tests de dÃ©monstration crÃ©Ã©s dans: $testPath" -ForegroundColor Green
 }
 
-# Vérifier si les données d'utilisation existent
+# VÃ©rifier si les donnÃ©es d'utilisation existent
 if (-not (Test-Path -Path $usageDataPath)) {
-    Write-Warning "Les données d'utilisation n'existent pas: $usageDataPath"
-    Write-Host "Création de données d'utilisation de démonstration..." -ForegroundColor Cyan
+    Write-Warning "Les donnÃ©es d'utilisation n'existent pas: $usageDataPath"
+    Write-Host "CrÃ©ation de donnÃ©es d'utilisation de dÃ©monstration..." -ForegroundColor Cyan
 
     # Importer le module UsageMonitor
     $usageMonitorPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "UsageMonitor\UsageMonitor.psm1"
@@ -116,56 +116,56 @@ if (-not (Test-Path -Path $usageDataPath)) {
     )
 
     foreach ($scriptPath in $scriptPaths) {
-        # Créer le script s'il n'existe pas
+        # CrÃ©er le script s'il n'existe pas
         if (-not (Test-Path -Path $scriptPath)) {
             $scriptName = Split-Path -Path $scriptPath -Leaf
             $scriptContent = "function $($scriptName -replace '\.ps1', '') { return `$true }"
             $scriptContent | Out-File -FilePath $scriptPath -Encoding utf8 -Force
         }
 
-        # Simuler plusieurs exécutions
+        # Simuler plusieurs exÃ©cutions
         for ($i = 1; $i -le 10; $i++) {
             $executionId = Start-ScriptUsageTracking -ScriptPath $scriptPath
 
-            # Simuler une exécution
+            # Simuler une exÃ©cution
             $success = $true
 
             if ($scriptPath -match "Failing") {
-                # Simuler un échec occasionnel
+                # Simuler un Ã©chec occasionnel
                 $success = ($i % 3 -ne 0)
             } elseif ($scriptPath -match "Slow") {
-                # Simuler une exécution lente
-                Start-Sleep -Milliseconds 10  # Simuler une exécution plus longue
+                # Simuler une exÃ©cution lente
+                Start-Sleep -Milliseconds 10  # Simuler une exÃ©cution plus longue
             } else {
-                # Simuler une exécution normale
+                # Simuler une exÃ©cution normale
             }
 
-            Start-Sleep -Milliseconds 10  # Simuler une exécution minimale
+            Start-Sleep -Milliseconds 10  # Simuler une exÃ©cution minimale
 
             # Terminer le suivi d'utilisation
-            Stop-ScriptUsageTracking -ExecutionId $executionId -Success $success -ErrorMessage $(if (-not $success) { "Erreur simulée" } else { "" })
+            Stop-ScriptUsageTracking -ExecutionId $executionId -Success $success -ErrorMessage $(if (-not $success) { "Erreur simulÃ©e" } else { "" })
         }
     }
 
-    # Sauvegarder la base de données
+    # Sauvegarder la base de donnÃ©es
     Save-UsageDatabase
 
-    Write-Host "Données d'utilisation de démonstration créées dans: $usageDataPath" -ForegroundColor Green
+    Write-Host "DonnÃ©es d'utilisation de dÃ©monstration crÃ©Ã©es dans: $usageDataPath" -ForegroundColor Green
 }
 
-# Exécuter TestOmnibus avec des paramètres optimisés
+# ExÃ©cuter TestOmnibus avec des paramÃ¨tres optimisÃ©s
 Write-Host "`n=== Execution de TestOmnibus avec des parametres optimises ===" -ForegroundColor Green
 $config = Invoke-OptimizedTestOmnibus -TestPath $testPath -UsageDataPath $usageDataPath -OutputPath $outputPath -GenerateCombinedReport
 
-# Afficher la configuration utilisée
-Write-Host "`nConfiguration utilisée:" -ForegroundColor Yellow
+# Afficher la configuration utilisÃ©e
+Write-Host "`nConfiguration utilisÃ©e:" -ForegroundColor Yellow
 $config | ConvertTo-Json -Depth 3
 
-# Générer des suggestions d'optimisation
+# GÃ©nÃ©rer des suggestions d'optimisation
 Write-Host "`n=== Generation de suggestions d'optimisation ===" -ForegroundColor Green
 $testResultsPath = Join-Path -Path $outputPath -ChildPath "TestResults\results.xml"
 
-# Vérifier si les résultats de test existent
+# VÃ©rifier si les rÃ©sultats de test existent
 if (Test-Path -Path $testResultsPath) {
     $suggestions = Get-CombinedOptimizationSuggestions -TestResultsPath $testResultsPath -UsageDataPath $usageDataPath -OutputPath $outputPath
 
@@ -208,7 +208,7 @@ if (Test-Path -Path $testResultsPath) {
         Write-Host "--------------------------------------------------"
     }
 } else {
-    Write-Warning "Les résultats de test n'existent pas: $testResultsPath"
+    Write-Warning "Les rÃ©sultats de test n'existent pas: $testResultsPath"
 }
 
 # Afficher les chemins des rapports

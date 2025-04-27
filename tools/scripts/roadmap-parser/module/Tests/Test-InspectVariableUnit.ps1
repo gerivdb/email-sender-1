@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Inspect-Variable.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour la fonction Inspect-Variable
-    qui ne dépendent pas du framework Pester.
+    qui ne dÃ©pendent pas du framework Pester.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Inspect-Variable.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Inspect-Variable.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Inspect-Variable.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
-Write-Host "Fonction Inspect-Variable importée depuis : $functionPath" -ForegroundColor Green
+Write-Host "Fonction Inspect-Variable importÃ©e depuis : $functionPath" -ForegroundColor Green
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Case {
     param (
         [string]$Name,
@@ -40,11 +40,11 @@ function Test-Case {
         $expectedValue = if ($Expected -is [scriptblock]) { & $Expected } else { $Expected }
 
         if ($result -eq $expectedValue) {
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Échoué" -ForegroundColor Red
-            Write-Host "    Résultat: $result" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©" -ForegroundColor Red
+            Write-Host "    RÃ©sultat: $result" -ForegroundColor Red
             Write-Host "    Attendu: $expectedValue" -ForegroundColor Red
             return $false
         }
@@ -54,7 +54,7 @@ function Test-Case {
     }
 }
 
-# Fonction pour exécuter un test qui vérifie une propriété
+# Fonction pour exÃ©cuter un test qui vÃ©rifie une propriÃ©tÃ©
 function Test-Property {
     param (
         [string]$Name,
@@ -68,11 +68,11 @@ function Test-Property {
         $result = & $Test
 
         if ($result.$Property -eq $ExpectedValue) {
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Échoué" -ForegroundColor Red
-            Write-Host "    Résultat: $($result.$Property)" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©" -ForegroundColor Red
+            Write-Host "    RÃ©sultat: $($result.$Property)" -ForegroundColor Red
             Write-Host "    Attendu: $ExpectedValue" -ForegroundColor Red
             return $false
         }
@@ -82,7 +82,7 @@ function Test-Property {
     }
 }
 
-# Fonction pour exécuter un test qui vérifie si une exception est levée
+# Fonction pour exÃ©cuter un test qui vÃ©rifie si une exception est levÃ©e
 function Test-Exception {
     param (
         [string]$Name,
@@ -93,14 +93,14 @@ function Test-Exception {
     Write-Host "Test: $Name" -ForegroundColor Cyan
     try {
         $result = & $Test
-        Write-Host "  Échoué: Aucune exception n'a été levée" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ©: Aucune exception n'a Ã©tÃ© levÃ©e" -ForegroundColor Red
         return $false
     } catch {
         if ($_.Exception.Message -match $ExpectedExceptionMessage) {
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Échoué: Exception incorrecte" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©: Exception incorrecte" -ForegroundColor Red
             Write-Host "    Exception: $($_.Exception.Message)" -ForegroundColor Red
             Write-Host "    Attendu: $ExpectedExceptionMessage" -ForegroundColor Red
             return $false
@@ -114,7 +114,7 @@ $passedTests = 0
 
 # Tests pour les types simples
 $totalTests++
-if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur une chaîne" -Test {
+if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur une chaÃ®ne" -Test {
         Inspect-Variable -InputObject "Test" -Format "Object"
     } -Property "Type" -ExpectedValue "System.String") {
     $passedTests++
@@ -128,7 +128,7 @@ if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur
 }
 
 $totalTests++
-if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur un booléen" -Test {
+if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur un boolÃ©en" -Test {
         Inspect-Variable -InputObject $true -Format "Object"
     } -Property "Type" -ExpectedValue "System.Boolean") {
     $passedTests++
@@ -151,7 +151,7 @@ if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur
 }
 
 $totalTests++
-if (Test-Property -Name "Inspect-Variable devrait limiter le nombre d'éléments affichés" -Test {
+if (Test-Property -Name "Inspect-Variable devrait limiter le nombre d'Ã©lÃ©ments affichÃ©s" -Test {
         $array = 1..20
         Inspect-Variable -InputObject $array -Format "Object" -MaxArrayItems 5
     } -Property "HasMore" -ExpectedValue $true) {
@@ -173,9 +173,9 @@ if (Test-Property -Name "Inspect-Variable devrait retourner des informations sur
     $passedTests++
 }
 
-# Tests pour les références circulaires
+# Tests pour les rÃ©fÃ©rences circulaires
 $totalTests++
-if (Test-Case -Name "Inspect-Variable devrait détecter une référence circulaire" -Test {
+if (Test-Case -Name "Inspect-Variable devrait dÃ©tecter une rÃ©fÃ©rence circulaire" -Test {
         $parent = [PSCustomObject]@{
             Name = "Parent"
         }
@@ -187,7 +187,7 @@ if (Test-Case -Name "Inspect-Variable devrait détecter une référence circulai
 
         $result = Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Mark"
 
-        # Vérifier manuellement si la référence circulaire est détectée
+        # VÃ©rifier manuellement si la rÃ©fÃ©rence circulaire est dÃ©tectÃ©e
         if ($result.Properties -and
             $result.Properties["Child"] -and
             $result.Properties["Child"].Properties -and
@@ -213,21 +213,21 @@ if (Test-Exception -Name "Inspect-Variable devrait lever une exception avec Circ
         $parent | Add-Member -MemberType NoteProperty -Name "Child" -Value $child
 
         Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Throw"
-    } -ExpectedExceptionMessage "Référence circulaire détectée") {
+    } -ExpectedExceptionMessage "RÃ©fÃ©rence circulaire dÃ©tectÃ©e") {
     $passedTests++
 }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis: $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
-Write-Host "  Tests échoués: $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis: $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+Write-Host "  Tests Ã©chouÃ©s: $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

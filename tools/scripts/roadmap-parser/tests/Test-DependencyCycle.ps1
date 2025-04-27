@@ -1,83 +1,83 @@
-# Test-DependencyCycle.ps1
+﻿# Test-DependencyCycle.ps1
 # Script pour tester la fonction Find-DependencyCycle
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $extendedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapExtended.ps1"
 $cycleFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\Find-DependencyCycle.ps1"
 
 . $extendedFunctionPath
 . $cycleFunctionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test avec des cycles de dépendances
+# CrÃ©er un fichier markdown de test avec des cycles de dÃ©pendances
 $testCyclesMarkdownPath = Join-Path -Path $testDir -ChildPath "test-cycles.md"
 $testCyclesMarkdown = @"
-# Roadmap avec Cycles de Dépendances
+# Roadmap avec Cycles de DÃ©pendances
 
-## Tâches
+## TÃ¢ches
 
-- [ ] **A** Tâche A @depends:C
-- [ ] **B** Tâche B @depends:A
-- [ ] **C** Tâche C @depends:B
+- [ ] **A** TÃ¢che A @depends:C
+- [ ] **B** TÃ¢che B @depends:A
+- [ ] **C** TÃ¢che C @depends:B
 
-## Autres Tâches
+## Autres TÃ¢ches
 
-- [ ] **D** Tâche D ref:E
-- [ ] **E** Tâche E ref:F
-- [ ] **F** Tâche F ref:D
+- [ ] **D** TÃ¢che D ref:E
+- [ ] **E** TÃ¢che E ref:F
+- [ ] **F** TÃ¢che F ref:D
 "@
 
 $testCyclesMarkdown | Out-File -FilePath $testCyclesMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testCyclesMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testCyclesMarkdownPath" -ForegroundColor Green
 
 try {
     # Convertir le markdown en roadmap
     $roadmap = ConvertFrom-MarkdownToRoadmapExtended -FilePath $testCyclesMarkdownPath -IncludeMetadata -DetectDependencies
     
-    # Vérifier les dépendances
-    Write-Host "Vérification des dépendances..." -ForegroundColor Cyan
+    # VÃ©rifier les dÃ©pendances
+    Write-Host "VÃ©rification des dÃ©pendances..." -ForegroundColor Cyan
     foreach ($id in $roadmap.AllTasks.Keys) {
         $task = $roadmap.AllTasks[$id]
         $dependencies = $task.Dependencies | ForEach-Object { $_.Id }
-        Write-Host "  - $id dépend de: $($dependencies -join ', ')" -ForegroundColor Yellow
+        Write-Host "  - $id dÃ©pend de: $($dependencies -join ', ')" -ForegroundColor Yellow
     }
     
-    # Détecter les cycles
+    # DÃ©tecter les cycles
     $visualizationPath = Join-Path -Path $testDir -ChildPath "cycles-visualization.md"
     $cycles = Find-DependencyCycle -Roadmap $roadmap -OutputPath $visualizationPath
     
-    Write-Host "`nNombre de cycles détectés: $($cycles.Cycles.Count)" -ForegroundColor Yellow
+    Write-Host "`nNombre de cycles dÃ©tectÃ©s: $($cycles.Cycles.Count)" -ForegroundColor Yellow
     
     if ($cycles.Cycles.Count -gt 0) {
-        Write-Host "✓ Cycles de dépendances détectés" -ForegroundColor Green
-        Write-Host "Cycles de dépendances:" -ForegroundColor Yellow
+        Write-Host "âœ“ Cycles de dÃ©pendances dÃ©tectÃ©s" -ForegroundColor Green
+        Write-Host "Cycles de dÃ©pendances:" -ForegroundColor Yellow
         foreach ($cycle in $cycles.Cycles) {
             Write-Host "  - $($cycle.CycleString)" -ForegroundColor Yellow
         }
         
         if (-not [string]::IsNullOrEmpty($cycles.Visualization)) {
-            Write-Host "`nVisualisation générée:" -ForegroundColor Cyan
+            Write-Host "`nVisualisation gÃ©nÃ©rÃ©e:" -ForegroundColor Cyan
             Write-Host $cycles.Visualization -ForegroundColor Gray
             
             if (Test-Path -Path $visualizationPath) {
-                Write-Host "Visualisation écrite dans: $visualizationPath" -ForegroundColor Green
+                Write-Host "Visualisation Ã©crite dans: $visualizationPath" -ForegroundColor Green
             } else {
-                Write-Host "Fichier de visualisation non créé" -ForegroundColor Red
+                Write-Host "Fichier de visualisation non crÃ©Ã©" -ForegroundColor Red
             }
         } else {
-            Write-Host "`nAucune visualisation générée" -ForegroundColor Red
+            Write-Host "`nAucune visualisation gÃ©nÃ©rÃ©e" -ForegroundColor Red
         }
     } else {
-        Write-Host "✗ Aucun cycle de dépendance détecté" -ForegroundColor Red
+        Write-Host "âœ— Aucun cycle de dÃ©pendance dÃ©tectÃ©" -ForegroundColor Red
     }
     
-    Write-Host "`nTest terminé." -ForegroundColor Green
+    Write-Host "`nTest terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors du test: $_" -ForegroundColor Red
@@ -87,6 +87,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

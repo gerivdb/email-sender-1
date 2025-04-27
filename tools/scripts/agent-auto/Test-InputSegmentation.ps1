@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests pour le système de segmentation d'entrée.
+    Tests pour le systÃ¨me de segmentation d'entrÃ©e.
 .DESCRIPTION
-    Ce script exécute une série de tests pour valider le fonctionnement
-    du système de segmentation d'entrée pour Agent Auto.
+    Ce script exÃ©cute une sÃ©rie de tests pour valider le fonctionnement
+    du systÃ¨me de segmentation d'entrÃ©e pour Agent Auto.
 .PARAMETER TestsPath
     Chemin du dossier contenant les tests.
 .PARAMETER GenerateReport
-    Génère un rapport détaillé des tests.
+    GÃ©nÃ¨re un rapport dÃ©taillÃ© des tests.
 .PARAMETER ReportPath
     Chemin du fichier de rapport.
 .EXAMPLE
@@ -16,7 +16,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
+    Date de crÃ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -41,7 +41,7 @@ if (-not (Test-Path -Path $modulePath)) {
 
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -67,7 +67,7 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFiles {
     [CmdletBinding()]
     param (
@@ -75,23 +75,23 @@ function New-TestFiles {
         [string]$TestsPath
     )
     
-    # Créer le dossier de tests s'il n'existe pas
+    # CrÃ©er le dossier de tests s'il n'existe pas
     if (-not (Test-Path -Path $TestsPath)) {
         New-Item -Path $TestsPath -ItemType Directory -Force | Out-Null
     }
     
-    # Créer un fichier texte volumineux
+    # CrÃ©er un fichier texte volumineux
     $largeTextPath = Join-Path -Path $TestsPath -ChildPath "large_text.txt"
     $largeText = ""
     
     for ($i = 0; $i -lt 1000; $i++) {
-        $largeText += "Ligne $i : Ceci est une ligne de test pour la segmentation d'entrée. " * 5
+        $largeText += "Ligne $i : Ceci est une ligne de test pour la segmentation d'entrÃ©e. " * 5
         $largeText += "`n"
     }
     
     $largeText | Out-File -FilePath $largeTextPath -Encoding utf8
     
-    # Créer un fichier JSON volumineux
+    # CrÃ©er un fichier JSON volumineux
     $largeJsonPath = Join-Path -Path $TestsPath -ChildPath "large_json.json"
     $largeJson = @{
         items = @()
@@ -114,16 +114,16 @@ function New-TestFiles {
     
     $largeJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $largeJsonPath -Encoding utf8
     
-    # Créer un petit fichier texte
+    # CrÃ©er un petit fichier texte
     $smallTextPath = Join-Path -Path $TestsPath -ChildPath "small_text.txt"
-    $smallText = "Ceci est un petit fichier texte pour tester la segmentation d'entrée."
+    $smallText = "Ceci est un petit fichier texte pour tester la segmentation d'entrÃ©e."
     $smallText | Out-File -FilePath $smallTextPath -Encoding utf8
     
-    # Créer un petit fichier JSON
+    # CrÃ©er un petit fichier JSON
     $smallJsonPath = Join-Path -Path $TestsPath -ChildPath "small_json.json"
     $smallJson = @{
         name = "Test"
-        description = "Petit fichier JSON pour tester la segmentation d'entrée"
+        description = "Petit fichier JSON pour tester la segmentation d'entrÃ©e"
         properties = @{
             prop1 = "Valeur 1"
             prop2 = "Valeur 2"
@@ -132,7 +132,7 @@ function New-TestFiles {
     
     $smallJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $smallJsonPath -Encoding utf8
     
-    Write-Log "Fichiers de test créés dans $TestsPath" -Level "SUCCESS"
+    Write-Log "Fichiers de test crÃ©Ã©s dans $TestsPath" -Level "SUCCESS"
     
     return @{
         LargeTextPath = $largeTextPath
@@ -142,7 +142,7 @@ function New-TestFiles {
     }
 }
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Start-SegmentationTests {
     [CmdletBinding()]
     param (
@@ -150,25 +150,25 @@ function Start-SegmentationTests {
         [string]$TestsPath
     )
     
-    Write-Log "Démarrage des tests de segmentation d'entrée..." -Level "TITLE"
+    Write-Log "DÃ©marrage des tests de segmentation d'entrÃ©e..." -Level "TITLE"
     
-    # Créer les fichiers de test
+    # CrÃ©er les fichiers de test
     $testFiles = New-TestFiles -TestsPath $TestsPath
     
     # Initialiser le module de segmentation
     Initialize-InputSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
     
-    # Tableau pour stocker les résultats des tests
+    # Tableau pour stocker les rÃ©sultats des tests
     $testResults = @()
     
-    # Test 1: Mesurer la taille d'une petite chaîne
+    # Test 1: Mesurer la taille d'une petite chaÃ®ne
     $smallText = "Ceci est un petit texte de test."
     $smallTextSize = Measure-InputSize -Input $smallText
     
     $test1 = [PSCustomObject]@{
-        Name = "Test 1: Mesure de la taille d'une petite chaîne"
+        Name = "Test 1: Mesure de la taille d'une petite chaÃ®ne"
         Success = ($smallTextSize -lt 1)
-        Details = "Taille mesurée: $smallTextSize KB"
+        Details = "Taille mesurÃ©e: $smallTextSize KB"
     }
     
     $testResults += $test1
@@ -176,7 +176,7 @@ function Start-SegmentationTests {
     # Test 2: Mesurer la taille d'un petit objet JSON
     $smallJson = @{
         name = "Test"
-        description = "Petit objet JSON pour tester la segmentation d'entrée"
+        description = "Petit objet JSON pour tester la segmentation d'entrÃ©e"
     }
     
     $smallJsonSize = Measure-InputSize -Input $smallJson
@@ -184,7 +184,7 @@ function Start-SegmentationTests {
     $test2 = [PSCustomObject]@{
         Name = "Test 2: Mesure de la taille d'un petit objet JSON"
         Success = ($smallJsonSize -lt 1)
-        Details = "Taille mesurée: $smallJsonSize KB"
+        Details = "Taille mesurÃ©e: $smallJsonSize KB"
     }
     
     $testResults += $test2
@@ -195,17 +195,17 @@ function Start-SegmentationTests {
     $test3 = [PSCustomObject]@{
         Name = "Test 3: Mesure de la taille d'un fichier texte volumineux"
         Success = ($largeTextSize -gt 10)
-        Details = "Taille mesurée: $largeTextSize KB"
+        Details = "Taille mesurÃ©e: $largeTextSize KB"
     }
     
     $testResults += $test3
     
-    # Test 4: Segmenter une chaîne de texte volumineuse
+    # Test 4: Segmenter une chaÃ®ne de texte volumineuse
     $largeText = Get-Content -Path $testFiles.LargeTextPath -Raw
     $textSegments = Split-TextInput -Text $largeText -ChunkSizeKB 5
     
     $test4 = [PSCustomObject]@{
-        Name = "Test 4: Segmentation d'une chaîne de texte volumineuse"
+        Name = "Test 4: Segmentation d'une chaÃ®ne de texte volumineuse"
         Success = ($textSegments.Count -gt 1)
         Details = "Nombre de segments: $($textSegments.Count)"
     }
@@ -235,7 +235,7 @@ function Start-SegmentationTests {
     
     $testResults += $test6
     
-    # Test 7: Segmenter un petit fichier (ne devrait pas être segmenté)
+    # Test 7: Segmenter un petit fichier (ne devrait pas Ãªtre segmentÃ©)
     $smallFileSegments = Split-FileInput -FilePath $testFiles.SmallTextPath -ChunkSizeKB 5
     
     $test7 = [PSCustomObject]@{
@@ -246,7 +246,7 @@ function Start-SegmentationTests {
     
     $testResults += $test7
     
-    # Test 8: Utiliser Invoke-WithSegmentation pour traiter une entrée volumineuse
+    # Test 8: Utiliser Invoke-WithSegmentation pour traiter une entrÃ©e volumineuse
     $outputPath = Join-Path -Path $TestsPath -ChildPath "output"
     
     if (-not (Test-Path -Path $outputPath)) {
@@ -257,21 +257,21 @@ function Start-SegmentationTests {
         param($input)
         # Simuler un traitement
         Start-Sleep -Milliseconds 100
-        return "Traité: $($input.Length) caractères"
+        return "TraitÃ©: $($input.Length) caractÃ¨res"
     }
     
     $largeText = Get-Content -Path $testFiles.LargeTextPath -Raw
     $segmentationResults = Invoke-WithSegmentation -Input $largeText -ScriptBlock $scriptBlock -Id "test" -ChunkSizeKB 5
     
     $test8 = [PSCustomObject]@{
-        Name = "Test 8: Invoke-WithSegmentation pour une entrée volumineuse"
+        Name = "Test 8: Invoke-WithSegmentation pour une entrÃ©e volumineuse"
         Success = ($segmentationResults.Count -gt 1)
-        Details = "Nombre de résultats: $($segmentationResults.Count)"
+        Details = "Nombre de rÃ©sultats: $($segmentationResults.Count)"
     }
     
     $testResults += $test8
     
-    # Test 9: Sauvegarder et charger l'état de segmentation
+    # Test 9: Sauvegarder et charger l'Ã©tat de segmentation
     $testId = "test_state"
     $testSegments = @("Segment 1", "Segment 2", "Segment 3")
     
@@ -279,14 +279,14 @@ function Start-SegmentationTests {
     $loadedState = Get-SegmentationState -Id $testId
     
     $test9 = [PSCustomObject]@{
-        Name = "Test 9: Sauvegarder et charger l'état de segmentation"
+        Name = "Test 9: Sauvegarder et charger l'Ã©tat de segmentation"
         Success = ($loadedState -and $loadedState.Id -eq $testId -and $loadedState.CurrentIndex -eq 1)
-        Details = "État chargé: $($loadedState -ne $null), ID: $($loadedState.Id), Index: $($loadedState.CurrentIndex)"
+        Details = "Ã‰tat chargÃ©: $($loadedState -ne $null), ID: $($loadedState.Id), Index: $($loadedState.CurrentIndex)"
     }
     
     $testResults += $test9
     
-    # Test 10: Segmenter une entrée générique
+    # Test 10: Segmenter une entrÃ©e gÃ©nÃ©rique
     $genericInput = @{
         text = $largeText
         metadata = @{
@@ -298,21 +298,21 @@ function Start-SegmentationTests {
     $genericSegments = Split-Input -Input $genericInput -ChunkSizeKB 5
     
     $test10 = [PSCustomObject]@{
-        Name = "Test 10: Segmentation d'une entrée générique"
+        Name = "Test 10: Segmentation d'une entrÃ©e gÃ©nÃ©rique"
         Success = ($genericSegments.Count -gt 1)
         Details = "Nombre de segments: $($genericSegments.Count)"
     }
     
     $testResults += $test10
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     $successCount = ($testResults | Where-Object { $_.Success }).Count
     $totalCount = $testResults.Count
     
-    Write-Log "Résultats des tests: $successCount / $totalCount tests réussis" -Level $(if ($successCount -eq $totalCount) { "SUCCESS" } else { "WARNING" })
+    Write-Log "RÃ©sultats des tests: $successCount / $totalCount tests rÃ©ussis" -Level $(if ($successCount -eq $totalCount) { "SUCCESS" } else { "WARNING" })
     
     foreach ($result in $testResults) {
-        $status = if ($result.Success) { "RÉUSSI" } else { "ÉCHOUÉ" }
+        $status = if ($result.Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" }
         $color = if ($result.Success) { "Green" } else { "Red" }
         
         Write-Host "[$status] " -NoNewline -ForegroundColor $color
@@ -322,7 +322,7 @@ function Start-SegmentationTests {
     return $testResults
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-TestReport {
     [CmdletBinding()]
     param (
@@ -343,7 +343,7 @@ function New-TestReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport des tests de segmentation d'entrée</title>
+    <title>Rapport des tests de segmentation d'entrÃ©e</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -399,24 +399,24 @@ function New-TestReport {
     </style>
 </head>
 <body>
-    <h1>Rapport des tests de segmentation d'entrée</h1>
+    <h1>Rapport des tests de segmentation d'entrÃ©e</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests réussis: <span class="success-rate">$successCount / $totalCount ($successRate%)</span></p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests rÃ©ussis: <span class="success-rate">$successCount / $totalCount ($successRate%)</span></p>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Test</th>
-            <th>Résultat</th>
-            <th>Détails</th>
+            <th>RÃ©sultat</th>
+            <th>DÃ©tails</th>
         </tr>
 "@
     
     foreach ($result in $TestResults) {
-        $status = if ($result.Success) { "RÉUSSI" } else { "ÉCHOUÉ" }
+        $status = if ($result.Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" }
         $statusClass = if ($result.Success) { "success" } else { "failure" }
         
         $html += @"
@@ -431,12 +431,12 @@ function New-TestReport {
     $html += @"
     </table>
     
-    <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p class="timestamp">Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $outputDir = [System.IO.Path]::GetDirectoryName($ReportPath)
     
     if (-not (Test-Path -Path $outputDir)) {
@@ -446,13 +446,13 @@ function New-TestReport {
     # Enregistrer le rapport
     $html | Out-File -FilePath $ReportPath -Encoding utf8
     
-    Write-Log "Rapport généré: $ReportPath" -Level "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ©: $ReportPath" -Level "SUCCESS"
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Start-SegmentationTests -TestsPath $TestsPath
 
-# Générer le rapport si demandé
+# GÃ©nÃ©rer le rapport si demandÃ©
 if ($GenerateReport) {
     New-TestReport -TestResults $testResults -ReportPath $ReportPath
 }

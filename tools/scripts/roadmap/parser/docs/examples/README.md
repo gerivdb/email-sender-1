@@ -1,6 +1,6 @@
-# examples - docs
+﻿# examples - docs
 
-Cette section contient les scripts liés à examples dans la catégorie docs.
+Cette section contient les scripts liÃ©s Ã  examples dans la catÃ©gorie docs.
 
 ## Scripts disponibles
 
@@ -13,9 +13,9 @@ Aucun script n'est encore disponible dans cette section.
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - oadmap-parser - Module principal de parsing de roadmap
 
 ## Tests

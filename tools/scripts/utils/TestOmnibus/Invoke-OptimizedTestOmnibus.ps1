@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute TestOmnibus avec des paramètres optimisés en fonction des données d'utilisation.
+    ExÃ©cute TestOmnibus avec des paramÃ¨tres optimisÃ©s en fonction des donnÃ©es d'utilisation.
 .DESCRIPTION
-    Ce script utilise les données d'utilisation collectées par le système d'optimisation proactive
-    pour exécuter TestOmnibus avec des paramètres optimisés, comme le nombre de threads,
-    l'ordre d'exécution des tests, etc.
+    Ce script utilise les donnÃ©es d'utilisation collectÃ©es par le systÃ¨me d'optimisation proactive
+    pour exÃ©cuter TestOmnibus avec des paramÃ¨tres optimisÃ©s, comme le nombre de threads,
+    l'ordre d'exÃ©cution des tests, etc.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER UsageDataPath
-    Chemin vers le fichier de données d'utilisation.
+    Chemin vers le fichier de donnÃ©es d'utilisation.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des tests.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des tests.
 .PARAMETER ConfigPath
-    Chemin vers un fichier de configuration personnalisé.
+    Chemin vers un fichier de configuration personnalisÃ©.
 .PARAMETER GenerateDetailedReport
-    Génère un rapport détaillé des résultats des tests.
+    GÃ©nÃ¨re un rapport dÃ©taillÃ© des rÃ©sultats des tests.
 .EXAMPLE
     .\Invoke-OptimizedTestOmnibus.ps1 -TestPath "D:\Tests" -UsageDataPath "D:\UsageData\usage_data.xml" -OutputPath "D:\TestResults"
 .NOTES
@@ -41,13 +41,13 @@ param (
     [switch]$GenerateDetailedReport
 )
 
-# Vérifier que le chemin des tests existe
+# VÃ©rifier que le chemin des tests existe
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -58,7 +58,7 @@ $optimizerPath = Join-Path -Path $PSScriptRoot -ChildPath "Optimizers\UsageBased
 # Chemin vers TestOmnibus
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
-# Vérifier que les scripts existent
+# VÃ©rifier que les scripts existent
 if (-not (Test-Path -Path $optimizerPath)) {
     Write-Error "L'optimiseur n'existe pas: $optimizerPath"
     return 1
@@ -69,49 +69,49 @@ if (-not (Test-Path -Path $testOmnibusPath)) {
     return 1
 }
 
-# Exécuter l'optimiseur pour obtenir une configuration optimisée
-Write-Host "Optimisation de l'exécution des tests..." -ForegroundColor Cyan
+# ExÃ©cuter l'optimiseur pour obtenir une configuration optimisÃ©e
+Write-Host "Optimisation de l'exÃ©cution des tests..." -ForegroundColor Cyan
 $optimizedConfig = & $optimizerPath -UsageDataPath $UsageDataPath -OutputPath $OutputPath
 
-# Créer un fichier de configuration temporaire
+# CrÃ©er un fichier de configuration temporaire
 $tempConfigPath = Join-Path -Path $OutputPath -ChildPath "optimized_config.json"
 $optimizedConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $tempConfigPath -Encoding utf8 -Force
 
-# Utiliser la configuration personnalisée si spécifiée
+# Utiliser la configuration personnalisÃ©e si spÃ©cifiÃ©e
 $configToUse = if ($ConfigPath -and (Test-Path -Path $ConfigPath)) { $ConfigPath } else { $tempConfigPath }
 
-# Exécuter TestOmnibus avec la configuration optimisée
-Write-Host "Exécution de TestOmnibus avec la configuration optimisée..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus avec la configuration optimisÃ©e
+Write-Host "ExÃ©cution de TestOmnibus avec la configuration optimisÃ©e..." -ForegroundColor Cyan
 Write-Host "Nombre de threads: $($optimizedConfig.MaxThreads)" -ForegroundColor Cyan
-Write-Host "Répertoire de sortie: $($optimizedConfig.OutputPath)" -ForegroundColor Cyan
+Write-Host "RÃ©pertoire de sortie: $($optimizedConfig.OutputPath)" -ForegroundColor Cyan
 
-# Construire les paramètres pour TestOmnibus
+# Construire les paramÃ¨tres pour TestOmnibus
 $testOmnibusParams = @{
     Path = $TestPath
     ConfigPath = $configToUse
 }
 
-# Exécuter TestOmnibus
+# ExÃ©cuter TestOmnibus
 $result = & $testOmnibusPath @testOmnibusParams
 
-# Générer un rapport détaillé si demandé
+# GÃ©nÃ©rer un rapport dÃ©taillÃ© si demandÃ©
 if ($GenerateDetailedReport) {
-    Write-Host "Génération d'un rapport détaillé..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration d'un rapport dÃ©taillÃ©..." -ForegroundColor Cyan
     
-    # Chemin vers le rapport détaillé
+    # Chemin vers le rapport dÃ©taillÃ©
     $detailedReportPath = Join-Path -Path $OutputPath -ChildPath "detailed_report.html"
     
-    # Récupérer les résultats des tests
+    # RÃ©cupÃ©rer les rÃ©sultats des tests
     $testResults = Import-Clixml -Path (Join-Path -Path $optimizedConfig.OutputPath -ChildPath "results.xml")
     
-    # Générer le rapport détaillé
+    # GÃ©nÃ©rer le rapport dÃ©taillÃ©
     $htmlReport = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport détaillé des tests</title>
+    <title>Rapport dÃ©taillÃ© des tests</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -192,48 +192,48 @@ if ($GenerateDetailedReport) {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport détaillé des tests</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <h1>Rapport dÃ©taillÃ© des tests</h1>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
         
         <div class="optimization-info">
             <h2>Informations d'optimisation</h2>
             <p>
                 <strong>Nombre de threads:</strong> $($optimizedConfig.MaxThreads)<br>
-                <strong>Répertoire de sortie:</strong> $($optimizedConfig.OutputPath)<br>
-                <strong>Génération de rapport HTML:</strong> $($optimizedConfig.GenerateHtmlReport)<br>
-                <strong>Collecte de données de performance:</strong> $($optimizedConfig.CollectPerformanceData)
+                <strong>RÃ©pertoire de sortie:</strong> $($optimizedConfig.OutputPath)<br>
+                <strong>GÃ©nÃ©ration de rapport HTML:</strong> $($optimizedConfig.GenerateHtmlReport)<br>
+                <strong>Collecte de donnÃ©es de performance:</strong> $($optimizedConfig.CollectPerformanceData)
             </p>
         </div>
         
-        <h2>Résumé des tests</h2>
+        <h2>RÃ©sumÃ© des tests</h2>
         <p>
-            <strong>Tests exécutés:</strong> $($testResults.Count)<br>
-            <strong>Tests réussis:</strong> $(($testResults | Where-Object { $_.Success }).Count)<br>
-            <strong>Tests échoués:</strong> $(($testResults | Where-Object { -not $_.Success }).Count)<br>
-            <strong>Durée totale:</strong> $([math]::Round(($testResults | Measure-Object -Property Duration -Sum).Sum, 2)) ms
+            <strong>Tests exÃ©cutÃ©s:</strong> $($testResults.Count)<br>
+            <strong>Tests rÃ©ussis:</strong> $(($testResults | Where-Object { $_.Success }).Count)<br>
+            <strong>Tests Ã©chouÃ©s:</strong> $(($testResults | Where-Object { -not $_.Success }).Count)<br>
+            <strong>DurÃ©e totale:</strong> $([math]::Round(($testResults | Measure-Object -Property Duration -Sum).Sum, 2)) ms
         </p>
         
         <div class="chart-container">
             <canvas id="testResultsChart"></canvas>
         </div>
         
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
         <table>
             <tr>
                 <th>Test</th>
-                <th>Résultat</th>
-                <th>Durée (ms)</th>
-                <th>Détails</th>
+                <th>RÃ©sultat</th>
+                <th>DurÃ©e (ms)</th>
+                <th>DÃ©tails</th>
             </tr>
 "@
 
     foreach ($result in $testResults) {
         $statusClass = if ($result.Success) { "success" } else { "failure" }
-        $statusText = if ($result.Success) { "Succès" } else { "Échec" }
+        $statusText = if ($result.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
         
         if ($result.Success -and $result.Duration -gt 1000) {
             $statusClass = "slow"
-            $statusText = "Succès (lent)"
+            $statusText = "SuccÃ¨s (lent)"
         }
         
         $htmlReport += @"
@@ -250,14 +250,14 @@ if ($GenerateDetailedReport) {
         </table>
         
         <script>
-            // Créer un graphique des résultats des tests
+            // CrÃ©er un graphique des rÃ©sultats des tests
             const ctx = document.getElementById('testResultsChart').getContext('2d');
             const testResultsChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Réussis', 'Échoués'],
+                    labels: ['RÃ©ussis', 'Ã‰chouÃ©s'],
                     datasets: [{
-                        label: 'Résultats des tests',
+                        label: 'RÃ©sultats des tests',
                         data: [$(($testResults | Where-Object { $_.Success }).Count), $(($testResults | Where-Object { -not $_.Success }).Count)],
                         backgroundColor: [
                             '#2ecc71',
@@ -278,7 +278,7 @@ if ($GenerateDetailedReport) {
                         },
                         title: {
                             display: true,
-                            text: 'Résultats des tests'
+                            text: 'RÃ©sultats des tests'
                         }
                     }
                 }
@@ -286,19 +286,19 @@ if ($GenerateDetailedReport) {
         </script>
         
         <div class="footer">
-            <p>Généré par TestOmnibus Optimizer</p>
+            <p>GÃ©nÃ©rÃ© par TestOmnibus Optimizer</p>
         </div>
     </div>
 </body>
 </html>
 "@
 
-    # Enregistrer le rapport détaillé
+    # Enregistrer le rapport dÃ©taillÃ©
     $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
     [System.IO.File]::WriteAllText($detailedReportPath, $htmlReport, $utf8WithBom)
     
-    Write-Host "Rapport détaillé généré: $detailedReportPath" -ForegroundColor Green
+    Write-Host "Rapport dÃ©taillÃ© gÃ©nÃ©rÃ©: $detailedReportPath" -ForegroundColor Green
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $result

@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module d'intégration entre TestOmnibus et le Système d'Optimisation Proactive.
+    Module d'intÃ©gration entre TestOmnibus et le SystÃ¨me d'Optimisation Proactive.
 .DESCRIPTION
-    Ce module combine les fonctionnalités de TestOmnibus et du Système d'Optimisation Proactive
-    pour créer une solution complète d'analyse, de test et d'optimisation des scripts PowerShell.
+    Ce module combine les fonctionnalitÃ©s de TestOmnibus et du SystÃ¨me d'Optimisation Proactive
+    pour crÃ©er une solution complÃ¨te d'analyse, de test et d'optimisation des scripts PowerShell.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -21,10 +21,10 @@ $testOmnibusPath = Join-Path -Path $parentPath -ChildPath "TestOmnibus\Invoke-Te
 if (Test-Path -Path $usageMonitorPath) {
     Import-Module $usageMonitorPath -Force
 } else {
-    Write-Error "Module UsageMonitor non trouvé: $usageMonitorPath"
+    Write-Error "Module UsageMonitor non trouvÃ©: $usageMonitorPath"
 }
 
-# Fonction pour exécuter TestOmnibus avec des paramètres optimisés
+# Fonction pour exÃ©cuter TestOmnibus avec des paramÃ¨tres optimisÃ©s
 function Invoke-OptimizedTestOmnibus {
     [CmdletBinding()]
     param (
@@ -41,13 +41,13 @@ function Invoke-OptimizedTestOmnibus {
         [switch]$GenerateCombinedReport
     )
 
-    # Vérifier si TestOmnibus existe
+    # VÃ©rifier si TestOmnibus existe
     if (-not (Test-Path -Path $testOmnibusPath)) {
-        Write-Error "TestOmnibus non trouvé: $testOmnibusPath"
+        Write-Error "TestOmnibus non trouvÃ©: $testOmnibusPath"
         return
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -55,15 +55,15 @@ function Invoke-OptimizedTestOmnibus {
     # Initialiser le moniteur d'utilisation
     Initialize-UsageMonitor -DatabasePath $UsageDataPath
 
-    # Récupérer les statistiques d'utilisation
+    # RÃ©cupÃ©rer les statistiques d'utilisation
     $usageStats = Get-ScriptUsageStatistics
 
     # Calculer le nombre optimal de threads
-    $optimalThreads = 4  # Valeur par défaut
+    $optimalThreads = 4  # Valeur par dÃ©faut
 
-    # Si nous avons des données d'utilisation, ajuster le nombre de threads
+    # Si nous avons des donnÃ©es d'utilisation, ajuster le nombre de threads
     if ($usageStats -and $usageStats.TopUsedScripts.Count -gt 0) {
-        # Obtenir les informations système
+        # Obtenir les informations systÃ¨me
         $computerInfo = Get-CimInstance -ClassName Win32_ComputerSystem
         $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
         $processorInfo = Get-CimInstance -ClassName Win32_Processor
@@ -76,7 +76,7 @@ function Invoke-OptimizedTestOmnibus {
         $optimalThreads = [math]::Max(1, [math]::Round($baseThreads * [math]::Min($cpuFactor, $memoryFactor)))
     }
 
-    # Créer un fichier de configuration temporaire pour TestOmnibus
+    # CrÃ©er un fichier de configuration temporaire pour TestOmnibus
     $configPath = Join-Path -Path $OutputPath -ChildPath "testomnibus_config.json"
     $config = @{
         MaxThreads             = $optimalThreads
@@ -85,11 +85,11 @@ function Invoke-OptimizedTestOmnibus {
         CollectPerformanceData = $true
     }
 
-    # Si nous avons des données d'utilisation, ajouter des priorités
+    # Si nous avons des donnÃ©es d'utilisation, ajouter des prioritÃ©s
     if ($usageStats -and $usageStats.TopUsedScripts.Count -gt 0) {
         $priorityScripts = @{}
 
-        # Prioriser les scripts les plus utilisés
+        # Prioriser les scripts les plus utilisÃ©s
         foreach ($scriptPath in $usageStats.TopUsedScripts.Keys) {
             $scriptName = Split-Path -Path $scriptPath -Leaf
             $priorityScripts[$scriptName] = "High"
@@ -101,7 +101,7 @@ function Invoke-OptimizedTestOmnibus {
             $priorityScripts[$scriptName] = "High"
         }
 
-        # Prioriser les scripts avec le plus d'échecs
+        # Prioriser les scripts avec le plus d'Ã©checs
         foreach ($scriptPath in $usageStats.MostFailingScripts.Keys) {
             $scriptName = Split-Path -Path $scriptPath -Leaf
             $priorityScripts[$scriptName] = "Critical"
@@ -113,27 +113,27 @@ function Invoke-OptimizedTestOmnibus {
     # Sauvegarder la configuration
     $config | ConvertTo-Json -Depth 3 | Out-File -FilePath $configPath -Encoding utf8 -Force
 
-    # Exécuter TestOmnibus avec la configuration optimisée
-    Write-Host "Exécution de TestOmnibus avec $optimalThreads threads..." -ForegroundColor Cyan
+    # ExÃ©cuter TestOmnibus avec la configuration optimisÃ©e
+    Write-Host "ExÃ©cution de TestOmnibus avec $optimalThreads threads..." -ForegroundColor Cyan
     & $testOmnibusPath -Path $TestPath -ConfigPath $configPath
 
-    # Générer un rapport combiné si demandé
+    # GÃ©nÃ©rer un rapport combinÃ© si demandÃ©
     if ($GenerateCombinedReport) {
         $testResultsPath = Join-Path -Path $OutputPath -ChildPath "TestResults\report.html"
         $combinedReportPath = Join-Path -Path $OutputPath -ChildPath "combined_report.html"
 
         if (Test-Path -Path $testResultsPath) {
-            Write-Host "Génération du rapport combiné..." -ForegroundColor Cyan
+            Write-Host "GÃ©nÃ©ration du rapport combinÃ©..." -ForegroundColor Cyan
             New-CombinedReport -TestReportPath $testResultsPath -UsageStats $usageStats -OutputPath $combinedReportPath
         } else {
-            Write-Warning "Rapport de test non trouvé: $testResultsPath"
+            Write-Warning "Rapport de test non trouvÃ©: $testResultsPath"
         }
     }
 
     return $config
 }
 
-# Fonction pour générer un rapport combiné
+# Fonction pour gÃ©nÃ©rer un rapport combinÃ©
 function New-CombinedReport {
     [CmdletBinding()]
     param (
@@ -149,22 +149,22 @@ function New-CombinedReport {
 
     # Lire le rapport de test
     if (-not (Test-Path -Path $TestReportPath)) {
-        Write-Error "Rapport de test non trouvé: $TestReportPath"
+        Write-Error "Rapport de test non trouvÃ©: $TestReportPath"
         return
     }
 
     $testReport = Get-Content -Path $TestReportPath -Raw
 
-    # Créer la section d'utilisation
+    # CrÃ©er la section d'utilisation
     $usageSection = @"
 <div class="usage-section">
-    <h2>Données d'utilisation réelle</h2>
+    <h2>DonnÃ©es d'utilisation rÃ©elle</h2>
 
-    <h3>Scripts les plus utilisés</h3>
+    <h3>Scripts les plus utilisÃ©s</h3>
     <table class="usage-table">
         <tr>
             <th>Script</th>
-            <th>Nombre d'exécutions</th>
+            <th>Nombre d'exÃ©cutions</th>
         </tr>
 "@
 
@@ -187,7 +187,7 @@ function New-CombinedReport {
     <table class="usage-table">
         <tr>
             <th>Script</th>
-            <th>Durée moyenne (ms)</th>
+            <th>DurÃ©e moyenne (ms)</th>
         </tr>
 "@
 
@@ -206,11 +206,11 @@ function New-CombinedReport {
     $usageSection += @"
     </table>
 
-    <h3>Scripts avec le plus d'échecs</h3>
+    <h3>Scripts avec le plus d'Ã©checs</h3>
     <table class="usage-table">
         <tr>
             <th>Script</th>
-            <th>Taux d'échec (%)</th>
+            <th>Taux d'Ã©chec (%)</th>
         </tr>
 "@
 
@@ -262,20 +262,20 @@ function New-CombinedReport {
 </style>
 "@
 
-    # Insérer la section d'utilisation avant la fermeture du body
+    # InsÃ©rer la section d'utilisation avant la fermeture du body
     $combinedReport = $testReport -replace "</body>", "$usageSection</body>"
 
-    # Ajouter un titre combiné
-    $combinedReport = $combinedReport -replace "<title>(.*?)</title>", "<title>Rapport Combiné: Tests et Utilisation</title>"
+    # Ajouter un titre combinÃ©
+    $combinedReport = $combinedReport -replace "<title>(.*?)</title>", "<title>Rapport CombinÃ©: Tests et Utilisation</title>"
 
-    # Sauvegarder le rapport combiné avec encodage UTF-8 avec BOM
+    # Sauvegarder le rapport combinÃ© avec encodage UTF-8 avec BOM
     $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
     [System.IO.File]::WriteAllText($OutputPath, $combinedReport, $utf8WithBom)
 
-    Write-Host "Rapport combiné généré: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport combinÃ© gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
-# Fonction pour générer des suggestions d'optimisation basées sur les résultats des tests et l'utilisation
+# Fonction pour gÃ©nÃ©rer des suggestions d'optimisation basÃ©es sur les rÃ©sultats des tests et l'utilisation
 function Get-CombinedOptimizationSuggestions {
     [CmdletBinding()]
     param (
@@ -289,7 +289,7 @@ function Get-CombinedOptimizationSuggestions {
         [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestOmnibusOptimizer\Suggestions")
     )
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -297,26 +297,26 @@ function Get-CombinedOptimizationSuggestions {
     # Initialiser le moniteur d'utilisation
     Initialize-UsageMonitor -DatabasePath $UsageDataPath
 
-    # Récupérer les statistiques d'utilisation
+    # RÃ©cupÃ©rer les statistiques d'utilisation
     $usageStats = Get-ScriptUsageStatistics
 
-    # Lire les résultats des tests
+    # Lire les rÃ©sultats des tests
     if (-not (Test-Path -Path $TestResultsPath)) {
-        Write-Error "Résultats de test non trouvés: $TestResultsPath"
+        Write-Error "RÃ©sultats de test non trouvÃ©s: $TestResultsPath"
         return
     }
 
     $testResults = Import-Clixml -Path $TestResultsPath
 
-    # Créer une liste de suggestions
+    # CrÃ©er une liste de suggestions
     $suggestions = @()
 
-    # Analyser les scripts échouant à la fois en test et en production
+    # Analyser les scripts Ã©chouant Ã  la fois en test et en production
     foreach ($testResult in $testResults) {
         $scriptName = $testResult.Name
         $scriptPath = $testResult.Path
 
-        # Vérifier si le script est dans les statistiques d'utilisation
+        # VÃ©rifier si le script est dans les statistiques d'utilisation
         $isInUsageStats = $false
         $usagePath = ""
 
@@ -329,7 +329,7 @@ function Get-CombinedOptimizationSuggestions {
         }
 
         if ($isInUsageStats -and -not $testResult.Success) {
-            # Le script échoue à la fois en test et en production
+            # Le script Ã©choue Ã  la fois en test et en production
             $suggestion = [PSCustomObject]@{
                 ScriptName    = $scriptName
                 ScriptPath    = $scriptPath
@@ -342,7 +342,7 @@ function Get-CombinedOptimizationSuggestions {
 
             $suggestions += $suggestion
         } elseif (-not $testResult.Success) {
-            # Le script échoue en test mais pas en production
+            # Le script Ã©choue en test mais pas en production
             $suggestion = [PSCustomObject]@{
                 ScriptName    = $scriptName
                 ScriptPath    = $scriptPath
@@ -370,7 +370,7 @@ function Get-CombinedOptimizationSuggestions {
             }
 
             if ($isSlowInProduction) {
-                # Le script est lent à la fois en test et en production
+                # Le script est lent Ã  la fois en test et en production
                 $suggestion = [PSCustomObject]@{
                     ScriptName    = $scriptName
                     ScriptPath    = $scriptPath
@@ -385,7 +385,7 @@ function Get-CombinedOptimizationSuggestions {
                 $suggestions += $suggestion
             } elseif ($testResult.Duration -gt 2000) {
                 # Plus de deux secondes
-                # Le script est très lent en test
+                # Le script est trÃ¨s lent en test
                 $suggestion = [PSCustomObject]@{
                     ScriptName    = $scriptName
                     ScriptPath    = $scriptPath
@@ -402,11 +402,11 @@ function Get-CombinedOptimizationSuggestions {
         }
     }
 
-    # Analyser les scripts fréquemment utilisés mais non testés
+    # Analyser les scripts frÃ©quemment utilisÃ©s mais non testÃ©s
     foreach ($scriptPath in $usageStats.TopUsedScripts.Keys) {
         $scriptName = Split-Path -Path $scriptPath -Leaf
 
-        # Vérifier si le script est dans les résultats de test
+        # VÃ©rifier si le script est dans les rÃ©sultats de test
         $isInTestResults = $false
 
         foreach ($testResult in $testResults) {
@@ -416,12 +416,12 @@ function Get-CombinedOptimizationSuggestions {
             }
         }
 
-        # Vérifier si un fichier de test correspondant existe
+        # VÃ©rifier si un fichier de test correspondant existe
         $testFileName = "$($scriptName -replace '\.ps1$', '.Tests.ps1')"
         $testFilePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath $testFileName
         $hasTestFile = Test-Path -Path $testFilePath
 
-        # Vérifier si le script est Example-Usage.ps1 et si son test existe dans le répertoire PSCacheManager
+        # VÃ©rifier si le script est Example-Usage.ps1 et si son test existe dans le rÃ©pertoire PSCacheManager
         $isExampleUsage = $scriptName -eq "Example-Usage.ps1"
         $exampleUsageTestPath = $null
 
@@ -432,7 +432,7 @@ function Get-CombinedOptimizationSuggestions {
         }
 
         if (-not $isInTestResults -and -not $hasTestFile) {
-            # Le script est fréquemment utilisé mais non testé
+            # Le script est frÃ©quemment utilisÃ© mais non testÃ©
             $suggestion = [PSCustomObject]@{
                 ScriptName = $scriptName
                 ScriptPath = $scriptPath
@@ -446,10 +446,10 @@ function Get-CombinedOptimizationSuggestions {
         }
     }
 
-    # Trier les suggestions par priorité
+    # Trier les suggestions par prioritÃ©
     $sortedSuggestions = $suggestions | Sort-Object -Property Priority, Type
 
-    # Générer un rapport HTML
+    # GÃ©nÃ©rer un rapport HTML
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "optimization_suggestions.html"
 
     $html = @"
@@ -812,11 +812,11 @@ function Get-CombinedOptimizationSuggestions {
     $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
     [System.IO.File]::WriteAllText($htmlPath, $html, $utf8WithBom)
 
-    # Générer un rapport CSV
+    # GÃ©nÃ©rer un rapport CSV
     $csvPath = Join-Path -Path $OutputPath -ChildPath "optimization_suggestions.csv"
     $sortedSuggestions | Export-Csv -Path $csvPath -NoTypeInformation -Encoding UTF8
 
-    Write-Host "Suggestions d'optimisation générées:" -ForegroundColor Green
+    Write-Host "Suggestions d'optimisation gÃ©nÃ©rÃ©es:" -ForegroundColor Green
     Write-Host "  - HTML: $htmlPath" -ForegroundColor Green
     Write-Host "  - CSV: $csvPath" -ForegroundColor Green
 

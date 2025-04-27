@@ -1,90 +1,90 @@
-# Documentation des Tests Format-Converters
+﻿# Documentation des Tests Format-Converters
 
-Ce document explique les différences entre les tests simplifiés et les tests réels du module Format-Converters, ainsi que les bonnes pratiques pour les utiliser.
+Ce document explique les diffÃ©rences entre les tests simplifiÃ©s et les tests rÃ©els du module Format-Converters, ainsi que les bonnes pratiques pour les utiliser.
 
 ## Structure des Tests
 
-Le répertoire de tests contient deux types de fichiers de test :
+Le rÃ©pertoire de tests contient deux types de fichiers de test :
 
-1. **Tests Simplifiés** : Fichiers avec le suffixe `.Simplified.ps1`
-   - Tests plus simples et plus faciles à comprendre
-   - Utilisés pour le développement rapide et les tests initiaux
-   - Contiennent moins de tests mais couvrent les fonctionnalités essentielles
+1. **Tests SimplifiÃ©s** : Fichiers avec le suffixe `.Simplified.ps1`
+   - Tests plus simples et plus faciles Ã  comprendre
+   - UtilisÃ©s pour le dÃ©veloppement rapide et les tests initiaux
+   - Contiennent moins de tests mais couvrent les fonctionnalitÃ©s essentielles
 
-2. **Tests Réels** : Fichiers avec le suffixe `.Tests.ps1`
+2. **Tests RÃ©els** : Fichiers avec le suffixe `.Tests.ps1`
    - Tests plus complets et plus robustes
-   - Utilisés pour les tests de régression et l'intégration continue
+   - UtilisÃ©s pour les tests de rÃ©gression et l'intÃ©gration continue
    - Contiennent plus de tests et couvrent plus de cas de test
 
-## Différences Principales
+## DiffÃ©rences Principales
 
-| Aspect | Tests Simplifiés | Tests Réels |
+| Aspect | Tests SimplifiÃ©s | Tests RÃ©els |
 |--------|-----------------|-------------|
 | Nombre de tests | 72 | 81 |
-| Complexité | Faible | Moyenne |
-| Temps d'exécution | Plus rapide | Plus lent |
-| Couverture de code | Partielle | Complète |
+| ComplexitÃ© | Faible | Moyenne |
+| Temps d'exÃ©cution | Plus rapide | Plus lent |
+| Couverture de code | Partielle | ComplÃ¨te |
 | Importation du module | Implicite | Explicite |
 | Variables | Globales | Locales dans BeforeAll |
 | Nettoyage | Simple | Complet |
 
 ## Bonnes Pratiques
 
-### Quand utiliser les tests simplifiés
+### Quand utiliser les tests simplifiÃ©s
 
-- Pendant le développement initial d'une fonctionnalité
+- Pendant le dÃ©veloppement initial d'une fonctionnalitÃ©
 - Pour des tests rapides de validation
 - Pour comprendre rapidement le comportement d'une fonction
 
-### Quand utiliser les tests réels
+### Quand utiliser les tests rÃ©els
 
-- Pour les tests de régression
-- Pour l'intégration continue
-- Pour s'assurer que toutes les fonctionnalités sont correctement testées
+- Pour les tests de rÃ©gression
+- Pour l'intÃ©gration continue
+- Pour s'assurer que toutes les fonctionnalitÃ©s sont correctement testÃ©es
 
-### Conversion des tests simplifiés en tests réels
+### Conversion des tests simplifiÃ©s en tests rÃ©els
 
-Pour convertir un test simplifié en test réel, utilisez le script `Convert-SimplifiedTest.ps1` :
+Pour convertir un test simplifiÃ© en test rÃ©el, utilisez le script `Convert-SimplifiedTest.ps1` :
 
 ```powershell
 .\Convert-SimplifiedTest.ps1 -SimplifiedTestPath "MonTest.Simplified.ps1" -RealTestPath "MonTest.Tests.ps1"
 ```
 
-### Exécution des tests
+### ExÃ©cution des tests
 
-Pour exécuter les tests, utilisez le script `Bridge-Tests.ps1` :
+Pour exÃ©cuter les tests, utilisez le script `Bridge-Tests.ps1` :
 
 ```powershell
-# Exécuter uniquement les tests simplifiés
+# ExÃ©cuter uniquement les tests simplifiÃ©s
 .\Bridge-Tests.ps1 -Mode Simplified
 
-# Exécuter uniquement les tests réels
+# ExÃ©cuter uniquement les tests rÃ©els
 .\Bridge-Tests.ps1 -Mode Real
 
-# Exécuter les deux types de tests et comparer les résultats
+# ExÃ©cuter les deux types de tests et comparer les rÃ©sultats
 .\Bridge-Tests.ps1 -Mode Compare
 
-# Exécuter tous les tests sans comparaison
+# ExÃ©cuter tous les tests sans comparaison
 .\Bridge-Tests.ps1 -Mode All
 ```
 
 ## Structure d'un Test
 
-### Structure d'un Test Simplifié
+### Structure d'un Test SimplifiÃ©
 
 ```powershell
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $global:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
 New-Item -Path $global:testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $global:jsonFilePath = Join-Path -Path $global:testTempDir -ChildPath "test.json"
 $global:jsonContent = '{"name":"Test","version":"1.0.0"}'
 $global:jsonContent | Set-Content -Path $global:jsonFilePath -Encoding UTF8
 
 # Tests
 Describe "Fonction Get-FileFormatAnalysis" {
-    Context "Analyse de fichiers avec format détecté" {
+    Context "Analyse de fichiers avec format dÃ©tectÃ©" {
         It "Analyse correctement un fichier JSON" {
             $result = Get-FileFormatAnalysis -FilePath $global:jsonFilePath -Format "json"
             $result | Should -Not -BeNullOrEmpty
@@ -102,7 +102,7 @@ AfterAll {
 }
 ```
 
-### Structure d'un Test Réel
+### Structure d'un Test RÃ©el
 
 ```powershell
 # Importer le module
@@ -112,7 +112,7 @@ if (Test-Path -Path $modulePath) {
 }
 
 BeforeAll {
-    # S'assurer que le module est importé
+    # S'assurer que le module est importÃ©
     if (-not (Get-Module -Name Format-Converters)) {
         $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
         if (Test-Path -Path $modulePath) {
@@ -120,11 +120,11 @@ BeforeAll {
         }
     }
     
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersTests_$(Get-Random)"
     New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
     
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "test.json"
     $jsonContent = '{"name":"Test","version":"1.0.0"}'
     $jsonContent | Set-Content -Path $jsonFilePath -Encoding UTF8
@@ -132,7 +132,7 @@ BeforeAll {
 
 # Tests
 Describe "Fonction Get-FileFormatAnalysis" {
-    Context "Analyse de fichiers avec format détecté" {
+    Context "Analyse de fichiers avec format dÃ©tectÃ©" {
         It "Analyse correctement un fichier JSON" {
             $result = Get-FileFormatAnalysis -FilePath $jsonFilePath -Format "json"
             $result | Should -Not -BeNullOrEmpty
@@ -150,26 +150,26 @@ AfterAll {
 }
 ```
 
-## Dépannage
+## DÃ©pannage
 
-### Problèmes courants
+### ProblÃ¨mes courants
 
-1. **Le module n'est pas importé correctement**
-   - Vérifiez que le chemin du module est correct
-   - Assurez-vous que le module est importé avec l'option `-Force`
+1. **Le module n'est pas importÃ© correctement**
+   - VÃ©rifiez que le chemin du module est correct
+   - Assurez-vous que le module est importÃ© avec l'option `-Force`
 
 2. **Les variables ne sont pas accessibles**
-   - Dans les tests simplifiés, utilisez des variables globales (`$global:maVariable`)
-   - Dans les tests réels, utilisez des variables locales définies dans le bloc `BeforeAll`
+   - Dans les tests simplifiÃ©s, utilisez des variables globales (`$global:maVariable`)
+   - Dans les tests rÃ©els, utilisez des variables locales dÃ©finies dans le bloc `BeforeAll`
 
-3. **Les fichiers temporaires ne sont pas nettoyés**
-   - Assurez-vous que le bloc `AfterAll` est correctement défini
-   - Vérifiez que le répertoire temporaire est supprimé avec l'option `-Recurse -Force`
+3. **Les fichiers temporaires ne sont pas nettoyÃ©s**
+   - Assurez-vous que le bloc `AfterAll` est correctement dÃ©fini
+   - VÃ©rifiez que le rÃ©pertoire temporaire est supprimÃ© avec l'option `-Recurse -Force`
 
 ### Comment obtenir de l'aide
 
-Si vous rencontrez des problèmes avec les tests, vous pouvez :
+Si vous rencontrez des problÃ¨mes avec les tests, vous pouvez :
 
 1. Consulter cette documentation
-2. Exécuter les tests en mode verbose : `Invoke-Pester -Path .\MonTest.Tests.ps1 -Verbose`
-3. Utiliser le script `Bridge-Tests.ps1` en mode Compare pour identifier les différences entre les tests simplifiés et les tests réels
+2. ExÃ©cuter les tests en mode verbose : `Invoke-Pester -Path .\MonTest.Tests.ps1 -Verbose`
+3. Utiliser le script `Bridge-Tests.ps1` en mode Compare pour identifier les diffÃ©rences entre les tests simplifiÃ©s et les tests rÃ©els

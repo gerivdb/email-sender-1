@@ -1,57 +1,57 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Split-RoadmapTask.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour la fonction Split-RoadmapTask
-    qui décompose une tâche de roadmap en sous-tâches plus granulaires.
+    qui dÃ©compose une tÃ¢che de roadmap en sous-tÃ¢ches plus granulaires.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
 }
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Split-RoadmapTask.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Split-RoadmapTask.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Split-RoadmapTask.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
 Describe "Split-RoadmapTask" {
     BeforeEach {
-        # Créer un fichier de test avec une structure de roadmap simple
+        # CrÃ©er un fichier de test avec une structure de roadmap simple
         @"
 # Roadmap de test
 
 ## Section 1
 
-- [ ] **1.1** Tâche 1
-- [ ] **1.2** Tâche 2
-  - [ ] **1.2.1** Sous-tâche 1
-  - [ ] **1.2.2** Sous-tâche 2
-- [ ] **1.3** Tâche à décomposer
+- [ ] **1.1** TÃ¢che 1
+- [ ] **1.2** TÃ¢che 2
+  - [ ] **1.2.1** Sous-tÃ¢che 1
+  - [ ] **1.2.2** Sous-tÃ¢che 2
+- [ ] **1.3** TÃ¢che Ã  dÃ©composer
 
 ## Section 2
 
-- [ ] **2.1** Autre tâche
+- [ ] **2.1** Autre tÃ¢che
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
     }
 
@@ -62,48 +62,48 @@ Describe "Split-RoadmapTask" {
         }
     }
 
-    It "Devrait décomposer une tâche en sous-tâches" {
-        # Définir les sous-tâches
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches" {
+        # DÃ©finir les sous-tÃ¢ches
         $subTasks = @(
-            @{ Title = "Première sous-tâche"; Description = "" },
-            @{ Title = "Deuxième sous-tâche"; Description = "" }
+            @{ Title = "PremiÃ¨re sous-tÃ¢che"; Description = "" },
+            @{ Title = "DeuxiÃ¨me sous-tÃ¢che"; Description = "" }
         )
 
         # Appeler la fonction
         Split-RoadmapTask -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasks $subTasks
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\*\* Tâche à décomposer"
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Première sous-tâche"
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.2\*\* Deuxième sous-tâche"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\*\* TÃ¢che Ã  dÃ©composer"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* PremiÃ¨re sous-tÃ¢che"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.2\*\* DeuxiÃ¨me sous-tÃ¢che"
     }
 
     It "Devrait respecter l'indentation existante" {
-        # Définir les sous-tâches
+        # DÃ©finir les sous-tÃ¢ches
         $subTasks = @(
-            @{ Title = "Sous-tâche indentée"; Description = "" }
+            @{ Title = "Sous-tÃ¢che indentÃ©e"; Description = "" }
         )
 
         # Appeler la fonction
         Split-RoadmapTask -FilePath $testFilePath -TaskIdentifier "1.2.1" -SubTasks $subTasks
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
         $taskLine = $content | Where-Object { $_ -match "\*\*1\.2\.1\*\*" }
         $subTaskLine = $content | Where-Object { $_ -match "\*\*1\.2\.1\.1\*\*" }
         
-        # Vérifier que l'indentation de la sous-tâche est correcte
+        # VÃ©rifier que l'indentation de la sous-tÃ¢che est correcte
         $taskIndent = $taskLine -replace "^(\s*).*", '$1'
         $subTaskIndent = $subTaskLine -replace "^(\s*).*", '$1'
         $subTaskIndent.Length | Should -BeGreaterThan $taskIndent.Length
     }
 
-    It "Devrait gérer les descriptions des sous-tâches" {
-        # Définir les sous-tâches avec descriptions
+    It "Devrait gÃ©rer les descriptions des sous-tÃ¢ches" {
+        # DÃ©finir les sous-tÃ¢ches avec descriptions
         $subTasks = @(
             @{ 
-                Title = "Sous-tâche avec description"; 
+                Title = "Sous-tÃ¢che avec description"; 
                 Description = "Ceci est une description`nSur plusieurs lignes" 
             }
         )
@@ -111,17 +111,17 @@ Describe "Split-RoadmapTask" {
         # Appeler la fonction
         Split-RoadmapTask -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasks $subTasks
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Sous-tâche avec description"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Sous-tÃ¢che avec description"
         $content -join "`n" | Should -Match "Ceci est une description"
         $content -join "`n" | Should -Match "Sur plusieurs lignes"
     }
 
-    It "Devrait lever une exception si la tâche n'existe pas" {
-        # Définir les sous-tâches
+    It "Devrait lever une exception si la tÃ¢che n'existe pas" {
+        # DÃ©finir les sous-tÃ¢ches
         $subTasks = @(
-            @{ Title = "Sous-tâche"; Description = "" }
+            @{ Title = "Sous-tÃ¢che"; Description = "" }
         )
 
         # Appeler la fonction avec un identifiant inexistant
@@ -129,39 +129,39 @@ Describe "Split-RoadmapTask" {
     }
 
     It "Devrait lever une exception si le fichier n'existe pas" {
-        # Définir les sous-tâches
+        # DÃ©finir les sous-tÃ¢ches
         $subTasks = @(
-            @{ Title = "Sous-tâche"; Description = "" }
+            @{ Title = "Sous-tÃ¢che"; Description = "" }
         )
 
         # Appeler la fonction avec un fichier inexistant
         { Split-RoadmapTask -FilePath "FichierInexistant.md" -TaskIdentifier "1.3" -SubTasks $subTasks } | Should -Throw
     }
 
-    It "Devrait utiliser le style d'indentation spécifié" {
-        # Définir les sous-tâches
+    It "Devrait utiliser le style d'indentation spÃ©cifiÃ©" {
+        # DÃ©finir les sous-tÃ¢ches
         $subTasks = @(
-            @{ Title = "Sous-tâche indentée"; Description = "" }
+            @{ Title = "Sous-tÃ¢che indentÃ©e"; Description = "" }
         )
 
-        # Appeler la fonction avec un style d'indentation spécifique
+        # Appeler la fonction avec un style d'indentation spÃ©cifique
         Split-RoadmapTask -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasks $subTasks -IndentationStyle "Spaces4"
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
         $taskLine = $content | Where-Object { $_ -match "\*\*1\.3\*\*" }
         $subTaskLine = $content | Where-Object { $_ -match "\*\*1\.3\.1\*\*" }
         
-        # Vérifier que l'indentation de la sous-tâche utilise 4 espaces
+        # VÃ©rifier que l'indentation de la sous-tÃ¢che utilise 4 espaces
         $taskIndent = $taskLine -replace "^(\s*).*", '$1'
         $subTaskIndent = $subTaskLine -replace "^(\s*).*", '$1'
         ($subTaskIndent.Length - $taskIndent.Length) | Should -Be 4
     }
 }
 
-# Exécuter les tests si Pester est disponible
+# ExÃ©cuter les tests si Pester est disponible
 if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
     Invoke-Pester -Path $MyInvocation.MyCommand.Path
 } else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
+    Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }

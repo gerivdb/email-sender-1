@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Corrige automatiquement les problèmes courants détectés par PSScriptAnalyzer.
+    Corrige automatiquement les problÃ¨mes courants dÃ©tectÃ©s par PSScriptAnalyzer.
 .DESCRIPTION
-    Ce script analyse et corrige automatiquement plusieurs problèmes courants détectés par PSScriptAnalyzer,
-    comme les comparaisons incorrectes avec $null, les verbes non approuvés, les variables non utilisées,
-    et les valeurs par défaut des paramètres de type switch.
+    Ce script analyse et corrige automatiquement plusieurs problÃ¨mes courants dÃ©tectÃ©s par PSScriptAnalyzer,
+    comme les comparaisons incorrectes avec $null, les verbes non approuvÃ©s, les variables non utilisÃ©es,
+    et les valeurs par dÃ©faut des paramÃ¨tres de type switch.
 .PARAMETER ScriptPath
-    Chemin du script à analyser et corriger. Accepte les wildcards.
+    Chemin du script Ã  analyser et corriger. Accepte les wildcards.
 .PARAMETER Fix
-    Si spécifié, applique les corrections automatiquement. Sinon, affiche seulement les problèmes.
+    Si spÃ©cifiÃ©, applique les corrections automatiquement. Sinon, affiche seulement les problÃ¨mes.
 .PARAMETER CreateBackup
-    Si spécifié, crée une sauvegarde des fichiers avant de les modifier.
+    Si spÃ©cifiÃ©, crÃ©e une sauvegarde des fichiers avant de les modifier.
 .EXAMPLE
     .\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\MonScript.ps1
-    Analyse le script spécifié et affiche les problèmes potentiels.
+    Analyse le script spÃ©cifiÃ© et affiche les problÃ¨mes potentiels.
 .EXAMPLE
     .\Repair-PSScriptAnalyzerIssues.ps1 -ScriptPath .\scripts\*.ps1 -Fix -CreateBackup
-    Analyse tous les scripts dans le dossier, crée des sauvegardes et corrige les problèmes.
+    Analyse tous les scripts dans le dossier, crÃ©e des sauvegardes et corrige les problÃ¨mes.
 .NOTES
     Author: Augment Agent
     Version: 1.0
@@ -36,9 +36,9 @@ param(
     [switch]$CreateBackup
 )
 
-# Vérifier si PSScriptAnalyzer est installé
+# VÃ©rifier si PSScriptAnalyzer est installÃ©
 if (-not (Get-Module -ListAvailable -Name PSScriptAnalyzer)) {
-    Write-Warning "PSScriptAnalyzer n'est pas installé. Installation en cours..."
+    Write-Warning "PSScriptAnalyzer n'est pas installÃ©. Installation en cours..."
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
 }
 
@@ -61,13 +61,13 @@ function Test-ScriptIssues {
         # Analyser le script avec PSScriptAnalyzer
         $results = Invoke-ScriptAnalyzer -Path $Path -Severity Warning, Error, Information
 
-        # Analyser le script avec l'AST pour des vérifications supplémentaires
+        # Analyser le script avec l'AST pour des vÃ©rifications supplÃ©mentaires
         $scriptContent = Get-Content -Path $Path -Raw
         $tokens = $null
         $errors = $null
         $ast = [System.Management.Automation.Language.Parser]::ParseInput($scriptContent, [ref]$tokens, [ref]$errors)
 
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return @{
             PSScriptAnalyzerResults = $results
             Ast                     = $ast
@@ -95,14 +95,14 @@ function Repair-NullComparison {
     return $correctedContent
 }
 
-# Fonction pour corriger les verbes non approuvés
+# Fonction pour corriger les verbes non approuvÃ©s
 function Repair-UnapprovedVerbs {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Content
     )
 
-    # Dictionnaire des verbes non approuvés et leurs remplacements
+    # Dictionnaire des verbes non approuvÃ©s et leurs remplacements
     $verbMappings = @{
         'Analyze'  = 'Test'
         'Fix'      = 'Repair'
@@ -118,7 +118,7 @@ function Repair-UnapprovedVerbs {
 
     $correctedContent = $Content
 
-    # Rechercher les définitions de fonctions avec des verbes non approuvés
+    # Rechercher les dÃ©finitions de fonctions avec des verbes non approuvÃ©s
     foreach ($verb in $verbMappings.Keys) {
         $pattern = "function\s+($verb)-(\w+)"
         $replacement = "function $($verbMappings[$verb])-`$2"
@@ -128,14 +128,14 @@ function Repair-UnapprovedVerbs {
     return $correctedContent
 }
 
-# Fonction pour corriger les valeurs par défaut des paramètres de type switch
+# Fonction pour corriger les valeurs par dÃ©faut des paramÃ¨tres de type switch
 function Repair-SwitchDefaultValue {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Content
     )
 
-    # Rechercher les paramètres switch avec une valeur par défaut
+    # Rechercher les paramÃ¨tres switch avec une valeur par dÃ©faut
     $pattern = '\[switch\]\$(\w+)\s*=\s*\$true'
     $replacement = '[switch]$1'
     $correctedContent = $Content -replace $pattern, $replacement
@@ -143,7 +143,7 @@ function Repair-SwitchDefaultValue {
     return $correctedContent
 }
 
-# Fonction pour corriger les variables non utilisées
+# Fonction pour corriger les variables non utilisÃ©es
 function Repair-UnusedVariables {
     param (
         [Parameter(Mandatory = $true)]
@@ -180,7 +180,7 @@ function Repair-UnusedVariables {
     $Ast.FindAll({ $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] }, $true) | ForEach-Object {
         $varName = $_.VariablePath.UserPath
         if ($assignments.ContainsKey($varName)) {
-            # Vérifier si c'est une utilisation et non une assignation
+            # VÃ©rifier si c'est une utilisation et non une assignation
             $isAssignment = $false
             $parent = $_.Parent
             while ($null -ne $parent) {
@@ -198,7 +198,7 @@ function Repair-UnusedVariables {
         }
     }
 
-    # Trouver les variables assignées mais non utilisées
+    # Trouver les variables assignÃ©es mais non utilisÃ©es
     $unusedVars = @()
     foreach ($var in $assignments.Values) {
         if ($var.AssignmentCount -gt 0 -and $var.UsageCount -eq 0 -and
@@ -208,7 +208,7 @@ function Repair-UnusedVariables {
         }
     }
 
-    # Corriger les variables non utilisées
+    # Corriger les variables non utilisÃ©es
     $lines = $Content -split "`r`n|\r|\n"
     $modified = $false
 
@@ -269,7 +269,7 @@ function Repair-AutomaticVariableAssignment {
     return $correctedContent
 }
 
-# Fonction principale pour corriger les problèmes PSScriptAnalyzer
+# Fonction principale pour corriger les problÃ¨mes PSScriptAnalyzer
 function Repair-PSScriptAnalyzerIssues {
     [CmdletBinding()]
     param(
@@ -283,7 +283,7 @@ function Repair-PSScriptAnalyzerIssues {
         [switch]$CreateBackup
     )
 
-    # Résoudre les chemins avec wildcards
+    # RÃ©soudre les chemins avec wildcards
     $resolvedPaths = @()
     foreach ($path in $ScriptPath) {
         if ($path -match '\*') {
@@ -308,12 +308,12 @@ function Repair-PSScriptAnalyzerIssues {
         $scriptContent = $analysisResults.Content
         $modified = $false
 
-        # Vérifier et corriger les problèmes
+        # VÃ©rifier et corriger les problÃ¨mes
         $psaResults = $analysisResults.PSScriptAnalyzerResults
 
-        # Afficher les problèmes détectés
+        # Afficher les problÃ¨mes dÃ©tectÃ©s
         if ($psaResults.Count -gt 0) {
-            Write-Host "Problèmes détectés dans $path :" -ForegroundColor Yellow
+            Write-Host "ProblÃ¨mes dÃ©tectÃ©s dans $path :" -ForegroundColor Yellow
             $psaResults | ForEach-Object {
                 $color = switch ($_.Severity) {
                     "Error" { "Red" }
@@ -325,12 +325,12 @@ function Repair-PSScriptAnalyzerIssues {
                 Write-Host "[$($_.Severity)] Ligne $($_.Line):$($_.Column) - $($_.Message)" -ForegroundColor $color
             }
 
-            # Corriger les problèmes si demandé
+            # Corriger les problÃ¨mes si demandÃ©
             if ($Fix) {
-                # Créer une sauvegarde si demandé
+                # CrÃ©er une sauvegarde si demandÃ©
                 if ($CreateBackup) {
                     $backupPath = "$path.bak"
-                    Write-Host "Création d'une sauvegarde: $backupPath" -ForegroundColor Cyan
+                    Write-Host "CrÃ©ation d'une sauvegarde: $backupPath" -ForegroundColor Cyan
                     Copy-Item -Path $path -Destination $backupPath -Force
                 }
 
@@ -342,18 +342,18 @@ function Repair-PSScriptAnalyzerIssues {
                     $modified = $true
                 }
 
-                # Corriger les verbes non approuvés
+                # Corriger les verbes non approuvÃ©s
                 $unapprovedVerbIssues = $psaResults | Where-Object { $_.RuleName -eq "PSUseApprovedVerbs" }
                 if ($unapprovedVerbIssues.Count -gt 0) {
-                    Write-Host "Correction des verbes non approuvés..." -ForegroundColor Green
+                    Write-Host "Correction des verbes non approuvÃ©s..." -ForegroundColor Green
                     $scriptContent = Repair-UnapprovedVerbs -Content $scriptContent
                     $modified = $true
                 }
 
-                # Corriger les valeurs par défaut des paramètres de type switch
+                # Corriger les valeurs par dÃ©faut des paramÃ¨tres de type switch
                 $switchDefaultIssues = $psaResults | Where-Object { $_.RuleName -eq "PSAvoidDefaultValueSwitchParameter" }
                 if ($switchDefaultIssues.Count -gt 0) {
-                    Write-Host "Correction des valeurs par défaut des paramètres de type switch..." -ForegroundColor Green
+                    Write-Host "Correction des valeurs par dÃ©faut des paramÃ¨tres de type switch..." -ForegroundColor Green
                     $scriptContent = Repair-SwitchDefaultValue -Content $scriptContent
                     $modified = $true
                 }
@@ -366,10 +366,10 @@ function Repair-PSScriptAnalyzerIssues {
                     $modified = $true
                 }
 
-                # Corriger les variables non utilisées
+                # Corriger les variables non utilisÃ©es
                 $unusedVarIssues = $psaResults | Where-Object { $_.RuleName -eq "PSUseDeclaredVarsMoreThanAssignments" }
                 if ($unusedVarIssues.Count -gt 0) {
-                    Write-Host "Correction des variables non utilisées..." -ForegroundColor Green
+                    Write-Host "Correction des variables non utilisÃ©es..." -ForegroundColor Green
                     $scriptContent = Repair-UnusedVariables -Content $scriptContent -Ast $analysisResults.Ast -Tokens $analysisResults.Tokens
                     $modified = $true
                 }
@@ -379,7 +379,7 @@ function Repair-PSScriptAnalyzerIssues {
                     Write-Host "Enregistrement des modifications dans $path" -ForegroundColor Green
                     Set-Content -Path $path -Value $scriptContent -Encoding UTF8
 
-                    # Analyser à nouveau pour vérifier les corrections
+                    # Analyser Ã  nouveau pour vÃ©rifier les corrections
                     $newAnalysisResults = Test-ScriptIssues -Path $path
                     $newPsaResults = $newAnalysisResults.PSScriptAnalyzerResults
 
@@ -390,7 +390,7 @@ function Repair-PSScriptAnalyzerIssues {
                         Fixed               = $modified
                     }
                 } else {
-                    Write-Host "Aucune modification nécessaire pour $path" -ForegroundColor Green
+                    Write-Host "Aucune modification nÃ©cessaire pour $path" -ForegroundColor Green
 
                     $results += [PSCustomObject]@{
                         Path                = $path
@@ -408,7 +408,7 @@ function Repair-PSScriptAnalyzerIssues {
                 }
             }
         } else {
-            Write-Host "Aucun problème détecté dans $path" -ForegroundColor Green
+            Write-Host "Aucun problÃ¨me dÃ©tectÃ© dans $path" -ForegroundColor Green
 
             $results += [PSCustomObject]@{
                 Path                = $path
@@ -419,19 +419,19 @@ function Repair-PSScriptAnalyzerIssues {
         }
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé:" -ForegroundColor Cyan
-    Write-Host "  Scripts analysés: $($resolvedPaths.Count)" -ForegroundColor White
-    Write-Host "  Scripts avec problèmes: $($results | Where-Object { $_.OriginalIssueCount -gt 0 } | Measure-Object).Count" -ForegroundColor White
-    Write-Host "  Problèmes détectés: $($results | Measure-Object -Property OriginalIssueCount -Sum).Sum" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ©:" -ForegroundColor Cyan
+    Write-Host "  Scripts analysÃ©s: $($resolvedPaths.Count)" -ForegroundColor White
+    Write-Host "  Scripts avec problÃ¨mes: $($results | Where-Object { $_.OriginalIssueCount -gt 0 } | Measure-Object).Count" -ForegroundColor White
+    Write-Host "  ProblÃ¨mes dÃ©tectÃ©s: $($results | Measure-Object -Property OriginalIssueCount -Sum).Sum" -ForegroundColor White
 
     if ($Fix) {
-        Write-Host "  Scripts corrigés: $($results | Where-Object { $_.Fixed } | Measure-Object).Count" -ForegroundColor Green
-        Write-Host "  Problèmes restants: $($results | Measure-Object -Property RemainingIssueCount -Sum).Sum" -ForegroundColor Yellow
+        Write-Host "  Scripts corrigÃ©s: $($results | Where-Object { $_.Fixed } | Measure-Object).Count" -ForegroundColor Green
+        Write-Host "  ProblÃ¨mes restants: $($results | Measure-Object -Property RemainingIssueCount -Sum).Sum" -ForegroundColor Yellow
     }
 
     return $results
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Repair-PSScriptAnalyzerIssues -ScriptPath $ScriptPath -Fix:$Fix -CreateBackup:$CreateBackup

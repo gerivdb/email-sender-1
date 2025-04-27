@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) métier - Partie 3.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) mÃ©tier - Partie 3.
 .DESCRIPTION
-    Calcule les KPIs métier à partir des données collectées.
-    Cette partie contient les fonctions d'exportation et de génération de tableaux de bord.
+    Calcule les KPIs mÃ©tier Ã  partir des donnÃ©es collectÃ©es.
+    Cette partie contient les fonctions d'exportation et de gÃ©nÃ©ration de tableaux de bord.
 #>
 
-# Fonction pour exporter les résultats
+# Fonction pour exporter les rÃ©sultats
 function Export-KpiResults {
     [CmdletBinding()]
     param (
@@ -20,22 +20,22 @@ function Export-KpiResults {
         [string]$Format = "CSV" # CSV, JSON
     )
     
-    Write-Log -Message "Exportation des résultats au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des rÃ©sultats au format $Format vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat à exporter" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat Ã  exporter" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Exporter les résultats selon le format spécifié
+        # Exporter les rÃ©sultats selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
                 $Results | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
@@ -49,15 +49,15 @@ function Export-KpiResults {
             }
         }
         
-        Write-Log -Message "Exportation réussie vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des résultats: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des rÃ©sultats: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction pour générer un tableau de bord JSON
+# Fonction pour gÃ©nÃ©rer un tableau de bord JSON
 function Export-KpiDashboard {
     [CmdletBinding()]
     param (
@@ -68,36 +68,36 @@ function Export-KpiDashboard {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Génération du tableau de bord vers $OutputPath" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du tableau de bord vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat pour générer le tableau de bord" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat pour gÃ©nÃ©rer le tableau de bord" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Créer la structure du tableau de bord
+        # CrÃ©er la structure du tableau de bord
         $Dashboard = @{
-            title = "Tableau de bord des KPIs métier"
+            title = "Tableau de bord des KPIs mÃ©tier"
             timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             panels = @()
         }
         
-        # Regrouper les KPIs par catégorie
+        # Regrouper les KPIs par catÃ©gorie
         $GroupedResults = $Results | Group-Object -Property Category
         
-        # Ajouter une section pour chaque catégorie
+        # Ajouter une section pour chaque catÃ©gorie
         foreach ($Group in $GroupedResults) {
             $CategoryPanels = @()
             
-            # Ajouter un panneau pour chaque KPI dans cette catégorie
+            # Ajouter un panneau pour chaque KPI dans cette catÃ©gorie
             foreach ($Kpi in $Group.Group) {
                 $Panel = @{
                     id = $Kpi.Id
@@ -127,15 +127,15 @@ function Export-KpiDashboard {
         # Exporter le tableau de bord au format JSON
         $Dashboard | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Tableau de bord généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Tableau de bord gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du tableau de bord: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du tableau de bord: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction pour générer un rapport PDF
+# Fonction pour gÃ©nÃ©rer un rapport PDF
 function Export-KpiReport {
     [CmdletBinding()]
     param (
@@ -146,28 +146,28 @@ function Export-KpiReport {
         [string]$OutputPath,
         
         [Parameter(Mandatory=$false)]
-        [string]$ReportTitle = "Rapport des KPIs métier",
+        [string]$ReportTitle = "Rapport des KPIs mÃ©tier",
         
         [Parameter(Mandatory=$false)]
         [string]$Period = "Dernier mois"
     )
     
-    Write-Log -Message "Génération du rapport vers $OutputPath" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du rapport vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat pour générer le rapport" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat pour gÃ©nÃ©rer le rapport" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Créer le contenu du rapport au format HTML
+        # CrÃ©er le contenu du rapport au format HTML
         $HtmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -189,11 +189,11 @@ function Export-KpiReport {
 </head>
 <body>
     <h1>$ReportTitle</h1>
-    <p>Période: $Period</p>
-    <p>Date de génération: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>PÃ©riode: $Period</p>
+    <p>Date de gÃ©nÃ©ration: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Nombre total de KPIs: $($Results.Count)</p>
         <p>KPIs critiques: $($Results | Where-Object { $_.Status -eq "Critical" } | Measure-Object).Count</p>
         <p>KPIs en avertissement: $($Results | Where-Object { $_.Status -eq "Warning" } | Measure-Object).Count</p>
@@ -201,10 +201,10 @@ function Export-KpiReport {
     </div>
 "@
         
-        # Regrouper les KPIs par catégorie
+        # Regrouper les KPIs par catÃ©gorie
         $GroupedResults = $Results | Group-Object -Property Category
         
-        # Ajouter une section pour chaque catégorie
+        # Ajouter une section pour chaque catÃ©gorie
         foreach ($Group in $GroupedResults) {
             $HtmlContent += @"
     <h2>$($Group.Name)</h2>
@@ -213,7 +213,7 @@ function Export-KpiReport {
             <th>KPI</th>
             <th>Description</th>
             <th>Valeur</th>
-            <th>Unité</th>
+            <th>UnitÃ©</th>
             <th>Statut</th>
         </tr>
 "@
@@ -250,10 +250,10 @@ function Export-KpiReport {
         # Sauvegarder le rapport au format HTML
         $HtmlContent | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Rapport généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du rapport: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du rapport: $_" -Level "Error"
         return $false
     }
 }

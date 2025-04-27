@@ -1,37 +1,37 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte et met à jour les références brisées dans les scripts.
+    DÃ©tecte et met Ã  jour les rÃ©fÃ©rences brisÃ©es dans les scripts.
 
 .DESCRIPTION
-    Ce script analyse les fichiers du projet pour identifier les références de chemins qui ne correspondent plus
-    à la nouvelle structure suite à la réorganisation des scripts. Il génère un rapport des références à mettre à jour
-    et peut effectuer les remplacements de manière sécurisée.
+    Ce script analyse les fichiers du projet pour identifier les rÃ©fÃ©rences de chemins qui ne correspondent plus
+    Ã  la nouvelle structure suite Ã  la rÃ©organisation des scripts. Il gÃ©nÃ¨re un rapport des rÃ©fÃ©rences Ã  mettre Ã  jour
+    et peut effectuer les remplacements de maniÃ¨re sÃ©curisÃ©e.
 
 .PARAMETER ScanPath
-    Chemin du répertoire à analyser. Par défaut, utilise le répertoire courant.
+    Chemin du rÃ©pertoire Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER ReportOnly
-    Si spécifié, génère uniquement un rapport sans effectuer de modifications.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re uniquement un rapport sans effectuer de modifications.
 
 .PARAMETER BackupFiles
-    Si spécifié, crée une sauvegarde des fichiers avant de les modifier.
+    Si spÃ©cifiÃ©, crÃ©e une sauvegarde des fichiers avant de les modifier.
 
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport des références brisées. Par défaut, utilise le répertoire courant.
+    Chemin oÃ¹ enregistrer le rapport des rÃ©fÃ©rences brisÃ©es. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .EXAMPLE
     .\Update-References.ps1 -ScanPath "D:\Projets\EMAIL_SENDER_1" -ReportOnly
-    Analyse le répertoire spécifié et génère un rapport des références brisées sans effectuer de modifications.
+    Analyse le rÃ©pertoire spÃ©cifiÃ© et gÃ©nÃ¨re un rapport des rÃ©fÃ©rences brisÃ©es sans effectuer de modifications.
 
 .EXAMPLE
     .\Update-References.ps1 -BackupFiles
-    Analyse le répertoire courant, crée des sauvegardes des fichiers et met à jour les références brisées.
+    Analyse le rÃ©pertoire courant, crÃ©e des sauvegardes des fichiers et met Ã  jour les rÃ©fÃ©rences brisÃ©es.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      PowerShell 5.1 ou supérieur
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      PowerShell 5.1 ou supÃ©rieur
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -49,7 +49,7 @@ param (
     [string]$OutputPath = (Get-Location).Path
 )
 
-# Définition des chemins obsolètes et leurs remplacements
+# DÃ©finition des chemins obsolÃ¨tes et leurs remplacements
 $pathMappings = @{
     "md\\roadmap_perso.md" = "Roadmap\\roadmap_perso.md"
     "md/roadmap_perso.md" = "Roadmap\\roadmap_perso.md"
@@ -67,7 +67,7 @@ function Get-NormalizedPath {
     return $Path.Replace('/', '\')
 }
 
-# Fonction pour créer une sauvegarde d'un fichier
+# Fonction pour crÃ©er une sauvegarde d'un fichier
 function Backup-File {
     param (
         [Parameter(Mandatory = $true)]
@@ -76,12 +76,12 @@ function Backup-File {
 
     if ($BackupFiles) {
         $backupPath = "$FilePath.bak"
-        Write-Verbose "Création d'une sauvegarde: $backupPath"
+        Write-Verbose "CrÃ©ation d'une sauvegarde: $backupPath"
         Copy-Item -Path $FilePath -Destination $backupPath -Force
     }
 }
 
-# Fonction pour scanner les fichiers à la recherche de références brisées
+# Fonction pour scanner les fichiers Ã  la recherche de rÃ©fÃ©rences brisÃ©es
 function Find-BrokenReferences {
     param (
         [Parameter(Mandatory = $true)]
@@ -91,9 +91,9 @@ function Find-BrokenReferences {
     $results = @()
     $extensions = @(".ps1", ".md", ".json", ".py", ".bat", ".txt")
     
-    Write-Host "Recherche des fichiers à analyser..."
+    Write-Host "Recherche des fichiers Ã  analyser..."
     $files = Get-ChildItem -Path $Path -Recurse -File | Where-Object { $extensions -contains $_.Extension }
-    Write-Host "Nombre de fichiers à analyser: $($files.Count)"
+    Write-Host "Nombre de fichiers Ã  analyser: $($files.Count)"
     
     $progressCounter = 0
     foreach ($file in $files) {
@@ -116,7 +116,7 @@ function Find-BrokenReferences {
                 }
             }
             
-            # Vérifier également avec l'autre type de séparateur
+            # VÃ©rifier Ã©galement avec l'autre type de sÃ©parateur
             $alternateOldPath = $oldPath.Replace('\', '/').Replace('//', '/')
             if ($content -match [regex]::Escape($alternateOldPath)) {
                 $results += [PSCustomObject]@{
@@ -133,7 +133,7 @@ function Find-BrokenReferences {
     return $results
 }
 
-# Fonction pour mettre à jour les références brisées
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences brisÃ©es
 function Update-BrokenReferences {
     param (
         [Parameter(Mandatory = $true)]
@@ -144,7 +144,7 @@ function Update-BrokenReferences {
     $updatedReferences = 0
     
     foreach ($reference in $References) {
-        if ($PSCmdlet.ShouldProcess($reference.FilePath, "Mise à jour des références")) {
+        if ($PSCmdlet.ShouldProcess($reference.FilePath, "Mise Ã  jour des rÃ©fÃ©rences")) {
             try {
                 Backup-File -FilePath $reference.FilePath
                 
@@ -156,10 +156,10 @@ function Update-BrokenReferences {
                 $updatedFiles++
                 $updatedReferences += $reference.LineCount
                 
-                Write-Verbose "Mise à jour de $($reference.FilePath): $($reference.OldPath) -> $($reference.NewPath)"
+                Write-Verbose "Mise Ã  jour de $($reference.FilePath): $($reference.OldPath) -> $($reference.NewPath)"
             }
             catch {
-                Write-Error "Erreur lors de la mise à jour de $($reference.FilePath): $_"
+                Write-Error "Erreur lors de la mise Ã  jour de $($reference.FilePath): $_"
             }
         }
     }
@@ -170,7 +170,7 @@ function Update-BrokenReferences {
     }
 }
 
-# Fonction pour générer un rapport des références brisées
+# Fonction pour gÃ©nÃ©rer un rapport des rÃ©fÃ©rences brisÃ©es
 function Export-ReferenceReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -185,14 +185,14 @@ function Export-ReferenceReport {
     
     $summaryPath = Join-Path -Path $OutputPath -ChildPath "broken_references_summary.md"
     $summary = @"
-# Rapport des références brisées
+# Rapport des rÃ©fÃ©rences brisÃ©es
 
-## Résumé
-- **Nombre total de fichiers affectés**: $($References | Select-Object -Property FilePath -Unique | Measure-Object).Count
-- **Nombre total de références à mettre à jour**: $($References | Measure-Object -Property LineCount -Sum).Sum
-- **Date de génération**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+## RÃ©sumÃ©
+- **Nombre total de fichiers affectÃ©s**: $($References | Select-Object -Property FilePath -Unique | Measure-Object).Count
+- **Nombre total de rÃ©fÃ©rences Ã  mettre Ã  jour**: $($References | Measure-Object -Property LineCount -Sum).Sum
+- **Date de gÃ©nÃ©ration**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Détails des références à mettre à jour
+## DÃ©tails des rÃ©fÃ©rences Ã  mettre Ã  jour
 
 | Fichier | Ancien chemin | Nouveau chemin | Nombre d'occurrences |
 |---------|--------------|---------------|---------------------|
@@ -202,40 +202,40 @@ $($References | ForEach-Object { "| $($_.FilePath) | $($_.OldPath) | $($_.NewPat
     
     $summary | Set-Content -Path $summaryPath -Force -Encoding UTF8
     
-    Write-Host "Rapport généré: $reportPath"
-    Write-Host "Résumé généré: $summaryPath"
+    Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath"
+    Write-Host "RÃ©sumÃ© gÃ©nÃ©rÃ©: $summaryPath"
 }
 
 # Fonction principale
 function Main {
-    Write-Host "Démarrage de l'analyse des références brisées..."
-    Write-Host "Répertoire analysé: $ScanPath"
+    Write-Host "DÃ©marrage de l'analyse des rÃ©fÃ©rences brisÃ©es..."
+    Write-Host "RÃ©pertoire analysÃ©: $ScanPath"
     
     $brokenReferences = Find-BrokenReferences -Path $ScanPath
     
     if ($brokenReferences.Count -eq 0) {
-        Write-Host "Aucune référence brisée trouvée."
+        Write-Host "Aucune rÃ©fÃ©rence brisÃ©e trouvÃ©e."
         return
     }
     
-    Write-Host "Nombre de références brisées trouvées: $($brokenReferences | Measure-Object -Property LineCount -Sum).Sum dans $($brokenReferences | Select-Object -Property FilePath -Unique | Measure-Object).Count fichiers."
+    Write-Host "Nombre de rÃ©fÃ©rences brisÃ©es trouvÃ©es: $($brokenReferences | Measure-Object -Property LineCount -Sum).Sum dans $($brokenReferences | Select-Object -Property FilePath -Unique | Measure-Object).Count fichiers."
     
     Export-ReferenceReport -References $brokenReferences -OutputPath $OutputPath
     
     if (-not $ReportOnly) {
-        $confirmation = Read-Host "Voulez-vous mettre à jour ces références? (O/N)"
+        $confirmation = Read-Host "Voulez-vous mettre Ã  jour ces rÃ©fÃ©rences? (O/N)"
         if ($confirmation -eq "O" -or $confirmation -eq "o") {
             $result = Update-BrokenReferences -References $brokenReferences
-            Write-Host "Mise à jour terminée: $($result.UpdatedReferences) références mises à jour dans $($result.UpdatedFiles) fichiers."
+            Write-Host "Mise Ã  jour terminÃ©e: $($result.UpdatedReferences) rÃ©fÃ©rences mises Ã  jour dans $($result.UpdatedFiles) fichiers."
         }
         else {
-            Write-Host "Opération annulée. Aucune modification n'a été effectuée."
+            Write-Host "OpÃ©ration annulÃ©e. Aucune modification n'a Ã©tÃ© effectuÃ©e."
         }
     }
     else {
-        Write-Host "Mode rapport uniquement. Aucune modification n'a été effectuée."
+        Write-Host "Mode rapport uniquement. Aucune modification n'a Ã©tÃ© effectuÃ©e."
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 Main

@@ -1,4 +1,4 @@
-# Module d'organisation pour le Script Manager
+﻿# Module d'organisation pour le Script Manager
 # Ce module coordonne l'organisation des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -25,15 +25,15 @@ foreach ($Module in $SubModules) {
 function Invoke-ScriptOrganization {
     <#
     .SYNOPSIS
-        Organise les scripts selon les règles définies
+        Organise les scripts selon les rÃ¨gles dÃ©finies
     .DESCRIPTION
-        Analyse, classe et déplace les scripts selon les règles de classification
+        Analyse, classe et dÃ©place les scripts selon les rÃ¨gles de classification
     .PARAMETER AnalysisPath
         Chemin vers le fichier d'analyse JSON
     .PARAMETER RulesPath
-        Chemin vers le fichier de règles JSON
+        Chemin vers le fichier de rÃ¨gles JSON
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de l'organisation
+        Chemin oÃ¹ enregistrer les rÃ©sultats de l'organisation
     .PARAMETER AutoApply
         Applique automatiquement les recommandations d'organisation
     .EXAMPLE
@@ -53,18 +53,18 @@ function Invoke-ScriptOrganization {
         [switch]$AutoApply
     )
     
-    # Vérifier si les fichiers existent
+    # VÃ©rifier si les fichiers existent
     if (-not (Test-Path -Path $AnalysisPath)) {
-        Write-Error "Fichier d'analyse non trouvé: $AnalysisPath"
+        Write-Error "Fichier d'analyse non trouvÃ©: $AnalysisPath"
         return $null
     }
     
     if (-not (Test-Path -Path $RulesPath)) {
-        Write-Error "Fichier de règles non trouvé: $RulesPath"
+        Write-Error "Fichier de rÃ¨gles non trouvÃ©: $RulesPath"
         return $null
     }
     
-    # Charger l'analyse et les règles
+    # Charger l'analyse et les rÃ¨gles
     try {
         $Analysis = Get-Content -Path $AnalysisPath -Raw | ConvertFrom-Json
         $Rules = Get-Content -Path $RulesPath -Raw | ConvertFrom-Json
@@ -74,13 +74,13 @@ function Invoke-ScriptOrganization {
     }
     
     Write-Host "Organisation des scripts en cours..." -ForegroundColor Cyan
-    Write-Host "Nombre de scripts à analyser: $($Analysis.TotalScripts)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts Ã  analyser: $($Analysis.TotalScripts)" -ForegroundColor Cyan
     Write-Host "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -ForegroundColor Yellow
     
-    # Créer un tableau pour stocker les résultats de l'organisation
+    # CrÃ©er un tableau pour stocker les rÃ©sultats de l'organisation
     $OrganizationResults = @()
     
-    # Créer la structure de dossiers selon les principes SOLID
+    # CrÃ©er la structure de dossiers selon les principes SOLID
     $FolderStructure = New-FolderStructure -Rules $Rules -AutoApply:$AutoApply
     
     # Traiter chaque script
@@ -92,17 +92,17 @@ function Invoke-ScriptOrganization {
         $Progress = [math]::Round(($Counter / $Total) * 100)
         Write-Progress -Activity "Organisation des scripts" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
         
-        # Classifier le script selon les règles
+        # Classifier le script selon les rÃ¨gles
         $Classification = Get-ScriptClassification -Script $Script -Rules $Rules
         
-        # Déterminer le chemin cible
+        # DÃ©terminer le chemin cible
         $TargetPath = Get-TargetPath -Script $Script -Classification $Classification
         
-        # Vérifier si le script doit être déplacé
+        # VÃ©rifier si le script doit Ãªtre dÃ©placÃ©
         $NeedsMove = $Script.Path -ne $TargetPath
         
         if ($NeedsMove) {
-            # Créer un objet avec les informations sur le déplacement
+            # CrÃ©er un objet avec les informations sur le dÃ©placement
             $MoveInfo = [PSCustomObject]@{
                 SourcePath = $Script.Path
                 TargetPath = $TargetPath
@@ -110,23 +110,23 @@ function Invoke-ScriptOrganization {
                 Dependencies = $Script.Dependencies
             }
             
-            # Déplacer le script si AutoApply est activé
+            # DÃ©placer le script si AutoApply est activÃ©
             $MoveResult = $null
             if ($AutoApply) {
                 $MoveResult = Move-Script -MoveInfo $MoveInfo
                 
-                # Mettre à jour les références si le déplacement a réussi
+                # Mettre Ã  jour les rÃ©fÃ©rences si le dÃ©placement a rÃ©ussi
                 if ($MoveResult.Success) {
                     Update-References -Script $Script -OldPath $Script.Path -NewPath $TargetPath
                 }
             } else {
                 $MoveResult = [PSCustomObject]@{
                     Success = $true
-                    Message = "Simulation: le script ne sera pas déplacé"
+                    Message = "Simulation: le script ne sera pas dÃ©placÃ©"
                 }
             }
             
-            # Ajouter le résultat au tableau
+            # Ajouter le rÃ©sultat au tableau
             $OrganizationResults += [PSCustomObject]@{
                 Path = $Script.Path
                 Name = $Script.Name
@@ -138,7 +138,7 @@ function Invoke-ScriptOrganization {
                 Message = $MoveResult.Message
             }
         } else {
-            # Le script est déjà au bon endroit
+            # Le script est dÃ©jÃ  au bon endroit
             $OrganizationResults += [PSCustomObject]@{
                 Path = $Script.Path
                 Name = $Script.Name
@@ -147,14 +147,14 @@ function Invoke-ScriptOrganization {
                 TargetPath = $TargetPath
                 NeedsMove = $false
                 Moved = $false
-                Message = "Le script est déjà au bon endroit"
+                Message = "Le script est dÃ©jÃ  au bon endroit"
             }
         }
     }
     
     Write-Progress -Activity "Organisation des scripts" -Completed
     
-    # Créer un objet avec les résultats de l'organisation
+    # CrÃ©er un objet avec les rÃ©sultats de l'organisation
     $Organization = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $Analysis.TotalScripts
@@ -168,7 +168,7 @@ function Invoke-ScriptOrganization {
     # Convertir l'objet en JSON et l'enregistrer dans un fichier
     $Organization | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    Write-Host "Organisation terminée. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
+    Write-Host "Organisation terminÃ©e. RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
     
     return $Organization
 }

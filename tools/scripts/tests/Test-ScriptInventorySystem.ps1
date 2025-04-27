@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le système d'inventaire et de classification des scripts
+    Tests unitaires pour le systÃ¨me d'inventaire et de classification des scripts
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
-    du système d'inventaire et de classification des scripts.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
+    du systÃ¨me d'inventaire et de classification des scripts.
 .EXAMPLE
     .\Test-ScriptInventorySystem.ps1
 .NOTES
@@ -20,26 +20,26 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Utiliser une version spécifique de Pester pour éviter les problèmes de récursion
+# Utiliser une version spÃ©cifique de Pester pour Ã©viter les problÃ¨mes de rÃ©cursion
 $pesterModule = Get-Module -Name Pester -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1
 Import-Module $pesterModule -Force
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ScriptInventoryTest_$(Get-Random)"
 New-Item -ItemType Directory -Path $testDir -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $testFiles = @{
     "Test-Core.ps1"       = @"
 <#
 .SYNOPSIS
-    Script de test pour la catégorie Core
+    Script de test pour la catÃ©gorie Core
 .DESCRIPTION
-    Ce script est utilisé pour tester la classification des scripts
+    Ce script est utilisÃ© pour tester la classification des scripts
 .AUTHOR
     Test Author
 .VERSION
@@ -55,9 +55,9 @@ function Initialize-TestEnvironment {
     "Test-Gestion.ps1"    = @"
 <#
 .SYNOPSIS
-    Script de test pour la catégorie Gestion
+    Script de test pour la catÃ©gorie Gestion
 .DESCRIPTION
-    Ce script est utilisé pour tester la classification des scripts
+    Ce script est utilisÃ© pour tester la classification des scripts
 .AUTHOR
     Test Author
 .VERSION
@@ -71,13 +71,13 @@ function Manage-TestProject {
 }
 "@
     "Test-Duplicate1.ps1" = @"
-# Script dupliqué pour les tests
+# Script dupliquÃ© pour les tests
 function Test-Duplicate {
     Write-Host "Test de duplication"
 }
 "@
     "Test-Duplicate2.ps1" = @"
-# Script dupliqué pour les tests
+# Script dupliquÃ© pour les tests
 function Test-Duplicate {
     Write-Host "Test de duplication"
 }
@@ -85,29 +85,29 @@ function Test-Duplicate {
     "Test-Similar1.ps1"   = @"
 # Script similaire pour les tests
 function Test-Similar {
-    Write-Host "Test de similarité version 1"
+    Write-Host "Test de similaritÃ© version 1"
 }
 "@
     "Test-Similar2.ps1"   = @"
 # Script similaire pour les tests
 function Test-Similar {
-    Write-Host "Test de similarité version 2"
+    Write-Host "Test de similaritÃ© version 2"
 }
 "@
 }
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 foreach ($file in $testFiles.Keys) {
     $filePath = Join-Path -Path $testDir -ChildPath $file
     Set-Content -Path $filePath -Value $testFiles[$file]
 }
 
-# Définir la taxonomie et les règles de classification pour les tests
+# DÃ©finir la taxonomie et les rÃ¨gles de classification pour les tests
 $taxonomy = @{
     "Core"    = @{
         Description   = "Scripts fondamentaux du projet"
         SubCategories = @{
-            "Initialisation" = "Scripts de démarrage et configuration"
+            "Initialisation" = "Scripts de dÃ©marrage et configuration"
         }
     }
     "Gestion" = @{
@@ -129,15 +129,15 @@ $classificationRules = @{
     }
 }
 
-# Exécuter les tests
-Describe "Tests du système d'inventaire et de classification des scripts" {
+# ExÃ©cuter les tests
+Describe "Tests du systÃ¨me d'inventaire et de classification des scripts" {
     Context "Test de l'inventaire des scripts" {
-        It "Doit scanner correctement le répertoire de test" {
+        It "Doit scanner correctement le rÃ©pertoire de test" {
             $scripts = Get-ScriptInventory -Path $testDir -ForceRescan
             $scripts.Count | Should -Be 6
         }
 
-        It "Doit extraire correctement les métadonnées" {
+        It "Doit extraire correctement les mÃ©tadonnÃ©es" {
             $scripts = Get-ScriptInventory -Path $testDir
             $coreScript = $scripts | Where-Object { $_.FileName -eq "Test-Core.ps1" }
             $coreScript.Author | Should -Be "Test Author"
@@ -145,13 +145,13 @@ Describe "Tests du système d'inventaire et de classification des scripts" {
         }
     }
 
-    Context "Test de détection des scripts dupliqués" {
-        It "Doit détecter les scripts dupliqués" {
+    Context "Test de dÃ©tection des scripts dupliquÃ©s" {
+        It "Doit dÃ©tecter les scripts dupliquÃ©s" {
             $duplicates = Get-ScriptDuplicates -SimilarityThreshold 100
             ($duplicates | Where-Object { $_.Type -eq "Duplicate" }).Count | Should -BeGreaterOrEqual 1
         }
 
-        It "Doit détecter les scripts similaires" {
+        It "Doit dÃ©tecter les scripts similaires" {
             $similar = Get-ScriptDuplicates -SimilarityThreshold 80
             ($similar | Where-Object { $_.Type -eq "Similar" }).Count | Should -BeGreaterOrEqual 1
         }
@@ -183,5 +183,5 @@ Describe "Tests du système d'inventaire et de classification des scripts" {
 # Nettoyer les fichiers de test
 Remove-Item -Path $testDir -Recurse -Force
 
-# Afficher un résumé
-Write-Host "`nTests terminés. Vérifiez les résultats ci-dessus." -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nTests terminÃ©s. VÃ©rifiez les rÃ©sultats ci-dessus." -ForegroundColor Green

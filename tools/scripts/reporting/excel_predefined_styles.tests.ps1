@@ -1,42 +1,42 @@
-# Tests pour le module excel_predefined_styles.ps1
+﻿# Tests pour le module excel_predefined_styles.ps1
 
 # Importer Pester
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "excel_predefined_styles.ps1"
 . $ModulePath
 
 Describe "Excel Predefined Styles Module" {
     BeforeAll {
-        # Réinitialiser le registre avant chaque test
+        # RÃ©initialiser le registre avant chaque test
         Reset-ExcelStyleRegistry
 
-        # Initialiser les styles prédéfinis
+        # Initialiser les styles prÃ©dÃ©finis
         Initialize-ExcelPredefinedStyles -Force
     }
 
     Context "Initialize-ExcelLineStyleLibrary function" {
         It "Should initialize line styles in the registry" {
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
 
             # Initialiser les styles de lignes
             $Count = Initialize-ExcelLineStyleLibrary
 
-            # Vérifier que des styles ont été ajoutés
+            # VÃ©rifier que des styles ont Ã©tÃ© ajoutÃ©s
             $Count | Should -BeGreaterThan 0
 
-            # Vérifier que les styles sont dans le registre
+            # VÃ©rifier que les styles sont dans le registre
             $Registry = Get-ExcelStyleRegistry
             $Registry.LineStyles.Count | Should -Be $Count
 
-            # Vérifier quelques styles spécifiques
+            # VÃ©rifier quelques styles spÃ©cifiques
             $Registry.GetByName("Ligne continue fine") | Should -Not -BeNullOrEmpty
-            $Registry.GetByName("Ligne pointillée moyenne") | Should -Not -BeNullOrEmpty
-            $Registry.GetByName("Ligne en tirets épaisse") | Should -Not -BeNullOrEmpty
+            $Registry.GetByName("Ligne pointillÃ©e moyenne") | Should -Not -BeNullOrEmpty
+            $Registry.GetByName("Ligne en tirets Ã©paisse") | Should -Not -BeNullOrEmpty
             $Registry.GetByName("Ligne rouge") | Should -Not -BeNullOrEmpty
         }
     }
@@ -46,7 +46,7 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir un style par nom
             $Style = Get-ExcelPredefinedLineStyle -Name "Ligne continue fine"
 
-            # Vérifier le style
+            # VÃ©rifier le style
             $Style | Should -Not -BeNullOrEmpty
             $Style.Name | Should -Be "Ligne continue fine"
             $Style.Category | Should -Be "Lignes continues"
@@ -59,7 +59,7 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir un style inexistant
             $Style = Get-ExcelPredefinedLineStyle -Name "Style inexistant"
 
-            # Vérifier que le style est null
+            # VÃ©rifier que le style est null
             $Style | Should -BeNullOrEmpty
         }
     }
@@ -69,53 +69,53 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir tous les styles de ligne
             $Styles = Get-ExcelPredefinedLineStyles
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de ligne
+            # VÃ©rifier que tous les styles sont des styles de ligne
             foreach ($Style in $Styles) {
                 $Style | Should -BeOfType [ExcelLineStyle]
             }
         }
 
         It "Should include advanced dotted styles" {
-            # Obtenir les styles de pointillés avancés
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Pointillés avancés"
+            # Obtenir les styles de pointillÃ©s avancÃ©s
+            $Styles = Get-ExcelPredefinedLineStyles -Category "PointillÃ©s avancÃ©s"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de pointillés avancés
+            # VÃ©rifier que tous les styles sont des styles de pointillÃ©s avancÃ©s
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Pointillés avancés"
-                $Style.HasTag("Pointillé") | Should -Be $true
+                $Style.Category | Should -Be "PointillÃ©s avancÃ©s"
+                $Style.HasTag("PointillÃ©") | Should -Be $true
             }
         }
 
         It "Should include advanced dash styles" {
-            # Obtenir les styles de tirets avancés
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Tirets avancés"
+            # Obtenir les styles de tirets avancÃ©s
+            $Styles = Get-ExcelPredefinedLineStyles -Category "Tirets avancÃ©s"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de tirets avancés
+            # VÃ©rifier que tous les styles sont des styles de tirets avancÃ©s
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Tirets avancés"
+                $Style.Category | Should -Be "Tirets avancÃ©s"
                 $Style.HasTag("Tiret") | Should -Be $true
             }
         }
 
         It "Should include advanced dash-dot combinations" {
-            # Obtenir les styles de combinaisons tiret-point avancées
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Combinaisons tiret-point avancées"
+            # Obtenir les styles de combinaisons tiret-point avancÃ©es
+            $Styles = Get-ExcelPredefinedLineStyles -Category "Combinaisons tiret-point avancÃ©es"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de combinaisons tiret-point avancées
+            # VÃ©rifier que tous les styles sont des styles de combinaisons tiret-point avancÃ©es
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Combinaisons tiret-point avancées"
+                $Style.Category | Should -Be "Combinaisons tiret-point avancÃ©es"
                 $Style.HasTag("Tiret-point") -or $Style.HasTag("Tiret-point-point") | Should -Be $true
             }
         }
@@ -124,10 +124,10 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir les styles de variations d'espacement
             $Styles = Get-ExcelPredefinedLineStyles -Category "Variations d'espacement"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de variations d'espacement
+            # VÃ©rifier que tous les styles sont des styles de variations d'espacement
             foreach ($Style in $Styles) {
                 $Style.Category | Should -Be "Variations d'espacement"
                 $Style.HasTag("Espacement") -or $Style.HasTag("Motif") | Should -Be $true
@@ -135,41 +135,41 @@ Describe "Excel Predefined Styles Module" {
         }
 
         It "Should filter styles by category" {
-            # Obtenir les styles de la catégorie "Lignes continues"
+            # Obtenir les styles de la catÃ©gorie "Lignes continues"
             $Styles = Get-ExcelPredefinedLineStyles -Category "Lignes continues"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont de la catégorie spécifiée
+            # VÃ©rifier que tous les styles sont de la catÃ©gorie spÃ©cifiÃ©e
             foreach ($Style in $Styles) {
                 $Style.Category | Should -Be "Lignes continues"
             }
         }
 
         It "Should filter styles by tag" {
-            # Obtenir les styles avec le tag "Pointillé"
-            $Styles = Get-ExcelPredefinedLineStyles -Tag "Pointillé"
+            # Obtenir les styles avec le tag "PointillÃ©"
+            $Styles = Get-ExcelPredefinedLineStyles -Tag "PointillÃ©"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles ont le tag spécifié
+            # VÃ©rifier que tous les styles ont le tag spÃ©cifiÃ©
             foreach ($Style in $Styles) {
-                $Style.HasTag("Pointillé") | Should -Be $true
+                $Style.HasTag("PointillÃ©") | Should -Be $true
             }
         }
 
         It "Should filter styles by category and tag" {
-            # Obtenir les styles de la catégorie "Lignes colorées" avec le tag "Rouge"
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Lignes colorées" -Tag "Rouge"
+            # Obtenir les styles de la catÃ©gorie "Lignes colorÃ©es" avec le tag "Rouge"
+            $Styles = Get-ExcelPredefinedLineStyles -Category "Lignes colorÃ©es" -Tag "Rouge"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont de la catégorie et ont le tag spécifiés
+            # VÃ©rifier que tous les styles sont de la catÃ©gorie et ont le tag spÃ©cifiÃ©s
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Lignes colorées"
+                $Style.Category | Should -Be "Lignes colorÃ©es"
                 $Style.HasTag("Rouge") | Should -Be $true
             }
         }
@@ -177,20 +177,20 @@ Describe "Excel Predefined Styles Module" {
 
     Context "Initialize-ExcelPredefinedStyles function" {
         It "Should initialize all predefined styles" {
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
 
-            # Initialiser tous les styles prédéfinis
+            # Initialiser tous les styles prÃ©dÃ©finis
             $Count = Initialize-ExcelPredefinedStyles
 
-            # Vérifier que des styles ont été ajoutés
+            # VÃ©rifier que des styles ont Ã©tÃ© ajoutÃ©s
             $Count | Should -BeGreaterThan 0
 
-            # Vérifier que les styles sont dans le registre
+            # VÃ©rifier que les styles sont dans le registre
             $Registry = Get-ExcelStyleRegistry
             $Registry.Styles.Count | Should -Be $Count
 
-            # Vérifier que tous les styles sont marqués comme prédéfinis
+            # VÃ©rifier que tous les styles sont marquÃ©s comme prÃ©dÃ©finis
             $BuiltInStyles = $Registry.Search(@{ IsBuiltIn = $true })
             $BuiltInStyles.Count | Should -Be $Count
         }
@@ -199,10 +199,10 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir les styles harmonieux
             $Styles = Get-ExcelPredefinedLineStyles -Category "Combinaisons harmonieuses"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles harmonieux
+            # VÃ©rifier que tous les styles sont des styles harmonieux
             foreach ($Style in $Styles) {
                 $Style.Category | Should -Be "Combinaisons harmonieuses"
                 $Style.HasTag("Harmonieux") | Should -Be $true
@@ -210,23 +210,23 @@ Describe "Excel Predefined Styles Module" {
         }
 
         It "Should include coordinated sets" {
-            # Obtenir les styles d'ensembles coordonnés
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Ensembles coordonnés"
+            # Obtenir les styles d'ensembles coordonnÃ©s
+            $Styles = Get-ExcelPredefinedLineStyles -Category "Ensembles coordonnÃ©s"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles d'ensembles coordonnés
+            # VÃ©rifier que tous les styles sont des styles d'ensembles coordonnÃ©s
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Ensembles coordonnés"
+                $Style.Category | Should -Be "Ensembles coordonnÃ©s"
                 $Style.HasTag("Ensemble") | Should -Be $true
             }
 
-            # Vérifier qu'il y a des styles pour l'ensemble 1
+            # VÃ©rifier qu'il y a des styles pour l'ensemble 1
             $Ensemble1Styles = $Styles | Where-Object { $_.HasTag("Ensemble1") }
             $Ensemble1Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a des styles pour l'ensemble 2
+            # VÃ©rifier qu'il y a des styles pour l'ensemble 2
             $Ensemble2Styles = $Styles | Where-Object { $_.HasTag("Ensemble2") }
             $Ensemble2Styles.Count | Should -BeGreaterThan 0
         }
@@ -235,73 +235,73 @@ Describe "Excel Predefined Styles Module" {
             # Obtenir les styles de variations par type
             $Styles = Get-ExcelPredefinedLineStyles -Category "Variations par type"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de variations par type
+            # VÃ©rifier que tous les styles sont des styles de variations par type
             foreach ($Style in $Styles) {
                 $Style.Category | Should -Be "Variations par type"
-                $Style.HasTag("Variable") -or $Style.HasTag("Dégradé") | Should -Be $true
+                $Style.HasTag("Variable") -or $Style.HasTag("DÃ©gradÃ©") | Should -Be $true
             }
         }
 
         It "Should include special gradients" {
-            # Obtenir les styles de dégradés spéciaux
-            $Styles = Get-ExcelPredefinedLineStyles -Category "Dégradés spéciaux"
+            # Obtenir les styles de dÃ©gradÃ©s spÃ©ciaux
+            $Styles = Get-ExcelPredefinedLineStyles -Category "DÃ©gradÃ©s spÃ©ciaux"
 
-            # Vérifier que des styles ont été retournés
+            # VÃ©rifier que des styles ont Ã©tÃ© retournÃ©s
             $Styles.Count | Should -BeGreaterThan 0
 
-            # Vérifier que tous les styles sont des styles de dégradés spéciaux
+            # VÃ©rifier que tous les styles sont des styles de dÃ©gradÃ©s spÃ©ciaux
             foreach ($Style in $Styles) {
-                $Style.Category | Should -Be "Dégradés spéciaux"
-                $Style.HasTag("Dégradé") | Should -Be $true
+                $Style.Category | Should -Be "DÃ©gradÃ©s spÃ©ciaux"
+                $Style.HasTag("DÃ©gradÃ©") | Should -Be $true
             }
         }
 
         It "Should not reinitialize styles without Force" {
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
 
-            # Initialiser les styles une première fois
+            # Initialiser les styles une premiÃ¨re fois
             $Count1 = Initialize-ExcelPredefinedStyles
 
-            # Initialiser les styles une deuxième fois sans Force
+            # Initialiser les styles une deuxiÃ¨me fois sans Force
             $Count2 = Initialize-ExcelPredefinedStyles
 
-            # Vérifier que les styles n'ont pas été réinitialisés
+            # VÃ©rifier que les styles n'ont pas Ã©tÃ© rÃ©initialisÃ©s
             $Count2 | Should -Be $Count1
 
-            # Vérifier que le nombre de styles dans le registre est correct
+            # VÃ©rifier que le nombre de styles dans le registre est correct
             $Registry = Get-ExcelStyleRegistry
             $Registry.Styles.Count | Should -Be $Count1
         }
 
         It "Should reinitialize styles with Force" {
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
 
-            # Initialiser les styles une première fois
+            # Initialiser les styles une premiÃ¨re fois
             $Count1 = Initialize-ExcelPredefinedStyles
 
-            # Ajouter un style personnalisé
+            # Ajouter un style personnalisÃ©
             $CustomStyle = [ExcelLineStyle]::new()
-            $CustomStyle.Name = "Style personnalisé"
+            $CustomStyle.Name = "Style personnalisÃ©"
             $CustomStyle.IsBuiltIn = $false
             Add-ExcelStyle -Style $CustomStyle
 
-            # Initialiser les styles une deuxième fois avec Force
+            # Initialiser les styles une deuxiÃ¨me fois avec Force
             $Count2 = Initialize-ExcelPredefinedStyles -Force
 
-            # Vérifier que les styles ont été réinitialisés
+            # VÃ©rifier que les styles ont Ã©tÃ© rÃ©initialisÃ©s
             $Count2 | Should -Be $Count1
 
-            # Vérifier que le nombre de styles dans le registre est correct (styles prédéfinis + style personnalisé)
+            # VÃ©rifier que le nombre de styles dans le registre est correct (styles prÃ©dÃ©finis + style personnalisÃ©)
             $Registry = Get-ExcelStyleRegistry
             $Registry.Styles.Count | Should -Be ($Count1 + 1)
 
-            # Vérifier que le style personnalisé est toujours présent
-            $Registry.GetByName("Style personnalisé") | Should -Not -BeNullOrEmpty
+            # VÃ©rifier que le style personnalisÃ© est toujours prÃ©sent
+            $Registry.GetByName("Style personnalisÃ©") | Should -Not -BeNullOrEmpty
         }
     }
 }

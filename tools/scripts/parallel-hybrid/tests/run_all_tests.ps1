@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour l'architecture hybride PowerShell-Python.
+    ExÃ©cute tous les tests unitaires pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour vérifier le bon fonctionnement
-    de l'architecture hybride PowerShell-Python et des cas d'usage implémentés.
+    Ce script exÃ©cute tous les tests unitaires pour vÃ©rifier le bon fonctionnement
+    de l'architecture hybride PowerShell-Python et des cas d'usage implÃ©mentÃ©s.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -22,7 +22,7 @@ param(
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -31,14 +31,14 @@ Import-Module Pester -Force
 # Chemin vers les tests
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-# Installer les dépendances Python si nécessaire
+# Installer les dÃ©pendances Python si nÃ©cessaire
 $installDependenciesPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "install_dependencies.ps1"
 if (Test-Path -Path $installDependenciesPath) {
-    Write-Host "Installation des dépendances Python..." -ForegroundColor Yellow
+    Write-Host "Installation des dÃ©pendances Python..." -ForegroundColor Yellow
     & $installDependenciesPath
 }
 
-# Créer un répertoire pour les rapports de tests
+# CrÃ©er un rÃ©pertoire pour les rapports de tests
 $testReportsPath = Join-Path -Path $scriptPath -ChildPath "test_reports"
 if (-not (Test-Path -Path $testReportsPath)) {
     New-Item -Path $testReportsPath -ItemType Directory -Force | Out-Null
@@ -65,24 +65,24 @@ if ($GenerateReport) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests :" -ForegroundColor Yellow
-Write-Host "  Tests exécutés : $($testResults.TotalCount)" -ForegroundColor Yellow
-Write-Host "  Tests réussis : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués : $($testResults.FailedCount)" -ForegroundColor ($testResults.FailedCount -gt 0 ? "Red" : "Green")
-Write-Host "  Tests ignorés : $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Tests non exécutés : $($testResults.NotRunCount)" -ForegroundColor Yellow
-Write-Host "  Durée totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Yellow
+Write-Host "  Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor Yellow
+Write-Host "  Tests rÃ©ussis : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s : $($testResults.FailedCount)" -ForegroundColor ($testResults.FailedCount -gt 0 ? "Red" : "Green")
+Write-Host "  Tests ignorÃ©s : $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  Tests non exÃ©cutÃ©s : $($testResults.NotRunCount)" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Yellow
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Cyan
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Cyan
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlReportPath = Join-Path -Path $testReportsPath -ChildPath "test_report.html"
     
     $htmlContent = @"
@@ -156,41 +156,41 @@ if ($GenerateReport) {
 </head>
 <body>
     <h1>Rapport de tests unitaires</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <div class="summary-grid">
             <div class="summary-item">
-                <h3>Tests exécutés</h3>
+                <h3>Tests exÃ©cutÃ©s</h3>
                 <p>$($testResults.TotalCount)</p>
             </div>
             <div class="summary-item">
-                <h3>Tests réussis</h3>
+                <h3>Tests rÃ©ussis</h3>
                 <p class="success">$($testResults.PassedCount)</p>
             </div>
             <div class="summary-item">
-                <h3>Tests échoués</h3>
+                <h3>Tests Ã©chouÃ©s</h3>
                 <p class="failure">$($testResults.FailedCount)</p>
             </div>
             <div class="summary-item">
-                <h3>Tests ignorés</h3>
+                <h3>Tests ignorÃ©s</h3>
                 <p>$($testResults.SkippedCount)</p>
             </div>
             <div class="summary-item">
-                <h3>Durée totale</h3>
+                <h3>DurÃ©e totale</h3>
                 <p>$([Math]::Round($testResults.Duration.TotalSeconds, 2)) secondes</p>
             </div>
         </div>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <thead>
             <tr>
                 <th>Nom du test</th>
-                <th>Résultat</th>
-                <th>Durée (s)</th>
+                <th>RÃ©sultat</th>
+                <th>DurÃ©e (s)</th>
             </tr>
         </thead>
         <tbody>
@@ -200,7 +200,7 @@ if ($GenerateReport) {
         foreach ($block in $container.Blocks) {
             foreach ($test in $block.Tests) {
                 $testClass = $test.Result -eq "Passed" ? "test-passed" : "test-failed"
-                $testResult = $test.Result -eq "Passed" ? "Succès" : "Échec"
+                $testResult = $test.Result -eq "Passed" ? "SuccÃ¨s" : "Ã‰chec"
                 
                 $htmlContent += @"
             <tr class="$testClass">
@@ -222,12 +222,12 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $htmlReportPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
     
     if ($OpenReport) {
         Start-Process $htmlReportPath
     }
 }
 
-# Retourner les résultats des tests
+# Retourner les rÃ©sultats des tests
 return $testResults

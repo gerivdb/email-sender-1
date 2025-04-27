@@ -1,17 +1,17 @@
-# Tests pour le module excel_style_registry.ps1
+﻿# Tests pour le module excel_style_registry.ps1
 
 # Importer Pester
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "excel_style_registry.ps1"
 . $ModulePath
 
 Describe "Excel Style Registry Module" {
     BeforeAll {
-        # Réinitialiser le registre avant chaque test
+        # RÃ©initialiser le registre avant chaque test
         Reset-ExcelStyleRegistry
     }
     
@@ -19,7 +19,7 @@ Describe "Excel Style Registry Module" {
         It "Should create a base style with default values" {
             $Style = [IExcelStyle]::new()
             $Style.Name | Should -Be "Default Style"
-            $Style.Description | Should -Be "Style par défaut"
+            $Style.Description | Should -Be "Style par dÃ©faut"
             $Style.Category | Should -Be "General"
             $Style.Tags.Count | Should -Be 0
             $Style.IsBuiltIn | Should -Be $false
@@ -85,7 +85,7 @@ Describe "Excel Style Registry Module" {
         It "Should create a line style with default values" {
             $Style = [ExcelLineStyle]::new()
             $Style.Name | Should -Be "Default Line Style"
-            $Style.Description | Should -Be "Style de ligne par défaut"
+            $Style.Description | Should -Be "Style de ligne par dÃ©faut"
             $Style.Category | Should -Be "Lines"
             $Style.LineConfig | Should -Not -BeNullOrEmpty
             $Style.Validate() | Should -Be $true
@@ -117,7 +117,7 @@ Describe "Excel Style Registry Module" {
         It "Should create a marker style with default values" {
             $Style = [ExcelMarkerStyle]::new()
             $Style.Name | Should -Be "Default Marker Style"
-            $Style.Description | Should -Be "Style de marqueur par défaut"
+            $Style.Description | Should -Be "Style de marqueur par dÃ©faut"
             $Style.Category | Should -Be "Markers"
             $Style.MarkerConfig | Should -Not -BeNullOrEmpty
             $Style.Validate() | Should -Be $true
@@ -148,7 +148,7 @@ Describe "Excel Style Registry Module" {
         It "Should create a border style with default values" {
             $Style = [ExcelBorderStyle]::new()
             $Style.Name | Should -Be "Default Border Style"
-            $Style.Description | Should -Be "Style de bordure par défaut"
+            $Style.Description | Should -Be "Style de bordure par dÃ©faut"
             $Style.Category | Should -Be "Borders"
             $Style.BorderConfig | Should -Not -BeNullOrEmpty
             $Style.Validate() | Should -Be $true
@@ -179,7 +179,7 @@ Describe "Excel Style Registry Module" {
         It "Should create a color style with default values" {
             $Style = [ExcelColorStyle]::new()
             $Style.Name | Should -Be "Default Color Style"
-            $Style.Description | Should -Be "Style de couleur par défaut"
+            $Style.Description | Should -Be "Style de couleur par dÃ©faut"
             $Style.Category | Should -Be "Colors"
             $Style.Color | Should -Be "#000000"
             $Style.Transparency | Should -Be 0
@@ -222,13 +222,13 @@ Describe "Excel Style Registry Module" {
         It "Should create a combined style with default values" {
             $Style = [ExcelCombinedStyle]::new()
             $Style.Name | Should -Be "Default Combined Style"
-            $Style.Description | Should -Be "Style combiné par défaut"
+            $Style.Description | Should -Be "Style combinÃ© par dÃ©faut"
             $Style.Category | Should -Be "Combined"
             $Style.LineStyle | Should -BeNullOrEmpty
             $Style.MarkerStyle | Should -BeNullOrEmpty
             $Style.BorderStyle | Should -BeNullOrEmpty
             $Style.ColorStyle | Should -BeNullOrEmpty
-            $Style.Validate() | Should -Be $false  # Au moins un style doit être défini
+            $Style.Validate() | Should -Be $false  # Au moins un style doit Ãªtre dÃ©fini
         }
         
         It "Should create a combined style with custom styles" {
@@ -303,7 +303,7 @@ Describe "Excel Style Registry Module" {
         It "Should add styles with categories and tags" {
             $Registry = [ExcelStyleRegistry]::new()
             
-            # Créer un style avec catégorie et tags
+            # CrÃ©er un style avec catÃ©gorie et tags
             $Style = [ExcelLineStyle]::new()
             $Style.Category = "TestCategory"
             $Style.AddTag("Tag1")
@@ -328,7 +328,7 @@ Describe "Excel Style Registry Module" {
         It "Should get styles by various criteria" {
             $Registry = [ExcelStyleRegistry]::new()
             
-            # Créer et ajouter des styles
+            # CrÃ©er et ajouter des styles
             $LineStyle = [ExcelLineStyle]::new()
             $LineStyle.Name = "Test Line Style"
             $LineStyle.Category = "TestCategory"
@@ -347,7 +347,7 @@ Describe "Excel Style Registry Module" {
             # Obtenir par nom
             $Registry.GetByName("Test Line Style") | Should -Be $LineStyle
             
-            # Obtenir par catégorie
+            # Obtenir par catÃ©gorie
             $CategoryStyles = $Registry.GetByCategory("TestCategory")
             $CategoryStyles.Count | Should -Be 2
             $CategoryStyles | Should -Contain $LineStyle
@@ -375,7 +375,7 @@ Describe "Excel Style Registry Module" {
         It "Should search styles by criteria" {
             $Registry = [ExcelStyleRegistry]::new()
             
-            # Créer et ajouter des styles
+            # CrÃ©er et ajouter des styles
             $LineStyle1 = [ExcelLineStyle]::new()
             $LineStyle1.Name = "Business Line Style"
             $LineStyle1.Category = "Business"
@@ -395,7 +395,7 @@ Describe "Excel Style Registry Module" {
             $NameResults.Count | Should -Be 1
             $NameResults | Should -Contain $LineStyle1
             
-            # Rechercher par catégorie
+            # Rechercher par catÃ©gorie
             $CategoryCriteria = @{ Category = "Business" }
             $CategoryResults = $Registry.Search($CategoryCriteria)
             $CategoryResults.Count | Should -Be 1
@@ -420,7 +420,7 @@ Describe "Excel Style Registry Module" {
             $BuiltInResults.Count | Should -Be 1
             $BuiltInResults | Should -Contain $LineStyle1
             
-            # Recherche combinée
+            # Recherche combinÃ©e
             $CombinedCriteria = @{
                 Type = "line"
                 Category = "Business"
@@ -434,19 +434,19 @@ Describe "Excel Style Registry Module" {
         It "Should update styles" {
             $Registry = [ExcelStyleRegistry]::new()
             
-            # Créer et ajouter un style
+            # CrÃ©er et ajouter un style
             $Style = [ExcelLineStyle]::new()
             $Style.Name = "Original Style"
             $Registry.Add($Style) | Should -Be $true
             
-            # Créer un nouveau style pour la mise à jour
+            # CrÃ©er un nouveau style pour la mise Ã  jour
             $UpdatedStyle = [ExcelLineStyle]::new()
             $UpdatedStyle.Name = "Updated Style"
             
-            # Mettre à jour le style
+            # Mettre Ã  jour le style
             $Registry.Update($Style.Id, $UpdatedStyle) | Should -Be $true
             
-            # Vérifier la mise à jour
+            # VÃ©rifier la mise Ã  jour
             $RetrievedStyle = $Registry.GetById($Style.Id)
             $RetrievedStyle | Should -Not -BeNullOrEmpty
             $RetrievedStyle.Name | Should -Be "Updated Style"
@@ -489,7 +489,7 @@ Describe "Excel Style Registry Module" {
         It "Should get categories and tags" {
             $Registry = [ExcelStyleRegistry]::new()
             
-            # Créer et ajouter des styles avec catégories et tags
+            # CrÃ©er et ajouter des styles avec catÃ©gories et tags
             $Style1 = [ExcelLineStyle]::new()
             $Style1.Category = "Category1"
             $Style1.AddTag("Tag1")
@@ -502,7 +502,7 @@ Describe "Excel Style Registry Module" {
             $Style2.AddTag("Tag3")
             $Registry.Add($Style2) | Should -Be $true
             
-            # Obtenir les catégories
+            # Obtenir les catÃ©gories
             $Categories = $Registry.GetCategories()
             $Categories.Count | Should -Be 2
             $Categories | Should -Contain "Category1"
@@ -534,7 +534,7 @@ Describe "Excel Style Registry Module" {
             $Instance.Add($Style) | Should -Be $true
             $Instance.Count | Should -Be 1
             
-            # Réinitialiser l'instance
+            # RÃ©initialiser l'instance
             [ExcelStyleRegistrySingleton]::Reset()
             $Instance.Count | Should -Be 0
         }
@@ -546,12 +546,12 @@ Describe "Excel Style Registry Module" {
             $Isolated | Should -Not -Be $Singleton
             $Isolated | Should -BeOfType [ExcelStyleRegistry]
             
-            # Ajouter un style à l'instance isolée
+            # Ajouter un style Ã  l'instance isolÃ©e
             $Style = [ExcelLineStyle]::new()
             $Isolated.Add($Style) | Should -Be $true
             $Isolated.Count | Should -Be 1
             
-            # Vérifier que l'instance singleton n'est pas affectée
+            # VÃ©rifier que l'instance singleton n'est pas affectÃ©e
             $Singleton.Count | Should -Be 0
         }
     }
@@ -566,7 +566,7 @@ Describe "Excel Style Registry Module" {
             $Registry = New-ExcelStyleRegistry
             $Registry | Should -BeOfType [ExcelStyleRegistry]
             
-            # Vérifier que c'est une instance isolée
+            # VÃ©rifier que c'est une instance isolÃ©e
             $Singleton = Get-ExcelStyleRegistry
             $Registry | Should -Not -Be $Singleton
         }
@@ -579,7 +579,7 @@ Describe "Excel Style Registry Module" {
             Add-ExcelStyle -Style $Style | Should -Be $true
             $Registry.Count | Should -Be 1
             
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
             $Registry.Count | Should -Be 0
         }
@@ -589,19 +589,19 @@ Describe "Excel Style Registry Module" {
             $Style = [ExcelLineStyle]::new()
             Add-ExcelStyle -Style $Style | Should -Be $true
             
-            # Vérifier que le style a été ajouté
+            # VÃ©rifier que le style a Ã©tÃ© ajoutÃ©
             $Registry = Get-ExcelStyleRegistry
             $Registry.Count | Should -Be 1
             
             # Supprimer le style
             Remove-ExcelStyle -Id $Style.Id | Should -Be $true
             
-            # Vérifier que le style a été supprimé
+            # VÃ©rifier que le style a Ã©tÃ© supprimÃ©
             $Registry.Count | Should -Be 0
         }
         
         It "Should get styles by various criteria" {
-            # Créer et ajouter des styles
+            # CrÃ©er et ajouter des styles
             $LineStyle = [ExcelLineStyle]::new()
             $LineStyle.Name = "Test Line Style"
             $LineStyle.Category = "TestCategory"
@@ -622,7 +622,7 @@ Describe "Excel Style Registry Module" {
             $StyleByName = Get-ExcelStyleByName -Name "Test Line Style"
             $StyleByName | Should -Be $LineStyle
             
-            # Obtenir par catégorie
+            # Obtenir par catÃ©gorie
             $StylesByCategory = Get-ExcelStyleByCategory -Category "TestCategory"
             $StylesByCategory.Count | Should -Be 2
             $StylesByCategory | Should -Contain $LineStyle
@@ -646,7 +646,7 @@ Describe "Excel Style Registry Module" {
             $MarkerStyles.Count | Should -Be 1
             $MarkerStyles | Should -Contain $MarkerStyle
             
-            # Rechercher par critères
+            # Rechercher par critÃ¨res
             $Criteria = @{
                 Category = "TestCategory"
                 Type = "Line"
@@ -661,7 +661,7 @@ Describe "Excel Style Registry Module" {
             $AllStyles | Should -Contain $LineStyle
             $AllStyles | Should -Contain $MarkerStyle
             
-            # Obtenir les catégories
+            # Obtenir les catÃ©gories
             $Categories = Get-ExcelStyleCategory
             $Categories.Count | Should -Be 1
             $Categories | Should -Contain "TestCategory"
@@ -672,7 +672,7 @@ Describe "Excel Style Registry Module" {
             $Tags | Should -Contain "Tag1"
             $Tags | Should -Contain "Tag2"
             
-            # Mettre à jour un style
+            # Mettre Ã  jour un style
             $UpdatedStyle = [ExcelLineStyle]::new()
             $UpdatedStyle.Name = "Updated Style"
             Update-ExcelStyle -Id $LineStyle.Id -Style $UpdatedStyle | Should -Be $true

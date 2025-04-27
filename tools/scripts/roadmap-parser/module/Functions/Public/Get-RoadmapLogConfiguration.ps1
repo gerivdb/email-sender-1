@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Obtient la configuration de journalisation actuelle du module RoadmapParser.
 
 .DESCRIPTION
     La fonction Get-RoadmapLogConfiguration obtient la configuration de journalisation actuelle du module RoadmapParser.
-    Elle retourne un objet contenant les paramètres de journalisation actuels.
+    Elle retourne un objet contenant les paramÃ¨tres de journalisation actuels.
 
 .EXAMPLE
     Get-RoadmapLogConfiguration
@@ -16,7 +16,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Get-RoadmapLogConfiguration {
     [CmdletBinding()]
@@ -31,9 +31,9 @@ function Get-RoadmapLogConfiguration {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Logging"
     $loggingFunctionsPath = Join-Path -Path $privatePath -ChildPath "LoggingFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $loggingFunctionsPath)) {
-        throw "Le fichier LoggingFunctions.ps1 est introuvable à l'emplacement : $loggingFunctionsPath"
+        throw "Le fichier LoggingFunctions.ps1 est introuvable Ã  l'emplacement : $loggingFunctionsPath"
     }
 
     # Importer les fonctions

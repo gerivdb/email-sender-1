@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation de FormatException et ses scénarios.
+    Tests pour valider la documentation de FormatException et ses scÃ©narios.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation de FormatException et ses scénarios.
+    fournies dans la documentation de FormatException et ses scÃ©narios.
 
 .NOTES
     Version:        1.0
@@ -14,24 +14,24 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la documentation de FormatException et ses scénarios" {
+# DÃ©finir les tests
+Describe "Tests de la documentation de FormatException et ses scÃ©narios" {
     Context "FormatException" {
-        It "Devrait être une sous-classe de SystemException" {
+        It "Devrait Ãªtre une sous-classe de SystemException" {
             [System.FormatException] | Should -BeOfType [System.Type]
             [System.FormatException].IsSubclassOf([System.SystemException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un message" {
+        It "Devrait permettre de spÃ©cifier un message" {
             $exception = [System.FormatException]::new("Message de test")
             $exception.Message | Should -Be "Message de test"
         }
         
-        It "Exemple 1: Devrait gérer la conversion de chaîne en nombre" {
+        It "Exemple 1: Devrait gÃ©rer la conversion de chaÃ®ne en nombre" {
             function Convert-ToNumber {
                 param (
                     [string]$InputString
@@ -49,7 +49,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Convert-ToNumber -InputString "123.45" | Should -Be "Erreur de format: '123.45' n'est pas un nombre valide"
         }
         
-        It "Exemple 2: Devrait gérer la conversion de chaîne en date" {
+        It "Exemple 2: Devrait gÃ©rer la conversion de chaÃ®ne en date" {
             function Convert-ToDate {
                 param (
                     [string]$DateString
@@ -66,7 +66,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Convert-ToDate -DateString "Pas une date" | Should -Be "Erreur de format: 'Pas une date' n'est pas une date valide"
         }
         
-        It "Exemple 3: Devrait gérer la conversion de chaîne en GUID" {
+        It "Exemple 3: Devrait gÃ©rer la conversion de chaÃ®ne en GUID" {
             function Convert-ToGuid {
                 param (
                     [string]$GuidString
@@ -84,7 +84,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Convert-ToGuid -GuidString "12345678-1234-1234-1234-12345678901" | Should -Be "Erreur de format: '12345678-1234-1234-1234-12345678901' n'est pas un GUID valide"
         }
         
-        It "Exemple 4: Devrait gérer le formatage de chaîne avec placeholders" {
+        It "Exemple 4: Devrait gÃ©rer le formatage de chaÃ®ne avec placeholders" {
             function Format-Message {
                 param (
                     [string]$Template,
@@ -103,7 +103,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Format-Message -Template "Bonjour {0}, vous avez {2} messages" -Args @("John", 5) | Should -Be "Erreur de format: Le template 'Bonjour {0}, vous avez {2} messages' est invalide avec les arguments fournis"
         }
         
-        It "Exemple 5: Devrait gérer la conversion de base64" {
+        It "Exemple 5: Devrait gÃ©rer la conversion de base64" {
             function Convert-FromBase64 {
                 param (
                     [string]$Base64String
@@ -113,19 +113,19 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
                     $bytes = [Convert]::FromBase64String($Base64String)
                     return [System.Text.Encoding]::UTF8.GetString($bytes)
                 } catch [System.FormatException] {
-                    return "Erreur de format: '$Base64String' n'est pas une chaîne base64 valide"
+                    return "Erreur de format: '$Base64String' n'est pas une chaÃ®ne base64 valide"
                 }
             }
             
             $validBase64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("Hello World"))
             Convert-FromBase64 -Base64String $validBase64 | Should -Be "Hello World"
-            Convert-FromBase64 -Base64String "Pas du base64" | Should -Be "Erreur de format: 'Pas du base64' n'est pas une chaîne base64 valide"
+            Convert-FromBase64 -Base64String "Pas du base64" | Should -Be "Erreur de format: 'Pas du base64' n'est pas une chaÃ®ne base64 valide"
             Convert-FromBase64 -Base64String "SGVsbG8gV29ybGQ=" | Should -Be "Hello World"
         }
     }
     
-    Context "Prévention des FormatException" {
-        It "Technique 1: Devrait utiliser TryParse pour éviter les exceptions" {
+    Context "PrÃ©vention des FormatException" {
+        It "Technique 1: Devrait utiliser TryParse pour Ã©viter les exceptions" {
             function Convert-ToNumberSafely {
                 param (
                     [string]$InputString
@@ -137,21 +137,21 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
                 if ($success) {
                     return $number
                 } else {
-                    return "La conversion a échoué: '$InputString' n'est pas un nombre valide"
+                    return "La conversion a Ã©chouÃ©: '$InputString' n'est pas un nombre valide"
                 }
             }
             
             Convert-ToNumberSafely -InputString "123" | Should -Be 123
-            Convert-ToNumberSafely -InputString "abc" | Should -Be "La conversion a échoué: 'abc' n'est pas un nombre valide"
+            Convert-ToNumberSafely -InputString "abc" | Should -Be "La conversion a Ã©chouÃ©: 'abc' n'est pas un nombre valide"
         }
         
-        It "Technique 2: Devrait utiliser des expressions régulières pour la validation préalable" {
+        It "Technique 2: Devrait utiliser des expressions rÃ©guliÃ¨res pour la validation prÃ©alable" {
             function Convert-ToDateSafely {
                 param (
                     [string]$DateString
                 )
                 
-                # Expression régulière simple pour une date au format YYYY-MM-DD
+                # Expression rÃ©guliÃ¨re simple pour une date au format YYYY-MM-DD
                 if ($DateString -match '^\d{4}-\d{2}-\d{2}$') {
                     try {
                         return [DateTime]::Parse($DateString)
@@ -168,7 +168,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Convert-ToDateSafely -DateString "2023-13-45" | Should -Be "La date est au bon format mais invalide: 2023-13-45"
         }
         
-        It "Technique 3: Devrait utiliser des valeurs par défaut" {
+        It "Technique 3: Devrait utiliser des valeurs par dÃ©faut" {
             function Get-NumberWithDefault {
                 param (
                     [string]$InputString,
@@ -188,7 +188,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
             Get-NumberWithDefault -InputString "xyz" -DefaultValue 42 | Should -Be 42
         }
         
-        It "Technique 4: Devrait utiliser des cultures spécifiques" {
+        It "Technique 4: Devrait utiliser des cultures spÃ©cifiques" {
             function Convert-ToDateWithCulture {
                 param (
                     [string]$DateString,
@@ -208,8 +208,8 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
         }
     }
     
-    Context "Débogage des FormatException" {
-        It "Devrait fournir des informations de débogage utiles" {
+    Context "DÃ©bogage des FormatException" {
+        It "Devrait fournir des informations de dÃ©bogage utiles" {
             function Debug-FormatException {
                 param (
                     [string]$InputValue,
@@ -232,7 +232,7 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
                         "Double" { [double]::Parse($InputValue) }
                         "DateTime" { [DateTime]::Parse($InputValue) }
                         "Guid" { [Guid]::Parse($InputValue) }
-                        default { throw "Type cible non supporté: $TargetType" }
+                        default { throw "Type cible non supportÃ©: $TargetType" }
                     }
                     
                     $result.ConversionSuccess = $true
@@ -255,8 +255,8 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
         }
     }
     
-    Context "Différence entre FormatException et autres exceptions de conversion" {
-        It "Devrait montrer la différence entre les exceptions de conversion" {
+    Context "DiffÃ©rence entre FormatException et autres exceptions de conversion" {
+        It "Devrait montrer la diffÃ©rence entre les exceptions de conversion" {
             function Compare-ConversionExceptions {
                 param (
                     [string]$TestCase
@@ -265,15 +265,15 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
                 try {
                     switch ($TestCase) {
                         "Format" {
-                            # Génère FormatException
+                            # GÃ©nÃ¨re FormatException
                             return [int]::Parse("abc")
                         }
                         "Overflow" {
-                            # Génère OverflowException
+                            # GÃ©nÃ¨re OverflowException
                             return [byte]::Parse("1000")
                         }
                         "ArgumentNull" {
-                            # Génère ArgumentNullException
+                            # GÃ©nÃ¨re ArgumentNullException
                             return [int]::Parse($null)
                         }
                         default {
@@ -292,5 +292,5 @@ Describe "Tests de la documentation de FormatException et ses scénarios" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

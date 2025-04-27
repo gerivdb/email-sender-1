@@ -1,4 +1,4 @@
-# Script pour corriger les references de variables dans les chaines accentuees
+﻿# Script pour corriger les references de variables dans les chaines accentuees
 # Version ASCII uniquement pour eviter les problemes d'encodage
 
 [CmdletBinding()]

@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Test de base pour le système de cache prédictif.
+    Test de base pour le systÃ¨me de cache prÃ©dictif.
 .DESCRIPTION
-    Ce script exécute un test de base pour le système de cache prédictif
+    Ce script exÃ©cute un test de base pour le systÃ¨me de cache prÃ©dictif
     en utilisant des fonctions simples.
 .NOTES
     Version: 1.0
@@ -10,17 +10,17 @@
     Date: 12/04/2025
 #>
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Test"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Définir les chemins de test
+# DÃ©finir les chemins de test
 $testCachePath = Join-Path -Path $testDir -ChildPath "Cache"
 $testDatabasePath = Join-Path -Path $testDir -ChildPath "Usage.db"
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testCachePath) {
     Remove-Item -Path $testCachePath -Recurse -Force -ErrorAction SilentlyContinue
 }
@@ -28,13 +28,13 @@ if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Créer le répertoire du cache
+# CrÃ©er le rÃ©pertoire du cache
 New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
 
-Write-Host "Test de base pour le cache prédictif" -ForegroundColor Cyan
+Write-Host "Test de base pour le cache prÃ©dictif" -ForegroundColor Cyan
 Write-Host "==================================" -ForegroundColor Cyan
 
-# Créer un cache simple
+# CrÃ©er un cache simple
 $cache = @{}
 
 # Fonctions de base pour le cache
@@ -111,7 +111,7 @@ function Get-KeyAccessStats {
     return $null
 }
 
-# Dépendances
+# DÃ©pendances
 $dependencies = @{}
 
 function Add-CacheDependency {
@@ -150,7 +150,7 @@ function Remove-CacheDependency {
     return $true
 }
 
-# Cache prédictif
+# Cache prÃ©dictif
 function Get-PredictiveCacheItem {
     param([string]$key)
     $value = Get-CacheItem -key $key
@@ -170,52 +170,52 @@ function Set-PredictiveCacheItem {
 Write-Host "`nTest 1: Utilisation du cache de base" -ForegroundColor Green
 Set-CacheItem -key "TestKey" -value "TestValue"
 $value = Get-CacheItem -key "TestKey"
-Write-Host "  Valeur récupérée: $value" -ForegroundColor White
+Write-Host "  Valeur rÃ©cupÃ©rÃ©e: $value" -ForegroundColor White
 $test1Success = $value -eq "TestValue"
-Write-Host "  Résultat: $(if ($test1Success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($test1Success) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultat: $(if ($test1Success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($test1Success) { "Green" } else { "Red" })
 
-# Test 2: Enregistrement des accès
-Write-Host "`nTest 2: Enregistrement des accès" -ForegroundColor Green
+# Test 2: Enregistrement des accÃ¨s
+Write-Host "`nTest 2: Enregistrement des accÃ¨s" -ForegroundColor Green
 Record-CacheAccess -key "Key1" -hit $true
 Record-CacheAccess -key "Key1" -hit $true
 Record-CacheAccess -key "Key2" -hit $false
 $stats = Get-KeyAccessStats -key "Key1"
 Write-Host "  Statistiques pour Key1: Hits=$($stats.Hits), Misses=$($stats.Misses), Total=$($stats.TotalAccesses)" -ForegroundColor White
 $test2Success = $stats.Hits -eq 2 -and $stats.TotalAccesses -eq 2
-Write-Host "  Résultat: $(if ($test2Success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($test2Success) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultat: $(if ($test2Success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($test2Success) { "Green" } else { "Red" })
 
-# Test 3: Gestion des dépendances
-Write-Host "`nTest 3: Gestion des dépendances" -ForegroundColor Green
+# Test 3: Gestion des dÃ©pendances
+Write-Host "`nTest 3: Gestion des dÃ©pendances" -ForegroundColor Green
 Add-CacheDependency -sourceKey "Source1" -targetKey "Target1" -strength 0.8
 $deps = Get-CacheDependencies -key "Source1"
-Write-Host "  Dépendances pour Source1: $($deps.Count)" -ForegroundColor White
+Write-Host "  DÃ©pendances pour Source1: $($deps.Count)" -ForegroundColor White
 $test3Success = $deps.Count -eq 1 -and $deps["Target1"] -eq 0.8
-Write-Host "  Résultat: $(if ($test3Success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($test3Success) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultat: $(if ($test3Success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($test3Success) { "Green" } else { "Red" })
 
-# Test 4: Cache prédictif
-Write-Host "`nTest 4: Cache prédictif" -ForegroundColor Green
+# Test 4: Cache prÃ©dictif
+Write-Host "`nTest 4: Cache prÃ©dictif" -ForegroundColor Green
 Set-PredictiveCacheItem -key "PredictiveKey" -value "PredictiveValue"
 $value = Get-PredictiveCacheItem -key "PredictiveKey"
-Write-Host "  Valeur récupérée: $value" -ForegroundColor White
+Write-Host "  Valeur rÃ©cupÃ©rÃ©e: $value" -ForegroundColor White
 $test4Success = $value -eq "PredictiveValue"
-Write-Host "  Résultat: $(if ($test4Success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($test4Success) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultat: $(if ($test4Success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($test4Success) { "Green" } else { "Red" })
 
-# Test 5: Vérification des statistiques après utilisation du cache prédictif
-Write-Host "`nTest 5: Vérification des statistiques après utilisation du cache prédictif" -ForegroundColor Green
+# Test 5: VÃ©rification des statistiques aprÃ¨s utilisation du cache prÃ©dictif
+Write-Host "`nTest 5: VÃ©rification des statistiques aprÃ¨s utilisation du cache prÃ©dictif" -ForegroundColor Green
 $stats = Get-KeyAccessStats -key "PredictiveKey"
 Write-Host "  Statistiques pour PredictiveKey: Hits=$($stats.Hits), Misses=$($stats.Misses), Total=$($stats.TotalAccesses)" -ForegroundColor White
 $test5Success = $stats.Hits -eq 1 -and $stats.TotalAccesses -eq 1
-Write-Host "  Résultat: $(if ($test5Success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($test5Success) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultat: $(if ($test5Success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($test5Success) { "Green" } else { "Red" })
 
-# Résumé des tests
-Write-Host "`nRésumé des tests" -ForegroundColor Cyan
+# RÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests" -ForegroundColor Cyan
 Write-Host "==============" -ForegroundColor Cyan
 $totalTests = 5
 $passedTests = @($test1Success, $test2Success, $test3Success, $test4Success, $test5Success).Where({ $_ -eq $true }).Count
-Write-Host "Tests exécutés: $totalTests" -ForegroundColor White
-Write-Host "Tests réussis: $passedTests" -ForegroundColor Green
-Write-Host "Tests échoués: $($totalTests - $passedTests)" -ForegroundColor Red
-Write-Host "Taux de réussite: $([Math]::Round(($passedTests / $totalTests) * 100, 2))%" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor White
+Write-Host "Tests rÃ©ussis: $passedTests" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s: $($totalTests - $passedTests)" -ForegroundColor Red
+Write-Host "Taux de rÃ©ussite: $([Math]::Round(($passedTests / $totalTests) * 100, 2))%" -ForegroundColor Cyan
 
 # Nettoyage
 Write-Host "`nNettoyage..." -ForegroundColor Cyan
@@ -226,11 +226,11 @@ if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force -ErrorAction SilentlyContinue
 }
 
-# Résultat final
+# RÃ©sultat final
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

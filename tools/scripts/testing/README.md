@@ -1,4 +1,4 @@
-# testing
+﻿# testing
 
 Tests et validation
 
@@ -6,7 +6,7 @@ Tests et validation
 
 ### integration
 
-Tests d'intégration
+Tests d'intÃ©gration
 
 ### performance
 

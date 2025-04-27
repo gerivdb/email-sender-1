@@ -1,4 +1,4 @@
-# RoadmapParser.psm1
+﻿# RoadmapParser.psm1
 # Module pour l'analyse et la manipulation des fichiers markdown de roadmap
 
 # Variables globales
@@ -22,7 +22,7 @@ function Get-RoadmapStructure {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath)) {
             throw "Le fichier '$FilePath' n'existe pas."
         }
@@ -47,7 +47,7 @@ function Get-RoadmapStructure {
     }
 }
 
-# Fonction pour analyser les marqueurs de liste utilisés dans le contenu markdown
+# Fonction pour analyser les marqueurs de liste utilisÃ©s dans le contenu markdown
 function Get-MarkdownListMarkers {
     [CmdletBinding()]
     param (
@@ -69,7 +69,7 @@ function Get-MarkdownListMarkers {
     return $usedMarkers
 }
 
-# Fonction pour analyser les conventions d'indentation utilisées dans le contenu markdown
+# Fonction pour analyser les conventions d'indentation utilisÃ©es dans le contenu markdown
 function Get-MarkdownIndentationPattern {
     [CmdletBinding()]
     param (
@@ -112,7 +112,7 @@ function Get-MarkdownIndentationPattern {
         }
     }
 
-    # Déterminer l'indentation la plus courante
+    # DÃ©terminer l'indentation la plus courante
     if ($indentDifferences.Count -gt 0) {
         $mostCommonDiff = $indentDifferences.GetEnumerator() |
             Sort-Object -Property Value -Descending |
@@ -120,7 +120,7 @@ function Get-MarkdownIndentationPattern {
 
         $indentationPattern.SpacesPerLevel = $mostCommonDiff.Key
 
-        # Vérifier si l'indentation est cohérente
+        # VÃ©rifier si l'indentation est cohÃ©rente
         $totalDiffs = $indentDifferences.Values | Measure-Object -Sum | Select-Object -ExpandProperty Sum
         $consistencyRatio = $mostCommonDiff.Value / $totalDiffs
 
@@ -221,7 +221,7 @@ function Get-MarkdownEmphasisStyles {
     return $emphasisStyles
 }
 
-# Fonction pour analyser la hiérarchie des tâches
+# Fonction pour analyser la hiÃ©rarchie des tÃ¢ches
 function Get-TaskHierarchy {
     [CmdletBinding()]
     param (
@@ -238,7 +238,7 @@ function Get-TaskHierarchy {
     # Diviser le contenu en lignes
     $lines = $Content -split "`n"
 
-    # Analyser la hiérarchie des tâches
+    # Analyser la hiÃ©rarchie des tÃ¢ches
     $currentDepth = 0
     $maxDepth = 0
     $numberingPatterns = @{}
@@ -251,7 +251,7 @@ function Get-TaskHierarchy {
         if ($line -match '^\s*[-*+]') {
             $indent = ($line -match '^\s*').Matches[0].Value.Length
 
-            # Déterminer la profondeur basée sur l'indentation
+            # DÃ©terminer la profondeur basÃ©e sur l'indentation
             if (-not $indentToDepth.ContainsKey($indent)) {
                 if ($indent -gt $previousIndent) {
                     $currentDepth++
@@ -271,7 +271,7 @@ function Get-TaskHierarchy {
 
             $maxDepth = [Math]::Max($maxDepth, $currentDepth)
 
-            # Analyser les conventions de numérotation
+            # Analyser les conventions de numÃ©rotation
             if ($line -match '^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)*|\w+\.)') {
                 $numberingPattern = $matches[1]
                 if (-not $numberingPatterns.ContainsKey($numberingPattern)) {
@@ -323,7 +323,7 @@ function Get-StatusMarkers {
     $statusMarkers.Incomplete = [regex]::Matches($Content, $incompletePattern).Count
     $statusMarkers.Complete = [regex]::Matches($Content, $completePattern).Count
 
-    # Rechercher les marqueurs de statut personnalisés
+    # Rechercher les marqueurs de statut personnalisÃ©s
     $customPattern = "(?m)^\s*[-*+]\s*\[([^x ])\]"
     $customMatches = [regex]::Matches($Content, $customPattern)
 
@@ -338,8 +338,8 @@ function Get-StatusMarkers {
 
     # Rechercher les indicateurs textuels de progression
     $textualIndicators = @(
-        "en cours", "en attente", "terminé", "complété", "bloqué",
-        "reporté", "annulé", "prioritaire", "urgent"
+        "en cours", "en attente", "terminÃ©", "complÃ©tÃ©", "bloquÃ©",
+        "reportÃ©", "annulÃ©", "prioritaire", "urgent"
     )
 
     foreach ($indicator in $textualIndicators) {

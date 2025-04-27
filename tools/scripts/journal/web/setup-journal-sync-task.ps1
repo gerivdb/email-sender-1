@@ -1,19 +1,19 @@
-# Script PowerShell pour configurer une tâche planifiée de synchronisation du journal
+﻿# Script PowerShell pour configurer une tÃ¢che planifiÃ©e de synchronisation du journal
 
-# Vérifier si le script est exécuté en tant qu'administrateur
+# VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    Write-Host "Ce script doit être exécuté en tant qu'administrateur." -ForegroundColor Red
-    Write-Host "Veuillez redémarrer le script avec des privilèges d'administrateur."
+    Write-Host "Ce script doit Ãªtre exÃ©cutÃ© en tant qu'administrateur." -ForegroundColor Red
+    Write-Host "Veuillez redÃ©marrer le script avec des privilÃ¨ges d'administrateur."
     exit
 }
 
-# Chemin absolu vers le répertoire du projet
+# Chemin absolu vers le rÃ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $SyncScriptPath = Join-Path $ProjectDir "..\..\D"
 
-# Fonction pour créer une tâche planifiée
+# Fonction pour crÃ©er une tÃ¢che planifiÃ©e
 function New-CustomScheduledTask {
     param (
         [string]$TaskName,
@@ -36,27 +36,27 @@ function New-CustomScheduledTask {
 
     $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
 
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $ExistingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 
     if ($ExistingTask) {
-        # Mettre à jour la tâche existante
+        # Mettre Ã  jour la tÃ¢che existante
         Set-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings
-        Write-Host "Tâche mise à jour: $TaskName" -ForegroundColor Green
+        Write-Host "TÃ¢che mise Ã  jour: $TaskName" -ForegroundColor Green
     } else {
-        # Créer une nouvelle tâche
+        # CrÃ©er une nouvelle tÃ¢che
         Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -User "SYSTEM" -RunLevel Highest
-        Write-Host "Tâche créée: $TaskName" -ForegroundColor Green
+        Write-Host "TÃ¢che crÃ©Ã©e: $TaskName" -ForegroundColor Green
     }
 }
 
 # Afficher un message d'introduction
-Write-Host "Configuration de la tâche planifiée de synchronisation du journal" -ForegroundColor Cyan
+Write-Host "Configuration de la tÃ¢che planifiÃ©e de synchronisation du journal" -ForegroundColor Cyan
 Write-Host "=============================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Demander la fréquence de synchronisation
-$frequency = Read-Host "Fréquence de synchronisation (1: Horaire, 2: Quotidienne) [2]"
+# Demander la frÃ©quence de synchronisation
+$frequency = Read-Host "FrÃ©quence de synchronisation (1: Horaire, 2: Quotidienne) [2]"
 if (-not $frequency) { $frequency = "2" }
 
 if ($frequency -eq "1") {
@@ -66,16 +66,16 @@ if ($frequency -eq "1") {
 } else {
     $schedule = "DAILY"
     $startTime = "20:00"
-    $intervalText = "tous les jours à 20:00"
+    $intervalText = "tous les jours Ã  20:00"
 }
 
-# Créer la tâche planifiée
-Write-Host "Création de la tâche planifiée pour synchroniser le journal $intervalText..." -ForegroundColor Cyan
+# CrÃ©er la tÃ¢che planifiÃ©e
+Write-Host "CrÃ©ation de la tÃ¢che planifiÃ©e pour synchroniser le journal $intervalText..." -ForegroundColor Cyan
 New-CustomScheduledTask -TaskName "Journal_Sync" -ScriptPath $SyncScriptPath -Schedule $schedule -StartTime $startTime
 
 # Afficher un message de conclusion
 Write-Host ""
-Write-Host "Configuration terminée!" -ForegroundColor Green
-Write-Host "Le journal sera automatiquement synchronisé avec l'écosystème $intervalText."
-Write-Host "Vous pouvez modifier cette tâche dans le Planificateur de tâches Windows."
+Write-Host "Configuration terminÃ©e!" -ForegroundColor Green
+Write-Host "Le journal sera automatiquement synchronisÃ© avec l'Ã©cosystÃ¨me $intervalText."
+Write-Host "Vous pouvez modifier cette tÃ¢che dans le Planificateur de tÃ¢ches Windows."
 

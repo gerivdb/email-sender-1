@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module PreloadManager.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module PreloadManager
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
 Describe "PreloadManager Module Tests" {
     BeforeAll {
-        # Créer un mock pour le CacheManager
+        # CrÃ©er un mock pour le CacheManager
         $script:mockCacheManager = [PSCustomObject]@{
             Set               = { param($key, $value) }
             Contains          = { param($key) return $false }
             DefaultTTLSeconds = 3600
         }
 
-        # Créer un mock pour le PredictionEngine
+        # CrÃ©er un mock pour le PredictionEngine
         $script:mockPredictionEngine = [PSCustomObject]@{
             PredictNextAccesses = {
                 return @(
@@ -74,7 +74,7 @@ Describe "PreloadManager Module Tests" {
 
     Context "PreloadManager Methods" {
         BeforeEach {
-            # Cette variable est utilisée dans chaque test de ce contexte
+            # Cette variable est utilisÃ©e dans chaque test de ce contexte
             $script:manager = New-PreloadManager -BaseCache $mockCacheManager -PredictionEngine $mockPredictionEngine
             $script:manager.RegisterGenerator("User:*", { return "User Data" })
             $script:manager.RegisterGenerator("Product:*", { return "Product Data" })
@@ -84,7 +84,7 @@ Describe "PreloadManager Module Tests" {
             # Arrange
             $key = "User:123"
 
-            # Act - Utilisation de la réflexion pour accéder à la méthode privée
+            # Act - Utilisation de la rÃ©flexion pour accÃ©der Ã  la mÃ©thode privÃ©e
             $generator = $manager.FindGenerator($key)
 
             # Assert

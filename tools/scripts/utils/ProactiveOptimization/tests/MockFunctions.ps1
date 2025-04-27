@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions mock pour les tests unitaires.
 .DESCRIPTION
     Ce script contient des fonctions mock pour les tests unitaires.
 #>
 
-# Fonction pour vérifier si un script utilise la parallélisation
+# Fonction pour vÃ©rifier si un script utilise la parallÃ©lisation
 function Test-ScriptUsesParallelization {
     param (
         [string]$ScriptPath
     )
 
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $ScriptPath)) {
         # Utiliser le mock pour les chemins de test
         if ($ScriptPath -like "*Test1.ps1" -or $ScriptPath -like "*Test3.ps1") {
@@ -23,7 +23,7 @@ function Test-ScriptUsesParallelization {
     try {
         $content = Get-Content -Path $ScriptPath -Raw -ErrorAction Stop
 
-        # Vérifier les patterns de parallélisation courants
+        # VÃ©rifier les patterns de parallÃ©lisation courants
         $parallelPatterns = @(
             'Invoke-Parallel',
             'Start-ThreadJob',
@@ -56,20 +56,20 @@ function Test-ScriptUsesParallelization {
     }
 }
 
-# Fonction pour analyser un goulot d'étranglement parallèle
+# Fonction pour analyser un goulot d'Ã©tranglement parallÃ¨le
 function Get-ParallelBottleneckAnalysis {
     param (
         [string]$ScriptPath,
         [PSCustomObject]$Bottleneck
     )
 
-    # Simuler l'analyse d'un goulot d'étranglement
+    # Simuler l'analyse d'un goulot d'Ã©tranglement
     if ($Bottleneck.SlowExecutions.Count -gt 0 -and
         $Bottleneck.SlowExecutions[0].ResourceUsage.CpuUsageEnd -gt 90) {
         return @{
             ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
             ProbableCause       = "Saturation du CPU"
-            Recommendation      = "Réduire le nombre de threads parallèles"
+            Recommendation      = "RÃ©duire le nombre de threads parallÃ¨les"
         }
     }
 
@@ -79,41 +79,41 @@ function Get-ParallelBottleneckAnalysis {
         $Bottleneck.SlowExecutions[0].Parameters.InputData.Count -gt 1000) {
         return @{
             ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
-            ProbableCause       = "Traitement de grands volumes de données"
+            ProbableCause       = "Traitement de grands volumes de donnÃ©es"
             Recommendation      = "Optimiser la taille des lots (batch size)"
         }
     }
 
     return @{
         ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
-        ProbableCause       = "Indéterminé"
+        ProbableCause       = "IndÃ©terminÃ©"
         Recommendation      = "Analyse manuelle requise"
     }
 }
 
-# Fonction pour générer un rapport de goulots d'étranglement
+# Fonction pour gÃ©nÃ©rer un rapport de goulots d'Ã©tranglement
 function New-BottleneckReport {
     param (
         [array]$Bottlenecks,
         [string]$OutputPath
     )
 
-    # Créer le dossier de rapport s'il n'existe pas
+    # CrÃ©er le dossier de rapport s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Générer le nom du fichier de rapport
+    # GÃ©nÃ©rer le nom du fichier de rapport
     $reportFile = Join-Path -Path $OutputPath -ChildPath "bottleneck_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Générer le contenu HTML du rapport
+    # GÃ©nÃ©rer le contenu HTML du rapport
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de Goulots d'Étranglement</title>
+    <title>Rapport de Goulots d'Ã‰tranglement</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
         h1, h2, h3 { color: #2c3e50; }
@@ -127,22 +127,22 @@ function New-BottleneckReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport de Goulots d'Étranglement</h1>
-        <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <h1>Rapport de Goulots d'Ã‰tranglement</h1>
+        <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 "@
 
     if ($Bottlenecks.Count -gt 0) {
         $htmlContent += @"
-        <h2>Goulots d'Étranglement Détectés</h2>
+        <h2>Goulots d'Ã‰tranglement DÃ©tectÃ©s</h2>
         <table>
             <tr>
                 <th>Script</th>
-                <th>Durée Moyenne (ms)</th>
+                <th>DurÃ©e Moyenne (ms)</th>
                 <th>Seuil de Lenteur (ms)</th>
-                <th>Exécutions Lentes</th>
-                <th>Total Exécutions</th>
-                <th>% Exécutions Lentes</th>
-                <th>Parallélisation</th>
+                <th>ExÃ©cutions Lentes</th>
+                <th>Total ExÃ©cutions</th>
+                <th>% ExÃ©cutions Lentes</th>
+                <th>ParallÃ©lisation</th>
             </tr>
 "@
 
@@ -165,18 +165,18 @@ function New-BottleneckReport {
         </table>
 "@
 
-        # Ajouter les détails pour les scripts parallèles
+        # Ajouter les dÃ©tails pour les scripts parallÃ¨les
         $parallelBottlenecks = $Bottlenecks | Where-Object { $_.IsParallel -and $_.DetailedAnalysis }
         if ($parallelBottlenecks.Count -gt 0) {
             $htmlContent += @"
-        <h2>Détails des Goulots d'Étranglement Parallèles</h2>
+        <h2>DÃ©tails des Goulots d'Ã‰tranglement ParallÃ¨les</h2>
 "@
 
             foreach ($bottleneck in $parallelBottlenecks) {
                 $htmlContent += @"
         <h3>$($bottleneck.ScriptName)</h3>
         <ul>
-            <li><strong>Type de Parallélisation:</strong> $($bottleneck.DetailedAnalysis.ParallelizationType)</li>
+            <li><strong>Type de ParallÃ©lisation:</strong> $($bottleneck.DetailedAnalysis.ParallelizationType)</li>
             <li><strong>Cause Probable:</strong> $($bottleneck.DetailedAnalysis.ProbableCause)</li>
             <li><strong>Recommandation:</strong> $($bottleneck.DetailedAnalysis.Recommendation)</li>
         </ul>
@@ -186,8 +186,8 @@ function New-BottleneckReport {
     } else {
         $htmlContent += @"
         <div class="success-message">
-            <h2>Aucun Goulot d'Étranglement Détecté</h2>
-            <p>Aucun goulot d'étranglement n'a été détecté dans les scripts analysés.</p>
+            <h2>Aucun Goulot d'Ã‰tranglement DÃ©tectÃ©</h2>
+            <p>Aucun goulot d'Ã©tranglement n'a Ã©tÃ© dÃ©tectÃ© dans les scripts analysÃ©s.</p>
         </div>
 "@
     }
@@ -198,19 +198,19 @@ function New-BottleneckReport {
 </html>
 "@
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
     return $reportFile
 }
 
-# Fonction pour trouver les goulots d'étranglement dans les processus parallèles
+# Fonction pour trouver les goulots d'Ã©tranglement dans les processus parallÃ¨les
 function Find-ParallelProcessBottlenecks {
     param (
         [switch]$DetailedAnalysis
     )
 
-    # Simuler la détection de goulots d'étranglement
+    # Simuler la dÃ©tection de goulots d'Ã©tranglement
     $bottlenecks = @(
         [PSCustomObject]@{
             ScriptPath              = "C:\Scripts\Test1.ps1"
@@ -243,7 +243,7 @@ function Find-ParallelProcessBottlenecks {
             $bottleneck | Add-Member -MemberType NoteProperty -Name "DetailedAnalysis" -Value @{
                 ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
                 ProbableCause       = "Saturation du CPU"
-                Recommendation      = "Réduire le nombre de threads parallèles"
+                Recommendation      = "RÃ©duire le nombre de threads parallÃ¨les"
             }
         }
     }

@@ -1,7 +1,7 @@
-    param($ServerLogins, $ServerRoles, $ServerPermissions)
+﻿    param($ServerLogins, $ServerRoles, $ServerPermissions)
     $results = @()
     
-    # Configurer les seuils d'inactivité (en jours)
+    # Configurer les seuils d'inactivitÃ© (en jours)
     $warningThreshold = 60    # Avertissement pour les comptes inactifs depuis 60 jours
     $criticalThreshold = 90   # Alerte critique pour les comptes inactifs depuis 90 jours
     
@@ -12,7 +12,7 @@
     $warningDate = $currentDate.AddDays(-$warningThreshold)
     $criticalDate = $currentDate.AddDays(-$criticalThreshold)
     
-    # Filtrer les logins SQL qui ont une date de dernière connexion
+    # Filtrer les logins SQL qui ont une date de derniÃ¨re connexion
     $loginsWithLastLogin = $ServerLogins | Where-Object { 
         $_.LoginType -eq "SQL_LOGIN" -and 
         $_.LastLogin -ne $null -and 
@@ -20,28 +20,28 @@
     }
     
     foreach ($login in $loginsWithLastLogin) {
-        # Calculer le nombre de jours depuis la dernière connexion
+        # Calculer le nombre de jours depuis la derniÃ¨re connexion
         $daysSinceLastLogin = [math]::Round(($currentDate - $login.LastLogin).TotalDays)
         
-        # Vérifier si le compte est critique (inactif depuis plus de 90 jours)
+        # VÃ©rifier si le compte est critique (inactif depuis plus de 90 jours)
         if ($login.LastLogin -lt $criticalDate) {
             $results += [PSCustomObject]@{
                 LoginName = $login.LoginName
-                Description = "Le login SQL est inactif depuis $daysSinceLastLogin jours (dernier accès: $($login.LastLogin.ToString('yyyy-MM-dd')))"
-                RecommendedAction = "Désactiver le compte ou le supprimer s'il n'est plus nécessaire"
+                Description = "Le login SQL est inactif depuis $daysSinceLastLogin jours (dernier accÃ¨s: $($login.LastLogin.ToString('yyyy-MM-dd')))"
+                RecommendedAction = "DÃ©sactiver le compte ou le supprimer s'il n'est plus nÃ©cessaire"
             }
         }
-        # Vérifier si le compte est en avertissement (inactif depuis plus de 60 jours)
+        # VÃ©rifier si le compte est en avertissement (inactif depuis plus de 60 jours)
         elseif ($login.LastLogin -lt $warningDate) {
             $results += [PSCustomObject]@{
                 LoginName = $login.LoginName
-                Description = "Le login SQL est inactif depuis $daysSinceLastLogin jours (dernier accès: $($login.LastLogin.ToString('yyyy-MM-dd')))"
-                RecommendedAction = "Vérifier si ce compte est toujours nécessaire"
+                Description = "Le login SQL est inactif depuis $daysSinceLastLogin jours (dernier accÃ¨s: $($login.LastLogin.ToString('yyyy-MM-dd')))"
+                RecommendedAction = "VÃ©rifier si ce compte est toujours nÃ©cessaire"
             }
         }
     }
     
-    # Vérifier les comptes qui n'ont jamais été utilisés
+    # VÃ©rifier les comptes qui n'ont jamais Ã©tÃ© utilisÃ©s
     $neverUsedLogins = $ServerLogins | Where-Object { 
         $_.LoginType -eq "SQL_LOGIN" -and 
         $_.LastLogin -eq $null -and 
@@ -54,8 +54,8 @@
         
         $results += [PSCustomObject]@{
             LoginName = $login.LoginName
-            Description = "Le login SQL a été créé il y a $daysSinceCreation jours mais n'a jamais été utilisé"
-            RecommendedAction = "Désactiver le compte ou le supprimer s'il n'est plus nécessaire"
+            Description = "Le login SQL a Ã©tÃ© crÃ©Ã© il y a $daysSinceCreation jours mais n'a jamais Ã©tÃ© utilisÃ©"
+            RecommendedAction = "DÃ©sactiver le compte ou le supprimer s'il n'est plus nÃ©cessaire"
         }
     }
     

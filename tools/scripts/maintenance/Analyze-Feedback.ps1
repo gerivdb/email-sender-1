@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Analyse les feedbacks des utilisateurs.
 .DESCRIPTION
-    Ce script analyse les feedbacks des utilisateurs et génère un rapport
-    d'analyse et d'opportunités d'amélioration.
+    Ce script analyse les feedbacks des utilisateurs et gÃ©nÃ¨re un rapport
+    d'analyse et d'opportunitÃ©s d'amÃ©lioration.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de sortie.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML en plus du rapport JSON.
+    GÃ©nÃ¨re un rapport HTML en plus du rapport JSON.
 .EXAMPLE
     .\Analyze-Feedback.ps1 -OutputPath ".\reports\feedback" -GenerateHTML
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-23
+    Date de crÃ©ation: 2025-05-23
 #>
 
 [CmdletBinding()]
@@ -30,7 +30,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\FeedbackCollection.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -55,30 +55,30 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Générer le rapport d'analyse
+# GÃ©nÃ©rer le rapport d'analyse
 $analysisPath = Join-Path -Path $OutputPath -ChildPath "feedback_analysis_$(Get-Date -Format 'yyyyMMdd').json"
 $analysis = Analyze-Feedbacks -OutputPath $analysisPath
 
 if (-not $analysis) {
-    Write-Log "Aucun feedback à analyser" -Level "WARNING"
+    Write-Log "Aucun feedback Ã  analyser" -Level "WARNING"
     exit 0
 }
 
-Write-Log "Rapport d'analyse généré: $analysisPath" -Level "SUCCESS"
+Write-Log "Rapport d'analyse gÃ©nÃ©rÃ©: $analysisPath" -Level "SUCCESS"
 
-# Générer le rapport d'opportunités d'amélioration
+# GÃ©nÃ©rer le rapport d'opportunitÃ©s d'amÃ©lioration
 $opportunitiesPath = Join-Path -Path $OutputPath -ChildPath "improvement_opportunities_$(Get-Date -Format 'yyyyMMdd').json"
 $opportunities = Identify-ImprovementOpportunities -OutputPath $opportunitiesPath
 
-Write-Log "Rapport d'opportunités d'amélioration généré: $opportunitiesPath" -Level "SUCCESS"
+Write-Log "Rapport d'opportunitÃ©s d'amÃ©lioration gÃ©nÃ©rÃ©: $opportunitiesPath" -Level "SUCCESS"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "feedback_report_$(Get-Date -Format 'yyyyMMdd').html"
     
@@ -141,9 +141,9 @@ if ($GenerateHTML) {
     <h1>Rapport de feedback</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Total des feedbacks: <strong>$($analysis.TotalFeedbacks)</strong></p>
-        <p>Rapport généré le: <strong>$($analysis.GeneratedAt)</strong></p>
+        <p>Rapport gÃ©nÃ©rÃ© le: <strong>$($analysis.GeneratedAt)</strong></p>
     </div>
     
     <div class="section">
@@ -213,10 +213,10 @@ if ($GenerateHTML) {
     </div>
     
     <div class="section">
-        <h2>Statistiques par sévérité</h2>
+        <h2>Statistiques par sÃ©vÃ©ritÃ©</h2>
         <table>
             <tr>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Nombre</th>
             </tr>
 "@
@@ -235,7 +235,7 @@ if ($GenerateHTML) {
     </div>
     
     <div class="section">
-        <h2>Opportunités d'amélioration</h2>
+        <h2>OpportunitÃ©s d'amÃ©lioration</h2>
         
         <h3>Composants avec le plus de bugs</h3>
         <table>
@@ -257,11 +257,11 @@ if ($GenerateHTML) {
     $htmlContent += @"
         </table>
         
-        <h3>Composants avec le plus de problèmes de performance</h3>
+        <h3>Composants avec le plus de problÃ¨mes de performance</h3>
         <table>
             <tr>
                 <th>Composant</th>
-                <th>Nombre de problèmes</th>
+                <th>Nombre de problÃ¨mes</th>
             </tr>
 "@
 
@@ -277,10 +277,10 @@ if ($GenerateHTML) {
     $htmlContent += @"
         </table>
         
-        <h3>Demandes de fonctionnalités les plus populaires</h3>
+        <h3>Demandes de fonctionnalitÃ©s les plus populaires</h3>
         <table>
             <tr>
-                <th>Fonctionnalité</th>
+                <th>FonctionnalitÃ©</th>
                 <th>Nombre de demandes</th>
             </tr>
 "@
@@ -297,14 +297,14 @@ if ($GenerateHTML) {
     $htmlContent += @"
         </table>
         
-        <h3>Problèmes critiques non résolus</h3>
+        <h3>ProblÃ¨mes critiques non rÃ©solus</h3>
         <table>
             <tr>
                 <th>ID</th>
                 <th>Composant</th>
                 <th>Type</th>
                 <th>Description</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Statut</th>
             </tr>
 "@
@@ -326,25 +326,25 @@ if ($GenerateHTML) {
         </table>
     </div>
     
-    <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p class="timestamp">Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
 
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
-# Afficher un résumé
-Write-Log "`nRésumé de l'analyse des feedbacks:" -Level "INFO"
+# Afficher un rÃ©sumÃ©
+Write-Log "`nRÃ©sumÃ© de l'analyse des feedbacks:" -Level "INFO"
 Write-Log "  Total des feedbacks: $($analysis.TotalFeedbacks)" -Level "INFO"
 Write-Log "  Composants: $($analysis.ComponentStats.Count)" -Level "INFO"
 Write-Log "  Types de feedback: $($analysis.TypeStats.Count)" -Level "INFO"
 Write-Log "  Statuts: $($analysis.StatusStats.Count)" -Level "INFO"
 
-Write-Log "`nOpportunités d'amélioration:" -Level "INFO"
+Write-Log "`nOpportunitÃ©s d'amÃ©lioration:" -Level "INFO"
 Write-Log "  Composants avec bugs: $($opportunities.BuggyComponents.Count)" -Level "INFO"
-Write-Log "  Composants avec problèmes de performance: $($opportunities.SlowComponents.Count)" -Level "INFO"
-Write-Log "  Demandes de fonctionnalités populaires: $($opportunities.PopularFeatures.Count)" -Level "INFO"
-Write-Log "  Problèmes critiques non résolus: $($opportunities.CriticalIssues.Count)" -Level "INFO"
+Write-Log "  Composants avec problÃ¨mes de performance: $($opportunities.SlowComponents.Count)" -Level "INFO"
+Write-Log "  Demandes de fonctionnalitÃ©s populaires: $($opportunities.PopularFeatures.Count)" -Level "INFO"
+Write-Log "  ProblÃ¨mes critiques non rÃ©solus: $($opportunities.CriticalIssues.Count)" -Level "INFO"

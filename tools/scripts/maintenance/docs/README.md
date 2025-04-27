@@ -1,10 +1,10 @@
-# Documentation de maintenance
+﻿# Documentation de maintenance
 
-Ce répertoire contient la documentation sur la maintenance du projet.
+Ce rÃ©pertoire contient la documentation sur la maintenance du projet.
 
 ## Contenu
 
-- Procédures de maintenance
-- Guides de dépannage
+- ProcÃ©dures de maintenance
+- Guides de dÃ©pannage
 - Bonnes pratiques
-- Historique des opérations de maintenance
+- Historique des opÃ©rations de maintenance

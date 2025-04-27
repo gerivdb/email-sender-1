@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les scripts d'analyse de code.
+    ExÃ©cute tous les tests unitaires pour les scripts d'analyse de code.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les scripts d'analyse de code
-    et génère un rapport de couverture de code.
+    Ce script exÃ©cute tous les tests unitaires pour les scripts d'analyse de code
+    et gÃ©nÃ¨re un rapport de couverture de code.
 .PARAMETER OutputPath
-    Chemin du répertoire où les rapports de tests seront générés.
+    Chemin du rÃ©pertoire oÃ¹ les rapports de tests seront gÃ©nÃ©rÃ©s.
 .PARAMETER ShowCoverage
-    Indique si le rapport de couverture de code doit être affiché.
+    Indique si le rapport de couverture de code doit Ãªtre affichÃ©.
 .EXAMPLE
     .\Run-AllTests.ps1 -OutputPath ".\results" -ShowCoverage
 #>
@@ -22,7 +22,7 @@ param (
     [switch]$ShowCoverage
 )
 
-# Vérifier si Pester est disponible
+# VÃ©rifier si Pester est disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Warning "Le module Pester n'est pas disponible. Installez-le avec 'Install-Module -Name Pester -Force'."
     return
@@ -31,24 +31,24 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module -Name Pester -Force
 
-# Définir le répertoire des tests
+# DÃ©finir le rÃ©pertoire des tests
 $testsDir = $PSScriptRoot
 $scriptsDir = Split-Path -Path $testsDir -Parent
 
-# Définir le répertoire de sortie par défaut si non spécifié
+# DÃ©finir le rÃ©pertoire de sortie par dÃ©faut si non spÃ©cifiÃ©
 if (-not $OutputPath) {
     $OutputPath = Join-Path -Path $testsDir -ChildPath "results"
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath -PathType Container)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Définir les fichiers de test à exécuter
+# DÃ©finir les fichiers de test Ã  exÃ©cuter
 $testFiles = Get-ChildItem -Path $testsDir -Filter "*.Tests.ps1" -File
 
-# Copier le module TestHelpers.psm1 dans le répertoire temporaire de Pester
+# Copier le module TestHelpers.psm1 dans le rÃ©pertoire temporaire de Pester
 $testHelpersPath = Join-Path -Path $testsDir -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     $pesterTempDir = Join-Path -Path $env:TEMP -ChildPath "Pester"
@@ -67,7 +67,7 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "TestResults.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Configurer la couverture de code si demandé
+# Configurer la couverture de code si demandÃ©
 if ($ShowCoverage) {
     $pesterConfig.CodeCoverage.Enabled = $true
     $pesterConfig.CodeCoverage.Path = @(
@@ -80,25 +80,25 @@ if ($ShowCoverage) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des résultats:" -ForegroundColor Cyan
-Write-Host "  - Tests exécutés: $($results.TotalCount)" -ForegroundColor White
-Write-Host "  - Tests réussis: $($results.PassedCount)" -ForegroundColor $(if ($results.PassedCount -eq $results.TotalCount) { "Green" } else { "White" })
-Write-Host "  - Tests échoués: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { "Red" } else { "Green" })
-Write-Host "  - Tests ignorés: $($results.SkippedCount)" -ForegroundColor $(if ($results.SkippedCount -gt 0) { "Yellow" } else { "Green" })
-Write-Host "  - Tests non exécutés: $($results.NotRunCount)" -ForegroundColor $(if ($results.NotRunCount -gt 0) { "Yellow" } else { "Green" })
-Write-Host "  - Durée: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+Write-Host "  - Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor White
+Write-Host "  - Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor $(if ($results.PassedCount -eq $results.TotalCount) { "Green" } else { "White" })
+Write-Host "  - Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { "Red" } else { "Green" })
+Write-Host "  - Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor $(if ($results.SkippedCount -gt 0) { "Yellow" } else { "Green" })
+Write-Host "  - Tests non exÃ©cutÃ©s: $($results.NotRunCount)" -ForegroundColor $(if ($results.NotRunCount -gt 0) { "Yellow" } else { "Green" })
+Write-Host "  - DurÃ©e: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-# Afficher le chemin des rapports générés
-Write-Host "`nRapports générés:" -ForegroundColor Cyan
+# Afficher le chemin des rapports gÃ©nÃ©rÃ©s
+Write-Host "`nRapports gÃ©nÃ©rÃ©s:" -ForegroundColor Cyan
 Write-Host "  - Rapport de tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor White
 if ($ShowCoverage) {
     Write-Host "  - Rapport de couverture: $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor White
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

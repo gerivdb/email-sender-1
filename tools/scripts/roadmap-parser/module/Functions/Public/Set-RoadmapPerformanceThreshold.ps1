@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit un seuil de performance pour un chronomètre.
+    DÃ©finit un seuil de performance pour un chronomÃ¨tre.
 
 .DESCRIPTION
-    La fonction Set-RoadmapPerformanceThreshold définit un seuil de performance pour un chronomètre.
-    Si le temps d'exécution dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-RoadmapPerformanceThreshold dÃ©finit un seuil de performance pour un chronomÃ¨tre.
+    Si le temps d'exÃ©cution dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
-    Le nom du chronomètre.
+    Le nom du chronomÃ¨tre.
 
 .PARAMETER ThresholdMs
-    Le seuil de temps d'exécution en millisecondes.
+    Le seuil de temps d'exÃ©cution en millisecondes.
 
 .EXAMPLE
     Set-RoadmapPerformanceThreshold -Name "MaFonction" -ThresholdMs 1000
-    Définit un seuil de 1000 millisecondes pour le chronomètre nommé "MaFonction".
+    DÃ©finit un seuil de 1000 millisecondes pour le chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Set-RoadmapPerformanceThreshold {
     [CmdletBinding()]
@@ -42,9 +42,9 @@ function Set-RoadmapPerformanceThreshold {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions

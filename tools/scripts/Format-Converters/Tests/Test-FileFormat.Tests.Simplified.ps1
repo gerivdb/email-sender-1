@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Test-FileFormat.
+    Tests unitaires simplifiÃ©s pour la fonction Test-FileFormat.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Test-FileFormat du module Format-Converters.
 
 .NOTES
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -25,17 +25,17 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
 # Tests Pester
 Describe "Fonction Test-FileFormat (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FileFormatTests_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer des fichiers de test avec différents formats
+        # CrÃ©er des fichiers de test avec diffÃ©rents formats
         $script:jsonFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.json"
         $jsonContent = @"
 {
@@ -45,7 +45,7 @@ Describe "Fonction Test-FileFormat (Simplified)" {
 }
 "@
         $jsonContent | Set-Content -Path $script:jsonFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:jsonFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:jsonFilePath"
 
         $script:xmlFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.xml"
         $xmlContent = @"
@@ -57,7 +57,7 @@ Describe "Fonction Test-FileFormat (Simplified)" {
 </root>
 "@
         $xmlContent | Set-Content -Path $script:xmlFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:xmlFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:xmlFilePath"
 
         $script:csvFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.csv"
         $csvContent = @"
@@ -65,7 +65,7 @@ Name,Version,Description
 Test,1.0.0,"Test file for CSV format detection"
 "@
         $csvContent | Set-Content -Path $script:csvFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:csvFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:csvFilePath"
 
         $script:htmlFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.html"
         $htmlContent = @"
@@ -81,7 +81,7 @@ Test,1.0.0,"Test file for CSV format detection"
 </html>
 "@
         $htmlContent | Set-Content -Path $script:htmlFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:htmlFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:htmlFilePath"
 
         $script:txtFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.txt"
         $txtContent = @"
@@ -90,13 +90,13 @@ It contains multiple lines.
 Test file for TEXT format detection.
 "@
         $txtContent | Set-Content -Path $script:txtFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:txtFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:txtFilePath"
 
         $script:emptyFilePath = Join-Path -Path $script:testTempDir -ChildPath "empty.txt"
         "" | Set-Content -Path $script:emptyFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:emptyFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:emptyFilePath"
 
-        # Créer un fichier ambigu (pourrait être JSON ou JavaScript)
+        # CrÃ©er un fichier ambigu (pourrait Ãªtre JSON ou JavaScript)
         $script:ambiguousFilePath = Join-Path -Path $script:testTempDir -ChildPath "ambiguous.txt"
         $ambiguousContent = @"
 {
@@ -105,9 +105,9 @@ Test file for TEXT format detection.
 }
 "@
         $ambiguousContent | Set-Content -Path $script:ambiguousFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:ambiguousFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:ambiguousFilePath"
 
-        # Vérifier que les fichiers de test existent
+        # VÃ©rifier que les fichiers de test existent
         $testFiles = @(
             $script:jsonFilePath,
             $script:xmlFilePath,
@@ -126,7 +126,7 @@ Test file for TEXT format detection.
 
         Write-Verbose "Tous les fichiers de test existent."
 
-        # Créer une fonction simplifiée Test-FileFormat pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Test-FileFormat pour les tests
         function global:Test-FileFormat {
             [CmdletBinding()]
             param (
@@ -137,15 +137,15 @@ Test file for TEXT format detection.
                 [switch]$IncludeAllFormats
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Déterminer le format en fonction de l'extension
+            # DÃ©terminer le format en fonction de l'extension
             $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
-            # Simuler la détection de format
+            # Simuler la dÃ©tection de format
             $detectedFormat = $null
             $confidence = 0
             $allFormats = @()
@@ -180,11 +180,11 @@ Test file for TEXT format detection.
                     )
                 }
                 ".txt" {
-                    # Pour les fichiers .txt, simuler une détection basée sur le contenu
+                    # Pour les fichiers .txt, simuler une dÃ©tection basÃ©e sur le contenu
                     $content = Get-Content -Path $FilePath -Raw
 
                     if ($content -match '^\s*\{.*\}\s*$') {
-                        # Pourrait être du JSON
+                        # Pourrait Ãªtre du JSON
                         $detectedFormat = "JSON"
                         $confidence = 75
                         $allFormats = @(
@@ -193,7 +193,7 @@ Test file for TEXT format detection.
                         )
                     }
                     elseif ($content -match '^\s*<.*>\s*$') {
-                        # Pourrait être du XML ou HTML
+                        # Pourrait Ãªtre du XML ou HTML
                         $detectedFormat = "XML"
                         $confidence = 70
                         $allFormats = @(
@@ -203,7 +203,7 @@ Test file for TEXT format detection.
                         )
                     }
                     elseif ($content -match ',') {
-                        # Pourrait être du CSV
+                        # Pourrait Ãªtre du CSV
                         $detectedFormat = "CSV"
                         $confidence = 65
                         $allFormats = @(
@@ -211,7 +211,7 @@ Test file for TEXT format detection.
                             [PSCustomObject]@{ Format = "TEXT"; Confidence = 60; Priority = 1 }
                         )
                     }
-                    # Cas spécial pour le fichier ambigu
+                    # Cas spÃ©cial pour le fichier ambigu
                     elseif ($FilePath -like "*ambiguous*") {
                         $detectedFormat = "JSON"
                         $confidence = 75
@@ -237,7 +237,7 @@ Test file for TEXT format detection.
                 }
             }
 
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $FilePath
                 DetectedFormat = $detectedFormat
@@ -249,29 +249,29 @@ Test file for TEXT format detection.
         }
     }
 
-    Context "Détection de formats basée sur l'extension" {
-        It "Détecte correctement le format JSON" {
+    Context "DÃ©tection de formats basÃ©e sur l'extension" {
+        It "DÃ©tecte correctement le format JSON" {
             $result = Test-FileFormat -FilePath $script:jsonFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "JSON"
             $result.Confidence | Should -BeGreaterThan 90
         }
 
-        It "Détecte correctement le format XML" {
+        It "DÃ©tecte correctement le format XML" {
             $result = Test-FileFormat -FilePath $script:xmlFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "XML"
             $result.Confidence | Should -BeGreaterThan 85
         }
 
-        It "Détecte correctement le format CSV" {
+        It "DÃ©tecte correctement le format CSV" {
             $result = Test-FileFormat -FilePath $script:csvFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "CSV"
             $result.Confidence | Should -BeGreaterThan 80
         }
 
-        It "Détecte correctement le format HTML" {
+        It "DÃ©tecte correctement le format HTML" {
             $result = Test-FileFormat -FilePath $script:htmlFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "HTML"
@@ -279,16 +279,16 @@ Test file for TEXT format detection.
         }
     }
 
-    Context "Détection de formats basée sur le contenu" {
-        It "Détecte correctement le format TEXT pour un fichier texte" {
+    Context "DÃ©tection de formats basÃ©e sur le contenu" {
+        It "DÃ©tecte correctement le format TEXT pour un fichier texte" {
             $result = Test-FileFormat -FilePath $script:txtFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "TEXT"
             $result.Confidence | Should -BeGreaterThan 85
         }
 
-        It "Détecte correctement un format ambigu" {
-            # Créer un fichier ambigu avec extension .json pour éviter les problèmes de détection
+        It "DÃ©tecte correctement un format ambigu" {
+            # CrÃ©er un fichier ambigu avec extension .json pour Ã©viter les problÃ¨mes de dÃ©tection
             $ambiguousJsonPath = Join-Path -Path $script:testTempDir -ChildPath "ambiguous.json"
             $ambiguousContent = @"
 {
@@ -305,7 +305,7 @@ Test file for TEXT format detection.
     }
 
     Context "Gestion des cas particuliers" {
-        It "Gère correctement les fichiers vides" {
+        It "GÃ¨re correctement les fichiers vides" {
             $result = Test-FileFormat -FilePath $script:emptyFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "TEXT"
@@ -318,8 +318,8 @@ Test file for TEXT format detection.
             $result.AllFormats.Count | Should -BeGreaterThan 1
         }
 
-        It "Gère correctement les fichiers avec des extensions inconnues" {
-            # Créer un fichier avec une extension inconnue
+        It "GÃ¨re correctement les fichiers avec des extensions inconnues" {
+            # CrÃ©er un fichier avec une extension inconnue
             $unknownExtFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.xyz"
             "Contenu de test" | Set-Content -Path $unknownExtFilePath -Encoding UTF8
 
@@ -328,51 +328,51 @@ Test file for TEXT format detection.
             $result.DetectedFormat | Should -Be "UNKNOWN"
         }
 
-        It "Gère correctement les fichiers sans extension" {
-            # Créer un fichier sans extension
+        It "GÃ¨re correctement les fichiers sans extension" {
+            # CrÃ©er un fichier sans extension
             $noExtFilePath = Join-Path -Path $script:testTempDir -ChildPath "test_sans_extension"
             "Contenu de test" | Set-Content -Path $noExtFilePath -Encoding UTF8
 
             $result = Test-FileFormat -FilePath $noExtFilePath
             $result | Should -Not -BeNullOrEmpty
-            # Le format détecté peut varier, mais ne devrait pas être null
+            # Le format dÃ©tectÃ© peut varier, mais ne devrait pas Ãªtre null
             $result.DetectedFormat | Should -Not -BeNullOrEmpty
         }
 
-        It "Gère correctement les fichiers binaires" {
-            # Créer un fichier binaire simple
+        It "GÃ¨re correctement les fichiers binaires" {
+            # CrÃ©er un fichier binaire simple
             $binaryFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.bin"
             $bytes = [byte[]]@(0, 1, 2, 3, 4, 5)
             [System.IO.File]::WriteAllBytes($binaryFilePath, $bytes)
 
             $result = Test-FileFormat -FilePath $binaryFilePath
             $result | Should -Not -BeNullOrEmpty
-            # Le format détecté peut varier, mais ne devrait pas planter
+            # Le format dÃ©tectÃ© peut varier, mais ne devrait pas planter
             $result.DetectedFormat | Should -Not -BeNullOrEmpty
         }
     }
 
     Context "Gestion des erreurs" {
-        It "Lève une erreur si le fichier n'existe pas" {
+        It "LÃ¨ve une erreur si le fichier n'existe pas" {
             { Test-FileFormat -FilePath "fichier_inexistant.txt" } | Should -Throw
         }
 
-        It "Lève une erreur si le chemin est un répertoire" {
+        It "LÃ¨ve une erreur si le chemin est un rÃ©pertoire" {
             { Test-FileFormat -FilePath $script:testTempDir } | Should -Throw
         }
 
-        It "Lève une erreur si le chemin est null" {
+        It "LÃ¨ve une erreur si le chemin est null" {
             { Test-FileFormat -FilePath $null } | Should -Throw
         }
 
-        It "Lève une erreur si le chemin est vide" {
+        It "LÃ¨ve une erreur si le chemin est vide" {
             { Test-FileFormat -FilePath "" } | Should -Throw
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

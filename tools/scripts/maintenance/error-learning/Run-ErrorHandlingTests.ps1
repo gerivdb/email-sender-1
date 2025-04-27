@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter les tests de gestion des erreurs PowerShell.
+    Script pour exÃ©cuter les tests de gestion des erreurs PowerShell.
 .DESCRIPTION
-    Ce script exécute les tests de gestion des erreurs PowerShell.
+    Ce script exÃ©cute les tests de gestion des erreurs PowerShell.
 .EXAMPLE
     .\Run-ErrorHandlingTests.ps1
-    Exécute les tests de gestion des erreurs PowerShell.
+    ExÃ©cute les tests de gestion des erreurs PowerShell.
 #>
 
 [CmdletBinding()]
 param ()
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -20,24 +20,24 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin du test de gestion des erreurs
+# DÃ©finir le chemin du test de gestion des erreurs
 $testFile = Join-Path -Path $PSScriptRoot -ChildPath "Tests\ErrorHandling.Tests.ps1"
 
-# Afficher les tests trouvés
-Write-Host "Test de gestion des erreurs trouvé :" -ForegroundColor Cyan
+# Afficher les tests trouvÃ©s
+Write-Host "Test de gestion des erreurs trouvÃ© :" -ForegroundColor Cyan
 Write-Host "  ErrorHandling.Tests.ps1" -ForegroundColor Yellow
 
-# Exécuter les tests
-Write-Host "`nExécution des tests de gestion des erreurs..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "`nExÃ©cution des tests de gestion des erreurs..." -ForegroundColor Cyan
 $results = Invoke-Pester -Path $testFile -Output Detailed -PassThru
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($results.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($results.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $results.FailedCount

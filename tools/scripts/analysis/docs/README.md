@@ -1,27 +1,27 @@
-# Système d'analyse de code
+﻿# SystÃ¨me d'analyse de code
 
-Ce système permet d'analyser le code source avec différents outils et d'intégrer les résultats avec des outils tiers.
+Ce systÃ¨me permet d'analyser le code source avec diffÃ©rents outils et d'intÃ©grer les rÃ©sultats avec des outils tiers.
 
 ## Documentation
 
-- [Guide d'intégration](INTEGRATION.md) - Guide complet pour l'intégration avec des outils d'analyse tiers
-- [Guide de performance](PERFORMANCE.md) - Guide pour optimiser les performances du système d'analyse
-- [Exemples](EXAMPLES.md) - Exemples concrets d'utilisation du système d'analyse
+- [Guide d'intÃ©gration](INTEGRATION.md) - Guide complet pour l'intÃ©gration avec des outils d'analyse tiers
+- [Guide de performance](PERFORMANCE.md) - Guide pour optimiser les performances du systÃ¨me d'analyse
+- [Exemples](EXAMPLES.md) - Exemples concrets d'utilisation du systÃ¨me d'analyse
 
 ## Vue d'ensemble
 
-Le système d'analyse de code est composé des scripts suivants :
+Le systÃ¨me d'analyse de code est composÃ© des scripts suivants :
 
-- `Start-CodeAnalysis.ps1` - Script principal pour l'analyse de code avec différents outils
-- `Fix-HtmlReportEncoding.ps1` - Script pour corriger les problèmes d'encodage dans les rapports HTML
-- `Integrate-ThirdPartyTools.ps1` - Script pour intégrer les résultats d'analyse avec des outils tiers
-- `modules/UnifiedResultsFormat.psm1` - Module pour définir un format unifié pour les résultats d'analyse
+- `Start-CodeAnalysis.ps1` - Script principal pour l'analyse de code avec diffÃ©rents outils
+- `Fix-HtmlReportEncoding.ps1` - Script pour corriger les problÃ¨mes d'encodage dans les rapports HTML
+- `Integrate-ThirdPartyTools.ps1` - Script pour intÃ©grer les rÃ©sultats d'analyse avec des outils tiers
+- `modules/UnifiedResultsFormat.psm1` - Module pour dÃ©finir un format unifiÃ© pour les rÃ©sultats d'analyse
 
 ## Installation
 
-1. Clonez ce dépôt ou téléchargez les fichiers dans un répertoire de votre choix.
-2. Assurez-vous que PowerShell 5.1 ou supérieur est installé sur votre système.
-3. Installez les dépendances requises :
+1. Clonez ce dÃ©pÃ´t ou tÃ©lÃ©chargez les fichiers dans un rÃ©pertoire de votre choix.
+2. Assurez-vous que PowerShell 5.1 ou supÃ©rieur est installÃ© sur votre systÃ¨me.
+3. Installez les dÃ©pendances requises :
 
 ```powershell
 # Installer PSScriptAnalyzer
@@ -42,39 +42,39 @@ pip install pylint
 # Analyser un fichier avec PSScriptAnalyzer
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools PSScriptAnalyzer
 
-# Analyser un répertoire avec PSScriptAnalyzer et TodoAnalyzer
+# Analyser un rÃ©pertoire avec PSScriptAnalyzer et TodoAnalyzer
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -Recurse
 
-# Analyser un fichier avec tous les outils disponibles et générer un rapport HTML
+# Analyser un fichier avec tous les outils disponibles et gÃ©nÃ©rer un rapport HTML
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools All -GenerateHtmlReport
 
-# Analyser un répertoire avec tous les outils disponibles, générer un rapport HTML et l'ouvrir
+# Analyser un rÃ©pertoire avec tous les outils disponibles, gÃ©nÃ©rer un rapport HTML et l'ouvrir
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
 ```
 
-### Correction des problèmes d'encodage dans les rapports HTML
+### Correction des problÃ¨mes d'encodage dans les rapports HTML
 
 ```powershell
 # Corriger l'encodage d'un fichier HTML
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results\report.html"
 
-# Corriger l'encodage de tous les fichiers HTML dans un répertoire
+# Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results"
 
-# Corriger l'encodage de tous les fichiers HTML dans un répertoire et ses sous-répertoires
+# Corriger l'encodage de tous les fichiers HTML dans un rÃ©pertoire et ses sous-rÃ©pertoires
 .\Fix-HtmlReportEncoding.ps1 -Path ".\results" -Recurse
 ```
 
-### Intégration avec des outils tiers
+### IntÃ©gration avec des outils tiers
 
 ```powershell
-# Intégrer les résultats avec GitHub Actions
+# IntÃ©grer les rÃ©sultats avec GitHub Actions
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool GitHub -OutputPath ".\github-annotations.json"
 
-# Intégrer les résultats avec SonarQube
+# IntÃ©grer les rÃ©sultats avec SonarQube
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\sonarqube-issues.json" -ProjectKey "my-project"
 
-# Intégrer les résultats avec Azure DevOps
+# IntÃ©grer les rÃ©sultats avec Azure DevOps
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\azuredevops-issues.json"
 ```
 
@@ -83,21 +83,21 @@ pip install pylint
 - **PSScriptAnalyzer** - Outil d'analyse statique pour les scripts PowerShell
 - **ESLint** - Outil d'analyse statique pour les fichiers JavaScript, TypeScript, etc.
 - **Pylint** - Outil d'analyse statique pour les fichiers Python
-- **TodoAnalyzer** - Outil d'analyse intégré pour détecter les commentaires TODO, FIXME, HACK, NOTE, etc.
+- **TodoAnalyzer** - Outil d'analyse intÃ©grÃ© pour dÃ©tecter les commentaires TODO, FIXME, HACK, NOTE, etc.
 
-## Intégration avec des outils tiers
+## IntÃ©gration avec des outils tiers
 
-- **GitHub Actions** - Intégration avec GitHub Actions pour afficher les problèmes dans les pull requests
-- **SonarQube** - Intégration avec SonarQube pour afficher les problèmes dans l'interface web
-- **Azure DevOps** - Intégration avec Azure DevOps pour afficher les problèmes dans les pull requests
+- **GitHub Actions** - IntÃ©gration avec GitHub Actions pour afficher les problÃ¨mes dans les pull requests
+- **SonarQube** - IntÃ©gration avec SonarQube pour afficher les problÃ¨mes dans l'interface web
+- **Azure DevOps** - IntÃ©gration avec Azure DevOps pour afficher les problÃ¨mes dans les pull requests
 
 ## Personnalisation
 
-Le système d'analyse peut être personnalisé pour prendre en charge d'autres outils d'analyse ou d'autres formats de résultats. Consultez le [guide d'intégration](INTEGRATION.md) pour plus d'informations.
+Le systÃ¨me d'analyse peut Ãªtre personnalisÃ© pour prendre en charge d'autres outils d'analyse ou d'autres formats de rÃ©sultats. Consultez le [guide d'intÃ©gration](INTEGRATION.md) pour plus d'informations.
 
-## Dépannage
+## DÃ©pannage
 
-Si vous rencontrez des problèmes lors de l'utilisation du système d'analyse, consultez la section "Dépannage" du [guide d'intégration](INTEGRATION.md).
+Si vous rencontrez des problÃ¨mes lors de l'utilisation du systÃ¨me d'analyse, consultez la section "DÃ©pannage" du [guide d'intÃ©gration](INTEGRATION.md).
 
 ## Licence
 

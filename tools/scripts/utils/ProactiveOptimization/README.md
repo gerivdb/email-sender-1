@@ -1,14 +1,14 @@
-# Système d'Optimisation Proactive
+﻿# SystÃ¨me d'Optimisation Proactive
 
-Ce module fournit un ensemble d'outils pour le monitoring et l'analyse comportementale des scripts, permettant d'optimiser proactivement leur exécution en fonction de leur utilisation réelle.
+Ce module fournit un ensemble d'outils pour le monitoring et l'analyse comportementale des scripts, permettant d'optimiser proactivement leur exÃ©cution en fonction de leur utilisation rÃ©elle.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Monitoring de l'utilisation des scripts** : Enregistre la fréquence, la durée, le succès/échec et les ressources consommées par les scripts.
-- **Analyse des logs** : Identifie les scripts les plus utilisés, les plus lents ou ceux échouant le plus souvent.
-- **Détection des goulots d'étranglement** : Identifie les problèmes de performance dans les processus parallèles.
-- **Analyse des tendances** : Suit l'évolution de l'utilisation et des performances des scripts au fil du temps.
-- **Génération de rapports** : Crée des rapports HTML interactifs pour visualiser les données d'utilisation et les tendances.
+- **Monitoring de l'utilisation des scripts** : Enregistre la frÃ©quence, la durÃ©e, le succÃ¨s/Ã©chec et les ressources consommÃ©es par les scripts.
+- **Analyse des logs** : Identifie les scripts les plus utilisÃ©s, les plus lents ou ceux Ã©chouant le plus souvent.
+- **DÃ©tection des goulots d'Ã©tranglement** : Identifie les problÃ¨mes de performance dans les processus parallÃ¨les.
+- **Analyse des tendances** : Suit l'Ã©volution de l'utilisation et des performances des scripts au fil du temps.
+- **GÃ©nÃ©ration de rapports** : CrÃ©e des rapports HTML interactifs pour visualiser les donnÃ©es d'utilisation et les tendances.
 
 ## Scripts disponibles
 
@@ -22,17 +22,17 @@ Script principal pour le monitoring et l'analyse de l'utilisation des scripts.
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath "reports\usage"
 ```
 
-#### Paramètres
+#### ParamÃ¨tres
 
-- `-DatabasePath` : Chemin vers la base de données d'utilisation (par défaut : usage_data.xml dans le dossier courant).
-- `-EnableRealTimeMonitoring` : Active le monitoring en temps réel.
-- `-GenerateReport` : Génère un rapport HTML.
-- `-ReportPath` : Chemin où enregistrer le rapport (par défaut : reports\usage).
-- `-AnalysisPeriodDays` : Nombre de jours à analyser (par défaut : 30).
+- `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
+- `-EnableRealTimeMonitoring` : Active le monitoring en temps rÃ©el.
+- `-GenerateReport` : GÃ©nÃ¨re un rapport HTML.
+- `-ReportPath` : Chemin oÃ¹ enregistrer le rapport (par dÃ©faut : reports\usage).
+- `-AnalysisPeriodDays` : Nombre de jours Ã  analyser (par dÃ©faut : 30).
 
 ### Detect-Bottlenecks.ps1
 
-Script spécialisé pour détecter les goulots d'étranglement dans les processus parallèles.
+Script spÃ©cialisÃ© pour dÃ©tecter les goulots d'Ã©tranglement dans les processus parallÃ¨les.
 
 ```powershell
 # Exemple d'utilisation
@@ -40,12 +40,12 @@ Script spécialisé pour détecter les goulots d'étranglement dans les processu
 .\Detect-Bottlenecks.ps1 -GenerateReport -ReportPath "reports\bottlenecks"
 ```
 
-#### Paramètres
+#### ParamÃ¨tres
 
-- `-DatabasePath` : Chemin vers la base de données d'utilisation (par défaut : usage_data.xml dans le dossier courant).
-- `-DetailedAnalysis` : Active l'analyse détaillée des goulots d'étranglement.
-- `-GenerateReport` : Génère un rapport HTML.
-- `-ReportPath` : Chemin où enregistrer le rapport (par défaut : reports\bottlenecks).
+- `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
+- `-DetailedAnalysis` : Active l'analyse dÃ©taillÃ©e des goulots d'Ã©tranglement.
+- `-GenerateReport` : GÃ©nÃ¨re un rapport HTML.
+- `-ReportPath` : Chemin oÃ¹ enregistrer le rapport (par dÃ©faut : reports\bottlenecks).
 
 ### Analyze-UsageTrends.ps1
 
@@ -57,61 +57,61 @@ Script pour analyser les tendances d'utilisation des scripts au fil du temps.
 .\Analyze-UsageTrends.ps1 -GenerateReport -ReportPath "reports\trends"
 ```
 
-#### Paramètres
+#### ParamÃ¨tres
 
-- `-DatabasePath` : Chemin vers la base de données d'utilisation (par défaut : usage_data.xml dans le dossier courant).
-- `-PeriodDays` : Nombre de jours à analyser (par défaut : 30).
-- `-GenerateReport` : Génère un rapport HTML.
-- `-ReportPath` : Chemin où enregistrer le rapport (par défaut : reports\trends).
+- `-DatabasePath` : Chemin vers la base de donnÃ©es d'utilisation (par dÃ©faut : usage_data.xml dans le dossier courant).
+- `-PeriodDays` : Nombre de jours Ã  analyser (par dÃ©faut : 30).
+- `-GenerateReport` : GÃ©nÃ¨re un rapport HTML.
+- `-ReportPath` : Chemin oÃ¹ enregistrer le rapport (par dÃ©faut : reports\trends).
 
-## Intégration avec UsageMonitor
+## IntÃ©gration avec UsageMonitor
 
-Ce système s'appuie sur le module UsageMonitor existant pour collecter les données d'utilisation. Pour activer le suivi d'utilisation dans vos scripts, vous pouvez utiliser le script `Add-UsageTracking.ps1` du module UsageMonitor :
+Ce systÃ¨me s'appuie sur le module UsageMonitor existant pour collecter les donnÃ©es d'utilisation. Pour activer le suivi d'utilisation dans vos scripts, vous pouvez utiliser le script `Add-UsageTracking.ps1` du module UsageMonitor :
 
 ```powershell
-# Ajouter le suivi d'utilisation à un script ou à un dossier de scripts
+# Ajouter le suivi d'utilisation Ã  un script ou Ã  un dossier de scripts
 ..\UsageMonitor\Add-UsageTracking.ps1 -Path "chemin\vers\votre\script.ps1"
 ..\UsageMonitor\Add-UsageTracking.ps1 -Path "chemin\vers\votre\dossier" -Recurse
 ```
 
-## Rapports générés
+## Rapports gÃ©nÃ©rÃ©s
 
-Les rapports HTML générés incluent :
+Les rapports HTML gÃ©nÃ©rÃ©s incluent :
 
-- **Rapport d'utilisation** : Affiche les scripts les plus utilisés, les plus lents, ceux échouant le plus souvent et les goulots d'étranglement détectés.
-- **Rapport de goulots d'étranglement** : Fournit une analyse détaillée des goulots d'étranglement dans les processus parallèles, avec des recommandations pour les résoudre.
-- **Rapport de tendances** : Montre l'évolution de l'utilisation et des performances des scripts au fil du temps.
+- **Rapport d'utilisation** : Affiche les scripts les plus utilisÃ©s, les plus lents, ceux Ã©chouant le plus souvent et les goulots d'Ã©tranglement dÃ©tectÃ©s.
+- **Rapport de goulots d'Ã©tranglement** : Fournit une analyse dÃ©taillÃ©e des goulots d'Ã©tranglement dans les processus parallÃ¨les, avec des recommandations pour les rÃ©soudre.
+- **Rapport de tendances** : Montre l'Ã©volution de l'utilisation et des performances des scripts au fil du temps.
 
 ## Exemples d'utilisation
 
-### Monitoring en temps réel
+### Monitoring en temps rÃ©el
 
 ```powershell
-# Démarrer le monitoring en temps réel
+# DÃ©marrer le monitoring en temps rÃ©el
 .\Monitor-ScriptUsage.ps1 -EnableRealTimeMonitoring
 ```
 
 ### Analyse hebdomadaire
 
 ```powershell
-# Créer un rapport hebdomadaire
+# CrÃ©er un rapport hebdomadaire
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath "reports\weekly"
 .\Detect-Bottlenecks.ps1 -DetailedAnalysis -GenerateReport -ReportPath "reports\weekly"
 .\Analyze-UsageTrends.ps1 -PeriodDays 7 -GenerateReport -ReportPath "reports\weekly"
 ```
 
-### Intégration dans un pipeline CI/CD
+### IntÃ©gration dans un pipeline CI/CD
 
 ```powershell
-# Exemple de script pour intégrer l'analyse dans un pipeline CI/CD
+# Exemple de script pour intÃ©grer l'analyse dans un pipeline CI/CD
 $reportPath = "reports\$(Get-Date -Format 'yyyy-MM-dd')"
 .\Monitor-ScriptUsage.ps1 -GenerateReport -ReportPath $reportPath
 .\Detect-Bottlenecks.ps1 -DetailedAnalysis -GenerateReport -ReportPath $reportPath
 .\Analyze-UsageTrends.ps1 -GenerateReport -ReportPath $reportPath
 ```
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-- Optimisation dynamique de la parallélisation
-- Mise en cache prédictive et adaptative
+- Optimisation dynamique de la parallÃ©lisation
+- Mise en cache prÃ©dictive et adaptative
 - Suggestions de refactorisation intelligentes

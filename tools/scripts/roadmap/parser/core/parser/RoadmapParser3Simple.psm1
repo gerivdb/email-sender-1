@@ -1,4 +1,4 @@
-# RoadmapParser3Simple.psm1
+﻿# RoadmapParser3Simple.psm1
 # Version simplifiee du module RoadmapParser3
 
 # Enumeration pour representer le statut d'une tache

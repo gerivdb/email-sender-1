@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Standardise les chemins pour une meilleure compatibilité entre les environnements.
+    Standardise les chemins pour une meilleure compatibilitÃ© entre les environnements.
 
 .DESCRIPTION
     Ce script fournit des fonctions pour standardiser les chemins de fichiers et de dossiers
-    afin d'assurer une meilleure compatibilité entre différents systèmes d'exploitation et
-    environnements. Il gère les chemins relatifs, absolus, UNC, et les URL de fichiers.
+    afin d'assurer une meilleure compatibilitÃ© entre diffÃ©rents systÃ¨mes d'exploitation et
+    environnements. Il gÃ¨re les chemins relatifs, absolus, UNC, et les URL de fichiers.
 
 .EXAMPLE
     . .\PathStandardizer.ps1
@@ -13,18 +13,18 @@
     $relativePath = ConvertTo-RelativePath -Path $standardPath -BasePath "C:\Users\user"
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Charger le module de détection d'environnement
+# Charger le module de dÃ©tection d'environnement
 $environmentDetectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "EnvironmentDetector.ps1"
 if (Test-Path -Path $environmentDetectorPath -PathType Leaf) {
     . $environmentDetectorPath
 }
 else {
-    Write-Warning "Le module de détection d'environnement n'a pas été trouvé. Certaines fonctionnalités peuvent ne pas fonctionner correctement."
+    Write-Warning "Le module de dÃ©tection d'environnement n'a pas Ã©tÃ© trouvÃ©. Certaines fonctionnalitÃ©s peuvent ne pas fonctionner correctement."
 }
 
 # Obtenir les informations sur l'environnement
@@ -32,7 +32,7 @@ $script:EnvironmentInfo = if (Get-Command -Name Get-EnvironmentInfo -ErrorAction
     Get-EnvironmentInfo
 }
 else {
-    # Créer un objet d'informations sur l'environnement minimal
+    # CrÃ©er un objet d'informations sur l'environnement minimal
     [PSCustomObject]@{
         IsWindows = $PSVersionTable.PSVersion.Major -lt 6 -or ($PSVersionTable.PSVersion.Major -ge 6 -and $IsWindows)
         IsLinux = $PSVersionTable.PSVersion.Major -ge 6 -and $IsLinux
@@ -65,7 +65,7 @@ function ConvertTo-StandardPath {
             return ""
         }
         
-        # Déterminer le séparateur de chemin cible
+        # DÃ©terminer le sÃ©parateur de chemin cible
         $targetSeparator = switch ($TargetOS) {
             "Windows" { "\" }
             "Unix" { "/" }
@@ -74,44 +74,44 @@ function ConvertTo-StandardPath {
             }
         }
         
-        # Normaliser les séparateurs de chemin
+        # Normaliser les sÃ©parateurs de chemin
         $normalizedPath = $Path.Replace("\", $targetSeparator).Replace("/", $targetSeparator)
         
-        # Résoudre le chemin relatif si demandé
+        # RÃ©soudre le chemin relatif si demandÃ©
         if ($ResolveRelativePath) {
             try {
                 $normalizedPath = Resolve-Path -Path $normalizedPath -ErrorAction Stop | Select-Object -ExpandProperty Path
             }
             catch {
-                Write-Warning "Impossible de résoudre le chemin relatif '$Path': $_"
+                Write-Warning "Impossible de rÃ©soudre le chemin relatif '$Path': $_"
             }
         }
         
-        # Normaliser la casse si demandé
+        # Normaliser la casse si demandÃ©
         if ($NormalizeCase) {
             if ($TargetOS -eq "Windows" -or ($TargetOS -eq "Auto" -and $script:EnvironmentInfo.IsWindows)) {
-                # Windows est insensible à la casse, convertir en minuscules
+                # Windows est insensible Ã  la casse, convertir en minuscules
                 $normalizedPath = $normalizedPath.ToLower()
             }
         }
         
-        # Gérer les chemins UNC
+        # GÃ©rer les chemins UNC
         if ($normalizedPath -match "^\\\\") {
             # C'est un chemin UNC, s'assurer qu'il a le bon format
             $normalizedPath = $normalizedPath -replace "^\\\\", "\\"
         }
         
-        # Gérer les URL de fichiers
+        # GÃ©rer les URL de fichiers
         if ($normalizedPath -match "^file://") {
             # C'est une URL de fichier, la convertir en chemin standard
             $normalizedPath = $normalizedPath -replace "^file://", ""
             
-            # Gérer les URL de fichiers Windows (file:///C:/...)
+            # GÃ©rer les URL de fichiers Windows (file:///C:/...)
             if ($normalizedPath -match "^/[A-Za-z]:") {
                 $normalizedPath = $normalizedPath.Substring(1)
             }
             
-            # Normaliser les séparateurs de chemin à nouveau
+            # Normaliser les sÃ©parateurs de chemin Ã  nouveau
             $normalizedPath = $normalizedPath.Replace("\", $targetSeparator).Replace("/", $targetSeparator)
         }
         
@@ -139,7 +139,7 @@ function ConvertTo-RelativePath {
             return ""
         }
         
-        # Déterminer le séparateur de chemin cible
+        # DÃ©terminer le sÃ©parateur de chemin cible
         $targetSeparator = switch ($TargetOS) {
             "Windows" { "\" }
             "Unix" { "/" }
@@ -152,26 +152,26 @@ function ConvertTo-RelativePath {
         $normalizedPath = ConvertTo-StandardPath -Path $Path -TargetOS $TargetOS
         $normalizedBasePath = ConvertTo-StandardPath -Path $BasePath -TargetOS $TargetOS
         
-        # S'assurer que le chemin de base se termine par un séparateur
+        # S'assurer que le chemin de base se termine par un sÃ©parateur
         if (-not $normalizedBasePath.EndsWith($targetSeparator)) {
             $normalizedBasePath += $targetSeparator
         }
         
-        # Vérifier si le chemin est déjà relatif
+        # VÃ©rifier si le chemin est dÃ©jÃ  relatif
         if (-not [System.IO.Path]::IsPathRooted($normalizedPath)) {
             return $normalizedPath
         }
         
-        # Vérifier si le chemin est sous le chemin de base
+        # VÃ©rifier si le chemin est sous le chemin de base
         if (-not $normalizedPath.StartsWith($normalizedBasePath, [System.StringComparison]::OrdinalIgnoreCase)) {
-            # Le chemin n'est pas sous le chemin de base, impossible de créer un chemin relatif
+            # Le chemin n'est pas sous le chemin de base, impossible de crÃ©er un chemin relatif
             return $normalizedPath
         }
         
         # Extraire la partie relative du chemin
         $relativePath = $normalizedPath.Substring($normalizedBasePath.Length)
         
-        # Supprimer le séparateur de chemin initial si présent
+        # Supprimer le sÃ©parateur de chemin initial si prÃ©sent
         if ($relativePath.StartsWith($targetSeparator)) {
             $relativePath = $relativePath.Substring(1)
         }
@@ -200,7 +200,7 @@ function ConvertTo-AbsolutePath {
             return ""
         }
         
-        # Déterminer le séparateur de chemin cible
+        # DÃ©terminer le sÃ©parateur de chemin cible
         $targetSeparator = switch ($TargetOS) {
             "Windows" { "\" }
             "Unix" { "/" }
@@ -212,12 +212,12 @@ function ConvertTo-AbsolutePath {
         # Normaliser le chemin
         $normalizedPath = ConvertTo-StandardPath -Path $Path -TargetOS $TargetOS
         
-        # Vérifier si le chemin est déjà absolu
+        # VÃ©rifier si le chemin est dÃ©jÃ  absolu
         if ([System.IO.Path]::IsPathRooted($normalizedPath)) {
             return $normalizedPath
         }
         
-        # Déterminer le chemin de base
+        # DÃ©terminer le chemin de base
         $normalizedBasePath = if ([string]::IsNullOrEmpty($BasePath)) {
             ConvertTo-StandardPath -Path (Get-Location).Path -TargetOS $TargetOS
         }
@@ -225,7 +225,7 @@ function ConvertTo-AbsolutePath {
             ConvertTo-StandardPath -Path $BasePath -TargetOS $TargetOS
         }
         
-        # S'assurer que le chemin de base se termine par un séparateur
+        # S'assurer que le chemin de base se termine par un sÃ©parateur
         if (-not $normalizedBasePath.EndsWith($targetSeparator)) {
             $normalizedBasePath += $targetSeparator
         }
@@ -233,10 +233,10 @@ function ConvertTo-AbsolutePath {
         # Combiner les chemins
         $absolutePath = $normalizedBasePath + $normalizedPath
         
-        # Normaliser le chemin (résoudre les .. et .)
+        # Normaliser le chemin (rÃ©soudre les .. et .)
         $absolutePath = [System.IO.Path]::GetFullPath($absolutePath)
         
-        # Normaliser les séparateurs de chemin
+        # Normaliser les sÃ©parateurs de chemin
         $absolutePath = $absolutePath.Replace("\", $targetSeparator).Replace("/", $targetSeparator)
         
         return $absolutePath
@@ -278,12 +278,12 @@ function Get-NormalizedPath {
         # Normaliser le chemin
         $normalizedPath = ConvertTo-StandardPath -Path $Path -TargetOS $TargetOS -NormalizeCase:$NormalizeCase
         
-        # Convertir en chemin absolu si demandé
+        # Convertir en chemin absolu si demandÃ©
         if ($MakeAbsolute) {
             $normalizedPath = ConvertTo-AbsolutePath -Path $normalizedPath -BasePath $BasePath -TargetOS $TargetOS
         }
         
-        # Convertir en chemin relatif si demandé
+        # Convertir en chemin relatif si demandÃ©
         if ($MakeRelative) {
             $basePathToUse = if ([string]::IsNullOrEmpty($BasePath)) {
                 (Get-Location).Path
@@ -295,7 +295,7 @@ function Get-NormalizedPath {
             $normalizedPath = ConvertTo-RelativePath -Path $normalizedPath -BasePath $basePathToUse -TargetOS $TargetOS
         }
         
-        # Vérifier si le chemin existe si demandé
+        # VÃ©rifier si le chemin existe si demandÃ©
         if ($EnsureExists) {
             if (-not (Test-Path -Path $normalizedPath)) {
                 Write-Warning "Le chemin '$normalizedPath' n'existe pas."
@@ -324,7 +324,7 @@ function Get-TempPath {
         [switch]$CreateDirectory
     )
     
-    # Déterminer le séparateur de chemin cible
+    # DÃ©terminer le sÃ©parateur de chemin cible
     $targetSeparator = switch ($TargetOS) {
         "Windows" { "\" }
         "Unix" { "/" }
@@ -333,18 +333,18 @@ function Get-TempPath {
         }
     }
     
-    # Obtenir le répertoire temporaire
+    # Obtenir le rÃ©pertoire temporaire
     $tempDir = [System.IO.Path]::GetTempPath()
     
-    # Normaliser le chemin du répertoire temporaire
+    # Normaliser le chemin du rÃ©pertoire temporaire
     $tempDir = ConvertTo-StandardPath -Path $tempDir -TargetOS $TargetOS
     
-    # S'assurer que le chemin se termine par un séparateur
+    # S'assurer que le chemin se termine par un sÃ©parateur
     if (-not $tempDir.EndsWith($targetSeparator)) {
         $tempDir += $targetSeparator
     }
     
-    # Générer un nom de fichier aléatoire si non spécifié
+    # GÃ©nÃ©rer un nom de fichier alÃ©atoire si non spÃ©cifiÃ©
     $fileNameToUse = if ([string]::IsNullOrEmpty($FileName)) {
         [System.IO.Path]::GetRandomFileName()
     }
@@ -352,7 +352,7 @@ function Get-TempPath {
         $FileName
     }
     
-    # Ajouter l'extension si spécifiée
+    # Ajouter l'extension si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($Extension)) {
         if (-not $Extension.StartsWith(".")) {
             $Extension = ".$Extension"
@@ -366,14 +366,14 @@ function Get-TempPath {
     # Construire le chemin complet
     $tempPath = $tempDir + $fileNameToUse
     
-    # Créer le répertoire si demandé
+    # CrÃ©er le rÃ©pertoire si demandÃ©
     if ($CreateDirectory) {
         $directory = if ([string]::IsNullOrEmpty($Extension)) {
-            # Si pas d'extension, considérer que c'est un répertoire
+            # Si pas d'extension, considÃ©rer que c'est un rÃ©pertoire
             $tempPath
         }
         else {
-            # Sinon, obtenir le répertoire parent
+            # Sinon, obtenir le rÃ©pertoire parent
             [System.IO.Path]::GetDirectoryName($tempPath)
         }
         
@@ -385,7 +385,7 @@ function Get-TempPath {
     return $tempPath
 }
 
-# Fonction pour résoudre les chemins avec des variables d'environnement
+# Fonction pour rÃ©soudre les chemins avec des variables d'environnement
 function Resolve-EnvironmentPath {
     [CmdletBinding()]
     param (
@@ -405,7 +405,7 @@ function Resolve-EnvironmentPath {
             return ""
         }
         
-        # Déterminer le séparateur de chemin cible
+        # DÃ©terminer le sÃ©parateur de chemin cible
         $targetSeparator = switch ($TargetOS) {
             "Windows" { "\" }
             "Unix" { "/" }
@@ -442,7 +442,7 @@ function Resolve-EnvironmentPath {
             }
         })
         
-        # Remplacer le tilde (~) par le répertoire utilisateur
+        # Remplacer le tilde (~) par le rÃ©pertoire utilisateur
         if ($resolvedPath.StartsWith("~")) {
             $homeDir = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
             $resolvedPath = $homeDir + $resolvedPath.Substring(1)
@@ -474,7 +474,7 @@ function Get-RelativePathBetween {
         return ""
     }
     
-    # Déterminer le séparateur de chemin cible
+    # DÃ©terminer le sÃ©parateur de chemin cible
     $targetSeparator = switch ($TargetOS) {
         "Windows" { "\" }
         "Unix" { "/" }
@@ -496,13 +496,13 @@ function Get-RelativePathBetween {
         $normalizedRelativeTo = ConvertTo-AbsolutePath -Path $normalizedRelativeTo -TargetOS $TargetOS
     }
     
-    # Vérifier si les chemins sont sur le même lecteur (Windows)
+    # VÃ©rifier si les chemins sont sur le mÃªme lecteur (Windows)
     if ($TargetOS -eq "Windows" -or ($TargetOS -eq "Auto" -and $script:EnvironmentInfo.IsWindows)) {
         $pathDrive = if ($normalizedPath -match "^([A-Za-z]:)") { $matches[1].ToUpper() } else { "" }
         $relativeToPathDrive = if ($normalizedRelativeTo -match "^([A-Za-z]:)") { $matches[1].ToUpper() } else { "" }
         
         if ($pathDrive -ne $relativeToPathDrive) {
-            # Les chemins sont sur des lecteurs différents, impossible de créer un chemin relatif
+            # Les chemins sont sur des lecteurs diffÃ©rents, impossible de crÃ©er un chemin relatif
             return $normalizedPath
         }
     }
@@ -511,7 +511,7 @@ function Get-RelativePathBetween {
     $pathSegments = $normalizedPath.Split($targetSeparator, [System.StringSplitOptions]::RemoveEmptyEntries)
     $relativeToSegments = $normalizedRelativeTo.Split($targetSeparator, [System.StringSplitOptions]::RemoveEmptyEntries)
     
-    # Trouver le préfixe commun
+    # Trouver le prÃ©fixe commun
     $commonPrefixLength = 0
     $minLength = [Math]::Min($pathSegments.Length, $relativeToSegments.Length)
     
@@ -527,7 +527,7 @@ function Get-RelativePathBetween {
     # Construire le chemin relatif
     $relativePath = ""
     
-    # Ajouter les ".." pour remonter au préfixe commun
+    # Ajouter les ".." pour remonter au prÃ©fixe commun
     for ($i = 0; $i -lt ($relativeToSegments.Length - $commonPrefixLength); $i++) {
         $relativePath += "..$targetSeparator"
     }

@@ -1,5 +1,5 @@
-# SqlPermissionRules.ps1
-# Contient les règles de détection d'anomalies pour les permissions SQL Server
+﻿# SqlPermissionRules.ps1
+# Contient les rÃ¨gles de dÃ©tection d'anomalies pour les permissions SQL Server
 
 function Get-SqlPermissionRules {
     [CmdletBinding()]
@@ -9,20 +9,20 @@ function Get-SqlPermissionRules {
         [string]$RuleType,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("All", "Élevée", "Moyenne", "Faible")]
+        [ValidateSet("All", "Ã‰levÃ©e", "Moyenne", "Faible")]
         [string]$Severity = "All"
     )
 
-    # Définir toutes les règles
+    # DÃ©finir toutes les rÃ¨gles
     $allRules = @()
 
-    # Règles au niveau serveur
+    # RÃ¨gles au niveau serveur
     if ($RuleType -eq "Server") {
         $allRules += @(
             [PSCustomObject]@{
                 RuleId = "SVR-001"
                 Name = "DisabledLoginWithPermissions"
-                Description = "Détecte les logins désactivés qui possèdent des permissions ou sont membres de rôles serveur"
+                Description = "DÃ©tecte les logins dÃ©sactivÃ©s qui possÃ¨dent des permissions ou sont membres de rÃ´les serveur"
                 Severity = "Moyenne"
                 RuleType = "Server"
                 CheckFunction = {
@@ -37,8 +37,8 @@ function Get-SqlPermissionRules {
                         if ($hasPermissions -or $isRoleMember) {
                             $results += [PSCustomObject]@{
                                 LoginName = $login.LoginName
-                                Description = "Le login désactivé possède des permissions ou est membre de rôles serveur"
-                                RecommendedAction = "Révoquer les permissions ou retirer des rôles serveur"
+                                Description = "Le login dÃ©sactivÃ© possÃ¨de des permissions ou est membre de rÃ´les serveur"
+                                RecommendedAction = "RÃ©voquer les permissions ou retirer des rÃ´les serveur"
                             }
                         }
                     }
@@ -49,8 +49,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "SVR-002"
                 Name = "HighPrivilegeAccount"
-                Description = "Détecte les logins membres de rôles serveur à privilèges élevés (sysadmin, securityadmin, serveradmin)"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les logins membres de rÃ´les serveur Ã  privilÃ¨ges Ã©levÃ©s (sysadmin, securityadmin, serveradmin)"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Server"
                 CheckFunction = {
                     param($ServerLogins, $ServerRoles, $ServerPermissions)
@@ -59,12 +59,12 @@ function Get-SqlPermissionRules {
                     $highPrivilegeRoles = @("sysadmin", "securityadmin", "serveradmin")
                     foreach ($role in $ServerRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
                         foreach ($member in $role.Members) {
-                            # Exclure les comptes système
+                            # Exclure les comptes systÃ¨me
                             if (-not $member.MemberName.StartsWith("##")) {
                                 $results += [PSCustomObject]@{
                                     LoginName = $member.MemberName
-                                    Description = "Le login est membre du rôle serveur à privilèges élevés: $($role.RoleName)"
-                                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                    Description = "Le login est membre du rÃ´le serveur Ã  privilÃ¨ges Ã©levÃ©s: $($role.RoleName)"
+                                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                                 }
                             }
                         }
@@ -76,7 +76,7 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "SVR-003"
                 Name = "PasswordPolicyExempt"
-                Description = "Détecte les logins SQL exemptés de la politique de mot de passe"
+                Description = "DÃ©tecte les logins SQL exemptÃ©s de la politique de mot de passe"
                 Severity = "Moyenne"
                 RuleType = "Server"
                 CheckFunction = {
@@ -90,8 +90,8 @@ function Get-SqlPermissionRules {
                     foreach ($login in $sqlLoginsWithoutPolicy) {
                         $results += [PSCustomObject]@{
                             LoginName = $login.LoginName
-                            Description = "Le login SQL n'est pas soumis à la politique de mot de passe complète"
-                            RecommendedAction = "Activer la vérification de politique et d'expiration de mot de passe"
+                            Description = "Le login SQL n'est pas soumis Ã  la politique de mot de passe complÃ¨te"
+                            RecommendedAction = "Activer la vÃ©rification de politique et d'expiration de mot de passe"
                         }
                     }
                     
@@ -101,7 +101,7 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "SVR-004"
                 Name = "LockedAccount"
-                Description = "Détecte les logins verrouillés"
+                Description = "DÃ©tecte les logins verrouillÃ©s"
                 Severity = "Moyenne"
                 RuleType = "Server"
                 CheckFunction = {
@@ -112,8 +112,8 @@ function Get-SqlPermissionRules {
                     foreach ($login in $lockedAccounts) {
                         $results += [PSCustomObject]@{
                             LoginName = $login.LoginName
-                            Description = "Le compte est verrouillé"
-                            RecommendedAction = "Déverrouiller le compte et investiguer la cause"
+                            Description = "Le compte est verrouillÃ©"
+                            RecommendedAction = "DÃ©verrouiller le compte et investiguer la cause"
                         }
                     }
                     
@@ -123,8 +123,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "SVR-005"
                 Name = "ControlServerPermission"
-                Description = "Détecte les logins avec la permission CONTROL SERVER (équivalent à sysadmin)"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les logins avec la permission CONTROL SERVER (Ã©quivalent Ã  sysadmin)"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Server"
                 CheckFunction = {
                     param($ServerLogins, $ServerRoles, $ServerPermissions)
@@ -137,12 +137,12 @@ function Get-SqlPermissionRules {
                     }
 
                     foreach ($permission in $controlServerPermissions) {
-                        # Exclure les comptes système
+                        # Exclure les comptes systÃ¨me
                         if (-not $permission.GranteeName.StartsWith("##")) {
                             $results += [PSCustomObject]@{
                                 LoginName = $permission.GranteeName
-                                Description = "Le login possède la permission CONTROL SERVER (équivalent à sysadmin)"
-                                RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                Description = "Le login possÃ¨de la permission CONTROL SERVER (Ã©quivalent Ã  sysadmin)"
+                                RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                             }
                         }
                     }
@@ -153,7 +153,7 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "SVR-006"
                 Name = "ExpiredPassword"
-                Description = "Détecte les logins SQL avec des mots de passe expirés"
+                Description = "DÃ©tecte les logins SQL avec des mots de passe expirÃ©s"
                 Severity = "Moyenne"
                 RuleType = "Server"
                 CheckFunction = {
@@ -164,7 +164,7 @@ function Get-SqlPermissionRules {
                     foreach ($login in $expiredPasswords) {
                         $results += [PSCustomObject]@{
                             LoginName = $login.LoginName
-                            Description = "Le mot de passe du login SQL est expiré"
+                            Description = "Le mot de passe du login SQL est expirÃ©"
                             RecommendedAction = "Changer le mot de passe du compte"
                         }
                     }
@@ -175,13 +175,13 @@ function Get-SqlPermissionRules {
         )
     }
     
-    # Règles au niveau base de données
+    # RÃ¨gles au niveau base de donnÃ©es
     elseif ($RuleType -eq "Database") {
         $allRules += @(
             [PSCustomObject]@{
                 RuleId = "DB-001"
                 Name = "OrphanedUser"
-                Description = "Détecte les utilisateurs de base de données sans login associé"
+                Description = "DÃ©tecte les utilisateurs de base de donnÃ©es sans login associÃ©"
                 Severity = "Moyenne"
                 RuleType = "Database"
                 CheckFunction = {
@@ -197,8 +197,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName = $user.DatabaseName
                             UserName = $user.UserName
-                            Description = "L'utilisateur de base de données n'a pas de login associé"
-                            RecommendedAction = "Supprimer l'utilisateur ou le réassocier à un login"
+                            Description = "L'utilisateur de base de donnÃ©es n'a pas de login associÃ©"
+                            RecommendedAction = "Supprimer l'utilisateur ou le rÃ©associer Ã  un login"
                         }
                     }
                     
@@ -208,7 +208,7 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "DB-002"
                 Name = "DisabledLoginWithDatabasePermissions"
-                Description = "Détecte les utilisateurs associés à des logins désactivés mais ayant des permissions"
+                Description = "DÃ©tecte les utilisateurs associÃ©s Ã  des logins dÃ©sactivÃ©s mais ayant des permissions"
                 Severity = "Moyenne"
                 RuleType = "Database"
                 CheckFunction = {
@@ -232,8 +232,8 @@ function Get-SqlPermissionRules {
                             $results += [PSCustomObject]@{
                                 DatabaseName = $user.DatabaseName
                                 UserName = $user.UserName
-                                Description = "L'utilisateur est associé à un login désactivé mais possède des permissions ou est membre de rôles"
-                                RecommendedAction = "Révoquer les permissions ou retirer des rôles de base de données"
+                                Description = "L'utilisateur est associÃ© Ã  un login dÃ©sactivÃ© mais possÃ¨de des permissions ou est membre de rÃ´les"
+                                RecommendedAction = "RÃ©voquer les permissions ou retirer des rÃ´les de base de donnÃ©es"
                             }
                         }
                     }
@@ -244,8 +244,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "DB-003"
                 Name = "HighPrivilegeDatabaseAccount"
-                Description = "Détecte les utilisateurs membres de rôles de base de données à privilèges élevés"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les utilisateurs membres de rÃ´les de base de donnÃ©es Ã  privilÃ¨ges Ã©levÃ©s"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Database"
                 CheckFunction = {
                     param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
@@ -254,13 +254,13 @@ function Get-SqlPermissionRules {
                     $highPrivilegeRoles = @("db_owner", "db_securityadmin", "db_accessadmin")
                     foreach ($role in $DatabaseRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
                         foreach ($member in $role.Members) {
-                            # Exclure les comptes système
+                            # Exclure les comptes systÃ¨me
                             if (-not $member.MemberName.StartsWith("##") -and $member.MemberName -ne "dbo") {
                                 $results += [PSCustomObject]@{
                                     DatabaseName = $role.DatabaseName
                                     UserName = $member.MemberName
-                                    Description = "L'utilisateur est membre du rôle de base de données à privilèges élevés: $($role.RoleName)"
-                                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                    Description = "L'utilisateur est membre du rÃ´le de base de donnÃ©es Ã  privilÃ¨ges Ã©levÃ©s: $($role.RoleName)"
+                                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                                 }
                             }
                         }
@@ -272,8 +272,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "DB-004"
                 Name = "ControlDatabasePermission"
-                Description = "Détecte les utilisateurs avec la permission CONTROL sur la base de données"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les utilisateurs avec la permission CONTROL sur la base de donnÃ©es"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Database"
                 CheckFunction = {
                     param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
@@ -288,13 +288,13 @@ function Get-SqlPermissionRules {
                     }
 
                     foreach ($permission in $controlDatabasePermissions) {
-                        # Exclure les comptes système et dbo
+                        # Exclure les comptes systÃ¨me et dbo
                         if (-not $permission.GranteeName.StartsWith("##") -and $permission.GranteeName -ne "dbo") {
                             $results += [PSCustomObject]@{
                                 DatabaseName = $permission.DatabaseName
                                 UserName = $permission.GranteeName
-                                Description = "L'utilisateur possède la permission CONTROL sur la base de données (équivalent à db_owner)"
-                                RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                Description = "L'utilisateur possÃ¨de la permission CONTROL sur la base de donnÃ©es (Ã©quivalent Ã  db_owner)"
+                                RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                             }
                         }
                     }
@@ -305,8 +305,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "DB-005"
                 Name = "GuestUserPermissions"
-                Description = "Détecte les permissions explicites accordées à l'utilisateur guest"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les permissions explicites accordÃ©es Ã  l'utilisateur guest"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Database"
                 CheckFunction = {
                     param($DatabaseUsers, $DatabaseRoles, $DatabasePermissions, $ServerLogins)
@@ -317,8 +317,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName = $permission.DatabaseName
                             UserName = "guest"
-                            Description = "L'utilisateur guest possède des permissions explicites"
-                            RecommendedAction = "Révoquer les permissions de l'utilisateur guest"
+                            Description = "L'utilisateur guest possÃ¨de des permissions explicites"
+                            RecommendedAction = "RÃ©voquer les permissions de l'utilisateur guest"
                         }
                     }
                     
@@ -328,13 +328,13 @@ function Get-SqlPermissionRules {
         )
     }
     
-    # Règles au niveau objet
+    # RÃ¨gles au niveau objet
     elseif ($RuleType -eq "Object") {
         $allRules += @(
             [PSCustomObject]@{
                 RuleId = "OBJ-001"
                 Name = "DisabledUserWithObjectPermissions"
-                Description = "Détecte les utilisateurs désactivés avec des permissions sur des objets"
+                Description = "DÃ©tecte les utilisateurs dÃ©sactivÃ©s avec des permissions sur des objets"
                 Severity = "Moyenne"
                 RuleType = "Object"
                 CheckFunction = {
@@ -349,8 +349,8 @@ function Get-SqlPermissionRules {
                             $results += [PSCustomObject]@{
                                 DatabaseName = $DatabaseName
                                 UserName = $user.UserName
-                                Description = "L'utilisateur désactivé possède des permissions sur $($userObjectPermissions.ObjectCount) objets"
-                                RecommendedAction = "Révoquer les permissions ou réactiver l'utilisateur si nécessaire"
+                                Description = "L'utilisateur dÃ©sactivÃ© possÃ¨de des permissions sur $($userObjectPermissions.ObjectCount) objets"
+                                RecommendedAction = "RÃ©voquer les permissions ou rÃ©activer l'utilisateur si nÃ©cessaire"
                                 AffectedObjects = $userObjectPermissions.ObjectPermissions | ForEach-Object { $_.ObjectName }
                             }
                         }
@@ -362,8 +362,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "OBJ-002"
                 Name = "GuestUserWithObjectPermissions"
-                Description = "Détecte les permissions accordées à l'utilisateur guest sur des objets"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les permissions accordÃ©es Ã  l'utilisateur guest sur des objets"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Object"
                 CheckFunction = {
                     param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
@@ -374,8 +374,8 @@ function Get-SqlPermissionRules {
                         $results += [PSCustomObject]@{
                             DatabaseName = $DatabaseName
                             UserName = "guest"
-                            Description = "L'utilisateur guest possède des permissions sur $($guestObjectPermissions.ObjectCount) objets"
-                            RecommendedAction = "Révoquer les permissions de l'utilisateur guest"
+                            Description = "L'utilisateur guest possÃ¨de des permissions sur $($guestObjectPermissions.ObjectCount) objets"
+                            RecommendedAction = "RÃ©voquer les permissions de l'utilisateur guest"
                             AffectedObjects = $guestObjectPermissions.ObjectPermissions | ForEach-Object { $_.ObjectName }
                         }
                     }
@@ -386,8 +386,8 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "OBJ-003"
                 Name = "ControlObjectPermission"
-                Description = "Détecte les utilisateurs avec la permission CONTROL sur des objets"
-                Severity = "Élevée"
+                Description = "DÃ©tecte les utilisateurs avec la permission CONTROL sur des objets"
+                Severity = "Ã‰levÃ©e"
                 RuleType = "Object"
                 CheckFunction = {
                     param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
@@ -401,13 +401,13 @@ function Get-SqlPermissionRules {
                         }
 
                         if ($controlObjects -and $controlObjects.Count -gt 0) {
-                            # Exclure les comptes système et dbo
+                            # Exclure les comptes systÃ¨me et dbo
                             if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                                 $results += [PSCustomObject]@{
                                     DatabaseName = $DatabaseName
                                     UserName = $userPerm.GranteeName
-                                    Description = "L'utilisateur possède la permission CONTROL sur $($controlObjects.Count) objets"
-                                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+                                    Description = "L'utilisateur possÃ¨de la permission CONTROL sur $($controlObjects.Count) objets"
+                                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
                                     AffectedObjects = $controlObjects | ForEach-Object { $_.ObjectName }
                                 }
                             }
@@ -420,7 +420,7 @@ function Get-SqlPermissionRules {
             [PSCustomObject]@{
                 RuleId = "OBJ-004"
                 Name = "ExcessiveTablePermissions"
-                Description = "Détecte les utilisateurs avec des permissions potentiellement excessives sur des tables"
+                Description = "DÃ©tecte les utilisateurs avec des permissions potentiellement excessives sur des tables"
                 Severity = "Moyenne"
                 RuleType = "Object"
                 CheckFunction = {
@@ -439,13 +439,13 @@ function Get-SqlPermissionRules {
                             }
 
                             if ($excessivePermTables -and $excessivePermTables.Count -gt 0) {
-                                # Exclure les comptes système et dbo
+                                # Exclure les comptes systÃ¨me et dbo
                                 if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                                     $results += [PSCustomObject]@{
                                         DatabaseName = $DatabaseName
                                         UserName = $userPerm.GranteeName
-                                        Description = "L'utilisateur possède des permissions potentiellement excessives sur $($excessivePermTables.Count) tables"
-                                        RecommendedAction = "Vérifier si ces permissions sont nécessaires"
+                                        Description = "L'utilisateur possÃ¨de des permissions potentiellement excessives sur $($excessivePermTables.Count) tables"
+                                        RecommendedAction = "VÃ©rifier si ces permissions sont nÃ©cessaires"
                                         AffectedObjects = $excessivePermTables | ForEach-Object { $_.ObjectName }
                                     }
                                 }
@@ -459,7 +459,7 @@ function Get-SqlPermissionRules {
         )
     }
 
-    # Filtrer par sévérité si demandé
+    # Filtrer par sÃ©vÃ©ritÃ© si demandÃ©
     if ($Severity -ne "All") {
         $allRules = $allRules | Where-Object { $_.Severity -eq $Severity }
     }

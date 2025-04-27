@@ -1,48 +1,48 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Configure la limitation dynamique pour l'analyse parallèle.
+    Configure la limitation dynamique pour l'analyse parallÃ¨le.
 
 .DESCRIPTION
-    Ce script configure la limitation dynamique pour l'analyse parallèle
+    Ce script configure la limitation dynamique pour l'analyse parallÃ¨le
     des pull requests, en ajustant automatiquement le nombre de threads
-    en fonction de la charge du système.
+    en fonction de la charge du systÃ¨me.
 
 .PARAMETER ConfigPath
     Le chemin du fichier de configuration.
-    Par défaut: "config\parallel_throttling.json"
+    Par dÃ©faut: "config\parallel_throttling.json"
 
 .PARAMETER MaxThreads
-    Le nombre maximum de threads à utiliser.
-    Par défaut: nombre de processeurs logiques
+    Le nombre maximum de threads Ã  utiliser.
+    Par dÃ©faut: nombre de processeurs logiques
 
 .PARAMETER MinThreads
-    Le nombre minimum de threads à utiliser.
-    Par défaut: 1
+    Le nombre minimum de threads Ã  utiliser.
+    Par dÃ©faut: 1
 
 .PARAMETER CPUThreshold
-    Le seuil d'utilisation du CPU (en pourcentage) à partir duquel réduire le nombre de threads.
-    Par défaut: 80
+    Le seuil d'utilisation du CPU (en pourcentage) Ã  partir duquel rÃ©duire le nombre de threads.
+    Par dÃ©faut: 80
 
 .PARAMETER MemoryThreshold
-    Le seuil d'utilisation de la mémoire (en pourcentage) à partir duquel réduire le nombre de threads.
-    Par défaut: 80
+    Le seuil d'utilisation de la mÃ©moire (en pourcentage) Ã  partir duquel rÃ©duire le nombre de threads.
+    Par dÃ©faut: 80
 
 .PARAMETER AdjustmentInterval
     L'intervalle (en secondes) entre les ajustements du nombre de threads.
-    Par défaut: 5
+    Par dÃ©faut: 5
 
 .PARAMETER EnableDynamicThrottling
     Indique s'il faut activer la limitation dynamique.
-    Par défaut: $true
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\Set-ParallelThrottling.ps1
-    Configure la limitation dynamique avec les paramètres par défaut.
+    Configure la limitation dynamique avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Set-ParallelThrottling.ps1 -MaxThreads 16 -CPUThreshold 70 -MemoryThreshold 75
-    Configure la limitation dynamique avec des paramètres personnalisés.
+    Configure la limitation dynamique avec des paramÃ¨tres personnalisÃ©s.
 
 .NOTES
     Version: 1.0
@@ -84,12 +84,12 @@ function Get-CPUUsage {
         
         return [Math]::Round($cpuCounter.CounterSamples[0].CookedValue, 2)
     } catch {
-        Write-Warning "Erreur lors de la récupération de l'utilisation du CPU: $_"
+        Write-Warning "Erreur lors de la rÃ©cupÃ©ration de l'utilisation du CPU: $_"
         return 0
     }
 }
 
-# Fonction pour obtenir l'utilisation actuelle de la mémoire
+# Fonction pour obtenir l'utilisation actuelle de la mÃ©moire
 function Get-MemoryUsage {
     try {
         $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue
@@ -104,7 +104,7 @@ function Get-MemoryUsage {
         
         return [Math]::Round($memoryUsage, 2)
     } catch {
-        Write-Warning "Erreur lors de la récupération de l'utilisation de la mémoire: $_"
+        Write-Warning "Erreur lors de la rÃ©cupÃ©ration de l'utilisation de la mÃ©moire: $_"
         return 0
     }
 }
@@ -135,25 +135,25 @@ function Get-OptimalThreadCount {
     try {
         # Calculer le facteur d'ajustement en fonction de l'utilisation du CPU
         $cpuFactor = if ($CPUUsage -ge $CPULimit) {
-            # Réduire le nombre de threads si l'utilisation du CPU est élevée
-            $reduction = ($CPUUsage - $CPULimit) / 20 # 5% de réduction pour chaque 1% au-dessus du seuil
-            $reduction = [Math]::Min($reduction, 0.5) # Limiter la réduction à 50%
+            # RÃ©duire le nombre de threads si l'utilisation du CPU est Ã©levÃ©e
+            $reduction = ($CPUUsage - $CPULimit) / 20 # 5% de rÃ©duction pour chaque 1% au-dessus du seuil
+            $reduction = [Math]::Min($reduction, 0.5) # Limiter la rÃ©duction Ã  50%
             1 - $reduction
         } else {
             # Augmenter le nombre de threads si l'utilisation du CPU est faible
             $increase = ($CPULimit - $CPUUsage) / 40 # 2.5% d'augmentation pour chaque 1% en dessous du seuil
-            $increase = [Math]::Min($increase, 0.2) # Limiter l'augmentation à 20%
+            $increase = [Math]::Min($increase, 0.2) # Limiter l'augmentation Ã  20%
             1 + $increase
         }
 
-        # Calculer le facteur d'ajustement en fonction de l'utilisation de la mémoire
+        # Calculer le facteur d'ajustement en fonction de l'utilisation de la mÃ©moire
         $memoryFactor = if ($MemoryUsage -ge $MemoryLimit) {
-            # Réduire le nombre de threads si l'utilisation de la mémoire est élevée
-            $reduction = ($MemoryUsage - $MemoryLimit) / 20 # 5% de réduction pour chaque 1% au-dessus du seuil
-            $reduction = [Math]::Min($reduction, 0.5) # Limiter la réduction à 50%
+            # RÃ©duire le nombre de threads si l'utilisation de la mÃ©moire est Ã©levÃ©e
+            $reduction = ($MemoryUsage - $MemoryLimit) / 20 # 5% de rÃ©duction pour chaque 1% au-dessus du seuil
+            $reduction = [Math]::Min($reduction, 0.5) # Limiter la rÃ©duction Ã  50%
             1 - $reduction
         } else {
-            # Pas d'augmentation basée sur la mémoire
+            # Pas d'augmentation basÃ©e sur la mÃ©moire
             1
         }
 
@@ -174,12 +174,12 @@ function Get-OptimalThreadCount {
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Déterminer le nombre maximum de threads
+    # DÃ©terminer le nombre maximum de threads
     $effectiveMaxThreads = if ($MaxThreads -gt 0) { $MaxThreads } else { [System.Environment]::ProcessorCount }
     
-    # Créer l'objet de configuration
+    # CrÃ©er l'objet de configuration
     $config = [PSCustomObject]@{
         MaxThreads = $effectiveMaxThreads
         MinThreads = $MinThreads
@@ -190,7 +190,7 @@ try {
         LastUpdated = Get-Date
     }
 
-    # Créer le répertoire de configuration s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de configuration s'il n'existe pas
     $configDir = Split-Path -Path $ConfigPath -Parent
     if (-not [string]::IsNullOrWhiteSpace($configDir) -and -not (Test-Path -Path $configDir)) {
         New-Item -Path $configDir -ItemType Directory -Force | Out-Null
@@ -200,16 +200,16 @@ try {
     $config | ConvertTo-Json | Set-Content -Path $ConfigPath -Encoding UTF8
 
     # Afficher la configuration
-    Write-Host "Configuration de la limitation parallèle:" -ForegroundColor Cyan
+    Write-Host "Configuration de la limitation parallÃ¨le:" -ForegroundColor Cyan
     Write-Host "  Nombre maximum de threads: $($config.MaxThreads)" -ForegroundColor White
     Write-Host "  Nombre minimum de threads: $($config.MinThreads)" -ForegroundColor White
     Write-Host "  Seuil d'utilisation du CPU: $($config.CPUThreshold)%" -ForegroundColor White
-    Write-Host "  Seuil d'utilisation de la mémoire: $($config.MemoryThreshold)%" -ForegroundColor White
+    Write-Host "  Seuil d'utilisation de la mÃ©moire: $($config.MemoryThreshold)%" -ForegroundColor White
     Write-Host "  Intervalle d'ajustement: $($config.AdjustmentInterval) secondes" -ForegroundColor White
-    Write-Host "  Limitation dynamique activée: $($config.EnableDynamicThrottling)" -ForegroundColor White
-    Write-Host "  Configuration enregistrée: $ConfigPath" -ForegroundColor White
+    Write-Host "  Limitation dynamique activÃ©e: $($config.EnableDynamicThrottling)" -ForegroundColor White
+    Write-Host "  Configuration enregistrÃ©e: $ConfigPath" -ForegroundColor White
 
-    # Tester la configuration si la limitation dynamique est activée
+    # Tester la configuration si la limitation dynamique est activÃ©e
     if ($EnableDynamicThrottling) {
         # Obtenir l'utilisation actuelle des ressources
         $cpuUsage = Get-CPUUsage
@@ -220,13 +220,13 @@ try {
         
         Write-Host "`nTest de la configuration:" -ForegroundColor Cyan
         Write-Host "  Utilisation actuelle du CPU: $cpuUsage%" -ForegroundColor White
-        Write-Host "  Utilisation actuelle de la mémoire: $memoryUsage%" -ForegroundColor White
+        Write-Host "  Utilisation actuelle de la mÃ©moire: $memoryUsage%" -ForegroundColor White
         Write-Host "  Nombre optimal de threads: $optimalThreads" -ForegroundColor White
     }
 
     # Retourner la configuration
     return $config
 } catch {
-    Write-Error "Erreur lors de la configuration de la limitation parallèle: $_"
+    Write-Error "Erreur lors de la configuration de la limitation parallÃ¨le: $_"
     exit 1
 }

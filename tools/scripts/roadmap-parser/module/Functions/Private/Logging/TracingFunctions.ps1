@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit les fonctions de trace pour le module RoadmapParser.
+    DÃ©finit les fonctions de trace pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script définit les fonctions de trace utilisées par le module RoadmapParser.
-    Il inclut des fonctions pour tracer l'entrée, la sortie et les étapes intermédiaires des fonctions.
+    Ce script dÃ©finit les fonctions de trace utilisÃ©es par le module RoadmapParser.
+    Il inclut des fonctions pour tracer l'entrÃ©e, la sortie et les Ã©tapes intermÃ©diaires des fonctions.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-22
+    Date de crÃ©ation: 2023-07-22
 #>
 
 # Importer le script des fonctions de journalisation
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $loggingFunctionsPath = Join-Path -Path $scriptPath -ChildPath "LoggingFunctions.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $loggingFunctionsPath)) {
-    throw "Le fichier LoggingFunctions.ps1 est introuvable à l'emplacement : $loggingFunctionsPath"
+    throw "Le fichier LoggingFunctions.ps1 est introuvable Ã  l'emplacement : $loggingFunctionsPath"
 }
 
 # Importer le script
@@ -43,51 +43,51 @@ $script:TracingCategory = "Tracing"
 
 .DESCRIPTION
     La fonction Set-TracingConfiguration configure les options de trace.
-    Elle permet de définir les paramètres de trace tels que l'activation, le niveau, etc.
+    Elle permet de dÃ©finir les paramÃ¨tres de trace tels que l'activation, le niveau, etc.
 
 .PARAMETER Enabled
-    Indique si la trace est activée.
-    Par défaut, c'est $true.
+    Indique si la trace est activÃ©e.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER Level
     Le niveau de journalisation pour la trace.
-    Par défaut, c'est LogLevelDebug.
+    Par dÃ©faut, c'est LogLevelDebug.
 
 .PARAMETER IndentSize
     La taille de l'indentation pour chaque niveau de profondeur.
-    Par défaut, c'est 2.
+    Par dÃ©faut, c'est 2.
 
 .PARAMETER IndentChar
-    Le caractère utilisé pour l'indentation.
-    Par défaut, c'est un espace.
+    Le caractÃ¨re utilisÃ© pour l'indentation.
+    Par dÃ©faut, c'est un espace.
 
 .PARAMETER MaxDepth
     La profondeur maximale de trace.
-    Par défaut, c'est 10.
+    Par dÃ©faut, c'est 10.
 
 .PARAMETER ShowParameters
-    Indique si les paramètres doivent être affichés dans la trace.
-    Par défaut, c'est $true.
+    Indique si les paramÃ¨tres doivent Ãªtre affichÃ©s dans la trace.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER ParameterMaxLength
-    La longueur maximale des valeurs de paramètres à afficher.
-    Par défaut, c'est 50.
+    La longueur maximale des valeurs de paramÃ¨tres Ã  afficher.
+    Par dÃ©faut, c'est 50.
 
 .PARAMETER ParameterMaxCount
-    Le nombre maximal de paramètres à afficher.
-    Par défaut, c'est 10.
+    Le nombre maximal de paramÃ¨tres Ã  afficher.
+    Par dÃ©faut, c'est 10.
 
 .PARAMETER ShowTypes
-    Indique si les types doivent être affichés dans la trace.
-    Par défaut, c'est $true.
+    Indique si les types doivent Ãªtre affichÃ©s dans la trace.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER Category
-    La catégorie à utiliser pour la journalisation.
-    Par défaut, c'est "Tracing".
+    La catÃ©gorie Ã  utiliser pour la journalisation.
+    Par dÃ©faut, c'est "Tracing".
 
 .EXAMPLE
     Set-TracingConfiguration -Enabled $true -Level $LogLevelDebug -IndentSize 4
-    Configure la trace pour être activée, avec un niveau de débogage et une indentation de 4 espaces.
+    Configure la trace pour Ãªtre activÃ©e, avec un niveau de dÃ©bogage et une indentation de 4 espaces.
 
 .OUTPUTS
     [void]
@@ -129,7 +129,7 @@ function Set-TracingConfiguration {
     # Valider le niveau de journalisation
     $script:TracingLevel = ConvertTo-LogLevel -Value $Level
 
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     $script:TracingEnabled = $Enabled
     $script:TracingIndentSize = $IndentSize
     $script:TracingIndentChar = $IndentChar
@@ -147,7 +147,7 @@ function Set-TracingConfiguration {
 
 .DESCRIPTION
     La fonction Get-TracingConfiguration obtient la configuration de trace.
-    Elle retourne un objet contenant les paramètres de trace actuels.
+    Elle retourne un objet contenant les paramÃ¨tres de trace actuels.
 
 .EXAMPLE
     Get-TracingConfiguration
@@ -207,21 +207,21 @@ function Get-TracingIndent {
 
 <#
 .SYNOPSIS
-    Formate les paramètres pour la trace.
+    Formate les paramÃ¨tres pour la trace.
 
 .DESCRIPTION
-    La fonction Format-TracingParameters formate les paramètres pour la trace.
-    Elle prend en charge la limitation de la longueur et du nombre de paramètres.
+    La fonction Format-TracingParameters formate les paramÃ¨tres pour la trace.
+    Elle prend en charge la limitation de la longueur et du nombre de paramÃ¨tres.
 
 .PARAMETER Parameters
-    Les paramètres à formater.
+    Les paramÃ¨tres Ã  formater.
 
 .EXAMPLE
     Format-TracingParameters -Parameters $PSBoundParameters
-    Formate les paramètres liés pour la trace.
+    Formate les paramÃ¨tres liÃ©s pour la trace.
 
 .OUTPUTS
-    [string] Les paramètres formatés.
+    [string] Les paramÃ¨tres formatÃ©s.
 #>
 function Format-TracingParameters {
     [CmdletBinding()]
@@ -278,35 +278,35 @@ function Format-TracingParameters {
 
 <#
 .SYNOPSIS
-    Trace l'entrée dans une fonction.
+    Trace l'entrÃ©e dans une fonction.
 
 .DESCRIPTION
-    La fonction Trace-FunctionEntry trace l'entrée dans une fonction.
-    Elle enregistre le nom de la fonction et les paramètres d'entrée.
+    La fonction Trace-FunctionEntry trace l'entrÃ©e dans une fonction.
+    Elle enregistre le nom de la fonction et les paramÃ¨tres d'entrÃ©e.
 
 .PARAMETER FunctionName
     Le nom de la fonction.
-    Par défaut, c'est le nom de la fonction appelante.
+    Par dÃ©faut, c'est le nom de la fonction appelante.
 
 .PARAMETER Parameters
-    Les paramètres de la fonction.
-    Par défaut, ce sont les paramètres liés de la fonction appelante.
+    Les paramÃ¨tres de la fonction.
+    Par dÃ©faut, ce sont les paramÃ¨tres liÃ©s de la fonction appelante.
 
 .PARAMETER CallerName
     Le nom de l'appelant.
-    Par défaut, c'est déterminé automatiquement.
+    Par dÃ©faut, c'est dÃ©terminÃ© automatiquement.
 
 .PARAMETER IncreaseDepth
-    Indique si la profondeur doit être augmentée après la trace.
-    Par défaut, c'est $true.
+    Indique si la profondeur doit Ãªtre augmentÃ©e aprÃ¨s la trace.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Trace-FunctionEntry
-    Trace l'entrée dans la fonction appelante.
+    Trace l'entrÃ©e dans la fonction appelante.
 
 .EXAMPLE
     Trace-FunctionEntry -FunctionName "Ma-Fonction" -Parameters $PSBoundParameters
-    Trace l'entrée dans la fonction "Ma-Fonction" avec les paramètres spécifiés.
+    Trace l'entrÃ©e dans la fonction "Ma-Fonction" avec les paramÃ¨tres spÃ©cifiÃ©s.
 
 .OUTPUTS
     [void]
@@ -327,12 +327,12 @@ function Trace-FunctionEntry {
         [switch]$IncreaseDepth = $true
     )
 
-    # Vérifier si la trace est activée
+    # VÃ©rifier si la trace est activÃ©e
     if (-not $script:TracingEnabled) {
         return
     }
 
-    # Vérifier si la profondeur maximale est atteinte
+    # VÃ©rifier si la profondeur maximale est atteinte
     if ($script:TracingCurrentDepth -ge $script:TracingMaxDepth) {
         return
     }
@@ -340,7 +340,7 @@ function Trace-FunctionEntry {
     # Obtenir l'indentation actuelle
     $indent = Get-TracingIndent
 
-    # Déterminer le nom de l'appelant si non spécifié
+    # DÃ©terminer le nom de l'appelant si non spÃ©cifiÃ©
     if ([string]::IsNullOrEmpty($CallerName)) {
         $callStack = Get-PSCallStack
         if ($callStack.Count -gt 2) {
@@ -356,16 +356,16 @@ function Trace-FunctionEntry {
         $message += " (called by $CallerName)"
     }
 
-    # Ajouter les paramètres si disponibles
+    # Ajouter les paramÃ¨tres si disponibles
     if ($null -ne $Parameters -and $Parameters.Count -gt 0) {
         $formattedParams = Format-TracingParameters -Parameters $Parameters
         $message += " $formattedParams"
     }
 
-    # Écrire le message de trace
+    # Ã‰crire le message de trace
     Write-Log -Message $message -Level $script:TracingLevel -Source $script:TracingCategory
 
-    # Augmenter la profondeur si demandé
+    # Augmenter la profondeur si demandÃ©
     if ($IncreaseDepth) {
         $script:TracingCurrentDepth++
     }
@@ -381,14 +381,14 @@ function Trace-FunctionEntry {
 
 .PARAMETER FunctionName
     Le nom de la fonction.
-    Par défaut, c'est le nom de la fonction appelante.
+    Par dÃ©faut, c'est le nom de la fonction appelante.
 
 .PARAMETER ReturnValue
     La valeur de retour de la fonction.
 
 .PARAMETER DecreaseDepth
-    Indique si la profondeur doit être diminuée avant la trace.
-    Par défaut, c'est $true.
+    Indique si la profondeur doit Ãªtre diminuÃ©e avant la trace.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Trace-FunctionExit
@@ -396,7 +396,7 @@ function Trace-FunctionEntry {
 
 .EXAMPLE
     Trace-FunctionExit -FunctionName "Ma-Fonction" -ReturnValue $result
-    Trace la sortie de la fonction "Ma-Fonction" avec la valeur de retour spécifiée.
+    Trace la sortie de la fonction "Ma-Fonction" avec la valeur de retour spÃ©cifiÃ©e.
 
 .OUTPUTS
     [void]
@@ -414,12 +414,12 @@ function Trace-FunctionExit {
         [switch]$DecreaseDepth = $true
     )
 
-    # Vérifier si la trace est activée
+    # VÃ©rifier si la trace est activÃ©e
     if (-not $script:TracingEnabled) {
         return
     }
 
-    # Diminuer la profondeur si demandé
+    # Diminuer la profondeur si demandÃ©
     if ($DecreaseDepth) {
         $script:TracingCurrentDepth = [Math]::Max(0, $script:TracingCurrentDepth - 1)
     }
@@ -448,42 +448,42 @@ function Trace-FunctionExit {
             $message += " => [$($ReturnValue.GetType().Name)]"
         }
 
-        # Ajouter le type si demandé
+        # Ajouter le type si demandÃ©
         if ($script:TracingShowTypes -and $null -ne $ReturnValue) {
             $typeName = $ReturnValue.GetType().Name
             $message += " [$typeName]"
         }
     }
 
-    # Écrire le message de trace
+    # Ã‰crire le message de trace
     Write-Log -Message $message -Level $script:TracingLevel -Source $script:TracingCategory
 }
 
 <#
 .SYNOPSIS
-    Trace une étape intermédiaire dans une fonction.
+    Trace une Ã©tape intermÃ©diaire dans une fonction.
 
 .DESCRIPTION
-    La fonction Trace-FunctionStep trace une étape intermédiaire dans une fonction.
-    Elle enregistre le nom de l'étape et les données associées.
+    La fonction Trace-FunctionStep trace une Ã©tape intermÃ©diaire dans une fonction.
+    Elle enregistre le nom de l'Ã©tape et les donnÃ©es associÃ©es.
 
 .PARAMETER StepName
-    Le nom de l'étape.
+    Le nom de l'Ã©tape.
 
 .PARAMETER StepData
-    Les données associées à l'étape.
+    Les donnÃ©es associÃ©es Ã  l'Ã©tape.
 
 .PARAMETER FunctionName
     Le nom de la fonction.
-    Par défaut, c'est le nom de la fonction appelante.
+    Par dÃ©faut, c'est le nom de la fonction appelante.
 
 .EXAMPLE
-    Trace-FunctionStep -StepName "Validation des données"
-    Trace l'étape "Validation des données" dans la fonction appelante.
+    Trace-FunctionStep -StepName "Validation des donnÃ©es"
+    Trace l'Ã©tape "Validation des donnÃ©es" dans la fonction appelante.
 
 .EXAMPLE
     Trace-FunctionStep -StepName "Traitement" -StepData $data
-    Trace l'étape "Traitement" avec les données spécifiées dans la fonction appelante.
+    Trace l'Ã©tape "Traitement" avec les donnÃ©es spÃ©cifiÃ©es dans la fonction appelante.
 
 .OUTPUTS
     [void]
@@ -501,7 +501,7 @@ function Trace-FunctionStep {
         [string]$FunctionName = (Get-PSCallStack)[1].Command
     )
 
-    # Vérifier si la trace est activée
+    # VÃ©rifier si la trace est activÃ©e
     if (-not $script:TracingEnabled) {
         return
     }
@@ -512,7 +512,7 @@ function Trace-FunctionStep {
     # Construire le message de trace
     $message = "${indent}STEP: [$FunctionName] $StepName"
 
-    # Ajouter les données si disponibles
+    # Ajouter les donnÃ©es si disponibles
     if ($PSBoundParameters.ContainsKey('StepData')) {
         if ($null -eq $StepData) {
             $message += " => null"
@@ -530,14 +530,14 @@ function Trace-FunctionStep {
             $message += " => [$($StepData.GetType().Name)]"
         }
 
-        # Ajouter le type si demandé
+        # Ajouter le type si demandÃ©
         if ($script:TracingShowTypes -and $null -ne $StepData) {
             $typeName = $StepData.GetType().Name
             $message += " [$typeName]"
         }
     }
 
-    # Écrire le message de trace
+    # Ã‰crire le message de trace
     Write-Log -Message $message -Level $script:TracingLevel -Source $script:TracingCategory
 }
 

@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Vérifie les prérequis pour l'exécution de la Phase 6.
+    VÃ©rifie les prÃ©requis pour l'exÃ©cution de la Phase 6.
 .DESCRIPTION
-    Ce script vérifie que l'environnement est correctement configuré pour l'exécution des scripts de la Phase 6.
-    Il teste l'accès aux répertoires, la disponibilité des dépendances et l'environnement PowerShell.
+    Ce script vÃ©rifie que l'environnement est correctement configurÃ© pour l'exÃ©cution des scripts de la Phase 6.
+    Il teste l'accÃ¨s aux rÃ©pertoires, la disponibilitÃ© des dÃ©pendances et l'environnement PowerShell.
 #>
 
 [CmdletBinding()]
@@ -27,30 +27,30 @@ function Write-Log {
         default { Write-Host $logEntry }
     }
 
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $LogFilePath -Parent
         if (-not (Test-Path -Path $logDir)) { New-Item -Path $logDir -ItemType Directory -Force | Out-Null }
         Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
-    } catch { Write-Warning "Impossible d'écrire dans le journal: $_" }
+    } catch { Write-Warning "Impossible d'Ã©crire dans le journal: $_" }
 }
 
-# Fonction pour vérifier l'environnement PowerShell
+# Fonction pour vÃ©rifier l'environnement PowerShell
 function Test-PowerShellEnvironment {
-    Write-Log "Vérification de l'environnement PowerShell..."
+    Write-Log "VÃ©rification de l'environnement PowerShell..."
 
-    # Vérifier la version de PowerShell
+    # VÃ©rifier la version de PowerShell
     $psVersion = $PSVersionTable.PSVersion
     Write-Log "Version PowerShell: $psVersion"
 
-    # Vérifier l'exécution de scripts
+    # VÃ©rifier l'exÃ©cution de scripts
     $executionPolicy = Get-ExecutionPolicy
-    Write-Log "Politique d'exécution: $executionPolicy"
+    Write-Log "Politique d'exÃ©cution: $executionPolicy"
     if ($executionPolicy -eq "Restricted") {
-        Write-Log "La politique d'exécution est restrictive. Certains scripts pourraient ne pas s'exécuter." -Level "WARNING"
+        Write-Log "La politique d'exÃ©cution est restrictive. Certains scripts pourraient ne pas s'exÃ©cuter." -Level "WARNING"
     }
 
-    # Vérifier les modules requis
+    # VÃ©rifier les modules requis
     $requiredModules = @("PSScriptAnalyzer")
     foreach ($module in $requiredModules) {
         if (Get-Module -ListAvailable -Name $module) {
@@ -60,24 +60,24 @@ function Test-PowerShellEnvironment {
         }
     }
 
-    # Vérifier l'accès au système de fichiers
+    # VÃ©rifier l'accÃ¨s au systÃ¨me de fichiers
     try {
         $testFile = Join-Path -Path $env:TEMP -ChildPath "phase6_test.txt"
         "Test" | Out-File -FilePath $testFile -Force
         if (Test-Path -Path $testFile) {
             Remove-Item -Path $testFile -Force
-            Write-Log "Accès en écriture au système de fichiers: OK" -Level "SUCCESS"
+            Write-Log "AccÃ¨s en Ã©criture au systÃ¨me de fichiers: OK" -Level "SUCCESS"
         }
     } catch {
-        Write-Log "Problème d'accès au système de fichiers: $_" -Level "ERROR"
+        Write-Log "ProblÃ¨me d'accÃ¨s au systÃ¨me de fichiers: $_" -Level "ERROR"
     }
 
     return $true
 }
 
-# Fonction pour vérifier les répertoires
+# Fonction pour vÃ©rifier les rÃ©pertoires
 function Test-Directories {
-    Write-Log "Vérification des répertoires..."
+    Write-Log "VÃ©rification des rÃ©pertoires..."
 
     $directories = @(
         $ScriptsDirectory,
@@ -89,14 +89,14 @@ function Test-Directories {
 
     foreach ($dir in $directories) {
         if (Test-Path -Path $dir -PathType Container) {
-            Write-Log "Répertoire existant: $dir" -Level "SUCCESS"
+            Write-Log "RÃ©pertoire existant: $dir" -Level "SUCCESS"
         } else {
-            Write-Log "Répertoire manquant: $dir" -Level "WARNING"
+            Write-Log "RÃ©pertoire manquant: $dir" -Level "WARNING"
             try {
                 New-Item -Path $dir -ItemType Directory -Force | Out-Null
-                Write-Log "Répertoire créé: $dir" -Level "SUCCESS"
+                Write-Log "RÃ©pertoire crÃ©Ã©: $dir" -Level "SUCCESS"
             } catch {
-                Write-Log "Impossible de créer le répertoire: $dir - $_" -Level "ERROR"
+                Write-Log "Impossible de crÃ©er le rÃ©pertoire: $dir - $_" -Level "ERROR"
                 $allExist = $false
             }
         }
@@ -105,9 +105,9 @@ function Test-Directories {
     return $allExist
 }
 
-# Fonction pour vérifier les scripts de la Phase 6
+# Fonction pour vÃ©rifier les scripts de la Phase 6
 function Test-Phase6Scripts {
-    Write-Log "Vérification des scripts de la Phase 6..."
+    Write-Log "VÃ©rification des scripts de la Phase 6..."
 
     $scripts = @(
         "Start-Phase6.ps1",
@@ -123,7 +123,7 @@ function Test-Phase6Scripts {
         if (Test-Path -Path $scriptPath -PathType Leaf) {
             Write-Log "Script existant: $script" -Level "SUCCESS"
 
-            # Vérifier la syntaxe du script si PSScriptAnalyzer est disponible
+            # VÃ©rifier la syntaxe du script si PSScriptAnalyzer est disponible
             if (Get-Module -ListAvailable -Name PSScriptAnalyzer) {
                 $errors = Invoke-ScriptAnalyzer -Path $scriptPath -Severity Error
                 if ($errors.Count -eq 0) {
@@ -145,9 +145,9 @@ function Test-Phase6Scripts {
     return $allExist
 }
 
-# Fonction pour vérifier les dépendances
+# Fonction pour vÃ©rifier les dÃ©pendances
 function Test-Dependencies {
-    Write-Log "Vérification des dépendances..."
+    Write-Log "VÃ©rification des dÃ©pendances..."
 
     $dependencies = @{
         "TryCatchAdder.ps1" = (Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "journal\TryCatchAdder.ps1")
@@ -161,48 +161,48 @@ function Test-Dependencies {
     foreach ($dependency in $dependencies.Keys) {
         $path = $dependencies[$dependency]
         if (Test-Path -Path $path -PathType Leaf) {
-            Write-Log "Dépendance disponible: $dependency" -Level "SUCCESS"
+            Write-Log "DÃ©pendance disponible: $dependency" -Level "SUCCESS"
         } else {
-            Write-Log "Dépendance manquante: $dependency ($path)" -Level "WARNING"
+            Write-Log "DÃ©pendance manquante: $dependency ($path)" -Level "WARNING"
             $missingDependencies += $dependency
         }
     }
 
     if ($missingDependencies.Count -gt 0) {
-        Write-Log "Certaines dépendances sont manquantes. Les fonctionnalités correspondantes seront limitées." -Level "WARNING"
+        Write-Log "Certaines dÃ©pendances sont manquantes. Les fonctionnalitÃ©s correspondantes seront limitÃ©es." -Level "WARNING"
     }
 
     return ($missingDependencies.Count -eq 0)
 }
 
-# Fonction pour effectuer un test simple d'exécution
+# Fonction pour effectuer un test simple d'exÃ©cution
 function Test-SimpleExecution {
-    Write-Log "Test simple d'exécution..."
+    Write-Log "Test simple d'exÃ©cution..."
 
     try {
         # Test d'une commande simple
         $result = Get-Date
-        Write-Log "Commande simple exécutée avec succès: $result" -Level "SUCCESS"
+        Write-Log "Commande simple exÃ©cutÃ©e avec succÃ¨s: $result" -Level "SUCCESS"
 
         # Test d'une commande avec pipeline
         $result = 1..5 | ForEach-Object { $_ * 2 }
-        Write-Log "Commande avec pipeline exécutée avec succès: $($result -join ', ')" -Level "SUCCESS"
+        Write-Log "Commande avec pipeline exÃ©cutÃ©e avec succÃ¨s: $($result -join ', ')" -Level "SUCCESS"
 
         # Test d'une fonction simple
         function Test-Function { param($value) return $value * 2 }
         $result = Test-Function -value 10
-        Write-Log "Fonction simple exécutée avec succès: $result" -Level "SUCCESS"
+        Write-Log "Fonction simple exÃ©cutÃ©e avec succÃ¨s: $result" -Level "SUCCESS"
 
         return $true
     } catch {
-        Write-Log "Erreur lors du test d'exécution: $_" -Level "ERROR"
+        Write-Log "Erreur lors du test d'exÃ©cution: $_" -Level "ERROR"
         return $false
     }
 }
 
 # Fonction principale
 function Test-Phase6Prerequisites {
-    Write-Log "Démarrage de la vérification des prérequis pour la Phase 6..."
+    Write-Log "DÃ©marrage de la vÃ©rification des prÃ©requis pour la Phase 6..."
 
     $results = @{
         PowerShellEnvironment = Test-PowerShellEnvironment
@@ -219,30 +219,30 @@ function Test-Phase6Prerequisites {
         }
     }
 
-    Write-Log "Résumé des vérifications:"
+    Write-Log "RÃ©sumÃ© des vÃ©rifications:"
     foreach ($key in $results.Keys) {
-        $status = if ($results[$key]) { "RÉUSSI" } else { "ÉCHOUÉ" }
+        $status = if ($results[$key]) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" }
         $level = if ($results[$key]) { "SUCCESS" } else { "ERROR" }
         Write-Log "  - $key : $status" -Level $level
     }
 
     if ($allPassed) {
-        Write-Log "Tous les prérequis sont satisfaits. Vous pouvez exécuter les scripts de la Phase 6." -Level "SUCCESS"
+        Write-Log "Tous les prÃ©requis sont satisfaits. Vous pouvez exÃ©cuter les scripts de la Phase 6." -Level "SUCCESS"
     } else {
-        Write-Log "Certains prérequis ne sont pas satisfaits. Veuillez corriger les problèmes avant d'exécuter les scripts de la Phase 6." -Level "WARNING"
+        Write-Log "Certains prÃ©requis ne sont pas satisfaits. Veuillez corriger les problÃ¨mes avant d'exÃ©cuter les scripts de la Phase 6." -Level "WARNING"
     }
 
     return $results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $results = Test-Phase6Prerequisites
 
-# Afficher un résumé
-Write-Host "`nRésumé des vérifications des prérequis:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des vÃ©rifications des prÃ©requis:" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
 foreach ($key in $results.Keys) {
-    $status = if ($results[$key]) { "RÉUSSI" } else { "ÉCHOUÉ" }
+    $status = if ($results[$key]) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" }
     $color = if ($results[$key]) { "Green" } else { "Red" }
     Write-Host "  - $key : $status" -ForegroundColor $color
 }
@@ -255,9 +255,9 @@ foreach ($key in $results.Keys) {
 }
 
 if ($allPassed) {
-    Write-Host "`nTous les prérequis sont satisfaits. Vous pouvez exécuter les scripts de la Phase 6." -ForegroundColor Green
+    Write-Host "`nTous les prÃ©requis sont satisfaits. Vous pouvez exÃ©cuter les scripts de la Phase 6." -ForegroundColor Green
 } else {
-    Write-Host "`nCertains prérequis ne sont pas satisfaits. Veuillez corriger les problèmes avant d'exécuter les scripts de la Phase 6." -ForegroundColor Yellow
+    Write-Host "`nCertains prÃ©requis ne sont pas satisfaits. Veuillez corriger les problÃ¨mes avant d'exÃ©cuter les scripts de la Phase 6." -ForegroundColor Yellow
 }
 
 Write-Host "Journal: $LogFilePath" -ForegroundColor Cyan

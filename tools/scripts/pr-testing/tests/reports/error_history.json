@@ -1,4 +1,4 @@
-{
+﻿{
   "Patterns": {
     "Utilisation de eval() (risque d'injection)": {
       "Count": 2,

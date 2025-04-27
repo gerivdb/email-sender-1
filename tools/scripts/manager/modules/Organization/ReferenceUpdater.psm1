@@ -1,5 +1,5 @@
-# Module de mise à jour des références pour le Script Manager
-# Ce module met à jour les références entre scripts après déplacement
+﻿# Module de mise Ã  jour des rÃ©fÃ©rences pour le Script Manager
+# Ce module met Ã  jour les rÃ©fÃ©rences entre scripts aprÃ¨s dÃ©placement
 # Author: Script Manager
 # Version: 1.0
 # Tags: organization, scripts, references
@@ -7,11 +7,11 @@
 function Update-References {
     <#
     .SYNOPSIS
-        Met à jour les références après le déplacement d'un script
+        Met Ã  jour les rÃ©fÃ©rences aprÃ¨s le dÃ©placement d'un script
     .DESCRIPTION
-        Recherche et met à jour les références au script déplacé dans les autres scripts
+        Recherche et met Ã  jour les rÃ©fÃ©rences au script dÃ©placÃ© dans les autres scripts
     .PARAMETER Script
-        Objet script qui a été déplacé
+        Objet script qui a Ã©tÃ© dÃ©placÃ©
     .PARAMETER OldPath
         Ancien chemin du script
     .PARAMETER NewPath
@@ -31,23 +31,23 @@ function Update-References {
         [string]$NewPath
     )
     
-    # Initialiser le compteur de références mises à jour
+    # Initialiser le compteur de rÃ©fÃ©rences mises Ã  jour
     $UpdatedReferences = 0
     
     # Obtenir le nom du script
     $ScriptName = Split-Path -Path $OldPath -Leaf
     
-    # Déterminer les chemins relatifs
+    # DÃ©terminer les chemins relatifs
     $OldRelativePath = $OldPath
     $NewRelativePath = $NewPath
     
-    # Rechercher les scripts qui pourraient référencer ce script
+    # Rechercher les scripts qui pourraient rÃ©fÃ©rencer ce script
     $PotentialReferencers = Get-ChildItem -Path "scripts" -Recurse -File | Where-Object {
         $_.Extension -in ".ps1", ".py", ".cmd", ".bat", ".sh"
     }
     
     foreach ($Referencer in $PotentialReferencers) {
-        # Ignorer le script lui-même
+        # Ignorer le script lui-mÃªme
         if ($Referencer.FullName -eq $NewPath) {
             continue
         }
@@ -59,7 +59,7 @@ function Update-References {
             continue
         }
         
-        # Déterminer le type de script
+        # DÃ©terminer le type de script
         $ScriptType = switch ($Referencer.Extension) {
             ".ps1" { "PowerShell" }
             ".py"  { "Python" }
@@ -69,25 +69,25 @@ function Update-References {
             default { "Unknown" }
         }
         
-        # Calculer le chemin relatif entre le référenceur et le script déplacé
+        # Calculer le chemin relatif entre le rÃ©fÃ©renceur et le script dÃ©placÃ©
         $ReferencerDir = Split-Path -Path $Referencer.FullName -Parent
         $OldRelativeToReferencer = Get-RelativePath -From $ReferencerDir -To $OldPath
         $NewRelativeToReferencer = Get-RelativePath -From $ReferencerDir -To $NewPath
         
-        # Rechercher et remplacer les références
+        # Rechercher et remplacer les rÃ©fÃ©rences
         $UpdatedContent = $Content
         $Updated = $false
         
         switch ($ScriptType) {
             "PowerShell" {
-                # Rechercher les références de type dot-sourcing
+                # Rechercher les rÃ©fÃ©rences de type dot-sourcing
                 $DotSourcePattern = "(\.\s+['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?)"
                 if ($Content -match $DotSourcePattern) {
                     $UpdatedContent = $UpdatedContent -replace $DotSourcePattern, "`$1$NewRelativeToReferencer`$2"
                     $Updated = $true
                 }
                 
-                # Rechercher les références de type appel
+                # Rechercher les rÃ©fÃ©rences de type appel
                 $CallPattern = "(&\s+['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?)"
                 if ($Content -match $CallPattern) {
                     $UpdatedContent = $UpdatedContent -replace $CallPattern, "`$1$NewRelativeToReferencer`$2"
@@ -95,7 +95,7 @@ function Update-References {
                 }
             }
             "Python" {
-                # Rechercher les références de type exec
+                # Rechercher les rÃ©fÃ©rences de type exec
                 $ExecPattern = "(exec\(open\(['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?\))"
                 if ($Content -match $ExecPattern) {
                     $UpdatedContent = $UpdatedContent -replace $ExecPattern, "`$1$NewRelativeToReferencer`$2"
@@ -103,7 +103,7 @@ function Update-References {
                 }
             }
             "Batch" {
-                # Rechercher les références de type call
+                # Rechercher les rÃ©fÃ©rences de type call
                 $CallPattern = "(call\s+['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?)"
                 if ($Content -match $CallPattern) {
                     $UpdatedContent = $UpdatedContent -replace $CallPattern, "`$1$NewRelativeToReferencer`$2"
@@ -111,14 +111,14 @@ function Update-References {
                 }
             }
             "Shell" {
-                # Rechercher les références de type source
+                # Rechercher les rÃ©fÃ©rences de type source
                 $SourcePattern = "(source\s+['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?)"
                 if ($Content -match $SourcePattern) {
                     $UpdatedContent = $UpdatedContent -replace $SourcePattern, "`$1$NewRelativeToReferencer`$2"
                     $Updated = $true
                 }
                 
-                # Rechercher les références de type dot
+                # Rechercher les rÃ©fÃ©rences de type dot
                 $DotPattern = "(\.\s+['`"]?)$([regex]::Escape($OldRelativeToReferencer))(['`"]?)"
                 if ($Content -match $DotPattern) {
                     $UpdatedContent = $UpdatedContent -replace $DotPattern, "`$1$NewRelativeToReferencer`$2"
@@ -127,15 +127,15 @@ function Update-References {
             }
         }
         
-        # Si des références ont été mises à jour, enregistrer le fichier
+        # Si des rÃ©fÃ©rences ont Ã©tÃ© mises Ã  jour, enregistrer le fichier
         if ($Updated) {
             Set-Content -Path $Referencer.FullName -Value $UpdatedContent
             $UpdatedReferences++
-            Write-Host "  Références mises à jour dans: $($Referencer.FullName)" -ForegroundColor Green
+            Write-Host "  RÃ©fÃ©rences mises Ã  jour dans: $($Referencer.FullName)" -ForegroundColor Green
         }
     }
     
-    Write-Host "  $UpdatedReferences références mises à jour" -ForegroundColor Cyan
+    Write-Host "  $UpdatedReferences rÃ©fÃ©rences mises Ã  jour" -ForegroundColor Cyan
     
     return $UpdatedReferences
 }
@@ -170,7 +170,7 @@ function Get-RelativePath {
     $RelativeUri = $FromUri.MakeRelativeUri($ToUri)
     $RelativePath = [System.Uri]::UnescapeDataString($RelativeUri.ToString())
     
-    # Remplacer les séparateurs de chemin
+    # Remplacer les sÃ©parateurs de chemin
     $RelativePath = $RelativePath -replace '/', [System.IO.Path]::DirectorySeparatorChar
     
     return $RelativePath

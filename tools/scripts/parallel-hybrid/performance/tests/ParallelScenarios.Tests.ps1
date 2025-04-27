@@ -1,7 +1,7 @@
-Describe "Tests des scénarios parallèles" {
-    Context "Comparaison séquentiel vs parallèle" {
+﻿Describe "Tests des scÃ©narios parallÃ¨les" {
+    Context "Comparaison sÃ©quentiel vs parallÃ¨le" {
         BeforeAll {
-            # Fonction pour exécuter un traitement en mode séquentiel
+            # Fonction pour exÃ©cuter un traitement en mode sÃ©quentiel
             function Invoke-SequentialProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -21,7 +21,7 @@ Describe "Tests des scénarios parallèles" {
                 return $results
             }
             
-            # Fonction pour exécuter un traitement en mode parallèle
+            # Fonction pour exÃ©cuter un traitement en mode parallÃ¨le
             function Invoke-ParallelProcessing {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -34,7 +34,7 @@ Describe "Tests des scénarios parallèles" {
                     [int]$ThrottleLimit = 5
                 )
                 
-                # Vérifier si ForEach-Object -Parallel est disponible (PowerShell 7+)
+                # VÃ©rifier si ForEach-Object -Parallel est disponible (PowerShell 7+)
                 $psVersion = $PSVersionTable.PSVersion
                 $supportsParallel = $psVersion.Major -ge 7
                 
@@ -50,13 +50,13 @@ Describe "Tests des scénarios parallèles" {
                     # Utiliser les runspaces pour PowerShell 5.1
                     $results = @()
                     
-                    # Créer un pool de runspaces
+                    # CrÃ©er un pool de runspaces
                     $runspacePool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit)
                     $runspacePool.Open()
                     
                     $runspaces = @()
                     
-                    # Créer et démarrer les runspaces
+                    # CrÃ©er et dÃ©marrer les runspaces
                     foreach ($item in $Items) {
                         $powershell = [powershell]::Create().AddScript({
                             param($item, $scriptBlock)
@@ -71,7 +71,7 @@ Describe "Tests des scénarios parallèles" {
                         }
                     }
                     
-                    # Récupérer les résultats
+                    # RÃ©cupÃ©rer les rÃ©sultats
                     foreach ($runspace in $runspaces) {
                         $result = $runspace.Powershell.EndInvoke($runspace.AsyncResult)
                         $results += $result
@@ -86,10 +86,10 @@ Describe "Tests des scénarios parallèles" {
                 return $results
             }
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testItems = 1..10
             
-            # Créer un scriptblock de traitement
+            # CrÃ©er un scriptblock de traitement
             $processItem = {
                 param($item)
                 Start-Sleep -Milliseconds ($item * 10)
@@ -97,43 +97,43 @@ Describe "Tests des scénarios parallèles" {
             }
         }
         
-        It "Le traitement parallèle est plus rapide que le traitement séquentiel" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
-            # Mesurer le temps d'exécution du traitement séquentiel
+        It "Le traitement parallÃ¨le est plus rapide que le traitement sÃ©quentiel" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
+            # Mesurer le temps d'exÃ©cution du traitement sÃ©quentiel
             $sequentialStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $sequentialResults = Invoke-SequentialProcessing -Items $testItems -ProcessItem $processItem
             $sequentialStopwatch.Stop()
             $sequentialTime = $sequentialStopwatch.Elapsed.TotalMilliseconds
             
-            # Mesurer le temps d'exécution du traitement parallèle
+            # Mesurer le temps d'exÃ©cution du traitement parallÃ¨le
             $parallelStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $parallelResults = Invoke-ParallelProcessing -Items $testItems -ProcessItem $processItem
             $parallelStopwatch.Stop()
             $parallelTime = $parallelStopwatch.Elapsed.TotalMilliseconds
             
-            # Vérifier que le traitement parallèle est plus rapide
+            # VÃ©rifier que le traitement parallÃ¨le est plus rapide
             $parallelTime | Should -BeLessThan $sequentialTime
             
-            # Vérifier que les résultats sont identiques (après tri)
+            # VÃ©rifier que les rÃ©sultats sont identiques (aprÃ¨s tri)
             $sortedSequentialResults = $sequentialResults | Sort-Object
             $sortedParallelResults = $parallelResults | Sort-Object
             $sortedSequentialResults | Should -Be $sortedParallelResults
         }
         
-        It "Le traitement parallèle produit les mêmes résultats que le traitement séquentiel" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
-            # Exécuter le traitement séquentiel
+        It "Le traitement parallÃ¨le produit les mÃªmes rÃ©sultats que le traitement sÃ©quentiel" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
+            # ExÃ©cuter le traitement sÃ©quentiel
             $sequentialResults = Invoke-SequentialProcessing -Items $testItems -ProcessItem $processItem
             
-            # Exécuter le traitement parallèle
+            # ExÃ©cuter le traitement parallÃ¨le
             $parallelResults = Invoke-ParallelProcessing -Items $testItems -ProcessItem $processItem
             
-            # Vérifier que les résultats sont identiques (après tri)
+            # VÃ©rifier que les rÃ©sultats sont identiques (aprÃ¨s tri)
             $sortedSequentialResults = $sequentialResults | Sort-Object
             $sortedParallelResults = $parallelResults | Sort-Object
             
-            # Vérifier que les deux ensembles de résultats ont la même taille
+            # VÃ©rifier que les deux ensembles de rÃ©sultats ont la mÃªme taille
             $sortedSequentialResults.Count | Should -Be $sortedParallelResults.Count
             
-            # Vérifier que chaque élément est identique
+            # VÃ©rifier que chaque Ã©lÃ©ment est identique
             for ($i = 0; $i -lt $sortedSequentialResults.Count; $i++) {
                 $sortedSequentialResults[$i] | Should -Be $sortedParallelResults[$i]
             }
@@ -159,14 +159,14 @@ Describe "Tests des scénarios parallèles" {
                 )
                 
                 if ($UseCache -and $Cache.ContainsKey($Key)) {
-                    # Retourner le résultat du cache
+                    # Retourner le rÃ©sultat du cache
                     return $Cache[$Key]
                 }
                 else {
-                    # Générer le résultat
+                    # GÃ©nÃ©rer le rÃ©sultat
                     $result = & $Generator
                     
-                    # Stocker le résultat dans le cache
+                    # Stocker le rÃ©sultat dans le cache
                     if ($UseCache) {
                         $Cache[$Key] = $result
                     }
@@ -175,17 +175,17 @@ Describe "Tests des scénarios parallèles" {
                 }
             }
             
-            # Créer un générateur qui prend du temps
+            # CrÃ©er un gÃ©nÃ©rateur qui prend du temps
             $slowGenerator = {
                 Start-Sleep -Milliseconds 50
                 return Get-Random
             }
             
-            # Créer un cache partagé
+            # CrÃ©er un cache partagÃ©
             $sharedCache = @{}
         }
         
-        It "L'utilisation du cache améliore les performances" {
+        It "L'utilisation du cache amÃ©liore les performances" {
             # Mesurer le temps sans cache
             $noCacheStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $noCacheResult1 = Get-CachedResult -Key "test" -Generator $slowGenerator -UseCache:$false -Cache $sharedCache
@@ -200,40 +200,40 @@ Describe "Tests des scénarios parallèles" {
             $withCacheStopwatch.Stop()
             $withCacheTime = $withCacheStopwatch.Elapsed.TotalMilliseconds
             
-            # Vérifier que l'utilisation du cache est plus rapide
+            # VÃ©rifier que l'utilisation du cache est plus rapide
             $withCacheTime | Should -BeLessThan $noCacheTime
             
-            # Vérifier que les résultats du cache sont cohérents
+            # VÃ©rifier que les rÃ©sultats du cache sont cohÃ©rents
             $withCacheResult1 | Should -Be $withCacheResult2
             
-            # Vérifier que les résultats sans cache sont différents (car générés aléatoirement)
-            # Note: Il y a une très faible probabilité que les deux résultats soient identiques par hasard
+            # VÃ©rifier que les rÃ©sultats sans cache sont diffÃ©rents (car gÃ©nÃ©rÃ©s alÃ©atoirement)
+            # Note: Il y a une trÃ¨s faible probabilitÃ© que les deux rÃ©sultats soient identiques par hasard
             if ($noCacheResult1 -eq $noCacheResult2) {
-                Write-Warning "Les résultats sans cache sont identiques par hasard. Cela peut arriver, mais c'est peu probable."
+                Write-Warning "Les rÃ©sultats sans cache sont identiques par hasard. Cela peut arriver, mais c'est peu probable."
             }
         }
         
-        It "Le cache stocke correctement les résultats" {
+        It "Le cache stocke correctement les rÃ©sultats" {
             # Vider le cache
             $sharedCache.Clear()
             
-            # Générer un résultat et le mettre en cache
+            # GÃ©nÃ©rer un rÃ©sultat et le mettre en cache
             $key = "testKey"
             $result1 = Get-CachedResult -Key $key -Generator $slowGenerator -UseCache -Cache $sharedCache
             
-            # Vérifier que le résultat est dans le cache
+            # VÃ©rifier que le rÃ©sultat est dans le cache
             $sharedCache.ContainsKey($key) | Should -Be $true
             $sharedCache[$key] | Should -Be $result1
             
-            # Récupérer le résultat du cache
+            # RÃ©cupÃ©rer le rÃ©sultat du cache
             $result2 = Get-CachedResult -Key $key -Generator $slowGenerator -UseCache -Cache $sharedCache
             
-            # Vérifier que le résultat est identique
+            # VÃ©rifier que le rÃ©sultat est identique
             $result2 | Should -Be $result1
         }
     }
     
-    Context "Gestion des ressources système" {
+    Context "Gestion des ressources systÃ¨me" {
         BeforeAll {
             # Fonction pour surveiller l'utilisation des ressources
             function Measure-ResourceUsage {
@@ -245,22 +245,22 @@ Describe "Tests des scénarios parallèles" {
                     [hashtable]$Parameters = @{}
                 )
                 
-                # Mesurer l'utilisation de la mémoire avant
+                # Mesurer l'utilisation de la mÃ©moire avant
                 $process = Get-Process -Id $PID
                 $startCpu = $process.TotalProcessorTime
                 $startWS = $process.WorkingSet64
                 $startPM = $process.PrivateMemorySize64
                 
-                # Exécuter le script
+                # ExÃ©cuter le script
                 $result = & $ScriptBlock @Parameters
                 
-                # Mesurer l'utilisation de la mémoire après
+                # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
                 $process = Get-Process -Id $PID
                 $endCpu = $process.TotalProcessorTime
                 $endWS = $process.WorkingSet64
                 $endPM = $process.PrivateMemorySize64
                 
-                # Calculer les différences
+                # Calculer les diffÃ©rences
                 $cpuTime = ($endCpu - $startCpu).TotalSeconds
                 $workingSetDiff = ($endWS - $startWS) / 1MB
                 $privateMemoryDiff = ($endPM - $startPM) / 1MB
@@ -273,9 +273,9 @@ Describe "Tests des scénarios parallèles" {
                 }
             }
             
-            # Créer des scriptblocks de test
+            # CrÃ©er des scriptblocks de test
             $lowMemoryScript = { 
-                # Script qui utilise peu de mémoire
+                # Script qui utilise peu de mÃ©moire
                 $sum = 0
                 for ($i = 0; $i -lt 1000; $i++) {
                     $sum += $i
@@ -284,7 +284,7 @@ Describe "Tests des scénarios parallèles" {
             }
             
             $highMemoryScript = { 
-                # Script qui utilise beaucoup de mémoire
+                # Script qui utilise beaucoup de mÃ©moire
                 $array = @()
                 for ($i = 0; $i -lt 100000; $i++) {
                     $array += "Item $i"
@@ -293,38 +293,38 @@ Describe "Tests des scénarios parallèles" {
             }
         }
         
-        It "Détecte correctement l'utilisation de la mémoire" {
-            # Mesurer l'utilisation des ressources pour un script qui utilise peu de mémoire
+        It "DÃ©tecte correctement l'utilisation de la mÃ©moire" {
+            # Mesurer l'utilisation des ressources pour un script qui utilise peu de mÃ©moire
             $lowMemoryUsage = Measure-ResourceUsage -ScriptBlock $lowMemoryScript
             
-            # Mesurer l'utilisation des ressources pour un script qui utilise beaucoup de mémoire
+            # Mesurer l'utilisation des ressources pour un script qui utilise beaucoup de mÃ©moire
             $highMemoryUsage = Measure-ResourceUsage -ScriptBlock $highMemoryScript
             
-            # Vérifier que l'utilisation de la mémoire est détectée correctement
+            # VÃ©rifier que l'utilisation de la mÃ©moire est dÃ©tectÃ©e correctement
             $highMemoryUsage.WorkingSetDiffMB | Should -BeGreaterThan $lowMemoryUsage.WorkingSetDiffMB
             $highMemoryUsage.PrivateMemoryDiffMB | Should -BeGreaterThan $lowMemoryUsage.PrivateMemoryDiffMB
         }
         
-        It "Retourne le résultat correct" {
-            # Mesurer l'utilisation des ressources pour un script avec un résultat connu
+        It "Retourne le rÃ©sultat correct" {
+            # Mesurer l'utilisation des ressources pour un script avec un rÃ©sultat connu
             $knownResultScript = { return 42 }
             $usage = Measure-ResourceUsage -ScriptBlock $knownResultScript
             
-            # Vérifier que le résultat est correct
+            # VÃ©rifier que le rÃ©sultat est correct
             $usage.Result | Should -Be 42
         }
         
-        It "Accepte des paramètres pour le scriptblock" {
-            # Créer un scriptblock qui utilise des paramètres
+        It "Accepte des paramÃ¨tres pour le scriptblock" {
+            # CrÃ©er un scriptblock qui utilise des paramÃ¨tres
             $paramScript = { 
                 param($value)
                 return $value * 2
             }
             
-            # Mesurer l'utilisation des ressources avec des paramètres
+            # Mesurer l'utilisation des ressources avec des paramÃ¨tres
             $usage = Measure-ResourceUsage -ScriptBlock $paramScript -Parameters @{ value = 5 }
             
-            # Vérifier que les paramètres sont passés correctement
+            # VÃ©rifier que les paramÃ¨tres sont passÃ©s correctement
             $usage.Result | Should -Be 10
         }
     }

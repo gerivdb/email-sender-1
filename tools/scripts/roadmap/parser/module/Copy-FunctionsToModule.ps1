@@ -1,4 +1,4 @@
-#
+﻿#
 # Copy-FunctionsToModule.ps1
 #
 # Script to copy existing functions to the module structure

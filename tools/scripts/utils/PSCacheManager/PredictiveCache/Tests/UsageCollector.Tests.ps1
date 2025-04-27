@@ -1,44 +1,44 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module UsageCollector.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module UsageCollector
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour la base de données de test
+# CrÃ©er un chemin temporaire pour la base de donnÃ©es de test
 $testDatabasePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\UsageCollector_Test.db"
 $testDatabaseDir = Split-Path -Path $testDatabasePath -Parent
 if (-not (Test-Path -Path $testDatabaseDir)) {
     New-Item -Path $testDatabaseDir -ItemType Directory -Force | Out-Null
 }
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force
 }
 
 Describe "UsageCollector Module Tests" {
     BeforeAll {
-        # Créer un mock pour System.Data.SQLite si nécessaire
+        # CrÃ©er un mock pour System.Data.SQLite si nÃ©cessaire
         if (-not ([System.Management.Automation.PSTypeName]'System.Data.SQLite.SQLiteConnection').Type) {
-            # Si SQLite n'est pas disponible, créer un mock de base de données en mémoire
-            # Cette variable est utilisée indirectement via les mocks
+            # Si SQLite n'est pas disponible, crÃ©er un mock de base de donnÃ©es en mÃ©moire
+            # Cette variable est utilisÃ©e indirectement via les mocks
             $script:mockDatabase = [PSCustomObject]@{
                 Accesses  = @()
                 Sets      = @()
@@ -93,7 +93,7 @@ Describe "UsageCollector Module Tests" {
 
     Context "UsageCollector Methods" {
         BeforeEach {
-            # Cette variable est utilisée dans chaque test de ce contexte
+            # Cette variable est utilisÃ©e dans chaque test de ce contexte
             $script:collector = New-UsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
         }
 
@@ -105,7 +105,7 @@ Describe "UsageCollector Module Tests" {
             # Act
             { $collector.RecordAccess($key, $hit) } | Should -Not -Throw
 
-            # Assert - Vérification indirecte via les statistiques
+            # Assert - VÃ©rification indirecte via les statistiques
             $stats = $collector.GetKeyAccessStats($key)
             if ($stats) {
                 $stats.Key | Should -Be $key
@@ -154,14 +154,14 @@ Describe "UsageCollector Module Tests" {
             # Act
             $sequences = $collector.GetFrequentSequences(10, 60)
 
-            # Assert - Vérification de base
+            # Assert - VÃ©rification de base
             $sequences | Should -Not -BeNullOrEmpty -ErrorAction SilentlyContinue
         }
     }
 
     Context "Database Operations" {
         BeforeEach {
-            # Cette variable est utilisée dans le test de fermeture de connexion
+            # Cette variable est utilisÃ©e dans le test de fermeture de connexion
             $script:collector = New-UsageCollector -DatabasePath $testDatabasePath -CacheName "TestCache"
         }
 

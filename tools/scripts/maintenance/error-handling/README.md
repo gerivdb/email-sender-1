@@ -1,33 +1,33 @@
-# Module de gestion d'erreurs
+﻿# Module de gestion d'erreurs
 
-Ce répertoire contient un module PowerShell pour la gestion d'erreurs dans les scripts, ainsi que des outils pour ajouter automatiquement des blocs try/catch et créer un système de journalisation centralisé.
+Ce rÃ©pertoire contient un module PowerShell pour la gestion d'erreurs dans les scripts, ainsi que des outils pour ajouter automatiquement des blocs try/catch et crÃ©er un systÃ¨me de journalisation centralisÃ©.
 
 ## Contenu
 
 - **ErrorHandling.psm1** : Module principal de gestion d'erreurs
 - **ErrorHandling.Tests.ps1** : Tests unitaires pour le module
-- **Add-ErrorHandlingToScripts.ps1** : Script pour ajouter la gestion d'erreurs à plusieurs scripts
-- **Run-Tests.ps1** : Script pour exécuter les tests unitaires
+- **Add-ErrorHandlingToScripts.ps1** : Script pour ajouter la gestion d'erreurs Ã  plusieurs scripts
+- **Run-Tests.ps1** : Script pour exÃ©cuter les tests unitaires
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
 ### Module ErrorHandling
 
-Le module ErrorHandling fournit les fonctionnalités suivantes :
+Le module ErrorHandling fournit les fonctionnalitÃ©s suivantes :
 
 - **Ajout automatique de blocs try/catch** : Analyse les scripts PowerShell et ajoute des blocs try/catch aux fonctions et au code principal.
-- **Journalisation des erreurs** : Enregistre les erreurs dans un fichier JSON avec des informations détaillées.
-- **Système de journalisation centralisé** : Crée une structure de répertoires et des scripts pour gérer les journaux.
-- **Base de données d'erreurs** : Stocke les erreurs connues et leurs solutions.
-- **Analyse des erreurs** : Identifie les patterns d'erreurs et suggère des solutions.
+- **Journalisation des erreurs** : Enregistre les erreurs dans un fichier JSON avec des informations dÃ©taillÃ©es.
+- **SystÃ¨me de journalisation centralisÃ©** : CrÃ©e une structure de rÃ©pertoires et des scripts pour gÃ©rer les journaux.
+- **Base de donnÃ©es d'erreurs** : Stocke les erreurs connues et leurs solutions.
+- **Analyse des erreurs** : Identifie les patterns d'erreurs et suggÃ¨re des solutions.
 
 ### Fonctions principales
 
-- `Initialize-ErrorHandling` : Initialise le module avec un répertoire de journaux personnalisé.
-- `Add-TryCatchBlock` : Ajoute des blocs try/catch à un script PowerShell.
+- `Initialize-ErrorHandling` : Initialise le module avec un rÃ©pertoire de journaux personnalisÃ©.
+- `Add-TryCatchBlock` : Ajoute des blocs try/catch Ã  un script PowerShell.
 - `Write-Log-Error` : Journalise une erreur dans un fichier JSON.
-- `New-CentralizedLoggingSystem` : Crée un système de journalisation centralisé.
-- `Add-ErrorSolution` : Ajoute une solution à une erreur connue.
+- `New-CentralizedLoggingSystem` : CrÃ©e un systÃ¨me de journalisation centralisÃ©.
+- `Add-ErrorSolution` : Ajoute une solution Ã  une erreur connue.
 
 ## Utilisation
 
@@ -37,17 +37,17 @@ Le module ErrorHandling fournit les fonctionnalités suivantes :
 # Importer le module
 Import-Module .\ErrorHandling.psm1
 
-# Initialiser le module avec un répertoire de journaux personnalisé
+# Initialiser le module avec un rÃ©pertoire de journaux personnalisÃ©
 Initialize-ErrorHandling -LogPath "C:\Logs"
 ```
 
-### Ajout de blocs try/catch à un script
+### Ajout de blocs try/catch Ã  un script
 
 ```powershell
-# Ajouter des blocs try/catch à un script
+# Ajouter des blocs try/catch Ã  un script
 Add-TryCatchBlock -ScriptPath "C:\Scripts\MonScript.ps1" -BackupFile
 
-# Ajouter des blocs try/catch à plusieurs scripts
+# Ajouter des blocs try/catch Ã  plusieurs scripts
 .\Add-ErrorHandlingToScripts.ps1 -ScriptPath "C:\Scripts" -Recurse -BackupFiles
 ```
 
@@ -56,7 +56,7 @@ Add-TryCatchBlock -ScriptPath "C:\Scripts\MonScript.ps1" -BackupFile
 ```powershell
 # Journaliser une erreur
 try {
-    # Code qui peut générer une erreur
+    # Code qui peut gÃ©nÃ©rer une erreur
     Get-Content -Path "C:\fichier_inexistant.txt" -ErrorAction Stop
 }
 catch {
@@ -65,41 +65,41 @@ catch {
 }
 ```
 
-### Création d'un système de journalisation centralisé
+### CrÃ©ation d'un systÃ¨me de journalisation centralisÃ©
 
 ```powershell
-# Créer un système de journalisation centralisé
+# CrÃ©er un systÃ¨me de journalisation centralisÃ©
 New-CentralizedLoggingSystem -LogPath "C:\Logs" -IncludeAnalytics
 ```
 
 ## Tests unitaires
 
-Le module inclut des tests unitaires pour vérifier son bon fonctionnement. Pour exécuter les tests :
+Le module inclut des tests unitaires pour vÃ©rifier son bon fonctionnement. Pour exÃ©cuter les tests :
 
 ```powershell
-# Exécuter les tests unitaires
+# ExÃ©cuter les tests unitaires
 .\Run-Tests.ps1
 
-# Exécuter les tests unitaires et générer un rapport HTML
+# ExÃ©cuter les tests unitaires et gÃ©nÃ©rer un rapport HTML
 .\Run-Tests.ps1 -GenerateReport
 ```
 
 ## Exemples
 
-### Exemple 1 : Ajouter la gestion d'erreurs à tous les scripts d'un répertoire
+### Exemple 1 : Ajouter la gestion d'erreurs Ã  tous les scripts d'un rÃ©pertoire
 
 ```powershell
 .\Add-ErrorHandlingToScripts.ps1 -ScriptPath "D:\Projets\Scripts" -Recurse -BackupFiles
 ```
 
-### Exemple 2 : Créer un système de journalisation centralisé
+### Exemple 2 : CrÃ©er un systÃ¨me de journalisation centralisÃ©
 
 ```powershell
 Import-Module .\ErrorHandling.psm1
 New-CentralizedLoggingSystem -LogPath "D:\Logs" -IncludeAnalytics
 ```
 
-### Exemple 3 : Ajouter une solution à une erreur connue
+### Exemple 3 : Ajouter une solution Ã  une erreur connue
 
 ```powershell
 Import-Module .\ErrorHandling.psm1
@@ -109,22 +109,22 @@ Initialize-ErrorHandling -LogPath "D:\Logs"
 $errorHash = "..."
 
 # Ajouter une solution
-Add-ErrorSolution -ErrorHash $errorHash -Solution "Vérifier que le fichier existe avant d'appeler Get-Content"
+Add-ErrorSolution -ErrorHash $errorHash -Solution "VÃ©rifier que le fichier existe avant d'appeler Get-Content"
 ```
 
 ## Bonnes pratiques
 
-- Toujours initialiser le module avec un répertoire de journaux approprié.
-- Créer des sauvegardes des fichiers avant de les modifier avec l'option `-BackupFile`.
-- Utiliser des catégories d'erreurs cohérentes pour faciliter l'analyse.
-- Exécuter régulièrement les tests unitaires pour vérifier le bon fonctionnement du module.
-- Analyser régulièrement les journaux d'erreurs pour identifier des patterns et améliorer le code.
+- Toujours initialiser le module avec un rÃ©pertoire de journaux appropriÃ©.
+- CrÃ©er des sauvegardes des fichiers avant de les modifier avec l'option `-BackupFile`.
+- Utiliser des catÃ©gories d'erreurs cohÃ©rentes pour faciliter l'analyse.
+- ExÃ©cuter rÃ©guliÃ¨rement les tests unitaires pour vÃ©rifier le bon fonctionnement du module.
+- Analyser rÃ©guliÃ¨rement les journaux d'erreurs pour identifier des patterns et amÃ©liorer le code.
 
-## Dépannage
+## DÃ©pannage
 
-Si vous rencontrez des problèmes avec le module, vérifiez les points suivants :
+Si vous rencontrez des problÃ¨mes avec le module, vÃ©rifiez les points suivants :
 
-- Assurez-vous que PowerShell 5.1 ou supérieur est installé.
-- Vérifiez que vous avez les droits d'accès en lecture et en écriture sur les répertoires de journaux.
-- Exécutez les tests unitaires pour vérifier le bon fonctionnement du module.
-- Consultez les journaux d'erreurs pour identifier les problèmes.
+- Assurez-vous que PowerShell 5.1 ou supÃ©rieur est installÃ©.
+- VÃ©rifiez que vous avez les droits d'accÃ¨s en lecture et en Ã©criture sur les rÃ©pertoires de journaux.
+- ExÃ©cutez les tests unitaires pour vÃ©rifier le bon fonctionnement du module.
+- Consultez les journaux d'erreurs pour identifier les problÃ¨mes.

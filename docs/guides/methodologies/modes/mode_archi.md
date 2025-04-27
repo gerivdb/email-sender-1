@@ -1,15 +1,15 @@
-# Mode ARCHI
+﻿# Mode ARCHI
 
 ## Description
-Le mode ARCHI (Architecture) est un mode opérationnel qui se concentre sur la conception et l'analyse de l'architecture du système.
+Le mode ARCHI (Architecture) est un mode opÃ©rationnel qui se concentre sur la conception et l'analyse de l'architecture du systÃ¨me.
 
 ## Objectif
-L'objectif principal du mode ARCHI est de concevoir, documenter et valider l'architecture du système pour assurer sa qualité, sa maintenabilité et son évolutivité.
+L'objectif principal du mode ARCHI est de concevoir, documenter et valider l'architecture du systÃ¨me pour assurer sa qualitÃ©, sa maintenabilitÃ© et son Ã©volutivitÃ©.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 - Conception d'architecture
-- Modélisation de systèmes
-- Analyse de dépendances
+- ModÃ©lisation de systÃ¨mes
+- Analyse de dÃ©pendances
 - Documentation d'architecture
 - Validation d'architecture
 
@@ -19,28 +19,28 @@ L'objectif principal du mode ARCHI est de concevoir, documenter et valider l'arc
 # Analyser l'architecture existante
 .\archi-mode.ps1 -SourcePath "src" -OutputPath "docs/architecture"
 
-# Générer un diagramme d'architecture
+# GÃ©nÃ©rer un diagramme d'architecture
 .\archi-mode.ps1 -SourcePath "src" -OutputPath "docs/architecture" -GenerateDiagram
 
-# Valider l'architecture par rapport à des règles
+# Valider l'architecture par rapport Ã  des rÃ¨gles
 .\archi-mode.ps1 -SourcePath "src" -RulesPath "config/architecture-rules.json" -Validate
 ```
 
 ## Types d'architecture
-Le mode ARCHI peut travailler avec différents types d'architecture :
+Le mode ARCHI peut travailler avec diffÃ©rents types d'architecture :
 - **Architecture logicielle** : Conception des composants logiciels
-- **Architecture système** : Conception du système dans son ensemble
-- **Architecture de données** : Conception des structures de données
-- **Architecture d'intégration** : Conception des interfaces entre systèmes
+- **Architecture systÃ¨me** : Conception du systÃ¨me dans son ensemble
+- **Architecture de donnÃ©es** : Conception des structures de donnÃ©es
+- **Architecture d'intÃ©gration** : Conception des interfaces entre systÃ¨mes
 
-## Intégration avec d'autres modes
-Le mode ARCHI peut être utilisé en combinaison avec d'autres modes :
-- **DEV-R** : Pour concevoir l'architecture avant de commencer le développement
-- **REVIEW** : Pour valider l'architecture implémentée
-- **C-BREAK** : Pour détecter et résoudre les dépendances circulaires
+## IntÃ©gration avec d'autres modes
+Le mode ARCHI peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
+- **DEV-R** : Pour concevoir l'architecture avant de commencer le dÃ©veloppement
+- **REVIEW** : Pour valider l'architecture implÃ©mentÃ©e
+- **C-BREAK** : Pour dÃ©tecter et rÃ©soudre les dÃ©pendances circulaires
 
-## Implémentation
-Le mode ARCHI est implémenté dans le script `archi-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/archi`.
+## ImplÃ©mentation
+Le mode ARCHI est implÃ©mentÃ© dans le script `archi-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/archi`.
 
 ## Exemple de diagramme d'architecture
 ```
@@ -55,10 +55,10 @@ Le mode ARCHI est implémenté dans le script `archi-mode.ps1` qui se trouve dan
 ```
 
 ## Bonnes pratiques
-- Documenter l'architecture avant de commencer l'implémentation
+- Documenter l'architecture avant de commencer l'implÃ©mentation
 - Valider l'architecture par rapport aux exigences
-- Maintenir la documentation d'architecture à jour
+- Maintenir la documentation d'architecture Ã  jour
 - Utiliser des diagrammes pour visualiser l'architecture
 - Suivre les principes SOLID dans la conception
-- Minimiser les dépendances entre composants
-- Prévoir l'évolutivité de l'architecture
+- Minimiser les dÃ©pendances entre composants
+- PrÃ©voir l'Ã©volutivitÃ© de l'architecture

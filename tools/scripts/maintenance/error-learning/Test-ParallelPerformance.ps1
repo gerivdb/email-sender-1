@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests the performance of different parallel processing approaches.
 .DESCRIPTION
@@ -75,7 +75,7 @@ $errorPatterns = @(
     @{
         Name        = "HardcodedPath"
         Pattern     = '(?<![\\])(["''])((?:[A-Za-z]:[\\/]|\\\\)[^''"]+)\1'
-        Description = "Chemin absolu codé en dur détecté"
+        Description = "Chemin absolu codÃ© en dur dÃ©tectÃ©"
         Correction  = {
             param($Line)
             $match = [regex]::Match($Line, '(?<![\\])(["''])((?:[A-Za-z]:[\\/]|\\\\)[^''"]+)\1')
@@ -98,7 +98,7 @@ $errorPatterns = @(
     @{
         Name        = "WriteHostUsage"
         Pattern     = '\bWrite-Host\b'
-        Description = "Utilisation de Write-Host détectée"
+        Description = "Utilisation de Write-Host dÃ©tectÃ©e"
         Correction  = {
             param($Line)
             return $Line -replace '\bWrite-Host\b', 'Write-Output'

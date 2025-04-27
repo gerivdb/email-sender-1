@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Initialise la gestion des erreurs pour TestOmnibus.
 .DESCRIPTION
     Ce script initialise la gestion des erreurs pour TestOmnibus en utilisant
     le module ErrorHandler.ps1. Il configure un gestionnaire d'erreurs global
-    et fournit des fonctions pour gérer les erreurs de manière cohérente.
+    et fournit des fonctions pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente.
 .EXAMPLE
     . .\Initialize-ErrorHandling.ps1
 .NOTES
@@ -18,9 +18,9 @@ $errorHandlerPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\utils\ErrorH
 if (Test-Path -Path $errorHandlerPath) {
     . $errorHandlerPath
 } else {
-    Write-Warning "Le module de gestion des erreurs n'a pas été trouvé: $errorHandlerPath"
+    Write-Warning "Le module de gestion des erreurs n'a pas Ã©tÃ© trouvÃ©: $errorHandlerPath"
     
-    # Définir des fonctions de base pour la gestion des erreurs si le module n'est pas disponible
+    # DÃ©finir des fonctions de base pour la gestion des erreurs si le module n'est pas disponible
     function Handle-Error {
         [CmdletBinding()]
         param (
@@ -28,7 +28,7 @@ if (Test-Path -Path $errorHandlerPath) {
             [System.Management.Automation.ErrorRecord]$ErrorRecord,
             
             [Parameter(Mandatory = $false)]
-            [string]$Context = "Opération générale",
+            [string]$Context = "OpÃ©ration gÃ©nÃ©rale",
             
             [Parameter(Mandatory = $false)]
             [string]$LogPath = "$env:TEMP\ErrorLogs\$(Get-Date -Format 'yyyyMMdd').log",
@@ -43,7 +43,7 @@ if (Test-Path -Path $errorHandlerPath) {
         # Afficher l'erreur
         Write-Error "ERREUR dans '$Context': $($ErrorRecord.Exception.Message)"
         
-        # Gérer l'erreur selon les paramètres
+        # GÃ©rer l'erreur selon les paramÃ¨tres
         if ($ThrowException) {
             throw $ErrorRecord
         }
@@ -60,7 +60,7 @@ if (Test-Path -Path $errorHandlerPath) {
             [string]$LogPath = "$env:TEMP\ErrorLogs\$(Get-Date -Format 'yyyyMMdd').log"
         )
         
-        Write-Host "Gestionnaire d'erreurs simplifié configuré." -ForegroundColor Yellow
+        Write-Host "Gestionnaire d'erreurs simplifiÃ© configurÃ©." -ForegroundColor Yellow
     }
 }
 
@@ -68,7 +68,7 @@ if (Test-Path -Path $errorHandlerPath) {
 $logPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\ErrorLogs\$(Get-Date -Format 'yyyyMMdd').log"
 Set-GlobalErrorHandler -LogPath $logPath
 
-# Fonction pour gérer les erreurs spécifiques à TestOmnibus
+# Fonction pour gÃ©rer les erreurs spÃ©cifiques Ã  TestOmnibus
 function Handle-TestOmnibusError {
     [CmdletBinding()]
     param (
@@ -85,23 +85,23 @@ function Handle-TestOmnibusError {
         [switch]$AddToReport
     )
     
-    # Contexte spécifique à TestOmnibus
+    # Contexte spÃ©cifique Ã  TestOmnibus
     $context = "TestOmnibus - $TestName"
     
     # Journaliser l'erreur
     Handle-Error -ErrorRecord $ErrorRecord -Context $context
     
-    # Ajouter l'erreur au rapport si demandé
+    # Ajouter l'erreur au rapport si demandÃ©
     if ($AddToReport) {
         $reportPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results\error_report.json"
         
-        # Créer le répertoire de rapports s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
         $reportDir = Split-Path -Path $reportPath -Parent
         if (-not (Test-Path -Path $reportDir)) {
             New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
         }
         
-        # Charger le rapport existant ou créer un nouveau
+        # Charger le rapport existant ou crÃ©er un nouveau
         if (Test-Path -Path $reportPath) {
             $report = Get-Content -Path $reportPath -Raw | ConvertFrom-Json
         } else {
@@ -129,10 +129,10 @@ function Handle-TestOmnibusError {
         $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $reportPath -Encoding UTF8
     }
     
-    # Sortir du script si demandé
+    # Sortir du script si demandÃ©
     if (-not $ContinueExecution) {
         exit 1
     }
 }
 
-Write-Host "Gestion des erreurs initialisée pour TestOmnibus" -ForegroundColor Green
+Write-Host "Gestion des erreurs initialisÃ©e pour TestOmnibus" -ForegroundColor Green

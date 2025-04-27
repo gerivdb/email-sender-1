@@ -1,27 +1,27 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute une analyse en temps réel pendant l'édition des fichiers.
+    ExÃ©cute une analyse en temps rÃ©el pendant l'Ã©dition des fichiers.
 
 .DESCRIPTION
-    Ce script surveille les fichiers d'un répertoire et exécute une analyse en temps réel
-    lorsqu'un fichier est modifié, avec un mécanisme de notification pour alerter l'utilisateur
-    des problèmes détectés.
+    Ce script surveille les fichiers d'un rÃ©pertoire et exÃ©cute une analyse en temps rÃ©el
+    lorsqu'un fichier est modifiÃ©, avec un mÃ©canisme de notification pour alerter l'utilisateur
+    des problÃ¨mes dÃ©tectÃ©s.
 
 .PARAMETER WatchPath
-    Chemin du répertoire à surveiller.
+    Chemin du rÃ©pertoire Ã  surveiller.
 
 .PARAMETER Filter
-    Filtre pour les types de fichiers à surveiller.
+    Filtre pour les types de fichiers Ã  surveiller.
 
 .PARAMETER NotificationType
-    Type de notification à utiliser (Console, Toast, Popup).
+    Type de notification Ã  utiliser (Console, Toast, Popup).
 
 .PARAMETER DebounceTime
-    Temps en millisecondes à attendre après une modification avant d'exécuter l'analyse.
+    Temps en millisecondes Ã  attendre aprÃ¨s une modification avant d'exÃ©cuter l'analyse.
 
 .PARAMETER UseCache
-    Indique s'il faut utiliser le cache pour améliorer les performances.
+    Indique s'il faut utiliser le cache pour amÃ©liorer les performances.
 
 .EXAMPLE
     .\Start-RealTimeAnalysis.ps1 -WatchPath "C:\Repos\MyProject" -Filter "*.ps1"
@@ -51,19 +51,19 @@ param(
     [switch]$UseCache
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 Import-Module "$modulesPath\FileContentIndexer.psm1" -Force -ErrorAction SilentlyContinue
 Import-Module "$modulesPath\SyntaxAnalyzer.psm1" -Force -ErrorAction SilentlyContinue
 Import-Module "$modulesPath\PRAnalysisCache.psm1" -Force -ErrorAction SilentlyContinue
 
-# Créer un cache si demandé
+# CrÃ©er un cache si demandÃ©
 $cache = if ($UseCache) { New-PRAnalysisCache -MaxMemoryItems 1000 } else { $null }
 
-# Créer un analyseur de syntaxe
+# CrÃ©er un analyseur de syntaxe
 $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
 
-# Dictionnaire pour stocker les dernières modifications
+# Dictionnaire pour stocker les derniÃ¨res modifications
 $lastModifications = @{}
 
 # Dictionnaire pour stocker les timers de debounce
@@ -105,7 +105,7 @@ function Invoke-FileAnalysis {
         [string]$FilePath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Warning "Le fichier n'existe pas: $FilePath"
         return $null
@@ -119,15 +119,15 @@ function Invoke-FileAnalysis {
         return $null
     }
     
-    # Vérifier si le fichier a été modifié depuis la dernière analyse
+    # VÃ©rifier si le fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re analyse
     $lastWrite = (Get-Item -Path $FilePath).LastWriteTime
     
     if ($lastModifications.ContainsKey($FilePath) -and $lastModifications[$FilePath] -eq $lastWrite) {
-        Write-Verbose "Le fichier n'a pas été modifié depuis la dernière analyse: $FilePath"
+        Write-Verbose "Le fichier n'a pas Ã©tÃ© modifiÃ© depuis la derniÃ¨re analyse: $FilePath"
         return $null
     }
     
-    # Mettre à jour la date de dernière modification
+    # Mettre Ã  jour la date de derniÃ¨re modification
     $lastModifications[$FilePath] = $lastWrite
     
     # Analyser le fichier
@@ -135,7 +135,7 @@ function Invoke-FileAnalysis {
         # Analyser le fichier
         $issues = $analyzer.AnalyzeFile($FilePath)
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         $result = [PSCustomObject]@{
             FilePath = $FilePath
             Issues = $issues
@@ -158,25 +158,25 @@ function Invoke-FileAnalysis {
     }
 }
 
-# Fonction pour traiter les événements de modification de fichier
+# Fonction pour traiter les Ã©vÃ©nements de modification de fichier
 function Process-FileChangeEvent {
     param(
         [string]$FilePath
     )
     
-    # Vérifier si un timer de debounce existe déjà pour ce fichier
+    # VÃ©rifier si un timer de debounce existe dÃ©jÃ  pour ce fichier
     if ($debounceTimers.ContainsKey($FilePath)) {
-        # Arrêter et supprimer le timer existant
+        # ArrÃªter et supprimer le timer existant
         $debounceTimers[$FilePath].Dispose()
         $debounceTimers.Remove($FilePath)
     }
     
-    # Créer un nouveau timer
+    # CrÃ©er un nouveau timer
     $timer = New-Object System.Timers.Timer
     $timer.Interval = $DebounceTime
     $timer.AutoReset = $false
     
-    # Définir l'action à exécuter lorsque le timer expire
+    # DÃ©finir l'action Ã  exÃ©cuter lorsque le timer expire
     $action = {
         param($FilePath)
         
@@ -184,14 +184,14 @@ function Process-FileChangeEvent {
         $result = Invoke-FileAnalysis -FilePath $FilePath
         
         if ($result -and $result.Success) {
-            # Afficher les résultats
+            # Afficher les rÃ©sultats
             $issueCount = $result.Issues.Count
             
             if ($issueCount -gt 0) {
-                $message = "Détecté $issueCount problème(s) dans le fichier $FilePath"
-                Show-Notification -Title "Analyse en temps réel" -Message $message -Type $NotificationType
+                $message = "DÃ©tectÃ© $issueCount problÃ¨me(s) dans le fichier $FilePath"
+                Show-Notification -Title "Analyse en temps rÃ©el" -Message $message -Type $NotificationType
                 
-                # Afficher les problèmes
+                # Afficher les problÃ¨mes
                 foreach ($issue in $result.Issues) {
                     Write-Host "  Ligne $($issue.Line), Colonne $($issue.Column): $($issue.Message)" -ForegroundColor $(
                         switch ($issue.Severity) {
@@ -202,7 +202,7 @@ function Process-FileChangeEvent {
                     )
                 }
             } else {
-                Write-Host "Aucun problème détecté dans le fichier $FilePath" -ForegroundColor Green
+                Write-Host "Aucun problÃ¨me dÃ©tectÃ© dans le fichier $FilePath" -ForegroundColor Green
             }
         }
     }
@@ -211,7 +211,7 @@ function Process-FileChangeEvent {
     $timer.Elapsed.Add({
         param($sender, $e)
         
-        # Exécuter l'action
+        # ExÃ©cuter l'action
         & $action $FilePath
         
         # Supprimer le timer
@@ -219,19 +219,19 @@ function Process-FileChangeEvent {
         $sender.Dispose()
     })
     
-    # Démarrer le timer
+    # DÃ©marrer le timer
     $debounceTimers[$FilePath] = $timer
     $timer.Start()
 }
 
-# Créer un observateur de fichiers
+# CrÃ©er un observateur de fichiers
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Path = $WatchPath
 $watcher.Filter = $Filter
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true
 
-# Configurer les gestionnaires d'événements
+# Configurer les gestionnaires d'Ã©vÃ©nements
 $onChange = Register-ObjectEvent -InputObject $watcher -EventName Changed -Action {
     $filePath = $Event.SourceEventArgs.FullPath
     Process-FileChangeEvent -FilePath $filePath
@@ -247,17 +247,17 @@ $onRenamed = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Acti
     Process-FileChangeEvent -FilePath $filePath
 }
 
-# Afficher un message de démarrage
-Write-Host "Analyse en temps réel démarrée pour $WatchPath" -ForegroundColor Green
+# Afficher un message de dÃ©marrage
+Write-Host "Analyse en temps rÃ©el dÃ©marrÃ©e pour $WatchPath" -ForegroundColor Green
 Write-Host "Surveillance des fichiers correspondant au filtre: $Filter" -ForegroundColor Green
 Write-Host "Type de notification: $NotificationType" -ForegroundColor Green
 Write-Host "Temps de debounce: $DebounceTime ms" -ForegroundColor Green
 Write-Host "Utilisation du cache: $UseCache" -ForegroundColor Green
 Write-Host ""
-Write-Host "Appuyez sur Ctrl+C pour arrêter l'analyse en temps réel" -ForegroundColor Yellow
+Write-Host "Appuyez sur Ctrl+C pour arrÃªter l'analyse en temps rÃ©el" -ForegroundColor Yellow
 
 try {
-    # Boucle infinie pour maintenir le script en cours d'exécution
+    # Boucle infinie pour maintenir le script en cours d'exÃ©cution
     while ($true) {
         Start-Sleep -Seconds 1
     }
@@ -273,5 +273,5 @@ try {
         $timer.Dispose()
     }
     
-    Write-Host "Analyse en temps réel arrêtée" -ForegroundColor Green
+    Write-Host "Analyse en temps rÃ©el arrÃªtÃ©e" -ForegroundColor Green
 }

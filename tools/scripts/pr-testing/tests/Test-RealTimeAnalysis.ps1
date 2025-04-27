@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-RealTimeAnalysis.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du script Start-RealTimeAnalysis.ps1.
 
 .EXAMPLE
@@ -21,24 +21,24 @@ param()
 
 # Importer Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Fonction pour créer un environnement de test
+# Fonction pour crÃ©er un environnement de test
 function Initialize-TestEnvironment {
     param(
         [string]$TestDir = "$env:TEMP\RealTimeAnalysisTest_$(Get-Random)"
     )
 
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDir)) {
         New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
     }
 
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $testFiles = @(
         @{
             Path    = "PowerShell\test1.ps1"
@@ -72,7 +72,7 @@ def test_function(param1):
     # Erreur: Utilisation de eval()
     result = eval("2 + 2")
 
-    # Erreur: Exception générique
+    # Erreur: Exception gÃ©nÃ©rique
     try:
         x = 1 / 0
     except:
@@ -92,11 +92,11 @@ def test_function(param1):
         Set-Content -Path $filePath -Value $file.Content -Encoding UTF8
     }
 
-    # Créer un répertoire pour les modules
+    # CrÃ©er un rÃ©pertoire pour les modules
     $modulesDir = Join-Path -Path $TestDir -ChildPath "modules"
     New-Item -Path $modulesDir -ItemType Directory -Force | Out-Null
 
-    # Créer des modules de test
+    # CrÃ©er des modules de test
     $moduleFiles = @(
         @{
             Path    = "FileContentIndexer.psm1"
@@ -134,7 +134,7 @@ function New-SyntaxAnalyzer {
         AnalyzeFile = {
             param([string]`$FilePath)
 
-            # Simuler des problèmes en fonction de l'extension du fichier
+            # Simuler des problÃ¨mes en fonction de l'extension du fichier
             `$extension = [System.IO.Path]::GetExtension(`$FilePath)
 
             if (`$extension -eq ".ps1") {
@@ -149,7 +149,7 @@ function New-SyntaxAnalyzer {
                         [PSCustomObject]@{
                             Line = 8
                             Column = 5
-                            Message = "Utilisation de Invoke-Expression peut présenter des risques de sécurité"
+                            Message = "Utilisation de Invoke-Expression peut prÃ©senter des risques de sÃ©curitÃ©"
                             Severity = "Error"
                         }
                     )
@@ -161,13 +161,13 @@ function New-SyntaxAnalyzer {
                     [PSCustomObject]@{
                         Line = 3
                         Column = 13
-                        Message = "Utilisation de eval() peut présenter des risques de sécurité"
+                        Message = "Utilisation de eval() peut prÃ©senter des risques de sÃ©curitÃ©"
                         Severity = "Error"
                     },
                     [PSCustomObject]@{
                         Line = 6
                         Column = 5
-                        Message = "Exception générique détectée"
+                        Message = "Exception gÃ©nÃ©rique dÃ©tectÃ©e"
                         Severity = "Warning"
                     }
                 )
@@ -237,21 +237,21 @@ function Remove-TestEnvironment {
     }
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Start-RealTimeAnalysis" {
     BeforeAll {
         # Initialiser l'environnement de test
         $script:testDir = Initialize-TestEnvironment
 
-        # Chemin du script à tester
+        # Chemin du script Ã  tester
         $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-RealTimeAnalysis.ps1"
 
-        # Vérifier que le script existe
+        # VÃ©rifier que le script existe
         if (-not (Test-Path -Path $scriptPath)) {
             throw "Le script Start-RealTimeAnalysis.ps1 n'existe pas: $scriptPath"
         }
 
-        # Créer une fonction pour tester les fonctions individuelles du script
+        # CrÃ©er une fonction pour tester les fonctions individuelles du script
         function Test-ScriptFunction {
             param(
                 [string]$FunctionName,
@@ -265,18 +265,18 @@ Describe "Start-RealTimeAnalysis" {
                 # Copier le script dans la session temporaire
                 Copy-Item -Path $scriptPath -Destination "TestScript.ps1" -ToSession $tempSession
 
-                # Créer un script block qui charge le script et exécute la fonction
+                # CrÃ©er un script block qui charge le script et exÃ©cute la fonction
                 $scriptBlock = {
                     param($FunctionName, $Parameters)
 
                     # Charger le script
                     . .\TestScript.ps1
 
-                    # Exécuter la fonction
+                    # ExÃ©cuter la fonction
                     & $FunctionName @Parameters
                 }
 
-                # Exécuter le script block dans la session temporaire
+                # ExÃ©cuter le script block dans la session temporaire
                 $result = Invoke-Command -Session $tempSession -ScriptBlock $scriptBlock -ArgumentList $FunctionName, $Parameters
 
                 return $result
@@ -286,7 +286,7 @@ Describe "Start-RealTimeAnalysis" {
             }
         }
 
-        # Créer une fonction pour tester l'analyse de fichier
+        # CrÃ©er une fonction pour tester l'analyse de fichier
         function Test-FileAnalysis {
             param(
                 [string]$FilePath,
@@ -297,21 +297,21 @@ Describe "Start-RealTimeAnalysis" {
             $tempSession = New-PSSession
 
             try {
-                # Copier le script et le fichier à analyser dans la session temporaire
+                # Copier le script et le fichier Ã  analyser dans la session temporaire
                 Copy-Item -Path $scriptPath -Destination "TestScript.ps1" -ToSession $tempSession
                 Copy-Item -Path $FilePath -Destination "TestFile$(Split-Path -Path $FilePath -Leaf)" -ToSession $tempSession
 
-                # Créer un script block qui charge le script et analyse le fichier
+                # CrÃ©er un script block qui charge le script et analyse le fichier
                 $scriptBlock = {
                     param($FilePath, $UseCache)
 
                     # Charger le script
                     . .\TestScript.ps1
 
-                    # Créer un cache si demandé
+                    # CrÃ©er un cache si demandÃ©
                     $cache = if ($UseCache) { New-PRAnalysisCache -MaxMemoryItems 1000 } else { $null }
 
-                    # Créer un analyseur de syntaxe
+                    # CrÃ©er un analyseur de syntaxe
                     $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
 
                     # Analyser le fichier
@@ -320,7 +320,7 @@ Describe "Start-RealTimeAnalysis" {
                     return $issues
                 }
 
-                # Exécuter le script block dans la session temporaire
+                # ExÃ©cuter le script block dans la session temporaire
                 $result = Invoke-Command -Session $tempSession -ScriptBlock $scriptBlock -ArgumentList "TestFile$(Split-Path -Path $FilePath -Leaf)", $UseCache
 
                 return $result
@@ -330,7 +330,7 @@ Describe "Start-RealTimeAnalysis" {
             }
         }
 
-        # Créer une fonction pour simuler un événement de modification de fichier
+        # CrÃ©er une fonction pour simuler un Ã©vÃ©nement de modification de fichier
         function Test-FileChangeEvent {
             param(
                 [string]$FilePath,
@@ -343,31 +343,31 @@ Describe "Start-RealTimeAnalysis" {
             $tempSession = New-PSSession
 
             try {
-                # Copier le script et le fichier à analyser dans la session temporaire
+                # Copier le script et le fichier Ã  analyser dans la session temporaire
                 Copy-Item -Path $scriptPath -Destination "TestScript.ps1" -ToSession $tempSession
                 Copy-Item -Path $FilePath -Destination "TestFile$(Split-Path -Path $FilePath -Leaf)" -ToSession $tempSession
 
-                # Créer un script block qui charge le script et simule un événement de modification de fichier
+                # CrÃ©er un script block qui charge le script et simule un Ã©vÃ©nement de modification de fichier
                 $scriptBlock = {
                     param($FilePath, $NotificationType, $DebounceTime, $UseCache)
 
                     # Charger le script
                     . .\TestScript.ps1
 
-                    # Créer un cache si demandé
+                    # CrÃ©er un cache si demandÃ©
                     $cache = if ($UseCache) { New-PRAnalysisCache -MaxMemoryItems 1000 } else { $null }
 
-                    # Créer un analyseur de syntaxe
+                    # CrÃ©er un analyseur de syntaxe
                     $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
 
-                    # Créer un dictionnaire pour stocker les dernières modifications
+                    # CrÃ©er un dictionnaire pour stocker les derniÃ¨res modifications
                     $lastModifications = @{}
 
-                    # Créer un dictionnaire pour stocker les timers de debounce
-                    # Variable non utilisée dans ce contexte de test, mais présente pour simuler le script réel
+                    # CrÃ©er un dictionnaire pour stocker les timers de debounce
+                    # Variable non utilisÃ©e dans ce contexte de test, mais prÃ©sente pour simuler le script rÃ©el
                     # $debounceTimers = @{}
 
-                    # Définir la fonction Show-Notification
+                    # DÃ©finir la fonction Show-Notification
                     function Show-Notification {
                         param(
                             [string]$Title,
@@ -382,13 +382,13 @@ Describe "Start-RealTimeAnalysis" {
                         }
                     }
 
-                    # Définir la fonction Invoke-FileAnalysis
+                    # DÃ©finir la fonction Invoke-FileAnalysis
                     function Invoke-FileAnalysis {
                         param(
                             [string]$FilePath
                         )
 
-                        # Vérifier si le fichier existe
+                        # VÃ©rifier si le fichier existe
                         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                             Write-Warning "Le fichier n'existe pas: $FilePath"
                             return $null
@@ -402,15 +402,15 @@ Describe "Start-RealTimeAnalysis" {
                             return $null
                         }
 
-                        # Vérifier si le fichier a été modifié depuis la dernière analyse
+                        # VÃ©rifier si le fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re analyse
                         $lastWrite = (Get-Item -Path $FilePath).LastWriteTime
 
                         if ($lastModifications.ContainsKey($FilePath) -and $lastModifications[$FilePath] -eq $lastWrite) {
-                            Write-Verbose "Le fichier n'a pas été modifié depuis la dernière analyse: $FilePath"
+                            Write-Verbose "Le fichier n'a pas Ã©tÃ© modifiÃ© depuis la derniÃ¨re analyse: $FilePath"
                             return $null
                         }
 
-                        # Mettre à jour la date de dernière modification
+                        # Mettre Ã  jour la date de derniÃ¨re modification
                         $lastModifications[$FilePath] = $lastWrite
 
                         # Analyser le fichier
@@ -418,7 +418,7 @@ Describe "Start-RealTimeAnalysis" {
                             # Analyser le fichier
                             $issues = $analyzer.AnalyzeFile($FilePath)
 
-                            # Créer un objet résultat
+                            # CrÃ©er un objet rÃ©sultat
                             $result = [PSCustomObject]@{
                                 FilePath   = $FilePath
                                 Issues     = $issues
@@ -441,7 +441,7 @@ Describe "Start-RealTimeAnalysis" {
                         }
                     }
 
-                    # Définir la fonction Invoke-FileChangeEvent (utilisation d'un verbe approuvé)
+                    # DÃ©finir la fonction Invoke-FileChangeEvent (utilisation d'un verbe approuvÃ©)
                     function Invoke-FileChangeEvent {
                         param(
                             [string]$FilePath
@@ -451,12 +451,12 @@ Describe "Start-RealTimeAnalysis" {
                         $result = Invoke-FileAnalysis -FilePath $FilePath
 
                         if ($result -and $result.Success) {
-                            # Afficher les résultats
+                            # Afficher les rÃ©sultats
                             $issueCount = $result.Issues.Count
 
                             if ($issueCount -gt 0) {
-                                $message = "Détecté $issueCount problème(s) dans le fichier $FilePath"
-                                $notification = Show-Notification -Title "Analyse en temps réel" -Message $message -Type $NotificationType
+                                $message = "DÃ©tectÃ© $issueCount problÃ¨me(s) dans le fichier $FilePath"
+                                $notification = Show-Notification -Title "Analyse en temps rÃ©el" -Message $message -Type $NotificationType
 
                                 return [PSCustomObject]@{
                                     Result       = $result
@@ -473,11 +473,11 @@ Describe "Start-RealTimeAnalysis" {
                         return $null
                     }
 
-                    # Simuler un événement de modification de fichier
+                    # Simuler un Ã©vÃ©nement de modification de fichier
                     return Invoke-FileChangeEvent -FilePath $FilePath
                 }
 
-                # Exécuter le script block dans la session temporaire
+                # ExÃ©cuter le script block dans la session temporaire
                 $result = Invoke-Command -Session $tempSession -ScriptBlock $scriptBlock -ArgumentList "TestFile$(Split-Path -Path $FilePath -Leaf)", $NotificationType, $DebounceTime, $UseCache
 
                 return $result
@@ -494,33 +494,33 @@ Describe "Start-RealTimeAnalysis" {
     }
 
     Context "Analyse de fichier" {
-        It "Détecte correctement les problèmes dans un fichier PowerShell" {
-            # Tester l'analyse d'un fichier PowerShell avec des problèmes
+        It "DÃ©tecte correctement les problÃ¨mes dans un fichier PowerShell" {
+            # Tester l'analyse d'un fichier PowerShell avec des problÃ¨mes
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
             $issues = Test-FileAnalysis -FilePath $filePath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $issues | Should -Not -BeNullOrEmpty
             $issues.Count | Should -Be 2
             $issues[0].Message | Should -Match "alias"
             $issues[1].Message | Should -Match "Invoke-Expression"
         }
 
-        It "Ne détecte pas de problèmes dans un fichier PowerShell valide" {
+        It "Ne dÃ©tecte pas de problÃ¨mes dans un fichier PowerShell valide" {
             # Tester l'analyse d'un fichier PowerShell valide
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test2.ps1"
             $issues = Test-FileAnalysis -FilePath $filePath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $issues | Should -BeNullOrEmpty
         }
 
-        It "Détecte correctement les problèmes dans un fichier Python" {
-            # Tester l'analyse d'un fichier Python avec des problèmes
+        It "DÃ©tecte correctement les problÃ¨mes dans un fichier Python" {
+            # Tester l'analyse d'un fichier Python avec des problÃ¨mes
             $filePath = Join-Path -Path $testDir -ChildPath "Python\test.py"
             $issues = Test-FileAnalysis -FilePath $filePath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $issues | Should -Not -BeNullOrEmpty
             $issues.Count | Should -Be 2
             $issues[0].Message | Should -Match "eval"
@@ -528,28 +528,28 @@ Describe "Start-RealTimeAnalysis" {
         }
     }
 
-    Context "Événements de modification de fichier" {
-        It "Génère une notification pour un fichier avec des problèmes" {
-            # Tester un événement de modification de fichier pour un fichier avec des problèmes
+    Context "Ã‰vÃ©nements de modification de fichier" {
+        It "GÃ©nÃ¨re une notification pour un fichier avec des problÃ¨mes" {
+            # Tester un Ã©vÃ©nement de modification de fichier pour un fichier avec des problÃ¨mes
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
             $result = Test-FileChangeEvent -FilePath $filePath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Result | Should -Not -BeNullOrEmpty
             $result.Result.Issues | Should -Not -BeNullOrEmpty
             $result.Result.Issues.Count | Should -Be 2
             $result.Notification | Should -Not -BeNullOrEmpty
-            $result.Notification.Title | Should -Be "Analyse en temps réel"
-            $result.Notification.Message | Should -Match "Détecté 2 problème"
+            $result.Notification.Title | Should -Be "Analyse en temps rÃ©el"
+            $result.Notification.Message | Should -Match "DÃ©tectÃ© 2 problÃ¨me"
         }
 
-        It "Ne génère pas de notification pour un fichier sans problèmes" {
-            # Tester un événement de modification de fichier pour un fichier sans problèmes
+        It "Ne gÃ©nÃ¨re pas de notification pour un fichier sans problÃ¨mes" {
+            # Tester un Ã©vÃ©nement de modification de fichier pour un fichier sans problÃ¨mes
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test2.ps1"
             $result = Test-FileChangeEvent -FilePath $filePath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Result | Should -Not -BeNullOrEmpty
             $result.Result.Issues | Should -BeNullOrEmpty
@@ -557,23 +557,23 @@ Describe "Start-RealTimeAnalysis" {
         }
     }
 
-    Context "Paramètres" {
+    Context "ParamÃ¨tres" {
         It "Utilise correctement le cache" {
-            # Tester l'analyse d'un fichier avec le cache activé
+            # Tester l'analyse d'un fichier avec le cache activÃ©
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
             $issues = Test-FileAnalysis -FilePath $filePath -UseCache $true
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $issues | Should -Not -BeNullOrEmpty
             $issues.Count | Should -Be 2
         }
 
         It "Utilise correctement le type de notification" {
-            # Tester un événement de modification de fichier avec un type de notification spécifique
+            # Tester un Ã©vÃ©nement de modification de fichier avec un type de notification spÃ©cifique
             $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
             $result = Test-FileChangeEvent -FilePath $filePath -NotificationType "Popup"
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Notification | Should -Not -BeNullOrEmpty
             $result.Notification.Type | Should -Be "Popup"
@@ -581,7 +581,7 @@ Describe "Start-RealTimeAnalysis" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $config = [PesterConfiguration]::Default
 $config.Run.Path = $PSCommandPath
 $config.Output.Verbosity = "Detailed"

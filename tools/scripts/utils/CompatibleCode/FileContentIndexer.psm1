@@ -1,9 +1,9 @@
-#
+﻿#
 # Module FileContentIndexer
 # Compatible avec PowerShell 5.1 et PowerShell 7+
 #
 
-# Détecter la version de PowerShell
+# DÃ©tecter la version de PowerShell
 $script:isPowerShell7 = $PSVersionTable.PSVersion.Major -ge 7
 $script:isPowerShell5 = $PSVersionTable.PSVersion.Major -eq 5
 
@@ -22,7 +22,7 @@ function Get-PSVersionInfo {
     }
 }
 
-# Fonction pour vérifier si une fonctionnalité est disponible
+# Fonction pour vÃ©rifier si une fonctionnalitÃ© est disponible
 function Test-FeatureAvailability {
     [CmdletBinding()]
     param(
@@ -48,7 +48,7 @@ function Test-FeatureAvailability {
 }
 
 #
-# Implémentation compatible avec les deux versions
+# ImplÃ©mentation compatible avec les deux versions
 #
 
 # Exemple de factory function au lieu d'une classe
@@ -62,7 +62,7 @@ function New-FileContentIndexer {
         [hashtable]$Properties = @{}
     )
 
-    # Créer un objet de base
+    # CrÃ©er un objet de base
     $instance = [PSCustomObject]@{
         Name = $Name
         Properties = $Properties
@@ -70,12 +70,12 @@ function New-FileContentIndexer {
         PSTypeName = "FileContentIndexer"
     }
 
-    # Ajouter des méthodes en fonction de la version de PowerShell
+    # Ajouter des mÃ©thodes en fonction de la version de PowerShell
     if ($script:isPowerShell7) {
-        # Utiliser des fonctionnalités PowerShell 7
+        # Utiliser des fonctionnalitÃ©s PowerShell 7
         $instance | Add-Member -MemberType ScriptMethod -Name "Process" -Value {
             param([string]$input)
-            return $input ?? "Default" # Utilisation de l'opérateur null-coalescing
+            return $input ?? "Default" # Utilisation de l'opÃ©rateur null-coalescing
         }
     } else {
         # Version compatible PowerShell 5.1
@@ -85,7 +85,7 @@ function New-FileContentIndexer {
         }
     }
 
-    # Ajouter une méthode commune
+    # Ajouter une mÃ©thode commune
     $instance | Add-Member -MemberType ScriptMethod -Name "ToString" -Value {
         return "$($this.Name) [Created: $($this.CreatedAt)]"
     }
@@ -93,7 +93,7 @@ function New-FileContentIndexer {
     return $instance
 }
 
-# Fonction wrapper pour la parallélisation
+# Fonction wrapper pour la parallÃ©lisation
 function Invoke-Parallel {
     [CmdletBinding()]
     param(
@@ -114,7 +114,7 @@ function Invoke-Parallel {
         # Utiliser une approche compatible avec PowerShell 5.1
         $results = @()
 
-        # Créer un pool de runspaces
+        # CrÃ©er un pool de runspaces
         $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
         $pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
         $pool.Open()
@@ -122,7 +122,7 @@ function Invoke-Parallel {
         try {
             $runspaces = @()
 
-            # Créer un runspace pour chaque élément d'entrée
+            # CrÃ©er un runspace pour chaque Ã©lÃ©ment d'entrÃ©e
             foreach ($item in $InputObject) {
                 $powershell = [System.Management.Automation.PowerShell]::Create()
                 $powershell.RunspacePool = $pool
@@ -136,7 +136,7 @@ function Invoke-Parallel {
                 }
             }
 
-            # Collecter les résultats
+            # Collecter les rÃ©sultats
             foreach ($runspace in $runspaces) {
                 $results += $runspace.PowerShell.EndInvoke($runspace.AsyncResult)
                 $runspace.PowerShell.Dispose()

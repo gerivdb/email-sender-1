@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Corrige les fins de ligne dans les fichiers du dépôt Git.
+    Corrige les fins de ligne dans les fichiers du dÃ©pÃ´t Git.
 
 .DESCRIPTION
-    Ce script corrige les fins de ligne dans les fichiers du dépôt Git en fonction
-    des règles définies dans le fichier .gitattributes.
+    Ce script corrige les fins de ligne dans les fichiers du dÃ©pÃ´t Git en fonction
+    des rÃ¨gles dÃ©finies dans le fichier .gitattributes.
 
 .PARAMETER Path
-    Chemin vers le répertoire à traiter. Par défaut, le répertoire courant.
+    Chemin vers le rÃ©pertoire Ã  traiter. Par dÃ©faut, le rÃ©pertoire courant.
 
 .PARAMETER Force
-    Force la normalisation des fins de ligne même si les fichiers n'ont pas été modifiés.
+    Force la normalisation des fins de ligne mÃªme si les fichiers n'ont pas Ã©tÃ© modifiÃ©s.
 
 .EXAMPLE
     .\Fix-LineEndings.ps1
@@ -34,17 +34,17 @@ param(
     [switch]$Force
 )
 
-# Vérifier si Git est installé
+# VÃ©rifier si Git est installÃ©
 try {
     $gitVersion = git --version
-    Write-Host "Git détecté : $gitVersion" -ForegroundColor Green
+    Write-Host "Git dÃ©tectÃ© : $gitVersion" -ForegroundColor Green
 }
 catch {
-    Write-Error "Git n'est pas installé ou n'est pas accessible dans le PATH."
+    Write-Error "Git n'est pas installÃ© ou n'est pas accessible dans le PATH."
     return
 }
 
-# Vérifier si le répertoire est un dépôt Git
+# VÃ©rifier si le rÃ©pertoire est un dÃ©pÃ´t Git
 $isGitRepo = $false
 try {
     Push-Location $Path
@@ -52,45 +52,45 @@ try {
     Pop-Location
 }
 catch {
-    Write-Error "Le répertoire spécifié n'est pas un dépôt Git valide."
+    Write-Error "Le rÃ©pertoire spÃ©cifiÃ© n'est pas un dÃ©pÃ´t Git valide."
     return
 }
 
 if (-not $isGitRepo) {
-    Write-Error "Le répertoire spécifié n'est pas un dépôt Git valide."
+    Write-Error "Le rÃ©pertoire spÃ©cifiÃ© n'est pas un dÃ©pÃ´t Git valide."
     return
 }
 
-# Vérifier si le fichier .gitattributes existe
+# VÃ©rifier si le fichier .gitattributes existe
 $gitAttributesPath = Join-Path -Path $Path -ChildPath ".gitattributes"
 if (-not (Test-Path -Path $gitAttributesPath -PathType Leaf)) {
-    Write-Error "Le fichier .gitattributes n'existe pas dans le dépôt."
+    Write-Error "Le fichier .gitattributes n'existe pas dans le dÃ©pÃ´t."
     return
 }
 
-# Configurer Git pour qu'il utilise les règles définies dans .gitattributes
-Write-Host "Configuration de Git pour utiliser les règles définies dans .gitattributes..." -ForegroundColor Cyan
+# Configurer Git pour qu'il utilise les rÃ¨gles dÃ©finies dans .gitattributes
+Write-Host "Configuration de Git pour utiliser les rÃ¨gles dÃ©finies dans .gitattributes..." -ForegroundColor Cyan
 Push-Location $Path
 git config --local core.autocrlf false
 git config --local core.eol native
 
 # Normaliser les fins de ligne
 if ($Force) {
-    Write-Host "Normalisation forcée des fins de ligne..." -ForegroundColor Cyan
+    Write-Host "Normalisation forcÃ©e des fins de ligne..." -ForegroundColor Cyan
     if ($PSCmdlet.ShouldProcess("Tous les fichiers", "Normaliser les fins de ligne")) {
-        # Réinitialiser l'index
+        # RÃ©initialiser l'index
         git rm --cached -r .
-        # Ajouter tous les fichiers à l'index
+        # Ajouter tous les fichiers Ã  l'index
         git add .
     }
 }
 else {
-    Write-Host "Normalisation des fins de ligne pour les fichiers modifiés..." -ForegroundColor Cyan
-    if ($PSCmdlet.ShouldProcess("Fichiers modifiés", "Normaliser les fins de ligne")) {
-        # Obtenir la liste des fichiers modifiés
+    Write-Host "Normalisation des fins de ligne pour les fichiers modifiÃ©s..." -ForegroundColor Cyan
+    if ($PSCmdlet.ShouldProcess("Fichiers modifiÃ©s", "Normaliser les fins de ligne")) {
+        # Obtenir la liste des fichiers modifiÃ©s
         $modifiedFiles = git diff --name-only
         
-        # Normaliser les fins de ligne pour chaque fichier modifié
+        # Normaliser les fins de ligne pour chaque fichier modifiÃ©
         foreach ($file in $modifiedFiles) {
             if (Test-Path -Path $file -PathType Leaf) {
                 Write-Host "  Normalisation de $file..." -ForegroundColor White
@@ -100,9 +100,9 @@ else {
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé :" -ForegroundColor Cyan
-Write-Host "  Les fins de ligne ont été normalisées selon les règles définies dans .gitattributes." -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© :" -ForegroundColor Cyan
+Write-Host "  Les fins de ligne ont Ã©tÃ© normalisÃ©es selon les rÃ¨gles dÃ©finies dans .gitattributes." -ForegroundColor Green
 Write-Host "  Vous pouvez maintenant effectuer un commit pour enregistrer les modifications." -ForegroundColor Green
 
 Pop-Location

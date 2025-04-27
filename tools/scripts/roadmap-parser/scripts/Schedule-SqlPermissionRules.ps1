@@ -1,5 +1,5 @@
-# Schedule-SqlPermissionRules.ps1
-# Script pour planifier l'exécution automatique de toutes les règles de détection d'anomalies SQL Server
+﻿# Schedule-SqlPermissionRules.ps1
+# Script pour planifier l'exÃ©cution automatique de toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -38,35 +38,35 @@ param (
     [string]$TaskName = "SqlPermissionRules_$ServerInstance",
 
     [Parameter(Mandatory = $false)]
-    [string]$TaskDescription = "Exécute toutes les règles de détection d'anomalies SQL Server",
+    [string]$TaskDescription = "ExÃ©cute toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server",
 
     [Parameter(Mandatory = $false)]
     [System.Management.Automation.PSCredential]$TaskCredential
 )
 
 begin {
-    # Vérifier que le dossier de sortie existe
+    # VÃ©rifier que le dossier de sortie existe
     if (-not (Test-Path -Path $OutputFolder)) {
-        if ($PSCmdlet.ShouldProcess($OutputFolder, "Créer le dossier de sortie")) {
+        if ($PSCmdlet.ShouldProcess($OutputFolder, "CrÃ©er le dossier de sortie")) {
             New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
-            Write-Verbose "Dossier de sortie créé: $OutputFolder"
+            Write-Verbose "Dossier de sortie crÃ©Ã©: $OutputFolder"
         }
     }
 
-    # Chemin du script d'exécution de toutes les règles
+    # Chemin du script d'exÃ©cution de toutes les rÃ¨gles
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Run-AllSqlPermissionRules.ps1"
     if (-not (Test-Path -Path $scriptPath)) {
-        throw "Script d'exécution de toutes les règles non trouvé: $scriptPath"
+        throw "Script d'exÃ©cution de toutes les rÃ¨gles non trouvÃ©: $scriptPath"
     }
 
-    # Construire la commande PowerShell à exécuter
+    # Construire la commande PowerShell Ã  exÃ©cuter
     $outputPath = Join-Path -Path $OutputFolder -ChildPath "SqlPermissionAnomaliesReport_`$(Get-Date -Format 'yyyyMMdd').html"
     
     $command = "& '$scriptPath' -ServerInstance '$ServerInstance' -OutputPath '$outputPath' -IncludeObjectLevel"
     
     if ($SendEmail) {
         if (-not $SmtpServer -or -not $FromAddress -or -not $ToAddress) {
-            throw "Paramètres d'email manquants. Veuillez spécifier SmtpServer, FromAddress et ToAddress."
+            throw "ParamÃ¨tres d'email manquants. Veuillez spÃ©cifier SmtpServer, FromAddress et ToAddress."
         }
         
         $toAddressString = "'" + ($ToAddress -join "','") + "'"
@@ -75,10 +75,10 @@ begin {
     
     $command += " -Verbose"
     
-    # Construire l'action de la tâche planifiée
+    # Construire l'action de la tÃ¢che planifiÃ©e
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -Command `"$command`""
     
-    # Construire le déclencheur de la tâche planifiée
+    # Construire le dÃ©clencheur de la tÃ¢che planifiÃ©e
     switch ($Frequency) {
         "Daily" {
             $trigger = New-ScheduledTaskTrigger -Daily -At $Time
@@ -91,18 +91,18 @@ begin {
         }
     }
     
-    # Construire les paramètres de la tâche planifiée
+    # Construire les paramÃ¨tres de la tÃ¢che planifiÃ©e
     $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 }
 
 process {
     try {
-        # Vérifier si la tâche existe déjà
+        # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
         $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
         
         if ($existingTask) {
-            if ($PSCmdlet.ShouldProcess($TaskName, "Mettre à jour la tâche planifiée")) {
-                # Mettre à jour la tâche existante
+            if ($PSCmdlet.ShouldProcess($TaskName, "Mettre Ã  jour la tÃ¢che planifiÃ©e")) {
+                # Mettre Ã  jour la tÃ¢che existante
                 if ($TaskCredential) {
                     Set-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -User $TaskCredential.UserName -Password $TaskCredential.GetNetworkCredential().Password -Description $TaskDescription
                 }
@@ -110,12 +110,12 @@ process {
                     Set-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Description $TaskDescription
                 }
                 
-                Write-Verbose "Tâche planifiée mise à jour: $TaskName"
+                Write-Verbose "TÃ¢che planifiÃ©e mise Ã  jour: $TaskName"
             }
         }
         else {
-            if ($PSCmdlet.ShouldProcess($TaskName, "Créer la tâche planifiée")) {
-                # Créer une nouvelle tâche
+            if ($PSCmdlet.ShouldProcess($TaskName, "CrÃ©er la tÃ¢che planifiÃ©e")) {
+                # CrÃ©er une nouvelle tÃ¢che
                 if ($TaskCredential) {
                     Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -User $TaskCredential.UserName -Password $TaskCredential.GetNetworkCredential().Password -Description $TaskDescription
                 }
@@ -123,12 +123,12 @@ process {
                     Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Description $TaskDescription
                 }
                 
-                Write-Verbose "Tâche planifiée créée: $TaskName"
+                Write-Verbose "TÃ¢che planifiÃ©e crÃ©Ã©e: $TaskName"
             }
         }
         
-        # Afficher les détails de la tâche
-        if ($PSCmdlet.ShouldProcess($TaskName, "Afficher les détails de la tâche planifiée")) {
+        # Afficher les dÃ©tails de la tÃ¢che
+        if ($PSCmdlet.ShouldProcess($TaskName, "Afficher les dÃ©tails de la tÃ¢che planifiÃ©e")) {
             $task = Get-ScheduledTask -TaskName $TaskName
             $taskInfo = [PSCustomObject]@{
                 TaskName = $task.TaskName
@@ -146,6 +146,6 @@ process {
         }
     }
     catch {
-        Write-Error "Erreur lors de la planification de l'exécution des règles: $_"
+        Write-Error "Erreur lors de la planification de l'exÃ©cution des rÃ¨gles: $_"
     }
 }

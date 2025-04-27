@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Script de test pour le plugin TodoAnalyzer.
@@ -7,10 +7,10 @@
     Ce script teste le plugin TodoAnalyzer en l'utilisant directement pour analyser un fichier de test.
 
 .PARAMETER FilePath
-    Chemin du fichier à analyser.
+    Chemin du fichier Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats.
+    Chemin du fichier de sortie pour les rÃ©sultats.
 
 .EXAMPLE
     .\Test-TodoAnalyzer.ps1 -FilePath ".\scripts\analysis\tests\test_script.ps1" -OutputPath ".\scripts\analysis\tests\results\todo-results.json"
@@ -51,7 +51,7 @@ function Find-TodoComments {
         [string]$Severity = "Information"
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
@@ -66,7 +66,7 @@ function Find-TodoComments {
         $line = $content[$i]
         $lineNumber = $i + 1
         
-        # Vérifier si la ligne contient un commentaire TODO
+        # VÃ©rifier si la ligne contient un commentaire TODO
         foreach ($keyword in $Keywords) {
             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
                 $todoKeyword = $matches[1]
@@ -80,7 +80,7 @@ function Find-TodoComments {
                                                    -Severity $Severity `
                                                    -Message "${todoKeyword}: $todoComment" `
                                                    -Category "Documentation" `
-                                                   -Suggestion "Résolvez ce $todoKeyword ou convertissez-le en tâche dans le système de suivi des problèmes."
+                                                   -Suggestion "RÃ©solvez ce $todoKeyword ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes."
                 
                 $results += $result
             }
@@ -90,15 +90,15 @@ function Find-TodoComments {
     return $results
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDirectory = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDirectory -PathType Container)) {
     try {
         New-Item -Path $outputDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire de sortie '$outputDirectory' créé."
+        Write-Verbose "RÃ©pertoire de sortie '$outputDirectory' crÃ©Ã©."
     }
     catch {
-        Write-Error "Impossible de créer le répertoire de sortie '$outputDirectory': $_"
+        Write-Error "Impossible de crÃ©er le rÃ©pertoire de sortie '$outputDirectory': $_"
         return
     }
 }
@@ -106,13 +106,13 @@ if (-not (Test-Path -Path $outputDirectory -PathType Container)) {
 # Analyser le fichier
 $results = Find-TodoComments -FilePath $FilePath -Severity "Information"
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($null -ne $results) {
     $totalIssues = $results.Count
     
-    Write-Host "Analyse terminée avec $totalIssues commentaires TODO détectés:" -ForegroundColor Cyan
+    Write-Host "Analyse terminÃ©e avec $totalIssues commentaires TODO dÃ©tectÃ©s:" -ForegroundColor Cyan
     
-    # Afficher les résultats détaillés
+    # Afficher les rÃ©sultats dÃ©taillÃ©s
     if ($totalIssues -gt 0) {
         $results | ForEach-Object {
             Write-Host ""
@@ -121,17 +121,17 @@ if ($null -ne $results) {
             Write-Host "Suggestion: $($_.Suggestion)" -ForegroundColor "Green"
         }
         
-        # Enregistrer les résultats dans un fichier
+        # Enregistrer les rÃ©sultats dans un fichier
         try {
             $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-            Write-Host "Résultats enregistrés dans '$OutputPath'." -ForegroundColor Green
+            Write-Host "RÃ©sultats enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
         }
         catch {
-            Write-Error "Erreur lors de l'enregistrement des résultats: $_"
+            Write-Error "Erreur lors de l'enregistrement des rÃ©sultats: $_"
         }
     }
     else {
-        Write-Host "Aucun commentaire TODO détecté." -ForegroundColor Yellow
+        Write-Host "Aucun commentaire TODO dÃ©tectÃ©." -ForegroundColor Yellow
     }
 }
 else {

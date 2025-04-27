@@ -1,47 +1,47 @@
-<#
+﻿<#
 .SYNOPSIS
-    Écrit un message d'erreur dans le journal du module RoadmapParser.
+    Ã‰crit un message d'erreur dans le journal du module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Write-RoadmapError écrit un message d'erreur dans le journal du module RoadmapParser.
+    La fonction Write-RoadmapError Ã©crit un message d'erreur dans le journal du module RoadmapParser.
     Elle est un wrapper autour de Write-RoadmapLog avec le niveau de journalisation Error.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est "RoadmapParser".
+    Par dÃ©faut, c'est "RoadmapParser".
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER Category
-    La catégorie du message. Permet de regrouper les messages par catégorie.
-    Par défaut : General.
+    La catÃ©gorie du message. Permet de regrouper les messages par catÃ©gorie.
+    Par dÃ©faut : General.
 
 .PARAMETER AdditionalInfo
-    Informations supplémentaires à inclure dans le message de journal.
+    Informations supplÃ©mentaires Ã  inclure dans le message de journal.
 
 .EXAMPLE
     Write-RoadmapError -Message "Ceci est un message d'erreur"
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Write-RoadmapError {
     [CmdletBinding()]
@@ -70,9 +70,9 @@ function Write-RoadmapError {
         [System.Collections.Hashtable]$AdditionalInfo
     )
 
-    # Utiliser directement la fonction Write-RoadmapLog qui est déjà importée par le module
+    # Utiliser directement la fonction Write-RoadmapLog qui est dÃ©jÃ  importÃ©e par le module
 
-    # Construire les paramètres pour Write-RoadmapLog
+    # Construire les paramÃ¨tres pour Write-RoadmapLog
     $params = @{
         Message = $Message
         Level   = "Error"
@@ -99,6 +99,6 @@ function Write-RoadmapError {
         $params['AdditionalInfo'] = $AdditionalInfo
     }
 
-    # Écrire le message dans le journal
+    # Ã‰crire le message dans le journal
     return Write-RoadmapLog @params
 }

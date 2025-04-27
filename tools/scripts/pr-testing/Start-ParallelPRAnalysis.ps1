@@ -1,40 +1,40 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démarre une analyse parallèle des pull requests.
+    DÃ©marre une analyse parallÃ¨le des pull requests.
 
 .DESCRIPTION
-    Ce script exécute l'analyse des pull requests en parallèle pour améliorer
-    les performances, en utilisant des runspace pools et une répartition intelligente
+    Ce script exÃ©cute l'analyse des pull requests en parallÃ¨le pour amÃ©liorer
+    les performances, en utilisant des runspace pools et une rÃ©partition intelligente
     de la charge de travail.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt à analyser.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t Ã  analyser.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER PullRequestNumber
-    Le numéro de la pull request à analyser.
-    Si non spécifié, la dernière pull request sera utilisée.
+    Le numÃ©ro de la pull request Ã  analyser.
+    Si non spÃ©cifiÃ©, la derniÃ¨re pull request sera utilisÃ©e.
 
 .PARAMETER MaxThreads
-    Le nombre maximum de threads à utiliser.
-    Par défaut: nombre de processeurs logiques
+    Le nombre maximum de threads Ã  utiliser.
+    Par dÃ©faut: nombre de processeurs logiques
 
 .PARAMETER ThrottleLimit
-    La limite de régulation pour les opérations parallèles.
-    Par défaut: égal à MaxThreads
+    La limite de rÃ©gulation pour les opÃ©rations parallÃ¨les.
+    Par dÃ©faut: Ã©gal Ã  MaxThreads
 
 .PARAMETER UseCache
-    Indique s'il faut utiliser le cache pour améliorer les performances.
-    Par défaut: $true
+    Indique s'il faut utiliser le cache pour amÃ©liorer les performances.
+    Par dÃ©faut: $true
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats de l'analyse.
-    Par défaut: "reports\pr-analysis"
+    Le chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse.
+    Par dÃ©faut: "reports\pr-analysis"
 
 .EXAMPLE
     .\Start-ParallelPRAnalysis.ps1
-    Analyse la dernière pull request en utilisant le nombre de threads par défaut.
+    Analyse la derniÃ¨re pull request en utilisant le nombre de threads par dÃ©faut.
 
 .EXAMPLE
     .\Start-ParallelPRAnalysis.ps1 -PullRequestNumber 42 -MaxThreads 8 -UseCache $false
@@ -67,7 +67,7 @@ param(
     [string]$OutputPath = "reports\pr-analysis"
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 $modulesToImport = @(
     "ParallelPRAnalysis.psm1",
@@ -79,7 +79,7 @@ foreach ($module in $modulesToImport) {
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
     } else {
-        Write-Error "Module $module non trouvé à l'emplacement: $modulePath"
+        Write-Error "Module $module non trouvÃ© Ã  l'emplacement: $modulePath"
         exit 1
     }
 }
@@ -96,33 +96,33 @@ function Get-PullRequestInfo {
     )
 
     try {
-        # Vérifier si le dépôt existe
+        # VÃ©rifier si le dÃ©pÃ´t existe
         if (-not (Test-Path -Path $RepoPath)) {
-            throw "Le dépôt n'existe pas à l'emplacement spécifié: $RepoPath"
+            throw "Le dÃ©pÃ´t n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $RepoPath"
         }
 
-        # Changer de répertoire vers le dépôt
+        # Changer de rÃ©pertoire vers le dÃ©pÃ´t
         Push-Location -Path $RepoPath
 
         try {
-            # Si aucun numéro de PR n'est spécifié, utiliser la dernière PR
+            # Si aucun numÃ©ro de PR n'est spÃ©cifiÃ©, utiliser la derniÃ¨re PR
             if ($PRNumber -eq 0) {
                 $prs = gh pr list --json number,title,headRefName,baseRefName,createdAt --limit 1 | ConvertFrom-Json
                 if ($prs.Count -eq 0) {
-                    throw "Aucune pull request trouvée dans le dépôt."
+                    throw "Aucune pull request trouvÃ©e dans le dÃ©pÃ´t."
                 }
                 $pr = $prs[0]
             } else {
                 $pr = gh pr view $PRNumber --json number,title,headRefName,baseRefName,createdAt | ConvertFrom-Json
                 if ($null -eq $pr) {
-                    throw "Pull request #$PRNumber non trouvée."
+                    throw "Pull request #$PRNumber non trouvÃ©e."
                 }
             }
 
-            # Obtenir les fichiers modifiés
+            # Obtenir les fichiers modifiÃ©s
             $files = gh pr view $pr.number --json files | ConvertFrom-Json
 
-            # Créer l'objet d'informations sur la PR
+            # CrÃ©er l'objet d'informations sur la PR
             $prInfo = [PSCustomObject]@{
                 Number     = $pr.number
                 Title      = $pr.title
@@ -138,11 +138,11 @@ function Get-PullRequestInfo {
 
             return $prInfo
         } finally {
-            # Revenir au répertoire précédent
+            # Revenir au rÃ©pertoire prÃ©cÃ©dent
             Pop-Location
         }
     } catch {
-        Write-Error "Erreur lors de la récupération des informations sur la pull request: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des informations sur la pull request: $_"
         return $null
     }
 }
@@ -162,7 +162,7 @@ function Invoke-FileAnalysis {
     )
 
     try {
-        # Créer un objet pour stocker les résultats
+        # CrÃ©er un objet pour stocker les rÃ©sultats
         $result = [PSCustomObject]@{
             FilePath = $File.path
             Issues = @()
@@ -172,7 +172,7 @@ function Invoke-FileAnalysis {
             Success = $false
         }
 
-        # Vérifier si le fichier est un script PowerShell
+        # VÃ©rifier si le fichier est un script PowerShell
         $isPowerShellScript = $File.path -like "*.ps1" -or $File.path -like "*.psm1" -or $File.path -like "*.psd1"
         $isPythonScript = $File.path -like "*.py"
 
@@ -184,10 +184,10 @@ function Invoke-FileAnalysis {
             return $result
         }
 
-        # Générer une clé de cache unique
+        # GÃ©nÃ©rer une clÃ© de cache unique
         $cacheKey = "PR:$($SharedState.PullRequestInfo.Number):File:$($File.path):$($File.sha)"
 
-        # Essayer d'obtenir les résultats du cache
+        # Essayer d'obtenir les rÃ©sultats du cache
         if ($UseFileCache -and $SharedState.UseCache -and $null -ne $SharedState.Cache) {
             $cachedResult = $SharedState.Cache.Get($cacheKey)
             if ($null -ne $cachedResult) {
@@ -195,13 +195,13 @@ function Invoke-FileAnalysis {
                 $cachedResult | Add-Member -MemberType NoteProperty -Name "FromCache" -Value $true -Force
                 $cachedResult | Add-Member -MemberType NoteProperty -Name "CacheKey" -Value $cacheKey -Force
                 
-                # Mettre à jour les statistiques
+                # Mettre Ã  jour les statistiques
                 $SharedState.Stats.CacheHits++
                 
                 return $cachedResult
             }
             
-            # Mettre à jour les statistiques
+            # Mettre Ã  jour les statistiques
             $SharedState.Stats.CacheMisses++
         }
 
@@ -211,7 +211,7 @@ function Invoke-FileAnalysis {
             $analysisDelay = [Math]::Max(100, ($File.additions + $File.deletions) * 5)
             Start-Sleep -Milliseconds $analysisDelay
 
-            # Simuler la détection d'erreurs
+            # Simuler la dÃ©tection d'erreurs
             $errorTypes = @("Syntax", "Style", "Performance", "Security")
             $errorCount = Get-Random -Minimum 0 -Maximum 10
 
@@ -222,7 +222,7 @@ function Invoke-FileAnalysis {
                 $issue = [PSCustomObject]@{
                     Type = $errorType
                     LineNumber = $lineNumber
-                    Message = "Problème de type $errorType à la ligne $lineNumber"
+                    Message = "ProblÃ¨me de type $errorType Ã  la ligne $lineNumber"
                     Severity = switch ($errorType) {
                         "Syntax" { "Error" }
                         "Security" { "Critical" }
@@ -237,7 +237,7 @@ function Invoke-FileAnalysis {
             $analysisDelay = [Math]::Max(100, ($File.additions + $File.deletions) * 3)
             Start-Sleep -Milliseconds $analysisDelay
 
-            # Simuler la détection d'erreurs
+            # Simuler la dÃ©tection d'erreurs
             $errorTypes = @("Syntax", "Style", "Performance", "Security")
             $errorCount = Get-Random -Minimum 0 -Maximum 8
 
@@ -248,7 +248,7 @@ function Invoke-FileAnalysis {
                 $issue = [PSCustomObject]@{
                     Type = $errorType
                     LineNumber = $lineNumber
-                    Message = "Problème de type $errorType à la ligne $lineNumber"
+                    Message = "ProblÃ¨me de type $errorType Ã  la ligne $lineNumber"
                     Severity = switch ($errorType) {
                         "Syntax" { "Error" }
                         "Security" { "Critical" }
@@ -260,22 +260,22 @@ function Invoke-FileAnalysis {
             }
         }
 
-        # Finaliser les résultats
+        # Finaliser les rÃ©sultats
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
         $result.Success = $true
 
-        # Stocker les résultats dans le cache
+        # Stocker les rÃ©sultats dans le cache
         if ($UseFileCache -and $SharedState.UseCache -and $null -ne $SharedState.Cache) {
             $SharedState.Cache.Set($cacheKey, $result)
         }
 
-        # Ajouter le résultat à la liste des résultats
+        # Ajouter le rÃ©sultat Ã  la liste des rÃ©sultats
         $SharedState.Results.Add($result)
 
         return $result
     } catch {
-        # Gérer les erreurs
+        # GÃ©rer les erreurs
         $errorInfo = [PSCustomObject]@{
             FilePath = $File.path
             Error = $_
@@ -284,7 +284,7 @@ function Invoke-FileAnalysis {
         
         $SharedState.Errors.Add($errorInfo)
         
-        # Finaliser les résultats en cas d'erreur
+        # Finaliser les rÃ©sultats en cas d'erreur
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
         $result.Success = $false
@@ -293,7 +293,7 @@ function Invoke-FileAnalysis {
     }
 }
 
-# Fonction pour générer un rapport d'analyse
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse
 function New-AnalysisReport {
     [CmdletBinding()]
     param(
@@ -311,7 +311,7 @@ function New-AnalysisReport {
     )
 
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
@@ -327,7 +327,7 @@ function New-AnalysisReport {
         $failureCount = $totalFiles - $successCount
         $issuesByType = $Results | Where-Object { $_.Success } | ForEach-Object { $_.Issues } | Group-Object -Property Type
 
-        # Créer le rapport
+        # CrÃ©er le rapport
         $reportData = [PSCustomObject]@{
             PullRequest = $PullRequestInfo
             Timestamp = Get-Date
@@ -348,7 +348,7 @@ function New-AnalysisReport {
         $reportPath = Join-Path -Path $OutputDir -ChildPath "pr_analysis_$($PullRequestInfo.Number).json"
         $reportData | ConvertTo-Json -Depth 10 | Set-Content -Path $reportPath -Encoding UTF8
 
-        # Générer un rapport HTML
+        # GÃ©nÃ©rer un rapport HTML
         $htmlReportPath = Join-Path -Path $OutputDir -ChildPath "pr_analysis_$($PullRequestInfo.Number).html"
         $html = @"
 <!DOCTYPE html>
@@ -414,17 +414,17 @@ function New-AnalysisReport {
         <h1>Rapport d'Analyse - Pull Request #$($PullRequestInfo.Number)</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <p><strong>Titre:</strong> $($PullRequestInfo.Title)</p>
             <p><strong>Branche source:</strong> $($PullRequestInfo.HeadBranch)</p>
             <p><strong>Branche cible:</strong> $($PullRequestInfo.BaseBranch)</p>
-            <p><strong>Fichiers analysés:</strong> $totalFiles</p>
-            <p><strong>Problèmes détectés:</strong> $totalIssues</p>
-            <p><strong>Durée totale:</strong> $([Math]::Round($totalDuration / 1000, 2)) secondes</p>
-            <p><strong>Durée moyenne par fichier:</strong> $([Math]::Round($averageDuration, 2)) ms</p>
+            <p><strong>Fichiers analysÃ©s:</strong> $totalFiles</p>
+            <p><strong>ProblÃ¨mes dÃ©tectÃ©s:</strong> $totalIssues</p>
+            <p><strong>DurÃ©e totale:</strong> $([Math]::Round($totalDuration / 1000, 2)) secondes</p>
+            <p><strong>DurÃ©e moyenne par fichier:</strong> $([Math]::Round($averageDuration, 2)) ms</p>
         </div>
         
-        <h2>Problèmes par Type</h2>
+        <h2>ProblÃ¨mes par Type</h2>
         <table>
             <tr>
                 <th>Type</th>
@@ -444,12 +444,12 @@ function New-AnalysisReport {
         $html += @"
         </table>
         
-        <h2>Fichiers avec Problèmes</h2>
+        <h2>Fichiers avec ProblÃ¨mes</h2>
         <table>
             <tr>
                 <th>Fichier</th>
-                <th>Problèmes</th>
-                <th>Durée (ms)</th>
+                <th>ProblÃ¨mes</th>
+                <th>DurÃ©e (ms)</th>
             </tr>
 "@
 
@@ -466,7 +466,7 @@ function New-AnalysisReport {
         $html += @"
         </table>
         
-        <h2>Détails des Problèmes</h2>
+        <h2>DÃ©tails des ProblÃ¨mes</h2>
 "@
 
         foreach ($result in ($Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 } | Sort-Object -Property { $_.Issues.Count } -Descending)) {
@@ -477,7 +477,7 @@ function New-AnalysisReport {
                 <th>Type</th>
                 <th>Ligne</th>
                 <th>Message</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
             </tr>
 "@
 
@@ -517,14 +517,14 @@ function New-AnalysisReport {
             HtmlPath = $htmlReportPath
         }
     } catch {
-        Write-Error "Erreur lors de la génération du rapport: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Obtenir les informations sur la pull request
@@ -536,27 +536,27 @@ try {
 
     # Afficher les informations sur la pull request
     Write-Host "Informations sur la pull request:" -ForegroundColor Cyan
-    Write-Host "  Numéro: #$($prInfo.Number)" -ForegroundColor White
+    Write-Host "  NumÃ©ro: #$($prInfo.Number)" -ForegroundColor White
     Write-Host "  Titre: $($prInfo.Title)" -ForegroundColor White
     Write-Host "  Branche source: $($prInfo.HeadBranch)" -ForegroundColor White
     Write-Host "  Branche cible: $($prInfo.BaseBranch)" -ForegroundColor White
-    Write-Host "  Fichiers modifiés: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  Fichiers modifiÃ©s: $($prInfo.FileCount)" -ForegroundColor White
     Write-Host "  Ajouts: $($prInfo.Additions)" -ForegroundColor White
     Write-Host "  Suppressions: $($prInfo.Deletions)" -ForegroundColor White
     Write-Host "  Modifications totales: $($prInfo.Changes)" -ForegroundColor White
 
-    # Initialiser le cache si nécessaire
+    # Initialiser le cache si nÃ©cessaire
     $cache = $null
     if ($UseCache) {
         $cachePath = Join-Path -Path $PSScriptRoot -ChildPath "cache\pr-analysis"
         $cache = New-PRAnalysisCache -Name "PRAnalysisCache" -CachePath $cachePath
         if ($null -eq $cache) {
-            Write-Warning "Impossible d'initialiser le cache. L'analyse sera effectuée sans cache."
+            Write-Warning "Impossible d'initialiser le cache. L'analyse sera effectuÃ©e sans cache."
             $UseCache = $false
         }
     }
 
-    # Créer l'état partagé
+    # CrÃ©er l'Ã©tat partagÃ©
     $sharedState = [hashtable]::Synchronized(@{
         PullRequestInfo = $prInfo
         Results = [System.Collections.Generic.List[object]]::new()
@@ -572,34 +572,34 @@ try {
         }
     })
 
-    # Déterminer le nombre de threads à utiliser
+    # DÃ©terminer le nombre de threads Ã  utiliser
     $effectiveMaxThreads = if ($MaxThreads -gt 0) { $MaxThreads } else { [System.Environment]::ProcessorCount }
     $effectiveThrottleLimit = if ($ThrottleLimit -gt 0) { $ThrottleLimit } else { $effectiveMaxThreads }
 
-    Write-Host "`nDémarrage de l'analyse parallèle avec $effectiveMaxThreads threads..." -ForegroundColor Cyan
+    Write-Host "`nDÃ©marrage de l'analyse parallÃ¨le avec $effectiveMaxThreads threads..." -ForegroundColor Cyan
     Write-Host "  Utilisation du cache: $UseCache" -ForegroundColor White
-    Write-Host "  Fichiers à analyser: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  Fichiers Ã  analyser: $($prInfo.FileCount)" -ForegroundColor White
 
-    # Diviser les fichiers en groupes pour une meilleure répartition de la charge
+    # Diviser les fichiers en groupes pour une meilleure rÃ©partition de la charge
     $fileGroups = Split-AnalysisWorkload -Items $prInfo.Files -WeightFunction {
         param($file)
         # Utiliser le nombre de modifications comme poids
         return $file.additions + $file.deletions
     }
 
-    Write-Host "  Fichiers répartis en $($fileGroups.Count) groupes" -ForegroundColor White
+    Write-Host "  Fichiers rÃ©partis en $($fileGroups.Count) groupes" -ForegroundColor White
 
-    # Créer le gestionnaire d'analyse parallèle
+    # CrÃ©er le gestionnaire d'analyse parallÃ¨le
     $manager = New-ParallelAnalysisManager -MaxThreads $effectiveMaxThreads -ThrottleLimit $effectiveThrottleLimit
     if ($null -eq $manager) {
-        Write-Error "Impossible de créer le gestionnaire d'analyse parallèle."
+        Write-Error "Impossible de crÃ©er le gestionnaire d'analyse parallÃ¨le."
         exit 1
     }
 
     # Initialiser le gestionnaire
     $manager.Initialize()
 
-    # Ajouter les tâches
+    # Ajouter les tÃ¢ches
     foreach ($fileGroup in $fileGroups) {
         foreach ($file in $fileGroup) {
             $manager.AddJob({
@@ -609,7 +609,7 @@ try {
         }
     }
 
-    # Attendre la fin de toutes les tâches
+    # Attendre la fin de toutes les tÃ¢ches
     $results = $manager.WaitForAll()
 
     # Nettoyer les ressources
@@ -619,20 +619,20 @@ try {
     $sharedState.Stats.EndTime = Get-Date
     $sharedState.Stats.TotalDuration = $sharedState.Stats.EndTime - $sharedState.Stats.StartTime
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $reportPaths = New-AnalysisReport -Results $sharedState.Results -PullRequestInfo $prInfo -OutputDir $OutputPath -Stats $sharedState.Stats
     if ($null -eq $reportPaths) {
-        Write-Error "Impossible de générer le rapport d'analyse."
+        Write-Error "Impossible de gÃ©nÃ©rer le rapport d'analyse."
         exit 1
     }
 
-    # Arrêter le chronomètre
+    # ArrÃªter le chronomÃ¨tre
     $stopwatch.Stop()
 
-    # Afficher un résumé
-    Write-Host "`nAnalyse terminée en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
-    Write-Host "  Fichiers analysés: $($sharedState.Results.Count)" -ForegroundColor White
-    Write-Host "  Problèmes détectés: $(($sharedState.Results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum)" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nAnalyse terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
+    Write-Host "  Fichiers analysÃ©s: $($sharedState.Results.Count)" -ForegroundColor White
+    Write-Host "  ProblÃ¨mes dÃ©tectÃ©s: $(($sharedState.Results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum)" -ForegroundColor White
     
     if ($UseCache) {
         Write-Host "  Cache hits: $($sharedState.Stats.CacheHits)" -ForegroundColor White
@@ -646,14 +646,14 @@ try {
     Write-Host "  Rapport JSON: $($reportPaths.JsonPath)" -ForegroundColor White
     Write-Host "  Rapport HTML: $($reportPaths.HtmlPath)" -ForegroundColor White
 
-    # Ouvrir le rapport HTML dans le navigateur par défaut
+    # Ouvrir le rapport HTML dans le navigateur par dÃ©faut
     if (Test-Path -Path $reportPaths.HtmlPath) {
         Start-Process $reportPaths.HtmlPath
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $sharedState.Results
 } catch {
-    Write-Error "Erreur lors de l'analyse parallèle: $_"
+    Write-Error "Erreur lors de l'analyse parallÃ¨le: $_"
     exit 1
 }

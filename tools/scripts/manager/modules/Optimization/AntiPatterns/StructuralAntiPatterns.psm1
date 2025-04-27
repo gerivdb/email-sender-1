@@ -1,5 +1,5 @@
-# Module de détection des anti-patterns structurels pour le Script Manager
-# Ce module détecte les anti-patterns liés à la structure du code
+﻿# Module de dÃ©tection des anti-patterns structurels pour le Script Manager
+# Ce module dÃ©tecte les anti-patterns liÃ©s Ã  la structure du code
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, anti-patterns, structure
@@ -7,11 +7,11 @@
 function Find-LongMethods {
     <#
     .SYNOPSIS
-        Détecte les méthodes trop longues
+        DÃ©tecte les mÃ©thodes trop longues
     .DESCRIPTION
-        Analyse le script pour détecter les méthodes trop longues
+        Analyse le script pour dÃ©tecter les mÃ©thodes trop longues
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -26,10 +26,10 @@ function Find-LongMethods {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les méthodes trop longues
+    # CrÃ©er un tableau pour stocker les mÃ©thodes trop longues
     $LongMethods = @()
     
-    # Définir la longueur maximale acceptable pour une méthode
+    # DÃ©finir la longueur maximale acceptable pour une mÃ©thode
     $MaxMethodLength = 50
     
     # Traiter selon le type de script
@@ -44,7 +44,7 @@ function Find-LongMethods {
                 $FunctionLines = $FunctionBody -split "`n"
                 
                 if ($FunctionLines.Count -gt $MaxMethodLength) {
-                    # Calculer les numéros de ligne
+                    # Calculer les numÃ©ros de ligne
                     $StartLine = ($Content.Substring(0, $Match.Index) -split "`n").Length
                     $EndLine = $StartLine + $FunctionLines.Count
                     $LineNumbers = $StartLine..$EndLine
@@ -67,7 +67,7 @@ function Find-LongMethods {
                 $FunctionLines = $FunctionBody -split "`n"
                 
                 if ($FunctionLines.Count -gt $MaxMethodLength) {
-                    # Calculer les numéros de ligne
+                    # Calculer les numÃ©ros de ligne
                     $StartLine = ($Content.Substring(0, $Match.Index) -split "`n").Length
                     $EndLine = $StartLine + $FunctionLines.Count
                     $LineNumbers = $StartLine..$EndLine
@@ -90,7 +90,7 @@ function Find-LongMethods {
                 $LabelLines = $LabelBody -split "`n"
                 
                 if ($LabelLines.Count -gt $MaxMethodLength) {
-                    # Calculer les numéros de ligne
+                    # Calculer les numÃ©ros de ligne
                     $StartLine = ($Content.Substring(0, $Match.Index) -split "`n").Length
                     $EndLine = $StartLine + $LabelLines.Count
                     $LineNumbers = $StartLine..$EndLine
@@ -113,7 +113,7 @@ function Find-LongMethods {
                 $FunctionLines = $FunctionBody -split "`n"
                 
                 if ($FunctionLines.Count -gt $MaxMethodLength) {
-                    # Calculer les numéros de ligne
+                    # Calculer les numÃ©ros de ligne
                     $StartLine = ($Content.Substring(0, $Match.Index) -split "`n").Length
                     $EndLine = $StartLine + $FunctionLines.Count
                     $LineNumbers = $StartLine..$EndLine
@@ -134,9 +134,9 @@ function Find-LongMethods {
 function Find-DeepNestings {
     <#
     .SYNOPSIS
-        Détecte les imbrications profondes
+        DÃ©tecte les imbrications profondes
     .DESCRIPTION
-        Analyse le contenu pour détecter les imbrications profondes
+        Analyse le contenu pour dÃ©tecter les imbrications profondes
     .PARAMETER Content
         Contenu du script
     .PARAMETER ScriptType
@@ -153,16 +153,16 @@ function Find-DeepNestings {
         [string]$ScriptType
     )
     
-    # Créer un tableau pour stocker les imbrications profondes
+    # CrÃ©er un tableau pour stocker les imbrications profondes
     $DeepNestings = @()
     
-    # Définir la profondeur maximale acceptable
+    # DÃ©finir la profondeur maximale acceptable
     $MaxNestingDepth = 3
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Définir les motifs d'imbrication selon le type de script
+    # DÃ©finir les motifs d'imbrication selon le type de script
     $NestingPatterns = switch ($ScriptType) {
         "PowerShell" { @("if\s*\(", "foreach\s*\(", "while\s*\(", "switch\s*\(", "do\s*\{") }
         "Python" { @("if\s+", "for\s+", "while\s+", "def\s+", "with\s+", "try\s*:") }
@@ -181,7 +181,7 @@ function Find-DeepNestings {
         $Line = $Lines[$i]
         $LineNumber = $i + 1
         
-        # Vérifier si la ligne contient un motif d'imbrication
+        # VÃ©rifier si la ligne contient un motif d'imbrication
         $ContainsNestingPattern = $false
         foreach ($Pattern in $NestingPatterns) {
             if ($Line -match $Pattern) {
@@ -190,7 +190,7 @@ function Find-DeepNestings {
             }
         }
         
-        # Mettre à jour la profondeur d'imbrication
+        # Mettre Ã  jour la profondeur d'imbrication
         if ($ContainsNestingPattern) {
             $CurrentNestingDepth++
             
@@ -203,13 +203,13 @@ function Find-DeepNestings {
             }
         }
         
-        # Vérifier si la ligne contient une fermeture d'imbrication
+        # VÃ©rifier si la ligne contient une fermeture d'imbrication
         if ($Line -match "(\}|\)|\bend\b|\bfi\b|\bdone\b)") {
             $CurrentNestingDepth = [Math]::Max(0, $CurrentNestingDepth - 1)
         }
     }
     
-    # Ajouter l'imbrication profonde si elle dépasse la profondeur maximale
+    # Ajouter l'imbrication profonde si elle dÃ©passe la profondeur maximale
     if ($MaxDepthFound -gt $MaxNestingDepth) {
         # Extraire un extrait du code
         $StartLine = [Math]::Max(0, $NestingStart - 2)
@@ -229,9 +229,9 @@ function Find-DeepNestings {
 function Find-HardcodedPaths {
     <#
     .SYNOPSIS
-        Détecte les chemins codés en dur
+        DÃ©tecte les chemins codÃ©s en dur
     .DESCRIPTION
-        Analyse le contenu pour détecter les chemins codés en dur
+        Analyse le contenu pour dÃ©tecter les chemins codÃ©s en dur
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -243,13 +243,13 @@ function Find-HardcodedPaths {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les chemins codés en dur
+    # CrÃ©er un tableau pour stocker les chemins codÃ©s en dur
     $HardcodedPaths = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Définir les motifs de chemins
+    # DÃ©finir les motifs de chemins
     $PathPatterns = @(
         # Chemins Windows
         "[A-Z]:\\(?:[^:*?`"<>|\r\n]+\\)*[^:*?`"<>|\r\n]*",
@@ -279,7 +279,7 @@ function Find-HardcodedPaths {
                     continue
                 }
                 
-                # Ajouter le chemin codé en dur
+                # Ajouter le chemin codÃ© en dur
                 $HardcodedPaths += [PSCustomObject]@{
                     Value = $Path
                     LineNumber = $LineNumber

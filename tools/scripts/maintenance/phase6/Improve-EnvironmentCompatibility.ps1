@@ -1,5 +1,5 @@
-# Script pour améliorer la compatibilité entre environnements
-# Ce script standardise la gestion des chemins et corrige les problèmes de compatibilité
+﻿# Script pour amÃ©liorer la compatibilitÃ© entre environnements
+# Ce script standardise la gestion des chemins et corrige les problÃ¨mes de compatibilitÃ©
 
 [CmdletBinding()]
 param (
@@ -35,7 +35,7 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Créer le répertoire de logs si nécessaire
+    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -45,19 +45,19 @@ function Write-Log {
 }
 
 try {
-    # Fonction pour identifier les scripts avec des problèmes de compatibilité
+    # Fonction pour identifier les scripts avec des problÃ¨mes de compatibilitÃ©
     function Find-CompatibilityIssues {
         param (
             [string]$Directory
         )
 
-        Write-Log "Recherche des scripts avec des problèmes de compatibilité dans $Directory"
+        Write-Log "Recherche des scripts avec des problÃ¨mes de compatibilitÃ© dans $Directory"
 
         $results = @()
 
-        # Récupérer tous les scripts PowerShell dans le répertoire
+        # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
         $scripts = Get-ChildItem -Path $Directory -Recurse -File -Filter "*.ps1" | Where-Object { -not $_.FullName.Contains(".bak") }
-        Write-Log "Nombre de scripts trouvés : $($scripts.Count)"
+        Write-Log "Nombre de scripts trouvÃ©s : $($scripts.Count)"
 
         foreach ($script in $scripts) {
             Write-Verbose "Analyse du script : $($script.FullName)"
@@ -70,35 +70,35 @@ try {
                 continue
             }
 
-            # Vérifier les problèmes de compatibilité
+            # VÃ©rifier les problÃ¨mes de compatibilitÃ©
             $issues = @()
 
-            # 1. Chemins codés en dur
+            # 1. Chemins codÃ©s en dur
             if ($content -match "([A-Z]:\\[^'`"]*\\[^'`"]*)" -or $content -match "([A-Z]:/[^'`"]*/[^'`"]*)") {
-                $issues += "Chemins codés en dur"
+                $issues += "Chemins codÃ©s en dur"
             }
 
-            # 2. Utilisation de séparateurs de chemin spécifiques à Windows
+            # 2. Utilisation de sÃ©parateurs de chemin spÃ©cifiques Ã  Windows
             if ($content -match "\\\\" -and -not $content -match "\\\\\\\\") {
-                $issues += "Séparateurs de chemin spécifiques à Windows"
+                $issues += "SÃ©parateurs de chemin spÃ©cifiques Ã  Windows"
             }
 
-            # 3. Commandes spécifiques à Windows
+            # 3. Commandes spÃ©cifiques Ã  Windows
             if ($content -match "cmd\.exe|cmd /c|powershell\.exe|\.bat|\.cmd") {
-                $issues += "Commandes spécifiques à Windows"
+                $issues += "Commandes spÃ©cifiques Ã  Windows"
             }
 
-            # 4. Utilisation de variables d'environnement spécifiques à Windows
+            # 4. Utilisation de variables d'environnement spÃ©cifiques Ã  Windows
             if ($content -match "\$env:USERPROFILE|\$env:APPDATA|\$env:ProgramFiles|\$env:SystemRoot") {
-                $issues += "Variables d'environnement spécifiques à Windows"
+                $issues += "Variables d'environnement spÃ©cifiques Ã  Windows"
             }
 
-            # 5. Utilisation de fonctions spécifiques à PowerShell Windows
+            # 5. Utilisation de fonctions spÃ©cifiques Ã  PowerShell Windows
             if ($content -match "Get-WmiObject|Get-CimInstance|Get-EventLog") {
-                $issues += "Fonctions spécifiques à PowerShell Windows"
+                $issues += "Fonctions spÃ©cifiques Ã  PowerShell Windows"
             }
 
-            # Si des problèmes ont été identifiés
+            # Si des problÃ¨mes ont Ã©tÃ© identifiÃ©s
             if ($issues.Count -gt 0) {
                 $results += [PSCustomObject]@{
                     Path = $script.FullName
@@ -119,19 +119,19 @@ try {
 
         Write-Verbose "Standardisation de la gestion des chemins dans $Path"
 
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$Path.bak"
             Copy-Item -Path $Path -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée : $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e : $backupPath"
         }
 
         # Lire le contenu du script
         $content = Get-Content -Path $Path -Raw
 
-        # 1. Remplacer les chemins codés en dur par des chemins relatifs
+        # 1. Remplacer les chemins codÃ©s en dur par des chemins relatifs
 
-        # Extraire les chemins codés en dur
+        # Extraire les chemins codÃ©s en dur
         $hardcodedPaths = [regex]::Matches($content, "([A-Z]:\\[^'`"]*\\[^'`"]*)|([A-Z]:/[^'`"]*/[^'`"]*)")
 
         foreach ($match in $hardcodedPaths) {
@@ -162,33 +162,33 @@ try {
             }
         }
 
-        # 2. Standardiser les séparateurs de chemin
+        # 2. Standardiser les sÃ©parateurs de chemin
         $content = $content -replace "\\\\(?!\\\\)", [System.IO.Path]::DirectorySeparatorChar
 
-        # 3. Remplacer les commandes spécifiques à Windows par des alternatives compatibles
+        # 3. Remplacer les commandes spÃ©cifiques Ã  Windows par des alternatives compatibles
         $content = $content -replace "cmd\.exe /c", "Invoke-Expression"
         $content = $content -replace "powershell\.exe", "pwsh"
 
-        # 4. Remplacer les variables d'environnement spécifiques à Windows
+        # 4. Remplacer les variables d'environnement spÃ©cifiques Ã  Windows
         $content = $content -replace '\$env:USERPROFILE', '\$HOME'
         $content = $content -replace '\$env:APPDATA', "Join-Path -Path \$HOME -ChildPath '.config'"
         $content = $content -replace '\$env:ProgramFiles', "'/usr/local'"
         $content = $content -replace '\$env:SystemRoot', "'/'"
 
-        # 5. Remplacer les fonctions spécifiques à PowerShell Windows
+        # 5. Remplacer les fonctions spÃ©cifiques Ã  PowerShell Windows
         $content = $content -replace "Get-WmiObject", "Get-CimInstance"
         $content = $content -replace "Get-EventLog", "Get-WinEvent"
 
-        # Ajouter une vérification de l'environnement d'exécution
+        # Ajouter une vÃ©rification de l'environnement d'exÃ©cution
         $environmentCheck = @"
-# Vérifier l'environnement d'exécution
+# VÃ©rifier l'environnement d'exÃ©cution
 `$IsWindows = `$PSVersionTable.PSVersion.Major -ge 6 -and `$PSVersionTable.Platform -eq 'Win32NT' -or `$PSVersionTable.PSVersion.Major -lt 6
 `$IsLinux = `$PSVersionTable.PSVersion.Major -ge 6 -and `$PSVersionTable.Platform -eq 'Unix'
 `$IsMacOS = `$PSVersionTable.PSVersion.Major -ge 6 -and `$PSVersionTable.Platform -eq 'Unix' -and (uname) -eq 'Darwin'
 
 "@
 
-        # Insérer la vérification de l'environnement après les paramètres
+        # InsÃ©rer la vÃ©rification de l'environnement aprÃ¨s les paramÃ¨tres
         $paramMatch = [regex]::Match($content, "(?s)^.*?param\s*\((.*?)\)", [System.Text.RegularExpressions.RegexOptions]::Singleline)
         if ($paramMatch.Success) {
             $content = $content.Insert($paramMatch.Length, "`n$environmentCheck")
@@ -196,7 +196,7 @@ try {
             $content = "$environmentCheck`n$content"
         }
 
-        # Écrire le nouveau contenu dans le fichier
+        # Ã‰crire le nouveau contenu dans le fichier
         Set-Content -Path $Path -Value $content -Encoding UTF8
 
         return $true
@@ -204,12 +204,12 @@ try {
 
     # Fonction principale
     function Start-EnvironmentCompatibilityImplementation {
-        Write-Log "Démarrage de l'implémentation de la compatibilité entre environnements"
+        Write-Log "DÃ©marrage de l'implÃ©mentation de la compatibilitÃ© entre environnements"
 
-        # Trouver les scripts avec des problèmes de compatibilité
+        # Trouver les scripts avec des problÃ¨mes de compatibilitÃ©
         $scriptsWithIssues = Find-CompatibilityIssues -Directory $ScriptsDirectory
 
-        Write-Log "Nombre de scripts avec des problèmes de compatibilité : $($scriptsWithIssues.Count)"
+        Write-Log "Nombre de scripts avec des problÃ¨mes de compatibilitÃ© : $($scriptsWithIssues.Count)"
 
         $results = @{
             Total = $scriptsWithIssues.Count
@@ -221,29 +221,29 @@ try {
         # Standardiser la gestion des chemins dans les scripts
         foreach ($script in $scriptsWithIssues) {
             Write-Log "Traitement du script : $($script.Path)"
-            Write-Log "Problèmes identifiés : $($script.Issues)" -Level "WARNING"
+            Write-Log "ProblÃ¨mes identifiÃ©s : $($script.Issues)" -Level "WARNING"
 
             try {
                 $success = Update-PathHandling -Path $script.Path -CreateBackup:$CreateBackup
 
                 if ($success) {
-                    Write-Log "Compatibilité améliorée avec succès pour : $($script.Path)" -Level "INFO"
+                    Write-Log "CompatibilitÃ© amÃ©liorÃ©e avec succÃ¨s pour : $($script.Path)" -Level "INFO"
                     $results.Succeeded++
                     $results.Details += [PSCustomObject]@{
                         Path = $script.Path
                         Issues = $script.Issues
                         Status = "Success"
-                        Message = "Compatibilité améliorée avec succès"
+                        Message = "CompatibilitÃ© amÃ©liorÃ©e avec succÃ¨s"
                     }
                 }
                 else {
-                    Write-Log "Échec de l'amélioration de la compatibilité pour : $($script.Path)" -Level "ERROR"
+                    Write-Log "Ã‰chec de l'amÃ©lioration de la compatibilitÃ© pour : $($script.Path)" -Level "ERROR"
                     $results.Failed++
                     $results.Details += [PSCustomObject]@{
                         Path = $script.Path
                         Issues = $script.Issues
                         Status = "Failed"
-                        Message = "Échec de l'amélioration de la compatibilité"
+                        Message = "Ã‰chec de l'amÃ©lioration de la compatibilitÃ©"
                     }
                 }
             }
@@ -259,23 +259,23 @@ try {
             }
         }
 
-        # Générer un rapport
+        # GÃ©nÃ©rer un rapport
         $reportPath = Join-Path -Path (Split-Path -Parent $LogFilePath) -ChildPath "environment_compatibility_report.json"
         $results | ConvertTo-Json -Depth 3 | Set-Content -Path $reportPath -Encoding UTF8
 
-        Write-Log "Rapport généré : $reportPath"
+        Write-Log "Rapport gÃ©nÃ©rÃ© : $reportPath"
 
-        # Afficher un résumé
-        Write-Host "`nRésumé de l'implémentation de la compatibilité entre environnements :" -ForegroundColor Cyan
+        # Afficher un rÃ©sumÃ©
+        Write-Host "`nRÃ©sumÃ© de l'implÃ©mentation de la compatibilitÃ© entre environnements :" -ForegroundColor Cyan
         Write-Host "----------------------------------------" -ForegroundColor Cyan
-        Write-Host "Scripts analysés : $($results.Total)" -ForegroundColor White
-        Write-Host "Améliorations réussies : $($results.Succeeded)" -ForegroundColor Green
-        Write-Host "Échecs : $($results.Failed)" -ForegroundColor Red
+        Write-Host "Scripts analysÃ©s : $($results.Total)" -ForegroundColor White
+        Write-Host "AmÃ©liorations rÃ©ussies : $($results.Succeeded)" -ForegroundColor Green
+        Write-Host "Ã‰checs : $($results.Failed)" -ForegroundColor Red
 
         return $results
     }
 
-    # Exécuter la fonction principale
+    # ExÃ©cuter la fonction principale
     Start-EnvironmentCompatibilityImplementation
 }
 catch {
@@ -284,5 +284,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

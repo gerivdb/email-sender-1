@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Démarre un chronomètre pour mesurer le temps d'exécution.
+    DÃ©marre un chronomÃ¨tre pour mesurer le temps d'exÃ©cution.
 
 .DESCRIPTION
-    La fonction Start-RoadmapPerformanceTimer démarre un chronomètre pour mesurer le temps d'exécution.
-    Elle crée un nouveau chronomètre ou réinitialise un chronomètre existant.
+    La fonction Start-RoadmapPerformanceTimer dÃ©marre un chronomÃ¨tre pour mesurer le temps d'exÃ©cution.
+    Elle crÃ©e un nouveau chronomÃ¨tre ou rÃ©initialise un chronomÃ¨tre existant.
 
 .PARAMETER Name
-    Le nom du chronomètre.
-    Ce nom est utilisé pour identifier le chronomètre lors de l'arrêt ou de la réinitialisation.
+    Le nom du chronomÃ¨tre.
+    Ce nom est utilisÃ© pour identifier le chronomÃ¨tre lors de l'arrÃªt ou de la rÃ©initialisation.
 
 .PARAMETER Reset
-    Indique si le chronomètre doit être réinitialisé s'il existe déjà.
-    Par défaut, c'est $true.
+    Indique si le chronomÃ¨tre doit Ãªtre rÃ©initialisÃ© s'il existe dÃ©jÃ .
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Start-RoadmapPerformanceTimer -Name "MaFonction"
-    Démarre un chronomètre nommé "MaFonction".
+    DÃ©marre un chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -24,7 +24,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Start-RoadmapPerformanceTimer {
     [CmdletBinding()]
@@ -44,14 +44,14 @@ function Start-RoadmapPerformanceTimer {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction de démarrage du chronomètre
+    # Appeler la fonction de dÃ©marrage du chronomÃ¨tre
     Start-PerformanceTimer -Name $Name -Reset:$Reset
 }

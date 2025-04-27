@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-Format.Tests.ps1
 #
 # Tests unitaires pour la fonction Test-Format
 #
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-Format.ps1"
@@ -42,11 +42,11 @@ Describe "Test-Format" {
     }
 
     Context "Validation de format PhoneNumber" {
-        It "Devrait retourner True pour un numéro de téléphone valide" {
+        It "Devrait retourner True pour un numÃ©ro de tÃ©lÃ©phone valide" {
             Test-Format -Value "123-456-7890" -Format "PhoneNumber" | Should -Be $true
         }
 
-        It "Devrait retourner False pour un numéro de téléphone invalide" {
+        It "Devrait retourner False pour un numÃ©ro de tÃ©lÃ©phone invalide" {
             Test-Format -Value "abc" -Format "PhoneNumber" | Should -Be $false
         }
     }
@@ -112,42 +112,42 @@ Describe "Test-Format" {
     }
 
     Context "Validation de format DirectoryPath" {
-        It "Devrait retourner True pour un chemin de répertoire valide" {
+        It "Devrait retourner True pour un chemin de rÃ©pertoire valide" {
             Test-Format -Value "C:\Windows\System32" -Format "DirectoryPath" | Should -Be $true
         }
 
-        It "Devrait retourner False pour un chemin de répertoire invalide" {
+        It "Devrait retourner False pour un chemin de rÃ©pertoire invalide" {
             Test-Format -Value "C:\Invalid|Path" -Format "DirectoryPath" | Should -Be $false
         }
     }
 
     Context "Validation de format Custom" {
-        It "Devrait retourner True pour une valeur correspondant au pattern personnalisé" {
+        It "Devrait retourner True pour une valeur correspondant au pattern personnalisÃ©" {
             Test-Format -Value "abc123" -Format "Custom" -Pattern "^[a-z]+[0-9]+$" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisé" {
+        It "Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisÃ©" {
             Test-Format -Value "123abc" -Format "Custom" -Pattern "^[a-z]+[0-9]+$" | Should -Be $false
         }
 
-        It "Devrait lever une exception si le pattern n'est pas spécifié" {
+        It "Devrait lever une exception si le pattern n'est pas spÃ©cifiÃ©" {
             { Test-Format -Value "abc123" -Format "Custom" } | Should -Throw
         }
     }
 
     Context "Validation avec ThrowOnFailure" {
-        It "Devrait lever une exception en cas d'échec avec ThrowOnFailure" {
+        It "Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure" {
             { Test-Format -Value "invalid@" -Format "Email" -ThrowOnFailure } | Should -Throw
         }
 
-        It "Ne devrait pas lever d'exception en cas de succès avec ThrowOnFailure" {
+        It "Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure" {
             { Test-Format -Value "user@example.com" -Format "Email" -ThrowOnFailure } | Should -Not -Throw
         }
     }
 
-    Context "Validation avec message d'erreur personnalisé" {
-        It "Devrait utiliser le message d'erreur personnalisé en cas d'échec" {
-            $customErrorMessage = "Message d'erreur personnalisé"
+    Context "Validation avec message d'erreur personnalisÃ©" {
+        It "Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec" {
+            $customErrorMessage = "Message d'erreur personnalisÃ©"
             $exceptionMessage = $null
 
             try {

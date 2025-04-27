@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport de couverture de code pour les fonctionnalités de détection de format.
+    GÃ©nÃ¨re un rapport de couverture de code pour les fonctionnalitÃ©s de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script génère un rapport de couverture de code pour les fonctionnalités de détection
-    de format développées dans le cadre de la section 2.1.2 de la roadmap.
+    Ce script gÃ©nÃ¨re un rapport de couverture de code pour les fonctionnalitÃ©s de dÃ©tection
+    de format dÃ©veloppÃ©es dans le cadre de la section 2.1.2 de la roadmap.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport de couverture sera enregistré. Par défaut, 'CodeCoverage.xml'.
+    Le chemin oÃ¹ le rapport de couverture sera enregistrÃ©. Par dÃ©faut, 'CodeCoverage.xml'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport XML.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport XML.
 
 .EXAMPLE
     .\Get-CodeCoverage.ps1 -GenerateHtmlReport
@@ -38,7 +38,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
         Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
     }
     catch {
-        Write-Error "Impossible d'installer le module Pester. Le rapport de couverture ne peut pas être généré."
+        Write-Error "Impossible d'installer le module Pester. Le rapport de couverture ne peut pas Ãªtre gÃ©nÃ©rÃ©."
         return
     }
 }
@@ -46,13 +46,13 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer le module Pester
 Import-Module Pester
 
-# Chemins vers les scripts à tester
+# Chemins vers les scripts Ã  tester
 $scriptsToTest = @(
     (Join-Path -Path $PSScriptRoot -ChildPath "..\analysis\Detect-FileEncoding.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "..\analysis\Improved-FormatDetection.ps1")
 )
 
-# Vérifier si les scripts existent
+# VÃ©rifier si les scripts existent
 $validScripts = @()
 foreach ($script in $scriptsToTest) {
     if (Test-Path -Path $script -PathType Leaf) {
@@ -64,7 +64,7 @@ foreach ($script in $scriptsToTest) {
 }
 
 if ($validScripts.Count -eq 0) {
-    Write-Error "Aucun script valide à tester. Le rapport de couverture ne peut pas être généré."
+    Write-Error "Aucun script valide Ã  tester. Le rapport de couverture ne peut pas Ãªtre gÃ©nÃ©rÃ©."
     return
 }
 
@@ -78,28 +78,28 @@ $pesterConfig.CodeCoverage.Path = $validScripts
 $pesterConfig.CodeCoverage.OutputPath = $OutputPath
 $pesterConfig.CodeCoverage.OutputFormat = 'JaCoCo'
 
-# Exécuter les tests avec couverture de code
-Write-Host "Génération du rapport de couverture de code..." -ForegroundColor Cyan
+# ExÃ©cuter les tests avec couverture de code
+Write-Host "GÃ©nÃ©ration du rapport de couverture de code..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé de la couverture
+# Afficher un rÃ©sumÃ© de la couverture
 $coverage = $testResults.CodeCoverage
 $totalCommands = $coverage.NumberOfCommandsAnalyzed
 $coveredCommands = $coverage.NumberOfCommandsExecuted
 $missedCommands = $totalCommands - $coveredCommands
 $coveragePercent = if ($totalCommands -gt 0) { [Math]::Round(($coveredCommands / $totalCommands) * 100, 2) } else { 0 }
 
-Write-Host "`nRésumé de la couverture de code :" -ForegroundColor Cyan
-Write-Host "  Commandes analysées : $totalCommands" -ForegroundColor White
+Write-Host "`nRÃ©sumÃ© de la couverture de code :" -ForegroundColor Cyan
+Write-Host "  Commandes analysÃ©es : $totalCommands" -ForegroundColor White
 Write-Host "  Commandes couvertes : $coveredCommands" -ForegroundColor Green
 Write-Host "  Commandes non couvertes : $missedCommands" -ForegroundColor $(if ($missedCommands -gt 0) { "Yellow" } else { "Green" })
 Write-Host "  Pourcentage de couverture : $coveragePercent%" -ForegroundColor $(if ($coveragePercent -ge 80) { "Green" } elseif ($coveragePercent -ge 50) { "Yellow" } else { "Red" })
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
 
-    # Générer un rapport HTML simple
+    # GÃ©nÃ©rer un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -174,11 +174,11 @@ if ($GenerateHtmlReport) {
 </head>
 <body>
     <h1>Rapport de couverture de code</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Commandes analysées : $totalCommands</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Commandes analysÃ©es : $totalCommands</p>
         <p>Commandes couvertes : $coveredCommands</p>
         <p>Commandes non couvertes : $missedCommands</p>
 
@@ -189,11 +189,11 @@ if ($GenerateHtmlReport) {
         </div>
     </div>
 
-    <h2>Détails par fichier</h2>
+    <h2>DÃ©tails par fichier</h2>
     <table>
         <tr>
             <th>Fichier</th>
-            <th>Commandes analysées</th>
+            <th>Commandes analysÃ©es</th>
             <th>Commandes couvertes</th>
             <th>Pourcentage</th>
         </tr>
@@ -259,8 +259,8 @@ if ($GenerateHtmlReport) {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $htmlOutputPath -Encoding utf8
 
-    Write-Host "`nRapport HTML généré : $htmlOutputPath" -ForegroundColor Green
+    Write-Host "`nRapport HTML gÃ©nÃ©rÃ© : $htmlOutputPath" -ForegroundColor Green
 }
 
-# Retourner les résultats de la couverture
+# Retourner les rÃ©sultats de la couverture
 return $coverage

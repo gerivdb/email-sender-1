@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les scripts de validation de détection de format.
+    ExÃ©cute tous les tests unitaires pour les scripts de validation de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les scripts de validation de détection de format
-    développés dans le cadre de la section 2.1.5 de la roadmap. Il utilise le framework Pester
-    pour exécuter les tests et génère des rapports de test.
+    Ce script exÃ©cute tous les tests unitaires pour les scripts de validation de dÃ©tection de format
+    dÃ©veloppÃ©s dans le cadre de la section 2.1.5 de la roadmap. Il utilise le framework Pester
+    pour exÃ©cuter les tests et gÃ©nÃ¨re des rapports de test.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les rapports de test seront enregistrés.
-    Par défaut, utilise le répertoire 'test_reports' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les rapports de test seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'test_reports' dans le rÃ©pertoire du script.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré.
-    Par défaut, cette option est activée.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .EXAMPLE
     .\Run-ValidationUnitTests.ps1 -GenerateHtmlReport
@@ -36,7 +36,7 @@ param(
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -46,11 +46,11 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Vérifier la version de Pester
+# VÃ©rifier la version de Pester
 $pesterVersion = (Get-Module -Name Pester -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1).Version
-Write-Host "Version de Pester détectée : $pesterVersion" -ForegroundColor Cyan
+Write-Host "Version de Pester dÃ©tectÃ©e : $pesterVersion" -ForegroundColor Cyan
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -58,11 +58,11 @@ function New-DirectoryIfNotExists {
     
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $Path"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $Path"
     }
 }
 
-# Créer le répertoire de sortie
+# CrÃ©er le rÃ©pertoire de sortie
 New-DirectoryIfNotExists -Path $OutputDirectory
 
 # Chemins des fichiers de test
@@ -72,7 +72,7 @@ $testFiles = @(
     "$PSScriptRoot\OptimizeAlgorithms.Tests.ps1"
 )
 
-# Vérifier si les fichiers de test existent
+# VÃ©rifier si les fichiers de test existent
 $missingTests = $testFiles | Where-Object { -not (Test-Path -Path $_) }
 
 if ($missingTests.Count -gt 0) {
@@ -82,7 +82,7 @@ if ($missingTests.Count -gt 0) {
 $existingTests = $testFiles | Where-Object { Test-Path -Path $_ }
 
 if ($existingTests.Count -eq 0) {
-    Write-Error "Aucun fichier de test n'a été trouvé."
+    Write-Error "Aucun fichier de test n'a Ã©tÃ© trouvÃ©."
     exit 1
 }
 
@@ -101,21 +101,21 @@ $pesterConfig.CodeCoverage.Path = @(
     "$PSScriptRoot\Optimize-DetectionAlgorithms.ps1"
 )
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des résultats de test :" -ForegroundColor Yellow
-Write-Host "Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "Tests réussis : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "Tests échoués : $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "Tests ignorés : $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "Durée totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des rÃ©sultats de test :" -ForegroundColor Yellow
+Write-Host "Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "Tests rÃ©ussis : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s : $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "Tests ignorÃ©s : $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Cyan
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Cyan
     
     $htmlReportPath = Join-Path -Path $OutputDirectory -ChildPath "ValidationUnitTestReport.html"
     
@@ -125,7 +125,7 @@ if ($GenerateHtmlReport) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de tests unitaires - Validation de détection de format</title>
+    <title>Rapport de tests unitaires - Validation de dÃ©tection de format</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -224,41 +224,41 @@ if ($GenerateHtmlReport) {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport de tests unitaires - Validation de détection de format</h1>
+        <h1>Rapport de tests unitaires - Validation de dÃ©tection de format</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Date d'exécution:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Date d'exÃ©cution:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
             <p><strong>Version de Pester:</strong> $pesterVersion</p>
         </div>
         
         <div class="metrics">
             <div class="metric-card">
-                <h3>Tests exécutés</h3>
+                <h3>Tests exÃ©cutÃ©s</h3>
                 <div class="metric-value neutral">$($testResults.TotalCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests réussis</h3>
+                <h3>Tests rÃ©ussis</h3>
                 <div class="metric-value success">$($testResults.PassedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests échoués</h3>
+                <h3>Tests Ã©chouÃ©s</h3>
                 <div class="metric-value failure">$($testResults.FailedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests ignorés</h3>
+                <h3>Tests ignorÃ©s</h3>
                 <div class="metric-value warning">$($testResults.SkippedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Durée totale</h3>
+                <h3>DurÃ©e totale</h3>
                 <div class="metric-value neutral">$([Math]::Round($testResults.Duration.TotalSeconds, 2)) s</div>
             </div>
         </div>
         
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
 "@
 
-    # Ajouter les résultats détaillés pour chaque fichier de test
+    # Ajouter les rÃ©sultats dÃ©taillÃ©s pour chaque fichier de test
     foreach ($testFile in $existingTests) {
         $fileName = [System.IO.Path]::GetFileName($testFile)
         $fileTests = $testResults.Tests | Where-Object { $_.Path -like "*$fileName*" }
@@ -270,8 +270,8 @@ if ($GenerateHtmlReport) {
                 <thead>
                     <tr>
                         <th>Nom du test</th>
-                        <th>Résultat</th>
-                        <th>Durée</th>
+                        <th>RÃ©sultat</th>
+                        <th>DurÃ©e</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,8 +311,8 @@ if ($GenerateHtmlReport) {
 "@
     
     $html | Set-Content -Path $htmlReportPath -Encoding UTF8
-    Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

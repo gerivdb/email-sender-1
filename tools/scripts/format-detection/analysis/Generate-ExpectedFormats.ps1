@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un fichier JSON de formats attendus pour les tests.
+    GÃ©nÃ¨re un fichier JSON de formats attendus pour les tests.
 
 .DESCRIPTION
-    Ce script génère un fichier JSON contenant les formats attendus pour chaque fichier
-    dans un répertoire donné. Il utilise l'extension du fichier pour déterminer le format
-    attendu, mais permet également de spécifier manuellement des formats pour certains fichiers.
+    Ce script gÃ©nÃ¨re un fichier JSON contenant les formats attendus pour chaque fichier
+    dans un rÃ©pertoire donnÃ©. Il utilise l'extension du fichier pour dÃ©terminer le format
+    attendu, mais permet Ã©galement de spÃ©cifier manuellement des formats pour certains fichiers.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le fichier de formats attendus sera enregistré. Par défaut, 'ExpectedFormats.json'.
+    Le chemin oÃ¹ le fichier de formats attendus sera enregistrÃ©. Par dÃ©faut, 'ExpectedFormats.json'.
 
 .PARAMETER ManualFormats
-    Un tableau de paires chemin-format pour spécifier manuellement des formats pour certains fichiers.
+    Un tableau de paires chemin-format pour spÃ©cifier manuellement des formats pour certains fichiers.
     Format : @("chemin1=format1", "chemin2=format2", ...)
 
 .EXAMPLE
@@ -39,28 +39,28 @@ param(
     [string[]]$ManualFormats = @()
 )
 
-# Vérifier si le répertoire d'échantillons existe
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
-    Write-Error "Le répertoire d'échantillons $SampleDirectory n'existe pas."
+    Write-Error "Le rÃ©pertoire d'Ã©chantillons $SampleDirectory n'existe pas."
     return
 }
 
-# Charger les critères de détection pour obtenir les extensions associées à chaque format
+# Charger les critÃ¨res de dÃ©tection pour obtenir les extensions associÃ©es Ã  chaque format
 $criteriaPath = Join-Path -Path $PSScriptRoot -ChildPath "FormatDetectionCriteria.json"
 if (Test-Path -Path $criteriaPath -PathType Leaf) {
     try {
         $formatCriteria = Get-Content -Path $criteriaPath -Raw | ConvertFrom-Json
-        Write-Host "Critères de détection chargés depuis $criteriaPath" -ForegroundColor Green
+        Write-Host "CritÃ¨res de dÃ©tection chargÃ©s depuis $criteriaPath" -ForegroundColor Green
     } catch {
-        Write-Warning "Impossible de charger les critères de détection depuis $criteriaPath : $_"
+        Write-Warning "Impossible de charger les critÃ¨res de dÃ©tection depuis $criteriaPath : $_"
         $formatCriteria = $null
     }
 } else {
-    Write-Warning "Le fichier de critères $criteriaPath n'existe pas."
+    Write-Warning "Le fichier de critÃ¨res $criteriaPath n'existe pas."
     $formatCriteria = $null
 }
 
-# Créer un dictionnaire d'extensions vers formats
+# CrÃ©er un dictionnaire d'extensions vers formats
 $extensionToFormat = @{}
 if ($formatCriteria) {
     foreach ($format in $formatCriteria.PSObject.Properties) {
@@ -75,22 +75,22 @@ if ($formatCriteria) {
     }
 }
 
-# Récupérer tous les fichiers du répertoire (récursivement)
+# RÃ©cupÃ©rer tous les fichiers du rÃ©pertoire (rÃ©cursivement)
 $files = Get-ChildItem -Path $SampleDirectory -File -Recurse
 
-Write-Host "Génération des formats attendus pour $($files.Count) fichiers..." -ForegroundColor Cyan
+Write-Host "GÃ©nÃ©ration des formats attendus pour $($files.Count) fichiers..." -ForegroundColor Cyan
 
-# Créer un dictionnaire de formats attendus
+# CrÃ©er un dictionnaire de formats attendus
 $expectedFormats = @{}
 
-# Ajouter les formats basés sur l'extension
+# Ajouter les formats basÃ©s sur l'extension
 foreach ($file in $files) {
     $extension = $file.Extension.ToLower()
     
     if ($extensionToFormat.ContainsKey($extension)) {
         $expectedFormats[$file.FullName] = $extensionToFormat[$extension]
     } else {
-        # Si l'extension n'est pas reconnue, utiliser un format par défaut
+        # Si l'extension n'est pas reconnue, utiliser un format par dÃ©faut
         if ($extension -eq "") {
             $expectedFormats[$file.FullName] = "UNKNOWN"
         } else {
@@ -106,11 +106,11 @@ foreach ($manualFormat in $ManualFormats) {
         $path = $parts[0]
         $format = $parts[1]
         
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (Test-Path -Path $path -PathType Leaf) {
             $expectedFormats[$path] = $format
         } else {
-            Write-Warning "Le fichier $path spécifié dans les formats manuels n'existe pas."
+            Write-Warning "Le fichier $path spÃ©cifiÃ© dans les formats manuels n'existe pas."
         }
     } else {
         Write-Warning "Format manuel invalide : $manualFormat. Utilisez le format 'chemin=format'."
@@ -120,9 +120,9 @@ foreach ($manualFormat in $ManualFormats) {
 # Enregistrer les formats attendus au format JSON
 $expectedFormats | ConvertTo-Json | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Formats attendus enregistrés dans $OutputPath" -ForegroundColor Green
+Write-Host "Formats attendus enregistrÃ©s dans $OutputPath" -ForegroundColor Green
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $formatCounts = @{}
 foreach ($format in $expectedFormats.Values) {
     if (-not $formatCounts.ContainsKey($format)) {
@@ -133,7 +133,7 @@ foreach ($format in $expectedFormats.Values) {
 
 $sortedFormats = $formatCounts.GetEnumerator() | Sort-Object -Property Value -Descending
 
-Write-Host "`nRésumé des formats attendus :" -ForegroundColor Cyan
+Write-Host "`nRÃ©sumÃ© des formats attendus :" -ForegroundColor Cyan
 foreach ($format in $sortedFormats) {
     Write-Host "  $($format.Key): $($format.Value) fichiers" -ForegroundColor White
 }

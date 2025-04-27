@@ -1,138 +1,169 @@
-# Mode C-BREAK
+# Mode C-BREAK - Détection et Résolution des Dépendances Circulaires
 
 ## Description
 
-Le mode C-BREAK (Cycle Breaker) est un mode opérationnel conçu pour détecter et corriger les dépendances circulaires dans un projet. Les dépendances circulaires sont des situations où un module A dépend d'un module B, qui dépend d'un module C, qui dépend à son tour du module A, créant ainsi un cycle. Ces cycles peuvent causer des problèmes de maintenance, de performance et de testabilité.
+Le mode C-BREAK (Cycle Breaker) est un mode opérationnel conçu pour détecter et corriger les dépendances circulaires dans un projet. Les dépendances circulaires sont des situations où un module A dépend d'un module B, qui dépend d'un module C, qui dépend à son tour du module A, créant ainsi un cycle. Ces cycles peuvent causer des problèmes de maintenance, de performance, d'importation et de testabilité.
 
 ## Objectifs
 
-- Détecter les dépendances circulaires dans un projet
-- Analyser la sévérité et l'impact des cycles détectés
-- Proposer des stratégies de refactoring pour briser les cycles
-- Appliquer automatiquement les corrections si demandé
+- Détecter automatiquement les dépendances circulaires dans le code
+- Analyser la gravité et l'impact des cycles détectés
+- Proposer des stratégies de résolution adaptées à chaque type de cycle
+- Appliquer les corrections nécessaires pour éliminer les cycles
+- Valider que les corrections n'introduisent pas de régressions
 - Générer des rapports et des visualisations des dépendances
 
 ## Fonctionnalités
 
-### Détection de cycles
+### Détection de Cycles
 
 Le mode C-BREAK utilise trois algorithmes différents pour détecter les cycles de dépendances :
 
-1. **DFS (Depth-First Search)** : Algorithme de parcours en profondeur qui détecte les cycles en marquant les nœuds visités.
-2. **Tarjan** : Algorithme pour trouver les composantes fortement connexes dans un graphe, qui correspondent aux cycles.
-3. **Johnson** : Algorithme pour énumérer tous les cycles élémentaires dans un graphe dirigé.
+1. **Algorithme DFS (Depth-First Search)** : Parcourt le graphe de dépendances en profondeur pour détecter les cycles en marquant les nœuds visités.
+2. **Algorithme de Tarjan** : Identifie les composantes fortement connexes dans le graphe, qui représentent des cycles.
+3. **Algorithme de Johnson** : Trouve tous les cycles élémentaires dans le graphe dirigé.
 
-### Analyse de dépendances
+### Analyse de Dépendances
 
-Le mode analyse les dépendances entre fichiers en fonction du langage de programmation :
+Le mode analyse les dépendances entre fichiers pour différents langages de programmation :
 
-- **PowerShell** : Détecte les instructions `Import-Module`, `. (dot sourcing)`, `#Requires`, etc.
+- **PowerShell** : Détecte les instructions `Import-Module`, `. (dot sourcing)`, `using module`, etc.
 - **Python** : Détecte les instructions `import` et `from ... import`.
 - **JavaScript/TypeScript** : Détecte les instructions `import` et `require()`.
 - **C#** : Détecte les instructions `using` et les références de namespace.
 - **Java** : Détecte les instructions `import`.
 
-### Stratégies de résolution
+### Stratégies de Résolution
 
-Le mode propose plusieurs stratégies pour résoudre les dépendances circulaires :
+Le mode propose plusieurs stratégies pour résoudre les cycles de dépendances :
 
-1. **Extraction d'interface** : Extraire une interface à partir d'une classe et faire dépendre les clients de l'interface plutôt que de l'implémentation.
-2. **Inversion de dépendance** : Inverser la direction des dépendances en introduisant des abstractions.
-3. **Pattern médiateur** : Introduire un médiateur pour gérer les interactions entre les modules.
-4. **Couche d'abstraction** : Introduire une couche d'abstraction entre les modules.
+1. **Extraction d'Interface** : Créer une interface commune pour briser le cycle, permettant aux clients de dépendre de l'interface plutôt que de l'implémentation.
+2. **Inversion de Dépendance** : Inverser la direction de la dépendance problématique en introduisant des abstractions.
+3. **Introduction d'un Médiateur** : Ajouter un composant intermédiaire pour gérer les interactions entre les modules.
+4. **Refactorisation** : Restructurer le code pour éliminer les dépendances inutiles ou les regrouper de manière plus cohérente.
 
-### Visualisation
+### Visualisation et Rapports
 
-Le mode peut générer des graphes de dépendances dans différents formats :
+Le mode peut générer des graphes de dépendances et des rapports détaillés dans différents formats :
 
-- **DOT** : Format Graphviz pour la visualisation de graphes.
-- **Mermaid** : Format Markdown pour la visualisation de graphes.
-- **PlantUML** : Format UML pour la visualisation de graphes.
-- **JSON** : Format JSON pour l'intégration avec d'autres outils.
+- **DOT** : Format Graphviz pour la visualisation de graphes complexes.
+- **Mermaid** : Format Markdown pour la visualisation de graphes dans la documentation.
+- **PlantUML** : Format UML pour la visualisation de graphes avec des relations détaillées.
+- **JSON** : Format structuré pour l'intégration avec d'autres outils d'analyse.
+- **HTML** : Rapport interactif pour explorer les dépendances et les cycles.
 
 ## Utilisation
 
-### Syntaxe
+### Commande de Base
 
 ```powershell
-.\c-break-mode.ps1 -FilePath <string> [-TaskIdentifier <string>] -ProjectPath <string> [-OutputPath <string>] [-StartPath <string>] [-IncludePatterns <string[]>] [-ExcludePatterns <string[]>] [-DetectionAlgorithm <string>] [-MaxDepth <int>] [-MinimumCycleSeverity <int>] [-AutoFix <bool>] [-FixStrategy <string>] [-GenerateGraph <bool>] [-GraphFormat <string>]
+.\tools\scripts\c-break.ps1 -Path <chemin_du_projet> -OutputPath <chemin_rapport>
 ```
 
 ### Paramètres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
-|-----------|-------------|-------------|-------------------|
-| FilePath | Chemin vers le fichier de roadmap à traiter. | Oui | - |
-| TaskIdentifier | Identifiant de la tâche à traiter. | Non | - |
-| ProjectPath | Chemin vers le répertoire du projet à analyser. | Oui | - |
-| OutputPath | Chemin où seront générés les fichiers de sortie. | Non | Répertoire courant |
-| StartPath | Chemin spécifique dans le projet où commencer l'analyse. | Non | "" |
-| IncludePatterns | Motifs d'inclusion pour les fichiers à analyser. | Non | "*.ps1", "*.py", "*.js", "*.ts", "*.cs", "*.java" |
-| ExcludePatterns | Motifs d'exclusion pour les fichiers à ignorer. | Non | "*node_modules*", "*venv*", "*__pycache__*", "*.test.*", "*.spec.*" |
-| DetectionAlgorithm | Algorithme à utiliser pour la détection des cycles. | Non | "TARJAN" |
-| MaxDepth | Profondeur maximale d'analyse des dépendances. | Non | 10 |
-| MinimumCycleSeverity | Niveau de détail minimum pour considérer un cycle comme significatif (1-5). | Non | 1 |
-| AutoFix | Indique si les dépendances circulaires détectées doivent être corrigées automatiquement. | Non | $false |
-| FixStrategy | Stratégie de correction à utiliser lorsque AutoFix est activé. | Non | "AUTO" |
-| GenerateGraph | Indique si un graphe des dépendances doit être généré. | Non | $false |
-| GraphFormat | Format du graphe à générer. | Non | "DOT" |
+- `-Path` : Chemin du projet à analyser (obligatoire)
+- `-OutputPath` : Chemin où enregistrer le rapport d'analyse (facultatif)
+- `-Algorithm` : Algorithme à utiliser pour la détection (DFS, TARJAN, JOHNSON)
+- `-MinimumSeverity` : Sévérité minimale des cycles à détecter (1-10)
+- `-FixCycles` : Appliquer automatiquement les corrections
+- `-FixStrategy` : Stratégie à utiliser pour les corrections (INTERFACE, INVERSION, MEDIATOR, REFACTOR)
+- `-IncludePatterns` : Motifs d'inclusion pour les fichiers à analyser
+- `-ExcludePatterns` : Motifs d'exclusion pour les fichiers à ignorer
+- `-MaxDepth` : Profondeur maximale d'analyse des dépendances
+- `-GenerateGraph` : Générer un graphe des dépendances
+- `-GraphFormat` : Format du graphe à générer (DOT, MERMAID, PLANTUML, JSON)
+- `-Verbose` : Afficher des informations détaillées pendant l'exécution
 
 ### Exemples
 
-#### Détecter les cycles dans un projet PowerShell
+#### Détecter les cycles dans un projet
 
 ```powershell
-.\c-break-mode.ps1 -FilePath "roadmap.md" -ProjectPath "C:\Projects\MyProject" -IncludePatterns "*.ps1" -DetectionAlgorithm "TARJAN"
+.\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -Verbose
 ```
 
-#### Générer un graphe de dépendances
+#### Générer un rapport détaillé
 
 ```powershell
-.\c-break-mode.ps1 -FilePath "roadmap.md" -ProjectPath "C:\Projects\MyProject" -GenerateGraph $true -GraphFormat "MERMAID"
+.\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -OutputPath "D:\Rapports\cycles.json" -Algorithm TARJAN
 ```
 
 #### Corriger automatiquement les cycles
 
 ```powershell
-.\c-break-mode.ps1 -FilePath "roadmap.md" -ProjectPath "C:\Projects\MyProject" -AutoFix $true -FixStrategy "INTERFACE_EXTRACTION"
+.\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -FixCycles -FixStrategy INVERSION -MinimumSeverity 5
 ```
 
 #### Analyser un sous-répertoire spécifique
 
 ```powershell
-.\c-break-mode.ps1 -FilePath "roadmap.md" -ProjectPath "C:\Projects\MyProject" -StartPath "src\core"
+.\tools\scripts\c-break.ps1 -Path "D:\MonProjet" -IncludePatterns "src\core\*.ps1" -MaxDepth 5
 ```
 
-## Sorties
+## Format du Rapport
 
-Le mode C-BREAK génère plusieurs fichiers de sortie :
+Le rapport généré contient les informations suivantes :
 
-1. **cycle_detection_report.json** : Rapport détaillé des cycles détectés.
-2. **dependency_graph.<format>** : Graphe des dépendances dans le format spécifié.
-3. **cycle_fix_report.json** : Rapport des corrections appliquées.
+```json
+{
+  "projectPath": "D:\\MonProjet",
+  "scanDate": "2025-04-25T14:30:00",
+  "algorithm": "TARJAN",
+  "cyclesDetected": 3,
+  "cycles": [
+    {
+      "files": ["A.ps1", "B.ps1", "C.ps1"],
+      "length": 3,
+      "severity": 6,
+      "description": "Cycle détecté par l'algorithme de Tarjan",
+      "suggestedFix": "INVERSION",
+      "fixDetails": "Inverser la dépendance entre A.ps1 et C.ps1"
+    },
+    // ...
+  ]
+}
+```
 
-## Intégration avec d'autres modes
+## Intégration avec d'autres Modes
 
-Le mode C-BREAK peut être utilisé en combinaison avec d'autres modes :
+Le mode C-BREAK s'intègre avec d'autres modes du système :
 
-- **Mode ARCHI** : Pour analyser l'architecture du projet et détecter les problèmes structurels.
-- **Mode REVIEW** : Pour vérifier la qualité du code et détecter les problèmes potentiels.
-- **Mode OPTI** : Pour optimiser les performances du projet en éliminant les dépendances inutiles.
+- **Mode CHECK** : Vérifie l'absence de cycles avant de valider une tâche
+- **Mode DEBUG** : Utilise C-BREAK pour diagnostiquer les problèmes liés aux dépendances
+- **Mode REVIEW** : Inclut la détection de cycles dans les revues de code
+- **Mode DEV-R** : Applique C-BREAK avant de livrer une fonctionnalité
 
-## Bonnes pratiques
+## Bonnes Pratiques
 
-1. **Commencer par une analyse** : Utilisez d'abord le mode sans correction automatique pour comprendre les cycles détectés.
-2. **Visualiser les dépendances** : Générez un graphe pour mieux comprendre la structure des dépendances.
-3. **Corriger progressivement** : Corrigez les cycles un par un, en commençant par les plus critiques.
-4. **Tester après chaque correction** : Assurez-vous que le projet fonctionne toujours après chaque correction.
-5. **Automatiser la détection** : Intégrez la détection de cycles dans votre pipeline CI/CD pour éviter l'introduction de nouveaux cycles.
+1. **Exécution régulière** : Exécuter C-BREAK régulièrement pendant le développement pour détecter les cycles tôt.
+2. **Validation avant commit** : Intégrer C-BREAK dans les hooks pre-commit pour éviter d'introduire des cycles.
+3. **Analyse incrémentale** : Analyser uniquement les fichiers modifiés pour des projets volumineux.
+4. **Revue manuelle** : Examiner les corrections proposées avant de les appliquer automatiquement.
+5. **Documentation** : Documenter les décisions de conception prises pour résoudre les cycles complexes.
 
 ## Limitations
 
-- La détection de dépendances est basée sur l'analyse statique du code et peut ne pas détecter toutes les dépendances dynamiques.
-- La correction automatique peut ne pas être adaptée à tous les cas et peut nécessiter une intervention manuelle.
-- L'analyse de grands projets peut prendre du temps et consommer beaucoup de ressources.
+- L'analyse peut être lente sur des projets très volumineux.
+- Certaines dépendances dynamiques peuvent ne pas être détectées.
+- Les corrections automatiques peuvent nécessiter des ajustements manuels.
+- L'analyse inter-langages est limitée aux importations explicites.
+
+## Dépannage
+
+### Problèmes courants
+
+1. **Faux positifs** : Des cycles peuvent être détectés alors qu'ils n'existent pas réellement, généralement en raison d'importations conditionnelles.
+2. **Performances lentes** : Sur de grands projets, l'analyse peut prendre beaucoup de temps.
+3. **Corrections incomplètes** : Les corrections automatiques peuvent ne pas résoudre complètement certains cycles complexes.
+
+### Solutions
+
+1. **Exclure des fichiers** : Utiliser le paramètre `-Exclude` pour ignorer certains fichiers.
+2. **Limiter la profondeur** : Utiliser le paramètre `-MaxDepth` pour limiter la profondeur d'analyse.
+3. **Analyse ciblée** : Analyser uniquement les sous-répertoires spécifiques.
+4. **Mode interactif** : Utiliser le paramètre `-Interactive` pour confirmer chaque correction.
 
 ## Conclusion
 
-Le mode C-BREAK est un outil puissant pour maintenir la qualité et la maintenabilité d'un projet en détectant et en corrigeant les dépendances circulaires. En utilisant ce mode régulièrement, vous pouvez éviter les problèmes liés aux cycles de dépendances et améliorer la structure de votre code.
+Le mode C-BREAK est un outil puissant pour maintenir la qualité du code en éliminant les dépendances circulaires. En l'utilisant régulièrement, vous pouvez éviter de nombreux problèmes difficiles à diagnostiquer et améliorer la maintenabilité de votre code.

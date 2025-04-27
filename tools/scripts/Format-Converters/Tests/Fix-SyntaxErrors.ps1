@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Corrige les erreurs de syntaxe dans les fichiers de test.
 
 .DESCRIPTION
     Ce script corrige les erreurs de syntaxe courantes dans les fichiers de test,
-    notamment les accolades supplémentaires et les lignes mal formatées.
+    notamment les accolades supplÃ©mentaires et les lignes mal formatÃ©es.
 
 .PARAMETER TestFile
-    Le fichier de test à corriger. Si non spécifié, tous les fichiers de test seront corrigés.
+    Le fichier de test Ã  corriger. Si non spÃ©cifiÃ©, tous les fichiers de test seront corrigÃ©s.
 
 .EXAMPLE
     .\Fix-SyntaxErrors.ps1
@@ -37,33 +37,33 @@ function Repair-SyntaxErrors {
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
     
-    # Créer une copie de sauvegarde du fichier
+    # CrÃ©er une copie de sauvegarde du fichier
     $backupPath = "$FilePath.backup"
     Copy-Item -Path $FilePath -Destination $backupPath -Force
-    Write-Host "Copie de sauvegarde créée : $backupPath" -ForegroundColor Yellow
+    Write-Host "Copie de sauvegarde crÃ©Ã©e : $backupPath" -ForegroundColor Yellow
     
-    # Corriger les erreurs de syntaxe spécifiques à Format-Converters.Tests.ps1
+    # Corriger les erreurs de syntaxe spÃ©cifiques Ã  Format-Converters.Tests.ps1
     if ($FilePath -like "*Format-Converters.Tests.ps1") {
-        # Corriger l'accolade supplémentaire à la ligne 67
+        # Corriger l'accolade supplÃ©mentaire Ã  la ligne 67
         $content = $content -replace "return \`$filePath\r?\n\}\r?\n\}", "return `$filePath`r`n}"
         
-        # Corriger l'accolade supplémentaire à la ligne 597
+        # Corriger l'accolade supplÃ©mentaire Ã  la ligne 597
         $content = $content -replace "\$xmlResult\.DetectedFormat \| Should -Be `"XML`"\r?\n\s+\}\r?\n\s+\}\r?\n\}", "`$xmlResult.DetectedFormat | Should -Be `"XML`"`r`n        }`r`n    }"
         
-        # Corriger les lignes mal formatées autour de la ligne 618
+        # Corriger les lignes mal formatÃ©es autour de la ligne 618
         $content = $content -replace "\.SourceFormat -eq \`$SourceFormat \}\r?\n\s+\}\r?\n\s+if \(\`$TargetFormat\) \{\r?\n\s+\`$converters = \`$converters \| Where-Object \{ #Requires", "# Corrected content`r`n    if (`$TargetFormat) {`r`n        `$converters = `$converters | Where-Object { `$_.TargetFormat -eq `$TargetFormat }`r`n    }`r`n    `r`n    return `$converters`r`n}`r`n`r`n#Requires"
         
-        # Corriger les lignes mal formatées autour de la ligne 1135
+        # Corriger les lignes mal formatÃ©es autour de la ligne 1135
         $content = $content -replace "\.TargetFormat -eq \`$TargetFormat \}\r?\n\s+\}\r?\n\s+return \`$converters\r?\n\}\r?\n\}", "# Removed duplicate content"
     }
     
     # Enregistrer les modifications
     $content | Set-Content -Path $FilePath -Encoding UTF8
     
-    Write-Host "Erreurs de syntaxe corrigées dans le fichier : $FilePath" -ForegroundColor Green
+    Write-Host "Erreurs de syntaxe corrigÃ©es dans le fichier : $FilePath" -ForegroundColor Green
 }
 
-# Obtenir les fichiers de test à corriger
+# Obtenir les fichiers de test Ã  corriger
 $testFiles = @()
 
 if ($TestFile) {
@@ -87,5 +87,5 @@ foreach ($file in $testFiles) {
     Repair-SyntaxErrors -FilePath $file
 }
 
-Write-Host "`nLes erreurs de syntaxe ont été corrigées dans tous les fichiers de test." -ForegroundColor Green
-Write-Host "Exécutez les tests pour vérifier si les problèmes ont été résolus." -ForegroundColor Green
+Write-Host "`nLes erreurs de syntaxe ont Ã©tÃ© corrigÃ©es dans tous les fichiers de test." -ForegroundColor Green
+Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green

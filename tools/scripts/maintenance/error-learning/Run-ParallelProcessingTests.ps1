@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter les tests des scripts de traitement parallèle.
+    Script pour exÃ©cuter les tests des scripts de traitement parallÃ¨le.
 .DESCRIPTION
-    Ce script exécute les tests des scripts de traitement parallèle.
+    Ce script exÃ©cute les tests des scripts de traitement parallÃ¨le.
 .EXAMPLE
     .\Run-ParallelProcessingTests.ps1
-    Exécute les tests des scripts de traitement parallèle.
+    ExÃ©cute les tests des scripts de traitement parallÃ¨le.
 #>
 
 [CmdletBinding()]
 param ()
 
-# Vérifier la version de PowerShell
+# VÃ©rifier la version de PowerShell
 if ($PSVersionTable.PSVersion.Major -lt 7) {
-    Write-Warning "Les tests de parallélisation nécessitent PowerShell 7.0 ou supérieur. Certains tests seront ignorés."
+    Write-Warning "Les tests de parallÃ©lisation nÃ©cessitent PowerShell 7.0 ou supÃ©rieur. Certains tests seront ignorÃ©s."
 }
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -25,24 +25,24 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin du test des scripts de traitement parallèle
+# DÃ©finir le chemin du test des scripts de traitement parallÃ¨le
 $testFile = Join-Path -Path $PSScriptRoot -ChildPath "Tests\ParallelProcessing.Tests.ps1"
 
-# Afficher les tests trouvés
-Write-Host "Test des scripts de traitement parallèle trouvé :" -ForegroundColor Cyan
+# Afficher les tests trouvÃ©s
+Write-Host "Test des scripts de traitement parallÃ¨le trouvÃ© :" -ForegroundColor Cyan
 Write-Host "  ParallelProcessing.Tests.ps1" -ForegroundColor Yellow
 
-# Exécuter les tests
-Write-Host "`nExécution des tests des scripts de traitement parallèle..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "`nExÃ©cution des tests des scripts de traitement parallÃ¨le..." -ForegroundColor Cyan
 $results = Invoke-Pester -Path $testFile -Output Detailed -PassThru
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($results.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($results.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $results.FailedCount

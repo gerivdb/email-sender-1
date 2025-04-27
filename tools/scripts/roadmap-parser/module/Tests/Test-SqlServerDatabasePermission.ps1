@@ -1,13 +1,13 @@
-# Test simplifié pour la fonction Analyze-SqlServerPermission avec analyse au niveau base de données
+﻿# Test simplifiÃ© pour la fonction Analyze-SqlServerPermission avec analyse au niveau base de donnÃ©es
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 . "$PSScriptRoot\..\Functions\Public\Analyze-SqlServerPermission.ps1"
 
-# Créer un dossier temporaire pour les rapports
+# CrÃ©er un dossier temporaire pour les rapports
 $TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
 New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
 
-# Mock pour Invoke-Sqlcmd - Rôles serveur
+# Mock pour Invoke-Sqlcmd - RÃ´les serveur
 function Invoke-Sqlcmd {
     param (
         [Parameter(Mandatory = $false)]
@@ -26,7 +26,7 @@ function Invoke-Sqlcmd {
         [string]$ErrorAction
     )
 
-    # Requête pour obtenir la liste des bases de données
+    # RequÃªte pour obtenir la liste des bases de donnÃ©es
     if ($Query -like "*sys.databases*") {
         return @(
             [PSCustomObject]@{
@@ -37,7 +37,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les rôles serveur
+    # RequÃªte pour obtenir les rÃ´les serveur
     elseif ($Query -like "*sys.server_role_members*") {
         return @(
             [PSCustomObject]@{
@@ -63,7 +63,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les permissions serveur
+    # RequÃªte pour obtenir les permissions serveur
     elseif ($Query -like "*sys.server_permissions*") {
         return @(
             [PSCustomObject]@{
@@ -92,7 +92,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les logins serveur
+    # RequÃªte pour obtenir les logins serveur
     elseif ($Query -like "*sys.server_principals*" -and $Query -like "*LOGINPROPERTY*") {
         return @(
             [PSCustomObject]@{
@@ -153,7 +153,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les rôles de base de données
+    # RequÃªte pour obtenir les rÃ´les de base de donnÃ©es
     elseif ($Query -like "*sys.database_role_members*") {
         return @(
             [PSCustomObject]@{
@@ -193,7 +193,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les permissions de base de données
+    # RequÃªte pour obtenir les permissions de base de donnÃ©es
     elseif ($Query -like "*sys.database_permissions*") {
         return @(
             [PSCustomObject]@{
@@ -238,7 +238,7 @@ function Invoke-Sqlcmd {
             }
         )
     }
-    # Requête pour obtenir les utilisateurs de base de données
+    # RequÃªte pour obtenir les utilisateurs de base de donnÃ©es
     elseif ($Query -like "*sys.database_principals*") {
         return @(
             [PSCustomObject]@{
@@ -328,101 +328,101 @@ function Import-Module {
 }
 
 # Tester la fonction
-Write-Host "Test de la fonction Analyze-SqlServerPermission avec analyse au niveau base de données..." -ForegroundColor Cyan
+Write-Host "Test de la fonction Analyze-SqlServerPermission avec analyse au niveau base de donnÃ©es..." -ForegroundColor Cyan
 
-# Définir la variable d'environnement pour le test
+# DÃ©finir la variable d'environnement pour le test
 $env:PESTER_TEST_RUN = $true
 
-# Test avec analyse au niveau base de données
+# Test avec analyse au niveau base de donnÃ©es
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true
 
-# Vérifier les résultats
-Write-Host "`nVérification des résultats..." -ForegroundColor Cyan
+# VÃ©rifier les rÃ©sultats
+Write-Host "`nVÃ©rification des rÃ©sultats..." -ForegroundColor Cyan
 
-# Vérifier les propriétés de base
+# VÃ©rifier les propriÃ©tÃ©s de base
 if ($result -and $result.ServerInstance -eq "localhost\SQLEXPRESS") {
     Write-Host "- ServerInstance: OK" -ForegroundColor Green
 } else {
-    Write-Host "- ServerInstance: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerInstance: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerRoles -and $result.ServerRoles.Count -gt 0) {
     Write-Host "- ServerRoles: OK (Count: $($result.ServerRoles.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerRoles: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerRoles: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerPermissions -and $result.ServerPermissions.Count -gt 0) {
     Write-Host "- ServerPermissions: OK (Count: $($result.ServerPermissions.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerPermissions: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerPermissions: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerLogins -and $result.ServerLogins.Count -gt 0) {
     Write-Host "- ServerLogins: OK (Count: $($result.ServerLogins.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerLogins: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerLogins: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerPermissionAnomalies -and $result.ServerPermissionAnomalies.Count -gt 0) {
     Write-Host "- ServerPermissionAnomalies: OK (Count: $($result.ServerPermissionAnomalies.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'anomalies
+    # VÃ©rifier les types d'anomalies
     $anomalyTypes = $result.ServerPermissionAnomalies | Group-Object -Property AnomalyType | Select-Object -ExpandProperty Name
-    Write-Host "  Types d'anomalies détectés au niveau serveur: $($anomalyTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'anomalies dÃ©tectÃ©s au niveau serveur: $($anomalyTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- ServerPermissionAnomalies: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerPermissionAnomalies: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.IncludeDatabaseLevel -eq $true) {
     Write-Host "- IncludeDatabaseLevel: OK" -ForegroundColor Green
 } else {
-    Write-Host "- IncludeDatabaseLevel: ÉCHEC" -ForegroundColor Red
+    Write-Host "- IncludeDatabaseLevel: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.DatabaseRoles -and $result.DatabaseRoles.Count -gt 0) {
     Write-Host "- DatabaseRoles: OK (Count: $($result.DatabaseRoles.Count))" -ForegroundColor Green
 
-    # Vérifier les bases de données analysées
+    # VÃ©rifier les bases de donnÃ©es analysÃ©es
     $databaseNames = $result.DatabaseRoles | Select-Object -Property DatabaseName -Unique | ForEach-Object { $_.DatabaseName }
-    Write-Host "  Bases de données analysées: $($databaseNames -join ', ')" -ForegroundColor Gray
+    Write-Host "  Bases de donnÃ©es analysÃ©es: $($databaseNames -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- DatabaseRoles: ÉCHEC" -ForegroundColor Red
+    Write-Host "- DatabaseRoles: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.DatabasePermissions -and $result.DatabasePermissions.Count -gt 0) {
     Write-Host "- DatabasePermissions: OK (Count: $($result.DatabasePermissions.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- DatabasePermissions: ÉCHEC" -ForegroundColor Red
+    Write-Host "- DatabasePermissions: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.DatabaseUsers -and $result.DatabaseUsers.Count -gt 0) {
     Write-Host "- DatabaseUsers: OK (Count: $($result.DatabaseUsers.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- DatabaseUsers: ÉCHEC" -ForegroundColor Red
+    Write-Host "- DatabaseUsers: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.DatabasePermissionAnomalies -and $result.DatabasePermissionAnomalies.Count -gt 0) {
     Write-Host "- DatabasePermissionAnomalies: OK (Count: $($result.DatabasePermissionAnomalies.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'anomalies
+    # VÃ©rifier les types d'anomalies
     $anomalyTypes = $result.DatabasePermissionAnomalies | Group-Object -Property AnomalyType | Select-Object -ExpandProperty Name
-    Write-Host "  Types d'anomalies détectés au niveau base de données: $($anomalyTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'anomalies dÃ©tectÃ©s au niveau base de donnÃ©es: $($anomalyTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- DatabasePermissionAnomalies: ÉCHEC" -ForegroundColor Red
+    Write-Host "- DatabasePermissionAnomalies: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport
+# Test de gÃ©nÃ©ration de rapport
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.html"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -OutputPath $outputPath -OutputFormat "HTML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport HTML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport HTML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport CSV
+# Test de gÃ©nÃ©ration de rapport CSV
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.csv"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -OutputPath $outputPath -OutputFormat "CSV"
 
@@ -431,47 +431,47 @@ $databaseAnomaliesPath = [System.IO.Path]::ChangeExtension($outputPath, "databas
 $databaseRolesPath = [System.IO.Path]::ChangeExtension($outputPath, "database_roles.csv")
 
 if ((Test-Path -Path $serverAnomaliesPath) -and (Test-Path -Path $databaseAnomaliesPath) -and (Test-Path -Path $databaseRolesPath)) {
-    Write-Host "- Génération de rapport CSV: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport CSV: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport JSON
+# Test de gÃ©nÃ©ration de rapport JSON
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.json"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -OutputPath $outputPath -OutputFormat "JSON"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport JSON: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport JSON: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport XML
+# Test de gÃ©nÃ©ration de rapport XML
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.xml"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $true -OutputPath $outputPath -OutputFormat "XML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport XML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport XML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport XML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport XML: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test avec une base de données spécifique
+# Test avec une base de donnÃ©es spÃ©cifique
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks"
 
 if ($result -and $result.IncludeDatabaseLevel -eq $true) {
-    Write-Host "- Test avec base de données spécifique: OK" -ForegroundColor Green
+    Write-Host "- Test avec base de donnÃ©es spÃ©cifique: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Test avec base de données spécifique: ÉCHEC" -ForegroundColor Red
+    Write-Host "- Test avec base de donnÃ©es spÃ©cifique: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test sans analyse au niveau base de données
+# Test sans analyse au niveau base de donnÃ©es
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $false
 
 if ($result -and $result.IncludeDatabaseLevel -eq $false -and $result.DatabaseRoles.Count -eq 0) {
-    Write-Host "- Test sans analyse au niveau base de données: OK" -ForegroundColor Green
+    Write-Host "- Test sans analyse au niveau base de donnÃ©es: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Test sans analyse au niveau base de données: ÉCHEC" -ForegroundColor Red
+    Write-Host "- Test sans analyse au niveau base de donnÃ©es: Ã‰CHEC" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -479,4 +479,4 @@ if (Test-Path -Path $TempFolder) {
     Remove-Item -Path $TempFolder -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host "`nTests terminés." -ForegroundColor Cyan
+Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Fusionne les fichiers journal.md à la racine et dans le dossier journal.
+    Fusionne les fichiers journal.md Ã  la racine et dans le dossier journal.
 .DESCRIPTION
-    Ce script fusionne le contenu du fichier journal.md à la racine avec celui
-    dans le dossier journal, puis supprime la version à la racine.
+    Ce script fusionne le contenu du fichier journal.md Ã  la racine avec celui
+    dans le dossier journal, puis supprime la version Ã  la racine.
 .EXAMPLE
     .\Merge-JournalFiles.ps1
     # Fusionne les fichiers journal.md.
@@ -44,9 +44,9 @@ $rootJournalPath = "journal.md"
 $journalFolderPath = "journal\journal.md"
 $mergedJournalPath = "journal\journal_merged.md"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $rootJournalPath)) {
-    Write-Log -Message "Le fichier journal.md à la racine n'existe pas." -Level "ERROR"
+    Write-Log -Message "Le fichier journal.md Ã  la racine n'existe pas." -Level "ERROR"
     exit 1
 }
 
@@ -59,34 +59,34 @@ if (-not (Test-Path -Path $journalFolderPath)) {
 $rootJournalContent = Get-Content -Path $rootJournalPath -Raw
 $journalFolderContent = Get-Content -Path $journalFolderPath -Raw
 
-# Créer le contenu fusionné
+# CrÃ©er le contenu fusionnÃ©
 $mergedContent = @"
 $journalFolderContent
 
 ---
 
-# Modèle de journal (importé de la racine)
+# ModÃ¨le de journal (importÃ© de la racine)
 
 $rootJournalContent
 "@
 
-# Écrire le contenu fusionné dans un nouveau fichier
+# Ã‰crire le contenu fusionnÃ© dans un nouveau fichier
 Set-Content -Path $mergedJournalPath -Value $mergedContent -Encoding UTF8
 
-# Vérifier si la fusion a réussi
+# VÃ©rifier si la fusion a rÃ©ussi
 if (Test-Path -Path $mergedJournalPath) {
-    Write-Log -Message "Fusion réussie. Le fichier fusionné a été créé : $mergedJournalPath" -Level "SUCCESS"
+    Write-Log -Message "Fusion rÃ©ussie. Le fichier fusionnÃ© a Ã©tÃ© crÃ©Ã© : $mergedJournalPath" -Level "SUCCESS"
     
-    # Remplacer le fichier journal.md dans le dossier journal par la version fusionnée
+    # Remplacer le fichier journal.md dans le dossier journal par la version fusionnÃ©e
     Move-Item -Path $mergedJournalPath -Destination $journalFolderPath -Force
-    Write-Log -Message "Le fichier journal.md dans le dossier journal a été remplacé par la version fusionnée." -Level "SUCCESS"
+    Write-Log -Message "Le fichier journal.md dans le dossier journal a Ã©tÃ© remplacÃ© par la version fusionnÃ©e." -Level "SUCCESS"
     
-    # Supprimer le fichier journal.md à la racine
+    # Supprimer le fichier journal.md Ã  la racine
     Remove-Item -Path $rootJournalPath -Force
-    Write-Log -Message "Le fichier journal.md à la racine a été supprimé." -Level "SUCCESS"
+    Write-Log -Message "Le fichier journal.md Ã  la racine a Ã©tÃ© supprimÃ©." -Level "SUCCESS"
 } else {
-    Write-Log -Message "La fusion a échoué. Le fichier fusionné n'a pas été créé." -Level "ERROR"
+    Write-Log -Message "La fusion a Ã©chouÃ©. Le fichier fusionnÃ© n'a pas Ã©tÃ© crÃ©Ã©." -Level "ERROR"
     exit 1
 }
 
-Write-Log -Message "Fusion des fichiers journal.md terminée avec succès." -Level "SUCCESS"
+Write-Log -Message "Fusion des fichiers journal.md terminÃ©e avec succÃ¨s." -Level "SUCCESS"

@@ -1,4 +1,4 @@
-# Module de surveillance pour le Script Manager
+﻿# Module de surveillance pour le Script Manager
 # Ce module coordonne la surveillance des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -25,18 +25,18 @@ foreach ($Module in $SubModules) {
 function Start-ScriptMonitoring {
     <#
     .SYNOPSIS
-        Démarre la surveillance des scripts
+        DÃ©marre la surveillance des scripts
     .DESCRIPTION
-        Configure et démarre la surveillance des scripts, incluant le suivi des modifications,
-        le tableau de bord de santé et le système d'alertes
+        Configure et dÃ©marre la surveillance des scripts, incluant le suivi des modifications,
+        le tableau de bord de santÃ© et le systÃ¨me d'alertes
     .PARAMETER InventoryPath
         Chemin vers le fichier d'inventaire JSON
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de la surveillance
+        Chemin oÃ¹ enregistrer les rÃ©sultats de la surveillance
     .PARAMETER MonitoringInterval
         Intervalle de surveillance en minutes
     .PARAMETER EnableAlerts
-        Active le système d'alertes
+        Active le systÃ¨me d'alertes
     .EXAMPLE
         Start-ScriptMonitoring -InventoryPath "data\inventory.json" -OutputPath "monitoring" -MonitoringInterval 60
     #>
@@ -53,9 +53,9 @@ function Start-ScriptMonitoring {
         [switch]$EnableAlerts
     )
     
-    # Vérifier si le fichier d'inventaire existe
+    # VÃ©rifier si le fichier d'inventaire existe
     if (-not (Test-Path -Path $InventoryPath)) {
-        Write-Error "Fichier d'inventaire non trouvé: $InventoryPath"
+        Write-Error "Fichier d'inventaire non trouvÃ©: $InventoryPath"
         return $null
     }
     
@@ -68,11 +68,11 @@ function Start-ScriptMonitoring {
     }
     
     Write-Host "Configuration de la surveillance des scripts..." -ForegroundColor Cyan
-    Write-Host "Nombre de scripts à surveiller: $($Inventory.TotalScripts)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts Ã  surveiller: $($Inventory.TotalScripts)" -ForegroundColor Cyan
     Write-Host "Intervalle de surveillance: $MonitoringInterval minutes" -ForegroundColor Cyan
-    Write-Host "Alertes: $(if ($EnableAlerts) { 'Activées' } else { 'Désactivées' })" -ForegroundColor Cyan
+    Write-Host "Alertes: $(if ($EnableAlerts) { 'ActivÃ©es' } else { 'DÃ©sactivÃ©es' })" -ForegroundColor Cyan
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
     }
@@ -80,10 +80,10 @@ function Start-ScriptMonitoring {
     # Initialiser le suivi des modifications
     $ChangeTracker = Initialize-ChangeTracker -Inventory $Inventory -OutputPath $OutputPath
     
-    # Initialiser le tableau de bord de santé
+    # Initialiser le tableau de bord de santÃ©
     $HealthDashboard = Initialize-HealthDashboard -Inventory $Inventory -OutputPath $OutputPath
     
-    # Initialiser le système d'alertes si activé
+    # Initialiser le systÃ¨me d'alertes si activÃ©
     $AlertSystem = $null
     if ($EnableAlerts) {
         $AlertSystem = Initialize-AlertSystem -Inventory $Inventory -OutputPath $OutputPath
@@ -92,7 +92,7 @@ function Start-ScriptMonitoring {
     # Initialiser le suivi d'utilisation
     $UsageTracker = Initialize-UsageTracker -Inventory $Inventory -OutputPath $OutputPath
     
-    # Créer un objet avec les informations de surveillance
+    # CrÃ©er un objet avec les informations de surveillance
     $Monitoring = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $Inventory.TotalScripts
@@ -108,40 +108,40 @@ function Start-ScriptMonitoring {
     $MonitoringPath = Join-Path -Path $OutputPath -ChildPath "monitoring.json"
     $Monitoring | ConvertTo-Json -Depth 10 | Set-Content -Path $MonitoringPath
     
-    Write-Host "Surveillance configurée. Informations enregistrées dans: $MonitoringPath" -ForegroundColor Green
+    Write-Host "Surveillance configurÃ©e. Informations enregistrÃ©es dans: $MonitoringPath" -ForegroundColor Green
     
-    # Créer une tâche planifiée pour la surveillance continue
+    # CrÃ©er une tÃ¢che planifiÃ©e pour la surveillance continue
     if ($MonitoringInterval -gt 0) {
         $TaskName = "ScriptManager_Monitoring"
         $TaskPath = "\Script Manager\"
         $ScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\Update-Monitoring.ps1"
         
-        # Vérifier si la tâche existe déjà
+        # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
         $TaskExists = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -ErrorAction SilentlyContinue
         
         if ($TaskExists) {
-            # Mettre à jour la tâche existante
+            # Mettre Ã  jour la tÃ¢che existante
             $Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$ScriptPath`" -InventoryPath `"$InventoryPath`" -OutputPath `"$OutputPath`" -EnableAlerts:`$$EnableAlerts"
             $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes $MonitoringInterval)
             Set-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger
-            Write-Host "Tâche planifiée mise à jour: $TaskPath$TaskName" -ForegroundColor Green
+            Write-Host "TÃ¢che planifiÃ©e mise Ã  jour: $TaskPath$TaskName" -ForegroundColor Green
         } else {
-            # Créer une nouvelle tâche
+            # CrÃ©er une nouvelle tÃ¢che
             try {
                 $Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$ScriptPath`" -InventoryPath `"$InventoryPath`" -OutputPath `"$OutputPath`" -EnableAlerts:`$$EnableAlerts"
                 $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes $MonitoringInterval)
                 $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
                 
-                # Créer le dossier de tâches s'il n'existe pas
+                # CrÃ©er le dossier de tÃ¢ches s'il n'existe pas
                 if (-not (Get-ScheduledTaskFolder -TaskPath $TaskPath -ErrorAction SilentlyContinue)) {
                     Register-ScheduledTaskFolder -TaskPath $TaskPath
                 }
                 
                 Register-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger -Settings $Settings -Description "Surveillance des scripts par le Script Manager"
-                Write-Host "Tâche planifiée créée: $TaskPath$TaskName" -ForegroundColor Green
+                Write-Host "TÃ¢che planifiÃ©e crÃ©Ã©e: $TaskPath$TaskName" -ForegroundColor Green
             } catch {
-                Write-Warning "Erreur lors de la création de la tâche planifiée: $_"
-                Write-Host "Vous devrez exécuter manuellement le script de surveillance: $ScriptPath" -ForegroundColor Yellow
+                Write-Warning "Erreur lors de la crÃ©ation de la tÃ¢che planifiÃ©e: $_"
+                Write-Host "Vous devrez exÃ©cuter manuellement le script de surveillance: $ScriptPath" -ForegroundColor Yellow
             }
         }
     }
@@ -152,11 +152,11 @@ function Start-ScriptMonitoring {
 function Get-ScheduledTaskFolder {
     <#
     .SYNOPSIS
-        Vérifie si un dossier de tâches planifiées existe
+        VÃ©rifie si un dossier de tÃ¢ches planifiÃ©es existe
     .DESCRIPTION
-        Vérifie si un dossier de tâches planifiées existe dans le planificateur de tâches
+        VÃ©rifie si un dossier de tÃ¢ches planifiÃ©es existe dans le planificateur de tÃ¢ches
     .PARAMETER TaskPath
-        Chemin du dossier de tâches
+        Chemin du dossier de tÃ¢ches
     .EXAMPLE
         Get-ScheduledTaskFolder -TaskPath "\Script Manager\"
     #>
@@ -171,7 +171,7 @@ function Get-ScheduledTaskFolder {
         $Schedule.Connect()
         $Root = $Schedule.GetFolder("\")
         
-        # Supprimer les barres obliques au début et à la fin
+        # Supprimer les barres obliques au dÃ©but et Ã  la fin
         $FolderPath = $TaskPath.Trim("\")
         
         # Si le chemin est vide, c'est le dossier racine
@@ -202,11 +202,11 @@ function Get-ScheduledTaskFolder {
 function Register-ScheduledTaskFolder {
     <#
     .SYNOPSIS
-        Crée un dossier de tâches planifiées
+        CrÃ©e un dossier de tÃ¢ches planifiÃ©es
     .DESCRIPTION
-        Crée un dossier de tâches planifiées dans le planificateur de tâches
+        CrÃ©e un dossier de tÃ¢ches planifiÃ©es dans le planificateur de tÃ¢ches
     .PARAMETER TaskPath
-        Chemin du dossier de tâches à créer
+        Chemin du dossier de tÃ¢ches Ã  crÃ©er
     .EXAMPLE
         Register-ScheduledTaskFolder -TaskPath "\Script Manager\"
     #>
@@ -221,7 +221,7 @@ function Register-ScheduledTaskFolder {
         $Schedule.Connect()
         $Root = $Schedule.GetFolder("\")
         
-        # Supprimer les barres obliques au début et à la fin
+        # Supprimer les barres obliques au dÃ©but et Ã  la fin
         $FolderPath = $TaskPath.Trim("\")
         
         # Si le chemin est vide, c'est le dossier racine
@@ -241,7 +241,7 @@ function Register-ScheduledTaskFolder {
                 try {
                     $CurrentFolder = $CurrentFolder.GetFolder($Segment)
                 } catch {
-                    # Le dossier n'existe pas, le créer
+                    # Le dossier n'existe pas, le crÃ©er
                     $CurrentFolder.CreateFolder($Segment)
                     $CurrentFolder = $CurrentFolder.GetFolder($Segment)
                 }
@@ -250,7 +250,7 @@ function Register-ScheduledTaskFolder {
         
         return $CurrentFolder
     } catch {
-        Write-Warning "Erreur lors de la création du dossier de tâches: $_"
+        Write-Warning "Erreur lors de la crÃ©ation du dossier de tÃ¢ches: $_"
         return $null
     }
 }

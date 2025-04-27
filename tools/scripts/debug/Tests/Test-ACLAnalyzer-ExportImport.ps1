@@ -1,22 +1,22 @@
-# Test pour les fonctions d'exportation et d'importation de ACLAnalyzer.ps1
-# Importer le module à tester
+﻿# Test pour les fonctions d'exportation et d'importation de ACLAnalyzer.ps1
+# Importer le module Ã  tester
 $scriptPath = Split-Path -Parent $PSCommandPath
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ACLAnalyzer.ps1"
 . $modulePath
 
-# Créer un dossier de test unique
+# CrÃ©er un dossier de test unique
 $testGuid = [System.Guid]::NewGuid().ToString()
 $testFolder = Join-Path -Path $env:TEMP -ChildPath "ACLTest_$testGuid"
 $testSubFolder = Join-Path -Path $testFolder -ChildPath "SubFolder"
 $exportFolder = Join-Path -Path $env:TEMP -ChildPath "ACLExport_$testGuid"
 $exportPath = Join-Path -Path $exportFolder -ChildPath "permissions.json"
 
-# Créer les dossiers pour les tests
+# CrÃ©er les dossiers pour les tests
 New-Item -Path $testFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $testSubFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $exportFolder -ItemType Directory -Force | Out-Null
 
-# Fonction pour afficher les résultats des tests
+# Fonction pour afficher les rÃ©sultats des tests
 function Test-Result {
     param (
         [string]$TestName,
@@ -30,9 +30,9 @@ function Test-Result {
         $valid = & $ValidationScript $result
         
         if ($valid) {
-            Write-Host "  RÉUSSI: $TestName" -ForegroundColor Green
+            Write-Host "  RÃ‰USSI: $TestName" -ForegroundColor Green
         } else {
-            Write-Host "  ÉCHEC: $TestName - Validation échouée" -ForegroundColor Red
+            Write-Host "  Ã‰CHEC: $TestName - Validation Ã©chouÃ©e" -ForegroundColor Red
         }
     } catch {
         Write-Host "  ERREUR: $TestName - $($_.Exception.Message)" -ForegroundColor Red
@@ -80,4 +80,4 @@ Write-Host "Nettoyage des fichiers de test..."
 Remove-Item -Path $testFolder -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path $exportFolder -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "Tests terminés."
+Write-Host "Tests terminÃ©s."

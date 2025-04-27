@@ -1,7 +1,7 @@
-    param($ServerLogins, $ServerRoles, $ServerPermissions)
+﻿    param($ServerLogins, $ServerRoles, $ServerPermissions)
     $results = @()
     
-    # Détecter les logins inactifs depuis plus de 90 jours
+    # DÃ©tecter les logins inactifs depuis plus de 90 jours
     $inactiveThreshold = (Get-Date).AddDays(-90)
     
     $inactiveLogins = $ServerLogins | Where-Object { 
@@ -16,8 +16,8 @@
         
         $results += [PSCustomObject]@{
             LoginName = $login.LoginName
-            Description = "Le login SQL n'a pas été utilisé depuis $daysSinceLastLogin jours (dernier accès: $($login.LastLogin.ToString('yyyy-MM-dd')))"
-            RecommendedAction = "Vérifier si ce compte est toujours nécessaire ou le désactiver"
+            Description = "Le login SQL n'a pas Ã©tÃ© utilisÃ© depuis $daysSinceLastLogin jours (dernier accÃ¨s: $($login.LastLogin.ToString('yyyy-MM-dd')))"
+            RecommendedAction = "VÃ©rifier si ce compte est toujours nÃ©cessaire ou le dÃ©sactiver"
         }
     }
     

@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte et gère les tests instables (flaky).
+    DÃ©tecte et gÃ¨re les tests instables (flaky).
 .DESCRIPTION
-    Ce script détecte les tests instables (flaky) en exécutant les tests plusieurs fois
-    et en analysant les résultats. Il peut également générer un rapport sur les tests
+    Ce script dÃ©tecte les tests instables (flaky) en exÃ©cutant les tests plusieurs fois
+    et en analysant les rÃ©sultats. Il peut Ã©galement gÃ©nÃ©rer un rapport sur les tests
     instables et proposer des solutions pour les stabiliser.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'analyse.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse.
 .PARAMETER Iterations
-    Nombre d'itérations à exécuter pour détecter les tests instables.
+    Nombre d'itÃ©rations Ã  exÃ©cuter pour dÃ©tecter les tests instables.
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats de l'analyse.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats de l'analyse.
 .PARAMETER FixMode
     Mode de correction des tests instables (None, Quarantine, Retry, Skip).
 .PARAMETER MaxRetries
@@ -49,18 +49,18 @@ param (
     [int]$MaxRetries = 3
 )
 
-# Vérifier que le chemin des tests existe
+# VÃ©rifier que le chemin des tests existe
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour exécuter les tests et collecter les résultats
+# Fonction pour exÃ©cuter les tests et collecter les rÃ©sultats
 function Invoke-TestIteration {
     [CmdletBinding()]
     param (
@@ -80,27 +80,27 @@ function Invoke-TestIteration {
             return $null
         }
 
-        # Exécuter TestOmnibus
-        Write-Host "Exécution de l'itération $Iteration..." -ForegroundColor Cyan
+        # ExÃ©cuter TestOmnibus
+        Write-Host "ExÃ©cution de l'itÃ©ration $Iteration..." -ForegroundColor Cyan
 
         $testOmnibusParams = @{
             Path = $TestPath
         }
 
-        # Exécuter TestOmnibus et ignorer la sortie directe
+        # ExÃ©cuter TestOmnibus et ignorer la sortie directe
         & $testOmnibusPath @testOmnibusParams | Out-Null
 
-        # Vérifier si des résultats ont été générés
+        # VÃ©rifier si des rÃ©sultats ont Ã©tÃ© gÃ©nÃ©rÃ©s
         $resultsPath = Join-Path -Path (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results") -ChildPath "results.xml"
         if (-not (Test-Path -Path $resultsPath)) {
-            Write-Error "Aucun résultat n'a été généré par TestOmnibus."
+            Write-Error "Aucun rÃ©sultat n'a Ã©tÃ© gÃ©nÃ©rÃ© par TestOmnibus."
             return $null
         }
 
-        # Charger les résultats
+        # Charger les rÃ©sultats
         $results = Import-Clixml -Path $resultsPath
 
-        # Ajouter l'itération aux résultats
+        # Ajouter l'itÃ©ration aux rÃ©sultats
         foreach ($testResult in $results) {
             $testResult | Add-Member -MemberType NoteProperty -Name "Iteration" -Value $Iteration
         }
@@ -112,7 +112,7 @@ function Invoke-TestIteration {
     }
 }
 
-# Fonction pour analyser les résultats et détecter les tests instables
+# Fonction pour analyser les rÃ©sultats et dÃ©tecter les tests instables
 function Get-FlakyTests {
     [CmdletBinding()]
     param (
@@ -121,25 +121,25 @@ function Get-FlakyTests {
     )
 
     try {
-        # Regrouper les résultats par test
+        # Regrouper les rÃ©sultats par test
         $testGroups = $AllResults | Group-Object -Property Name
 
-        # Analyser chaque groupe pour détecter les tests instables
+        # Analyser chaque groupe pour dÃ©tecter les tests instables
         $flakyTests = @()
 
         foreach ($group in $testGroups) {
             $testName = $group.Name
             $testResults = $group.Group
 
-            # Calculer le taux de réussite
+            # Calculer le taux de rÃ©ussite
             $successCount = ($testResults | Where-Object { $_.Success } | Measure-Object).Count
             $successRate = $successCount / $testResults.Count
 
-            # Vérifier si le test est instable
+            # VÃ©rifier si le test est instable
             $isFlaky = $successRate -gt 0 -and $successRate -lt 1
 
             if ($isFlaky) {
-                # Créer un objet pour le test instable
+                # CrÃ©er un objet pour le test instable
                 $flakyTest = [PSCustomObject]@{
                     Name              = $testName
                     SuccessRate       = $successRate
@@ -158,12 +158,12 @@ function Get-FlakyTests {
 
         return $flakyTests
     } catch {
-        Write-Error "Erreur lors de l'analyse des résultats: $_"
+        Write-Error "Erreur lors de l'analyse des rÃ©sultats: $_"
         return @()
     }
 }
 
-# Fonction pour générer un rapport HTML des tests instables
+# Fonction pour gÃ©nÃ©rer un rapport HTML des tests instables
 function New-FlakyTestReport {
     [CmdletBinding()]
     param (
@@ -181,7 +181,7 @@ function New-FlakyTestReport {
     )
 
     try {
-        # Créer le chemin du rapport
+        # CrÃ©er le chemin du rapport
         $reportPath = Join-Path -Path $OutputPath -ChildPath "flaky_tests_report.html"
 
         # Calculer des statistiques globales
@@ -189,7 +189,7 @@ function New-FlakyTestReport {
         $totalFlakyTests = $FlakyTests.Count
         $flakyTestsPercent = if ($totalTests -gt 0) { [math]::Round(($totalFlakyTests / $totalTests) * 100, 2) } else { 0 }
 
-        # Générer le contenu HTML
+        # GÃ©nÃ©rer le contenu HTML
         $htmlReport = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -339,7 +339,7 @@ function New-FlakyTestReport {
 <body>
     <div class="container">
         <h1>Rapport des tests instables (flaky)</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 
         <div class="flaky-summary">
             <div class="flaky-item">
@@ -350,11 +350,11 @@ function New-FlakyTestReport {
                 <p>sur $totalTests tests ($flakyTestsPercent%)</p>
             </div>
             <div class="flaky-item">
-                <h3>Itérations</h3>
+                <h3>ItÃ©rations</h3>
                 <div class="flaky-value flaky-neutral">
                     $Iterations
                 </div>
-                <p>exécutions par test</p>
+                <p>exÃ©cutions par test</p>
             </div>
         </div>
 
@@ -365,13 +365,13 @@ function New-FlakyTestReport {
 
         if ($FlakyTests.Count -gt 0) {
             $htmlReport += @"
-        <h2>Tests instables détectés</h2>
+        <h2>Tests instables dÃ©tectÃ©s</h2>
         <table>
             <tr>
                 <th>Test</th>
-                <th>Taux de réussite</th>
-                <th>Réussites / Échecs</th>
-                <th>Itérations en échec</th>
+                <th>Taux de rÃ©ussite</th>
+                <th>RÃ©ussites / Ã‰checs</th>
+                <th>ItÃ©rations en Ã©chec</th>
                 <th>Recommandation</th>
             </tr>
 "@
@@ -380,13 +380,13 @@ function New-FlakyTestReport {
                 $successRatePercent = [math]::Round($test.SuccessRate * 100, 2)
                 $failureIterations = $test.FailureIterations -join ", "
 
-                # Déterminer la recommandation
+                # DÃ©terminer la recommandation
                 $recommendation = if ($test.SuccessRate -ge 0.8) {
-                    "Retry: Ce test réussit la plupart du temps, il est recommandé d'utiliser une stratégie de nouvelle tentative."
+                    "Retry: Ce test rÃ©ussit la plupart du temps, il est recommandÃ© d'utiliser une stratÃ©gie de nouvelle tentative."
                 } elseif ($test.SuccessRate -ge 0.5) {
-                    "Quarantine: Ce test est modérément instable, il est recommandé de le mettre en quarantaine et d'investiguer."
+                    "Quarantine: Ce test est modÃ©rÃ©ment instable, il est recommandÃ© de le mettre en quarantaine et d'investiguer."
                 } else {
-                    "Skip: Ce test échoue souvent, il est recommandé de le désactiver temporairement et de le refactoriser."
+                    "Skip: Ce test Ã©choue souvent, il est recommandÃ© de le dÃ©sactiver temporairement et de le refactoriser."
                 }
 
                 $htmlReport += @"
@@ -410,16 +410,16 @@ function New-FlakyTestReport {
         </table>
 "@
 
-            # Ajouter les détails des erreurs pour chaque test instable
+            # Ajouter les dÃ©tails des erreurs pour chaque test instable
             $htmlReport += @"
-        <h2>Détails des erreurs</h2>
+        <h2>DÃ©tails des erreurs</h2>
 "@
 
             foreach ($test in $FlakyTests) {
                 $htmlReport += @"
         <h3>$($test.Name)</h3>
-        <p>Taux de réussite: $([math]::Round($test.SuccessRate * 100, 2))% ($($test.SuccessCount) / $($test.TotalCount))</p>
-        <p>Itérations en échec: $($test.FailureIterations -join ", ")</p>
+        <p>Taux de rÃ©ussite: $([math]::Round($test.SuccessRate * 100, 2))% ($($test.SuccessCount) / $($test.TotalCount))</p>
+        <p>ItÃ©rations en Ã©chec: $($test.FailureIterations -join ", ")</p>
         <h4>Messages d'erreur:</h4>
 "@
 
@@ -429,7 +429,7 @@ function New-FlakyTestReport {
 "@
                 }
 
-                # Ajouter des recommandations spécifiques
+                # Ajouter des recommandations spÃ©cifiques
                 $htmlReport += @"
         <h4>Recommandations:</h4>
         <div class="recommendation">
@@ -437,37 +437,37 @@ function New-FlakyTestReport {
 
                 if ($test.SuccessRate -ge 0.8) {
                     $htmlReport += @"
-            <p><strong>Stratégie recommandée: Retry</strong></p>
-            <p>Ce test réussit la plupart du temps ($([math]::Round($test.SuccessRate * 100, 2))%), ce qui suggère qu'il est affecté par des conditions temporaires. Considérez les actions suivantes:</p>
+            <p><strong>StratÃ©gie recommandÃ©e: Retry</strong></p>
+            <p>Ce test rÃ©ussit la plupart du temps ($([math]::Round($test.SuccessRate * 100, 2))%), ce qui suggÃ¨re qu'il est affectÃ© par des conditions temporaires. ConsidÃ©rez les actions suivantes:</p>
             <ul>
-                <li>Configurez le test pour qu'il soit réexécuté automatiquement en cas d'échec (jusqu'à $MaxRetries fois).</li>
-                <li>Ajoutez des délais d'attente plus longs pour les opérations asynchrones.</li>
-                <li>Vérifiez si le test dépend de ressources externes qui peuvent être temporairement indisponibles.</li>
-                <li>Assurez-vous que l'état initial est correctement réinitialisé entre les exécutions.</li>
+                <li>Configurez le test pour qu'il soit rÃ©exÃ©cutÃ© automatiquement en cas d'Ã©chec (jusqu'Ã  $MaxRetries fois).</li>
+                <li>Ajoutez des dÃ©lais d'attente plus longs pour les opÃ©rations asynchrones.</li>
+                <li>VÃ©rifiez si le test dÃ©pend de ressources externes qui peuvent Ãªtre temporairement indisponibles.</li>
+                <li>Assurez-vous que l'Ã©tat initial est correctement rÃ©initialisÃ© entre les exÃ©cutions.</li>
             </ul>
 "@
                 } elseif ($test.SuccessRate -ge 0.5) {
                     $htmlReport += @"
-            <p><strong>Stratégie recommandée: Quarantine</strong></p>
-            <p>Ce test est modérément instable ($([math]::Round($test.SuccessRate * 100, 2))% de réussite), ce qui suggère des problèmes plus profonds. Considérez les actions suivantes:</p>
+            <p><strong>StratÃ©gie recommandÃ©e: Quarantine</strong></p>
+            <p>Ce test est modÃ©rÃ©ment instable ($([math]::Round($test.SuccessRate * 100, 2))% de rÃ©ussite), ce qui suggÃ¨re des problÃ¨mes plus profonds. ConsidÃ©rez les actions suivantes:</p>
             <ul>
                 <li>Mettez le test en quarantaine pour qu'il n'affecte pas les builds de production.</li>
-                <li>Analysez les conditions qui font échouer le test.</li>
-                <li>Vérifiez les dépendances entre les tests qui pourraient causer des interférences.</li>
-                <li>Recherchez les conditions de concurrence ou les problèmes de synchronisation.</li>
-                <li>Refactorisez le test pour le rendre plus déterministe.</li>
+                <li>Analysez les conditions qui font Ã©chouer le test.</li>
+                <li>VÃ©rifiez les dÃ©pendances entre les tests qui pourraient causer des interfÃ©rences.</li>
+                <li>Recherchez les conditions de concurrence ou les problÃ¨mes de synchronisation.</li>
+                <li>Refactorisez le test pour le rendre plus dÃ©terministe.</li>
             </ul>
 "@
                 } else {
                     $htmlReport += @"
-            <p><strong>Stratégie recommandée: Skip</strong></p>
-            <p>Ce test échoue souvent ($([math]::Round((1 - $test.SuccessRate) * 100, 2))% d'échecs), ce qui suggère des problèmes fondamentaux. Considérez les actions suivantes:</p>
+            <p><strong>StratÃ©gie recommandÃ©e: Skip</strong></p>
+            <p>Ce test Ã©choue souvent ($([math]::Round((1 - $test.SuccessRate) * 100, 2))% d'Ã©checs), ce qui suggÃ¨re des problÃ¨mes fondamentaux. ConsidÃ©rez les actions suivantes:</p>
             <ul>
-                <li>Désactivez temporairement le test pour qu'il n'affecte pas les builds.</li>
-                <li>Réécrivez complètement le test en utilisant une approche différente.</li>
-                <li>Vérifiez si le test est toujours pertinent ou s'il teste des fonctionnalités obsolètes.</li>
-                <li>Divisez le test en plusieurs tests plus petits et plus ciblés.</li>
-                <li>Utilisez des mocks pour isoler le test des dépendances externes.</li>
+                <li>DÃ©sactivez temporairement le test pour qu'il n'affecte pas les builds.</li>
+                <li>RÃ©Ã©crivez complÃ¨tement le test en utilisant une approche diffÃ©rente.</li>
+                <li>VÃ©rifiez si le test est toujours pertinent ou s'il teste des fonctionnalitÃ©s obsolÃ¨tes.</li>
+                <li>Divisez le test en plusieurs tests plus petits et plus ciblÃ©s.</li>
+                <li>Utilisez des mocks pour isoler le test des dÃ©pendances externes.</li>
             </ul>
 "@
                 }
@@ -478,14 +478,14 @@ function New-FlakyTestReport {
             }
         } else {
             $htmlReport += @"
-        <h2>Aucun test instable détecté</h2>
-        <p>Félicitations! Aucun test instable n'a été détecté après $Iterations itérations.</p>
+        <h2>Aucun test instable dÃ©tectÃ©</h2>
+        <p>FÃ©licitations! Aucun test instable n'a Ã©tÃ© dÃ©tectÃ© aprÃ¨s $Iterations itÃ©rations.</p>
 "@
         }
 
         $htmlReport += @"
         <script>
-            // Créer un graphique des tests instables
+            // CrÃ©er un graphique des tests instables
             const ctx = document.getElementById('flakyTestsChart').getContext('2d');
             const flakyTestsChart = new Chart(ctx, {
                 type: 'pie',
@@ -513,7 +513,7 @@ function New-FlakyTestReport {
                         },
                         title: {
                             display: true,
-                            text: 'Répartition des tests'
+                            text: 'RÃ©partition des tests'
                         }
                     }
                 }
@@ -521,7 +521,7 @@ function New-FlakyTestReport {
         </script>
 
         <div class="footer">
-            <p>Généré par TestOmnibus Flaky Test Manager</p>
+            <p>GÃ©nÃ©rÃ© par TestOmnibus Flaky Test Manager</p>
         </div>
     </div>
 </body>
@@ -534,12 +534,12 @@ function New-FlakyTestReport {
 
         return $reportPath
     } catch {
-        Write-Error "Erreur lors de la génération du rapport des tests instables: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport des tests instables: $_"
         return $null
     }
 }
 
-# Fonction pour créer un fichier de configuration pour les tests instables
+# Fonction pour crÃ©er un fichier de configuration pour les tests instables
 function New-FlakyTestConfig {
     [CmdletBinding()]
     param (
@@ -557,10 +557,10 @@ function New-FlakyTestConfig {
     )
 
     try {
-        # Créer le chemin du fichier de configuration
+        # CrÃ©er le chemin du fichier de configuration
         $configPath = Join-Path -Path $OutputPath -ChildPath "flaky_tests_config.json"
 
-        # Créer la configuration
+        # CrÃ©er la configuration
         $config = @{
             FlakyTests  = @{}
             FixMode     = $FixMode
@@ -568,7 +568,7 @@ function New-FlakyTestConfig {
             GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         }
 
-        # Ajouter les tests instables à la configuration
+        # Ajouter les tests instables Ã  la configuration
         foreach ($test in $FlakyTests) {
             $config.FlakyTests[$test.Name] = @{
                 SuccessRate        = $test.SuccessRate
@@ -590,15 +590,15 @@ function New-FlakyTestConfig {
 
         return $configPath
     } catch {
-        Write-Error "Erreur lors de la création du fichier de configuration pour les tests instables: $_"
+        Write-Error "Erreur lors de la crÃ©ation du fichier de configuration pour les tests instables: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Exécuter les tests plusieurs fois
-    Write-Host "Exécution des tests $Iterations fois pour détecter les tests instables..." -ForegroundColor Cyan
+    # ExÃ©cuter les tests plusieurs fois
+    Write-Host "ExÃ©cution des tests $Iterations fois pour dÃ©tecter les tests instables..." -ForegroundColor Cyan
 
     $allResults = @()
 
@@ -608,7 +608,7 @@ try {
         if ($iterationResults) {
             $allResults += $iterationResults
 
-            # Afficher un résumé de l'itération
+            # Afficher un rÃ©sumÃ© de l'itÃ©ration
             $passedCount = ($iterationResults | Where-Object { $_.Success } | Measure-Object).Count
             $failedCount = ($iterationResults | Where-Object { -not $_.Success } | Measure-Object).Count
             $totalCount = $iterationResults.Count
@@ -658,7 +658,7 @@ try {
         }
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return [PSCustomObject]@{
         FlakyTests = $flakyTests
         AllResults = $allResults
@@ -666,6 +666,6 @@ try {
         ConfigPath = if ($flakyTests.Count -gt 0) { $configPath } else { $null }
     }
 } catch {
-    Write-Error "Erreur lors de la détection des tests instables: $_"
+    Write-Error "Erreur lors de la dÃ©tection des tests instables: $_"
     return 1
 }

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Optimise l'utilisation de la mémoire dans le traitement parallèle.
+    Optimise l'utilisation de la mÃ©moire dans le traitement parallÃ¨le.
 .DESCRIPTION
-    Ce script implémente des techniques pour réduire l'empreinte mémoire
-    des opérations parallèles et améliorer la gestion de la mémoire.
+    Ce script implÃ©mente des techniques pour rÃ©duire l'empreinte mÃ©moire
+    des opÃ©rations parallÃ¨les et amÃ©liorer la gestion de la mÃ©moire.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -20,16 +20,16 @@ param(
     [switch]$GenerateReport
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour surveiller l'utilisation de la mémoire
+# Fonction pour surveiller l'utilisation de la mÃ©moire
 function Start-MemoryMonitoring {
     [CmdletBinding()]
     param(
@@ -46,16 +46,16 @@ function Start-MemoryMonitoring {
     
     $memoryUsage = @()
     
-    Write-Host "Démarrage de la surveillance de la mémoire..." -ForegroundColor Yellow
+    Write-Host "DÃ©marrage de la surveillance de la mÃ©moire..." -ForegroundColor Yellow
     Write-Host "  Processus : $($process.Name) (PID: $PID)" -ForegroundColor Yellow
     Write-Host "  Intervalle : $IntervalSeconds secondes" -ForegroundColor Yellow
-    Write-Host "  Durée : $DurationSeconds secondes" -ForegroundColor Yellow
+    Write-Host "  DurÃ©e : $DurationSeconds secondes" -ForegroundColor Yellow
     
     while ((Get-Date) -lt $endTime) {
-        # Mettre à jour les informations du processus
+        # Mettre Ã  jour les informations du processus
         $process = Get-Process -Id $PID
         
-        # Enregistrer l'utilisation de la mémoire
+        # Enregistrer l'utilisation de la mÃ©moire
         $memoryUsage += [PSCustomObject]@{
             Timestamp = Get-Date
             WorkingSetMB = $process.WorkingSet64 / 1MB
@@ -63,16 +63,16 @@ function Start-MemoryMonitoring {
             VirtualMemoryMB = $process.VirtualMemorySize64 / 1MB
         }
         
-        # Attendre l'intervalle spécifié
+        # Attendre l'intervalle spÃ©cifiÃ©
         Start-Sleep -Seconds $IntervalSeconds
     }
     
-    Write-Host "Surveillance de la mémoire terminée." -ForegroundColor Green
+    Write-Host "Surveillance de la mÃ©moire terminÃ©e." -ForegroundColor Green
     
     return $memoryUsage
 }
 
-# Fonction pour optimiser l'utilisation de la mémoire
+# Fonction pour optimiser l'utilisation de la mÃ©moire
 function Optimize-MemoryUsage {
     [CmdletBinding()]
     param(
@@ -86,15 +86,15 @@ function Optimize-MemoryUsage {
         [string]$OutputPath
     )
     
-    Write-Host "`n=== Optimisation de l'utilisation de la mémoire ===" -ForegroundColor Cyan
+    Write-Host "`n=== Optimisation de l'utilisation de la mÃ©moire ===" -ForegroundColor Cyan
     
-    # Créer un répertoire pour les résultats
+    # CrÃ©er un rÃ©pertoire pour les rÃ©sultats
     $resultsPath = Join-Path -Path $OutputPath -ChildPath "memory_optimization"
     if (-not (Test-Path -Path $resultsPath)) {
         New-Item -Path $resultsPath -ItemType Directory -Force | Out-Null
     }
     
-    # Techniques d'optimisation de la mémoire
+    # Techniques d'optimisation de la mÃ©moire
     $optimizationTechniques = @(
         @{
             Name = "Standard (sans optimisation)"
@@ -104,7 +104,7 @@ function Optimize-MemoryUsage {
             }
         },
         @{
-            Name = "Traitement par lots avec libération de mémoire"
+            Name = "Traitement par lots avec libÃ©ration de mÃ©moire"
             Parameters = @{
                 ScriptsPath = $TestFilesPath
                 OutputPath = (Join-Path -Path $resultsPath -ChildPath "batch_with_gc")
@@ -113,7 +113,7 @@ function Optimize-MemoryUsage {
             }
         },
         @{
-            Name = "Streaming de données"
+            Name = "Streaming de donnÃ©es"
             Parameters = @{
                 ScriptsPath = $TestFilesPath
                 OutputPath = (Join-Path -Path $resultsPath -ChildPath "streaming")
@@ -121,7 +121,7 @@ function Optimize-MemoryUsage {
             }
         },
         @{
-            Name = "Limitation du nombre de processus parallèles"
+            Name = "Limitation du nombre de processus parallÃ¨les"
             Parameters = @{
                 ScriptsPath = $TestFilesPath
                 OutputPath = (Join-Path -Path $resultsPath -ChildPath "limited_processes")
@@ -135,7 +135,7 @@ function Optimize-MemoryUsage {
     foreach ($technique in $optimizationTechniques) {
         Write-Host "`nTest de la technique : $($technique.Name)" -ForegroundColor Yellow
         
-        # Démarrer la surveillance de la mémoire
+        # DÃ©marrer la surveillance de la mÃ©moire
         $monitoringJob = Start-Job -ScriptBlock {
             param($PID, $IntervalSeconds, $DurationSeconds)
             
@@ -165,16 +165,16 @@ function Optimize-MemoryUsage {
             return $memoryUsage
         } -ArgumentList $PID, 1, 120
         
-        # Exécuter le script avec les paramètres spécifiés
+        # ExÃ©cuter le script avec les paramÃ¨tres spÃ©cifiÃ©s
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $scriptResult = & $ScriptPath @($technique.Parameters)
             $success = $true
         }
         catch {
-            Write-Error "Erreur lors de l'exécution du script avec la technique '$($technique.Name)' : $_"
+            Write-Error "Erreur lors de l'exÃ©cution du script avec la technique '$($technique.Name)' : $_"
             $success = $false
             $scriptResult = $null
         }
@@ -182,11 +182,11 @@ function Optimize-MemoryUsage {
         $stopwatch.Stop()
         $executionTime = $stopwatch.Elapsed.TotalSeconds
         
-        # Arrêter la surveillance de la mémoire
+        # ArrÃªter la surveillance de la mÃ©moire
         $memoryUsage = Receive-Job -Job $monitoringJob
         Remove-Job -Job $monitoringJob -Force
         
-        # Calculer les statistiques d'utilisation de la mémoire
+        # Calculer les statistiques d'utilisation de la mÃ©moire
         if ($memoryUsage -and $memoryUsage.Count -gt 0) {
             $avgWorkingSet = ($memoryUsage | Measure-Object -Property WorkingSetMB -Average).Average
             $maxWorkingSet = ($memoryUsage | Measure-Object -Property WorkingSetMB -Maximum).Maximum
@@ -200,7 +200,7 @@ function Optimize-MemoryUsage {
             $maxPrivateMemory = 0
         }
         
-        # Enregistrer les résultats
+        # Enregistrer les rÃ©sultats
         $result = [PSCustomObject]@{
             Technique = $technique.Name
             ExecutionTime = $executionTime
@@ -214,40 +214,40 @@ function Optimize-MemoryUsage {
         
         $results += $result
         
-        Write-Host "  Temps d'exécution : $executionTime secondes" -ForegroundColor Yellow
+        Write-Host "  Temps d'exÃ©cution : $executionTime secondes" -ForegroundColor Yellow
         Write-Host "  Working Set moyen : $avgWorkingSet MB" -ForegroundColor Yellow
         Write-Host "  Working Set max : $maxWorkingSet MB" -ForegroundColor Yellow
-        Write-Host "  Mémoire privée moyenne : $avgPrivateMemory MB" -ForegroundColor Yellow
-        Write-Host "  Mémoire privée max : $maxPrivateMemory MB" -ForegroundColor Yellow
-        Write-Host "  Succès : $success" -ForegroundColor ($success ? "Green" : "Red")
+        Write-Host "  MÃ©moire privÃ©e moyenne : $avgPrivateMemory MB" -ForegroundColor Yellow
+        Write-Host "  MÃ©moire privÃ©e max : $maxPrivateMemory MB" -ForegroundColor Yellow
+        Write-Host "  SuccÃ¨s : $success" -ForegroundColor ($success ? "Green" : "Red")
     }
     
-    # Déterminer la technique optimale
+    # DÃ©terminer la technique optimale
     $optimalTechnique = $results | 
         Where-Object { $_.Success } | 
         Sort-Object -Property MaxWorkingSetMB | 
         Select-Object -First 1
     
     if ($optimalTechnique) {
-        Write-Host "`n=== Technique d'optimisation de la mémoire optimale ===" -ForegroundColor Green
+        Write-Host "`n=== Technique d'optimisation de la mÃ©moire optimale ===" -ForegroundColor Green
         Write-Host "  Technique : $($optimalTechnique.Technique)" -ForegroundColor Green
-        Write-Host "  Temps d'exécution : $($optimalTechnique.ExecutionTime) secondes" -ForegroundColor Green
+        Write-Host "  Temps d'exÃ©cution : $($optimalTechnique.ExecutionTime) secondes" -ForegroundColor Green
         Write-Host "  Working Set max : $($optimalTechnique.MaxWorkingSetMB) MB" -ForegroundColor Green
-        Write-Host "  Mémoire privée max : $($optimalTechnique.MaxPrivateMemoryMB) MB" -ForegroundColor Green
+        Write-Host "  MÃ©moire privÃ©e max : $($optimalTechnique.MaxPrivateMemoryMB) MB" -ForegroundColor Green
     }
     else {
-        Write-Warning "Impossible de déterminer la technique optimale. Aucun test n'a réussi."
+        Write-Warning "Impossible de dÃ©terminer la technique optimale. Aucun test n'a rÃ©ussi."
     }
     
     return $results
 }
 
-# Créer des fichiers de test si nécessaire
+# CrÃ©er des fichiers de test si nÃ©cessaire
 $testFilesPath = Join-Path -Path $OutputPath -ChildPath "test_files"
 if (-not (Test-Path -Path $testFilesPath)) {
-    Write-Host "Création des fichiers de test..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation des fichiers de test..." -ForegroundColor Yellow
     
-    # Importer le script de benchmark pour utiliser sa fonction de création de fichiers de test
+    # Importer le script de benchmark pour utiliser sa fonction de crÃ©ation de fichiers de test
     $benchmarkPath = Join-Path -Path $PSScriptRoot -ChildPath "benchmark.ps1"
     . $benchmarkPath
     
@@ -260,21 +260,21 @@ else {
 # Chemin vers le script d'analyse
 $analyzerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "examples\script-analyzer-simple.ps1"
 
-# Optimiser l'utilisation de la mémoire
+# Optimiser l'utilisation de la mÃ©moire
 $results = Optimize-MemoryUsage `
     -ScriptPath $analyzerPath `
     -TestFilesPath $testFilesPath `
     -OutputPath $OutputPath
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $OutputPath -ChildPath "memory_optimization_results.json"
 $results | Select-Object -Property Technique, ExecutionTime, AverageWorkingSetMB, MaxWorkingSetMB, AveragePrivateMemoryMB, MaxPrivateMemoryMB, Success | 
     ConvertTo-Json -Depth 5 | 
     Out-File -FilePath $resultsPath -Encoding utf8
 
-Write-Host "`nRésultats enregistrés : $resultsPath" -ForegroundColor Green
+Write-Host "`nRÃ©sultats enregistrÃ©s : $resultsPath" -ForegroundColor Green
 
-# Enregistrer les données d'utilisation de la mémoire pour chaque technique
+# Enregistrer les donnÃ©es d'utilisation de la mÃ©moire pour chaque technique
 foreach ($result in $results) {
     $techniqueName = $result.Technique -replace '[^a-zA-Z0-9]', '_'
     $memoryUsagePath = Join-Path -Path $OutputPath -ChildPath "memory_usage_$techniqueName.json"
@@ -283,10 +283,10 @@ foreach ($result in $results) {
         ConvertTo-Json -Depth 5 | 
         Out-File -FilePath $memoryUsagePath -Encoding utf8
     
-    Write-Host "Données d'utilisation de la mémoire enregistrées : $memoryUsagePath" -ForegroundColor Green
+    Write-Host "DonnÃ©es d'utilisation de la mÃ©moire enregistrÃ©es : $memoryUsagePath" -ForegroundColor Green
 }
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
     $reportPath = Join-Path -Path $OutputPath -ChildPath "memory_optimization_report.html"
     
@@ -296,7 +296,7 @@ if ($GenerateReport) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport d'optimisation de la mémoire</title>
+    <title>Rapport d'optimisation de la mÃ©moire</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -344,15 +344,15 @@ if ($GenerateReport) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Rapport d'optimisation de la mémoire</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <h1>Rapport d'optimisation de la mÃ©moire</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de techniques testées : $($results.Count)</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de techniques testÃ©es : $($results.Count)</p>
 "@
     
-    # Déterminer la technique optimale
+    # DÃ©terminer la technique optimale
     $optimalTechnique = $results | 
         Where-Object { $_.Success } | 
         Sort-Object -Property MaxWorkingSetMB | 
@@ -361,31 +361,31 @@ if ($GenerateReport) {
     if ($optimalTechnique) {
         $htmlContent += @"
         <p><strong>Technique optimale : $($optimalTechnique.Technique)</strong></p>
-        <p>Temps d'exécution : $([Math]::Round($optimalTechnique.ExecutionTime, 2)) secondes</p>
+        <p>Temps d'exÃ©cution : $([Math]::Round($optimalTechnique.ExecutionTime, 2)) secondes</p>
         <p>Working Set max : $([Math]::Round($optimalTechnique.MaxWorkingSetMB, 2)) MB</p>
-        <p>Mémoire privée max : $([Math]::Round($optimalTechnique.MaxPrivateMemoryMB, 2)) MB</p>
+        <p>MÃ©moire privÃ©e max : $([Math]::Round($optimalTechnique.MaxPrivateMemoryMB, 2)) MB</p>
 "@
     }
     else {
         $htmlContent += @"
-        <p><strong>Impossible de déterminer la technique optimale. Aucun test n'a réussi.</strong></p>
+        <p><strong>Impossible de dÃ©terminer la technique optimale. Aucun test n'a rÃ©ussi.</strong></p>
 "@
     }
     
     $htmlContent += @"
     </div>
     
-    <h2>Résultats par technique</h2>
+    <h2>RÃ©sultats par technique</h2>
     <table>
         <thead>
             <tr>
                 <th>Technique</th>
-                <th>Temps d'exécution (s)</th>
+                <th>Temps d'exÃ©cution (s)</th>
                 <th>Working Set moyen (MB)</th>
                 <th>Working Set max (MB)</th>
-                <th>Mémoire privée moyenne (MB)</th>
-                <th>Mémoire privée max (MB)</th>
-                <th>Succès</th>
+                <th>MÃ©moire privÃ©e moyenne (MB)</th>
+                <th>MÃ©moire privÃ©e max (MB)</th>
+                <th>SuccÃ¨s</th>
             </tr>
         </thead>
         <tbody>
@@ -414,23 +414,23 @@ if ($GenerateReport) {
     
     <h2>Graphiques</h2>
     
-    <h3>Utilisation de la mémoire (Working Set)</h3>
+    <h3>Utilisation de la mÃ©moire (Working Set)</h3>
     <div class="chart-container">
         <canvas id="workingSetChart"></canvas>
     </div>
     
-    <h3>Utilisation de la mémoire (Mémoire privée)</h3>
+    <h3>Utilisation de la mÃ©moire (MÃ©moire privÃ©e)</h3>
     <div class="chart-container">
         <canvas id="privateMemoryChart"></canvas>
     </div>
     
-    <h3>Temps d'exécution</h3>
+    <h3>Temps d'exÃ©cution</h3>
     <div class="chart-container">
         <canvas id="timeChart"></canvas>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const techniques = [$(($results | ForEach-Object { "'$($_.Technique)'" }) -join ', ')];
         const avgWorkingSet = [$(($results | ForEach-Object { [Math]::Round($_.AverageWorkingSetMB, 2) }) -join ', ')];
         const maxWorkingSet = [$(($results | ForEach-Object { [Math]::Round($_.MaxWorkingSetMB, 2) }) -join ', ')];
@@ -474,7 +474,7 @@ if ($GenerateReport) {
             }
         });
         
-        // Graphique Mémoire privée
+        // Graphique MÃ©moire privÃ©e
         const pmCtx = document.getElementById('privateMemoryChart').getContext('2d');
         new Chart(pmCtx, {
             type: 'bar',
@@ -482,14 +482,14 @@ if ($GenerateReport) {
                 labels: techniques,
                 datasets: [
                     {
-                        label: 'Mémoire privée moyenne (MB)',
+                        label: 'MÃ©moire privÃ©e moyenne (MB)',
                         data: avgPrivateMemory,
                         backgroundColor: 'rgba(0, 120, 212, 0.7)',
                         borderColor: 'rgba(0, 120, 212, 1)',
                         borderWidth: 1
                     },
                     {
-                        label: 'Mémoire privée max (MB)',
+                        label: 'MÃ©moire privÃ©e max (MB)',
                         data: maxPrivateMemory,
                         backgroundColor: 'rgba(0, 183, 74, 0.7)',
                         borderColor: 'rgba(0, 183, 74, 1)',
@@ -510,14 +510,14 @@ if ($GenerateReport) {
             }
         });
         
-        // Graphique Temps d'exécution
+        // Graphique Temps d'exÃ©cution
         const timeCtx = document.getElementById('timeChart').getContext('2d');
         new Chart(timeCtx, {
             type: 'bar',
             data: {
                 labels: techniques,
                 datasets: [{
-                    label: 'Temps d\'exécution (s)',
+                    label: 'Temps d\'exÃ©cution (s)',
                     data: executionTimes,
                     backgroundColor: 'rgba(209, 52, 56, 0.7)',
                     borderColor: 'rgba(209, 52, 56, 1)',
@@ -543,11 +543,11 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

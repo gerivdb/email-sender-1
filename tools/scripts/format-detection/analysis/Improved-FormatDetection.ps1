@@ -1,27 +1,27 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détection avancée de format de fichiers avec système de score.
+    DÃ©tection avancÃ©e de format de fichiers avec systÃ¨me de score.
 
 .DESCRIPTION
-    Ce script implémente une détection avancée de format de fichiers en utilisant
-    un système de score basé sur plusieurs critères : extension, signatures binaires,
-    motifs de contenu, et analyse de structure. Il permet également de détecter
+    Ce script implÃ©mente une dÃ©tection avancÃ©e de format de fichiers en utilisant
+    un systÃ¨me de score basÃ© sur plusieurs critÃ¨res : extension, signatures binaires,
+    motifs de contenu, et analyse de structure. Il permet Ã©galement de dÃ©tecter
     l'encodage des fichiers texte.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser.
+    Le chemin du fichier Ã  analyser.
 
 .PARAMETER CriteriaPath
-    Le chemin vers le fichier JSON contenant les critères de détection.
-    Par défaut, utilise 'FormatDetectionCriteria.json' dans le même répertoire.
+    Le chemin vers le fichier JSON contenant les critÃ¨res de dÃ©tection.
+    Par dÃ©faut, utilise 'FormatDetectionCriteria.json' dans le mÃªme rÃ©pertoire.
 
 .PARAMETER DetailedOutput
-    Indique si le script doit retourner des informations détaillées sur la détection,
-    incluant les scores pour chaque format et les critères correspondants.
+    Indique si le script doit retourner des informations dÃ©taillÃ©es sur la dÃ©tection,
+    incluant les scores pour chaque format et les critÃ¨res correspondants.
 
 .PARAMETER DetectEncoding
-    Indique si le script doit tenter de détecter l'encodage des fichiers texte.
+    Indique si le script doit tenter de dÃ©tecter l'encodage des fichiers texte.
 
 .EXAMPLE
     .\Improved-FormatDetection.ps1 -FilePath "C:\Temp\document.docx"
@@ -52,30 +52,30 @@ param(
 )
 
 begin {
-    # Vérifier si le module PSCacheManager est disponible
+    # VÃ©rifier si le module PSCacheManager est disponible
     if (-not (Get-Module -Name PSCacheManager -ListAvailable)) {
-        Write-Verbose "Le module PSCacheManager n'est pas disponible. Les résultats ne seront pas mis en cache."
+        Write-Verbose "Le module PSCacheManager n'est pas disponible. Les rÃ©sultats ne seront pas mis en cache."
         $useCache = $false
     } else {
         Import-Module PSCacheManager
         $useCache = $true
     }
     
-    # Charger les critères de détection
+    # Charger les critÃ¨res de dÃ©tection
     if (Test-Path -Path $CriteriaPath -PathType Leaf) {
         try {
             $formatCriteria = Get-Content -Path $CriteriaPath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
-            Write-Verbose "Critères de détection chargés depuis $CriteriaPath"
+            Write-Verbose "CritÃ¨res de dÃ©tection chargÃ©s depuis $CriteriaPath"
         } catch {
-            Write-Error "Impossible de charger les critères de détection depuis $CriteriaPath : $_"
+            Write-Error "Impossible de charger les critÃ¨res de dÃ©tection depuis $CriteriaPath : $_"
             return
         }
     } else {
-        Write-Error "Le fichier de critères $CriteriaPath n'existe pas."
+        Write-Error "Le fichier de critÃ¨res $CriteriaPath n'existe pas."
         return
     }
     
-    # Fonction pour détecter l'encodage d'un fichier
+    # Fonction pour dÃ©tecter l'encodage d'un fichier
     function Get-FileEncoding {
         param (
             [Parameter(Mandatory = $true)]
@@ -83,10 +83,10 @@ begin {
         )
         
         try {
-            # Lire les premiers octets du fichier pour détecter les BOM
+            # Lire les premiers octets du fichier pour dÃ©tecter les BOM
             $bytes = [System.IO.File]::ReadAllBytes($FilePath)
             
-            # Vérifier les BOM (Byte Order Mark)
+            # VÃ©rifier les BOM (Byte Order Mark)
             if ($bytes.Length -ge 4 -and $bytes[0] -eq 0x00 -and $bytes[1] -eq 0x00 -and $bytes[2] -eq 0xFE -and $bytes[3] -eq 0xFF) {
                 return "UTF-32BE"
             }
@@ -103,12 +103,12 @@ begin {
                 return "UTF-16LE"
             }
             
-            # Si aucun BOM n'est détecté, essayer de déterminer l'encodage par analyse du contenu
+            # Si aucun BOM n'est dÃ©tectÃ©, essayer de dÃ©terminer l'encodage par analyse du contenu
             # Lire les premiers 4 Ko du fichier
             $sampleSize = [Math]::Min(4096, $bytes.Length)
             $sample = $bytes[0..($sampleSize - 1)]
             
-            # Vérifier si le fichier contient des octets nuls (caractéristique de UTF-16/UTF-32)
+            # VÃ©rifier si le fichier contient des octets nuls (caractÃ©ristique de UTF-16/UTF-32)
             $containsNulls = $false
             for ($i = 0; $i -lt $sample.Length; $i++) {
                 if ($sample[$i] -eq 0) {
@@ -118,7 +118,7 @@ begin {
             }
             
             if ($containsNulls) {
-                # Vérifier les motifs de nulls pour UTF-16/UTF-32
+                # VÃ©rifier les motifs de nulls pour UTF-16/UTF-32
                 $utf16LEPattern = $true
                 $utf16BEPattern = $true
                 
@@ -138,15 +138,15 @@ begin {
                     return "UTF-16BE"
                 }
                 
-                # Si les motifs ne correspondent pas clairement, considérer comme binaire
+                # Si les motifs ne correspondent pas clairement, considÃ©rer comme binaire
                 return "BINARY"
             }
             
-            # Vérifier si le fichier est probablement UTF-8
+            # VÃ©rifier si le fichier est probablement UTF-8
             $isUtf8 = $true
             $i = 0
             while ($i -lt $sample.Length) {
-                # Vérifier les séquences UTF-8 valides
+                # VÃ©rifier les sÃ©quences UTF-8 valides
                 if ($sample[$i] -lt 0x80) {
                     # ASCII (0xxxxxxx)
                     $i++
@@ -175,7 +175,7 @@ begin {
                     }
                     $i += 4
                 } else {
-                    # Séquence invalide
+                    # SÃ©quence invalide
                     $isUtf8 = $false
                     break
                 }
@@ -185,7 +185,7 @@ begin {
                 return "UTF-8"
             }
             
-            # Vérifier si le fichier est probablement ASCII
+            # VÃ©rifier si le fichier est probablement ASCII
             $isAscii = $true
             foreach ($byte in $sample) {
                 if ($byte -gt 0x7F) {
@@ -198,15 +198,15 @@ begin {
                 return "ASCII"
             }
             
-            # Si aucun encodage spécifique n'est détecté, supposer Windows-1252 (ou autre encodage 8 bits)
+            # Si aucun encodage spÃ©cifique n'est dÃ©tectÃ©, supposer Windows-1252 (ou autre encodage 8 bits)
             return "Windows-1252"
         } catch {
-            Write-Error "Erreur lors de la détection de l'encodage du fichier $FilePath : $_"
+            Write-Error "Erreur lors de la dÃ©tection de l'encodage du fichier $FilePath : $_"
             return "UNKNOWN"
         }
     }
     
-    # Fonction pour vérifier si un fichier est binaire
+    # Fonction pour vÃ©rifier si un fichier est binaire
     function Test-BinaryFile {
         param (
             [Parameter(Mandatory = $true)]
@@ -225,7 +225,7 @@ begin {
             $sampleSize = [Math]::Min(4096, $bytes.Length)
             $sample = $bytes[0..($sampleSize - 1)]
             
-            # Compter les caractères de contrôle non autorisés
+            # Compter les caractÃ¨res de contrÃ´le non autorisÃ©s
             $binaryCount = 0
             foreach ($byte in $sample) {
                 if (($byte -lt 32 -and $ControlCharsAllowed -notcontains $byte) -or $byte -eq 0) {
@@ -233,18 +233,18 @@ begin {
                 }
             }
             
-            # Calculer le ratio de caractères binaires
+            # Calculer le ratio de caractÃ¨res binaires
             $binaryRatio = $binaryCount / $sampleSize
             
-            # Retourner vrai si le ratio dépasse le seuil
+            # Retourner vrai si le ratio dÃ©passe le seuil
             return $binaryRatio -gt $MaxBinaryRatio
         } catch {
-            Write-Error "Erreur lors de la vérification du fichier binaire $FilePath : $_"
-            return $true  # En cas d'erreur, considérer comme binaire par sécurité
+            Write-Error "Erreur lors de la vÃ©rification du fichier binaire $FilePath : $_"
+            return $true  # En cas d'erreur, considÃ©rer comme binaire par sÃ©curitÃ©
         }
     }
     
-    # Fonction pour vérifier les signatures binaires
+    # Fonction pour vÃ©rifier les signatures binaires
     function Test-FileSignature {
         param (
             [Parameter(Mandatory = $true)]
@@ -257,24 +257,24 @@ begin {
         try {
             # Lire les premiers octets du fichier
             $fileStream = [System.IO.File]::OpenRead($FilePath)
-            $buffer = New-Object byte[] 32  # Lire jusqu'à 32 octets pour les signatures
+            $buffer = New-Object byte[] 32  # Lire jusqu'Ã  32 octets pour les signatures
             $bytesRead = $fileStream.Read($buffer, 0, 32)
             $fileStream.Close()
             
-            # Vérifier si la signature correspond
+            # VÃ©rifier si la signature correspond
             $offset = $Signature.Offset
             
             if ($Signature.Type -eq "HEX") {
                 # Signature en octets (HEX)
                 $pattern = $Signature.Pattern
                 
-                # Vérifier si le pattern est un tableau d'octets ou une chaîne
+                # VÃ©rifier si le pattern est un tableau d'octets ou une chaÃ®ne
                 if ($pattern -is [string]) {
-                    # Convertir la chaîne hexadécimale en tableau d'octets
+                    # Convertir la chaÃ®ne hexadÃ©cimale en tableau d'octets
                     $pattern = $pattern -split ' ' | ForEach-Object { [Convert]::ToByte($_, 16) }
                 }
                 
-                # Vérifier si le buffer contient suffisamment d'octets
+                # VÃ©rifier si le buffer contient suffisamment d'octets
                 if ($bytesRead -lt ($offset + $pattern.Length)) {
                     return $false
                 }
@@ -291,16 +291,16 @@ begin {
                 # Signature en ASCII
                 $pattern = $Signature.Pattern
                 
-                # Vérifier si le buffer contient suffisamment d'octets
+                # VÃ©rifier si le buffer contient suffisamment d'octets
                 if ($bytesRead -lt ($offset + $pattern.Length)) {
                     return $false
                 }
                 
-                # Convertir les octets en chaîne ASCII
+                # Convertir les octets en chaÃ®ne ASCII
                 $encoding = [System.Text.Encoding]::ASCII
                 $text = $encoding.GetString($buffer, $offset, $pattern.Length)
                 
-                # Comparer les chaînes
+                # Comparer les chaÃ®nes
                 if ($Signature.IgnoreWhitespace) {
                     $text = $text.Trim()
                     $pattern = $pattern.Trim()
@@ -311,12 +311,12 @@ begin {
             
             return $false
         } catch {
-            Write-Error "Erreur lors de la vérification de la signature du fichier $FilePath : $_"
+            Write-Error "Erreur lors de la vÃ©rification de la signature du fichier $FilePath : $_"
             return $false
         }
     }
     
-    # Fonction pour vérifier les motifs de contenu
+    # Fonction pour vÃ©rifier les motifs de contenu
     function Test-ContentPattern {
         param (
             [Parameter(Mandatory = $true)]
@@ -327,17 +327,17 @@ begin {
         )
         
         try {
-            # Vérifier si le fichier est binaire
+            # VÃ©rifier si le fichier est binaire
             if ($ContentPattern.BinaryTest) {
                 if ($ContentPattern.BinaryTest.IsBinary) {
                     return Test-BinaryFile -FilePath $FilePath -MaxBinaryRatio 0
                 } else {
-                    $maxRatio = 0.1  # Valeur par défaut
+                    $maxRatio = 0.1  # Valeur par dÃ©faut
                     if ($ContentPattern.BinaryTest.MaxBinaryRatio) {
                         $maxRatio = $ContentPattern.BinaryTest.MaxBinaryRatio
                     }
                     
-                    $controlChars = @(9, 10, 13)  # Valeur par défaut
+                    $controlChars = @(9, 10, 13)  # Valeur par dÃ©faut
                     if ($ContentPattern.BinaryTest.ControlCharsAllowed) {
                         $controlChars = $ContentPattern.BinaryTest.ControlCharsAllowed
                     }
@@ -347,7 +347,7 @@ begin {
                 }
             }
             
-            # Vérifier les expressions régulières
+            # VÃ©rifier les expressions rÃ©guliÃ¨res
             if ($ContentPattern.Regex) {
                 # Lire le contenu du fichier
                 $content = Get-Content -Path $FilePath -Raw -ErrorAction SilentlyContinue
@@ -356,7 +356,7 @@ begin {
                     return $false
                 }
                 
-                # Vérifier chaque expression régulière
+                # VÃ©rifier chaque expression rÃ©guliÃ¨re
                 foreach ($regex in $ContentPattern.Regex) {
                     if ($content -match $regex) {
                         return $true
@@ -366,12 +366,12 @@ begin {
             
             return $false
         } catch {
-            Write-Error "Erreur lors de la vérification des motifs de contenu du fichier $FilePath : $_"
+            Write-Error "Erreur lors de la vÃ©rification des motifs de contenu du fichier $FilePath : $_"
             return $false
         }
     }
     
-    # Fonction pour vérifier la structure du fichier
+    # Fonction pour vÃ©rifier la structure du fichier
     function Test-FileStructure {
         param (
             [Parameter(Mandatory = $true)]
@@ -385,14 +385,14 @@ begin {
         )
         
         try {
-            # Vérifier si le fichier est un ZIP
+            # VÃ©rifier si le fichier est un ZIP
             if ($StructureTest.ZipStructure) {
-                # Vérifier si le fichier est un ZIP valide
+                # VÃ©rifier si le fichier est un ZIP valide
                 try {
                     Add-Type -AssemblyName System.IO.Compression.FileSystem
                     $zip = [System.IO.Compression.ZipFile]::OpenRead($FilePath)
                     
-                    # Vérifier les entrées spécifiques pour les formats Office
+                    # VÃ©rifier les entrÃ©es spÃ©cifiques pour les formats Office
                     if ($FormatName -eq "WORD" -and $StructureTest.DocxContentTypes) {
                         $hasRequiredEntry = $zip.Entries | Where-Object { $_.FullName -eq $StructureTest.DocxContentTypes.Path }
                         $zip.Dispose()
@@ -418,7 +418,7 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier est un JSON valide
+            # VÃ©rifier si le fichier est un JSON valide
             if ($StructureTest.ValidJson) {
                 try {
                     $content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -429,7 +429,7 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier est un XML valide
+            # VÃ©rifier si le fichier est un XML valide
             if ($StructureTest.WellFormed) {
                 try {
                     $content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -441,7 +441,7 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier a des balises HTML requises
+            # VÃ©rifier si le fichier a des balises HTML requises
             if ($StructureTest.RequiredTags) {
                 try {
                     $content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -458,7 +458,7 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier a un délimiteur cohérent (CSV, TSV)
+            # VÃ©rifier si le fichier a un dÃ©limiteur cohÃ©rent (CSV, TSV)
             if ($StructureTest.ConsistentDelimiter) {
                 try {
                     $content = Get-Content -Path $FilePath -ErrorAction Stop
@@ -470,7 +470,7 @@ begin {
                     $delimiter = $StructureTest.ConsistentDelimiter
                     $firstLineCount = ($content[0] -split [regex]::Escape($delimiter)).Count
                     
-                    # Vérifier si toutes les lignes ont le même nombre de champs
+                    # VÃ©rifier si toutes les lignes ont le mÃªme nombre de champs
                     for ($i = 1; $i -lt [Math]::Min(10, $content.Count); $i++) {
                         $lineCount = ($content[$i] -split [regex]::Escape($delimiter)).Count
                         if ($lineCount -ne $firstLineCount) {
@@ -484,7 +484,7 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier a une indentation cohérente (Python)
+            # VÃ©rifier si le fichier a une indentation cohÃ©rente (Python)
             if ($StructureTest.Indentation) {
                 try {
                     $content = Get-Content -Path $FilePath -ErrorAction Stop
@@ -505,14 +505,14 @@ begin {
                         }
                     }
                     
-                    # Si au moins 20% des lignes sont indentées, c'est probablement du code indenté
+                    # Si au moins 20% des lignes sont indentÃ©es, c'est probablement du code indentÃ©
                     return ($totalLines -gt 0) -and (($indentedLines / $totalLines) -gt 0.2)
                 } catch {
                     return $false
                 }
             }
             
-            # Vérifier si le fichier a des sauts de ligne (TEXT)
+            # VÃ©rifier si le fichier a des sauts de ligne (TEXT)
             if ($StructureTest.LineBreaks) {
                 try {
                     $content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -522,15 +522,15 @@ begin {
                 }
             }
             
-            # Si aucun test spécifique n'est défini, retourner vrai
+            # Si aucun test spÃ©cifique n'est dÃ©fini, retourner vrai
             return $true
         } catch {
-            Write-Error "Erreur lors de la vérification de la structure du fichier $FilePath : $_"
+            Write-Error "Erreur lors de la vÃ©rification de la structure du fichier $FilePath : $_"
             return $false
         }
     }
     
-    # Fonction pour calculer le score de détection
+    # Fonction pour calculer le score de dÃ©tection
     function Get-FormatDetectionScore {
         param (
             [Parameter(Mandatory = $true)]
@@ -547,7 +547,7 @@ begin {
         $maxScore = 0
         $matchedCriteria = @()
         
-        # Vérifier l'extension
+        # VÃ©rifier l'extension
         $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
         if ($FormatCriteria.Extensions -contains $extension) {
             $score += 30
@@ -555,7 +555,7 @@ begin {
         }
         $maxScore += 30
         
-        # Vérifier les signatures
+        # VÃ©rifier les signatures
         if ($FormatCriteria.Signatures) {
             $signatureMatched = $false
             foreach ($signature in $FormatCriteria.Signatures) {
@@ -572,7 +572,7 @@ begin {
             $maxScore += 40
         }
         
-        # Vérifier les motifs de contenu
+        # VÃ©rifier les motifs de contenu
         if ($FormatCriteria.ContentPatterns) {
             if (Test-ContentPattern -FilePath $FilePath -ContentPattern $FormatCriteria.ContentPatterns) {
                 $score += 20
@@ -581,7 +581,7 @@ begin {
             $maxScore += 20
         }
         
-        # Vérifier la structure
+        # VÃ©rifier la structure
         if ($FormatCriteria.StructureTests) {
             if (Test-FileStructure -FilePath $FilePath -StructureTest $FormatCriteria.StructureTests -FormatName $FormatName) {
                 $score += 10
@@ -590,13 +590,13 @@ begin {
             $maxScore += 10
         }
         
-        # Calculer le score normalisé (0-100)
+        # Calculer le score normalisÃ© (0-100)
         $normalizedScore = 0
         if ($maxScore -gt 0) {
             $normalizedScore = [Math]::Round(($score / $maxScore) * 100)
         }
         
-        # Retourner le résultat
+        # Retourner le rÃ©sultat
         return [PSCustomObject]@{
             Format = $FormatName
             Score = $normalizedScore
@@ -607,7 +607,7 @@ begin {
 }
 
 process {
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier $FilePath n'existe pas."
         return
@@ -620,7 +620,7 @@ process {
         $cachedResult = Get-PSCacheItem -Key $cacheKey
         
         if ($null -ne $cachedResult) {
-            Write-Verbose "Résultat récupéré du cache pour $FilePath"
+            Write-Verbose "RÃ©sultat rÃ©cupÃ©rÃ© du cache pour $FilePath"
             return $cachedResult
         }
     }
@@ -635,13 +635,13 @@ process {
         $scores += $score
     }
     
-    # Trier les scores par score et priorité
+    # Trier les scores par score et prioritÃ©
     $sortedScores = $scores | Sort-Object -Property Score, Priority -Descending
     
-    # Sélectionner le format le plus probable
+    # SÃ©lectionner le format le plus probable
     $bestMatch = $sortedScores | Select-Object -First 1
     
-    # Détecter l'encodage si demandé
+    # DÃ©tecter l'encodage si demandÃ©
     $encoding = $null
     if ($DetectEncoding) {
         $category = ($formatCriteria.PSObject.Properties | Where-Object { $_.Name -eq $bestMatch.Format }).Value.Category
@@ -651,7 +651,7 @@ process {
         }
     }
     
-    # Créer le résultat
+    # CrÃ©er le rÃ©sultat
     $result = [PSCustomObject]@{
         FilePath = $FilePath
         FileName = [System.IO.Path]::GetFileName($FilePath)
@@ -662,25 +662,25 @@ process {
         MatchedCriteria = $bestMatch.MatchedCriteria -join ", "
     }
     
-    # Ajouter l'encodage si détecté
+    # Ajouter l'encodage si dÃ©tectÃ©
     if ($encoding) {
         $result | Add-Member -MemberType NoteProperty -Name "Encoding" -Value $encoding
     }
     
-    # Ajouter les détails si demandé
+    # Ajouter les dÃ©tails si demandÃ©
     if ($DetailedOutput) {
         $result | Add-Member -MemberType NoteProperty -Name "AllFormats" -Value $sortedScores
     }
     
-    # Mettre en cache le résultat si le cache est disponible
+    # Mettre en cache le rÃ©sultat si le cache est disponible
     if ($useCache) {
         Set-PSCacheItem -Key $cacheKey -Value $result -TTL 3600
     }
     
-    # Retourner le résultat
+    # Retourner le rÃ©sultat
     return $result
 }
 
 end {
-    # Rien à faire ici
+    # Rien Ã  faire ici
 }

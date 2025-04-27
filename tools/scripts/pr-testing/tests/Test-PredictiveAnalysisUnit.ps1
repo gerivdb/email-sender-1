@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le système d'analyse prédictive.
+    Tests unitaires pour le systÃ¨me d'analyse prÃ©dictive.
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
-    du système d'analyse prédictive.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
+    du systÃ¨me d'analyse prÃ©dictive.
 .EXAMPLE
     .\Test-PredictiveAnalysisUnit.ps1
 .NOTES
@@ -18,19 +18,19 @@ param()
 
 # Importer Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     } catch {
-        Write-Error "Impossible d'installer Pester. Les tests seront exécutés sans Pester."
+        Write-Error "Impossible d'installer Pester. Les tests seront exÃ©cutÃ©s sans Pester."
     }
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PredictiveAnalysisUnitTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -48,7 +48,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptSafe = @"
 # Test PowerShell Script (Safe)
 function Test-Function {
@@ -80,7 +80,7 @@ function Test-Function {
     # Utilisation de Invoke-Expression
     Invoke-Expression "Get-Process"
 
-    # Suppression récursive
+    # Suppression rÃ©cursive
     Remove-Item -Path "C:\Temp\*" -Recurse -Force
 
     Write-Output `$testVariable
@@ -89,16 +89,16 @@ function Test-Function {
 Test-Function -param1 "Test"
 "@
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $testFiles = @{
     Safe  = New-TestFile -Path "powershell/test_safe.ps1" -Content $psScriptSafe
     Risky = New-TestFile -Path "powershell/test_risky.ps1" -Content $psScriptRisky
 }
 
-# Chemin du script d'analyse prédictive
+# Chemin du script d'analyse prÃ©dictive
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-PredictiveFileAnalysis.ps1"
 
-# Fonction pour exécuter les tests sans Pester
+# Fonction pour exÃ©cuter les tests sans Pester
 function Invoke-SimpleTest {
     param(
         [string]$Name,
@@ -109,15 +109,15 @@ function Invoke-SimpleTest {
 
     try {
         & $Test
-        Write-Host "  Réussi" -ForegroundColor Green
+        Write-Host "  RÃ©ussi" -ForegroundColor Green
         return $true
     } catch {
-        Write-Host "  Échoué: $_" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
         return $false
     }
 }
 
-# Fonction pour vérifier si une condition est vraie
+# Fonction pour vÃ©rifier si une condition est vraie
 function Assert-True {
     param(
         [bool]$Condition,
@@ -125,11 +125,11 @@ function Assert-True {
     )
 
     if (-not $Condition) {
-        throw "Assertion échouée: $Message"
+        throw "Assertion Ã©chouÃ©e: $Message"
     }
 }
 
-# Fonction pour vérifier si deux valeurs sont égales
+# Fonction pour vÃ©rifier si deux valeurs sont Ã©gales
 function Assert-Equal {
     param(
         $Expected,
@@ -138,11 +138,11 @@ function Assert-Equal {
     )
 
     if ($Expected -ne $Actual) {
-        throw "Assertion échouée: $Message. Attendu: $Expected, Obtenu: $Actual"
+        throw "Assertion Ã©chouÃ©e: $Message. Attendu: $Expected, Obtenu: $Actual"
     }
 }
 
-# Fonction pour vérifier si une valeur est nulle
+# Fonction pour vÃ©rifier si une valeur est nulle
 function Assert-Null {
     param(
         $Value,
@@ -150,11 +150,11 @@ function Assert-Null {
     )
 
     if ($null -ne $Value) {
-        throw "Assertion échouée: $Message. La valeur n'est pas nulle: $Value"
+        throw "Assertion Ã©chouÃ©e: $Message. La valeur n'est pas nulle: $Value"
     }
 }
 
-# Fonction pour vérifier si une valeur n'est pas nulle
+# Fonction pour vÃ©rifier si une valeur n'est pas nulle
 function Assert-NotNull {
     param(
         $Value,
@@ -162,11 +162,11 @@ function Assert-NotNull {
     )
 
     if ($null -eq $Value) {
-        throw "Assertion échouée: $Message. La valeur est nulle"
+        throw "Assertion Ã©chouÃ©e: $Message. La valeur est nulle"
     }
 }
 
-# Fonction pour vérifier si une collection contient un élément
+# Fonction pour vÃ©rifier si une collection contient un Ã©lÃ©ment
 function Assert-Contains {
     param(
         $Collection,
@@ -175,11 +175,11 @@ function Assert-Contains {
     )
 
     if ($Collection -notcontains $Item) {
-        throw "Assertion échouée: $Message. La collection ne contient pas l'élément: $Item"
+        throw "Assertion Ã©chouÃ©e: $Message. La collection ne contient pas l'Ã©lÃ©ment: $Item"
     }
 }
 
-# Fonction pour vérifier si une chaîne contient une sous-chaîne
+# Fonction pour vÃ©rifier si une chaÃ®ne contient une sous-chaÃ®ne
 function Assert-StringContains {
     param(
         [string]$String,
@@ -188,86 +188,86 @@ function Assert-StringContains {
     )
 
     if ($String -notlike "*$Substring*") {
-        throw "Assertion échouée: $Message. La chaîne ne contient pas la sous-chaîne: $Substring"
+        throw "Assertion Ã©chouÃ©e: $Message. La chaÃ®ne ne contient pas la sous-chaÃ®ne: $Substring"
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = @()
 
-# Test 1: Vérifier que le script existe
-$testResults += Invoke-SimpleTest -Name "Le script d'analyse prédictive existe" {
-    Assert-True (Test-Path -Path $scriptPath) "Le script d'analyse prédictive n'existe pas: $scriptPath"
+# Test 1: VÃ©rifier que le script existe
+$testResults += Invoke-SimpleTest -Name "Le script d'analyse prÃ©dictive existe" {
+    Assert-True (Test-Path -Path $scriptPath) "Le script d'analyse prÃ©dictive n'existe pas: $scriptPath"
 }
 
-# Test 2: Vérifier que le script peut être exécuté
-$testResults += Invoke-SimpleTest -Name "Le script d'analyse prédictive peut être exécuté" {
+# Test 2: VÃ©rifier que le script peut Ãªtre exÃ©cutÃ©
+$testResults += Invoke-SimpleTest -Name "Le script d'analyse prÃ©dictive peut Ãªtre exÃ©cutÃ©" {
     $null = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
-    Assert-True (Test-Path -Path "$testDir\report.html") "Le rapport n'a pas été généré"
+    Assert-True (Test-Path -Path "$testDir\report.html") "Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©"
 }
 
-# Test 3: Vérifier que le script détecte les problèmes dans les fichiers risqués
-$testResults += Invoke-SimpleTest -Name "Le script détecte les problèmes dans les fichiers risqués" {
+# Test 3: VÃ©rifier que le script dÃ©tecte les problÃ¨mes dans les fichiers risquÃ©s
+$testResults += Invoke-SimpleTest -Name "Le script dÃ©tecte les problÃ¨mes dans les fichiers risquÃ©s" {
     $result = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
 
     $riskyFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.Risky }
-    Assert-NotNull $riskyFile "Le fichier risqué n'a pas été analysé"
-    Assert-True ($riskyFile.Issues.Count -gt 0) "Aucun problème n'a été détecté dans le fichier risqué"
+    Assert-NotNull $riskyFile "Le fichier risquÃ© n'a pas Ã©tÃ© analysÃ©"
+    Assert-True ($riskyFile.Issues.Count -gt 0) "Aucun problÃ¨me n'a Ã©tÃ© dÃ©tectÃ© dans le fichier risquÃ©"
 
     $invokeExpressionIssue = $riskyFile.Issues | Where-Object { $_.Message -like "*Invoke-Expression*" }
-    Assert-NotNull $invokeExpressionIssue "Le problème Invoke-Expression n'a pas été détecté"
+    Assert-NotNull $invokeExpressionIssue "Le problÃ¨me Invoke-Expression n'a pas Ã©tÃ© dÃ©tectÃ©"
 }
 
-# Test 4: Vérifier que le script calcule correctement le score de risque
+# Test 4: VÃ©rifier que le script calcule correctement le score de risque
 $testResults += Invoke-SimpleTest -Name "Le script calcule correctement le score de risque" {
     $result = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
 
     $safeFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.Safe }
     $riskyFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.Risky }
 
-    Assert-NotNull $safeFile "Le fichier sûr n'a pas été analysé"
-    Assert-NotNull $riskyFile "Le fichier risqué n'a pas été analysé"
+    Assert-NotNull $safeFile "Le fichier sÃ»r n'a pas Ã©tÃ© analysÃ©"
+    Assert-NotNull $riskyFile "Le fichier risquÃ© n'a pas Ã©tÃ© analysÃ©"
 
-    Assert-True ($riskyFile.RiskScore -gt $safeFile.RiskScore) "Le score de risque du fichier risqué n'est pas supérieur à celui du fichier sûr"
+    Assert-True ($riskyFile.RiskScore -gt $safeFile.RiskScore) "Le score de risque du fichier risquÃ© n'est pas supÃ©rieur Ã  celui du fichier sÃ»r"
 }
 
-# Test 5: Vérifier que le script met à jour l'historique des erreurs
-$testResults += Invoke-SimpleTest -Name "Le script met à jour l'historique des erreurs" {
-    # Première exécution
+# Test 5: VÃ©rifier que le script met Ã  jour l'historique des erreurs
+$testResults += Invoke-SimpleTest -Name "Le script met Ã  jour l'historique des erreurs" {
+    # PremiÃ¨re exÃ©cution
     & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report1.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache | Out-Null
 
-    # Deuxième exécution
+    # DeuxiÃ¨me exÃ©cution
     & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report2.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache | Out-Null
 
-    Assert-True (Test-Path -Path "$testDir\error_history.json") "L'historique des erreurs n'a pas été créé"
+    Assert-True (Test-Path -Path "$testDir\error_history.json") "L'historique des erreurs n'a pas Ã©tÃ© crÃ©Ã©"
 
     $errorHistory = Get-Content -Path "$testDir\error_history.json" -Raw | ConvertFrom-Json
     Assert-NotNull $errorHistory "L'historique des erreurs est vide"
     Assert-NotNull $errorHistory.Files "L'historique des fichiers est vide"
 
     $relativeRiskyPath = $testFiles.Risky -replace [regex]::Escape($testDir), "" -replace "^\\", ""
-    Assert-NotNull $errorHistory.Files.$relativeRiskyPath "Le fichier risqué n'est pas dans l'historique des erreurs"
+    Assert-NotNull $errorHistory.Files.$relativeRiskyPath "Le fichier risquÃ© n'est pas dans l'historique des erreurs"
 }
 
-# Afficher un résumé des tests
+# Afficher un rÃ©sumÃ© des tests
 $successCount = ($testResults | Where-Object { $_ -eq $true }).Count
 $failureCount = ($testResults | Where-Object { $_ -eq $false }).Count
 $totalCount = $testResults.Count
 
 Write-Host ""
-Write-Host "Résumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests réussis: $successCount" -ForegroundColor Green
-Write-Host "  Tests échoués: $failureCount" -ForegroundColor Red
+Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis: $successCount" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $failureCount" -ForegroundColor Red
 Write-Host "  Total: $totalCount" -ForegroundColor White
 Write-Host ""
 
 # Nettoyer
 Write-Host "Nettoyage..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
-Write-Host "  Répertoire de test supprimé" -ForegroundColor Green
+Write-Host "  RÃ©pertoire de test supprimÃ©" -ForegroundColor Green
 Write-Host ""
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 $success = $failureCount -eq 0
-Write-Host "Résultat global: $(if ($success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
+Write-Host "RÃ©sultat global: $(if ($success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
 exit $(if ($success) { 0 } else { 1 })

@@ -1,48 +1,48 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour la fonction Inspect-Variable.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour la fonction Inspect-Variable.
-    Il vérifie que la fonction fonctionne correctement avec différents types de données
-    et différentes options.
+    Il vÃ©rifie que la fonction fonctionne correctement avec diffÃ©rents types de donnÃ©es
+    et diffÃ©rentes options.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Scope CurrentUser -Force
 }
 
 # Importer le module Pester
 Import-Module -Name Pester
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Inspect-Variable.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Inspect-Variable.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Inspect-Variable.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
 
-# Démarrer les tests
+# DÃ©marrer les tests
 Describe "Tests pour Inspect-Variable" {
     Context "Tests de base" {
-        It "Devrait retourner des informations sur une chaîne" {
+        It "Devrait retourner des informations sur une chaÃ®ne" {
             $result = Inspect-Variable -InputObject "Test" -Format "Object"
             $result.Type | Should -Be "System.String"
             $result.Value | Should -Be "Test"
-            $result.Size | Should -Be 8 # 4 caractères * 2 bytes par caractère
+            $result.Size | Should -Be 8 # 4 caractÃ¨res * 2 bytes par caractÃ¨re
         }
 
         It "Devrait retourner des informations sur un entier" {
@@ -51,7 +51,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Value | Should -Be 42
         }
 
-        It "Devrait retourner des informations sur un booléen" {
+        It "Devrait retourner des informations sur un boolÃ©en" {
             $result = Inspect-Variable -InputObject $true -Format "Object"
             $result.Type | Should -Be "System.Boolean"
             $result.Value | Should -Be $true
@@ -74,7 +74,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Items[0].Value | Should -Be 1
         }
 
-        It "Devrait limiter le nombre d'éléments affichés" {
+        It "Devrait limiter le nombre d'Ã©lÃ©ments affichÃ©s" {
             $array = 1..20
             $result = Inspect-Variable -InputObject $array -Format "Object" -MaxArrayItems 5
             $result.Items.Count | Should -Be 5
@@ -133,7 +133,7 @@ Describe "Tests pour Inspect-Variable" {
     }
 
     Context "Tests de format de sortie" {
-        It "Devrait retourner une chaîne formatée en mode Text" {
+        It "Devrait retourner une chaÃ®ne formatÃ©e en mode Text" {
             $result = Inspect-Variable -InputObject "Test" -Format "Text"
             $result | Should -BeOfType [string]
             $result | Should -Match "\[Type\] System.String"
@@ -147,7 +147,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Value | Should -Be "Test"
         }
 
-        It "Devrait retourner une chaîne JSON en mode JSON" {
+        It "Devrait retourner une chaÃ®ne JSON en mode JSON" {
             $result = Inspect-Variable -InputObject "Test" -Format "JSON"
             $result | Should -BeOfType [string]
             $result | Should -Match '"Type":\s*"System.String"'
@@ -155,7 +155,7 @@ Describe "Tests pour Inspect-Variable" {
         }
     }
 
-    Context "Tests de niveau de détail" {
+    Context "Tests de niveau de dÃ©tail" {
         It "Devrait limiter les informations en mode Basic" {
             $obj = [PSCustomObject]@{
                 Name   = "Test"
@@ -179,8 +179,8 @@ Describe "Tests pour Inspect-Variable" {
         }
     }
 
-    Context "Tests de filtrage des propriétés" {
-        It "Devrait filtrer les propriétés par nom avec une expression régulière" {
+    Context "Tests de filtrage des propriÃ©tÃ©s" {
+        It "Devrait filtrer les propriÃ©tÃ©s par nom avec une expression rÃ©guliÃ¨re" {
             $obj = [PSCustomObject]@{
                 Name          = "Test"
                 Value         = 42
@@ -194,7 +194,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Properties.Keys | Should -Not -Contain "InternalValue"
         }
 
-        It "Devrait filtrer les propriétés par type avec une expression régulière" {
+        It "Devrait filtrer les propriÃ©tÃ©s par type avec une expression rÃ©guliÃ¨re" {
             $obj = [PSCustomObject]@{
                 Name  = "Test"
                 Value = 42
@@ -208,7 +208,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Properties.Keys | Should -Not -Contain "Date"
         }
 
-        It "Devrait inclure les propriétés internes avec IncludeInternalProperties" {
+        It "Devrait inclure les propriÃ©tÃ©s internes avec IncludeInternalProperties" {
             $obj = [PSCustomObject]@{
                 Name           = "Test"
                 _InternalValue = "Secret"
@@ -218,7 +218,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Properties.Keys | Should -Contain "_InternalValue"
         }
 
-        It "Ne devrait pas inclure les propriétés internes par défaut" {
+        It "Ne devrait pas inclure les propriÃ©tÃ©s internes par dÃ©faut" {
             $obj = [PSCustomObject]@{
                 Name           = "Test"
                 _InternalValue = "Secret"
@@ -229,8 +229,8 @@ Describe "Tests pour Inspect-Variable" {
         }
     }
 
-    Context "Tests de détection des références circulaires" {
-        It "Devrait détecter une référence circulaire simple" {
+    Context "Tests de dÃ©tection des rÃ©fÃ©rences circulaires" {
+        It "Devrait dÃ©tecter une rÃ©fÃ©rence circulaire simple" {
             $parent = [PSCustomObject]@{
                 Name = "Parent"
             }
@@ -244,7 +244,7 @@ Describe "Tests pour Inspect-Variable" {
             $result.Properties["Child"].Properties["Parent"].IsCircularReference | Should -Be $true
         }
 
-        It "Devrait ignorer les références circulaires avec CircularReferenceHandling=Ignore" {
+        It "Devrait ignorer les rÃ©fÃ©rences circulaires avec CircularReferenceHandling=Ignore" {
             $parent = [PSCustomObject]@{
                 Name = "Parent"
             }
@@ -271,7 +271,7 @@ Describe "Tests pour Inspect-Variable" {
             { Inspect-Variable -InputObject $parent -Format "Object" -CircularReferenceHandling "Throw" } | Should -Throw
         }
 
-        It "Devrait désactiver la détection des références circulaires avec DetectCircularReferences=`$false" {
+        It "Devrait dÃ©sactiver la dÃ©tection des rÃ©fÃ©rences circulaires avec DetectCircularReferences=`$false" {
             $parent = [PSCustomObject]@{
                 Name = "Parent"
             }

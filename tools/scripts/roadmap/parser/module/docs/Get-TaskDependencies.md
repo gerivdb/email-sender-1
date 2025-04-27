@@ -1,8 +1,8 @@
-# Get-TaskDependencies
+﻿# Get-TaskDependencies
 
 ## SYNOPSIS
 
-Analyse et gère les dépendances entre les tâches d'une roadmap.
+Analyse et gÃ¨re les dÃ©pendances entre les tÃ¢ches d'une roadmap.
 
 ## SYNTAX
 
@@ -12,14 +12,14 @@ Analyse et gère les dépendances entre les tâches d'une roadmap.
 ```n
 ## DESCRIPTION
 
-La fonction Get-TaskDependencies analyse une roadmap pour détecter et gérer les dépendances entre les tâches.
-Elle peut détecter les dépendances explicites et implicites, et générer une visualisation des dépendances.
+La fonction Get-TaskDependencies analyse une roadmap pour dÃ©tecter et gÃ©rer les dÃ©pendances entre les tÃ¢ches.
+Elle peut dÃ©tecter les dÃ©pendances explicites et implicites, et gÃ©nÃ©rer une visualisation des dÃ©pendances.
 
 ## PARAMETERS
 
 ### -FilePath
 
-Chemin du fichier markdown à analyser.
+Chemin du fichier markdown Ã  analyser.
 
 `yaml
 Type: String
@@ -35,7 +35,7 @@ Accept wildcard characters: false
 
 ### -OutputPath
 
-Chemin du fichier de sortie pour la visualisation des dépendances.
+Chemin du fichier de sortie pour la visualisation des dÃ©pendances.
 
 `yaml
 Type: String
@@ -55,13 +55,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant les dépendances de la roadmap.
+[PSCustomObject] ReprÃ©sentant les dÃ©pendances de la roadmap.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -69,7 +69,7 @@ Date de création: 2023-07-10
 
 `powershell
 Get-TaskDependencies -FilePath ".\roadmap.md" -OutputPath ".\dependencies.md"
-Analyse les dépendances de la roadmap et génère une visualisation.
+Analyse les dÃ©pendances de la roadmap et gÃ©nÃ¨re une visualisation.
 `
 
     

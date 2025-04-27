@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste les 4 phases du projet de réorganisation des scripts.
+    Teste les 4 phases du projet de rÃ©organisation des scripts.
 .DESCRIPTION
-    Ce script exécute des tests pour vérifier que les 4 phases du projet
-    (mise à jour des références, standardisation, élimination des duplications,
-    amélioration du système de gestion) ont porté leurs fruits et que tout fonctionne.
+    Ce script exÃ©cute des tests pour vÃ©rifier que les 4 phases du projet
+    (mise Ã  jour des rÃ©fÃ©rences, standardisation, Ã©limination des duplications,
+    amÃ©lioration du systÃ¨me de gestion) ont portÃ© leurs fruits et que tout fonctionne.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à tester. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
 .EXAMPLE
     .\Test-AllPhases.ps1
     Teste toutes les phases du projet sur les scripts du dossier "scripts".
@@ -19,7 +19,7 @@ param (
     [string]$Path = "scripts"
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -41,46 +41,46 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\tests\test_results.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour tester la Phase 1 : Mise à jour des références
+# Fonction pour tester la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences
 function Test-Phase1 {
     param (
         [string]$Path
     )
     
-    Write-Log "Test de la Phase 1 : Mise à jour des références" -Level "TITLE"
+    Write-Log "Test de la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences" -Level "TITLE"
     
-    # Vérifier si l'outil de détection des références existe
+    # VÃ©rifier si l'outil de dÃ©tection des rÃ©fÃ©rences existe
     $ReferenceToolPath = "scripts\maintenance\encoding\Detect-BrokenReferences.ps1"
     if (-not (Test-Path -Path $ReferenceToolPath)) {
-        Write-Log "L'outil de détection des références n'existe pas: $ReferenceToolPath" -Level "ERROR"
+        Write-Log "L'outil de dÃ©tection des rÃ©fÃ©rences n'existe pas: $ReferenceToolPath" -Level "ERROR"
         return $false
     }
     
-    Write-Log "L'outil de détection des références existe: $ReferenceToolPath" -Level "SUCCESS"
+    Write-Log "L'outil de dÃ©tection des rÃ©fÃ©rences existe: $ReferenceToolPath" -Level "SUCCESS"
     
-    # Exécuter l'outil de détection des références
-    Write-Log "Exécution de l'outil de détection des références..." -Level "INFO"
+    # ExÃ©cuter l'outil de dÃ©tection des rÃ©fÃ©rences
+    Write-Log "ExÃ©cution de l'outil de dÃ©tection des rÃ©fÃ©rences..." -Level "INFO"
     
     try {
         $OutputPath = "scripts\tests\references_test_report.json"
         & $ReferenceToolPath -Path $Path -OutputPath $OutputPath
         
-        # Vérifier si le rapport a été généré
+        # VÃ©rifier si le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
         if (Test-Path -Path $OutputPath) {
-            Write-Log "Rapport généré avec succès: $OutputPath" -Level "SUCCESS"
+            Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "SUCCESS"
             
             # Analyser le rapport (si possible)
             try {
                 $Report = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
                 if ($Report.BrokenReferencesCount -gt 0) {
-                    Write-Log "Des références brisées ont été détectées: $($Report.BrokenReferencesCount)" -Level "WARNING"
+                    Write-Log "Des rÃ©fÃ©rences brisÃ©es ont Ã©tÃ© dÃ©tectÃ©es: $($Report.BrokenReferencesCount)" -Level "WARNING"
                 } else {
-                    Write-Log "Aucune référence brisée détectée" -Level "SUCCESS"
+                    Write-Log "Aucune rÃ©fÃ©rence brisÃ©e dÃ©tectÃ©e" -Level "SUCCESS"
                 }
             } catch {
                 Write-Log "Impossible d'analyser le rapport: $_" -Level "WARNING"
@@ -88,11 +88,11 @@ function Test-Phase1 {
             
             return $true
         } else {
-            Write-Log "Le rapport n'a pas été généré: $OutputPath" -Level "WARNING"
+            Write-Log "Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $OutputPath" -Level "WARNING"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution de l'outil de détection des références: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution de l'outil de dÃ©tection des rÃ©fÃ©rences: $_" -Level "ERROR"
         return $false
     }
 }
@@ -105,7 +105,7 @@ function Test-Phase2 {
     
     Write-Log "Test de la Phase 2 : Standardisation des scripts" -Level "TITLE"
     
-    # Vérifier si l'outil de standardisation existe
+    # VÃ©rifier si l'outil de standardisation existe
     $StandardsToolPath = "scripts\maintenance\standards\Manage-Standards-v2.ps1"
     if (-not (Test-Path -Path $StandardsToolPath)) {
         Write-Log "L'outil de standardisation n'existe pas: $StandardsToolPath" -Level "ERROR"
@@ -114,62 +114,62 @@ function Test-Phase2 {
     
     Write-Log "L'outil de standardisation existe: $StandardsToolPath" -Level "SUCCESS"
     
-    # Exécuter l'outil de standardisation en mode analyse
-    Write-Log "Exécution de l'outil de standardisation en mode analyse..." -Level "INFO"
+    # ExÃ©cuter l'outil de standardisation en mode analyse
+    Write-Log "ExÃ©cution de l'outil de standardisation en mode analyse..." -Level "INFO"
     
     try {
         & $StandardsToolPath -Action analyze -Path $Path
         
-        # Vérifier si l'exécution a réussi
-        Write-Log "Exécution réussie de l'outil de standardisation" -Level "SUCCESS"
+        # VÃ©rifier si l'exÃ©cution a rÃ©ussi
+        Write-Log "ExÃ©cution rÃ©ussie de l'outil de standardisation" -Level "SUCCESS"
         return $true
     } catch {
-        Write-Log "Erreur lors de l'exécution de l'outil de standardisation: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution de l'outil de standardisation: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour tester la Phase 3 : Élimination des duplications
+# Fonction pour tester la Phase 3 : Ã‰limination des duplications
 function Test-Phase3 {
     param (
         [string]$Path
     )
     
-    Write-Log "Test de la Phase 3 : Élimination des duplications" -Level "TITLE"
+    Write-Log "Test de la Phase 3 : Ã‰limination des duplications" -Level "TITLE"
     
-    # Vérifier si l'outil d'élimination des duplications existe
+    # VÃ©rifier si l'outil d'Ã©limination des duplications existe
     $DuplicationToolPath = "scripts\maintenance\duplication\Manage-Duplications.ps1"
     if (-not (Test-Path -Path $DuplicationToolPath)) {
-        Write-Log "L'outil d'élimination des duplications n'existe pas: $DuplicationToolPath" -Level "ERROR"
+        Write-Log "L'outil d'Ã©limination des duplications n'existe pas: $DuplicationToolPath" -Level "ERROR"
         return $false
     }
     
-    Write-Log "L'outil d'élimination des duplications existe: $DuplicationToolPath" -Level "SUCCESS"
+    Write-Log "L'outil d'Ã©limination des duplications existe: $DuplicationToolPath" -Level "SUCCESS"
     
-    # Exécuter l'outil d'élimination des duplications en mode détection
-    Write-Log "Exécution de l'outil d'élimination des duplications en mode détection..." -Level "INFO"
+    # ExÃ©cuter l'outil d'Ã©limination des duplications en mode dÃ©tection
+    Write-Log "ExÃ©cution de l'outil d'Ã©limination des duplications en mode dÃ©tection..." -Level "INFO"
     
     try {
         & $DuplicationToolPath -Action detect -Path $Path
         
-        # Vérifier si l'exécution a réussi
-        Write-Log "Exécution réussie de l'outil d'élimination des duplications" -Level "SUCCESS"
+        # VÃ©rifier si l'exÃ©cution a rÃ©ussi
+        Write-Log "ExÃ©cution rÃ©ussie de l'outil d'Ã©limination des duplications" -Level "SUCCESS"
         return $true
     } catch {
-        Write-Log "Erreur lors de l'exécution de l'outil d'élimination des duplications: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution de l'outil d'Ã©limination des duplications: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour tester la Phase 4 : Amélioration du système de gestion de scripts
+# Fonction pour tester la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts
 function Test-Phase4 {
     param (
         [string]$Path
     )
     
-    Write-Log "Test de la Phase 4 : Amélioration du système de gestion de scripts" -Level "TITLE"
+    Write-Log "Test de la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts" -Level "TITLE"
     
-    # Vérifier si le ScriptManager existe
+    # VÃ©rifier si le ScriptManager existe
     $ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
     if (-not (Test-Path -Path $ScriptManagerPath)) {
         Write-Log "Le ScriptManager n'existe pas: $ScriptManagerPath" -Level "ERROR"
@@ -178,80 +178,80 @@ function Test-Phase4 {
     
     Write-Log "Le ScriptManager existe: $ScriptManagerPath" -Level "SUCCESS"
     
-    # Tester la fonctionnalité d'inventaire
-    Write-Log "Test de la fonctionnalité d'inventaire..." -Level "INFO"
+    # Tester la fonctionnalitÃ© d'inventaire
+    Write-Log "Test de la fonctionnalitÃ© d'inventaire..." -Level "INFO"
     
     try {
         & $ScriptManagerPath -Action inventory -Path $Path
         
-        # Vérifier si le fichier d'inventaire a été généré
+        # VÃ©rifier si le fichier d'inventaire a Ã©tÃ© gÃ©nÃ©rÃ©
         $InventoryPath = "scripts\manager\data\inventory.json"
         if (Test-Path -Path $InventoryPath) {
-            Write-Log "Fichier d'inventaire généré avec succès: $InventoryPath" -Level "SUCCESS"
+            Write-Log "Fichier d'inventaire gÃ©nÃ©rÃ© avec succÃ¨s: $InventoryPath" -Level "SUCCESS"
             
             # Analyser le fichier d'inventaire
             try {
                 $Inventory = Get-Content -Path $InventoryPath -Raw | ConvertFrom-Json
-                Write-Log "Nombre de scripts inventoriés: $($Inventory.TotalScripts)" -Level "INFO"
+                Write-Log "Nombre de scripts inventoriÃ©s: $($Inventory.TotalScripts)" -Level "INFO"
             } catch {
                 Write-Log "Impossible d'analyser le fichier d'inventaire: $_" -Level "WARNING"
             }
         } else {
-            Write-Log "Le fichier d'inventaire n'a pas été généré: $InventoryPath" -Level "WARNING"
+            Write-Log "Le fichier d'inventaire n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $InventoryPath" -Level "WARNING"
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution de la fonctionnalité d'inventaire: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution de la fonctionnalitÃ© d'inventaire: $_" -Level "ERROR"
         return $false
     }
     
-    # Tester la fonctionnalité d'analyse
-    Write-Log "Test de la fonctionnalité d'analyse..." -Level "INFO"
+    # Tester la fonctionnalitÃ© d'analyse
+    Write-Log "Test de la fonctionnalitÃ© d'analyse..." -Level "INFO"
     
     try {
         & $ScriptManagerPath -Action analyze -Path $Path
         
-        # Vérifier si le fichier d'analyse a été généré
+        # VÃ©rifier si le fichier d'analyse a Ã©tÃ© gÃ©nÃ©rÃ©
         $AnalysisPath = "scripts\manager\data\analysis.json"
         if (Test-Path -Path $AnalysisPath) {
-            Write-Log "Fichier d'analyse généré avec succès: $AnalysisPath" -Level "SUCCESS"
+            Write-Log "Fichier d'analyse gÃ©nÃ©rÃ© avec succÃ¨s: $AnalysisPath" -Level "SUCCESS"
         } else {
-            Write-Log "Le fichier d'analyse n'a pas été généré: $AnalysisPath" -Level "WARNING"
+            Write-Log "Le fichier d'analyse n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $AnalysisPath" -Level "WARNING"
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution de la fonctionnalité d'analyse: $_" -Level "WARNING"
-        # Ne pas échouer le test complet si cette fonctionnalité échoue
+        Write-Log "Erreur lors de l'exÃ©cution de la fonctionnalitÃ© d'analyse: $_" -Level "WARNING"
+        # Ne pas Ã©chouer le test complet si cette fonctionnalitÃ© Ã©choue
     }
     
-    # Tester la fonctionnalité de documentation
-    Write-Log "Test de la fonctionnalité de documentation..." -Level "INFO"
+    # Tester la fonctionnalitÃ© de documentation
+    Write-Log "Test de la fonctionnalitÃ© de documentation..." -Level "INFO"
     
     try {
         & $ScriptManagerPath -Action document -Path $Path -Format Markdown
         
-        # Vérifier si le fichier de documentation a été généré
+        # VÃ©rifier si le fichier de documentation a Ã©tÃ© gÃ©nÃ©rÃ©
         $DocumentationPath = "scripts\manager\docs\script_documentation.markdown"
         if (Test-Path -Path $DocumentationPath) {
-            Write-Log "Fichier de documentation généré avec succès: $DocumentationPath" -Level "SUCCESS"
+            Write-Log "Fichier de documentation gÃ©nÃ©rÃ© avec succÃ¨s: $DocumentationPath" -Level "SUCCESS"
         } else {
-            Write-Log "Le fichier de documentation n'a pas été généré: $DocumentationPath" -Level "WARNING"
+            Write-Log "Le fichier de documentation n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $DocumentationPath" -Level "WARNING"
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution de la fonctionnalité de documentation: $_" -Level "WARNING"
-        # Ne pas échouer le test complet si cette fonctionnalité échoue
+        Write-Log "Erreur lors de l'exÃ©cution de la fonctionnalitÃ© de documentation: $_" -Level "WARNING"
+        # Ne pas Ã©chouer le test complet si cette fonctionnalitÃ© Ã©choue
     }
     
-    # Tester la fonctionnalité de tableau de bord
-    Write-Log "Test de la fonctionnalité de tableau de bord..." -Level "INFO"
+    # Tester la fonctionnalitÃ© de tableau de bord
+    Write-Log "Test de la fonctionnalitÃ© de tableau de bord..." -Level "INFO"
     
     try {
         & $ScriptManagerPath -Action dashboard
-        Write-Log "Fonctionnalité de tableau de bord exécutée avec succès" -Level "SUCCESS"
+        Write-Log "FonctionnalitÃ© de tableau de bord exÃ©cutÃ©e avec succÃ¨s" -Level "SUCCESS"
     } catch {
-        Write-Log "Erreur lors de l'exécution de la fonctionnalité de tableau de bord: $_" -Level "WARNING"
-        # Ne pas échouer le test complet si cette fonctionnalité échoue
+        Write-Log "Erreur lors de l'exÃ©cution de la fonctionnalitÃ© de tableau de bord: $_" -Level "WARNING"
+        # Ne pas Ã©chouer le test complet si cette fonctionnalitÃ© Ã©choue
     }
     
-    # Si au moins la fonctionnalité d'inventaire fonctionne, considérer que la phase 4 est réussie
+    # Si au moins la fonctionnalitÃ© d'inventaire fonctionne, considÃ©rer que la phase 4 est rÃ©ussie
     return $true
 }
 
@@ -261,14 +261,14 @@ function Test-AllPhases {
         [string]$Path
     )
     
-    Write-Log "=== Test des 4 phases du projet de réorganisation des scripts ===" -Level "TITLE"
-    Write-Log "Chemin des scripts à tester: $Path" -Level "INFO"
+    Write-Log "=== Test des 4 phases du projet de rÃ©organisation des scripts ===" -Level "TITLE"
+    Write-Log "Chemin des scripts Ã  tester: $Path" -Level "INFO"
     
-    # Créer le dossier de tests s'il n'existe pas
+    # CrÃ©er le dossier de tests s'il n'existe pas
     $TestsFolder = "scripts\tests"
     if (-not (Test-Path -Path $TestsFolder)) {
         New-Item -ItemType Directory -Path $TestsFolder -Force | Out-Null
-        Write-Log "Dossier de tests créé: $TestsFolder" -Level "INFO"
+        Write-Log "Dossier de tests crÃ©Ã©: $TestsFolder" -Level "INFO"
     }
     
     # Tester chaque phase
@@ -277,32 +277,32 @@ function Test-AllPhases {
     $Phase3Success = Test-Phase3 -Path $Path
     $Phase4Success = Test-Phase4 -Path $Path
     
-    # Afficher un résumé des résultats
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
     Write-Log "" -Level "INFO"
-    Write-Log "=== Résumé des tests ===" -Level "TITLE"
-    Write-Log "Phase 1 (Mise à jour des références): $(if ($Phase1Success) { "RÉUSSI" } else { "ÉCHOUÉ" })" -Level $(if ($Phase1Success) { "SUCCESS" } else { "ERROR" })
-    Write-Log "Phase 2 (Standardisation des scripts): $(if ($Phase2Success) { "RÉUSSI" } else { "ÉCHOUÉ" })" -Level $(if ($Phase2Success) { "SUCCESS" } else { "ERROR" })
-    Write-Log "Phase 3 (Élimination des duplications): $(if ($Phase3Success) { "RÉUSSI" } else { "ÉCHOUÉ" })" -Level $(if ($Phase3Success) { "SUCCESS" } else { "ERROR" })
-    Write-Log "Phase 4 (Amélioration du système de gestion): $(if ($Phase4Success) { "RÉUSSI" } else { "ÉCHOUÉ" })" -Level $(if ($Phase4Success) { "SUCCESS" } else { "ERROR" })
+    Write-Log "=== RÃ©sumÃ© des tests ===" -Level "TITLE"
+    Write-Log "Phase 1 (Mise Ã  jour des rÃ©fÃ©rences): $(if ($Phase1Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" })" -Level $(if ($Phase1Success) { "SUCCESS" } else { "ERROR" })
+    Write-Log "Phase 2 (Standardisation des scripts): $(if ($Phase2Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" })" -Level $(if ($Phase2Success) { "SUCCESS" } else { "ERROR" })
+    Write-Log "Phase 3 (Ã‰limination des duplications): $(if ($Phase3Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" })" -Level $(if ($Phase3Success) { "SUCCESS" } else { "ERROR" })
+    Write-Log "Phase 4 (AmÃ©lioration du systÃ¨me de gestion): $(if ($Phase4Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" })" -Level $(if ($Phase4Success) { "SUCCESS" } else { "ERROR" })
     
-    # Calculer le résultat global
+    # Calculer le rÃ©sultat global
     $SuccessCount = @($Phase1Success, $Phase2Success, $Phase3Success, $Phase4Success).Where({ $_ -eq $true }).Count
     $TotalCount = 4
     
     if ($SuccessCount -eq $TotalCount) {
-        Write-Log "Toutes les phases ont réussi ($SuccessCount/$TotalCount)" -Level "SUCCESS"
+        Write-Log "Toutes les phases ont rÃ©ussi ($SuccessCount/$TotalCount)" -Level "SUCCESS"
         return $true
     } elseif ($SuccessCount -ge ($TotalCount / 2)) {
-        Write-Log "La plupart des phases ont réussi ($SuccessCount/$TotalCount)" -Level "WARNING"
+        Write-Log "La plupart des phases ont rÃ©ussi ($SuccessCount/$TotalCount)" -Level "WARNING"
         return $true
     } else {
-        Write-Log "La plupart des phases ont échoué ($SuccessCount/$TotalCount)" -Level "ERROR"
+        Write-Log "La plupart des phases ont Ã©chouÃ© ($SuccessCount/$TotalCount)" -Level "ERROR"
         return $false
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $Success = Test-AllPhases -Path $Path
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $Success

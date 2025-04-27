@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider le tableau récapitulatif des propriétés communes de System.Exception.
+    Tests pour valider le tableau rÃ©capitulatif des propriÃ©tÃ©s communes de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les informations fournies
-    dans le tableau récapitulatif des propriétés communes de System.Exception.
+    dans le tableau rÃ©capitulatif des propriÃ©tÃ©s communes de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,23 +14,23 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests du tableau récapitulatif des propriétés communes de System.Exception" {
-    Context "Vérification des types et caractéristiques des propriétés" {
-        It "Message devrait être une chaîne non modifiable" {
+# DÃ©finir les tests
+Describe "Tests du tableau rÃ©capitulatif des propriÃ©tÃ©s communes de System.Exception" {
+    Context "VÃ©rification des types et caractÃ©ristiques des propriÃ©tÃ©s" {
+        It "Message devrait Ãªtre une chaÃ®ne non modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Message | Should -BeOfType [string]
             $exception.Message | Should -Be "Message de test"
 
-            # Vérifier que Message n'est pas modifiable (devrait générer une erreur)
+            # VÃ©rifier que Message n'est pas modifiable (devrait gÃ©nÃ©rer une erreur)
             { $exception.Message = "Nouveau message" } | Should -Throw
         }
 
-        It "StackTrace devrait être une chaîne non modifiable générée automatiquement" {
+        It "StackTrace devrait Ãªtre une chaÃ®ne non modifiable gÃ©nÃ©rÃ©e automatiquement" {
             try {
                 throw [System.Exception]::new("Message de test")
             }
@@ -38,50 +38,50 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
                 $_.Exception.StackTrace | Should -BeOfType [string]
                 $_.Exception.StackTrace | Should -Not -BeNullOrEmpty
 
-                # Vérifier que StackTrace n'est pas modifiable (devrait générer une erreur)
+                # VÃ©rifier que StackTrace n'est pas modifiable (devrait gÃ©nÃ©rer une erreur)
                 { $_.Exception.StackTrace = "Nouvelle trace" } | Should -Throw
             }
         }
 
-        It "InnerException devrait être une exception non modifiable" {
+        It "InnerException devrait Ãªtre une exception non modifiable" {
             $innerException = [System.ArgumentException]::new("Argument invalide")
-            $outerException = [System.InvalidOperationException]::new("Opération invalide", $innerException)
+            $outerException = [System.InvalidOperationException]::new("OpÃ©ration invalide", $innerException)
 
             $outerException.InnerException | Should -BeOfType [System.ArgumentException]
             $outerException.InnerException.Message | Should -Be "Argument invalide"
 
-            # Vérifier que InnerException n'est pas modifiable (devrait générer une erreur)
+            # VÃ©rifier que InnerException n'est pas modifiable (devrait gÃ©nÃ©rer une erreur)
             { $outerException.InnerException = [System.Exception]::new("Nouvelle exception") } | Should -Throw
         }
 
-        It "Source devrait être une chaîne modifiable" {
+        It "Source devrait Ãªtre une chaÃ®ne modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Source | Should -BeOfType [string] -Or $exception.Source | Should -BeNullOrEmpty
 
-            # Vérifier que Source est modifiable
+            # VÃ©rifier que Source est modifiable
             $exception.Source = "SourceTest"
             $exception.Source | Should -Be "SourceTest"
         }
 
-        It "HResult devrait être un entier modifiable" {
+        It "HResult devrait Ãªtre un entier modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.HResult | Should -BeOfType [int]
 
-            # Vérifier que HResult est modifiable
+            # VÃ©rifier que HResult est modifiable
             $exception.HResult = 0x80004005  # E_FAIL
             $exception.HResult | Should -Be 0x80004005
         }
 
-        It "Data devrait être un IDictionary modifiable" {
+        It "Data devrait Ãªtre un IDictionary modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Data | Should -BeOfType [System.Collections.IDictionary]
 
-            # Vérifier que le contenu de Data est modifiable
+            # VÃ©rifier que le contenu de Data est modifiable
             $exception.Data["TestKey"] = "TestValue"
             $exception.Data["TestKey"] | Should -Be "TestValue"
         }
 
-        It "TargetSite devrait être un MethodBase non modifiable" {
+        It "TargetSite devrait Ãªtre un MethodBase non modifiable" {
             try {
                 throw [System.Exception]::new("Message de test")
             }
@@ -89,19 +89,19 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
                 if ($_.Exception.TargetSite -ne $null) {
                     $_.Exception.TargetSite | Should -BeOfType [System.Reflection.MethodBase]
 
-                    # Vérifier que TargetSite n'est pas modifiable (devrait générer une erreur)
+                    # VÃ©rifier que TargetSite n'est pas modifiable (devrait gÃ©nÃ©rer une erreur)
                     { $_.Exception.TargetSite = $null } | Should -Throw
                 }
                 else {
-                    # Dans certains environnements, TargetSite peut être null
+                    # Dans certains environnements, TargetSite peut Ãªtre null
                     $true | Should -Be $true
                 }
             }
         }
     }
 
-    Context "Vérification des méthodes" {
-        It "ToString() devrait retourner une représentation textuelle complète" {
+    Context "VÃ©rification des mÃ©thodes" {
+        It "ToString() devrait retourner une reprÃ©sentation textuelle complÃ¨te" {
             $exception = [System.Exception]::new("Message de test")
             $toString = $exception.ToString()
 
@@ -123,8 +123,8 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
         }
     }
 
-    Context "Vérification des scénarios d'utilisation" {
-        It "Devrait permettre l'affichage à l'utilisateur avec Message et Source" {
+    Context "VÃ©rification des scÃ©narios d'utilisation" {
+        It "Devrait permettre l'affichage Ã  l'utilisateur avec Message et Source" {
             $exception = [System.Exception]::new("Message d'erreur")
             $exception.Source = "MonApplication"
 
@@ -142,9 +142,9 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
             $logEntry | Should -Match "Message d'erreur"
         }
 
-        It "Devrait permettre le diagnostic avancé avec GetBaseException() et autres propriétés" {
+        It "Devrait permettre le diagnostic avancÃ© avec GetBaseException() et autres propriÃ©tÃ©s" {
             $innerException = [System.FormatException]::new("Format invalide")
-            $outerException = [System.InvalidOperationException]::new("Opération invalide", $innerException)
+            $outerException = [System.InvalidOperationException]::new("OpÃ©ration invalide", $innerException)
 
             $diagnosticInfo = [PSCustomObject]@{
                 RootExceptionType = $outerException.GetBaseException().GetType().FullName
@@ -170,10 +170,10 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
         }
     }
 
-    Context "Vérification des bonnes pratiques" {
-        It "Devrait permettre une approche hiérarchique pour accéder aux informations" {
+    Context "VÃ©rification des bonnes pratiques" {
+        It "Devrait permettre une approche hiÃ©rarchique pour accÃ©der aux informations" {
             $innerException = [System.FormatException]::new("Format invalide")
-            $outerException = [System.InvalidOperationException]::new("Opération invalide", $innerException)
+            $outerException = [System.InvalidOperationException]::new("OpÃ©ration invalide", $innerException)
             $outerException.Source = "MonApplication"
             $outerException.Data["Context"] = "Test"
 
@@ -195,7 +195,7 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
                 $standardInfo.Data[$key] = $outerException.Data[$key]
             }
 
-            # Niveau 3 (avancé)
+            # Niveau 3 (avancÃ©)
             $advancedInfo = [PSCustomObject]@{
                 Type = $outerException.GetType().FullName
                 Message = $outerException.Message
@@ -211,7 +211,7 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
             }
 
             $basicInfo.Type | Should -Be "System.InvalidOperationException"
-            $basicInfo.Message | Should -Be "Opération invalide"
+            $basicInfo.Message | Should -Be "OpÃ©ration invalide"
 
             $standardInfo.Source | Should -Be "MonApplication"
             $standardInfo.InnerExceptionType | Should -Be "System.FormatException"
@@ -221,7 +221,7 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
             $advancedInfo.Data["Context"] | Should -Be "Test"
         }
 
-        It "Devrait permettre un traitement conditionnel basé sur le type d'exception et HResult" {
+        It "Devrait permettre un traitement conditionnel basÃ© sur le type d'exception et HResult" {
             function Test-ExceptionHandling {
                 param (
                     [System.Exception]$Exception
@@ -229,25 +229,25 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
 
                 $result = ""
 
-                # Traitement basé sur le type d'exception
+                # Traitement basÃ© sur le type d'exception
                 switch ($Exception.GetBaseException().GetType().FullName) {
                     "System.IO.FileNotFoundException" {
-                        $result = "Fichier non trouvé"
+                        $result = "Fichier non trouvÃ©"
                     }
                     "System.FormatException" {
                         $result = "Format invalide"
                     }
                     default {
-                        # Traitement basé sur HResult
+                        # Traitement basÃ© sur HResult
                         switch ($Exception.HResult) {
                             0x80070002 { # ERROR_FILE_NOT_FOUND
-                                $result = "Fichier non trouvé (HResult)"
+                                $result = "Fichier non trouvÃ© (HResult)"
                             }
                             0x80070005 { # ERROR_ACCESS_DENIED
-                                $result = "Accès refusé (HResult)"
+                                $result = "AccÃ¨s refusÃ© (HResult)"
                             }
                             default {
-                                $result = "Erreur non spécifique"
+                                $result = "Erreur non spÃ©cifique"
                             }
                         }
                     }
@@ -256,17 +256,17 @@ Describe "Tests du tableau récapitulatif des propriétés communes de System.Ex
                 return $result
             }
 
-            $fileEx = [System.IO.FileNotFoundException]::new("Fichier non trouvé")
+            $fileEx = [System.IO.FileNotFoundException]::new("Fichier non trouvÃ©")
             $formatEx = [System.FormatException]::new("Format invalide")
-            $accessEx = [System.Exception]::new("Accès refusé")
+            $accessEx = [System.Exception]::new("AccÃ¨s refusÃ©")
             $accessEx.HResult = 0x80070005  # ERROR_ACCESS_DENIED
 
-            Test-ExceptionHandling -Exception $fileEx | Should -Be "Fichier non trouvé"
+            Test-ExceptionHandling -Exception $fileEx | Should -Be "Fichier non trouvÃ©"
             Test-ExceptionHandling -Exception $formatEx | Should -Be "Format invalide"
-            Test-ExceptionHandling -Exception $accessEx | Should -Be "Accès refusé (HResult)"
+            Test-ExceptionHandling -Exception $accessEx | Should -Be "AccÃ¨s refusÃ© (HResult)"
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

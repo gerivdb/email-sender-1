@@ -1,35 +1,35 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les modules de rapports d'analyse.
+    ExÃ©cute tous les tests unitaires pour les modules de rapports d'analyse.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les modules de rapports d'analyse
+    Ce script exÃ©cute tous les tests unitaires pour les modules de rapports d'analyse
     en utilisant le framework Pester.
 
 .PARAMETER TestName
-    Le nom des tests à exécuter. Si non spécifié, tous les tests seront exécutés.
+    Le nom des tests Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests seront exÃ©cutÃ©s.
 
 .PARAMETER OutputFormat
-    Le format de sortie des résultats des tests.
+    Le format de sortie des rÃ©sultats des tests.
     Valeurs possibles: "Normal", "Detailed", "Diagnostic", "Minimal", "None"
-    Par défaut: "Detailed"
+    Par dÃ©faut: "Detailed"
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats des tests.
-    Si non spécifié, les résultats ne seront pas enregistrés.
+    Le chemin oÃ¹ enregistrer les rÃ©sultats des tests.
+    Si non spÃ©cifiÃ©, les rÃ©sultats ne seront pas enregistrÃ©s.
 
 .PARAMETER ShowCodeCoverage
     Indique s'il faut afficher la couverture de code.
-    Par défaut: $false
+    Par dÃ©faut: $false
 
 .EXAMPLE
     .\Invoke-AllReportingTests.ps1
-    Exécute tous les tests unitaires avec les paramètres par défaut.
+    ExÃ©cute tous les tests unitaires avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Invoke-AllReportingTests.ps1 -TestName "PRReportTemplates" -OutputFormat "Diagnostic" -ShowCodeCoverage
-    Exécute uniquement les tests pour le module PRReportTemplates avec un format de sortie détaillé et affiche la couverture de code.
+    ExÃ©cute uniquement les tests pour le module PRReportTemplates avec un format de sortie dÃ©taillÃ© et affiche la couverture de code.
 
 .NOTES
     Version: 1.0
@@ -53,9 +53,9 @@ param(
     [switch]$ShowCodeCoverage
 )
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
     exit 1
 }
 
@@ -66,40 +66,40 @@ Import-Module Pester
 $testsPath = $PSScriptRoot
 $testFiles = Get-ChildItem -Path $testsPath -Filter "*.Tests.ps1" -Recurse
 
-# Filtrer les fichiers de test si un nom est spécifié
+# Filtrer les fichiers de test si un nom est spÃ©cifiÃ©
 if (-not [string]::IsNullOrWhiteSpace($TestName)) {
     $testFiles = $testFiles | Where-Object { $_.BaseName -like "*$TestName*" }
 }
 
-# Vérifier s'il y a des fichiers de test
+# VÃ©rifier s'il y a des fichiers de test
 if ($testFiles.Count -eq 0) {
-    Write-Warning "Aucun fichier de test trouvé."
+    Write-Warning "Aucun fichier de test trouvÃ©."
     exit 1
 }
 
 # Afficher les fichiers de test
-Write-Host "Fichiers de test trouvés:" -ForegroundColor Cyan
+Write-Host "Fichiers de test trouvÃ©s:" -ForegroundColor Cyan
 foreach ($file in $testFiles) {
     Write-Host "  $($file.Name)" -ForegroundColor White
 }
 
-# Déterminer la version de Pester
+# DÃ©terminer la version de Pester
 $pesterVersion = (Get-Module -Name Pester -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1).Version
 Write-Host "Utilisation de Pester version $pesterVersion" -ForegroundColor Cyan
 
-# Préparer les paramètres pour Invoke-Pester
+# PrÃ©parer les paramÃ¨tres pour Invoke-Pester
 $pesterParams = @{}
 
-# Paramètres communs à toutes les versions
+# ParamÃ¨tres communs Ã  toutes les versions
 if (-not [string]::IsNullOrWhiteSpace($OutputPath)) {
     $pesterParams["OutputFile"] = $OutputPath
     $pesterParams["OutputFormat"] = "NUnitXml"
 }
 
-# Exécuter les tests avec les paramètres appropriés selon la version
+# ExÃ©cuter les tests avec les paramÃ¨tres appropriÃ©s selon la version
 $results = @()
 foreach ($file in $testFiles) {
-    Write-Host "Exécution des tests: $($file.Name)" -ForegroundColor Yellow
+    Write-Host "ExÃ©cution des tests: $($file.Name)" -ForegroundColor Yellow
 
     $fileParams = $pesterParams.Clone()
     $fileParams["Path"] = $file.FullName
@@ -142,17 +142,17 @@ foreach ($result in $results) {
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $totalCount" -ForegroundColor White
-Write-Host "  Tests réussis: $passedCount" -ForegroundColor Green
-Write-Host "  Tests échoués: $failedCount" -ForegroundColor Red
-Write-Host "  Tests ignorés: $skippedCount" -ForegroundColor Yellow
-Write-Host "  Durée totale: $($totalDuration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $totalCount" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $passedCount" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $failedCount" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $skippedCount" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale: $($totalDuration.TotalSeconds) secondes" -ForegroundColor White
 
 if ($ShowCodeCoverage) {
-    Write-Host "`nCouverture de code non disponible dans cette version simplifiée." -ForegroundColor Yellow
+    Write-Host "`nCouverture de code non disponible dans cette version simplifiÃ©e." -ForegroundColor Yellow
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

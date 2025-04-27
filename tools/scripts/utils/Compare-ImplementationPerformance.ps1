@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Compare les performances entre différentes implémentations.
+    Compare les performances entre diffÃ©rentes implÃ©mentations.
 .DESCRIPTION
-    Ce script compare les performances entre l'implémentation originale basée sur des classes
-    et l'implémentation simplifiée basée sur des objets personnalisés.
+    Ce script compare les performances entre l'implÃ©mentation originale basÃ©e sur des classes
+    et l'implÃ©mentation simplifiÃ©e basÃ©e sur des objets personnalisÃ©s.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport de performance.
+    Chemin oÃ¹ enregistrer le rapport de performance.
 .PARAMETER TestFiles
-    Nombre de fichiers de test à générer.
+    Nombre de fichiers de test Ã  gÃ©nÃ©rer.
 .PARAMETER TestIterations
-    Nombre d'itérations pour chaque test.
+    Nombre d'itÃ©rations pour chaque test.
 .EXAMPLE
     .\Compare-ImplementationPerformance.ps1 -TestFiles 10 -TestIterations 5
 .NOTES
@@ -31,11 +31,11 @@ param(
     [int]$TestIterations = 3
 )
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PerformanceComparisonTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -50,7 +50,7 @@ function New-TestFile {
         New-Item -Path $directory -ItemType Directory -Force | Out-Null
     }
 
-    # Répéter le contenu pour augmenter la taille du fichier
+    # RÃ©pÃ©ter le contenu pour augmenter la taille du fichier
     $repeatedContent = ""
     for ($i = 0; $i -lt $Size; $i++) {
         $repeatedContent += $Content
@@ -60,7 +60,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Fonction pour générer un contenu de fichier aléatoire
+# Fonction pour gÃ©nÃ©rer un contenu de fichier alÃ©atoire
 function New-RandomFileContent {
     param(
         [string]$Type,
@@ -71,7 +71,7 @@ function New-RandomFileContent {
 
     $content = "# Test $Type File`n"
 
-    # Générer des fonctions
+    # GÃ©nÃ©rer des fonctions
     for ($i = 1; $i -le $FunctionCount; $i++) {
         switch ($Type) {
             "PowerShell" {
@@ -113,7 +113,7 @@ function New-RandomFileContent {
         }
     }
 
-    # Générer des classes
+    # GÃ©nÃ©rer des classes
     for ($i = 1; $i -le $ClassCount; $i++) {
         switch ($Type) {
             "PowerShell" {
@@ -195,7 +195,7 @@ function Measure-Performance {
     for ($i = 0; $i -lt $Iterations; $i++) {
         $filePath = $FilePaths[0]
 
-        # Créer un indexeur
+        # CrÃ©er un indexeur
         $indexer = New-FileContentIndexer -IndexPath $testDir
 
         # Mesurer le temps d'indexation
@@ -208,7 +208,7 @@ function Measure-Performance {
 
     # Test 2: Indexation de plusieurs fichiers
     for ($i = 0; $i -lt $Iterations; $i++) {
-        # Créer un indexeur
+        # CrÃ©er un indexeur
         $indexer = New-FileContentIndexer -IndexPath $testDir
 
         # Mesurer le temps d'indexation
@@ -219,19 +219,19 @@ function Measure-Performance {
         $results.MultipleFileIndexing += $stopwatch.ElapsedMilliseconds
     }
 
-    # Test 3: Indexation incrémentale
+    # Test 3: Indexation incrÃ©mentale
     for ($i = 0; $i -lt $Iterations; $i++) {
         $filePath = $FilePaths[0]
         $content = Get-Content -Path $filePath -Raw
         $modifiedContent = $content.Replace("Test value 1", "Modified value 1")
 
-        # Créer un indexeur
+        # CrÃ©er un indexeur
         $indexer = New-FileContentIndexer -IndexPath $testDir
 
         # Indexer le fichier original
         New-FileIndex -Indexer $indexer -FilePath $filePath | Out-Null
 
-        # Mesurer le temps d'indexation incrémentale
+        # Mesurer le temps d'indexation incrÃ©mentale
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         New-IncrementalFileIndex -Indexer $indexer -FilePath $filePath -OldContent $content -NewContent $modifiedContent | Out-Null
         $stopwatch.Stop()
@@ -252,7 +252,7 @@ function Measure-Performance {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-PerformanceReport {
     param(
         [hashtable]$SimpleResults,
@@ -288,28 +288,28 @@ function New-PerformanceReport {
     <div class="info-box">
         <p><strong>Date du rapport:</strong> $reportDate</p>
         <p><strong>Ordinateur:</strong> $computerName</p>
-        <p><strong>Système d'exploitation:</strong> $($osInfo.Caption) $($osInfo.Version) $($osInfo.OSArchitecture)</p>
+        <p><strong>SystÃ¨me d'exploitation:</strong> $($osInfo.Caption) $($osInfo.Version) $($osInfo.OSArchitecture)</p>
         <p><strong>PowerShell Version:</strong> $($PSVersionTable.PSVersion)</p>
         <p><strong>Edition:</strong> $($PSVersionTable.PSEdition)</p>
     </div>
 
-    <h2>Résumé des performances</h2>
+    <h2>RÃ©sumÃ© des performances</h2>
     <table>
         <tr>
             <th>Test</th>
-            <th>Implémentation simplifiée (ms)</th>
-            <th>Implémentation originale (ms)</th>
-            <th>Différence (ms)</th>
-            <th>Différence (%)</th>
+            <th>ImplÃ©mentation simplifiÃ©e (ms)</th>
+            <th>ImplÃ©mentation originale (ms)</th>
+            <th>DiffÃ©rence (ms)</th>
+            <th>DiffÃ©rence (%)</th>
         </tr>
 "@
 
-    # Ajouter les résultats au tableau
+    # Ajouter les rÃ©sultats au tableau
     $tests = @("SingleFileIndexing", "MultipleFileIndexing", "IncrementalIndexing")
     $testNames = @{
         "SingleFileIndexing"   = "Indexation d'un seul fichier"
         "MultipleFileIndexing" = "Indexation de plusieurs fichiers"
-        "IncrementalIndexing"  = "Indexation incrémentale"
+        "IncrementalIndexing"  = "Indexation incrÃ©mentale"
     }
 
     foreach ($test in $tests) {
@@ -342,17 +342,17 @@ function New-PerformanceReport {
         <canvas id="performanceChart"></canvas>
     </div>
 
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <h3>Indexation d'un seul fichier</h3>
     <table>
         <tr>
-            <th>Itération</th>
-            <th>Implémentation simplifiée (ms)</th>
-            <th>Implémentation originale (ms)</th>
+            <th>ItÃ©ration</th>
+            <th>ImplÃ©mentation simplifiÃ©e (ms)</th>
+            <th>ImplÃ©mentation originale (ms)</th>
         </tr>
 "@
 
-    # Ajouter les détails pour l'indexation d'un seul fichier
+    # Ajouter les dÃ©tails pour l'indexation d'un seul fichier
     for ($i = 0; $i -lt $SimpleResults.Results.SingleFileIndexing.Count; $i++) {
         $simpleTime = $SimpleResults.Results.SingleFileIndexing[$i]
         $originalTime = $OriginalResults.Results.SingleFileIndexing[$i]
@@ -372,13 +372,13 @@ function New-PerformanceReport {
     <h3>Indexation de plusieurs fichiers</h3>
     <table>
         <tr>
-            <th>Itération</th>
-            <th>Implémentation simplifiée (ms)</th>
-            <th>Implémentation originale (ms)</th>
+            <th>ItÃ©ration</th>
+            <th>ImplÃ©mentation simplifiÃ©e (ms)</th>
+            <th>ImplÃ©mentation originale (ms)</th>
         </tr>
 "@
 
-    # Ajouter les détails pour l'indexation de plusieurs fichiers
+    # Ajouter les dÃ©tails pour l'indexation de plusieurs fichiers
     for ($i = 0; $i -lt $SimpleResults.Results.MultipleFileIndexing.Count; $i++) {
         $simpleTime = $SimpleResults.Results.MultipleFileIndexing[$i]
         $originalTime = $OriginalResults.Results.MultipleFileIndexing[$i]
@@ -395,16 +395,16 @@ function New-PerformanceReport {
     $html += @"
     </table>
 
-    <h3>Indexation incrémentale</h3>
+    <h3>Indexation incrÃ©mentale</h3>
     <table>
         <tr>
-            <th>Itération</th>
-            <th>Implémentation simplifiée (ms)</th>
-            <th>Implémentation originale (ms)</th>
+            <th>ItÃ©ration</th>
+            <th>ImplÃ©mentation simplifiÃ©e (ms)</th>
+            <th>ImplÃ©mentation originale (ms)</th>
         </tr>
 "@
 
-    # Ajouter les détails pour l'indexation incrémentale
+    # Ajouter les dÃ©tails pour l'indexation incrÃ©mentale
     for ($i = 0; $i -lt $SimpleResults.Results.IncrementalIndexing.Count; $i++) {
         $simpleTime = $SimpleResults.Results.IncrementalIndexing[$i]
         $originalTime = $OriginalResults.Results.IncrementalIndexing[$i]
@@ -422,15 +422,15 @@ function New-PerformanceReport {
     </table>
 
     <script>
-        // Créer le graphique
+        // CrÃ©er le graphique
         const ctx = document.getElementById('performanceChart').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Indexation d\'un seul fichier', 'Indexation de plusieurs fichiers', 'Indexation incrémentale'],
+                labels: ['Indexation d\'un seul fichier', 'Indexation de plusieurs fichiers', 'Indexation incrÃ©mentale'],
                 datasets: [
                     {
-                        label: 'Implémentation simplifiée',
+                        label: 'ImplÃ©mentation simplifiÃ©e',
                         data: [
                             $([Math]::Round($SimpleResults.Averages.SingleFileIndexing, 2)),
                             $([Math]::Round($SimpleResults.Averages.MultipleFileIndexing, 2)),
@@ -441,7 +441,7 @@ function New-PerformanceReport {
                         borderWidth: 1
                     },
                     {
-                        label: 'Implémentation originale',
+                        label: 'ImplÃ©mentation originale',
                         data: [
                             $([Math]::Round($OriginalResults.Averages.SingleFileIndexing, 2)),
                             $([Math]::Round($OriginalResults.Averages.MultipleFileIndexing, 2)),
@@ -475,8 +475,8 @@ function New-PerformanceReport {
     return $OutputPath
 }
 
-# Créer des fichiers de test
-Write-Host "Création de fichiers de test..." -ForegroundColor Cyan
+# CrÃ©er des fichiers de test
+Write-Host "CrÃ©ation de fichiers de test..." -ForegroundColor Cyan
 $testFilePaths = @()
 
 for ($i = 1; $i -le $NumberOfTestFiles; $i++) {
@@ -498,51 +498,51 @@ for ($i = 1; $i -le $NumberOfTestFiles; $i++) {
     $testFilePaths += $filePath
 }
 
-Write-Host "  $($testFilePaths.Count) fichiers de test créés" -ForegroundColor Green
+Write-Host "  $($testFilePaths.Count) fichiers de test crÃ©Ã©s" -ForegroundColor Green
 Write-Host ""
 
-# Mesurer les performances de l'implémentation simplifiée
-Write-Host "Mesure des performances de l'implémentation simplifiée..." -ForegroundColor Cyan
+# Mesurer les performances de l'implÃ©mentation simplifiÃ©e
+Write-Host "Mesure des performances de l'implÃ©mentation simplifiÃ©e..." -ForegroundColor Cyan
 $simpleModulePath = Join-Path -Path $PSScriptRoot -ChildPath "SimpleFileContentIndexer.psm1"
 $simpleResults = Measure-Performance -ModulePath $simpleModulePath -FilePaths $testFilePaths -Iterations $TestIterations
-Write-Host "  Mesures terminées" -ForegroundColor Green
+Write-Host "  Mesures terminÃ©es" -ForegroundColor Green
 Write-Host ""
 
-# Mesurer les performances de l'implémentation originale
-Write-Host "Mesure des performances de l'implémentation originale..." -ForegroundColor Cyan
+# Mesurer les performances de l'implÃ©mentation originale
+Write-Host "Mesure des performances de l'implÃ©mentation originale..." -ForegroundColor Cyan
 $originalModulePath = Join-Path -Path $PSScriptRoot -ChildPath "CompatibleCode\FileContentIndexer.psm1"
 $originalResults = Measure-Performance -ModulePath $originalModulePath -FilePaths $testFilePaths -Iterations $TestIterations
-Write-Host "  Mesures terminées" -ForegroundColor Green
+Write-Host "  Mesures terminÃ©es" -ForegroundColor Green
 Write-Host ""
 
-# Générer le rapport
-Write-Host "Génération du rapport..." -ForegroundColor Cyan
+# GÃ©nÃ©rer le rapport
+Write-Host "GÃ©nÃ©ration du rapport..." -ForegroundColor Cyan
 $reportPath = New-PerformanceReport -SimpleResults $simpleResults -OriginalResults $originalResults -OutputPath $OutputPath
-Write-Host "  Rapport généré: $reportPath" -ForegroundColor Green
+Write-Host "  Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 Write-Host ""
 
-# Afficher un résumé
-Write-Host "Résumé des performances:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "RÃ©sumÃ© des performances:" -ForegroundColor Cyan
 Write-Host "  Indexation d'un seul fichier:" -ForegroundColor Yellow
-Write-Host "    Implémentation simplifiée: $([Math]::Round($simpleResults.Averages.SingleFileIndexing, 2)) ms" -ForegroundColor White
-Write-Host "    Implémentation originale: $([Math]::Round($originalResults.Averages.SingleFileIndexing, 2)) ms" -ForegroundColor White
+Write-Host "    ImplÃ©mentation simplifiÃ©e: $([Math]::Round($simpleResults.Averages.SingleFileIndexing, 2)) ms" -ForegroundColor White
+Write-Host "    ImplÃ©mentation originale: $([Math]::Round($originalResults.Averages.SingleFileIndexing, 2)) ms" -ForegroundColor White
 Write-Host "  Indexation de plusieurs fichiers:" -ForegroundColor Yellow
-Write-Host "    Implémentation simplifiée: $([Math]::Round($simpleResults.Averages.MultipleFileIndexing, 2)) ms" -ForegroundColor White
-Write-Host "    Implémentation originale: $([Math]::Round($originalResults.Averages.MultipleFileIndexing, 2)) ms" -ForegroundColor White
-Write-Host "  Indexation incrémentale:" -ForegroundColor Yellow
-Write-Host "    Implémentation simplifiée: $([Math]::Round($simpleResults.Averages.IncrementalIndexing, 2)) ms" -ForegroundColor White
-Write-Host "    Implémentation originale: $([Math]::Round($originalResults.Averages.IncrementalIndexing, 2)) ms" -ForegroundColor White
+Write-Host "    ImplÃ©mentation simplifiÃ©e: $([Math]::Round($simpleResults.Averages.MultipleFileIndexing, 2)) ms" -ForegroundColor White
+Write-Host "    ImplÃ©mentation originale: $([Math]::Round($originalResults.Averages.MultipleFileIndexing, 2)) ms" -ForegroundColor White
+Write-Host "  Indexation incrÃ©mentale:" -ForegroundColor Yellow
+Write-Host "    ImplÃ©mentation simplifiÃ©e: $([Math]::Round($simpleResults.Averages.IncrementalIndexing, 2)) ms" -ForegroundColor White
+Write-Host "    ImplÃ©mentation originale: $([Math]::Round($originalResults.Averages.IncrementalIndexing, 2)) ms" -ForegroundColor White
 Write-Host ""
 
 # Nettoyer
 Write-Host "Nettoyage..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
-Write-Host "  Répertoire de test supprimé" -ForegroundColor Green
+Write-Host "  RÃ©pertoire de test supprimÃ©" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "Ouvrez le rapport pour voir les résultats détaillés: $reportPath" -ForegroundColor Green
+Write-Host "Ouvrez le rapport pour voir les rÃ©sultats dÃ©taillÃ©s: $reportPath" -ForegroundColor Green
 
-# Retourner un objet avec les résultats
+# Retourner un objet avec les rÃ©sultats
 return @{
     SimpleResults   = $simpleResults
     OriginalResults = $originalResults

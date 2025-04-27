@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de gestion des erreurs pour les scripts PowerShell.
 .DESCRIPTION
-    Ce module fournit des fonctions pour gérer les erreurs de manière cohérente
+    Ce module fournit des fonctions pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente
     dans les scripts PowerShell, avec journalisation et rapports.
 .NOTES
     Auteur: Augment Agent
@@ -10,7 +10,7 @@
     Version: 1.0
 #>
 
-# Fonction pour gérer les erreurs de manière cohérente
+# Fonction pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente
 function Handle-Error {
     [CmdletBinding()]
     param (
@@ -18,7 +18,7 @@ function Handle-Error {
         [System.Management.Automation.ErrorRecord]$ErrorRecord,
         
         [Parameter(Mandatory = $false)]
-        [string]$Context = "Opération générale",
+        [string]$Context = "OpÃ©ration gÃ©nÃ©rale",
         
         [Parameter(Mandatory = $false)]
         [string]$LogPath = "$env:TEMP\ErrorLogs\$(Get-Date -Format 'yyyyMMdd').log",
@@ -30,7 +30,7 @@ function Handle-Error {
         [switch]$ExitScript
     )
     
-    # Créer le répertoire de logs s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de logs s'il n'existe pas
     $logDir = Split-Path -Path $LogPath -Parent
     if (-not (Test-Path -Path $logDir)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -40,10 +40,10 @@ function Handle-Error {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $errorMessage = "[$timestamp] ERREUR dans '$Context': $($ErrorRecord.Exception.Message)"
     $errorDetails = @"
-Détails de l'erreur:
+DÃ©tails de l'erreur:
   Message: $($ErrorRecord.Exception.Message)
   Type d'exception: $($ErrorRecord.Exception.GetType().FullName)
-  Catégorie: $($ErrorRecord.CategoryInfo.Category)
+  CatÃ©gorie: $($ErrorRecord.CategoryInfo.Category)
   Cible: $($ErrorRecord.CategoryInfo.TargetName)
   Script: $($ErrorRecord.InvocationInfo.ScriptName)
   Ligne: $($ErrorRecord.InvocationInfo.ScriptLineNumber)
@@ -67,7 +67,7 @@ $errorDetails
     Write-Error $errorMessage
     Write-Verbose $errorDetails
     
-    # Gérer l'erreur selon les paramètres
+    # GÃ©rer l'erreur selon les paramÃ¨tres
     if ($ThrowException) {
         throw $ErrorRecord
     }
@@ -86,10 +86,10 @@ function Set-GlobalErrorHandler {
         [string]$LogPath = "$env:TEMP\ErrorLogs\$(Get-Date -Format 'yyyyMMdd').log"
     )
     
-    # Définir le gestionnaire d'erreurs global
+    # DÃ©finir le gestionnaire d'erreurs global
     $global:ErrorActionPreference = "Continue"
     
-    # Créer un gestionnaire d'erreurs qui sera appelé pour chaque erreur non gérée
+    # CrÃ©er un gestionnaire d'erreurs qui sera appelÃ© pour chaque erreur non gÃ©rÃ©e
     $global:error_handler = {
         param($sender, $eventArgs)
         
@@ -101,16 +101,16 @@ function Set-GlobalErrorHandler {
             $null
         )
         
-        Handle-Error -ErrorRecord $errorRecord -Context "Erreur non gérée" -LogPath $LogPath
+        Handle-Error -ErrorRecord $errorRecord -Context "Erreur non gÃ©rÃ©e" -LogPath $LogPath
     }
     
-    # Attacher le gestionnaire d'erreurs à l'événement d'erreur
+    # Attacher le gestionnaire d'erreurs Ã  l'Ã©vÃ©nement d'erreur
     $null = [AppDomain]::CurrentDomain.add_UnhandledException($global:error_handler)
     
-    Write-Host "Gestionnaire d'erreurs global configuré. Les erreurs seront journalisées dans: $LogPath" -ForegroundColor Cyan
+    Write-Host "Gestionnaire d'erreurs global configurÃ©. Les erreurs seront journalisÃ©es dans: $LogPath" -ForegroundColor Cyan
 }
 
-# Fonction pour générer un rapport d'erreurs
+# Fonction pour gÃ©nÃ©rer un rapport d'erreurs
 function Get-ErrorReport {
     [CmdletBinding()]
     param (
@@ -130,7 +130,7 @@ function Get-ErrorReport {
         [string]$HtmlOutputPath = "$env:TEMP\ErrorReports\ErrorReport_$(Get-Date -Format 'yyyyMMdd').html"
     )
     
-    # Déterminer les fichiers de log à analyser
+    # DÃ©terminer les fichiers de log Ã  analyser
     $logFiles = @()
     
     if ($LastDay) {
@@ -167,7 +167,7 @@ function Get-ErrorReport {
     foreach ($logFile in $logFiles) {
         $content = Get-Content -Path $logFile -Raw
         
-        # Extraire les entrées d'erreur
+        # Extraire les entrÃ©es d'erreur
         $pattern = '(?s)==================================================\r?\n\[(.*?)\] ERREUR dans \'(.*?)\':(.*?)==================================================\r?\n'
         $matches = [regex]::Matches($content, $pattern)
         
@@ -187,15 +187,15 @@ function Get-ErrorReport {
     # Trier les erreurs par horodatage
     $errorEntries = $errorEntries | Sort-Object -Property Timestamp -Descending
     
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtml) {
-        # Créer le répertoire de rapports s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
         $reportDir = Split-Path -Path $HtmlOutputPath -Parent
         if (-not (Test-Path -Path $reportDir)) {
             New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
         }
         
-        # Générer le HTML
+        # GÃ©nÃ©rer le HTML
         $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -273,12 +273,12 @@ function Get-ErrorReport {
     <div class="container">
         <h1>Rapport d'erreurs</h1>
         <div class="summary">
-            <p><strong>Période:</strong> $(if ($LastDay) { "Dernières 24 heures" } elseif ($LastWeek) { "Dernière semaine" } else { "Journée courante" })</p>
+            <p><strong>PÃ©riode:</strong> $(if ($LastDay) { "DerniÃ¨res 24 heures" } elseif ($LastWeek) { "DerniÃ¨re semaine" } else { "JournÃ©e courante" })</p>
             <p><strong>Nombre d'erreurs:</strong> $($errorEntries.Count)</p>
-            <p><strong>Généré le:</strong> $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+            <p><strong>GÃ©nÃ©rÃ© le:</strong> $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
         </div>
         
-        <h2>Erreurs détectées</h2>
+        <h2>Erreurs dÃ©tectÃ©es</h2>
 "@
         
         if ($errorEntries.Count -gt 0) {
@@ -294,13 +294,13 @@ function Get-ErrorReport {
         }
         else {
             $htmlContent += @"
-        <p>Aucune erreur détectée pour la période spécifiée.</p>
+        <p>Aucune erreur dÃ©tectÃ©e pour la pÃ©riode spÃ©cifiÃ©e.</p>
 "@
         }
         
         $htmlContent += @"
         <div class="footer">
-            <p>Généré par le module de gestion des erreurs</p>
+            <p>GÃ©nÃ©rÃ© par le module de gestion des erreurs</p>
         </div>
     </div>
 </body>
@@ -310,12 +310,12 @@ function Get-ErrorReport {
         # Enregistrer le rapport HTML
         $htmlContent | Out-File -FilePath $HtmlOutputPath -Encoding UTF8
         
-        Write-Host "Rapport HTML généré: $HtmlOutputPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $HtmlOutputPath" -ForegroundColor Green
         
         return $HtmlOutputPath
     }
     
-    # Retourner les entrées d'erreur
+    # Retourner les entrÃ©es d'erreur
     return $errorEntries
 }
 

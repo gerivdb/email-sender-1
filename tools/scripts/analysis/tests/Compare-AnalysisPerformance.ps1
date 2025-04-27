@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Compare les performances de l'analyse standard et de l'analyse avec cache.
@@ -6,7 +6,7 @@
     Ce script compare les performances de l'analyse standard (Start-CodeAnalysis.ps1)
     et de l'analyse avec cache (Start-CachedAnalysis.ps1).
 .PARAMETER Path
-    Chemin du répertoire contenant les scripts PowerShell à analyser.
+    Chemin du rÃ©pertoire contenant les scripts PowerShell Ã  analyser.
 .EXAMPLE
     .\Compare-AnalysisPerformance.ps1 -Path ".\scripts"
 .NOTES
@@ -19,9 +19,9 @@ param(
     [string]$Path
 )
 
-# Vérifier si le répertoire existe
+# VÃ©rifier si le rÃ©pertoire existe
 if (-not (Test-Path -Path $Path -PathType Container)) {
-    Write-Error "Le répertoire n'existe pas: $Path"
+    Write-Error "Le rÃ©pertoire n'existe pas: $Path"
     exit 1
 }
 
@@ -31,16 +31,16 @@ $standardAnalysisPath = Join-Path -Path $scriptPath -ChildPath "Start-CodeAnalys
 $cachedAnalysisPath = Join-Path -Path $scriptPath -ChildPath "Start-CachedAnalysis.ps1"
 
 if (-not (Test-Path -Path $standardAnalysisPath)) {
-    Write-Error "Script Start-CodeAnalysis.ps1 non trouvé à l'emplacement: $standardAnalysisPath"
+    Write-Error "Script Start-CodeAnalysis.ps1 non trouvÃ© Ã  l'emplacement: $standardAnalysisPath"
     exit 1
 }
 
 if (-not (Test-Path -Path $cachedAnalysisPath)) {
-    Write-Error "Script Start-CachedAnalysis.ps1 non trouvé à l'emplacement: $cachedAnalysisPath"
+    Write-Error "Script Start-CachedAnalysis.ps1 non trouvÃ© Ã  l'emplacement: $cachedAnalysisPath"
     exit 1
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     [CmdletBinding()]
     param(
@@ -48,14 +48,14 @@ function Measure-ExecutionTime {
         [scriptblock]$ScriptBlock,
         
         [Parameter()]
-        [string]$Description = "Opération"
+        [string]$Description = "OpÃ©ration"
     )
     
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     $result = & $ScriptBlock
     $stopwatch.Stop()
     
-    Write-Host "$Description terminé en $($stopwatch.ElapsedMilliseconds) ms" -ForegroundColor Cyan
+    Write-Host "$Description terminÃ© en $($stopwatch.ElapsedMilliseconds) ms" -ForegroundColor Cyan
     
     return @{
         Result = $result
@@ -82,39 +82,39 @@ $cachedResult1 = Measure-ExecutionTime -ScriptBlock {
     & $cachedAnalysisPath -Path $Path -Tool PSScriptAnalyzer -UseCache -Recurse
 } -Description "Analyse avec cache (premier passage)"
 
-# Analyse avec cache (deuxième passage)
-Write-Host "`n=== Analyse avec cache (deuxième passage) ===" -ForegroundColor Cyan
+# Analyse avec cache (deuxiÃ¨me passage)
+Write-Host "`n=== Analyse avec cache (deuxiÃ¨me passage) ===" -ForegroundColor Cyan
 $cachedResult2 = Measure-ExecutionTime -ScriptBlock {
     & $cachedAnalysisPath -Path $Path -Tool PSScriptAnalyzer -UseCache -Recurse
-} -Description "Analyse avec cache (deuxième passage)"
+} -Description "Analyse avec cache (deuxiÃ¨me passage)"
 
 # Afficher les statistiques
 Write-Host "`n=== Statistiques ===" -ForegroundColor Cyan
 Write-Host "Temps d'analyse standard: $($standardResult.ElapsedMilliseconds) ms" -ForegroundColor White
 Write-Host "Temps d'analyse avec cache (premier passage): $($cachedResult1.ElapsedMilliseconds) ms" -ForegroundColor White
-Write-Host "Temps d'analyse avec cache (deuxième passage): $($cachedResult2.ElapsedMilliseconds) ms" -ForegroundColor White
+Write-Host "Temps d'analyse avec cache (deuxiÃ¨me passage): $($cachedResult2.ElapsedMilliseconds) ms" -ForegroundColor White
 
 $speedup1 = [math]::Round(($standardResult.ElapsedMilliseconds / $cachedResult1.ElapsedMilliseconds), 2)
 $speedup2 = [math]::Round(($standardResult.ElapsedMilliseconds / $cachedResult2.ElapsedMilliseconds), 2)
 
-Write-Host "Accélération (premier passage): ${speedup1}x" -ForegroundColor Green
-Write-Host "Accélération (deuxième passage): ${speedup2}x" -ForegroundColor Green
+Write-Host "AccÃ©lÃ©ration (premier passage): ${speedup1}x" -ForegroundColor Green
+Write-Host "AccÃ©lÃ©ration (deuxiÃ¨me passage): ${speedup2}x" -ForegroundColor Green
 
-# Vérifier que les résultats sont cohérents
+# VÃ©rifier que les rÃ©sultats sont cohÃ©rents
 $standardCount = $standardResult.Result.Count
 $cachedCount1 = $cachedResult1.Result.Count
 $cachedCount2 = $cachedResult2.Result.Count
 
-Write-Host "`n=== Cohérence des résultats ===" -ForegroundColor Cyan
-Write-Host "Nombre de problèmes trouvés (analyse standard): $standardCount" -ForegroundColor White
-Write-Host "Nombre de problèmes trouvés (analyse avec cache, premier passage): $cachedCount1" -ForegroundColor White
-Write-Host "Nombre de problèmes trouvés (analyse avec cache, deuxième passage): $cachedCount2" -ForegroundColor White
+Write-Host "`n=== CohÃ©rence des rÃ©sultats ===" -ForegroundColor Cyan
+Write-Host "Nombre de problÃ¨mes trouvÃ©s (analyse standard): $standardCount" -ForegroundColor White
+Write-Host "Nombre de problÃ¨mes trouvÃ©s (analyse avec cache, premier passage): $cachedCount1" -ForegroundColor White
+Write-Host "Nombre de problÃ¨mes trouvÃ©s (analyse avec cache, deuxiÃ¨me passage): $cachedCount2" -ForegroundColor White
 
 if ($cachedCount1 -eq $standardCount -and $cachedCount2 -eq $standardCount) {
-    Write-Host "Les résultats sont cohérents." -ForegroundColor Green
+    Write-Host "Les rÃ©sultats sont cohÃ©rents." -ForegroundColor Green
 }
 else {
-    Write-Host "Les résultats ne sont pas cohérents." -ForegroundColor Red
+    Write-Host "Les rÃ©sultats ne sont pas cohÃ©rents." -ForegroundColor Red
 }
 
 # Afficher les statistiques du cache

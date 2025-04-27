@@ -1,23 +1,23 @@
-# Entries - Journal
+﻿# Entries - Journal
 
-Cette section contient les scripts liés à la gestion des entrées de journal dans la catégorie journal.
+Cette section contient les scripts liÃ©s Ã  la gestion des entrÃ©es de journal dans la catÃ©gorie journal.
 
 ## Scripts disponibles
 
-- `Add-RoadmapJournalEntry.ps1` - Ajoute une nouvelle entrée au journal de roadmap
+- `Add-RoadmapJournalEntry.ps1` - Ajoute une nouvelle entrÃ©e au journal de roadmap
 - `Import-ExistingRoadmapToJournal.ps1` - Importe une roadmap existante dans le journal
-- `Update-RoadmapJournalStatus.ps1` - Met à jour le statut d'une entrée de journal
+- `Update-RoadmapJournalStatus.ps1` - Met Ã  jour le statut d'une entrÃ©e de journal
 
 ## Utilisation
 
 ```powershell
 # Exemple d'utilisation
-.\Add-RoadmapJournalEntry.ps1 -TaskId "1.2.3" -Status "In Progress" -Comment "Travail en cours sur cette tâche"
+.\Add-RoadmapJournalEntry.ps1 -TaskId "1.2.3" -Status "In Progress" -Comment "Travail en cours sur cette tÃ¢che"
 ```
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - `roadmap-parser` - Module principal de parsing de roadmap
 
 ## Tests

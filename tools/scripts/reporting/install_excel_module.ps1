@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'installation et de vérification du module ImportExcel.
+    Script d'installation et de vÃ©rification du module ImportExcel.
 .DESCRIPTION
-    Ce script vérifie si le module ImportExcel est installé et l'installe si nécessaire.
-    Il vérifie également la version du module et propose une mise à jour si une version
-    plus récente est disponible.
+    Ce script vÃ©rifie si le module ImportExcel est installÃ© et l'installe si nÃ©cessaire.
+    Il vÃ©rifie Ã©galement la version du module et propose une mise Ã  jour si une version
+    plus rÃ©cente est disponible.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de création: 2025-04-23
+    Date de crÃ©ation: 2025-04-23
 #>
 
 [CmdletBinding(SupportsShouldProcess=$true)]
@@ -48,7 +48,7 @@ function Write-Log {
     Write-Host "[$Timestamp] [$Level] $Message" -ForegroundColor $ForegroundColor
 }
 
-# Fonction pour vérifier si le module est installé
+# Fonction pour vÃ©rifier si le module est installÃ©
 function Test-ModuleInstalled {
     [CmdletBinding()]
     param (
@@ -60,7 +60,7 @@ function Test-ModuleInstalled {
     return ($null -ne $Module)
 }
 
-# Fonction pour vérifier la version du module
+# Fonction pour vÃ©rifier la version du module
 function Get-ModuleVersion {
     [CmdletBinding()]
     param (
@@ -75,7 +75,7 @@ function Get-ModuleVersion {
     return $null
 }
 
-# Fonction pour vérifier si une mise à jour est disponible
+# Fonction pour vÃ©rifier si une mise Ã  jour est disponible
 function Test-ModuleUpdateAvailable {
     [CmdletBinding()]
     param (
@@ -96,7 +96,7 @@ function Test-ModuleUpdateAvailable {
         return $OnlineVersion -gt $CurrentVersion
     }
     catch {
-        Write-Log -Message "Impossible de vérifier les mises à jour pour le module $ModuleName : $_" -Level "Warning"
+        Write-Log -Message "Impossible de vÃ©rifier les mises Ã  jour pour le module $ModuleName : $_" -Level "Warning"
         return $false
     }
 }
@@ -132,7 +132,7 @@ function Install-RequiredModule {
     try {
         if ($PSCmdlet.ShouldProcess($ModuleName, "Install module")) {
             Install-Module @InstallParams
-            Write-Log -Message "Module $ModuleName installé avec succès" -Level "Success"
+            Write-Log -Message "Module $ModuleName installÃ© avec succÃ¨s" -Level "Success"
             return $true
         }
         return $false
@@ -143,7 +143,7 @@ function Install-RequiredModule {
     }
 }
 
-# Fonction pour mettre à jour le module
+# Fonction pour mettre Ã  jour le module
 function Update-ExistingModule {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param (
@@ -167,13 +167,13 @@ function Update-ExistingModule {
     try {
         if ($PSCmdlet.ShouldProcess($ModuleName, "Update module")) {
             Update-Module @UpdateParams
-            Write-Log -Message "Module $ModuleName mis à jour avec succès" -Level "Success"
+            Write-Log -Message "Module $ModuleName mis Ã  jour avec succÃ¨s" -Level "Success"
             return $true
         }
         return $false
     }
     catch {
-        Write-Log -Message "Erreur lors de la mise à jour du module $ModuleName : $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la mise Ã  jour du module $ModuleName : $_" -Level "Error"
         return $false
     }
 }
@@ -190,7 +190,7 @@ function Test-ExcelModule {
         # Importer le module
         Import-Module -Name $ModuleName -ErrorAction Stop
         
-        # Créer un fichier Excel de test
+        # CrÃ©er un fichier Excel de test
         $TestData = @(
             [PSCustomObject]@{
                 Name = "Test1"
@@ -204,10 +204,10 @@ function Test-ExcelModule {
         
         $TempFile = [System.IO.Path]::GetTempFileName() + ".xlsx"
         
-        # Exporter les données vers Excel
+        # Exporter les donnÃ©es vers Excel
         $TestData | Export-Excel -Path $TempFile -AutoSize -TableName "TestData"
         
-        # Vérifier si le fichier a été créé
+        # VÃ©rifier si le fichier a Ã©tÃ© crÃ©Ã©
         $FileExists = Test-Path -Path $TempFile
         
         # Supprimer le fichier de test
@@ -216,11 +216,11 @@ function Test-ExcelModule {
         }
         
         if ($FileExists) {
-            Write-Log -Message "Test du module $ModuleName réussi" -Level "Success"
+            Write-Log -Message "Test du module $ModuleName rÃ©ussi" -Level "Success"
             return $true
         }
         else {
-            Write-Log -Message "Test du module $ModuleName échoué : le fichier n'a pas été créé" -Level "Error"
+            Write-Log -Message "Test du module $ModuleName Ã©chouÃ© : le fichier n'a pas Ã©tÃ© crÃ©Ã©" -Level "Error"
             return $false
         }
     }
@@ -230,35 +230,35 @@ function Test-ExcelModule {
     }
 }
 
-# Vérifier si le module PSGallery est disponible
+# VÃ©rifier si le module PSGallery est disponible
 try {
     $PSGallery = Get-PSRepository -Name "PSGallery" -ErrorAction Stop
     if ($PSGallery.InstallationPolicy -ne "Trusted") {
         if ($PSCmdlet.ShouldProcess("PSGallery", "Set as trusted repository")) {
             Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-            Write-Log -Message "PSGallery défini comme dépôt de confiance" -Level "Info"
+            Write-Log -Message "PSGallery dÃ©fini comme dÃ©pÃ´t de confiance" -Level "Info"
         }
     }
 }
 catch {
-    Write-Log -Message "Impossible d'accéder au dépôt PSGallery : $_" -Level "Error"
+    Write-Log -Message "Impossible d'accÃ©der au dÃ©pÃ´t PSGallery : $_" -Level "Error"
     exit 1
 }
 
-# Vérifier si le module ImportExcel est installé
+# VÃ©rifier si le module ImportExcel est installÃ©
 $ModuleName = "ImportExcel"
 $IsInstalled = Test-ModuleInstalled -ModuleName $ModuleName
 
 if ($IsInstalled) {
     $CurrentVersion = Get-ModuleVersion -ModuleName $ModuleName
-    Write-Log -Message "Module $ModuleName version $CurrentVersion est déjà installé" -Level "Info"
+    Write-Log -Message "Module $ModuleName version $CurrentVersion est dÃ©jÃ  installÃ©" -Level "Info"
     
-    # Vérifier si une version spécifique est requise
+    # VÃ©rifier si une version spÃ©cifique est requise
     if (-not [string]::IsNullOrEmpty($RequiredVersion)) {
         $RequiredVersionObj = [version]$RequiredVersion
         
         if ($CurrentVersion -lt $RequiredVersionObj) {
-            Write-Log -Message "La version actuelle ($CurrentVersion) est inférieure à la version requise ($RequiredVersion)" -Level "Warning"
+            Write-Log -Message "La version actuelle ($CurrentVersion) est infÃ©rieure Ã  la version requise ($RequiredVersion)" -Level "Warning"
             
             $InstallSpecificVersion = Install-RequiredModule -ModuleName $ModuleName -RequiredVersion $RequiredVersion -Force:$Force -Scope $Scope
             if (-not $InstallSpecificVersion) {
@@ -267,7 +267,7 @@ if ($IsInstalled) {
             }
         }
         elseif ($CurrentVersion -gt $RequiredVersionObj -and $Force) {
-            Write-Log -Message "La version actuelle ($CurrentVersion) est supérieure à la version requise ($RequiredVersion), mais l'installation forcée est demandée" -Level "Warning"
+            Write-Log -Message "La version actuelle ($CurrentVersion) est supÃ©rieure Ã  la version requise ($RequiredVersion), mais l'installation forcÃ©e est demandÃ©e" -Level "Warning"
             
             $InstallSpecificVersion = Install-RequiredModule -ModuleName $ModuleName -RequiredVersion $RequiredVersion -Force:$Force -Scope $Scope
             if (-not $InstallSpecificVersion) {
@@ -277,26 +277,26 @@ if ($IsInstalled) {
         }
     }
     else {
-        # Vérifier si une mise à jour est disponible
+        # VÃ©rifier si une mise Ã  jour est disponible
         $UpdateAvailable = Test-ModuleUpdateAvailable -ModuleName $ModuleName -CurrentVersion $CurrentVersion
         
         if ($UpdateAvailable) {
-            Write-Log -Message "Une mise à jour est disponible pour le module $ModuleName" -Level "Info"
+            Write-Log -Message "Une mise Ã  jour est disponible pour le module $ModuleName" -Level "Info"
             
-            if ($Force -or $PSCmdlet.ShouldContinue("Voulez-vous mettre à jour le module $ModuleName ?", "Mise à jour du module")) {
+            if ($Force -or $PSCmdlet.ShouldContinue("Voulez-vous mettre Ã  jour le module $ModuleName ?", "Mise Ã  jour du module")) {
                 $Updated = Update-ExistingModule -ModuleName $ModuleName -Force:$Force -Scope $Scope
                 if (-not $Updated) {
-                    Write-Log -Message "Impossible de mettre à jour le module $ModuleName" -Level "Warning"
+                    Write-Log -Message "Impossible de mettre Ã  jour le module $ModuleName" -Level "Warning"
                 }
             }
         }
         else {
-            Write-Log -Message "Le module $ModuleName est à jour" -Level "Success"
+            Write-Log -Message "Le module $ModuleName est Ã  jour" -Level "Success"
         }
     }
 }
 else {
-    Write-Log -Message "Module $ModuleName n'est pas installé" -Level "Warning"
+    Write-Log -Message "Module $ModuleName n'est pas installÃ©" -Level "Warning"
     
     # Installer le module
     $InstallParams = @{
@@ -321,10 +321,10 @@ else {
 $TestResult = Test-ExcelModule -ModuleName $ModuleName
 
 if ($TestResult) {
-    Write-Log -Message "Module $ModuleName est correctement installé et fonctionnel" -Level "Success"
+    Write-Log -Message "Module $ModuleName est correctement installÃ© et fonctionnel" -Level "Success"
     exit 0
 }
 else {
-    Write-Log -Message "Module $ModuleName est installé mais ne fonctionne pas correctement" -Level "Error"
+    Write-Log -Message "Module $ModuleName est installÃ© mais ne fonctionne pas correctement" -Level "Error"
     exit 1
 }

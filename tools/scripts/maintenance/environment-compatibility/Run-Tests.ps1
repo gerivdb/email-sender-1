@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour le module de compatibilité entre environnements.
+    ExÃ©cute tous les tests unitaires pour le module de compatibilitÃ© entre environnements.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour le module de compatibilité entre environnements
+    Ce script exÃ©cute tous les tests unitaires pour le module de compatibilitÃ© entre environnements
     en utilisant le framework Pester.
 
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des tests. Par défaut, utilise le répertoire courant.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats des tests.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 
 .EXAMPLE
     .\Run-Tests.ps1 -GenerateReport
-    Exécute les tests unitaires et génère un rapport HTML des résultats.
+    ExÃ©cute les tests unitaires et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      Pester 5.0 ou supérieur
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      Pester 5.0 ou supÃ©rieur
 #>
 
 [CmdletBinding()]
@@ -32,7 +32,7 @@ param (
     [switch]$GenerateReport
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -41,14 +41,14 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests
+# DÃ©finir le chemin des tests
 $testRoot = $PSScriptRoot
 $testFiles = @(
     (Join-Path -Path $testRoot -ChildPath "EnvironmentManager.Tests.ps1"),
     (Join-Path -Path $testRoot -ChildPath "Improve-ScriptCompatibility.Tests.ps1")
 )
 
-# Définir la configuration Pester
+# DÃ©finir la configuration Pester
 $pesterConfig = New-PesterConfiguration
 $pesterConfig.Run.Path = $testFiles
 $pesterConfig.Output.Verbosity = "Detailed"
@@ -69,23 +69,23 @@ if ($GenerateReport) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
-    Write-Host "Génération du rapport HTML..." -ForegroundColor Yellow
+    Write-Host "GÃ©nÃ©ration du rapport HTML..." -ForegroundColor Yellow
     
-    # Vérifier si ReportUnit est installé
+    # VÃ©rifier si ReportUnit est installÃ©
     $reportUnitPath = Join-Path -Path $env:TEMP -ChildPath "ReportUnit.exe"
     
     if (-not (Test-Path -Path $reportUnitPath)) {
-        Write-Host "Téléchargement de ReportUnit..." -ForegroundColor Yellow
+        Write-Host "TÃ©lÃ©chargement de ReportUnit..." -ForegroundColor Yellow
         $reportUnitUrl = "https://github.com/reportunit/reportunit/releases/download/1.2.1/ReportUnit.exe"
         Invoke-WebRequest -Uri $reportUnitUrl -OutFile $reportUnitPath
     }
     
-    # Générer le rapport HTML
+    # GÃ©nÃ©rer le rapport HTML
     $reportXmlPath = Join-Path -Path $reportPath -ChildPath "TestResults.xml"
     $reportHtmlPath = Join-Path -Path $reportPath -ChildPath "TestResults.html"
     
@@ -93,26 +93,26 @@ if ($GenerateReport) {
         & $reportUnitPath $reportXmlPath $reportPath
         
         if (Test-Path -Path $reportHtmlPath) {
-            Write-Host "Rapport HTML généré: $reportHtmlPath" -ForegroundColor Green
+            Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportHtmlPath" -ForegroundColor Green
             Start-Process $reportHtmlPath
         }
         else {
-            Write-Warning "Échec de la génération du rapport HTML."
+            Write-Warning "Ã‰chec de la gÃ©nÃ©ration du rapport HTML."
         }
     }
     else {
-        Write-Warning "Fichier de résultats XML non trouvé: $reportXmlPath"
+        Write-Warning "Fichier de rÃ©sultats XML non trouvÃ©: $reportXmlPath"
     }
 }
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 Write-Host
-Write-Host "Résumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($testResults.TotalCount)"
-Write-Host "  Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)"
+Write-Host "  Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $testResults.FailedCount

@@ -1,4 +1,4 @@
-# setup
+﻿# setup
 
 Scripts d'installation et configuration
 

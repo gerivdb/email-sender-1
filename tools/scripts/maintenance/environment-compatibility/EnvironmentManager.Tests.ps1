@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module EnvironmentManager.
 
@@ -9,34 +9,34 @@
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      Pester 5.0 ou supérieur
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      Pester 5.0 ou supÃ©rieur
 #>
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $moduleRoot = $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "EnvironmentManager.psm1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testRoot = Join-Path -Path $env:TEMP -ChildPath "EnvironmentManagerTests"
 if (Test-Path -Path $testRoot) {
     Remove-Item -Path $testRoot -Recurse -Force
 }
 New-Item -Path $testRoot -ItemType Directory -Force | Out-Null
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "Module EnvironmentManager" {
     BeforeAll {
-        # Importer le module à tester
+        # Importer le module Ã  tester
         Import-Module $modulePath -Force
 
         # Initialiser le module
@@ -44,20 +44,20 @@ Describe "Module EnvironmentManager" {
     }
 
     Context "Initialisation du module" {
-        It "Devrait initialiser le module avec succès" {
+        It "Devrait initialiser le module avec succÃ¨s" {
             $result = Initialize-EnvironmentManager -Force
             $result | Should -BeNullOrEmpty
         }
     }
 
-    Context "Détection d'environnement" {
-        It "Devrait détecter l'environnement d'exécution" {
+    Context "DÃ©tection d'environnement" {
+        It "Devrait dÃ©tecter l'environnement d'exÃ©cution" {
             $envInfo = Get-EnvironmentInfo
             $envInfo | Should -Not -BeNullOrEmpty
             $envInfo.PSVersion | Should -Be $PSVersionTable.PSVersion
         }
 
-        It "Devrait détecter correctement Windows" {
+        It "Devrait dÃ©tecter correctement Windows" {
             $envInfo = Get-EnvironmentInfo
             if ($PSVersionTable.PSVersion.Major -lt 6) {
                 $envInfo.IsWindows | Should -BeTrue
@@ -82,33 +82,33 @@ Describe "Module EnvironmentManager" {
         }
     }
 
-    Context "Compatibilité d'environnement" {
-        It "Devrait vérifier la compatibilité avec Windows" {
+    Context "CompatibilitÃ© d'environnement" {
+        It "Devrait vÃ©rifier la compatibilitÃ© avec Windows" {
             $result = Test-EnvironmentCompatibility -TargetOS "Windows"
             $result | Should -Not -BeNullOrEmpty
             $result.IsCompatible | Should -BeOfType [bool]
         }
 
-        It "Devrait vérifier la compatibilité avec Linux" {
+        It "Devrait vÃ©rifier la compatibilitÃ© avec Linux" {
             $result = Test-EnvironmentCompatibility -TargetOS "Linux"
             $result | Should -Not -BeNullOrEmpty
             $result.IsCompatible | Should -BeOfType [bool]
         }
 
-        It "Devrait vérifier la compatibilité avec macOS" {
+        It "Devrait vÃ©rifier la compatibilitÃ© avec macOS" {
             $result = Test-EnvironmentCompatibility -TargetOS "MacOS"
             $result | Should -Not -BeNullOrEmpty
             $result.IsCompatible | Should -BeOfType [bool]
         }
 
-        It "Devrait vérifier la compatibilité avec une version PowerShell" {
+        It "Devrait vÃ©rifier la compatibilitÃ© avec une version PowerShell" {
             $result = Test-EnvironmentCompatibility -MinimumPSVersion "5.0"
             $result | Should -Not -BeNullOrEmpty
             $result.PSVersionCompatible | Should -BeOfType [bool]
         }
 
-        It "Devrait lancer une exception si demandé" {
-            # Créer une version incompatible
+        It "Devrait lancer une exception si demandÃ©" {
+            # CrÃ©er une version incompatible
             $incompatibleVersion = [version]"99.0"
             { Test-EnvironmentCompatibility -MinimumPSVersion $incompatibleVersion -ThrowOnIncompatible } | Should -Throw
         }
@@ -127,13 +127,13 @@ Describe "Module EnvironmentManager" {
             $result | Should -Be "C:/Users/user/Documents/file.txt"
         }
 
-        It "Devrait normaliser un chemin avec des séparateurs mixtes" {
+        It "Devrait normaliser un chemin avec des sÃ©parateurs mixtes" {
             $path = "C:\Users/user\Documents/file.txt"
             $result = ConvertTo-CrossPlatformPath -Path $path -TargetOS "Windows"
             $result | Should -Be "C:\Users\user\Documents\file.txt"
         }
 
-        It "Devrait retourner une chaîne vide pour un chemin vide" {
+        It "Devrait retourner une chaÃ®ne vide pour un chemin vide" {
             $result = ConvertTo-CrossPlatformPath -Path "" -TargetOS "Windows"
             $result | Should -Be ""
         }
@@ -141,22 +141,22 @@ Describe "Module EnvironmentManager" {
 
     Context "Test de chemins" {
         BeforeAll {
-            # Créer un fichier de test
+            # CrÃ©er un fichier de test
             $testFilePath = Join-Path -Path $testRoot -ChildPath "test.txt"
             Set-Content -Path $testFilePath -Value "Test" -Force
 
-            # Créer un répertoire de test
+            # CrÃ©er un rÃ©pertoire de test
             $testDirPath = Join-Path -Path $testRoot -ChildPath "testdir"
             New-Item -Path $testDirPath -ItemType Directory -Force | Out-Null
         }
 
-        It "Devrait vérifier si un fichier existe" {
+        It "Devrait vÃ©rifier si un fichier existe" {
             $testFilePath = Join-Path -Path $testRoot -ChildPath "test.txt"
             $result = Test-CrossPlatformPath -Path $testFilePath -PathType "Leaf"
             $result | Should -BeTrue
         }
 
-        It "Devrait vérifier si un répertoire existe" {
+        It "Devrait vÃ©rifier si un rÃ©pertoire existe" {
             $testDirPath = Join-Path -Path $testRoot -ChildPath "testdir"
             $result = Test-CrossPlatformPath -Path $testDirPath -PathType "Container"
             $result | Should -BeTrue
@@ -185,12 +185,12 @@ Describe "Module EnvironmentManager" {
             $result | Should -Be "/home/user/documents/file.txt"
         }
 
-        It "Devrait gérer les séparateurs redondants" {
+        It "Devrait gÃ©rer les sÃ©parateurs redondants" {
             $result = Join-CrossPlatformPath -Path "C:\Users\" -ChildPath "\user", "\Documents\", "file.txt" -TargetOS "Windows"
             $result | Should -Be "C:\Users\user\Documents\file.txt"
         }
 
-        It "Devrait retourner une chaîne vide pour un chemin vide" {
+        It "Devrait retourner une chaÃ®ne vide pour un chemin vide" {
             $result = Join-CrossPlatformPath -Path "" -ChildPath "user"
             $result | Should -Be ""
         }
@@ -228,14 +228,14 @@ Describe "Module EnvironmentManager" {
         }
     }
 
-    Context "Lecture et écriture de fichiers" {
+    Context "Lecture et Ã©criture de fichiers" {
         BeforeAll {
-            # Créer un fichier de test
+            # CrÃ©er un fichier de test
             $script:testFilePath = Join-Path -Path $testRoot -ChildPath "content-test.txt"
             $script:testContent = "Test de contenu`nLigne 2`nLigne 3"
         }
 
-        It "Devrait écrire dans un fichier" {
+        It "Devrait Ã©crire dans un fichier" {
             $result = Set-CrossPlatformContent -Path $testFilePath -Content $testContent -Force
             $result | Should -BeTrue
             Test-Path -Path $testFilePath | Should -BeTrue
@@ -246,13 +246,13 @@ Describe "Module EnvironmentManager" {
             $content.TrimEnd() | Should -Be $testContent.TrimEnd()
         }
 
-        It "Devrait retourner une chaîne vide pour un fichier inexistant" {
+        It "Devrait retourner une chaÃ®ne vide pour un fichier inexistant" {
             $nonExistentPath = Join-Path -Path $testRoot -ChildPath "nonexistent.txt"
             $content = Get-CrossPlatformContent -Path $nonExistentPath
             $content | Should -Be ""
         }
 
-        It "Devrait retourner False pour une écriture dans un fichier inexistant sans Force" {
+        It "Devrait retourner False pour une Ã©criture dans un fichier inexistant sans Force" {
             $nonExistentPath = Join-Path -Path $testRoot -ChildPath "nonexistent2.txt"
             $result = Set-CrossPlatformContent -Path $nonExistentPath -Content "Test"
             $result | Should -BeFalse
@@ -263,12 +263,12 @@ Describe "Module EnvironmentManager" {
         # Nettoyer
         Remove-Module -Name EnvironmentManager -Force -ErrorAction SilentlyContinue
 
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $testRoot) {
             Remove-Item -Path $testRoot -Recurse -Force -ErrorAction SilentlyContinue
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

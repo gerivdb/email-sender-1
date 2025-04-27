@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Test des performances de l'analyse avec et sans cache.
 .DESCRIPTION
     Ce script teste les performances de l'analyse de scripts PowerShell avec et sans cache.
 .PARAMETER Path
-    Chemin du répertoire contenant les scripts PowerShell à analyser.
+    Chemin du rÃ©pertoire contenant les scripts PowerShell Ã  analyser.
 .EXAMPLE
     .\Test-CachedPSScriptAnalyzer.ps1 -Path ".\scripts"
 .NOTES
@@ -18,9 +18,9 @@ param(
     [string]$Path
 )
 
-# Vérifier si le répertoire existe
+# VÃ©rifier si le rÃ©pertoire existe
 if (-not (Test-Path -Path $Path -PathType Container)) {
-    Write-Error "Le répertoire n'existe pas: $Path"
+    Write-Error "Le rÃ©pertoire n'existe pas: $Path"
     exit 1
 }
 
@@ -28,11 +28,11 @@ if (-not (Test-Path -Path $Path -PathType Container)) {
 $analyzerPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Invoke-CachedPSScriptAnalyzer.ps1"
 
 if (-not (Test-Path -Path $analyzerPath)) {
-    Write-Error "Script Invoke-CachedPSScriptAnalyzer.ps1 non trouvé à l'emplacement: $analyzerPath"
+    Write-Error "Script Invoke-CachedPSScriptAnalyzer.ps1 non trouvÃ© Ã  l'emplacement: $analyzerPath"
     exit 1
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     [CmdletBinding()]
     param(
@@ -40,14 +40,14 @@ function Measure-ExecutionTime {
         [scriptblock]$ScriptBlock,
         
         [Parameter()]
-        [string]$Description = "Opération"
+        [string]$Description = "OpÃ©ration"
     )
     
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     $result = & $ScriptBlock
     $stopwatch.Stop()
     
-    Write-Host "$Description terminé en $($stopwatch.ElapsedMilliseconds) ms" -ForegroundColor Cyan
+    Write-Host "$Description terminÃ© en $($stopwatch.ElapsedMilliseconds) ms" -ForegroundColor Cyan
     
     return @{
         Result = $result
@@ -68,36 +68,36 @@ $firstPassResult = Measure-ExecutionTime -ScriptBlock {
     & $analyzerPath -Path $Path -UseCache:$false -Recurse
 } -Description "Analyse sans cache"
 
-# Deuxième passage avec cache
-Write-Host "`n=== Deuxième passage (avec cache) ===" -ForegroundColor Cyan
+# DeuxiÃ¨me passage avec cache
+Write-Host "`n=== DeuxiÃ¨me passage (avec cache) ===" -ForegroundColor Cyan
 $secondPassResult = Measure-ExecutionTime -ScriptBlock {
     & $analyzerPath -Path $Path -UseCache -Recurse
-} -Description "Analyse avec cache (premier accès)"
+} -Description "Analyse avec cache (premier accÃ¨s)"
 
-# Troisième passage avec cache
-Write-Host "`n=== Troisième passage (avec cache) ===" -ForegroundColor Cyan
+# TroisiÃ¨me passage avec cache
+Write-Host "`n=== TroisiÃ¨me passage (avec cache) ===" -ForegroundColor Cyan
 $thirdPassResult = Measure-ExecutionTime -ScriptBlock {
     & $analyzerPath -Path $Path -UseCache -Recurse
-} -Description "Analyse avec cache (deuxième accès)"
+} -Description "Analyse avec cache (deuxiÃ¨me accÃ¨s)"
 
 # Afficher les statistiques
 Write-Host "`n=== Statistiques ===" -ForegroundColor Cyan
 Write-Host "Temps sans cache: $($firstPassResult.ElapsedMilliseconds) ms" -ForegroundColor White
-Write-Host "Temps avec cache (premier accès): $($secondPassResult.ElapsedMilliseconds) ms" -ForegroundColor White
-Write-Host "Temps avec cache (deuxième accès): $($thirdPassResult.ElapsedMilliseconds) ms" -ForegroundColor White
+Write-Host "Temps avec cache (premier accÃ¨s): $($secondPassResult.ElapsedMilliseconds) ms" -ForegroundColor White
+Write-Host "Temps avec cache (deuxiÃ¨me accÃ¨s): $($thirdPassResult.ElapsedMilliseconds) ms" -ForegroundColor White
 
 $speedup1 = [math]::Round(($firstPassResult.ElapsedMilliseconds / $secondPassResult.ElapsedMilliseconds), 2)
 $speedup2 = [math]::Round(($firstPassResult.ElapsedMilliseconds / $thirdPassResult.ElapsedMilliseconds), 2)
 
-Write-Host "Accélération (premier accès au cache): ${speedup1}x" -ForegroundColor Green
-Write-Host "Accélération (deuxième accès au cache): ${speedup2}x" -ForegroundColor Green
+Write-Host "AccÃ©lÃ©ration (premier accÃ¨s au cache): ${speedup1}x" -ForegroundColor Green
+Write-Host "AccÃ©lÃ©ration (deuxiÃ¨me accÃ¨s au cache): ${speedup2}x" -ForegroundColor Green
 
-# Vérifier que le cache fonctionne correctement
+# VÃ©rifier que le cache fonctionne correctement
 if ($thirdPassResult.ElapsedMilliseconds -lt $firstPassResult.ElapsedMilliseconds) {
-    Write-Host "Test réussi: Le cache améliore les performances." -ForegroundColor Green
+    Write-Host "Test rÃ©ussi: Le cache amÃ©liore les performances." -ForegroundColor Green
 }
 else {
-    Write-Host "Test échoué: Le cache n'améliore pas les performances." -ForegroundColor Red
+    Write-Host "Test Ã©chouÃ©: Le cache n'amÃ©liore pas les performances." -ForegroundColor Red
 }
 
 # Afficher les statistiques du cache

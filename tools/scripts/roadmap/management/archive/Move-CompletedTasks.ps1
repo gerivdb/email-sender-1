@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    Déplace les tâches terminées d'une roadmap vers un fichier d'archive.
+    DÃ©place les tÃ¢ches terminÃ©es d'une roadmap vers un fichier d'archive.
 
 .DESCRIPTION
-    Ce script analyse un fichier de roadmap au format Markdown, identifie les tâches
-    terminées (100% de progression), les déplace vers un fichier d'archive et les
-    remplace par des références dans le fichier original.
+    Ce script analyse un fichier de roadmap au format Markdown, identifie les tÃ¢ches
+    terminÃ©es (100% de progression), les dÃ©place vers un fichier d'archive et les
+    remplace par des rÃ©fÃ©rences dans le fichier original.
 
 .PARAMETER MarkdownPath
     Chemin vers le fichier Markdown de la roadmap.
 
 .PARAMETER ArchivePath
-    Chemin vers le fichier d'archive. Si non spécifié, le fichier sera créé au même
+    Chemin vers le fichier d'archive. Si non spÃ©cifiÃ©, le fichier sera crÃ©Ã© au mÃªme
     emplacement que le fichier de roadmap avec le nom "completed_tasks.md".
 
 .EXAMPLE
     .\Move-CompletedTasks.ps1 -MarkdownPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 
 .NOTES
-    Auteur: Équipe DevOps
+    Auteur: Ã‰quipe DevOps
     Date: 2025-04-20
     Version: 1.0.0
 #>
@@ -42,7 +42,7 @@ function Move-CompletedTasksToArchive {
         [string]$ArchivePath
     )
 
-    # Vérifier si le fichier de roadmap existe
+    # VÃ©rifier si le fichier de roadmap existe
     if (-not (Test-Path -Path $MarkdownPath)) {
         throw "Le fichier de roadmap '$MarkdownPath' n'existe pas."
     }
@@ -50,46 +50,46 @@ function Move-CompletedTasksToArchive {
     # Lire le contenu du fichier de roadmap
     $content = Get-Content -Path $MarkdownPath -Encoding UTF8
 
-    # Créer ou lire le fichier d'archive
+    # CrÃ©er ou lire le fichier d'archive
     if (Test-Path -Path $ArchivePath) {
         $archiveContent = Get-Content -Path $ArchivePath -Encoding UTF8
     } else {
         $archiveContent = @(
-            "# Archive des tâches terminées",
+            "# Archive des tÃ¢ches terminÃ©es",
             "",
-            "Ce fichier contient les tâches terminées qui ont été archivées de la roadmap principale.",
+            "Ce fichier contient les tÃ¢ches terminÃ©es qui ont Ã©tÃ© archivÃ©es de la roadmap principale.",
             "",
-            "Dernière mise à jour: $(Get-Date -Format 'yyyy-MM-dd')",
+            "DerniÃ¨re mise Ã  jour: $(Get-Date -Format 'yyyy-MM-dd')",
             ""
         )
     }
 
-    # Structure pour stocker les tâches terminées
+    # Structure pour stocker les tÃ¢ches terminÃ©es
     $completedTasks = @()
     $taskContent = @{}
     $taskIndices = @{}
 
-    # Identifier les tâches terminées
+    # Identifier les tÃ¢ches terminÃ©es
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
 
-        # Détecter les tâches
+        # DÃ©tecter les tÃ¢ches
         Write-Host "Ligne: $line"
         if ($line -match '^#### (\d+\.\d+\.\d+) (.+)$') {
             $taskId = $matches[1]
             $taskName = $matches[2]
 
-            # Vérifier si la tâche est terminée
+            # VÃ©rifier si la tÃ¢che est terminÃ©e
             $isCompleted = $false
             for ($j = $i + 1; $j -lt $content.Count; $j++) {
-                Write-Host "Vérification ligne: $($content[$j])"
-                if ($content[$j] -match '^\*\*Progression\*\*: 100% - \*Terminé\*$') {
+                Write-Host "VÃ©rification ligne: $($content[$j])"
+                if ($content[$j] -match '^\*\*Progression\*\*: 100% - \*TerminÃ©\*$') {
                     $isCompleted = $true
-                    Write-Host "Tâche terminée trouvée: $taskId $taskName"
+                    Write-Host "TÃ¢che terminÃ©e trouvÃ©e: $taskId $taskName"
                     break
                 }
 
-                # Arrêter la recherche si on atteint une autre tâche
+                # ArrÃªter la recherche si on atteint une autre tÃ¢che
                 if ($content[$j] -match '^#### ') {
                     break
                 }
@@ -103,7 +103,7 @@ function Move-CompletedTasksToArchive {
                     endIndex   = $i
                 }
 
-                # Trouver la fin de la tâche
+                # Trouver la fin de la tÃ¢che
                 for ($j = $i + 1; $j -lt $content.Count; $j++) {
                     if (($j -eq $content.Count - 1) -or ($content[$j + 1] -match '^#### ')) {
                         $completedTasks[-1].endIndex = $j
@@ -111,7 +111,7 @@ function Move-CompletedTasksToArchive {
                     }
                 }
 
-                # Extraire le contenu de la tâche
+                # Extraire le contenu de la tÃ¢che
                 $taskContent[$taskId] = $content[$i..$completedTasks[-1].endIndex]
                 $taskIndices[$taskId] = @{
                     start = $i
@@ -121,15 +121,15 @@ function Move-CompletedTasksToArchive {
         }
     }
 
-    # Si aucune tâche terminée n'est trouvée, sortir
+    # Si aucune tÃ¢che terminÃ©e n'est trouvÃ©e, sortir
     if ($completedTasks.Count -eq 0) {
-        Write-Host "Aucune tâche terminée à archiver."
+        Write-Host "Aucune tÃ¢che terminÃ©e Ã  archiver."
         return
     }
 
-    # Ajouter les tâches terminées au fichier d'archive
+    # Ajouter les tÃ¢ches terminÃ©es au fichier d'archive
     $archiveContent += ""
-    $archiveContent += "## Tâches archivées le $(Get-Date -Format 'yyyy-MM-dd')"
+    $archiveContent += "## TÃ¢ches archivÃ©es le $(Get-Date -Format 'yyyy-MM-dd')"
     $archiveContent += ""
 
     foreach ($task in $completedTasks) {
@@ -137,7 +137,7 @@ function Move-CompletedTasksToArchive {
         $archiveContent += ""
     }
 
-    # Remplacer les tâches terminées par des références dans le fichier original
+    # Remplacer les tÃ¢ches terminÃ©es par des rÃ©fÃ©rences dans le fichier original
     $newContent = @()
     $skipIndices = @()
 
@@ -148,12 +148,12 @@ function Move-CompletedTasksToArchive {
 
     for ($i = 0; $i -lt $content.Count; $i++) {
         if ($skipIndices -contains $i) {
-            # Si c'est le début d'une tâche terminée, ajouter une référence
+            # Si c'est le dÃ©but d'une tÃ¢che terminÃ©e, ajouter une rÃ©fÃ©rence
             foreach ($task in $completedTasks) {
                 if ($i -eq $taskIndices[$task.id].start) {
                     $newContent += "#### $($task.id) $($task.name)"
-                    $newContent += "**Progression**: 100% - *Terminé*"
-                    $newContent += "**Note**: Cette tâche a été archivée. Voir `$ArchivePath` pour les détails."
+                    $newContent += "**Progression**: 100% - *TerminÃ©*"
+                    $newContent += "**Note**: Cette tÃ¢che a Ã©tÃ© archivÃ©e. Voir `$ArchivePath` pour les dÃ©tails."
                     $newContent += ""
                     break
                 }
@@ -175,23 +175,23 @@ function Move-CompletedTasksToArchive {
 
 # Fonction principale
 try {
-    # Déterminer le chemin d'archive
+    # DÃ©terminer le chemin d'archive
     if (-not $ArchivePath) {
         $ArchivePath = Join-Path -Path (Split-Path -Parent $MarkdownPath) -ChildPath "completed_tasks.md"
     }
 
     $result = Move-CompletedTasksToArchive -MarkdownPath $MarkdownPath -ArchivePath $ArchivePath
 
-    Write-Host "Archivage des tâches terminées réussi."
-    Write-Host "$($result.archivedTasks.Count) tâches archivées dans '$($result.archivePath)'."
+    Write-Host "Archivage des tÃ¢ches terminÃ©es rÃ©ussi."
+    Write-Host "$($result.archivedTasks.Count) tÃ¢ches archivÃ©es dans '$($result.archivePath)'."
 
-    # Afficher les tâches archivées
+    # Afficher les tÃ¢ches archivÃ©es
     if ($result.archivedTasks.Count -gt 0) {
-        Write-Host "`nTâches archivées:"
+        Write-Host "`nTÃ¢ches archivÃ©es:"
         foreach ($task in $result.archivedTasks) {
             Write-Host "  $($task.id) $($task.name)"
         }
     }
 } catch {
-    Write-Error "Erreur lors de l'archivage des tâches terminées: $_"
+    Write-Error "Erreur lors de l'archivage des tÃ¢ches terminÃ©es: $_"
 }

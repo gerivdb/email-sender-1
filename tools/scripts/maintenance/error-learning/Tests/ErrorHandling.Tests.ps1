@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la gestion des erreurs PowerShell.
 .DESCRIPTION
@@ -6,14 +6,14 @@
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "Tests de gestion des erreurs PowerShell" {
-    Context "Création et manipulation d'erreurs" {
-        It "Devrait créer une erreur PowerShell" {
-            # Créer une erreur factice
+    Context "CrÃ©ation et manipulation d'erreurs" {
+        It "Devrait crÃ©er une erreur PowerShell" {
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -22,17 +22,17 @@ Describe "Tests de gestion des erreurs PowerShell" {
                 $null
             )
             
-            # Vérifier que l'erreur a été créée correctement
+            # VÃ©rifier que l'erreur a Ã©tÃ© crÃ©Ã©e correctement
             $errorRecord | Should -Not -BeNullOrEmpty
             $errorRecord.Exception.Message | Should -Be "Erreur de test"
             $errorRecord.FullyQualifiedErrorId | Should -Be "TestError"
         }
         
         It "Devrait capturer une erreur avec try/catch" {
-            # Définir une variable pour vérifier si l'erreur a été capturée
+            # DÃ©finir une variable pour vÃ©rifier si l'erreur a Ã©tÃ© capturÃ©e
             $errorCaptured = $false
             
-            # Essayer d'exécuter une commande qui génère une erreur
+            # Essayer d'exÃ©cuter une commande qui gÃ©nÃ¨re une erreur
             try {
                 Get-Item -Path "C:\CeCheminNExistePas" -ErrorAction Stop
             }
@@ -42,7 +42,7 @@ Describe "Tests de gestion des erreurs PowerShell" {
                 $_.Exception.Message | Should -Match "Impossible de trouver le chemin"
             }
             
-            # Vérifier que l'erreur a été capturée
+            # VÃ©rifier que l'erreur a Ã©tÃ© capturÃ©e
             $errorCaptured | Should -BeTrue
         }
         
@@ -50,10 +50,10 @@ Describe "Tests de gestion des erreurs PowerShell" {
             # Vider la variable $Error
             $Error.Clear()
             
-            # Exécuter une commande qui génère une erreur
+            # ExÃ©cuter une commande qui gÃ©nÃ¨re une erreur
             Get-Item -Path "C:\CeCheminNExistePas" -ErrorAction SilentlyContinue
             
-            # Vérifier que l'erreur a été enregistrée dans la variable $Error
+            # VÃ©rifier que l'erreur a Ã©tÃ© enregistrÃ©e dans la variable $Error
             $Error.Count | Should -BeGreaterThan 0
             $Error[0].Exception.Message | Should -Match "Impossible de trouver le chemin"
         }
@@ -61,7 +61,7 @@ Describe "Tests de gestion des erreurs PowerShell" {
     
     Context "Analyse des erreurs" {
         It "Devrait extraire des informations d'une erreur" {
-            # Créer une erreur factice
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -79,7 +79,7 @@ Describe "Tests de gestion des erreurs PowerShell" {
                 ScriptStackTrace = $errorRecord.ScriptStackTrace
             }
             
-            # Vérifier que les informations ont été extraites correctement
+            # VÃ©rifier que les informations ont Ã©tÃ© extraites correctement
             $errorInfo.Message | Should -Be "Erreur de test"
             $errorInfo.ErrorId | Should -Be "TestError"
             $errorInfo.Category | Should -Be "NotSpecified"

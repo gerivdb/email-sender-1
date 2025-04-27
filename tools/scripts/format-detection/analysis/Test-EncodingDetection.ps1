@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste la détection d'encodage sur un ensemble de fichiers.
+    Teste la dÃ©tection d'encodage sur un ensemble de fichiers.
 
 .DESCRIPTION
-    Ce script teste la détection d'encodage sur un ensemble de fichiers
-    et génère un rapport détaillé des résultats.
+    Ce script teste la dÃ©tection d'encodage sur un ensemble de fichiers
+    et gÃ©nÃ¨re un rapport dÃ©taillÃ© des rÃ©sultats.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport d'analyse sera enregistré. Par défaut, 'EncodingDetectionResults.json'.
+    Le chemin oÃ¹ le rapport d'analyse sera enregistrÃ©. Par dÃ©faut, 'EncodingDetectionResults.json'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport JSON.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport JSON.
 
 .PARAMETER ExpectedEncodingsPath
     Le chemin vers un fichier JSON contenant les encodages attendus pour chaque fichier.
-    Si spécifié, le script comparera les résultats avec les encodages attendus.
+    Si spÃ©cifiÃ©, le script comparera les rÃ©sultats avec les encodages attendus.
 
 .EXAMPLE
     .\Test-EncodingDetection.ps1 -SampleDirectory "C:\Samples" -GenerateHtmlReport
@@ -44,31 +44,31 @@ param(
     [string]$ExpectedEncodingsPath
 )
 
-# Importer le script de détection d'encodage
+# Importer le script de dÃ©tection d'encodage
 $detectionScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Detect-FileEncoding.ps1"
 if (-not (Test-Path -Path $detectionScriptPath -PathType Leaf)) {
-    Write-Error "Le script de détection d'encodage $detectionScriptPath n'existe pas."
+    Write-Error "Le script de dÃ©tection d'encodage $detectionScriptPath n'existe pas."
     return
 }
 
-# Vérifier si le répertoire d'échantillons existe
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
-    Write-Error "Le répertoire d'échantillons $SampleDirectory n'existe pas."
+    Write-Error "Le rÃ©pertoire d'Ã©chantillons $SampleDirectory n'existe pas."
     return
 }
 
-# Charger les encodages attendus si spécifiés
+# Charger les encodages attendus si spÃ©cifiÃ©s
 $expectedEncodings = @{}
 if ($ExpectedEncodingsPath -and (Test-Path -Path $ExpectedEncodingsPath -PathType Leaf)) {
     try {
         $expectedEncodings = Get-Content -Path $ExpectedEncodingsPath -Raw | ConvertFrom-Json -AsHashtable
-        Write-Host "Encodages attendus chargés depuis $ExpectedEncodingsPath" -ForegroundColor Green
+        Write-Host "Encodages attendus chargÃ©s depuis $ExpectedEncodingsPath" -ForegroundColor Green
     } catch {
         Write-Warning "Impossible de charger les encodages attendus depuis $ExpectedEncodingsPath : $_"
     }
 }
 
-# Récupérer tous les fichiers du répertoire (récursivement)
+# RÃ©cupÃ©rer tous les fichiers du rÃ©pertoire (rÃ©cursivement)
 $files = Get-ChildItem -Path $SampleDirectory -File -Recurse
 
 Write-Host "Analyse de $($files.Count) fichiers..." -ForegroundColor Cyan
@@ -81,10 +81,10 @@ foreach ($file in $files) {
     Write-Progress -Activity "Analyse des fichiers" -Status "Fichier $i sur $($files.Count)" -PercentComplete (($i / $files.Count) * 100)
     
     try {
-        # Détecter l'encodage du fichier
+        # DÃ©tecter l'encodage du fichier
         $detectionResult = & $detectionScriptPath -FilePath $file.FullName
         
-        # Vérifier si l'encodage détecté correspond à l'encodage attendu
+        # VÃ©rifier si l'encodage dÃ©tectÃ© correspond Ã  l'encodage attendu
         $expectedEncoding = $null
         $isCorrect = $null
         
@@ -93,7 +93,7 @@ foreach ($file in $files) {
             $isCorrect = $detectionResult.Encoding -eq $expectedEncoding
         }
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         $result = [PSCustomObject]@{
             FilePath = $file.FullName
             FileName = $file.Name
@@ -111,7 +111,7 @@ foreach ($file in $files) {
     } catch {
         Write-Warning "Erreur lors de l'analyse du fichier $($file.FullName) : $_"
         
-        # Ajouter un résultat d'erreur
+        # Ajouter un rÃ©sultat d'erreur
         $results += [PSCustomObject]@{
             FilePath = $file.FullName
             FileName = $file.Name
@@ -130,12 +130,12 @@ foreach ($file in $files) {
 
 Write-Progress -Activity "Analyse des fichiers" -Completed
 
-# Enregistrer les résultats au format JSON
+# Enregistrer les rÃ©sultats au format JSON
 $results | ConvertTo-Json -Depth 4 | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Rapport JSON généré : $OutputPath" -ForegroundColor Green
+Write-Host "Rapport JSON gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
     
@@ -145,7 +145,7 @@ if ($GenerateHtmlReport) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de détection d'encodage</title>
+    <title>Rapport de dÃ©tection d'encodage</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -207,8 +207,8 @@ if ($GenerateHtmlReport) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Rapport de détection d'encodage</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <h1>Rapport de dÃ©tection d'encodage</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 "@
     
     # Calculer les statistiques
@@ -223,7 +223,7 @@ if ($GenerateHtmlReport) {
     
     $correctPercent = if ($totalFiles -gt 0 -and $correctDetections -gt 0) { [Math]::Round(($correctDetections / ($correctDetections + $incorrectDetections)) * 100, 2) } else { 0 }
     
-    # Compter les encodages détectés
+    # Compter les encodages dÃ©tectÃ©s
     $encodingCounts = @{}
     foreach ($result in $results) {
         $encoding = $result.DetectedEncoding
@@ -233,29 +233,29 @@ if ($GenerateHtmlReport) {
         $encodingCounts[$encoding]++
     }
     
-    # Trier les encodages par fréquence
+    # Trier les encodages par frÃ©quence
     $sortedEncodings = $encodingCounts.GetEnumerator() | Sort-Object -Property Value -Descending
     
-    # Générer les données pour le graphique
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique
     $encodingLabels = $sortedEncodings | ForEach-Object { "`"$($_.Key)`"" }
     $encodingValues = $sortedEncodings | ForEach-Object { $_.Value }
     
     $htmlSummary = @"
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre total de fichiers analysés : $totalFiles</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre total de fichiers analysÃ©s : $totalFiles</p>
 "@
     
     if ($correctDetections -gt 0 -or $incorrectDetections -gt 0) {
         $htmlSummary += @"
-        <p>Détections correctes : $correctDetections ($correctPercent%)</p>
-        <p>Détections incorrectes : $incorrectDetections</p>
+        <p>DÃ©tections correctes : $correctDetections ($correctPercent%)</p>
+        <p>DÃ©tections incorrectes : $incorrectDetections</p>
         <p>Fichiers sans encodage attendu : $noExpectedEncoding</p>
 "@
     }
     
     $htmlSummary += @"
-        <p>Fichiers avec confiance élevée (>= 80%) : $highConfidence</p>
+        <p>Fichiers avec confiance Ã©levÃ©e (>= 80%) : $highConfidence</p>
         <p>Fichiers avec confiance moyenne (50-79%) : $mediumConfidence</p>
         <p>Fichiers avec confiance faible (< 50%) : $lowConfidence</p>
         <p>Fichiers avec BOM : $bomFiles</p>
@@ -304,12 +304,12 @@ if ($GenerateHtmlReport) {
 "@
     
     $htmlResults = @"
-    <h2>Résultats de détection</h2>
+    <h2>RÃ©sultats de dÃ©tection</h2>
     <table>
         <tr>
             <th>Nom du fichier</th>
             <th>Extension</th>
-            <th>Encodage détecté</th>
+            <th>Encodage dÃ©tectÃ©</th>
             <th>BOM</th>
             <th>Confiance</th>
             <th>Description</th>
@@ -379,10 +379,10 @@ if ($GenerateHtmlReport) {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $htmlOutputPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $htmlOutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlOutputPath" -ForegroundColor Green
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $totalFiles = $results.Count
 $correctDetections = ($results | Where-Object { $_.IsCorrect -eq $true }).Count
 $incorrectDetections = ($results | Where-Object { $_.IsCorrect -eq $false }).Count
@@ -392,22 +392,22 @@ $mediumConfidence = ($results | Where-Object { $_.Confidence -ge 50 -and $_.Conf
 $lowConfidence = ($results | Where-Object { $_.Confidence -lt 50 }).Count
 $bomFiles = ($results | Where-Object { $_.BOM -eq $true }).Count
 
-Write-Host "`nRésumé de l'analyse :" -ForegroundColor Cyan
-Write-Host "  Nombre total de fichiers analysés : $totalFiles" -ForegroundColor White
+Write-Host "`nRÃ©sumÃ© de l'analyse :" -ForegroundColor Cyan
+Write-Host "  Nombre total de fichiers analysÃ©s : $totalFiles" -ForegroundColor White
 
 if ($correctDetections -gt 0 -or $incorrectDetections -gt 0) {
     $correctPercent = if ($totalFiles -gt 0 -and $correctDetections -gt 0) { [Math]::Round(($correctDetections / ($correctDetections + $incorrectDetections)) * 100, 2) } else { 0 }
-    Write-Host "  Détections correctes : $correctDetections ($correctPercent%)" -ForegroundColor $(if ($correctPercent -ge 80) { "Green" } elseif ($correctPercent -ge 50) { "Yellow" } else { "Red" })
-    Write-Host "  Détections incorrectes : $incorrectDetections" -ForegroundColor $(if ($incorrectDetections -gt 0) { "Red" } else { "Green" })
+    Write-Host "  DÃ©tections correctes : $correctDetections ($correctPercent%)" -ForegroundColor $(if ($correctPercent -ge 80) { "Green" } elseif ($correctPercent -ge 50) { "Yellow" } else { "Red" })
+    Write-Host "  DÃ©tections incorrectes : $incorrectDetections" -ForegroundColor $(if ($incorrectDetections -gt 0) { "Red" } else { "Green" })
     Write-Host "  Fichiers sans encodage attendu : $noExpectedEncoding" -ForegroundColor White
 }
 
-Write-Host "  Fichiers avec confiance élevée (>= 80%) : $highConfidence" -ForegroundColor Green
+Write-Host "  Fichiers avec confiance Ã©levÃ©e (>= 80%) : $highConfidence" -ForegroundColor Green
 Write-Host "  Fichiers avec confiance moyenne (50-79%) : $mediumConfidence" -ForegroundColor Yellow
 Write-Host "  Fichiers avec confiance faible (< 50%) : $lowConfidence" -ForegroundColor Red
 Write-Host "  Fichiers avec BOM : $bomFiles" -ForegroundColor Cyan
 
-# Afficher les encodages les plus fréquents
+# Afficher les encodages les plus frÃ©quents
 $encodingCounts = @{}
 foreach ($result in $results) {
     $encoding = $result.DetectedEncoding
@@ -419,17 +419,17 @@ foreach ($result in $results) {
 
 $sortedEncodings = $encodingCounts.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 5
 
-Write-Host "`nEncodages les plus fréquents :" -ForegroundColor Cyan
+Write-Host "`nEncodages les plus frÃ©quents :" -ForegroundColor Cyan
 foreach ($encoding in $sortedEncodings) {
     Write-Host "  $($encoding.Key): $($encoding.Value) fichiers" -ForegroundColor White
 }
 
-# Afficher les encodages incorrectement détectés si des encodages attendus sont disponibles
+# Afficher les encodages incorrectement dÃ©tectÃ©s si des encodages attendus sont disponibles
 if ($incorrectDetections -gt 0) {
     $incorrectResults = $results | Where-Object { $_.IsCorrect -eq $false } | Sort-Object -Property Confidence -Descending
     
-    Write-Host "`nEncodages incorrectement détectés :" -ForegroundColor Red
+    Write-Host "`nEncodages incorrectement dÃ©tectÃ©s :" -ForegroundColor Red
     foreach ($result in $incorrectResults) {
-        Write-Host "  $($result.FileName) - Détecté: $($result.DetectedEncoding), Attendu: $($result.ExpectedEncoding), Confiance: $($result.Confidence)%" -ForegroundColor White
+        Write-Host "  $($result.FileName) - DÃ©tectÃ©: $($result.DetectedEncoding), Attendu: $($result.ExpectedEncoding), Confiance: $($result.Confidence)%" -ForegroundColor White
     }
 }

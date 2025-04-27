@@ -1,4 +1,4 @@
-# Module d'analyse statique pour le Script Manager
+﻿# Module d'analyse statique pour le Script Manager
 # Ce module effectue une analyse statique du code des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -11,7 +11,7 @@ function Invoke-StaticAnalysis {
     .DESCRIPTION
         Analyse le code pour extraire des informations sur sa structure et son contenu
     .PARAMETER Content
-        Contenu du script à analyser
+        Contenu du script Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .PARAMETER Depth
@@ -51,7 +51,7 @@ function Invoke-StaticAnalysis {
     $Lines = $Content -split "`n" | Where-Object { $_.Trim() -ne "" }
     $Analysis.LineCount = $Lines.Count
     
-    # Analyse spécifique au type de script
+    # Analyse spÃ©cifique au type de script
     switch ($ScriptType) {
         "PowerShell" {
             # Compter les commentaires
@@ -62,7 +62,7 @@ function Invoke-StaticAnalysis {
             $Analysis.FunctionCount = $FunctionMatches.Count
             $Analysis.Functions = $FunctionMatches | ForEach-Object { $_.Groups[1].Value }
             
-            # Compter les variables (déclarations)
+            # Compter les variables (dÃ©clarations)
             $VariableMatches = [regex]::Matches($Content, "\$([a-zA-Z0-9_-]+)\s*=")
             $Analysis.VariableCount = $VariableMatches.Count
             $Analysis.Variables = $VariableMatches | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
@@ -77,17 +77,17 @@ function Invoke-StaticAnalysis {
             # Compter les boucles
             $Analysis.Loops = ([regex]::Matches($Content, "foreach\s*\(")).Count + ([regex]::Matches($Content, "for\s*\(")).Count + ([regex]::Matches($Content, "while\s*\(")).Count + ([regex]::Matches($Content, "do\s*\{")).Count
             
-            # Calculer la complexité (formule simple)
+            # Calculer la complexitÃ© (formule simple)
             $Analysis.ComplexityScore = $Analysis.FunctionCount + $Analysis.Conditionals + $Analysis.Loops
             
-            # Analyse avancée si demandée
+            # Analyse avancÃ©e si demandÃ©e
             if ($Depth -eq "Advanced") {
-                # Détecter les classes
+                # DÃ©tecter les classes
                 $ClassMatches = [regex]::Matches($Content, "class\s+([a-zA-Z0-9_-]+)")
                 $Analysis.Classes = $ClassMatches | ForEach-Object { $_.Groups[1].Value }
                 
-                # Analyse plus approfondie des fonctions (paramètres, etc.)
-                # Cette partie pourrait être développée davantage
+                # Analyse plus approfondie des fonctions (paramÃ¨tres, etc.)
+                # Cette partie pourrait Ãªtre dÃ©veloppÃ©e davantage
             }
         }
         "Python" {
@@ -111,12 +111,12 @@ function Invoke-StaticAnalysis {
             # Compter les boucles
             $Analysis.Loops = ([regex]::Matches($Content, "for\s+")).Count + ([regex]::Matches($Content, "while\s+")).Count
             
-            # Calculer la complexité (formule simple)
+            # Calculer la complexitÃ© (formule simple)
             $Analysis.ComplexityScore = $Analysis.FunctionCount + $Analysis.Conditionals + $Analysis.Loops
             
-            # Analyse avancée si demandée
+            # Analyse avancÃ©e si demandÃ©e
             if ($Depth -eq "Advanced") {
-                # Détecter les classes
+                # DÃ©tecter les classes
                 $ClassMatches = [regex]::Matches($Content, "class\s+([a-zA-Z0-9_]+)")
                 $Analysis.Classes = $ClassMatches | ForEach-Object { $_.Groups[1].Value }
             }
@@ -130,7 +130,7 @@ function Invoke-StaticAnalysis {
             $Analysis.FunctionCount = $LabelMatches.Count
             $Analysis.Functions = $LabelMatches | ForEach-Object { $_.Groups[1].Value }
             
-            # Compter les variables (déclarations)
+            # Compter les variables (dÃ©clarations)
             $VariableMatches = [regex]::Matches($Content, "set\s+([a-zA-Z0-9_-]+)=")
             $Analysis.VariableCount = $VariableMatches.Count
             $Analysis.Variables = $VariableMatches | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
@@ -141,7 +141,7 @@ function Invoke-StaticAnalysis {
             # Compter les boucles
             $Analysis.Loops = ([regex]::Matches($Content, "for\s+")).Count
             
-            # Calculer la complexité (formule simple)
+            # Calculer la complexitÃ© (formule simple)
             $Analysis.ComplexityScore = $Analysis.FunctionCount + $Analysis.Conditionals + $Analysis.Loops
         }
         "Shell" {
@@ -155,7 +155,7 @@ function Invoke-StaticAnalysis {
                 if ($_.Groups[1].Value) { $_.Groups[1].Value } else { $_.Groups[2].Value }
             }
             
-            # Compter les variables (déclarations)
+            # Compter les variables (dÃ©clarations)
             $VariableMatches = [regex]::Matches($Content, "([a-zA-Z0-9_-]+)=")
             $Analysis.VariableCount = $VariableMatches.Count
             $Analysis.Variables = $VariableMatches | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
@@ -172,7 +172,7 @@ function Invoke-StaticAnalysis {
             # Compter les boucles
             $Analysis.Loops = ([regex]::Matches($Content, "for\s+")).Count + ([regex]::Matches($Content, "while\s+")).Count + ([regex]::Matches($Content, "until\s+")).Count
             
-            # Calculer la complexité (formule simple)
+            # Calculer la complexitÃ© (formule simple)
             $Analysis.ComplexityScore = $Analysis.FunctionCount + $Analysis.Conditionals + $Analysis.Loops
         }
         default {

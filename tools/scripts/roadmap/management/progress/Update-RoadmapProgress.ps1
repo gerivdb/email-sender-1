@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour automatiquement les pourcentages de progression dans un fichier de roadmap.
+    Met Ã  jour automatiquement les pourcentages de progression dans un fichier de roadmap.
 
 .DESCRIPTION
-    Ce script analyse un fichier de roadmap au format Markdown et met à jour les pourcentages
-    de progression en fonction de l'état des sous-tâches. Il calcule la progression des tâches,
+    Ce script analyse un fichier de roadmap au format Markdown et met Ã  jour les pourcentages
+    de progression en fonction de l'Ã©tat des sous-tÃ¢ches. Il calcule la progression des tÃ¢ches,
     sous-sections et sections principales.
 
 .PARAMETER MarkdownPath
@@ -14,7 +14,7 @@
     .\Update-RoadmapProgress.ps1 -MarkdownPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 
 .NOTES
-    Auteur: Équipe DevOps
+    Auteur: Ã‰quipe DevOps
     Date: 2025-04-20
     Version: 1.0.0
 #>
@@ -32,7 +32,7 @@ function Update-RoadmapProgress {
         [string]$MarkdownPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $MarkdownPath)) {
         throw "Le fichier '$MarkdownPath' n'existe pas."
     }
@@ -47,17 +47,17 @@ function Update-RoadmapProgress {
         tasks = @{}
     }
 
-    # Analyser les sous-tâches et calculer leur progression
+    # Analyser les sous-tÃ¢ches et calculer leur progression
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
         
-        # Détecter les sous-tâches
-        if ($line -match '- \[([ x])\] \*\*Sous-tâche (\d+\.\d+)\*\*: (.+?) \((\d+)h\)') {
+        # DÃ©tecter les sous-tÃ¢ches
+        if ($line -match '- \[([ x])\] \*\*Sous-tÃ¢che (\d+\.\d+)\*\*: (.+?) \((\d+)h\)') {
             $completed = $matches[1] -eq 'x'
             $subtaskId = $matches[2]
             $taskId = $subtaskId -replace '\.\d+$', ''
             
-            # Extraire l'ID de la tâche parente
+            # Extraire l'ID de la tÃ¢che parente
             $taskPattern = '#### (\d+\.\d+\.\d+) '
             for ($j = $i; $j -ge 0; $j--) {
                 if ($content[$j] -match $taskPattern) {
@@ -66,7 +66,7 @@ function Update-RoadmapProgress {
                 }
             }
             
-            # Mettre à jour les informations de progression de la tâche
+            # Mettre Ã  jour les informations de progression de la tÃ¢che
             if (-not $progressInfo.tasks.ContainsKey($taskId)) {
                 $progressInfo.tasks[$taskId] = @{
                     total = 0
@@ -81,21 +81,21 @@ function Update-RoadmapProgress {
         }
     }
 
-    # Calculer la progression des tâches
+    # Calculer la progression des tÃ¢ches
     foreach ($taskId in $progressInfo.tasks.Keys) {
         $taskInfo = $progressInfo.tasks[$taskId]
         $taskProgress = if ($taskInfo.total -gt 0) { [math]::Round(($taskInfo.completed / $taskInfo.total) * 100) } else { 0 }
         
-        # Déterminer le statut en fonction de la progression
+        # DÃ©terminer le statut en fonction de la progression
         $taskStatus = switch ($taskProgress) {
-            0 { "Non commencé" }
+            0 { "Non commencÃ©" }
             { $_ -ge 1 -and $_ -lt 90 } { "En cours" }
-            { $_ -ge 90 -and $_ -lt 100 } { "Presque terminé" }
-            100 { "Terminé" }
-            default { "Non commencé" }
+            { $_ -ge 90 -and $_ -lt 100 } { "Presque terminÃ©" }
+            100 { "TerminÃ©" }
+            default { "Non commencÃ©" }
         }
         
-        # Mettre à jour la progression de la tâche dans le contenu
+        # Mettre Ã  jour la progression de la tÃ¢che dans le contenu
         for ($i = 0; $i -lt $content.Count; $i++) {
             if ($content[$i] -match "#### $taskId ") {
                 # Trouver la ligne de progression
@@ -112,7 +112,7 @@ function Update-RoadmapProgress {
         # Extraire l'ID de la sous-section parente
         $subsectionId = $taskId -replace '\.\d+$', ''
         
-        # Mettre à jour les informations de progression de la sous-section
+        # Mettre Ã  jour les informations de progression de la sous-section
         if (-not $progressInfo.subsections.ContainsKey($subsectionId)) {
             $progressInfo.subsections[$subsectionId] = @{
                 tasks = @()
@@ -138,7 +138,7 @@ function Update-RoadmapProgress {
         
         $subsectionProgress = if ($taskCount -gt 0) { [math]::Round($totalProgress / $taskCount) } else { 0 }
         
-        # Mettre à jour la progression de la sous-section dans le contenu
+        # Mettre Ã  jour la progression de la sous-section dans le contenu
         for ($i = 0; $i -lt $content.Count; $i++) {
             if ($content[$i] -match "### $subsectionId ") {
                 # Trouver la ligne de progression
@@ -155,7 +155,7 @@ function Update-RoadmapProgress {
         # Extraire l'ID de la section parente
         $sectionId = $subsectionId -replace '\.\d+$', ''
         
-        # Mettre à jour les informations de progression de la section
+        # Mettre Ã  jour les informations de progression de la section
         if (-not $progressInfo.sections.ContainsKey($sectionId)) {
             $progressInfo.sections[$sectionId] = @{
                 subsections = @()
@@ -181,16 +181,16 @@ function Update-RoadmapProgress {
         
         $sectionProgress = if ($subsectionCount -gt 0) { [math]::Round($totalProgress / $subsectionCount) } else { 0 }
         
-        # Déterminer le statut en fonction de la progression
+        # DÃ©terminer le statut en fonction de la progression
         $sectionStatus = switch ($sectionProgress) {
-            0 { "Non commencé" }
+            0 { "Non commencÃ©" }
             { $_ -ge 1 -and $_ -lt 90 } { "En cours" }
-            { $_ -ge 90 -and $_ -lt 100 } { "Presque terminé" }
-            100 { "Terminé" }
-            default { "Non commencé" }
+            { $_ -ge 90 -and $_ -lt 100 } { "Presque terminÃ©" }
+            100 { "TerminÃ©" }
+            default { "Non commencÃ©" }
         }
         
-        # Mettre à jour la progression de la section dans le contenu
+        # Mettre Ã  jour la progression de la section dans le contenu
         for ($i = 0; $i -lt $content.Count; $i++) {
             if ($content[$i] -match "## $sectionId\. ") {
                 # Trouver la ligne de statut global
@@ -219,10 +219,10 @@ function Update-RoadmapProgress {
 try {
     $progressInfo = Update-RoadmapProgress -MarkdownPath $MarkdownPath
     
-    Write-Host "Progression mise à jour avec succès dans '$MarkdownPath'"
+    Write-Host "Progression mise Ã  jour avec succÃ¨s dans '$MarkdownPath'"
     
-    # Afficher un résumé des mises à jour
-    Write-Host "`nRésumé des mises à jour de progression:"
+    # Afficher un rÃ©sumÃ© des mises Ã  jour
+    Write-Host "`nRÃ©sumÃ© des mises Ã  jour de progression:"
     
     Write-Host "`nSections:"
     foreach ($sectionId in $progressInfo.sections.Keys | Sort-Object) {
@@ -256,14 +256,14 @@ try {
         Write-Host "  Sous-section $subsectionId : $subsectionProgress%"
     }
     
-    Write-Host "`nTâches:"
+    Write-Host "`nTÃ¢ches:"
     foreach ($taskId in $progressInfo.tasks.Keys | Sort-Object) {
         $taskInfo = $progressInfo.tasks[$taskId]
         $taskProgress = if ($taskInfo.total -gt 0) { [math]::Round(($taskInfo.completed / $taskInfo.total) * 100) } else { 0 }
         
-        Write-Host "  Tâche $taskId : $taskProgress% ($($taskInfo.completed)/$($taskInfo.total) sous-tâches)"
+        Write-Host "  TÃ¢che $taskId : $taskProgress% ($($taskInfo.completed)/$($taskInfo.total) sous-tÃ¢ches)"
     }
 }
 catch {
-    Write-Error "Erreur lors de la mise à jour de la progression: $_"
+    Write-Error "Erreur lors de la mise Ã  jour de la progression: $_"
 }

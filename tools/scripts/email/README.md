@@ -1,6 +1,6 @@
-# email
+﻿# email
 
-Fonctionnalités liées aux emails
+FonctionnalitÃ©s liÃ©es aux emails
 
 ## Sous-dossiers
 

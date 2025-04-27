@@ -1,6 +1,6 @@
-# Script pour copier les fichiers de documentation
+﻿# Script pour copier les fichiers de documentation
 
-# Créer le dossier de documentation
+# CrÃ©er le dossier de documentation
 New-Item -Path "temp-files/docs" -ItemType Directory -Force | Out-Null
 
 # Copier les fichiers de documentation
@@ -12,4 +12,4 @@ Copy-Item -Path "n8n/docs/examples/common-scenarios.md" -Destination "temp-files
 Copy-Item -Path "n8n/docs/user-guide.md" -Destination "temp-files/docs/user-guide.md" -Force
 Copy-Item -Path "n8n/docs/index.md" -Destination "temp-files/docs/index.md" -Force
 
-Write-Host "Fichiers de documentation copiés dans le dossier temp-files/docs"
+Write-Host "Fichiers de documentation copiÃ©s dans le dossier temp-files/docs"

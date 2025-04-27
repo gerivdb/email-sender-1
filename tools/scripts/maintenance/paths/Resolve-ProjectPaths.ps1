@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Résout et valide les chemins du projet en utilisant le module PathResolver.
+    RÃ©sout et valide les chemins du projet en utilisant le module PathResolver.
 .DESCRIPTION
-    Ce script résout et valide les chemins du projet en utilisant le module PathResolver,
-    et affiche des statistiques sur les chemins résolus.
+    Ce script rÃ©sout et valide les chemins du projet en utilisant le module PathResolver,
+    et affiche des statistiques sur les chemins rÃ©solus.
 .PARAMETER ConfigPath
     Chemin du fichier de configuration contenant les mappings de chemins.
 .PARAMETER PathsToResolve
-    Liste des chemins à résoudre et valider.
+    Liste des chemins Ã  rÃ©soudre et valider.
 .PARAMETER OutputFormat
-    Format de sortie des résultats. Valeurs possibles : "Console", "CSV", "JSON".
+    Format de sortie des rÃ©sultats. Valeurs possibles : "Console", "CSV", "JSON".
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour les formats CSV et JSON.
 .EXAMPLE
@@ -43,19 +43,19 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "PathResolver.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module PathResolver non trouvé: $modulePath"
+    Write-Error "Module PathResolver non trouvÃ©: $modulePath"
     exit 1
 }
 
 Import-Module $modulePath -Force
 
-# Charger la configuration si spécifiée
+# Charger la configuration si spÃ©cifiÃ©e
 if ($ConfigPath) {
     if (Test-Path -Path $ConfigPath) {
         try {
             $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
             
-            # Initialiser le module avec les paramètres de configuration
+            # Initialiser le module avec les paramÃ¨tres de configuration
             $initParams = @{}
             
             if ($config.SearchPaths) {
@@ -80,7 +80,7 @@ if ($ConfigPath) {
             
             Initialize-PathResolver @initParams
             
-            Write-Host "Configuration chargée depuis '$ConfigPath'" -ForegroundColor Green
+            Write-Host "Configuration chargÃ©e depuis '$ConfigPath'" -ForegroundColor Green
         }
         catch {
             Write-Error "Erreur lors du chargement de la configuration: $($_.Exception.Message)"
@@ -88,12 +88,12 @@ if ($ConfigPath) {
         }
     }
     else {
-        Write-Error "Fichier de configuration non trouvé: $ConfigPath"
+        Write-Error "Fichier de configuration non trouvÃ©: $ConfigPath"
         exit 1
     }
 }
 
-# Si aucun chemin n'est spécifié, utiliser des chemins par défaut
+# Si aucun chemin n'est spÃ©cifiÃ©, utiliser des chemins par dÃ©faut
 if (-not $PathsToResolve) {
     $PathsToResolve = @(
         "scripts\maintenance\paths\PathResolver.psm1",
@@ -104,11 +104,11 @@ if (-not $PathsToResolve) {
     )
 }
 
-# Résoudre et valider les chemins
+# RÃ©soudre et valider les chemins
 $results = @()
 
 foreach ($path in $PathsToResolve) {
-    Write-Host "Résolution du chemin '$path'..." -ForegroundColor Cyan
+    Write-Host "RÃ©solution du chemin '$path'..." -ForegroundColor Cyan
     
     $resolvedPath = Get-ScriptPath -Path $path -UseCache
     $isValid = Test-ScriptPath -Path $path -RequiredPermissions "Read"
@@ -124,10 +124,10 @@ foreach ($path in $PathsToResolve) {
     
     $results += $result
     
-    # Afficher le résultat dans la console
+    # Afficher le rÃ©sultat dans la console
     if ($OutputFormat -eq "Console") {
         Write-Host "  Chemin original: $($result.OriginalPath)" -ForegroundColor White
-        Write-Host "  Chemin résolu: $($result.ResolvedPath)" -ForegroundColor $(if ($result.Exists) { "Green" } else { "Red" })
+        Write-Host "  Chemin rÃ©solu: $($result.ResolvedPath)" -ForegroundColor $(if ($result.Exists) { "Green" } else { "Red" })
         Write-Host "  Existe: $($result.Exists)" -ForegroundColor $(if ($result.Exists) { "Green" } else { "Red" })
         Write-Host "  Valide: $($result.IsValid)" -ForegroundColor $(if ($result.IsValid) { "Green" } else { "Red" })
         
@@ -143,10 +143,10 @@ foreach ($path in $PathsToResolve) {
 # Afficher les statistiques du cache
 $statistics = Get-PathStatistics
 Write-Host "Statistiques du cache:" -ForegroundColor Cyan
-Write-Host "  Entrées dans le cache: $($statistics.CacheEntries)" -ForegroundColor White
-Write-Host "  Âge moyen du cache: $($statistics.AverageAgeMinutes) minutes" -ForegroundColor White
-Write-Host "  Cache activé: $($statistics.CacheEnabled)" -ForegroundColor White
-Write-Host "  Âge maximum du cache: $($statistics.MaxCacheAgeHours) heures" -ForegroundColor White
+Write-Host "  EntrÃ©es dans le cache: $($statistics.CacheEntries)" -ForegroundColor White
+Write-Host "  Ã‚ge moyen du cache: $($statistics.AverageAgeMinutes) minutes" -ForegroundColor White
+Write-Host "  Cache activÃ©: $($statistics.CacheEnabled)" -ForegroundColor White
+Write-Host "  Ã‚ge maximum du cache: $($statistics.MaxCacheAgeHours) heures" -ForegroundColor White
 
 Write-Host "`nChemins de recherche:" -ForegroundColor Cyan
 foreach ($searchPath in $statistics.SearchPaths) {
@@ -158,7 +158,7 @@ foreach ($prefix in $statistics.PathMappings.Keys) {
     Write-Host "  $prefix -> $($statistics.PathMappings[$prefix])" -ForegroundColor White
 }
 
-# Exporter les résultats si nécessaire
+# Exporter les rÃ©sultats si nÃ©cessaire
 if ($OutputFormat -ne "Console") {
     if (-not $OutputPath) {
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath "ResolvedPaths.$($OutputFormat.ToLower())"
@@ -167,14 +167,14 @@ if ($OutputFormat -ne "Console") {
     switch ($OutputFormat) {
         "CSV" {
             $results | Export-Csv -Path $OutputPath -NoTypeInformation
-            Write-Host "`nDonnées exportées au format CSV: $OutputPath" -ForegroundColor Green
+            Write-Host "`nDonnÃ©es exportÃ©es au format CSV: $OutputPath" -ForegroundColor Green
         }
         "JSON" {
             $results | ConvertTo-Json | Out-File -FilePath $OutputPath
-            Write-Host "`nDonnées exportées au format JSON: $OutputPath" -ForegroundColor Green
+            Write-Host "`nDonnÃ©es exportÃ©es au format JSON: $OutputPath" -ForegroundColor Green
         }
     }
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

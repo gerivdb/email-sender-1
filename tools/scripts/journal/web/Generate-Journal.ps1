@@ -1,9 +1,9 @@
-# Generate-Journal.ps1
-# Script simplifié pour générer une entrée de journal pour une phase terminée
+﻿# Generate-Journal.ps1
+# Script simplifiÃ© pour gÃ©nÃ©rer une entrÃ©e de journal pour une phase terminÃ©e
 
 
 # Generate-Journal.ps1
-# Script simplifié pour générer une entrée de journal pour une phase terminée
+# Script simplifiÃ© pour gÃ©nÃ©rer une entrÃ©e de journal pour une phase terminÃ©e
 
 param (
     [Parameter(Mandatory = $true)
@@ -29,12 +29,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -43,7 +43,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
@@ -84,7 +84,7 @@ $inProgressTasks = @()
 $pendingTasks = @()
 
 foreach ($line in $lines) {
-    # Détecter la catégorie
+    # DÃ©tecter la catÃ©gorie
     if ($line -match "^## (\d+)\. (.+)") {
         $categoryId = $matches[1]
         $categoryName = $matches[2]
@@ -97,12 +97,12 @@ foreach ($line in $lines) {
         continue
     }
 
-    # Si on n'est pas dans la phase recherchée, passer à la ligne suivante
+    # Si on n'est pas dans la phase recherchÃ©e, passer Ã  la ligne suivante
     if (-not $inPhase) {
         continue
     }
 
-    # Détecter les tâches
+    # DÃ©tecter les tÃ¢ches
     if ($line -match "^- \[([ x])\] (.+?) \((.+?)\)") {
         $completed = ($matches[1] -eq "x")
         $description = $matches[2]
@@ -202,7 +202,7 @@ if ($journalExists) {
     # Lire le contenu du journal
     $journalContent = Get-Content -Path $JournalPath -Raw
 
-    # Ajouter l'entrée au début du journal
+    # Ajouter l'entrÃ©e au dÃ©but du journal
     $updatedContent = "$journalEntry`n`n---`n`n$journalContent"
 
     # Sauvegarder le journal
@@ -224,5 +224,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

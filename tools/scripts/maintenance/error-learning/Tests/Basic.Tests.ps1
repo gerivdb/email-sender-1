@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires très simples pour vérifier que Pester fonctionne correctement.
+    Tests unitaires trÃ¨s simples pour vÃ©rifier que Pester fonctionne correctement.
 .DESCRIPTION
-    Ce script contient des tests unitaires très simples pour vérifier que Pester fonctionne correctement.
+    Ce script contient des tests unitaires trÃ¨s simples pour vÃ©rifier que Pester fonctionne correctement.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 Describe "Tests basiques" {

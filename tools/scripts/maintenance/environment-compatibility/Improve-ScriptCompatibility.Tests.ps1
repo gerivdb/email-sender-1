@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script Improve-ScriptCompatibility.
 
@@ -9,32 +9,32 @@
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      Pester 5.0 ou supérieur
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      Pester 5.0 ou supÃ©rieur
 #>
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptRoot = $PSScriptRoot
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "Improve-ScriptCompatibility.ps1"
 $modulePath = Join-Path -Path $scriptRoot -ChildPath "EnvironmentManager.psm1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testRoot = Join-Path -Path $env:TEMP -ChildPath "ScriptCompatibilityTests"
 if (Test-Path -Path $testRoot) {
     Remove-Item -Path $testRoot -Recurse -Force
 }
 New-Item -Path $testRoot -ItemType Directory -Force | Out-Null
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "Script Improve-ScriptCompatibility" {
     BeforeAll {
         # Importer le module EnvironmentManager
@@ -43,12 +43,12 @@ Describe "Script Improve-ScriptCompatibility" {
         # Initialiser le module
         Initialize-EnvironmentManager
 
-        # Créer des scripts de test avec différents problèmes de compatibilité
+        # CrÃ©er des scripts de test avec diffÃ©rents problÃ¨mes de compatibilitÃ©
         $testScripts = @{
             "HardcodedPaths" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "HardcodedPaths.ps1"
                 Content = @"
-# Script avec des chemins codés en dur
+# Script avec des chemins codÃ©s en dur
 `$logPath = "D:\Logs\app.log"
 `$configPath = "C:\Program Files\App\config.xml"
 Write-Host "Log Path: `$logPath"
@@ -58,7 +58,7 @@ Write-Host "Config Path: `$configPath"
             "WindowsSeparators" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "WindowsSeparators.ps1"
                 Content = @"
-# Script avec des séparateurs de chemin spécifiques à Windows
+# Script avec des sÃ©parateurs de chemin spÃ©cifiques Ã  Windows
 `$scriptPath = "scripts\\utils\\path-utils.ps1"
 `$dataPath = "data\\files\\data.csv"
 Write-Host "Script Path: `$scriptPath"
@@ -68,7 +68,7 @@ Write-Host "Data Path: `$dataPath"
             "WindowsCommands" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "WindowsCommands.ps1"
                 Content = @"
-# Script avec des commandes spécifiques à Windows
+# Script avec des commandes spÃ©cifiques Ã  Windows
 `$result = cmd.exe /c "dir /b"
 `$output = powershell.exe -Command "Get-Process"
 Write-Host "Result: `$result"
@@ -78,7 +78,7 @@ Write-Host "Output: `$output"
             "WindowsEnvironmentVars" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "WindowsEnvironmentVars.ps1"
                 Content = @"
-# Script avec des variables d'environnement spécifiques à Windows
+# Script avec des variables d'environnement spÃ©cifiques Ã  Windows
 `$userProfile = `$env:USERPROFILE
 `$appData = `$env:APPDATA
 `$programFiles = `$env:ProgramFiles
@@ -92,7 +92,7 @@ Write-Host "System Root: `$systemRoot"
             "WindowsFunctions" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "WindowsFunctions.ps1"
                 Content = @"
-# Script avec des fonctions spécifiques à PowerShell Windows
+# Script avec des fonctions spÃ©cifiques Ã  PowerShell Windows
 `$processes = Get-WmiObject -Class Win32_Process
 `$logs = Get-EventLog -LogName Application -Newest 10
 Write-Host "Processes: `$(`$processes.Count)"
@@ -102,7 +102,7 @@ Write-Host "Logs: `$(`$logs.Count)"
             "AlreadyCompatible" = @{
                 Path = Join-Path -Path $testRoot -ChildPath "AlreadyCompatible.ps1"
                 Content = @"
-# Script déjà compatible
+# Script dÃ©jÃ  compatible
 # Importer le module EnvironmentManager
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\maintenance\environment-compatibility\EnvironmentManager.psm1"
 if (Test-Path -Path `$modulePath) {
@@ -121,138 +121,138 @@ Write-Host "Exists: `$exists"
             }
         }
 
-        # Créer les fichiers de test
+        # CrÃ©er les fichiers de test
         foreach ($script in $testScripts.GetEnumerator()) {
             Set-Content -Path $script.Value.Path -Value $script.Value.Content -Force
         }
     }
 
-    Context "Analyse de compatibilité" {
-        It "Devrait détecter les chemins codés en dur" {
+    Context "Analyse de compatibilitÃ©" {
+        It "Devrait dÃ©tecter les chemins codÃ©s en dur" {
             $scriptPath = $testScripts["HardcodedPaths"].Path
             $result = & $scriptPath -ScriptPath $scriptPath -ReportOnly
-            $result.Issues | Should -Contain "Chemins codés en dur"
+            $result.Issues | Should -Contain "Chemins codÃ©s en dur"
         }
 
-        It "Devrait détecter les séparateurs de chemin spécifiques à Windows" {
+        It "Devrait dÃ©tecter les sÃ©parateurs de chemin spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsSeparators"].Path
             $result = & $scriptPath -ScriptPath $scriptPath -ReportOnly
-            $result.Issues | Should -Contain "Séparateurs de chemin spécifiques à Windows"
+            $result.Issues | Should -Contain "SÃ©parateurs de chemin spÃ©cifiques Ã  Windows"
         }
 
-        It "Devrait détecter les commandes spécifiques à Windows" {
+        It "Devrait dÃ©tecter les commandes spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsCommands"].Path
             $result = & $scriptPath -ScriptPath $scriptPath -ReportOnly
-            $result.Issues | Should -Contain "Commandes spécifiques à Windows"
+            $result.Issues | Should -Contain "Commandes spÃ©cifiques Ã  Windows"
         }
 
-        It "Devrait détecter les variables d'environnement spécifiques à Windows" {
+        It "Devrait dÃ©tecter les variables d'environnement spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsEnvironmentVars"].Path
             $result = & $scriptPath -ScriptPath $scriptPath -ReportOnly
-            $result.Issues | Should -Contain "Variables d'environnement spécifiques à Windows"
+            $result.Issues | Should -Contain "Variables d'environnement spÃ©cifiques Ã  Windows"
         }
 
-        It "Devrait détecter les fonctions spécifiques à PowerShell Windows" {
+        It "Devrait dÃ©tecter les fonctions spÃ©cifiques Ã  PowerShell Windows" {
             $scriptPath = $testScripts["WindowsFunctions"].Path
             $result = & $scriptPath -ScriptPath $scriptPath -ReportOnly
-            $result.Issues | Should -Contain "Fonctions spécifiques à PowerShell Windows"
+            $result.Issues | Should -Contain "Fonctions spÃ©cifiques Ã  PowerShell Windows"
         }
     }
 
-    Context "Amélioration de compatibilité" {
-        It "Devrait améliorer les chemins codés en dur" {
+    Context "AmÃ©lioration de compatibilitÃ©" {
+        It "Devrait amÃ©liorer les chemins codÃ©s en dur" {
             $scriptPath = $testScripts["HardcodedPaths"].Path
             $backupPath = "$scriptPath.bak"
 
-            # Créer une sauvegarde du script original
+            # CrÃ©er une sauvegarde du script original
             Copy-Item -Path $scriptPath -Destination $backupPath -Force
 
-            # Améliorer le script
+            # AmÃ©liorer le script
             & $scriptPath -ScriptPath $scriptPath -BackupFiles
 
-            # Vérifier que le script a été modifié
+            # VÃ©rifier que le script a Ã©tÃ© modifiÃ©
             $originalContent = Get-Content -Path $backupPath -Raw
             $modifiedContent = Get-Content -Path $scriptPath -Raw
             $modifiedContent | Should -Not -Be $originalContent
 
-            # Vérifier que le module EnvironmentManager a été importé
+            # VÃ©rifier que le module EnvironmentManager a Ã©tÃ© importÃ©
             $modifiedContent | Should -Match "EnvironmentManager\.psm1"
         }
 
-        It "Devrait améliorer les séparateurs de chemin spécifiques à Windows" {
+        It "Devrait amÃ©liorer les sÃ©parateurs de chemin spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsSeparators"].Path
             $backupPath = "$scriptPath.bak"
 
-            # Créer une sauvegarde du script original
+            # CrÃ©er une sauvegarde du script original
             Copy-Item -Path $scriptPath -Destination $backupPath -Force
 
-            # Améliorer le script
+            # AmÃ©liorer le script
             & $scriptPath -ScriptPath $scriptPath -BackupFiles
 
-            # Vérifier que le script a été modifié
+            # VÃ©rifier que le script a Ã©tÃ© modifiÃ©
             $originalContent = Get-Content -Path $backupPath -Raw
             $modifiedContent = Get-Content -Path $scriptPath -Raw
             $modifiedContent | Should -Not -Be $originalContent
 
-            # Vérifier que les séparateurs de chemin ont été standardisés
+            # VÃ©rifier que les sÃ©parateurs de chemin ont Ã©tÃ© standardisÃ©s
             $modifiedContent | Should -Not -Match "scripts\\\\utils\\\\path-utils\.ps1"
         }
 
-        It "Devrait améliorer les commandes spécifiques à Windows" {
+        It "Devrait amÃ©liorer les commandes spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsCommands"].Path
             $backupPath = "$scriptPath.bak"
 
-            # Créer une sauvegarde du script original
+            # CrÃ©er une sauvegarde du script original
             Copy-Item -Path $scriptPath -Destination $backupPath -Force
 
-            # Améliorer le script
+            # AmÃ©liorer le script
             & $scriptPath -ScriptPath $scriptPath -BackupFiles
 
-            # Vérifier que le script a été modifié
+            # VÃ©rifier que le script a Ã©tÃ© modifiÃ©
             $originalContent = Get-Content -Path $backupPath -Raw
             $modifiedContent = Get-Content -Path $scriptPath -Raw
             $modifiedContent | Should -Not -Be $originalContent
 
-            # Vérifier que les commandes spécifiques à Windows ont été remplacées
+            # VÃ©rifier que les commandes spÃ©cifiques Ã  Windows ont Ã©tÃ© remplacÃ©es
             $modifiedContent | Should -Not -Match "cmd\.exe /c"
             $modifiedContent | Should -Match "Invoke-CrossPlatformCommand"
         }
 
-        It "Devrait améliorer les variables d'environnement spécifiques à Windows" {
+        It "Devrait amÃ©liorer les variables d'environnement spÃ©cifiques Ã  Windows" {
             $scriptPath = $testScripts["WindowsEnvironmentVars"].Path
             $backupPath = "$scriptPath.bak"
 
-            # Créer une sauvegarde du script original
+            # CrÃ©er une sauvegarde du script original
             Copy-Item -Path $scriptPath -Destination $backupPath -Force
 
-            # Améliorer le script
+            # AmÃ©liorer le script
             & $scriptPath -ScriptPath $scriptPath -BackupFiles
 
-            # Vérifier que le script a été modifié
+            # VÃ©rifier que le script a Ã©tÃ© modifiÃ©
             $originalContent = Get-Content -Path $backupPath -Raw
             $modifiedContent = Get-Content -Path $scriptPath -Raw
             $modifiedContent | Should -Not -Be $originalContent
 
-            # Vérifier que les variables d'environnement spécifiques à Windows ont été remplacées
+            # VÃ©rifier que les variables d'environnement spÃ©cifiques Ã  Windows ont Ã©tÃ© remplacÃ©es
             $modifiedContent | Should -Match "if \(\$IsWindows\)"
         }
 
-        It "Devrait améliorer les fonctions spécifiques à PowerShell Windows" {
+        It "Devrait amÃ©liorer les fonctions spÃ©cifiques Ã  PowerShell Windows" {
             $scriptPath = $testScripts["WindowsFunctions"].Path
             $backupPath = "$scriptPath.bak"
 
-            # Créer une sauvegarde du script original
+            # CrÃ©er une sauvegarde du script original
             Copy-Item -Path $scriptPath -Destination $backupPath -Force
 
-            # Améliorer le script
+            # AmÃ©liorer le script
             & $scriptPath -ScriptPath $scriptPath -BackupFiles
 
-            # Vérifier que le script a été modifié
+            # VÃ©rifier que le script a Ã©tÃ© modifiÃ©
             $originalContent = Get-Content -Path $backupPath -Raw
             $modifiedContent = Get-Content -Path $scriptPath -Raw
             $modifiedContent | Should -Not -Be $originalContent
 
-            # Vérifier que les fonctions spécifiques à PowerShell Windows ont été remplacées
+            # VÃ©rifier que les fonctions spÃ©cifiques Ã  PowerShell Windows ont Ã©tÃ© remplacÃ©es
             $modifiedContent | Should -Not -Match "Get-WmiObject"
             $modifiedContent | Should -Match "Get-CimInstance"
         }
@@ -262,12 +262,12 @@ Write-Host "Exists: `$exists"
         # Nettoyer
         Remove-Module -Name EnvironmentManager -Force -ErrorAction SilentlyContinue
 
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $testRoot) {
             Remove-Item -Path $testRoot -Recurse -Force -ErrorAction SilentlyContinue
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour gérer la base de connaissances des erreurs PowerShell.
+    Script pour gÃ©rer la base de connaissances des erreurs PowerShell.
 .DESCRIPTION
-    Ce script permet de gérer la base de connaissances des erreurs PowerShell,
+    Ce script permet de gÃ©rer la base de connaissances des erreurs PowerShell,
     y compris l'ajout, la modification et la recherche d'erreurs.
 #>
 
@@ -32,10 +32,10 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorLearningSystem.psm1"
 Import-Module $modulePath -Force
 
-# Initialiser le système
+# Initialiser le systÃ¨me
 Initialize-ErrorLearningSystem
 
-# Fonction pour ajouter une erreur à la base de connaissances
+# Fonction pour ajouter une erreur Ã  la base de connaissances
 function Add-ErrorToKnowledgeBase {
     [CmdletBinding()]
     param (
@@ -49,7 +49,7 @@ function Add-ErrorToKnowledgeBase {
         [string]$Solution
     )
     
-    # Créer un ErrorRecord factice
+    # CrÃ©er un ErrorRecord factice
     $exception = New-Object System.Exception($ErrorMessage)
     $errorRecord = New-Object System.Management.Automation.ErrorRecord(
         $exception,
@@ -58,7 +58,7 @@ function Add-ErrorToKnowledgeBase {
         $null
     )
     
-    # Ajouter des informations supplémentaires
+    # Ajouter des informations supplÃ©mentaires
     $additionalInfo = @{
         IsKnowledgeBaseEntry = $true
         ManuallyAdded = $true
@@ -70,7 +70,7 @@ function Add-ErrorToKnowledgeBase {
     return $errorId
 }
 
-# Fonction pour mettre à jour une erreur dans la base de connaissances
+# Fonction pour mettre Ã  jour une erreur dans la base de connaissances
 function Update-ErrorInKnowledgeBase {
     [CmdletBinding()]
     param (
@@ -84,12 +84,12 @@ function Update-ErrorInKnowledgeBase {
         [string]$Solution = ""
     )
     
-    # Vérifier si le système est initialisé
+    # VÃ©rifier si le systÃ¨me est initialisÃ©
     if (-not $script:IsInitialized) {
         Initialize-ErrorLearningSystem
     }
     
-    # Rechercher l'erreur dans la base de données
+    # Rechercher l'erreur dans la base de donnÃ©es
     $errorIndex = -1
     for ($i = 0; $i -lt $script:ErrorDatabase.Errors.Count; $i++) {
         if ($script:ErrorDatabase.Errors[$i].Id -eq $ErrorId) {
@@ -99,11 +99,11 @@ function Update-ErrorInKnowledgeBase {
     }
     
     if ($errorIndex -eq -1) {
-        Write-Error "Erreur non trouvée dans la base de connaissances : $ErrorId"
+        Write-Error "Erreur non trouvÃ©e dans la base de connaissances : $ErrorId"
         return $false
     }
     
-    # Mettre à jour l'erreur
+    # Mettre Ã  jour l'erreur
     if ($Category) {
         $script:ErrorDatabase.Errors[$errorIndex].Category = $Category
     }
@@ -112,10 +112,10 @@ function Update-ErrorInKnowledgeBase {
         $script:ErrorDatabase.Errors[$errorIndex].Solution = $Solution
     }
     
-    # Mettre à jour la date de dernière mise à jour
+    # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
     $script:ErrorDatabase.Statistics.LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     
-    # Sauvegarder la base de données
+    # Sauvegarder la base de donnÃ©es
     $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ErrorDatabasePath -Force
     
     return $true
@@ -132,7 +132,7 @@ function Search-ErrorsInKnowledgeBase {
         [string]$Category = ""
     )
     
-    # Vérifier si le système est initialisé
+    # VÃ©rifier si le systÃ¨me est initialisÃ©
     if (-not $script:IsInitialized) {
         Initialize-ErrorLearningSystem
     }
@@ -159,12 +159,12 @@ function Export-KnowledgeBase {
         [string]$FilePath
     )
     
-    # Vérifier si le système est initialisé
+    # VÃ©rifier si le systÃ¨me est initialisÃ©
     if (-not $script:IsInitialized) {
         Initialize-ErrorLearningSystem
     }
     
-    # Exporter la base de données
+    # Exporter la base de donnÃ©es
     $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $FilePath -Force
     
     return $true
@@ -178,33 +178,33 @@ function Import-KnowledgeBase {
         [string]$FilePath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+        Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
         return $false
     }
     
-    # Importer la base de données
+    # Importer la base de donnÃ©es
     try {
         $importedDatabase = Get-Content -Path $FilePath -Raw | ConvertFrom-Json -AsHashtable
         
-        # Vérifier la structure de la base de données
+        # VÃ©rifier la structure de la base de donnÃ©es
         if (-not $importedDatabase.ContainsKey("Errors") -or -not $importedDatabase.ContainsKey("Statistics")) {
-            Write-Error "Le fichier importé n'a pas la structure attendue."
+            Write-Error "Le fichier importÃ© n'a pas la structure attendue."
             return $false
         }
         
-        # Sauvegarder la base de données actuelle
+        # Sauvegarder la base de donnÃ©es actuelle
         $backupPath = "$script:ErrorDatabasePath.bak"
         Copy-Item -Path $script:ErrorDatabasePath -Destination $backupPath -Force
         
-        # Remplacer la base de données
+        # Remplacer la base de donnÃ©es
         $script:ErrorDatabase = $importedDatabase
         
-        # Mettre à jour la date de dernière mise à jour
+        # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
         $script:ErrorDatabase.Statistics.LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         
-        # Sauvegarder la base de données
+        # Sauvegarder la base de donnÃ©es
         $script:ErrorDatabase | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ErrorDatabasePath -Force
         
         return $true
@@ -215,38 +215,38 @@ function Import-KnowledgeBase {
     }
 }
 
-# Exécuter l'action demandée
+# ExÃ©cuter l'action demandÃ©e
 switch ($Action) {
     "Add" {
         if (-not $ErrorMessage -or -not $Category -or -not $Solution) {
-            Write-Error "Pour ajouter une erreur, vous devez spécifier ErrorMessage, Category et Solution."
+            Write-Error "Pour ajouter une erreur, vous devez spÃ©cifier ErrorMessage, Category et Solution."
             exit 1
         }
         
         $errorId = Add-ErrorToKnowledgeBase -ErrorMessage $ErrorMessage -Category $Category -Solution $Solution
-        Write-Host "Erreur ajoutée à la base de connaissances avec l'ID : $errorId"
+        Write-Host "Erreur ajoutÃ©e Ã  la base de connaissances avec l'ID : $errorId"
     }
     "Update" {
         if (-not $ErrorId) {
-            Write-Error "Pour mettre à jour une erreur, vous devez spécifier ErrorId."
+            Write-Error "Pour mettre Ã  jour une erreur, vous devez spÃ©cifier ErrorId."
             exit 1
         }
         
         $result = Update-ErrorInKnowledgeBase -ErrorId $ErrorId -Category $Category -Solution $Solution
         if ($result) {
-            Write-Host "Erreur mise à jour dans la base de connaissances : $ErrorId"
+            Write-Host "Erreur mise Ã  jour dans la base de connaissances : $ErrorId"
         }
     }
     "Search" {
         $results = Search-ErrorsInKnowledgeBase -ErrorMessage $ErrorMessage -Category $Category
         
-        Write-Host "Résultats de la recherche : $($results.Count) erreurs trouvées."
+        Write-Host "RÃ©sultats de la recherche : $($results.Count) erreurs trouvÃ©es."
         
         foreach ($error in $results) {
             Write-Host "`nID : $($error.Id)"
             Write-Host "Timestamp : $($error.Timestamp)"
             Write-Host "Source : $($error.Source)"
-            Write-Host "Catégorie : $($error.Category)"
+            Write-Host "CatÃ©gorie : $($error.Category)"
             Write-Host "Message : $($error.ErrorMessage)"
             
             if ($error.Solution) {
@@ -256,24 +256,24 @@ switch ($Action) {
     }
     "Export" {
         if (-not $FilePath) {
-            Write-Error "Pour exporter la base de connaissances, vous devez spécifier FilePath."
+            Write-Error "Pour exporter la base de connaissances, vous devez spÃ©cifier FilePath."
             exit 1
         }
         
         $result = Export-KnowledgeBase -FilePath $FilePath
         if ($result) {
-            Write-Host "Base de connaissances exportée vers : $FilePath"
+            Write-Host "Base de connaissances exportÃ©e vers : $FilePath"
         }
     }
     "Import" {
         if (-not $FilePath) {
-            Write-Error "Pour importer la base de connaissances, vous devez spécifier FilePath."
+            Write-Error "Pour importer la base de connaissances, vous devez spÃ©cifier FilePath."
             exit 1
         }
         
         $result = Import-KnowledgeBase -FilePath $FilePath
         if ($result) {
-            Write-Host "Base de connaissances importée depuis : $FilePath"
+            Write-Host "Base de connaissances importÃ©e depuis : $FilePath"
         }
     }
 }

@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère des adaptateurs pour les tests simplifiés.
+    GÃ©nÃ¨re des adaptateurs pour les tests simplifiÃ©s.
 
 .DESCRIPTION
-    Ce script génère automatiquement des adaptateurs pour tous les tests simplifiés
-    afin de faciliter leur intégration avec les tests réels.
+    Ce script gÃ©nÃ¨re automatiquement des adaptateurs pour tous les tests simplifiÃ©s
+    afin de faciliter leur intÃ©gration avec les tests rÃ©els.
 
 .PARAMETER Force
-    Force la régénération des adaptateurs existants.
+    Force la rÃ©gÃ©nÃ©ration des adaptateurs existants.
 #>
 
 [CmdletBinding()]
@@ -17,7 +17,7 @@ param(
     [switch]$Force
 )
 
-# Mappings entre les tests simplifiés et les fonctions réelles
+# Mappings entre les tests simplifiÃ©s et les fonctions rÃ©elles
 $functionMappings = @{
     "Test-FileFormat" = "Detect-FileFormat"
     "Test-DetectedFileFormat" = "Detect-FileFormat"
@@ -28,50 +28,50 @@ $functionMappings = @{
     "Confirm-FormatDetection" = "Confirm-FormatDetection"
 }
 
-# Créer le répertoire des adaptateurs s'il n'existe pas
+# CrÃ©er le rÃ©pertoire des adaptateurs s'il n'existe pas
 $adaptersDir = Join-Path -Path $PSScriptRoot -ChildPath "Adapters"
 if (-not (Test-Path -Path $adaptersDir -PathType Container)) {
     New-Item -Path $adaptersDir -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire des adaptateurs créé : $adaptersDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire des adaptateurs crÃ©Ã© : $adaptersDir" -ForegroundColor Green
 }
 
-# Obtenir tous les fichiers de test simplifiés
+# Obtenir tous les fichiers de test simplifiÃ©s
 $simplifiedTests = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.Simplified.ps1"
 
 foreach ($test in $simplifiedTests) {
-    # Extraire le nom de la fonction testée
+    # Extraire le nom de la fonction testÃ©e
     $functionName = $test.BaseName -replace "\.Tests\.Simplified$", ""
     
-    # Vérifier si un mapping existe pour cette fonction
+    # VÃ©rifier si un mapping existe pour cette fonction
     if ($functionMappings.ContainsKey($functionName)) {
         $realFunctionName = $functionMappings[$functionName]
         
         # Chemin de l'adaptateur
         $adapterPath = Join-Path -Path $adaptersDir -ChildPath "$functionName.Adapter.ps1"
         
-        # Vérifier si l'adaptateur existe déjà
+        # VÃ©rifier si l'adaptateur existe dÃ©jÃ 
         if ((Test-Path -Path $adapterPath) -and -not $Force) {
-            Write-Host "L'adaptateur pour $functionName existe déjà. Utilisez -Force pour le régénérer." -ForegroundColor Yellow
+            Write-Host "L'adaptateur pour $functionName existe dÃ©jÃ . Utilisez -Force pour le rÃ©gÃ©nÃ©rer." -ForegroundColor Yellow
             continue
         }
         
-        # Générer le contenu de l'adaptateur
+        # GÃ©nÃ©rer le contenu de l'adaptateur
         $adapterContent = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Adaptateur pour intégrer $functionName.Tests.Simplified.ps1 avec les tests réels.
+    Adaptateur pour intÃ©grer $functionName.Tests.Simplified.ps1 avec les tests rÃ©els.
 
 .DESCRIPTION
-    Cet adaptateur permet d'exécuter les tests simplifiés dans l'environnement des tests réels
-    en faisant le pont entre les fonctions simplifiées et les fonctions réelles.
+    Cet adaptateur permet d'exÃ©cuter les tests simplifiÃ©s dans l'environnement des tests rÃ©els
+    en faisant le pont entre les fonctions simplifiÃ©es et les fonctions rÃ©elles.
 
 .NOTES
-    Généré automatiquement par Generate-TestAdapters.ps1
-    Date de génération : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃ©nÃ©rÃ© automatiquement par Generate-TestAdapters.ps1
+    Date de gÃ©nÃ©ration : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 #>
 
-# Importer les fonctions réelles du module
+# Importer les fonctions rÃ©elles du module
 `$moduleRoot = Split-Path -Parent (Split-Path -Parent `$PSScriptRoot)
 `$modulePath = Join-Path -Path `$moduleRoot -ChildPath "Format-Converters.psm1"
 
@@ -79,11 +79,11 @@ if (Test-Path -Path `$modulePath) {
     Import-Module `$modulePath -Force
 }
 else {
-    Write-Error "Le module Format-Converters n'a pas été trouvé à l'emplacement : `$modulePath"
+    Write-Error "Le module Format-Converters n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : `$modulePath"
     exit 1
 }
 
-# Créer un adaptateur pour la fonction $functionName
+# CrÃ©er un adaptateur pour la fonction $functionName
 function $functionName {
     [CmdletBinding()]
     param (
@@ -96,12 +96,12 @@ function $functionName {
     )
     
     process {
-        # Vérifier si la fonction réelle existe
+        # VÃ©rifier si la fonction rÃ©elle existe
         if (Get-Command -Name "$realFunctionName" -ErrorAction SilentlyContinue) {
-            # Appeler la fonction réelle avec les paramètres adaptés
+            # Appeler la fonction rÃ©elle avec les paramÃ¨tres adaptÃ©s
             `$result = & "$realFunctionName" @PSBoundParameters
             
-            # Retourner le résultat
+            # Retourner le rÃ©sultat
             return `$result
         }
         else {
@@ -111,54 +111,54 @@ function $functionName {
     }
 }
 
-# Exporter la fonction adaptée
+# Exporter la fonction adaptÃ©e
 Export-ModuleMember -Function $functionName
 
-# Exécuter les tests simplifiés avec l'adaptateur
+# ExÃ©cuter les tests simplifiÃ©s avec l'adaptateur
 `$simplifiedTestPath = Join-Path -Path `$PSScriptRoot -ChildPath "..\\$($test.Name)"
 
 if (Test-Path -Path `$simplifiedTestPath) {
-    Write-Host "Exécution des tests simplifiés avec l'adaptateur..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests simplifiÃ©s avec l'adaptateur..." -ForegroundColor Cyan
     
-    # Créer un contexte d'exécution isolé
+    # CrÃ©er un contexte d'exÃ©cution isolÃ©
     `$scriptBlock = {
         param(`$TestPath, `$AdapterPath)
         
         # Importer l'adaptateur
         . `$AdapterPath
         
-        # Exécuter les tests
+        # ExÃ©cuter les tests
         Invoke-Pester -Path `$TestPath -PassThru
     }
     
-    # Exécuter les tests dans un nouveau contexte
+    # ExÃ©cuter les tests dans un nouveau contexte
     `$results = & `$scriptBlock `$simplifiedTestPath `$PSCommandPath
     
-    # Afficher un résumé des résultats
-    Write-Host "`nRésumé des résultats :" -ForegroundColor Cyan
-    Write-Host "Tests exécutés : `$(`$results.TotalCount)"
-    Write-Host "Tests réussis : `$(`$results.PassedCount)" -ForegroundColor Green
-    Write-Host "Tests échoués : `$(`$results.FailedCount)" -ForegroundColor Red
-    Write-Host "Tests ignorés : `$(`$results.SkippedCount)" -ForegroundColor Yellow
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
+    Write-Host "`nRÃ©sumÃ© des rÃ©sultats :" -ForegroundColor Cyan
+    Write-Host "Tests exÃ©cutÃ©s : `$(`$results.TotalCount)"
+    Write-Host "Tests rÃ©ussis : `$(`$results.PassedCount)" -ForegroundColor Green
+    Write-Host "Tests Ã©chouÃ©s : `$(`$results.FailedCount)" -ForegroundColor Red
+    Write-Host "Tests ignorÃ©s : `$(`$results.SkippedCount)" -ForegroundColor Yellow
     
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return `$results
 }
 else {
-    Write-Error "Le fichier de test simplifié n'a pas été trouvé à l'emplacement : `$simplifiedTestPath"
+    Write-Error "Le fichier de test simplifiÃ© n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : `$simplifiedTestPath"
     exit 1
 }
 "@
         
         # Enregistrer l'adaptateur
         $adapterContent | Set-Content -Path $adapterPath -Encoding UTF8
-        Write-Host "Adaptateur généré pour $functionName : $adapterPath" -ForegroundColor Green
+        Write-Host "Adaptateur gÃ©nÃ©rÃ© pour $functionName : $adapterPath" -ForegroundColor Green
     }
     else {
-        Write-Warning "Aucun mapping trouvé pour la fonction $functionName. Adaptateur non généré."
+        Write-Warning "Aucun mapping trouvÃ© pour la fonction $functionName. Adaptateur non gÃ©nÃ©rÃ©."
     }
 }
 
-Write-Host "`nGénération des adaptateurs terminée." -ForegroundColor Cyan
-Write-Host "Pour exécuter les tests avec les adaptateurs, utilisez :" -ForegroundColor Cyan
+Write-Host "`nGÃ©nÃ©ration des adaptateurs terminÃ©e." -ForegroundColor Cyan
+Write-Host "Pour exÃ©cuter les tests avec les adaptateurs, utilisez :" -ForegroundColor Cyan
 Write-Host "Invoke-Pester -Path '$adaptersDir'" -ForegroundColor Yellow

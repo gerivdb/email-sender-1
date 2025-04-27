@@ -1,11 +1,11 @@
-# Module temporaire pour les tests
+﻿# Module temporaire pour les tests
 $modulePath = (Split-Path -Parent $PSScriptRoot)
 $functionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ConfigurationFunctions.ps1"
 
 # Charger le contenu du fichier
 $content = Get-Content -Path $functionsPath -Raw
 
-# Exécuter le contenu
+# ExÃ©cuter le contenu
 $scriptBlock = [ScriptBlock]::Create($content)
 . $scriptBlock
 

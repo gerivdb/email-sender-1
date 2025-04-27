@@ -1,5 +1,5 @@
-# Add-SqlPermissionRule.ps1
-# Script pour ajouter une nouvelle règle de détection d'anomalies SQL Server
+﻿# Add-SqlPermissionRule.ps1
+# Script pour ajouter une nouvelle rÃ¨gle de dÃ©tection d'anomalies SQL Server
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -18,7 +18,7 @@ param (
     [string]$RuleType,
 
     [Parameter(Mandatory = $true)]
-    [ValidateSet("Élevée", "Moyenne", "Faible")]
+    [ValidateSet("Ã‰levÃ©e", "Moyenne", "Faible")]
     [string]$Severity,
 
     [Parameter(Mandatory = $true)]
@@ -30,55 +30,55 @@ begin {
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\module" -Resolve
     $rulesFilePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\SqlPermissionRules.ps1"
 
-    # Vérifier que le fichier de règles existe
+    # VÃ©rifier que le fichier de rÃ¨gles existe
     if (-not (Test-Path -Path $rulesFilePath)) {
-        throw "Le fichier de règles n'existe pas: $rulesFilePath"
+        throw "Le fichier de rÃ¨gles n'existe pas: $rulesFilePath"
     }
 
-    # Vérifier que le fichier de fonction de vérification existe
+    # VÃ©rifier que le fichier de fonction de vÃ©rification existe
     if (-not (Test-Path -Path $CheckFunctionPath)) {
-        throw "Le fichier de fonction de vérification n'existe pas: $CheckFunctionPath"
+        throw "Le fichier de fonction de vÃ©rification n'existe pas: $CheckFunctionPath"
     }
 
-    # Lire le contenu du fichier de règles
+    # Lire le contenu du fichier de rÃ¨gles
     $rulesContent = Get-Content -Path $rulesFilePath -Raw
 
-    # Vérifier si la règle existe déjà
+    # VÃ©rifier si la rÃ¨gle existe dÃ©jÃ 
     if ($rulesContent -match [regex]::Escape("RuleId = `"$RuleId`"")) {
-        throw "La règle avec l'ID '$RuleId' existe déjà dans le fichier de règles."
+        throw "La rÃ¨gle avec l'ID '$RuleId' existe dÃ©jÃ  dans le fichier de rÃ¨gles."
     }
 
-    # Lire le contenu du fichier de fonction de vérification
+    # Lire le contenu du fichier de fonction de vÃ©rification
     $checkFunctionContent = Get-Content -Path $CheckFunctionPath -Raw
 }
 
 process {
-    # Déterminer où insérer la nouvelle règle
+    # DÃ©terminer oÃ¹ insÃ©rer la nouvelle rÃ¨gle
     $ruleTypeSection = switch ($RuleType) {
-        "Server" { "# Règles au niveau serveur" }
-        "Database" { "# Règles au niveau base de données" }
-        "Object" { "# Règles au niveau objet" }
+        "Server" { "# RÃ¨gles au niveau serveur" }
+        "Database" { "# RÃ¨gles au niveau base de donnÃ©es" }
+        "Object" { "# RÃ¨gles au niveau objet" }
     }
 
     # Trouver la position d'insertion
     $ruleTypeSectionPos = $rulesContent.IndexOf($ruleTypeSection)
     if ($ruleTypeSectionPos -eq -1) {
-        throw "Section de type de règle '$ruleTypeSection' non trouvée dans le fichier de règles."
+        throw "Section de type de rÃ¨gle '$ruleTypeSection' non trouvÃ©e dans le fichier de rÃ¨gles."
     }
 
     # Trouver la fin de la section
     $nextSectionPos = $rulesContent.IndexOf("elseif", $ruleTypeSectionPos)
     if ($nextSectionPos -eq -1) {
-        $nextSectionPos = $rulesContent.IndexOf("# Filtrer par sévérité", $ruleTypeSectionPos)
+        $nextSectionPos = $rulesContent.IndexOf("# Filtrer par sÃ©vÃ©ritÃ©", $ruleTypeSectionPos)
     }
 
-    # Trouver la position d'insertion exacte (avant la dernière accolade de la section)
+    # Trouver la position d'insertion exacte (avant la derniÃ¨re accolade de la section)
     $insertPos = $rulesContent.LastIndexOf("}", $nextSectionPos)
     if ($insertPos -eq -1) {
-        throw "Position d'insertion non trouvée dans le fichier de règles."
+        throw "Position d'insertion non trouvÃ©e dans le fichier de rÃ¨gles."
     }
 
-    # Créer le contenu de la nouvelle règle
+    # CrÃ©er le contenu de la nouvelle rÃ¨gle
     $newRuleContent = @"
             [PSCustomObject]@{
                 RuleId = "$RuleId"
@@ -93,27 +93,27 @@ $checkFunctionContent
 
 "@
 
-    # Insérer la nouvelle règle dans le contenu
+    # InsÃ©rer la nouvelle rÃ¨gle dans le contenu
     $newRulesContent = $rulesContent.Substring(0, $insertPos) + $newRuleContent + $rulesContent.Substring($insertPos)
 
-    # Écrire le nouveau contenu dans le fichier de règles
-    if ($PSCmdlet.ShouldProcess($rulesFilePath, "Ajouter la règle $RuleId")) {
+    # Ã‰crire le nouveau contenu dans le fichier de rÃ¨gles
+    if ($PSCmdlet.ShouldProcess($rulesFilePath, "Ajouter la rÃ¨gle $RuleId")) {
         Set-Content -Path $rulesFilePath -Value $newRulesContent -Encoding UTF8
-        Write-Host "La règle '$RuleId' a été ajoutée avec succès au fichier de règles." -ForegroundColor Green
+        Write-Host "La rÃ¨gle '$RuleId' a Ã©tÃ© ajoutÃ©e avec succÃ¨s au fichier de rÃ¨gles." -ForegroundColor Green
     }
 }
 
 end {
-    # Mettre à jour la documentation
+    # Mettre Ã  jour la documentation
     $docsFilePath = Join-Path -Path $PSScriptRoot -ChildPath "..\docs\SqlPermissionRules.md"
     if (Test-Path -Path $docsFilePath) {
         $docsContent = Get-Content -Path $docsFilePath -Raw
 
-        # Déterminer la section de documentation à mettre à jour
+        # DÃ©terminer la section de documentation Ã  mettre Ã  jour
         $docsSectionHeader = switch ($RuleType) {
-            "Server" { "### Règles au niveau serveur" }
-            "Database" { "### Règles au niveau base de données" }
-            "Object" { "### Règles au niveau objet" }
+            "Server" { "### RÃ¨gles au niveau serveur" }
+            "Database" { "### RÃ¨gles au niveau base de donnÃ©es" }
+            "Object" { "### RÃ¨gles au niveau objet" }
         }
 
         # Trouver la position d'insertion dans la documentation
@@ -131,23 +131,23 @@ end {
                 $tableEndPos = $docsSectionEndPos
             }
 
-            # Créer la nouvelle ligne de table
+            # CrÃ©er la nouvelle ligne de table
             $newTableRow = "| $RuleId | $Name | $Description | $Severity |`r`n"
 
-            # Insérer la nouvelle ligne dans la table
+            # InsÃ©rer la nouvelle ligne dans la table
             $newDocsContent = $docsContent.Substring(0, $tableEndPos) + $newTableRow + $docsContent.Substring($tableEndPos)
 
-            # Écrire le nouveau contenu dans le fichier de documentation
-            if ($PSCmdlet.ShouldProcess($docsFilePath, "Mettre à jour la documentation pour la règle $RuleId")) {
+            # Ã‰crire le nouveau contenu dans le fichier de documentation
+            if ($PSCmdlet.ShouldProcess($docsFilePath, "Mettre Ã  jour la documentation pour la rÃ¨gle $RuleId")) {
                 Set-Content -Path $docsFilePath -Value $newDocsContent -Encoding UTF8
-                Write-Host "La documentation a été mise à jour avec succès pour la règle '$RuleId'." -ForegroundColor Green
+                Write-Host "La documentation a Ã©tÃ© mise Ã  jour avec succÃ¨s pour la rÃ¨gle '$RuleId'." -ForegroundColor Green
             }
         }
         else {
-            Write-Warning "Section de documentation '$docsSectionHeader' non trouvée. La documentation n'a pas été mise à jour."
+            Write-Warning "Section de documentation '$docsSectionHeader' non trouvÃ©e. La documentation n'a pas Ã©tÃ© mise Ã  jour."
         }
     }
     else {
-        Write-Warning "Fichier de documentation non trouvé: $docsFilePath. La documentation n'a pas été mise à jour."
+        Write-Warning "Fichier de documentation non trouvÃ©: $docsFilePath. La documentation n'a pas Ã©tÃ© mise Ã  jour."
     }
 }

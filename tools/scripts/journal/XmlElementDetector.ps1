@@ -1,21 +1,21 @@
-# Module de détection des éléments XML
-# Ce script implémente les fonctionnalités pour détecter et analyser les éléments XML
+﻿# Module de dÃ©tection des Ã©lÃ©ments XML
+# Ce script implÃ©mente les fonctionnalitÃ©s pour dÃ©tecter et analyser les Ã©lÃ©ments XML
 
 # Configuration
 $XmlDetectorConfig = @{
-    # Paramètres par défaut pour la détection des éléments XML
+    # ParamÃ¨tres par dÃ©faut pour la dÃ©tection des Ã©lÃ©ments XML
     DefaultDetectionSettings = @{
         IncludeAttributes = $true
         IncludeNamespaces = $true
         IncludeValues = $true
-        MaxDepth = 0  # 0 = illimité
+        MaxDepth = 0  # 0 = illimitÃ©
         IgnoreComments = $true
         IgnoreProcessingInstructions = $true
         IgnoreWhitespace = $true
     }
 }
 
-# Classe pour représenter un élément XML
+# Classe pour reprÃ©senter un Ã©lÃ©ment XML
 class XmlElementInfo {
     [string]$Name
     [string]$Path
@@ -56,7 +56,7 @@ class XmlElementInfo {
     }
 }
 
-# Fonction pour détecter les éléments XML dans une chaîne
+# Fonction pour dÃ©tecter les Ã©lÃ©ments XML dans une chaÃ®ne
 function Get-XmlElements {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -67,7 +67,7 @@ function Get-XmlElements {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $config = if ($Settings) { 
             $mergedSettings = $XmlDetectorConfig.DefaultDetectionSettings.Clone()
             foreach ($key in $Settings.Keys) {
@@ -88,14 +88,14 @@ function Get-XmlElements {
             throw "Erreur lors du chargement du XML: $_"
         }
         
-        # Créer un tableau pour stocker les éléments
+        # CrÃ©er un tableau pour stocker les Ã©lÃ©ments
         $elements = New-Object System.Collections.ArrayList
         
-        # Analyser les éléments de manière récursive
+        # Analyser les Ã©lÃ©ments de maniÃ¨re rÃ©cursive
         $rootElement = $xmlDoc.DocumentElement
         $rootInfo = [XmlElementInfo]::new($rootElement.LocalName, "/$($rootElement.LocalName)", 0)
         
-        # Ajouter les attributs du nœud racine
+        # Ajouter les attributs du nÅ“ud racine
         if ($config.IncludeAttributes -and $rootElement.HasAttributes) {
             foreach ($attr in $rootElement.Attributes) {
                 if ($attr.Name -ne "xmlns" -and -not $attr.Name.StartsWith("xmlns:")) {
@@ -104,20 +104,20 @@ function Get-XmlElements {
             }
         }
         
-        # Ajouter les informations de namespace du nœud racine
+        # Ajouter les informations de namespace du nÅ“ud racine
         if ($config.IncludeNamespaces -and $rootElement.NamespaceURI) {
             $rootInfo.Namespace = $rootElement.Prefix
             $rootInfo.NamespaceUri = $rootElement.NamespaceURI
         }
         
-        # Ajouter la valeur du nœud racine
+        # Ajouter la valeur du nÅ“ud racine
         if ($config.IncludeValues -and $rootElement.InnerText) {
             $rootInfo.Value = $rootElement.InnerText
         }
         
         [void]$elements.Add($rootInfo)
         
-        # Fonction récursive pour analyser les nœuds enfants
+        # Fonction rÃ©cursive pour analyser les nÅ“uds enfants
         function Process-XmlNode {
             param (
                 [System.Xml.XmlNode]$Node,
@@ -125,29 +125,29 @@ function Get-XmlElements {
                 [int]$CurrentDepth
             )
             
-            # Vérifier la profondeur maximale
+            # VÃ©rifier la profondeur maximale
             if ($config.MaxDepth -gt 0 -and $CurrentDepth -ge $config.MaxDepth) {
                 return
             }
             
-            # Parcourir les nœuds enfants
+            # Parcourir les nÅ“uds enfants
             foreach ($childNode in $Node.ChildNodes) {
-                # Ignorer les nœuds de commentaire si demandé
+                # Ignorer les nÅ“uds de commentaire si demandÃ©
                 if ($config.IgnoreComments -and $childNode.NodeType -eq [System.Xml.XmlNodeType]::Comment) {
                     continue
                 }
                 
-                # Ignorer les nœuds d'instruction de traitement si demandé
+                # Ignorer les nÅ“uds d'instruction de traitement si demandÃ©
                 if ($config.IgnoreProcessingInstructions -and $childNode.NodeType -eq [System.Xml.XmlNodeType]::ProcessingInstruction) {
                     continue
                 }
                 
-                # Ignorer les nœuds de texte vide si demandé
+                # Ignorer les nÅ“uds de texte vide si demandÃ©
                 if ($config.IgnoreWhitespace -and $childNode.NodeType -eq [System.Xml.XmlNodeType]::Text -and [string]::IsNullOrWhiteSpace($childNode.Value)) {
                     continue
                 }
                 
-                # Traiter uniquement les nœuds d'élément
+                # Traiter uniquement les nÅ“uds d'Ã©lÃ©ment
                 if ($childNode.NodeType -eq [System.Xml.XmlNodeType]::Element) {
                     $childPath = "$($ParentInfo.Path)/$($childNode.LocalName)"
                     $childInfo = [XmlElementInfo]::new($childNode.LocalName, $childPath, $CurrentDepth + 1)
@@ -172,26 +172,26 @@ function Get-XmlElements {
                         $childInfo.Value = $childNode.InnerText
                     }
                     
-                    # Ajouter l'élément à la liste des enfants du parent
+                    # Ajouter l'Ã©lÃ©ment Ã  la liste des enfants du parent
                     [void]$ParentInfo.Children.Add($childInfo)
                     
-                    # Ajouter l'élément à la liste globale
+                    # Ajouter l'Ã©lÃ©ment Ã  la liste globale
                     [void]$elements.Add($childInfo)
                     
-                    # Traiter les nœuds enfants de manière récursive
+                    # Traiter les nÅ“uds enfants de maniÃ¨re rÃ©cursive
                     Process-XmlNode -Node $childNode -ParentInfo $childInfo -CurrentDepth ($CurrentDepth + 1)
                 }
             }
         }
         
-        # Démarrer l'analyse récursive
+        # DÃ©marrer l'analyse rÃ©cursive
         Process-XmlNode -Node $rootElement -ParentInfo $rootInfo -CurrentDepth 0
         
         return $elements
     }
 }
 
-# Fonction pour détecter les éléments XML dans un fichier
+# Fonction pour dÃ©tecter les Ã©lÃ©ments XML dans un fichier
 function Get-XmlElementsFromFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -201,7 +201,7 @@ function Get-XmlElementsFromFile {
         [hashtable]$Settings
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $XmlPath)) {
         throw "Le fichier XML n'existe pas: $XmlPath"
     }
@@ -209,11 +209,11 @@ function Get-XmlElementsFromFile {
     # Lire le contenu du fichier XML
     $xmlContent = Get-Content -Path $XmlPath -Raw
     
-    # Détecter les éléments XML
+    # DÃ©tecter les Ã©lÃ©ments XML
     return Get-XmlElements -XmlContent $xmlContent -Settings $Settings
 }
 
-# Fonction pour générer un rapport sur la structure XML
+# Fonction pour gÃ©nÃ©rer un rapport sur la structure XML
 function Get-XmlStructureReport {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -227,12 +227,12 @@ function Get-XmlStructureReport {
     )
     
     process {
-        # Détecter les éléments XML
+        # DÃ©tecter les Ã©lÃ©ments XML
         $elements = Get-XmlElements -XmlContent $XmlContent -Settings $Settings
         
-        # Créer un rapport
+        # CrÃ©er un rapport
         if ($AsHtml) {
-            # Générer un rapport HTML
+            # GÃ©nÃ©rer un rapport HTML
             $html = @"
 <!DOCTYPE html>
 <html>
@@ -262,16 +262,16 @@ function Get-XmlStructureReport {
 <body>
     <h1>Rapport de structure XML</h1>
     
-    <h2>Résumé</h2>
-    <p>Nombre total d'éléments: $($elements.Count)</p>
+    <h2>RÃ©sumÃ©</h2>
+    <p>Nombre total d'Ã©lÃ©ments: $($elements.Count)</p>
     <p>Profondeur maximale: $($elements | Measure-Object -Property Depth -Maximum | Select-Object -ExpandProperty Maximum)</p>
-    <p>Nombre d'éléments avec attributs: $($elements | Where-Object { $_.Attributes.Count -gt 0 } | Measure-Object | Select-Object -ExpandProperty Count)</p>
-    <p>Nombre d'éléments avec namespace: $($elements | Where-Object { $_.Namespace } | Measure-Object | Select-Object -ExpandProperty Count)</p>
+    <p>Nombre d'Ã©lÃ©ments avec attributs: $($elements | Where-Object { $_.Attributes.Count -gt 0 } | Measure-Object | Select-Object -ExpandProperty Count)</p>
+    <p>Nombre d'Ã©lÃ©ments avec namespace: $($elements | Where-Object { $_.Namespace } | Measure-Object | Select-Object -ExpandProperty Count)</p>
     
-    <h2>Structure des éléments</h2>
+    <h2>Structure des Ã©lÃ©ments</h2>
     <table>
         <tr>
-            <th>Élément</th>
+            <th>Ã‰lÃ©ment</th>
             <th>Chemin</th>
             <th>Profondeur</th>
             <th>Attributs</th>
@@ -314,18 +314,18 @@ function Get-XmlStructureReport {
             return $html
         }
         else {
-            # Générer un rapport texte
+            # GÃ©nÃ©rer un rapport texte
             $report = "Rapport de structure XML`n"
             $report += "======================`n`n"
             
-            $report += "Résumé`n"
+            $report += "RÃ©sumÃ©`n"
             $report += "------`n"
-            $report += "Nombre total d'éléments: $($elements.Count)`n"
+            $report += "Nombre total d'Ã©lÃ©ments: $($elements.Count)`n"
             $report += "Profondeur maximale: $($elements | Measure-Object -Property Depth -Maximum | Select-Object -ExpandProperty Maximum)`n"
-            $report += "Nombre d'éléments avec attributs: $($elements | Where-Object { $_.Attributes.Count -gt 0 } | Measure-Object | Select-Object -ExpandProperty Count)`n"
-            $report += "Nombre d'éléments avec namespace: $($elements | Where-Object { $_.Namespace } | Measure-Object | Select-Object -ExpandProperty Count)`n`n"
+            $report += "Nombre d'Ã©lÃ©ments avec attributs: $($elements | Where-Object { $_.Attributes.Count -gt 0 } | Measure-Object | Select-Object -ExpandProperty Count)`n"
+            $report += "Nombre d'Ã©lÃ©ments avec namespace: $($elements | Where-Object { $_.Namespace } | Measure-Object | Select-Object -ExpandProperty Count)`n`n"
             
-            $report += "Structure des éléments`n"
+            $report += "Structure des Ã©lÃ©ments`n"
             $report += "---------------------`n"
             
             foreach ($element in $elements) {
@@ -355,7 +355,7 @@ function Get-XmlStructureReport {
     }
 }
 
-# Fonction pour générer un rapport sur la structure XML d'un fichier
+# Fonction pour gÃ©nÃ©rer un rapport sur la structure XML d'un fichier
 function Get-XmlStructureReportFromFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -371,7 +371,7 @@ function Get-XmlStructureReportFromFile {
         [string]$OutputPath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $XmlPath)) {
         throw "Le fichier XML n'existe pas: $XmlPath"
     }
@@ -379,19 +379,19 @@ function Get-XmlStructureReportFromFile {
     # Lire le contenu du fichier XML
     $xmlContent = Get-Content -Path $XmlPath -Raw
     
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $report = Get-XmlStructureReport -XmlContent $xmlContent -Settings $Settings -AsHtml:$AsHtml
     
-    # Enregistrer le rapport si un chemin de sortie est spécifié
+    # Enregistrer le rapport si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
-        # Créer le répertoire de destination si nécessaire
+        # CrÃ©er le rÃ©pertoire de destination si nÃ©cessaire
         $outputDir = Split-Path -Path $OutputPath -Parent
         
         if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Déterminer l'encodage en fonction du format
+        # DÃ©terminer l'encodage en fonction du format
         $encoding = if ($AsHtml) { "UTF8" } else { "ASCII" }
         
         # Enregistrer le rapport
@@ -403,7 +403,7 @@ function Get-XmlStructureReportFromFile {
     return $report
 }
 
-# Fonction pour mapper les éléments XML vers la structure de roadmap
+# Fonction pour mapper les Ã©lÃ©ments XML vers la structure de roadmap
 function ConvertTo-RoadmapMapping {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -411,10 +411,10 @@ function ConvertTo-RoadmapMapping {
     )
     
     process {
-        # Détecter les éléments XML
+        # DÃ©tecter les Ã©lÃ©ments XML
         $elements = Get-XmlElements -XmlContent $XmlContent
         
-        # Créer un mapping
+        # CrÃ©er un mapping
         $mapping = @{
             RootElement = $null
             Sections = @()
@@ -425,9 +425,9 @@ function ConvertTo-RoadmapMapping {
             Metadata = @()
         }
         
-        # Analyser les éléments
+        # Analyser les Ã©lÃ©ments
         foreach ($element in $elements) {
-            # Identifier l'élément racine
+            # Identifier l'Ã©lÃ©ment racine
             if ($element.Depth -eq 0) {
                 $mapping.RootElement = $element
                 continue
@@ -445,13 +445,13 @@ function ConvertTo-RoadmapMapping {
                 continue
             }
             
-            # Identifier les tâches
+            # Identifier les tÃ¢ches
             if ($element.Name -eq "task") {
                 $mapping.Tasks += $element
                 continue
             }
             
-            # Identifier les sous-tâches
+            # Identifier les sous-tÃ¢ches
             if ($element.Name -eq "subtask") {
                 $mapping.Subtasks += $element
                 continue
@@ -463,18 +463,18 @@ function ConvertTo-RoadmapMapping {
                 continue
             }
             
-            # Identifier les métadonnées
+            # Identifier les mÃ©tadonnÃ©es
             if ($element.Name -eq "metadata" -or $element.Path -match "/section/metadata/") {
                 $mapping.Metadata += $element
                 continue
             }
         }
         
-        # Générer un rapport de mapping
+        # GÃ©nÃ©rer un rapport de mapping
         $report = "Mapping XML vers Roadmap`n"
         $report += "======================`n`n"
         
-        $report += "Élément racine: $($mapping.RootElement.Name) ($($mapping.RootElement.Path))`n`n"
+        $report += "Ã‰lÃ©ment racine: $($mapping.RootElement.Name) ($($mapping.RootElement.Path))`n`n"
         
         $report += "Sections ($($mapping.Sections.Count)):`n"
         foreach ($section in $mapping.Sections) {
@@ -488,23 +488,23 @@ function ConvertTo-RoadmapMapping {
             $report += "  - $($phase.Name) ($($phase.Path))`n"
             $report += "    ID: $($phase.Attributes["id"])`n"
             $report += "    Titre: $($phase.Attributes["title"])`n"
-            $report += "    Terminée: $($phase.Attributes["completed"])`n`n"
+            $report += "    TerminÃ©e: $($phase.Attributes["completed"])`n`n"
         }
         
-        $report += "Tâches ($($mapping.Tasks.Count)):`n"
+        $report += "TÃ¢ches ($($mapping.Tasks.Count)):`n"
         foreach ($task in $mapping.Tasks) {
             $report += "  - $($task.Name) ($($task.Path))`n"
             $report += "    Titre: $($task.Attributes["title"])`n"
-            $report += "    Temps estimé: $($task.Attributes["estimatedTime"])`n"
-            $report += "    Date de début: $($task.Attributes["startDate"])`n"
-            $report += "    Terminée: $($task.Attributes["completed"])`n`n"
+            $report += "    Temps estimÃ©: $($task.Attributes["estimatedTime"])`n"
+            $report += "    Date de dÃ©but: $($task.Attributes["startDate"])`n"
+            $report += "    TerminÃ©e: $($task.Attributes["completed"])`n`n"
         }
         
-        $report += "Sous-tâches ($($mapping.Subtasks.Count)):`n"
+        $report += "Sous-tÃ¢ches ($($mapping.Subtasks.Count)):`n"
         foreach ($subtask in $mapping.Subtasks) {
             $report += "  - $($subtask.Name) ($($subtask.Path))`n"
             $report += "    Titre: $($subtask.Attributes["title"])`n"
-            $report += "    Terminée: $($subtask.Attributes["completed"])`n`n"
+            $report += "    TerminÃ©e: $($subtask.Attributes["completed"])`n`n"
         }
         
         $report += "Notes ($($mapping.Notes.Count)):`n"
@@ -513,12 +513,12 @@ function ConvertTo-RoadmapMapping {
             $report += "    Texte: $($note.Value)`n`n"
         }
         
-        $report += "Métadonnées ($($mapping.Metadata.Count)):`n"
+        $report += "MÃ©tadonnÃ©es ($($mapping.Metadata.Count)):`n"
         foreach ($metadata in $mapping.Metadata) {
             $report += "  - $($metadata.Name) ($($metadata.Path))`n"
             
             if ($metadata.Name -eq "metadata") {
-                $report += "    Éléments enfants:`n"
+                $report += "    Ã‰lÃ©ments enfants:`n"
                 foreach ($child in $metadata.Children) {
                     $report += "      - $($child.Name): $($child.Value)`n"
                 }

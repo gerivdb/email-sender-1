@@ -1,45 +1,45 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Divise une charge de travail d'analyse en parties équilibrées.
+    Divise une charge de travail d'analyse en parties Ã©quilibrÃ©es.
 
 .DESCRIPTION
-    Ce script divise une charge de travail d'analyse en parties équilibrées
-    pour une exécution parallèle efficace, en tenant compte de la complexité
-    des éléments à analyser.
+    Ce script divise une charge de travail d'analyse en parties Ã©quilibrÃ©es
+    pour une exÃ©cution parallÃ¨le efficace, en tenant compte de la complexitÃ©
+    des Ã©lÃ©ments Ã  analyser.
 
 .PARAMETER InputPath
-    Le chemin du fichier d'entrée contenant les éléments à diviser.
-    Le fichier doit être au format JSON.
+    Le chemin du fichier d'entrÃ©e contenant les Ã©lÃ©ments Ã  diviser.
+    Le fichier doit Ãªtre au format JSON.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats de la division.
-    Par défaut: "workloads\split_workload.json"
+    Le chemin oÃ¹ enregistrer les rÃ©sultats de la division.
+    Par dÃ©faut: "workloads\split_workload.json"
 
 .PARAMETER ChunkCount
-    Le nombre de parties à créer.
-    Par défaut: nombre de processeurs logiques
+    Le nombre de parties Ã  crÃ©er.
+    Par dÃ©faut: nombre de processeurs logiques
 
 .PARAMETER WeightProperty
-    Le nom de la propriété à utiliser comme poids pour la répartition.
-    Par défaut: "Weight"
+    Le nom de la propriÃ©tÃ© Ã  utiliser comme poids pour la rÃ©partition.
+    Par dÃ©faut: "Weight"
 
 .PARAMETER CalculateWeights
-    Indique s'il faut calculer les poids des éléments.
-    Par défaut: $false
+    Indique s'il faut calculer les poids des Ã©lÃ©ments.
+    Par dÃ©faut: $false
 
 .PARAMETER WeightFunction
-    Le nom de la fonction à utiliser pour calculer les poids.
+    Le nom de la fonction Ã  utiliser pour calculer les poids.
     Valeurs possibles: "Size", "Complexity", "Changes", "Custom"
-    Par défaut: "Changes"
+    Par dÃ©faut: "Changes"
 
 .EXAMPLE
     .\Split-AnalysisWorkload.ps1 -InputPath "files_to_analyze.json" -ChunkCount 8
-    Divise les fichiers en 8 parties équilibrées.
+    Divise les fichiers en 8 parties Ã©quilibrÃ©es.
 
 .EXAMPLE
     .\Split-AnalysisWorkload.ps1 -InputPath "files_to_analyze.json" -CalculateWeights -WeightFunction "Complexity"
-    Divise les fichiers en utilisant la complexité comme poids.
+    Divise les fichiers en utilisant la complexitÃ© comme poids.
 
 .NOTES
     Version: 1.0
@@ -69,16 +69,16 @@ param(
     [string]$WeightFunction = "Changes"
 )
 
-# Importer le module de parallélisation
+# Importer le module de parallÃ©lisation
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\ParallelPRAnalysis.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module ParallelPRAnalysis non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module ParallelPRAnalysis non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
-# Fonction pour calculer le poids d'un élément
+# Fonction pour calculer le poids d'un Ã©lÃ©ment
 function Get-ItemWeight {
     [CmdletBinding()]
     param(
@@ -106,13 +106,13 @@ function Get-ItemWeight {
                 }
             }
             "Complexity" {
-                # Utiliser une estimation de la complexité comme poids
+                # Utiliser une estimation de la complexitÃ© comme poids
                 if ($null -ne $Item.complexity) {
                     return $Item.complexity
                 } elseif ($null -ne $Item.Complexity) {
                     return $Item.Complexity
                 } else {
-                    # Estimer la complexité en fonction du type de fichier
+                    # Estimer la complexitÃ© en fonction du type de fichier
                     $extension = [System.IO.Path]::GetExtension($Item.path)
                     switch ($extension) {
                         ".ps1" { return 3 }
@@ -141,7 +141,7 @@ function Get-ItemWeight {
                 }
             }
             "Custom" {
-                # Utiliser une propriété personnalisée comme poids
+                # Utiliser une propriÃ©tÃ© personnalisÃ©e comme poids
                 if ($null -ne $Item.$WeightProperty) {
                     return $Item.$WeightProperty
                 } else {
@@ -153,35 +153,35 @@ function Get-ItemWeight {
             }
         }
     } catch {
-        Write-Warning "Erreur lors du calcul du poids pour l'élément: $_"
+        Write-Warning "Erreur lors du calcul du poids pour l'Ã©lÃ©ment: $_"
         return 1
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath)) {
-        Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+        Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
         exit 1
     }
 
-    # Charger les éléments à partir du fichier d'entrée
+    # Charger les Ã©lÃ©ments Ã  partir du fichier d'entrÃ©e
     $items = Get-Content -Path $InputPath -Raw | ConvertFrom-Json
     if ($null -eq $items) {
-        Write-Error "Impossible de charger les éléments à partir du fichier d'entrée."
+        Write-Error "Impossible de charger les Ã©lÃ©ments Ã  partir du fichier d'entrÃ©e."
         exit 1
     }
 
-    # Convertir en tableau si nécessaire
+    # Convertir en tableau si nÃ©cessaire
     if ($items -isnot [array]) {
         $items = @($items)
     }
 
-    # Afficher des informations sur les éléments
-    Write-Host "Éléments chargés: $($items.Count)" -ForegroundColor Cyan
+    # Afficher des informations sur les Ã©lÃ©ments
+    Write-Host "Ã‰lÃ©ments chargÃ©s: $($items.Count)" -ForegroundColor Cyan
 
-    # Calculer les poids si nécessaire
+    # Calculer les poids si nÃ©cessaire
     if ($CalculateWeights) {
         Write-Host "Calcul des poids avec la fonction: $WeightFunction" -ForegroundColor Cyan
         
@@ -191,7 +191,7 @@ try {
         }
     }
 
-    # Déterminer le nombre de parties
+    # DÃ©terminer le nombre de parties
     $effectiveChunkCount = $ChunkCount
     if ($effectiveChunkCount -le 0) {
         $effectiveChunkCount = [System.Environment]::ProcessorCount
@@ -201,9 +201,9 @@ try {
     $effectiveChunkCount = [Math]::Min($effectiveChunkCount, $items.Count)
     $effectiveChunkCount = [Math]::Max($effectiveChunkCount, 1)
     
-    Write-Host "Division de $($items.Count) éléments en $effectiveChunkCount parties..." -ForegroundColor Cyan
+    Write-Host "Division de $($items.Count) Ã©lÃ©ments en $effectiveChunkCount parties..." -ForegroundColor Cyan
 
-    # Créer une fonction de poids pour Split-AnalysisWorkload
+    # CrÃ©er une fonction de poids pour Split-AnalysisWorkload
     $weightFunction = {
         param($item)
         if ($null -ne $item.$WeightProperty) {
@@ -213,16 +213,16 @@ try {
         }
     }
 
-    # Diviser les éléments
+    # Diviser les Ã©lÃ©ments
     $chunks = Split-AnalysisWorkload -Items $items -ChunkCount $effectiveChunkCount -WeightFunction $weightFunction
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     }
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         TotalItems = $items.Count
         ChunkCount = $chunks.Count
@@ -244,22 +244,22 @@ try {
         }
     }
 
-    # Enregistrer le résultat
+    # Enregistrer le rÃ©sultat
     $result | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de la division:" -ForegroundColor Cyan
-    Write-Host "  Éléments totaux: $($items.Count)" -ForegroundColor White
-    Write-Host "  Parties créées: $($chunks.Count)" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la division:" -ForegroundColor Cyan
+    Write-Host "  Ã‰lÃ©ments totaux: $($items.Count)" -ForegroundColor White
+    Write-Host "  Parties crÃ©Ã©es: $($chunks.Count)" -ForegroundColor White
     
     for ($i = 0; $i -lt $result.Chunks.Count; $i++) {
         $chunk = $result.Chunks[$i]
-        Write-Host "  Partie $($i + 1): $($chunk.ItemCount) éléments, poids total: $($chunk.TotalWeight)" -ForegroundColor White
+        Write-Host "  Partie $($i + 1): $($chunk.ItemCount) Ã©lÃ©ments, poids total: $($chunk.TotalWeight)" -ForegroundColor White
     }
     
-    Write-Host "  Résultat enregistré: $OutputPath" -ForegroundColor White
+    Write-Host "  RÃ©sultat enregistrÃ©: $OutputPath" -ForegroundColor White
 
-    # Retourner le résultat
+    # Retourner le rÃ©sultat
     return $result
 } catch {
     Write-Error "Erreur lors de la division de la charge de travail: $_"

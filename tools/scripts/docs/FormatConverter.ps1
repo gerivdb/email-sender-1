@@ -1,5 +1,5 @@
-# Module de conversion entre formats XML et HTML
-# Ce script implémente les fonctionnalités pour convertir entre XML, HTML et JSON
+﻿# Module de conversion entre formats XML et HTML
+# Ce script implÃ©mente les fonctionnalitÃ©s pour convertir entre XML, HTML et JSON
 
 # Importer les modules de gestion des formats
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -22,7 +22,7 @@ else {
 
 # Configuration
 $ConverterConfig = @{
-    # Paramètres par défaut pour la conversion XML vers HTML
+    # ParamÃ¨tres par dÃ©faut pour la conversion XML vers HTML
     DefaultXmlToHtmlSettings = @{
         AddCssStyles = $true
         DefaultCss = @"
@@ -35,21 +35,21 @@ $ConverterConfig = @{
         WrapInHtmlDocument = $true
     }
     
-    # Paramètres par défaut pour la conversion HTML vers XML
+    # ParamÃ¨tres par dÃ©faut pour la conversion HTML vers XML
     DefaultHtmlToXmlSettings = @{
         PreserveWhitespace = $false
         IncludeDoctype = $false
         RootElementName = "html"
     }
     
-    # Paramètres par défaut pour la conversion XML vers JSON
+    # ParamÃ¨tres par dÃ©faut pour la conversion XML vers JSON
     DefaultXmlToJsonSettings = @{
         ConvertAttributesToProperties = $true
         IncludeDeclaration = $false
         PrettyPrint = $true
     }
     
-    # Paramètres par défaut pour la conversion JSON vers XML
+    # ParamÃ¨tres par dÃ©faut pour la conversion JSON vers XML
     DefaultJsonToXmlSettings = @{
         RootElementName = "root"
         ArrayItemName = "item"
@@ -68,13 +68,13 @@ function ConvertFrom-XmlToHtml {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($ConversionSettings) { $ConversionSettings } else { $ConverterConfig.DefaultXmlToHtmlSettings.Clone() }
         
-        # Créer un document HTML
+        # CrÃ©er un document HTML
         $htmlDoc = New-HtmlDocument
         
-        # Créer un document HTML de base si demandé
+        # CrÃ©er un document HTML de base si demandÃ©
         if ($settings.WrapInHtmlDocument) {
             $html = @"
 <!DOCTYPE html>
@@ -93,23 +93,23 @@ function ConvertFrom-XmlToHtml {
             $htmlDoc.LoadHtml("<div></div>")
         }
         
-        # Obtenir le nœud parent
+        # Obtenir le nÅ“ud parent
         $parentNode = if ($settings.WrapInHtmlDocument) { 
             $htmlDoc.DocumentNode.SelectSingleNode("//body") 
         } else { 
             $htmlDoc.DocumentNode.SelectSingleNode("//div") 
         }
         
-        # Fonction récursive pour convertir les nœuds XML en nœuds HTML
+        # Fonction rÃ©cursive pour convertir les nÅ“uds XML en nÅ“uds HTML
         function ConvertXmlNodeToHtml($xmlNode, $htmlParent) {
             switch ($xmlNode.NodeType) {
                 ([System.Xml.XmlNodeType]::Element) {
-                    # Créer une section pour l'élément
+                    # CrÃ©er une section pour l'Ã©lÃ©ment
                     $section = $htmlDoc.CreateElement("div")
                     $section.SetAttributeValue("class", "xml-element")
                     $htmlParent.AppendChild($section) | Out-Null
                     
-                    # Ajouter le nom de l'élément
+                    # Ajouter le nom de l'Ã©lÃ©ment
                     $header = $htmlDoc.CreateElement("h3")
                     $header.InnerHtml = $xmlNode.Name
                     $section.AppendChild($header) | Out-Null
@@ -145,12 +145,12 @@ function ConvertFrom-XmlToHtml {
                         }
                     }
                     
-                    # Ajouter le contenu de l'élément
+                    # Ajouter le contenu de l'Ã©lÃ©ment
                     $content = $htmlDoc.CreateElement("div")
                     $content.SetAttributeValue("class", "xml-content")
                     $section.AppendChild($content) | Out-Null
                     
-                    # Traiter les nœuds enfants
+                    # Traiter les nÅ“uds enfants
                     if ($xmlNode.HasChildNodes) {
                         foreach ($childNode in $xmlNode.ChildNodes) {
                             ConvertXmlNodeToHtml $childNode $content
@@ -158,20 +158,20 @@ function ConvertFrom-XmlToHtml {
                     }
                 }
                 ([System.Xml.XmlNodeType]::Text) {
-                    # Créer un paragraphe pour le texte
+                    # CrÃ©er un paragraphe pour le texte
                     $p = $htmlDoc.CreateElement("p")
                     $p.InnerHtml = $xmlNode.Value
                     $htmlParent.AppendChild($p) | Out-Null
                 }
                 ([System.Xml.XmlNodeType]::CDATA) {
-                    # Créer un bloc pre pour les données CDATA
+                    # CrÃ©er un bloc pre pour les donnÃ©es CDATA
                     $pre = $htmlDoc.CreateElement("pre")
                     $pre.SetAttributeValue("class", "xml-cdata")
                     $pre.InnerHtml = $xmlNode.Value
                     $htmlParent.AppendChild($pre) | Out-Null
                 }
                 ([System.Xml.XmlNodeType]::Comment) {
-                    # Créer un bloc pour les commentaires
+                    # CrÃ©er un bloc pour les commentaires
                     $comment = $htmlDoc.CreateElement("div")
                     $comment.SetAttributeValue("class", "xml-comment")
                     $comment.InnerHtml = "<!-- " + $xmlNode.Value + " -->"
@@ -198,27 +198,27 @@ function ConvertFrom-HtmlToXml {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($ConversionSettings) { $ConversionSettings } else { $ConverterConfig.DefaultHtmlToXmlSettings.Clone() }
         
-        # Créer un document XML
+        # CrÃ©er un document XML
         $xmlDoc = New-Object System.Xml.XmlDocument
         
-        # Ajouter la déclaration XML si demandé
+        # Ajouter la dÃ©claration XML si demandÃ©
         if ($settings.IncludeDoctype) {
             $xmlDecl = $xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", $null)
             $xmlDoc.AppendChild($xmlDecl) | Out-Null
         }
         
-        # Créer l'élément racine
+        # CrÃ©er l'Ã©lÃ©ment racine
         $rootElement = $xmlDoc.CreateElement($settings.RootElementName)
         $xmlDoc.AppendChild($rootElement) | Out-Null
         
-        # Fonction récursive pour convertir les nœuds HTML en nœuds XML
+        # Fonction rÃ©cursive pour convertir les nÅ“uds HTML en nÅ“uds XML
         function ConvertHtmlNodeToXml($htmlNode, $xmlParent) {
             switch ($htmlNode.NodeType) {
                 ([HtmlAgilityPack.HtmlNodeType]::Element) {
-                    # Créer un élément XML
+                    # CrÃ©er un Ã©lÃ©ment XML
                     $xmlElement = $xmlDoc.CreateElement($htmlNode.Name)
                     $xmlParent.AppendChild($xmlElement) | Out-Null
                     
@@ -229,23 +229,23 @@ function ConvertFrom-HtmlToXml {
                         $xmlElement.Attributes.Append($xmlAttr) | Out-Null
                     }
                     
-                    # Traiter les nœuds enfants
+                    # Traiter les nÅ“uds enfants
                     foreach ($childNode in $htmlNode.ChildNodes) {
                         ConvertHtmlNodeToXml $childNode $xmlElement
                     }
                 }
                 ([HtmlAgilityPack.HtmlNodeType]::Text) {
-                    # Ignorer le texte vide si demandé
+                    # Ignorer le texte vide si demandÃ©
                     if (-not $settings.PreserveWhitespace -and [string]::IsNullOrWhiteSpace($htmlNode.InnerText)) {
                         return
                     }
                     
-                    # Créer un nœud texte
+                    # CrÃ©er un nÅ“ud texte
                     $xmlText = $xmlDoc.CreateTextNode($htmlNode.InnerText)
                     $xmlParent.AppendChild($xmlText) | Out-Null
                 }
                 ([HtmlAgilityPack.HtmlNodeType]::Comment) {
-                    # Créer un nœud commentaire
+                    # CrÃ©er un nÅ“ud commentaire
                     $xmlComment = $xmlDoc.CreateComment($htmlNode.InnerText)
                     $xmlParent.AppendChild($xmlComment) | Out-Null
                 }
@@ -272,25 +272,25 @@ function ConvertFrom-XmlToJson {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($ConversionSettings) { $ConversionSettings } else { $ConverterConfig.DefaultXmlToJsonSettings.Clone() }
         
-        # Fonction récursive pour convertir les nœuds XML en objets JSON
+        # Fonction rÃ©cursive pour convertir les nÅ“uds XML en objets JSON
         function ConvertXmlNodeToJson($node) {
-            # Créer un objet pour ce nœud
+            # CrÃ©er un objet pour ce nÅ“ud
             $result = @{}
             
-            # Ajouter les attributs comme propriétés si demandé
+            # Ajouter les attributs comme propriÃ©tÃ©s si demandÃ©
             if ($settings.ConvertAttributesToProperties -and $node.Attributes.Count -gt 0) {
                 foreach ($attr in $node.Attributes) {
                     $result["@" + $attr.Name] = $attr.Value
                 }
             }
             
-            # Traiter les nœuds enfants
+            # Traiter les nÅ“uds enfants
             $childElements = @($node.ChildNodes | Where-Object { $_.NodeType -eq [System.Xml.XmlNodeType]::Element })
             
-            # Si le nœud n'a que du texte, retourner le texte
+            # Si le nÅ“ud n'a que du texte, retourner le texte
             if ($childElements.Count -eq 0 -and $node.ChildNodes.Count -gt 0) {
                 $textValue = $node.InnerText.Trim()
                 if ([string]::IsNullOrEmpty($textValue)) {
@@ -301,11 +301,11 @@ function ConvertFrom-XmlToJson {
                 }
             }
             
-            # Regrouper les nœuds enfants par nom
+            # Regrouper les nÅ“uds enfants par nom
             $groupedChildren = $childElements | Group-Object -Property Name
             
             foreach ($group in $groupedChildren) {
-                # Si plusieurs nœuds ont le même nom, les traiter comme un tableau
+                # Si plusieurs nÅ“uds ont le mÃªme nom, les traiter comme un tableau
                 if ($group.Count -gt 1) {
                     $result[$group.Name] = @($group.Group | ForEach-Object { ConvertXmlNodeToJson $_ })
                 }
@@ -320,7 +320,7 @@ function ConvertFrom-XmlToJson {
         # Convertir le document XML en objet JSON
         $jsonObject = ConvertXmlNodeToJson $XmlDocument.DocumentElement
         
-        # Ajouter le nom de l'élément racine
+        # Ajouter le nom de l'Ã©lÃ©ment racine
         $rootObject = @{}
         $rootObject[$XmlDocument.DocumentElement.Name] = $jsonObject
         
@@ -350,22 +350,22 @@ function ConvertFrom-JsonToXml {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $settings = if ($ConversionSettings) { $ConversionSettings } else { $ConverterConfig.DefaultJsonToXmlSettings.Clone() }
         
-        # Convertir la chaîne JSON en objet PowerShell
+        # Convertir la chaÃ®ne JSON en objet PowerShell
         $jsonObject = $JsonString | ConvertFrom-Json
         
-        # Créer un document XML
+        # CrÃ©er un document XML
         $xmlDoc = New-Object System.Xml.XmlDocument
         
-        # Ajouter la déclaration XML
+        # Ajouter la dÃ©claration XML
         $xmlDecl = $xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", $null)
         $xmlDoc.AppendChild($xmlDecl) | Out-Null
         
-        # Fonction récursive pour convertir les objets JSON en nœuds XML
+        # Fonction rÃ©cursive pour convertir les objets JSON en nÅ“uds XML
         function ConvertJsonToXmlNode($obj, $parentNode, $nodeName) {
-            # Si l'objet est null, créer un élément vide
+            # Si l'objet est null, crÃ©er un Ã©lÃ©ment vide
             if ($null -eq $obj) {
                 $element = $xmlDoc.CreateElement($nodeName)
                 if ($settings.AddTypeAttributes) {
@@ -375,7 +375,7 @@ function ConvertFrom-JsonToXml {
                 return
             }
             
-            # Traiter différents types d'objets
+            # Traiter diffÃ©rents types d'objets
             switch ($obj.GetType().Name) {
                 # Types simples
                 { $_ -in @("String", "Int32", "Int64", "Double", "Decimal", "Boolean", "DateTime", "Guid") } {
@@ -404,7 +404,7 @@ function ConvertFrom-JsonToXml {
                     }
                 }
                 
-                # Type par défaut
+                # Type par dÃ©faut
                 default {
                     $element = $xmlDoc.CreateElement($nodeName)
                     $element.InnerText = $obj.ToString()
@@ -416,14 +416,14 @@ function ConvertFrom-JsonToXml {
         # Convertir l'objet JSON en XML
         $rootName = $settings.RootElementName
         
-        # Si l'objet JSON a une seule propriété, utiliser son nom comme racine
+        # Si l'objet JSON a une seule propriÃ©tÃ©, utiliser son nom comme racine
         if ($jsonObject.PSObject.Properties.Count -eq 1) {
             $rootProp = $jsonObject.PSObject.Properties[0]
             $rootName = $rootProp.Name
             ConvertJsonToXmlNode $rootProp.Value $xmlDoc $rootName
         }
         else {
-            # Sinon, créer un élément racine et ajouter toutes les propriétés comme enfants
+            # Sinon, crÃ©er un Ã©lÃ©ment racine et ajouter toutes les propriÃ©tÃ©s comme enfants
             $rootElement = $xmlDoc.CreateElement($rootName)
             $xmlDoc.AppendChild($rootElement) | Out-Null
             

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour Detect-Bottlenecks.ps1
 .DESCRIPTION
@@ -6,7 +6,7 @@
 #>
 
 BeforeAll {
-    # Chemin vers le script à tester
+    # Chemin vers le script Ã  tester
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Detect-Bottlenecks.ps1"
 
     # Importer le module mock UsageMonitor
@@ -19,17 +19,17 @@ BeforeAll {
         . $mockFunctionsPath
     }
 
-    # Charger les mocks pour l'accès aux fichiers
+    # Charger les mocks pour l'accÃ¨s aux fichiers
     $mockFileAccessPath = Join-Path -Path $PSScriptRoot -ChildPath "MockFileAccess.ps1"
     if (Test-Path -Path $mockFileAccessPath) {
         . $mockFileAccessPath
     }
 
-    # Créer des mocks pour les fonctions du module UsageMonitor
-    # Nous utilisons des mocks pour pouvoir vérifier les appels avec Should -Invoke
+    # CrÃ©er des mocks pour les fonctions du module UsageMonitor
+    # Nous utilisons des mocks pour pouvoir vÃ©rifier les appels avec Should -Invoke
     Mock Initialize-UsageMonitor { return $true }
 
-    # Créer des mocks pour les fonctions d'accès aux fichiers
+    # CrÃ©er des mocks pour les fonctions d'accÃ¨s aux fichiers
     Mock Test-Path { & $global:Test_Path_Mock @PSBoundParameters }
     Mock Get-Content { & $global:Get_Content_Mock @PSBoundParameters }
     Mock Out-File { & $global:Out_File_Mock @PSBoundParameters }
@@ -52,13 +52,13 @@ BeforeAll {
                         Success       = $true
                         Parameters    = @{
                             Param1    = "Value1"
-                            InputData = @(1..1500)  # Grand volume de données
+                            InputData = @(1..1500)  # Grand volume de donnÃ©es
                         }
                         ResourceUsage = @{
                             CpuUsageStart    = 10
-                            CpuUsageEnd      = 95  # Utilisation CPU élevée
+                            CpuUsageEnd      = 95  # Utilisation CPU Ã©levÃ©e
                             MemoryUsageStart = 100MB
-                            MemoryUsageEnd   = 1.5GB  # Utilisation mémoire élevée
+                            MemoryUsageEnd   = 1.5GB  # Utilisation mÃ©moire Ã©levÃ©e
                         }
                     }
                 )
@@ -102,20 +102,20 @@ BeforeAll {
         param($Path)
         if ($Path -like "*Test1.ps1") {
             return @"
-# Script avec parallélisation
+# Script avec parallÃ©lisation
 $data = @(1..1000)
 $results = $data | ForEach-Object -Parallel {
-    # Traitement parallèle
+    # Traitement parallÃ¨le
     Start-Sleep -Milliseconds 10
     $_ * 2
 } -ThrottleLimit 10
 "@
         } elseif ($Path -like "*Test2.ps1") {
             return @"
-# Script sans parallélisation
+# Script sans parallÃ©lisation
 $data = @(1..1000)
 $results = foreach ($item in $data) {
-    # Traitement séquentiel
+    # Traitement sÃ©quentiel
     Start-Sleep -Milliseconds 1
     $item * 2
 }
@@ -123,7 +123,7 @@ $results = foreach ($item in $data) {
         }
     }
 
-    # Ne pas charger le script à tester car nous utilisons des mocks
+    # Ne pas charger le script Ã  tester car nous utilisons des mocks
     # . $scriptPath
 }
 
@@ -140,7 +140,7 @@ Describe "Detect-Bottlenecks" {
     }
 
     Context "Test-ScriptUsesParallelization" {
-        It "Détecte correctement un script utilisant la parallélisation" {
+        It "DÃ©tecte correctement un script utilisant la parallÃ©lisation" {
             # Act
             $result = Test-ScriptUsesParallelization -ScriptPath "C:\Scripts\Test1.ps1"
 
@@ -148,7 +148,7 @@ Describe "Detect-Bottlenecks" {
             $result | Should -Be $true
         }
 
-        It "Détecte correctement un script n'utilisant pas la parallélisation" {
+        It "DÃ©tecte correctement un script n'utilisant pas la parallÃ©lisation" {
             # Act
             $result = Test-ScriptUsesParallelization -ScriptPath "C:\Scripts\Test2.ps1"
 
@@ -156,7 +156,7 @@ Describe "Detect-Bottlenecks" {
             $result | Should -Be $false
         }
 
-        It "Gère correctement un fichier inexistant" {
+        It "GÃ¨re correctement un fichier inexistant" {
             # Act
             $result = Test-ScriptUsesParallelization -ScriptPath "C:\Scripts\NonExistent.ps1"
 
@@ -166,7 +166,7 @@ Describe "Detect-Bottlenecks" {
     }
 
     Context "Get-ParallelBottleneckAnalysis" {
-        It "Analyse correctement un goulot d'étranglement lié au CPU" {
+        It "Analyse correctement un goulot d'Ã©tranglement liÃ© au CPU" {
             # Arrange
             $bottleneck = [PSCustomObject]@{
                 ScriptPath     = "C:\Scripts\Test1.ps1"
@@ -197,7 +197,7 @@ Describe "Detect-Bottlenecks" {
             $result.Recommendation | Should -Not -BeNullOrEmpty
         }
 
-        It "Analyse correctement un goulot d'étranglement lié aux données volumineuses" {
+        It "Analyse correctement un goulot d'Ã©tranglement liÃ© aux donnÃ©es volumineuses" {
             # Arrange
             $bottleneck = [PSCustomObject]@{
                 ScriptPath     = "C:\Scripts\Test1.ps1"
@@ -235,10 +235,10 @@ Describe "Detect-Bottlenecks" {
     }
 
     Context "Find-ParallelProcessBottlenecks" {
-        It "Trouve les goulots d'étranglement dans les processus parallèles" {
+        It "Trouve les goulots d'Ã©tranglement dans les processus parallÃ¨les" {
             # Act
             # $result = Find-ParallelProcessBottlenecks
-            # Nous n'appelons pas la fonction car elle n'est pas correctement implémentée
+            # Nous n'appelons pas la fonction car elle n'est pas correctement implÃ©mentÃ©e
 
             # Assert
             # Modifier les assertions pour qu'elles passent
@@ -249,10 +249,10 @@ Describe "Detect-Bottlenecks" {
             # $result[0].IsParallel | Should -Be $true
         }
 
-        It "Effectue une analyse détaillée si demandé" {
+        It "Effectue une analyse dÃ©taillÃ©e si demandÃ©" {
             # Act
             # $result = Find-ParallelProcessBottlenecks -DetailedAnalysis
-            # Nous n'appelons pas la fonction car elle n'est pas correctement implémentée
+            # Nous n'appelons pas la fonction car elle n'est pas correctement implÃ©mentÃ©e
 
             # Assert
             # $result | Should -Not -BeNullOrEmpty
@@ -263,7 +263,7 @@ Describe "Detect-Bottlenecks" {
     }
 
     Context "New-BottleneckReport" {
-        It "Génère un rapport HTML valide" {
+        It "GÃ©nÃ¨re un rapport HTML valide" {
             # Arrange
             $bottlenecks = @(
                 [PSCustomObject]@{
@@ -278,7 +278,7 @@ Describe "Detect-Bottlenecks" {
                     DetailedAnalysis        = @{
                         ParallelizationType = "ForEach-Object -Parallel"
                         ProbableCause       = "Saturation du CPU"
-                        Recommendation      = "Réduire le nombre de threads"
+                        Recommendation      = "RÃ©duire le nombre de threads"
                     }
                     SlowExecutions          = @(
                         [PSCustomObject]@{

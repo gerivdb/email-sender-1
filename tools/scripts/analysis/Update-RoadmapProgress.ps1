@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Met à jour la progression de la section 1.1.2.1 dans la roadmap.
+    Met Ã  jour la progression de la section 1.1.2.1 dans la roadmap.
 .DESCRIPTION
-    Ce script met à jour la progression de la section 1.1.2.1 dans la roadmap
-    pour indiquer que la tâche est terminée.
+    Ce script met Ã  jour la progression de la section 1.1.2.1 dans la roadmap
+    pour indiquer que la tÃ¢che est terminÃ©e.
 .PARAMETER RoadmapPath
-    Chemin du fichier roadmap à mettre à jour.
+    Chemin du fichier roadmap Ã  mettre Ã  jour.
 .EXAMPLE
     .\Update-RoadmapProgress.ps1 -RoadmapPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 .NOTES
@@ -19,7 +19,7 @@ param(
     [string]$RoadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md"
 )
 
-# Vérifier que le fichier roadmap existe
+# VÃ©rifier que le fichier roadmap existe
 if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
     Write-Error "Le fichier roadmap n'existe pas: $RoadmapPath"
     exit 1
@@ -28,21 +28,21 @@ if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
 # Lire le contenu du fichier roadmap
 $content = Get-Content -Path $RoadmapPath -Raw
 
-# Mettre à jour la progression de la section 1.1.2.1
-$pattern = '(### 1\.1\.2\.1 Système d''inventaire et de classification des scripts\s+\*\*Complexité\*\*:.*\s+\*\*Temps estimé\*\*:.*\s+\*\*Progression\*\*:) \d+% - \*.*\*'
-$replacement = '$1 100% - *Terminé*'
+# Mettre Ã  jour la progression de la section 1.1.2.1
+$pattern = '(### 1\.1\.2\.1 SystÃ¨me d''inventaire et de classification des scripts\s+\*\*ComplexitÃ©\*\*:.*\s+\*\*Temps estimÃ©\*\*:.*\s+\*\*Progression\*\*:) \d+% - \*.*\*'
+$replacement = '$1 100% - *TerminÃ©*'
 
 $updatedContent = $content -replace $pattern, $replacement
 
 # Sauvegarder une copie de sauvegarde du fichier roadmap original
 $backupPath = "$RoadmapPath.bak3"
 Copy-Item -Path $RoadmapPath -Destination $backupPath -Force
-Write-Host "Copie de sauvegarde créée: $backupPath" -ForegroundColor Green
+Write-Host "Copie de sauvegarde crÃ©Ã©e: $backupPath" -ForegroundColor Green
 
-# Écrire le contenu mis à jour dans le fichier roadmap
+# Ã‰crire le contenu mis Ã  jour dans le fichier roadmap
 Set-Content -Path $RoadmapPath -Value $updatedContent -Encoding UTF8
-Write-Host "Roadmap mise à jour avec succès: $RoadmapPath" -ForegroundColor Green
+Write-Host "Roadmap mise Ã  jour avec succÃ¨s: $RoadmapPath" -ForegroundColor Green
 
-# Afficher un résumé des modifications
-Write-Host "`nRésumé des modifications:" -ForegroundColor Cyan
-Write-Host "- Mise à jour de la progression de la section '1.1.2.1 Système d'inventaire et de classification des scripts' à 100% - Terminé" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des modifications
+Write-Host "`nRÃ©sumÃ© des modifications:" -ForegroundColor Cyan
+Write-Host "- Mise Ã  jour de la progression de la section '1.1.2.1 SystÃ¨me d'inventaire et de classification des scripts' Ã  100% - TerminÃ©" -ForegroundColor White

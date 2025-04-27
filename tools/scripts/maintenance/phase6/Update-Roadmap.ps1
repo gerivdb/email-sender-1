@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour la roadmap avec les informations de la Phase 6.
+    Met Ã  jour la roadmap avec les informations de la Phase 6.
 .DESCRIPTION
-    Ce script met à jour le fichier roadmap.md avec les informations sur la Phase 6,
-    notamment les tâches réalisées et les prochaines étapes.
+    Ce script met Ã  jour le fichier roadmap.md avec les informations sur la Phase 6,
+    notamment les tÃ¢ches rÃ©alisÃ©es et les prochaines Ã©tapes.
 #>
 
 [CmdletBinding()]
@@ -27,21 +27,21 @@ function Write-Log {
         default { Write-Host $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $LogFilePath -Parent
         if (-not (Test-Path -Path $logDir)) { New-Item -Path $logDir -ItemType Directory -Force | Out-Null }
         Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
-    } catch { Write-Warning "Impossible d'écrire dans le journal: $_" }
+    } catch { Write-Warning "Impossible d'Ã©crire dans le journal: $_" }
 }
 
-# Fonction pour mettre à jour la roadmap
+# Fonction pour mettre Ã  jour la roadmap
 function Update-Roadmap {
     param ([string]$RoadmapPath)
     
-    Write-Log "Mise à jour de la roadmap: $RoadmapPath"
+    Write-Log "Mise Ã  jour de la roadmap: $RoadmapPath"
     
-    # Vérifier si le fichier roadmap existe
+    # VÃ©rifier si le fichier roadmap existe
     if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
         Write-Log "Le fichier roadmap n'existe pas: $RoadmapPath" -Level "ERROR"
         return $false
@@ -54,74 +54,74 @@ function Update-Roadmap {
         return $false
     }
     
-    # Créer une sauvegarde
+    # CrÃ©er une sauvegarde
     $backupPath = "$RoadmapPath.bak"
     Copy-Item -Path $RoadmapPath -Destination $backupPath -Force
-    Write-Log "Sauvegarde de la roadmap créée: $backupPath" -Level "INFO"
+    Write-Log "Sauvegarde de la roadmap crÃ©Ã©e: $backupPath" -Level "INFO"
     
     # Informations sur la Phase 6
     $phase6Info = @"
 
-## Phase 6 - Correctifs prioritaires pour la gestion d'erreurs et la compatibilité (Terminé)
+## Phase 6 - Correctifs prioritaires pour la gestion d'erreurs et la compatibilitÃ© (TerminÃ©)
 
 ### Objectifs
-- Améliorer la gestion d'erreurs dans les scripts existants
-- Résoudre les problèmes de compatibilité entre environnements
-- Implémenter un système de journalisation centralisé
+- AmÃ©liorer la gestion d'erreurs dans les scripts existants
+- RÃ©soudre les problÃ¨mes de compatibilitÃ© entre environnements
+- ImplÃ©menter un systÃ¨me de journalisation centralisÃ©
 
-### Tâches réalisées
-- [x] Création des scripts pour la Phase 6
-- [x] Analyse des scripts existants pour identifier les améliorations nécessaires
-- [x] Implémentation des améliorations de gestion d'erreurs
-- [x] Implémentation des améliorations de compatibilité entre environnements
-- [x] Implémentation du système de journalisation centralisé
-- [x] Tests et validation des améliorations
-- [x] Documentation des améliorations
+### TÃ¢ches rÃ©alisÃ©es
+- [x] CrÃ©ation des scripts pour la Phase 6
+- [x] Analyse des scripts existants pour identifier les amÃ©liorations nÃ©cessaires
+- [x] ImplÃ©mentation des amÃ©liorations de gestion d'erreurs
+- [x] ImplÃ©mentation des amÃ©liorations de compatibilitÃ© entre environnements
+- [x] ImplÃ©mentation du systÃ¨me de journalisation centralisÃ©
+- [x] Tests et validation des amÃ©liorations
+- [x] Documentation des amÃ©liorations
 
-### Leçons apprises
-- Importance de vérifier les verbes approuvés PowerShell avant de créer des fonctions
-- Nécessité d'éviter les conflits de paramètres (ex: WhatIf défini deux fois)
-- Avantages d'une approche standardisée pour la gestion des chemins
-- Valeur d'un système de journalisation centralisé pour le diagnostic des problèmes
+### LeÃ§ons apprises
+- Importance de vÃ©rifier les verbes approuvÃ©s PowerShell avant de crÃ©er des fonctions
+- NÃ©cessitÃ© d'Ã©viter les conflits de paramÃ¨tres (ex: WhatIf dÃ©fini deux fois)
+- Avantages d'une approche standardisÃ©e pour la gestion des chemins
+- Valeur d'un systÃ¨me de journalisation centralisÃ© pour le diagnostic des problÃ¨mes
 
-### Prochaines étapes
-- Implémenter un système de détection automatique des conflits de paramètres
-- Développer un framework de test d'environnement pour valider les prérequis
-- Créer une bibliothèque standardisée pour la gestion des chemins
-- Améliorer le système de journalisation pour capturer plus de détails sur les erreurs
+### Prochaines Ã©tapes
+- ImplÃ©menter un systÃ¨me de dÃ©tection automatique des conflits de paramÃ¨tres
+- DÃ©velopper un framework de test d'environnement pour valider les prÃ©requis
+- CrÃ©er une bibliothÃ¨que standardisÃ©e pour la gestion des chemins
+- AmÃ©liorer le systÃ¨me de journalisation pour capturer plus de dÃ©tails sur les erreurs
 
 "@
     
-    # Vérifier si la Phase 6 est déjà mentionnée dans la roadmap
+    # VÃ©rifier si la Phase 6 est dÃ©jÃ  mentionnÃ©e dans la roadmap
     if ($content -match "## Phase 6 - Correctifs prioritaires") {
-        Write-Log "La Phase 6 est déjà mentionnée dans la roadmap" -Level "INFO"
+        Write-Log "La Phase 6 est dÃ©jÃ  mentionnÃ©e dans la roadmap" -Level "INFO"
         
-        # Mettre à jour les informations de la Phase 6
+        # Mettre Ã  jour les informations de la Phase 6
         $pattern = "## Phase 6 - Correctifs prioritaires.*?(?=\n## |$)"
         $newContent = [regex]::Replace($content, $pattern, $phase6Info.Trim(), [System.Text.RegularExpressions.RegexOptions]::Singleline)
     } else {
-        Write-Log "Ajout des informations de la Phase 6 à la roadmap" -Level "INFO"
+        Write-Log "Ajout des informations de la Phase 6 Ã  la roadmap" -Level "INFO"
         
-        # Ajouter les informations de la Phase 6 à la fin de la roadmap
+        # Ajouter les informations de la Phase 6 Ã  la fin de la roadmap
         $newContent = $content + "`n" + $phase6Info
     }
     
     # Enregistrer le nouveau contenu
     Set-Content -Path $RoadmapPath -Value $newContent
-    Write-Log "Roadmap mise à jour avec succès" -Level "SUCCESS"
+    Write-Log "Roadmap mise Ã  jour avec succÃ¨s" -Level "SUCCESS"
     
     return $true
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $success = Update-Roadmap -RoadmapPath $RoadmapPath
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 if ($success) {
-    Write-Host "`nLa roadmap a été mise à jour avec succès:" -ForegroundColor Green
+    Write-Host "`nLa roadmap a Ã©tÃ© mise Ã  jour avec succÃ¨s:" -ForegroundColor Green
     Write-Host "  - $RoadmapPath" -ForegroundColor White
 } else {
-    Write-Host "`nÉchec de la mise à jour de la roadmap:" -ForegroundColor Red
+    Write-Host "`nÃ‰chec de la mise Ã  jour de la roadmap:" -ForegroundColor Red
     Write-Host "  - $RoadmapPath" -ForegroundColor White
 }
 

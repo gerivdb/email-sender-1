@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires avec Pester pour les fonctions de journalisation.
 

@@ -1,5 +1,5 @@
-# Script de redémarrage Augment
-# Ce script permet de relancer Augment en cas d'échec
+﻿# Script de redÃ©marrage Augment
+# Ce script permet de relancer Augment en cas d'Ã©chec
 
 param (
     [Parameter(Mandatory = $true)]
@@ -15,7 +15,7 @@ $logFile = "RestartAugment.log"
 $augmentExecutorPath = "AugmentExecutor.ps1"
 $roadmapAdminPath = "RoadmapAdmin.ps1"
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     param (
         [string]$Message,
@@ -25,7 +25,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     Add-Content -Path $logFile -Value $logEntry
     
     # Afficher dans la console avec couleur
@@ -38,7 +38,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour exécuter Augment avec plusieurs tentatives
+# Fonction pour exÃ©cuter Augment avec plusieurs tentatives
 function Invoke-AugmentWithRetry {
     param (
         [string]$Task
@@ -49,17 +49,17 @@ function Invoke-AugmentWithRetry {
     
     while (-not $success -and $retryCount -lt $MaxRetries) {
         try {
-            Write-Log "Tentative d'exécution #$($retryCount + 1)" "INFO"
+            Write-Log "Tentative d'exÃ©cution #$($retryCount + 1)" "INFO"
             
-            # Exécuter le script Augment
+            # ExÃ©cuter le script Augment
             & $augmentExecutorPath -Task $Task
             
             $success = $true
-            Write-Log "Exécution réussie" "SUCCESS"
+            Write-Log "ExÃ©cution rÃ©ussie" "SUCCESS"
         }
         catch {
             $retryCount++
-            Write-Log "Échec de l'exécution: $_" "ERROR"
+            Write-Log "Ã‰chec de l'exÃ©cution: $_" "ERROR"
             
             if ($retryCount -lt $MaxRetries) {
                 Write-Log "Nouvelle tentative dans $RetryDelay secondes..." "WARNING"
@@ -71,33 +71,33 @@ function Invoke-AugmentWithRetry {
     return $success
 }
 
-# Fonction pour mettre à jour la roadmap
+# Fonction pour mettre Ã  jour la roadmap
 function Update-RoadmapTask {
     param (
         [string]$Task
     )
     
     try {
-        Write-Log "Mise à jour de la roadmap pour la tâche: $Task" "INFO"
+        Write-Log "Mise Ã  jour de la roadmap pour la tÃ¢che: $Task" "INFO"
         
-        # Exécuter le script d'administration de la roadmap
+        # ExÃ©cuter le script d'administration de la roadmap
         & $roadmapAdminPath -RoadmapPath $RoadmapPath -AutoUpdate
         
-        Write-Log "Roadmap mise à jour avec succès" "SUCCESS"
+        Write-Log "Roadmap mise Ã  jour avec succÃ¨s" "SUCCESS"
         return $true
     }
     catch {
-        Write-Log "Échec de la mise à jour de la roadmap: $_" "ERROR"
+        Write-Log "Ã‰chec de la mise Ã  jour de la roadmap: $_" "ERROR"
         return $false
     }
 }
 
 # Fonction principale
 function Restart-Augment {
-    # Exécuter Augment avec plusieurs tentatives
+    # ExÃ©cuter Augment avec plusieurs tentatives
     $success = Invoke-AugmentWithRetry -Task $Task
     
-    # Mettre à jour la roadmap si demandé et si l'exécution a réussi
+    # Mettre Ã  jour la roadmap si demandÃ© et si l'exÃ©cution a rÃ©ussi
     if ($UpdateRoadmap -and $success) {
         Update-RoadmapTask -Task $Task
     }
@@ -105,10 +105,10 @@ function Restart-Augment {
     return $success
 }
 
-# Démarrer le script
-Write-Log "Démarrage du script de redémarrage Augment" "INFO"
-Write-Log "Tâche: $Task" "INFO"
+# DÃ©marrer le script
+Write-Log "DÃ©marrage du script de redÃ©marrage Augment" "INFO"
+Write-Log "TÃ¢che: $Task" "INFO"
 $success = Restart-Augment
-Write-Log "Fin du script de redémarrage Augment (Succès: $success)" "INFO"
+Write-Log "Fin du script de redÃ©marrage Augment (SuccÃ¨s: $success)" "INFO"
 
 return $success

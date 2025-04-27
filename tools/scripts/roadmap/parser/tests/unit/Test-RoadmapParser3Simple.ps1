@@ -1,4 +1,4 @@
-# Test-RoadmapParser3Simple.ps1
+﻿# Test-RoadmapParser3Simple.ps1
 # Script pour tester le module RoadmapParser3Simple
 
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapParser3Simple.psm1"

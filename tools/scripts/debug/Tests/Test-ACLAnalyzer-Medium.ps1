@@ -1,33 +1,33 @@
-# Test plus détaillé pour ACLAnalyzer.ps1
-# Importer le module à tester
+﻿# Test plus dÃ©taillÃ© pour ACLAnalyzer.ps1
+# Importer le module Ã  tester
 $scriptPath = Split-Path -Parent $PSCommandPath
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ACLAnalyzer.ps1"
 . $modulePath
 
-# Créer un dossier de test unique
+# CrÃ©er un dossier de test unique
 $testGuid = [System.Guid]::NewGuid().ToString()
 $testFolder = Join-Path -Path $env:TEMP -ChildPath "ACLTest_$testGuid"
 $testSubFolder = Join-Path -Path $testFolder -ChildPath "SubFolder"
 $testFile = Join-Path -Path $testFolder -ChildPath "testfile.txt"
 
-# Créer le dossier et le fichier pour les tests
+# CrÃ©er le dossier et le fichier pour les tests
 New-Item -Path $testFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $testSubFolder -ItemType Directory -Force | Out-Null
 "Test content" | Out-File -FilePath $testFile -Encoding utf8
 
-# Ajouter une permission "Everyone" pour tester la détection d'anomalies
+# Ajouter une permission "Everyone" pour tester la dÃ©tection d'anomalies
 $acl = Get-Acl -Path $testFolder
 $everyone = New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::WorldSid, $null)
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($everyone, "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
 $acl.AddAccessRule($rule)
 Set-Acl -Path $testFolder -AclObject $acl
 
-# Désactiver l'héritage sur le sous-dossier pour les tests
+# DÃ©sactiver l'hÃ©ritage sur le sous-dossier pour les tests
 $acl = Get-Acl -Path $testSubFolder
-$acl.SetAccessRuleProtection($true, $true)  # Désactiver l'héritage mais conserver les règles héritées
+$acl.SetAccessRuleProtection($true, $true)  # DÃ©sactiver l'hÃ©ritage mais conserver les rÃ¨gles hÃ©ritÃ©es
 Set-Acl -Path $testSubFolder -AclObject $acl
 
-# Fonction pour afficher les résultats des tests
+# Fonction pour afficher les rÃ©sultats des tests
 function Test-Result {
     param (
         [string]$TestName,
@@ -41,9 +41,9 @@ function Test-Result {
         $valid = & $ValidationScript $result
         
         if ($valid) {
-            Write-Host "  RÉUSSI: $TestName" -ForegroundColor Green
+            Write-Host "  RÃ‰USSI: $TestName" -ForegroundColor Green
         } else {
-            Write-Host "  ÉCHEC: $TestName - Validation échouée" -ForegroundColor Red
+            Write-Host "  Ã‰CHEC: $TestName - Validation Ã©chouÃ©e" -ForegroundColor Red
         }
     } catch {
         Write-Host "  ERREUR: $TestName - $($_.Exception.Message)" -ForegroundColor Red
@@ -60,8 +60,8 @@ $result1 = Test-Result -TestName "Get-NTFSPermission sur un dossier" -TestScript
     return $r -and $r.Count -gt 0 -and $r[0].Path -eq $testFolder
 }
 
-# Test 2: Get-NTFSPermission avec récursivité limitée
-$result2 = Test-Result -TestName "Get-NTFSPermission avec récursivité limitée" -TestScript {
+# Test 2: Get-NTFSPermission avec rÃ©cursivitÃ© limitÃ©e
+$result2 = Test-Result -TestName "Get-NTFSPermission avec rÃ©cursivitÃ© limitÃ©e" -TestScript {
     Get-NTFSPermission -Path $testFolder -Recurse $true
 } -ValidationScript {
     param($r)
@@ -76,8 +76,8 @@ $result3 = Test-Result -TestName "Get-NTFSPermissionInheritance sur un dossier" 
     return $r -and $r.Path -eq $testFolder -and $r.InheritanceEnabled -eq $true
 }
 
-# Test 4: Get-NTFSPermissionInheritance sur un dossier avec héritage désactivé
-$result4 = Test-Result -TestName "Get-NTFSPermissionInheritance sur un dossier avec héritage désactivé" -TestScript {
+# Test 4: Get-NTFSPermissionInheritance sur un dossier avec hÃ©ritage dÃ©sactivÃ©
+$result4 = Test-Result -TestName "Get-NTFSPermissionInheritance sur un dossier avec hÃ©ritage dÃ©sactivÃ©" -TestScript {
     Get-NTFSPermissionInheritance -Path $testSubFolder -Recurse $false
 } -ValidationScript {
     param($r)
@@ -128,4 +128,4 @@ $result9 = Test-Result -TestName "New-NTFSPermissionReport au format JSON" -Test
 Write-Host "Nettoyage des fichiers de test..."
 Remove-Item -Path $testFolder -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "Tests terminés."
+Write-Host "Tests terminÃ©s."

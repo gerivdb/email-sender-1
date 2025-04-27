@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Optimise la taille des lots pour le traitement parallèle.
+    Optimise la taille des lots pour le traitement parallÃ¨le.
 .DESCRIPTION
-    Ce script détermine la taille de lot optimale pour le traitement parallèle
-    en exécutant des tests avec différentes tailles de lots.
+    Ce script dÃ©termine la taille de lot optimale pour le traitement parallÃ¨le
+    en exÃ©cutant des tests avec diffÃ©rentes tailles de lots.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -26,16 +26,16 @@ param(
     [switch]$GenerateReport
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer les performances avec différentes tailles de lots
+# Fonction pour mesurer les performances avec diffÃ©rentes tailles de lots
 function Measure-BatchSizePerformance {
     [CmdletBinding()]
     param(
@@ -62,19 +62,19 @@ function Measure-BatchSizePerformance {
         $batchResults = @()
         
         for ($i = 1; $i -le $Iterations; $i++) {
-            Write-Host "  Itération $i/$Iterations..." -ForegroundColor Yellow
+            Write-Host "  ItÃ©ration $i/$Iterations..." -ForegroundColor Yellow
             
-            # Nettoyer la mémoire avant chaque test
+            # Nettoyer la mÃ©moire avant chaque test
             [System.GC]::Collect()
             
-            # Mesurer l'utilisation de la mémoire avant
+            # Mesurer l'utilisation de la mÃ©moire avant
             $memoryBefore = [System.GC]::GetTotalMemory($true)
             
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             
             try {
-                # Exécuter l'analyseur avec la taille de lot spécifiée
+                # ExÃ©cuter l'analyseur avec la taille de lot spÃ©cifiÃ©e
                 $analyzerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "examples\script-analyzer-simple.ps1"
                 $result = & $analyzerPath -ScriptsPath $TestFilesPath -OutputPath (Join-Path -Path $OutputPath -ChildPath "batch_$batchSize") -BatchSize $batchSize
                 
@@ -89,11 +89,11 @@ function Measure-BatchSizePerformance {
             $stopwatch.Stop()
             $executionTime = $stopwatch.Elapsed.TotalSeconds
             
-            # Mesurer l'utilisation de la mémoire après
+            # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
             $memoryAfter = [System.GC]::GetTotalMemory($true)
             $memoryUsage = ($memoryAfter - $memoryBefore) / 1MB
             
-            # Enregistrer les résultats
+            # Enregistrer les rÃ©sultats
             $batchResults += [PSCustomObject]@{
                 Iteration = $i
                 BatchSize = $batchSize
@@ -103,9 +103,9 @@ function Measure-BatchSizePerformance {
                 ResultCount = if ($result) { $result.Count } else { 0 }
             }
             
-            Write-Host "    Temps d'exécution : $executionTime secondes" -ForegroundColor Yellow
-            Write-Host "    Utilisation mémoire : $memoryUsage MB" -ForegroundColor Yellow
-            Write-Host "    Succès : $success" -ForegroundColor ($success ? "Green" : "Red")
+            Write-Host "    Temps d'exÃ©cution : $executionTime secondes" -ForegroundColor Yellow
+            Write-Host "    Utilisation mÃ©moire : $memoryUsage MB" -ForegroundColor Yellow
+            Write-Host "    SuccÃ¨s : $success" -ForegroundColor ($success ? "Green" : "Red")
         }
         
         # Calculer les statistiques pour cette taille de lot
@@ -115,11 +115,11 @@ function Measure-BatchSizePerformance {
         $avgMemory = ($batchResults | Measure-Object -Property MemoryUsageMB -Average).Average
         $successRate = ($batchResults | Where-Object { $_.Success } | Measure-Object).Count / $Iterations * 100
         
-        Write-Host "`n  Résultats pour taille de lot $batchSize :" -ForegroundColor Cyan
+        Write-Host "`n  RÃ©sultats pour taille de lot $batchSize :" -ForegroundColor Cyan
         Write-Host "    Temps moyen : $avgTime secondes" -ForegroundColor Green
         Write-Host "    Temps min/max : $minTime / $maxTime secondes" -ForegroundColor Green
-        Write-Host "    Mémoire moyenne : $avgMemory MB" -ForegroundColor Green
-        Write-Host "    Taux de succès : $successRate%" -ForegroundColor Green
+        Write-Host "    MÃ©moire moyenne : $avgMemory MB" -ForegroundColor Green
+        Write-Host "    Taux de succÃ¨s : $successRate%" -ForegroundColor Green
         
         $results += [PSCustomObject]@{
             BatchSize = $batchSize
@@ -132,7 +132,7 @@ function Measure-BatchSizePerformance {
         }
     }
     
-    # Déterminer la taille de lot optimale
+    # DÃ©terminer la taille de lot optimale
     $optimalBatchSize = $results | 
         Where-Object { $_.SuccessRate -eq 100 } | 
         Sort-Object -Property AverageTime | 
@@ -142,21 +142,21 @@ function Measure-BatchSizePerformance {
         Write-Host "`n=== Taille de lot optimale ===" -ForegroundColor Green
         Write-Host "  Taille de lot : $($optimalBatchSize.BatchSize)" -ForegroundColor Green
         Write-Host "  Temps moyen : $($optimalBatchSize.AverageTime) secondes" -ForegroundColor Green
-        Write-Host "  Mémoire moyenne : $($optimalBatchSize.AverageMemoryMB) MB" -ForegroundColor Green
+        Write-Host "  MÃ©moire moyenne : $($optimalBatchSize.AverageMemoryMB) MB" -ForegroundColor Green
     }
     else {
-        Write-Warning "Impossible de déterminer la taille de lot optimale. Aucun test n'a réussi à 100%."
+        Write-Warning "Impossible de dÃ©terminer la taille de lot optimale. Aucun test n'a rÃ©ussi Ã  100%."
     }
     
     return $results
 }
 
-# Créer des fichiers de test si nécessaire
+# CrÃ©er des fichiers de test si nÃ©cessaire
 $testFilesPath = Join-Path -Path $OutputPath -ChildPath "test_files"
 if (-not (Test-Path -Path $testFilesPath)) {
-    Write-Host "Création des fichiers de test..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation des fichiers de test..." -ForegroundColor Yellow
     
-    # Importer le script de benchmark pour utiliser sa fonction de création de fichiers de test
+    # Importer le script de benchmark pour utiliser sa fonction de crÃ©ation de fichiers de test
     $benchmarkPath = Join-Path -Path $PSScriptRoot -ChildPath "benchmark.ps1"
     . $benchmarkPath
     
@@ -166,20 +166,20 @@ else {
     Write-Host "Utilisation des fichiers de test existants : $testFilesPath" -ForegroundColor Yellow
 }
 
-# Exécuter les tests de performance avec différentes tailles de lots
+# ExÃ©cuter les tests de performance avec diffÃ©rentes tailles de lots
 $results = Measure-BatchSizePerformance `
     -TestFilesPath $testFilesPath `
     -OutputPath $OutputPath `
     -BatchSizes $BatchSizes `
     -Iterations $Iterations
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $OutputPath -ChildPath "batch_size_results.json"
 $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $resultsPath -Encoding utf8
 
-Write-Host "`nRésultats enregistrés : $resultsPath" -ForegroundColor Green
+Write-Host "`nRÃ©sultats enregistrÃ©s : $resultsPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
     $reportPath = Join-Path -Path $OutputPath -ChildPath "batch_size_report.html"
     
@@ -238,15 +238,15 @@ if ($GenerateReport) {
 </head>
 <body>
     <h1>Rapport d'optimisation de la taille des lots</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de tailles de lots testées : $($results.Count)</p>
-        <p>Nombre d'itérations par taille : $Iterations</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de tailles de lots testÃ©es : $($results.Count)</p>
+        <p>Nombre d'itÃ©rations par taille : $Iterations</p>
 "@
     
-    # Déterminer la taille de lot optimale
+    # DÃ©terminer la taille de lot optimale
     $optimalBatchSize = $results | 
         Where-Object { $_.SuccessRate -eq 100 } | 
         Sort-Object -Property AverageTime | 
@@ -256,19 +256,19 @@ if ($GenerateReport) {
         $htmlContent += @"
         <p><strong>Taille de lot optimale : $($optimalBatchSize.BatchSize)</strong></p>
         <p>Temps moyen : $([Math]::Round($optimalBatchSize.AverageTime, 2)) secondes</p>
-        <p>Mémoire moyenne : $([Math]::Round($optimalBatchSize.AverageMemoryMB, 2)) MB</p>
+        <p>MÃ©moire moyenne : $([Math]::Round($optimalBatchSize.AverageMemoryMB, 2)) MB</p>
 "@
     }
     else {
         $htmlContent += @"
-        <p><strong>Impossible de déterminer la taille de lot optimale. Aucun test n'a réussi à 100%.</strong></p>
+        <p><strong>Impossible de dÃ©terminer la taille de lot optimale. Aucun test n'a rÃ©ussi Ã  100%.</strong></p>
 "@
     }
     
     $htmlContent += @"
     </div>
     
-    <h2>Résultats par taille de lot</h2>
+    <h2>RÃ©sultats par taille de lot</h2>
     <table>
         <thead>
             <tr>
@@ -276,8 +276,8 @@ if ($GenerateReport) {
                 <th>Temps moyen (s)</th>
                 <th>Temps min (s)</th>
                 <th>Temps max (s)</th>
-                <th>Mémoire moyenne (MB)</th>
-                <th>Taux de succès (%)</th>
+                <th>MÃ©moire moyenne (MB)</th>
+                <th>Taux de succÃ¨s (%)</th>
             </tr>
         </thead>
         <tbody>
@@ -305,30 +305,30 @@ if ($GenerateReport) {
     
     <h2>Graphiques</h2>
     
-    <h3>Temps d'exécution moyen par taille de lot</h3>
+    <h3>Temps d'exÃ©cution moyen par taille de lot</h3>
     <div class="chart-container">
         <canvas id="timeChart"></canvas>
     </div>
     
-    <h3>Utilisation mémoire moyenne par taille de lot</h3>
+    <h3>Utilisation mÃ©moire moyenne par taille de lot</h3>
     <div class="chart-container">
         <canvas id="memoryChart"></canvas>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const batchSizes = [$(($results | ForEach-Object { $_.BatchSize }) -join ', ')];
         const avgTimes = [$(($results | ForEach-Object { [Math]::Round($_.AverageTime, 2) }) -join ', ')];
         const avgMemory = [$(($results | ForEach-Object { [Math]::Round($_.AverageMemoryMB, 2) }) -join ', ')];
         
-        // Graphique des temps d'exécution
+        // Graphique des temps d'exÃ©cution
         const timeCtx = document.getElementById('timeChart').getContext('2d');
         new Chart(timeCtx, {
             type: 'line',
             data: {
                 labels: batchSizes,
                 datasets: [{
-                    label: 'Temps d\'exécution moyen (s)',
+                    label: 'Temps d\'exÃ©cution moyen (s)',
                     data: avgTimes,
                     backgroundColor: 'rgba(0, 120, 212, 0.2)',
                     borderColor: 'rgba(0, 120, 212, 1)',
@@ -357,14 +357,14 @@ if ($GenerateReport) {
             }
         });
         
-        // Graphique de l'utilisation mémoire
+        // Graphique de l'utilisation mÃ©moire
         const memoryCtx = document.getElementById('memoryChart').getContext('2d');
         new Chart(memoryCtx, {
             type: 'line',
             data: {
                 labels: batchSizes,
                 datasets: [{
-                    label: 'Utilisation mémoire moyenne (MB)',
+                    label: 'Utilisation mÃ©moire moyenne (MB)',
                     data: avgMemory,
                     backgroundColor: 'rgba(0, 183, 74, 0.2)',
                     borderColor: 'rgba(0, 183, 74, 1)',
@@ -399,11 +399,11 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

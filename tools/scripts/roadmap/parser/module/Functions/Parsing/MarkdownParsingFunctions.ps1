@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions pour le parsing de fichiers markdown.
 
 .DESCRIPTION
     Ce module contient des fonctions pour lire, analyser et parser des fichiers markdown,
-    avec une attention particulière pour les roadmaps et les listes de tâches.
+    avec une attention particuliÃ¨re pour les roadmaps et les listes de tÃ¢ches.
 
 .NOTES
     Version:        1.0
@@ -16,14 +16,14 @@
 
 <#
 .SYNOPSIS
-    Détecte l'encodage d'un fichier.
+    DÃ©tecte l'encodage d'un fichier.
 
 .DESCRIPTION
-    Cette fonction tente de détecter automatiquement l'encodage d'un fichier
+    Cette fonction tente de dÃ©tecter automatiquement l'encodage d'un fichier
     en analysant ses premiers octets (BOM - Byte Order Mark) et son contenu.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à analyser.
+    Chemin vers le fichier Ã  analyser.
 
 .EXAMPLE
     $encoding = Get-FileEncoding -FilePath "roadmap.md"
@@ -39,54 +39,54 @@ function Get-FileEncoding {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Error "Le fichier '$FilePath' n'existe pas ou n'est pas un fichier."
             return $null
         }
 
-        # Lire les premiers octets du fichier pour détecter le BOM
+        # Lire les premiers octets du fichier pour dÃ©tecter le BOM
         $fileStream = [System.IO.File]::OpenRead($FilePath)
         $bytes = New-Object byte[] 4
         $fileStream.Read($bytes, 0, 4) | Out-Null
         $fileStream.Close()
         $fileStream.Dispose()
 
-        # Détecter l'encodage basé sur le BOM
+        # DÃ©tecter l'encodage basÃ© sur le BOM
         if ($bytes.Length -ge 2) {
             # UTF-8 BOM (EF BB BF)
             if ($bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes.Length -ge 3 -and $bytes[2] -eq 0xBF) {
-                Write-Verbose "Encodage détecté: UTF-8 avec BOM"
+                Write-Verbose "Encodage dÃ©tectÃ©: UTF-8 avec BOM"
                 return [System.Text.Encoding]::UTF8
             }
 
             # UTF-16 LE BOM (FF FE)
             if ($bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
-                Write-Verbose "Encodage détecté: UTF-16 LE"
+                Write-Verbose "Encodage dÃ©tectÃ©: UTF-16 LE"
                 return [System.Text.Encoding]::Unicode
             }
 
             # UTF-16 BE BOM (FE FF)
             if ($bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
-                Write-Verbose "Encodage détecté: UTF-16 BE"
+                Write-Verbose "Encodage dÃ©tectÃ©: UTF-16 BE"
                 return [System.Text.Encoding]::BigEndianUnicode
             }
 
             # UTF-32 LE BOM (FF FE 00 00)
             if ($bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE -and $bytes.Length -ge 4 -and $bytes[2] -eq 0x00 -and $bytes[3] -eq 0x00) {
-                Write-Verbose "Encodage détecté: UTF-32 LE"
+                Write-Verbose "Encodage dÃ©tectÃ©: UTF-32 LE"
                 return [System.Text.Encoding]::UTF32
             }
 
             # UTF-32 BE BOM (00 00 FE FF)
             if ($bytes[0] -eq 0x00 -and $bytes[1] -eq 0x00 -and $bytes.Length -ge 4 -and $bytes[2] -eq 0xFE -and $bytes[3] -eq 0xFF) {
-                Write-Verbose "Encodage détecté: UTF-32 BE"
+                Write-Verbose "Encodage dÃ©tectÃ©: UTF-32 BE"
                 return [System.Text.Encoding]::GetEncoding("utf-32BE")
             }
         }
 
-        # Si aucun BOM n'est détecté, essayer de deviner l'encodage en analysant le contenu
-        # Lire un échantillon plus grand du fichier
+        # Si aucun BOM n'est dÃ©tectÃ©, essayer de deviner l'encodage en analysant le contenu
+        # Lire un Ã©chantillon plus grand du fichier
         $sampleSize = [Math]::Min([int](Get-Item -Path $FilePath).Length, 1024)
         $fileStream = [System.IO.File]::OpenRead($FilePath)
         $bytes = New-Object byte[] $sampleSize
@@ -94,11 +94,11 @@ function Get-FileEncoding {
         $fileStream.Close()
         $fileStream.Dispose()
 
-        # Vérifier si le contenu est probablement UTF-8
+        # VÃ©rifier si le contenu est probablement UTF-8
         $isUtf8 = $true
         $i = 0
         while ($i -lt $bytes.Length) {
-            # Vérifier les séquences UTF-8 valides
+            # VÃ©rifier les sÃ©quences UTF-8 valides
             if ($bytes[$i] -lt 0x80) {
                 # ASCII (0xxxxxxx)
                 $i++
@@ -136,11 +136,11 @@ function Get-FileEncoding {
         }
 
         if ($isUtf8) {
-            Write-Verbose "Encodage détecté: UTF-8 sans BOM"
+            Write-Verbose "Encodage dÃ©tectÃ©: UTF-8 sans BOM"
             return [System.Text.Encoding]::UTF8
         }
 
-        # Vérifier si le contenu est probablement ASCII
+        # VÃ©rifier si le contenu est probablement ASCII
         $isAscii = $true
         foreach ($byte in $bytes) {
             if ($byte -gt 0x7F) {
@@ -150,32 +150,32 @@ function Get-FileEncoding {
         }
 
         if ($isAscii) {
-            Write-Verbose "Encodage détecté: ASCII"
+            Write-Verbose "Encodage dÃ©tectÃ©: ASCII"
             return [System.Text.Encoding]::ASCII
         }
 
-        # Par défaut, supposer que c'est UTF-8 sans BOM
-        Write-Verbose "Encodage par défaut: UTF-8 sans BOM"
+        # Par dÃ©faut, supposer que c'est UTF-8 sans BOM
+        Write-Verbose "Encodage par dÃ©faut: UTF-8 sans BOM"
         return [System.Text.Encoding]::UTF8
     } catch {
-        Write-Error "Erreur lors de la détection de l'encodage: $_"
+        Write-Error "Erreur lors de la dÃ©tection de l'encodage: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Lit un fichier markdown avec détection automatique de l'encodage.
+    Lit un fichier markdown avec dÃ©tection automatique de l'encodage.
 
 .DESCRIPTION
-    Cette fonction lit un fichier markdown en détectant automatiquement son encodage
-    et en gérant les BOM (Byte Order Mark).
+    Cette fonction lit un fichier markdown en dÃ©tectant automatiquement son encodage
+    et en gÃ©rant les BOM (Byte Order Mark).
 
 .PARAMETER FilePath
-    Chemin vers le fichier markdown à lire.
+    Chemin vers le fichier markdown Ã  lire.
 
 .PARAMETER Encoding
-    Encodage à utiliser pour la lecture. Si non spécifié, l'encodage est détecté automatiquement.
+    Encodage Ã  utiliser pour la lecture. Si non spÃ©cifiÃ©, l'encodage est dÃ©tectÃ© automatiquement.
 
 .EXAMPLE
     $content = Read-MarkdownFile -FilePath "roadmap.md"
@@ -194,23 +194,23 @@ function Read-MarkdownFile {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Error "Le fichier '$FilePath' n'existe pas ou n'est pas un fichier."
             return $null
         }
 
-        # Détecter l'encodage si non spécifié
+        # DÃ©tecter l'encodage si non spÃ©cifiÃ©
         if ($null -eq $Encoding) {
             $Encoding = Get-FileEncoding -FilePath $FilePath
 
             if ($null -eq $Encoding) {
-                Write-Error "Impossible de détecter l'encodage du fichier '$FilePath'."
+                Write-Error "Impossible de dÃ©tecter l'encodage du fichier '$FilePath'."
                 return $null
             }
         }
 
-        # Lire le contenu du fichier avec l'encodage détecté
+        # Lire le contenu du fichier avec l'encodage dÃ©tectÃ©
         $content = [System.IO.File]::ReadAllText($FilePath, $Encoding)
 
         # Normaliser les fins de ligne
@@ -229,17 +229,17 @@ function Read-MarkdownFile {
 
 <#
 .SYNOPSIS
-    Lit un fichier markdown et retourne son contenu sous forme d'objet structuré.
+    Lit un fichier markdown et retourne son contenu sous forme d'objet structurÃ©.
 
 .DESCRIPTION
-    Cette fonction lit un fichier markdown, détecte son encodage, et retourne son contenu
-    sous forme d'un objet structuré contenant les lignes et les métadonnées du fichier.
+    Cette fonction lit un fichier markdown, dÃ©tecte son encodage, et retourne son contenu
+    sous forme d'un objet structurÃ© contenant les lignes et les mÃ©tadonnÃ©es du fichier.
 
 .PARAMETER FilePath
-    Chemin vers le fichier markdown à lire.
+    Chemin vers le fichier markdown Ã  lire.
 
 .PARAMETER Encoding
-    Encodage à utiliser pour la lecture. Si non spécifié, l'encodage est détecté automatiquement.
+    Encodage Ã  utiliser pour la lecture. Si non spÃ©cifiÃ©, l'encodage est dÃ©tectÃ© automatiquement.
 
 .EXAMPLE
     $markdownContent = Get-MarkdownContent -FilePath "roadmap.md"
@@ -258,12 +258,12 @@ function Get-MarkdownContent {
     )
 
     try {
-        # Détecter l'encodage si non spécifié
+        # DÃ©tecter l'encodage si non spÃ©cifiÃ©
         if ($null -eq $Encoding) {
             $Encoding = Get-FileEncoding -FilePath $FilePath
 
             if ($null -eq $Encoding) {
-                Write-Error "Impossible de détecter l'encodage du fichier '$FilePath'."
+                Write-Error "Impossible de dÃ©tecter l'encodage du fichier '$FilePath'."
                 return $null
             }
         }
@@ -275,7 +275,7 @@ function Get-MarkdownContent {
             return $null
         }
 
-        # Créer un objet pour stocker le contenu et les métadonnées
+        # CrÃ©er un objet pour stocker le contenu et les mÃ©tadonnÃ©es
         $markdownContent = [PSCustomObject]@{
             FilePath  = $FilePath
             Encoding  = $Encoding
@@ -285,7 +285,7 @@ function Get-MarkdownContent {
             Metadata  = @{}
         }
 
-        # Extraire les métadonnées YAML frontmatter si présentes
+        # Extraire les mÃ©tadonnÃ©es YAML frontmatter si prÃ©sentes
         if ($lines.Count -gt 0 -and $lines[0].Trim() -eq "---") {
             $endFrontMatter = $lines | Select-Object -Skip 1 | Select-String -Pattern "^---$" | Select-Object -First 1 -ExpandProperty LineNumber
 
@@ -297,21 +297,21 @@ function Get-MarkdownContent {
 
         return $markdownContent
     } catch {
-        Write-Error "Erreur lors de la récupération du contenu markdown: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration du contenu markdown: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Vérifie si un fichier contient un BOM (Byte Order Mark).
+    VÃ©rifie si un fichier contient un BOM (Byte Order Mark).
 
 .DESCRIPTION
-    Cette fonction vérifie si un fichier contient un BOM (Byte Order Mark)
+    Cette fonction vÃ©rifie si un fichier contient un BOM (Byte Order Mark)
     en analysant ses premiers octets.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à analyser.
+    Chemin vers le fichier Ã  analyser.
 
 .EXAMPLE
     $hasBOM = Test-FileBOM -FilePath "roadmap.md"
@@ -327,7 +327,7 @@ function Test-FileBOM {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Error "Le fichier '$FilePath' n'existe pas ou n'est pas un fichier."
             return $false
@@ -345,7 +345,7 @@ function Test-FileBOM {
             return $false
         }
 
-        # Vérifier les différents types de BOM
+        # VÃ©rifier les diffÃ©rents types de BOM
         if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
             # UTF-8 BOM
             return $true
@@ -363,10 +363,10 @@ function Test-FileBOM {
             return $true
         }
 
-        # Aucun BOM détecté
+        # Aucun BOM dÃ©tectÃ©
         return $false
     } catch {
-        Write-Error "Erreur lors de la vérification du BOM: $_"
+        Write-Error "Erreur lors de la vÃ©rification du BOM: $_"
         return $false
     }
 }
@@ -377,7 +377,7 @@ function Test-FileBOM {
 
 .DESCRIPTION
     Cette fonction convertit le YAML frontmatter d'un fichier markdown
-    et retourne les métadonnées sous forme de hashtable.
+    et retourne les mÃ©tadonnÃ©es sous forme de hashtable.
 
 .PARAMETER FrontMatter
     Lignes de texte contenant le YAML frontmatter.
@@ -398,7 +398,7 @@ function ConvertFrom-YamlFrontMatter {
     try {
         $metadata = @{}
 
-        # Vérifier si le tableau est vide ou ne contient que des espaces
+        # VÃ©rifier si le tableau est vide ou ne contient que des espaces
         if ($null -eq $FrontMatter -or $FrontMatter.Count -eq 0 -or ($FrontMatter.Count -eq 1 -and [string]::IsNullOrWhiteSpace($FrontMatter[0]))) {
             return $metadata
         }
@@ -412,12 +412,12 @@ function ConvertFrom-YamlFrontMatter {
                 $key = $matches[1].Trim()
                 $value = $matches[2].Trim()
 
-                # Gérer les valeurs entre guillemets
+                # GÃ©rer les valeurs entre guillemets
                 if ($value -match '^"(.*)"$' -or $value -match "^'(.*)'$") {
                     $value = $matches[1]
                 }
 
-                # Gérer les listes
+                # GÃ©rer les listes
                 if ($value -match "^\[.*\]$") {
                     $value = $value.Trim("[]").Split(",") | ForEach-Object { $_.Trim() }
                 }

@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-RoadmapInputDirectly.ps1
 #
 # Script pour tester la fonction Test-RoadmapInput directement
@@ -15,7 +15,7 @@ $validationPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Vali
 . "$validationPath\Test-Range.ps1"
 . "$validationPath\Test-Custom.ps1"
 
-# Définir la fonction Test-RoadmapInput
+# DÃ©finir la fonction Test-RoadmapInput
 function Test-RoadmapInput {
     [CmdletBinding(DefaultParameterSetName = "Default")]
     param (
@@ -65,10 +65,10 @@ function Test-RoadmapInput {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $true
 
-    # Valider le type de données
+    # Valider le type de donnÃ©es
     if ($PSBoundParameters.ContainsKey('Type')) {
         $dataTypeParams = @{
             Value = $Value
@@ -86,7 +86,7 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas au type de données $Type."
+                "La valeur ne correspond pas au type de donnÃ©es $Type."
             }
             
             throw $errorMsg
@@ -165,14 +165,14 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas à la plage spécifiée."
+                "La valeur ne correspond pas Ã  la plage spÃ©cifiÃ©e."
             }
             
             throw $errorMsg
         }
     }
 
-    # Valider avec une fonction personnalisée
+    # Valider avec une fonction personnalisÃ©e
     if (($PSBoundParameters.ContainsKey('ValidationFunction') -or $PSBoundParameters.ContainsKey('ValidationScript')) -and $isValid) {
         $customParams = @{
             Value = $Value
@@ -197,7 +197,7 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas aux critères de validation personnalisés."
+                "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
             }
             
             throw $errorMsg
@@ -207,16 +207,16 @@ function Test-RoadmapInput {
     return $isValid
 }
 
-Write-Host "Début des tests de la fonction Test-RoadmapInput..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Test-RoadmapInput..." -ForegroundColor Cyan
 
-# Test 1: Validation de type de données
-Write-Host "`nTest 1: Validation de type de données" -ForegroundColor Cyan
+# Test 1: Validation de type de donnÃ©es
+Write-Host "`nTest 1: Validation de type de donnÃ©es" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "Chaîne valide" }
+    @{ Value = "Hello"; Type = "String"; Expected = $true; Description = "ChaÃ®ne valide" }
     @{ Value = 42; Type = "Integer"; Expected = $true; Description = "Entier valide" }
     @{ Value = 42; Type = "String"; Expected = $false; Description = "Entier invalide pour String" }
-    @{ Value = "Hello"; Type = "Integer"; Expected = $false; Description = "Chaîne invalide pour Integer" }
+    @{ Value = "Hello"; Type = "Integer"; Expected = $false; Description = "ChaÃ®ne invalide pour Integer" }
 )
 
 $successCount = 0
@@ -224,7 +224,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -Type $testCase.Type
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -236,7 +236,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Validation de format
 Write-Host "`nTest 2: Validation de format" -ForegroundColor Cyan
@@ -251,7 +251,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -Format $testCase.Format
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -263,7 +263,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 3: Validation de plage
 Write-Host "`nTest 3: Validation de plage" -ForegroundColor Cyan
@@ -278,7 +278,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -Min $testCase.Min -Max $testCase.Max
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -290,14 +290,14 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 4: Validation de longueur
 Write-Host "`nTest 4: Validation de longueur" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "Chaîne de longueur valide" }
-    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "Chaîne trop courte" }
+    @{ Value = "Hello"; MinLength = 3; MaxLength = 10; Expected = $true; Description = "ChaÃ®ne de longueur valide" }
+    @{ Value = "Hi"; MinLength = 3; MaxLength = 10; Expected = $false; Description = "ChaÃ®ne trop courte" }
 )
 
 $successCount = 0
@@ -305,7 +305,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -MinLength $testCase.MinLength -MaxLength $testCase.MaxLength
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -317,10 +317,10 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 5: Validation personnalisée
-Write-Host "`nTest 5: Validation personnalisée" -ForegroundColor Cyan
+# Test 5: Validation personnalisÃ©e
+Write-Host "`nTest 5: Validation personnalisÃ©e" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Value = 42; ValidationFunction = { param($val) $val -gt 0 -and $val -lt 100 }; Expected = $true; Description = "Fonction de validation valide" }
@@ -332,7 +332,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -ValidationFunction $testCase.ValidationFunction
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -344,14 +344,14 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 6: Validation combinée
-Write-Host "`nTest 6: Validation combinée" -ForegroundColor Cyan
+# Test 6: Validation combinÃ©e
+Write-Host "`nTest 6: Validation combinÃ©e" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 5; MaxLength = 50; Expected = $true; Description = "Validation combinée valide" }
-    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 20; MaxLength = 50; Expected = $false; Description = "Validation combinée invalide" }
+    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 5; MaxLength = 50; Expected = $true; Description = "Validation combinÃ©e valide" }
+    @{ Value = "user@example.com"; Type = "String"; Format = "Email"; MinLength = 20; MaxLength = 50; Expected = $false; Description = "Validation combinÃ©e invalide" }
 )
 
 $successCount = 0
@@ -359,7 +359,7 @@ $failureCount = 0
 
 foreach ($testCase in $testCases) {
     $result = Test-RoadmapInput -Value $testCase.Value -Type $testCase.Type -Format $testCase.Format -MinLength $testCase.MinLength -MaxLength $testCase.MaxLength
-    $status = if ($result -eq $testCase.Expected) { "Réussi" } else { "Échoué" }
+    $status = if ($result -eq $testCase.Expected) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($result -eq $testCase.Expected) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -371,7 +371,7 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 7: Validation avec ThrowOnFailure
 Write-Host "`nTest 7: Validation avec ThrowOnFailure" -ForegroundColor Cyan
@@ -393,7 +393,7 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
     
-    $status = if ($exceptionThrown -eq $testCase.ShouldThrow) { "Réussi" } else { "Échoué" }
+    $status = if ($exceptionThrown -eq $testCase.ShouldThrow) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($exceptionThrown -eq $testCase.ShouldThrow) { "Green" } else { "Red" }
     
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -405,12 +405,12 @@ foreach ($testCase in $testCases) {
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 8: Validation avec message d'erreur personnalisé
-Write-Host "`nTest 8: Validation avec message d'erreur personnalisé" -ForegroundColor Cyan
+# Test 8: Validation avec message d'erreur personnalisÃ©
+Write-Host "`nTest 8: Validation avec message d'erreur personnalisÃ©" -ForegroundColor Cyan
 
-$customErrorMessage = "Message d'erreur personnalisé"
+$customErrorMessage = "Message d'erreur personnalisÃ©"
 $exceptionMessage = $null
 
 try {
@@ -420,11 +420,11 @@ try {
 }
 
 if ($exceptionMessage -eq $customErrorMessage) {
-    Write-Host "  Message d'erreur personnalisé: Réussi" -ForegroundColor Green
+    Write-Host "  Message d'erreur personnalisÃ©: RÃ©ussi" -ForegroundColor Green
 } else {
-    Write-Host "  Message d'erreur personnalisé: Échoué" -ForegroundColor Red
+    Write-Host "  Message d'erreur personnalisÃ©: Ã‰chouÃ©" -ForegroundColor Red
     Write-Host "  Message attendu: $customErrorMessage" -ForegroundColor Red
-    Write-Host "  Message reçu: $exceptionMessage" -ForegroundColor Red
+    Write-Host "  Message reÃ§u: $exceptionMessage" -ForegroundColor Red
 }
 
-Write-Host "`nTests de la fonction Test-RoadmapInput terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Test-RoadmapInput terminÃ©s." -ForegroundColor Cyan

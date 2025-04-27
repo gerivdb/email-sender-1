@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute les tests de détection des erreurs d'encodage avec TestOmnibus.
+    ExÃ©cute les tests de dÃ©tection des erreurs d'encodage avec TestOmnibus.
 .DESCRIPTION
-    Ce script exécute les tests de détection des erreurs d'encodage en utilisant
-    TestOmnibus et génère un rapport HTML des résultats.
+    Ce script exÃ©cute les tests de dÃ©tection des erreurs d'encodage en utilisant
+    TestOmnibus et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration de TestOmnibus.
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 .PARAMETER ShowDetailedResults
-    Indique si les résultats détaillés doivent être affichés.
+    Indique si les rÃ©sultats dÃ©taillÃ©s doivent Ãªtre affichÃ©s.
 .EXAMPLE
     .\Run-EncodingErrorDetectionTests.ps1 -GenerateHtmlReport
 .NOTES
@@ -30,7 +30,7 @@ param (
     [switch]$ShowDetailedResults
 )
 
-# Vérifier que le fichier de configuration existe
+# VÃ©rifier que le fichier de configuration existe
 if (-not (Test-Path -Path $ConfigPath)) {
     Write-Error "Le fichier de configuration n'existe pas: $ConfigPath"
     return 1
@@ -40,31 +40,31 @@ if (-not (Test-Path -Path $ConfigPath)) {
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
 if (-not (Test-Path -Path $testOmnibusPath)) {
-    Write-Error "TestOmnibus non trouvé: $testOmnibusPath"
+    Write-Error "TestOmnibus non trouvÃ©: $testOmnibusPath"
     return 1
 }
 
 # Charger la configuration
 $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 
-# Filtrer les modules de test pour ne garder que ceux liés à la détection des erreurs d'encodage
+# Filtrer les modules de test pour ne garder que ceux liÃ©s Ã  la dÃ©tection des erreurs d'encodage
 $encodingErrorDetectionModules = $config.TestModules | Where-Object { $_.Name -eq "EncodingErrorDetection" }
 
 if ($encodingErrorDetectionModules.Count -eq 0) {
-    Write-Error "Aucun module de test de détection des erreurs d'encodage trouvé dans la configuration."
+    Write-Error "Aucun module de test de dÃ©tection des erreurs d'encodage trouvÃ© dans la configuration."
     return 1
 }
 
-# Exécuter les tests pour chaque module de détection des erreurs d'encodage
+# ExÃ©cuter les tests pour chaque module de dÃ©tection des erreurs d'encodage
 $results = @()
 
 foreach ($module in $encodingErrorDetectionModules) {
-    Write-Host "Exécution des tests pour le module $($module.Name)..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests pour le module $($module.Name)..." -ForegroundColor Cyan
     
-    # Exécuter TestOmnibus pour ce module
+    # ExÃ©cuter TestOmnibus pour ce module
     $moduleResults = & $testOmnibusPath -Path $module.Path -ConfigPath $ConfigPath
     
-    # Ajouter les résultats à la liste
+    # Ajouter les rÃ©sultats Ã  la liste
     $results += [PSCustomObject]@{
         Module      = $module.Name
         Success     = $moduleResults.Success
@@ -75,19 +75,19 @@ foreach ($module in $encodingErrorDetectionModules) {
     }
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests de détection des erreurs d'encodage :" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests de dÃ©tection des erreurs d'encodage :" -ForegroundColor Cyan
 $totalTests = ($results | Measure-Object -Property TestsRun -Sum).Sum
 $totalPassed = ($results | Measure-Object -Property TestsPassed -Sum).Sum
 $totalFailed = ($results | Measure-Object -Property TestsFailed -Sum).Sum
 $totalDuration = ($results | Measure-Object -Property Duration -Sum).Sum
 
-Write-Host "Tests exécutés : $totalTests" -ForegroundColor White
-Write-Host "Tests réussis : $totalPassed" -ForegroundColor Green
-Write-Host "Tests échoués : $totalFailed" -ForegroundColor Red
-Write-Host "Durée totale : $totalDuration secondes" -ForegroundColor White
+Write-Host "Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor White
+Write-Host "Tests rÃ©ussis : $totalPassed" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s : $totalFailed" -ForegroundColor Red
+Write-Host "DurÃ©e totale : $totalDuration secondes" -ForegroundColor White
 
-# Générer un rapport HTML global si demandé
+# GÃ©nÃ©rer un rapport HTML global si demandÃ©
 if ($GenerateHtmlReport) {
     $reportDir = Join-Path -Path $config.OutputPath -ChildPath "EncodingErrorDetection"
     
@@ -97,13 +97,13 @@ if ($GenerateHtmlReport) {
     
     $reportPath = Join-Path -Path $reportDir -ChildPath "EncodingErrorDetection-GlobalReport.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlReport = @"
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Rapport global - Tests de détection des erreurs d'encodage</title>
+    <title>Rapport global - Tests de dÃ©tection des erreurs d'encodage</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #333; }
@@ -120,31 +120,31 @@ if ($GenerateHtmlReport) {
     </style>
 </head>
 <body>
-    <h1>Rapport global - Tests de détection des erreurs d'encodage</h1>
+    <h1>Rapport global - Tests de dÃ©tection des erreurs d'encodage</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés : $totalTests</p>
-        <p>Tests réussis : <span class="success">$totalPassed</span></p>
-        <p>Tests échoués : <span class="failure">$totalFailed</span></p>
-        <p>Durée totale : $totalDuration secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s : $totalTests</p>
+        <p>Tests rÃ©ussis : <span class="success">$totalPassed</span></p>
+        <p>Tests Ã©chouÃ©s : <span class="failure">$totalFailed</span></p>
+        <p>DurÃ©e totale : $totalDuration secondes</p>
     </div>
     
-    <h2>Détails par module</h2>
+    <h2>DÃ©tails par module</h2>
     <table>
         <tr>
             <th>Module</th>
-            <th>Tests exécutés</th>
-            <th>Tests réussis</th>
-            <th>Tests échoués</th>
-            <th>Durée (s)</th>
+            <th>Tests exÃ©cutÃ©s</th>
+            <th>Tests rÃ©ussis</th>
+            <th>Tests Ã©chouÃ©s</th>
+            <th>DurÃ©e (s)</th>
             <th>Statut</th>
         </tr>
 "@
 
     foreach ($result in $results) {
         $rowClass = if ($result.Success) { 'success-row' } else { 'failure-row' }
-        $status = if ($result.Success) { 'Succès' } else { 'Échec' }
+        $status = if ($result.Success) { 'SuccÃ¨s' } else { 'Ã‰chec' }
         
         $htmlReport += @"
         <tr class="$rowClass">
@@ -163,9 +163,9 @@ if ($GenerateHtmlReport) {
     
     <h2>Recommandations</h2>
     <ul>
-        <li>Exécuter régulièrement les tests de détection des erreurs d'encodage pour identifier les problèmes potentiels.</li>
-        <li>Utiliser l'outil de correction automatique des problèmes d'encodage pour résoudre les problèmes identifiés.</li>
-        <li>Configurer les éditeurs de code pour utiliser UTF-8 avec BOM pour les fichiers PowerShell.</li>
+        <li>ExÃ©cuter rÃ©guliÃ¨rement les tests de dÃ©tection des erreurs d'encodage pour identifier les problÃ¨mes potentiels.</li>
+        <li>Utiliser l'outil de correction automatique des problÃ¨mes d'encodage pour rÃ©soudre les problÃ¨mes identifiÃ©s.</li>
+        <li>Configurer les Ã©diteurs de code pour utiliser UTF-8 avec BOM pour les fichiers PowerShell.</li>
     </ul>
 </body>
 </html>
@@ -173,10 +173,10 @@ if ($GenerateHtmlReport) {
 
     # Enregistrer le rapport HTML
     $htmlReport | Out-File -FilePath $reportPath -Encoding utf8
-    Write-Host "Rapport HTML global généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML global gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return [PSCustomObject]@{
     TotalCount   = $totalTests
     PassedCount  = $totalPassed

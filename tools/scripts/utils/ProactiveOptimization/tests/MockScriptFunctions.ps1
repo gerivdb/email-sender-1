@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Mocks pour les fonctions des scripts à tester.
+    Mocks pour les fonctions des scripts Ã  tester.
 .DESCRIPTION
-    Ce script contient des mocks pour les fonctions des scripts à tester.
+    Ce script contient des mocks pour les fonctions des scripts Ã  tester.
 #>
 
 # Fonctions pour Analyze-UsageTrends.ps1
@@ -21,18 +21,18 @@ function Get-ScriptUsageTrends {
     $failureRateTrends = @{}
     $resourceUsageTrends = @{}
 
-    # Générer des données quotidiennes
+    # GÃ©nÃ©rer des donnÃ©es quotidiennes
     for ($i = 0; $i -lt $PeriodDays; $i++) {
         $date = $baseDate.AddDays($i).ToString("yyyy-MM-dd")
         $dailyUsage[$date] = Get-Random -Minimum 0 -Maximum 20
     }
 
-    # Générer des données horaires
+    # GÃ©nÃ©rer des donnÃ©es horaires
     for ($hour = 0; $hour -lt 24; $hour++) {
         $hourlyUsage[$hour] = Get-Random -Minimum 0 -Maximum 15
     }
 
-    # Générer des tendances de performance
+    # GÃ©nÃ©rer des tendances de performance
     $scripts = @("Test1.ps1", "Test2.ps1", "Test3.ps1")
     foreach ($script in $scripts) {
         $performanceTrends[$script] = @{}
@@ -69,15 +69,15 @@ function New-TrendReport {
         [string]$OutputPath = "TestReports"
     )
 
-    # Créer le dossier de rapport s'il n'existe pas
+    # CrÃ©er le dossier de rapport s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Générer le nom du fichier de rapport
+    # GÃ©nÃ©rer le nom du fichier de rapport
     $reportFile = Join-Path -Path $OutputPath -ChildPath "trend_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Simuler la génération d'un rapport HTML
+    # Simuler la gÃ©nÃ©ration d'un rapport HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -86,12 +86,12 @@ function New-TrendReport {
 </head>
 <body>
     <h1>Rapport de Tendances d'Utilisation</h1>
-    <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+    <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 </body>
 </html>
 "@
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
     return $reportFile
@@ -105,7 +105,7 @@ function Find-ParallelProcessBottlenecks {
         [switch]$DetailedAnalysis
     )
 
-    # Simuler la détection de goulots d'étranglement
+    # Simuler la dÃ©tection de goulots d'Ã©tranglement
     $bottlenecks = @(
         [PSCustomObject]@{
             ScriptPath              = "C:\Scripts\Test1.ps1"
@@ -123,7 +123,7 @@ function Find-ParallelProcessBottlenecks {
         $bottlenecks[0] | Add-Member -MemberType NoteProperty -Name "DetailedAnalysis" -Value @{
             ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
             ProbableCause       = "Saturation du CPU"
-            Recommendation      = "Réduire le nombre de threads parallèles"
+            Recommendation      = "RÃ©duire le nombre de threads parallÃ¨les"
         }
     }
 
@@ -140,29 +140,29 @@ function New-BottleneckReport {
         [string]$OutputPath = "TestReports"
     )
 
-    # Créer le dossier de rapport s'il n'existe pas
+    # CrÃ©er le dossier de rapport s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Générer le nom du fichier de rapport
+    # GÃ©nÃ©rer le nom du fichier de rapport
     $reportFile = Join-Path -Path $OutputPath -ChildPath "bottleneck_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Simuler la génération d'un rapport HTML
+    # Simuler la gÃ©nÃ©ration d'un rapport HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport de Goulots d'Étranglement</title>
+    <title>Rapport de Goulots d'Ã‰tranglement</title>
 </head>
 <body>
-    <h1>Rapport de Goulots d'Étranglement</h1>
-    <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+    <h1>Rapport de Goulots d'Ã‰tranglement</h1>
+    <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 </body>
 </html>
 "@
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
     return $reportFile
@@ -204,7 +204,7 @@ function Detect-ParallelBottlenecks {
     [CmdletBinding()]
     param ()
 
-    # Simuler la détection de goulots d'étranglement
+    # Simuler la dÃ©tection de goulots d'Ã©tranglement
     return @(
         [PSCustomObject]@{
             ScriptPath              = "C:\Scripts\Test1.ps1"
@@ -232,11 +232,11 @@ function Get-SlowExecutionPatterns {
         [array]$SlowExecutions = @()
     )
 
-    # Simuler l'analyse des patterns d'exécution lente
+    # Simuler l'analyse des patterns d'exÃ©cution lente
     $result = @{
-        "Paramètre fréquent" = "Param1=Value1"
-        "Taille d'entrée"    = "Grande"
-        "Heure d'exécution"  = "Matin"
+        "ParamÃ¨tre frÃ©quent" = "Param1=Value1"
+        "Taille d'entrÃ©e"    = "Grande"
+        "Heure d'exÃ©cution"  = "Matin"
         "Contention"         = "CPU"
     }
 
@@ -259,15 +259,15 @@ function New-UsageReport {
         [string]$OutputPath = "TestReports"
     )
 
-    # Créer le dossier de rapport s'il n'existe pas
+    # CrÃ©er le dossier de rapport s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Générer le nom du fichier de rapport
+    # GÃ©nÃ©rer le nom du fichier de rapport
     $reportFile = Join-Path -Path $OutputPath -ChildPath "usage_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Simuler la génération d'un rapport HTML
+    # Simuler la gÃ©nÃ©ration d'un rapport HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -276,12 +276,12 @@ function New-UsageReport {
 </head>
 <body>
     <h1>Rapport d'Utilisation des Scripts</h1>
-    <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+    <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 </body>
 </html>
 "@
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
     return $reportFile

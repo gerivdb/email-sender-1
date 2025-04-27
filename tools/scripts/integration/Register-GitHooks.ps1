@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Enregistre des hooks Git pour l'intégration avec le système d'inventaire
+    Enregistre des hooks Git pour l'intÃ©gration avec le systÃ¨me d'inventaire
 .DESCRIPTION
-    Ce script crée et installe des hooks Git pour mettre à jour automatiquement
-    l'inventaire des scripts et vérifier les métadonnées lors des opérations Git.
+    Ce script crÃ©e et installe des hooks Git pour mettre Ã  jour automatiquement
+    l'inventaire des scripts et vÃ©rifier les mÃ©tadonnÃ©es lors des opÃ©rations Git.
 .PARAMETER GitRepoPath
-    Chemin du dépôt Git
+    Chemin du dÃ©pÃ´t Git
 .PARAMETER Force
     Indique s'il faut remplacer les hooks existants
 .EXAMPLE
@@ -14,7 +14,7 @@
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
-    Tags: git, hooks, intégration
+    Tags: git, hooks, intÃ©gration
 #>
 
 [CmdletBinding()]
@@ -26,21 +26,21 @@ param(
     [switch]$Force
 )
 
-# Vérifier que le répertoire est un dépôt Git
+# VÃ©rifier que le rÃ©pertoire est un dÃ©pÃ´t Git
 $gitDir = Join-Path -Path $GitRepoPath -ChildPath ".git"
 if (-not (Test-Path $gitDir -PathType Container)) {
-    Write-Error "Le répertoire spécifié n'est pas un dépôt Git: $GitRepoPath"
+    Write-Error "Le rÃ©pertoire spÃ©cifiÃ© n'est pas un dÃ©pÃ´t Git: $GitRepoPath"
     exit 1
 }
 
-# Créer le répertoire des hooks s'il n'existe pas
+# CrÃ©er le rÃ©pertoire des hooks s'il n'existe pas
 $hooksDir = Join-Path -Path $gitDir -ChildPath "hooks"
 if (-not (Test-Path $hooksDir -PathType Container)) {
     New-Item -ItemType Directory -Path $hooksDir -Force | Out-Null
-    Write-Host "Répertoire des hooks créé: $hooksDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire des hooks crÃ©Ã©: $hooksDir" -ForegroundColor Green
 }
 
-# Fonction pour créer un hook
+# Fonction pour crÃ©er un hook
 function New-GitHook {
     param (
         [Parameter(Mandatory = $true)]
@@ -55,21 +55,21 @@ function New-GitHook {
     
     $hookPath = Join-Path -Path $hooksDir -ChildPath $HookName
     
-    # Vérifier si le hook existe déjà
+    # VÃ©rifier si le hook existe dÃ©jÃ 
     if ((Test-Path $hookPath) -and -not $Force) {
-        Write-Warning "Le hook $HookName existe déjà. Utilisez -Force pour le remplacer."
+        Write-Warning "Le hook $HookName existe dÃ©jÃ . Utilisez -Force pour le remplacer."
         return $false
     }
     
-    # Écrire le contenu du hook
+    # Ã‰crire le contenu du hook
     Set-Content -Path $hookPath -Value $HookContent -Encoding UTF8
     
-    # Rendre le hook exécutable
+    # Rendre le hook exÃ©cutable
     if ($IsLinux -or $IsMacOS) {
         chmod +x $hookPath
     }
     
-    Write-Host "Hook $HookName créé: $hookPath" -ForegroundColor Green
+    Write-Host "Hook $HookName crÃ©Ã©: $hookPath" -ForegroundColor Green
     return $true
 }
 
@@ -77,11 +77,11 @@ function New-GitHook {
 $preCommitHook = @"
 #!/usr/bin/env pwsh
 #
-# Hook pre-commit pour vérifier les métadonnées des scripts
-# Créé automatiquement par Register-GitHooks.ps1
+# Hook pre-commit pour vÃ©rifier les mÃ©tadonnÃ©es des scripts
+# CrÃ©Ã© automatiquement par Register-GitHooks.ps1
 #
 
-# Récupérer les fichiers modifiés
+# RÃ©cupÃ©rer les fichiers modifiÃ©s
 `$stagedFiles = git diff --cached --name-only --diff-filter=ACM
 
 # Filtrer les scripts
@@ -92,11 +92,11 @@ $preCommitHook = @"
 }
 
 if (`$scripts.Count -eq 0) {
-    # Aucun script modifié, continuer le commit
+    # Aucun script modifiÃ©, continuer le commit
     exit 0
 }
 
-Write-Host "Vérification des métadonnées pour `$(`$scripts.Count) scripts..." -ForegroundColor Cyan
+Write-Host "VÃ©rification des mÃ©tadonnÃ©es pour `$(`$scripts.Count) scripts..." -ForegroundColor Cyan
 
 `$errors = @()
 
@@ -108,11 +108,11 @@ foreach (`$script in `$scripts) {
         continue
     }
     
-    # Vérifier les métadonnées selon le type de script
+    # VÃ©rifier les mÃ©tadonnÃ©es selon le type de script
     `$ext = [System.IO.Path]::GetExtension(`$script)
     
     if (`$ext -eq '.ps1' -or `$ext -eq '.psm1') {
-        # Vérifier les métadonnées PowerShell
+        # VÃ©rifier les mÃ©tadonnÃ©es PowerShell
         if (-not (`$content -match '<#' -and `$content -match '#>')) {
             `$errors += "Erreur: Le script PowerShell `$script ne contient pas de bloc de commentaires."
             continue
@@ -131,7 +131,7 @@ foreach (`$script in `$scripts) {
         }
     }
     elseif (`$ext -eq '.py') {
-        # Vérifier les métadonnées Python
+        # VÃ©rifier les mÃ©tadonnÃ©es Python
         if (-not (`$content -match '"""' -and `$content -match '"""')) {
             `$errors += "Erreur: Le script Python `$script ne contient pas de docstring."
             continue
@@ -148,14 +148,14 @@ foreach (`$script in `$scripts) {
 }
 
 if (`$errors.Count -gt 0) {
-    Write-Host "`nProblèmes détectés dans les métadonnées des scripts:" -ForegroundColor Red
+    Write-Host "`nProblÃ¨mes dÃ©tectÃ©s dans les mÃ©tadonnÃ©es des scripts:" -ForegroundColor Red
     foreach (`$error in `$errors) {
         Write-Host `$error -ForegroundColor Yellow
     }
     
-    `$continue = Read-Host "Voulez-vous continuer le commit malgré les problèmes? (O/N)"
+    `$continue = Read-Host "Voulez-vous continuer le commit malgrÃ© les problÃ¨mes? (O/N)"
     if (`$continue -ne "O" -and `$continue -ne "o") {
-        Write-Host "Commit annulé. Veuillez corriger les problèmes et réessayer." -ForegroundColor Red
+        Write-Host "Commit annulÃ©. Veuillez corriger les problÃ¨mes et rÃ©essayer." -ForegroundColor Red
         exit 1
     }
 }
@@ -168,30 +168,30 @@ exit 0
 $postCommitHook = @"
 #!/usr/bin/env pwsh
 #
-# Hook post-commit pour mettre à jour l'inventaire des scripts
-# Créé automatiquement par Register-GitHooks.ps1
+# Hook post-commit pour mettre Ã  jour l'inventaire des scripts
+# CrÃ©Ã© automatiquement par Register-GitHooks.ps1
 #
 
 # Chemin relatif vers le module d'inventaire
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "../../modules/ScriptInventoryManager.psm1"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (Test-Path `$modulePath) {
     try {
         # Importer le module
         Import-Module `$modulePath -Force
         
-        # Mettre à jour l'inventaire
-        Write-Host "Mise à jour de l'inventaire des scripts..." -ForegroundColor Cyan
+        # Mettre Ã  jour l'inventaire
+        Write-Host "Mise Ã  jour de l'inventaire des scripts..." -ForegroundColor Cyan
         Update-ScriptInventory
-        Write-Host "Inventaire mis à jour avec succès." -ForegroundColor Green
+        Write-Host "Inventaire mis Ã  jour avec succÃ¨s." -ForegroundColor Green
     }
     catch {
-        Write-Host "Erreur lors de la mise à jour de l'inventaire: `$_" -ForegroundColor Red
+        Write-Host "Erreur lors de la mise Ã  jour de l'inventaire: `$_" -ForegroundColor Red
     }
 }
 else {
-    Write-Host "Module d'inventaire non trouvé: `$modulePath" -ForegroundColor Yellow
+    Write-Host "Module d'inventaire non trouvÃ©: `$modulePath" -ForegroundColor Yellow
 }
 
 # Continuer normalement
@@ -202,37 +202,37 @@ exit 0
 $postMergeHook = @"
 #!/usr/bin/env pwsh
 #
-# Hook post-merge pour mettre à jour l'inventaire des scripts
-# Créé automatiquement par Register-GitHooks.ps1
+# Hook post-merge pour mettre Ã  jour l'inventaire des scripts
+# CrÃ©Ã© automatiquement par Register-GitHooks.ps1
 #
 
 # Chemin relatif vers le module d'inventaire
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "../../modules/ScriptInventoryManager.psm1"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (Test-Path `$modulePath) {
     try {
         # Importer le module
         Import-Module `$modulePath -Force
         
-        # Mettre à jour l'inventaire
-        Write-Host "Mise à jour de l'inventaire des scripts après merge..." -ForegroundColor Cyan
+        # Mettre Ã  jour l'inventaire
+        Write-Host "Mise Ã  jour de l'inventaire des scripts aprÃ¨s merge..." -ForegroundColor Cyan
         Update-ScriptInventory
-        Write-Host "Inventaire mis à jour avec succès." -ForegroundColor Green
+        Write-Host "Inventaire mis Ã  jour avec succÃ¨s." -ForegroundColor Green
     }
     catch {
-        Write-Host "Erreur lors de la mise à jour de l'inventaire: `$_" -ForegroundColor Red
+        Write-Host "Erreur lors de la mise Ã  jour de l'inventaire: `$_" -ForegroundColor Red
     }
 }
 else {
-    Write-Host "Module d'inventaire non trouvé: `$modulePath" -ForegroundColor Yellow
+    Write-Host "Module d'inventaire non trouvÃ©: `$modulePath" -ForegroundColor Yellow
 }
 
 # Continuer normalement
 exit 0
 "@
 
-# Créer les hooks
+# CrÃ©er les hooks
 $hooksCreated = 0
 
 if (New-GitHook -HookName "pre-commit" -HookContent $preCommitHook -Force:$Force) {
@@ -247,16 +247,16 @@ if (New-GitHook -HookName "post-merge" -HookContent $postMergeHook -Force:$Force
     $hooksCreated++
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé:" -ForegroundColor Cyan
-Write-Host "- $hooksCreated hooks Git créés ou mis à jour" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ©:" -ForegroundColor Cyan
+Write-Host "- $hooksCreated hooks Git crÃ©Ã©s ou mis Ã  jour" -ForegroundColor Green
 
 if ($hooksCreated -gt 0) {
-    Write-Host "`nLes hooks Git ont été installés avec succès." -ForegroundColor Green
+    Write-Host "`nLes hooks Git ont Ã©tÃ© installÃ©s avec succÃ¨s." -ForegroundColor Green
     Write-Host "Ces hooks permettront de:" -ForegroundColor White
-    Write-Host "- Vérifier les métadonnées des scripts avant un commit" -ForegroundColor White
-    Write-Host "- Mettre à jour l'inventaire des scripts après un commit" -ForegroundColor White
-    Write-Host "- Mettre à jour l'inventaire des scripts après un merge" -ForegroundColor White
+    Write-Host "- VÃ©rifier les mÃ©tadonnÃ©es des scripts avant un commit" -ForegroundColor White
+    Write-Host "- Mettre Ã  jour l'inventaire des scripts aprÃ¨s un commit" -ForegroundColor White
+    Write-Host "- Mettre Ã  jour l'inventaire des scripts aprÃ¨s un merge" -ForegroundColor White
     
     Write-Host "`nNote: Pour ignorer les hooks lors d'un commit, utilisez l'option --no-verify:" -ForegroundColor Yellow
     Write-Host "git commit --no-verify -m 'Message de commit'" -ForegroundColor White

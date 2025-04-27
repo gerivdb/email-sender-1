@@ -1,125 +1,125 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Test basique pour le module PRAnalysisCache.
 .DESCRIPTION
-    Ce script teste les fonctionnalités de base du module PRAnalysisCache.
+    Ce script teste les fonctionnalitÃ©s de base du module PRAnalysisCache.
 .NOTES
     Author: Augment Agent
     Version: 1.0
 #>
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 Write-Host "Chemin du module: $modulePath"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module PRAnalysisCache.psm1 non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
 # Importer le module
 Import-Module $modulePath -Force
-Write-Host "Module importé avec succès."
+Write-Host "Module importÃ© avec succÃ¨s."
 
-# Créer un répertoire de test
+# CrÃ©er un rÃ©pertoire de test
 $testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCacheBasicTest"
 if (-not (Test-Path -Path $testCachePath)) {
     New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de test créé: $testCachePath"
+    Write-Host "RÃ©pertoire de test crÃ©Ã©: $testCachePath"
 } else {
-    # Nettoyer le répertoire
+    # Nettoyer le rÃ©pertoire
     Get-ChildItem -Path $testCachePath -File | Remove-Item -Force
-    Write-Host "Répertoire de test nettoyé: $testCachePath"
+    Write-Host "RÃ©pertoire de test nettoyÃ©: $testCachePath"
 }
 
-# Créer un cache
+# CrÃ©er un cache
 $cache = New-PRAnalysisCache -MaxMemoryItems 10
 if ($null -eq $cache) {
-    Write-Error "Impossible de créer le cache."
+    Write-Error "Impossible de crÃ©er le cache."
     exit 1
 }
-Write-Host "Cache créé avec succès."
+Write-Host "Cache crÃ©Ã© avec succÃ¨s."
 
-# Rediriger le chemin du cache vers le répertoire de test
+# Rediriger le chemin du cache vers le rÃ©pertoire de test
 $cache.DiskCachePath = $testCachePath
-Write-Host "Chemin du cache configuré: $($cache.DiskCachePath)"
+Write-Host "Chemin du cache configurÃ©: $($cache.DiskCachePath)"
 
-# Ajouter un élément au cache
+# Ajouter un Ã©lÃ©ment au cache
 $cache.SetItem("TestKey", "TestValue", (New-TimeSpan -Hours 1))
-Write-Host "Élément ajouté au cache."
+Write-Host "Ã‰lÃ©ment ajoutÃ© au cache."
 
-# Vérifier que l'élément a été ajouté
+# VÃ©rifier que l'Ã©lÃ©ment a Ã©tÃ© ajoutÃ©
 $value = $cache.GetItem("TestKey")
 if ($value -eq "TestValue") {
-    Write-Host "Élément récupéré avec succès: $value" -ForegroundColor Green
+    Write-Host "Ã‰lÃ©ment rÃ©cupÃ©rÃ© avec succÃ¨s: $value" -ForegroundColor Green
 } else {
-    Write-Error "Impossible de récupérer l'élément du cache."
+    Write-Error "Impossible de rÃ©cupÃ©rer l'Ã©lÃ©ment du cache."
     exit 1
 }
 
-# Vérifier que le fichier de cache a été créé
+# VÃ©rifier que le fichier de cache a Ã©tÃ© crÃ©Ã©
 $cacheFile = Join-Path -Path $testCachePath -ChildPath "$($cache.NormalizeKey("TestKey")).xml"
 if (Test-Path -Path $cacheFile) {
-    Write-Host "Fichier de cache créé: $cacheFile" -ForegroundColor Green
+    Write-Host "Fichier de cache crÃ©Ã©: $cacheFile" -ForegroundColor Green
 } else {
-    Write-Error "Fichier de cache non créé: $cacheFile"
+    Write-Error "Fichier de cache non crÃ©Ã©: $cacheFile"
     exit 1
 }
 
-# Supprimer l'élément du cache
+# Supprimer l'Ã©lÃ©ment du cache
 $cache.RemoveItem("TestKey")
-Write-Host "Élément supprimé du cache."
+Write-Host "Ã‰lÃ©ment supprimÃ© du cache."
 
-# Vérifier que l'élément a été supprimé
+# VÃ©rifier que l'Ã©lÃ©ment a Ã©tÃ© supprimÃ©
 $value = $cache.GetItem("TestKey")
 if ($null -eq $value) {
-    Write-Host "Élément correctement supprimé du cache." -ForegroundColor Green
+    Write-Host "Ã‰lÃ©ment correctement supprimÃ© du cache." -ForegroundColor Green
 } else {
-    Write-Error "L'élément n'a pas été supprimé du cache."
+    Write-Error "L'Ã©lÃ©ment n'a pas Ã©tÃ© supprimÃ© du cache."
     exit 1
 }
 
-# Vérifier que le fichier de cache a été supprimé
+# VÃ©rifier que le fichier de cache a Ã©tÃ© supprimÃ©
 if (-not (Test-Path -Path $cacheFile)) {
-    Write-Host "Fichier de cache supprimé." -ForegroundColor Green
+    Write-Host "Fichier de cache supprimÃ©." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de cache n'a pas été supprimé."
+    Write-Error "Le fichier de cache n'a pas Ã©tÃ© supprimÃ©."
     exit 1
 }
 
-# Ajouter plusieurs éléments au cache
+# Ajouter plusieurs Ã©lÃ©ments au cache
 for ($i = 1; $i -le 5; $i++) {
     $cache.SetItem("Key$i", "Value$i", (New-TimeSpan -Hours 1))
 }
-Write-Host "5 éléments ajoutés au cache."
+Write-Host "5 Ã©lÃ©ments ajoutÃ©s au cache."
 
-# Vérifier que les éléments ont été ajoutés
+# VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© ajoutÃ©s
 $allItemsFound = $true
 for ($i = 1; $i -le 5; $i++) {
     $value = $cache.GetItem("Key$i")
     if ($value -ne "Value$i") {
         $allItemsFound = $false
-        Write-Error "Élément Key$i non trouvé ou valeur incorrecte."
+        Write-Error "Ã‰lÃ©ment Key$i non trouvÃ© ou valeur incorrecte."
     }
 }
 
 if ($allItemsFound) {
-    Write-Host "Tous les éléments ont été correctement ajoutés au cache." -ForegroundColor Green
+    Write-Host "Tous les Ã©lÃ©ments ont Ã©tÃ© correctement ajoutÃ©s au cache." -ForegroundColor Green
 }
 
 # Vider le cache
 $cache.Clear()
-Write-Host "Cache vidé."
+Write-Host "Cache vidÃ©."
 
-# Vérifier que le cache est vide
+# VÃ©rifier que le cache est vide
 $cacheFiles = Get-ChildItem -Path $testCachePath -Filter "*.xml"
 if ($cacheFiles.Count -eq 0) {
-    Write-Host "Cache correctement vidé." -ForegroundColor Green
+    Write-Host "Cache correctement vidÃ©." -ForegroundColor Green
 } else {
-    Write-Error "Le cache n'a pas été correctement vidé. Nombre de fichiers restants: $($cacheFiles.Count)"
+    Write-Error "Le cache n'a pas Ã©tÃ© correctement vidÃ©. Nombre de fichiers restants: $($cacheFiles.Count)"
     exit 1
 }
 
-Write-Host "Tous les tests ont réussi!" -ForegroundColor Green
+Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green

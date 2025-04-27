@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Intègre les résultats d'analyse de code avec des outils tiers (SonarQube, GitHub, AzureDevOps).
+    IntÃ¨gre les rÃ©sultats d'analyse de code avec des outils tiers (SonarQube, GitHub, AzureDevOps).
 .PARAMETER Path
-    Chemin du fichier JSON contenant les résultats d'analyse.
+    Chemin du fichier JSON contenant les rÃ©sultats d'analyse.
 .PARAMETER Tool
-    Outil tiers avec lequel intégrer les résultats (SonarQube, GitHub, AzureDevOps).
+    Outil tiers avec lequel intÃ©grer les rÃ©sultats (SonarQube, GitHub, AzureDevOps).
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats convertis.
+    Chemin du fichier de sortie pour les rÃ©sultats convertis.
 .PARAMETER ApiKey, ApiUrl, ProjectKey
-    Paramètres d'API pour l'outil tiers (si nécessaire).
+    ParamÃ¨tres d'API pour l'outil tiers (si nÃ©cessaire).
 #>
 
 [CmdletBinding()]
@@ -22,7 +22,7 @@ param (
     [Parameter(Mandatory = $false)][string]$ProjectKey
 )
 
-# Vérifications et initialisation
+# VÃ©rifications et initialisation
 if (-not (Test-Path -Path $Path -PathType Leaf)) { throw "Le fichier '$Path' n'existe pas." }
 if (-not $OutputPath) {
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
@@ -31,7 +31,7 @@ if (-not $OutputPath) {
     $OutputPath = Join-Path -Path $outputDirectory -ChildPath "$baseName-$Tool-$timestamp.json"
 }
 
-# Lire les résultats d'analyse
+# Lire les rÃ©sultats d'analyse
 try { $results = Get-Content -Path $Path -Raw | ConvertFrom-Json }
 catch { throw "Erreur lors de la lecture du fichier '$Path': $_" }
 
@@ -110,28 +110,28 @@ function ConvertTo-AzureDevOpsFormat($Results) {
     return @{ version = "2.0"; tool_name = "CodeAnalysis"; tool_version = "1.0"; issues = $issues }
 }
 
-# Convertir les résultats vers le format approprié
+# Convertir les rÃ©sultats vers le format appropriÃ©
 try {
     $convertedResults = switch ($Tool) {
         "SonarQube" {
-            if (-not $ProjectKey) { throw "Le paramètre ProjectKey est requis pour SonarQube." }
+            if (-not $ProjectKey) { throw "Le paramÃ¨tre ProjectKey est requis pour SonarQube." }
             ConvertTo-SonarQubeFormat -Results $results -ProjectKey $ProjectKey
         }
         "GitHub" { ConvertTo-GitHubFormat -Results $results }
         "AzureDevOps" { ConvertTo-AzureDevOpsFormat -Results $results }
     }
 
-    # Enregistrer les résultats convertis
+    # Enregistrer les rÃ©sultats convertis
     $convertedResults | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-    Write-Host "Résultats convertis enregistrés dans '$OutputPath'." -ForegroundColor Green
+    Write-Host "RÃ©sultats convertis enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
 
-    # Envoyer les résultats à l'outil tiers si nécessaire
+    # Envoyer les rÃ©sultats Ã  l'outil tiers si nÃ©cessaire
     if ($Tool -eq "SonarQube" -and $ApiKey -and $ApiUrl) {
         $headers = @{ "Content-Type" = "application/json"; "Authorization" = "Bearer $ApiKey" }
         $body = $convertedResults | ConvertTo-Json -Depth 10 -Compress
         try {
             Invoke-RestMethod -Uri "$ApiUrl/api/issues/bulk_create" -Method Post -Headers $headers -Body $body
-            Write-Host "Résultats envoyés à SonarQube avec succès." -ForegroundColor Green
-        } catch { Write-Error "Erreur lors de l'envoi des résultats à SonarQube: $_" }
+            Write-Host "RÃ©sultats envoyÃ©s Ã  SonarQube avec succÃ¨s." -ForegroundColor Green
+        } catch { Write-Error "Erreur lors de l'envoi des rÃ©sultats Ã  SonarQube: $_" }
     }
-} catch { Write-Error "Erreur lors de la conversion des résultats: $_" }
+} catch { Write-Error "Erreur lors de la conversion des rÃ©sultats: $_" }

@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Intègre TestOmnibus avec Jenkins.
+    IntÃ¨gre TestOmnibus avec Jenkins.
 .DESCRIPTION
-    Ce script intègre TestOmnibus avec Jenkins en générant des rapports JUnit
+    Ce script intÃ¨gre TestOmnibus avec Jenkins en gÃ©nÃ©rant des rapports JUnit
     et en les publiant sur un serveur Jenkins.
 .PARAMETER TestDirectory
-    Le répertoire contenant les tests Python.
+    Le rÃ©pertoire contenant les tests Python.
 .PARAMETER JenkinsUrl
     L'URL du serveur Jenkins.
 .PARAMETER JenkinsJob
@@ -16,7 +16,7 @@
 .PARAMETER JenkinsUser
     Le nom d'utilisateur Jenkins.
 .PARAMETER SimulationMode
-    Active le mode simulation (ne tente pas réellement de se connecter à Jenkins).
+    Active le mode simulation (ne tente pas rÃ©ellement de se connecter Ã  Jenkins).
 .EXAMPLE
     .\Integrate-Jenkins.ps1 -TestDirectory "tests/python" -JenkinsUrl "http://jenkins.example.com" -JenkinsJob "python-tests" -JenkinsToken "token" -JenkinsUser "user"
 .EXAMPLE
@@ -43,63 +43,63 @@ param(
     [switch]$SimulationMode
 )
 
-# Définir le répertoire des rapports Jenkins
+# DÃ©finir le rÃ©pertoire des rapports Jenkins
 $jenkinsDir = "jenkins-results"
 
-# Exécuter TestOmnibus avec l'option Jenkins
-Write-Host "Exécution de TestOmnibus avec génération de rapports JUnit..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus avec l'option Jenkins
+Write-Host "ExÃ©cution de TestOmnibus avec gÃ©nÃ©ration de rapports JUnit..." -ForegroundColor Cyan
 $testOmnibusScript = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 & $testOmnibusScript -TestDirectory $TestDirectory -GenerateJenkinsReport -JenkinsDirectory $jenkinsDir -Analyze -GenerateReport
 
-# Vérifier si des rapports JUnit ont été générés
+# VÃ©rifier si des rapports JUnit ont Ã©tÃ© gÃ©nÃ©rÃ©s
 $jenkinsFiles = Get-ChildItem -Path $jenkinsDir -Filter "*.xml" -ErrorAction SilentlyContinue
 
 if ($jenkinsFiles.Count -eq 0) {
-    Write-Error "Aucun rapport JUnit n'a été généré. Impossible de publier les résultats sur Jenkins."
+    Write-Error "Aucun rapport JUnit n'a Ã©tÃ© gÃ©nÃ©rÃ©. Impossible de publier les rÃ©sultats sur Jenkins."
     return 1
 }
 
-# Créer une archive des rapports JUnit
+# CrÃ©er une archive des rapports JUnit
 $archivePath = "jenkins-results.zip"
 Compress-Archive -Path "$jenkinsDir\*" -DestinationPath $archivePath -Force
 
-# Publier les résultats sur Jenkins
-Write-Host "Publication des résultats sur Jenkins..." -ForegroundColor Cyan
+# Publier les rÃ©sultats sur Jenkins
+Write-Host "Publication des rÃ©sultats sur Jenkins..." -ForegroundColor Cyan
 
 try {
-    # Vérifier si le mode simulation est activé
+    # VÃ©rifier si le mode simulation est activÃ©
     if ($SimulationMode) {
-        # Simuler l'envoi à Jenkins
-        Write-Host "Mode simulation activé. Aucune connexion réelle à Jenkins ne sera effectuée." -ForegroundColor Yellow
-        Write-Host "Les résultats seraient envoyés à $JenkinsUrl/job/$JenkinsJob/build" -ForegroundColor Yellow
-        Write-Host "Simulation réussie." -ForegroundColor Green
+        # Simuler l'envoi Ã  Jenkins
+        Write-Host "Mode simulation activÃ©. Aucune connexion rÃ©elle Ã  Jenkins ne sera effectuÃ©e." -ForegroundColor Yellow
+        Write-Host "Les rÃ©sultats seraient envoyÃ©s Ã  $JenkinsUrl/job/$JenkinsJob/build" -ForegroundColor Yellow
+        Write-Host "Simulation rÃ©ussie." -ForegroundColor Green
     } else {
         # Construire l'URL de l'API Jenkins
         $apiUrl = "$JenkinsUrl/job/$JenkinsJob/build"
 
-        # Créer les informations d'authentification
+        # CrÃ©er les informations d'authentification
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $JenkinsUser, $JenkinsToken)))
 
-        # Créer les en-têtes de la requête
+        # CrÃ©er les en-tÃªtes de la requÃªte
         $headers = @{
             Authorization = "Basic $base64AuthInfo"
         }
 
-        # Envoyer la requête à Jenkins
-        # Utiliser la variable de retour pour éviter l'avertissement
+        # Envoyer la requÃªte Ã  Jenkins
+        # Utiliser la variable de retour pour Ã©viter l'avertissement
         $jenkinsResponse = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Post -InFile $archivePath -ContentType "application/zip"
 
-        # Afficher des informations sur la réponse si nécessaire
+        # Afficher des informations sur la rÃ©ponse si nÃ©cessaire
         if ($jenkinsResponse) {
-            Write-Verbose "Réponse de Jenkins: $jenkinsResponse"
+            Write-Verbose "RÃ©ponse de Jenkins: $jenkinsResponse"
         }
 
-        Write-Host "Résultats publiés avec succès sur Jenkins." -ForegroundColor Green
+        Write-Host "RÃ©sultats publiÃ©s avec succÃ¨s sur Jenkins." -ForegroundColor Green
     }
 
     Write-Host "URL du job: $JenkinsUrl/job/$JenkinsJob" -ForegroundColor Cyan
 } catch {
-    Write-Error "Erreur lors de la publication des résultats sur Jenkins: $_"
+    Write-Error "Erreur lors de la publication des rÃ©sultats sur Jenkins: $_"
     return 1
 } finally {
     # Supprimer l'archive temporaire

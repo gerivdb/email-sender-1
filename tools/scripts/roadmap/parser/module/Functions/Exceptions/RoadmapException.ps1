@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit les classes d'exceptions personnalisées pour le module RoadmapParser.
+    DÃ©finit les classes d'exceptions personnalisÃ©es pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script définit une hiérarchie d'exceptions personnalisées pour le module RoadmapParser.
-    Ces exceptions permettent de gérer de manière spécifique les différentes erreurs qui peuvent
+    Ce script dÃ©finit une hiÃ©rarchie d'exceptions personnalisÃ©es pour le module RoadmapParser.
+    Ces exceptions permettent de gÃ©rer de maniÃ¨re spÃ©cifique les diffÃ©rentes erreurs qui peuvent
     survenir lors de l'utilisation du module.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-15
+    Date de crÃ©ation: 2023-07-15
 #>
 
 # Classe d'exception de base pour toutes les exceptions du module RoadmapParser
@@ -226,7 +226,7 @@ class RoadmapIOException : RoadmapException {
     }
 }
 
-# Exception pour les erreurs de dépendance
+# Exception pour les erreurs de dÃ©pendance
 class RoadmapDependencyException : RoadmapException {
     [string]$SourceTaskId
     [string]$TargetTaskId

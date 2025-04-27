@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) système.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) systÃ¨me.
 .DESCRIPTION
-    Calcule les KPIs système à partir des données de performance collectées.
+    Calcule les KPIs systÃ¨me Ã  partir des donnÃ©es de performance collectÃ©es.
 .PARAMETER DataPath
-    Chemin vers les données de performance.
+    Chemin vers les donnÃ©es de performance.
 .PARAMETER OutputPath
-    Chemin où les résultats seront sauvegardés.
+    Chemin oÃ¹ les rÃ©sultats seront sauvegardÃ©s.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration des KPIs.
 .PARAMETER LogLevel
@@ -57,7 +57,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données
+# Fonction pour charger les donnÃ©es
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -65,19 +65,19 @@ function Import-PerformanceData {
         [string]$FilePath
     )
     
-    Write-Log -Message "Chargement des données depuis $FilePath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es depuis $FilePath" -Level "Info"
     
     try {
         if (Test-Path -Path $FilePath) {
             $Data = Import-Csv -Path $FilePath
-            Write-Log -Message "Chargement réussi: $($Data.Count) entrées" -Level "Info"
+            Write-Log -Message "Chargement rÃ©ussi: $($Data.Count) entrÃ©es" -Level "Info"
             return $Data
         } else {
-            Write-Log -Message "Fichier non trouvé: $FilePath" -Level "Error"
+            Write-Log -Message "Fichier non trouvÃ©: $FilePath" -Level "Error"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
@@ -95,19 +95,19 @@ function Import-KpiConfig {
     try {
         if (Test-Path -Path $ConfigPath) {
             $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
-            Write-Log -Message "Configuration chargée avec succès: $($Config.kpis.Count) KPIs définis" -Level "Info"
+            Write-Log -Message "Configuration chargÃ©e avec succÃ¨s: $($Config.kpis.Count) KPIs dÃ©finis" -Level "Info"
             return $Config
         } else {
-            Write-Log -Message "Fichier de configuration non trouvé: $ConfigPath" -Level "Warning"
+            Write-Log -Message "Fichier de configuration non trouvÃ©: $ConfigPath" -Level "Warning"
             
-            # Créer une configuration par défaut
+            # CrÃ©er une configuration par dÃ©faut
             $DefaultConfig = @{
                 kpis = @(
                     @{
                         id = "CPU_UTILIZATION"
                         name = "Utilisation CPU"
                         description = "Pourcentage moyen d'utilisation du CPU"
-                        category = "Système"
+                        category = "SystÃ¨me"
                         unit = "%"
                         formula = "AVG"
                         source = "CPU"
@@ -118,9 +118,9 @@ function Import-KpiConfig {
                     },
                     @{
                         id = "MEMORY_UTILIZATION"
-                        name = "Utilisation mémoire"
-                        description = "Pourcentage d'utilisation de la mémoire physique"
-                        category = "Système"
+                        name = "Utilisation mÃ©moire"
+                        description = "Pourcentage d'utilisation de la mÃ©moire physique"
+                        category = "SystÃ¨me"
                         unit = "%"
                         formula = "AVG"
                         source = "Memory"
@@ -133,7 +133,7 @@ function Import-KpiConfig {
                         id = "DISK_UTILIZATION"
                         name = "Utilisation disque"
                         description = "Pourcentage d'utilisation de l'espace disque"
-                        category = "Système"
+                        category = "SystÃ¨me"
                         unit = "%"
                         formula = "AVG"
                         source = "Disk"
@@ -144,9 +144,9 @@ function Import-KpiConfig {
                     },
                     @{
                         id = "DISK_IO"
-                        name = "Activité disque"
-                        description = "Nombre d'opérations d'entrée/sortie par seconde"
-                        category = "Système"
+                        name = "ActivitÃ© disque"
+                        description = "Nombre d'opÃ©rations d'entrÃ©e/sortie par seconde"
+                        category = "SystÃ¨me"
                         unit = "IOPS"
                         formula = "AVG"
                         source = "DiskIO"
@@ -157,9 +157,9 @@ function Import-KpiConfig {
                     },
                     @{
                         id = "NETWORK_THROUGHPUT"
-                        name = "Débit réseau"
-                        description = "Débit réseau total (entrée + sortie)"
-                        category = "Système"
+                        name = "DÃ©bit rÃ©seau"
+                        description = "DÃ©bit rÃ©seau total (entrÃ©e + sortie)"
+                        category = "SystÃ¨me"
                         unit = "MB/s"
                         formula = "AVG"
                         source = "Network"
@@ -170,9 +170,9 @@ function Import-KpiConfig {
                     },
                     @{
                         id = "SYSTEM_LOAD"
-                        name = "Charge système"
-                        description = "Indice de charge système composite (CPU, mémoire, disque)"
-                        category = "Système"
+                        name = "Charge systÃ¨me"
+                        description = "Indice de charge systÃ¨me composite (CPU, mÃ©moire, disque)"
+                        category = "SystÃ¨me"
                         unit = "Score"
                         formula = "COMPOSITE"
                         sources = @("CPU", "Memory", "Disk")
@@ -185,16 +185,16 @@ function Import-KpiConfig {
                 )
             }
             
-            # Créer le répertoire de configuration s'il n'existe pas
+            # CrÃ©er le rÃ©pertoire de configuration s'il n'existe pas
             $ConfigDir = Split-Path -Parent $ConfigPath
             if (-not (Test-Path -Path $ConfigDir)) {
                 New-Item -Path $ConfigDir -ItemType Directory -Force | Out-Null
             }
             
-            # Sauvegarder la configuration par défaut
+            # Sauvegarder la configuration par dÃ©faut
             $DefaultConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $ConfigPath -Encoding UTF8
             
-            Write-Log -Message "Configuration par défaut créée: $ConfigPath" -Level "Info"
+            Write-Log -Message "Configuration par dÃ©faut crÃ©Ã©e: $ConfigPath" -Level "Info"
             return $DefaultConfig
         }
     } catch {
@@ -227,18 +227,18 @@ function Get-SimpleKpi {
     )
     
     try {
-        # Filtrer les données pour la source spécifiée
+        # Filtrer les donnÃ©es pour la source spÃ©cifiÃ©e
         $SourceData = $Data | Where-Object { $_.$SourceColumn -like "*$Source*" }
         
         if (-not $SourceData -or $SourceData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée trouvée pour la source: $Source" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour la source: $Source" -Level "Warning"
             return $null
         }
         
         # Convertir les valeurs en nombres
         $Values = $SourceData | ForEach-Object { [double]$_.$ValueColumn }
         
-        # Calculer le KPI selon la formule spécifiée
+        # Calculer le KPI selon la formule spÃ©cifiÃ©e
         switch ($Formula) {
             "AVG" {
                 $Result = ($Values | Measure-Object -Average).Average
@@ -311,13 +311,13 @@ function Get-CompositeKpi {
     
     try {
         if ($Sources.Count -ne $Weights.Count) {
-            Write-Log -Message "Le nombre de sources et de poids doit être identique" -Level "Error"
+            Write-Log -Message "Le nombre de sources et de poids doit Ãªtre identique" -Level "Error"
             return $null
         }
         
         $WeightSum = ($Weights | Measure-Object -Sum).Sum
         if ([Math]::Abs($WeightSum - 1) -gt 0.001) {
-            Write-Log -Message "La somme des poids doit être égale à 1" -Level "Warning"
+            Write-Log -Message "La somme des poids doit Ãªtre Ã©gale Ã  1" -Level "Warning"
             # Normaliser les poids
             $Weights = $Weights | ForEach-Object { $_ / $WeightSum }
         }
@@ -356,7 +356,7 @@ function Get-SystemKpis {
         [object]$Config
     )
     
-    Write-Log -Message "Calcul des KPIs système" -Level "Info"
+    Write-Log -Message "Calcul des KPIs systÃ¨me" -Level "Info"
     
     try {
         $Results = @()
@@ -373,7 +373,7 @@ function Get-SystemKpis {
             }
             
             if ($null -ne $KpiValue) {
-                # Déterminer le statut en fonction des seuils
+                # DÃ©terminer le statut en fonction des seuils
                 $Status = "Normal"
                 if ($Kpi.thresholds.warning -and $KpiValue -ge $Kpi.thresholds.warning) {
                     $Status = "Warning"
@@ -395,7 +395,7 @@ function Get-SystemKpis {
             }
         }
         
-        Write-Log -Message "Calcul terminé: $($Results.Count) KPIs calculés" -Level "Info"
+        Write-Log -Message "Calcul terminÃ©: $($Results.Count) KPIs calculÃ©s" -Level "Info"
         return $Results
     } catch {
         Write-Log -Message "Erreur lors du calcul des KPIs: $_" -Level "Error"
@@ -403,7 +403,7 @@ function Get-SystemKpis {
     }
 }
 
-# Fonction pour exporter les résultats
+# Fonction pour exporter les rÃ©sultats
 function Export-KpiResults {
     [CmdletBinding()]
     param (
@@ -417,22 +417,22 @@ function Export-KpiResults {
         [string]$Format = "CSV" # CSV, JSON
     )
     
-    Write-Log -Message "Exportation des résultats au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des rÃ©sultats au format $Format vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat à exporter" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat Ã  exporter" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Exporter les résultats selon le format spécifié
+        # Exporter les rÃ©sultats selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
                 $Results | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
@@ -446,15 +446,15 @@ function Export-KpiResults {
             }
         }
         
-        Write-Log -Message "Exportation réussie vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des résultats: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des rÃ©sultats: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction pour générer un tableau de bord JSON
+# Fonction pour gÃ©nÃ©rer un tableau de bord JSON
 function Export-KpiDashboard {
     [CmdletBinding()]
     param (
@@ -465,24 +465,24 @@ function Export-KpiDashboard {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Génération du tableau de bord vers $OutputPath" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du tableau de bord vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat pour générer le tableau de bord" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat pour gÃ©nÃ©rer le tableau de bord" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Créer la structure du tableau de bord
+        # CrÃ©er la structure du tableau de bord
         $Dashboard = @{
-            title = "Tableau de bord des KPIs système"
+            title = "Tableau de bord des KPIs systÃ¨me"
             timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             panels = @()
         }
@@ -509,10 +509,10 @@ function Export-KpiDashboard {
         # Exporter le tableau de bord au format JSON
         $Dashboard | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Tableau de bord généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Tableau de bord gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du tableau de bord: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du tableau de bord: $_" -Level "Error"
         return $false
     }
 }
@@ -531,16 +531,16 @@ function Start-SystemKpiCalculation {
         [string]$ConfigPath
     )
     
-    Write-Log -Message "Début du calcul des KPIs système" -Level "Info"
+    Write-Log -Message "DÃ©but du calcul des KPIs systÃ¨me" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $PerformanceDataPath = Join-Path -Path $DataPath -ChildPath "prepared_performance_data.csv"
     $PerformanceData = Import-PerformanceData -FilePath $PerformanceDataPath
     
     # 2. Charger la configuration des KPIs
     $KpiConfig = Import-KpiConfig -ConfigPath $ConfigPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -550,7 +550,7 @@ function Start-SystemKpiCalculation {
         $KpiResults = Get-SystemKpis -Data $PerformanceData -Config $KpiConfig
         
         if ($KpiResults -and $KpiResults.Count -gt 0) {
-            # 4. Exporter les résultats
+            # 4. Exporter les rÃ©sultats
             $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "system_kpis.csv"
             $JsonOutputPath = Join-Path -Path $OutputPath -ChildPath "system_kpis.json"
             $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "system_kpis_dashboard.json"
@@ -559,12 +559,12 @@ function Start-SystemKpiCalculation {
             Export-KpiResults -Results $KpiResults -OutputPath $JsonOutputPath -Format "JSON"
             Export-KpiDashboard -Results $KpiResults -OutputPath $DashboardOutputPath
         } else {
-            Write-Log -Message "Aucun KPI calculé" -Level "Warning"
+            Write-Log -Message "Aucun KPI calculÃ©" -Level "Warning"
         }
     } else {
-        Write-Log -Message "Données ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
+        Write-Log -Message "DonnÃ©es ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
         
-        # Créer des fichiers vides avec en-têtes
+        # CrÃ©er des fichiers vides avec en-tÃªtes
         $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "system_kpis.csv"
         "Id,Name,Description,Category,Value,Unit,Status,Timestamp" | Out-File -FilePath $CsvOutputPath -Encoding UTF8
         
@@ -573,13 +573,13 @@ function Start-SystemKpiCalculation {
         
         $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "system_kpis_dashboard.json"
         @{
-            title = "Tableau de bord des KPIs système"
+            title = "Tableau de bord des KPIs systÃ¨me"
             timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             panels = @()
         } | ConvertTo-Json -Depth 10 | Out-File -FilePath $DashboardOutputPath -Encoding UTF8
     }
     
-    Write-Log -Message "Calcul des KPIs système terminé" -Level "Info"
+    Write-Log -Message "Calcul des KPIs systÃ¨me terminÃ©" -Level "Info"
     
     return @{
         Success = $true
@@ -587,13 +587,13 @@ function Start-SystemKpiCalculation {
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-SystemKpiCalculation -DataPath $DataPath -OutputPath $OutputPath -ConfigPath $ConfigPath
 
 if ($Result.Success) {
-    Write-Log -Message "Calcul des KPIs système réussi" -Level "Info"
+    Write-Log -Message "Calcul des KPIs systÃ¨me rÃ©ussi" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec du calcul des KPIs système" -Level "Error"
+    Write-Log -Message "Ã‰chec du calcul des KPIs systÃ¨me" -Level "Error"
     return 1
 }

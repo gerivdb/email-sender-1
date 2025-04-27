@@ -1,107 +1,107 @@
-# Roadmap Parser
+﻿# Roadmap Parser
 
-Ce répertoire contient des outils pour l'analyse, la manipulation et la gestion des fichiers de roadmap du projet.
+Ce rÃ©pertoire contient des outils pour l'analyse, la manipulation et la gestion des fichiers de roadmap du projet.
 
-## Structure du répertoire
+## Structure du rÃ©pertoire
 
-La structure est organisée de manière modulaire pour faciliter la maintenance et l'évolution des outils :
+La structure est organisÃ©e de maniÃ¨re modulaire pour faciliter la maintenance et l'Ã©volution des outils :
 
 ```
 scripts/roadmap-parser/
-├── core/                        # Fonctionnalités de base
-│   ├── parser/                  # Parseurs de roadmap
-│   ├── model/                   # Modèles de données
-│   ├── converter/               # Convertisseurs de format
-│   └── structure/               # Gestion de structure
-├── modes/                       # Modes opérationnels
-│   ├── debug/                   # Mode de débogage
-│   ├── test/                    # Mode de test
-│   ├── archi/                   # Mode d'architecture
-│   ├── check/                   # Mode de vérification
-│   ├── gran/                    # Mode de granularisation
-│   ├── dev-r/                   # Mode de développement roadmap
-│   ├── review/                  # Mode de revue
-│   └── opti/                    # Mode d'optimisation
-├── analysis/                    # Outils d'analyse
-│   ├── dependencies/            # Analyse de dépendances
-│   ├── performance/             # Analyse de performance
-│   ├── validation/              # Validation de roadmap
-│   └── reporting/               # Génération de rapports
-├── utils/                       # Utilitaires
-│   ├── encoding/                # Gestion d'encodage
-│   ├── export/                  # Export vers différents formats
-│   ├── import/                  # Import depuis différents formats
-│   └── helpers/                 # Fonctions d'aide
-├── tests/                       # Tests
-│   ├── unit/                    # Tests unitaires
-│   ├── integration/             # Tests d'intégration
-│   ├── performance/             # Tests de performance
-│   └── validation/              # Tests de validation
-└── docs/                        # Documentation
-    ├── examples/                # Exemples d'utilisation
-    ├── guides/                  # Guides d'utilisation
-    └── api/                     # Documentation de l'API
+â”œâ”€â”€ core/                        # FonctionnalitÃ©s de base
+â”‚   â”œâ”€â”€ parser/                  # Parseurs de roadmap
+â”‚   â”œâ”€â”€ model/                   # ModÃ¨les de donnÃ©es
+â”‚   â”œâ”€â”€ converter/               # Convertisseurs de format
+â”‚   â””â”€â”€ structure/               # Gestion de structure
+â”œâ”€â”€ modes/                       # Modes opÃ©rationnels
+â”‚   â”œâ”€â”€ debug/                   # Mode de dÃ©bogage
+â”‚   â”œâ”€â”€ test/                    # Mode de test
+â”‚   â”œâ”€â”€ archi/                   # Mode d'architecture
+â”‚   â”œâ”€â”€ check/                   # Mode de vÃ©rification
+â”‚   â”œâ”€â”€ gran/                    # Mode de granularisation
+â”‚   â”œâ”€â”€ dev-r/                   # Mode de dÃ©veloppement roadmap
+â”‚   â”œâ”€â”€ review/                  # Mode de revue
+â”‚   â””â”€â”€ opti/                    # Mode d'optimisation
+â”œâ”€â”€ analysis/                    # Outils d'analyse
+â”‚   â”œâ”€â”€ dependencies/            # Analyse de dÃ©pendances
+â”‚   â”œâ”€â”€ performance/             # Analyse de performance
+â”‚   â”œâ”€â”€ validation/              # Validation de roadmap
+â”‚   â””â”€â”€ reporting/               # GÃ©nÃ©ration de rapports
+â”œâ”€â”€ utils/                       # Utilitaires
+â”‚   â”œâ”€â”€ encoding/                # Gestion d'encodage
+â”‚   â”œâ”€â”€ export/                  # Export vers diffÃ©rents formats
+â”‚   â”œâ”€â”€ import/                  # Import depuis diffÃ©rents formats
+â”‚   â””â”€â”€ helpers/                 # Fonctions d'aide
+â”œâ”€â”€ tests/                       # Tests
+â”‚   â”œâ”€â”€ unit/                    # Tests unitaires
+â”‚   â”œâ”€â”€ integration/             # Tests d'intÃ©gration
+â”‚   â”œâ”€â”€ performance/             # Tests de performance
+â”‚   â””â”€â”€ validation/              # Tests de validation
+â””â”€â”€ docs/                        # Documentation
+    â”œâ”€â”€ examples/                # Exemples d'utilisation
+    â”œâ”€â”€ guides/                  # Guides d'utilisation
+    â””â”€â”€ api/                     # Documentation de l'API
 ```
 
-## Utilisation de Hygen pour générer de nouveaux scripts
+## Utilisation de Hygen pour gÃ©nÃ©rer de nouveaux scripts
 
-Ce projet utilise [Hygen](https://www.hygen.io/) pour générer de nouveaux scripts selon un modèle standardisé.
+Ce projet utilise [Hygen](https://www.hygen.io/) pour gÃ©nÃ©rer de nouveaux scripts selon un modÃ¨le standardisÃ©.
 
 ### Installation de Hygen
 
-Si Hygen n'est pas déjà installé, vous pouvez l'installer globalement avec npm :
+Si Hygen n'est pas dÃ©jÃ  installÃ©, vous pouvez l'installer globalement avec npm :
 
 ```bash
 npm install -g hygen
 ```
 
-### Génération d'un nouveau script
+### GÃ©nÃ©ration d'un nouveau script
 
-Pour générer un nouveau script, utilisez la commande suivante :
+Pour gÃ©nÃ©rer un nouveau script, utilisez la commande suivante :
 
 ```bash
 hygen roadmap-parser new script
 ```
 
-Vous serez guidé par une série de questions pour configurer votre script :
+Vous serez guidÃ© par une sÃ©rie de questions pour configurer votre script :
 - Nom du script
 - Description
-- Catégorie
-- Sous-catégorie
+- CatÃ©gorie
+- Sous-catÃ©gorie
 - Auteur
 
-## Modes opérationnels
+## Modes opÃ©rationnels
 
-Le module roadmap-parser prend en charge plusieurs modes opérationnels, chacun avec un objectif spécifique :
+Le module roadmap-parser prend en charge plusieurs modes opÃ©rationnels, chacun avec un objectif spÃ©cifique :
 
-- **DEBUG** : Mode de débogage pour identifier et résoudre les problèmes
-- **TEST** : Mode de test pour valider les fonctionnalités
-- **ARCHI** : Mode d'architecture pour analyser et améliorer la structure
-- **CHECK** : Mode de vérification pour valider l'état d'avancement
-- **GRAN** : Mode de granularisation pour décomposer les tâches complexes
-- **DEV-R** : Mode de développement roadmap pour implémenter les tâches
-- **REVIEW** : Mode de revue pour analyser la qualité du code
-- **OPTI** : Mode d'optimisation pour améliorer les performances
+- **DEBUG** : Mode de dÃ©bogage pour identifier et rÃ©soudre les problÃ¨mes
+- **TEST** : Mode de test pour valider les fonctionnalitÃ©s
+- **ARCHI** : Mode d'architecture pour analyser et amÃ©liorer la structure
+- **CHECK** : Mode de vÃ©rification pour valider l'Ã©tat d'avancement
+- **GRAN** : Mode de granularisation pour dÃ©composer les tÃ¢ches complexes
+- **DEV-R** : Mode de dÃ©veloppement roadmap pour implÃ©menter les tÃ¢ches
+- **REVIEW** : Mode de revue pour analyser la qualitÃ© du code
+- **OPTI** : Mode d'optimisation pour amÃ©liorer les performances
 
-Chaque mode est implémenté dans un script dédié dans le dossier `modes/`.
+Chaque mode est implÃ©mentÃ© dans un script dÃ©diÃ© dans le dossier `modes/`.
 
 ## Bonnes pratiques
 
-- Utilisez toujours Hygen pour créer de nouveaux scripts afin de maintenir une structure cohérente
-- Placez les scripts dans les dossiers appropriés selon leur fonction
-- Créez des tests unitaires pour chaque script
+- Utilisez toujours Hygen pour crÃ©er de nouveaux scripts afin de maintenir une structure cohÃ©rente
+- Placez les scripts dans les dossiers appropriÃ©s selon leur fonction
+- CrÃ©ez des tests unitaires pour chaque script
 - Documentez vos scripts avec des commentaires d'aide PowerShell
 - Suivez les conventions de nommage : verbe-nom.ps1 pour les scripts
 
 ## Contribution
 
-Si vous souhaitez améliorer le module roadmap-parser, n'hésitez pas à proposer des modifications. Voici quelques idées d'amélioration :
+Si vous souhaitez amÃ©liorer le module roadmap-parser, n'hÃ©sitez pas Ã  proposer des modifications. Voici quelques idÃ©es d'amÃ©lioration :
 
-- Ajouter de nouveaux modes opérationnels
-- Améliorer les performances des parseurs existants
-- Ajouter de nouvelles fonctionnalités d'analyse
-- Étendre la couverture des tests
-- Améliorer la documentation
+- Ajouter de nouveaux modes opÃ©rationnels
+- AmÃ©liorer les performances des parseurs existants
+- Ajouter de nouvelles fonctionnalitÃ©s d'analyse
+- Ã‰tendre la couverture des tests
+- AmÃ©liorer la documentation
 
 ## Licence
 

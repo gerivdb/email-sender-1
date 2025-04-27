@@ -1,67 +1,67 @@
-# TestOmnibus
+﻿# TestOmnibus
 
-TestOmnibus est un système centralisé pour exécuter et gérer tous les tests unitaires du projet. Il permet d'exécuter les tests de différents modules, de collecter les résultats et de générer des rapports.
+TestOmnibus est un systÃ¨me centralisÃ© pour exÃ©cuter et gÃ©rer tous les tests unitaires du projet. Il permet d'exÃ©cuter les tests de diffÃ©rents modules, de collecter les rÃ©sultats et de gÃ©nÃ©rer des rapports.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Exécution centralisée** des tests unitaires de différents modules
-- **Parallélisation** des tests pour une exécution plus rapide
-- **Génération de rapports** HTML détaillés
-- **Collecte de métriques** de performance
-- **Filtrage des tests** par module, tag, priorité, etc.
-- **Intégration avec différents frameworks** de test (Pester, etc.)
+- **ExÃ©cution centralisÃ©e** des tests unitaires de diffÃ©rents modules
+- **ParallÃ©lisation** des tests pour une exÃ©cution plus rapide
+- **GÃ©nÃ©ration de rapports** HTML dÃ©taillÃ©s
+- **Collecte de mÃ©triques** de performance
+- **Filtrage des tests** par module, tag, prioritÃ©, etc.
+- **IntÃ©gration avec diffÃ©rents frameworks** de test (Pester, etc.)
 
 ## Structure
 
-- `Invoke-TestOmnibus.ps1` : Script principal pour exécuter les tests
-- `Run-AllTests.ps1` : Script pour exécuter tous les tests configurés
-- `Run-MaintenanceTests.ps1` : Script pour exécuter spécifiquement les tests de maintenance
-- `Config/` : Répertoire contenant les fichiers de configuration
+- `Invoke-TestOmnibus.ps1` : Script principal pour exÃ©cuter les tests
+- `Run-AllTests.ps1` : Script pour exÃ©cuter tous les tests configurÃ©s
+- `Run-MaintenanceTests.ps1` : Script pour exÃ©cuter spÃ©cifiquement les tests de maintenance
+- `Config/` : RÃ©pertoire contenant les fichiers de configuration
   - `testomnibus_config.json` : Configuration principale
-- `Adapters/` : Répertoire contenant les adaptateurs pour différents modules de test
+- `Adapters/` : RÃ©pertoire contenant les adaptateurs pour diffÃ©rents modules de test
   - `ProactiveOptimization-Adapter.ps1` : Adaptateur pour les tests d'optimisation proactive
   - `MaintenanceStandards-Adapter.ps1` : Adaptateur pour les tests de standards de maintenance
   - `MaintenanceCleanup-Adapter.ps1` : Adaptateur pour les tests de nettoyage de maintenance
-- `Results/` : Répertoire où sont stockés les résultats des tests
+- `Results/` : RÃ©pertoire oÃ¹ sont stockÃ©s les rÃ©sultats des tests
 
-## Modules de test intégrés
+## Modules de test intÃ©grÃ©s
 
 ### ProactiveOptimization
 
 Tests pour le module d'optimisation proactive, qui inclut :
-- Tests pour l'optimisation dynamique de la parallélisation
-- Tests pour la mise en cache prédictive
+- Tests pour l'optimisation dynamique de la parallÃ©lisation
+- Tests pour la mise en cache prÃ©dictive
 - Tests pour le monitoring d'usage
 
 ### MaintenanceStandards
 
 Tests pour le module de standards de maintenance, qui inclut :
-- Tests pour l'inspection préventive des scripts
-- Tests pour la vérification des bonnes pratiques de codage
+- Tests pour l'inspection prÃ©ventive des scripts
+- Tests pour la vÃ©rification des bonnes pratiques de codage
 - Tests pour la validation des standards de nommage
 
 ### MaintenanceCleanup
 
 Tests pour le module de nettoyage de maintenance, qui inclut :
-- Tests pour la correction automatique des problèmes PSScriptAnalyzer
+- Tests pour la correction automatique des problÃ¨mes PSScriptAnalyzer
 - Tests pour le nettoyage des fichiers temporaires
 - Tests pour la gestion des sauvegardes
 
 ## Utilisation
 
-### Exécuter tous les tests
+### ExÃ©cuter tous les tests
 
 ```powershell
 .\Run-AllTests.ps1 -GenerateHtmlReport
 ```
 
-### Exécuter les tests d'un module spécifique
+### ExÃ©cuter les tests d'un module spÃ©cifique
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -Path "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/utils/ProactiveOptimization/tests"
 ```
 
-### Exécuter les tests de maintenance
+### ExÃ©cuter les tests de maintenance
 
 ```powershell
 .\Run-MaintenanceTests.ps1 -GenerateHtmlReport
@@ -105,21 +105,21 @@ Le fichier `testomnibus_config.json` contient la configuration principale de Tes
 
 ## Ajouter un nouveau module de test
 
-Pour ajouter un nouveau module de test à TestOmnibus :
+Pour ajouter un nouveau module de test Ã  TestOmnibus :
 
-1. Créer un adaptateur pour le module dans le répertoire `Adapters/`
-2. Ajouter une entrée pour le module dans le fichier `testomnibus_config.json`
-3. Créer les tests unitaires pour le module
+1. CrÃ©er un adaptateur pour le module dans le rÃ©pertoire `Adapters/`
+2. Ajouter une entrÃ©e pour le module dans le fichier `testomnibus_config.json`
+3. CrÃ©er les tests unitaires pour le module
 
 ## Rapports
 
-Les rapports HTML générés par TestOmnibus contiennent :
+Les rapports HTML gÃ©nÃ©rÃ©s par TestOmnibus contiennent :
 
-- Un résumé global des tests exécutés
-- Des résultats détaillés par module
-- Des métriques de performance
-- Des graphiques et visualisations (si activés)
+- Un rÃ©sumÃ© global des tests exÃ©cutÃ©s
+- Des rÃ©sultats dÃ©taillÃ©s par module
+- Des mÃ©triques de performance
+- Des graphiques et visualisations (si activÃ©s)
 
-## Intégration continue
+## IntÃ©gration continue
 
-TestOmnibus peut être intégré dans un pipeline CI/CD pour exécuter automatiquement les tests à chaque commit ou pull request.
+TestOmnibus peut Ãªtre intÃ©grÃ© dans un pipeline CI/CD pour exÃ©cuter automatiquement les tests Ã  chaque commit ou pull request.

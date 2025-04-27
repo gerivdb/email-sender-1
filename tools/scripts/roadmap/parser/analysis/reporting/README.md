@@ -1,6 +1,6 @@
-# reporting - analysis
+﻿# reporting - analysis
 
-Cette section contient les scripts liés à reporting dans la catégorie analysis.
+Cette section contient les scripts liÃ©s Ã  reporting dans la catÃ©gorie analysis.
 
 ## Scripts disponibles
 
@@ -17,9 +17,9 @@ Cette section contient les scripts liés à reporting dans la catégorie analysi
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - oadmap-parser - Module principal de parsing de roadmap
 
 ## Tests

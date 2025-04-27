@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Standardise les chemins dans les scripts PowerShell.
 .DESCRIPTION
-    Ce script standardise les chemins dans les scripts PowerShell pour améliorer
-    la compatibilité entre différents environnements.
+    Ce script standardise les chemins dans les scripts PowerShell pour amÃ©liorer
+    la compatibilitÃ© entre diffÃ©rents environnements.
 .EXAMPLE
     . .\PathStandardizer.ps1
     Standardize-PathsInScript -Path "C:\path\to\script.ps1" -CreateBackup
@@ -26,30 +26,30 @@ function Standardize-PathsInScript {
     )
     
     process {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-Error "Le fichier '$Path' n'existe pas."
             return $false
         }
         
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         if ([string]::IsNullOrEmpty($OutputPath)) {
             $OutputPath = $Path
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$Path.bak"
             Copy-Item -Path $Path -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée: $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
         }
         
         # Lire le contenu du script
         $content = Get-Content -Path $Path -Raw
         
-        # Définir les modèles de recherche et de remplacement
+        # DÃ©finir les modÃ¨les de recherche et de remplacement
         $patterns = @(
-            # Remplacer les chemins codés en dur avec des barres obliques inversées par Join-Path
+            # Remplacer les chemins codÃ©s en dur avec des barres obliques inversÃ©es par Join-Path
             @{
                 Pattern = '([''"])([A-Za-z]:\\[^''"\r\n]+)([''"])'
                 Replacement = {
@@ -75,10 +75,10 @@ function Standardize-PathsInScript {
                         "$quote$joinPathExpr$quote"
                     }
                 }
-                Description = "Remplacer les chemins codés en dur par Join-Path"
+                Description = "Remplacer les chemins codÃ©s en dur par Join-Path"
             },
             
-            # Remplacer les chemins relatifs avec des barres obliques inversées par Join-Path
+            # Remplacer les chemins relatifs avec des barres obliques inversÃ©es par Join-Path
             @{
                 Pattern = '([''"])(\.\.[\\\/][^''"\r\n]+)([''"])'
                 Replacement = {
@@ -105,11 +105,11 @@ function Standardize-PathsInScript {
                 Description = "Remplacer les chemins relatifs par Join-Path"
             },
             
-            # Remplacer les concaténations de chemins par Join-Path
+            # Remplacer les concatÃ©nations de chemins par Join-Path
             @{
                 Pattern = '([''"][^''"\r\n]*[''"])\s*\+\s*[''"][\\\/]?([^''"\r\n]*)[''"]'
                 Replacement = '(Join-Path -Path $1 -ChildPath "$2")'
-                Description = "Remplacer les concaténations de chemins par Join-Path"
+                Description = "Remplacer les concatÃ©nations de chemins par Join-Path"
             },
             
             # Remplacer les chemins avec des variables d'environnement par [System.Environment]::GetFolderPath
@@ -119,7 +119,7 @@ function Standardize-PathsInScript {
                     param($match)
                     $envVar = $match.Groups[1].Value
                     
-                    # Mapper les variables d'environnement courantes aux dossiers spéciaux
+                    # Mapper les variables d'environnement courantes aux dossiers spÃ©ciaux
                     switch ($envVar) {
                         "USERPROFILE" { "[System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)" }
                         "APPDATA" { "[System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)" }
@@ -138,22 +138,22 @@ function Standardize-PathsInScript {
                 Description = "Remplacer les variables d'environnement par GetFolderPath"
             },
             
-            # Remplacer les séparateurs de chemin codés en dur par [System.IO.Path]::DirectorySeparatorChar
+            # Remplacer les sÃ©parateurs de chemin codÃ©s en dur par [System.IO.Path]::DirectorySeparatorChar
             @{
                 Pattern = '([''"])\\([''"])'
                 Replacement = '[System.IO.Path]::DirectorySeparatorChar'
-                Description = "Remplacer les séparateurs de chemin codés en dur"
+                Description = "Remplacer les sÃ©parateurs de chemin codÃ©s en dur"
             },
             
-            # Remplacer les appels à Test-Path sans -PathType
+            # Remplacer les appels Ã  Test-Path sans -PathType
             @{
                 Pattern = 'Test-Path\s+([^-\r\n]+)(?!\s+-PathType)'
                 Replacement = 'Test-Path -Path $1 -PathType Any'
-                Description = "Ajouter -PathType à Test-Path"
+                Description = "Ajouter -PathType Ã  Test-Path"
             }
         )
         
-        # Appliquer les modèles
+        # Appliquer les modÃ¨les
         $modifiedContent = $content
         $modifications = @()
         
@@ -164,11 +164,11 @@ function Standardize-PathsInScript {
             $matches = $regex.Matches($modifiedContent)
             
             if ($matches.Count -gt 0) {
-                # Appliquer les remplacements en commençant par la fin pour éviter les décalages
+                # Appliquer les remplacements en commenÃ§ant par la fin pour Ã©viter les dÃ©calages
                 for ($i = $matches.Count - 1; $i -ge 0; $i--) {
                     $match = $matches[$i]
                     
-                    # Déterminer le texte de remplacement
+                    # DÃ©terminer le texte de remplacement
                     $replacement = if ($pattern.Replacement -is [scriptblock]) {
                         & $pattern.Replacement $match
                     }
@@ -189,7 +189,7 @@ function Standardize-PathsInScript {
             }
         }
         
-        # Ajouter une fonction d'aide pour la gestion des chemins si des modifications ont été apportées
+        # Ajouter une fonction d'aide pour la gestion des chemins si des modifications ont Ã©tÃ© apportÃ©es
         if ($modifications.Count -gt 0) {
             $pathHelperFunction = @"
 
@@ -210,20 +210,20 @@ function Get-NormalizedPath {
         [string]`$BasePath = ""
     )
     
-    # Normaliser les séparateurs de chemin
+    # Normaliser les sÃ©parateurs de chemin
     `$normalizedPath = `$Path.Replace('\', [System.IO.Path]::DirectorySeparatorChar).Replace('/', [System.IO.Path]::DirectorySeparatorChar)
     
-    # Résoudre le chemin si demandé
+    # RÃ©soudre le chemin si demandÃ©
     if (`$Resolve) {
         try {
             `$normalizedPath = Resolve-Path -Path `$normalizedPath -ErrorAction Stop | Select-Object -ExpandProperty Path
         }
         catch {
-            Write-Warning "Impossible de résoudre le chemin '`$Path': `$_"
+            Write-Warning "Impossible de rÃ©soudre le chemin '`$Path': `$_"
         }
     }
     
-    # Convertir en chemin relatif si demandé
+    # Convertir en chemin relatif si demandÃ©
     if (`$AsRelativePath) {
         `$basePathToUse = if ([string]::IsNullOrEmpty(`$BasePath)) {
             (Get-Location).Path
@@ -249,15 +249,15 @@ function Get-NormalizedPath {
 
 "@
             
-            # Trouver l'endroit où insérer la fonction d'aide
+            # Trouver l'endroit oÃ¹ insÃ©rer la fonction d'aide
             $insertPosition = 0
             
-            # Chercher après les commentaires initiaux, les déclarations param et les fonctions existantes
+            # Chercher aprÃ¨s les commentaires initiaux, les dÃ©clarations param et les fonctions existantes
             if ($modifiedContent -match '(?s)^(#[^\n]*\n)+\s*(param\s*\([^\)]+\))?\s*(\$ErrorActionPreference\s*=\s*[\'"]Stop[\'"])?\s*') {
                 $insertPosition = $matches[0].Length
             }
             
-            # Insérer la fonction d'aide
+            # InsÃ©rer la fonction d'aide
             $modifiedContent = $modifiedContent.Substring(0, $insertPosition) + $pathHelperFunction + $modifiedContent.Substring($insertPosition)
             
             $modifications += [PSCustomObject]@{
@@ -271,17 +271,17 @@ function Get-NormalizedPath {
         if (-not $WhatIf) {
             if ($modifications.Count -gt 0) {
                 Set-Content -Path $OutputPath -Value $modifiedContent
-                Write-Verbose "Script modifié avec $($modifications.Count) standardisations de chemins."
+                Write-Verbose "Script modifiÃ© avec $($modifications.Count) standardisations de chemins."
                 return $true
             }
             else {
-                Write-Verbose "Aucune modification nécessaire pour le script."
+                Write-Verbose "Aucune modification nÃ©cessaire pour le script."
                 return $false
             }
         }
         else {
-            # Afficher les modifications prévues
-            Write-Host "Modifications prévues pour le script '$Path':"
+            # Afficher les modifications prÃ©vues
+            Write-Host "Modifications prÃ©vues pour le script '$Path':"
             
             foreach ($mod in $modifications) {
                 Write-Host "- $($mod.Pattern)"
@@ -314,13 +314,13 @@ function Standardize-PathsInDirectory {
         [switch]$WhatIf
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path -PathType Container)) {
-        Write-Error "Le répertoire '$Path' n'existe pas."
+        Write-Error "Le rÃ©pertoire '$Path' n'existe pas."
         return $null
     }
     
-    # Obtenir la liste des fichiers à traiter
+    # Obtenir la liste des fichiers Ã  traiter
     $files = Get-ChildItem -Path $Path -Filter $Filter -File -Recurse:$Recurse
     
     $results = @{
@@ -357,7 +357,7 @@ function Standardize-PathsInDirectory {
                     $results.Details += [PSCustomObject]@{
                         FilePath = $file.FullName
                         Status = "Skipped"
-                        Reason = "Aucune modification nécessaire"
+                        Reason = "Aucune modification nÃ©cessaire"
                     }
                 }
             }
@@ -366,7 +366,7 @@ function Standardize-PathsInDirectory {
                 $results.Details += [PSCustomObject]@{
                     FilePath = $file.FullName
                     Status = "Skipped"
-                    Reason = "Aucune modification nécessaire"
+                    Reason = "Aucune modification nÃ©cessaire"
                 }
             }
         }

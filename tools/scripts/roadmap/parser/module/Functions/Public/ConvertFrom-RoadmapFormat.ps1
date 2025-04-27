@@ -1,37 +1,37 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un format spécifié en objet avec gestion d'erreurs.
+    Convertit un format spÃ©cifiÃ© en objet avec gestion d'erreurs.
 
 .DESCRIPTION
-    La fonction ConvertFrom-RoadmapFormat convertit un format spécifié en objet avec gestion d'erreurs.
-    Elle combine les différentes fonctions de conversion et peut être utilisée pour
-    convertir les entrées et sorties des fonctions du module RoadmapParser.
+    La fonction ConvertFrom-RoadmapFormat convertit un format spÃ©cifiÃ© en objet avec gestion d'erreurs.
+    Elle combine les diffÃ©rentes fonctions de conversion et peut Ãªtre utilisÃ©e pour
+    convertir les entrÃ©es et sorties des fonctions du module RoadmapParser.
 
 .PARAMETER InputObject
-    La valeur à convertir.
+    La valeur Ã  convertir.
 
 .PARAMETER SourceFormat
     Le format source de la conversion. Valeurs possibles :
-    - Json : Désérialise le JSON en objet
-    - Xml : Désérialise le XML en objet
-    - Csv : Désérialise le CSV en objet
-    - Yaml : Désérialise le YAML en objet
-    - Psd1 : Désérialise le fichier de données PowerShell en objet
-    - Base64 : Désérialise la chaîne Base64 en objet
-    - Clixml : Désérialise le CLIXML en objet
-    - Binary : Désérialise le format binaire en objet
-    - Custom : Utilise un format personnalisé
+    - Json : DÃ©sÃ©rialise le JSON en objet
+    - Xml : DÃ©sÃ©rialise le XML en objet
+    - Csv : DÃ©sÃ©rialise le CSV en objet
+    - Yaml : DÃ©sÃ©rialise le YAML en objet
+    - Psd1 : DÃ©sÃ©rialise le fichier de donnÃ©es PowerShell en objet
+    - Base64 : DÃ©sÃ©rialise la chaÃ®ne Base64 en objet
+    - Clixml : DÃ©sÃ©rialise le CLIXML en objet
+    - Binary : DÃ©sÃ©rialise le format binaire en objet
+    - Custom : Utilise un format personnalisÃ©
 
 .PARAMETER CustomFormat
-    Le format personnalisé à utiliser pour la désérialisation.
-    Utilisé uniquement lorsque SourceFormat est "Custom".
+    Le format personnalisÃ© Ã  utiliser pour la dÃ©sÃ©rialisation.
+    UtilisÃ© uniquement lorsque SourceFormat est "Custom".
 
 .PARAMETER TargetType
-    Le type cible de la conversion après désérialisation. Valeurs possibles :
-    - String : Convertit la valeur en chaîne de caractères
+    Le type cible de la conversion aprÃ¨s dÃ©sÃ©rialisation. Valeurs possibles :
+    - String : Convertit la valeur en chaÃ®ne de caractÃ¨res
     - Integer : Convertit la valeur en entier
-    - Decimal : Convertit la valeur en nombre décimal
-    - Boolean : Convertit la valeur en booléen
+    - Decimal : Convertit la valeur en nombre dÃ©cimal
+    - Boolean : Convertit la valeur en boolÃ©en
     - DateTime : Convertit la valeur en date/heure
     - Array : Convertit la valeur en tableau
     - Hashtable : Convertit la valeur en table de hachage
@@ -40,60 +40,60 @@
     - Guid : Convertit la valeur en GUID
     - XmlDocument : Convertit la valeur en document XML
     - JsonObject : Convertit la valeur en objet JSON
-    - CsvData : Convertit la valeur en données CSV
+    - CsvData : Convertit la valeur en donnÃ©es CSV
     - MarkdownDocument : Convertit la valeur en document Markdown
     - HtmlDocument : Convertit la valeur en document HTML
     - YamlDocument : Convertit la valeur en document YAML
-    - Base64 : Convertit la valeur en chaîne Base64
-    - SecureString : Convertit la valeur en chaîne sécurisée
+    - Base64 : Convertit la valeur en chaÃ®ne Base64
+    - SecureString : Convertit la valeur en chaÃ®ne sÃ©curisÃ©e
     - Credential : Convertit la valeur en objet d'identification
     - Uri : Convertit la valeur en URI
     - Version : Convertit la valeur en version
-    - Custom : Utilise un type personnalisé
+    - Custom : Utilise un type personnalisÃ©
 
 .PARAMETER CustomType
-    Le type personnalisé à utiliser pour la conversion.
-    Utilisé uniquement lorsque TargetType est "Custom".
+    Le type personnalisÃ© Ã  utiliser pour la conversion.
+    UtilisÃ© uniquement lorsque TargetType est "Custom".
 
 .PARAMETER Format
-    Le format à utiliser pour la conversion (par exemple, format de date).
+    Le format Ã  utiliser pour la conversion (par exemple, format de date).
 
 .PARAMETER Encoding
-    L'encodage à utiliser pour la conversion.
+    L'encodage Ã  utiliser pour la conversion.
 
 .PARAMETER FilePath
-    Le chemin du fichier à désérialiser.
-    Si spécifié, le contenu du fichier sera désérialisé au lieu de InputObject.
+    Le chemin du fichier Ã  dÃ©sÃ©rialiser.
+    Si spÃ©cifiÃ©, le contenu du fichier sera dÃ©sÃ©rialisÃ© au lieu de InputObject.
 
 .PARAMETER AsHashtable
-    Indique si le résultat doit être retourné sous forme de hashtable au lieu d'un PSObject.
-    Applicable uniquement pour certains formats de désérialisation.
+    Indique si le rÃ©sultat doit Ãªtre retournÃ© sous forme de hashtable au lieu d'un PSObject.
+    Applicable uniquement pour certains formats de dÃ©sÃ©rialisation.
 
 .PARAMETER DefaultValue
-    La valeur par défaut à retourner en cas d'échec de la conversion.
+    La valeur par dÃ©faut Ã  retourner en cas d'Ã©chec de la conversion.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la conversion.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la conversion.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la conversion.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la conversion.
 
 .EXAMPLE
     ConvertFrom-RoadmapFormat -InputObject $jsonString -SourceFormat Json
-    Désérialise la chaîne JSON en objet.
+    DÃ©sÃ©rialise la chaÃ®ne JSON en objet.
 
 .EXAMPLE
     ConvertFrom-RoadmapFormat -FilePath "C:\temp\object.xml" -SourceFormat Xml -TargetType Hashtable -ThrowOnFailure
-    Désérialise le contenu du fichier XML en objet, le convertit en hashtable, et lève une exception si la conversion échoue.
+    DÃ©sÃ©rialise le contenu du fichier XML en objet, le convertit en hashtable, et lÃ¨ve une exception si la conversion Ã©choue.
 
 .OUTPUTS
-    [object] L'objet désérialisé et converti.
+    [object] L'objet dÃ©sÃ©rialisÃ© et converti.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function ConvertFrom-RoadmapFormat {
     [CmdletBinding()]
@@ -138,13 +138,13 @@ function ConvertFrom-RoadmapFormat {
         [switch]$ThrowOnFailure
     )
 
-    # Les fonctions de conversion sont déjà importées par le module
+    # Les fonctions de conversion sont dÃ©jÃ  importÃ©es par le module
 
-    # Initialiser le résultat de la conversion
+    # Initialiser le rÃ©sultat de la conversion
     $result = $null
     $conversionSucceeded = $false
 
-    # Effectuer la désérialisation
+    # Effectuer la dÃ©sÃ©rialisation
     try {
         $params = @{
             Format         = $SourceFormat
@@ -177,7 +177,7 @@ function ConvertFrom-RoadmapFormat {
 
         $deserializedObject = ConvertFrom-SerializedFormat @params
 
-        # Convertir l'objet désérialisé vers le type cible si spécifié
+        # Convertir l'objet dÃ©sÃ©rialisÃ© vers le type cible si spÃ©cifiÃ©
         if ($PSBoundParameters.ContainsKey('TargetType')) {
             # Types primitifs
             if ($TargetType -in @("String", "Integer", "Decimal", "Boolean", "DateTime", "Array", "Hashtable", "PSObject", "ScriptBlock", "Guid")) {
@@ -245,7 +245,7 @@ function ConvertFrom-RoadmapFormat {
         }
     }
 
-    # Gérer l'échec de la conversion
+    # GÃ©rer l'Ã©chec de la conversion
     if (-not $conversionSucceeded) {
         if ($PSBoundParameters.ContainsKey('DefaultValue')) {
             $result = $DefaultValue

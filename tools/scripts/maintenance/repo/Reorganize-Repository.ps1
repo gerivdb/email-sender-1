@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Réorganise le dépôt selon le standard défini
+    RÃ©organise le dÃ©pÃ´t selon le standard dÃ©fini
 .DESCRIPTION
-    Ce script réorganise les fichiers du dépôt selon la structure standardisée
-    définie dans le document RepoStructureStandard.md. Il crée la structure de
-    dossiers, migre les fichiers et génère un journal des déplacements.
+    Ce script rÃ©organise les fichiers du dÃ©pÃ´t selon la structure standardisÃ©e
+    dÃ©finie dans le document RepoStructureStandard.md. Il crÃ©e la structure de
+    dossiers, migre les fichiers et gÃ©nÃ¨re un journal des dÃ©placements.
 .PARAMETER Path
-    Chemin du dépôt à réorganiser
+    Chemin du dÃ©pÃ´t Ã  rÃ©organiser
 .PARAMETER LogPath
-    Chemin où générer le journal des déplacements
+    Chemin oÃ¹ gÃ©nÃ©rer le journal des dÃ©placements
 .PARAMETER DryRun
-    Indique si le script doit simuler les déplacements sans les effectuer
+    Indique si le script doit simuler les dÃ©placements sans les effectuer
 .PARAMETER Force
-    Indique si le script doit forcer la réorganisation même en cas de conflits
+    Indique si le script doit forcer la rÃ©organisation mÃªme en cas de conflits
 .EXAMPLE
     .\Reorganize-Repository.ps1 -Path "D:\Repos\EMAIL_SENDER_1" -DryRun
 .NOTES
@@ -37,7 +37,7 @@ param(
     [switch]$Force
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     param (
         [Parameter(Mandatory = $true)]
@@ -63,7 +63,7 @@ function Write-Log {
     }
 }
 
-# Définition des règles de migration
+# DÃ©finition des rÃ¨gles de migration
 $migrationRules = @(
     # Scripts PowerShell
     @{
@@ -84,7 +84,7 @@ $migrationRules = @(
                 Regex = "^(Show|Display|New-.*Form|New-.*Window).*\.ps1$"
                 Destination = "scripts\gui" 
             },
-            # Scripts d'intégration
+            # Scripts d'intÃ©gration
             @{ 
                 Regex = "^(Connect|Sync|Import|Export|Push|Pull).*\.ps1$"
                 Destination = "scripts\integration" 
@@ -99,7 +99,7 @@ $migrationRules = @(
                 Regex = "^(Install|Uninstall|Setup|Configure|Initialize).*\.ps1$"
                 Destination = "scripts\setup" 
             },
-            # Scripts utilitaires (par défaut)
+            # Scripts utilitaires (par dÃ©faut)
             @{ 
                 Regex = ".*\.ps1$"
                 Destination = "scripts\utils" 
@@ -126,7 +126,7 @@ $migrationRules = @(
                 Regex = "^(show|display|gui|window|form).*\.py$"
                 Destination = "scripts\gui" 
             },
-            # Scripts d'intégration
+            # Scripts d'intÃ©gration
             @{ 
                 Regex = "^(connect|sync|import|export|push|pull).*\.py$"
                 Destination = "scripts\integration" 
@@ -141,7 +141,7 @@ $migrationRules = @(
                 Regex = "^(install|uninstall|setup|configure|initialize).*\.py$"
                 Destination = "scripts\setup" 
             },
-            # Scripts utilitaires (par défaut)
+            # Scripts utilitaires (par dÃ©faut)
             @{ 
                 Regex = ".*\.py$"
                 Destination = "scripts\utils" 
@@ -158,7 +158,7 @@ $migrationRules = @(
                 Regex = "^(install|setup|configure).*\.(cmd|bat)$"
                 Destination = "scripts\setup" 
             },
-            # Scripts utilitaires (par défaut)
+            # Scripts utilitaires (par dÃ©faut)
             @{ 
                 Regex = ".*\.(cmd|bat)$"
                 Destination = "scripts\utils" 
@@ -196,7 +196,7 @@ $migrationRules = @(
                 Regex = "^(Architecture|Design).*\.md$"
                 Destination = "docs\architecture" 
             },
-            # Développement (par défaut)
+            # DÃ©veloppement (par dÃ©faut)
             @{ 
                 Regex = ".*\.md$"
                 Destination = "docs\development" 
@@ -224,7 +224,7 @@ $migrationRules = @(
                 Regex = "^(Unit|Test-Unit).*\.ps1$|^test_unit.*\.py$|^unit_test.*\.py$"
                 Destination = "tests\unit" 
             },
-            # Tests d'intégration
+            # Tests d'intÃ©gration
             @{ 
                 Regex = "^(Integration|Test-Integration).*\.ps1$|^test_integration.*\.py$|^integration_test.*\.py$"
                 Destination = "tests\integration" 
@@ -234,7 +234,7 @@ $migrationRules = @(
                 Regex = "^(Performance|Test-Performance).*\.ps1$|^test_performance.*\.py$|^performance_test.*\.py$"
                 Destination = "tests\performance" 
             },
-            # Tests (par défaut)
+            # Tests (par dÃ©faut)
             @{ 
                 Regex = ".*Test.*\.ps1$|.*Tests.*\.ps1$|test_.*\.py$|.*_test\.py$"
                 Destination = "tests\unit" 
@@ -243,7 +243,7 @@ $migrationRules = @(
     }
 )
 
-# Fonction pour déterminer la destination d'un fichier
+# Fonction pour dÃ©terminer la destination d'un fichier
 function Get-FileDestination {
     param (
         [Parameter(Mandatory = $true)]
@@ -270,13 +270,13 @@ function Get-FileDestination {
         }
     }
     
-    # Si aucune règle ne correspond, retourner null
+    # Si aucune rÃ¨gle ne correspond, retourner null
     return $null
 }
 
-# Fonction pour créer la structure de dossiers
+# Fonction pour crÃ©er la structure de dossiers
 function Create-FolderStructure {
-    # Définition des dossiers principaux
+    # DÃ©finition des dossiers principaux
     $mainFolders = @(
         "scripts",
         "modules",
@@ -292,7 +292,7 @@ function Create-FolderStructure {
         "Roadmap"
     )
     
-    # Définition des sous-dossiers
+    # DÃ©finition des sous-dossiers
     $subFolders = @{
         "scripts" = @(
             "scripts\analysis",
@@ -322,18 +322,18 @@ function Create-FolderStructure {
         )
     }
     
-    # Créer les dossiers principaux
+    # CrÃ©er les dossiers principaux
     foreach ($folder in $mainFolders) {
         $folderPath = Join-Path -Path $Path -ChildPath $folder
         if (-not (Test-Path -Path $folderPath -PathType Container)) {
             if (-not $DryRun) {
                 New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
             }
-            Write-Log -Message "Dossier créé: $folder" -Level "SUCCESS"
+            Write-Log -Message "Dossier crÃ©Ã©: $folder" -Level "SUCCESS"
         }
     }
     
-    # Créer les sous-dossiers
+    # CrÃ©er les sous-dossiers
     foreach ($mainFolder in $subFolders.Keys) {
         foreach ($subFolder in $subFolders[$mainFolder]) {
             $folderPath = Join-Path -Path $Path -ChildPath $subFolder
@@ -341,7 +341,7 @@ function Create-FolderStructure {
                 if (-not $DryRun) {
                     New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
                 }
-                Write-Log -Message "Sous-dossier créé: $subFolder" -Level "SUCCESS"
+                Write-Log -Message "Sous-dossier crÃ©Ã©: $subFolder" -Level "SUCCESS"
             }
         }
     }
@@ -349,7 +349,7 @@ function Create-FolderStructure {
 
 # Fonction pour migrer les fichiers
 function Migrate-Files {
-    # Obtenir tous les fichiers à la racine et dans les dossiers non standards
+    # Obtenir tous les fichiers Ã  la racine et dans les dossiers non standards
     $excludedDirs = @(
         "scripts",
         "modules",
@@ -380,14 +380,14 @@ function Migrate-Files {
     $migratedFiles = 0
     $skippedFiles = 0
     
-    Write-Log -Message "Début de la migration de $totalFiles fichiers..." -Level "INFO"
+    Write-Log -Message "DÃ©but de la migration de $totalFiles fichiers..." -Level "INFO"
     
     foreach ($file in $allFiles) {
         $processedFiles++
         $destination = Get-FileDestination -File $file
         
         if ($null -eq $destination) {
-            Write-Log -Message "Aucune règle de migration pour: $($file.FullName)" -Level "WARNING"
+            Write-Log -Message "Aucune rÃ¨gle de migration pour: $($file.FullName)" -Level "WARNING"
             $skippedFiles++
             continue
         }
@@ -395,10 +395,10 @@ function Migrate-Files {
         $destinationPath = Join-Path -Path $Path -ChildPath $destination
         $destinationFile = Join-Path -Path $destinationPath -ChildPath $file.Name
         
-        # Vérifier si le fichier existe déjà à la destination
+        # VÃ©rifier si le fichier existe dÃ©jÃ  Ã  la destination
         if (Test-Path -Path $destinationFile) {
             if (-not $Force) {
-                Write-Log -Message "Le fichier existe déjà à la destination: $destinationFile" -Level "WARNING"
+                Write-Log -Message "Le fichier existe dÃ©jÃ  Ã  la destination: $destinationFile" -Level "WARNING"
                 $skippedFiles++
                 continue
             }
@@ -408,7 +408,7 @@ function Migrate-Files {
             $destHash = Get-FileHash -Path $destinationFile -Algorithm SHA256
             
             if ($sourceHash.Hash -eq $destHash.Hash) {
-                Write-Log -Message "Le fichier est identique à la destination, suppression de la source: $($file.FullName)" -Level "INFO"
+                Write-Log -Message "Le fichier est identique Ã  la destination, suppression de la source: $($file.FullName)" -Level "INFO"
                 
                 if (-not $DryRun) {
                     Remove-Item -Path $file.FullName -Force
@@ -422,23 +422,23 @@ function Migrate-Files {
             $newName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name) + "_old" + $file.Extension
             $renamedDestination = Join-Path -Path $destinationPath -ChildPath $newName
             
-            Write-Log -Message "Conflit détecté, renommage du fichier de destination: $destinationFile -> $renamedDestination" -Level "WARNING"
+            Write-Log -Message "Conflit dÃ©tectÃ©, renommage du fichier de destination: $destinationFile -> $renamedDestination" -Level "WARNING"
             
             if (-not $DryRun) {
                 Rename-Item -Path $destinationFile -NewName $newName -Force
             }
         }
         
-        # Déplacer le fichier
+        # DÃ©placer le fichier
         Write-Log -Message "Migration: $($file.FullName) -> $destinationFile" -Level "INFO"
         
         if (-not $DryRun) {
-            # Créer le dossier de destination s'il n'existe pas
+            # CrÃ©er le dossier de destination s'il n'existe pas
             if (-not (Test-Path -Path $destinationPath -PathType Container)) {
                 New-Item -Path $destinationPath -ItemType Directory -Force | Out-Null
             }
             
-            # Déplacer le fichier
+            # DÃ©placer le fichier
             Move-Item -Path $file.FullName -Destination $destinationFile -Force
         }
         
@@ -446,12 +446,12 @@ function Migrate-Files {
         
         # Afficher la progression
         $progress = [math]::Round(($processedFiles / $totalFiles) * 100)
-        Write-Progress -Activity "Migration des fichiers" -Status "$processedFiles / $totalFiles fichiers traités ($progress%)" -PercentComplete $progress
+        Write-Progress -Activity "Migration des fichiers" -Status "$processedFiles / $totalFiles fichiers traitÃ©s ($progress%)" -PercentComplete $progress
     }
     
     Write-Progress -Activity "Migration des fichiers" -Completed
     
-    Write-Log -Message "Migration terminée: $migratedFiles fichiers migrés, $skippedFiles fichiers ignorés" -Level "SUCCESS"
+    Write-Log -Message "Migration terminÃ©e: $migratedFiles fichiers migrÃ©s, $skippedFiles fichiers ignorÃ©s" -Level "SUCCESS"
 }
 
 # Fonction pour nettoyer les dossiers vides
@@ -470,7 +470,7 @@ function Clean-EmptyFolders {
         if ($null -eq $items -or $items.Count -eq 0) {
             $emptyFolders += $folder.FullName
             
-            Write-Log -Message "Dossier vide détecté: $($folder.FullName)" -Level "INFO"
+            Write-Log -Message "Dossier vide dÃ©tectÃ©: $($folder.FullName)" -Level "INFO"
             
             if (-not $DryRun) {
                 Remove-Item -Path $folder.FullName -Force
@@ -478,18 +478,18 @@ function Clean-EmptyFolders {
         }
     }
     
-    Write-Log -Message "Nettoyage terminé: $($emptyFolders.Count) dossiers vides supprimés" -Level "SUCCESS"
+    Write-Log -Message "Nettoyage terminÃ©: $($emptyFolders.Count) dossiers vides supprimÃ©s" -Level "SUCCESS"
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path -PathType Container)) {
-        Write-Error "Le chemin spécifié n'existe pas: $Path"
+        Write-Error "Le chemin spÃ©cifiÃ© n'existe pas: $Path"
         exit 1
     }
     
-    # Créer le dossier de logs s'il n'existe pas
+    # CrÃ©er le dossier de logs s'il n'existe pas
     $logDir = Split-Path -Path $LogPath -Parent
     $logDirPath = Join-Path -Path $Path -ChildPath $logDir
     
@@ -500,13 +500,13 @@ function Main {
     # Chemin complet du fichier journal
     $script:logFilePath = Join-Path -Path $Path -ChildPath $LogPath
     
-    # Afficher le mode d'exécution
+    # Afficher le mode d'exÃ©cution
     if ($DryRun) {
-        Write-Log -Message "Mode simulation activé. Aucune modification ne sera effectuée." -Level "WARNING"
+        Write-Log -Message "Mode simulation activÃ©. Aucune modification ne sera effectuÃ©e." -Level "WARNING"
     }
     
-    # Créer la structure de dossiers
-    Write-Log -Message "Création de la structure de dossiers..." -Level "INFO"
+    # CrÃ©er la structure de dossiers
+    Write-Log -Message "CrÃ©ation de la structure de dossiers..." -Level "INFO"
     Create-FolderStructure
     
     # Migrer les fichiers
@@ -517,15 +517,15 @@ function Main {
     Write-Log -Message "Nettoyage des dossiers vides..." -Level "INFO"
     Clean-EmptyFolders
     
-    # Afficher le résumé
-    Write-Log -Message "Réorganisation du dépôt terminée." -Level "SUCCESS"
-    Write-Log -Message "Journal des opérations: $logFilePath" -Level "INFO"
+    # Afficher le rÃ©sumÃ©
+    Write-Log -Message "RÃ©organisation du dÃ©pÃ´t terminÃ©e." -Level "SUCCESS"
+    Write-Log -Message "Journal des opÃ©rations: $logFilePath" -Level "INFO"
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 try {
     Main
 } catch {
-    Write-Log -Message "Erreur lors de la réorganisation du dépôt: $_" -Level "ERROR"
+    Write-Log -Message "Erreur lors de la rÃ©organisation du dÃ©pÃ´t: $_" -Level "ERROR"
     exit 1
 }

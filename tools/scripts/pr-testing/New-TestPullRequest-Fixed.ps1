@@ -1,54 +1,54 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère des pull requests de test avec différents types de modifications.
+    GÃ©nÃ¨re des pull requests de test avec diffÃ©rents types de modifications.
 
 .DESCRIPTION
-    Ce script crée des pull requests de test dans le dépôt spécifié avec
-    différents types de modifications (ajouts, modifications, suppressions)
-    et injecte des erreurs connues pour tester le système d'analyse.
+    Ce script crÃ©e des pull requests de test dans le dÃ©pÃ´t spÃ©cifiÃ© avec
+    diffÃ©rents types de modifications (ajouts, modifications, suppressions)
+    et injecte des erreurs connues pour tester le systÃ¨me d'analyse.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt de test.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t de test.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER BranchName
-    Le nom de la branche à créer pour la pull request.
-    Par défaut: "feature/test-pr-{timestamp}"
+    Le nom de la branche Ã  crÃ©er pour la pull request.
+    Par dÃ©faut: "feature/test-pr-{timestamp}"
 
 .PARAMETER BaseBranch
-    La branche de base à partir de laquelle créer la nouvelle branche.
-    Par défaut: "develop"
+    La branche de base Ã  partir de laquelle crÃ©er la nouvelle branche.
+    Par dÃ©faut: "develop"
 
 .PARAMETER FileCount
-    Le nombre de fichiers à modifier.
-    Par défaut: 5
+    Le nombre de fichiers Ã  modifier.
+    Par dÃ©faut: 5
 
 .PARAMETER ErrorCount
-    Le nombre d'erreurs à injecter par fichier.
-    Par défaut: 3
+    Le nombre d'erreurs Ã  injecter par fichier.
+    Par dÃ©faut: 3
 
 .PARAMETER ErrorTypes
-    Les types d'erreurs à injecter.
+    Les types d'erreurs Ã  injecter.
     Valeurs possibles: Syntax, Style, Performance, Security, All
-    Par défaut: "All"
+    Par dÃ©faut: "All"
 
 .PARAMETER ModificationTypes
-    Les types de modifications à effectuer.
+    Les types de modifications Ã  effectuer.
     Valeurs possibles: Add, Modify, Delete, Mixed
-    Par défaut: "Mixed"
+    Par dÃ©faut: "Mixed"
 
 .PARAMETER CreatePR
-    Indique s'il faut créer une pull request sur GitHub.
-    Par défaut: $false
+    Indique s'il faut crÃ©er une pull request sur GitHub.
+    Par dÃ©faut: $false
 
 .EXAMPLE
     .\New-TestPullRequest.ps1
-    Génère une pull request de test avec les paramètres par défaut.
+    GÃ©nÃ¨re une pull request de test avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\New-TestPullRequest.ps1 -FileCount 10 -ErrorCount 5 -ErrorTypes "Syntax,Style"
-    Génère une pull request avec 10 fichiers modifiés, 5 erreurs par fichier, de types syntaxe et style.
+    GÃ©nÃ¨re une pull request avec 10 fichiers modifiÃ©s, 5 erreurs par fichier, de types syntaxe et style.
 
 .NOTES
     Version: 1.0
@@ -85,7 +85,7 @@ param(
     [switch]$CreatePR
 )
 
-# Fonction pour créer une nouvelle branche
+# Fonction pour crÃ©er une nouvelle branche
 function New-GitBranch {
     param (
         [string]$RepositoryPath,
@@ -93,7 +93,7 @@ function New-GitBranch {
         [string]$BaseBranch
     )
 
-    Write-Host "Création de la branche $BranchName à partir de $BaseBranch..." -ForegroundColor Cyan
+    Write-Host "CrÃ©ation de la branche $BranchName Ã  partir de $BaseBranch..." -ForegroundColor Cyan
 
     Push-Location $RepositoryPath
     try {
@@ -103,23 +103,23 @@ function New-GitBranch {
             throw "Erreur lors du checkout de la branche $BaseBranch."
         }
 
-        # Créer la nouvelle branche
+        # CrÃ©er la nouvelle branche
         git checkout -b $BranchName
         if ($LASTEXITCODE -ne 0) {
-            throw "Erreur lors de la création de la branche $BranchName."
+            throw "Erreur lors de la crÃ©ation de la branche $BranchName."
         }
 
-        Write-Host "Branche $BranchName créée avec succès." -ForegroundColor Green
+        Write-Host "Branche $BranchName crÃ©Ã©e avec succÃ¨s." -ForegroundColor Green
         return $true
     } catch {
-        Write-Error "Erreur lors de la création de la branche: $_"
+        Write-Error "Erreur lors de la crÃ©ation de la branche: $_"
         return $false
     } finally {
         Pop-Location
     }
 }
 
-# Fonction pour générer un script PowerShell avec des erreurs
+# Fonction pour gÃ©nÃ©rer un script PowerShell avec des erreurs
 function New-PowerShellScriptWithErrors {
     param (
         [string]$Path,
@@ -127,7 +127,7 @@ function New-PowerShellScriptWithErrors {
         [string[]]$ErrorTypes
     )
 
-    # Modèles de fonctions PowerShell correctes
+    # ModÃ¨les de fonctions PowerShell correctes
     $scriptFunctions = @(
         @{
             Name    = "Get-SystemInfo"
@@ -221,11 +221,11 @@ function Convert-Size {
         }
     )
 
-    # Modèles d'erreurs à injecter
+    # ModÃ¨les d'erreurs Ã  injecter
     $errorPatterns = @{
         Syntax      = @(
             @{
-                Description = "Parenthèse manquante"
+                Description = "ParenthÃ¨se manquante"
                 Pattern     = 'param\(([^)]+)\)'
                 Replacement = 'param($1'
             },
@@ -235,24 +235,24 @@ function Convert-Size {
                 Replacement = '{$1'
             },
             @{
-                Description = "Virgule manquante entre paramètres"
+                Description = "Virgule manquante entre paramÃ¨tres"
                 Pattern     = '(\[Parameter\(\)\])\s+(\[.+?\])'
                 Replacement = '$1$2'
             },
             @{
-                Description = "Guillemet non fermé"
+                Description = "Guillemet non fermÃ©"
                 Pattern     = '"([^"]+)"'
                 Replacement = '"$1'
             }
         )
         Style       = @(
             @{
-                Description = "Verbe non approuvé"
+                Description = "Verbe non approuvÃ©"
                 Pattern     = 'function (Get|Test|Convert)-'
                 Replacement = 'function Do-'
             },
             @{
-                Description = "Variable non utilisée"
+                Description = "Variable non utilisÃ©e"
                 Pattern     = '(\s+)\$([a-zA-Z0-9]+) = .+\r?\n'
                 Replacement = '$1$unusedVar = Get-Random`r`n$1$$2 = .+`r`n'
             },
@@ -264,7 +264,7 @@ function Convert-Size {
         )
         Performance = @(
             @{
-                Description = "Appel inutile à Select-Object"
+                Description = "Appel inutile Ã  Select-Object"
                 Pattern     = '(Get-CimInstance .+)'
                 Replacement = '$1 | Select-Object -Property *'
             },
@@ -274,7 +274,7 @@ function Convert-Size {
                 Replacement = '$output = @()`r`n    foreach ($item in $results) { $output += $item }`r`n    return $output'
             },
             @{
-                Description = "Appel répété à une commande coûteuse"
+                Description = "Appel rÃ©pÃ©tÃ© Ã  une commande coÃ»teuse"
                 Pattern     = '\$computerSystem = (Get-CimInstance .+)'
                 Replacement = '$computerSystem = (Get-CimInstance -ClassName Win32_ComputerSystem)`r`n    $computerSystem2 = (Get-CimInstance -ClassName Win32_ComputerSystem)`r`n    $computerSystem3 = (Get-CimInstance -ClassName Win32_ComputerSystem)'
             }
@@ -286,23 +286,23 @@ function Convert-Size {
                 Replacement = 'param($1,`r`n        [string]$Password = ''P@ssw0rd''`r`n    '
             },
             @{
-                Description = "Désactivation de la validation de certificat"
+                Description = "DÃ©sactivation de la validation de certificat"
                 Pattern     = '(Invoke-WebRequest|Invoke-RestMethod)'
                 Replacement = '$1 -SkipCertificateCheck'
             },
             @{
-                Description = "Exécution de code à partir d'une entrée utilisateur"
+                Description = "ExÃ©cution de code Ã  partir d'une entrÃ©e utilisateur"
                 Pattern     = 'return \$results'
                 Replacement = '    $userInput = Read-Host ''Enter command to execute''`r`n    Invoke-Expression $userInput`r`n    return $results'
             }
         )
     }
 
-    # Sélectionner une fonction aléatoire comme base
+    # SÃ©lectionner une fonction alÃ©atoire comme base
     $selectedFunction = $scriptFunctions | Get-Random
     $scriptContent = $selectedFunction.Content
 
-    # Déterminer les types d'erreurs à injecter
+    # DÃ©terminer les types d'erreurs Ã  injecter
     $errorTypesToUse = @()
     if ($ErrorTypes -eq "All") {
         $errorTypesToUse = @("Syntax", "Style", "Performance", "Security")
@@ -312,17 +312,17 @@ function Convert-Size {
 
     # Injecter les erreurs
     for ($i = 0; $i -lt $ErrorCount; $i++) {
-        # Sélectionner un type d'erreur aléatoire parmi ceux spécifiés
+        # SÃ©lectionner un type d'erreur alÃ©atoire parmi ceux spÃ©cifiÃ©s
         $errorType = $errorTypesToUse | Get-Random
 
-        # Sélectionner une erreur aléatoire de ce type
+        # SÃ©lectionner une erreur alÃ©atoire de ce type
         $errorToInject = $errorPatterns[$errorType] | Get-Random
 
         # Appliquer l'erreur au contenu du script
         $regexMatches = [regex]::Matches($scriptContent, $errorToInject.Pattern)
         if ($regexMatches.Count -gt 0) {
             $randomMatch = $regexMatches | Get-Random
-            # Utiliser une approche compatible avec PowerShell 5.1 pour remplacer la première occurrence
+            # Utiliser une approche compatible avec PowerShell 5.1 pour remplacer la premiÃ¨re occurrence
             $beforeMatch = $scriptContent.Substring(0, $randomMatch.Index)
             $afterMatch = $scriptContent.Substring($randomMatch.Index + $randomMatch.Length)
             $scriptContent = $beforeMatch + $randomMatch.Value.Replace($randomMatch.Value, $errorToInject.Replacement) + $afterMatch
@@ -330,26 +330,26 @@ function Convert-Size {
             # Ajouter un commentaire pour identifier l'erreur
             $scriptContent = $scriptContent.Replace(
                 $errorToInject.Replacement,
-                "$($errorToInject.Replacement) # Erreur injectée: $($errorToInject.Description)"
+                "$($errorToInject.Replacement) # Erreur injectÃ©e: $($errorToInject.Description)"
             )
         }
     }
 
-    # Ajouter un en-tête au script
+    # Ajouter un en-tÃªte au script
     $header = @"
 <#
 .SYNOPSIS
-    Script de test avec erreurs injectées pour l'analyse des pull requests.
+    Script de test avec erreurs injectÃ©es pour l'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script contient des erreurs intentionnellement injectées pour tester
-    le système d'analyse des pull requests. Il ne doit pas être utilisé en
+    Ce script contient des erreurs intentionnellement injectÃ©es pour tester
+    le systÃ¨me d'analyse des pull requests. Il ne doit pas Ãªtre utilisÃ© en
     production.
 
 .NOTES
-    Erreurs injectées: $ErrorCount
+    Erreurs injectÃ©es: $ErrorCount
     Types d'erreurs: $($errorTypesToUse -join ", ")
-    Généré automatiquement par New-TestPullRequest.ps1
+    GÃ©nÃ©rÃ© automatiquement par New-TestPullRequest.ps1
     Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 #>
 
@@ -357,10 +357,10 @@ function Convert-Size {
 
     $scriptContent = $header + $scriptContent
 
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     Set-Content -Path $Path -Value $scriptContent -Encoding UTF8
 
-    Write-Host "  Script créé avec $ErrorCount erreurs: $Path" -ForegroundColor Yellow
+    Write-Host "  Script crÃ©Ã© avec $ErrorCount erreurs: $Path" -ForegroundColor Yellow
 }
 
 # Fonction pour ajouter de nouveaux fichiers
@@ -391,7 +391,7 @@ function Add-NewFiles {
     Push-Location $RepositoryPath
     try {
         git add "scripts\pr-testing\generated\*.ps1"
-        Write-Host "Nouveaux fichiers ajoutés avec succès." -ForegroundColor Green
+        Write-Host "Nouveaux fichiers ajoutÃ©s avec succÃ¨s." -ForegroundColor Green
     } catch {
         Write-Error "Erreur lors de l'ajout des fichiers: $_"
     } finally {
@@ -416,7 +416,7 @@ function Update-ExistingFiles {
         Select-Object -First $Count
 
     if ($existingFiles.Count -eq 0) {
-        Write-Warning "Aucun fichier PowerShell existant trouvé. Création de nouveaux fichiers à la place."
+        Write-Warning "Aucun fichier PowerShell existant trouvÃ©. CrÃ©ation de nouveaux fichiers Ã  la place."
         Add-NewFiles -RepositoryPath $RepositoryPath -Count $Count -ErrorCount $ErrorCount -ErrorTypes $ErrorTypes
         return
     }
@@ -435,23 +435,23 @@ function Update-ExistingFiles {
         $updatedContent = @"
 $content
 
-# Fonction ajoutée pour les tests de pull requests
+# Fonction ajoutÃ©e pour les tests de pull requests
 $newFunction
 "@
 
-        # Écrire le contenu mis à jour
+        # Ã‰crire le contenu mis Ã  jour
         Set-Content -Path $file.FullName -Value $updatedContent -Encoding UTF8
 
-        Write-Host "  Fichier modifié avec $ErrorCount erreurs: $($file.FullName)" -ForegroundColor Yellow
+        Write-Host "  Fichier modifiÃ© avec $ErrorCount erreurs: $($file.FullName)" -ForegroundColor Yellow
     }
 
-    # Ajouter les fichiers modifiés au Git
+    # Ajouter les fichiers modifiÃ©s au Git
     Push-Location $RepositoryPath
     try {
         git add -u
-        Write-Host "Fichiers modifiés ajoutés avec succès." -ForegroundColor Green
+        Write-Host "Fichiers modifiÃ©s ajoutÃ©s avec succÃ¨s." -ForegroundColor Green
     } catch {
-        Write-Error "Erreur lors de l'ajout des fichiers modifiés: $_"
+        Write-Error "Erreur lors de l'ajout des fichiers modifiÃ©s: $_"
     } finally {
         Pop-Location
     }
@@ -472,7 +472,7 @@ function Remove-ExistingFiles {
         Select-Object -First $Count
 
     if ($existingFiles.Count -eq 0) {
-        Write-Warning "Aucun fichier PowerShell existant trouvé à supprimer."
+        Write-Warning "Aucun fichier PowerShell existant trouvÃ© Ã  supprimer."
         return
     }
 
@@ -480,14 +480,14 @@ function Remove-ExistingFiles {
         # Supprimer le fichier
         Remove-Item -Path $file.FullName -Force
 
-        Write-Host "  Fichier supprimé: $($file.FullName)" -ForegroundColor Yellow
+        Write-Host "  Fichier supprimÃ©: $($file.FullName)" -ForegroundColor Yellow
     }
 
     # Ajouter les suppressions au Git
     Push-Location $RepositoryPath
     try {
         git add -u
-        Write-Host "Suppressions de fichiers ajoutées avec succès." -ForegroundColor Green
+        Write-Host "Suppressions de fichiers ajoutÃ©es avec succÃ¨s." -ForegroundColor Green
     } catch {
         Write-Error "Erreur lors de l'ajout des suppressions: $_"
     } finally {
@@ -495,7 +495,7 @@ function Remove-ExistingFiles {
     }
 }
 
-# Fonction pour committer les changements (utilise un verbe approuvé)
+# Fonction pour committer les changements (utilise un verbe approuvÃ©)
 function Submit-Changes {
     param (
         [string]$RepositoryPath,
@@ -511,7 +511,7 @@ function Submit-Changes {
             throw "Erreur lors du commit des changements."
         }
 
-        Write-Host "Changements committés avec succès." -ForegroundColor Green
+        Write-Host "Changements committÃ©s avec succÃ¨s." -ForegroundColor Green
         return $true
     } catch {
         Write-Error "Erreur lors du commit des changements: $_"
@@ -537,7 +537,7 @@ function Push-Changes {
             throw "Erreur lors du push des changements."
         }
 
-        Write-Host "Changements poussés avec succès." -ForegroundColor Green
+        Write-Host "Changements poussÃ©s avec succÃ¨s." -ForegroundColor Green
         return $true
     } catch {
         Write-Error "Erreur lors du push des changements: $_"
@@ -547,7 +547,7 @@ function Push-Changes {
     }
 }
 
-# Fonction pour créer une pull request
+# Fonction pour crÃ©er une pull request
 function New-GithubPullRequest {
     param (
         [string]$RepositoryPath,
@@ -557,30 +557,30 @@ function New-GithubPullRequest {
         [string]$Body
     )
 
-    Write-Host "Création d'une pull request..." -ForegroundColor Cyan
+    Write-Host "CrÃ©ation d'une pull request..." -ForegroundColor Cyan
 
     Push-Location $RepositoryPath
     try {
-        # Vérifier si gh CLI est installé
+        # VÃ©rifier si gh CLI est installÃ©
         $ghInstalled = $null -ne (Get-Command -Name gh -ErrorAction SilentlyContinue)
 
         if (-not $ghInstalled) {
-            Write-Warning "GitHub CLI (gh) n'est pas installé. Impossible de créer une pull request automatiquement."
-            Write-Host "Veuillez créer la pull request manuellement sur GitHub." -ForegroundColor Yellow
+            Write-Warning "GitHub CLI (gh) n'est pas installÃ©. Impossible de crÃ©er une pull request automatiquement."
+            Write-Host "Veuillez crÃ©er la pull request manuellement sur GitHub." -ForegroundColor Yellow
             return $false
         }
 
-        # Créer la pull request
+        # CrÃ©er la pull request
         $prResult = gh pr create --base $BaseBranch --head $BranchName --title $Title --body $Body
 
         if ($LASTEXITCODE -ne 0) {
-            throw "Erreur lors de la création de la pull request."
+            throw "Erreur lors de la crÃ©ation de la pull request."
         }
 
-        Write-Host "Pull request créée avec succès: $prResult" -ForegroundColor Green
+        Write-Host "Pull request crÃ©Ã©e avec succÃ¨s: $prResult" -ForegroundColor Green
         return $true
     } catch {
-        Write-Error "Erreur lors de la création de la pull request: $_"
+        Write-Error "Erreur lors de la crÃ©ation de la pull request: $_"
         return $false
     } finally {
         Pop-Location
@@ -589,19 +589,19 @@ function New-GithubPullRequest {
 
 # Fonction principale
 function New-TestPullRequest {
-    # Vérifier que le dépôt existe
+    # VÃ©rifier que le dÃ©pÃ´t existe
     if (-not (Test-Path -Path $RepositoryPath)) {
-        Write-Error "Le dépôt spécifié n'existe pas: $RepositoryPath"
+        Write-Error "Le dÃ©pÃ´t spÃ©cifiÃ© n'existe pas: $RepositoryPath"
         return
     }
 
-    # Créer une nouvelle branche
+    # CrÃ©er une nouvelle branche
     $branchResult = New-GitBranch -RepositoryPath $RepositoryPath -BranchName $BranchName -BaseBranch $BaseBranch
     if (-not $branchResult) {
         return
     }
 
-    # Déterminer les types de modifications à effectuer
+    # DÃ©terminer les types de modifications Ã  effectuer
     switch ($ModificationTypes) {
         "Add" {
             Add-NewFiles -RepositoryPath $RepositoryPath -Count $FileCount -ErrorCount $ErrorCount -ErrorTypes $ErrorTypes
@@ -636,15 +636,15 @@ function New-TestPullRequest {
         return
     }
 
-    # Créer une pull request si demandé
+    # CrÃ©er une pull request si demandÃ©
     if ($CreatePR) {
         $prTitle = "Test PR: $ModificationTypes modifications with $ErrorCount $ErrorTypes errors"
         $prBody = @"
 # Test Pull Request
 
-Cette pull request a été générée automatiquement pour tester le système d'analyse des pull requests.
+Cette pull request a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement pour tester le systÃ¨me d'analyse des pull requests.
 
-## Détails
+## DÃ©tails
 
 - **Type de modifications**: $ModificationTypes
 - **Nombre de fichiers**: $FileCount
@@ -653,14 +653,14 @@ Cette pull request a été générée automatiquement pour tester le système d'
 
 ## Notes
 
-Les erreurs ont été intentionnellement injectées dans le code pour tester la détection.
-Cette PR ne doit pas être fusionnée en production.
+Les erreurs ont Ã©tÃ© intentionnellement injectÃ©es dans le code pour tester la dÃ©tection.
+Cette PR ne doit pas Ãªtre fusionnÃ©e en production.
 "@
 
         New-GithubPullRequest -RepositoryPath $RepositoryPath -BranchName $BranchName -BaseBranch $BaseBranch -Title $prTitle -Body $prBody
     }
 
-    Write-Host "`nPull request de test créée avec succès:" -ForegroundColor Green
+    Write-Host "`nPull request de test crÃ©Ã©e avec succÃ¨s:" -ForegroundColor Green
     Write-Host "  Branche: $BranchName" -ForegroundColor Cyan
     Write-Host "  Base: $BaseBranch" -ForegroundColor Cyan
     Write-Host "  Type de modifications: $ModificationTypes" -ForegroundColor Cyan
@@ -669,7 +669,7 @@ Cette PR ne doit pas être fusionnée en production.
     Write-Host "  Types d'erreurs: $ErrorTypes" -ForegroundColor Cyan
 
     if (-not $CreatePR) {
-        Write-Host "`nPour créer une pull request manuellement, visitez:" -ForegroundColor Yellow
+        Write-Host "`nPour crÃ©er une pull request manuellement, visitez:" -ForegroundColor Yellow
         Write-Host "  https://github.com/VOTRE_UTILISATEUR/VOTRE_REPO/compare/$BaseBranch...$BranchName" -ForegroundColor Yellow
     }
 }
@@ -677,8 +677,8 @@ Cette PR ne doit pas être fusionnée en production.
 # Exporter la fonction principale
 Export-ModuleMember -Function New-TestPullRequest
 
-# Si le script est exécuté directement (pas importé comme module)
+# Si le script est exÃ©cutÃ© directement (pas importÃ© comme module)
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    # Exécuter la fonction principale
+    # ExÃ©cuter la fonction principale
     New-TestPullRequest
 }

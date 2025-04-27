@@ -1,4 +1,4 @@
-# RoadmapParser3.ps1
+﻿# RoadmapParser3.ps1
 # Script pour parser, manipuler et generer des roadmaps en format markdown
 
 # Enumeration pour representer le statut d'une tache

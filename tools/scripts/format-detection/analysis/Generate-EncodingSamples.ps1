@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère des fichiers d'échantillon avec différents encodages.
+    GÃ©nÃ¨re des fichiers d'Ã©chantillon avec diffÃ©rents encodages.
 
 .DESCRIPTION
-    Ce script génère des fichiers d'échantillon avec différents encodages
-    pour tester la détection d'encodage. Il crée des fichiers texte avec
-    du contenu multilingue dans différents encodages.
+    Ce script gÃ©nÃ¨re des fichiers d'Ã©chantillon avec diffÃ©rents encodages
+    pour tester la dÃ©tection d'encodage. Il crÃ©e des fichiers texte avec
+    du contenu multilingue dans diffÃ©rents encodages.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les fichiers d'échantillon seront enregistrés.
-    Par défaut, utilise le répertoire 'samples/encoding'.
+    Le rÃ©pertoire oÃ¹ les fichiers d'Ã©chantillon seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'samples/encoding'.
 
 .PARAMETER GenerateExpectedEncodings
-    Indique si un fichier JSON contenant les encodages attendus doit être généré.
+    Indique si un fichier JSON contenant les encodages attendus doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     .\Generate-EncodingSamples.ps1 -OutputDirectory "C:\Samples\Encoding" -GenerateExpectedEncodings
@@ -33,58 +33,58 @@ param(
     [switch]$GenerateExpectedEncodings
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputDirectory -PathType Container)) {
     New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé : $OutputDirectory" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $OutputDirectory" -ForegroundColor Green
 }
 
 # Contenu multilingue pour les tests
 $multilingualContent = @"
-=== Test de détection d'encodage ===
+=== Test de dÃ©tection d'encodage ===
 
 == Texte latin (ASCII) ==
 The quick brown fox jumps over the lazy dog.
 0123456789 !@#$%^&*()_+-=[]{}|;':",./<>?
 
-== Texte français (Latin-1) ==
-Voici un texte en français avec des accents : éèêëàâäôöùûüÿç
-Les œufs et les bœufs sont dans le pré.
+== Texte franÃ§ais (Latin-1) ==
+Voici un texte en franÃ§ais avec des accents : Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§
+Les Å“ufs et les bÅ“ufs sont dans le prÃ©.
 
 == Texte allemand (Latin-1) ==
-Falsches Üben von Xylophonmusik quält jeden größeren Zwerg.
-Die Königin und der König leben in einem Schloß.
+Falsches Ãœben von Xylophonmusik quÃ¤lt jeden grÃ¶ÃŸeren Zwerg.
+Die KÃ¶nigin und der KÃ¶nig leben in einem SchloÃŸ.
 
 == Texte grec (UTF-8) ==
-Ξεσκεπάζω την ψυχοφθόρα βδελυγμία.
-Καλημέρα, πώς είστε σήμερα;
+ÎžÎµÏƒÎºÎµÏ€Î¬Î¶Ï‰ Ï„Î·Î½ ÏˆÏ…Ï‡Î¿Ï†Î¸ÏŒÏÎ± Î²Î´ÎµÎ»Ï…Î³Î¼Î¯Î±.
+ÎšÎ±Î»Î·Î¼Î­ÏÎ±, Ï€ÏŽÏ‚ ÎµÎ¯ÏƒÏ„Îµ ÏƒÎ®Î¼ÎµÏÎ±;
 
 == Texte russe (UTF-8) ==
-Съешь же ещё этих мягких французских булок, да выпей чаю.
-Широкая электрификация южных губерний даст мощный толчок подъёму сельского хозяйства.
+Ð¡ÑŠÐµÑˆÑŒ Ð¶Ðµ ÐµÑ‰Ñ‘ ÑÑ‚Ð¸Ñ… Ð¼ÑÐ³ÐºÐ¸Ñ… Ñ„Ñ€Ð°Ð½Ñ†ÑƒÐ·ÑÐºÐ¸Ñ… Ð±ÑƒÐ»Ð¾Ðº, Ð´Ð° Ð²Ñ‹Ð¿ÐµÐ¹ Ñ‡Ð°ÑŽ.
+Ð¨Ð¸Ñ€Ð¾ÐºÐ°Ñ ÑÐ»ÐµÐºÑ‚Ñ€Ð¸Ñ„Ð¸ÐºÐ°Ñ†Ð¸Ñ ÑŽÐ¶Ð½Ñ‹Ñ… Ð³ÑƒÐ±ÐµÑ€Ð½Ð¸Ð¹ Ð´Ð°ÑÑ‚ Ð¼Ð¾Ñ‰Ð½Ñ‹Ð¹ Ñ‚Ð¾Ð»Ñ‡Ð¾Ðº Ð¿Ð¾Ð´ÑŠÑ‘Ð¼Ñƒ ÑÐµÐ»ÑŒÑÐºÐ¾Ð³Ð¾ Ñ…Ð¾Ð·ÑÐ¹ÑÑ‚Ð²Ð°.
 
 == Texte japonais (UTF-8) ==
-いろはにほへと ちりぬるを わかよたれそ つねならむ
-私は日本語を勉強しています。
+ã„ã‚ã¯ã«ã»ã¸ã¨ ã¡ã‚Šã¬ã‚‹ã‚’ ã‚ã‹ã‚ˆãŸã‚Œã ã¤ã­ãªã‚‰ã‚€
+ç§ã¯æ—¥æœ¬èªžã‚’å‹‰å¼·ã—ã¦ã„ã¾ã™ã€‚
 
 == Texte chinois (UTF-8) ==
-我能吞下玻璃而不伤身体。
-你好，世界！
+æˆ‘èƒ½åžä¸‹çŽ»ç’ƒè€Œä¸ä¼¤èº«ä½“ã€‚
+ä½ å¥½ï¼Œä¸–ç•Œï¼
 
 == Texte arabe (UTF-8) ==
-أنا قادر على أكل الزجاج و هذا لا يؤلمني.
-مرحبا بالعالم!
+Ø£Ù†Ø§ Ù‚Ø§Ø¯Ø± Ø¹Ù„Ù‰ Ø£ÙƒÙ„ Ø§Ù„Ø²Ø¬Ø§Ø¬ Ùˆ Ù‡Ø°Ø§ Ù„Ø§ ÙŠØ¤Ù„Ù…Ù†ÙŠ.
+Ù…Ø±Ø­Ø¨Ø§ Ø¨Ø§Ù„Ø¹Ø§Ù„Ù…!
 
-== Texte hébreu (UTF-8) ==
-אני יכול לאכול זכוכית וזה לא מזיק לי.
-שלום עולם!
+== Texte hÃ©breu (UTF-8) ==
+×× ×™ ×™×›×•×œ ×œ××›×•×œ ×–×›×•×›×™×ª ×•×–×” ×œ× ×ž×–×™×§ ×œ×™.
+×©×œ×•× ×¢×•×œ×!
 
 == Texte emoji (UTF-8) ==
-😀 😃 😄 😁 😆 😅 😂 🤣 🥲 ☺️ 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😗 😙 😚 😋 😛 😝 😜
-🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐻‍❄️ 🐨 🐯 🦁 🐮 🐷 🐽 🐸 🐵 🙈 🙉 🙊 🐒 🐔 🐧 🐦 🐤 🐣
+ðŸ˜€ ðŸ˜ƒ ðŸ˜„ ðŸ˜ ðŸ˜† ðŸ˜… ðŸ˜‚ ðŸ¤£ ðŸ¥² â˜ºï¸ ðŸ˜Š ðŸ˜‡ ðŸ™‚ ðŸ™ƒ ðŸ˜‰ ðŸ˜Œ ðŸ˜ ðŸ¥° ðŸ˜˜ ðŸ˜— ðŸ˜™ ðŸ˜š ðŸ˜‹ ðŸ˜› ðŸ˜ ðŸ˜œ
+ðŸ¶ ðŸ± ðŸ­ ðŸ¹ ðŸ° ðŸ¦Š ðŸ» ðŸ¼ ðŸ»â€â„ï¸ ðŸ¨ ðŸ¯ ðŸ¦ ðŸ® ðŸ· ðŸ½ ðŸ¸ ðŸµ ðŸ™ˆ ðŸ™‰ ðŸ™Š ðŸ’ ðŸ” ðŸ§ ðŸ¦ ðŸ¤ ðŸ£
 "@
 
-# Définir les encodages à tester
+# DÃ©finir les encodages Ã  tester
 $encodings = @(
     @{ Name = "ASCII"; Encoding = [System.Text.ASCIIEncoding]::new(); HasBOM = $false },
     @{ Name = "UTF-8"; Encoding = [System.Text.UTF8Encoding]::new($false); HasBOM = $false },
@@ -100,25 +100,25 @@ $encodings = @(
 # Dictionnaire pour stocker les encodages attendus
 $expectedEncodings = @{}
 
-# Générer les fichiers d'échantillon
+# GÃ©nÃ©rer les fichiers d'Ã©chantillon
 foreach ($encoding in $encodings) {
     $fileName = "sample_$($encoding.Name).txt"
     $filePath = Join-Path -Path $OutputDirectory -ChildPath $fileName
     
     try {
-        # Écrire le contenu dans le fichier avec l'encodage spécifié
+        # Ã‰crire le contenu dans le fichier avec l'encodage spÃ©cifiÃ©
         [System.IO.File]::WriteAllText($filePath, $multilingualContent, $encoding.Encoding)
         
-        Write-Host "Fichier créé : $fileName (Encodage: $($encoding.Name), BOM: $($encoding.HasBOM))" -ForegroundColor Green
+        Write-Host "Fichier crÃ©Ã© : $fileName (Encodage: $($encoding.Name), BOM: $($encoding.HasBOM))" -ForegroundColor Green
         
         # Ajouter l'encodage attendu au dictionnaire
         $expectedEncodings[$filePath] = $encoding.Name
     } catch {
-        Write-Warning "Erreur lors de la création du fichier $fileName : $_"
+        Write-Warning "Erreur lors de la crÃ©ation du fichier $fileName : $_"
     }
 }
 
-# Créer des fichiers binaires pour tester la détection
+# CrÃ©er des fichiers binaires pour tester la dÃ©tection
 $binaryFiles = @(
     @{ Name = "sample_binary.bin"; Size = 1024 },
     @{ Name = "sample_binary_with_text.bin"; Size = 1024; HasText = $true },
@@ -129,44 +129,44 @@ foreach ($binaryFile in $binaryFiles) {
     $filePath = Join-Path -Path $OutputDirectory -ChildPath $binaryFile.Name
     
     try {
-        # Créer un tableau d'octets aléatoires
+        # CrÃ©er un tableau d'octets alÃ©atoires
         $bytes = [byte[]]::new($binaryFile.Size)
         $random = [System.Random]::new()
         $random.NextBytes($bytes)
         
-        # Ajouter du texte si demandé
+        # Ajouter du texte si demandÃ©
         if ($binaryFile.HasText) {
             $text = "This is some text embedded in a binary file."
             $textBytes = [System.Text.Encoding]::ASCII.GetBytes($text)
             [Array]::Copy($textBytes, 0, $bytes, 100, $textBytes.Length)
         }
         
-        # Ajouter des octets nuls si demandé
+        # Ajouter des octets nuls si demandÃ©
         if ($binaryFile.HasNulls) {
             for ($i = 0; $i -lt 100; $i++) {
                 $bytes[$i * 2] = 0
             }
         }
         
-        # Écrire les octets dans le fichier
+        # Ã‰crire les octets dans le fichier
         [System.IO.File]::WriteAllBytes($filePath, $bytes)
         
-        Write-Host "Fichier créé : $($binaryFile.Name) (Binaire)" -ForegroundColor Green
+        Write-Host "Fichier crÃ©Ã© : $($binaryFile.Name) (Binaire)" -ForegroundColor Green
         
         # Ajouter l'encodage attendu au dictionnaire
         $expectedEncodings[$filePath] = "BINARY"
     } catch {
-        Write-Warning "Erreur lors de la création du fichier $($binaryFile.Name) : $_"
+        Write-Warning "Erreur lors de la crÃ©ation du fichier $($binaryFile.Name) : $_"
     }
 }
 
-# Générer le fichier d'encodages attendus si demandé
+# GÃ©nÃ©rer le fichier d'encodages attendus si demandÃ©
 if ($GenerateExpectedEncodings) {
     $expectedEncodingsPath = Join-Path -Path $OutputDirectory -ChildPath "ExpectedEncodings.json"
     $expectedEncodings | ConvertTo-Json | Out-File -FilePath $expectedEncodingsPath -Encoding utf8
     
-    Write-Host "Fichier d'encodages attendus créé : $expectedEncodingsPath" -ForegroundColor Green
+    Write-Host "Fichier d'encodages attendus crÃ©Ã© : $expectedEncodingsPath" -ForegroundColor Green
 }
 
-Write-Host "`nGénération des fichiers d'échantillon terminée." -ForegroundColor Cyan
-Write-Host "Nombre total de fichiers créés : $($encodings.Count + $binaryFiles.Count)" -ForegroundColor Cyan
+Write-Host "`nGÃ©nÃ©ration des fichiers d'Ã©chantillon terminÃ©e." -ForegroundColor Cyan
+Write-Host "Nombre total de fichiers crÃ©Ã©s : $($encodings.Count + $binaryFiles.Count)" -ForegroundColor Cyan

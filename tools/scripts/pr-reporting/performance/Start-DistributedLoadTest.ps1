@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de charge distribués sur plusieurs machines.
+    ExÃ©cute des tests de charge distribuÃ©s sur plusieurs machines.
 .DESCRIPTION
-    Coordonne l'exécution de tests de charge sur plusieurs machines et agrège les résultats.
+    Coordonne l'exÃ©cution de tests de charge sur plusieurs machines et agrÃ¨ge les rÃ©sultats.
 .PARAMETER ComputerNames
-    Liste des noms d'ordinateurs sur lesquels exécuter les tests.
+    Liste des noms d'ordinateurs sur lesquels exÃ©cuter les tests.
 .PARAMETER Credentials
     Informations d'identification pour se connecter aux ordinateurs distants.
 .PARAMETER TestScriptPath
-    Chemin local vers le script de test de charge à exécuter sur chaque machine.
+    Chemin local vers le script de test de charge Ã  exÃ©cuter sur chaque machine.
 .PARAMETER Duration
-    Durée des tests en secondes. Par défaut: 30.
+    DurÃ©e des tests en secondes. Par dÃ©faut: 30.
 .PARAMETER Concurrency
-    Nombre d'exécutions concurrentes par machine. Par défaut: 3.
+    Nombre d'exÃ©cutions concurrentes par machine. Par dÃ©faut: 3.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats agrégés. Par défaut: "./distributed-results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats agrÃ©gÃ©s. Par dÃ©faut: "./distributed-results.json".
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .EXAMPLE
     .\Start-DistributedLoadTest.ps1 -ComputerNames @("Server1", "Server2") -TestScriptPath ".\Simple-PRLoadTest.ps1" -Duration 60
 #>
@@ -46,7 +46,7 @@ param (
     [switch]$GenerateReport
 )
 
-# Fonction pour préparer une machine distante
+# Fonction pour prÃ©parer une machine distante
 function Initialize-RemoteMachine {
     param (
         [string]$ComputerName,
@@ -54,9 +54,9 @@ function Initialize-RemoteMachine {
         [string]$TestScriptPath
     )
     
-    Write-Host "Préparation de la machine $ComputerName..." -ForegroundColor Cyan
+    Write-Host "PrÃ©paration de la machine $ComputerName..." -ForegroundColor Cyan
     
-    # Paramètres pour la session distante
+    # ParamÃ¨tres pour la session distante
     $sessionParams = @{
         ComputerName = $ComputerName
         ErrorAction = "Stop"
@@ -67,10 +67,10 @@ function Initialize-RemoteMachine {
     }
     
     try {
-        # Créer une session distante
+        # CrÃ©er une session distante
         $session = New-PSSession @sessionParams
         
-        # Créer un répertoire temporaire sur la machine distante
+        # CrÃ©er un rÃ©pertoire temporaire sur la machine distante
         $remoteTempDir = Invoke-Command -Session $session -ScriptBlock {
             $tempDir = Join-Path -Path $env:TEMP -ChildPath "DistributedLoadTest_$(Get-Random)"
             New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
@@ -81,14 +81,14 @@ function Initialize-RemoteMachine {
         $remoteScriptPath = Join-Path -Path $remoteTempDir -ChildPath (Split-Path -Path $TestScriptPath -Leaf)
         Copy-Item -Path $TestScriptPath -Destination $remoteScriptPath -ToSession $session
         
-        # Vérifier que le script a été copié
+        # VÃ©rifier que le script a Ã©tÃ© copiÃ©
         $scriptExists = Invoke-Command -Session $session -ScriptBlock {
             param ($ScriptPath)
             Test-Path -Path $ScriptPath
         } -ArgumentList $remoteScriptPath
         
         if (-not $scriptExists) {
-            throw "Échec de la copie du script sur la machine distante."
+            throw "Ã‰chec de la copie du script sur la machine distante."
         }
         
         return @{
@@ -98,7 +98,7 @@ function Initialize-RemoteMachine {
         }
     }
     catch {
-        Write-Error "Erreur lors de la préparation de la machine $ComputerName : $_"
+        Write-Error "Erreur lors de la prÃ©paration de la machine $ComputerName : $_"
         if ($session) {
             Remove-PSSession -Session $session
         }
@@ -106,7 +106,7 @@ function Initialize-RemoteMachine {
     }
 }
 
-# Fonction pour exécuter un test sur une machine distante
+# Fonction pour exÃ©cuter un test sur une machine distante
 function Start-RemoteTest {
     param (
         [System.Management.Automation.Runspaces.PSSession]$Session,
@@ -116,17 +116,17 @@ function Start-RemoteTest {
         [int]$Concurrency
     )
     
-    Write-Host "Démarrage du test sur $($Session.ComputerName)..." -ForegroundColor Cyan
+    Write-Host "DÃ©marrage du test sur $($Session.ComputerName)..." -ForegroundColor Cyan
     
     try {
-        # Exécuter le script de test sur la machine distante
+        # ExÃ©cuter le script de test sur la machine distante
         $job = Invoke-Command -Session $Session -ScriptBlock {
             param ($ScriptPath, $OutputPath, $Duration, $Concurrency)
             
-            # Exécuter le script de test
+            # ExÃ©cuter le script de test
             & $ScriptPath -Duration $Duration -Concurrency $Concurrency -OutputPath $OutputPath
             
-            # Vérifier que les résultats ont été générés
+            # VÃ©rifier que les rÃ©sultats ont Ã©tÃ© gÃ©nÃ©rÃ©s
             if (Test-Path -Path $OutputPath) {
                 $results = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
                 return @{
@@ -138,7 +138,7 @@ function Start-RemoteTest {
             else {
                 return @{
                     Success = $false
-                    Error = "Les résultats n'ont pas été générés."
+                    Error = "Les rÃ©sultats n'ont pas Ã©tÃ© gÃ©nÃ©rÃ©s."
                 }
             }
         } -ArgumentList $ScriptPath, $OutputPath, $Duration, $Concurrency -AsJob
@@ -146,12 +146,12 @@ function Start-RemoteTest {
         return $job
     }
     catch {
-        Write-Error "Erreur lors du démarrage du test sur $($Session.ComputerName) : $_"
+        Write-Error "Erreur lors du dÃ©marrage du test sur $($Session.ComputerName) : $_"
         return $null
     }
 }
 
-# Fonction pour récupérer les résultats d'un test distant
+# Fonction pour rÃ©cupÃ©rer les rÃ©sultats d'un test distant
 function Get-RemoteTestResults {
     param (
         [System.Management.Automation.Job]$Job,
@@ -163,16 +163,16 @@ function Get-RemoteTestResults {
         $result = $Job | Wait-Job | Receive-Job
         
         if ($result.Success) {
-            # Récupérer les résultats
+            # RÃ©cupÃ©rer les rÃ©sultats
             return $result.Results
         }
         else {
-            Write-Error "Erreur lors de l'exécution du test sur $($Session.ComputerName) : $($result.Error)"
+            Write-Error "Erreur lors de l'exÃ©cution du test sur $($Session.ComputerName) : $($result.Error)"
             return $null
         }
     }
     catch {
-        Write-Error "Erreur lors de la récupération des résultats sur $($Session.ComputerName) : $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des rÃ©sultats sur $($Session.ComputerName) : $_"
         return $null
     }
 }
@@ -185,7 +185,7 @@ function Clear-RemoteMachine {
     )
     
     try {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         Invoke-Command -Session $Session -ScriptBlock {
             param ($TempDir)
             if (Test-Path -Path $TempDir) {
@@ -201,18 +201,18 @@ function Clear-RemoteMachine {
     }
 }
 
-# Fonction pour agréger les résultats
+# Fonction pour agrÃ©ger les rÃ©sultats
 function Merge-TestResults {
     param (
         [array]$Results
     )
     
-    # Vérifier qu'il y a des résultats à agréger
+    # VÃ©rifier qu'il y a des rÃ©sultats Ã  agrÃ©ger
     if ($Results.Count -eq 0) {
-        throw "Aucun résultat à agréger."
+        throw "Aucun rÃ©sultat Ã  agrÃ©ger."
     }
     
-    # Initialiser les résultats agrégés
+    # Initialiser les rÃ©sultats agrÃ©gÃ©s
     $aggregatedResults = [PSCustomObject]@{
         StartTime = $Results[0].StartTime
         Duration = $Results[0].Duration
@@ -231,7 +231,7 @@ function Merge-TestResults {
         Machines = @()
     }
     
-    # Agréger les métriques
+    # AgrÃ©ger les mÃ©triques
     $totalResponseTime = 0
     $allResponseTimes = @()
     
@@ -264,7 +264,7 @@ function Merge-TestResults {
         $aggregatedResults.AvgResponseMs = $totalResponseTime / $aggregatedResults.TotalRequests
     }
     
-    # Calculer le débit global
+    # Calculer le dÃ©bit global
     $totalExecTime = ($Results | Measure-Object -Property TotalExecTime -Maximum).Maximum
     $aggregatedResults.TotalExecTime = $totalExecTime
     $aggregatedResults.RequestsPerSecond = $aggregatedResults.TotalRequests / $totalExecTime
@@ -272,14 +272,14 @@ function Merge-TestResults {
     return $aggregatedResults
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-DistributedTestReport {
     param (
         [object]$Results,
         [string]$OutputPath
     )
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $machineLabels = $Results.Machines | ForEach-Object { $_.ComputerName }
     $machineRequests = $Results.Machines | ForEach-Object { $_.TotalRequests }
     $machineResponseTimes = $Results.Machines | ForEach-Object { $_.AvgResponseMs }
@@ -303,7 +303,7 @@ function New-DistributedTestReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de test de charge distribué</title>
+    <title>Rapport de test de charge distribuÃ©</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -385,12 +385,12 @@ function New-DistributedTestReport {
 </head>
 <body>
     <div class="header">
-        <h1>Rapport de test de charge distribué</h1>
-        <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <h1>Rapport de test de charge distribuÃ©</h1>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
     <div class="section">
-        <h2>Résumé global</h2>
+        <h2>RÃ©sumÃ© global</h2>
         <div class="summary">
             <div class="metric-card">
                 <div class="metric-title">Machines</div>
@@ -401,19 +401,19 @@ function New-DistributedTestReport {
                 <div class="metric-value">$($Results.Concurrency)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Requêtes totales</div>
+                <div class="metric-title">RequÃªtes totales</div>
                 <div class="metric-value">$($Results.TotalRequests)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Requêtes par seconde</div>
+                <div class="metric-title">RequÃªtes par seconde</div>
                 <div class="metric-value">$([Math]::Round($Results.RequestsPerSecond, 2))</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps de réponse moyen</div>
+                <div class="metric-title">Temps de rÃ©ponse moyen</div>
                 <div class="metric-value">$([Math]::Round($Results.AvgResponseMs, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Durée du test</div>
+                <div class="metric-title">DurÃ©e du test</div>
                 <div class="metric-value">$([Math]::Round($Results.TotalExecTime, 2))<span class="metric-unit">s</span></div>
             </div>
         </div>
@@ -433,32 +433,32 @@ function New-DistributedTestReport {
     </div>
     
     <div class="section">
-        <h2>Détails par machine</h2>
+        <h2>DÃ©tails par machine</h2>
         <table>
             <tr>
                 <th>Machine</th>
-                <th>Requêtes</th>
-                <th>Temps de réponse moyen</th>
-                <th>Requêtes par seconde</th>
+                <th>RequÃªtes</th>
+                <th>Temps de rÃ©ponse moyen</th>
+                <th>RequÃªtes par seconde</th>
             </tr>
             $machineRows
         </table>
     </div>
     
     <div class="footer">
-        <p>Rapport généré par Start-DistributedLoadTest.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par Start-DistributedLoadTest.ps1</p>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Graphique des requêtes par machine
+            // Graphique des requÃªtes par machine
             const requestsCtx = document.getElementById('requestsChart').getContext('2d');
             new Chart(requestsCtx, {
                 type: 'bar',
                 data: {
                     labels: $($machineLabels | ConvertTo-Json),
                     datasets: [{
-                        label: 'Requêtes par machine',
+                        label: 'RequÃªtes par machine',
                         data: $($machineRequests | ConvertTo-Json),
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -470,7 +470,7 @@ function New-DistributedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Requêtes par machine'
+                            text: 'RequÃªtes par machine'
                         }
                     },
                     scales: {
@@ -478,21 +478,21 @@ function New-DistributedTestReport {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Nombre de requêtes'
+                                text: 'Nombre de requÃªtes'
                             }
                         }
                     }
                 }
             });
             
-            // Graphique des temps de réponse par machine
+            // Graphique des temps de rÃ©ponse par machine
             const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
             new Chart(responseTimeCtx, {
                 type: 'bar',
                 data: {
                     labels: $($machineLabels | ConvertTo-Json),
                     datasets: [{
-                        label: 'Temps de réponse moyen par machine',
+                        label: 'Temps de rÃ©ponse moyen par machine',
                         data: $($machineResponseTimes | ConvertTo-Json),
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -504,7 +504,7 @@ function New-DistributedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Temps de réponse moyen par machine'
+                            text: 'Temps de rÃ©ponse moyen par machine'
                         }
                     },
                     scales: {
@@ -526,7 +526,7 @@ function New-DistributedTestReport {
                 data: {
                     labels: $($machineLabels | ConvertTo-Json),
                     datasets: [{
-                        label: 'Requêtes par seconde par machine',
+                        label: 'RequÃªtes par seconde par machine',
                         data: $($machineRps | ConvertTo-Json),
                         backgroundColor: 'rgba(75, 192, 192, 0.5)',
                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -538,7 +538,7 @@ function New-DistributedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Requêtes par seconde par machine'
+                            text: 'RequÃªtes par seconde par machine'
                         }
                     },
                     scales: {
@@ -559,25 +559,25 @@ function New-DistributedTestReport {
 "@
     
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier que le script de test existe
+    # VÃ©rifier que le script de test existe
     if (-not (Test-Path -Path $TestScriptPath)) {
         Write-Error "Le script de test n'existe pas: $TestScriptPath"
         return
     }
     
-    # Vérifier que le répertoire de sortie existe
+    # VÃ©rifier que le rÃ©pertoire de sortie existe
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de sortie créé: $outputDir" -ForegroundColor Cyan
+        Write-Host "RÃ©pertoire de sortie crÃ©Ã©: $outputDir" -ForegroundColor Cyan
     }
     
-    # Préparer les machines distantes
+    # PrÃ©parer les machines distantes
     $remoteInfo = @{}
     foreach ($computer in $ComputerNames) {
         $info = Initialize-RemoteMachine -ComputerName $computer -Credentials $Credentials -TestScriptPath $TestScriptPath
@@ -587,11 +587,11 @@ function Main {
     }
     
     if ($remoteInfo.Count -eq 0) {
-        Write-Error "Aucune machine distante n'a pu être préparée."
+        Write-Error "Aucune machine distante n'a pu Ãªtre prÃ©parÃ©e."
         return
     }
     
-    # Démarrer les tests sur chaque machine
+    # DÃ©marrer les tests sur chaque machine
     $jobs = @{}
     foreach ($computer in $remoteInfo.Keys) {
         $info = $remoteInfo[$computer]
@@ -607,7 +607,7 @@ function Main {
     }
     
     if ($jobs.Count -eq 0) {
-        Write-Error "Aucun test n'a pu être démarré."
+        Write-Error "Aucun test n'a pu Ãªtre dÃ©marrÃ©."
         return
     }
     
@@ -620,7 +620,7 @@ function Main {
         $result = Get-RemoteTestResults -Job $jobInfo.Job -Session $jobInfo.Session
         
         if ($result) {
-            # Ajouter le nom de la machine aux résultats
+            # Ajouter le nom de la machine aux rÃ©sultats
             $result | Add-Member -MemberType NoteProperty -Name "ComputerName" -Value $computer
             $results += $result
         }
@@ -633,38 +633,38 @@ function Main {
     }
     
     if ($results.Count -eq 0) {
-        Write-Error "Aucun résultat n'a été récupéré."
+        Write-Error "Aucun rÃ©sultat n'a Ã©tÃ© rÃ©cupÃ©rÃ©."
         return
     }
     
-    # Agréger les résultats
+    # AgrÃ©ger les rÃ©sultats
     try {
         $aggregatedResults = Merge-TestResults -Results $results
         
-        # Enregistrer les résultats agrégés
+        # Enregistrer les rÃ©sultats agrÃ©gÃ©s
         $aggregatedResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-        Write-Host "Résultats agrégés enregistrés: $OutputPath" -ForegroundColor Green
+        Write-Host "RÃ©sultats agrÃ©gÃ©s enregistrÃ©s: $OutputPath" -ForegroundColor Green
         
-        # Générer un rapport HTML si demandé
+        # GÃ©nÃ©rer un rapport HTML si demandÃ©
         if ($GenerateReport) {
             $reportPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
             New-DistributedTestReport -Results $aggregatedResults -OutputPath $reportPath
         }
         
-        # Afficher un résumé
-        Write-Host "`nRésumé du test distribué:" -ForegroundColor Cyan
+        # Afficher un rÃ©sumÃ©
+        Write-Host "`nRÃ©sumÃ© du test distribuÃ©:" -ForegroundColor Cyan
         Write-Host "=======================" -ForegroundColor Cyan
         Write-Host "Machines: $($results.Count)"
-        Write-Host "Requêtes totales: $($aggregatedResults.TotalRequests)"
-        Write-Host "Requêtes par seconde: $([Math]::Round($aggregatedResults.RequestsPerSecond, 2))"
-        Write-Host "Temps de réponse moyen: $([Math]::Round($aggregatedResults.AvgResponseMs, 2)) ms"
+        Write-Host "RequÃªtes totales: $($aggregatedResults.TotalRequests)"
+        Write-Host "RequÃªtes par seconde: $([Math]::Round($aggregatedResults.RequestsPerSecond, 2))"
+        Write-Host "Temps de rÃ©ponse moyen: $([Math]::Round($aggregatedResults.AvgResponseMs, 2)) ms"
         
         return $aggregatedResults
     }
     catch {
-        Write-Error "Erreur lors de l'agrégation des résultats: $_"
+        Write-Error "Erreur lors de l'agrÃ©gation des rÃ©sultats: $_"
     }
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

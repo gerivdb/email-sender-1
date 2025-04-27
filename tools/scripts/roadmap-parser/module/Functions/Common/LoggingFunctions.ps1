@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de journalisation pour les modes RoadmapParser.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour la journalisation des événements
-    dans les différents modes de RoadmapParser.
+    Ce script contient des fonctions pour la journalisation des Ã©vÃ©nements
+    dans les diffÃ©rents modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.1
-    Date de création: 2023-08-15
-    Date de mise à jour: 2023-08-16
+    Date de crÃ©ation: 2023-08-15
+    Date de mise Ã  jour: 2023-08-16
 #>
 
 # Importer les fonctions de rotation des journaux
 . "$PSScriptRoot\LogRotationFunctions.ps1"
 
-# Importer les fonctions de verbosité
+# Importer les fonctions de verbositÃ©
 . "$PSScriptRoot\VerbosityFunctions.ps1"
 
 # Variable globale pour le niveau de journalisation
@@ -31,7 +31,7 @@ $script:LoggingLevels = @{
     "DEBUG"   = 4
 }
 
-# Couleurs pour les différents niveaux de journalisation
+# Couleurs pour les diffÃ©rents niveaux de journalisation
 $script:LoggingColors = @{
     "ERROR"   = "Red"
     "WARNING" = "Yellow"
@@ -42,25 +42,25 @@ $script:LoggingColors = @{
 
 # Configuration de journalisation
 $script:LoggingConfig = @{
-    # Fichier de journal par défaut
+    # Fichier de journal par dÃ©faut
     DefaultLogFile  = "logs\roadmap-parser.log"
 
     # Activer la rotation des journaux
     EnableRotation  = $true
 
-    # Activer la verbosité configurable
+    # Activer la verbositÃ© configurable
     EnableVerbosity = $true
 }
 
 <#
 .SYNOPSIS
-    Définit le niveau de journalisation.
+    DÃ©finit le niveau de journalisation.
 
 .DESCRIPTION
-    Cette fonction définit le niveau de journalisation pour les fonctions de journalisation.
+    Cette fonction dÃ©finit le niveau de journalisation pour les fonctions de journalisation.
 
 .PARAMETER Level
-    Niveau de journalisation à utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
+    Niveau de journalisation Ã  utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
 
 .EXAMPLE
     Set-LoggingLevel -Level "DEBUG"
@@ -77,7 +77,7 @@ function Set-LoggingLevel {
     )
 
     $script:LoggingLevel = $Level
-    Write-Host "Niveau de journalisation défini à : $Level" -ForegroundColor $script:LoggingColors[$Level]
+    Write-Host "Niveau de journalisation dÃ©fini Ã  : $Level" -ForegroundColor $script:LoggingColors[$Level]
 }
 
 <#
@@ -102,10 +102,10 @@ function Get-LoggingLevel {
 
 <#
 .SYNOPSIS
-    Vérifie si un message doit être journalisé en fonction du niveau de journalisation actuel.
+    VÃ©rifie si un message doit Ãªtre journalisÃ© en fonction du niveau de journalisation actuel.
 
 .DESCRIPTION
-    Cette fonction vérifie si un message doit être journalisé en fonction du niveau de journalisation actuel.
+    Cette fonction vÃ©rifie si un message doit Ãªtre journalisÃ© en fonction du niveau de journalisation actuel.
 
 .PARAMETER Level
     Niveau de journalisation du message.
@@ -135,7 +135,7 @@ function Test-LoggingLevel {
     Cette fonction journalise un message d'erreur.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .EXAMPLE
     Write-LogError "Une erreur s'est produite."
@@ -164,10 +164,10 @@ function Write-LogError {
     Cette fonction journalise un message d'avertissement.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .EXAMPLE
-    Write-LogWarning "Attention, cette opération peut être dangereuse."
+    Write-LogWarning "Attention, cette opÃ©ration peut Ãªtre dangereuse."
 
 .OUTPUTS
     None
@@ -193,7 +193,7 @@ function Write-LogWarning {
     Cette fonction journalise un message d'information.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .EXAMPLE
     Write-LogInfo "Traitement en cours..."
@@ -216,16 +216,16 @@ function Write-LogInfo {
 
 <#
 .SYNOPSIS
-    Journalise un message détaillé.
+    Journalise un message dÃ©taillÃ©.
 
 .DESCRIPTION
-    Cette fonction journalise un message détaillé.
+    Cette fonction journalise un message dÃ©taillÃ©.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .EXAMPLE
-    Write-LogVerbose "Détails supplémentaires sur le traitement en cours..."
+    Write-LogVerbose "DÃ©tails supplÃ©mentaires sur le traitement en cours..."
 
 .OUTPUTS
     None
@@ -245,13 +245,13 @@ function Write-LogVerbose {
 
 <#
 .SYNOPSIS
-    Journalise un message de débogage.
+    Journalise un message de dÃ©bogage.
 
 .DESCRIPTION
-    Cette fonction journalise un message de débogage.
+    Cette fonction journalise un message de dÃ©bogage.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .EXAMPLE
     Write-LogDebug "Valeur de la variable x : $x"
@@ -278,10 +278,10 @@ function Write-LogDebug {
 
 .DESCRIPTION
     Cette fonction journalise un message dans un fichier.
-    Elle prend en charge la rotation des journaux si celle-ci est activée.
+    Elle prend en charge la rotation des journaux si celle-ci est activÃ©e.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .PARAMETER Level
     Niveau de journalisation du message.
@@ -290,7 +290,7 @@ function Write-LogDebug {
     Chemin vers le fichier de journalisation.
 
 .PARAMETER Category
-    Catégorie du message.
+    CatÃ©gorie du message.
 
 .PARAMETER Source
     Source du message.
@@ -299,13 +299,13 @@ function Write-LogDebug {
     Identifiant du message.
 
 .PARAMETER NoRotation
-    Indique si la rotation des journaux doit être désactivée pour cet appel.
+    Indique si la rotation des journaux doit Ãªtre dÃ©sactivÃ©e pour cet appel.
 
 .EXAMPLE
     Write-LogToFile -Message "Une erreur s'est produite." -Level "ERROR" -LogFile "logs\error.log"
 
 .EXAMPLE
-    Write-LogToFile -Message "Connexion à la base de données." -Level "INFO" -LogFile "logs\app.log" -Category "Database" -Source "Repository" -Id "DB001"
+    Write-LogToFile -Message "Connexion Ã  la base de donnÃ©es." -Level "INFO" -LogFile "logs\app.log" -Category "Database" -Source "Repository" -Id "DB001"
 
 .OUTPUTS
     None
@@ -337,20 +337,20 @@ function Write-LogToFile {
     )
 
     if (Test-LoggingLevel -Level $Level) {
-        # Créer le répertoire parent s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire parent s'il n'existe pas
         $parentDir = Split-Path -Parent $LogFile
         if (-not [string]::IsNullOrEmpty($parentDir) -and -not (Test-Path -Path $parentDir)) {
             New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
         }
 
-        # Vérifier si la rotation des journaux est nécessaire
+        # VÃ©rifier si la rotation des journaux est nÃ©cessaire
         if ($script:LoggingConfig.EnableRotation -and -not $NoRotation) {
             if (Test-Path -Path $LogFile) {
                 Invoke-LogRotation -LogFile $LogFile
             }
         }
 
-        # Formater le message en fonction de la verbosité si activée
+        # Formater le message en fonction de la verbositÃ© si activÃ©e
         if ($script:LoggingConfig.EnableVerbosity) {
             $logMessage = Format-MessageByVerbosity -Message $Message -Level $Level -Category $Category -Source $Source -Id $Id
         } else {
@@ -364,14 +364,14 @@ function Write-LogToFile {
 
 <#
 .SYNOPSIS
-    Journalise un message à la fois dans la console et dans un fichier.
+    Journalise un message Ã  la fois dans la console et dans un fichier.
 
 .DESCRIPTION
-    Cette fonction journalise un message à la fois dans la console et dans un fichier.
-    Elle prend en charge la rotation des journaux et la verbosité configurable.
+    Cette fonction journalise un message Ã  la fois dans la console et dans un fichier.
+    Elle prend en charge la rotation des journaux et la verbositÃ© configurable.
 
 .PARAMETER Message
-    Message à journaliser.
+    Message Ã  journaliser.
 
 .PARAMETER Level
     Niveau de journalisation du message.
@@ -380,7 +380,7 @@ function Write-LogToFile {
     Chemin vers le fichier de journalisation.
 
 .PARAMETER Category
-    Catégorie du message.
+    CatÃ©gorie du message.
 
 .PARAMETER Source
     Source du message.
@@ -389,13 +389,13 @@ function Write-LogToFile {
     Identifiant du message.
 
 .PARAMETER NoRotation
-    Indique si la rotation des journaux doit être désactivée pour cet appel.
+    Indique si la rotation des journaux doit Ãªtre dÃ©sactivÃ©e pour cet appel.
 
 .EXAMPLE
     Write-Log -Message "Une erreur s'est produite." -Level "ERROR" -LogFile "logs\error.log"
 
 .EXAMPLE
-    Write-Log -Message "Connexion à la base de données." -Level "INFO" -LogFile "logs\app.log" -Category "Database" -Source "Repository" -Id "DB001"
+    Write-Log -Message "Connexion Ã  la base de donnÃ©es." -Level "INFO" -LogFile "logs\app.log" -Category "Database" -Source "Repository" -Id "DB001"
 
 .OUTPUTS
     None
@@ -427,7 +427,7 @@ function Write-Log {
     )
 
     if ($script:LoggingConfig.EnableVerbosity) {
-        # Utiliser les fonctions de verbosité configurable
+        # Utiliser les fonctions de verbositÃ© configurable
         if ($LogFile) {
             Write-LogWithVerbosity -Message $Message -Level $Level -Category $Category -Source $Source -Id $Id -LogFile $LogFile
         } else {
@@ -453,7 +453,7 @@ function Write-Log {
             "DEBUG" { Write-LogDebug $Message }
         }
 
-        # Journaliser dans un fichier si spécifié
+        # Journaliser dans un fichier si spÃ©cifiÃ©
         if ($LogFile) {
             Write-LogToFile -Message $Message -Level $Level -LogFile $LogFile -Category $Category -Source $Source -Id $Id -NoRotation:$NoRotation
         }
@@ -468,6 +468,6 @@ if ($MyInvocation.ScriptName -ne '') {
     # Exporter les fonctions de rotation des journaux
     Export-ModuleMember -Function Get-LogRotationConfig, Set-LogRotationConfig, Test-LogRotationBySize, Test-LogRotationByDate, Invoke-LogRotationBySize, Invoke-LogRotationByDate, Compress-LogFile, Invoke-LogAutoPurge, Invoke-LogRotation
 
-    # Exporter les fonctions de verbosité
+    # Exporter les fonctions de verbositÃ©
     Export-ModuleMember -Function Get-VerbosityConfig, Set-VerbosityLevel, Get-VerbosityLevel, Set-VerbosityFormat, Get-VerbosityFormat, Set-VerbosityCategories, Get-VerbosityCategories, Set-VerbosityPreset, Test-VerbosityLogLevel, Format-MessageByVerbosity, Write-LogWithVerbosity
 }

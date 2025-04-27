@@ -1,4 +1,4 @@
-# SimpleModule.psm1
+﻿# SimpleModule.psm1
 # Module simple pour tester l'importation
 
 function Test-SimpleFunction {

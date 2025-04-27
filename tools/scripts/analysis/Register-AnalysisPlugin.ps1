@@ -1,34 +1,34 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Enregistre un plugin d'analyse dans le système d'analyse.
+    Enregistre un plugin d'analyse dans le systÃ¨me d'analyse.
 
 .DESCRIPTION
-    Ce script permet d'enregistrer un plugin d'analyse dans le système d'analyse.
-    Les plugins peuvent être des scripts PowerShell, des modules ou des connecteurs
+    Ce script permet d'enregistrer un plugin d'analyse dans le systÃ¨me d'analyse.
+    Les plugins peuvent Ãªtre des scripts PowerShell, des modules ou des connecteurs
     vers des outils d'analyse tiers.
 
 .PARAMETER Path
-    Chemin du fichier de plugin à enregistrer. Si non spécifié, le script recherche
-    automatiquement les plugins dans le répertoire plugins.
+    Chemin du fichier de plugin Ã  enregistrer. Si non spÃ©cifiÃ©, le script recherche
+    automatiquement les plugins dans le rÃ©pertoire plugins.
 
 .PARAMETER Force
-    Remplacer un plugin existant avec le même nom.
+    Remplacer un plugin existant avec le mÃªme nom.
 
 .PARAMETER ListPlugins
-    Afficher la liste des plugins enregistrés.
+    Afficher la liste des plugins enregistrÃ©s.
 
 .PARAMETER EnablePlugin
-    Activer un plugin spécifique.
+    Activer un plugin spÃ©cifique.
 
 .PARAMETER DisablePlugin
-    Désactiver un plugin spécifique.
+    DÃ©sactiver un plugin spÃ©cifique.
 
 .PARAMETER ExportPlugin
     Exporter un plugin vers un fichier.
 
 .PARAMETER OutputDirectory
-    Répertoire de sortie pour l'exportation du plugin.
+    RÃ©pertoire de sortie pour l'exportation du plugin.
 
 .EXAMPLE
     .\Register-AnalysisPlugin.ps1 -Path "C:\Plugins\MyPlugin.ps1"
@@ -80,15 +80,15 @@ else {
     throw "Module AnalysisPluginManager.psm1 introuvable."
 }
 
-# Créer le répertoire de plugins s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de plugins s'il n'existe pas
 $pluginsDirectory = Join-Path -Path $PSScriptRoot -ChildPath "plugins"
 if (-not (Test-Path -Path $pluginsDirectory -PathType Container)) {
     try {
         New-Item -Path $pluginsDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire de plugins '$pluginsDirectory' créé."
+        Write-Verbose "RÃ©pertoire de plugins '$pluginsDirectory' crÃ©Ã©."
     }
     catch {
-        Write-Error "Impossible de créer le répertoire de plugins '$pluginsDirectory': $_"
+        Write-Error "Impossible de crÃ©er le rÃ©pertoire de plugins '$pluginsDirectory': $_"
     }
 }
 
@@ -100,15 +100,15 @@ function Show-PluginList {
     $plugins = Get-AnalysisPlugin
     
     if ($null -eq $plugins -or $plugins.Count -eq 0) {
-        Write-Host "Aucun plugin enregistré." -ForegroundColor Yellow
+        Write-Host "Aucun plugin enregistrÃ©." -ForegroundColor Yellow
         return
     }
     
-    Write-Host "Plugins enregistrés:" -ForegroundColor Cyan
+    Write-Host "Plugins enregistrÃ©s:" -ForegroundColor Cyan
     
     $plugins | ForEach-Object {
         $statusColor = if ($_.Enabled) { "Green" } else { "Red" }
-        $status = if ($_.Enabled) { "Activé" } else { "Désactivé" }
+        $status = if ($_.Enabled) { "ActivÃ©" } else { "DÃ©sactivÃ©" }
         
         Write-Host ""
         Write-Host "$($_.Name) ($($_.Version))" -ForegroundColor Cyan
@@ -118,22 +118,22 @@ function Show-PluginList {
         Write-Host "  Statut: $status" -ForegroundColor $statusColor
         
         if ($_.ExecutionCount -gt 0) {
-            Write-Host "  Exécutions: $($_.ExecutionCount)" -ForegroundColor "White"
+            Write-Host "  ExÃ©cutions: $($_.ExecutionCount)" -ForegroundColor "White"
             Write-Host "  Temps moyen: $($_.AverageExecutionTime) ms" -ForegroundColor "White"
-            Write-Host "  Dernière exécution: $($_.LastExecutionTime)" -ForegroundColor "White"
+            Write-Host "  DerniÃ¨re exÃ©cution: $($_.LastExecutionTime)" -ForegroundColor "White"
         }
         
         if ($_.Dependencies.Count -gt 0) {
-            Write-Host "  Dépendances: $($_.Dependencies -join ", ")" -ForegroundColor "White"
+            Write-Host "  DÃ©pendances: $($_.Dependencies -join ", ")" -ForegroundColor "White"
         }
     }
 }
 
-# Traiter les différentes actions
+# Traiter les diffÃ©rentes actions
 switch ($PSCmdlet.ParameterSetName) {
     "Register" {
         if ($Path) {
-            # Enregistrer un plugin spécifique
+            # Enregistrer un plugin spÃ©cifique
             if (-not (Test-Path -Path $Path -PathType Leaf)) {
                 Write-Error "Le fichier '$Path' n'existe pas."
                 return
@@ -142,10 +142,10 @@ switch ($PSCmdlet.ParameterSetName) {
             $result = Import-AnalysisPlugin -Path $Path -Force:$Force
             
             if ($result) {
-                Write-Host "Plugin enregistré avec succès: $Path" -ForegroundColor Green
+                Write-Host "Plugin enregistrÃ© avec succÃ¨s: $Path" -ForegroundColor Green
             }
             else {
-                Write-Error "Échec de l'enregistrement du plugin: $Path"
+                Write-Error "Ã‰chec de l'enregistrement du plugin: $Path"
             }
         }
         else {
@@ -153,20 +153,20 @@ switch ($PSCmdlet.ParameterSetName) {
             $pluginFiles = Find-AnalysisPlugins -Register -Force:$Force
             
             if ($pluginFiles.Count -gt 0) {
-                Write-Host "$($pluginFiles.Count) plugins enregistrés avec succès:" -ForegroundColor Green
+                Write-Host "$($pluginFiles.Count) plugins enregistrÃ©s avec succÃ¨s:" -ForegroundColor Green
                 $pluginFiles | ForEach-Object {
                     Write-Host "  - $_" -ForegroundColor "White"
                 }
             }
             else {
-                Write-Host "Aucun plugin trouvé à enregistrer." -ForegroundColor Yellow
+                Write-Host "Aucun plugin trouvÃ© Ã  enregistrer." -ForegroundColor Yellow
                 
-                # Proposer d'enregistrer les connecteurs intégrés
+                # Proposer d'enregistrer les connecteurs intÃ©grÃ©s
                 $toolsDirectory = Join-Path -Path $PSScriptRoot -ChildPath "tools"
                 $connectors = Get-ChildItem -Path $toolsDirectory -Filter "Connect-*.ps1" -ErrorAction SilentlyContinue
                 
                 if ($connectors.Count -gt 0) {
-                    Write-Host "`nConnecteurs intégrés disponibles:" -ForegroundColor Cyan
+                    Write-Host "`nConnecteurs intÃ©grÃ©s disponibles:" -ForegroundColor Cyan
                     $connectors | ForEach-Object {
                         Write-Host "  - $($_.Name)" -ForegroundColor "White"
                     }
@@ -192,21 +192,21 @@ switch ($PSCmdlet.ParameterSetName) {
         $result = Set-AnalysisPluginState -Name $EnablePlugin -Enabled $true
         
         if ($result) {
-            Write-Host "Plugin '$EnablePlugin' activé." -ForegroundColor Green
+            Write-Host "Plugin '$EnablePlugin' activÃ©." -ForegroundColor Green
         }
         else {
-            Write-Error "Échec de l'activation du plugin '$EnablePlugin'."
+            Write-Error "Ã‰chec de l'activation du plugin '$EnablePlugin'."
         }
     }
     "Disable" {
-        # Désactiver un plugin
+        # DÃ©sactiver un plugin
         $result = Set-AnalysisPluginState -Name $DisablePlugin -Enabled $false
         
         if ($result) {
-            Write-Host "Plugin '$DisablePlugin' désactivé." -ForegroundColor Green
+            Write-Host "Plugin '$DisablePlugin' dÃ©sactivÃ©." -ForegroundColor Green
         }
         else {
-            Write-Error "Échec de la désactivation du plugin '$DisablePlugin'."
+            Write-Error "Ã‰chec de la dÃ©sactivation du plugin '$DisablePlugin'."
         }
     }
     "Export" {
@@ -218,10 +218,10 @@ switch ($PSCmdlet.ParameterSetName) {
         $result = Export-AnalysisPlugin -Name $ExportPlugin -OutputDirectory $OutputDirectory -Force
         
         if ($result) {
-            Write-Host "Plugin '$ExportPlugin' exporté vers '$OutputDirectory'." -ForegroundColor Green
+            Write-Host "Plugin '$ExportPlugin' exportÃ© vers '$OutputDirectory'." -ForegroundColor Green
         }
         else {
-            Write-Error "Échec de l'exportation du plugin '$ExportPlugin'."
+            Write-Error "Ã‰chec de l'exportation du plugin '$ExportPlugin'."
         }
     }
 }

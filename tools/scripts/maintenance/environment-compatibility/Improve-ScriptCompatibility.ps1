@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour améliorer la compatibilité des scripts PowerShell entre environnements.
+    Script pour amÃ©liorer la compatibilitÃ© des scripts PowerShell entre environnements.
 
 .DESCRIPTION
-    Ce script analyse les scripts PowerShell existants et les modifie pour améliorer
-    leur compatibilité entre différents environnements (Windows, Linux, macOS).
+    Ce script analyse les scripts PowerShell existants et les modifie pour amÃ©liorer
+    leur compatibilitÃ© entre diffÃ©rents environnements (Windows, Linux, macOS).
 
 .PARAMETER ScriptPath
-    Le chemin du script ou du répertoire à analyser.
+    Le chemin du script ou du rÃ©pertoire Ã  analyser.
 
 .PARAMETER Recurse
-    Si spécifié, analyse récursivement les sous-répertoires.
+    Si spÃ©cifiÃ©, analyse rÃ©cursivement les sous-rÃ©pertoires.
 
 .PARAMETER BackupFiles
-    Si spécifié, crée une sauvegarde des fichiers avant de les modifier.
+    Si spÃ©cifiÃ©, crÃ©e une sauvegarde des fichiers avant de les modifier.
 
 .PARAMETER WhatIf
-    Si spécifié, affiche les modifications qui seraient apportées sans les appliquer.
+    Si spÃ©cifiÃ©, affiche les modifications qui seraient apportÃ©es sans les appliquer.
 
 .PARAMETER ReportOnly
-    Si spécifié, génère uniquement un rapport sans modifier les fichiers.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re uniquement un rapport sans modifier les fichiers.
 
 .EXAMPLE
     .\Improve-ScriptCompatibility.ps1 -ScriptPath "C:\Scripts" -Recurse -BackupFiles
@@ -30,7 +30,7 @@
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -54,7 +54,7 @@ if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 }
 else {
-    Write-Error "Module EnvironmentManager non trouvé: $modulePath"
+    Write-Error "Module EnvironmentManager non trouvÃ©: $modulePath"
     exit 1
 }
 
@@ -70,7 +70,7 @@ function Test-ScriptCompatibility {
     )
     
     if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
-        Write-Error "Script non trouvé: $ScriptPath"
+        Write-Error "Script non trouvÃ©: $ScriptPath"
         return $null
     }
     
@@ -82,38 +82,38 @@ function Test-ScriptCompatibility {
     
     $issues = @()
     
-    # 1. Chemins codés en dur
+    # 1. Chemins codÃ©s en dur
     if ($content -match "([A-Z]:\\[^'`"]*\\[^'`"]*)" -or $content -match "([A-Z]:/[^'`"]*/[^'`"]*)") {
-        $issues += "Chemins codés en dur"
+        $issues += "Chemins codÃ©s en dur"
     }
     
-    # 2. Utilisation de séparateurs de chemin spécifiques à Windows
+    # 2. Utilisation de sÃ©parateurs de chemin spÃ©cifiques Ã  Windows
     if ($content -match "\\\\" -and -not $content -match "\\\\\\\\") {
-        $issues += "Séparateurs de chemin spécifiques à Windows"
+        $issues += "SÃ©parateurs de chemin spÃ©cifiques Ã  Windows"
     }
     
-    # 3. Commandes spécifiques à Windows
+    # 3. Commandes spÃ©cifiques Ã  Windows
     if ($content -match "cmd\.exe|cmd /c|powershell\.exe|\.bat|\.cmd") {
-        $issues += "Commandes spécifiques à Windows"
+        $issues += "Commandes spÃ©cifiques Ã  Windows"
     }
     
-    # 4. Utilisation de variables d'environnement spécifiques à Windows
+    # 4. Utilisation de variables d'environnement spÃ©cifiques Ã  Windows
     if ($content -match "\$env:USERPROFILE|\$env:APPDATA|\$env:ProgramFiles|\$env:SystemRoot") {
-        $issues += "Variables d'environnement spécifiques à Windows"
+        $issues += "Variables d'environnement spÃ©cifiques Ã  Windows"
     }
     
-    # 5. Utilisation de fonctions spécifiques à PowerShell Windows
+    # 5. Utilisation de fonctions spÃ©cifiques Ã  PowerShell Windows
     if ($content -match "Get-WmiObject|Get-EventLog") {
-        $issues += "Fonctions spécifiques à PowerShell Windows"
+        $issues += "Fonctions spÃ©cifiques Ã  PowerShell Windows"
     }
     
-    # Vérifier l'utilisation de fonctions de gestion de chemins
+    # VÃ©rifier l'utilisation de fonctions de gestion de chemins
     $hasPathFunctions = $content -match "Join-Path|Split-Path|Test-Path.*-PathType|System\.IO\.Path|ConvertTo-CrossPlatformPath|Join-CrossPlatformPath"
     
-    # Vérifier la présence de détection d'environnement
+    # VÃ©rifier la prÃ©sence de dÃ©tection d'environnement
     $hasEnvironmentDetection = $content -match "Get-EnvironmentInfo|Test-EnvironmentCompatibility|\$IsWindows|\$IsLinux|\$IsMacOS"
     
-    # Déterminer si le script est compatible
+    # DÃ©terminer si le script est compatible
     $isCompatible = ($issues.Count -eq 0) -or $hasPathFunctions -or $hasEnvironmentDetection
     
     return [PSCustomObject]@{
@@ -125,7 +125,7 @@ function Test-ScriptCompatibility {
     }
 }
 
-# Fonction pour améliorer la compatibilité d'un script
+# Fonction pour amÃ©liorer la compatibilitÃ© d'un script
 function Improve-Script {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -137,7 +137,7 @@ function Improve-Script {
     )
     
     if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
-        Write-Error "Script non trouvé: $ScriptPath"
+        Write-Error "Script non trouvÃ©: $ScriptPath"
         return $false
     }
     
@@ -147,19 +147,19 @@ function Improve-Script {
         return $false
     }
     
-    # Créer une sauvegarde si demandé
+    # CrÃ©er une sauvegarde si demandÃ©
     if ($BackupFile) {
         $backupPath = "$ScriptPath.bak"
-        if ($PSCmdlet.ShouldProcess($ScriptPath, "Créer une sauvegarde")) {
+        if ($PSCmdlet.ShouldProcess($ScriptPath, "CrÃ©er une sauvegarde")) {
             Copy-Item -Path $ScriptPath -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée: $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
         }
     }
     
-    # Modifications à apporter
+    # Modifications Ã  apporter
     $modifiedContent = $content
     
-    # 1. Ajouter l'importation du module EnvironmentManager si nécessaire
+    # 1. Ajouter l'importation du module EnvironmentManager si nÃ©cessaire
     if (-not ($modifiedContent -match "EnvironmentManager\.psm1")) {
         $importModule = @"
 # Importer le module EnvironmentManager
@@ -168,7 +168,7 @@ if (Test-Path -Path `$modulePath) {
     Import-Module `$modulePath -Force
 }
 else {
-    Write-Warning "Module EnvironmentManager non trouvé: `$modulePath"
+    Write-Warning "Module EnvironmentManager non trouvÃ©: `$modulePath"
 }
 
 # Initialiser le module
@@ -178,9 +178,9 @@ if (Get-Command -Name Initialize-EnvironmentManager -ErrorAction SilentlyContinu
 
 "@
         
-        # Trouver l'endroit où insérer l'importation du module
+        # Trouver l'endroit oÃ¹ insÃ©rer l'importation du module
         if ($modifiedContent -match "^<#") {
-            # Après le bloc de commentaires
+            # AprÃ¨s le bloc de commentaires
             $endComment = $modifiedContent -match "#>"
             if ($endComment) {
                 $endCommentIndex = $modifiedContent.IndexOf("#>") + 2
@@ -191,35 +191,35 @@ if (Get-Command -Name Initialize-EnvironmentManager -ErrorAction SilentlyContinu
             }
         }
         else {
-            # Au début du fichier
+            # Au dÃ©but du fichier
             $modifiedContent = $importModule + $modifiedContent
         }
     }
     
-    # 2. Standardiser les séparateurs de chemin
+    # 2. Standardiser les sÃ©parateurs de chemin
     $modifiedContent = $modifiedContent -replace "\\\\(?!\\\\)", [System.IO.Path]::DirectorySeparatorChar
     
-    # 3. Remplacer les commandes spécifiques à Windows par des alternatives compatibles
+    # 3. Remplacer les commandes spÃ©cifiques Ã  Windows par des alternatives compatibles
     $modifiedContent = $modifiedContent -replace "cmd\.exe /c", "Invoke-CrossPlatformCommand -WindowsCommand 'cmd.exe /c' -UnixCommand 'bash -c'"
     $modifiedContent = $modifiedContent -replace "powershell\.exe", "pwsh"
     
-    # 4. Remplacer les variables d'environnement spécifiques à Windows
+    # 4. Remplacer les variables d'environnement spÃ©cifiques Ã  Windows
     $modifiedContent = $modifiedContent -replace '\$env:USERPROFILE', 'if ($IsWindows) { $env:USERPROFILE } else { $HOME }'
     $modifiedContent = $modifiedContent -replace '\$env:APPDATA', 'if ($IsWindows) { $env:APPDATA } else { Join-Path -Path $HOME -ChildPath ".config" }'
     $modifiedContent = $modifiedContent -replace '\$env:ProgramFiles', 'if ($IsWindows) { $env:ProgramFiles } else { "/usr/local" }'
     $modifiedContent = $modifiedContent -replace '\$env:SystemRoot', 'if ($IsWindows) { $env:SystemRoot } else { "/" }'
     
-    # 5. Remplacer les fonctions spécifiques à PowerShell Windows
+    # 5. Remplacer les fonctions spÃ©cifiques Ã  PowerShell Windows
     $modifiedContent = $modifiedContent -replace "Get-WmiObject", "Get-CimInstance"
     $modifiedContent = $modifiedContent -replace "Get-EventLog", "Get-WinEvent"
     
-    # 6. Remplacer les chemins codés en dur par des chemins relatifs
-    # Cette partie est plus complexe et nécessiterait une analyse plus approfondie du script
+    # 6. Remplacer les chemins codÃ©s en dur par des chemins relatifs
+    # Cette partie est plus complexe et nÃ©cessiterait une analyse plus approfondie du script
     
-    # Écrire le contenu modifié dans le fichier
-    if ($PSCmdlet.ShouldProcess($ScriptPath, "Améliorer la compatibilité")) {
+    # Ã‰crire le contenu modifiÃ© dans le fichier
+    if ($PSCmdlet.ShouldProcess($ScriptPath, "AmÃ©liorer la compatibilitÃ©")) {
         Set-Content -Path $ScriptPath -Value $modifiedContent -Force
-        Write-Verbose "Script amélioré: $ScriptPath"
+        Write-Verbose "Script amÃ©liorÃ©: $ScriptPath"
         return $true
     }
     
@@ -243,13 +243,13 @@ function Start-ScriptCompatibilityImprovement {
         [switch]$ReportOnly
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $ScriptPath)) {
-        Write-Error "Le chemin spécifié n'existe pas: $ScriptPath"
+        Write-Error "Le chemin spÃ©cifiÃ© n'existe pas: $ScriptPath"
         return
     }
     
-    # Obtenir les scripts à analyser
+    # Obtenir les scripts Ã  analyser
     $scripts = if (Test-Path -Path $ScriptPath -PathType Leaf) {
         Get-Item -Path $ScriptPath
     }
@@ -263,7 +263,7 @@ function Start-ScriptCompatibilityImprovement {
     $incompatibleScripts = 0
     $improvedScripts = 0
     
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
     
     # Analyser chaque script
@@ -278,10 +278,10 @@ function Start-ScriptCompatibilityImprovement {
             continue
         }
         
-        # Ajouter le résultat au tableau
+        # Ajouter le rÃ©sultat au tableau
         $results += $compatibility
         
-        # Mettre à jour les compteurs
+        # Mettre Ã  jour les compteurs
         if ($compatibility.IsCompatible) {
             $compatibleScripts++
             Write-Host "  Compatible: Oui" -ForegroundColor Green
@@ -289,38 +289,38 @@ function Start-ScriptCompatibilityImprovement {
         else {
             $incompatibleScripts++
             Write-Host "  Compatible: Non" -ForegroundColor Red
-            Write-Host "  Problèmes: $($compatibility.Issues -join ", ")" -ForegroundColor Yellow
+            Write-Host "  ProblÃ¨mes: $($compatibility.Issues -join ", ")" -ForegroundColor Yellow
             
-            # Améliorer le script si demandé
+            # AmÃ©liorer le script si demandÃ©
             if (-not $ReportOnly) {
                 $improved = Improve-Script -ScriptPath $script.FullName -BackupFile:$BackupFiles
                 if ($improved) {
                     $improvedScripts++
-                    Write-Host "  Amélioré: Oui" -ForegroundColor Green
+                    Write-Host "  AmÃ©liorÃ©: Oui" -ForegroundColor Green
                 }
                 else {
-                    Write-Host "  Amélioré: Non" -ForegroundColor Yellow
+                    Write-Host "  AmÃ©liorÃ©: Non" -ForegroundColor Yellow
                 }
             }
         }
     }
     
-    # Afficher un résumé
-    Write-Host "`nRésumé:" -ForegroundColor Cyan
-    Write-Host "  Scripts analysés: $totalScripts" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ©:" -ForegroundColor Cyan
+    Write-Host "  Scripts analysÃ©s: $totalScripts" -ForegroundColor White
     Write-Host "  Scripts compatibles: $compatibleScripts" -ForegroundColor Green
     Write-Host "  Scripts incompatibles: $incompatibleScripts" -ForegroundColor Red
     if (-not $ReportOnly) {
-        Write-Host "  Scripts améliorés: $improvedScripts" -ForegroundColor Yellow
+        Write-Host "  Scripts amÃ©liorÃ©s: $improvedScripts" -ForegroundColor Yellow
     }
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "ScriptCompatibilityReport.csv"
     $results | Export-Csv -Path $reportPath -NoTypeInformation -Encoding UTF8
-    Write-Host "`nRapport généré: $reportPath" -ForegroundColor Cyan
+    Write-Host "`nRapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Cyan
     
     return $results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-ScriptCompatibilityImprovement -ScriptPath $ScriptPath -Recurse:$Recurse -BackupFiles:$BackupFiles -ReportOnly:$ReportOnly

@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Implémente des timeouts systématiques pour les processus.
+    ImplÃ©mente des timeouts systÃ©matiques pour les processus.
 
 .DESCRIPTION
-    Ce script fournit des fonctions pour exécuter des processus avec des timeouts,
-    permettant d'arrêter automatiquement les processus qui prennent trop de temps.
+    Ce script fournit des fonctions pour exÃ©cuter des processus avec des timeouts,
+    permettant d'arrÃªter automatiquement les processus qui prennent trop de temps.
 
 .EXAMPLE
     . .\ProcessTimeout.ps1
     $result = Invoke-ProcessWithTimeout -FilePath "ping.exe" -Arguments @("localhost", "-n", "10") -TimeoutSeconds 2
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Fonction pour exécuter un processus avec un timeout
+# Fonction pour exÃ©cuter un processus avec un timeout
 function Invoke-ProcessWithTimeout {
     [CmdletBinding()]
     param (
@@ -46,7 +46,7 @@ function Invoke-ProcessWithTimeout {
         [string]$TimeoutAction = "Stop"
     )
     
-    # Créer un objet Process
+    # CrÃ©er un objet Process
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo.FileName = $FilePath
     $process.StartInfo.Arguments = $Arguments -join " "
@@ -55,7 +55,7 @@ function Invoke-ProcessWithTimeout {
         $process.StartInfo.WorkingDirectory = $WorkingDirectory
     }
     
-    # Configurer la fenêtre du processus
+    # Configurer la fenÃªtre du processus
     if ($NoWindow) {
         $process.StartInfo.CreateNoWindow = $true
         $process.StartInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden
@@ -68,7 +68,7 @@ function Invoke-ProcessWithTimeout {
         $process.StartInfo.RedirectStandardError = $true
     }
     
-    # Ajouter des variables d'environnement si spécifiées
+    # Ajouter des variables d'environnement si spÃ©cifiÃ©es
     if ($EnvironmentVariables.Count -gt 0) {
         $process.StartInfo.UseShellExecute = $false
         
@@ -77,11 +77,11 @@ function Invoke-ProcessWithTimeout {
         }
     }
     
-    # Créer des listes pour stocker la sortie
+    # CrÃ©er des listes pour stocker la sortie
     $outputLines = [System.Collections.Generic.List[string]]::new()
     $errorLines = [System.Collections.Generic.List[string]]::new()
     
-    # Configurer les gestionnaires d'événements pour la sortie
+    # Configurer les gestionnaires d'Ã©vÃ©nements pour la sortie
     if ($CaptureOutput) {
         $outputHandler = {
             param($sender, $e)
@@ -103,15 +103,15 @@ function Invoke-ProcessWithTimeout {
         $process.ErrorDataReceived += $errorHandler
     }
     
-    # Démarrer le processus
+    # DÃ©marrer le processus
     $started = $process.Start()
     
     if (-not $started) {
-        Write-Error "Impossible de démarrer le processus $FilePath"
+        Write-Error "Impossible de dÃ©marrer le processus $FilePath"
         return $null
     }
     
-    # Démarrer la lecture de la sortie si la capture est activée
+    # DÃ©marrer la lecture de la sortie si la capture est activÃ©e
     if ($CaptureOutput) {
         $process.BeginOutputReadLine()
         $process.BeginErrorReadLine()
@@ -120,7 +120,7 @@ function Invoke-ProcessWithTimeout {
     # Attendre que le processus se termine ou que le timeout soit atteint
     $completed = $process.WaitForExit($TimeoutSeconds * 1000)
     
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         Process = $process
         ExitCode = -1
@@ -131,7 +131,7 @@ function Invoke-ProcessWithTimeout {
     }
     
     if ($completed) {
-        # Le processus s'est terminé normalement
+        # Le processus s'est terminÃ© normalement
         $result.ExitCode = $process.ExitCode
         
         # Attendre que toute la sortie soit lue
@@ -140,37 +140,37 @@ function Invoke-ProcessWithTimeout {
         }
     }
     else {
-        # Le processus a dépassé le timeout
-        Write-Warning "Le processus $FilePath a dépassé le délai d'attente de $TimeoutSeconds secondes."
+        # Le processus a dÃ©passÃ© le timeout
+        Write-Warning "Le processus $FilePath a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         
-        # Arrêter le processus
+        # ArrÃªter le processus
         try {
             $process.Kill()
             $process.WaitForExit(5000) # Attendre 5 secondes que le processus se termine
         }
         catch {
-            Write-Warning "Erreur lors de l'arrêt du processus : $_"
+            Write-Warning "Erreur lors de l'arrÃªt du processus : $_"
         }
         
-        # Gérer l'action de timeout
+        # GÃ©rer l'action de timeout
         if ($TimeoutAction -eq "Stop") {
-            throw "Le processus $FilePath a dépassé le délai d'attente de $TimeoutSeconds secondes."
+            throw "Le processus $FilePath a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         }
         elseif ($TimeoutAction -eq "Continue") {
-            # Continuer l'exécution
+            # Continuer l'exÃ©cution
         }
         elseif ($TimeoutAction -eq "SilentlyContinue") {
             # Continuer silencieusement
         }
     }
     
-    # Calculer le temps d'exécution
+    # Calculer le temps d'exÃ©cution
     $result.ExecutionTime = $process.ExitTime - $process.StartTime
     
     return $result
 }
 
-# Fonction pour exécuter un script PowerShell avec un timeout
+# Fonction pour exÃ©cuter un script PowerShell avec un timeout
 function Invoke-ScriptBlockWithTimeout {
     [CmdletBinding()]
     param (
@@ -188,21 +188,21 @@ function Invoke-ScriptBlockWithTimeout {
         [string]$TimeoutAction = "Stop"
     )
     
-    # Créer un jeton d'annulation
+    # CrÃ©er un jeton d'annulation
     $cancellationTokenSource = New-Object System.Threading.CancellationTokenSource
     
-    # Créer une tâche pour exécuter le script
+    # CrÃ©er une tÃ¢che pour exÃ©cuter le script
     $task = [System.Threading.Tasks.Task]::Run({
         param($scriptBlock, $argumentList)
         
-        # Exécuter le script avec les arguments
+        # ExÃ©cuter le script avec les arguments
         & $scriptBlock @argumentList
     }, $cancellationTokenSource.Token)
     
-    # Attendre que la tâche se termine ou que le timeout soit atteint
+    # Attendre que la tÃ¢che se termine ou que le timeout soit atteint
     $completed = $task.Wait($TimeoutSeconds * 1000)
     
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         Completed = $completed
         TimedOut = -not $completed
@@ -211,7 +211,7 @@ function Invoke-ScriptBlockWithTimeout {
     }
     
     if ($completed) {
-        # La tâche s'est terminée normalement
+        # La tÃ¢che s'est terminÃ©e normalement
         if ($task.Status -eq [System.Threading.Tasks.TaskStatus]::RanToCompletion) {
             $result.Result = $task.Result
         }
@@ -220,31 +220,31 @@ function Invoke-ScriptBlockWithTimeout {
         }
     }
     else {
-        # La tâche a dépassé le timeout
-        Write-Warning "L'exécution du script a dépassé le délai d'attente de $TimeoutSeconds secondes."
+        # La tÃ¢che a dÃ©passÃ© le timeout
+        Write-Warning "L'exÃ©cution du script a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         
-        # Annuler la tâche
+        # Annuler la tÃ¢che
         $cancellationTokenSource.Cancel()
         
-        # Gérer l'action de timeout
+        # GÃ©rer l'action de timeout
         if ($TimeoutAction -eq "Stop") {
-            throw "L'exécution du script a dépassé le délai d'attente de $TimeoutSeconds secondes."
+            throw "L'exÃ©cution du script a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         }
         elseif ($TimeoutAction -eq "Continue") {
-            # Continuer l'exécution
+            # Continuer l'exÃ©cution
         }
         elseif ($TimeoutAction -eq "SilentlyContinue") {
             # Continuer silencieusement
         }
     }
     
-    # Libérer les ressources
+    # LibÃ©rer les ressources
     $cancellationTokenSource.Dispose()
     
     return $result
 }
 
-# Fonction pour exécuter une commande PowerShell avec un timeout
+# Fonction pour exÃ©cuter une commande PowerShell avec un timeout
 function Invoke-CommandWithTimeout {
     [CmdletBinding()]
     param (
@@ -262,11 +262,11 @@ function Invoke-CommandWithTimeout {
     # Convertir la commande en scriptblock
     $scriptBlock = [scriptblock]::Create($Command)
     
-    # Exécuter le scriptblock avec timeout
+    # ExÃ©cuter le scriptblock avec timeout
     return Invoke-ScriptBlockWithTimeout -ScriptBlock $scriptBlock -TimeoutSeconds $TimeoutSeconds -TimeoutAction $TimeoutAction
 }
 
-# Fonction pour exécuter une commande en arrière-plan avec un timeout
+# Fonction pour exÃ©cuter une commande en arriÃ¨re-plan avec un timeout
 function Start-BackgroundProcessWithTimeout {
     [CmdletBinding()]
     param (
@@ -295,7 +295,7 @@ function Start-BackgroundProcessWithTimeout {
         [scriptblock]$OnExit = {}
     )
     
-    # Créer un objet Process
+    # CrÃ©er un objet Process
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo.FileName = $FilePath
     $process.StartInfo.Arguments = $Arguments -join " "
@@ -304,13 +304,13 @@ function Start-BackgroundProcessWithTimeout {
         $process.StartInfo.WorkingDirectory = $WorkingDirectory
     }
     
-    # Configurer la fenêtre du processus
+    # Configurer la fenÃªtre du processus
     if ($NoWindow) {
         $process.StartInfo.CreateNoWindow = $true
         $process.StartInfo.WindowStyle = [System.Diagnostics.ProcessWindowStyle]::Hidden
     }
     
-    # Ajouter des variables d'environnement si spécifiées
+    # Ajouter des variables d'environnement si spÃ©cifiÃ©es
     if ($EnvironmentVariables.Count -gt 0) {
         $process.StartInfo.UseShellExecute = $false
         
@@ -319,15 +319,15 @@ function Start-BackgroundProcessWithTimeout {
         }
     }
     
-    # Démarrer le processus
+    # DÃ©marrer le processus
     $started = $process.Start()
     
     if (-not $started) {
-        Write-Error "Impossible de démarrer le processus $FilePath"
+        Write-Error "Impossible de dÃ©marrer le processus $FilePath"
         return $null
     }
     
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         Process = $process
         Id = $process.Id
@@ -337,7 +337,7 @@ function Start-BackgroundProcessWithTimeout {
         TimedOut = $false
     }
     
-    # Configurer le timeout si spécifié
+    # Configurer le timeout si spÃ©cifiÃ©
     if ($TimeoutSeconds -gt 0) {
         $timer = $null
         
@@ -348,35 +348,35 @@ function Start-BackgroundProcessWithTimeout {
             $process = $processInfo.Process
             
             if (-not $process.HasExited) {
-                Write-Warning "Le processus $($process.Id) a dépassé le délai d'attente de $($processInfo.TimeoutSeconds) secondes."
+                Write-Warning "Le processus $($process.Id) a dÃ©passÃ© le dÃ©lai d'attente de $($processInfo.TimeoutSeconds) secondes."
                 
-                # Marquer le processus comme ayant dépassé le timeout
+                # Marquer le processus comme ayant dÃ©passÃ© le timeout
                 $processInfo.TimedOut = $true
                 
-                # Exécuter le script OnTimeout
+                # ExÃ©cuter le script OnTimeout
                 if ($null -ne $processInfo.OnTimeout) {
                     try {
                         & $processInfo.OnTimeout -Process $process
                     }
                     catch {
-                        Write-Warning "Erreur lors de l'exécution du script OnTimeout: $_"
+                        Write-Warning "Erreur lors de l'exÃ©cution du script OnTimeout: $_"
                     }
                 }
                 
-                # Arrêter le processus
+                # ArrÃªter le processus
                 try {
                     $process.Kill()
                 }
                 catch {
-                    Write-Warning "Erreur lors de l'arrêt du processus: $_"
+                    Write-Warning "Erreur lors de l'arrÃªt du processus: $_"
                 }
             }
             
-            # Arrêter le timer
+            # ArrÃªter le timer
             $processInfo.Timer.Dispose()
         }
         
-        # Créer un objet d'état pour le timer
+        # CrÃ©er un objet d'Ã©tat pour le timer
         $state = [PSCustomObject]@{
             Process = $process
             TimeoutSeconds = $TimeoutSeconds
@@ -384,7 +384,7 @@ function Start-BackgroundProcessWithTimeout {
             Timer = $null
         }
         
-        # Créer le timer
+        # CrÃ©er le timer
         $timer = New-Object System.Threading.Timer(
             $timerCallback,
             $state,
@@ -395,7 +395,7 @@ function Start-BackgroundProcessWithTimeout {
         $state.Timer = $timer
     }
     
-    # Configurer le gestionnaire d'événement pour la sortie du processus
+    # Configurer le gestionnaire d'Ã©vÃ©nement pour la sortie du processus
     if ($null -ne $OnExit) {
         $process.EnableRaisingEvents = $true
         
@@ -404,12 +404,12 @@ function Start-BackgroundProcessWithTimeout {
             
             $proc = [System.Diagnostics.Process]$sender
             
-            # Exécuter le script OnExit
+            # ExÃ©cuter le script OnExit
             try {
                 & $OnExit -Process $proc
             }
             catch {
-                Write-Warning "Erreur lors de l'exécution du script OnExit: $_"
+                Write-Warning "Erreur lors de l'exÃ©cution du script OnExit: $_"
             }
         }
         
@@ -440,24 +440,24 @@ function Wait-ProcessWithTimeout {
         [string]$TimeoutAction = "Stop"
     )
     
-    # Obtenir le processus si l'ID est spécifié
+    # Obtenir le processus si l'ID est spÃ©cifiÃ©
     if ($PSCmdlet.ParameterSetName -eq "ById") {
         try {
             $Process = Get-Process -Id $Id -ErrorAction Stop
         }
         catch {
-            Write-Error "Processus avec l'ID $Id non trouvé: $_"
+            Write-Error "Processus avec l'ID $Id non trouvÃ©: $_"
             return $null
         }
     }
     
-    # Vérifier si le processus existe
+    # VÃ©rifier si le processus existe
     if ($null -eq $Process) {
         Write-Error "Processus non valide."
         return $null
     }
     
-    # Vérifier si le processus est déjà terminé
+    # VÃ©rifier si le processus est dÃ©jÃ  terminÃ©
     if ($Process.HasExited) {
         return [PSCustomObject]@{
             Process = $Process
@@ -470,7 +470,7 @@ function Wait-ProcessWithTimeout {
     # Attendre que le processus se termine ou que le timeout soit atteint
     $completed = $Process.WaitForExit($TimeoutSeconds * 1000)
     
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         Process = $Process
         ExitCode = -1
@@ -479,15 +479,15 @@ function Wait-ProcessWithTimeout {
     }
     
     if ($completed) {
-        # Le processus s'est terminé normalement
+        # Le processus s'est terminÃ© normalement
         $result.ExitCode = $Process.ExitCode
         $result.ExecutionTime = $Process.ExitTime - $Process.StartTime
     }
     else {
-        # Le processus a dépassé le timeout
-        Write-Warning "Le processus $($Process.Id) a dépassé le délai d'attente de $TimeoutSeconds secondes."
+        # Le processus a dÃ©passÃ© le timeout
+        Write-Warning "Le processus $($Process.Id) a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         
-        # Arrêter le processus si demandé
+        # ArrÃªter le processus si demandÃ©
         if ($KillOnTimeout) {
             try {
                 $Process.Kill()
@@ -495,16 +495,16 @@ function Wait-ProcessWithTimeout {
                 $result.ExitCode = $Process.ExitCode
             }
             catch {
-                Write-Warning "Erreur lors de l'arrêt du processus : $_"
+                Write-Warning "Erreur lors de l'arrÃªt du processus : $_"
             }
         }
         
-        # Gérer l'action de timeout
+        # GÃ©rer l'action de timeout
         if ($TimeoutAction -eq "Stop") {
-            throw "Le processus $($Process.Id) a dépassé le délai d'attente de $TimeoutSeconds secondes."
+            throw "Le processus $($Process.Id) a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes."
         }
         elseif ($TimeoutAction -eq "Continue") {
-            # Continuer l'exécution
+            # Continuer l'exÃ©cution
         }
         elseif ($TimeoutAction -eq "SilentlyContinue") {
             # Continuer silencieusement

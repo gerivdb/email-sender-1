@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module de filtrage pour les rapports d'analyse de pull requests.
 .DESCRIPTION
-    Fournit des fonctions pour filtrer et trier les résultats d'analyse
+    Fournit des fonctions pour filtrer et trier les rÃ©sultats d'analyse
     de pull requests dans les rapports interactifs.
 .NOTES
     Version: 1.0
@@ -11,7 +11,7 @@
     Date: 2025-04-29
 #>
 
-# Fonction pour générer des contrôles de filtrage HTML
+# Fonction pour gÃ©nÃ©rer des contrÃ´les de filtrage HTML
 function Add-FilterControls {
     [CmdletBinding()]
     param(
@@ -32,12 +32,12 @@ function Add-FilterControls {
         [hashtable]$CustomLabels = @{}
     )
 
-    # Vérifier si la collection est vide
+    # VÃ©rifier si la collection est vide
     if ($null -eq $Issues -or $Issues.Count -eq 0) {
         $Issues = @()
     }
 
-    # Extraire les valeurs uniques pour chaque propriété de filtrage
+    # Extraire les valeurs uniques pour chaque propriÃ©tÃ© de filtrage
     $filterValues = @{}
     foreach ($property in $FilterProperties) {
         if ($Issues.Count -gt 0) {
@@ -48,12 +48,12 @@ function Add-FilterControls {
         }
     }
 
-    # Générer le HTML pour les contrôles de filtrage
+    # GÃ©nÃ©rer le HTML pour les contrÃ´les de filtrage
     $html = @"
 <div id="$ContainerId" class="pr-filter-container">
     <div class="pr-filter-header">
         <h3>Filtres</h3>
-        <button id="pr-reset-filters" class="pr-button">Réinitialiser</button>
+        <button id="pr-reset-filters" class="pr-button">RÃ©initialiser</button>
     </div>
     <div class="pr-filter-controls">
 "@
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const table = document.getElementById('$TargetTableId');
 
     if (!table) {
-        console.error('Table cible non trouvée: $TargetTableId');
+        console.error('Table cible non trouvÃ©e: $TargetTableId');
         return;
     }
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
             let visible = true;
 
-            // Appliquer les filtres de sélection
+            // Appliquer les filtres de sÃ©lection
             for (const [property, value] of Object.entries(filters)) {
                 const cell = row.querySelector(`[data-${property.toLowerCase()}]`);
                 if (cell && cell.dataset[property.toLowerCase()] !== value) {
@@ -135,22 +135,22 @@ document.addEventListener('DOMContentLoaded', function() {
             row.style.display = visible ? '' : 'none';
         });
 
-        // Mettre à jour le compteur
+        // Mettre Ã  jour le compteur
         updateCounter();
     }
 
-    // Fonction pour mettre à jour le compteur d'éléments visibles
+    // Fonction pour mettre Ã  jour le compteur d'Ã©lÃ©ments visibles
     function updateCounter() {
         const visibleRows = table.querySelectorAll('tbody tr:not([style*="display: none"])').length;
         const totalRows = table.querySelectorAll('tbody tr').length;
 
         const counterElement = document.getElementById('pr-issues-counter');
         if (counterElement) {
-            counterElement.textContent = `Affichage de ${visibleRows} sur ${totalRows} problèmes`;
+            counterElement.textContent = `Affichage de ${visibleRows} sur ${totalRows} problÃ¨mes`;
         }
     }
 
-    // Ajouter les écouteurs d'événements
+    // Ajouter les Ã©couteurs d'Ã©vÃ©nements
     filterControls.forEach(select => {
         select.addEventListener('change', applyFilters);
     });
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return $html
 }
 
-# Fonction pour ajouter des capacités de tri à une table HTML
+# Fonction pour ajouter des capacitÃ©s de tri Ã  une table HTML
 function Add-SortingCapabilities {
     [CmdletBinding()]
     param(
@@ -244,18 +244,18 @@ function Add-SortingCapabilities {
         [string]$DefaultSortDirection = "desc"
     )
 
-    # Générer le JavaScript pour le tri
+    # GÃ©nÃ©rer le JavaScript pour le tri
     $html = @"
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const table = document.getElementById('$TableId');
 
     if (!table) {
-        console.error('Table non trouvée: $TableId');
+        console.error('Table non trouvÃ©e: $TableId');
         return;
     }
 
-    // Ajouter des attributs de tri aux en-têtes de colonnes
+    // Ajouter des attributs de tri aux en-tÃªtes de colonnes
     const headers = table.querySelectorAll('thead th');
     const sortableColumns = $($SortableColumns | ConvertTo-Json -Compress);
 
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sortIndicator.className = 'pr-sort-indicator';
             header.appendChild(sortIndicator);
 
-            // Ajouter l'écouteur d'événements
+            // Ajouter l'Ã©couteur d'Ã©vÃ©nements
             header.addEventListener('click', () => sortTable(header));
         }
     });
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const column = header.dataset.sort;
         let direction = header.dataset.direction;
 
-        // Réinitialiser tous les en-têtes
+        // RÃ©initialiser tous les en-tÃªtes
         headers.forEach(h => {
             if (h !== header) {
                 h.dataset.direction = 'none';
@@ -308,28 +308,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const aValue = a.querySelector(`[data-\${column}]`)?.dataset[column] || a.cells[Array.from(headers).indexOf(header)].textContent;
             const bValue = b.querySelector(`[data-\${column}]`)?.dataset[column] || b.cells[Array.from(headers).indexOf(header)].textContent;
 
-            // Déterminer le type de données
+            // DÃ©terminer le type de donnÃ©es
             if (!isNaN(aValue) && !isNaN(bValue)) {
-                // Tri numérique
+                // Tri numÃ©rique
                 return direction === 'asc'
                     ? parseFloat(aValue) - parseFloat(bValue)
                     : parseFloat(bValue) - parseFloat(aValue);
             } else {
-                // Tri alphabétique
+                // Tri alphabÃ©tique
                 return direction === 'asc'
                     ? aValue.localeCompare(bValue)
                     : bValue.localeCompare(aValue);
             }
         });
 
-        // Réorganiser les lignes
+        // RÃ©organiser les lignes
         rows.forEach(row => tbody.appendChild(row));
     }
 
-    // Trier par défaut
+    // Trier par dÃ©faut
     const defaultHeader = Array.from(headers).find(h => h.textContent.trim() === '$DefaultSortColumn');
     if (defaultHeader) {
-        defaultHeader.dataset.direction = '$DefaultSortDirection' === 'asc' ? 'desc' : 'asc'; // Inversé car le clic va le changer
+        defaultHeader.dataset.direction = '$DefaultSortDirection' === 'asc' ? 'desc' : 'asc'; // InversÃ© car le clic va le changer
         sortTable(defaultHeader);
     }
 });
@@ -348,15 +348,15 @@ document.addEventListener('DOMContentLoaded', function() {
     transform: translateY(-50%);
 }
 .pr-sort-indicator::before {
-    content: '⇕';
+    content: 'â‡•';
     color: #ccc;
 }
 .pr-sort-asc .pr-sort-indicator::before {
-    content: '↑';
+    content: 'â†‘';
     color: #333;
 }
 .pr-sort-desc .pr-sort-indicator::before {
-    content: '↓';
+    content: 'â†“';
     color: #333;
 }
 </style>
@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return $html
 }
 
-# Fonction pour créer une vue personnalisée
+# Fonction pour crÃ©er une vue personnalisÃ©e
 function New-CustomReportView {
     [CmdletBinding()]
     param(
@@ -385,13 +385,13 @@ function New-CustomReportView {
         [string]$TargetTableId = "pr-issues-table"
     )
 
-    # Générer un ID unique pour la vue
+    # GÃ©nÃ©rer un ID unique pour la vue
     $viewId = "view-$($Name.ToLower() -replace '[^a-z0-9]', '-')"
 
     # Convertir les filtres en JSON pour le JavaScript
     $filtersJson = $Filters | ConvertTo-Json -Compress
 
-    # Générer le HTML pour la vue personnalisée
+    # GÃ©nÃ©rer le HTML pour la vue personnalisÃ©e
     $html = @"
 <div class="pr-custom-view" id="$viewId" data-filters='$filtersJson'>
     <div class="pr-view-icon">
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const view = document.getElementById('$viewId');
 
     if (!view) {
-        console.error('Vue personnalisée non trouvée: $viewId');
+        console.error('Vue personnalisÃ©e non trouvÃ©e: $viewId');
         return;
     }
 
@@ -417,11 +417,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const table = document.getElementById('$TargetTableId');
 
         if (!table) {
-            console.error('Table cible non trouvée: $TargetTableId');
+            console.error('Table cible non trouvÃ©e: $TargetTableId');
             return;
         }
 
-        // Réinitialiser les filtres actuels
+        // RÃ©initialiser les filtres actuels
         const filterSelects = document.querySelectorAll('.pr-filter-select');
         const searchInput = document.getElementById('pr-search-input');
 
@@ -441,10 +441,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Déclencher l'événement de changement pour appliquer les filtres
+        // DÃ©clencher l'Ã©vÃ©nement de changement pour appliquer les filtres
         filterSelects[0]?.dispatchEvent(new Event('change'));
 
-        // Mettre en évidence la vue active
+        // Mettre en Ã©vidence la vue active
         document.querySelectorAll('.pr-custom-view').forEach(v => {
             v.classList.remove('pr-view-active');
         });
@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return $html
 }
 
-# Fonction pour créer un rapport avec recherche avancée
+# Fonction pour crÃ©er un rapport avec recherche avancÃ©e
 function New-SearchableReport {
     [CmdletBinding()]
     param(
@@ -517,12 +517,12 @@ function New-SearchableReport {
         [string[]]$SearchableProperties = @("FilePath", "Message", "Rule", "Type", "Severity")
     )
 
-    # Vérifier si la collection est vide
+    # VÃ©rifier si la collection est vide
     if ($null -eq $Issues -or $Issues.Count -eq 0) {
         $Issues = @()
     }
 
-    # Générer le HTML pour le rapport avec recherche
+    # GÃ©nÃ©rer le HTML pour le rapport avec recherche
     $html = @"
 <div class="pr-searchable-report">
     <div class="pr-report-header">
@@ -531,12 +531,12 @@ function New-SearchableReport {
     </div>
 
     <div class="pr-search-container">
-        <input type="text" id="pr-advanced-search" class="pr-advanced-search" placeholder="Recherche avancée (ex: severity:error type:syntax)">
+        <input type="text" id="pr-advanced-search" class="pr-advanced-search" placeholder="Recherche avancÃ©e (ex: severity:error type:syntax)">
         <button id="pr-search-help" class="pr-button pr-help-button">?</button>
     </div>
 
     <div id="pr-search-help-content" class="pr-search-help-content" style="display: none;">
-        <h4>Aide à la recherche</h4>
+        <h4>Aide Ã  la recherche</h4>
         <p>Vous pouvez utiliser les filtres suivants dans votre recherche :</p>
         <ul>
 "@
@@ -550,11 +550,11 @@ function New-SearchableReport {
     $html += @"
         </ul>
         <p>Vous pouvez combiner plusieurs filtres : <code>severity:error type:syntax file:script.ps1</code></p>
-        <p>Les termes sans préfixe seront recherchés dans tous les champs.</p>
+        <p>Les termes sans prÃ©fixe seront recherchÃ©s dans tous les champs.</p>
     </div>
 
     <div class="pr-results-info">
-        <span id="pr-issues-counter">Affichage de ${$Issues.Count} problèmes</span>
+        <span id="pr-issues-counter">Affichage de ${$Issues.Count} problÃ¨mes</span>
     </div>
 
     <table id="$TableId" class="pr-issues-table">
@@ -597,16 +597,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const helpContent = document.getElementById('pr-search-help-content');
 
     if (!table || !searchInput) {
-        console.error('Éléments requis non trouvés');
+        console.error('Ã‰lÃ©ments requis non trouvÃ©s');
         return;
     }
 
-    // Fonction pour analyser la requête de recherche
+    // Fonction pour analyser la requÃªte de recherche
     function parseSearchQuery(query) {
         const filters = {};
         const terms = [];
 
-        // Extraire les filtres spécifiques (property:value)
+        // Extraire les filtres spÃ©cifiques (property:value)
         const filterRegex = /(\w+):([^\s]+|"[^"]*")/g;
         let match;
 
@@ -614,18 +614,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const property = match[1].toLowerCase();
             let value = match[2];
 
-            // Supprimer les guillemets si présents
+            // Supprimer les guillemets si prÃ©sents
             if (value.startsWith('"') && value.endsWith('"')) {
                 value = value.substring(1, value.length - 1);
             }
 
             filters[property] = value.toLowerCase();
 
-            // Remplacer le filtre par un espace dans la requête
+            // Remplacer le filtre par un espace dans la requÃªte
             query = query.replace(match[0], ' ');
         }
 
-        // Les termes restants sont des termes de recherche généraux
+        // Les termes restants sont des termes de recherche gÃ©nÃ©raux
         query.split(/\s+/).forEach(term => {
             if (term.trim()) {
                 terms.push(term.toLowerCase());
@@ -645,7 +645,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
             let visible = true;
 
-            // Appliquer les filtres spécifiques
+            // Appliquer les filtres spÃ©cifiques
             for (const [property, value] of Object.entries(filters)) {
                 if (searchableProperties.includes(property.charAt(0).toUpperCase() + property.slice(1))) {
                     const cell = row.querySelector(`[data-\${property}]`) ||
@@ -659,17 +659,17 @@ document.addEventListener('DOMContentLoaded', function() {
                             break;
                         }
                     } else {
-                        // Si la propriété n'est pas trouvée, on considère que le filtre n'est pas satisfait
+                        // Si la propriÃ©tÃ© n'est pas trouvÃ©e, on considÃ¨re que le filtre n'est pas satisfait
                         visible = false;
                         break;
                     }
                 } else {
-                    // Propriété non reconnue, ignorer ce filtre
-                    console.warn(`Propriété de recherche non reconnue: \${property}`);
+                    // PropriÃ©tÃ© non reconnue, ignorer ce filtre
+                    console.warn(`PropriÃ©tÃ© de recherche non reconnue: \${property}`);
                 }
             }
 
-            // Appliquer les termes généraux
+            // Appliquer les termes gÃ©nÃ©raux
             if (visible && terms.length > 0) {
                 const rowText = Array.from(row.cells).map(cell => cell.textContent.toLowerCase()).join(' ');
                 visible = terms.every(term => rowText.includes(term));
@@ -678,22 +678,22 @@ document.addEventListener('DOMContentLoaded', function() {
             row.style.display = visible ? '' : 'none';
         });
 
-        // Mettre à jour le compteur
+        // Mettre Ã  jour le compteur
         updateCounter();
     }
 
-    // Fonction pour mettre à jour le compteur
+    // Fonction pour mettre Ã  jour le compteur
     function updateCounter() {
         const visibleRows = table.querySelectorAll('tbody tr:not([style*="display: none"])').length;
         const totalRows = table.querySelectorAll('tbody tr').length;
 
         const counterElement = document.getElementById('pr-issues-counter');
         if (counterElement) {
-            counterElement.textContent = `Affichage de \${visibleRows} sur \${totalRows} problèmes`;
+            counterElement.textContent = `Affichage de \${visibleRows} sur \${totalRows} problÃ¨mes`;
         }
     }
 
-    // Ajouter les écouteurs d'événements
+    // Ajouter les Ã©couteurs d'Ã©vÃ©nements
     searchInput.addEventListener('input', applySearch);
 
     helpButton.addEventListener('click', function() {

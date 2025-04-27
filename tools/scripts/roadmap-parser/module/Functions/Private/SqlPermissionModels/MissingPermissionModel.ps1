@@ -1,14 +1,14 @@
-# MissingPermissionModel.ps1
-# Définit la structure de données pour représenter les permissions manquantes dans SQL Server
+﻿# MissingPermissionModel.ps1
+# DÃ©finit la structure de donnÃ©es pour reprÃ©senter les permissions manquantes dans SQL Server
 
 <#
 .SYNOPSIS
-    Définit les classes et structures de données pour représenter les permissions manquantes dans SQL Server.
+    DÃ©finit les classes et structures de donnÃ©es pour reprÃ©senter les permissions manquantes dans SQL Server.
 
 .DESCRIPTION
-    Ce fichier contient les définitions des classes et structures de données utilisées pour représenter
-    les permissions manquantes lors de la comparaison entre les permissions actuelles et un modèle de référence.
-    Ces structures sont utilisées par les algorithmes de détection d'écarts de permissions.
+    Ce fichier contient les dÃ©finitions des classes et structures de donnÃ©es utilisÃ©es pour reprÃ©senter
+    les permissions manquantes lors de la comparaison entre les permissions actuelles et un modÃ¨le de rÃ©fÃ©rence.
+    Ces structures sont utilisÃ©es par les algorithmes de dÃ©tection d'Ã©carts de permissions.
 
 .NOTES
     Version:        1.0
@@ -16,27 +16,27 @@
     Creation Date:  2023-11-15
 #>
 
-# Classe pour représenter une permission manquante au niveau serveur
+# Classe pour reprÃ©senter une permission manquante au niveau serveur
 class SqlServerMissingPermission {
     [string]$PermissionName      # Nom de la permission manquante (ex: CONNECT SQL, ALTER ANY LOGIN)
     [string]$LoginName           # Nom du login qui devrait avoir cette permission
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
-    [string]$SecurableType       # Type d'élément sécurisable (SERVER)
-    [string]$SecurableName       # Nom de l'élément sécurisable (généralement le nom du serveur)
-    [string]$ExpectedInModel     # Nom du modèle de référence qui attend cette permission
-    [string]$Severity            # Sévérité de l'écart (Critique, Élevée, Moyenne, Faible)
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
+    [string]$SecurableType       # Type d'Ã©lÃ©ment sÃ©curisable (SERVER)
+    [string]$SecurableName       # Nom de l'Ã©lÃ©ment sÃ©curisable (gÃ©nÃ©ralement le nom du serveur)
+    [string]$ExpectedInModel     # Nom du modÃ¨le de rÃ©fÃ©rence qui attend cette permission
+    [string]$Severity            # SÃ©vÃ©ritÃ© de l'Ã©cart (Critique, Ã‰levÃ©e, Moyenne, Faible)
     [string]$Impact              # Description de l'impact potentiel de cette permission manquante
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
     [string]$ScriptTemplate      # Template de script SQL pour ajouter la permission manquante
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlServerMissingPermission() {
         $this.SecurableType = "SERVER"
         $this.PermissionState = "GRANT"
         $this.Severity = "Moyenne"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlServerMissingPermission([string]$permissionName, [string]$loginName, [string]$permissionState) {
         $this.PermissionName = $permissionName
         $this.LoginName = $loginName
@@ -63,7 +63,7 @@ class SqlServerMissingPermission {
         $this.Severity = $severity
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             return "$($this.PermissionState) $($this.PermissionName) TO [$($this.LoginName)];"
@@ -78,34 +78,34 @@ class SqlServerMissingPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission manquante
+    # MÃ©thode pour obtenir une description textuelle de la permission manquante
     [string] ToString() {
         return "Permission manquante: $($this.PermissionState) $($this.PermissionName) pour le login [$($this.LoginName)]"
     }
 }
 
-# Classe pour représenter une permission manquante au niveau base de données
+# Classe pour reprÃ©senter une permission manquante au niveau base de donnÃ©es
 class SqlDatabaseMissingPermission {
     [string]$PermissionName      # Nom de la permission manquante (ex: SELECT, INSERT, UPDATE)
-    [string]$DatabaseName        # Nom de la base de données
-    [string]$UserName            # Nom de l'utilisateur de base de données qui devrait avoir cette permission
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
-    [string]$SecurableType       # Type d'élément sécurisable (DATABASE, SCHEMA)
-    [string]$SecurableName       # Nom de l'élément sécurisable (nom de la base de données ou du schéma)
-    [string]$ExpectedInModel     # Nom du modèle de référence qui attend cette permission
-    [string]$Severity            # Sévérité de l'écart (Critique, Élevée, Moyenne, Faible)
+    [string]$DatabaseName        # Nom de la base de donnÃ©es
+    [string]$UserName            # Nom de l'utilisateur de base de donnÃ©es qui devrait avoir cette permission
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
+    [string]$SecurableType       # Type d'Ã©lÃ©ment sÃ©curisable (DATABASE, SCHEMA)
+    [string]$SecurableName       # Nom de l'Ã©lÃ©ment sÃ©curisable (nom de la base de donnÃ©es ou du schÃ©ma)
+    [string]$ExpectedInModel     # Nom du modÃ¨le de rÃ©fÃ©rence qui attend cette permission
+    [string]$Severity            # SÃ©vÃ©ritÃ© de l'Ã©cart (Critique, Ã‰levÃ©e, Moyenne, Faible)
     [string]$Impact              # Description de l'impact potentiel de cette permission manquante
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
     [string]$ScriptTemplate      # Template de script SQL pour ajouter la permission manquante
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlDatabaseMissingPermission() {
         $this.SecurableType = "DATABASE"
         $this.PermissionState = "GRANT"
         $this.Severity = "Moyenne"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlDatabaseMissingPermission([string]$permissionName, [string]$databaseName, [string]$userName, [string]$permissionState) {
         $this.PermissionName = $permissionName
         $this.DatabaseName = $databaseName
@@ -137,7 +137,7 @@ class SqlDatabaseMissingPermission {
         $this.Severity = $severity
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             $securablePrefix = switch ($this.SecurableType) {
@@ -160,35 +160,35 @@ class SqlDatabaseMissingPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission manquante
+    # MÃ©thode pour obtenir une description textuelle de la permission manquante
     [string] ToString() {
-        return "Permission manquante: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] dans la base de données [$($this.DatabaseName)]"
+        return "Permission manquante: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] dans la base de donnÃ©es [$($this.DatabaseName)]"
     }
 }
 
-# Classe pour représenter une permission manquante au niveau objet
+# Classe pour reprÃ©senter une permission manquante au niveau objet
 class SqlObjectMissingPermission {
     [string]$PermissionName      # Nom de la permission manquante (ex: SELECT, INSERT, UPDATE)
-    [string]$DatabaseName        # Nom de la base de données
-    [string]$UserName            # Nom de l'utilisateur de base de données qui devrait avoir cette permission
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
+    [string]$DatabaseName        # Nom de la base de donnÃ©es
+    [string]$UserName            # Nom de l'utilisateur de base de donnÃ©es qui devrait avoir cette permission
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
     [string]$ObjectType          # Type d'objet (TABLE, VIEW, PROCEDURE, FUNCTION)
-    [string]$SchemaName          # Nom du schéma
+    [string]$SchemaName          # Nom du schÃ©ma
     [string]$ObjectName          # Nom de l'objet
     [string]$ColumnName          # Nom de la colonne (si applicable)
-    [string]$ExpectedInModel     # Nom du modèle de référence qui attend cette permission
-    [string]$Severity            # Sévérité de l'écart (Critique, Élevée, Moyenne, Faible)
+    [string]$ExpectedInModel     # Nom du modÃ¨le de rÃ©fÃ©rence qui attend cette permission
+    [string]$Severity            # SÃ©vÃ©ritÃ© de l'Ã©cart (Critique, Ã‰levÃ©e, Moyenne, Faible)
     [string]$Impact              # Description de l'impact potentiel de cette permission manquante
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
     [string]$ScriptTemplate      # Template de script SQL pour ajouter la permission manquante
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlObjectMissingPermission() {
         $this.PermissionState = "GRANT"
         $this.Severity = "Moyenne"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlObjectMissingPermission(
         [string]$permissionName,
         [string]$databaseName,
@@ -233,7 +233,7 @@ class SqlObjectMissingPermission {
         $this.Severity = $severity
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             $objectFullName = "[$($this.SchemaName)].[$($this.ObjectName)]"
@@ -259,7 +259,7 @@ class SqlObjectMissingPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission manquante
+    # MÃ©thode pour obtenir une description textuelle de la permission manquante
     [string] ToString() {
         $objectFullName = "[$($this.SchemaName)].[$($this.ObjectName)]"
         
@@ -268,11 +268,11 @@ class SqlObjectMissingPermission {
             $columnClause = " (colonne: $($this.ColumnName))"
         }
         
-        return "Permission manquante: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] sur l'objet $objectFullName$columnClause dans la base de données [$($this.DatabaseName)]"
+        return "Permission manquante: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] sur l'objet $objectFullName$columnClause dans la base de donnÃ©es [$($this.DatabaseName)]"
     }
 }
 
-# Classe pour représenter un ensemble de permissions manquantes
+# Classe pour reprÃ©senter un ensemble de permissions manquantes
 class SqlMissingPermissionsSet {
     [System.Collections.Generic.List[SqlServerMissingPermission]]$ServerPermissions
     [System.Collections.Generic.List[SqlDatabaseMissingPermission]]$DatabasePermissions
@@ -283,7 +283,7 @@ class SqlMissingPermissionsSet {
     [int]$TotalCount
     [hashtable]$SeverityCounts
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlMissingPermissionsSet() {
         $this.ServerPermissions = New-Object System.Collections.Generic.List[SqlServerMissingPermission]
         $this.DatabasePermissions = New-Object System.Collections.Generic.List[SqlDatabaseMissingPermission]
@@ -291,13 +291,13 @@ class SqlMissingPermissionsSet {
         $this.ComparisonDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $this.SeverityCounts = @{
             "Critique" = 0
-            "Élevée" = 0
+            "Ã‰levÃ©e" = 0
             "Moyenne" = 0
             "Faible" = 0
         }
     }
 
-    # Constructeur avec paramètres
+    # Constructeur avec paramÃ¨tres
     SqlMissingPermissionsSet([string]$serverInstance, [string]$modelName) {
         $this.ServerPermissions = New-Object System.Collections.Generic.List[SqlServerMissingPermission]
         $this.DatabasePermissions = New-Object System.Collections.Generic.List[SqlDatabaseMissingPermission]
@@ -307,31 +307,31 @@ class SqlMissingPermissionsSet {
         $this.ComparisonDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $this.SeverityCounts = @{
             "Critique" = 0
-            "Élevée" = 0
+            "Ã‰levÃ©e" = 0
             "Moyenne" = 0
             "Faible" = 0
         }
     }
 
-    # Méthode pour ajouter une permission manquante au niveau serveur
+    # MÃ©thode pour ajouter une permission manquante au niveau serveur
     [void] AddServerPermission([SqlServerMissingPermission]$permission) {
         $this.ServerPermissions.Add($permission)
         $this.UpdateCounts($permission.Severity)
     }
 
-    # Méthode pour ajouter une permission manquante au niveau base de données
+    # MÃ©thode pour ajouter une permission manquante au niveau base de donnÃ©es
     [void] AddDatabasePermission([SqlDatabaseMissingPermission]$permission) {
         $this.DatabasePermissions.Add($permission)
         $this.UpdateCounts($permission.Severity)
     }
 
-    # Méthode pour ajouter une permission manquante au niveau objet
+    # MÃ©thode pour ajouter une permission manquante au niveau objet
     [void] AddObjectPermission([SqlObjectMissingPermission]$permission) {
         $this.ObjectPermissions.Add($permission)
         $this.UpdateCounts($permission.Severity)
     }
 
-    # Méthode privée pour mettre à jour les compteurs
+    # MÃ©thode privÃ©e pour mettre Ã  jour les compteurs
     hidden [void] UpdateCounts([string]$severity) {
         if ($this.SeverityCounts.ContainsKey($severity)) {
             $this.SeverityCounts[$severity]++
@@ -339,7 +339,7 @@ class SqlMissingPermissionsSet {
         $this.TotalCount = $this.ServerPermissions.Count + $this.DatabasePermissions.Count + $this.ObjectPermissions.Count
     }
 
-    # Méthode pour filtrer les permissions par sévérité
+    # MÃ©thode pour filtrer les permissions par sÃ©vÃ©ritÃ©
     [SqlMissingPermissionsSet] FilterBySeverity([string]$severity) {
         $result = [SqlMissingPermissionsSet]::new($this.ServerInstance, $this.ModelName)
         
@@ -364,12 +364,12 @@ class SqlMissingPermissionsSet {
         return $result
     }
 
-    # Méthode pour générer un script SQL de correction pour toutes les permissions manquantes
+    # MÃ©thode pour gÃ©nÃ©rer un script SQL de correction pour toutes les permissions manquantes
     [string] GenerateFixScript() {
         $script = "-- Script de correction des permissions manquantes`n"
         $script += "-- Instance: $($this.ServerInstance)`n"
         $script += "-- Date: $($this.ComparisonDate)`n"
-        $script += "-- Modèle de référence: $($this.ModelName)`n`n"
+        $script += "-- ModÃ¨le de rÃ©fÃ©rence: $($this.ModelName)`n`n"
         
         if ($this.ServerPermissions.Count -gt 0) {
             $script += "-- Permissions manquantes au niveau serveur`n"
@@ -379,15 +379,15 @@ class SqlMissingPermissionsSet {
             $script += "`n"
         }
         
-        # Regrouper les permissions de base de données par base de données
+        # Regrouper les permissions de base de donnÃ©es par base de donnÃ©es
         $dbGroups = $this.DatabasePermissions | Group-Object -Property DatabaseName
         
         foreach ($dbGroup in $dbGroups) {
-            $script += "-- Permissions manquantes pour la base de données [$($dbGroup.Name)]`n"
+            $script += "-- Permissions manquantes pour la base de donnÃ©es [$($dbGroup.Name)]`n"
             $script += "USE [$($dbGroup.Name)];`n"
             
             foreach ($perm in $dbGroup.Group) {
-                # Supprimer la partie USE [database] car elle est déjà incluse
+                # Supprimer la partie USE [database] car elle est dÃ©jÃ  incluse
                 $permScript = $perm.GenerateFixScript() -replace "USE \[[^\]]+\];`n", ""
                 $script += $permScript + "`n"
             }
@@ -395,15 +395,15 @@ class SqlMissingPermissionsSet {
             $script += "`n"
         }
         
-        # Regrouper les permissions d'objet par base de données
+        # Regrouper les permissions d'objet par base de donnÃ©es
         $objGroups = $this.ObjectPermissions | Group-Object -Property DatabaseName
         
         foreach ($objGroup in $objGroups) {
-            $script += "-- Permissions manquantes pour les objets de la base de données [$($objGroup.Name)]`n"
+            $script += "-- Permissions manquantes pour les objets de la base de donnÃ©es [$($objGroup.Name)]`n"
             $script += "USE [$($objGroup.Name)];`n"
             
             foreach ($perm in $objGroup.Group) {
-                # Supprimer la partie USE [database] car elle est déjà incluse
+                # Supprimer la partie USE [database] car elle est dÃ©jÃ  incluse
                 $permScript = $perm.GenerateFixScript() -replace "USE \[[^\]]+\];`n", ""
                 $script += $permScript + "`n"
             }
@@ -414,20 +414,20 @@ class SqlMissingPermissionsSet {
         return $script
     }
 
-    # Méthode pour obtenir un résumé des permissions manquantes
+    # MÃ©thode pour obtenir un rÃ©sumÃ© des permissions manquantes
     [string] GetSummary() {
-        $summary = "Résumé des permissions manquantes pour l'instance $($this.ServerInstance)`n"
-        $summary += "Comparaison avec le modèle: $($this.ModelName)`n"
+        $summary = "RÃ©sumÃ© des permissions manquantes pour l'instance $($this.ServerInstance)`n"
+        $summary += "Comparaison avec le modÃ¨le: $($this.ModelName)`n"
         $summary += "Date: $($this.ComparisonDate)`n`n"
         
         $summary += "Nombre total de permissions manquantes: $($this.TotalCount)`n"
         $summary += "- Permissions serveur: $($this.ServerPermissions.Count)`n"
-        $summary += "- Permissions base de données: $($this.DatabasePermissions.Count)`n"
+        $summary += "- Permissions base de donnÃ©es: $($this.DatabasePermissions.Count)`n"
         $summary += "- Permissions objet: $($this.ObjectPermissions.Count)`n`n"
         
-        $summary += "Répartition par sévérité:`n"
+        $summary += "RÃ©partition par sÃ©vÃ©ritÃ©:`n"
         $summary += "- Critique: $($this.SeverityCounts['Critique'])`n"
-        $summary += "- Élevée: $($this.SeverityCounts['Élevée'])`n"
+        $summary += "- Ã‰levÃ©e: $($this.SeverityCounts['Ã‰levÃ©e'])`n"
         $summary += "- Moyenne: $($this.SeverityCounts['Moyenne'])`n"
         $summary += "- Faible: $($this.SeverityCounts['Faible'])`n"
         
@@ -435,7 +435,7 @@ class SqlMissingPermissionsSet {
     }
 }
 
-# Fonction pour créer un nouvel ensemble de permissions manquantes
+# Fonction pour crÃ©er un nouvel ensemble de permissions manquantes
 function New-SqlMissingPermissionsSet {
     [CmdletBinding()]
     param (
@@ -449,7 +449,7 @@ function New-SqlMissingPermissionsSet {
     return [SqlMissingPermissionsSet]::new($ServerInstance, $ModelName)
 }
 
-# Fonction pour créer une nouvelle permission manquante au niveau serveur
+# Fonction pour crÃ©er une nouvelle permission manquante au niveau serveur
 function New-SqlServerMissingPermission {
     [CmdletBinding()]
     param (
@@ -470,14 +470,14 @@ function New-SqlServerMissingPermission {
         [string]$ExpectedInModel,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevée", "Moyenne", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")]
         [string]$Severity = "Moyenne"
     )
     
     return [SqlServerMissingPermission]::new($PermissionName, $LoginName, $PermissionState, $SecurableName, $ExpectedInModel, $Severity)
 }
 
-# Fonction pour créer une nouvelle permission manquante au niveau base de données
+# Fonction pour crÃ©er une nouvelle permission manquante au niveau base de donnÃ©es
 function New-SqlDatabaseMissingPermission {
     [CmdletBinding()]
     param (
@@ -505,7 +505,7 @@ function New-SqlDatabaseMissingPermission {
         [string]$ExpectedInModel,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevée", "Moyenne", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")]
         [string]$Severity = "Moyenne"
     )
     
@@ -516,7 +516,7 @@ function New-SqlDatabaseMissingPermission {
     return [SqlDatabaseMissingPermission]::new($PermissionName, $DatabaseName, $UserName, $PermissionState, $SecurableType, $SecurableName, $ExpectedInModel, $Severity)
 }
 
-# Fonction pour créer une nouvelle permission manquante au niveau objet
+# Fonction pour crÃ©er une nouvelle permission manquante au niveau objet
 function New-SqlObjectMissingPermission {
     [CmdletBinding()]
     param (
@@ -550,7 +550,7 @@ function New-SqlObjectMissingPermission {
         [string]$ExpectedInModel,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevée", "Moyenne", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")]
         [string]$Severity = "Moyenne"
     )
     

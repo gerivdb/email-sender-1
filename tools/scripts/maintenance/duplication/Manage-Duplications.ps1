@@ -1,42 +1,42 @@
-<#
+﻿<#
 .SYNOPSIS
-    Gère la détection et la fusion des duplications de code.
+    GÃ¨re la dÃ©tection et la fusion des duplications de code.
 .DESCRIPTION
-    Ce script orchestre le processus de détection des duplications de code et de fusion
-    des scripts similaires. Il permet d'analyser les scripts, de générer un rapport
+    Ce script orchestre le processus de dÃ©tection des duplications de code et de fusion
+    des scripts similaires. Il permet d'analyser les scripts, de gÃ©nÃ©rer un rapport
     de duplications et d'appliquer automatiquement les fusions.
 .PARAMETER Action
-    Action à effectuer. Valeurs possibles: detect, merge, all.
-    - detect: Détecte les duplications de code.
+    Action Ã  effectuer. Valeurs possibles: detect, merge, all.
+    - detect: DÃ©tecte les duplications de code.
     - merge: Fusionne les scripts similaires.
     - all: Effectue les deux actions.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à analyser. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER MinimumLineCount
-    Nombre minimum de lignes pour considérer une duplication. Par défaut: 5
+    Nombre minimum de lignes pour considÃ©rer une duplication. Par dÃ©faut: 5
 .PARAMETER SimilarityThreshold
-    Seuil de similarité (0-1) pour considérer deux blocs comme similaires. Par défaut: 0.8
+    Seuil de similaritÃ© (0-1) pour considÃ©rer deux blocs comme similaires. Par dÃ©faut: 0.8
 .PARAMETER MinimumDuplicationCount
-    Nombre minimum de duplications pour créer une fonction réutilisable. Par défaut: 2
+    Nombre minimum de duplications pour crÃ©er une fonction rÃ©utilisable. Par dÃ©faut: 2
 .PARAMETER ScriptType
-    Type de script à analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par défaut: All
+    Type de script Ã  analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER AutoApply
     Applique automatiquement les modifications sans demander de confirmation.
 .PARAMETER Interactive
     Mode interactif pour valider chaque fusion.
 .PARAMETER ShowDetails
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .PARAMETER UsePython
-    Utilise les scripts Python pour la détection et la fusion (recommandé pour les grands projets).
+    Utilise les scripts Python pour la dÃ©tection et la fusion (recommandÃ© pour les grands projets).
 .EXAMPLE
     .\Manage-Duplications.ps1 -Action detect
-    Détecte les duplications de code dans tous les scripts.
+    DÃ©tecte les duplications de code dans tous les scripts.
 .EXAMPLE
     .\Manage-Duplications.ps1 -Action merge -AutoApply
     Fusionne automatiquement les scripts similaires.
 .EXAMPLE
     .\Manage-Duplications.ps1 -Action all -Path "scripts\maintenance" -ScriptType PowerShell -Interactive
-    Détecte les duplications et fusionne les scripts PowerShell dans le dossier spécifié en mode interactif.
+    DÃ©tecte les duplications et fusionne les scripts PowerShell dans le dossier spÃ©cifiÃ© en mode interactif.
 #>
 
 param (
@@ -55,7 +55,7 @@ param (
     [switch]$UsePython
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -77,12 +77,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\manager\data\duplication_management.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour détecter les duplications de code avec PowerShell
+# Fonction pour dÃ©tecter les duplications de code avec PowerShell
 function Start-DuplicationDetectionPS {
     param (
         [string]$Path,
@@ -92,48 +92,48 @@ function Start-DuplicationDetectionPS {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la détection des duplications de code avec PowerShell..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des duplications de code avec PowerShell..." -Level "TITLE"
     
     $DetectScript = "scripts\maintenance\duplication\Find-CodeDuplication.ps1"
     $OutputPath = "scripts\manager\data\duplication_report.json"
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $DetectScript -ErrorAction SilentlyContinue)) {
-        Write-Log "Le script de détection n'existe pas: $DetectScript" -Level "ERROR"
+        Write-Log "Le script de dÃ©tection n'existe pas: $DetectScript" -Level "ERROR"
         return $false
     }
     
-    # Exécuter le script de détection
+    # ExÃ©cuter le script de dÃ©tection
     $ShowDetailsParam = if ($ShowDetails) { "-ShowDetails" } else { "" }
     $Command = "& '$DetectScript' -Path '$Path' -OutputPath '$OutputPath' -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -ScriptType '$ScriptType' $ShowDetailsParam"
     
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
     
     try {
         Invoke-Expression $Command
         
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath -ErrorAction SilentlyContinue) {
             $Report = Get-Content -Path $OutputPath -Raw -ErrorAction Stop | ConvertFrom-Json
             $IntraFileCount = ($Report.IntraFileDuplications | Measure-Object -Property Duplications -Sum).Sum
             $InterFileCount = $Report.InterFileDuplications.Count
             
-            Write-Log "Détection terminée avec succès" -Level "SUCCESS"
-            Write-Log "Nombre de duplications internes trouvées: $IntraFileCount" -Level "INFO"
-            Write-Log "Nombre de duplications entre fichiers trouvées: $InterFileCount" -Level "INFO"
+            Write-Log "DÃ©tection terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+            Write-Log "Nombre de duplications internes trouvÃ©es: $IntraFileCount" -Level "INFO"
+            Write-Log "Nombre de duplications entre fichiers trouvÃ©es: $InterFileCount" -Level "INFO"
             
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de détection: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de dÃ©tection: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour détecter les duplications de code avec Python
+# Fonction pour dÃ©tecter les duplications de code avec Python
 function Start-DuplicationDetectionPY {
     param (
         [string]$Path,
@@ -143,52 +143,52 @@ function Start-DuplicationDetectionPY {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la détection des duplications de code avec Python..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des duplications de code avec Python..." -Level "TITLE"
     
     $DetectScript = "scripts\maintenance\duplication\Find-CodeDuplication.py"
     $OutputPath = "scripts\manager\data\duplication_report.json"
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $DetectScript -ErrorAction SilentlyContinue)) {
-        Write-Log "Le script de détection Python n'existe pas: $DetectScript" -Level "ERROR"
+        Write-Log "Le script de dÃ©tection Python n'existe pas: $DetectScript" -Level "ERROR"
         return $false
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     try {
         $PythonVersion = python --version
-        Write-Log "Python détecté: $PythonVersion" -Level "INFO"
+        Write-Log "Python dÃ©tectÃ©: $PythonVersion" -Level "INFO"
     } catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH" -Level "ERROR"
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH" -Level "ERROR"
         return $false
     }
     
-    # Exécuter le script de détection
+    # ExÃ©cuter le script de dÃ©tection
     $ShowDetailsParam = if ($ShowDetails) { "--details" } else { "" }
     $Command = "python '$DetectScript' --path '$Path' --output '$OutputPath' --min-lines $MinimumLineCount --similarity $SimilarityThreshold --script-type '$ScriptType' $ShowDetailsParam"
     
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
     
     try {
         Invoke-Expression $Command
         
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath -ErrorAction SilentlyContinue) {
             $Report = Get-Content -Path $OutputPath -Raw -ErrorAction Stop | ConvertFrom-Json
             $IntraFileCount = ($Report.intra_file_duplications | Measure-Object).Count
             $InterFileCount = ($Report.inter_file_duplications | Measure-Object).Count
             
-            Write-Log "Détection terminée avec succès" -Level "SUCCESS"
-            Write-Log "Nombre de duplications internes trouvées: $IntraFileCount" -Level "INFO"
-            Write-Log "Nombre de duplications entre fichiers trouvées: $InterFileCount" -Level "INFO"
+            Write-Log "DÃ©tection terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+            Write-Log "Nombre de duplications internes trouvÃ©es: $IntraFileCount" -Level "INFO"
+            Write-Log "Nombre de duplications entre fichiers trouvÃ©es: $InterFileCount" -Level "INFO"
             
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de détection Python: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de dÃ©tection Python: $_" -Level "ERROR"
         return $false
     }
 }
@@ -202,57 +202,57 @@ function Start-ScriptMergePS {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la fusion des scripts similaires avec PowerShell..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la fusion des scripts similaires avec PowerShell..." -Level "TITLE"
     
     $MergeScript = "scripts\maintenance\duplication\Merge-SimilarScripts.ps1"
     $InputPath = "scripts\manager\data\duplication_report.json"
     $OutputPath = "scripts\manager\data\merge_report.json"
     $LibraryPath = "scripts\common\lib"
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $MergeScript -ErrorAction SilentlyContinue)) {
         Write-Log "Le script de fusion n'existe pas: $MergeScript" -Level "ERROR"
         return $false
     }
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath -ErrorAction SilentlyContinue)) {
-        Write-Log "Le fichier d'entrée n'existe pas: $InputPath" -Level "ERROR"
-        Write-Log "Exécutez d'abord l'action 'detect' pour générer le rapport." -Level "ERROR"
+        Write-Log "Le fichier d'entrÃ©e n'existe pas: $InputPath" -Level "ERROR"
+        Write-Log "ExÃ©cutez d'abord l'action 'detect' pour gÃ©nÃ©rer le rapport." -Level "ERROR"
         return $false
     }
     
-    # Exécuter le script de fusion
+    # ExÃ©cuter le script de fusion
     $AutoApplyParam = if ($AutoApply) { "-AutoApply" } else { "" }
     $ShowDetailsParam = if ($ShowDetails) { "-ShowDetails" } else { "" }
     $Command = "& '$MergeScript' -InputPath '$InputPath' -OutputPath '$OutputPath' -LibraryPath '$LibraryPath' -MinimumDuplicationCount $MinimumDuplicationCount $AutoApplyParam $ShowDetailsParam"
     
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
     
     try {
         Invoke-Expression $Command
         
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath -ErrorAction SilentlyContinue) {
             $Report = Get-Content -Path $OutputPath -Raw -ErrorAction Stop | ConvertFrom-Json
             $MergeCount = $Report.TotalMerges
             
-            Write-Log "Fusion terminée avec succès" -Level "SUCCESS"
+            Write-Log "Fusion terminÃ©e avec succÃ¨s" -Level "SUCCESS"
             Write-Log "Nombre de fusions: $MergeCount" -Level "INFO"
             
             if ($AutoApply) {
-                Write-Log "Fusions appliquées" -Level "SUCCESS"
+                Write-Log "Fusions appliquÃ©es" -Level "SUCCESS"
             } else {
-                Write-Log "Pour appliquer les fusions, exécutez la commande avec -AutoApply" -Level "WARNING"
+                Write-Log "Pour appliquer les fusions, exÃ©cutez la commande avec -AutoApply" -Level "WARNING"
             }
             
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de fusion: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de fusion: $_" -Level "ERROR"
         return $false
     }
 }
@@ -266,58 +266,58 @@ function Start-ScriptMergePY {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la fusion des scripts similaires avec Python..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la fusion des scripts similaires avec Python..." -Level "TITLE"
     
     $MergeScript = "scripts\maintenance\duplication\Merge-SimilarScripts.py"
     $InputPath = "scripts\manager\data\duplication_report.json"
     $OutputPath = "scripts\manager\data\merge_report.json"
     $LibraryPath = "scripts\common\lib"
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $MergeScript -ErrorAction SilentlyContinue)) {
         Write-Log "Le script de fusion Python n'existe pas: $MergeScript" -Level "ERROR"
         return $false
     }
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath -ErrorAction SilentlyContinue)) {
-        Write-Log "Le fichier d'entrée n'existe pas: $InputPath" -Level "ERROR"
-        Write-Log "Exécutez d'abord l'action 'detect' pour générer le rapport." -Level "ERROR"
+        Write-Log "Le fichier d'entrÃ©e n'existe pas: $InputPath" -Level "ERROR"
+        Write-Log "ExÃ©cutez d'abord l'action 'detect' pour gÃ©nÃ©rer le rapport." -Level "ERROR"
         return $false
     }
     
-    # Exécuter le script de fusion
+    # ExÃ©cuter le script de fusion
     $ApplyParam = if ($AutoApply) { "--apply" } else { "" }
     $InteractiveParam = if ($Interactive) { "--interactive" } else { "" }
     $DetailsParam = if ($ShowDetails) { "--details" } else { "" }
     $Command = "python '$MergeScript' --input '$InputPath' --output '$OutputPath' --library '$LibraryPath' --min-duplications $MinimumDuplicationCount $ApplyParam $InteractiveParam $DetailsParam"
     
-    Write-Log "Exécution de la commande: $Command" -Level "INFO"
+    Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
     
     try {
         Invoke-Expression $Command
         
-        # Vérifier si le fichier de sortie a été créé
+        # VÃ©rifier si le fichier de sortie a Ã©tÃ© crÃ©Ã©
         if (Test-Path -Path $OutputPath -ErrorAction SilentlyContinue) {
             $Report = Get-Content -Path $OutputPath -Raw -ErrorAction Stop | ConvertFrom-Json
             $MergeCount = $Report.total_merges
             
-            Write-Log "Fusion terminée avec succès" -Level "SUCCESS"
+            Write-Log "Fusion terminÃ©e avec succÃ¨s" -Level "SUCCESS"
             Write-Log "Nombre de fusions: $MergeCount" -Level "INFO"
             
             if ($AutoApply) {
-                Write-Log "Fusions appliquées" -Level "SUCCESS"
+                Write-Log "Fusions appliquÃ©es" -Level "SUCCESS"
             } else {
-                Write-Log "Pour appliquer les fusions, exécutez la commande avec -AutoApply" -Level "WARNING"
+                Write-Log "Pour appliquer les fusions, exÃ©cutez la commande avec -AutoApply" -Level "WARNING"
             }
             
             return $true
         } else {
-            Write-Log "Le fichier de sortie n'a pas été créé: $OutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© crÃ©Ã©: $OutputPath" -Level "ERROR"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de fusion Python: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de fusion Python: $_" -Level "ERROR"
         return $false
     }
 }
@@ -342,14 +342,14 @@ function Start-DuplicationManagement {
     Write-Log "Chemin: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     Write-Log "Nombre minimum de lignes: $MinimumLineCount" -Level "INFO"
-    Write-Log "Seuil de similarité: $SimilarityThreshold" -Level "INFO"
+    Write-Log "Seuil de similaritÃ©: $SimilarityThreshold" -Level "INFO"
     Write-Log "Nombre minimum de duplications: $MinimumDuplicationCount" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
     Write-Log "Utiliser Python: $UsePython" -Level "INFO"
     
     $Success = $true
     
-    # Exécuter l'action demandée
+    # ExÃ©cuter l'action demandÃ©e
     switch ($Action) {
         "detect" {
             if ($UsePython) {
@@ -380,15 +380,15 @@ function Start-DuplicationManagement {
         }
     }
     
-    # Afficher un message de résultat
+    # Afficher un message de rÃ©sultat
     if ($Success) {
-        Write-Log "Opération terminée avec succès" -Level "SUCCESS"
+        Write-Log "OpÃ©ration terminÃ©e avec succÃ¨s" -Level "SUCCESS"
     } else {
-        Write-Log "Opération terminée avec des erreurs" -Level "ERROR"
+        Write-Log "OpÃ©ration terminÃ©e avec des erreurs" -Level "ERROR"
     }
     
     return $Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-DuplicationManagement -Action $Action -Path $Path -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -MinimumDuplicationCount $MinimumDuplicationCount -ScriptType $ScriptType -AutoApply:$AutoApply -Interactive:$Interactive -ShowDetails:$ShowDetails -UsePython:$UsePython

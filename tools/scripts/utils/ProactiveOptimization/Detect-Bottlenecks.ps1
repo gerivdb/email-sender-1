@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les goulots d'étranglement dans les processus parallèles.
+    DÃ©tecte les goulots d'Ã©tranglement dans les processus parallÃ¨les.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation pour détecter les goulots d'étranglement
-    dans les processus parallèles, en se concentrant sur:
-    - Les scripts qui ralentissent fréquemment
+    Ce script analyse les donnÃ©es d'utilisation pour dÃ©tecter les goulots d'Ã©tranglement
+    dans les processus parallÃ¨les, en se concentrant sur:
+    - Les scripts qui ralentissent frÃ©quemment
     - Les contentions de ressources
-    - Les problèmes de synchronisation
+    - Les problÃ¨mes de synchronisation
 .EXAMPLE
     .\Detect-Bottlenecks.ps1 -DetailedAnalysis
 .NOTES
@@ -34,11 +34,11 @@ $usageMonitorPath = Join-Path -Path $PSScriptRoot -ChildPath "..\UsageMonitor\Us
 if (Test-Path -Path $usageMonitorPath) {
     Import-Module $usageMonitorPath -Force
 } else {
-    Write-Error "Module UsageMonitor non trouvé: $usageMonitorPath"
+    Write-Error "Module UsageMonitor non trouvÃ©: $usageMonitorPath"
     exit 1
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -61,7 +61,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour vérifier si un script utilise la parallélisation
+# Fonction pour vÃ©rifier si un script utilise la parallÃ©lisation
 function Test-ScriptUsesParallelization {
     param (
         [string]$ScriptPath
@@ -74,7 +74,7 @@ function Test-ScriptUsesParallelization {
     try {
         $content = Get-Content -Path $ScriptPath -Raw -ErrorAction Stop
 
-        # Vérifier les patterns de parallélisation courants
+        # VÃ©rifier les patterns de parallÃ©lisation courants
         $parallelPatterns = @(
             'Invoke-Parallel',
             'Start-ThreadJob',
@@ -99,12 +99,12 @@ function Test-ScriptUsesParallelization {
 
         return $false
     } catch {
-        Write-Warning "Erreur lors de la vérification de la parallélisation pour $ScriptPath : $_"
+        Write-Warning "Erreur lors de la vÃ©rification de la parallÃ©lisation pour $ScriptPath : $_"
         return $false
     }
 }
 
-# Fonction pour analyser en détail un goulot d'étranglement parallèle
+# Fonction pour analyser en dÃ©tail un goulot d'Ã©tranglement parallÃ¨le
 function Analyze-ParallelBottleneck {
     param (
         [string]$ScriptPath,
@@ -113,14 +113,14 @@ function Analyze-ParallelBottleneck {
 
     $analysis = @{
         ParallelizationType = "Inconnue"
-        ProbableCause       = "Indéterminé"
+        ProbableCause       = "IndÃ©terminÃ©"
         Recommendation      = "Analyse manuelle requise"
     }
 
     try {
         $content = Get-Content -Path $ScriptPath -Raw -ErrorAction Stop
 
-        # Déterminer le type de parallélisation
+        # DÃ©terminer le type de parallÃ©lisation
         if ($content -match 'ForEach-Object\s+-Parallel') {
             $analysis.ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
         } elseif ($content -match 'RunspacePool') {
@@ -130,14 +130,14 @@ function Analyze-ParallelBottleneck {
         } elseif ($content -match 'Invoke-Parallel') {
             $analysis.ParallelizationType = "Invoke-Parallel (Module PoshRSJob)"
         } elseif ($content -match 'Invoke-OptimizedParallel') {
-            $analysis.ParallelizationType = "Invoke-OptimizedParallel (Module personnalisé)"
+            $analysis.ParallelizationType = "Invoke-OptimizedParallel (Module personnalisÃ©)"
         }
 
-        # Analyser les exécutions lentes pour détecter des patterns
+        # Analyser les exÃ©cutions lentes pour dÃ©tecter des patterns
         $slowExecutions = $Bottleneck.SlowExecutions
 
         if ($slowExecutions.Count -gt 0) {
-            # Vérifier si les ralentissements sont liés à la taille des données
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  la taille des donnÃ©es
             $largeDataCount = 0
             foreach ($execution in $slowExecutions) {
                 if ($execution.Parameters -and ($execution.Parameters.Count -gt 0)) {
@@ -151,11 +151,11 @@ function Analyze-ParallelBottleneck {
             }
 
             if ($largeDataCount -gt ($slowExecutions.Count * 0.5)) {
-                $analysis.ProbableCause = "Traitement de grands volumes de données"
-                $analysis.Recommendation = "Optimiser la taille des lots (batch size) et implémenter un partitionnement plus efficace"
+                $analysis.ProbableCause = "Traitement de grands volumes de donnÃ©es"
+                $analysis.Recommendation = "Optimiser la taille des lots (batch size) et implÃ©menter un partitionnement plus efficace"
             }
 
-            # Vérifier si les ralentissements sont liés à la contention des ressources
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  la contention des ressources
             $highCpuCount = 0
             $highMemoryCount = 0
 
@@ -174,57 +174,57 @@ function Analyze-ParallelBottleneck {
 
             if ($highCpuCount -gt ($slowExecutions.Count * 0.5)) {
                 $analysis.ProbableCause = "Saturation du CPU"
-                $analysis.Recommendation = "Réduire le nombre de threads parallèles et optimiser les opérations intensives en CPU"
+                $analysis.Recommendation = "RÃ©duire le nombre de threads parallÃ¨les et optimiser les opÃ©rations intensives en CPU"
             } elseif ($highMemoryCount -gt ($slowExecutions.Count * 0.5)) {
-                $analysis.ProbableCause = "Consommation excessive de mémoire"
-                $analysis.Recommendation = "Optimiser l'utilisation de la mémoire, libérer les ressources non utilisées et traiter les données par lots plus petits"
+                $analysis.ProbableCause = "Consommation excessive de mÃ©moire"
+                $analysis.Recommendation = "Optimiser l'utilisation de la mÃ©moire, libÃ©rer les ressources non utilisÃ©es et traiter les donnÃ©es par lots plus petits"
             }
 
-            # Vérifier si les ralentissements sont liés à des opérations d'E/S
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  des opÃ©rations d'E/S
             if ($content -match '(Get-Content|Set-Content|Add-Content|Out-File|Import-Csv|Export-Csv|Copy-Item|Move-Item)') {
-                $analysis.ProbableCause = "Opérations d'E/S intensives"
-                $analysis.Recommendation = "Optimiser les opérations de fichier, utiliser des buffers plus grands, et considérer des techniques comme la mise en cache ou la lecture/écriture asynchrone"
+                $analysis.ProbableCause = "OpÃ©rations d'E/S intensives"
+                $analysis.Recommendation = "Optimiser les opÃ©rations de fichier, utiliser des buffers plus grands, et considÃ©rer des techniques comme la mise en cache ou la lecture/Ã©criture asynchrone"
             }
 
-            # Vérifier si les ralentissements sont liés à des problèmes de synchronisation
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  des problÃ¨mes de synchronisation
             if ($content -match '(lock|Mutex|Semaphore|Monitor|SyncRoot|SemaphoreSlim|ReaderWriterLockSlim)') {
                 $analysis.ProbableCause = "Contention de synchronisation"
-                $analysis.Recommendation = "Réduire la granularité des verrous, utiliser des structures de données thread-safe, et minimiser les sections critiques"
+                $analysis.Recommendation = "RÃ©duire la granularitÃ© des verrous, utiliser des structures de donnÃ©es thread-safe, et minimiser les sections critiques"
             }
         }
     } catch {
-        Write-Warning "Erreur lors de l'analyse détaillée pour $ScriptPath : $_"
+        Write-Warning "Erreur lors de l'analyse dÃ©taillÃ©e pour $ScriptPath : $_"
     }
 
     return $analysis
 }
 
-# Fonction pour détecter les goulots d'étranglement dans les processus parallèles
+# Fonction pour dÃ©tecter les goulots d'Ã©tranglement dans les processus parallÃ¨les
 function Find-ParallelProcessBottlenecks {
     [CmdletBinding()]
     param (
         [switch]$DetailedAnalysis
     )
 
-    Write-Log "Détection des goulots d'étranglement dans les processus parallèles..." -Level "TITLE"
+    Write-Log "DÃ©tection des goulots d'Ã©tranglement dans les processus parallÃ¨les..." -Level "TITLE"
 
-    # Utiliser la fonction existante pour trouver les goulots d'étranglement
+    # Utiliser la fonction existante pour trouver les goulots d'Ã©tranglement
     $bottlenecks = Find-ScriptBottlenecks
 
-    # Filtrer pour ne garder que les scripts qui utilisent la parallélisation
+    # Filtrer pour ne garder que les scripts qui utilisent la parallÃ©lisation
     $parallelBottlenecks = @()
 
     foreach ($bottleneck in $bottlenecks) {
         $scriptPath = $bottleneck.ScriptPath
 
-        # Vérifier si le script utilise des fonctionnalités de parallélisation
+        # VÃ©rifier si le script utilise des fonctionnalitÃ©s de parallÃ©lisation
         $isParallel = Test-ScriptUsesParallelization -ScriptPath $scriptPath
 
         if ($isParallel) {
             $bottleneck | Add-Member -MemberType NoteProperty -Name "IsParallel" -Value $true
             $parallelBottlenecks += $bottleneck
 
-            # Analyse détaillée si demandée
+            # Analyse dÃ©taillÃ©e si demandÃ©e
             if ($DetailedAnalysis) {
                 $detailedInfo = Get-ParallelBottleneckAnalysis -ScriptPath $scriptPath -Bottleneck $bottleneck
                 $bottleneck | Add-Member -MemberType NoteProperty -Name "DetailedAnalysis" -Value $detailedInfo
@@ -233,22 +233,22 @@ function Find-ParallelProcessBottlenecks {
     }
 
     if ($parallelBottlenecks.Count -gt 0) {
-        Write-Log "Goulots d'étranglement détectés dans les processus parallèles:" -Level "WARNING"
+        Write-Log "Goulots d'Ã©tranglement dÃ©tectÃ©s dans les processus parallÃ¨les:" -Level "WARNING"
         foreach ($bottleneck in $parallelBottlenecks) {
             Write-Log "  - Script: $($bottleneck.ScriptName)" -Level "WARNING"
-            Write-Log "    * Durée moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
+            Write-Log "    * DurÃ©e moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
             Write-Log "    * Seuil de lenteur: $([math]::Round($bottleneck.SlowThreshold, 2)) ms" -Level "INFO"
-            Write-Log "    * Exécutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
+            Write-Log "    * ExÃ©cutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
 
             if ($DetailedAnalysis -and $bottleneck.DetailedAnalysis) {
-                Write-Log "    * Analyse détaillée:" -Level "INFO"
-                Write-Log "      - Type de parallélisation: $($bottleneck.DetailedAnalysis.ParallelizationType)" -Level "INFO"
-                Write-Log "      - Problème probable: $($bottleneck.DetailedAnalysis.ProbableCause)" -Level "INFO"
+                Write-Log "    * Analyse dÃ©taillÃ©e:" -Level "INFO"
+                Write-Log "      - Type de parallÃ©lisation: $($bottleneck.DetailedAnalysis.ParallelizationType)" -Level "INFO"
+                Write-Log "      - ProblÃ¨me probable: $($bottleneck.DetailedAnalysis.ProbableCause)" -Level "INFO"
                 Write-Log "      - Recommandation: $($bottleneck.DetailedAnalysis.Recommendation)" -Level "INFO"
             }
         }
     } else {
-        Write-Log "Aucun goulot d'étranglement détecté dans les processus parallèles." -Level "SUCCESS"
+        Write-Log "Aucun goulot d'Ã©tranglement dÃ©tectÃ© dans les processus parallÃ¨les." -Level "SUCCESS"
     }
 
     return $parallelBottlenecks
@@ -256,7 +256,7 @@ function Find-ParallelProcessBottlenecks {
 
 
 
-# Fonction pour analyser en détail un goulot d'étranglement parallèle
+# Fonction pour analyser en dÃ©tail un goulot d'Ã©tranglement parallÃ¨le
 function Get-ParallelBottleneckAnalysis {
     param (
         [string]$ScriptPath,
@@ -265,14 +265,14 @@ function Get-ParallelBottleneckAnalysis {
 
     $analysis = @{
         ParallelizationType = "Inconnue"
-        ProbableCause       = "Indéterminé"
+        ProbableCause       = "IndÃ©terminÃ©"
         Recommendation      = "Analyse manuelle requise"
     }
 
     try {
         $content = Get-Content -Path $ScriptPath -Raw -ErrorAction Stop
 
-        # Déterminer le type de parallélisation
+        # DÃ©terminer le type de parallÃ©lisation
         if ($content -match 'ForEach-Object\s+-Parallel') {
             $analysis.ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
         } elseif ($content -match 'RunspacePool') {
@@ -282,14 +282,14 @@ function Get-ParallelBottleneckAnalysis {
         } elseif ($content -match 'Invoke-Parallel') {
             $analysis.ParallelizationType = "Invoke-Parallel (Module PoshRSJob)"
         } elseif ($content -match 'Invoke-OptimizedParallel') {
-            $analysis.ParallelizationType = "Invoke-OptimizedParallel (Module personnalisé)"
+            $analysis.ParallelizationType = "Invoke-OptimizedParallel (Module personnalisÃ©)"
         }
 
-        # Analyser les exécutions lentes pour détecter des patterns
+        # Analyser les exÃ©cutions lentes pour dÃ©tecter des patterns
         $slowExecutions = $Bottleneck.SlowExecutions
 
         if ($slowExecutions.Count -gt 0) {
-            # Vérifier si les ralentissements sont liés à la taille des données
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  la taille des donnÃ©es
             $largeDataCount = 0
             foreach ($execution in $slowExecutions) {
                 if ($execution.Parameters -and ($execution.Parameters.Count -gt 0)) {
@@ -303,11 +303,11 @@ function Get-ParallelBottleneckAnalysis {
             }
 
             if ($largeDataCount -gt ($slowExecutions.Count * 0.5)) {
-                $analysis.ProbableCause = "Traitement de grands volumes de données"
-                $analysis.Recommendation = "Optimiser la taille des lots (batch size) et implémenter un partitionnement plus efficace"
+                $analysis.ProbableCause = "Traitement de grands volumes de donnÃ©es"
+                $analysis.Recommendation = "Optimiser la taille des lots (batch size) et implÃ©menter un partitionnement plus efficace"
             }
 
-            # Vérifier si les ralentissements sont liés à la contention des ressources
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  la contention des ressources
             $highCpuCount = 0
             $highMemoryCount = 0
 
@@ -326,41 +326,41 @@ function Get-ParallelBottleneckAnalysis {
 
             if ($highCpuCount -gt ($slowExecutions.Count * 0.5)) {
                 $analysis.ProbableCause = "Saturation du CPU"
-                $analysis.Recommendation = "Réduire le nombre de threads parallèles et optimiser les opérations intensives en CPU"
+                $analysis.Recommendation = "RÃ©duire le nombre de threads parallÃ¨les et optimiser les opÃ©rations intensives en CPU"
             } elseif ($highMemoryCount -gt ($slowExecutions.Count * 0.5)) {
-                $analysis.ProbableCause = "Consommation excessive de mémoire"
-                $analysis.Recommendation = "Optimiser l'utilisation de la mémoire, libérer les ressources non utilisées et traiter les données par lots plus petits"
+                $analysis.ProbableCause = "Consommation excessive de mÃ©moire"
+                $analysis.Recommendation = "Optimiser l'utilisation de la mÃ©moire, libÃ©rer les ressources non utilisÃ©es et traiter les donnÃ©es par lots plus petits"
             }
 
-            # Vérifier si les ralentissements sont liés à des opérations d'E/S
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  des opÃ©rations d'E/S
             if ($content -match '(Get-Content|Set-Content|Add-Content|Out-File|Import-Csv|Export-Csv|Copy-Item|Move-Item)') {
-                $analysis.ProbableCause = "Opérations d'E/S intensives"
-                $analysis.Recommendation = "Optimiser les opérations de fichier, utiliser des buffers plus grands, et considérer des techniques comme la mise en cache ou la lecture/écriture asynchrone"
+                $analysis.ProbableCause = "OpÃ©rations d'E/S intensives"
+                $analysis.Recommendation = "Optimiser les opÃ©rations de fichier, utiliser des buffers plus grands, et considÃ©rer des techniques comme la mise en cache ou la lecture/Ã©criture asynchrone"
             }
 
-            # Vérifier si les ralentissements sont liés à des problèmes de synchronisation
+            # VÃ©rifier si les ralentissements sont liÃ©s Ã  des problÃ¨mes de synchronisation
             if ($content -match '(lock|Mutex|Semaphore|Monitor|SyncRoot|SemaphoreSlim|ReaderWriterLockSlim)') {
                 $analysis.ProbableCause = "Contention de synchronisation"
-                $analysis.Recommendation = "Réduire la granularité des verrous, utiliser des structures de données thread-safe, et minimiser les sections critiques"
+                $analysis.Recommendation = "RÃ©duire la granularitÃ© des verrous, utiliser des structures de donnÃ©es thread-safe, et minimiser les sections critiques"
             }
         }
     } catch {
-        Write-Warning "Erreur lors de l'analyse détaillée pour $ScriptPath : $_"
+        Write-Warning "Erreur lors de l'analyse dÃ©taillÃ©e pour $ScriptPath : $_"
     }
 
     return $analysis
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-BottleneckReport {
     param (
         [array]$Bottlenecks,
         [string]$OutputPath
     )
 
-    Write-Log "Génération du rapport de goulots d'étranglement..." -Level "TITLE"
+    Write-Log "GÃ©nÃ©ration du rapport de goulots d'Ã©tranglement..." -Level "TITLE"
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $reportDir = Join-Path -Path $PSScriptRoot -ChildPath $OutputPath
     if (-not (Test-Path -Path $reportDir)) {
         New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
@@ -368,14 +368,14 @@ function New-BottleneckReport {
 
     $reportFile = Join-Path -Path $reportDir -ChildPath "bottleneck_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport des goulots d'étranglement dans les processus parallèles</title>
+    <title>Rapport des goulots d'Ã©tranglement dans les processus parallÃ¨les</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -448,22 +448,22 @@ function New-BottleneckReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport des goulots d'étranglement dans les processus parallèles</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm")</p>
+        <h1>Rapport des goulots d'Ã©tranglement dans les processus parallÃ¨les</h1>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm")</p>
 
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
 "@
 
     if ($Bottlenecks.Count -gt 0) {
-        $htmlContent += "<p>$($Bottlenecks.Count) goulots d'étranglement détectés dans les processus parallèles.</p>"
+        $htmlContent += "<p>$($Bottlenecks.Count) goulots d'Ã©tranglement dÃ©tectÃ©s dans les processus parallÃ¨les.</p>"
 
         $htmlContent += @"
         <table>
             <tr>
                 <th>Script</th>
-                <th>Durée moyenne (ms)</th>
+                <th>DurÃ©e moyenne (ms)</th>
                 <th>Seuil de lenteur (ms)</th>
-                <th>Exécutions lentes</th>
+                <th>ExÃ©cutions lentes</th>
                 <th>Pourcentage</th>
             </tr>
 "@
@@ -489,7 +489,7 @@ function New-BottleneckReport {
 
         $htmlContent += "</table>"
 
-        $htmlContent += "<h2>Analyse détaillée</h2>"
+        $htmlContent += "<h2>Analyse dÃ©taillÃ©e</h2>"
 
         foreach ($bottleneck in $Bottlenecks) {
             $scriptName = $bottleneck.ScriptName
@@ -503,24 +503,24 @@ function New-BottleneckReport {
             if ($bottleneck.DetailedAnalysis) {
                 $htmlContent += @"
                 <div class="details">
-                    <p><strong>Type de parallélisation:</strong> $($bottleneck.DetailedAnalysis.ParallelizationType)</p>
-                    <p><strong>Problème probable:</strong> $($bottleneck.DetailedAnalysis.ProbableCause)</p>
+                    <p><strong>Type de parallÃ©lisation:</strong> $($bottleneck.DetailedAnalysis.ParallelizationType)</p>
+                    <p><strong>ProblÃ¨me probable:</strong> $($bottleneck.DetailedAnalysis.ProbableCause)</p>
                     <p><strong>Recommandation:</strong> $($bottleneck.DetailedAnalysis.Recommendation)</p>
                 </div>
 "@
             }
 
-            $htmlContent += "<h4>Exécutions lentes</h4>"
+            $htmlContent += "<h4>ExÃ©cutions lentes</h4>"
 
             if ($bottleneck.SlowExecutions.Count -gt 0) {
                 $htmlContent += @"
                 <table>
                     <tr>
                         <th>Date</th>
-                        <th>Durée (ms)</th>
-                        <th>Paramètres</th>
+                        <th>DurÃ©e (ms)</th>
+                        <th>ParamÃ¨tres</th>
                         <th>CPU (%)</th>
-                        <th>Mémoire (MB)</th>
+                        <th>MÃ©moire (MB)</th>
                     </tr>
 "@
 
@@ -562,19 +562,19 @@ function New-BottleneckReport {
                 $htmlContent += "</table>"
 
                 if ($bottleneck.SlowExecutions.Count -gt 10) {
-                    $htmlContent += "<p><em>Affichage limité aux 10 premières exécutions lentes sur un total de $($bottleneck.SlowExecutions.Count).</em></p>"
+                    $htmlContent += "<p><em>Affichage limitÃ© aux 10 premiÃ¨res exÃ©cutions lentes sur un total de $($bottleneck.SlowExecutions.Count).</em></p>"
                 }
             } else {
-                $htmlContent += "<p>Aucune information détaillée disponible sur les exécutions lentes.</p>"
+                $htmlContent += "<p>Aucune information dÃ©taillÃ©e disponible sur les exÃ©cutions lentes.</p>"
             }
         }
     } else {
-        $htmlContent += "<p class='success'>Aucun goulot d'étranglement détecté dans les processus parallèles.</p>"
+        $htmlContent += "<p class='success'>Aucun goulot d'Ã©tranglement dÃ©tectÃ© dans les processus parallÃ¨les.</p>"
     }
 
     $htmlContent += @"
         <div class="footer">
-            <p>Rapport généré par le système de détection des goulots d'étranglement</p>
+            <p>Rapport gÃ©nÃ©rÃ© par le systÃ¨me de dÃ©tection des goulots d'Ã©tranglement</p>
         </div>
     </div>
 </body>
@@ -584,12 +584,12 @@ function New-BottleneckReport {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $reportFile -Encoding utf8 -Force
 
-    Write-Log "Rapport généré avec succès: $reportFile" -Level "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $reportFile" -Level "SUCCESS"
 
     return $reportFile
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Initialiser le moniteur d'utilisation
     if ([string]::IsNullOrEmpty($DatabasePath)) {
@@ -597,21 +597,21 @@ try {
     }
 
     Initialize-UsageMonitor -DatabasePath $DatabasePath
-    Write-Log "Moniteur d'utilisation initialisé avec la base de données: $DatabasePath" -Level "SUCCESS"
+    Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
 
-    # Détecter les goulots d'étranglement dans les processus parallèles
+    # DÃ©tecter les goulots d'Ã©tranglement dans les processus parallÃ¨les
     $bottlenecks = Find-ParallelProcessBottlenecks -DetailedAnalysis:$DetailedAnalysis
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
         $reportFile = New-BottleneckReport -Bottlenecks $bottlenecks -OutputPath $ReportPath
 
-        # Ouvrir le rapport dans le navigateur par défaut
+        # Ouvrir le rapport dans le navigateur par dÃ©faut
         if (Test-Path -Path $reportFile) {
             Start-Process $reportFile
         }
     }
 } catch {
-    Write-Log "Erreur lors de l'exécution du script: $_" -Level "ERROR"
+    Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }

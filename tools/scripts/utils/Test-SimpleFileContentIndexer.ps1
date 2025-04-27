@@ -1,4 +1,4 @@
-#
+﻿#
 # Script de test pour le module SimpleFileContentIndexer
 # Compatible avec PowerShell 5.1 et PowerShell 7
 #
@@ -12,11 +12,11 @@ Write-Host "PowerShell Version: $($PSVersionTable.PSVersion)" -ForegroundColor C
 Write-Host "Edition: $($PSVersionTable.PSEdition)" -ForegroundColor Cyan
 Write-Host ""
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SimpleFileContentIndexerTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -34,7 +34,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @"
 # Test PowerShell Script
 function Test-Function {
@@ -129,80 +129,80 @@ body {
 }
 "@
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $testPsScript = New-TestFile -Path "test.ps1" -Content $psScriptContent
 $testPyScript = New-TestFile -Path "test.py" -Content $pyScriptContent
 $testJsScript = New-TestFile -Path "test.js" -Content $jsScriptContent
 $testHtml = New-TestFile -Path "test.html" -Content $htmlContent
 $testCss = New-TestFile -Path "test.css" -Content $cssContent
 
-# Créer un indexeur
-Write-Host "Création d'un indexeur..." -ForegroundColor Cyan
+# CrÃ©er un indexeur
+Write-Host "CrÃ©ation d'un indexeur..." -ForegroundColor Cyan
 $indexer = New-FileContentIndexer -IndexPath $testDir -PersistIndices $true -MaxConcurrentIndexing 4 -EnableIncrementalIndexing $true
 
 # Tester l'indexation d'un fichier PowerShell
 Write-Host "Test d'indexation d'un fichier PowerShell..." -ForegroundColor Cyan
 $psIndex = New-FileIndex -Indexer $indexer -FilePath $testPsScript
-Write-Host "  Fonctions trouvées: $($psIndex.Functions -join ', ')" -ForegroundColor Green
-Write-Host "  Variables trouvées: $($psIndex.Variables -join ', ')" -ForegroundColor Green
-Write-Host "  Symboles trouvés: $($psIndex.Symbols.Count)" -ForegroundColor Green
+Write-Host "  Fonctions trouvÃ©es: $($psIndex.Functions -join ', ')" -ForegroundColor Green
+Write-Host "  Variables trouvÃ©es: $($psIndex.Variables -join ', ')" -ForegroundColor Green
+Write-Host "  Symboles trouvÃ©s: $($psIndex.Symbols.Count)" -ForegroundColor Green
 Write-Host ""
 
 # Tester l'indexation d'un fichier Python
 Write-Host "Test d'indexation d'un fichier Python..." -ForegroundColor Cyan
 $pyIndex = New-FileIndex -Indexer $indexer -FilePath $testPyScript
-Write-Host "  Fonctions trouvées: $($pyIndex.Functions -join ', ')" -ForegroundColor Green
-Write-Host "  Classes trouvées: $($pyIndex.Classes -join ', ')" -ForegroundColor Green
-Write-Host "  Symboles trouvés: $($pyIndex.Symbols.Count)" -ForegroundColor Green
+Write-Host "  Fonctions trouvÃ©es: $($pyIndex.Functions -join ', ')" -ForegroundColor Green
+Write-Host "  Classes trouvÃ©es: $($pyIndex.Classes -join ', ')" -ForegroundColor Green
+Write-Host "  Symboles trouvÃ©s: $($pyIndex.Symbols.Count)" -ForegroundColor Green
 Write-Host ""
 
 # Tester l'indexation d'un fichier JavaScript
 Write-Host "Test d'indexation d'un fichier JavaScript..." -ForegroundColor Cyan
 $jsIndex = New-FileIndex -Indexer $indexer -FilePath $testJsScript
-Write-Host "  Fonctions trouvées: $($jsIndex.Functions -join ', ')" -ForegroundColor Green
-Write-Host "  Classes trouvées: $($jsIndex.Classes -join ', ')" -ForegroundColor Green
-Write-Host "  Symboles trouvés: $($jsIndex.Symbols.Count)" -ForegroundColor Green
+Write-Host "  Fonctions trouvÃ©es: $($jsIndex.Functions -join ', ')" -ForegroundColor Green
+Write-Host "  Classes trouvÃ©es: $($jsIndex.Classes -join ', ')" -ForegroundColor Green
+Write-Host "  Symboles trouvÃ©s: $($jsIndex.Symbols.Count)" -ForegroundColor Green
 Write-Host ""
 
 # Tester l'indexation d'un fichier HTML
 Write-Host "Test d'indexation d'un fichier HTML..." -ForegroundColor Cyan
 $htmlIndex = New-FileIndex -Indexer $indexer -FilePath $testHtml
-Write-Host "  Symboles trouvés: $($htmlIndex.Symbols.Count)" -ForegroundColor Green
+Write-Host "  Symboles trouvÃ©s: $($htmlIndex.Symbols.Count)" -ForegroundColor Green
 Write-Host ""
 
 # Tester l'indexation d'un fichier CSS
 Write-Host "Test d'indexation d'un fichier CSS..." -ForegroundColor Cyan
 $cssIndex = New-FileIndex -Indexer $indexer -FilePath $testCss
-Write-Host "  Symboles trouvés: $($cssIndex.Symbols.Count)" -ForegroundColor Green
+Write-Host "  Symboles trouvÃ©s: $($cssIndex.Symbols.Count)" -ForegroundColor Green
 Write-Host ""
 
-# Tester l'indexation incrémentale
-Write-Host "Test d'indexation incrémentale..." -ForegroundColor Cyan
+# Tester l'indexation incrÃ©mentale
+Write-Host "Test d'indexation incrÃ©mentale..." -ForegroundColor Cyan
 $modifiedPsContent = $psScriptContent.Replace("Test value", "Modified value")
 $incrementalIndex = New-IncrementalFileIndex -Indexer $indexer -FilePath $testPsScript -OldContent $psScriptContent -NewContent $modifiedPsContent
-Write-Host "  Lignes modifiées: $($incrementalIndex.ChangedLines -join ', ')" -ForegroundColor Green
-Write-Host "  Fonctions modifiées: $($incrementalIndex.ChangedFunctions -join ', ')" -ForegroundColor Green
+Write-Host "  Lignes modifiÃ©es: $($incrementalIndex.ChangedLines -join ', ')" -ForegroundColor Green
+Write-Host "  Fonctions modifiÃ©es: $($incrementalIndex.ChangedFunctions -join ', ')" -ForegroundColor Green
 Write-Host ""
 
-# Tester l'indexation parallèle
-Write-Host "Test d'indexation parallèle..." -ForegroundColor Cyan
+# Tester l'indexation parallÃ¨le
+Write-Host "Test d'indexation parallÃ¨le..." -ForegroundColor Cyan
 $filePaths = @($testPsScript, $testPyScript, $testJsScript, $testHtml, $testCss)
 $parallelResults = New-ParallelFileIndices -Indexer $indexer -FilePaths $filePaths
-Write-Host "  Fichiers indexés: $($parallelResults.Count)" -ForegroundColor Green
+Write-Host "  Fichiers indexÃ©s: $($parallelResults.Count)" -ForegroundColor Green
 Write-Host ""
 
-# Vérifier les indices et la carte des symboles
-Write-Host "Vérification des indices et de la carte des symboles..." -ForegroundColor Cyan
+# VÃ©rifier les indices et la carte des symboles
+Write-Host "VÃ©rification des indices et de la carte des symboles..." -ForegroundColor Cyan
 $fileIndices = $indexer.GetFileIndices()
 $symbolMap = $indexer.GetSymbolMap()
-Write-Host "  Nombre de fichiers indexés: $($fileIndices.Count)" -ForegroundColor Green
+Write-Host "  Nombre de fichiers indexÃ©s: $($fileIndices.Count)" -ForegroundColor Green
 Write-Host "  Nombre de symboles dans la carte: $($symbolMap.Count)" -ForegroundColor Green
 Write-Host ""
 
 # Nettoyer
 Write-Host "Nettoyage..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
-Write-Host "  Répertoire de test supprimé" -ForegroundColor Green
+Write-Host "  RÃ©pertoire de test supprimÃ©" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "Tous les tests ont réussi!" -ForegroundColor Green
+Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green

@@ -1,37 +1,37 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute une suite complète de tests et validations pour la détection de format.
+    ExÃ©cute une suite complÃ¨te de tests et validations pour la dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute une suite complète de tests et validations pour la détection de format,
-    y compris la génération d'échantillons, la mesure de la précision, et l'optimisation
-    des algorithmes. Il est conçu pour être utilisé dans le cadre de la section 2.1.5
+    Ce script exÃ©cute une suite complÃ¨te de tests et validations pour la dÃ©tection de format,
+    y compris la gÃ©nÃ©ration d'Ã©chantillons, la mesure de la prÃ©cision, et l'optimisation
+    des algorithmes. Il est conÃ§u pour Ãªtre utilisÃ© dans le cadre de la section 2.1.5
     "Tests et validation" de la roadmap.
 
 .PARAMETER TestDirectory
-    Le répertoire où les fichiers de test seront générés et stockés.
-    Par défaut, utilise le répertoire 'validation_samples' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les fichiers de test seront gÃ©nÃ©rÃ©s et stockÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'validation_samples' dans le rÃ©pertoire du script.
 
 .PARAMETER ReportDirectory
-    Le répertoire où les rapports seront enregistrés.
-    Par défaut, utilise le répertoire 'validation_reports' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les rapports seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'validation_reports' dans le rÃ©pertoire du script.
 
 .PARAMETER GenerateSamples
-    Indique si de nouveaux échantillons doivent être générés.
-    Par défaut, cette option est activée.
+    Indique si de nouveaux Ã©chantillons doivent Ãªtre gÃ©nÃ©rÃ©s.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER IncludeMalformedSamples
-    Indique si les échantillons malformés doivent être inclus dans les tests.
-    Par défaut, cette option est activée.
+    Indique si les Ã©chantillons malformÃ©s doivent Ãªtre inclus dans les tests.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER OptimizeAlgorithms
-    Indique si les algorithmes doivent être optimisés en fonction des résultats.
-    Par défaut, cette option est activée.
+    Indique si les algorithmes doivent Ãªtre optimisÃ©s en fonction des rÃ©sultats.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER GenerateHtmlReports
-    Indique si des rapports HTML doivent être générés.
-    Par défaut, cette option est activée.
+    Indique si des rapports HTML doivent Ãªtre gÃ©nÃ©rÃ©s.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .EXAMPLE
     .\Run-ValidationTests.ps1 -GenerateHtmlReports
@@ -63,13 +63,13 @@ param(
     [switch]$GenerateHtmlReports
 )
 
-# Importer les scripts nécessaires
+# Importer les scripts nÃ©cessaires
 $generateSamplesScript = "$PSScriptRoot\Generate-TestSamples.ps1"
 $generateMalformedScript = "$PSScriptRoot\Generate-MalformedSamples.ps1"
 $measureAccuracyScript = "$PSScriptRoot\Measure-DetectionAccuracy.ps1"
 $optimizeAlgorithmsScript = "$PSScriptRoot\Optimize-DetectionAlgorithms.ps1"
 
-# Vérifier si les scripts nécessaires existent
+# VÃ©rifier si les scripts nÃ©cessaires existent
 $missingScripts = @()
 
 if (-not (Test-Path -Path $generateSamplesScript)) {
@@ -93,7 +93,7 @@ if ($missingScripts.Count -gt 0) {
     exit 1
 }
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -101,19 +101,19 @@ function New-DirectoryIfNotExists {
     
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $Path"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $Path"
     }
 }
 
 # Fonction principale
 function Main {
-    # Créer les répertoires nécessaires
+    # CrÃ©er les rÃ©pertoires nÃ©cessaires
     New-DirectoryIfNotExists -Path $TestDirectory
     New-DirectoryIfNotExists -Path $ReportDirectory
     
-    # Étape 1 : Générer des échantillons de test
+    # Ã‰tape 1 : GÃ©nÃ©rer des Ã©chantillons de test
     if ($GenerateSamples) {
-        Write-Host "Étape 1 : Génération d'échantillons de test..." -ForegroundColor Cyan
+        Write-Host "Ã‰tape 1 : GÃ©nÃ©ration d'Ã©chantillons de test..." -ForegroundColor Cyan
         
         $samplesParams = @{
             OutputDirectory = $TestDirectory
@@ -122,9 +122,9 @@ function Main {
         
         & $generateSamplesScript @samplesParams
         
-        # Générer des échantillons malformés
+        # GÃ©nÃ©rer des Ã©chantillons malformÃ©s
         if ($IncludeMalformedSamples) {
-            Write-Host "`nGénération d'échantillons malformés..." -ForegroundColor Cyan
+            Write-Host "`nGÃ©nÃ©ration d'Ã©chantillons malformÃ©s..." -ForegroundColor Cyan
             
             $malformedParams = @{
                 SourceDirectory = $TestDirectory
@@ -136,8 +136,8 @@ function Main {
         }
     }
     
-    # Étape 2 : Mesurer la précision de la détection
-    Write-Host "`nÉtape 2 : Mesure de la précision de la détection..." -ForegroundColor Cyan
+    # Ã‰tape 2 : Mesurer la prÃ©cision de la dÃ©tection
+    Write-Host "`nÃ‰tape 2 : Mesure de la prÃ©cision de la dÃ©tection..." -ForegroundColor Cyan
     
     $accuracyParams = @{
         TestDirectory = $TestDirectory
@@ -148,17 +148,17 @@ function Main {
     
     $accuracyResult = & $measureAccuracyScript @accuracyParams
     
-    # Afficher un résumé des résultats
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
     $metrics = $accuracyResult.Metrics
     
-    Write-Host "`nRésumé des résultats de détection :" -ForegroundColor Yellow
-    Write-Host "Nombre de fichiers testés : $($metrics.TotalFiles)" -ForegroundColor White
-    Write-Host "Précision globale : $([Math]::Round($metrics.Accuracy, 2))%" -ForegroundColor White
-    Write-Host "Cas ambigus : $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) résolus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)" -ForegroundColor White
+    Write-Host "`nRÃ©sumÃ© des rÃ©sultats de dÃ©tection :" -ForegroundColor Yellow
+    Write-Host "Nombre de fichiers testÃ©s : $($metrics.TotalFiles)" -ForegroundColor White
+    Write-Host "PrÃ©cision globale : $([Math]::Round($metrics.Accuracy, 2))%" -ForegroundColor White
+    Write-Host "Cas ambigus : $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) rÃ©solus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)" -ForegroundColor White
     
-    # Étape 3 : Optimiser les algorithmes
+    # Ã‰tape 3 : Optimiser les algorithmes
     if ($OptimizeAlgorithms) {
-        Write-Host "`nÉtape 3 : Optimisation des algorithmes de détection..." -ForegroundColor Cyan
+        Write-Host "`nÃ‰tape 3 : Optimisation des algorithmes de dÃ©tection..." -ForegroundColor Cyan
         
         $accuracyReportPath = Join-Path -Path $ReportDirectory -ChildPath "DetectionAccuracy.json"
         
@@ -170,14 +170,14 @@ function Main {
         
         $optimizationResult = & $optimizeAlgorithmsScript @optimizeParams
         
-        # Afficher un résumé des optimisations
-        Write-Host "`nRésumé des optimisations :" -ForegroundColor Yellow
-        Write-Host "Nombre d'optimisations effectuées : $($optimizationResult.OptimizationLog.Count)" -ForegroundColor White
+        # Afficher un rÃ©sumÃ© des optimisations
+        Write-Host "`nRÃ©sumÃ© des optimisations :" -ForegroundColor Yellow
+        Write-Host "Nombre d'optimisations effectuÃ©es : $($optimizationResult.OptimizationLog.Count)" -ForegroundColor White
     }
     
-    # Étape 4 : Générer un rapport final
+    # Ã‰tape 4 : GÃ©nÃ©rer un rapport final
     if ($GenerateHtmlReports) {
-        Write-Host "`nÉtape 4 : Génération du rapport final..." -ForegroundColor Cyan
+        Write-Host "`nÃ‰tape 4 : GÃ©nÃ©ration du rapport final..." -ForegroundColor Cyan
         
         $finalReportPath = Join-Path -Path $ReportDirectory -ChildPath "ValidationReport.html"
         
@@ -187,7 +187,7 @@ function Main {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de validation de la détection de format</title>
+    <title>Rapport de validation de la dÃ©tection de format</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -269,42 +269,42 @@ function Main {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport de validation de la détection de format</h1>
+        <h1>Rapport de validation de la dÃ©tection de format</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Nombre de fichiers testés:</strong> $($metrics.TotalFiles)</p>
-            <p><strong>Précision globale:</strong> $([Math]::Round($metrics.Accuracy, 2))%</p>
-            <p><strong>Cas ambigus:</strong> $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) résolus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Nombre de fichiers testÃ©s:</strong> $($metrics.TotalFiles)</p>
+            <p><strong>PrÃ©cision globale:</strong> $([Math]::Round($metrics.Accuracy, 2))%</p>
+            <p><strong>Cas ambigus:</strong> $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) rÃ©solus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)</p>
             <p><strong>Date de la validation:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
         
         <div class="section">
-            <h2>Métriques globales</h2>
+            <h2>MÃ©triques globales</h2>
             <div class="metrics">
                 <div class="metric-card">
-                    <h3>Précision</h3>
+                    <h3>PrÃ©cision</h3>
                     <div class="metric-value">$([Math]::Round($metrics.GlobalPrecision, 2))%</div>
-                    <p>Pourcentage de détections correctes parmi toutes les détections</p>
+                    <p>Pourcentage de dÃ©tections correctes parmi toutes les dÃ©tections</p>
                 </div>
                 <div class="metric-card">
                     <h3>Rappel</h3>
                     <div class="metric-value">$([Math]::Round($metrics.GlobalRecall, 2))%</div>
-                    <p>Pourcentage de formats correctement identifiés</p>
+                    <p>Pourcentage de formats correctement identifiÃ©s</p>
                 </div>
                 <div class="metric-card">
                     <h3>F1-Score</h3>
                     <div class="metric-value">$([Math]::Round($metrics.GlobalF1Score, 2))%</div>
-                    <p>Moyenne harmonique de la précision et du rappel</p>
+                    <p>Moyenne harmonique de la prÃ©cision et du rappel</p>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <h2>Rapports détaillés</h2>
+            <h2>Rapports dÃ©taillÃ©s</h2>
             <div class="report-links">
                 <ul>
-                    <li><a href="DetectionAccuracy.html" target="_blank">Rapport de précision de détection</a></li>
+                    <li><a href="DetectionAccuracy.html" target="_blank">Rapport de prÃ©cision de dÃ©tection</a></li>
 "@
 
         if ($OptimizeAlgorithms) {
@@ -321,23 +321,23 @@ function Main {
         <div class="section">
             <h2>Conclusion</h2>
             <p>
-                Cette validation a permis de tester la robustesse et la précision des algorithmes de détection de format
-                sur un ensemble varié de fichiers, y compris des cas difficiles comme des fichiers malformés, tronqués,
+                Cette validation a permis de tester la robustesse et la prÃ©cision des algorithmes de dÃ©tection de format
+                sur un ensemble variÃ© de fichiers, y compris des cas difficiles comme des fichiers malformÃ©s, tronquÃ©s,
                 ou avec des extensions incorrectes.
             </p>
             <p>
-                La précision globale de $([Math]::Round($metrics.Accuracy, 2))% montre que le système est capable de détecter
-                correctement le format de la plupart des fichiers. Les cas ambigus sont gérés avec un taux de réussite
-                de $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%, ce qui démontre l'efficacité du mécanisme de
-                résolution des ambiguïtés.
+                La prÃ©cision globale de $([Math]::Round($metrics.Accuracy, 2))% montre que le systÃ¨me est capable de dÃ©tecter
+                correctement le format de la plupart des fichiers. Les cas ambigus sont gÃ©rÃ©s avec un taux de rÃ©ussite
+                de $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%, ce qui dÃ©montre l'efficacitÃ© du mÃ©canisme de
+                rÃ©solution des ambiguÃ¯tÃ©s.
             </p>
 "@
 
         if ($OptimizeAlgorithms) {
             $html += @"
             <p>
-                Les optimisations proposées devraient permettre d'améliorer encore davantage la précision de la détection,
-                notamment pour les cas difficiles identifiés lors de cette validation.
+                Les optimisations proposÃ©es devraient permettre d'amÃ©liorer encore davantage la prÃ©cision de la dÃ©tection,
+                notamment pour les cas difficiles identifiÃ©s lors de cette validation.
             </p>
 "@
         }
@@ -350,11 +350,11 @@ function Main {
 "@
 
         $html | Set-Content -Path $finalReportPath -Encoding UTF8
-        Write-Host "Rapport final généré : $finalReportPath" -ForegroundColor Green
+        Write-Host "Rapport final gÃ©nÃ©rÃ© : $finalReportPath" -ForegroundColor Green
     }
     
-    Write-Host "`nValidation terminée avec succès !" -ForegroundColor Green
+    Write-Host "`nValidation terminÃ©e avec succÃ¨s !" -ForegroundColor Green
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit une valeur vers un format spécifié avec gestion d'erreurs.
+    Convertit une valeur vers un format spÃ©cifiÃ© avec gestion d'erreurs.
 
 .DESCRIPTION
-    La fonction ConvertTo-RoadmapFormat convertit une valeur vers un format spécifié avec gestion d'erreurs.
-    Elle combine les différentes fonctions de conversion et peut être utilisée pour
-    convertir les entrées et sorties des fonctions du module RoadmapParser.
+    La fonction ConvertTo-RoadmapFormat convertit une valeur vers un format spÃ©cifiÃ© avec gestion d'erreurs.
+    Elle combine les diffÃ©rentes fonctions de conversion et peut Ãªtre utilisÃ©e pour
+    convertir les entrÃ©es et sorties des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à convertir.
+    La valeur Ã  convertir.
 
 .PARAMETER TargetType
     Le type cible de la conversion. Valeurs possibles :
-    - String : Convertit la valeur en chaîne de caractères
+    - String : Convertit la valeur en chaÃ®ne de caractÃ¨res
     - Integer : Convertit la valeur en entier
-    - Decimal : Convertit la valeur en nombre décimal
-    - Boolean : Convertit la valeur en booléen
+    - Decimal : Convertit la valeur en nombre dÃ©cimal
+    - Boolean : Convertit la valeur en boolÃ©en
     - DateTime : Convertit la valeur en date/heure
     - Array : Convertit la valeur en tableau
     - Hashtable : Convertit la valeur en table de hachage
@@ -24,82 +24,82 @@
     - Guid : Convertit la valeur en GUID
     - XmlDocument : Convertit la valeur en document XML
     - JsonObject : Convertit la valeur en objet JSON
-    - CsvData : Convertit la valeur en données CSV
+    - CsvData : Convertit la valeur en donnÃ©es CSV
     - MarkdownDocument : Convertit la valeur en document Markdown
     - HtmlDocument : Convertit la valeur en document HTML
     - YamlDocument : Convertit la valeur en document YAML
-    - Base64 : Convertit la valeur en chaîne Base64
-    - SecureString : Convertit la valeur en chaîne sécurisée
+    - Base64 : Convertit la valeur en chaÃ®ne Base64
+    - SecureString : Convertit la valeur en chaÃ®ne sÃ©curisÃ©e
     - Credential : Convertit la valeur en objet d'identification
     - Uri : Convertit la valeur en URI
     - Version : Convertit la valeur en version
-    - Custom : Utilise un type personnalisé
+    - Custom : Utilise un type personnalisÃ©
 
 .PARAMETER CustomType
-    Le type personnalisé à utiliser pour la conversion.
-    Utilisé uniquement lorsque TargetType est "Custom".
+    Le type personnalisÃ© Ã  utiliser pour la conversion.
+    UtilisÃ© uniquement lorsque TargetType est "Custom".
 
 .PARAMETER Format
-    Le format à utiliser pour la conversion (par exemple, format de date).
+    Le format Ã  utiliser pour la conversion (par exemple, format de date).
 
 .PARAMETER Encoding
-    L'encodage à utiliser pour la conversion.
+    L'encodage Ã  utiliser pour la conversion.
 
 .PARAMETER AsHashtable
-    Indique si le résultat doit être retourné sous forme de hashtable au lieu d'un PSObject.
+    Indique si le rÃ©sultat doit Ãªtre retournÃ© sous forme de hashtable au lieu d'un PSObject.
     Applicable uniquement pour certains types complexes.
 
 .PARAMETER Serialize
-    Indique si la valeur doit être sérialisée après la conversion.
+    Indique si la valeur doit Ãªtre sÃ©rialisÃ©e aprÃ¨s la conversion.
 
 .PARAMETER SerializationFormat
-    Le format de sérialisation à utiliser. Valeurs possibles :
-    - Json : Sérialise l'objet en JSON
-    - Xml : Sérialise l'objet en XML
-    - Csv : Sérialise l'objet en CSV
-    - Yaml : Sérialise l'objet en YAML
-    - Psd1 : Sérialise l'objet en fichier de données PowerShell
-    - Base64 : Sérialise l'objet en chaîne Base64
-    - Clixml : Sérialise l'objet en CLIXML
-    - Binary : Sérialise l'objet en format binaire
-    - Custom : Utilise un format personnalisé
+    Le format de sÃ©rialisation Ã  utiliser. Valeurs possibles :
+    - Json : SÃ©rialise l'objet en JSON
+    - Xml : SÃ©rialise l'objet en XML
+    - Csv : SÃ©rialise l'objet en CSV
+    - Yaml : SÃ©rialise l'objet en YAML
+    - Psd1 : SÃ©rialise l'objet en fichier de donnÃ©es PowerShell
+    - Base64 : SÃ©rialise l'objet en chaÃ®ne Base64
+    - Clixml : SÃ©rialise l'objet en CLIXML
+    - Binary : SÃ©rialise l'objet en format binaire
+    - Custom : Utilise un format personnalisÃ©
 
 .PARAMETER CustomSerializationFormat
-    Le format personnalisé à utiliser pour la sérialisation.
-    Utilisé uniquement lorsque SerializationFormat est "Custom".
+    Le format personnalisÃ© Ã  utiliser pour la sÃ©rialisation.
+    UtilisÃ© uniquement lorsque SerializationFormat est "Custom".
 
 .PARAMETER Depth
-    La profondeur maximale de sérialisation pour les objets imbriqués.
+    La profondeur maximale de sÃ©rialisation pour les objets imbriquÃ©s.
 
 .PARAMETER FilePath
-    Le chemin du fichier où enregistrer le résultat de la conversion/sérialisation.
-    Si spécifié, le résultat sera enregistré dans le fichier au lieu d'être retourné.
+    Le chemin du fichier oÃ¹ enregistrer le rÃ©sultat de la conversion/sÃ©rialisation.
+    Si spÃ©cifiÃ©, le rÃ©sultat sera enregistrÃ© dans le fichier au lieu d'Ãªtre retournÃ©.
 
 .PARAMETER DefaultValue
-    La valeur par défaut à retourner en cas d'échec de la conversion.
+    La valeur par dÃ©faut Ã  retourner en cas d'Ã©chec de la conversion.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la conversion.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la conversion.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la conversion.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la conversion.
 
 .EXAMPLE
     ConvertTo-RoadmapFormat -Value "42" -TargetType Integer
-    Convertit la chaîne "42" en entier.
+    Convertit la chaÃ®ne "42" en entier.
 
 .EXAMPLE
     ConvertTo-RoadmapFormat -Value $object -TargetType JsonObject -Serialize -SerializationFormat Json -FilePath "C:\temp\object.json" -ThrowOnFailure
-    Convertit l'objet en objet JSON, le sérialise en JSON et enregistre le résultat dans le fichier spécifié, et lève une exception si la conversion échoue.
+    Convertit l'objet en objet JSON, le sÃ©rialise en JSON et enregistre le rÃ©sultat dans le fichier spÃ©cifiÃ©, et lÃ¨ve une exception si la conversion Ã©choue.
 
 .OUTPUTS
-    [object] La valeur convertie vers le format spécifié.
+    [object] La valeur convertie vers le format spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function ConvertTo-RoadmapFormat {
     [CmdletBinding()]
@@ -150,9 +150,9 @@ function ConvertTo-RoadmapFormat {
         [switch]$ThrowOnFailure
     )
 
-    # Les fonctions de conversion sont déjà importées par le module
+    # Les fonctions de conversion sont dÃ©jÃ  importÃ©es par le module
 
-    # Initialiser le résultat de la conversion
+    # Initialiser le rÃ©sultat de la conversion
     $result = $null
     $conversionSucceeded = $false
 
@@ -215,7 +215,7 @@ function ConvertTo-RoadmapFormat {
             throw "Type cible non pris en charge : $TargetType"
         }
 
-        # Sérialiser le résultat si demandé
+        # SÃ©rialiser le rÃ©sultat si demandÃ©
         if ($Serialize -and $conversionSucceeded) {
             $params = @{
                 InputObject    = $result
@@ -245,15 +245,15 @@ function ConvertTo-RoadmapFormat {
 
             $result = ConvertTo-SerializedFormat @params
         }
-        # Enregistrer le résultat dans un fichier si spécifié et non sérialisé
+        # Enregistrer le rÃ©sultat dans un fichier si spÃ©cifiÃ© et non sÃ©rialisÃ©
         elseif (-not [string]::IsNullOrEmpty($FilePath) -and $conversionSucceeded -and -not $Serialize) {
             try {
                 $result | Out-File -FilePath $FilePath -Encoding $Encoding
             } catch {
                 if ($ThrowOnFailure) {
-                    throw "Impossible d'enregistrer le résultat dans le fichier '$FilePath' : $_"
+                    throw "Impossible d'enregistrer le rÃ©sultat dans le fichier '$FilePath' : $_"
                 } else {
-                    Write-Warning "Impossible d'enregistrer le résultat dans le fichier '$FilePath' : $_"
+                    Write-Warning "Impossible d'enregistrer le rÃ©sultat dans le fichier '$FilePath' : $_"
                 }
             }
         }
@@ -264,7 +264,7 @@ function ConvertTo-RoadmapFormat {
         }
     }
 
-    # Gérer l'échec de la conversion
+    # GÃ©rer l'Ã©chec de la conversion
     if (-not $conversionSucceeded) {
         if ($PSBoundParameters.ContainsKey('DefaultValue')) {
             $result = $DefaultValue

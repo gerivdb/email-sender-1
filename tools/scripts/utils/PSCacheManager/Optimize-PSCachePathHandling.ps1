@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
     Optimise la gestion des chemins de fichiers dans le cache disque du module PSCacheManager.
 .DESCRIPTION
-    Ce script améliore la gestion des chemins de fichiers dans le cache disque du module PSCacheManager
-    en implémentant des techniques pour éviter les problèmes de longueur de chemin, normaliser les noms
+    Ce script amÃ©liore la gestion des chemins de fichiers dans le cache disque du module PSCacheManager
+    en implÃ©mentant des techniques pour Ã©viter les problÃ¨mes de longueur de chemin, normaliser les noms
     de fichiers et optimiser la structure des dossiers de cache.
 .PARAMETER ModulePath
-    Chemin du module PSCacheManager. Par défaut, utilise le dossier courant.
+    Chemin du module PSCacheManager. Par dÃ©faut, utilise le dossier courant.
 .PARAMETER ApplyChanges
-    Si spécifié, applique les modifications au module. Sinon, affiche seulement les modifications proposées.
+    Si spÃ©cifiÃ©, applique les modifications au module. Sinon, affiche seulement les modifications proposÃ©es.
 .EXAMPLE
     .\Optimize-PSCachePathHandling.ps1 -ApplyChanges
     Optimise la gestion des chemins de fichiers dans le module PSCacheManager et applique les modifications.
 .NOTES
-    Auteur: Système d'optimisation
-    Date de création: 09/04/2025
+    Auteur: SystÃ¨me d'optimisation
+    Date de crÃ©ation: 09/04/2025
     Version: 1.0
 #>
 
@@ -27,14 +27,14 @@ param (
     [switch]$ApplyChanges
 )
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 $modulePsmPath = Join-Path -Path $ModulePath -ChildPath "PSCacheManager.psm1"
 if (-not (Test-Path -Path $modulePsmPath)) {
-    Write-Error "Module PSCacheManager introuvable à l'emplacement: $modulePsmPath"
+    Write-Error "Module PSCacheManager introuvable Ã  l'emplacement: $modulePsmPath"
     exit 1
 }
 
-# Fonction pour générer un hash court à partir d'une chaîne
+# Fonction pour gÃ©nÃ©rer un hash court Ã  partir d'une chaÃ®ne
 function Get-ShortHash {
     param (
         [string]$InputString
@@ -52,7 +52,7 @@ function Get-NormalizedCachePath {
         [string]$CacheBasePath
     )
     
-    # Remplacer les caractères invalides dans les noms de fichiers
+    # Remplacer les caractÃ¨res invalides dans les noms de fichiers
     $invalidChars = [System.IO.Path]::GetInvalidFileNameChars()
     $safeKey = $Key
     foreach ($char in $invalidChars) {
@@ -66,11 +66,11 @@ function Get-NormalizedCachePath {
         $safeKey = $shortKey
     }
     
-    # Créer une structure de dossiers à deux niveaux pour éviter d'avoir trop de fichiers dans un seul dossier
+    # CrÃ©er une structure de dossiers Ã  deux niveaux pour Ã©viter d'avoir trop de fichiers dans un seul dossier
     $firstLevel = $safeKey.Substring(0, [Math]::Min(2, $safeKey.Length))
     $cachePath = Join-Path -Path $CacheBasePath -ChildPath $firstLevel
     
-    # Créer le dossier s'il n'existe pas
+    # CrÃ©er le dossier s'il n'existe pas
     if (-not (Test-Path -Path $cachePath)) {
         New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
     }
@@ -82,10 +82,10 @@ function Get-NormalizedCachePath {
 # Lire le contenu du module
 $moduleContent = Get-Content -Path $modulePsmPath -Raw
 
-# Modifications à apporter
+# Modifications Ã  apporter
 $modifications = @(
     @{
-        Description = "Amélioration de la méthode SaveToDisk pour gérer les chemins longs"
+        Description = "AmÃ©lioration de la mÃ©thode SaveToDisk pour gÃ©rer les chemins longs"
         Pattern = '(?s)\[void\] SaveToDisk\(\[string\]\$key, \[CacheItem\]\$item\) \{.*?if \(-not \$this\.EnableDiskCache\) \{.*?return.*?\}.*?\$persistPath = Join-Path -Path \$this\.CachePath -ChildPath "\$key\.cache"'
         Replacement = '[void] SaveToDisk([string]$key, [CacheItem]$item) {
         if (-not $this.EnableDiskCache) {
@@ -96,7 +96,7 @@ $modifications = @(
         $persistPath = $this.GetNormalizedCachePath($key)'
     },
     @{
-        Description = "Amélioration de la méthode LoadFromDisk pour gérer les chemins longs"
+        Description = "AmÃ©lioration de la mÃ©thode LoadFromDisk pour gÃ©rer les chemins longs"
         Pattern = '(?s)\[CacheItem\] LoadFromDisk\(\[string\]\$key\) \{.*?if \(-not \$this\.EnableDiskCache\) \{.*?return \$null.*?\}.*?\$persistPath = Join-Path -Path \$this\.CachePath -ChildPath "\$key\.cache"'
         Replacement = '[CacheItem] LoadFromDisk([string]$key) {
         if (-not $this.EnableDiskCache) {
@@ -107,7 +107,7 @@ $modifications = @(
         $persistPath = $this.GetNormalizedCachePath($key)'
     },
     @{
-        Description = "Amélioration de la méthode RemoveFromDisk pour gérer les chemins longs"
+        Description = "AmÃ©lioration de la mÃ©thode RemoveFromDisk pour gÃ©rer les chemins longs"
         Pattern = '(?s)\[void\] RemoveFromDisk\(\[string\]\$key\) \{.*?if \(-not \$this\.EnableDiskCache\) \{.*?return.*?\}.*?\$persistPath = Join-Path -Path \$this\.CachePath -ChildPath "\$key\.cache"'
         Replacement = '[void] RemoveFromDisk([string]$key) {
         if (-not $this.EnableDiskCache) {
@@ -118,11 +118,11 @@ $modifications = @(
         $persistPath = $this.GetNormalizedCachePath($key)'
     },
     @{
-        Description = "Ajout de la méthode GetNormalizedCachePath pour normaliser les chemins de fichiers"
-        Pattern = '(?s)# Méthodes de statistiques.*?\[hashtable\] GetStatistics\(\) \{'
-        Replacement = '# Méthode pour normaliser les chemins de fichiers cache
+        Description = "Ajout de la mÃ©thode GetNormalizedCachePath pour normaliser les chemins de fichiers"
+        Pattern = '(?s)# MÃ©thodes de statistiques.*?\[hashtable\] GetStatistics\(\) \{'
+        Replacement = '# MÃ©thode pour normaliser les chemins de fichiers cache
     [string] GetNormalizedCachePath([string]$key) {
-        # Remplacer les caractères invalides dans les noms de fichiers
+        # Remplacer les caractÃ¨res invalides dans les noms de fichiers
         $invalidChars = [System.IO.Path]::GetInvalidFileNameChars()
         $safeKey = $key
         foreach ($char in $invalidChars) {
@@ -131,21 +131,21 @@ $modifications = @(
         
         # Si le chemin est trop long, utiliser un hash
         if ($safeKey.Length -gt 100) {
-            # Générer un hash MD5 court
+            # GÃ©nÃ©rer un hash MD5 court
             $stringAsStream = [System.IO.MemoryStream]::new([System.Text.Encoding]::UTF8.GetBytes($key))
             $hash = Get-FileHash -InputStream $stringAsStream -Algorithm MD5
             $shortHash = $hash.Hash.Substring(0, 8).ToLower()
             
-            # Tronquer la clé et ajouter le hash
+            # Tronquer la clÃ© et ajouter le hash
             $shortKey = $safeKey.Substring(0, 90) + "_" + $shortHash
             $safeKey = $shortKey
         }
         
-        # Créer une structure de dossiers à deux niveaux pour éviter d''avoir trop de fichiers dans un seul dossier
+        # CrÃ©er une structure de dossiers Ã  deux niveaux pour Ã©viter d''avoir trop de fichiers dans un seul dossier
         $firstLevel = $safeKey.Substring(0, [Math]::Min(2, $safeKey.Length))
         $cachePath = Join-Path -Path $this.CachePath -ChildPath $firstLevel
         
-        # Créer le dossier s''il n''existe pas
+        # CrÃ©er le dossier s''il n''existe pas
         if (-not (Test-Path -Path $cachePath)) {
             New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
         }
@@ -154,36 +154,36 @@ $modifications = @(
         return Join-Path -Path $cachePath -ChildPath "$safeKey.cache"
     }
     
-    # Méthodes de statistiques
+    # MÃ©thodes de statistiques
     [hashtable] GetStatistics() {'
     },
     @{
-        Description = "Modification de la méthode LoadPersistentCache pour utiliser la nouvelle structure de dossiers"
+        Description = "Modification de la mÃ©thode LoadPersistentCache pour utiliser la nouvelle structure de dossiers"
         Pattern = '(?s)\[void\] LoadPersistentCache\(\) \{.*?if \(-not \$this\.EnableDiskCache\) \{.*?return.*?\}.*?\$cacheFiles = Get-ChildItem -Path \$this\.CachePath -Filter "\*\.cache" -File'
         Replacement = '[void] LoadPersistentCache() {
         if (-not $this.EnableDiskCache) {
             return
         }
         
-        # Rechercher récursivement tous les fichiers cache
+        # Rechercher rÃ©cursivement tous les fichiers cache
         $cacheFiles = Get-ChildItem -Path $this.CachePath -Filter "*.cache" -File -Recurse'
     }
 )
 
-# Afficher les modifications proposées
-Write-Host "Modifications proposées pour optimiser la gestion des chemins de fichiers:" -ForegroundColor Cyan
+# Afficher les modifications proposÃ©es
+Write-Host "Modifications proposÃ©es pour optimiser la gestion des chemins de fichiers:" -ForegroundColor Cyan
 foreach ($mod in $modifications) {
     Write-Host "- $($mod.Description)" -ForegroundColor Yellow
 }
 
-# Appliquer les modifications si demandé
+# Appliquer les modifications si demandÃ©
 if ($ApplyChanges) {
     Write-Host "`nApplication des modifications..." -ForegroundColor Green
     
-    # Créer une sauvegarde du fichier original
+    # CrÃ©er une sauvegarde du fichier original
     $backupPath = "$modulePsmPath.bak"
     Copy-Item -Path $modulePsmPath -Destination $backupPath -Force
-    Write-Host "Sauvegarde créée: $backupPath" -ForegroundColor Green
+    Write-Host "Sauvegarde crÃ©Ã©e: $backupPath" -ForegroundColor Green
     
     # Appliquer les modifications
     $newContent = $moduleContent
@@ -191,28 +191,28 @@ if ($ApplyChanges) {
         $newContent = $newContent -replace $mod.Pattern, $mod.Replacement
     }
     
-    # Sauvegarder le fichier modifié
+    # Sauvegarder le fichier modifiÃ©
     $newContent | Out-File -FilePath $modulePsmPath -Encoding UTF8
-    Write-Host "Modifications appliquées avec succès." -ForegroundColor Green
+    Write-Host "Modifications appliquÃ©es avec succÃ¨s." -ForegroundColor Green
     
-    # Vérifier si le module peut être importé
+    # VÃ©rifier si le module peut Ãªtre importÃ©
     try {
         Import-Module $modulePsmPath -Force -ErrorAction Stop
-        Write-Host "Module importé avec succès après les modifications." -ForegroundColor Green
+        Write-Host "Module importÃ© avec succÃ¨s aprÃ¨s les modifications." -ForegroundColor Green
     } catch {
-        Write-Error "Erreur lors de l'importation du module après les modifications: $_"
+        Write-Error "Erreur lors de l'importation du module aprÃ¨s les modifications: $_"
         Write-Host "Restauration de la sauvegarde..." -ForegroundColor Yellow
         Copy-Item -Path $backupPath -Destination $modulePsmPath -Force
-        Write-Host "Sauvegarde restaurée." -ForegroundColor Green
+        Write-Host "Sauvegarde restaurÃ©e." -ForegroundColor Green
     }
 } else {
-    Write-Host "`nLes modifications n'ont pas été appliquées. Utilisez le paramètre -ApplyChanges pour appliquer les modifications." -ForegroundColor Yellow
+    Write-Host "`nLes modifications n'ont pas Ã©tÃ© appliquÃ©es. Utilisez le paramÃ¨tre -ApplyChanges pour appliquer les modifications." -ForegroundColor Yellow
 }
 
-# Afficher des recommandations supplémentaires
-Write-Host "`nRecommandations supplémentaires:" -ForegroundColor Cyan
-Write-Host "1. Utilisez des clés de cache concises et significatives pour éviter les problèmes de longueur de chemin." -ForegroundColor White
-Write-Host "2. Évitez d'utiliser des caractères spéciaux dans les clés de cache." -ForegroundColor White
+# Afficher des recommandations supplÃ©mentaires
+Write-Host "`nRecommandations supplÃ©mentaires:" -ForegroundColor Cyan
+Write-Host "1. Utilisez des clÃ©s de cache concises et significatives pour Ã©viter les problÃ¨mes de longueur de chemin." -ForegroundColor White
+Write-Host "2. Ã‰vitez d'utiliser des caractÃ¨res spÃ©ciaux dans les clÃ©s de cache." -ForegroundColor White
 Write-Host "3. Configurez le chemin de base du cache dans un emplacement avec un chemin court (ex: C:\Cache)." -ForegroundColor White
-Write-Host "4. Utilisez la compression pour réduire la taille des fichiers de cache volumineux." -ForegroundColor White
-Write-Host "5. Implémentez une stratégie de nettoyage périodique pour éviter l'accumulation de fichiers de cache obsolètes." -ForegroundColor White
+Write-Host "4. Utilisez la compression pour rÃ©duire la taille des fichiers de cache volumineux." -ForegroundColor White
+Write-Host "5. ImplÃ©mentez une stratÃ©gie de nettoyage pÃ©riodique pour Ã©viter l'accumulation de fichiers de cache obsolÃ¨tes." -ForegroundColor White

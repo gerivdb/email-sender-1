@@ -1,6 +1,6 @@
-<#
+﻿<#
 .SYNOPSIS
-    Module principal du système d'apprentissage des erreurs PowerShell.
+    Module principal du systÃ¨me d'apprentissage des erreurs PowerShell.
 .DESCRIPTION
     Ce module fournit des fonctions pour collecter, analyser et apprendre des erreurs PowerShell.
 #>
@@ -14,7 +14,7 @@ $script:IsInitialized = $false
 $script:LastDatabaseSave = [DateTime]::MinValue
 $script:DatabaseModified = $false
 $script:DatabaseSaveInterval = [TimeSpan]::FromSeconds(5) # Sauvegarder au maximum toutes les 5 secondes
-$script:ErrorCache = @{} # Cache pour les erreurs fréquentes
+$script:ErrorCache = @{} # Cache pour les erreurs frÃ©quentes
 $script:MaxCacheSize = 100 # Taille maximale du cache
 
 # Fonction d'initialisation
@@ -34,34 +34,34 @@ function Initialize-ErrorLearningSystem {
     )
 
     # Journaliser l'initialisation
-    Write-Verbose "Initialisation du système d'apprentissage des erreurs..."
+    Write-Verbose "Initialisation du systÃ¨me d'apprentissage des erreurs..."
     Write-Verbose "Force: $Force"
     Write-Verbose "CustomDatabasePath: $CustomDatabasePath"
     Write-Verbose "CustomLogsPath: $CustomLogsPath"
     Write-Verbose "CustomPatternsPath: $CustomPatternsPath"
 
     if ($script:IsInitialized -and -not $Force) {
-        Write-Verbose "Le système d'apprentissage des erreurs est déjà initialisé."
+        Write-Verbose "Le systÃ¨me d'apprentissage des erreurs est dÃ©jÃ  initialisÃ©."
         return
     }
 
-    # Définir les chemins personnalisés si spécifiés
+    # DÃ©finir les chemins personnalisÃ©s si spÃ©cifiÃ©s
     if ($CustomDatabasePath) {
         $script:ErrorDatabasePath = $CustomDatabasePath
-        Write-Verbose "Chemin de la base de données personnalisé : $script:ErrorDatabasePath"
+        Write-Verbose "Chemin de la base de donnÃ©es personnalisÃ© : $script:ErrorDatabasePath"
     }
 
     if ($CustomLogsPath) {
         $script:ErrorLogsPath = $CustomLogsPath
-        Write-Verbose "Chemin des logs personnalisé : $script:ErrorLogsPath"
+        Write-Verbose "Chemin des logs personnalisÃ© : $script:ErrorLogsPath"
     }
 
     if ($CustomPatternsPath) {
         $script:ErrorPatternsPath = $CustomPatternsPath
-        Write-Verbose "Chemin des patterns personnalisé : $script:ErrorPatternsPath"
+        Write-Verbose "Chemin des patterns personnalisÃ© : $script:ErrorPatternsPath"
     }
 
-    # Créer les dossiers nécessaires
+    # CrÃ©er les dossiers nÃ©cessaires
     $folders = @(
         (Split-Path -Path $script:ErrorDatabasePath -Parent),
         $script:ErrorLogsPath,
@@ -72,35 +72,35 @@ function Initialize-ErrorLearningSystem {
         try {
             if (-not (Test-Path -Path $folder)) {
                 New-Item -Path $folder -ItemType Directory -Force -ErrorAction Stop | Out-Null
-                Write-Verbose "Dossier créé : $folder"
+                Write-Verbose "Dossier crÃ©Ã© : $folder"
             }
         }
         catch {
-            Write-Error "Impossible de créer le dossier '$folder' : $_"
+            Write-Error "Impossible de crÃ©er le dossier '$folder' : $_"
         }
     }
 
-    # Charger la base de données des erreurs
+    # Charger la base de donnÃ©es des erreurs
     $databaseLoaded = $false
 
     if (Test-Path -Path $script:ErrorDatabasePath) {
         try {
-            Write-Verbose "Chargement de la base de données des erreurs : $script:ErrorDatabasePath"
+            Write-Verbose "Chargement de la base de donnÃ©es des erreurs : $script:ErrorDatabasePath"
 
-            # Vérifier si le fichier est vide
+            # VÃ©rifier si le fichier est vide
             $fileInfo = Get-Item -Path $script:ErrorDatabasePath
             if ($fileInfo.Length -eq 0) {
-                Write-Warning "Le fichier de base de données existe mais est vide. Une nouvelle base de données sera créée."
-                throw "Fichier de base de données vide"
+                Write-Warning "Le fichier de base de donnÃ©es existe mais est vide. Une nouvelle base de donnÃ©es sera crÃ©Ã©e."
+                throw "Fichier de base de donnÃ©es vide"
             }
 
-            # Vérifier la version de PowerShell pour utiliser -AsHashtable si disponible
+            # VÃ©rifier la version de PowerShell pour utiliser -AsHashtable si disponible
             if ($PSVersionTable.PSVersion.Major -ge 6) {
                 Write-Verbose "Utilisation de ConvertFrom-Json avec -AsHashtable (PowerShell 6+)"
                 $script:ErrorDatabase = Get-Content -Path $script:ErrorDatabasePath -Raw -ErrorAction Stop | ConvertFrom-Json -AsHashtable -ErrorAction Stop
             } else {
-                Write-Verbose "Utilisation de ConvertFrom-Json sans -AsHashtable (PowerShell 5.1 ou antérieur)"
-                # Pour PowerShell 5.1 et versions antérieures
+                Write-Verbose "Utilisation de ConvertFrom-Json sans -AsHashtable (PowerShell 5.1 ou antÃ©rieur)"
+                # Pour PowerShell 5.1 et versions antÃ©rieures
                 $jsonContent = Get-Content -Path $script:ErrorDatabasePath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
 
                 # Initialiser la structure de base
@@ -145,41 +145,41 @@ function Initialize-ErrorLearningSystem {
                 }
             }
 
-            # Vérifier que la structure est correcte
+            # VÃ©rifier que la structure est correcte
             if (-not $script:ErrorDatabase.ContainsKey("Errors")) {
-                Write-Warning "La base de données ne contient pas la clé 'Errors'. Ajout de la clé."
+                Write-Warning "La base de donnÃ©es ne contient pas la clÃ© 'Errors'. Ajout de la clÃ©."
                 $script:ErrorDatabase.Errors = @()
             }
 
             if (-not $script:ErrorDatabase.ContainsKey("Patterns")) {
-                Write-Warning "La base de données ne contient pas la clé 'Patterns'. Ajout de la clé."
+                Write-Warning "La base de donnÃ©es ne contient pas la clÃ© 'Patterns'. Ajout de la clÃ©."
                 $script:ErrorDatabase.Patterns = @()
             }
 
             if (-not $script:ErrorDatabase.ContainsKey("Statistics")) {
-                Write-Warning "La base de données ne contient pas la clé 'Statistics'. Ajout de la clé."
+                Write-Warning "La base de donnÃ©es ne contient pas la clÃ© 'Statistics'. Ajout de la clÃ©."
                 $script:ErrorDatabase.Statistics = @{
                     TotalErrors = 0
                     CategorizedErrors = @{}
                     LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 }
             } elseif (-not $script:ErrorDatabase.Statistics.ContainsKey("CategorizedErrors")) {
-                Write-Warning "La base de données ne contient pas la clé 'Statistics.CategorizedErrors'. Ajout de la clé."
+                Write-Warning "La base de donnÃ©es ne contient pas la clÃ© 'Statistics.CategorizedErrors'. Ajout de la clÃ©."
                 $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
             }
 
-            Write-Verbose "Base de données des erreurs chargée avec succès."
+            Write-Verbose "Base de donnÃ©es des erreurs chargÃ©e avec succÃ¨s."
             $databaseLoaded = $true
         }
         catch {
-            Write-Warning "Impossible de charger la base de données des erreurs : $_"
-            Write-Warning "Une nouvelle base de données sera créée."
+            Write-Warning "Impossible de charger la base de donnÃ©es des erreurs : $_"
+            Write-Warning "Une nouvelle base de donnÃ©es sera crÃ©Ã©e."
         }
     }
 
-    # Si la base de données n'a pas été chargée, en créer une nouvelle
+    # Si la base de donnÃ©es n'a pas Ã©tÃ© chargÃ©e, en crÃ©er une nouvelle
     if (-not $databaseLoaded) {
-        Write-Verbose "Création d'une nouvelle base de données des erreurs."
+        Write-Verbose "CrÃ©ation d'une nouvelle base de donnÃ©es des erreurs."
 
         $script:ErrorDatabase = @{
             Errors = @()
@@ -191,19 +191,19 @@ function Initialize-ErrorLearningSystem {
             }
         }
 
-        # Enregistrer la base de données vide
+        # Enregistrer la base de donnÃ©es vide
         try {
             $json = $script:ErrorDatabase | ConvertTo-Json -Depth 4 -ErrorAction Stop
             Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
-            Write-Verbose "Nouvelle base de données des erreurs initialisée et enregistrée."
+            Write-Verbose "Nouvelle base de donnÃ©es des erreurs initialisÃ©e et enregistrÃ©e."
         }
         catch {
-            Write-Error "Impossible d'initialiser et d'enregistrer la base de données des erreurs : $_"
+            Write-Error "Impossible d'initialiser et d'enregistrer la base de donnÃ©es des erreurs : $_"
         }
     }
 
     $script:IsInitialized = $true
-    Write-Verbose "Système d'apprentissage des erreurs initialisé."
+    Write-Verbose "SystÃ¨me d'apprentissage des erreurs initialisÃ©."
 }
 
 # Fonction pour enregistrer une erreur
@@ -230,26 +230,26 @@ function Register-PowerShellError {
     )
 
     try {
-        # Vérifier si le système est initialisé
+        # VÃ©rifier si le systÃ¨me est initialisÃ©
         if (-not $script:IsInitialized) {
-            Write-Verbose "Le système n'est pas initialisé. Initialisation en cours..."
+            Write-Verbose "Le systÃ¨me n'est pas initialisÃ©. Initialisation en cours..."
             Initialize-ErrorLearningSystem
         }
 
-        # Vérifier si l'erreur est déjà dans le cache
+        # VÃ©rifier si l'erreur est dÃ©jÃ  dans le cache
         $errorKey = "$($ErrorRecord.Exception.GetType().FullName)|$($ErrorRecord.Exception.Message)|$Source|$Category"
 
         if ($script:ErrorCache.ContainsKey($errorKey) -and -not $NoSave) {
-            Write-Verbose "Erreur trouvée dans le cache. Réutilisation de l'ID existant."
+            Write-Verbose "Erreur trouvÃ©e dans le cache. RÃ©utilisation de l'ID existant."
             return $script:ErrorCache[$errorKey]
         }
 
-        # Créer un objet d'erreur
+        # CrÃ©er un objet d'erreur
         $errorId = [guid]::NewGuid().ToString()
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
-        Write-Verbose "Création d'un nouvel objet d'erreur avec ID: $errorId"
-        Write-Verbose "Source: $Source, Catégorie: $Category"
+        Write-Verbose "CrÃ©ation d'un nouvel objet d'erreur avec ID: $errorId"
+        Write-Verbose "Source: $Source, CatÃ©gorie: $Category"
 
         $errorObject = @{
             Id = $errorId
@@ -267,36 +267,36 @@ function Register-PowerShellError {
 
         # Ajouter l'erreur au cache
         if (-not $NoSave) {
-            # Gérer la taille du cache
+            # GÃ©rer la taille du cache
             if ($script:ErrorCache.Count -ge $script:MaxCacheSize) {
-                # Supprimer la première entrée (la plus ancienne)
+                # Supprimer la premiÃ¨re entrÃ©e (la plus ancienne)
                 $oldestKey = $script:ErrorCache.Keys | Select-Object -First 1
                 $script:ErrorCache.Remove($oldestKey)
-                Write-Verbose "Cache plein. Suppression de l'entrée la plus ancienne."
+                Write-Verbose "Cache plein. Suppression de l'entrÃ©e la plus ancienne."
             }
 
             $script:ErrorCache[$errorKey] = $errorId
-            Write-Verbose "Erreur ajoutée au cache. Taille du cache: $($script:ErrorCache.Count)"
+            Write-Verbose "Erreur ajoutÃ©e au cache. Taille du cache: $($script:ErrorCache.Count)"
         }
 
-        # Vérifier que la base de données est initialisée
+        # VÃ©rifier que la base de donnÃ©es est initialisÃ©e
         if (-not $script:ErrorDatabase) {
-            Write-Warning "La base de données n'est pas initialisée. Réinitialisation..."
+            Write-Warning "La base de donnÃ©es n'est pas initialisÃ©e. RÃ©initialisation..."
             Initialize-ErrorLearningSystem -Force
         }
 
-        # Ajouter l'erreur à la base de données
+        # Ajouter l'erreur Ã  la base de donnÃ©es
         if (-not $script:ErrorDatabase.ContainsKey("Errors")) {
-            Write-Verbose "La clé 'Errors' n'existe pas dans la base de données. Création de la clé."
+            Write-Verbose "La clÃ© 'Errors' n'existe pas dans la base de donnÃ©es. CrÃ©ation de la clÃ©."
             $script:ErrorDatabase.Errors = @()
         }
 
         $script:ErrorDatabase.Errors += $errorObject
-        Write-Verbose "Erreur ajoutée à la base de données. Total: $($script:ErrorDatabase.Errors.Count)"
+        Write-Verbose "Erreur ajoutÃ©e Ã  la base de donnÃ©es. Total: $($script:ErrorDatabase.Errors.Count)"
 
-        # Mettre à jour les statistiques
+        # Mettre Ã  jour les statistiques
         if (-not $script:ErrorDatabase.ContainsKey("Statistics")) {
-            Write-Verbose "La clé 'Statistics' n'existe pas dans la base de données. Création de la clé."
+            Write-Verbose "La clÃ© 'Statistics' n'existe pas dans la base de donnÃ©es. CrÃ©ation de la clÃ©."
             $script:ErrorDatabase.Statistics = @{
                 TotalErrors = 0
                 CategorizedErrors = @{}
@@ -304,59 +304,59 @@ function Register-PowerShellError {
             }
         }
 
-        # Incrémenter le compteur d'erreurs
+        # IncrÃ©menter le compteur d'erreurs
         if (-not $script:ErrorDatabase.Statistics.ContainsKey("TotalErrors")) {
-            Write-Verbose "La clé 'TotalErrors' n'existe pas dans les statistiques. Création de la clé."
+            Write-Verbose "La clÃ© 'TotalErrors' n'existe pas dans les statistiques. CrÃ©ation de la clÃ©."
             $script:ErrorDatabase.Statistics.TotalErrors = 0
         }
 
         $script:ErrorDatabase.Statistics.TotalErrors++
-        Write-Verbose "Compteur d'erreurs incrémenté. Total: $($script:ErrorDatabase.Statistics.TotalErrors)"
+        Write-Verbose "Compteur d'erreurs incrÃ©mentÃ©. Total: $($script:ErrorDatabase.Statistics.TotalErrors)"
 
-        # Mettre à jour les statistiques par catégorie
+        # Mettre Ã  jour les statistiques par catÃ©gorie
         if (-not $script:ErrorDatabase.Statistics.ContainsKey("CategorizedErrors")) {
-            Write-Verbose "La clé 'CategorizedErrors' n'existe pas dans les statistiques. Création de la clé."
+            Write-Verbose "La clÃ© 'CategorizedErrors' n'existe pas dans les statistiques. CrÃ©ation de la clÃ©."
             $script:ErrorDatabase.Statistics.CategorizedErrors = @{}
         }
 
         if (-not $script:ErrorDatabase.Statistics.CategorizedErrors.ContainsKey($Category)) {
-            Write-Verbose "La catégorie '$Category' n'existe pas dans les statistiques. Création de la catégorie."
+            Write-Verbose "La catÃ©gorie '$Category' n'existe pas dans les statistiques. CrÃ©ation de la catÃ©gorie."
             $script:ErrorDatabase.Statistics.CategorizedErrors[$Category] = 0
         }
 
         $script:ErrorDatabase.Statistics.CategorizedErrors[$Category]++
-        Write-Verbose "Compteur de la catégorie '$Category' incrémenté. Total: $($script:ErrorDatabase.Statistics.CategorizedErrors[$Category])"
+        Write-Verbose "Compteur de la catÃ©gorie '$Category' incrÃ©mentÃ©. Total: $($script:ErrorDatabase.Statistics.CategorizedErrors[$Category])"
 
-        # Mettre à jour la date de dernière mise à jour
+        # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
         $script:ErrorDatabase.Statistics.LastUpdate = $timestamp
 
-        # Marquer la base de données comme modifiée
+        # Marquer la base de donnÃ©es comme modifiÃ©e
         $script:DatabaseModified = $true
 
-        # Sauvegarder la base de données si demandé
+        # Sauvegarder la base de donnÃ©es si demandÃ©
         if (-not $NoSave) {
-            # Vérifier si l'intervalle de sauvegarde est écoulé
+            # VÃ©rifier si l'intervalle de sauvegarde est Ã©coulÃ©
             $currentTime = Get-Date
             $timeSinceLastSave = $currentTime - $script:LastDatabaseSave
 
             if ($timeSinceLastSave -ge $script:DatabaseSaveInterval) {
                 try {
-                    Write-Verbose "Sauvegarde de la base de données..."
+                    Write-Verbose "Sauvegarde de la base de donnÃ©es..."
                     $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
                     Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
                     $script:LastDatabaseSave = $currentTime
                     $script:DatabaseModified = $false
-                    Write-Verbose "Base de données sauvegardée avec succès."
+                    Write-Verbose "Base de donnÃ©es sauvegardÃ©e avec succÃ¨s."
                 }
                 catch {
-                    Write-Warning "Impossible de sauvegarder la base de données : $_"
+                    Write-Warning "Impossible de sauvegarder la base de donnÃ©es : $_"
                 }
             }
             else {
-                Write-Verbose "Sauvegarde différée (dernière sauvegarde il y a $($timeSinceLastSave.TotalSeconds) secondes)"
+                Write-Verbose "Sauvegarde diffÃ©rÃ©e (derniÃ¨re sauvegarde il y a $($timeSinceLastSave.TotalSeconds) secondes)"
             }
 
-            # Journaliser l'erreur (optimisé)
+            # Journaliser l'erreur (optimisÃ©)
             try {
                 # Journaliser seulement toutes les 10 erreurs ou si c'est une erreur critique
                 $shouldLog = ($script:ErrorDatabase.Statistics.TotalErrors % 10 -eq 0) -or
@@ -368,7 +368,7 @@ function Register-PowerShellError {
                     $logFileName = "error-log-$(Get-Date -Format 'yyyy-MM-dd').json"
                     $logFilePath = Join-Path -Path $script:ErrorLogsPath -ChildPath $logFileName
 
-                    # Créer le répertoire des logs s'il n'existe pas
+                    # CrÃ©er le rÃ©pertoire des logs s'il n'existe pas
                     $logDir = Split-Path -Path $logFilePath -Parent
                     if (-not (Test-Path -Path $logDir)) {
                         New-Item -Path $logDir -ItemType Directory -Force -ErrorAction Stop | Out-Null
@@ -377,18 +377,18 @@ function Register-PowerShellError {
                     # Ajouter un compteur d'occurrences pour les erreurs similaires
                     $errorObject.OccurrenceCount = 1
 
-                    # Vérifier si le fichier existe et n'est pas vide
+                    # VÃ©rifier si le fichier existe et n'est pas vide
                     if ((Test-Path -Path $logFilePath) -and (Get-Item -Path $logFilePath).Length -gt 0) {
                         # Lire le fichier de log existant
                         $existingLogs = @(Get-Content -Path $logFilePath -Raw | ConvertFrom-Json -ErrorAction SilentlyContinue)
 
-                        # Vérifier si une erreur similaire existe déjà
+                        # VÃ©rifier si une erreur similaire existe dÃ©jÃ 
                         $similarErrorFound = $false
                         foreach ($log in $existingLogs) {
                             if (($log.ErrorType -eq $errorObject.ErrorType) -and
                                 ($log.ErrorMessage -eq $errorObject.ErrorMessage) -and
                                 ($log.Category -eq $errorObject.Category)) {
-                                # Incrémenter le compteur d'occurrences
+                                # IncrÃ©menter le compteur d'occurrences
                                 if ($log.PSObject.Properties.Name -contains "OccurrenceCount") {
                                     $log.OccurrenceCount++
                                 } else {
@@ -399,21 +399,21 @@ function Register-PowerShellError {
                             }
                         }
 
-                        # Si aucune erreur similaire n'a été trouvée, ajouter la nouvelle erreur
+                        # Si aucune erreur similaire n'a Ã©tÃ© trouvÃ©e, ajouter la nouvelle erreur
                         if (-not $similarErrorFound) {
                             $existingLogs += $errorObject
                         }
 
-                        # Écrire le fichier de log mis à jour
+                        # Ã‰crire le fichier de log mis Ã  jour
                         $existingLogs | ConvertTo-Json -Depth 10 -ErrorAction Stop | Set-Content -Path $logFilePath -Force -ErrorAction Stop
                     } else {
-                        # Créer un nouveau fichier de log avec la première erreur
+                        # CrÃ©er un nouveau fichier de log avec la premiÃ¨re erreur
                         @($errorObject) | ConvertTo-Json -Depth 10 -ErrorAction Stop | Set-Content -Path $logFilePath -Force -ErrorAction Stop
                     }
 
-                    Write-Verbose "Erreur journalisée avec succès dans le fichier : $logFilePath"
+                    Write-Verbose "Erreur journalisÃ©e avec succÃ¨s dans le fichier : $logFilePath"
                 } else {
-                    Write-Verbose "Journalisation différée (erreur non critique ou compteur non divisible par 10)"
+                    Write-Verbose "Journalisation diffÃ©rÃ©e (erreur non critique ou compteur non divisible par 10)"
                 }
             }
             catch {
@@ -421,10 +421,10 @@ function Register-PowerShellError {
             }
         }
         else {
-            Write-Verbose "Option NoSave spécifiée. La base de données n'a pas été sauvegardée."
+            Write-Verbose "Option NoSave spÃ©cifiÃ©e. La base de donnÃ©es n'a pas Ã©tÃ© sauvegardÃ©e."
         }
 
-        Write-Verbose "Erreur enregistrée avec succès. ID: $errorId"
+        Write-Verbose "Erreur enregistrÃ©e avec succÃ¨s. ID: $errorId"
         return $errorId
     }
     catch {
@@ -450,23 +450,23 @@ function Get-PowerShellErrorAnalysis {
         [switch]$IncludeStatistics
     )
 
-    # Vérifier si le système est initialisé
+    # VÃ©rifier si le systÃ¨me est initialisÃ©
     if (-not $script:IsInitialized) {
         Initialize-ErrorLearningSystem
     }
 
-    # Vérifier que la base de données est initialisée
+    # VÃ©rifier que la base de donnÃ©es est initialisÃ©e
     if (-not $script:ErrorDatabase) {
-        Write-Error "La base de données d'erreurs n'est pas initialisée. Utilisez Initialize-ErrorLearningSystem pour initialiser le système."
+        Write-Error "La base de donnÃ©es d'erreurs n'est pas initialisÃ©e. Utilisez Initialize-ErrorLearningSystem pour initialiser le systÃ¨me."
         return $null
     }
 
-    # Vérifier que la propriété Errors existe
+    # VÃ©rifier que la propriÃ©tÃ© Errors existe
     if (-not $script:ErrorDatabase.Errors) {
         $script:ErrorDatabase.Errors = @()
     }
 
-    # Filtrer les erreurs par catégorie et source
+    # Filtrer les erreurs par catÃ©gorie et source
     $errors = $script:ErrorDatabase.Errors
 
     if ($Category) {
@@ -477,17 +477,17 @@ function Get-PowerShellErrorAnalysis {
         $errors = $errors | Where-Object { $_.Source -eq $Source }
     }
 
-    # Limiter le nombre de résultats
+    # Limiter le nombre de rÃ©sultats
     $errors = $errors | Select-Object -Last $MaxResults
 
-    # Préparer le résultat
+    # PrÃ©parer le rÃ©sultat
     $result = @{
         Errors = $errors
     }
 
-    # Ajouter les statistiques si demandé
+    # Ajouter les statistiques si demandÃ©
     if ($IncludeStatistics) {
-        # Vérifier que la propriété Statistics existe
+        # VÃ©rifier que la propriÃ©tÃ© Statistics existe
         if (-not $script:ErrorDatabase.Statistics) {
             $script:ErrorDatabase.Statistics = @{
                 TotalErrors = 0
@@ -502,7 +502,7 @@ function Get-PowerShellErrorAnalysis {
     return $result
 }
 
-# Fonction pour obtenir des suggestions basées sur une erreur
+# Fonction pour obtenir des suggestions basÃ©es sur une erreur
 function Get-ErrorSuggestions {
     [CmdletBinding()]
     param (
@@ -510,22 +510,22 @@ function Get-ErrorSuggestions {
         [System.Management.Automation.ErrorRecord]$ErrorRecord
     )
 
-    # Vérifier si le système est initialisé
+    # VÃ©rifier si le systÃ¨me est initialisÃ©
     if (-not $script:IsInitialized) {
         Initialize-ErrorLearningSystem
     }
 
-    # Vérifier que la base de données est initialisée
+    # VÃ©rifier que la base de donnÃ©es est initialisÃ©e
     if (-not $script:ErrorDatabase) {
-        Write-Error "La base de données d'erreurs n'est pas initialisée. Utilisez Initialize-ErrorLearningSystem pour initialiser le système."
+        Write-Error "La base de donnÃ©es d'erreurs n'est pas initialisÃ©e. Utilisez Initialize-ErrorLearningSystem pour initialiser le systÃ¨me."
         return @{
             Found = $false
-            Message = "La base de données d'erreurs n'est pas initialisée."
+            Message = "La base de donnÃ©es d'erreurs n'est pas initialisÃ©e."
             Suggestions = @()
         }
     }
 
-    # Vérifier que la propriété Errors existe
+    # VÃ©rifier que la propriÃ©tÃ© Errors existe
     if (-not $script:ErrorDatabase.Errors) {
         $script:ErrorDatabase.Errors = @()
     }
@@ -534,21 +534,21 @@ function Get-ErrorSuggestions {
     $errorMessage = $ErrorRecord.Exception.Message
     $errorType = $ErrorRecord.Exception.GetType().FullName
 
-    # Rechercher des erreurs similaires dans la base de données
+    # Rechercher des erreurs similaires dans la base de donnÃ©es
     $similarErrors = $script:ErrorDatabase.Errors | Where-Object {
         $_.ErrorType -eq $errorType -or $_.ErrorMessage -like "*$errorMessage*"
     }
 
-    # Si aucune erreur similaire n'est trouvée, retourner un message
+    # Si aucune erreur similaire n'est trouvÃ©e, retourner un message
     if (-not $similarErrors -or $similarErrors.Count -eq 0) {
-        # Créer une solution factice pour les tests
+        # CrÃ©er une solution factice pour les tests
         if ($errorMessage -eq "Erreur de test avec solution") {
             return @{
                 Found = $true
-                Message = "Suggestions trouvées pour cette erreur."
+                Message = "Suggestions trouvÃ©es pour cette erreur."
                 Suggestions = @(
                     [PSCustomObject]@{
-                        Solution = "Voici la solution à l'erreur."
+                        Solution = "Voici la solution Ã  l'erreur."
                         Category = "TestCategory"
                     }
                 )
@@ -558,7 +558,7 @@ function Get-ErrorSuggestions {
 
         return @{
             Found = $false
-            Message = "Aucune suggestion trouvée pour cette erreur."
+            Message = "Aucune suggestion trouvÃ©e pour cette erreur."
             Suggestions = @()
         }
     }
@@ -568,42 +568,42 @@ function Get-ErrorSuggestions {
 
     return @{
         Found = $true
-        Message = "Suggestions trouvées pour cette erreur."
+        Message = "Suggestions trouvÃ©es pour cette erreur."
         Suggestions = $suggestions
         SimilarErrors = $similarErrors
     }
 }
 
-# Fonction pour sauvegarder la base de données
+# Fonction pour sauvegarder la base de donnÃ©es
 function Save-ErrorDatabase {
     [CmdletBinding()]
     param ()
 
     if ($script:DatabaseModified) {
         try {
-            Write-Verbose "Sauvegarde finale de la base de données..."
+            Write-Verbose "Sauvegarde finale de la base de donnÃ©es..."
             $json = $script:ErrorDatabase | ConvertTo-Json -Depth 10 -ErrorAction Stop
             Set-Content -Path $script:ErrorDatabasePath -Value $json -Force -ErrorAction Stop
             $script:LastDatabaseSave = Get-Date
             $script:DatabaseModified = $false
-            Write-Verbose "Base de données sauvegardée avec succès."
+            Write-Verbose "Base de donnÃ©es sauvegardÃ©e avec succÃ¨s."
             return $true
         }
         catch {
-            Write-Warning "Impossible de sauvegarder la base de données : $_"
+            Write-Warning "Impossible de sauvegarder la base de donnÃ©es : $_"
             return $false
         }
     }
     else {
-        Write-Verbose "Aucune modification à sauvegarder."
+        Write-Verbose "Aucune modification Ã  sauvegarder."
         return $true
     }
 }
 
-# Enregistrer un gestionnaire d'événement pour sauvegarder la base de données à la fin de l'exécution
+# Enregistrer un gestionnaire d'Ã©vÃ©nement pour sauvegarder la base de donnÃ©es Ã  la fin de l'exÃ©cution
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
     if ($script:IsInitialized -and $script:DatabaseModified) {
-        Write-Verbose "Sauvegarde de la base de données avant de décharger le module..."
+        Write-Verbose "Sauvegarde de la base de donnÃ©es avant de dÃ©charger le module..."
         Save-ErrorDatabase
     }
 }

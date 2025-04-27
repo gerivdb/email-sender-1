@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Optimise l'exécution des tests TestOmnibus avec des algorithmes avancés.
+    Optimise l'exÃ©cution des tests TestOmnibus avec des algorithmes avancÃ©s.
 .DESCRIPTION
-    Ce script utilise des algorithmes avancés pour optimiser l'exécution des tests,
-    en tenant compte de l'historique des exécutions, des dépendances entre tests,
-    et des ressources système disponibles.
+    Ce script utilise des algorithmes avancÃ©s pour optimiser l'exÃ©cution des tests,
+    en tenant compte de l'historique des exÃ©cutions, des dÃ©pendances entre tests,
+    et des ressources systÃ¨me disponibles.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER HistoryPath
-    Chemin vers l'historique des exécutions précédentes.
+    Chemin vers l'historique des exÃ©cutions prÃ©cÃ©dentes.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'optimisation.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'optimisation.
 .EXAMPLE
     .\Advanced-Optimizer.ps1 -TestPath "D:\Tests" -HistoryPath "D:\TestHistory"
 .NOTES
@@ -31,13 +31,13 @@ param (
     [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results")
 )
 
-# Vérifier les chemins
+# VÃ©rifier les chemins
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
 }
 
-# Créer les répertoires s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires s'ils n'existent pas
 if (-not (Test-Path -Path $HistoryPath)) {
     New-Item -Path $HistoryPath -ItemType Directory -Force | Out-Null
 }
@@ -46,7 +46,7 @@ if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour analyser les dépendances entre tests
+# Fonction pour analyser les dÃ©pendances entre tests
 function Get-TestDependencies {
     [CmdletBinding()]
     param (
@@ -65,7 +65,7 @@ function Get-TestDependencies {
             Dependencies = @()
         }
         
-        # Analyser le contenu pour trouver les dépendances
+        # Analyser le contenu pour trouver les dÃ©pendances
         $matches = [regex]::Matches($content, '(?:Describe|Context|It)\s*\(\s*["'']([^"'']+)["'']')
         foreach ($match in $matches) {
             $testName = $match.Groups[1].Value
@@ -76,7 +76,7 @@ function Get-TestDependencies {
     return $dependencies
 }
 
-# Fonction pour analyser l'historique des exécutions
+# Fonction pour analyser l'historique des exÃ©cutions
 function Get-ExecutionHistory {
     [CmdletBinding()]
     param (
@@ -126,7 +126,7 @@ function Get-ExecutionHistory {
     return $history
 }
 
-# Fonction pour optimiser l'ordre d'exécution des tests
+# Fonction pour optimiser l'ordre d'exÃ©cution des tests
 function Get-OptimizedTestOrder {
     [CmdletBinding()]
     param (
@@ -137,25 +137,25 @@ function Get-OptimizedTestOrder {
         [hashtable]$History
     )
     
-    # Créer une liste de tests avec leurs scores
+    # CrÃ©er une liste de tests avec leurs scores
     $testScores = @()
     
     foreach ($testPath in $Dependencies.Keys) {
         $testName = $Dependencies[$testPath].Name
         $score = 0
         
-        # Facteur 1: Taux d'échec (les tests qui échouent souvent sont exécutés en premier)
+        # Facteur 1: Taux d'Ã©chec (les tests qui Ã©chouent souvent sont exÃ©cutÃ©s en premier)
         if ($History.ContainsKey($testName)) {
             $score += $History[$testName].FailureRate * 100
         }
         
-        # Facteur 2: Durée (les tests courts sont exécutés en premier)
+        # Facteur 2: DurÃ©e (les tests courts sont exÃ©cutÃ©s en premier)
         if ($History.ContainsKey($testName)) {
             $duration = $History[$testName].AverageDuration
             $score -= [Math]::Log10($duration + 1) * 10
         }
         
-        # Facteur 3: Nombre de dépendances (les tests avec moins de dépendances sont exécutés en premier)
+        # Facteur 3: Nombre de dÃ©pendances (les tests avec moins de dÃ©pendances sont exÃ©cutÃ©s en premier)
         $score -= $Dependencies[$testPath].Dependencies.Count * 5
         
         $testScores += [PSCustomObject]@{
@@ -165,44 +165,44 @@ function Get-OptimizedTestOrder {
         }
     }
     
-    # Trier les tests par score (décroissant)
+    # Trier les tests par score (dÃ©croissant)
     $sortedTests = $testScores | Sort-Object -Property Score -Descending
     
     return $sortedTests.Path
 }
 
-# Fonction pour déterminer le nombre optimal de threads
+# Fonction pour dÃ©terminer le nombre optimal de threads
 function Get-OptimalThreadCount {
     [CmdletBinding()]
     param ()
     
-    # Nombre de cœurs logiques
+    # Nombre de cÅ“urs logiques
     $logicalCores = [Environment]::ProcessorCount
     
     # Charge CPU actuelle
     $cpuLoad = (Get-Counter '\Processor(_Total)\% Processor Time' -SampleInterval 1 -MaxSamples 1).CounterSamples.CookedValue
     
-    # Mémoire disponible
+    # MÃ©moire disponible
     $memoryInfo = Get-CimInstance -ClassName Win32_OperatingSystem
     $memoryAvailable = $memoryInfo.FreePhysicalMemory / $memoryInfo.TotalVisibleMemorySize
     
     # Calculer le nombre optimal de threads
-    $threadFactor = 0.75  # Facteur de base (75% des cœurs)
+    $threadFactor = 0.75  # Facteur de base (75% des cÅ“urs)
     
     # Ajuster en fonction de la charge CPU
     if ($cpuLoad -gt 80) {
-        $threadFactor *= 0.6  # Réduire si la CPU est très chargée
+        $threadFactor *= 0.6  # RÃ©duire si la CPU est trÃ¨s chargÃ©e
     }
     elseif ($cpuLoad -gt 60) {
-        $threadFactor *= 0.8  # Réduire légèrement si la CPU est chargée
+        $threadFactor *= 0.8  # RÃ©duire lÃ©gÃ¨rement si la CPU est chargÃ©e
     }
     
-    # Ajuster en fonction de la mémoire disponible
+    # Ajuster en fonction de la mÃ©moire disponible
     if ($memoryAvailable -lt 0.2) {
-        $threadFactor *= 0.7  # Réduire si peu de mémoire disponible
+        $threadFactor *= 0.7  # RÃ©duire si peu de mÃ©moire disponible
     }
     elseif ($memoryAvailable -lt 0.4) {
-        $threadFactor *= 0.9  # Réduire légèrement si mémoire limitée
+        $threadFactor *= 0.9  # RÃ©duire lÃ©gÃ¨rement si mÃ©moire limitÃ©e
     }
     
     # Calculer le nombre de threads
@@ -211,7 +211,7 @@ function Get-OptimalThreadCount {
     return $optimalThreads
 }
 
-# Fonction pour générer une configuration optimisée
+# Fonction pour gÃ©nÃ©rer une configuration optimisÃ©e
 function New-OptimizedConfig {
     [CmdletBinding()]
     param (
@@ -241,32 +241,32 @@ function New-OptimizedConfig {
     return $configPath
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Analyser les dépendances entre tests
-    Write-Host "Analyse des dépendances entre tests..." -ForegroundColor Cyan
+    # Analyser les dÃ©pendances entre tests
+    Write-Host "Analyse des dÃ©pendances entre tests..." -ForegroundColor Cyan
     $dependencies = Get-TestDependencies -TestPath $TestPath
-    Write-Host "Dépendances analysées pour $($dependencies.Count) tests" -ForegroundColor Green
+    Write-Host "DÃ©pendances analysÃ©es pour $($dependencies.Count) tests" -ForegroundColor Green
     
-    # Analyser l'historique des exécutions
-    Write-Host "Analyse de l'historique des exécutions..." -ForegroundColor Cyan
+    # Analyser l'historique des exÃ©cutions
+    Write-Host "Analyse de l'historique des exÃ©cutions..." -ForegroundColor Cyan
     $history = Get-ExecutionHistory -HistoryPath $HistoryPath
-    Write-Host "Historique analysé pour $($history.Count) tests" -ForegroundColor Green
+    Write-Host "Historique analysÃ© pour $($history.Count) tests" -ForegroundColor Green
     
-    # Optimiser l'ordre d'exécution des tests
-    Write-Host "Optimisation de l'ordre d'exécution des tests..." -ForegroundColor Cyan
+    # Optimiser l'ordre d'exÃ©cution des tests
+    Write-Host "Optimisation de l'ordre d'exÃ©cution des tests..." -ForegroundColor Cyan
     $optimizedOrder = Get-OptimizedTestOrder -Dependencies $dependencies -History $history
-    Write-Host "Ordre d'exécution optimisé pour $($optimizedOrder.Count) tests" -ForegroundColor Green
+    Write-Host "Ordre d'exÃ©cution optimisÃ© pour $($optimizedOrder.Count) tests" -ForegroundColor Green
     
-    # Déterminer le nombre optimal de threads
-    Write-Host "Détermination du nombre optimal de threads..." -ForegroundColor Cyan
+    # DÃ©terminer le nombre optimal de threads
+    Write-Host "DÃ©termination du nombre optimal de threads..." -ForegroundColor Cyan
     $threadCount = Get-OptimalThreadCount
     Write-Host "Nombre optimal de threads: $threadCount" -ForegroundColor Green
     
-    # Générer une configuration optimisée
-    Write-Host "Génération de la configuration optimisée..." -ForegroundColor Cyan
+    # GÃ©nÃ©rer une configuration optimisÃ©e
+    Write-Host "GÃ©nÃ©ration de la configuration optimisÃ©e..." -ForegroundColor Cyan
     $configPath = New-OptimizedConfig -OptimizedOrder $optimizedOrder -ThreadCount $threadCount -OutputPath $OutputPath
-    Write-Host "Configuration optimisée générée: $configPath" -ForegroundColor Green
+    Write-Host "Configuration optimisÃ©e gÃ©nÃ©rÃ©e: $configPath" -ForegroundColor Green
     
     # Retourner la configuration
     return @{

@@ -1,41 +1,41 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module DependencyManager.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module DependencyManager
-    du système de cache prédictif.
+    du systÃ¨me de cache prÃ©dictif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module de types simulés
+# Importer le module de types simulÃ©s
 $mockTypesPath = Join-Path -Path $PSScriptRoot -ChildPath "MockTypes.psm1"
 Import-Module $mockTypesPath -Force
 
-# Créer un chemin temporaire pour la base de données de test
+# CrÃ©er un chemin temporaire pour la base de donnÃ©es de test
 $testDatabasePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\DependencyManager_Test.db"
 $testDatabaseDir = Split-Path -Path $testDatabasePath -Parent
 if (-not (Test-Path -Path $testDatabaseDir)) {
     New-Item -Path $testDatabaseDir -ItemType Directory -Force | Out-Null
 }
 
-# Nettoyer les tests précédents
+# Nettoyer les tests prÃ©cÃ©dents
 if (Test-Path -Path $testDatabasePath) {
     Remove-Item -Path $testDatabasePath -Force
 }
 
 Describe "DependencyManager Module Tests" {
     BeforeAll {
-        # Créer un UsageCollector réel à partir de la classe définie dans MockTypes.psm1
+        # CrÃ©er un UsageCollector rÃ©el Ã  partir de la classe dÃ©finie dans MockTypes.psm1
         $testCachePath = Join-Path -Path $env:TEMP -ChildPath "PSCacheManager_Tests\Cache"
         if (-not (Test-Path -Path $testCachePath)) {
             New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
@@ -44,7 +44,7 @@ Describe "DependencyManager Module Tests" {
         $script:mockCacheManager = [CacheManager]::new("TestCache", $testCachePath)
         $script:mockUsageCollector = [UsageCollector]::new($testDatabasePath, "TestCache")
 
-        # Ajouter des données de test au UsageCollector
+        # Ajouter des donnÃ©es de test au UsageCollector
         $script:mockUsageCollector.RecordAccess("Key1", $true)
         $script:mockUsageCollector.RecordAccess("Key2", $true)
         $script:mockUsageCollector.RecordAccess("Key3", $true)
@@ -119,7 +119,7 @@ Context "Set-DependencyManagerOptions Function" {
 
 Context "DependencyManager Methods" {
     BeforeEach {
-        # Cette variable est utilisée dans chaque test de ce contexte
+        # Cette variable est utilisÃ©e dans chaque test de ce contexte
         $script:manager = New-DependencyManager -BaseCache $mockCacheManager -UsageCollector $mockUsageCollector
     }
 

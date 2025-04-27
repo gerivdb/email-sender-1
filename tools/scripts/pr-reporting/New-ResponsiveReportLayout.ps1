@@ -1,54 +1,54 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Crée un layout responsif pour les rapports d'analyse de pull requests.
+    CrÃ©e un layout responsif pour les rapports d'analyse de pull requests.
 
 .DESCRIPTION
-    Ce script génère un layout HTML responsif pour les rapports d'analyse
-    de pull requests, avec différentes options de mise en page.
+    Ce script gÃ©nÃ¨re un layout HTML responsif pour les rapports d'analyse
+    de pull requests, avec diffÃ©rentes options de mise en page.
 
 .PARAMETER LayoutType
-    Le type de layout à générer.
+    Le type de layout Ã  gÃ©nÃ©rer.
     Valeurs possibles: "Standard", "Dashboard", "Compact", "Detailed"
-    Par défaut: "Standard"
+    Par dÃ©faut: "Standard"
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le fichier de layout généré.
-    Par défaut: "templates\layouts\{LayoutType}.html"
+    Le chemin oÃ¹ enregistrer le fichier de layout gÃ©nÃ©rÃ©.
+    Par dÃ©faut: "templates\layouts\{LayoutType}.html"
 
 .PARAMETER Columns
     Le nombre de colonnes pour les sections principales.
     Valeurs possibles: 1, 2, 3, 4
-    Par défaut: 2
+    Par dÃ©faut: 2
 
 .PARAMETER IncludeHeader
-    Indique s'il faut inclure un en-tête dans le layout.
-    Par défaut: $true
+    Indique s'il faut inclure un en-tÃªte dans le layout.
+    Par dÃ©faut: $true
 
 .PARAMETER IncludeFooter
     Indique s'il faut inclure un pied de page dans le layout.
-    Par défaut: $true
+    Par dÃ©faut: $true
 
 .PARAMETER IncludeSidebar
-    Indique s'il faut inclure une barre latérale dans le layout.
-    Par défaut: $false
+    Indique s'il faut inclure une barre latÃ©rale dans le layout.
+    Par dÃ©faut: $false
 
 .PARAMETER SidebarPosition
-    La position de la barre latérale.
+    La position de la barre latÃ©rale.
     Valeurs possibles: "Left", "Right"
-    Par défaut: "Left"
+    Par dÃ©faut: "Left"
 
 .PARAMETER SidebarWidth
-    La largeur de la barre latérale en pourcentage.
-    Par défaut: 25
+    La largeur de la barre latÃ©rale en pourcentage.
+    Par dÃ©faut: 25
 
 .EXAMPLE
     .\New-ResponsiveReportLayout.ps1 -LayoutType "Dashboard" -Columns 3 -IncludeSidebar $true
-    Génère un layout de type tableau de bord avec 3 colonnes et une barre latérale.
+    GÃ©nÃ¨re un layout de type tableau de bord avec 3 colonnes et une barre latÃ©rale.
 
 .EXAMPLE
     .\New-ResponsiveReportLayout.ps1 -LayoutType "Compact" -OutputPath "templates\layouts\custom_compact.html"
-    Génère un layout compact et l'enregistre dans un fichier personnalisé.
+    GÃ©nÃ¨re un layout compact et l'enregistre dans un fichier personnalisÃ©.
 
 .NOTES
     Version: 1.0
@@ -87,18 +87,18 @@ param(
     [int]$SidebarWidth = 25
 )
 
-# Déterminer le chemin de sortie si non spécifié
+# DÃ©terminer le chemin de sortie si non spÃ©cifiÃ©
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     $OutputPath = "templates\layouts\$LayoutType.html"
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Définir les styles CSS de base
+# DÃ©finir les styles CSS de base
 $baseStyles = @"
 :root {
     --primary-color: {{primaryColor}};
@@ -227,7 +227,7 @@ table tr:hover {
 }
 "@
 
-# Générer le HTML pour l'en-tête
+# GÃ©nÃ©rer le HTML pour l'en-tÃªte
 $headerHtml = if ($IncludeHeader) {
     @"
 <header class="header">
@@ -235,7 +235,7 @@ $headerHtml = if ($IncludeHeader) {
         <div class="header-content">
             <h1 class="header-title">{{title}}</h1>
             <div class="header-info">
-                <span class="header-timestamp">Généré le {{timestamp}}</span>
+                <span class="header-timestamp">GÃ©nÃ©rÃ© le {{timestamp}}</span>
             </div>
         </div>
     </div>
@@ -280,13 +280,13 @@ $headerHtml = if ($IncludeHeader) {
     ""
 }
 
-# Générer le HTML pour le pied de page
+# GÃ©nÃ©rer le HTML pour le pied de page
 $footerHtml = if ($IncludeFooter) {
     @"
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
-            <p>Rapport généré par le système d'analyse de pull requests</p>
+            <p>Rapport gÃ©nÃ©rÃ© par le systÃ¨me d'analyse de pull requests</p>
             <p>Version 1.0 - &copy; 2025</p>
         </div>
     </div>
@@ -313,7 +313,7 @@ $footerHtml = if ($IncludeFooter) {
     ""
 }
 
-# Générer le HTML pour la barre latérale
+# GÃ©nÃ©rer le HTML pour la barre latÃ©rale
 $sidebarHtml = if ($IncludeSidebar) {
     $sidebarClass = if ($SidebarPosition -eq "Left") { "sidebar-left" } else { "sidebar-right" }
     $mainWidth = 100 - $SidebarWidth
@@ -373,7 +373,7 @@ $sidebarHtml = if ($IncludeSidebar) {
 "@
 }
 
-# Générer le HTML pour les colonnes
+# GÃ©nÃ©rer le HTML pour les colonnes
 $columnsHtml = @"
 <div class="grid-layout columns-$Columns">
     {{grid_content}}
@@ -420,7 +420,7 @@ $columnsHtml = @"
 </style>
 "@
 
-# Générer des styles spécifiques au type de layout
+# GÃ©nÃ©rer des styles spÃ©cifiques au type de layout
 $layoutSpecificStyles = switch ($LayoutType) {
     "Dashboard" {
         @"
@@ -594,16 +594,16 @@ $footerHtml
 # Enregistrer le layout
 Set-Content -Path $OutputPath -Value $html -Encoding UTF8
 
-Write-Host "Layout responsif généré avec succès: $OutputPath" -ForegroundColor Green
+Write-Host "Layout responsif gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
 Write-Host "  Type: $LayoutType" -ForegroundColor White
 Write-Host "  Colonnes: $Columns" -ForegroundColor White
-Write-Host "  En-tête: $IncludeHeader" -ForegroundColor White
+Write-Host "  En-tÃªte: $IncludeHeader" -ForegroundColor White
 Write-Host "  Pied de page: $IncludeFooter" -ForegroundColor White
-Write-Host "  Barre latérale: $IncludeSidebar" -ForegroundColor White
+Write-Host "  Barre latÃ©rale: $IncludeSidebar" -ForegroundColor White
 
 if ($IncludeSidebar) {
-    Write-Host "  Position de la barre latérale: $SidebarPosition" -ForegroundColor White
-    Write-Host "  Largeur de la barre latérale: $SidebarWidth%" -ForegroundColor White
+    Write-Host "  Position de la barre latÃ©rale: $SidebarPosition" -ForegroundColor White
+    Write-Host "  Largeur de la barre latÃ©rale: $SidebarWidth%" -ForegroundColor White
 }
 
 return $OutputPath

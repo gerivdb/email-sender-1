@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Obtient les statistiques de performance pour un chronomètre.
+    Obtient les statistiques de performance pour un chronomÃ¨tre.
 
 .DESCRIPTION
-    La fonction Get-RoadmapPerformanceStatistics obtient les statistiques de performance pour un chronomètre.
-    Elle retourne un objet contenant les statistiques telles que le nombre d'exécutions, le temps total, etc.
+    La fonction Get-RoadmapPerformanceStatistics obtient les statistiques de performance pour un chronomÃ¨tre.
+    Elle retourne un objet contenant les statistiques telles que le nombre d'exÃ©cutions, le temps total, etc.
 
 .PARAMETER Name
-    Le nom du chronomètre.
-    Si non spécifié, retourne les statistiques pour tous les chronomètres.
+    Le nom du chronomÃ¨tre.
+    Si non spÃ©cifiÃ©, retourne les statistiques pour tous les chronomÃ¨tres.
 
 .EXAMPLE
     Get-RoadmapPerformanceStatistics -Name "MaFonction"
-    Obtient les statistiques pour le chronomètre nommé "MaFonction".
+    Obtient les statistiques pour le chronomÃ¨tre nommÃ© "MaFonction".
 
 .OUTPUTS
     [PSCustomObject] Un objet contenant les statistiques de performance.
@@ -20,7 +20,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Get-RoadmapPerformanceStatistics {
     [CmdletBinding()]
@@ -38,9 +38,9 @@ function Get-RoadmapPerformanceStatistics {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions

@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-Format.Tests.ps1
 #
 # Tests unitaires pour la fonction Test-Format
 #
 
-# Définir la fonction Test-Format directement dans le script de test
+# DÃ©finir la fonction Test-Format directement dans le script de test
 function Test-Format {
     [CmdletBinding()]
     param (
@@ -26,13 +26,13 @@ function Test-Format {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
-    # Vérifier si la valeur est null
+    # VÃ©rifier si la valeur est null
     if ($null -eq $Value) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "La valeur ne peut pas être null pour valider le format."
+            $ErrorMessage = "La valeur ne peut pas Ãªtre null pour valider le format."
         }
         if ($ThrowOnFailure) {
             throw $ErrorMessage
@@ -42,10 +42,10 @@ function Test-Format {
         return $false
     }
 
-    # Convertir la valeur en chaîne de caractères
+    # Convertir la valeur en chaÃ®ne de caractÃ¨res
     $stringValue = $Value.ToString()
 
-    # Définir le pattern selon le format
+    # DÃ©finir le pattern selon le format
     $regexPattern = switch ($Format) {
         "Email" {
             "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -74,9 +74,9 @@ function Test-Format {
         "Custom" {
             if ([string]::IsNullOrEmpty($Pattern)) {
                 if ($ThrowOnFailure) {
-                    throw "Le pattern doit être spécifié pour le format Custom."
+                    throw "Le pattern doit Ãªtre spÃ©cifiÃ© pour le format Custom."
                 } else {
-                    Write-Warning "Le pattern doit être spécifié pour le format Custom."
+                    Write-Warning "Le pattern doit Ãªtre spÃ©cifiÃ© pour le format Custom."
                 }
                 return $false
             }
@@ -87,7 +87,7 @@ function Test-Format {
     # Valider le format
     $isValid = $stringValue -match $regexPattern
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
             $ErrorMessage = "La valeur ne correspond pas au format $Format."
@@ -135,11 +135,11 @@ Describe "Test-Format" {
     }
 
     Context "Validation de format PhoneNumber" {
-        It "Devrait retourner True pour un numéro de téléphone valide" {
+        It "Devrait retourner True pour un numÃ©ro de tÃ©lÃ©phone valide" {
             Test-Format -Value "123-456-7890" -Format "PhoneNumber" | Should -Be $true
         }
 
-        It "Devrait retourner False pour un numéro de téléphone invalide" {
+        It "Devrait retourner False pour un numÃ©ro de tÃ©lÃ©phone invalide" {
             Test-Format -Value "abc" -Format "PhoneNumber" | Should -Be $false
         }
     }
@@ -205,42 +205,42 @@ Describe "Test-Format" {
     }
 
     Context "Validation de format DirectoryPath" {
-        It "Devrait retourner True pour un chemin de répertoire valide" {
+        It "Devrait retourner True pour un chemin de rÃ©pertoire valide" {
             Test-Format -Value "C:\Windows\System32" -Format "DirectoryPath" | Should -Be $true
         }
 
-        It "Devrait retourner False pour un chemin de répertoire invalide" {
+        It "Devrait retourner False pour un chemin de rÃ©pertoire invalide" {
             Test-Format -Value "C:\Invalid|Path" -Format "DirectoryPath" | Should -Be $false
         }
     }
 
     Context "Validation de format Custom" {
-        It "Devrait retourner True pour une valeur correspondant au pattern personnalisé" {
+        It "Devrait retourner True pour une valeur correspondant au pattern personnalisÃ©" {
             Test-Format -Value "abc123" -Format "Custom" -Pattern "^[a-z]+[0-9]+$" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisé" {
+        It "Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisÃ©" {
             Test-Format -Value "123abc" -Format "Custom" -Pattern "^[a-z]+[0-9]+$" | Should -Be $false
         }
 
-        It "Devrait lever une exception si le pattern n'est pas spécifié" {
+        It "Devrait lever une exception si le pattern n'est pas spÃ©cifiÃ©" {
             { Test-Format -Value "abc123" -Format "Custom" } | Should -Throw
         }
     }
 
     Context "Validation avec ThrowOnFailure" {
-        It "Devrait lever une exception en cas d'échec avec ThrowOnFailure" {
+        It "Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure" {
             { Test-Format -Value "invalid@" -Format "Email" -ThrowOnFailure } | Should -Throw
         }
 
-        It "Ne devrait pas lever d'exception en cas de succès avec ThrowOnFailure" {
+        It "Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure" {
             { Test-Format -Value "user@example.com" -Format "Email" -ThrowOnFailure } | Should -Not -Throw
         }
     }
 
-    Context "Validation avec message d'erreur personnalisé" {
-        It "Devrait utiliser le message d'erreur personnalisé en cas d'échec" {
-            $customErrorMessage = "Message d'erreur personnalisé"
+    Context "Validation avec message d'erreur personnalisÃ©" {
+        It "Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec" {
+            $customErrorMessage = "Message d'erreur personnalisÃ©"
             $exceptionMessage = $null
 
             try {

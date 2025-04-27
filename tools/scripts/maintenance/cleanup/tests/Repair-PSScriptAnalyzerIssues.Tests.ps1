@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Repair-PSScriptAnalyzerIssues.ps1.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     des fonctions de correction du script Repair-PSScriptAnalyzerIssues.ps1.
 .NOTES
     Author: Augment Agent
@@ -11,26 +11,26 @@
     Date: 12/04/2025
 #>
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Repair-PSScriptAnalyzerIssues.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script à tester n'existe pas: $scriptPath"
+    throw "Le script Ã  tester n'existe pas: $scriptPath"
 }
 
-# Importer le script à tester
+# Importer le script Ã  tester
 . $scriptPath
 
 # Importer Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PSScriptAnalyzerTests"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -39,7 +39,7 @@ if (-not (Test-Path -Path $testDir)) {
 # Tests unitaires
 Describe "Repair-PSScriptAnalyzerIssues" {
     BeforeAll {
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $nullComparisonScript = @'
 function Test-NullComparison {
     param($value)
@@ -58,14 +58,14 @@ function Test-NullComparison {
 function Fix-Problem {
     param($issue)
 
-    # Corriger le problème
+    # Corriger le problÃ¨me
     return "Fixed: $issue"
 }
 
 function Analyze-Data {
     param($data)
 
-    # Analyser les données
+    # Analyser les donnÃ©es
     return "Analyzed: $data"
 }
 '@
@@ -88,11 +88,11 @@ function Test-SwitchDefault {
 
         $unusedVariableScript = @'
 function Test-UnusedVariable {
-    # Variable non utilisée
-    $unused = "Cette variable n'est jamais utilisée"
+    # Variable non utilisÃ©e
+    $unused = "Cette variable n'est jamais utilisÃ©e"
 
-    # Variable utilisée
-    $used = "Cette variable est utilisée"
+    # Variable utilisÃ©e
+    $used = "Cette variable est utilisÃ©e"
     return $used
 }
 '@
@@ -101,7 +101,7 @@ function Test-UnusedVariable {
 
         $automaticVariableScript = @'
 function Test-AutomaticVariable {
-    # Assignation à une variable automatique
+    # Assignation Ã  une variable automatique
     $matches = @{
         "Key1" = "Value1"
         "Key2" = "Value2"
@@ -123,7 +123,7 @@ function Test-AutomaticVariable {
     }
 
     Context "Test-ScriptIssues Function" {
-        It "Devrait analyser un script et retourner des résultats" {
+        It "Devrait analyser un script et retourner des rÃ©sultats" {
             $results = Test-ScriptIssues -Path $nullComparisonPath
             $results | Should -Not -BeNullOrEmpty
             $results.PSScriptAnalyzerResults | Should -Not -BeNullOrEmpty
@@ -143,18 +143,18 @@ function Test-AutomaticVariable {
             $content = Get-Content -Path $nullComparisonPath -Raw
             $correctedContent = Repair-NullComparison -Content $content
 
-            # Vérifier que la correction a été appliquée
+            # VÃ©rifier que la correction a Ã©tÃ© appliquÃ©e
             $correctedContent | Should -Match '\$null -eq \$value'
             $correctedContent | Should -Not -Match '\$value -eq \$null'
         }
     }
 
     Context "Repair-UnapprovedVerbs Function" {
-        It "Devrait corriger les verbes non approuvés" {
+        It "Devrait corriger les verbes non approuvÃ©s" {
             $content = Get-Content -Path $unapprovedVerbPath -Raw
             $correctedContent = Repair-UnapprovedVerbs -Content $content
 
-            # Vérifier que les corrections ont été appliquées
+            # VÃ©rifier que les corrections ont Ã©tÃ© appliquÃ©es
             $correctedContent | Should -Match 'function Repair-Problem'
             $correctedContent | Should -Match 'function Test-Data'
             $correctedContent | Should -Not -Match 'function Fix-Problem'
@@ -163,11 +163,11 @@ function Test-AutomaticVariable {
     }
 
     Context "Repair-SwitchDefaultValue Function" {
-        It "Devrait corriger les valeurs par défaut des paramètres de type switch" {
+        It "Devrait corriger les valeurs par dÃ©faut des paramÃ¨tres de type switch" {
             $content = Get-Content -Path $switchDefaultValuePath -Raw
             $correctedContent = Repair-SwitchDefaultValue -Content $content
 
-            # Vérifier que les corrections ont été appliquées
+            # VÃ©rifier que les corrections ont Ã©tÃ© appliquÃ©es
             $correctedContent | Should -Match '\[switch\]\$Force'
             $correctedContent | Should -Match '\[switch\]\$Verbose'
             $correctedContent | Should -Not -Match '\[switch\]\$Force = \$true'
@@ -176,15 +176,15 @@ function Test-AutomaticVariable {
     }
 
     Context "Repair-UnusedVariables Function" {
-        It "Devrait corriger les variables non utilisées" {
+        It "Devrait corriger les variables non utilisÃ©es" {
             $content = Get-Content -Path $unusedVariablePath -Raw
             $analysisResults = Test-ScriptIssues -Path $unusedVariablePath
             $correctedContent = Repair-UnusedVariables -Content $content -Ast $analysisResults.Ast -Tokens $analysisResults.Tokens
 
-            # Vérifier que les corrections ont été appliquées
-            $correctedContent | Should -Not -Match '\$unused = "Cette variable n''est jamais utilisée"'
-            $correctedContent | Should -Match '"Cette variable n''est jamais utilisée" \| Out-Null'
-            $correctedContent | Should -Match '\$used = "Cette variable est utilisée"'
+            # VÃ©rifier que les corrections ont Ã©tÃ© appliquÃ©es
+            $correctedContent | Should -Not -Match '\$unused = "Cette variable n''est jamais utilisÃ©e"'
+            $correctedContent | Should -Match '"Cette variable n''est jamais utilisÃ©e" \| Out-Null'
+            $correctedContent | Should -Match '\$used = "Cette variable est utilisÃ©e"'
         }
     }
 
@@ -193,7 +193,7 @@ function Test-AutomaticVariable {
             $content = Get-Content -Path $automaticVariablePath -Raw
             $correctedContent = Repair-AutomaticVariableAssignment -Content $content
 
-            # Vérifier que les corrections ont été appliquées
+            # VÃ©rifier que les corrections ont Ã©tÃ© appliquÃ©es
             $correctedContent | Should -Match '\$custom_matches = @{'
             $correctedContent | Should -Match 'return \$custom_matches\["Key1"\]'
             $correctedContent | Should -Not -Match '\$matches = @{'
@@ -202,61 +202,61 @@ function Test-AutomaticVariable {
     }
 
     Context "Repair-PSScriptAnalyzerIssues Function" {
-        It "Devrait analyser et corriger les problèmes dans un script" {
-            # Créer une copie du script pour le test
+        It "Devrait analyser et corriger les problÃ¨mes dans un script" {
+            # CrÃ©er une copie du script pour le test
             $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
             Copy-Item -Path $nullComparisonPath -Destination $testScriptPath -Force
 
-            # Exécuter la fonction principale
+            # ExÃ©cuter la fonction principale
             $results = Repair-PSScriptAnalyzerIssues -ScriptPath $testScriptPath -Fix
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Path | Should -Be $testScriptPath
             $results.Fixed | Should -BeTrue
 
-            # Vérifier que le contenu a été corrigé
+            # VÃ©rifier que le contenu a Ã©tÃ© corrigÃ©
             $correctedContent = Get-Content -Path $testScriptPath -Raw
             $correctedContent | Should -Match '\$null -eq \$value'
             $correctedContent | Should -Not -Match '\$value -eq \$null'
         }
 
-        It "Devrait analyser sans corriger si Fix n'est pas spécifié" {
-            # Créer une copie du script pour le test
+        It "Devrait analyser sans corriger si Fix n'est pas spÃ©cifiÃ©" {
+            # CrÃ©er une copie du script pour le test
             $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScriptNoFix.ps1"
             Copy-Item -Path $nullComparisonPath -Destination $testScriptPath -Force
 
-            # Exécuter la fonction principale sans Fix
+            # ExÃ©cuter la fonction principale sans Fix
             $results = Repair-PSScriptAnalyzerIssues -ScriptPath $testScriptPath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Path | Should -Be $testScriptPath
             $results.Fixed | Should -BeFalse
 
-            # Vérifier que le contenu n'a pas été corrigé
+            # VÃ©rifier que le contenu n'a pas Ã©tÃ© corrigÃ©
             $content = Get-Content -Path $testScriptPath -Raw
             $content | Should -Match '\$value -eq \$null'
             $content | Should -Not -Match '\$null -eq \$value'
         }
 
-        It "Devrait créer une sauvegarde si CreateBackup est spécifié" {
-            # Créer une copie du script pour le test
+        It "Devrait crÃ©er une sauvegarde si CreateBackup est spÃ©cifiÃ©" {
+            # CrÃ©er une copie du script pour le test
             $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScriptWithBackup.ps1"
             Copy-Item -Path $nullComparisonPath -Destination $testScriptPath -Force
 
-            # Exécuter la fonction principale avec CreateBackup
+            # ExÃ©cuter la fonction principale avec CreateBackup
             $results = Repair-PSScriptAnalyzerIssues -ScriptPath $testScriptPath -Fix -CreateBackup
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Fixed | Should -BeTrue
 
-            # Vérifier que la sauvegarde a été créée
+            # VÃ©rifier que la sauvegarde a Ã©tÃ© crÃ©Ã©e
             $backupPath = "$testScriptPath.bak"
             Test-Path -Path $backupPath | Should -BeTrue
 
-            # Vérifier que le contenu de la sauvegarde est l'original
+            # VÃ©rifier que le contenu de la sauvegarde est l'original
             $backupContent = Get-Content -Path $backupPath -Raw
             $backupContent | Should -Match '\$value -eq \$null'
             $backupContent | Should -Not -Match '\$null -eq \$value'
@@ -264,5 +264,5 @@ function Test-AutomaticVariable {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

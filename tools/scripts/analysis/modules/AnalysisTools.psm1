@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module fournissant des fonctions pour interagir avec différents outils d'analyse.
+    Module fournissant des fonctions pour interagir avec diffÃ©rents outils d'analyse.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour exécuter des analyses avec différents outils
-    comme PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc. et convertir leurs résultats
-    vers un format unifié.
+    Ce module fournit des fonctions pour exÃ©cuter des analyses avec diffÃ©rents outils
+    comme PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc. et convertir leurs rÃ©sultats
+    vers un format unifiÃ©.
 
 .NOTES
     Version:        1.0
@@ -22,7 +22,7 @@ if (Test-Path -Path $modulePath) {
     throw "Module UnifiedResultsFormat.psm1 introuvable."
 }
 
-# Fonction pour vérifier si un outil est disponible
+# Fonction pour vÃ©rifier si un outil est disponible
 function Test-AnalysisTool {
     [CmdletBinding()]
     param (
@@ -68,7 +68,7 @@ function Test-AnalysisTool {
     }
 }
 
-# Fonction pour exécuter PSScriptAnalyzer
+# Fonction pour exÃ©cuter PSScriptAnalyzer
 function Invoke-PSScriptAnalyzerTool {
     [CmdletBinding()]
     param (
@@ -92,7 +92,7 @@ function Invoke-PSScriptAnalyzerTool {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si PSScriptAnalyzer est disponible
+    # VÃ©rifier si PSScriptAnalyzer est disponible
     if (-not (Test-AnalysisTool -ToolName "PSScriptAnalyzer")) {
         Write-Error "PSScriptAnalyzer n'est pas disponible. Installez-le avec 'Install-Module -Name PSScriptAnalyzer'."
         return $null
@@ -101,7 +101,7 @@ function Invoke-PSScriptAnalyzerTool {
     # Importer le module PSScriptAnalyzer
     Import-Module -Name PSScriptAnalyzer -Force
 
-    # Préparer les paramètres pour Invoke-ScriptAnalyzer
+    # PrÃ©parer les paramÃ¨tres pour Invoke-ScriptAnalyzer
     $params = @{
         Path = $FilePath
     }
@@ -122,23 +122,23 @@ function Invoke-PSScriptAnalyzerTool {
         $params["Recurse"] = $true
     }
 
-    # Exécuter PSScriptAnalyzer
+    # ExÃ©cuter PSScriptAnalyzer
     try {
         $results = Invoke-ScriptAnalyzer @params
 
-        # Convertir les résultats vers le format unifié si demandé
+        # Convertir les rÃ©sultats vers le format unifiÃ© si demandÃ©
         if ($ReturnUnifiedFormat) {
             return ConvertFrom-PSScriptAnalyzerResult -Results $results
         } else {
             return $results
         }
     } catch {
-        Write-Error "Erreur lors de l'exécution de PSScriptAnalyzer: $_"
+        Write-Error "Erreur lors de l'exÃ©cution de PSScriptAnalyzer: $_"
         return $null
     }
 }
 
-# Fonction pour exécuter ESLint
+# Fonction pour exÃ©cuter ESLint
 function Invoke-ESLintTool {
     [CmdletBinding()]
     param (
@@ -155,13 +155,13 @@ function Invoke-ESLintTool {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si ESLint est disponible
+    # VÃ©rifier si ESLint est disponible
     if (-not (Test-AnalysisTool -ToolName "ESLint")) {
         Write-Error "ESLint n'est pas disponible. Installez-le avec 'npm install -g eslint'."
         return $null
     }
 
-    # Préparer la commande ESLint
+    # PrÃ©parer la commande ESLint
     $eslintCommand = "eslint"
     $eslintArgs = @("--format", "json")
 
@@ -176,33 +176,33 @@ function Invoke-ESLintTool {
 
     $eslintArgs += $FilePath
 
-    # Exécuter ESLint
+    # ExÃ©cuter ESLint
     try {
         $output = & $eslintCommand $eslintArgs 2>&1
 
-        # Vérifier si l'exécution a réussi
+        # VÃ©rifier si l'exÃ©cution a rÃ©ussi
         if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 1) {
-            # ESLint retourne 1 s'il trouve des problèmes, ce qui est normal
-            Write-Error "Erreur lors de l'exécution d'ESLint (code $LASTEXITCODE): $output"
+            # ESLint retourne 1 s'il trouve des problÃ¨mes, ce qui est normal
+            Write-Error "Erreur lors de l'exÃ©cution d'ESLint (code $LASTEXITCODE): $output"
             return $null
         }
 
         # Convertir la sortie JSON en objet PowerShell
         $results = $output | ConvertFrom-Json
 
-        # Convertir les résultats vers le format unifié si demandé
+        # Convertir les rÃ©sultats vers le format unifiÃ© si demandÃ©
         if ($ReturnUnifiedFormat) {
             return ConvertFrom-ESLintResult -Results $results
         } else {
             return $results
         }
     } catch {
-        Write-Error "Erreur lors de l'exécution d'ESLint: $_"
+        Write-Error "Erreur lors de l'exÃ©cution d'ESLint: $_"
         return $null
     }
 }
 
-# Fonction pour exécuter Pylint
+# Fonction pour exÃ©cuter Pylint
 function Invoke-PylintTool {
     [CmdletBinding()]
     param (
@@ -222,13 +222,13 @@ function Invoke-PylintTool {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si Pylint est disponible
+    # VÃ©rifier si Pylint est disponible
     if (-not (Test-AnalysisTool -ToolName "Pylint")) {
         Write-Error "Pylint n'est pas disponible. Installez-le avec 'pip install pylint'."
         return $null
     }
 
-    # Préparer la commande Pylint
+    # PrÃ©parer la commande Pylint
     $pylintCommand = "pylint"
     $pylintArgs = @("--output-format=text")
 
@@ -246,33 +246,33 @@ function Invoke-PylintTool {
 
     $pylintArgs += $FilePath
 
-    # Exécuter Pylint
+    # ExÃ©cuter Pylint
     try {
         $output = & $pylintCommand $pylintArgs 2>&1
 
-        # Pylint retourne différents codes selon le nombre d'erreurs trouvées
+        # Pylint retourne diffÃ©rents codes selon le nombre d'erreurs trouvÃ©es
         # 0 = pas d'erreur, 1-15 = erreurs, 16 = erreur fatale, 32 = erreur d'utilisation
         if ($LASTEXITCODE -gt 15) {
-            Write-Error "Erreur lors de l'exécution de Pylint (code $LASTEXITCODE): $output"
+            Write-Error "Erreur lors de l'exÃ©cution de Pylint (code $LASTEXITCODE): $output"
             return $null
         }
 
         # Filtrer les lignes de sortie pour ne garder que les messages d'erreur
         $results = $output | Where-Object { $_ -match '.*?:\d+:\d+: \[.*?\]' }
 
-        # Convertir les résultats vers le format unifié si demandé
+        # Convertir les rÃ©sultats vers le format unifiÃ© si demandÃ©
         if ($ReturnUnifiedFormat) {
             return ConvertFrom-PylintResult -Results $results
         } else {
             return $results
         }
     } catch {
-        Write-Error "Erreur lors de l'exécution de Pylint: $_"
+        Write-Error "Erreur lors de l'exÃ©cution de Pylint: $_"
         return $null
     }
 }
 
-# Fonction pour exécuter SonarQube
+# Fonction pour exÃ©cuter SonarQube
 function Invoke-SonarQubeTool {
     [CmdletBinding()]
     param (
@@ -298,13 +298,13 @@ function Invoke-SonarQubeTool {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si SonarQube Scanner est disponible
+    # VÃ©rifier si SonarQube Scanner est disponible
     if (-not (Test-AnalysisTool -ToolName "SonarQube")) {
         Write-Error "SonarQube Scanner n'est pas disponible. Installez-le et ajoutez-le au PATH."
         return $null
     }
 
-    # Préparer la commande SonarQube Scanner
+    # PrÃ©parer la commande SonarQube Scanner
     $sonarScannerCommand = "sonar-scanner"
     $sonarScannerArgs = @(
         "-Dsonar.projectKey=$ProjectKey",
@@ -318,16 +318,16 @@ function Invoke-SonarQubeTool {
         $sonarScannerArgs += "-Dsonar.login=$Token"
     }
 
-    # Exécuter SonarQube Scanner
+    # ExÃ©cuter SonarQube Scanner
     try {
         $output = & $sonarScannerCommand $sonarScannerArgs 2>&1
 
         if ($LASTEXITCODE -ne 0) {
-            Write-Error "Erreur lors de l'exécution de SonarQube Scanner (code $LASTEXITCODE): $output"
+            Write-Error "Erreur lors de l'exÃ©cution de SonarQube Scanner (code $LASTEXITCODE): $output"
             return $null
         }
 
-        # Récupérer les résultats de l'analyse depuis l'API SonarQube
+        # RÃ©cupÃ©rer les rÃ©sultats de l'analyse depuis l'API SonarQube
         $apiUrl = "$SonarQubeUrl/api/issues/search?projectKeys=$ProjectKey&resolved=false"
         $headers = @{}
 
@@ -338,19 +338,19 @@ function Invoke-SonarQubeTool {
 
         $response = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Get
 
-        # Convertir les résultats vers le format unifié si demandé
+        # Convertir les rÃ©sultats vers le format unifiÃ© si demandÃ©
         if ($ReturnUnifiedFormat) {
             return ConvertFrom-SonarQubeResult -Results $response
         } else {
             return $response
         }
     } catch {
-        Write-Error "Erreur lors de l'exécution de SonarQube Scanner ou de la récupération des résultats: $_"
+        Write-Error "Erreur lors de l'exÃ©cution de SonarQube Scanner ou de la rÃ©cupÃ©ration des rÃ©sultats: $_"
         return $null
     }
 }
 
-# Fonction pour analyser un fichier avec l'outil approprié en fonction de son extension
+# Fonction pour analyser un fichier avec l'outil appropriÃ© en fonction de son extension
 function Invoke-FileAnalysis {
     [CmdletBinding()]
     param (
@@ -368,13 +368,13 @@ function Invoke-FileAnalysis {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
     }
 
-    # Déterminer l'outil à utiliser en fonction de l'extension du fichier si Auto
+    # DÃ©terminer l'outil Ã  utiliser en fonction de l'extension du fichier si Auto
     if ($Tool -eq "Auto") {
         $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
@@ -389,13 +389,13 @@ function Invoke-FileAnalysis {
                 $Tool = "Pylint"
             }
             default {
-                Write-Warning "Extension de fichier '$extension' non reconnue. Utilisation de PSScriptAnalyzer par défaut."
+                Write-Warning "Extension de fichier '$extension' non reconnue. Utilisation de PSScriptAnalyzer par dÃ©faut."
                 $Tool = "PSScriptAnalyzer"
             }
         }
     }
 
-    # Exécuter l'outil approprié
+    # ExÃ©cuter l'outil appropriÃ©
     switch ($Tool) {
         "PSScriptAnalyzer" {
             $params = @{
@@ -403,7 +403,7 @@ function Invoke-FileAnalysis {
                 ReturnUnifiedFormat = $ReturnUnifiedFormat
             }
 
-            # Ajouter les paramètres spécifiques à PSScriptAnalyzer
+            # Ajouter les paramÃ¨tres spÃ©cifiques Ã  PSScriptAnalyzer
             foreach ($key in $ToolParameters.Keys) {
                 if ($key -in @("IncludeRule", "ExcludeRule", "Severity", "Recurse")) {
                     $params[$key] = $ToolParameters[$key]
@@ -418,7 +418,7 @@ function Invoke-FileAnalysis {
                 ReturnUnifiedFormat = $ReturnUnifiedFormat
             }
 
-            # Ajouter les paramètres spécifiques à ESLint
+            # Ajouter les paramÃ¨tres spÃ©cifiques Ã  ESLint
             foreach ($key in $ToolParameters.Keys) {
                 if ($key -in @("ConfigFile", "Fix")) {
                     $params[$key] = $ToolParameters[$key]
@@ -433,7 +433,7 @@ function Invoke-FileAnalysis {
                 ReturnUnifiedFormat = $ReturnUnifiedFormat
             }
 
-            # Ajouter les paramètres spécifiques à Pylint
+            # Ajouter les paramÃ¨tres spÃ©cifiques Ã  Pylint
             foreach ($key in $ToolParameters.Keys) {
                 if ($key -in @("ConfigFile", "DisableRules", "EnableRules")) {
                     $params[$key] = $ToolParameters[$key]
@@ -449,7 +449,7 @@ function Invoke-FileAnalysis {
     }
 }
 
-# Fonction pour analyser un répertoire avec les outils appropriés
+# Fonction pour analyser un rÃ©pertoire avec les outils appropriÃ©s
 function Invoke-DirectoryAnalysis {
     [CmdletBinding()]
     param (
@@ -472,13 +472,13 @@ function Invoke-DirectoryAnalysis {
         [switch]$ReturnUnifiedFormat = $true
     )
 
-    # Vérifier si le répertoire existe
+    # VÃ©rifier si le rÃ©pertoire existe
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
-        Write-Error "Le répertoire '$DirectoryPath' n'existe pas."
+        Write-Error "Le rÃ©pertoire '$DirectoryPath' n'existe pas."
         return $null
     }
 
-    # Récupérer tous les fichiers à analyser
+    # RÃ©cupÃ©rer tous les fichiers Ã  analyser
     $getChildItemParams = @{
         Path    = $DirectoryPath
         Include = $Include

@@ -1,5 +1,5 @@
-# Module de classification pour le Script Manager
-# Ce module classe les scripts selon des règles définies
+﻿# Module de classification pour le Script Manager
+# Ce module classe les scripts selon des rÃ¨gles dÃ©finies
 # Author: Script Manager
 # Version: 1.0
 # Tags: classification, scripts, organization
@@ -7,13 +7,13 @@
 function Get-ScriptClassification {
     <#
     .SYNOPSIS
-        Classifie un script selon les règles définies
+        Classifie un script selon les rÃ¨gles dÃ©finies
     .DESCRIPTION
-        Analyse un script et détermine sa catégorie et sa sous-catégorie selon les règles
+        Analyse un script et dÃ©termine sa catÃ©gorie et sa sous-catÃ©gorie selon les rÃ¨gles
     .PARAMETER Script
-        Objet script à classifier
+        Objet script Ã  classifier
     .PARAMETER Rules
-        Règles de classification
+        RÃ¨gles de classification
     .EXAMPLE
         Get-ScriptClassification -Script $script -Rules $rules
     #>
@@ -34,7 +34,7 @@ function Get-ScriptClassification {
         MatchedRules = @()
     }
     
-    # Trouver les règles applicables au type de script
+    # Trouver les rÃ¨gles applicables au type de script
     $ApplicableRules = @()
     foreach ($Rule in $Rules.rules) {
         foreach ($Pattern in $Rule.patterns) {
@@ -55,7 +55,7 @@ function Get-ScriptClassification {
         }
     }
     
-    # Si aucune règle n'est applicable, retourner la classification par défaut
+    # Si aucune rÃ¨gle n'est applicable, retourner la classification par dÃ©faut
     if ($ApplicableRules.Count -eq 0) {
         return $Classification
     }
@@ -63,7 +63,7 @@ function Get-ScriptClassification {
     # Lire le contenu du script
     $Content = Get-Content -Path $Script.Path -Raw -ErrorAction SilentlyContinue
     
-    # Évaluer chaque règle applicable
+    # Ã‰valuer chaque rÃ¨gle applicable
     $CategoryScores = @{}
     $SubCategoryScores = @{}
     $MatchedRules = @()
@@ -73,7 +73,7 @@ function Get-ScriptClassification {
             $IsMatch = $false
             $MatchScore = 0
             
-            # Évaluer la condition
+            # Ã‰valuer la condition
             if ($Condition.field -eq "content" -and $Content) {
                 if ($Condition.type -eq "regex") {
                     $Matches = [regex]::Matches($Content, $Condition.pattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
@@ -101,27 +101,27 @@ function Get-ScriptClassification {
                 }
             }
             
-            # Si la condition est remplie, ajouter le score à la catégorie correspondante
+            # Si la condition est remplie, ajouter le score Ã  la catÃ©gorie correspondante
             if ($IsMatch) {
-                # Extraire la catégorie et la sous-catégorie de la destination
+                # Extraire la catÃ©gorie et la sous-catÃ©gorie de la destination
                 $DestinationParts = $Condition.destination -split "/"
                 $Category = $DestinationParts[1]  # scripts/category/subcategory
                 $SubCategory = if ($DestinationParts.Count -gt 2) { $DestinationParts[2] } else { "General" }
                 
-                # Incrémenter le score de la catégorie
+                # IncrÃ©menter le score de la catÃ©gorie
                 if (-not $CategoryScores.ContainsKey($Category)) {
                     $CategoryScores[$Category] = 0
                 }
                 $CategoryScores[$Category] += $MatchScore
                 
-                # Incrémenter le score de la sous-catégorie
+                # IncrÃ©menter le score de la sous-catÃ©gorie
                 $SubCategoryKey = "$Category/$SubCategory"
                 if (-not $SubCategoryScores.ContainsKey($SubCategoryKey)) {
                     $SubCategoryScores[$SubCategoryKey] = 0
                 }
                 $SubCategoryScores[$SubCategoryKey] += $MatchScore
                 
-                # Ajouter la règle aux règles correspondantes
+                # Ajouter la rÃ¨gle aux rÃ¨gles correspondantes
                 $MatchedRules += [PSCustomObject]@{
                     RuleName = $Rule.name
                     Condition = $Condition.field
@@ -133,14 +133,14 @@ function Get-ScriptClassification {
         }
     }
     
-    # Déterminer la catégorie avec le score le plus élevé
+    # DÃ©terminer la catÃ©gorie avec le score le plus Ã©levÃ©
     $BestCategory = $CategoryScores.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 1
     
     if ($BestCategory) {
         $Classification.Category = $BestCategory.Name
         $Classification.Score = $BestCategory.Value
         
-        # Déterminer la sous-catégorie avec le score le plus élevé pour cette catégorie
+        # DÃ©terminer la sous-catÃ©gorie avec le score le plus Ã©levÃ© pour cette catÃ©gorie
         $BestSubCategory = $SubCategoryScores.GetEnumerator() | 
             Where-Object { $_.Name -like "$($BestCategory.Name)/*" } | 
             Sort-Object -Property Value -Descending | 
@@ -159,11 +159,11 @@ function Get-ScriptClassification {
 function Get-TargetPath {
     <#
     .SYNOPSIS
-        Détermine le chemin cible pour un script
+        DÃ©termine le chemin cible pour un script
     .DESCRIPTION
         Calcule le chemin cible pour un script en fonction de sa classification
     .PARAMETER Script
-        Objet script à déplacer
+        Objet script Ã  dÃ©placer
     .PARAMETER Classification
         Classification du script
     .EXAMPLE
@@ -178,14 +178,14 @@ function Get-TargetPath {
         [PSCustomObject]$Classification
     )
     
-    # Déterminer le dossier cible en fonction de la classification
+    # DÃ©terminer le dossier cible en fonction de la classification
     $Category = $Classification.Category
     $SubCategory = $Classification.SubCategory
     
     # Construire le chemin cible
     $TargetFolder = "scripts"
     
-    # Ajouter le dossier spécifique au type de script si nécessaire
+    # Ajouter le dossier spÃ©cifique au type de script si nÃ©cessaire
     $TypeFolder = switch ($Script.Type) {
         "PowerShell" { "" }
         "Python" { "python/" }

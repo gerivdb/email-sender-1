@@ -1,39 +1,39 @@
-<#
+﻿<#
 .SYNOPSIS
-    Ajoute la gestion d'erreurs à plusieurs scripts PowerShell.
+    Ajoute la gestion d'erreurs Ã  plusieurs scripts PowerShell.
 
 .DESCRIPTION
-    Ce script ajoute automatiquement des blocs try/catch à plusieurs scripts PowerShell.
+    Ce script ajoute automatiquement des blocs try/catch Ã  plusieurs scripts PowerShell.
     Il utilise le module ErrorHandling pour ajouter la gestion d'erreurs.
 
 .PARAMETER ScriptPath
-    Chemin du répertoire contenant les scripts à traiter. Par défaut, utilise le répertoire courant.
+    Chemin du rÃ©pertoire contenant les scripts Ã  traiter. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER Filter
-    Filtre pour sélectionner les scripts à traiter. Par défaut, traite tous les fichiers .ps1.
+    Filtre pour sÃ©lectionner les scripts Ã  traiter. Par dÃ©faut, traite tous les fichiers .ps1.
 
 .PARAMETER Recurse
-    Si spécifié, traite également les sous-répertoires.
+    Si spÃ©cifiÃ©, traite Ã©galement les sous-rÃ©pertoires.
 
 .PARAMETER BackupFiles
-    Si spécifié, crée une sauvegarde des fichiers avant de les modifier.
+    Si spÃ©cifiÃ©, crÃ©e une sauvegarde des fichiers avant de les modifier.
 
 .PARAMETER Force
-    Si spécifié, remplace les blocs try/catch existants.
+    Si spÃ©cifiÃ©, remplace les blocs try/catch existants.
 
 .PARAMETER LogPath
-    Chemin où enregistrer les journaux. Par défaut, utilise le répertoire temporaire.
+    Chemin oÃ¹ enregistrer les journaux. Par dÃ©faut, utilise le rÃ©pertoire temporaire.
 
 .EXAMPLE
     .\Add-ErrorHandlingToScripts.ps1 -ScriptPath "D:\Projets\Scripts" -Recurse -BackupFiles
-    Ajoute la gestion d'erreurs à tous les scripts PowerShell dans le répertoire spécifié et ses sous-répertoires,
-    en créant des sauvegardes des fichiers avant de les modifier.
+    Ajoute la gestion d'erreurs Ã  tous les scripts PowerShell dans le rÃ©pertoire spÃ©cifiÃ© et ses sous-rÃ©pertoires,
+    en crÃ©ant des sauvegardes des fichiers avant de les modifier.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      Module ErrorHandling
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      Module ErrorHandling
 #>
 
 [CmdletBinding()]
@@ -57,7 +57,7 @@ param (
 # Importer les fonctions de gestion d'erreurs
 $errorHandlingScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "SimpleErrorHandling.ps1"
 if (-not (Test-Path -Path $errorHandlingScriptPath)) {
-    Write-Error "Script de gestion d'erreurs non trouvé: $errorHandlingScriptPath"
+    Write-Error "Script de gestion d'erreurs non trouvÃ©: $errorHandlingScriptPath"
     exit 1
 }
 . $errorHandlingScriptPath
@@ -75,17 +75,17 @@ function Start-ScriptProcessing {
     try {
         Write-Host "Traitement du script: $ScriptPath"
 
-        # Vérifier si le script est valide
+        # VÃ©rifier si le script est valide
         Get-Content -Path $ScriptPath -Raw -ErrorAction Stop | Out-Null
 
         # Ajouter des blocs try/catch
         $result = Add-TryCatchBlock -ScriptPath $ScriptPath -BackupFile:$BackupFiles
 
         if ($result) {
-            Write-Host "  Blocs try/catch ajoutés avec succès" -ForegroundColor Green
+            Write-Host "  Blocs try/catch ajoutÃ©s avec succÃ¨s" -ForegroundColor Green
         }
         else {
-            Write-Host "  Le script contient déjà des blocs try/catch" -ForegroundColor Yellow
+            Write-Host "  Le script contient dÃ©jÃ  des blocs try/catch" -ForegroundColor Yellow
         }
 
         return $true
@@ -100,14 +100,14 @@ function Start-ScriptProcessing {
 # Fonction principale
 function Main {
     Write-Host "Ajout de la gestion d'erreurs aux scripts PowerShell"
-    Write-Host "Répertoire: $ScriptPath"
+    Write-Host "RÃ©pertoire: $ScriptPath"
     Write-Host "Filtre: $Filter"
-    Write-Host "Récursif: $Recurse"
+    Write-Host "RÃ©cursif: $Recurse"
     Write-Host "Sauvegarde: $BackupFiles"
     Write-Host "Journaux: $LogPath"
     Write-Host
 
-    # Récupérer les scripts à traiter
+    # RÃ©cupÃ©rer les scripts Ã  traiter
     $scriptParams = @{
         Path = $ScriptPath
         Filter = $Filter
@@ -121,11 +121,11 @@ function Main {
     $scripts = Get-ChildItem @scriptParams
 
     if ($scripts.Count -eq 0) {
-        Write-Warning "Aucun script trouvé avec les critères spécifiés."
+        Write-Warning "Aucun script trouvÃ© avec les critÃ¨res spÃ©cifiÃ©s."
         return
     }
 
-    Write-Host "Nombre de scripts à traiter: $($scripts.Count)"
+    Write-Host "Nombre de scripts Ã  traiter: $($scripts.Count)"
     Write-Host
 
     # Traiter chaque script
@@ -133,9 +133,9 @@ function Main {
     $errorCount = 0
 
     foreach ($script in $scripts) {
-        # Ignorer le script de gestion d'erreurs lui-même
+        # Ignorer le script de gestion d'erreurs lui-mÃªme
         if ($script.FullName -eq $errorHandlingScriptPath -or $script.FullName -eq $PSCommandPath) {
-            Write-Host "  Ignoré: $($script.FullName)" -ForegroundColor Yellow
+            Write-Host "  IgnorÃ©: $($script.FullName)" -ForegroundColor Yellow
             continue
         }
 
@@ -150,14 +150,14 @@ function Main {
     }
 
     Write-Host
-    Write-Host "Traitement terminé"
-    Write-Host "Scripts traités avec succès: $successCount"
+    Write-Host "Traitement terminÃ©"
+    Write-Host "Scripts traitÃ©s avec succÃ¨s: $successCount"
     Write-Host "Scripts avec erreurs: $errorCount"
 
     # Afficher le chemin des journaux
     Write-Host
-    Write-Host "Les erreurs sont journalisées dans: $LogPath"
+    Write-Host "Les erreurs sont journalisÃ©es dans: $LogPath"
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

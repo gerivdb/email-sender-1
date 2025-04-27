@@ -1,6 +1,6 @@
-# manager
+﻿# manager
 
-Système de gestion des scripts
+SystÃ¨me de gestion des scripts
 
 ## Sous-dossiers
 
@@ -10,7 +10,7 @@ Configuration
 
 ### data
 
-Données générées
+DonnÃ©es gÃ©nÃ©rÃ©es
 
 ### modules
 

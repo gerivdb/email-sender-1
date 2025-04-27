@@ -1,74 +1,74 @@
-# Mode REVIEW
+﻿# Mode REVIEW
 
 ## Description
-Le mode REVIEW est un mode opérationnel qui se concentre sur l'évaluation et l'amélioration de la qualité du code, de la documentation et des tests.
+Le mode REVIEW est un mode opÃ©rationnel qui se concentre sur l'Ã©valuation et l'amÃ©lioration de la qualitÃ© du code, de la documentation et des tests.
 
 ## Objectif
-L'objectif principal du mode REVIEW est d'assurer que le code respecte les standards de qualité, est bien documenté et testé, et suit les bonnes pratiques.
+L'objectif principal du mode REVIEW est d'assurer que le code respecte les standards de qualitÃ©, est bien documentÃ© et testÃ©, et suit les bonnes pratiques.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 - Analyse statique de code
-- Vérification des standards de codage
-- Évaluation de la documentation
-- Vérification de la couverture des tests
-- Détection des problèmes potentiels
-- Génération de rapports de revue
+- VÃ©rification des standards de codage
+- Ã‰valuation de la documentation
+- VÃ©rification de la couverture des tests
+- DÃ©tection des problÃ¨mes potentiels
+- GÃ©nÃ©ration de rapports de revue
 
 ## Utilisation
 
 ```powershell
-# Analyser un script spécifique
+# Analyser un script spÃ©cifique
 .\review-mode.ps1 -ScriptPath "tools/scripts/roadmap/parser.ps1"
 
 # Analyser un dossier complet
 .\review-mode.ps1 -FolderPath "tools/scripts/roadmap"
 
-# Générer un rapport de revue
+# GÃ©nÃ©rer un rapport de revue
 .\review-mode.ps1 -FolderPath "tools/scripts/roadmap" -GenerateReport
 ```
 
-## Critères de revue
-Le mode REVIEW évalue le code selon plusieurs critères :
-- **Qualité du code** : Complexité, lisibilité, maintenabilité
+## CritÃ¨res de revue
+Le mode REVIEW Ã©value le code selon plusieurs critÃ¨res :
+- **QualitÃ© du code** : ComplexitÃ©, lisibilitÃ©, maintenabilitÃ©
 - **Standards de codage** : Respect des conventions
 - **Documentation** : Commentaires, documentation API
-- **Tests** : Couverture, qualité des tests
-- **Sécurité** : Vulnérabilités potentielles
-- **Performance** : Problèmes de performance évidents
+- **Tests** : Couverture, qualitÃ© des tests
+- **SÃ©curitÃ©** : VulnÃ©rabilitÃ©s potentielles
+- **Performance** : ProblÃ¨mes de performance Ã©vidents
 
-## Intégration avec d'autres modes
-Le mode REVIEW peut être utilisé en combinaison avec d'autres modes :
-- **DEV-R** : Pour valider le code avant de marquer une tâche comme complète
-- **OPTI** : Pour identifier les opportunités d'optimisation
-- **CHECK** : Pour vérifier que le code respecte les standards avant de le valider
+## IntÃ©gration avec d'autres modes
+Le mode REVIEW peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
+- **DEV-R** : Pour valider le code avant de marquer une tÃ¢che comme complÃ¨te
+- **OPTI** : Pour identifier les opportunitÃ©s d'optimisation
+- **CHECK** : Pour vÃ©rifier que le code respecte les standards avant de le valider
 
-## Implémentation
-Le mode REVIEW est implémenté dans le script `review-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/review`.
+## ImplÃ©mentation
+Le mode REVIEW est implÃ©mentÃ© dans le script `review-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/review`.
 
 ## Exemple de rapport de revue
 ```
 Rapport de revue :
-- Fichiers analysés : 15
-- Problèmes critiques : 2
-- Problèmes majeurs : 5
-- Problèmes mineurs : 12
-- Score de qualité : 85/100
+- Fichiers analysÃ©s : 15
+- ProblÃ¨mes critiques : 2
+- ProblÃ¨mes majeurs : 5
+- ProblÃ¨mes mineurs : 12
+- Score de qualitÃ© : 85/100
 
-Problèmes critiques :
-- parser.ps1:42 - Vulnérabilité d'injection
-- parser.ps1:78 - Fuite de mémoire potentielle
+ProblÃ¨mes critiques :
+- parser.ps1:42 - VulnÃ©rabilitÃ© d'injection
+- parser.ps1:78 - Fuite de mÃ©moire potentielle
 
-Problèmes majeurs :
-- parser.ps1:120 - Complexité cyclomatique trop élevée (15)
+ProblÃ¨mes majeurs :
+- parser.ps1:120 - ComplexitÃ© cyclomatique trop Ã©levÃ©e (15)
 - parser.ps1:200 - Fonction trop longue (150 lignes)
 - ...
 ```
 
 ## Bonnes pratiques
-- Effectuer des revues régulières du code
-- Corriger les problèmes critiques immédiatement
-- Planifier la correction des problèmes majeurs
-- Documenter les décisions de conception
+- Effectuer des revues rÃ©guliÃ¨res du code
+- Corriger les problÃ¨mes critiques immÃ©diatement
+- Planifier la correction des problÃ¨mes majeurs
+- Documenter les dÃ©cisions de conception
 - Utiliser des outils d'analyse statique
 - Suivre les principes SOLID, DRY et KISS
-- Maintenir une couverture de tests élevée
+- Maintenir une couverture de tests Ã©levÃ©e

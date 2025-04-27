@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-Module.ps1
 #
 # Script to test the RoadmapParser module

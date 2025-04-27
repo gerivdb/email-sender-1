@@ -1,17 +1,17 @@
-# TestOmnibusOptimizer
+﻿# TestOmnibusOptimizer
 
-Ce module intègre TestOmnibus et le Système d'Optimisation Proactive pour créer une solution complète d'analyse, de test et d'optimisation des scripts PowerShell.
+Ce module intÃ¨gre TestOmnibus et le SystÃ¨me d'Optimisation Proactive pour crÃ©er une solution complÃ¨te d'analyse, de test et d'optimisation des scripts PowerShell.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Exécution optimisée de TestOmnibus** : Exécute TestOmnibus avec des paramètres optimisés en fonction des données d'utilisation réelle.
-- **Rapports combinés** : Génère des rapports qui combinent les résultats des tests et les données d'utilisation réelle.
-- **Suggestions d'optimisation** : Fournit des suggestions d'optimisation basées sur les résultats des tests et l'utilisation réelle.
+- **ExÃ©cution optimisÃ©e de TestOmnibus** : ExÃ©cute TestOmnibus avec des paramÃ¨tres optimisÃ©s en fonction des donnÃ©es d'utilisation rÃ©elle.
+- **Rapports combinÃ©s** : GÃ©nÃ¨re des rapports qui combinent les rÃ©sultats des tests et les donnÃ©es d'utilisation rÃ©elle.
+- **Suggestions d'optimisation** : Fournit des suggestions d'optimisation basÃ©es sur les rÃ©sultats des tests et l'utilisation rÃ©elle.
 
 ## Installation
 
-1. Assurez-vous que TestOmnibus et le Système d'Optimisation Proactive sont installés.
-2. Copiez le dossier `TestOmnibusOptimizer` dans votre répertoire de scripts PowerShell.
+1. Assurez-vous que TestOmnibus et le SystÃ¨me d'Optimisation Proactive sont installÃ©s.
+2. Copiez le dossier `TestOmnibusOptimizer` dans votre rÃ©pertoire de scripts PowerShell.
 3. Importez le module dans vos scripts :
 
 ```powershell
@@ -20,24 +20,24 @@ Import-Module "chemin\vers\TestOmnibusOptimizer\TestOmnibusOptimizer.psm1" -Forc
 
 ## Utilisation
 
-### Exécution optimisée de TestOmnibus
+### ExÃ©cution optimisÃ©e de TestOmnibus
 
 ```powershell
-# Exécuter TestOmnibus avec des paramètres optimisés
+# ExÃ©cuter TestOmnibus avec des paramÃ¨tres optimisÃ©s
 Invoke-OptimizedTestOmnibus -TestPath "C:\Tests" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports" -GenerateCombinedReport
 ```
 
-### Génération d'un rapport combiné
+### GÃ©nÃ©ration d'un rapport combinÃ©
 
 ```powershell
-# Générer un rapport combiné
+# GÃ©nÃ©rer un rapport combinÃ©
 New-CombinedReport -TestReportPath "C:\Reports\TestResults\report.html" -UsageStats $usageStats -OutputPath "C:\Reports\combined_report.html"
 ```
 
-### Génération de suggestions d'optimisation
+### GÃ©nÃ©ration de suggestions d'optimisation
 
 ```powershell
-# Générer des suggestions d'optimisation
+# GÃ©nÃ©rer des suggestions d'optimisation
 Get-CombinedOptimizationSuggestions -TestResultsPath "C:\Reports\TestResults\results.xml" -UsageDataPath "C:\UsageData\usage_data.xml" -OutputPath "C:\Reports\Suggestions"
 ```
 
@@ -45,19 +45,19 @@ Get-CombinedOptimizationSuggestions -TestResultsPath "C:\Reports\TestResults\res
 
 Voir le script `Example-Integration.ps1` pour un exemple complet d'utilisation du module.
 
-## Avantages de l'intégration
+## Avantages de l'intÃ©gration
 
-1. **Vision complète** : Obtenez une vision à 360° de vos scripts, tant du point de vue des tests que de l'utilisation réelle.
-2. **Optimisation ciblée** : Concentrez vos efforts d'optimisation sur les scripts qui sont à la fois problématiques en test et fréquemment utilisés en production.
+1. **Vision complÃ¨te** : Obtenez une vision Ã  360Â° de vos scripts, tant du point de vue des tests que de l'utilisation rÃ©elle.
+2. **Optimisation ciblÃ©e** : Concentrez vos efforts d'optimisation sur les scripts qui sont Ã  la fois problÃ©matiques en test et frÃ©quemment utilisÃ©s en production.
 3. **Meilleure allocation des ressources** : Allouez plus de ressources (threads, cache) aux scripts les plus critiques.
-4. **Détection précoce des problèmes** : Les problèmes détectés en test peuvent être corrélés avec les problèmes en production pour une résolution plus rapide.
-5. **Rapports plus riches** : Les rapports combinés fournissent plus de contexte et d'informations pour la prise de décision.
+4. **DÃ©tection prÃ©coce des problÃ¨mes** : Les problÃ¨mes dÃ©tectÃ©s en test peuvent Ãªtre corrÃ©lÃ©s avec les problÃ¨mes en production pour une rÃ©solution plus rapide.
+5. **Rapports plus riches** : Les rapports combinÃ©s fournissent plus de contexte et d'informations pour la prise de dÃ©cision.
 
-## Prérequis
+## PrÃ©requis
 
-- PowerShell 5.1 ou supérieur
+- PowerShell 5.1 ou supÃ©rieur
 - TestOmnibus
-- Système d'Optimisation Proactive (UsageMonitor)
+- SystÃ¨me d'Optimisation Proactive (UsageMonitor)
 
 ## Auteur
 

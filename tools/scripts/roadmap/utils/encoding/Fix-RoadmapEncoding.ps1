@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Corrige les problemes d'encodage dans un fichier Markdown.
 
@@ -40,18 +40,18 @@ try {
     
     # Definir les remplacements
     $replacements = @{
-        'fonctionnalitÃ©s' = 'fonctionnalites'
-        'ComplexitÃ©' = 'Complexite'
-        'estimÃ©' = 'estime'
-        'DÃ©pendances' = 'Dependances'
-        'SÃ©curitÃ©' = 'Securite'
-        'Ã©viter' = 'eviter'
-        'donnÃ©es' = 'donnees'
-        'Ã‰quipe' = 'Equipe'
-        'dÃ©veloppement' = 'developpement'
-        'approuvÃ©s' = 'approuves'
-        'Modules et fonctionnalitÃ©s' = 'Modules et fonctionnalites'
-        'Ã‰quipe de dÃ©veloppement' = 'Equipe de developpement'
+        'fonctionnalitÃƒÂ©s' = 'fonctionnalites'
+        'ComplexitÃƒÂ©' = 'Complexite'
+        'estimÃƒÂ©' = 'estime'
+        'DÃƒÂ©pendances' = 'Dependances'
+        'SÃƒÂ©curitÃƒÂ©' = 'Securite'
+        'ÃƒÂ©viter' = 'eviter'
+        'donnÃƒÂ©es' = 'donnees'
+        'Ãƒâ€°quipe' = 'Equipe'
+        'dÃƒÂ©veloppement' = 'developpement'
+        'approuvÃƒÂ©s' = 'approuves'
+        'Modules et fonctionnalitÃƒÂ©s' = 'Modules et fonctionnalites'
+        'Ãƒâ€°quipe de dÃƒÂ©veloppement' = 'Equipe de developpement'
     }
     
     # Appliquer les remplacements

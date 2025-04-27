@@ -1,4 +1,4 @@
-# Module de mock pour UsageMonitor
+﻿# Module de mock pour UsageMonitor
 # Ce module simule les fonctions du module UsageMonitor pour les tests
 
 # Variables globales du module
@@ -20,10 +20,10 @@ $script:UsageDatabase = [PSCustomObject]@{
         $baseDate = (Get-Date).AddDays(-30)
         $metrics = @()
 
-        # Générer des métriques différentes selon le script
+        # GÃ©nÃ©rer des mÃ©triques diffÃ©rentes selon le script
         switch ($ScriptPath) {
             "C:\Scripts\Test1.ps1" {
-                # Script avec amélioration de performance
+                # Script avec amÃ©lioration de performance
                 for ($i = 0; $i -lt 20; $i++) {
                     $date = $baseDate.AddDays($i)
                     $duration = if ($i -lt 10) { 2000 - ($i * 50) } else { 1500 - ($i * 25) }
@@ -46,11 +46,11 @@ $script:UsageDatabase = [PSCustomObject]@{
                 }
             }
             "C:\Scripts\Test2.ps1" {
-                # Script avec dégradation de performance
+                # Script avec dÃ©gradation de performance
                 for ($i = 0; $i -lt 20; $i++) {
                     $date = $baseDate.AddDays($i)
                     $duration = 1000 + ($i * 50)
-                    $success = $i % 5 -ne 0  # Échec tous les 5 jours
+                    $success = $i % 5 -ne 0  # Ã‰chec tous les 5 jours
 
                     $metrics += [PSCustomObject]@{
                         ScriptPath    = $ScriptPath
@@ -74,7 +74,7 @@ $script:UsageDatabase = [PSCustomObject]@{
                 for ($i = 0; $i -lt 30; $i++) {
                     $date = $baseDate.AddDays($i)
 
-                    # Plus d'exécutions pendant les heures de bureau (9h-17h)
+                    # Plus d'exÃ©cutions pendant les heures de bureau (9h-17h)
                     $executions = 1..3
                     if ($i % 7 -lt 5) {
                         # Jours de semaine
@@ -104,7 +104,7 @@ $script:UsageDatabase = [PSCustomObject]@{
                 }
             }
             default {
-                # Script par défaut
+                # Script par dÃ©faut
                 for ($i = 0; $i -lt 5; $i++) {
                     $date = $baseDate.AddDays($i)
 
@@ -215,7 +215,7 @@ function Initialize-UsageMonitor {
     )
 
     $script:IsInitialized = $true
-    Write-Verbose "UsageMonitor initialisé avec succès. Base de données: $DatabasePath"
+    Write-Verbose "UsageMonitor initialisÃ© avec succÃ¨s. Base de donnÃ©es: $DatabasePath"
 
     return $true
 }
@@ -271,13 +271,13 @@ function Get-MetricsForScript {
         [string]$ScriptPath
     )
 
-    # Simuler des métriques différentes selon le script
+    # Simuler des mÃ©triques diffÃ©rentes selon le script
     $baseDate = (Get-Date).AddDays(-30)
     $metrics = @()
 
     switch ($ScriptPath) {
         "C:\Scripts\Test1.ps1" {
-            # Script avec amélioration de performance
+            # Script avec amÃ©lioration de performance
             for ($i = 0; $i -lt 20; $i++) {
                 $date = $baseDate.AddDays($i)
                 $duration = if ($i -lt 10) { 2000 - ($i * 50) } else { 1500 - ($i * 25) }
@@ -300,11 +300,11 @@ function Get-MetricsForScript {
             }
         }
         "C:\Scripts\Test2.ps1" {
-            # Script avec dégradation de performance
+            # Script avec dÃ©gradation de performance
             for ($i = 0; $i -lt 20; $i++) {
                 $date = $baseDate.AddDays($i)
                 $duration = 1000 + ($i * 50)
-                $success = $i % 5 -ne 0  # Échec tous les 5 jours
+                $success = $i % 5 -ne 0  # Ã‰chec tous les 5 jours
 
                 $metrics += [PSCustomObject]@{
                     ScriptPath    = $ScriptPath
@@ -324,7 +324,7 @@ function Get-MetricsForScript {
             }
         }
         default {
-            # Script par défaut
+            # Script par dÃ©faut
             for ($i = 0; $i -lt 5; $i++) {
                 $date = $baseDate.AddDays($i)
 

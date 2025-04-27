@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions de parsing markdown.
 
@@ -12,7 +12,7 @@
     Creation Date:  2023-08-17
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
@@ -20,7 +20,7 @@ if (-not (Get-Module -Name Pester)) {
 # Importer le module de test
 $moduleTestPath = Join-Path -Path $PSScriptRoot -ChildPath "MarkdownParsingTest.psm1"
 
-# Créer le module de test s'il n'existe pas
+# CrÃ©er le module de test s'il n'existe pas
 if (-not (Test-Path -Path $moduleTestPath)) {
     $modulePath = (Split-Path -Parent $PSScriptRoot)
     $functionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownParsingFunctions.ps1"
@@ -32,7 +32,7 @@ if (-not (Test-Path -Path $moduleTestPath)) {
 # Charger le contenu du fichier
 `$content = Get-Content -Path `$functionsPath -Raw
 
-# Exécuter le contenu
+# ExÃ©cuter le contenu
 `$scriptBlock = [ScriptBlock]::Create(`$content)
 . `$scriptBlock
 
@@ -46,11 +46,11 @@ Import-Module $moduleTestPath -Force
 
 Describe "Markdown Parsing Functions" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "MarkdownParsingTests_$(Get-Random)"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier markdown UTF-8 sans BOM
+        # CrÃ©er un fichier markdown UTF-8 sans BOM
         $utf8Content = @"
 # Test Markdown File
 
@@ -71,17 +71,17 @@ This is a test markdown file with UTF-8 encoding without BOM.
         $utf8File = Join-Path -Path $testDir -ChildPath "utf8.md"
         $utf8Content | Out-File -FilePath $utf8File -Encoding utf8NoBOM
 
-        # Créer un fichier markdown UTF-8 avec BOM
+        # CrÃ©er un fichier markdown UTF-8 avec BOM
         $utf8BomFile = Join-Path -Path $testDir -ChildPath "utf8-bom.md"
-        # Écrire directement avec BOM
+        # Ã‰crire directement avec BOM
         $utf8Bom = New-Object System.Text.UTF8Encoding $true
         [System.IO.File]::WriteAllText($utf8BomFile, $utf8Content, $utf8Bom)
 
-        # Créer un fichier markdown UTF-16 LE
+        # CrÃ©er un fichier markdown UTF-16 LE
         $utf16File = Join-Path -Path $testDir -ChildPath "utf16.md"
         $utf8Content | Out-File -FilePath $utf16File -Encoding unicode
 
-        # Créer un fichier markdown avec YAML frontmatter
+        # CrÃ©er un fichier markdown avec YAML frontmatter
         $frontMatterContent = @"
 ---
 title: Test Markdown with Frontmatter
@@ -95,13 +95,13 @@ tags: [markdown, test, frontmatter]
 This file has YAML frontmatter at the beginning.
 "@
         $frontMatterFile = Join-Path -Path $testDir -ChildPath "frontmatter.md"
-        # Écrire directement avec BOM
+        # Ã‰crire directement avec BOM
         $utf8Bom = New-Object System.Text.UTF8Encoding $true
         [System.IO.File]::WriteAllText($frontMatterFile, $frontMatterContent, $utf8Bom)
     }
 
     AfterAll {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }

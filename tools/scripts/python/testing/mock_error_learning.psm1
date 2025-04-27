@@ -1,17 +1,17 @@
-function Update-ErrorDatabase {
+﻿function Update-ErrorDatabase {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [array]$ErrorEntries
     )
     
-    Write-Host "Mise à jour de la base de données d'erreurs avec $($ErrorEntries.Count) entrées..." -ForegroundColor Cyan
+    Write-Host "Mise Ã  jour de la base de donnÃ©es d'erreurs avec $($ErrorEntries.Count) entrÃ©es..." -ForegroundColor Cyan
     
     foreach ($entry in $ErrorEntries) {
         Write-Host "  Erreur: $($entry.ErrorType) - $($entry.ErrorMessage)" -ForegroundColor Yellow
         Write-Host "  Fichiers: $($entry.SourceFiles -join ', ')" -ForegroundColor Gray
-        Write-Host "  Première occurrence: $($entry.FirstSeen)" -ForegroundColor Gray
-        Write-Host "  Dernière occurrence: $($entry.LastSeen)" -ForegroundColor Gray
+        Write-Host "  PremiÃ¨re occurrence: $($entry.FirstSeen)" -ForegroundColor Gray
+        Write-Host "  DerniÃ¨re occurrence: $($entry.LastSeen)" -ForegroundColor Gray
         Write-Host "  Occurrences: $($entry.Occurrences)" -ForegroundColor Gray
         Write-Host "  Langage: $($entry.Language)" -ForegroundColor Gray
         Write-Host ""
@@ -43,7 +43,7 @@ function Get-ErrorCorrections {
             $suggestions += [PSCustomObject]@{
                 ErrorType = $ErrorType
                 ErrorMessage = $ErrorMessage
-                Suggestion = "Ajouter une vérification pour éviter la division par zéro: if denominator != 0: result = numerator / denominator"
+                Suggestion = "Ajouter une vÃ©rification pour Ã©viter la division par zÃ©ro: if denominator != 0: result = numerator / denominator"
                 Confidence = 95
             }
         }
@@ -51,7 +51,7 @@ function Get-ErrorCorrections {
             $suggestions += [PSCustomObject]@{
                 ErrorType = $ErrorType
                 ErrorMessage = $ErrorMessage
-                Suggestion = "Définir la variable avant de l'utiliser ou vérifier son existence avec try/except"
+                Suggestion = "DÃ©finir la variable avant de l'utiliser ou vÃ©rifier son existence avec try/except"
                 Confidence = 90
             }
         }
@@ -75,7 +75,7 @@ function Get-ErrorCorrections {
             $suggestions += [PSCustomObject]@{
                 ErrorType = $ErrorType
                 ErrorMessage = $ErrorMessage
-                Suggestion = "Vérifier la logique du test et s'assurer que les assertions sont correctes"
+                Suggestion = "VÃ©rifier la logique du test et s'assurer que les assertions sont correctes"
                 Confidence = 70
             }
         }

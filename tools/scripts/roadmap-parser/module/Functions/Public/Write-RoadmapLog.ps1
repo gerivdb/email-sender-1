@@ -1,65 +1,65 @@
-<#
+﻿<#
 .SYNOPSIS
-    Écrit un message dans le journal du module RoadmapParser.
+    Ã‰crit un message dans le journal du module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Write-RoadmapLog écrit un message dans le journal du module RoadmapParser.
-    Elle prend en charge différents niveaux de journalisation et destinations.
+    La fonction Write-RoadmapLog Ã©crit un message dans le journal du module RoadmapParser.
+    Elle prend en charge diffÃ©rents niveaux de journalisation et destinations.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
     Le niveau de journalisation du message. Valeurs possibles :
-    - Debug : Message de débogage
-    - Verbose : Message détaillé
+    - Debug : Message de dÃ©bogage
+    - Verbose : Message dÃ©taillÃ©
     - Information : Message d'information
     - Warning : Message d'avertissement
     - Error : Message d'erreur
     - Critical : Message critique
-    Par défaut, c'est "Information".
+    Par dÃ©faut, c'est "Information".
 
 .PARAMETER Source
     La source du message.
-    Par défaut, c'est "RoadmapParser".
+    Par dÃ©faut, c'est "RoadmapParser".
 
 .PARAMETER Exception
-    L'exception à inclure dans le message.
+    L'exception Ã  inclure dans le message.
 
 .PARAMETER NoNewLine
-    Indique si un saut de ligne doit être ajouté à la fin du message.
-    Par défaut, c'est $false.
+    Indique si un saut de ligne doit Ãªtre ajoutÃ© Ã  la fin du message.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER PassThru
-    Indique si le message doit être retourné après avoir été écrit dans le journal.
-    Par défaut, c'est $false.
+    Indique si le message doit Ãªtre retournÃ© aprÃ¨s avoir Ã©tÃ© Ã©crit dans le journal.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER Category
-    La catégorie du message. Permet de regrouper les messages par catégorie.
-    Par défaut : General.
+    La catÃ©gorie du message. Permet de regrouper les messages par catÃ©gorie.
+    Par dÃ©faut : General.
 
 .PARAMETER AdditionalInfo
-    Informations supplémentaires à inclure dans le message de journal.
+    Informations supplÃ©mentaires Ã  inclure dans le message de journal.
 
 .EXAMPLE
     Write-RoadmapLog -Message "Ceci est un message d'information"
-    Écrit un message d'information dans le journal.
+    Ã‰crit un message d'information dans le journal.
 
 .EXAMPLE
     Write-RoadmapLog -Message "Ceci est un message d'erreur" -Level Error
-    Écrit un message d'erreur dans le journal.
+    Ã‰crit un message d'erreur dans le journal.
 
 .EXAMPLE
     Write-RoadmapLog -Message "Ceci est un message d'avertissement" -Level Warning -Source "MonModule"
-    Écrit un message d'avertissement dans le journal avec une source personnalisée.
+    Ã‰crit un message d'avertissement dans le journal avec une source personnalisÃ©e.
 
 .OUTPUTS
-    [string] Le message formaté si PassThru est $true, sinon rien.
+    [string] Le message formatÃ© si PassThru est $true, sinon rien.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 2.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Write-RoadmapLog {
     [CmdletBinding()]
@@ -100,15 +100,15 @@ function Write-RoadmapLog {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Logging"
     $loggingFunctionsPath = Join-Path -Path $privatePath -ChildPath "LoggingFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $loggingFunctionsPath)) {
-        throw "Le fichier LoggingFunctions.ps1 est introuvable à l'emplacement : $loggingFunctionsPath"
+        throw "Le fichier LoggingFunctions.ps1 est introuvable Ã  l'emplacement : $loggingFunctionsPath"
     }
 
     # Importer les fonctions
     . $loggingFunctionsPath
 
-    # Ajouter les informations supplémentaires au message
+    # Ajouter les informations supplÃ©mentaires au message
     $fullMessage = $Message
 
     if ($Category -ne "General") {
@@ -116,13 +116,13 @@ function Write-RoadmapLog {
     }
 
     if ($AdditionalInfo -and $AdditionalInfo.Count -gt 0) {
-        $fullMessage += "`nInformations supplémentaires:"
+        $fullMessage += "`nInformations supplÃ©mentaires:"
         foreach ($key in $AdditionalInfo.Keys) {
             $fullMessage += "`n  - ${key}: $($AdditionalInfo[$key])"
         }
     }
 
-    # Construire les paramètres pour Write-Log
+    # Construire les paramÃ¨tres pour Write-Log
     $params = @{
         Message = $fullMessage
         Level   = $Level
@@ -141,6 +141,6 @@ function Write-RoadmapLog {
         $params['PassThru'] = $true
     }
 
-    # Écrire le message dans le journal
+    # Ã‰crire le message dans le journal
     return Write-Log @params
 }

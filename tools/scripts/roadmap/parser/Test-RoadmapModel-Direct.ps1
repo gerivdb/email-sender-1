@@ -1,26 +1,26 @@
-# Test-RoadmapModel-Direct.ps1
-# Script pour tester le modèle objet de la roadmap sans utiliser les scriptblocks
+﻿# Test-RoadmapModel-Direct.ps1
+# Script pour tester le modÃ¨le objet de la roadmap sans utiliser les scriptblocks
 
 # Importer le module RoadmapModel
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapModel.psm1"
 Import-Module $modulePath -Force
 
-# Créer un nouvel arbre de roadmap
-Write-Host "Création d'un nouvel arbre de roadmap..." -ForegroundColor Cyan
-$roadmap = New-RoadmapTree -Title "Roadmap de Test" -Description "Ceci est une roadmap de test pour valider le modèle objet."
+# CrÃ©er un nouvel arbre de roadmap
+Write-Host "CrÃ©ation d'un nouvel arbre de roadmap..." -ForegroundColor Cyan
+$roadmap = New-RoadmapTree -Title "Roadmap de Test" -Description "Ceci est une roadmap de test pour valider le modÃ¨le objet."
 
-# Créer quelques tâches
-Write-Host "Création des tâches..." -ForegroundColor Cyan
-$task1 = New-RoadmapTask -Id "1" -Title "Tâche 1" -Description "Description de la tâche 1"
-$task1_1 = New-RoadmapTask -Id "1.1" -Title "Tâche 1.1" -Description "Description de la tâche 1.1"
-$task1_2 = New-RoadmapTask -Id "1.2" -Title "Tâche 1.2" -Description "Description de la tâche 1.2"
-$task1_2_1 = New-RoadmapTask -Id "1.2.1" -Title "Tâche 1.2.1" -Description "Description de la tâche 1.2.1"
-$task1_2_2 = New-RoadmapTask -Id "1.2.2" -Title "Tâche 1.2.2" -Description "Description de la tâche 1.2.2" -Status ([TaskStatus]::Complete)
-$task2 = New-RoadmapTask -Id "2" -Title "Tâche 2" -Description "Description de la tâche 2"
-$task2_1 = New-RoadmapTask -Id "2.1" -Title "Tâche 2.1" -Description "Description de la tâche 2.1" -Status ([TaskStatus]::InProgress)
+# CrÃ©er quelques tÃ¢ches
+Write-Host "CrÃ©ation des tÃ¢ches..." -ForegroundColor Cyan
+$task1 = New-RoadmapTask -Id "1" -Title "TÃ¢che 1" -Description "Description de la tÃ¢che 1"
+$task1_1 = New-RoadmapTask -Id "1.1" -Title "TÃ¢che 1.1" -Description "Description de la tÃ¢che 1.1"
+$task1_2 = New-RoadmapTask -Id "1.2" -Title "TÃ¢che 1.2" -Description "Description de la tÃ¢che 1.2"
+$task1_2_1 = New-RoadmapTask -Id "1.2.1" -Title "TÃ¢che 1.2.1" -Description "Description de la tÃ¢che 1.2.1"
+$task1_2_2 = New-RoadmapTask -Id "1.2.2" -Title "TÃ¢che 1.2.2" -Description "Description de la tÃ¢che 1.2.2" -Status ([TaskStatus]::Complete)
+$task2 = New-RoadmapTask -Id "2" -Title "TÃ¢che 2" -Description "Description de la tÃ¢che 2"
+$task2_1 = New-RoadmapTask -Id "2.1" -Title "TÃ¢che 2.1" -Description "Description de la tÃ¢che 2.1" -Status ([TaskStatus]::InProgress)
 
-# Ajouter les tâches à l'arbre manuellement
-Write-Host "Ajout des tâches à l'arbre..." -ForegroundColor Cyan
+# Ajouter les tÃ¢ches Ã  l'arbre manuellement
+Write-Host "Ajout des tÃ¢ches Ã  l'arbre..." -ForegroundColor Cyan
 $task1.Parent = $roadmap.Root
 $roadmap.Root.Children.Add($task1)
 $roadmap.AllTasks.Add($task1)
@@ -63,15 +63,15 @@ $roadmap.AllTasks.Add($task2_1)
 $roadmap.TasksById[$task2_1.Id] = $task2_1
 $task2_1.Level = 1
 
-# Ajouter des dépendances manuellement
-Write-Host "Ajout des dépendances..." -ForegroundColor Cyan
+# Ajouter des dÃ©pendances manuellement
+Write-Host "Ajout des dÃ©pendances..." -ForegroundColor Cyan
 $task2.Dependencies.Add($task1)
 $task1.DependentTasks.Add($task2)
 
 $task2_1.Dependencies.Add($task1_2_2)
 $task1_2_2.DependentTasks.Add($task2_1)
 
-# Définir la fonction de parcours récursif
+# DÃ©finir la fonction de parcours rÃ©cursif
 function TraverseTasksRecursively {
     param(
         [PSCustomObject]$Task,
@@ -107,13 +107,13 @@ foreach ($task in $tasks) {
 Write-Host "`nExportation de l'arbre en JSON..." -ForegroundColor Cyan
 $jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-test-direct.json"
 Export-RoadmapTreeToJson -RoadmapTree $roadmap -FilePath $jsonPath
-Write-Host "Arbre exporté en JSON: $jsonPath" -ForegroundColor Green
+Write-Host "Arbre exportÃ© en JSON: $jsonPath" -ForegroundColor Green
 
 # Exporter l'arbre en markdown
 Write-Host "`nExportation de l'arbre en markdown..." -ForegroundColor Cyan
 $markdownPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-test-direct.md"
 
-# Générer le markdown manuellement
+# GÃ©nÃ©rer le markdown manuellement
 $markdown = "# $($roadmap.Title)`n`n"
 if (-not [string]::IsNullOrEmpty($roadmap.Description)) {
     $markdown += "$($roadmap.Description)`n`n"
@@ -149,17 +149,17 @@ foreach ($task in $roadmap.Root.Children) {
 }
 
 $markdown | Out-File -FilePath $markdownPath -Encoding UTF8
-Write-Host "Arbre exporté en markdown: $markdownPath" -ForegroundColor Green
+Write-Host "Arbre exportÃ© en markdown: $markdownPath" -ForegroundColor Green
 
-# Afficher les dépendances
-Write-Host "`nDépendances:" -ForegroundColor Cyan
+# Afficher les dÃ©pendances
+Write-Host "`nDÃ©pendances:" -ForegroundColor Cyan
 foreach ($task in $tasks) {
     if ($task.Dependencies.Count -gt 0) {
-        Write-Host "  $($task.Id) $($task.Title) dépend de:" -ForegroundColor Green
+        Write-Host "  $($task.Id) $($task.Title) dÃ©pend de:" -ForegroundColor Green
         foreach ($dependency in $task.Dependencies) {
             Write-Host "    - $($dependency.Id) $($dependency.Title)" -ForegroundColor Yellow
         }
     }
 }
 
-Write-Host "`nTest terminé." -ForegroundColor Cyan
+Write-Host "`nTest terminÃ©." -ForegroundColor Cyan

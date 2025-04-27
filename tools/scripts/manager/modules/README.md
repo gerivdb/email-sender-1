@@ -1,5 +1,5 @@
-# modules
+﻿# modules
 
 Modules du gestionnaire
 
-Ce dossier fait partie de la section [manager](..) qui contient syst�me de gestion des scripts.
+Ce dossier fait partie de la section [manager](..) qui contient systã¨me de gestion des scripts.

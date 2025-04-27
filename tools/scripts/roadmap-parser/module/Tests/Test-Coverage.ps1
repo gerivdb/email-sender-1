@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
     Valide la couverture de tests du module RoadmapParser.
 
 .DESCRIPTION
-    Ce script analyse la couverture de tests du module RoadmapParser et génère
-    un rapport détaillé. Il identifie les fonctions non testées ou insuffisamment
-    testées et suggère des améliorations.
+    Ce script analyse la couverture de tests du module RoadmapParser et gÃ©nÃ¨re
+    un rapport dÃ©taillÃ©. Il identifie les fonctions non testÃ©es ou insuffisamment
+    testÃ©es et suggÃ¨re des amÃ©liorations.
 
 .PARAMETER MinCoverage
-    Pourcentage minimum de couverture requis. Par défaut: 80.
+    Pourcentage minimum de couverture requis. Par dÃ©faut: 80.
 
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport de couverture. Si non spécifié, le rapport sera
-    enregistré dans le répertoire TestReports à la racine du module.
+    Chemin oÃ¹ enregistrer le rapport de couverture. Si non spÃ©cifiÃ©, le rapport sera
+    enregistrÃ© dans le rÃ©pertoire TestReports Ã  la racine du module.
 
 .PARAMETER GenerateHtmlReport
-    Indique s'il faut générer un rapport HTML détaillé.
+    Indique s'il faut gÃ©nÃ©rer un rapport HTML dÃ©taillÃ©.
 
 .EXAMPLE
     .\Test-Coverage.ps1 -MinCoverage 90 -GenerateHtmlReport
@@ -23,7 +23,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
 [CmdletBinding()]
@@ -35,19 +35,19 @@ param(
     [switch]$GenerateHtmlReport
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Error "Le module Pester est requis pour exécuter ces tests. Installez-le avec 'Install-Module -Name Pester -Force'"
+    Write-Error "Le module Pester est requis pour exÃ©cuter ces tests. Installez-le avec 'Install-Module -Name Pester -Force'"
     return
 }
 
 # Importer le module Pester
 Import-Module Pester -Force
 
-# Déterminer le chemin du module
+# DÃ©terminer le chemin du module
 $moduleRoot = Split-Path -Path $PSScriptRoot -Parent
 
-# Définir le chemin de sortie pour le rapport
+# DÃ©finir le chemin de sortie pour le rapport
 if (-not $OutputPath) {
     $OutputPath = Join-Path -Path $moduleRoot -ChildPath "TestReports"
     if (-not (Test-Path -Path $OutputPath -PathType Container)) {
@@ -68,33 +68,33 @@ $pesterConfig.CodeCoverage.Path = @(
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "coverage.xml"
 $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 
-# Exécuter les tests avec couverture
-Write-Host "Exécution des tests avec analyse de couverture..."
+# ExÃ©cuter les tests avec couverture
+Write-Host "ExÃ©cution des tests avec analyse de couverture..."
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Analyser les résultats de couverture
+# Analyser les rÃ©sultats de couverture
 $coverageReport = $results.CodeCoverage
 $totalCommands = $coverageReport.NumberOfCommandsAnalyzed
 $coveredCommands = $coverageReport.NumberOfCommandsExecuted
 $missedCommands = $totalCommands - $coveredCommands
 $coveragePercent = [math]::Round(($coveredCommands / $totalCommands) * 100, 2)
 
-# Afficher un résumé de la couverture
-Write-Host "`nRésumé de la couverture de tests:"
+# Afficher un rÃ©sumÃ© de la couverture
+Write-Host "`nRÃ©sumÃ© de la couverture de tests:"
 Write-Host "-----------------------------"
-Write-Host "Commandes analysées: $totalCommands"
-Write-Host "Commandes exécutées: $coveredCommands"
+Write-Host "Commandes analysÃ©es: $totalCommands"
+Write-Host "Commandes exÃ©cutÃ©es: $coveredCommands"
 Write-Host "Commandes non couvertes: $missedCommands"
 Write-Host "Pourcentage de couverture: $coveragePercent%"
 
-# Vérifier si la couverture minimale est atteinte
+# VÃ©rifier si la couverture minimale est atteinte
 if ($coveragePercent -lt $MinCoverage) {
-    Write-Host "`nLa couverture de tests est inférieure au minimum requis ($MinCoverage%)." -ForegroundColor Red
+    Write-Host "`nLa couverture de tests est infÃ©rieure au minimum requis ($MinCoverage%)." -ForegroundColor Red
 } else {
-    Write-Host "`nLa couverture de tests est supérieure au minimum requis ($MinCoverage%)." -ForegroundColor Green
+    Write-Host "`nLa couverture de tests est supÃ©rieure au minimum requis ($MinCoverage%)." -ForegroundColor Green
 }
 
-# Identifier les fonctions non testées ou insuffisamment testées
+# Identifier les fonctions non testÃ©es ou insuffisamment testÃ©es
 $functionCoverage = @{}
 foreach ($file in $coverageReport.MissedCommands.File | Select-Object -Unique) {
     $fileContent = Get-Content -Path $file -Raw
@@ -136,7 +136,7 @@ if ($insufficientCoverage.Count -eq 0) {
     }
 }
 
-# Générer un rapport HTML détaillé si demandé
+# GÃ©nÃ©rer un rapport HTML dÃ©taillÃ© si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlReportPath = Join-Path -Path $OutputPath -ChildPath "coverage-report.html"
     
@@ -207,15 +207,15 @@ if ($GenerateHtmlReport) {
 <body>
     <h1>Rapport de couverture de tests - RoadmapParser</h1>
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Date d'exécution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Date d'exÃ©cution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         <div class="progress-container">
             <div class="progress-bar" style="width: $coveragePercent%">
                 $coveragePercent%
             </div>
         </div>
-        <p>Commandes analysées : <strong>$totalCommands</strong></p>
-        <p>Commandes exécutées : <strong>$coveredCommands</strong></p>
+        <p>Commandes analysÃ©es : <strong>$totalCommands</strong></p>
+        <p>Commandes exÃ©cutÃ©es : <strong>$coveredCommands</strong></p>
         <p>Commandes non couvertes : <strong>$missedCommands</strong></p>
         <p>Pourcentage de couverture : <strong>$coveragePercent%</strong></p>
         <p>Minimum requis : <strong>$MinCoverage%</strong></p>
@@ -261,7 +261,7 @@ if ($GenerateHtmlReport) {
 "@
     } else {
         $htmlReport += @"
-        <li class="danger">Améliorer la couverture des fonctions suivantes :</li>
+        <li class="danger">AmÃ©liorer la couverture des fonctions suivantes :</li>
         <ul>
 "@
         foreach ($function in $insufficientCoverage) {
@@ -281,10 +281,10 @@ if ($GenerateHtmlReport) {
 "@
 
     $htmlReport | Set-Content -Path $htmlReportPath -Encoding UTF8
-    Write-Host "`nRapport HTML généré: $htmlReportPath" -ForegroundColor Green
+    Write-Host "`nRapport HTML gÃ©nÃ©rÃ©: $htmlReportPath" -ForegroundColor Green
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return @{
     CoveragePercent = $coveragePercent
     MinCoverage = $MinCoverage

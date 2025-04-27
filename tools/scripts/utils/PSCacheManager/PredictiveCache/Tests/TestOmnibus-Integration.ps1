@@ -1,46 +1,46 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'intégration des tests du cache prédictif avec TestOmnibus.
+    Script d'intÃ©gration des tests du cache prÃ©dictif avec TestOmnibus.
 .DESCRIPTION
-    Ce script intègre les tests du cache prédictif avec le système TestOmnibus
-    pour une exécution centralisée et des rapports unifiés.
+    Ce script intÃ¨gre les tests du cache prÃ©dictif avec le systÃ¨me TestOmnibus
+    pour une exÃ©cution centralisÃ©e et des rapports unifiÃ©s.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Définir le répertoire des tests
+# DÃ©finir le rÃ©pertoire des tests
 $testDirectory = $PSScriptRoot
 $moduleDirectory = Split-Path -Path $testDirectory -Parent
 $testOmnibusPath = Join-Path -Path (Split-Path -Path $moduleDirectory -Parent) -ChildPath "TestOmnibus\TestOmnibus.psm1"
 
-# Vérifier si TestOmnibus existe
+# VÃ©rifier si TestOmnibus existe
 if (-not (Test-Path -Path $testOmnibusPath)) {
-    Write-Warning "Le module TestOmnibus n'a pas été trouvé à l'emplacement: $testOmnibusPath"
-    Write-Warning "Création d'un répertoire pour TestOmnibus..."
+    Write-Warning "Le module TestOmnibus n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $testOmnibusPath"
+    Write-Warning "CrÃ©ation d'un rÃ©pertoire pour TestOmnibus..."
 
-    # Créer le répertoire pour TestOmnibus
+    # CrÃ©er le rÃ©pertoire pour TestOmnibus
     $testOmnibusDir = Split-Path -Path $testOmnibusPath -Parent
     if (-not (Test-Path -Path $testOmnibusDir)) {
         New-Item -Path $testOmnibusDir -ItemType Directory -Force | Out-Null
     }
 
-    # Créer un module TestOmnibus minimal
+    # CrÃ©er un module TestOmnibus minimal
     $testOmnibusContent = @'
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module TestOmnibus pour l'exécution centralisée des tests.
+    Module TestOmnibus pour l'exÃ©cution centralisÃ©e des tests.
 .DESCRIPTION
-    Ce module permet d'exécuter et de gérer les tests de manière centralisée.
+    Ce module permet d'exÃ©cuter et de gÃ©rer les tests de maniÃ¨re centralisÃ©e.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-TestOmnibus {
     [CmdletBinding()]
     param (
@@ -54,9 +54,9 @@ function Invoke-TestOmnibus {
         [switch]$GenerateReport
     )
 
-    # Importer Pester si nécessaire
+    # Importer Pester si nÃ©cessaire
     if (-not (Get-Module -Name Pester -ListAvailable)) {
-        Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+        Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
 
@@ -75,14 +75,14 @@ function Invoke-TestOmnibus {
         $pesterConfig.TestResult.OutputPath = $OutputPath
     }
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $testResults = Invoke-Pester -Configuration $pesterConfig
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport -and $OutputPath) {
         $reportPath = $OutputPath -replace '\.xml$', '_report.html'
 
-        # Créer un rapport HTML simple
+        # CrÃ©er un rapport HTML simple
         $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -111,31 +111,31 @@ function Invoke-TestOmnibus {
 
     <div class="tests-summary">
         <div class="test-stat passed">
-            <h3>Tests réussis</h3>
+            <h3>Tests rÃ©ussis</h3>
             <p>$($testResults.PassedCount)</p>
         </div>
         <div class="test-stat failed">
-            <h3>Tests échoués</h3>
+            <h3>Tests Ã©chouÃ©s</h3>
             <p>$($testResults.FailedCount)</p>
         </div>
         <div class="test-stat skipped">
-            <h3>Tests ignorés</h3>
+            <h3>Tests ignorÃ©s</h3>
             <p>$($testResults.SkippedCount)</p>
         </div>
     </div>
 
     <div class="summary">
-        <h2>Résumé des tests</h2>
-        <p>Tests exécutés: $($testResults.TotalCount)</p>
-        <p>Durée totale: $([Math]::Round($testResults.Duration.TotalSeconds, 2)) secondes</p>
+        <h2>RÃ©sumÃ© des tests</h2>
+        <p>Tests exÃ©cutÃ©s: $($testResults.TotalCount)</p>
+        <p>DurÃ©e totale: $([Math]::Round($testResults.Duration.TotalSeconds, 2)) secondes</p>
     </div>
 
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
@@ -158,7 +158,7 @@ function Invoke-TestOmnibus {
         $htmlContent += @"
     </table>
 
-    <p><em>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</em></p>
+    <p><em>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</em></p>
 </body>
 </html>
 "@
@@ -166,7 +166,7 @@ function Invoke-TestOmnibus {
         # Enregistrer le rapport HTML
         $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
 
-        Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Cyan
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Cyan
     }
 
     return $testResults
@@ -189,13 +189,13 @@ function Register-TestOmnibusTest {
         [int]$Priority = 100
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Error "Le fichier de test n'existe pas: $Path"
         return $false
     }
 
-    # Créer un objet de test
+    # CrÃ©er un objet de test
     $test = [PSCustomObject]@{
         Name = $Name
         Path = $Path
@@ -221,10 +221,10 @@ function Register-TestOmnibusTest {
     # Ajouter le nouveau test
     $registeredTests += $test
 
-    # Enregistrer la configuration mise à jour
+    # Enregistrer la configuration mise Ã  jour
     $registeredTests | ConvertTo-Json | Out-File -FilePath $configPath -Encoding utf8
 
-    Write-Host "Test enregistré avec succès: $Name" -ForegroundColor Green
+    Write-Host "Test enregistrÃ© avec succÃ¨s: $Name" -ForegroundColor Green
     return $true
 }
 
@@ -233,13 +233,13 @@ Export-ModuleMember -Function Invoke-TestOmnibus, Register-TestOmnibusTest
 '@
 
     $testOmnibusContent | Out-File -FilePath $testOmnibusPath -Encoding utf8
-    Write-Host "Module TestOmnibus créé à l'emplacement: $testOmnibusPath" -ForegroundColor Green
+    Write-Host "Module TestOmnibus crÃ©Ã© Ã  l'emplacement: $testOmnibusPath" -ForegroundColor Green
 }
 
 # Importer TestOmnibus
 Import-Module $testOmnibusPath -Force
 
-# Enregistrer les tests du cache prédictif
+# Enregistrer les tests du cache prÃ©dictif
 $testFiles = Get-ChildItem -Path $testDirectory -Filter "*.Tests.ps1" -Recurse
 
 foreach ($testFile in $testFiles) {
@@ -247,7 +247,7 @@ foreach ($testFile in $testFiles) {
     $testPath = $testFile.FullName
     $category = "PredictiveCache"
 
-    # Déterminer la priorité en fonction du nom du test
+    # DÃ©terminer la prioritÃ© en fonction du nom du test
     $priority = switch -Wildcard ($testName) {
         "*Performance*" { 200 }
         "*EdgeCases*" { 300 }
@@ -259,23 +259,23 @@ foreach ($testFile in $testFiles) {
     Register-TestOmnibusTest -Name $testName -Path $testPath -Category $category -Priority $priority
 }
 
-# Créer un répertoire pour les rapports
+# CrÃ©er un rÃ©pertoire pour les rapports
 $reportDir = Join-Path -Path $testDirectory -ChildPath "Reports"
 if (-not (Test-Path -Path $reportDir)) {
     New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $outputPath = Join-Path -Path $reportDir -ChildPath "PredictiveCache_TestResults.xml"
 $testResults = Invoke-TestOmnibus -TestPattern "$testDirectory\*.Tests.ps1" -OutputPath $outputPath -GenerateReport
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "Tests exécutés: $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "Durée totale: $([Math]::Round($testResults.Duration.TotalSeconds, 2)) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "DurÃ©e totale: $([Math]::Round($testResults.Duration.TotalSeconds, 2)) secondes" -ForegroundColor White
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 exit $testResults.FailedCount

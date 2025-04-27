@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Restaure la structure correcte du fichier roadmap après l'archivage des tâches.
+    Restaure la structure correcte du fichier roadmap aprÃ¨s l'archivage des tÃ¢ches.
 .DESCRIPTION
-    Ce script corrige la structure du fichier roadmap après l'archivage des tâches
-    en s'assurant que les sections et sous-sections sont correctement préservées.
+    Ce script corrige la structure du fichier roadmap aprÃ¨s l'archivage des tÃ¢ches
+    en s'assurant que les sections et sous-sections sont correctement prÃ©servÃ©es.
 .PARAMETER RoadmapPath
     Chemin vers le fichier Markdown de la roadmap.
 .EXAMPLE
@@ -28,7 +28,7 @@ function Restore-RoadmapStructure {
         [string]$RoadmapPath
     )
 
-    # Vérifier si le fichier de roadmap existe
+    # VÃ©rifier si le fichier de roadmap existe
     if (-not (Test-Path -Path $RoadmapPath)) {
         throw "Le fichier de roadmap '$RoadmapPath' n'existe pas."
     }
@@ -45,9 +45,9 @@ function Restore-RoadmapStructure {
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
 
-        # Détecter les sections principales (## Titre)
+        # DÃ©tecter les sections principales (## Titre)
         if ($line -match '^## (?!Archive)') {
-            # Si on a déjà une section en cours, l'ajouter à la liste
+            # Si on a dÃ©jÃ  une section en cours, l'ajouter Ã  la liste
             if ($currentSection) {
                 $sections += @{
                     title   = $currentSection
@@ -63,9 +63,9 @@ function Restore-RoadmapStructure {
         elseif ($line -match '^## Archive') {
             # Ne rien faire, ignorer cette section
         }
-        # Détecter les sections principales qui ne commencent pas par ## (cas spécial pour "6. Security")
+        # DÃ©tecter les sections principales qui ne commencent pas par ## (cas spÃ©cial pour "6. Security")
         elseif ($line -match '^#### (\d+\.\d+\.\d+) ' -and $line -match '^#### 6\.') {
-            # Si on a déjà une section en cours, l'ajouter à la liste
+            # Si on a dÃ©jÃ  une section en cours, l'ajouter Ã  la liste
             if ($currentSection) {
                 $sections += @{
                     title   = $currentSection
@@ -75,15 +75,15 @@ function Restore-RoadmapStructure {
 
             # Commencer une nouvelle section pour "6. Security"
             $currentSection = "## 6. Security"
-            $currentSectionContent = @("## 6. Security", "**Description**: Modules de sécurité, d'authentification et de protection des données.", "**Responsable**: Équipe Sécurité", "**Statut global**: Planifié - 5%", "", "### 6.1 Gestion des secrets", "**Complexité**: Élevée", "**Temps estimé total**: 10 jours", "**Progression globale**: 0%", "**Dépendances**: Aucune", "", $line)
+            $currentSectionContent = @("## 6. Security", "**Description**: Modules de sÃ©curitÃ©, d'authentification et de protection des donnÃ©es.", "**Responsable**: Ã‰quipe SÃ©curitÃ©", "**Statut global**: PlanifiÃ© - 5%", "", "### 6.1 Gestion des secrets", "**ComplexitÃ©**: Ã‰levÃ©e", "**Temps estimÃ© total**: 10 jours", "**Progression globale**: 0%", "**DÃ©pendances**: Aucune", "", $line)
         }
-        # Ajouter la ligne à la section en cours
+        # Ajouter la ligne Ã  la section en cours
         elseif ($currentSection) {
             $currentSectionContent += $line
         }
     }
 
-    # Ajouter la dernière section si elle existe
+    # Ajouter la derniÃ¨re section si elle existe
     if ($currentSection) {
         $sections += @{
             title   = $currentSection
@@ -100,9 +100,9 @@ function Restore-RoadmapStructure {
         $newContent += ""
     }
 
-    # Ajouter une seule section d'archive à la fin
+    # Ajouter une seule section d'archive Ã  la fin
     $newContent += "## Archive"
-    $newContent += "[Tâches archivées](archive/roadmap_archive.md)"
+    $newContent += "[TÃ¢ches archivÃ©es](archive/roadmap_archive.md)"
 
     # Enregistrer les modifications
     $newContent | Out-File -FilePath $RoadmapPath -Encoding UTF8
@@ -118,8 +118,8 @@ try {
     $result = Restore-RoadmapStructure -RoadmapPath $RoadmapPath
 
     if ($result) {
-        Write-Host "Restauration de la structure du roadmap réussie."
-        Write-Host "$($result.sectionCount) sections principales identifiées et restaurées dans '$($result.roadmapPath)'."
+        Write-Host "Restauration de la structure du roadmap rÃ©ussie."
+        Write-Host "$($result.sectionCount) sections principales identifiÃ©es et restaurÃ©es dans '$($result.roadmapPath)'."
     }
 } catch {
     Write-Error "Erreur lors de la restauration de la structure du roadmap: $_"

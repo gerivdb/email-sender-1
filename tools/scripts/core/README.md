@@ -1,12 +1,12 @@
-# core
+﻿# core
 
-Fonctionnalités essentielles et modules de base
+FonctionnalitÃ©s essentielles et modules de base
 
 ## Sous-dossiers
 
 ### config
 
-Configuration du système
+Configuration du systÃ¨me
 
 ### logging
 
@@ -14,5 +14,5 @@ Journalisation et rapports
 
 ### utils
 
-Utilitaires génériques
+Utilitaires gÃ©nÃ©riques
 

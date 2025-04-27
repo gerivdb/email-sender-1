@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Génère la documentation des fonctions du module RoadmapParser.
+    GÃ©nÃ¨re la documentation des fonctions du module RoadmapParser.
 
 .DESCRIPTION
-    Ce script analyse les fonctions du module RoadmapParser et génère
-    une documentation complète au format Markdown. Il extrait les commentaires
-    d'aide, les paramètres, les types de retour et les exemples.
+    Ce script analyse les fonctions du module RoadmapParser et gÃ©nÃ¨re
+    une documentation complÃ¨te au format Markdown. Il extrait les commentaires
+    d'aide, les paramÃ¨tres, les types de retour et les exemples.
 
 .PARAMETER OutputPath
-    Chemin où enregistrer la documentation générée. Par défaut: "docs/api".
+    Chemin oÃ¹ enregistrer la documentation gÃ©nÃ©rÃ©e. Par dÃ©faut: "docs/api".
 
 .PARAMETER IncludePrivateFunctions
-    Indique s'il faut inclure les fonctions privées dans la documentation.
+    Indique s'il faut inclure les fonctions privÃ©es dans la documentation.
 
 .PARAMETER GenerateHtmlDocs
-    Indique s'il faut générer également une documentation HTML.
+    Indique s'il faut gÃ©nÃ©rer Ã©galement une documentation HTML.
 
 .EXAMPLE
     .\Generate-FunctionDocumentation.ps1 -OutputPath "docs/api" -GenerateHtmlDocs
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
 [CmdletBinding()]
@@ -34,30 +34,30 @@ param(
     [switch]$GenerateHtmlDocs
 )
 
-# Déterminer le chemin du module
+# DÃ©terminer le chemin du module
 $moduleRoot = Split-Path -Path $PSScriptRoot -Parent
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de documentation créé: $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de documentation crÃ©Ã©: $OutputPath" -ForegroundColor Green
 }
 
 # Importer le module
 Import-Module $moduleRoot\RoadmapParser.psm1 -Force
 
-# Récupérer les fonctions du module
+# RÃ©cupÃ©rer les fonctions du module
 $functions = Get-Command -Module RoadmapParser | Where-Object {
     $_.CommandType -eq "Function" -and
     ($IncludePrivateFunctions -or $_.Name -notmatch "^(Get-|Set-|New-|Remove-|Test-|Convert-|Format-|Measure-|Search-|Select-|Sort-|Group-|Compare-|Copy-|Move-|Rename-|Clear-|Show-|Hide-|Enable-|Disable-|Start-|Stop-|Restart-|Resume-|Suspend-|Wait-|Use-|Import-|Export-|Mount-|Dismount-|Add-|Remove-|Install-|Uninstall-|Register-|Unregister-|Invoke-|ConvertFrom-|ConvertTo-|Update-|Push-|Pop-|Join-|Split-|Compress-|Expand-|Backup-|Restore-|Sync-|Optimize-|Debug-|Trace-|Repair-|Test-|Approve-|Assert-|Complete-|Confirm-|Deny-|Deploy-|Disconnect-|Edit-|Enter-|Exit-|Find-|Initialize-|Limit-|Lock-|Out-|Ping-|Protect-|Publish-|Read-|Receive-|Redo-|Reset-|Resize-|Resolve-|Revoke-|Save-|Send-|Skip-|Step-|Switch-|Undo-|Unlock-|Unpublish-|Unprotect-|Watch-|Write-)")
 }
 
-# Créer un index des fonctions
+# CrÃ©er un index des fonctions
 $indexPath = Join-Path -Path $OutputPath -ChildPath "index.md"
 $indexContent = @"
 # Documentation de l'API RoadmapParser
 
-Cette documentation décrit les fonctions disponibles dans le module RoadmapParser.
+Cette documentation dÃ©crit les fonctions disponibles dans le module RoadmapParser.
 
 ## Fonctions publiques
 
@@ -65,18 +65,18 @@ Cette documentation décrit les fonctions disponibles dans le module RoadmapPars
 |-----|-------------|
 "@
 
-# Créer la documentation pour chaque fonction
+# CrÃ©er la documentation pour chaque fonction
 foreach ($function in $functions | Sort-Object Name) {
-    Write-Host "Génération de la documentation pour $($function.Name)..." -ForegroundColor Yellow
+    Write-Host "GÃ©nÃ©ration de la documentation pour $($function.Name)..." -ForegroundColor Yellow
     
-    # Récupérer l'aide de la fonction
+    # RÃ©cupÃ©rer l'aide de la fonction
     $help = Get-Help -Name $function.Name -Full
     
-    # Déterminer si la fonction est publique ou privée
+    # DÃ©terminer si la fonction est publique ou privÃ©e
     $isPublic = $function.Name -notmatch "^(Private|Internal)"
-    $functionType = if ($isPublic) { "publique" } else { "privée" }
+    $functionType = if ($isPublic) { "publique" } else { "privÃ©e" }
     
-    # Récupérer le chemin du fichier source
+    # RÃ©cupÃ©rer le chemin du fichier source
     $functionPath = $function.ScriptBlock.File
     $relativePath = if ($functionPath) {
         $functionPath.Replace($moduleRoot, "").TrimStart("\")
@@ -84,11 +84,11 @@ foreach ($function in $functions | Sort-Object Name) {
         "Inconnu"
     }
     
-    # Créer le contenu de la documentation
+    # CrÃ©er le contenu de la documentation
     $docContent = @"
 # $($function.Name)
 
-## Résumé
+## RÃ©sumÃ©
 
 $($help.Synopsis)
 
@@ -102,11 +102,11 @@ $($help.Description.Text)
 $($help.Syntax.SyntaxItem.Name) $($help.Syntax.SyntaxItem.Parameter | ForEach-Object { "[-$($_.Name) <$($_.Type.Name)>] " })
 ```
 
-## Paramètres
+## ParamÃ¨tres
 
 "@
     
-    # Ajouter les paramètres
+    # Ajouter les paramÃ¨tres
     foreach ($parameter in $help.Parameters.Parameter) {
         $docContent += @"
 ### -$($parameter.Name)
@@ -115,17 +115,17 @@ $($parameter.Description.Text)
 
 - Type: $($parameter.Type.Name)
 - Position: $($parameter.Position)
-- Défaut: $($parameter.DefaultValue)
-- Accepte les entrées de pipeline: $($parameter.PipelineInput)
-- Accepte les caractères génériques: $($parameter.Globbing)
+- DÃ©faut: $($parameter.DefaultValue)
+- Accepte les entrÃ©es de pipeline: $($parameter.PipelineInput)
+- Accepte les caractÃ¨res gÃ©nÃ©riques: $($parameter.Globbing)
 
 "@
     }
     
-    # Ajouter les entrées
+    # Ajouter les entrÃ©es
     if ($help.InputTypes) {
         $docContent += @"
-## Entrées
+## EntrÃ©es
 
 $($help.InputTypes.InputType.Type.Name)
 
@@ -186,12 +186,12 @@ $($example.Remarks.Text)
     $docPath = Join-Path -Path $OutputPath -ChildPath "$($function.Name).md"
     $docContent | Set-Content -Path $docPath -Encoding UTF8
     
-    # Ajouter à l'index
+    # Ajouter Ã  l'index
     $indexContent += @"
 | [$($function.Name)]($($function.Name).md) | $($help.Synopsis) |
 "@
     
-    # Générer la documentation HTML si demandé
+    # GÃ©nÃ©rer la documentation HTML si demandÃ©
     if ($GenerateHtmlDocs) {
         $htmlPath = Join-Path -Path $OutputPath -ChildPath "$($function.Name).html"
         $htmlContent = @"
@@ -252,7 +252,7 @@ $($example.Remarks.Text)
 <body>
     <h1>$($function.Name)</h1>
     
-    <h2>Résumé</h2>
+    <h2>RÃ©sumÃ©</h2>
     <p>$($help.Synopsis)</p>
     
     <h2>Description</h2>
@@ -261,10 +261,10 @@ $($example.Remarks.Text)
     <h2>Syntaxe</h2>
     <pre><code>$($help.Syntax.SyntaxItem.Name) $($help.Syntax.SyntaxItem.Parameter | ForEach-Object { "[-$($_.Name) &lt;$($_.Type.Name)&gt;] " })</code></pre>
     
-    <h2>Paramètres</h2>
+    <h2>ParamÃ¨tres</h2>
 "@
         
-        # Ajouter les paramètres
+        # Ajouter les paramÃ¨tres
         foreach ($parameter in $help.Parameters.Parameter) {
             $htmlContent += @"
     <div class="parameter">
@@ -273,18 +273,18 @@ $($example.Remarks.Text)
         <div class="parameter-details">
             <p><strong>Type:</strong> $($parameter.Type.Name)</p>
             <p><strong>Position:</strong> $($parameter.Position)</p>
-            <p><strong>Défaut:</strong> $($parameter.DefaultValue)</p>
-            <p><strong>Accepte les entrées de pipeline:</strong> $($parameter.PipelineInput)</p>
-            <p><strong>Accepte les caractères génériques:</strong> $($parameter.Globbing)</p>
+            <p><strong>DÃ©faut:</strong> $($parameter.DefaultValue)</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> $($parameter.PipelineInput)</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> $($parameter.Globbing)</p>
         </div>
     </div>
 "@
         }
         
-        # Ajouter les entrées
+        # Ajouter les entrÃ©es
         if ($help.InputTypes) {
             $htmlContent += @"
-    <h2>Entrées</h2>
+    <h2>EntrÃ©es</h2>
     <p>$($help.InputTypes.InputType.Type.Name)</p>
 "@
         }
@@ -341,7 +341,7 @@ $($example.Remarks.Text)
 # Enregistrer l'index
 $indexContent | Set-Content -Path $indexPath -Encoding UTF8
 
-# Générer l'index HTML si demandé
+# GÃ©nÃ©rer l'index HTML si demandÃ©
 if ($GenerateHtmlDocs) {
     $htmlIndexPath = Join-Path -Path $OutputPath -ChildPath "index.html"
     $htmlIndexContent = @"
@@ -380,7 +380,7 @@ if ($GenerateHtmlDocs) {
 </head>
 <body>
     <h1>Documentation de l'API RoadmapParser</h1>
-    <p>Cette documentation décrit les fonctions disponibles dans le module RoadmapParser.</p>
+    <p>Cette documentation dÃ©crit les fonctions disponibles dans le module RoadmapParser.</p>
     
     <h2>Fonctions publiques</h2>
     <table>
@@ -410,10 +410,10 @@ if ($GenerateHtmlDocs) {
     $htmlIndexContent | Set-Content -Path $htmlIndexPath -Encoding UTF8
 }
 
-Write-Host "`nDocumentation générée avec succès dans $OutputPath" -ForegroundColor Green
+Write-Host "`nDocumentation gÃ©nÃ©rÃ©e avec succÃ¨s dans $OutputPath" -ForegroundColor Green
 if ($GenerateHtmlDocs) {
-    Write-Host "Documentation HTML générée avec succès dans $OutputPath" -ForegroundColor Green
+    Write-Host "Documentation HTML gÃ©nÃ©rÃ©e avec succÃ¨s dans $OutputPath" -ForegroundColor Green
 }
 
-# Retourner le nombre de fonctions documentées
+# Retourner le nombre de fonctions documentÃ©es
 return $functions.Count

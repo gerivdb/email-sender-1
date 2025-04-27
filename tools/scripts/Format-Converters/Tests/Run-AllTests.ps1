@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour le module Format-Converters.
+    ExÃ©cute tous les tests unitaires pour le module Format-Converters.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour le module Format-Converters
-    et génère un rapport de test. Il utilise le framework Pester pour exécuter les tests.
+    Ce script exÃ©cute tous les tests unitaires pour le module Format-Converters
+    et gÃ©nÃ¨re un rapport de test. Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les rapports de test seront enregistrés.
-    Par défaut, utilise le répertoire 'TestResults' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les rapports de test seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'TestResults' dans le rÃ©pertoire du script.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré.
-    Par défaut, cette option est activée.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .EXAMPLE
     .\Run-AllTests.ps1
-    Exécute tous les tests unitaires et génère un rapport HTML.
+    ExÃ©cute tous les tests unitaires et gÃ©nÃ¨re un rapport HTML.
 
 .NOTES
     Version: 1.0
@@ -34,14 +34,14 @@ param(
     [switch]$GenerateHtmlReport
 )
 
-# Définir la valeur par défaut du paramètre GenerateHtmlReport
+# DÃ©finir la valeur par dÃ©faut du paramÃ¨tre GenerateHtmlReport
 if (-not $PSBoundParameters.ContainsKey('GenerateHtmlReport')) {
     $GenerateHtmlReport = $true
 }
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -60,11 +60,11 @@ if (Test-Path -Path $testHelpersPath) {
     exit 1
 }
 
-# Vérifier la version de Pester
+# VÃ©rifier la version de Pester
 $pesterVersion = (Get-Module -Name Pester -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1).Version
-Write-Host "Version de Pester détectée : $pesterVersion" -ForegroundColor Cyan
+Write-Host "Version de Pester dÃ©tectÃ©e : $pesterVersion" -ForegroundColor Cyan
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -72,11 +72,11 @@ function New-DirectoryIfNotExists {
 
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $Path"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $Path"
     }
 }
 
-# Créer le répertoire de sortie
+# CrÃ©er le rÃ©pertoire de sortie
 New-DirectoryIfNotExists -Path $OutputDirectory
 
 # Chemins des fichiers de test
@@ -88,7 +88,7 @@ $testFiles = @(
     "$PSScriptRoot\Format-Converters.Tests.ps1"
 )
 
-# Vérifier si les fichiers de test existent
+# VÃ©rifier si les fichiers de test existent
 $missingTests = @()
 foreach ($file in $testFiles) {
     if (-not (Test-Path -Path $file)) {
@@ -108,15 +108,15 @@ foreach ($file in $testFiles) {
 }
 
 if ($existingTests.Count -eq 0) {
-    Write-Error "Aucun fichier de test n'a été trouvé."
+    Write-Error "Aucun fichier de test n'a Ã©tÃ© trouvÃ©."
     exit 1
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "Format-Converters.psm1"
 
-# Copier le fichier de critères de détection pour les tests
+# Copier le fichier de critÃ¨res de dÃ©tection pour les tests
 $testCriteriaPath = Join-Path -Path $PSScriptRoot -ChildPath "TestData\FormatDetectionCriteria.json"
 $targetCriteriaPath = Join-Path -Path $moduleRoot -ChildPath "Detectors\FormatDetectionCriteria.json"
 
@@ -139,21 +139,21 @@ $pesterConfig.CodeCoverage.Path = @(
     (Join-Path -Path $moduleRoot -ChildPath "Integrations\*.ps1")
 )
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des résultats de test :" -ForegroundColor Yellow
-Write-Host "Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "Tests réussis : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "Tests échoués : $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "Tests ignorés : $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "Durée totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des rÃ©sultats de test :" -ForegroundColor Yellow
+Write-Host "Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "Tests rÃ©ussis : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s : $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "Tests ignorÃ©s : $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Cyan
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Cyan
 
     $htmlReportPath = Join-Path -Path $OutputDirectory -ChildPath "TestReport.html"
 
@@ -265,35 +265,35 @@ if ($GenerateHtmlReport) {
         <h1>Rapport de tests unitaires - Module Format-Converters</h1>
 
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Date d'exécution:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Date d'exÃ©cution:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
             <p><strong>Version de Pester:</strong> $pesterVersion</p>
         </div>
 
         <div class="metrics">
             <div class="metric-card">
-                <h3>Tests exécutés</h3>
+                <h3>Tests exÃ©cutÃ©s</h3>
                 <div class="metric-value neutral">$($testResults.TotalCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests réussis</h3>
+                <h3>Tests rÃ©ussis</h3>
                 <div class="metric-value success">$($testResults.PassedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests échoués</h3>
+                <h3>Tests Ã©chouÃ©s</h3>
                 <div class="metric-value failure">$($testResults.FailedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Tests ignorés</h3>
+                <h3>Tests ignorÃ©s</h3>
                 <div class="metric-value warning">$($testResults.SkippedCount)</div>
             </div>
             <div class="metric-card">
-                <h3>Durée totale</h3>
+                <h3>DurÃ©e totale</h3>
                 <div class="metric-value neutral">$([Math]::Round($testResults.Duration.TotalSeconds, 2)) s</div>
             </div>
         </div>
 
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
 "@
 
     # Regrouper les tests par fichier
@@ -316,8 +316,8 @@ if ($GenerateHtmlReport) {
                 <thead>
                     <tr>
                         <th>Nom du test</th>
-                        <th>Résultat</th>
-                        <th>Durée</th>
+                        <th>RÃ©sultat</th>
+                        <th>DurÃ©e</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -357,8 +357,8 @@ if ($GenerateHtmlReport) {
 "@
 
     $html | Set-Content -Path $htmlReportPath -Encoding UTF8
-    Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

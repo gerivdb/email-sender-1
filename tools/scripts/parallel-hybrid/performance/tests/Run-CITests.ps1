@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script pour exécuter les tests dans un environnement CI/CD.
+    Script pour exÃ©cuter les tests dans un environnement CI/CD.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et génère des rapports de couverture
-    et de résultats au format compatible avec les systèmes CI/CD.
+    Ce script exÃ©cute tous les tests unitaires et gÃ©nÃ¨re des rapports de couverture
+    et de rÃ©sultats au format compatible avec les systÃ¨mes CI/CD.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -20,12 +20,12 @@ param(
     [int]$ThresholdPercent = 70
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -49,23 +49,23 @@ $pesterConfig.CodeCoverage.Path = @(
 $pesterConfig.CodeCoverage.OutputFormat = 'JaCoCo'
 $pesterConfig.CodeCoverage.OutputPath = "$OutputPath\coverage.xml"
 
-# Configuration des résultats de test
+# Configuration des rÃ©sultats de test
 $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 $pesterConfig.TestResult.OutputPath = "$OutputPath\TestResults.xml"
 
-# Exécuter les tests
-Write-Host "Exécution des tests..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis  : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués  : $($testResults.FailedCount)" -ForegroundColor ($testResults.FailedCount -gt 0 ? "Red" : "Green")
-Write-Host "  Tests ignorés  : $($testResults.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $($testResults.FailedCount)" -ForegroundColor ($testResults.FailedCount -gt 0 ? "Red" : "Green")
+Write-Host "  Tests ignorÃ©s  : $($testResults.SkippedCount)" -ForegroundColor Yellow
 
-# Vérifier la couverture de code
+# VÃ©rifier la couverture de code
 if ($pesterConfig.CodeCoverage.Enabled) {
     $coveragePercent = [Math]::Round($testResults.CodeCoverage.CoveragePercent, 2)
     
@@ -74,9 +74,9 @@ if ($pesterConfig.CodeCoverage.Enabled) {
     Write-Host "  Seuil minimal     : $ThresholdPercent%" -ForegroundColor White
     Write-Host "  Rapport de couverture : $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor White
     
-    # Vérifier si la couverture est suffisante
+    # VÃ©rifier si la couverture est suffisante
     if ($coveragePercent -lt $ThresholdPercent) {
-        Write-Host "`nAttention : La couverture de code est inférieure au seuil minimal." -ForegroundColor Red
+        Write-Host "`nAttention : La couverture de code est infÃ©rieure au seuil minimal." -ForegroundColor Red
         
         # Afficher les lignes non couvertes
         Write-Host "`nLignes non couvertes :" -ForegroundColor Yellow
@@ -84,25 +84,25 @@ if ($pesterConfig.CodeCoverage.Enabled) {
             Write-Host "  $($file.File) : Ligne $($file.Line)" -ForegroundColor Yellow
         }
         
-        # En environnement CI, on pourrait vouloir échouer le build
+        # En environnement CI, on pourrait vouloir Ã©chouer le build
         # exit 1
     }
 }
 
-# Vérifier si tous les tests ont réussi
+# VÃ©rifier si tous les tests ont rÃ©ussi
 if ($testResults.FailedCount -gt 0) {
-    Write-Host "`nAttention : Certains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nAttention : Certains tests ont Ã©chouÃ©." -ForegroundColor Red
     
-    # Afficher les tests qui ont échoué
-    Write-Host "`nTests échoués :" -ForegroundColor Yellow
+    # Afficher les tests qui ont Ã©chouÃ©
+    Write-Host "`nTests Ã©chouÃ©s :" -ForegroundColor Yellow
     foreach ($test in $testResults.Failed) {
         Write-Host "  $($test.Name)" -ForegroundColor Yellow
         Write-Host "    $($test.ErrorRecord.Exception.Message)" -ForegroundColor Red
     }
     
-    # En environnement CI, on pourrait vouloir échouer le build
+    # En environnement CI, on pourrait vouloir Ã©chouer le build
     # exit 1
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

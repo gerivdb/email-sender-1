@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Crée des chemins de code alternatifs pour PowerShell 5.1 et 7.
+    CrÃ©e des chemins de code alternatifs pour PowerShell 5.1 et 7.
 .DESCRIPTION
-    Ce script génère des modèles de code compatibles avec PowerShell 5.1 et 7,
-    en implémentant des wrappers de fonctions et des techniques de sélection de code.
+    Ce script gÃ©nÃ¨re des modÃ¨les de code compatibles avec PowerShell 5.1 et 7,
+    en implÃ©mentant des wrappers de fonctions et des techniques de sÃ©lection de code.
 .PARAMETER OutputPath
-    Chemin où enregistrer les modèles de code générés.
+    Chemin oÃ¹ enregistrer les modÃ¨les de code gÃ©nÃ©rÃ©s.
 .PARAMETER ModuleName
-    Nom du module pour lequel générer des modèles de code.
+    Nom du module pour lequel gÃ©nÃ©rer des modÃ¨les de code.
 .EXAMPLE
     .\New-VersionCompatibleCode.ps1 -ModuleName "FileContentIndexer" -OutputPath "D:\Projets\ModuleCompatible"
 .NOTES
@@ -26,12 +26,12 @@ param(
     [string]$OutputPath = "$PSScriptRoot\CompatibleCode"
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour générer un modèle de module compatible
+# Fonction pour gÃ©nÃ©rer un modÃ¨le de module compatible
 function New-CompatibleModuleTemplate {
     param(
         [string]$ModuleName,
@@ -46,7 +46,7 @@ function New-CompatibleModuleTemplate {
 # Compatible avec PowerShell 5.1 et PowerShell 7+
 #
 
-# Détecter la version de PowerShell
+# DÃ©tecter la version de PowerShell
 `$script:isPowerShell7 = `$PSVersionTable.PSVersion.Major -ge 7
 `$script:isPowerShell5 = `$PSVersionTable.PSVersion.Major -eq 5
 
@@ -65,7 +65,7 @@ function Get-PSVersionInfo {
     }
 }
 
-# Fonction pour vérifier si une fonctionnalité est disponible
+# Fonction pour vÃ©rifier si une fonctionnalitÃ© est disponible
 function Test-FeatureAvailability {
     [CmdletBinding()]
     param(
@@ -91,7 +91,7 @@ function Test-FeatureAvailability {
 }
 
 #
-# Implémentation compatible avec les deux versions
+# ImplÃ©mentation compatible avec les deux versions
 #
 
 # Exemple de factory function au lieu d'une classe
@@ -105,7 +105,7 @@ function New-$ModuleName {
         [hashtable]`$Properties = @{}
     )
 
-    # Créer un objet de base
+    # CrÃ©er un objet de base
     `$instance = [PSCustomObject]@{
         Name = `$Name
         Properties = `$Properties
@@ -113,12 +113,12 @@ function New-$ModuleName {
         PSTypeName = "$ModuleName"
     }
 
-    # Ajouter des méthodes en fonction de la version de PowerShell
+    # Ajouter des mÃ©thodes en fonction de la version de PowerShell
     if (`$script:isPowerShell7) {
-        # Utiliser des fonctionnalités PowerShell 7
+        # Utiliser des fonctionnalitÃ©s PowerShell 7
         `$instance | Add-Member -MemberType ScriptMethod -Name "Process" -Value {
             param([string]`$input)
-            return `$input ?? "Default" # Utilisation de l'opérateur null-coalescing
+            return `$input ?? "Default" # Utilisation de l'opÃ©rateur null-coalescing
         }
     } else {
         # Version compatible PowerShell 5.1
@@ -128,7 +128,7 @@ function New-$ModuleName {
         }
     }
 
-    # Ajouter une méthode commune
+    # Ajouter une mÃ©thode commune
     `$instance | Add-Member -MemberType ScriptMethod -Name "ToString" -Value {
         return "`$(`$this.Name) [Created: `$(`$this.CreatedAt)]"
     }
@@ -136,7 +136,7 @@ function New-$ModuleName {
     return `$instance
 }
 
-# Fonction wrapper pour la parallélisation
+# Fonction wrapper pour la parallÃ©lisation
 function Invoke-Parallel {
     [CmdletBinding()]
     param(
@@ -157,7 +157,7 @@ function Invoke-Parallel {
         # Utiliser une approche compatible avec PowerShell 5.1
         `$results = @()
 
-        # Créer un pool de runspaces
+        # CrÃ©er un pool de runspaces
         `$sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
         `$pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(1, `$ThrottleLimit, `$sessionState, `$Host)
         `$pool.Open()
@@ -165,7 +165,7 @@ function Invoke-Parallel {
         try {
             `$runspaces = @()
 
-            # Créer un runspace pour chaque élément d'entrée
+            # CrÃ©er un runspace pour chaque Ã©lÃ©ment d'entrÃ©e
             foreach (`$item in `$InputObject) {
                 `$powershell = [System.Management.Automation.PowerShell]::Create()
                 `$powershell.RunspacePool = `$pool
@@ -179,7 +179,7 @@ function Invoke-Parallel {
                 }
             }
 
-            # Collecter les résultats
+            # Collecter les rÃ©sultats
             foreach (`$runspace in `$runspaces) {
                 `$results += `$runspace.PowerShell.EndInvoke(`$runspace.AsyncResult)
                 `$runspace.PowerShell.Dispose()
@@ -203,7 +203,7 @@ Export-ModuleMember -Function New-$ModuleName, Invoke-Parallel, Get-PSVersionInf
     return $modulePath
 }
 
-# Fonction pour générer un exemple d'utilisation
+# Fonction pour gÃ©nÃ©rer un exemple d'utilisation
 function New-UsageExampleScript {
     param(
         [string]$ModuleName,
@@ -229,8 +229,8 @@ Write-Host "PowerShell 7+: `$(`$versionInfo.IsPowerShell7)" -ForegroundColor Cya
 Write-Host "PowerShell 5.1: `$(`$versionInfo.IsPowerShell5)" -ForegroundColor Cyan
 Write-Host ""
 
-# Vérifier la disponibilité des fonctionnalités
-Write-Host "Vérification des fonctionnalités disponibles:" -ForegroundColor Cyan
+# VÃ©rifier la disponibilitÃ© des fonctionnalitÃ©s
+Write-Host "VÃ©rification des fonctionnalitÃ©s disponibles:" -ForegroundColor Cyan
 `$features = @('Classes', 'AdvancedClasses', 'Ternary', 'PipelineChain', 'NullCoalescing', 'ForEachParallel')
 foreach (`$feature in `$features) {
     `$available = Test-FeatureAvailability -FeatureName `$feature
@@ -238,27 +238,27 @@ foreach (`$feature in `$features) {
 }
 Write-Host ""
 
-# Créer une instance du module
-Write-Host "Création d'une instance de ${ModuleName}:" -ForegroundColor Cyan
+# CrÃ©er une instance du module
+Write-Host "CrÃ©ation d'une instance de ${ModuleName}:" -ForegroundColor Cyan
 `$instance = New-$ModuleName -Name "MonInstance" -Properties @{
     Setting1 = "Valeur1"
     Setting2 = 42
 }
 
-Write-Host "Instance créée: `$(`$instance.ToString())"
-Write-Host "Propriétés: `$(`$instance.Properties | ConvertTo-Json -Compress)"
+Write-Host "Instance crÃ©Ã©e: `$(`$instance.ToString())"
+Write-Host "PropriÃ©tÃ©s: `$(`$instance.Properties | ConvertTo-Json -Compress)"
 Write-Host ""
 
-# Tester la méthode Process
-Write-Host "Test de la méthode Process:" -ForegroundColor Cyan
+# Tester la mÃ©thode Process
+Write-Host "Test de la mÃ©thode Process:" -ForegroundColor Cyan
 `$result1 = `$instance.Process("Test")
 `$result2 = `$instance.Process(`$null)
 Write-Host "  Process('Test'): `$result1"
 Write-Host "  Process(null): `$result2"
 Write-Host ""
 
-# Tester la parallélisation
-Write-Host "Test de parallélisation:" -ForegroundColor Cyan
+# Tester la parallÃ©lisation
+Write-Host "Test de parallÃ©lisation:" -ForegroundColor Cyan
 `$items = 1..5
 `$results = Invoke-Parallel -ScriptBlock {
     param(`$item)
@@ -272,7 +272,7 @@ Write-Host "Test de parallélisation:" -ForegroundColor Cyan
     }
 } -InputObject `$items -ThrottleLimit 3
 
-Write-Host "Résultats de la parallélisation:"
+Write-Host "RÃ©sultats de la parallÃ©lisation:"
 `$results | Format-Table -AutoSize
 "@
 
@@ -280,7 +280,7 @@ Write-Host "Résultats de la parallélisation:"
     return $examplePath
 }
 
-# Fonction pour générer un guide de migration
+# Fonction pour gÃ©nÃ©rer un guide de migration
 function New-MigrationGuide {
     param(
         [string]$ModuleName,
@@ -292,15 +292,15 @@ function New-MigrationGuide {
     $guideContent = @"
 # Guide de migration vers PowerShell 7 pour le module $ModuleName
 
-Ce guide explique comment migrer votre code du module $ModuleName de PowerShell 5.1 vers PowerShell 7, en mettant en évidence les différences clés et les meilleures pratiques.
+Ce guide explique comment migrer votre code du module $ModuleName de PowerShell 5.1 vers PowerShell 7, en mettant en Ã©vidence les diffÃ©rences clÃ©s et les meilleures pratiques.
 
-## Différences de syntaxe et de comportement
+## DiffÃ©rences de syntaxe et de comportement
 
-### 1. Opérateurs et expressions
+### 1. OpÃ©rateurs et expressions
 
-PowerShell 7 introduit plusieurs nouveaux opérateurs qui simplifient le code :
+PowerShell 7 introduit plusieurs nouveaux opÃ©rateurs qui simplifient le code :
 
-- **Opérateur ternaire** : Disponible uniquement dans PowerShell 7
+- **OpÃ©rateur ternaire** : Disponible uniquement dans PowerShell 7
   - PS5: `if (condition) { valeurSiVrai } else { valeurSiFaux }`
   - PS7: `condition ? valeurSiVrai : valeurSiFaux`
 
@@ -308,7 +308,7 @@ PowerShell 7 introduit plusieurs nouveaux opérateurs qui simplifient le code :
   - PS5: `if ($null -eq $var) { $default } else { $var }`
   - PS7: `$var ?? $default`
 
-- **Chaînage de pipeline** : Disponible uniquement dans PowerShell 7
+- **ChaÃ®nage de pipeline** : Disponible uniquement dans PowerShell 7
   - PS5: `$result = cmd1; $result | cmd2`
   - PS7: `cmd1 |> cmd2`
 
@@ -316,32 +316,32 @@ PowerShell 7 introduit plusieurs nouveaux opérateurs qui simplifient le code :
 
 PowerShell 7 offre un meilleur support pour les classes :
 
-- **Classes de base** : Support amélioré dans PowerShell 7
-- **Héritage** : Mieux géré dans PowerShell 7
-- **Interfaces** : Supporté uniquement dans PowerShell 7
-- **Constructeurs** : Options avancées dans PowerShell 7
+- **Classes de base** : Support amÃ©liorÃ© dans PowerShell 7
+- **HÃ©ritage** : Mieux gÃ©rÃ© dans PowerShell 7
+- **Interfaces** : SupportÃ© uniquement dans PowerShell 7
+- **Constructeurs** : Options avancÃ©es dans PowerShell 7
 
-### 3. Parallélisation
+### 3. ParallÃ©lisation
 
-PowerShell 7 simplifie la parallélisation :
+PowerShell 7 simplifie la parallÃ©lisation :
 
-- **ForEach parallèle** :
+- **ForEach parallÃ¨le** :
   - PS5: Runspaces manuels
   - PS7: `ForEach-Object -Parallel`
 
 - **Throttling** :
-  - PS5: Implémentation manuelle
-  - PS7: Paramètre `-ThrottleLimit`
+  - PS5: ImplÃ©mentation manuelle
+  - PS7: ParamÃ¨tre `-ThrottleLimit`
 
-- **Variables partagées** :
-  - PS5: Implémentation complexe
-  - PS7: Préfixe 'using:'
+- **Variables partagÃ©es** :
+  - PS5: ImplÃ©mentation complexe
+  - PS7: PrÃ©fixe 'using:'
 
-## Stratégies de migration
+## StratÃ©gies de migration
 
 ### Approche 1: Code conditionnel
 
-Utilisez des conditions pour exécuter différent code selon la version:
+Utilisez des conditions pour exÃ©cuter diffÃ©rent code selon la version:
 
 ```powershell
 if ($PSVersionTable.PSVersion.Major -ge 7) {
@@ -353,7 +353,7 @@ if ($PSVersionTable.PSVersion.Major -ge 7) {
 
 ### Approche 2: Factory functions
 
-Utilisez des factory functions au lieu de classes pour une meilleure compatibilité:
+Utilisez des factory functions au lieu de classes pour une meilleure compatibilitÃ©:
 
 ```powershell
 function New-MyObject {
@@ -363,19 +363,19 @@ function New-MyObject {
         Name = $Name
     }
 
-    # Ajouter des méthodes
+    # Ajouter des mÃ©thodes
     $obj | Add-Member -MemberType ScriptMethod -Name "DoSomething" -Value {
         param([string]$input)
-        # Implémentation
+        # ImplÃ©mentation
     }
 
     return $obj
 }
 ```
 
-### Approche 3: Wrappers de fonctionnalités
+### Approche 3: Wrappers de fonctionnalitÃ©s
 
-Créez des wrappers pour les fonctionnalités spécifiques à une version:
+CrÃ©ez des wrappers pour les fonctionnalitÃ©s spÃ©cifiques Ã  une version:
 
 ```powershell
 function Invoke-Parallel {
@@ -389,7 +389,7 @@ function Invoke-Parallel {
         # Utiliser ForEach-Object -Parallel
         return $InputObject | ForEach-Object -Parallel $ScriptBlock -ThrottleLimit $ThrottleLimit
     } else {
-        # Implémentation compatible PS 5.1 avec Runspaces
+        # ImplÃ©mentation compatible PS 5.1 avec Runspaces
         # ...
     }
 }
@@ -398,41 +398,41 @@ function Invoke-Parallel {
 ## Meilleures pratiques
 
 1. **Tester sur les deux versions**: Assurez-vous que votre code fonctionne correctement sur PowerShell 5.1 et 7.
-2. **Utiliser des factory functions**: Préférez les factory functions aux classes pour une meilleure compatibilité.
-3. **Éviter les fonctionnalités exclusives**: Évitez d'utiliser des fonctionnalités exclusives à PowerShell 7 si la compatibilité avec PowerShell 5.1 est requise.
-4. **Documenter les différences**: Documentez clairement les différences de comportement entre les versions.
-5. **Utiliser des wrappers**: Créez des wrappers pour les fonctionnalités spécifiques à une version.
+2. **Utiliser des factory functions**: PrÃ©fÃ©rez les factory functions aux classes pour une meilleure compatibilitÃ©.
+3. **Ã‰viter les fonctionnalitÃ©s exclusives**: Ã‰vitez d'utiliser des fonctionnalitÃ©s exclusives Ã  PowerShell 7 si la compatibilitÃ© avec PowerShell 5.1 est requise.
+4. **Documenter les diffÃ©rences**: Documentez clairement les diffÃ©rences de comportement entre les versions.
+5. **Utiliser des wrappers**: CrÃ©ez des wrappers pour les fonctionnalitÃ©s spÃ©cifiques Ã  une version.
 
-## Ressources supplémentaires
+## Ressources supplÃ©mentaires
 
 - [Documentation officielle PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-70)
 - [Guide de migration PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/migrating-from-windows-powershell-51-to-powershell-7)
-- [Nouveautés de PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-70)
+- [NouveautÃ©s de PowerShell 7](https://docs.microsoft.com/en-us/powershell/scripting/whats-new/what-s-new-in-powershell-70)
 "@
 
     $guideContent | Out-File -FilePath $guidePath -Encoding UTF8
     return $guidePath
 }
 
-# Générer les fichiers
+# GÃ©nÃ©rer les fichiers
 $modulePath = New-CompatibleModuleTemplate -ModuleName $ModuleName -OutputPath $OutputPath
 $examplePath = New-UsageExampleScript -ModuleName $ModuleName -OutputPath $OutputPath
 $guidePath = New-MigrationGuide -ModuleName $ModuleName -OutputPath $OutputPath
 
-# Afficher un résumé
-Write-Host "Génération de code compatible terminée!" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "GÃ©nÃ©ration de code compatible terminÃ©e!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Fichiers générés:" -ForegroundColor Cyan
+Write-Host "Fichiers gÃ©nÃ©rÃ©s:" -ForegroundColor Cyan
 Write-Host "  Module: $modulePath"
 Write-Host "  Exemple: $examplePath"
 Write-Host "  Guide de migration: $guidePath"
 Write-Host ""
 Write-Host "Pour tester le module:"
 Write-Host "  1. Ouvrez PowerShell 5.1 ou 7"
-Write-Host "  2. Naviguez vers le répertoire: $OutputPath"
-Write-Host "  3. Exécutez: .\Example-$ModuleName.ps1"
+Write-Host "  2. Naviguez vers le rÃ©pertoire: $OutputPath"
+Write-Host "  3. ExÃ©cutez: .\Example-$ModuleName.ps1"
 
-# Retourner un objet avec les chemins des fichiers générés
+# Retourner un objet avec les chemins des fichiers gÃ©nÃ©rÃ©s
 return @{
     ModulePath  = $modulePath
     ExamplePath = $examplePath

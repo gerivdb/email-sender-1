@@ -1,4 +1,4 @@
-# Module d'analyse avancée pour le Script Manager
+﻿# Module d'analyse avancÃ©e pour le Script Manager
 # Ce module coordonne l'analyse approfondie des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -27,11 +27,11 @@ function Invoke-ScriptAnalysis {
     .SYNOPSIS
         Analyse approfondie des scripts
     .DESCRIPTION
-        Effectue une analyse statique, détecte les dépendances et évalue la qualité du code
+        Effectue une analyse statique, dÃ©tecte les dÃ©pendances et Ã©value la qualitÃ© du code
     .PARAMETER InventoryPath
         Chemin vers le fichier d'inventaire JSON
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de l'analyse
+        Chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse
     .PARAMETER Depth
         Niveau de profondeur de l'analyse (Basic, Standard, Advanced)
     .EXAMPLE
@@ -49,9 +49,9 @@ function Invoke-ScriptAnalysis {
         [string]$Depth = "Standard"
     )
     
-    # Vérifier si le fichier d'inventaire existe
+    # VÃ©rifier si le fichier d'inventaire existe
     if (-not (Test-Path -Path $InventoryPath)) {
-        Write-Error "Fichier d'inventaire non trouvé: $InventoryPath"
+        Write-Error "Fichier d'inventaire non trouvÃ©: $InventoryPath"
         return $null
     }
     
@@ -64,10 +64,10 @@ function Invoke-ScriptAnalysis {
     }
     
     Write-Host "Analyse des scripts en cours..." -ForegroundColor Cyan
-    Write-Host "Nombre de scripts à analyser: $($Inventory.TotalScripts)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts Ã  analyser: $($Inventory.TotalScripts)" -ForegroundColor Cyan
     Write-Host "Niveau d'analyse: $Depth" -ForegroundColor Cyan
     
-    # Créer un tableau pour stocker les résultats de l'analyse
+    # CrÃ©er un tableau pour stocker les rÃ©sultats de l'analyse
     $AnalysisResults = @()
     
     # Traiter chaque script
@@ -90,16 +90,16 @@ function Invoke-ScriptAnalysis {
         # Effectuer l'analyse statique
         $StaticAnalysis = Invoke-StaticAnalysis -Content $Content -ScriptType $Script.Type -Depth $Depth
         
-        # Détecter les dépendances
+        # DÃ©tecter les dÃ©pendances
         $Dependencies = Get-ScriptDependencies -Content $Content -ScriptType $Script.Type -Path $Script.Path
         
-        # Analyser la qualité du code
+        # Analyser la qualitÃ© du code
         $CodeQuality = Measure-CodeQuality -Content $Content -ScriptType $Script.Type
         
-        # Détecter les problèmes potentiels
+        # DÃ©tecter les problÃ¨mes potentiels
         $Problems = Find-CodeProblems -Content $Content -ScriptType $Script.Type -Path $Script.Path
         
-        # Créer un objet avec les résultats de l'analyse
+        # CrÃ©er un objet avec les rÃ©sultats de l'analyse
         $AnalysisResult = [PSCustomObject]@{
             Path = $Script.Path
             Name = $Script.Name
@@ -118,7 +118,7 @@ function Invoke-ScriptAnalysis {
     
     Write-Progress -Activity "Analyse des scripts" -Completed
     
-    # Créer un objet avec les résultats de l'analyse
+    # CrÃ©er un objet avec les rÃ©sultats de l'analyse
     $Analysis = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $AnalysisResults.Count
@@ -138,7 +138,7 @@ function Invoke-ScriptAnalysis {
     # Convertir l'objet en JSON et l'enregistrer dans un fichier
     $Analysis | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    Write-Host "Analyse terminée. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
+    Write-Host "Analyse terminÃ©e. RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
     
     return $Analysis
 }

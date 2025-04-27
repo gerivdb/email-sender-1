@@ -1,5 +1,5 @@
-# Test-ProjectConventions.ps1
-# Script pour tester l'analyse des conventions spécifiques au projet
+﻿# Test-ProjectConventions.ps1
+# Script pour tester l'analyse des conventions spÃ©cifiques au projet
 
 param (
     [Parameter(Mandatory = $false)]
@@ -10,7 +10,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapAnalyzer.psm1"
 Import-Module $modulePath -Force
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $RoadmapFilePath)) {
     Write-Error "Le fichier '$RoadmapFilePath' n'existe pas."
     exit 1
@@ -19,31 +19,31 @@ if (-not (Test-Path -Path $RoadmapFilePath)) {
 # Lire le contenu du fichier
 $content = Get-Content -Path $RoadmapFilePath -Encoding UTF8 -Raw
 
-# Analyser les conventions spécifiques au projet
-Write-Host "Analyse des conventions spécifiques au projet dans: $RoadmapFilePath" -ForegroundColor Cyan
+# Analyser les conventions spÃ©cifiques au projet
+Write-Host "Analyse des conventions spÃ©cifiques au projet dans: $RoadmapFilePath" -ForegroundColor Cyan
 $conventions = Get-ProjectConventions -Content $content
 
-# Afficher les résultats
-Write-Host "`nConventions spécifiques au projet détectées:" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "`nConventions spÃ©cifiques au projet dÃ©tectÃ©es:" -ForegroundColor Green
 
-# Identifiants de tâches
-Write-Host "`n1. Identifiants de tâches:" -ForegroundColor Yellow
+# Identifiants de tÃ¢ches
+Write-Host "`n1. Identifiants de tÃ¢ches:" -ForegroundColor Yellow
 if ($null -eq $conventions.TaskIdentifiers.Pattern) {
-    Write-Host "  Aucun format d'identifiant de tâche spécifique détecté."
+    Write-Host "  Aucun format d'identifiant de tÃ¢che spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.TaskIdentifiers.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.TaskIdentifiers.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.TaskIdentifiers.Examples) {
         Write-Host "    - $example"
     }
 }
 
-# Indicateurs de priorité
-Write-Host "`n2. Indicateurs de priorité:" -ForegroundColor Yellow
+# Indicateurs de prioritÃ©
+Write-Host "`n2. Indicateurs de prioritÃ©:" -ForegroundColor Yellow
 if ($null -eq $conventions.PriorityIndicators.Pattern) {
-    Write-Host "  Aucun indicateur de priorité spécifique détecté."
+    Write-Host "  Aucun indicateur de prioritÃ© spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.PriorityIndicators.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.PriorityIndicators.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.PriorityIndicators.Examples) {
         Write-Host "    - $example"
@@ -53,32 +53,32 @@ if ($null -eq $conventions.PriorityIndicators.Pattern) {
 # Indicateurs de statut
 Write-Host "`n3. Indicateurs de statut:" -ForegroundColor Yellow
 if ($null -eq $conventions.StatusIndicators.Pattern) {
-    Write-Host "  Aucun indicateur de statut spécifique détecté."
+    Write-Host "  Aucun indicateur de statut spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.StatusIndicators.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.StatusIndicators.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.StatusIndicators.Examples) {
         Write-Host "    - $example"
     }
 }
 
-# Sections spéciales
-Write-Host "`n4. Sections spéciales:" -ForegroundColor Yellow
+# Sections spÃ©ciales
+Write-Host "`n4. Sections spÃ©ciales:" -ForegroundColor Yellow
 if ($conventions.SpecialSections.Count -eq 0) {
-    Write-Host "  Aucune section spéciale détectée."
+    Write-Host "  Aucune section spÃ©ciale dÃ©tectÃ©e."
 } else {
-    Write-Host "  Sections détectées:"
+    Write-Host "  Sections dÃ©tectÃ©es:"
     foreach ($section in $conventions.SpecialSections) {
         Write-Host "    - $section"
     }
 }
 
-# Format des métadonnées
-Write-Host "`n5. Format des métadonnées:" -ForegroundColor Yellow
+# Format des mÃ©tadonnÃ©es
+Write-Host "`n5. Format des mÃ©tadonnÃ©es:" -ForegroundColor Yellow
 if ($null -eq $conventions.MetadataFormat) {
-    Write-Host "  Aucun format de métadonnées spécifique détecté."
+    Write-Host "  Aucun format de mÃ©tadonnÃ©es spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.MetadataFormat)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.MetadataFormat)"
 }
 
-Write-Host "`nAnalyse terminée." -ForegroundColor Cyan
+Write-Host "`nAnalyse terminÃ©e." -ForegroundColor Cyan

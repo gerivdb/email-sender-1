@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-Teste le système d'inventaire et de classification des scripts
+Teste le systÃ¨me d'inventaire et de classification des scripts
 
 .DESCRIPTION
-Ce script vérifie que :
+Ce script vÃ©rifie que :
 - Le module ScriptInventoryManager fonctionne correctement
-- La détection des scripts redondants est efficace
-- La classification des scripts est cohérente
+- La dÃ©tection des scripts redondants est efficace
+- La classification des scripts est cohÃ©rente
 #>
 
-# Charger les modules nécessaires
+# Charger les modules nÃ©cessaires
 Import-Module $PSScriptRoot/../../modules/ScriptInventoryManager.psm1 -Force
 Import-Module Pester -MinimumVersion 5.0 -ErrorAction Stop
 
-Describe "Tests du système d'inventaire des scripts" {
+Describe "Tests du systÃ¨me d'inventaire des scripts" {
     BeforeAll {
-        # Créer un environnement de test temporaire
+        # CrÃ©er un environnement de test temporaire
         $testDir = "TestDrive:\script_test"
         New-Item -ItemType Directory -Path $testDir -Force | Out-Null
 
-        # Créer des scripts de test
+        # CrÃ©er des scripts de test
         @'
 <#
 .Author: TestUser
@@ -40,12 +40,12 @@ function Test-Core { Write-Output "Core function" }
 function Test-Gestion { Write-Output "Gestion function" }
 '@ | Out-File "$testDir\Test-Gestion.ps1"
 
-        # Copie légèrement modifiée pour tester la détection de similarité
+        # Copie lÃ©gÃ¨rement modifiÃ©e pour tester la dÃ©tection de similaritÃ©
         @'
 <#
 .Author: TestUser
 .Version: 1.1
-.Description: Script de test core modifié
+.Description: Script de test core modifiÃ©
 .Tags: test,core,modified
 #>
 function Test-Core { Write-Output "Core function modified" }
@@ -53,12 +53,12 @@ function Test-Core { Write-Output "Core function modified" }
     }
 
     Context "Test du module ScriptInventoryManager" {
-        It "Doit détecter les 3 scripts de test" {
+        It "Doit dÃ©tecter les 3 scripts de test" {
             $scripts = Get-ScriptInventory -Path $testDir -ForceRescan
             $scripts.Count | Should -Be 3
         }
 
-        It "Doit extraire correctement les métadonnées" {
+        It "Doit extraire correctement les mÃ©tadonnÃ©es" {
             $scripts = Get-ScriptInventory -Path $testDir -ForceRescan
             $script = $scripts | Where-Object { $_.FileName -eq "Test-Core.ps1" } | Select-Object -First 1
             $script.Author | Should -BeExactly "TestUser"
@@ -68,8 +68,8 @@ function Test-Core { Write-Output "Core function modified" }
         }
     }
 
-    Context "Test de détection des scripts redondants" {
-        It "Doit détecter les scripts similaires" {
+    Context "Test de dÃ©tection des scripts redondants" {
+        It "Doit dÃ©tecter les scripts similaires" {
             $result = & "$PSScriptRoot/../analysis/Find-RedundantScripts.ps1" -Path $testDir -SimilarityThreshold 80
             $result | Should -Not -BeNullOrEmpty
             ($result | Where-Object { $_.Script1 -like "*Test-Core*" -and $_.Script2 -like "*Test-Core*" }).Count | Should -BeGreaterThan 0

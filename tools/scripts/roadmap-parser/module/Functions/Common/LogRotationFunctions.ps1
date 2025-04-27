@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de rotation des journaux pour les modes RoadmapParser.
 
 .DESCRIPTION
     Ce script contient des fonctions pour la rotation des fichiers de journalisation
-    dans les différents modes de RoadmapParser.
+    dans les diffÃ©rents modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Configuration par défaut pour la rotation des journaux
+# Configuration par dÃ©faut pour la rotation des journaux
 $script:LogRotationConfig = @{
     # Configuration de rotation par taille
     SizeBasedRotation = @{
         Enabled     = $true
-        MaxSizeKB   = 1024  # Taille maximale du fichier de journal en KB (1 MB par défaut)
-        BackupCount = 5   # Nombre de fichiers de sauvegarde à conserver
+        MaxSizeKB   = 1024  # Taille maximale du fichier de journal en KB (1 MB par dÃ©faut)
+        BackupCount = 5   # Nombre de fichiers de sauvegarde Ã  conserver
     }
 
     # Configuration de rotation par date
@@ -38,8 +38,8 @@ $script:LogRotationConfig = @{
     # Configuration de purge automatique
     AutoPurge         = @{
         Enabled        = $true
-        MaxAge         = 90  # Âge maximal des fichiers en jours
-        MaxCount       = 100  # Nombre maximal de fichiers à conserver
+        MaxAge         = 90  # Ã‚ge maximal des fichiers en jours
+        MaxCount       = 100  # Nombre maximal de fichiers Ã  conserver
         MinDiskSpaceGB = 1  # Espace disque minimal requis en GB
     }
 }
@@ -66,31 +66,31 @@ function Get-LogRotationConfig {
 
 <#
 .SYNOPSIS
-    Définit la configuration de rotation des journaux.
+    DÃ©finit la configuration de rotation des journaux.
 
 .DESCRIPTION
     Cette fonction permet de modifier la configuration de rotation des journaux.
 
 .PARAMETER SizeBasedEnabled
-    Indique si la rotation basée sur la taille est activée.
+    Indique si la rotation basÃ©e sur la taille est activÃ©e.
 
 .PARAMETER MaxSizeKB
     Taille maximale du fichier de journal en KB.
 
 .PARAMETER BackupCount
-    Nombre de fichiers de sauvegarde à conserver.
+    Nombre de fichiers de sauvegarde Ã  conserver.
 
 .PARAMETER DateBasedEnabled
-    Indique si la rotation basée sur la date est activée.
+    Indique si la rotation basÃ©e sur la date est activÃ©e.
 
 .PARAMETER Interval
-    Intervalle de rotation basée sur la date.
+    Intervalle de rotation basÃ©e sur la date.
 
 .PARAMETER RetentionDays
     Nombre de jours de conservation des journaux.
 
 .PARAMETER CompressionEnabled
-    Indique si la compression des journaux est activée.
+    Indique si la compression des journaux est activÃ©e.
 
 .PARAMETER CompressionFormat
     Format de compression des journaux.
@@ -99,13 +99,13 @@ function Get-LogRotationConfig {
     Compresser les fichiers plus anciens que X jours.
 
 .PARAMETER AutoPurgeEnabled
-    Indique si la purge automatique est activée.
+    Indique si la purge automatique est activÃ©e.
 
 .PARAMETER MaxAge
-    Âge maximal des fichiers en jours.
+    Ã‚ge maximal des fichiers en jours.
 
 .PARAMETER MaxCount
-    Nombre maximal de fichiers à conserver.
+    Nombre maximal de fichiers Ã  conserver.
 
 .PARAMETER MinDiskSpaceGB
     Espace disque minimal requis en GB.
@@ -161,7 +161,7 @@ function Set-LogRotationConfig {
         [double]$MinDiskSpaceGB
     )
 
-    # Mettre à jour la configuration de rotation par taille
+    # Mettre Ã  jour la configuration de rotation par taille
     if ($PSBoundParameters.ContainsKey('SizeBasedEnabled')) {
         $script:LogRotationConfig.SizeBasedRotation.Enabled = $SizeBasedEnabled
     }
@@ -174,7 +174,7 @@ function Set-LogRotationConfig {
         $script:LogRotationConfig.SizeBasedRotation.BackupCount = $BackupCount
     }
 
-    # Mettre à jour la configuration de rotation par date
+    # Mettre Ã  jour la configuration de rotation par date
     if ($PSBoundParameters.ContainsKey('DateBasedEnabled')) {
         $script:LogRotationConfig.DateBasedRotation.Enabled = $DateBasedEnabled
     }
@@ -187,7 +187,7 @@ function Set-LogRotationConfig {
         $script:LogRotationConfig.DateBasedRotation.RetentionDays = $RetentionDays
     }
 
-    # Mettre à jour la configuration de compression
+    # Mettre Ã  jour la configuration de compression
     if ($PSBoundParameters.ContainsKey('CompressionEnabled')) {
         $script:LogRotationConfig.Compression.Enabled = $CompressionEnabled
     }
@@ -200,7 +200,7 @@ function Set-LogRotationConfig {
         $script:LogRotationConfig.Compression.CompressAfterDays = $CompressAfterDays
     }
 
-    # Mettre à jour la configuration de purge automatique
+    # Mettre Ã  jour la configuration de purge automatique
     if ($PSBoundParameters.ContainsKey('AutoPurgeEnabled')) {
         $script:LogRotationConfig.AutoPurge.Enabled = $AutoPurgeEnabled
     }
@@ -217,18 +217,18 @@ function Set-LogRotationConfig {
         $script:LogRotationConfig.AutoPurge.MinDiskSpaceGB = $MinDiskSpaceGB
     }
 
-    Write-Verbose "Configuration de rotation des journaux mise à jour."
+    Write-Verbose "Configuration de rotation des journaux mise Ã  jour."
 }
 
 <#
 .SYNOPSIS
-    Vérifie si un fichier de journal doit être rotaté en fonction de sa taille.
+    VÃ©rifie si un fichier de journal doit Ãªtre rotatÃ© en fonction de sa taille.
 
 .DESCRIPTION
-    Cette fonction vérifie si un fichier de journal doit être rotaté en fonction de sa taille.
+    Cette fonction vÃ©rifie si un fichier de journal doit Ãªtre rotatÃ© en fonction de sa taille.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à vérifier.
+    Chemin vers le fichier de journal Ã  vÃ©rifier.
 
 .EXAMPLE
     $shouldRotate = Test-LogRotationBySize -LogFile "logs\app.log"
@@ -259,13 +259,13 @@ function Test-LogRotationBySize {
 
 <#
 .SYNOPSIS
-    Vérifie si un fichier de journal doit être rotaté en fonction de sa date.
+    VÃ©rifie si un fichier de journal doit Ãªtre rotatÃ© en fonction de sa date.
 
 .DESCRIPTION
-    Cette fonction vérifie si un fichier de journal doit être rotaté en fonction de sa date.
+    Cette fonction vÃ©rifie si un fichier de journal doit Ãªtre rotatÃ© en fonction de sa date.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à vérifier.
+    Chemin vers le fichier de journal Ã  vÃ©rifier.
 
 .EXAMPLE
     $shouldRotate = Test-LogRotationByDate -LogFile "logs\app.log"
@@ -317,10 +317,10 @@ function Test-LogRotationByDate {
 
 .DESCRIPTION
     Cette fonction effectue la rotation d'un fichier de journal en fonction de sa taille.
-    Elle crée des fichiers de sauvegarde numérotés.
+    Elle crÃ©e des fichiers de sauvegarde numÃ©rotÃ©s.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à rotater.
+    Chemin vers le fichier de journal Ã  rotater.
 
 .EXAMPLE
     Invoke-LogRotationBySize -LogFile "logs\app.log"
@@ -348,7 +348,7 @@ function Invoke-LogRotationBySize {
         Remove-Item -Path $oldestBackup -Force
     }
 
-    # Décaler les fichiers de sauvegarde existants
+    # DÃ©caler les fichiers de sauvegarde existants
     for ($i = $backupCount - 1; $i -ge 1; $i--) {
         $currentBackup = "$LogFile.$i"
         $nextBackup = "$LogFile.$($i + 1)"
@@ -358,13 +358,13 @@ function Invoke-LogRotationBySize {
         }
     }
 
-    # Créer le premier fichier de sauvegarde
+    # CrÃ©er le premier fichier de sauvegarde
     Copy-Item -Path $LogFile -Destination "$LogFile.1" -Force
 
     # Vider le fichier de journal actuel
     Clear-Content -Path $LogFile
 
-    Write-Verbose "Rotation par taille effectuée pour le fichier : $LogFile"
+    Write-Verbose "Rotation par taille effectuÃ©e pour le fichier : $LogFile"
 }
 
 <#
@@ -373,10 +373,10 @@ function Invoke-LogRotationBySize {
 
 .DESCRIPTION
     Cette fonction effectue la rotation d'un fichier de journal en fonction de sa date.
-    Elle crée des fichiers de sauvegarde avec un horodatage.
+    Elle crÃ©e des fichiers de sauvegarde avec un horodatage.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à rotater.
+    Chemin vers le fichier de journal Ã  rotater.
 
 .EXAMPLE
     Invoke-LogRotationByDate -LogFile "logs\app.log"
@@ -399,15 +399,15 @@ function Invoke-LogRotationByDate {
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $backupFile = "$LogFile.$timestamp"
 
-    # Créer le fichier de sauvegarde
+    # CrÃ©er le fichier de sauvegarde
     Copy-Item -Path $LogFile -Destination $backupFile -Force
 
     # Vider le fichier de journal actuel
     Clear-Content -Path $LogFile
 
-    Write-Verbose "Rotation par date effectuée pour le fichier : $LogFile"
+    Write-Verbose "Rotation par date effectuÃ©e pour le fichier : $LogFile"
 
-    # Purger les anciens fichiers de journal si nécessaire
+    # Purger les anciens fichiers de journal si nÃ©cessaire
     if ($script:LogRotationConfig.DateBasedRotation.RetentionDays -gt 0) {
         $cutoffDate = (Get-Date).AddDays(-$script:LogRotationConfig.DateBasedRotation.RetentionDays)
         $logDir = Split-Path -Parent $LogFile
@@ -417,7 +417,7 @@ function Invoke-LogRotationByDate {
             $_.LastWriteTime -lt $cutoffDate
         } | ForEach-Object {
             Remove-Item -Path $_.FullName -Force
-            Write-Verbose "Fichier de journal supprimé (rétention) : $($_.FullName)"
+            Write-Verbose "Fichier de journal supprimÃ© (rÃ©tention) : $($_.FullName)"
         }
     }
 }
@@ -427,10 +427,10 @@ function Invoke-LogRotationByDate {
     Compresse un fichier de journal.
 
 .DESCRIPTION
-    Cette fonction compresse un fichier de journal en utilisant le format spécifié.
+    Cette fonction compresse un fichier de journal en utilisant le format spÃ©cifiÃ©.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à compresser.
+    Chemin vers le fichier de journal Ã  compresser.
 
 .EXAMPLE
     Compress-LogFile -LogFile "logs\app.log.20230815_120000"
@@ -473,10 +473,10 @@ function Compress-LogFile {
             }
         }
 
-        # Supprimer le fichier original après compression
+        # Supprimer le fichier original aprÃ¨s compression
         Remove-Item -Path $LogFile -Force
 
-        Write-Verbose "Fichier de journal compressé : $LogFile -> $compressedFile"
+        Write-Verbose "Fichier de journal compressÃ© : $LogFile -> $compressedFile"
     } catch {
         Write-Warning "Erreur lors de la compression du fichier de journal : $LogFile`n$_"
     }
@@ -488,13 +488,13 @@ function Compress-LogFile {
 
 .DESCRIPTION
     Cette fonction effectue la purge automatique des fichiers de journal en fonction
-    de leur âge, du nombre maximal de fichiers à conserver et de l'espace disque disponible.
+    de leur Ã¢ge, du nombre maximal de fichiers Ã  conserver et de l'espace disque disponible.
 
 .PARAMETER LogDirectory
-    Répertoire contenant les fichiers de journal à purger.
+    RÃ©pertoire contenant les fichiers de journal Ã  purger.
 
 .PARAMETER LogFilePattern
-    Modèle de nom de fichier pour les fichiers de journal à purger.
+    ModÃ¨le de nom de fichier pour les fichiers de journal Ã  purger.
 
 .EXAMPLE
     Invoke-LogAutoPurge -LogDirectory "logs" -LogFilePattern "app.log.*"
@@ -517,11 +517,11 @@ function Invoke-LogAutoPurge {
     }
 
     if (-not (Test-Path -Path $LogDirectory)) {
-        Write-Warning "Le répertoire de journaux n'existe pas : $LogDirectory"
+        Write-Warning "Le rÃ©pertoire de journaux n'existe pas : $LogDirectory"
         return
     }
 
-    # Purger les fichiers en fonction de leur âge
+    # Purger les fichiers en fonction de leur Ã¢ge
     if ($script:LogRotationConfig.AutoPurge.MaxAge -gt 0) {
         $cutoffDate = (Get-Date).AddDays(-$script:LogRotationConfig.AutoPurge.MaxAge)
 
@@ -529,11 +529,11 @@ function Invoke-LogAutoPurge {
             $_.LastWriteTime -lt $cutoffDate
         } | ForEach-Object {
             Remove-Item -Path $_.FullName -Force
-            Write-Verbose "Fichier de journal supprimé (âge) : $($_.FullName)"
+            Write-Verbose "Fichier de journal supprimÃ© (Ã¢ge) : $($_.FullName)"
         }
     }
 
-    # Purger les fichiers en fonction du nombre maximal à conserver
+    # Purger les fichiers en fonction du nombre maximal Ã  conserver
     if ($script:LogRotationConfig.AutoPurge.MaxCount -gt 0) {
         $logFiles = Get-ChildItem -Path $LogDirectory -Filter $LogFilePattern | Sort-Object -Property LastWriteTime -Descending
 
@@ -542,7 +542,7 @@ function Invoke-LogAutoPurge {
 
             foreach ($file in $filesToDelete) {
                 Remove-Item -Path $file.FullName -Force
-                Write-Verbose "Fichier de journal supprimé (nombre) : $($file.FullName)"
+                Write-Verbose "Fichier de journal supprimÃ© (nombre) : $($file.FullName)"
             }
         }
     }
@@ -558,9 +558,9 @@ function Invoke-LogAutoPurge {
 
             foreach ($file in $logFiles) {
                 Remove-Item -Path $file.FullName -Force
-                Write-Verbose "Fichier de journal supprimé (espace disque) : $($file.FullName)"
+                Write-Verbose "Fichier de journal supprimÃ© (espace disque) : $($file.FullName)"
 
-                # Vérifier si l'espace disque est maintenant suffisant
+                # VÃ©rifier si l'espace disque est maintenant suffisant
                 $driveInfo = Get-PSDrive -Name $drive.Replace(":", "")
                 $freeSpaceGB = $driveInfo.Free / 1GB
 
@@ -578,10 +578,10 @@ function Invoke-LogAutoPurge {
 
 .DESCRIPTION
     Cette fonction effectue la rotation d'un fichier de journal en fonction de sa taille et/ou de sa date.
-    Elle gère également la compression et la purge automatique des fichiers de journal.
+    Elle gÃ¨re Ã©galement la compression et la purge automatique des fichiers de journal.
 
 .PARAMETER LogFile
-    Chemin vers le fichier de journal à rotater.
+    Chemin vers le fichier de journal Ã  rotater.
 
 .EXAMPLE
     Invoke-LogRotation -LogFile "logs\app.log"
@@ -603,19 +603,19 @@ function Invoke-LogRotation {
 
     $rotated = $false
 
-    # Vérifier si une rotation par taille est nécessaire
+    # VÃ©rifier si une rotation par taille est nÃ©cessaire
     if (Test-LogRotationBySize -LogFile $LogFile) {
         Invoke-LogRotationBySize -LogFile $LogFile
         $rotated = $true
     }
 
-    # Vérifier si une rotation par date est nécessaire
+    # VÃ©rifier si une rotation par date est nÃ©cessaire
     if (Test-LogRotationByDate -LogFile $LogFile) {
         Invoke-LogRotationByDate -LogFile $LogFile
         $rotated = $true
     }
 
-    # Si une rotation a été effectuée, vérifier si des fichiers doivent être compressés
+    # Si une rotation a Ã©tÃ© effectuÃ©e, vÃ©rifier si des fichiers doivent Ãªtre compressÃ©s
     if ($rotated -and $script:LogRotationConfig.Compression.Enabled) {
         $logDir = Split-Path -Parent $LogFile
         $logFileName = Split-Path -Leaf $LogFile
@@ -628,7 +628,7 @@ function Invoke-LogRotation {
         }
     }
 
-    # Effectuer la purge automatique si nécessaire
+    # Effectuer la purge automatique si nÃ©cessaire
     if ($script:LogRotationConfig.AutoPurge.Enabled) {
         $logDir = Split-Path -Parent $LogFile
         $logFileName = Split-Path -Leaf $LogFile

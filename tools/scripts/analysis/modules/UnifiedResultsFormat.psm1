@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module définissant un format unifié pour les résultats d'analyse de différents outils.
+    Module dÃ©finissant un format unifiÃ© pour les rÃ©sultats d'analyse de diffÃ©rents outils.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour convertir les résultats d'analyse de différents outils
-    (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) vers un format unifié, permettant
-    ainsi de les comparer, fusionner et traiter de manière cohérente.
+    Ce module fournit des fonctions pour convertir les rÃ©sultats d'analyse de diffÃ©rents outils
+    (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) vers un format unifiÃ©, permettant
+    ainsi de les comparer, fusionner et traiter de maniÃ¨re cohÃ©rente.
 
 .NOTES
     Version:        1.0
@@ -14,21 +14,21 @@
     Creation Date:  15/04/2025
 #>
 
-# Format unifié pour les résultats d'analyse
-# Chaque résultat d'analyse est représenté par un objet PSCustomObject avec les propriétés suivantes:
+# Format unifiÃ© pour les rÃ©sultats d'analyse
+# Chaque rÃ©sultat d'analyse est reprÃ©sentÃ© par un objet PSCustomObject avec les propriÃ©tÃ©s suivantes:
 # - ToolName: Nom de l'outil d'analyse (PSScriptAnalyzer, ESLint, Pylint, etc.)
-# - FilePath: Chemin complet du fichier analysé
-# - FileName: Nom du fichier analysé
-# - Line: Numéro de ligne où le problème a été détecté
-# - Column: Numéro de colonne où le problème a été détecté
-# - RuleId: Identifiant de la règle qui a détecté le problème
-# - Severity: Sévérité du problème (Error, Warning, Information)
-# - Message: Description du problème
-# - Category: Catégorie du problème (Style, Performance, Security, etc.)
+# - FilePath: Chemin complet du fichier analysÃ©
+# - FileName: Nom du fichier analysÃ©
+# - Line: NumÃ©ro de ligne oÃ¹ le problÃ¨me a Ã©tÃ© dÃ©tectÃ©
+# - Column: NumÃ©ro de colonne oÃ¹ le problÃ¨me a Ã©tÃ© dÃ©tectÃ©
+# - RuleId: Identifiant de la rÃ¨gle qui a dÃ©tectÃ© le problÃ¨me
+# - Severity: SÃ©vÃ©ritÃ© du problÃ¨me (Error, Warning, Information)
+# - Message: Description du problÃ¨me
+# - Category: CatÃ©gorie du problÃ¨me (Style, Performance, Security, etc.)
 # - Suggestion: Suggestion de correction (si disponible)
-# - OriginalObject: Objet original retourné par l'outil d'analyse
+# - OriginalObject: Objet original retournÃ© par l'outil d'analyse
 
-# Fonction pour créer un nouvel objet de résultat d'analyse unifié
+# Fonction pour crÃ©er un nouvel objet de rÃ©sultat d'analyse unifiÃ©
 function New-UnifiedAnalysisResult {
     [CmdletBinding()]
     param (
@@ -82,7 +82,7 @@ function New-UnifiedAnalysisResult {
     }
 }
 
-# Fonction pour convertir les résultats de PSScriptAnalyzer vers le format unifié
+# Fonction pour convertir les rÃ©sultats de PSScriptAnalyzer vers le format unifiÃ©
 function ConvertFrom-PSScriptAnalyzerResult {
     [CmdletBinding()]
     param (
@@ -96,7 +96,7 @@ function ConvertFrom-PSScriptAnalyzerResult {
     
     process {
         foreach ($result in $Results) {
-            # Mapper la sévérité de PSScriptAnalyzer vers notre format unifié
+            # Mapper la sÃ©vÃ©ritÃ© de PSScriptAnalyzer vers notre format unifiÃ©
             $severity = switch ($result.Severity) {
                 "Error" { "Error" }
                 "Warning" { "Warning" }
@@ -124,7 +124,7 @@ function ConvertFrom-PSScriptAnalyzerResult {
     }
 }
 
-# Fonction pour convertir les résultats d'ESLint vers le format unifié
+# Fonction pour convertir les rÃ©sultats d'ESLint vers le format unifiÃ©
 function ConvertFrom-ESLintResult {
     [CmdletBinding()]
     param (
@@ -138,7 +138,7 @@ function ConvertFrom-ESLintResult {
         $filePath = $file.filePath
         
         foreach ($message in $file.messages) {
-            # Mapper la sévérité d'ESLint vers notre format unifié
+            # Mapper la sÃ©vÃ©ritÃ© d'ESLint vers notre format unifiÃ©
             $severity = switch ($message.severity) {
                 2 { "Error" }
                 1 { "Warning" }
@@ -162,7 +162,7 @@ function ConvertFrom-ESLintResult {
     return $unifiedResults
 }
 
-# Fonction pour convertir les résultats de Pylint vers le format unifié
+# Fonction pour convertir les rÃ©sultats de Pylint vers le format unifiÃ©
 function ConvertFrom-PylintResult {
     [CmdletBinding()]
     param (
@@ -173,7 +173,7 @@ function ConvertFrom-PylintResult {
     $unifiedResults = @()
     
     foreach ($result in $Results) {
-        # Extraire les informations du résultat Pylint
+        # Extraire les informations du rÃ©sultat Pylint
         # Format typique: "file.py:line:column: [C0111] Missing docstring (missing-docstring)"
         if ($result -match '(.*?):(\d+):(\d+): \[(.*?)\] (.*?) \((.*?)\)') {
             $filePath = $Matches[1]
@@ -183,7 +183,7 @@ function ConvertFrom-PylintResult {
             $message = $Matches[5]
             $category = $Matches[6]
             
-            # Mapper la sévérité de Pylint vers notre format unifié
+            # Mapper la sÃ©vÃ©ritÃ© de Pylint vers notre format unifiÃ©
             $severity = switch ($ruleId[0]) {
                 "E" { "Error" }
                 "F" { "Error" }
@@ -210,7 +210,7 @@ function ConvertFrom-PylintResult {
     return $unifiedResults
 }
 
-# Fonction pour convertir les résultats de SonarQube vers le format unifié
+# Fonction pour convertir les rÃ©sultats de SonarQube vers le format unifiÃ©
 function ConvertFrom-SonarQubeResult {
     [CmdletBinding()]
     param (
@@ -221,7 +221,7 @@ function ConvertFrom-SonarQubeResult {
     $unifiedResults = @()
     
     foreach ($issue in $Results.issues) {
-        # Mapper la sévérité de SonarQube vers notre format unifié
+        # Mapper la sÃ©vÃ©ritÃ© de SonarQube vers notre format unifiÃ©
         $severity = switch ($issue.severity) {
             "BLOCKER" { "Error" }
             "CRITICAL" { "Error" }
@@ -246,7 +246,7 @@ function ConvertFrom-SonarQubeResult {
     return $unifiedResults
 }
 
-# Fonction pour fusionner les résultats d'analyse de différentes sources
+# Fonction pour fusionner les rÃ©sultats d'analyse de diffÃ©rentes sources
 function Merge-AnalysisResults {
     [CmdletBinding()]
     param (
@@ -268,7 +268,7 @@ function Merge-AnalysisResults {
     }
     
     end {
-        # Supprimer les doublons si demandé
+        # Supprimer les doublons si demandÃ©
         if ($RemoveDuplicates) {
             $uniqueResults = @()
             $seen = @{}
@@ -290,7 +290,7 @@ function Merge-AnalysisResults {
     }
 }
 
-# Fonction pour filtrer les résultats d'analyse par sévérité
+# Fonction pour filtrer les rÃ©sultats d'analyse par sÃ©vÃ©ritÃ©
 function Filter-AnalysisResultsBySeverity {
     [CmdletBinding()]
     param (
@@ -319,7 +319,7 @@ function Filter-AnalysisResultsBySeverity {
     }
 }
 
-# Fonction pour filtrer les résultats d'analyse par outil
+# Fonction pour filtrer les rÃ©sultats d'analyse par outil
 function Filter-AnalysisResultsByTool {
     [CmdletBinding()]
     param (
@@ -347,7 +347,7 @@ function Filter-AnalysisResultsByTool {
     }
 }
 
-# Fonction pour filtrer les résultats d'analyse par catégorie
+# Fonction pour filtrer les rÃ©sultats d'analyse par catÃ©gorie
 function Filter-AnalysisResultsByCategory {
     [CmdletBinding()]
     param (

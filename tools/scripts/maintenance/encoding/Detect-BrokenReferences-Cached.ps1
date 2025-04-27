@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
-    Version optimisée du détecteur de références brisées utilisant PSCacheManager.
+    Version optimisÃ©e du dÃ©tecteur de rÃ©fÃ©rences brisÃ©es utilisant PSCacheManager.
 .DESCRIPTION
     Ce script analyse tous les scripts du projet pour identifier les chemins de fichiers
-    qui ne correspondent plus à la nouvelle structure de dossiers. Il génère un rapport
-    des références à mettre à jour, avec mise en cache des résultats d'analyse pour
-    améliorer les performances lors d'exécutions répétées.
+    qui ne correspondent plus Ã  la nouvelle structure de dossiers. Il gÃ©nÃ¨re un rapport
+    des rÃ©fÃ©rences Ã  mettre Ã  jour, avec mise en cache des rÃ©sultats d'analyse pour
+    amÃ©liorer les performances lors d'exÃ©cutions rÃ©pÃ©tÃ©es.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à analyser. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par défaut: broken_references_report.json
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: broken_references_report.json
 .PARAMETER ShowDetails
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .PARAMETER DisableCache
-    Si spécifié, désactive l'utilisation du cache pour cette analyse.
+    Si spÃ©cifiÃ©, dÃ©sactive l'utilisation du cache pour cette analyse.
 .EXAMPLE
     .\Detect-BrokenReferences-Cached.ps1
-    Analyse tous les scripts dans le dossier scripts et génère un rapport.
+    Analyse tous les scripts dans le dossier scripts et gÃ©nÃ¨re un rapport.
 .EXAMPLE
     .\Detect-BrokenReferences-Cached.ps1 -Path "D:\scripts" -OutputPath "D:\rapport.json" -DisableCache
-    Analyse tous les scripts dans le dossier D:\scripts sans utiliser le cache et génère un rapport dans D:\rapport.json.
+    Analyse tous les scripts dans le dossier D:\scripts sans utiliser le cache et gÃ©nÃ¨re un rapport dans D:\rapport.json.
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 09/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 09/04/2025
     Version: 2.0
 #>
 
@@ -36,13 +36,13 @@ param (
 # Importer le module PSCacheManager
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\utils\PSCacheManager\PSCacheManager.psm1"
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module PSCacheManager introuvable à l'emplacement: $modulePath"
+    Write-Error "Module PSCacheManager introuvable Ã  l'emplacement: $modulePath"
     exit 1
 }
 
 try {
     Import-Module $modulePath -Force -ErrorAction Stop
-    Write-Verbose "Module PSCacheManager importé avec succès."
+    Write-Verbose "Module PSCacheManager importÃ© avec succÃ¨s."
 } catch {
     Write-Error "Erreur lors de l'importation du module PSCacheManager: $_"
     exit 1
@@ -53,7 +53,7 @@ $scriptContentCache = New-PSCache -Name "ScriptContent" -MaxMemoryItems 1000 -De
 $fileExistenceCache = New-PSCache -Name "FileExistence" -MaxMemoryItems 5000 -DefaultTTLSeconds 3600
 $pathAnalysisCache = New-PSCache -Name "PathAnalysis" -MaxMemoryItems 500 -DefaultTTLSeconds 3600
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -76,7 +76,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour vérifier si un fichier existe (avec cache)
+# Fonction pour vÃ©rifier si un fichier existe (avec cache)
 function Test-FileExistsWithCache {
     param (
         [string]$FilePath
@@ -111,7 +111,7 @@ function Get-FilePathsFromScript {
     }
 }
 
-# Fonction pour extraire les chemins de fichiers d'un script (implémentation)
+# Fonction pour extraire les chemins de fichiers d'un script (implÃ©mentation)
 function Extract-Paths {
     param (
         [string]$ScriptPath
@@ -132,7 +132,7 @@ function Extract-Paths {
             }
         }
         
-        # Patterns pour détecter les chemins de fichiers
+        # Patterns pour dÃ©tecter les chemins de fichiers
         $patterns = @(
             # Chemins entre guillemets
             '(?<=["''])([.\\\/\w-]+\.\w+)(?=["''])',
@@ -151,7 +151,7 @@ function Extract-Paths {
             foreach ($match in $matches) {
                 $path = $match.Value
                 
-                # Ignorer les chemins qui ne semblent pas être des références à des fichiers
+                # Ignorer les chemins qui ne semblent pas Ãªtre des rÃ©fÃ©rences Ã  des fichiers
                 if ($path -match '^\w+$' -or $path -match '^https?:' -or $path -match '^\$') {
                     continue
                 }
@@ -159,7 +159,7 @@ function Extract-Paths {
                 # Normaliser le chemin
                 $normalizedPath = $path.Replace('/', '\')
                 
-                # Ajouter à la liste des chemins détectés
+                # Ajouter Ã  la liste des chemins dÃ©tectÃ©s
                 if ($normalizedPath -notin $detectedPaths) {
                     $detectedPaths += $normalizedPath
                 }
@@ -174,7 +174,7 @@ function Extract-Paths {
     }
 }
 
-# Fonction principale pour détecter les références brisées
+# Fonction principale pour dÃ©tecter les rÃ©fÃ©rences brisÃ©es
 function Detect-BrokenReferences {
     param (
         [string]$RootPath,
@@ -182,12 +182,12 @@ function Detect-BrokenReferences {
     )
     
     $startTime = Get-Date
-    Write-Log "Début de la détection des références brisées..." -Level "TITLE"
+    Write-Log "DÃ©but de la dÃ©tection des rÃ©fÃ©rences brisÃ©es..." -Level "TITLE"
     Write-Log "Dossier racine: $RootPath" -Level "INFO"
     
-    # Récupérer tous les scripts PowerShell
+    # RÃ©cupÃ©rer tous les scripts PowerShell
     $scripts = Get-ChildItem -Path $RootPath -Recurse -Filter "*.ps1" -File
-    Write-Log "Nombre de scripts trouvés: $($scripts.Count)" -Level "INFO"
+    Write-Log "Nombre de scripts trouvÃ©s: $($scripts.Count)" -Level "INFO"
     
     $brokenReferences = @()
     $processedScripts = 0
@@ -199,13 +199,13 @@ function Detect-BrokenReferences {
         
         $brokenPaths = @()
         foreach ($path in $scriptPaths) {
-            # Vérifier si le chemin est relatif
+            # VÃ©rifier si le chemin est relatif
             if ($path -match '^\.\.\\' -or $path -match '^\.\\'  -or $path -match '^[a-zA-Z]\\') {
                 # Construire le chemin complet
                 $basePath = Split-Path -Parent $script.FullName
                 $fullPath = Join-Path -Path $basePath -ChildPath $path
                 
-                # Vérifier si le fichier existe
+                # VÃ©rifier si le fichier existe
                 $exists = Test-FileExistsWithCache -FilePath $fullPath
                 
                 if (-not $exists) {
@@ -228,20 +228,20 @@ function Detect-BrokenReferences {
             if ($ShowDetails) {
                 Write-Log "Script: $($script.FullName)" -Level "WARNING"
                 foreach ($brokenPath in $brokenPaths) {
-                    Write-Log "  - Chemin brisé: $($brokenPath.Path)" -Level "WARNING"
+                    Write-Log "  - Chemin brisÃ©: $($brokenPath.Path)" -Level "WARNING"
                 }
             }
         }
         
         # Afficher la progression
         if ($processedScripts % 10 -eq 0 -or $processedScripts -eq $scripts.Count) {
-            Write-Progress -Activity "Détection des références brisées" -Status "Traitement des scripts" -PercentComplete (($processedScripts / $scripts.Count) * 100)
+            Write-Progress -Activity "DÃ©tection des rÃ©fÃ©rences brisÃ©es" -Status "Traitement des scripts" -PercentComplete (($processedScripts / $scripts.Count) * 100)
         }
     }
     
-    Write-Progress -Activity "Détection des références brisées" -Completed
+    Write-Progress -Activity "DÃ©tection des rÃ©fÃ©rences brisÃ©es" -Completed
     
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $report = @{
         ScannedScripts = $scripts.Count
         BrokenReferences = $brokenReferences.Count
@@ -256,13 +256,13 @@ function Detect-BrokenReferences {
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalSeconds
     
-    Write-Log "Détection terminée en $duration secondes." -Level "SUCCESS"
-    Write-Log "Scripts analysés: $($scripts.Count)" -Level "INFO"
-    Write-Log "Scripts avec références brisées: $($brokenReferences.Count)" -Level "INFO"
-    Write-Log "Nombre total de chemins brisés: $totalBrokenPaths" -Level "INFO"
-    Write-Log "Rapport sauvegardé: $OutputFile" -Level "SUCCESS"
+    Write-Log "DÃ©tection terminÃ©e en $duration secondes." -Level "SUCCESS"
+    Write-Log "Scripts analysÃ©s: $($scripts.Count)" -Level "INFO"
+    Write-Log "Scripts avec rÃ©fÃ©rences brisÃ©es: $($brokenReferences.Count)" -Level "INFO"
+    Write-Log "Nombre total de chemins brisÃ©s: $totalBrokenPaths" -Level "INFO"
+    Write-Log "Rapport sauvegardÃ©: $OutputFile" -Level "SUCCESS"
     
-    # Afficher les statistiques du cache si activé
+    # Afficher les statistiques du cache si activÃ©
     if (-not $DisableCache) {
         $contentStats = Get-PSCacheStatistics -Cache $scriptContentCache
         $existenceStats = Get-PSCacheStatistics -Cache $fileExistenceCache
@@ -270,19 +270,19 @@ function Detect-BrokenReferences {
         
         Write-Log "Statistiques du cache:" -Level "TITLE"
         Write-Log "Cache de contenu de scripts:" -Level "INFO"
-        Write-Log "  - Éléments: $($contentStats.MemoryItemCount)" -Level "INFO"
+        Write-Log "  - Ã‰lÃ©ments: $($contentStats.MemoryItemCount)" -Level "INFO"
         Write-Log "  - Hits: $($contentStats.Hits)" -Level "INFO"
         Write-Log "  - Misses: $($contentStats.Misses)" -Level "INFO"
         Write-Log "  - Ratio de hits: $([Math]::Round($contentStats.HitRatio * 100, 2))%" -Level "INFO"
         
         Write-Log "Cache d'existence de fichiers:" -Level "INFO"
-        Write-Log "  - Éléments: $($existenceStats.MemoryItemCount)" -Level "INFO"
+        Write-Log "  - Ã‰lÃ©ments: $($existenceStats.MemoryItemCount)" -Level "INFO"
         Write-Log "  - Hits: $($existenceStats.Hits)" -Level "INFO"
         Write-Log "  - Misses: $($existenceStats.Misses)" -Level "INFO"
         Write-Log "  - Ratio de hits: $([Math]::Round($existenceStats.HitRatio * 100, 2))%" -Level "INFO"
         
         Write-Log "Cache d'analyse de chemins:" -Level "INFO"
-        Write-Log "  - Éléments: $($pathStats.MemoryItemCount)" -Level "INFO"
+        Write-Log "  - Ã‰lÃ©ments: $($pathStats.MemoryItemCount)" -Level "INFO"
         Write-Log "  - Hits: $($pathStats.Hits)" -Level "INFO"
         Write-Log "  - Misses: $($pathStats.Misses)" -Level "INFO"
         Write-Log "  - Ratio de hits: $([Math]::Round($pathStats.HitRatio * 100, 2))%" -Level "INFO"
@@ -291,5 +291,5 @@ function Detect-BrokenReferences {
     return $report
 }
 
-# Exécuter la détection
+# ExÃ©cuter la dÃ©tection
 Detect-BrokenReferences -RootPath $Path -OutputFile $OutputPath

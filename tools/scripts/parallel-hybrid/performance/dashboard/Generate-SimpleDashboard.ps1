@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un tableau de bord HTML simplifié pour suivre l'évolution des performances.
+    GÃ©nÃ¨re un tableau de bord HTML simplifiÃ© pour suivre l'Ã©volution des performances.
 .DESCRIPTION
-    Ce script génère un tableau de bord HTML qui affiche l'évolution des performances
-    des différentes fonctions au fil du temps.
+    Ce script gÃ©nÃ¨re un tableau de bord HTML qui affiche l'Ã©volution des performances
+    des diffÃ©rentes fonctions au fil du temps.
 .PARAMETER OutputPath
-    Le chemin où le tableau de bord HTML sera généré.
+    Le chemin oÃ¹ le tableau de bord HTML sera gÃ©nÃ©rÃ©.
 .EXAMPLE
     .\Generate-SimpleDashboard.ps1 -OutputPath ".\Dashboard.html"
 #>
@@ -17,13 +17,13 @@ param(
     [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "PerformanceDashboard.html")
 )
 
-# Créer le répertoire parent s'il n'existe pas
+# CrÃ©er le rÃ©pertoire parent s'il n'existe pas
 $parentDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $parentDir -PathType Container)) {
     New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer des données de démonstration
+# CrÃ©er des donnÃ©es de dÃ©monstration
 $demoData = @{
     "Tri" = @{
         "Dates" = @("2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-05", "2025-04-06", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11")
@@ -41,7 +41,7 @@ $demoData = @{
         "Max" = 85
         "Tendance" = -23.5
     }
-    "Agrégation" = @{
+    "AgrÃ©gation" = @{
         "Dates" = @("2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-05", "2025-04-06", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11")
         "Temps" = @(150, 148, 145, 142, 140, 138, 135, 132, 130, 128, 125)
         "Moyenne" = 137.5
@@ -49,7 +49,7 @@ $demoData = @{
         "Max" = 150
         "Tendance" = -16.7
     }
-    "Traitement parallèle" = @{
+    "Traitement parallÃ¨le" = @{
         "Dates" = @("2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-05", "2025-04-06", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11")
         "Temps" = @(200, 180, 160, 150, 140, 130, 120, 110, 100, 90, 80)
         "Moyenne" = 132.7
@@ -59,7 +59,7 @@ $demoData = @{
     }
 }
 
-# Générer le HTML du tableau de bord
+# GÃ©nÃ©rer le HTML du tableau de bord
 $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -132,13 +132,13 @@ $html = @"
 </head>
 <body>
     <h1>Tableau de bord des performances</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Nombre de fonctions suivies : $($demoData.Count)</p>
-        <p>Période d'analyse : 01/04/2025 - 11/04/2025</p>
-        <p>Amélioration moyenne des performances : 32.4%</p>
+        <p>PÃ©riode d'analyse : 01/04/2025 - 11/04/2025</p>
+        <p>AmÃ©lioration moyenne des performances : 32.4%</p>
     </div>
     
     <div class="dashboard">
@@ -148,15 +148,15 @@ foreach ($name in $demoData.Keys) {
     $data = $demoData[$name]
     
     $trendClass = "trend-neutral"
-    $trendSymbol = "→"
+    $trendSymbol = "â†’"
     
     if ($data.Tendance -lt -5) {
         $trendClass = "trend-positive"
-        $trendSymbol = "↓"
+        $trendSymbol = "â†“"
     }
     elseif ($data.Tendance -gt 5) {
         $trendClass = "trend-negative"
-        $trendSymbol = "↑"
+        $trendSymbol = "â†‘"
     }
     
     $html += @"
@@ -167,7 +167,7 @@ foreach ($name in $demoData.Keys) {
             </div>
             <table>
                 <tr>
-                    <th>Métrique</th>
+                    <th>MÃ©trique</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -227,7 +227,7 @@ foreach ($name in $demoData.Keys) {
                         beginAtZero: false,
                         title: {
                             display: true,
-                            text: 'Temps d\'exécution (ms)'
+                            text: 'Temps d\'exÃ©cution (ms)'
                         }
                     },
                     x: {
@@ -251,7 +251,7 @@ $html += @"
 # Sauvegarder le tableau de bord
 $html | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Tableau de bord généré : $OutputPath" -ForegroundColor Green
+Write-Host "Tableau de bord gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 
-# Ouvrir le tableau de bord dans le navigateur par défaut
+# Ouvrir le tableau de bord dans le navigateur par dÃ©faut
 Start-Process $OutputPath

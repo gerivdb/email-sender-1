@@ -1,4 +1,4 @@
-# Script de test pour le support des formats XML et HTML
+﻿# Script de test pour le support des formats XML et HTML
 
 # Importer les modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -7,7 +7,7 @@ $xmlHandlerPath = Join-Path -Path $implementationPath -ChildPath "XMLFormatHandl
 $htmlHandlerPath = Join-Path -Path $implementationPath -ChildPath "HTMLFormatHandler.ps1"
 $formatConverterPath = Join-Path -Path $implementationPath -ChildPath "FormatConverter.ps1"
 
-# Créer le dossier de sortie des tests
+# CrÃ©er le dossier de sortie des tests
 $testOutputPath = Join-Path -Path $scriptPath -ChildPath "Output"
 if (-not (Test-Path -Path $testOutputPath)) {
     New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
@@ -19,14 +19,14 @@ Write-Host "Importation des modules..."
 . $htmlHandlerPath
 . $formatConverterPath
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-FormatSupportTests {
     # Compteurs de tests
     $totalTests = 0
     $passedTests = 0
     $failedTests = 0
     
-    # Fonction pour exécuter un test
+    # Fonction pour exÃ©cuter un test
     function Test-Case {
         param (
             [string]$Name,
@@ -38,11 +38,11 @@ function Invoke-FormatSupportTests {
         
         try {
             & $Test
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             $script:passedTests++
         }
         catch {
-            Write-Host "  Échoué: $_" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
             $script:failedTests++
         }
         
@@ -70,7 +70,7 @@ function Invoke-FormatSupportTests {
         $xmlDoc = ConvertFrom-Xml -XmlString $xmlString
         
         if (-not ($xmlDoc -is [System.Xml.XmlDocument])) {
-            throw "Le résultat n'est pas un XmlDocument"
+            throw "Le rÃ©sultat n'est pas un XmlDocument"
         }
         
         $persons = $xmlDoc.SelectNodes("//person")
@@ -80,12 +80,12 @@ function Invoke-FormatSupportTests {
         
         $firstPerson = $persons[0]
         if ($firstPerson.GetAttribute("id") -ne "1" -or $firstPerson.SelectSingleNode("name").InnerText -ne "John Doe") {
-            throw "Les données de la première personne sont incorrectes"
+            throw "Les donnÃ©es de la premiÃ¨re personne sont incorrectes"
         }
     }
     
-    # Test 2: Génération XML
-    Test-Case -Name "Génération XML" -Test {
+    # Test 2: GÃ©nÃ©ration XML
+    Test-Case -Name "GÃ©nÃ©ration XML" -Test {
         $data = @{
             person = @(
                 @{
@@ -108,12 +108,12 @@ function Invoke-FormatSupportTests {
         $xmlString | Out-File -FilePath $outputPath -Encoding UTF8
         
         if (-not (Test-Path -Path $outputPath)) {
-            throw "Le fichier XML n'a pas été créé"
+            throw "Le fichier XML n'a pas Ã©tÃ© crÃ©Ã©"
         }
         
         $content = Get-Content -Path $outputPath -Raw
         if (-not $content.Contains("<person>") -or -not $content.Contains("<name>John Doe</name>")) {
-            throw "Le contenu XML généré est incorrect"
+            throw "Le contenu XML gÃ©nÃ©rÃ© est incorrect"
         }
     }
     
@@ -137,7 +137,7 @@ function Invoke-FormatSupportTests {
 </html>
 "@
         
-        # Vérifier si HtmlAgilityPack est disponible
+        # VÃ©rifier si HtmlAgilityPack est disponible
         if (-not (Test-HtmlAgilityPackAvailable)) {
             Write-Host "  Installation de HtmlAgilityPack..." -ForegroundColor Yellow
             Install-HtmlAgilityPack
@@ -146,7 +146,7 @@ function Invoke-FormatSupportTests {
         $htmlDoc = ConvertFrom-Html -HtmlString $htmlString
         
         if (-not ($htmlDoc -is [HtmlAgilityPack.HtmlDocument])) {
-            throw "Le résultat n'est pas un HtmlDocument"
+            throw "Le rÃ©sultat n'est pas un HtmlDocument"
         }
         
         $h1 = $htmlDoc.DocumentNode.SelectSingleNode("//h1")
@@ -156,7 +156,7 @@ function Invoke-FormatSupportTests {
         
         $listItems = $htmlDoc.DocumentNode.SelectNodes("//li")
         if ($listItems.Count -ne 3) {
-            throw "Le nombre d'éléments de liste est incorrect: $($listItems.Count)"
+            throw "Le nombre d'Ã©lÃ©ments de liste est incorrect: $($listItems.Count)"
         }
     }
     
@@ -178,27 +178,27 @@ function Invoke-FormatSupportTests {
         
         $htmlDoc = ConvertFrom-Html -HtmlString $htmlString -Sanitize
         
-        # Vérifier que les éléments dangereux ont été supprimés
+        # VÃ©rifier que les Ã©lÃ©ments dangereux ont Ã©tÃ© supprimÃ©s
         $script = $htmlDoc.DocumentNode.SelectSingleNode("//script")
         if ($script -ne $null) {
-            throw "L'élément script n'a pas été supprimé"
+            throw "L'Ã©lÃ©ment script n'a pas Ã©tÃ© supprimÃ©"
         }
         
         $iframe = $htmlDoc.DocumentNode.SelectSingleNode("//iframe")
         if ($iframe -ne $null) {
-            throw "L'élément iframe n'a pas été supprimé"
+            throw "L'Ã©lÃ©ment iframe n'a pas Ã©tÃ© supprimÃ©"
         }
         
-        # Vérifier que les liens malveillants ont été nettoyés
+        # VÃ©rifier que les liens malveillants ont Ã©tÃ© nettoyÃ©s
         $maliciousLink = $htmlDoc.DocumentNode.SelectSingleNode("//a[@href='javascript:alert(\'XSS\')']")
         if ($maliciousLink -ne $null) {
-            throw "Le lien malveillant n'a pas été nettoyé"
+            throw "Le lien malveillant n'a pas Ã©tÃ© nettoyÃ©"
         }
         
-        # Vérifier que les liens sûrs sont conservés
+        # VÃ©rifier que les liens sÃ»rs sont conservÃ©s
         $safeLink = $htmlDoc.DocumentNode.SelectSingleNode("//a[@href='https://example.com']")
         if ($safeLink -eq $null) {
-            throw "Le lien sûr a été supprimé"
+            throw "Le lien sÃ»r a Ã©tÃ© supprimÃ©"
         }
     }
     
@@ -224,19 +224,19 @@ function Invoke-FormatSupportTests {
         $htmlDoc = ConvertFrom-XmlToHtml -XmlDocument $xmlDoc
         
         if (-not ($htmlDoc -is [HtmlAgilityPack.HtmlDocument])) {
-            throw "Le résultat n'est pas un HtmlDocument"
+            throw "Le rÃ©sultat n'est pas un HtmlDocument"
         }
         
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "xml_to_html.html"
         Export-HtmlFile -HtmlDocument $htmlDoc -FilePath $outputPath
         
         if (-not (Test-Path -Path $outputPath)) {
-            throw "Le fichier HTML n'a pas été créé"
+            throw "Le fichier HTML n'a pas Ã©tÃ© crÃ©Ã©"
         }
         
         $content = Get-Content -Path $outputPath -Raw
         if (-not $content.Contains("John Doe") -or -not $content.Contains("Jane Smith")) {
-            throw "Le contenu HTML généré est incorrect"
+            throw "Le contenu HTML gÃ©nÃ©rÃ© est incorrect"
         }
     }
     
@@ -264,19 +264,19 @@ function Invoke-FormatSupportTests {
         $xmlDoc = ConvertFrom-HtmlToXml -HtmlDocument $htmlDoc
         
         if (-not ($xmlDoc -is [System.Xml.XmlDocument])) {
-            throw "Le résultat n'est pas un XmlDocument"
+            throw "Le rÃ©sultat n'est pas un XmlDocument"
         }
         
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "html_to_xml.xml"
         $xmlDoc.Save($outputPath)
         
         if (-not (Test-Path -Path $outputPath)) {
-            throw "Le fichier XML n'a pas été créé"
+            throw "Le fichier XML n'a pas Ã©tÃ© crÃ©Ã©"
         }
         
         $content = Get-Content -Path $outputPath -Raw
         if (-not $content.Contains("<h1>Hello World</h1>") -or -not $content.Contains("<li>Item 1</li>")) {
-            throw "Le contenu XML généré est incorrect"
+            throw "Le contenu XML gÃ©nÃ©rÃ© est incorrect"
         }
     }
     
@@ -302,19 +302,19 @@ function Invoke-FormatSupportTests {
         $json = ConvertFrom-XmlToJson -XmlDocument $xmlDoc
         
         if (-not ($json -is [string])) {
-            throw "Le résultat n'est pas une chaîne JSON"
+            throw "Le rÃ©sultat n'est pas une chaÃ®ne JSON"
         }
         
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "xml_to_json.json"
         $json | Out-File -FilePath $outputPath -Encoding UTF8
         
         if (-not (Test-Path -Path $outputPath)) {
-            throw "Le fichier JSON n'a pas été créé"
+            throw "Le fichier JSON n'a pas Ã©tÃ© crÃ©Ã©"
         }
         
         $content = Get-Content -Path $outputPath -Raw
         if (-not $content.Contains('"name": "John Doe"') -or -not $content.Contains('"age": "30"')) {
-            throw "Le contenu JSON généré est incorrect"
+            throw "Le contenu JSON gÃ©nÃ©rÃ© est incorrect"
         }
     }
     
@@ -344,27 +344,27 @@ function Invoke-FormatSupportTests {
         $xmlDoc = ConvertFrom-JsonToXml -JsonString $jsonString
         
         if (-not ($xmlDoc -is [System.Xml.XmlDocument])) {
-            throw "Le résultat n'est pas un XmlDocument"
+            throw "Le rÃ©sultat n'est pas un XmlDocument"
         }
         
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "json_to_xml.xml"
         $xmlDoc.Save($outputPath)
         
         if (-not (Test-Path -Path $outputPath)) {
-            throw "Le fichier XML n'a pas été créé"
+            throw "Le fichier XML n'a pas Ã©tÃ© crÃ©Ã©"
         }
         
         $content = Get-Content -Path $outputPath -Raw
         if (-not $content.Contains("<name>John Doe</name>") -or -not $content.Contains("<age>30</age>")) {
-            throw "Le contenu XML généré est incorrect"
+            throw "Le contenu XML gÃ©nÃ©rÃ© est incorrect"
         }
     }
     
-    # Afficher le résumé des tests
-    Write-Host "Résumé des tests:" -ForegroundColor Yellow
+    # Afficher le rÃ©sumÃ© des tests
+    Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Yellow
     Write-Host "  Total: $totalTests" -ForegroundColor Cyan
-    Write-Host "  Réussis: $passedTests" -ForegroundColor Green
-    Write-Host "  Échoués: $failedTests" -ForegroundColor Red
+    Write-Host "  RÃ©ussis: $passedTests" -ForegroundColor Green
+    Write-Host "  Ã‰chouÃ©s: $failedTests" -ForegroundColor Red
     
     return @{
         TotalTests = $totalTests
@@ -373,12 +373,12 @@ function Invoke-FormatSupportTests {
     }
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests de support des formats XML et HTML..." -ForegroundColor Yellow
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests de support des formats XML et HTML..." -ForegroundColor Yellow
 $results = Invoke-FormatSupportTests
 
 # Afficher le chemin des fichiers de sortie
 Write-Host "Les fichiers de sortie des tests sont disponibles dans: $testOutputPath" -ForegroundColor Cyan
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

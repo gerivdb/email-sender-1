@@ -1,12 +1,12 @@
-# Script pour les alertes automatiques d'erreurs récurrentes
+﻿# Script pour les alertes automatiques d'erreurs rÃ©currentes
 
 # Configuration des alertes
 $script:AlertConfig = @{
     # Seuils d'alerte
     Thresholds = @{
-        Error = 5      # Nombre d'erreurs pour déclencher une alerte
-        Warning = 10   # Nombre d'avertissements pour déclencher une alerte
-        Frequency = 3  # Nombre d'occurrences d'une même erreur pour la considérer comme récurrente
+        Error = 5      # Nombre d'erreurs pour dÃ©clencher une alerte
+        Warning = 10   # Nombre d'avertissements pour dÃ©clencher une alerte
+        Frequency = 3  # Nombre d'occurrences d'une mÃªme erreur pour la considÃ©rer comme rÃ©currente
     }
     
     # Configuration des notifications
@@ -47,19 +47,19 @@ function Initialize-ErrorAlerts {
         [string]$ConfigPath = ""
     )
     
-    # Charger la configuration depuis un fichier si spécifié
+    # Charger la configuration depuis un fichier si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($ConfigPath) -and (Test-Path -Path $ConfigPath)) {
         try {
             $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
             
-            # Mettre à jour les seuils
+            # Mettre Ã  jour les seuils
             if ($config.Thresholds) {
                 $script:AlertConfig.Thresholds.Error = $config.Thresholds.Error
                 $script:AlertConfig.Thresholds.Warning = $config.Thresholds.Warning
                 $script:AlertConfig.Thresholds.Frequency = $config.Thresholds.Frequency
             }
             
-            # Mettre à jour les notifications
+            # Mettre Ã  jour les notifications
             if ($config.Notifications) {
                 if ($config.Notifications.Email) {
                     $script:AlertConfig.Notifications.Email.Enabled = $config.Notifications.Email.Enabled
@@ -81,17 +81,17 @@ function Initialize-ErrorAlerts {
                 }
             }
             
-            # Mettre à jour le fichier d'historique
+            # Mettre Ã  jour le fichier d'historique
             if ($config.HistoryFile) {
                 $script:AlertConfig.HistoryFile = $config.HistoryFile
             }
             
-            # Mettre à jour les patterns à ignorer
+            # Mettre Ã  jour les patterns Ã  ignorer
             if ($config.IgnorePatterns) {
                 $script:AlertConfig.IgnorePatterns = $config.IgnorePatterns
             }
             
-            Write-Verbose "Configuration des alertes chargée depuis $ConfigPath"
+            Write-Verbose "Configuration des alertes chargÃ©e depuis $ConfigPath"
         }
         catch {
             Write-Error "Erreur lors du chargement de la configuration des alertes: $_"
@@ -112,7 +112,7 @@ function Initialize-ErrorAlerts {
     return $script:AlertConfig
 }
 
-# Fonction pour analyser les erreurs et déclencher des alertes
+# Fonction pour analyser les erreurs et dÃ©clencher des alertes
 function Invoke-ErrorAnalysisAlert {
     param (
         [Parameter(Mandatory = $true)]
@@ -131,7 +131,7 @@ function Invoke-ErrorAnalysisAlert {
         $errorCounts[$key] = $history.ErrorCounts.$key
     }
     
-    # Filtrer les résultats
+    # Filtrer les rÃ©sultats
     $filteredResults = $AnalysisResults | Where-Object {
         $_.Severity -in @("Error", "Warning") -and
         $_.RuleName -notin $script:AlertConfig.IgnorePatterns
@@ -155,7 +155,7 @@ function Invoke-ErrorAnalysisAlert {
         $currentErrors[$key].Messages += "$($result.ScriptPath):$($result.Line) - $($result.Message)"
     }
     
-    # Mettre à jour les compteurs d'erreurs
+    # Mettre Ã  jour les compteurs d'erreurs
     foreach ($key in $currentErrors.Keys) {
         if (-not $errorCounts.ContainsKey($key)) {
             $errorCounts[$key] = @{
@@ -172,15 +172,15 @@ function Invoke-ErrorAnalysisAlert {
         $errorCounts[$key].LastSeen = Get-Date
     }
     
-    # Identifier les erreurs récurrentes
+    # Identifier les erreurs rÃ©currentes
     $alerts = @()
     
     foreach ($key in $errorCounts.Keys) {
         $error = $errorCounts[$key]
         
-        # Vérifier si l'erreur est récurrente
+        # VÃ©rifier si l'erreur est rÃ©currente
         if ($error.Occurrences -ge $script:AlertConfig.Thresholds.Frequency) {
-            # Vérifier si le seuil d'alerte est atteint
+            # VÃ©rifier si le seuil d'alerte est atteint
             $threshold = if ($error.Severity -eq "Error") {
                 $script:AlertConfig.Thresholds.Error
             }
@@ -208,18 +208,18 @@ function Invoke-ErrorAnalysisAlert {
             Send-ErrorAlertEmail -Alerts $alerts
         }
         
-        # Envoyer à Teams
+        # Envoyer Ã  Teams
         if ($script:AlertConfig.Notifications.Teams.Enabled) {
             Send-ErrorAlertTeams -Alerts $alerts
         }
         
-        # Envoyer à Slack
+        # Envoyer Ã  Slack
         if ($script:AlertConfig.Notifications.Slack.Enabled) {
             Send-ErrorAlertSlack -Alerts $alerts
         }
     }
     
-    # Mettre à jour l'historique
+    # Mettre Ã  jour l'historique
     $history.LastRun = Get-Date
     $history.Alerts = $alerts
     $history.ErrorCounts = $errorCounts
@@ -238,11 +238,11 @@ function Send-ErrorAlertEmail {
     
     $config = $script:AlertConfig.Notifications.Email
     
-    # Créer le corps de l'email
-    $body = "<h1>Alerte d'erreurs récurrentes</h1>"
-    $body += "<p>Les erreurs suivantes ont été détectées de manière récurrente:</p>"
+    # CrÃ©er le corps de l'email
+    $body = "<h1>Alerte d'erreurs rÃ©currentes</h1>"
+    $body += "<p>Les erreurs suivantes ont Ã©tÃ© dÃ©tectÃ©es de maniÃ¨re rÃ©currente:</p>"
     $body += "<table border='1'>"
-    $body += "<tr><th>Règle</th><th>Sévérité</th><th>Nombre</th><th>Occurrences</th><th>Dernière détection</th></tr>"
+    $body += "<tr><th>RÃ¨gle</th><th>SÃ©vÃ©ritÃ©</th><th>Nombre</th><th>Occurrences</th><th>DerniÃ¨re dÃ©tection</th></tr>"
     
     foreach ($alert in $Alerts) {
         $severityColor = if ($alert.Severity -eq "Error") { "red" } else { "orange" }
@@ -258,8 +258,8 @@ function Send-ErrorAlertEmail {
     
     $body += "</table>"
     
-    # Ajouter les détails des erreurs
-    $body += "<h2>Détails des erreurs</h2>"
+    # Ajouter les dÃ©tails des erreurs
+    $body += "<h2>DÃ©tails des erreurs</h2>"
     
     foreach ($alert in $Alerts) {
         $body += "<h3>$($alert.Rule) ($($alert.Severity))</h3>"
@@ -272,19 +272,19 @@ function Send-ErrorAlertEmail {
         $body += "</ul>"
     }
     
-    # Paramètres de l'email
+    # ParamÃ¨tres de l'email
     $emailParams = @{
         SmtpServer = $config.SmtpServer
         Port = $config.Port
         UseSsl = $config.UseSsl
         From = $config.From
         To = $config.To
-        Subject = "Alerte d'erreurs récurrentes - $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))"
+        Subject = "Alerte d'erreurs rÃ©currentes - $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))"
         Body = $body
         BodyAsHtml = $true
     }
     
-    # Ajouter les credentials si spécifiés
+    # Ajouter les credentials si spÃ©cifiÃ©s
     if ($null -ne $config.Credentials) {
         $emailParams.Credential = $config.Credentials
     }
@@ -292,7 +292,7 @@ function Send-ErrorAlertEmail {
     # Envoyer l'email
     try {
         Send-MailMessage @emailParams
-        Write-Verbose "Alerte envoyée par email à $($config.To -join ', ')"
+        Write-Verbose "Alerte envoyÃ©e par email Ã  $($config.To -join ', ')"
         return $true
     }
     catch {
@@ -301,7 +301,7 @@ function Send-ErrorAlertEmail {
     }
 }
 
-# Fonction pour envoyer une alerte à Microsoft Teams
+# Fonction pour envoyer une alerte Ã  Microsoft Teams
 function Send-ErrorAlertTeams {
     param (
         [Parameter(Mandatory = $true)]
@@ -310,7 +310,7 @@ function Send-ErrorAlertTeams {
     
     $webhookUrl = $script:AlertConfig.Notifications.Teams.WebhookUrl
     
-    # Créer le message Teams
+    # CrÃ©er le message Teams
     $facts = @()
     
     foreach ($alert in $Alerts) {
@@ -323,13 +323,13 @@ function Send-ErrorAlertTeams {
     $message = @{
         "@type" = "MessageCard"
         "@context" = "http://schema.org/extensions"
-        "summary" = "Alerte d'erreurs récurrentes"
+        "summary" = "Alerte d'erreurs rÃ©currentes"
         "themeColor" = "0078D7"
-        "title" = "Alerte d'erreurs récurrentes"
+        "title" = "Alerte d'erreurs rÃ©currentes"
         "sections" = @(
             @{
-                "activityTitle" = "Erreurs détectées"
-                "activitySubtitle" = "Les erreurs suivantes ont été détectées de manière récurrente"
+                "activityTitle" = "Erreurs dÃ©tectÃ©es"
+                "activitySubtitle" = "Les erreurs suivantes ont Ã©tÃ© dÃ©tectÃ©es de maniÃ¨re rÃ©currente"
                 "facts" = $facts
             }
         )
@@ -348,16 +348,16 @@ function Send-ErrorAlertTeams {
         
         Invoke-RestMethod @params
         
-        Write-Verbose "Alerte envoyée à Microsoft Teams"
+        Write-Verbose "Alerte envoyÃ©e Ã  Microsoft Teams"
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'envoi de l'alerte à Microsoft Teams: $_"
+        Write-Error "Erreur lors de l'envoi de l'alerte Ã  Microsoft Teams: $_"
         return $false
     }
 }
 
-# Fonction pour envoyer une alerte à Slack
+# Fonction pour envoyer une alerte Ã  Slack
 function Send-ErrorAlertSlack {
     param (
         [Parameter(Mandatory = $true)]
@@ -366,13 +366,13 @@ function Send-ErrorAlertSlack {
     
     $webhookUrl = $script:AlertConfig.Notifications.Slack.WebhookUrl
     
-    # Créer le message Slack
+    # CrÃ©er le message Slack
     $blocks = @(
         @{
             type = "header"
             text = @{
                 type = "plain_text"
-                text = "Alerte d'erreurs récurrentes"
+                text = "Alerte d'erreurs rÃ©currentes"
                 emoji = $true
             }
         },
@@ -380,7 +380,7 @@ function Send-ErrorAlertSlack {
             type = "section"
             text = @{
                 type = "mrkdwn"
-                text = "Les erreurs suivantes ont été détectées de manière récurrente:"
+                text = "Les erreurs suivantes ont Ã©tÃ© dÃ©tectÃ©es de maniÃ¨re rÃ©currente:"
             }
         }
     )
@@ -414,11 +414,11 @@ function Send-ErrorAlertSlack {
         
         Invoke-RestMethod @params
         
-        Write-Verbose "Alerte envoyée à Slack"
+        Write-Verbose "Alerte envoyÃ©e Ã  Slack"
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'envoi de l'alerte à Slack: $_"
+        Write-Error "Erreur lors de l'envoi de l'alerte Ã  Slack: $_"
         return $false
     }
 }

@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un fichier markdown en structure d'objet PowerShell représentant une roadmap avec performance optimisée.
+    Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec performance optimisÃ©e.
 
 .DESCRIPTION
     La fonction ConvertFrom-MarkdownToRoadmapOptimized lit un fichier markdown et le convertit en une structure d'objet PowerShell.
-    Elle est optimisée pour traiter efficacement les fichiers volumineux en utilisant des techniques de lecture par blocs
-    et des structures de données optimisées.
+    Elle est optimisÃ©e pour traiter efficacement les fichiers volumineux en utilisant des techniques de lecture par blocs
+    et des structures de donnÃ©es optimisÃ©es.
 
 .PARAMETER FilePath
-    Chemin du fichier markdown à convertir.
+    Chemin du fichier markdown Ã  convertir.
 
 .PARAMETER IncludeMetadata
-    Indique si les métadonnées supplémentaires doivent être extraites et incluses dans les objets.
+    Indique si les mÃ©tadonnÃ©es supplÃ©mentaires doivent Ãªtre extraites et incluses dans les objets.
 
 .PARAMETER CustomStatusMarkers
-    Hashtable définissant des marqueurs de statut personnalisés et leur correspondance avec les statuts standard.
+    Hashtable dÃ©finissant des marqueurs de statut personnalisÃ©s et leur correspondance avec les statuts standard.
 
 .PARAMETER DetectDependencies
-    Indique si les dépendances entre tâches doivent être détectées et incluses dans les objets.
+    Indique si les dÃ©pendances entre tÃ¢ches doivent Ãªtre dÃ©tectÃ©es et incluses dans les objets.
 
 .PARAMETER ValidateStructure
-    Indique si la structure de la roadmap doit être validée.
+    Indique si la structure de la roadmap doit Ãªtre validÃ©e.
 
 .PARAMETER BlockSize
-    Taille des blocs de lecture en lignes. Par défaut, 1000 lignes.
+    Taille des blocs de lecture en lignes. Par dÃ©faut, 1000 lignes.
 
 .EXAMPLE
     ConvertFrom-MarkdownToRoadmapOptimized -FilePath ".\roadmap.md"
@@ -31,16 +31,16 @@
 
 .EXAMPLE
     ConvertFrom-MarkdownToRoadmapOptimized -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies -BlockSize 500
-    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des métadonnées et détection des dépendances,
+    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des mÃ©tadonnÃ©es et dÃ©tection des dÃ©pendances,
     en utilisant des blocs de 500 lignes.
 
 .OUTPUTS
-    [PSCustomObject] Représentant la structure de la roadmap.
+    [PSCustomObject] ReprÃ©sentant la structure de la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function ConvertFrom-MarkdownToRoadmapOptimized {
     [CmdletBinding()]
@@ -65,15 +65,15 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
         [int]$BlockSize = 1000
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
 
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-    # Créer l'objet roadmap
+    # CrÃ©er l'objet roadmap
     $roadmap = [PSCustomObject]@{
         Title = "Roadmap"
         Description = ""
@@ -87,7 +87,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
         }
     }
 
-    # Définir les marqueurs de statut standard
+    # DÃ©finir les marqueurs de statut standard
     $statusMarkers = [System.Collections.Generic.Dictionary[string, string]]::new([StringComparer]::OrdinalIgnoreCase)
     $statusMarkers["x"] = "Complete"
     $statusMarkers["X"] = "Complete"
@@ -96,19 +96,19 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
     $statusMarkers[" "] = "Incomplete"
     $statusMarkers[""] = "Incomplete"
 
-    # Fusionner avec les marqueurs personnalisés si fournis
+    # Fusionner avec les marqueurs personnalisÃ©s si fournis
     if ($null -ne $CustomStatusMarkers) {
         foreach ($key in $CustomStatusMarkers.Keys) {
             $statusMarkers[$key] = $CustomStatusMarkers[$key]
         }
     }
 
-    # Créer des expressions régulières compilées pour améliorer les performances
+    # CrÃ©er des expressions rÃ©guliÃ¨res compilÃ©es pour amÃ©liorer les performances
     $sectionRegex = [regex]::new('^##\s+(.+)$', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     $taskRegex = [regex]::new('^(\s*)[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     $titleRegex = [regex]::new('^#\s+(.+)$', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     
-    # Expressions régulières pour les métadonnées
+    # Expressions rÃ©guliÃ¨res pour les mÃ©tadonnÃ©es
     $assigneeRegex = [regex]::new('@([a-zA-Z0-9_-]+)(?:\s|$)', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     $tagRegex = [regex]::new('#([a-zA-Z0-9_-]+)(?:\s|$)', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     $priorityRegex = [regex]::new('\b(P[0-9])\b', [System.Text.RegularExpressions.RegexOptions]::Compiled)
@@ -119,7 +119,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
     $endDateRegex = [regex]::new('@end:(\d{4}-\d{2}-\d{2})', [System.Text.RegularExpressions.RegexOptions]::Compiled)
     $refRegex = [regex]::new('\bref:([a-zA-Z0-9_.-]+)\b', [System.Text.RegularExpressions.RegexOptions]::Compiled)
 
-    # Variables pour suivre l'état du parsing
+    # Variables pour suivre l'Ã©tat du parsing
     $currentSection = $null
     $taskStack = [System.Collections.Generic.Stack[object]]::new()
     $currentLevel = 0
@@ -128,7 +128,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
     $descriptionLines = [System.Collections.ArrayList]::new()
     $titleFound = $false
 
-    # Ouvrir le fichier en mode streaming pour économiser la mémoire
+    # Ouvrir le fichier en mode streaming pour Ã©conomiser la mÃ©moire
     $reader = [System.IO.StreamReader]::new($FilePath, [System.Text.Encoding]::UTF8)
     
     try {
@@ -142,7 +142,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
             $linesProcessed++
             $line = $read
             
-            # Extraire le titre (première ligne commençant par #)
+            # Extraire le titre (premiÃ¨re ligne commenÃ§ant par #)
             if (-not $titleFound -and $titleRegex.IsMatch($line)) {
                 $match = $titleRegex.Match($line)
                 $roadmap.Title = $match.Groups[1].Value
@@ -153,13 +153,13 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
             
             # Collecter les lignes de description
             if ($inDescription) {
-                # Si on trouve une section, on arrête la description
+                # Si on trouve une section, on arrÃªte la description
                 if ($sectionRegex.IsMatch($line)) {
                     $inDescription = $false
                     # Ne pas continuer, traiter la section ci-dessous
                 }
                 else {
-                    # Ignorer les lignes vides au début de la description
+                    # Ignorer les lignes vides au dÃ©but de la description
                     if ($descriptionLines.Count -eq 0 -and [string]::IsNullOrWhiteSpace($line)) {
                         continue
                     }
@@ -169,7 +169,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                 }
             }
             
-            # Détecter les sections (lignes commençant par ##)
+            # DÃ©tecter les sections (lignes commenÃ§ant par ##)
             if ($sectionRegex.IsMatch($line)) {
                 $match = $sectionRegex.Match($line)
                 $sectionTitle = $match.Groups[1].Value
@@ -184,7 +184,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                 continue
             }
             
-            # Détecter les tâches (lignes commençant par -, *, + avec ou sans case à cocher)
+            # DÃ©tecter les tÃ¢ches (lignes commenÃ§ant par -, *, + avec ou sans case Ã  cocher)
             if ($null -ne $currentSection -and $taskRegex.IsMatch($line)) {
                 $match = $taskRegex.Match($line)
                 $indent = $match.Groups[1].Value.Length
@@ -192,17 +192,17 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                 $id = $match.Groups[3].Value
                 $title = $match.Groups[4].Value
                 
-                # Déterminer le statut
+                # DÃ©terminer le statut
                 $status = if ($statusMarkers.ContainsKey($statusMarker)) {
                     $statusMarkers[$statusMarker]
                 } else {
                     "Incomplete"
                 }
                 
-                # Extraire les métadonnées
+                # Extraire les mÃ©tadonnÃ©es
                 $metadata = [System.Collections.Generic.Dictionary[string, object]]::new()
                 
-                # Extraire les métadonnées avancées si demandé
+                # Extraire les mÃ©tadonnÃ©es avancÃ©es si demandÃ©
                 if ($IncludeMetadata) {
                     # Extraire les assignations (@personne)
                     $assigneeMatch = $assigneeRegex.Match($title)
@@ -224,7 +224,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                         $title = $tagRegex.Replace($title, '')
                     }
                     
-                    # Extraire les priorités (P1, P2, etc.)
+                    # Extraire les prioritÃ©s (P1, P2, etc.)
                     $priorityMatch = $priorityRegex.Match($title)
                     if ($priorityMatch.Success) {
                         $metadata["Priority"] = $priorityMatch.Groups[1].Value
@@ -240,7 +240,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                         $title = $dateRegex.Replace($title, '')
                     }
                     
-                    # Extraire les dépendances (format: @depends:ID1,ID2,...)
+                    # Extraire les dÃ©pendances (format: @depends:ID1,ID2,...)
                     $dependsOnMatch = $dependsOnRegex.Match($title)
                     if ($dependsOnMatch.Success) {
                         $dependsOn = $dependsOnMatch.Groups[1].Value -split ','
@@ -257,7 +257,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                         $title = $estimateRegex.Replace($title, '')
                     }
                     
-                    # Extraire les dates de début (format: @start:YYYY-MM-DD)
+                    # Extraire les dates de dÃ©but (format: @start:YYYY-MM-DD)
                     $startDateMatch = $startDateRegex.Match($title)
                     if ($startDateMatch.Success) {
                         $metadata["StartDate"] = $startDateMatch.Groups[1].Value
@@ -273,7 +273,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                         $title = $endDateRegex.Replace($title, '')
                     }
                     
-                    # Extraire les références (format: ref:ID)
+                    # Extraire les rÃ©fÃ©rences (format: ref:ID)
                     $refMatch = $refRegex.Match($title)
                     if ($refMatch.Success) {
                         $metadata["References"] = $refMatch.Groups[1].Value
@@ -285,7 +285,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                 # Nettoyer le titre (supprimer les espaces en trop)
                 $title = $title.Trim()
                 
-                # Créer l'objet tâche
+                # CrÃ©er l'objet tÃ¢che
                 $task = [PSCustomObject]@{
                     Id = $id
                     Title = $title
@@ -299,7 +299,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                     OriginalText = $line
                 }
                 
-                # Ajouter la tâche au dictionnaire global
+                # Ajouter la tÃ¢che au dictionnaire global
                 if (-not [string]::IsNullOrEmpty($id)) {
                     if ($roadmap.AllTasks.ContainsKey($id)) {
                         if ($ValidateStructure) {
@@ -310,16 +310,16 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                     }
                 }
                 
-                # Déterminer le parent en fonction de l'indentation
+                # DÃ©terminer le parent en fonction de l'indentation
                 if ($indent -eq 0) {
-                    # Tâche de premier niveau
+                    # TÃ¢che de premier niveau
                     $currentSection.Tasks.Add($task) | Out-Null
                     $taskStack.Clear()
                     $taskStack.Push($task)
                     $currentLevel = 0
                 }
                 elseif ($indent -gt $currentLevel) {
-                    # Sous-tâche
+                    # Sous-tÃ¢che
                     if ($taskStack.Count -gt 0) {
                         $parent = $taskStack.Peek()
                         $parent.SubTasks.Add($task) | Out-Null
@@ -328,7 +328,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                     }
                 }
                 elseif ($indent -eq $currentLevel) {
-                    # Même niveau que la tâche précédente
+                    # MÃªme niveau que la tÃ¢che prÃ©cÃ©dente
                     if ($taskStack.Count -gt 1) {
                         $taskStack.Pop() | Out-Null
                         $parent = $taskStack.Peek()
@@ -342,7 +342,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                     }
                 }
                 elseif ($indent -lt $currentLevel) {
-                    # Remonter dans la hiérarchie
+                    # Remonter dans la hiÃ©rarchie
                     $levelDiff = [int](($currentLevel - $indent) / 2)
                     for ($i = 0; $i -lt $levelDiff + 1; $i++) {
                         if ($taskStack.Count -gt 0) {
@@ -366,18 +366,18 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
             }
         }
         
-        # Définir la description
+        # DÃ©finir la description
         if ($descriptionLines.Count -gt 0) {
-            # Supprimer les lignes vides à la fin
+            # Supprimer les lignes vides Ã  la fin
             while ($descriptionLines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($descriptionLines[$descriptionLines.Count - 1])) {
                 $descriptionLines.RemoveAt($descriptionLines.Count - 1)
             }
             $roadmap.Description = [string]::Join("`n", $descriptionLines)
         }
         
-        # Détecter les dépendances entre tâches si demandé
+        # DÃ©tecter les dÃ©pendances entre tÃ¢ches si demandÃ©
         if ($DetectDependencies) {
-            # Traiter les dépendances explicites (via métadonnées)
+            # Traiter les dÃ©pendances explicites (via mÃ©tadonnÃ©es)
             foreach ($id in $roadmap.AllTasks.Keys) {
                 $task = $roadmap.AllTasks[$id]
                 if ($task.Metadata.ContainsKey("DependsOn")) {
@@ -393,7 +393,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                     }
                 }
                 
-                # Détecter les dépendances implicites (basées sur les références dans le titre)
+                # DÃ©tecter les dÃ©pendances implicites (basÃ©es sur les rÃ©fÃ©rences dans le titre)
                 if ($task.Metadata.ContainsKey("References")) {
                     $refId = $task.Metadata["References"]
                     if ($roadmap.AllTasks.ContainsKey($refId) -and $refId -ne $id) {
@@ -407,16 +407,16 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
             }
         }
         
-        # Valider la structure de la roadmap si demandé
+        # Valider la structure de la roadmap si demandÃ©
         if ($ValidateStructure) {
-            # Vérifier les IDs manquants
+            # VÃ©rifier les IDs manquants
             foreach ($section in $roadmap.Sections) {
                 foreach ($task in $section.Tasks) {
                     if ([string]::IsNullOrEmpty($task.Id)) {
                         $roadmap.ValidationIssues.Add("Missing task ID at line $($task.LineNumber)") | Out-Null
                     }
                     
-                    # Vérifier récursivement les sous-tâches
+                    # VÃ©rifier rÃ©cursivement les sous-tÃ¢ches
                     function Test-SubTasks {
                         param (
                             [PSCustomObject]$Task
@@ -434,7 +434,7 @@ function ConvertFrom-MarkdownToRoadmapOptimized {
                 }
             }
             
-            # Vérifier les dépendances circulaires
+            # VÃ©rifier les dÃ©pendances circulaires
             function Test-CircularDependencies {
                 param (
                     [PSCustomObject]$Task,

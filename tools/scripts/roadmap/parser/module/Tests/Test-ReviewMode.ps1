@@ -1,92 +1,92 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour le script review-mode.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires et d'intégration pour le script review-mode.ps1
-    qui implémente le mode REVIEW pour vérifier la lisibilité, les standards et la documentation du code.
+    Ce script contient des tests unitaires et d'intÃ©gration pour le script review-mode.ps1
+    qui implÃ©mente le mode REVIEW pour vÃ©rifier la lisibilitÃ©, les standards et la documentation du code.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $projectRoot = Split-Path -Parent (Split-Path -Parent $modulePath)
 $reviewModePath = Join-Path -Path $projectRoot -ChildPath "review-mode.ps1"
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $invokeReviewPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapReview.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $reviewModePath)) {
-    Write-Warning "Le script review-mode.ps1 est introuvable à l'emplacement : $reviewModePath"
+    Write-Warning "Le script review-mode.ps1 est introuvable Ã  l'emplacement : $reviewModePath"
 }
 
 if (-not (Test-Path -Path $invokeReviewPath)) {
-    Write-Warning "Le fichier Invoke-RoadmapReview.ps1 est introuvable à l'emplacement : $invokeReviewPath"
+    Write-Warning "Le fichier Invoke-RoadmapReview.ps1 est introuvable Ã  l'emplacement : $invokeReviewPath"
 }
 
 # Importer les fonctions si elles existent
 if (Test-Path -Path $invokeReviewPath) {
     . $invokeReviewPath
-    Write-Host "Fonction Invoke-RoadmapReview importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapReview importÃ©e." -ForegroundColor Green
 }
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
-# Créer un fichier de test avec une structure de roadmap simple
+# CrÃ©er un fichier de test avec une structure de roadmap simple
 @"
 # Roadmap de test
 
 ## Section 1
 
 - [ ] **1.1** Revue de code
-  - [ ] **1.1.1** Vérifier la conformité aux standards
-  - [ ] **1.1.2** Évaluer la qualité de la documentation
-- [ ] **1.2** Amélioration de la qualité
-  - [ ] **1.2.1** Réduire la complexité
-  - [ ] **1.2.2** Améliorer la lisibilité
+  - [ ] **1.1.1** VÃ©rifier la conformitÃ© aux standards
+  - [ ] **1.1.2** Ã‰valuer la qualitÃ© de la documentation
+- [ ] **1.2** AmÃ©lioration de la qualitÃ©
+  - [ ] **1.2.1** RÃ©duire la complexitÃ©
+  - [ ] **1.2.2** AmÃ©liorer la lisibilitÃ©
 
 ## Section 2
 
-- [ ] **2.1** Tests de qualité
+- [ ] **2.1** Tests de qualitÃ©
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
 
-Write-Host "Fichier de roadmap créé : $testFilePath" -ForegroundColor Green
+Write-Host "Fichier de roadmap crÃ©Ã© : $testFilePath" -ForegroundColor Green
 
-# Créer des répertoires temporaires pour les tests
+# CrÃ©er des rÃ©pertoires temporaires pour les tests
 $testModulePath = Join-Path -Path $env:TEMP -ChildPath "TestModule_$(Get-Random)"
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "TestOutput_$(Get-Random)"
 
-# Créer la structure du module de test
+# CrÃ©er la structure du module de test
 New-Item -Path $testModulePath -ItemType Directory -Force | Out-Null
 New-Item -Path (Join-Path -Path $testModulePath -ChildPath "Functions") -ItemType Directory -Force | Out-Null
 New-Item -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Public") -ItemType Directory -Force | Out-Null
 New-Item -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private") -ItemType Directory -Force | Out-Null
 New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de code avec des problèmes de qualité pour les tests
+# CrÃ©er des fichiers de code avec des problÃ¨mes de qualitÃ© pour les tests
 @"
 function Process-Data {
-    # Problème : Pas de documentation
+    # ProblÃ¨me : Pas de documentation
     param (
         [Parameter(Mandatory = `$true)]
         [object]`$Data
     )
     
-    # Problème : Complexité cyclomatique élevée
+    # ProblÃ¨me : ComplexitÃ© cyclomatique Ã©levÃ©e
     if (`$Data -is [string]) {
         if (`$Data.Length -gt 10) {
             if (`$Data.StartsWith("A")) {
@@ -121,13 +121,13 @@ function Process-Data {
 
 @"
 function Helper-Function {
-    # Problème : Nom de fonction non conforme aux standards PowerShell
-    # Problème : Documentation insuffisante
+    # ProblÃ¨me : Nom de fonction non conforme aux standards PowerShell
+    # ProblÃ¨me : Documentation insuffisante
     param (
-        [string]`$input # Problème : Nom de paramètre réservé
+        [string]`$input # ProblÃ¨me : Nom de paramÃ¨tre rÃ©servÃ©
     )
     
-    # Problème : Duplication de code (similaire à Process-Data)
+    # ProblÃ¨me : Duplication de code (similaire Ã  Process-Data)
     if (`$input -is [string]) {
         if (`$input.Length -gt 10) {
             if (`$input.StartsWith("A")) {
@@ -146,10 +146,10 @@ function Helper-Function {
 }
 "@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private\Helper-Function.ps1") -Encoding UTF8
 
-Write-Host "Module de test créé : $testModulePath" -ForegroundColor Green
-Write-Host "Répertoire de sortie créé : $testOutputPath" -ForegroundColor Green
+Write-Host "Module de test crÃ©Ã© : $testModulePath" -ForegroundColor Green
+Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $testOutputPath" -ForegroundColor Green
 
-# Créer un fichier de standards de codage
+# CrÃ©er un fichier de standards de codage
 $standardsFilePath = Join-Path -Path $testOutputPath -ChildPath "coding-standards.json"
 @"
 {
@@ -175,19 +175,19 @@ $standardsFilePath = Join-Path -Path $testOutputPath -ChildPath "coding-standard
 }
 "@ | Set-Content -Path $standardsFilePath -Encoding UTF8
 
-Write-Host "Fichier de standards de codage créé : $standardsFilePath" -ForegroundColor Green
+Write-Host "Fichier de standards de codage crÃ©Ã© : $standardsFilePath" -ForegroundColor Green
 
 # Tests unitaires avec Pester
 Describe "Invoke-RoadmapReview" {
     BeforeEach {
-        # Préparation avant chaque test
+        # PrÃ©paration avant chaque test
     }
 
     AfterEach {
-        # Nettoyage après chaque test
+        # Nettoyage aprÃ¨s chaque test
     }
 
-    It "Devrait exécuter correctement avec des paramètres valides" {
+    It "Devrait exÃ©cuter correctement avec des paramÃ¨tres valides" {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapReview -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapReview -ModulePath $testModulePath -OutputPath $testOutputPath -CheckStandards $true
@@ -206,85 +206,85 @@ Describe "Invoke-RoadmapReview" {
         }
     }
 
-    It "Devrait vérifier la conformité aux standards de codage" {
-        # Appeler la fonction et vérifier la vérification des standards
+    It "Devrait vÃ©rifier la conformitÃ© aux standards de codage" {
+        # Appeler la fonction et vÃ©rifier la vÃ©rification des standards
         if (Get-Command -Name Invoke-RoadmapReview -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapReview -ModulePath $testModulePath -OutputPath $testOutputPath -CheckStandards $true -StandardsFile $standardsFilePath
             
-            # Vérifier que les problèmes de standards sont identifiés
+            # VÃ©rifier que les problÃ¨mes de standards sont identifiÃ©s
             $result.StandardsViolations | Should -Not -BeNullOrEmpty
             $result.StandardsViolations.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les problèmes spécifiques sont identifiés
+            # VÃ©rifier que les problÃ¨mes spÃ©cifiques sont identifiÃ©s
             $result.StandardsViolations | Should -Contain "Helper-Function"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
     }
 
-    It "Devrait vérifier la qualité de la documentation" {
-        # Appeler la fonction et vérifier la vérification de la documentation
+    It "Devrait vÃ©rifier la qualitÃ© de la documentation" {
+        # Appeler la fonction et vÃ©rifier la vÃ©rification de la documentation
         if (Get-Command -Name Invoke-RoadmapReview -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapReview -ModulePath $testModulePath -OutputPath $testOutputPath -CheckDocumentation $true -MinDocRatio 0.2
             
-            # Vérifier que les problèmes de documentation sont identifiés
+            # VÃ©rifier que les problÃ¨mes de documentation sont identifiÃ©s
             $result.DocumentationIssues | Should -Not -BeNullOrEmpty
             $result.DocumentationIssues.Count | Should -BeGreaterThan 0
             
-            # Vérifier que le ratio de documentation est calculé
+            # VÃ©rifier que le ratio de documentation est calculÃ©
             $result.DocRatio | Should -BeLessThan 0.2
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
     }
 
-    It "Devrait vérifier la complexité cyclomatique" {
-        # Appeler la fonction et vérifier la vérification de la complexité
+    It "Devrait vÃ©rifier la complexitÃ© cyclomatique" {
+        # Appeler la fonction et vÃ©rifier la vÃ©rification de la complexitÃ©
         if (Get-Command -Name Invoke-RoadmapReview -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapReview -ModulePath $testModulePath -OutputPath $testOutputPath -CheckComplexity $true -MaxComplexity 10
             
-            # Vérifier que les problèmes de complexité sont identifiés
+            # VÃ©rifier que les problÃ¨mes de complexitÃ© sont identifiÃ©s
             $result.ComplexityIssues | Should -Not -BeNullOrEmpty
             $result.ComplexityIssues.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les fonctions complexes sont identifiées
+            # VÃ©rifier que les fonctions complexes sont identifiÃ©es
             $result.ComplexityIssues | Should -Contain "Process-Data"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
     }
 
-    It "Devrait générer un rapport de revue" {
-        # Appeler la fonction et vérifier la génération du rapport
+    It "Devrait gÃ©nÃ©rer un rapport de revue" {
+        # Appeler la fonction et vÃ©rifier la gÃ©nÃ©ration du rapport
         if (Get-Command -Name Invoke-RoadmapReview -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapReview -ModulePath $testModulePath -OutputPath $testOutputPath -CheckStandards $true -CheckDocumentation $true -CheckComplexity $true
             
-            # Vérifier que le rapport est généré
+            # VÃ©rifier que le rapport est gÃ©nÃ©rÃ©
             $reviewReportPath = Join-Path -Path $testOutputPath -ChildPath "review_report.html"
             Test-Path -Path $reviewReportPath | Should -Be $true
             
-            # Vérifier que le contenu du rapport contient les informations attendues
+            # VÃ©rifier que le contenu du rapport contient les informations attendues
             $reportContent = Get-Content -Path $reviewReportPath -Raw
             $reportContent | Should -Match "Standards de codage"
             $reportContent | Should -Match "Documentation"
-            $reportContent | Should -Match "Complexité cyclomatique"
+            $reportContent | Should -Match "ComplexitÃ© cyclomatique"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
     }
 }
 
-# Test d'intégration du script review-mode.ps1
+# Test d'intÃ©gration du script review-mode.ps1
 Describe "review-mode.ps1 Integration" {
-    It "Devrait s'exécuter correctement avec des paramètres valides" {
+    It "Devrait s'exÃ©cuter correctement avec des paramÃ¨tres valides" {
         if (Test-Path -Path $reviewModePath) {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $output = & $reviewModePath -ModulePath $testModulePath -OutputPath $testOutputPath -CheckStandards $true -CheckDocumentation $true -CheckComplexity $true
             
-            # Vérifier que le script s'est exécuté sans erreur
+            # VÃ©rifier que le script s'est exÃ©cutÃ© sans erreur
             $LASTEXITCODE | Should -Be 0
             
-            # Vérifier que les fichiers attendus existent
+            # VÃ©rifier que les fichiers attendus existent
             $reviewReportPath = Join-Path -Path $testOutputPath -ChildPath "review_report.html"
             Test-Path -Path $reviewReportPath | Should -Be $true
         } else {
@@ -296,22 +296,22 @@ Describe "review-mode.ps1 Integration" {
 # Nettoyage
 if (Test-Path -Path $testFilePath) {
     Remove-Item -Path $testFilePath -Force
-    Write-Host "Fichier de roadmap supprimé." -ForegroundColor Gray
+    Write-Host "Fichier de roadmap supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testModulePath) {
     Remove-Item -Path $testModulePath -Recurse -Force
-    Write-Host "Module de test supprimé." -ForegroundColor Gray
+    Write-Host "Module de test supprimÃ©." -ForegroundColor Gray
 }
 
 if (Test-Path -Path $testOutputPath) {
     Remove-Item -Path $testOutputPath -Recurse -Force
-    Write-Host "Répertoire de sortie supprimé." -ForegroundColor Gray
+    Write-Host "RÃ©pertoire de sortie supprimÃ©." -ForegroundColor Gray
 }
 
-# Exécuter les tests si Pester est disponible
+# ExÃ©cuter les tests si Pester est disponible
 if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
     Invoke-Pester -Path $MyInvocation.MyCommand.Path
 } else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
+    Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }

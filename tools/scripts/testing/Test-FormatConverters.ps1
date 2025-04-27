@@ -1,4 +1,4 @@
-# Test-FormatConverters.ps1
+﻿# Test-FormatConverters.ps1
 # Script pour tester les convertisseurs de format
 
 # Importer le module Format-Converters

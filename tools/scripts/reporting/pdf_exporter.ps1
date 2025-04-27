@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
     Module d'export de rapports au format PDF.
 .DESCRIPTION
     Ce module fournit des fonctions pour exporter des rapports au format PDF
-    en utilisant la bibliothèque DinkToPdf via HTML.
+    en utilisant la bibliothÃ¨que DinkToPdf via HTML.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de création: 2025-04-23
+    Date de crÃ©ation: 2025-04-23
 #>
 
 # Importer le module d'export HTML
@@ -16,26 +16,26 @@ if (Test-Path -Path $HtmlExporterPath) {
     . $HtmlExporterPath
 }
 else {
-    Write-Error "Module d'export HTML non trouvé: $HtmlExporterPath"
+    Write-Error "Module d'export HTML non trouvÃ©: $HtmlExporterPath"
     exit 1
 }
 
-# Définition des chemins par défaut
+# DÃ©finition des chemins par dÃ©faut
 $script:DefaultWkhtmltopdfPath = "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
 $script:DefaultPdfOptionsPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\config\reporting\pdf_options.json"
 
 <#
 .SYNOPSIS
-    Vérifie si wkhtmltopdf est installé.
+    VÃ©rifie si wkhtmltopdf est installÃ©.
 .DESCRIPTION
-    Cette fonction vérifie si wkhtmltopdf est installé et disponible
-    pour la génération de PDF.
+    Cette fonction vÃ©rifie si wkhtmltopdf est installÃ© et disponible
+    pour la gÃ©nÃ©ration de PDF.
 .PARAMETER WkhtmltopdfPath
-    Chemin vers l'exécutable wkhtmltopdf.
+    Chemin vers l'exÃ©cutable wkhtmltopdf.
 .EXAMPLE
     $IsInstalled = Test-WkhtmltopdfInstallation
 .OUTPUTS
-    System.Boolean - True si wkhtmltopdf est installé, False sinon.
+    System.Boolean - True si wkhtmltopdf est installÃ©, False sinon.
 #>
 function Test-WkhtmltopdfInstallation {
     [CmdletBinding()]
@@ -45,13 +45,13 @@ function Test-WkhtmltopdfInstallation {
     )
     
     try {
-        # Vérifier si l'exécutable existe
+        # VÃ©rifier si l'exÃ©cutable existe
         if (Test-Path -Path $WkhtmltopdfPath) {
-            # Vérifier si l'exécutable fonctionne
+            # VÃ©rifier si l'exÃ©cutable fonctionne
             $Version = & $WkhtmltopdfPath --version 2>&1
             
             if ($LASTEXITCODE -eq 0) {
-                Write-Verbose "wkhtmltopdf est installé: $Version"
+                Write-Verbose "wkhtmltopdf est installÃ©: $Version"
                 return $true
             }
             else {
@@ -60,27 +60,27 @@ function Test-WkhtmltopdfInstallation {
             }
         }
         else {
-            Write-Error "wkhtmltopdf n'est pas installé: $WkhtmltopdfPath"
+            Write-Error "wkhtmltopdf n'est pas installÃ©: $WkhtmltopdfPath"
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors de la vérification de l'installation de wkhtmltopdf: $_"
+        Write-Error "Erreur lors de la vÃ©rification de l'installation de wkhtmltopdf: $_"
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Installe wkhtmltopdf si nécessaire.
+    Installe wkhtmltopdf si nÃ©cessaire.
 .DESCRIPTION
-    Cette fonction télécharge et installe wkhtmltopdf si nécessaire.
+    Cette fonction tÃ©lÃ©charge et installe wkhtmltopdf si nÃ©cessaire.
 .PARAMETER InstallPath
     Chemin d'installation de wkhtmltopdf.
 .EXAMPLE
     $Result = Install-Wkhtmltopdf
 .OUTPUTS
-    System.Boolean - True si l'installation a réussi, False sinon.
+    System.Boolean - True si l'installation a rÃ©ussi, False sinon.
 #>
 function Install-Wkhtmltopdf {
     [CmdletBinding()]
@@ -90,35 +90,35 @@ function Install-Wkhtmltopdf {
     )
     
     try {
-        # Vérifier si wkhtmltopdf est déjà installé
+        # VÃ©rifier si wkhtmltopdf est dÃ©jÃ  installÃ©
         if (Test-WkhtmltopdfInstallation) {
-            Write-Verbose "wkhtmltopdf est déjà installé"
+            Write-Verbose "wkhtmltopdf est dÃ©jÃ  installÃ©"
             return $true
         }
         
-        # Créer un répertoire temporaire
+        # CrÃ©er un rÃ©pertoire temporaire
         $TempDir = [System.IO.Path]::GetTempPath() + [System.Guid]::NewGuid().ToString()
         New-Item -Path $TempDir -ItemType Directory -Force | Out-Null
         
-        # URL de téléchargement
+        # URL de tÃ©lÃ©chargement
         $DownloadUrl = "https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.msvc2015-win64.exe"
         $InstallerPath = Join-Path -Path $TempDir -ChildPath "wkhtmltopdf-installer.exe"
         
-        # Télécharger l'installateur
-        Write-Verbose "Téléchargement de wkhtmltopdf depuis $DownloadUrl"
+        # TÃ©lÃ©charger l'installateur
+        Write-Verbose "TÃ©lÃ©chargement de wkhtmltopdf depuis $DownloadUrl"
         Invoke-WebRequest -Uri $DownloadUrl -OutFile $InstallerPath
         
         # Installer wkhtmltopdf
         Write-Verbose "Installation de wkhtmltopdf"
         Start-Process -FilePath $InstallerPath -ArgumentList "/S", "/D=$InstallPath" -Wait
         
-        # Vérifier si l'installation a réussi
+        # VÃ©rifier si l'installation a rÃ©ussi
         if (Test-WkhtmltopdfInstallation) {
-            Write-Verbose "wkhtmltopdf a été installé avec succès"
+            Write-Verbose "wkhtmltopdf a Ã©tÃ© installÃ© avec succÃ¨s"
             return $true
         }
         else {
-            Write-Error "L'installation de wkhtmltopdf a échoué"
+            Write-Error "L'installation de wkhtmltopdf a Ã©chouÃ©"
             return $false
         }
     }
@@ -127,7 +127,7 @@ function Install-Wkhtmltopdf {
         return $false
     }
     finally {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         if (Test-Path -Path $TempDir) {
             Remove-Item -Path $TempDir -Recurse -Force
         }
@@ -139,13 +139,13 @@ function Install-Wkhtmltopdf {
     Charge les options PDF depuis un fichier JSON.
 .DESCRIPTION
     Cette fonction charge les options PDF depuis un fichier JSON
-    pour la génération de PDF.
+    pour la gÃ©nÃ©ration de PDF.
 .PARAMETER OptionsPath
     Chemin vers le fichier JSON contenant les options PDF.
 .EXAMPLE
     $Options = Get-PdfOptions -OptionsPath "config/reporting/pdf_options.json"
 .OUTPUTS
-    System.Object - Les options PDF chargées.
+    System.Object - Les options PDF chargÃ©es.
 #>
 function Get-PdfOptions {
     [CmdletBinding()]
@@ -155,18 +155,18 @@ function Get-PdfOptions {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (Test-Path -Path $OptionsPath) {
             # Charger le fichier JSON
             $OptionsJson = Get-Content -Path $OptionsPath -Raw -Encoding UTF8
             $Options = ConvertFrom-Json -InputObject $OptionsJson -ErrorAction Stop
             
-            Write-Verbose "Options PDF chargées avec succès"
+            Write-Verbose "Options PDF chargÃ©es avec succÃ¨s"
             return $Options
         }
         else {
-            # Utiliser des options par défaut
-            Write-Verbose "Fichier d'options PDF non trouvé, utilisation des options par défaut"
+            # Utiliser des options par dÃ©faut
+            Write-Verbose "Fichier d'options PDF non trouvÃ©, utilisation des options par dÃ©faut"
             
             $DefaultOptions = @{
                 global = @{
@@ -183,7 +183,7 @@ function Get-PdfOptions {
                 }
                 toc = @{
                     enable = $true
-                    header_text = "Table des matières"
+                    header_text = "Table des matiÃ¨res"
                     level_indentation = 10
                     disable_dotted_lines = $false
                     disable_links = $false
@@ -199,7 +199,7 @@ function Get-PdfOptions {
                 }
                 footer = @{
                     enable = $true
-                    html = "<div style='text-align: center; font-size: 10px; color: #777;'>Rapport généré le [date] à [time]</div>"
+                    html = "<div style='text-align: center; font-size: 10px; color: #777;'>Rapport gÃ©nÃ©rÃ© le [date] Ã  [time]</div>"
                     spacing = "5mm"
                 }
             }
@@ -210,7 +210,7 @@ function Get-PdfOptions {
     catch {
         Write-Error "Erreur lors du chargement des options PDF: $_"
         
-        # Utiliser des options par défaut en cas d'erreur
+        # Utiliser des options par dÃ©faut en cas d'erreur
         $DefaultOptions = @{
             global = @{
                 margin_top = "20mm"
@@ -233,7 +233,7 @@ function Get-PdfOptions {
     Cette fonction convertit les options PDF en arguments
     pour la ligne de commande wkhtmltopdf.
 .PARAMETER Options
-    Options PDF à convertir.
+    Options PDF Ã  convertir.
 .EXAMPLE
     $Args = ConvertTo-WkhtmltopdfArguments -Options $Options
 .OUTPUTS
@@ -303,7 +303,7 @@ function ConvertTo-WkhtmltopdfArguments {
             }
         }
         
-        # Options de table des matières
+        # Options de table des matiÃ¨res
         if ($Options.PSObject.Properties.Name -contains "toc" -and $Options.toc.enable) {
             $Arguments += "toc"
             
@@ -336,7 +336,7 @@ function ConvertTo-WkhtmltopdfArguments {
             }
         }
         
-        # Options d'en-tête
+        # Options d'en-tÃªte
         if ($Options.PSObject.Properties.Name -contains "header" -and $Options.header.enable) {
             if ($Options.header.PSObject.Properties.Name -contains "html") {
                 $HeaderHtmlPath = [System.IO.Path]::GetTempFileName() + ".html"
@@ -383,17 +383,17 @@ function ConvertTo-WkhtmltopdfArguments {
     Cette fonction exporte un rapport au format PDF
     en utilisant wkhtmltopdf.
 .PARAMETER ReportData
-    Données du rapport à exporter.
+    DonnÃ©es du rapport Ã  exporter.
 .PARAMETER OutputPath
-    Chemin où le fichier PDF sera sauvegardé.
+    Chemin oÃ¹ le fichier PDF sera sauvegardÃ©.
 .PARAMETER OptionsPath
     Chemin vers le fichier JSON contenant les options PDF.
 .PARAMETER WkhtmltopdfPath
-    Chemin vers l'exécutable wkhtmltopdf.
+    Chemin vers l'exÃ©cutable wkhtmltopdf.
 .EXAMPLE
     $Result = Export-ReportToPdf -ReportData $ReportData -OutputPath "output/reports/report.pdf"
 .OUTPUTS
-    System.Boolean - True si l'export a réussi, False sinon.
+    System.Boolean - True si l'export a rÃ©ussi, False sinon.
 #>
 function Export-ReportToPdf {
     [CmdletBinding()]
@@ -412,7 +412,7 @@ function Export-ReportToPdf {
     )
     
     try {
-        # Vérifier si wkhtmltopdf est installé
+        # VÃ©rifier si wkhtmltopdf est installÃ©
         if (-not (Test-WkhtmltopdfInstallation -WkhtmltopdfPath $WkhtmltopdfPath)) {
             # Tenter d'installer wkhtmltopdf
             $Installed = Install-Wkhtmltopdf
@@ -423,14 +423,14 @@ function Export-ReportToPdf {
             }
         }
         
-        # Créer un fichier HTML temporaire
+        # CrÃ©er un fichier HTML temporaire
         $TempHtmlPath = [System.IO.Path]::GetTempFileName() + ".html"
         
         # Exporter le rapport en HTML
         $HtmlExported = Export-ReportToHtml -ReportData $ReportData -OutputPath $TempHtmlPath
         
         if (-not $HtmlExported) {
-            Write-Error "Échec de l'export du rapport en HTML"
+            Write-Error "Ã‰chec de l'export du rapport en HTML"
             return $false
         }
         
@@ -444,23 +444,23 @@ function Export-ReportToPdf {
         $Arguments += $TempHtmlPath
         $Arguments += $OutputPath
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Exécuter wkhtmltopdf
-        Write-Verbose "Génération du PDF avec wkhtmltopdf"
+        # ExÃ©cuter wkhtmltopdf
+        Write-Verbose "GÃ©nÃ©ration du PDF avec wkhtmltopdf"
         $Process = Start-Process -FilePath $WkhtmltopdfPath -ArgumentList $Arguments -Wait -PassThru -NoNewWindow
         
-        # Vérifier si la génération a réussi
+        # VÃ©rifier si la gÃ©nÃ©ration a rÃ©ussi
         if ($Process.ExitCode -eq 0) {
-            Write-Verbose "PDF généré avec succès: $OutputPath"
+            Write-Verbose "PDF gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath"
             return $true
         }
         else {
-            Write-Error "Échec de la génération du PDF: code de sortie $($Process.ExitCode)"
+            Write-Error "Ã‰chec de la gÃ©nÃ©ration du PDF: code de sortie $($Process.ExitCode)"
             return $false
         }
     }

@@ -1,4 +1,4 @@
-# Test script with known issues
+﻿# Test script with known issues
 function Test-Function {
     param (
         [Parameter(Mandatory = $true)]

@@ -1,70 +1,70 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires et met à jour la roadmap.
+    ExÃ©cute les tests unitaires et met Ã  jour la roadmap.
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour l'optimisation dynamique de la parallélisation
-    et met à jour la roadmap pour refléter la progression.
+    Ce script exÃ©cute les tests unitaires pour l'optimisation dynamique de la parallÃ©lisation
+    et met Ã  jour la roadmap pour reflÃ©ter la progression.
 .EXAMPLE
     .\Update-RoadmapAndRunTests.ps1
-    Exécute les tests et met à jour la roadmap.
+    ExÃ©cute les tests et met Ã  jour la roadmap.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Date: 12/04/2025
 #>
 
-# Exécuter les tests unitaires
+# ExÃ©cuter les tests unitaires
 $testsPath = Join-Path -Path $PSScriptRoot -ChildPath "tests\Run-ParallelizationTests.ps1"
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $testResults = & $testsPath
 
-# Vérifier si les tests ont réussi
+# VÃ©rifier si les tests ont rÃ©ussi
 $testsSucceeded = $testResults.FailedCount -eq 0
 
 if ($testsSucceeded) {
-    Write-Host "Tous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green
     
-    # Mettre à jour la roadmap
+    # Mettre Ã  jour la roadmap
     $roadmapPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))) -ChildPath "Roadmap\roadmap_perso_fixed.md"
     
     if (Test-Path -Path $roadmapPath) {
-        Write-Host "Mise à jour de la roadmap..." -ForegroundColor Cyan
+        Write-Host "Mise Ã  jour de la roadmap..." -ForegroundColor Cyan
         
         # Lire le contenu de la roadmap
         $roadmapContent = Get-Content -Path $roadmapPath -Raw
         
-        # Mettre à jour les tâches
-        $updatedContent = $roadmapContent -replace '- \[ \] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée', '- [x] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge système observée'
-        $updatedContent = $updatedContent -replace '- \[ \] Réorganiser dynamiquement la file d''attente des tâches en priorisant celles qui bloquent souvent d''autres processus', '- [x] Réorganiser dynamiquement la file d''attente des tâches en priorisant celles qui bloquent souvent d''autres processus'
-        $updatedContent = $updatedContent -replace '- \[ \] Implémenter un système de feedback pour l''auto-ajustement des paramètres de parallélisation', '- [x] Implémenter un système de feedback pour l''auto-ajustement des paramètres de parallélisation'
+        # Mettre Ã  jour les tÃ¢ches
+        $updatedContent = $roadmapContent -replace '- \[ \] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge systÃ¨me observÃ©e', '- [x] Ajuster dynamiquement le nombre de threads/runspaces en fonction de la charge systÃ¨me observÃ©e'
+        $updatedContent = $updatedContent -replace '- \[ \] RÃ©organiser dynamiquement la file d''attente des tÃ¢ches en priorisant celles qui bloquent souvent d''autres processus', '- [x] RÃ©organiser dynamiquement la file d''attente des tÃ¢ches en priorisant celles qui bloquent souvent d''autres processus'
+        $updatedContent = $updatedContent -replace '- \[ \] ImplÃ©menter un systÃ¨me de feedback pour l''auto-ajustement des paramÃ¨tres de parallÃ©lisation', '- [x] ImplÃ©menter un systÃ¨me de feedback pour l''auto-ajustement des paramÃ¨tres de parallÃ©lisation'
         
-        # Mettre à jour les sous-tâches
-        $updatedContent = $updatedContent -replace '  - \[ \] Développer un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources', '  - [x] Développer un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources'
-        $updatedContent = $updatedContent -replace '  - \[ \] Implémenter une fonction `Get-OptimalThreadCount` qui analyse CPU, mémoire et I/O en temps réel', '  - [x] Implémenter une fonction `Get-OptimalThreadCount` qui analyse CPU, mémoire et I/O en temps réel'
-        $updatedContent = $updatedContent -replace '  - \[ \] Créer un mécanisme d''ajustement progressif pour éviter les oscillations \(augmentation/diminution graduelle\)', '  - [x] Créer un mécanisme d''ajustement progressif pour éviter les oscillations (augmentation/diminution graduelle)'
-        $updatedContent = $updatedContent -replace '  - \[ \] Intégrer des seuils configurables pour les métriques système \(CPU > 80%, mémoire < 20%\)', '  - [x] Intégrer des seuils configurables pour les métriques système (CPU > 80%, mémoire < 20%)'
+        # Mettre Ã  jour les sous-tÃ¢ches
+        $updatedContent = $updatedContent -replace '  - \[ \] DÃ©velopper un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources', '  - [x] DÃ©velopper un module PowerShell `Dynamic-ThreadManager.psm1` pour surveiller et ajuster les ressources'
+        $updatedContent = $updatedContent -replace '  - \[ \] ImplÃ©menter une fonction `Get-OptimalThreadCount` qui analyse CPU, mÃ©moire et I/O en temps rÃ©el', '  - [x] ImplÃ©menter une fonction `Get-OptimalThreadCount` qui analyse CPU, mÃ©moire et I/O en temps rÃ©el'
+        $updatedContent = $updatedContent -replace '  - \[ \] CrÃ©er un mÃ©canisme d''ajustement progressif pour Ã©viter les oscillations \(augmentation/diminution graduelle\)', '  - [x] CrÃ©er un mÃ©canisme d''ajustement progressif pour Ã©viter les oscillations (augmentation/diminution graduelle)'
+        $updatedContent = $updatedContent -replace '  - \[ \] IntÃ©grer des seuils configurables pour les mÃ©triques systÃ¨me \(CPU > 80%, mÃ©moire < 20%\)', '  - [x] IntÃ©grer des seuils configurables pour les mÃ©triques systÃ¨me (CPU > 80%, mÃ©moire < 20%)'
         
-        $updatedContent = $updatedContent -replace '  - \[ \] Développer un système de détection des dépendances entre tâches avec graphe de dépendances', '  - [x] Développer un système de détection des dépendances entre tâches avec graphe de dépendances'
-        $updatedContent = $updatedContent -replace '  - \[ \] Implémenter un algorithme de scoring des tâches basé sur l''historique des blocages', '  - [x] Implémenter un algorithme de scoring des tâches basé sur l''historique des blocages'
-        $updatedContent = $updatedContent -replace '  - \[ \] Créer une file d''attente prioritaire avec `System.Collections.Generic.PriorityQueue`', '  - [x] Créer une file d''attente prioritaire avec `System.Collections.Generic.PriorityQueue`'
-        $updatedContent = $updatedContent -replace '  - \[ \] Ajouter un mécanisme de promotion des tâches longtemps en attente pour éviter la famine', '  - [x] Ajouter un mécanisme de promotion des tâches longtemps en attente pour éviter la famine'
+        $updatedContent = $updatedContent -replace '  - \[ \] DÃ©velopper un systÃ¨me de dÃ©tection des dÃ©pendances entre tÃ¢ches avec graphe de dÃ©pendances', '  - [x] DÃ©velopper un systÃ¨me de dÃ©tection des dÃ©pendances entre tÃ¢ches avec graphe de dÃ©pendances'
+        $updatedContent = $updatedContent -replace '  - \[ \] ImplÃ©menter un algorithme de scoring des tÃ¢ches basÃ© sur l''historique des blocages', '  - [x] ImplÃ©menter un algorithme de scoring des tÃ¢ches basÃ© sur l''historique des blocages'
+        $updatedContent = $updatedContent -replace '  - \[ \] CrÃ©er une file d''attente prioritaire avec `System.Collections.Generic.PriorityQueue`', '  - [x] CrÃ©er une file d''attente prioritaire avec `System.Collections.Generic.PriorityQueue`'
+        $updatedContent = $updatedContent -replace '  - \[ \] Ajouter un mÃ©canisme de promotion des tÃ¢ches longtemps en attente pour Ã©viter la famine', '  - [x] Ajouter un mÃ©canisme de promotion des tÃ¢ches longtemps en attente pour Ã©viter la famine'
         
-        $updatedContent = $updatedContent -replace '  - \[ \] Créer une base de données SQLite pour stocker les métriques de performance des exécutions', '  - [x] Créer une base de données SQLite pour stocker les métriques de performance des exécutions'
-        $updatedContent = $updatedContent -replace '  - \[ \] Développer un algorithme d''apprentissage qui corrèle paramètres et performances', '  - [x] Développer un algorithme d''apprentissage qui corrèle paramètres et performances'
-        $updatedContent = $updatedContent -replace '  - \[ \] Implémenter un mécanisme d''ajustement automatique basé sur les tendances historiques', '  - [x] Implémenter un mécanisme d''ajustement automatique basé sur les tendances historiques'
-        $updatedContent = $updatedContent -replace '  - \[ \] Ajouter un système de validation A/B pour confirmer l''efficacité des ajustements', '  - [x] Ajouter un système de validation A/B pour confirmer l''efficacité des ajustements'
+        $updatedContent = $updatedContent -replace '  - \[ \] CrÃ©er une base de donnÃ©es SQLite pour stocker les mÃ©triques de performance des exÃ©cutions', '  - [x] CrÃ©er une base de donnÃ©es SQLite pour stocker les mÃ©triques de performance des exÃ©cutions'
+        $updatedContent = $updatedContent -replace '  - \[ \] DÃ©velopper un algorithme d''apprentissage qui corrÃ¨le paramÃ¨tres et performances', '  - [x] DÃ©velopper un algorithme d''apprentissage qui corrÃ¨le paramÃ¨tres et performances'
+        $updatedContent = $updatedContent -replace '  - \[ \] ImplÃ©menter un mÃ©canisme d''ajustement automatique basÃ© sur les tendances historiques', '  - [x] ImplÃ©menter un mÃ©canisme d''ajustement automatique basÃ© sur les tendances historiques'
+        $updatedContent = $updatedContent -replace '  - \[ \] Ajouter un systÃ¨me de validation A/B pour confirmer l''efficacitÃ© des ajustements', '  - [x] Ajouter un systÃ¨me de validation A/B pour confirmer l''efficacitÃ© des ajustements'
         
-        # Mettre à jour la progression
-        $updatedContent = $updatedContent -replace '\*\*Progression\*\*: 33% - \*Mise à jour le 15/05/2025\*', "**Progression**: 66% - *Mise à jour le $(Get-Date -Format 'dd/MM/yyyy')*"
+        # Mettre Ã  jour la progression
+        $updatedContent = $updatedContent -replace '\*\*Progression\*\*: 33% - \*Mise Ã  jour le 15/05/2025\*', "**Progression**: 66% - *Mise Ã  jour le $(Get-Date -Format 'dd/MM/yyyy')*"
         
         # Enregistrer les modifications
         $updatedContent | Set-Content -Path $roadmapPath -Encoding UTF8
         
-        Write-Host "Roadmap mise à jour avec succès!" -ForegroundColor Green
+        Write-Host "Roadmap mise Ã  jour avec succÃ¨s!" -ForegroundColor Green
     }
     else {
-        Write-Warning "Fichier roadmap non trouvé: $roadmapPath"
+        Write-Warning "Fichier roadmap non trouvÃ©: $roadmapPath"
     }
     
     # Commiter les modifications
@@ -85,7 +85,7 @@ if ($testsSucceeded) {
     )
     
     try {
-        # Changer de répertoire
+        # Changer de rÃ©pertoire
         Push-Location -Path $repoRoot
         
         # Ajouter les fichiers
@@ -94,29 +94,29 @@ if ($testsSucceeded) {
         }
         
         # Commiter les modifications
-        git commit -m "Implémentation de l'Optimisation Dynamique de la Parallélisation" --no-verify
+        git commit -m "ImplÃ©mentation de l'Optimisation Dynamique de la ParallÃ©lisation" --no-verify
         
         # Pousser les modifications
         git push --no-verify
         
-        Write-Host "Modifications commitées et poussées avec succès!" -ForegroundColor Green
+        Write-Host "Modifications commitÃ©es et poussÃ©es avec succÃ¨s!" -ForegroundColor Green
     }
     catch {
         Write-Error "Erreur lors du commit des modifications: $_"
     }
     finally {
-        # Revenir au répertoire d'origine
+        # Revenir au rÃ©pertoire d'origine
         Pop-Location
     }
 }
 else {
-    Write-Warning "Certains tests ont échoué. La roadmap n'a pas été mise à jour."
-    Write-Host "Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-    Write-Host "Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
+    Write-Warning "Certains tests ont Ã©chouÃ©. La roadmap n'a pas Ã©tÃ© mise Ã  jour."
+    Write-Host "Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+    Write-Host "Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
     
-    # Afficher les tests qui ont échoué
+    # Afficher les tests qui ont Ã©chouÃ©
     if ($testResults.FailedCount -gt 0) {
-        Write-Host "`nTests échoués:" -ForegroundColor Red
+        Write-Host "`nTests Ã©chouÃ©s:" -ForegroundColor Red
         $testResults.Failed | ForEach-Object {
             Write-Host "  - $($_.Name): $($_.ErrorRecord.Exception.Message)" -ForegroundColor Red
         }

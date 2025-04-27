@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
-    Suggère des refactorisations intelligentes basées sur l'analyse d'usage.
+    SuggÃ¨re des refactorisations intelligentes basÃ©es sur l'analyse d'usage.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation et la structure du code pour
-    suggérer des refactorisations qui amélioreraient les performances et la maintenabilité.
+    Ce script analyse les donnÃ©es d'utilisation et la structure du code pour
+    suggÃ©rer des refactorisations qui amÃ©lioreraient les performances et la maintenabilitÃ©.
 .PARAMETER DatabasePath
-    Chemin vers le fichier de base de données d'utilisation.
+    Chemin vers le fichier de base de donnÃ©es d'utilisation.
 .PARAMETER OutputPath
-    Chemin où les suggestions seront enregistrées.
+    Chemin oÃ¹ les suggestions seront enregistrÃ©es.
 .EXAMPLE
     .\Suggest-Refactoring.ps1 -OutputPath "C:\Refactoring"
 #>
@@ -25,7 +25,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "UsageMonitor.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -48,7 +48,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour analyser la complexité du code
+# Fonction pour analyser la complexitÃ© du code
 function Analyze-CodeComplexity {
     param (
         [string]$ScriptPath
@@ -64,7 +64,7 @@ function Analyze-CodeComplexity {
             $psaResults = Invoke-ScriptAnalyzer -Path $ScriptPath -Severity Error, Warning, Information
         }
         
-        # Métriques de base
+        # MÃ©triques de base
         $metrics = @{
             LineCount = ($content -split "`r`n|\r|\n").Count
             FunctionCount = ([regex]::Matches($content, "function\s+\w+")).Count
@@ -77,18 +77,18 @@ function Analyze-CodeComplexity {
             PSADetails = $psaResults
         }
         
-        # Calculer la complexité cyclomatique approximative
+        # Calculer la complexitÃ© cyclomatique approximative
         $metrics.CyclomaticComplexity = $metrics.IfStatementCount + $metrics.ForEachCount + $metrics.TryCatchCount + 1
         
         return $metrics
     }
     catch {
-        Write-Log "Erreur lors de l'analyse de la complexité du code pour $ScriptPath : $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'analyse de la complexitÃ© du code pour $ScriptPath : $_" -Level "ERROR"
         return $null
     }
 }
 
-# Fonction pour générer des suggestions de refactorisation
+# Fonction pour gÃ©nÃ©rer des suggestions de refactorisation
 function Generate-RefactoringSuggestions {
     param (
         [PSCustomObject]$UsageStats,
@@ -109,15 +109,15 @@ function Generate-RefactoringSuggestions {
                 ScriptName = $scriptName
                 Type = "Performance"
                 Priority = "High"
-                Issue = "Script lent avec durée moyenne d'exécution de $([math]::Round($avgDuration, 2)) ms"
+                Issue = "Script lent avec durÃ©e moyenne d'exÃ©cution de $([math]::Round($avgDuration, 2)) ms"
                 Suggestions = @()
                 Metrics = $complexity
-                Justification = "Ce script est parmi les plus lents du système"
+                Justification = "Ce script est parmi les plus lents du systÃ¨me"
             }
             
-            # Ajouter des suggestions spécifiques basées sur la complexité
+            # Ajouter des suggestions spÃ©cifiques basÃ©es sur la complexitÃ©
             if ($complexity.CyclomaticComplexity -gt 15) {
-                $suggestion.Suggestions += "Réduire la complexité cyclomatique ($($complexity.CyclomaticComplexity)) en divisant les fonctions complexes"
+                $suggestion.Suggestions += "RÃ©duire la complexitÃ© cyclomatique ($($complexity.CyclomaticComplexity)) en divisant les fonctions complexes"
             }
             
             if ($complexity.ForEachCount -gt 5) {
@@ -129,38 +129,38 @@ function Generate-RefactoringSuggestions {
             }
             
             if ($complexity.PSAIssues -gt 0) {
-                $suggestion.Suggestions += "Corriger les $($complexity.PSAIssues) problèmes identifiés par PSScriptAnalyzer"
+                $suggestion.Suggestions += "Corriger les $($complexity.PSAIssues) problÃ¨mes identifiÃ©s par PSScriptAnalyzer"
             }
             
             $suggestions += $suggestion
         }
     }
     
-    # Analyser les scripts avec beaucoup d'échecs
+    # Analyser les scripts avec beaucoup d'Ã©checs
     foreach ($scriptPath in $UsageStats.MostFailingScripts.Keys) {
         $scriptName = Split-Path -Path $scriptPath -Leaf
         $failureRate = $UsageStats.MostFailingScripts[$scriptPath]
         $complexity = $ComplexityData[$scriptPath]
         
-        if ($complexity -and $failureRate -gt 10) {  # Plus de 10% d'échecs
+        if ($complexity -and $failureRate -gt 10) {  # Plus de 10% d'Ã©checs
             $suggestion = [PSCustomObject]@{
                 ScriptPath = $scriptPath
                 ScriptName = $scriptName
                 Type = "Reliability"
                 Priority = "High"
-                Issue = "Taux d'échec élevé de $([math]::Round($failureRate, 2))%"
+                Issue = "Taux d'Ã©chec Ã©levÃ© de $([math]::Round($failureRate, 2))%"
                 Suggestions = @()
                 Metrics = $complexity
-                Justification = "Ce script échoue fréquemment, ce qui affecte la fiabilité du système"
+                Justification = "Ce script Ã©choue frÃ©quemment, ce qui affecte la fiabilitÃ© du systÃ¨me"
             }
             
-            # Ajouter des suggestions spécifiques
+            # Ajouter des suggestions spÃ©cifiques
             if ($complexity.TryCatchCount -lt 3) {
-                $suggestion.Suggestions += "Améliorer la gestion des erreurs (seulement $($complexity.TryCatchCount) blocs try-catch)"
+                $suggestion.Suggestions += "AmÃ©liorer la gestion des erreurs (seulement $($complexity.TryCatchCount) blocs try-catch)"
             }
             
-            $suggestion.Suggestions += "Ajouter des validations d'entrée plus strictes"
-            $suggestion.Suggestions += "Implémenter des mécanismes de reprise après échec"
+            $suggestion.Suggestions += "Ajouter des validations d'entrÃ©e plus strictes"
+            $suggestion.Suggestions += "ImplÃ©menter des mÃ©canismes de reprise aprÃ¨s Ã©chec"
             
             $suggestions += $suggestion
         }
@@ -178,27 +178,27 @@ function Generate-RefactoringSuggestions {
                 ScriptName = $scriptName
                 Type = "ResourceOptimization"
                 Priority = "Medium"
-                Issue = "Utilisation élevée de mémoire: $([math]::Round($memoryUsage / 1MB, 2)) Mo"
+                Issue = "Utilisation Ã©levÃ©e de mÃ©moire: $([math]::Round($memoryUsage / 1MB, 2)) Mo"
                 Suggestions = @()
                 Metrics = $complexity
-                Justification = "Ce script consomme beaucoup de ressources mémoire"
+                Justification = "Ce script consomme beaucoup de ressources mÃ©moire"
             }
             
-            # Ajouter des suggestions spécifiques
-            $suggestion.Suggestions += "Optimiser l'utilisation de la mémoire en traitant les données par lots"
-            $suggestion.Suggestions += "Libérer explicitement les ressources avec [System.GC]::Collect()"
-            $suggestion.Suggestions += "Utiliser des structures de données plus efficaces"
+            # Ajouter des suggestions spÃ©cifiques
+            $suggestion.Suggestions += "Optimiser l'utilisation de la mÃ©moire en traitant les donnÃ©es par lots"
+            $suggestion.Suggestions += "LibÃ©rer explicitement les ressources avec [System.GC]::Collect()"
+            $suggestion.Suggestions += "Utiliser des structures de donnÃ©es plus efficaces"
             
             $suggestions += $suggestion
         }
     }
     
-    # Analyser les scripts complexes mais peu utilisés (candidats pour la simplification)
+    # Analyser les scripts complexes mais peu utilisÃ©s (candidats pour la simplification)
     foreach ($scriptPath in $ComplexityData.Keys) {
         $complexity = $ComplexityData[$scriptPath]
         $scriptName = Split-Path -Path $scriptPath -Leaf
         
-        # Vérifier si le script est peu utilisé
+        # VÃ©rifier si le script est peu utilisÃ©
         $isRarelyUsed = -not $UsageStats.TopUsedScripts.ContainsKey($scriptPath)
         
         if ($isRarelyUsed -and $complexity.CyclomaticComplexity -gt 20) {
@@ -207,13 +207,13 @@ function Generate-RefactoringSuggestions {
                 ScriptName = $scriptName
                 Type = "Simplification"
                 Priority = "Low"
-                Issue = "Script complexe ($($complexity.CyclomaticComplexity) complexité) mais rarement utilisé"
+                Issue = "Script complexe ($($complexity.CyclomaticComplexity) complexitÃ©) mais rarement utilisÃ©"
                 Suggestions = @()
                 Metrics = $complexity
-                Justification = "Ce script est complexe mais peu utilisé, ce qui suggère un potentiel de simplification"
+                Justification = "Ce script est complexe mais peu utilisÃ©, ce qui suggÃ¨re un potentiel de simplification"
             }
             
-            $suggestion.Suggestions += "Évaluer si toutes les fonctionnalités sont nécessaires"
+            $suggestion.Suggestions += "Ã‰valuer si toutes les fonctionnalitÃ©s sont nÃ©cessaires"
             $suggestion.Suggestions += "Simplifier la logique ou diviser en composants plus petits"
             
             $suggestions += $suggestion
@@ -223,7 +223,7 @@ function Generate-RefactoringSuggestions {
     return $suggestions
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-HtmlReport {
     param (
         [PSCustomObject[]]$Suggestions,
@@ -346,29 +346,29 @@ function Generate-HtmlReport {
 <body>
     <div class="container">
         <h1>Suggestions de Refactorisation</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 "@
     
     $htmlFooter = @"
         <div class="footer">
-            <p>Généré par le module UsageMonitor</p>
+            <p>GÃ©nÃ©rÃ© par le module UsageMonitor</p>
         </div>
     </div>
 </body>
 </html>
 "@
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = $htmlHeader
     
-    # Regrouper les suggestions par priorité
+    # Regrouper les suggestions par prioritÃ©
     $highPriority = $Suggestions | Where-Object { $_.Priority -eq "High" }
     $mediumPriority = $Suggestions | Where-Object { $_.Priority -eq "Medium" }
     $lowPriority = $Suggestions | Where-Object { $_.Priority -eq "Low" }
     
-    # Section des suggestions de haute priorité
+    # Section des suggestions de haute prioritÃ©
     if ($highPriority.Count -gt 0) {
-        $htmlContent += "<h2>Suggestions de Haute Priorité</h2>"
+        $htmlContent += "<h2>Suggestions de Haute PrioritÃ©</h2>"
         
         foreach ($suggestion in $highPriority) {
             $htmlContent += @"
@@ -391,11 +391,11 @@ function Generate-HtmlReport {
             $htmlContent += @"
         </ul>
         <div class="metrics">
-            <div class="metrics-title">Métriques:</div>
+            <div class="metrics-title">MÃ©triques:</div>
             <div class="metrics-list">
                 <div class="metric"><strong>Lignes:</strong> $($suggestion.Metrics.LineCount)</div>
                 <div class="metric"><strong>Fonctions:</strong> $($suggestion.Metrics.FunctionCount)</div>
-                <div class="metric"><strong>Complexité:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
+                <div class="metric"><strong>ComplexitÃ©:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
                 <div class="metric"><strong>Issues PSA:</strong> $($suggestion.Metrics.PSAIssues)</div>
             </div>
         </div>
@@ -405,9 +405,9 @@ function Generate-HtmlReport {
         }
     }
     
-    # Section des suggestions de priorité moyenne
+    # Section des suggestions de prioritÃ© moyenne
     if ($mediumPriority.Count -gt 0) {
-        $htmlContent += "<h2>Suggestions de Priorité Moyenne</h2>"
+        $htmlContent += "<h2>Suggestions de PrioritÃ© Moyenne</h2>"
         
         foreach ($suggestion in $mediumPriority) {
             $htmlContent += @"
@@ -430,11 +430,11 @@ function Generate-HtmlReport {
             $htmlContent += @"
         </ul>
         <div class="metrics">
-            <div class="metrics-title">Métriques:</div>
+            <div class="metrics-title">MÃ©triques:</div>
             <div class="metrics-list">
                 <div class="metric"><strong>Lignes:</strong> $($suggestion.Metrics.LineCount)</div>
                 <div class="metric"><strong>Fonctions:</strong> $($suggestion.Metrics.FunctionCount)</div>
-                <div class="metric"><strong>Complexité:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
+                <div class="metric"><strong>ComplexitÃ©:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
                 <div class="metric"><strong>Issues PSA:</strong> $($suggestion.Metrics.PSAIssues)</div>
             </div>
         </div>
@@ -444,9 +444,9 @@ function Generate-HtmlReport {
         }
     }
     
-    # Section des suggestions de basse priorité
+    # Section des suggestions de basse prioritÃ©
     if ($lowPriority.Count -gt 0) {
-        $htmlContent += "<h2>Suggestions de Basse Priorité</h2>"
+        $htmlContent += "<h2>Suggestions de Basse PrioritÃ©</h2>"
         
         foreach ($suggestion in $lowPriority) {
             $htmlContent += @"
@@ -469,11 +469,11 @@ function Generate-HtmlReport {
             $htmlContent += @"
         </ul>
         <div class="metrics">
-            <div class="metrics-title">Métriques:</div>
+            <div class="metrics-title">MÃ©triques:</div>
             <div class="metrics-list">
                 <div class="metric"><strong>Lignes:</strong> $($suggestion.Metrics.LineCount)</div>
                 <div class="metric"><strong>Fonctions:</strong> $($suggestion.Metrics.FunctionCount)</div>
-                <div class="metric"><strong>Complexité:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
+                <div class="metric"><strong>ComplexitÃ©:</strong> $($suggestion.Metrics.CyclomaticComplexity)</div>
                 <div class="metric"><strong>Issues PSA:</strong> $($suggestion.Metrics.PSAIssues)</div>
             </div>
         </div>
@@ -485,52 +485,52 @@ function Generate-HtmlReport {
     
     $htmlContent += $htmlFooter
     
-    # Écrire le rapport HTML
+    # Ã‰crire le rapport HTML
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8 -Force
     
     return $reportPath
 }
 
-# Point d'entrée principal
-Write-Log "Démarrage de l'analyse pour les suggestions de refactorisation..." -Level "TITLE"
+# Point d'entrÃ©e principal
+Write-Log "DÃ©marrage de l'analyse pour les suggestions de refactorisation..." -Level "TITLE"
 
-# Vérifier si le fichier de base de données existe
+# VÃ©rifier si le fichier de base de donnÃ©es existe
 if (-not (Test-Path -Path $DatabasePath)) {
-    Write-Log "Le fichier de base de données spécifié n'existe pas: $DatabasePath" -Level "ERROR"
+    Write-Log "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas: $DatabasePath" -Level "ERROR"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Initialiser le moniteur d'utilisation avec la base de données spécifiée
+# Initialiser le moniteur d'utilisation avec la base de donnÃ©es spÃ©cifiÃ©e
 Initialize-UsageMonitor -DatabasePath $DatabasePath
-Write-Log "Base de données d'utilisation chargée: $DatabasePath" -Level "INFO"
+Write-Log "Base de donnÃ©es d'utilisation chargÃ©e: $DatabasePath" -Level "INFO"
 
-# Récupérer les statistiques d'utilisation
+# RÃ©cupÃ©rer les statistiques d'utilisation
 $usageStats = Get-ScriptUsageStatistics
-Write-Log "Statistiques d'utilisation récupérées" -Level "INFO"
+Write-Log "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -Level "INFO"
 
-# Collecter les scripts à analyser
+# Collecter les scripts Ã  analyser
 $scriptsToAnalyze = @()
 $scriptsToAnalyze += $usageStats.TopUsedScripts.Keys
 $scriptsToAnalyze += $usageStats.SlowestScripts.Keys
 $scriptsToAnalyze += $usageStats.MostFailingScripts.Keys
 $scriptsToAnalyze += $usageStats.ResourceIntensiveScripts.Keys
 
-# Éliminer les doublons
+# Ã‰liminer les doublons
 $scriptsToAnalyze = $scriptsToAnalyze | Select-Object -Unique
 
-Write-Log "Nombre de scripts à analyser: $($scriptsToAnalyze.Count)" -Level "INFO"
+Write-Log "Nombre de scripts Ã  analyser: $($scriptsToAnalyze.Count)" -Level "INFO"
 
-# Analyser la complexité du code
+# Analyser la complexitÃ© du code
 $complexityData = @{}
 
 foreach ($scriptPath in $scriptsToAnalyze) {
-    Write-Log "Analyse de la complexité du code pour: $(Split-Path -Path $scriptPath -Leaf)" -Level "INFO"
+    Write-Log "Analyse de la complexitÃ© du code pour: $(Split-Path -Path $scriptPath -Leaf)" -Level "INFO"
     $complexity = Analyze-CodeComplexity -ScriptPath $scriptPath
     
     if ($complexity) {
@@ -538,22 +538,22 @@ foreach ($scriptPath in $scriptsToAnalyze) {
     }
 }
 
-Write-Log "Analyse de la complexité terminée pour $($complexityData.Count) scripts" -Level "INFO"
+Write-Log "Analyse de la complexitÃ© terminÃ©e pour $($complexityData.Count) scripts" -Level "INFO"
 
-# Générer des suggestions de refactorisation
+# GÃ©nÃ©rer des suggestions de refactorisation
 $suggestions = Generate-RefactoringSuggestions -UsageStats $usageStats -ComplexityData $complexityData
-Write-Log "Suggestions de refactorisation générées: $($suggestions.Count) suggestions" -Level "INFO"
+Write-Log "Suggestions de refactorisation gÃ©nÃ©rÃ©es: $($suggestions.Count) suggestions" -Level "INFO"
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $reportPath = Generate-HtmlReport -Suggestions $suggestions -OutputPath $OutputPath
-Write-Log "Rapport de suggestions généré: $reportPath" -Level "SUCCESS"
+Write-Log "Rapport de suggestions gÃ©nÃ©rÃ©: $reportPath" -Level "SUCCESS"
 
-# Générer un rapport JSON
+# GÃ©nÃ©rer un rapport JSON
 $jsonPath = Join-Path -Path $OutputPath -ChildPath "refactoring_suggestions.json"
 $suggestions | ConvertTo-Json -Depth 5 | Out-File -FilePath $jsonPath -Encoding utf8 -Force
-Write-Log "Rapport JSON généré: $jsonPath" -Level "SUCCESS"
+Write-Log "Rapport JSON gÃ©nÃ©rÃ©: $jsonPath" -Level "SUCCESS"
 
-Write-Log "Analyse pour les suggestions de refactorisation terminée." -Level "TITLE"
+Write-Log "Analyse pour les suggestions de refactorisation terminÃ©e." -Level "TITLE"
 
 # Ouvrir le rapport HTML
 Start-Process $reportPath

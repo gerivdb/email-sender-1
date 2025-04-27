@@ -1,4 +1,4 @@
-# Module manifest for module 'RoadmapAnalyzer'
+﻿# Module manifest for module 'RoadmapAnalyzer'
 @{
     # Script module or binary module file associated with this manifest.
     RootModule = 'RoadmapAnalyzer.psm1'

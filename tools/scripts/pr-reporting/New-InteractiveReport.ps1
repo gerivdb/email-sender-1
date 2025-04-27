@@ -1,42 +1,42 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport d'analyse interactif pour les pull requests.
+    GÃ©nÃ¨re un rapport d'analyse interactif pour les pull requests.
 
 .DESCRIPTION
-    Ce script génère un rapport HTML interactif à partir des résultats d'analyse
-    de pull requests, avec des visualisations, des filtres et des fonctionnalités
-    de tri avancées.
+    Ce script gÃ©nÃ¨re un rapport HTML interactif Ã  partir des rÃ©sultats d'analyse
+    de pull requests, avec des visualisations, des filtres et des fonctionnalitÃ©s
+    de tri avancÃ©es.
 
 .PARAMETER InputPath
-    Le chemin du fichier JSON contenant les résultats d'analyse.
+    Le chemin du fichier JSON contenant les rÃ©sultats d'analyse.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le rapport HTML généré.
-    Par défaut: "reports\pr-analysis\interactive_report.html"
+    Le chemin oÃ¹ enregistrer le rapport HTML gÃ©nÃ©rÃ©.
+    Par dÃ©faut: "reports\pr-analysis\interactive_report.html"
 
 .PARAMETER TemplateType
-    Le type de template à utiliser pour le rapport.
+    Le type de template Ã  utiliser pour le rapport.
     Valeurs possibles: "Standard", "Developer", "Executive", "QA"
-    Par défaut: "Standard"
+    Par dÃ©faut: "Standard"
 
 .PARAMETER Theme
-    Le thème à utiliser pour le rapport.
+    Le thÃ¨me Ã  utiliser pour le rapport.
     Valeurs possibles: "Light", "Dark", "Blue", "Green"
-    Par défaut: "Light"
+    Par dÃ©faut: "Light"
 
 .PARAMETER IncludeAssets
     Indique s'il faut inclure les assets (CSS, JS) dans le fichier HTML.
-    Si $false, les assets seront référencés depuis le dossier assets.
-    Par défaut: $true
+    Si $false, les assets seront rÃ©fÃ©rencÃ©s depuis le dossier assets.
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\New-InteractiveReport.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -TemplateType "Developer"
-    Génère un rapport interactif pour les développeurs à partir des résultats d'analyse de la PR #42.
+    GÃ©nÃ¨re un rapport interactif pour les dÃ©veloppeurs Ã  partir des rÃ©sultats d'analyse de la PR #42.
 
 .EXAMPLE
     .\New-InteractiveReport.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -Theme "Dark" -OutputPath "reports\pr-analysis\dark_report.html"
-    Génère un rapport interactif avec le thème sombre et l'enregistre dans un fichier personnalisé.
+    GÃ©nÃ¨re un rapport interactif avec le thÃ¨me sombre et l'enregistre dans un fichier personnalisÃ©.
 
 .NOTES
     Version: 1.0
@@ -64,7 +64,7 @@ param(
     [bool]$IncludeAssets = $true
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 $modulesToImport = @(
     "PRReportTemplates.psm1",
@@ -77,26 +77,26 @@ foreach ($module in $modulesToImport) {
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
     } else {
-        Write-Error "Module $module non trouvé à l'emplacement: $modulePath"
+        Write-Error "Module $module non trouvÃ© Ã  l'emplacement: $modulePath"
         exit 1
     }
 }
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputPath)) {
-    Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
     exit 1
 }
 
-# Charger les données d'analyse
+# Charger les donnÃ©es d'analyse
 try {
     $analysisData = Get-Content -Path $InputPath -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement des données d'analyse: $_"
+    Write-Error "Erreur lors du chargement des donnÃ©es d'analyse: $_"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -106,10 +106,10 @@ if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $ou
 $templatesDir = Join-Path -Path $PSScriptRoot -ChildPath "templates"
 Import-PRReportTemplates -TemplatesDirectory $templatesDir
 
-# Déterminer le template à utiliser
+# DÃ©terminer le template Ã  utiliser
 $templateName = "PR-Analysis-$TemplateType"
 
-# Préparer les données pour le rapport
+# PrÃ©parer les donnÃ©es pour le rapport
 $reportData = [PSCustomObject]@{
     Title = "Rapport d'analyse de la Pull Request #$($analysisData.PullRequest.Number)"
     PullRequest = $analysisData.PullRequest
@@ -123,7 +123,7 @@ $reportData = [PSCustomObject]@{
     Issues = @()
 }
 
-# Extraire tous les problèmes
+# Extraire tous les problÃ¨mes
 foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 }) {
     foreach ($issue in $result.Issues) {
         $reportData.Issues += [PSCustomObject]@{
@@ -138,12 +138,12 @@ foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Is
     }
 }
 
-# Générer les visualisations
+# GÃ©nÃ©rer les visualisations
 $issuesByType = $reportData.Issues | Group-Object -Property Type | Select-Object Name, Count
 $issuesBySeverity = $reportData.Issues | Group-Object -Property Severity | Select-Object Name, Count
 $issuesByFile = $reportData.Issues | Group-Object -Property FilePath | Select-Object Name, Count | Sort-Object -Property Count -Descending | Select-Object -First 10
 
-# Créer les données pour les graphiques
+# CrÃ©er les donnÃ©es pour les graphiques
 $typeData = @{}
 foreach ($group in $issuesByType) {
     $typeData[$group.Name] = $group.Count
@@ -159,27 +159,27 @@ foreach ($group in $issuesByFile) {
     $fileData[($group.Name -replace '.*[/\\]', '')] = $group.Count
 }
 
-# Générer les graphiques
-$typeChart = New-PRBarChart -Data $typeData -Title "Problèmes par type"
-$severityChart = New-PRPieChart -Data $severityData -Title "Problèmes par sévérité"
-$fileChart = New-PRBarChart -Data $fileData -Title "Top 10 des fichiers avec problèmes"
+# GÃ©nÃ©rer les graphiques
+$typeChart = New-PRBarChart -Data $typeData -Title "ProblÃ¨mes par type"
+$severityChart = New-PRPieChart -Data $severityData -Title "ProblÃ¨mes par sÃ©vÃ©ritÃ©"
+$fileChart = New-PRBarChart -Data $fileData -Title "Top 10 des fichiers avec problÃ¨mes"
 
-# Créer les filtres
+# CrÃ©er les filtres
 $filterControls = Add-FilterControls -Issues $reportData.Issues -FilterProperties @("Type", "Severity", "Rule")
 
-# Ajouter les capacités de tri
+# Ajouter les capacitÃ©s de tri
 $sortingCapabilities = Add-SortingCapabilities -DefaultSortColumn "Severity" -DefaultSortDirection "desc"
 
-# Créer des vues personnalisées
+# CrÃ©er des vues personnalisÃ©es
 $errorView = New-CustomReportView -Name "Erreurs critiques" -Filters @{ Severity = "Error" } -Description "Afficher uniquement les erreurs critiques" -Icon "exclamation-circle"
 $warningView = New-CustomReportView -Name "Avertissements" -Filters @{ Severity = "Warning" } -Description "Afficher uniquement les avertissements" -Icon "exclamation-triangle"
-$syntaxView = New-CustomReportView -Name "Problèmes de syntaxe" -Filters @{ Type = "Syntax" } -Description "Afficher uniquement les problèmes de syntaxe" -Icon "code"
-$styleView = New-CustomReportView -Name "Problèmes de style" -Filters @{ Type = "Style" } -Description "Afficher uniquement les problèmes de style" -Icon "paint-brush"
+$syntaxView = New-CustomReportView -Name "ProblÃ¨mes de syntaxe" -Filters @{ Type = "Syntax" } -Description "Afficher uniquement les problÃ¨mes de syntaxe" -Icon "code"
+$styleView = New-CustomReportView -Name "ProblÃ¨mes de style" -Filters @{ Type = "Style" } -Description "Afficher uniquement les problÃ¨mes de style" -Icon "paint-brush"
 
-# Créer le rapport avec recherche avancée
+# CrÃ©er le rapport avec recherche avancÃ©e
 $searchableReport = New-SearchableReport -Issues $reportData.Issues -Title $reportData.Title -Description "Analyse de la pull request #$($analysisData.PullRequest.Number) - $($analysisData.PullRequest.Title)"
 
-# Générer le HTML final
+# GÃ©nÃ©rer le HTML final
 $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -344,7 +344,7 @@ $html = @"
             color: #666;
         }
         
-        /* Styles spécifiques au thème sombre */
+        /* Styles spÃ©cifiques au thÃ¨me sombre */
         body.theme-dark {
             background-color: #121212;
             color: #E0E0E0;
@@ -380,14 +380,14 @@ $html = @"
     <div class="container">
         <div class="header">
             <h1>$($reportData.Title)</h1>
-            <div class="timestamp">Généré le $($reportData.Timestamp)</div>
+            <div class="timestamp">GÃ©nÃ©rÃ© le $($reportData.Timestamp)</div>
         </div>
         
         <div class="pr-info">
             <h2>Informations sur la Pull Request</h2>
             <div class="pr-info-grid">
                 <div class="pr-info-item">
-                    <span class="pr-info-label">Numéro</span>
+                    <span class="pr-info-label">NumÃ©ro</span>
                     <span class="pr-info-value">#$($reportData.PullRequest.Number)</span>
                 </div>
                 <div class="pr-info-item">
@@ -403,11 +403,11 @@ $html = @"
                     <span class="pr-info-value">$($reportData.PullRequest.BaseBranch)</span>
                 </div>
                 <div class="pr-info-item">
-                    <span class="pr-info-label">Fichiers modifiés</span>
+                    <span class="pr-info-label">Fichiers modifiÃ©s</span>
                     <span class="pr-info-value">$($reportData.PullRequest.FileCount)</span>
                 </div>
                 <div class="pr-info-item">
-                    <span class="pr-info-label">Problèmes détectés</span>
+                    <span class="pr-info-label">ProblÃ¨mes dÃ©tectÃ©s</span>
                     <span class="pr-info-value">$($reportData.TotalIssues)</span>
                 </div>
                 <div class="pr-info-item">
@@ -420,8 +420,8 @@ $html = @"
         <div class="tab-container">
             <div class="tabs">
                 <div class="tab active" data-tab="overview">Vue d'ensemble</div>
-                <div class="tab" data-tab="issues">Problèmes détectés</div>
-                <div class="tab" data-tab="files">Fichiers analysés</div>
+                <div class="tab" data-tab="issues">ProblÃ¨mes dÃ©tectÃ©s</div>
+                <div class="tab" data-tab="files">Fichiers analysÃ©s</div>
             </div>
             
             <div class="tab-content active" id="tab-overview">
@@ -431,7 +431,7 @@ $html = @"
                     $fileChart
                 </div>
                 
-                <h3>Vues prédéfinies</h3>
+                <h3>Vues prÃ©dÃ©finies</h3>
                 <div class="views-container">
                     $errorView
                     $warningView
@@ -447,14 +447,14 @@ $html = @"
             </div>
             
             <div class="tab-content" id="tab-files">
-                <h3>Fichiers analysés</h3>
+                <h3>Fichiers analysÃ©s</h3>
                 <table class="pr-issues-table">
                     <thead>
                         <tr>
                             <th>Fichier</th>
-                            <th>Problèmes</th>
-                            <th>Lignes modifiées</th>
-                            <th>Lignes analysées</th>
+                            <th>ProblÃ¨mes</th>
+                            <th>Lignes modifiÃ©es</th>
+                            <th>Lignes analysÃ©es</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -478,7 +478,7 @@ $html += @"
         </div>
         
         <div class="footer">
-            <p>Rapport généré par le système d'analyse de pull requests</p>
+            <p>Rapport gÃ©nÃ©rÃ© par le systÃ¨me d'analyse de pull requests</p>
             <p>Version 1.0 - &copy; 2025</p>
         </div>
     </div>
@@ -493,11 +493,11 @@ $html += @"
                 tab.addEventListener('click', function() {
                     const tabId = this.dataset.tab;
                     
-                    // Désactiver tous les onglets
+                    // DÃ©sactiver tous les onglets
                     tabs.forEach(t => t.classList.remove('active'));
                     tabContents.forEach(c => c.classList.remove('active'));
                     
-                    // Activer l'onglet sélectionné
+                    // Activer l'onglet sÃ©lectionnÃ©
                     this.classList.add('active');
                     document.getElementById(`tab-\${tabId}`).classList.add('active');
                 });
@@ -511,9 +511,9 @@ $html += @"
 # Enregistrer le rapport HTML
 Set-Content -Path $OutputPath -Value $html -Encoding UTF8
 
-Write-Host "Rapport interactif généré avec succès: $OutputPath" -ForegroundColor Green
+Write-Host "Rapport interactif gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
 
-# Ouvrir le rapport dans le navigateur par défaut
+# Ouvrir le rapport dans le navigateur par dÃ©faut
 if (Test-Path -Path $OutputPath) {
     Start-Process $OutputPath
 }

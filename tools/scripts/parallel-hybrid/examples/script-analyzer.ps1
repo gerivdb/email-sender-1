@@ -1,4 +1,4 @@
-# --- Use the Improved Script from the Previous Answer ---
+﻿# --- Use the Improved Script from the Previous Answer ---
 # (Pasting it here again for completeness)
 
 #Requires -Version 5.1

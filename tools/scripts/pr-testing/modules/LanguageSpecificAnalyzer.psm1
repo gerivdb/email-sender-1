@@ -1,6 +1,6 @@
-#
+﻿#
 # Module LanguageSpecificAnalyzer
-# Analyseurs spécialisés pour différents langages de programmation
+# Analyseurs spÃ©cialisÃ©s pour diffÃ©rents langages de programmation
 #
 
 # Classe de base pour les analyseurs de langage
@@ -22,7 +22,7 @@ class LanguageAnalyzer {
     }
     
     [array] AnalyzeFile([string]$filePath) {
-        throw "Cette méthode doit être implémentée par les classes dérivées"
+        throw "Cette mÃ©thode doit Ãªtre implÃ©mentÃ©e par les classes dÃ©rivÃ©es"
     }
     
     [void] AddRule([string]$name, [scriptblock]$rule, [string]$message, [string]$severity, [string]$category) {
@@ -50,7 +50,7 @@ class LanguageAnalyzer {
 # Analyseur pour PowerShell
 class PowerShellAnalyzer : LanguageAnalyzer {
     PowerShellAnalyzer() : base("PowerShell") {
-        # Règles de style
+        # RÃ¨gles de style
         $this.AddRule("AvoidUsingCmdletAliases", {
             param($ast)
             $aliases = @{
@@ -153,7 +153,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
                 $commandName = $commandAst.CommandElements[0].Value
                 if ($aliases.ContainsKey($commandName)) {
                     return @{
-                        Message = "L'alias '$commandName' est utilisé au lieu de '$($aliases[$commandName])'"
+                        Message = "L'alias '$commandName' est utilisÃ© au lieu de '$($aliases[$commandName])'"
                         Line = $commandAst.Extent.StartLineNumber
                         Column = $commandAst.Extent.StartColumnNumber
                     }
@@ -161,9 +161,9 @@ class PowerShellAnalyzer : LanguageAnalyzer {
             }
             
             return $null
-        }, "Évitez d'utiliser des alias de cmdlet", "Warning", "Style")
+        }, "Ã‰vitez d'utiliser des alias de cmdlet", "Warning", "Style")
         
-        # Règles de sécurité
+        # RÃ¨gles de sÃ©curitÃ©
         $this.AddRule("AvoidUsingPlainTextForPassword", {
             param($ast)
             $paramAst = $ast -as [System.Management.Automation.Language.ParameterAst]
@@ -171,7 +171,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
                 $paramName = $paramAst.Name.VariablePath.UserPath
                 if ($paramName -match "password|pwd|passphrase|secret|credential" -and $paramName -notmatch "secure") {
                     return @{
-                        Message = "Le paramètre '$paramName' pourrait contenir un mot de passe en texte clair"
+                        Message = "Le paramÃ¨tre '$paramName' pourrait contenir un mot de passe en texte clair"
                         Line = $paramAst.Extent.StartLineNumber
                         Column = $paramAst.Extent.StartColumnNumber
                     }
@@ -179,24 +179,24 @@ class PowerShellAnalyzer : LanguageAnalyzer {
             }
             
             return $null
-        }, "Évitez d'utiliser du texte en clair pour les mots de passe", "Error", "Security")
+        }, "Ã‰vitez d'utiliser du texte en clair pour les mots de passe", "Error", "Security")
         
-        # Règles de performance
+        # RÃ¨gles de performance
         $this.AddRule("AvoidUsingForEachMethod", {
             param($ast)
             $invokeMemberAst = $ast -as [System.Management.Automation.Language.InvokeMemberExpressionAst]
             if ($invokeMemberAst -and $invokeMemberAst.Member.Value -eq "ForEach") {
                 return @{
-                    Message = "Utilisez l'opérateur de pipeline ForEach-Object au lieu de la méthode .ForEach() pour de meilleures performances"
+                    Message = "Utilisez l'opÃ©rateur de pipeline ForEach-Object au lieu de la mÃ©thode .ForEach() pour de meilleures performances"
                     Line = $invokeMemberAst.Extent.StartLineNumber
                     Column = $invokeMemberAst.Extent.StartColumnNumber
                 }
             }
             
             return $null
-        }, "Évitez d'utiliser la méthode .ForEach()", "Warning", "Performance")
+        }, "Ã‰vitez d'utiliser la mÃ©thode .ForEach()", "Warning", "Performance")
         
-        # Règles de bonnes pratiques
+        # RÃ¨gles de bonnes pratiques
         $this.AddRule("AvoidUsingPositionalParameters", {
             param($ast)
             $commandAst = $ast -as [System.Management.Automation.Language.CommandAst]
@@ -215,7 +215,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
                 
                 if ($hasPositionalParam) {
                     return @{
-                        Message = "Évitez d'utiliser des paramètres positionnels pour la commande '$commandName'"
+                        Message = "Ã‰vitez d'utiliser des paramÃ¨tres positionnels pour la commande '$commandName'"
                         Line = $commandAst.Extent.StartLineNumber
                         Column = $commandAst.Extent.StartColumnNumber
                     }
@@ -223,7 +223,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
             }
             
             return $null
-        }, "Évitez d'utiliser des paramètres positionnels", "Warning", "BestPractices")
+        }, "Ã‰vitez d'utiliser des paramÃ¨tres positionnels", "Warning", "BestPractices")
     }
     
     [array] AnalyzeFile([string]$filePath) {
@@ -231,13 +231,13 @@ class PowerShellAnalyzer : LanguageAnalyzer {
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Vérifier que le fichier existe
+            # VÃ©rifier que le fichier existe
             if (-not (Test-Path -Path $filePath -PathType Leaf)) {
                 Write-Warning "Le fichier n'existe pas: $filePath"
                 return $issues
             }
             
-            # Vérifier l'extension du fichier
+            # VÃ©rifier l'extension du fichier
             $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
             if ($extension -notin @(".ps1", ".psm1", ".psd1")) {
                 Write-Warning "Le fichier n'est pas un script PowerShell: $filePath"
@@ -264,7 +264,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
                 }
             }
             
-            # Appliquer les règles
+            # Appliquer les rÃ¨gles
             $astVisitor = {
                 param($ast)
                 
@@ -287,7 +287,7 @@ class PowerShellAnalyzer : LanguageAnalyzer {
                 return $true
             }
             
-            # Visiter tous les nœuds de l'AST
+            # Visiter tous les nÅ“uds de l'AST
             $ast.Visit($astVisitor)
         }
         catch {
@@ -305,14 +305,14 @@ class PowerShellAnalyzer : LanguageAnalyzer {
 # Analyseur pour Python
 class PythonAnalyzer : LanguageAnalyzer {
     PythonAnalyzer() : base("Python") {
-        # Règles de style
+        # RÃ¨gles de style
         $this.AddRule("UseConsistentIndentation", {
             param($line, $lineNumber, $content)
             if ($line -match "^\s+") {
                 $indentation = $matches[0]
                 if ($indentation -match " " -and $indentation -match "\t") {
                     return @{
-                        Message = "Mélange d'espaces et de tabulations dans l'indentation"
+                        Message = "MÃ©lange d'espaces et de tabulations dans l'indentation"
                         Line = $lineNumber
                         Column = 1
                     }
@@ -320,49 +320,49 @@ class PythonAnalyzer : LanguageAnalyzer {
             }
             
             return $null
-        }, "Utilisez une indentation cohérente", "Warning", "Style")
+        }, "Utilisez une indentation cohÃ©rente", "Warning", "Style")
         
-        # Règles de sécurité
+        # RÃ¨gles de sÃ©curitÃ©
         $this.AddRule("AvoidUsingEval", {
             param($line, $lineNumber, $content)
             if ($line -match "\beval\s*\(") {
                 return @{
-                    Message = "Évitez d'utiliser eval() pour des raisons de sécurité"
+                    Message = "Ã‰vitez d'utiliser eval() pour des raisons de sÃ©curitÃ©"
                     Line = $lineNumber
                     Column = $line.IndexOf("eval")
                 }
             }
             
             return $null
-        }, "Évitez d'utiliser eval()", "Error", "Security")
+        }, "Ã‰vitez d'utiliser eval()", "Error", "Security")
         
-        # Règles de performance
+        # RÃ¨gles de performance
         $this.AddRule("AvoidUsingGlobals", {
             param($line, $lineNumber, $content)
             if ($line -match "\bglobal\b") {
                 return @{
-                    Message = "Évitez d'utiliser des variables globales pour de meilleures performances"
+                    Message = "Ã‰vitez d'utiliser des variables globales pour de meilleures performances"
                     Line = $lineNumber
                     Column = $line.IndexOf("global")
                 }
             }
             
             return $null
-        }, "Évitez d'utiliser des variables globales", "Warning", "Performance")
+        }, "Ã‰vitez d'utiliser des variables globales", "Warning", "Performance")
         
-        # Règles de bonnes pratiques
+        # RÃ¨gles de bonnes pratiques
         $this.AddRule("UseWithForFileOperations", {
             param($line, $lineNumber, $content)
             if ($line -match "\bopen\s*\(" -and $content -notmatch "with\s+open\s*\(") {
                 return @{
-                    Message = "Utilisez 'with open()' pour les opérations sur les fichiers"
+                    Message = "Utilisez 'with open()' pour les opÃ©rations sur les fichiers"
                     Line = $lineNumber
                     Column = $line.IndexOf("open")
                 }
             }
             
             return $null
-        }, "Utilisez 'with' pour les opérations sur les fichiers", "Warning", "BestPractices")
+        }, "Utilisez 'with' pour les opÃ©rations sur les fichiers", "Warning", "BestPractices")
     }
     
     [array] AnalyzeFile([string]$filePath) {
@@ -370,13 +370,13 @@ class PythonAnalyzer : LanguageAnalyzer {
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Vérifier que le fichier existe
+            # VÃ©rifier que le fichier existe
             if (-not (Test-Path -Path $filePath -PathType Leaf)) {
                 Write-Warning "Le fichier n'existe pas: $filePath"
                 return $issues
             }
             
-            # Vérifier l'extension du fichier
+            # VÃ©rifier l'extension du fichier
             $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
             if ($extension -ne ".py") {
                 Write-Warning "Le fichier n'est pas un script Python: $filePath"
@@ -387,7 +387,7 @@ class PythonAnalyzer : LanguageAnalyzer {
             $content = Get-Content -Path $filePath -Raw
             $lines = $content -split "`n"
             
-            # Appliquer les règles
+            # Appliquer les rÃ¨gles
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 $lineNumber = $i + 1
                 $line = $lines[$i]
@@ -424,12 +424,12 @@ class PythonAnalyzer : LanguageAnalyzer {
 # Analyseur pour JavaScript
 class JavaScriptAnalyzer : LanguageAnalyzer {
     JavaScriptAnalyzer() : base("JavaScript") {
-        # Règles de style
+        # RÃ¨gles de style
         $this.AddRule("UseSemicolons", {
             param($line, $lineNumber, $content)
             if ($line -match "^\s*\w.*[^;,{}\[\]]\s*$" -and $line -notmatch "^\s*\/\/") {
                 return @{
-                    Message = "Utilisez des points-virgules à la fin des instructions"
+                    Message = "Utilisez des points-virgules Ã  la fin des instructions"
                     Line = $lineNumber
                     Column = $line.Length
                 }
@@ -438,40 +438,40 @@ class JavaScriptAnalyzer : LanguageAnalyzer {
             return $null
         }, "Utilisez des points-virgules", "Warning", "Style")
         
-        # Règles de sécurité
+        # RÃ¨gles de sÃ©curitÃ©
         $this.AddRule("AvoidUsingEval", {
             param($line, $lineNumber, $content)
             if ($line -match "\beval\s*\(") {
                 return @{
-                    Message = "Évitez d'utiliser eval() pour des raisons de sécurité"
+                    Message = "Ã‰vitez d'utiliser eval() pour des raisons de sÃ©curitÃ©"
                     Line = $lineNumber
                     Column = $line.IndexOf("eval")
                 }
             }
             
             return $null
-        }, "Évitez d'utiliser eval()", "Error", "Security")
+        }, "Ã‰vitez d'utiliser eval()", "Error", "Security")
         
-        # Règles de performance
+        # RÃ¨gles de performance
         $this.AddRule("AvoidUsingDocumentWrite", {
             param($line, $lineNumber, $content)
             if ($line -match "\bdocument\.write\s*\(") {
                 return @{
-                    Message = "Évitez d'utiliser document.write() pour de meilleures performances"
+                    Message = "Ã‰vitez d'utiliser document.write() pour de meilleures performances"
                     Line = $lineNumber
                     Column = $line.IndexOf("document.write")
                 }
             }
             
             return $null
-        }, "Évitez d'utiliser document.write()", "Warning", "Performance")
+        }, "Ã‰vitez d'utiliser document.write()", "Warning", "Performance")
         
-        # Règles de bonnes pratiques
+        # RÃ¨gles de bonnes pratiques
         $this.AddRule("UseStrictMode", {
             param($line, $lineNumber, $content)
             if ($lineNumber -eq 1 -and $content -notmatch "^\s*['\"]use strict['\"];") {
                 return @{
-                    Message = "Utilisez 'use strict' au début du fichier"
+                    Message = "Utilisez 'use strict' au dÃ©but du fichier"
                     Line = $lineNumber
                     Column = 1
                 }
@@ -486,13 +486,13 @@ class JavaScriptAnalyzer : LanguageAnalyzer {
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Vérifier que le fichier existe
+            # VÃ©rifier que le fichier existe
             if (-not (Test-Path -Path $filePath -PathType Leaf)) {
                 Write-Warning "Le fichier n'existe pas: $filePath"
                 return $issues
             }
             
-            # Vérifier l'extension du fichier
+            # VÃ©rifier l'extension du fichier
             $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
             if ($extension -notin @(".js", ".jsx", ".ts", ".tsx")) {
                 Write-Warning "Le fichier n'est pas un script JavaScript: $filePath"
@@ -503,7 +503,7 @@ class JavaScriptAnalyzer : LanguageAnalyzer {
             $content = Get-Content -Path $filePath -Raw
             $lines = $content -split "`n"
             
-            # Appliquer les règles
+            # Appliquer les rÃ¨gles
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 $lineNumber = $i + 1
                 $line = $lines[$i]
@@ -537,7 +537,7 @@ class JavaScriptAnalyzer : LanguageAnalyzer {
     }
 }
 
-# Fonction pour créer un analyseur de langage
+# Fonction pour crÃ©er un analyseur de langage
 function New-LanguageAnalyzer {
     [CmdletBinding()]
     param(
@@ -554,7 +554,7 @@ function New-LanguageAnalyzer {
     }
 }
 
-# Fonction pour analyser un fichier avec l'analyseur approprié
+# Fonction pour analyser un fichier avec l'analyseur appropriÃ©
 function Invoke-LanguageSpecificAnalysis {
     [CmdletBinding()]
     param(
@@ -565,13 +565,13 @@ function Invoke-LanguageSpecificAnalysis {
         [object]$Analyzer = $null
     )
     
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier n'existe pas: $FilePath"
         return @()
     }
     
-    # Déterminer le langage en fonction de l'extension du fichier
+    # DÃ©terminer le langage en fonction de l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
     $language = switch ($extension) {
         { $_ -in @(".ps1", ".psm1", ".psd1") } { "PowerShell" }
@@ -585,7 +585,7 @@ function Invoke-LanguageSpecificAnalysis {
         return @()
     }
     
-    # Créer l'analyseur si nécessaire
+    # CrÃ©er l'analyseur si nÃ©cessaire
     if (-not $Analyzer -or $Analyzer.Language -ne $language) {
         $Analyzer = New-LanguageAnalyzer -Language $language
     }

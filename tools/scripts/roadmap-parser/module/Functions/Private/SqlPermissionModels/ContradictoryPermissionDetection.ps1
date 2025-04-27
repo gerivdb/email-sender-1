@@ -1,30 +1,30 @@
-# ContradictoryPermissionDetection.ps1
-# Fonctions pour détecter les permissions contradictoires dans SQL Server
+﻿# ContradictoryPermissionDetection.ps1
+# Fonctions pour dÃ©tecter les permissions contradictoires dans SQL Server
 
-# Importer le modèle de permissions contradictoires
+# Importer le modÃ¨le de permissions contradictoires
 $contradictoryPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "ContradictoryPermissionModel.ps1"
 if (Test-Path $contradictoryPermissionModelPath) {
     . $contradictoryPermissionModelPath
 } else {
-    Write-Warning "Le fichier ContradictoryPermissionModel.ps1 n'a pas été trouvé à l'emplacement: $contradictoryPermissionModelPath"
+    Write-Warning "Le fichier ContradictoryPermissionModel.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $contradictoryPermissionModelPath"
 }
 
-#region Fonctions de détection au niveau serveur
+#region Fonctions de dÃ©tection au niveau serveur
 
 <#
 .SYNOPSIS
-    Détecte les permissions contradictoires au niveau serveur SQL.
+    DÃ©tecte les permissions contradictoires au niveau serveur SQL.
 .DESCRIPTION
-    Cette fonction analyse les permissions au niveau serveur pour détecter les contradictions
-    de type GRANT/DENY sur la même permission pour le même login.
+    Cette fonction analyse les permissions au niveau serveur pour dÃ©tecter les contradictions
+    de type GRANT/DENY sur la mÃªme permission pour le mÃªme login.
 .PARAMETER ServerInstance
-    Nom de l'instance SQL Server à analyser.
+    Nom de l'instance SQL Server Ã  analyser.
 .PARAMETER Credential
-    Informations d'identification pour la connexion à SQL Server.
+    Informations d'identification pour la connexion Ã  SQL Server.
 .PARAMETER PermissionsData
-    Données de permissions préalablement récupérées (facultatif).
+    DonnÃ©es de permissions prÃ©alablement rÃ©cupÃ©rÃ©es (facultatif).
 .PARAMETER ModelName
-    Nom du modèle de référence utilisé pour l'analyse.
+    Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour l'analyse.
 .EXAMPLE
     $contradictions = Find-SqlServerContradictoryPermission -ServerInstance "SQLSERVER01"
 .OUTPUTS
@@ -50,11 +50,11 @@ function Find-SqlServerContradictoryPermission {
     $contradictions = New-Object System.Collections.Generic.List[SqlServerContradictoryPermission]
 
     try {
-        # Si les données de permissions ne sont pas fournies, les récupérer
+        # Si les donnÃ©es de permissions ne sont pas fournies, les rÃ©cupÃ©rer
         if ($PSCmdlet.ParameterSetName -eq "Server") {
-            Write-Verbose "Récupération des permissions au niveau serveur pour l'instance $ServerInstance"
+            Write-Verbose "RÃ©cupÃ©ration des permissions au niveau serveur pour l'instance $ServerInstance"
 
-            # Construire les paramètres pour la connexion
+            # Construire les paramÃ¨tres pour la connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
                 Database       = "master"
@@ -88,23 +88,23 @@ function Find-SqlServerContradictoryPermission {
                 $sqlParams.Add("Credential", $Credential)
             }
 
-            # Exécuter la requête
+            # ExÃ©cuter la requÃªte
             try {
                 $permissionsData = Invoke-Sqlcmd @sqlParams
             } catch {
-                Write-Error "Erreur lors de la récupération des permissions au niveau serveur: $_"
+                Write-Error "Erreur lors de la rÃ©cupÃ©ration des permissions au niveau serveur: $_"
                 return $contradictions
             }
         }
 
-        # Analyser les données de permissions pour détecter les contradictions
-        Write-Verbose "Analyse des permissions au niveau serveur pour détecter les contradictions"
+        # Analyser les donnÃ©es de permissions pour dÃ©tecter les contradictions
+        Write-Verbose "Analyse des permissions au niveau serveur pour dÃ©tecter les contradictions"
 
         # Regrouper les permissions par login et nom de permission
         $permissionGroups = $permissionsData | Group-Object -Property LoginName, PermissionName
 
         foreach ($group in $permissionGroups) {
-            # Vérifier s'il y a à la fois GRANT et DENY pour la même permission
+            # VÃ©rifier s'il y a Ã  la fois GRANT et DENY pour la mÃªme permission
             $grantPermission = $group.Group | Where-Object { $_.StateDesc -eq "GRANT" }
             $denyPermission = $group.Group | Where-Object { $_.StateDesc -eq "DENY" }
 
@@ -115,26 +115,26 @@ function Find-SqlServerContradictoryPermission {
                 $securableType = $group.Group[0].SecurableType
                 $securableName = $group.Group[0].SecurableName
 
-                # Créer un objet de permission contradictoire
+                # CrÃ©er un objet de permission contradictoire
                 $contradiction = New-SqlServerContradictoryPermission `
                     -PermissionName $permissionName `
                     -LoginName $loginName `
                     -SecurableName $securableName `
                     -ContradictionType "GRANT/DENY" `
                     -ModelName $ModelName `
-                    -RiskLevel "Élevé" `
-                    -Impact "L'utilisateur peut avoir des problèmes d'accès intermittents" `
-                    -RecommendedAction "Résoudre la contradiction en supprimant soit GRANT soit DENY"
+                    -RiskLevel "Ã‰levÃ©" `
+                    -Impact "L'utilisateur peut avoir des problÃ¨mes d'accÃ¨s intermittents" `
+                    -RecommendedAction "RÃ©soudre la contradiction en supprimant soit GRANT soit DENY"
 
                 $contradictions.Add($contradiction)
 
-                Write-Verbose "Contradiction détectée: Permission $permissionName pour le login $loginName"
+                Write-Verbose "Contradiction dÃ©tectÃ©e: Permission $permissionName pour le login $loginName"
             }
         }
 
-        Write-Verbose "$($contradictions.Count) contradictions détectées au niveau serveur"
+        Write-Verbose "$($contradictions.Count) contradictions dÃ©tectÃ©es au niveau serveur"
     } catch {
-        Write-Error "Erreur lors de la détection des permissions contradictoires au niveau serveur: $_"
+        Write-Error "Erreur lors de la dÃ©tection des permissions contradictoires au niveau serveur: $_"
     }
 
     return $contradictions
@@ -142,24 +142,24 @@ function Find-SqlServerContradictoryPermission {
 
 #endregion
 
-#region Fonctions de détection au niveau base de données
+#region Fonctions de dÃ©tection au niveau base de donnÃ©es
 
 <#
 .SYNOPSIS
-    Détecte les permissions contradictoires au niveau base de données SQL.
+    DÃ©tecte les permissions contradictoires au niveau base de donnÃ©es SQL.
 .DESCRIPTION
-    Cette fonction analyse les permissions au niveau base de données pour détecter les contradictions
-    de type GRANT/DENY sur la même permission pour le même utilisateur.
+    Cette fonction analyse les permissions au niveau base de donnÃ©es pour dÃ©tecter les contradictions
+    de type GRANT/DENY sur la mÃªme permission pour le mÃªme utilisateur.
 .PARAMETER ServerInstance
-    Nom de l'instance SQL Server à analyser.
+    Nom de l'instance SQL Server Ã  analyser.
 .PARAMETER Database
-    Nom de la base de données à analyser.
+    Nom de la base de donnÃ©es Ã  analyser.
 .PARAMETER Credential
-    Informations d'identification pour la connexion à SQL Server.
+    Informations d'identification pour la connexion Ã  SQL Server.
 .PARAMETER PermissionsData
-    Données de permissions préalablement récupérées (facultatif).
+    DonnÃ©es de permissions prÃ©alablement rÃ©cupÃ©rÃ©es (facultatif).
 .PARAMETER ModelName
-    Nom du modèle de référence utilisé pour l'analyse.
+    Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour l'analyse.
 .EXAMPLE
     $contradictions = Find-SqlDatabaseContradictoryPermission -ServerInstance "SQLSERVER01" -Database "AdventureWorks"
 .OUTPUTS
@@ -188,11 +188,11 @@ function Find-SqlDatabaseContradictoryPermission {
     $contradictions = New-Object System.Collections.Generic.List[SqlDatabaseContradictoryPermission]
 
     try {
-        # Si les données de permissions ne sont pas fournies, les récupérer
+        # Si les donnÃ©es de permissions ne sont pas fournies, les rÃ©cupÃ©rer
         if ($PSCmdlet.ParameterSetName -eq "Server") {
-            Write-Verbose "Récupération des permissions au niveau base de données pour $Database sur $ServerInstance"
+            Write-Verbose "RÃ©cupÃ©ration des permissions au niveau base de donnÃ©es pour $Database sur $ServerInstance"
 
-            # Construire les paramètres pour la connexion
+            # Construire les paramÃ¨tres pour la connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
                 Database       = $Database
@@ -225,7 +225,7 @@ function Find-SqlDatabaseContradictoryPermission {
                 JOIN sys.database_principals dp ON p.grantee_principal_id = dp.principal_id
                 LEFT JOIN sys.server_principals sp ON dp.sid = sp.sid
                 WHERE dp.type IN ('S', 'U', 'G')
-                AND p.class = 0 -- Permissions au niveau base de données uniquement
+                AND p.class = 0 -- Permissions au niveau base de donnÃ©es uniquement
                 ORDER BY dp.name, p.permission_name, p.state_desc
 "@
             }
@@ -235,23 +235,23 @@ function Find-SqlDatabaseContradictoryPermission {
                 $sqlParams.Add("Credential", $Credential)
             }
 
-            # Exécuter la requête
+            # ExÃ©cuter la requÃªte
             try {
                 $permissionsData = Invoke-Sqlcmd @sqlParams
             } catch {
-                Write-Error "Erreur lors de la récupération des permissions au niveau base de données: $_"
+                Write-Error "Erreur lors de la rÃ©cupÃ©ration des permissions au niveau base de donnÃ©es: $_"
                 return $contradictions
             }
         }
 
-        # Analyser les données de permissions pour détecter les contradictions
-        Write-Verbose "Analyse des permissions au niveau base de données pour détecter les contradictions"
+        # Analyser les donnÃ©es de permissions pour dÃ©tecter les contradictions
+        Write-Verbose "Analyse des permissions au niveau base de donnÃ©es pour dÃ©tecter les contradictions"
 
         # Regrouper les permissions par utilisateur et nom de permission
         $permissionGroups = $permissionsData | Group-Object -Property UserName, PermissionName
 
         foreach ($group in $permissionGroups) {
-            # Vérifier s'il y a à la fois GRANT et DENY pour la même permission
+            # VÃ©rifier s'il y a Ã  la fois GRANT et DENY pour la mÃªme permission
             $grantPermission = $group.Group | Where-Object { $_.StateDesc -eq "GRANT" }
             $denyPermission = $group.Group | Where-Object { $_.StateDesc -eq "DENY" }
 
@@ -262,27 +262,27 @@ function Find-SqlDatabaseContradictoryPermission {
                 $databaseName = if ($PSCmdlet.ParameterSetName -eq "Server") { $Database } else { $group.Group[0].SecurableName }
                 $loginName = $group.Group[0].LoginName
 
-                # Créer un objet de permission contradictoire
+                # CrÃ©er un objet de permission contradictoire
                 $contradiction = New-SqlDatabaseContradictoryPermission `
                     -PermissionName $permissionName `
                     -UserName $userName `
                     -DatabaseName $databaseName `
                     -ContradictionType "GRANT/DENY" `
                     -ModelName $ModelName `
-                    -RiskLevel "Élevé" `
+                    -RiskLevel "Ã‰levÃ©" `
                     -LoginName $loginName `
-                    -Impact "L'utilisateur peut avoir des problèmes d'accès intermittents à la base de données" `
-                    -RecommendedAction "Résoudre la contradiction en supprimant soit GRANT soit DENY"
+                    -Impact "L'utilisateur peut avoir des problÃ¨mes d'accÃ¨s intermittents Ã  la base de donnÃ©es" `
+                    -RecommendedAction "RÃ©soudre la contradiction en supprimant soit GRANT soit DENY"
 
                 $contradictions.Add($contradiction)
 
-                Write-Verbose "Contradiction détectée: Permission $permissionName pour l'utilisateur $userName dans la base de données $databaseName"
+                Write-Verbose "Contradiction dÃ©tectÃ©e: Permission $permissionName pour l'utilisateur $userName dans la base de donnÃ©es $databaseName"
             }
         }
 
-        Write-Verbose "$($contradictions.Count) contradictions détectées au niveau base de données"
+        Write-Verbose "$($contradictions.Count) contradictions dÃ©tectÃ©es au niveau base de donnÃ©es"
     } catch {
-        Write-Error "Erreur lors de la détection des permissions contradictoires au niveau base de données: $_"
+        Write-Error "Erreur lors de la dÃ©tection des permissions contradictoires au niveau base de donnÃ©es: $_"
     }
 
     return $contradictions
@@ -290,24 +290,24 @@ function Find-SqlDatabaseContradictoryPermission {
 
 #endregion
 
-#region Fonctions de détection au niveau objet
+#region Fonctions de dÃ©tection au niveau objet
 
 <#
 .SYNOPSIS
-    Détecte les permissions contradictoires au niveau objet SQL.
+    DÃ©tecte les permissions contradictoires au niveau objet SQL.
 .DESCRIPTION
-    Cette fonction analyse les permissions au niveau objet pour détecter les contradictions
-    de type GRANT/DENY sur la même permission pour le même utilisateur.
+    Cette fonction analyse les permissions au niveau objet pour dÃ©tecter les contradictions
+    de type GRANT/DENY sur la mÃªme permission pour le mÃªme utilisateur.
 .PARAMETER ServerInstance
-    Nom de l'instance SQL Server à analyser.
+    Nom de l'instance SQL Server Ã  analyser.
 .PARAMETER Database
-    Nom de la base de données à analyser.
+    Nom de la base de donnÃ©es Ã  analyser.
 .PARAMETER Credential
-    Informations d'identification pour la connexion à SQL Server.
+    Informations d'identification pour la connexion Ã  SQL Server.
 .PARAMETER PermissionsData
-    Données de permissions préalablement récupérées (facultatif).
+    DonnÃ©es de permissions prÃ©alablement rÃ©cupÃ©rÃ©es (facultatif).
 .PARAMETER ModelName
-    Nom du modèle de référence utilisé pour l'analyse.
+    Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour l'analyse.
 .EXAMPLE
     $contradictions = Find-SqlObjectContradictoryPermission -ServerInstance "SQLSERVER01" -Database "AdventureWorks"
 .OUTPUTS
@@ -336,11 +336,11 @@ function Find-SqlObjectContradictoryPermission {
     $contradictions = New-Object System.Collections.Generic.List[SqlObjectContradictoryPermission]
 
     try {
-        # Si les données de permissions ne sont pas fournies, les récupérer
+        # Si les donnÃ©es de permissions ne sont pas fournies, les rÃ©cupÃ©rer
         if ($PSCmdlet.ParameterSetName -eq "Server") {
-            Write-Verbose "Récupération des permissions au niveau objet pour $Database sur $ServerInstance"
+            Write-Verbose "RÃ©cupÃ©ration des permissions au niveau objet pour $Database sur $ServerInstance"
 
-            # Construire les paramètres pour la connexion
+            # Construire les paramÃ¨tres pour la connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
                 Database       = $Database
@@ -377,23 +377,23 @@ function Find-SqlObjectContradictoryPermission {
                 $sqlParams.Add("Credential", $Credential)
             }
 
-            # Exécuter la requête
+            # ExÃ©cuter la requÃªte
             try {
                 $permissionsData = Invoke-Sqlcmd @sqlParams
             } catch {
-                Write-Error "Erreur lors de la récupération des permissions au niveau objet: $_"
+                Write-Error "Erreur lors de la rÃ©cupÃ©ration des permissions au niveau objet: $_"
                 return $contradictions
             }
         }
 
-        # Analyser les données de permissions pour détecter les contradictions
-        Write-Verbose "Analyse des permissions au niveau objet pour détecter les contradictions"
+        # Analyser les donnÃ©es de permissions pour dÃ©tecter les contradictions
+        Write-Verbose "Analyse des permissions au niveau objet pour dÃ©tecter les contradictions"
 
         # Regrouper les permissions par utilisateur, objet, colonne et nom de permission
         $permissionGroups = $permissionsData | Group-Object -Property UserName, SchemaName, ObjectName, ColumnName, PermissionName
 
         foreach ($group in $permissionGroups) {
-            # Vérifier s'il y a à la fois GRANT et DENY pour la même permission
+            # VÃ©rifier s'il y a Ã  la fois GRANT et DENY pour la mÃªme permission
             $grantPermission = $group.Group | Where-Object { $_.StateDesc -eq "GRANT" }
             $denyPermission = $group.Group | Where-Object { $_.StateDesc -eq "DENY" }
 
@@ -408,8 +408,8 @@ function Find-SqlObjectContradictoryPermission {
                 $columnName = $group.Group[0].ColumnName
                 $loginName = $group.Group[0].LoginName
 
-                # Créer un objet de permission contradictoire
-                # Vérifier que les valeurs requises ne sont pas vides
+                # CrÃ©er un objet de permission contradictoire
+                # VÃ©rifier que les valeurs requises ne sont pas vides
                 if ([string]::IsNullOrEmpty($databaseName)) {
                     $databaseName = "UnknownDB"
                 }
@@ -428,21 +428,21 @@ function Find-SqlObjectContradictoryPermission {
                     -ColumnName $columnName `
                     -ContradictionType "GRANT/DENY" `
                     -ModelName $ModelName `
-                    -RiskLevel "Élevé" `
+                    -RiskLevel "Ã‰levÃ©" `
                     -LoginName $loginName `
-                    -Impact "L'utilisateur peut avoir des problèmes d'accès intermittents à l'objet" `
-                    -RecommendedAction "Résoudre la contradiction en supprimant soit GRANT soit DENY"
+                    -Impact "L'utilisateur peut avoir des problÃ¨mes d'accÃ¨s intermittents Ã  l'objet" `
+                    -RecommendedAction "RÃ©soudre la contradiction en supprimant soit GRANT soit DENY"
 
                 $contradictions.Add($contradiction)
 
                 $columnInfo = if ($columnName) { " (colonne: $columnName)" } else { "" }
-                Write-Verbose "Contradiction détectée: Permission $permissionName pour l'utilisateur $userName sur l'objet $schemaName.$objectName$columnInfo"
+                Write-Verbose "Contradiction dÃ©tectÃ©e: Permission $permissionName pour l'utilisateur $userName sur l'objet $schemaName.$objectName$columnInfo"
             }
         }
 
-        Write-Verbose "$($contradictions.Count) contradictions détectées au niveau objet"
+        Write-Verbose "$($contradictions.Count) contradictions dÃ©tectÃ©es au niveau objet"
     } catch {
-        Write-Error "Erreur lors de la détection des permissions contradictoires au niveau objet: $_"
+        Write-Error "Erreur lors de la dÃ©tection des permissions contradictoires au niveau objet: $_"
     }
 
     return $contradictions
@@ -450,22 +450,22 @@ function Find-SqlObjectContradictoryPermission {
 
 #endregion
 
-#region Fonction principale de détection
+#region Fonction principale de dÃ©tection
 
 <#
 .SYNOPSIS
-    Détecte toutes les permissions contradictoires dans une instance SQL Server.
+    DÃ©tecte toutes les permissions contradictoires dans une instance SQL Server.
 .DESCRIPTION
-    Cette fonction analyse les permissions à tous les niveaux (serveur, base de données, objet)
-    pour détecter les contradictions de type GRANT/DENY.
+    Cette fonction analyse les permissions Ã  tous les niveaux (serveur, base de donnÃ©es, objet)
+    pour dÃ©tecter les contradictions de type GRANT/DENY.
 .PARAMETER ServerInstance
-    Nom de l'instance SQL Server à analyser.
+    Nom de l'instance SQL Server Ã  analyser.
 .PARAMETER Database
-    Nom de la base de données à analyser. Si non spécifié, toutes les bases de données seront analysées.
+    Nom de la base de donnÃ©es Ã  analyser. Si non spÃ©cifiÃ©, toutes les bases de donnÃ©es seront analysÃ©es.
 .PARAMETER Credential
-    Informations d'identification pour la connexion à SQL Server.
+    Informations d'identification pour la connexion Ã  SQL Server.
 .PARAMETER ModelName
-    Nom du modèle de référence utilisé pour l'analyse.
+    Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour l'analyse.
 .EXAMPLE
     $contradictionsSet = Find-SqlContradictoryPermission -ServerInstance "SQLSERVER01"
 .OUTPUTS
@@ -488,23 +488,23 @@ function Find-SqlContradictoryPermission {
         [string]$ModelName = "DefaultModel"
     )
 
-    # Créer un ensemble de permissions contradictoires
+    # CrÃ©er un ensemble de permissions contradictoires
     $contradictionsSet = New-SqlContradictoryPermissionsSet -ServerName $ServerInstance -ModelName $ModelName
 
     try {
-        # Détecter les contradictions au niveau serveur
-        Write-Verbose "Détection des contradictions au niveau serveur pour $ServerInstance"
+        # DÃ©tecter les contradictions au niveau serveur
+        Write-Verbose "DÃ©tection des contradictions au niveau serveur pour $ServerInstance"
         $serverContradictions = Find-SqlServerContradictoryPermission -ServerInstance $ServerInstance -Credential $Credential -ModelName $ModelName
 
         foreach ($contradiction in $serverContradictions) {
             $contradictionsSet.AddServerContradiction($contradiction)
         }
 
-        # Si aucune base de données n'est spécifiée, récupérer toutes les bases de données
+        # Si aucune base de donnÃ©es n'est spÃ©cifiÃ©e, rÃ©cupÃ©rer toutes les bases de donnÃ©es
         if (-not $Database) {
-            Write-Verbose "Récupération de la liste des bases de données"
+            Write-Verbose "RÃ©cupÃ©ration de la liste des bases de donnÃ©es"
 
-            # Construire les paramètres pour la connexion
+            # Construire les paramÃ¨tres pour la connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
                 Database       = "master"
@@ -516,28 +516,28 @@ function Find-SqlContradictoryPermission {
                 $sqlParams.Add("Credential", $Credential)
             }
 
-            # Exécuter la requête
+            # ExÃ©cuter la requÃªte
             try {
                 $databaseList = Invoke-Sqlcmd @sqlParams
                 $Database = $databaseList | Select-Object -ExpandProperty name
             } catch {
-                Write-Error "Erreur lors de la récupération de la liste des bases de données: $_"
+                Write-Error "Erreur lors de la rÃ©cupÃ©ration de la liste des bases de donnÃ©es: $_"
                 return $contradictionsSet
             }
         }
 
-        # Détecter les contradictions pour chaque base de données
+        # DÃ©tecter les contradictions pour chaque base de donnÃ©es
         foreach ($db in $Database) {
-            Write-Verbose "Détection des contradictions pour la base de données $db"
+            Write-Verbose "DÃ©tection des contradictions pour la base de donnÃ©es $db"
 
-            # Détecter les contradictions au niveau base de données
+            # DÃ©tecter les contradictions au niveau base de donnÃ©es
             $dbContradictions = Find-SqlDatabaseContradictoryPermission -ServerInstance $ServerInstance -Database $db -Credential $Credential -ModelName $ModelName
 
             foreach ($contradiction in $dbContradictions) {
                 $contradictionsSet.AddDatabaseContradiction($contradiction)
             }
 
-            # Détecter les contradictions au niveau objet
+            # DÃ©tecter les contradictions au niveau objet
             $objContradictions = Find-SqlObjectContradictoryPermission -ServerInstance $ServerInstance -Database $db -Credential $Credential -ModelName $ModelName
 
             foreach ($contradiction in $objContradictions) {
@@ -545,9 +545,9 @@ function Find-SqlContradictoryPermission {
             }
         }
 
-        Write-Verbose "Détection des contradictions terminée. Total: $($contradictionsSet.TotalContradictions)"
+        Write-Verbose "DÃ©tection des contradictions terminÃ©e. Total: $($contradictionsSet.TotalContradictions)"
     } catch {
-        Write-Error "Erreur lors de la détection des permissions contradictoires: $_"
+        Write-Error "Erreur lors de la dÃ©tection des permissions contradictoires: $_"
     }
 
     return $contradictionsSet

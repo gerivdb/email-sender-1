@@ -1,4 +1,4 @@
-# performance
+﻿# performance
 
 Tests de performance
 

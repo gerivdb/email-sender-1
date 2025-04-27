@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Valide les standards de code PowerShell.
 .DESCRIPTION
     Ce script valide les standards de code PowerShell en utilisant une architecture hybride
-    PowerShell-Python pour le traitement parallèle.
+    PowerShell-Python pour le traitement parallÃ¨le.
 .PARAMETER ScriptsPath
-    Chemin vers le répertoire contenant les scripts PowerShell à valider.
+    Chemin vers le rÃ©pertoire contenant les scripts PowerShell Ã  valider.
 .PARAMETER OutputPath
-    Chemin vers le répertoire où les résultats seront enregistrés.
+    Chemin vers le rÃ©pertoire oÃ¹ les rÃ©sultats seront enregistrÃ©s.
 .PARAMETER StandardsFile
     Chemin vers le fichier JSON contenant les standards de code.
 .PARAMETER FilePatterns
-    Modèles de noms de fichiers à inclure (par défaut : *.ps1, *.psm1).
+    ModÃ¨les de noms de fichiers Ã  inclure (par dÃ©faut : *.ps1, *.psm1).
 .PARAMETER UseCache
-    Utilise un cache pour améliorer les performances lors des exécutions répétées.
+    Utilise un cache pour amÃ©liorer les performances lors des exÃ©cutions rÃ©pÃ©tÃ©es.
 .PARAMETER FixViolations
     Tente de corriger automatiquement certaines violations des standards.
 .NOTES
@@ -48,7 +48,7 @@ param(
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le fichier de standards s'il n'existe pas
+# CrÃ©er le fichier de standards s'il n'existe pas
 if (-not (Test-Path -Path $StandardsFile)) {
     $standards = @{
         naming = @{
@@ -59,19 +59,19 @@ if (-not (Test-Path -Path $StandardsFile)) {
             }
             variables = @{
                 pattern = "^[a-z][a-zA-Z0-9]+$"
-                description = "Les noms de variables doivent être en camelCase"
+                description = "Les noms de variables doivent Ãªtre en camelCase"
                 severity = "Warning"
             }
             parameters = @{
                 pattern = "^[A-Z][a-zA-Z0-9]+$"
-                description = "Les noms de paramètres doivent être en PascalCase"
+                description = "Les noms de paramÃ¨tres doivent Ãªtre en PascalCase"
                 severity = "Warning"
             }
         }
         structure = @{
             requires = @{
                 pattern = "^#Requires -Version"
-                description = "Les scripts doivent spécifier la version PowerShell requise"
+                description = "Les scripts doivent spÃ©cifier la version PowerShell requise"
                 severity = "Warning"
             }
             help = @{
@@ -81,7 +81,7 @@ if (-not (Test-Path -Path $StandardsFile)) {
             }
             encoding = @{
                 pattern = "utf8"
-                description = "Les fichiers doivent être encodés en UTF-8"
+                description = "Les fichiers doivent Ãªtre encodÃ©s en UTF-8"
                 severity = "Error"
             }
         }
@@ -93,30 +93,30 @@ if (-not (Test-Path -Path $StandardsFile)) {
             }
             approvedVerbs = @{
                 pattern = "^(Add|Clear|Close|Copy|Enter|Exit|Find|Format|Get|Hide|Join|Lock|Move|New|Open|Optimize|Pop|Push|Read|Remove|Rename|Reset|Resize|Search|Select|Set|Show|Skip|Split|Step|Switch|Undo|Unlock|Watch|Write)-"
-                description = "Utiliser uniquement des verbes approuvés pour les fonctions"
+                description = "Utiliser uniquement des verbes approuvÃ©s pour les fonctions"
                 severity = "Error"
             }
             commentRatio = @{
                 value = 0.1
-                description = "Le ratio de commentaires doit être d'au moins 10% du code"
+                description = "Le ratio de commentaires doit Ãªtre d'au moins 10% du code"
                 severity = "Warning"
             }
         }
     }
     
     $standards | ConvertTo-Json -Depth 5 | Out-File -FilePath $StandardsFile -Encoding utf8
-    Write-Host "Fichier de standards créé : $StandardsFile" -ForegroundColor Green
+    Write-Host "Fichier de standards crÃ©Ã© : $StandardsFile" -ForegroundColor Green
 }
 
-# Vérifier que le script Python de validation existe
+# VÃ©rifier que le script Python de validation existe
 $pythonScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "standards_validator.py"
 if (-not (Test-Path -Path $pythonScriptPath)) {
     Write-Error "Le script Python de validation n'existe pas : $pythonScriptPath"
-    Write-Host "Veuillez exécuter 'git pull' pour récupérer les derniers fichiers ou créer le fichier manuellement." -ForegroundColor Yellow
+    Write-Host "Veuillez exÃ©cuter 'git pull' pour rÃ©cupÃ©rer les derniers fichiers ou crÃ©er le fichier manuellement." -ForegroundColor Yellow
     exit 1
 }
 
-# Fonction pour démarrer la validation des standards
+# Fonction pour dÃ©marrer la validation des standards
 function Start-StandardsValidation {
     [CmdletBinding()]
     param(
@@ -136,22 +136,22 @@ function Start-StandardsValidation {
         [switch]$UseCache
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # Récupérer les fichiers à valider
+    # RÃ©cupÃ©rer les fichiers Ã  valider
     $scriptFiles = @()
     foreach ($pattern in $FilePatterns) {
         $scriptFiles += Get-ChildItem -Path $ScriptsPath -Filter $pattern -Recurse | Select-Object -ExpandProperty FullName
     }
     
     $totalFiles = $scriptFiles.Count
-    Write-Host "Nombre de fichiers à valider : $totalFiles" -ForegroundColor Yellow
+    Write-Host "Nombre de fichiers Ã  valider : $totalFiles" -ForegroundColor Yellow
     
     if ($totalFiles -eq 0) {
-        Write-Warning "Aucun fichier trouvé correspondant aux modèles spécifiés."
+        Write-Warning "Aucun fichier trouvÃ© correspondant aux modÃ¨les spÃ©cifiÃ©s."
         return @()
     }
     
@@ -168,14 +168,14 @@ function Start-StandardsValidation {
         }
     }
     
-    # Valider les standards en parallèle
-    Write-Host "Validation des standards en parallèle..." -ForegroundColor Cyan
+    # Valider les standards en parallÃ¨le
+    Write-Host "Validation des standards en parallÃ¨le..." -ForegroundColor Cyan
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
-    # Convertir les standards en JSON pour éviter les problèmes de sérialisation
+    # Convertir les standards en JSON pour Ã©viter les problÃ¨mes de sÃ©rialisation
     $standardsJson = $standards | ConvertTo-Json -Depth 10 -Compress
     
-    # Utiliser une approche simplifiée pour la validation
+    # Utiliser une approche simplifiÃ©e pour la validation
     $results = @()
     
     foreach ($scriptFile in $scriptFiles) {
@@ -186,10 +186,10 @@ function Start-StandardsValidation {
             $outputFile = Join-Path -Path $OutputPath -ChildPath "validation-$([System.IO.Path]::GetFileNameWithoutExtension($scriptFile)).json"
             $inputFile = Join-Path -Path $OutputPath -ChildPath "input-$([System.IO.Path]::GetFileNameWithoutExtension($scriptFile)).json"
             
-            # Créer le fichier d'entrée
+            # CrÃ©er le fichier d'entrÃ©e
             @($scriptFile) | ConvertTo-Json | Out-File -FilePath $inputFile -Encoding utf8
             
-            # Exécuter le script Python
+            # ExÃ©cuter le script Python
             $pythonArgs = @(
                 $pythonScriptPath,
                 "--input", $inputFile,
@@ -205,7 +205,7 @@ function Start-StandardsValidation {
             $pythonProcess = Start-Process -FilePath "python" -ArgumentList $pythonArgs -NoNewWindow -PassThru -Wait
             
             if ($pythonProcess.ExitCode -eq 0) {
-                # Lire les résultats
+                # Lire les rÃ©sultats
                 $result = Get-Content -Path $outputFile -Raw | ConvertFrom-Json
                 $results += $result
             }
@@ -227,21 +227,21 @@ function Start-StandardsValidation {
     }
     
     $stopwatch.Stop()
-    Write-Host "Validation terminée en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
+    Write-Host "Validation terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
     
-    # Générer un rapport de synthèse
+    # GÃ©nÃ©rer un rapport de synthÃ¨se
     $reportPath = Join-Path -Path $OutputPath -ChildPath "validation-report.json"
     $results | ConvertTo-Json -Depth 10 | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport de validation généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport de validation gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $compliantFiles = ($results | Where-Object { $_.is_compliant -eq $true }).Count
     $nonCompliantFiles = $totalFiles - $compliantFiles
     $totalErrors = ($results | Measure-Object -Property errors -Sum).Sum
     $totalWarnings = ($results | Measure-Object -Property warnings -Sum).Sum
     
-    Write-Host "`nRésumé de la validation :" -ForegroundColor Yellow
+    Write-Host "`nRÃ©sumÃ© de la validation :" -ForegroundColor Yellow
     Write-Host "  Fichiers conformes : $compliantFiles / $totalFiles" -ForegroundColor Yellow
     Write-Host "  Fichiers non conformes : $nonCompliantFiles / $totalFiles" -ForegroundColor Yellow
     Write-Host "  Erreurs totales : $totalErrors" -ForegroundColor Yellow
@@ -333,7 +333,7 @@ function Repair-StandardViolations {
             if ($modified) {
                 $content | Out-File -FilePath $filePath -Encoding utf8
                 $fixedFiles++
-                Write-Host "Fichier corrigé : $filePath" -ForegroundColor Green
+                Write-Host "Fichier corrigÃ© : $filePath" -ForegroundColor Green
             }
             else {
                 Write-Host "Aucune correction automatique possible pour $filePath" -ForegroundColor Yellow
@@ -344,7 +344,7 @@ function Repair-StandardViolations {
     return $fixedFiles
 }
 
-# Exécuter la validation
+# ExÃ©cuter la validation
 try {
     $results = Start-StandardsValidation `
         -ScriptsPath $ScriptsPath `
@@ -353,14 +353,14 @@ try {
         -FilePatterns $FilePatterns `
         -UseCache:$UseCache
     
-    # Corriger les violations si demandé
+    # Corriger les violations si demandÃ©
     if ($FixViolations) {
         Write-Host "`nCorrection des violations..." -ForegroundColor Cyan
         $fixedFiles = Repair-StandardViolations -Results $results -Standards $standards
-        Write-Host "Nombre de fichiers corrigés : $fixedFiles" -ForegroundColor Green
+        Write-Host "Nombre de fichiers corrigÃ©s : $fixedFiles" -ForegroundColor Green
     }
     
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $results
 }
 catch {

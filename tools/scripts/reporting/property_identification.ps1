@@ -1,31 +1,31 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions pour l'identification et l'analyse des propriétés dans les types .NET.
+    Fonctions pour l'identification et l'analyse des propriÃ©tÃ©s dans les types .NET.
 .DESCRIPTION
-    Ce module fournit des fonctions pour identifier, analyser et catégoriser les propriétés
-    dans les types .NET, y compris la détection des accesseurs, l'analyse des niveaux d'accès,
-    l'analyse des attributs et la détection des propriétés auto-implémentées.
+    Ce module fournit des fonctions pour identifier, analyser et catÃ©goriser les propriÃ©tÃ©s
+    dans les types .NET, y compris la dÃ©tection des accesseurs, l'analyse des niveaux d'accÃ¨s,
+    l'analyse des attributs et la dÃ©tection des propriÃ©tÃ©s auto-implÃ©mentÃ©es.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
 #>
 
-#region Détection des accesseurs
+#region DÃ©tection des accesseurs
 
 <#
 .SYNOPSIS
-    Détecte les méthodes get/set associées à une propriété.
+    DÃ©tecte les mÃ©thodes get/set associÃ©es Ã  une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction détecte les méthodes get/set associées à une propriété et retourne des informations détaillées sur ces accesseurs.
+    Cette fonction dÃ©tecte les mÃ©thodes get/set associÃ©es Ã  une propriÃ©tÃ© et retourne des informations dÃ©taillÃ©es sur ces accesseurs.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $accessors = Get-PropertyAccessors -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les accesseurs de la propriété.
+    PSObject - Un objet contenant des informations sur les accesseurs de la propriÃ©tÃ©.
 #>
 function Get-PropertyAccessors {
     [CmdletBinding()]
@@ -37,11 +37,11 @@ function Get-PropertyAccessors {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer les méthodes get/set
+    # RÃ©cupÃ©rer les mÃ©thodes get/set
     $getMethod = $Property.GetGetMethod($IncludeNonPublic)
     $setMethod = $Property.GetSetMethod($IncludeNonPublic)
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Property    = $Property
         GetMethod   = $getMethod
@@ -58,17 +58,17 @@ function Get-PropertyAccessors {
 
 <#
 .SYNOPSIS
-    Associe les accesseurs aux propriétés dans un type.
+    Associe les accesseurs aux propriÃ©tÃ©s dans un type.
 .DESCRIPTION
-    Cette fonction analyse un type et associe les méthodes get/set aux propriétés correspondantes.
+    Cette fonction analyse un type et associe les mÃ©thodes get/set aux propriÃ©tÃ©s correspondantes.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $accessorMap = Get-TypePropertyAccessorMap -Type ([System.String])
 .OUTPUTS
-    Hashtable - Une table de hachage où les clés sont les noms des propriétés et les valeurs sont les informations sur les accesseurs.
+    Hashtable - Une table de hachage oÃ¹ les clÃ©s sont les noms des propriÃ©tÃ©s et les valeurs sont les informations sur les accesseurs.
 #>
 function Get-TypePropertyAccessorMap {
     [CmdletBinding()]
@@ -80,7 +80,7 @@ function Get-TypePropertyAccessorMap {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -88,10 +88,10 @@ function Get-TypePropertyAccessorMap {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer la table de hachage pour stocker les associations
+    # CrÃ©er la table de hachage pour stocker les associations
     $accessorMap = @{}
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
         $accessors = Get-PropertyAccessors -Property $property -IncludeNonPublic:$IncludeNonPublic
         $accessorMap[$property.Name] = $accessors
@@ -102,18 +102,18 @@ function Get-TypePropertyAccessorMap {
 
 <#
 .SYNOPSIS
-    Vérifie la compatibilité des types entre les accesseurs get/set d'une propriété.
+    VÃ©rifie la compatibilitÃ© des types entre les accesseurs get/set d'une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction vérifie que les types de retour et de paramètre des accesseurs get/set d'une propriété sont compatibles.
+    Cette fonction vÃ©rifie que les types de retour et de paramÃ¨tre des accesseurs get/set d'une propriÃ©tÃ© sont compatibles.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $isCompatible = Test-PropertyAccessorTypeCompatibility -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur la compatibilité des types des accesseurs.
+    PSObject - Un objet contenant des informations sur la compatibilitÃ© des types des accesseurs.
 #>
 function Test-PropertyAccessorTypeCompatibility {
     [CmdletBinding()]
@@ -125,12 +125,12 @@ function Test-PropertyAccessorTypeCompatibility {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer les accesseurs
+    # RÃ©cupÃ©rer les accesseurs
     $accessors = Get-PropertyAccessors -Property $Property -IncludeNonPublic:$IncludeNonPublic
 
-    # Vérifier si les deux accesseurs existent
+    # VÃ©rifier si les deux accesseurs existent
     if (-not $accessors.HasGetter -or -not $accessors.HasSetter) {
-        # Si un seul accesseur existe, il n'y a pas de problème de compatibilité
+        # Si un seul accesseur existe, il n'y a pas de problÃ¨me de compatibilitÃ©
         return [PSCustomObject]@{
             IsCompatible = $true
             Property     = $Property
@@ -140,14 +140,14 @@ function Test-PropertyAccessorTypeCompatibility {
         }
     }
 
-    # Récupérer les types
+    # RÃ©cupÃ©rer les types
     $getterType = $accessors.GetMethod.ReturnType
     $setterType = $accessors.SetMethod.GetParameters()[0].ParameterType
 
-    # Vérifier la compatibilité
+    # VÃ©rifier la compatibilitÃ©
     $isCompatible = $getterType -eq $setterType
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         IsCompatible = $isCompatible
         Property     = $Property
@@ -161,13 +161,13 @@ function Test-PropertyAccessorTypeCompatibility {
 
 <#
 .SYNOPSIS
-    Détecte les accesseurs explicites d'interface dans un type.
+    DÃ©tecte les accesseurs explicites d'interface dans un type.
 .DESCRIPTION
-    Cette fonction détecte les accesseurs explicites d'interface dans un type et les associe aux propriétés correspondantes.
+    Cette fonction dÃ©tecte les accesseurs explicites d'interface dans un type et les associe aux propriÃ©tÃ©s correspondantes.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER InterfaceType
-    Le type d'interface à rechercher. Si non spécifié, toutes les interfaces implémentées par le type sont analysées.
+    Le type d'interface Ã  rechercher. Si non spÃ©cifiÃ©, toutes les interfaces implÃ©mentÃ©es par le type sont analysÃ©es.
 .EXAMPLE
     $explicitAccessors = Get-TypeExplicitInterfaceAccessors -Type ([System.Collections.Generic.List`1[System.String]])
 .OUTPUTS
@@ -183,35 +183,35 @@ function Get-TypeExplicitInterfaceAccessors {
         [type]$InterfaceType
     )
 
-    # Récupérer toutes les interfaces implémentées par le type
+    # RÃ©cupÃ©rer toutes les interfaces implÃ©mentÃ©es par le type
     $interfaces = if ($null -ne $InterfaceType) {
         @($InterfaceType)
     } else {
         $Type.GetInterfaces()
     }
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
     # Analyser chaque interface
     foreach ($interface in $interfaces) {
-        # Récupérer la carte d'implémentation d'interface
+        # RÃ©cupÃ©rer la carte d'implÃ©mentation d'interface
         $interfaceMap = $Type.GetInterfaceMap($interface)
 
-        # Parcourir les méthodes de l'interface
+        # Parcourir les mÃ©thodes de l'interface
         for ($i = 0; $i -lt $interfaceMap.InterfaceMethods.Length; $i++) {
             $interfaceMethod = $interfaceMap.InterfaceMethods[$i]
             $implementationMethod = $interfaceMap.TargetMethods[$i]
 
-            # Vérifier si la méthode est un accesseur
+            # VÃ©rifier si la mÃ©thode est un accesseur
             if ($interfaceMethod.Name -match '^get_|^set_') {
-                # Extraire le nom de la propriété
+                # Extraire le nom de la propriÃ©tÃ©
                 $propertyName = $interfaceMethod.Name -replace '^get_|^set_', ''
 
-                # Déterminer s'il s'agit d'un getter ou d'un setter
+                # DÃ©terminer s'il s'agit d'un getter ou d'un setter
                 $isGetter = $interfaceMethod.Name -match '^get_'
 
-                # Créer l'objet résultat
+                # CrÃ©er l'objet rÃ©sultat
                 $result = [PSCustomObject]@{
                     Interface            = $interface
                     PropertyName         = $propertyName
@@ -232,22 +232,22 @@ function Get-TypeExplicitInterfaceAccessors {
 
 #endregion
 
-#region Vérification des niveaux d'accès
+#region VÃ©rification des niveaux d'accÃ¨s
 
 <#
 .SYNOPSIS
-    Analyse les modificateurs d'accès d'une propriété.
+    Analyse les modificateurs d'accÃ¨s d'une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction analyse les modificateurs d'accès (public, private, etc.) d'une propriété et de ses accesseurs.
+    Cette fonction analyse les modificateurs d'accÃ¨s (public, private, etc.) d'une propriÃ©tÃ© et de ses accesseurs.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $accessLevels = Get-PropertyAccessLevels -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les niveaux d'accès de la propriété.
+    PSObject - Un objet contenant des informations sur les niveaux d'accÃ¨s de la propriÃ©tÃ©.
 #>
 function Get-PropertyAccessLevels {
     [CmdletBinding()]
@@ -259,10 +259,10 @@ function Get-PropertyAccessLevels {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer les accesseurs
+    # RÃ©cupÃ©rer les accesseurs
     $accessors = Get-PropertyAccessors -Property $Property -IncludeNonPublic:$IncludeNonPublic
 
-    # Déterminer les niveaux d'accès
+    # DÃ©terminer les niveaux d'accÃ¨s
     $getterAccess = if ($accessors.HasGetter) {
         if ($accessors.GetMethod.IsPublic) { "Public" }
         elseif ($accessors.GetMethod.IsPrivate) { "Private" }
@@ -283,7 +283,7 @@ function Get-PropertyAccessLevels {
         else { "Unknown" }
     } else { $null }
 
-    # Déterminer le niveau d'accès global de la propriété
+    # DÃ©terminer le niveau d'accÃ¨s global de la propriÃ©tÃ©
     $propertyAccess = if ($getterAccess -eq $setterAccess) {
         $getterAccess
     } elseif ($null -eq $getterAccess) {
@@ -294,7 +294,7 @@ function Get-PropertyAccessLevels {
         "Mixed"
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Property               = $Property
         PropertyAccess         = $propertyAccess
@@ -315,17 +315,17 @@ function Get-PropertyAccessLevels {
 
 <#
 .SYNOPSIS
-    Détecte les accesseurs asymétriques dans un type.
+    DÃ©tecte les accesseurs asymÃ©triques dans un type.
 .DESCRIPTION
-    Cette fonction détecte les propriétés d'un type qui ont des accesseurs avec des niveaux d'accès différents.
+    Cette fonction dÃ©tecte les propriÃ©tÃ©s d'un type qui ont des accesseurs avec des niveaux d'accÃ¨s diffÃ©rents.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $asymmetricProperties = Get-TypeAsymmetricAccessors -Type ([System.String])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les propriétés avec des accesseurs asymétriques.
+    PSObject[] - Un tableau d'objets contenant des informations sur les propriÃ©tÃ©s avec des accesseurs asymÃ©triques.
 #>
 function Get-TypeAsymmetricAccessors {
     [CmdletBinding()]
@@ -337,7 +337,7 @@ function Get-TypeAsymmetricAccessors {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -345,14 +345,14 @@ function Get-TypeAsymmetricAccessors {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
         $accessLevels = Get-PropertyAccessLevels -Property $property -IncludeNonPublic:$IncludeNonPublic
 
-        # Vérifier si les accesseurs sont asymétriques
+        # VÃ©rifier si les accesseurs sont asymÃ©triques
         if ($accessLevels.HasAsymmetricAccessors) {
             $results += $accessLevels
         }
@@ -363,16 +363,16 @@ function Get-TypeAsymmetricAccessors {
 
 <#
 .SYNOPSIS
-    Vérifie les restrictions d'accès sur une propriété.
+    VÃ©rifie les restrictions d'accÃ¨s sur une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction vérifie les restrictions d'accès sur une propriété, comme les attributs de sécurité ou les restrictions d'héritage.
+    Cette fonction vÃ©rifie les restrictions d'accÃ¨s sur une propriÃ©tÃ©, comme les attributs de sÃ©curitÃ© ou les restrictions d'hÃ©ritage.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $restrictions = Test-PropertyAccessRestrictions -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les restrictions d'accès de la propriété.
+    PSObject - Un objet contenant des informations sur les restrictions d'accÃ¨s de la propriÃ©tÃ©.
 #>
 function Test-PropertyAccessRestrictions {
     [CmdletBinding()]
@@ -381,23 +381,23 @@ function Test-PropertyAccessRestrictions {
         [System.Reflection.PropertyInfo]$Property
     )
 
-    # Récupérer les accesseurs
+    # RÃ©cupÃ©rer les accesseurs
     $accessors = Get-PropertyAccessors -Property $Property -IncludeNonPublic
 
-    # Vérifier les restrictions d'accès
+    # VÃ©rifier les restrictions d'accÃ¨s
     $hasSecurityRestrictions = $false
     $hasInheritanceRestrictions = $false
     $hasAccessModifiers = $false
     $restrictions = @()
 
-    # Vérifier les attributs de sécurité
+    # VÃ©rifier les attributs de sÃ©curitÃ©
     $securityAttributes = $Property.GetCustomAttributes([System.Security.Permissions.SecurityAttribute], $true)
     if ($securityAttributes.Length -gt 0) {
         $hasSecurityRestrictions = $true
         $restrictions += "SecurityAttribute"
     }
 
-    # Vérifier les restrictions d'héritage
+    # VÃ©rifier les restrictions d'hÃ©ritage
     if ($accessors.HasGetter -and $accessors.GetMethod.IsFinal) {
         $hasInheritanceRestrictions = $true
         $restrictions += "FinalGetter"
@@ -408,14 +408,14 @@ function Test-PropertyAccessRestrictions {
         $restrictions += "FinalSetter"
     }
 
-    # Vérifier les modificateurs d'accès
+    # VÃ©rifier les modificateurs d'accÃ¨s
     $accessLevels = Get-PropertyAccessLevels -Property $Property -IncludeNonPublic
     if ($accessLevels.HasAsymmetricAccessors) {
         $hasAccessModifiers = $true
         $restrictions += "AsymmetricAccessors"
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Property                   = $Property
         HasRestrictions            = $hasSecurityRestrictions -or $hasInheritanceRestrictions -or $hasAccessModifiers
@@ -430,17 +430,17 @@ function Test-PropertyAccessRestrictions {
 
 <#
 .SYNOPSIS
-    Analyse les propriétés avec accès mixte dans un type.
+    Analyse les propriÃ©tÃ©s avec accÃ¨s mixte dans un type.
 .DESCRIPTION
-    Cette fonction analyse les propriétés d'un type qui ont des niveaux d'accès mixtes (par exemple, getter public et setter privé).
+    Cette fonction analyse les propriÃ©tÃ©s d'un type qui ont des niveaux d'accÃ¨s mixtes (par exemple, getter public et setter privÃ©).
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les accesseurs non publics doivent être inclus dans l'analyse.
+    Indique si les accesseurs non publics doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $mixedAccessProperties = Get-TypeMixedAccessProperties -Type ([System.String])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les propriétés avec accès mixte.
+    PSObject[] - Un tableau d'objets contenant des informations sur les propriÃ©tÃ©s avec accÃ¨s mixte.
 #>
 function Get-TypeMixedAccessProperties {
     [CmdletBinding()]
@@ -452,7 +452,7 @@ function Get-TypeMixedAccessProperties {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -460,14 +460,14 @@ function Get-TypeMixedAccessProperties {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
         $accessLevels = Get-PropertyAccessLevels -Property $property -IncludeNonPublic:$IncludeNonPublic
 
-        # Vérifier si la propriété a un accès mixte
+        # VÃ©rifier si la propriÃ©tÃ© a un accÃ¨s mixte
         if ($accessLevels.IsMixed) {
             $results += $accessLevels
         }
@@ -482,18 +482,18 @@ function Get-TypeMixedAccessProperties {
 
 <#
 .SYNOPSIS
-    Détecte les attributs de sérialisation sur une propriété.
+    DÃ©tecte les attributs de sÃ©rialisation sur une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction détecte les attributs de sérialisation (XmlElement, JsonProperty, etc.) sur une propriété.
+    Cette fonction dÃ©tecte les attributs de sÃ©rialisation (XmlElement, JsonProperty, etc.) sur une propriÃ©tÃ©.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER IncludeInherited
-    Indique si les attributs hérités doivent être inclus dans l'analyse.
+    Indique si les attributs hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $serializationAttributes = Get-PropertySerializationAttributes -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les attributs de sérialisation de la propriété.
+    PSObject - Un objet contenant des informations sur les attributs de sÃ©rialisation de la propriÃ©tÃ©.
 #>
 function Get-PropertySerializationAttributes {
     [CmdletBinding()]
@@ -505,7 +505,7 @@ function Get-PropertySerializationAttributes {
         [switch]$IncludeInherited
     )
 
-    # Définir les types d'attributs de sérialisation courants
+    # DÃ©finir les types d'attributs de sÃ©rialisation courants
     $serializationAttributeTypes = @(
         "System.Xml.Serialization.XmlElementAttribute",
         "System.Xml.Serialization.XmlAttributeAttribute",
@@ -523,10 +523,10 @@ function Get-PropertySerializationAttributes {
         "System.SerializableAttribute"
     )
 
-    # Récupérer tous les attributs de la propriété
+    # RÃ©cupÃ©rer tous les attributs de la propriÃ©tÃ©
     $attributes = $Property.GetCustomAttributes($IncludeInherited)
 
-    # Filtrer les attributs de sérialisation
+    # Filtrer les attributs de sÃ©rialisation
     $serializationAttributes = @()
     foreach ($attribute in $attributes) {
         $attributeType = $attribute.GetType().FullName
@@ -535,7 +535,7 @@ function Get-PropertySerializationAttributes {
         }
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Property                   = $Property
         HasSerializationAttributes = $serializationAttributes.Count -gt 0
@@ -552,18 +552,18 @@ function Get-PropertySerializationAttributes {
 
 <#
 .SYNOPSIS
-    Analyse les attributs de validation sur une propriété.
+    Analyse les attributs de validation sur une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction analyse les attributs de validation (Required, Range, StringLength, etc.) sur une propriété.
+    Cette fonction analyse les attributs de validation (Required, Range, StringLength, etc.) sur une propriÃ©tÃ©.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER IncludeInherited
-    Indique si les attributs hérités doivent être inclus dans l'analyse.
+    Indique si les attributs hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $validationAttributes = Get-PropertyValidationAttributes -Property $propertyInfo
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les attributs de validation de la propriété.
+    PSObject - Un objet contenant des informations sur les attributs de validation de la propriÃ©tÃ©.
 #>
 function Get-PropertyValidationAttributes {
     [CmdletBinding()]
@@ -575,7 +575,7 @@ function Get-PropertyValidationAttributes {
         [switch]$IncludeInherited
     )
 
-    # Définir les types d'attributs de validation courants
+    # DÃ©finir les types d'attributs de validation courants
     $validationAttributeTypes = @(
         "System.ComponentModel.DataAnnotations.RequiredAttribute",
         "System.ComponentModel.DataAnnotations.RangeAttribute",
@@ -591,7 +591,7 @@ function Get-PropertyValidationAttributes {
         "System.ComponentModel.DataAnnotations.ValidationAttribute"
     )
 
-    # Récupérer tous les attributs de la propriété
+    # RÃ©cupÃ©rer tous les attributs de la propriÃ©tÃ©
     $attributes = $Property.GetCustomAttributes($IncludeInherited)
 
     # Filtrer les attributs de validation
@@ -604,7 +604,7 @@ function Get-PropertyValidationAttributes {
         }
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Property                  = $Property
         HasValidationAttributes   = $validationAttributes.Count -gt 0
@@ -620,20 +620,20 @@ function Get-PropertyValidationAttributes {
 
 <#
 .SYNOPSIS
-    Traite les attributs personnalisés sur une propriété.
+    Traite les attributs personnalisÃ©s sur une propriÃ©tÃ©.
 .DESCRIPTION
-    Cette fonction traite les attributs personnalisés sur une propriété et extrait leurs valeurs.
+    Cette fonction traite les attributs personnalisÃ©s sur une propriÃ©tÃ© et extrait leurs valeurs.
 .PARAMETER Property
-    La propriété à analyser.
+    La propriÃ©tÃ© Ã  analyser.
 .PARAMETER AttributeType
-    Le type d'attribut à rechercher. Si non spécifié, tous les attributs personnalisés sont traités.
+    Le type d'attribut Ã  rechercher. Si non spÃ©cifiÃ©, tous les attributs personnalisÃ©s sont traitÃ©s.
 .PARAMETER IncludeInherited
-    Indique si les attributs hérités doivent être inclus dans l'analyse.
+    Indique si les attributs hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $propertyInfo = [System.String].GetProperty("Length")
     $customAttributes = Get-PropertyCustomAttributes -Property $propertyInfo
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les attributs personnalisés de la propriété.
+    PSObject[] - Un tableau d'objets contenant des informations sur les attributs personnalisÃ©s de la propriÃ©tÃ©.
 #>
 function Get-PropertyCustomAttributes {
     [CmdletBinding()]
@@ -648,28 +648,28 @@ function Get-PropertyCustomAttributes {
         [switch]$IncludeInherited
     )
 
-    # Récupérer les attributs
+    # RÃ©cupÃ©rer les attributs
     $attributes = if ($null -ne $AttributeType) {
         $Property.GetCustomAttributes($AttributeType, $IncludeInherited)
     } else {
         $Property.GetCustomAttributes($IncludeInherited)
     }
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
     # Traiter chaque attribut
     foreach ($attribute in $attributes) {
-        # Récupérer les propriétés de l'attribut
+        # RÃ©cupÃ©rer les propriÃ©tÃ©s de l'attribut
         $attributeProperties = $attribute.GetType().GetProperties() | Where-Object { $_.Name -ne "TypeId" }
 
-        # Créer un dictionnaire pour stocker les valeurs des propriétés
+        # CrÃ©er un dictionnaire pour stocker les valeurs des propriÃ©tÃ©s
         $propertyValues = @{}
         foreach ($attributeProperty in $attributeProperties) {
             $propertyValues[$attributeProperty.Name] = $attributeProperty.GetValue($attribute)
         }
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             Property       = $Property
             Attribute      = $attribute
@@ -685,19 +685,19 @@ function Get-PropertyCustomAttributes {
 
 <#
 .SYNOPSIS
-    Catégorise les propriétés d'un type par attributs.
+    CatÃ©gorise les propriÃ©tÃ©s d'un type par attributs.
 .DESCRIPTION
-    Cette fonction catégorise les propriétés d'un type en fonction des attributs qu'elles possèdent.
+    Cette fonction catÃ©gorise les propriÃ©tÃ©s d'un type en fonction des attributs qu'elles possÃ¨dent.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeInherited
-    Indique si les attributs hérités doivent être inclus dans l'analyse.
+    Indique si les attributs hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans l'analyse.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $categorizedProperties = Get-TypePropertiesByAttributes -Type ([System.String])
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés catégorisées par attributs.
+    PSObject - Un objet contenant les propriÃ©tÃ©s catÃ©gorisÃ©es par attributs.
 #>
 function Get-TypePropertiesByAttributes {
     [CmdletBinding()]
@@ -712,7 +712,7 @@ function Get-TypePropertiesByAttributes {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -720,7 +720,7 @@ function Get-TypePropertiesByAttributes {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer des listes pour chaque catégorie
+    # CrÃ©er des listes pour chaque catÃ©gorie
     $serializableProperties = @()
     $validatedProperties = @()
     $requiredProperties = @()
@@ -728,7 +728,7 @@ function Get-TypePropertiesByAttributes {
     $customProperties = @()
     $uncategorizedProperties = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
         $attributes = $property.GetCustomAttributes($IncludeInherited)
 
@@ -741,7 +741,7 @@ function Get-TypePropertiesByAttributes {
         foreach ($attribute in $attributes) {
             $attributeType = $attribute.GetType().FullName
 
-            # Vérifier les attributs de sérialisation
+            # VÃ©rifier les attributs de sÃ©rialisation
             if ($attributeType -like "System.Xml.Serialization.*" -or
                 $attributeType -like "*Json*" -or
                 $attributeType -like "System.Runtime.Serialization.*" -or
@@ -750,40 +750,40 @@ function Get-TypePropertiesByAttributes {
                 $serializableProperties += $property
             }
 
-            # Vérifier les attributs de validation
+            # VÃ©rifier les attributs de validation
             if ($attributeType -like "System.ComponentModel.DataAnnotations.*Attribute" -or
                 ($null -ne $attribute.GetType().BaseType -and $attribute.GetType().BaseType.FullName -eq "System.ComponentModel.DataAnnotations.ValidationAttribute")) {
                 $isValidated = $true
                 $validatedProperties += $property
 
-                # Vérifier si la propriété est requise
+                # VÃ©rifier si la propriÃ©tÃ© est requise
                 if ($attributeType -eq "System.ComponentModel.DataAnnotations.RequiredAttribute") {
                     $isRequired = $true
                     $requiredProperties += $property
                 }
             }
 
-            # Vérifier les attributs d'affichage
+            # VÃ©rifier les attributs d'affichage
             if ($attributeType -like "System.ComponentModel.*DisplayAttribute" -or
                 $attributeType -eq "System.ComponentModel.DisplayNameAttribute") {
                 $hasDisplayAttribute = $true
                 $displayProperties += $property
             }
 
-            # Vérifier les attributs personnalisés (non système)
+            # VÃ©rifier les attributs personnalisÃ©s (non systÃ¨me)
             if (-not $attributeType.StartsWith("System.")) {
                 $hasCustomAttribute = $true
                 $customProperties += $property
             }
         }
 
-        # Si la propriété n'a pas été catégorisée, l'ajouter aux propriétés non catégorisées
+        # Si la propriÃ©tÃ© n'a pas Ã©tÃ© catÃ©gorisÃ©e, l'ajouter aux propriÃ©tÃ©s non catÃ©gorisÃ©es
         if (-not ($isSerialized -or $isValidated -or $hasDisplayAttribute -or $hasCustomAttribute)) {
             $uncategorizedProperties += $property
         }
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type                    = $Type
         AllProperties           = $properties
@@ -800,21 +800,21 @@ function Get-TypePropertiesByAttributes {
 
 #endregion
 
-#region Propriétés auto-implémentées
+#region PropriÃ©tÃ©s auto-implÃ©mentÃ©es
 
 <#
 .SYNOPSIS
-    Détecte les champs de backing pour les propriétés.
+    DÃ©tecte les champs de backing pour les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction détecte les champs de backing (champs privés utilisés pour stocker les valeurs des propriétés) dans un type.
+    Cette fonction dÃ©tecte les champs de backing (champs privÃ©s utilisÃ©s pour stocker les valeurs des propriÃ©tÃ©s) dans un type.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER Property
-    La propriété spécifique à analyser. Si non spécifié, toutes les propriétés du type sont analysées.
+    La propriÃ©tÃ© spÃ©cifique Ã  analyser. Si non spÃ©cifiÃ©, toutes les propriÃ©tÃ©s du type sont analysÃ©es.
 .EXAMPLE
     $backingFields = Get-TypePropertyBackingFields -Type ([System.String])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les champs de backing des propriétés.
+    PSObject[] - Un tableau d'objets contenant des informations sur les champs de backing des propriÃ©tÃ©s.
 #>
 function Get-TypePropertyBackingFields {
     [CmdletBinding()]
@@ -826,38 +826,38 @@ function Get-TypePropertyBackingFields {
         [System.Reflection.PropertyInfo]$Property
     )
 
-    # Récupérer tous les champs privés du type
+    # RÃ©cupÃ©rer tous les champs privÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::NonPublic -bor [System.Reflection.BindingFlags]::Instance
     $fields = $Type.GetFields($bindingFlags)
 
-    # Récupérer les propriétés à analyser
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s Ã  analyser
     $properties = if ($null -ne $Property) {
         @($Property)
     } else {
         $Type.GetProperties([System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance)
     }
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($prop in $properties) {
         # Rechercher les champs de backing potentiels
         $backingFields = @()
 
-        # Modèles de nommage courants pour les champs de backing
+        # ModÃ¨les de nommage courants pour les champs de backing
         $patterns = @(
             "_$($prop.Name.ToLower())", # _propertyName
             "m_$($prop.Name.ToLower())", # m_propertyName
             "$($prop.Name.ToLower())Field", # propertyNameField
             "$($prop.Name.Substring(0, 1).ToLower())$($prop.Name.Substring(1))", # propertyName (camelCase)
-            "<$($prop.Name)>k__BackingField"  # <PropertyName>k__BackingField (auto-implémenté)
+            "<$($prop.Name)>k__BackingField"  # <PropertyName>k__BackingField (auto-implÃ©mentÃ©)
         )
 
         foreach ($field in $fields) {
             $fieldNameLower = $field.Name.ToLower()
 
-            # Vérifier si le champ correspond à l'un des modèles
+            # VÃ©rifier si le champ correspond Ã  l'un des modÃ¨les
             $isBackingField = $false
             foreach ($pattern in $patterns) {
                 if ($fieldNameLower -eq $pattern.ToLower() -or $field.Name -eq "<$($prop.Name)>k__BackingField") {
@@ -866,13 +866,13 @@ function Get-TypePropertyBackingFields {
                 }
             }
 
-            # Vérifier si le type du champ est compatible avec le type de la propriété
+            # VÃ©rifier si le type du champ est compatible avec le type de la propriÃ©tÃ©
             if ($isBackingField -and $field.FieldType -eq $prop.PropertyType) {
                 $backingFields += $field
             }
         }
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         if ($backingFields.Count -gt 0) {
             $result = [PSCustomObject]@{
                 Property          = $prop
@@ -889,15 +889,15 @@ function Get-TypePropertyBackingFields {
 
 <#
 .SYNOPSIS
-    Identifie les propriétés synthétiques dans un type.
+    Identifie les propriÃ©tÃ©s synthÃ©tiques dans un type.
 .DESCRIPTION
-    Cette fonction identifie les propriétés synthétiques (propriétés générées par le compilateur) dans un type.
+    Cette fonction identifie les propriÃ©tÃ©s synthÃ©tiques (propriÃ©tÃ©s gÃ©nÃ©rÃ©es par le compilateur) dans un type.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .EXAMPLE
     $syntheticProperties = Get-TypeSyntheticProperties -Type ([System.String])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les propriétés synthétiques du type.
+    PSObject[] - Un tableau d'objets contenant des informations sur les propriÃ©tÃ©s synthÃ©tiques du type.
 #>
 function Get-TypeSyntheticProperties {
     [CmdletBinding()]
@@ -906,36 +906,36 @@ function Get-TypeSyntheticProperties {
         [type]$Type
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::NonPublic -bor [System.Reflection.BindingFlags]::Instance
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
-        # Vérifier si la propriété est synthétique
+        # VÃ©rifier si la propriÃ©tÃ© est synthÃ©tique
         $isSynthetic = $false
 
-        # Vérifier les attributs de compilation
+        # VÃ©rifier les attributs de compilation
         $compilerGeneratedAttribute = $property.GetCustomAttributes([System.Runtime.CompilerServices.CompilerGeneratedAttribute], $false)
         if ($compilerGeneratedAttribute.Length -gt 0) {
             $isSynthetic = $true
         }
 
-        # Vérifier si la propriété a un champ de backing généré par le compilateur
+        # VÃ©rifier si la propriÃ©tÃ© a un champ de backing gÃ©nÃ©rÃ© par le compilateur
         $backingFields = Get-TypePropertyBackingFields -Type $Type -Property $property
         if ($backingFields.IsAutoImplemented) {
             $isSynthetic = $true
         }
 
-        # Vérifier si le nom de la propriété suit un modèle synthétique
+        # VÃ©rifier si le nom de la propriÃ©tÃ© suit un modÃ¨le synthÃ©tique
         if ($property.Name -match "^<.*>.*$") {
             $isSynthetic = $true
         }
 
-        # Créer l'objet résultat si la propriété est synthétique
+        # CrÃ©er l'objet rÃ©sultat si la propriÃ©tÃ© est synthÃ©tique
         if ($isSynthetic) {
             $result = [PSCustomObject]@{
                 Property                       = $property
@@ -954,15 +954,15 @@ function Get-TypeSyntheticProperties {
 
 <#
 .SYNOPSIS
-    Distingue les propriétés explicites des propriétés auto-implémentées.
+    Distingue les propriÃ©tÃ©s explicites des propriÃ©tÃ©s auto-implÃ©mentÃ©es.
 .DESCRIPTION
-    Cette fonction distingue les propriétés explicites (avec accesseurs personnalisés) des propriétés auto-implémentées dans un type.
+    Cette fonction distingue les propriÃ©tÃ©s explicites (avec accesseurs personnalisÃ©s) des propriÃ©tÃ©s auto-implÃ©mentÃ©es dans un type.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .EXAMPLE
     $propertyTypes = Get-TypePropertyImplementationTypes -Type ([System.String])
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les propriétés explicites et auto-implémentées du type.
+    PSObject - Un objet contenant des informations sur les propriÃ©tÃ©s explicites et auto-implÃ©mentÃ©es du type.
 #>
 function Get-TypePropertyImplementationTypes {
     [CmdletBinding()]
@@ -971,32 +971,32 @@ function Get-TypePropertyImplementationTypes {
         [type]$Type
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Récupérer les champs de backing
+    # RÃ©cupÃ©rer les champs de backing
     $backingFields = Get-TypePropertyBackingFields -Type $Type
 
-    # Créer des listes pour chaque catégorie
+    # CrÃ©er des listes pour chaque catÃ©gorie
     $autoImplementedProperties = @()
     $explicitProperties = @()
     $mixedProperties = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
-        # Récupérer les accesseurs
+        # RÃ©cupÃ©rer les accesseurs
         $accessors = Get-PropertyAccessors -Property $property -IncludeNonPublic
 
-        # Vérifier si la propriété a un champ de backing auto-implémenté
+        # VÃ©rifier si la propriÃ©tÃ© a un champ de backing auto-implÃ©mentÃ©
         $backingField = $backingFields | Where-Object { $_.Property -eq $property }
         $isAutoImplemented = $null -ne $backingField -and $backingField.IsAutoImplemented
 
-        # Vérifier si les accesseurs sont explicites
+        # VÃ©rifier si les accesseurs sont explicites
         $hasExplicitAccessors = $false
 
         if ($accessors.HasGetter) {
-            # Vérifier si le getter contient du code personnalisé
+            # VÃ©rifier si le getter contient du code personnalisÃ©
             $getterIL = $accessors.GetMethod.GetMethodBody()
             if ($null -ne $getterIL -and $getterIL.GetILAsByteArray().Length -gt 10) {
                 $hasExplicitAccessors = $true
@@ -1004,14 +1004,14 @@ function Get-TypePropertyImplementationTypes {
         }
 
         if ($accessors.HasSetter) {
-            # Vérifier si le setter contient du code personnalisé
+            # VÃ©rifier si le setter contient du code personnalisÃ©
             $setterIL = $accessors.SetMethod.GetMethodBody()
             if ($null -ne $setterIL -and $setterIL.GetILAsByteArray().Length -gt 10) {
                 $hasExplicitAccessors = $true
             }
         }
 
-        # Catégoriser la propriété
+        # CatÃ©goriser la propriÃ©tÃ©
         if ($isAutoImplemented -and -not $hasExplicitAccessors) {
             $autoImplementedProperties += $property
         } elseif ($hasExplicitAccessors -and -not $isAutoImplemented) {
@@ -1021,7 +1021,7 @@ function Get-TypePropertyImplementationTypes {
         }
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type                      = $Type
         AllProperties             = $properties
@@ -1035,15 +1035,15 @@ function Get-TypePropertyImplementationTypes {
 
 <#
 .SYNOPSIS
-    Analyse les optimisations du compilateur pour les propriétés.
+    Analyse les optimisations du compilateur pour les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction analyse les optimisations du compilateur pour les propriétés d'un type, comme l'inlining ou les accesseurs synthétiques.
+    Cette fonction analyse les optimisations du compilateur pour les propriÃ©tÃ©s d'un type, comme l'inlining ou les accesseurs synthÃ©tiques.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .EXAMPLE
     $optimizations = Get-TypePropertyCompilerOptimizations -Type ([System.String])
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les optimisations du compilateur pour les propriétés du type.
+    PSObject - Un objet contenant des informations sur les optimisations du compilateur pour les propriÃ©tÃ©s du type.
 #>
 function Get-TypePropertyCompilerOptimizations {
     [CmdletBinding()]
@@ -1052,25 +1052,25 @@ function Get-TypePropertyCompilerOptimizations {
         [type]$Type
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::NonPublic -bor [System.Reflection.BindingFlags]::Instance
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
-        # Récupérer les accesseurs
+        # RÃ©cupÃ©rer les accesseurs
         $accessors = Get-PropertyAccessors -Property $property -IncludeNonPublic
 
-        # Vérifier les optimisations
+        # VÃ©rifier les optimisations
         $isInlined = $false
         $hasAggressiveInlining = $false
         $isReadOnly = $false
         $isConstant = $false
 
-        # Vérifier l'attribut AggressiveInlining
+        # VÃ©rifier l'attribut AggressiveInlining
         if ($accessors.HasGetter) {
             $aggressiveInliningAttribute = $accessors.GetMethod.GetCustomAttributes([System.Runtime.CompilerServices.MethodImplAttribute], $false) |
                 Where-Object { $_.Value -band [System.Runtime.CompilerServices.MethodImplOptions]::AggressiveInlining }
@@ -1079,11 +1079,11 @@ function Get-TypePropertyCompilerOptimizations {
                 $hasAggressiveInlining = $true
             }
 
-            # Vérifier si la propriété est en lecture seule
+            # VÃ©rifier si la propriÃ©tÃ© est en lecture seule
             if (-not $accessors.HasSetter) {
                 $isReadOnly = $true
 
-                # Vérifier si la propriété est une constante (getter simple qui retourne une valeur constante)
+                # VÃ©rifier si la propriÃ©tÃ© est une constante (getter simple qui retourne une valeur constante)
                 $getterIL = $accessors.GetMethod.GetMethodBody()
                 if ($null -ne $getterIL -and $getterIL.GetILAsByteArray().Length -le 5) {
                     $isConstant = $true
@@ -1091,12 +1091,12 @@ function Get-TypePropertyCompilerOptimizations {
             }
         }
 
-        # Vérifier si la propriété est susceptible d'être inlinée
+        # VÃ©rifier si la propriÃ©tÃ© est susceptible d'Ãªtre inlinÃ©e
         if ($hasAggressiveInlining -or $isConstant) {
             $isInlined = $true
         }
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             Property              = $property
             IsInlined             = $isInlined

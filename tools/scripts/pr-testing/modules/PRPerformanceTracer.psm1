@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de traçage des performances pour l'analyse des pull requests.
+    Module de traÃ§age des performances pour l'analyse des pull requests.
 .DESCRIPTION
-    Fournit des fonctionnalités pour tracer et analyser les performances
-    du système d'analyse des pull requests.
+    Fournit des fonctionnalitÃ©s pour tracer et analyser les performances
+    du systÃ¨me d'analyse des pull requests.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-29
 #>
 
-# Classe principale pour le traçage des performances
+# Classe principale pour le traÃ§age des performances
 class PRPerformanceTracer {
-    # Propriétés
+    # PropriÃ©tÃ©s
     [string[]]$EnabledTracers
     [string]$DetailLevel
     [string]$OutputPath
@@ -37,7 +37,7 @@ class PRPerformanceTracer {
         $this.ResourceSnapshots = [System.Collections.Generic.List[object]]::new()
     }
 
-    # Démarrer le traçage
+    # DÃ©marrer le traÃ§age
     [void] Start() {
         $this.StartTime = Get-Date
         $this.MainStopwatch.Start()
@@ -45,7 +45,7 @@ class PRPerformanceTracer {
         $this.TakeResourceSnapshot("Start")
     }
 
-    # Arrêter le traçage
+    # ArrÃªter le traÃ§age
     [void] Stop() {
         $this.EndTime = Get-Date
         $this.MainStopwatch.Stop()
@@ -53,10 +53,10 @@ class PRPerformanceTracer {
         $this.TakeResourceSnapshot("End")
     }
 
-    # Démarrer une opération
+    # DÃ©marrer une opÃ©ration
     [void] StartOperation([string]$name, [string]$description) {
         if (-not $this.IsRunning) {
-            Write-Warning "Le traceur n'est pas démarré. L'opération ne sera pas tracée."
+            Write-Warning "Le traceur n'est pas dÃ©marrÃ©. L'opÃ©ration ne sera pas tracÃ©e."
             return
         }
 
@@ -72,22 +72,22 @@ class PRPerformanceTracer {
             ResourceUsage = $null
         }
 
-        # Prendre un instantané des ressources
+        # Prendre un instantanÃ© des ressources
         $operation.ResourceUsage = $this.CaptureResourceUsage()
 
-        # Ajouter à la liste des opérations actives
+        # Ajouter Ã  la liste des opÃ©rations actives
         $this.ActiveOperations[$name] = $operation
     }
 
-    # Arrêter une opération
+    # ArrÃªter une opÃ©ration
     [void] StopOperation([string]$name) {
         if (-not $this.IsRunning) {
-            Write-Warning "Le traceur n'est pas démarré. L'opération ne sera pas arrêtée."
+            Write-Warning "Le traceur n'est pas dÃ©marrÃ©. L'opÃ©ration ne sera pas arrÃªtÃ©e."
             return
         }
 
         if (-not $this.ActiveOperations.ContainsKey($name)) {
-            Write-Warning "Aucune opération active avec le nom '$name'."
+            Write-Warning "Aucune opÃ©ration active avec le nom '$name'."
             return
         }
 
@@ -95,7 +95,7 @@ class PRPerformanceTracer {
         $operation.EndTime = Get-Date
         $operation.Duration = $operation.EndTime - $operation.StartTime
 
-        # Mettre à jour l'utilisation des ressources
+        # Mettre Ã  jour l'utilisation des ressources
         $endResourceUsage = $this.CaptureResourceUsage()
         $operation.ResourceUsage = [PSCustomObject]@{
             Start = $operation.ResourceUsage
@@ -108,16 +108,16 @@ class PRPerformanceTracer {
             }
         }
 
-        # Ajouter à la liste des opérations terminées
+        # Ajouter Ã  la liste des opÃ©rations terminÃ©es
         $this.Operations.Add($operation)
 
-        # Supprimer de la liste des opérations actives
+        # Supprimer de la liste des opÃ©rations actives
         $this.ActiveOperations.Remove($name)
     }
 
     # Capturer l'utilisation des ressources
     [object] CaptureResourceUsage() {
-        # Obtenir le processus actuel et ses métriques
+        # Obtenir le processus actuel et ses mÃ©triques
         $processObj = Get-Process -Id ([System.Diagnostics.Process]::GetCurrentProcess().Id)
         $cpuTime = $processObj.CPU
         $workingSetSize = $processObj.WorkingSet64
@@ -125,7 +125,7 @@ class PRPerformanceTracer {
         $handleCount = $processObj.HandleCount
         $timestamp = Get-Date
 
-        # Créer et retourner l'objet d'utilisation des ressources
+        # CrÃ©er et retourner l'objet d'utilisation des ressources
         return [PSCustomObject]@{
             Timestamp     = $timestamp
             CPU           = $cpuTime
@@ -135,14 +135,14 @@ class PRPerformanceTracer {
         }
     }
 
-    # Prendre un instantané des ressources
+    # Prendre un instantanÃ© des ressources
     [void] TakeResourceSnapshot([string]$label) {
         $snapshot = $this.CaptureResourceUsage()
         $snapshot | Add-Member -MemberType NoteProperty -Name "Label" -Value $label
         $this.ResourceSnapshots.Add($snapshot)
     }
 
-    # Obtenir les données de traçage
+    # Obtenir les donnÃ©es de traÃ§age
     [object] GetTracingData() {
         return [PSCustomObject]@{
             StartTime         = $this.StartTime
@@ -156,7 +156,7 @@ class PRPerformanceTracer {
     }
 }
 
-# Fonction pour créer un nouveau traceur de performance
+# Fonction pour crÃ©er un nouveau traceur de performance
 function New-PRPerformanceTracer {
     [CmdletBinding()]
     [OutputType([PRPerformanceTracer])]
@@ -176,7 +176,7 @@ function New-PRPerformanceTracer {
         $tracer = [PRPerformanceTracer]::new($TracerTypes, $DetailLevel, $OutputPath)
         return $tracer
     } catch {
-        Write-Error "Erreur lors de la création du traceur de performance: $_"
+        Write-Error "Erreur lors de la crÃ©ation du traceur de performance: $_"
         return $null
     }
 }

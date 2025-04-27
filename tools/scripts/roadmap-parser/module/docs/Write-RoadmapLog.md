@@ -1,8 +1,8 @@
-# Write-RoadmapLog
+﻿# Write-RoadmapLog
 
 ## SYNOPSIS
 
-Écrit un message de journal pour le module RoadmapParser.
+Ã‰crit un message de journal pour le module RoadmapParser.
 
 ## SYNTAX
 
@@ -12,15 +12,15 @@
 ```n
 ## DESCRIPTION
 
-La fonction Write-RoadmapLog écrit un message de journal pour le module RoadmapParser.
-Elle prend en charge différents niveaux de journalisation et peut écrire dans un fichier,
+La fonction Write-RoadmapLog Ã©crit un message de journal pour le module RoadmapParser.
+Elle prend en charge diffÃ©rents niveaux de journalisation et peut Ã©crire dans un fichier,
 dans la console, ou les deux.
 
 ## PARAMETERS
 
 ### -Message
 
-Le message à journaliser.
+Le message Ã  journaliser.
 
 `yaml
 Type: String
@@ -37,7 +37,7 @@ Accept wildcard characters: false
 ### -Level
 
 Le niveau de journalisation. Valeurs possibles : Debug, Info, Warning, Error, Fatal.
-Par défaut : Info.
+Par dÃ©faut : Info.
 
 `yaml
 Type: String
@@ -53,8 +53,8 @@ Accept wildcard characters: false
 
 ### -Category
 
-La catégorie du message. Permet de regrouper les messages par catégorie.
-Par défaut : General.
+La catÃ©gorie du message. Permet de regrouper les messages par catÃ©gorie.
+Par dÃ©faut : General.
 
 `yaml
 Type: String
@@ -70,7 +70,7 @@ Accept wildcard characters: false
 
 ### -Exception
 
-L'exception associée au message, le cas échéant.
+L'exception associÃ©e au message, le cas Ã©chÃ©ant.
 
 `yaml
 Type: Exception
@@ -86,7 +86,7 @@ Accept wildcard characters: false
 
 ### -FilePath
 
-Le chemin du fichier de journal. Si non spécifié, le journal sera écrit uniquement dans la console.
+Le chemin du fichier de journal. Si non spÃ©cifiÃ©, le journal sera Ã©crit uniquement dans la console.
 
 `yaml
 Type: String
@@ -102,7 +102,7 @@ Accept wildcard characters: false
 
 ### -NoConsole
 
-Indique si le message ne doit pas être affiché dans la console.
+Indique si le message ne doit pas Ãªtre affichÃ© dans la console.
 
 `yaml
 Type: SwitchParameter
@@ -118,7 +118,7 @@ Accept wildcard characters: false
 
 ### -AdditionalInfo
 
-Informations supplémentaires à inclure dans le message de journal.
+Informations supplÃ©mentaires Ã  inclure dans le message de journal.
 
 `yaml
 Type: Hashtable
@@ -144,7 +144,7 @@ Accept wildcard characters: false
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-15
+Date de crÃ©ation: 2023-07-15
 
 ## EXAMPLES
 
@@ -152,7 +152,7 @@ Date de création: 2023-07-15
 
 `powershell
 Write-RoadmapLog -Message "Traitement du fichier roadmap.md" -Level Info -Category "Parsing"
-Écrit un message d'information dans la console.
+Ã‰crit un message d'information dans la console.
 `
 
     
@@ -161,7 +161,7 @@ Write-RoadmapLog -Message "Traitement du fichier roadmap.md" -Level Info -Catego
 
 `powershell
 Write-RoadmapLog -Message "Erreur lors de l'ouverture du fichier" -Level Error -Category "IO" -Exception $_ -FilePath ".\logs\roadmap-parser.log"
-Écrit un message d'erreur dans la console et dans un fichier, avec les détails de l'exception.
+Ã‰crit un message d'erreur dans la console et dans un fichier, avec les dÃ©tails de l'exception.
 `
 
     

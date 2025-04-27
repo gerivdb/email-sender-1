@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Compare les résultats de performance des modules de rapports PR.
+    Compare les rÃ©sultats de performance des modules de rapports PR.
 .DESCRIPTION
-    Ce script compare les résultats de performance entre différentes versions
-    des modules de rapports PR et génère des visualisations pour faciliter l'analyse.
+    Ce script compare les rÃ©sultats de performance entre diffÃ©rentes versions
+    des modules de rapports PR et gÃ©nÃ¨re des visualisations pour faciliter l'analyse.
 .PARAMETER ResultsPath
-    Tableau de chemins vers les fichiers de résultats à comparer.
+    Tableau de chemins vers les fichiers de rÃ©sultats Ã  comparer.
 .PARAMETER Labels
-    Tableau d'étiquettes pour identifier chaque ensemble de résultats. Doit avoir la même longueur que ResultsPath.
+    Tableau d'Ã©tiquettes pour identifier chaque ensemble de rÃ©sultats. Doit avoir la mÃªme longueur que ResultsPath.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport de comparaison. Par défaut: ".\performance_comparison.html".
+    Chemin oÃ¹ enregistrer le rapport de comparaison. Par dÃ©faut: ".\performance_comparison.html".
 .PARAMETER IncludeRawData
-    Inclut les données brutes dans le rapport.
+    Inclut les donnÃ©es brutes dans le rapport.
 .EXAMPLE
     .\Compare-PRPerformanceResults.ps1 -ResultsPath @(".\baseline_results.json", ".\current_results.json") -Labels @("Baseline", "Current")
 .NOTES
@@ -36,19 +36,19 @@ param (
     [switch]$IncludeRawData
 )
 
-# Vérifier que les paramètres sont valides
+# VÃ©rifier que les paramÃ¨tres sont valides
 if ($ResultsPath.Count -ne $Labels.Count) {
-    throw "Le nombre de chemins de résultats ($($ResultsPath.Count)) doit être égal au nombre d'étiquettes ($($Labels.Count))."
+    throw "Le nombre de chemins de rÃ©sultats ($($ResultsPath.Count)) doit Ãªtre Ã©gal au nombre d'Ã©tiquettes ($($Labels.Count))."
 }
 
-# Vérifier que les fichiers de résultats existent
+# VÃ©rifier que les fichiers de rÃ©sultats existent
 foreach ($path in $ResultsPath) {
     if (-not (Test-Path -Path $path)) {
-        throw "Le fichier de résultats n'existe pas: $path"
+        throw "Le fichier de rÃ©sultats n'existe pas: $path"
     }
 }
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modules = @(
     "PRReportTemplates",
@@ -60,14 +60,14 @@ foreach ($module in $modules) {
     $modulePath = Join-Path -Path $modulesPath -ChildPath "$module.psm1"
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
-        Write-Verbose "Module importé: $module"
+        Write-Verbose "Module importÃ©: $module"
     }
     else {
-        Write-Error "Module non trouvé: $modulePath"
+        Write-Error "Module non trouvÃ©: $modulePath"
     }
 }
 
-# Fonction pour charger les résultats
+# Fonction pour charger les rÃ©sultats
 function Import-Results {
     param (
         [string[]]$Paths,
@@ -95,7 +95,7 @@ function Import-Results {
     return $results
 }
 
-# Fonction pour comparer les résultats
+# Fonction pour comparer les rÃ©sultats
 function Compare-Results {
     param (
         [object[]]$Results
@@ -103,7 +103,7 @@ function Compare-Results {
     
     $comparisons = @()
     
-    # Créer un dictionnaire pour regrouper les résultats par fonction
+    # CrÃ©er un dictionnaire pour regrouper les rÃ©sultats par fonction
     $functionResults = @{}
     
     foreach ($result in $Results) {
@@ -126,11 +126,11 @@ function Compare-Results {
         }
     }
     
-    # Comparer les résultats pour chaque fonction
+    # Comparer les rÃ©sultats pour chaque fonction
     foreach ($key in $functionResults.Keys) {
         $functionData = $functionResults[$key]
         
-        # Vérifier que nous avons des résultats pour toutes les versions
+        # VÃ©rifier que nous avons des rÃ©sultats pour toutes les versions
         if ($functionData.Count -eq $Results.Count) {
             $comparison = [PSCustomObject]@{
                 ModuleName   = $functionData[0].ModuleName
@@ -139,7 +139,7 @@ function Compare-Results {
                 Differences  = @()
             }
             
-            # Calculer les différences entre les versions
+            # Calculer les diffÃ©rences entre les versions
             for ($i = 1; $i -lt $functionData.Count; $i++) {
                 $baseline = $functionData[0]
                 $current = $functionData[$i]
@@ -164,7 +164,7 @@ function Compare-Results {
     return $comparisons
 }
 
-# Fonction pour générer des données de visualisation
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de visualisation
 function New-VisualizationData {
     param (
         [object[]]$Comparisons
@@ -172,7 +172,7 @@ function New-VisualizationData {
     
     $visualizations = @{}
     
-    # Données pour le graphique à barres des temps moyens
+    # DonnÃ©es pour le graphique Ã  barres des temps moyens
     $barChartData = @()
     foreach ($comparison in $Comparisons) {
         foreach ($result in $comparison.Results) {
@@ -184,7 +184,7 @@ function New-VisualizationData {
         }
     }
     
-    # Données pour le graphique à barres des différences
+    # DonnÃ©es pour le graphique Ã  barres des diffÃ©rences
     $diffChartData = @()
     foreach ($comparison in $Comparisons) {
         foreach ($diff in $comparison.Differences) {
@@ -196,7 +196,7 @@ function New-VisualizationData {
         }
     }
     
-    # Données pour le graphique en ligne des temps min/max/avg
+    # DonnÃ©es pour le graphique en ligne des temps min/max/avg
     $lineChartData = @()
     foreach ($comparison in $Comparisons) {
         $lineData = @()
@@ -222,7 +222,7 @@ function New-VisualizationData {
     return $visualizations
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ComparisonReport {
     param (
         [object[]]$Results,
@@ -232,7 +232,7 @@ function New-ComparisonReport {
         [bool]$IncludeRawData
     )
     
-    # Créer un template HTML pour le rapport
+    # CrÃ©er un template HTML pour le rapport
     $htmlTemplate = @"
 <!DOCTYPE html>
 <html>
@@ -297,36 +297,36 @@ function New-ComparisonReport {
     <h1>Rapport de comparaison de performance</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Date de la comparaison: {{Timestamp}}</p>
-        <p>Versions comparées:</p>
+        <p>Versions comparÃ©es:</p>
         <ul>
             {{#each Results}}
             <li><strong>{{this.Label}}</strong>: {{this.Timestamp}} ({{this.DataSize}})</li>
             {{/each}}
         </ul>
-        <p>Fonctions comparées: {{Comparisons.length}}</p>
-        <p>Améliorations: <span class="improvement">{{ImprovementCount}}</span></p>
-        <p>Régressions: <span class="regression">{{RegressionCount}}</span></p>
+        <p>Fonctions comparÃ©es: {{Comparisons.length}}</p>
+        <p>AmÃ©liorations: <span class="improvement">{{ImprovementCount}}</span></p>
+        <p>RÃ©gressions: <span class="regression">{{RegressionCount}}</span></p>
     </div>
     
     <h2>Visualisations</h2>
     
     <div class="chart-container">
-        <div class="chart-title">Temps d'exécution moyens par fonction</div>
+        <div class="chart-title">Temps d'exÃ©cution moyens par fonction</div>
         <div id="avgTimeChart" class="pr-bar-chart">
             {{AvgTimeChart}}
         </div>
     </div>
     
     <div class="chart-container">
-        <div class="chart-title">Différences de performance (%)</div>
+        <div class="chart-title">DiffÃ©rences de performance (%)</div>
         <div id="diffChart" class="pr-bar-chart">
             {{DiffChart}}
         </div>
     </div>
     
-    <h2>Comparaisons détaillées</h2>
+    <h2>Comparaisons dÃ©taillÃ©es</h2>
     
     <table>
         <tr>
@@ -335,7 +335,7 @@ function New-ComparisonReport {
             {{#each Results}}
             <th>{{this.Label}} (ms)</th>
             {{/each}}
-            <th>Différence</th>
+            <th>DiffÃ©rence</th>
         </tr>
         {{#each Comparisons}}
         <tr>
@@ -346,9 +346,9 @@ function New-ComparisonReport {
             {{/each}}
             <td class="{{#if this.Differences.[0].Improvement}}improvement{{else}}regression{{/if}}">
                 {{#if this.Differences.[0].Improvement}}
-                {{this.Differences.[0].DiffPercent}}% (amélioration)
+                {{this.Differences.[0].DiffPercent}}% (amÃ©lioration)
                 {{else}}
-                +{{this.Differences.[0].DiffPercent}}% (régression)
+                +{{this.Differences.[0].DiffPercent}}% (rÃ©gression)
                 {{/if}}
             </td>
         </tr>
@@ -356,7 +356,7 @@ function New-ComparisonReport {
     </table>
     
     {{#if IncludeRawData}}
-    <h2>Données brutes</h2>
+    <h2>DonnÃ©es brutes</h2>
     
     {{#each Comparisons}}
     <h3>{{this.ModuleName}}.{{this.FunctionName}}</h3>
@@ -367,7 +367,7 @@ function New-ComparisonReport {
             <th>Moyenne (ms)</th>
             <th>Min (ms)</th>
             <th>Max (ms)</th>
-            <th>Itérations</th>
+            <th>ItÃ©rations</th>
         </tr>
         {{#each this.Results}}
         <tr>
@@ -385,22 +385,22 @@ function New-ComparisonReport {
 </html>
 "@
     
-    # Créer un répertoire temporaire pour le template
+    # CrÃ©er un rÃ©pertoire temporaire pour le template
     $tempDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceComparison_$(Get-Random)"
     New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
     
-    # Créer le fichier de template
+    # CrÃ©er le fichier de template
     $templatePath = Join-Path -Path $tempDir -ChildPath "performance_comparison.html"
     Set-Content -Path $templatePath -Value $htmlTemplate -Encoding UTF8
     
     # Enregistrer le template
     Register-PRReportTemplate -Name "PerformanceComparison" -Format "HTML" -TemplatePath $templatePath -Force | Out-Null
     
-    # Générer les graphiques
-    $avgTimeChart = New-PRBarChart -Data $VisualizationData.BarChartData -Title "Temps d'exécution moyens" -XAxisLabel "Fonction" -YAxisLabel "Temps (ms)"
-    $diffChart = New-PRBarChart -Data $VisualizationData.DiffChartData -Title "Différences de performance" -XAxisLabel "Fonction" -YAxisLabel "Différence (%)"
+    # GÃ©nÃ©rer les graphiques
+    $avgTimeChart = New-PRBarChart -Data $VisualizationData.BarChartData -Title "Temps d'exÃ©cution moyens" -XAxisLabel "Fonction" -YAxisLabel "Temps (ms)"
+    $diffChart = New-PRBarChart -Data $VisualizationData.DiffChartData -Title "DiffÃ©rences de performance" -XAxisLabel "Fonction" -YAxisLabel "DiffÃ©rence (%)"
     
-    # Compter les améliorations et les régressions
+    # Compter les amÃ©liorations et les rÃ©gressions
     $improvementCount = 0
     $regressionCount = 0
     
@@ -415,7 +415,7 @@ function New-ComparisonReport {
         }
     }
     
-    # Préparer les données pour le rapport
+    # PrÃ©parer les donnÃ©es pour le rapport
     $reportData = @{
         Timestamp       = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         Results         = $Results
@@ -427,7 +427,7 @@ function New-ComparisonReport {
         IncludeRawData  = $IncludeRawData
     }
     
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     New-PRReport -TemplateName "PerformanceComparison" -Format "HTML" -Data $reportData -OutputPath $OutputPath | Out-Null
     
     # Nettoyer les fichiers temporaires
@@ -436,26 +436,26 @@ function New-ComparisonReport {
     return $OutputPath
 }
 
-# Charger les résultats
+# Charger les rÃ©sultats
 $results = Import-Results -Paths $ResultsPath -Labels $Labels
 
-# Comparer les résultats
+# Comparer les rÃ©sultats
 $comparisons = Compare-Results -Results $results
 
-# Générer des données de visualisation
+# GÃ©nÃ©rer des donnÃ©es de visualisation
 $visualizationData = New-VisualizationData -Comparisons $comparisons
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $reportPath = New-ComparisonReport -Results $results -Comparisons $comparisons -VisualizationData $visualizationData -OutputPath $OutputPath -IncludeRawData $IncludeRawData
 
-# Afficher un résumé
-Write-Host "Rapport de comparaison généré: $reportPath"
-Write-Host "Versions comparées:"
+# Afficher un rÃ©sumÃ©
+Write-Host "Rapport de comparaison gÃ©nÃ©rÃ©: $reportPath"
+Write-Host "Versions comparÃ©es:"
 foreach ($result in $results) {
     Write-Host "  $($result.Label): $($result.Timestamp) ($($result.DataSize))"
 }
 
-# Compter les améliorations et les régressions
+# Compter les amÃ©liorations et les rÃ©gressions
 $improvementCount = 0
 $regressionCount = 0
 
@@ -470,9 +470,9 @@ foreach ($comparison in $comparisons) {
     }
 }
 
-Write-Host "Fonctions comparées: $($comparisons.Count)"
-Write-Host "Améliorations: $improvementCount"
-Write-Host "Régressions: $regressionCount"
+Write-Host "Fonctions comparÃ©es: $($comparisons.Count)"
+Write-Host "AmÃ©liorations: $improvementCount"
+Write-Host "RÃ©gressions: $regressionCount"
 
-# Ouvrir le rapport dans le navigateur par défaut
+# Ouvrir le rapport dans le navigateur par dÃ©faut
 Start-Process $reportPath

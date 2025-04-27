@@ -1,10 +1,10 @@
-# Sauvegardes de maintenance
+﻿# Sauvegardes de maintenance
 
-Ce répertoire contient les sauvegardes créées avant les opérations de maintenance.
+Ce rÃ©pertoire contient les sauvegardes crÃ©Ã©es avant les opÃ©rations de maintenance.
 
 ## Nomenclature
 
-Les sauvegardes suivent généralement le format suivant :
+Les sauvegardes suivent gÃ©nÃ©ralement le format suivant :
 - `backup_<type>_<date>_<heure>.zip`
 
 Exemple : `backup_cleanup_20230815_123045.zip`

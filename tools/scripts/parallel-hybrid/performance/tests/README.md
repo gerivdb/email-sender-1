@@ -1,40 +1,40 @@
-# Tests de performance pour l'architecture hybride PowerShell-Python
+﻿# Tests de performance pour l'architecture hybride PowerShell-Python
 
 ## Test du script AutoHotkey - Test final
 
-Ce répertoire contient les tests unitaires et de performance pour l'architecture hybride PowerShell-Python. Ces tests permettent de vérifier le bon fonctionnement des scripts et de mesurer leurs performances.
+Ce rÃ©pertoire contient les tests unitaires et de performance pour l'architecture hybride PowerShell-Python. Ces tests permettent de vÃ©rifier le bon fonctionnement des scripts et de mesurer leurs performances.
 
 ## Structure des tests
 
-Les tests sont organisés en plusieurs fichiers :
+Les tests sont organisÃ©s en plusieurs fichiers :
 
-- **Functions.Tests.ps1** : Tests unitaires pour les fonctions communes utilisées dans les scripts de performance.
-- **HtmlReporting.Tests.ps1** : Tests pour les fonctions de génération de rapports HTML.
-- **TestDataManagement.Tests.ps1** : Tests pour la gestion des données de test.
-- **Integration.Tests.ps1** : Tests d'intégration pour vérifier l'interaction entre les différentes fonctions.
-- **Performance.Tests.ps1** : Tests de performance pour mesurer les améliorations apportées.
-- **ParallelScenarios.Tests.ps1** : Tests pour les scénarios de test parallèles.
-- **PerformanceBenchmark.Tests.ps1** : Tests de benchmark pour comparer les performances de différentes implémentations.
-- **Optimize-ParallelBatchSize.Tests.ps1** : Tests pour l'optimisation de la taille des lots en traitement parallèle.
+- **Functions.Tests.ps1** : Tests unitaires pour les fonctions communes utilisÃ©es dans les scripts de performance.
+- **HtmlReporting.Tests.ps1** : Tests pour les fonctions de gÃ©nÃ©ration de rapports HTML.
+- **TestDataManagement.Tests.ps1** : Tests pour la gestion des donnÃ©es de test.
+- **Integration.Tests.ps1** : Tests d'intÃ©gration pour vÃ©rifier l'interaction entre les diffÃ©rentes fonctions.
+- **Performance.Tests.ps1** : Tests de performance pour mesurer les amÃ©liorations apportÃ©es.
+- **ParallelScenarios.Tests.ps1** : Tests pour les scÃ©narios de test parallÃ¨les.
+- **PerformanceBenchmark.Tests.ps1** : Tests de benchmark pour comparer les performances de diffÃ©rentes implÃ©mentations.
+- **Optimize-ParallelBatchSize.Tests.ps1** : Tests pour l'optimisation de la taille des lots en traitement parallÃ¨le.
 
-## Exécution des tests
+## ExÃ©cution des tests
 
-### Exécution de tous les tests
+### ExÃ©cution de tous les tests
 
-Pour exécuter tous les tests, utilisez le script `Run-AllTests.ps1` :
+Pour exÃ©cuter tous les tests, utilisez le script `Run-AllTests.ps1` :
 
 ```powershell
 .\Run-AllTests.ps1
 ```
 
-Par défaut, ce script exécute tous les tests et génère un rapport HTML des résultats.
+Par dÃ©faut, ce script exÃ©cute tous les tests et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 
-### Options d'exécution
+### Options d'exÃ©cution
 
-Le script `Run-AllTests.ps1` accepte les paramètres suivants :
+Le script `Run-AllTests.ps1` accepte les paramÃ¨tres suivants :
 
-- **GenerateReport** : Indique si un rapport HTML des résultats doit être généré (par défaut : $true).
-- **OutputPath** : Chemin où les résultats des tests seront enregistrés (par défaut : "$PSScriptRoot\TestResults").
+- **GenerateReport** : Indique si un rapport HTML des rÃ©sultats doit Ãªtre gÃ©nÃ©rÃ© (par dÃ©faut : $true).
+- **OutputPath** : Chemin oÃ¹ les rÃ©sultats des tests seront enregistrÃ©s (par dÃ©faut : "$PSScriptRoot\TestResults").
 
 Exemple :
 
@@ -42,44 +42,44 @@ Exemple :
 .\Run-AllTests.ps1 -GenerateReport $true -OutputPath "C:\TestResults"
 ```
 
-### Exécution dans un environnement CI/CD
+### ExÃ©cution dans un environnement CI/CD
 
-Pour exécuter les tests dans un environnement CI/CD, utilisez le script `Run-CITests.ps1` :
+Pour exÃ©cuter les tests dans un environnement CI/CD, utilisez le script `Run-CITests.ps1` :
 
 ```powershell
 .\Run-CITests.ps1 -ThresholdPercent 70
 ```
 
-Ce script exécute tous les tests, génère des rapports de couverture et de résultats au format compatible avec les systèmes CI/CD, et vérifie que la couverture de code est supérieure au seuil spécifié.
+Ce script exÃ©cute tous les tests, gÃ©nÃ¨re des rapports de couverture et de rÃ©sultats au format compatible avec les systÃ¨mes CI/CD, et vÃ©rifie que la couverture de code est supÃ©rieure au seuil spÃ©cifiÃ©.
 
 ## Types de tests
 
 ### Tests unitaires
 
-Les tests unitaires vérifient le bon fonctionnement des fonctions individuelles. Ils sont organisés en contextes (Context) et en tests (It).
+Les tests unitaires vÃ©rifient le bon fonctionnement des fonctions individuelles. Ils sont organisÃ©s en contextes (Context) et en tests (It).
 
 Exemple de test unitaire :
 
 ```powershell
 Describe "Fonctions communes des scripts de performance" {
     Context "New-DirectoryIfNotExists" {
-        It "Crée un répertoire s'il n'existe pas" {
+        It "CrÃ©e un rÃ©pertoire s'il n'existe pas" {
             # Test code here
         }
     }
 }
 ```
 
-### Tests d'intégration
+### Tests d'intÃ©gration
 
-Les tests d'intégration vérifient l'interaction entre les différentes fonctions et le flux de travail complet.
+Les tests d'intÃ©gration vÃ©rifient l'interaction entre les diffÃ©rentes fonctions et le flux de travail complet.
 
-Exemple de test d'intégration :
+Exemple de test d'intÃ©gration :
 
 ```powershell
-Describe "Tests d'intégration des scripts de performance" {
+Describe "Tests d'intÃ©gration des scripts de performance" {
     Context "Flux de travail complet" {
-        It "Exécute correctement le flux de travail complet" {
+        It "ExÃ©cute correctement le flux de travail complet" {
             # Test code here
         }
     }
@@ -88,7 +88,7 @@ Describe "Tests d'intégration des scripts de performance" {
 
 ### Tests de performance
 
-Les tests de performance mesurent les performances des fonctions et comparent les différentes implémentations.
+Les tests de performance mesurent les performances des fonctions et comparent les diffÃ©rentes implÃ©mentations.
 
 Exemple de test de performance :
 
@@ -104,14 +104,14 @@ Describe "Tests de performance" {
 
 ### Tests de benchmark
 
-Les tests de benchmark comparent les performances de différentes implémentations et mesurent la scalabilité des fonctions avec différentes tailles de données.
+Les tests de benchmark comparent les performances de diffÃ©rentes implÃ©mentations et mesurent la scalabilitÃ© des fonctions avec diffÃ©rentes tailles de donnÃ©es.
 
 Exemple de test de benchmark :
 
 ```powershell
 Describe "Tests de benchmark de performance" {
-    Context "Comparaison des performances entre différentes implémentations" {
-        It "Compare les performances du tri avec différentes approches" {
+    Context "Comparaison des performances entre diffÃ©rentes implÃ©mentations" {
+        It "Compare les performances du tri avec diffÃ©rentes approches" {
             # Test code here
         }
     }
@@ -120,7 +120,7 @@ Describe "Tests de benchmark de performance" {
 
 ## Couverture de code
 
-Les tests sont configurés pour mesurer la couverture de code. Le rapport de couverture est généré au format JaCoCo et enregistré dans le répertoire des résultats des tests.
+Les tests sont configurÃ©s pour mesurer la couverture de code. Le rapport de couverture est gÃ©nÃ©rÃ© au format JaCoCo et enregistrÃ© dans le rÃ©pertoire des rÃ©sultats des tests.
 
 Pour visualiser la couverture de code, ouvrez le fichier `coverage.xml` dans un outil compatible avec le format JaCoCo, comme ReportGenerator ou un plugin d'IDE.
 
@@ -128,29 +128,29 @@ Pour visualiser la couverture de code, ouvrez le fichier `coverage.xml` dans un 
 
 ### Structure d'un test
 
-Un test Pester est structuré comme suit :
+Un test Pester est structurÃ© comme suit :
 
-1. **Describe** : Décrit un ensemble de tests liés à une fonctionnalité ou un composant.
-2. **Context** : Décrit un contexte ou un scénario spécifique dans lequel les tests sont exécutés.
-3. **BeforeAll** : Code exécuté une fois avant tous les tests dans le contexte.
-4. **It** : Un test individuel qui vérifie un comportement spécifique.
-5. **Should** : Une assertion qui vérifie que le résultat est conforme aux attentes.
+1. **Describe** : DÃ©crit un ensemble de tests liÃ©s Ã  une fonctionnalitÃ© ou un composant.
+2. **Context** : DÃ©crit un contexte ou un scÃ©nario spÃ©cifique dans lequel les tests sont exÃ©cutÃ©s.
+3. **BeforeAll** : Code exÃ©cutÃ© une fois avant tous les tests dans le contexte.
+4. **It** : Un test individuel qui vÃ©rifie un comportement spÃ©cifique.
+5. **Should** : Une assertion qui vÃ©rifie que le rÃ©sultat est conforme aux attentes.
 
 ### Exemple de test
 
 ```powershell
-Describe "Ma fonctionnalité" {
-    Context "Dans un contexte spécifique" {
+Describe "Ma fonctionnalitÃ©" {
+    Context "Dans un contexte spÃ©cifique" {
         BeforeAll {
             # Code d'initialisation
             $testData = @(1, 2, 3)
         }
 
-        It "Fait quelque chose de spécifique" {
-            # Appeler la fonction à tester
+        It "Fait quelque chose de spÃ©cifique" {
+            # Appeler la fonction Ã  tester
             $result = Do-Something -Data $testData
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $result | Should -Be 6
         }
     }
@@ -159,40 +159,40 @@ Describe "Ma fonctionnalité" {
 
 ### Bonnes pratiques pour les tests
 
-1. **Nommage explicite** : Donnez des noms clairs et descriptifs à vos tests pour faciliter la compréhension de ce qu'ils testent.
-2. **Tests isolés** : Chaque test doit être indépendant des autres tests.
+1. **Nommage explicite** : Donnez des noms clairs et descriptifs Ã  vos tests pour faciliter la comprÃ©hension de ce qu'ils testent.
+2. **Tests isolÃ©s** : Chaque test doit Ãªtre indÃ©pendant des autres tests.
 3. **Initialisation et nettoyage** : Utilisez BeforeAll, AfterAll, BeforeEach et AfterEach pour initialiser et nettoyer l'environnement de test.
-4. **Assertions précises** : Utilisez des assertions précises pour vérifier les résultats.
+4. **Assertions prÃ©cises** : Utilisez des assertions prÃ©cises pour vÃ©rifier les rÃ©sultats.
 5. **Tests de cas limites** : Testez les cas limites et les cas d'erreur.
-6. **Tests de performance** : Pour les tests de performance, utilisez des mesures précises et répétez les tests plusieurs fois pour obtenir des résultats fiables.
+6. **Tests de performance** : Pour les tests de performance, utilisez des mesures prÃ©cises et rÃ©pÃ©tez les tests plusieurs fois pour obtenir des rÃ©sultats fiables.
 
 ### Ajout d'un nouveau fichier de test
 
 Pour ajouter un nouveau fichier de test :
 
-1. Créez un nouveau fichier avec le suffixe `.Tests.ps1` dans le répertoire des tests.
+1. CrÃ©ez un nouveau fichier avec le suffixe `.Tests.ps1` dans le rÃ©pertoire des tests.
 2. Structurez vos tests avec Describe, Context et It.
-3. Exécutez les tests avec `Run-AllTests.ps1` pour vérifier qu'ils fonctionnent correctement.
+3. ExÃ©cutez les tests avec `Run-AllTests.ps1` pour vÃ©rifier qu'ils fonctionnent correctement.
 
-## Dépannage
+## DÃ©pannage
 
-### Problèmes courants
+### ProblÃ¨mes courants
 
-1. **Tests qui échouent de manière intermittente** : Les tests de performance peuvent échouer de manière intermittente en raison de variations dans l'environnement d'exécution. Utilisez des tolérances appropriées et répétez les tests plusieurs fois pour obtenir des résultats fiables.
+1. **Tests qui Ã©chouent de maniÃ¨re intermittente** : Les tests de performance peuvent Ã©chouer de maniÃ¨re intermittente en raison de variations dans l'environnement d'exÃ©cution. Utilisez des tolÃ©rances appropriÃ©es et rÃ©pÃ©tez les tests plusieurs fois pour obtenir des rÃ©sultats fiables.
 
-2. **Tests qui prennent trop de temps** : Les tests de performance peuvent prendre beaucoup de temps à s'exécuter. Utilisez le paramètre Skip pour ignorer les tests longs pendant le développement.
+2. **Tests qui prennent trop de temps** : Les tests de performance peuvent prendre beaucoup de temps Ã  s'exÃ©cuter. Utilisez le paramÃ¨tre Skip pour ignorer les tests longs pendant le dÃ©veloppement.
 
-3. **Erreurs de couverture de code** : Si la couverture de code est inférieure au seuil, vérifiez les parties du code qui ne sont pas couvertes et ajoutez des tests pour ces parties.
+3. **Erreurs de couverture de code** : Si la couverture de code est infÃ©rieure au seuil, vÃ©rifiez les parties du code qui ne sont pas couvertes et ajoutez des tests pour ces parties.
 
-### Résolution des problèmes
+### RÃ©solution des problÃ¨mes
 
-1. **Exécuter un test spécifique** : Pour exécuter un test spécifique, utilisez le paramètre `-Name` de Invoke-Pester :
+1. **ExÃ©cuter un test spÃ©cifique** : Pour exÃ©cuter un test spÃ©cifique, utilisez le paramÃ¨tre `-Name` de Invoke-Pester :
 
 ```powershell
-Invoke-Pester -Path ".\MyTest.Tests.ps1" -Name "Ma fonctionnalité"
+Invoke-Pester -Path ".\MyTest.Tests.ps1" -Name "Ma fonctionnalitÃ©"
 ```
 
-2. **Déboguer un test** : Pour déboguer un test, utilisez Write-Host pour afficher des informations de débogage ou utilisez le débogueur de PowerShell :
+2. **DÃ©boguer un test** : Pour dÃ©boguer un test, utilisez Write-Host pour afficher des informations de dÃ©bogage ou utilisez le dÃ©bogueur de PowerShell :
 
 ```powershell
 It "Mon test" {
@@ -201,7 +201,7 @@ It "Mon test" {
 }
 ```
 
-3. **Ignorer un test** : Pour ignorer temporairement un test, utilisez le paramètre Skip :
+3. **Ignorer un test** : Pour ignorer temporairement un test, utilisez le paramÃ¨tre Skip :
 
 ```powershell
 It "Mon test" -Skip {

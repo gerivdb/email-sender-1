@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour le module ProactiveOptimization avec des mocks.
+    ExÃ©cute tous les tests unitaires pour le module ProactiveOptimization avec des mocks.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour le module ProactiveOptimization en utilisant des mocks
-    pour simuler les dépendances externes.
+    Ce script exÃ©cute tous les tests unitaires pour le module ProactiveOptimization en utilisant des mocks
+    pour simuler les dÃ©pendances externes.
 #>
 
 [CmdletBinding()]
@@ -20,10 +20,10 @@ $testsPath = $PSScriptRoot
 $modulePath = Split-Path -Path $testsPath -Parent
 $scriptFiles = Get-ChildItem -Path $modulePath -Filter "*.ps1" | Where-Object { $_.Name -notlike "Test-*" }
 
-# Vérifier que le module mock UsageMonitor existe
+# VÃ©rifier que le module mock UsageMonitor existe
 $mockModulePath = Join-Path -Path $testsPath -ChildPath "MockUsageMonitor.psm1"
 if (-not (Test-Path -Path $mockModulePath)) {
-    Write-Error "Module mock UsageMonitor non trouvé: $mockModulePath"
+    Write-Error "Module mock UsageMonitor non trouvÃ©: $mockModulePath"
     exit 1
 }
 
@@ -31,78 +31,78 @@ if (-not (Test-Path -Path $mockModulePath)) {
 $mockFunctionsPath = Join-Path -Path $testsPath -ChildPath "MockFunctions.ps1"
 if (Test-Path -Path $mockFunctionsPath) {
     . $mockFunctionsPath
-    Write-Host "Fonctions mock chargées avec succès." -ForegroundColor Green
+    Write-Host "Fonctions mock chargÃ©es avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Warning "Script de fonctions mock non trouvé: $mockFunctionsPath"
+    Write-Warning "Script de fonctions mock non trouvÃ©: $mockFunctionsPath"
 }
 
-# Charger les mocks pour l'accès aux fichiers
+# Charger les mocks pour l'accÃ¨s aux fichiers
 $mockFileAccessPath = Join-Path -Path $testsPath -ChildPath "MockFileAccess.ps1"
 if (Test-Path -Path $mockFileAccessPath) {
     . $mockFileAccessPath
-    Write-Host "Mocks pour l'accès aux fichiers chargés avec succès." -ForegroundColor Green
+    Write-Host "Mocks pour l'accÃ¨s aux fichiers chargÃ©s avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Warning "Script de mocks pour l'accès aux fichiers non trouvé: $mockFileAccessPath"
+    Write-Warning "Script de mocks pour l'accÃ¨s aux fichiers non trouvÃ©: $mockFileAccessPath"
 }
 
-# Charger les mocks pour les fonctions des scripts à tester
+# Charger les mocks pour les fonctions des scripts Ã  tester
 $mockScriptFunctionsPath = Join-Path -Path $testsPath -ChildPath "MockScriptFunctions.ps1"
 if (Test-Path -Path $mockScriptFunctionsPath) {
     . $mockScriptFunctionsPath
-    Write-Host "Mocks pour les fonctions des scripts chargés avec succès." -ForegroundColor Green
+    Write-Host "Mocks pour les fonctions des scripts chargÃ©s avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Warning "Script de mocks pour les fonctions des scripts non trouvé: $mockScriptFunctionsPath"
+    Write-Warning "Script de mocks pour les fonctions des scripts non trouvÃ©: $mockScriptFunctionsPath"
 }
 
-# Définir les fonctions de mock globales
+# DÃ©finir les fonctions de mock globales
 $global:Test_Path_Mock = { param($Path) Test-MockPath -Path $Path }
 $global:Get_Content_Mock = { param($Path, $Raw) Get-MockContent -Path $Path -Raw:$Raw }
 $global:Out_File_Mock = { param($FilePath, $InputObject, $Encoding) Out-MockFile -FilePath $FilePath -InputObject $InputObject -Encoding $Encoding }
 $global:New_Item_Mock = { param($Path, $ItemType, $Force) New-MockItem -Path $Path -ItemType $ItemType -Force:$Force }
 
-# Afficher les tests qui seront exécutés
+# Afficher les tests qui seront exÃ©cutÃ©s
 $testScripts = Get-ChildItem -Path $testsPath -Filter "*.Tests.ps1"
 if ($testScripts.Count -eq 0) {
-    Write-Error "Aucun test trouvé dans le dossier: $testsPath"
+    Write-Error "Aucun test trouvÃ© dans le dossier: $testsPath"
     exit 1
 }
 
-Write-Host "Tests à exécuter:" -ForegroundColor Cyan
+Write-Host "Tests Ã  exÃ©cuter:" -ForegroundColor Cyan
 foreach ($testScript in $testScripts) {
     Write-Host "  - $($testScript.Name)" -ForegroundColor Cyan
 }
 
-# Paramètres pour Invoke-Pester
+# ParamÃ¨tres pour Invoke-Pester
 $pesterParams = @{
     Path     = $testsPath
     PassThru = $true
 }
 
-# Ajouter les paramètres de couverture de code si demandé
+# Ajouter les paramÃ¨tres de couverture de code si demandÃ©
 if ($GenerateCodeCoverage) {
     $pesterParams.CodeCoverage = $scriptFiles.FullName
     $pesterParams.CodeCoverageOutputFile = Join-Path -Path $testsPath -ChildPath "coverage.xml"
     $pesterParams.CodeCoverageOutputFormat = 'JaCoCo'
 }
 
-# Ajouter le paramètre de verbosité si demandé
+# Ajouter le paramÃ¨tre de verbositÃ© si demandÃ©
 if ($ShowDetailedResults) {
     $pesterParams.Output = 'Detailed'
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour le module ProactiveOptimization..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour le module ProactiveOptimization..." -ForegroundColor Cyan
 $results = Invoke-Pester @pesterParams
 
-# Afficher le résumé des tests
-Write-Host "Résumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($results.TotalCount)" -ForegroundColor Cyan
-Write-Host "  Tests réussis: $($results.PassedCount)" -ForegroundColor $(if ($results.PassedCount -eq $results.TotalCount) { 'Green' } else { 'Cyan' })
-Write-Host "  Tests échoués: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { 'Red' } else { 'Cyan' })
-Write-Host "  Tests ignorés: $($results.SkippedCount)" -ForegroundColor Cyan
-Write-Host "  Tests non exécutés: $($results.NotRunCount)" -ForegroundColor Cyan
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor $(if ($results.PassedCount -eq $results.TotalCount) { 'Green' } else { 'Cyan' })
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { 'Red' } else { 'Cyan' })
+Write-Host "  Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Cyan
+Write-Host "  Tests non exÃ©cutÃ©s: $($results.NotRunCount)" -ForegroundColor Cyan
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $reportPath = Join-Path -Path $modulePath -ChildPath "TestReports"
 if (-not (Test-Path -Path $reportPath)) {
     New-Item -Path $reportPath -ItemType Directory -Force | Out-Null
@@ -234,7 +234,7 @@ $htmlHeader = @"
 
 $htmlFooter = @"
         <footer>
-            <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
         </footer>
     </div>
 </body>
@@ -249,7 +249,7 @@ $skippedTests = $results.SkippedCount
 $notRunTests = $results.NotRunCount
 $successRate = if ($totalTests -gt 0) { [math]::Round(($passedTests / $totalTests) * 100, 2) } else { 0 }
 
-# Générer le résumé
+# GÃ©nÃ©rer le rÃ©sumÃ©
 $htmlSummary = @"
         <div class="summary">
             <div class="summary-item info">
@@ -257,38 +257,38 @@ $htmlSummary = @"
                 <p>$totalTests tests</p>
             </div>
             <div class="summary-item success">
-                <h3>Réussis</h3>
+                <h3>RÃ©ussis</h3>
                 <p>$passedTests tests</p>
             </div>
             <div class="summary-item danger">
-                <h3>Échoués</h3>
+                <h3>Ã‰chouÃ©s</h3>
                 <p>$failedTests tests</p>
             </div>
             <div class="summary-item warning">
-                <h3>Ignorés</h3>
+                <h3>IgnorÃ©s</h3>
                 <p>$skippedTests tests</p>
             </div>
             <div class="summary-item info">
-                <h3>Non exécutés</h3>
+                <h3>Non exÃ©cutÃ©s</h3>
                 <p>$notRunTests tests</p>
             </div>
         </div>
 
-        <h2>Taux de réussite</h2>
+        <h2>Taux de rÃ©ussite</h2>
         <div class="progress-bar">
             <div class="progress" style="width: $successRate%">$successRate%</div>
         </div>
 "@
 
-# Générer le rapport complet
+# GÃ©nÃ©rer le rapport complet
 $htmlContent = $htmlHeader + $htmlSummary + $htmlFooter
 
-# Écrire le rapport dans un fichier
+# Ã‰crire le rapport dans un fichier
 $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
-Write-Host "Rapport de test généré avec succès: $reportFile" -ForegroundColor Green
+Write-Host "Rapport de test gÃ©nÃ©rÃ© avec succÃ¨s: $reportFile" -ForegroundColor Green
 
-# Ouvrir le rapport dans le navigateur par défaut
+# Ouvrir le rapport dans le navigateur par dÃ©faut
 if (Test-Path -Path $reportFile) {
     Start-Process $reportFile
 }

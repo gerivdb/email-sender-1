@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module d'adaptation du cache pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Ce module fournit des fonctions pour gérer le cache partagé entre PowerShell et Python.
+    Ce module fournit des fonctions pour gÃ©rer le cache partagÃ© entre PowerShell et Python.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-10
-    Compatibilité: PowerShell 5.1 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur
 #>
 
-# Vérifier si le module PSCacheManager est disponible
+# VÃ©rifier si le module PSCacheManager est disponible
 $psCacheManagerAvailable = $false
 try {
     $psCacheManagerAvailable = Get-Module -ListAvailable -Name PSCacheManager
     if (-not $psCacheManagerAvailable) {
-        Write-Verbose "Module PSCacheManager non disponible. Utilisation du cache intégré."
+        Write-Verbose "Module PSCacheManager non disponible. Utilisation du cache intÃ©grÃ©."
     }
     else {
         Write-Verbose "Module PSCacheManager disponible. Utilisation du cache PSCacheManager."
@@ -24,32 +24,32 @@ try {
     }
 }
 catch {
-    Write-Warning "Erreur lors de la vérification du module PSCacheManager : $_"
+    Write-Warning "Erreur lors de la vÃ©rification du module PSCacheManager : $_"
 }
 
 <#
 .SYNOPSIS
-    Initialise le cache partagé pour l'architecture hybride PowerShell-Python.
+    Initialise le cache partagÃ© pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Crée et configure un cache partagé entre PowerShell et Python.
+    CrÃ©e et configure un cache partagÃ© entre PowerShell et Python.
 .PARAMETER Config
-    Configuration du cache partagé.
+    Configuration du cache partagÃ©.
 .PARAMETER CachePath
-    Chemin vers le répertoire du cache. Par défaut: sous-répertoire 'cache' du répertoire courant.
+    Chemin vers le rÃ©pertoire du cache. Par dÃ©faut: sous-rÃ©pertoire 'cache' du rÃ©pertoire courant.
 .PARAMETER CacheType
-    Type de cache à utiliser. Valeurs possibles: 'Memory', 'Disk', 'Hybrid'. Par défaut: 'Hybrid'.
+    Type de cache Ã  utiliser. Valeurs possibles: 'Memory', 'Disk', 'Hybrid'. Par dÃ©faut: 'Hybrid'.
 .PARAMETER MaxMemorySize
-    Taille maximale du cache en mémoire en Mo. Par défaut: 100.
+    Taille maximale du cache en mÃ©moire en Mo. Par dÃ©faut: 100.
 .PARAMETER MaxDiskSize
-    Taille maximale du cache sur disque en Mo. Par défaut: 1000.
+    Taille maximale du cache sur disque en Mo. Par dÃ©faut: 1000.
 .PARAMETER DefaultTTL
-    Durée de vie par défaut des éléments du cache en secondes. Par défaut: 3600 (1 heure).
+    DurÃ©e de vie par dÃ©faut des Ã©lÃ©ments du cache en secondes. Par dÃ©faut: 3600 (1 heure).
 .PARAMETER EvictionPolicy
-    Politique d'éviction des éléments du cache. Valeurs possibles: 'LRU', 'LFU', 'FIFO'. Par défaut: 'LRU'.
+    Politique d'Ã©viction des Ã©lÃ©ments du cache. Valeurs possibles: 'LRU', 'LFU', 'FIFO'. Par dÃ©faut: 'LRU'.
 .EXAMPLE
     $cache = Initialize-SharedCache -CachePath "C:\Temp\Cache" -CacheType "Hybrid"
 .OUTPUTS
-    Un objet représentant le cache partagé.
+    Un objet reprÃ©sentant le cache partagÃ©.
 #>
 function Initialize-SharedCache {
     [CmdletBinding()]
@@ -79,7 +79,7 @@ function Initialize-SharedCache {
         [string]$EvictionPolicy = "LRU"
     )
     
-    # Fusionner la configuration par défaut avec la configuration fournie
+    # Fusionner la configuration par dÃ©faut avec la configuration fournie
     $cacheConfig = @{
         CachePath = $CachePath
         CacheType = $CacheType
@@ -93,12 +93,12 @@ function Initialize-SharedCache {
         $cacheConfig[$key] = $Config[$key]
     }
     
-    # Créer le répertoire du cache si nécessaire
+    # CrÃ©er le rÃ©pertoire du cache si nÃ©cessaire
     if (-not (Test-Path -Path $cacheConfig.CachePath)) {
         New-Item -Path $cacheConfig.CachePath -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le fichier de configuration du cache pour Python
+    # CrÃ©er le fichier de configuration du cache pour Python
     $cacheConfigPath = Join-Path -Path $cacheConfig.CachePath -ChildPath "cache_config.json"
     $cacheConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $cacheConfigPath -Encoding utf8
     
@@ -127,13 +127,13 @@ function Initialize-SharedCache {
 .SYNOPSIS
     Initialise un cache interne pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Crée et configure un cache interne lorsque PSCacheManager n'est pas disponible.
+    CrÃ©e et configure un cache interne lorsque PSCacheManager n'est pas disponible.
 .PARAMETER Config
     Configuration du cache interne.
 .EXAMPLE
     $cache = Initialize-InternalCache -Config $cacheConfig
 .OUTPUTS
-    Un objet représentant le cache interne.
+    Un objet reprÃ©sentant le cache interne.
 #>
 function Initialize-InternalCache {
     [CmdletBinding()]
@@ -143,7 +143,7 @@ function Initialize-InternalCache {
         [hashtable]$Config
     )
     
-    # Créer l'objet cache
+    # CrÃ©er l'objet cache
     $cache = [PSCustomObject]@{
         Name = "InternalCache"
         CachePath = $Config.CachePath
@@ -163,29 +163,29 @@ function Initialize-InternalCache {
         }
     }
     
-    # Ajouter les méthodes au cache
+    # Ajouter les mÃ©thodes au cache
     $cache | Add-Member -MemberType ScriptMethod -Name "Get" -Value {
         param(
             [string]$Key,
             [object]$DefaultValue = $null
         )
         
-        # Vérifier d'abord dans le cache mémoire
+        # VÃ©rifier d'abord dans le cache mÃ©moire
         if ($this.MemoryCache.ContainsKey($Key)) {
             $item = $this.MemoryCache[$Key]
             
-            # Vérifier si l'élément est expiré
+            # VÃ©rifier si l'Ã©lÃ©ment est expirÃ©
             if ($item.ExpiresAt -gt (Get-Date)) {
                 $this.Statistics.MemoryHits++
                 return $item.Value
             }
             else {
-                # Supprimer l'élément expiré
+                # Supprimer l'Ã©lÃ©ment expirÃ©
                 $this.MemoryCache.Remove($Key)
             }
         }
         
-        # Si le cache est de type Hybrid ou Disk, vérifier dans le cache disque
+        # Si le cache est de type Hybrid ou Disk, vÃ©rifier dans le cache disque
         if ($this.CacheType -ne "Memory") {
             $diskCachePath = Join-Path -Path $this.CachePath -ChildPath "$Key.cache"
             
@@ -193,11 +193,11 @@ function Initialize-InternalCache {
                 try {
                     $item = Import-Clixml -Path $diskCachePath
                     
-                    # Vérifier si l'élément est expiré
+                    # VÃ©rifier si l'Ã©lÃ©ment est expirÃ©
                     if ($item.ExpiresAt -gt (Get-Date)) {
                         $this.Statistics.DiskHits++
                         
-                        # Promouvoir l'élément dans le cache mémoire si le cache est de type Hybrid
+                        # Promouvoir l'Ã©lÃ©ment dans le cache mÃ©moire si le cache est de type Hybrid
                         if ($this.CacheType -eq "Hybrid") {
                             $this.Set($Key, $item.Value, ($item.ExpiresAt - (Get-Date)).TotalSeconds)
                         }
@@ -205,12 +205,12 @@ function Initialize-InternalCache {
                         return $item.Value
                     }
                     else {
-                        # Supprimer l'élément expiré
+                        # Supprimer l'Ã©lÃ©ment expirÃ©
                         Remove-Item -Path $diskCachePath -Force
                     }
                 }
                 catch {
-                    Write-Warning "Erreur lors de la lecture du cache disque pour la clé '$Key' : $_"
+                    Write-Warning "Erreur lors de la lecture du cache disque pour la clÃ© '$Key' : $_"
                 }
             }
             
@@ -230,7 +230,7 @@ function Initialize-InternalCache {
             [int]$TTL = $this.DefaultTTL
         )
         
-        # Créer l'élément de cache
+        # CrÃ©er l'Ã©lÃ©ment de cache
         $expiresAt = (Get-Date).AddSeconds($TTL)
         $item = @{
             Key = $Key
@@ -240,11 +240,11 @@ function Initialize-InternalCache {
             TTL = $TTL
         }
         
-        # Stocker dans le cache mémoire si le cache est de type Memory ou Hybrid
+        # Stocker dans le cache mÃ©moire si le cache est de type Memory ou Hybrid
         if ($this.CacheType -ne "Disk") {
-            # Vérifier si le cache mémoire est plein
+            # VÃ©rifier si le cache mÃ©moire est plein
             if ($this.MemoryCache.Count -ge $this.MaxMemorySize) {
-                # Appliquer la politique d'éviction
+                # Appliquer la politique d'Ã©viction
                 $this.EvictFromMemory()
             }
             
@@ -257,15 +257,15 @@ function Initialize-InternalCache {
                 $diskCachePath = Join-Path -Path $this.CachePath -ChildPath "$Key.cache"
                 $item | Export-Clixml -Path $diskCachePath -Force
                 
-                # Vérifier si le cache disque est plein
+                # VÃ©rifier si le cache disque est plein
                 $diskCacheSize = (Get-ChildItem -Path $this.CachePath -Filter "*.cache" | Measure-Object -Property Length -Sum).Sum / 1MB
                 if ($diskCacheSize -ge $this.MaxDiskSize) {
-                    # Appliquer la politique d'éviction
+                    # Appliquer la politique d'Ã©viction
                     $this.EvictFromDisk()
                 }
             }
             catch {
-                Write-Warning "Erreur lors de l'écriture dans le cache disque pour la clé '$Key' : $_"
+                Write-Warning "Erreur lors de l'Ã©criture dans le cache disque pour la clÃ© '$Key' : $_"
             }
         }
         
@@ -277,7 +277,7 @@ function Initialize-InternalCache {
             [string]$Key
         )
         
-        # Supprimer du cache mémoire
+        # Supprimer du cache mÃ©moire
         if ($this.MemoryCache.ContainsKey($Key)) {
             $this.MemoryCache.Remove($Key)
         }
@@ -290,13 +290,13 @@ function Initialize-InternalCache {
     }
     
     $cache | Add-Member -MemberType ScriptMethod -Name "Clear" -Value {
-        # Vider le cache mémoire
+        # Vider le cache mÃ©moire
         $this.MemoryCache.Clear()
         
         # Vider le cache disque
         Get-ChildItem -Path $this.CachePath -Filter "*.cache" | Remove-Item -Force
         
-        # Réinitialiser les statistiques
+        # RÃ©initialiser les statistiques
         $this.Statistics.MemoryHits = 0
         $this.Statistics.MemoryMisses = 0
         $this.Statistics.DiskHits = 0
@@ -305,7 +305,7 @@ function Initialize-InternalCache {
     }
     
     $cache | Add-Member -MemberType ScriptMethod -Name "EvictFromMemory" -Value {
-        # Appliquer la politique d'éviction pour le cache mémoire
+        # Appliquer la politique d'Ã©viction pour le cache mÃ©moire
         switch ($this.EvictionPolicy) {
             "LRU" {
                 # Least Recently Used
@@ -335,7 +335,7 @@ function Initialize-InternalCache {
     }
     
     $cache | Add-Member -MemberType ScriptMethod -Name "EvictFromDisk" -Value {
-        # Appliquer la politique d'éviction pour le cache disque
+        # Appliquer la politique d'Ã©viction pour le cache disque
         $cacheFiles = Get-ChildItem -Path $this.CachePath -Filter "*.cache"
         
         switch ($this.EvictionPolicy) {
@@ -348,7 +348,7 @@ function Initialize-InternalCache {
                 }
             }
             "LFU" {
-                # Least Frequently Used (approximation basée sur la taille du fichier)
+                # Least Frequently Used (approximation basÃ©e sur la taille du fichier)
                 $smallestFile = $cacheFiles | Sort-Object Length | Select-Object -First 1
                 if ($smallestFile) {
                     Remove-Item -Path $smallestFile.FullName -Force
@@ -375,19 +375,19 @@ function Initialize-InternalCache {
 
 <#
 .SYNOPSIS
-    Obtient un élément du cache partagé.
+    Obtient un Ã©lÃ©ment du cache partagÃ©.
 .DESCRIPTION
-    Récupère un élément du cache partagé en utilisant sa clé.
+    RÃ©cupÃ¨re un Ã©lÃ©ment du cache partagÃ© en utilisant sa clÃ©.
 .PARAMETER Cache
-    Objet cache initialisé par Initialize-SharedCache.
+    Objet cache initialisÃ© par Initialize-SharedCache.
 .PARAMETER Key
-    Clé de l'élément à récupérer.
+    ClÃ© de l'Ã©lÃ©ment Ã  rÃ©cupÃ©rer.
 .PARAMETER DefaultValue
-    Valeur par défaut à retourner si l'élément n'est pas trouvé. Par défaut: $null.
+    Valeur par dÃ©faut Ã  retourner si l'Ã©lÃ©ment n'est pas trouvÃ©. Par dÃ©faut: $null.
 .EXAMPLE
     $value = Get-SharedCacheItem -Cache $cache -Key "myKey" -DefaultValue "defaultValue"
 .OUTPUTS
-    La valeur de l'élément du cache ou la valeur par défaut si l'élément n'est pas trouvé.
+    La valeur de l'Ã©lÃ©ment du cache ou la valeur par dÃ©faut si l'Ã©lÃ©ment n'est pas trouvÃ©.
 #>
 function Get-SharedCacheItem {
     [CmdletBinding()]
@@ -412,21 +412,21 @@ function Get-SharedCacheItem {
 
 <#
 .SYNOPSIS
-    Définit un élément dans le cache partagé.
+    DÃ©finit un Ã©lÃ©ment dans le cache partagÃ©.
 .DESCRIPTION
-    Stocke un élément dans le cache partagé en utilisant sa clé.
+    Stocke un Ã©lÃ©ment dans le cache partagÃ© en utilisant sa clÃ©.
 .PARAMETER Cache
-    Objet cache initialisé par Initialize-SharedCache.
+    Objet cache initialisÃ© par Initialize-SharedCache.
 .PARAMETER Key
-    Clé de l'élément à stocker.
+    ClÃ© de l'Ã©lÃ©ment Ã  stocker.
 .PARAMETER Value
-    Valeur de l'élément à stocker.
+    Valeur de l'Ã©lÃ©ment Ã  stocker.
 .PARAMETER TTL
-    Durée de vie de l'élément en secondes. Par défaut: valeur par défaut du cache.
+    DurÃ©e de vie de l'Ã©lÃ©ment en secondes. Par dÃ©faut: valeur par dÃ©faut du cache.
 .EXAMPLE
     Set-SharedCacheItem -Cache $cache -Key "myKey" -Value "myValue" -TTL 3600
 .OUTPUTS
-    La valeur stockée dans le cache.
+    La valeur stockÃ©e dans le cache.
 #>
 function Set-SharedCacheItem {
     [CmdletBinding()]
@@ -458,13 +458,13 @@ function Set-SharedCacheItem {
 
 <#
 .SYNOPSIS
-    Supprime un élément du cache partagé.
+    Supprime un Ã©lÃ©ment du cache partagÃ©.
 .DESCRIPTION
-    Supprime un élément du cache partagé en utilisant sa clé.
+    Supprime un Ã©lÃ©ment du cache partagÃ© en utilisant sa clÃ©.
 .PARAMETER Cache
-    Objet cache initialisé par Initialize-SharedCache.
+    Objet cache initialisÃ© par Initialize-SharedCache.
 .PARAMETER Key
-    Clé de l'élément à supprimer.
+    ClÃ© de l'Ã©lÃ©ment Ã  supprimer.
 .EXAMPLE
     Remove-SharedCacheItem -Cache $cache -Key "myKey"
 #>
@@ -488,11 +488,11 @@ function Remove-SharedCacheItem {
 
 <#
 .SYNOPSIS
-    Vide le cache partagé.
+    Vide le cache partagÃ©.
 .DESCRIPTION
-    Supprime tous les éléments du cache partagé.
+    Supprime tous les Ã©lÃ©ments du cache partagÃ©.
 .PARAMETER Cache
-    Objet cache initialisé par Initialize-SharedCache.
+    Objet cache initialisÃ© par Initialize-SharedCache.
 .EXAMPLE
     Clear-SharedCache -Cache $cache
 #>
@@ -513,11 +513,11 @@ function Clear-SharedCache {
 
 <#
 .SYNOPSIS
-    Obtient les statistiques du cache partagé.
+    Obtient les statistiques du cache partagÃ©.
 .DESCRIPTION
-    Récupère les statistiques d'utilisation du cache partagé.
+    RÃ©cupÃ¨re les statistiques d'utilisation du cache partagÃ©.
 .PARAMETER Cache
-    Objet cache initialisé par Initialize-SharedCache.
+    Objet cache initialisÃ© par Initialize-SharedCache.
 .EXAMPLE
     $stats = Get-SharedCacheStatistics -Cache $cache
 .OUTPUTS

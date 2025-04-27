@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de gestion des erreurs pour les modes RoadmapParser.
 
 .DESCRIPTION
-    Ce script contient des fonctions de gestion des erreurs utilisées par tous les modes de RoadmapParser.
+    Ce script contient des fonctions de gestion des erreurs utilisÃ©es par tous les modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 <#
 .SYNOPSIS
-    Gère une exception et affiche un message d'erreur.
+    GÃ¨re une exception et affiche un message d'erreur.
 
 .DESCRIPTION
-    Cette fonction gère une exception et affiche un message d'erreur.
+    Cette fonction gÃ¨re une exception et affiche un message d'erreur.
 
 .PARAMETER Exception
-    Exception à gérer.
+    Exception Ã  gÃ©rer.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .PARAMETER LogFile
     Chemin vers le fichier de journalisation.
 
 .PARAMETER ExitCode
-    Code de sortie à retourner.
+    Code de sortie Ã  retourner.
 
 .PARAMETER ExitOnError
     Indique si le script doit se terminer en cas d'erreur.
@@ -69,12 +69,12 @@ function Handle-Exception {
     # Journaliser l'erreur
     Write-LogError $fullErrorMessage
     
-    # Journaliser dans un fichier si spécifié
+    # Journaliser dans un fichier si spÃ©cifiÃ©
     if ($LogFile) {
         Write-LogToFile -Message $fullErrorMessage -Level "ERROR" -LogFile $LogFile
     }
     
-    # Terminer le script si demandé
+    # Terminer le script si demandÃ©
     if ($ExitOnError) {
         exit $ExitCode
     }
@@ -82,22 +82,22 @@ function Handle-Exception {
 
 <#
 .SYNOPSIS
-    Gère une erreur et affiche un message d'erreur.
+    GÃ¨re une erreur et affiche un message d'erreur.
 
 .DESCRIPTION
-    Cette fonction gère une erreur et affiche un message d'erreur.
+    Cette fonction gÃ¨re une erreur et affiche un message d'erreur.
 
 .PARAMETER ErrorRecord
-    Enregistrement d'erreur à gérer.
+    Enregistrement d'erreur Ã  gÃ©rer.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .PARAMETER LogFile
     Chemin vers le fichier de journalisation.
 
 .PARAMETER ExitCode
-    Code de sortie à retourner.
+    Code de sortie Ã  retourner.
 
 .PARAMETER ExitOnError
     Indique si le script doit se terminer en cas d'erreur.
@@ -128,7 +128,7 @@ function Handle-Error {
     )
     
     # Construire le message d'erreur complet
-    $fullErrorMessage = "$ErrorMessage`nErreur : $($ErrorRecord.Exception.Message)`nType : $($ErrorRecord.Exception.GetType().FullName)`nCatégorie : $($ErrorRecord.CategoryInfo.Category)`nCible : $($ErrorRecord.CategoryInfo.TargetName)"
+    $fullErrorMessage = "$ErrorMessage`nErreur : $($ErrorRecord.Exception.Message)`nType : $($ErrorRecord.Exception.GetType().FullName)`nCatÃ©gorie : $($ErrorRecord.CategoryInfo.Category)`nCible : $($ErrorRecord.CategoryInfo.TargetName)"
     
     # Ajouter la trace de la pile si disponible
     if ($ErrorRecord.ScriptStackTrace) {
@@ -138,12 +138,12 @@ function Handle-Error {
     # Journaliser l'erreur
     Write-LogError $fullErrorMessage
     
-    # Journaliser dans un fichier si spécifié
+    # Journaliser dans un fichier si spÃ©cifiÃ©
     if ($LogFile) {
         Write-LogToFile -Message $fullErrorMessage -Level "ERROR" -LogFile $LogFile
     }
     
-    # Terminer le script si demandé
+    # Terminer le script si demandÃ©
     if ($ExitOnError) {
         exit $ExitCode
     }
@@ -151,22 +151,22 @@ function Handle-Error {
 
 <#
 .SYNOPSIS
-    Exécute une action avec gestion des erreurs.
+    ExÃ©cute une action avec gestion des erreurs.
 
 .DESCRIPTION
-    Cette fonction exécute une action avec gestion des erreurs.
+    Cette fonction exÃ©cute une action avec gestion des erreurs.
 
 .PARAMETER Action
-    Action à exécuter.
+    Action Ã  exÃ©cuter.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .PARAMETER LogFile
     Chemin vers le fichier de journalisation.
 
 .PARAMETER ExitCode
-    Code de sortie à retourner.
+    Code de sortie Ã  retourner.
 
 .PARAMETER ExitOnError
     Indique si le script doit se terminer en cas d'erreur.
@@ -184,7 +184,7 @@ function Invoke-WithErrorHandling {
         [scriptblock]$Action,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Une erreur s'est produite lors de l'exécution de l'action.",
+        [string]$ErrorMessage = "Une erreur s'est produite lors de l'exÃ©cution de l'action.",
         
         [Parameter(Mandatory = $false)]
         [string]$LogFile,
@@ -197,39 +197,39 @@ function Invoke-WithErrorHandling {
     )
     
     try {
-        # Exécuter l'action
+        # ExÃ©cuter l'action
         $result = & $Action
         return $result
     } catch {
-        # Gérer l'erreur
+        # GÃ©rer l'erreur
         Handle-Error -ErrorRecord $_ -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
     }
 }
 
 <#
 .SYNOPSIS
-    Exécute une action avec une nouvelle tentative en cas d'erreur.
+    ExÃ©cute une action avec une nouvelle tentative en cas d'erreur.
 
 .DESCRIPTION
-    Cette fonction exécute une action avec une nouvelle tentative en cas d'erreur.
+    Cette fonction exÃ©cute une action avec une nouvelle tentative en cas d'erreur.
 
 .PARAMETER Action
-    Action à exécuter.
+    Action Ã  exÃ©cuter.
 
 .PARAMETER MaxRetries
     Nombre maximal de tentatives.
 
 .PARAMETER RetryDelaySeconds
-    Délai en secondes entre chaque tentative.
+    DÃ©lai en secondes entre chaque tentative.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .PARAMETER LogFile
     Chemin vers le fichier de journalisation.
 
 .PARAMETER ExitCode
-    Code de sortie à retourner.
+    Code de sortie Ã  retourner.
 
 .PARAMETER ExitOnError
     Indique si le script doit se terminer en cas d'erreur.
@@ -253,7 +253,7 @@ function Invoke-WithRetry {
         [int]$RetryDelaySeconds = 5,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Une erreur s'est produite lors de l'exécution de l'action.",
+        [string]$ErrorMessage = "Une erreur s'est produite lors de l'exÃ©cution de l'action.",
         
         [Parameter(Mandatory = $false)]
         [string]$LogFile,
@@ -271,24 +271,24 @@ function Invoke-WithRetry {
     
     while (-not $success -and $retryCount -lt $MaxRetries) {
         try {
-            # Exécuter l'action
+            # ExÃ©cuter l'action
             $result = & $Action
             $success = $true
         } catch {
             $retryCount++
             
             if ($retryCount -ge $MaxRetries) {
-                # Gérer l'erreur après le nombre maximal de tentatives
+                # GÃ©rer l'erreur aprÃ¨s le nombre maximal de tentatives
                 Handle-Error -ErrorRecord $_ -ErrorMessage "$ErrorMessage (Tentative $retryCount/$MaxRetries)" -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
             } else {
-                # Journaliser l'erreur et réessayer
-                Write-LogWarning "Erreur lors de l'exécution de l'action : $($_.Exception.Message). Nouvelle tentative dans $RetryDelaySeconds secondes (Tentative $retryCount/$MaxRetries)."
+                # Journaliser l'erreur et rÃ©essayer
+                Write-LogWarning "Erreur lors de l'exÃ©cution de l'action : $($_.Exception.Message). Nouvelle tentative dans $RetryDelaySeconds secondes (Tentative $retryCount/$MaxRetries)."
                 
                 if ($LogFile) {
-                    Write-LogToFile -Message "Erreur lors de l'exécution de l'action : $($_.Exception.Message). Nouvelle tentative dans $RetryDelaySeconds secondes (Tentative $retryCount/$MaxRetries)." -Level "WARNING" -LogFile $LogFile
+                    Write-LogToFile -Message "Erreur lors de l'exÃ©cution de l'action : $($_.Exception.Message). Nouvelle tentative dans $RetryDelaySeconds secondes (Tentative $retryCount/$MaxRetries)." -Level "WARNING" -LogFile $LogFile
                 }
                 
-                # Attendre avant de réessayer
+                # Attendre avant de rÃ©essayer
                 Start-Sleep -Seconds $RetryDelaySeconds
             }
         }
@@ -299,31 +299,31 @@ function Invoke-WithRetry {
 
 <#
 .SYNOPSIS
-    Exécute une action avec un délai d'expiration.
+    ExÃ©cute une action avec un dÃ©lai d'expiration.
 
 .DESCRIPTION
-    Cette fonction exécute une action avec un délai d'expiration.
+    Cette fonction exÃ©cute une action avec un dÃ©lai d'expiration.
 
 .PARAMETER Action
-    Action à exécuter.
+    Action Ã  exÃ©cuter.
 
 .PARAMETER TimeoutSeconds
-    Délai d'expiration en secondes.
+    DÃ©lai d'expiration en secondes.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .PARAMETER LogFile
     Chemin vers le fichier de journalisation.
 
 .PARAMETER ExitCode
-    Code de sortie à retourner.
+    Code de sortie Ã  retourner.
 
 .PARAMETER ExitOnError
     Indique si le script doit se terminer en cas d'erreur.
 
 .EXAMPLE
-    $result = Invoke-WithTimeout -Action { Invoke-RestMethod -Uri $Uri } -TimeoutSeconds 30 -ErrorMessage "L'opération a expiré." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
+    $result = Invoke-WithTimeout -Action { Invoke-RestMethod -Uri $Uri } -TimeoutSeconds 30 -ErrorMessage "L'opÃ©ration a expirÃ©." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
 
 .OUTPUTS
     System.Object
@@ -338,7 +338,7 @@ function Invoke-WithTimeout {
         [int]$TimeoutSeconds = 30,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "L'opération a expiré après $TimeoutSeconds secondes.",
+        [string]$ErrorMessage = "L'opÃ©ration a expirÃ© aprÃ¨s $TimeoutSeconds secondes.",
         
         [Parameter(Mandatory = $false)]
         [string]$LogFile,
@@ -350,19 +350,19 @@ function Invoke-WithTimeout {
         [bool]$ExitOnError = $false
     )
     
-    # Créer un objet de synchronisation
+    # CrÃ©er un objet de synchronisation
     $sync = [System.Collections.Hashtable]::Synchronized(@{})
     $sync.Result = $null
     $sync.Completed = $false
     $sync.Error = $null
     
-    # Créer un runspace pour exécuter l'action en arrière-plan
+    # CrÃ©er un runspace pour exÃ©cuter l'action en arriÃ¨re-plan
     $runspace = [runspacefactory]::CreateRunspace()
     $runspace.Open()
     $runspace.SessionStateProxy.SetVariable("sync", $sync)
     $runspace.SessionStateProxy.SetVariable("action", $Action)
     
-    # Créer et démarrer le pipeline
+    # CrÃ©er et dÃ©marrer le pipeline
     $pipeline = $runspace.CreatePipeline({
         try {
             $sync.Result = & $action
@@ -374,7 +374,7 @@ function Invoke-WithTimeout {
     })
     $pipeline.InvokeAsync()
     
-    # Attendre que l'action se termine ou que le délai expire
+    # Attendre que l'action se termine ou que le dÃ©lai expire
     $startTime = Get-Date
     $timeoutReached = $false
     
@@ -384,7 +384,7 @@ function Invoke-WithTimeout {
         $timeoutReached = $elapsedTime.TotalSeconds -ge $TimeoutSeconds
     }
     
-    # Arrêter le pipeline si le délai a expiré
+    # ArrÃªter le pipeline si le dÃ©lai a expirÃ©
     if ($timeoutReached) {
         $pipeline.Stop()
         $runspace.Close()
@@ -396,7 +396,7 @@ function Invoke-WithTimeout {
             Write-LogToFile -Message $ErrorMessage -Level "ERROR" -LogFile $LogFile
         }
         
-        # Terminer le script si demandé
+        # Terminer le script si demandÃ©
         if ($ExitOnError) {
             exit $ExitCode
         }
@@ -407,7 +407,7 @@ function Invoke-WithTimeout {
     # Fermer le runspace
     $runspace.Close()
     
-    # Gérer l'erreur si elle s'est produite
+    # GÃ©rer l'erreur si elle s'est produite
     if ($sync.Error) {
         Handle-Error -ErrorRecord $sync.Error -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
     }

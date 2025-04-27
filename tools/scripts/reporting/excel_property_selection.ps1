@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Module de sélection de propriétés pour les styles Excel.
+    Module de sÃ©lection de propriÃ©tÃ©s pour les styles Excel.
 .DESCRIPTION
-    Ce module fournit des fonctions pour sélectionner, filtrer et manipuler
-    les propriétés des styles Excel lors des opérations de fusion.
+    Ce module fournit des fonctions pour sÃ©lectionner, filtrer et manipuler
+    les propriÃ©tÃ©s des styles Excel lors des opÃ©rations de fusion.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -19,23 +19,23 @@ $script:TypeAliases = @{}
 
 <#
 .SYNOPSIS
-    Crée un comparateur de chaînes personnalisé.
+    CrÃ©e un comparateur de chaÃ®nes personnalisÃ©.
 .DESCRIPTION
-    Cette fonction crée un comparateur de chaînes personnalisé avec des options de sensibilité à la casse,
+    Cette fonction crÃ©e un comparateur de chaÃ®nes personnalisÃ© avec des options de sensibilitÃ© Ã  la casse,
     de normalisation et de culture.
 .PARAMETER IgnoreCase
-    Indique si la comparaison doit être insensible à la casse.
+    Indique si la comparaison doit Ãªtre insensible Ã  la casse.
 .PARAMETER Culture
-    La culture à utiliser pour la comparaison. Par défaut, utilise la culture invariante.
+    La culture Ã  utiliser pour la comparaison. Par dÃ©faut, utilise la culture invariante.
 .PARAMETER IgnoreWhiteSpace
-    Indique si les espaces blancs doivent être ignorés lors de la comparaison.
+    Indique si les espaces blancs doivent Ãªtre ignorÃ©s lors de la comparaison.
 .PARAMETER IgnoreNonAlphanumeric
-    Indique si les caractères non alphanumériques doivent être ignorés lors de la comparaison.
+    Indique si les caractÃ¨res non alphanumÃ©riques doivent Ãªtre ignorÃ©s lors de la comparaison.
 .EXAMPLE
     $Comparer = New-StringComparer -IgnoreCase -IgnoreWhiteSpace
     $result = $Comparer.Equals("Hello World", "HELLOWORLD")
 .OUTPUTS
-    System.StringComparer - Un comparateur de chaînes personnalisé.
+    System.StringComparer - Un comparateur de chaÃ®nes personnalisÃ©.
 #>
 function New-StringComparer {
     [CmdletBinding()]
@@ -53,7 +53,7 @@ function New-StringComparer {
         [switch]$IgnoreNonAlphanumeric
     )
 
-    # Déterminer le comparateur de base
+    # DÃ©terminer le comparateur de base
     $baseComparer = if ($null -eq $Culture) {
         if ($IgnoreCase) {
             [StringComparer]::InvariantCultureIgnoreCase
@@ -68,23 +68,23 @@ function New-StringComparer {
         }
     }
 
-    # Si aucune option supplémentaire n'est spécifiée, retourner le comparateur de base
+    # Si aucune option supplÃ©mentaire n'est spÃ©cifiÃ©e, retourner le comparateur de base
     if (-not $IgnoreWhiteSpace -and -not $IgnoreNonAlphanumeric) {
         return $baseComparer
     }
 
-    # Créer un comparateur personnalisé avec les options spécifiées
+    # CrÃ©er un comparateur personnalisÃ© avec les options spÃ©cifiÃ©es
     $customComparer = [PSCustomObject]@{
         BaseComparer          = $baseComparer
         IgnoreWhiteSpace      = $IgnoreWhiteSpace
         IgnoreNonAlphanumeric = $IgnoreNonAlphanumeric
     }
 
-    # Ajouter les méthodes du comparateur
+    # Ajouter les mÃ©thodes du comparateur
     $customComparer | Add-Member -MemberType ScriptMethod -Name "Equals" -Value {
         param([string]$x, [string]$y)
 
-        # Normaliser les chaînes selon les options
+        # Normaliser les chaÃ®nes selon les options
         if ($this.IgnoreWhiteSpace) {
             $x = $x -replace '\s', ''
             $y = $y -replace '\s', ''
@@ -95,14 +95,14 @@ function New-StringComparer {
             $y = $y -replace '[^a-zA-Z0-9]', ''
         }
 
-        # Comparer les chaînes normalisées
+        # Comparer les chaÃ®nes normalisÃ©es
         return $this.BaseComparer.Equals($x, $y)
     } -Force
 
     $customComparer | Add-Member -MemberType ScriptMethod -Name "Compare" -Value {
         param([string]$x, [string]$y)
 
-        # Normaliser les chaînes selon les options
+        # Normaliser les chaÃ®nes selon les options
         if ($this.IgnoreWhiteSpace) {
             $x = $x -replace '\s', ''
             $y = $y -replace '\s', ''
@@ -113,14 +113,14 @@ function New-StringComparer {
             $y = $y -replace '[^a-zA-Z0-9]', ''
         }
 
-        # Comparer les chaînes normalisées
+        # Comparer les chaÃ®nes normalisÃ©es
         return $this.BaseComparer.Compare($x, $y)
     } -Force
 
     $customComparer | Add-Member -MemberType ScriptMethod -Name "GetHashCode" -Value {
         param([string]$obj)
 
-        # Normaliser la chaîne selon les options
+        # Normaliser la chaÃ®ne selon les options
         if ($this.IgnoreWhiteSpace) {
             $obj = $obj -replace '\s', ''
         }
@@ -129,7 +129,7 @@ function New-StringComparer {
             $obj = $obj -replace '[^a-zA-Z0-9]', ''
         }
 
-        # Calculer le code de hachage de la chaîne normalisée
+        # Calculer le code de hachage de la chaÃ®ne normalisÃ©e
         return $this.BaseComparer.GetHashCode($obj)
     } -Force
 
@@ -138,22 +138,22 @@ function New-StringComparer {
 
 <#
 .SYNOPSIS
-    Récupère un type par son nom qualifié complet.
+    RÃ©cupÃ¨re un type par son nom qualifiÃ© complet.
 .DESCRIPTION
-    Cette fonction récupère un type par son nom qualifié complet, en effectuant
-    une recherche dans les assemblies chargées ou spécifiées.
+    Cette fonction rÃ©cupÃ¨re un type par son nom qualifiÃ© complet, en effectuant
+    une recherche dans les assemblies chargÃ©es ou spÃ©cifiÃ©es.
 .PARAMETER TypeName
-    Le nom qualifié complet du type à récupérer.
+    Le nom qualifiÃ© complet du type Ã  rÃ©cupÃ©rer.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles rechercher le type. Si non spécifié, recherche dans toutes les assemblies chargées.
+    Les assemblies dans lesquelles rechercher le type. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER IgnoreCase
-    Indique si la recherche doit être insensible à la casse.
+    Indique si la recherche doit Ãªtre insensible Ã  la casse.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur de résolution.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur de rÃ©solution.
 .PARAMETER ResolveCollisions
-    Indique comment résoudre les collisions de noms. Les valeurs possibles sont : FirstMatch, LastMatch, ThrowOnCollision, Interactive.
+    Indique comment rÃ©soudre les collisions de noms. Les valeurs possibles sont : FirstMatch, LastMatch, ThrowOnCollision, Interactive.
 .PARAMETER AssemblyPriority
-    Les assemblies prioritaires lors de la résolution des collisions. Les types trouvés dans ces assemblies seront préférés.
+    Les assemblies prioritaires lors de la rÃ©solution des collisions. Les types trouvÃ©s dans ces assemblies seront prÃ©fÃ©rÃ©s.
 .EXAMPLE
     $Type = Get-TypeByQualifiedName -TypeName "System.String"
 .EXAMPLE
@@ -161,7 +161,7 @@ function New-StringComparer {
 .EXAMPLE
     $Type = Get-TypeByQualifiedName -TypeName "MyNamespace.MyClass" -ResolveCollisions "Interactive"
 .OUTPUTS
-    System.Type - Le type récupéré, ou $null si le type n'a pas été trouvé et ThrowOnError est $false.
+    System.Type - Le type rÃ©cupÃ©rÃ©, ou $null si le type n'a pas Ã©tÃ© trouvÃ© et ThrowOnError est $false.
 #>
 function Get-TypeByQualifiedName {
     [CmdletBinding()]
@@ -186,38 +186,38 @@ function Get-TypeByQualifiedName {
         [System.Reflection.Assembly[]]$AssemblyPriority
     )
 
-    # Vérifier si le nom du type est valide
+    # VÃ©rifier si le nom du type est valide
     if ([string]::IsNullOrWhiteSpace($TypeName)) {
         if ($ThrowOnError) {
-            throw "Le nom du type ne peut pas être vide."
+            throw "Le nom du type ne peut pas Ãªtre vide."
         }
         return $null
     }
 
-    # Résoudre les alias de types
+    # RÃ©soudre les alias de types
     $resolvedTypeName = Resolve-TypeAlias -TypeName $TypeName
     if ($resolvedTypeName -ne $TypeName) {
-        Write-Verbose "Alias '$TypeName' résolu en '$resolvedTypeName'."
+        Write-Verbose "Alias '$TypeName' rÃ©solu en '$resolvedTypeName'."
         $TypeName = $resolvedTypeName
     }
 
-    # Essayer d'abord la méthode Type.GetType qui est la plus rapide
+    # Essayer d'abord la mÃ©thode Type.GetType qui est la plus rapide
     try {
         $type = [Type]::GetType($TypeName, $false, $IgnoreCase)
         if ($null -ne $type) {
-            Write-Verbose "Type '$TypeName' trouvé avec Type.GetType."
+            Write-Verbose "Type '$TypeName' trouvÃ© avec Type.GetType."
             return $type
         }
     } catch {
         Write-Verbose "Erreur lors de la recherche du type avec Type.GetType: $($_.Exception.Message)"
     }
 
-    # Si aucune assembly n'est spécifiée, utiliser toutes les assemblies chargées
+    # Si aucune assembly n'est spÃ©cifiÃ©e, utiliser toutes les assemblies chargÃ©es
     if ($null -eq $Assemblies -or $Assemblies.Count -eq 0) {
         $Assemblies = [AppDomain]::CurrentDomain.GetAssemblies()
-        Write-Verbose "Recherche dans toutes les assemblies chargées ($($Assemblies.Count) assemblies)."
+        Write-Verbose "Recherche dans toutes les assemblies chargÃ©es ($($Assemblies.Count) assemblies)."
     } else {
-        Write-Verbose "Recherche dans les assemblies spécifiées ($($Assemblies.Count) assemblies)."
+        Write-Verbose "Recherche dans les assemblies spÃ©cifiÃ©es ($($Assemblies.Count) assemblies)."
     }
 
     # Fonction pour parser le nom du type et extraire l'espace de noms et le nom de type
@@ -225,15 +225,15 @@ function Get-TypeByQualifiedName {
     $namespace = $typeInfo.Namespace
     $simpleTypeName = $typeInfo.TypeName
 
-    # Rechercher tous les types correspondants dans les assemblies spécifiées
+    # Rechercher tous les types correspondants dans les assemblies spÃ©cifiÃ©es
     $matchingTypes = @()
 
     foreach ($assembly in $Assemblies) {
         try {
-            # Essayer d'abord avec le nom qualifié complet
+            # Essayer d'abord avec le nom qualifiÃ© complet
             $type = $assembly.GetType($TypeName, $false, $IgnoreCase)
             if ($null -ne $type) {
-                Write-Verbose "Type '$TypeName' trouvé dans l'assembly '$($assembly.FullName)'."
+                Write-Verbose "Type '$TypeName' trouvÃ© dans l'assembly '$($assembly.FullName)'."
                 $matchingTypes += @{
                     Type      = $type
                     Assembly  = $assembly
@@ -242,7 +242,7 @@ function Get-TypeByQualifiedName {
                 }
             }
 
-            # Si le type n'est pas trouvé, essayer de rechercher par espace de noms et nom simple
+            # Si le type n'est pas trouvÃ©, essayer de rechercher par espace de noms et nom simple
             if (-not [string]::IsNullOrEmpty($namespace) -and -not [string]::IsNullOrEmpty($simpleTypeName)) {
                 $types = $assembly.GetTypes() | Where-Object {
                     if ($IgnoreCase) {
@@ -254,7 +254,7 @@ function Get-TypeByQualifiedName {
 
                 if ($null -ne $types -and $types.Count -gt 0) {
                     foreach ($t in $types) {
-                        Write-Verbose "Type '$namespace.$simpleTypeName' trouvé dans l'assembly '$($assembly.FullName)'."
+                        Write-Verbose "Type '$namespace.$simpleTypeName' trouvÃ© dans l'assembly '$($assembly.FullName)'."
                         $matchingTypes += @{
                             Type      = $t
                             Assembly  = $assembly
@@ -269,23 +269,23 @@ function Get-TypeByQualifiedName {
         }
     }
 
-    # Si aucun type n'est trouvé, retourner null ou lever une exception
+    # Si aucun type n'est trouvÃ©, retourner null ou lever une exception
     if ($matchingTypes.Count -eq 0) {
         if ($ThrowOnError) {
-            throw "Le type '$TypeName' n'a pas été trouvé dans les assemblies spécifiées."
+            throw "Le type '$TypeName' n'a pas Ã©tÃ© trouvÃ© dans les assemblies spÃ©cifiÃ©es."
         }
         return $null
     }
 
-    # Si un seul type est trouvé, le retourner directement
+    # Si un seul type est trouvÃ©, le retourner directement
     if ($matchingTypes.Count -eq 1) {
         return $matchingTypes[0].Type
     }
 
-    # Gérer les collisions selon la stratégie spécifiée
-    Write-Verbose "$($matchingTypes.Count) types correspondants trouvés pour '$TypeName'. Résolution selon la stratégie '$ResolveCollisions'."
+    # GÃ©rer les collisions selon la stratÃ©gie spÃ©cifiÃ©e
+    Write-Verbose "$($matchingTypes.Count) types correspondants trouvÃ©s pour '$TypeName'. RÃ©solution selon la stratÃ©gie '$ResolveCollisions'."
 
-    # Trier les types par priorité (assemblies prioritaires d'abord)
+    # Trier les types par prioritÃ© (assemblies prioritaires d'abord)
     $sortedTypes = $matchingTypes | Sort-Object -Property Priority -Descending
 
     switch ($ResolveCollisions) {
@@ -297,24 +297,24 @@ function Get-TypeByQualifiedName {
         }
         "ThrowOnCollision" {
             $assemblies = $sortedTypes | ForEach-Object { $_.Assembly.GetName().Name }
-            throw "Collision détectée pour le type '$TypeName'. Types trouvés dans les assemblies: $($assemblies -join ', ')"
+            throw "Collision dÃ©tectÃ©e pour le type '$TypeName'. Types trouvÃ©s dans les assemblies: $($assemblies -join ', ')"
         }
         "Interactive" {
-            # Afficher les options à l'utilisateur
-            Write-Host "Plusieurs types correspondants trouvés pour '$TypeName':" -ForegroundColor Yellow
+            # Afficher les options Ã  l'utilisateur
+            Write-Host "Plusieurs types correspondants trouvÃ©s pour '$TypeName':" -ForegroundColor Yellow
             for ($i = 0; $i -lt $sortedTypes.Count; $i++) {
                 $t = $sortedTypes[$i]
                 $priority = if ($t.Priority -gt 0) { " (prioritaire)" } else { "" }
                 Write-Host "  $($i+1). $($t.Type.FullName) dans $($t.Assembly.GetName().Name)$priority" -ForegroundColor Cyan
             }
 
-            # Demander à l'utilisateur de choisir
+            # Demander Ã  l'utilisateur de choisir
             $choice = 0
             do {
                 $userInput = Read-Host "Choisissez un type (1-$($sortedTypes.Count)) ou 'q' pour annuler"
                 if ($userInput -eq 'q') {
                     if ($ThrowOnError) {
-                        throw "Sélection annulée par l'utilisateur."
+                        throw "SÃ©lection annulÃ©e par l'utilisateur."
                     }
                     return $null
                 }
@@ -329,15 +329,15 @@ function Get-TypeByQualifiedName {
 .SYNOPSIS
     Convertit un nom de type en ses composants (espace de noms et nom simple).
 .DESCRIPTION
-    Cette fonction convertit un nom de type qualifié en ses composants : l'espace de noms et le nom simple du type.
+    Cette fonction convertit un nom de type qualifiÃ© en ses composants : l'espace de noms et le nom simple du type.
 .PARAMETER TypeName
-    Le nom qualifié du type à convertir.
+    Le nom qualifiÃ© du type Ã  convertir.
 .PARAMETER NormalizeName
-    Indique si le nom du type doit être normalisé (suppression des caractères spéciaux, etc.).
+    Indique si le nom du type doit Ãªtre normalisÃ© (suppression des caractÃ¨res spÃ©ciaux, etc.).
 .EXAMPLE
     $TypeInfo = ConvertFrom-TypeName -TypeName "System.Collections.Generic.List``1"
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés Namespace et TypeName.
+    PSObject - Un objet contenant les propriÃ©tÃ©s Namespace et TypeName.
 #>
 function ConvertFrom-TypeName {
     [CmdletBinding()]
@@ -349,13 +349,13 @@ function ConvertFrom-TypeName {
         [switch]$NormalizeName
     )
 
-    # Initialiser les valeurs par défaut
+    # Initialiser les valeurs par dÃ©faut
     $namespace = ""
     $simpleTypeName = $TypeName
 
-    # Vérifier si le nom du type contient un point (séparateur d'espace de noms)
+    # VÃ©rifier si le nom du type contient un point (sÃ©parateur d'espace de noms)
     if ($TypeName -match '\.') {
-        # Trouver le dernier point pour séparer l'espace de noms du nom de type
+        # Trouver le dernier point pour sÃ©parer l'espace de noms du nom de type
         $lastDotIndex = $TypeName.LastIndexOf('.')
         if ($lastDotIndex -gt 0) {
             $namespace = $TypeName.Substring(0, $lastDotIndex)
@@ -363,14 +363,14 @@ function ConvertFrom-TypeName {
         }
     }
 
-    # Gérer les types génériques (avec des backticks)
+    # GÃ©rer les types gÃ©nÃ©riques (avec des backticks)
     if ($simpleTypeName -match '`') {
-        # Extraire le nom de base du type générique (avant le backtick)
+        # Extraire le nom de base du type gÃ©nÃ©rique (avant le backtick)
         $genericBaseNameMatch = [regex]::Match($simpleTypeName, '^([^`]+)`')
         if ($genericBaseNameMatch.Success) {
             $genericBaseName = $genericBaseNameMatch.Groups[1].Value
 
-            # Extraire le nombre de paramètres de type
+            # Extraire le nombre de paramÃ¨tres de type
             $genericArityMatch = [regex]::Match($simpleTypeName, '`(\d+)')
             if ($genericArityMatch.Success) {
                 $genericArity = [int]::Parse($genericArityMatch.Groups[1].Value)
@@ -381,9 +381,9 @@ function ConvertFrom-TypeName {
         }
     }
 
-    # Normaliser le nom si demandé
+    # Normaliser le nom si demandÃ©
     if ($NormalizeName) {
-        # Supprimer les caractères spéciaux et les espaces
+        # Supprimer les caractÃ¨res spÃ©ciaux et les espaces
         $simpleTypeName = $simpleTypeName -replace '[^a-zA-Z0-9_]', ''
 
         # Normaliser la casse (PascalCase)
@@ -397,7 +397,7 @@ function ConvertFrom-TypeName {
         }
     }
 
-    # Créer et retourner l'objet résultat
+    # CrÃ©er et retourner l'objet rÃ©sultat
     return [PSCustomObject]@{
         Namespace = $namespace
         TypeName  = $simpleTypeName
@@ -408,19 +408,19 @@ function ConvertFrom-TypeName {
 .SYNOPSIS
     Recherche un type dans plusieurs assemblies avec gestion des erreurs.
 .DESCRIPTION
-    Cette fonction recherche un type dans plusieurs assemblies et gère les erreurs de résolution.
+    Cette fonction recherche un type dans plusieurs assemblies et gÃ¨re les erreurs de rÃ©solution.
 .PARAMETER TypeName
-    Le nom qualifié du type à rechercher.
+    Le nom qualifiÃ© du type Ã  rechercher.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles rechercher le type. Si non spécifié, recherche dans toutes les assemblies chargées.
+    Les assemblies dans lesquelles rechercher le type. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER IgnoreCase
-    Indique si la recherche doit être insensible à la casse.
+    Indique si la recherche doit Ãªtre insensible Ã  la casse.
 .PARAMETER IncludeErrors
-    Indique si les erreurs de résolution doivent être incluses dans les résultats.
+    Indique si les erreurs de rÃ©solution doivent Ãªtre incluses dans les rÃ©sultats.
 .EXAMPLE
     $SearchResult = Search-TypeInAssemblies -TypeName "System.String"
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés Type, Assembly et Error.
+    PSObject - Un objet contenant les propriÃ©tÃ©s Type, Assembly et Error.
 #>
 function Search-TypeInAssemblies {
     [CmdletBinding()]
@@ -438,12 +438,12 @@ function Search-TypeInAssemblies {
         [switch]$IncludeErrors
     )
 
-    # Si aucune assembly n'est spécifiée, utiliser toutes les assemblies chargées
+    # Si aucune assembly n'est spÃ©cifiÃ©e, utiliser toutes les assemblies chargÃ©es
     if ($null -eq $Assemblies -or $Assemblies.Count -eq 0) {
         $Assemblies = [AppDomain]::CurrentDomain.GetAssemblies()
     }
 
-    # Initialiser les résultats comme un tableau vide
+    # Initialiser les rÃ©sultats comme un tableau vide
     [System.Collections.ArrayList]$results = @()
 
     # Rechercher le type dans chaque assembly
@@ -468,7 +468,7 @@ function Search-TypeInAssemblies {
         }
     }
 
-    # Si aucun résultat n'est trouvé, retourner un tableau vide plutôt que null
+    # Si aucun rÃ©sultat n'est trouvÃ©, retourner un tableau vide plutÃ´t que null
     if ($null -eq $results -or $results.Count -eq 0) {
         return @()
     }
@@ -478,37 +478,37 @@ function Search-TypeInAssemblies {
 
 <#
 .SYNOPSIS
-    Récupère des informations détaillées sur une erreur de résolution de type.
+    RÃ©cupÃ¨re des informations dÃ©taillÃ©es sur une erreur de rÃ©solution de type.
 .DESCRIPTION
-    Cette fonction analyse les erreurs de résolution de type et fournit des informations détaillées sur l'erreur.
+    Cette fonction analyse les erreurs de rÃ©solution de type et fournit des informations dÃ©taillÃ©es sur l'erreur.
 .PARAMETER TypeName
-    Le nom qualifié du type qui n'a pas pu être résolu.
+    Le nom qualifiÃ© du type qui n'a pas pu Ãªtre rÃ©solu.
 .PARAMETER ErrorInfo
-    Les informations d'erreur à analyser.
+    Les informations d'erreur Ã  analyser.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles le type a été recherché.
+    Les assemblies dans lesquelles le type a Ã©tÃ© recherchÃ©.
 .EXAMPLE
     $ErrorDetails = Get-TypeResolutionError -TypeName "MyNamespace.MyClass" -ErrorInfo $Error[0]
 .OUTPUTS
-    PSObject - Un objet contenant des informations détaillées sur l'erreur.
+    PSObject - Un objet contenant des informations dÃ©taillÃ©es sur l'erreur.
 #>
 
 <#
 .SYNOPSIS
-    Définit un alias de type.
+    DÃ©finit un alias de type.
 .DESCRIPTION
-    Cette fonction définit un alias pour un type, permettant d'utiliser un nom court ou alternatif
-    pour référencer un type avec un nom qualifié complet.
+    Cette fonction dÃ©finit un alias pour un type, permettant d'utiliser un nom court ou alternatif
+    pour rÃ©fÃ©rencer un type avec un nom qualifiÃ© complet.
 .PARAMETER Alias
-    L'alias à définir pour le type.
+    L'alias Ã  dÃ©finir pour le type.
 .PARAMETER TypeName
-    Le nom qualifié complet du type.
+    Le nom qualifiÃ© complet du type.
 .PARAMETER Force
-    Indique si l'alias doit être remplacé s'il existe déjà.
+    Indique si l'alias doit Ãªtre remplacÃ© s'il existe dÃ©jÃ .
 .EXAMPLE
     Set-TypeAlias -Alias "str" -TypeName "System.String"
 .OUTPUTS
-    System.Boolean - True si l'alias a été défini avec succès, False sinon.
+    System.Boolean - True si l'alias a Ã©tÃ© dÃ©fini avec succÃ¨s, False sinon.
 #>
 function Set-TypeAlias {
     [CmdletBinding()]
@@ -523,15 +523,15 @@ function Set-TypeAlias {
         [switch]$Force
     )
 
-    # Vérifier si l'alias existe déjà
+    # VÃ©rifier si l'alias existe dÃ©jÃ 
     if ($script:TypeAliases.ContainsKey($Alias) -and -not $Force) {
-        Write-Warning "L'alias '$Alias' existe déjà pour le type '$($script:TypeAliases[$Alias])'. Utilisez -Force pour remplacer."
+        Write-Warning "L'alias '$Alias' existe dÃ©jÃ  pour le type '$($script:TypeAliases[$Alias])'. Utilisez -Force pour remplacer."
         return $false
     }
 
-    # Définir l'alias
+    # DÃ©finir l'alias
     $script:TypeAliases[$Alias] = $TypeName
-    Write-Verbose "Alias '$Alias' défini pour le type '$TypeName'."
+    Write-Verbose "Alias '$Alias' dÃ©fini pour le type '$TypeName'."
 
     return $true
 }
@@ -540,13 +540,13 @@ function Set-TypeAlias {
 .SYNOPSIS
     Supprime un alias de type.
 .DESCRIPTION
-    Cette fonction supprime un alias de type précédemment défini.
+    Cette fonction supprime un alias de type prÃ©cÃ©demment dÃ©fini.
 .PARAMETER Alias
-    L'alias à supprimer.
+    L'alias Ã  supprimer.
 .EXAMPLE
     Remove-TypeAlias -Alias "str"
 .OUTPUTS
-    System.Boolean - True si l'alias a été supprimé avec succès, False sinon.
+    System.Boolean - True si l'alias a Ã©tÃ© supprimÃ© avec succÃ¨s, False sinon.
 #>
 function Remove-TypeAlias {
     [CmdletBinding()]
@@ -555,7 +555,7 @@ function Remove-TypeAlias {
         [string]$Alias
     )
 
-    # Vérifier si l'alias existe
+    # VÃ©rifier si l'alias existe
     if (-not $script:TypeAliases.ContainsKey($Alias)) {
         Write-Warning "L'alias '$Alias' n'existe pas."
         return $false
@@ -563,25 +563,25 @@ function Remove-TypeAlias {
 
     # Supprimer l'alias
     $script:TypeAliases.Remove($Alias) | Out-Null
-    Write-Verbose "Alias '$Alias' supprimé."
+    Write-Verbose "Alias '$Alias' supprimÃ©."
 
     return $true
 }
 
 <#
 .SYNOPSIS
-    Obtient un alias de type ou tous les alias définis.
+    Obtient un alias de type ou tous les alias dÃ©finis.
 .DESCRIPTION
-    Cette fonction retourne un alias de type spécifique ou tous les alias définis.
+    Cette fonction retourne un alias de type spÃ©cifique ou tous les alias dÃ©finis.
 .PARAMETER Alias
-    L'alias à obtenir. Si non spécifié, retourne tous les alias.
+    L'alias Ã  obtenir. Si non spÃ©cifiÃ©, retourne tous les alias.
 .EXAMPLE
     $TypeName = Get-TypeAlias -Alias "str"
 .EXAMPLE
     $AllAliases = Get-TypeAlias
 .OUTPUTS
-    System.String - Le nom qualifié complet du type associé à l'alias, ou $null si l'alias n'existe pas.
-    System.Collections.Hashtable - Tous les alias définis si aucun alias n'est spécifié.
+    System.String - Le nom qualifiÃ© complet du type associÃ© Ã  l'alias, ou $null si l'alias n'existe pas.
+    System.Collections.Hashtable - Tous les alias dÃ©finis si aucun alias n'est spÃ©cifiÃ©.
 #>
 function Get-TypeAlias {
     [CmdletBinding()]
@@ -590,32 +590,32 @@ function Get-TypeAlias {
         [string]$Alias
     )
 
-    # Si aucun alias n'est spécifié, retourner tous les alias
+    # Si aucun alias n'est spÃ©cifiÃ©, retourner tous les alias
     if ([string]::IsNullOrEmpty($Alias)) {
         return $script:TypeAliases.Clone()
     }
 
-    # Vérifier si l'alias existe
+    # VÃ©rifier si l'alias existe
     if (-not $script:TypeAliases.ContainsKey($Alias)) {
         Write-Warning "L'alias '$Alias' n'existe pas."
         return $null
     }
 
-    # Retourner le nom qualifié complet du type associé à l'alias
+    # Retourner le nom qualifiÃ© complet du type associÃ© Ã  l'alias
     return $script:TypeAliases[$Alias]
 }
 
 <#
 .SYNOPSIS
-    Résout un nom de type en utilisant les alias définis.
+    RÃ©sout un nom de type en utilisant les alias dÃ©finis.
 .DESCRIPTION
-    Cette fonction résout un nom de type en utilisant les alias définis, retournant le nom qualifié complet du type.
+    Cette fonction rÃ©sout un nom de type en utilisant les alias dÃ©finis, retournant le nom qualifiÃ© complet du type.
 .PARAMETER TypeName
-    Le nom du type à résoudre, qui peut être un alias ou un nom qualifié complet.
+    Le nom du type Ã  rÃ©soudre, qui peut Ãªtre un alias ou un nom qualifiÃ© complet.
 .EXAMPLE
     $ResolvedTypeName = Resolve-TypeAlias -TypeName "str"
 .OUTPUTS
-    System.String - Le nom qualifié complet du type résolu, ou le nom d'origine si aucun alias ne correspond.
+    System.String - Le nom qualifiÃ© complet du type rÃ©solu, ou le nom d'origine si aucun alias ne correspond.
 #>
 function Resolve-TypeAlias {
     [CmdletBinding()]
@@ -624,9 +624,9 @@ function Resolve-TypeAlias {
         [string]$TypeName
     )
 
-    # Vérifier si le nom est un alias
+    # VÃ©rifier si le nom est un alias
     if ($script:TypeAliases.ContainsKey($TypeName)) {
-        Write-Verbose "Alias '$TypeName' résolu en '$($script:TypeAliases[$TypeName])'."
+        Write-Verbose "Alias '$TypeName' rÃ©solu en '$($script:TypeAliases[$TypeName])'."
         return $script:TypeAliases[$TypeName]
     }
 
@@ -640,13 +640,13 @@ function Resolve-TypeAlias {
 .DESCRIPTION
     Cette fonction importe des alias de types depuis un fichier JSON.
 .PARAMETER Path
-    Le chemin du fichier JSON contenant les alias à importer.
+    Le chemin du fichier JSON contenant les alias Ã  importer.
 .PARAMETER Force
-    Indique si les alias existants doivent être remplacés.
+    Indique si les alias existants doivent Ãªtre remplacÃ©s.
 .EXAMPLE
     Import-TypeAliases -Path "C:\Aliases\TypeAliases.json"
 .OUTPUTS
-    System.Int32 - Le nombre d'alias importés.
+    System.Int32 - Le nombre d'alias importÃ©s.
 #>
 function Import-TypeAliases {
     [CmdletBinding()]
@@ -658,7 +658,7 @@ function Import-TypeAliases {
         [switch]$Force
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Error "Le fichier '$Path' n'existe pas."
         return 0
@@ -685,7 +685,7 @@ function Import-TypeAliases {
         }
     }
 
-    Write-Verbose "$importedCount alias importés depuis '$Path'."
+    Write-Verbose "$importedCount alias importÃ©s depuis '$Path'."
     return $importedCount
 }
 
@@ -695,13 +695,13 @@ function Import-TypeAliases {
 .DESCRIPTION
     Cette fonction exporte des alias de types vers un fichier JSON.
 .PARAMETER Path
-    Le chemin du fichier JSON où exporter les alias.
+    Le chemin du fichier JSON oÃ¹ exporter les alias.
 .PARAMETER Force
-    Indique si le fichier doit être remplacé s'il existe déjà.
+    Indique si le fichier doit Ãªtre remplacÃ© s'il existe dÃ©jÃ .
 .EXAMPLE
     Export-TypeAliases -Path "C:\Aliases\TypeAliases.json"
 .OUTPUTS
-    System.Int32 - Le nombre d'alias exportés.
+    System.Int32 - Le nombre d'alias exportÃ©s.
 #>
 function Export-TypeAliases {
     [CmdletBinding()]
@@ -713,10 +713,10 @@ function Export-TypeAliases {
         [switch]$Force
     )
 
-    # Vérifier si le fichier existe déjà
+    # VÃ©rifier si le fichier existe dÃ©jÃ 
     if (Test-Path -Path $Path) {
         if (-not $Force) {
-            Write-Error "Le fichier '$Path' existe déjà. Utilisez -Force pour remplacer."
+            Write-Error "Le fichier '$Path' existe dÃ©jÃ . Utilisez -Force pour remplacer."
             return 0
         }
     }
@@ -731,28 +731,28 @@ function Export-TypeAliases {
         return 0
     }
 
-    Write-Verbose "$($aliases.Count) alias exportés vers '$Path'."
+    Write-Verbose "$($aliases.Count) alias exportÃ©s vers '$Path'."
     return $aliases.Count
 }
 
 <#
 .SYNOPSIS
-    Récupère un type non-public par son nom qualifié.
+    RÃ©cupÃ¨re un type non-public par son nom qualifiÃ©.
 .DESCRIPTION
-    Cette fonction récupère un type non-public (interne, privé, etc.) par son nom qualifié,
-    en utilisant la réflexion avancée pour accéder aux types non-publics.
+    Cette fonction rÃ©cupÃ¨re un type non-public (interne, privÃ©, etc.) par son nom qualifiÃ©,
+    en utilisant la rÃ©flexion avancÃ©e pour accÃ©der aux types non-publics.
 .PARAMETER TypeName
-    Le nom qualifié du type non-public à récupérer.
+    Le nom qualifiÃ© du type non-public Ã  rÃ©cupÃ©rer.
 .PARAMETER Assembly
-    L'assembly dans laquelle rechercher le type. Si non spécifié, recherche dans toutes les assemblies chargées.
+    L'assembly dans laquelle rechercher le type. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER IncludeNestedTypes
-    Indique si les types imbriqués doivent être inclus dans la recherche.
+    Indique si les types imbriquÃ©s doivent Ãªtre inclus dans la recherche.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur de résolution.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur de rÃ©solution.
 .EXAMPLE
     $Type = Get-NonPublicType -TypeName "System.RuntimeType+RuntimeTypeCache"
 .OUTPUTS
-    System.Type - Le type non-public récupéré, ou $null si le type n'a pas été trouvé et ThrowOnError est $false.
+    System.Type - Le type non-public rÃ©cupÃ©rÃ©, ou $null si le type n'a pas Ã©tÃ© trouvÃ© et ThrowOnError est $false.
 #>
 function Get-NonPublicType {
     [CmdletBinding()]
@@ -770,7 +770,7 @@ function Get-NonPublicType {
         [switch]$ThrowOnError
     )
 
-    # Déterminer les assemblies à rechercher
+    # DÃ©terminer les assemblies Ã  rechercher
     $assemblies = @()
     if ($null -ne $Assembly) {
         $assemblies += $Assembly
@@ -778,7 +778,7 @@ function Get-NonPublicType {
         $assemblies += [AppDomain]::CurrentDomain.GetAssemblies()
     }
 
-    # Analyser le nom du type pour détecter les types imbriqués
+    # Analyser le nom du type pour dÃ©tecter les types imbriquÃ©s
     $isNestedType = $TypeName -match '\+'
     $parentTypeName = $null
     $nestedTypeName = $null
@@ -789,14 +789,14 @@ function Get-NonPublicType {
         $nestedTypeName = $typeParts[1]
     }
 
-    # Rechercher le type dans les assemblies spécifiées
+    # Rechercher le type dans les assemblies spÃ©cifiÃ©es
     foreach ($asm in $assemblies) {
         try {
-            # Si c'est un type imbriqué, rechercher d'abord le type parent
+            # Si c'est un type imbriquÃ©, rechercher d'abord le type parent
             if ($isNestedType) {
                 $parentType = $asm.GetType($parentTypeName, $false, $true)
                 if ($null -ne $parentType) {
-                    # Rechercher le type imbriqué dans le type parent
+                    # Rechercher le type imbriquÃ© dans le type parent
                     $bindingFlags = [System.Reflection.BindingFlags]::NonPublic -bor
                     [System.Reflection.BindingFlags]::Public -bor
                     [System.Reflection.BindingFlags]::Instance -bor
@@ -804,20 +804,20 @@ function Get-NonPublicType {
 
                     $nestedType = $parentType.GetNestedType($nestedTypeName, $bindingFlags)
                     if ($null -ne $nestedType) {
-                        Write-Verbose "Type imbriqué non-public '$TypeName' trouvé dans l'assembly '$($asm.FullName)'."
+                        Write-Verbose "Type imbriquÃ© non-public '$TypeName' trouvÃ© dans l'assembly '$($asm.FullName)'."
                         return $nestedType
                     }
                 }
             } else {
-                # Essayer de récupérer tous les types de l'assembly, y compris les types non-publics
+                # Essayer de rÃ©cupÃ©rer tous les types de l'assembly, y compris les types non-publics
                 $types = $asm.GetTypes() | Where-Object { $_.FullName -eq $TypeName -or $_.Name -eq $TypeName }
 
                 if ($null -ne $types -and $types.Count -gt 0) {
-                    Write-Verbose "Type non-public '$TypeName' trouvé dans l'assembly '$($asm.FullName)'."
+                    Write-Verbose "Type non-public '$TypeName' trouvÃ© dans l'assembly '$($asm.FullName)'."
                     return $types[0]
                 }
 
-                # Si IncludeNestedTypes est spécifié, rechercher dans les types imbriqués
+                # Si IncludeNestedTypes est spÃ©cifiÃ©, rechercher dans les types imbriquÃ©s
                 if ($IncludeNestedTypes) {
                     $allTypes = $asm.GetTypes()
                     foreach ($type in $allTypes) {
@@ -830,7 +830,7 @@ function Get-NonPublicType {
                         $matchingNestedType = $nestedTypes | Where-Object { $_.Name -eq $TypeName -or $_.FullName -eq $TypeName }
 
                         if ($null -ne $matchingNestedType -and $matchingNestedType.Count -gt 0) {
-                            Write-Verbose "Type imbriqué non-public '$TypeName' trouvé dans l'assembly '$($asm.FullName)'."
+                            Write-Verbose "Type imbriquÃ© non-public '$TypeName' trouvÃ© dans l'assembly '$($asm.FullName)'."
                             return $matchingNestedType[0]
                         }
                     }
@@ -841,13 +841,13 @@ function Get-NonPublicType {
         }
     }
 
-    # Si le type n'est pas trouvé et ThrowOnError est spécifié, lever une exception
+    # Si le type n'est pas trouvÃ© et ThrowOnError est spÃ©cifiÃ©, lever une exception
     if ($ThrowOnError) {
-        throw "Le type non-public '$TypeName' n'a pas été trouvé dans les assemblies spécifiées."
+        throw "Le type non-public '$TypeName' n'a pas Ã©tÃ© trouvÃ© dans les assemblies spÃ©cifiÃ©es."
     }
 
     # Sinon, retourner null
-    Write-Verbose "Le type non-public '$TypeName' n'a pas été trouvé."
+    Write-Verbose "Le type non-public '$TypeName' n'a pas Ã©tÃ© trouvÃ©."
     return $null
 }
 
@@ -868,22 +868,22 @@ function Get-TypeResolutionError {
     $errorMessage = $ErrorInfo.Exception.Message
     $errorType = $ErrorInfo.Exception.GetType().Name
 
-    # Déterminer le type d'erreur
+    # DÃ©terminer le type d'erreur
     $errorCategory = "Unknown"
     $suggestion = ""
 
     if ($errorMessage -match "Could not load file or assembly") {
         $errorCategory = "AssemblyLoadError"
-        $suggestion = "Vérifiez que l'assembly est accessible et que toutes ses dépendances sont satisfaites."
+        $suggestion = "VÃ©rifiez que l'assembly est accessible et que toutes ses dÃ©pendances sont satisfaites."
     } elseif ($errorMessage -match "The type or namespace name .* could not be found") {
         $errorCategory = "TypeNotFoundError"
-        $suggestion = "Vérifiez l'orthographe du nom de type et assurez-vous que l'assembly contenant ce type est chargé."
+        $suggestion = "VÃ©rifiez l'orthographe du nom de type et assurez-vous que l'assembly contenant ce type est chargÃ©."
     } elseif ($errorMessage -match "Ambiguous match found") {
         $errorCategory = "AmbiguousMatchError"
-        $suggestion = "Utilisez le nom qualifié complet du type pour éviter les ambiguïtés."
+        $suggestion = "Utilisez le nom qualifiÃ© complet du type pour Ã©viter les ambiguÃ¯tÃ©s."
     }
 
-    # Créer l'objet de détails d'erreur
+    # CrÃ©er l'objet de dÃ©tails d'erreur
     $errorDetails = [PSCustomObject]@{
         TypeName           = $TypeName
         ErrorMessage       = $errorMessage
@@ -899,23 +899,23 @@ function Get-TypeResolutionError {
 
 <#
 .SYNOPSIS
-    Recherche des types par expression régulière.
+    Recherche des types par expression rÃ©guliÃ¨re.
 .DESCRIPTION
-    Cette fonction recherche des types dont le nom correspond à une expression régulière spécifiée.
+    Cette fonction recherche des types dont le nom correspond Ã  une expression rÃ©guliÃ¨re spÃ©cifiÃ©e.
 .PARAMETER Pattern
-    L'expression régulière à utiliser pour la recherche.
+    L'expression rÃ©guliÃ¨re Ã  utiliser pour la recherche.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles rechercher les types. Si non spécifié, recherche dans toutes les assemblies chargées.
+    Les assemblies dans lesquelles rechercher les types. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER SearchFullName
-    Indique si la recherche doit porter sur le nom qualifié complet du type (espace de noms + nom).
+    Indique si la recherche doit porter sur le nom qualifiÃ© complet du type (espace de noms + nom).
 .PARAMETER IgnoreCase
-    Indique si la recherche doit être insensible à la casse.
+    Indique si la recherche doit Ãªtre insensible Ã  la casse.
 .PARAMETER MaxResults
-    Le nombre maximum de résultats à retourner. Si non spécifié, retourne tous les résultats.
+    Le nombre maximum de rÃ©sultats Ã  retourner. Si non spÃ©cifiÃ©, retourne tous les rÃ©sultats.
 .EXAMPLE
     $Types = Find-TypesByRegex -Pattern "^System\.Collections\.Generic\..*Dictionary.*$"
 .OUTPUTS
-    System.Type[] - Les types correspondant à l'expression régulière spécifiée.
+    System.Type[] - Les types correspondant Ã  l'expression rÃ©guliÃ¨re spÃ©cifiÃ©e.
 #>
 function Find-TypesByRegex {
     [CmdletBinding()]
@@ -936,12 +936,12 @@ function Find-TypesByRegex {
         [int]$MaxResults = 0
     )
 
-    # Si aucune assembly n'est spécifiée, utiliser toutes les assemblies chargées
+    # Si aucune assembly n'est spÃ©cifiÃ©e, utiliser toutes les assemblies chargÃ©es
     if ($null -eq $Assemblies -or $Assemblies.Count -eq 0) {
         $Assemblies = [AppDomain]::CurrentDomain.GetAssemblies()
     }
 
-    # Créer l'expression régulière
+    # CrÃ©er l'expression rÃ©guliÃ¨re
     $regexOptions = [System.Text.RegularExpressions.RegexOptions]::Compiled
     if ($IgnoreCase) {
         $regexOptions = $regexOptions -bor [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
@@ -950,7 +950,7 @@ function Find-TypesByRegex {
     try {
         $regex = New-Object System.Text.RegularExpressions.Regex($Pattern, $regexOptions)
     } catch {
-        Write-Error "Erreur lors de la création de l'expression régulière: $($_.Exception.Message)"
+        Write-Error "Erreur lors de la crÃ©ation de l'expression rÃ©guliÃ¨re: $($_.Exception.Message)"
         return @()
     }
 
@@ -963,17 +963,17 @@ function Find-TypesByRegex {
             $types = $assembly.GetTypes()
 
             foreach ($type in $types) {
-                # Déterminer la chaîne à rechercher
+                # DÃ©terminer la chaÃ®ne Ã  rechercher
                 $searchString = if ($SearchFullName) { $type.FullName } else { $type.Name }
 
-                # Vérifier si le type correspond à l'expression régulière
+                # VÃ©rifier si le type correspond Ã  l'expression rÃ©guliÃ¨re
                 if ($regex.IsMatch($searchString)) {
                     $result += $type
                     $count++
 
-                    # Vérifier si le nombre maximum de résultats est atteint
+                    # VÃ©rifier si le nombre maximum de rÃ©sultats est atteint
                     if ($MaxResults -gt 0 -and $count -ge $MaxResults) {
-                        Write-Verbose "Nombre maximum de résultats atteint ($MaxResults)."
+                        Write-Verbose "Nombre maximum de rÃ©sultats atteint ($MaxResults)."
                         return $result
                     }
                 }
@@ -983,7 +983,7 @@ function Find-TypesByRegex {
         }
     }
 
-    Write-Verbose "$count types correspondant à l'expression régulière '$Pattern' trouvés."
+    Write-Verbose "$count types correspondant Ã  l'expression rÃ©guliÃ¨re '$Pattern' trouvÃ©s."
     return $result
 }
 
@@ -991,22 +991,22 @@ function Find-TypesByRegex {
 .SYNOPSIS
     Charge une assembly depuis un chemin de fichier.
 .DESCRIPTION
-    Cette fonction charge une assembly depuis un chemin de fichier, avec des options pour la résolution des dépendances
-    et le chargement en contexte isolé.
+    Cette fonction charge une assembly depuis un chemin de fichier, avec des options pour la rÃ©solution des dÃ©pendances
+    et le chargement en contexte isolÃ©.
 .PARAMETER Path
-    Le chemin du fichier d'assembly à charger.
+    Le chemin du fichier d'assembly Ã  charger.
 .PARAMETER ResolveReferences
-    Indique si les références de l'assembly doivent être résolues automatiquement.
+    Indique si les rÃ©fÃ©rences de l'assembly doivent Ãªtre rÃ©solues automatiquement.
 .PARAMETER IsolatedContext
-    Indique si l'assembly doit être chargée dans un contexte isolé.
+    Indique si l'assembly doit Ãªtre chargÃ©e dans un contexte isolÃ©.
 .PARAMETER ReferencePaths
-    Les chemins où rechercher les assemblies référencées.
+    Les chemins oÃ¹ rechercher les assemblies rÃ©fÃ©rencÃ©es.
 .EXAMPLE
     $Assembly = Import-Assembly -Path "C:\MyAssemblies\MyLibrary.dll"
 .EXAMPLE
     $Assembly = Import-Assembly -Path "C:\MyAssemblies\MyLibrary.dll" -ResolveReferences -ReferencePaths "C:\References"
 .OUTPUTS
-    System.Reflection.Assembly - L'assembly chargée.
+    System.Reflection.Assembly - L'assembly chargÃ©e.
 #>
 function Import-Assembly {
     [CmdletBinding()]
@@ -1024,7 +1024,7 @@ function Import-Assembly {
         [string[]]$ReferencePaths
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Error "Le fichier d'assembly '$Path' n'existe pas."
         return $null
@@ -1034,16 +1034,16 @@ function Import-Assembly {
         # Obtenir le chemin absolu
         $absolutePath = (Resolve-Path -Path $Path).Path
 
-        # Créer un gestionnaire de résolution des dépendances si nécessaire
+        # CrÃ©er un gestionnaire de rÃ©solution des dÃ©pendances si nÃ©cessaire
         if ($ResolveReferences) {
-            # Créer un gestionnaire d'événements pour la résolution des assemblies
+            # CrÃ©er un gestionnaire d'Ã©vÃ©nements pour la rÃ©solution des assemblies
             $resolveEventHandler = {
                 param($senderObj, $resolveArgs)
 
                 $assemblyName = $resolveArgs.Name
-                Write-Verbose "Tentative de résolution de l'assembly: $assemblyName"
+                Write-Verbose "Tentative de rÃ©solution de l'assembly: $assemblyName"
 
-                # Rechercher dans les chemins de référence spécifiés
+                # Rechercher dans les chemins de rÃ©fÃ©rence spÃ©cifiÃ©s
                 if ($null -ne $ReferencePaths -and $ReferencePaths.Count -gt 0) {
                     foreach ($refPath in $ReferencePaths) {
                         if (-not (Test-Path -Path $refPath -PathType Container)) {
@@ -1059,28 +1059,28 @@ function Import-Assembly {
                         # Rechercher le fichier DLL
                         $dllPath = Join-Path -Path $refPath -ChildPath "$simpleName.dll"
                         if (Test-Path -Path $dllPath) {
-                            Write-Verbose "Assembly '$assemblyName' résolue à '$dllPath'."
+                            Write-Verbose "Assembly '$assemblyName' rÃ©solue Ã  '$dllPath'."
                             return [System.Reflection.Assembly]::LoadFrom($dllPath)
                         }
                     }
                 }
 
-                # Essayer de résoudre l'assembly par son nom
+                # Essayer de rÃ©soudre l'assembly par son nom
                 try {
                     return [System.Reflection.Assembly]::Load($assemblyName)
                 } catch {
-                    Write-Verbose "Impossible de résoudre l'assembly '$assemblyName': $($_.Exception.Message)"
+                    Write-Verbose "Impossible de rÃ©soudre l'assembly '$assemblyName': $($_.Exception.Message)"
                     return $null
                 }
             }
 
-            # Ajouter le gestionnaire d'événements
+            # Ajouter le gestionnaire d'Ã©vÃ©nements
             [System.AppDomain]::CurrentDomain.add_AssemblyResolve($resolveEventHandler)
         }
 
         # Charger l'assembly
         $assembly = if ($IsolatedContext) {
-            # Créer un contexte de chargement isolé
+            # CrÃ©er un contexte de chargement isolÃ©
             $context = [System.Reflection.Assembly]::LoadFile($absolutePath)
             $context
         } else {
@@ -1088,13 +1088,13 @@ function Import-Assembly {
             [System.Reflection.Assembly]::LoadFrom($absolutePath)
         }
 
-        Write-Verbose "Assembly '$Path' chargée avec succès."
+        Write-Verbose "Assembly '$Path' chargÃ©e avec succÃ¨s."
         return $assembly
     } catch {
         Write-Error "Erreur lors du chargement de l'assembly '$Path': $($_.Exception.Message)"
         return $null
     } finally {
-        # Supprimer le gestionnaire d'événements si nécessaire
+        # Supprimer le gestionnaire d'Ã©vÃ©nements si nÃ©cessaire
         if ($ResolveReferences) {
             [System.AppDomain]::CurrentDomain.remove_AssemblyResolve($resolveEventHandler)
         }
@@ -1103,26 +1103,26 @@ function Import-Assembly {
 
 <#
 .SYNOPSIS
-    Charge une assembly depuis un flux de données.
+    Charge une assembly depuis un flux de donnÃ©es.
 .DESCRIPTION
-    Cette fonction charge une assembly depuis un flux de données, avec des options pour la résolution des dépendances
-    et le chargement en contexte isolé.
+    Cette fonction charge une assembly depuis un flux de donnÃ©es, avec des options pour la rÃ©solution des dÃ©pendances
+    et le chargement en contexte isolÃ©.
 .PARAMETER Stream
-    Le flux de données contenant l'assembly à charger.
+    Le flux de donnÃ©es contenant l'assembly Ã  charger.
 .PARAMETER SymbolStream
-    Le flux de données contenant les symboles de débogage (PDB) de l'assembly.
+    Le flux de donnÃ©es contenant les symboles de dÃ©bogage (PDB) de l'assembly.
 .PARAMETER ResolveReferences
-    Indique si les références de l'assembly doivent être résolues automatiquement.
+    Indique si les rÃ©fÃ©rences de l'assembly doivent Ãªtre rÃ©solues automatiquement.
 .PARAMETER IsolatedContext
-    Indique si l'assembly doit être chargée dans un contexte isolé.
+    Indique si l'assembly doit Ãªtre chargÃ©e dans un contexte isolÃ©.
 .PARAMETER ReferencePaths
-    Les chemins où rechercher les assemblies référencées.
+    Les chemins oÃ¹ rechercher les assemblies rÃ©fÃ©rencÃ©es.
 .EXAMPLE
     $Assembly = Import-AssemblyFromStream -Stream $stream
 .EXAMPLE
     $Assembly = Import-AssemblyFromStream -Stream $stream -SymbolStream $symbolStream -ResolveReferences
 .OUTPUTS
-    System.Reflection.Assembly - L'assembly chargée.
+    System.Reflection.Assembly - L'assembly chargÃ©e.
 #>
 function Import-AssemblyFromStream {
     [CmdletBinding()]
@@ -1144,12 +1144,12 @@ function Import-AssemblyFromStream {
     )
 
     try {
-        # Lire les données du flux
+        # Lire les donnÃ©es du flux
         $assemblyData = New-Object byte[] $Stream.Length
         $Stream.Read($assemblyData, 0, $Stream.Length) | Out-Null
         $Stream.Position = 0
 
-        # Lire les données des symboles si spécifié
+        # Lire les donnÃ©es des symboles si spÃ©cifiÃ©
         $symbolData = $null
         if ($null -ne $SymbolStream) {
             $symbolData = New-Object byte[] $SymbolStream.Length
@@ -1157,16 +1157,16 @@ function Import-AssemblyFromStream {
             $SymbolStream.Position = 0
         }
 
-        # Créer un gestionnaire de résolution des dépendances si nécessaire
+        # CrÃ©er un gestionnaire de rÃ©solution des dÃ©pendances si nÃ©cessaire
         if ($ResolveReferences) {
-            # Créer un gestionnaire d'événements pour la résolution des assemblies
+            # CrÃ©er un gestionnaire d'Ã©vÃ©nements pour la rÃ©solution des assemblies
             $resolveEventHandler = {
                 param($senderObj, $resolveArgs)
 
                 $assemblyName = $resolveArgs.Name
-                Write-Verbose "Tentative de résolution de l'assembly: $assemblyName"
+                Write-Verbose "Tentative de rÃ©solution de l'assembly: $assemblyName"
 
-                # Rechercher dans les chemins de référence spécifiés
+                # Rechercher dans les chemins de rÃ©fÃ©rence spÃ©cifiÃ©s
                 if ($null -ne $ReferencePaths -and $ReferencePaths.Count -gt 0) {
                     foreach ($refPath in $ReferencePaths) {
                         if (-not (Test-Path -Path $refPath -PathType Container)) {
@@ -1182,22 +1182,22 @@ function Import-AssemblyFromStream {
                         # Rechercher le fichier DLL
                         $dllPath = Join-Path -Path $refPath -ChildPath "$simpleName.dll"
                         if (Test-Path -Path $dllPath) {
-                            Write-Verbose "Assembly '$assemblyName' résolue à '$dllPath'."
+                            Write-Verbose "Assembly '$assemblyName' rÃ©solue Ã  '$dllPath'."
                             return [System.Reflection.Assembly]::LoadFrom($dllPath)
                         }
                     }
                 }
 
-                # Essayer de résoudre l'assembly par son nom
+                # Essayer de rÃ©soudre l'assembly par son nom
                 try {
                     return [System.Reflection.Assembly]::Load($assemblyName)
                 } catch {
-                    Write-Verbose "Impossible de résoudre l'assembly '$assemblyName': $($_.Exception.Message)"
+                    Write-Verbose "Impossible de rÃ©soudre l'assembly '$assemblyName': $($_.Exception.Message)"
                     return $null
                 }
             }
 
-            # Ajouter le gestionnaire d'événements
+            # Ajouter le gestionnaire d'Ã©vÃ©nements
             [System.AppDomain]::CurrentDomain.add_AssemblyResolve($resolveEventHandler)
         }
 
@@ -1210,13 +1210,13 @@ function Import-AssemblyFromStream {
             [System.Reflection.Assembly]::Load($assemblyData)
         }
 
-        Write-Verbose "Assembly chargée avec succès depuis le flux."
+        Write-Verbose "Assembly chargÃ©e avec succÃ¨s depuis le flux."
         return $assembly
     } catch {
         Write-Error "Erreur lors du chargement de l'assembly depuis le flux: $($_.Exception.Message)"
         return $null
     } finally {
-        # Supprimer le gestionnaire d'événements si nécessaire
+        # Supprimer le gestionnaire d'Ã©vÃ©nements si nÃ©cessaire
         if ($ResolveReferences) {
             [System.AppDomain]::CurrentDomain.remove_AssemblyResolve($resolveEventHandler)
         }
@@ -1227,21 +1227,21 @@ function Import-AssemblyFromStream {
 .SYNOPSIS
     Recherche des types par espace de noms.
 .DESCRIPTION
-    Cette fonction recherche des types dans un espace de noms spécifié, avec des options de filtrage et de recherche hiérarchique.
+    Cette fonction recherche des types dans un espace de noms spÃ©cifiÃ©, avec des options de filtrage et de recherche hiÃ©rarchique.
 .PARAMETER Namespace
     L'espace de noms dans lequel rechercher les types.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles rechercher les types. Si non spécifié, recherche dans toutes les assemblies chargées.
+    Les assemblies dans lesquelles rechercher les types. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER IncludeSubNamespaces
-    Indique si les sous-espaces de noms doivent être inclus dans la recherche.
+    Indique si les sous-espaces de noms doivent Ãªtre inclus dans la recherche.
 .PARAMETER Filter
-    Un filtre pour limiter les types retournés (ex: "*Controller", "I*Repository").
+    Un filtre pour limiter les types retournÃ©s (ex: "*Controller", "I*Repository").
 .PARAMETER IgnoreCase
-    Indique si la recherche doit être insensible à la casse.
+    Indique si la recherche doit Ãªtre insensible Ã  la casse.
 .EXAMPLE
     $Types = Find-TypesByNamespace -Namespace "System.Collections.Generic" -Filter "*Dictionary*"
 .OUTPUTS
-    System.Type[] - Les types trouvés dans l'espace de noms spécifié.
+    System.Type[] - Les types trouvÃ©s dans l'espace de noms spÃ©cifiÃ©.
 #>
 function Find-TypesByNamespace {
     [CmdletBinding()]
@@ -1262,12 +1262,12 @@ function Find-TypesByNamespace {
         [switch]$IgnoreCase
     )
 
-    # Si aucune assembly n'est spécifiée, utiliser toutes les assemblies chargées
+    # Si aucune assembly n'est spÃ©cifiÃ©e, utiliser toutes les assemblies chargÃ©es
     if ($null -eq $Assemblies -or $Assemblies.Count -eq 0) {
         $Assemblies = [AppDomain]::CurrentDomain.GetAssemblies()
     }
 
-    # Créer un index des types par espace de noms
+    # CrÃ©er un index des types par espace de noms
     $namespaceIndex = @{}
 
     foreach ($assembly in $Assemblies) {
@@ -1280,7 +1280,7 @@ function Find-TypesByNamespace {
                     continue
                 }
 
-                # Ajouter le type à l'index
+                # Ajouter le type Ã  l'index
                 if (-not $namespaceIndex.ContainsKey($type.Namespace)) {
                     $namespaceIndex[$type.Namespace] = @()
                 }
@@ -1292,14 +1292,14 @@ function Find-TypesByNamespace {
         }
     }
 
-    # Rechercher les types dans l'espace de noms spécifié
+    # Rechercher les types dans l'espace de noms spÃ©cifiÃ©
     $result = @()
 
-    # Déterminer les espaces de noms à inclure
+    # DÃ©terminer les espaces de noms Ã  inclure
     $namespacesToSearch = @()
 
     if ($IncludeSubNamespaces) {
-        # Inclure l'espace de noms spécifié et tous ses sous-espaces de noms
+        # Inclure l'espace de noms spÃ©cifiÃ© et tous ses sous-espaces de noms
         $namespacesToSearch = $namespaceIndex.Keys | Where-Object {
             if ($IgnoreCase) {
                 $_ -eq $Namespace -or $_.StartsWith("$Namespace.", [StringComparison]::OrdinalIgnoreCase)
@@ -1308,7 +1308,7 @@ function Find-TypesByNamespace {
             }
         }
     } else {
-        # Inclure uniquement l'espace de noms spécifié
+        # Inclure uniquement l'espace de noms spÃ©cifiÃ©
         $namespacesToSearch = $namespaceIndex.Keys | Where-Object {
             if ($IgnoreCase) {
                 $_ -eq $Namespace
@@ -1318,11 +1318,11 @@ function Find-TypesByNamespace {
         }
     }
 
-    # Ajouter les types des espaces de noms sélectionnés
+    # Ajouter les types des espaces de noms sÃ©lectionnÃ©s
     foreach ($ns in $namespacesToSearch) {
         $typesInNamespace = $namespaceIndex[$ns]
 
-        # Appliquer le filtre si spécifié
+        # Appliquer le filtre si spÃ©cifiÃ©
         if (-not [string]::IsNullOrEmpty($Filter)) {
             if ($Filter -match '\*') {
                 # Utiliser un filtre de type wildcard
@@ -1357,24 +1357,24 @@ function Find-TypesByNamespace {
 
 <#
 .SYNOPSIS
-    Crée un type générique avec les arguments de type spécifiés.
+    CrÃ©e un type gÃ©nÃ©rique avec les arguments de type spÃ©cifiÃ©s.
 .DESCRIPTION
-    Cette fonction crée un type générique avec les arguments de type spécifiés, en résolvant
-    automatiquement les types génériques et leurs arguments.
+    Cette fonction crÃ©e un type gÃ©nÃ©rique avec les arguments de type spÃ©cifiÃ©s, en rÃ©solvant
+    automatiquement les types gÃ©nÃ©riques et leurs arguments.
 .PARAMETER GenericTypeName
-    Le nom qualifié complet du type générique (sans les arguments de type).
+    Le nom qualifiÃ© complet du type gÃ©nÃ©rique (sans les arguments de type).
 .PARAMETER TypeArguments
-    Les arguments de type à utiliser pour construire le type générique.
+    Les arguments de type Ã  utiliser pour construire le type gÃ©nÃ©rique.
 .PARAMETER Assemblies
-    Les assemblies dans lesquelles rechercher le type générique. Si non spécifié, recherche dans toutes les assemblies chargées.
+    Les assemblies dans lesquelles rechercher le type gÃ©nÃ©rique. Si non spÃ©cifiÃ©, recherche dans toutes les assemblies chargÃ©es.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur de résolution.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur de rÃ©solution.
 .EXAMPLE
     $ListOfString = New-GenericType -GenericTypeName "System.Collections.Generic.List" -TypeArguments ([string])
 .EXAMPLE
     $DictionaryOfStringInt = New-GenericType -GenericTypeName "System.Collections.Generic.Dictionary" -TypeArguments @([string], [int])
 .OUTPUTS
-    System.Type - Le type générique construit, ou $null si le type n'a pas pu être construit et ThrowOnError est $false.
+    System.Type - Le type gÃ©nÃ©rique construit, ou $null si le type n'a pas pu Ãªtre construit et ThrowOnError est $false.
 #>
 function New-GenericType {
     [CmdletBinding()]
@@ -1393,15 +1393,15 @@ function New-GenericType {
     )
 
     try {
-        # Résoudre le type générique non construit
+        # RÃ©soudre le type gÃ©nÃ©rique non construit
         $genericTypeDefinition = Get-TypeByQualifiedName -TypeName $GenericTypeName -Assemblies $Assemblies -ThrowOnError:$ThrowOnError
         if ($null -eq $genericTypeDefinition) {
             return $null
         }
 
-        # Vérifier si le type est générique
+        # VÃ©rifier si le type est gÃ©nÃ©rique
         if (-not $genericTypeDefinition.IsGenericTypeDefinition) {
-            $errorMessage = "Le type '$GenericTypeName' n'est pas un type générique."
+            $errorMessage = "Le type '$GenericTypeName' n'est pas un type gÃ©nÃ©rique."
             if ($ThrowOnError) {
                 throw $errorMessage
             }
@@ -1409,10 +1409,10 @@ function New-GenericType {
             return $null
         }
 
-        # Vérifier si le nombre d'arguments de type est correct
+        # VÃ©rifier si le nombre d'arguments de type est correct
         $genericArguments = $genericTypeDefinition.GetGenericArguments()
         if ($genericArguments.Length -ne $TypeArguments.Length) {
-            $errorMessage = "Le type générique '$GenericTypeName' attend $($genericArguments.Length) arguments de type, mais $($TypeArguments.Length) ont été fournis."
+            $errorMessage = "Le type gÃ©nÃ©rique '$GenericTypeName' attend $($genericArguments.Length) arguments de type, mais $($TypeArguments.Length) ont Ã©tÃ© fournis."
             if ($ThrowOnError) {
                 throw $errorMessage
             }
@@ -1420,13 +1420,13 @@ function New-GenericType {
             return $null
         }
 
-        # Construire le type générique
+        # Construire le type gÃ©nÃ©rique
         $constructedType = $genericTypeDefinition.MakeGenericType($TypeArguments)
-        Write-Verbose "Type générique '$GenericTypeName' construit avec succès: $($constructedType.FullName)"
+        Write-Verbose "Type gÃ©nÃ©rique '$GenericTypeName' construit avec succÃ¨s: $($constructedType.FullName)"
 
         return $constructedType
     } catch {
-        $errorMessage = "Erreur lors de la construction du type générique '$GenericTypeName': $($_.Exception.Message)"
+        $errorMessage = "Erreur lors de la construction du type gÃ©nÃ©rique '$GenericTypeName': $($_.Exception.Message)"
         if ($ThrowOnError) {
             throw $errorMessage
         }
@@ -1437,17 +1437,17 @@ function New-GenericType {
 
 <#
 .SYNOPSIS
-    Récupère les arguments de type d'un type générique construit.
+    RÃ©cupÃ¨re les arguments de type d'un type gÃ©nÃ©rique construit.
 .DESCRIPTION
-    Cette fonction récupère les arguments de type d'un type générique construit.
+    Cette fonction rÃ©cupÃ¨re les arguments de type d'un type gÃ©nÃ©rique construit.
 .PARAMETER Type
-    Le type générique construit dont on veut récupérer les arguments de type.
+    Le type gÃ©nÃ©rique construit dont on veut rÃ©cupÃ©rer les arguments de type.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur.
 .EXAMPLE
     $TypeArguments = Get-GenericTypeArguments -Type ([System.Collections.Generic.List[string]])
 .OUTPUTS
-    System.Type[] - Les arguments de type du type générique construit, ou $null si le type n'est pas générique et ThrowOnError est $false.
+    System.Type[] - Les arguments de type du type gÃ©nÃ©rique construit, ou $null si le type n'est pas gÃ©nÃ©rique et ThrowOnError est $false.
 #>
 function Get-GenericTypeArguments {
     [CmdletBinding()]
@@ -1460,9 +1460,9 @@ function Get-GenericTypeArguments {
     )
 
     try {
-        # Vérifier si le type est générique
+        # VÃ©rifier si le type est gÃ©nÃ©rique
         if (-not $Type.IsGenericType) {
-            $errorMessage = "Le type '$($Type.FullName)' n'est pas un type générique."
+            $errorMessage = "Le type '$($Type.FullName)' n'est pas un type gÃ©nÃ©rique."
             if ($ThrowOnError) {
                 throw $errorMessage
             }
@@ -1470,13 +1470,13 @@ function Get-GenericTypeArguments {
             return $null
         }
 
-        # Récupérer les arguments de type
+        # RÃ©cupÃ©rer les arguments de type
         $typeArguments = $Type.GetGenericArguments()
-        Write-Verbose "Arguments de type récupérés pour le type '$($Type.FullName)': $($typeArguments.Length) arguments."
+        Write-Verbose "Arguments de type rÃ©cupÃ©rÃ©s pour le type '$($Type.FullName)': $($typeArguments.Length) arguments."
 
         return $typeArguments
     } catch {
-        $errorMessage = "Erreur lors de la récupération des arguments de type pour le type '$($Type.FullName)': $($_.Exception.Message)"
+        $errorMessage = "Erreur lors de la rÃ©cupÃ©ration des arguments de type pour le type '$($Type.FullName)': $($_.Exception.Message)"
         if ($ThrowOnError) {
             throw $errorMessage
         }
@@ -1487,19 +1487,19 @@ function Get-GenericTypeArguments {
 
 <#
 .SYNOPSIS
-    Vérifie si un type est un type générique ou un type générique construit.
+    VÃ©rifie si un type est un type gÃ©nÃ©rique ou un type gÃ©nÃ©rique construit.
 .DESCRIPTION
-    Cette fonction vérifie si un type est un type générique ou un type générique construit.
+    Cette fonction vÃ©rifie si un type est un type gÃ©nÃ©rique ou un type gÃ©nÃ©rique construit.
 .PARAMETER Type
-    Le type à vérifier.
+    Le type Ã  vÃ©rifier.
 .PARAMETER ConstructedOnly
-    Indique si seuls les types génériques construits doivent être considérés comme génériques.
+    Indique si seuls les types gÃ©nÃ©riques construits doivent Ãªtre considÃ©rÃ©s comme gÃ©nÃ©riques.
 .PARAMETER DefinitionOnly
-    Indique si seuls les définitions de types génériques doivent être considérées comme génériques.
+    Indique si seuls les dÃ©finitions de types gÃ©nÃ©riques doivent Ãªtre considÃ©rÃ©es comme gÃ©nÃ©riques.
 .EXAMPLE
     $IsGeneric = Test-GenericType -Type ([System.Collections.Generic.List[string]])
 .OUTPUTS
-    System.Boolean - True si le type est générique, False sinon.
+    System.Boolean - True si le type est gÃ©nÃ©rique, False sinon.
 #>
 function Test-GenericType {
     [CmdletBinding()]
@@ -1514,18 +1514,18 @@ function Test-GenericType {
         [switch]$DefinitionOnly
     )
 
-    # Vérifier si le type est générique
+    # VÃ©rifier si le type est gÃ©nÃ©rique
     $isGeneric = $Type.IsGenericType
 
-    # Si le type n'est pas générique, retourner False
+    # Si le type n'est pas gÃ©nÃ©rique, retourner False
     if (-not $isGeneric) {
         return $false
     }
 
-    # Vérifier si le type est une définition de type générique
+    # VÃ©rifier si le type est une dÃ©finition de type gÃ©nÃ©rique
     $isGenericTypeDefinition = $Type.IsGenericTypeDefinition
 
-    # Appliquer les filtres spécifiés
+    # Appliquer les filtres spÃ©cifiÃ©s
     if ($ConstructedOnly) {
         return $isGeneric -and -not $isGenericTypeDefinition
     } elseif ($DefinitionOnly) {
@@ -1539,15 +1539,15 @@ function Test-GenericType {
 
 <#
 .SYNOPSIS
-    Crée un type anonyme avec les propriétés spécifiées.
+    CrÃ©e un type anonyme avec les propriÃ©tÃ©s spÃ©cifiÃ©es.
 .DESCRIPTION
-    Cette fonction crée un type anonyme avec les propriétés spécifiées, similaire aux types anonymes en C#.
+    Cette fonction crÃ©e un type anonyme avec les propriÃ©tÃ©s spÃ©cifiÃ©es, similaire aux types anonymes en C#.
 .PARAMETER Properties
-    Les propriétés à inclure dans le type anonyme, sous forme de table de hachage.
+    Les propriÃ©tÃ©s Ã  inclure dans le type anonyme, sous forme de table de hachage.
 .EXAMPLE
     $AnonymousType = New-AnonymousType -Properties @{ Name = "John"; Age = 30 }
 .OUTPUTS
-    PSObject - Un objet avec les propriétés spécifiées.
+    PSObject - Un objet avec les propriÃ©tÃ©s spÃ©cifiÃ©es.
 #>
 function New-AnonymousType {
     [CmdletBinding()]
@@ -1556,16 +1556,16 @@ function New-AnonymousType {
         [hashtable]$Properties
     )
 
-    # Créer un objet PSObject
+    # CrÃ©er un objet PSObject
     $anonymousType = New-Object PSObject
 
-    # Ajouter les propriétés spécifiées
+    # Ajouter les propriÃ©tÃ©s spÃ©cifiÃ©es
     foreach ($key in $Properties.Keys) {
         $value = $Properties[$key]
         $anonymousType | Add-Member -MemberType NoteProperty -Name $key -Value $value
     }
 
-    # Ajouter une méthode ToString personnalisée
+    # Ajouter une mÃ©thode ToString personnalisÃ©e
     $anonymousType | Add-Member -MemberType ScriptMethod -Name "ToString" -Value {
         $properties = @()
         foreach ($property in $this.PSObject.Properties) {
@@ -1577,7 +1577,7 @@ function New-AnonymousType {
         return "{ $($properties -join ", ") }"
     } -Force
 
-    # Ajouter une méthode Equals personnalisée
+    # Ajouter une mÃ©thode Equals personnalisÃ©e
     $anonymousType | Add-Member -MemberType ScriptMethod -Name "Equals" -Value {
         param([object]$obj)
 
@@ -1589,7 +1589,7 @@ function New-AnonymousType {
             return $true
         }
 
-        # Vérifier si l'objet a les mêmes propriétés
+        # VÃ©rifier si l'objet a les mÃªmes propriÃ©tÃ©s
         foreach ($property in $this.PSObject.Properties) {
             if ($property.Name -ne "ToString" -and $property.Name -ne "Equals" -and $property.Name -ne "GetHashCode") {
                 if (-not $obj.PSObject.Properties.Match($property.Name).Count -or
@@ -1604,7 +1604,7 @@ function New-AnonymousType {
         return $true
     } -Force
 
-    # Ajouter une méthode GetHashCode personnalisée
+    # Ajouter une mÃ©thode GetHashCode personnalisÃ©e
     $anonymousType | Add-Member -MemberType ScriptMethod -Name "GetHashCode" -Value {
         $hash = 17
 
@@ -1625,23 +1625,23 @@ function New-AnonymousType {
 
 <#
 .SYNOPSIS
-    Crée un type dynamique avec les propriétés et méthodes spécifiées.
+    CrÃ©e un type dynamique avec les propriÃ©tÃ©s et mÃ©thodes spÃ©cifiÃ©es.
 .DESCRIPTION
-    Cette fonction crée un type dynamique avec les propriétés et méthodes spécifiées, en utilisant System.Reflection.Emit.
+    Cette fonction crÃ©e un type dynamique avec les propriÃ©tÃ©s et mÃ©thodes spÃ©cifiÃ©es, en utilisant System.Reflection.Emit.
 .PARAMETER TypeName
-    Le nom du type dynamique à créer.
+    Le nom du type dynamique Ã  crÃ©er.
 .PARAMETER Properties
-    Les propriétés à inclure dans le type dynamique, sous forme de table de hachage où les clés sont les noms des propriétés et les valeurs sont les types des propriétés.
+    Les propriÃ©tÃ©s Ã  inclure dans le type dynamique, sous forme de table de hachage oÃ¹ les clÃ©s sont les noms des propriÃ©tÃ©s et les valeurs sont les types des propriÃ©tÃ©s.
 .PARAMETER Methods
-    Les méthodes à inclure dans le type dynamique, sous forme de table de hachage où les clés sont les noms des méthodes et les valeurs sont des objets décrivant les méthodes.
+    Les mÃ©thodes Ã  inclure dans le type dynamique, sous forme de table de hachage oÃ¹ les clÃ©s sont les noms des mÃ©thodes et les valeurs sont des objets dÃ©crivant les mÃ©thodes.
 .PARAMETER Interfaces
-    Les interfaces que le type dynamique doit implémenter.
+    Les interfaces que le type dynamique doit implÃ©menter.
 .PARAMETER BaseType
-    Le type de base du type dynamique. Par défaut, System.Object.
+    Le type de base du type dynamique. Par dÃ©faut, System.Object.
 .EXAMPLE
     $DynamicType = New-DynamicType -TypeName "MyDynamicType" -Properties @{ Name = [string]; Age = [int] }
 .OUTPUTS
-    System.Type - Le type dynamique créé.
+    System.Type - Le type dynamique crÃ©Ã©.
 #>
 function New-DynamicType {
     [CmdletBinding()]
@@ -1663,32 +1663,32 @@ function New-DynamicType {
     )
 
     try {
-        # Créer un nom d'assembly dynamique
+        # CrÃ©er un nom d'assembly dynamique
         $assemblyName = New-Object System.Reflection.AssemblyName("DynamicAssembly")
         $assemblyBuilder = [System.AppDomain]::CurrentDomain.DefineDynamicAssembly($assemblyName, [System.Reflection.Emit.AssemblyBuilderAccess]::Run)
         $moduleBuilder = $assemblyBuilder.DefineDynamicModule("DynamicModule")
 
-        # Créer le type dynamique
+        # CrÃ©er le type dynamique
         $typeBuilder = $moduleBuilder.DefineType($TypeName, [System.Reflection.TypeAttributes]::Public -bor [System.Reflection.TypeAttributes]::Class, $BaseType, $Interfaces)
 
-        # Ajouter les propriétés
+        # Ajouter les propriÃ©tÃ©s
         foreach ($propertyName in $Properties.Keys) {
             $propertyType = $Properties[$propertyName]
 
-            # Créer le champ privé pour la propriété
+            # CrÃ©er le champ privÃ© pour la propriÃ©tÃ©
             $fieldBuilder = $typeBuilder.DefineField("_$propertyName", $propertyType, [System.Reflection.FieldAttributes]::Private)
 
-            # Créer la propriété
+            # CrÃ©er la propriÃ©tÃ©
             $propertyBuilder = $typeBuilder.DefineProperty($propertyName, [System.Reflection.PropertyAttributes]::HasDefault, $propertyType, $null)
 
-            # Créer la méthode getter
+            # CrÃ©er la mÃ©thode getter
             $getMethodBuilder = $typeBuilder.DefineMethod("get_$propertyName", [System.Reflection.MethodAttributes]::Public -bor [System.Reflection.MethodAttributes]::SpecialName -bor [System.Reflection.MethodAttributes]::HideBySig, $propertyType, $null)
             $ilGenerator = $getMethodBuilder.GetILGenerator()
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ldarg_0)
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ldfld, $fieldBuilder)
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ret)
 
-            # Créer la méthode setter
+            # CrÃ©er la mÃ©thode setter
             $setMethodBuilder = $typeBuilder.DefineMethod("set_$propertyName", [System.Reflection.MethodAttributes]::Public -bor [System.Reflection.MethodAttributes]::SpecialName -bor [System.Reflection.MethodAttributes]::HideBySig, $null, @($propertyType))
             $ilGenerator = $setMethodBuilder.GetILGenerator()
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ldarg_0)
@@ -1696,31 +1696,31 @@ function New-DynamicType {
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Stfld, $fieldBuilder)
             $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ret)
 
-            # Associer les méthodes getter et setter à la propriété
+            # Associer les mÃ©thodes getter et setter Ã  la propriÃ©tÃ©
             $propertyBuilder.SetGetMethod($getMethodBuilder)
             $propertyBuilder.SetSetMethod($setMethodBuilder)
         }
 
-        # Ajouter les méthodes
+        # Ajouter les mÃ©thodes
         foreach ($methodName in $Methods.Keys) {
             $methodInfo = $Methods[$methodName]
 
-            # Extraire les informations de la méthode
+            # Extraire les informations de la mÃ©thode
             $returnType = $methodInfo.ReturnType
             $parameterTypes = $methodInfo.ParameterTypes
             $methodAttributes = $methodInfo.Attributes -bor [System.Reflection.MethodAttributes]::Public -bor [System.Reflection.MethodAttributes]::HideBySig
 
-            # Créer la méthode
+            # CrÃ©er la mÃ©thode
             $methodBuilder = $typeBuilder.DefineMethod($methodName, $methodAttributes, $returnType, $parameterTypes)
 
-            # Générer le code IL pour la méthode
+            # GÃ©nÃ©rer le code IL pour la mÃ©thode
             $ilGenerator = $methodBuilder.GetILGenerator()
 
-            # Si une implémentation est fournie, l'utiliser
+            # Si une implÃ©mentation est fournie, l'utiliser
             if ($methodInfo.Implementation) {
                 $methodInfo.Implementation.Invoke($ilGenerator)
             } else {
-                # Implémentation par défaut : retourner la valeur par défaut du type de retour
+                # ImplÃ©mentation par dÃ©faut : retourner la valeur par dÃ©faut du type de retour
                 if ($returnType -eq [void]) {
                     $ilGenerator.Emit([System.Reflection.Emit.OpCodes]::Ret)
                 } else {
@@ -1731,28 +1731,28 @@ function New-DynamicType {
             }
         }
 
-        # Créer le type
+        # CrÃ©er le type
         $type = $typeBuilder.CreateType()
-        Write-Verbose "Type dynamique '$TypeName' créé avec succès."
+        Write-Verbose "Type dynamique '$TypeName' crÃ©Ã© avec succÃ¨s."
 
         return $type
     } catch {
-        Write-Error "Erreur lors de la création du type dynamique '$TypeName': $($_.Exception.Message)"
+        Write-Error "Erreur lors de la crÃ©ation du type dynamique '$TypeName': $($_.Exception.Message)"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Crée un type Nullable pour un type de valeur.
+    CrÃ©e un type Nullable pour un type de valeur.
 .DESCRIPTION
-    Cette fonction crée un type Nullable pour un type de valeur spécifié.
+    Cette fonction crÃ©e un type Nullable pour un type de valeur spÃ©cifiÃ©.
 .PARAMETER ValueType
-    Le type de valeur pour lequel créer un type Nullable.
+    Le type de valeur pour lequel crÃ©er un type Nullable.
 .EXAMPLE
     $NullableInt = New-NullableType -ValueType ([int])
 .OUTPUTS
-    System.Type - Le type Nullable créé.
+    System.Type - Le type Nullable crÃ©Ã©.
 #>
 function New-NullableType {
     [CmdletBinding()]
@@ -1761,20 +1761,20 @@ function New-NullableType {
         [type]$ValueType
     )
 
-    # Vérifier si le type est un type de valeur
+    # VÃ©rifier si le type est un type de valeur
     if (-not $ValueType.IsValueType) {
-        throw "Le type '$($ValueType.FullName)' n'est pas un type de valeur. Seuls les types de valeur peuvent être rendus nullables."
+        throw "Le type '$($ValueType.FullName)' n'est pas un type de valeur. Seuls les types de valeur peuvent Ãªtre rendus nullables."
     }
 
-    # Vérifier si le type est déjà un type Nullable
+    # VÃ©rifier si le type est dÃ©jÃ  un type Nullable
     if ($ValueType.IsGenericType -and $ValueType.GetGenericTypeDefinition() -eq [System.Nullable`1]) {
-        Write-Warning "Le type '$($ValueType.FullName)' est déjà un type Nullable."
+        Write-Warning "Le type '$($ValueType.FullName)' est dÃ©jÃ  un type Nullable."
         return $ValueType
     }
 
-    # Créer le type Nullable
+    # CrÃ©er le type Nullable
     $nullableType = [System.Nullable`1].MakeGenericType($ValueType)
-    Write-Verbose "Type Nullable créé pour le type '$($ValueType.FullName)'."
+    Write-Verbose "Type Nullable crÃ©Ã© pour le type '$($ValueType.FullName)'."
 
     return $nullableType
 }
@@ -1784,25 +1784,25 @@ function New-NullableType {
     Parcourt les membres d'un type.
 .DESCRIPTION
     Cette fonction parcourt les membres d'un type, avec des options pour filtrer par type de membre,
-    flags de liaison, et pour effectuer un parcours récursif.
+    flags de liaison, et pour effectuer un parcours rÃ©cursif.
 .PARAMETER Type
     Le type dont on veut parcourir les membres.
 .PARAMETER MemberTypes
-    Les types de membres à inclure dans le parcours. Par défaut, tous les types de membres sont inclus.
+    Les types de membres Ã  inclure dans le parcours. Par dÃ©faut, tous les types de membres sont inclus.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER IncludeSpecialNames
-    Indique si les membres avec des noms spéciaux (ex: .ctor, .cctor) doivent être inclus.
+    Indique si les membres avec des noms spÃ©ciaux (ex: .ctor, .cctor) doivent Ãªtre inclus.
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $Members = Get-TypeMembers -Type ([System.String])
 .EXAMPLE
     $Properties = Get-TypeMembers -Type ([System.String]) -MemberTypes Property -BindingFlags ([System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance)
 .OUTPUTS
-    System.Reflection.MemberInfo[] - Les membres du type qui correspondent aux critères spécifiés.
+    System.Reflection.MemberInfo[] - Les membres du type qui correspondent aux critÃ¨res spÃ©cifiÃ©s.
 #>
 function Get-TypeMembers {
     [CmdletBinding()]
@@ -1826,34 +1826,34 @@ function Get-TypeMembers {
         [scriptblock]$Filter
     )
 
-    # Ajouter les flags pour les membres statiques et non-publics si nécessaire
+    # Ajouter les flags pour les membres statiques et non-publics si nÃ©cessaire
     if (-not ($BindingFlags -band [System.Reflection.BindingFlags]::Static)) {
-        Write-Verbose "Flags de liaison ne contiennent pas Static. Seuls les membres d'instance seront retournés."
+        Write-Verbose "Flags de liaison ne contiennent pas Static. Seuls les membres d'instance seront retournÃ©s."
     }
 
     if (-not ($BindingFlags -band [System.Reflection.BindingFlags]::NonPublic)) {
-        Write-Verbose "Flags de liaison ne contiennent pas NonPublic. Seuls les membres publics seront retournés."
+        Write-Verbose "Flags de liaison ne contiennent pas NonPublic. Seuls les membres publics seront retournÃ©s."
     }
 
-    # Ajouter le flag FlattenHierarchy si Recursive est spécifié
+    # Ajouter le flag FlattenHierarchy si Recursive est spÃ©cifiÃ©
     if ($Recursive) {
         $BindingFlags = $BindingFlags -bor [System.Reflection.BindingFlags]::FlattenHierarchy
     }
 
-    # Récupérer les membres du type
+    # RÃ©cupÃ©rer les membres du type
     $members = $Type.GetMembers($BindingFlags)
 
-    # Filtrer par type de membre si spécifié
+    # Filtrer par type de membre si spÃ©cifiÃ©
     if ($MemberTypes -ne [System.Reflection.MemberTypes]::All) {
         $members = $members | Where-Object { $_.MemberType -band $MemberTypes }
     }
 
-    # Filtrer les membres avec des noms spéciaux si nécessaire
+    # Filtrer les membres avec des noms spÃ©ciaux si nÃ©cessaire
     if (-not $IncludeSpecialNames) {
         $members = $members | Where-Object { -not $_.Name.StartsWith(".") }  # Exclure les noms comme .ctor, .cctor, etc.
     }
 
-    # Appliquer le filtre personnalisé si spécifié
+    # Appliquer le filtre personnalisÃ© si spÃ©cifiÃ©
     if ($null -ne $Filter) {
         $members = $members | Where-Object $Filter
     }
@@ -1863,27 +1863,27 @@ function Get-TypeMembers {
 
 <#
 .SYNOPSIS
-    Parcourt les membres d'un type de manière récursive.
+    Parcourt les membres d'un type de maniÃ¨re rÃ©cursive.
 .DESCRIPTION
-    Cette fonction parcourt les membres d'un type de manière récursive, en incluant les membres des types de base.
+    Cette fonction parcourt les membres d'un type de maniÃ¨re rÃ©cursive, en incluant les membres des types de base.
 .PARAMETER Type
     Le type dont on veut parcourir les membres.
 .PARAMETER MemberTypes
-    Les types de membres à inclure dans le parcours. Par défaut, tous les types de membres sont inclus.
+    Les types de membres Ã  inclure dans le parcours. Par dÃ©faut, tous les types de membres sont inclus.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER MaxDepth
-    La profondeur maximale de récursion. Par défaut, il n'y a pas de limite.
+    La profondeur maximale de rÃ©cursion. Par dÃ©faut, il n'y a pas de limite.
 .PARAMETER IncludeSpecialNames
-    Indique si les membres avec des noms spéciaux (ex: .ctor, .cctor) doivent être inclus.
+    Indique si les membres avec des noms spÃ©ciaux (ex: .ctor, .cctor) doivent Ãªtre inclus.
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $AllMembers = Get-TypeMembersRecursive -Type ([System.String])
 .EXAMPLE
     $AllProperties = Get-TypeMembersRecursive -Type ([System.String]) -MemberTypes Property -MaxDepth 2
 .OUTPUTS
-    System.Reflection.MemberInfo[] - Les membres du type qui correspondent aux critères spécifiés.
+    System.Reflection.MemberInfo[] - Les membres du type qui correspondent aux critÃ¨res spÃ©cifiÃ©s.
 #>
 function Get-TypeMembersRecursive {
     [CmdletBinding()]
@@ -1907,22 +1907,22 @@ function Get-TypeMembersRecursive {
         [scriptblock]$Filter
     )
 
-    # Fonction récursive interne
+    # Fonction rÃ©cursive interne
     function Get-MembersRecursive {
         param (
             [type]$CurrentType,
             [int]$CurrentDepth = 0
         )
 
-        # Vérifier si la profondeur maximale est atteinte
+        # VÃ©rifier si la profondeur maximale est atteinte
         if ($MaxDepth -ne -1 -and $CurrentDepth -gt $MaxDepth) {
             return @()
         }
 
-        # Récupérer les membres du type courant
+        # RÃ©cupÃ©rer les membres du type courant
         $currentMembers = Get-TypeMembers -Type $CurrentType -MemberTypes $MemberTypes -BindingFlags $BindingFlags -IncludeSpecialNames:$IncludeSpecialNames -Filter $Filter
 
-        # Si le type a un type de base, récupérer ses membres récursivement
+        # Si le type a un type de base, rÃ©cupÃ©rer ses membres rÃ©cursivement
         $baseMembers = @()
         if ($null -ne $CurrentType.BaseType -and $CurrentType.BaseType -ne [object]) {
             $baseMembers = Get-MembersRecursive -CurrentType $CurrentType.BaseType -CurrentDepth ($CurrentDepth + 1)
@@ -1932,31 +1932,31 @@ function Get-TypeMembersRecursive {
         return $currentMembers + $baseMembers
     }
 
-    # Appeler la fonction récursive
+    # Appeler la fonction rÃ©cursive
     return Get-MembersRecursive -CurrentType $Type
 }
 
 <#
 .SYNOPSIS
-    Parcourt les membres d'un type par catégorie.
+    Parcourt les membres d'un type par catÃ©gorie.
 .DESCRIPTION
-    Cette fonction parcourt les membres d'un type et les regroupe par catégorie (propriétés, méthodes, événements, etc.).
+    Cette fonction parcourt les membres d'un type et les regroupe par catÃ©gorie (propriÃ©tÃ©s, mÃ©thodes, Ã©vÃ©nements, etc.).
 .PARAMETER Type
     Le type dont on veut parcourir les membres.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER IncludeSpecialNames
-    Indique si les membres avec des noms spéciaux (ex: .ctor, .cctor) doivent être inclus.
+    Indique si les membres avec des noms spÃ©ciaux (ex: .ctor, .cctor) doivent Ãªtre inclus.
 .PARAMETER Categories
-    Les catégories de membres à inclure. Par défaut, toutes les catégories sont incluses.
+    Les catÃ©gories de membres Ã  inclure. Par dÃ©faut, toutes les catÃ©gories sont incluses.
 .EXAMPLE
     $MembersByCategory = Get-TypeMembersByCategory -Type ([System.String])
 .EXAMPLE
     $MembersByCategory = Get-TypeMembersByCategory -Type ([System.String]) -Categories Property, Method -Recursive
 .OUTPUTS
-    System.Collections.Hashtable - Une table de hachage où les clés sont les catégories de membres et les valeurs sont les membres correspondants.
+    System.Collections.Hashtable - Une table de hachage oÃ¹ les clÃ©s sont les catÃ©gories de membres et les valeurs sont les membres correspondants.
 #>
 function Get-TypeMembersByCategory {
     [CmdletBinding()]
@@ -1978,15 +1978,15 @@ function Get-TypeMembersByCategory {
         [string[]]$Categories = @("Property", "Method", "Constructor", "Event", "Field", "NestedType", "Custom")
     )
 
-    # Créer une table de hachage pour stocker les membres par catégorie
+    # CrÃ©er une table de hachage pour stocker les membres par catÃ©gorie
     $membersByCategory = @{}
 
-    # Initialiser les catégories sélectionnées
+    # Initialiser les catÃ©gories sÃ©lectionnÃ©es
     foreach ($category in $Categories) {
         $membersByCategory[$category] = @()
     }
 
-    # Définir les types de membres pour chaque catégorie
+    # DÃ©finir les types de membres pour chaque catÃ©gorie
     $categoryMemberTypes = @{
         "Property"    = [System.Reflection.MemberTypes]::Property
         "Method"      = [System.Reflection.MemberTypes]::Method
@@ -1997,7 +1997,7 @@ function Get-TypeMembersByCategory {
         "Custom"      = [System.Reflection.MemberTypes]::Custom
     }
 
-    # Récupérer tous les membres
+    # RÃ©cupÃ©rer tous les membres
     $getMembersParams = @{
         Type                = $Type
         BindingFlags        = $BindingFlags
@@ -2010,7 +2010,7 @@ function Get-TypeMembersByCategory {
         $allMembers = Get-TypeMembers @getMembersParams
     }
 
-    # Regrouper les membres par catégorie
+    # Regrouper les membres par catÃ©gorie
     foreach ($member in $allMembers) {
         foreach ($category in $Categories) {
             if ($member.MemberType -band $categoryMemberTypes[$category]) {
@@ -2024,27 +2024,27 @@ function Get-TypeMembersByCategory {
 
 <#
 .SYNOPSIS
-    Crée un itérateur pour parcourir les membres d'un type.
+    CrÃ©e un itÃ©rateur pour parcourir les membres d'un type.
 .DESCRIPTION
-    Cette fonction crée un itérateur pour parcourir les membres d'un type, avec des options pour filtrer par type de membre,
-    flags de liaison, et pour effectuer un parcours récursif.
+    Cette fonction crÃ©e un itÃ©rateur pour parcourir les membres d'un type, avec des options pour filtrer par type de membre,
+    flags de liaison, et pour effectuer un parcours rÃ©cursif.
 .PARAMETER Type
     Le type dont on veut parcourir les membres.
 .PARAMETER MemberTypes
-    Les types de membres à inclure dans le parcours. Par défaut, tous les types de membres sont inclus.
+    Les types de membres Ã  inclure dans le parcours. Par dÃ©faut, tous les types de membres sont inclus.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER IncludeSpecialNames
-    Indique si les membres avec des noms spéciaux (ex: .ctor, .cctor) doivent être inclus.
+    Indique si les membres avec des noms spÃ©ciaux (ex: .ctor, .cctor) doivent Ãªtre inclus.
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $Iterator = New-TypeMemberIterator -Type ([System.String])
     foreach ($member in $Iterator) { $member.Name }
 .OUTPUTS
-    System.Collections.IEnumerable - Un itérateur pour parcourir les membres du type.
+    System.Collections.IEnumerable - Un itÃ©rateur pour parcourir les membres du type.
 #>
 function New-TypeMemberIterator {
     [CmdletBinding()]
@@ -2068,7 +2068,7 @@ function New-TypeMemberIterator {
         [scriptblock]$Filter
     )
 
-    # Créer un script block qui retourne un énumérateur
+    # CrÃ©er un script block qui retourne un Ã©numÃ©rateur
     $iteratorScriptBlock = {
         param (
             [type]$Type,
@@ -2079,26 +2079,26 @@ function New-TypeMemberIterator {
             [scriptblock]$Filter
         )
 
-        # Fonction récursive pour parcourir les membres
+        # Fonction rÃ©cursive pour parcourir les membres
         function Get-MembersRecursive {
             param (
                 [type]$CurrentType
             )
 
-            # Récupérer les membres du type courant
+            # RÃ©cupÃ©rer les membres du type courant
             $members = $CurrentType.GetMembers($BindingFlags)
 
-            # Filtrer par type de membre si spécifié
+            # Filtrer par type de membre si spÃ©cifiÃ©
             if ($MemberTypes -ne [System.Reflection.MemberTypes]::All) {
                 $members = $members | Where-Object { $_.MemberType -band $MemberTypes }
             }
 
-            # Filtrer les membres avec des noms spéciaux si nécessaire
+            # Filtrer les membres avec des noms spÃ©ciaux si nÃ©cessaire
             if (-not $IncludeSpecialNames) {
                 $members = $members | Where-Object { -not $_.Name.StartsWith(".") }  # Exclure les noms comme .ctor, .cctor, etc.
             }
 
-            # Appliquer le filtre personnalisé si spécifié
+            # Appliquer le filtre personnalisÃ© si spÃ©cifiÃ©
             if ($null -ne $Filter) {
                 $members = $members | Where-Object $Filter
             }
@@ -2108,7 +2108,7 @@ function New-TypeMemberIterator {
                 yield $member
             }
 
-            # Si récursif et le type a un type de base, parcourir ses membres
+            # Si rÃ©cursif et le type a un type de base, parcourir ses membres
             if ($Recursive -and $null -ne $CurrentType.BaseType -and $CurrentType.BaseType -ne [object]) {
                 Get-MembersRecursive -CurrentType $CurrentType.BaseType
             }
@@ -2118,7 +2118,7 @@ function New-TypeMemberIterator {
         Get-MembersRecursive -CurrentType $Type
     }
 
-    # Créer et retourner l'énumérateur
+    # CrÃ©er et retourner l'Ã©numÃ©rateur
     return & $iteratorScriptBlock -Type $Type -MemberTypes $MemberTypes -BindingFlags $BindingFlags -Recursive $Recursive -IncludeSpecialNames $IncludeSpecialNames -Filter $Filter
 }
 
@@ -2126,23 +2126,23 @@ function New-TypeMemberIterator {
 .SYNOPSIS
     Filtre les membres d'un type par attribut.
 .DESCRIPTION
-    Cette fonction filtre les membres d'un type en fonction des attributs qu'ils possèdent.
+    Cette fonction filtre les membres d'un type en fonction des attributs qu'ils possÃ¨dent.
 .PARAMETER Type
     Le type dont on veut filtrer les membres.
 .PARAMETER AttributeType
-    Le type d'attribut à rechercher.
+    Le type d'attribut Ã  rechercher.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER IncludeInherited
-    Indique si les attributs hérités doivent être inclus.
+    Indique si les attributs hÃ©ritÃ©s doivent Ãªtre inclus.
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $SerializableMembers = Get-TypeMembersByAttribute -Type ([System.String]) -AttributeType ([System.SerializableAttribute])
 .OUTPUTS
-    System.Reflection.MemberInfo[] - Les membres du type qui possèdent l'attribut spécifié.
+    System.Reflection.MemberInfo[] - Les membres du type qui possÃ¨dent l'attribut spÃ©cifiÃ©.
 #>
 function Get-TypeMembersByAttribute {
     [CmdletBinding()]
@@ -2166,7 +2166,7 @@ function Get-TypeMembersByAttribute {
         [scriptblock]$Filter
     )
 
-    # Récupérer les membres du type
+    # RÃ©cupÃ©rer les membres du type
     $getMembersParams = @{
         Type         = $Type
         BindingFlags = $BindingFlags
@@ -2189,7 +2189,7 @@ function Get-TypeMembersByAttribute {
 
         $hasAttribute = $attributes.Count -gt 0
 
-        # Appliquer le filtre personnalisé si spécifié
+        # Appliquer le filtre personnalisÃ© si spÃ©cifiÃ©
         if ($hasAttribute -and $null -ne $Filter) {
             return $member | Where-Object $Filter
         }
@@ -2204,23 +2204,23 @@ function Get-TypeMembersByAttribute {
 .SYNOPSIS
     Filtre les membres d'un type par type de retour.
 .DESCRIPTION
-    Cette fonction filtre les membres d'un type en fonction de leur type de retour (pour les propriétés et méthodes).
+    Cette fonction filtre les membres d'un type en fonction de leur type de retour (pour les propriÃ©tÃ©s et mÃ©thodes).
 .PARAMETER Type
     Le type dont on veut filtrer les membres.
 .PARAMETER ReturnType
-    Le type de retour à rechercher.
+    Le type de retour Ã  rechercher.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, les membres publics et d'instance sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, les membres publics et d'instance sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER ExactMatch
-    Indique si le type de retour doit correspondre exactement au type spécifié.
+    Indique si le type de retour doit correspondre exactement au type spÃ©cifiÃ©.
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $StringMembers = Get-TypeMembersByReturnType -Type ([System.Object]) -ReturnType ([System.String])
 .OUTPUTS
-    System.Reflection.MemberInfo[] - Les membres du type qui ont le type de retour spécifié.
+    System.Reflection.MemberInfo[] - Les membres du type qui ont le type de retour spÃ©cifiÃ©.
 #>
 function Get-TypeMembersByReturnType {
     [CmdletBinding()]
@@ -2244,7 +2244,7 @@ function Get-TypeMembersByReturnType {
         [scriptblock]$Filter
     )
 
-    # Récupérer les membres du type
+    # RÃ©cupÃ©rer les membres du type
     $getMembersParams = @{
         Type         = $Type
         BindingFlags = $BindingFlags
@@ -2262,7 +2262,7 @@ function Get-TypeMembersByReturnType {
         $member = $_
         $memberReturnType = $null
 
-        # Déterminer le type de retour en fonction du type de membre
+        # DÃ©terminer le type de retour en fonction du type de membre
         if ($member.MemberType -eq [System.Reflection.MemberTypes]::Property) {
             $memberReturnType = $member.PropertyType
         } elseif ($member.MemberType -eq [System.Reflection.MemberTypes]::Method) {
@@ -2271,14 +2271,14 @@ function Get-TypeMembersByReturnType {
             return $false  # Ignorer les autres types de membres
         }
 
-        # Vérifier si le type de retour correspond
+        # VÃ©rifier si le type de retour correspond
         $typeMatches = if ($ExactMatch) {
             $memberReturnType -eq $ReturnType
         } else {
             $ReturnType.IsAssignableFrom($memberReturnType)
         }
 
-        # Appliquer le filtre personnalisé si spécifié
+        # Appliquer le filtre personnalisÃ© si spÃ©cifiÃ©
         if ($typeMatches -and $null -ne $Filter) {
             return $member | Where-Object $Filter
         }
@@ -2291,23 +2291,23 @@ function Get-TypeMembersByReturnType {
 
 <#
 .SYNOPSIS
-    Filtre les membres d'un type par accessibilité.
+    Filtre les membres d'un type par accessibilitÃ©.
 .DESCRIPTION
-    Cette fonction filtre les membres d'un type en fonction de leur accessibilité (public, privé, protégé, etc.).
+    Cette fonction filtre les membres d'un type en fonction de leur accessibilitÃ© (public, privÃ©, protÃ©gÃ©, etc.).
 .PARAMETER Type
     Le type dont on veut filtrer les membres.
 .PARAMETER Accessibility
-    L'accessibilité des membres à inclure. Les valeurs possibles sont : Public, Private, Protected, Internal, ProtectedInternal, PrivateProtected.
+    L'accessibilitÃ© des membres Ã  inclure. Les valeurs possibles sont : Public, Private, Protected, Internal, ProtectedInternal, PrivateProtected.
 .PARAMETER BindingFlags
-    Les flags de liaison à utiliser pour la récupération des membres. Par défaut, tous les membres sont inclus.
+    Les flags de liaison Ã  utiliser pour la rÃ©cupÃ©ration des membres. Par dÃ©faut, tous les membres sont inclus.
 .PARAMETER Recursive
-    Indique si le parcours doit être récursif (inclure les membres des types de base).
+    Indique si le parcours doit Ãªtre rÃ©cursif (inclure les membres des types de base).
 .PARAMETER Filter
-    Un prédicat pour filtrer les membres retournés.
+    Un prÃ©dicat pour filtrer les membres retournÃ©s.
 .EXAMPLE
     $PublicMembers = Get-TypeMembersByAccessibility -Type ([System.String]) -Accessibility Public
 .OUTPUTS
-    System.Reflection.MemberInfo[] - Les membres du type qui ont l'accessibilité spécifiée.
+    System.Reflection.MemberInfo[] - Les membres du type qui ont l'accessibilitÃ© spÃ©cifiÃ©e.
 #>
 function Get-TypeMembersByAccessibility {
     [CmdletBinding()]
@@ -2329,7 +2329,7 @@ function Get-TypeMembersByAccessibility {
         [scriptblock]$Filter
     )
 
-    # Récupérer les membres du type
+    # RÃ©cupÃ©rer les membres du type
     $getMembersParams = @{
         Type         = $Type
         BindingFlags = $BindingFlags
@@ -2341,17 +2341,17 @@ function Get-TypeMembersByAccessibility {
         $members = Get-TypeMembers @getMembersParams
     }
 
-    # Filtrer les membres par accessibilité
+    # Filtrer les membres par accessibilitÃ©
     $filteredMembers = $members | Where-Object {
         $member = $_
 
-        # Déterminer l'accessibilité du membre
+        # DÃ©terminer l'accessibilitÃ© du membre
         $isPublic = $false
         $isPrivate = $false
         $isProtected = $false
         $isInternal = $false
 
-        # Vérifier le type de membre et déterminer son accessibilité
+        # VÃ©rifier le type de membre et dÃ©terminer son accessibilitÃ©
         if ($member.MemberType -eq [System.Reflection.MemberTypes]::Method) {
             $isPublic = $member.IsPublic
             $isPrivate = $member.IsPrivate
@@ -2367,9 +2367,9 @@ function Get-TypeMembersByAccessibility {
             $isProtectedInternal = $member.IsFamilyOrAssembly
             $isPrivateProtected = $member.IsFamilyAndAssembly
         } elseif ($member.MemberType -eq [System.Reflection.MemberTypes]::Property) {
-            # Pour les propriétés, vérifier les accesseurs
-            $getMethod = $member.GetGetMethod($true)  # Inclure les méthodes non-publiques
-            $setMethod = $member.GetSetMethod($true)  # Inclure les méthodes non-publiques
+            # Pour les propriÃ©tÃ©s, vÃ©rifier les accesseurs
+            $getMethod = $member.GetGetMethod($true)  # Inclure les mÃ©thodes non-publiques
+            $setMethod = $member.GetSetMethod($true)  # Inclure les mÃ©thodes non-publiques
 
             # Utiliser l'accesseur le plus accessible
             if ($null -ne $getMethod) {
@@ -2390,9 +2390,9 @@ function Get-TypeMembersByAccessibility {
                 $isPrivateProtected = $isPrivateProtected -or $setMethod.IsFamilyAndAssembly
             }
         } elseif ($member.MemberType -eq [System.Reflection.MemberTypes]::Event) {
-            # Pour les événements, vérifier les accesseurs
-            $addMethod = $member.GetAddMethod($true)  # Inclure les méthodes non-publiques
-            $removeMethod = $member.GetRemoveMethod($true)  # Inclure les méthodes non-publiques
+            # Pour les Ã©vÃ©nements, vÃ©rifier les accesseurs
+            $addMethod = $member.GetAddMethod($true)  # Inclure les mÃ©thodes non-publiques
+            $removeMethod = $member.GetRemoveMethod($true)  # Inclure les mÃ©thodes non-publiques
 
             # Utiliser l'accesseur le plus accessible
             if ($null -ne $addMethod) {
@@ -2414,7 +2414,7 @@ function Get-TypeMembersByAccessibility {
             }
         }
 
-        # Vérifier si l'accessibilité du membre correspond à celle spécifiée
+        # VÃ©rifier si l'accessibilitÃ© du membre correspond Ã  celle spÃ©cifiÃ©e
         $accessibilityMatches = $false
         foreach ($acc in $Accessibility) {
             switch ($acc) {
@@ -2427,7 +2427,7 @@ function Get-TypeMembersByAccessibility {
             }
         }
 
-        # Appliquer le filtre personnalisé si spécifié
+        # Appliquer le filtre personnalisÃ© si spÃ©cifiÃ©
         if ($accessibilityMatches -and $null -ne $Filter) {
             return $member | Where-Object $Filter
         }
@@ -2442,17 +2442,17 @@ function Get-TypeMembersByAccessibility {
 .SYNOPSIS
     Analyse une classe d'exception.
 .DESCRIPTION
-    Cette fonction analyse une classe d'exception et retourne des informations détaillées sur ses propriétés, constructeurs et méthodes.
+    Cette fonction analyse une classe d'exception et retourne des informations dÃ©taillÃ©es sur ses propriÃ©tÃ©s, constructeurs et mÃ©thodes.
 .PARAMETER ExceptionType
-    Le type d'exception à analyser.
+    Le type d'exception Ã  analyser.
 .PARAMETER IncludeInheritedMembers
-    Indique si les membres hérités doivent être inclus dans l'analyse.
+    Indique si les membres hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .PARAMETER IncludePrivateMembers
-    Indique si les membres privés doivent être inclus dans l'analyse.
+    Indique si les membres privÃ©s doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $ExceptionInfo = Get-ExceptionTypeInfo -ExceptionType ([System.ArgumentException])
 .OUTPUTS
-    PSObject - Un objet contenant des informations détaillées sur la classe d'exception.
+    PSObject - Un objet contenant des informations dÃ©taillÃ©es sur la classe d'exception.
 #>
 function Get-ExceptionTypeInfo {
     [CmdletBinding()]
@@ -2467,19 +2467,19 @@ function Get-ExceptionTypeInfo {
         [switch]$IncludePrivateMembers
     )
 
-    # Vérifier si le type est une exception
+    # VÃ©rifier si le type est une exception
     if (-not [System.Exception].IsAssignableFrom($ExceptionType)) {
         throw "Le type '$($ExceptionType.FullName)' n'est pas une classe d'exception."
     }
 
-    # Déterminer les flags de liaison
+    # DÃ©terminer les flags de liaison
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
 
     if ($IncludePrivateMembers) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
     }
 
-    # Récupérer les membres
+    # RÃ©cupÃ©rer les membres
     $getMembersParams = @{
         Type         = $ExceptionType
         BindingFlags = $bindingFlags
@@ -2488,7 +2488,7 @@ function Get-ExceptionTypeInfo {
 
     $membersByCategory = Get-TypeMembersByCategory @getMembersParams -Categories Property, Method, Constructor, Field
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type                 = $ExceptionType
         FullName             = $ExceptionType.FullName
@@ -2502,7 +2502,7 @@ function Get-ExceptionTypeInfo {
         InheritanceHierarchy = @()
     }
 
-    # Construire la hiérarchie d'héritage
+    # Construire la hiÃ©rarchie d'hÃ©ritage
     $currentType = $ExceptionType
     while ($null -ne $currentType -and $currentType -ne [object]) {
         $result.InheritanceHierarchy += $currentType
@@ -2516,17 +2516,17 @@ function Get-ExceptionTypeInfo {
 .SYNOPSIS
     Analyse une classe d'attribut.
 .DESCRIPTION
-    Cette fonction analyse une classe d'attribut et retourne des informations détaillées sur ses propriétés, constructeurs et cibles valides.
+    Cette fonction analyse une classe d'attribut et retourne des informations dÃ©taillÃ©es sur ses propriÃ©tÃ©s, constructeurs et cibles valides.
 .PARAMETER AttributeType
-    Le type d'attribut à analyser.
+    Le type d'attribut Ã  analyser.
 .PARAMETER IncludeInheritedMembers
-    Indique si les membres hérités doivent être inclus dans l'analyse.
+    Indique si les membres hÃ©ritÃ©s doivent Ãªtre inclus dans l'analyse.
 .PARAMETER IncludePrivateMembers
-    Indique si les membres privés doivent être inclus dans l'analyse.
+    Indique si les membres privÃ©s doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $AttributeInfo = Get-AttributeTypeInfo -AttributeType ([System.SerializableAttribute])
 .OUTPUTS
-    PSObject - Un objet contenant des informations détaillées sur la classe d'attribut.
+    PSObject - Un objet contenant des informations dÃ©taillÃ©es sur la classe d'attribut.
 #>
 function Get-AttributeTypeInfo {
     [CmdletBinding()]
@@ -2541,19 +2541,19 @@ function Get-AttributeTypeInfo {
         [switch]$IncludePrivateMembers
     )
 
-    # Vérifier si le type est un attribut
+    # VÃ©rifier si le type est un attribut
     if (-not [System.Attribute].IsAssignableFrom($AttributeType)) {
         throw "Le type '$($AttributeType.FullName)' n'est pas une classe d'attribut."
     }
 
-    # Déterminer les flags de liaison
+    # DÃ©terminer les flags de liaison
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
 
     if ($IncludePrivateMembers) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
     }
 
-    # Récupérer les membres
+    # RÃ©cupÃ©rer les membres
     $getMembersParams = @{
         Type         = $AttributeType
         BindingFlags = $bindingFlags
@@ -2562,27 +2562,27 @@ function Get-AttributeTypeInfo {
 
     $membersByCategory = Get-TypeMembersByCategory @getMembersParams -Categories Property, Constructor
 
-    # Récupérer les cibles valides de l'attribut
+    # RÃ©cupÃ©rer les cibles valides de l'attribut
     $attributeUsageAttribute = $AttributeType.GetCustomAttributes([System.AttributeUsageAttribute], $true) | Select-Object -First 1
     $validTargets = if ($null -ne $attributeUsageAttribute) {
         $attributeUsageAttribute.ValidOn
     } else {
-        [System.AttributeTargets]::All  # Valeur par défaut
+        [System.AttributeTargets]::All  # Valeur par dÃ©faut
     }
 
     $allowMultiple = if ($null -ne $attributeUsageAttribute) {
         $attributeUsageAttribute.AllowMultiple
     } else {
-        $false  # Valeur par défaut
+        $false  # Valeur par dÃ©faut
     }
 
     $inherited = if ($null -ne $attributeUsageAttribute) {
         $attributeUsageAttribute.Inherited
     } else {
-        $true  # Valeur par défaut
+        $true  # Valeur par dÃ©faut
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type                 = $AttributeType
         FullName             = $AttributeType.FullName
@@ -2597,7 +2597,7 @@ function Get-AttributeTypeInfo {
         InheritanceHierarchy = @()
     }
 
-    # Construire la hiérarchie d'héritage
+    # Construire la hiÃ©rarchie d'hÃ©ritage
     $currentType = $AttributeType
     while ($null -ne $currentType -and $currentType -ne [object]) {
         $result.InheritanceHierarchy += $currentType
@@ -2609,17 +2609,17 @@ function Get-AttributeTypeInfo {
 
 <#
 .SYNOPSIS
-    Analyse une classe d'énumération.
+    Analyse une classe d'Ã©numÃ©ration.
 .DESCRIPTION
-    Cette fonction analyse une classe d'énumération et retourne des informations détaillées sur ses valeurs et attributs.
+    Cette fonction analyse une classe d'Ã©numÃ©ration et retourne des informations dÃ©taillÃ©es sur ses valeurs et attributs.
 .PARAMETER EnumType
-    Le type d'énumération à analyser.
+    Le type d'Ã©numÃ©ration Ã  analyser.
 .PARAMETER IncludeAttributes
-    Indique si les attributs des valeurs d'énumération doivent être inclus dans l'analyse.
+    Indique si les attributs des valeurs d'Ã©numÃ©ration doivent Ãªtre inclus dans l'analyse.
 .EXAMPLE
     $EnumInfo = Get-EnumTypeInfo -EnumType ([System.DayOfWeek])
 .OUTPUTS
-    PSObject - Un objet contenant des informations détaillées sur la classe d'énumération.
+    PSObject - Un objet contenant des informations dÃ©taillÃ©es sur la classe d'Ã©numÃ©ration.
 #>
 function Get-EnumTypeInfo {
     [CmdletBinding()]
@@ -2631,22 +2631,22 @@ function Get-EnumTypeInfo {
         [switch]$IncludeAttributes
     )
 
-    # Vérifier si le type est une énumération
+    # VÃ©rifier si le type est une Ã©numÃ©ration
     if (-not $EnumType.IsEnum) {
-        throw "Le type '$($EnumType.FullName)' n'est pas une énumération."
+        throw "Le type '$($EnumType.FullName)' n'est pas une Ã©numÃ©ration."
     }
 
-    # Récupérer les valeurs de l'énumération
+    # RÃ©cupÃ©rer les valeurs de l'Ã©numÃ©ration
     $enumValues = [Enum]::GetValues($EnumType)
     $enumNames = [Enum]::GetNames($EnumType)
 
-    # Récupérer le type sous-jacent
+    # RÃ©cupÃ©rer le type sous-jacent
     $underlyingType = [Enum]::GetUnderlyingType($EnumType)
 
-    # Vérifier si l'énumération a l'attribut [Flags]
+    # VÃ©rifier si l'Ã©numÃ©ration a l'attribut [Flags]
     $isFlagsEnum = $EnumType.GetCustomAttributes([System.FlagsAttribute], $false).Length -gt 0
 
-    # Créer un tableau pour stocker les informations sur les valeurs
+    # CrÃ©er un tableau pour stocker les informations sur les valeurs
     $values = @()
 
     for ($i = 0; $i -lt $enumNames.Length; $i++) {
@@ -2660,7 +2660,7 @@ function Get-EnumTypeInfo {
             NumericValue = $numericValue
         }
 
-        # Ajouter les attributs si demandé
+        # Ajouter les attributs si demandÃ©
         if ($IncludeAttributes) {
             $field = $EnumType.GetField($name)
             $attributes = $field.GetCustomAttributes($false)
@@ -2670,7 +2670,7 @@ function Get-EnumTypeInfo {
         $values += $valueInfo
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type           = $EnumType
         FullName       = $EnumType.FullName
@@ -2683,5 +2683,5 @@ function Get-EnumTypeInfo {
 }
 
 # Exporter les fonctions
-# Note: Commenté pour permettre l'exécution en mode script
+# Note: CommentÃ© pour permettre l'exÃ©cution en mode script
 # Export-ModuleMember -Function Get-TypeByQualifiedName, ConvertFrom-TypeName, Search-TypeInAssemblies, Get-TypeResolutionError, Get-NonPublicType, New-StringComparer, Find-TypesByNamespace, Find-TypesByRegex, Set-TypeAlias, Remove-TypeAlias, Get-TypeAlias, Resolve-TypeAlias, Import-TypeAliases, Export-TypeAliases, Import-Assembly, Import-AssemblyFromStream, New-GenericType, Get-GenericTypeArguments, Test-GenericType, New-AnonymousType, New-DynamicType, New-NullableType, Get-TypeMembers, Get-TypeMembersRecursive, Get-TypeMembersByCategory, New-TypeMemberIterator, Get-TypeMembersByAttribute, Get-TypeMembersByReturnType, Get-TypeMembersByAccessibility, Get-ExceptionTypeInfo, Get-AttributeTypeInfo, Get-EnumTypeInfo

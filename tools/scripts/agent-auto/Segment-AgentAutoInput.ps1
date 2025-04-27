@@ -1,28 +1,28 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Segmente automatiquement les entrées volumineuses pour Agent Auto.
+    Segmente automatiquement les entrÃ©es volumineuses pour Agent Auto.
 .DESCRIPTION
-    Ce script segmente les entrées volumineuses pour Agent Auto afin d'éviter
-    les interruptions dues aux limites de taille d'entrée.
+    Ce script segmente les entrÃ©es volumineuses pour Agent Auto afin d'Ã©viter
+    les interruptions dues aux limites de taille d'entrÃ©e.
 .PARAMETER Input
-    Entrée à segmenter (texte, fichier, objet JSON).
+    EntrÃ©e Ã  segmenter (texte, fichier, objet JSON).
 .PARAMETER OutputPath
     Chemin du dossier de sortie pour les segments.
 .PARAMETER MaxInputSizeKB
-    Taille maximale d'entrée en KB (par défaut: 10).
+    Taille maximale d'entrÃ©e en KB (par dÃ©faut: 10).
 .PARAMETER ChunkSizeKB
-    Taille des segments en KB (par défaut: 5).
+    Taille des segments en KB (par dÃ©faut: 5).
 .PARAMETER PreserveLines
-    Préserve les sauts de ligne lors de la segmentation de texte.
+    PrÃ©serve les sauts de ligne lors de la segmentation de texte.
 .PARAMETER InputType
-    Type d'entrée (Auto, Text, Json, File).
+    Type d'entrÃ©e (Auto, Text, Json, File).
 .EXAMPLE
     .\Segment-AgentAutoInput.ps1 -Input "chemin/vers/fichier.json" -OutputPath "chemin/vers/sortie" -InputType File
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
+    Date de crÃ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -57,7 +57,7 @@ if (-not (Test-Path -Path $modulePath)) {
 
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -106,18 +106,18 @@ function Start-InputSegmentation {
         [string]$InputType
     )
     
-    Write-Log "Démarrage de la segmentation d'entrée pour Agent Auto..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la segmentation d'entrÃ©e pour Agent Auto..." -Level "TITLE"
     
     # Initialiser le module de segmentation
     Initialize-InputSegmentation -MaxInputSizeKB $MaxInputSizeKB -DefaultChunkSizeKB $ChunkSizeKB
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputPath"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath"
     }
     
-    # Déterminer le type d'entrée si Auto
+    # DÃ©terminer le type d'entrÃ©e si Auto
     $actualInputType = $InputType
     
     if ($InputType -eq "Auto") {
@@ -140,17 +140,17 @@ function Start-InputSegmentation {
         }
     }
     
-    Write-Log "Type d'entrée détecté: $actualInputType"
+    Write-Log "Type d'entrÃ©e dÃ©tectÃ©: $actualInputType"
     
-    # Mesurer la taille de l'entrée
+    # Mesurer la taille de l'entrÃ©e
     $sizeKB = Measure-InputSize -Input $Input
-    Write-Log "Taille de l'entrée: $sizeKB KB"
+    Write-Log "Taille de l'entrÃ©e: $sizeKB KB"
     
-    # Vérifier si la segmentation est nécessaire
+    # VÃ©rifier si la segmentation est nÃ©cessaire
     if ($sizeKB -le $MaxInputSizeKB) {
-        Write-Log "L'entrée est déjà de taille acceptable (< $MaxInputSizeKB KB). Aucune segmentation nécessaire." -Level "SUCCESS"
+        Write-Log "L'entrÃ©e est dÃ©jÃ  de taille acceptable (< $MaxInputSizeKB KB). Aucune segmentation nÃ©cessaire." -Level "SUCCESS"
         
-        # Créer un seul fichier de sortie
+        # CrÃ©er un seul fichier de sortie
         $outputFile = Join-Path -Path $OutputPath -ChildPath "input.txt"
         
         switch ($actualInputType) {
@@ -166,11 +166,11 @@ function Start-InputSegmentation {
             }
         }
         
-        Write-Log "Entrée copiée dans: $outputFile" -Level "SUCCESS"
+        Write-Log "EntrÃ©e copiÃ©e dans: $outputFile" -Level "SUCCESS"
         return @($outputFile)
     }
     
-    # Segmenter l'entrée
+    # Segmenter l'entrÃ©e
     $segments = @()
     
     switch ($actualInputType) {
@@ -186,7 +186,7 @@ function Start-InputSegmentation {
         }
     }
     
-    Write-Log "Entrée segmentée en $($segments.Count) parties."
+    Write-Log "EntrÃ©e segmentÃ©e en $($segments.Count) parties."
     
     # Enregistrer les segments
     $outputFiles = @()
@@ -210,7 +210,7 @@ function Start-InputSegmentation {
         $outputFiles += $outputFile
     }
     
-    # Créer un fichier d'index
+    # CrÃ©er un fichier d'index
     $indexFile = Join-Path -Path $OutputPath -ChildPath "index_${timestamp}.json"
     
     $index = @{
@@ -224,17 +224,17 @@ function Start-InputSegmentation {
     
     $index | ConvertTo-Json -Depth 10 | Out-File -FilePath $indexFile -Encoding utf8
     
-    Write-Log "Segmentation terminée. $($segments.Count) segments créés." -Level "SUCCESS"
+    Write-Log "Segmentation terminÃ©e. $($segments.Count) segments crÃ©Ã©s." -Level "SUCCESS"
     Write-Log "Fichier d'index: $indexFile" -Level "SUCCESS"
     
     return $outputFiles
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $result = Start-InputSegmentation -Input $Input -OutputPath $OutputPath -MaxInputSizeKB $MaxInputSizeKB -ChunkSizeKB $ChunkSizeKB -PreserveLines:$PreserveLines -InputType $InputType
 
-# Afficher les résultats
-Write-Log "Segments créés:" -Level "TITLE"
+# Afficher les rÃ©sultats
+Write-Log "Segments crÃ©Ã©s:" -Level "TITLE"
 
 foreach ($file in $result) {
     Write-Host "- $file"

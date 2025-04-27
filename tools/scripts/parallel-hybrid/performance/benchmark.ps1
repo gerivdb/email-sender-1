@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Script de benchmark pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
     Ce script mesure les performances de l'architecture hybride PowerShell-Python
-    en exécutant différents scénarios de test.
+    en exÃ©cutant diffÃ©rents scÃ©narios de test.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -23,16 +23,16 @@ param(
     [switch]$GenerateReport
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer les performances d'une opération
+# Fonction pour mesurer les performances d'une opÃ©ration
 function Measure-Operation {
     [CmdletBinding()]
     param(
@@ -54,24 +54,24 @@ function Measure-Operation {
     $results = @()
     
     for ($i = 1; $i -le $Iterations; $i++) {
-        Write-Host "  Itération $i/$Iterations..." -ForegroundColor Yellow
+        Write-Host "  ItÃ©ration $i/$Iterations..." -ForegroundColor Yellow
         
-        # Nettoyer la mémoire avant chaque test
+        # Nettoyer la mÃ©moire avant chaque test
         [System.GC]::Collect()
         
-        # Mesurer l'utilisation de la mémoire avant
+        # Mesurer l'utilisation de la mÃ©moire avant
         $memoryBefore = [System.GC]::GetTotalMemory($true)
         
-        # Mesurer le temps d'exécution
+        # Mesurer le temps d'exÃ©cution
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
         try {
-            # Exécuter l'opération
+            # ExÃ©cuter l'opÃ©ration
             $result = & $ScriptBlock @Parameters
             $success = $true
         }
         catch {
-            Write-Error "Erreur lors de l'exécution du test '$Name' : $_"
+            Write-Error "Erreur lors de l'exÃ©cution du test '$Name' : $_"
             $success = $false
             $result = $null
         }
@@ -79,11 +79,11 @@ function Measure-Operation {
         $stopwatch.Stop()
         $executionTime = $stopwatch.Elapsed.TotalSeconds
         
-        # Mesurer l'utilisation de la mémoire après
+        # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
         $memoryAfter = [System.GC]::GetTotalMemory($true)
         $memoryUsage = ($memoryAfter - $memoryBefore) / 1MB
         
-        # Enregistrer les résultats
+        # Enregistrer les rÃ©sultats
         $results += [PSCustomObject]@{
             Iteration = $i
             ExecutionTime = $executionTime
@@ -92,9 +92,9 @@ function Measure-Operation {
             Result = $result
         }
         
-        Write-Host "    Temps d'exécution : $executionTime secondes" -ForegroundColor Yellow
-        Write-Host "    Utilisation mémoire : $memoryUsage MB" -ForegroundColor Yellow
-        Write-Host "    Succès : $success" -ForegroundColor ($success ? "Green" : "Red")
+        Write-Host "    Temps d'exÃ©cution : $executionTime secondes" -ForegroundColor Yellow
+        Write-Host "    Utilisation mÃ©moire : $memoryUsage MB" -ForegroundColor Yellow
+        Write-Host "    SuccÃ¨s : $success" -ForegroundColor ($success ? "Green" : "Red")
     }
     
     # Calculer les statistiques
@@ -104,11 +104,11 @@ function Measure-Operation {
     $avgMemory = ($results | Measure-Object -Property MemoryUsageMB -Average).Average
     $successRate = ($results | Where-Object { $_.Success } | Measure-Object).Count / $Iterations * 100
     
-    Write-Host "`n  Résultats pour '$Name' :" -ForegroundColor Cyan
+    Write-Host "`n  RÃ©sultats pour '$Name' :" -ForegroundColor Cyan
     Write-Host "    Temps moyen : $avgTime secondes" -ForegroundColor Green
     Write-Host "    Temps min/max : $minTime / $maxTime secondes" -ForegroundColor Green
-    Write-Host "    Mémoire moyenne : $avgMemory MB" -ForegroundColor Green
-    Write-Host "    Taux de succès : $successRate%" -ForegroundColor Green
+    Write-Host "    MÃ©moire moyenne : $avgMemory MB" -ForegroundColor Green
+    Write-Host "    Taux de succÃ¨s : $successRate%" -ForegroundColor Green
     
     return [PSCustomObject]@{
         Name = $Name
@@ -121,7 +121,7 @@ function Measure-Operation {
     }
 }
 
-# Fonction pour générer des fichiers de test
+# Fonction pour gÃ©nÃ©rer des fichiers de test
 function New-TestFiles {
     [CmdletBinding()]
     param(
@@ -144,14 +144,14 @@ function New-TestFiles {
         New-Item -Path $testFilesPath -ItemType Directory -Force | Out-Null
     }
     
-    # Modèles de contenu
+    # ModÃ¨les de contenu
     $smallTemplate = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
     Petit script de test.
 .DESCRIPTION
-    Ce script est utilisé pour les tests de performance.
+    Ce script est utilisÃ© pour les tests de performance.
 #>
 
 # Fonction simple
@@ -174,8 +174,8 @@ Test-Function -InputString "Hello, World!"
 .SYNOPSIS
     Script de test de taille moyenne.
 .DESCRIPTION
-    Ce script est utilisé pour les tests de performance.
-    Il contient plusieurs fonctions et structures de contrôle.
+    Ce script est utilisÃ© pour les tests de performance.
+    Il contient plusieurs fonctions et structures de contrÃ´le.
 .NOTES
     Version: 1.0
     Auteur: Test
@@ -256,15 +256,15 @@ if (`$processingEnabled) {
 .SYNOPSIS
     Grand script de test.
 .DESCRIPTION
-    Ce script est utilisé pour les tests de performance.
-    Il contient de nombreuses fonctions, classes et structures de contrôle.
+    Ce script est utilisÃ© pour les tests de performance.
+    Il contient de nombreuses fonctions, classes et structures de contrÃ´le.
 .NOTES
     Version: 1.0
     Auteur: Test
     Date: 2025-04-10
 #>
 
-# Définition de classe
+# DÃ©finition de classe
 class TestItem {
     [string]`$Name
     [int]`$Value
@@ -340,11 +340,11 @@ function Start-ItemsProcessing {
     )
     
     try {
-        Write-Verbose "Démarrage du traitement de `$Count éléments..."
+        Write-Verbose "DÃ©marrage du traitement de `$Count Ã©lÃ©ments..."
         
         `$items = @()
         
-        # Création des éléments
+        # CrÃ©ation des Ã©lÃ©ments
         for (`$i = 1; `$i -le `$Count; `$i++) {
             `$name = "Item_`$i"
             `$value = Get-Random -Minimum (`$IncludeInvalid ? -10 : 1) -Maximum 100
@@ -352,10 +352,10 @@ function Start-ItemsProcessing {
             `$item = New-TestItem -Name `$name -Value `$value
             `$items += `$item
             
-            Write-Verbose "Élément créé : `$item"
+            Write-Verbose "Ã‰lÃ©ment crÃ©Ã© : `$item"
         }
         
-        # Validation des éléments
+        # Validation des Ã©lÃ©ments
         `$validItems = @()
         `$invalidItems = @()
         
@@ -371,7 +371,7 @@ function Start-ItemsProcessing {
         # Statistiques
         `$statistics = Get-ItemsStatistics -Items `$items
         
-        # Résultats
+        # RÃ©sultats
         return @{
             Items = `$items
             ValidItems = `$validItems
@@ -380,18 +380,18 @@ function Start-ItemsProcessing {
         }
     }
     catch {
-        Write-Error "Erreur lors du traitement des éléments : `$_"
+        Write-Error "Erreur lors du traitement des Ã©lÃ©ments : `$_"
         return `$null
     }
 }
 
-# Exécution du traitement
+# ExÃ©cution du traitement
 `$result = Start-ItemsProcessing -Count 50 -IncludeInvalid
-Write-Output "Traitement terminé avec `$(`$result.ValidItems.Count) éléments valides sur `$(`$result.Items.Count) au total."
+Write-Output "Traitement terminÃ© avec `$(`$result.ValidItems.Count) Ã©lÃ©ments valides sur `$(`$result.Items.Count) au total."
 Write-Output "Valeur totale : `$(`$result.Statistics.TotalValue)"
 Write-Output "Valeur moyenne : `$(`$result.Statistics.AverageValue)"
 
-# Traitement supplémentaire
+# Traitement supplÃ©mentaire
 `$categories = @("A", "B", "C")
 `$itemsByCategory = @{}
 
@@ -399,17 +399,17 @@ foreach (`$category in `$categories) {
     `$itemsInCategory = `$result.ValidItems | Where-Object { `$_.Value % `$categories.Count -eq `$categories.IndexOf(`$category) }
     `$itemsByCategory[`$category] = `$itemsInCategory
     
-    Write-Output "Catégorie `$category : `$(`$itemsInCategory.Count) éléments"
+    Write-Output "CatÃ©gorie `$category : `$(`$itemsInCategory.Count) Ã©lÃ©ments"
 }
 
-# Exportation des résultats (simulation)
-Write-Output "Exportation des résultats..."
+# Exportation des rÃ©sultats (simulation)
+Write-Output "Exportation des rÃ©sultats..."
 Start-Sleep -Seconds 1
-Write-Output "Exportation terminée."
+Write-Output "Exportation terminÃ©e."
 "@
     
-    # Créer les fichiers de test
-    Write-Host "Création des fichiers de test..." -ForegroundColor Yellow
+    # CrÃ©er les fichiers de test
+    Write-Host "CrÃ©ation des fichiers de test..." -ForegroundColor Yellow
     
     # Petits fichiers
     for ($i = 1; $i -le $SmallFiles; $i++) {
@@ -429,7 +429,7 @@ Write-Output "Exportation terminée."
         $largeTemplate | Out-File -FilePath $filePath -Encoding utf8
     }
     
-    Write-Host "Création des fichiers de test terminée." -ForegroundColor Green
+    Write-Host "CrÃ©ation des fichiers de test terminÃ©e." -ForegroundColor Green
     Write-Host "  Petits fichiers : $SmallFiles" -ForegroundColor Green
     Write-Host "  Fichiers moyens : $MediumFiles" -ForegroundColor Green
     Write-Host "  Grands fichiers : $LargeFiles" -ForegroundColor Green
@@ -437,13 +437,13 @@ Write-Output "Exportation terminée."
     return $testFilesPath
 }
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $testFilesPath = New-TestFiles -OutputPath $OutputPath
 
-# Définir les scénarios de test
+# DÃ©finir les scÃ©narios de test
 $testScenarios = @(
     @{
-        Name = "Analyse de scripts (séquentiel)"
+        Name = "Analyse de scripts (sÃ©quentiel)"
         ScriptBlock = {
             param($TestFilesPath, $OutputPath)
             
@@ -458,7 +458,7 @@ $testScenarios = @(
         }
     },
     @{
-        Name = "Analyse de scripts (parallèle)"
+        Name = "Analyse de scripts (parallÃ¨le)"
         ScriptBlock = {
             param($TestFilesPath, $OutputPath)
             
@@ -473,7 +473,7 @@ $testScenarios = @(
         }
     },
     @{
-        Name = "Analyse de scripts (parallèle avec cache)"
+        Name = "Analyse de scripts (parallÃ¨le avec cache)"
         ScriptBlock = {
             param($TestFilesPath, $OutputPath)
             
@@ -489,7 +489,7 @@ $testScenarios = @(
     }
 )
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $benchmarkResults = @()
 
 foreach ($scenario in $testScenarios) {
@@ -502,13 +502,13 @@ foreach ($scenario in $testScenarios) {
     $benchmarkResults += $result
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $OutputPath -ChildPath "benchmark_results.json"
 $benchmarkResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $resultsPath -Encoding utf8
 
-Write-Host "`nRésultats du benchmark enregistrés : $resultsPath" -ForegroundColor Green
+Write-Host "`nRÃ©sultats du benchmark enregistrÃ©s : $resultsPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
     $reportPath = Join-Path -Path $OutputPath -ChildPath "benchmark_report.html"
     
@@ -563,24 +563,24 @@ if ($GenerateReport) {
 </head>
 <body>
     <h1>Rapport de benchmark</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de scénarios testés : $($benchmarkResults.Count)</p>
-        <p>Nombre d'itérations par scénario : $Iterations</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de scÃ©narios testÃ©s : $($benchmarkResults.Count)</p>
+        <p>Nombre d'itÃ©rations par scÃ©nario : $Iterations</p>
     </div>
     
-    <h2>Résultats par scénario</h2>
+    <h2>RÃ©sultats par scÃ©nario</h2>
     <table>
         <thead>
             <tr>
-                <th>Scénario</th>
+                <th>ScÃ©nario</th>
                 <th>Temps moyen (s)</th>
                 <th>Temps min (s)</th>
                 <th>Temps max (s)</th>
-                <th>Mémoire moyenne (MB)</th>
-                <th>Taux de succès (%)</th>
+                <th>MÃ©moire moyenne (MB)</th>
+                <th>Taux de succÃ¨s (%)</th>
             </tr>
         </thead>
         <tbody>
@@ -605,30 +605,30 @@ if ($GenerateReport) {
     
     <h2>Graphiques</h2>
     
-    <h3>Temps d'exécution moyen</h3>
+    <h3>Temps d'exÃ©cution moyen</h3>
     <div class="chart-container">
         <canvas id="timeChart"></canvas>
     </div>
     
-    <h3>Utilisation mémoire moyenne</h3>
+    <h3>Utilisation mÃ©moire moyenne</h3>
     <div class="chart-container">
         <canvas id="memoryChart"></canvas>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const scenarios = [$(($benchmarkResults | ForEach-Object { "'$($_.Name)'" }) -join ', ')];
         const avgTimes = [$(($benchmarkResults | ForEach-Object { [Math]::Round($_.AverageTime, 2) }) -join ', ')];
         const avgMemory = [$(($benchmarkResults | ForEach-Object { [Math]::Round($_.AverageMemoryMB, 2) }) -join ', ')];
         
-        // Graphique des temps d'exécution
+        // Graphique des temps d'exÃ©cution
         const timeCtx = document.getElementById('timeChart').getContext('2d');
         new Chart(timeCtx, {
             type: 'bar',
             data: {
                 labels: scenarios,
                 datasets: [{
-                    label: 'Temps d\'exécution moyen (s)',
+                    label: 'Temps d\'exÃ©cution moyen (s)',
                     data: avgTimes,
                     backgroundColor: 'rgba(0, 120, 212, 0.7)',
                     borderColor: 'rgba(0, 120, 212, 1)',
@@ -648,14 +648,14 @@ if ($GenerateReport) {
             }
         });
         
-        // Graphique de l'utilisation mémoire
+        // Graphique de l'utilisation mÃ©moire
         const memoryCtx = document.getElementById('memoryChart').getContext('2d');
         new Chart(memoryCtx, {
             type: 'bar',
             data: {
                 labels: scenarios,
                 datasets: [{
-                    label: 'Utilisation mémoire moyenne (MB)',
+                    label: 'Utilisation mÃ©moire moyenne (MB)',
                     data: avgMemory,
                     backgroundColor: 'rgba(0, 183, 74, 0.7)',
                     borderColor: 'rgba(0, 183, 74, 1)',
@@ -681,11 +681,11 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $benchmarkResults

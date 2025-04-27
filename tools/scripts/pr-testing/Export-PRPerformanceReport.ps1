@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exporte un rapport de performance détaillé pour l'analyse des pull requests.
+    Exporte un rapport de performance dÃ©taillÃ© pour l'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script génère un rapport HTML détaillé à partir des données de traçage
-    collectées par le module PRPerformanceTracer.
+    Ce script gÃ©nÃ¨re un rapport HTML dÃ©taillÃ© Ã  partir des donnÃ©es de traÃ§age
+    collectÃ©es par le module PRPerformanceTracer.
 
 .PARAMETER Tracer
-    L'objet traceur contenant les données de traçage.
+    L'objet traceur contenant les donnÃ©es de traÃ§age.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le rapport.
-    Par défaut: "reports\pr-analysis\profiling\performance_report.html"
+    Le chemin oÃ¹ enregistrer le rapport.
+    Par dÃ©faut: "reports\pr-analysis\profiling\performance_report.html"
 
 .PARAMETER PullRequestInfo
-    Informations sur la pull request analysée.
+    Informations sur la pull request analysÃ©e.
 
 .EXAMPLE
     Export-PRPerformanceReport -Tracer $tracer -OutputPath "reports\performance_report_pr42.html" -PullRequestInfo $prInfo
-    Génère un rapport de performance à partir des données du traceur et l'enregistre dans le fichier spécifié.
+    GÃ©nÃ¨re un rapport de performance Ã  partir des donnÃ©es du traceur et l'enregistre dans le fichier spÃ©cifiÃ©.
 
 .NOTES
     Version: 1.0
@@ -39,7 +39,7 @@ param(
     [PSCustomObject]$PullRequestInfo = $null
 )
 
-# Fonction pour générer le HTML du rapport
+# Fonction pour gÃ©nÃ©rer le HTML du rapport
 function New-PerformanceReportHtml {
     [CmdletBinding()]
     param(
@@ -50,11 +50,11 @@ function New-PerformanceReportHtml {
         [PSCustomObject]$PRInfo = $null
     )
 
-    # Convertir les données en JSON pour les graphiques
+    # Convertir les donnÃ©es en JSON pour les graphiques
     $operationsJson = $TracingData.Operations | ConvertTo-Json -Depth 10
     $resourceSnapshotsJson = $TracingData.ResourceSnapshots | ConvertTo-Json -Depth 10
 
-    # Créer le HTML
+    # CrÃ©er le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -148,9 +148,9 @@ function New-PerformanceReportHtml {
     <div class="container">
         <h1>Rapport de Performance - Analyse de Pull Request</h1>
         
-        <!-- Résumé -->
+        <!-- RÃ©sumÃ© -->
         <div class="section">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <div class="summary">
 "@
 
@@ -158,11 +158,11 @@ function New-PerformanceReportHtml {
     if ($null -ne $PRInfo) {
         $html += @"
                 <h3>Informations sur la Pull Request</h3>
-                <p><strong>Numéro:</strong> #$($PRInfo.Number)</p>
+                <p><strong>NumÃ©ro:</strong> #$($PRInfo.Number)</p>
                 <p><strong>Titre:</strong> $($PRInfo.Title)</p>
                 <p><strong>Branche source:</strong> $($PRInfo.HeadBranch)</p>
                 <p><strong>Branche cible:</strong> $($PRInfo.BaseBranch)</p>
-                <p><strong>Fichiers modifiés:</strong> $($PRInfo.FileCount)</p>
+                <p><strong>Fichiers modifiÃ©s:</strong> $($PRInfo.FileCount)</p>
                 <p><strong>Ajouts:</strong> $($PRInfo.Additions)</p>
                 <p><strong>Suppressions:</strong> $($PRInfo.Deletions)</p>
                 <p><strong>Modifications totales:</strong> $($PRInfo.Changes)</p>
@@ -170,18 +170,18 @@ function New-PerformanceReportHtml {
     }
 
     $html += @"
-                <h3>Métriques de Performance</h3>
+                <h3>MÃ©triques de Performance</h3>
                 <div class="metrics">
                     <div class="metric">
-                        <h3>Durée Totale</h3>
+                        <h3>DurÃ©e Totale</h3>
                         <p>$([Math]::Round($TracingData.Duration.TotalSeconds, 2)) s</p>
                     </div>
                     <div class="metric">
-                        <h3>Opérations</h3>
+                        <h3>OpÃ©rations</h3>
                         <p>$($TracingData.Operations.Count)</p>
                     </div>
                     <div class="metric">
-                        <h3>Mémoire Max</h3>
+                        <h3>MÃ©moire Max</h3>
                         <p>$([Math]::Round(($TracingData.ResourceSnapshots | Measure-Object -Property WorkingSet -Maximum).Maximum / 1MB, 2)) MB</p>
                     </div>
                     <div class="metric">
@@ -205,29 +205,29 @@ function New-PerformanceReportHtml {
             </div>
         </div>
         
-        <!-- Opérations -->
+        <!-- OpÃ©rations -->
         <div class="section">
-            <h2>Opérations</h2>
+            <h2>OpÃ©rations</h2>
             
             <div class="chart-container">
                 <canvas id="operationsChart"></canvas>
             </div>
             
-            <h3>Détails des Opérations</h3>
+            <h3>DÃ©tails des OpÃ©rations</h3>
             <table>
                 <thead>
                     <tr>
                         <th>Nom</th>
                         <th>Description</th>
-                        <th>Durée (ms)</th>
-                        <th>Mémoire (MB)</th>
+                        <th>DurÃ©e (ms)</th>
+                        <th>MÃ©moire (MB)</th>
                         <th>CPU</th>
                     </tr>
                 </thead>
                 <tbody>
 "@
 
-    # Ajouter les détails des opérations
+    # Ajouter les dÃ©tails des opÃ©rations
     foreach ($operation in $TracingData.Operations) {
         $memoryDelta = 0
         $cpuDelta = 0
@@ -260,56 +260,56 @@ function New-PerformanceReportHtml {
                 <ul>
 "@
 
-    # Ajouter des recommandations basées sur l'analyse
+    # Ajouter des recommandations basÃ©es sur l'analyse
     $avgOperationTime = ($TracingData.Operations | Measure-Object -Property { $_.Duration.TotalMilliseconds } -Average).Average
     $maxOperationTime = ($TracingData.Operations | Measure-Object -Property { $_.Duration.TotalMilliseconds } -Maximum).Maximum
     $maxMemoryOperation = $TracingData.Operations | Sort-Object -Property { if ($null -ne $_.ResourceUsage -and $null -ne $_.ResourceUsage.Delta) { $_.ResourceUsage.Delta.WorkingSet } else { 0 } } -Descending | Select-Object -First 1
 
     if ($avgOperationTime -gt 500) {
         $html += @"
-                    <li><strong>Optimisation des performances générales:</strong> Le temps moyen d'opération est élevé ($([Math]::Round($avgOperationTime, 2)) ms). Envisagez d'optimiser les opérations les plus courantes.</li>
+                    <li><strong>Optimisation des performances gÃ©nÃ©rales:</strong> Le temps moyen d'opÃ©ration est Ã©levÃ© ($([Math]::Round($avgOperationTime, 2)) ms). Envisagez d'optimiser les opÃ©rations les plus courantes.</li>
 "@
     }
 
     if ($maxOperationTime -gt 1000) {
         $slowestOp = $TracingData.Operations | Sort-Object -Property { $_.Duration.TotalMilliseconds } -Descending | Select-Object -First 1
         $html += @"
-                    <li><strong>Optimisation des opérations lentes:</strong> L'opération '$($slowestOp.Name)' est particulièrement lente ($([Math]::Round($slowestOp.Duration.TotalMilliseconds, 2)) ms). Envisagez de l'optimiser en priorité.</li>
+                    <li><strong>Optimisation des opÃ©rations lentes:</strong> L'opÃ©ration '$($slowestOp.Name)' est particuliÃ¨rement lente ($([Math]::Round($slowestOp.Duration.TotalMilliseconds, 2)) ms). Envisagez de l'optimiser en prioritÃ©.</li>
 "@
     }
 
     if ($null -ne $maxMemoryOperation -and $null -ne $maxMemoryOperation.ResourceUsage -and $null -ne $maxMemoryOperation.ResourceUsage.Delta -and $maxMemoryOperation.ResourceUsage.Delta.WorkingSet / 1MB -gt 50) {
         $html += @"
-                    <li><strong>Optimisation de la mémoire:</strong> L'opération '$($maxMemoryOperation.Name)' consomme beaucoup de mémoire ($([Math]::Round($maxMemoryOperation.ResourceUsage.Delta.WorkingSet / 1MB, 2)) MB). Envisagez d'optimiser son utilisation de la mémoire.</li>
+                    <li><strong>Optimisation de la mÃ©moire:</strong> L'opÃ©ration '$($maxMemoryOperation.Name)' consomme beaucoup de mÃ©moire ($([Math]::Round($maxMemoryOperation.ResourceUsage.Delta.WorkingSet / 1MB, 2)) MB). Envisagez d'optimiser son utilisation de la mÃ©moire.</li>
 "@
     }
 
     $html += @"
-                    <li><strong>Mise en cache:</strong> Envisagez d'implémenter un système de cache pour les opérations fréquentes et coûteuses.</li>
-                    <li><strong>Parallélisation:</strong> Certaines opérations pourraient bénéficier d'une exécution parallèle pour améliorer les performances globales.</li>
+                    <li><strong>Mise en cache:</strong> Envisagez d'implÃ©menter un systÃ¨me de cache pour les opÃ©rations frÃ©quentes et coÃ»teuses.</li>
+                    <li><strong>ParallÃ©lisation:</strong> Certaines opÃ©rations pourraient bÃ©nÃ©ficier d'une exÃ©cution parallÃ¨le pour amÃ©liorer les performances globales.</li>
                 </ul>
             </div>
         </div>
     </div>
 
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const operations = $operationsJson;
         const resourceSnapshots = $resourceSnapshotsJson;
         
-        // Préparer les données pour les graphiques
+        // PrÃ©parer les donnÃ©es pour les graphiques
         const timestamps = resourceSnapshots.map(snapshot => new Date(snapshot.Timestamp).toLocaleTimeString());
         const memoryData = resourceSnapshots.map(snapshot => snapshot.WorkingSet / (1024 * 1024)); // Convertir en MB
         const cpuData = resourceSnapshots.map(snapshot => snapshot.CPU);
         
-        // Graphique de mémoire
+        // Graphique de mÃ©moire
         const memoryCtx = document.getElementById('memoryChart').getContext('2d');
         new Chart(memoryCtx, {
             type: 'line',
             data: {
                 labels: timestamps,
                 datasets: [{
-                    label: 'Utilisation Mémoire (MB)',
+                    label: 'Utilisation MÃ©moire (MB)',
                     data: memoryData,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -325,7 +325,7 @@ function New-PerformanceReportHtml {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Mémoire (MB)'
+                            text: 'MÃ©moire (MB)'
                         }
                     },
                     x: {
@@ -374,7 +374,7 @@ function New-PerformanceReportHtml {
             }
         });
         
-        // Graphique des opérations
+        // Graphique des opÃ©rations
         const operationsCtx = document.getElementById('operationsChart').getContext('2d');
         const operationNames = operations.map(op => op.Name);
         const operationDurations = operations.map(op => op.Duration.TotalMilliseconds);
@@ -384,7 +384,7 @@ function New-PerformanceReportHtml {
             data: {
                 labels: operationNames,
                 datasets: [{
-                    label: 'Durée (ms)',
+                    label: 'DurÃ©e (ms)',
                     data: operationDurations,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -399,13 +399,13 @@ function New-PerformanceReportHtml {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Durée (ms)'
+                            text: 'DurÃ©e (ms)'
                         }
                     },
                     x: {
                         title: {
                             display: true,
-                            text: 'Opération'
+                            text: 'OpÃ©ration'
                         }
                     }
                 }
@@ -419,34 +419,34 @@ function New-PerformanceReportHtml {
     return $html
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Vérifier que le traceur est valide
+    # VÃ©rifier que le traceur est valide
     if ($null -eq $Tracer) {
         throw "L'objet traceur est null."
     }
 
-    # Obtenir les données de traçage
+    # Obtenir les donnÃ©es de traÃ§age
     $tracingData = $Tracer.GetTracingData()
     if ($null -eq $tracingData) {
-        throw "Impossible d'obtenir les données de traçage."
+        throw "Impossible d'obtenir les donnÃ©es de traÃ§age."
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     }
 
-    # Générer le HTML du rapport
+    # GÃ©nÃ©rer le HTML du rapport
     $html = New-PerformanceReportHtml -TracingData $tracingData -PRInfo $PullRequestInfo
 
     # Enregistrer le fichier HTML
     Set-Content -Path $OutputPath -Value $html -Encoding UTF8
 
-    Write-Host "Rapport de performance généré avec succès: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport de performance gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
     return $OutputPath
 } catch {
-    Write-Error "Erreur lors de la génération du rapport de performance: $_"
+    Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de performance: $_"
     return $null
 }

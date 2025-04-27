@@ -1,5 +1,5 @@
-# Get-ProjectSpecificConventions.ps1
-# Script pour détecter les conventions spécifiques au projet dans un fichier markdown de roadmap
+﻿# Get-ProjectSpecificConventions.ps1
+# Script pour dÃ©tecter les conventions spÃ©cifiques au projet dans un fichier markdown de roadmap
 
 param (
     [Parameter(Mandatory = $true)]
@@ -10,7 +10,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapParser.psm1"
 Import-Module $modulePath -Force
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $RoadmapFilePath)) {
     Write-Error "Le fichier '$RoadmapFilePath' n'existe pas."
     exit 1
@@ -19,7 +19,7 @@ if (-not (Test-Path -Path $RoadmapFilePath)) {
 # Lire le contenu du fichier
 $content = Get-Content -Path $RoadmapFilePath -Encoding UTF8 -Raw
 
-# Fonction pour détecter les conventions spécifiques au projet
+# Fonction pour dÃ©tecter les conventions spÃ©cifiques au projet
 function Get-ProjectConventions {
     param (
         [Parameter(Mandatory = $true)]
@@ -43,13 +43,13 @@ function Get-ProjectConventions {
         MetadataFormat = $null
     }
 
-    # Détecter les identifiants de tâches
+    # DÃ©tecter les identifiants de tÃ¢ches
     $taskIdPatterns = @(
-        # Format numérique (1.2.3)
+        # Format numÃ©rique (1.2.3)
         '(?m)^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)+)(?:\*\*)?\s',
-        # Format alphanumérique (A.1.2)
+        # Format alphanumÃ©rique (A.1.2)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Za-z]+(\.\d+)+)(?:\*\*)?\s',
-        # Format avec préfixe (TASK-123)
+        # Format avec prÃ©fixe (TASK-123)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Z]+-\d+)(?:\*\*)?\s'
     )
 
@@ -64,13 +64,13 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les indicateurs de priorité
+    # DÃ©tecter les indicateurs de prioritÃ©
     $priorityPatterns = @(
         # Format [PRIORITY: HIGH]
         '(?m)\[PRIORITY:\s*([A-Z]+)\]',
         # Format (P1), (P2), etc.
         '(?m)\(P(\d+)\)',
-        # Format !!! (haute priorité), !! (moyenne), ! (basse)
+        # Format !!! (haute prioritÃ©), !! (moyenne), ! (basse)
         '(?m)(!{1,3})'
     )
 
@@ -85,7 +85,7 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les indicateurs de statut spécifiques au projet
+    # DÃ©tecter les indicateurs de statut spÃ©cifiques au projet
     $statusPatterns = @(
         # Format [STATUS: IN_PROGRESS]
         '(?m)\[STATUS:\s*([A-Z_]+)\]',
@@ -106,11 +106,11 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les sections spéciales
+    # DÃ©tecter les sections spÃ©ciales
     $specialSectionPatterns = @(
-        # Sections avec des titres spécifiques
+        # Sections avec des titres spÃ©cifiques
         '(?m)^#+\s*(TODO|DONE|IN PROGRESS|BACKLOG|ICEBOX|NOTES|REFERENCES)',
-        # Sections délimitées par des séparateurs
+        # Sections dÃ©limitÃ©es par des sÃ©parateurs
         '(?m)^-{3,}\s*([A-Z ]+)\s*-{3,}$'
     )
 
@@ -123,11 +123,11 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter le format des métadonnées
+    # DÃ©tecter le format des mÃ©tadonnÃ©es
     $metadataPatterns = @(
         # Format YAML front matter
         '(?ms)^---\s*\n(.*?)\n---\s*\n',
-        # Format clé-valeur
+        # Format clÃ©-valeur
         '(?m)^([A-Za-z]+):\s*(.+)$'
     )
 
@@ -142,31 +142,31 @@ function Get-ProjectConventions {
     return $conventions
 }
 
-# Analyser les conventions spécifiques au projet
-Write-Host "Analyse des conventions spécifiques au projet dans: $RoadmapFilePath" -ForegroundColor Cyan
+# Analyser les conventions spÃ©cifiques au projet
+Write-Host "Analyse des conventions spÃ©cifiques au projet dans: $RoadmapFilePath" -ForegroundColor Cyan
 $conventions = Get-ProjectConventions -Content $content
 
-# Afficher les résultats
-Write-Host "`nConventions spécifiques au projet détectées:" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "`nConventions spÃ©cifiques au projet dÃ©tectÃ©es:" -ForegroundColor Green
 
-# Identifiants de tâches
-Write-Host "`n1. Identifiants de tâches:" -ForegroundColor Yellow
+# Identifiants de tÃ¢ches
+Write-Host "`n1. Identifiants de tÃ¢ches:" -ForegroundColor Yellow
 if ($null -eq $conventions.TaskIdentifiers.Pattern) {
-    Write-Host "  Aucun format d'identifiant de tâche spécifique détecté."
+    Write-Host "  Aucun format d'identifiant de tÃ¢che spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.TaskIdentifiers.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.TaskIdentifiers.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.TaskIdentifiers.Examples) {
         Write-Host "    - $example"
     }
 }
 
-# Indicateurs de priorité
-Write-Host "`n2. Indicateurs de priorité:" -ForegroundColor Yellow
+# Indicateurs de prioritÃ©
+Write-Host "`n2. Indicateurs de prioritÃ©:" -ForegroundColor Yellow
 if ($null -eq $conventions.PriorityIndicators.Pattern) {
-    Write-Host "  Aucun indicateur de priorité spécifique détecté."
+    Write-Host "  Aucun indicateur de prioritÃ© spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.PriorityIndicators.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.PriorityIndicators.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.PriorityIndicators.Examples) {
         Write-Host "    - $example"
@@ -176,32 +176,32 @@ if ($null -eq $conventions.PriorityIndicators.Pattern) {
 # Indicateurs de statut
 Write-Host "`n3. Indicateurs de statut:" -ForegroundColor Yellow
 if ($null -eq $conventions.StatusIndicators.Pattern) {
-    Write-Host "  Aucun indicateur de statut spécifique détecté."
+    Write-Host "  Aucun indicateur de statut spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.StatusIndicators.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.StatusIndicators.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $conventions.StatusIndicators.Examples) {
         Write-Host "    - $example"
     }
 }
 
-# Sections spéciales
-Write-Host "`n4. Sections spéciales:" -ForegroundColor Yellow
+# Sections spÃ©ciales
+Write-Host "`n4. Sections spÃ©ciales:" -ForegroundColor Yellow
 if ($conventions.SpecialSections.Count -eq 0) {
-    Write-Host "  Aucune section spéciale détectée."
+    Write-Host "  Aucune section spÃ©ciale dÃ©tectÃ©e."
 } else {
-    Write-Host "  Sections détectées:"
+    Write-Host "  Sections dÃ©tectÃ©es:"
     foreach ($section in $conventions.SpecialSections) {
         Write-Host "    - $section"
     }
 }
 
-# Format des métadonnées
-Write-Host "`n5. Format des métadonnées:" -ForegroundColor Yellow
+# Format des mÃ©tadonnÃ©es
+Write-Host "`n5. Format des mÃ©tadonnÃ©es:" -ForegroundColor Yellow
 if ($null -eq $conventions.MetadataFormat) {
-    Write-Host "  Aucun format de métadonnées spécifique détecté."
+    Write-Host "  Aucun format de mÃ©tadonnÃ©es spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($conventions.MetadataFormat)"
+    Write-Host "  Format dÃ©tectÃ©: $($conventions.MetadataFormat)"
 }
 
-Write-Host "`nAnalyse terminée." -ForegroundColor Cyan
+Write-Host "`nAnalyse terminÃ©e." -ForegroundColor Cyan

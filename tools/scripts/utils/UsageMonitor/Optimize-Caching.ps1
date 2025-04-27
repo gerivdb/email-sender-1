@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Optimise la mise en cache prédictive et adaptative pour les scripts PowerShell.
+    Optimise la mise en cache prÃ©dictive et adaptative pour les scripts PowerShell.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation collectées par le module UsageMonitor
-    et optimise la mise en cache en préchargeant les données fréquemment utilisées
-    et en adaptant les stratégies d'invalidation en fonction des patterns d'utilisation.
+    Ce script analyse les donnÃ©es d'utilisation collectÃ©es par le module UsageMonitor
+    et optimise la mise en cache en prÃ©chargeant les donnÃ©es frÃ©quemment utilisÃ©es
+    et en adaptant les stratÃ©gies d'invalidation en fonction des patterns d'utilisation.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration de cache.
 .PARAMETER DatabasePath
-    Chemin vers le fichier de base de données d'utilisation.
+    Chemin vers le fichier de base de donnÃ©es d'utilisation.
 .PARAMETER Apply
-    Indique si les optimisations doivent être appliquées automatiquement.
+    Indique si les optimisations doivent Ãªtre appliquÃ©es automatiquement.
 .EXAMPLE
     .\Optimize-Caching.ps1 -Apply
 .NOTES
@@ -31,7 +31,7 @@ param (
     [switch]$Apply
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $usageMonitorPath = Join-Path -Path $PSScriptRoot -ChildPath "UsageMonitor.psm1"
 Import-Module $usageMonitorPath -Force
 
@@ -40,11 +40,11 @@ if (Test-Path -Path $psCacheManagerPath) {
     Import-Module $psCacheManagerPath -Force
 }
 else {
-    Write-Error "Module PSCacheManager non trouvé: $psCacheManagerPath"
+    Write-Error "Module PSCacheManager non trouvÃ©: $psCacheManagerPath"
     exit 1
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -75,11 +75,11 @@ function Analyze-CacheUsagePatterns {
     
     $cachePatterns = @{}
     
-    # Analyser les scripts les plus utilisés
+    # Analyser les scripts les plus utilisÃ©s
     foreach ($scriptPath in $UsageStats.TopUsedScripts.Keys) {
         $metrics = $script:UsageDatabase.GetMetricsForScript($scriptPath)
         
-        # Extraire les paramètres utilisés
+        # Extraire les paramÃ¨tres utilisÃ©s
         $parameterSets = @{}
         
         foreach ($metric in $metrics) {
@@ -96,7 +96,7 @@ function Analyze-CacheUsagePatterns {
             }
         }
         
-        # Identifier les ensembles de paramètres fréquemment utilisés
+        # Identifier les ensembles de paramÃ¨tres frÃ©quemment utilisÃ©s
         $frequentParams = $parameterSets.GetEnumerator() | 
             Where-Object { $_.Value -gt 2 } | 
             Sort-Object -Property Value -Descending
@@ -108,7 +108,7 @@ function Analyze-CacheUsagePatterns {
                 AverageDuration = 0
             }
             
-            # Calculer la durée moyenne d'exécution
+            # Calculer la durÃ©e moyenne d'exÃ©cution
             $successfulExecutions = $metrics | Where-Object { $_.Success }
             if ($successfulExecutions.Count -gt 0) {
                 $totalDuration = [timespan]::Zero
@@ -123,7 +123,7 @@ function Analyze-CacheUsagePatterns {
     return $cachePatterns
 }
 
-# Fonction pour analyser les séquences d'exécution
+# Fonction pour analyser les sÃ©quences d'exÃ©cution
 function Analyze-ExecutionSequences {
     param (
         [PSCustomObject]$UsageStats
@@ -132,7 +132,7 @@ function Analyze-ExecutionSequences {
     $sequences = @{}
     $allMetrics = @()
     
-    # Collecter toutes les métriques triées par heure de début
+    # Collecter toutes les mÃ©triques triÃ©es par heure de dÃ©but
     foreach ($scriptPath in $UsageStats.TopUsedScripts.Keys) {
         $metrics = $script:UsageDatabase.GetMetricsForScript($scriptPath)
         foreach ($metric in $metrics) {
@@ -147,18 +147,18 @@ function Analyze-ExecutionSequences {
         }
     }
     
-    # Trier les métriques par heure de début
+    # Trier les mÃ©triques par heure de dÃ©but
     $sortedMetrics = $allMetrics | Sort-Object -Property StartTime
     
-    # Analyser les séquences d'exécution
+    # Analyser les sÃ©quences d'exÃ©cution
     for ($i = 0; $i -lt ($sortedMetrics.Count - 1); $i++) {
         $current = $sortedMetrics[$i]
         $next = $sortedMetrics[$i + 1]
         
-        # Vérifier si les scripts sont exécutés dans un intervalle de temps court
+        # VÃ©rifier si les scripts sont exÃ©cutÃ©s dans un intervalle de temps court
         $timeDiff = ($next.StartTime - $current.EndTime).TotalSeconds
         
-        if ($timeDiff -lt 60) {  # Moins d'une minute entre les exécutions
+        if ($timeDiff -lt 60) {  # Moins d'une minute entre les exÃ©cutions
             $sequenceKey = "$($current.ScriptPath) -> $($next.ScriptPath)"
             
             if (-not $sequences.ContainsKey($sequenceKey)) {
@@ -177,7 +177,7 @@ function Analyze-ExecutionSequences {
         }
     }
     
-    # Filtrer les séquences fréquentes
+    # Filtrer les sÃ©quences frÃ©quentes
     $frequentSequences = $sequences.GetEnumerator() | 
         Where-Object { $_.Value.Count -gt 2 } | 
         Sort-Object -Property { $_.Value.Count } -Descending
@@ -190,7 +190,7 @@ function Analyze-ExecutionSequences {
     return $result
 }
 
-# Fonction pour générer une configuration de cache optimisée
+# Fonction pour gÃ©nÃ©rer une configuration de cache optimisÃ©e
 function Generate-CacheConfig {
     param (
         [hashtable]$CachePatterns,
@@ -199,7 +199,7 @@ function Generate-CacheConfig {
     
     $config = @{
         GlobalSettings = @{
-            DefaultTTLSeconds = 3600  # 1 heure par défaut
+            DefaultTTLSeconds = 3600  # 1 heure par dÃ©faut
             MaxMemoryItems = 1000
             EnableDiskCache = $true
             EvictionPolicy = "LFU"  # Least Frequently Used
@@ -210,19 +210,19 @@ function Generate-CacheConfig {
         PredictiveSequences = @{}
     }
     
-    # Configurer les paramètres spécifiques aux scripts
+    # Configurer les paramÃ¨tres spÃ©cifiques aux scripts
     foreach ($scriptPath in $CachePatterns.Keys) {
         $scriptName = Split-Path -Path $scriptPath -Leaf
         $pattern = $CachePatterns[$scriptPath]
         
-        # Calculer le TTL optimal en fonction de la fréquence d'utilisation et de la durée
+        # Calculer le TTL optimal en fonction de la frÃ©quence d'utilisation et de la durÃ©e
         $executionCount = $pattern.ExecutionCount
         $avgDuration = $pattern.AverageDuration
         
-        # Plus le script est utilisé fréquemment, plus le TTL est long
+        # Plus le script est utilisÃ© frÃ©quemment, plus le TTL est long
         $ttlFactor = [math]::Log10($executionCount + 1) * 2
         
-        # Plus le script est lent, plus le TTL est long (pour éviter de recalculer des opérations coûteuses)
+        # Plus le script est lent, plus le TTL est long (pour Ã©viter de recalculer des opÃ©rations coÃ»teuses)
         $durationFactor = [math]::Log10($avgDuration + 1)
         
         # Calculer le TTL optimal (entre 10 minutes et 24 heures)
@@ -234,7 +234,7 @@ function Generate-CacheConfig {
             EvictionPolicy = "LFU"
         }
         
-        # Configurer les patterns de préchargement
+        # Configurer les patterns de prÃ©chargement
         $frequentParams = $pattern.FrequentParameters | Select-Object -First 5
         if ($frequentParams.Count -gt 0) {
             $config.PreloadPatterns[$scriptPath] = @{
@@ -249,11 +249,11 @@ function Generate-CacheConfig {
         }
     }
     
-    # Configurer les séquences prédictives
+    # Configurer les sÃ©quences prÃ©dictives
     foreach ($sequenceKey in $ExecutionSequences.Keys) {
         $sequence = $ExecutionSequences[$sequenceKey]
         
-        if ($sequence.Count -gt 3) {  # Séquence fréquente
+        if ($sequence.Count -gt 3) {  # SÃ©quence frÃ©quente
             $config.PredictiveSequences[$sequenceKey] = @{
                 FirstScript = $sequence.FirstScript
                 SecondScript = $sequence.SecondScript
@@ -267,7 +267,7 @@ function Generate-CacheConfig {
     return $config
 }
 
-# Fonction pour générer le code de préchargement du cache
+# Fonction pour gÃ©nÃ©rer le code de prÃ©chargement du cache
 function Generate-CachePreloadCode {
     param (
         [hashtable]$Config
@@ -276,13 +276,13 @@ function Generate-CachePreloadCode {
     $preloadCode = @"
 <#
 .SYNOPSIS
-    Script de préchargement du cache pour les scripts fréquemment utilisés.
+    Script de prÃ©chargement du cache pour les scripts frÃ©quemment utilisÃ©s.
 .DESCRIPTION
-    Ce script précharge le cache avec des données fréquemment utilisées
-    pour améliorer les performances des scripts.
+    Ce script prÃ©charge le cache avec des donnÃ©es frÃ©quemment utilisÃ©es
+    pour amÃ©liorer les performances des scripts.
 .NOTES
-    Généré automatiquement par Optimize-Caching.ps1
-    Date de génération: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃ©nÃ©rÃ© automatiquement par Optimize-Caching.ps1
+    Date de gÃ©nÃ©ration: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 #>
 
 # Importer le module PSCacheManager
@@ -291,11 +291,11 @@ if (Test-Path -Path `$psCacheManagerPath) {
     Import-Module `$psCacheManagerPath -Force
 }
 else {
-    Write-Error "Module PSCacheManager non trouvé: `$psCacheManagerPath"
+    Write-Error "Module PSCacheManager non trouvÃ©: `$psCacheManagerPath"
     exit 1
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]`$Message,
@@ -316,12 +316,12 @@ function Write-Log {
     Write-Host `$FormattedMessage -ForegroundColor `$Color
 }
 
-# Créer les caches
-Write-Log "Création des caches..." -Level "INFO"
+# CrÃ©er les caches
+Write-Log "CrÃ©ation des caches..." -Level "INFO"
 
 "@
     
-    # Ajouter le code pour créer les caches
+    # Ajouter le code pour crÃ©er les caches
     foreach ($scriptPath in $Config.ScriptSpecificSettings.Keys) {
         $scriptName = Split-Path -Path $scriptPath -Leaf
         $settings = $Config.ScriptSpecificSettings[$scriptPath]
@@ -333,15 +333,15 @@ Write-Log "Création des caches..." -Level "INFO"
         
         $preloadCode += @"
 `$${cacheName}Cache = New-PSCache -Name "$cacheName" -DefaultTTLSeconds $ttl -EvictionPolicy "$evictionPolicy" -ExtendTtlOnAccess:`$$extendTtl
-Write-Log "Cache créé: $cacheName" -Level "SUCCESS"
+Write-Log "Cache crÃ©Ã©: $cacheName" -Level "SUCCESS"
 
 "@
     }
     
-    # Ajouter le code pour précharger les données
+    # Ajouter le code pour prÃ©charger les donnÃ©es
     $preloadCode += @"
-# Précharger les données fréquemment utilisées
-Write-Log "Préchargement des données..." -Level "INFO"
+# PrÃ©charger les donnÃ©es frÃ©quemment utilisÃ©es
+Write-Log "PrÃ©chargement des donnÃ©es..." -Level "INFO"
 
 "@
     
@@ -353,21 +353,21 @@ Write-Log "Préchargement des données..." -Level "INFO"
             $cacheName = $scriptName -replace "\.ps1|\.psm1", ""
             
             $preloadCode += @"
-# Préchargement pour $scriptName
-Write-Log "Préchargement des données pour $scriptName..." -Level "INFO"
+# PrÃ©chargement pour $scriptName
+Write-Log "PrÃ©chargement des donnÃ©es pour $scriptName..." -Level "INFO"
 try {
     # Charger le script
     `$scriptPath = "$scriptPath"
     if (Test-Path -Path `$scriptPath) {
         . `$scriptPath
         
-        # Précharger les données avec les paramètres fréquemment utilisés
+        # PrÃ©charger les donnÃ©es avec les paramÃ¨tres frÃ©quemment utilisÃ©s
 "@
             
             foreach ($paramHash in $pattern.Parameters.Keys) {
                 $count = $pattern.Parameters[$paramHash]
                 
-                # Extraire les paramètres du hash
+                # Extraire les paramÃ¨tres du hash
                 if ($paramHash -match "^(.*?):(.*?)$") {
                     $paramKeys = $matches[1] -split ","
                     $paramValues = $matches[2] -split ","
@@ -378,21 +378,21 @@ try {
                             $key = $paramKeys[$i].Trim()
                             $value = $paramValues[$i].Trim()
                             
-                            # Essayer de déterminer le type de la valeur
+                            # Essayer de dÃ©terminer le type de la valeur
                             if ($value -match "^\d+$") {
                                 # Entier
                                 $paramCode += "$key = $value; "
                             }
                             elseif ($value -match "^\d+\.\d+$") {
-                                # Décimal
+                                # DÃ©cimal
                                 $paramCode += "$key = $value; "
                             }
                             elseif ($value -eq "true" -or $value -eq "false") {
-                                # Booléen
+                                # BoolÃ©en
                                 $paramCode += "$key = `$$value; "
                             }
                             else {
-                                # Chaîne
+                                # ChaÃ®ne
                                 $paramCode += "$key = '$value'; "
                             }
                         }
@@ -400,14 +400,14 @@ try {
                         
                         $preloadCode += @"
         
-        # Paramètres utilisés $count fois
+        # ParamÃ¨tres utilisÃ©s $count fois
         `$params = $paramCode
         `$cacheKey = "$(($scriptName -replace "\.ps1|\.psm1", ""))_" + ((`$params.Keys | Sort-Object) -join "_") + "_" + ((`$params.Values | ForEach-Object { "`$_" }) -join "_")
         
         Get-PSCacheItem -Cache `$${cacheName}Cache -Key `$cacheKey -GenerateValue {
-            Write-Log "Génération des données pour `$cacheKey..." -Level "INFO"
-            # Appeler la fonction principale du script avec les paramètres
-            # Note: Ceci est une approximation, le script réel peut nécessiter des ajustements
+            Write-Log "GÃ©nÃ©ration des donnÃ©es pour `$cacheKey..." -Level "INFO"
+            # Appeler la fonction principale du script avec les paramÃ¨tres
+            # Note: Ceci est une approximation, le script rÃ©el peut nÃ©cessiter des ajustements
             `$result = & `$scriptPath @params
             return `$result
         } | Out-Null
@@ -419,22 +419,22 @@ try {
             $preloadCode += @"
     }
     else {
-        Write-Log "Script non trouvé: `$scriptPath" -Level "WARNING"
+        Write-Log "Script non trouvÃ©: `$scriptPath" -Level "WARNING"
     }
 }
 catch {
-    Write-Log "Erreur lors du préchargement des données pour $scriptName: `$_" -Level "ERROR"
+    Write-Log "Erreur lors du prÃ©chargement des donnÃ©es pour $scriptName: `$_" -Level "ERROR"
 }
 
 "@
         }
     }
     
-    # Ajouter le code pour les séquences prédictives
+    # Ajouter le code pour les sÃ©quences prÃ©dictives
     if ($Config.PredictiveSequences.Count -gt 0) {
         $preloadCode += @"
-# Configurer les séquences prédictives
-Write-Log "Configuration des séquences prédictives..." -Level "INFO"
+# Configurer les sÃ©quences prÃ©dictives
+Write-Log "Configuration des sÃ©quences prÃ©dictives..." -Level "INFO"
 
 `$predictiveSequences = @{
 
@@ -462,17 +462,17 @@ Write-Log "Configuration des séquences prédictives..." -Level "INFO"
         $preloadCode += @"
 }
 
-# Enregistrer les séquences prédictives pour utilisation future
+# Enregistrer les sÃ©quences prÃ©dictives pour utilisation future
 `$predictiveSequencesPath = Join-Path -Path `$PSScriptRoot -ChildPath "predictive_sequences.xml"
 `$predictiveSequences | Export-Clixml -Path `$predictiveSequencesPath -Force
 
-Write-Log "Séquences prédictives configurées et enregistrées." -Level "SUCCESS"
+Write-Log "SÃ©quences prÃ©dictives configurÃ©es et enregistrÃ©es." -Level "SUCCESS"
 "@
     }
     
     $preloadCode += @"
 
-Write-Log "Préchargement du cache terminé." -Level "SUCCESS"
+Write-Log "PrÃ©chargement du cache terminÃ©." -Level "SUCCESS"
 "@
     
     return $preloadCode
@@ -489,42 +489,42 @@ function Apply-CacheConfig {
     # Sauvegarder la configuration dans un fichier JSON
     $Config | ConvertTo-Json -Depth 5 | Out-File -FilePath $ConfigPath -Encoding utf8 -Force
     
-    Write-Log "Configuration de cache sauvegardée: $ConfigPath" -Level "SUCCESS"
+    Write-Log "Configuration de cache sauvegardÃ©e: $ConfigPath" -Level "SUCCESS"
     
-    # Générer le code de préchargement du cache
+    # GÃ©nÃ©rer le code de prÃ©chargement du cache
     $preloadCode = Generate-CachePreloadCode -Config $Config
     $preloadPath = Join-Path -Path $PSScriptRoot -ChildPath "Preload-Cache.ps1"
     
     $preloadCode | Out-File -FilePath $preloadPath -Encoding utf8 -Force
     
-    Write-Log "Script de préchargement du cache généré: $preloadPath" -Level "SUCCESS"
+    Write-Log "Script de prÃ©chargement du cache gÃ©nÃ©rÃ©: $preloadPath" -Level "SUCCESS"
     
     # Rechercher les scripts qui utilisent PSCacheManager
     $cacheScripts = Get-ChildItem -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -Filter "*.ps1" -Recurse |
         Where-Object { (Get-Content -Path $_.FullName -Raw) -match "PSCacheManager|New-PSCache|Get-PSCacheItem" }
     
-    Write-Log "Nombre de scripts utilisant le cache trouvés: $($cacheScripts.Count)" -Level "INFO"
+    Write-Log "Nombre de scripts utilisant le cache trouvÃ©s: $($cacheScripts.Count)" -Level "INFO"
     
     if ($Apply) {
         foreach ($script in $cacheScripts) {
             $scriptPath = $script.FullName
             $scriptName = $script.Name
             
-            # Vérifier si le script a une configuration spécifique
+            # VÃ©rifier si le script a une configuration spÃ©cifique
             if ($Config.ScriptSpecificSettings.ContainsKey($scriptPath)) {
-                Write-Log "Application de la configuration à: $scriptName" -Level "INFO"
+                Write-Log "Application de la configuration Ã : $scriptName" -Level "INFO"
                 
                 $content = Get-Content -Path $scriptPath -Raw
                 $settings = $Config.ScriptSpecificSettings[$scriptPath]
                 
-                # Rechercher les appels à New-PSCache
+                # Rechercher les appels Ã  New-PSCache
                 if ($content -match "New-PSCache\s+(?:-Name\s+)?[\"']([^\"']+)[\"'](?:\s+-DefaultTTLSeconds\s+)?(\d+)?(?:\s+-EvictionPolicy\s+)?[\"']?(\w+)?[\"']?(?:\s+-ExtendTtlOnAccess:)?(\`$\w+|true|false)?") {
                     $currentName = $matches[1]
                     $currentTTL = $matches[2]
                     $currentPolicy = $matches[3]
                     $currentExtendTtl = $matches[4]
                     
-                    # Remplacer les paramètres par ceux de la configuration
+                    # Remplacer les paramÃ¨tres par ceux de la configuration
                     $newContent = $content
                     
                     if ($currentTTL) {
@@ -540,82 +540,82 @@ function Apply-CacheConfig {
                         $newContent = $newContent -replace "(-ExtendTtlOnAccess:)(\`$\w+|true|false)", "`$1`$$extendTtl"
                     }
                     
-                    # Sauvegarder le script modifié
+                    # Sauvegarder le script modifiÃ©
                     Set-Content -Path $scriptPath -Value $newContent -Force
                     
-                    Write-Log "Configuration appliquée à: $scriptName" -Level "SUCCESS"
+                    Write-Log "Configuration appliquÃ©e Ã : $scriptName" -Level "SUCCESS"
                 }
                 else {
-                    Write-Log "Aucun appel à New-PSCache trouvé dans: $scriptName" -Level "WARNING"
+                    Write-Log "Aucun appel Ã  New-PSCache trouvÃ© dans: $scriptName" -Level "WARNING"
                 }
             }
         }
         
-        # Créer une tâche planifiée pour exécuter le script de préchargement
+        # CrÃ©er une tÃ¢che planifiÃ©e pour exÃ©cuter le script de prÃ©chargement
         $taskName = "PreloadCacheTask"
         $taskPath = "\EMAIL_SENDER_1\"
         $taskCommand = "powershell.exe"
         $taskArgs = "-ExecutionPolicy Bypass -File `"$preloadPath`""
         
-        Write-Log "Création d'une tâche planifiée pour le préchargement du cache..." -Level "INFO"
+        Write-Log "CrÃ©ation d'une tÃ¢che planifiÃ©e pour le prÃ©chargement du cache..." -Level "INFO"
         
         try {
-            # Vérifier si la tâche existe déjà
+            # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
             $existingTask = Get-ScheduledTask -TaskName $taskName -TaskPath $taskPath -ErrorAction SilentlyContinue
             
             if ($existingTask) {
-                # Supprimer la tâche existante
+                # Supprimer la tÃ¢che existante
                 Unregister-ScheduledTask -TaskName $taskName -TaskPath $taskPath -Confirm:$false
             }
             
-            # Créer une nouvelle tâche
+            # CrÃ©er une nouvelle tÃ¢che
             $action = New-ScheduledTaskAction -Execute $taskCommand -Argument $taskArgs
             $trigger = New-ScheduledTaskTrigger -Daily -At "3:00 AM"
             $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
             
-            Register-ScheduledTask -TaskName $taskName -TaskPath $taskPath -Action $action -Trigger $trigger -Settings $settings -Description "Préchargement du cache pour les scripts fréquemment utilisés"
+            Register-ScheduledTask -TaskName $taskName -TaskPath $taskPath -Action $action -Trigger $trigger -Settings $settings -Description "PrÃ©chargement du cache pour les scripts frÃ©quemment utilisÃ©s"
             
-            Write-Log "Tâche planifiée créée avec succès." -Level "SUCCESS"
+            Write-Log "TÃ¢che planifiÃ©e crÃ©Ã©e avec succÃ¨s." -Level "SUCCESS"
         }
         catch {
-            Write-Log "Erreur lors de la création de la tâche planifiée: $_" -Level "ERROR"
+            Write-Log "Erreur lors de la crÃ©ation de la tÃ¢che planifiÃ©e: $_" -Level "ERROR"
         }
     }
     else {
-        Write-Log "Mode simulation: la configuration n'a pas été appliquée aux scripts. Utilisez -Apply pour appliquer les modifications." -Level "WARNING"
+        Write-Log "Mode simulation: la configuration n'a pas Ã©tÃ© appliquÃ©e aux scripts. Utilisez -Apply pour appliquer les modifications." -Level "WARNING"
     }
 }
 
-# Point d'entrée principal
-Write-Log "Démarrage de l'optimisation du cache..." -Level "TITLE"
+# Point d'entrÃ©e principal
+Write-Log "DÃ©marrage de l'optimisation du cache..." -Level "TITLE"
 
-# Vérifier si le fichier de base de données existe
+# VÃ©rifier si le fichier de base de donnÃ©es existe
 if (-not (Test-Path -Path $DatabasePath)) {
-    Write-Log "Le fichier de base de données spécifié n'existe pas: $DatabasePath" -Level "ERROR"
+    Write-Log "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas: $DatabasePath" -Level "ERROR"
     exit 1
 }
 
-# Initialiser le moniteur d'utilisation avec la base de données spécifiée
+# Initialiser le moniteur d'utilisation avec la base de donnÃ©es spÃ©cifiÃ©e
 Initialize-UsageMonitor -DatabasePath $DatabasePath
-Write-Log "Base de données d'utilisation chargée: $DatabasePath" -Level "INFO"
+Write-Log "Base de donnÃ©es d'utilisation chargÃ©e: $DatabasePath" -Level "INFO"
 
-# Récupérer les statistiques d'utilisation
+# RÃ©cupÃ©rer les statistiques d'utilisation
 $usageStats = Get-ScriptUsageStatistics
-Write-Log "Statistiques d'utilisation récupérées" -Level "INFO"
+Write-Log "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -Level "INFO"
 
 # Analyser les patterns d'utilisation du cache
 $cachePatterns = Analyze-CacheUsagePatterns -UsageStats $usageStats
-Write-Log "Patterns d'utilisation du cache analysés: $($cachePatterns.Count) scripts avec patterns" -Level "INFO"
+Write-Log "Patterns d'utilisation du cache analysÃ©s: $($cachePatterns.Count) scripts avec patterns" -Level "INFO"
 
-# Analyser les séquences d'exécution
+# Analyser les sÃ©quences d'exÃ©cution
 $executionSequences = Analyze-ExecutionSequences -UsageStats $usageStats
-Write-Log "Séquences d'exécution analysées: $($executionSequences.Count) séquences fréquentes" -Level "INFO"
+Write-Log "SÃ©quences d'exÃ©cution analysÃ©es: $($executionSequences.Count) sÃ©quences frÃ©quentes" -Level "INFO"
 
-# Générer la configuration de cache
+# GÃ©nÃ©rer la configuration de cache
 $cacheConfig = Generate-CacheConfig -CachePatterns $cachePatterns -ExecutionSequences $executionSequences
-Write-Log "Configuration de cache générée" -Level "INFO"
+Write-Log "Configuration de cache gÃ©nÃ©rÃ©e" -Level "INFO"
 
 # Appliquer la configuration
 Apply-CacheConfig -Config $cacheConfig -ConfigPath $ConfigPath -Apply:$Apply
 
-Write-Log "Optimisation du cache terminée." -Level "TITLE"
+Write-Log "Optimisation du cache terminÃ©e." -Level "TITLE"

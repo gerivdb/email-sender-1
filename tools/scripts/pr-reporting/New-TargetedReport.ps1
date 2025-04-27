@@ -1,41 +1,41 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport d'analyse ciblé pour différents types d'utilisateurs.
+    GÃ©nÃ¨re un rapport d'analyse ciblÃ© pour diffÃ©rents types d'utilisateurs.
 
 .DESCRIPTION
-    Ce script génère un rapport d'analyse adapté à différents publics cibles
-    (développeurs, responsables QA, dirigeants) à partir des résultats d'analyse
+    Ce script gÃ©nÃ¨re un rapport d'analyse adaptÃ© Ã  diffÃ©rents publics cibles
+    (dÃ©veloppeurs, responsables QA, dirigeants) Ã  partir des rÃ©sultats d'analyse
     de pull requests.
 
 .PARAMETER InputPath
-    Le chemin du fichier JSON contenant les résultats d'analyse.
+    Le chemin du fichier JSON contenant les rÃ©sultats d'analyse.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le rapport généré.
-    Si non spécifié, un nom basé sur le type de rapport sera utilisé.
+    Le chemin oÃ¹ enregistrer le rapport gÃ©nÃ©rÃ©.
+    Si non spÃ©cifiÃ©, un nom basÃ© sur le type de rapport sera utilisÃ©.
 
 .PARAMETER TargetAudience
     Le public cible du rapport.
     Valeurs possibles: "Developer", "QA", "Executive"
-    Par défaut: "Developer"
+    Par dÃ©faut: "Developer"
 
 .PARAMETER Format
     Le format du rapport.
     Valeurs possibles: "HTML", "PDF", "Markdown"
-    Par défaut: "HTML"
+    Par dÃ©faut: "HTML"
 
 .PARAMETER IncludeDetails
-    Indique s'il faut inclure les détails complets dans le rapport.
-    Par défaut: $true pour Developer et QA, $false pour Executive
+    Indique s'il faut inclure les dÃ©tails complets dans le rapport.
+    Par dÃ©faut: $true pour Developer et QA, $false pour Executive
 
 .EXAMPLE
     .\New-TargetedReport.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -TargetAudience "Developer"
-    Génère un rapport ciblé pour les développeurs à partir des résultats d'analyse de la PR #42.
+    GÃ©nÃ¨re un rapport ciblÃ© pour les dÃ©veloppeurs Ã  partir des rÃ©sultats d'analyse de la PR #42.
 
 .EXAMPLE
     .\New-TargetedReport.ps1 -InputPath "reports\pr-analysis\analysis_42.json" -TargetAudience "Executive" -Format "PDF"
-    Génère un rapport PDF pour les dirigeants à partir des résultats d'analyse de la PR #42.
+    GÃ©nÃ¨re un rapport PDF pour les dirigeants Ã  partir des rÃ©sultats d'analyse de la PR #42.
 
 .NOTES
     Version: 1.0
@@ -63,7 +63,7 @@ param(
     [bool]$IncludeDetails = $null
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 $modulesToImport = @(
     "PRReportTemplates.psm1",
@@ -76,26 +76,26 @@ foreach ($module in $modulesToImport) {
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
     } else {
-        Write-Error "Module $module non trouvé à l'emplacement: $modulePath"
+        Write-Error "Module $module non trouvÃ© Ã  l'emplacement: $modulePath"
         exit 1
     }
 }
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputPath)) {
-    Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
     exit 1
 }
 
-# Charger les données d'analyse
+# Charger les donnÃ©es d'analyse
 try {
     $analysisData = Get-Content -Path $InputPath -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement des données d'analyse: $_"
+    Write-Error "Erreur lors du chargement des donnÃ©es d'analyse: $_"
     exit 1
 }
 
-# Déterminer si les détails doivent être inclus
+# DÃ©terminer si les dÃ©tails doivent Ãªtre inclus
 if ($null -eq $IncludeDetails) {
     $IncludeDetails = switch ($TargetAudience) {
         "Developer" { $true }
@@ -105,7 +105,7 @@ if ($null -eq $IncludeDetails) {
     }
 }
 
-# Déterminer le chemin de sortie si non spécifié
+# DÃ©terminer le chemin de sortie si non spÃ©cifiÃ©
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     $baseName = [System.IO.Path]::GetFileNameWithoutExtension($InputPath)
     $extension = switch ($Format) {
@@ -117,7 +117,7 @@ if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     $OutputPath = "reports\pr-analysis\${baseName}_${TargetAudience}${extension}"
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -132,7 +132,7 @@ $prBaseBranch = $prInfo.BaseBranch
 $prFileCount = $prInfo.FileCount
 $totalIssues = $analysisData.TotalIssues
 
-# Extraire tous les problèmes
+# Extraire tous les problÃ¨mes
 $issues = @()
 foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 }) {
     foreach ($issue in $result.Issues) {
@@ -148,19 +148,19 @@ foreach ($result in $analysisData.Results | Where-Object { $_.Success -and $_.Is
     }
 }
 
-# Filtrer et organiser les données en fonction du public cible
+# Filtrer et organiser les donnÃ©es en fonction du public cible
 switch ($TargetAudience) {
     "Developer" {
-        # Pour les développeurs, inclure tous les problèmes avec des détails techniques
+        # Pour les dÃ©veloppeurs, inclure tous les problÃ¨mes avec des dÃ©tails techniques
         $title = "Rapport d'analyse technique - PR #$prNumber"
-        $description = "Analyse détaillée des problèmes détectés dans la pull request #$prNumber"
+        $description = "Analyse dÃ©taillÃ©e des problÃ¨mes dÃ©tectÃ©s dans la pull request #$prNumber"
         
-        # Grouper les problèmes par fichier et par type
+        # Grouper les problÃ¨mes par fichier et par type
         $issuesByFile = $issues | Group-Object -Property FilePath
         $issuesByType = $issues | Group-Object -Property Type
         $issuesBySeverity = $issues | Group-Object -Property Severity
         
-        # Créer des visualisations pour les développeurs
+        # CrÃ©er des visualisations pour les dÃ©veloppeurs
         $typeData = @{}
         foreach ($group in $issuesByType) {
             $typeData[$group.Name] = $group.Count
@@ -171,20 +171,20 @@ switch ($TargetAudience) {
             $severityData[$group.Name] = $group.Count
         }
         
-        $typeChart = New-PRBarChart -Data $typeData -Title "Problèmes par type"
-        $severityChart = New-PRPieChart -Data $severityData -Title "Problèmes par sévérité"
+        $typeChart = New-PRBarChart -Data $typeData -Title "ProblÃ¨mes par type"
+        $severityChart = New-PRPieChart -Data $severityData -Title "ProblÃ¨mes par sÃ©vÃ©ritÃ©"
         
-        # Créer le contenu du rapport
+        # CrÃ©er le contenu du rapport
         $content = @"
 # $title
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Pull Request**: #$prNumber - $prTitle
 - **Branche source**: $prHeadBranch
 - **Branche cible**: $prBaseBranch
-- **Fichiers modifiés**: $prFileCount
-- **Problèmes détectés**: $totalIssues
+- **Fichiers modifiÃ©s**: $prFileCount
+- **ProblÃ¨mes dÃ©tectÃ©s**: $totalIssues
 
 ## Visualisations
 
@@ -192,7 +192,7 @@ $severityChart
 
 $typeChart
 
-## Problèmes par fichier
+## ProblÃ¨mes par fichier
 
 "@
         
@@ -204,7 +204,7 @@ $typeChart
 
 ### $filePath
 
-| Type | Ligne | Sévérité | Message | Règle |
+| Type | Ligne | SÃ©vÃ©ritÃ© | Message | RÃ¨gle |
 |------|-------|----------|---------|-------|
 "@
             
@@ -216,18 +216,18 @@ $typeChart
         }
     }
     "QA" {
-        # Pour les responsables QA, mettre l'accent sur les problèmes de qualité et les tests
-        $title = "Rapport d'assurance qualité - PR #$prNumber"
-        $description = "Analyse de la qualité du code dans la pull request #$prNumber"
+        # Pour les responsables QA, mettre l'accent sur les problÃ¨mes de qualitÃ© et les tests
+        $title = "Rapport d'assurance qualitÃ© - PR #$prNumber"
+        $description = "Analyse de la qualitÃ© du code dans la pull request #$prNumber"
         
-        # Filtrer les problèmes pertinents pour la QA
+        # Filtrer les problÃ¨mes pertinents pour la QA
         $qaIssues = $issues | Where-Object { $_.Severity -in @("Error", "Warning") -or $_.Type -in @("Quality", "Security", "Performance") }
         
-        # Grouper les problèmes par sévérité et par type
+        # Grouper les problÃ¨mes par sÃ©vÃ©ritÃ© et par type
         $issuesBySeverity = $qaIssues | Group-Object -Property Severity
         $issuesByType = $qaIssues | Group-Object -Property Type
         
-        # Créer des visualisations pour la QA
+        # CrÃ©er des visualisations pour la QA
         $severityData = @{}
         foreach ($group in $issuesBySeverity) {
             $severityData[$group.Name] = $group.Count
@@ -238,20 +238,20 @@ $typeChart
             $typeData[$group.Name] = $group.Count
         }
         
-        $severityChart = New-PRPieChart -Data $severityData -Title "Problèmes par sévérité"
-        $typeChart = New-PRBarChart -Data $typeData -Title "Problèmes par type"
+        $severityChart = New-PRPieChart -Data $severityData -Title "ProblÃ¨mes par sÃ©vÃ©ritÃ©"
+        $typeChart = New-PRBarChart -Data $typeData -Title "ProblÃ¨mes par type"
         
-        # Créer le contenu du rapport
+        # CrÃ©er le contenu du rapport
         $content = @"
 # $title
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Pull Request**: #$prNumber - $prTitle
 - **Branche source**: $prHeadBranch
 - **Branche cible**: $prBaseBranch
-- **Fichiers modifiés**: $prFileCount
-- **Problèmes de qualité détectés**: $($qaIssues.Count)
+- **Fichiers modifiÃ©s**: $prFileCount
+- **ProblÃ¨mes de qualitÃ© dÃ©tectÃ©s**: $($qaIssues.Count)
 
 ## Visualisations
 
@@ -259,9 +259,9 @@ $severityChart
 
 $typeChart
 
-## Problèmes critiques
+## ProblÃ¨mes critiques
 
-| Fichier | Type | Sévérité | Message |
+| Fichier | Type | SÃ©vÃ©ritÃ© | Message |
 |---------|------|----------|---------|
 "@
         
@@ -273,9 +273,9 @@ $typeChart
         
         $content += @"
 
-## Problèmes d'avertissement
+## ProblÃ¨mes d'avertissement
 
-| Fichier | Type | Sévérité | Message |
+| Fichier | Type | SÃ©vÃ©ritÃ© | Message |
 |---------|------|----------|---------|
 "@
         
@@ -286,11 +286,11 @@ $typeChart
         }
     }
     "Executive" {
-        # Pour les dirigeants, fournir un résumé de haut niveau
-        $title = "Résumé exécutif - PR #$prNumber"
-        $description = "Aperçu de haut niveau de la pull request #$prNumber"
+        # Pour les dirigeants, fournir un rÃ©sumÃ© de haut niveau
+        $title = "RÃ©sumÃ© exÃ©cutif - PR #$prNumber"
+        $description = "AperÃ§u de haut niveau de la pull request #$prNumber"
         
-        # Calculer des métriques pour les dirigeants
+        # Calculer des mÃ©triques pour les dirigeants
         $criticalIssues = ($issues | Where-Object { $_.Severity -eq "Error" }).Count
         $warningIssues = ($issues | Where-Object { $_.Severity -eq "Warning" }).Count
         $infoIssues = ($issues | Where-Object { $_.Severity -eq "Information" }).Count
@@ -299,7 +299,7 @@ $typeChart
         $performanceIssues = ($issues | Where-Object { $_.Type -eq "Performance" }).Count
         $qualityIssues = ($issues | Where-Object { $_.Type -eq "Quality" }).Count
         
-        # Créer des visualisations pour les dirigeants
+        # CrÃ©er des visualisations pour les dirigeants
         $severityData = @{
             "Critique" = $criticalIssues
             "Avertissement" = $warningIssues
@@ -307,32 +307,32 @@ $typeChart
         }
         
         $typeData = @{
-            "Sécurité" = $securityIssues
+            "SÃ©curitÃ©" = $securityIssues
             "Performance" = $performanceIssues
-            "Qualité" = $qualityIssues
+            "QualitÃ©" = $qualityIssues
             "Autres" = $totalIssues - ($securityIssues + $performanceIssues + $qualityIssues)
         }
         
-        $severityChart = New-PRPieChart -Data $severityData -Title "Répartition des problèmes par sévérité"
+        $severityChart = New-PRPieChart -Data $severityData -Title "RÃ©partition des problÃ¨mes par sÃ©vÃ©ritÃ©"
         
-        # Créer le contenu du rapport
+        # CrÃ©er le contenu du rapport
         $content = @"
 # $title
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Pull Request**: #$prNumber - $prTitle
 - **Branche source**: $prHeadBranch
 - **Branche cible**: $prBaseBranch
-- **Fichiers modifiés**: $prFileCount
+- **Fichiers modifiÃ©s**: $prFileCount
 
-## Métriques clés
+## MÃ©triques clÃ©s
 
-- **Problèmes critiques**: $criticalIssues
+- **ProblÃ¨mes critiques**: $criticalIssues
 - **Avertissements**: $warningIssues
-- **Problèmes de sécurité**: $securityIssues
-- **Problèmes de performance**: $performanceIssues
-- **Problèmes de qualité**: $qualityIssues
+- **ProblÃ¨mes de sÃ©curitÃ©**: $securityIssues
+- **ProblÃ¨mes de performance**: $performanceIssues
+- **ProblÃ¨mes de qualitÃ©**: $qualityIssues
 
 ## Visualisation
 
@@ -344,27 +344,27 @@ $severityChart
         
         if ($criticalIssues -gt 0) {
             $content += @"
-**Action requise**: Cette pull request contient $criticalIssues problèmes critiques qui doivent être résolus avant la fusion.
+**Action requise**: Cette pull request contient $criticalIssues problÃ¨mes critiques qui doivent Ãªtre rÃ©solus avant la fusion.
 "@
         } elseif ($warningIssues -gt 10) {
             $content += @"
-**Attention requise**: Cette pull request contient un nombre élevé d'avertissements ($warningIssues) qui devraient être examinés.
+**Attention requise**: Cette pull request contient un nombre Ã©levÃ© d'avertissements ($warningIssues) qui devraient Ãªtre examinÃ©s.
 "@
         } else {
             $content += @"
-**Prêt pour la revue**: Cette pull request ne contient pas de problèmes critiques et peut être examinée pour la fusion.
+**PrÃªt pour la revue**: Cette pull request ne contient pas de problÃ¨mes critiques et peut Ãªtre examinÃ©e pour la fusion.
 "@
         }
     }
 }
 
-# Générer le rapport dans le format demandé
+# GÃ©nÃ©rer le rapport dans le format demandÃ©
 switch ($Format) {
     "HTML" {
-        # Générer un rapport HTML
+        # GÃ©nÃ©rer un rapport HTML
         $interactiveReportScript = Join-Path -Path $PSScriptRoot -ChildPath "New-InteractiveReport.ps1"
         
-        # Créer un fichier JSON temporaire avec les données filtrées
+        # CrÃ©er un fichier JSON temporaire avec les donnÃ©es filtrÃ©es
         $tempJsonPath = [System.IO.Path]::GetTempFileName()
         
         $reportData = [PSCustomObject]@{
@@ -378,17 +378,17 @@ switch ($Format) {
         
         $reportData | ConvertTo-Json -Depth 10 | Set-Content -Path $tempJsonPath -Encoding UTF8
         
-        # Générer le rapport interactif
+        # GÃ©nÃ©rer le rapport interactif
         & $interactiveReportScript -InputPath $tempJsonPath -OutputPath $OutputPath -TemplateType $TargetAudience
         
         # Supprimer le fichier temporaire
         Remove-Item -Path $tempJsonPath -Force
     }
     "PDF" {
-        # Générer un rapport PDF
+        # GÃ©nÃ©rer un rapport PDF
         $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, ".html")
         
-        # Créer un fichier HTML temporaire
+        # CrÃ©er un fichier HTML temporaire
         $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -442,14 +442,14 @@ switch ($Format) {
         Remove-Item -Path $htmlPath -Force
     }
     "Markdown" {
-        # Générer un rapport Markdown
+        # GÃ©nÃ©rer un rapport Markdown
         Set-Content -Path $OutputPath -Value $content -Encoding UTF8
     }
 }
 
-Write-Host "Rapport ciblé généré avec succès: $OutputPath" -ForegroundColor Green
+Write-Host "Rapport ciblÃ© gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
 Write-Host "  Public cible: $TargetAudience" -ForegroundColor White
 Write-Host "  Format: $Format" -ForegroundColor White
-Write-Host "  Détails inclus: $IncludeDetails" -ForegroundColor White
+Write-Host "  DÃ©tails inclus: $IncludeDetails" -ForegroundColor White
 
 return $OutputPath

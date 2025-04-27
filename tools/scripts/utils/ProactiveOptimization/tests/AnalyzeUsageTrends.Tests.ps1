@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour Analyze-UsageTrends.ps1
 .DESCRIPTION
@@ -6,7 +6,7 @@
 #>
 
 BeforeAll {
-    # Chemin vers le script à tester
+    # Chemin vers le script Ã  tester
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Analyze-UsageTrends.ps1"
 
     # Importer le module mock UsageMonitor
@@ -19,23 +19,23 @@ BeforeAll {
         . $mockFunctionsPath
     }
 
-    # Charger les mocks pour l'accès aux fichiers
+    # Charger les mocks pour l'accÃ¨s aux fichiers
     $mockFileAccessPath = Join-Path -Path $PSScriptRoot -ChildPath "MockFileAccess.ps1"
     if (Test-Path -Path $mockFileAccessPath) {
         . $mockFileAccessPath
     }
 
-    # Créer des mocks pour les fonctions du module UsageMonitor
-    # Nous utilisons des mocks pour pouvoir vérifier les appels avec Should -Invoke
+    # CrÃ©er des mocks pour les fonctions du module UsageMonitor
+    # Nous utilisons des mocks pour pouvoir vÃ©rifier les appels avec Should -Invoke
     Mock Initialize-UsageMonitor { return $true }
 
-    # Créer des mocks pour les fonctions d'accès aux fichiers
+    # CrÃ©er des mocks pour les fonctions d'accÃ¨s aux fichiers
     Mock Test-Path { & $global:Test_Path_Mock @PSBoundParameters }
     Mock Get-Content { & $global:Get_Content_Mock @PSBoundParameters }
     Mock Out-File { & $global:Out_File_Mock @PSBoundParameters }
     Mock New-Item { & $global:New_Item_Mock @PSBoundParameters }
 
-    # Créer des données de test pour le module UsageMonitor
+    # CrÃ©er des donnÃ©es de test pour le module UsageMonitor
     $script:UsageDatabase = [PSCustomObject]@{
         GetAllScriptPaths   = {
             return @(
@@ -50,10 +50,10 @@ BeforeAll {
             $baseDate = (Get-Date).AddDays(-30)
             $metrics = @()
 
-            # Générer des métriques différentes selon le script
+            # GÃ©nÃ©rer des mÃ©triques diffÃ©rentes selon le script
             switch ($ScriptPath) {
                 "C:\Scripts\Test1.ps1" {
-                    # Script avec amélioration de performance
+                    # Script avec amÃ©lioration de performance
                     for ($i = 0; $i -lt 20; $i++) {
                         $date = $baseDate.AddDays($i)
                         $duration = if ($i -lt 10) { 2000 - ($i * 50) } else { 1500 - ($i * 25) }
@@ -76,11 +76,11 @@ BeforeAll {
                     }
                 }
                 "C:\Scripts\Test2.ps1" {
-                    # Script avec dégradation de performance
+                    # Script avec dÃ©gradation de performance
                     for ($i = 0; $i -lt 20; $i++) {
                         $date = $baseDate.AddDays($i)
                         $duration = 1000 + ($i * 50)
-                        $success = $i % 5 -ne 0  # Échec tous les 5 jours
+                        $success = $i % 5 -ne 0  # Ã‰chec tous les 5 jours
 
                         $metrics += [PSCustomObject]@{
                             ScriptPath    = $ScriptPath
@@ -104,7 +104,7 @@ BeforeAll {
                     for ($i = 0; $i -lt 30; $i++) {
                         $date = $baseDate.AddDays($i)
 
-                        # Plus d'exécutions pendant les heures de bureau (9h-17h)
+                        # Plus d'exÃ©cutions pendant les heures de bureau (9h-17h)
                         $executions = 1..3
                         if ($i % 7 -lt 5) {
                             # Jours de semaine
@@ -139,7 +139,7 @@ BeforeAll {
         }
     }
 
-    # Ne pas charger le script à tester car nous utilisons des mocks
+    # Ne pas charger le script Ã  tester car nous utilisons des mocks
     # . $scriptPath
 }
 
@@ -176,7 +176,7 @@ Describe "Analyze-UsageTrends" {
             # Assert
             $result.DailyUsage.Count | Should -BeGreaterThan 0
 
-            # Vérifier que les dates sont au format attendu
+            # VÃ©rifier que les dates sont au format attendu
             $result.DailyUsage.Keys | ForEach-Object {
                 $_ | Should -Match "^\d{4}-\d{2}-\d{2}$"
             }
@@ -189,7 +189,7 @@ Describe "Analyze-UsageTrends" {
             # Assert
             $result.HourlyUsage.Count | Should -Be 24
 
-            # Vérifier que les heures sont de 0 à 23
+            # VÃ©rifier que les heures sont de 0 Ã  23
             $result.HourlyUsage.Keys | Sort-Object | Should -Be (0..23)
         }
 
@@ -202,13 +202,13 @@ Describe "Analyze-UsageTrends" {
             $result.PerformanceTrends.Keys | Should -Contain "Test1.ps1"
             $result.PerformanceTrends.Keys | Should -Contain "Test2.ps1"
 
-            # Vérifier que les semaines sont identifiées
+            # VÃ©rifier que les semaines sont identifiÃ©es
             $result.PerformanceTrends["Test1.ps1"].Count | Should -BeGreaterThan 0
         }
     }
 
     Context "Generate-TrendReport" {
-        It "Génère un rapport HTML valide" {
+        It "GÃ©nÃ¨re un rapport HTML valide" {
             # Arrange
             $trends = Get-ScriptUsageTrends -PeriodDays 30
             $outputPath = "TestReports"

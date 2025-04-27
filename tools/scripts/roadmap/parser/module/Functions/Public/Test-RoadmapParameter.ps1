@@ -1,58 +1,58 @@
-<#
+﻿<#
 .SYNOPSIS
-    Valide les paramètres utilisés dans les fonctions du module RoadmapParser.
+    Valide les paramÃ¨tres utilisÃ©s dans les fonctions du module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Test-RoadmapParameter valide les paramètres selon différentes règles
-    et critères. Elle permet de s'assurer que les paramètres fournis aux fonctions
+    La fonction Test-RoadmapParameter valide les paramÃ¨tres selon diffÃ©rentes rÃ¨gles
+    et critÃ¨res. Elle permet de s'assurer que les paramÃ¨tres fournis aux fonctions
     du module RoadmapParser sont valides et conformes aux attentes.
 
 .PARAMETER Value
-    La valeur du paramètre à valider.
+    La valeur du paramÃ¨tre Ã  valider.
 
 .PARAMETER Type
-    Le type de validation à effectuer. Valeurs possibles :
-    - FilePath : Vérifie que le chemin de fichier existe et est accessible
-    - DirectoryPath : Vérifie que le répertoire existe et est accessible
-    - RoadmapObject : Vérifie que l'objet est une roadmap valide
-    - TaskId : Vérifie que l'identifiant de tâche est valide
-    - Status : Vérifie que le statut est valide
-    - NonEmptyString : Vérifie que la chaîne n'est pas vide
-    - PositiveInteger : Vérifie que l'entier est positif
-    - Custom : Utilise une validation personnalisée
+    Le type de validation Ã  effectuer. Valeurs possibles :
+    - FilePath : VÃ©rifie que le chemin de fichier existe et est accessible
+    - DirectoryPath : VÃ©rifie que le rÃ©pertoire existe et est accessible
+    - RoadmapObject : VÃ©rifie que l'objet est une roadmap valide
+    - TaskId : VÃ©rifie que l'identifiant de tÃ¢che est valide
+    - Status : VÃ©rifie que le statut est valide
+    - NonEmptyString : VÃ©rifie que la chaÃ®ne n'est pas vide
+    - PositiveInteger : VÃ©rifie que l'entier est positif
+    - Custom : Utilise une validation personnalisÃ©e
 
 .PARAMETER CustomValidation
-    Une expression scriptblock pour une validation personnalisée.
-    Utilisé uniquement lorsque Type est "Custom".
+    Une expression scriptblock pour une validation personnalisÃ©e.
+    UtilisÃ© uniquement lorsque Type est "Custom".
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la validation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER Roadmap
-    L'objet roadmap à utiliser pour la validation (requis pour certains types de validation).
+    L'objet roadmap Ã  utiliser pour la validation (requis pour certains types de validation).
 
 .PARAMETER AllowNull
-    Indique si la valeur null est autorisée.
+    Indique si la valeur null est autorisÃ©e.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la validation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 .EXAMPLE
     Test-RoadmapParameter -Value "C:\path\to\file.md" -Type FilePath -ThrowOnFailure
-    Vérifie que le chemin de fichier existe et est accessible, et lève une exception si ce n'est pas le cas.
+    VÃ©rifie que le chemin de fichier existe et est accessible, et lÃ¨ve une exception si ce n'est pas le cas.
 
 .EXAMPLE
     Test-RoadmapParameter -Value "Task-123" -Type TaskId -Roadmap $roadmap
-    Vérifie que l'identifiant de tâche existe dans la roadmap spécifiée.
+    VÃ©rifie que l'identifiant de tÃ¢che existe dans la roadmap spÃ©cifiÃ©e.
 
 .OUTPUTS
-    [bool] Indique si la validation a réussi.
+    [bool] Indique si la validation a rÃ©ussi.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Test-RoadmapParameter {
     [CmdletBinding()]
@@ -81,14 +81,14 @@ function Test-RoadmapParameter {
         [switch]$ThrowOnFailure
     )
 
-    # Vérifier si la valeur est null
+    # VÃ©rifier si la valeur est null
     if ($null -eq $Value) {
         if ($AllowNull) {
             return $true
         } else {
             $message = $ErrorMessage
             if ([string]::IsNullOrEmpty($message)) {
-                $message = "La valeur ne peut pas être null."
+                $message = "La valeur ne peut pas Ãªtre null."
             }
             
             if ($ThrowOnFailure) {
@@ -114,7 +114,7 @@ function Test-RoadmapParameter {
         "DirectoryPath" {
             $isValid = Test-Path -Path $Value -PathType Container
             if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                $validationMessage = "Le répertoire '$Value' n'existe pas ou n'est pas accessible."
+                $validationMessage = "Le rÃ©pertoire '$Value' n'existe pas ou n'est pas accessible."
             }
         }
         "RoadmapObject" {
@@ -129,12 +129,12 @@ function Test-RoadmapParameter {
             if ($null -eq $Roadmap) {
                 $isValid = $false
                 if ([string]::IsNullOrEmpty($validationMessage)) {
-                    $validationMessage = "L'objet roadmap est requis pour valider un identifiant de tâche."
+                    $validationMessage = "L'objet roadmap est requis pour valider un identifiant de tÃ¢che."
                 }
             } else {
                 $isValid = $Roadmap.AllTasks.ContainsKey($Value)
                 if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                    $validationMessage = "La tâche avec l'identifiant '$Value' n'existe pas dans la roadmap."
+                    $validationMessage = "La tÃ¢che avec l'identifiant '$Value' n'existe pas dans la roadmap."
                 }
             }
         }
@@ -142,44 +142,44 @@ function Test-RoadmapParameter {
             $validStatuses = @("Complete", "Incomplete", "InProgress", "Blocked", "All")
             $isValid = $validStatuses -contains $Value
             if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                $validationMessage = "Le statut '$Value' n'est pas valide. Valeurs autorisées : $($validStatuses -join ', ')"
+                $validationMessage = "Le statut '$Value' n'est pas valide. Valeurs autorisÃ©es : $($validStatuses -join ', ')"
             }
         }
         "NonEmptyString" {
             $isValid = -not [string]::IsNullOrWhiteSpace($Value)
             if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                $validationMessage = "La chaîne ne peut pas être vide ou ne contenir que des espaces."
+                $validationMessage = "La chaÃ®ne ne peut pas Ãªtre vide ou ne contenir que des espaces."
             }
         }
         "PositiveInteger" {
             $isValid = $Value -is [int] -and $Value -ge 0
             if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                $validationMessage = "La valeur doit être un entier positif ou nul."
+                $validationMessage = "La valeur doit Ãªtre un entier positif ou nul."
             }
         }
         "Custom" {
             if ($null -eq $CustomValidation) {
                 $isValid = $false
                 if ([string]::IsNullOrEmpty($validationMessage)) {
-                    $validationMessage = "Une validation personnalisée est requise lorsque le type est 'Custom'."
+                    $validationMessage = "Une validation personnalisÃ©e est requise lorsque le type est 'Custom'."
                 }
             } else {
                 try {
                     $isValid = & $CustomValidation $Value
                     if ([string]::IsNullOrEmpty($validationMessage) -and -not $isValid) {
-                        $validationMessage = "La validation personnalisée a échoué."
+                        $validationMessage = "La validation personnalisÃ©e a Ã©chouÃ©."
                     }
                 } catch {
                     $isValid = $false
                     if ([string]::IsNullOrEmpty($validationMessage)) {
-                        $validationMessage = "Erreur lors de la validation personnalisée : $_"
+                        $validationMessage = "Erreur lors de la validation personnalisÃ©e : $_"
                     }
                 }
             }
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ($ThrowOnFailure) {
             throw $validationMessage

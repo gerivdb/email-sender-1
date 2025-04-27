@@ -1,6 +1,6 @@
-# Test manuel pour la fonction Analyze-SqlServerPermission
+﻿# Test manuel pour la fonction Analyze-SqlServerPermission
 
-# Définir la fonction à tester
+# DÃ©finir la fonction Ã  tester
 function Analyze-SqlServerPermission {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -21,7 +21,7 @@ function Analyze-SqlServerPermission {
     # Simuler l'analyse des permissions SQL Server
     Write-Host "Analyse des permissions SQL Server pour l'instance: $ServerInstance"
 
-    # Simuler les rôles serveur
+    # Simuler les rÃ´les serveur
     $serverRoles = @(
         [PSCustomObject]@{
             RoleName    = "sysadmin"
@@ -163,48 +163,48 @@ function Analyze-SqlServerPermission {
         [PSCustomObject]@{
             AnomalyType       = "DisabledLoginWithPermissions"
             LoginName         = "SecurityUser"
-            Description       = "Le login désactivé possède des permissions ou est membre de rôles serveur"
+            Description       = "Le login dÃ©sactivÃ© possÃ¨de des permissions ou est membre de rÃ´les serveur"
             Severity          = "Moyenne"
-            RecommendedAction = "Révoquer les permissions ou retirer des rôles serveur"
+            RecommendedAction = "RÃ©voquer les permissions ou retirer des rÃ´les serveur"
         },
         [PSCustomObject]@{
             AnomalyType       = "HighPrivilegeAccount"
             LoginName         = "sa"
-            Description       = "Le login est membre du rôle serveur à privilèges élevés: sysadmin"
-            Severity          = "Élevée"
-            RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+            Description       = "Le login est membre du rÃ´le serveur Ã  privilÃ¨ges Ã©levÃ©s: sysadmin"
+            Severity          = "Ã‰levÃ©e"
+            RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
         },
         [PSCustomObject]@{
             AnomalyType       = "HighPrivilegeAccount"
             LoginName         = "DOMAIN\Administrator"
-            Description       = "Le login est membre du rôle serveur à privilèges élevés: sysadmin"
-            Severity          = "Élevée"
-            RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+            Description       = "Le login est membre du rÃ´le serveur Ã  privilÃ¨ges Ã©levÃ©s: sysadmin"
+            Severity          = "Ã‰levÃ©e"
+            RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
         },
         [PSCustomObject]@{
             AnomalyType       = "ExpiredPassword"
             LoginName         = "SecurityUser"
-            Description       = "Le mot de passe du login SQL est expiré"
+            Description       = "Le mot de passe du login SQL est expirÃ©"
             Severity          = "Moyenne"
             RecommendedAction = "Changer le mot de passe du compte"
         },
         [PSCustomObject]@{
             AnomalyType       = "LockedAccount"
             LoginName         = "LockedUser"
-            Description       = "Le compte est verrouillé"
+            Description       = "Le compte est verrouillÃ©"
             Severity          = "Moyenne"
-            RecommendedAction = "Déverrouiller le compte et investiguer la cause"
+            RecommendedAction = "DÃ©verrouiller le compte et investiguer la cause"
         },
         [PSCustomObject]@{
             AnomalyType       = "ControlServerPermission"
             LoginName         = "sa"
-            Description       = "Le login possède la permission CONTROL SERVER (équivalent à sysadmin)"
-            Severity          = "Élevée"
-            RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire"
+            Description       = "Le login possÃ¨de la permission CONTROL SERVER (Ã©quivalent Ã  sysadmin)"
+            Severity          = "Ã‰levÃ©e"
+            RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire"
         }
     )
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         ServerInstance      = $ServerInstance
         ServerRoles         = $serverRoles
@@ -214,15 +214,15 @@ function Analyze-SqlServerPermission {
         AnalysisDate        = Get-Date
     }
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($OutputPath) {
-        if ($PSCmdlet.ShouldProcess("Rapport de permissions", "Génération")) {
+        if ($PSCmdlet.ShouldProcess("Rapport de permissions", "GÃ©nÃ©ration")) {
             Write-Host "Generation du rapport de permissions au format $OutputFormat : $OutputPath"
 
-            # Simuler la génération de rapport
+            # Simuler la gÃ©nÃ©ration de rapport
             switch ($OutputFormat) {
                 "HTML" {
-                    # Créer un rapport HTML minimal
+                    # CrÃ©er un rapport HTML minimal
                     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -239,7 +239,7 @@ function Analyze-SqlServerPermission {
                     $htmlContent | Out-File -FilePath $OutputPath -Encoding UTF8
                 }
                 "CSV" {
-                    # Créer des fichiers CSV
+                    # CrÃ©er des fichiers CSV
                     $anomaliesPath = [System.IO.Path]::ChangeExtension($OutputPath, "anomalies.csv")
                     $permissionAnomalies | ConvertTo-Csv -NoTypeInformation | Out-File -FilePath $anomaliesPath -Encoding UTF8
 
@@ -247,22 +247,22 @@ function Analyze-SqlServerPermission {
                     $serverLogins | ConvertTo-Csv -NoTypeInformation | Out-File -FilePath $loginsPath -Encoding UTF8
                 }
                 "JSON" {
-                    # Créer un rapport JSON
+                    # CrÃ©er un rapport JSON
                     $result | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
                 }
                 "XML" {
-                    # Créer un rapport XML
+                    # CrÃ©er un rapport XML
                     $result | Export-Clixml -Path $OutputPath
                 }
             }
         }
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $result
 }
 
-# Créer un dossier temporaire pour les rapports
+# CrÃ©er un dossier temporaire pour les rapports
 $TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
 New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
 
@@ -272,83 +272,83 @@ Write-Host "Test de la fonction Analyze-SqlServerPermission..." -ForegroundColor
 # Test de base
 $result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
-# Vérifier les résultats
-Write-Host "`nVérification des résultats..." -ForegroundColor Cyan
+# VÃ©rifier les rÃ©sultats
+Write-Host "`nVÃ©rification des rÃ©sultats..." -ForegroundColor Cyan
 
-# Vérifier les propriétés de base
+# VÃ©rifier les propriÃ©tÃ©s de base
 if ($result -and $result.ServerInstance -eq "localhost\SQLEXPRESS") {
     Write-Host "- ServerInstance: OK" -ForegroundColor Green
 } else {
-    Write-Host "- ServerInstance: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerInstance: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerRoles -and $result.ServerRoles.Count -gt 0) {
     Write-Host "- ServerRoles: OK (Count: $($result.ServerRoles.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerRoles: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerRoles: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerPermissions -and $result.ServerPermissions.Count -gt 0) {
     Write-Host "- ServerPermissions: OK (Count: $($result.ServerPermissions.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerPermissions: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerPermissions: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.ServerLogins -and $result.ServerLogins.Count -gt 0) {
     Write-Host "- ServerLogins: OK (Count: $($result.ServerLogins.Count))" -ForegroundColor Green
 } else {
-    Write-Host "- ServerLogins: ÉCHEC" -ForegroundColor Red
+    Write-Host "- ServerLogins: Ã‰CHEC" -ForegroundColor Red
 }
 
 if ($result.PermissionAnomalies -and $result.PermissionAnomalies.Count -gt 0) {
     Write-Host "- PermissionAnomalies: OK (Count: $($result.PermissionAnomalies.Count))" -ForegroundColor Green
 
-    # Vérifier les types d'anomalies
+    # VÃ©rifier les types d'anomalies
     $anomalyTypes = $result.PermissionAnomalies | Group-Object -Property AnomalyType | Select-Object -ExpandProperty Name
-    Write-Host "  Types d'anomalies détectés: $($anomalyTypes -join ', ')" -ForegroundColor Gray
+    Write-Host "  Types d'anomalies dÃ©tectÃ©s: $($anomalyTypes -join ', ')" -ForegroundColor Gray
 } else {
-    Write-Host "- PermissionAnomalies: ÉCHEC" -ForegroundColor Red
+    Write-Host "- PermissionAnomalies: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport
+# Test de gÃ©nÃ©ration de rapport
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.html"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "HTML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport HTML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport HTML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport HTML: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport CSV
+# Test de gÃ©nÃ©ration de rapport CSV
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.csv"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "CSV"
 
 $anomaliesPath = [System.IO.Path]::ChangeExtension($outputPath, "anomalies.csv")
 if (Test-Path -Path $anomaliesPath) {
-    Write-Host "- Génération de rapport CSV: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport CSV: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport CSV: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport JSON
+# Test de gÃ©nÃ©ration de rapport JSON
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.json"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "JSON"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport JSON: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport JSON: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport JSON: Ã‰CHEC" -ForegroundColor Red
 }
 
-# Test de génération de rapport XML
+# Test de gÃ©nÃ©ration de rapport XML
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.xml"
 Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "XML"
 
 if (Test-Path -Path $outputPath) {
-    Write-Host "- Génération de rapport XML: OK" -ForegroundColor Green
+    Write-Host "- GÃ©nÃ©ration de rapport XML: OK" -ForegroundColor Green
 } else {
-    Write-Host "- Génération de rapport XML: ÉCHEC" -ForegroundColor Red
+    Write-Host "- GÃ©nÃ©ration de rapport XML: Ã‰CHEC" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -356,4 +356,4 @@ if (Test-Path -Path $TempFolder) {
     Remove-Item -Path $TempFolder -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host "`nTests terminés." -ForegroundColor Cyan
+Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan

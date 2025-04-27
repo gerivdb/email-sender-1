@@ -1,37 +1,37 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démontre l'utilisation du système de gestion des cas ambigus de détection de format.
+    DÃ©montre l'utilisation du systÃ¨me de gestion des cas ambigus de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script démontre l'utilisation du système de gestion des cas ambigus de détection de format
+    Ce script dÃ©montre l'utilisation du systÃ¨me de gestion des cas ambigus de dÃ©tection de format
     en utilisant des exemples de fichiers avec des formats potentiellement ambigus. Il permet
-    de voir comment le système détecte les cas ambigus, comment il les résout automatiquement
-    ou avec confirmation utilisateur, et comment il affiche les résultats.
+    de voir comment le systÃ¨me dÃ©tecte les cas ambigus, comment il les rÃ©sout automatiquement
+    ou avec confirmation utilisateur, et comment il affiche les rÃ©sultats.
 
 .PARAMETER CreateSamples
-    Indique si le script doit créer des exemples de fichiers ambigus.
-    Par défaut, cette option est activée.
+    Indique si le script doit crÃ©er des exemples de fichiers ambigus.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .PARAMETER SamplesDirectory
-    Le répertoire où créer les exemples de fichiers ambigus.
-    Par défaut, utilise le sous-répertoire 'demo_samples' du répertoire courant.
+    Le rÃ©pertoire oÃ¹ crÃ©er les exemples de fichiers ambigus.
+    Par dÃ©faut, utilise le sous-rÃ©pertoire 'demo_samples' du rÃ©pertoire courant.
 
 .PARAMETER AutoResolve
-    Indique si le script doit tenter de résoudre automatiquement les cas ambigus sans intervention utilisateur.
-    Par défaut, cette option est désactivée.
+    Indique si le script doit tenter de rÃ©soudre automatiquement les cas ambigus sans intervention utilisateur.
+    Par dÃ©faut, cette option est dÃ©sactivÃ©e.
 
 .PARAMETER GenerateReport
-    Indique si le script doit générer un rapport HTML des résultats.
-    Par défaut, cette option est activée.
+    Indique si le script doit gÃ©nÃ©rer un rapport HTML des rÃ©sultats.
+    Par dÃ©faut, cette option est activÃ©e.
 
 .EXAMPLE
     .\Demo-AmbiguousFormatHandling.ps1
-    Démontre le système de gestion des cas ambigus avec des exemples de fichiers et génère un rapport HTML.
+    DÃ©montre le systÃ¨me de gestion des cas ambigus avec des exemples de fichiers et gÃ©nÃ¨re un rapport HTML.
 
 .EXAMPLE
     .\Demo-AmbiguousFormatHandling.ps1 -AutoResolve
-    Démontre le système avec résolution automatique des cas ambigus.
+    DÃ©montre le systÃ¨me avec rÃ©solution automatique des cas ambigus.
 
 .NOTES
     Auteur: Augment Agent
@@ -52,35 +52,35 @@ param (
     [switch]$GenerateReport
 )
 
-# Importer les scripts nécessaires
+# Importer les scripts nÃ©cessaires
 $integrationScript = "$PSScriptRoot\Detect-FileFormatWithConfirmation.ps1"
 
 if (-not (Test-Path -Path $integrationScript)) {
-    Write-Error "Le script d'intégration '$integrationScript' n'existe pas."
+    Write-Error "Le script d'intÃ©gration '$integrationScript' n'existe pas."
     exit 1
 }
 
-# Fonction pour créer des exemples de fichiers ambigus
+# Fonction pour crÃ©er des exemples de fichiers ambigus
 function New-SampleFiles {
     param (
         [string]$Directory
     )
 
-    # Créer le répertoire s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire s'il n'existe pas
     if (-not (Test-Path -Path $Directory -PathType Container)) {
         try {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
-            Write-Host "Répertoire d'exemples créé : $Directory" -ForegroundColor Yellow
+            Write-Host "RÃ©pertoire d'exemples crÃ©Ã© : $Directory" -ForegroundColor Yellow
         }
         catch {
-            Write-Error "Impossible de créer le répertoire d'exemples : $_"
+            Write-Error "Impossible de crÃ©er le rÃ©pertoire d'exemples : $_"
             exit 1
         }
     }
 
-    Write-Host "Création d'exemples de fichiers ambigus..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation d'exemples de fichiers ambigus..." -ForegroundColor Yellow
 
-    # Exemple 1: Fichier JSON qui pourrait être confondu avec du JavaScript
+    # Exemple 1: Fichier JSON qui pourrait Ãªtre confondu avec du JavaScript
     $jsonJsContent = @"
 {
     "name": "Test",
@@ -101,9 +101,9 @@ function New-SampleFiles {
 
     $jsonJsPath = Join-Path -Path $Directory -ChildPath "package.txt"
     $jsonJsContent | Set-Content -Path $jsonJsPath -Encoding UTF8
-    Write-Host "  Créé : package.txt (JSON/JavaScript ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : package.txt (JSON/JavaScript ambigu)" -ForegroundColor Green
 
-    # Exemple 2: Fichier XML qui pourrait être confondu avec du HTML
+    # Exemple 2: Fichier XML qui pourrait Ãªtre confondu avec du HTML
     $xmlHtmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <html>
@@ -119,9 +119,9 @@ function New-SampleFiles {
 
     $xmlHtmlPath = Join-Path -Path $Directory -ChildPath "page.txt"
     $xmlHtmlContent | Set-Content -Path $xmlHtmlPath -Encoding UTF8
-    Write-Host "  Créé : page.txt (XML/HTML ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : page.txt (XML/HTML ambigu)" -ForegroundColor Green
 
-    # Exemple 3: Fichier CSV qui pourrait être confondu avec du texte
+    # Exemple 3: Fichier CSV qui pourrait Ãªtre confondu avec du texte
     $csvTextContent = @"
 Name,Age,Email
 John Doe,30,john.doe@example.com
@@ -131,9 +131,9 @@ Bob Johnson,40,bob.johnson@example.com
 
     $csvTextPath = Join-Path -Path $Directory -ChildPath "data.txt"
     $csvTextContent | Set-Content -Path $csvTextPath -Encoding UTF8
-    Write-Host "  Créé : data.txt (CSV/Texte ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : data.txt (CSV/Texte ambigu)" -ForegroundColor Green
 
-    # Exemple 4: Fichier PowerShell qui pourrait être confondu avec du texte
+    # Exemple 4: Fichier PowerShell qui pourrait Ãªtre confondu avec du texte
     $ps1TextContent = @"
 # This is a PowerShell script
 # It could be confused with a text file
@@ -151,9 +151,9 @@ Test-Function -Name "World"
 
     $ps1TextPath = Join-Path -Path $Directory -ChildPath "script.txt"
     $ps1TextContent | Set-Content -Path $ps1TextPath -Encoding UTF8
-    Write-Host "  Créé : script.txt (PowerShell/Texte ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : script.txt (PowerShell/Texte ambigu)" -ForegroundColor Green
 
-    # Exemple 5: Fichier INI qui pourrait être confondu avec du texte
+    # Exemple 5: Fichier INI qui pourrait Ãªtre confondu avec du texte
     $iniTextContent = @"
 [General]
 Name=Test Configuration
@@ -172,9 +172,9 @@ Email=john.doe@example.com
 
     $iniTextPath = Join-Path -Path $Directory -ChildPath "config.txt"
     $iniTextContent | Set-Content -Path $iniTextPath -Encoding UTF8
-    Write-Host "  Créé : config.txt (INI/Texte ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : config.txt (INI/Texte ambigu)" -ForegroundColor Green
 
-    # Exemple 6: Fichier YAML qui pourrait être confondu avec du texte
+    # Exemple 6: Fichier YAML qui pourrait Ãªtre confondu avec du texte
     $yamlTextContent = @"
 # YAML configuration file
 version: '1.0'
@@ -196,16 +196,16 @@ user:
 
     $yamlTextPath = Join-Path -Path $Directory -ChildPath "config.yaml.txt"
     $yamlTextContent | Set-Content -Path $yamlTextPath -Encoding UTF8
-    Write-Host "  Créé : config.yaml.txt (YAML/Texte ambigu)" -ForegroundColor Green
+    Write-Host "  CrÃ©Ã© : config.yaml.txt (YAML/Texte ambigu)" -ForegroundColor Green
 
-    Write-Host "Exemples de fichiers ambigus créés avec succès." -ForegroundColor Green
+    Write-Host "Exemples de fichiers ambigus crÃ©Ã©s avec succÃ¨s." -ForegroundColor Green
     Write-Host ""
 
-    # Retourner la liste des fichiers créés
+    # Retourner la liste des fichiers crÃ©Ã©s
     return Get-ChildItem -Path $Directory -File
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-DemoReport {
     param (
         [array]$Results,
@@ -218,7 +218,7 @@ function New-DemoReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Démonstration - Gestion des cas ambigus</title>
+    <title>DÃ©monstration - Gestion des cas ambigus</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -324,23 +324,23 @@ function New-DemoReport {
 </head>
 <body>
     <div class="container">
-        <h1>Démonstration - Gestion des cas ambigus</h1>
+        <h1>DÃ©monstration - Gestion des cas ambigus</h1>
 
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Nombre de fichiers testés:</strong> $($Results.Count)</p>
-            <p><strong>Mode de résolution:</strong> $(if ($AutoResolve) { "Automatique" } else { "Confirmation utilisateur" })</p>
-            <p><strong>Date de la démonstration:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Nombre de fichiers testÃ©s:</strong> $($Results.Count)</p>
+            <p><strong>Mode de rÃ©solution:</strong> $(if ($AutoResolve) { "Automatique" } else { "Confirmation utilisateur" })</p>
+            <p><strong>Date de la dÃ©monstration:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
 
-        <h2>Détails des exemples</h2>
+        <h2>DÃ©tails des exemples</h2>
 "@
 
     foreach ($result in $Results) {
         $fileName = [System.IO.Path]::GetFileName($result.FilePath)
         $fileContent = Get-Content -Path $result.FilePath -Raw
 
-        # Déterminer si le cas est ambigu
+        # DÃ©terminer si le cas est ambigu
         $topFormats = $result.AllFormats | Sort-Object -Property Score, Priority -Descending | Select-Object -First 2
         $isAmbiguous = ($topFormats.Count -ge 2) -and (($topFormats[0].Score - $topFormats[1].Score) -lt 20)
 
@@ -360,18 +360,18 @@ function New-DemoReport {
             </div>
 
             <div class="$resultClass">
-                <h4>Résultat de détection</h4>
+                <h4>RÃ©sultat de dÃ©tection</h4>
 "@
 
         if ($isAmbiguous) {
             $html += @"
-                <p><strong>Cas ambigu détecté!</strong></p>
-                <p><strong>Format détecté:</strong> $($result.DetectedFormat)</p>
-                <p><strong>Résolu par:</strong> $(if ($AutoResolve) { "Résolution automatique" } else { "Confirmation utilisateur" })</p>
+                <p><strong>Cas ambigu dÃ©tectÃ©!</strong></p>
+                <p><strong>Format dÃ©tectÃ©:</strong> $($result.DetectedFormat)</p>
+                <p><strong>RÃ©solu par:</strong> $(if ($AutoResolve) { "RÃ©solution automatique" } else { "Confirmation utilisateur" })</p>
 "@
         } else {
             $html += @"
-                <p><strong>Format détecté:</strong> $($result.DetectedFormat)</p>
+                <p><strong>Format dÃ©tectÃ©:</strong> $($result.DetectedFormat)</p>
 "@
         }
 
@@ -383,17 +383,17 @@ function New-DemoReport {
 
         $html += @"
                 <p><strong>Score de confiance:</strong> <span class="$scoreClass">$($result.ConfidenceScore)%</span></p>
-                <p><strong>Critères correspondants:</strong> $($result.MatchedCriteria)</p>
+                <p><strong>CritÃ¨res correspondants:</strong> $($result.MatchedCriteria)</p>
             </div>
 
-            <h4>Formats détectés</h4>
+            <h4>Formats dÃ©tectÃ©s</h4>
             <table class="format-list">
                 <thead>
                     <tr>
                         <th>Format</th>
                         <th>Score</th>
-                        <th>Priorité</th>
-                        <th>Critères</th>
+                        <th>PrioritÃ©</th>
+                        <th>CritÃ¨res</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -435,16 +435,16 @@ function New-DemoReport {
 "@
 
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport de démonstration généré : $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport de dÃ©monstration gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    Write-Host "Démonstration du système de gestion des cas ambigus" -ForegroundColor Cyan
-    Write-Host "Mode de résolution : $(if ($AutoResolve) { 'Automatique' } else { 'Confirmation utilisateur' })" -ForegroundColor Cyan
+    Write-Host "DÃ©monstration du systÃ¨me de gestion des cas ambigus" -ForegroundColor Cyan
+    Write-Host "Mode de rÃ©solution : $(if ($AutoResolve) { 'Automatique' } else { 'Confirmation utilisateur' })" -ForegroundColor Cyan
     Write-Host ""
 
-    # Créer des exemples de fichiers si demandé
+    # CrÃ©er des exemples de fichiers si demandÃ©
     $sampleFiles = @()
 
     if ($CreateSamples -or -not (Test-Path -Path $SamplesDirectory -PathType Container)) {
@@ -456,13 +456,13 @@ function Main {
             $sampleFiles = Get-ChildItem -Path $SamplesDirectory -File
         }
         else {
-            Write-Error "Le répertoire d'exemples '$SamplesDirectory' n'existe pas."
+            Write-Error "Le rÃ©pertoire d'exemples '$SamplesDirectory' n'existe pas."
             exit 1
         }
     }
 
     if ($sampleFiles.Count -eq 0) {
-        Write-Error "Aucun fichier d'exemple trouvé."
+        Write-Error "Aucun fichier d'exemple trouvÃ©."
         exit 1
     }
 
@@ -475,16 +475,16 @@ function Main {
     foreach ($file in $sampleFiles) {
         Write-Host "Analyse du fichier : $($file.Name)" -ForegroundColor Yellow
 
-        # Exécuter le script d'intégration
+        # ExÃ©cuter le script d'intÃ©gration
         $result = & $integrationScript -FilePath $file.FullName -AutoResolve:$AutoResolve -ShowDetails
 
-        # Ajouter le résultat à la liste
+        # Ajouter le rÃ©sultat Ã  la liste
         $results += $result
 
         Write-Host ""
     }
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
         New-DemoReport -Results $results
     }
@@ -492,6 +492,6 @@ function Main {
     return $results
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 $results = Main
 return $results

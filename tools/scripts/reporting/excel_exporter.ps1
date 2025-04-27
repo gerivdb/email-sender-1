@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
     Module d'export Excel pour les rapports automatiques.
 .DESCRIPTION
-    Ce module fournit une couche d'abstraction pour la génération de fichiers Excel
+    Ce module fournit une couche d'abstraction pour la gÃ©nÃ©ration de fichiers Excel
     en utilisant le module ImportExcel.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de création: 2025-04-23
+    Date de crÃ©ation: 2025-04-23
 #>
 
-# Vérifier si le module ImportExcel est installé
+# VÃ©rifier si le module ImportExcel est installÃ©
 $InstallerPath = Join-Path -Path $PSScriptRoot -ChildPath "install_excel_module.ps1"
 if (Test-Path -Path $InstallerPath) {
     & $InstallerPath -RequiredVersion "5.4.5"
 } else {
     if (-not (Get-Module -Name "ImportExcel" -ListAvailable)) {
-        throw "Module ImportExcel non installé et script d'installation non trouvé"
+        throw "Module ImportExcel non installÃ© et script d'installation non trouvÃ©"
     }
 }
 
@@ -26,28 +26,28 @@ Import-Module -Name "ImportExcel" -ErrorAction Stop
 #region Exceptions
 
 # Classe ExcelException
-# Exception de base pour toutes les erreurs liées à Excel
+# Exception de base pour toutes les erreurs liÃ©es Ã  Excel
 class ExcelException : System.Exception {
     ExcelException([string]$Message) : base($Message) {}
     ExcelException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelWorkbookException
-# Exception liée aux opérations sur les classeurs
+# Exception liÃ©e aux opÃ©rations sur les classeurs
 class ExcelWorkbookException : ExcelException {
     ExcelWorkbookException([string]$Message) : base($Message) {}
     ExcelWorkbookException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelWorksheetException
-# Exception liée aux opérations sur les feuilles de calcul
+# Exception liÃ©e aux opÃ©rations sur les feuilles de calcul
 class ExcelWorksheetException : ExcelException {
     ExcelWorksheetException([string]$Message) : base($Message) {}
     ExcelWorksheetException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
 }
 
 # Classe ExcelDataException
-# Exception liée aux opérations sur les données
+# Exception liÃ©e aux opÃ©rations sur les donnÃ©es
 class ExcelDataException : ExcelException {
     ExcelDataException([string]$Message) : base($Message) {}
     ExcelDataException([string]$Message, [System.Exception]$InnerException) : base($Message, $InnerException) {}
@@ -60,7 +60,7 @@ class ExcelDataException : ExcelException {
 # Classe ExcelConfiguration
 # Configuration pour les exporteurs Excel
 class ExcelConfiguration {
-    # Propriétés statiques
+    # PropriÃ©tÃ©s statiques
     static [hashtable] $DefaultStyles = @{
         Header   = @{
             Bold                = $true
@@ -101,14 +101,14 @@ class ExcelConfiguration {
 
     static [hashtable] $ChartOptions = @{
         Line   = @{
-            Title          = "Graphique linéaire"
+            Title          = "Graphique linÃ©aire"
             ShowLegend     = $true
             ShowDataLabels = $false
             Width          = 600
             Height         = 400
         }
         Bar    = @{
-            Title          = "Graphique à barres"
+            Title          = "Graphique Ã  barres"
             ShowLegend     = $true
             ShowDataLabels = $true
             Width          = 600
@@ -122,7 +122,7 @@ class ExcelConfiguration {
             Height         = 500
         }
         Column = @{
-            Title          = "Graphique à colonnes"
+            Title          = "Graphique Ã  colonnes"
             ShowLegend     = $true
             ShowDataLabels = $true
             Width          = 600
@@ -140,21 +140,21 @@ class ExcelConfiguration {
         ConditionalFormatting = $false
     }
 
-    # Méthode statique pour configurer les styles
+    # MÃ©thode statique pour configurer les styles
     static [void] ConfigureStyles([hashtable]$Styles) {
         foreach ($Key in $Styles.Keys) {
             [ExcelConfiguration]::DefaultStyles[$Key] = $Styles[$Key]
         }
     }
 
-    # Méthode statique pour configurer les options de graphique
+    # MÃ©thode statique pour configurer les options de graphique
     static [void] ConfigureChartOptions([hashtable]$Options) {
         foreach ($Key in $Options.Keys) {
             [ExcelConfiguration]::ChartOptions[$Key] = $Options[$Key]
         }
     }
 
-    # Méthode statique pour configurer les options d'export
+    # MÃ©thode statique pour configurer les options d'export
     static [void] ConfigureExportOptions([hashtable]$Options) {
         foreach ($Key in $Options.Keys) {
             [ExcelConfiguration]::ExportOptions[$Key] = $Options[$Key]
@@ -167,9 +167,9 @@ class ExcelConfiguration {
 #region ExcelExporter
 
 # Classe ExcelExporter
-# Implémentation de l'interface d'exportation Excel
+# ImplÃ©mentation de l'interface d'exportation Excel
 class ExcelExporter {
-    # Propriétés privées
+    # PropriÃ©tÃ©s privÃ©es
     hidden [hashtable] $_workbooks = @{}
     hidden [hashtable] $_worksheets = @{}
     hidden [string] $_lastError = ""
@@ -178,7 +178,7 @@ class ExcelExporter {
 
     # Constructeur
     ExcelExporter() {
-        # Vérifier si le module ImportExcel est chargé
+        # VÃ©rifier si le module ImportExcel est chargÃ©
         if (-not (Get-Module -Name "ImportExcel")) {
             try {
                 Import-Module -Name "ImportExcel" -ErrorAction Stop
@@ -192,13 +192,13 @@ class ExcelExporter {
         $this.InitializeTypeConverters()
     }
 
-    # Méthode pour initialiser les convertisseurs de types
+    # MÃ©thode pour initialiser les convertisseurs de types
     hidden [void] InitializeTypeConverters() {
-        # Convertisseur pour les types numériques
+        # Convertisseur pour les types numÃ©riques
         $this._typeConverters["Numeric"] = {
             param($Value, $Options)
 
-            # Déterminer le format numérique
+            # DÃ©terminer le format numÃ©rique
             $Format = if ($Options -and $Options.ContainsKey("Format")) { $Options.Format } else { "General" }
 
             # Convertir la valeur en nombre
@@ -210,7 +210,7 @@ class ExcelExporter {
                     Type   = "Numeric"
                 }
             } catch {
-                # Si la conversion échoue, retourner la valeur d'origine
+                # Si la conversion Ã©choue, retourner la valeur d'origine
                 return @{
                     Value  = $Value
                     Format = "General"
@@ -219,14 +219,14 @@ class ExcelExporter {
             }
         }
 
-        # Convertisseur pour les chaînes de caractères
+        # Convertisseur pour les chaÃ®nes de caractÃ¨res
         $this._typeConverters["Text"] = {
             param($Value, $Options)
 
-            # Déterminer le format de texte
+            # DÃ©terminer le format de texte
             $Format = if ($Options -and $Options.ContainsKey("Format")) { $Options.Format } else { "@" }
 
-            # Convertir la valeur en chaîne
+            # Convertir la valeur en chaÃ®ne
             $TextValue = if ($null -eq $Value) { "" } else { $Value.ToString() }
 
             return @{
@@ -236,14 +236,14 @@ class ExcelExporter {
             }
         }
 
-        # Convertisseur pour les valeurs booléennes
+        # Convertisseur pour les valeurs boolÃ©ennes
         $this._typeConverters["Boolean"] = {
             param($Value, $Options)
 
-            # Déterminer le format booléen
+            # DÃ©terminer le format boolÃ©en
             $Format = if ($Options -and $Options.ContainsKey("Format")) { $Options.Format } else { "Yes/No" }
 
-            # Convertir la valeur en booléen
+            # Convertir la valeur en boolÃ©en
             try {
                 $BoolValue = [bool]$Value
                 return @{
@@ -252,7 +252,7 @@ class ExcelExporter {
                     Type   = "Boolean"
                 }
             } catch {
-                # Si la conversion échoue, retourner la valeur d'origine
+                # Si la conversion Ã©choue, retourner la valeur d'origine
                 return @{
                     Value  = $Value
                     Format = "General"
@@ -265,7 +265,7 @@ class ExcelExporter {
         $this._typeConverters["DateTime"] = {
             param($Value, $Options)
 
-            # Déterminer le format de date
+            # DÃ©terminer le format de date
             $Format = if ($Options -and $Options.ContainsKey("Format")) { $Options.Format } else { "yyyy-MM-dd HH:mm:ss" }
 
             # Convertir la valeur en date
@@ -282,7 +282,7 @@ class ExcelExporter {
                     Type   = "DateTime"
                 }
             } catch {
-                # Si la conversion échoue, retourner la valeur d'origine
+                # Si la conversion Ã©choue, retourner la valeur d'origine
                 return @{
                     Value  = $Value
                     Format = "General"
@@ -303,15 +303,15 @@ class ExcelExporter {
         }
     }
 
-    #region Méthodes de création de classeurs et feuilles
+    #region MÃ©thodes de crÃ©ation de classeurs et feuilles
 
     <#
     .SYNOPSIS
-        Crée un nouveau classeur Excel.
+        CrÃ©e un nouveau classeur Excel.
     .DESCRIPTION
-        Cette méthode crée un nouveau classeur Excel et retourne un identifiant unique.
+        Cette mÃ©thode crÃ©e un nouveau classeur Excel et retourne un identifiant unique.
     .PARAMETER Path
-        Chemin où le classeur sera sauvegardé (optionnel).
+        Chemin oÃ¹ le classeur sera sauvegardÃ© (optionnel).
     .EXAMPLE
         $WorkbookId = $Exporter.CreateWorkbook("C:\Temp\Rapport.xlsx")
     .OUTPUTS
@@ -319,12 +319,12 @@ class ExcelExporter {
     #>
     [string] CreateWorkbook([string]$Path = "") {
         try {
-            # Créer un package Excel
+            # CrÃ©er un package Excel
             $ExcelPackage = New-Object OfficeOpenXml.ExcelPackage
 
-            # Si un chemin est spécifié, associer le package à ce fichier
+            # Si un chemin est spÃ©cifiÃ©, associer le package Ã  ce fichier
             if (-not [string]::IsNullOrEmpty($Path)) {
-                # Vérifier si le répertoire parent existe
+                # VÃ©rifier si le rÃ©pertoire parent existe
                 $Directory = Split-Path -Parent $Path
                 if (-not [string]::IsNullOrEmpty($Directory) -and -not (Test-Path -Path $Directory)) {
                     New-Item -Path $Directory -ItemType Directory -Force | Out-Null
@@ -334,7 +334,7 @@ class ExcelExporter {
                 $ExcelPackage = New-Object OfficeOpenXml.ExcelPackage($FileInfo)
             }
 
-            # Générer un ID unique pour le classeur
+            # GÃ©nÃ©rer un ID unique pour le classeur
             $WorkbookId = [Guid]::NewGuid().ToString()
 
             # Stocker le classeur dans la collection
@@ -346,44 +346,44 @@ class ExcelExporter {
 
             return $WorkbookId
         } catch {
-            $this._lastError = "Erreur lors de la création du classeur: $_"
+            $this._lastError = "Erreur lors de la crÃ©ation du classeur: $_"
             throw [ExcelWorkbookException]::new($this._lastError, $_.Exception)
         }
     }
 
     <#
     .SYNOPSIS
-        Ajoute une feuille de calcul à un classeur Excel.
+        Ajoute une feuille de calcul Ã  un classeur Excel.
     .DESCRIPTION
-        Cette méthode ajoute une feuille de calcul à un classeur Excel et retourne un identifiant unique.
+        Cette mÃ©thode ajoute une feuille de calcul Ã  un classeur Excel et retourne un identifiant unique.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER Name
         Nom de la feuille de calcul.
     .EXAMPLE
-        $WorksheetId = $Exporter.AddWorksheet($WorkbookId, "Données")
+        $WorksheetId = $Exporter.AddWorksheet($WorkbookId, "DonnÃ©es")
     .OUTPUTS
         System.String - Identifiant unique de la feuille de calcul.
     #>
     [string] AddWorksheet([string]$WorkbookId, [string]$Name) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
             $ExcelPackage = $Workbook.Package
 
-            # Vérifier si une feuille avec ce nom existe déjà
+            # VÃ©rifier si une feuille avec ce nom existe dÃ©jÃ 
             $Worksheet = $ExcelPackage.Workbook.Worksheets | Where-Object { $_.Name -eq $Name }
 
             if ($null -eq $Worksheet) {
-                # Créer une nouvelle feuille
+                # CrÃ©er une nouvelle feuille
                 $Worksheet = $ExcelPackage.Workbook.Worksheets.Add($Name)
             }
 
-            # Générer un ID unique pour la feuille
+            # GÃ©nÃ©rer un ID unique pour la feuille
             $WorksheetId = [Guid]::NewGuid().ToString()
 
             # Stocker la feuille dans la collection
@@ -400,34 +400,34 @@ class ExcelExporter {
     .SYNOPSIS
         Obtient une feuille de calcul existante dans un classeur Excel.
     .DESCRIPTION
-        Cette méthode récupère une feuille de calcul existante dans un classeur Excel et retourne un identifiant unique.
+        Cette mÃ©thode rÃ©cupÃ¨re une feuille de calcul existante dans un classeur Excel et retourne un identifiant unique.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER Name
         Nom de la feuille de calcul.
     .EXAMPLE
-        $WorksheetId = $Exporter.GetWorksheet($WorkbookId, "Données")
+        $WorksheetId = $Exporter.GetWorksheet($WorkbookId, "DonnÃ©es")
     .OUTPUTS
         System.String - Identifiant unique de la feuille de calcul.
     #>
     [string] GetWorksheet([string]$WorkbookId, [string]$Name) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
             $ExcelPackage = $Workbook.Package
 
-            # Vérifier si une feuille avec ce nom existe
+            # VÃ©rifier si une feuille avec ce nom existe
             $Worksheet = $ExcelPackage.Workbook.Worksheets | Where-Object { $_.Name -eq $Name }
 
             if ($null -eq $Worksheet) {
-                throw "Feuille de calcul non trouvée: $Name"
+                throw "Feuille de calcul non trouvÃ©e: $Name"
             }
 
-            # Vérifier si cette feuille est déjà dans la collection
+            # VÃ©rifier si cette feuille est dÃ©jÃ  dans la collection
             foreach ($Key in $Workbook.Worksheets.Keys) {
                 if ($Workbook.Worksheets[$Key].Name -eq $Name) {
                     return $Key
@@ -440,7 +440,7 @@ class ExcelExporter {
 
             return $WorksheetId
         } catch {
-            $this._lastError = "Erreur lors de la récupération de la feuille de calcul: $_"
+            $this._lastError = "Erreur lors de la rÃ©cupÃ©ration de la feuille de calcul: $_"
             throw [ExcelWorksheetException]::new($this._lastError, $_.Exception)
         }
     }
@@ -449,7 +449,7 @@ class ExcelExporter {
     .SYNOPSIS
         Liste toutes les feuilles de calcul d'un classeur Excel.
     .DESCRIPTION
-        Cette méthode liste toutes les feuilles de calcul d'un classeur Excel.
+        Cette mÃ©thode liste toutes les feuilles de calcul d'un classeur Excel.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .EXAMPLE
@@ -459,19 +459,19 @@ class ExcelExporter {
     #>
     [hashtable] ListWorksheets([string]$WorkbookId) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
             $ExcelPackage = $Workbook.Package
 
-            # Créer une table de hachage des feuilles de calcul
+            # CrÃ©er une table de hachage des feuilles de calcul
             $Worksheets = @{}
 
             foreach ($Worksheet in $ExcelPackage.Workbook.Worksheets) {
-                # Vérifier si cette feuille est déjà dans la collection
+                # VÃ©rifier si cette feuille est dÃ©jÃ  dans la collection
                 $Found = $false
 
                 foreach ($Key in $Workbook.Worksheets.Keys) {
@@ -499,35 +499,35 @@ class ExcelExporter {
 
     #endregion
 
-    #region Méthodes de sauvegarde et fermeture
+    #region MÃ©thodes de sauvegarde et fermeture
 
     <#
     .SYNOPSIS
         Sauvegarde un classeur Excel.
     .DESCRIPTION
-        Cette méthode sauvegarde un classeur Excel.
+        Cette mÃ©thode sauvegarde un classeur Excel.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER Path
-        Chemin où le classeur sera sauvegardé (optionnel).
+        Chemin oÃ¹ le classeur sera sauvegardÃ© (optionnel).
     .EXAMPLE
         $Path = $Exporter.SaveWorkbook($WorkbookId, "C:\Temp\Rapport.xlsx")
     .OUTPUTS
-        System.String - Chemin du fichier sauvegardé.
+        System.String - Chemin du fichier sauvegardÃ©.
     #>
     [string] SaveWorkbook([string]$WorkbookId, [string]$Path = "") {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
             $ExcelPackage = $Workbook.Package
 
-            # Si un chemin est spécifié, sauvegarder à cet emplacement
+            # Si un chemin est spÃ©cifiÃ©, sauvegarder Ã  cet emplacement
             if (-not [string]::IsNullOrEmpty($Path)) {
-                # Vérifier si le répertoire parent existe
+                # VÃ©rifier si le rÃ©pertoire parent existe
                 $Directory = Split-Path -Parent $Path
                 if (-not [string]::IsNullOrEmpty($Directory) -and -not (Test-Path -Path $Directory)) {
                     New-Item -Path $Directory -ItemType Directory -Force | Out-Null
@@ -538,9 +538,9 @@ class ExcelExporter {
                 $Workbook.Path = $Path
                 return $Path
             } else {
-                # Si aucun chemin n'est spécifié, utiliser le chemin existant
+                # Si aucun chemin n'est spÃ©cifiÃ©, utiliser le chemin existant
                 if ([string]::IsNullOrEmpty($Workbook.Path)) {
-                    throw "Aucun chemin spécifié pour la sauvegarde du classeur"
+                    throw "Aucun chemin spÃ©cifiÃ© pour la sauvegarde du classeur"
                 }
 
                 # Sauvegarder le classeur
@@ -555,9 +555,9 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Ferme un classeur Excel et libère les ressources.
+        Ferme un classeur Excel et libÃ¨re les ressources.
     .DESCRIPTION
-        Cette méthode ferme un classeur Excel et libère les ressources.
+        Cette mÃ©thode ferme un classeur Excel et libÃ¨re les ressources.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .EXAMPLE
@@ -567,15 +567,15 @@ class ExcelExporter {
     #>
     [void] CloseWorkbook([string]$WorkbookId) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
             $ExcelPackage = $Workbook.Package
 
-            # Fermer le classeur et libérer les ressources
+            # Fermer le classeur et libÃ©rer les ressources
             $ExcelPackage.Dispose()
 
             # Supprimer le classeur de la collection
@@ -588,9 +588,9 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Ferme tous les classeurs Excel et libère les ressources.
+        Ferme tous les classeurs Excel et libÃ¨re les ressources.
     .DESCRIPTION
-        Cette méthode ferme tous les classeurs Excel et libère les ressources.
+        Cette mÃ©thode ferme tous les classeurs Excel et libÃ¨re les ressources.
     .EXAMPLE
         $Exporter.CloseAllWorkbooks()
     .OUTPUTS
@@ -610,27 +610,27 @@ class ExcelExporter {
 
     #endregion
 
-    #region Méthodes de manipulation des données
+    #region MÃ©thodes de manipulation des donnÃ©es
 
     <#
     .SYNOPSIS
-        Ajoute des données à une feuille de calcul.
+        Ajoute des donnÃ©es Ã  une feuille de calcul.
     .DESCRIPTION
-        Cette méthode ajoute des données à une feuille de calcul avec conversion automatique des types.
+        Cette mÃ©thode ajoute des donnÃ©es Ã  une feuille de calcul avec conversion automatique des types.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER WorksheetId
         Identifiant de la feuille de calcul.
     .PARAMETER Data
-        Données à ajouter (peut être un objet, un tableau ou une collection).
+        DonnÃ©es Ã  ajouter (peut Ãªtre un objet, un tableau ou une collection).
     .PARAMETER StartRow
-        Ligne de départ (par défaut: 1).
+        Ligne de dÃ©part (par dÃ©faut: 1).
     .PARAMETER StartColumn
-        Colonne de départ (par défaut: 1).
+        Colonne de dÃ©part (par dÃ©faut: 1).
     .PARAMETER IncludeHeaders
-        Indique si les en-têtes doivent être inclus (par défaut: $true).
+        Indique si les en-tÃªtes doivent Ãªtre inclus (par dÃ©faut: $true).
     .PARAMETER AutoFormat
-        Indique si le formatage automatique doit être appliqué (par défaut: $true).
+        Indique si le formatage automatique doit Ãªtre appliquÃ© (par dÃ©faut: $true).
     .EXAMPLE
         $Exporter.AddData($WorkbookId, $WorksheetId, $Data, 1, 1, $true, $true)
     .OUTPUTS
@@ -646,41 +646,41 @@ class ExcelExporter {
         [bool]$AutoFormat = $true
     ) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
 
-            # Vérifier si la feuille existe
+            # VÃ©rifier si la feuille existe
             if (-not $Workbook.Worksheets.ContainsKey($WorksheetId)) {
-                throw "Feuille de calcul non trouvée: $WorksheetId"
+                throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
             }
 
             $Worksheet = $Workbook.Worksheets[$WorksheetId]
             $Row = $StartRow
 
-            # Si les données sont nulles, ne rien faire
+            # Si les donnÃ©es sont nulles, ne rien faire
             if ($null -eq $Data) {
                 return
             }
 
-            # Si les données sont un tableau d'objets
+            # Si les donnÃ©es sont un tableau d'objets
             if ($Data -is [System.Collections.IEnumerable] -and $Data -isnot [string]) {
-                # Obtenir le premier élément pour déterminer les propriétés
+                # Obtenir le premier Ã©lÃ©ment pour dÃ©terminer les propriÃ©tÃ©s
                 $FirstItem = $Data | Select-Object -First 1
 
-                # Si le premier élément est un objet avec des propriétés
+                # Si le premier Ã©lÃ©ment est un objet avec des propriÃ©tÃ©s
                 if ($FirstItem -is [PSObject] -and $IncludeHeaders) {
                     $Properties = $FirstItem.PSObject.Properties.Name
                     $Column = $StartColumn
 
-                    # Ajouter les en-têtes
+                    # Ajouter les en-tÃªtes
                     foreach ($Property in $Properties) {
                         $Worksheet.Cells[$Row, $Column].Value = $Property
 
-                        # Appliquer le style d'en-tête si le formatage automatique est activé
+                        # Appliquer le style d'en-tÃªte si le formatage automatique est activÃ©
                         if ($AutoFormat) {
                             $this.ApplyHeaderStyle($Worksheet, $Row, $Column)
                         }
@@ -691,7 +691,7 @@ class ExcelExporter {
                     $Row++
                 }
 
-                # Ajouter les données
+                # Ajouter les donnÃ©es
                 foreach ($Item in $Data) {
                     $Column = $StartColumn
 
@@ -713,43 +713,43 @@ class ExcelExporter {
                     $Row++
                 }
             } else {
-                # Si les données sont une valeur simple
+                # Si les donnÃ©es sont une valeur simple
                 $this.AddCellValue($Worksheet, $Row, $StartColumn, $Data, $AutoFormat)
             }
         } catch {
-            $this._lastError = "Erreur lors de l'ajout des données: $_"
+            $this._lastError = "Erreur lors de l'ajout des donnÃ©es: $_"
             throw [ExcelDataException]::new($this._lastError, $_.Exception)
         }
     }
 
     <#
     .SYNOPSIS
-        Ajoute une valeur à une cellule avec conversion de type.
+        Ajoute une valeur Ã  une cellule avec conversion de type.
     .DESCRIPTION
-        Cette méthode ajoute une valeur à une cellule avec conversion automatique du type.
+        Cette mÃ©thode ajoute une valeur Ã  une cellule avec conversion automatique du type.
     .PARAMETER Worksheet
         Feuille de calcul.
     .PARAMETER Row
-        Numéro de ligne.
+        NumÃ©ro de ligne.
     .PARAMETER Column
-        Numéro de colonne.
+        NumÃ©ro de colonne.
     .PARAMETER Value
-        Valeur à ajouter.
+        Valeur Ã  ajouter.
     .PARAMETER AutoFormat
-        Indique si le formatage automatique doit être appliqué.
+        Indique si le formatage automatique doit Ãªtre appliquÃ©.
     .EXAMPLE
         $Exporter.AddCellValue($Worksheet, 1, 1, $Value, $true)
     .OUTPUTS
         None
     #>
     hidden [void] AddCellValue($Worksheet, [int]$Row, [int]$Column, $Value, [bool]$AutoFormat) {
-        # Déterminer le type de la valeur
+        # DÃ©terminer le type de la valeur
         $TypeInfo = $this.GetValueTypeInfo($Value)
 
-        # Ajouter la valeur à la cellule
+        # Ajouter la valeur Ã  la cellule
         $Worksheet.Cells[$Row, $Column].Value = $TypeInfo.Value
 
-        # Appliquer le format si nécessaire
+        # Appliquer le format si nÃ©cessaire
         if ($AutoFormat) {
             $this.ApplyCellFormat($Worksheet, $Row, $Column, $TypeInfo)
         }
@@ -757,11 +757,11 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Détermine le type d'une valeur et la convertit si nécessaire.
+        DÃ©termine le type d'une valeur et la convertit si nÃ©cessaire.
     .DESCRIPTION
-        Cette méthode détermine le type d'une valeur et la convertit dans le format approprié.
+        Cette mÃ©thode dÃ©termine le type d'une valeur et la convertit dans le format appropriÃ©.
     .PARAMETER Value
-        Valeur à analyser.
+        Valeur Ã  analyser.
     .EXAMPLE
         $TypeInfo = $Exporter.GetValueTypeInfo($Value)
     .OUTPUTS
@@ -773,7 +773,7 @@ class ExcelExporter {
             return $this._typeConverters["Null"].Invoke($Value, $null)
         }
 
-        # Déterminer le type de la valeur
+        # DÃ©terminer le type de la valeur
         $TypeName = switch ($Value.GetType().Name) {
             { $_ -in "Int32", "Int64", "Double", "Single", "Decimal" } { "Numeric" }
             "Boolean" { "Boolean" }
@@ -781,23 +781,23 @@ class ExcelExporter {
             default { "Text" }
         }
 
-        # Utiliser le convertisseur approprié
+        # Utiliser le convertisseur appropriÃ©
         return $this._typeConverters[$TypeName].Invoke($Value, $null)
     }
 
     <#
     .SYNOPSIS
-        Applique un format à une cellule en fonction du type de données.
+        Applique un format Ã  une cellule en fonction du type de donnÃ©es.
     .DESCRIPTION
-        Cette méthode applique un format à une cellule en fonction du type de données.
+        Cette mÃ©thode applique un format Ã  une cellule en fonction du type de donnÃ©es.
     .PARAMETER Worksheet
         Feuille de calcul.
     .PARAMETER Row
-        Numéro de ligne.
+        NumÃ©ro de ligne.
     .PARAMETER Column
-        Numéro de colonne.
+        NumÃ©ro de colonne.
     .PARAMETER TypeInfo
-        Informations sur le type de données.
+        Informations sur le type de donnÃ©es.
     .EXAMPLE
         $Exporter.ApplyCellFormat($Worksheet, 1, 1, $TypeInfo)
     .OUTPUTS
@@ -839,15 +839,15 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Applique un style d'en-tête à une cellule.
+        Applique un style d'en-tÃªte Ã  une cellule.
     .DESCRIPTION
-        Cette méthode applique un style d'en-tête à une cellule.
+        Cette mÃ©thode applique un style d'en-tÃªte Ã  une cellule.
     .PARAMETER Worksheet
         Feuille de calcul.
     .PARAMETER Row
-        Numéro de ligne.
+        NumÃ©ro de ligne.
     .PARAMETER Column
-        Numéro de colonne.
+        NumÃ©ro de colonne.
     .EXAMPLE
         $Exporter.ApplyHeaderStyle($Worksheet, 1, 1)
     .OUTPUTS
@@ -856,7 +856,7 @@ class ExcelExporter {
     hidden [void] ApplyHeaderStyle($Worksheet, [int]$Row, [int]$Column) {
         $Cell = $Worksheet.Cells[$Row, $Column]
 
-        # Appliquer le style d'en-tête
+        # Appliquer le style d'en-tÃªte
         $Cell.Style.Font.Bold = $true
         $Cell.Style.Fill.PatternType = [OfficeOpenXml.Style.ExcelFillStyle]::Solid
         $Cell.Style.Fill.BackgroundColor.SetColor([System.Drawing.Color]::FromArgb(200, 200, 200))
@@ -866,21 +866,21 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Lit des données d'une feuille de calcul.
+        Lit des donnÃ©es d'une feuille de calcul.
     .DESCRIPTION
-        Cette méthode lit des données d'une feuille de calcul et les convertit en objets PowerShell.
+        Cette mÃ©thode lit des donnÃ©es d'une feuille de calcul et les convertit en objets PowerShell.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER WorksheetId
         Identifiant de la feuille de calcul.
     .PARAMETER Range
-        Plage de cellules à lire (par exemple: "A1:C10"). Si non spécifié, lit toutes les données.
+        Plage de cellules Ã  lire (par exemple: "A1:C10"). Si non spÃ©cifiÃ©, lit toutes les donnÃ©es.
     .PARAMETER IncludeHeaders
-        Indique si la première ligne doit être considérée comme des en-têtes (par défaut: $true).
+        Indique si la premiÃ¨re ligne doit Ãªtre considÃ©rÃ©e comme des en-tÃªtes (par dÃ©faut: $true).
     .EXAMPLE
         $Data = $Exporter.ReadData($WorkbookId, $WorksheetId, "A1:C10", $true)
     .OUTPUTS
-        System.Collections.ArrayList - Données lues sous forme d'objets PowerShell.
+        System.Collections.ArrayList - DonnÃ©es lues sous forme d'objets PowerShell.
     #>
     [System.Collections.ArrayList] ReadData(
         [string]$WorkbookId,
@@ -889,21 +889,21 @@ class ExcelExporter {
         [bool]$IncludeHeaders = $true
     ) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
 
-            # Vérifier si la feuille existe
+            # VÃ©rifier si la feuille existe
             if (-not $Workbook.Worksheets.ContainsKey($WorksheetId)) {
-                throw "Feuille de calcul non trouvée: $WorksheetId"
+                throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
             }
 
             $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
-            # Déterminer la plage à lire
+            # DÃ©terminer la plage Ã  lire
             $DataRange = if ([string]::IsNullOrEmpty($Range)) {
                 $Worksheet.Dimension
             }
@@ -923,7 +923,7 @@ class ExcelExporter {
 
             $Result = New-Object System.Collections.ArrayList
 
-            # Lire les en-têtes si nécessaire
+            # Lire les en-tÃªtes si nÃ©cessaire
             $Headers = @()
 
             if ($IncludeHeaders -and $StartRow -lt $EndRow) {
@@ -935,13 +935,13 @@ class ExcelExporter {
                 $StartRow++
             }
             else {
-                # Si pas d'en-têtes, créer des noms de colonnes par défaut
+                # Si pas d'en-tÃªtes, crÃ©er des noms de colonnes par dÃ©faut
                 for ($Column = $StartColumn; $Column -le $EndColumn; $Column++) {
                     $Headers += "Column$Column"
                 }
             }
 
-            # Lire les données
+            # Lire les donnÃ©es
             for ($Row = $StartRow; $Row -le $EndRow; $Row++) {
                 $RowData = [ordered]@{}
 
@@ -949,35 +949,35 @@ class ExcelExporter {
                     $HeaderIndex = $Column - $StartColumn
                     $CellValue = $Worksheet.Cells[$Row, $Column].Value
 
-                    # Convertir la valeur si nécessaire
+                    # Convertir la valeur si nÃ©cessaire
                     $RowData[$Headers[$HeaderIndex]] = $CellValue
                 }
 
-                # Ajouter l'objet à la liste de résultats
+                # Ajouter l'objet Ã  la liste de rÃ©sultats
                 $Result.Add([PSCustomObject]$RowData) | Out-Null
             }
 
             return $Result
         }
         catch {
-            $this._lastError = "Erreur lors de la lecture des données: $_"
+            $this._lastError = "Erreur lors de la lecture des donnÃ©es: $_"
             throw [ExcelDataException]::new($this._lastError, $_.Exception)
         }
     }
 
     #endregion
 
-    #region Méthodes utilitaires
+    #region MÃ©thodes utilitaires
 
     <#
     .SYNOPSIS
-        Obtient la dernière erreur survenue.
+        Obtient la derniÃ¨re erreur survenue.
     .DESCRIPTION
-        Cette méthode retourne la dernière erreur survenue lors de l'utilisation de l'exporteur.
+        Cette mÃ©thode retourne la derniÃ¨re erreur survenue lors de l'utilisation de l'exporteur.
     .EXAMPLE
         $LastError = $Exporter.GetLastError()
     .OUTPUTS
-        System.String - Message de la dernière erreur.
+        System.String - Message de la derniÃ¨re erreur.
     #>
     [string] GetLastError() {
         return $this._lastError
@@ -985,9 +985,9 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Vérifie si un classeur existe.
+        VÃ©rifie si un classeur existe.
     .DESCRIPTION
-        Cette méthode vérifie si un classeur existe dans la collection.
+        Cette mÃ©thode vÃ©rifie si un classeur existe dans la collection.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .EXAMPLE
@@ -1001,9 +1001,9 @@ class ExcelExporter {
 
     <#
     .SYNOPSIS
-        Vérifie si une feuille de calcul existe dans un classeur.
+        VÃ©rifie si une feuille de calcul existe dans un classeur.
     .DESCRIPTION
-        Cette méthode vérifie si une feuille de calcul existe dans un classeur.
+        Cette mÃ©thode vÃ©rifie si une feuille de calcul existe dans un classeur.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER WorksheetId
@@ -1025,7 +1025,7 @@ class ExcelExporter {
     .SYNOPSIS
         Obtient le nom d'une feuille de calcul.
     .DESCRIPTION
-        Cette méthode retourne le nom d'une feuille de calcul.
+        Cette mÃ©thode retourne le nom d'une feuille de calcul.
     .PARAMETER WorkbookId
         Identifiant du classeur.
     .PARAMETER WorksheetId
@@ -1037,21 +1037,21 @@ class ExcelExporter {
     #>
     [string] GetWorksheetName([string]$WorkbookId, [string]$WorksheetId) {
         try {
-            # Vérifier si le classeur existe
+            # VÃ©rifier si le classeur existe
             if (-not $this._workbooks.ContainsKey($WorkbookId)) {
-                throw "Classeur non trouvé: $WorkbookId"
+                throw "Classeur non trouvÃ©: $WorkbookId"
             }
 
             $Workbook = $this._workbooks[$WorkbookId]
 
-            # Vérifier si la feuille existe
+            # VÃ©rifier si la feuille existe
             if (-not $Workbook.Worksheets.ContainsKey($WorksheetId)) {
-                throw "Feuille de calcul non trouvée: $WorksheetId"
+                throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
             }
 
             return $Workbook.Worksheets[$WorksheetId].Name
         } catch {
-            $this._lastError = "Erreur lors de la récupération du nom de la feuille de calcul: $_"
+            $this._lastError = "Erreur lors de la rÃ©cupÃ©ration du nom de la feuille de calcul: $_"
             throw [ExcelWorksheetException]::new($this._lastError, $_.Exception)
         }
     }
@@ -1065,9 +1065,9 @@ class ExcelExporter {
 
 <#
 .SYNOPSIS
-    Crée un nouvel exporteur Excel.
+    CrÃ©e un nouvel exporteur Excel.
 .DESCRIPTION
-    Cette fonction crée un nouvel exporteur Excel.
+    Cette fonction crÃ©e un nouvel exporteur Excel.
 .EXAMPLE
     $Exporter = New-ExcelExporter
 .OUTPUTS
@@ -1080,20 +1080,20 @@ function New-ExcelExporter {
     try {
         return [ExcelExporter]::new()
     } catch {
-        Write-Error "Erreur lors de la création de l'exporteur Excel: $_"
+        Write-Error "Erreur lors de la crÃ©ation de l'exporteur Excel: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Crée un nouveau classeur Excel.
+    CrÃ©e un nouveau classeur Excel.
 .DESCRIPTION
-    Cette fonction crée un nouveau classeur Excel.
+    Cette fonction crÃ©e un nouveau classeur Excel.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER Path
-    Chemin où le classeur sera sauvegardé (optionnel).
+    Chemin oÃ¹ le classeur sera sauvegardÃ© (optionnel).
 .EXAMPLE
     $WorkbookId = New-ExcelWorkbook -Exporter $Exporter -Path "C:\Temp\Rapport.xlsx"
 .OUTPUTS
@@ -1112,24 +1112,24 @@ function New-ExcelWorkbook {
     try {
         return $Exporter.CreateWorkbook($Path)
     } catch {
-        Write-Error "Erreur lors de la création du classeur Excel: $_"
+        Write-Error "Erreur lors de la crÃ©ation du classeur Excel: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Ajoute une feuille de calcul à un classeur Excel.
+    Ajoute une feuille de calcul Ã  un classeur Excel.
 .DESCRIPTION
-    Cette fonction ajoute une feuille de calcul à un classeur Excel.
+    Cette fonction ajoute une feuille de calcul Ã  un classeur Excel.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .PARAMETER Name
     Nom de la feuille de calcul.
 .EXAMPLE
-    $WorksheetId = Add-ExcelWorksheet -Exporter $Exporter -WorkbookId $WorkbookId -Name "Données"
+    $WorksheetId = Add-ExcelWorksheet -Exporter $Exporter -WorkbookId $WorkbookId -Name "DonnÃ©es"
 .OUTPUTS
     System.String - Identifiant unique de la feuille de calcul.
 #>
@@ -1160,15 +1160,15 @@ function Add-ExcelWorksheet {
 .DESCRIPTION
     Cette fonction sauvegarde un classeur Excel.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .PARAMETER Path
-    Chemin où le classeur sera sauvegardé (optionnel).
+    Chemin oÃ¹ le classeur sera sauvegardÃ© (optionnel).
 .EXAMPLE
     $Path = Save-ExcelWorkbook -Exporter $Exporter -WorkbookId $WorkbookId -Path "C:\Temp\Rapport.xlsx"
 .OUTPUTS
-    System.String - Chemin du fichier sauvegardé.
+    System.String - Chemin du fichier sauvegardÃ©.
 #>
 function Save-ExcelWorkbook {
     [CmdletBinding()]
@@ -1193,11 +1193,11 @@ function Save-ExcelWorkbook {
 
 <#
 .SYNOPSIS
-    Ferme un classeur Excel et libère les ressources.
+    Ferme un classeur Excel et libÃ¨re les ressources.
 .DESCRIPTION
-    Cette fonction ferme un classeur Excel et libère les ressources.
+    Cette fonction ferme un classeur Excel et libÃ¨re les ressources.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .EXAMPLE
@@ -1228,7 +1228,7 @@ function Close-ExcelWorkbook {
 .DESCRIPTION
     Cette fonction liste toutes les feuilles de calcul d'un classeur Excel.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .EXAMPLE
@@ -1258,25 +1258,25 @@ function Get-ExcelWorksheets {
 
 <#
 .SYNOPSIS
-    Ajoute des données à une feuille de calcul Excel.
+    Ajoute des donnÃ©es Ã  une feuille de calcul Excel.
 .DESCRIPTION
-    Cette fonction ajoute des données à une feuille de calcul Excel.
+    Cette fonction ajoute des donnÃ©es Ã  une feuille de calcul Excel.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .PARAMETER WorksheetId
     Identifiant de la feuille de calcul.
 .PARAMETER Data
-    Données à ajouter (peut être un objet, un tableau ou une collection).
+    DonnÃ©es Ã  ajouter (peut Ãªtre un objet, un tableau ou une collection).
 .PARAMETER StartRow
-    Ligne de départ (par défaut: 1).
+    Ligne de dÃ©part (par dÃ©faut: 1).
 .PARAMETER StartColumn
-    Colonne de départ (par défaut: 1).
+    Colonne de dÃ©part (par dÃ©faut: 1).
 .PARAMETER IncludeHeaders
-    Indique si les en-têtes doivent être inclus (par défaut: $true).
+    Indique si les en-tÃªtes doivent Ãªtre inclus (par dÃ©faut: $true).
 .PARAMETER AutoFormat
-    Indique si le formatage automatique doit être appliqué (par défaut: $true).
+    Indique si le formatage automatique doit Ãªtre appliquÃ© (par dÃ©faut: $true).
 .EXAMPLE
     Add-ExcelData -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -Data $Data
 .OUTPUTS
@@ -1314,29 +1314,29 @@ function Add-ExcelData {
         $Exporter.AddData($WorkbookId, $WorksheetId, $Data, $StartRow, $StartColumn, $IncludeHeaders, $AutoFormat)
     }
     catch {
-        Write-Error "Erreur lors de l'ajout des données: $_"
+        Write-Error "Erreur lors de l'ajout des donnÃ©es: $_"
     }
 }
 
 <#
 .SYNOPSIS
-    Lit des données d'une feuille de calcul Excel.
+    Lit des donnÃ©es d'une feuille de calcul Excel.
 .DESCRIPTION
-    Cette fonction lit des données d'une feuille de calcul Excel et les convertit en objets PowerShell.
+    Cette fonction lit des donnÃ©es d'une feuille de calcul Excel et les convertit en objets PowerShell.
 .PARAMETER Exporter
-    Exporteur Excel à utiliser.
+    Exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     Identifiant du classeur.
 .PARAMETER WorksheetId
     Identifiant de la feuille de calcul.
 .PARAMETER Range
-    Plage de cellules à lire (par exemple: "A1:C10"). Si non spécifié, lit toutes les données.
+    Plage de cellules Ã  lire (par exemple: "A1:C10"). Si non spÃ©cifiÃ©, lit toutes les donnÃ©es.
 .PARAMETER IncludeHeaders
-    Indique si la première ligne doit être considérée comme des en-têtes (par défaut: $true).
+    Indique si la premiÃ¨re ligne doit Ãªtre considÃ©rÃ©e comme des en-tÃªtes (par dÃ©faut: $true).
 .EXAMPLE
     $Data = Get-ExcelData -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId
 .OUTPUTS
-    System.Collections.ArrayList - Données lues sous forme d'objets PowerShell.
+    System.Collections.ArrayList - DonnÃ©es lues sous forme d'objets PowerShell.
 #>
 function Get-ExcelData {
     [CmdletBinding()]
@@ -1361,7 +1361,7 @@ function Get-ExcelData {
         return $Exporter.ReadData($WorkbookId, $WorksheetId, $Range, $IncludeHeaders)
     }
     catch {
-        Write-Error "Erreur lors de la lecture des données: $_"
+        Write-Error "Erreur lors de la lecture des donnÃ©es: $_"
         return $null
     }
 }

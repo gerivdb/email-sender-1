@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Vérifie la couverture de tests pour tous les modes.
+    VÃ©rifie la couverture de tests pour tous les modes.
 
 .DESCRIPTION
-    Ce script vérifie que tous les modes ont des tests associés et que ces tests
-    couvrent correctement les fonctionnalités des modes. Il génère un rapport
+    Ce script vÃ©rifie que tous les modes ont des tests associÃ©s et que ces tests
+    couvrent correctement les fonctionnalitÃ©s des modes. Il gÃ©nÃ¨re un rapport
     de couverture pour chaque mode et un rapport global.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les rapports de couverture.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les rapports de couverture.
 
 .PARAMETER MinimumCoverage
-    Pourcentage minimum de couverture requis pour considérer qu'un mode est correctement testé.
+    Pourcentage minimum de couverture requis pour considÃ©rer qu'un mode est correctement testÃ©.
 
 .PARAMETER ShowResults
-    Indique si les résultats de la vérification doivent être affichés dans la console.
+    Indique si les rÃ©sultats de la vÃ©rification doivent Ãªtre affichÃ©s dans la console.
 
 .PARAMETER GenerateReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     .\Test-ModeCoverage.ps1 -OutputPath "coverage-reports" -MinimumCoverage 80 -ShowResults $true -GenerateReport $true
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 [CmdletBinding()]
@@ -43,26 +43,26 @@ param(
     [bool]$GenerateReport = $true
 )
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
         Import-Module Pester
-        Write-Host "Module Pester installé avec succès." -ForegroundColor Green
+        Write-Host "Module Pester installÃ© avec succÃ¨s." -ForegroundColor Green
     } catch {
         Write-Error "Impossible d'installer le module Pester : $_"
         exit 1
     }
 } else {
     Import-Module Pester
-    Write-Host "Module Pester déjà installé." -ForegroundColor Green
+    Write-Host "Module Pester dÃ©jÃ  installÃ©." -ForegroundColor Green
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé : $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath" -ForegroundColor Green
 }
 
 # Chemin vers les scripts et les tests
@@ -74,17 +74,17 @@ $projectRoot = Split-Path -Parent (Split-Path -Parent $modulePath)
 $modeScripts = Get-ChildItem -Path $projectRoot -Filter "*-mode.ps1"
 $modeTests = Get-ChildItem -Path $scriptPath -Filter "Test-*Mode.ps1" | Where-Object { $_.Name -ne "Test-ModeCoverage.ps1" -and $_.Name -ne "Test-ModesIntegration.ps1" -and $_.Name -ne "Test-ModesDataSharing.ps1" }
 
-Write-Host "Scripts de mode trouvés : $($modeScripts.Count)" -ForegroundColor Green
+Write-Host "Scripts de mode trouvÃ©s : $($modeScripts.Count)" -ForegroundColor Green
 foreach ($modeScript in $modeScripts) {
     Write-Host "  - $($modeScript.Name)" -ForegroundColor Gray
 }
 
-Write-Host "Tests de mode trouvés : $($modeTests.Count)" -ForegroundColor Green
+Write-Host "Tests de mode trouvÃ©s : $($modeTests.Count)" -ForegroundColor Green
 foreach ($modeTest in $modeTests) {
     Write-Host "  - $($modeTest.Name)" -ForegroundColor Gray
 }
 
-# Vérifier que chaque script de mode a un test associé
+# VÃ©rifier que chaque script de mode a un test associÃ©
 $missingTests = @()
 foreach ($modeScript in $modeScripts) {
     $modeName = $modeScript.BaseName -replace "-mode", ""
@@ -96,10 +96,10 @@ foreach ($modeScript in $modeScripts) {
 }
 
 if ($missingTests.Count -gt 0) {
-    Write-Warning "Les scripts de mode suivants n'ont pas de test associé : $($missingTests -join ', ')"
+    Write-Warning "Les scripts de mode suivants n'ont pas de test associÃ© : $($missingTests -join ', ')"
 }
 
-# Vérifier la couverture de tests pour chaque mode
+# VÃ©rifier la couverture de tests pour chaque mode
 $coverageResults = @()
 
 foreach ($modeTest in $modeTests) {
@@ -108,7 +108,7 @@ foreach ($modeTest in $modeTests) {
     $modeScriptPath = Join-Path -Path $projectRoot -ChildPath $modeScriptName
     
     if (Test-Path -Path $modeScriptPath) {
-        Write-Host "Vérification de la couverture pour le mode $modeName..." -ForegroundColor Yellow
+        Write-Host "VÃ©rification de la couverture pour le mode $modeName..." -ForegroundColor Yellow
         
         # Configuration des tests
         $pesterConfig = New-PesterConfiguration
@@ -120,7 +120,7 @@ foreach ($modeTest in $modeTests) {
         $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "coverage-$($modeName.ToLower()).xml"
         $pesterConfig.CodeCoverage.OutputFormat = 'JaCoCo'
         
-        # Exécuter les tests
+        # ExÃ©cuter les tests
         $testResults = Invoke-Pester -Configuration $pesterConfig
         
         # Calculer la couverture
@@ -129,7 +129,7 @@ foreach ($modeTest in $modeTests) {
             $coverage = [Math]::Round(($testResults.CodeCoverage.CommandsExecutedCount / $testResults.CodeCoverage.CommandsAnalyzedCount) * 100)
         }
         
-        # Ajouter les résultats
+        # Ajouter les rÃ©sultats
         $coverageResults += [PSCustomObject]@{
             Mode = $modeName
             Script = $modeScriptName
@@ -148,9 +148,9 @@ foreach ($modeTest in $modeTests) {
     }
 }
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($ShowResults) {
-    Write-Host "`nRésultats de la couverture de tests :" -ForegroundColor Yellow
+    Write-Host "`nRÃ©sultats de la couverture de tests :" -ForegroundColor Yellow
     
     foreach ($result in $coverageResults) {
         $statusColor = if ($result.Status -eq "OK") { "Green" } else { "Red" }
@@ -160,30 +160,30 @@ if ($ShowResults) {
         Write-Host "  - Test : $($result.Test)" -ForegroundColor Gray
         Write-Host "  - Couverture : $($result.Coverage)%" -ForegroundColor $(if ($result.Coverage -ge $MinimumCoverage) { "Green" } else { "Red" })
         Write-Host "  - Status : $($result.Status)" -ForegroundColor $statusColor
-        Write-Host "  - Commandes analysées : $($result.CommandsAnalyzed)" -ForegroundColor Gray
-        Write-Host "  - Commandes exécutées : $($result.CommandsExecuted)" -ForegroundColor Gray
-        Write-Host "  - Tests exécutés : $($result.TestsTotal)" -ForegroundColor Gray
-        Write-Host "  - Tests réussis : $($result.TestsPassed)" -ForegroundColor $(if ($result.TestsPassed -eq $result.TestsTotal) { "Green" } else { "Yellow" })
-        Write-Host "  - Tests échoués : $($result.TestsFailed)" -ForegroundColor $(if ($result.TestsFailed -eq 0) { "Green" } else { "Red" })
-        Write-Host "  - Tests ignorés : $($result.TestsSkipped)" -ForegroundColor $(if ($result.TestsSkipped -eq 0) { "Green" } else { "Yellow" })
+        Write-Host "  - Commandes analysÃ©es : $($result.CommandsAnalyzed)" -ForegroundColor Gray
+        Write-Host "  - Commandes exÃ©cutÃ©es : $($result.CommandsExecuted)" -ForegroundColor Gray
+        Write-Host "  - Tests exÃ©cutÃ©s : $($result.TestsTotal)" -ForegroundColor Gray
+        Write-Host "  - Tests rÃ©ussis : $($result.TestsPassed)" -ForegroundColor $(if ($result.TestsPassed -eq $result.TestsTotal) { "Green" } else { "Yellow" })
+        Write-Host "  - Tests Ã©chouÃ©s : $($result.TestsFailed)" -ForegroundColor $(if ($result.TestsFailed -eq 0) { "Green" } else { "Red" })
+        Write-Host "  - Tests ignorÃ©s : $($result.TestsSkipped)" -ForegroundColor $(if ($result.TestsSkipped -eq 0) { "Green" } else { "Yellow" })
         Write-Host ""
     }
     
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $averageCoverage = if ($coverageResults.Count -gt 0) { [Math]::Round(($coverageResults | Measure-Object -Property Coverage -Average).Average) } else { 0 }
     $modesWithInsufficientCoverage = $coverageResults | Where-Object { $_.Status -eq "Insuffisant" } | Select-Object -ExpandProperty Mode
     
-    Write-Host "Résumé :" -ForegroundColor Yellow
-    Write-Host "  - Nombre de modes testés : $($coverageResults.Count)" -ForegroundColor Gray
+    Write-Host "RÃ©sumÃ© :" -ForegroundColor Yellow
+    Write-Host "  - Nombre de modes testÃ©s : $($coverageResults.Count)" -ForegroundColor Gray
     Write-Host "  - Couverture moyenne : $averageCoverage%" -ForegroundColor $(if ($averageCoverage -ge $MinimumCoverage) { "Green" } else { "Red" })
     Write-Host "  - Modes avec une couverture insuffisante : $($modesWithInsufficientCoverage -join ', ')" -ForegroundColor $(if ($modesWithInsufficientCoverage.Count -eq 0) { "Green" } else { "Red" })
 }
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 if ($GenerateReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Yellow
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Yellow
     
-    # Créer le rapport HTML
+    # CrÃ©er le rapport HTML
     $reportPath = Join-Path -Path $OutputPath -ChildPath "coverage-report.html"
     
     $htmlReport = @"
@@ -253,15 +253,15 @@ if ($GenerateReport) {
 <body>
     <h1>Rapport de couverture de tests - Modes RoadmapParser</h1>
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Date d'exécution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-        <p>Nombre de modes testés : <strong>$($coverageResults.Count)</strong></p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Date d'exÃ©cution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>Nombre de modes testÃ©s : <strong>$($coverageResults.Count)</strong></p>
         <p>Couverture moyenne : <span class="$(if ($averageCoverage -ge $MinimumCoverage) { "success" } else { "danger" })"><strong>$averageCoverage%</strong></span></p>
         <p>Seuil minimum de couverture : <strong>$MinimumCoverage%</strong></p>
         <p>Modes avec une couverture insuffisante : <span class="$(if ($modesWithInsufficientCoverage.Count -eq 0) { "success" } else { "danger" })"><strong>$($modesWithInsufficientCoverage -join ', ')</strong></span></p>
     </div>
     
-    <h2>Détails de la couverture par mode</h2>
+    <h2>DÃ©tails de la couverture par mode</h2>
     <table>
         <tr>
             <th>Mode</th>
@@ -269,12 +269,12 @@ if ($GenerateReport) {
             <th>Test</th>
             <th>Couverture</th>
             <th>Status</th>
-            <th>Commandes analysées</th>
-            <th>Commandes exécutées</th>
-            <th>Tests exécutés</th>
-            <th>Tests réussis</th>
-            <th>Tests échoués</th>
-            <th>Tests ignorés</th>
+            <th>Commandes analysÃ©es</th>
+            <th>Commandes exÃ©cutÃ©es</th>
+            <th>Tests exÃ©cutÃ©s</th>
+            <th>Tests rÃ©ussis</th>
+            <th>Tests Ã©chouÃ©s</th>
+            <th>Tests ignorÃ©s</th>
         </tr>
 "@
 
@@ -351,7 +351,7 @@ if ($GenerateReport) {
 "@
     } else {
         $htmlReport += @"
-    <p class="success">Tous les modes ont des tests associés.</p>
+    <p class="success">Tous les modes ont des tests associÃ©s.</p>
 "@
     }
 
@@ -361,8 +361,8 @@ if ($GenerateReport) {
 "@
 
     $htmlReport | Set-Content -Path $reportPath -Encoding UTF8
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $coverageResults

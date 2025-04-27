@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests simplifiés pour le système d'inventaire et de classification des scripts
+    Tests simplifiÃ©s pour le systÃ¨me d'inventaire et de classification des scripts
 .DESCRIPTION
-    Ce script exécute des tests simplifiés pour vérifier le bon fonctionnement
-    du système d'inventaire et de classification des scripts.
+    Ce script exÃ©cute des tests simplifiÃ©s pour vÃ©rifier le bon fonctionnement
+    du systÃ¨me d'inventaire et de classification des scripts.
 .EXAMPLE
     .\Test-ScriptInventoryBasic2.ps1
 .NOTES
@@ -14,18 +14,18 @@
 [CmdletBinding()]
 param()
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ScriptInventoryTest_$(Get-Random)"
 New-Item -ItemType Directory -Path $testDir -Force | Out-Null
 
 Write-Host "Preparation des tests..." -ForegroundColor Cyan
 Write-Host "Repertoire de test: $testDir" -ForegroundColor White
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $testFiles = @{
     "Test-Core.ps1"       = @"
 <#
@@ -77,14 +77,14 @@ function Test-Duplicate {
 "@
 }
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 foreach ($file in $testFiles.Keys) {
     $filePath = Join-Path -Path $testDir -ChildPath $file
     Set-Content -Path $filePath -Value $testFiles[$file]
     Write-Host "Fichier cree: $filePath" -ForegroundColor Green
 }
 
-# Définir la taxonomie et les règles de classification pour les tests
+# DÃ©finir la taxonomie et les rÃ¨gles de classification pour les tests
 $taxonomy = @{
     "Core"    = @{
         Description   = "Scripts fondamentaux du projet"
@@ -111,7 +111,7 @@ $classificationRules = @{
     }
 }
 
-# Exécuter les tests manuellement
+# ExÃ©cuter les tests manuellement
 Write-Host "`nTest 1: Scan du repertoire" -ForegroundColor Cyan
 $scripts = Get-ScriptInventory -Path $testDir -ForceRescan
 Write-Host "Nombre de scripts trouves: $($scripts.Count)" -ForegroundColor White
@@ -182,5 +182,5 @@ Write-Host "`nNettoyage des fichiers de test..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force
 Write-Host "Repertoire de test supprime: $testDir" -ForegroundColor Green
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Host "`nTests termines." -ForegroundColor Green

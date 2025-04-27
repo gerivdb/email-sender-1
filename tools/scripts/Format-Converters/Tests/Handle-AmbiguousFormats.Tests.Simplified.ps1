@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Handle-AmbiguousFormats.
+    Tests unitaires simplifiÃ©s pour la fonction Handle-AmbiguousFormats.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Handle-AmbiguousFormats du module Format-Converters.
 
 .NOTES
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -25,30 +25,30 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
 # Tests Pester
 Describe "Fonction Handle-AmbiguousFormats (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "AmbiguousFormatsTests_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer un fichier test.txt pour les tests
+        # CrÃ©er un fichier test.txt pour les tests
         $script:testTxtPath = Join-Path -Path $script:testTempDir -ChildPath "test.txt"
         "Test content for tests" | Set-Content -Path $script:testTxtPath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:testTxtPath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:testTxtPath"
 
-        # Vérifier que le fichier de test existe
+        # VÃ©rifier que le fichier de test existe
         if (-not (Test-Path -Path $script:testTxtPath)) {
             throw "Le fichier de test $script:testTxtPath n'existe pas."
         }
 
         Write-Verbose "Tous les fichiers de test existent."
 
-        # Créer une fonction simplifiée Resolve-AmbiguousFormats pour les tests
-        # (Utilisation d'un verbe approuvé 'Resolve' au lieu de 'Handle')
+        # CrÃ©er une fonction simplifiÃ©e Resolve-AmbiguousFormats pour les tests
+        # (Utilisation d'un verbe approuvÃ© 'Resolve' au lieu de 'Handle')
         function global:Resolve-AmbiguousFormats {
             [CmdletBinding()]
             param (
@@ -62,12 +62,12 @@ Describe "Fonction Handle-AmbiguousFormats (Simplified)" {
                 [switch]$ShowDetails
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Simuler un résultat de détection
+            # Simuler un rÃ©sultat de dÃ©tection
             $detectionResult = [PSCustomObject]@{
                 FilePath = $FilePath
                 DetectedFormat = "JSON"
@@ -82,16 +82,16 @@ Describe "Fonction Handle-AmbiguousFormats (Simplified)" {
         }
     }
 
-    Context "Détection de cas ambigus" {
-        It "Détecte correctement un cas ambigu" {
+    Context "DÃ©tection de cas ambigus" {
+        It "DÃ©tecte correctement un cas ambigu" {
             $result = Resolve-AmbiguousFormats -FilePath $script:testTxtPath -ShowDetails
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "JSON"
         }
     }
 
-    Context "Résolution automatique des cas ambigus" {
-        It "Résout automatiquement un cas ambigu avec l'option -AutoResolve" {
+    Context "RÃ©solution automatique des cas ambigus" {
+        It "RÃ©sout automatiquement un cas ambigu avec l'option -AutoResolve" {
             $result = Resolve-AmbiguousFormats -FilePath $script:testTxtPath -AutoResolve -ShowDetails
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "JSON"
@@ -99,14 +99,14 @@ Describe "Fonction Handle-AmbiguousFormats (Simplified)" {
     }
 
     Context "Gestion des erreurs" {
-        It "Lève une erreur si le fichier n'existe pas" {
+        It "LÃ¨ve une erreur si le fichier n'existe pas" {
             { Resolve-AmbiguousFormats -FilePath "fichier_inexistant.txt" } | Should -Throw
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

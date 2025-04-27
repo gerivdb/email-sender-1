@@ -1,6 +1,6 @@
-# Script d'intégration avec n8n
+﻿# Script d'intÃ©gration avec n8n
 
-# Configuration de l'intégration n8n
+# Configuration de l'intÃ©gration n8n
 $script:N8nConfig = @{
     # URL de base de l'API n8n
     BaseUrl = "http://localhost:5678"
@@ -43,17 +43,17 @@ function Initialize-N8nIntegration {
         [string]$AuthType = "None"
     )
     
-    # Charger la configuration depuis un fichier si spécifié
+    # Charger la configuration depuis un fichier si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($ConfigPath) -and (Test-Path -Path $ConfigPath)) {
         try {
             $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
             
-            # Mettre à jour l'URL de base
+            # Mettre Ã  jour l'URL de base
             if ($config.BaseUrl) {
                 $script:N8nConfig.BaseUrl = $config.BaseUrl
             }
             
-            # Mettre à jour l'authentification
+            # Mettre Ã  jour l'authentification
             if ($config.Auth) {
                 $script:N8nConfig.Auth.Type = $config.Auth.Type
                 $script:N8nConfig.Auth.Username = $config.Auth.Username
@@ -63,54 +63,54 @@ function Initialize-N8nIntegration {
                 $script:N8nConfig.Auth.OAuthToken = $config.Auth.OAuthToken
             }
             
-            # Mettre à jour les workflows
+            # Mettre Ã  jour les workflows
             if ($config.Workflows) {
                 $script:N8nConfig.Workflows.ErrorNotification = $config.Workflows.ErrorNotification
                 $script:N8nConfig.Workflows.ErrorAnalysis = $config.Workflows.ErrorAnalysis
                 $script:N8nConfig.Workflows.ErrorReporting = $config.Workflows.ErrorReporting
             }
             
-            # Mettre à jour les webhooks
+            # Mettre Ã  jour les webhooks
             if ($config.Webhooks) {
                 $script:N8nConfig.Webhooks.ErrorReport = $config.Webhooks.ErrorReport
                 $script:N8nConfig.Webhooks.ErrorAlert = $config.Webhooks.ErrorAlert
             }
             
-            Write-Verbose "Configuration n8n chargée depuis $ConfigPath"
+            Write-Verbose "Configuration n8n chargÃ©e depuis $ConfigPath"
         }
         catch {
             Write-Error "Erreur lors du chargement de la configuration n8n: $_"
         }
     }
     
-    # Mettre à jour l'URL de base si spécifiée
+    # Mettre Ã  jour l'URL de base si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($BaseUrl)) {
         $script:N8nConfig.BaseUrl = $BaseUrl
     }
     
-    # Mettre à jour le type d'authentification si spécifié
+    # Mettre Ã  jour le type d'authentification si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($AuthType)) {
         $script:N8nConfig.Auth.Type = $AuthType
     }
     
-    # Tester la connexion à n8n
+    # Tester la connexion Ã  n8n
     $connected = Test-N8nConnection
     
     if ($connected) {
-        Write-Verbose "Connexion à n8n établie avec succès"
+        Write-Verbose "Connexion Ã  n8n Ã©tablie avec succÃ¨s"
         
-        # Récupérer les workflows disponibles
+        # RÃ©cupÃ©rer les workflows disponibles
         $workflows = Get-N8nWorkflows
         
         if ($workflows) {
-            Write-Verbose "Workflows n8n récupérés avec succès"
+            Write-Verbose "Workflows n8n rÃ©cupÃ©rÃ©s avec succÃ¨s"
         }
     }
     
     return $script:N8nConfig
 }
 
-# Fonction pour tester la connexion à n8n
+# Fonction pour tester la connexion Ã  n8n
 function Test-N8nConnection {
     try {
         $response = Invoke-N8nApiRequest -Endpoint "/healthz"
@@ -119,17 +119,17 @@ function Test-N8nConnection {
             return $true
         }
         else {
-            Write-Warning "La connexion à n8n a échoué avec le code d'état $($response.StatusCode)"
+            Write-Warning "La connexion Ã  n8n a Ã©chouÃ© avec le code d'Ã©tat $($response.StatusCode)"
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors du test de connexion à n8n: $_"
+        Write-Error "Erreur lors du test de connexion Ã  n8n: $_"
         return $false
     }
 }
 
-# Fonction pour effectuer une requête à l'API n8n
+# Fonction pour effectuer une requÃªte Ã  l'API n8n
 function Invoke-N8nApiRequest {
     param (
         [Parameter(Mandatory = $true)]
@@ -146,10 +146,10 @@ function Invoke-N8nApiRequest {
         [hashtable]$Headers = @{}
     )
     
-    # Construire l'URL complète
+    # Construire l'URL complÃ¨te
     $url = "$($script:N8nConfig.BaseUrl)$Endpoint"
     
-    # Ajouter les en-têtes d'authentification
+    # Ajouter les en-tÃªtes d'authentification
     $authHeaders = @{}
     
     switch ($script:N8nConfig.Auth.Type) {
@@ -165,10 +165,10 @@ function Invoke-N8nApiRequest {
         }
     }
     
-    # Fusionner les en-têtes
+    # Fusionner les en-tÃªtes
     $allHeaders = $Headers + $authHeaders
     
-    # Paramètres de la requête
+    # ParamÃ¨tres de la requÃªte
     $params = @{
         Uri = $url
         Method = $Method
@@ -176,12 +176,12 @@ function Invoke-N8nApiRequest {
         ContentType = "application/json"
     }
     
-    # Ajouter le corps si spécifié
+    # Ajouter le corps si spÃ©cifiÃ©
     if ($null -ne $Body) {
         $params.Body = if ($Body -is [string]) { $Body } else { $Body | ConvertTo-Json -Depth 10 }
     }
     
-    # Effectuer la requête
+    # Effectuer la requÃªte
     try {
         $response = Invoke-RestMethod @params -ErrorAction Stop
         return $response
@@ -190,24 +190,24 @@ function Invoke-N8nApiRequest {
         $statusCode = $_.Exception.Response.StatusCode.value__
         $statusDescription = $_.Exception.Response.StatusDescription
         
-        Write-Error "Erreur lors de la requête à l'API n8n: $Method $url - Code d'état: $statusCode - Description: $statusDescription"
+        Write-Error "Erreur lors de la requÃªte Ã  l'API n8n: $Method $url - Code d'Ã©tat: $statusCode - Description: $statusDescription"
         throw $_
     }
 }
 
-# Fonction pour récupérer les workflows n8n
+# Fonction pour rÃ©cupÃ©rer les workflows n8n
 function Get-N8nWorkflows {
     try {
         $response = Invoke-N8nApiRequest -Endpoint "/workflows"
         return $response
     }
     catch {
-        Write-Error "Erreur lors de la récupération des workflows n8n: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des workflows n8n: $_"
         return $null
     }
 }
 
-# Fonction pour exécuter un workflow n8n
+# Fonction pour exÃ©cuter un workflow n8n
 function Invoke-N8nWorkflow {
     param (
         [Parameter(Mandatory = $true)]
@@ -223,12 +223,12 @@ function Invoke-N8nWorkflow {
         return $response
     }
     catch {
-        Write-Error "Erreur lors de l'exécution du workflow n8n: $_"
+        Write-Error "Erreur lors de l'exÃ©cution du workflow n8n: $_"
         return $null
     }
 }
 
-# Fonction pour envoyer un rapport d'erreur à n8n
+# Fonction pour envoyer un rapport d'erreur Ã  n8n
 function Send-ErrorReportToN8n {
     param (
         [Parameter(Mandatory = $true)]
@@ -241,13 +241,13 @@ function Send-ErrorReportToN8n {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si un webhook ou un workflow est configuré
+    # VÃ©rifier si un webhook ou un workflow est configurÃ©
     if ([string]::IsNullOrEmpty($script:N8nConfig.Webhooks.ErrorReport) -and [string]::IsNullOrEmpty($script:N8nConfig.Workflows.ErrorReporting)) {
-        Write-Error "Aucun webhook ou workflow n'est configuré pour les rapports d'erreur"
+        Write-Error "Aucun webhook ou workflow n'est configurÃ© pour les rapports d'erreur"
         return $false
     }
     
-    # Préparer les données
+    # PrÃ©parer les donnÃ©es
     $data = @{
         errors = $Errors
         source = $Source
@@ -255,7 +255,7 @@ function Send-ErrorReportToN8n {
         metadata = $Metadata
     }
     
-    # Envoyer au webhook si configuré
+    # Envoyer au webhook si configurÃ©
     if (-not [string]::IsNullOrEmpty($script:N8nConfig.Webhooks.ErrorReport)) {
         try {
             $params = @{
@@ -266,7 +266,7 @@ function Send-ErrorReportToN8n {
             }
             
             $response = Invoke-RestMethod @params
-            Write-Verbose "Rapport d'erreur envoyé au webhook n8n"
+            Write-Verbose "Rapport d'erreur envoyÃ© au webhook n8n"
             return $true
         }
         catch {
@@ -280,13 +280,13 @@ function Send-ErrorReportToN8n {
             return $false
         }
     }
-    # Sinon, exécuter le workflow
+    # Sinon, exÃ©cuter le workflow
     else {
         return Invoke-N8nWorkflow -WorkflowId $script:N8nConfig.Workflows.ErrorReporting -Data $data
     }
 }
 
-# Fonction pour envoyer une alerte d'erreur à n8n
+# Fonction pour envoyer une alerte d'erreur Ã  n8n
 function Send-ErrorAlertToN8n {
     param (
         [Parameter(Mandatory = $true)]
@@ -299,13 +299,13 @@ function Send-ErrorAlertToN8n {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si un webhook ou un workflow est configuré
+    # VÃ©rifier si un webhook ou un workflow est configurÃ©
     if ([string]::IsNullOrEmpty($script:N8nConfig.Webhooks.ErrorAlert) -and [string]::IsNullOrEmpty($script:N8nConfig.Workflows.ErrorNotification)) {
-        Write-Error "Aucun webhook ou workflow n'est configuré pour les alertes d'erreur"
+        Write-Error "Aucun webhook ou workflow n'est configurÃ© pour les alertes d'erreur"
         return $false
     }
     
-    # Préparer les données
+    # PrÃ©parer les donnÃ©es
     $data = @{
         alerts = $Alerts
         source = $Source
@@ -313,7 +313,7 @@ function Send-ErrorAlertToN8n {
         metadata = $Metadata
     }
     
-    # Envoyer au webhook si configuré
+    # Envoyer au webhook si configurÃ©
     if (-not [string]::IsNullOrEmpty($script:N8nConfig.Webhooks.ErrorAlert)) {
         try {
             $params = @{
@@ -324,7 +324,7 @@ function Send-ErrorAlertToN8n {
             }
             
             $response = Invoke-RestMethod @params
-            Write-Verbose "Alerte d'erreur envoyée au webhook n8n"
+            Write-Verbose "Alerte d'erreur envoyÃ©e au webhook n8n"
             return $true
         }
         catch {
@@ -338,7 +338,7 @@ function Send-ErrorAlertToN8n {
             return $false
         }
     }
-    # Sinon, exécuter le workflow
+    # Sinon, exÃ©cuter le workflow
     else {
         return Invoke-N8nWorkflow -WorkflowId $script:N8nConfig.Workflows.ErrorNotification -Data $data
     }

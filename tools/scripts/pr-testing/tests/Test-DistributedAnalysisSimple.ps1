@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour le script Start-DistributedAnalysis.ps1.
+    Tests unitaires simplifiÃ©s pour le script Start-DistributedAnalysis.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement
     du script Start-DistributedAnalysis.ps1.
 
 .EXAMPLE
@@ -19,18 +19,18 @@
 [CmdletBinding()]
 param()
 
-# Fonction pour créer un environnement de test
+# Fonction pour crÃ©er un environnement de test
 function Initialize-TestEnvironment {
     param(
         [string]$TestDir = "$env:TEMP\DistributedAnalysisTest_$(Get-Random)"
     )
     
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDir)) {
         New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
     }
     
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $testFiles = @(
         @{
             Path = "PowerShell\test1.ps1"
@@ -64,7 +64,7 @@ def test_function(param1):
     # Erreur: Utilisation de eval()
     result = eval("2 + 2")
     
-    # Erreur: Exception générique
+    # Erreur: Exception gÃ©nÃ©rique
     try:
         x = 1 / 0
     except:
@@ -105,7 +105,7 @@ function Test-SplitFilesIntoChunks {
         [int]$ChunkSize
     )
     
-    # Définir la fonction Split-FilesIntoChunks
+    # DÃ©finir la fonction Split-FilesIntoChunks
     function Split-FilesIntoChunks {
         param([string[]]$FilePaths, [int]$ChunkSize)
         
@@ -128,7 +128,7 @@ function Test-SplitFilesIntoChunks {
         return $chunks
     }
     
-    # Exécuter la fonction
+    # ExÃ©cuter la fonction
     $result = Split-FilesIntoChunks -FilePaths $FilePaths -ChunkSize $ChunkSize
     
     return $result
@@ -140,7 +140,7 @@ function Test-MergeAnalysisResults {
         [array]$Results
     )
     
-    # Définir la fonction Merge-AnalysisResults
+    # DÃ©finir la fonction Merge-AnalysisResults
     function Merge-AnalysisResults {
         param([array]$Results)
         
@@ -168,7 +168,7 @@ function Test-MergeAnalysisResults {
         return $mergedResults
     }
     
-    # Exécuter la fonction
+    # ExÃ©cuter la fonction
     $result = Merge-AnalysisResults -Results $Results
     
     return $result
@@ -178,12 +178,12 @@ function Test-MergeAnalysisResults {
 $testDir = Initialize-TestEnvironment
 
 try {
-    Write-Host "Exécution des tests unitaires simplifiés pour Start-DistributedAnalysis.ps1" -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests unitaires simplifiÃ©s pour Start-DistributedAnalysis.ps1" -ForegroundColor Cyan
     
     # Test 1: Split-FilesIntoChunks divise correctement les fichiers en lots
     Write-Host "Test 1: Split-FilesIntoChunks divise correctement les fichiers en lots" -ForegroundColor Yellow
     
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $files = @(
         "$testDir\file1.ps1",
         "$testDir\file2.ps1",
@@ -195,19 +195,19 @@ try {
     # Tester la fonction Split-FilesIntoChunks
     $result = Test-SplitFilesIntoChunks -FilePaths $files -ChunkSize 2
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($result.Count -eq 3 -and $result[0].Count -eq 2 -and $result[1].Count -eq 2 -and $result[2].Count -eq 1) {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: 3 lots (2, 2, 1)" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($result.Count) lots ($($result[0].Count), $($result[1].Count), $($result[2].Count))" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: 3 lots (2, 2, 1)" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($result.Count) lots ($($result[0].Count), $($result[1].Count), $($result[2].Count))" -ForegroundColor Red
     }
     
-    # Test 2: Merge-AnalysisResults fusionne correctement les résultats
-    Write-Host "Test 2: Merge-AnalysisResults fusionne correctement les résultats" -ForegroundColor Yellow
+    # Test 2: Merge-AnalysisResults fusionne correctement les rÃ©sultats
+    Write-Host "Test 2: Merge-AnalysisResults fusionne correctement les rÃ©sultats" -ForegroundColor Yellow
     
-    # Créer des résultats de test
+    # CrÃ©er des rÃ©sultats de test
     $results = @(
         @(
             [PSCustomObject]@{
@@ -270,16 +270,16 @@ try {
     # Tester la fonction Merge-AnalysisResults
     $result = Test-MergeAnalysisResults -Results $results
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($result.Count -eq 3 -and $result["$testDir\file1.ps1"].Issues.Count -eq 2 -and $result["$testDir\file2.ps1"].Issues.Count -eq 1 -and $result["$testDir\file3.ps1"].Issues.Count -eq 1) {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: 3 fichiers (2 issues, 1 issue, 1 issue)" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($result.Count) fichiers ($($result["$testDir\file1.ps1"].Issues.Count), $($result["$testDir\file2.ps1"].Issues.Count), $($result["$testDir\file3.ps1"].Issues.Count))" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: 3 fichiers (2 issues, 1 issue, 1 issue)" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($result.Count) fichiers ($($result["$testDir\file1.ps1"].Issues.Count), $($result["$testDir\file2.ps1"].Issues.Count), $($result["$testDir\file3.ps1"].Issues.Count))" -ForegroundColor Red
     }
     
-    Write-Host "Tests terminés" -ForegroundColor Cyan
+    Write-Host "Tests terminÃ©s" -ForegroundColor Cyan
 } finally {
     # Nettoyer l'environnement de test
     Remove-TestEnvironment -TestDir $testDir

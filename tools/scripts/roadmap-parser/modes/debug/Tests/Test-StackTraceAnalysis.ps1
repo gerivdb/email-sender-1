@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions d'analyse de stack trace.
 
@@ -9,27 +9,27 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin vers le fichier de fonctions à tester
+# Chemin vers le fichier de fonctions Ã  tester
 $functionsPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))) -ChildPath "module\Functions\Private\Debugging\StackTraceAnalysisFunctions.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionsPath)) {
     throw "Le fichier de fonctions n'existe pas : $functionsPath"
 }
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . $functionsPath
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testScriptPath = Join-Path -Path $env:TEMP -ChildPath "TestScript.ps1"
 @"
 function Test-Function1 {
@@ -51,7 +51,7 @@ function Test-Function3 {
 Test-Function1 -value 0
 "@ | Out-File -FilePath $testScriptPath -Encoding UTF8
 
-# Créer une stack trace de test
+# CrÃ©er une stack trace de test
 $testStackTrace = @"
 At C:\Temp\TestScript.ps1:13 char:1
 + Test-Function1 -value 0
@@ -78,8 +78,8 @@ At C:\Temp\TestScript.ps1:13 char:5
     + FullyQualifiedErrorId : RuntimeException
 "@
 
-# Créer un objet ErrorRecord de test
-$testException = New-Object System.DivideByZeroException "Tentative de division par zéro."
+# CrÃ©er un objet ErrorRecord de test
+$testException = New-Object System.DivideByZeroException "Tentative de division par zÃ©ro."
 $testErrorRecord = New-Object System.Management.Automation.ErrorRecord(
     $testException,
     "DivideByZero",
@@ -96,10 +96,10 @@ $testErrorRecord.InvocationInfo.OffsetInLine = 5
 $testErrorRecord.InvocationInfo.Line = "    1 / `$value"
 $testErrorRecord.ScriptStackTrace = $testStackTrace
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Tests des fonctions d'analyse de stack trace" {
     Context "Get-StackTraceInfo" {
-        It "Devrait parser une stack trace sous forme de chaîne" {
+        It "Devrait parser une stack trace sous forme de chaÃ®ne" {
             $result = Get-StackTraceInfo -StackTrace $testStackTrace
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -BeGreaterThan 0
@@ -124,28 +124,28 @@ Describe "Tests des fonctions d'analyse de stack trace" {
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -BeGreaterThan 0
             
-            # Vérifier si le contenu de la ligne est extrait
+            # VÃ©rifier si le contenu de la ligne est extrait
             $result[0].LineContent | Should -Not -BeNullOrEmpty
             $result[0].Context | Should -Not -BeNullOrEmpty
         }
     }
 
     Context "Resolve-StackTracePaths" {
-        It "Devrait résoudre les chemins de fichiers" {
-            # Créer une stack trace avec un chemin relatif
+        It "Devrait rÃ©soudre les chemins de fichiers" {
+            # CrÃ©er une stack trace avec un chemin relatif
             $relativeStackTrace = $testStackTrace -replace "C:\\Temp\\TestScript\.ps1", "TestScript.ps1"
             
             $result = Resolve-StackTracePaths -StackTrace $relativeStackTrace -BasePath $env:TEMP
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -BeGreaterThan 0
             
-            # Vérifier si le chemin a été résolu
+            # VÃ©rifier si le chemin a Ã©tÃ© rÃ©solu
             $result[0].File | Should -Be $testScriptPath
         }
     }
 
     Context "Get-StackTraceCallSequence" {
-        It "Devrait analyser la séquence d'appels" {
+        It "Devrait analyser la sÃ©quence d'appels" {
             $result = Get-StackTraceCallSequence -StackTrace $testStackTrace
             $result | Should -Not -BeNullOrEmpty
             $result.CallPath | Should -Not -BeNullOrEmpty
@@ -155,19 +155,19 @@ Describe "Tests des fonctions d'analyse de stack trace" {
     }
 
     Context "Show-StackTraceHierarchy" {
-        It "Devrait générer une visualisation en format texte" {
+        It "Devrait gÃ©nÃ©rer une visualisation en format texte" {
             $result = Show-StackTraceHierarchy -StackTrace $testStackTrace -Format "Text"
             $result | Should -Not -BeNullOrEmpty
             $result | Should -Match "Stack Trace Hierarchy"
         }
 
-        It "Devrait générer une visualisation en format HTML" {
+        It "Devrait gÃ©nÃ©rer une visualisation en format HTML" {
             $result = Show-StackTraceHierarchy -StackTrace $testStackTrace -Format "HTML"
             $result | Should -Not -BeNullOrEmpty
             $result | Should -Match "<div class='stack-trace'>"
         }
 
-        It "Devrait générer une visualisation en format Markdown" {
+        It "Devrait gÃ©nÃ©rer une visualisation en format Markdown" {
             $result = Show-StackTraceHierarchy -StackTrace $testStackTrace -Format "Markdown"
             $result | Should -Not -BeNullOrEmpty
             $result | Should -Match "# Stack Trace Hierarchy"

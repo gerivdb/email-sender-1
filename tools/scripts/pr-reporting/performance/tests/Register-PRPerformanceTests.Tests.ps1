@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Register-PRPerformanceTests.ps1.
@@ -13,33 +13,33 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Register-PRPerformanceTests.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Register-PRPerformanceTests.ps1 non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Register-PRPerformanceTests.ps1 non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
 # Tests Pester
 Describe "Register-PRPerformanceTests Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceRegisterTests_$(Get-Random)"
         New-Item -Path $script:testDir -ItemType Directory -Force | Out-Null
         
-        # Créer des fichiers de configuration et de résultats de test
+        # CrÃ©er des fichiers de configuration et de rÃ©sultats de test
         $script:configPath = Join-Path -Path $script:testDir -ChildPath "performance_tests_config.json"
         $script:baselineResultsPath = Join-Path -Path $script:testDir -ChildPath "baseline_results.json"
         $script:outputDir = Join-Path -Path $script:testDir -ChildPath "performance_results"
         
-        # Créer un répertoire de sortie
+        # CrÃ©er un rÃ©pertoire de sortie
         New-Item -Path $script:outputDir -ItemType Directory -Force | Out-Null
         
-        # Créer des données de test pour les résultats de référence
+        # CrÃ©er des donnÃ©es de test pour les rÃ©sultats de rÃ©fÃ©rence
         $baselineResults = @{
             Timestamp = "2025-04-28 10:00:00"
             DataSize = "Medium"
@@ -71,48 +71,48 @@ Describe "Register-PRPerformanceTests Tests" {
             )
         }
         
-        # Enregistrer le fichier de résultats de référence
+        # Enregistrer le fichier de rÃ©sultats de rÃ©fÃ©rence
         $baselineResults | ConvertTo-Json -Depth 10 | Set-Content -Path $script:baselineResultsPath -Encoding UTF8
         
-        # Créer un mock pour les scripts de test de performance
+        # CrÃ©er un mock pour les scripts de test de performance
         Mock Invoke-Expression { } -ModuleName $scriptToTest
     }
     
-    Context "Validation des paramètres" {
-        It "Accepte le paramètre ConfigPath" {
+    Context "Validation des paramÃ¨tres" {
+        It "Accepte le paramÃ¨tre ConfigPath" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre BaselineResultsPath" {
+        It "Accepte le paramÃ¨tre BaselineResultsPath" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre ThresholdPercent" {
+        It "Accepte le paramÃ¨tre ThresholdPercent" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -ThresholdPercent 5 -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre OutputDir" {
+        It "Accepte le paramÃ¨tre OutputDir" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre GenerateReport" {
+        It "Accepte le paramÃ¨tre GenerateReport" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -GenerateReport -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre FailOnRegression" {
+        It "Accepte le paramÃ¨tre FailOnRegression" {
             { & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -FailOnRegression -WhatIf } | Should -Not -Throw
         }
     }
     
-    Context "Création de configuration" {
-        It "Crée un fichier de configuration par défaut si non existant" {
-            # Exécuter le script
+    Context "CrÃ©ation de configuration" {
+        It "CrÃ©e un fichier de configuration par dÃ©faut si non existant" {
+            # ExÃ©cuter le script
             & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir
             
-            # Vérifier que le fichier de configuration a été créé
+            # VÃ©rifier que le fichier de configuration a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:configPath | Should -Be $true
             
-            # Vérifier que le fichier de configuration contient des données valides
+            # VÃ©rifier que le fichier de configuration contient des donnÃ©es valides
             $config = Get-Content -Path $script:configPath -Raw | ConvertFrom-Json
             $config | Should -Not -BeNullOrEmpty
             $config.Benchmark | Should -Not -BeNullOrEmpty
@@ -122,11 +122,11 @@ Describe "Register-PRPerformanceTests Tests" {
             $config.CI | Should -Not -BeNullOrEmpty
         }
         
-        It "Met à jour la configuration existante avec les paramètres spécifiés" {
-            # Exécuter le script avec des paramètres spécifiques
+        It "Met Ã  jour la configuration existante avec les paramÃ¨tres spÃ©cifiÃ©s" {
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -ThresholdPercent 5 -OutputDir $script:outputDir -GenerateReport -FailOnRegression
             
-            # Vérifier que le fichier de configuration a été mis à jour
+            # VÃ©rifier que le fichier de configuration a Ã©tÃ© mis Ã  jour
             $config = Get-Content -Path $script:configPath -Raw | ConvertFrom-Json
             $config | Should -Not -BeNullOrEmpty
             $config.Regression.ThresholdPercent | Should -Be 5
@@ -137,44 +137,44 @@ Describe "Register-PRPerformanceTests Tests" {
         }
     }
     
-    Context "Génération de scripts CI" {
-        It "Génère un script CI" {
-            # Exécuter le script
+    Context "GÃ©nÃ©ration de scripts CI" {
+        It "GÃ©nÃ¨re un script CI" {
+            # ExÃ©cuter le script
             & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir
             
-            # Vérifier que le script CI a été créé
+            # VÃ©rifier que le script CI a Ã©tÃ© crÃ©Ã©
             $ciScriptPath = Join-Path -Path $script:outputDir -ChildPath "Run-PRPerformanceTests.ps1"
             Test-Path -Path $ciScriptPath | Should -Be $true
             
-            # Vérifier que le script CI contient des données valides
+            # VÃ©rifier que le script CI contient des donnÃ©es valides
             $ciScript = Get-Content -Path $ciScriptPath -Raw
             $ciScript | Should -Not -BeNullOrEmpty
             $ciScript | Should -BeLike "*Register-PRPerformanceTests.ps1*"
         }
         
-        It "Génère une configuration Azure DevOps" {
-            # Exécuter le script
+        It "GÃ©nÃ¨re une configuration Azure DevOps" {
+            # ExÃ©cuter le script
             & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir
             
-            # Vérifier que la configuration Azure DevOps a été créée
+            # VÃ©rifier que la configuration Azure DevOps a Ã©tÃ© crÃ©Ã©e
             $azureDevOpsConfigPath = Join-Path -Path $script:outputDir -ChildPath "azure-pipelines-performance.yml"
             Test-Path -Path $azureDevOpsConfigPath | Should -Be $true
             
-            # Vérifier que la configuration Azure DevOps contient des données valides
+            # VÃ©rifier que la configuration Azure DevOps contient des donnÃ©es valides
             $azureDevOpsConfig = Get-Content -Path $azureDevOpsConfigPath -Raw
             $azureDevOpsConfig | Should -Not -BeNullOrEmpty
             $azureDevOpsConfig | Should -BeLike "*Run-PRPerformanceTests.ps1*"
         }
         
-        It "Génère une configuration GitHub Actions" {
-            # Exécuter le script
+        It "GÃ©nÃ¨re une configuration GitHub Actions" {
+            # ExÃ©cuter le script
             & $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir
             
-            # Vérifier que la configuration GitHub Actions a été créée
+            # VÃ©rifier que la configuration GitHub Actions a Ã©tÃ© crÃ©Ã©e
             $githubActionsConfigPath = Join-Path -Path $script:outputDir -ChildPath "github-actions-performance.yml"
             Test-Path -Path $githubActionsConfigPath | Should -Be $true
             
-            # Vérifier que la configuration GitHub Actions contient des données valides
+            # VÃ©rifier que la configuration GitHub Actions contient des donnÃ©es valides
             $githubActionsConfig = Get-Content -Path $githubActionsConfigPath -Raw
             $githubActionsConfig | Should -Not -BeNullOrEmpty
             $githubActionsConfig | Should -BeLike "*Run-PRPerformanceTests.ps1*"

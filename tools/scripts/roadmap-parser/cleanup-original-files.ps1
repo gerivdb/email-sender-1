@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Supprime les fichiers originaux après la réorganisation.
+    Supprime les fichiers originaux aprÃ¨s la rÃ©organisation.
 
 .DESCRIPTION
-    Ce script supprime les fichiers originaux qui ont été copiés vers la nouvelle structure
-    de dossiers lors de la réorganisation.
+    Ce script supprime les fichiers originaux qui ont Ã©tÃ© copiÃ©s vers la nouvelle structure
+    de dossiers lors de la rÃ©organisation.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Liste des fichiers à supprimer
+# Liste des fichiers Ã  supprimer
 $filesToRemove = @(
     "archi-mode.ps1",
     "debug-mode.ps1",
@@ -67,7 +67,7 @@ function Remove-FileIfExists {
     if (Test-Path -Path $FilePath) {
         try {
             Remove-Item -Path $FilePath -Force
-            Write-Host "Fichier supprimé : $FilePath" -ForegroundColor Green
+            Write-Host "Fichier supprimÃ© : $FilePath" -ForegroundColor Green
         }
         catch {
             Write-Error "Erreur lors de la suppression du fichier $FilePath : $_"
@@ -79,12 +79,12 @@ function Remove-FileIfExists {
 }
 
 # Demander confirmation avant de supprimer les fichiers
-Write-Host "Cette opération va supprimer les fichiers originaux suivants :" -ForegroundColor Yellow
+Write-Host "Cette opÃ©ration va supprimer les fichiers originaux suivants :" -ForegroundColor Yellow
 foreach ($file in $filesToRemove) {
     Write-Host "  - $file"
 }
 
-$confirmation = Read-Host "Êtes-vous sûr de vouloir supprimer ces fichiers ? (O/N)"
+$confirmation = Read-Host "ÃŠtes-vous sÃ»r de vouloir supprimer ces fichiers ? (O/N)"
 
 if ($confirmation -eq "O" -or $confirmation -eq "o") {
     # Supprimer les fichiers
@@ -93,8 +93,8 @@ if ($confirmation -eq "O" -or $confirmation -eq "o") {
         Remove-FileIfExists -FilePath $filePath
     }
     
-    Write-Host "Nettoyage terminé. Les fichiers originaux ont été supprimés." -ForegroundColor Green
+    Write-Host "Nettoyage terminÃ©. Les fichiers originaux ont Ã©tÃ© supprimÃ©s." -ForegroundColor Green
 }
 else {
-    Write-Host "Opération annulée. Aucun fichier n'a été supprimé." -ForegroundColor Yellow
+    Write-Host "OpÃ©ration annulÃ©e. Aucun fichier n'a Ã©tÃ© supprimÃ©." -ForegroundColor Yellow
 }

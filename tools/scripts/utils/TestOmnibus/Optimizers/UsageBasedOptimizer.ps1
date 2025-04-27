@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Optimise l'exécution des tests TestOmnibus en fonction des données d'utilisation.
+    Optimise l'exÃ©cution des tests TestOmnibus en fonction des donnÃ©es d'utilisation.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation collectées par le système d'optimisation proactive
-    pour déterminer les paramètres optimaux d'exécution des tests, comme le nombre de threads,
-    l'ordre d'exécution des tests, etc.
+    Ce script analyse les donnÃ©es d'utilisation collectÃ©es par le systÃ¨me d'optimisation proactive
+    pour dÃ©terminer les paramÃ¨tres optimaux d'exÃ©cution des tests, comme le nombre de threads,
+    l'ordre d'exÃ©cution des tests, etc.
 .PARAMETER UsageDataPath
-    Chemin vers le fichier de données d'utilisation.
+    Chemin vers le fichier de donnÃ©es d'utilisation.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'optimisation.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'optimisation.
 .EXAMPLE
     .\UsageBasedOptimizer.ps1 -UsageDataPath "D:\UsageData\usage_data.xml" -OutputPath "D:\TestResults"
 .NOTES
@@ -32,11 +32,11 @@ if (Test-Path -Path $usageMonitorPath) {
     Import-Module $usageMonitorPath -Force
 }
 else {
-    Write-Warning "Module UsageMonitor non trouvé: $usageMonitorPath"
-    Write-Warning "L'optimisation basée sur l'utilisation ne sera pas disponible."
+    Write-Warning "Module UsageMonitor non trouvÃ©: $usageMonitorPath"
+    Write-Warning "L'optimisation basÃ©e sur l'utilisation ne sera pas disponible."
 }
 
-# Fonction pour déterminer le nombre optimal de threads
+# Fonction pour dÃ©terminer le nombre optimal de threads
 function Get-OptimalThreadCount {
     [CmdletBinding()]
     param (
@@ -44,30 +44,30 @@ function Get-OptimalThreadCount {
         [PSCustomObject]$UsageStats
     )
     
-    # Nombre de cœurs logiques disponibles
+    # Nombre de cÅ“urs logiques disponibles
     $logicalCores = [Environment]::ProcessorCount
     
-    # Nombre de threads par défaut (75% des cœurs disponibles)
+    # Nombre de threads par dÃ©faut (75% des cÅ“urs disponibles)
     $defaultThreads = [Math]::Max(1, [Math]::Floor($logicalCores * 0.75))
     
-    # Si les données d'utilisation ne sont pas disponibles, utiliser la valeur par défaut
+    # Si les donnÃ©es d'utilisation ne sont pas disponibles, utiliser la valeur par dÃ©faut
     if (-not $UsageStats) {
         return $defaultThreads
     }
     
     try {
-        # Analyser les données d'utilisation pour déterminer la charge système moyenne
+        # Analyser les donnÃ©es d'utilisation pour dÃ©terminer la charge systÃ¨me moyenne
         $resourceIntensiveScripts = $UsageStats.ResourceIntensiveScripts
         
         if ($resourceIntensiveScripts -and $resourceIntensiveScripts.Count -gt 0) {
-            # Calculer un facteur d'ajustement basé sur l'intensité des ressources
+            # Calculer un facteur d'ajustement basÃ© sur l'intensitÃ© des ressources
             $adjustmentFactor = 1.0
             
-            # Si plus de 30% des scripts sont intensifs en ressources, réduire le nombre de threads
+            # Si plus de 30% des scripts sont intensifs en ressources, rÃ©duire le nombre de threads
             if ($resourceIntensiveScripts.Count -gt ($UsageStats.TopUsedScripts.Count * 0.3)) {
                 $adjustmentFactor = 0.6
             }
-            # Si plus de 50% des scripts sont intensifs en ressources, réduire davantage
+            # Si plus de 50% des scripts sont intensifs en ressources, rÃ©duire davantage
             elseif ($resourceIntensiveScripts.Count -gt ($UsageStats.TopUsedScripts.Count * 0.5)) {
                 $adjustmentFactor = 0.4
             }
@@ -78,14 +78,14 @@ function Get-OptimalThreadCount {
         }
     }
     catch {
-        Write-Warning "Erreur lors de l'analyse des données d'utilisation: $_"
+        Write-Warning "Erreur lors de l'analyse des donnÃ©es d'utilisation: $_"
     }
     
-    # En cas d'erreur, utiliser la valeur par défaut
+    # En cas d'erreur, utiliser la valeur par dÃ©faut
     return $defaultThreads
 }
 
-# Fonction pour déterminer l'ordre optimal d'exécution des tests
+# Fonction pour dÃ©terminer l'ordre optimal d'exÃ©cution des tests
 function Get-OptimalTestOrder {
     [CmdletBinding()]
     param (
@@ -96,34 +96,34 @@ function Get-OptimalTestOrder {
         [PSCustomObject]$UsageStats
     )
     
-    # Si les données d'utilisation ne sont pas disponibles, retourner l'ordre original
+    # Si les donnÃ©es d'utilisation ne sont pas disponibles, retourner l'ordre original
     if (-not $UsageStats) {
         return $TestFiles
     }
     
     try {
-        # Créer une liste pour stocker les tests avec leur priorité
+        # CrÃ©er une liste pour stocker les tests avec leur prioritÃ©
         $prioritizedTests = @()
         
         foreach ($testFile in $TestFiles) {
             $testName = Split-Path -Path $testFile -Leaf
             $priority = 0
             
-            # Vérifier si le test est dans la liste des tests qui échouent souvent
+            # VÃ©rifier si le test est dans la liste des tests qui Ã©chouent souvent
             $failingScripts = $UsageStats.MostFailingScripts
             if ($failingScripts -and $failingScripts.ContainsKey($testFile)) {
-                # Plus le taux d'échec est élevé, plus la priorité est élevée
+                # Plus le taux d'Ã©chec est Ã©levÃ©, plus la prioritÃ© est Ã©levÃ©e
                 $priority += [Math]::Min(100, $failingScripts[$testFile] * 10)
             }
             
-            # Vérifier si le test est dans la liste des tests lents
+            # VÃ©rifier si le test est dans la liste des tests lents
             $slowScripts = $UsageStats.SlowestScripts
             if ($slowScripts -and $slowScripts.ContainsKey($testFile)) {
-                # Les tests lents ont une priorité plus basse pour permettre aux tests rapides de s'exécuter en premier
+                # Les tests lents ont une prioritÃ© plus basse pour permettre aux tests rapides de s'exÃ©cuter en premier
                 $priority -= [Math]::Min(50, $slowScripts[$testFile] / 100)
             }
             
-            # Ajouter le test à la liste avec sa priorité
+            # Ajouter le test Ã  la liste avec sa prioritÃ©
             $prioritizedTests += [PSCustomObject]@{
                 Path = $testFile
                 Name = $testName
@@ -131,19 +131,19 @@ function Get-OptimalTestOrder {
             }
         }
         
-        # Trier les tests par priorité (décroissante)
+        # Trier les tests par prioritÃ© (dÃ©croissante)
         $sortedTests = $prioritizedTests | Sort-Object -Property Priority -Descending
         
-        # Retourner les chemins des tests triés
+        # Retourner les chemins des tests triÃ©s
         return $sortedTests.Path
     }
     catch {
-        Write-Warning "Erreur lors de la détermination de l'ordre optimal des tests: $_"
+        Write-Warning "Erreur lors de la dÃ©termination de l'ordre optimal des tests: $_"
         return $TestFiles
     }
 }
 
-# Fonction pour générer une configuration optimisée pour TestOmnibus
+# Fonction pour gÃ©nÃ©rer une configuration optimisÃ©e pour TestOmnibus
 function Get-OptimizedTestOmnibusConfig {
     [CmdletBinding()]
     param (
@@ -157,13 +157,13 @@ function Get-OptimizedTestOmnibusConfig {
         [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results")
     )
     
-    # Déterminer le nombre optimal de threads
+    # DÃ©terminer le nombre optimal de threads
     $optimalThreads = Get-OptimalThreadCount -UsageStats $UsageStats
     
-    # Déterminer l'ordre optimal d'exécution des tests
+    # DÃ©terminer l'ordre optimal d'exÃ©cution des tests
     $optimalTestOrder = Get-OptimalTestOrder -TestFiles $TestFiles -UsageStats $UsageStats
     
-    # Créer la configuration optimisée
+    # CrÃ©er la configuration optimisÃ©e
     $optimizedConfig = @{
         MaxThreads = $optimalThreads
         OutputPath = $OutputPath
@@ -175,11 +175,11 @@ function Get-OptimizedTestOmnibusConfig {
     return $optimizedConfig
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Vérifier si le module UsageMonitor est disponible
+    # VÃ©rifier si le module UsageMonitor est disponible
     if (-not (Get-Command -Name Initialize-UsageMonitor -ErrorAction SilentlyContinue)) {
-        Write-Warning "La fonction Initialize-UsageMonitor n'est pas disponible. L'optimisation basée sur l'utilisation ne sera pas disponible."
+        Write-Warning "La fonction Initialize-UsageMonitor n'est pas disponible. L'optimisation basÃ©e sur l'utilisation ne sera pas disponible."
         return @{
             MaxThreads = [Environment]::ProcessorCount
             OutputPath = $OutputPath
@@ -190,34 +190,34 @@ try {
     
     # Initialiser le moniteur d'utilisation
     Initialize-UsageMonitor -DatabasePath $UsageDataPath
-    Write-Host "Moniteur d'utilisation initialisé avec la base de données: $UsageDataPath" -ForegroundColor Green
+    Write-Host "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $UsageDataPath" -ForegroundColor Green
     
-    # Récupérer les statistiques d'utilisation
+    # RÃ©cupÃ©rer les statistiques d'utilisation
     $usageStats = Get-ScriptUsageStatistics
-    Write-Host "Statistiques d'utilisation récupérées" -ForegroundColor Green
+    Write-Host "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -ForegroundColor Green
     
-    # Récupérer la liste des fichiers de test
+    # RÃ©cupÃ©rer la liste des fichiers de test
     $testFiles = Get-ChildItem -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\..\ProactiveOptimization\tests") -Filter "*.Tests.ps1" -Recurse | Select-Object -ExpandProperty FullName
-    Write-Host "Fichiers de test trouvés: $($testFiles.Count)" -ForegroundColor Green
+    Write-Host "Fichiers de test trouvÃ©s: $($testFiles.Count)" -ForegroundColor Green
     
-    # Générer une configuration optimisée
+    # GÃ©nÃ©rer une configuration optimisÃ©e
     $optimizedConfig = Get-OptimizedTestOmnibusConfig -TestFiles $testFiles -UsageStats $usageStats -OutputPath $OutputPath
-    Write-Host "Configuration optimisée générée" -ForegroundColor Green
+    Write-Host "Configuration optimisÃ©e gÃ©nÃ©rÃ©e" -ForegroundColor Green
     
-    # Afficher la configuration optimisée
+    # Afficher la configuration optimisÃ©e
     Write-Host "Nombre optimal de threads: $($optimizedConfig.MaxThreads)" -ForegroundColor Cyan
-    Write-Host "Ordre optimal d'exécution des tests:" -ForegroundColor Cyan
+    Write-Host "Ordre optimal d'exÃ©cution des tests:" -ForegroundColor Cyan
     foreach ($testPath in $optimizedConfig.OptimizedTestOrder) {
         Write-Host "  - $(Split-Path -Path $testPath -Leaf)" -ForegroundColor Cyan
     }
     
-    # Retourner la configuration optimisée
+    # Retourner la configuration optimisÃ©e
     return $optimizedConfig
 }
 catch {
     Write-Error "Erreur lors de l'optimisation de TestOmnibus: $_"
     
-    # En cas d'erreur, retourner une configuration par défaut
+    # En cas d'erreur, retourner une configuration par dÃ©faut
     return @{
         MaxThreads = [Environment]::ProcessorCount
         OutputPath = $OutputPath

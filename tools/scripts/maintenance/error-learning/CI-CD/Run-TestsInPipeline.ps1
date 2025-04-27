@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter les tests dans un pipeline CI/CD.
+    Script pour exÃ©cuter les tests dans un pipeline CI/CD.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et d'intégration du système d'apprentissage des erreurs
-    dans un pipeline CI/CD et génère un rapport des résultats.
+    Ce script exÃ©cute tous les tests unitaires et d'intÃ©gration du systÃ¨me d'apprentissage des erreurs
+    dans un pipeline CI/CD et gÃ©nÃ¨re un rapport des rÃ©sultats.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des tests. Par défaut, utilise le répertoire courant.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut, utilise le rÃ©pertoire courant.
 .EXAMPLE
     .\Run-TestsInPipeline.ps1
-    Exécute tous les tests unitaires et d'intégration et génère un rapport XML des résultats.
+    ExÃ©cute tous les tests unitaires et d'intÃ©gration et gÃ©nÃ¨re un rapport XML des rÃ©sultats.
 #>
 
 [CmdletBinding()]
@@ -17,7 +17,7 @@ param (
     [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestResults")
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -26,17 +26,17 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests
+# DÃ©finir le chemin des tests
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $testRoot = Join-Path -Path $scriptRoot -ChildPath "Tests"
 $testFiles = Get-ChildItem -Path $testRoot -Filter "*.Tests.ps1" -Recurse
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Définir la configuration Pester
+# DÃ©finir la configuration Pester
 $pesterConfig = New-PesterConfiguration
 $pesterConfig.Run.Path = $testFiles.FullName
 $pesterConfig.Output.Verbosity = "Detailed"
@@ -54,23 +54,23 @@ $pesterConfig.CodeCoverage.Path = @(
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "CodeCoverage.xml"
 $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 
-# Exécuter les tests
-Write-Host "Exécution des tests..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
 Write-Host
 
-# Afficher le chemin des résultats
-Write-Host "Résultats des tests enregistrés dans: $OutputPath" -ForegroundColor Cyan
-Write-Host "  Résultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor Yellow
+# Afficher le chemin des rÃ©sultats
+Write-Host "RÃ©sultats des tests enregistrÃ©s dans: $OutputPath" -ForegroundColor Cyan
+Write-Host "  RÃ©sultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor Yellow
 Write-Host "  Couverture de code: $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $testResults.FailedCount

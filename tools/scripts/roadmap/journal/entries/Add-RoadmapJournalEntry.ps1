@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Ajoute une nouvelle tâche au journal de la roadmap.
+    Ajoute une nouvelle tÃ¢che au journal de la roadmap.
 .DESCRIPTION
-    Ce script permet d'ajouter interactivement une nouvelle tâche
+    Ce script permet d'ajouter interactivement une nouvelle tÃ¢che
     au journal de la roadmap et de la synchroniser avec le fichier Markdown.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -53,9 +53,9 @@ $indexPath = Join-Path -Path $journalRoot -ChildPath "index.json"
 # Charger l'index
 $index = Get-Content -Path $indexPath -Raw | ConvertFrom-Json
 
-# Fonction pour afficher les tâches existantes
+# Fonction pour afficher les tÃ¢ches existantes
 function Show-ExistingTasks {
-    Write-Host "`nTâches existantes:" -ForegroundColor Cyan
+    Write-Host "`nTÃ¢ches existantes:" -ForegroundColor Cyan
     
     $tasks = @()
     foreach ($entryId in $index.entries.PSObject.Properties.Name | Sort-Object) {
@@ -72,7 +72,7 @@ function Show-ExistingTasks {
     $tasks | Format-Table -AutoSize
 }
 
-# Fonction pour suggérer un nouvel ID
+# Fonction pour suggÃ©rer un nouvel ID
 function Get-NextAvailableId {
     param (
         [Parameter(Mandatory=$false)]
@@ -115,34 +115,34 @@ function Get-NextAvailableId {
     }
 }
 
-# Fonction pour ajouter une tâche de manière interactive
+# Fonction pour ajouter une tÃ¢che de maniÃ¨re interactive
 function Add-TaskInteractive {
-    # Afficher les tâches existantes
+    # Afficher les tÃ¢ches existantes
     Show-ExistingTasks
     
-    # Demander les informations de la nouvelle tâche
-    Write-Host "`nAjout d'une nouvelle tâche:" -ForegroundColor Cyan
+    # Demander les informations de la nouvelle tÃ¢che
+    Write-Host "`nAjout d'une nouvelle tÃ¢che:" -ForegroundColor Cyan
     
     # Demander l'ID parent (optionnel)
-    $parentId = Read-Host "ID parent (laissez vide pour une tâche de premier niveau)"
+    $parentId = Read-Host "ID parent (laissez vide pour une tÃ¢che de premier niveau)"
     
-    # Suggérer un ID
+    # SuggÃ©rer un ID
     $suggestedId = Get-NextAvailableId -ParentId $parentId
-    $taskId = Read-Host "ID de la tâche [$suggestedId]"
+    $taskId = Read-Host "ID de la tÃ¢che [$suggestedId]"
     if (-not $taskId) {
         $taskId = $suggestedId
     }
     
-    # Vérifier si l'ID existe déjà
+    # VÃ©rifier si l'ID existe dÃ©jÃ 
     if ($index.entries.PSObject.Properties.Name -contains $taskId) {
-        Write-Error "Une tâche avec l'ID '$taskId' existe déjà."
+        Write-Error "Une tÃ¢che avec l'ID '$taskId' existe dÃ©jÃ ."
         return $false
     }
     
     # Demander les autres informations
-    $taskTitle = Read-Host "Titre de la tâche"
+    $taskTitle = Read-Host "Titre de la tÃ¢che"
     if (-not $taskTitle) {
-        Write-Error "Le titre de la tâche est obligatoire."
+        Write-Error "Le titre de la tÃ¢che est obligatoire."
         return $false
     }
     
@@ -153,22 +153,22 @@ function Add-TaskInteractive {
     
     $taskDescription = Read-Host "Description"
     
-    $complexityStr = Read-Host "Complexité (1-5) [3]"
+    $complexityStr = Read-Host "ComplexitÃ© (1-5) [3]"
     $taskComplexity = if ($complexityStr) { [int]$complexityStr } else { 3 }
     
-    $estimatedHoursStr = Read-Host "Temps estimé (heures) [8]"
+    $estimatedHoursStr = Read-Host "Temps estimÃ© (heures) [8]"
     $taskEstimatedHours = if ($estimatedHoursStr) { [double]$estimatedHoursStr } else { 8 }
     
     $progressStr = Read-Host "Progression (0-100) [0]"
     $taskProgress = if ($progressStr) { [int]$progressStr } else { 0 }
     
-    $startDateStr = Read-Host "Date de début (yyyy-MM-dd) [aujourd'hui]"
+    $startDateStr = Read-Host "Date de dÃ©but (yyyy-MM-dd) [aujourd'hui]"
     $taskStartDate = if ($startDateStr) {
         try {
             [DateTime]::ParseExact($startDateStr, "yyyy-MM-dd", $null).ToString("o")
         }
         catch {
-            Write-Warning "Format de date invalide. La date de début sera définie à aujourd'hui."
+            Write-Warning "Format de date invalide. La date de dÃ©but sera dÃ©finie Ã  aujourd'hui."
             (Get-Date).ToString("o")
         }
     }
@@ -176,13 +176,13 @@ function Add-TaskInteractive {
         (Get-Date).ToString("o")
     }
     
-    $dueDateStr = Read-Host "Date d'échéance (yyyy-MM-dd) [dans 30 jours]"
+    $dueDateStr = Read-Host "Date d'Ã©chÃ©ance (yyyy-MM-dd) [dans 30 jours]"
     $taskDueDate = if ($dueDateStr) {
         try {
             [DateTime]::ParseExact($dueDateStr, "yyyy-MM-dd", $null).ToString("o")
         }
         catch {
-            Write-Warning "Format de date invalide. La date d'échéance sera définie à dans 30 jours."
+            Write-Warning "Format de date invalide. La date d'Ã©chÃ©ance sera dÃ©finie Ã  dans 30 jours."
             (Get-Date).AddDays(30).ToString("o")
         }
     }
@@ -192,7 +192,7 @@ function Add-TaskInteractive {
     
     $ownerStr = Read-Host "Responsable"
     
-    # Préparer les métadonnées
+    # PrÃ©parer les mÃ©tadonnÃ©es
     $metadata = @{
         complexity = $taskComplexity
         estimatedHours = $taskEstimatedHours
@@ -205,13 +205,13 @@ function Add-TaskInteractive {
         $metadata.owner = $ownerStr
     }
     
-    # Ajouter la tâche
+    # Ajouter la tÃ¢che
     $result = New-RoadmapJournalEntry -Id $taskId -Title $taskTitle -Status $taskStatus -Description $taskDescription -Metadata $metadata -ParentId $parentId
     
     if ($result) {
-        Write-Host "Tâche ajoutée avec succès." -ForegroundColor Green
+        Write-Host "TÃ¢che ajoutÃ©e avec succÃ¨s." -ForegroundColor Green
         
-        # Mettre à jour le statut global
+        # Mettre Ã  jour le statut global
         Get-RoadmapJournalStatus | Out-Null
         
         # Synchroniser avec la roadmap
@@ -221,12 +221,12 @@ function Add-TaskInteractive {
         return $true
     }
     else {
-        Write-Error "Échec de l'ajout de la tâche."
+        Write-Error "Ã‰chec de l'ajout de la tÃ¢che."
         return $false
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 if ($Interactive) {
     # Mode interactif
     Add-TaskInteractive
@@ -234,22 +234,22 @@ if ($Interactive) {
 else {
     # Mode non interactif
     if (-not $Id) {
-        Write-Error "L'ID de la tâche est requis en mode non interactif."
+        Write-Error "L'ID de la tÃ¢che est requis en mode non interactif."
         exit 1
     }
     
     if (-not $Title) {
-        Write-Error "Le titre de la tâche est requis en mode non interactif."
+        Write-Error "Le titre de la tÃ¢che est requis en mode non interactif."
         exit 1
     }
     
-    # Vérifier si l'ID existe déjà
+    # VÃ©rifier si l'ID existe dÃ©jÃ 
     if ($index.entries.PSObject.Properties.Name -contains $Id) {
-        Write-Error "Une tâche avec l'ID '$Id' existe déjà."
+        Write-Error "Une tÃ¢che avec l'ID '$Id' existe dÃ©jÃ ."
         exit 1
     }
     
-    # Préparer les métadonnées
+    # PrÃ©parer les mÃ©tadonnÃ©es
     $metadata = @{
         progress = $Progress
     }
@@ -262,13 +262,13 @@ else {
         $metadata.estimatedHours = $EstimatedHours
     }
     
-    # Ajouter la tâche
+    # Ajouter la tÃ¢che
     $result = New-RoadmapJournalEntry -Id $Id -Title $Title -Status $Status -Description $Description -Metadata $metadata -ParentId $ParentId
     
     if ($result) {
-        Write-Host "Tâche ajoutée avec succès." -ForegroundColor Green
+        Write-Host "TÃ¢che ajoutÃ©e avec succÃ¨s." -ForegroundColor Green
         
-        # Mettre à jour le statut global
+        # Mettre Ã  jour le statut global
         Get-RoadmapJournalStatus | Out-Null
         
         # Synchroniser avec la roadmap
@@ -276,7 +276,7 @@ else {
         & $syncScriptPath -Direction "ToRoadmap"
     }
     else {
-        Write-Error "Échec de l'ajout de la tâche."
+        Write-Error "Ã‰chec de l'ajout de la tÃ¢che."
         exit 1
     }
 }

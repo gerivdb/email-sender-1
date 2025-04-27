@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fournit des wrappers pour les commandes spécifiques à l'OS.
+    Fournit des wrappers pour les commandes spÃ©cifiques Ã  l'OS.
 
 .DESCRIPTION
     Ce script fournit des fonctions wrapper pour les commandes courantes qui ont
-    des implémentations différentes selon le système d'exploitation. Il permet
-    d'écrire du code qui fonctionne de manière transparente sur différents systèmes.
+    des implÃ©mentations diffÃ©rentes selon le systÃ¨me d'exploitation. Il permet
+    d'Ã©crire du code qui fonctionne de maniÃ¨re transparente sur diffÃ©rents systÃ¨mes.
 
 .EXAMPLE
     . .\OSCommandWrappers.ps1
     Get-OSProcessList | Where-Object { $_.Name -like "*chrome*" }
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Charger le module de détection d'environnement
+# Charger le module de dÃ©tection d'environnement
 $environmentDetectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "EnvironmentDetector.ps1"
 if (Test-Path -Path $environmentDetectorPath -PathType Leaf) {
     . $environmentDetectorPath
 }
 else {
-    Write-Warning "Le module de détection d'environnement n'a pas été trouvé. Certaines fonctionnalités peuvent ne pas fonctionner correctement."
+    Write-Warning "Le module de dÃ©tection d'environnement n'a pas Ã©tÃ© trouvÃ©. Certaines fonctionnalitÃ©s peuvent ne pas fonctionner correctement."
 }
 
 # Obtenir les informations sur l'environnement
@@ -31,7 +31,7 @@ $script:EnvironmentInfo = if (Get-Command -Name Get-EnvironmentInfo -ErrorAction
     Get-EnvironmentInfo
 }
 else {
-    # Créer un objet d'informations sur l'environnement minimal
+    # CrÃ©er un objet d'informations sur l'environnement minimal
     [PSCustomObject]@{
         IsWindows = $PSVersionTable.PSVersion.Major -lt 6 -or ($PSVersionTable.PSVersion.Major -ge 6 -and $IsWindows)
         IsLinux = $PSVersionTable.PSVersion.Major -ge 6 -and $IsLinux
@@ -76,7 +76,7 @@ function Get-OSProcessList {
     }
 }
 
-# Fonction pour obtenir des informations sur un processus spécifique
+# Fonction pour obtenir des informations sur un processus spÃ©cifique
 function Get-OSProcess {
     [CmdletBinding()]
     param (
@@ -128,7 +128,7 @@ function Get-OSProcess {
     }
 }
 
-# Fonction pour arrêter un processus
+# Fonction pour arrÃªter un processus
 function Stop-OSProcess {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     param (
@@ -183,7 +183,7 @@ function Stop-OSProcess {
     }
 }
 
-# Fonction pour obtenir des informations sur le système
+# Fonction pour obtenir des informations sur le systÃ¨me
 function Get-OSSystemInfo {
     [CmdletBinding()]
     param ()
@@ -399,7 +399,7 @@ function Get-OSDiskUsage {
     }
 }
 
-# Fonction pour obtenir l'utilisation de la mémoire
+# Fonction pour obtenir l'utilisation de la mÃ©moire
 function Get-OSMemoryUsage {
     [CmdletBinding()]
     param ()
@@ -455,7 +455,7 @@ function Get-OSMemoryUsage {
             }
         }
         else {
-            Write-Warning "Impossible d'obtenir les informations sur la mémoire."
+            Write-Warning "Impossible d'obtenir les informations sur la mÃ©moire."
             return $null
         }
     }
@@ -537,7 +537,7 @@ function Get-OSCpuUsage {
     }
 }
 
-# Fonction pour exécuter une commande avec les adaptations nécessaires selon l'OS
+# Fonction pour exÃ©cuter une commande avec les adaptations nÃ©cessaires selon l'OS
 function Invoke-OSCommand {
     [CmdletBinding()]
     param (

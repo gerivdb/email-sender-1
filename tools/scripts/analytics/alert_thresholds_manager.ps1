@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
     Script de gestion des seuils d'alerte pour les KPIs.
 .DESCRIPTION
-    Permet de définir, valider et ajuster les seuils d'alerte pour les différents KPIs.
+    Permet de dÃ©finir, valider et ajuster les seuils d'alerte pour les diffÃ©rents KPIs.
 .PARAMETER ConfigPath
-    Chemin vers le répertoire de configuration des KPIs.
+    Chemin vers le rÃ©pertoire de configuration des KPIs.
 .PARAMETER OutputPath
-    Chemin où les seuils d'alerte seront sauvegardés.
+    Chemin oÃ¹ les seuils d'alerte seront sauvegardÃ©s.
 .PARAMETER HistoricalDataPath
-    Chemin vers les données historiques pour l'analyse statistique.
+    Chemin vers les donnÃ©es historiques pour l'analyse statistique.
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
 #>
@@ -70,9 +70,9 @@ function Import-KpiConfigurations {
     try {
         $Configurations = @{}
         
-        # Vérifier si le répertoire existe
+        # VÃ©rifier si le rÃ©pertoire existe
         if (-not (Test-Path -Path $ConfigPath)) {
-            Write-Log -Message "Répertoire de configuration non trouvé: $ConfigPath" -Level "Error"
+            Write-Log -Message "RÃ©pertoire de configuration non trouvÃ©: $ConfigPath" -Level "Error"
             return $null
         }
         
@@ -83,7 +83,7 @@ function Import-KpiConfigurations {
             $ConfigType = $File.BaseName -replace "_kpis$", ""
             $ConfigContent = Get-Content -Path $File.FullName -Raw | ConvertFrom-Json
             
-            Write-Log -Message "Configuration chargée: $($File.Name) avec $($ConfigContent.kpis.Count) KPIs" -Level "Info"
+            Write-Log -Message "Configuration chargÃ©e: $($File.Name) avec $($ConfigContent.kpis.Count) KPIs" -Level "Info"
             $Configurations[$ConfigType] = $ConfigContent
         }
         
@@ -94,7 +94,7 @@ function Import-KpiConfigurations {
     }
 }
 
-# Fonction pour charger les données historiques des KPIs
+# Fonction pour charger les donnÃ©es historiques des KPIs
 function Import-HistoricalData {
     [CmdletBinding()]
     param (
@@ -102,14 +102,14 @@ function Import-HistoricalData {
         [string]$HistoricalDataPath
     )
     
-    Write-Log -Message "Chargement des données historiques depuis $HistoricalDataPath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es historiques depuis $HistoricalDataPath" -Level "Info"
     
     try {
         $HistoricalData = @{}
         
-        # Vérifier si le répertoire existe
+        # VÃ©rifier si le rÃ©pertoire existe
         if (-not (Test-Path -Path $HistoricalDataPath)) {
-            Write-Log -Message "Répertoire de données historiques non trouvé: $HistoricalDataPath" -Level "Error"
+            Write-Log -Message "RÃ©pertoire de donnÃ©es historiques non trouvÃ©: $HistoricalDataPath" -Level "Error"
             return $null
         }
         
@@ -120,13 +120,13 @@ function Import-HistoricalData {
             $DataType = $File.BaseName -replace "_kpis$", ""
             $DataContent = Import-Csv -Path $File.FullName
             
-            Write-Log -Message "Données historiques chargées: $($File.Name) avec $($DataContent.Count) entrées" -Level "Info"
+            Write-Log -Message "DonnÃ©es historiques chargÃ©es: $($File.Name) avec $($DataContent.Count) entrÃ©es" -Level "Info"
             $HistoricalData[$DataType] = $DataContent
         }
         
         return $HistoricalData
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données historiques: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es historiques: $_" -Level "Error"
         return $null
     }
 }
@@ -154,11 +154,11 @@ function Get-StatisticalThresholds {
     Write-Log -Message "Calcul des seuils statistiques pour $KpiId" -Level "Verbose"
     
     try {
-        # Filtrer les données pour le KPI spécifié
+        # Filtrer les donnÃ©es pour le KPI spÃ©cifiÃ©
         $KpiData = $Data | Where-Object { $_.Id -eq $KpiId }
         
         if (-not $KpiData -or $KpiData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée historique trouvée pour le KPI: $KpiId" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e historique trouvÃ©e pour le KPI: $KpiId" -Level "Warning"
             return $null
         }
         
@@ -172,7 +172,7 @@ function Get-StatisticalThresholds {
         $WarningIndex = [Math]::Ceiling($SortedValues.Count * ($WarningPercentile / 100)) - 1
         $CriticalIndex = [Math]::Ceiling($SortedValues.Count * ($CriticalPercentile / 100)) - 1
         
-        # Ajuster les indices pour éviter les dépassements
+        # Ajuster les indices pour Ã©viter les dÃ©passements
         $WarningIndex = [Math]::Min($WarningIndex, $SortedValues.Count - 1)
         $CriticalIndex = [Math]::Min($CriticalIndex, $SortedValues.Count - 1)
         
@@ -180,7 +180,7 @@ function Get-StatisticalThresholds {
         $WarningThreshold = $SortedValues[$WarningIndex]
         $CriticalThreshold = $SortedValues[$CriticalIndex]
         
-        # Inverser les seuils si nécessaire
+        # Inverser les seuils si nÃ©cessaire
         if ($Inverse) {
             $TempWarning = $WarningThreshold
             $WarningThreshold = $SortedValues[[Math]::Floor($SortedValues.Count * (1 - $WarningPercentile / 100))]
@@ -197,7 +197,7 @@ function Get-StatisticalThresholds {
     }
 }
 
-# Fonction pour générer les seuils d'alerte
+# Fonction pour gÃ©nÃ©rer les seuils d'alerte
 function Get-AlertThresholds {
     [CmdletBinding()]
     param (
@@ -215,7 +215,7 @@ function Get-AlertThresholds {
         [double]$StatisticalWeight = 0.5
     )
     
-    Write-Log -Message "Génération des seuils d'alerte avec la méthode: $Method" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration des seuils d'alerte avec la mÃ©thode: $Method" -Level "Info"
     
     try {
         $AlertThresholds = @{}
@@ -234,13 +234,13 @@ function Get-AlertThresholds {
                     critical = $Kpi.thresholds.critical
                 }
                 
-                # Vérifier si des données historiques sont disponibles
+                # VÃ©rifier si des donnÃ©es historiques sont disponibles
                 if ($HistoricalData.ContainsKey($ConfigType)) {
                     # Obtenir les seuils statistiques
                     $Inverse = $Kpi.PSObject.Properties.Name -contains "inverse" -and $Kpi.inverse
                     $StatisticalThresholds = Get-StatisticalThresholds -Data $HistoricalData[$ConfigType] -KpiId $Kpi.id -Inverse $Inverse
                     
-                    # Combiner les seuils selon la méthode spécifiée
+                    # Combiner les seuils selon la mÃ©thode spÃ©cifiÃ©e
                     switch ($Method) {
                         "Static" {
                             $Thresholds = $StaticThresholds
@@ -267,7 +267,7 @@ function Get-AlertThresholds {
                     $Thresholds = $StaticThresholds
                 }
                 
-                # Ajouter les seuils au résultat
+                # Ajouter les seuils au rÃ©sultat
                 $AlertThresholds[$ConfigType].kpis += @{
                     id = $Kpi.id
                     name = $Kpi.name
@@ -282,7 +282,7 @@ function Get-AlertThresholds {
         
         return $AlertThresholds
     } catch {
-        Write-Log -Message "Erreur lors de la génération des seuils d'alerte: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration des seuils d'alerte: $_" -Level "Error"
         return $null
     }
 }
@@ -301,7 +301,7 @@ function Export-AlertThresholds {
     Write-Log -Message "Exportation des seuils d'alerte vers $OutputPath" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputPath)) {
             New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
         }
@@ -311,7 +311,7 @@ function Export-AlertThresholds {
             $OutputFile = Join-Path -Path $OutputPath -ChildPath "$($ThresholdType)_alert_thresholds.json"
             $AlertThresholds[$ThresholdType] | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputFile -Encoding UTF8
             
-            Write-Log -Message "Seuils d'alerte exportés: $OutputFile" -Level "Info"
+            Write-Log -Message "Seuils d'alerte exportÃ©s: $OutputFile" -Level "Info"
         }
         
         return $true
@@ -321,7 +321,7 @@ function Export-AlertThresholds {
     }
 }
 
-# Fonction pour générer la documentation des seuils d'alerte
+# Fonction pour gÃ©nÃ©rer la documentation des seuils d'alerte
 function Export-AlertThresholdsDocumentation {
     [CmdletBinding()]
     param (
@@ -332,15 +332,15 @@ function Export-AlertThresholdsDocumentation {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Génération de la documentation des seuils d'alerte" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration de la documentation des seuils d'alerte" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputPath)) {
             New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
         }
         
-        # Créer le fichier de documentation
+        # CrÃ©er le fichier de documentation
         $DocumentationPath = Join-Path -Path $OutputPath -ChildPath "alert_thresholds_documentation.md"
         
         $Documentation = @"
@@ -348,24 +348,24 @@ function Export-AlertThresholdsDocumentation {
 
 ## Introduction
 
-Ce document décrit les seuils d'alerte définis pour les différents indicateurs clés de performance (KPIs) du système. Ces seuils sont utilisés pour déclencher des alertes lorsque les valeurs des KPIs dépassent certains niveaux, permettant ainsi une détection précoce des problèmes potentiels.
+Ce document dÃ©crit les seuils d'alerte dÃ©finis pour les diffÃ©rents indicateurs clÃ©s de performance (KPIs) du systÃ¨me. Ces seuils sont utilisÃ©s pour dÃ©clencher des alertes lorsque les valeurs des KPIs dÃ©passent certains niveaux, permettant ainsi une dÃ©tection prÃ©coce des problÃ¨mes potentiels.
 
-## Méthodologie
+## MÃ©thodologie
 
-Les seuils d'alerte ont été définis en utilisant une combinaison des approches suivantes :
+Les seuils d'alerte ont Ã©tÃ© dÃ©finis en utilisant une combinaison des approches suivantes :
 
-1. **Seuils statiques** : Définis manuellement en fonction des bonnes pratiques et des exigences métier
-2. **Seuils statistiques** : Calculés à partir des données historiques en utilisant des percentiles
-3. **Seuils hybrides** : Combinaison pondérée des seuils statiques et statistiques
+1. **Seuils statiques** : DÃ©finis manuellement en fonction des bonnes pratiques et des exigences mÃ©tier
+2. **Seuils statistiques** : CalculÃ©s Ã  partir des donnÃ©es historiques en utilisant des percentiles
+3. **Seuils hybrides** : Combinaison pondÃ©rÃ©e des seuils statiques et statistiques
 
 ## Niveaux d'alerte
 
-Deux niveaux d'alerte sont définis pour chaque KPI :
+Deux niveaux d'alerte sont dÃ©finis pour chaque KPI :
 
-- **Avertissement (Warning)** : Indique une situation qui mérite attention mais n'est pas critique
-- **Critique (Critical)** : Indique une situation qui nécessite une intervention immédiate
+- **Avertissement (Warning)** : Indique une situation qui mÃ©rite attention mais n'est pas critique
+- **Critique (Critical)** : Indique une situation qui nÃ©cessite une intervention immÃ©diate
 
-## Seuils par catégorie de KPI
+## Seuils par catÃ©gorie de KPI
 
 "@
         
@@ -375,7 +375,7 @@ Deux niveaux d'alerte sont définis pour chaque KPI :
 
 ### KPIs $ThresholdType
 
-| ID | Nom | Catégorie | Unité | Seuil d'avertissement | Seuil critique | Inverse |
+| ID | Nom | CatÃ©gorie | UnitÃ© | Seuil d'avertissement | Seuil critique | Inverse |
 |---|---|---|---|---|---|---|
 "@
             
@@ -389,33 +389,33 @@ Deux niveaux d'alerte sont définis pour chaque KPI :
         
         $Documentation += @"
 
-## Interprétation
+## InterprÃ©tation
 
-- **Seuil normal** : Valeur en dessous du seuil d'avertissement (ou au-dessus pour les KPIs inversés)
+- **Seuil normal** : Valeur en dessous du seuil d'avertissement (ou au-dessus pour les KPIs inversÃ©s)
 - **Seuil d'avertissement** : Valeur entre le seuil d'avertissement et le seuil critique
-- **Seuil critique** : Valeur au-dessus du seuil critique (ou en dessous pour les KPIs inversés)
+- **Seuil critique** : Valeur au-dessus du seuil critique (ou en dessous pour les KPIs inversÃ©s)
 
 ## Ajustement des seuils
 
-Les seuils d'alerte sont régulièrement revus et ajustés en fonction des éléments suivants :
+Les seuils d'alerte sont rÃ©guliÃ¨rement revus et ajustÃ©s en fonction des Ã©lÃ©ments suivants :
 
-1. Analyse des données historiques
-2. Retours d'expérience sur les alertes déclenchées
-3. Évolution des exigences métier
+1. Analyse des donnÃ©es historiques
+2. Retours d'expÃ©rience sur les alertes dÃ©clenchÃ©es
+3. Ã‰volution des exigences mÃ©tier
 4. Changements dans l'infrastructure ou les applications
 
-## Dernière mise à jour
+## DerniÃ¨re mise Ã  jour
 
-Date de la dernière mise à jour : $(Get-Date -Format "yyyy-MM-dd")
+Date de la derniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd")
 "@
         
         # Sauvegarder la documentation
         $Documentation | Out-File -FilePath $DocumentationPath -Encoding UTF8
         
-        Write-Log -Message "Documentation générée: $DocumentationPath" -Level "Info"
+        Write-Log -Message "Documentation gÃ©nÃ©rÃ©e: $DocumentationPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération de la documentation: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration de la documentation: $_" -Level "Error"
         return $false
     }
 }
@@ -441,7 +441,7 @@ function Start-AlertThresholdsManager {
         [double]$StatisticalWeight = 0.5
     )
     
-    Write-Log -Message "Début de la gestion des seuils d'alerte" -Level "Info"
+    Write-Log -Message "DÃ©but de la gestion des seuils d'alerte" -Level "Info"
     
     # 1. Charger les configurations des KPIs
     $Configurations = Import-KpiConfigurations -ConfigPath $ConfigPath
@@ -451,18 +451,18 @@ function Start-AlertThresholdsManager {
         return $false
     }
     
-    # 2. Charger les données historiques
+    # 2. Charger les donnÃ©es historiques
     $HistoricalData = Import-HistoricalData -HistoricalDataPath $HistoricalDataPath
     
     if (-not $HistoricalData) {
-        Write-Log -Message "Impossible de charger les données historiques, utilisation des seuils statiques uniquement" -Level "Warning"
+        Write-Log -Message "Impossible de charger les donnÃ©es historiques, utilisation des seuils statiques uniquement" -Level "Warning"
     }
     
-    # 3. Générer les seuils d'alerte
+    # 3. GÃ©nÃ©rer les seuils d'alerte
     $AlertThresholds = Get-AlertThresholds -Configurations $Configurations -HistoricalData $HistoricalData -Method $Method -StatisticalWeight $StatisticalWeight
     
     if (-not $AlertThresholds) {
-        Write-Log -Message "Impossible de générer les seuils d'alerte" -Level "Error"
+        Write-Log -Message "Impossible de gÃ©nÃ©rer les seuils d'alerte" -Level "Error"
         return $false
     }
     
@@ -474,24 +474,24 @@ function Start-AlertThresholdsManager {
         return $false
     }
     
-    # 5. Générer la documentation
+    # 5. GÃ©nÃ©rer la documentation
     $DocumentationResult = Export-AlertThresholdsDocumentation -AlertThresholds $AlertThresholds -OutputPath $OutputPath
     
     if (-not $DocumentationResult) {
-        Write-Log -Message "Impossible de générer la documentation des seuils d'alerte" -Level "Warning"
+        Write-Log -Message "Impossible de gÃ©nÃ©rer la documentation des seuils d'alerte" -Level "Warning"
     }
     
-    Write-Log -Message "Gestion des seuils d'alerte terminée avec succès" -Level "Info"
+    Write-Log -Message "Gestion des seuils d'alerte terminÃ©e avec succÃ¨s" -Level "Info"
     return $true
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-AlertThresholdsManager -ConfigPath $ConfigPath -OutputPath $OutputPath -HistoricalDataPath $HistoricalDataPath
 
 if ($Result) {
-    Write-Log -Message "Gestion des seuils d'alerte réussie" -Level "Info"
+    Write-Log -Message "Gestion des seuils d'alerte rÃ©ussie" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec de la gestion des seuils d'alerte" -Level "Error"
+    Write-Log -Message "Ã‰chec de la gestion des seuils d'alerte" -Level "Error"
     return 1
 }

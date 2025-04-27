@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte et configure automatiquement les serveurs MCP.
+    DÃ©tecte et configure automatiquement les serveurs MCP.
 .DESCRIPTION
-    Ce script détecte et configure automatiquement les serveurs MCP (Model Control Plane)
-    pour une intégration transparente avec les outils d'IA.
+    Ce script dÃ©tecte et configure automatiquement les serveurs MCP (Model Control Plane)
+    pour une intÃ©gration transparente avec les outils d'IA.
 .PARAMETER ConfigPath
     Chemin du fichier de configuration MCP.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour la configuration détectée.
+    Chemin du fichier de sortie pour la configuration dÃ©tectÃ©e.
 .PARAMETER Scan
-    Effectue un scan complet du réseau pour détecter les serveurs MCP.
+    Effectue un scan complet du rÃ©seau pour dÃ©tecter les serveurs MCP.
 .PARAMETER Force
-    Force la détection même si une configuration existe déjà.
+    Force la dÃ©tection mÃªme si une configuration existe dÃ©jÃ .
 .EXAMPLE
     .\Detect-MCPServers.ps1 -ConfigPath ".\mcp-servers\config.json" -OutputPath ".\mcp-servers\detected.json"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
+    Date de crÃ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -36,7 +36,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -62,7 +62,7 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Fonction pour détecter les serveurs MCP locaux
+# Fonction pour dÃ©tecter les serveurs MCP locaux
 function Find-LocalMCPServers {
     [CmdletBinding()]
     param (
@@ -74,7 +74,7 @@ function Find-LocalMCPServers {
     
     $servers = @()
     
-    # Vérifier les ports courants pour les serveurs MCP
+    # VÃ©rifier les ports courants pour les serveurs MCP
     $ports = @(5678, 8080, 3000, 3001, 5000, 5001, 8000, 8888)
     $localhost = "localhost"
     
@@ -99,26 +99,26 @@ function Find-LocalMCPServers {
                         Status = "Active"
                     }
                     
-                    Write-Log "Serveur MCP détecté: $($isMCP.Type) v$($isMCP.Version) sur $localhost:$port" -Level "SUCCESS"
+                    Write-Log "Serveur MCP dÃ©tectÃ©: $($isMCP.Type) v$($isMCP.Version) sur $localhost:$port" -Level "SUCCESS"
                 }
             }
             
             $tcpClient.Close()
         }
         catch {
-            Write-Log "Erreur lors de la vérification du port $port: $_" -Level "WARNING"
+            Write-Log "Erreur lors de la vÃ©rification du port $port: $_" -Level "WARNING"
         }
     }
     
-    # Si le scan est activé, rechercher sur le réseau local
+    # Si le scan est activÃ©, rechercher sur le rÃ©seau local
     if ($Scan) {
-        Write-Log "Scan du réseau local pour les serveurs MCP..." -Level "INFO"
+        Write-Log "Scan du rÃ©seau local pour les serveurs MCP..." -Level "INFO"
         
         # Obtenir l'adresse IP locale
         $localIP = (Get-NetIPAddress | Where-Object { $_.AddressFamily -eq "IPv4" -and $_.PrefixOrigin -ne "WellKnown" } | Select-Object -First 1).IPAddress
         
         if ($localIP) {
-            # Extraire le préfixe du réseau
+            # Extraire le prÃ©fixe du rÃ©seau
             $networkPrefix = $localIP.Substring(0, $localIP.LastIndexOf(".") + 1)
             
             # Scanner les 254 adresses possibles
@@ -129,7 +129,7 @@ function Find-LocalMCPServers {
                     continue  # Ignorer l'adresse locale
                 }
                 
-                Write-Progress -Activity "Scan du réseau" -Status "Vérification de $ip" -PercentComplete (($i / 254) * 100)
+                Write-Progress -Activity "Scan du rÃ©seau" -Status "VÃ©rification de $ip" -PercentComplete (($i / 254) * 100)
                 
                 foreach ($port in $ports) {
                     try {
@@ -152,7 +152,7 @@ function Find-LocalMCPServers {
                                     Status = "Active"
                                 }
                                 
-                                Write-Log "Serveur MCP détecté: $($isMCP.Type) v$($isMCP.Version) sur $ip:$port" -Level "SUCCESS"
+                                Write-Log "Serveur MCP dÃ©tectÃ©: $($isMCP.Type) v$($isMCP.Version) sur $ip:$port" -Level "SUCCESS"
                             }
                         }
                         
@@ -164,10 +164,10 @@ function Find-LocalMCPServers {
                 }
             }
             
-            Write-Progress -Activity "Scan du réseau" -Completed
+            Write-Progress -Activity "Scan du rÃ©seau" -Completed
         }
         else {
-            Write-Log "Impossible de déterminer l'adresse IP locale pour le scan réseau." -Level "WARNING"
+            Write-Log "Impossible de dÃ©terminer l'adresse IP locale pour le scan rÃ©seau." -Level "WARNING"
         }
     }
     
@@ -185,7 +185,7 @@ function Test-MCPServer {
         [int]$Port
     )
     
-    # Tester différents types de serveurs MCP
+    # Tester diffÃ©rents types de serveurs MCP
     
     # 1. Tester n8n
     try {
@@ -251,11 +251,11 @@ function Test-MCPServer {
         # Ignorer les erreurs
     }
     
-    # Aucun serveur MCP détecté
+    # Aucun serveur MCP dÃ©tectÃ©
     return $null
 }
 
-# Fonction pour détecter les serveurs MCP cloud
+# Fonction pour dÃ©tecter les serveurs MCP cloud
 function Find-CloudMCPServers {
     [CmdletBinding()]
     param (
@@ -267,7 +267,7 @@ function Find-CloudMCPServers {
     
     $servers = @()
     
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (-not (Test-Path -Path $ConfigPath)) {
         Write-Log "Fichier de configuration introuvable: $ConfigPath" -Level "WARNING"
         return $servers
@@ -277,16 +277,16 @@ function Find-CloudMCPServers {
         # Charger la configuration
         $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
         
-        # Vérifier les serveurs GCP
+        # VÃ©rifier les serveurs GCP
         if ($config.mcp_servers.gcp.enabled) {
             $gcpProjectId = $config.mcp_servers.gcp.project_id
             
             if ($gcpProjectId) {
-                # Vérifier si gcloud est installé
+                # VÃ©rifier si gcloud est installÃ©
                 $gcloud = Get-Command gcloud -ErrorAction SilentlyContinue
                 
                 if ($gcloud) {
-                    Write-Log "Vérification des serveurs MCP sur GCP (projet: $gcpProjectId)..." -Level "INFO"
+                    Write-Log "VÃ©rification des serveurs MCP sur GCP (projet: $gcpProjectId)..." -Level "INFO"
                     
                     # Obtenir les instances GCP
                     $instances = & gcloud compute instances list --project $gcpProjectId --format json | ConvertFrom-Json
@@ -296,7 +296,7 @@ function Find-CloudMCPServers {
                             $externalIP = $instance.networkInterfaces[0].accessConfigs[0].natIP
                             
                             if ($externalIP) {
-                                # Vérifier les ports courants
+                                # VÃ©rifier les ports courants
                                 $ports = @(5678, 8080, 3000, 3001, 5000, 5001, 8000, 8888)
                                 
                                 foreach ($port in $ports) {
@@ -322,7 +322,7 @@ function Find-CloudMCPServers {
                                                     Zone = $instance.zone
                                                 }
                                                 
-                                                Write-Log "Serveur MCP détecté sur GCP: $($isMCP.Type) v$($isMCP.Version) sur $externalIP:$port (instance: $($instance.name))" -Level "SUCCESS"
+                                                Write-Log "Serveur MCP dÃ©tectÃ© sur GCP: $($isMCP.Type) v$($isMCP.Version) sur $externalIP:$port (instance: $($instance.name))" -Level "SUCCESS"
                                             }
                                         }
                                         
@@ -337,17 +337,17 @@ function Find-CloudMCPServers {
                     }
                 }
                 else {
-                    Write-Log "gcloud n'est pas installé. Impossible de vérifier les serveurs MCP sur GCP." -Level "WARNING"
+                    Write-Log "gcloud n'est pas installÃ©. Impossible de vÃ©rifier les serveurs MCP sur GCP." -Level "WARNING"
                 }
             }
         }
         
-        # Vérifier les serveurs GitHub
+        # VÃ©rifier les serveurs GitHub
         if ($config.mcp_servers.github.enabled) {
-            Write-Log "Vérification des serveurs MCP sur GitHub..." -Level "INFO"
+            Write-Log "VÃ©rification des serveurs MCP sur GitHub..." -Level "INFO"
             
-            # Cette partie nécessiterait l'API GitHub pour vérifier les GitHub Actions
-            # ou d'autres services hébergés sur GitHub
+            # Cette partie nÃ©cessiterait l'API GitHub pour vÃ©rifier les GitHub Actions
+            # ou d'autres services hÃ©bergÃ©s sur GitHub
         }
     }
     catch {
@@ -374,17 +374,17 @@ function Start-MCPServerDetection {
         [switch]$Force
     )
     
-    Write-Log "Démarrage de la détection des serveurs MCP..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des serveurs MCP..." -Level "TITLE"
     Write-Log "Fichier de configuration: $ConfigPath"
     Write-Log "Fichier de sortie: $OutputPath"
     
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ((Test-Path -Path $OutputPath) -and -not $Force) {
-        Write-Log "Le fichier de sortie existe déjà. Utilisez -Force pour écraser." -Level "WARNING"
+        Write-Log "Le fichier de sortie existe dÃ©jÃ . Utilisez -Force pour Ã©craser." -Level "WARNING"
         
         try {
             $existingServers = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
-            Write-Log "Serveurs MCP déjà détectés: $($existingServers.Count)" -Level "INFO"
+            Write-Log "Serveurs MCP dÃ©jÃ  dÃ©tectÃ©s: $($existingServers.Count)" -Level "INFO"
             
             foreach ($server in $existingServers) {
                 Write-Log "- $($server.Type) v$($server.Version) sur $($server.Host):$($server.Port) ($($server.Status))" -Level "INFO"
@@ -397,36 +397,36 @@ function Start-MCPServerDetection {
         }
     }
     
-    # Détecter les serveurs MCP locaux
+    # DÃ©tecter les serveurs MCP locaux
     $localServers = Find-LocalMCPServers -Scan:$Scan
     
-    # Détecter les serveurs MCP cloud
+    # DÃ©tecter les serveurs MCP cloud
     $cloudServers = Find-CloudMCPServers -ConfigPath $ConfigPath
     
-    # Combiner les résultats
+    # Combiner les rÃ©sultats
     $allServers = $localServers + $cloudServers
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     if ($allServers.Count -gt 0) {
-        # Créer le dossier de sortie s'il n'existe pas
+        # CrÃ©er le dossier de sortie s'il n'existe pas
         $outputDir = [System.IO.Path]::GetDirectoryName($OutputPath)
         
         if (-not (Test-Path -Path $outputDir)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Enregistrer les serveurs détectés
+        # Enregistrer les serveurs dÃ©tectÃ©s
         $allServers | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
         
-        Write-Log "Serveurs MCP détectés: $($allServers.Count)" -Level "SUCCESS"
-        Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+        Write-Log "Serveurs MCP dÃ©tectÃ©s: $($allServers.Count)" -Level "SUCCESS"
+        Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     }
     else {
-        Write-Log "Aucun serveur MCP détecté." -Level "WARNING"
+        Write-Log "Aucun serveur MCP dÃ©tectÃ©." -Level "WARNING"
     }
     
     return $allServers
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-MCPServerDetection -ConfigPath $ConfigPath -OutputPath $OutputPath -Scan:$Scan -Force:$Force

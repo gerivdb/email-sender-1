@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de styles et personnalisation pour les graphiques Excel.
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour la personnalisation des graphiques Excel,
-    incluant des palettes de couleurs, des styles de lignes, et des thèmes complets.
+    Ce module fournit des fonctionnalitÃ©s pour la personnalisation des graphiques Excel,
+    incluant des palettes de couleurs, des styles de lignes, et des thÃ¨mes complets.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Vérifier si le module excel_charts.ps1 est disponible
+# VÃ©rifier si le module excel_charts.ps1 est disponible
 $ChartsPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_charts.ps1"
 if (-not (Test-Path -Path $ChartsPath)) {
-    throw "Le module excel_charts.ps1 est requis mais n'a pas été trouvé."
+    throw "Le module excel_charts.ps1 est requis mais n'a pas Ã©tÃ© trouvÃ©."
 }
 
 # Importer le module excel_charts.ps1
@@ -21,28 +21,28 @@ if (-not (Test-Path -Path $ChartsPath)) {
 
 #region Palettes de couleurs
 
-# Classe pour représenter une palette de couleurs
+# Classe pour reprÃ©senter une palette de couleurs
 class ExcelColorPalette {
     [string]$Name
     [string[]]$Colors
     [string]$Description
     [bool]$IsBuiltIn = $true
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelColorPalette() {
         $this.Name = "Default"
         $this.Colors = @(
             "#4472C4", "#ED7D31", "#A5A5A5", "#FFC000",
             "#5B9BD5", "#70AD47", "#FF0000", "#0070C0"
         )
-        $this.Description = "Palette par défaut d'Excel"
+        $this.Description = "Palette par dÃ©faut d'Excel"
     }
 
     # Constructeur avec nom et couleurs
     ExcelColorPalette([string]$Name, [string[]]$Colors) {
         $this.Name = $Name
         $this.Colors = $Colors
-        $this.Description = "Palette personnalisée: $Name"
+        $this.Description = "Palette personnalisÃ©e: $Name"
         $this.IsBuiltIn = $false
     }
 
@@ -54,30 +54,30 @@ class ExcelColorPalette {
         $this.IsBuiltIn = $IsBuiltIn
     }
 
-    # Méthode pour obtenir une couleur à un index spécifique (avec rotation)
+    # MÃ©thode pour obtenir une couleur Ã  un index spÃ©cifique (avec rotation)
     [string] GetColor([int]$Index) {
         if ($this.Colors.Count -eq 0) {
-            return "#000000"  # Noir par défaut si la palette est vide
+            return "#000000"  # Noir par dÃ©faut si la palette est vide
         }
 
-        # Utiliser la rotation pour les index dépassant le nombre de couleurs
+        # Utiliser la rotation pour les index dÃ©passant le nombre de couleurs
         $ColorIndex = $Index % $this.Colors.Count
         return $this.Colors[$ColorIndex]
     }
 
-    # Méthode pour ajouter une couleur à la palette
+    # MÃ©thode pour ajouter une couleur Ã  la palette
     [void] AddColor([string]$Color) {
         $this.Colors += $Color
     }
 
-    # Méthode pour remplacer une couleur à un index spécifique
+    # MÃ©thode pour remplacer une couleur Ã  un index spÃ©cifique
     [void] ReplaceColor([int]$Index, [string]$Color) {
         if ($Index -ge 0 -and $Index -lt $this.Colors.Count) {
             $this.Colors[$Index] = $Color
         }
     }
 
-    # Méthode pour valider les couleurs (format hexadécimal)
+    # MÃ©thode pour valider les couleurs (format hexadÃ©cimal)
     [bool] Validate() {
         foreach ($Color in $this.Colors) {
             if (-not ($Color -match '^#[0-9A-Fa-f]{6}$')) {
@@ -87,20 +87,20 @@ class ExcelColorPalette {
         return $true
     }
 
-    # Méthode pour créer une copie de la palette
+    # MÃ©thode pour crÃ©er une copie de la palette
     [ExcelColorPalette] Clone() {
         return [ExcelColorPalette]::new($this.Name, $this.Colors.Clone(), $this.Description, $false)
     }
 
-    # Méthode pour obtenir une version inversée de la palette
+    # MÃ©thode pour obtenir une version inversÃ©e de la palette
     [ExcelColorPalette] GetReversed() {
         $ReversedColors = $this.Colors.Clone()
         [array]::Reverse($ReversedColors)
-        return [ExcelColorPalette]::new("$($this.Name)_Reversed", $ReversedColors, "Version inversée de $($this.Description)", $false)
+        return [ExcelColorPalette]::new("$($this.Name)_Reversed", $ReversedColors, "Version inversÃ©e de $($this.Description)", $false)
     }
 }
 
-# Classe pour gérer un registre de palettes de couleurs
+# Classe pour gÃ©rer un registre de palettes de couleurs
 class ExcelColorPaletteRegistry {
     [System.Collections.Generic.Dictionary[string, ExcelColorPalette]] $Palettes
 
@@ -110,7 +110,7 @@ class ExcelColorPaletteRegistry {
         $this.InitializeBuiltInPalettes()
     }
 
-    # Méthode pour initialiser les palettes prédéfinies
+    # MÃ©thode pour initialiser les palettes prÃ©dÃ©finies
     [void] InitializeBuiltInPalettes() {
         # Palette Office
         $OfficePalette = [ExcelColorPalette]::new(
@@ -209,20 +209,20 @@ class ExcelColorPaletteRegistry {
         $this.Palettes.Add($CorporatePalette.Name, $CorporatePalette)
     }
 
-    # Méthode pour obtenir une palette par son nom
+    # MÃ©thode pour obtenir une palette par son nom
     [ExcelColorPalette] GetPalette([string]$Name) {
         if ($this.Palettes.ContainsKey($Name)) {
             return $this.Palettes[$Name]
         }
 
-        # Retourner la palette par défaut si le nom n'existe pas
+        # Retourner la palette par dÃ©faut si le nom n'existe pas
         return $this.Palettes["Office"]
     }
 
-    # Méthode pour ajouter une nouvelle palette
+    # MÃ©thode pour ajouter une nouvelle palette
     [void] AddPalette([ExcelColorPalette]$Palette) {
         if ($this.Palettes.ContainsKey($Palette.Name)) {
-            # Remplacer la palette existante si elle n'est pas prédéfinie
+            # Remplacer la palette existante si elle n'est pas prÃ©dÃ©finie
             $ExistingPalette = $this.Palettes[$Palette.Name]
             if (-not $ExistingPalette.IsBuiltIn) {
                 $this.Palettes[$Palette.Name] = $Palette
@@ -233,7 +233,7 @@ class ExcelColorPaletteRegistry {
         }
     }
 
-    # Méthode pour supprimer une palette
+    # MÃ©thode pour supprimer une palette
     [bool] RemovePalette([string]$Name) {
         if ($this.Palettes.ContainsKey($Name)) {
             $Palette = $this.Palettes[$Name]
@@ -244,31 +244,31 @@ class ExcelColorPaletteRegistry {
         return $false
     }
 
-    # Méthode pour lister toutes les palettes disponibles
+    # MÃ©thode pour lister toutes les palettes disponibles
     [ExcelColorPalette[]] ListPalettes() {
         return $this.Palettes.Values
     }
 
-    # Méthode pour lister les noms de toutes les palettes
+    # MÃ©thode pour lister les noms de toutes les palettes
     [string[]] ListPaletteNames() {
         return $this.Palettes.Keys
     }
 }
 
-# Créer une instance globale du registre de palettes
+# CrÃ©er une instance globale du registre de palettes
 $Global:ExcelColorPaletteRegistry = [ExcelColorPaletteRegistry]::new()
 
 <#
 .SYNOPSIS
     Obtient une palette de couleurs par son nom.
 .DESCRIPTION
-    Cette fonction récupère une palette de couleurs prédéfinie ou personnalisée par son nom.
+    Cette fonction rÃ©cupÃ¨re une palette de couleurs prÃ©dÃ©finie ou personnalisÃ©e par son nom.
 .PARAMETER Name
-    Nom de la palette à récupérer.
+    Nom de la palette Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Palette = Get-ExcelColorPalette -Name "Office"
 .OUTPUTS
-    ExcelColorPalette - La palette de couleurs demandée.
+    ExcelColorPalette - La palette de couleurs demandÃ©e.
 #>
 function Get-ExcelColorPalette {
     [CmdletBinding()]
@@ -282,20 +282,20 @@ function Get-ExcelColorPalette {
 
 <#
 .SYNOPSIS
-    Crée une nouvelle palette de couleurs personnalisée.
+    CrÃ©e une nouvelle palette de couleurs personnalisÃ©e.
 .DESCRIPTION
-    Cette fonction crée une nouvelle palette de couleurs personnalisée avec les couleurs spécifiées.
+    Cette fonction crÃ©e une nouvelle palette de couleurs personnalisÃ©e avec les couleurs spÃ©cifiÃ©es.
 .PARAMETER Name
     Nom de la nouvelle palette.
 .PARAMETER Colors
-    Tableau de couleurs au format hexadécimal (#RRGGBB).
+    Tableau de couleurs au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Description
     Description de la palette (optionnel).
 .EXAMPLE
     $Colors = @("#FF0000", "#00FF00", "#0000FF", "#FFFF00")
-    New-ExcelColorPalette -Name "MaPalette" -Colors $Colors -Description "Ma palette personnalisée"
+    New-ExcelColorPalette -Name "MaPalette" -Colors $Colors -Description "Ma palette personnalisÃ©e"
 .OUTPUTS
-    ExcelColorPalette - La nouvelle palette de couleurs créée.
+    ExcelColorPalette - La nouvelle palette de couleurs crÃ©Ã©e.
 #>
 function New-ExcelColorPalette {
     [CmdletBinding()]
@@ -307,15 +307,15 @@ function New-ExcelColorPalette {
         [string[]]$Colors,
 
         [Parameter(Mandatory = $false)]
-        [string]$Description = "Palette personnalisée"
+        [string]$Description = "Palette personnalisÃ©e"
     )
 
-    # Créer la nouvelle palette
+    # CrÃ©er la nouvelle palette
     $Palette = [ExcelColorPalette]::new($Name, $Colors, $Description, $false)
 
     # Valider la palette
     if (-not $Palette.Validate()) {
-        throw "Les couleurs spécifiées ne sont pas au format hexadécimal valide (#RRGGBB)."
+        throw "Les couleurs spÃ©cifiÃ©es ne sont pas au format hexadÃ©cimal valide (#RRGGBB)."
     }
 
     # Ajouter la palette au registre
@@ -328,17 +328,17 @@ function New-ExcelColorPalette {
 .SYNOPSIS
     Liste toutes les palettes de couleurs disponibles.
 .DESCRIPTION
-    Cette fonction liste toutes les palettes de couleurs prédéfinies et personnalisées disponibles.
+    Cette fonction liste toutes les palettes de couleurs prÃ©dÃ©finies et personnalisÃ©es disponibles.
 .PARAMETER IncludeColors
-    Si spécifié, inclut les couleurs de chaque palette dans la sortie.
+    Si spÃ©cifiÃ©, inclut les couleurs de chaque palette dans la sortie.
 .PARAMETER BuiltInOnly
-    Si spécifié, liste uniquement les palettes prédéfinies.
+    Si spÃ©cifiÃ©, liste uniquement les palettes prÃ©dÃ©finies.
 .PARAMETER CustomOnly
-    Si spécifié, liste uniquement les palettes personnalisées.
+    Si spÃ©cifiÃ©, liste uniquement les palettes personnalisÃ©es.
 .EXAMPLE
     Get-ExcelColorPaletteList -IncludeColors
 .OUTPUTS
-    PSObject[] - Liste des palettes disponibles avec leurs propriétés.
+    PSObject[] - Liste des palettes disponibles avec leurs propriÃ©tÃ©s.
 #>
 function Get-ExcelColorPaletteList {
     [CmdletBinding()]
@@ -357,7 +357,7 @@ function Get-ExcelColorPaletteList {
     $Result = @()
 
     foreach ($Palette in $Palettes) {
-        # Filtrer selon les paramètres
+        # Filtrer selon les paramÃ¨tres
         if ($BuiltInOnly -and -not $Palette.IsBuiltIn) {
             continue
         }
@@ -385,16 +385,16 @@ function Get-ExcelColorPaletteList {
 
 <#
 .SYNOPSIS
-    Supprime une palette de couleurs personnalisée.
+    Supprime une palette de couleurs personnalisÃ©e.
 .DESCRIPTION
-    Cette fonction supprime une palette de couleurs personnalisée du registre.
-    Les palettes prédéfinies ne peuvent pas être supprimées.
+    Cette fonction supprime une palette de couleurs personnalisÃ©e du registre.
+    Les palettes prÃ©dÃ©finies ne peuvent pas Ãªtre supprimÃ©es.
 .PARAMETER Name
-    Nom de la palette à supprimer.
+    Nom de la palette Ã  supprimer.
 .EXAMPLE
     Remove-ExcelColorPalette -Name "MaPalette"
 .OUTPUTS
-    System.Boolean - True si la suppression a réussi, False sinon.
+    System.Boolean - True si la suppression a rÃ©ussi, False sinon.
 #>
 function Remove-ExcelColorPalette {
     [CmdletBinding()]
@@ -408,27 +408,27 @@ function Remove-ExcelColorPalette {
 
 <#
 .SYNOPSIS
-    Applique une palette de couleurs à un graphique Excel.
+    Applique une palette de couleurs Ã  un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique une palette de couleurs spécifiée à un graphique Excel existant.
+    Cette fonction applique une palette de couleurs spÃ©cifiÃ©e Ã  un graphique Excel existant.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER PaletteName
-    Le nom de la palette de couleurs à appliquer.
+    Le nom de la palette de couleurs Ã  appliquer.
 .PARAMETER StartIndex
-    L'index de départ dans la palette (0 par défaut).
+    L'index de dÃ©part dans la palette (0 par dÃ©faut).
 .PARAMETER ReverseOrder
-    Si spécifié, applique les couleurs dans l'ordre inverse.
+    Si spÃ©cifiÃ©, applique les couleurs dans l'ordre inverse.
 .EXAMPLE
     Set-ExcelChartColorPalette -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -PaletteName "Pastel"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartColorPalette {
     [CmdletBinding()]
@@ -456,17 +456,17 @@ function Set-ExcelChartColorPalette {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -480,13 +480,13 @@ function Set-ExcelChartColorPalette {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
         # Obtenir la palette de couleurs
         $Palette = $Global:ExcelColorPaletteRegistry.GetPalette($PaletteName)
 
-        # Appliquer les couleurs aux séries du graphique
+        # Appliquer les couleurs aux sÃ©ries du graphique
         $SeriesCount = $Chart.Series.Count
 
         for ($i = 0; $i -lt $SeriesCount; $i++) {
@@ -501,7 +501,7 @@ function Set-ExcelChartColorPalette {
 
             $Color = $Palette.GetColor($ColorIndex)
 
-            # Appliquer la couleur à la série
+            # Appliquer la couleur Ã  la sÃ©rie
             if ($Series.PSObject.Properties.Name -contains "Fill") {
                 $Series.Fill.Color.SetColor($Color)
             } elseif ($Series.PSObject.Properties.Name -contains "LineColor") {
@@ -521,31 +521,31 @@ function Set-ExcelChartColorPalette {
 
 #endregion
 
-#region Personnalisation des couleurs par série
+#region Personnalisation des couleurs par sÃ©rie
 
 <#
 .SYNOPSIS
-    Modifie la couleur d'une série spécifique dans un graphique Excel.
+    Modifie la couleur d'une sÃ©rie spÃ©cifique dans un graphique Excel.
 .DESCRIPTION
-    Cette fonction permet de modifier la couleur d'une série spécifique dans un graphique Excel.
+    Cette fonction permet de modifier la couleur d'une sÃ©rie spÃ©cifique dans un graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER SeriesIndex
-    L'index de la série à modifier (0-basé).
+    L'index de la sÃ©rie Ã  modifier (0-basÃ©).
 .PARAMETER Color
-    La couleur à appliquer au format hexadécimal (#RRGGBB).
+    La couleur Ã  appliquer au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Transparency
-    Le niveau de transparence à appliquer (0-100, où 0 est opaque et 100 est transparent).
+    Le niveau de transparence Ã  appliquer (0-100, oÃ¹ 0 est opaque et 100 est transparent).
 .EXAMPLE
     Set-ExcelChartSeriesColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -SeriesIndex 0 -Color "#FF0000" -Transparency 30
 .OUTPUTS
-    System.Boolean - True si la modification a réussi, False sinon.
+    System.Boolean - True si la modification a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesColor {
     [CmdletBinding()]
@@ -574,22 +574,22 @@ function Set-ExcelChartSeriesColor {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format de la couleur
+        # VÃ©rifier le format de la couleur
         if (-not ($Color -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -603,28 +603,28 @@ function Set-ExcelChartSeriesColor {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Vérifier que l'index de série est valide
+        # VÃ©rifier que l'index de sÃ©rie est valide
         if ($SeriesIndex -lt 0 -or $SeriesIndex -ge $Chart.Series.Count) {
-            throw "Index de série invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) séries."
+            throw "Index de sÃ©rie invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
         }
 
-        # Obtenir la série
+        # Obtenir la sÃ©rie
         $Series = $Chart.Series[$SeriesIndex]
 
-        # Appliquer la couleur à la série
+        # Appliquer la couleur Ã  la sÃ©rie
         if ($Series.PSObject.Properties.Name -contains "Fill") {
-            # Pour les graphiques à colonnes, barres, aires, etc.
+            # Pour les graphiques Ã  colonnes, barres, aires, etc.
             $Series.Fill.Color.SetColor($Color)
 
-            # Appliquer la transparence si spécifiée
+            # Appliquer la transparence si spÃ©cifiÃ©e
             if ($Transparency -gt 0 -and $Series.Fill.PSObject.Properties.Name -contains "Transparency") {
                 $Series.Fill.Transparency = $Transparency
             }
         } elseif ($Series.PSObject.Properties.Name -contains "LineColor") {
-            # Pour les graphiques linéaires
+            # Pour les graphiques linÃ©aires
             $Series.LineColor.SetColor($Color)
         }
 
@@ -633,36 +633,36 @@ function Set-ExcelChartSeriesColor {
 
         return $true
     } catch {
-        Write-Error "Erreur lors de la modification de la couleur de la série: $_"
+        Write-Error "Erreur lors de la modification de la couleur de la sÃ©rie: $_"
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Applique un dégradé de couleurs aux séries d'un graphique Excel.
+    Applique un dÃ©gradÃ© de couleurs aux sÃ©ries d'un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un dégradé de couleurs entre deux couleurs spécifiées aux séries d'un graphique Excel.
+    Cette fonction applique un dÃ©gradÃ© de couleurs entre deux couleurs spÃ©cifiÃ©es aux sÃ©ries d'un graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER StartColor
-    La couleur de début du dégradé au format hexadécimal (#RRGGBB).
+    La couleur de dÃ©but du dÃ©gradÃ© au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER EndColor
-    La couleur de fin du dégradé au format hexadécimal (#RRGGBB).
+    La couleur de fin du dÃ©gradÃ© au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER ReverseOrder
-    Si spécifié, applique le dégradé dans l'ordre inverse.
+    Si spÃ©cifiÃ©, applique le dÃ©gradÃ© dans l'ordre inverse.
 .PARAMETER Transparency
-    Le niveau de transparence à appliquer (0-100, où 0 est opaque et 100 est transparent).
+    Le niveau de transparence Ã  appliquer (0-100, oÃ¹ 0 est opaque et 100 est transparent).
 .EXAMPLE
     Set-ExcelChartSeriesGradient -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -StartColor "#FF0000" -EndColor "#0000FF"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesGradient {
     [CmdletBinding()]
@@ -694,22 +694,22 @@ function Set-ExcelChartSeriesGradient {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format des couleurs
+        # VÃ©rifier le format des couleurs
         if (-not ($StartColor -match '^#[0-9A-Fa-f]{6}$') -or -not ($EndColor -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -723,79 +723,79 @@ function Set-ExcelChartSeriesGradient {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Obtenir le nombre de séries
+        # Obtenir le nombre de sÃ©ries
         $SeriesCount = $Chart.Series.Count
         if ($SeriesCount -lt 2) {
-            # Si une seule série, appliquer la couleur de début
+            # Si une seule sÃ©rie, appliquer la couleur de dÃ©but
             if ($SeriesCount -eq 1) {
                 Set-ExcelChartSeriesColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName $ChartName -SeriesIndex 0 -Color $StartColor -Transparency $Transparency | Out-Null
             }
             return $true
         }
 
-        # Convertir les couleurs hexadécimales en composantes RGB
+        # Convertir les couleurs hexadÃ©cimales en composantes RGB
         $StartColorRGB = ConvertFrom-HexColor -HexColor $StartColor
         $EndColorRGB = ConvertFrom-HexColor -HexColor $EndColor
 
-        # Appliquer le dégradé à chaque série
+        # Appliquer le dÃ©gradÃ© Ã  chaque sÃ©rie
         for ($i = 0; $i -lt $SeriesCount; $i++) {
-            # Calculer la position dans le dégradé (0 à 1)
+            # Calculer la position dans le dÃ©gradÃ© (0 Ã  1)
             $Position = if ($SeriesCount -eq 1) { 0 } else { $i / ($SeriesCount - 1) }
 
-            # Inverser la position si demandé
+            # Inverser la position si demandÃ©
             if ($ReverseOrder) {
                 $Position = 1 - $Position
             }
 
-            # Calculer la couleur interpolée
+            # Calculer la couleur interpolÃ©e
             $R = [int]($StartColorRGB.R + ($EndColorRGB.R - $StartColorRGB.R) * $Position)
             $G = [int]($StartColorRGB.G + ($EndColorRGB.G - $StartColorRGB.G) * $Position)
             $B = [int]($StartColorRGB.B + ($EndColorRGB.B - $StartColorRGB.B) * $Position)
 
-            # Formater la couleur en hexadécimal
+            # Formater la couleur en hexadÃ©cimal
             $Color = "#{0:X2}{1:X2}{2:X2}" -f $R, $G, $B
 
-            # Appliquer la couleur à la série
+            # Appliquer la couleur Ã  la sÃ©rie
             Set-ExcelChartSeriesColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName $ChartName -SeriesIndex $i -Color $Color -Transparency $Transparency | Out-Null
         }
 
         return $true
     } catch {
-        Write-Error "Erreur lors de l'application du dégradé de couleurs: $_"
+        Write-Error "Erreur lors de l'application du dÃ©gradÃ© de couleurs: $_"
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Applique une coloration conditionnelle aux séries d'un graphique Excel.
+    Applique une coloration conditionnelle aux sÃ©ries d'un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique des couleurs différentes aux séries d'un graphique Excel en fonction de leurs valeurs.
+    Cette fonction applique des couleurs diffÃ©rentes aux sÃ©ries d'un graphique Excel en fonction de leurs valeurs.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER PositiveColor
-    La couleur à appliquer aux valeurs positives au format hexadécimal (#RRGGBB).
+    La couleur Ã  appliquer aux valeurs positives au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER NegativeColor
-    La couleur à appliquer aux valeurs négatives au format hexadécimal (#RRGGBB).
+    La couleur Ã  appliquer aux valeurs nÃ©gatives au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER NeutralColor
-    La couleur à appliquer aux valeurs nulles au format hexadécimal (#RRGGBB).
+    La couleur Ã  appliquer aux valeurs nulles au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Threshold
-    La valeur seuil pour considérer une valeur comme positive ou négative (défaut: 0).
+    La valeur seuil pour considÃ©rer une valeur comme positive ou nÃ©gative (dÃ©faut: 0).
 .PARAMETER Transparency
-    Le niveau de transparence à appliquer (0-100, où 0 est opaque et 100 est transparent).
+    Le niveau de transparence Ã  appliquer (0-100, oÃ¹ 0 est opaque et 100 est transparent).
 .EXAMPLE
     Set-ExcelChartSeriesConditionalColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -PositiveColor "#00FF00" -NegativeColor "#FF0000" -NeutralColor "#CCCCCC"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesConditionalColor {
     [CmdletBinding()]
@@ -830,24 +830,24 @@ function Set-ExcelChartSeriesConditionalColor {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format des couleurs
+        # VÃ©rifier le format des couleurs
         if (-not ($PositiveColor -match '^#[0-9A-Fa-f]{6}$') -or
             -not ($NegativeColor -match '^#[0-9A-Fa-f]{6}$') -or
             -not ($NeutralColor -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -861,32 +861,32 @@ function Set-ExcelChartSeriesConditionalColor {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Obtenir les séries du graphique
+        # Obtenir les sÃ©ries du graphique
         $SeriesCount = $Chart.Series.Count
 
-        # Créer une feuille temporaire pour analyser les données
+        # CrÃ©er une feuille temporaire pour analyser les donnÃ©es
         $TempSheetName = "Temp_ConditionalColor_" + [Guid]::NewGuid().ToString().Substring(0, 8)
         $TempSheet = $Workbook.Worksheets.Add($TempSheetName)
 
-        # Pour chaque série, extraire les valeurs et appliquer la couleur conditionnelle
+        # Pour chaque sÃ©rie, extraire les valeurs et appliquer la couleur conditionnelle
         for ($i = 0; $i -lt $SeriesCount; $i++) {
             $Series = $Chart.Series[$i]
 
-            # Obtenir la plage de données de la série
+            # Obtenir la plage de donnÃ©es de la sÃ©rie
             $DataRange = $Series.Series
 
-            # Si la plage est vide ou non valide, passer à la série suivante
+            # Si la plage est vide ou non valide, passer Ã  la sÃ©rie suivante
             if ([string]::IsNullOrEmpty($DataRange)) {
                 continue
             }
 
-            # Extraire les valeurs de la série
+            # Extraire les valeurs de la sÃ©rie
             $Values = @()
 
-            # Analyser la plage de données
+            # Analyser la plage de donnÃ©es
             if ($DataRange -match '(.*?)!(.*?)$') {
                 $SheetName = $Matches[1]
                 $Range = $Matches[2]
@@ -915,7 +915,7 @@ function Set-ExcelChartSeriesConditionalColor {
                 }
             }
 
-            # Déterminer la couleur en fonction des valeurs
+            # DÃ©terminer la couleur en fonction des valeurs
             $Color = $NeutralColor
 
             if ($Values.Count -gt 0) {
@@ -928,7 +928,7 @@ function Set-ExcelChartSeriesConditionalColor {
                 }
             }
 
-            # Appliquer la couleur à la série
+            # Appliquer la couleur Ã  la sÃ©rie
             Set-ExcelChartSeriesColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName $ChartName -SeriesIndex $i -Color $Color -Transparency $Transparency | Out-Null
         }
 
@@ -947,30 +947,30 @@ function Set-ExcelChartSeriesConditionalColor {
 
 <#
 .SYNOPSIS
-    Configure la rotation automatique des couleurs pour les séries d'un graphique Excel.
+    Configure la rotation automatique des couleurs pour les sÃ©ries d'un graphique Excel.
 .DESCRIPTION
-    Cette fonction configure la rotation automatique des couleurs pour les séries d'un graphique Excel
-    en utilisant une palette de couleurs spécifiée.
+    Cette fonction configure la rotation automatique des couleurs pour les sÃ©ries d'un graphique Excel
+    en utilisant une palette de couleurs spÃ©cifiÃ©e.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER PaletteName
-    Le nom de la palette de couleurs à utiliser pour la rotation.
+    Le nom de la palette de couleurs Ã  utiliser pour la rotation.
 .PARAMETER StartIndex
-    L'index de départ dans la palette (0-basé).
+    L'index de dÃ©part dans la palette (0-basÃ©).
 .PARAMETER Interval
-    L'intervalle entre les couleurs dans la palette (défaut: 1).
+    L'intervalle entre les couleurs dans la palette (dÃ©faut: 1).
 .PARAMETER Transparency
-    Le niveau de transparence à appliquer (0-100, où 0 est opaque et 100 est transparent).
+    Le niveau de transparence Ã  appliquer (0-100, oÃ¹ 0 est opaque et 100 est transparent).
 .EXAMPLE
     Set-ExcelChartSeriesColorRotation -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -PaletteName "Vivid" -StartIndex 0 -Interval 2
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesColorRotation {
     [CmdletBinding()]
@@ -1002,17 +1002,17 @@ function Set-ExcelChartSeriesColorRotation {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -1026,13 +1026,13 @@ function Set-ExcelChartSeriesColorRotation {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
         # Obtenir la palette de couleurs
         $Palette = $Global:ExcelColorPaletteRegistry.GetPalette($PaletteName)
 
-        # Obtenir le nombre de séries
+        # Obtenir le nombre de sÃ©ries
         $SeriesCount = $Chart.Series.Count
 
         # Appliquer les couleurs en rotation
@@ -1040,7 +1040,7 @@ function Set-ExcelChartSeriesColorRotation {
             $ColorIndex = $StartIndex + ($i * $Interval)
             $Color = $Palette.GetColor($ColorIndex)
 
-            # Appliquer la couleur à la série
+            # Appliquer la couleur Ã  la sÃ©rie
             Set-ExcelChartSeriesColor -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName $ChartName -SeriesIndex $i -Color $Color -Transparency $Transparency | Out-Null
         }
 
@@ -1058,7 +1058,7 @@ function Set-ExcelChartSeriesColorRotation {
 
 #region Styles de lignes et marqueurs
 
-# Énumération pour les styles de ligne
+# Ã‰numÃ©ration pour les styles de ligne
 Enum ExcelLineStyle {
     Solid = 0
     Dash = 1
@@ -1068,7 +1068,7 @@ Enum ExcelLineStyle {
     None = 5
 }
 
-# Énumération pour les styles de bordure
+# Ã‰numÃ©ration pour les styles de bordure
 Enum ExcelBorderStyle {
     None = 0
     Thin = 1
@@ -1086,26 +1086,26 @@ Enum ExcelBorderStyle {
     SlantDashDot = 13
 }
 
-# Énumération pour les styles de marqueurs
+# Ã‰numÃ©ration pour les styles de marqueurs
 Enum ExcelMarkerStyle {
     # Styles de marqueurs standard
     None = 0        # Aucun marqueur
-    Square = 1      # Carré
+    Square = 1      # CarrÃ©
     Diamond = 2     # Losange
     Triangle = 3    # Triangle
     X = 4           # X
-    Star = 5        # Étoile
+    Star = 5        # Ã‰toile
     Circle = 6      # Cercle
     Plus = 7        # Plus
     Dash = 8        # Tiret
     Dot = 9         # Point
 
-    # Styles de marqueurs avancés
-    TriangleDown = 10  # Triangle inversé
+    # Styles de marqueurs avancÃ©s
+    TriangleDown = 10  # Triangle inversÃ©
     Pentagon = 11      # Pentagone
     Hexagon = 12       # Hexagone
     Cross = 13         # Croix
-    Picture = 14       # Image personnalisée
+    Picture = 14       # Image personnalisÃ©e
 }
 
 # Classe pour la conversion des styles de marqueurs
@@ -1126,39 +1126,39 @@ class ExcelMarkerStyleConverter {
         [ExcelMarkerStyle]::Pentagon     = 1      # Utilise Square comme approximation
         [ExcelMarkerStyle]::Hexagon      = 1       # Utilise Square comme approximation
         [ExcelMarkerStyle]::Cross        = 7         # Utilise Plus comme approximation
-        [ExcelMarkerStyle]::Picture      = 0       # Non supporté directement
+        [ExcelMarkerStyle]::Picture      = 0       # Non supportÃ© directement
     }
 
     # Dictionnaire des descriptions des styles de marqueurs
     static [hashtable] $StyleDescriptions = @{
         [ExcelMarkerStyle]::None         = "Aucun marqueur"
-        [ExcelMarkerStyle]::Square       = "Marqueur carré"
+        [ExcelMarkerStyle]::Square       = "Marqueur carrÃ©"
         [ExcelMarkerStyle]::Diamond      = "Marqueur en forme de losange"
         [ExcelMarkerStyle]::Triangle     = "Marqueur en forme de triangle"
         [ExcelMarkerStyle]::X            = "Marqueur en forme de X"
-        [ExcelMarkerStyle]::Star         = "Marqueur en forme d'étoile"
+        [ExcelMarkerStyle]::Star         = "Marqueur en forme d'Ã©toile"
         [ExcelMarkerStyle]::Circle       = "Marqueur circulaire"
         [ExcelMarkerStyle]::Plus         = "Marqueur en forme de plus"
         [ExcelMarkerStyle]::Dash         = "Marqueur en forme de tiret"
         [ExcelMarkerStyle]::Dot          = "Marqueur en forme de point"
-        [ExcelMarkerStyle]::TriangleDown = "Marqueur en forme de triangle inversé"
+        [ExcelMarkerStyle]::TriangleDown = "Marqueur en forme de triangle inversÃ©"
         [ExcelMarkerStyle]::Pentagon     = "Marqueur en forme de pentagone"
         [ExcelMarkerStyle]::Hexagon      = "Marqueur en forme d'hexagone"
         [ExcelMarkerStyle]::Cross        = "Marqueur en forme de croix"
-        [ExcelMarkerStyle]::Picture      = "Marqueur avec image personnalisée"
+        [ExcelMarkerStyle]::Picture      = "Marqueur avec image personnalisÃ©e"
     }
 
-    # Méthode pour convertir ExcelMarkerStyle en eMarkerStyle d'EPPlus
+    # MÃ©thode pour convertir ExcelMarkerStyle en eMarkerStyle d'EPPlus
     static [int] ToEPPlusStyle([ExcelMarkerStyle]$Style) {
         return [ExcelMarkerStyleConverter]::StyleMapping[$Style]
     }
 
-    # Méthode pour obtenir la description d'un style de marqueur
+    # MÃ©thode pour obtenir la description d'un style de marqueur
     static [string] GetDescription([ExcelMarkerStyle]$Style) {
         return [ExcelMarkerStyleConverter]::StyleDescriptions[$Style]
     }
 
-    # Méthode pour obtenir tous les styles disponibles avec leurs descriptions
+    # MÃ©thode pour obtenir tous les styles disponibles avec leurs descriptions
     static [PSObject[]] GetAllStyles() {
         $Result = @()
 
@@ -1176,7 +1176,7 @@ class ExcelMarkerStyleConverter {
         return $Result
     }
 
-    # Méthode pour vérifier si un style nécessite un traitement spécial
+    # MÃ©thode pour vÃ©rifier si un style nÃ©cessite un traitement spÃ©cial
     static [bool] RequiresSpecialHandling([ExcelMarkerStyle]$Style) {
         return $Style -in @(
             [ExcelMarkerStyle]::TriangleDown,
@@ -1187,7 +1187,7 @@ class ExcelMarkerStyleConverter {
         )
     }
 
-    # Tailles de marqueurs prédéfinies
+    # Tailles de marqueurs prÃ©dÃ©finies
     static [hashtable] $PredefinedSizes = @{
         "Tiny"       = 3
         "Small"      = 5
@@ -1202,12 +1202,12 @@ class ExcelMarkerStyleConverter {
     static [int] $MaxSize = 25
     static [int] $DefaultSize = 7
 
-    # Méthode pour valider une taille de marqueur
+    # MÃ©thode pour valider une taille de marqueur
     static [bool] ValidateSize([int]$Size) {
         return $Size -ge [ExcelMarkerStyleConverter]::MinSize -and $Size -le [ExcelMarkerStyleConverter]::MaxSize
     }
 
-    # Méthode pour obtenir une taille prédéfinie
+    # MÃ©thode pour obtenir une taille prÃ©dÃ©finie
     static [int] GetPredefinedSize([string]$SizeName) {
         if ([ExcelMarkerStyleConverter]::PredefinedSizes.ContainsKey($SizeName)) {
             return [ExcelMarkerStyleConverter]::PredefinedSizes[$SizeName]
@@ -1215,7 +1215,7 @@ class ExcelMarkerStyleConverter {
         return [ExcelMarkerStyleConverter]::DefaultSize
     }
 
-    # Méthode pour obtenir toutes les tailles prédéfinies
+    # MÃ©thode pour obtenir toutes les tailles prÃ©dÃ©finies
     static [PSObject[]] GetAllPredefinedSizes() {
         $Result = @()
 
@@ -1232,18 +1232,18 @@ class ExcelMarkerStyleConverter {
         return $Result
     }
 
-    # Méthode pour appliquer un style de marqueur à une série
+    # MÃ©thode pour appliquer un style de marqueur Ã  une sÃ©rie
     static [void] ApplyToSeries([object]$Series, [ExcelMarkerStyle]$Style, [int]$Size = 7) {
         if ($null -eq $Series) {
             return
         }
 
-        # Vérifier si la série supporte les marqueurs
+        # VÃ©rifier si la sÃ©rie supporte les marqueurs
         if (-not ($Series.PSObject.Properties.Name -contains "MarkerStyle")) {
             return
         }
 
-        # Valider et ajuster la taille si nécessaire
+        # Valider et ajuster la taille si nÃ©cessaire
         if (-not [ExcelMarkerStyleConverter]::ValidateSize($Size)) {
             $Size = [Math]::Max([ExcelMarkerStyleConverter]::MinSize, [Math]::Min($Size, [ExcelMarkerStyleConverter]::MaxSize))
         }
@@ -1256,30 +1256,30 @@ class ExcelMarkerStyleConverter {
             $Series.MarkerSize = $Size
         }
 
-        # Traitement spécial pour certains styles
+        # Traitement spÃ©cial pour certains styles
         if ([ExcelMarkerStyleConverter]::RequiresSpecialHandling($Style)) {
             switch ($Style) {
                 ([ExcelMarkerStyle]::TriangleDown) {
-                    # Pour un triangle inversé, on utilise un triangle normal avec une rotation
+                    # Pour un triangle inversÃ©, on utilise un triangle normal avec une rotation
                     if ($Series.PSObject.Properties.Name -contains "MarkerRotation") {
                         $Series.MarkerRotation = 180
                     }
                 }
                 ([ExcelMarkerStyle]::Pentagon) {
-                    # Approximé par un carré pour l'instant
-                    # Aucun traitement spécial supplémentaire
+                    # ApproximÃ© par un carrÃ© pour l'instant
+                    # Aucun traitement spÃ©cial supplÃ©mentaire
                 }
                 ([ExcelMarkerStyle]::Hexagon) {
-                    # Approximé par un carré pour l'instant
-                    # Aucun traitement spécial supplémentaire
+                    # ApproximÃ© par un carrÃ© pour l'instant
+                    # Aucun traitement spÃ©cial supplÃ©mentaire
                 }
                 ([ExcelMarkerStyle]::Cross) {
-                    # Approximé par un plus pour l'instant
-                    # Aucun traitement spécial supplémentaire
+                    # ApproximÃ© par un plus pour l'instant
+                    # Aucun traitement spÃ©cial supplÃ©mentaire
                 }
                 ([ExcelMarkerStyle]::Picture) {
-                    # Le support d'images personnalisées nécessiterait une implémentation spécifique
-                    # Non implémenté pour l'instant
+                    # Le support d'images personnalisÃ©es nÃ©cessiterait une implÃ©mentation spÃ©cifique
+                    # Non implÃ©mentÃ© pour l'instant
                 }
             }
         }
@@ -1295,9 +1295,9 @@ class ExcelMarkerConfig {
     [int]$BorderWidth = 1
     [string]$Description = ""
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelMarkerConfig() {
-        $this.Description = "Configuration de marqueur par défaut"
+        $this.Description = "Configuration de marqueur par dÃ©faut"
     }
 
     # Constructeur avec style et taille
@@ -1317,7 +1317,7 @@ class ExcelMarkerConfig {
         $this.Description = $Description
     }
 
-    # Méthode pour valider la configuration
+    # MÃ©thode pour valider la configuration
     [bool] Validate() {
         # Valider la taille
         if (-not [ExcelMarkerStyleConverter]::ValidateSize($this.Size)) {
@@ -1341,7 +1341,7 @@ class ExcelMarkerConfig {
         return $true
     }
 
-    # Méthode pour créer une copie de la configuration
+    # MÃ©thode pour crÃ©er une copie de la configuration
     [ExcelMarkerConfig] Clone() {
         $Clone = [ExcelMarkerConfig]::new()
         $Clone.Style = $this.Style
@@ -1354,7 +1354,7 @@ class ExcelMarkerConfig {
         return $Clone
     }
 
-    # Méthode pour appliquer la configuration à une série
+    # MÃ©thode pour appliquer la configuration Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -eq $Series) {
             return
@@ -1363,23 +1363,23 @@ class ExcelMarkerConfig {
         # Appliquer le style et la taille
         [ExcelMarkerStyleConverter]::ApplyToSeries($Series, $this.Style, $this.Size)
 
-        # Appliquer la couleur du marqueur si spécifiée
+        # Appliquer la couleur du marqueur si spÃ©cifiÃ©e
         if ($this.Color -ne "" -and $Series.PSObject.Properties.Name -contains "MarkerColor") {
             $Series.MarkerColor.SetColor($this.Color)
         }
 
-        # Appliquer la couleur de bordure si spécifiée
+        # Appliquer la couleur de bordure si spÃ©cifiÃ©e
         if ($this.BorderColor -ne "" -and $Series.PSObject.Properties.Name -contains "MarkerBorderColor") {
             $Series.MarkerBorderColor.SetColor($this.BorderColor)
         }
 
-        # Appliquer la largeur de bordure si spécifiée
+        # Appliquer la largeur de bordure si spÃ©cifiÃ©e
         if ($Series.PSObject.Properties.Name -contains "MarkerBorderWidth") {
             $Series.MarkerBorderWidth = $this.BorderWidth
         }
     }
 
-    # Méthode pour appliquer la configuration à un point de données
+    # MÃ©thode pour appliquer la configuration Ã  un point de donnÃ©es
     [void] ApplyToDataPoint([object]$DataPoint) {
         if ($null -eq $DataPoint) {
             return
@@ -1395,49 +1395,49 @@ class ExcelMarkerConfig {
             $DataPoint.MarkerSize = $this.Size
         }
 
-        # Appliquer la couleur du marqueur si spécifiée
+        # Appliquer la couleur du marqueur si spÃ©cifiÃ©e
         if ($this.Color -ne "" -and $DataPoint.PSObject.Properties.Name -contains "MarkerColor") {
             $DataPoint.MarkerColor.SetColor($this.Color)
         }
 
-        # Appliquer la couleur de bordure si spécifiée
+        # Appliquer la couleur de bordure si spÃ©cifiÃ©e
         if ($this.BorderColor -ne "" -and $DataPoint.PSObject.Properties.Name -contains "MarkerBorderColor") {
             $DataPoint.MarkerBorderColor.SetColor($this.BorderColor)
         }
 
-        # Appliquer la largeur de bordure si spécifiée
+        # Appliquer la largeur de bordure si spÃ©cifiÃ©e
         if ($DataPoint.PSObject.Properties.Name -contains "MarkerBorderWidth") {
             $DataPoint.MarkerBorderWidth = $this.BorderWidth
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "$($this.Description) (Style: $($this.Style), Taille: $($this.Size))"
     }
 }
 
-# Classe pour représenter un style de ligne
+# Classe pour reprÃ©senter un style de ligne
 class ExcelLineStyleConfig {
     [int]$Width = 1                          # Largeur de la ligne (1-10)
     [ExcelLineStyle]$Style = [ExcelLineStyle]::Solid  # Style de la ligne
     [string]$Color = "#000000"               # Couleur de la ligne
     [int]$Transparency = 0                   # Transparence (0-100)
-    [bool]$Smooth = $false                   # Lissage des lignes (pour les graphiques linéaires)
+    [bool]$Smooth = $false                   # Lissage des lignes (pour les graphiques linÃ©aires)
     [string]$Description = ""                # Description du style
-    [bool]$IsBuiltIn = $false                # Indique si c'est un style prédéfini
+    [bool]$IsBuiltIn = $false                # Indique si c'est un style prÃ©dÃ©fini
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelLineStyleConfig() {
-        $this.Description = "Style de ligne par défaut"
+        $this.Description = "Style de ligne par dÃ©faut"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     ExcelLineStyleConfig([int]$Width, [ExcelLineStyle]$Style, [string]$Color) {
         $this.Width = $Width
         $this.Style = $Style
         $this.Color = $Color
-        $this.Description = "Style de ligne personnalisé"
+        $this.Description = "Style de ligne personnalisÃ©"
     }
 
     # Constructeur complet
@@ -1450,19 +1450,19 @@ class ExcelLineStyleConfig {
         $this.Description = $Description
     }
 
-    # Méthode pour valider le style
+    # MÃ©thode pour valider le style
     [bool] Validate() {
-        # Vérifier la largeur
+        # VÃ©rifier la largeur
         if ($this.Width -lt 1 -or $this.Width -gt 10) {
             return $false
         }
 
-        # Vérifier la transparence
+        # VÃ©rifier la transparence
         if ($this.Transparency -lt 0 -or $this.Transparency -gt 100) {
             return $false
         }
 
-        # Vérifier le format de la couleur
+        # VÃ©rifier le format de la couleur
         if (-not ($this.Color -match '^#[0-9A-Fa-f]{6}$')) {
             return $false
         }
@@ -1470,7 +1470,7 @@ class ExcelLineStyleConfig {
         return $true
     }
 
-    # Méthode pour créer une copie du style
+    # MÃ©thode pour crÃ©er une copie du style
     [ExcelLineStyleConfig] Clone() {
         $Clone = [ExcelLineStyleConfig]::new()
         $Clone.Width = $this.Width
@@ -1479,12 +1479,12 @@ class ExcelLineStyleConfig {
         $Clone.Transparency = $this.Transparency
         $Clone.Smooth = $this.Smooth
         $Clone.Description = $this.Description
-        $Clone.IsBuiltIn = $false  # Une copie n'est jamais un style prédéfini
+        $Clone.IsBuiltIn = $false  # Une copie n'est jamais un style prÃ©dÃ©fini
 
         return $Clone
     }
 
-    # Méthode pour appliquer le style à une série
+    # MÃ©thode pour appliquer le style Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -eq $Series) {
             return
@@ -1523,13 +1523,13 @@ class ExcelLineStyleConfig {
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
         return "$($this.Description) (Largeur: $($this.Width), Style: $($this.Style), Couleur: $($this.Color))"
     }
 }
 
-# Classe pour gérer un registre de styles de ligne
+# Classe pour gÃ©rer un registre de styles de ligne
 class ExcelLineStyleRegistry {
     [System.Collections.Generic.Dictionary[string, ExcelLineStyleConfig]] $Styles
 
@@ -1539,11 +1539,11 @@ class ExcelLineStyleRegistry {
         $this.InitializeBuiltInStyles()
     }
 
-    # Méthode pour initialiser les styles prédéfinis
+    # MÃ©thode pour initialiser les styles prÃ©dÃ©finis
     [void] InitializeBuiltInStyles() {
-        # Style par défaut
+        # Style par dÃ©faut
         $DefaultStyle = [ExcelLineStyleConfig]::new()
-        $DefaultStyle.Description = "Style par défaut"
+        $DefaultStyle.Description = "Style par dÃ©faut"
         $DefaultStyle.IsBuiltIn = $true
         $this.Styles.Add("Default", $DefaultStyle)
 
@@ -1553,15 +1553,15 @@ class ExcelLineStyleRegistry {
         $ThinStyle.IsBuiltIn = $true
         $this.Styles.Add("Thin", $ThinStyle)
 
-        # Style épais
+        # Style Ã©pais
         $ThickStyle = [ExcelLineStyleConfig]::new(3, [ExcelLineStyle]::Solid, "#000000")
-        $ThickStyle.Description = "Ligne épaisse"
+        $ThickStyle.Description = "Ligne Ã©paisse"
         $ThickStyle.IsBuiltIn = $true
         $this.Styles.Add("Thick", $ThickStyle)
 
-        # Style pointillé
+        # Style pointillÃ©
         $DottedStyle = [ExcelLineStyleConfig]::new(1, [ExcelLineStyle]::Dot, "#000000")
-        $DottedStyle.Description = "Ligne pointillée"
+        $DottedStyle.Description = "Ligne pointillÃ©e"
         $DottedStyle.IsBuiltIn = $true
         $this.Styles.Add("Dotted", $DottedStyle)
 
@@ -1577,9 +1577,9 @@ class ExcelLineStyleRegistry {
         $DashDotStyle.IsBuiltIn = $true
         $this.Styles.Add("DashDot", $DashDotStyle)
 
-        # Style rouge épais
+        # Style rouge Ã©pais
         $ThickRedStyle = [ExcelLineStyleConfig]::new(3, [ExcelLineStyle]::Solid, "#FF0000")
-        $ThickRedStyle.Description = "Ligne rouge épaisse"
+        $ThickRedStyle.Description = "Ligne rouge Ã©paisse"
         $ThickRedStyle.IsBuiltIn = $true
         $this.Styles.Add("ThickRed", $ThickRedStyle)
 
@@ -1589,34 +1589,34 @@ class ExcelLineStyleRegistry {
         $ThinBlueStyle.IsBuiltIn = $true
         $this.Styles.Add("ThinBlue", $ThinBlueStyle)
 
-        # Style vert pointillé
+        # Style vert pointillÃ©
         $DottedGreenStyle = [ExcelLineStyleConfig]::new(1, [ExcelLineStyle]::Dot, "#00FF00")
-        $DottedGreenStyle.Description = "Ligne verte pointillée"
+        $DottedGreenStyle.Description = "Ligne verte pointillÃ©e"
         $DottedGreenStyle.IsBuiltIn = $true
         $this.Styles.Add("DottedGreen", $DottedGreenStyle)
 
-        # Style lissé
+        # Style lissÃ©
         $SmoothStyle = [ExcelLineStyleConfig]::new(2, [ExcelLineStyle]::Solid, "#000000")
         $SmoothStyle.Smooth = $true
-        $SmoothStyle.Description = "Ligne lissée"
+        $SmoothStyle.Description = "Ligne lissÃ©e"
         $SmoothStyle.IsBuiltIn = $true
         $this.Styles.Add("Smooth", $SmoothStyle)
     }
 
-    # Méthode pour obtenir un style par son nom
+    # MÃ©thode pour obtenir un style par son nom
     [ExcelLineStyleConfig] GetStyle([string]$Name) {
         if ($this.Styles.ContainsKey($Name)) {
             return $this.Styles[$Name]
         }
 
-        # Retourner le style par défaut si le nom n'existe pas
+        # Retourner le style par dÃ©faut si le nom n'existe pas
         return $this.Styles["Default"]
     }
 
-    # Méthode pour ajouter un nouveau style
+    # MÃ©thode pour ajouter un nouveau style
     [void] AddStyle([string]$Name, [ExcelLineStyleConfig]$Style) {
         if ($this.Styles.ContainsKey($Name)) {
-            # Remplacer le style existant s'il n'est pas prédéfini
+            # Remplacer le style existant s'il n'est pas prÃ©dÃ©fini
             $ExistingStyle = $this.Styles[$Name]
             if (-not $ExistingStyle.IsBuiltIn) {
                 $this.Styles[$Name] = $Style
@@ -1627,7 +1627,7 @@ class ExcelLineStyleRegistry {
         }
     }
 
-    # Méthode pour supprimer un style
+    # MÃ©thode pour supprimer un style
     [bool] RemoveStyle([string]$Name) {
         if ($this.Styles.ContainsKey($Name)) {
             $Style = $this.Styles[$Name]
@@ -1638,31 +1638,31 @@ class ExcelLineStyleRegistry {
         return $false
     }
 
-    # Méthode pour lister tous les styles disponibles
+    # MÃ©thode pour lister tous les styles disponibles
     [ExcelLineStyleConfig[]] ListStyles() {
         return $this.Styles.Values
     }
 
-    # Méthode pour lister les noms de tous les styles
+    # MÃ©thode pour lister les noms de tous les styles
     [string[]] ListStyleNames() {
         return $this.Styles.Keys
     }
 }
 
-# Créer une instance globale du registre de styles de ligne
+# CrÃ©er une instance globale du registre de styles de ligne
 $Global:ExcelLineStyleRegistry = [ExcelLineStyleRegistry]::new()
 
 <#
 .SYNOPSIS
     Obtient un style de ligne par son nom.
 .DESCRIPTION
-    Cette fonction récupère un style de ligne prédéfini ou personnalisé par son nom.
+    Cette fonction rÃ©cupÃ¨re un style de ligne prÃ©dÃ©fini ou personnalisÃ© par son nom.
 .PARAMETER Name
-    Nom du style à récupérer.
+    Nom du style Ã  rÃ©cupÃ©rer.
 .EXAMPLE
     $Style = Get-ExcelLineStyle -Name "Dashed"
 .OUTPUTS
-    ExcelLineStyleConfig - Le style de ligne demandé.
+    ExcelLineStyleConfig - Le style de ligne demandÃ©.
 #>
 function Get-ExcelLineStyle {
     [CmdletBinding()]
@@ -1676,9 +1676,9 @@ function Get-ExcelLineStyle {
 
 <#
 .SYNOPSIS
-    Crée un nouveau style de ligne personnalisé.
+    CrÃ©e un nouveau style de ligne personnalisÃ©.
 .DESCRIPTION
-    Cette fonction crée un nouveau style de ligne personnalisé avec les propriétés spécifiées.
+    Cette fonction crÃ©e un nouveau style de ligne personnalisÃ© avec les propriÃ©tÃ©s spÃ©cifiÃ©es.
 .PARAMETER Name
     Nom du nouveau style.
 .PARAMETER Width
@@ -1686,17 +1686,17 @@ function Get-ExcelLineStyle {
 .PARAMETER Style
     Style de la ligne (Solid, Dash, Dot, DashDot, DashDotDot, None).
 .PARAMETER Color
-    Couleur de la ligne au format hexadécimal (#RRGGBB).
+    Couleur de la ligne au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Transparency
     Transparence de la ligne (0-100).
 .PARAMETER Smooth
-    Indique si la ligne doit être lissée.
+    Indique si la ligne doit Ãªtre lissÃ©e.
 .PARAMETER Description
     Description du style (optionnel).
 .EXAMPLE
-    New-ExcelLineStyle -Name "MonStyle" -Width 2 -Style Dash -Color "#FF0000" -Description "Mon style personnalisé"
+    New-ExcelLineStyle -Name "MonStyle" -Width 2 -Style Dash -Color "#FF0000" -Description "Mon style personnalisÃ©"
 .OUTPUTS
-    ExcelLineStyleConfig - Le nouveau style de ligne créé.
+    ExcelLineStyleConfig - Le nouveau style de ligne crÃ©Ã©.
 #>
 function New-ExcelLineStyle {
     [CmdletBinding()]
@@ -1722,15 +1722,15 @@ function New-ExcelLineStyle {
         [bool]$Smooth = $false,
 
         [Parameter(Mandatory = $false)]
-        [string]$Description = "Style personnalisé"
+        [string]$Description = "Style personnalisÃ©"
     )
 
-    # Créer le nouveau style
+    # CrÃ©er le nouveau style
     $LineStyle = [ExcelLineStyleConfig]::new($Width, $Style, $Color, $Transparency, $Smooth, $Description)
 
     # Valider le style
     if (-not $LineStyle.Validate()) {
-        throw "Style de ligne invalide. Vérifiez les paramètres."
+        throw "Style de ligne invalide. VÃ©rifiez les paramÃ¨tres."
     }
 
     # Ajouter le style au registre
@@ -1743,15 +1743,15 @@ function New-ExcelLineStyle {
 .SYNOPSIS
     Liste tous les styles de ligne disponibles.
 .DESCRIPTION
-    Cette fonction liste tous les styles de ligne prédéfinis et personnalisés disponibles.
+    Cette fonction liste tous les styles de ligne prÃ©dÃ©finis et personnalisÃ©s disponibles.
 .PARAMETER BuiltInOnly
-    Si spécifié, liste uniquement les styles prédéfinis.
+    Si spÃ©cifiÃ©, liste uniquement les styles prÃ©dÃ©finis.
 .PARAMETER CustomOnly
-    Si spécifié, liste uniquement les styles personnalisés.
+    Si spÃ©cifiÃ©, liste uniquement les styles personnalisÃ©s.
 .EXAMPLE
     Get-ExcelLineStyleList -BuiltInOnly
 .OUTPUTS
-    PSObject[] - Liste des styles disponibles avec leurs propriétés.
+    PSObject[] - Liste des styles disponibles avec leurs propriÃ©tÃ©s.
 #>
 function Get-ExcelLineStyleList {
     [CmdletBinding()]
@@ -1767,7 +1767,7 @@ function Get-ExcelLineStyleList {
     $Result = @()
 
     foreach ($Style in $Styles) {
-        # Filtrer selon les paramètres
+        # Filtrer selon les paramÃ¨tres
         if ($BuiltInOnly -and -not $Style.IsBuiltIn) {
             continue
         }
@@ -1795,16 +1795,16 @@ function Get-ExcelLineStyleList {
 
 <#
 .SYNOPSIS
-    Supprime un style de ligne personnalisé.
+    Supprime un style de ligne personnalisÃ©.
 .DESCRIPTION
-    Cette fonction supprime un style de ligne personnalisé du registre.
-    Les styles prédéfinis ne peuvent pas être supprimés.
+    Cette fonction supprime un style de ligne personnalisÃ© du registre.
+    Les styles prÃ©dÃ©finis ne peuvent pas Ãªtre supprimÃ©s.
 .PARAMETER Name
-    Nom du style à supprimer.
+    Nom du style Ã  supprimer.
 .EXAMPLE
     Remove-ExcelLineStyle -Name "MonStyle"
 .OUTPUTS
-    System.Boolean - True si la suppression a réussi, False sinon.
+    System.Boolean - True si la suppression a rÃ©ussi, False sinon.
 #>
 function Remove-ExcelLineStyle {
     [CmdletBinding()]
@@ -1818,27 +1818,27 @@ function Remove-ExcelLineStyle {
 
 <#
 .SYNOPSIS
-    Applique un style de ligne à une série dans un graphique Excel.
+    Applique un style de ligne Ã  une sÃ©rie dans un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un style de ligne spécifié à une série dans un graphique Excel.
+    Cette fonction applique un style de ligne spÃ©cifiÃ© Ã  une sÃ©rie dans un graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER SeriesIndex
-    L'index de la série à modifier (0-basé).
+    L'index de la sÃ©rie Ã  modifier (0-basÃ©).
 .PARAMETER StyleName
-    Le nom du style de ligne à appliquer.
+    Le nom du style de ligne Ã  appliquer.
 .PARAMETER Style
-    Un objet de style de ligne à appliquer (alternative à StyleName).
+    Un objet de style de ligne Ã  appliquer (alternative Ã  StyleName).
 .EXAMPLE
     Set-ExcelChartSeriesLineStyle -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -SeriesIndex 0 -StyleName "Dashed"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesLineStyle {
     [CmdletBinding()]
@@ -1866,17 +1866,17 @@ function Set-ExcelChartSeriesLineStyle {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -1890,15 +1890,15 @@ function Set-ExcelChartSeriesLineStyle {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Vérifier que l'index de série est valide
+        # VÃ©rifier que l'index de sÃ©rie est valide
         if ($SeriesIndex -lt 0 -or $SeriesIndex -ge $Chart.Series.Count) {
-            throw "Index de série invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) séries."
+            throw "Index de sÃ©rie invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
         }
 
-        # Obtenir la série
+        # Obtenir la sÃ©rie
         $Series = $Chart.Series[$SeriesIndex]
 
         # Obtenir le style de ligne
@@ -1908,7 +1908,7 @@ function Set-ExcelChartSeriesLineStyle {
             $LineStyle = $Style
         }
 
-        # Appliquer le style à la série
+        # Appliquer le style Ã  la sÃ©rie
         $LineStyle.ApplyToSeries($Series)
 
         # Sauvegarder le classeur
@@ -1931,7 +1931,7 @@ function Set-ExcelChartSeriesLineStyle {
 .EXAMPLE
     Get-ExcelMarkerStyleList
 .OUTPUTS
-    PSObject[] - Liste des styles de marqueurs disponibles avec leurs propriétés.
+    PSObject[] - Liste des styles de marqueurs disponibles avec leurs propriÃ©tÃ©s.
 #>
 function Get-ExcelMarkerStyleList {
     [CmdletBinding()]
@@ -1942,13 +1942,13 @@ function Get-ExcelMarkerStyleList {
 
 <#
 .SYNOPSIS
-    Liste toutes les tailles de marqueurs prédéfinies.
+    Liste toutes les tailles de marqueurs prÃ©dÃ©finies.
 .DESCRIPTION
-    Cette fonction liste toutes les tailles de marqueurs prédéfinies disponibles.
+    Cette fonction liste toutes les tailles de marqueurs prÃ©dÃ©finies disponibles.
 .EXAMPLE
     Get-ExcelMarkerSizeList
 .OUTPUTS
-    PSObject[] - Liste des tailles prédéfinies avec leurs valeurs.
+    PSObject[] - Liste des tailles prÃ©dÃ©finies avec leurs valeurs.
 #>
 function Get-ExcelMarkerSizeList {
     [CmdletBinding()]
@@ -1959,19 +1959,19 @@ function Get-ExcelMarkerSizeList {
 
 <#
 .SYNOPSIS
-    Crée une nouvelle configuration de marqueur.
+    CrÃ©e une nouvelle configuration de marqueur.
 .DESCRIPTION
-    Cette fonction crée une nouvelle configuration de marqueur avec les propriétés spécifiées.
+    Cette fonction crÃ©e une nouvelle configuration de marqueur avec les propriÃ©tÃ©s spÃ©cifiÃ©es.
 .PARAMETER Style
-    Le style de marqueur à utiliser.
+    Le style de marqueur Ã  utiliser.
 .PARAMETER Size
     La taille du marqueur (1-25).
 .PARAMETER SizeName
-    Le nom d'une taille prédéfinie (Tiny, Small, Medium, Large, ExtraLarge, Huge).
+    Le nom d'une taille prÃ©dÃ©finie (Tiny, Small, Medium, Large, ExtraLarge, Huge).
 .PARAMETER Color
-    La couleur du marqueur au format hexadécimal (#RRGGBB).
+    La couleur du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderColor
-    La couleur de bordure du marqueur au format hexadécimal (#RRGGBB).
+    La couleur de bordure du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderWidth
     La largeur de la bordure du marqueur (1-5).
 .PARAMETER Description
@@ -1981,7 +1981,7 @@ function Get-ExcelMarkerSizeList {
 .EXAMPLE
     $MarkerConfig = New-ExcelMarkerConfig -Style Circle -SizeName "Large" -Color "#0000FF"
 .OUTPUTS
-    ExcelMarkerConfig - La nouvelle configuration de marqueur créée.
+    ExcelMarkerConfig - La nouvelle configuration de marqueur crÃ©Ã©e.
 #>
 function New-ExcelMarkerConfig {
     [CmdletBinding(DefaultParameterSetName = "BySize")]
@@ -2011,25 +2011,25 @@ function New-ExcelMarkerConfig {
         [string]$Description = ""
     )
 
-    # Déterminer la taille à utiliser
+    # DÃ©terminer la taille Ã  utiliser
     $ActualSize = if ($PSCmdlet.ParameterSetName -eq "BySizeName") {
         [ExcelMarkerStyleConverter]::GetPredefinedSize($SizeName)
     } else {
         $Size
     }
 
-    # Créer la description si non spécifiée
+    # CrÃ©er la description si non spÃ©cifiÃ©e
     if ([string]::IsNullOrEmpty($Description)) {
         $SizeDesc = if ($PSCmdlet.ParameterSetName -eq "BySizeName") { $SizeName } else { $ActualSize }
         $Description = "Marqueur $Style de taille $SizeDesc"
     }
 
-    # Créer la configuration
+    # CrÃ©er la configuration
     $MarkerConfig = [ExcelMarkerConfig]::new($Style, $ActualSize, $Color, $BorderColor, $BorderWidth, $Description)
 
     # Valider la configuration
     if (-not $MarkerConfig.Validate()) {
-        throw "Configuration de marqueur invalide. Vérifiez les paramètres."
+        throw "Configuration de marqueur invalide. VÃ©rifiez les paramÃ¨tres."
     }
 
     return $MarkerConfig
@@ -2037,33 +2037,33 @@ function New-ExcelMarkerConfig {
 
 <#
 .SYNOPSIS
-    Applique un style de marqueur à une série dans un graphique Excel.
+    Applique un style de marqueur Ã  une sÃ©rie dans un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un style de marqueur spécifié à une série dans un graphique Excel.
+    Cette fonction applique un style de marqueur spÃ©cifiÃ© Ã  une sÃ©rie dans un graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER SeriesIndex
-    L'index de la série à modifier (0-basé).
+    L'index de la sÃ©rie Ã  modifier (0-basÃ©).
 .PARAMETER MarkerStyle
-    Le style de marqueur à appliquer.
+    Le style de marqueur Ã  appliquer.
 .PARAMETER Size
     La taille du marqueur (1-25).
 .PARAMETER Color
-    La couleur du marqueur au format hexadécimal (#RRGGBB).
+    La couleur du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderColor
-    La couleur de bordure du marqueur au format hexadécimal (#RRGGBB).
+    La couleur de bordure du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderWidth
     La largeur de la bordure du marqueur (1-5).
 .EXAMPLE
     Set-ExcelChartSeriesMarkerStyle -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -SeriesIndex 0 -MarkerStyle Diamond -Size 10 -Color "#FF0000" -BorderColor "#000000" -BorderWidth 2
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartSeriesMarkerStyle {
     [CmdletBinding()]
@@ -2102,26 +2102,26 @@ function Set-ExcelChartSeriesMarkerStyle {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format des couleurs
+        # VÃ©rifier le format des couleurs
         if ($Color -ne "" -and -not ($Color -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide pour le marqueur. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide pour le marqueur. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
         if ($BorderColor -ne "" -and -not ($BorderColor -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide pour la bordure. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide pour la bordure. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -2135,31 +2135,31 @@ function Set-ExcelChartSeriesMarkerStyle {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Vérifier que l'index de série est valide
+        # VÃ©rifier que l'index de sÃ©rie est valide
         if ($SeriesIndex -lt 0 -or $SeriesIndex -ge $Chart.Series.Count) {
-            throw "Index de série invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) séries."
+            throw "Index de sÃ©rie invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
         }
 
-        # Obtenir la série
+        # Obtenir la sÃ©rie
         $Series = $Chart.Series[$SeriesIndex]
 
         # Appliquer le style de marqueur
         [ExcelMarkerStyleConverter]::ApplyToSeries($Series, $MarkerStyle, $Size)
 
-        # Appliquer la couleur du marqueur si spécifiée
+        # Appliquer la couleur du marqueur si spÃ©cifiÃ©e
         if ($Color -ne "" -and $Series.PSObject.Properties.Name -contains "MarkerColor") {
             $Series.MarkerColor.SetColor($Color)
         }
 
-        # Appliquer la couleur de bordure si spécifiée
+        # Appliquer la couleur de bordure si spÃ©cifiÃ©e
         if ($BorderColor -ne "" -and $Series.PSObject.Properties.Name -contains "MarkerBorderColor") {
             $Series.MarkerBorderColor.SetColor($BorderColor)
         }
 
-        # Appliquer la largeur de bordure si spécifiée
+        # Appliquer la largeur de bordure si spÃ©cifiÃ©e
         if ($Series.PSObject.Properties.Name -contains "MarkerBorderWidth") {
             $Series.MarkerBorderWidth = $BorderWidth
         }
@@ -2176,35 +2176,35 @@ function Set-ExcelChartSeriesMarkerStyle {
 
 <#
 .SYNOPSIS
-    Applique un style de marqueur à un point de données spécifique dans un graphique Excel.
+    Applique un style de marqueur Ã  un point de donnÃ©es spÃ©cifique dans un graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un style de marqueur spécifié à un point de données spécifique dans un graphique Excel.
+    Cette fonction applique un style de marqueur spÃ©cifiÃ© Ã  un point de donnÃ©es spÃ©cifique dans un graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER SeriesIndex
-    L'index de la série contenant le point de données (0-basé).
+    L'index de la sÃ©rie contenant le point de donnÃ©es (0-basÃ©).
 .PARAMETER PointIndex
-    L'index du point de données à modifier (0-basé).
+    L'index du point de donnÃ©es Ã  modifier (0-basÃ©).
 .PARAMETER MarkerStyle
-    Le style de marqueur à appliquer.
+    Le style de marqueur Ã  appliquer.
 .PARAMETER Size
     La taille du marqueur (1-25).
 .PARAMETER Color
-    La couleur du marqueur au format hexadécimal (#RRGGBB).
+    La couleur du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderColor
-    La couleur de bordure du marqueur au format hexadécimal (#RRGGBB).
+    La couleur de bordure du marqueur au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER BorderWidth
     La largeur de la bordure du marqueur (1-5).
 .EXAMPLE
     Set-ExcelChartDataPointMarkerStyle -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -SeriesIndex 0 -PointIndex 2 -MarkerStyle Star -Size 12 -Color "#00FF00"
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartDataPointMarkerStyle {
     [CmdletBinding()]
@@ -2246,26 +2246,26 @@ function Set-ExcelChartDataPointMarkerStyle {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format des couleurs
+        # VÃ©rifier le format des couleurs
         if ($Color -ne "" -and -not ($Color -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide pour le marqueur. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide pour le marqueur. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
         if ($BorderColor -ne "" -and -not ($BorderColor -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide pour la bordure. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide pour la bordure. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -2279,28 +2279,28 @@ function Set-ExcelChartDataPointMarkerStyle {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Vérifier que l'index de série est valide
+        # VÃ©rifier que l'index de sÃ©rie est valide
         if ($SeriesIndex -lt 0 -or $SeriesIndex -ge $Chart.Series.Count) {
-            throw "Index de série invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) séries."
+            throw "Index de sÃ©rie invalide: $SeriesIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
         }
 
-        # Obtenir la série
+        # Obtenir la sÃ©rie
         $Series = $Chart.Series[$SeriesIndex]
 
-        # Vérifier si la série supporte les points de données
+        # VÃ©rifier si la sÃ©rie supporte les points de donnÃ©es
         if (-not ($Series.PSObject.Properties.Name -contains "Points")) {
-            throw "La série ne supporte pas la personnalisation par point de données."
+            throw "La sÃ©rie ne supporte pas la personnalisation par point de donnÃ©es."
         }
 
-        # Vérifier que l'index de point est valide
+        # VÃ©rifier que l'index de point est valide
         if ($PointIndex -lt 0 -or $PointIndex -ge $Series.Points.Count) {
-            throw "Index de point invalide: $PointIndex. La série contient $($Series.Points.Count) points."
+            throw "Index de point invalide: $PointIndex. La sÃ©rie contient $($Series.Points.Count) points."
         }
 
-        # Obtenir le point de données
+        # Obtenir le point de donnÃ©es
         $DataPoint = $Series.Points[$PointIndex]
 
         # Appliquer le style de marqueur
@@ -2313,17 +2313,17 @@ function Set-ExcelChartDataPointMarkerStyle {
             $DataPoint.MarkerSize = $Size
         }
 
-        # Appliquer la couleur du marqueur si spécifiée
+        # Appliquer la couleur du marqueur si spÃ©cifiÃ©e
         if ($Color -ne "" -and $DataPoint.PSObject.Properties.Name -contains "MarkerColor") {
             $DataPoint.MarkerColor.SetColor($Color)
         }
 
-        # Appliquer la couleur de bordure si spécifiée
+        # Appliquer la couleur de bordure si spÃ©cifiÃ©e
         if ($BorderColor -ne "" -and $DataPoint.PSObject.Properties.Name -contains "MarkerBorderColor") {
             $DataPoint.MarkerBorderColor.SetColor($BorderColor)
         }
 
-        # Appliquer la largeur de bordure si spécifiée
+        # Appliquer la largeur de bordure si spÃ©cifiÃ©e
         if ($DataPoint.PSObject.Properties.Name -contains "MarkerBorderWidth") {
             $DataPoint.MarkerBorderWidth = $BorderWidth
         }
@@ -2333,7 +2333,7 @@ function Set-ExcelChartDataPointMarkerStyle {
 
         return $true
     } catch {
-        Write-Error "Erreur lors de l'application du style de marqueur au point de données: $_"
+        Write-Error "Erreur lors de l'application du style de marqueur au point de donnÃ©es: $_"
         return $false
     }
 }
@@ -2363,10 +2363,10 @@ class ExcelBorderStyleConverter {
         [ExcelBorderStyle]::None             = "Aucune bordure"
         [ExcelBorderStyle]::Thin             = "Bordure fine"
         [ExcelBorderStyle]::Medium           = "Bordure moyenne"
-        [ExcelBorderStyle]::Thick            = "Bordure épaisse"
+        [ExcelBorderStyle]::Thick            = "Bordure Ã©paisse"
         [ExcelBorderStyle]::Double           = "Bordure double"
-        [ExcelBorderStyle]::Hair             = "Bordure très fine"
-        [ExcelBorderStyle]::Dotted           = "Bordure pointillée"
+        [ExcelBorderStyle]::Hair             = "Bordure trÃ¨s fine"
+        [ExcelBorderStyle]::Dotted           = "Bordure pointillÃ©e"
         [ExcelBorderStyle]::Dashed           = "Bordure en tirets"
         [ExcelBorderStyle]::MediumDashed     = "Bordure moyenne en tirets"
         [ExcelBorderStyle]::DashDot          = "Bordure tiret-point"
@@ -2376,17 +2376,17 @@ class ExcelBorderStyleConverter {
         [ExcelBorderStyle]::SlantDashDot     = "Bordure tiret-point oblique"
     }
 
-    # Méthode pour convertir ExcelBorderStyle en eBorderStyle d'EPPlus
+    # MÃ©thode pour convertir ExcelBorderStyle en eBorderStyle d'EPPlus
     static [int] ToEPPlusStyle([ExcelBorderStyle]$Style) {
         return [ExcelBorderStyleConverter]::StyleMapping[$Style]
     }
 
-    # Méthode pour obtenir la description d'un style de bordure
+    # MÃ©thode pour obtenir la description d'un style de bordure
     static [string] GetDescription([ExcelBorderStyle]$Style) {
         return [ExcelBorderStyleConverter]::StyleDescriptions[$Style]
     }
 
-    # Méthode pour obtenir tous les styles disponibles avec leurs descriptions
+    # MÃ©thode pour obtenir tous les styles disponibles avec leurs descriptions
     static [PSObject[]] GetAllStyles() {
         $Result = @()
 
@@ -2409,13 +2409,13 @@ class ExcelBorderStyleConverter {
 class ExcelBorderStyleConfig {
     [ExcelBorderStyle]$Style = [ExcelBorderStyle]::Thin
     [string]$Color = "#000000"
-    [int]$Width = 1                # Épaisseur supplémentaire (1-5)
+    [int]$Width = 1                # Ã‰paisseur supplÃ©mentaire (1-5)
     [string]$Description = ""
     [bool]$IsBuiltIn = $false
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     ExcelBorderStyleConfig() {
-        $this.Description = "Configuration de bordure par défaut"
+        $this.Description = "Configuration de bordure par dÃ©faut"
     }
 
     # Constructeur avec style et couleur
@@ -2433,7 +2433,7 @@ class ExcelBorderStyleConfig {
         $this.Description = $Description
     }
 
-    # Méthode pour valider la configuration
+    # MÃ©thode pour valider la configuration
     [bool] Validate() {
         # Valider la largeur
         if ($this.Width -lt 1 -or $this.Width -gt 5) {
@@ -2448,25 +2448,25 @@ class ExcelBorderStyleConfig {
         return $true
     }
 
-    # Méthode pour créer une copie de la configuration
+    # MÃ©thode pour crÃ©er une copie de la configuration
     [ExcelBorderStyleConfig] Clone() {
         $Clone = [ExcelBorderStyleConfig]::new()
         $Clone.Style = $this.Style
         $Clone.Color = $this.Color
         $Clone.Width = $this.Width
         $Clone.Description = $this.Description
-        $Clone.IsBuiltIn = $false  # Une copie n'est jamais un style prédéfini
+        $Clone.IsBuiltIn = $false  # Une copie n'est jamais un style prÃ©dÃ©fini
 
         return $Clone
     }
 
-    # Méthode pour appliquer la configuration à un élément de graphique
+    # MÃ©thode pour appliquer la configuration Ã  un Ã©lÃ©ment de graphique
     [void] ApplyToElement([object]$Element) {
         if ($null -eq $Element) {
             return
         }
 
-        # Appliquer le style de bordure si l'élément supporte cette propriété
+        # Appliquer le style de bordure si l'Ã©lÃ©ment supporte cette propriÃ©tÃ©
         if ($Element.PSObject.Properties.Name -contains "Border") {
             if ($Element.Border.PSObject.Properties.Name -contains "Style") {
                 $Element.Border.Style = [ExcelBorderStyleConverter]::ToEPPlusStyle($this.Style)
@@ -2480,7 +2480,7 @@ class ExcelBorderStyleConfig {
                 $Element.Border.Width = $this.Width
             }
         }
-        # Si l'élément a des propriétés de bordure directes
+        # Si l'Ã©lÃ©ment a des propriÃ©tÃ©s de bordure directes
         elseif ($Element.PSObject.Properties.Name -contains "BorderStyle") {
             $Element.BorderStyle = [ExcelBorderStyleConverter]::ToEPPlusStyle($this.Style)
 
@@ -2494,13 +2494,13 @@ class ExcelBorderStyleConfig {
         }
     }
 
-    # Méthode pour appliquer la configuration à une série
+    # MÃ©thode pour appliquer la configuration Ã  une sÃ©rie
     [void] ApplyToSeries([object]$Series) {
         if ($null -eq $Series) {
             return
         }
 
-        # Appliquer à l'élément de série principal
+        # Appliquer Ã  l'Ã©lÃ©ment de sÃ©rie principal
         $this.ApplyToElement($Series)
 
         # Appliquer aux marqueurs si disponibles
@@ -2517,13 +2517,13 @@ class ExcelBorderStyleConfig {
         }
     }
 
-    # Méthode pour appliquer la configuration à un point de données
+    # MÃ©thode pour appliquer la configuration Ã  un point de donnÃ©es
     [void] ApplyToDataPoint([object]$DataPoint) {
         if ($null -eq $DataPoint) {
             return
         }
 
-        # Appliquer à l'élément de point de données principal
+        # Appliquer Ã  l'Ã©lÃ©ment de point de donnÃ©es principal
         $this.ApplyToElement($DataPoint)
 
         # Appliquer aux marqueurs si disponibles
@@ -2540,9 +2540,9 @@ class ExcelBorderStyleConfig {
         }
     }
 
-    # Méthode pour convertir en chaîne
+    # MÃ©thode pour convertir en chaÃ®ne
     [string] ToString() {
-        return "$($this.Description) (Style: $($this.Style), Couleur: $($this.Color), Épaisseur: $($this.Width))"
+        return "$($this.Description) (Style: $($this.Style), Couleur: $($this.Color), Ã‰paisseur: $($this.Width))"
     }
 }
 
@@ -2554,7 +2554,7 @@ class ExcelBorderStyleConfig {
 .EXAMPLE
     Get-ExcelBorderStyleList
 .OUTPUTS
-    PSObject[] - Liste des styles de bordure disponibles avec leurs propriétés.
+    PSObject[] - Liste des styles de bordure disponibles avec leurs propriÃ©tÃ©s.
 #>
 function Get-ExcelBorderStyleList {
     [CmdletBinding()]
@@ -2565,21 +2565,21 @@ function Get-ExcelBorderStyleList {
 
 <#
 .SYNOPSIS
-    Crée une nouvelle configuration de bordure.
+    CrÃ©e une nouvelle configuration de bordure.
 .DESCRIPTION
-    Cette fonction crée une nouvelle configuration de bordure avec les propriétés spécifiées.
+    Cette fonction crÃ©e une nouvelle configuration de bordure avec les propriÃ©tÃ©s spÃ©cifiÃ©es.
 .PARAMETER Style
-    Le style de bordure à utiliser.
+    Le style de bordure Ã  utiliser.
 .PARAMETER Color
-    La couleur de la bordure au format hexadécimal (#RRGGBB).
+    La couleur de la bordure au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Width
-    L'épaisseur supplémentaire de la bordure (1-5).
+    L'Ã©paisseur supplÃ©mentaire de la bordure (1-5).
 .PARAMETER Description
     Description de la configuration (optionnel).
 .EXAMPLE
     $BorderConfig = New-ExcelBorderConfig -Style Medium -Color "#FF0000" -Width 2
 .OUTPUTS
-    ExcelBorderStyleConfig - La nouvelle configuration de bordure créée.
+    ExcelBorderStyleConfig - La nouvelle configuration de bordure crÃ©Ã©e.
 #>
 function New-ExcelBorderConfig {
     [CmdletBinding()]
@@ -2598,17 +2598,17 @@ function New-ExcelBorderConfig {
         [string]$Description = ""
     )
 
-    # Créer la description si non spécifiée
+    # CrÃ©er la description si non spÃ©cifiÃ©e
     if ([string]::IsNullOrEmpty($Description)) {
         $Description = "Bordure $Style de couleur $Color"
     }
 
-    # Créer la configuration
+    # CrÃ©er la configuration
     $BorderConfig = [ExcelBorderStyleConfig]::new($Style, $Color, $Width, $Description)
 
     # Valider la configuration
     if (-not $BorderConfig.Validate()) {
-        throw "Configuration de bordure invalide. Vérifiez les paramètres."
+        throw "Configuration de bordure invalide. VÃ©rifiez les paramÃ¨tres."
     }
 
     return $BorderConfig
@@ -2616,31 +2616,31 @@ function New-ExcelBorderConfig {
 
 <#
 .SYNOPSIS
-    Applique un style de bordure à un élément de graphique Excel.
+    Applique un style de bordure Ã  un Ã©lÃ©ment de graphique Excel.
 .DESCRIPTION
-    Cette fonction applique un style de bordure spécifié à un élément de graphique Excel.
+    Cette fonction applique un style de bordure spÃ©cifiÃ© Ã  un Ã©lÃ©ment de graphique Excel.
 .PARAMETER Exporter
-    L'exporteur Excel à utiliser.
+    L'exporteur Excel Ã  utiliser.
 .PARAMETER WorkbookId
     L'identifiant du classeur contenant le graphique.
 .PARAMETER WorksheetId
     L'identifiant de la feuille contenant le graphique.
 .PARAMETER ChartName
-    Le nom du graphique à modifier.
+    Le nom du graphique Ã  modifier.
 .PARAMETER ElementType
-    Le type d'élément à modifier (Series, Title, Legend, Plot, Axis).
+    Le type d'Ã©lÃ©ment Ã  modifier (Series, Title, Legend, Plot, Axis).
 .PARAMETER ElementIndex
-    L'index de l'élément à modifier (pour les séries et axes).
+    L'index de l'Ã©lÃ©ment Ã  modifier (pour les sÃ©ries et axes).
 .PARAMETER Style
-    Le style de bordure à appliquer.
+    Le style de bordure Ã  appliquer.
 .PARAMETER Color
-    La couleur de la bordure au format hexadécimal (#RRGGBB).
+    La couleur de la bordure au format hexadÃ©cimal (#RRGGBB).
 .PARAMETER Width
-    L'épaisseur supplémentaire de la bordure (1-5).
+    L'Ã©paisseur supplÃ©mentaire de la bordure (1-5).
 .EXAMPLE
     Set-ExcelChartElementBorder -Exporter $Exporter -WorkbookId $WorkbookId -WorksheetId $WorksheetId -ChartName "MonGraphique" -ElementType Series -ElementIndex 0 -Style Medium -Color "#FF0000" -Width 2
 .OUTPUTS
-    System.Boolean - True si l'application a réussi, False sinon.
+    System.Boolean - True si l'application a rÃ©ussi, False sinon.
 #>
 function Set-ExcelChartElementBorder {
     [CmdletBinding()]
@@ -2676,22 +2676,22 @@ function Set-ExcelChartElementBorder {
     )
 
     try {
-        # Vérifier si le classeur existe
+        # VÃ©rifier si le classeur existe
         if (-not $Exporter.WorkbookExists($WorkbookId)) {
-            throw "Classeur non trouvé: $WorkbookId"
+            throw "Classeur non trouvÃ©: $WorkbookId"
         }
 
-        # Vérifier si la feuille existe
+        # VÃ©rifier si la feuille existe
         if (-not $Exporter.WorksheetExists($WorkbookId, $WorksheetId)) {
-            throw "Feuille de calcul non trouvée: $WorksheetId"
+            throw "Feuille de calcul non trouvÃ©e: $WorksheetId"
         }
 
-        # Vérifier le format de la couleur
+        # VÃ©rifier le format de la couleur
         if (-not ($Color -match '^#[0-9A-Fa-f]{6}$')) {
-            throw "Format de couleur invalide. Utilisez le format hexadécimal (#RRGGBB)."
+            throw "Format de couleur invalide. Utilisez le format hexadÃ©cimal (#RRGGBB)."
         }
 
-        # Accéder au classeur et à la feuille
+        # AccÃ©der au classeur et Ã  la feuille
         $Workbook = $Exporter._workbooks[$WorkbookId]
         $Worksheet = $Workbook.Worksheets[$WorksheetId]
 
@@ -2705,19 +2705,19 @@ function Set-ExcelChartElementBorder {
         }
 
         if ($null -eq $Chart) {
-            throw "Graphique non trouvé: $ChartName"
+            throw "Graphique non trouvÃ©: $ChartName"
         }
 
-        # Créer la configuration de bordure
+        # CrÃ©er la configuration de bordure
         $BorderConfig = [ExcelBorderStyleConfig]::new($Style, $Color, $Width, "")
 
-        # Obtenir l'élément à modifier
+        # Obtenir l'Ã©lÃ©ment Ã  modifier
         $Element = $null
 
         switch ($ElementType) {
             "Series" {
                 if ($ElementIndex -lt 0 -or $ElementIndex -ge $Chart.Series.Count) {
-                    throw "Index de série invalide: $ElementIndex. Le graphique contient $($Chart.Series.Count) séries."
+                    throw "Index de sÃ©rie invalide: $ElementIndex. Le graphique contient $($Chart.Series.Count) sÃ©ries."
                 }
                 $Element = $Chart.Series[$ElementIndex]
                 $BorderConfig.ApplyToSeries($Element)
@@ -2752,7 +2752,7 @@ function Set-ExcelChartElementBorder {
         }
 
         if ($null -eq $Element) {
-            throw "Élément non trouvé ou non supporté: $ElementType"
+            throw "Ã‰lÃ©ment non trouvÃ© ou non supportÃ©: $ElementType"
         }
 
         # Sauvegarder le classeur

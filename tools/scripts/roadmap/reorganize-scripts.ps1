@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Réorganise les scripts de roadmap dans la nouvelle structure de dossiers.
+    RÃ©organise les scripts de roadmap dans la nouvelle structure de dossiers.
 
 .DESCRIPTION
-    Ce script déplace les fichiers existants dans le dossier scripts/roadmap vers la nouvelle structure
-    de dossiers organisée par catégories et sous-catégories.
+    Ce script dÃ©place les fichiers existants dans le dossier scripts/roadmap vers la nouvelle structure
+    de dossiers organisÃ©e par catÃ©gories et sous-catÃ©gories.
 
 .NOTES
     Auteur: RoadmapTools Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Définir les mappages de fichiers vers les nouveaux emplacements
+# DÃ©finir les mappages de fichiers vers les nouveaux emplacements
 $fileMappings = @{
     # Core - Conversion
     "Convert-Roadmap.ps1" = "core/conversion/Convert-Roadmap.ps1"
@@ -59,7 +59,7 @@ $fileMappings = @{
     "Export-RoadmapToJSON.ps1" = "utils/export/Export-RoadmapToJSON.ps1"
 }
 
-# Fonction pour déplacer un fichier
+# Fonction pour dÃ©placer un fichier
 function Move-FileToNewLocation {
     param (
         [string]$SourceFile,
@@ -69,33 +69,33 @@ function Move-FileToNewLocation {
     $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath $SourceFile
     $destinationPath = Join-Path -Path $PSScriptRoot -ChildPath $DestinationPath
     
-    # Vérifier si le fichier source existe
+    # VÃ©rifier si le fichier source existe
     if (-not (Test-Path -Path $sourcePath)) {
         Write-Warning "Le fichier source n'existe pas : $sourcePath"
         return
     }
     
-    # Créer le dossier de destination s'il n'existe pas
+    # CrÃ©er le dossier de destination s'il n'existe pas
     $destinationDir = Split-Path -Path $destinationPath -Parent
     if (-not (Test-Path -Path $destinationDir)) {
         New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier créé : $destinationDir"
+        Write-Host "Dossier crÃ©Ã© : $destinationDir"
     }
     
-    # Déplacer le fichier
+    # DÃ©placer le fichier
     try {
         Copy-Item -Path $sourcePath -Destination $destinationPath -Force
-        Write-Host "Fichier copié : $SourceFile -> $DestinationPath"
+        Write-Host "Fichier copiÃ© : $SourceFile -> $DestinationPath"
     }
     catch {
         Write-Error "Erreur lors de la copie du fichier $SourceFile : $_"
     }
 }
 
-# Déplacer les fichiers
+# DÃ©placer les fichiers
 foreach ($file in $fileMappings.Keys) {
     Move-FileToNewLocation -SourceFile $file -DestinationPath $fileMappings[$file]
 }
 
-Write-Host "Réorganisation terminée. Les fichiers ont été copiés vers leurs nouveaux emplacements."
-Write-Host "Vous pouvez maintenant vérifier que tout fonctionne correctement avant de supprimer les fichiers originaux."
+Write-Host "RÃ©organisation terminÃ©e. Les fichiers ont Ã©tÃ© copiÃ©s vers leurs nouveaux emplacements."
+Write-Host "Vous pouvez maintenant vÃ©rifier que tout fonctionne correctement avant de supprimer les fichiers originaux."

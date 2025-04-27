@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Fusionne les résultats d'analyses parallèles.
+    Fusionne les rÃ©sultats d'analyses parallÃ¨les.
 
 .DESCRIPTION
-    Ce script fusionne les résultats d'analyses parallèles de pull requests
-    en un seul rapport consolidé, en éliminant les doublons et en résolvant
+    Ce script fusionne les rÃ©sultats d'analyses parallÃ¨les de pull requests
+    en un seul rapport consolidÃ©, en Ã©liminant les doublons et en rÃ©solvant
     les conflits.
 
 .PARAMETER InputPaths
-    Les chemins des fichiers de résultats à fusionner.
+    Les chemins des fichiers de rÃ©sultats Ã  fusionner.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le résultat fusionné.
-    Par défaut: "reports\pr-analysis\merged_results.json"
+    Le chemin oÃ¹ enregistrer le rÃ©sultat fusionnÃ©.
+    Par dÃ©faut: "reports\pr-analysis\merged_results.json"
 
 .PARAMETER ConflictResolution
-    La stratégie de résolution des conflits.
+    La stratÃ©gie de rÃ©solution des conflits.
     Valeurs possibles: "First", "Last", "Newest", "MostIssues", "LeastIssues"
-    Par défaut: "Newest"
+    Par dÃ©faut: "Newest"
 
 .PARAMETER GenerateHtmlReport
-    Indique s'il faut générer un rapport HTML.
-    Par défaut: $true
+    Indique s'il faut gÃ©nÃ©rer un rapport HTML.
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\Merge-ParallelResults.ps1 -InputPaths "results1.json", "results2.json"
-    Fusionne les résultats des deux fichiers spécifiés.
+    Fusionne les rÃ©sultats des deux fichiers spÃ©cifiÃ©s.
 
 .EXAMPLE
     .\Merge-ParallelResults.ps1 -InputPaths "results*.json" -ConflictResolution "MostIssues"
-    Fusionne tous les fichiers correspondant au modèle, en privilégiant les résultats avec le plus de problèmes en cas de conflit.
+    Fusionne tous les fichiers correspondant au modÃ¨le, en privilÃ©giant les rÃ©sultats avec le plus de problÃ¨mes en cas de conflit.
 
 .NOTES
     Version: 1.0
@@ -54,16 +54,16 @@ param(
     [bool]$GenerateHtmlReport = $true
 )
 
-# Importer le module de parallélisation
+# Importer le module de parallÃ©lisation
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\ParallelPRAnalysis.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module ParallelPRAnalysis non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module ParallelPRAnalysis non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
-# Fonction pour résoudre les chemins de fichiers
+# Fonction pour rÃ©soudre les chemins de fichiers
 function Resolve-FilePaths {
     [CmdletBinding()]
     param(
@@ -75,13 +75,13 @@ function Resolve-FilePaths {
         $resolvedPaths = @()
         
         foreach ($path in $Paths) {
-            # Vérifier si le chemin contient des caractères génériques
+            # VÃ©rifier si le chemin contient des caractÃ¨res gÃ©nÃ©riques
             if ($path -match '\*|\?') {
-                # Résoudre les chemins avec des caractères génériques
+                # RÃ©soudre les chemins avec des caractÃ¨res gÃ©nÃ©riques
                 $matchingPaths = Get-ChildItem -Path $path -File | Select-Object -ExpandProperty FullName
                 $resolvedPaths += $matchingPaths
             } else {
-                # Vérifier si le fichier existe
+                # VÃ©rifier si le fichier existe
                 if (Test-Path -Path $path -PathType Leaf) {
                     $resolvedPaths += (Get-Item -Path $path).FullName
                 } else {
@@ -92,12 +92,12 @@ function Resolve-FilePaths {
         
         return $resolvedPaths
     } catch {
-        Write-Error "Erreur lors de la résolution des chemins de fichiers: $_"
+        Write-Error "Erreur lors de la rÃ©solution des chemins de fichiers: $_"
         return @()
     }
 }
 
-# Fonction pour charger les résultats
+# Fonction pour charger les rÃ©sultats
 function Get-ResultsFromFile {
     [CmdletBinding()]
     param(
@@ -126,12 +126,12 @@ function Get-ResultsFromFile {
         
         return $results
     } catch {
-        Write-Error "Erreur lors du chargement des résultats à partir du fichier: $Path`n$_"
+        Write-Error "Erreur lors du chargement des rÃ©sultats Ã  partir du fichier: $Path`n$_"
         return $null
     }
 }
 
-# Fonction pour fusionner les résultats
+# Fonction pour fusionner les rÃ©sultats
 function Merge-Results {
     [CmdletBinding()]
     param(
@@ -143,18 +143,18 @@ function Merge-Results {
     )
 
     try {
-        # Vérifier s'il y a des résultats à fusionner
+        # VÃ©rifier s'il y a des rÃ©sultats Ã  fusionner
         if ($ResultsArray.Count -eq 0) {
-            Write-Warning "Aucun résultat à fusionner."
+            Write-Warning "Aucun rÃ©sultat Ã  fusionner."
             return $null
         }
         
         if ($ResultsArray.Count -eq 1) {
-            Write-Host "Un seul résultat à traiter, aucune fusion nécessaire." -ForegroundColor Yellow
+            Write-Host "Un seul rÃ©sultat Ã  traiter, aucune fusion nÃ©cessaire." -ForegroundColor Yellow
             return $ResultsArray[0]
         }
         
-        # Créer un objet pour stocker les résultats fusionnés
+        # CrÃ©er un objet pour stocker les rÃ©sultats fusionnÃ©s
         $mergedResults = [PSCustomObject]@{
             PullRequest = $ResultsArray[0].PullRequest
             Timestamp = Get-Date
@@ -177,35 +177,35 @@ function Merge-Results {
             }
         }
         
-        # Créer un dictionnaire pour stocker les résultats par chemin de fichier
+        # CrÃ©er un dictionnaire pour stocker les rÃ©sultats par chemin de fichier
         $resultsByPath = @{}
         
-        # Parcourir tous les résultats
+        # Parcourir tous les rÃ©sultats
         foreach ($resultSet in $ResultsArray) {
-            # Parcourir les résultats de chaque fichier
+            # Parcourir les rÃ©sultats de chaque fichier
             foreach ($fileResult in $resultSet.Results) {
                 $filePath = $fileResult.FilePath
                 
-                # Vérifier s'il y a déjà un résultat pour ce fichier
+                # VÃ©rifier s'il y a dÃ©jÃ  un rÃ©sultat pour ce fichier
                 if ($resultsByPath.ContainsKey($filePath)) {
-                    # Conflit détecté
+                    # Conflit dÃ©tectÃ©
                     $mergedResults.Stats.Conflicts++
                     
-                    # Résoudre le conflit selon la stratégie spécifiée
+                    # RÃ©soudre le conflit selon la stratÃ©gie spÃ©cifiÃ©e
                     $existingResult = $resultsByPath[$filePath]
                     $newResult = $null
                     
                     switch ($Strategy) {
                         "First" {
-                            # Conserver le premier résultat
+                            # Conserver le premier rÃ©sultat
                             $newResult = $existingResult
                         }
                         "Last" {
-                            # Utiliser le dernier résultat
+                            # Utiliser le dernier rÃ©sultat
                             $newResult = $fileResult
                         }
                         "Newest" {
-                            # Utiliser le résultat le plus récent
+                            # Utiliser le rÃ©sultat le plus rÃ©cent
                             if ($fileResult.EndTime -gt $existingResult.EndTime) {
                                 $newResult = $fileResult
                             } else {
@@ -213,7 +213,7 @@ function Merge-Results {
                             }
                         }
                         "MostIssues" {
-                            # Utiliser le résultat avec le plus de problèmes
+                            # Utiliser le rÃ©sultat avec le plus de problÃ¨mes
                             if ($fileResult.Issues.Count -gt $existingResult.Issues.Count) {
                                 $newResult = $fileResult
                             } else {
@@ -221,7 +221,7 @@ function Merge-Results {
                             }
                         }
                         "LeastIssues" {
-                            # Utiliser le résultat avec le moins de problèmes
+                            # Utiliser le rÃ©sultat avec le moins de problÃ¨mes
                             if ($fileResult.Issues.Count -lt $existingResult.Issues.Count) {
                                 $newResult = $fileResult
                             } else {
@@ -229,7 +229,7 @@ function Merge-Results {
                             }
                         }
                         default {
-                            # Par défaut, utiliser le résultat le plus récent
+                            # Par dÃ©faut, utiliser le rÃ©sultat le plus rÃ©cent
                             if ($fileResult.EndTime -gt $existingResult.EndTime) {
                                 $newResult = $fileResult
                             } else {
@@ -238,11 +238,11 @@ function Merge-Results {
                         }
                     }
                     
-                    # Mettre à jour le résultat
+                    # Mettre Ã  jour le rÃ©sultat
                     $resultsByPath[$filePath] = $newResult
                     $mergedResults.Stats.ResolvedConflicts++
                 } else {
-                    # Pas de conflit, ajouter le résultat
+                    # Pas de conflit, ajouter le rÃ©sultat
                     $resultsByPath[$filePath] = $fileResult
                 }
             }
@@ -251,7 +251,7 @@ function Merge-Results {
         # Convertir le dictionnaire en tableau
         $mergedResults.Results = $resultsByPath.Values
         
-        # Mettre à jour les statistiques
+        # Mettre Ã  jour les statistiques
         $mergedResults.TotalFiles = $mergedResults.Results.Count
         $mergedResults.TotalIssues = ($mergedResults.Results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum
         $mergedResults.TotalDurationMs = ($mergedResults.Results | ForEach-Object { $_.Duration.TotalMilliseconds } | Measure-Object -Sum).Sum
@@ -264,12 +264,12 @@ function Merge-Results {
         
         return $mergedResults
     } catch {
-        Write-Error "Erreur lors de la fusion des résultats: $_"
+        Write-Error "Erreur lors de la fusion des rÃ©sultats: $_"
         return $null
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param(
@@ -281,20 +281,20 @@ function New-HtmlReport {
     )
 
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $outputDir = Split-Path -Path $OutputPath -Parent
         if (-not (Test-Path -Path $outputDir)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
 
-        # Générer le HTML
+        # GÃ©nÃ©rer le HTML
         $html = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport d'Analyse Fusionné - PR #$($Results.PullRequest.Number)</title>
+    <title>Rapport d'Analyse FusionnÃ© - PR #$($Results.PullRequest.Number)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -352,29 +352,29 @@ function New-HtmlReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport d'Analyse Fusionné - Pull Request #$($Results.PullRequest.Number)</h1>
+        <h1>Rapport d'Analyse FusionnÃ© - Pull Request #$($Results.PullRequest.Number)</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <p><strong>Titre:</strong> $($Results.PullRequest.Title)</p>
             <p><strong>Branche source:</strong> $($Results.PullRequest.HeadBranch)</p>
             <p><strong>Branche cible:</strong> $($Results.PullRequest.BaseBranch)</p>
-            <p><strong>Fichiers analysés:</strong> $($Results.TotalFiles)</p>
-            <p><strong>Problèmes détectés:</strong> $($Results.TotalIssues)</p>
-            <p><strong>Durée totale:</strong> $([Math]::Round($Results.TotalDurationMs / 1000, 2)) secondes</p>
-            <p><strong>Durée moyenne par fichier:</strong> $([Math]::Round($Results.AverageDurationMs, 2)) ms</p>
+            <p><strong>Fichiers analysÃ©s:</strong> $($Results.TotalFiles)</p>
+            <p><strong>ProblÃ¨mes dÃ©tectÃ©s:</strong> $($Results.TotalIssues)</p>
+            <p><strong>DurÃ©e totale:</strong> $([Math]::Round($Results.TotalDurationMs / 1000, 2)) secondes</p>
+            <p><strong>DurÃ©e moyenne par fichier:</strong> $([Math]::Round($Results.AverageDurationMs, 2)) ms</p>
         </div>
         
         <div class="summary">
             <h2>Informations sur la Fusion</h2>
-            <p><strong>Stratégie de fusion:</strong> $($Results.Stats.MergeStrategy)</p>
+            <p><strong>StratÃ©gie de fusion:</strong> $($Results.Stats.MergeStrategy)</p>
             <p><strong>Fichiers sources:</strong> $($Results.Stats.SourceFiles)</p>
-            <p><strong>Conflits détectés:</strong> $($Results.Stats.Conflicts)</p>
-            <p><strong>Conflits résolus:</strong> $($Results.Stats.ResolvedConflicts)</p>
+            <p><strong>Conflits dÃ©tectÃ©s:</strong> $($Results.Stats.Conflicts)</p>
+            <p><strong>Conflits rÃ©solus:</strong> $($Results.Stats.ResolvedConflicts)</p>
             <p><strong>Date de fusion:</strong> $($Results.Stats.MergeTime)</p>
         </div>
         
-        <h2>Problèmes par Type</h2>
+        <h2>ProblÃ¨mes par Type</h2>
         <table>
             <tr>
                 <th>Type</th>
@@ -394,12 +394,12 @@ function New-HtmlReport {
         $html += @"
         </table>
         
-        <h2>Fichiers avec Problèmes</h2>
+        <h2>Fichiers avec ProblÃ¨mes</h2>
         <table>
             <tr>
                 <th>Fichier</th>
-                <th>Problèmes</th>
-                <th>Durée (ms)</th>
+                <th>ProblÃ¨mes</th>
+                <th>DurÃ©e (ms)</th>
             </tr>
 "@
 
@@ -416,7 +416,7 @@ function New-HtmlReport {
         $html += @"
         </table>
         
-        <h2>Détails des Problèmes</h2>
+        <h2>DÃ©tails des ProblÃ¨mes</h2>
 "@
 
         foreach ($result in ($Results.Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 } | Sort-Object -Property { $_.Issues.Count } -Descending)) {
@@ -427,7 +427,7 @@ function New-HtmlReport {
                 <th>Type</th>
                 <th>Ligne</th>
                 <th>Message</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
             </tr>
 "@
 
@@ -465,88 +465,88 @@ function New-HtmlReport {
         
         return $OutputPath
     } catch {
-        Write-Error "Erreur lors de la génération du rapport HTML: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport HTML: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Résoudre les chemins de fichiers
+    # RÃ©soudre les chemins de fichiers
     $resolvedPaths = Resolve-FilePaths -Paths $InputPaths
     if ($resolvedPaths.Count -eq 0) {
-        Write-Error "Aucun fichier trouvé."
+        Write-Error "Aucun fichier trouvÃ©."
         exit 1
     }
     
-    Write-Host "Fichiers trouvés: $($resolvedPaths.Count)" -ForegroundColor Cyan
+    Write-Host "Fichiers trouvÃ©s: $($resolvedPaths.Count)" -ForegroundColor Cyan
     foreach ($path in $resolvedPaths) {
         Write-Host "  $path" -ForegroundColor White
     }
 
-    # Charger les résultats
+    # Charger les rÃ©sultats
     $resultsArray = @()
     foreach ($path in $resolvedPaths) {
         $results = Get-ResultsFromFile -Path $path
         if ($null -ne $results) {
             $resultsArray += $results
-            Write-Host "Résultats chargés: $path" -ForegroundColor Green
+            Write-Host "RÃ©sultats chargÃ©s: $path" -ForegroundColor Green
         }
     }
     
     if ($resultsArray.Count -eq 0) {
-        Write-Error "Aucun résultat chargé."
+        Write-Error "Aucun rÃ©sultat chargÃ©."
         exit 1
     }
     
-    Write-Host "Résultats chargés: $($resultsArray.Count)" -ForegroundColor Cyan
+    Write-Host "RÃ©sultats chargÃ©s: $($resultsArray.Count)" -ForegroundColor Cyan
 
-    # Fusionner les résultats
-    Write-Host "Fusion des résultats avec la stratégie: $ConflictResolution" -ForegroundColor Cyan
+    # Fusionner les rÃ©sultats
+    Write-Host "Fusion des rÃ©sultats avec la stratÃ©gie: $ConflictResolution" -ForegroundColor Cyan
     $mergedResults = Merge-Results -ResultsArray $resultsArray -Strategy $ConflictResolution
     if ($null -eq $mergedResults) {
-        Write-Error "Échec de la fusion des résultats."
+        Write-Error "Ã‰chec de la fusion des rÃ©sultats."
         exit 1
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     }
     
-    # Enregistrer les résultats fusionnés
+    # Enregistrer les rÃ©sultats fusionnÃ©s
     $mergedResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Résultats fusionnés enregistrés: $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©sultats fusionnÃ©s enregistrÃ©s: $OutputPath" -ForegroundColor Green
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     $htmlPath = $null
     if ($GenerateHtmlReport) {
         $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         $htmlPath = New-HtmlReport -Results $mergedResults -OutputPath $htmlPath
         if ($null -ne $htmlPath) {
-            Write-Host "Rapport HTML généré: $htmlPath" -ForegroundColor Green
+            Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -ForegroundColor Green
         }
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de la fusion:" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la fusion:" -ForegroundColor Cyan
     Write-Host "  Fichiers sources: $($mergedResults.Stats.SourceFiles)" -ForegroundColor White
-    Write-Host "  Stratégie de fusion: $($mergedResults.Stats.MergeStrategy)" -ForegroundColor White
-    Write-Host "  Conflits détectés: $($mergedResults.Stats.Conflicts)" -ForegroundColor White
-    Write-Host "  Conflits résolus: $($mergedResults.Stats.ResolvedConflicts)" -ForegroundColor White
-    Write-Host "  Fichiers analysés: $($mergedResults.TotalFiles)" -ForegroundColor White
-    Write-Host "  Problèmes détectés: $($mergedResults.TotalIssues)" -ForegroundColor White
-    Write-Host "  Durée totale: $([Math]::Round($mergedResults.TotalDurationMs / 1000, 2)) secondes" -ForegroundColor White
+    Write-Host "  StratÃ©gie de fusion: $($mergedResults.Stats.MergeStrategy)" -ForegroundColor White
+    Write-Host "  Conflits dÃ©tectÃ©s: $($mergedResults.Stats.Conflicts)" -ForegroundColor White
+    Write-Host "  Conflits rÃ©solus: $($mergedResults.Stats.ResolvedConflicts)" -ForegroundColor White
+    Write-Host "  Fichiers analysÃ©s: $($mergedResults.TotalFiles)" -ForegroundColor White
+    Write-Host "  ProblÃ¨mes dÃ©tectÃ©s: $($mergedResults.TotalIssues)" -ForegroundColor White
+    Write-Host "  DurÃ©e totale: $([Math]::Round($mergedResults.TotalDurationMs / 1000, 2)) secondes" -ForegroundColor White
     
-    # Ouvrir le rapport HTML dans le navigateur par défaut
+    # Ouvrir le rapport HTML dans le navigateur par dÃ©faut
     if ($null -ne $htmlPath -and (Test-Path -Path $htmlPath)) {
         Start-Process $htmlPath
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $mergedResults
 } catch {
-    Write-Error "Erreur lors de la fusion des résultats: $_"
+    Write-Error "Erreur lors de la fusion des rÃ©sultats: $_"
     exit 1
 }

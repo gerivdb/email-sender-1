@@ -1,4 +1,4 @@
-# Guide de référence rapide - Format-Converters
+﻿# Guide de rÃ©fÃ©rence rapide - Format-Converters
 
 ## Installation
 
@@ -8,35 +8,35 @@ Import-Module -Path "chemin\vers\Format-Converters\Format-Converters.psm1"
 
 ## Commandes principales
 
-### Détection de format
+### DÃ©tection de format
 
 ```powershell
-# Détection simple
+# DÃ©tection simple
 Detect-FileFormat -FilePath "fichier.txt"
 
-# Détection avec résolution automatique des cas ambigus
+# DÃ©tection avec rÃ©solution automatique des cas ambigus
 Detect-FileFormat -FilePath "fichier.txt" -AutoResolve
 
-# Détection avec affichage des détails
+# DÃ©tection avec affichage des dÃ©tails
 Detect-FileFormat -FilePath "fichier.txt" -ShowDetails
 
-# Détection avec mémorisation des choix
+# DÃ©tection avec mÃ©morisation des choix
 Detect-FileFormat -FilePath "fichier.txt" -RememberChoices
 
-# Détection avec export des résultats
+# DÃ©tection avec export des rÃ©sultats
 Detect-FileFormat -FilePath "fichier.txt" -ShowDetails -ExportResults -ExportFormat "HTML"
 ```
 
 ### Conversion de format
 
 ```powershell
-# Conversion avec détection automatique du format d'entrée
+# Conversion avec dÃ©tection automatique du format d'entrÃ©e
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -AutoDetect
 
-# Conversion avec format d'entrée spécifié
+# Conversion avec format d'entrÃ©e spÃ©cifiÃ©
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -InputFormat "JSON" -OutputFormat "XML"
 
-# Conversion avec écrasement du fichier de sortie
+# Conversion avec Ã©crasement du fichier de sortie
 Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFormat "XML" -Force
 
 # Conversion avec affichage de la progression
@@ -46,10 +46,10 @@ Convert-FileFormat -InputPath "fichier.json" -OutputPath "fichier.xml" -OutputFo
 ### Analyse de format
 
 ```powershell
-# Analyse avec détection automatique du format
+# Analyse avec dÃ©tection automatique du format
 Analyze-FileFormat -FilePath "fichier.json" -AutoDetect
 
-# Analyse avec format spécifié
+# Analyse avec format spÃ©cifiÃ©
 Analyze-FileFormat -FilePath "fichier.json" -Format "JSON"
 
 # Analyse avec inclusion du contenu
@@ -79,30 +79,30 @@ Analyze-FileFormat -FilePath "fichier.json" -ExportReport
 ## Gestion des cas ambigus
 
 ```powershell
-# Résolution automatique
+# RÃ©solution automatique
 Detect-FileFormat -FilePath "fichier.txt" -AutoResolve
 
 # Confirmation utilisateur
 Detect-FileFormat -FilePath "fichier.txt"
 
-# Mémorisation des choix
+# MÃ©morisation des choix
 Detect-FileFormat -FilePath "fichier.txt" -RememberChoices
 
-# Personnalisation du seuil d'ambiguïté
+# Personnalisation du seuil d'ambiguÃ¯tÃ©
 Handle-AmbiguousFormats -FilePath "fichier.txt" -AmbiguityThreshold 15
 ```
 
 ## Exemples courants
 
 ```powershell
-# Détecter le format d'un fichier et afficher les détails
+# DÃ©tecter le format d'un fichier et afficher les dÃ©tails
 $result = Detect-FileFormat -FilePath "fichier.txt" -ShowDetails
-Write-Host "Format détecté : $($result.DetectedFormat) (Score : $($result.ConfidenceScore)%)"
+Write-Host "Format dÃ©tectÃ© : $($result.DetectedFormat) (Score : $($result.ConfidenceScore)%)"
 
 # Convertir un fichier JSON en XML
 $result = Convert-FileFormat -InputPath "data.json" -OutputPath "data.xml" -OutputFormat "XML" -AutoDetect
 if ($result.Success) {
-    Write-Host "Conversion réussie !"
+    Write-Host "Conversion rÃ©ussie !"
 }
 
 # Analyser un fichier et exporter le rapport
@@ -112,17 +112,17 @@ $result | Format-List
 
 ## Personnalisation
 
-Les critères de détection peuvent être personnalisés en modifiant le fichier `Detectors\FormatDetectionCriteria.json`.
+Les critÃ¨res de dÃ©tection peuvent Ãªtre personnalisÃ©s en modifiant le fichier `Detectors\FormatDetectionCriteria.json`.
 
-## Dépannage
+## DÃ©pannage
 
-1. **Format non détecté** : Vérifiez que le fichier est valide et que son format est pris en charge.
-2. **Erreur de conversion** : Vérifiez que la conversion entre les formats spécifiés est prise en charge.
-3. **Cas ambigu non résolu** : Utilisez l'option `-ShowDetails` pour voir les formats possibles et leurs scores de confiance.
+1. **Format non dÃ©tectÃ©** : VÃ©rifiez que le fichier est valide et que son format est pris en charge.
+2. **Erreur de conversion** : VÃ©rifiez que la conversion entre les formats spÃ©cifiÃ©s est prise en charge.
+3. **Cas ambigu non rÃ©solu** : Utilisez l'option `-ShowDetails` pour voir les formats possibles et leurs scores de confiance.
 
-## Documentation complète
+## Documentation complÃ¨te
 
 Pour plus d'informations, consultez les documents suivants :
 
-- `Format-Converters.md` : Documentation complète du module
+- `Format-Converters.md` : Documentation complÃ¨te du module
 - `Ambiguous-Format-Handling.md` : Guide de gestion des cas ambigus

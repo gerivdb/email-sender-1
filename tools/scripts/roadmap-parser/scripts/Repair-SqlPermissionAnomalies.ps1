@@ -1,4 +1,4 @@
-# Repair-SqlPermissionAnomalies.ps1
+﻿# Repair-SqlPermissionAnomalies.ps1
 # Script pour corriger automatiquement certaines anomalies courantes de permissions SQL Server
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -33,7 +33,7 @@ begin {
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\module" -Resolve
     Import-Module $modulePath -Force
 
-    # Paramètres de connexion SQL Server
+    # ParamÃ¨tres de connexion SQL Server
     $sqlParams = @{
         ServerInstance = $ServerInstance
         Database = "master"
@@ -43,25 +43,25 @@ begin {
         $sqlParams.Credential = $Credential
     }
 
-    # Définir les règles qui peuvent être corrigées automatiquement
+    # DÃ©finir les rÃ¨gles qui peuvent Ãªtre corrigÃ©es automatiquement
     $repairableRules = @{
-        # Règles au niveau serveur
+        # RÃ¨gles au niveau serveur
         "SVR-001" = @{
             Name = "DisabledLoginWithPermissions"
-            Description = "Supprime les permissions des logins désactivés"
+            Description = "Supprime les permissions des logins dÃ©sactivÃ©s"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
                 $loginName = $Anomaly.LoginName
                 $sql = @"
--- Supprimer les permissions explicites du login désactivé
+-- Supprimer les permissions explicites du login dÃ©sactivÃ©
 DECLARE @sql NVARCHAR(MAX) = '';
 SELECT @sql = @sql + 'REVOKE ' + permission_name + ' TO [' + grantee_principal_name + '];' + CHAR(13)
 FROM sys.server_permissions sp
 JOIN sys.server_principals grantee ON sp.grantee_principal_id = grantee.principal_id
 WHERE grantee.name = '$loginName';
 
--- Supprimer l'appartenance aux rôles serveur
+-- Supprimer l'appartenance aux rÃ´les serveur
 DECLARE @role_name sysname;
 DECLARE role_cursor CURSOR FOR
 SELECT r.name
@@ -103,13 +103,13 @@ ALTER LOGIN [$loginName] WITH CHECK_POLICY = ON, CHECK_EXPIRATION = ON;
         }
         "SVR-004" = @{
             Name = "LockedAccount"
-            Description = "Déverrouille les comptes verrouillés"
+            Description = "DÃ©verrouille les comptes verrouillÃ©s"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
                 $loginName = $Anomaly.LoginName
                 $sql = @"
--- Déverrouiller le compte
+-- DÃ©verrouiller le compte
 ALTER LOGIN [$loginName] WITH UNLOCK;
 "@
                 return $sql
@@ -117,20 +117,20 @@ ALTER LOGIN [$loginName] WITH UNLOCK;
         }
         "SVR-009" = @{
             Name = "InactiveAccounts"
-            Description = "Désactive les comptes inactifs"
+            Description = "DÃ©sactive les comptes inactifs"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
                 $loginName = $Anomaly.LoginName
                 $sql = @"
--- Désactiver le compte inactif
+-- DÃ©sactiver le compte inactif
 ALTER LOGIN [$loginName] DISABLE;
 "@
                 return $sql
             }
         }
         
-        # Règles au niveau base de données
+        # RÃ¨gles au niveau base de donnÃ©es
         "DB-001" = @{
             Name = "OrphanedUser"
             Description = "Supprime les utilisateurs orphelins"
@@ -150,7 +150,7 @@ DROP USER [$userName];
         }
         "DB-002" = @{
             Name = "DisabledLoginWithDatabasePermissions"
-            Description = "Supprime les permissions des utilisateurs associés à des logins désactivés"
+            Description = "Supprime les permissions des utilisateurs associÃ©s Ã  des logins dÃ©sactivÃ©s"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
@@ -170,7 +170,7 @@ FROM sys.database_permissions dp
 JOIN sys.database_principals grantee ON dp.grantee_principal_id = grantee.principal_id
 WHERE grantee.name = '$userName';
 
--- Supprimer l'appartenance aux rôles de base de données
+-- Supprimer l'appartenance aux rÃ´les de base de donnÃ©es
 DECLARE @role_name sysname;
 DECLARE role_cursor CURSOR FOR
 SELECT r.name
@@ -198,7 +198,7 @@ EXEC sp_executesql @sql;
         }
         "DB-005" = @{
             Name = "GuestUserPermissions"
-            Description = "Révoque les permissions explicites accordées à l'utilisateur guest"
+            Description = "RÃ©voque les permissions explicites accordÃ©es Ã  l'utilisateur guest"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
@@ -206,7 +206,7 @@ EXEC sp_executesql @sql;
                 $sql = @"
 USE [$databaseName];
 
--- Révoquer les permissions explicites de l'utilisateur guest
+-- RÃ©voquer les permissions explicites de l'utilisateur guest
 DECLARE @sql NVARCHAR(MAX) = '';
 SELECT @sql = @sql + 'REVOKE ' + permission_name + ' ON ' + 
     CASE WHEN class_desc = 'DATABASE' THEN 'DATABASE::[$databaseName]' 
@@ -223,10 +223,10 @@ EXEC sp_executesql @sql;
             }
         }
         
-        # Règles au niveau objet
+        # RÃ¨gles au niveau objet
         "OBJ-002" = @{
             Name = "GuestUserWithObjectPermissions"
-            Description = "Révoque les permissions de l'utilisateur guest sur des objets"
+            Description = "RÃ©voque les permissions de l'utilisateur guest sur des objets"
             RepairFunction = {
                 param($Anomaly, $Connection)
                 
@@ -234,7 +234,7 @@ EXEC sp_executesql @sql;
                 $sql = @"
 USE [$databaseName];
 
--- Révoquer les permissions de l'utilisateur guest sur des objets
+-- RÃ©voquer les permissions de l'utilisateur guest sur des objets
 DECLARE @sql NVARCHAR(MAX) = '';
 SELECT @sql = @sql + 'REVOKE ' + permission_name + ' ON ' + 
     COALESCE(OBJECT_SCHEMA_NAME(major_id) + '.' + OBJECT_NAME(major_id), 'SCHEMA::' + SCHEMA_NAME(major_id)) + 
@@ -251,7 +251,7 @@ EXEC sp_executesql @sql;
         }
     }
 
-    # Fonction pour exécuter une requête SQL
+    # Fonction pour exÃ©cuter une requÃªte SQL
     function Invoke-SqlQuery {
         param (
             [Parameter(Mandatory = $true)]
@@ -289,7 +289,7 @@ EXEC sp_executesql @sql;
             if ($connection.State -eq [System.Data.ConnectionState]::Open) {
                 $connection.Close()
             }
-            Write-Error "Erreur lors de l'exécution de la requête: $_"
+            Write-Error "Erreur lors de l'exÃ©cution de la requÃªte: $_"
             return $false
         }
     }
@@ -309,16 +309,16 @@ process {
             $analyzeParams.RuleIds = $RuleIds
         }
         else {
-            # Utiliser uniquement les règles qui peuvent être corrigées automatiquement
+            # Utiliser uniquement les rÃ¨gles qui peuvent Ãªtre corrigÃ©es automatiquement
             $analyzeParams.RuleIds = $repairableRules.Keys
         }
 
-        Write-Verbose "Exécution de l'analyse avec les règles: $($analyzeParams.RuleIds -join ', ')"
+        Write-Verbose "ExÃ©cution de l'analyse avec les rÃ¨gles: $($analyzeParams.RuleIds -join ', ')"
         $result = Analyze-SqlServerPermission @analyzeParams
 
-        Write-Verbose "Analyse terminée. Nombre total d'anomalies détectées: $($result.TotalAnomalies)"
+        Write-Verbose "Analyse terminÃ©e. Nombre total d'anomalies dÃ©tectÃ©es: $($result.TotalAnomalies)"
 
-        # Filtrer les anomalies qui peuvent être corrigées automatiquement
+        # Filtrer les anomalies qui peuvent Ãªtre corrigÃ©es automatiquement
         $repairableAnomalies = @()
         
         foreach ($anomaly in $result.ServerAnomalies) {
@@ -339,14 +339,14 @@ process {
             }
         }
 
-        Write-Verbose "Nombre d'anomalies réparables: $($repairableAnomalies.Count)"
+        Write-Verbose "Nombre d'anomalies rÃ©parables: $($repairableAnomalies.Count)"
 
         if ($repairableAnomalies.Count -eq 0) {
-            Write-Host "Aucune anomalie réparable détectée." -ForegroundColor Green
+            Write-Host "Aucune anomalie rÃ©parable dÃ©tectÃ©e." -ForegroundColor Green
             return
         }
 
-        # Générer les scripts de correction
+        # GÃ©nÃ©rer les scripts de correction
         $repairScripts = @()
         
         foreach ($anomaly in $repairableAnomalies) {
@@ -362,7 +362,7 @@ process {
             }
         }
 
-        # Générer un script SQL combiné si demandé
+        # GÃ©nÃ©rer un script SQL combinÃ© si demandÃ©
         if ($GenerateScript) {
             $combinedScript = @"
 -- Script de correction des anomalies de permissions SQL Server
@@ -385,7 +385,7 @@ $($script.Script)
 
             if ($ScriptOutputPath) {
                 $combinedScript | Out-File -FilePath $ScriptOutputPath -Encoding UTF8
-                Write-Host "Script de correction généré: $ScriptOutputPath" -ForegroundColor Green
+                Write-Host "Script de correction gÃ©nÃ©rÃ©: $ScriptOutputPath" -ForegroundColor Green
             }
             else {
                 Write-Host "Script de correction:" -ForegroundColor Green
@@ -393,7 +393,7 @@ $($script.Script)
             }
         }
         else {
-            # Exécuter les corrections
+            # ExÃ©cuter les corrections
             $correctedCount = 0
             $failedCount = 0
             
@@ -411,19 +411,19 @@ $($script.Script)
                     $success = Invoke-SqlQuery -ServerInstance $ServerInstance -Credential $Credential -Database $database -Query $script.Script
                     
                     if ($success) {
-                        Write-Verbose "Anomalie corrigée avec succès."
+                        Write-Verbose "Anomalie corrigÃ©e avec succÃ¨s."
                         $correctedCount++
                     }
                     else {
-                        Write-Warning "Échec de la correction de l'anomalie."
+                        Write-Warning "Ã‰chec de la correction de l'anomalie."
                         $failedCount++
                     }
                 }
             }
             
-            Write-Host "Correction terminée." -ForegroundColor Green
-            Write-Host "Anomalies corrigées: $correctedCount" -ForegroundColor Green
-            Write-Host "Échecs de correction: $failedCount" -ForegroundColor $(if ($failedCount -gt 0) { "Red" } else { "Green" })
+            Write-Host "Correction terminÃ©e." -ForegroundColor Green
+            Write-Host "Anomalies corrigÃ©es: $correctedCount" -ForegroundColor Green
+            Write-Host "Ã‰checs de correction: $failedCount" -ForegroundColor $(if ($failedCount -gt 0) { "Red" } else { "Green" })
         }
     }
     catch {

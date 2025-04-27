@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de collecte des données d'utilisation pour le cache prédictif.
+    Module de collecte des donnÃ©es d'utilisation pour le cache prÃ©dictif.
 .DESCRIPTION
-    Collecte et stocke les données d'utilisation du cache pour alimenter
-    les algorithmes de prédiction et d'optimisation.
+    Collecte et stocke les donnÃ©es d'utilisation du cache pour alimenter
+    les algorithmes de prÃ©diction et d'optimisation.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Classe pour la gestion de la base de données d'utilisation
+# Classe pour la gestion de la base de donnÃ©es d'utilisation
 class UsageDatabase {
     [string]$DatabasePath
     [System.Data.SQLite.SQLiteConnection]$Connection
@@ -23,10 +23,10 @@ class UsageDatabase {
         $this.InitializeDatabase()
     }
     
-    # Initialiser la base de données
+    # Initialiser la base de donnÃ©es
     [void] InitializeDatabase() {
         try {
-            # Vérifier si le répertoire existe
+            # VÃ©rifier si le rÃ©pertoire existe
             $databaseDir = Split-Path -Path $this.DatabasePath -Parent
             if (-not (Test-Path -Path $databaseDir)) {
                 New-Item -Path $databaseDir -ItemType Directory -Force | Out-Null
@@ -35,46 +35,46 @@ class UsageDatabase {
             # Charger l'assembly SQLite
             Add-Type -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\..\lib\System.Data.SQLite.dll")
             
-            # Créer la connexion
+            # CrÃ©er la connexion
             $connectionString = "Data Source=$($this.DatabasePath);Version=3;"
             $this.Connection = New-Object System.Data.SQLite.SQLiteConnection($connectionString)
             $this.Connection.Open()
             
-            # Créer les tables si elles n'existent pas
+            # CrÃ©er les tables si elles n'existent pas
             $this.CreateTables()
             
             $this.Initialized = $true
         }
         catch {
-            Write-Error "Erreur lors de l'initialisation de la base de données: $_"
+            Write-Error "Erreur lors de l'initialisation de la base de donnÃ©es: $_"
             
-            # Fallback: utiliser une base de données en mémoire
+            # Fallback: utiliser une base de donnÃ©es en mÃ©moire
             $this.UseFallbackDatabase()
         }
     }
     
-    # Utiliser une base de données de secours en mémoire
+    # Utiliser une base de donnÃ©es de secours en mÃ©moire
     [void] UseFallbackDatabase() {
         try {
-            Write-Warning "Utilisation d'une base de données en mémoire comme solution de secours."
+            Write-Warning "Utilisation d'une base de donnÃ©es en mÃ©moire comme solution de secours."
             
-            # Créer une base de données en mémoire
+            # CrÃ©er une base de donnÃ©es en mÃ©moire
             $connectionString = "Data Source=:memory:;Version=3;"
             $this.Connection = New-Object System.Data.SQLite.SQLiteConnection($connectionString)
             $this.Connection.Open()
             
-            # Créer les tables
+            # CrÃ©er les tables
             $this.CreateTables()
             
             $this.Initialized = $true
         }
         catch {
-            Write-Error "Erreur lors de la création de la base de données de secours: $_"
+            Write-Error "Erreur lors de la crÃ©ation de la base de donnÃ©es de secours: $_"
             $this.Initialized = $false
         }
     }
     
-    # Créer les tables nécessaires
+    # CrÃ©er les tables nÃ©cessaires
     [void] CreateTables() {
         $createAccessTable = @"
 CREATE TABLE IF NOT EXISTS CacheAccess (
@@ -127,7 +127,7 @@ CREATE INDEX IF NOT EXISTS idx_eviction_key ON CacheEviction(KeyName, CacheName)
 CREATE INDEX IF NOT EXISTS idx_sequence_keys ON AccessSequence(FirstKey, SecondKey, CacheName);
 "@
         
-        # Exécuter les commandes SQL
+        # ExÃ©cuter les commandes SQL
         $command = $this.Connection.CreateCommand()
         $command.CommandText = $createAccessTable
         $command.ExecuteNonQuery() | Out-Null
@@ -145,7 +145,7 @@ CREATE INDEX IF NOT EXISTS idx_sequence_keys ON AccessSequence(FirstKey, SecondK
         $command.ExecuteNonQuery() | Out-Null
     }
     
-    # Enregistrer un accès au cache
+    # Enregistrer un accÃ¨s au cache
     [void] RecordAccess([string]$cacheName, [string]$key, [bool]$hit, [int]$executionTime = 0) {
         if (-not $this.Initialized) { return }
         
@@ -163,20 +163,20 @@ VALUES (@CacheName, @KeyName, @AccessTime, @Hit, @ExecutionTime);
             
             $command.ExecuteNonQuery() | Out-Null
             
-            # Enregistrer la séquence d'accès si nécessaire
+            # Enregistrer la sÃ©quence d'accÃ¨s si nÃ©cessaire
             $this.RecordAccessSequence($cacheName, $key)
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de l'accès au cache: $_"
+            Write-Warning "Erreur lors de l'enregistrement de l'accÃ¨s au cache: $_"
         }
     }
     
-    # Enregistrer une séquence d'accès
+    # Enregistrer une sÃ©quence d'accÃ¨s
     [void] RecordAccessSequence([string]$cacheName, [string]$currentKey) {
         if (-not $this.Initialized) { return }
         
         try {
-            # Récupérer la dernière clé accédée
+            # RÃ©cupÃ©rer la derniÃ¨re clÃ© accÃ©dÃ©e
             $command = $this.Connection.CreateCommand()
             $command.CommandText = @"
 SELECT KeyName, AccessTime FROM CacheAccess
@@ -193,11 +193,11 @@ ORDER BY AccessTime DESC LIMIT 1;
                 $lastAccessTime = [datetime]::Parse($reader["AccessTime"].ToString())
                 $reader.Close()
                 
-                # Calculer la différence de temps
+                # Calculer la diffÃ©rence de temps
                 $currentTime = Get-Date
                 $timeDifference = ($currentTime - $lastAccessTime).TotalMilliseconds
                 
-                # Enregistrer la séquence si la différence est inférieure à 30 secondes
+                # Enregistrer la sÃ©quence si la diffÃ©rence est infÃ©rieure Ã  30 secondes
                 if ($timeDifference -lt 30000) {
                     $command = $this.Connection.CreateCommand()
                     $command.CommandText = @"
@@ -218,11 +218,11 @@ VALUES (@CacheName, @FirstKey, @SecondKey, @TimeDifference, @SequenceTime);
             }
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de la séquence d'accès: $_"
+            Write-Warning "Erreur lors de l'enregistrement de la sÃ©quence d'accÃ¨s: $_"
         }
     }
     
-    # Enregistrer une opération de définition dans le cache
+    # Enregistrer une opÃ©ration de dÃ©finition dans le cache
     [void] RecordSet([string]$cacheName, [string]$key, [int]$ttl, [int]$valueSize = 0) {
         if (-not $this.Initialized) { return }
         
@@ -241,11 +241,11 @@ VALUES (@CacheName, @KeyName, @SetTime, @TTL, @ValueSize);
             $command.ExecuteNonQuery() | Out-Null
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de la définition dans le cache: $_"
+            Write-Warning "Erreur lors de l'enregistrement de la dÃ©finition dans le cache: $_"
         }
     }
     
-    # Enregistrer une éviction du cache
+    # Enregistrer une Ã©viction du cache
     [void] RecordEviction([string]$cacheName, [string]$key, [string]$reason = "Unknown") {
         if (-not $this.Initialized) { return }
         
@@ -263,11 +263,11 @@ VALUES (@CacheName, @KeyName, @EvictionTime, @Reason);
             $command.ExecuteNonQuery() | Out-Null
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de l'éviction du cache: $_"
+            Write-Warning "Erreur lors de l'enregistrement de l'Ã©viction du cache: $_"
         }
     }
     
-    # Obtenir les statistiques d'accès pour une clé
+    # Obtenir les statistiques d'accÃ¨s pour une clÃ©
     [PSCustomObject] GetKeyAccessStats([string]$cacheName, [string]$key) {
         if (-not $this.Initialized) { return $null }
         
@@ -311,12 +311,12 @@ WHERE CacheName = @CacheName AND KeyName = @KeyName;
             }
         }
         catch {
-            Write-Warning "Erreur lors de la récupération des statistiques d'accès: $_"
+            Write-Warning "Erreur lors de la rÃ©cupÃ©ration des statistiques d'accÃ¨s: $_"
             return $null
         }
     }
     
-    # Obtenir les clés les plus fréquemment accédées
+    # Obtenir les clÃ©s les plus frÃ©quemment accÃ©dÃ©es
     [array] GetMostAccessedKeys([string]$cacheName, [int]$limit = 10, [int]$timeWindowMinutes = 60) {
         if (-not $this.Initialized) { return @() }
         
@@ -361,12 +361,12 @@ LIMIT @Limit;
             return $results
         }
         catch {
-            Write-Warning "Erreur lors de la récupération des clés les plus accédées: $_"
+            Write-Warning "Erreur lors de la rÃ©cupÃ©ration des clÃ©s les plus accÃ©dÃ©es: $_"
             return @()
         }
     }
     
-    # Obtenir les séquences d'accès les plus fréquentes
+    # Obtenir les sÃ©quences d'accÃ¨s les plus frÃ©quentes
     [array] GetFrequentSequences([string]$cacheName, [int]$limit = 10, [int]$timeWindowMinutes = 60) {
         if (-not $this.Initialized) { return @() }
         
@@ -408,12 +408,12 @@ LIMIT @Limit;
             return $results
         }
         catch {
-            Write-Warning "Erreur lors de la récupération des séquences fréquentes: $_"
+            Write-Warning "Erreur lors de la rÃ©cupÃ©ration des sÃ©quences frÃ©quentes: $_"
             return @()
         }
     }
     
-    # Nettoyer les anciennes données
+    # Nettoyer les anciennes donnÃ©es
     [void] CleanupOldData([int]$daysToKeep = 30) {
         if (-not $this.Initialized) { return }
         
@@ -431,12 +431,12 @@ DELETE FROM AccessSequence WHERE SequenceTime < @CutoffDate;
             
             $command.ExecuteNonQuery() | Out-Null
             
-            # Optimiser la base de données
+            # Optimiser la base de donnÃ©es
             $command.CommandText = "VACUUM;"
             $command.ExecuteNonQuery() | Out-Null
         }
         catch {
-            Write-Warning "Erreur lors du nettoyage des anciennes données: $_"
+            Write-Warning "Erreur lors du nettoyage des anciennes donnÃ©es: $_"
         }
     }
     
@@ -465,12 +465,12 @@ class UsageCollector {
         $this.InitializeDatabase()
     }
     
-    # Initialiser la base de données
+    # Initialiser la base de donnÃ©es
     [void] InitializeDatabase() {
         try {
             $this.Database = [UsageDatabase]::new($this.DatabasePath)
             
-            # Vérifier si un nettoyage est nécessaire
+            # VÃ©rifier si un nettoyage est nÃ©cessaire
             $now = Get-Date
             if (($now - $this.LastCleanup).TotalDays -ge $this.CleanupInterval) {
                 $this.Database.CleanupOldData()
@@ -478,14 +478,14 @@ class UsageCollector {
             }
         }
         catch {
-            Write-Error "Erreur lors de l'initialisation de la base de données d'utilisation: $_"
+            Write-Error "Erreur lors de l'initialisation de la base de donnÃ©es d'utilisation: $_"
         }
     }
     
-    # Enregistrer un accès au cache
+    # Enregistrer un accÃ¨s au cache
     [void] RecordAccess([string]$key, [bool]$hit) {
         try {
-            # Calculer le temps d'exécution si disponible
+            # Calculer le temps d'exÃ©cution si disponible
             $executionTime = 0
             $now = Get-Date
             
@@ -494,18 +494,18 @@ class UsageCollector {
                 $executionTime = ($now - $lastAccess).TotalMilliseconds
             }
             
-            # Enregistrer l'accès
+            # Enregistrer l'accÃ¨s
             $this.Database.RecordAccess($this.CacheName, $key, $hit, $executionTime)
             
-            # Mettre à jour le dernier accès
+            # Mettre Ã  jour le dernier accÃ¨s
             $this.LastAccesses[$key] = $now
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de l'accès: $_"
+            Write-Warning "Erreur lors de l'enregistrement de l'accÃ¨s: $_"
         }
     }
     
-    # Enregistrer une opération de définition dans le cache
+    # Enregistrer une opÃ©ration de dÃ©finition dans le cache
     [void] RecordSet([string]$key, [object]$value, [int]$ttl) {
         try {
             # Estimer la taille de la valeur
@@ -518,31 +518,31 @@ class UsageCollector {
             $this.Database.RecordSet($this.CacheName, $key, $ttl, $valueSize)
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de la définition: $_"
+            Write-Warning "Erreur lors de l'enregistrement de la dÃ©finition: $_"
         }
     }
     
-    # Enregistrer une éviction du cache
+    # Enregistrer une Ã©viction du cache
     [void] RecordEviction([string]$key) {
         try {
             $this.Database.RecordEviction($this.CacheName, $key)
         }
         catch {
-            Write-Warning "Erreur lors de l'enregistrement de l'éviction: $_"
+            Write-Warning "Erreur lors de l'enregistrement de l'Ã©viction: $_"
         }
     }
     
-    # Obtenir les statistiques d'accès pour une clé
+    # Obtenir les statistiques d'accÃ¨s pour une clÃ©
     [PSCustomObject] GetKeyAccessStats([string]$key) {
         return $this.Database.GetKeyAccessStats($this.CacheName, $key)
     }
     
-    # Obtenir les clés les plus fréquemment accédées
+    # Obtenir les clÃ©s les plus frÃ©quemment accÃ©dÃ©es
     [array] GetMostAccessedKeys([int]$limit = 10, [int]$timeWindowMinutes = 60) {
         return $this.Database.GetMostAccessedKeys($this.CacheName, $limit, $timeWindowMinutes)
     }
     
-    # Obtenir les séquences d'accès les plus fréquentes
+    # Obtenir les sÃ©quences d'accÃ¨s les plus frÃ©quentes
     [array] GetFrequentSequences([int]$limit = 10, [int]$timeWindowMinutes = 60) {
         return $this.Database.GetFrequentSequences($this.CacheName, $limit, $timeWindowMinutes)
     }
@@ -555,15 +555,15 @@ class UsageCollector {
     }
 }
 
-# Fonctions exportées
+# Fonctions exportÃ©es
 
 <#
 .SYNOPSIS
-    Crée un nouveau collecteur d'utilisation.
+    CrÃ©e un nouveau collecteur d'utilisation.
 .DESCRIPTION
-    Crée un nouveau collecteur d'utilisation pour enregistrer les accès au cache.
+    CrÃ©e un nouveau collecteur d'utilisation pour enregistrer les accÃ¨s au cache.
 .PARAMETER DatabasePath
-    Chemin vers la base de données d'utilisation.
+    Chemin vers la base de donnÃ©es d'utilisation.
 .PARAMETER CacheName
     Nom du cache.
 .EXAMPLE
@@ -584,7 +584,7 @@ function New-UsageCollector {
         return [UsageCollector]::new($DatabasePath, $CacheName)
     }
     catch {
-        Write-Error "Erreur lors de la création du collecteur d'utilisation: $_"
+        Write-Error "Erreur lors de la crÃ©ation du collecteur d'utilisation: $_"
         return $null
     }
 }

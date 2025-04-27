@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de charge pour les modules de rapports PR.
+    ExÃ©cute des tests de charge pour les modules de rapports PR.
 .DESCRIPTION
-    Ce script exécute des tests de charge pour simuler une utilisation intensive
-    des modules de rapports PR avec de grands volumes de données. Il mesure la
-    consommation de ressources (CPU, mémoire) et identifie les goulots d'étranglement.
+    Ce script exÃ©cute des tests de charge pour simuler une utilisation intensive
+    des modules de rapports PR avec de grands volumes de donnÃ©es. Il mesure la
+    consommation de ressources (CPU, mÃ©moire) et identifie les goulots d'Ã©tranglement.
 .PARAMETER ModuleName
-    Nom du module à tester. Si non spécifié, tous les modules seront testés.
+    Nom du module Ã  tester. Si non spÃ©cifiÃ©, tous les modules seront testÃ©s.
 .PARAMETER FunctionName
-    Nom de la fonction à tester. Si non spécifié, toutes les fonctions du module seront testées.
+    Nom de la fonction Ã  tester. Si non spÃ©cifiÃ©, toutes les fonctions du module seront testÃ©es.
 .PARAMETER Duration
-    Durée du test de charge en secondes. Par défaut: 60.
+    DurÃ©e du test de charge en secondes. Par dÃ©faut: 60.
 .PARAMETER Concurrency
-    Nombre d'exécutions concurrentes. Par défaut: 5.
+    Nombre d'exÃ©cutions concurrentes. Par dÃ©faut: 5.
 .PARAMETER DataSize
-    Taille des données de test (Small, Medium, Large, ExtraLarge). Par défaut: Large.
+    Taille des donnÃ©es de test (Small, Medium, Large, ExtraLarge). Par dÃ©faut: Large.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats. Par défaut: ".\load_test_results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats. Par dÃ©faut: ".\load_test_results.json".
 .PARAMETER MonitorInterval
-    Intervalle de surveillance des ressources en secondes. Par défaut: 1.
+    Intervalle de surveillance des ressources en secondes. Par dÃ©faut: 1.
 .EXAMPLE
     .\Start-PRLoadTest.ps1 -ModuleName "PRVisualization" -Duration 120 -Concurrency 10
 .NOTES
@@ -54,7 +54,7 @@ param (
     [int]$MonitorInterval = 1
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modules = @(
     "PRReportFilters",
@@ -62,7 +62,7 @@ $modules = @(
     "PRVisualization"
 )
 
-# Filtrer les modules si un module spécifique est demandé
+# Filtrer les modules si un module spÃ©cifique est demandÃ©
 if ($ModuleName) {
     $modules = $modules | Where-Object { $_ -eq $ModuleName }
 }
@@ -72,19 +72,19 @@ foreach ($module in $modules) {
     $modulePath = Join-Path -Path $modulesPath -ChildPath "$module.psm1"
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
-        Write-Verbose "Module importé: $module"
+        Write-Verbose "Module importÃ©: $module"
     } else {
-        Write-Error "Module non trouvé: $modulePath"
+        Write-Error "Module non trouvÃ©: $modulePath"
     }
 }
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     param (
         [string]$Size
     )
 
-    # Définir la taille des données en fonction du paramètre
+    # DÃ©finir la taille des donnÃ©es en fonction du paramÃ¨tre
     $count = switch ($Size) {
         "Small" { 10 }
         "Medium" { 100 }
@@ -93,9 +93,9 @@ function New-TestData {
         default { 100 }
     }
 
-    Write-Verbose "Génération de données de test de taille $Size ($count éléments)..."
+    Write-Verbose "GÃ©nÃ©ration de donnÃ©es de test de taille $Size ($count Ã©lÃ©ments)..."
 
-    # Générer des données de test pour PRReportFilters
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRReportFilters
     $filterTestData = @()
     for ($i = 0; $i -lt $count; $i++) {
         $filterTestData += [PSCustomObject]@{
@@ -108,7 +108,7 @@ function New-TestData {
         }
     }
 
-    # Générer des données de test pour PRVisualization
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRVisualization
     $visualizationTestData = @()
     for ($i = 0; $i -lt $count; $i++) {
         $visualizationTestData += [PSCustomObject]@{
@@ -118,7 +118,7 @@ function New-TestData {
         }
     }
 
-    # Générer des données de test pour PRReportTemplates
+    # GÃ©nÃ©rer des donnÃ©es de test pour PRReportTemplates
     $templateTestData = [PSCustomObject]@{
         title       = "Test Report"
         description = "This is a test report with $count items"
@@ -132,7 +132,7 @@ function New-TestData {
         }
     }
 
-    # Créer un template HTML de test
+    # CrÃ©er un template HTML de test
     $htmlTemplate = @"
 <!DOCTYPE html>
 <html>
@@ -151,11 +151,11 @@ function New-TestData {
 </html>
 "@
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "PRLoadTest_$(Get-Random)"
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer le fichier de template
+    # CrÃ©er le fichier de template
     $templatePath = Join-Path -Path $testDir -ChildPath "template.html"
     Set-Content -Path $templatePath -Value $htmlTemplate -Encoding UTF8
 
@@ -187,7 +187,7 @@ function Get-ProcessPerformance {
     }
 }
 
-# Fonction pour exécuter une fonction avec des paramètres spécifiques
+# Fonction pour exÃ©cuter une fonction avec des paramÃ¨tres spÃ©cifiques
 function Invoke-TestFunction {
     param (
         [string]$ModuleName,
@@ -195,7 +195,7 @@ function Invoke-TestFunction {
         [object]$TestData
     )
 
-    # Préparer les paramètres pour la fonction
+    # PrÃ©parer les paramÃ¨tres pour la fonction
     $params = @{}
 
     switch ($ModuleName) {
@@ -284,7 +284,7 @@ function Invoke-TestFunction {
         }
     }
 
-    # Exécuter la fonction avec les paramètres préparés
+    # ExÃ©cuter la fonction avec les paramÃ¨tres prÃ©parÃ©s
     try {
         $result = & $FunctionName @params
         return @{
@@ -299,7 +299,7 @@ function Invoke-TestFunction {
     }
 }
 
-# Fonction pour exécuter un test de charge
+# Fonction pour exÃ©cuter un test de charge
 function Start-LoadTest {
     param (
         [string]$ModuleName,
@@ -310,13 +310,13 @@ function Start-LoadTest {
         [int]$MonitorInterval
     )
 
-    Write-Host "Démarrage du test de charge pour $ModuleName.$FunctionName..."
-    Write-Host "  Durée: $Duration secondes"
-    Write-Host "  Concurrence: $Concurrency exécutions simultanées"
-    Write-Host "  Taille des données: $DataSize"
+    Write-Host "DÃ©marrage du test de charge pour $ModuleName.$FunctionName..."
+    Write-Host "  DurÃ©e: $Duration secondes"
+    Write-Host "  Concurrence: $Concurrency exÃ©cutions simultanÃ©es"
+    Write-Host "  Taille des donnÃ©es: $DataSize"
     Write-Host ""
 
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $results = @{
         ModuleName    = $ModuleName
         FunctionName  = $FunctionName
@@ -335,7 +335,7 @@ function Start-LoadTest {
         Performance   = @()
     }
 
-    # Démarrer la surveillance des performances
+    # DÃ©marrer la surveillance des performances
     $processId = $PID  # Stocker la valeur de $PID dans une variable normale
     $monitorJob = Start-Job -ScriptBlock {
         param ($ProcessId, $Duration, $Interval)
@@ -363,13 +363,13 @@ function Start-LoadTest {
         return $performance
     } -ArgumentList $processId, $Duration, $MonitorInterval
 
-    # Démarrer le test de charge
+    # DÃ©marrer le test de charge
     $startTime = Get-Date
     $endTime = $startTime.AddSeconds($Duration)
     $runningJobs = @()
 
     while ((Get-Date) -lt $endTime) {
-        # Vérifier les jobs terminés
+        # VÃ©rifier les jobs terminÃ©s
         $completedJobs = $runningJobs | Where-Object { $_.Job.State -eq "Completed" }
         foreach ($job in $completedJobs) {
             $jobResult = Receive-Job -Job $job.Job
@@ -392,20 +392,20 @@ function Start-LoadTest {
             Remove-Job -Job $job.Job -Force
         }
 
-        # Supprimer les jobs terminés de la liste
+        # Supprimer les jobs terminÃ©s de la liste
         $runningJobs = $runningJobs | Where-Object { $_.Job.State -ne "Completed" }
 
-        # Démarrer de nouveaux jobs si nécessaire
+        # DÃ©marrer de nouveaux jobs si nÃ©cessaire
         while ($runningJobs.Count -lt $Concurrency -and (Get-Date) -lt $endTime) {
             $jobStartTime = Get-Date
             $job = Start-Job -ScriptBlock {
                 param ($ModuleName, $FunctionName, $TestData)
 
-                # Importer les modules nécessaires
+                # Importer les modules nÃ©cessaires
                 $modulesPath = Join-Path -Path $using:PSScriptRoot -ChildPath "..\modules"
                 $modulePath = Join-Path -Path $modulesPath -ChildPath "$ModuleName.psm1"
 
-                # Vérifier si le module existe
+                # VÃ©rifier si le module existe
                 if (Test-Path -Path $modulePath) {
                     Import-Module $modulePath -Force
                 } else {
@@ -413,7 +413,7 @@ function Start-LoadTest {
                     function Global:Test-DummyFunction { param($Data) return $Data }
                 }
 
-                # Préparer les paramètres pour la fonction
+                # PrÃ©parer les paramÃ¨tres pour la fonction
                 $params = @{}
 
                 switch ($ModuleName) {
@@ -489,9 +489,9 @@ function Start-LoadTest {
                     }
                 }
 
-                # Exécuter la fonction avec les paramètres préparés
+                # ExÃ©cuter la fonction avec les paramÃ¨tres prÃ©parÃ©s
                 try {
-                    # Vérifier si la fonction existe
+                    # VÃ©rifier si la fonction existe
                     if (Get-Command -Name $FunctionName -ErrorAction SilentlyContinue) {
                         $result = & $FunctionName @params
                     } else {
@@ -517,7 +517,7 @@ function Start-LoadTest {
             }
         }
 
-        # Mettre à jour les temps de fin des jobs terminés
+        # Mettre Ã  jour les temps de fin des jobs terminÃ©s
         foreach ($job in $runningJobs) {
             if ($job.Job.State -eq "Completed" -and -not $job.EndTime) {
                 $job.EndTime = Get-Date
@@ -526,7 +526,7 @@ function Start-LoadTest {
 
         # Afficher la progression
         $progress = [Math]::Min(100, [Math]::Round(((Get-Date) - $startTime).TotalSeconds / $Duration * 100))
-        Write-Progress -Activity "Test de charge en cours" -Status "$($results.Executions) exécutions, $($results.Successes) succès, $($results.Failures) échecs" -PercentComplete $progress
+        Write-Progress -Activity "Test de charge en cours" -Status "$($results.Executions) exÃ©cutions, $($results.Successes) succÃ¨s, $($results.Failures) Ã©checs" -PercentComplete $progress
 
         # Attendre un peu
         Start-Sleep -Milliseconds 100
@@ -534,7 +534,7 @@ function Start-LoadTest {
 
     # Attendre que tous les jobs se terminent
     while ($runningJobs.Count -gt 0) {
-        # Vérifier les jobs terminés
+        # VÃ©rifier les jobs terminÃ©s
         $completedJobs = $runningJobs | Where-Object { $_.Job.State -eq "Completed" }
         foreach ($job in $completedJobs) {
             $jobResult = Receive-Job -Job $job.Job
@@ -557,10 +557,10 @@ function Start-LoadTest {
             Remove-Job -Job $job.Job -Force
         }
 
-        # Supprimer les jobs terminés de la liste
+        # Supprimer les jobs terminÃ©s de la liste
         $runningJobs = $runningJobs | Where-Object { $_.Job.State -ne "Completed" }
 
-        # Mettre à jour les temps de fin des jobs terminés
+        # Mettre Ã  jour les temps de fin des jobs terminÃ©s
         foreach ($job in $runningJobs) {
             if ($job.Job.State -eq "Completed" -and -not $job.EndTime) {
                 $job.EndTime = Get-Date
@@ -571,7 +571,7 @@ function Start-LoadTest {
         Start-Sleep -Milliseconds 100
     }
 
-    # Récupérer les données de performance
+    # RÃ©cupÃ©rer les donnÃ©es de performance
     $results.Performance = Receive-Job -Job $monitorJob
     Remove-Job -Job $monitorJob -Force
 
@@ -584,7 +584,7 @@ function Start-LoadTest {
     return $results
 }
 
-# Fonction principale pour exécuter tous les tests de charge
+# Fonction principale pour exÃ©cuter tous les tests de charge
 function Start-AllLoadTests {
     param (
         [string[]]$Modules,
@@ -599,10 +599,10 @@ function Start-AllLoadTests {
     $testData = New-TestData -Size $DataSize
 
     foreach ($module in $Modules) {
-        # Obtenir toutes les fonctions exportées du module
+        # Obtenir toutes les fonctions exportÃ©es du module
         $functions = Get-Command -Module $module | Where-Object { $_.CommandType -eq "Function" }
 
-        # Filtrer les fonctions si un filtre est spécifié
+        # Filtrer les fonctions si un filtre est spÃ©cifiÃ©
         if ($FunctionFilter) {
             $functions = $functions | Where-Object { $_.Name -like "*$FunctionFilter*" }
         }
@@ -615,7 +615,7 @@ function Start-AllLoadTests {
                 continue
             }
 
-            # Exécuter le test de charge pour cette fonction
+            # ExÃ©cuter le test de charge pour cette fonction
             $result = Start-LoadTest -ModuleName $module -FunctionName $functionName -TestData $testData -Duration $Duration -Concurrency $Concurrency -MonitorInterval $MonitorInterval
 
             if ($result) {
@@ -632,10 +632,10 @@ function Start-AllLoadTests {
     return $allResults
 }
 
-# Exécuter les tests de charge
+# ExÃ©cuter les tests de charge
 $loadTestResults = Start-AllLoadTests -Modules $modules -FunctionFilter $FunctionName -Duration $Duration -Concurrency $Concurrency -DataSize $DataSize -MonitorInterval $MonitorInterval
 
-# Ajouter des métadonnées aux résultats
+# Ajouter des mÃ©tadonnÃ©es aux rÃ©sultats
 $results = @{
     Timestamp   = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     DataSize    = $DataSize
@@ -649,21 +649,21 @@ $results = @{
     Results     = $loadTestResults
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests de charge:"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests de charge:"
 Write-Host "========================="
 Write-Host "Date: $($results.Timestamp)"
-Write-Host "Taille des données: $DataSize"
-Write-Host "Durée: $Duration secondes"
-Write-Host "Concurrence: $Concurrency exécutions simultanées"
-Write-Host "Système: PowerShell $($results.System.PSVersion) sur $($results.System.OS)"
+Write-Host "Taille des donnÃ©es: $DataSize"
+Write-Host "DurÃ©e: $Duration secondes"
+Write-Host "Concurrence: $Concurrency exÃ©cutions simultanÃ©es"
+Write-Host "SystÃ¨me: PowerShell $($results.System.PSVersion) sur $($results.System.OS)"
 Write-Host ""
 
 $loadTestResults | ForEach-Object {
     Write-Host "$($_.ModuleName).$($_.FunctionName):"
-    Write-Host "  Exécutions: $($_.Executions)"
-    Write-Host "  Succès: $($_.Successes)"
-    Write-Host "  Échecs: $($_.Failures)"
+    Write-Host "  ExÃ©cutions: $($_.Executions)"
+    Write-Host "  SuccÃ¨s: $($_.Successes)"
+    Write-Host "  Ã‰checs: $($_.Failures)"
     Write-Host "  Temps moyen: $([Math]::Round($_.AvgExecTime, 2)) ms"
     Write-Host "  Temps min: $([Math]::Round($_.MinExecTime, 2)) ms"
     Write-Host "  Temps max: $([Math]::Round($_.MaxExecTime, 2)) ms"
@@ -674,14 +674,14 @@ $loadTestResults | ForEach-Object {
         $peakMemory = ($_.Performance | Measure-Object -Property WorkingSet -Maximum).Maximum
         $memoryGrowth = $peakMemory - $initialMemory
 
-        Write-Host "  Mémoire initiale: $([Math]::Round($initialMemory / 1MB, 2)) MB"
-        Write-Host "  Mémoire maximale: $([Math]::Round($peakMemory / 1MB, 2)) MB"
-        Write-Host "  Croissance mémoire: $([Math]::Round($memoryGrowth / 1MB, 2)) MB"
+        Write-Host "  MÃ©moire initiale: $([Math]::Round($initialMemory / 1MB, 2)) MB"
+        Write-Host "  MÃ©moire maximale: $([Math]::Round($peakMemory / 1MB, 2)) MB"
+        Write-Host "  Croissance mÃ©moire: $([Math]::Round($memoryGrowth / 1MB, 2)) MB"
     }
 
     Write-Host ""
 }
 
-# Enregistrer les résultats dans un fichier JSON
+# Enregistrer les rÃ©sultats dans un fichier JSON
 $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Résultats enregistrés dans: $OutputPath"
+Write-Host "RÃ©sultats enregistrÃ©s dans: $OutputPath"

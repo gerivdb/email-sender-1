@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'extraction et de préparation des données historiques de performance.
+    Script d'extraction et de prÃ©paration des donnÃ©es historiques de performance.
 
 .DESCRIPTION
-    Ce script extrait les données de performance historiques de différentes sources,
-    les nettoie, les transforme et les prépare pour l'analyse. Il gère les valeurs manquantes,
-    normalise les données et les structure dans un format adapté à l'analyse.
+    Ce script extrait les donnÃ©es de performance historiques de diffÃ©rentes sources,
+    les nettoie, les transforme et les prÃ©pare pour l'analyse. Il gÃ¨re les valeurs manquantes,
+    normalise les donnÃ©es et les structure dans un format adaptÃ© Ã  l'analyse.
 
 .PARAMETER SourcePath
-    Chemin vers les sources de données (logs, métriques, etc.).
+    Chemin vers les sources de donnÃ©es (logs, mÃ©triques, etc.).
 
 .PARAMETER OutputPath
-    Chemin où les données préparées seront sauvegardées.
+    Chemin oÃ¹ les donnÃ©es prÃ©parÃ©es seront sauvegardÃ©es.
 
 .PARAMETER StartDate
-    Date de début pour l'extraction des données (format: yyyy-MM-dd).
+    Date de dÃ©but pour l'extraction des donnÃ©es (format: yyyy-MM-dd).
 
 .PARAMETER EndDate
-    Date de fin pour l'extraction des données (format: yyyy-MM-dd).
+    Date de fin pour l'extraction des donnÃ©es (format: yyyy-MM-dd).
 
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
@@ -27,7 +27,7 @@
 
 .NOTES
     Auteur: Augment Agent
-    Date de création: 22/04/2025
+    Date de crÃ©ation: 22/04/2025
     Version: 1.0
 #>
 
@@ -50,7 +50,7 @@ param (
     [string]$LogLevel = "Info"
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ModulePath = Join-Path -Path $ScriptPath -ChildPath "..\utils"
 
@@ -86,7 +86,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour extraire les données des logs système
+# Fonction pour extraire les donnÃ©es des logs systÃ¨me
 function Get-SystemLogs {
     [CmdletBinding()]
     param (
@@ -97,29 +97,29 @@ function Get-SystemLogs {
         [string]$EndDate
     )
 
-    Write-Log -Message "Extraction des logs système du $StartDate au $EndDate" -Level "Info"
+    Write-Log -Message "Extraction des logs systÃ¨me du $StartDate au $EndDate" -Level "Info"
 
     try {
         # Convertir les dates en objets DateTime
         $Start = [DateTime]::ParseExact($StartDate, "yyyy-MM-dd", $null)
         $End = [DateTime]::ParseExact($EndDate, "yyyy-MM-dd", $null).AddDays(1).AddSeconds(-1)
 
-        # Extraire les logs d'événements système
+        # Extraire les logs d'Ã©vÃ©nements systÃ¨me
         $SystemLogs = Get-WinEvent -FilterHashtable @{
             LogName   = 'System'
             StartTime = $Start
             EndTime   = $End
         } -ErrorAction SilentlyContinue | Select-Object TimeCreated, Id, LevelDisplayName, Message
 
-        Write-Log -Message "Extraction réussie: $($SystemLogs.Count) logs système extraits" -Level "Info"
+        Write-Log -Message "Extraction rÃ©ussie: $($SystemLogs.Count) logs systÃ¨me extraits" -Level "Info"
         return $SystemLogs
     } catch {
-        Write-Log -Message "Erreur lors de l'extraction des logs système: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'extraction des logs systÃ¨me: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour extraire les données de performance
+# Fonction pour extraire les donnÃ©es de performance
 function Get-PerformanceData {
     [CmdletBinding()]
     param (
@@ -133,10 +133,10 @@ function Get-PerformanceData {
         [int]$SampleInterval = 60 # Intervalle en secondes
     )
 
-    Write-Log -Message "Extraction des données de performance du $StartDate au $EndDate" -Level "Info"
+    Write-Log -Message "Extraction des donnÃ©es de performance du $StartDate au $EndDate" -Level "Info"
 
     try {
-        # Liste des compteurs de performance à collecter
+        # Liste des compteurs de performance Ã  collecter
         $Counters = @(
             "\Processor(_Total)\% Processor Time",
             "\Memory\Available MBytes",
@@ -145,11 +145,11 @@ function Get-PerformanceData {
             "\Network Interface(*)\Bytes Total/sec"
         )
 
-        # Collecter les données de performance actuelles (pour démonstration)
-        # Dans un cas réel, on utiliserait des données historiques stockées
+        # Collecter les donnÃ©es de performance actuelles (pour dÃ©monstration)
+        # Dans un cas rÃ©el, on utiliserait des donnÃ©es historiques stockÃ©es
         $PerfData = Get-Counter -Counter $Counters -SampleInterval $SampleInterval -MaxSamples 10 -ErrorAction SilentlyContinue
 
-        # Transformer les données en format exploitable
+        # Transformer les donnÃ©es en format exploitable
         $ProcessedData = $PerfData.CounterSamples | ForEach-Object {
             [PSCustomObject]@{
                 Timestamp = $_.Timestamp
@@ -159,10 +159,10 @@ function Get-PerformanceData {
             }
         }
 
-        Write-Log -Message "Extraction réussie: $($ProcessedData.Count) métriques de performance extraites" -Level "Info"
+        Write-Log -Message "Extraction rÃ©ussie: $($ProcessedData.Count) mÃ©triques de performance extraites" -Level "Info"
         return $ProcessedData
     } catch {
-        Write-Log -Message "Erreur lors de l'extraction des données de performance: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'extraction des donnÃ©es de performance: $_" -Level "Error"
         return $null
     }
 }
@@ -184,11 +184,11 @@ function Get-ApplicationLogs {
     Write-Log -Message "Extraction des logs applicatifs du $StartDate au $EndDate" -Level "Info"
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $LogPath)) {
             Write-Log -Message "Le chemin des logs applicatifs n'existe pas: $LogPath" -Level "Warning"
 
-            # Créer des données de démonstration
+            # CrÃ©er des donnÃ©es de dÃ©monstration
             $DemoLogs = @()
             $Start = [DateTime]::ParseExact($StartDate, "yyyy-MM-dd", $null)
             $End = [DateTime]::ParseExact($EndDate, "yyyy-MM-dd", $null)
@@ -199,16 +199,16 @@ function Get-ApplicationLogs {
                     Timestamp = $CurrentDate.AddHours((Get-Random -Minimum 0 -Maximum 24))
                     Level     = (Get-Random -InputObject @("INFO", "WARNING", "ERROR", "DEBUG"))
                     Component = (Get-Random -InputObject @("API", "Database", "UI", "Authentication"))
-                    Message   = "Message de log de démonstration"
+                    Message   = "Message de log de dÃ©monstration"
                 }
                 $CurrentDate = $CurrentDate.AddDays(1)
             }
 
-            Write-Log -Message "Données de démonstration créées: $($DemoLogs.Count) logs applicatifs" -Level "Info"
+            Write-Log -Message "DonnÃ©es de dÃ©monstration crÃ©Ã©es: $($DemoLogs.Count) logs applicatifs" -Level "Info"
             return $DemoLogs
         }
 
-        # Extraire les logs applicatifs réels
+        # Extraire les logs applicatifs rÃ©els
         $LogFiles = Get-ChildItem -Path $LogPath -Filter "*.log" | Where-Object {
             $_.LastWriteTime -ge [DateTime]::ParseExact($StartDate, "yyyy-MM-dd", $null) -and
             $_.LastWriteTime -le [DateTime]::ParseExact($EndDate, "yyyy-MM-dd", $null).AddDays(1)
@@ -218,7 +218,7 @@ function Get-ApplicationLogs {
         foreach ($File in $LogFiles) {
             $Content = Get-Content -Path $File.FullName
             # Analyser le contenu selon le format des logs
-            # Ceci est un exemple simplifié, à adapter selon le format réel des logs
+            # Ceci est un exemple simplifiÃ©, Ã  adapter selon le format rÃ©el des logs
             foreach ($Line in $Content) {
                 if ($Line -match '^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[(\w+)\] \[(\w+)\] (.+)$') {
                     $AppLogs += [PSCustomObject]@{
@@ -231,7 +231,7 @@ function Get-ApplicationLogs {
             }
         }
 
-        Write-Log -Message "Extraction réussie: $($AppLogs.Count) logs applicatifs extraits" -Level "Info"
+        Write-Log -Message "Extraction rÃ©ussie: $($AppLogs.Count) logs applicatifs extraits" -Level "Info"
         return $AppLogs
     } catch {
         Write-Log -Message "Erreur lors de l'extraction des logs applicatifs: $_" -Level "Error"
@@ -239,7 +239,7 @@ function Get-ApplicationLogs {
     }
 }
 
-# Fonction pour nettoyer les données
+# Fonction pour nettoyer les donnÃ©es
 function Clean-Data {
     [CmdletBinding()]
     param (
@@ -251,22 +251,22 @@ function Clean-Data {
         [string]$DataType = "Performance"
     )
 
-    Write-Log -Message "Nettoyage des données de type $DataType" -Level "Info"
+    Write-Log -Message "Nettoyage des donnÃ©es de type $DataType" -Level "Info"
 
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à nettoyer pour le type $DataType" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  nettoyer pour le type $DataType" -Level "Warning"
             return $null
         }
 
         # Filtrer les valeurs nulles ou aberrantes
         $CleanedData = $Data | Where-Object { $null -ne $_.Value }
 
-        # Traitement spécifique selon le type de données
+        # Traitement spÃ©cifique selon le type de donnÃ©es
         switch ($DataType) {
             "Performance" {
-                # Détecter et gérer les valeurs aberrantes (exemple: méthode IQR)
+                # DÃ©tecter et gÃ©rer les valeurs aberrantes (exemple: mÃ©thode IQR)
                 $CleanedData = $CleanedData | Group-Object Path | ForEach-Object {
                     $Group = $_.Group
                     $Values = $Group.Value
@@ -279,7 +279,7 @@ function Clean-Data {
                     $Q3 = $SortedValues[$Q3Index]
                     $IQR = $Q3 - $Q1
 
-                    # Définir les limites pour les valeurs aberrantes
+                    # DÃ©finir les limites pour les valeurs aberrantes
                     $LowerBound = $Q1 - (1.5 * $IQR)
                     $UpperBound = $Q3 + (1.5 * $IQR)
 
@@ -292,20 +292,20 @@ function Clean-Data {
                 $CleanedData = $CleanedData | Sort-Object Timestamp -Unique
             }
             default {
-                # Nettoyage générique
+                # Nettoyage gÃ©nÃ©rique
                 $CleanedData = $CleanedData | Sort-Object Timestamp
             }
         }
 
-        Write-Log -Message "Nettoyage réussi: $($CleanedData.Count) entrées conservées sur $($Data.Count)" -Level "Info"
+        Write-Log -Message "Nettoyage rÃ©ussi: $($CleanedData.Count) entrÃ©es conservÃ©es sur $($Data.Count)" -Level "Info"
         return $CleanedData
     } catch {
-        Write-Log -Message "Erreur lors du nettoyage des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du nettoyage des donnÃ©es: $_" -Level "Error"
         return $Data
     }
 }
 
-# Fonction pour normaliser les données
+# Fonction pour normaliser les donnÃ©es
 function Normalize-Data {
     [CmdletBinding()]
     param (
@@ -317,27 +317,27 @@ function Normalize-Data {
         [string]$Method = "MinMax" # MinMax, ZScore, Log
     )
 
-    Write-Log -Message "Normalisation des données avec la méthode $Method" -Level "Info"
+    Write-Log -Message "Normalisation des donnÃ©es avec la mÃ©thode $Method" -Level "Info"
 
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à normaliser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  normaliser" -Level "Warning"
             return $null
         }
 
-        # Normaliser les données numériques
+        # Normaliser les donnÃ©es numÃ©riques
         $NormalizedData = $Data | Group-Object Path | ForEach-Object {
             $Group = $_.Group
             $Values = $Group.Value
 
-            # Calculer les statistiques nécessaires pour la normalisation
+            # Calculer les statistiques nÃ©cessaires pour la normalisation
             $Min = ($Values | Measure-Object -Minimum).Minimum
             $Max = ($Values | Measure-Object -Maximum).Maximum
             $Mean = ($Values | Measure-Object -Average).Average
             $StdDev = [Math]::Sqrt(($Values | ForEach-Object { [Math]::Pow($_ - $Mean, 2) } | Measure-Object -Average).Average)
 
-            # Appliquer la méthode de normalisation
+            # Appliquer la mÃ©thode de normalisation
             switch ($Method) {
                 "MinMax" {
                     # Normalisation Min-Max (0-1)
@@ -374,15 +374,15 @@ function Normalize-Data {
             $Group
         }
 
-        Write-Log -Message "Normalisation réussie avec la méthode $Method" -Level "Info"
+        Write-Log -Message "Normalisation rÃ©ussie avec la mÃ©thode $Method" -Level "Info"
         return $NormalizedData
     } catch {
-        Write-Log -Message "Erreur lors de la normalisation des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la normalisation des donnÃ©es: $_" -Level "Error"
         return $Data
     }
 }
 
-# Fonction pour exporter les données
+# Fonction pour exporter les donnÃ©es
 function Export-PreparedData {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -397,32 +397,32 @@ function Export-PreparedData {
         [string]$Format = "CSV" # CSV, JSON
     )
 
-    Write-Log -Message "Exportation des données au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des donnÃ©es au format $Format vers $OutputPath" -Level "Info"
 
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à exporter" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  exporter" -Level "Warning"
             return $false
         }
 
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
-            if ($PSCmdlet.ShouldProcess($Directory, "Création du répertoire")) {
+            if ($PSCmdlet.ShouldProcess($Directory, "CrÃ©ation du rÃ©pertoire")) {
                 New-Item -Path $Directory -ItemType Directory -Force | Out-Null
             }
         }
 
-        # Exporter les données selon le format spécifié
+        # Exporter les donnÃ©es selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
-                if ($PSCmdlet.ShouldProcess($OutputPath, "Exportation des données au format CSV")) {
+                if ($PSCmdlet.ShouldProcess($OutputPath, "Exportation des donnÃ©es au format CSV")) {
                     $Data | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
                 }
             }
             "JSON" {
-                if ($PSCmdlet.ShouldProcess($OutputPath, "Exportation des données au format JSON")) {
+                if ($PSCmdlet.ShouldProcess($OutputPath, "Exportation des donnÃ©es au format JSON")) {
                     $Data | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
                 }
             }
@@ -432,10 +432,10 @@ function Export-PreparedData {
             }
         }
 
-        Write-Log -Message "Exportation réussie: $($Data.Count) entrées exportées vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie: $($Data.Count) entrÃ©es exportÃ©es vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des donnÃ©es: $_" -Level "Error"
         return $false
     }
 }
@@ -457,33 +457,33 @@ function Start-DataPreparation {
         [string]$EndDate
     )
 
-    Write-Log -Message "Début du processus de préparation des données" -Level "Info"
+    Write-Log -Message "DÃ©but du processus de prÃ©paration des donnÃ©es" -Level "Info"
 
-    # 1. Extraction des données
-    Write-Log -Message "Étape 1: Extraction des données" -Level "Info"
+    # 1. Extraction des donnÃ©es
+    Write-Log -Message "Ã‰tape 1: Extraction des donnÃ©es" -Level "Info"
     $SystemLogs = Get-SystemLogs -StartDate $StartDate -EndDate $EndDate
     $PerformanceData = Get-PerformanceData -StartDate $StartDate -EndDate $EndDate
     $ApplicationLogs = Get-ApplicationLogs -LogPath $SourcePath -StartDate $StartDate -EndDate $EndDate
 
-    # 2. Nettoyage des données
-    Write-Log -Message "Étape 2: Nettoyage des données" -Level "Info"
+    # 2. Nettoyage des donnÃ©es
+    Write-Log -Message "Ã‰tape 2: Nettoyage des donnÃ©es" -Level "Info"
     $CleanedPerformanceData = if ($null -ne $PerformanceData -and $PerformanceData.Count -gt 0) { Clean-Data -Data $PerformanceData -DataType "Performance" } else { @() }
     $CleanedSystemLogs = if ($null -ne $SystemLogs -and $SystemLogs.Count -gt 0) { Clean-Data -Data $SystemLogs -DataType "Logs" } else { @() }
     $CleanedApplicationLogs = if ($null -ne $ApplicationLogs -and $ApplicationLogs.Count -gt 0) { Clean-Data -Data $ApplicationLogs -DataType "Logs" } else { @() }
 
-    # 3. Normalisation des données
-    Write-Log -Message "Étape 3: Normalisation des données" -Level "Info"
+    # 3. Normalisation des donnÃ©es
+    Write-Log -Message "Ã‰tape 3: Normalisation des donnÃ©es" -Level "Info"
     $NormalizedPerformanceData = if ($null -ne $CleanedPerformanceData -and $CleanedPerformanceData.Count -gt 0) { Normalize-Data -Data $CleanedPerformanceData -Method "MinMax" } else { @() }
 
-    # 4. Exportation des données préparées
-    Write-Log -Message "Étape 4: Exportation des données préparées" -Level "Info"
+    # 4. Exportation des donnÃ©es prÃ©parÃ©es
+    Write-Log -Message "Ã‰tape 4: Exportation des donnÃ©es prÃ©parÃ©es" -Level "Info"
     $PerformanceOutputPath = Join-Path -Path $OutputPath -ChildPath "prepared_performance_data.csv"
     $SystemLogsOutputPath = Join-Path -Path $OutputPath -ChildPath "prepared_system_logs.csv"
     $ApplicationLogsOutputPath = Join-Path -Path $OutputPath -ChildPath "prepared_application_logs.csv"
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
-        if ($PSCmdlet.ShouldProcess($OutputPath, "Création du répertoire")) {
+        if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃ©ation du rÃ©pertoire")) {
             New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
         }
     }
@@ -491,7 +491,7 @@ function Start-DataPreparation {
     $ExportPerformance = if ($NormalizedPerformanceData.Count -gt 0) {
         Export-PreparedData -Data $NormalizedPerformanceData -OutputPath $PerformanceOutputPath -Format "CSV"
     } else {
-        # Créer un fichier vide avec en-tête
+        # CrÃ©er un fichier vide avec en-tÃªte
         "Timestamp,Path,Instance,Value,NormalizedValue" | Out-File -FilePath $PerformanceOutputPath -Encoding UTF8
         $true
     }
@@ -499,7 +499,7 @@ function Start-DataPreparation {
     $ExportSystemLogs = if ($CleanedSystemLogs.Count -gt 0) {
         Export-PreparedData -Data $CleanedSystemLogs -OutputPath $SystemLogsOutputPath -Format "CSV"
     } else {
-        # Créer un fichier vide avec en-tête
+        # CrÃ©er un fichier vide avec en-tÃªte
         "TimeCreated,Id,LevelDisplayName,Message" | Out-File -FilePath $SystemLogsOutputPath -Encoding UTF8
         $true
     }
@@ -507,16 +507,16 @@ function Start-DataPreparation {
     $ExportApplicationLogs = if ($CleanedApplicationLogs.Count -gt 0) {
         Export-PreparedData -Data $CleanedApplicationLogs -OutputPath $ApplicationLogsOutputPath -Format "CSV"
     } else {
-        # Créer un fichier vide avec en-tête
+        # CrÃ©er un fichier vide avec en-tÃªte
         "Timestamp,Level,Component,Message" | Out-File -FilePath $ApplicationLogsOutputPath -Encoding UTF8
         $true
     }
 
-    # 5. Résumé des résultats
-    Write-Log -Message "Processus de préparation des données terminé" -Level "Info"
-    Write-Log -Message "Données de performance: $($NormalizedPerformanceData.Count) entrées" -Level "Info"
-    Write-Log -Message "Logs système: $($CleanedSystemLogs.Count) entrées" -Level "Info"
-    Write-Log -Message "Logs applicatifs: $($CleanedApplicationLogs.Count) entrées" -Level "Info"
+    # 5. RÃ©sumÃ© des rÃ©sultats
+    Write-Log -Message "Processus de prÃ©paration des donnÃ©es terminÃ©" -Level "Info"
+    Write-Log -Message "DonnÃ©es de performance: $($NormalizedPerformanceData.Count) entrÃ©es" -Level "Info"
+    Write-Log -Message "Logs systÃ¨me: $($CleanedSystemLogs.Count) entrÃ©es" -Level "Info"
+    Write-Log -Message "Logs applicatifs: $($CleanedApplicationLogs.Count) entrÃ©es" -Level "Info"
 
     return @{
         PerformanceData = $NormalizedPerformanceData
@@ -526,15 +526,15 @@ function Start-DataPreparation {
     }
 }
 
-# Exécution du script
-if ($PSCmdlet.ShouldProcess("Préparation des données", "Exécuter")) {
+# ExÃ©cution du script
+if ($PSCmdlet.ShouldProcess("PrÃ©paration des donnÃ©es", "ExÃ©cuter")) {
     $Result = Start-DataPreparation -SourcePath $SourcePath -OutputPath $OutputPath -StartDate $StartDate -EndDate $EndDate
 
     if ($Result.Success) {
-        Write-Log -Message "Préparation des données réussie" -Level "Info"
+        Write-Log -Message "PrÃ©paration des donnÃ©es rÃ©ussie" -Level "Info"
         return 0
     } else {
-        Write-Log -Message "Échec de la préparation des données" -Level "Error"
+        Write-Log -Message "Ã‰chec de la prÃ©paration des donnÃ©es" -Level "Error"
         return 1
     }
 }

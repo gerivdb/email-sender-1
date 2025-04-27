@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les permissions contradictoires dans SQL Server.
+    DÃ©tecte les permissions contradictoires dans SQL Server.
 
 .DESCRIPTION
-    Cette fonction analyse les permissions SQL Server pour détecter les contradictions,
-    comme des permissions GRANT et DENY sur le même objet pour le même login.
+    Cette fonction analyse les permissions SQL Server pour dÃ©tecter les contradictions,
+    comme des permissions GRANT et DENY sur le mÃªme objet pour le mÃªme login.
 
 .PARAMETER ServerInstance
-    Le nom de l'instance SQL Server à analyser.
+    Le nom de l'instance SQL Server Ã  analyser.
 
 .PARAMETER Credential
-    Les informations d'identification à utiliser pour la connexion à SQL Server.
+    Les informations d'identification Ã  utiliser pour la connexion Ã  SQL Server.
 
 .PARAMETER LoginName
-    Filtre les résultats pour un login spécifique.
+    Filtre les rÃ©sultats pour un login spÃ©cifique.
 
 .PARAMETER PermissionName
-    Filtre les résultats pour une permission spécifique.
+    Filtre les rÃ©sultats pour une permission spÃ©cifique.
 
 .PARAMETER ContradictionType
-    Filtre les résultats par type de contradiction (GRANT/DENY, Héritage, Rôle/Utilisateur).
+    Filtre les rÃ©sultats par type de contradiction (GRANT/DENY, HÃ©ritage, RÃ´le/Utilisateur).
 
 .PARAMETER OutputFormat
-    Format de sortie des résultats (Object, Text, HTML, JSON).
+    Format de sortie des rÃ©sultats (Object, Text, HTML, JSON).
 
 .EXAMPLE
     Find-SqlServerContradictoryPermission -ServerInstance "SQLSERVER01"
@@ -51,7 +51,7 @@ function Find-SqlServerContradictoryPermission {
         [string]$PermissionName,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("GRANT/DENY", "Héritage", "Rôle/Utilisateur", "Tous")]
+        [ValidateSet("GRANT/DENY", "HÃ©ritage", "RÃ´le/Utilisateur", "Tous")]
         [string]$ContradictionType = "Tous",
         
         [Parameter(Mandatory = $false)]
@@ -60,9 +60,9 @@ function Find-SqlServerContradictoryPermission {
     )
     
     begin {
-        # Vérifier si le module SqlServer est installé
+        # VÃ©rifier si le module SqlServer est installÃ©
         if (-not (Get-Module -Name SqlServer -ListAvailable)) {
-            Write-Warning "Le module SqlServer n'est pas installé. Installation en cours..."
+            Write-Warning "Le module SqlServer n'est pas installÃ©. Installation en cours..."
             try {
                 Install-Module -Name SqlServer -Force -Scope CurrentUser
             } catch {
@@ -73,23 +73,23 @@ function Find-SqlServerContradictoryPermission {
         # Importer le module SqlServer
         Import-Module -Name SqlServer -ErrorAction Stop
         
-        # Charger le modèle de permissions contradictoires
+        # Charger le modÃ¨le de permissions contradictoires
         $contradictoryPermissionModelPath = Join-Path -Path $script:PrivateFunctionsPath -ChildPath "SqlPermissionModels\ContradictoryPermissionModel.ps1"
         if (Test-Path -Path $contradictoryPermissionModelPath) {
             . $contradictoryPermissionModelPath
         } else {
-            throw "Le fichier de modèle de permissions contradictoires est introuvable: $contradictoryPermissionModelPath"
+            throw "Le fichier de modÃ¨le de permissions contradictoires est introuvable: $contradictoryPermissionModelPath"
         }
         
-        # Créer une liste pour stocker les contradictions détectées
+        # CrÃ©er une liste pour stocker les contradictions dÃ©tectÃ©es
         $contradictions = New-Object System.Collections.Generic.List[object]
     }
     
     process {
         try {
-            Write-Verbose "Connexion à l'instance SQL Server: $ServerInstance"
+            Write-Verbose "Connexion Ã  l'instance SQL Server: $ServerInstance"
             
-            # Paramètres de connexion
+            # ParamÃ¨tres de connexion
             $sqlParams = @{
                 ServerInstance = $ServerInstance
                 ErrorAction = "Stop"
@@ -99,8 +99,8 @@ function Find-SqlServerContradictoryPermission {
                 $sqlParams.Credential = $Credential
             }
             
-            # Récupérer les permissions au niveau serveur
-            Write-Verbose "Récupération des permissions au niveau serveur"
+            # RÃ©cupÃ©rer les permissions au niveau serveur
+            Write-Verbose "RÃ©cupÃ©ration des permissions au niveau serveur"
             $query = @"
 SELECT 
     p.class_desc AS SecurableType,
@@ -121,17 +121,17 @@ ORDER BY l.name, p.permission_name, p.state_desc
             # Regrouper les permissions par login et nom de permission
             $permissionsByLogin = $serverPermissions | Group-Object -Property LoginName, PermissionName
             
-            # Détecter les contradictions GRANT/DENY
+            # DÃ©tecter les contradictions GRANT/DENY
             foreach ($group in $permissionsByLogin) {
                 $loginName = ($group.Name -split ", ")[0]
                 $permissionName = ($group.Name -split ", ")[1]
                 
-                # Filtrer par login si spécifié
+                # Filtrer par login si spÃ©cifiÃ©
                 if ($LoginName -and $loginName -ne $LoginName) {
                     continue
                 }
                 
-                # Filtrer par permission si spécifié
+                # Filtrer par permission si spÃ©cifiÃ©
                 if ($PermissionName -and $permissionName -ne $PermissionName) {
                     continue
                 }
@@ -140,7 +140,7 @@ ORDER BY l.name, p.permission_name, p.state_desc
                 $denyPermission = $group.Group | Where-Object { $_.PermissionState -eq "DENY" }
                 
                 if ($grantPermission -and $denyPermission) {
-                    # Filtrer par type de contradiction si spécifié
+                    # Filtrer par type de contradiction si spÃ©cifiÃ©
                     if ($ContradictionType -ne "Tous" -and $ContradictionType -ne "GRANT/DENY") {
                         continue
                     }
@@ -150,17 +150,17 @@ ORDER BY l.name, p.permission_name, p.state_desc
                         -LoginName $loginName `
                         -SecurableName $ServerInstance `
                         -ContradictionType "GRANT/DENY" `
-                        -RiskLevel "Élevé" `
-                        -Impact "L'utilisateur peut avoir des problèmes d'accès intermittents" `
+                        -RiskLevel "Ã‰levÃ©" `
+                        -Impact "L'utilisateur peut avoir des problÃ¨mes d'accÃ¨s intermittents" `
                         -RecommendedAction "Supprimer l'une des permissions contradictoires (GRANT ou DENY)"
                     
                     $contradictions.Add($contradiction)
                 }
             }
             
-            # Détecter les contradictions d'héritage (exemple simplifié)
-            if ($ContradictionType -eq "Tous" -or $ContradictionType -eq "Héritage") {
-                # Récupérer les rôles de serveur et leurs membres
+            # DÃ©tecter les contradictions d'hÃ©ritage (exemple simplifiÃ©)
+            if ($ContradictionType -eq "Tous" -or $ContradictionType -eq "HÃ©ritage") {
+                # RÃ©cupÃ©rer les rÃ´les de serveur et leurs membres
                 $rolesQuery = @"
 SELECT 
     r.name AS RoleName,
@@ -172,13 +172,13 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
                 
                 $serverRoles = Invoke-Sqlcmd @sqlParams -Query $rolesQuery
                 
-                # Regrouper les rôles par membre
+                # Regrouper les rÃ´les par membre
                 $rolesByMember = $serverRoles | Group-Object -Property MemberName
                 
                 foreach ($member in $rolesByMember) {
                     $memberName = $member.Name
                     
-                    # Filtrer par login si spécifié
+                    # Filtrer par login si spÃ©cifiÃ©
                     if ($LoginName -and $memberName -ne $LoginName) {
                         continue
                     }
@@ -196,7 +196,7 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
                             }
                             
                             if ($memberContradiction) {
-                                # Filtrer par permission si spécifié
+                                # Filtrer par permission si spÃ©cifiÃ©
                                 if ($PermissionName -and $rolePermission.PermissionName -ne $PermissionName) {
                                     continue
                                 }
@@ -205,10 +205,10 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
                                     -PermissionName $rolePermission.PermissionName `
                                     -LoginName $memberName `
                                     -SecurableName $ServerInstance `
-                                    -ContradictionType "Héritage" `
+                                    -ContradictionType "HÃ©ritage" `
                                     -RiskLevel "Moyen" `
-                                    -Impact "L'utilisateur hérite de permissions contradictoires du rôle $roleName" `
-                                    -RecommendedAction "Vérifier les permissions du rôle et de l'utilisateur"
+                                    -Impact "L'utilisateur hÃ©rite de permissions contradictoires du rÃ´le $roleName" `
+                                    -RecommendedAction "VÃ©rifier les permissions du rÃ´le et de l'utilisateur"
                                 
                                 $contradictions.Add($contradiction)
                             }
@@ -217,13 +217,13 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
                 }
             }
             
-            # Formater la sortie selon le format demandé
+            # Formater la sortie selon le format demandÃ©
             switch ($OutputFormat) {
                 "Object" {
                     return $contradictions
                 }
                 "Text" {
-                    $result = "Permissions contradictoires détectées sur $ServerInstance:`n`n"
+                    $result = "Permissions contradictoires dÃ©tectÃ©es sur $ServerInstance:`n`n"
                     foreach ($contradiction in $contradictions) {
                         $result += $contradiction.GetDetailedDescription() + "`n`n"
                     }
@@ -251,7 +251,7 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
 <body>
     <h1>Rapport de permissions contradictoires - $ServerInstance</h1>
     <p>Date du rapport: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-    <p>Nombre de contradictions détectées: $($contradictions.Count)</p>
+    <p>Nombre de contradictions dÃ©tectÃ©es: $($contradictions.Count)</p>
     
     <table>
         <tr>
@@ -260,14 +260,14 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
             <th>Type de contradiction</th>
             <th>Niveau de risque</th>
             <th>Impact</th>
-            <th>Action recommandée</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
                     
                     foreach ($contradiction in $contradictions) {
                         $riskClass = switch ($contradiction.RiskLevel) {
                             "Critique" { "critical" }
-                            "Élevé" { "high" }
+                            "Ã‰levÃ©" { "high" }
                             "Moyen" { "medium" }
                             "Faible" { "low" }
                             default { "" }
@@ -316,13 +316,13 @@ JOIN sys.server_principals m ON rm.member_principal_id = m.principal_id
                 }
             }
         } catch {
-            Write-Error "Erreur lors de la détection des permissions contradictoires: $_"
+            Write-Error "Erreur lors de la dÃ©tection des permissions contradictoires: $_"
             throw
         }
     }
     
     end {
-        Write-Verbose "Détection des permissions contradictoires terminée. $($contradictions.Count) contradictions trouvées."
+        Write-Verbose "DÃ©tection des permissions contradictoires terminÃ©e. $($contradictions.Count) contradictions trouvÃ©es."
     }
 }
 

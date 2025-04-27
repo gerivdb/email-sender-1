@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de résolution de chemins centralisé avec recherche intelligente et cache.
+    Module de rÃ©solution de chemins centralisÃ© avec recherche intelligente et cache.
 .DESCRIPTION
-    Ce module fournit des fonctions pour résoudre les chemins de fichiers et de répertoires
-    de manière intelligente, avec cache et validation.
+    Ce module fournit des fonctions pour rÃ©soudre les chemins de fichiers et de rÃ©pertoires
+    de maniÃ¨re intelligente, avec cache et validation.
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
@@ -20,7 +20,7 @@ $script:MaxCacheAge = New-TimeSpan -Hours 1
 $script:CacheEnabled = $true
 $script:DefaultSearchDepth = 3
 
-# Initialiser les chemins de recherche par défaut
+# Initialiser les chemins de recherche par dÃ©faut
 function Initialize-PathResolver {
     [CmdletBinding()]
     param (
@@ -37,62 +37,62 @@ function Initialize-PathResolver {
         [switch]$DisableCache
     )
 
-    # Réinitialiser les variables globales
+    # RÃ©initialiser les variables globales
     $script:PathCache = @{}
     $script:LastAccessTime = @{}
     $script:SearchPaths = @()
 
-    # Définir les chemins de recherche par défaut
+    # DÃ©finir les chemins de recherche par dÃ©faut
     $script:SearchPaths += $PSScriptRoot
     $script:SearchPaths += (Split-Path -Parent $PSScriptRoot)
     $script:SearchPaths += (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
-    # Ajouter les chemins de recherche supplémentaires
+    # Ajouter les chemins de recherche supplÃ©mentaires
     if ($AdditionalSearchPaths) {
         foreach ($path in $AdditionalSearchPaths) {
             if (Test-Path -Path $path -PathType Container) {
                 $script:SearchPaths += $path
             } else {
-                Write-Warning "Le chemin de recherche '$path' n'existe pas ou n'est pas un répertoire."
+                Write-Warning "Le chemin de recherche '$path' n'existe pas ou n'est pas un rÃ©pertoire."
             }
         }
     }
 
-    # Définir les mappings de chemins
+    # DÃ©finir les mappings de chemins
     if ($PathMappings) {
         $script:PathMappings = $PathMappings
     }
 
-    # Définir l'âge maximum du cache
+    # DÃ©finir l'Ã¢ge maximum du cache
     if ($CacheMaxAgeHours -ne 1) {
         $script:MaxCacheAge = New-TimeSpan -Hours $CacheMaxAgeHours
     }
 
-    # Activer ou désactiver le cache
+    # Activer ou dÃ©sactiver le cache
     $script:CacheEnabled = -not $DisableCache
 
-    Write-Verbose "PathResolver initialisé avec $(($script:SearchPaths | Select-Object -Unique).Count) chemins de recherche uniques."
-    Write-Verbose "Cache $(if ($script:CacheEnabled) { 'activé' } else { 'désactivé' }) avec un âge maximum de $($script:MaxCacheAge.TotalHours) heures."
+    Write-Verbose "PathResolver initialisÃ© avec $(($script:SearchPaths | Select-Object -Unique).Count) chemins de recherche uniques."
+    Write-Verbose "Cache $(if ($script:CacheEnabled) { 'activÃ©' } else { 'dÃ©sactivÃ©' }) avec un Ã¢ge maximum de $($script:MaxCacheAge.TotalHours) heures."
 }
 
 <#
 .SYNOPSIS
-    Résout un chemin de fichier ou de répertoire de manière intelligente.
+    RÃ©sout un chemin de fichier ou de rÃ©pertoire de maniÃ¨re intelligente.
 .DESCRIPTION
-    Cette fonction résout un chemin de fichier ou de répertoire en utilisant une recherche intelligente,
-    des mappings de chemins et un cache pour améliorer les performances.
+    Cette fonction rÃ©sout un chemin de fichier ou de rÃ©pertoire en utilisant une recherche intelligente,
+    des mappings de chemins et un cache pour amÃ©liorer les performances.
 .PARAMETER Path
-    Chemin à résoudre. Peut être un chemin relatif ou absolu.
+    Chemin Ã  rÃ©soudre. Peut Ãªtre un chemin relatif ou absolu.
 .PARAMETER SearchDepth
     Profondeur de recherche pour les chemins relatifs.
 .PARAMETER FileType
-    Type de fichier à rechercher. Si spécifié, seuls les fichiers de ce type seront retournés.
+    Type de fichier Ã  rechercher. Si spÃ©cifiÃ©, seuls les fichiers de ce type seront retournÃ©s.
 .PARAMETER UseCache
-    Indique si le cache doit être utilisé pour les résolutions récentes.
+    Indique si le cache doit Ãªtre utilisÃ© pour les rÃ©solutions rÃ©centes.
 .PARAMETER ValidateOnly
-    Indique si la fonction doit uniquement valider le chemin sans le résoudre.
+    Indique si la fonction doit uniquement valider le chemin sans le rÃ©soudre.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur.
 .EXAMPLE
     Get-ScriptPath -Path "scripts\maintenance\paths\PathResolver.psm1"
 .EXAMPLE
@@ -123,19 +123,19 @@ function Get-ScriptPath {
     # Normaliser le chemin
     $normalizedPath = $Path.Replace('/', '\')
 
-    # Vérifier si le chemin est dans le cache
+    # VÃ©rifier si le chemin est dans le cache
     if ($UseCache -and $script:CacheEnabled -and $script:PathCache.ContainsKey($normalizedPath)) {
         $lastAccess = $script:LastAccessTime[$normalizedPath]
         $cacheAge = (Get-Date) - $lastAccess
 
         if ($cacheAge -lt $script:MaxCacheAge) {
-            Write-Verbose "Utilisation du chemin en cache pour '$normalizedPath' (âge: $($cacheAge.TotalMinutes) minutes)"
+            Write-Verbose "Utilisation du chemin en cache pour '$normalizedPath' (Ã¢ge: $($cacheAge.TotalMinutes) minutes)"
             $resolvedPath = $script:PathCache[$normalizedPath]
 
-            # Mettre à jour le temps d'accès
+            # Mettre Ã  jour le temps d'accÃ¨s
             $script:LastAccessTime[$normalizedPath] = Get-Date
 
-            # Valider le chemin si nécessaire
+            # Valider le chemin si nÃ©cessaire
             if ($ValidateOnly) {
                 return Test-Path -Path $resolvedPath
             }
@@ -144,16 +144,16 @@ function Get-ScriptPath {
         }
     }
 
-    # Vérifier si le chemin est un chemin absolu
+    # VÃ©rifier si le chemin est un chemin absolu
     if ([System.IO.Path]::IsPathRooted($normalizedPath)) {
         if (Test-Path -Path $normalizedPath) {
-            # Mettre à jour le cache
+            # Mettre Ã  jour le cache
             if ($script:CacheEnabled) {
                 $script:PathCache[$normalizedPath] = $normalizedPath
                 $script:LastAccessTime[$normalizedPath] = Get-Date
             }
 
-            # Valider le chemin si nécessaire
+            # Valider le chemin si nÃ©cessaire
             if ($ValidateOnly) {
                 return $true
             }
@@ -167,7 +167,7 @@ function Get-ScriptPath {
             } else {
                 Write-Warning $errorMessage
 
-                # Valider le chemin si nécessaire
+                # Valider le chemin si nÃ©cessaire
                 if ($ValidateOnly) {
                     return $false
                 }
@@ -177,19 +177,19 @@ function Get-ScriptPath {
         }
     }
 
-    # Vérifier si le chemin est dans les mappings
+    # VÃ©rifier si le chemin est dans les mappings
     foreach ($key in $script:PathMappings.Keys) {
         if ($normalizedPath -like "$key*") {
             $mappedPath = $normalizedPath -replace "^$key", $script:PathMappings[$key]
 
             if (Test-Path -Path $mappedPath) {
-                # Mettre à jour le cache
+                # Mettre Ã  jour le cache
                 if ($script:CacheEnabled) {
                     $script:PathCache[$normalizedPath] = $mappedPath
                     $script:LastAccessTime[$normalizedPath] = Get-Date
                 }
 
-                # Valider le chemin si nécessaire
+                # Valider le chemin si nÃ©cessaire
                 if ($ValidateOnly) {
                     return $true
                 }
@@ -204,18 +204,18 @@ function Get-ScriptPath {
         $potentialPath = Join-Path -Path $searchPath -ChildPath $normalizedPath
 
         if (Test-Path -Path $potentialPath) {
-            # Filtrer par type de fichier si nécessaire
+            # Filtrer par type de fichier si nÃ©cessaire
             if ($FileType -and (Get-Item -Path $potentialPath).Extension -ne ".$FileType") {
                 continue
             }
 
-            # Mettre à jour le cache
+            # Mettre Ã  jour le cache
             if ($script:CacheEnabled) {
                 $script:PathCache[$normalizedPath] = $potentialPath
                 $script:LastAccessTime[$normalizedPath] = Get-Date
             }
 
-            # Valider le chemin si nécessaire
+            # Valider le chemin si nÃ©cessaire
             if ($ValidateOnly) {
                 return $true
             }
@@ -224,10 +224,10 @@ function Get-ScriptPath {
         }
     }
 
-    # Recherche récursive dans les chemins de recherche
+    # Recherche rÃ©cursive dans les chemins de recherche
     if ($SearchDepth -gt 0) {
         foreach ($searchPath in ($script:SearchPaths | Select-Object -Unique)) {
-            # Obtenir tous les sous-répertoires jusqu'à la profondeur spécifiée
+            # Obtenir tous les sous-rÃ©pertoires jusqu'Ã  la profondeur spÃ©cifiÃ©e
             $directories = @($searchPath)
             $allDirectories = @($searchPath)
 
@@ -242,7 +242,7 @@ function Get-ScriptPath {
                             $allDirectories += $subDirs.FullName
                         }
                     } catch {
-                        Write-Verbose "Erreur lors de l'accès au répertoire '$dir': $($_.Exception.Message)"
+                        Write-Verbose "Erreur lors de l'accÃ¨s au rÃ©pertoire '$dir': $($_.Exception.Message)"
                     }
                 }
 
@@ -252,23 +252,23 @@ function Get-ScriptPath {
 
             $directories = $allDirectories
 
-            # Rechercher le fichier dans tous les répertoires
+            # Rechercher le fichier dans tous les rÃ©pertoires
             foreach ($dir in $directories) {
                 $potentialPath = Join-Path -Path $dir -ChildPath $normalizedPath
 
                 if (Test-Path -Path $potentialPath) {
-                    # Filtrer par type de fichier si nécessaire
+                    # Filtrer par type de fichier si nÃ©cessaire
                     if ($FileType -and (Get-Item -Path $potentialPath).Extension -ne ".$FileType") {
                         continue
                     }
 
-                    # Mettre à jour le cache
+                    # Mettre Ã  jour le cache
                     if ($script:CacheEnabled) {
                         $script:PathCache[$normalizedPath] = $potentialPath
                         $script:LastAccessTime[$normalizedPath] = Get-Date
                     }
 
-                    # Valider le chemin si nécessaire
+                    # Valider le chemin si nÃ©cessaire
                     if ($ValidateOnly) {
                         return $true
                     }
@@ -279,15 +279,15 @@ function Get-ScriptPath {
         }
     }
 
-    # Si le chemin n'a pas été trouvé
-    $errorMessage = "Le chemin '$normalizedPath' n'a pas pu être résolu."
+    # Si le chemin n'a pas Ã©tÃ© trouvÃ©
+    $errorMessage = "Le chemin '$normalizedPath' n'a pas pu Ãªtre rÃ©solu."
 
     if ($ThrowOnError) {
         throw $errorMessage
     } else {
         Write-Warning $errorMessage
 
-        # Valider le chemin si nécessaire
+        # Valider le chemin si nÃ©cessaire
         if ($ValidateOnly) {
             return $false
         }
@@ -298,24 +298,24 @@ function Get-ScriptPath {
 
 <#
 .SYNOPSIS
-    Valide un chemin de fichier ou de répertoire avant exécution.
+    Valide un chemin de fichier ou de rÃ©pertoire avant exÃ©cution.
 .DESCRIPTION
-    Cette fonction valide un chemin de fichier ou de répertoire avant exécution,
-    en vérifiant son existence, ses permissions, et d'autres critères de sécurité.
+    Cette fonction valide un chemin de fichier ou de rÃ©pertoire avant exÃ©cution,
+    en vÃ©rifiant son existence, ses permissions, et d'autres critÃ¨res de sÃ©curitÃ©.
 .PARAMETER Path
-    Chemin à valider. Peut être un chemin relatif ou absolu.
+    Chemin Ã  valider. Peut Ãªtre un chemin relatif ou absolu.
 .PARAMETER RequiredPermissions
     Permissions requises pour le chemin. Valeurs possibles : "Read", "Write", "Execute", "ReadWrite", "ReadExecute", "WriteExecute", "FullControl".
 .PARAMETER RequiredAttributes
     Attributs requis pour le chemin. Valeurs possibles : "Archive", "Compressed", "Device", "Directory", "Encrypted", "Hidden", "Normal", "NotContentIndexed", "Offline", "ReadOnly", "ReparsePoint", "SparseFile", "System", "Temporary".
 .PARAMETER FileType
-    Type de fichier requis. Si spécifié, seuls les fichiers de ce type seront validés.
+    Type de fichier requis. Si spÃ©cifiÃ©, seuls les fichiers de ce type seront validÃ©s.
 .PARAMETER MinimumSize
     Taille minimale requise pour le fichier, en octets.
 .PARAMETER MaximumSize
-    Taille maximale autorisée pour le fichier, en octets.
+    Taille maximale autorisÃ©e pour le fichier, en octets.
 .PARAMETER ThrowOnError
-    Indique si une exception doit être levée en cas d'erreur.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'erreur.
 .EXAMPLE
     Test-ScriptPath -Path "scripts\maintenance\paths\PathResolver.psm1" -RequiredPermissions "Read"
 .EXAMPLE
@@ -348,7 +348,7 @@ function Test-ScriptPath {
         [switch]$ThrowOnError
     )
 
-    # Résoudre le chemin
+    # RÃ©soudre le chemin
     $resolvedPath = Get-ScriptPath -Path $Path -UseCache -ThrowOnError:$ThrowOnError
 
     if (-not $resolvedPath) {
@@ -356,7 +356,7 @@ function Test-ScriptPath {
     }
 
     try {
-        # Vérifier l'existence du chemin
+        # VÃ©rifier l'existence du chemin
         if (-not (Test-Path -Path $resolvedPath)) {
             $errorMessage = "Le chemin '$resolvedPath' n'existe pas."
 
@@ -368,10 +368,10 @@ function Test-ScriptPath {
             }
         }
 
-        # Obtenir les informations sur le fichier ou le répertoire
+        # Obtenir les informations sur le fichier ou le rÃ©pertoire
         $item = Get-Item -Path $resolvedPath
 
-        # Vérifier le type de fichier
+        # VÃ©rifier le type de fichier
         if ($FileType -and $item.Extension -ne ".$FileType") {
             $errorMessage = "Le fichier '$resolvedPath' n'est pas du type '$FileType'."
 
@@ -383,7 +383,7 @@ function Test-ScriptPath {
             }
         }
 
-        # Vérifier les attributs
+        # VÃ©rifier les attributs
         if ($RequiredAttributes) {
             foreach ($attr in $RequiredAttributes) {
                 if (-not ($item.Attributes -band [System.IO.FileAttributes]::$attr)) {
@@ -399,7 +399,7 @@ function Test-ScriptPath {
             }
         }
 
-        # Vérifier la taille du fichier
+        # VÃ©rifier la taille du fichier
         if ($item -is [System.IO.FileInfo]) {
             if ($MinimumSize -and $item.Length -lt $MinimumSize) {
                 $errorMessage = "Le fichier '$resolvedPath' est trop petit (taille: $($item.Length) octets, minimum requis: $MinimumSize octets)."
@@ -413,7 +413,7 @@ function Test-ScriptPath {
             }
 
             if ($MaximumSize -and $item.Length -gt $MaximumSize) {
-                $errorMessage = "Le fichier '$resolvedPath' est trop grand (taille: $($item.Length) octets, maximum autorisé: $MaximumSize octets)."
+                $errorMessage = "Le fichier '$resolvedPath' est trop grand (taille: $($item.Length) octets, maximum autorisÃ©: $MaximumSize octets)."
 
                 if ($ThrowOnError) {
                     throw $errorMessage
@@ -424,7 +424,7 @@ function Test-ScriptPath {
             }
         }
 
-        # Vérifier les permissions
+        # VÃ©rifier les permissions
         if ($RequiredPermissions) {
             $acl = Get-Acl -Path $resolvedPath
             $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
@@ -470,7 +470,7 @@ function Test-ScriptPath {
             }
         }
 
-        # Toutes les validations ont réussi
+        # Toutes les validations ont rÃ©ussi
         return $true
     } catch {
         if ($ThrowOnError) {
@@ -486,10 +486,10 @@ function Test-ScriptPath {
 .SYNOPSIS
     Efface le cache des chemins.
 .DESCRIPTION
-    Cette fonction efface le cache des chemins, forçant ainsi
-    la résolution de nouveaux chemins lors des prochains appels à Get-ScriptPath.
+    Cette fonction efface le cache des chemins, forÃ§ant ainsi
+    la rÃ©solution de nouveaux chemins lors des prochains appels Ã  Get-ScriptPath.
 .PARAMETER Path
-    Chemin à effacer du cache. Si non spécifié, tout le cache est effacé.
+    Chemin Ã  effacer du cache. Si non spÃ©cifiÃ©, tout le cache est effacÃ©.
 .EXAMPLE
     Clear-PathCache
 .EXAMPLE
@@ -506,19 +506,19 @@ function Clear-PathCache {
         # Normaliser le chemin
         $normalizedPath = $Path.Replace('/', '\')
 
-        # Effacer un chemin spécifique du cache
+        # Effacer un chemin spÃ©cifique du cache
         if ($script:PathCache.ContainsKey($normalizedPath)) {
             $script:PathCache.Remove($normalizedPath)
             $script:LastAccessTime.Remove($normalizedPath)
-            Write-Verbose "Cache effacé pour '$normalizedPath'"
+            Write-Verbose "Cache effacÃ© pour '$normalizedPath'"
         } else {
-            Write-Verbose "Aucune entrée de cache trouvée pour '$normalizedPath'"
+            Write-Verbose "Aucune entrÃ©e de cache trouvÃ©e pour '$normalizedPath'"
         }
     } else {
         # Effacer tout le cache
         $script:PathCache.Clear()
         $script:LastAccessTime.Clear()
-        Write-Verbose "Cache entièrement effacé"
+        Write-Verbose "Cache entiÃ¨rement effacÃ©"
     }
 }
 
@@ -527,10 +527,10 @@ function Clear-PathCache {
     Obtient des statistiques sur le cache des chemins.
 .DESCRIPTION
     Cette fonction retourne des statistiques sur le cache des chemins,
-    comme le nombre d'entrées, l'âge moyen, et les chemins les plus utilisés.
+    comme le nombre d'entrÃ©es, l'Ã¢ge moyen, et les chemins les plus utilisÃ©s.
 .PARAMETER Path
     Chemin pour lequel obtenir des statistiques.
-    Si non spécifié, des statistiques pour tous les chemins sont retournées.
+    Si non spÃ©cifiÃ©, des statistiques pour tous les chemins sont retournÃ©es.
 .EXAMPLE
     Get-PathStatistics
 .EXAMPLE
@@ -547,7 +547,7 @@ function Get-PathStatistics {
         # Normaliser le chemin
         $normalizedPath = $Path.Replace('/', '\')
 
-        # Créer un objet de statistiques par défaut pour éviter les erreurs de test
+        # CrÃ©er un objet de statistiques par dÃ©faut pour Ã©viter les erreurs de test
         $result = [PSCustomObject]@{
             Path            = $normalizedPath
             ResolvedPath    = $null
@@ -556,7 +556,7 @@ function Get-PathStatistics {
             CacheAgeMinutes = 0
         }
 
-        # Obtenir des statistiques pour un chemin spécifique
+        # Obtenir des statistiques pour un chemin spÃ©cifique
         if ($script:PathCache.ContainsKey($normalizedPath)) {
             $lastAccess = $script:LastAccessTime[$normalizedPath]
             $cacheAge = (Get-Date) - $lastAccess
@@ -566,7 +566,7 @@ function Get-PathStatistics {
             $result.CacheAge = $cacheAge
             $result.CacheAgeMinutes = [math]::Round($cacheAge.TotalMinutes, 2)
         } else {
-            Write-Warning "Aucune entrée de cache trouvée pour '$normalizedPath'"
+            Write-Warning "Aucune entrÃ©e de cache trouvÃ©e pour '$normalizedPath'"
         }
 
         return $result
@@ -585,7 +585,7 @@ function Get-PathStatistics {
             0
         }
 
-        # Obtenir les chemins les plus récemment utilisés
+        # Obtenir les chemins les plus rÃ©cemment utilisÃ©s
         $recentPaths = @()
         foreach ($path in $script:PathCache.Keys) {
             $recentPaths += [PSCustomObject]@{
@@ -614,9 +614,9 @@ function Get-PathStatistics {
 .SYNOPSIS
     Ajoute un mapping de chemin.
 .DESCRIPTION
-    Cette fonction ajoute un mapping de chemin, qui sera utilisé pour résoudre les chemins.
+    Cette fonction ajoute un mapping de chemin, qui sera utilisÃ© pour rÃ©soudre les chemins.
 .PARAMETER Prefix
-    Préfixe du chemin à mapper.
+    PrÃ©fixe du chemin Ã  mapper.
 .PARAMETER Target
     Cible du mapping.
 .EXAMPLE
@@ -636,17 +636,17 @@ function Add-PathMapping {
     $normalizedPrefix = $Prefix.Replace('/', '\').TrimEnd('\')
     $normalizedTarget = $Target.Replace('/', '\').TrimEnd('\')
 
-    # Vérifier si la cible existe
+    # VÃ©rifier si la cible existe
     if (-not (Test-Path -Path $normalizedTarget -PathType Container)) {
-        Write-Warning "La cible du mapping '$normalizedTarget' n'existe pas ou n'est pas un répertoire."
+        Write-Warning "La cible du mapping '$normalizedTarget' n'existe pas ou n'est pas un rÃ©pertoire."
     }
 
     # Ajouter le mapping
     $script:PathMappings[$normalizedPrefix] = $normalizedTarget
 
-    Write-Verbose "Mapping ajouté: '$normalizedPrefix' -> '$normalizedTarget'"
+    Write-Verbose "Mapping ajoutÃ©: '$normalizedPrefix' -> '$normalizedTarget'"
 
-    # Effacer le cache pour les chemins qui commencent par le préfixe
+    # Effacer le cache pour les chemins qui commencent par le prÃ©fixe
     $pathsToRemove = @()
     foreach ($path in $script:PathCache.Keys) {
         if ($path -like "$normalizedPrefix*") {
@@ -659,7 +659,7 @@ function Add-PathMapping {
         $script:LastAccessTime.Remove($path)
     }
 
-    Write-Verbose "$($pathsToRemove.Count) entrées de cache effacées pour le préfixe '$normalizedPrefix'"
+    Write-Verbose "$($pathsToRemove.Count) entrÃ©es de cache effacÃ©es pour le prÃ©fixe '$normalizedPrefix'"
 }
 
 <#
@@ -668,7 +668,7 @@ function Add-PathMapping {
 .DESCRIPTION
     Cette fonction supprime un mapping de chemin.
 .PARAMETER Prefix
-    Préfixe du chemin à supprimer.
+    PrÃ©fixe du chemin Ã  supprimer.
 .EXAMPLE
     Remove-PathMapping -Prefix "scripts"
 #>
@@ -679,15 +679,15 @@ function Remove-PathMapping {
         [string]$Prefix
     )
 
-    # Normaliser le préfixe
+    # Normaliser le prÃ©fixe
     $normalizedPrefix = $Prefix.Replace('/', '\').TrimEnd('\')
 
     # Supprimer le mapping
     if ($script:PathMappings.ContainsKey($normalizedPrefix)) {
         $script:PathMappings.Remove($normalizedPrefix)
-        Write-Verbose "Mapping supprimé: '$normalizedPrefix'"
+        Write-Verbose "Mapping supprimÃ©: '$normalizedPrefix'"
 
-        # Effacer le cache pour les chemins qui commencent par le préfixe
+        # Effacer le cache pour les chemins qui commencent par le prÃ©fixe
         $pathsToRemove = @()
         foreach ($path in $script:PathCache.Keys) {
             if ($path -like "$normalizedPrefix*") {
@@ -700,9 +700,9 @@ function Remove-PathMapping {
             $script:LastAccessTime.Remove($path)
         }
 
-        Write-Verbose "$($pathsToRemove.Count) entrées de cache effacées pour le préfixe '$normalizedPrefix'"
+        Write-Verbose "$($pathsToRemove.Count) entrÃ©es de cache effacÃ©es pour le prÃ©fixe '$normalizedPrefix'"
     } else {
-        Write-Warning "Aucun mapping trouvé pour le préfixe '$normalizedPrefix'"
+        Write-Warning "Aucun mapping trouvÃ© pour le prÃ©fixe '$normalizedPrefix'"
     }
 }
 

@@ -1,39 +1,39 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Gère les cas ambigus de détection de format.
+    GÃ¨re les cas ambigus de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script gère les cas ambigus de détection de format en utilisant un système de score de confiance.
-    Il permet de résoudre automatiquement les cas ambigus ou de demander une confirmation à l'utilisateur.
+    Ce script gÃ¨re les cas ambigus de dÃ©tection de format en utilisant un systÃ¨me de score de confiance.
+    Il permet de rÃ©soudre automatiquement les cas ambigus ou de demander une confirmation Ã  l'utilisateur.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser.
+    Le chemin du fichier Ã  analyser.
 
 .PARAMETER AutoResolve
-    Indique si les cas ambigus doivent être résolus automatiquement sans intervention de l'utilisateur.
+    Indique si les cas ambigus doivent Ãªtre rÃ©solus automatiquement sans intervention de l'utilisateur.
 
 .PARAMETER RememberChoices
-    Indique si les choix de l'utilisateur doivent être mémorisés pour les cas similaires.
+    Indique si les choix de l'utilisateur doivent Ãªtre mÃ©morisÃ©s pour les cas similaires.
 
 .PARAMETER ShowDetails
-    Indique si les détails de la détection doivent être affichés.
+    Indique si les dÃ©tails de la dÃ©tection doivent Ãªtre affichÃ©s.
 
 .PARAMETER AmbiguityThreshold
-    Le seuil de différence de score en dessous duquel deux formats sont considérés comme ambigus.
-    Par défaut, la valeur est 20.
+    Le seuil de diffÃ©rence de score en dessous duquel deux formats sont considÃ©rÃ©s comme ambigus.
+    Par dÃ©faut, la valeur est 20.
 
 .PARAMETER UserChoicesPath
-    Le chemin vers le fichier JSON contenant les choix mémorisés de l'utilisateur.
-    Par défaut, utilise 'UserFormatChoices.json' dans le même répertoire que ce script.
+    Le chemin vers le fichier JSON contenant les choix mÃ©morisÃ©s de l'utilisateur.
+    Par dÃ©faut, utilise 'UserFormatChoices.json' dans le mÃªme rÃ©pertoire que ce script.
 
 .EXAMPLE
     Handle-AmbiguousFormats -FilePath "C:\path\to\file.txt"
-    Détecte le format du fichier spécifié et gère les cas ambigus.
+    DÃ©tecte le format du fichier spÃ©cifiÃ© et gÃ¨re les cas ambigus.
 
 .EXAMPLE
     Handle-AmbiguousFormats -FilePath "C:\path\to\file.txt" -AutoResolve
-    Détecte le format du fichier spécifié et résout automatiquement les cas ambigus.
+    DÃ©tecte le format du fichier spÃ©cifiÃ© et rÃ©sout automatiquement les cas ambigus.
 
 .NOTES
     Version: 1.0
@@ -63,20 +63,20 @@ function Handle-AmbiguousFormats {
         [string]$UserChoicesPath = (Join-Path -Path $PSScriptRoot -ChildPath "UserFormatChoices.json")
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
     
-    # Détecter le format du fichier
+    # DÃ©tecter le format du fichier
     $detectionResult = Detect-FileFormat -FilePath $FilePath -IncludeAllFormats
     
-    # Si aucun format n'a été détecté, retourner le résultat tel quel
+    # Si aucun format n'a Ã©tÃ© dÃ©tectÃ©, retourner le rÃ©sultat tel quel
     if (-not $detectionResult.DetectedFormat) {
         return $detectionResult
     }
     
-    # Vérifier s'il y a des cas ambigus
+    # VÃ©rifier s'il y a des cas ambigus
     $topFormats = $detectionResult.AllFormats | Sort-Object -Property Score, Priority -Descending | Select-Object -First 2
     
     if ($topFormats.Count -lt 2) {
@@ -85,29 +85,29 @@ function Handle-AmbiguousFormats {
     
     $scoreDifference = $topFormats[0].Score - $topFormats[1].Score
     
-    # Si la différence de score est supérieure au seuil, ce n'est pas ambigu
+    # Si la diffÃ©rence de score est supÃ©rieure au seuil, ce n'est pas ambigu
     if ($scoreDifference -ge $AmbiguityThreshold) {
         return $detectionResult
     }
     
-    # C'est un cas ambigu, afficher les détails si demandé
+    # C'est un cas ambigu, afficher les dÃ©tails si demandÃ©
     if ($ShowDetails) {
-        Write-Host "Cas ambigu détecté pour le fichier '$FilePath'" -ForegroundColor Yellow
+        Write-Host "Cas ambigu dÃ©tectÃ© pour le fichier '$FilePath'" -ForegroundColor Yellow
         Write-Host "Formats possibles :" -ForegroundColor Yellow
         
         foreach ($format in $topFormats) {
-            Write-Host "  - $($format.Format) (Score: $($format.Score)%, Priorité: $($format.Priority))" -ForegroundColor Cyan
-            Write-Host "    Critères correspondants : $($format.MatchedCriteria -join ", ")" -ForegroundColor Gray
+            Write-Host "  - $($format.Format) (Score: $($format.Score)%, PrioritÃ©: $($format.Priority))" -ForegroundColor Cyan
+            Write-Host "    CritÃ¨res correspondants : $($format.MatchedCriteria -join ", ")" -ForegroundColor Gray
         }
         
         Write-Host ""
     }
     
-    # Créer une clé unique pour ce cas ambigu
+    # CrÃ©er une clÃ© unique pour ce cas ambigu
     $fileExtension = [System.IO.Path]::GetExtension($FilePath).ToLower()
     $ambiguityKey = "$fileExtension|$($topFormats[0].Format):$($topFormats[0].Score)|$($topFormats[1].Format):$($topFormats[1].Score)"
     
-    # Vérifier si un choix a déjà été mémorisé pour ce cas
+    # VÃ©rifier si un choix a dÃ©jÃ  Ã©tÃ© mÃ©morisÃ© pour ce cas
     $userChoice = $null
     
     if ($RememberChoices -and (Test-Path -Path $UserChoicesPath)) {
@@ -118,34 +118,34 @@ function Handle-AmbiguousFormats {
                 $userChoice = $userChoices[$ambiguityKey]
                 
                 if ($ShowDetails) {
-                    Write-Host "Choix mémorisé trouvé pour ce cas : $userChoice" -ForegroundColor Green
+                    Write-Host "Choix mÃ©morisÃ© trouvÃ© pour ce cas : $userChoice" -ForegroundColor Green
                 }
             }
         }
         catch {
-            Write-Warning "Erreur lors du chargement des choix mémorisés : $_"
+            Write-Warning "Erreur lors du chargement des choix mÃ©morisÃ©s : $_"
         }
     }
     
-    # Si un choix a été mémorisé, l'utiliser
+    # Si un choix a Ã©tÃ© mÃ©morisÃ©, l'utiliser
     if ($userChoice) {
         $selectedFormat = $userChoice
     }
-    # Sinon, résoudre automatiquement ou demander à l'utilisateur
+    # Sinon, rÃ©soudre automatiquement ou demander Ã  l'utilisateur
     else {
         if ($AutoResolve) {
-            # Résoudre automatiquement en fonction de la priorité
+            # RÃ©soudre automatiquement en fonction de la prioritÃ©
             $selectedFormat = $topFormats | Sort-Object -Property Priority -Descending | Select-Object -First 1 -ExpandProperty Format
             
             if ($ShowDetails) {
-                Write-Host "Résolution automatique : $selectedFormat (priorité plus élevée)" -ForegroundColor Green
+                Write-Host "RÃ©solution automatique : $selectedFormat (prioritÃ© plus Ã©levÃ©e)" -ForegroundColor Green
             }
         }
         else {
-            # Demander à l'utilisateur
+            # Demander Ã  l'utilisateur
             $selectedFormat = Confirm-FormatDetection -Formats $topFormats
             
-            # Mémoriser le choix si demandé
+            # MÃ©moriser le choix si demandÃ©
             if ($RememberChoices -and $selectedFormat) {
                 try {
                     $userChoices = @{}
@@ -158,17 +158,17 @@ function Handle-AmbiguousFormats {
                     $userChoices | ConvertTo-Json | Set-Content -Path $UserChoicesPath -Encoding UTF8
                     
                     if ($ShowDetails) {
-                        Write-Host "Choix mémorisé pour les cas similaires." -ForegroundColor Green
+                        Write-Host "Choix mÃ©morisÃ© pour les cas similaires." -ForegroundColor Green
                     }
                 }
                 catch {
-                    Write-Warning "Erreur lors de la mémorisation du choix : $_"
+                    Write-Warning "Erreur lors de la mÃ©morisation du choix : $_"
                 }
             }
         }
     }
     
-    # Mettre à jour le résultat avec le format sélectionné
+    # Mettre Ã  jour le rÃ©sultat avec le format sÃ©lectionnÃ©
     $selectedFormatInfo = $detectionResult.AllFormats | Where-Object { $_.Format -eq $selectedFormat } | Select-Object -First 1
     
     if ($selectedFormatInfo) {
@@ -180,7 +180,7 @@ function Handle-AmbiguousFormats {
     return $detectionResult
 }
 
-# Fonction pour demander une confirmation à l'utilisateur
+# Fonction pour demander une confirmation Ã  l'utilisateur
 function Confirm-FormatDetection {
     [CmdletBinding()]
     param(
@@ -188,14 +188,14 @@ function Confirm-FormatDetection {
         [array]$Formats
     )
     
-    Write-Host "Plusieurs formats possibles ont été détectés." -ForegroundColor Yellow
-    Write-Host "Veuillez sélectionner le format correct :" -ForegroundColor Yellow
+    Write-Host "Plusieurs formats possibles ont Ã©tÃ© dÃ©tectÃ©s." -ForegroundColor Yellow
+    Write-Host "Veuillez sÃ©lectionner le format correct :" -ForegroundColor Yellow
     
     $formatOptions = @()
     $index = 1
     
     foreach ($format in $Formats) {
-        Write-Host "  $index. $($format.Format) (Score: $($format.Score)%, Priorité: $($format.Priority))" -ForegroundColor Cyan
+        Write-Host "  $index. $($format.Format) (Score: $($format.Score)%, PrioritÃ©: $($format.Priority))" -ForegroundColor Cyan
         $formatOptions += $format.Format
         $index++
     }
@@ -203,7 +203,7 @@ function Confirm-FormatDetection {
     Write-Host ""
     
     while ($true) {
-        $userInput = Read-Host "Entrez le numéro du format (1-$($formatOptions.Count)) ou 'q' pour quitter"
+        $userInput = Read-Host "Entrez le numÃ©ro du format (1-$($formatOptions.Count)) ou 'q' pour quitter"
         
         if ($userInput -eq 'q') {
             return $null
@@ -220,7 +220,7 @@ function Confirm-FormatDetection {
             }
         }
         catch {
-            Write-Host "Entrée invalide. Veuillez entrer un nombre." -ForegroundColor Red
+            Write-Host "EntrÃ©e invalide. Veuillez entrer un nombre." -ForegroundColor Red
         }
     }
 }

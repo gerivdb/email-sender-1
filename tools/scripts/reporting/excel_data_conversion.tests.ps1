@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les fonctionnalités de conversion de données du module d'export Excel.
+    Tests unitaires pour les fonctionnalitÃ©s de conversion de donnÃ©es du module d'export Excel.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
-    des fonctionnalités de conversion de données du module excel_exporter.ps1.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    des fonctionnalitÃ©s de conversion de donnÃ©es du module excel_exporter.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le module à tester
+# Chemin vers le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "excel_exporter.ps1"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Excel Data Conversion Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "excel_data_conversion_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
         
-        # Importer le module à tester
+        # Importer le module Ã  tester
         . $ModulePath
         
-        # Créer un exporteur Excel
+        # CrÃ©er un exporteur Excel
         $script:Exporter = New-ExcelExporter
         
-        # Créer un classeur de test
+        # CrÃ©er un classeur de test
         $script:WorkbookPath = Join-Path -Path $script:TestDir -ChildPath "test_data_conversion.xlsx"
         $script:WorkbookId = New-ExcelWorkbook -Exporter $script:Exporter -Path $script:WorkbookPath
         
-        # Créer une feuille de test
+        # CrÃ©er une feuille de test
         $script:WorksheetId = Add-ExcelWorksheet -Exporter $script:Exporter -WorkbookId $script:WorkbookId -Name "TestData"
     }
     
@@ -43,9 +43,9 @@ Describe "Excel Data Conversion Tests" {
         Close-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
     }
     
-    Context "Conversion des types de données primitifs" {
+    Context "Conversion des types de donnÃ©es primitifs" {
         It "Should convert numeric values correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "Integer"
@@ -64,16 +64,16 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 1 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A1:C4"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 3
             $Data[0].Value | Should -Be 42
             $Data[1].Value | Should -Be 3.14159
@@ -81,7 +81,7 @@ Describe "Excel Data Conversion Tests" {
         }
         
         It "Should convert string values correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "Simple String"
@@ -100,16 +100,16 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 5 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A5:C8"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 3
             $Data[0].Value | Should -Be "Hello, World!"
             $Data[1].Value | Should -Be ""
@@ -117,7 +117,7 @@ Describe "Excel Data Conversion Tests" {
         }
         
         It "Should convert boolean values correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "True"
@@ -131,23 +131,23 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 9 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A9:C11"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 2
             $Data[0].Value | Should -Be $true
             $Data[1].Value | Should -Be $false
         }
         
         It "Should convert date and time values correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $Date1 = Get-Date -Year 2025 -Month 4 -Day 23 -Hour 10 -Minute 30 -Second 0
             $Date2 = Get-Date -Year 2025 -Month 12 -Day 31 -Hour 23 -Minute 59 -Second 59
             
@@ -164,23 +164,23 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 12 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A12:C14"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 2
             $Data[0].Value.ToString("yyyy-MM-dd HH:mm:ss") | Should -Be $Date1.ToString("yyyy-MM-dd HH:mm:ss")
             $Data[1].Value.ToString("yyyy-MM-dd HH:mm:ss") | Should -Be $Date2.ToString("yyyy-MM-dd HH:mm:ss")
         }
         
         It "Should handle null values correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "Null Value"
@@ -189,16 +189,16 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 15 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A15:C16"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 1
             $Data[0].Value | Should -BeNullOrEmpty
         }
@@ -206,7 +206,7 @@ Describe "Excel Data Conversion Tests" {
     
     Context "Conversion des structures complexes" {
         It "Should convert arrays correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "Array of Numbers"
@@ -218,23 +218,23 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 17 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A17:B19"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 2
             $Data[0].Name | Should -Be "Array of Numbers"
             $Data[1].Name | Should -Be "Array of Strings"
         }
         
         It "Should convert hashtables correctly" {
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     Name = "Simple Hashtable"
@@ -246,29 +246,29 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Data $TestData -StartRow 20 -StartColumn 1
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $script:WorksheetId -Range "A20:B21"
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 1
             $Data[0].Name | Should -Be "Simple Hashtable"
-            # La valeur sera convertie en chaîne par Excel
+            # La valeur sera convertie en chaÃ®ne par Excel
             $Data[0].Value | Should -Not -BeNullOrEmpty
         }
     }
     
-    Context "Lecture et écriture de données" {
+    Context "Lecture et Ã©criture de donnÃ©es" {
         It "Should read and write data correctly" {
-            # Créer une nouvelle feuille
+            # CrÃ©er une nouvelle feuille
             $ReadWriteSheetId = Add-ExcelWorksheet -Exporter $script:Exporter -WorkbookId $script:WorkbookId -Name "ReadWrite"
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $TestData = @(
                 [PSCustomObject]@{
                     ID = 1
@@ -290,16 +290,16 @@ Describe "Excel Data Conversion Tests" {
                 }
             )
             
-            # Ajouter les données à la feuille
+            # Ajouter les donnÃ©es Ã  la feuille
             Add-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $ReadWriteSheetId -Data $TestData
             
             # Sauvegarder le classeur
             Save-ExcelWorkbook -Exporter $script:Exporter -WorkbookId $script:WorkbookId
             
-            # Lire les données
+            # Lire les donnÃ©es
             $Data = Get-ExcelData -Exporter $script:Exporter -WorkbookId $script:WorkbookId -WorksheetId $ReadWriteSheetId
             
-            # Vérifier les données
+            # VÃ©rifier les donnÃ©es
             $Data.Count | Should -Be 3
             $Data[0].ID | Should -Be 1
             $Data[0].Name | Should -Be "John Doe"
@@ -319,6 +319,6 @@ Describe "Excel Data Conversion Tests" {
     }
 }
 
-# Ne pas exécuter les tests automatiquement à la fin du script
-# Pour exécuter les tests, utilisez la commande suivante :
+# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
+# Pour exÃ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\excel_data_conversion.tests.ps1 -Output Detailed

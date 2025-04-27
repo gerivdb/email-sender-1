@@ -1,5 +1,5 @@
-# Generate-ProgressReport.ps1
-# Script pour générer un rapport de progression sur un fichier markdown de roadmap
+﻿# Generate-ProgressReport.ps1
+# Script pour gÃ©nÃ©rer un rapport de progression sur un fichier markdown de roadmap
 
 param (
     [Parameter(Mandatory = $false)]
@@ -9,17 +9,17 @@ param (
     [string]$OutputPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\analysis\progress-report.md"
 )
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $RoadmapFilePath)) {
     Write-Error "Le fichier '$RoadmapFilePath' n'existe pas."
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé: $outputDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã©: $outputDir" -ForegroundColor Green
 }
 
 # Lire le contenu du fichier
@@ -47,7 +47,7 @@ function Get-StatusMarkers {
     $statusMarkers.Incomplete = [regex]::Matches($Content, $incompletePattern).Count
     $statusMarkers.Complete = [regex]::Matches($Content, $completePattern).Count
 
-    # Rechercher les marqueurs de statut personnalisés
+    # Rechercher les marqueurs de statut personnalisÃ©s
     $customPattern = "(?m)^\s*[-*+]\s*\[([^x ])\]"
     $customMatches = [regex]::Matches($Content, $customPattern)
     
@@ -62,8 +62,8 @@ function Get-StatusMarkers {
 
     # Rechercher les indicateurs textuels de progression
     $textualIndicators = @(
-        "en cours", "en attente", "terminé", "complété", "bloqué", 
-        "reporté", "annulé", "prioritaire", "urgent"
+        "en cours", "en attente", "terminÃ©", "complÃ©tÃ©", "bloquÃ©", 
+        "reportÃ©", "annulÃ©", "prioritaire", "urgent"
     )
     
     foreach ($indicator in $textualIndicators) {
@@ -111,7 +111,7 @@ function Get-SectionProgress {
     $sectionProgress = @{}
     
     foreach ($section in $Sections) {
-        # Échapper les caractères spéciaux dans le titre de la section
+        # Ã‰chapper les caractÃ¨res spÃ©ciaux dans le titre de la section
         $escapedSection = [regex]::Escape($section)
         
         # Trouver le contenu de la section
@@ -121,7 +121,7 @@ function Get-SectionProgress {
         if ($sectionMatch.Success) {
             $sectionContent = $sectionMatch.Value
             
-            # Compter les tâches complètes et incomplètes dans la section
+            # Compter les tÃ¢ches complÃ¨tes et incomplÃ¨tes dans la section
             $completePattern = "(?m)^\s*[-*+]\s*\[x\]"
             $incompletePattern = "(?m)^\s*[-*+]\s*\[ \]"
             
@@ -151,7 +151,7 @@ function Get-SectionProgress {
 Write-Host "Analyse des marqueurs de statut dans: $RoadmapFilePath" -ForegroundColor Cyan
 $statusMarkers = Get-StatusMarkers -Content $content
 
-# Calculer le pourcentage de complétion global
+# Calculer le pourcentage de complÃ©tion global
 $totalTasks = $statusMarkers.Incomplete + $statusMarkers.Complete
 foreach ($customCount in $statusMarkers.Custom.Values) {
     $totalTasks += $customCount
@@ -169,18 +169,18 @@ $mainSections = Get-MainSections -Content $content
 # Analyser la progression par section
 $sectionProgress = Get-SectionProgress -Content $content -Sections $mainSections
 
-# Générer le rapport de progression
+# GÃ©nÃ©rer le rapport de progression
 $report = "# Rapport de Progression de la Roadmap`r`n`r`n"
-$report += "**Fichier analysé:** $RoadmapFilePath`r`n"
+$report += "**Fichier analysÃ©:** $RoadmapFilePath`r`n"
 $report += "**Date d'analyse:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`r`n`r`n"
 
 $report += "## Progression Globale`r`n`r`n"
-$report += "- **Tâches totales:** $totalTasks`r`n"
-$report += "- **Tâches terminées:** $($statusMarkers.Complete)`r`n"
-$report += "- **Tâches en cours:** $($statusMarkers.Incomplete)`r`n"
-$report += "- **Pourcentage de complétion:** $completionPercentage%`r`n`r`n"
+$report += "- **TÃ¢ches totales:** $totalTasks`r`n"
+$report += "- **TÃ¢ches terminÃ©es:** $($statusMarkers.Complete)`r`n"
+$report += "- **TÃ¢ches en cours:** $($statusMarkers.Incomplete)`r`n"
+$report += "- **Pourcentage de complÃ©tion:** $completionPercentage%`r`n`r`n"
 
-# Créer un graphique de progression en ASCII art
+# CrÃ©er un graphique de progression en ASCII art
 $progressBarWidth = 50
 $completedChars = [Math]::Round(($completionPercentage / 100) * $progressBarWidth)
 $remainingChars = $progressBarWidth - $completedChars
@@ -195,7 +195,7 @@ $report += "$progressBar $completionPercentage%`r`n"
 $report += "````r`n`r`n"
 
 $report += "## Progression par Section`r`n`r`n"
-$report += "| Section | Tâches Totales | Terminées | En Cours | Progression |`r`n"
+$report += "| Section | TÃ¢ches Totales | TerminÃ©es | En Cours | Progression |`r`n"
 $report += "|---------|---------------|-----------|----------|-------------|`r`n"
 
 foreach ($section in $mainSections) {
@@ -205,13 +205,13 @@ foreach ($section in $mainSections) {
     }
 }
 
-$report += "`r`n## Détails des Marqueurs de Statut`r`n`r`n"
+$report += "`r`n## DÃ©tails des Marqueurs de Statut`r`n`r`n"
 $report += "- **Marqueurs standard:**`r`n"
 $report += "  - [ ] (Incomplet): $($statusMarkers.Incomplete) occurrences`r`n"
 $report += "  - [x] (Complet): $($statusMarkers.Complete) occurrences`r`n`r`n"
 
 if ($statusMarkers.Custom.Count -gt 0) {
-    $report += "- **Marqueurs personnalisés:**`r`n"
+    $report += "- **Marqueurs personnalisÃ©s:**`r`n"
     foreach ($marker in $statusMarkers.Custom.GetEnumerator()) {
         $report += "  - [$($marker.Key)]: $($marker.Value) occurrences`r`n"
     }
@@ -228,21 +228,21 @@ if ($statusMarkers.TextualIndicators.Count -gt 0) {
 
 $report += "## Recommandations`r`n`r`n"
 
-# Générer des recommandations basées sur l'analyse
+# GÃ©nÃ©rer des recommandations basÃ©es sur l'analyse
 $recommendations = @()
 
 # Recommandation pour la progression globale
 if ($completionPercentage -lt 25) {
-    $recommendations += "- **Progression globale:** La progression est encore faible ($completionPercentage%). Concentrez-vous sur la complétion des tâches prioritaires."
+    $recommendations += "- **Progression globale:** La progression est encore faible ($completionPercentage%). Concentrez-vous sur la complÃ©tion des tÃ¢ches prioritaires."
 } elseif ($completionPercentage -lt 50) {
-    $recommendations += "- **Progression globale:** La progression est modérée ($completionPercentage%). Continuez à avancer régulièrement."
+    $recommendations += "- **Progression globale:** La progression est modÃ©rÃ©e ($completionPercentage%). Continuez Ã  avancer rÃ©guliÃ¨rement."
 } elseif ($completionPercentage -lt 75) {
-    $recommendations += "- **Progression globale:** La progression est bonne ($completionPercentage%). Concentrez-vous sur les sections les moins avancées."
+    $recommendations += "- **Progression globale:** La progression est bonne ($completionPercentage%). Concentrez-vous sur les sections les moins avancÃ©es."
 } else {
-    $recommendations += "- **Progression globale:** La progression est excellente ($completionPercentage%). Finalisez les dernières tâches restantes."
+    $recommendations += "- **Progression globale:** La progression est excellente ($completionPercentage%). Finalisez les derniÃ¨res tÃ¢ches restantes."
 }
 
-# Recommandation pour les sections les moins avancées
+# Recommandation pour les sections les moins avancÃ©es
 $leastProgressedSections = $sectionProgress.GetEnumerator() | 
                           Where-Object { $_.Value.TotalTasks -gt 0 } |
                           Sort-Object -Property { $_.Value.CompletionPercentage } |
@@ -250,10 +250,10 @@ $leastProgressedSections = $sectionProgress.GetEnumerator() |
 
 if ($leastProgressedSections.Count -gt 0) {
     $sectionsList = ($leastProgressedSections | ForEach-Object { "$($_.Key) ($($_.Value.CompletionPercentage)%)" }) -join ", "
-    $recommendations += "- **Sections à prioriser:** Les sections suivantes ont la progression la plus faible: $sectionsList."
+    $recommendations += "- **Sections Ã  prioriser:** Les sections suivantes ont la progression la plus faible: $sectionsList."
 }
 
-# Recommandation pour les sections les plus avancées
+# Recommandation pour les sections les plus avancÃ©es
 $mostProgressedSections = $sectionProgress.GetEnumerator() | 
                          Where-Object { $_.Value.TotalTasks -gt 0 -and $_.Value.CompletionPercentage -lt 100 } |
                          Sort-Object -Property { $_.Value.CompletionPercentage } -Descending |
@@ -261,18 +261,18 @@ $mostProgressedSections = $sectionProgress.GetEnumerator() |
 
 if ($mostProgressedSections.Count -gt 0) {
     $sectionsList = ($mostProgressedSections | ForEach-Object { "$($_.Key) ($($_.Value.CompletionPercentage)%)" }) -join ", "
-    $recommendations += "- **Sections presque terminées:** Les sections suivantes sont presque terminées: $sectionsList. Envisagez de les finaliser rapidement."
+    $recommendations += "- **Sections presque terminÃ©es:** Les sections suivantes sont presque terminÃ©es: $sectionsList. Envisagez de les finaliser rapidement."
 }
 
 # Ajouter les recommandations au rapport
 if ($recommendations.Count -gt 0) {
     $report += $recommendations -join "`r`n"
 } else {
-    $report += "Aucune recommandation spécifique. Continuez à suivre votre plan de travail."
+    $report += "Aucune recommandation spÃ©cifique. Continuez Ã  suivre votre plan de travail."
 }
 
 # Enregistrer le rapport dans un fichier
 $report | Out-File -FilePath $OutputPath -Encoding UTF8
 
-Write-Host "Rapport de progression généré: $OutputPath" -ForegroundColor Green
-Write-Host "Analyse terminée." -ForegroundColor Cyan
+Write-Host "Rapport de progression gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
+Write-Host "Analyse terminÃ©e." -ForegroundColor Cyan

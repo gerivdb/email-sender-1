@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de préchargement pour le cache prédictif.
+    Module de prÃ©chargement pour le cache prÃ©dictif.
 .DESCRIPTION
-    Gère le préchargement proactif des données susceptibles d'être utilisées.
+    GÃ¨re le prÃ©chargement proactif des donnÃ©es susceptibles d'Ãªtre utilisÃ©es.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 12/04/2025
 #>
 
-# Classe pour le gestionnaire de préchargement
+# Classe pour le gestionnaire de prÃ©chargement
 class PreloadManager {
     [CacheManager]$BaseCache
     [PredictionEngine]$PredictionEngine
@@ -28,21 +28,21 @@ class PreloadManager {
         $this.PredictionEngine = $predictionEngine
     }
     
-    # Enregistrer un générateur de valeur pour une clé
+    # Enregistrer un gÃ©nÃ©rateur de valeur pour une clÃ©
     [void] RegisterGenerator([string]$keyPattern, [scriptblock]$generator) {
         $this.PreloadGenerators[$keyPattern] = $generator
     }
     
-    # Vérifier si une clé est un candidat au préchargement
+    # VÃ©rifier si une clÃ© est un candidat au prÃ©chargement
     [bool] IsPreloadCandidate([string]$key) {
         return $this.PreloadedKeys.ContainsKey($key)
     }
     
-    # Précharger des clés
+    # PrÃ©charger des clÃ©s
     [void] PreloadKeys([array]$keys) {
-        # Vérifier les ressources système
+        # VÃ©rifier les ressources systÃ¨me
         if ($this.EnableResourceCheck -and $this.IsSystemUnderHeavyLoad()) {
-            Write-Verbose "Préchargement annulé: charge système élevée"
+            Write-Verbose "PrÃ©chargement annulÃ©: charge systÃ¨me Ã©levÃ©e"
             return
         }
         
@@ -50,12 +50,12 @@ class PreloadManager {
         $preloadCount = 0
         
         foreach ($key in $keys) {
-            # Vérifier si la clé est déjà dans le cache
+            # VÃ©rifier si la clÃ© est dÃ©jÃ  dans le cache
             if ($this.BaseCache.Contains($key)) {
                 continue
             }
             
-            # Vérifier le temps de refroidissement
+            # VÃ©rifier le temps de refroidissement
             if ($this.LastPreloadTimes.ContainsKey($key)) {
                 $lastPreload = $this.LastPreloadTimes[$key]
                 if (($now - $lastPreload).TotalSeconds -lt $this.PreloadCooldown) {
@@ -63,26 +63,26 @@ class PreloadManager {
                 }
             }
             
-            # Trouver un générateur approprié
+            # Trouver un gÃ©nÃ©rateur appropriÃ©
             $generator = $this.FindGenerator($key)
             
             if ($generator -ne $null) {
-                # Limiter le nombre de préchargements concurrents
+                # Limiter le nombre de prÃ©chargements concurrents
                 if ($preloadCount -ge $this.MaxConcurrentPreloads) {
                     break
                 }
                 
-                # Précharger en arrière-plan
+                # PrÃ©charger en arriÃ¨re-plan
                 $this.PreloadInBackground($key, $generator)
                 $preloadCount++
                 
-                # Mettre à jour le temps de préchargement
+                # Mettre Ã  jour le temps de prÃ©chargement
                 $this.LastPreloadTimes[$key] = $now
             }
         }
     }
     
-    # Trouver un générateur approprié pour une clé
+    # Trouver un gÃ©nÃ©rateur appropriÃ© pour une clÃ©
     [scriptblock] FindGenerator([string]$key) {
         foreach ($pattern in $this.PreloadGenerators.Keys) {
             if ($key -like $pattern) {
@@ -93,17 +93,17 @@ class PreloadManager {
         return $null
     }
     
-    # Précharger une clé en arrière-plan
+    # PrÃ©charger une clÃ© en arriÃ¨re-plan
     [void] PreloadInBackground([string]$key, [scriptblock]$generator) {
-        # Marquer la clé comme en cours de préchargement
-        $this.PreloadedKeys[$key] = $false  # false = préchargement en cours
+        # Marquer la clÃ© comme en cours de prÃ©chargement
+        $this.PreloadedKeys[$key] = $false  # false = prÃ©chargement en cours
         
-        # Créer un job en arrière-plan
+        # CrÃ©er un job en arriÃ¨re-plan
         Start-ThreadJob -ScriptBlock {
             param($key, $generator, $cacheInstance)
             
             try {
-                # Exécuter le générateur
+                # ExÃ©cuter le gÃ©nÃ©rateur
                 $value = & $generator
                 
                 # Stocker dans le cache
@@ -113,14 +113,14 @@ class PreloadManager {
                 }
             }
             catch {
-                Write-Warning "Erreur lors du préchargement de la clé '$key': $_"
+                Write-Warning "Erreur lors du prÃ©chargement de la clÃ© '$key': $_"
                 return @{ Key = $key; Success = $false; Error = $_ }
             }
             
             return @{ Key = $key; Success = $false }
         } -ArgumentList $key, $generator, $this.BaseCache -Name "Preload_$key" | Out-Null
         
-        # Gérer la complétion du job en arrière-plan
+        # GÃ©rer la complÃ©tion du job en arriÃ¨re-plan
         $job = Get-Job -Name "Preload_$key" -ErrorAction SilentlyContinue
         
         if ($job -ne $null) {
@@ -132,11 +132,11 @@ class PreloadManager {
                     $result = Receive-Job -Job $job
                     
                     if ($result.Success) {
-                        # Marquer la clé comme préchargée avec succès
+                        # Marquer la clÃ© comme prÃ©chargÃ©e avec succÃ¨s
                         $this.PreloadedKeys[$key] = $true
                     }
                     else {
-                        # Supprimer la clé des préchargements
+                        # Supprimer la clÃ© des prÃ©chargements
                         $this.PreloadedKeys.Remove($key)
                     }
                     
@@ -147,53 +147,53 @@ class PreloadManager {
         }
     }
     
-    # Vérifier si le système est sous charge élevée
+    # VÃ©rifier si le systÃ¨me est sous charge Ã©levÃ©e
     [bool] IsSystemUnderHeavyLoad() {
         try {
             # Obtenir l'utilisation du CPU
             $cpuLoad = Get-CimInstance -ClassName Win32_Processor | Measure-Object -Property LoadPercentage -Average | Select-Object -ExpandProperty Average
             
-            # Obtenir l'utilisation de la mémoire
+            # Obtenir l'utilisation de la mÃ©moire
             $os = Get-CimInstance -ClassName Win32_OperatingSystem
             $memoryUsed = $os.TotalVisibleMemorySize - $os.FreePhysicalMemory
             $memoryLoad = $memoryUsed / $os.TotalVisibleMemorySize
             
-            # Vérifier si l'une des ressources dépasse le seuil
+            # VÃ©rifier si l'une des ressources dÃ©passe le seuil
             return ($cpuLoad / 100 -gt $this.ResourceThreshold) -or ($memoryLoad -gt $this.ResourceThreshold)
         }
         catch {
-            Write-Warning "Erreur lors de la vérification de la charge système: $_"
-            return $false  # En cas d'erreur, supposer que le système n'est pas sous charge
+            Write-Warning "Erreur lors de la vÃ©rification de la charge systÃ¨me: $_"
+            return $false  # En cas d'erreur, supposer que le systÃ¨me n'est pas sous charge
         }
     }
     
-    # Optimiser la stratégie de préchargement
+    # Optimiser la stratÃ©gie de prÃ©chargement
     [void] OptimizePreloadStrategy() {
-        # Ajuster les paramètres en fonction des statistiques
+        # Ajuster les paramÃ¨tres en fonction des statistiques
         $stats = $this.GetPreloadStatistics()
         
         if ($stats.SuccessRate -lt 0.3) {
-            # Si le taux de succès est faible, augmenter le seuil de probabilité
+            # Si le taux de succÃ¨s est faible, augmenter le seuil de probabilitÃ©
             $this.ResourceThreshold = [Math]::Min(0.9, $this.ResourceThreshold + 0.05)
         }
         elseif ($stats.SuccessRate -gt 0.7) {
-            # Si le taux de succès est élevé, diminuer le seuil de probabilité
+            # Si le taux de succÃ¨s est Ã©levÃ©, diminuer le seuil de probabilitÃ©
             $this.ResourceThreshold = [Math]::Max(0.5, $this.ResourceThreshold - 0.05)
         }
         
-        # Ajuster le nombre maximum de préchargements concurrents
-        if ($stats.AveragePreloadTime -gt 1000) {  # Si le préchargement est lent (> 1s)
+        # Ajuster le nombre maximum de prÃ©chargements concurrents
+        if ($stats.AveragePreloadTime -gt 1000) {  # Si le prÃ©chargement est lent (> 1s)
             $this.MaxConcurrentPreloads = [Math]::Max(1, $this.MaxConcurrentPreloads - 1)
         }
-        elseif ($stats.AveragePreloadTime -lt 200) {  # Si le préchargement est rapide (< 200ms)
+        elseif ($stats.AveragePreloadTime -lt 200) {  # Si le prÃ©chargement est rapide (< 200ms)
             $this.MaxConcurrentPreloads = [Math]::Min(10, $this.MaxConcurrentPreloads + 1)
         }
         
-        # Nettoyer les anciennes entrées
+        # Nettoyer les anciennes entrÃ©es
         $this.CleanupOldEntries()
     }
     
-    # Nettoyer les anciennes entrées
+    # Nettoyer les anciennes entrÃ©es
     [void] CleanupOldEntries() {
         $now = Get-Date
         $keysToRemove = @()
@@ -211,13 +211,13 @@ class PreloadManager {
         }
     }
     
-    # Obtenir les statistiques de préchargement
+    # Obtenir les statistiques de prÃ©chargement
     [PSCustomObject] GetPreloadStatistics() {
         $successCount = ($this.PreloadedKeys.Values | Where-Object { $_ -eq $true }).Count
         $totalCount = $this.PreloadedKeys.Count
         $successRate = if ($totalCount -gt 0) { $successCount / $totalCount } else { 0 }
         
-        # Calculer le temps moyen de préchargement (simulé pour l'exemple)
+        # Calculer le temps moyen de prÃ©chargement (simulÃ© pour l'exemple)
         $averagePreloadTime = 500  # ms (valeur fictive)
         
         return [PSCustomObject]@{
@@ -231,17 +231,17 @@ class PreloadManager {
     }
 }
 
-# Fonctions exportées
+# Fonctions exportÃ©es
 
 <#
 .SYNOPSIS
-    Crée un nouveau gestionnaire de préchargement.
+    CrÃ©e un nouveau gestionnaire de prÃ©chargement.
 .DESCRIPTION
-    Crée un nouveau gestionnaire de préchargement pour le cache prédictif.
+    CrÃ©e un nouveau gestionnaire de prÃ©chargement pour le cache prÃ©dictif.
 .PARAMETER BaseCache
-    Cache de base à utiliser.
+    Cache de base Ã  utiliser.
 .PARAMETER PredictionEngine
-    Moteur de prédiction à utiliser.
+    Moteur de prÃ©diction Ã  utiliser.
 .EXAMPLE
     $preloadManager = New-PreloadManager -BaseCache $cache -PredictionEngine $engine
 #>
@@ -260,22 +260,22 @@ function New-PreloadManager {
         return [PreloadManager]::new($BaseCache, $PredictionEngine)
     }
     catch {
-        Write-Error "Erreur lors de la création du gestionnaire de préchargement: $_"
+        Write-Error "Erreur lors de la crÃ©ation du gestionnaire de prÃ©chargement: $_"
         return $null
     }
 }
 
 <#
 .SYNOPSIS
-    Enregistre un générateur de valeur pour le préchargement.
+    Enregistre un gÃ©nÃ©rateur de valeur pour le prÃ©chargement.
 .DESCRIPTION
-    Enregistre un générateur de valeur pour une clé ou un modèle de clé.
+    Enregistre un gÃ©nÃ©rateur de valeur pour une clÃ© ou un modÃ¨le de clÃ©.
 .PARAMETER PreloadManager
-    Gestionnaire de préchargement à utiliser.
+    Gestionnaire de prÃ©chargement Ã  utiliser.
 .PARAMETER KeyPattern
-    Modèle de clé (peut contenir des caractères génériques).
+    ModÃ¨le de clÃ© (peut contenir des caractÃ¨res gÃ©nÃ©riques).
 .PARAMETER Generator
-    Script de génération de la valeur.
+    Script de gÃ©nÃ©ration de la valeur.
 .EXAMPLE
     Register-PreloadGenerator -PreloadManager $manager -KeyPattern "User:*" -Generator { Get-UserData }
 #>
@@ -297,7 +297,7 @@ function Register-PreloadGenerator {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'enregistrement du générateur: $_"
+        Write-Error "Erreur lors de l'enregistrement du gÃ©nÃ©rateur: $_"
         return $false
     }
 }

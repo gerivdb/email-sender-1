@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
-    Récupère les valeurs par défaut pour les paramètres des fonctions du module RoadmapParser.
+    RÃ©cupÃ¨re les valeurs par dÃ©faut pour les paramÃ¨tres des fonctions du module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Get-RoadmapParameterDefault fournit des valeurs par défaut pour les paramètres
+    La fonction Get-RoadmapParameterDefault fournit des valeurs par dÃ©faut pour les paramÃ¨tres
     des fonctions du module RoadmapParser. Elle permet de centraliser la gestion des valeurs
-    par défaut et de les personnaliser selon les besoins.
+    par dÃ©faut et de les personnaliser selon les besoins.
 
 .PARAMETER ParameterName
-    Le nom du paramètre pour lequel récupérer la valeur par défaut.
+    Le nom du paramÃ¨tre pour lequel rÃ©cupÃ©rer la valeur par dÃ©faut.
 
 .PARAMETER FunctionName
-    Le nom de la fonction pour laquelle récupérer la valeur par défaut du paramètre.
+    Le nom de la fonction pour laquelle rÃ©cupÃ©rer la valeur par dÃ©faut du paramÃ¨tre.
 
 .PARAMETER ConfigurationPath
-    Le chemin vers un fichier de configuration contenant des valeurs par défaut personnalisées.
-    Si non spécifié, les valeurs par défaut intégrées seront utilisées.
+    Le chemin vers un fichier de configuration contenant des valeurs par dÃ©faut personnalisÃ©es.
+    Si non spÃ©cifiÃ©, les valeurs par dÃ©faut intÃ©grÃ©es seront utilisÃ©es.
 
 .EXAMPLE
     Get-RoadmapParameterDefault -ParameterName "Status" -FunctionName "Select-RoadmapTask"
-    Récupère la valeur par défaut du paramètre "Status" pour la fonction "Select-RoadmapTask".
+    RÃ©cupÃ¨re la valeur par dÃ©faut du paramÃ¨tre "Status" pour la fonction "Select-RoadmapTask".
 
 .EXAMPLE
     Get-RoadmapParameterDefault -ParameterName "BlockSize" -FunctionName "ConvertFrom-MarkdownToRoadmapOptimized" -ConfigurationPath "C:\config.json"
-    Récupère la valeur par défaut du paramètre "BlockSize" pour la fonction "ConvertFrom-MarkdownToRoadmapOptimized"
-    à partir du fichier de configuration spécifié.
+    RÃ©cupÃ¨re la valeur par dÃ©faut du paramÃ¨tre "BlockSize" pour la fonction "ConvertFrom-MarkdownToRoadmapOptimized"
+    Ã  partir du fichier de configuration spÃ©cifiÃ©.
 
 .OUTPUTS
-    La valeur par défaut du paramètre.
+    La valeur par dÃ©faut du paramÃ¨tre.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Get-RoadmapParameterDefault {
     [CmdletBinding()]
@@ -47,20 +47,20 @@ function Get-RoadmapParameterDefault {
         [string]$ConfigurationPath
     )
 
-    # Charger la configuration personnalisée si spécifiée
+    # Charger la configuration personnalisÃ©e si spÃ©cifiÃ©e
     $customConfig = $null
     if (-not [string]::IsNullOrEmpty($ConfigurationPath) -and (Test-Path -Path $ConfigurationPath)) {
         try {
             $customConfig = Get-Content -Path $ConfigurationPath -Raw | ConvertFrom-Json
         } catch {
-            Write-Warning "Impossible de charger la configuration personnalisée : $_"
+            Write-Warning "Impossible de charger la configuration personnalisÃ©e : $_"
         }
     }
 
-    # Définir les valeurs par défaut intégrées
+    # DÃ©finir les valeurs par dÃ©faut intÃ©grÃ©es
     $defaultValues = @{
         "ConvertFrom-MarkdownToRoadmap" = @{
-            # Aucun paramètre par défaut
+            # Aucun paramÃ¨tre par dÃ©faut
         }
         "ConvertFrom-MarkdownToRoadmapExtended" = @{
             "IncludeMetadata" = $false
@@ -85,10 +85,10 @@ function Get-RoadmapParameterDefault {
             "PassThru" = $false
         }
         "Find-DependencyCycle" = @{
-            # Aucun paramètre par défaut
+            # Aucun paramÃ¨tre par dÃ©faut
         }
         "Get-TaskDependencies" = @{
-            # Aucun paramètre par défaut
+            # Aucun paramÃ¨tre par dÃ©faut
         }
         "Export-RoadmapToJson" = @{
             "IncludeMetadata" = $false
@@ -114,22 +114,22 @@ function Get-RoadmapParameterDefault {
         }
     }
 
-    # Vérifier si la fonction existe dans les valeurs par défaut
+    # VÃ©rifier si la fonction existe dans les valeurs par dÃ©faut
     if (-not $defaultValues.ContainsKey($FunctionName)) {
-        Write-Warning "Aucune valeur par défaut n'est définie pour la fonction '$FunctionName'."
+        Write-Warning "Aucune valeur par dÃ©faut n'est dÃ©finie pour la fonction '$FunctionName'."
         return $null
     }
 
-    # Vérifier si le paramètre existe dans les valeurs par défaut de la fonction
+    # VÃ©rifier si le paramÃ¨tre existe dans les valeurs par dÃ©faut de la fonction
     if (-not $defaultValues[$FunctionName].ContainsKey($ParameterName)) {
-        Write-Warning "Aucune valeur par défaut n'est définie pour le paramètre '$ParameterName' de la fonction '$FunctionName'."
+        Write-Warning "Aucune valeur par dÃ©faut n'est dÃ©finie pour le paramÃ¨tre '$ParameterName' de la fonction '$FunctionName'."
         return $null
     }
 
-    # Récupérer la valeur par défaut
+    # RÃ©cupÃ©rer la valeur par dÃ©faut
     $defaultValue = $defaultValues[$FunctionName][$ParameterName]
 
-    # Vérifier si une valeur personnalisée existe dans la configuration
+    # VÃ©rifier si une valeur personnalisÃ©e existe dans la configuration
     if ($null -ne $customConfig -and 
         $customConfig.PSObject.Properties.Name -contains $FunctionName -and 
         $customConfig.$FunctionName.PSObject.Properties.Name -contains $ParameterName) {

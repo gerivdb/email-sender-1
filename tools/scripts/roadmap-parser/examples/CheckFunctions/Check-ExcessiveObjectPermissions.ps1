@@ -1,7 +1,7 @@
-    param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
+﻿    param($ObjectPermissions, $DatabaseUsers, $DatabaseName)
     $results = @()
     
-    # 1. Détecter les utilisateurs avec des permissions CONTROL sur des objets sensibles
+    # 1. DÃ©tecter les utilisateurs avec des permissions CONTROL sur des objets sensibles
     $sensitiveObjectTypes = @("USER_TABLE", "VIEW", "PROCEDURE", "FUNCTION", "ASSEMBLY")
     
     foreach ($userPerm in $ObjectPermissions) {
@@ -13,20 +13,20 @@
         }
 
         if ($controlObjects -and $controlObjects.Count -gt 0) {
-            # Exclure les comptes système et dbo
+            # Exclure les comptes systÃ¨me et dbo
             if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                 $results += [PSCustomObject]@{
                     DatabaseName = $DatabaseName
                     UserName = $userPerm.GranteeName
-                    Description = "L'utilisateur possède la permission CONTROL sur $($controlObjects.Count) objets sensibles"
-                    RecommendedAction = "Remplacer par des permissions plus spécifiques (SELECT, INSERT, UPDATE, EXECUTE, etc.)"
+                    Description = "L'utilisateur possÃ¨de la permission CONTROL sur $($controlObjects.Count) objets sensibles"
+                    RecommendedAction = "Remplacer par des permissions plus spÃ©cifiques (SELECT, INSERT, UPDATE, EXECUTE, etc.)"
                     AffectedObjects = $controlObjects | ForEach-Object { $_.ObjectName }
                 }
             }
         }
     }
     
-    # 2. Détecter les utilisateurs avec des permissions ALTER sur des objets sensibles
+    # 2. DÃ©tecter les utilisateurs avec des permissions ALTER sur des objets sensibles
     foreach ($userPerm in $ObjectPermissions) {
         $alterObjects = $userPerm.ObjectPermissions | Where-Object {
             $sensitiveObjectTypes -contains $_.ObjectType -and
@@ -36,20 +36,20 @@
         }
 
         if ($alterObjects -and $alterObjects.Count -gt 0) {
-            # Exclure les comptes système et dbo
+            # Exclure les comptes systÃ¨me et dbo
             if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                 $results += [PSCustomObject]@{
                     DatabaseName = $DatabaseName
                     UserName = $userPerm.GranteeName
-                    Description = "L'utilisateur possède la permission ALTER sur $($alterObjects.Count) objets sensibles"
-                    RecommendedAction = "Limiter les permissions de modification aux administrateurs de base de données"
+                    Description = "L'utilisateur possÃ¨de la permission ALTER sur $($alterObjects.Count) objets sensibles"
+                    RecommendedAction = "Limiter les permissions de modification aux administrateurs de base de donnÃ©es"
                     AffectedObjects = $alterObjects | ForEach-Object { $_.ObjectName }
                 }
             }
         }
     }
     
-    # 3. Détecter les utilisateurs avec des permissions TAKE OWNERSHIP sur des objets
+    # 3. DÃ©tecter les utilisateurs avec des permissions TAKE OWNERSHIP sur des objets
     foreach ($userPerm in $ObjectPermissions) {
         $takeOwnershipObjects = $userPerm.ObjectPermissions | Where-Object {
             $_.Permissions | Where-Object {
@@ -58,20 +58,20 @@
         }
 
         if ($takeOwnershipObjects -and $takeOwnershipObjects.Count -gt 0) {
-            # Exclure les comptes système et dbo
+            # Exclure les comptes systÃ¨me et dbo
             if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                 $results += [PSCustomObject]@{
                     DatabaseName = $DatabaseName
                     UserName = $userPerm.GranteeName
-                    Description = "L'utilisateur possède la permission TAKE OWNERSHIP sur $($takeOwnershipObjects.Count) objets"
-                    RecommendedAction = "Révoquer cette permission et utiliser des propriétaires spécifiques pour les objets"
+                    Description = "L'utilisateur possÃ¨de la permission TAKE OWNERSHIP sur $($takeOwnershipObjects.Count) objets"
+                    RecommendedAction = "RÃ©voquer cette permission et utiliser des propriÃ©taires spÃ©cifiques pour les objets"
                     AffectedObjects = $takeOwnershipObjects | ForEach-Object { $_.ObjectName }
                 }
             }
         }
     }
     
-    # 4. Détecter les utilisateurs avec des permissions excessives sur des tables contenant des données sensibles
+    # 4. DÃ©tecter les utilisateurs avec des permissions excessives sur des tables contenant des donnÃ©es sensibles
     $potentiallySensitiveTables = $ObjectPermissions | ForEach-Object { 
         $_.ObjectPermissions | Where-Object { 
             $_.ObjectType -eq "USER_TABLE" -and 
@@ -103,13 +103,13 @@
             }
 
             if ($excessivePermTables -and $excessivePermTables.Count -gt 0) {
-                # Exclure les comptes système et dbo
+                # Exclure les comptes systÃ¨me et dbo
                 if (-not $userPerm.GranteeName.StartsWith("##") -and $userPerm.GranteeName -ne "dbo") {
                     $results += [PSCustomObject]@{
                         DatabaseName = $DatabaseName
                         UserName = $userPerm.GranteeName
-                        Description = "L'utilisateur possède des permissions potentiellement excessives sur $($excessivePermTables.Count) tables contenant des données sensibles"
-                        RecommendedAction = "Limiter les permissions aux opérations nécessaires (SELECT uniquement si possible)"
+                        Description = "L'utilisateur possÃ¨de des permissions potentiellement excessives sur $($excessivePermTables.Count) tables contenant des donnÃ©es sensibles"
+                        RecommendedAction = "Limiter les permissions aux opÃ©rations nÃ©cessaires (SELECT uniquement si possible)"
                         AffectedObjects = $excessivePermTables | ForEach-Object { $_.ObjectName }
                     }
                 }
@@ -117,12 +117,12 @@
         }
     }
     
-    # 5. Détecter les utilisateurs avec des permissions sur un grand nombre d'objets
-    $objectCountThreshold = 50  # Seuil à partir duquel le nombre d'objets est considéré comme excessif
+    # 5. DÃ©tecter les utilisateurs avec des permissions sur un grand nombre d'objets
+    $objectCountThreshold = 50  # Seuil Ã  partir duquel le nombre d'objets est considÃ©rÃ© comme excessif
     
     foreach ($userPerm in $ObjectPermissions) {
         if ($userPerm.ObjectCount -gt $objectCountThreshold) {
-            # Exclure les comptes système, dbo et les comptes de service connus
+            # Exclure les comptes systÃ¨me, dbo et les comptes de service connus
             if (-not $userPerm.GranteeName.StartsWith("##") -and 
                 $userPerm.GranteeName -ne "dbo" -and
                 -not $userPerm.GranteeName.EndsWith("_svc") -and
@@ -131,8 +131,8 @@
                 $results += [PSCustomObject]@{
                     DatabaseName = $DatabaseName
                     UserName = $userPerm.GranteeName
-                    Description = "L'utilisateur possède des permissions sur un nombre excessif d'objets ($($userPerm.ObjectCount) > $objectCountThreshold)"
-                    RecommendedAction = "Vérifier si ces permissions sont nécessaires ou si elles peuvent être gérées via des rôles"
+                    Description = "L'utilisateur possÃ¨de des permissions sur un nombre excessif d'objets ($($userPerm.ObjectCount) > $objectCountThreshold)"
+                    RecommendedAction = "VÃ©rifier si ces permissions sont nÃ©cessaires ou si elles peuvent Ãªtre gÃ©rÃ©es via des rÃ´les"
                     AffectedObjects = "Nombre total d'objets: $($userPerm.ObjectCount)"
                 }
             }

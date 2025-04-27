@@ -1,32 +1,32 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de gestion des tâches parallèles pour l'architecture hybride PowerShell-Python.
+    Module de gestion des tÃ¢ches parallÃ¨les pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Ce module fournit des fonctions pour gérer l'exécution parallèle des tâches
+    Ce module fournit des fonctions pour gÃ©rer l'exÃ©cution parallÃ¨le des tÃ¢ches
     dans l'architecture hybride PowerShell-Python.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-10
-    Compatibilité: PowerShell 5.1 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur
 #>
 
 <#
 .SYNOPSIS
-    Initialise un gestionnaire de tâches pour l'exécution parallèle.
+    Initialise un gestionnaire de tÃ¢ches pour l'exÃ©cution parallÃ¨le.
 .DESCRIPTION
-    Crée et configure un gestionnaire de tâches pour l'exécution parallèle des tâches.
+    CrÃ©e et configure un gestionnaire de tÃ¢ches pour l'exÃ©cution parallÃ¨le des tÃ¢ches.
 .PARAMETER MaxConcurrency
-    Nombre maximum de tâches concurrentes. Par défaut: nombre de processeurs.
+    Nombre maximum de tÃ¢ches concurrentes. Par dÃ©faut: nombre de processeurs.
 .PARAMETER ThrottleLimit
-    Limite de régulation pour les runspaces. Par défaut: MaxConcurrency + 2.
+    Limite de rÃ©gulation pour les runspaces. Par dÃ©faut: MaxConcurrency + 2.
 .PARAMETER PriorityQueue
-    Si spécifié, utilise une file d'attente avec priorité pour les tâches.
+    Si spÃ©cifiÃ©, utilise une file d'attente avec prioritÃ© pour les tÃ¢ches.
 .EXAMPLE
     $taskManager = Initialize-TaskManager -MaxConcurrency 4
 .OUTPUTS
-    Un objet représentant le gestionnaire de tâches.
+    Un objet reprÃ©sentant le gestionnaire de tÃ¢ches.
 #>
 function Initialize-TaskManager {
     [CmdletBinding()]
@@ -42,24 +42,24 @@ function Initialize-TaskManager {
         [switch]$PriorityQueue
     )
 
-    # Déterminer le nombre optimal de tâches concurrentes
+    # DÃ©terminer le nombre optimal de tÃ¢ches concurrentes
     if ($MaxConcurrency -le 0) {
         $MaxConcurrency = [Environment]::ProcessorCount
     }
 
-    # Déterminer la limite de régulation
+    # DÃ©terminer la limite de rÃ©gulation
     if ($ThrottleLimit -le 0) {
         $ThrottleLimit = $MaxConcurrency + 2
     }
 
-    # Créer le pool de runspaces
+    # CrÃ©er le pool de runspaces
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $runspacePool = [runspacefactory]::CreateRunspacePool(1, $ThrottleLimit, $sessionState, $Host)
     $runspacePool.Open()
 
-    # Créer la file d'attente des tâches
+    # CrÃ©er la file d'attente des tÃ¢ches
     $taskQueue = if ($PriorityQueue) {
-        # File d'attente avec priorité
+        # File d'attente avec prioritÃ©
         New-Object System.Collections.Generic.List[PSObject]
     }
     else {
@@ -67,7 +67,7 @@ function Initialize-TaskManager {
         New-Object System.Collections.Generic.Queue[PSObject]
     }
 
-    # Créer et retourner le gestionnaire de tâches
+    # CrÃ©er et retourner le gestionnaire de tÃ¢ches
     return [PSCustomObject]@{
         MaxConcurrency = $MaxConcurrency
         ThrottleLimit = $ThrottleLimit
@@ -89,22 +89,22 @@ function Initialize-TaskManager {
 
 <#
 .SYNOPSIS
-    Ajoute une tâche à la file d'attente du gestionnaire de tâches.
+    Ajoute une tÃ¢che Ã  la file d'attente du gestionnaire de tÃ¢ches.
 .DESCRIPTION
-    Ajoute une tâche à la file d'attente pour exécution parallèle.
+    Ajoute une tÃ¢che Ã  la file d'attente pour exÃ©cution parallÃ¨le.
 .PARAMETER TaskManager
-    Gestionnaire de tâches initialisé par Initialize-TaskManager.
+    Gestionnaire de tÃ¢ches initialisÃ© par Initialize-TaskManager.
 .PARAMETER ScriptBlock
-    Bloc de script à exécuter.
+    Bloc de script Ã  exÃ©cuter.
 .PARAMETER Parameters
-    Paramètres à passer au bloc de script.
+    ParamÃ¨tres Ã  passer au bloc de script.
 .PARAMETER Priority
-    Priorité de la tâche (1-10, 10 étant la plus haute). Par défaut: 5.
+    PrioritÃ© de la tÃ¢che (1-10, 10 Ã©tant la plus haute). Par dÃ©faut: 5.
 .EXAMPLE
     $scriptBlock = { param($data) Process-Data $data }
     Add-TaskToQueue -TaskManager $taskManager -ScriptBlock $scriptBlock -Parameters @{ data = $myData }
 .OUTPUTS
-    Un objet représentant la tâche ajoutée.
+    Un objet reprÃ©sentant la tÃ¢che ajoutÃ©e.
 #>
 function Add-TaskToQueue {
     [CmdletBinding()]
@@ -124,7 +124,7 @@ function Add-TaskToQueue {
         [int]$Priority = 5
     )
 
-    # Créer l'objet tâche
+    # CrÃ©er l'objet tÃ¢che
     $task = [PSCustomObject]@{
         Id = [guid]::NewGuid().ToString()
         ScriptBlock = $ScriptBlock
@@ -140,9 +140,9 @@ function Add-TaskToQueue {
         AsyncResult = $null
     }
 
-    # Ajouter la tâche à la file d'attente
+    # Ajouter la tÃ¢che Ã  la file d'attente
     if ($TaskManager.TaskQueue -is [System.Collections.Generic.List[PSObject]]) {
-        # File d'attente avec priorité
+        # File d'attente avec prioritÃ©
         $TaskManager.TaskQueue.Add($task)
         $TaskManager.TaskQueue.Sort({ param($a, $b) $b.Priority - $a.Priority })
     }
@@ -151,7 +151,7 @@ function Add-TaskToQueue {
         $TaskManager.TaskQueue.Enqueue($task)
     }
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     $TaskManager.Statistics.TotalTasks++
 
     return $task
@@ -159,19 +159,19 @@ function Add-TaskToQueue {
 
 <#
 .SYNOPSIS
-    Exécute les tâches en parallèle.
+    ExÃ©cute les tÃ¢ches en parallÃ¨le.
 .DESCRIPTION
-    Exécute les tâches de la file d'attente en parallèle et attend leur complétion.
+    ExÃ©cute les tÃ¢ches de la file d'attente en parallÃ¨le et attend leur complÃ©tion.
 .PARAMETER TaskManager
-    Gestionnaire de tâches initialisé par Initialize-TaskManager.
+    Gestionnaire de tÃ¢ches initialisÃ© par Initialize-TaskManager.
 .PARAMETER WaitForCompletion
-    Si spécifié, attend la complétion de toutes les tâches. Par défaut: $true.
+    Si spÃ©cifiÃ©, attend la complÃ©tion de toutes les tÃ¢ches. Par dÃ©faut: $true.
 .PARAMETER TimeoutSeconds
-    Délai d'attente en secondes. Par défaut: 0 (pas de délai).
+    DÃ©lai d'attente en secondes. Par dÃ©faut: 0 (pas de dÃ©lai).
 .EXAMPLE
     Start-ParallelTasks -TaskManager $taskManager
 .OUTPUTS
-    Les résultats des tâches exécutées.
+    Les rÃ©sultats des tÃ¢ches exÃ©cutÃ©es.
 #>
 function Start-ParallelTasks {
     [CmdletBinding()]
@@ -186,22 +186,22 @@ function Start-ParallelTasks {
         [int]$TimeoutSeconds = 0
     )
 
-    # Démarrer le chronomètre
+    # DÃ©marrer le chronomÃ¨tre
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-    # Exécuter les tâches en parallèle
+    # ExÃ©cuter les tÃ¢ches en parallÃ¨le
     while ($TaskManager.TaskQueue.Count -gt 0 -or $TaskManager.ActiveTasks.Count -gt 0) {
-        # Vérifier le délai d'attente
+        # VÃ©rifier le dÃ©lai d'attente
         if ($TimeoutSeconds -gt 0 -and $stopwatch.Elapsed.TotalSeconds -gt $TimeoutSeconds) {
-            Write-Warning "Délai d'attente dépassé. Arrêt des tâches en cours..."
+            Write-Warning "DÃ©lai d'attente dÃ©passÃ©. ArrÃªt des tÃ¢ches en cours..."
             break
         }
 
-        # Démarrer de nouvelles tâches si possible
+        # DÃ©marrer de nouvelles tÃ¢ches si possible
         while ($TaskManager.TaskQueue.Count -gt 0 -and $TaskManager.ActiveTasks.Count -lt $TaskManager.MaxConcurrency) {
-            # Récupérer la prochaine tâche
+            # RÃ©cupÃ©rer la prochaine tÃ¢che
             $task = if ($TaskManager.TaskQueue -is [System.Collections.Generic.List[PSObject]]) {
-                # File d'attente avec priorité
+                # File d'attente avec prioritÃ©
                 $nextTask = $TaskManager.TaskQueue[0]
                 $TaskManager.TaskQueue.RemoveAt(0)
                 $nextTask
@@ -211,29 +211,29 @@ function Start-ParallelTasks {
                 $TaskManager.TaskQueue.Dequeue()
             }
 
-            # Créer et configurer le PowerShell
+            # CrÃ©er et configurer le PowerShell
             $ps = [powershell]::Create().AddScript($task.ScriptBlock)
             foreach ($param in $task.Parameters.GetEnumerator()) {
                 $ps.AddParameter($param.Key, $param.Value) | Out-Null
             }
             $ps.RunspacePool = $TaskManager.RunspacePool
 
-            # Démarrer la tâche de manière asynchrone
+            # DÃ©marrer la tÃ¢che de maniÃ¨re asynchrone
             $task.PowerShell = $ps
             $task.AsyncResult = $ps.BeginInvoke()
             $task.Status = "Running"
             $task.StartTime = Get-Date
 
-            # Ajouter la tâche aux tâches actives
+            # Ajouter la tÃ¢che aux tÃ¢ches actives
             $TaskManager.ActiveTasks.Add($task)
         }
 
-        # Vérifier les tâches terminées
+        # VÃ©rifier les tÃ¢ches terminÃ©es
         for ($i = $TaskManager.ActiveTasks.Count - 1; $i -ge 0; $i--) {
             $task = $TaskManager.ActiveTasks[$i]
 
             if ($task.AsyncResult.IsCompleted) {
-                # Récupérer le résultat
+                # RÃ©cupÃ©rer le rÃ©sultat
                 try {
                     $task.Result = $task.PowerShell.EndInvoke($task.AsyncResult)
                     $task.Status = "Completed"
@@ -252,50 +252,50 @@ function Start-ParallelTasks {
                     $task.EndTime = Get-Date
                     $task.Duration = $task.EndTime - $task.StartTime
 
-                    # Supprimer la tâche des tâches actives
+                    # Supprimer la tÃ¢che des tÃ¢ches actives
                     $TaskManager.ActiveTasks.RemoveAt($i)
                 }
             }
         }
 
-        # Attendre un peu avant de vérifier à nouveau
+        # Attendre un peu avant de vÃ©rifier Ã  nouveau
         if ($TaskManager.ActiveTasks.Count -gt 0) {
             Start-Sleep -Milliseconds 100
         }
 
-        # Sortir de la boucle si on ne veut pas attendre la complétion
+        # Sortir de la boucle si on ne veut pas attendre la complÃ©tion
         if (-not $WaitForCompletion -and $TaskManager.TaskQueue.Count -eq 0) {
             break
         }
     }
 
-    # Arrêter le chronomètre
+    # ArrÃªter le chronomÃ¨tre
     $stopwatch.Stop()
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     $TaskManager.Statistics.EndTime = Get-Date
     $TaskManager.Statistics.Duration = $TaskManager.Statistics.EndTime - $TaskManager.Statistics.StartTime
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $TaskManager.CompletedTasks | ForEach-Object { $_.Result }
 }
 
 <#
 .SYNOPSIS
-    Exécute des tâches parallèles en utilisant le gestionnaire de tâches.
+    ExÃ©cute des tÃ¢ches parallÃ¨les en utilisant le gestionnaire de tÃ¢ches.
 .DESCRIPTION
-    Fonction de haut niveau qui combine l'initialisation du gestionnaire de tâches,
-    l'ajout des tâches à la file d'attente et leur exécution parallèle.
+    Fonction de haut niveau qui combine l'initialisation du gestionnaire de tÃ¢ches,
+    l'ajout des tÃ¢ches Ã  la file d'attente et leur exÃ©cution parallÃ¨le.
 .PARAMETER TaskManager
-    Gestionnaire de tâches initialisé par Initialize-TaskManager. Si non spécifié,
-    un nouveau gestionnaire est créé.
+    Gestionnaire de tÃ¢ches initialisÃ© par Initialize-TaskManager. Si non spÃ©cifiÃ©,
+    un nouveau gestionnaire est crÃ©Ã©.
 .PARAMETER Tasks
-    Tableau de tâches à exécuter. Chaque tâche doit être un hashtable avec les clés
-    PythonScript, InputData, et éventuellement CachePath et AdditionalArguments.
+    Tableau de tÃ¢ches Ã  exÃ©cuter. Chaque tÃ¢che doit Ãªtre un hashtable avec les clÃ©s
+    PythonScript, InputData, et Ã©ventuellement CachePath et AdditionalArguments.
 .PARAMETER MaxConcurrency
-    Nombre maximum de tâches concurrentes. Par défaut: nombre de processeurs.
+    Nombre maximum de tÃ¢ches concurrentes. Par dÃ©faut: nombre de processeurs.
 .PARAMETER TimeoutSeconds
-    Délai d'attente en secondes. Par défaut: 0 (pas de délai).
+    DÃ©lai d'attente en secondes. Par dÃ©faut: 0 (pas de dÃ©lai).
 .EXAMPLE
     $tasks = @(
         @{ PythonScript = "script1.py"; InputData = $data1 },
@@ -303,7 +303,7 @@ function Start-ParallelTasks {
     )
     $results = Invoke-ParallelTasks -Tasks $tasks
 .OUTPUTS
-    Les résultats des tâches exécutées.
+    Les rÃ©sultats des tÃ¢ches exÃ©cutÃ©es.
 #>
 function Invoke-ParallelTasks {
     [CmdletBinding()]
@@ -321,12 +321,12 @@ function Invoke-ParallelTasks {
         [int]$TimeoutSeconds = 0
     )
 
-    # Initialiser le gestionnaire de tâches si nécessaire
+    # Initialiser le gestionnaire de tÃ¢ches si nÃ©cessaire
     if (-not $TaskManager) {
         $TaskManager = Initialize-TaskManager -MaxConcurrency $MaxConcurrency
     }
 
-    # Ajouter les tâches à la file d'attente
+    # Ajouter les tÃ¢ches Ã  la file d'attente
     foreach ($task in $Tasks) {
         $scriptBlock = {
             param(
@@ -336,16 +336,16 @@ function Invoke-ParallelTasks {
                 [hashtable]$AdditionalArguments
             )
 
-            # Préparer les arguments pour le script Python
+            # PrÃ©parer les arguments pour le script Python
             $inputJson = ConvertTo-Json -InputObject $InputData -Depth 10 -Compress
             $inputFile = [System.IO.Path]::GetTempFileName()
             $outputFile = [System.IO.Path]::GetTempFileName()
 
             try {
-                # Écrire les données d'entrée dans un fichier temporaire
+                # Ã‰crire les donnÃ©es d'entrÃ©e dans un fichier temporaire
                 $inputJson | Out-File -FilePath $inputFile -Encoding utf8
 
-                # Préparer les arguments pour le script Python
+                # PrÃ©parer les arguments pour le script Python
                 $pythonArgs = @(
                     $PythonScript,
                     "--input", $inputFile,
@@ -356,20 +356,20 @@ function Invoke-ParallelTasks {
                     $pythonArgs += @("--cache", $CachePath)
                 }
 
-                # Ajouter les arguments supplémentaires
+                # Ajouter les arguments supplÃ©mentaires
                 foreach ($arg in $AdditionalArguments.GetEnumerator()) {
                     $pythonArgs += @("--$($arg.Key)", $arg.Value)
                 }
 
-                # Exécuter le script Python
+                # ExÃ©cuter le script Python
                 $process = Start-Process -FilePath "python" -ArgumentList $pythonArgs -NoNewWindow -PassThru -Wait
 
-                # Vérifier le code de sortie
+                # VÃ©rifier le code de sortie
                 if ($process.ExitCode -ne 0) {
-                    throw "Le script Python a échoué avec le code de sortie $($process.ExitCode)"
+                    throw "Le script Python a Ã©chouÃ© avec le code de sortie $($process.ExitCode)"
                 }
 
-                # Lire les résultats
+                # Lire les rÃ©sultats
                 $outputJson = Get-Content -Path $outputFile -Raw
                 $result = ConvertFrom-Json -InputObject $outputJson
 
@@ -389,7 +389,7 @@ function Invoke-ParallelTasks {
         Add-TaskToQueue -TaskManager $TaskManager -ScriptBlock $scriptBlock -Parameters $task
     }
 
-    # Exécuter les tâches en parallèle
+    # ExÃ©cuter les tÃ¢ches en parallÃ¨le
     $results = Start-ParallelTasks -TaskManager $TaskManager -TimeoutSeconds $TimeoutSeconds
 
     return $results
@@ -397,11 +397,11 @@ function Invoke-ParallelTasks {
 
 <#
 .SYNOPSIS
-    Nettoie les ressources du gestionnaire de tâches.
+    Nettoie les ressources du gestionnaire de tÃ¢ches.
 .DESCRIPTION
-    Libère les ressources utilisées par le gestionnaire de tâches.
+    LibÃ¨re les ressources utilisÃ©es par le gestionnaire de tÃ¢ches.
 .PARAMETER TaskManager
-    Gestionnaire de tâches à nettoyer.
+    Gestionnaire de tÃ¢ches Ã  nettoyer.
 .EXAMPLE
     Clear-TaskManager -TaskManager $taskManager
 #>
@@ -412,7 +412,7 @@ function Clear-TaskManager {
         [PSCustomObject]$TaskManager
     )
 
-    # Arrêter les tâches en cours
+    # ArrÃªter les tÃ¢ches en cours
     foreach ($task in $TaskManager.ActiveTasks) {
         if ($task.PowerShell -and -not $task.AsyncResult.IsCompleted) {
             $task.PowerShell.Stop()

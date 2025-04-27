@@ -1,4 +1,4 @@
-# Test-StatusMarkers.ps1
+﻿# Test-StatusMarkers.ps1
 # Script pour tester l'analyse des marqueurs de statut dans un fichier markdown de roadmap
 
 param (
@@ -6,7 +6,7 @@ param (
     [string]$RoadmapFilePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md"
 )
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $RoadmapFilePath)) {
     Write-Error "Le fichier '$RoadmapFilePath' n'existe pas."
     exit 1
@@ -37,7 +37,7 @@ function Get-StatusMarkers {
     $statusMarkers.Incomplete = [regex]::Matches($Content, $incompletePattern).Count
     $statusMarkers.Complete = [regex]::Matches($Content, $completePattern).Count
 
-    # Rechercher les marqueurs de statut personnalisés
+    # Rechercher les marqueurs de statut personnalisÃ©s
     $customPattern = "(?m)^\s*[-*+]\s*\[([^x ])\]"
     $customMatches = [regex]::Matches($Content, $customPattern)
     
@@ -52,8 +52,8 @@ function Get-StatusMarkers {
 
     # Rechercher les indicateurs textuels de progression
     $textualIndicators = @(
-        "en cours", "en attente", "terminé", "complété", "bloqué", 
-        "reporté", "annulé", "prioritaire", "urgent"
+        "en cours", "en attente", "terminÃ©", "complÃ©tÃ©", "bloquÃ©", 
+        "reportÃ©", "annulÃ©", "prioritaire", "urgent"
     )
     
     foreach ($indicator in $textualIndicators) {
@@ -71,14 +71,14 @@ function Get-StatusMarkers {
 Write-Host "Analyse des marqueurs de statut dans: $RoadmapFilePath" -ForegroundColor Cyan
 $statusMarkers = Get-StatusMarkers -Content $content
 
-# Afficher les résultats
-Write-Host "`nMarqueurs de statut détectés:" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "`nMarqueurs de statut dÃ©tectÃ©s:" -ForegroundColor Green
 Write-Host "  [ ] (Incomplet): $($statusMarkers.Incomplete) occurrences"
 Write-Host "  [x] (Complet): $($statusMarkers.Complete) occurrences"
 
-Write-Host "`nMarqueurs personnalisés:" -ForegroundColor Yellow
+Write-Host "`nMarqueurs personnalisÃ©s:" -ForegroundColor Yellow
 if ($statusMarkers.Custom.Count -eq 0) {
-    Write-Host "  Aucun marqueur personnalisé détecté."
+    Write-Host "  Aucun marqueur personnalisÃ© dÃ©tectÃ©."
 } else {
     foreach ($marker in $statusMarkers.Custom.GetEnumerator()) {
         Write-Host "  [$($marker.Key)]: $($marker.Value) occurrences"
@@ -87,14 +87,14 @@ if ($statusMarkers.Custom.Count -eq 0) {
 
 Write-Host "`nIndicateurs textuels de progression:" -ForegroundColor Yellow
 if ($statusMarkers.TextualIndicators.Count -eq 0) {
-    Write-Host "  Aucun indicateur textuel détecté."
+    Write-Host "  Aucun indicateur textuel dÃ©tectÃ©."
 } else {
     foreach ($indicator in $statusMarkers.TextualIndicators.GetEnumerator()) {
         Write-Host "  '$($indicator.Key)': $($indicator.Value) occurrences"
     }
 }
 
-# Calculer le pourcentage de complétion
+# Calculer le pourcentage de complÃ©tion
 $totalTasks = $statusMarkers.Incomplete + $statusMarkers.Complete
 foreach ($customCount in $statusMarkers.Custom.Values) {
     $totalTasks += $customCount
@@ -107,9 +107,9 @@ $completionPercentage = if ($totalTasks -gt 0) {
 }
 
 Write-Host "`nStatistiques de progression:" -ForegroundColor Green
-Write-Host "  Tâches totales: $totalTasks"
-Write-Host "  Tâches terminées: $($statusMarkers.Complete)"
-Write-Host "  Tâches en cours: $($statusMarkers.Incomplete)"
-Write-Host "  Pourcentage de complétion: $completionPercentage%"
+Write-Host "  TÃ¢ches totales: $totalTasks"
+Write-Host "  TÃ¢ches terminÃ©es: $($statusMarkers.Complete)"
+Write-Host "  TÃ¢ches en cours: $($statusMarkers.Incomplete)"
+Write-Host "  Pourcentage de complÃ©tion: $completionPercentage%"
 
-Write-Host "`nAnalyse terminée." -ForegroundColor Cyan
+Write-Host "`nAnalyse terminÃ©e." -ForegroundColor Cyan

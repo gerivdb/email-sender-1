@@ -1,7 +1,7 @@
-Describe "Tests des fonctions de benchmark" {
+﻿Describe "Tests des fonctions de benchmark" {
     Context "Measure-Operation" {
         BeforeAll {
-            # Définir la fonction à tester
+            # DÃ©finir la fonction Ã  tester
             function Measure-Operation {
                 [CmdletBinding()]
                 param(
@@ -21,17 +21,17 @@ Describe "Tests des fonctions de benchmark" {
                 $results = @()
                 
                 for ($i = 1; $i -le $Iterations; $i++) {
-                    # Nettoyer la mémoire avant chaque test
+                    # Nettoyer la mÃ©moire avant chaque test
                     [System.GC]::Collect()
                     
-                    # Mesurer l'utilisation de la mémoire avant
+                    # Mesurer l'utilisation de la mÃ©moire avant
                     $memoryBefore = [System.GC]::GetTotalMemory($true)
                     
-                    # Mesurer le temps d'exécution
+                    # Mesurer le temps d'exÃ©cution
                     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
                     
                     try {
-                        # Exécuter l'opération
+                        # ExÃ©cuter l'opÃ©ration
                         $result = & $ScriptBlock @Parameters
                         $success = $true
                     }
@@ -43,11 +43,11 @@ Describe "Tests des fonctions de benchmark" {
                     $stopwatch.Stop()
                     $executionTime = $stopwatch.Elapsed.TotalSeconds
                     
-                    # Mesurer l'utilisation de la mémoire après
+                    # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
                     $memoryAfter = [System.GC]::GetTotalMemory($true)
                     $memoryUsage = ($memoryAfter - $memoryBefore) / 1MB
                     
-                    # Enregistrer les résultats
+                    # Enregistrer les rÃ©sultats
                     $results += [PSCustomObject]@{
                         Iteration = $i
                         ExecutionTime = $executionTime
@@ -75,7 +75,7 @@ Describe "Tests des fonctions de benchmark" {
                 }
             }
             
-            # Créer des scriptblocks de test
+            # CrÃ©er des scriptblocks de test
             $fastScriptBlock = { Start-Sleep -Milliseconds 10; return "Fast" }
             $slowScriptBlock = { Start-Sleep -Milliseconds 50; return "Slow" }
             $errorScriptBlock = { throw "Test error" }
@@ -88,62 +88,62 @@ Describe "Tests des fonctions de benchmark" {
             }
         }
         
-        It "Mesure correctement le temps d'exécution" {
-            # Exécuter la fonction avec un scriptblock rapide
+        It "Mesure correctement le temps d'exÃ©cution" {
+            # ExÃ©cuter la fonction avec un scriptblock rapide
             $fastResult = Measure-Operation -Name "Test rapide" -ScriptBlock $fastScriptBlock -Iterations 2
             
-            # Exécuter la fonction avec un scriptblock lent
+            # ExÃ©cuter la fonction avec un scriptblock lent
             $slowResult = Measure-Operation -Name "Test lent" -ScriptBlock $slowScriptBlock -Iterations 2
             
-            # Vérifier que le temps d'exécution est mesuré correctement
+            # VÃ©rifier que le temps d'exÃ©cution est mesurÃ© correctement
             $fastResult.AverageTime | Should -BeLessThan $slowResult.AverageTime
             $fastResult.MinTime | Should -BeLessThan $slowResult.MinTime
             $fastResult.MaxTime | Should -BeLessThan $slowResult.MaxTime
         }
         
-        It "Mesure correctement l'utilisation de la mémoire" {
-            # Exécuter la fonction avec un scriptblock qui utilise beaucoup de mémoire
-            $memoryResult = Measure-Operation -Name "Test mémoire" -ScriptBlock $memoryScriptBlock -Iterations 2
+        It "Mesure correctement l'utilisation de la mÃ©moire" {
+            # ExÃ©cuter la fonction avec un scriptblock qui utilise beaucoup de mÃ©moire
+            $memoryResult = Measure-Operation -Name "Test mÃ©moire" -ScriptBlock $memoryScriptBlock -Iterations 2
             
-            # Vérifier que l'utilisation de la mémoire est mesurée
+            # VÃ©rifier que l'utilisation de la mÃ©moire est mesurÃ©e
             $memoryResult.AverageMemoryMB | Should -BeGreaterThan 0
         }
         
-        It "Gère correctement les erreurs" {
-            # Exécuter la fonction avec un scriptblock qui génère une erreur
+        It "GÃ¨re correctement les erreurs" {
+            # ExÃ©cuter la fonction avec un scriptblock qui gÃ©nÃ¨re une erreur
             $errorResult = Measure-Operation -Name "Test erreur" -ScriptBlock $errorScriptBlock -Iterations 2
             
-            # Vérifier que les erreurs sont gérées correctement
+            # VÃ©rifier que les erreurs sont gÃ©rÃ©es correctement
             $errorResult.SuccessRate | Should -Be 0
             $errorResult.DetailedResults[0].Success | Should -Be $false
             $errorResult.DetailedResults[0].Result | Should -BeNullOrEmpty
         }
         
-        It "Accepte des paramètres pour le scriptblock" {
-            # Créer un scriptblock qui utilise des paramètres
+        It "Accepte des paramÃ¨tres pour le scriptblock" {
+            # CrÃ©er un scriptblock qui utilise des paramÃ¨tres
             $paramScriptBlock = { 
                 param($value)
                 return $value * 2
             }
             
-            # Exécuter la fonction avec des paramètres
-            $paramResult = Measure-Operation -Name "Test paramètres" -ScriptBlock $paramScriptBlock -Parameters @{ value = 5 } -Iterations 1
+            # ExÃ©cuter la fonction avec des paramÃ¨tres
+            $paramResult = Measure-Operation -Name "Test paramÃ¨tres" -ScriptBlock $paramScriptBlock -Parameters @{ value = 5 } -Iterations 1
             
-            # Vérifier que les paramètres sont passés correctement
+            # VÃ©rifier que les paramÃ¨tres sont passÃ©s correctement
             $paramResult.DetailedResults[0].Result | Should -Be 10
         }
         
         It "Retourne les statistiques correctes" {
-            # Exécuter la fonction avec un scriptblock simple
+            # ExÃ©cuter la fonction avec un scriptblock simple
             $result = Measure-Operation -Name "Test statistiques" -ScriptBlock { return 42 } -Iterations 3
             
-            # Vérifier que les statistiques sont calculées correctement
+            # VÃ©rifier que les statistiques sont calculÃ©es correctement
             $result.Name | Should -Be "Test statistiques"
             $result.SuccessRate | Should -Be 100
             $result.DetailedResults.Count | Should -Be 3
             $result.AverageTime | Should -BeGreaterThan 0
             
-            # Vérifier que les statistiques correspondent aux résultats détaillés
+            # VÃ©rifier que les statistiques correspondent aux rÃ©sultats dÃ©taillÃ©s
             $avgTime = ($result.DetailedResults | Measure-Object -Property ExecutionTime -Average).Average
             $result.AverageTime | Should -Be $avgTime
         }
@@ -151,7 +151,7 @@ Describe "Tests des fonctions de benchmark" {
     
     Context "New-TestFiles" {
         BeforeAll {
-            # Définir la fonction à tester (version simplifiée pour les tests)
+            # DÃ©finir la fonction Ã  tester (version simplifiÃ©e pour les tests)
             function New-TestFiles {
                 [CmdletBinding()]
                 param(
@@ -174,7 +174,7 @@ Describe "Tests des fonctions de benchmark" {
                     New-Item -Path $testFilesPath -ItemType Directory -Force | Out-Null
                 }
                 
-                # Créer des fichiers de test simplifiés
+                # CrÃ©er des fichiers de test simplifiÃ©s
                 for ($i = 1; $i -le $SmallFiles; $i++) {
                     $filePath = Join-Path -Path $testFilesPath -ChildPath "small_$i.ps1"
                     "# Small test file $i" | Out-File -FilePath $filePath -Encoding utf8
@@ -193,31 +193,31 @@ Describe "Tests des fonctions de benchmark" {
                 return $testFilesPath
             }
             
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testOutputDir = Join-Path -Path $TestDrive -ChildPath "TestOutput"
         }
         
-        It "Crée le répertoire de sortie s'il n'existe pas" {
+        It "CrÃ©e le rÃ©pertoire de sortie s'il n'existe pas" {
             # Appeler la fonction
             $result = New-TestFiles -OutputPath $testOutputDir
             
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $result -PathType Container | Should -Be $true
         }
         
-        It "Crée le nombre correct de fichiers" {
-            # Appeler la fonction avec des paramètres spécifiques
+        It "CrÃ©e le nombre correct de fichiers" {
+            # Appeler la fonction avec des paramÃ¨tres spÃ©cifiques
             $smallFiles = 3
             $mediumFiles = 2
             $largeFiles = 1
             
             $result = New-TestFiles -OutputPath $testOutputDir -SmallFiles $smallFiles -MediumFiles $mediumFiles -LargeFiles $largeFiles
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $createdFiles = Get-ChildItem -Path $result -File
             $createdFiles.Count | Should -Be ($smallFiles + $mediumFiles + $largeFiles)
             
-            # Vérifier le nombre de chaque type de fichier
+            # VÃ©rifier le nombre de chaque type de fichier
             (Get-ChildItem -Path $result -Filter "small_*.ps1").Count | Should -Be $smallFiles
             (Get-ChildItem -Path $result -Filter "medium_*.ps1").Count | Should -Be $mediumFiles
             (Get-ChildItem -Path $result -Filter "large_*.ps1").Count | Should -Be $largeFiles
@@ -227,15 +227,15 @@ Describe "Tests des fonctions de benchmark" {
             # Appeler la fonction
             $result = New-TestFiles -OutputPath $testOutputDir
             
-            # Vérifier que le chemin retourné est correct
+            # VÃ©rifier que le chemin retournÃ© est correct
             $expectedPath = Join-Path -Path $testOutputDir -ChildPath "test_files"
             $result | Should -Be $expectedPath
         }
     }
     
-    Context "Génération de rapports HTML" {
+    Context "GÃ©nÃ©ration de rapports HTML" {
         BeforeAll {
-            # Fonction simplifiée pour générer un rapport HTML
+            # Fonction simplifiÃ©e pour gÃ©nÃ©rer un rapport HTML
             function New-BenchmarkReport {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -257,10 +257,10 @@ Describe "Tests des fonctions de benchmark" {
     <h1>Rapport de benchmark</h1>
     <table>
         <tr>
-            <th>Scénario</th>
+            <th>ScÃ©nario</th>
             <th>Temps moyen (s)</th>
-            <th>Mémoire moyenne (MB)</th>
-            <th>Taux de succès (%)</th>
+            <th>MÃ©moire moyenne (MB)</th>
+            <th>Taux de succÃ¨s (%)</th>
         </tr>
 "@
                 
@@ -286,7 +286,7 @@ Describe "Tests des fonctions de benchmark" {
                 return $reportPath
             }
             
-            # Créer des données de test
+            # CrÃ©er des donnÃ©es de test
             $testResults = @(
                 [PSCustomObject]@{
                     Name = "Test 1"
@@ -308,30 +308,30 @@ Describe "Tests des fonctions de benchmark" {
                 }
             )
             
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testOutputDir = Join-Path -Path $TestDrive -ChildPath "ReportOutput"
             New-Item -Path $testOutputDir -ItemType Directory -Force | Out-Null
         }
         
-        It "Génère un fichier HTML valide" {
-            # Générer un rapport
+        It "GÃ©nÃ¨re un fichier HTML valide" {
+            # GÃ©nÃ©rer un rapport
             $reportPath = New-BenchmarkReport -OutputPath $testOutputDir -Results $testResults
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $reportPath | Should -Be $true
             
-            # Vérifier que le contenu est du HTML valide
+            # VÃ©rifier que le contenu est du HTML valide
             $content = Get-Content -Path $reportPath -Raw
             $content | Should -Match "<!DOCTYPE html>"
             $content | Should -Match "<html>"
             $content | Should -Match "</html>"
         }
         
-        It "Inclut toutes les données de performance" {
-            # Générer un rapport
+        It "Inclut toutes les donnÃ©es de performance" {
+            # GÃ©nÃ©rer un rapport
             $reportPath = New-BenchmarkReport -OutputPath $testOutputDir -Results $testResults
             
-            # Vérifier que le contenu inclut toutes les données
+            # VÃ©rifier que le contenu inclut toutes les donnÃ©es
             $content = Get-Content -Path $reportPath -Raw
             
             foreach ($result in $testResults) {

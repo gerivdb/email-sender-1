@@ -1,33 +1,33 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module d'export HTML.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module html_exporter.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le module à tester
+# Chemin vers le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "html_exporter.ps1"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 function New-TestTemplates {
     param (
         [string]$OutputPath
     )
     
-    # Créer le répertoire de templates de test
+    # CrÃ©er le rÃ©pertoire de templates de test
     $TemplatesDir = Join-Path -Path $OutputPath -ChildPath "templates/reports/html"
     New-Item -Path $TemplatesDir -ItemType Directory -Force | Out-Null
     
-    # Créer un template de base de test
+    # CrÃ©er un template de base de test
     $BaseTemplatePath = Join-Path -Path $TemplatesDir -ChildPath "test_base_template.html"
     
     $BaseTemplate = @"
@@ -39,11 +39,11 @@ function New-TestTemplates {
 <body>
     <h1>{{report_title}}</h1>
     <p>{{report_description}}</p>
-    <p>Période: {{report_period_start}} - {{report_period_end}}</p>
-    <p>Généré le: {{report_generated_at}}</p>
+    <p>PÃ©riode: {{report_period_start}} - {{report_period_end}}</p>
+    <p>GÃ©nÃ©rÃ© le: {{report_generated_at}}</p>
     
     <div class="toc">
-        <h2>Table des matières</h2>
+        <h2>Table des matiÃ¨res</h2>
         <ul>
             {{toc_items}}
         </ul>
@@ -62,7 +62,7 @@ function New-TestTemplates {
     
     $BaseTemplate | Out-File -FilePath $BaseTemplatePath -Encoding UTF8
     
-    # Créer un template de sections de test
+    # CrÃ©er un template de sections de test
     $SectionTemplatesPath = Join-Path -Path $TemplatesDir -ChildPath "test_section_templates.html"
     
     $SectionTemplates = @"
@@ -110,7 +110,7 @@ function New-TestTemplates {
     <ul>{{recommendations}}</ul>
 </section>
 
-<!-- Template pour un élément de la table des matières -->
+<!-- Template pour un Ã©lÃ©ment de la table des matiÃ¨res -->
 <li><a href="#{{section_id}}">{{section_title}}</a></li>
 "@
     
@@ -122,7 +122,7 @@ function New-TestTemplates {
     }
 }
 
-# Créer des données de rapport de test
+# CrÃ©er des donnÃ©es de rapport de test
 function New-TestReportData {
     return @{
         id = "test_report"
@@ -137,13 +137,13 @@ function New-TestReportData {
         sections = @(
             @{
                 id = "summary"
-                title = "Résumé"
+                title = "RÃ©sumÃ©"
                 type = "texte"
-                content = "Ceci est un résumé du rapport de test."
+                content = "Ceci est un rÃ©sumÃ© du rapport de test."
             },
             @{
                 id = "metrics"
-                title = "Métriques clés"
+                title = "MÃ©triques clÃ©s"
                 type = "metrics_summary"
                 metrics = @(
                     @{
@@ -155,7 +155,7 @@ function New-TestReportData {
                     },
                     @{
                         id = "memory_max"
-                        name = "Mémoire maximale"
+                        name = "MÃ©moire maximale"
                         value = 78.6
                         formatted_value = "78.6%"
                         trend = -1.3
@@ -190,11 +190,11 @@ function New-TestReportData {
                         }
                     }
                 }
-                chart_description = "Évolution de l'utilisation CPU sur la période."
+                chart_description = "Ã‰volution de l'utilisation CPU sur la pÃ©riode."
             },
             @{
                 id = "anomalies"
-                title = "Anomalies détectées"
+                title = "Anomalies dÃ©tectÃ©es"
                 type = "anomalies"
                 anomalies = @(
                     @{
@@ -208,20 +208,20 @@ function New-TestReportData {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "HTML Exporter Module Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "html_exporter_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
         
-        # Créer des templates de test
+        # CrÃ©er des templates de test
         $script:TestPaths = New-TestTemplates -OutputPath $script:TestDir
         
-        # Importer le module à tester
+        # Importer le module Ã  tester
         . $ModulePath
         
-        # Redéfinir les chemins par défaut pour les tests
+        # RedÃ©finir les chemins par dÃ©faut pour les tests
         $script:DefaultTemplatesPath = Join-Path -Path $script:TestDir -ChildPath "templates/reports/html"
         $script:BaseTemplatePath = $script:TestPaths.BaseTemplatePath
         $script:SectionTemplatesPath = $script:TestPaths.SectionTemplatesPath
@@ -239,7 +239,7 @@ Describe "HTML Exporter Module Tests" {
             # Premier appel pour remplir le cache
             $Template1 = Get-HtmlTemplate -TemplatePath $script:TestPaths.BaseTemplatePath -TemplateKey "test_base_cache"
             
-            # Deuxième appel qui devrait utiliser le cache
+            # DeuxiÃ¨me appel qui devrait utiliser le cache
             $Template2 = Get-HtmlTemplate -TemplatePath $script:TestPaths.BaseTemplatePath -TemplateKey "test_base_cache"
             
             $Template1 | Should -Not -BeNullOrEmpty
@@ -255,7 +255,7 @@ Describe "HTML Exporter Module Tests" {
             $ModifiedTemplate = "<!-- Modified template -->`n" + (Get-Content -Path $script:TestPaths.BaseTemplatePath -Raw)
             $ModifiedTemplate | Out-File -FilePath $script:TestPaths.BaseTemplatePath -Encoding UTF8
             
-            # Deuxième appel avec ForceReload
+            # DeuxiÃ¨me appel avec ForceReload
             $Template2 = Get-HtmlTemplate -TemplatePath $script:TestPaths.BaseTemplatePath -TemplateKey "test_base_force" -ForceReload
             
             $Template1 | Should -Not -BeNullOrEmpty
@@ -378,14 +378,14 @@ Describe "HTML Exporter Module Tests" {
             $Content | Should -BeLike "*Ceci est un rapport de test*"
             $Content | Should -BeLike "*2025-04-22 00:00:00*"
             $Content | Should -BeLike "*2025-04-22 23:59:59*"
-            $Content | Should -BeLike "*Résumé*"
-            $Content | Should -BeLike "*Métriques clés*"
+            $Content | Should -BeLike "*RÃ©sumÃ©*"
+            $Content | Should -BeLike "*MÃ©triques clÃ©s*"
             $Content | Should -BeLike "*Utilisation CPU*"
-            $Content | Should -BeLike "*Anomalies détectées*"
+            $Content | Should -BeLike "*Anomalies dÃ©tectÃ©es*"
         }
     }
 }
 
-# Ne pas exécuter les tests automatiquement à la fin du script
-# Pour exécuter les tests, utilisez la commande suivante :
+# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
+# Pour exÃ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\html_exporter.tests.ps1 -Output Detailed

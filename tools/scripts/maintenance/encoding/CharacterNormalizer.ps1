@@ -1,36 +1,36 @@
-<#
+﻿<#
 .SYNOPSIS
-    Normalise les caractères spéciaux dans un fichier texte.
+    Normalise les caractÃ¨res spÃ©ciaux dans un fichier texte.
 
 .DESCRIPTION
-    Ce script normalise les caractères spéciaux (accents, caractères non-ASCII) dans un fichier texte
-    pour éviter les problèmes d'encodage et de compatibilité entre différents systèmes.
+    Ce script normalise les caractÃ¨res spÃ©ciaux (accents, caractÃ¨res non-ASCII) dans un fichier texte
+    pour Ã©viter les problÃ¨mes d'encodage et de compatibilitÃ© entre diffÃ©rents systÃ¨mes.
 
 .PARAMETER FilePath
-    Chemin du fichier à normaliser.
+    Chemin du fichier Ã  normaliser.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie. Si non spécifié, le fichier original sera remplacé.
+    Chemin du fichier de sortie. Si non spÃ©cifiÃ©, le fichier original sera remplacÃ©.
 
 .PARAMETER NormalizationForm
-    Forme de normalisation Unicode à utiliser. Les valeurs possibles sont:
-    - FormD: Décomposition canonique
-    - FormC: Décomposition suivie d'une recomposition canonique (par défaut)
-    - FormKD: Décomposition de compatibilité
-    - FormKC: Décomposition de compatibilité suivie d'une recomposition canonique
+    Forme de normalisation Unicode Ã  utiliser. Les valeurs possibles sont:
+    - FormD: DÃ©composition canonique
+    - FormC: DÃ©composition suivie d'une recomposition canonique (par dÃ©faut)
+    - FormKD: DÃ©composition de compatibilitÃ©
+    - FormKC: DÃ©composition de compatibilitÃ© suivie d'une recomposition canonique
 
 .PARAMETER RemoveAccents
-    Si spécifié, les accents seront supprimés des caractères (ex: é -> e).
+    Si spÃ©cifiÃ©, les accents seront supprimÃ©s des caractÃ¨res (ex: Ã© -> e).
 
 .PARAMETER ReplaceNonAscii
-    Si spécifié, les caractères non-ASCII seront remplacés par leurs équivalents ASCII ou par des caractères de substitution.
+    Si spÃ©cifiÃ©, les caractÃ¨res non-ASCII seront remplacÃ©s par leurs Ã©quivalents ASCII ou par des caractÃ¨res de substitution.
 
 .EXAMPLE
     .\CharacterNormalizer.ps1 -FilePath "C:\path\to\file.txt" -RemoveAccents
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
@@ -79,11 +79,11 @@ function Get-FileEncoding {
         return $encodingInfo.Encoding, $encodingInfo.HasBOM
     }
     
-    # Méthode de secours si EncodingDetector.ps1 n'est pas disponible
+    # MÃ©thode de secours si EncodingDetector.ps1 n'est pas disponible
     try {
         $bytes = [System.IO.File]::ReadAllBytes($Path)
         
-        # Vérifier les différents BOM
+        # VÃ©rifier les diffÃ©rents BOM
         if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
             return "UTF-8 with BOM", $true
         }
@@ -102,11 +102,11 @@ function Get-FileEncoding {
             return "UTF-32 BE", $true
         }
         
-        # Si aucun BOM n'est détecté, supposer UTF-8 sans BOM
+        # Si aucun BOM n'est dÃ©tectÃ©, supposer UTF-8 sans BOM
         return "UTF-8 (no BOM)", $false
     }
     catch {
-        Write-Error "Erreur lors de la détection de l'encodage: $_"
+        Write-Error "Erreur lors de la dÃ©tection de l'encodage: $_"
         return "UTF-8 (no BOM)", $false
     }
 }
@@ -140,7 +140,7 @@ function Get-EncodingObject {
             return [System.Text.Encoding]::ASCII
         }
         default {
-            # Par défaut, utiliser Windows-1252
+            # Par dÃ©faut, utiliser Windows-1252
             return [System.Text.Encoding]::GetEncoding(1252)
         }
     }
@@ -169,48 +169,48 @@ function Replace-NonAsciiChars {
         [string]$Text
     )
     
-    # Table de correspondance pour les caractères non-ASCII courants
+    # Table de correspondance pour les caractÃ¨res non-ASCII courants
     $replacements = @{
-        'à' = 'a'; 'á' = 'a'; 'â' = 'a'; 'ã' = 'a'; 'ä' = 'a'; 'å' = 'a'; 'æ' = 'ae'
-        'ç' = 'c'; 'č' = 'c'
-        'è' = 'e'; 'é' = 'e'; 'ê' = 'e'; 'ë' = 'e'; 'ē' = 'e'; 'ė' = 'e'; 'ę' = 'e'
-        'ì' = 'i'; 'í' = 'i'; 'î' = 'i'; 'ï' = 'i'; 'ī' = 'i'; 'į' = 'i'
-        'ñ' = 'n'; 'ń' = 'n'
-        'ò' = 'o'; 'ó' = 'o'; 'ô' = 'o'; 'õ' = 'o'; 'ö' = 'o'; 'ø' = 'o'; 'ō' = 'o'; 'œ' = 'oe'
-        'ù' = 'u'; 'ú' = 'u'; 'û' = 'u'; 'ü' = 'u'; 'ū' = 'u'
-        'ý' = 'y'; 'ÿ' = 'y'
-        'ß' = 'ss'
-        'Þ' = 'th'
-        'À' = 'A'; 'Á' = 'A'; 'Â' = 'A'; 'Ã' = 'A'; 'Ä' = 'A'; 'Å' = 'A'; 'Æ' = 'AE'
-        'Ç' = 'C'; 'Č' = 'C'
-        'È' = 'E'; 'É' = 'E'; 'Ê' = 'E'; 'Ë' = 'E'; 'Ē' = 'E'; 'Ė' = 'E'; 'Ę' = 'E'
-        'Ì' = 'I'; 'Í' = 'I'; 'Î' = 'I'; 'Ï' = 'I'; 'Ī' = 'I'; 'Į' = 'I'
-        'Ñ' = 'N'; 'Ń' = 'N'
-        'Ò' = 'O'; 'Ó' = 'O'; 'Ô' = 'O'; 'Õ' = 'O'; 'Ö' = 'O'; 'Ø' = 'O'; 'Ō' = 'O'; 'Œ' = 'OE'
-        'Ù' = 'U'; 'Ú' = 'U'; 'Û' = 'U'; 'Ü' = 'U'; 'Ū' = 'U'
-        'Ý' = 'Y'; 'Ÿ' = 'Y'
-        '«' = '"'; '»' = '"'; '„' = '"'; '"' = '"'; '"' = '"'
+        'Ã ' = 'a'; 'Ã¡' = 'a'; 'Ã¢' = 'a'; 'Ã£' = 'a'; 'Ã¤' = 'a'; 'Ã¥' = 'a'; 'Ã¦' = 'ae'
+        'Ã§' = 'c'; 'Ä' = 'c'
+        'Ã¨' = 'e'; 'Ã©' = 'e'; 'Ãª' = 'e'; 'Ã«' = 'e'; 'Ä“' = 'e'; 'Ä—' = 'e'; 'Ä™' = 'e'
+        'Ã¬' = 'i'; 'Ã­' = 'i'; 'Ã®' = 'i'; 'Ã¯' = 'i'; 'Ä«' = 'i'; 'Ä¯' = 'i'
+        'Ã±' = 'n'; 'Å„' = 'n'
+        'Ã²' = 'o'; 'Ã³' = 'o'; 'Ã´' = 'o'; 'Ãµ' = 'o'; 'Ã¶' = 'o'; 'Ã¸' = 'o'; 'Å' = 'o'; 'Å“' = 'oe'
+        'Ã¹' = 'u'; 'Ãº' = 'u'; 'Ã»' = 'u'; 'Ã¼' = 'u'; 'Å«' = 'u'
+        'Ã½' = 'y'; 'Ã¿' = 'y'
+        'ÃŸ' = 'ss'
+        'Ãž' = 'th'
+        'Ã€' = 'A'; 'Ã' = 'A'; 'Ã‚' = 'A'; 'Ãƒ' = 'A'; 'Ã„' = 'A'; 'Ã…' = 'A'; 'Ã†' = 'AE'
+        'Ã‡' = 'C'; 'ÄŒ' = 'C'
+        'Ãˆ' = 'E'; 'Ã‰' = 'E'; 'ÃŠ' = 'E'; 'Ã‹' = 'E'; 'Ä’' = 'E'; 'Ä–' = 'E'; 'Ä˜' = 'E'
+        'ÃŒ' = 'I'; 'Ã' = 'I'; 'ÃŽ' = 'I'; 'Ã' = 'I'; 'Äª' = 'I'; 'Ä®' = 'I'
+        'Ã‘' = 'N'; 'Åƒ' = 'N'
+        'Ã’' = 'O'; 'Ã“' = 'O'; 'Ã”' = 'O'; 'Ã•' = 'O'; 'Ã–' = 'O'; 'Ã˜' = 'O'; 'ÅŒ' = 'O'; 'Å’' = 'OE'
+        'Ã™' = 'U'; 'Ãš' = 'U'; 'Ã›' = 'U'; 'Ãœ' = 'U'; 'Åª' = 'U'
+        'Ã' = 'Y'; 'Å¸' = 'Y'
+        'Â«' = '"'; 'Â»' = '"'; 'â€ž' = '"'; '"' = '"'; '"' = '"'
         ''' = "'"; ''' = "'"
-        '€' = 'EUR'; '£' = 'GBP'; '¥' = 'JPY'
-        '©' = '(c)'; '®' = '(r)'; '™' = '(tm)'
-        '°' = ' degrees'
-        '±' = '+/-'
-        '×' = 'x'
-        '÷' = '/'
-        '…' = '...'
-        '•' = '*'
-        '·' = '-'
-        '¿' = '?'
-        '¡' = '!'
-        '¼' = '1/4'; '½' = '1/2'; '¾' = '3/4'
+        'â‚¬' = 'EUR'; 'Â£' = 'GBP'; 'Â¥' = 'JPY'
+        'Â©' = '(c)'; 'Â®' = '(r)'; 'â„¢' = '(tm)'
+        'Â°' = ' degrees'
+        'Â±' = '+/-'
+        'Ã—' = 'x'
+        'Ã·' = '/'
+        'â€¦' = '...'
+        'â€¢' = '*'
+        'Â·' = '-'
+        'Â¿' = '?'
+        'Â¡' = '!'
+        'Â¼' = '1/4'; 'Â½' = '1/2'; 'Â¾' = '3/4'
     }
     
-    # Remplacer les caractères connus
+    # Remplacer les caractÃ¨res connus
     foreach ($key in $replacements.Keys) {
         $Text = $Text.Replace($key, $replacements[$key])
     }
     
-    # Remplacer les caractères restants non-ASCII par un point d'interrogation
+    # Remplacer les caractÃ¨res restants non-ASCII par un point d'interrogation
     $result = ""
     foreach ($c in $Text.ToCharArray()) {
         if ([int]$c -lt 128) {
@@ -232,7 +232,7 @@ function Normalize-Text {
         [bool]$ReplaceNonAscii
     )
     
-    # Normaliser selon la forme spécifiée
+    # Normaliser selon la forme spÃ©cifiÃ©e
     $normalizationForm = [Text.NormalizationForm]::FormC
     switch ($NormForm) {
         "FormD" { $normalizationForm = [Text.NormalizationForm]::FormD }
@@ -243,12 +243,12 @@ function Normalize-Text {
     
     $normalizedText = $Text.Normalize($normalizationForm)
     
-    # Supprimer les accents si demandé
+    # Supprimer les accents si demandÃ©
     if ($RemoveDiacritics) {
         $normalizedText = Remove-Diacritics -Text $normalizedText
     }
     
-    # Remplacer les caractères non-ASCII si demandé
+    # Remplacer les caractÃ¨res non-ASCII si demandÃ©
     if ($ReplaceNonAscii) {
         $normalizedText = Replace-NonAsciiChars -Text $normalizedText
     }
@@ -271,7 +271,7 @@ function Normalize-File {
     }
     
     try {
-        # Détecter l'encodage du fichier d'entrée
+        # DÃ©tecter l'encodage du fichier d'entrÃ©e
         $encodingName, $hasBOM = Get-FileEncoding -Path $InputPath
         $encoding = Get-EncodingObject -EncodingName $encodingName -HasBOM $hasBOM
         
@@ -281,16 +281,16 @@ function Normalize-File {
         # Normaliser le texte
         $normalizedContent = Normalize-Text -Text $content -NormForm $NormForm -RemoveDiacritics $RemoveDiacritics -ReplaceNonAscii $ReplaceNonAscii
         
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         $finalOutputPath = if ($OutputPath -eq "") { $InputPath } else { $OutputPath }
         
-        # Déterminer l'encodage de sortie (conserver l'encodage original)
+        # DÃ©terminer l'encodage de sortie (conserver l'encodage original)
         $outputEncoding = $encoding
         
-        # Écrire le contenu normalisé dans le fichier de sortie
+        # Ã‰crire le contenu normalisÃ© dans le fichier de sortie
         [System.IO.File]::WriteAllText($finalOutputPath, $normalizedContent, $outputEncoding)
         
-        Write-Host "Normalisation terminée. Fichier sauvegardé: $finalOutputPath"
+        Write-Host "Normalisation terminÃ©e. Fichier sauvegardÃ©: $finalOutputPath"
         return $true
     }
     catch {
@@ -299,8 +299,8 @@ function Normalize-File {
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 $result = Normalize-File -InputPath $FilePath -OutputPath $OutputPath -NormForm $NormalizationForm -RemoveDiacritics $RemoveAccents.IsPresent -ReplaceNonAscii $ReplaceNonAscii.IsPresent
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $result

@@ -1,31 +1,31 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste les fonctionnalités de détection et de mise à jour des références.
+    Teste les fonctionnalitÃ©s de dÃ©tection et de mise Ã  jour des rÃ©fÃ©rences.
 
 .DESCRIPTION
-    Ce script crée un environnement de test pour vérifier le bon fonctionnement des scripts
-    Detect-BrokenReferences.ps1 et Update-References.ps1. Il génère des fichiers de test
-    contenant des références brisées, exécute les scripts et vérifie les résultats.
+    Ce script crÃ©e un environnement de test pour vÃ©rifier le bon fonctionnement des scripts
+    Detect-BrokenReferences.ps1 et Update-References.ps1. Il gÃ©nÃ¨re des fichiers de test
+    contenant des rÃ©fÃ©rences brisÃ©es, exÃ©cute les scripts et vÃ©rifie les rÃ©sultats.
 
 .PARAMETER TestDirectory
-    Répertoire où créer l'environnement de test. Par défaut, utilise un sous-répertoire "test" du répertoire courant.
+    RÃ©pertoire oÃ¹ crÃ©er l'environnement de test. Par dÃ©faut, utilise un sous-rÃ©pertoire "test" du rÃ©pertoire courant.
 
 .PARAMETER CleanupAfterTest
-    Si spécifié, supprime l'environnement de test après l'exécution.
+    Si spÃ©cifiÃ©, supprime l'environnement de test aprÃ¨s l'exÃ©cution.
 
 .EXAMPLE
     .\Test-ReferenceUpdater.ps1
-    Crée un environnement de test, exécute les tests et conserve l'environnement pour inspection.
+    CrÃ©e un environnement de test, exÃ©cute les tests et conserve l'environnement pour inspection.
 
 .EXAMPLE
     .\Test-ReferenceUpdater.ps1 -CleanupAfterTest
-    Crée un environnement de test, exécute les tests et supprime l'environnement après l'exécution.
+    CrÃ©e un environnement de test, exÃ©cute les tests et supprime l'environnement aprÃ¨s l'exÃ©cution.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
-    Prérequis:      PowerShell 5.1 ou supérieur
+    Date crÃ©ation:  09/04/2025
+    PrÃ©requis:      PowerShell 5.1 ou supÃ©rieur
 #>
 
 [CmdletBinding()]
@@ -37,7 +37,7 @@ param (
     [switch]$CleanupAfterTest
 )
 
-# Fonction pour créer l'environnement de test
+# Fonction pour crÃ©er l'environnement de test
 function Initialize-TestEnvironment {
     param (
         [Parameter(Mandatory = $true)]
@@ -49,25 +49,25 @@ function Initialize-TestEnvironment {
         Remove-Item -Path $TestDir -Recurse -Force
     }
 
-    Write-Host "Création de l'environnement de test..."
+    Write-Host "CrÃ©ation de l'environnement de test..."
     New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path -Path $TestDir -ChildPath "scripts") -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path -Path $TestDir -ChildPath "docs") -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path -Path $TestDir -ChildPath "md") -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path -Path $TestDir -ChildPath "Roadmap") -ItemType Directory -Force | Out-Null
 
-    # Créer des fichiers de test avec des références brisées
+    # CrÃ©er des fichiers de test avec des rÃ©fÃ©rences brisÃ©es
     $testFiles = @{
         "scripts\test1.ps1" = @"
 # Script de test 1
-# Référence à un fichier roadmap
+# RÃ©fÃ©rence Ã  un fichier roadmap
 `$roadmapPath = "md\roadmap_perso.md"
 Get-Content -Path `$roadmapPath
 "@
 
         "scripts\test2.ps1" = @"
 # Script de test 2
-# Référence à un fichier roadmap avec séparateur /
+# RÃ©fÃ©rence Ã  un fichier roadmap avec sÃ©parateur /
 `$roadmapPath = "md/roadmap_perso.md"
 Get-Content -Path `$roadmapPath
 "@
@@ -77,13 +77,13 @@ Get-Content -Path `$roadmapPath
 
 Voir la roadmap du projet pour plus d'informations: [Roadmap](../md/roadmap_perso.md)
 
-Voir également la nouvelle roadmap: [Nouvelle Roadmap](../Roadmap/roadmap_perso_new.md)
+Voir Ã©galement la nouvelle roadmap: [Nouvelle Roadmap](../Roadmap/roadmap_perso_new.md)
 "@
 
         "Roadmap\README.md" = @"
 # Roadmap du projet
 
-Ce répertoire contient les fichiers de roadmap du projet.
+Ce rÃ©pertoire contient les fichiers de roadmap du projet.
 
 - [Roadmap principale](roadmap_perso.md)
 - [Ancienne roadmap](../md/roadmap_perso.md)
@@ -103,27 +103,27 @@ Ce répertoire contient les fichiers de roadmap du projet.
         Set-Content -Path $filePath -Value $content -Force -Encoding UTF8
     }
 
-    # Créer les fichiers roadmap
+    # CrÃ©er les fichiers roadmap
     $roadmapContent = "# Roadmap du projet`n`nCe document contient la roadmap du projet."
     Set-Content -Path (Join-Path -Path $TestDir -ChildPath "md\roadmap_perso.md") -Value $roadmapContent -Force -Encoding UTF8
     Set-Content -Path (Join-Path -Path $TestDir -ChildPath "Roadmap\roadmap_perso_new.md") -Value $roadmapContent -Force -Encoding UTF8
     Set-Content -Path (Join-Path -Path $TestDir -ChildPath "Roadmap\roadmap_perso.md") -Value $roadmapContent -Force -Encoding UTF8
 
-    Write-Host "Environnement de test créé avec succès: $TestDir"
+    Write-Host "Environnement de test crÃ©Ã© avec succÃ¨s: $TestDir"
 }
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-ReferenceTests {
     param (
         [Parameter(Mandatory = $true)]
         [string]$TestDir
     )
 
-    Write-Host "`n=== Test de détection des références brisées ===`n"
+    Write-Host "`n=== Test de dÃ©tection des rÃ©fÃ©rences brisÃ©es ===`n"
 
     $detectScript = Join-Path -Path (Get-Location).Path -ChildPath "Detect-BrokenReferences.ps1"
     if (-not (Test-Path -Path $detectScript)) {
-        Write-Error "Script de détection non trouvé: $detectScript"
+        Write-Error "Script de dÃ©tection non trouvÃ©: $detectScript"
         return $false
     }
 
@@ -131,15 +131,15 @@ function Invoke-ReferenceTests {
 
     $detailedReport = Join-Path -Path $TestDir -ChildPath "broken_references_detailed.md"
     if (-not (Test-Path -Path $detailedReport)) {
-        Write-Error "Rapport détaillé non généré: $detailedReport"
+        Write-Error "Rapport dÃ©taillÃ© non gÃ©nÃ©rÃ©: $detailedReport"
         return $false
     }
 
-    Write-Host "`n=== Test de mise à jour des références brisées ===`n"
+    Write-Host "`n=== Test de mise Ã  jour des rÃ©fÃ©rences brisÃ©es ===`n"
 
     $updateScript = Join-Path -Path (Get-Location).Path -ChildPath "Update-References.ps1"
     if (-not (Test-Path -Path $updateScript)) {
-        Write-Error "Script de mise à jour non trouvé: $updateScript"
+        Write-Error "Script de mise Ã  jour non trouvÃ©: $updateScript"
         return $false
     }
 
@@ -147,17 +147,17 @@ function Invoke-ReferenceTests {
 
     $summaryReport = Join-Path -Path $TestDir -ChildPath "broken_references_summary.md"
     if (-not (Test-Path -Path $summaryReport)) {
-        Write-Error "Rapport de synthèse non généré: $summaryReport"
+        Write-Error "Rapport de synthÃ¨se non gÃ©nÃ©rÃ©: $summaryReport"
         return $false
     }
 
-    Write-Host "`n=== Vérification des sauvegardes et des mises à jour ===`n"
+    Write-Host "`n=== VÃ©rification des sauvegardes et des mises Ã  jour ===`n"
 
     # Simuler une confirmation utilisateur
-    Write-Host "Simulation de la confirmation utilisateur pour la mise à jour..."
+    Write-Host "Simulation de la confirmation utilisateur pour la mise Ã  jour..."
     & $updateScript -ScanPath $TestDir -OutputPath $TestDir -BackupFiles
 
-    # Vérifier que les fichiers ont été mis à jour
+    # VÃ©rifier que les fichiers ont Ã©tÃ© mis Ã  jour
     $updatedFiles = @(
         "scripts\test1.ps1",
         "scripts\test2.ps1",
@@ -170,23 +170,23 @@ function Invoke-ReferenceTests {
         $content = Get-Content -Path $filePath -Raw
 
         if ($content -match "md[/\\]roadmap_perso\.md" -or $content -match "roadmap_perso_new\.md") {
-            Write-Error "Le fichier n'a pas été correctement mis à jour: $filePath"
+            Write-Error "Le fichier n'a pas Ã©tÃ© correctement mis Ã  jour: $filePath"
             $allUpdated = $false
         }
 
         $backupPath = "$filePath.bak"
         if (-not (Test-Path -Path $backupPath)) {
-            Write-Error "Sauvegarde non créée pour: $filePath"
+            Write-Error "Sauvegarde non crÃ©Ã©e pour: $filePath"
             $allUpdated = $false
         }
     }
 
     if ($allUpdated) {
-        Write-Host "Tous les fichiers ont été correctement mis à jour et sauvegardés."
+        Write-Host "Tous les fichiers ont Ã©tÃ© correctement mis Ã  jour et sauvegardÃ©s."
         return $true
     }
     else {
-        Write-Error "Certains fichiers n'ont pas été correctement mis à jour ou sauvegardés."
+        Write-Error "Certains fichiers n'ont pas Ã©tÃ© correctement mis Ã  jour ou sauvegardÃ©s."
         return $false
     }
 }
@@ -201,14 +201,14 @@ function Remove-TestEnvironment {
     if (Test-Path -Path $TestDir) {
         Write-Host "Suppression de l'environnement de test..."
         Remove-Item -Path $TestDir -Recurse -Force
-        Write-Host "Environnement de test supprimé: $TestDir"
+        Write-Host "Environnement de test supprimÃ©: $TestDir"
     }
 }
 
 # Fonction principale
 function Main {
-    Write-Host "=== Test des scripts de gestion des références ==="
-    Write-Host "Répertoire de test: $TestDirectory"
+    Write-Host "=== Test des scripts de gestion des rÃ©fÃ©rences ==="
+    Write-Host "RÃ©pertoire de test: $TestDirectory"
 
     Initialize-TestEnvironment -TestDir $TestDirectory
 
@@ -218,17 +218,17 @@ function Main {
         Remove-TestEnvironment -TestDir $TestDirectory
     }
     else {
-        Write-Host "`nL'environnement de test a été conservé pour inspection: $TestDirectory"
-        Write-Host "Pour le supprimer manuellement, exécutez: Remove-Item -Path `"$TestDirectory`" -Recurse -Force"
+        Write-Host "`nL'environnement de test a Ã©tÃ© conservÃ© pour inspection: $TestDirectory"
+        Write-Host "Pour le supprimer manuellement, exÃ©cutez: Remove-Item -Path `"$TestDirectory`" -Recurse -Force"
     }
 
     if ($testResult) {
-        Write-Host "`n=== Tests réussis ! ==="
+        Write-Host "`n=== Tests rÃ©ussis ! ==="
     }
     else {
-        Write-Host "`n=== Tests échoués ! ===" -ForegroundColor Red
+        Write-Host "`n=== Tests Ã©chouÃ©s ! ===" -ForegroundColor Red
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 Main

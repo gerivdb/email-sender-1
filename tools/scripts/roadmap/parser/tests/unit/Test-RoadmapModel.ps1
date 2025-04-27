@@ -1,26 +1,26 @@
-# Test-RoadmapModel.ps1
-# Script pour tester le modèle objet de la roadmap
+﻿# Test-RoadmapModel.ps1
+# Script pour tester le modÃ¨le objet de la roadmap
 
 # Importer le module RoadmapModel
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapModel.psm1"
 Import-Module $modulePath -Force
 
-# Créer un nouvel arbre de roadmap
-Write-Host "Création d'un nouvel arbre de roadmap..." -ForegroundColor Cyan
-$roadmap = New-RoadmapTree -Title "Roadmap de Test" -Description "Ceci est une roadmap de test pour valider le modèle objet."
+# CrÃ©er un nouvel arbre de roadmap
+Write-Host "CrÃ©ation d'un nouvel arbre de roadmap..." -ForegroundColor Cyan
+$roadmap = New-RoadmapTree -Title "Roadmap de Test" -Description "Ceci est une roadmap de test pour valider le modÃ¨le objet."
 
-# Créer quelques tâches
-Write-Host "Création des tâches..." -ForegroundColor Cyan
-$task1 = New-RoadmapTask -Id "1" -Title "Tâche 1" -Description "Description de la tâche 1"
-$task1_1 = New-RoadmapTask -Id "1.1" -Title "Tâche 1.1" -Description "Description de la tâche 1.1"
-$task1_2 = New-RoadmapTask -Id "1.2" -Title "Tâche 1.2" -Description "Description de la tâche 1.2"
-$task1_2_1 = New-RoadmapTask -Id "1.2.1" -Title "Tâche 1.2.1" -Description "Description de la tâche 1.2.1"
-$task1_2_2 = New-RoadmapTask -Id "1.2.2" -Title "Tâche 1.2.2" -Description "Description de la tâche 1.2.2" -Status ([TaskStatus]::Complete)
-$task2 = New-RoadmapTask -Id "2" -Title "Tâche 2" -Description "Description de la tâche 2"
-$task2_1 = New-RoadmapTask -Id "2.1" -Title "Tâche 2.1" -Description "Description de la tâche 2.1" -Status ([TaskStatus]::InProgress)
+# CrÃ©er quelques tÃ¢ches
+Write-Host "CrÃ©ation des tÃ¢ches..." -ForegroundColor Cyan
+$task1 = New-RoadmapTask -Id "1" -Title "TÃ¢che 1" -Description "Description de la tÃ¢che 1"
+$task1_1 = New-RoadmapTask -Id "1.1" -Title "TÃ¢che 1.1" -Description "Description de la tÃ¢che 1.1"
+$task1_2 = New-RoadmapTask -Id "1.2" -Title "TÃ¢che 1.2" -Description "Description de la tÃ¢che 1.2"
+$task1_2_1 = New-RoadmapTask -Id "1.2.1" -Title "TÃ¢che 1.2.1" -Description "Description de la tÃ¢che 1.2.1"
+$task1_2_2 = New-RoadmapTask -Id "1.2.2" -Title "TÃ¢che 1.2.2" -Description "Description de la tÃ¢che 1.2.2" -Status ([TaskStatus]::Complete)
+$task2 = New-RoadmapTask -Id "2" -Title "TÃ¢che 2" -Description "Description de la tÃ¢che 2"
+$task2_1 = New-RoadmapTask -Id "2.1" -Title "TÃ¢che 2.1" -Description "Description de la tÃ¢che 2.1" -Status ([TaskStatus]::InProgress)
 
-# Ajouter les tâches à l'arbre
-Write-Host "Ajout des tâches à l'arbre..." -ForegroundColor Cyan
+# Ajouter les tÃ¢ches Ã  l'arbre
+Write-Host "Ajout des tÃ¢ches Ã  l'arbre..." -ForegroundColor Cyan
 $roadmap.AddTask.Invoke($task1)
 $roadmap.AddTask.Invoke($task1_1, $task1)
 $roadmap.AddTask.Invoke($task1_2, $task1)
@@ -29,8 +29,8 @@ $roadmap.AddTask.Invoke($task1_2_2, $task1_2)
 $roadmap.AddTask.Invoke($task2)
 $roadmap.AddTask.Invoke($task2_1, $task2)
 
-# Ajouter des dépendances
-Write-Host "Ajout des dépendances..." -ForegroundColor Cyan
+# Ajouter des dÃ©pendances
+Write-Host "Ajout des dÃ©pendances..." -ForegroundColor Cyan
 $task2.AddDependency.Invoke($task1)
 $task2_1.AddDependency.Invoke($task1_2_2)
 
@@ -57,55 +57,55 @@ Write-Host "Structure valide: $isValid" -ForegroundColor $(if ($isValid) { "Gree
 Write-Host "`nExportation de l'arbre en JSON..." -ForegroundColor Cyan
 $jsonPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-test.json"
 Export-RoadmapTreeToJson -RoadmapTree $roadmap -FilePath $jsonPath
-Write-Host "Arbre exporté en JSON: $jsonPath" -ForegroundColor Green
+Write-Host "Arbre exportÃ© en JSON: $jsonPath" -ForegroundColor Green
 
 # Exporter l'arbre en markdown
 Write-Host "`nExportation de l'arbre en markdown..." -ForegroundColor Cyan
 $markdownPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-test.md"
 Export-RoadmapTreeToMarkdown -RoadmapTree $roadmap -FilePath $markdownPath
-Write-Host "Arbre exporté en markdown: $markdownPath" -ForegroundColor Green
+Write-Host "Arbre exportÃ© en markdown: $markdownPath" -ForegroundColor Green
 
-# Importer l'arbre à partir du JSON
-Write-Host "`nImportation de l'arbre à partir du JSON..." -ForegroundColor Cyan
+# Importer l'arbre Ã  partir du JSON
+Write-Host "`nImportation de l'arbre Ã  partir du JSON..." -ForegroundColor Cyan
 $importedRoadmap = Import-RoadmapTreeFromJson -FilePath $jsonPath
-Write-Host "Arbre importé avec succès." -ForegroundColor Green
+Write-Host "Arbre importÃ© avec succÃ¨s." -ForegroundColor Green
 
-# Vérifier que l'arbre importé est identique à l'original
-Write-Host "`nVérification de l'arbre importé:" -ForegroundColor Cyan
+# VÃ©rifier que l'arbre importÃ© est identique Ã  l'original
+Write-Host "`nVÃ©rification de l'arbre importÃ©:" -ForegroundColor Cyan
 $importedTasks = $importedRoadmap.TraverseDepthFirst.Invoke()
-Write-Host "Nombre de tâches dans l'arbre original: $($tasks.Count)" -ForegroundColor Green
-Write-Host "Nombre de tâches dans l'arbre importé: $($importedTasks.Count)" -ForegroundColor Green
+Write-Host "Nombre de tÃ¢ches dans l'arbre original: $($tasks.Count)" -ForegroundColor Green
+Write-Host "Nombre de tÃ¢ches dans l'arbre importÃ©: $($importedTasks.Count)" -ForegroundColor Green
 
-# Rechercher des tâches
-Write-Host "`nRecherche de tâches contenant '1.2':" -ForegroundColor Cyan
+# Rechercher des tÃ¢ches
+Write-Host "`nRecherche de tÃ¢ches contenant '1.2':" -ForegroundColor Cyan
 $searchResults = $roadmap.SearchTasks.Invoke("1.2")
 foreach ($task in $searchResults) {
     Write-Host "  - $($task.Id) $($task.Title)" -ForegroundColor Green
 }
 
-# Filtrer les tâches terminées
-Write-Host "`nFiltrage des tâches terminées:" -ForegroundColor Cyan
+# Filtrer les tÃ¢ches terminÃ©es
+Write-Host "`nFiltrage des tÃ¢ches terminÃ©es:" -ForegroundColor Cyan
 $completedTasks = $roadmap.FilterTasks.Invoke({ param($t) $t.Status -eq [TaskStatus]::Complete })
 foreach ($task in $completedTasks) {
     Write-Host "  - $($task.Id) $($task.Title)" -ForegroundColor Green
 }
 
-# Filtrer les tâches en cours
-Write-Host "`nFiltrage des tâches en cours:" -ForegroundColor Cyan
+# Filtrer les tÃ¢ches en cours
+Write-Host "`nFiltrage des tÃ¢ches en cours:" -ForegroundColor Cyan
 $inProgressTasks = $roadmap.FilterTasks.Invoke({ param($t) $t.Status -eq [TaskStatus]::InProgress })
 foreach ($task in $inProgressTasks) {
     Write-Host "  - $($task.Id) $($task.Title)" -ForegroundColor Green
 }
 
-# Afficher les dépendances
-Write-Host "`nDépendances:" -ForegroundColor Cyan
+# Afficher les dÃ©pendances
+Write-Host "`nDÃ©pendances:" -ForegroundColor Cyan
 foreach ($task in $tasks) {
     if ($task.Dependencies.Count -gt 0) {
-        Write-Host "  $($task.Id) $($task.Title) dépend de:" -ForegroundColor Green
+        Write-Host "  $($task.Id) $($task.Title) dÃ©pend de:" -ForegroundColor Green
         foreach ($dependency in $task.Dependencies) {
             Write-Host "    - $($dependency.Id) $($dependency.Title)" -ForegroundColor Yellow
         }
     }
 }
 
-Write-Host "`nTest terminé." -ForegroundColor Cyan
+Write-Host "`nTest terminÃ©." -ForegroundColor Cyan

@@ -1,4 +1,4 @@
-# Test-PermissionComparisonFunctions.ps1
+﻿# Test-PermissionComparisonFunctions.ps1
 # Tests unitaires pour les fonctions de comparaison ensembliste
 
 # Importer le module de test
@@ -9,7 +9,7 @@ Import-Module $testModulePath -Force
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\RoadmapParser.psm1"
 Import-Module $modulePath -Force
 
-# Charger directement les fichiers nécessaires pour les tests
+# Charger directement les fichiers nÃ©cessaires pour les tests
 $missingPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\MissingPermissionModel.ps1"
 . $missingPermissionModelPath
 
@@ -19,7 +19,7 @@ $permissionComparisonFunctionsPath = Join-Path -Path $PSScriptRoot -ChildPath ".
 Describe "PermissionComparisonFunctions" {
     Context "Compare-SqlServerPermissionSets" {
         BeforeAll {
-            # Créer des ensembles de permissions de référence et actuelles pour les tests
+            # CrÃ©er des ensembles de permissions de rÃ©fÃ©rence et actuelles pour les tests
             $referenceServerPermissions = @(
                 [PSCustomObject]@{
                     PermissionName = "CONNECT SQL"
@@ -31,7 +31,7 @@ Describe "PermissionComparisonFunctions" {
                     PermissionName = "VIEW SERVER STATE"
                     LoginName = "MonitorUser"
                     PermissionState = "GRANT"
-                    Description = "Permet de voir l'état du serveur"
+                    Description = "Permet de voir l'Ã©tat du serveur"
                 },
                 [PSCustomObject]@{
                     PermissionName = "ALTER ANY LOGIN"
@@ -82,7 +82,7 @@ Describe "PermissionComparisonFunctions" {
             $alterAnyLoginPerm = $result.ServerPermissions | Where-Object { $_.PermissionName -eq "ALTER ANY LOGIN" }
             
             $viewServerStatePerm.Severity | Should -Be "Moyenne"
-            $alterAnyLoginPerm.Severity | Should -Be "Élevée"
+            $alterAnyLoginPerm.Severity | Should -Be "Ã‰levÃ©e"
         }
         
         It "Should apply custom severity map" {
@@ -116,14 +116,14 @@ Describe "PermissionComparisonFunctions" {
             $viewServerStatePerm = $result.ServerPermissions | Where-Object { $_.PermissionName -eq "VIEW SERVER STATE" }
             $alterAnyLoginPerm = $result.ServerPermissions | Where-Object { $_.PermissionName -eq "ALTER ANY LOGIN" }
             
-            $viewServerStatePerm.Impact | Should -Be "Permet de voir l'état du serveur"
+            $viewServerStatePerm.Impact | Should -Be "Permet de voir l'Ã©tat du serveur"
             $alterAnyLoginPerm.Impact | Should -Be "Permet de modifier les logins"
         }
     }
     
     Context "Compare-SqlDatabasePermissionSets" {
         BeforeAll {
-            # Créer des ensembles de permissions de référence et actuelles pour les tests
+            # CrÃ©er des ensembles de permissions de rÃ©fÃ©rence et actuelles pour les tests
             $referenceDatabasePermissions = @(
                 [PSCustomObject]@{
                     PermissionName = "CONNECT"
@@ -131,7 +131,7 @@ Describe "PermissionComparisonFunctions" {
                     PermissionState = "GRANT"
                     SecurableType = "DATABASE"
                     SecurableName = "TestDB"
-                    Description = "Permet la connexion à la base de données"
+                    Description = "Permet la connexion Ã  la base de donnÃ©es"
                 },
                 [PSCustomObject]@{
                     PermissionName = "SELECT"
@@ -139,7 +139,7 @@ Describe "PermissionComparisonFunctions" {
                     PermissionState = "GRANT"
                     SecurableType = "DATABASE"
                     SecurableName = "TestDB"
-                    Description = "Permet de lire toutes les données"
+                    Description = "Permet de lire toutes les donnÃ©es"
                 },
                 [PSCustomObject]@{
                     PermissionName = "CREATE TABLE"
@@ -147,7 +147,7 @@ Describe "PermissionComparisonFunctions" {
                     PermissionState = "GRANT"
                     SecurableType = "SCHEMA"
                     SecurableName = "dbo"
-                    Description = "Permet de créer des tables dans le schéma dbo"
+                    Description = "Permet de crÃ©er des tables dans le schÃ©ma dbo"
                 }
             )
             
@@ -226,13 +226,13 @@ Describe "PermissionComparisonFunctions" {
                 -ModelName "TestModel"
             
             $selectPerm = $result.DatabasePermissions | Where-Object { $_.PermissionName -eq "SELECT" }
-            $selectPerm.Impact | Should -Be "Permet de lire toutes les données"
+            $selectPerm.Impact | Should -Be "Permet de lire toutes les donnÃ©es"
         }
     }
     
     Context "Compare-SqlObjectPermissionSets" {
         BeforeAll {
-            # Créer des ensembles de permissions de référence et actuelles pour les tests
+            # CrÃ©er des ensembles de permissions de rÃ©fÃ©rence et actuelles pour les tests
             $referenceObjectPermissions = @(
                 [PSCustomObject]@{
                     PermissionName = "SELECT"
@@ -242,7 +242,7 @@ Describe "PermissionComparisonFunctions" {
                     SchemaName = "dbo"
                     ObjectName = "Customers"
                     ColumnName = ""
-                    Description = "Permet de lire les données clients"
+                    Description = "Permet de lire les donnÃ©es clients"
                 },
                 [PSCustomObject]@{
                     PermissionName = "EXECUTE"
@@ -252,7 +252,7 @@ Describe "PermissionComparisonFunctions" {
                     SchemaName = "dbo"
                     ObjectName = "GetCustomerData"
                     ColumnName = ""
-                    Description = "Permet d'exécuter la procédure stockée"
+                    Description = "Permet d'exÃ©cuter la procÃ©dure stockÃ©e"
                 },
                 [PSCustomObject]@{
                     PermissionName = "SELECT"
@@ -340,7 +340,7 @@ Describe "PermissionComparisonFunctions" {
         It "Should apply object type specific severity" {
             $customObjectTypeSeverityMap = @{
                 "PROCEDURE" = @{
-                    "EXECUTE" = "Élevée"
+                    "EXECUTE" = "Ã‰levÃ©e"
                 }
                 "TABLE" = @{
                     "SELECT" = "Faible"
@@ -356,7 +356,7 @@ Describe "PermissionComparisonFunctions" {
                 -ObjectTypeSeverityMap $customObjectTypeSeverityMap
             
             $executePerm = $result.ObjectPermissions | Where-Object { $_.PermissionName -eq "EXECUTE" }
-            $executePerm.Severity | Should -Be "Élevée"
+            $executePerm.Severity | Should -Be "Ã‰levÃ©e"
         }
         
         It "Should include description from reference permissions" {
@@ -368,13 +368,13 @@ Describe "PermissionComparisonFunctions" {
                 -ModelName "TestModel"
             
             $executePerm = $result.ObjectPermissions | Where-Object { $_.PermissionName -eq "EXECUTE" }
-            $executePerm.Impact | Should -Be "Permet d'exécuter la procédure stockée"
+            $executePerm.Impact | Should -Be "Permet d'exÃ©cuter la procÃ©dure stockÃ©e"
         }
     }
     
     Context "Compare-SqlPermissionsWithModel" {
         BeforeAll {
-            # Créer un modèle de référence
+            # CrÃ©er un modÃ¨le de rÃ©fÃ©rence
             $referenceModel = [PSCustomObject]@{
                 ModelName = "TestModel"
                 ServerPermissions = @(
@@ -431,7 +431,7 @@ Describe "PermissionComparisonFunctions" {
                 )
             }
             
-            # Créer les permissions actuelles
+            # CrÃ©er les permissions actuelles
             $currentPermissions = [PSCustomObject]@{
                 ServerPermissions = @(
                     [PSCustomObject]@{
@@ -548,7 +548,7 @@ Describe "PermissionComparisonFunctions" {
             }
             
             $databaseSeverityMap = @{
-                "SELECT" = "Élevée"
+                "SELECT" = "Ã‰levÃ©e"
                 "DEFAULT" = "Moyenne"
             }
             
@@ -567,11 +567,11 @@ Describe "PermissionComparisonFunctions" {
             
             $result | Should -Not -BeNullOrEmpty
             $result.ServerPermissions[0].Severity | Should -Be "Critique"
-            $result.DatabasePermissions[0].Severity | Should -Be "Élevée"
+            $result.DatabasePermissions[0].Severity | Should -Be "Ã‰levÃ©e"
             $result.ObjectPermissions[0].Severity | Should -Be "Faible"
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

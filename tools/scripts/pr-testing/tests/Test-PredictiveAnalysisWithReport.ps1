@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste le système d'analyse prédictive et génère un rapport permanent.
+    Teste le systÃ¨me d'analyse prÃ©dictive et gÃ©nÃ¨re un rapport permanent.
 .DESCRIPTION
-    Ce script teste le système d'analyse prédictive en créant des fichiers de test
-    avec différents types d'erreurs et en exécutant l'analyse prédictive sur ces fichiers.
-    Le rapport généré est conservé dans un emplacement permanent.
+    Ce script teste le systÃ¨me d'analyse prÃ©dictive en crÃ©ant des fichiers de test
+    avec diffÃ©rents types d'erreurs et en exÃ©cutant l'analyse prÃ©dictive sur ces fichiers.
+    Le rapport gÃ©nÃ©rÃ© est conservÃ© dans un emplacement permanent.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport d'analyse prédictive.
+    Chemin oÃ¹ enregistrer le rapport d'analyse prÃ©dictive.
 .EXAMPLE
     .\Test-PredictiveAnalysisWithReport.ps1
 .NOTES
@@ -22,17 +22,17 @@ param(
     [string]$OutputPath = "$PSScriptRoot\reports\PredictiveAnalysisReport.html"
 )
 
-# Créer le répertoire des rapports s'il n'existe pas
+# CrÃ©er le rÃ©pertoire des rapports s'il n'existe pas
 $reportsDir = Join-Path -Path $PSScriptRoot -ChildPath "reports"
 if (-not (Test-Path -Path $reportsDir)) {
     New-Item -Path $reportsDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PredictiveAnalysisTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -50,8 +50,8 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test avec différents types d'erreurs
-Write-Host "Création de fichiers de test..." -ForegroundColor Cyan
+# CrÃ©er des fichiers de test avec diffÃ©rents types d'erreurs
+Write-Host "CrÃ©ation de fichiers de test..." -ForegroundColor Cyan
 
 # PowerShell avec erreurs
 $psScriptWithErrors = @"
@@ -70,7 +70,7 @@ function Test-Function {
     # Erreur: Utilisation de Invoke-Expression
     Invoke-Expression "Get-Process"
 
-    # Erreur: Suppression récursive
+    # Erreur: Suppression rÃ©cursive
     Remove-Item -Path "C:\Temp\*" -Recurse -Force
 
     # Erreur: Comparaison incorrecte avec null
@@ -103,16 +103,16 @@ def test_function(param1, param2=0):
     # Erreur: Utilisation de eval()
     result = eval("2 + 2")
 
-    # Erreur: Appel système direct
+    # Erreur: Appel systÃ¨me direct
     os.system("ls -la")
 
-    # Erreur: Exception générique
+    # Erreur: Exception gÃ©nÃ©rique
     try:
         x = 1 / 0
     except:
         pass
 
-    # Erreur: Indentation incohérente
+    # Erreur: Indentation incohÃ©rente
     if param1:
       print("Indentation incorrecte")
 
@@ -182,7 +182,7 @@ $htmlWithErrors = @"
 <body>
     <h1 id="title">Test HTML with Errors</h1>
 
-    <!-- Erreur: Balise non fermée -->
+    <!-- Erreur: Balise non fermÃ©e -->
     <div class="test-class">Test content
 
     <!-- Erreur: Balise fermante ne correspond pas -->
@@ -204,7 +204,7 @@ $cssWithErrors = @"
     font-size: 16px;
 }
 
-/* Erreur: Accolade non fermée */
+/* Erreur: Accolade non fermÃ©e */
 #test-id {
     font-weight: bold;
     text-decoration: underline;
@@ -217,7 +217,7 @@ body {
 }
 "@
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $testFiles = @(
     (New-TestFile -Path "powershell/test_with_errors.ps1" -Content $psScriptWithErrors),
     (New-TestFile -Path "python/test_with_errors.py" -Content $pyScriptWithErrors),
@@ -226,27 +226,27 @@ $testFiles = @(
     (New-TestFile -Path "css/test_with_errors.css" -Content $cssWithErrors)
 )
 
-Write-Host "  $($testFiles.Count) fichiers de test créés" -ForegroundColor Green
+Write-Host "  $($testFiles.Count) fichiers de test crÃ©Ã©s" -ForegroundColor Green
 Write-Host ""
 
-# Exécuter l'analyse prédictive
-Write-Host "Exécution de l'analyse prédictive..." -ForegroundColor Cyan
+# ExÃ©cuter l'analyse prÃ©dictive
+Write-Host "ExÃ©cution de l'analyse prÃ©dictive..." -ForegroundColor Cyan
 
-# Chemin du script d'analyse prédictive
+# Chemin du script d'analyse prÃ©dictive
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-PredictiveFileAnalysis.ps1"
 
 if (Test-Path -Path $scriptPath) {
-    # Exécuter le script d'analyse prédictive
+    # ExÃ©cuter le script d'analyse prÃ©dictive
     $errorHistoryPath = Join-Path -Path $reportsDir -ChildPath "error_history.json"
     & $scriptPath -RepositoryPath $testDir -OutputPath $OutputPath -ErrorHistoryPath $errorHistoryPath -UseCache | Out-Null
 
-    Write-Host "  Analyse terminée" -ForegroundColor Green
-    Write-Host "  Rapport généré: $OutputPath" -ForegroundColor Green
+    Write-Host "  Analyse terminÃ©e" -ForegroundColor Green
+    Write-Host "  Rapport gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $OutputPath
 } else {
-    Write-Error "Le script d'analyse prédictive n'existe pas: $scriptPath"
+    Write-Error "Le script d'analyse prÃ©dictive n'existe pas: $scriptPath"
 }
 
 Write-Host ""
@@ -254,8 +254,8 @@ Write-Host ""
 # Nettoyer
 Write-Host "Nettoyage..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
-Write-Host "  Répertoire de test supprimé" -ForegroundColor Green
+Write-Host "  RÃ©pertoire de test supprimÃ©" -ForegroundColor Green
 Write-Host ""
 
-Write-Host "Test terminé!" -ForegroundColor Green
-Write-Host "Le rapport est disponible à l'adresse: $OutputPath" -ForegroundColor Green
+Write-Host "Test terminÃ©!" -ForegroundColor Green
+Write-Host "Le rapport est disponible Ã  l'adresse: $OutputPath" -ForegroundColor Green

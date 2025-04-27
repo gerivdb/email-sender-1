@@ -1,49 +1,49 @@
-<#
+﻿<#
 .SYNOPSIS
-    Valide les entrées des fonctions du module RoadmapParser.
+    Valide les entrÃ©es des fonctions du module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Test-RoadmapInput valide les entrées des fonctions du module RoadmapParser.
-    Elle combine les différentes fonctions de validation et peut être utilisée pour
-    valider les entrées des fonctions du module RoadmapParser.
+    La fonction Test-RoadmapInput valide les entrÃ©es des fonctions du module RoadmapParser.
+    Elle combine les diffÃ©rentes fonctions de validation et peut Ãªtre utilisÃ©e pour
+    valider les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à valider.
+    La valeur Ã  valider.
 
 .PARAMETER Type
-    Le type de données à valider. Valeurs possibles :
-    - String : Vérifie que la valeur est une chaîne de caractères
-    - Integer : Vérifie que la valeur est un entier
-    - Decimal : Vérifie que la valeur est un nombre décimal
-    - Boolean : Vérifie que la valeur est un booléen
-    - DateTime : Vérifie que la valeur est une date/heure
-    - Array : Vérifie que la valeur est un tableau
-    - Hashtable : Vérifie que la valeur est une table de hachage
-    - PSObject : Vérifie que la valeur est un objet PowerShell
-    - ScriptBlock : Vérifie que la valeur est un bloc de script
-    - Null : Vérifie que la valeur est null
-    - NotNull : Vérifie que la valeur n'est pas null
-    - Empty : Vérifie que la valeur est vide
-    - NotEmpty : Vérifie que la valeur n'est pas vide
+    Le type de donnÃ©es Ã  valider. Valeurs possibles :
+    - String : VÃ©rifie que la valeur est une chaÃ®ne de caractÃ¨res
+    - Integer : VÃ©rifie que la valeur est un entier
+    - Decimal : VÃ©rifie que la valeur est un nombre dÃ©cimal
+    - Boolean : VÃ©rifie que la valeur est un boolÃ©en
+    - DateTime : VÃ©rifie que la valeur est une date/heure
+    - Array : VÃ©rifie que la valeur est un tableau
+    - Hashtable : VÃ©rifie que la valeur est une table de hachage
+    - PSObject : VÃ©rifie que la valeur est un objet PowerShell
+    - ScriptBlock : VÃ©rifie que la valeur est un bloc de script
+    - Null : VÃ©rifie que la valeur est null
+    - NotNull : VÃ©rifie que la valeur n'est pas null
+    - Empty : VÃ©rifie que la valeur est vide
+    - NotEmpty : VÃ©rifie que la valeur n'est pas vide
 
 .PARAMETER Format
-    Le format à valider. Valeurs possibles :
-    - Email : Vérifie que la valeur est une adresse email valide
-    - URL : Vérifie que la valeur est une URL valide
-    - IPAddress : Vérifie que la valeur est une adresse IP valide
-    - PhoneNumber : Vérifie que la valeur est un numéro de téléphone valide
-    - ZipCode : Vérifie que la valeur est un code postal valide
-    - Date : Vérifie que la valeur est une date valide
-    - Time : Vérifie que la valeur est une heure valide
-    - DateTime : Vérifie que la valeur est une date/heure valide
-    - Guid : Vérifie que la valeur est un GUID valide
-    - FilePath : Vérifie que la valeur est un chemin de fichier valide
-    - DirectoryPath : Vérifie que la valeur est un chemin de répertoire valide
-    - Custom : Utilise une expression régulière personnalisée
+    Le format Ã  valider. Valeurs possibles :
+    - Email : VÃ©rifie que la valeur est une adresse email valide
+    - URL : VÃ©rifie que la valeur est une URL valide
+    - IPAddress : VÃ©rifie que la valeur est une adresse IP valide
+    - PhoneNumber : VÃ©rifie que la valeur est un numÃ©ro de tÃ©lÃ©phone valide
+    - ZipCode : VÃ©rifie que la valeur est un code postal valide
+    - Date : VÃ©rifie que la valeur est une date valide
+    - Time : VÃ©rifie que la valeur est une heure valide
+    - DateTime : VÃ©rifie que la valeur est une date/heure valide
+    - Guid : VÃ©rifie que la valeur est un GUID valide
+    - FilePath : VÃ©rifie que la valeur est un chemin de fichier valide
+    - DirectoryPath : VÃ©rifie que la valeur est un chemin de rÃ©pertoire valide
+    - Custom : Utilise une expression rÃ©guliÃ¨re personnalisÃ©e
 
 .PARAMETER Pattern
-    L'expression régulière personnalisée à utiliser pour la validation.
-    Utilisé uniquement lorsque Format est "Custom".
+    L'expression rÃ©guliÃ¨re personnalisÃ©e Ã  utiliser pour la validation.
+    UtilisÃ© uniquement lorsque Format est "Custom".
 
 .PARAMETER Min
     La valeur minimale de la plage.
@@ -58,45 +58,45 @@
     La longueur maximale de la valeur.
 
 .PARAMETER MinCount
-    Le nombre minimal d'éléments dans la collection.
+    Le nombre minimal d'Ã©lÃ©ments dans la collection.
 
 .PARAMETER MaxCount
-    Le nombre maximal d'éléments dans la collection.
+    Le nombre maximal d'Ã©lÃ©ments dans la collection.
 
 .PARAMETER ValidationFunction
-    La fonction de validation personnalisée à utiliser.
-    Cette fonction doit prendre un paramètre (la valeur à valider) et retourner un booléen.
+    La fonction de validation personnalisÃ©e Ã  utiliser.
+    Cette fonction doit prendre un paramÃ¨tre (la valeur Ã  valider) et retourner un boolÃ©en.
 
 .PARAMETER ValidationScript
-    Le script de validation personnalisé à utiliser.
-    Ce script doit prendre un paramètre (la valeur à valider) et retourner un booléen.
+    Le script de validation personnalisÃ© Ã  utiliser.
+    Ce script doit prendre un paramÃ¨tre (la valeur Ã  valider) et retourner un boolÃ©en.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la validation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la validation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 .EXAMPLE
     Test-RoadmapInput -Value "user@example.com" -Type String -Format Email
-    Vérifie que la valeur "user@example.com" est une chaîne de caractères et une adresse email valide.
+    VÃ©rifie que la valeur "user@example.com" est une chaÃ®ne de caractÃ¨res et une adresse email valide.
 
 .EXAMPLE
     Test-RoadmapInput -Value 42 -Type Integer -Min 0 -Max 100 -ThrowOnFailure
-    Vérifie que la valeur 42 est un entier compris entre 0 et 100, et lève une exception si ce n'est pas le cas.
+    VÃ©rifie que la valeur 42 est un entier compris entre 0 et 100, et lÃ¨ve une exception si ce n'est pas le cas.
 
 .EXAMPLE
     Test-RoadmapInput -Value "Hello" -Type String -MinLength 3 -MaxLength 10 -ValidationFunction { param($val) $val -match "^[a-zA-Z]+$" }
-    Vérifie que la chaîne "Hello" a une longueur comprise entre 3 et 10 caractères et ne contient que des lettres.
+    VÃ©rifie que la chaÃ®ne "Hello" a une longueur comprise entre 3 et 10 caractÃ¨res et ne contient que des lettres.
 
 .OUTPUTS
-    [bool] Indique si la validation a réussi.
+    [bool] Indique si la validation a rÃ©ussi.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function Test-RoadmapInput {
     [CmdletBinding(DefaultParameterSetName = "Default")]
@@ -147,12 +147,12 @@ function Test-RoadmapInput {
         [switch]$ThrowOnFailure
     )
 
-    # Les fonctions de validation sont déjà importées par le module
+    # Les fonctions de validation sont dÃ©jÃ  importÃ©es par le module
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $true
 
-    # Valider le type de données
+    # Valider le type de donnÃ©es
     if ($PSBoundParameters.ContainsKey('Type')) {
         $dataTypeParams = @{
             Value          = $Value
@@ -170,7 +170,7 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas au type de données $Type."
+                "La valeur ne correspond pas au type de donnÃ©es $Type."
             }
 
             throw $errorMsg
@@ -249,14 +249,14 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas à la plage spécifiée."
+                "La valeur ne correspond pas Ã  la plage spÃ©cifiÃ©e."
             }
 
             throw $errorMsg
         }
     }
 
-    # Valider avec une fonction personnalisée
+    # Valider avec une fonction personnalisÃ©e
     if (($PSBoundParameters.ContainsKey('ValidationFunction') -or $PSBoundParameters.ContainsKey('ValidationScript')) -and $isValid) {
         $customParams = @{
             Value          = $Value
@@ -281,7 +281,7 @@ function Test-RoadmapInput {
             $errorMsg = if ($PSBoundParameters.ContainsKey('ErrorMessage')) {
                 $ErrorMessage
             } else {
-                "La valeur ne correspond pas aux critères de validation personnalisés."
+                "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
             }
 
             throw $errorMsg

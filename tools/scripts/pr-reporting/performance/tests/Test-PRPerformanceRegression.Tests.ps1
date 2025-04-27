@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Test-PRPerformanceRegression.ps1.
@@ -13,30 +13,30 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Test-PRPerformanceRegression.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Test-PRPerformanceRegression.ps1 non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Test-PRPerformanceRegression.ps1 non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
 # Tests Pester
 Describe "Test-PRPerformanceRegression Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceRegressionTests_$(Get-Random)"
         New-Item -Path $script:testDir -ItemType Directory -Force | Out-Null
 
-        # Créer des fichiers de résultats de test
+        # CrÃ©er des fichiers de rÃ©sultats de test
         $script:baselineResultsPath = Join-Path -Path $script:testDir -ChildPath "baseline_results.json"
         $script:currentResultsPath = Join-Path -Path $script:testDir -ChildPath "current_results.json"
         $script:outputPath = Join-Path -Path $script:testDir -ChildPath "regression_results.json"
 
-        # Créer des données de test pour les résultats de référence
+        # CrÃ©er des donnÃ©es de test pour les rÃ©sultats de rÃ©fÃ©rence
         $baselineResults = @{
             Timestamp  = "2025-04-28 10:00:00"
             DataSize   = "Medium"
@@ -68,7 +68,7 @@ Describe "Test-PRPerformanceRegression Tests" {
             )
         }
 
-        # Créer des données de test pour les résultats actuels (avec une régression)
+        # CrÃ©er des donnÃ©es de test pour les rÃ©sultats actuels (avec une rÃ©gression)
         $currentResults = @{
             Timestamp  = "2025-04-29 10:00:00"
             DataSize   = "Medium"
@@ -100,39 +100,39 @@ Describe "Test-PRPerformanceRegression Tests" {
             )
         }
 
-        # Enregistrer les fichiers de résultats
+        # Enregistrer les fichiers de rÃ©sultats
         $baselineResults | ConvertTo-Json -Depth 10 | Set-Content -Path $script:baselineResultsPath -Encoding UTF8
         $currentResults | ConvertTo-Json -Depth 10 | Set-Content -Path $script:currentResultsPath -Encoding UTF8
 
-        # Créer un mock pour les modules
+        # CrÃ©er un mock pour les modules
         Mock Import-Module { } -ModuleName $scriptToTest
     }
 
-    Context "Validation des paramètres" {
-        It "Accepte le paramètre CurrentResults" {
+    Context "Validation des paramÃ¨tres" {
+        It "Accepte le paramÃ¨tre CurrentResults" {
             { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
 
-        It "Accepte le paramètre BaselineResults" {
+        It "Accepte le paramÃ¨tre BaselineResults" {
             { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
 
-        It "Accepte le paramètre ThresholdPercent" {
+        It "Accepte le paramÃ¨tre ThresholdPercent" {
             { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -ThresholdPercent 5 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
 
-        It "Accepte le paramètre OutputPath" {
+        It "Accepte le paramÃ¨tre OutputPath" {
             { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
 
-        It "Accepte le paramètre GenerateReport" {
+        It "Accepte le paramÃ¨tre GenerateReport" {
             { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -GenerateReport -WhatIf } | Should -Not -Throw
         }
     }
 
-    Context "Détection des régressions" {
-        It "Détecte les régressions de performance" {
-            # Créer un mock pour les résultats
+    Context "DÃ©tection des rÃ©gressions" {
+        It "DÃ©tecte les rÃ©gressions de performance" {
+            # CrÃ©er un mock pour les rÃ©sultats
             $mockResults = @{
                 Timestamp         = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 CurrentTimestamp  = "2025-04-29 10:00:00"
@@ -168,28 +168,28 @@ Describe "Test-PRPerformanceRegression Tests" {
                 }
             }
 
-            # Créer un mock pour ConvertTo-Json
+            # CrÃ©er un mock pour ConvertTo-Json
             Mock ConvertTo-Json { return $mockResults | ConvertTo-Json -Depth 10 } -ModuleName $scriptToTest
 
-            # Créer un mock pour Set-Content
+            # CrÃ©er un mock pour Set-Content
             Mock Set-Content { } -ModuleName $scriptToTest
 
-            # Créer un mock pour Get-Content
+            # CrÃ©er un mock pour Get-Content
             Mock Get-Content { return $mockResults | ConvertTo-Json -Depth 10 } -ModuleName $scriptToTest
 
-            # Créer un mock pour Test-Path
+            # CrÃ©er un mock pour Test-Path
             Mock Test-Path { return $true } -ModuleName $scriptToTest
 
-            # Exécuter le script avec un seuil bas pour détecter la régression
+            # ExÃ©cuter le script avec un seuil bas pour dÃ©tecter la rÃ©gression
             . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -ThresholdPercent 5 -OutputPath $script:outputPath -WhatIf
 
-            # Vérifier que les mocks ont été appelés
+            # VÃ©rifier que les mocks ont Ã©tÃ© appelÃ©s
             Should -Invoke ConvertTo-Json -ModuleName $scriptToTest
             Should -Invoke Set-Content -ModuleName $scriptToTest
         }
 
-        It "Respecte le seuil de régression spécifié" {
-            # Créer un mock pour les résultats
+        It "Respecte le seuil de rÃ©gression spÃ©cifiÃ©" {
+            # CrÃ©er un mock pour les rÃ©sultats
             $mockResults = @{
                 Timestamp         = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                 CurrentTimestamp  = "2025-04-29 10:00:00"
@@ -215,39 +215,39 @@ Describe "Test-PRPerformanceRegression Tests" {
                 }
             }
 
-            # Créer un mock pour ConvertTo-Json
+            # CrÃ©er un mock pour ConvertTo-Json
             Mock ConvertTo-Json { return $mockResults | ConvertTo-Json -Depth 10 } -ModuleName $scriptToTest
 
-            # Créer un mock pour Set-Content
+            # CrÃ©er un mock pour Set-Content
             Mock Set-Content { } -ModuleName $scriptToTest
 
-            # Créer un mock pour Get-Content
+            # CrÃ©er un mock pour Get-Content
             Mock Get-Content { return $mockResults | ConvertTo-Json -Depth 10 } -ModuleName $scriptToTest
 
-            # Créer un mock pour Test-Path
+            # CrÃ©er un mock pour Test-Path
             Mock Test-Path { return $true } -ModuleName $scriptToTest
 
-            # Exécuter le script avec un seuil élevé pour ne pas détecter la régression
+            # ExÃ©cuter le script avec un seuil Ã©levÃ© pour ne pas dÃ©tecter la rÃ©gression
             . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -ThresholdPercent 15 -OutputPath $script:outputPath -WhatIf
 
-            # Vérifier que les mocks ont été appelés
+            # VÃ©rifier que les mocks ont Ã©tÃ© appelÃ©s
             Should -Invoke ConvertTo-Json -ModuleName $scriptToTest
             Should -Invoke Set-Content -ModuleName $scriptToTest
         }
     }
 
-    Context "Génération de rapports" {
-        It "Génère un rapport HTML si demandé" {
-            # Créer un mock pour la fonction New-PRReport
+    Context "GÃ©nÃ©ration de rapports" {
+        It "GÃ©nÃ¨re un rapport HTML si demandÃ©" {
+            # CrÃ©er un mock pour la fonction New-PRReport
             Mock New-PRReport { return "HTML Report" } -ModuleName $scriptToTest
 
-            # Créer un mock pour Test-Path
+            # CrÃ©er un mock pour Test-Path
             Mock Test-Path { return $true } -ModuleName $scriptToTest
 
-            # Exécuter le script avec l'option GenerateReport
+            # ExÃ©cuter le script avec l'option GenerateReport
             . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -GenerateReport -WhatIf
 
-            # Vérifier que la fonction New-PRReport a été appelée
+            # VÃ©rifier que la fonction New-PRReport a Ã©tÃ© appelÃ©e
             Should -Invoke New-PRReport -ModuleName $scriptToTest
         }
     }

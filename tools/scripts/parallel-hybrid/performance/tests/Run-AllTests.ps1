@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les scripts de performance.
+    ExÃ©cute tous les tests unitaires pour les scripts de performance.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les scripts de performance
-    en utilisant le framework Pester. Il génère un rapport de couverture de code
-    et affiche les résultats dans la console.
+    Ce script exÃ©cute tous les tests unitaires pour les scripts de performance
+    en utilisant le framework Pester. Il gÃ©nÃ¨re un rapport de couverture de code
+    et affiche les rÃ©sultats dans la console.
 .EXAMPLE
     .\Run-AllTests.ps1
-    Exécute tous les tests unitaires et affiche les résultats.
+    ExÃ©cute tous les tests unitaires et affiche les rÃ©sultats.
 .NOTES
     Auteur: Augment Agent
     Date: 10/04/2025
@@ -23,21 +23,21 @@ param (
     [string]$OutputPath = "$PSScriptRoot\TestResults"
 )
 
-# Par défaut, générer un rapport
+# Par dÃ©faut, gÃ©nÃ©rer un rapport
 if (-not $PSBoundParameters.ContainsKey('GenerateReport')) {
     $GenerateReport = $true
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if ($GenerateReport -and -not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -60,26 +60,26 @@ $pesterConfig.CodeCoverage.OutputPath = "$PSScriptRoot\TestResults\coverage.xml"
 if ($GenerateReport) {
     $pesterConfig.TestResult.Enabled = $true
     $pesterConfig.TestResult.OutputPath = "$OutputPath\TestResults.xml"
-    # Désactiver la couverture de code car nous ne pouvons pas importer les scripts complets
+    # DÃ©sactiver la couverture de code car nous ne pouvons pas importer les scripts complets
     $pesterConfig.CodeCoverage.Enabled = $false
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`n=== RÉSUMÉ DES TESTS ===" -ForegroundColor Cyan
-Write-Host "Tests exécutés: $($results.TotalCount)" -ForegroundColor White
-Write-Host "Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "Tests échoués: $($results.FailedCount)" -ForegroundColor Red
-Write-Host "Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
-Write-Host "Durée totale: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`n=== RÃ‰SUMÃ‰ DES TESTS ===" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor White
+Write-Host "Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor Red
+Write-Host "Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
+Write-Host "DurÃ©e totale: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
 
 if ($GenerateReport) {
-    Write-Host "`nRapports générés dans: $OutputPath" -ForegroundColor Cyan
+    Write-Host "`nRapports gÃ©nÃ©rÃ©s dans: $OutputPath" -ForegroundColor Cyan
 }
 
-# Retourner un code d'erreur si des tests ont échoué
+# Retourner un code d'erreur si des tests ont Ã©chouÃ©
 if ($results.FailedCount -gt 0) {
     exit 1
 }

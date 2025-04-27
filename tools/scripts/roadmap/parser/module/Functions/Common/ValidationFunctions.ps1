@@ -1,31 +1,31 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de validation pour les modes RoadmapParser.
 
 .DESCRIPTION
-    Ce script contient des fonctions de validation utilisées par tous les modes de RoadmapParser.
+    Ce script contient des fonctions de validation utilisÃ©es par tous les modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 <#
 .SYNOPSIS
-    Vérifie si une chaîne est nulle ou vide.
+    VÃ©rifie si une chaÃ®ne est nulle ou vide.
 
 .DESCRIPTION
-    Cette fonction vérifie si une chaîne est nulle ou vide et lève une exception si c'est le cas.
+    Cette fonction vÃ©rifie si une chaÃ®ne est nulle ou vide et lÃ¨ve une exception si c'est le cas.
 
 .PARAMETER String
-    Chaîne à vérifier.
+    ChaÃ®ne Ã  vÃ©rifier.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-NotNullOrEmpty -String $FilePath -ParameterName "FilePath"
@@ -45,7 +45,7 @@ function Assert-NotNullOrEmpty {
         [string]$ParameterName = "String",
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Le paramètre '$ParameterName' ne peut pas être nul ou vide."
+        [string]$ErrorMessage = "Le paramÃ¨tre '$ParameterName' ne peut pas Ãªtre nul ou vide."
     )
     
     if ([string]::IsNullOrEmpty($String)) {
@@ -55,19 +55,19 @@ function Assert-NotNullOrEmpty {
 
 <#
 .SYNOPSIS
-    Vérifie si un chemin est valide.
+    VÃ©rifie si un chemin est valide.
 
 .DESCRIPTION
-    Cette fonction vérifie si un chemin est valide et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si un chemin est valide et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER Path
-    Chemin à vérifier.
+    Chemin Ã  vÃ©rifier.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidPath -Path $FilePath -ParameterName "FilePath"
@@ -88,10 +88,10 @@ function Assert-ValidPath {
         [string]$ErrorMessage = "Le chemin '$Path' n'est pas valide."
     )
     
-    # Vérifier si la chaîne est nulle ou vide
+    # VÃ©rifier si la chaÃ®ne est nulle ou vide
     Assert-NotNullOrEmpty -String $Path -ParameterName $ParameterName
     
-    # Vérifier si le chemin contient des caractères invalides
+    # VÃ©rifier si le chemin contient des caractÃ¨res invalides
     $invalidChars = [System.IO.Path]::GetInvalidPathChars()
     $invalidCharsFound = $invalidChars | Where-Object { $Path.Contains($_) }
     
@@ -102,19 +102,19 @@ function Assert-ValidPath {
 
 <#
 .SYNOPSIS
-    Vérifie si un identifiant de tâche est valide.
+    VÃ©rifie si un identifiant de tÃ¢che est valide.
 
 .DESCRIPTION
-    Cette fonction vérifie si un identifiant de tâche est valide et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si un identifiant de tÃ¢che est valide et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER TaskIdentifier
-    Identifiant de tâche à vérifier.
+    Identifiant de tÃ¢che Ã  vÃ©rifier.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidTaskIdentifier -TaskIdentifier "1.1" -ParameterName "TaskIdentifier"
@@ -132,13 +132,13 @@ function Assert-ValidTaskIdentifier {
         [string]$ParameterName = "TaskIdentifier",
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "L'identifiant de tâche '$TaskIdentifier' n'est pas valide. Il doit être au format 'X.Y.Z'."
+        [string]$ErrorMessage = "L'identifiant de tÃ¢che '$TaskIdentifier' n'est pas valide. Il doit Ãªtre au format 'X.Y.Z'."
     )
     
-    # Vérifier si la chaîne est nulle ou vide
+    # VÃ©rifier si la chaÃ®ne est nulle ou vide
     Assert-NotNullOrEmpty -String $TaskIdentifier -ParameterName $ParameterName
     
-    # Vérifier si l'identifiant de tâche est au format X.Y.Z
+    # VÃ©rifier si l'identifiant de tÃ¢che est au format X.Y.Z
     if (-not ($TaskIdentifier -match '^[0-9]+(\.[0-9]+)*$')) {
         throw $ErrorMessage
     }
@@ -146,22 +146,22 @@ function Assert-ValidTaskIdentifier {
 
 <#
 .SYNOPSIS
-    Vérifie si un fichier existe et est du type attendu.
+    VÃ©rifie si un fichier existe et est du type attendu.
 
 .DESCRIPTION
-    Cette fonction vérifie si un fichier existe et est du type attendu.
+    Cette fonction vÃ©rifie si un fichier existe et est du type attendu.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à vérifier.
+    Chemin vers le fichier Ã  vÃ©rifier.
 
 .PARAMETER FileType
     Type de fichier attendu (extension).
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidFile -FilePath "roadmap.md" -FileType ".md" -ParameterName "FilePath"
@@ -185,10 +185,10 @@ function Assert-ValidFile {
         [string]$ErrorMessage
     )
     
-    # Vérifier si le chemin est valide
+    # VÃ©rifier si le chemin est valide
     Assert-ValidPath -Path $FilePath -ParameterName $ParameterName
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         if (-not $ErrorMessage) {
             $ErrorMessage = "Le fichier '$FilePath' n'existe pas."
@@ -196,7 +196,7 @@ function Assert-ValidFile {
         throw $ErrorMessage
     }
     
-    # Vérifier le type de fichier si spécifié
+    # VÃ©rifier le type de fichier si spÃ©cifiÃ©
     if ($FileType) {
         $extension = [System.IO.Path]::GetExtension($FilePath)
         if ($extension -ne $FileType) {
@@ -210,19 +210,19 @@ function Assert-ValidFile {
 
 <#
 .SYNOPSIS
-    Vérifie si un répertoire existe.
+    VÃ©rifie si un rÃ©pertoire existe.
 
 .DESCRIPTION
-    Cette fonction vérifie si un répertoire existe et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si un rÃ©pertoire existe et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER DirectoryPath
-    Chemin vers le répertoire à vérifier.
+    Chemin vers le rÃ©pertoire Ã  vÃ©rifier.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidDirectory -DirectoryPath "output" -ParameterName "OutputPath"
@@ -243,13 +243,13 @@ function Assert-ValidDirectory {
         [string]$ErrorMessage
     )
     
-    # Vérifier si le chemin est valide
+    # VÃ©rifier si le chemin est valide
     Assert-ValidPath -Path $DirectoryPath -ParameterName $ParameterName
     
-    # Vérifier si le répertoire existe
+    # VÃ©rifier si le rÃ©pertoire existe
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
         if (-not $ErrorMessage) {
-            $ErrorMessage = "Le répertoire '$DirectoryPath' n'existe pas."
+            $ErrorMessage = "Le rÃ©pertoire '$DirectoryPath' n'existe pas."
         }
         throw $ErrorMessage
     }
@@ -257,13 +257,13 @@ function Assert-ValidDirectory {
 
 <#
 .SYNOPSIS
-    Vérifie si une valeur est dans une plage.
+    VÃ©rifie si une valeur est dans une plage.
 
 .DESCRIPTION
-    Cette fonction vérifie si une valeur est dans une plage et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si une valeur est dans une plage et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER Value
-    Valeur à vérifier.
+    Valeur Ã  vÃ©rifier.
 
 .PARAMETER Minimum
     Valeur minimale de la plage.
@@ -272,10 +272,10 @@ function Assert-ValidDirectory {
     Valeur maximale de la plage.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-InRange -Value 5 -Minimum 1 -Maximum 10 -ParameterName "Count"
@@ -304,7 +304,7 @@ function Assert-InRange {
     
     if ($Value -lt $Minimum -or $Value -gt $Maximum) {
         if (-not $ErrorMessage) {
-            $ErrorMessage = "La valeur '$Value' du paramètre '$ParameterName' doit être comprise entre $Minimum et $Maximum."
+            $ErrorMessage = "La valeur '$Value' du paramÃ¨tre '$ParameterName' doit Ãªtre comprise entre $Minimum et $Maximum."
         }
         throw $ErrorMessage
     }
@@ -312,22 +312,22 @@ function Assert-InRange {
 
 <#
 .SYNOPSIS
-    Vérifie si une valeur est dans un ensemble de valeurs.
+    VÃ©rifie si une valeur est dans un ensemble de valeurs.
 
 .DESCRIPTION
-    Cette fonction vérifie si une valeur est dans un ensemble de valeurs et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si une valeur est dans un ensemble de valeurs et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER Value
-    Valeur à vérifier.
+    Valeur Ã  vÃ©rifier.
 
 .PARAMETER ValidValues
     Ensemble de valeurs valides.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidValue -Value "INFO" -ValidValues @("ERROR", "WARNING", "INFO", "VERBOSE", "DEBUG") -ParameterName "LogLevel"
@@ -353,7 +353,7 @@ function Assert-ValidValue {
     
     if ($ValidValues -notcontains $Value) {
         if (-not $ErrorMessage) {
-            $ErrorMessage = "La valeur '$Value' du paramètre '$ParameterName' n'est pas valide. Les valeurs valides sont : $($ValidValues -join ', ')."
+            $ErrorMessage = "La valeur '$Value' du paramÃ¨tre '$ParameterName' n'est pas valide. Les valeurs valides sont : $($ValidValues -join ', ')."
         }
         throw $ErrorMessage
     }
@@ -361,22 +361,22 @@ function Assert-ValidValue {
 
 <#
 .SYNOPSIS
-    Vérifie si un objet est du type attendu.
+    VÃ©rifie si un objet est du type attendu.
 
 .DESCRIPTION
-    Cette fonction vérifie si un objet est du type attendu et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si un objet est du type attendu et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER Object
-    Objet à vérifier.
+    Objet Ã  vÃ©rifier.
 
 .PARAMETER Type
     Type attendu.
 
 .PARAMETER ParameterName
-    Nom du paramètre pour le message d'erreur.
+    Nom du paramÃ¨tre pour le message d'erreur.
 
 .PARAMETER ErrorMessage
-    Message d'erreur personnalisé.
+    Message d'erreur personnalisÃ©.
 
 .EXAMPLE
     Assert-ValidType -Object $Config -Type "System.Collections.Hashtable" -ParameterName "Config"
@@ -402,7 +402,7 @@ function Assert-ValidType {
     
     if ($Object -isnot $Type) {
         if (-not $ErrorMessage) {
-            $ErrorMessage = "Le paramètre '$ParameterName' doit être de type '$Type'."
+            $ErrorMessage = "Le paramÃ¨tre '$ParameterName' doit Ãªtre de type '$Type'."
         }
         throw $ErrorMessage
     }

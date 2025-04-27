@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration simplifiés pour le module Format-Converters.
+    Tests d'intÃ©gration simplifiÃ©s pour le module Format-Converters.
 
 .DESCRIPTION
-    Ce script contient des tests d'intégration simplifiés pour vérifier l'interaction
-    entre les différentes fonctions du module Format-Converters.
+    Ce script contient des tests d'intÃ©gration simplifiÃ©s pour vÃ©rifier l'interaction
+    entre les diffÃ©rentes fonctions du module Format-Converters.
 
 .NOTES
     Version: 1.0
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -26,14 +26,14 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 }
 
 # Tests Pester
-Describe "Tests d'intégration Format-Converters (Simplified)" {
+Describe "Tests d'intÃ©gration Format-Converters (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatConvertersIntegration_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $script:jsonFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.json"
         $jsonContent = @"
 {
@@ -43,7 +43,7 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
 }
 "@
         $jsonContent | Set-Content -Path $script:jsonFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:jsonFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:jsonFilePath"
 
         $script:ambiguousFilePath = Join-Path -Path $script:testTempDir -ChildPath "ambiguous.txt"
         $ambiguousContent = @"
@@ -53,9 +53,9 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
 }
 "@
         $ambiguousContent | Set-Content -Path $script:ambiguousFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:ambiguousFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:ambiguousFilePath"
 
-        # Vérifier que les fichiers de test existent
+        # VÃ©rifier que les fichiers de test existent
         $testFiles = @(
             $script:jsonFilePath,
             $script:ambiguousFilePath
@@ -69,7 +69,7 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
 
         Write-Verbose "Tous les fichiers de test existent."
 
-        # Créer des fonctions simplifiées pour les tests
+        # CrÃ©er des fonctions simplifiÃ©es pour les tests
         function global:Test-FileFormat {
             [CmdletBinding()]
             param (
@@ -80,15 +80,15 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 [switch]$IncludeAllFormats
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Déterminer le format en fonction de l'extension
+            # DÃ©terminer le format en fonction de l'extension
             $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
-            # Simuler la détection de format
+            # Simuler la dÃ©tection de format
             $detectedFormat = $null
             $confidence = 0
             $allFormats = @()
@@ -102,11 +102,11 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                     )
                 }
                 ".txt" {
-                    # Pour les fichiers .txt, simuler une détection basée sur le contenu
+                    # Pour les fichiers .txt, simuler une dÃ©tection basÃ©e sur le contenu
                     $content = Get-Content -Path $FilePath -Raw
 
                     if ($content -match '^\s*\{.*\}\s*$' -or $FilePath -like "*ambiguous*" -or $FilePath -like "*workflow_test*") {
-                        # Pourrait être du JSON
+                        # Pourrait Ãªtre du JSON
                         $detectedFormat = "JSON"
                         $confidence = 75
                         $allFormats = @(
@@ -131,7 +131,7 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 }
             }
 
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $FilePath
                 DetectedFormat = $detectedFormat
@@ -155,21 +155,21 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 [switch]$ShowDetails
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Simuler un résultat de détection
+            # Simuler un rÃ©sultat de dÃ©tection
             $detectionResult = Test-FileFormat -FilePath $FilePath -IncludeAllFormats
 
-            # Si l'option AutoResolve est activée, retourner le format avec le score le plus élevé
+            # Si l'option AutoResolve est activÃ©e, retourner le format avec le score le plus Ã©levÃ©
             if ($AutoResolve) {
                 return $detectionResult
             }
 
             # Simuler une interaction utilisateur (pour les tests)
-            # Dans une implémentation réelle, cela demanderait à l'utilisateur de choisir
+            # Dans une implÃ©mentation rÃ©elle, cela demanderait Ã  l'utilisateur de choisir
 
             return $detectionResult
         }
@@ -194,18 +194,18 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 [switch]$PassThru
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Détecter le format source
+            # DÃ©tecter le format source
             $detectionResult = Test-FileFormat -FilePath $FilePath
             $sourceFormat = $detectionResult.DetectedFormat
 
-            # Vérifier si la conversion est nécessaire
+            # VÃ©rifier si la conversion est nÃ©cessaire
             if ($sourceFormat -eq $TargetFormat) {
-                Write-Warning "Le fichier est déjà au format $TargetFormat. Aucune conversion nécessaire."
+                Write-Warning "Le fichier est dÃ©jÃ  au format $TargetFormat. Aucune conversion nÃ©cessaire."
 
                 if ($PassThru) {
                     return $FilePath
@@ -214,7 +214,7 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 return
             }
 
-            # Déterminer le chemin de sortie
+            # DÃ©terminer le chemin de sortie
             if (-not $OutputPath) {
                 $directory = [System.IO.Path]::GetDirectoryName($FilePath)
                 $filename = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
@@ -223,8 +223,8 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
             }
 
             # Simuler la conversion
-            # Lire le contenu du fichier (utilisé dans un scénario réel)
-            # mais non utilisé dans cette version simplifiée
+            # Lire le contenu du fichier (utilisÃ© dans un scÃ©nario rÃ©el)
+            # mais non utilisÃ© dans cette version simplifiÃ©e
             $null = Get-Content -Path $FilePath -Raw
 
             # Conversion de JSON vers XML
@@ -243,7 +243,7 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 throw "Conversion de $sourceFormat vers $TargetFormat non prise en charge."
             }
 
-            # Retourner le chemin du fichier converti si demandé
+            # Retourner le chemin du fichier converti si demandÃ©
             if ($PassThru) {
                 return $OutputPath
             }
@@ -262,14 +262,14 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
                 [switch]$ShowAllFormats
             )
 
-            # Afficher les résultats
-            Write-Host "Résultats de détection de format pour '$FilePath'"
-            Write-Host "Format détecté: $($DetectionResult.DetectedFormat)"
+            # Afficher les rÃ©sultats
+            Write-Host "RÃ©sultats de dÃ©tection de format pour '$FilePath'"
+            Write-Host "Format dÃ©tectÃ©: $($DetectionResult.DetectedFormat)"
             Write-Host "Score de confiance: $($DetectionResult.Confidence)%"
 
             if ($ShowAllFormats -and $DetectionResult.AllFormats) {
                 Write-Host ""
-                Write-Host "Tous les formats détectés:"
+                Write-Host "Tous les formats dÃ©tectÃ©s:"
                 foreach ($format in $DetectionResult.AllFormats) {
                     Write-Host "  - $($format.Format) (Score: $($format.Confidence)%)"
                 }
@@ -279,52 +279,52 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
         }
     }
 
-    Context "Flux de travail complet : Détection et conversion de format" {
-        It "Détecte et convertit un fichier JSON en XML" {
-            # Étape 1 : Détecter le format du fichier
+    Context "Flux de travail complet : DÃ©tection et conversion de format" {
+        It "DÃ©tecte et convertit un fichier JSON en XML" {
+            # Ã‰tape 1 : DÃ©tecter le format du fichier
             $detectionResult = Test-FileFormat -FilePath $script:jsonFilePath
             $detectionResult | Should -Not -BeNullOrEmpty
             $detectionResult.DetectedFormat | Should -Be "JSON"
 
-            # Étape 2 : Afficher les résultats de détection
+            # Ã‰tape 2 : Afficher les rÃ©sultats de dÃ©tection
             $displayResult = Show-FormatDetectionResults -FilePath $script:jsonFilePath -DetectionResult $detectionResult
             $displayResult | Should -Be $detectionResult
 
-            # Étape 3 : Convertir le fichier
+            # Ã‰tape 3 : Convertir le fichier
             $outputPath = Join-Path -Path $script:testTempDir -ChildPath "test_converted.xml"
             $conversionResult = Convert-FileFormat -FilePath $script:jsonFilePath -TargetFormat "XML" -OutputPath $outputPath -PassThru
             $conversionResult | Should -Be $outputPath
             Test-Path -Path $outputPath | Should -Be $true
 
-            # Vérifier que le fichier converti contient du XML
+            # VÃ©rifier que le fichier converti contient du XML
             $convertedContent = Get-Content -Path $outputPath -Raw
             $convertedContent | Should -Match "<root>"
         }
 
-        It "Détecte et gère un format ambigu" {
-            # Étape 1 : Détecter le format du fichier
+        It "DÃ©tecte et gÃ¨re un format ambigu" {
+            # Ã‰tape 1 : DÃ©tecter le format du fichier
             $detectionResult = Test-FileFormat -FilePath $script:ambiguousFilePath
             $detectionResult | Should -Not -BeNullOrEmpty
             $detectionResult.DetectedFormat | Should -Be "JSON"
 
-            # Étape 2 : Résoudre l'ambiguïté
+            # Ã‰tape 2 : RÃ©soudre l'ambiguÃ¯tÃ©
             $resolvedResult = Resolve-AmbiguousFormats -FilePath $script:ambiguousFilePath -AutoResolve
             $resolvedResult | Should -Not -BeNullOrEmpty
             $resolvedResult.DetectedFormat | Should -Be "JSON"
 
-            # Étape 3 : Convertir le fichier
+            # Ã‰tape 3 : Convertir le fichier
             $outputPath = Join-Path -Path $script:testTempDir -ChildPath "ambiguous_converted.xml"
             $conversionResult = Convert-FileFormat -FilePath $script:ambiguousFilePath -TargetFormat "XML" -OutputPath $outputPath -PassThru
             $conversionResult | Should -Be $outputPath
             Test-Path -Path $outputPath | Should -Be $true
 
-            # Vérifier que le fichier converti contient du XML
+            # VÃ©rifier que le fichier converti contient du XML
             $convertedContent = Get-Content -Path $outputPath -Raw
             $convertedContent | Should -Match "<root>"
         }
 
-        It "Gère un flux de travail complet avec affichage détaillé" {
-            # Créer un fichier de test avec un format ambigu
+        It "GÃ¨re un flux de travail complet avec affichage dÃ©taillÃ©" {
+            # CrÃ©er un fichier de test avec un format ambigu
             $testFilePath = Join-Path -Path $script:testTempDir -ChildPath "workflow_test.txt"
             $testContent = @"
 {
@@ -334,36 +334,36 @@ Describe "Tests d'intégration Format-Converters (Simplified)" {
 "@
             $testContent | Set-Content -Path $testFilePath -Encoding UTF8
 
-            # Étape 1 : Détecter le format du fichier avec détails
+            # Ã‰tape 1 : DÃ©tecter le format du fichier avec dÃ©tails
             $detectionResult = Test-FileFormat -FilePath $testFilePath -IncludeAllFormats
             $detectionResult | Should -Not -BeNullOrEmpty
             $detectionResult.DetectedFormat | Should -Be "JSON"
             $detectionResult.AllFormats.Count | Should -BeGreaterThan 0
 
-            # Étape 2 : Afficher les résultats de détection avec tous les formats
+            # Ã‰tape 2 : Afficher les rÃ©sultats de dÃ©tection avec tous les formats
             $displayResult = Show-FormatDetectionResults -FilePath $testFilePath -DetectionResult $detectionResult -ShowAllFormats
             $displayResult | Should -Be $detectionResult
 
-            # Étape 3 : Résoudre l'ambiguïté avec auto-résolution
+            # Ã‰tape 3 : RÃ©soudre l'ambiguÃ¯tÃ© avec auto-rÃ©solution
             $resolvedResult = Resolve-AmbiguousFormats -FilePath $testFilePath -AutoResolve -ShowDetails
             $resolvedResult | Should -Not -BeNullOrEmpty
             $resolvedResult.DetectedFormat | Should -Be "JSON"
 
-            # Étape 4 : Convertir le fichier avec PassThru
+            # Ã‰tape 4 : Convertir le fichier avec PassThru
             $outputPath = Join-Path -Path $script:testTempDir -ChildPath "workflow_converted.xml"
             $conversionResult = Convert-FileFormat -FilePath $testFilePath -TargetFormat "XML" -OutputPath $outputPath -Force -PassThru
             $conversionResult | Should -Be $outputPath
             Test-Path -Path $outputPath | Should -Be $true
 
-            # Vérifier que le fichier converti contient du XML
+            # VÃ©rifier que le fichier converti contient du XML
             $convertedContent = Get-Content -Path $outputPath -Raw
             $convertedContent | Should -Match "<root>"
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

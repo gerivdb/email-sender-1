@@ -1,28 +1,28 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Initialise la segmentation automatique pour Agent Auto.
 .DESCRIPTION
-    Ce script configure et initialise la segmentation automatique des entrées
-    pour Agent Auto, évitant ainsi les interruptions dues aux limites de taille d'entrée.
+    Ce script configure et initialise la segmentation automatique des entrÃ©es
+    pour Agent Auto, Ã©vitant ainsi les interruptions dues aux limites de taille d'entrÃ©e.
 .PARAMETER ConfigPath
     Chemin du fichier de configuration Augment.
 .PARAMETER Enable
     Active la segmentation automatique.
 .PARAMETER MaxInputSizeKB
-    Taille maximale d'entrée en KB (par défaut: 10).
+    Taille maximale d'entrÃ©e en KB (par dÃ©faut: 10).
 .PARAMETER ChunkSizeKB
-    Taille des segments en KB (par défaut: 5).
+    Taille des segments en KB (par dÃ©faut: 5).
 .PARAMETER PreserveLines
-    Préserve les sauts de ligne lors de la segmentation de texte.
+    PrÃ©serve les sauts de ligne lors de la segmentation de texte.
 .PARAMETER CachePath
-    Chemin du dossier de cache pour les états de segmentation.
+    Chemin du dossier de cache pour les Ã©tats de segmentation.
 .EXAMPLE
     .\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
+    Date de crÃ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -56,7 +56,7 @@ if (-not (Test-Path -Path $modulePath)) {
 
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -82,7 +82,7 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Fonction pour mettre à jour la configuration
+# Fonction pour mettre Ã  jour la configuration
 function Update-AugmentConfig {
     [CmdletBinding()]
     param (
@@ -105,9 +105,9 @@ function Update-AugmentConfig {
         [string]$CachePath
     )
     
-    Write-Log "Mise à jour de la configuration Augment..." -Level "INFO"
+    Write-Log "Mise Ã  jour de la configuration Augment..." -Level "INFO"
     
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (-not (Test-Path -Path $ConfigPath)) {
         Write-Log "Le fichier de configuration n'existe pas: $ConfigPath" -Level "ERROR"
         return $false
@@ -117,9 +117,9 @@ function Update-AugmentConfig {
         # Charger la configuration
         $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
         
-        # Vérifier si la section agent_auto existe
+        # VÃ©rifier si la section agent_auto existe
         if (-not (Get-Member -InputObject $config -Name "agent_auto" -MemberType Properties)) {
-            # Créer la section agent_auto
+            # CrÃ©er la section agent_auto
             $config | Add-Member -MemberType NoteProperty -Name "agent_auto" -Value @{
                 input_segmentation = @{
                     enabled = $Enable
@@ -138,9 +138,9 @@ function Update-AugmentConfig {
             }
         }
         else {
-            # Vérifier si la section input_segmentation existe
+            # VÃ©rifier si la section input_segmentation existe
             if (-not (Get-Member -InputObject $config.agent_auto -Name "input_segmentation" -MemberType Properties)) {
-                # Créer la section input_segmentation
+                # CrÃ©er la section input_segmentation
                 $config.agent_auto | Add-Member -MemberType NoteProperty -Name "input_segmentation" -Value @{
                     enabled = $Enable
                     max_input_size_kb = $MaxInputSizeKB
@@ -150,7 +150,7 @@ function Update-AugmentConfig {
                 }
             }
             else {
-                # Mettre à jour la section input_segmentation
+                # Mettre Ã  jour la section input_segmentation
                 $config.agent_auto.input_segmentation.enabled = $Enable
                 $config.agent_auto.input_segmentation.max_input_size_kb = $MaxInputSizeKB
                 $config.agent_auto.input_segmentation.chunk_size_kb = $ChunkSizeKB
@@ -158,9 +158,9 @@ function Update-AugmentConfig {
                 $config.agent_auto.input_segmentation.state_path = $CachePath
             }
             
-            # Vérifier si la section error_prevention existe
+            # VÃ©rifier si la section error_prevention existe
             if (-not (Get-Member -InputObject $config.agent_auto -Name "error_prevention" -MemberType Properties)) {
-                # Créer la section error_prevention
+                # CrÃ©er la section error_prevention
                 $config.agent_auto | Add-Member -MemberType NoteProperty -Name "error_prevention" -Value @{
                     cycle_detection = @{
                         enabled = $true
@@ -174,16 +174,16 @@ function Update-AugmentConfig {
         # Enregistrer la configuration
         $config | ConvertTo-Json -Depth 10 | Out-File -FilePath $ConfigPath -Encoding utf8
         
-        Write-Log "Configuration mise à jour avec succès." -Level "SUCCESS"
+        Write-Log "Configuration mise Ã  jour avec succÃ¨s." -Level "SUCCESS"
         return $true
     }
     catch {
-        Write-Log "Erreur lors de la mise à jour de la configuration: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la mise Ã  jour de la configuration: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour créer un hook PowerShell pour Agent Auto
+# Fonction pour crÃ©er un hook PowerShell pour Agent Auto
 function New-AgentAutoHook {
     [CmdletBinding()]
     param (
@@ -197,7 +197,7 @@ function New-AgentAutoHook {
         [bool]$PreserveLines
     )
     
-    Write-Log "Création du hook PowerShell pour Agent Auto..." -Level "INFO"
+    Write-Log "CrÃ©ation du hook PowerShell pour Agent Auto..." -Level "INFO"
     
     $hookPath = Join-Path -Path $PSScriptRoot -ChildPath "AgentAutoHook.ps1"
     
@@ -205,14 +205,14 @@ function New-AgentAutoHook {
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Hook PowerShell pour la segmentation automatique des entrées Agent Auto.
+    Hook PowerShell pour la segmentation automatique des entrÃ©es Agent Auto.
 .DESCRIPTION
-    Ce script intercepte les entrées destinées à Agent Auto et les segmente
-    automatiquement si elles dépassent la taille maximale autorisée.
+    Ce script intercepte les entrÃ©es destinÃ©es Ã  Agent Auto et les segmente
+    automatiquement si elles dÃ©passent la taille maximale autorisÃ©e.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: $(Get-Date -Format "yyyy-MM-dd")
+    Date de crÃ©ation: $(Get-Date -Format "yyyy-MM-dd")
 #>
 
 # Importer le module de segmentation
@@ -221,7 +221,7 @@ Import-Module "$PSScriptRoot\..\..\modules\InputSegmentation.psm1" -Force
 # Initialiser le module de segmentation
 Initialize-InputSegmentation -MaxInputSizeKB $MaxInputSizeKB -DefaultChunkSizeKB $ChunkSizeKB
 
-# Fonction pour traiter une entrée
+# Fonction pour traiter une entrÃ©e
 function Process-AgentAutoInput {
     [CmdletBinding()]
     param (
@@ -230,24 +230,24 @@ function Process-AgentAutoInput {
     )
     
     process {
-        # Mesurer la taille de l'entrée
+        # Mesurer la taille de l'entrÃ©e
         `$sizeKB = Measure-InputSize -Input `$Input
         
-        # Si l'entrée est plus petite que la taille maximale, la retourner telle quelle
+        # Si l'entrÃ©e est plus petite que la taille maximale, la retourner telle quelle
         if (`$sizeKB -le $MaxInputSizeKB) {
             return `$Input
         }
         
-        # Segmenter l'entrée
+        # Segmenter l'entrÃ©e
         `$segments = Split-Input -Input `$Input -ChunkSizeKB $ChunkSizeKB -PreserveLines:`$$PreserveLines
         
-        # Créer un identifiant unique pour cette segmentation
+        # CrÃ©er un identifiant unique pour cette segmentation
         `$segmentationId = [guid]::NewGuid().ToString()
         
-        # Sauvegarder l'état de segmentation
+        # Sauvegarder l'Ã©tat de segmentation
         Save-SegmentationState -Id `$segmentationId -Segments `$segments -CurrentIndex 0
         
-        # Retourner le premier segment avec des métadonnées
+        # Retourner le premier segment avec des mÃ©tadonnÃ©es
         return [PSCustomObject]@{
             Content = `$segments[0]
             IsSegmented = `$true
@@ -255,7 +255,7 @@ function Process-AgentAutoInput {
             SegmentIndex = 0
             TotalSegments = `$segments.Count
             OriginalSizeKB = `$sizeKB
-            Message = "Entrée segmentée en `$(`$segments.Count) parties. Utilisez Get-NextSegment -Id `$segmentationId pour obtenir les segments suivants."
+            Message = "EntrÃ©e segmentÃ©e en `$(`$segments.Count) parties. Utilisez Get-NextSegment -Id `$segmentationId pour obtenir les segments suivants."
         }
     }
 }
@@ -268,27 +268,27 @@ function Get-NextSegment {
         [string]`$Id
     )
     
-    # Charger l'état de segmentation
+    # Charger l'Ã©tat de segmentation
     `$state = Get-SegmentationState -Id `$Id
     
     if (-not `$state) {
-        Write-Error "État de segmentation introuvable pour l'ID: `$Id"
+        Write-Error "Ã‰tat de segmentation introuvable pour l'ID: `$Id"
         return `$null
     }
     
-    # Vérifier s'il reste des segments
+    # VÃ©rifier s'il reste des segments
     if (`$state.CurrentIndex -ge `$state.TotalSegments - 1) {
-        Write-Warning "Tous les segments ont déjà été traités pour l'ID: `$Id"
+        Write-Warning "Tous les segments ont dÃ©jÃ  Ã©tÃ© traitÃ©s pour l'ID: `$Id"
         return `$null
     }
     
-    # Incrémenter l'index
+    # IncrÃ©menter l'index
     `$nextIndex = `$state.CurrentIndex + 1
     
-    # Mettre à jour l'état
+    # Mettre Ã  jour l'Ã©tat
     Save-SegmentationState -Id `$Id -Segments `$state.Segments -CurrentIndex `$nextIndex
     
-    # Retourner le segment suivant avec des métadonnées
+    # Retourner le segment suivant avec des mÃ©tadonnÃ©es
     return [PSCustomObject]@{
         Content = `$state.Segments[`$nextIndex]
         IsSegmented = `$true
@@ -306,21 +306,21 @@ Export-ModuleMember -Function Process-AgentAutoInput, Get-NextSegment
     
     try {
         $hookContent | Out-File -FilePath $hookPath -Encoding utf8
-        Write-Log "Hook PowerShell créé: $hookPath" -Level "SUCCESS"
+        Write-Log "Hook PowerShell crÃ©Ã©: $hookPath" -Level "SUCCESS"
         return $true
     }
     catch {
-        Write-Log "Erreur lors de la création du hook PowerShell: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation du hook PowerShell: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour créer un exemple d'utilisation
+# Fonction pour crÃ©er un exemple d'utilisation
 function New-UsageExample {
     [CmdletBinding()]
     param ()
     
-    Write-Log "Création d'un exemple d'utilisation..." -Level "INFO"
+    Write-Log "CrÃ©ation d'un exemple d'utilisation..." -Level "INFO"
     
     $examplePath = Join-Path -Path $PSScriptRoot -ChildPath "Example-AgentAutoSegmentation.ps1"
     
@@ -331,11 +331,11 @@ function New-UsageExample {
     Exemple d'utilisation de la segmentation automatique pour Agent Auto.
 .DESCRIPTION
     Ce script montre comment utiliser la segmentation automatique pour
-    traiter des entrées volumineuses avec Agent Auto.
+    traiter des entrÃ©es volumineuses avec Agent Auto.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: $(Get-Date -Format "yyyy-MM-dd")
+    Date de crÃ©ation: $(Get-Date -Format "yyyy-MM-dd")
 #>
 
 # Importer le hook Agent Auto
@@ -349,16 +349,16 @@ function Invoke-AgentAuto {
         [object]`$Input
     )
     
-    Write-Host "Agent Auto traite l'entrée..." -ForegroundColor Cyan
+    Write-Host "Agent Auto traite l'entrÃ©e..." -ForegroundColor Cyan
     
     # Simuler un traitement
     Start-Sleep -Seconds 1
     
-    # Retourner une réponse
-    return "Agent Auto a traité l'entrée: `$(`$Input.GetType().Name) de taille `$((Measure-InputSize -Input `$Input)) KB"
+    # Retourner une rÃ©ponse
+    return "Agent Auto a traitÃ© l'entrÃ©e: `$(`$Input.GetType().Name) de taille `$((Measure-InputSize -Input `$Input)) KB"
 }
 
-# Fonction pour traiter une entrée avec segmentation
+# Fonction pour traiter une entrÃ©e avec segmentation
 function Invoke-AgentAutoWithSegmentation {
     [CmdletBinding()]
     param (
@@ -366,16 +366,16 @@ function Invoke-AgentAutoWithSegmentation {
         [object]`$Input
     )
     
-    # Traiter l'entrée avec segmentation
+    # Traiter l'entrÃ©e avec segmentation
     `$processedInput = `$Input | Process-AgentAutoInput
     
-    # Vérifier si l'entrée a été segmentée
+    # VÃ©rifier si l'entrÃ©e a Ã©tÃ© segmentÃ©e
     if (`$processedInput.IsSegmented) {
-        Write-Host "Entrée segmentée en `$(`$processedInput.TotalSegments) parties." -ForegroundColor Yellow
+        Write-Host "EntrÃ©e segmentÃ©e en `$(`$processedInput.TotalSegments) parties." -ForegroundColor Yellow
         
         # Traiter le premier segment
         `$result = Invoke-AgentAuto -Input `$processedInput.Content
-        Write-Host "Segment 1/`$(`$processedInput.TotalSegments) traité: `$result" -ForegroundColor Green
+        Write-Host "Segment 1/`$(`$processedInput.TotalSegments) traitÃ©: `$result" -ForegroundColor Green
         
         # Traiter les segments restants
         for (`$i = 1; `$i -lt `$processedInput.TotalSegments; `$i++) {
@@ -383,34 +383,34 @@ function Invoke-AgentAutoWithSegmentation {
             
             if (`$nextSegment) {
                 `$result = Invoke-AgentAuto -Input `$nextSegment.Content
-                Write-Host "Segment `$(`$i + 1)/`$(`$processedInput.TotalSegments) traité: `$result" -ForegroundColor Green
+                Write-Host "Segment `$(`$i + 1)/`$(`$processedInput.TotalSegments) traitÃ©: `$result" -ForegroundColor Green
             }
         }
         
-        return "Traitement terminé. `$(`$processedInput.TotalSegments) segments traités."
+        return "Traitement terminÃ©. `$(`$processedInput.TotalSegments) segments traitÃ©s."
     }
     else {
-        # Traiter l'entrée directement
+        # Traiter l'entrÃ©e directement
         return Invoke-AgentAuto -Input `$processedInput
     }
 }
 
-# Exemple 1: Entrée de petite taille
-Write-Host "`nExemple 1: Entrée de petite taille" -ForegroundColor Magenta
-`$smallInput = "Ceci est une petite entrée de test."
+# Exemple 1: EntrÃ©e de petite taille
+Write-Host "`nExemple 1: EntrÃ©e de petite taille" -ForegroundColor Magenta
+`$smallInput = "Ceci est une petite entrÃ©e de test."
 Invoke-AgentAutoWithSegmentation -Input `$smallInput
 
-# Exemple 2: Entrée de grande taille (texte)
-Write-Host "`nExemple 2: Entrée de grande taille (texte)" -ForegroundColor Magenta
+# Exemple 2: EntrÃ©e de grande taille (texte)
+Write-Host "`nExemple 2: EntrÃ©e de grande taille (texte)" -ForegroundColor Magenta
 `$largeText = ""
 for (`$i = 0; `$i -lt 500; `$i++) {
-    `$largeText += "Ligne `$i : Ceci est une ligne de test pour la segmentation d'entrée. " * 5
+    `$largeText += "Ligne `$i : Ceci est une ligne de test pour la segmentation d'entrÃ©e. " * 5
     `$largeText += "`n"
 }
 Invoke-AgentAutoWithSegmentation -Input `$largeText
 
-# Exemple 3: Entrée de grande taille (JSON)
-Write-Host "`nExemple 3: Entrée de grande taille (JSON)" -ForegroundColor Magenta
+# Exemple 3: EntrÃ©e de grande taille (JSON)
+Write-Host "`nExemple 3: EntrÃ©e de grande taille (JSON)" -ForegroundColor Magenta
 `$largeJson = @{
     items = @()
 }
@@ -433,11 +433,11 @@ Invoke-AgentAutoWithSegmentation -Input `$largeJson
     
     try {
         $exampleContent | Out-File -FilePath $examplePath -Encoding utf8
-        Write-Log "Exemple d'utilisation créé: $examplePath" -Level "SUCCESS"
+        Write-Log "Exemple d'utilisation crÃ©Ã©: $examplePath" -Level "SUCCESS"
         return $true
     }
     catch {
-        Write-Log "Erreur lors de la création de l'exemple d'utilisation: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation de l'exemple d'utilisation: $_" -Level "ERROR"
         return $false
     }
 }
@@ -470,53 +470,53 @@ function Initialize-AgentAutoSegmentation {
     # Initialiser le module de segmentation
     Initialize-InputSegmentation -MaxInputSizeKB $MaxInputSizeKB -DefaultChunkSizeKB $ChunkSizeKB
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     $configUpdated = Update-AugmentConfig -ConfigPath $ConfigPath -Enable $Enable -MaxInputSizeKB $MaxInputSizeKB -ChunkSizeKB $ChunkSizeKB -PreserveLines $PreserveLines -CachePath $CachePath
     
     if (-not $configUpdated) {
-        Write-Log "Échec de la mise à jour de la configuration." -Level "ERROR"
+        Write-Log "Ã‰chec de la mise Ã  jour de la configuration." -Level "ERROR"
         return $false
     }
     
-    # Créer le hook PowerShell
+    # CrÃ©er le hook PowerShell
     $hookCreated = New-AgentAutoHook -MaxInputSizeKB $MaxInputSizeKB -ChunkSizeKB $ChunkSizeKB -PreserveLines $PreserveLines
     
     if (-not $hookCreated) {
-        Write-Log "Échec de la création du hook PowerShell." -Level "ERROR"
+        Write-Log "Ã‰chec de la crÃ©ation du hook PowerShell." -Level "ERROR"
         return $false
     }
     
-    # Créer l'exemple d'utilisation
+    # CrÃ©er l'exemple d'utilisation
     $exampleCreated = New-UsageExample
     
     if (-not $exampleCreated) {
-        Write-Log "Échec de la création de l'exemple d'utilisation." -Level "WARNING"
+        Write-Log "Ã‰chec de la crÃ©ation de l'exemple d'utilisation." -Level "WARNING"
     }
     
-    # Créer les dossiers nécessaires
+    # CrÃ©er les dossiers nÃ©cessaires
     $cacheDirPath = Split-Path -Path $CachePath -Parent
     
     if (-not (Test-Path -Path $cacheDirPath)) {
         New-Item -Path $cacheDirPath -ItemType Directory -Force | Out-Null
-        Write-Log "Dossier de cache créé: $cacheDirPath" -Level "INFO"
+        Write-Log "Dossier de cache crÃ©Ã©: $cacheDirPath" -Level "INFO"
     }
     
     $logsDirPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\logs\segmentation"
     
     if (-not (Test-Path -Path $logsDirPath)) {
         New-Item -Path $logsDirPath -ItemType Directory -Force | Out-Null
-        Write-Log "Dossier de logs créé: $logsDirPath" -Level "INFO"
+        Write-Log "Dossier de logs crÃ©Ã©: $logsDirPath" -Level "INFO"
     }
     
-    Write-Log "Initialisation terminée." -Level "SUCCESS"
-    Write-Log "La segmentation automatique pour Agent Auto est maintenant $(if ($Enable) { 'activée' } else { 'désactivée' })." -Level $(if ($Enable) { "SUCCESS" } else { "WARNING" })
-    Write-Log "Taille maximale d'entrée: $MaxInputSizeKB KB" -Level "INFO"
+    Write-Log "Initialisation terminÃ©e." -Level "SUCCESS"
+    Write-Log "La segmentation automatique pour Agent Auto est maintenant $(if ($Enable) { 'activÃ©e' } else { 'dÃ©sactivÃ©e' })." -Level $(if ($Enable) { "SUCCESS" } else { "WARNING" })
+    Write-Log "Taille maximale d'entrÃ©e: $MaxInputSizeKB KB" -Level "INFO"
     Write-Log "Taille des segments: $ChunkSizeKB KB" -Level "INFO"
-    Write-Log "Préservation des lignes: $PreserveLines" -Level "INFO"
+    Write-Log "PrÃ©servation des lignes: $PreserveLines" -Level "INFO"
     Write-Log "Chemin du cache: $CachePath" -Level "INFO"
     
     return $true
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Initialize-AgentAutoSegmentation -ConfigPath $ConfigPath -Enable $Enable -MaxInputSizeKB $MaxInputSizeKB -ChunkSizeKB $ChunkSizeKB -PreserveLines $PreserveLines -CachePath $CachePath

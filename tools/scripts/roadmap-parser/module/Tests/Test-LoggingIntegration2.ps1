@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Test d'integration pour les fonctions de journalisation.
 

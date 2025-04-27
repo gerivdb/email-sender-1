@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exemple d'utilisation du module Format-Converters pour la détection de format.
+    Exemple d'utilisation du module Format-Converters pour la dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script montre comment utiliser le module Format-Converters pour détecter le format
-    d'un fichier, gérer les cas ambigus, et afficher les résultats.
+    Ce script montre comment utiliser le module Format-Converters pour dÃ©tecter le format
+    d'un fichier, gÃ©rer les cas ambigus, et afficher les rÃ©sultats.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser. Si non spécifié, l'utilisateur sera invité à sélectionner un fichier.
+    Le chemin du fichier Ã  analyser. Si non spÃ©cifiÃ©, l'utilisateur sera invitÃ© Ã  sÃ©lectionner un fichier.
 
 .PARAMETER AutoResolve
-    Indique si les cas ambigus doivent être résolus automatiquement.
+    Indique si les cas ambigus doivent Ãªtre rÃ©solus automatiquement.
 
 .PARAMETER GenerateReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     .\Detect-FileFormat-Example.ps1 -FilePath "C:\path\to\file.txt"
@@ -36,18 +36,18 @@ param(
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 Import-Module $modulePath -Force
 
-# Si aucun fichier n'est spécifié, demander à l'utilisateur d'en sélectionner un
+# Si aucun fichier n'est spÃ©cifiÃ©, demander Ã  l'utilisateur d'en sÃ©lectionner un
 if (-not $FilePath) {
     Add-Type -AssemblyName System.Windows.Forms
     $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
-    $openFileDialog.Title = "Sélectionner un fichier à analyser"
+    $openFileDialog.Title = "SÃ©lectionner un fichier Ã  analyser"
     $openFileDialog.Filter = "Tous les fichiers (*.*)|*.*"
     
     if ($openFileDialog.ShowDialog() -eq "OK") {
         $FilePath = $openFileDialog.FileName
     }
     else {
-        Write-Error "Aucun fichier sélectionné."
+        Write-Error "Aucun fichier sÃ©lectionnÃ©."
         exit 1
     }
 }
@@ -55,7 +55,7 @@ if (-not $FilePath) {
 Write-Host "Analyse du fichier : $FilePath" -ForegroundColor Cyan
 
 try {
-    # Détecter le format du fichier
+    # DÃ©tecter le format du fichier
     $detectionParams = @{
         FilePath = $FilePath
         AutoResolve = $AutoResolve
@@ -70,11 +70,11 @@ try {
     
     $result = Detect-FileFormat @detectionParams
     
-    # Afficher un résumé
-    Write-Host "Résumé :" -ForegroundColor Green
-    Write-Host "  Format détecté : $($result.DetectedFormat)" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "RÃ©sumÃ© :" -ForegroundColor Green
+    Write-Host "  Format dÃ©tectÃ© : $($result.DetectedFormat)" -ForegroundColor White
     Write-Host "  Score de confiance : $($result.ConfidenceScore)%" -ForegroundColor White
 }
 catch {
-    Write-Error "Erreur lors de la détection : $_"
+    Write-Error "Erreur lors de la dÃ©tection : $_"
 }

@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Affiche des statistiques sur les scripts du projet
 .DESCRIPTION
-    Ce script génère et affiche des statistiques sur les scripts du projet,
-    notamment la distribution par catégorie, langage, auteur, etc.
+    Ce script gÃ©nÃ¨re et affiche des statistiques sur les scripts du projet,
+    notamment la distribution par catÃ©gorie, langage, auteur, etc.
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .PARAMETER OutputFormat
     Format de sortie du rapport (Console, HTML)
 .PARAMETER OutputPath
@@ -32,11 +32,11 @@ param(
     [string]$OutputPath = "reports/script_statistics.html"
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -46,7 +46,7 @@ function New-HtmlReport {
         [string]$OutputPath
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
@@ -64,7 +64,7 @@ function New-HtmlReport {
     $mediumScripts = ($Scripts | Where-Object { $_.LineCount -ge 100 -and $_.LineCount -lt 500 }).Count
     $largeScripts = ($Scripts | Where-Object { $_.LineCount -ge 500 }).Count
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -136,11 +136,11 @@ function New-HtmlReport {
         <h1>Statistiques des Scripts</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <p><strong>Date d'analyse:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
             <p><strong>Nombre total de scripts:</strong> $totalScripts</p>
             <p><strong>Nombre de langages:</strong> $($scriptsByLanguage.Count)</p>
-            <p><strong>Nombre de catégories:</strong> $($scriptsByCategory.Count)</p>
+            <p><strong>Nombre de catÃ©gories:</strong> $($scriptsByCategory.Count)</p>
             <p><strong>Nombre d'auteurs:</strong> $($scriptsByAuthor.Count)</p>
         </div>
         
@@ -153,7 +153,7 @@ function New-HtmlReport {
             </div>
             
             <div class="chart-col">
-                <h2>Distribution par catégorie</h2>
+                <h2>Distribution par catÃ©gorie</h2>
                 <div class="chart-container">
                     <canvas id="categoryChart"></canvas>
                 </div>
@@ -176,7 +176,7 @@ function New-HtmlReport {
             </div>
         </div>
         
-        <h2>Évolution dans le temps</h2>
+        <h2>Ã‰volution dans le temps</h2>
         <div class="chart-container">
             <canvas id="timelineChart"></canvas>
         </div>
@@ -186,10 +186,10 @@ function New-HtmlReport {
             <tr>
                 <th>Nom</th>
                 <th>Langage</th>
-                <th>Catégorie</th>
+                <th>CatÃ©gorie</th>
                 <th>Auteur</th>
                 <th>Lignes</th>
-                <th>Dernière modification</th>
+                <th>DerniÃ¨re modification</th>
             </tr>
 "@
 
@@ -214,12 +214,12 @@ function New-HtmlReport {
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const languageData = {
             labels: [
 "@
 
-    # Générer les données pour le graphique des langages
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique des langages
     $languageLabels = $scriptsByLanguage | ForEach-Object { "'$($_.Name)'" }
     $html += $languageLabels -join ",`n                "
 
@@ -252,7 +252,7 @@ function New-HtmlReport {
             labels: [
 "@
 
-    # Générer les données pour le graphique des catégories
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique des catÃ©gories
     $categoryLabels = $scriptsByCategory | ForEach-Object { "'$($_.Name)'" }
     $html += $categoryLabels -join ",`n                "
 
@@ -285,7 +285,7 @@ function New-HtmlReport {
             labels: [
 "@
 
-    # Générer les données pour le graphique des auteurs
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique des auteurs
     $authorLabels = $scriptsByAuthor | Select-Object -First 10 | ForEach-Object { "'$($_.Name)'" }
     $html += $authorLabels -join ",`n                "
 
@@ -331,7 +331,7 @@ function New-HtmlReport {
             labels: [
 "@
 
-    # Générer les données pour le graphique de l'évolution dans le temps
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique de l'Ã©volution dans le temps
     $timelineLabels = $scriptsByMonth | ForEach-Object { "'$($_.Name)'" }
     $html += $timelineLabels -join ",`n                "
 
@@ -354,7 +354,7 @@ function New-HtmlReport {
             }]
         };
         
-        // Créer les graphiques
+        // CrÃ©er les graphiques
         const languageCtx = document.getElementById('languageChart').getContext('2d');
         new Chart(languageCtx, {
             type: 'pie',
@@ -385,7 +385,7 @@ function New-HtmlReport {
                     },
                     title: {
                         display: true,
-                        text: 'Distribution par catégorie'
+                        text: 'Distribution par catÃ©gorie'
                     }
                 }
             }
@@ -444,7 +444,7 @@ function New-HtmlReport {
                     },
                     title: {
                         display: true,
-                        text: 'Évolution dans le temps'
+                        text: 'Ã‰volution dans le temps'
                     }
                 },
                 scales: {
@@ -459,23 +459,23 @@ function New-HtmlReport {
 </html>
 "@
 
-    # Écrire le fichier HTML
+    # Ã‰crire le fichier HTML
     Set-Content -Path $OutputPath -Value $html -Encoding UTF8
     
     return $OutputPath
 }
 
-# Récupérer les scripts
-Write-Host "Récupération des scripts..." -ForegroundColor Cyan
+# RÃ©cupÃ©rer les scripts
+Write-Host "RÃ©cupÃ©ration des scripts..." -ForegroundColor Cyan
 $scripts = Get-ScriptInventory -Path $Path
 
-# Vérifier qu'il y a des scripts
+# VÃ©rifier qu'il y a des scripts
 if (-not $scripts -or $scripts.Count -eq 0) {
-    Write-Host "Aucun script trouvé dans le répertoire spécifié." -ForegroundColor Red
+    Write-Host "Aucun script trouvÃ© dans le rÃ©pertoire spÃ©cifiÃ©." -ForegroundColor Red
     exit
 }
 
-# Afficher les statistiques selon le format demandé
+# Afficher les statistiques selon le format demandÃ©
 switch ($OutputFormat) {
     "Console" {
         Write-Host "`nStatistiques des scripts:" -ForegroundColor Cyan
@@ -487,9 +487,9 @@ switch ($OutputFormat) {
             Expression = { $_.Name }
         }, Count -AutoSize
         
-        Write-Host "`nDistribution par catégorie:" -ForegroundColor Cyan
+        Write-Host "`nDistribution par catÃ©gorie:" -ForegroundColor Cyan
         $scripts | Group-Object -Property Category | Sort-Object -Property Count -Descending | Format-Table -Property @{
-            Label = "Catégorie"
+            Label = "CatÃ©gorie"
             Expression = { $_.Name }
         }, Count -AutoSize
         
@@ -505,9 +505,9 @@ switch ($OutputFormat) {
     "HTML" {
         $outputFilePath = if ($OutputPath -like "*.html") { $OutputPath } else { "$OutputPath.html" }
         $reportPath = New-HtmlReport -Scripts $scripts -OutputPath $outputFilePath
-        Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
         
-        # Ouvrir le rapport dans le navigateur par défaut
+        # Ouvrir le rapport dans le navigateur par dÃ©faut
         Start-Process $reportPath
     }
 }

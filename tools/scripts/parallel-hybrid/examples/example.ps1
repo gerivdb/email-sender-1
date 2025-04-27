@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exemple d'utilisation de l'architecture hybride PowerShell-Python pour le traitement parallèle.
+    Exemple d'utilisation de l'architecture hybride PowerShell-Python pour le traitement parallÃ¨le.
 .DESCRIPTION
     Ce script montre comment utiliser l'architecture hybride PowerShell-Python
-    pour effectuer un traitement parallèle intensif.
+    pour effectuer un traitement parallÃ¨le intensif.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-10
-    Compatibilité: PowerShell 5.1 et supérieur, Python 3.6 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur, Python 3.6 et supÃ©rieur
 #>
 
 # Importer le module d'architecture hybride
@@ -17,7 +17,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script Python de traitement
+# CrÃ©er un script Python de traitement
 $pythonScriptPath = Join-Path -Path $scriptPath -ChildPath "process_data.py"
 if (-not (Test-Path -Path $pythonScriptPath)) {
     $pythonScript = @"
@@ -33,7 +33,7 @@ import random
 from multiprocessing import Pool, cpu_count
 
 def process_item(item):
-    """Traite un élément de données."""
+    """Traite un Ã©lÃ©ment de donnÃ©es."""
     # Simuler un traitement intensif
     time.sleep(random.uniform(0.01, 0.05))
     
@@ -49,7 +49,7 @@ def process_item(item):
         return item
 
 def process_batch(batch, num_workers=None):
-    """Traite un lot de données en parallèle."""
+    """Traite un lot de donnÃ©es en parallÃ¨le."""
     if num_workers is None:
         num_workers = cpu_count()
     
@@ -60,35 +60,35 @@ def process_batch(batch, num_workers=None):
 
 def main():
     """Fonction principale."""
-    parser = argparse.ArgumentParser(description='Traitement de données en parallèle')
-    parser.add_argument('--input', required=True, help='Fichier d\'entrée JSON')
+    parser = argparse.ArgumentParser(description='Traitement de donnÃ©es en parallÃ¨le')
+    parser.add_argument('--input', required=True, help='Fichier d\'entrÃ©e JSON')
     parser.add_argument('--output', required=True, help='Fichier de sortie JSON')
-    parser.add_argument('--cache', help='Chemin vers le répertoire du cache')
-    parser.add_argument('--num-workers', type=int, help='Nombre de processus parallèles')
+    parser.add_argument('--cache', help='Chemin vers le rÃ©pertoire du cache')
+    parser.add_argument('--num-workers', type=int, help='Nombre de processus parallÃ¨les')
     
     args = parser.parse_args()
     
-    # Charger les données d'entrée
+    # Charger les donnÃ©es d'entrÃ©e
     try:
         with open(args.input, 'r', encoding='utf-8') as f:
             input_data = json.load(f)
     except Exception as e:
-        print(f"Erreur lors de la lecture du fichier d'entrée : {e}", file=sys.stderr)
+        print(f"Erreur lors de la lecture du fichier d'entrÃ©e : {e}", file=sys.stderr)
         sys.exit(1)
     
-    # Traiter les données
+    # Traiter les donnÃ©es
     try:
         results = process_batch(input_data, args.num_workers)
     except Exception as e:
-        print(f"Erreur lors du traitement des données : {e}", file=sys.stderr)
+        print(f"Erreur lors du traitement des donnÃ©es : {e}", file=sys.stderr)
         sys.exit(1)
     
-    # Écrire les résultats
+    # Ã‰crire les rÃ©sultats
     try:
         with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"Erreur lors de l'écriture du fichier de sortie : {e}", file=sys.stderr)
+        print(f"Erreur lors de l'Ã©criture du fichier de sortie : {e}", file=sys.stderr)
         sys.exit(1)
     
     sys.exit(0)
@@ -98,10 +98,10 @@ if __name__ == '__main__':
 "@
     
     $pythonScript | Out-File -FilePath $pythonScriptPath -Encoding utf8
-    Write-Host "Script Python de traitement créé : $pythonScriptPath" -ForegroundColor Green
+    Write-Host "Script Python de traitement crÃ©Ã© : $pythonScriptPath" -ForegroundColor Green
 }
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     param(
         [int]$Count = 1000,
@@ -156,63 +156,63 @@ function New-TestData {
 function Measure-Performance {
     param(
         [scriptblock]$ScriptBlock,
-        [string]$Name = "Opération"
+        [string]$Name = "OpÃ©ration"
     )
     
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     $result = & $ScriptBlock
     $stopwatch.Stop()
     
-    Write-Host "$Name terminé en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Cyan
+    Write-Host "$Name terminÃ© en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Cyan
     
     return $result
 }
 
-# Exemple 1 : Traitement parallèle simple
+# Exemple 1 : Traitement parallÃ¨le simple
 function Example-SimpleParallel {
-    Write-Host "`n=== Exemple 1 : Traitement parallèle simple ===" -ForegroundColor Yellow
+    Write-Host "`n=== Exemple 1 : Traitement parallÃ¨le simple ===" -ForegroundColor Yellow
     
-    # Générer des données de test
+    # GÃ©nÃ©rer des donnÃ©es de test
     $data = New-TestData -Count 1000 -Type "numbers"
-    Write-Host "Données générées : $($data.Count) éléments" -ForegroundColor Green
+    Write-Host "DonnÃ©es gÃ©nÃ©rÃ©es : $($data.Count) Ã©lÃ©ments" -ForegroundColor Green
     
     # Initialiser l'environnement hybride
     $env = Initialize-HybridEnvironment -InstallMissing -Verbose
     if (-not $env.Ready) {
-        Write-Error "L'environnement hybride n'est pas prêt. Vérifiez les prérequis."
+        Write-Error "L'environnement hybride n'est pas prÃªt. VÃ©rifiez les prÃ©requis."
         return
     }
     
-    # Exécuter le traitement parallèle
+    # ExÃ©cuter le traitement parallÃ¨le
     $results = Measure-Performance -ScriptBlock {
         Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 100
-    } -Name "Traitement parallèle"
+    } -Name "Traitement parallÃ¨le"
     
-    # Afficher les résultats
-    Write-Host "Résultats : $($results.Count) éléments" -ForegroundColor Green
-    Write-Host "Premiers éléments : $($results | Select-Object -First 5 | ConvertTo-Json -Compress)" -ForegroundColor Green
+    # Afficher les rÃ©sultats
+    Write-Host "RÃ©sultats : $($results.Count) Ã©lÃ©ments" -ForegroundColor Green
+    Write-Host "Premiers Ã©lÃ©ments : $($results | Select-Object -First 5 | ConvertTo-Json -Compress)" -ForegroundColor Green
 }
 
-# Exemple 2 : Traitement parallèle avec surveillance des ressources
+# Exemple 2 : Traitement parallÃ¨le avec surveillance des ressources
 function Example-ParallelWithMonitoring {
-    Write-Host "`n=== Exemple 2 : Traitement parallèle avec surveillance des ressources ===" -ForegroundColor Yellow
+    Write-Host "`n=== Exemple 2 : Traitement parallÃ¨le avec surveillance des ressources ===" -ForegroundColor Yellow
     
-    # Générer des données de test
+    # GÃ©nÃ©rer des donnÃ©es de test
     $data = New-TestData -Count 5000 -Type "mixed"
-    Write-Host "Données générées : $($data.Count) éléments" -ForegroundColor Green
+    Write-Host "DonnÃ©es gÃ©nÃ©rÃ©es : $($data.Count) Ã©lÃ©ments" -ForegroundColor Green
     
-    # Démarrer la surveillance des ressources
+    # DÃ©marrer la surveillance des ressources
     $monitoring = Start-ResourceMonitoring -IntervalSeconds 0.5
-    Write-Host "Surveillance des ressources démarrée" -ForegroundColor Green
+    Write-Host "Surveillance des ressources dÃ©marrÃ©e" -ForegroundColor Green
     
-    # Exécuter le traitement parallèle
+    # ExÃ©cuter le traitement parallÃ¨le
     $results = Measure-Performance -ScriptBlock {
         Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 250 -MaxConcurrency 4
-    } -Name "Traitement parallèle"
+    } -Name "Traitement parallÃ¨le"
     
-    # Arrêter la surveillance des ressources
+    # ArrÃªter la surveillance des ressources
     $resourceData = Stop-ResourceMonitoring -MonitoringObject $monitoring
-    Write-Host "Surveillance des ressources arrêtée" -ForegroundColor Green
+    Write-Host "Surveillance des ressources arrÃªtÃ©e" -ForegroundColor Green
     
     # Afficher les statistiques d'utilisation des ressources
     $cpuValues = $resourceData.Samples | ForEach-Object { $_.system.cpu_percent }
@@ -226,20 +226,20 @@ function Example-ParallelWithMonitoring {
     Write-Host "Statistiques d'utilisation des ressources :" -ForegroundColor Cyan
     Write-Host "  CPU moyen : $([Math]::Round($cpuAvg, 2))%" -ForegroundColor Cyan
     Write-Host "  CPU maximum : $([Math]::Round($cpuMax, 2))%" -ForegroundColor Cyan
-    Write-Host "  Mémoire moyenne : $([Math]::Round($memoryAvg, 2))%" -ForegroundColor Cyan
-    Write-Host "  Mémoire maximum : $([Math]::Round($memoryMax, 2))%" -ForegroundColor Cyan
+    Write-Host "  MÃ©moire moyenne : $([Math]::Round($memoryAvg, 2))%" -ForegroundColor Cyan
+    Write-Host "  MÃ©moire maximum : $([Math]::Round($memoryMax, 2))%" -ForegroundColor Cyan
     
-    # Afficher les résultats
-    Write-Host "Résultats : $($results.Count) éléments" -ForegroundColor Green
+    # Afficher les rÃ©sultats
+    Write-Host "RÃ©sultats : $($results.Count) Ã©lÃ©ments" -ForegroundColor Green
 }
 
-# Exemple 3 : Traitement parallèle avec cache
+# Exemple 3 : Traitement parallÃ¨le avec cache
 function Example-ParallelWithCache {
-    Write-Host "`n=== Exemple 3 : Traitement parallèle avec cache ===" -ForegroundColor Yellow
+    Write-Host "`n=== Exemple 3 : Traitement parallÃ¨le avec cache ===" -ForegroundColor Yellow
     
-    # Générer des données de test
+    # GÃ©nÃ©rer des donnÃ©es de test
     $data = New-TestData -Count 2000 -Type "objects"
-    Write-Host "Données générées : $($data.Count) éléments" -ForegroundColor Green
+    Write-Host "DonnÃ©es gÃ©nÃ©rÃ©es : $($data.Count) Ã©lÃ©ments" -ForegroundColor Green
     
     # Configurer le cache
     $cacheConfig = @{
@@ -251,31 +251,31 @@ function Example-ParallelWithCache {
         EvictionPolicy = "LRU"
     }
     
-    # Exécuter le traitement parallèle avec cache (première exécution)
-    Write-Host "Première exécution (sans cache) :" -ForegroundColor Cyan
+    # ExÃ©cuter le traitement parallÃ¨le avec cache (premiÃ¨re exÃ©cution)
+    Write-Host "PremiÃ¨re exÃ©cution (sans cache) :" -ForegroundColor Cyan
     $results1 = Measure-Performance -ScriptBlock {
         Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 200 -CacheConfig $cacheConfig
-    } -Name "Traitement parallèle (première exécution)"
+    } -Name "Traitement parallÃ¨le (premiÃ¨re exÃ©cution)"
     
-    # Exécuter le traitement parallèle avec cache (deuxième exécution)
-    Write-Host "Deuxième exécution (avec cache) :" -ForegroundColor Cyan
+    # ExÃ©cuter le traitement parallÃ¨le avec cache (deuxiÃ¨me exÃ©cution)
+    Write-Host "DeuxiÃ¨me exÃ©cution (avec cache) :" -ForegroundColor Cyan
     $results2 = Measure-Performance -ScriptBlock {
         Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 200 -CacheConfig $cacheConfig
-    } -Name "Traitement parallèle (deuxième exécution)"
+    } -Name "Traitement parallÃ¨le (deuxiÃ¨me exÃ©cution)"
     
-    # Vérifier que les résultats sont identiques
+    # VÃ©rifier que les rÃ©sultats sont identiques
     $equal = ($results1 | ConvertTo-Json -Depth 10) -eq ($results2 | ConvertTo-Json -Depth 10)
-    Write-Host "Résultats identiques : $equal" -ForegroundColor Green
+    Write-Host "RÃ©sultats identiques : $equal" -ForegroundColor Green
 }
 
-# Exécuter les exemples
+# ExÃ©cuter les exemples
 try {
     Example-SimpleParallel
     Example-ParallelWithMonitoring
     Example-ParallelWithCache
 }
 catch {
-    Write-Error "Erreur lors de l'exécution des exemples : $_"
+    Write-Error "Erreur lors de l'exÃ©cution des exemples : $_"
 }
 finally {
     # Nettoyer les ressources
@@ -284,5 +284,5 @@ finally {
     # Supprimer les fichiers temporaires
     Get-ChildItem -Path $env:TEMP -Filter "tmp*" | Where-Object { $_.CreationTime -gt (Get-Date).AddHours(-1) } | Remove-Item -Force
     
-    Write-Host "Nettoyage terminé" -ForegroundColor Green
+    Write-Host "Nettoyage terminÃ©" -ForegroundColor Green
 }

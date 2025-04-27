@@ -1,4 +1,4 @@
-# Script pour améliorer les recommandations d'erreurs
+﻿# Script pour amÃ©liorer les recommandations d'erreurs
 # Respecte les principes SOLID, DRY, KISS et Clean Code
 
 # Configuration
@@ -6,7 +6,7 @@ $RecommendationConfig = @{
     # Dossier des recommandations
     RecommendationsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorRecommendations"
     
-    # Fichier de base de données des recommandations
+    # Fichier de base de donnÃ©es des recommandations
     RecommendationsFile = Join-Path -Path $env:TEMP -ChildPath "ErrorRecommendations\recommendations.json"
     
     # Fichier de feedback sur les recommandations
@@ -25,7 +25,7 @@ function Initialize-RecommendationEngine {
         [double]$RelevanceThreshold = 0
     )
     
-    # Mettre à jour la configuration avec les paramètres fournis
+    # Mettre Ã  jour la configuration avec les paramÃ¨tres fournis
     if (-not [string]::IsNullOrEmpty($RecommendationsFolder)) {
         $RecommendationConfig.RecommendationsFolder = $RecommendationsFolder
     }
@@ -42,12 +42,12 @@ function Initialize-RecommendationEngine {
         $RecommendationConfig.RelevanceThreshold = $RelevanceThreshold
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     if (-not (Test-Path -Path $RecommendationConfig.RecommendationsFolder)) {
         New-Item -Path $RecommendationConfig.RecommendationsFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le fichier de recommandations s'il n'existe pas
+    # CrÃ©er le fichier de recommandations s'il n'existe pas
     if (-not (Test-Path -Path $RecommendationConfig.RecommendationsFile)) {
         $initialRecommendations = @{
             Recommendations = @()
@@ -57,7 +57,7 @@ function Initialize-RecommendationEngine {
         $initialRecommendations | ConvertTo-Json -Depth 5 | Set-Content -Path $RecommendationConfig.RecommendationsFile
     }
     
-    # Créer le fichier de feedback s'il n'existe pas
+    # CrÃ©er le fichier de feedback s'il n'existe pas
     if (-not (Test-Path -Path $RecommendationConfig.FeedbackFile)) {
         $initialFeedback = @{
             Feedback = @()
@@ -95,7 +95,7 @@ function Add-ErrorRecommendation {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si le fichier de recommandations existe
+    # VÃ©rifier si le fichier de recommandations existe
     if (-not (Test-Path -Path $RecommendationConfig.RecommendationsFile)) {
         Initialize-RecommendationEngine
     }
@@ -103,15 +103,15 @@ function Add-ErrorRecommendation {
     # Charger les recommandations existantes
     $recommendationsData = Get-Content -Path $RecommendationConfig.RecommendationsFile -Raw | ConvertFrom-Json
     
-    # Vérifier si la recommandation existe déjà
+    # VÃ©rifier si la recommandation existe dÃ©jÃ 
     $existingRecommendation = $recommendationsData.Recommendations | Where-Object { $_.ErrorPattern -eq $ErrorPattern }
     
     if ($existingRecommendation) {
-        Write-Warning "Une recommandation pour ce pattern d'erreur existe déjà."
+        Write-Warning "Une recommandation pour ce pattern d'erreur existe dÃ©jÃ ."
         return $null
     }
     
-    # Créer la recommandation
+    # CrÃ©er la recommandation
     $newRecommendation = @{
         ID = [Guid]::NewGuid().ToString()
         ErrorPattern = $ErrorPattern
@@ -154,7 +154,7 @@ function Get-ErrorRecommendations {
         [double]$MinRelevance = 0
     )
     
-    # Utiliser le seuil par défaut si non spécifié
+    # Utiliser le seuil par dÃ©faut si non spÃ©cifiÃ©
     if ($MinRelevance -le 0) {
         $MinRelevance = $RecommendationConfig.RelevanceThreshold
     }
@@ -162,7 +162,7 @@ function Get-ErrorRecommendations {
     # Charger les recommandations
     $recommendationsData = Get-Content -Path $RecommendationConfig.RecommendationsFile -Raw | ConvertFrom-Json
     
-    # Filtrer par catégorie si spécifiée
+    # Filtrer par catÃ©gorie si spÃ©cifiÃ©e
     $recommendations = $recommendationsData.Recommendations
     if (-not [string]::IsNullOrEmpty($Category)) {
         $recommendations = $recommendations | Where-Object { $_.Category -eq $Category }
@@ -176,13 +176,13 @@ function Get-ErrorRecommendations {
             $pattern = [regex]$recommendation.ErrorPattern
             
             if ($pattern.IsMatch($ErrorMessage)) {
-                # Calculer un score de pertinence basé sur la longueur du pattern et le nombre d'utilisations réussies
+                # Calculer un score de pertinence basÃ© sur la longueur du pattern et le nombre d'utilisations rÃ©ussies
                 $patternLength = $recommendation.ErrorPattern.Length
                 $successRate = if ($recommendation.UsageCount -gt 0) {
                     $recommendation.SuccessCount / $recommendation.UsageCount
                 }
                 else {
-                    0.5  # Valeur par défaut pour les nouvelles recommandations
+                    0.5  # Valeur par dÃ©faut pour les nouvelles recommandations
                 }
                 
                 $relevance = ($patternLength / 100) * 0.7 + $successRate * 0.3
@@ -202,17 +202,17 @@ function Get-ErrorRecommendations {
         }
     }
     
-    # Trier par pertinence et limiter le nombre de résultats
+    # Trier par pertinence et limiter le nombre de rÃ©sultats
     $result = $relevantRecommendations | Sort-Object -Property Relevance -Descending | Select-Object -First $MaxResults
     
-    # Mettre à jour les compteurs d'utilisation
+    # Mettre Ã  jour les compteurs d'utilisation
     foreach ($item in $result) {
         $recommendation = $item.Recommendation
         $recommendation.UsageCount++
         $recommendation.UpdatedAt = Get-Date -Format "o"
     }
     
-    # Enregistrer les recommandations mises à jour
+    # Enregistrer les recommandations mises Ã  jour
     $recommendationsData.LastUpdate = Get-Date -Format "o"
     $recommendationsData | ConvertTo-Json -Depth 5 | Set-Content -Path $RecommendationConfig.RecommendationsFile
     
@@ -238,7 +238,7 @@ function Add-RecommendationFeedback {
         [string]$UserID = $env:USERNAME
     )
     
-    # Vérifier si les fichiers existent
+    # VÃ©rifier si les fichiers existent
     if (-not (Test-Path -Path $RecommendationConfig.RecommendationsFile) -or
         -not (Test-Path -Path $RecommendationConfig.FeedbackFile)) {
         Initialize-RecommendationEngine
@@ -251,11 +251,11 @@ function Add-RecommendationFeedback {
     $recommendation = $recommendationsData.Recommendations | Where-Object { $_.ID -eq $RecommendationID }
     
     if (-not $recommendation) {
-        Write-Error "Recommandation non trouvée: $RecommendationID"
+        Write-Error "Recommandation non trouvÃ©e: $RecommendationID"
         return $false
     }
     
-    # Mettre à jour les compteurs
+    # Mettre Ã  jour les compteurs
     if ($Success) {
         $recommendation.SuccessCount++
     }
@@ -263,7 +263,7 @@ function Add-RecommendationFeedback {
     # Charger les feedbacks
     $feedbackData = Get-Content -Path $RecommendationConfig.FeedbackFile -Raw | ConvertFrom-Json
     
-    # Créer le feedback
+    # CrÃ©er le feedback
     $newFeedback = @{
         ID = [Guid]::NewGuid().ToString()
         RecommendationID = $RecommendationID
@@ -278,7 +278,7 @@ function Add-RecommendationFeedback {
     $feedbackData.Feedback += $newFeedback
     $feedbackData.LastUpdate = Get-Date -Format "o"
     
-    # Enregistrer les données
+    # Enregistrer les donnÃ©es
     $recommendationsData.LastUpdate = Get-Date -Format "o"
     $recommendationsData | ConvertTo-Json -Depth 5 | Set-Content -Path $RecommendationConfig.RecommendationsFile
     $feedbackData | ConvertTo-Json -Depth 5 | Set-Content -Path $RecommendationConfig.FeedbackFile
@@ -286,9 +286,9 @@ function Add-RecommendationFeedback {
     return $newFeedback
 }
 
-# Fonction pour améliorer les recommandations basées sur le feedback
+# Fonction pour amÃ©liorer les recommandations basÃ©es sur le feedback
 function Update-RecommendationsFromFeedback {
-    # Charger les données
+    # Charger les donnÃ©es
     $recommendationsData = Get-Content -Path $RecommendationConfig.RecommendationsFile -Raw | ConvertFrom-Json
     $feedbackData = Get-Content -Path $RecommendationConfig.FeedbackFile -Raw | ConvertFrom-Json
     
@@ -305,12 +305,12 @@ function Update-RecommendationsFromFeedback {
         $feedbacksByRecommendation[$recommendationID] += $feedback
     }
     
-    # Mettre à jour les scores de pertinence
+    # Mettre Ã  jour les scores de pertinence
     foreach ($recommendation in $recommendationsData.Recommendations) {
         $feedbacks = $feedbacksByRecommendation[$recommendation.ID]
         
         if ($feedbacks -and $feedbacks.Count -gt 0) {
-            # Calculer le taux de succès
+            # Calculer le taux de succÃ¨s
             $successCount = ($feedbacks | Where-Object { $_.Success } | Measure-Object).Count
             $successRate = $successCount / $feedbacks.Count
             
@@ -318,19 +318,19 @@ function Update-RecommendationsFromFeedback {
             $ratingSum = ($feedbacks | Measure-Object -Property Rating -Sum).Sum
             $ratingAvg = if ($feedbacks.Count -gt 0) { $ratingSum / $feedbacks.Count } else { 0 }
             
-            # Mettre à jour le score de pertinence
+            # Mettre Ã  jour le score de pertinence
             $recommendation.RelevanceScore = ($successRate * 0.7) + ($ratingAvg / 5 * 0.3)
         }
     }
     
-    # Enregistrer les recommandations mises à jour
+    # Enregistrer les recommandations mises Ã  jour
     $recommendationsData.LastUpdate = Get-Date -Format "o"
     $recommendationsData | ConvertTo-Json -Depth 5 | Set-Content -Path $RecommendationConfig.RecommendationsFile
     
     return $recommendationsData.Recommendations
 }
 
-# Fonction pour générer des recommandations à partir des patterns d'erreur
+# Fonction pour gÃ©nÃ©rer des recommandations Ã  partir des patterns d'erreur
 function New-RecommendationsFromPatterns {
     param (
         [Parameter(Mandatory = $true)]
@@ -340,7 +340,7 @@ function New-RecommendationsFromPatterns {
         [switch]$Force
     )
     
-    # Vérifier si le fichier de patterns existe
+    # VÃ©rifier si le fichier de patterns existe
     if (-not (Test-Path -Path $PatternsFile)) {
         Write-Error "Le fichier de patterns n'existe pas: $PatternsFile"
         return $null
@@ -356,11 +356,11 @@ function New-RecommendationsFromPatterns {
     $updatedRecommendations = @()
     
     foreach ($pattern in $patternsData.Patterns) {
-        # Vérifier si une recommandation existe déjà pour ce pattern
+        # VÃ©rifier si une recommandation existe dÃ©jÃ  pour ce pattern
         $existingRecommendation = $recommendationsData.Recommendations | Where-Object { $_.ErrorPattern -eq $pattern.Pattern }
         
         if ($existingRecommendation -and -not $Force) {
-            # Mettre à jour la recommandation existante si elle a une solution
+            # Mettre Ã  jour la recommandation existante si elle a une solution
             if (-not [string]::IsNullOrEmpty($pattern.Solution)) {
                 $existingRecommendation.Recommendation = $pattern.Solution
                 $existingRecommendation.UpdatedAt = Get-Date -Format "o"
@@ -368,7 +368,7 @@ function New-RecommendationsFromPatterns {
             }
         }
         else {
-            # Créer une nouvelle recommandation si le pattern a une solution
+            # CrÃ©er une nouvelle recommandation si le pattern a une solution
             if (-not [string]::IsNullOrEmpty($pattern.Solution)) {
                 $newRecommendation = Add-ErrorRecommendation -ErrorPattern $pattern.Pattern `
                     -Recommendation $pattern.Solution -Category $pattern.Category `
@@ -388,7 +388,7 @@ function New-RecommendationsFromPatterns {
     }
 }
 
-# Fonction pour générer un rapport des recommandations
+# Fonction pour gÃ©nÃ©rer un rapport des recommandations
 function New-RecommendationsReport {
     param (
         [Parameter(Mandatory = $false)]
@@ -407,20 +407,20 @@ function New-RecommendationsReport {
     # Charger les recommandations
     $recommendationsData = Get-Content -Path $RecommendationConfig.RecommendationsFile -Raw | ConvertFrom-Json
     
-    # Filtrer par catégorie si spécifiée
+    # Filtrer par catÃ©gorie si spÃ©cifiÃ©e
     $recommendations = $recommendationsData.Recommendations
     if (-not [string]::IsNullOrEmpty($Category)) {
         $recommendations = $recommendations | Where-Object { $_.Category -eq $Category }
     }
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "RecommendationsReport-$timestamp.html"
         $OutputPath = Join-Path -Path $env:TEMP -ChildPath $fileName
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -531,13 +531,13 @@ function New-RecommendationsReport {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
         <div class="summary">
             <p>Nombre total de recommandations: $($recommendations.Count)</p>
-            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>Catégorie: $Category</p>" })
+            $(if (-not [string]::IsNullOrEmpty($Category)) { "<p>CatÃ©gorie: $Category</p>" })
         </div>
         
         <h2>Recommandations d'erreurs</h2>
@@ -551,16 +551,16 @@ function New-RecommendationsReport {
             "<div class='recommendation'>
                 <h3>Recommandation #$($recommendation.ID.Substring(0, 8))</h3>
                 <div class='recommendation-meta'>
-                    <span>Catégorie: $($recommendation.Category)</span> |
-                    <span>Sévérité: <span class='$severityClass'>$($recommendation.Severity)</span></span> |
+                    <span>CatÃ©gorie: $($recommendation.Category)</span> |
+                    <span>SÃ©vÃ©ritÃ©: <span class='$severityClass'>$($recommendation.Severity)</span></span> |
                     <span>Source: $($recommendation.Source)</span> |
                     <span>Pertinence: $relevancePercent%</span>
                 </div>
                 <div class='recommendation-meta'>
-                    <span>Créé le: $createdAt</span> |
-                    <span>Mis à jour le: $updatedAt</span> |
+                    <span>CrÃ©Ã© le: $createdAt</span> |
+                    <span>Mis Ã  jour le: $updatedAt</span> |
                     <span>Utilisations: $($recommendation.UsageCount)</span> |
-                    <span>Succès: $($recommendation.SuccessCount)</span>
+                    <span>SuccÃ¨s: $($recommendation.SuccessCount)</span>
                 </div>
                 <div class='pattern'>
                     <strong>Pattern d'erreur:</strong><br>
@@ -581,7 +581,7 @@ function New-RecommendationsReport {
         })
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </div>
 </body>
@@ -591,7 +591,7 @@ function New-RecommendationsReport {
     # Enregistrer le HTML
     $html | Set-Content -Path $OutputPath -Encoding UTF8
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }

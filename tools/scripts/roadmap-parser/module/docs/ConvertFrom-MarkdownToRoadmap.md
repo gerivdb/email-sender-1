@@ -1,8 +1,8 @@
-# ConvertFrom-MarkdownToRoadmap
+﻿# ConvertFrom-MarkdownToRoadmap
 
 ## SYNOPSIS
 
-Convertit un fichier markdown en structure d'objet PowerShell représentant une roadmap.
+Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap.
 
 ## SYNTAX
 
@@ -13,13 +13,13 @@ Convertit un fichier markdown en structure d'objet PowerShell représentant une 
 ## DESCRIPTION
 
 La fonction ConvertFrom-MarkdownToRoadmap lit un fichier markdown et le convertit en une structure d'objet PowerShell.
-Elle est spécialement conçue pour traiter les roadmaps au format markdown avec des tâches, des statuts et des identifiants.
+Elle est spÃ©cialement conÃ§ue pour traiter les roadmaps au format markdown avec des tÃ¢ches, des statuts et des identifiants.
 
 ## PARAMETERS
 
 ### -FilePath
 
-Chemin du fichier markdown à convertir.
+Chemin du fichier markdown Ã  convertir.
 
 `yaml
 Type: String
@@ -35,7 +35,7 @@ Accept wildcard characters: false
 
 ### -IncludeMetadata
 
-Indique si les métadonnées supplémentaires doivent être extraites et incluses dans les objets.
+Indique si les mÃ©tadonnÃ©es supplÃ©mentaires doivent Ãªtre extraites et incluses dans les objets.
 
 `yaml
 Type: SwitchParameter
@@ -55,13 +55,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant la structure de la roadmap.
+[PSCustomObject] ReprÃ©sentant la structure de la roadmap.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -78,7 +78,7 @@ Convertit le fichier roadmap.md en structure d'objet PowerShell.
 
 `powershell
 ConvertFrom-MarkdownToRoadmap -FilePath ".\roadmap.md" -IncludeMetadata
-Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des métadonnées.
+Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des mÃ©tadonnÃ©es.
 `
 
     

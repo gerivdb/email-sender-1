@@ -1,5 +1,5 @@
-# Module de génération d'index pour le Script Manager
-# Ce module génère un index global pour la documentation
+﻿# Module de gÃ©nÃ©ration d'index pour le Script Manager
+# Ce module gÃ©nÃ¨re un index global pour la documentation
 # Author: Script Manager
 # Version: 1.0
 # Tags: documentation, index, scripts
@@ -7,17 +7,17 @@
 function New-GlobalIndex {
     <#
     .SYNOPSIS
-        Génère un index global pour la documentation
+        GÃ©nÃ¨re un index global pour la documentation
     .DESCRIPTION
-        Crée un index global qui référence tous les scripts et dossiers documentés
+        CrÃ©e un index global qui rÃ©fÃ©rence tous les scripts et dossiers documentÃ©s
     .PARAMETER Analysis
         Objet d'analyse des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer l'index
+        Chemin oÃ¹ enregistrer l'index
     .PARAMETER FolderReadmes
-        Résultats de la génération des README de dossiers
+        RÃ©sultats de la gÃ©nÃ©ration des README de dossiers
     .PARAMETER ScriptDocs
-        Résultats de la génération de la documentation des scripts
+        RÃ©sultats de la gÃ©nÃ©ration de la documentation des scripts
     .EXAMPLE
         New-GlobalIndex -Analysis $analysis -OutputPath "docs" -FolderReadmes $readmes -ScriptDocs $docs
     #>
@@ -36,12 +36,12 @@ function New-GlobalIndex {
         [array]$ScriptDocs
     )
     
-    Write-Host "Génération de l'index global..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration de l'index global..." -ForegroundColor Cyan
     
-    # Créer le chemin du fichier d'index
+    # CrÃ©er le chemin du fichier d'index
     $IndexPath = Join-Path -Path $OutputPath -ChildPath "index.md"
     
-    # Générer les statistiques
+    # GÃ©nÃ©rer les statistiques
     $Stats = [PSCustomObject]@{
         TotalScripts = $Analysis.TotalScripts
         ScriptsByType = $Analysis.ScriptsByType
@@ -52,12 +52,12 @@ function New-GlobalIndex {
         ScriptsWithDependencies = $Analysis.ScriptsWithDependencies
     }
     
-    # Générer la liste des dossiers
+    # GÃ©nÃ©rer la liste des dossiers
     $FoldersList = $FolderReadmes | ForEach-Object {
         "- [**$($_.FolderName)**](folders/$($_.FolderName)/README.md) - $($_.ScriptCount) scripts"
     }
     
-    # Générer la liste des scripts par type
+    # GÃ©nÃ©rer la liste des scripts par type
     $ScriptsByType = @{}
     foreach ($Script in $ScriptDocs | Where-Object { $_.Success }) {
         if (-not $ScriptsByType.ContainsKey($Script.Type)) {
@@ -79,24 +79,24 @@ $($TypeScripts | ForEach-Object {
 "@
     }
     
-    # Générer le contenu de l'index
+    # GÃ©nÃ©rer le contenu de l'index
     $IndexContent = @"
 # Index de la documentation des scripts
 
 ## Vue d'ensemble
 
-Cette documentation a été générée automatiquement par le Script Manager le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss").
+Cette documentation a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement par le Script Manager le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss").
 
 ### Statistiques
 
 - **Nombre total de scripts:** $($Stats.TotalScripts)
 - **Nombre de dossiers:** $($Stats.TotalFolders)
-- **Scripts documentés:** $($Stats.DocumentedScripts)
-- **Score de qualité moyen:** $($Stats.AverageQuality)/100
-- **Scripts avec problèmes:** $($Stats.ScriptsWithProblems)
-- **Scripts avec dépendances:** $($Stats.ScriptsWithDependencies)
+- **Scripts documentÃ©s:** $($Stats.DocumentedScripts)
+- **Score de qualitÃ© moyen:** $($Stats.AverageQuality)/100
+- **Scripts avec problÃ¨mes:** $($Stats.ScriptsWithProblems)
+- **Scripts avec dÃ©pendances:** $($Stats.ScriptsWithDependencies)
 
-### Répartition par type
+### RÃ©partition par type
 
 $($Stats.ScriptsByType | ForEach-Object {
     "- **$($_.Type):** $($_.Count) scripts"
@@ -114,9 +114,9 @@ $($ScriptsLists -join "`n`n")
 
 Utilisez la fonction de recherche de votre navigateur (Ctrl+F) pour trouver rapidement un script ou un dossier.
 
-## Mise à jour de la documentation
+## Mise Ã  jour de la documentation
 
-Pour mettre à jour cette documentation, exécutez :
+Pour mettre Ã  jour cette documentation, exÃ©cutez :
 
 ```powershell
 .\scripts\manager\Phase3-DocumentAndMonitor.ps1
@@ -124,15 +124,15 @@ Pour mettre à jour cette documentation, exécutez :
 
 ---
 
-*Documentation générée par le Script Manager*
+*Documentation gÃ©nÃ©rÃ©e par le Script Manager*
 "@
     
     # Enregistrer l'index
     try {
         Set-Content -Path $IndexPath -Value $IndexContent
-        Write-Host "  Index global généré: $IndexPath" -ForegroundColor Green
+        Write-Host "  Index global gÃ©nÃ©rÃ©: $IndexPath" -ForegroundColor Green
         
-        # Créer une copie de l'index comme README principal
+        # CrÃ©er une copie de l'index comme README principal
         $ReadmePath = Join-Path -Path $OutputPath -ChildPath "README.md"
         Copy-Item -Path $IndexPath -Destination $ReadmePath -Force
         
@@ -142,7 +142,7 @@ Pour mettre à jour cette documentation, exécutez :
             Success = $true
         }
     } catch {
-        Write-Warning "Erreur lors de la création de l'index global : $_"
+        Write-Warning "Erreur lors de la crÃ©ation de l'index global : $_"
         
         return [PSCustomObject]@{
             IndexPath = $IndexPath

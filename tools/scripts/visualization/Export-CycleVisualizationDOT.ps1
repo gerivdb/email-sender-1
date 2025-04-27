@@ -1,4 +1,4 @@
-# Fonction pour exporter une visualisation DOT des cycles de dépendances
+﻿# Fonction pour exporter une visualisation DOT des cycles de dÃ©pendances
 function Export-CycleVisualizationDOT {
     [CmdletBinding()]
     param (
@@ -15,37 +15,37 @@ function Export-CycleVisualizationDOT {
         [switch]$IncludeStatistics
     )
 
-    # Vérifier si les données de cycle sont valides
+    # VÃ©rifier si les donnÃ©es de cycle sont valides
     if (-not $CycleData.DependencyGraph) {
-        Write-Error "Les données de cycle ne contiennent pas de graphe de dépendances."
+        Write-Error "Les donnÃ©es de cycle ne contiennent pas de graphe de dÃ©pendances."
         return $null
     }
 
-    # Générer le chemin de sortie par défaut si non spécifié
+    # GÃ©nÃ©rer le chemin de sortie par dÃ©faut si non spÃ©cifiÃ©
     if (-not $OutputPath) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $OutputPath = "reports/cycle_visualization_${timestamp}.dot"
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
     }
 
-    # Générer un fichier DOT pour GraphViz
+    # GÃ©nÃ©rer un fichier DOT pour GraphViz
     $dotContent = "digraph DependencyGraph {`n"
     $dotContent += "    rankdir=LR;`n"
     $dotContent += "    node [shape=box, style=filled, fillcolor=white];`n"
     
-    # Définir les nœuds
+    # DÃ©finir les nÅ“uds
     foreach ($script in $CycleData.DependencyGraph.Keys) {
         $isCyclic = $CycleData.HasCycles -and $CycleData.Cycles -contains $script
         $nodeStyle = if ($isCyclic -and $HighlightCycles) { "fillcolor=`"#ffcccc`"" } else { "fillcolor=white" }
         $dotContent += "    `"$script`" [$nodeStyle];`n"
     }
     
-    # Définir les arêtes
+    # DÃ©finir les arÃªtes
     foreach ($script in $CycleData.DependencyGraph.Keys) {
         foreach ($dependency in $CycleData.DependencyGraph[$script]) {
             $isCyclicEdge = $CycleData.HasCycles -and $CycleData.Cycles -contains $script -and $CycleData.Cycles -contains $dependency
@@ -54,15 +54,15 @@ function Export-CycleVisualizationDOT {
         }
     }
     
-    # Ajouter les statistiques en commentaire si demandé
+    # Ajouter les statistiques en commentaire si demandÃ©
     if ($IncludeStatistics) {
         $dotContent += "`n    // Statistiques`n"
         $dotContent += "    // Total des scripts: $($CycleData.DependencyGraph.Keys.Count)`n"
-        $dotContent += "    // Scripts impliqués dans des cycles: $(if ($CycleData.HasCycles) { $CycleData.Cycles.Count } else { 0 })`n"
+        $dotContent += "    // Scripts impliquÃ©s dans des cycles: $(if ($CycleData.HasCycles) { $CycleData.Cycles.Count } else { 0 })`n"
         $dotContent += "    // Scripts sans cycles: $($CycleData.NonCyclicScripts.Count)`n"
         
         if ($CycleData.HasCycles) {
-            $dotContent += "`n    // Cycles détectés`n"
+            $dotContent += "`n    // Cycles dÃ©tectÃ©s`n"
             foreach ($cycle in $CycleData.Cycles) {
                 $cycleStr = $cycle -join " -> "
                 $dotContent += "    // $cycleStr`n"
@@ -74,7 +74,7 @@ function Export-CycleVisualizationDOT {
     
     # Enregistrer le fichier DOT
     $dotContent | Out-File -FilePath $OutputPath -Encoding utf8
-    Write-Host "Fichier DOT généré: $OutputPath"
+    Write-Host "Fichier DOT gÃ©nÃ©rÃ©: $OutputPath"
 
     return $OutputPath
 }

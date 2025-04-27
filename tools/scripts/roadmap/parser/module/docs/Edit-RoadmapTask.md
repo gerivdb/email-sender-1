@@ -1,8 +1,8 @@
-# Edit-RoadmapTask
+﻿# Edit-RoadmapTask
 
 ## SYNOPSIS
 
-Modifie une tâche dans une roadmap.
+Modifie une tÃ¢che dans une roadmap.
 
 ## SYNTAX
 
@@ -12,14 +12,14 @@ Modifie une tâche dans une roadmap.
 ```n
 ## DESCRIPTION
 
-La fonction Edit-RoadmapTask permet de modifier une tâche dans une roadmap.
-Elle peut modifier le titre, le statut, les métadonnées, etc.
+La fonction Edit-RoadmapTask permet de modifier une tÃ¢che dans une roadmap.
+Elle peut modifier le titre, le statut, les mÃ©tadonnÃ©es, etc.
 
 ## PARAMETERS
 
 ### -Roadmap
 
-L'objet roadmap contenant la tâche à modifier.
+L'objet roadmap contenant la tÃ¢che Ã  modifier.
 
 `yaml
 Type: PSObject
@@ -35,7 +35,7 @@ Accept wildcard characters: false
 
 ### -TaskId
 
-L'identifiant de la tâche à modifier.
+L'identifiant de la tÃ¢che Ã  modifier.
 
 `yaml
 Type: String
@@ -51,7 +51,7 @@ Accept wildcard characters: false
 
 ### -Title
 
-Le nouveau titre de la tâche.
+Le nouveau titre de la tÃ¢che.
 
 `yaml
 Type: String
@@ -67,7 +67,7 @@ Accept wildcard characters: false
 
 ### -Status
 
-Le nouveau statut de la tâche. Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked".
+Le nouveau statut de la tÃ¢che. Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked".
 
 `yaml
 Type: String
@@ -83,7 +83,7 @@ Accept wildcard characters: false
 
 ### -Metadata
 
-Les nouvelles métadonnées de la tâche.
+Les nouvelles mÃ©tadonnÃ©es de la tÃ¢che.
 
 `yaml
 Type: Hashtable
@@ -99,7 +99,7 @@ Accept wildcard characters: false
 
 ### -AddDependency
 
-L'identifiant d'une tâche dont la tâche à modifier dépendra.
+L'identifiant d'une tÃ¢che dont la tÃ¢che Ã  modifier dÃ©pendra.
 
 `yaml
 Type: String
@@ -115,7 +115,7 @@ Accept wildcard characters: false
 
 ### -RemoveDependency
 
-L'identifiant d'une tâche dont la dépendance doit être supprimée.
+L'identifiant d'une tÃ¢che dont la dÃ©pendance doit Ãªtre supprimÃ©e.
 
 `yaml
 Type: String
@@ -131,7 +131,7 @@ Accept wildcard characters: false
 
 ### -PassThru
 
-Indique si la roadmap modifiée doit être retournée.
+Indique si la roadmap modifiÃ©e doit Ãªtre retournÃ©e.
 
 `yaml
 Type: SwitchParameter
@@ -151,13 +151,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant la roadmap modifiée si PassThru est spécifié.
+[PSCustomObject] ReprÃ©sentant la roadmap modifiÃ©e si PassThru est spÃ©cifiÃ©.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -166,7 +166,7 @@ Date de création: 2023-07-10
 `powershell
 $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
 Edit-RoadmapTask -Roadmap $roadmap -TaskId "1.1" -Title "Nouveau titre" -Status "Complete"
-Modifie le titre et le statut de la tâche 1.1.
+Modifie le titre et le statut de la tÃ¢che 1.1.
 `
 
     

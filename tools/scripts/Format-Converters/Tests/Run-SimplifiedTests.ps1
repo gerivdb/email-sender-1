@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests simplifiés pour le module Format-Converters.
+    ExÃ©cute tous les tests simplifiÃ©s pour le module Format-Converters.
 
 .DESCRIPTION
-    Ce script exécute tous les tests simplifiés pour le module Format-Converters.
-    Les tests simplifiés sont des versions indépendantes des tests qui ne dépendent pas
-    du module réel, ce qui permet de les exécuter sans problèmes de dépendances.
+    Ce script exÃ©cute tous les tests simplifiÃ©s pour le module Format-Converters.
+    Les tests simplifiÃ©s sont des versions indÃ©pendantes des tests qui ne dÃ©pendent pas
+    du module rÃ©el, ce qui permet de les exÃ©cuter sans problÃ¨mes de dÃ©pendances.
 
 .NOTES
     Version: 1.0
@@ -16,7 +16,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -26,7 +26,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Définir les fichiers de test simplifiés
+# DÃ©finir les fichiers de test simplifiÃ©s
 $simplifiedTestFiles = @(
     # Tests unitaires
     ".\Handle-AmbiguousFormats.Tests.Simplified.ps1",
@@ -37,23 +37,23 @@ $simplifiedTestFiles = @(
     ".\Confirm-FormatDetection.Tests.Simplified.ps1",
     ".\Test-FileFormatWithConfirmation.Tests.Simplified.ps1",
 
-    # Tests d'intégration
+    # Tests d'intÃ©gration
     ".\Integration.Tests.Simplified.ps1"
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Path $simplifiedTestFiles -PassThru -Output Detailed
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 Write-Host ""
-Write-Host "Résumé des résultats de test :"
-Write-Host "Tests exécutés : $($results.TotalCount)"
-Write-Host "Tests réussis : $($results.PassedCount)"
-Write-Host "Tests échoués : $($results.FailedCount)"
-Write-Host "Tests ignorés : $($results.SkippedCount)"
-Write-Host "Durée totale : $($results.Duration.TotalSeconds) secondes"
+Write-Host "RÃ©sumÃ© des rÃ©sultats de test :"
+Write-Host "Tests exÃ©cutÃ©s : $($results.TotalCount)"
+Write-Host "Tests rÃ©ussis : $($results.PassedCount)"
+Write-Host "Tests Ã©chouÃ©s : $($results.FailedCount)"
+Write-Host "Tests ignorÃ©s : $($results.SkippedCount)"
+Write-Host "DurÃ©e totale : $($results.Duration.TotalSeconds) secondes"
 
-# Retourner un code de sortie en fonction des résultats
+# Retourner un code de sortie en fonction des rÃ©sultats
 if ($results.FailedCount -gt 0) {
     exit 1
 }

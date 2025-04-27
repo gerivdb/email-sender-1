@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Convert-FileFormat.
+    Tests unitaires simplifiÃ©s pour la fonction Convert-FileFormat.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Convert-FileFormat du module Format-Converters.
 
 .NOTES
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -25,17 +25,17 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
 # Tests Pester
 Describe "Fonction Convert-FileFormat (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FileConversionTests_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer des fichiers de test avec différents formats
+        # CrÃ©er des fichiers de test avec diffÃ©rents formats
         $script:jsonFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.json"
         $jsonContent = @"
 {
@@ -45,7 +45,7 @@ Describe "Fonction Convert-FileFormat (Simplified)" {
 }
 "@
         $jsonContent | Set-Content -Path $script:jsonFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:jsonFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:jsonFilePath"
 
         $script:xmlFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.xml"
         $xmlContent = @"
@@ -57,7 +57,7 @@ Describe "Fonction Convert-FileFormat (Simplified)" {
 </root>
 "@
         $xmlContent | Set-Content -Path $script:xmlFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:xmlFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:xmlFilePath"
 
         $script:csvFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.csv"
         $csvContent = @"
@@ -65,9 +65,9 @@ Name,Version,Description
 Test,1.0.0,"Test file for CSV format conversion"
 "@
         $csvContent | Set-Content -Path $script:csvFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:csvFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:csvFilePath"
 
-        # Vérifier que les fichiers de test existent
+        # VÃ©rifier que les fichiers de test existent
         $testFiles = @(
             $script:jsonFilePath,
             $script:xmlFilePath,
@@ -82,7 +82,7 @@ Test,1.0.0,"Test file for CSV format conversion"
 
         Write-Verbose "Tous les fichiers de test existent."
 
-        # Créer une fonction simplifiée Test-FileFormat pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Test-FileFormat pour les tests
         function global:Test-FileFormat {
             [CmdletBinding()]
             param (
@@ -90,15 +90,15 @@ Test,1.0.0,"Test file for CSV format conversion"
                 [string]$FilePath
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Déterminer le format en fonction de l'extension
+            # DÃ©terminer le format en fonction de l'extension
             $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
-            # Simuler la détection de format
+            # Simuler la dÃ©tection de format
             $detectedFormat = $null
 
             switch ($extension) {
@@ -110,7 +110,7 @@ Test,1.0.0,"Test file for CSV format conversion"
                 default { $detectedFormat = "UNKNOWN" }
             }
 
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $FilePath
                 DetectedFormat = $detectedFormat
@@ -119,7 +119,7 @@ Test,1.0.0,"Test file for CSV format conversion"
             return $result
         }
 
-        # Créer une fonction simplifiée Convert-FileFormat pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Convert-FileFormat pour les tests
         function global:Convert-FileFormat {
             [CmdletBinding(SupportsShouldProcess=$true)]
             param (
@@ -140,18 +140,18 @@ Test,1.0.0,"Test file for CSV format conversion"
                 [switch]$PassThru
             )
 
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
 
-            # Détecter le format source
+            # DÃ©tecter le format source
             $detectionResult = Test-FileFormat -FilePath $FilePath
             $sourceFormat = $detectionResult.DetectedFormat
 
-            # Vérifier si la conversion est nécessaire
+            # VÃ©rifier si la conversion est nÃ©cessaire
             if ($sourceFormat -eq $TargetFormat) {
-                Write-Warning "Le fichier est déjà au format $TargetFormat. Aucune conversion nécessaire."
+                Write-Warning "Le fichier est dÃ©jÃ  au format $TargetFormat. Aucune conversion nÃ©cessaire."
 
                 if ($PassThru) {
                     return $FilePath
@@ -160,7 +160,7 @@ Test,1.0.0,"Test file for CSV format conversion"
                 return
             }
 
-            # Déterminer le chemin de sortie
+            # DÃ©terminer le chemin de sortie
             if (-not $OutputPath) {
                 $directory = [System.IO.Path]::GetDirectoryName($FilePath)
                 $filename = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
@@ -168,20 +168,20 @@ Test,1.0.0,"Test file for CSV format conversion"
                 $OutputPath = Join-Path -Path $directory -ChildPath "$filename$extension"
             }
 
-            # Vérifier si le fichier de sortie existe déjà
+            # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
             if ((Test-Path -Path $OutputPath) -and -not $Force) {
                 if ($PSCmdlet.ShouldProcess($OutputPath, "Remplacer")) {
                     # Continuer avec la conversion
                 }
                 else {
-                    Write-Warning "Le fichier de sortie existe déjà. Utilisez -Force pour remplacer."
+                    Write-Warning "Le fichier de sortie existe dÃ©jÃ . Utilisez -Force pour remplacer."
                     return
                 }
             }
 
             # Simuler la conversion
-            # Lire le contenu du fichier (utilisé dans un scénario réel)
-            # mais non utilisé dans cette version simplifiée
+            # Lire le contenu du fichier (utilisÃ© dans un scÃ©nario rÃ©el)
+            # mais non utilisÃ© dans cette version simplifiÃ©e
             $null = Get-Content -Path $FilePath -Raw
 
             # Conversion de JSON vers d'autres formats
@@ -247,7 +247,7 @@ Test,1.0.0,"Converted from XML to CSV"
                 throw "Conversion de $sourceFormat vers $TargetFormat non prise en charge."
             }
 
-            # Retourner le chemin du fichier converti si demandé
+            # Retourner le chemin du fichier converti si demandÃ©
             if ($PassThru) {
                 return $OutputPath
             }
@@ -325,7 +325,7 @@ Test,1.0.0,"Converted from XML to CSV"
     }
 
     Context "Options de conversion" {
-        It "Utilise le chemin de sortie par défaut si non spécifié" {
+        It "Utilise le chemin de sortie par dÃ©faut si non spÃ©cifiÃ©" {
             $defaultOutputPath = Join-Path -Path $script:testTempDir -ChildPath "test.xml"
             if (Test-Path -Path $defaultOutputPath) {
                 Remove-Item -Path $defaultOutputPath -Force
@@ -345,13 +345,13 @@ Test,1.0.0,"Converted from XML to CSV"
             Test-Path -Path $outputPath | Should -Be $true
         }
 
-        It "Vérifie le comportement avec l'option -Force" {
-            # Au lieu de tester le comportement sans -Force (qui nécessite de mocker ShouldProcess),
+        It "VÃ©rifie le comportement avec l'option -Force" {
+            # Au lieu de tester le comportement sans -Force (qui nÃ©cessite de mocker ShouldProcess),
             # nous testons simplement que l'option -Force permet de remplacer un fichier existant
             $outputPath = Join-Path -Path $script:testTempDir -ChildPath "force_test.xml"
             "Contenu existant" | Set-Content -Path $outputPath -Encoding UTF8 -NoNewline
 
-            # Vérifier que le fichier existe avec le contenu initial
+            # VÃ©rifier que le fichier existe avec le contenu initial
             Test-Path -Path $outputPath | Should -Be $true
             $initialContent = Get-Content -Path $outputPath -Raw
             $initialContent | Should -BeExactly "Contenu existant"
@@ -359,13 +359,13 @@ Test,1.0.0,"Converted from XML to CSV"
             # Convertir avec l'option -Force
             Convert-FileFormat -FilePath $script:jsonFilePath -TargetFormat "XML" -OutputPath $outputPath -Force
 
-            # Vérifier que le contenu a été remplacé
+            # VÃ©rifier que le contenu a Ã©tÃ© remplacÃ©
             $newContent = Get-Content -Path $outputPath -Raw
             $newContent | Should -Not -BeExactly "Contenu existant"
             $newContent | Should -Match "<root>"
         }
 
-        It "Gère correctement les chemins de sortie avec des espaces" {
+        It "GÃ¨re correctement les chemins de sortie avec des espaces" {
             $outputPath = Join-Path -Path $script:testTempDir -ChildPath "chemin avec espaces.xml"
 
             $result = Convert-FileFormat -FilePath $script:jsonFilePath -TargetFormat "XML" -OutputPath $outputPath -Force -PassThru
@@ -374,8 +374,8 @@ Test,1.0.0,"Converted from XML to CSV"
             Test-Path -Path $outputPath | Should -Be $true
         }
 
-        It "Gère correctement les chemins de sortie avec des caractères spéciaux" {
-            $outputPath = Join-Path -Path $script:testTempDir -ChildPath "test_spécial-éàùè.xml"
+        It "GÃ¨re correctement les chemins de sortie avec des caractÃ¨res spÃ©ciaux" {
+            $outputPath = Join-Path -Path $script:testTempDir -ChildPath "test_spÃ©cial-Ã©Ã Ã¹Ã¨.xml"
 
             $result = Convert-FileFormat -FilePath $script:jsonFilePath -TargetFormat "XML" -OutputPath $outputPath -Force -PassThru
 
@@ -383,26 +383,26 @@ Test,1.0.0,"Converted from XML to CSV"
             Test-Path -Path $outputPath | Should -Be $true
         }
 
-        It "Affiche un avertissement si le fichier est déjà au format cible" {
+        It "Affiche un avertissement si le fichier est dÃ©jÃ  au format cible" {
             # Capturer les avertissements
             $warnings = @()
 
-            # Exécuter la commande avec -WarningVariable pour capturer les avertissements
+            # ExÃ©cuter la commande avec -WarningVariable pour capturer les avertissements
             Convert-FileFormat -FilePath $script:jsonFilePath -TargetFormat "JSON" -WarningVariable warnings -WarningAction SilentlyContinue
 
-            # Vérifier qu'un avertissement a été émis
+            # VÃ©rifier qu'un avertissement a Ã©tÃ© Ã©mis
             $warnings.Count | Should -BeGreaterThan 0
-            $warnings[0] | Should -Match "déjà au format"
+            $warnings[0] | Should -Match "dÃ©jÃ  au format"
         }
     }
 
     Context "Gestion des erreurs" {
-        It "Lève une erreur si le fichier source n'existe pas" {
+        It "LÃ¨ve une erreur si le fichier source n'existe pas" {
             { Convert-FileFormat -FilePath "fichier_inexistant.txt" -TargetFormat "XML" } | Should -Throw
         }
 
-        It "Lève une erreur pour une conversion non prise en charge" {
-            # Créer un fichier texte pour tester
+        It "LÃ¨ve une erreur pour une conversion non prise en charge" {
+            # CrÃ©er un fichier texte pour tester
             $textFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.txt"
             "Contenu texte" | Set-Content -Path $textFilePath -Encoding UTF8
 
@@ -418,9 +418,9 @@ Test,1.0.0,"Converted from XML to CSV"
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

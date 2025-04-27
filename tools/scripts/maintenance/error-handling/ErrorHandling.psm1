@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de gestion d'erreurs pour les scripts PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour gérer les erreurs de manière cohérente dans les scripts PowerShell.
-    Il inclut des fonctions pour ajouter des blocs try/catch, journaliser les erreurs et créer un système
-    de journalisation centralisé.
+    Ce module fournit des fonctions pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente dans les scripts PowerShell.
+    Il inclut des fonctions pour ajouter des blocs try/catch, journaliser les erreurs et crÃ©er un systÃ¨me
+    de journalisation centralisÃ©.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 # Variables globales pour la configuration
@@ -18,14 +18,14 @@ $script:ErrorLogPath = Join-Path -Path $env:TEMP -ChildPath "ErrorLogs"
 $script:DefaultErrorLogFile = Join-Path -Path $script:ErrorLogPath -ChildPath "error_log.json"
 $script:ErrorDatabase = @{}
 $script:ErrorCategories = @{
-    "FileSystem" = "Erreurs liées au système de fichiers"
-    "Network" = "Erreurs liées au réseau"
-    "Authentication" = "Erreurs liées à l'authentification"
-    "Permission" = "Erreurs liées aux permissions"
+    "FileSystem" = "Erreurs liÃ©es au systÃ¨me de fichiers"
+    "Network" = "Erreurs liÃ©es au rÃ©seau"
+    "Authentication" = "Erreurs liÃ©es Ã  l'authentification"
+    "Permission" = "Erreurs liÃ©es aux permissions"
     "Syntax" = "Erreurs de syntaxe"
     "Logic" = "Erreurs de logique"
     "Configuration" = "Erreurs de configuration"
-    "External" = "Erreurs liées à des systèmes externes"
+    "External" = "Erreurs liÃ©es Ã  des systÃ¨mes externes"
     "Unknown" = "Erreurs inconnues"
 }
 
@@ -41,7 +41,7 @@ function Initialize-ErrorHandling {
     )
     
     try {
-        # Définir le chemin du journal d'erreurs
+        # DÃ©finir le chemin du journal d'erreurs
         if ($LogPath) {
             $script:ErrorLogPath = $LogPath
         }
@@ -50,12 +50,12 @@ function Initialize-ErrorHandling {
             New-Item -Path $script:ErrorLogPath -ItemType Directory -Force | Out-Null
         }
         
-        # Définir le fichier de journal d'erreurs
+        # DÃ©finir le fichier de journal d'erreurs
         if ($LogFile) {
             $script:DefaultErrorLogFile = Join-Path -Path $script:ErrorLogPath -ChildPath $LogFile
         }
         
-        # Charger la base de données d'erreurs si elle existe
+        # Charger la base de donnÃ©es d'erreurs si elle existe
         if (Test-Path -Path $script:DefaultErrorLogFile) {
             $script:ErrorDatabase = Get-Content -Path $script:DefaultErrorLogFile -Raw | ConvertFrom-Json -AsHashtable
         }
@@ -68,7 +68,7 @@ function Initialize-ErrorHandling {
     }
 }
 
-# Fonction pour ajouter un bloc try/catch à un script
+# Fonction pour ajouter un bloc try/catch Ã  un script
 function Add-TryCatchBlock {
     [CmdletBinding()]
     param (
@@ -83,12 +83,12 @@ function Add-TryCatchBlock {
     )
     
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $ScriptPath)) {
-            throw "Le fichier spécifié n'existe pas: $ScriptPath"
+            throw "Le fichier spÃ©cifiÃ© n'existe pas: $ScriptPath"
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($BackupFile) {
             $backupPath = "$ScriptPath.bak"
             Copy-Item -Path $ScriptPath -Destination $backupPath -Force
@@ -97,11 +97,11 @@ function Add-TryCatchBlock {
         # Lire le contenu du script
         $scriptContent = Get-Content -Path $ScriptPath -Raw
         
-        # Vérifier si le script contient déjà des blocs try/catch
+        # VÃ©rifier si le script contient dÃ©jÃ  des blocs try/catch
         $hasTryCatch = $scriptContent -match "try\s*\{"
         
         if ($hasTryCatch -and -not $Force) {
-            Write-Warning "Le script contient déjà des blocs try/catch. Utilisez -Force pour les remplacer."
+            Write-Warning "Le script contient dÃ©jÃ  des blocs try/catch. Utilisez -Force pour les remplacer."
             return $false
         }
         
@@ -137,7 +137,7 @@ function Add-TryCatchBlock {
                 # Extraire le corps de la fonction
                 $functionBody = $scriptContent.Substring($functionStart, $functionEnd - $functionStart + 1)
                 
-                # Vérifier si la fonction contient déjà un bloc try/catch
+                # VÃ©rifier si la fonction contient dÃ©jÃ  un bloc try/catch
                 if ($functionBody -match "try\s*\{" -and -not $Force) {
                     continue
                 }
@@ -149,7 +149,7 @@ function Add-TryCatchBlock {
                 $modifiedContent = $modifiedContent.Replace($functionBody, $newFunctionBody)
             }
             
-            # Écrire le contenu modifié dans le fichier
+            # Ã‰crire le contenu modifiÃ© dans le fichier
             Set-Content -Path $ScriptPath -Value $modifiedContent -Force
         }
         else {
@@ -163,7 +163,7 @@ $scriptContent
 }
 "@
             
-            # Écrire le contenu modifié dans le fichier
+            # Ã‰crire le contenu modifiÃ© dans le fichier
             Set-Content -Path $ScriptPath -Value $newContent -Force
         }
         
@@ -193,13 +193,13 @@ function Write-Log-Error {
     )
     
     try {
-        # Créer le répertoire de journaux s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de journaux s'il n'existe pas
         $logDir = Split-Path -Path $LogFile -Parent
         if (-not (Test-Path -Path $logDir)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
         
-        # Déterminer la catégorie d'erreur si non spécifiée
+        # DÃ©terminer la catÃ©gorie d'erreur si non spÃ©cifiÃ©e
         if ($Category -eq "Unknown") {
             if ($ErrorRecord.Exception -is [System.IO.IOException]) {
                 $Category = "FileSystem"
@@ -215,7 +215,7 @@ function Write-Log-Error {
             }
         }
         
-        # Créer l'entrée d'erreur
+        # CrÃ©er l'entrÃ©e d'erreur
         $errorEntry = @{
             Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             FunctionName = $FunctionName
@@ -227,7 +227,7 @@ function Write-Log-Error {
             Exception = $ErrorRecord.Exception.GetType().FullName
         }
         
-        # Charger le journal existant ou créer un nouveau
+        # Charger le journal existant ou crÃ©er un nouveau
         $errorLog = @()
         if (Test-Path -Path $LogFile) {
             $errorLog = Get-Content -Path $LogFile -Raw | ConvertFrom-Json
@@ -236,13 +236,13 @@ function Write-Log-Error {
             }
         }
         
-        # Ajouter la nouvelle entrée
+        # Ajouter la nouvelle entrÃ©e
         $errorLog += $errorEntry
         
         # Enregistrer le journal
         $errorLog | ConvertTo-Json -Depth 5 | Set-Content -Path $LogFile -Force
         
-        # Mettre à jour la base de données d'erreurs
+        # Mettre Ã  jour la base de donnÃ©es d'erreurs
         $errorHash = Get-Hash-For-Error -ErrorRecord $ErrorRecord
         if (-not $script:ErrorDatabase.ContainsKey($errorHash)) {
             $script:ErrorDatabase[$errorHash] = @{
@@ -259,7 +259,7 @@ function Write-Log-Error {
             $script:ErrorDatabase[$errorHash].Count++
         }
         
-        # Enregistrer la base de données d'erreurs
+        # Enregistrer la base de donnÃ©es d'erreurs
         $script:ErrorDatabase | ConvertTo-Json -Depth 5 | Set-Content -Path "$script:ErrorLogPath\error_database.json" -Force
         
         return $true
@@ -286,7 +286,7 @@ function Get-Hash-For-Error {
     return $hash.Replace("-", "")
 }
 
-# Fonction pour créer un système de journalisation centralisé
+# Fonction pour crÃ©er un systÃ¨me de journalisation centralisÃ©
 function New-CentralizedLoggingSystem {
     [CmdletBinding()]
     param (
@@ -298,12 +298,12 @@ function New-CentralizedLoggingSystem {
     )
     
     try {
-        # Créer le répertoire de journaux s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de journaux s'il n'existe pas
         if (-not (Test-Path -Path $LogPath)) {
             New-Item -Path $LogPath -ItemType Directory -Force | Out-Null
         }
         
-        # Créer les sous-répertoires
+        # CrÃ©er les sous-rÃ©pertoires
         $directories = @(
             "Errors",
             "Warnings",
@@ -318,7 +318,7 @@ function New-CentralizedLoggingSystem {
             }
         }
         
-        # Créer le fichier de configuration
+        # CrÃ©er le fichier de configuration
         $configPath = Join-Path -Path $LogPath -ChildPath "logging_config.json"
         $config = @{
             LogPath = $LogPath
@@ -334,7 +334,7 @@ function New-CentralizedLoggingSystem {
         
         $config | ConvertTo-Json -Depth 3 | Set-Content -Path $configPath -Force
         
-        # Créer le script de rotation des journaux
+        # CrÃ©er le script de rotation des journaux
         $rotationScriptPath = Join-Path -Path $LogPath -ChildPath "Rotate-Logs.ps1"
         $rotationScript = @"
 <#
@@ -342,12 +342,12 @@ function New-CentralizedLoggingSystem {
     Script de rotation des journaux.
 
 .DESCRIPTION
-    Ce script effectue la rotation des fichiers journaux selon la configuration spécifiée.
+    Ce script effectue la rotation des fichiers journaux selon la configuration spÃ©cifiÃ©e.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 # Charger la configuration
@@ -376,15 +376,15 @@ function Rotate-LogFile {
     `$logName = `$logFileInfo.BaseName
     `$logExt = `$logFileInfo.Extension
     
-    # Vérifier si la rotation est nécessaire
+    # VÃ©rifier si la rotation est nÃ©cessaire
     `$needRotation = `$false
     
-    # Rotation basée sur la taille
+    # Rotation basÃ©e sur la taille
     if (`$logFileInfo.Length -gt `$MaxLogSize) {
         `$needRotation = `$true
     }
     
-    # Rotation basée sur l'âge
+    # Rotation basÃ©e sur l'Ã¢ge
     `$rotationInterval = `$config.RotationInterval
     `$lastWriteTime = `$logFileInfo.LastWriteTime
     
@@ -412,7 +412,7 @@ function Rotate-LogFile {
         
         Move-Item -Path `$LogFile -Destination `$newLogFile -Force
         
-        # Créer un nouveau fichier journal vide
+        # CrÃ©er un nouveau fichier journal vide
         New-Item -Path `$LogFile -ItemType File -Force | Out-Null
         
         # Supprimer les anciens fichiers journaux
@@ -432,7 +432,7 @@ Rotate-LogFile -LogFile `$config.DebugLogFile -MaxLogAge `$config.MaxLogAge -Max
         
         Set-Content -Path $rotationScriptPath -Value $rotationScript -Force
         
-        # Créer le script d'analyse des erreurs si demandé
+        # CrÃ©er le script d'analyse des erreurs si demandÃ©
         if ($IncludeAnalytics) {
             $analyticsScriptPath = Join-Path -Path $LogPath -ChildPath "Analyze-Errors.ps1"
             $analyticsScript = @"
@@ -441,19 +441,19 @@ Rotate-LogFile -LogFile `$config.DebugLogFile -MaxLogAge `$config.MaxLogAge -Max
     Script d'analyse des erreurs.
 
 .DESCRIPTION
-    Ce script analyse les erreurs journalisées pour identifier des patterns et suggérer des solutions.
+    Ce script analyse les erreurs journalisÃ©es pour identifier des patterns et suggÃ©rer des solutions.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 # Charger la configuration
 `$configPath = Join-Path -Path `$PSScriptRoot -ChildPath "logging_config.json"
 `$config = Get-Content -Path `$configPath -Raw | ConvertFrom-Json
 
-# Charger la base de données d'erreurs
+# Charger la base de donnÃ©es d'erreurs
 `$errorDatabasePath = Join-Path -Path `$PSScriptRoot -ChildPath "error_database.json"
 `$errorDatabase = @{}
 
@@ -469,22 +469,22 @@ if (Test-Path -Path `$errorLogPath) {
     `$errorLog = Get-Content -Path `$errorLogPath -Raw | ConvertFrom-Json
 }
 
-# Générer un rapport d'analyse
+# GÃ©nÃ©rer un rapport d'analyse
 `$reportPath = Join-Path -Path `$PSScriptRoot -ChildPath "error_analysis_report.md"
 `$report = @"
 # Rapport d'analyse des erreurs
 
-## Résumé
+## RÃ©sumÃ©
 - **Nombre total d'erreurs**: `$(`$errorLog.Count)
-- **Date de génération**: `$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- **Date de gÃ©nÃ©ration**: `$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Erreurs les plus fréquentes
+## Erreurs les plus frÃ©quentes
 
-| Catégorie | Message | Occurrences | Dernière occurrence |
+| CatÃ©gorie | Message | Occurrences | DerniÃ¨re occurrence |
 |-----------|---------|-------------|---------------------|
 "@
 
-# Ajouter les erreurs les plus fréquentes au rapport
+# Ajouter les erreurs les plus frÃ©quentes au rapport
 `$topErrors = `$errorDatabase.GetEnumerator() | Sort-Object { `$_.Value.Count } -Descending | Select-Object -First 10
 
 foreach (`$error in `$topErrors) {
@@ -497,7 +497,7 @@ foreach (`$error in `$topErrors) {
 
 "@
 
-# Ajouter des recommandations basées sur les catégories d'erreurs
+# Ajouter des recommandations basÃ©es sur les catÃ©gories d'erreurs
 `$errorCategories = `$errorLog | Group-Object -Property Category
 
 foreach (`$category in `$errorCategories) {
@@ -506,34 +506,34 @@ foreach (`$category in `$errorCategories) {
     switch (`$category.Name) {
         "FileSystem" {
             `$report += @"
-- Vérifiez les permissions des fichiers et répertoires
-- Assurez-vous que les chemins sont correctement spécifiés
-- Utilisez des chemins absolus plutôt que relatifs
+- VÃ©rifiez les permissions des fichiers et rÃ©pertoires
+- Assurez-vous que les chemins sont correctement spÃ©cifiÃ©s
+- Utilisez des chemins absolus plutÃ´t que relatifs
 "@
         }
         "Network" {
             `$report += @"
-- Vérifiez la connectivité réseau
+- VÃ©rifiez la connectivitÃ© rÃ©seau
 - Assurez-vous que les URL sont correctes
-- Vérifiez les paramètres du proxy si applicable
+- VÃ©rifiez les paramÃ¨tres du proxy si applicable
 "@
         }
         "Permission" {
             `$report += @"
-- Exécutez le script avec des privilèges administratifs
-- Vérifiez les permissions des utilisateurs
+- ExÃ©cutez le script avec des privilÃ¨ges administratifs
+- VÃ©rifiez les permissions des utilisateurs
 - Utilisez des jetons d'authentification valides
 "@
         }
         "Syntax" {
             `$report += @"
-- Vérifiez la syntaxe du code
-- Utilisez un linter pour détecter les erreurs de syntaxe
-- Assurez-vous que les variables sont correctement déclarées
+- VÃ©rifiez la syntaxe du code
+- Utilisez un linter pour dÃ©tecter les erreurs de syntaxe
+- Assurez-vous que les variables sont correctement dÃ©clarÃ©es
 "@
         }
         default {
-            `$report += "- Aucune recommandation spécifique disponible pour cette catégorie"
+            `$report += "- Aucune recommandation spÃ©cifique disponible pour cette catÃ©gorie"
         }
     }
 }
@@ -541,7 +541,7 @@ foreach (`$category in `$errorCategories) {
 # Enregistrer le rapport
 `$report | Set-Content -Path `$reportPath -Force
 
-Write-Host "Rapport d'analyse généré: `$reportPath"
+Write-Host "Rapport d'analyse gÃ©nÃ©rÃ©: `$reportPath"
 "@
             
             Set-Content -Path $analyticsScriptPath -Value $analyticsScript -Force
@@ -550,12 +550,12 @@ Write-Host "Rapport d'analyse généré: `$reportPath"
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la création du système de journalisation centralisé: $_"
+        Write-Error "Erreur lors de la crÃ©ation du systÃ¨me de journalisation centralisÃ©: $_"
         return $false
     }
 }
 
-# Fonction pour ajouter une solution à une erreur connue
+# Fonction pour ajouter une solution Ã  une erreur connue
 function Add-ErrorSolution {
     [CmdletBinding()]
     param (
@@ -573,15 +573,15 @@ function Add-ErrorSolution {
     )
     
     try {
-        # Charger la base de données d'erreurs
+        # Charger la base de donnÃ©es d'erreurs
         $errorDatabase = @{}
         if (Test-Path -Path $DatabasePath) {
             $errorDatabase = Get-Content -Path $DatabasePath -Raw | ConvertFrom-Json -AsHashtable
         }
         
-        # Vérifier si l'erreur existe
+        # VÃ©rifier si l'erreur existe
         if (-not $errorDatabase.ContainsKey($ErrorHash)) {
-            Write-Error "L'erreur spécifiée n'existe pas dans la base de données."
+            Write-Error "L'erreur spÃ©cifiÃ©e n'existe pas dans la base de donnÃ©es."
             return $false
         }
         
@@ -598,7 +598,7 @@ function Add-ErrorSolution {
         
         $errorDatabase[$ErrorHash].Solutions += $solutionEntry
         
-        # Enregistrer la base de données
+        # Enregistrer la base de donnÃ©es
         $errorDatabase | ConvertTo-Json -Depth 5 | Set-Content -Path $DatabasePath -Force
         
         return $true

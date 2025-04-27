@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation des propriétés Data et TargetSite de System.Exception.
+    Tests pour valider la documentation des propriÃ©tÃ©s Data et TargetSite de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation des propriétés Data et TargetSite de System.Exception.
+    fournies dans la documentation des propriÃ©tÃ©s Data et TargetSite de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,31 +14,31 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests des propriétés Data et TargetSite de System.Exception" {
-    Context "Propriété Data" {
-        It "Devrait être une collection de type IDictionary" {
+# DÃ©finir les tests
+Describe "Tests des propriÃ©tÃ©s Data et TargetSite de System.Exception" {
+    Context "PropriÃ©tÃ© Data" {
+        It "Devrait Ãªtre une collection de type IDictionary" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Data | Should -Not -BeNullOrEmpty
             $exception.Data | Should -BeOfType [System.Collections.IDictionary]
         }
         
-        It "Devrait permettre d'ajouter des paires clé/valeur" {
+        It "Devrait permettre d'ajouter des paires clÃ©/valeur" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Data["TestKey"] = "TestValue"
             $exception.Data["TestKey"] | Should -Be "TestValue"
         }
         
-        It "Devrait être initialisée automatiquement" {
+        It "Devrait Ãªtre initialisÃ©e automatiquement" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Data | Should -Not -BeNull
         }
         
-        It "Devrait persister les données lors de la propagation de l'exception" {
+        It "Devrait persister les donnÃ©es lors de la propagation de l'exception" {
             $outerException = $null
             
             try {
@@ -48,7 +48,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
                     throw $innerException
                 }
                 catch {
-                    $outerException = [System.InvalidOperationException]::new("Opération invalide", $_.Exception)
+                    $outerException = [System.InvalidOperationException]::new("OpÃ©ration invalide", $_.Exception)
                     $outerException.Data["OuterKey"] = "OuterValue"
                     throw $outerException
                 }
@@ -62,8 +62,8 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
         }
     }
     
-    Context "Propriété TargetSite" {
-        It "Devrait fournir des informations sur la méthode qui a généré l'exception" {
+    Context "PropriÃ©tÃ© TargetSite" {
+        It "Devrait fournir des informations sur la mÃ©thode qui a gÃ©nÃ©rÃ© l'exception" {
             try {
                 [int]::Parse("abc")
             }
@@ -77,7 +77,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
             }
         }
         
-        It "Devrait permettre d'accéder aux paramètres de la méthode" {
+        It "Devrait permettre d'accÃ©der aux paramÃ¨tres de la mÃ©thode" {
             try {
                 [int]::Parse("abc")
             }
@@ -90,7 +90,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
             }
         }
         
-        It "Devrait permettre de déterminer si la méthode est statique" {
+        It "Devrait permettre de dÃ©terminer si la mÃ©thode est statique" {
             try {
                 [int]::Parse("abc")
             }
@@ -104,13 +104,13 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
     }
     
     Context "Exemples de la documentation" {
-        It "Exemple 1: Devrait utiliser la propriété Data pour enrichir une exception" {
+        It "Exemple 1: Devrait utiliser la propriÃ©tÃ© Data pour enrichir une exception" {
             $exceptionType = $null
             $message = $null
             $data = $null
             
             try {
-                $exception = [System.InvalidOperationException]::new("Opération non valide")
+                $exception = [System.InvalidOperationException]::new("OpÃ©ration non valide")
                 $exception.Data["Timestamp"] = Get-Date
                 $exception.Data["OperationName"] = "Test-Operation"
                 $exception.Data["Parameters"] = @{
@@ -128,7 +128,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
             }
             
             $exceptionType | Should -Be "System.InvalidOperationException"
-            $message | Should -Be "Opération non valide"
+            $message | Should -Be "OpÃ©ration non valide"
             $data["Timestamp"] | Should -Not -BeNull
             $data["OperationName"] | Should -Be "Test-Operation"
             $data["Parameters"] | Should -Not -BeNull
@@ -137,7 +137,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
             $data["Parameters"]["Param3"] | Should -Be $true
         }
         
-        It "Exemple 3: Devrait utiliser la propriété TargetSite pour obtenir des informations sur la méthode" {
+        It "Exemple 3: Devrait utiliser la propriÃ©tÃ© TargetSite pour obtenir des informations sur la mÃ©thode" {
             $methodName = $null
             $declaringType = $null
             $isStatic = $null
@@ -168,7 +168,7 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
     }
     
     Context "Bonnes pratiques" {
-        It "Devrait utiliser des clés significatives pour la propriété Data" {
+        It "Devrait utiliser des clÃ©s significatives pour la propriÃ©tÃ© Data" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Data["OperationContext"] = "ContextValue"
             $exception.Data["Timestamp"] = Get-Date
@@ -179,19 +179,19 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
             $exception.Data["RequestId"] | Should -Not -BeNull
         }
         
-        It "Devrait vérifier si TargetSite est null avant d'y accéder" {
+        It "Devrait vÃ©rifier si TargetSite est null avant d'y accÃ©der" {
             $exception = [System.Exception]::new("Message de test")
             
-            # TargetSite peut être null pour une exception nouvellement créée
+            # TargetSite peut Ãªtre null pour une exception nouvellement crÃ©Ã©e
             if ($exception.TargetSite -ne $null) {
                 $exception.TargetSite.Name | Should -Not -BeNullOrEmpty
             }
             
-            # Le test passe si TargetSite est null ou si l'accès à Name réussit
+            # Le test passe si TargetSite est null ou si l'accÃ¨s Ã  Name rÃ©ussit
             $true | Should -Be $true
         }
         
-        It "Devrait combiner TargetSite avec StackTrace pour une compréhension complète" {
+        It "Devrait combiner TargetSite avec StackTrace pour une comprÃ©hension complÃ¨te" {
             try {
                 [int]::Parse("abc")
             }
@@ -202,14 +202,14 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
                 $targetSite | Should -Not -BeNull
                 $stackTrace | Should -Not -BeNullOrEmpty
                 
-                # Vérifier que le nom de la méthode apparaît dans la pile d'appels
+                # VÃ©rifier que le nom de la mÃ©thode apparaÃ®t dans la pile d'appels
                 $stackTrace | Should -Match $targetSite.Name
             }
         }
     }
     
     Context "Utilisation dans PowerShell" {
-        It "Devrait accéder aux propriétés via l'objet ErrorRecord" {
+        It "Devrait accÃ©der aux propriÃ©tÃ©s via l'objet ErrorRecord" {
             $data = $null
             $targetSite = $null
             
@@ -250,5 +250,5 @@ Describe "Tests des propriétés Data et TargetSite de System.Exception" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

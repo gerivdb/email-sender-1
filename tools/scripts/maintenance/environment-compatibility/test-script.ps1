@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de test pour l'amélioration de la compatibilité.
+    Script de test pour l'amÃ©lioration de la compatibilitÃ©.
 
 .DESCRIPTION
-    Ce script contient des problèmes de compatibilité à corriger.
+    Ce script contient des problÃ¨mes de compatibilitÃ© Ã  corriger.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 # Importer le module EnvironmentManager
@@ -17,7 +17,7 @@ if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 }
 else {
-    Write-Warning "Module EnvironmentManager non trouvé: $modulePath"
+    Write-Warning "Module EnvironmentManager non trouvÃ©: $modulePath"
 }
 
 # Initialiser le module
@@ -26,27 +26,27 @@ if (Get-Command -Name Initialize-EnvironmentManager -ErrorAction SilentlyContinu
 }
 
 
-# Chemins codés en dur
+# Chemins codÃ©s en dur
 $logPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\logs"
 $configPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\config"
 
-# Utilisation de séparateurs de chemin spécifiques à Windows
+# Utilisation de sÃ©parateurs de chemin spÃ©cifiques Ã  Windows
 $scriptPath = "scripts\utils\path-utils.ps1"
 
-# Commandes spécifiques à Windows
+# Commandes spÃ©cifiques Ã  Windows
 $result = Invoke-CrossPlatformCommand -WindowsCommand 'cmd.exe /c' -UnixCommand 'bash -c' "dir /b"
 
-# Variables d'environnement spécifiques à Windows
+# Variables d'environnement spÃ©cifiques Ã  Windows
 $userProfile = if ($IsWindows) { $env:USERPROFILE } else { $HOME }
 $appData = if ($IsWindows) { $env:APPDATA } else { Join-Path -Path $HOME -ChildPath ".config" }
 $programFiles = if ($IsWindows) { $env:ProgramFiles } else { "/usr/local" }
 $systemRoot = if ($IsWindows) { $env:SystemRoot } else { "/" }
 
-# Fonctions spécifiques à PowerShell Windows
+# Fonctions spÃ©cifiques Ã  PowerShell Windows
 $processes = Get-CimInstance -Class Win32_Process
 $logs = Get-WinEvent -LogName Application -Newest 10
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 Write-Host "Log Path: $logPath"
 Write-Host "Config Path: $configPath"
 Write-Host "Script Path: $scriptPath"

@@ -1,38 +1,38 @@
-# Test de performance du système d'analyse
+﻿# Test de performance du systÃ¨me d'analyse
 
-Ce document présente les résultats des tests de performance du système d'analyse de code.
+Ce document prÃ©sente les rÃ©sultats des tests de performance du systÃ¨me d'analyse de code.
 
 ## Configuration du test
 
-Les tests ont été effectués sur un ordinateur avec les caractéristiques suivantes :
-- Processeur : Intel Core i7-9700K (8 cœurs, 3.6 GHz)
-- Mémoire : 32 Go DDR4
+Les tests ont Ã©tÃ© effectuÃ©s sur un ordinateur avec les caractÃ©ristiques suivantes :
+- Processeur : Intel Core i7-9700K (8 cÅ“urs, 3.6 GHz)
+- MÃ©moire : 32 Go DDR4
 - Disque : SSD NVMe 1 To
-- Système d'exploitation : Windows 10 Pro (64 bits)
+- SystÃ¨me d'exploitation : Windows 10 Pro (64 bits)
 - PowerShell : 5.1 et 7.3
 
-## Scénarios de test
+## ScÃ©narios de test
 
-Les scénarios de test suivants ont été utilisés :
+Les scÃ©narios de test suivants ont Ã©tÃ© utilisÃ©s :
 
-1. **Analyse séquentielle** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode séquentiel.
-2. **Analyse parallèle (PowerShell 5.1)** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallèle avec 4 threads en utilisant des Runspace Pools.
-3. **Analyse parallèle (PowerShell 7.3)** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallèle avec 4 threads en utilisant ForEach-Object -Parallel.
-4. **Analyse parallèle avec différents nombres de threads** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallèle avec 2, 4, 8 et 16 threads.
+1. **Analyse sÃ©quentielle** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode sÃ©quentiel.
+2. **Analyse parallÃ¨le (PowerShell 5.1)** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallÃ¨le avec 4 threads en utilisant des Runspace Pools.
+3. **Analyse parallÃ¨le (PowerShell 7.3)** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallÃ¨le avec 4 threads en utilisant ForEach-Object -Parallel.
+4. **Analyse parallÃ¨le avec diffÃ©rents nombres de threads** : Analyse de 100 fichiers PowerShell avec PSScriptAnalyzer et TodoAnalyzer en mode parallÃ¨le avec 2, 4, 8 et 16 threads.
 
-## Résultats
+## RÃ©sultats
 
-### Analyse séquentielle vs parallèle
+### Analyse sÃ©quentielle vs parallÃ¨le
 
 | Mode d'analyse | PowerShell 5.1 | PowerShell 7.3 |
 |----------------|----------------|----------------|
-| Séquentiel     | 45.2 secondes  | 38.7 secondes  |
-| Parallèle (4 threads) | 15.8 secondes | 12.3 secondes |
-| Amélioration   | 65.0%          | 68.2%          |
+| SÃ©quentiel     | 45.2 secondes  | 38.7 secondes  |
+| ParallÃ¨le (4 threads) | 15.8 secondes | 12.3 secondes |
+| AmÃ©lioration   | 65.0%          | 68.2%          |
 
-### Analyse parallèle avec différents nombres de threads (PowerShell 7.3)
+### Analyse parallÃ¨le avec diffÃ©rents nombres de threads (PowerShell 7.3)
 
-| Nombre de threads | Temps d'exécution | Amélioration par rapport au mode séquentiel |
+| Nombre de threads | Temps d'exÃ©cution | AmÃ©lioration par rapport au mode sÃ©quentiel |
 |-------------------|-------------------|---------------------------------------------|
 | 2                 | 20.1 secondes     | 48.1%                                       |
 | 4                 | 12.3 secondes     | 68.2%                                       |
@@ -41,38 +41,38 @@ Les scénarios de test suivants ont été utilisés :
 
 ### Utilisation des ressources
 
-| Mode d'analyse | Utilisation CPU moyenne | Utilisation mémoire moyenne |
+| Mode d'analyse | Utilisation CPU moyenne | Utilisation mÃ©moire moyenne |
 |----------------|-------------------------|----------------------------|
-| Séquentiel     | 25%                     | 250 Mo                     |
-| Parallèle (4 threads) | 85%              | 450 Mo                     |
-| Parallèle (8 threads) | 95%              | 650 Mo                     |
+| SÃ©quentiel     | 25%                     | 250 Mo                     |
+| ParallÃ¨le (4 threads) | 85%              | 450 Mo                     |
+| ParallÃ¨le (8 threads) | 95%              | 650 Mo                     |
 
 ## Analyse
 
-Les résultats montrent que l'analyse parallèle permet d'améliorer considérablement les performances du système d'analyse, avec une réduction du temps d'exécution de 65% à 80% selon le nombre de threads utilisés.
+Les rÃ©sultats montrent que l'analyse parallÃ¨le permet d'amÃ©liorer considÃ©rablement les performances du systÃ¨me d'analyse, avec une rÃ©duction du temps d'exÃ©cution de 65% Ã  80% selon le nombre de threads utilisÃ©s.
 
-PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode séquentiel qu'en mode parallèle, grâce à son moteur d'exécution plus efficace et à l'opérateur ForEach-Object -Parallel.
+PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode sÃ©quentiel qu'en mode parallÃ¨le, grÃ¢ce Ã  son moteur d'exÃ©cution plus efficace et Ã  l'opÃ©rateur ForEach-Object -Parallel.
 
-L'augmentation du nombre de threads permet d'améliorer les performances, mais avec un rendement décroissant au-delà de 8 threads. Cela est dû à la saturation des ressources CPU et à la contention des ressources.
+L'augmentation du nombre de threads permet d'amÃ©liorer les performances, mais avec un rendement dÃ©croissant au-delÃ  de 8 threads. Cela est dÃ» Ã  la saturation des ressources CPU et Ã  la contention des ressources.
 
-L'analyse parallèle utilise plus de ressources CPU et mémoire que l'analyse séquentielle, ce qui est normal car elle exécute plusieurs analyses en parallèle.
+L'analyse parallÃ¨le utilise plus de ressources CPU et mÃ©moire que l'analyse sÃ©quentielle, ce qui est normal car elle exÃ©cute plusieurs analyses en parallÃ¨le.
 
 ## Recommandations
 
-Sur la base des résultats des tests de performance, les recommandations suivantes peuvent être formulées :
+Sur la base des rÃ©sultats des tests de performance, les recommandations suivantes peuvent Ãªtre formulÃ©es :
 
-1. **Utiliser l'analyse parallèle** : L'analyse parallèle permet d'améliorer considérablement les performances du système d'analyse, en particulier pour les projets avec de nombreux fichiers.
+1. **Utiliser l'analyse parallÃ¨le** : L'analyse parallÃ¨le permet d'amÃ©liorer considÃ©rablement les performances du systÃ¨me d'analyse, en particulier pour les projets avec de nombreux fichiers.
 
-2. **Utiliser PowerShell 7.3 si possible** : PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode séquentiel qu'en mode parallèle.
+2. **Utiliser PowerShell 7.3 si possible** : PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode sÃ©quentiel qu'en mode parallÃ¨le.
 
-3. **Adapter le nombre de threads** : Le nombre optimal de threads dépend de la configuration matérielle et de la charge de travail. Pour la plupart des systèmes, 4 à 8 threads offrent un bon compromis entre performances et utilisation des ressources.
+3. **Adapter le nombre de threads** : Le nombre optimal de threads dÃ©pend de la configuration matÃ©rielle et de la charge de travail. Pour la plupart des systÃ¨mes, 4 Ã  8 threads offrent un bon compromis entre performances et utilisation des ressources.
 
-4. **Surveiller l'utilisation des ressources** : L'analyse parallèle utilise plus de ressources CPU et mémoire que l'analyse séquentielle. Il est important de surveiller l'utilisation des ressources pour éviter de saturer le système.
+4. **Surveiller l'utilisation des ressources** : L'analyse parallÃ¨le utilise plus de ressources CPU et mÃ©moire que l'analyse sÃ©quentielle. Il est important de surveiller l'utilisation des ressources pour Ã©viter de saturer le systÃ¨me.
 
 ## Conclusion
 
-L'optimisation des performances du système d'analyse de code est essentielle pour améliorer l'efficacité et la productivité. L'analyse parallèle permet d'améliorer considérablement les performances, en particulier pour les projets avec de nombreux fichiers.
+L'optimisation des performances du systÃ¨me d'analyse de code est essentielle pour amÃ©liorer l'efficacitÃ© et la productivitÃ©. L'analyse parallÃ¨le permet d'amÃ©liorer considÃ©rablement les performances, en particulier pour les projets avec de nombreux fichiers.
 
-PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode séquentiel qu'en mode parallèle, grâce à son moteur d'exécution plus efficace et à l'opérateur ForEach-Object -Parallel.
+PowerShell 7.3 offre de meilleures performances que PowerShell 5.1, tant en mode sÃ©quentiel qu'en mode parallÃ¨le, grÃ¢ce Ã  son moteur d'exÃ©cution plus efficace et Ã  l'opÃ©rateur ForEach-Object -Parallel.
 
-Le nombre optimal de threads dépend de la configuration matérielle et de la charge de travail. Pour la plupart des systèmes, 4 à 8 threads offrent un bon compromis entre performances et utilisation des ressources.
+Le nombre optimal de threads dÃ©pend de la configuration matÃ©rielle et de la charge de travail. Pour la plupart des systÃ¨mes, 4 Ã  8 threads offrent un bon compromis entre performances et utilisation des ressources.

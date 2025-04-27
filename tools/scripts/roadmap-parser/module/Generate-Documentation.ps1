@@ -1,4 +1,4 @@
-#
+﻿#
 # Generate-Documentation.ps1
 #
 # Script to generate documentation for the RoadmapParser module

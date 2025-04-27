@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Nettoie les processus orphelins laissés par des scripts ou applications.
+    Nettoie les processus orphelins laissÃ©s par des scripts ou applications.
 
 .DESCRIPTION
-    Ce script identifie et nettoie les processus orphelins qui peuvent être laissés
-    lorsque des scripts ou applications se terminent de manière inattendue. Il peut
-    être configuré pour surveiller des processus spécifiques ou des modèles de noms.
+    Ce script identifie et nettoie les processus orphelins qui peuvent Ãªtre laissÃ©s
+    lorsque des scripts ou applications se terminent de maniÃ¨re inattendue. Il peut
+    Ãªtre configurÃ© pour surveiller des processus spÃ©cifiques ou des modÃ¨les de noms.
 
 .EXAMPLE
     . .\OrphanProcessCleaner.ps1
@@ -13,18 +13,18 @@
     Start-ProcessMonitoring
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Liste des modèles de processus à surveiller
+# Liste des modÃ¨les de processus Ã  surveiller
 $script:ProcessPatterns = [System.Collections.Generic.List[PSCustomObject]]::new()
 
 # Timer pour la surveillance des processus
 $script:MonitoringTimer = $null
 
-# Fonction pour enregistrer un modèle de processus à surveiller
+# Fonction pour enregistrer un modÃ¨le de processus Ã  surveiller
 function Register-ProcessPattern {
     [CmdletBinding()]
     param (
@@ -53,21 +53,21 @@ function Register-ProcessPattern {
         [switch]$Force
     )
     
-    # Vérifier si le modèle existe déjà
+    # VÃ©rifier si le modÃ¨le existe dÃ©jÃ 
     $existingPattern = $script:ProcessPatterns | Where-Object { $_.Name -eq $Name } | Select-Object -First 1
     
     if ($null -ne $existingPattern) {
         if ($Force) {
-            # Supprimer le modèle existant
+            # Supprimer le modÃ¨le existant
             $script:ProcessPatterns.Remove($existingPattern)
         }
         else {
-            Write-Error "Un modèle de processus avec le nom '$Name' existe déjà. Utilisez -Force pour le remplacer."
+            Write-Error "Un modÃ¨le de processus avec le nom '$Name' existe dÃ©jÃ . Utilisez -Force pour le remplacer."
             return
         }
     }
     
-    # Créer le modèle de processus
+    # CrÃ©er le modÃ¨le de processus
     $pattern = [PSCustomObject]@{
         Name = $Name
         CommandLinePattern = $CommandLinePattern
@@ -79,13 +79,13 @@ function Register-ProcessPattern {
         LastCleanupTime = [datetime]::MinValue
     }
     
-    # Ajouter le modèle à la liste
+    # Ajouter le modÃ¨le Ã  la liste
     $script:ProcessPatterns.Add($pattern)
     
-    Write-Verbose "Modèle de processus '$Name' enregistré."
+    Write-Verbose "ModÃ¨le de processus '$Name' enregistrÃ©."
 }
 
-# Fonction pour supprimer un modèle de processus
+# Fonction pour supprimer un modÃ¨le de processus
 function Unregister-ProcessPattern {
     [CmdletBinding()]
     param (
@@ -93,22 +93,22 @@ function Unregister-ProcessPattern {
         [string]$Name
     )
     
-    # Trouver le modèle
+    # Trouver le modÃ¨le
     $pattern = $script:ProcessPatterns | Where-Object { $_.Name -eq $Name } | Select-Object -First 1
     
     if ($null -eq $pattern) {
-        Write-Error "Modèle de processus '$Name' non trouvé."
+        Write-Error "ModÃ¨le de processus '$Name' non trouvÃ©."
         return $false
     }
     
-    # Supprimer le modèle
+    # Supprimer le modÃ¨le
     $script:ProcessPatterns.Remove($pattern)
     
-    Write-Verbose "Modèle de processus '$Name' supprimé."
+    Write-Verbose "ModÃ¨le de processus '$Name' supprimÃ©."
     return $true
 }
 
-# Fonction pour obtenir la liste des modèles de processus
+# Fonction pour obtenir la liste des modÃ¨les de processus
 function Get-ProcessPatterns {
     [CmdletBinding()]
     param ()
@@ -129,7 +129,7 @@ function Clear-OrphanProcesses {
     
     $killedProcesses = @()
     
-    # Filtrer les modèles de processus
+    # Filtrer les modÃ¨les de processus
     $patterns = if ([string]::IsNullOrEmpty($Name)) {
         $script:ProcessPatterns
     }
@@ -138,48 +138,48 @@ function Clear-OrphanProcesses {
     }
     
     if ($patterns.Count -eq 0) {
-        Write-Warning "Aucun modèle de processus trouvé."
+        Write-Warning "Aucun modÃ¨le de processus trouvÃ©."
         return $killedProcesses
     }
     
-    # Traiter chaque modèle
+    # Traiter chaque modÃ¨le
     foreach ($pattern in $patterns) {
-        Write-Verbose "Traitement du modèle '$($pattern.Name)'..."
+        Write-Verbose "Traitement du modÃ¨le '$($pattern.Name)'..."
         
-        # Obtenir les processus correspondant au modèle
+        # Obtenir les processus correspondant au modÃ¨le
         $processes = Get-Process -Name $pattern.Name -ErrorAction SilentlyContinue
         
         if ($null -eq $processes -or $processes.Count -eq 0) {
-            Write-Verbose "Aucun processus trouvé pour le modèle '$($pattern.Name)'."
+            Write-Verbose "Aucun processus trouvÃ© pour le modÃ¨le '$($pattern.Name)'."
             continue
         }
         
-        # Filtrer les processus en fonction des critères
+        # Filtrer les processus en fonction des critÃ¨res
         foreach ($process in $processes) {
             $shouldKill = $false
             $reason = ""
             
-            # Vérifier la durée de vie
+            # VÃ©rifier la durÃ©e de vie
             if ($pattern.MaxLifetimeMinutes -gt 0) {
                 $lifetime = (Get-Date) - $process.StartTime
                 if ($lifetime.TotalMinutes -gt $pattern.MaxLifetimeMinutes) {
                     $shouldKill = $true
-                    $reason = "Durée de vie dépassée ($($lifetime.TotalMinutes.ToString('F2')) minutes > $($pattern.MaxLifetimeMinutes) minutes)"
+                    $reason = "DurÃ©e de vie dÃ©passÃ©e ($($lifetime.TotalMinutes.ToString('F2')) minutes > $($pattern.MaxLifetimeMinutes) minutes)"
                 }
             }
             
-            # Vérifier l'utilisation de la mémoire
+            # VÃ©rifier l'utilisation de la mÃ©moire
             if (-not $shouldKill -and $pattern.MaxMemoryMB -gt 0) {
                 $memoryMB = $process.WorkingSet64 / 1MB
                 if ($memoryMB -gt $pattern.MaxMemoryMB) {
                     $shouldKill = $true
-                    $reason = "Utilisation de la mémoire dépassée ($($memoryMB.ToString('F2')) MB > $($pattern.MaxMemoryMB) MB)"
+                    $reason = "Utilisation de la mÃ©moire dÃ©passÃ©e ($($memoryMB.ToString('F2')) MB > $($pattern.MaxMemoryMB) MB)"
                 }
             }
             
-            # Vérifier l'utilisation du CPU
+            # VÃ©rifier l'utilisation du CPU
             if (-not $shouldKill -and $pattern.MaxCPUPercent -gt 0) {
-                # Obtenir l'utilisation du CPU (nécessite plusieurs mesures)
+                # Obtenir l'utilisation du CPU (nÃ©cessite plusieurs mesures)
                 $cpuCounter = New-Object System.Diagnostics.PerformanceCounter("Process", "% Processor Time", $process.ProcessName, $true)
                 $cpuCounter.NextValue() | Out-Null
                 Start-Sleep -Milliseconds 100
@@ -187,17 +187,17 @@ function Clear-OrphanProcesses {
                 
                 if ($cpuPercent -gt $pattern.MaxCPUPercent) {
                     $shouldKill = $true
-                    $reason = "Utilisation du CPU dépassée ($($cpuPercent.ToString('F2'))% > $($pattern.MaxCPUPercent)%)"
+                    $reason = "Utilisation du CPU dÃ©passÃ©e ($($cpuPercent.ToString('F2'))% > $($pattern.MaxCPUPercent)%)"
                 }
             }
             
-            # Vérifier la ligne de commande
+            # VÃ©rifier la ligne de commande
             if (-not $shouldKill -and -not [string]::IsNullOrEmpty($pattern.CommandLinePattern)) {
                 try {
                     $commandLine = (Get-WmiObject -Class Win32_Process -Filter "ProcessId = $($process.Id)").CommandLine
                     if ($commandLine -match $pattern.CommandLinePattern) {
                         $shouldKill = $true
-                        $reason = "Ligne de commande correspondant au modèle '$($pattern.CommandLinePattern)'"
+                        $reason = "Ligne de commande correspondant au modÃ¨le '$($pattern.CommandLinePattern)'"
                     }
                 }
                 catch {
@@ -205,32 +205,32 @@ function Clear-OrphanProcesses {
                 }
             }
             
-            # Vérifier la condition personnalisée
+            # VÃ©rifier la condition personnalisÃ©e
             if (-not $shouldKill -and $null -ne $pattern.CustomCondition) {
                 try {
                     $shouldKill = & $pattern.CustomCondition -Process $process
                     if ($shouldKill) {
-                        $reason = "Condition personnalisée satisfaite"
+                        $reason = "Condition personnalisÃ©e satisfaite"
                     }
                 }
                 catch {
-                    Write-Warning "Erreur lors de l'évaluation de la condition personnalisée pour le processus $($process.Id): $_"
+                    Write-Warning "Erreur lors de l'Ã©valuation de la condition personnalisÃ©e pour le processus $($process.Id): $_"
                 }
             }
             
-            # Tuer le processus si nécessaire
+            # Tuer le processus si nÃ©cessaire
             if ($shouldKill) {
-                Write-Verbose "Processus $($process.Id) ($($process.ProcessName)) identifié comme orphelin: $reason"
+                Write-Verbose "Processus $($process.Id) ($($process.ProcessName)) identifiÃ© comme orphelin: $reason"
                 
                 if (-not $WhatIf) {
                     try {
-                        # Exécuter le script BeforeKill
+                        # ExÃ©cuter le script BeforeKill
                         if ($null -ne $pattern.BeforeKill) {
                             try {
                                 & $pattern.BeforeKill -Process $process
                             }
                             catch {
-                                Write-Warning "Erreur lors de l'exécution du script BeforeKill pour le processus $($process.Id): $_"
+                                Write-Warning "Erreur lors de l'exÃ©cution du script BeforeKill pour le processus $($process.Id): $_"
                             }
                         }
                         
@@ -245,26 +245,26 @@ function Clear-OrphanProcesses {
                             Reason = $reason
                         }
                         
-                        Write-Verbose "Processus $($process.Id) ($($process.ProcessName)) tué."
+                        Write-Verbose "Processus $($process.Id) ($($process.ProcessName)) tuÃ©."
                     }
                     catch {
-                        Write-Warning "Erreur lors de l'arrêt du processus $($process.Id): $_"
+                        Write-Warning "Erreur lors de l'arrÃªt du processus $($process.Id): $_"
                     }
                 }
                 else {
-                    Write-Host "WhatIf: Le processus $($process.Id) ($($process.ProcessName)) serait tué: $reason"
+                    Write-Host "WhatIf: Le processus $($process.Id) ($($process.ProcessName)) serait tuÃ©: $reason"
                 }
             }
         }
         
-        # Mettre à jour l'heure du dernier nettoyage
+        # Mettre Ã  jour l'heure du dernier nettoyage
         $pattern.LastCleanupTime = Get-Date
     }
     
     return $killedProcesses
 }
 
-# Fonction pour démarrer la surveillance des processus
+# Fonction pour dÃ©marrer la surveillance des processus
 function Start-ProcessMonitoring {
     [CmdletBinding()]
     param (
@@ -272,31 +272,31 @@ function Start-ProcessMonitoring {
         [int]$IntervalMinutes = 5
     )
     
-    # Arrêter la surveillance existante
+    # ArrÃªter la surveillance existante
     if ($null -ne $script:MonitoringTimer) {
         Stop-ProcessMonitoring
     }
     
-    # Vérifier s'il y a des modèles de processus à surveiller
+    # VÃ©rifier s'il y a des modÃ¨les de processus Ã  surveiller
     if ($script:ProcessPatterns.Count -eq 0) {
-        Write-Warning "Aucun modèle de processus enregistré. Utilisez Register-ProcessPattern pour ajouter des modèles."
+        Write-Warning "Aucun modÃ¨le de processus enregistrÃ©. Utilisez Register-ProcessPattern pour ajouter des modÃ¨les."
         return $false
     }
     
-    # Créer le callback du timer
+    # CrÃ©er le callback du timer
     $timerCallback = {
         param($state)
         
-        Write-Verbose "Exécution du nettoyage des processus orphelins..."
+        Write-Verbose "ExÃ©cution du nettoyage des processus orphelins..."
         
         try {
             $killedProcesses = Clear-OrphanProcesses
             
             if ($killedProcesses.Count -gt 0) {
-                Write-Verbose "$($killedProcesses.Count) processus orphelins nettoyés."
+                Write-Verbose "$($killedProcesses.Count) processus orphelins nettoyÃ©s."
             }
             else {
-                Write-Verbose "Aucun processus orphelin trouvé."
+                Write-Verbose "Aucun processus orphelin trouvÃ©."
             }
         }
         catch {
@@ -304,7 +304,7 @@ function Start-ProcessMonitoring {
         }
     }
     
-    # Créer le timer
+    # CrÃ©er le timer
     $script:MonitoringTimer = New-Object System.Threading.Timer(
         $timerCallback,
         $null,
@@ -312,11 +312,11 @@ function Start-ProcessMonitoring {
         ($IntervalMinutes * 60 * 1000)
     )
     
-    Write-Verbose "Surveillance des processus démarrée avec un intervalle de $IntervalMinutes minutes."
+    Write-Verbose "Surveillance des processus dÃ©marrÃ©e avec un intervalle de $IntervalMinutes minutes."
     return $true
 }
 
-# Fonction pour arrêter la surveillance des processus
+# Fonction pour arrÃªter la surveillance des processus
 function Stop-ProcessMonitoring {
     [CmdletBinding()]
     param ()
@@ -325,7 +325,7 @@ function Stop-ProcessMonitoring {
         $script:MonitoringTimer.Dispose()
         $script:MonitoringTimer = $null
         
-        Write-Verbose "Surveillance des processus arrêtée."
+        Write-Verbose "Surveillance des processus arrÃªtÃ©e."
         return $true
     }
     else {
@@ -334,7 +334,7 @@ function Stop-ProcessMonitoring {
     }
 }
 
-# Fonction pour vérifier si un processus est orphelin
+# Fonction pour vÃ©rifier si un processus est orphelin
 function Test-OrphanProcess {
     [CmdletBinding()]
     param (
@@ -345,60 +345,60 @@ function Test-OrphanProcess {
         [System.Diagnostics.Process]$Process
     )
     
-    # Obtenir le processus si l'ID est spécifié
+    # Obtenir le processus si l'ID est spÃ©cifiÃ©
     if ($PSCmdlet.ParameterSetName -eq "ById") {
         try {
             $Process = Get-Process -Id $Id -ErrorAction Stop
         }
         catch {
-            Write-Error "Processus avec l'ID $Id non trouvé: $_"
+            Write-Error "Processus avec l'ID $Id non trouvÃ©: $_"
             return $null
         }
     }
     
-    # Vérifier si le processus existe
+    # VÃ©rifier si le processus existe
     if ($null -eq $Process) {
         Write-Error "Processus non valide."
         return $null
     }
     
-    # Trouver un modèle correspondant
+    # Trouver un modÃ¨le correspondant
     $pattern = $script:ProcessPatterns | Where-Object { $_.Name -eq $Process.ProcessName } | Select-Object -First 1
     
     if ($null -eq $pattern) {
-        Write-Verbose "Aucun modèle de processus trouvé pour '$($Process.ProcessName)'."
+        Write-Verbose "Aucun modÃ¨le de processus trouvÃ© pour '$($Process.ProcessName)'."
         return [PSCustomObject]@{
             IsOrphan = $false
             Process = $Process
-            Reason = "Aucun modèle de processus correspondant"
+            Reason = "Aucun modÃ¨le de processus correspondant"
         }
     }
     
-    # Vérifier si le processus est orphelin
+    # VÃ©rifier si le processus est orphelin
     $isOrphan = $false
     $reason = ""
     
-    # Vérifier la durée de vie
+    # VÃ©rifier la durÃ©e de vie
     if ($pattern.MaxLifetimeMinutes -gt 0) {
         $lifetime = (Get-Date) - $Process.StartTime
         if ($lifetime.TotalMinutes -gt $pattern.MaxLifetimeMinutes) {
             $isOrphan = $true
-            $reason = "Durée de vie dépassée ($($lifetime.TotalMinutes.ToString('F2')) minutes > $($pattern.MaxLifetimeMinutes) minutes)"
+            $reason = "DurÃ©e de vie dÃ©passÃ©e ($($lifetime.TotalMinutes.ToString('F2')) minutes > $($pattern.MaxLifetimeMinutes) minutes)"
         }
     }
     
-    # Vérifier l'utilisation de la mémoire
+    # VÃ©rifier l'utilisation de la mÃ©moire
     if (-not $isOrphan -and $pattern.MaxMemoryMB -gt 0) {
         $memoryMB = $Process.WorkingSet64 / 1MB
         if ($memoryMB -gt $pattern.MaxMemoryMB) {
             $isOrphan = $true
-            $reason = "Utilisation de la mémoire dépassée ($($memoryMB.ToString('F2')) MB > $($pattern.MaxMemoryMB) MB)"
+            $reason = "Utilisation de la mÃ©moire dÃ©passÃ©e ($($memoryMB.ToString('F2')) MB > $($pattern.MaxMemoryMB) MB)"
         }
     }
     
-    # Vérifier l'utilisation du CPU
+    # VÃ©rifier l'utilisation du CPU
     if (-not $isOrphan -and $pattern.MaxCPUPercent -gt 0) {
-        # Obtenir l'utilisation du CPU (nécessite plusieurs mesures)
+        # Obtenir l'utilisation du CPU (nÃ©cessite plusieurs mesures)
         $cpuCounter = New-Object System.Diagnostics.PerformanceCounter("Process", "% Processor Time", $Process.ProcessName, $true)
         $cpuCounter.NextValue() | Out-Null
         Start-Sleep -Milliseconds 100
@@ -406,17 +406,17 @@ function Test-OrphanProcess {
         
         if ($cpuPercent -gt $pattern.MaxCPUPercent) {
             $isOrphan = $true
-            $reason = "Utilisation du CPU dépassée ($($cpuPercent.ToString('F2'))% > $($pattern.MaxCPUPercent)%)"
+            $reason = "Utilisation du CPU dÃ©passÃ©e ($($cpuPercent.ToString('F2'))% > $($pattern.MaxCPUPercent)%)"
         }
     }
     
-    # Vérifier la ligne de commande
+    # VÃ©rifier la ligne de commande
     if (-not $isOrphan -and -not [string]::IsNullOrEmpty($pattern.CommandLinePattern)) {
         try {
             $commandLine = (Get-WmiObject -Class Win32_Process -Filter "ProcessId = $($Process.Id)").CommandLine
             if ($commandLine -match $pattern.CommandLinePattern) {
                 $isOrphan = $true
-                $reason = "Ligne de commande correspondant au modèle '$($pattern.CommandLinePattern)'"
+                $reason = "Ligne de commande correspondant au modÃ¨le '$($pattern.CommandLinePattern)'"
             }
         }
         catch {
@@ -424,16 +424,16 @@ function Test-OrphanProcess {
         }
     }
     
-    # Vérifier la condition personnalisée
+    # VÃ©rifier la condition personnalisÃ©e
     if (-not $isOrphan -and $null -ne $pattern.CustomCondition) {
         try {
             $isOrphan = & $pattern.CustomCondition -Process $Process
             if ($isOrphan) {
-                $reason = "Condition personnalisée satisfaite"
+                $reason = "Condition personnalisÃ©e satisfaite"
             }
         }
         catch {
-            Write-Warning "Erreur lors de l'évaluation de la condition personnalisée pour le processus $($Process.Id): $_"
+            Write-Warning "Erreur lors de l'Ã©valuation de la condition personnalisÃ©e pour le processus $($Process.Id): $_"
         }
     }
     
@@ -454,7 +454,7 @@ function Get-OrphanProcesses {
     
     $orphanProcesses = @()
     
-    # Filtrer les modèles de processus
+    # Filtrer les modÃ¨les de processus
     $patterns = if ([string]::IsNullOrEmpty($Name)) {
         $script:ProcessPatterns
     }
@@ -463,23 +463,23 @@ function Get-OrphanProcesses {
     }
     
     if ($patterns.Count -eq 0) {
-        Write-Warning "Aucun modèle de processus trouvé."
+        Write-Warning "Aucun modÃ¨le de processus trouvÃ©."
         return $orphanProcesses
     }
     
-    # Traiter chaque modèle
+    # Traiter chaque modÃ¨le
     foreach ($pattern in $patterns) {
-        Write-Verbose "Traitement du modèle '$($pattern.Name)'..."
+        Write-Verbose "Traitement du modÃ¨le '$($pattern.Name)'..."
         
-        # Obtenir les processus correspondant au modèle
+        # Obtenir les processus correspondant au modÃ¨le
         $processes = Get-Process -Name $pattern.Name -ErrorAction SilentlyContinue
         
         if ($null -eq $processes -or $processes.Count -eq 0) {
-            Write-Verbose "Aucun processus trouvé pour le modèle '$($pattern.Name)'."
+            Write-Verbose "Aucun processus trouvÃ© pour le modÃ¨le '$($pattern.Name)'."
             continue
         }
         
-        # Vérifier chaque processus
+        # VÃ©rifier chaque processus
         foreach ($process in $processes) {
             $result = Test-OrphanProcess -Process $process
             

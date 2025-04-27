@@ -1,43 +1,43 @@
-<#
+﻿<#
 .SYNOPSIS
-    Récupère les configurations d'alerte de performance.
+    RÃ©cupÃ¨re les configurations d'alerte de performance.
 
 .DESCRIPTION
-    La fonction Get-RoadmapPerformanceAlert permet de récupérer les configurations d'alerte
-    de performance configurées avec Set-RoadmapPerformanceAlert. Elle peut filtrer les alertes
+    La fonction Get-RoadmapPerformanceAlert permet de rÃ©cupÃ©rer les configurations d'alerte
+    de performance configurÃ©es avec Set-RoadmapPerformanceAlert. Elle peut filtrer les alertes
     par type et par nom.
 
 .PARAMETER Type
     Le type de mesure de performance. Les valeurs possibles sont : ExecutionTime, MemoryUsage, Operations.
-    Si non spécifié, toutes les alertes sont retournées.
+    Si non spÃ©cifiÃ©, toutes les alertes sont retournÃ©es.
 
 .PARAMETER Name
-    Le nom de la mesure de performance pour laquelle récupérer les alertes.
-    Si non spécifié, toutes les alertes du type spécifié sont retournées.
+    Le nom de la mesure de performance pour laquelle rÃ©cupÃ©rer les alertes.
+    Si non spÃ©cifiÃ©, toutes les alertes du type spÃ©cifiÃ© sont retournÃ©es.
 
 .PARAMETER IncludeDisabled
-    Indique si les alertes désactivées doivent être incluses dans les résultats.
-    Par défaut : $false.
+    Indique si les alertes dÃ©sactivÃ©es doivent Ãªtre incluses dans les rÃ©sultats.
+    Par dÃ©faut : $false.
 
 .EXAMPLE
     Get-RoadmapPerformanceAlert
-    Récupère toutes les configurations d'alerte de performance.
+    RÃ©cupÃ¨re toutes les configurations d'alerte de performance.
 
 .EXAMPLE
     Get-RoadmapPerformanceAlert -Type ExecutionTime
-    Récupère toutes les configurations d'alerte de performance pour les mesures de temps d'exécution.
+    RÃ©cupÃ¨re toutes les configurations d'alerte de performance pour les mesures de temps d'exÃ©cution.
 
 .EXAMPLE
     Get-RoadmapPerformanceAlert -Type MemoryUsage -Name "LoadRoadmap"
-    Récupère la configuration d'alerte de performance pour la mesure d'utilisation de mémoire "LoadRoadmap".
+    RÃ©cupÃ¨re la configuration d'alerte de performance pour la mesure d'utilisation de mÃ©moire "LoadRoadmap".
 
 .OUTPUTS
-    [PSCustomObject[]] Retourne un tableau d'objets représentant les configurations d'alerte.
+    [PSCustomObject[]] Retourne un tableau d'objets reprÃ©sentant les configurations d'alerte.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-24
+    Date de crÃ©ation: 2023-07-24
 #>
 function Get-RoadmapPerformanceAlert {
     [CmdletBinding()]
@@ -61,9 +61,9 @@ function Get-RoadmapPerformanceAlert {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
@@ -72,9 +72,9 @@ function Get-RoadmapPerformanceAlert {
     # Obtenir le chemin du fichier de configurations d'alerte
     $alertConfigurationsPath = Get-AlertConfigurationsPath
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $alertConfigurationsPath)) {
-        Write-Log -Message "Aucune configuration d'alerte trouvée." -Level "Info" -Source "PerformanceAlert"
+        Write-Log -Message "Aucune configuration d'alerte trouvÃ©e." -Level "Info" -Source "PerformanceAlert"
         return @()
     }
 
@@ -94,7 +94,7 @@ function Get-RoadmapPerformanceAlert {
         $filteredAlerts = $filteredAlerts | Where-Object { $_.Name -eq $Name }
     }
     
-    # Filtrer par état
+    # Filtrer par Ã©tat
     if (-not $IncludeDisabled) {
         $filteredAlerts = $filteredAlerts | Where-Object { $_.Enabled -eq $true }
     }
@@ -102,7 +102,7 @@ function Get-RoadmapPerformanceAlert {
     return $filteredAlerts
 }
 
-# Fonction privée pour obtenir le chemin du fichier de configurations d'alerte
+# Fonction privÃ©e pour obtenir le chemin du fichier de configurations d'alerte
 function Get-AlertConfigurationsPath {
     [CmdletBinding()]
     param ()

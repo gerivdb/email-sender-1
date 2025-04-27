@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonction principale du mode DEBUG qui permet de détecter et corriger les bugs dans le code.
+    Fonction principale du mode DEBUG qui permet de dÃ©tecter et corriger les bugs dans le code.
 
 .DESCRIPTION
-    Cette fonction analyse un fichier de log d'erreurs et un module pour détecter et corriger les bugs
-    en fonction des tâches spécifiées dans un fichier de roadmap.
+    Cette fonction analyse un fichier de log d'erreurs et un module pour dÃ©tecter et corriger les bugs
+    en fonction des tÃ¢ches spÃ©cifiÃ©es dans un fichier de roadmap.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à traiter.
+    Chemin vers le fichier de roadmap Ã  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (optionnel). Si non spécifié, toutes les tâches seront traitées.
+    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
 
 .PARAMETER ErrorLog
-    Chemin vers le fichier de log d'erreurs à analyser.
+    Chemin vers le fichier de log d'erreurs Ã  analyser.
 
 .PARAMETER ModulePath
-    Chemin vers le répertoire du module à déboguer.
+    Chemin vers le rÃ©pertoire du module Ã  dÃ©boguer.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les fichiers de sortie.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.
 
 .PARAMETER GeneratePatch
-    Indique si un patch correctif doit être généré.
+    Indique si un patch correctif doit Ãªtre gÃ©nÃ©rÃ©.
 
 .PARAMETER IncludeStackTrace
-    Indique si les traces de pile doivent être incluses dans l'analyse.
+    Indique si les traces de pile doivent Ãªtre incluses dans l'analyse.
 
 .PARAMETER MaxStackTraceDepth
-    Profondeur maximale des traces de pile à analyser.
+    Profondeur maximale des traces de pile Ã  analyser.
 
 .PARAMETER AnalyzePerformance
-    Indique si les performances doivent être analysées.
+    Indique si les performances doivent Ãªtre analysÃ©es.
 
 .PARAMETER SuggestFixes
-    Indique si des suggestions de correction doivent être générées.
+    Indique si des suggestions de correction doivent Ãªtre gÃ©nÃ©rÃ©es.
 
 .EXAMPLE
     Invoke-RoadmapDebug -FilePath "roadmap.md" -TaskIdentifier "1.1" -ErrorLog "error.log" -ModulePath "module" -OutputPath "output" -GeneratePatch $true
@@ -76,7 +76,7 @@ function Invoke-RoadmapDebug {
         [bool]$SuggestFixes = $true
     )
 
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $result = @{
         Success     = $false
         ErrorCount  = 0
@@ -87,23 +87,23 @@ function Invoke-RoadmapDebug {
         OutputFiles = @()
     }
 
-    # Extraire les tâches de la roadmap
+    # Extraire les tÃ¢ches de la roadmap
     $tasks = Get-RoadmapTasks -FilePath $FilePath -TaskIdentifier $TaskIdentifier
 
     if ($tasks.Count -eq 0) {
-        Write-LogWarning "Aucune tâche trouvée dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
+        Write-LogWarning "Aucune tÃ¢che trouvÃ©e dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
         return $result
     }
 
-    Write-LogInfo "Nombre de tâches trouvées : $($tasks.Count)"
+    Write-LogInfo "Nombre de tÃ¢ches trouvÃ©es : $($tasks.Count)"
 
     # Analyser le fichier de log d'erreurs
     Write-LogInfo "Analyse du fichier de log d'erreurs : $ErrorLog"
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "Répertoire de sortie créé : $OutputPath"
+        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
     }
 
     # Lire le contenu du fichier de log d'erreurs
@@ -135,7 +135,7 @@ function Invoke-RoadmapDebug {
 
     $result.ErrorCount = $result.Errors.Count
 
-    Write-LogInfo "Nombre d'erreurs trouvées : $($result.ErrorCount)"
+    Write-LogInfo "Nombre d'erreurs trouvÃ©es : $($result.ErrorCount)"
 
     # Analyser les fichiers du module
     Write-LogInfo "Analyse du module : $ModulePath"
@@ -143,27 +143,27 @@ function Invoke-RoadmapDebug {
     $files = Get-ChildItem -Path $ModulePath -Recurse -File | Where-Object { $_.Extension -in ".ps1", ".psm1", ".psd1" }
     $result.FileCount = $files.Count
 
-    Write-LogInfo "Nombre de fichiers trouvés : $($result.FileCount)"
+    Write-LogInfo "Nombre de fichiers trouvÃ©s : $($result.FileCount)"
 
-    # Analyser les erreurs et générer des correctifs
+    # Analyser les erreurs et gÃ©nÃ©rer des correctifs
     if ($result.Errors.Count -gt 0) {
-        Write-LogInfo "Génération des correctifs..."
+        Write-LogInfo "GÃ©nÃ©ration des correctifs..."
 
-        # Créer un rapport d'analyse
+        # CrÃ©er un rapport d'analyse
         $debugReportPath = Join-Path -Path $OutputPath -ChildPath "debug_report.md"
 
         $debugReport = @"
-# Rapport de débogage
+# Rapport de dÃ©bogage
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Date du rapport :** $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-- **Fichier de log analysé :** $ErrorLog
-- **Module analysé :** $ModulePath
-- **Nombre d'erreurs trouvées :** $($result.ErrorCount)
-- **Nombre de fichiers analysés :** $($result.FileCount)
+- **Fichier de log analysÃ© :** $ErrorLog
+- **Module analysÃ© :** $ModulePath
+- **Nombre d'erreurs trouvÃ©es :** $($result.ErrorCount)
+- **Nombre de fichiers analysÃ©s :** $($result.FileCount)
 
-## Erreurs détectées
+## Erreurs dÃ©tectÃ©es
 
 "@
 
@@ -195,48 +195,48 @@ $errorLineContent
 
 "@
 
-                # Générer une suggestion de correction
+                # GÃ©nÃ©rer une suggestion de correction
                 if ($SuggestFixes) {
                     $fix = ""
 
-                    # Analyser le type d'erreur et suggérer une correction
+                    # Analyser le type d'erreur et suggÃ©rer une correction
                     switch -Regex ($error.Type) {
                         "NullReferenceException" {
-                            # Suggérer une vérification de nullité
+                            # SuggÃ©rer une vÃ©rification de nullitÃ©
                             if ($errorLineContent -match '\$([a-zA-Z0-9_]+)\.') {
                                 $variableName = $matches[1]
-                                $fix = "Ajouter une vérification de nullité pour la variable `$$variableName :"
+                                $fix = "Ajouter une vÃ©rification de nullitÃ© pour la variable `$$variableName :"
                                 $fixCode = "if (`$null -ne `$$variableName) {`n    $errorLineContent`n}"
                             }
                         }
                         "ArgumentNullException" {
-                            # Suggérer une vérification de paramètre
+                            # SuggÃ©rer une vÃ©rification de paramÃ¨tre
                             if ($errorLineContent -match 'param\s*\(\s*\[([^\]]+)\]\s*\$([a-zA-Z0-9_]+)\s*\)') {
                                 $paramName = $matches[2]
-                                $fix = "Ajouter une vérification de paramètre pour `$$paramName :"
-                                $fixCode = "if (`$null -eq `$$paramName) {`n    throw 'Le paramètre $paramName ne peut pas être null.'`n}"
+                                $fix = "Ajouter une vÃ©rification de paramÃ¨tre pour `$$paramName :"
+                                $fixCode = "if (`$null -eq `$$paramName) {`n    throw 'Le paramÃ¨tre $paramName ne peut pas Ãªtre null.'`n}"
                             }
                         }
                         "IndexOutOfRangeException" {
-                            # Suggérer une vérification d'index
+                            # SuggÃ©rer une vÃ©rification d'index
                             if ($errorLineContent -match '\$([a-zA-Z0-9_]+)\[([^\]]+)\]') {
                                 $arrayName = $matches[1]
                                 $indexExpr = $matches[2]
-                                $fix = "Ajouter une vérification d'index pour le tableau `$$arrayName :"
+                                $fix = "Ajouter une vÃ©rification d'index pour le tableau `$$arrayName :"
                                 $fixCode = "if (`$$arrayName.Length -gt $indexExpr) {`n    $errorLineContent`n} else {`n    Write-Warning 'Index hors limites'`n}"
                             }
                         }
                         "DivideByZeroException" {
-                            # Suggérer une vérification de division par zéro
+                            # SuggÃ©rer une vÃ©rification de division par zÃ©ro
                             if ($errorLineContent -match '\/\s*([^\s;]+)') {
                                 $divisor = $matches[1]
-                                $fix = "Ajouter une vérification de division par zéro :"
-                                $fixCode = "if ($divisor -ne 0) {`n    $errorLineContent`n} else {`n    Write-Warning 'Division par zéro'`n}"
+                                $fix = "Ajouter une vÃ©rification de division par zÃ©ro :"
+                                $fixCode = "if ($divisor -ne 0) {`n    $errorLineContent`n} else {`n    Write-Warning 'Division par zÃ©ro'`n}"
                             }
                         }
                         default {
-                            # Suggestion générique
-                            $fix = "Vérifier la logique de cette ligne :"
+                            # Suggestion gÃ©nÃ©rique
+                            $fix = "VÃ©rifier la logique de cette ligne :"
                             $fixCode = "# TODO: Corriger cette ligne`n$errorLineContent"
                         }
                     }
@@ -253,7 +253,7 @@ $fixCode
 
 "@
 
-                        # Ajouter le correctif au résultat
+                        # Ajouter le correctif au rÃ©sultat
                         $patch = @{
                             File         = $error.File
                             Line         = $error.Line
@@ -265,7 +265,7 @@ $fixCode
                     }
                 }
 
-                # Inclure la trace de pile si demandé
+                # Inclure la trace de pile si demandÃ©
                 if ($IncludeStackTrace) {
                     $stackTracePattern = "Stack trace:\s+((?:.+\r?\n?)+)"
                     $stackTraceMatch = [regex]::Match($errorLogContent, $stackTracePattern)
@@ -296,7 +296,7 @@ $($stackTraceLines -join "`n")
         if ($result.Patches.Count -gt 0) {
             $debugReport += @"
 
-## Correctifs suggérés
+## Correctifs suggÃ©rÃ©s
 
 "@
 
@@ -311,7 +311,7 @@ $($stackTraceLines -join "`n")
 $($patch.OriginalCode)
 ```
 
-**Correction suggérée :**
+**Correction suggÃ©rÃ©e :**
 
 ```powershell
 $($patch.Fix)
@@ -321,7 +321,7 @@ $($patch.Fix)
             }
         }
 
-        # Ajouter une section pour l'analyse des performances si demandé
+        # Ajouter une section pour l'analyse des performances si demandÃ©
         if ($AnalyzePerformance) {
             $debugReport += @"
 
@@ -335,37 +335,37 @@ $($patch.Fix)
             foreach ($file in $files) {
                 $fileContent = Get-Content -Path $file.FullName -Raw
 
-                # Rechercher des problèmes de performance courants
+                # Rechercher des problÃ¨mes de performance courants
 
-                # 1. Utilisation inefficace de la concaténation de chaînes
+                # 1. Utilisation inefficace de la concatÃ©nation de chaÃ®nes
                 $stringConcatMatches = [regex]::Matches($fileContent, '\$([a-zA-Z0-9_]+)\s*\+=')
                 foreach ($match in $stringConcatMatches) {
                     $variableName = $match.Groups[1].Value
                     $performanceIssues += @{
                         File        = $file.FullName
-                        Issue       = "Concaténation de chaînes inefficace"
-                        Description = "Utilisation de += pour la concaténation de chaînes avec la variable `$$variableName. Envisager d'utiliser un StringBuilder ou un tableau avec Join-String."
+                        Issue       = "ConcatÃ©nation de chaÃ®nes inefficace"
+                        Description = "Utilisation de += pour la concatÃ©nation de chaÃ®nes avec la variable `$$variableName. Envisager d'utiliser un StringBuilder ou un tableau avec Join-String."
                     }
                 }
 
-                # 2. Boucles imbriquées inefficaces
+                # 2. Boucles imbriquÃ©es inefficaces
                 $nestedLoopMatches = [regex]::Matches($fileContent, '(foreach|for|while).*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\s+(foreach|for|while)')
                 foreach ($match in $nestedLoopMatches) {
                     $performanceIssues += @{
                         File        = $file.FullName
-                        Issue       = "Boucles imbriquées inefficaces"
-                        Description = "Utilisation de boucles imbriquées qui peuvent être inefficaces pour de grands ensembles de données. Envisager d'utiliser des structures de données optimisées ou des requêtes LINQ."
+                        Issue       = "Boucles imbriquÃ©es inefficaces"
+                        Description = "Utilisation de boucles imbriquÃ©es qui peuvent Ãªtre inefficaces pour de grands ensembles de donnÃ©es. Envisager d'utiliser des structures de donnÃ©es optimisÃ©es ou des requÃªtes LINQ."
                     }
                 }
 
-                # 3. Appels répétés à des fonctions coûteuses
+                # 3. Appels rÃ©pÃ©tÃ©s Ã  des fonctions coÃ»teuses
                 $expensiveFunctionMatches = [regex]::Matches($fileContent, '(Get-ChildItem|Get-Content|Invoke-RestMethod|Invoke-WebRequest|ConvertTo-Json|ConvertFrom-Json)')
                 foreach ($match in $expensiveFunctionMatches) {
                     $functionName = $match.Groups[1].Value
                     $performanceIssues += @{
                         File        = $file.FullName
-                        Issue       = "Appel répété à une fonction coûteuse"
-                        Description = "Utilisation de la fonction coûteuse $functionName. Envisager de mettre en cache les résultats si elle est appelée plusieurs fois avec les mêmes paramètres."
+                        Issue       = "Appel rÃ©pÃ©tÃ© Ã  une fonction coÃ»teuse"
+                        Description = "Utilisation de la fonction coÃ»teuse $functionName. Envisager de mettre en cache les rÃ©sultats si elle est appelÃ©e plusieurs fois avec les mÃªmes paramÃ¨tres."
                     }
                 }
             }
@@ -373,9 +373,9 @@ $($patch.Fix)
             if ($performanceIssues.Count -gt 0) {
                 $debugReport += @"
 
-### Problèmes de performance détectés
+### ProblÃ¨mes de performance dÃ©tectÃ©s
 
-| Fichier | Problème | Description |
+| Fichier | ProblÃ¨me | Description |
 |---------|----------|-------------|
 "@
 
@@ -386,44 +386,44 @@ $($patch.Fix)
             } else {
                 $debugReport += @"
 
-Aucun problème de performance détecté.
+Aucun problÃ¨me de performance dÃ©tectÃ©.
 
 "@
             }
         }
 
-        # Écrire le rapport dans un fichier
+        # Ã‰crire le rapport dans un fichier
         Set-Content -Path $debugReportPath -Value $debugReport -Encoding UTF8
         $result.OutputFiles += $debugReportPath
 
-        # Générer un script de patch si demandé
+        # GÃ©nÃ©rer un script de patch si demandÃ©
         if ($GeneratePatch -and $result.Patches.Count -gt 0) {
             $patchScriptPath = Join-Path -Path $OutputPath -ChildPath "fix_patch.ps1"
 
             $patchScript = @"
 <#
 .SYNOPSIS
-    Script de correctif généré automatiquement.
+    Script de correctif gÃ©nÃ©rÃ© automatiquement.
 
 .DESCRIPTION
-    Ce script applique les correctifs suggérés pour résoudre les erreurs détectées.
+    Ce script applique les correctifs suggÃ©rÃ©s pour rÃ©soudre les erreurs dÃ©tectÃ©es.
 
 .NOTES
-    Généré le : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃ©nÃ©rÃ© le : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     Nombre de correctifs : $($result.Patches.Count)
 #>
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 `$modulePath = "$ModulePath"
 if (-not (Test-Path -Path `$modulePath)) {
-    Write-Error "Le module est introuvable à l'emplacement : `$modulePath"
+    Write-Error "Le module est introuvable Ã  l'emplacement : `$modulePath"
     exit 1
 }
 
-# Créer une sauvegarde des fichiers avant modification
+# CrÃ©er une sauvegarde des fichiers avant modification
 `$backupPath = Join-Path -Path "$OutputPath" -ChildPath "backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
 New-Item -Path `$backupPath -ItemType Directory -Force | Out-Null
-Write-Host "Répertoire de sauvegarde créé : `$backupPath" -ForegroundColor Green
+Write-Host "RÃ©pertoire de sauvegarde crÃ©Ã© : `$backupPath" -ForegroundColor Green
 
 "@
 
@@ -439,14 +439,14 @@ Write-Host "Répertoire de sauvegarde créé : `$backupPath" -ForegroundColor Gr
 # Traitement du fichier : $relativeFilePath
 `$filePath = Join-Path -Path `$modulePath -ChildPath "$relativeFilePath"
 if (Test-Path -Path `$filePath) {
-    # Créer une sauvegarde du fichier
+    # CrÃ©er une sauvegarde du fichier
     `$backupFilePath = Join-Path -Path `$backupPath -ChildPath "$relativeFilePath"
     `$backupFileDir = Split-Path -Parent `$backupFilePath
     if (-not (Test-Path -Path `$backupFileDir)) {
         New-Item -Path `$backupFileDir -ItemType Directory -Force | Out-Null
     }
     Copy-Item -Path `$filePath -Destination `$backupFilePath -Force
-    Write-Host "Sauvegarde créée : `$backupFilePath" -ForegroundColor Green
+    Write-Host "Sauvegarde crÃ©Ã©e : `$backupFilePath" -ForegroundColor Green
 
     # Lire le contenu du fichier
     `$content = Get-Content -Path `$filePath
@@ -469,9 +469,9 @@ $fixCode
                 }
 
                 $patchScript += @"
-                    # Écrire le contenu modifié dans le fichier
+                    # Ã‰crire le contenu modifiÃ© dans le fichier
                     Set-Content -Path `$filePath -Value `$content -Encoding UTF8
-                    Write-Host "Correctifs appliqués au fichier : $relativeFilePath" -ForegroundColor Green
+                    Write-Host "Correctifs appliquÃ©s au fichier : $relativeFilePath" -ForegroundColor Green
                 } else {
                     Write-Warning "Le fichier est introuvable : `$filePath"
                 }
@@ -481,24 +481,24 @@ $fixCode
 
             $patchScript += @"
 
-                Write-Host "Tous les correctifs ont été appliqués." -ForegroundColor Green
+                Write-Host "Tous les correctifs ont Ã©tÃ© appliquÃ©s." -ForegroundColor Green
                 "@
 
-            # Écrire le script de patch dans un fichier
+            # Ã‰crire le script de patch dans un fichier
             Set-Content -Path $patchScriptPath -Value $patchScript -Encoding UTF8
             $result.OutputFiles += $patchScriptPath
             $result.PatchCount = $result.Patches.Count
         }
     }
 
-    # Générer des cas de test pour les erreurs détectées
+    # GÃ©nÃ©rer des cas de test pour les erreurs dÃ©tectÃ©es
     $testCasesPath = Join-Path -Path $OutputPath -ChildPath "test_cases.json"
 
     $testCases = @()
 
     foreach ($errorItem in $result.Errors) {
         $testCase = @{
-            Description = "Test pour $($errorItem.Type) dans $($errorItem.File) à la ligne $($errorItem.Line)"
+            Description = "Test pour $($errorItem.Type) dans $($errorItem.File) Ã  la ligne $($errorItem.Line)"
             File = $errorItem.File
             Line = $errorItem.Line
             ErrorType = $errorItem.Type
@@ -506,34 +506,34 @@ $fixCode
             TestCode = ""
         }
 
-        # Générer du code de test en fonction du type d'erreur
+        # GÃ©nÃ©rer du code de test en fonction du type d'erreur
         switch -Regex ($errorItem.Type) {
             "NullReferenceException" {
-                $testCase.TestCode = "# Test pour NullReferenceException`nDescribe `"Test pour $($errorItem.File)`" { `n    It `"Ne devrait pas lever NullReferenceException à la ligne $($errorItem.Line)`" { `n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
+                $testCase.TestCode = "# Test pour NullReferenceException`nDescribe `"Test pour $($errorItem.File)`" { `n    It `"Ne devrait pas lever NullReferenceException Ã  la ligne $($errorItem.Line)`" { `n        # Arrange`n        # TODO: Initialiser les variables nÃ©cessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
                     }
                     "ArgumentNullException" {
-                        $testCase.TestCode = "# Test pour ArgumentNullException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever ArgumentNullException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un argument null } | Should -Throw -ExceptionType ([ArgumentNullException])`n    }`n}"
+                        $testCase.TestCode = "# Test pour ArgumentNullException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever ArgumentNullException Ã  la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nÃ©cessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un argument null } | Should -Throw -ExceptionType ([ArgumentNullException])`n    }`n}"
                     }
                     "IndexOutOfRangeException" {
-                        $testCase.TestCode = "# Test pour IndexOutOfRangeException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever IndexOutOfRangeException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un index hors limites } | Should -Not -Throw`n    }`n}"
+                        $testCase.TestCode = "# Test pour IndexOutOfRangeException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever IndexOutOfRangeException Ã  la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nÃ©cessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un index hors limites } | Should -Not -Throw`n    }`n}"
                     }
                     "DivideByZeroException" {
-                        $testCase.TestCode = "# Test pour DivideByZeroException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever DivideByZeroException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un diviseur égal à zéro } | Should -Not -Throw`n    }`n}"
+                        $testCase.TestCode = "# Test pour DivideByZeroException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever DivideByZeroException Ã  la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nÃ©cessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un diviseur Ã©gal Ã  zÃ©ro } | Should -Not -Throw`n    }`n}"
                     }
                     default {
-                        $testCase.TestCode = "# Test pour $($errorItem.Type)`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever $($errorItem.Type) à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
+                        $testCase.TestCode = "# Test pour $($errorItem.Type)`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever $($errorItem.Type) Ã  la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nÃ©cessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
                     }
                 }
 
                 $testCases += $testCase
             }
 
-            # Écrire les cas de test dans un fichier JSON
+            # Ã‰crire les cas de test dans un fichier JSON
             $testCasesJson = $testCases | ConvertTo-Json -Depth 10
             Set-Content -Path $testCasesPath -Value $testCasesJson -Encoding UTF8
             $result.OutputFiles += $testCasesPath
 
-            # Mettre à jour le résultat
+            # Mettre Ã  jour le rÃ©sultat
             $result.Success = $true
 
             return $result

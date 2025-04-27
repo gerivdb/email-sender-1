@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Demonstrates usage of the improved PSCacheManager module v2.0.
 .DESCRIPTION
@@ -11,7 +11,7 @@
     Author: Augment Agent (Improved by AI)
     Version: 2.0
     Requires: PSCacheManager.psm1 (v2.0+) in the same directory or PowerShell module path.
-    Compatibilité: PowerShell 5.1 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur
 #>
 
 param(

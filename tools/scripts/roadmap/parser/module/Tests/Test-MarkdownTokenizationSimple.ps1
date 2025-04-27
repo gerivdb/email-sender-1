@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires simplifiés pour les fonctions de tokenization markdown.
+    Tests unitaires simplifiÃ©s pour les fonctions de tokenization markdown.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour les fonctions de tokenization markdown
+    Ce script contient des tests unitaires simplifiÃ©s pour les fonctions de tokenization markdown
     du module RoadmapParser.
 
 .NOTES
@@ -12,17 +12,17 @@
     Creation Date:  2023-08-18
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Créer des versions temporaires des fichiers sans les instructions Export-ModuleMember
+# CrÃ©er des versions temporaires des fichiers sans les instructions Export-ModuleMember
 $modulePath = (Split-Path -Parent $PSScriptRoot)
 $parsingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownParsingFunctions.ps1"
 $tokenizationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownTokenizationFunctions.ps1"
 
-# Vérifier que les fichiers existent
+# VÃ©rifier que les fichiers existent
 if (-not (Test-Path -Path $parsingFunctionsPath)) {
     throw "Le fichier de fonctions de parsing n'existe pas: $parsingFunctionsPath"
 }
@@ -30,7 +30,7 @@ if (-not (Test-Path -Path $tokenizationFunctionsPath)) {
     throw "Le fichier de fonctions de tokenization n'existe pas: $tokenizationFunctionsPath"
 }
 
-# Créer des versions temporaires des fichiers sans les instructions Export-ModuleMember
+# CrÃ©er des versions temporaires des fichiers sans les instructions Export-ModuleMember
 $parsingContent = Get-Content -Path $parsingFunctionsPath -Raw
 $tokenizationContent = Get-Content -Path $tokenizationFunctionsPath -Raw
 
@@ -43,11 +43,11 @@ $tempTokenizationPath = Join-Path -Path $env:TEMP -ChildPath "TempMarkdownTokeni
 $parsingContent | Set-Content -Path $tempParsingPath -Force
 $tokenizationContent | Set-Content -Path $tempTokenizationPath -Force
 
-# Charger les fonctions à partir des fichiers temporaires
+# Charger les fonctions Ã  partir des fichiers temporaires
 . $tempParsingPath
 . $tempTokenizationPath
 
-# Définir l'énumération MarkdownTokenType et la classe MarkdownToken
+# DÃ©finir l'Ã©numÃ©ration MarkdownTokenType et la classe MarkdownToken
 Add-Type -TypeDefinition @"
 using System;
 using System.Collections.Generic;

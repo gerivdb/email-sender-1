@@ -1,14 +1,14 @@
-# ExcessPermissionModel.ps1
-# Définit la structure de données pour représenter les permissions excédentaires dans SQL Server
+﻿# ExcessPermissionModel.ps1
+# DÃ©finit la structure de donnÃ©es pour reprÃ©senter les permissions excÃ©dentaires dans SQL Server
 
 <#
 .SYNOPSIS
-    Définit les classes et structures de données pour représenter les permissions excédentaires dans SQL Server.
+    DÃ©finit les classes et structures de donnÃ©es pour reprÃ©senter les permissions excÃ©dentaires dans SQL Server.
 
 .DESCRIPTION
-    Ce fichier contient les définitions des classes et structures de données utilisées pour représenter
-    les permissions excédentaires lors de la comparaison entre les permissions actuelles et un modèle de référence.
-    Ces structures sont utilisées par les algorithmes de détection d'écarts de permissions.
+    Ce fichier contient les dÃ©finitions des classes et structures de donnÃ©es utilisÃ©es pour reprÃ©senter
+    les permissions excÃ©dentaires lors de la comparaison entre les permissions actuelles et un modÃ¨le de rÃ©fÃ©rence.
+    Ces structures sont utilisÃ©es par les algorithmes de dÃ©tection d'Ã©carts de permissions.
 
 .NOTES
     Version:        1.0
@@ -16,27 +16,27 @@
     Creation Date:  2023-11-15
 #>
 
-# Classe pour représenter une permission excédentaire au niveau serveur
+# Classe pour reprÃ©senter une permission excÃ©dentaire au niveau serveur
 class SqlServerExcessPermission {
-    [string]$PermissionName      # Nom de la permission excédentaire (ex: CONNECT SQL, ALTER ANY LOGIN)
+    [string]$PermissionName      # Nom de la permission excÃ©dentaire (ex: CONNECT SQL, ALTER ANY LOGIN)
     [string]$LoginName           # Nom du login qui a cette permission en trop
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
-    [string]$SecurableType       # Type d'élément sécurisable (SERVER)
-    [string]$SecurableName       # Nom de l'élément sécurisable (généralement le nom du serveur)
-    [string]$ModelName           # Nom du modèle de référence utilisé pour la comparaison
-    [string]$RiskLevel           # Niveau de risque (Critique, Élevé, Moyen, Faible)
-    [string]$Impact              # Description de l'impact potentiel de cette permission excédentaire
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
-    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excédentaire
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
+    [string]$SecurableType       # Type d'Ã©lÃ©ment sÃ©curisable (SERVER)
+    [string]$SecurableName       # Nom de l'Ã©lÃ©ment sÃ©curisable (gÃ©nÃ©ralement le nom du serveur)
+    [string]$ModelName           # Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour la comparaison
+    [string]$RiskLevel           # Niveau de risque (Critique, Ã‰levÃ©, Moyen, Faible)
+    [string]$Impact              # Description de l'impact potentiel de cette permission excÃ©dentaire
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
+    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excÃ©dentaire
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlServerExcessPermission() {
         $this.SecurableType = "SERVER"
         $this.PermissionState = "GRANT"
         $this.RiskLevel = "Moyen"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlServerExcessPermission([string]$permissionName, [string]$loginName, [string]$permissionState) {
         $this.PermissionName = $permissionName
         $this.LoginName = $loginName
@@ -63,7 +63,7 @@ class SqlServerExcessPermission {
         $this.RiskLevel = $riskLevel
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             return "REVOKE $($this.PermissionName) FROM [$($this.LoginName)];"
@@ -78,34 +78,34 @@ class SqlServerExcessPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission excédentaire
+    # MÃ©thode pour obtenir une description textuelle de la permission excÃ©dentaire
     [string] ToString() {
-        return "Permission excédentaire: $($this.PermissionState) $($this.PermissionName) pour le login [$($this.LoginName)]"
+        return "Permission excÃ©dentaire: $($this.PermissionState) $($this.PermissionName) pour le login [$($this.LoginName)]"
     }
 }
 
-# Classe pour représenter une permission excédentaire au niveau base de données
+# Classe pour reprÃ©senter une permission excÃ©dentaire au niveau base de donnÃ©es
 class SqlDatabaseExcessPermission {
-    [string]$PermissionName      # Nom de la permission excédentaire (ex: SELECT, INSERT, UPDATE)
-    [string]$DatabaseName        # Nom de la base de données
-    [string]$UserName            # Nom de l'utilisateur de base de données qui a cette permission en trop
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
-    [string]$SecurableType       # Type d'élément sécurisable (DATABASE, SCHEMA)
-    [string]$SecurableName       # Nom de l'élément sécurisable (nom de la base de données ou du schéma)
-    [string]$ModelName           # Nom du modèle de référence utilisé pour la comparaison
-    [string]$RiskLevel           # Niveau de risque (Critique, Élevé, Moyen, Faible)
-    [string]$Impact              # Description de l'impact potentiel de cette permission excédentaire
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
-    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excédentaire
+    [string]$PermissionName      # Nom de la permission excÃ©dentaire (ex: SELECT, INSERT, UPDATE)
+    [string]$DatabaseName        # Nom de la base de donnÃ©es
+    [string]$UserName            # Nom de l'utilisateur de base de donnÃ©es qui a cette permission en trop
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
+    [string]$SecurableType       # Type d'Ã©lÃ©ment sÃ©curisable (DATABASE, SCHEMA)
+    [string]$SecurableName       # Nom de l'Ã©lÃ©ment sÃ©curisable (nom de la base de donnÃ©es ou du schÃ©ma)
+    [string]$ModelName           # Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour la comparaison
+    [string]$RiskLevel           # Niveau de risque (Critique, Ã‰levÃ©, Moyen, Faible)
+    [string]$Impact              # Description de l'impact potentiel de cette permission excÃ©dentaire
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
+    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excÃ©dentaire
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlDatabaseExcessPermission() {
         $this.SecurableType = "DATABASE"
         $this.PermissionState = "GRANT"
         $this.RiskLevel = "Moyen"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlDatabaseExcessPermission([string]$permissionName, [string]$databaseName, [string]$userName, [string]$permissionState) {
         $this.PermissionName = $permissionName
         $this.DatabaseName = $databaseName
@@ -137,7 +137,7 @@ class SqlDatabaseExcessPermission {
         $this.RiskLevel = $riskLevel
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             $securablePrefix = switch ($this.SecurableType) {
@@ -160,35 +160,35 @@ class SqlDatabaseExcessPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission excédentaire
+    # MÃ©thode pour obtenir une description textuelle de la permission excÃ©dentaire
     [string] ToString() {
-        return "Permission excédentaire: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] dans la base de données [$($this.DatabaseName)]"
+        return "Permission excÃ©dentaire: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] dans la base de donnÃ©es [$($this.DatabaseName)]"
     }
 }
 
-# Classe pour représenter une permission excédentaire au niveau objet
+# Classe pour reprÃ©senter une permission excÃ©dentaire au niveau objet
 class SqlObjectExcessPermission {
-    [string]$PermissionName      # Nom de la permission excédentaire (ex: SELECT, INSERT, UPDATE)
-    [string]$DatabaseName        # Nom de la base de données
-    [string]$UserName            # Nom de l'utilisateur de base de données qui a cette permission en trop
-    [string]$PermissionState     # État de la permission (GRANT, DENY)
+    [string]$PermissionName      # Nom de la permission excÃ©dentaire (ex: SELECT, INSERT, UPDATE)
+    [string]$DatabaseName        # Nom de la base de donnÃ©es
+    [string]$UserName            # Nom de l'utilisateur de base de donnÃ©es qui a cette permission en trop
+    [string]$PermissionState     # Ã‰tat de la permission (GRANT, DENY)
     [string]$ObjectType          # Type d'objet (TABLE, VIEW, PROCEDURE, FUNCTION)
-    [string]$SchemaName          # Nom du schéma
+    [string]$SchemaName          # Nom du schÃ©ma
     [string]$ObjectName          # Nom de l'objet
     [string]$ColumnName          # Nom de la colonne (si applicable)
-    [string]$ModelName           # Nom du modèle de référence utilisé pour la comparaison
-    [string]$RiskLevel           # Niveau de risque (Critique, Élevé, Moyen, Faible)
-    [string]$Impact              # Description de l'impact potentiel de cette permission excédentaire
-    [string]$RecommendedAction   # Action recommandée pour corriger l'écart
-    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excédentaire
+    [string]$ModelName           # Nom du modÃ¨le de rÃ©fÃ©rence utilisÃ© pour la comparaison
+    [string]$RiskLevel           # Niveau de risque (Critique, Ã‰levÃ©, Moyen, Faible)
+    [string]$Impact              # Description de l'impact potentiel de cette permission excÃ©dentaire
+    [string]$RecommendedAction   # Action recommandÃ©e pour corriger l'Ã©cart
+    [string]$ScriptTemplate      # Template de script SQL pour supprimer la permission excÃ©dentaire
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlObjectExcessPermission() {
         $this.PermissionState = "GRANT"
         $this.RiskLevel = "Moyen"
     }
 
-    # Constructeur avec paramètres de base
+    # Constructeur avec paramÃ¨tres de base
     SqlObjectExcessPermission(
         [string]$permissionName,
         [string]$databaseName,
@@ -233,7 +233,7 @@ class SqlObjectExcessPermission {
         $this.RiskLevel = $riskLevel
     }
 
-    # Méthode pour générer le script SQL de correction
+    # MÃ©thode pour gÃ©nÃ©rer le script SQL de correction
     [string] GenerateFixScript() {
         if ([string]::IsNullOrEmpty($this.ScriptTemplate)) {
             $objectFullName = "[$($this.SchemaName)].[$($this.ObjectName)]"
@@ -259,7 +259,7 @@ class SqlObjectExcessPermission {
         }
     }
 
-    # Méthode pour obtenir une description textuelle de la permission excédentaire
+    # MÃ©thode pour obtenir une description textuelle de la permission excÃ©dentaire
     [string] ToString() {
         $objectFullName = "[$($this.SchemaName)].[$($this.ObjectName)]"
         
@@ -268,11 +268,11 @@ class SqlObjectExcessPermission {
             $columnClause = " (colonne: $($this.ColumnName))"
         }
         
-        return "Permission excédentaire: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] sur l'objet $objectFullName$columnClause dans la base de données [$($this.DatabaseName)]"
+        return "Permission excÃ©dentaire: $($this.PermissionState) $($this.PermissionName) pour l'utilisateur [$($this.UserName)] sur l'objet $objectFullName$columnClause dans la base de donnÃ©es [$($this.DatabaseName)]"
     }
 }
 
-# Classe pour représenter un ensemble de permissions excédentaires
+# Classe pour reprÃ©senter un ensemble de permissions excÃ©dentaires
 class SqlExcessPermissionsSet {
     [System.Collections.Generic.List[SqlServerExcessPermission]]$ServerPermissions
     [System.Collections.Generic.List[SqlDatabaseExcessPermission]]$DatabasePermissions
@@ -283,7 +283,7 @@ class SqlExcessPermissionsSet {
     [int]$TotalCount
     [hashtable]$RiskLevelCounts
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     SqlExcessPermissionsSet() {
         $this.ServerPermissions = New-Object System.Collections.Generic.List[SqlServerExcessPermission]
         $this.DatabasePermissions = New-Object System.Collections.Generic.List[SqlDatabaseExcessPermission]
@@ -291,13 +291,13 @@ class SqlExcessPermissionsSet {
         $this.ComparisonDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $this.RiskLevelCounts = @{
             "Critique" = 0
-            "Élevé" = 0
+            "Ã‰levÃ©" = 0
             "Moyen" = 0
             "Faible" = 0
         }
     }
 
-    # Constructeur avec paramètres
+    # Constructeur avec paramÃ¨tres
     SqlExcessPermissionsSet([string]$serverInstance, [string]$modelName) {
         $this.ServerPermissions = New-Object System.Collections.Generic.List[SqlServerExcessPermission]
         $this.DatabasePermissions = New-Object System.Collections.Generic.List[SqlDatabaseExcessPermission]
@@ -307,31 +307,31 @@ class SqlExcessPermissionsSet {
         $this.ComparisonDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $this.RiskLevelCounts = @{
             "Critique" = 0
-            "Élevé" = 0
+            "Ã‰levÃ©" = 0
             "Moyen" = 0
             "Faible" = 0
         }
     }
 
-    # Méthode pour ajouter une permission excédentaire au niveau serveur
+    # MÃ©thode pour ajouter une permission excÃ©dentaire au niveau serveur
     [void] AddServerPermission([SqlServerExcessPermission]$permission) {
         $this.ServerPermissions.Add($permission)
         $this.UpdateCounts($permission.RiskLevel)
     }
 
-    # Méthode pour ajouter une permission excédentaire au niveau base de données
+    # MÃ©thode pour ajouter une permission excÃ©dentaire au niveau base de donnÃ©es
     [void] AddDatabasePermission([SqlDatabaseExcessPermission]$permission) {
         $this.DatabasePermissions.Add($permission)
         $this.UpdateCounts($permission.RiskLevel)
     }
 
-    # Méthode pour ajouter une permission excédentaire au niveau objet
+    # MÃ©thode pour ajouter une permission excÃ©dentaire au niveau objet
     [void] AddObjectPermission([SqlObjectExcessPermission]$permission) {
         $this.ObjectPermissions.Add($permission)
         $this.UpdateCounts($permission.RiskLevel)
     }
 
-    # Méthode privée pour mettre à jour les compteurs
+    # MÃ©thode privÃ©e pour mettre Ã  jour les compteurs
     hidden [void] UpdateCounts([string]$riskLevel) {
         if ($this.RiskLevelCounts.ContainsKey($riskLevel)) {
             $this.RiskLevelCounts[$riskLevel]++
@@ -339,7 +339,7 @@ class SqlExcessPermissionsSet {
         $this.TotalCount = $this.ServerPermissions.Count + $this.DatabasePermissions.Count + $this.ObjectPermissions.Count
     }
 
-    # Méthode pour filtrer les permissions par niveau de risque
+    # MÃ©thode pour filtrer les permissions par niveau de risque
     [SqlExcessPermissionsSet] FilterByRiskLevel([string]$riskLevel) {
         $result = [SqlExcessPermissionsSet]::new($this.ServerInstance, $this.ModelName)
         
@@ -364,30 +364,30 @@ class SqlExcessPermissionsSet {
         return $result
     }
 
-    # Méthode pour générer un script SQL de correction pour toutes les permissions excédentaires
+    # MÃ©thode pour gÃ©nÃ©rer un script SQL de correction pour toutes les permissions excÃ©dentaires
     [string] GenerateFixScript() {
-        $script = "-- Script de correction des permissions excédentaires`n"
+        $script = "-- Script de correction des permissions excÃ©dentaires`n"
         $script += "-- Instance: $($this.ServerInstance)`n"
         $script += "-- Date: $($this.ComparisonDate)`n"
-        $script += "-- Modèle de référence: $($this.ModelName)`n`n"
+        $script += "-- ModÃ¨le de rÃ©fÃ©rence: $($this.ModelName)`n`n"
         
         if ($this.ServerPermissions.Count -gt 0) {
-            $script += "-- Permissions excédentaires au niveau serveur`n"
+            $script += "-- Permissions excÃ©dentaires au niveau serveur`n"
             foreach ($perm in $this.ServerPermissions) {
                 $script += $perm.GenerateFixScript() + "`n"
             }
             $script += "`n"
         }
         
-        # Regrouper les permissions de base de données par base de données
+        # Regrouper les permissions de base de donnÃ©es par base de donnÃ©es
         $dbGroups = $this.DatabasePermissions | Group-Object -Property DatabaseName
         
         foreach ($dbGroup in $dbGroups) {
-            $script += "-- Permissions excédentaires pour la base de données [$($dbGroup.Name)]`n"
+            $script += "-- Permissions excÃ©dentaires pour la base de donnÃ©es [$($dbGroup.Name)]`n"
             $script += "USE [$($dbGroup.Name)];`n"
             
             foreach ($perm in $dbGroup.Group) {
-                # Supprimer la partie USE [database] car elle est déjà incluse
+                # Supprimer la partie USE [database] car elle est dÃ©jÃ  incluse
                 $permScript = $perm.GenerateFixScript() -replace "USE \[[^\]]+\];`n", ""
                 $script += $permScript + "`n"
             }
@@ -395,15 +395,15 @@ class SqlExcessPermissionsSet {
             $script += "`n"
         }
         
-        # Regrouper les permissions d'objet par base de données
+        # Regrouper les permissions d'objet par base de donnÃ©es
         $objGroups = $this.ObjectPermissions | Group-Object -Property DatabaseName
         
         foreach ($objGroup in $objGroups) {
-            $script += "-- Permissions excédentaires pour les objets de la base de données [$($objGroup.Name)]`n"
+            $script += "-- Permissions excÃ©dentaires pour les objets de la base de donnÃ©es [$($objGroup.Name)]`n"
             $script += "USE [$($objGroup.Name)];`n"
             
             foreach ($perm in $objGroup.Group) {
-                # Supprimer la partie USE [database] car elle est déjà incluse
+                # Supprimer la partie USE [database] car elle est dÃ©jÃ  incluse
                 $permScript = $perm.GenerateFixScript() -replace "USE \[[^\]]+\];`n", ""
                 $script += $permScript + "`n"
             }
@@ -414,20 +414,20 @@ class SqlExcessPermissionsSet {
         return $script
     }
 
-    # Méthode pour obtenir un résumé des permissions excédentaires
+    # MÃ©thode pour obtenir un rÃ©sumÃ© des permissions excÃ©dentaires
     [string] GetSummary() {
-        $summary = "Résumé des permissions excédentaires pour l'instance $($this.ServerInstance)`n"
-        $summary += "Comparaison avec le modèle: $($this.ModelName)`n"
+        $summary = "RÃ©sumÃ© des permissions excÃ©dentaires pour l'instance $($this.ServerInstance)`n"
+        $summary += "Comparaison avec le modÃ¨le: $($this.ModelName)`n"
         $summary += "Date: $($this.ComparisonDate)`n`n"
         
-        $summary += "Nombre total de permissions excédentaires: $($this.TotalCount)`n"
+        $summary += "Nombre total de permissions excÃ©dentaires: $($this.TotalCount)`n"
         $summary += "- Permissions serveur: $($this.ServerPermissions.Count)`n"
-        $summary += "- Permissions base de données: $($this.DatabasePermissions.Count)`n"
+        $summary += "- Permissions base de donnÃ©es: $($this.DatabasePermissions.Count)`n"
         $summary += "- Permissions objet: $($this.ObjectPermissions.Count)`n`n"
         
-        $summary += "Répartition par niveau de risque:`n"
+        $summary += "RÃ©partition par niveau de risque:`n"
         $summary += "- Critique: $($this.RiskLevelCounts['Critique'])`n"
-        $summary += "- Élevé: $($this.RiskLevelCounts['Élevé'])`n"
+        $summary += "- Ã‰levÃ©: $($this.RiskLevelCounts['Ã‰levÃ©'])`n"
         $summary += "- Moyen: $($this.RiskLevelCounts['Moyen'])`n"
         $summary += "- Faible: $($this.RiskLevelCounts['Faible'])`n"
         
@@ -435,7 +435,7 @@ class SqlExcessPermissionsSet {
     }
 }
 
-# Fonction pour créer un nouvel ensemble de permissions excédentaires
+# Fonction pour crÃ©er un nouvel ensemble de permissions excÃ©dentaires
 function New-SqlExcessPermissionsSet {
     [CmdletBinding()]
     param (
@@ -449,7 +449,7 @@ function New-SqlExcessPermissionsSet {
     return [SqlExcessPermissionsSet]::new($ServerInstance, $ModelName)
 }
 
-# Fonction pour créer une nouvelle permission excédentaire au niveau serveur
+# Fonction pour crÃ©er une nouvelle permission excÃ©dentaire au niveau serveur
 function New-SqlServerExcessPermission {
     [CmdletBinding()]
     param (
@@ -470,14 +470,14 @@ function New-SqlServerExcessPermission {
         [string]$ModelName,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevé", "Moyen", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©", "Moyen", "Faible")]
         [string]$RiskLevel = "Moyen"
     )
     
     return [SqlServerExcessPermission]::new($PermissionName, $LoginName, $PermissionState, $SecurableName, $ModelName, $RiskLevel)
 }
 
-# Fonction pour créer une nouvelle permission excédentaire au niveau base de données
+# Fonction pour crÃ©er une nouvelle permission excÃ©dentaire au niveau base de donnÃ©es
 function New-SqlDatabaseExcessPermission {
     [CmdletBinding()]
     param (
@@ -505,7 +505,7 @@ function New-SqlDatabaseExcessPermission {
         [string]$ModelName,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevé", "Moyen", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©", "Moyen", "Faible")]
         [string]$RiskLevel = "Moyen"
     )
     
@@ -516,7 +516,7 @@ function New-SqlDatabaseExcessPermission {
     return [SqlDatabaseExcessPermission]::new($PermissionName, $DatabaseName, $UserName, $PermissionState, $SecurableType, $SecurableName, $ModelName, $RiskLevel)
 }
 
-# Fonction pour créer une nouvelle permission excédentaire au niveau objet
+# Fonction pour crÃ©er une nouvelle permission excÃ©dentaire au niveau objet
 function New-SqlObjectExcessPermission {
     [CmdletBinding()]
     param (
@@ -550,7 +550,7 @@ function New-SqlObjectExcessPermission {
         [string]$ModelName,
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Critique", "Élevé", "Moyen", "Faible")]
+        [ValidateSet("Critique", "Ã‰levÃ©", "Moyen", "Faible")]
         [string]$RiskLevel = "Moyen"
     )
     

@@ -1,39 +1,39 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script Manager - Système centralisé de gestion des scripts
+    Script Manager - SystÃ¨me centralisÃ© de gestion des scripts
 .DESCRIPTION
-    Système centralisé pour inventorier, analyser, standardiser, optimiser et documenter
-    tous les scripts du projet. Intègre les fonctionnalités des phases 1 à 3.
+    SystÃ¨me centralisÃ© pour inventorier, analyser, standardiser, optimiser et documenter
+    tous les scripts du projet. IntÃ¨gre les fonctionnalitÃ©s des phases 1 Ã  3.
 .PARAMETER Action
-    Action à effectuer:
+    Action Ã  effectuer:
     - inventory: Inventaire des scripts
     - analyze: Analyse des scripts
     - standardize: Standardisation des scripts
-    - deduplicate: Élimination des duplications
+    - deduplicate: Ã‰limination des duplications
     - document: Documentation des scripts
     - dashboard: Affichage du tableau de bord
-    - all: Exécute toutes les actions
+    - all: ExÃ©cute toutes les actions
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à traiter
+    Chemin du dossier contenant les scripts Ã  traiter
 .PARAMETER ScriptType
-    Type de script à traiter (All, PowerShell, Python, Batch, Shell)
+    Type de script Ã  traiter (All, PowerShell, Python, Batch, Shell)
 .PARAMETER AutoApply
     Applique automatiquement les modifications
 .PARAMETER Format
     Format de sortie (JSON, HTML, Markdown)
 .PARAMETER UsePython
-    Utilise les scripts Python pour les opérations avancées
+    Utilise les scripts Python pour les opÃ©rations avancÃ©es
 .PARAMETER ShowDetails
-    Affiche des informations détaillées
+    Affiche des informations dÃ©taillÃ©es
 .EXAMPLE
     .\ScriptManager.ps1 -Action inventory -Path scripts
     Effectue un inventaire des scripts dans le dossier "scripts"
 .EXAMPLE
     .\ScriptManager.ps1 -Action analyze -Path scripts -ScriptType PowerShell -UsePython
-    Analyse les scripts PowerShell en utilisant les modules Python avancés
+    Analyse les scripts PowerShell en utilisant les modules Python avancÃ©s
 .EXAMPLE
     .\ScriptManager.ps1 -Action all -Path scripts -AutoApply
-    Exécute toutes les actions sur les scripts et applique automatiquement les modifications
+    ExÃ©cute toutes les actions sur les scripts et applique automatiquement les modifications
 #>
 
 param (
@@ -56,14 +56,14 @@ param (
     [switch]$ShowDetails
 )
 
-# Définition des chemins
+# DÃ©finition des chemins
 $ScriptRoot = $PSScriptRoot
 $ModulesPath = Join-Path -Path $ScriptRoot -ChildPath "modules"
 $ConfigPath = Join-Path -Path $ScriptRoot -ChildPath "config"
 $DataPath = Join-Path -Path $ScriptRoot -ChildPath "data"
 $DocsPath = Join-Path -Path $ScriptRoot -ChildPath "docs"
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -85,12 +85,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = Join-Path -Path $DataPath -ChildPath "script_manager.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour afficher la bannière
+# Fonction pour afficher la banniÃ¨re
 function Show-Banner {
     $Banner = @"
  _____           _       _     __  __                                   
@@ -105,14 +105,14 @@ function Show-Banner {
     
     Write-Host $Banner -ForegroundColor Cyan
     Write-Host "Version 2.0.0" -ForegroundColor Yellow
-    Write-Host "Système centralisé de gestion des scripts" -ForegroundColor Yellow
+    Write-Host "SystÃ¨me centralisÃ© de gestion des scripts" -ForegroundColor Yellow
     Write-Host ""
 }
 
-# Fonction pour vérifier les dépendances Python
+# Fonction pour vÃ©rifier les dÃ©pendances Python
 function Test-PythonDependencies {
     if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH" -Level "ERROR"
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH" -Level "ERROR"
         return $false
     }
     
@@ -144,7 +144,7 @@ function Invoke-ScriptInventory {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de l'inventaire des scripts..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'inventaire des scripts..." -Level "TITLE"
     Write-Log "Dossier: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     
@@ -157,20 +157,20 @@ function Invoke-ScriptInventory {
             $Command = "python `"$PythonScript`" `"$Path`" --report `"$OutputPath`""
             
             if ($ShowDetails) {
-                Write-Log "Exécution de la commande: $Command" -Level "INFO"
+                Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
             }
             
             try {
                 Invoke-Expression $Command
-                Write-Log "Inventaire terminé avec succès" -Level "SUCCESS"
-                Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+                Write-Log "Inventaire terminÃ© avec succÃ¨s" -Level "SUCCESS"
+                Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "INFO"
                 return $true
             } catch {
-                Write-Log "Erreur lors de l'exécution de l'inventaire Python: $_" -Level "ERROR"
+                Write-Log "Erreur lors de l'exÃ©cution de l'inventaire Python: $_" -Level "ERROR"
                 return $false
             }
         } else {
-            Write-Log "Script Python d'analyse non trouvé: $PythonScript" -Level "ERROR"
+            Write-Log "Script Python d'analyse non trouvÃ©: $PythonScript" -Level "ERROR"
             return $false
         }
     } else {
@@ -190,16 +190,16 @@ function Invoke-ScriptInventory {
             
             try {
                 $Result = Invoke-ScriptInventory -Path $Path -OutputPath $OutputPath -Extensions $ScriptExtensions -Verbose:$ShowDetails
-                Write-Log "Inventaire terminé avec succès" -Level "SUCCESS"
-                Write-Log "Nombre de scripts trouvés: $($Result.TotalScripts)" -Level "INFO"
-                Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+                Write-Log "Inventaire terminÃ© avec succÃ¨s" -Level "SUCCESS"
+                Write-Log "Nombre de scripts trouvÃ©s: $($Result.TotalScripts)" -Level "INFO"
+                Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "INFO"
                 return $true
             } catch {
-                Write-Log "Erreur lors de l'exécution de l'inventaire PowerShell: $_" -Level "ERROR"
+                Write-Log "Erreur lors de l'exÃ©cution de l'inventaire PowerShell: $_" -Level "ERROR"
                 return $false
             }
         } else {
-            Write-Log "Module PowerShell d'inventaire non trouvé: $InventoryModule" -Level "ERROR"
+            Write-Log "Module PowerShell d'inventaire non trouvÃ©: $InventoryModule" -Level "ERROR"
             return $false
         }
     }
@@ -214,7 +214,7 @@ function Invoke-ScriptAnalysis {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de l'analyse des scripts..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'analyse des scripts..." -Level "TITLE"
     Write-Log "Dossier: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     
@@ -227,21 +227,21 @@ function Invoke-ScriptAnalysis {
             $Command = "python `"$PythonScript`" `"$Path`" --report `"$OutputPath`" --viz `"$OutputPath`_dependencies`" --dupes"
             
             if ($ShowDetails) {
-                Write-Log "Exécution de la commande: $Command" -Level "INFO"
+                Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
             }
             
             try {
                 Invoke-Expression $Command
-                Write-Log "Analyse terminée avec succès" -Level "SUCCESS"
-                Write-Log "Résultats enregistrés dans: $OutputPath.json" -Level "INFO"
-                Write-Log "Visualisation des dépendances: $OutputPath`_dependencies.svg" -Level "INFO"
+                Write-Log "Analyse terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+                Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath.json" -Level "INFO"
+                Write-Log "Visualisation des dÃ©pendances: $OutputPath`_dependencies.svg" -Level "INFO"
                 return $true
             } catch {
-                Write-Log "Erreur lors de l'exécution de l'analyse Python: $_" -Level "ERROR"
+                Write-Log "Erreur lors de l'exÃ©cution de l'analyse Python: $_" -Level "ERROR"
                 return $false
             }
         } else {
-            Write-Log "Script Python d'analyse non trouvé: $PythonScript" -Level "ERROR"
+            Write-Log "Script Python d'analyse non trouvÃ©: $PythonScript" -Level "ERROR"
             return $false
         }
     } else {
@@ -253,15 +253,15 @@ function Invoke-ScriptAnalysis {
             
             try {
                 $Result = Start-ScriptAnalysis -Path $Path -ScriptType $ScriptType -OutputPath "$OutputPath.json" -Verbose:$ShowDetails
-                Write-Log "Analyse terminée avec succès" -Level "SUCCESS"
-                Write-Log "Résultats enregistrés dans: $OutputPath.json" -Level "INFO"
+                Write-Log "Analyse terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+                Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath.json" -Level "INFO"
                 return $true
             } catch {
-                Write-Log "Erreur lors de l'exécution de l'analyse PowerShell: $_" -Level "ERROR"
+                Write-Log "Erreur lors de l'exÃ©cution de l'analyse PowerShell: $_" -Level "ERROR"
                 return $false
             }
         } else {
-            Write-Log "Module PowerShell d'analyse non trouvé: $AnalysisModule" -Level "ERROR"
+            Write-Log "Module PowerShell d'analyse non trouvÃ©: $AnalysisModule" -Level "ERROR"
             return $false
         }
     }
@@ -276,7 +276,7 @@ function Invoke-ScriptStandardization {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la standardisation des scripts..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la standardisation des scripts..." -Level "TITLE"
     Write-Log "Dossier: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
@@ -297,24 +297,24 @@ function Invoke-ScriptStandardization {
         
         if ($ShowDetails) {
             $Command += " -ShowDetails"
-            Write-Log "Exécution de la commande: $Command" -Level "INFO"
+            Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
         }
         
         try {
             Invoke-Expression $Command
-            Write-Log "Standardisation terminée avec succès" -Level "SUCCESS"
+            Write-Log "Standardisation terminÃ©e avec succÃ¨s" -Level "SUCCESS"
             return $true
         } catch {
-            Write-Log "Erreur lors de l'exécution de la standardisation: $_" -Level "ERROR"
+            Write-Log "Erreur lors de l'exÃ©cution de la standardisation: $_" -Level "ERROR"
             return $false
         }
     } else {
-        Write-Log "Script de standardisation non trouvé: $StandardsScript" -Level "ERROR"
+        Write-Log "Script de standardisation non trouvÃ©: $StandardsScript" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour éliminer les duplications
+# Fonction pour Ã©liminer les duplications
 function Invoke-ScriptDeduplication {
     param (
         [string]$Path,
@@ -324,7 +324,7 @@ function Invoke-ScriptDeduplication {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de l'élimination des duplications..." -Level "TITLE"
+    Write-Log "DÃ©marrage de l'Ã©limination des duplications..." -Level "TITLE"
     Write-Log "Dossier: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
@@ -349,24 +349,24 @@ function Invoke-ScriptDeduplication {
         
         if ($ShowDetails) {
             $Command += " -ShowDetails"
-            Write-Log "Exécution de la commande: $Command" -Level "INFO"
+            Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
         }
         
         try {
             Invoke-Expression $Command
-            Write-Log "Élimination des duplications terminée avec succès" -Level "SUCCESS"
+            Write-Log "Ã‰limination des duplications terminÃ©e avec succÃ¨s" -Level "SUCCESS"
             return $true
         } catch {
-            Write-Log "Erreur lors de l'exécution de l'élimination des duplications: $_" -Level "ERROR"
+            Write-Log "Erreur lors de l'exÃ©cution de l'Ã©limination des duplications: $_" -Level "ERROR"
             return $false
         }
     } else {
-        Write-Log "Script d'élimination des duplications non trouvé: $DeduplicationScript" -Level "ERROR"
+        Write-Log "Script d'Ã©limination des duplications non trouvÃ©: $DeduplicationScript" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour générer la documentation
+# Fonction pour gÃ©nÃ©rer la documentation
 function Invoke-ScriptDocumentation {
     param (
         [string]$Path,
@@ -375,7 +375,7 @@ function Invoke-ScriptDocumentation {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la génération de la documentation..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la gÃ©nÃ©ration de la documentation..." -Level "TITLE"
     Write-Log "Dossier: $Path" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     Write-Log "Format: $Format" -Level "INFO"
@@ -389,15 +389,15 @@ function Invoke-ScriptDocumentation {
         
         try {
             $Result = Generate-ScriptDocumentation -Path $Path -ScriptType $ScriptType -Format $Format -OutputPath $OutputPath -Verbose:$ShowDetails
-            Write-Log "Documentation générée avec succès" -Level "SUCCESS"
-            Write-Log "Résultats enregistrés dans: $OutputPath" -Level "INFO"
+            Write-Log "Documentation gÃ©nÃ©rÃ©e avec succÃ¨s" -Level "SUCCESS"
+            Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "INFO"
             return $true
         } catch {
-            Write-Log "Erreur lors de la génération de la documentation: $_" -Level "ERROR"
+            Write-Log "Erreur lors de la gÃ©nÃ©ration de la documentation: $_" -Level "ERROR"
             return $false
         }
     } else {
-        Write-Log "Module de documentation non trouvé: $DocumentationModule" -Level "ERROR"
+        Write-Log "Module de documentation non trouvÃ©: $DocumentationModule" -Level "ERROR"
         return $false
     }
 }
@@ -408,9 +408,9 @@ function Show-ScriptDashboard {
         [switch]$ShowDetails
     )
     
-    Write-Log "Génération du tableau de bord..." -Level "TITLE"
+    Write-Log "GÃ©nÃ©ration du tableau de bord..." -Level "TITLE"
     
-    # Charger les données d'inventaire
+    # Charger les donnÃ©es d'inventaire
     $InventoryPath = Join-Path -Path $DataPath -ChildPath "inventory.json"
     if (Test-Path -Path $InventoryPath) {
         try {
@@ -423,12 +423,12 @@ function Show-ScriptDashboard {
             $ScriptsByType = @()
         }
     } else {
-        Write-Log "Fichier d'inventaire non trouvé: $InventoryPath" -Level "WARNING"
+        Write-Log "Fichier d'inventaire non trouvÃ©: $InventoryPath" -Level "WARNING"
         $ScriptCount = 0
         $ScriptsByType = @()
     }
     
-    # Charger les données d'analyse
+    # Charger les donnÃ©es d'analyse
     $AnalysisPath = Join-Path -Path $DataPath -ChildPath "analysis.json"
     if (Test-Path -Path $AnalysisPath) {
         try {
@@ -439,7 +439,7 @@ function Show-ScriptDashboard {
             $IssueCount = 0
         }
     } else {
-        Write-Log "Fichier d'analyse non trouvé: $AnalysisPath" -Level "WARNING"
+        Write-Log "Fichier d'analyse non trouvÃ©: $AnalysisPath" -Level "WARNING"
         $IssueCount = 0
     }
     
@@ -449,22 +449,22 @@ function Show-ScriptDashboard {
     Write-Host ""
     Write-Host "Nombre total de scripts: $ScriptCount" -ForegroundColor White
     Write-Host ""
-    Write-Host "Répartition par type:" -ForegroundColor Yellow
+    Write-Host "RÃ©partition par type:" -ForegroundColor Yellow
     foreach ($Type in $ScriptsByType) {
         Write-Host "  $($Type.Type): $($Type.Count)" -ForegroundColor White
     }
     Write-Host ""
-    Write-Host "Problèmes détectés: $IssueCount" -ForegroundColor $(if ($IssueCount -gt 0) { "Yellow" } else { "Green" })
+    Write-Host "ProblÃ¨mes dÃ©tectÃ©s: $IssueCount" -ForegroundColor $(if ($IssueCount -gt 0) { "Yellow" } else { "Green" })
     Write-Host ""
     Write-Host "=== ACTIONS DISPONIBLES ===" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  inventory    : Inventaire des scripts" -ForegroundColor White
     Write-Host "  analyze      : Analyse des scripts" -ForegroundColor White
     Write-Host "  standardize  : Standardisation des scripts" -ForegroundColor White
-    Write-Host "  deduplicate  : Élimination des duplications" -ForegroundColor White
+    Write-Host "  deduplicate  : Ã‰limination des duplications" -ForegroundColor White
     Write-Host "  document     : Documentation des scripts" -ForegroundColor White
     Write-Host "  dashboard    : Affichage du tableau de bord" -ForegroundColor White
-    Write-Host "  all          : Exécute toutes les actions" -ForegroundColor White
+    Write-Host "  all          : ExÃ©cute toutes les actions" -ForegroundColor White
     Write-Host ""
     Write-Host "Exemple: .\ScriptManager.ps1 -Action analyze -Path scripts" -ForegroundColor Yellow
     Write-Host ""
@@ -484,19 +484,19 @@ function Start-ScriptManager {
         [switch]$ShowDetails
     )
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     $FoldersToCreate = @($ModulesPath, $ConfigPath, $DataPath, $DocsPath)
     foreach ($Folder in $FoldersToCreate) {
         if (-not (Test-Path -Path $Folder)) {
             New-Item -ItemType Directory -Path $Folder -Force | Out-Null
-            Write-Log "Dossier créé: $Folder" -Level "SUCCESS"
+            Write-Log "Dossier crÃ©Ã©: $Folder" -Level "SUCCESS"
         }
     }
     
-    # Afficher la bannière
+    # Afficher la banniÃ¨re
     Show-Banner
     
-    # Exécuter l'action demandée
+    # ExÃ©cuter l'action demandÃ©e
     $Success = $true
     
     switch ($Action) {
@@ -519,7 +519,7 @@ function Start-ScriptManager {
             $Success = Show-ScriptDashboard -ShowDetails:$ShowDetails
         }
         "all" {
-            Write-Log "Exécution de toutes les actions..." -Level "TITLE"
+            Write-Log "ExÃ©cution de toutes les actions..." -Level "TITLE"
             
             $Success = Invoke-ScriptInventory -Path $Path -ScriptType $ScriptType -UsePython:$UsePython -ShowDetails:$ShowDetails
             if ($Success) {
@@ -540,15 +540,15 @@ function Start-ScriptManager {
         }
     }
     
-    # Afficher un message de résultat
+    # Afficher un message de rÃ©sultat
     if ($Success) {
-        Write-Log "Opération terminée avec succès" -Level "SUCCESS"
+        Write-Log "OpÃ©ration terminÃ©e avec succÃ¨s" -Level "SUCCESS"
     } else {
-        Write-Log "Opération terminée avec des erreurs" -Level "ERROR"
+        Write-Log "OpÃ©ration terminÃ©e avec des erreurs" -Level "ERROR"
     }
     
     return $Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-ScriptManager -Action $Action -Path $Path -ScriptType $ScriptType -AutoApply:$AutoApply -Format $Format -UsePython:$UsePython -ShowDetails:$ShowDetails

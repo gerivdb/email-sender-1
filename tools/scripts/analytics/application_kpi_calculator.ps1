@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) applicatifs.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) applicatifs.
 .DESCRIPTION
-    Calcule les KPIs applicatifs à partir des données de performance collectées.
+    Calcule les KPIs applicatifs Ã  partir des donnÃ©es de performance collectÃ©es.
 .PARAMETER DataPath
-    Chemin vers les données de performance.
+    Chemin vers les donnÃ©es de performance.
 .PARAMETER OutputPath
-    Chemin où les résultats seront sauvegardés.
+    Chemin oÃ¹ les rÃ©sultats seront sauvegardÃ©s.
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration des KPIs.
 .PARAMETER LogLevel
@@ -29,23 +29,23 @@ param (
     [string]$LogLevel = "Info"
 )
 
-# Définir la variable de niveau de log au niveau du script
+# DÃ©finir la variable de niveau de log au niveau du script
 $script:LogLevel = $LogLevel
 
-# Importer les différentes parties du script
+# Importer les diffÃ©rentes parties du script
 $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$ScriptPath\application_kpi_calculator_part1.ps1"
 . "$ScriptPath\application_kpi_calculator_part2.ps1"
 . "$ScriptPath\application_kpi_calculator_part3.ps1"
 . "$ScriptPath\application_kpi_calculator_part4.ps1"
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-ApplicationKpiCalculation -DataPath $DataPath -OutputPath $OutputPath -ConfigPath $ConfigPath
 
 if ($Result.Success) {
-    Write-Log -Message "Calcul des KPIs applicatifs réussi" -Level "Info"
+    Write-Log -Message "Calcul des KPIs applicatifs rÃ©ussi" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec du calcul des KPIs applicatifs" -Level "Error"
+    Write-Log -Message "Ã‰chec du calcul des KPIs applicatifs" -Level "Error"
     return 1
 }

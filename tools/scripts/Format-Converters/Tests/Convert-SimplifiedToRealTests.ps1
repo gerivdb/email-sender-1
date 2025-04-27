@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Convertit les tests simplifiés en tests réels.
+    Convertit les tests simplifiÃ©s en tests rÃ©els.
 
 .DESCRIPTION
-    Ce script convertit les tests simplifiés en tests réels en utilisant les tests simplifiés
-    comme base pour les tests réels. Il copie les tests simplifiés dans les fichiers de tests
-    réels correspondants, en adaptant le code pour qu'il fonctionne dans les tests réels.
+    Ce script convertit les tests simplifiÃ©s en tests rÃ©els en utilisant les tests simplifiÃ©s
+    comme base pour les tests rÃ©els. Il copie les tests simplifiÃ©s dans les fichiers de tests
+    rÃ©els correspondants, en adaptant le code pour qu'il fonctionne dans les tests rÃ©els.
 
 .PARAMETER TestFile
-    Le fichier de test simplifié à convertir. Si non spécifié, tous les fichiers de test simplifiés seront convertis.
+    Le fichier de test simplifiÃ© Ã  convertir. Si non spÃ©cifiÃ©, tous les fichiers de test simplifiÃ©s seront convertis.
 
 .EXAMPLE
     .\Convert-SimplifiedToRealTests.ps1
-    Convertit tous les fichiers de test simplifiés en tests réels.
+    Convertit tous les fichiers de test simplifiÃ©s en tests rÃ©els.
 
 .EXAMPLE
     .\Convert-SimplifiedToRealTests.ps1 -TestFile "Get-FileFormatAnalysis.Simplified.ps1"
-    Convertit le fichier Get-FileFormatAnalysis.Simplified.ps1 en test réel.
+    Convertit le fichier Get-FileFormatAnalysis.Simplified.ps1 en test rÃ©el.
 #>
 
 [CmdletBinding()]
@@ -26,43 +26,43 @@ param(
     [string]$TestFile
 )
 
-# Fonction pour convertir un test simplifié en test réel
+# Fonction pour convertir un test simplifiÃ© en test rÃ©el
 function Convert-SimplifiedToRealTest {
     param (
         [Parameter(Mandatory = $true)]
         [string]$SimplifiedTestPath
     )
     
-    Write-Host "Conversion du test simplifié : $SimplifiedTestPath" -ForegroundColor Cyan
+    Write-Host "Conversion du test simplifiÃ© : $SimplifiedTestPath" -ForegroundColor Cyan
     
-    # Déterminer le nom du fichier de test réel correspondant
+    # DÃ©terminer le nom du fichier de test rÃ©el correspondant
     $simplifiedFileName = Split-Path -Path $SimplifiedTestPath -Leaf
     $realFileName = $simplifiedFileName -replace "\.Simplified\.ps1$", ".ps1"
     $realTestPath = Join-Path -Path (Split-Path -Path $SimplifiedTestPath -Parent) -ChildPath $realFileName
     
-    # Vérifier si le fichier de test réel existe
+    # VÃ©rifier si le fichier de test rÃ©el existe
     if (-not (Test-Path -Path $realTestPath)) {
-        Write-Warning "Le fichier de test réel '$realTestPath' n'existe pas. Création d'un nouveau fichier."
+        Write-Warning "Le fichier de test rÃ©el '$realTestPath' n'existe pas. CrÃ©ation d'un nouveau fichier."
         $realTestPath = Join-Path -Path (Split-Path -Path $SimplifiedTestPath -Parent) -ChildPath $realFileName
     }
     
-    # Créer une copie de sauvegarde du fichier de test réel
+    # CrÃ©er une copie de sauvegarde du fichier de test rÃ©el
     $backupPath = "$realTestPath.backup"
     if (Test-Path -Path $realTestPath) {
         Copy-Item -Path $realTestPath -Destination $backupPath -Force
-        Write-Host "Copie de sauvegarde créée : $backupPath" -ForegroundColor Yellow
+        Write-Host "Copie de sauvegarde crÃ©Ã©e : $backupPath" -ForegroundColor Yellow
     }
     
-    # Lire le contenu du fichier de test simplifié
+    # Lire le contenu du fichier de test simplifiÃ©
     $simplifiedContent = Get-Content -Path $SimplifiedTestPath -Raw
     
-    # Adapter le contenu pour qu'il fonctionne dans les tests réels
+    # Adapter le contenu pour qu'il fonctionne dans les tests rÃ©els
     $realContent = $simplifiedContent
     
-    # Remplacer les références aux variables globales
+    # Remplacer les rÃ©fÃ©rences aux variables globales
     $realContent = $realContent -replace "\`$global:", "\$"
     
-    # Ajouter des commentaires pour indiquer que le fichier a été généré automatiquement
+    # Ajouter des commentaires pour indiquer que le fichier a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement
     $realContent = @"
 #Requires -Version 5.1
 <#
@@ -71,25 +71,25 @@ function Convert-SimplifiedToRealTest {
 
 .DESCRIPTION
     Ce fichier contient des tests pour la fonction $(($realFileName -replace "\.ps1$", "") -replace "\.Tests$", "").
-    Il a été généré automatiquement à partir du fichier de test simplifié $simplifiedFileName.
+    Il a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement Ã  partir du fichier de test simplifiÃ© $simplifiedFileName.
 
 .NOTES
-    Date de génération : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    Date de gÃ©nÃ©ration : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     Auteur : Augment Agent
 #>
 
 $realContent
 "@
     
-    # Enregistrer le contenu dans le fichier de test réel
+    # Enregistrer le contenu dans le fichier de test rÃ©el
     $realContent | Set-Content -Path $realTestPath -Encoding UTF8
     
-    Write-Host "Test simplifié converti en test réel : $realTestPath" -ForegroundColor Green
+    Write-Host "Test simplifiÃ© converti en test rÃ©el : $realTestPath" -ForegroundColor Green
     
     return $realTestPath
 }
 
-# Obtenir les fichiers de test simplifiés à convertir
+# Obtenir les fichiers de test simplifiÃ©s Ã  convertir
 $simplifiedTestFiles = @()
 
 if ($TestFile) {
@@ -98,7 +98,7 @@ if ($TestFile) {
         $simplifiedTestFiles += $simplifiedTestPath
     }
     else {
-        Write-Error "Le fichier de test simplifié '$TestFile' n'existe pas."
+        Write-Error "Le fichier de test simplifiÃ© '$TestFile' n'existe pas."
         exit 1
     }
 }
@@ -107,14 +107,14 @@ else {
         ForEach-Object { $_.FullName }
 }
 
-# Convertir chaque fichier de test simplifié en test réel
+# Convertir chaque fichier de test simplifiÃ© en test rÃ©el
 $convertedFiles = @()
 foreach ($file in $simplifiedTestFiles) {
     $convertedFile = Convert-SimplifiedToRealTest -SimplifiedTestPath $file
     $convertedFiles += $convertedFile
 }
 
-Write-Host "`nLes tests simplifiés ont été convertis en tests réels." -ForegroundColor Green
+Write-Host "`nLes tests simplifiÃ©s ont Ã©tÃ© convertis en tests rÃ©els." -ForegroundColor Green
 Write-Host "Fichiers convertis :" -ForegroundColor Green
 $convertedFiles | ForEach-Object { Write-Host "  - $_" -ForegroundColor Green }
-Write-Host "`nExécutez les tests pour vérifier si les conversions ont résolu les problèmes." -ForegroundColor Green
+Write-Host "`nExÃ©cutez les tests pour vÃ©rifier si les conversions ont rÃ©solu les problÃ¨mes." -ForegroundColor Green

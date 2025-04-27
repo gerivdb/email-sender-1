@@ -1,11 +1,11 @@
-    param($ServerLogins, $ServerRoles, $ServerPermissions, $DatabaseRoles, $DatabasePermissions, $DatabaseUsers)
+﻿    param($ServerLogins, $ServerRoles, $ServerPermissions, $DatabaseRoles, $DatabasePermissions, $DatabaseUsers)
     $results = @()
     
-    # 1. Détecter les comptes désactivés mais membres de rôles
+    # 1. DÃ©tecter les comptes dÃ©sactivÃ©s mais membres de rÃ´les
     $disabledLogins = $ServerLogins | Where-Object { $_.IsDisabled -eq $true }
     
     foreach ($login in $disabledLogins) {
-        # Vérifier si le login est membre d'un rôle serveur
+        # VÃ©rifier si le login est membre d'un rÃ´le serveur
         $isServerRoleMember = $false
         foreach ($role in $ServerRoles) {
             if ($role.Members | Where-Object { $_.MemberName -eq $login.LoginName }) {
@@ -17,12 +17,12 @@
         if ($isServerRoleMember) {
             $results += [PSCustomObject]@{
                 LoginName = $login.LoginName
-                Description = "Le login est désactivé mais est toujours membre de rôles serveur"
-                RecommendedAction = "Retirer le login des rôles serveur avant de le désactiver"
+                Description = "Le login est dÃ©sactivÃ© mais est toujours membre de rÃ´les serveur"
+                RecommendedAction = "Retirer le login des rÃ´les serveur avant de le dÃ©sactiver"
             }
         }
         
-        # Vérifier si le login a des utilisateurs de base de données associés qui sont membres de rôles
+        # VÃ©rifier si le login a des utilisateurs de base de donnÃ©es associÃ©s qui sont membres de rÃ´les
         $dbUsers = $DatabaseUsers | Where-Object { $_.LoginName -eq $login.LoginName }
         
         foreach ($dbUser in $dbUsers) {
@@ -37,14 +37,14 @@
             if ($isDbRoleMember) {
                 $results += [PSCustomObject]@{
                     LoginName = $login.LoginName
-                    Description = "Le login est désactivé mais son utilisateur de base de données '$($dbUser.UserName)' dans '$($dbUser.DatabaseName)' est toujours membre de rôles"
-                    RecommendedAction = "Retirer l'utilisateur des rôles de base de données avant de désactiver le login"
+                    Description = "Le login est dÃ©sactivÃ© mais son utilisateur de base de donnÃ©es '$($dbUser.UserName)' dans '$($dbUser.DatabaseName)' est toujours membre de rÃ´les"
+                    RecommendedAction = "Retirer l'utilisateur des rÃ´les de base de donnÃ©es avant de dÃ©sactiver le login"
                 }
             }
         }
     }
     
-    # 2. Détecter les permissions DENY et GRANT contradictoires au niveau serveur
+    # 2. DÃ©tecter les permissions DENY et GRANT contradictoires au niveau serveur
     foreach ($login in $ServerPermissions) {
         $permissionNames = $login.Permissions | ForEach-Object { $_.PermissionName } | Select-Object -Unique
         
@@ -55,14 +55,14 @@
             if ($grantedPerm -and $deniedPerm) {
                 $results += [PSCustomObject]@{
                     LoginName = $login.GranteeName
-                    Description = "Le login a des permissions contradictoires: $permName est à la fois GRANT et DENY"
-                    RecommendedAction = "Résoudre la contradiction en supprimant l'une des permissions"
+                    Description = "Le login a des permissions contradictoires: $permName est Ã  la fois GRANT et DENY"
+                    RecommendedAction = "RÃ©soudre la contradiction en supprimant l'une des permissions"
                 }
             }
         }
     }
     
-    # 3. Détecter les permissions DENY et GRANT contradictoires au niveau base de données
+    # 3. DÃ©tecter les permissions DENY et GRANT contradictoires au niveau base de donnÃ©es
     foreach ($dbPerm in $DatabasePermissions) {
         $permissionNames = $dbPerm.Permissions | ForEach-Object { $_.PermissionName } | Select-Object -Unique
         
@@ -73,27 +73,27 @@
             if ($grantedPerm -and $deniedPerm) {
                 $results += [PSCustomObject]@{
                     LoginName = $dbPerm.GranteeName
-                    Description = "L'utilisateur '$($dbPerm.GranteeName)' dans la base de données '$($dbPerm.DatabaseName)' a des permissions contradictoires: $permName est à la fois GRANT et DENY"
-                    RecommendedAction = "Résoudre la contradiction en supprimant l'une des permissions"
+                    Description = "L'utilisateur '$($dbPerm.GranteeName)' dans la base de donnÃ©es '$($dbPerm.DatabaseName)' a des permissions contradictoires: $permName est Ã  la fois GRANT et DENY"
+                    RecommendedAction = "RÃ©soudre la contradiction en supprimant l'une des permissions"
                 }
             }
         }
     }
     
-    # 4. Détecter les permissions redondantes (permissions explicites et via rôles)
-    # Pour chaque base de données
+    # 4. DÃ©tecter les permissions redondantes (permissions explicites et via rÃ´les)
+    # Pour chaque base de donnÃ©es
     $databaseNames = $DatabaseRoles | ForEach-Object { $_.DatabaseName } | Select-Object -Unique
     
     foreach ($dbName in $databaseNames) {
-        # Obtenir tous les rôles de la base de données
+        # Obtenir tous les rÃ´les de la base de donnÃ©es
         $dbRoles = $DatabaseRoles | Where-Object { $_.DatabaseName -eq $dbName }
         
-        # Obtenir toutes les permissions explicites de la base de données
+        # Obtenir toutes les permissions explicites de la base de donnÃ©es
         $dbExplicitPerms = $DatabasePermissions | Where-Object { $_.DatabaseName -eq $dbName }
         
         # Pour chaque utilisateur avec des permissions explicites
         foreach ($userPerm in $dbExplicitPerms) {
-            # Vérifier si l'utilisateur est membre de rôles
+            # VÃ©rifier si l'utilisateur est membre de rÃ´les
             $userRoles = @()
             foreach ($role in $dbRoles) {
                 if ($role.Members | Where-Object { $_.MemberName -eq $userPerm.GranteeName }) {
@@ -101,9 +101,9 @@
                 }
             }
             
-            # Si l'utilisateur est membre de rôles, vérifier les permissions redondantes
+            # Si l'utilisateur est membre de rÃ´les, vÃ©rifier les permissions redondantes
             if ($userRoles.Count -gt 0) {
-                # Permissions courantes par rôle
+                # Permissions courantes par rÃ´le
                 $rolePermissions = @{
                     "db_datareader" = @("SELECT")
                     "db_datawriter" = @("INSERT", "UPDATE", "DELETE")
@@ -112,7 +112,7 @@
                     "db_owner" = @("CONTROL")
                 }
                 
-                # Vérifier les permissions redondantes
+                # VÃ©rifier les permissions redondantes
                 foreach ($roleName in $userRoles) {
                     if ($rolePermissions.ContainsKey($roleName)) {
                         foreach ($permName in $rolePermissions[$roleName]) {
@@ -123,20 +123,20 @@
                             if ($explicitPerm) {
                                 $results += [PSCustomObject]@{
                                     LoginName = $userPerm.GranteeName
-                                    Description = "L'utilisateur '$($userPerm.GranteeName)' dans la base de données '$dbName' a la permission '$permName' explicite qui est redondante avec son appartenance au rôle '$roleName'"
+                                    Description = "L'utilisateur '$($userPerm.GranteeName)' dans la base de donnÃ©es '$dbName' a la permission '$permName' explicite qui est redondante avec son appartenance au rÃ´le '$roleName'"
                                     RecommendedAction = "Supprimer la permission explicite redondante"
                                 }
                             }
                         }
                     }
                     
-                    # Cas spécial pour db_owner qui inclut toutes les permissions
+                    # Cas spÃ©cial pour db_owner qui inclut toutes les permissions
                     if ($roleName -eq "db_owner") {
                         if ($userPerm.Permissions.Count -gt 0) {
                             $results += [PSCustomObject]@{
                                 LoginName = $userPerm.GranteeName
-                                Description = "L'utilisateur '$($userPerm.GranteeName)' dans la base de données '$dbName' est membre du rôle 'db_owner' mais a également $($userPerm.Permissions.Count) permissions explicites redondantes"
-                                RecommendedAction = "Supprimer les permissions explicites redondantes car db_owner inclut déjà toutes les permissions"
+                                Description = "L'utilisateur '$($userPerm.GranteeName)' dans la base de donnÃ©es '$dbName' est membre du rÃ´le 'db_owner' mais a Ã©galement $($userPerm.Permissions.Count) permissions explicites redondantes"
+                                RecommendedAction = "Supprimer les permissions explicites redondantes car db_owner inclut dÃ©jÃ  toutes les permissions"
                             }
                         }
                     }

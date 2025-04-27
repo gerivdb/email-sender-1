@@ -1,38 +1,38 @@
-# Update-Progress.ps1
-# Script pour mettre à jour le pourcentage de progression des catégories
+﻿# Update-Progress.ps1
+# Script pour mettre Ã  jour le pourcentage de progression des catÃ©gories
 
 # Chemins des fichiers
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dataPath = Join-Path -Path $scriptPath -ChildPath "roadmap-data.json"
 $roadmapPath = "Roadmap\roadmap_perso.md"""
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $dataPath)) {
-    Write-Error "Fichier de données non trouvé: $dataPath"
+    Write-Error "Fichier de donnÃ©es non trouvÃ©: $dataPath"
     exit 1
 }
 
-# Charger les données JSON
+# Charger les donnÃ©es JSON
 try {
     $roadmapData = Get-Content -Path $dataPath -Raw | ConvertFrom-Json
 }
 catch {
-    Write-Error "Erreur lors du chargement des données JSON: $_"
+    Write-Error "Erreur lors du chargement des donnÃ©es JSON: $_"
     exit 1
 }
 
-# Mettre à jour les pourcentages de progression
+# Mettre Ã  jour les pourcentages de progression
 foreach ($category in $roadmapData.categories) {
     $totalTasks = $category.tasks.Count
     $completedTasks = ($category.tasks | Where-Object { $_.completed -eq $true }).Count
     $category.progress = [math]::Round(($completedTasks / $totalTasks) * 100)
-    Write-Host "Catégorie $($category.id): $($category.progress)%"
+    Write-Host "CatÃ©gorie $($category.id): $($category.progress)%"
 }
 
-# Sauvegarder les données JSON
+# Sauvegarder les donnÃ©es JSON
 $roadmapData | ConvertTo-Json -Depth 10 | Set-Content -Path $dataPath
 
-# Générer le contenu Markdown en ASCII
+# GÃ©nÃ©rer le contenu Markdown en ASCII
 $markdown = @"
 # Roadmap personnelle d'amelioration du projet
 
@@ -43,10 +43,10 @@ Ce document presente une feuille de route organisee par ordre de complexite croi
 "@
 
 foreach ($category in $roadmapData.categories) {
-    $complexity = $category.complexity -replace "à", "a" -replace "É", "E" -replace "é", "e" -replace "è", "e"
+    $complexity = $category.complexity -replace "Ã ", "a" -replace "Ã‰", "E" -replace "Ã©", "e" -replace "Ã¨", "e"
     $markdown += @"
 
-## $($category.id). $($category.name -replace "é", "e" -replace "è", "e" -replace "à", "a" -replace "É", "E")
+## $($category.id). $($category.name -replace "Ã©", "e" -replace "Ã¨", "e" -replace "Ã ", "a" -replace "Ã‰", "E")
 **Complexite**: $complexity
 **Temps estime**: $($category.estimatedDays) jours
 **Progression**: $($category.progress)%
@@ -55,7 +55,7 @@ foreach ($category in $roadmapData.categories) {
     
     foreach ($task in $category.tasks) {
         $checkbox = if ($task.completed) { "[x]" } else { "[ ]" }
-        $description = $task.description -replace "é", "e" -replace "è", "e" -replace "à", "a" -replace "É", "E" -replace "ê", "e" -replace "ô", "o" -replace "î", "i"
+        $description = $task.description -replace "Ã©", "e" -replace "Ã¨", "e" -replace "Ã ", "a" -replace "Ã‰", "E" -replace "Ãª", "e" -replace "Ã´", "o" -replace "Ã®", "i"
         $markdown += "- $checkbox $description ($($task.estimatedDays) jours)"
         
         if ($task.startDate -and -not $task.completionDate) {
@@ -71,7 +71,7 @@ foreach ($category in $roadmapData.categories) {
         $markdown += "`n"
         
         if ($task.notes) {
-            $notes = $task.notes -replace "é", "e" -replace "è", "e" -replace "à", "a" -replace "É", "E" -replace "ê", "e" -replace "ô", "o" -replace "î", "i"
+            $notes = $task.notes -replace "Ã©", "e" -replace "Ã¨", "e" -replace "Ã ", "a" -replace "Ã‰", "E" -replace "Ãª", "e" -replace "Ã´", "o" -replace "Ã®", "i"
             $markdown += "  > *Note: $notes*`n"
         }
     }
@@ -112,4 +112,4 @@ Cette approche progressive permet d'obtenir des ameliorations visibles rapidemen
 # Sauvegarder le fichier Markdown avec encodage ASCII
 $markdown | Out-File -FilePath $roadmapPath -Encoding ascii
 
-Write-Host "Roadmap mise à jour avec succès."
+Write-Host "Roadmap mise Ã  jour avec succÃ¨s."

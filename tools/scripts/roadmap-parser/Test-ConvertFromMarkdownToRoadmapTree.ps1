@@ -1,7 +1,7 @@
-# Test-ConvertFromMarkdownToRoadmapTree.ps1
+﻿# Test-ConvertFromMarkdownToRoadmapTree.ps1
 # Script pour tester la fonction ConvertFrom-MarkdownToRoadmapTree
 
-# Créer un fichier markdown de test
+# CrÃ©er un fichier markdown de test
 $testMarkdownPath = Join-Path -Path $PSScriptRoot -ChildPath "test-roadmap.md"
 $testMarkdown = @"
 # Roadmap de Test
@@ -10,16 +10,16 @@ Ceci est une roadmap de test pour valider la fonction ConvertFrom-MarkdownToRoad
 
 ## Section 1
 
-- [ ] **1** Tâche 1
-  - [x] **1.1** Tâche 1.1
-  - [ ] **1.2** Tâche 1.2
-    - [~] **1.2.1** Tâche 1.2.1
-    - [!] **1.2.2** Tâche 1.2.2
+- [ ] **1** TÃ¢che 1
+  - [x] **1.1** TÃ¢che 1.1
+  - [ ] **1.2** TÃ¢che 1.2
+    - [~] **1.2.1** TÃ¢che 1.2.1
+    - [!] **1.2.2** TÃ¢che 1.2.2
 
 ## Section 2
 
-- [ ] **2** Tâche 2
-  - [ ] **2.1** Tâche 2.1
+- [ ] **2** TÃ¢che 2
+  - [ ] **2.1** TÃ¢che 2.1
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
@@ -40,38 +40,38 @@ try {
     Write-Host "Importation du module..." -ForegroundColor Cyan
     Import-Module $modulePath -Force -Verbose
 
-    # Vérifier que les fonctions sont disponibles
+    # VÃ©rifier que les fonctions sont disponibles
     Write-Host "Fonctions disponibles:" -ForegroundColor Cyan
     Get-Command -Module RoadmapParser3 | ForEach-Object { Write-Host "  $($_.Name)" -ForegroundColor Gray }
 
-    # Tester la création d'un arbre de roadmap
-    Write-Host "Test de la création d'un arbre de roadmap..." -ForegroundColor Cyan
+    # Tester la crÃ©ation d'un arbre de roadmap
+    Write-Host "Test de la crÃ©ation d'un arbre de roadmap..." -ForegroundColor Cyan
     $tree = New-RoadmapTree -Title "Test" -Description "Test"
-    Write-Host "Arbre créé: $($tree.Title)" -ForegroundColor Green
+    Write-Host "Arbre crÃ©Ã©: $($tree.Title)" -ForegroundColor Green
 
-    # Tester la création d'une tâche
-    Write-Host "Test de la création d'une tâche..." -ForegroundColor Cyan
+    # Tester la crÃ©ation d'une tÃ¢che
+    Write-Host "Test de la crÃ©ation d'une tÃ¢che..." -ForegroundColor Cyan
     $task = New-RoadmapTask -Id "1" -Title "Test" -Status ([TaskStatus]::Incomplete)
-    Write-Host "Tâche créée: $($task.Id) - $($task.Title)" -ForegroundColor Green
+    Write-Host "TÃ¢che crÃ©Ã©e: $($task.Id) - $($task.Title)" -ForegroundColor Green
 
-    # Tester l'ajout d'une tâche à l'arbre
-    Write-Host "Test de l'ajout d'une tâche à l'arbre..." -ForegroundColor Cyan
+    # Tester l'ajout d'une tÃ¢che Ã  l'arbre
+    Write-Host "Test de l'ajout d'une tÃ¢che Ã  l'arbre..." -ForegroundColor Cyan
     Add-RoadmapTask -RoadmapTree $tree -Task $task -ParentTask $null
-    Write-Host "Tâche ajoutée: $($tree.AllTasks.Count) tâches dans l'arbre" -ForegroundColor Green
+    Write-Host "TÃ¢che ajoutÃ©e: $($tree.AllTasks.Count) tÃ¢ches dans l'arbre" -ForegroundColor Green
 
     # Tester la fonction ConvertFrom-MarkdownToRoadmapTree
     Write-Host "Test de la fonction ConvertFrom-MarkdownToRoadmapTree..." -ForegroundColor Cyan
     $roadmap = ConvertFrom-MarkdownToRoadmapTree -FilePath $testMarkdownPath
 
-    # Vérifier que le titre et la description ont été correctement extraits
+    # VÃ©rifier que le titre et la description ont Ã©tÃ© correctement extraits
     Write-Host "Titre: $($roadmap.Title)" -ForegroundColor Green
     Write-Host "Description: $($roadmap.Description)" -ForegroundColor Green
 
-    # Vérifier que les tâches ont été correctement extraites
-    Write-Host "Nombre de tâches: $($roadmap.AllTasks.Count)" -ForegroundColor Green
+    # VÃ©rifier que les tÃ¢ches ont Ã©tÃ© correctement extraites
+    Write-Host "Nombre de tÃ¢ches: $($roadmap.AllTasks.Count)" -ForegroundColor Green
 
-    # Afficher les tâches
-    Write-Host "Tâches:" -ForegroundColor Green
+    # Afficher les tÃ¢ches
+    Write-Host "TÃ¢ches:" -ForegroundColor Green
     foreach ($task in $roadmap.AllTasks) {
         $indent = "  " * $task.Level
         $statusMark = switch ($task.Status) {
@@ -83,9 +83,9 @@ try {
         Write-Host "$indent- $statusMark $($task.Id) $($task.Title)" -ForegroundColor Yellow
     }
 
-    Write-Host "Test réussi!" -ForegroundColor Green
+    Write-Host "Test rÃ©ussi!" -ForegroundColor Green
 } catch {
-    Write-Host "Test échoué: $_" -ForegroundColor Red
+    Write-Host "Test Ã©chouÃ©: $_" -ForegroundColor Red
     Write-Host "Stack Trace:" -ForegroundColor Red
     Write-Host $_.ScriptStackTrace -ForegroundColor Red
 } finally {

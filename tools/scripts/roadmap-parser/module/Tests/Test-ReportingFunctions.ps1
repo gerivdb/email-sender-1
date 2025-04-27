@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les fonctions de reporting du module RoadmapParser.
 
 .DESCRIPTION
-    Ce fichier contient des tests unitaires pour vérifier le bon fonctionnement
-    des fonctions de reporting du module RoadmapParser, notamment la génération
-    de rapports dans différents formats et avec différentes options.
+    Ce fichier contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    des fonctions de reporting du module RoadmapParser, notamment la gÃ©nÃ©ration
+    de rapports dans diffÃ©rents formats et avec diffÃ©rentes options.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    throw "Le module Pester est requis pour exécuter ces tests. Installez-le avec 'Install-Module -Name Pester -Force'"
+    throw "Le module Pester est requis pour exÃ©cuter ces tests. Installez-le avec 'Install-Module -Name Pester -Force'"
 }
 
 # Importer le module RoadmapParser
 $moduleRoot = Split-Path -Path $PSScriptRoot -Parent
 Import-Module $moduleRoot\RoadmapParser.psm1 -Force
 
-# Définir un répertoire temporaire pour les tests
+# DÃ©finir un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "RoadmapParserTests\Reporting"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-Describe "Fonctions de génération de rapports" {
+Describe "Fonctions de gÃ©nÃ©ration de rapports" {
     BeforeAll {
-        # Créer des données de test
+        # CrÃ©er des donnÃ©es de test
         $testData = @(
             [PSCustomObject]@{
                 ID = 1
@@ -53,25 +53,25 @@ Describe "Fonctions de génération de rapports" {
             }
         )
 
-        # Sauvegarder les données dans un fichier JSON pour les tests
+        # Sauvegarder les donnÃ©es dans un fichier JSON pour les tests
         $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
         $testData | ConvertTo-Json | Set-Content -Path $testDataPath -Force
     }
 
-    Context "Génération de rapports texte" {
-        It "Devrait générer un rapport au format texte" {
-            # Vérifier que la fonction existe
+    Context "GÃ©nÃ©ration de rapports texte" {
+        It "Devrait gÃ©nÃ©rer un rapport au format texte" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-TextReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report.txt"
                 
-                # Générer le rapport
+                # GÃ©nÃ©rer le rapport
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-TextReport -Data $testData -OutputPath $reportPath -Title "Test Report"
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
@@ -81,52 +81,52 @@ Describe "Fonctions de génération de rapports" {
                 $content | Should -Match "Task 3"
             } else {
                 Write-Host "La fonction New-TextReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
 
-        It "Devrait inclure les en-têtes spécifiés" {
-            # Vérifier que la fonction existe
+        It "Devrait inclure les en-tÃªtes spÃ©cifiÃ©s" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-TextReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report-headers.txt"
                 
-                # Générer le rapport avec des en-têtes spécifiques
+                # GÃ©nÃ©rer le rapport avec des en-tÃªtes spÃ©cifiques
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $headers = @("ID", "Name", "Status")
                 $result = New-TextReport -Data $testData -OutputPath $reportPath -Title "Test Report" -Headers $headers
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
                 $content | Should -Match "ID"
                 $content | Should -Match "Name"
                 $content | Should -Match "Status"
-                $content | Should -Not -Match "Priority"  # Cet en-tête ne devrait pas être inclus
+                $content | Should -Not -Match "Priority"  # Cet en-tÃªte ne devrait pas Ãªtre inclus
             } else {
                 Write-Host "La fonction New-TextReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
     }
 
-    Context "Génération de rapports HTML" {
-        It "Devrait générer un rapport au format HTML" {
-            # Vérifier que la fonction existe
+    Context "GÃ©nÃ©ration de rapports HTML" {
+        It "Devrait gÃ©nÃ©rer un rapport au format HTML" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-HtmlReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report.html"
                 
-                # Générer le rapport
+                # GÃ©nÃ©rer le rapport
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-HtmlReport -Data $testData -OutputPath $reportPath -Title "Test Report"
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
@@ -137,26 +137,26 @@ Describe "Fonctions de génération de rapports" {
                 $content | Should -Match "Task 3"
             } else {
                 Write-Host "La fonction New-HtmlReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
 
-        It "Devrait appliquer un style CSS personnalisé" {
-            # Vérifier que la fonction existe
+        It "Devrait appliquer un style CSS personnalisÃ©" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-HtmlReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report-styled.html"
                 
-                # Définir un style CSS personnalisé
+                # DÃ©finir un style CSS personnalisÃ©
                 $css = "body { font-family: Arial; } table { border-collapse: collapse; }"
                 
-                # Générer le rapport avec le style personnalisé
+                # GÃ©nÃ©rer le rapport avec le style personnalisÃ©
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-HtmlReport -Data $testData -OutputPath $reportPath -Title "Test Report" -Css $css
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
@@ -164,25 +164,25 @@ Describe "Fonctions de génération de rapports" {
                 $content | Should -Match "border-collapse: collapse"
             } else {
                 Write-Host "La fonction New-HtmlReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
     }
 
-    Context "Génération de rapports CSV" {
-        It "Devrait générer un rapport au format CSV" {
-            # Vérifier que la fonction existe
+    Context "GÃ©nÃ©ration de rapports CSV" {
+        It "Devrait gÃ©nÃ©rer un rapport au format CSV" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-CsvReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report.csv"
                 
-                # Générer le rapport
+                # GÃ©nÃ©rer le rapport
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-CsvReport -Data $testData -OutputPath $reportPath
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
@@ -192,23 +192,23 @@ Describe "Fonctions de génération de rapports" {
                 $content | Should -Match "3,Task 3,Not Started,Low"
             } else {
                 Write-Host "La fonction New-CsvReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
 
-        It "Devrait utiliser un délimiteur personnalisé" {
-            # Vérifier que la fonction existe
+        It "Devrait utiliser un dÃ©limiteur personnalisÃ©" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-CsvReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report-semicolon.csv"
                 
-                # Générer le rapport avec un délimiteur personnalisé
+                # GÃ©nÃ©rer le rapport avec un dÃ©limiteur personnalisÃ©
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-CsvReport -Data $testData -OutputPath $reportPath -Delimiter ";"
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
@@ -218,25 +218,25 @@ Describe "Fonctions de génération de rapports" {
                 $content | Should -Match "3;Task 3;Not Started;Low"
             } else {
                 Write-Host "La fonction New-CsvReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
     }
 
-    Context "Génération de rapports JSON" {
-        It "Devrait générer un rapport au format JSON" {
-            # Vérifier que la fonction existe
+    Context "GÃ©nÃ©ration de rapports JSON" {
+        It "Devrait gÃ©nÃ©rer un rapport au format JSON" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-JsonReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report.json"
                 
-                # Générer le rapport
+                # GÃ©nÃ©rer le rapport
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-JsonReport -Data $testData -OutputPath $reportPath
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw | ConvertFrom-Json
@@ -249,30 +249,30 @@ Describe "Fonctions de génération de rapports" {
                 $content[2].Name | Should -Be "Task 3"
             } else {
                 Write-Host "La fonction New-JsonReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
 
-        It "Devrait générer un rapport JSON avec métadonnées" {
-            # Vérifier que la fonction existe
+        It "Devrait gÃ©nÃ©rer un rapport JSON avec mÃ©tadonnÃ©es" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-JsonReport -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "report-metadata.json"
                 
-                # Définir les métadonnées
+                # DÃ©finir les mÃ©tadonnÃ©es
                 $metadata = @{
                     Title = "Test Report"
                     GeneratedOn = Get-Date -Format "yyyy-MM-dd"
                     Author = "Test User"
                 }
                 
-                # Générer le rapport avec métadonnées
+                # GÃ©nÃ©rer le rapport avec mÃ©tadonnÃ©es
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-JsonReport -Data $testData -OutputPath $reportPath -Metadata $metadata
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw | ConvertFrom-Json
@@ -283,20 +283,20 @@ Describe "Fonctions de génération de rapports" {
                 $content.Data[0].Name | Should -Be "Task 1"
             } else {
                 Write-Host "La fonction New-JsonReport n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
     }
 
-    Context "Fonctions de rapport génériques" {
-        It "Devrait générer un rapport dans le format spécifié" {
-            # Vérifier que la fonction existe
+    Context "Fonctions de rapport gÃ©nÃ©riques" {
+        It "Devrait gÃ©nÃ©rer un rapport dans le format spÃ©cifiÃ©" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-Report -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "generic-report"
                 
-                # Générer des rapports dans différents formats
+                # GÃ©nÃ©rer des rapports dans diffÃ©rents formats
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 
@@ -321,35 +321,35 @@ Describe "Fonctions de génération de rapports" {
                 Test-Path -Path "$reportPath.json" | Should -Be $true
             } else {
                 Write-Host "La fonction New-Report n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
 
-        It "Devrait filtrer les données selon les critères spécifiés" {
-            # Vérifier que la fonction existe
+        It "Devrait filtrer les donnÃ©es selon les critÃ¨res spÃ©cifiÃ©s" {
+            # VÃ©rifier que la fonction existe
             $function = Get-Command -Name New-Report -ErrorAction SilentlyContinue
             if ($function) {
-                # Définir le chemin du rapport
+                # DÃ©finir le chemin du rapport
                 $reportPath = Join-Path -Path $testDir -ChildPath "filtered-report.txt"
                 
-                # Définir un filtre pour ne sélectionner que les tâches complétées
+                # DÃ©finir un filtre pour ne sÃ©lectionner que les tÃ¢ches complÃ©tÃ©es
                 $filter = { $_.Status -eq "Completed" }
                 
-                # Générer le rapport filtré
+                # GÃ©nÃ©rer le rapport filtrÃ©
                 $testDataPath = Join-Path -Path $testDir -ChildPath "test-data.json"
                 $testData = Get-Content -Path $testDataPath -Raw | ConvertFrom-Json
                 $result = New-Report -Data $testData -OutputPath $reportPath -Format "Text" -Title "Filtered Report" -Filter $filter
                 
-                # Vérifier le résultat
+                # VÃ©rifier le rÃ©sultat
                 $result | Should -Be $true
                 Test-Path -Path $reportPath | Should -Be $true
                 $content = Get-Content -Path $reportPath -Raw
                 $content | Should -Match "Task 1"
-                $content | Should -Not -Match "Task 2"  # Cette tâche n'est pas complétée
-                $content | Should -Not -Match "Task 3"  # Cette tâche n'est pas complétée
+                $content | Should -Not -Match "Task 2"  # Cette tÃ¢che n'est pas complÃ©tÃ©e
+                $content | Should -Not -Match "Task 3"  # Cette tÃ¢che n'est pas complÃ©tÃ©e
             } else {
                 Write-Host "La fonction New-Report n'existe pas"
-                $true | Should -Be $true  # Test toujours réussi
+                $true | Should -Be $true  # Test toujours rÃ©ussi
             }
         }
     }

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour les fonctionnalités de performance du module SyntaxAnalyzer.
+    Tests unitaires pour les fonctionnalitÃ©s de performance du module SyntaxAnalyzer.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctionnalités de performance
-    et d'analyse parallèle du module SyntaxAnalyzer en utilisant le framework Pester.
+    Ce script contient des tests unitaires pour les fonctionnalitÃ©s de performance
+    et d'analyse parallÃ¨le du module SyntaxAnalyzer en utilisant le framework Pester.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -13,18 +13,18 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\SyntaxAnalyzer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Module SyntaxAnalyzer non trouvé à l'emplacement: $moduleToTest"
+    throw "Module SyntaxAnalyzer non trouvÃ© Ã  l'emplacement: $moduleToTest"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $moduleToTest -Force
 
 # Importer le module de cache si disponible
@@ -36,11 +36,11 @@ if (Test-Path -Path $cacheModulePath) {
     $script:cache = $null
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SyntaxAnalyzerPerformanceTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -58,7 +58,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @"
 # Test PowerShell Script with Syntax Errors
 function Test-Function {
@@ -108,14 +108,14 @@ if __name__ == "__main__":
     obj.test_method()
 "@
 
-# Créer le fichier PowerShell pour les tests
+# CrÃ©er le fichier PowerShell pour les tests
 $testPsScript = New-TestFile -Path "test_syntax.ps1" -Content $psScriptContent
 
-# Nous n'utilisons pas directement le fichier Python dans les tests, mais nous le créons quand même
-# pour complétude et pour les tests futurs qui pourraient l'utiliser
+# Nous n'utilisons pas directement le fichier Python dans les tests, mais nous le crÃ©ons quand mÃªme
+# pour complÃ©tude et pour les tests futurs qui pourraient l'utiliser
 New-TestFile -Path "test_syntax.py" -Content $pyScriptContent | Out-Null
 
-# Créer plusieurs fichiers pour les tests de performance
+# CrÃ©er plusieurs fichiers pour les tests de performance
 for ($i = 1; $i -le 5; $i++) {
     $content = $psScriptContent.Replace("Test-Function", "Test-Function$i")
     New-TestFile -Path "test_perf_$i.ps1" -Content $content
@@ -124,12 +124,12 @@ for ($i = 1; $i -le 5; $i++) {
 # Tests Pester
 Describe "SyntaxAnalyzer Performance Tests" {
     BeforeAll {
-        # Créer un analyseur pour les tests
+        # CrÃ©er un analyseur pour les tests
         $script:analyzer = New-SyntaxAnalyzer -UseCache ($null -ne $script:cache) -Cache $script:cache
     }
 
-    Context "Métriques de performance" {
-        It "Collecte des métriques de performance lors de l'analyse d'un fichier" {
+    Context "MÃ©triques de performance" {
+        It "Collecte des mÃ©triques de performance lors de l'analyse d'un fichier" {
             $results = $analyzer.AnalyzeFile($testPsScript)
 
             $results | Should -Not -BeNullOrEmpty
@@ -139,8 +139,8 @@ Describe "SyntaxAnalyzer Performance Tests" {
         }
     }
 
-    Context "Analyse parallèle" {
-        It "Analyse plusieurs fichiers en parallèle" {
+    Context "Analyse parallÃ¨le" {
+        It "Analyse plusieurs fichiers en parallÃ¨le" {
             $files = Get-ChildItem -Path $testDir -Filter "test_perf_*.ps1" | Select-Object -ExpandProperty FullName
             $results = $analyzer.AnalyzeFiles($files)
 
@@ -153,9 +153,9 @@ Describe "SyntaxAnalyzer Performance Tests" {
             }
         }
 
-        It "Collecte des métriques de performance pour l'analyse parallèle" {
+        It "Collecte des mÃ©triques de performance pour l'analyse parallÃ¨le" {
             $files = Get-ChildItem -Path $testDir -Filter "test_perf_*.ps1" | Select-Object -ExpandProperty FullName
-            # Exécuter l'analyse et ignorer les résultats car nous testons seulement les métriques
+            # ExÃ©cuter l'analyse et ignorer les rÃ©sultats car nous testons seulement les mÃ©triques
             $analyzer.AnalyzeFiles($files) | Out-Null
 
             $analyzer.PerformanceMetrics.ParallelJobs | Should -BeGreaterThan 0
@@ -164,23 +164,23 @@ Describe "SyntaxAnalyzer Performance Tests" {
     }
 
     Context "Optimisation des performances" {
-        It "Utilise le cache pour améliorer les performances" {
+        It "Utilise le cache pour amÃ©liorer les performances" {
             if ($null -ne $script:cache) {
-                # Première analyse (sans cache)
+                # PremiÃ¨re analyse (sans cache)
                 $startTime1 = [System.Diagnostics.Stopwatch]::StartNew()
-                # Exécuter l'analyse et ignorer les résultats car nous testons seulement le temps d'exécution
+                # ExÃ©cuter l'analyse et ignorer les rÃ©sultats car nous testons seulement le temps d'exÃ©cution
                 $analyzer.AnalyzeFile($testPsScript) | Out-Null
                 $startTime1.Stop()
                 $time1 = $startTime1.ElapsedMilliseconds
 
-                # Deuxième analyse (avec cache)
+                # DeuxiÃ¨me analyse (avec cache)
                 $startTime2 = [System.Diagnostics.Stopwatch]::StartNew()
-                # Exécuter l'analyse et ignorer les résultats car nous testons seulement le temps d'exécution
+                # ExÃ©cuter l'analyse et ignorer les rÃ©sultats car nous testons seulement le temps d'exÃ©cution
                 $analyzer.AnalyzeFile($testPsScript) | Out-Null
                 $startTime2.Stop()
                 $time2 = $startTime2.ElapsedMilliseconds
 
-                # La deuxième analyse devrait être plus rapide
+                # La deuxiÃ¨me analyse devrait Ãªtre plus rapide
                 $time2 | Should -BeLessThan $time1
             } else {
                 Set-ItResult -Skipped -Because "Le module de cache n'est pas disponible"
@@ -194,5 +194,5 @@ Describe "SyntaxAnalyzer Performance Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

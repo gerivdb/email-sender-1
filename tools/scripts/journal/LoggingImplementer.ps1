@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Implémente un système de journalisation centralisé dans les scripts PowerShell.
+    ImplÃ©mente un systÃ¨me de journalisation centralisÃ© dans les scripts PowerShell.
 .DESCRIPTION
-    Ce script ajoute un système de journalisation centralisé aux scripts PowerShell
-    existants pour améliorer le suivi et le débogage des erreurs.
+    Ce script ajoute un systÃ¨me de journalisation centralisÃ© aux scripts PowerShell
+    existants pour amÃ©liorer le suivi et le dÃ©bogage des erreurs.
 .EXAMPLE
     . .\LoggingImplementer.ps1
     Add-LoggingToScript -Path "C:\path\to\script.ps1" -CreateBackup
@@ -33,44 +33,44 @@ function Add-LoggingToScript {
     )
     
     process {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-Error "Le fichier '$Path' n'existe pas."
             return $false
         }
         
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         if ([string]::IsNullOrEmpty($OutputPath)) {
             $OutputPath = $Path
         }
         
-        # Déterminer le chemin du fichier journal
+        # DÃ©terminer le chemin du fichier journal
         if ([string]::IsNullOrEmpty($LogFilePath)) {
             $scriptName = Split-Path -Path $Path -Leaf
             $LogFilePath = "`$env:TEMP\$scriptName.log"
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$Path.bak"
             Copy-Item -Path $Path -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée: $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
         }
         
         # Lire le contenu du script
         $content = Get-Content -Path $Path -Raw
         
-        # Vérifier si le script a déjà une fonction de journalisation
+        # VÃ©rifier si le script a dÃ©jÃ  une fonction de journalisation
         if ($content -match 'function\s+(Write-Log|Log-Message|Add-Log)') {
-            Write-Verbose "Le script a déjà une fonction de journalisation."
+            Write-Verbose "Le script a dÃ©jÃ  une fonction de journalisation."
             
-            # Mettre à jour la fonction existante si nécessaire
-            # (Cette partie pourrait être développée davantage)
+            # Mettre Ã  jour la fonction existante si nÃ©cessaire
+            # (Cette partie pourrait Ãªtre dÃ©veloppÃ©e davantage)
             
             return $true
         }
         
-        # Créer la fonction de journalisation en fonction du niveau demandé
+        # CrÃ©er la fonction de journalisation en fonction du niveau demandÃ©
         $loggingFunction = switch ($LoggingLevel) {
             "Basic" {
                 @"
@@ -101,12 +101,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose `$logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         Add-Content -Path `$LogFilePath -Value `$logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 
@@ -115,7 +115,7 @@ function Write-Log {
             "Advanced" {
                 @"
 
-# Fonction de journalisation avancée
+# Fonction de journalisation avancÃ©e
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -157,14 +157,14 @@ function Write-Log {
     `$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
     `$logEntry = "``[`$timestamp``] [`$Level] [`$Source] `$Message"
     
-    # Ajouter les détails de l'erreur si fournis
+    # Ajouter les dÃ©tails de l'erreur si fournis
     if (`$ErrorRecord) {
         `$logEntry += "``nException: `$(`$ErrorRecord.Exception.GetType().FullName)"
         `$logEntry += "``nMessage: `$(`$ErrorRecord.Exception.Message)"
         `$logEntry += "``nStack Trace: `$(`$ErrorRecord.ScriptStackTrace)"
     }
     
-    # Afficher dans la console si demandé
+    # Afficher dans la console si demandÃ©
     if (-not `$NoConsole) {
         switch (`$Level) {
             "INFO" { Write-Host `$logEntry -ForegroundColor White }
@@ -175,7 +175,7 @@ function Write-Log {
         }
     }
     
-    # Vérifier et faire pivoter le fichier journal si nécessaire
+    # VÃ©rifier et faire pivoter le fichier journal si nÃ©cessaire
     try {
         if (Test-Path -Path `$LogFilePath) {
             `$logFile = Get-Item -Path `$LogFilePath
@@ -188,17 +188,17 @@ function Write-Log {
             }
         }
         
-        # Créer le dossier du journal si nécessaire
+        # CrÃ©er le dossier du journal si nÃ©cessaire
         `$logDir = Split-Path -Path `$LogFilePath -Parent
         if (-not [string]::IsNullOrEmpty(`$logDir) -and -not (Test-Path -Path `$logDir)) {
             New-Item -Path `$logDir -ItemType Directory -Force | Out-Null
         }
         
-        # Écrire dans le fichier journal
+        # Ã‰crire dans le fichier journal
         Add-Content -Path `$LogFilePath -Value `$logEntry
     }
     catch {
-        Write-Warning "Impossible d'écrire dans le fichier journal: `$_"
+        Write-Warning "Impossible d'Ã©crire dans le fichier journal: `$_"
     }
 }
 
@@ -214,7 +214,7 @@ function Write-LogVerbose { param([string]`$Message) Write-Log -Message `$Messag
             "Enterprise" {
                 @"
 
-# Système de journalisation d'entreprise
+# SystÃ¨me de journalisation d'entreprise
 `$script:LoggerConfig = @{
     LogFilePath = "$LogFilePath"
     MaxLogSizeKB = 5120
@@ -259,7 +259,7 @@ function Initialize-Logger {
         [string]`$EventLogName
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (`$PSBoundParameters.ContainsKey('LogFilePath')) { `$script:LoggerConfig.LogFilePath = `$LogFilePath }
     if (`$PSBoundParameters.ContainsKey('MaxLogSizeKB')) { `$script:LoggerConfig.MaxLogSizeKB = `$MaxLogSizeKB }
     if (`$PSBoundParameters.ContainsKey('MaxLogFiles')) { `$script:LoggerConfig.MaxLogFiles = `$MaxLogFiles }
@@ -270,7 +270,7 @@ function Initialize-Logger {
     if (`$PSBoundParameters.ContainsKey('EventLogSource')) { `$script:LoggerConfig.EventLogSource = `$EventLogSource }
     if (`$PSBoundParameters.ContainsKey('EventLogName')) { `$script:LoggerConfig.EventLogName = `$EventLogName }
     
-    # Initialiser le journal des événements si nécessaire
+    # Initialiser le journal des Ã©vÃ©nements si nÃ©cessaire
     if (`$script:LoggerConfig.EnableEventLog) {
         try {
             if (-not [System.Diagnostics.EventLog]::SourceExists(`$script:LoggerConfig.EventLogSource)) {
@@ -278,12 +278,12 @@ function Initialize-Logger {
             }
         }
         catch {
-            Write-Warning "Impossible d'initialiser le journal des événements: `$_"
+            Write-Warning "Impossible d'initialiser le journal des Ã©vÃ©nements: `$_"
             `$script:LoggerConfig.EnableEventLog = `$false
         }
     }
     
-    # Créer le dossier du journal si nécessaire
+    # CrÃ©er le dossier du journal si nÃ©cessaire
     if (`$script:LoggerConfig.EnableFile) {
         try {
             `$logDir = Split-Path -Path `$script:LoggerConfig.LogFilePath -Parent
@@ -292,12 +292,12 @@ function Initialize-Logger {
             }
         }
         catch {
-            Write-Warning "Impossible de créer le dossier du journal: `$_"
+            Write-Warning "Impossible de crÃ©er le dossier du journal: `$_"
         }
     }
     
     # Journaliser l'initialisation
-    Write-Log -Message "Logger initialisé avec le niveau minimum: `$(`$script:LoggerConfig.MinLevel)" -Level "INFO"
+    Write-Log -Message "Logger initialisÃ© avec le niveau minimum: `$(`$script:LoggerConfig.MinLevel)" -Level "INFO"
 }
 
 function Write-Log {
@@ -320,7 +320,7 @@ function Write-Log {
         [int]`$EventId = 0
     )
     
-    # Vérifier le niveau minimum
+    # VÃ©rifier le niveau minimum
     `$levelValues = @{
         "DEBUG" = 0
         "VERBOSE" = 1
@@ -348,7 +348,7 @@ function Write-Log {
     `$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
     `$logEntry = "``[`$timestamp``] [`$Level] [`$Source] `$Message"
     
-    # Ajouter les détails de l'erreur si fournis
+    # Ajouter les dÃ©tails de l'erreur si fournis
     if (`$ErrorRecord) {
         `$logEntry += "``nException: `$(`$ErrorRecord.Exception.GetType().FullName)"
         `$logEntry += "``nMessage: `$(`$ErrorRecord.Exception.Message)"
@@ -369,7 +369,7 @@ function Write-Log {
     # Journaliser dans le fichier
     if (`$script:LoggerConfig.EnableFile) {
         try {
-            # Vérifier et faire pivoter le fichier journal si nécessaire
+            # VÃ©rifier et faire pivoter le fichier journal si nÃ©cessaire
             if (Test-Path -Path `$script:LoggerConfig.LogFilePath) {
                 `$logFile = Get-Item -Path `$script:LoggerConfig.LogFilePath
                 if (`$logFile.Length / 1KB -gt `$script:LoggerConfig.MaxLogSizeKB) {
@@ -395,15 +395,15 @@ function Write-Log {
                 }
             }
             
-            # Écrire dans le fichier journal
+            # Ã‰crire dans le fichier journal
             Add-Content -Path `$script:LoggerConfig.LogFilePath -Value `$logEntry
         }
         catch {
-            Write-Warning "Impossible d'écrire dans le fichier journal: `$_"
+            Write-Warning "Impossible d'Ã©crire dans le fichier journal: `$_"
         }
     }
     
-    # Journaliser dans le journal des événements
+    # Journaliser dans le journal des Ã©vÃ©nements
     if (`$script:LoggerConfig.EnableEventLog) {
         try {
             `$eventType = switch (`$Level) {
@@ -432,7 +432,7 @@ function Write-Log {
             Write-EventLog -LogName `$script:LoggerConfig.EventLogName -Source `$script:LoggerConfig.EventLogSource -EventId `$eventIdToUse -EntryType `$eventType -Message `$logEntry
         }
         catch {
-            Write-Warning "Impossible d'écrire dans le journal des événements: `$_"
+            Write-Warning "Impossible d'Ã©crire dans le journal des Ã©vÃ©nements: `$_"
         }
     }
 }
@@ -451,7 +451,7 @@ Initialize-Logger
             }
         }
         
-        # Extraire les commentaires et les déclarations param au début du script
+        # Extraire les commentaires et les dÃ©clarations param au dÃ©but du script
         $header = ""
         if ($content -match '(?s)^(#[^\n]*\n)+') {
             $header = $matches[0]
@@ -473,11 +473,11 @@ $param
 `$ErrorActionPreference = 'Stop'
 `$Error.Clear()
 $loggingFunction
-# Début du script original
+# DÃ©but du script original
 $content
 "@
         
-        # Ajouter des appels de journalisation aux endroits clés
+        # Ajouter des appels de journalisation aux endroits clÃ©s
         $newContent = $newContent -replace '(?m)^(\s*)Write-Error\s+([''"])(.+?)([''"])', '$1Write-LogError $2$3$4'
         $newContent = $newContent -replace '(?m)^(\s*)Write-Warning\s+([''"])(.+?)([''"])', '$1Write-LogWarning $2$3$4'
         $newContent = $newContent -replace '(?m)^(\s*)Write-Verbose\s+([''"])(.+?)([''"])', '$1Write-LogVerbose $2$3$4'
@@ -489,14 +489,14 @@ $content
         # Appliquer les modifications si ce n'est pas un test
         if (-not $WhatIf) {
             Set-Content -Path $OutputPath -Value $newContent
-            Write-Verbose "Système de journalisation ajouté au script."
+            Write-Verbose "SystÃ¨me de journalisation ajoutÃ© au script."
             return $true
         }
         else {
-            # Afficher les modifications prévues
-            Write-Host "Modifications prévues pour le script '$Path':"
-            Write-Host "- Ajout d'un système de journalisation de niveau '$LoggingLevel'"
-            Write-Host "- Configuration de ErrorActionPreference à 'Stop'"
+            # Afficher les modifications prÃ©vues
+            Write-Host "Modifications prÃ©vues pour le script '$Path':"
+            Write-Host "- Ajout d'un systÃ¨me de journalisation de niveau '$LoggingLevel'"
+            Write-Host "- Configuration de ErrorActionPreference Ã  'Stop'"
             Write-Host "- Remplacement des appels Write-Error par Write-LogError"
             Write-Host "- Remplacement des appels Write-Warning par Write-LogWarning"
             Write-Host "- Ajout de journalisation dans les blocs catch"
@@ -532,13 +532,13 @@ function Add-LoggingToDirectory {
         [switch]$WhatIf
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path -PathType Container)) {
-        Write-Error "Le répertoire '$Path' n'existe pas."
+        Write-Error "Le rÃ©pertoire '$Path' n'existe pas."
         return $null
     }
     
-    # Obtenir la liste des fichiers à traiter
+    # Obtenir la liste des fichiers Ã  traiter
     $files = Get-ChildItem -Path $Path -Filter $Filter -File -Recurse:$Recurse
     
     $results = @{
@@ -553,7 +553,7 @@ function Add-LoggingToDirectory {
         Write-Verbose "Traitement du fichier: $($file.FullName)"
         
         try {
-            # Déterminer le chemin du fichier journal
+            # DÃ©terminer le chemin du fichier journal
             $scriptLogFilePath = if ([string]::IsNullOrEmpty($LogFilePath)) {
                 "`$env:TEMP\$($file.Name).log"
             }
@@ -584,7 +584,7 @@ function Add-LoggingToDirectory {
                 $results.Details += [PSCustomObject]@{
                     FilePath = $file.FullName
                     Status = "Skipped"
-                    Reason = "Le script a déjà une fonction de journalisation"
+                    Reason = "Le script a dÃ©jÃ  une fonction de journalisation"
                 }
             }
         }

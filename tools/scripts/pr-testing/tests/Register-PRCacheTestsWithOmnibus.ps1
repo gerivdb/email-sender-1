@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Enregistre les tests du système de cache avec TestOmnibus.
+    Enregistre les tests du systÃ¨me de cache avec TestOmnibus.
 .DESCRIPTION
-    Ce script enregistre tous les tests unitaires, d'intégration et de performance
-    du système de cache d'analyse des pull requests avec TestOmnibus.
+    Ce script enregistre tous les tests unitaires, d'intÃ©gration et de performance
+    du systÃ¨me de cache d'analyse des pull requests avec TestOmnibus.
 .PARAMETER TestOmnibusPath
-    Le chemin vers le répertoire de TestOmnibus.
-    Par défaut: "scripts\tests\TestOmnibus"
+    Le chemin vers le rÃ©pertoire de TestOmnibus.
+    Par dÃ©faut: "scripts\tests\TestOmnibus"
 .EXAMPLE
     .\Register-PRCacheTestsWithOmnibus.ps1
-    Enregistre les tests avec TestOmnibus en utilisant le chemin par défaut.
+    Enregistre les tests avec TestOmnibus en utilisant le chemin par dÃ©faut.
 .EXAMPLE
     .\Register-PRCacheTestsWithOmnibus.ps1 -TestOmnibusPath "D:\Tests\TestOmnibus"
-    Enregistre les tests avec TestOmnibus en utilisant un chemin personnalisé.
+    Enregistre les tests avec TestOmnibus en utilisant un chemin personnalisÃ©.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -26,31 +26,31 @@ param(
     [string]$TestOmnibusPath = "scripts\tests\TestOmnibus"
 )
 
-# Vérifier que le répertoire TestOmnibus existe
+# VÃ©rifier que le rÃ©pertoire TestOmnibus existe
 if (-not (Test-Path -Path $TestOmnibusPath)) {
-    throw "Répertoire TestOmnibus non trouvé: $TestOmnibusPath"
+    throw "RÃ©pertoire TestOmnibus non trouvÃ©: $TestOmnibusPath"
 }
 
 # Chemin du module TestOmnibus
 $testOmnibusModule = Join-Path -Path $TestOmnibusPath -ChildPath "TestOmnibus.psm1"
 
-# Vérifier que le module TestOmnibus existe
+# VÃ©rifier que le module TestOmnibus existe
 if (-not (Test-Path -Path $testOmnibusModule)) {
-    throw "Module TestOmnibus non trouvé: $testOmnibusModule"
+    throw "Module TestOmnibus non trouvÃ©: $testOmnibusModule"
 }
 
 # Importer le module TestOmnibus
 Import-Module $testOmnibusModule -Force
 
-# Chemin des tests du système de cache
+# Chemin des tests du systÃ¨me de cache
 $cacheTestsPath = $PSScriptRoot
 
-# Vérifier que le répertoire des tests existe
+# VÃ©rifier que le rÃ©pertoire des tests existe
 if (-not (Test-Path -Path $cacheTestsPath)) {
-    throw "Répertoire des tests du système de cache non trouvé: $cacheTestsPath"
+    throw "RÃ©pertoire des tests du systÃ¨me de cache non trouvÃ©: $cacheTestsPath"
 }
 
-# Fichiers de test à enregistrer
+# Fichiers de test Ã  enregistrer
 $testFiles = @(
     "PRAnalysisCache.Tests.ps1",
     "Initialize-PRCachePersistence.Tests.ps1",
@@ -61,28 +61,28 @@ $testFiles = @(
     "PRCache.Performance.Tests.ps1"
 )
 
-# Vérifier que tous les fichiers de test existent
+# VÃ©rifier que tous les fichiers de test existent
 foreach ($testFile in $testFiles) {
     $testFilePath = Join-Path -Path $cacheTestsPath -ChildPath $testFile
     if (-not (Test-Path -Path $testFilePath)) {
-        Write-Warning "Fichier de test non trouvé: $testFilePath"
+        Write-Warning "Fichier de test non trouvÃ©: $testFilePath"
     }
 }
 
 # Enregistrer les tests avec TestOmnibus
-Write-Host "Enregistrement des tests du système de cache avec TestOmnibus..." -ForegroundColor Cyan
+Write-Host "Enregistrement des tests du systÃ¨me de cache avec TestOmnibus..." -ForegroundColor Cyan
 
-# Créer la configuration des tests
+# CrÃ©er la configuration des tests
 $testConfig = @{
     Name = "PRCacheSystem"
-    Description = "Tests du système de cache d'analyse des pull requests"
+    Description = "Tests du systÃ¨me de cache d'analyse des pull requests"
     Category = "PR-Analysis"
     Tags = @("Cache", "Performance", "Integration")
     Priority = "High"
     TestFiles = @()
 }
 
-# Ajouter les fichiers de test à la configuration
+# Ajouter les fichiers de test Ã  la configuration
 foreach ($testFile in $testFiles) {
     $testFilePath = Join-Path -Path $cacheTestsPath -ChildPath $testFile
     if (Test-Path -Path $testFilePath) {
@@ -105,14 +105,14 @@ foreach ($testFile in $testFiles) {
 # Enregistrer la configuration avec TestOmnibus
 $result = Register-TestSuite -Config $testConfig
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 if ($result.Success) {
-    Write-Host "Tests enregistrés avec succès!" -ForegroundColor Green
+    Write-Host "Tests enregistrÃ©s avec succÃ¨s!" -ForegroundColor Green
     Write-Host "ID de la suite de tests: $($result.SuiteId)" -ForegroundColor White
-    Write-Host "Nombre de tests enregistrés: $($result.TestCount)" -ForegroundColor White
+    Write-Host "Nombre de tests enregistrÃ©s: $($result.TestCount)" -ForegroundColor White
 } else {
-    Write-Host "Échec de l'enregistrement des tests: $($result.Error)" -ForegroundColor Red
+    Write-Host "Ã‰chec de l'enregistrement des tests: $($result.Error)" -ForegroundColor Red
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $result

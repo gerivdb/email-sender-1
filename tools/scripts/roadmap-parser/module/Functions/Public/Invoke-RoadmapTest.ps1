@@ -1,43 +1,43 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonction principale du mode TEST qui permet de tester les fonctionnalités d'un module.
+    Fonction principale du mode TEST qui permet de tester les fonctionnalitÃ©s d'un module.
 
 .DESCRIPTION
-    Cette fonction exécute des tests unitaires et d'intégration sur un module
-    en fonction des tâches spécifiées dans un fichier de roadmap.
+    Cette fonction exÃ©cute des tests unitaires et d'intÃ©gration sur un module
+    en fonction des tÃ¢ches spÃ©cifiÃ©es dans un fichier de roadmap.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à traiter.
+    Chemin vers le fichier de roadmap Ã  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (optionnel). Si non spécifié, toutes les tâches seront traitées.
+    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
 
 .PARAMETER ModulePath
-    Chemin vers le répertoire du module à tester.
+    Chemin vers le rÃ©pertoire du module Ã  tester.
 
 .PARAMETER TestsPath
-    Chemin vers le répertoire contenant les tests à exécuter.
+    Chemin vers le rÃ©pertoire contenant les tests Ã  exÃ©cuter.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les fichiers de sortie.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.
 
 .PARAMETER CoverageThreshold
     Seuil de couverture de code en pourcentage.
 
 .PARAMETER GenerateReport
-    Indique si un rapport de test doit être généré.
+    Indique si un rapport de test doit Ãªtre gÃ©nÃ©rÃ©.
 
 .PARAMETER IncludeCodeCoverage
-    Indique si la couverture de code doit être incluse dans le rapport.
+    Indique si la couverture de code doit Ãªtre incluse dans le rapport.
 
 .PARAMETER TestFramework
-    Framework de test à utiliser. Les valeurs possibles sont : Pester, NUnit, xUnit.
+    Framework de test Ã  utiliser. Les valeurs possibles sont : Pester, NUnit, xUnit.
 
 .PARAMETER ParallelTests
-    Indique si les tests doivent être exécutés en parallèle.
+    Indique si les tests doivent Ãªtre exÃ©cutÃ©s en parallÃ¨le.
 
 .PARAMETER TestCases
-    Chemin vers un fichier JSON contenant des cas de test supplémentaires.
+    Chemin vers un fichier JSON contenant des cas de test supplÃ©mentaires.
 
 .EXAMPLE
     Invoke-RoadmapTest -FilePath "roadmap.md" -TaskIdentifier "1.1" -ModulePath "module" -TestsPath "tests" -OutputPath "output" -CoverageThreshold 80 -GenerateReport $true
@@ -83,7 +83,7 @@ function Invoke-RoadmapTest {
         [string]$TestCases
     )
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $result = @{
         Success = $false
         TestCount = 0
@@ -95,38 +95,38 @@ function Invoke-RoadmapTest {
         OutputFiles = @()
     }
     
-    # Extraire les tâches de la roadmap
+    # Extraire les tÃ¢ches de la roadmap
     $tasks = Get-RoadmapTasks -FilePath $FilePath -TaskIdentifier $TaskIdentifier
     
     if ($tasks.Count -eq 0) {
-        Write-LogWarning "Aucune tâche trouvée dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
+        Write-LogWarning "Aucune tÃ¢che trouvÃ©e dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
         return $result
     }
     
-    Write-LogInfo "Nombre de tâches trouvées : $($tasks.Count)"
+    Write-LogInfo "Nombre de tÃ¢ches trouvÃ©es : $($tasks.Count)"
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "Répertoire de sortie créé : $OutputPath"
+        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
     }
     
-    # Vérifier si le framework de test est installé
+    # VÃ©rifier si le framework de test est installÃ©
     switch ($TestFramework) {
         "Pester" {
             if (-not (Get-Module -ListAvailable -Name Pester)) {
-                Write-LogWarning "Le module Pester n'est pas installé. Installation en cours..."
+                Write-LogWarning "Le module Pester n'est pas installÃ©. Installation en cours..."
                 try {
                     Install-Module -Name Pester -Force -SkipPublisherCheck
                     Import-Module Pester
-                    Write-LogInfo "Module Pester installé avec succès."
+                    Write-LogInfo "Module Pester installÃ© avec succÃ¨s."
                 } catch {
                     Write-LogError "Impossible d'installer le module Pester : $_"
                     return $result
                 }
             } else {
                 Import-Module Pester
-                Write-LogInfo "Module Pester importé."
+                Write-LogInfo "Module Pester importÃ©."
             }
         }
         "NUnit" {
@@ -147,30 +147,30 @@ function Invoke-RoadmapTest {
     }
     
     if ($testFiles.Count -eq 0) {
-        Write-LogWarning "Aucun fichier de test trouvé dans le répertoire : $TestsPath"
+        Write-LogWarning "Aucun fichier de test trouvÃ© dans le rÃ©pertoire : $TestsPath"
         return $result
     }
     
-    Write-LogInfo "Nombre de fichiers de test trouvés : $($testFiles.Count)"
+    Write-LogInfo "Nombre de fichiers de test trouvÃ©s : $($testFiles.Count)"
     
-    # Charger les cas de test supplémentaires si spécifiés
+    # Charger les cas de test supplÃ©mentaires si spÃ©cifiÃ©s
     $additionalTestCases = @()
     
     if ($TestCases -and (Test-Path -Path $TestCases)) {
         try {
             $additionalTestCases = Get-Content -Path $TestCases -Raw | ConvertFrom-Json
-            Write-LogInfo "Nombre de cas de test supplémentaires chargés : $($additionalTestCases.Count)"
+            Write-LogInfo "Nombre de cas de test supplÃ©mentaires chargÃ©s : $($additionalTestCases.Count)"
         } catch {
-            Write-LogWarning "Impossible de charger les cas de test supplémentaires : $_"
+            Write-LogWarning "Impossible de charger les cas de test supplÃ©mentaires : $_"
         }
     }
     
-    # Exécuter les tests
-    Write-LogInfo "Exécution des tests avec le framework : $TestFramework"
+    # ExÃ©cuter les tests
+    Write-LogInfo "ExÃ©cution des tests avec le framework : $TestFramework"
     
     switch ($TestFramework) {
         "Pester" {
-            # Créer la configuration Pester
+            # CrÃ©er la configuration Pester
             $pesterConfig = New-PesterConfiguration
             $pesterConfig.Run.Path = $testFiles.FullName
             $pesterConfig.Run.PassThru = $true
@@ -193,10 +193,10 @@ function Invoke-RoadmapTest {
                 }
             }
             
-            # Exécuter les tests
+            # ExÃ©cuter les tests
             $testResults = Invoke-Pester -Configuration $pesterConfig
             
-            # Traiter les résultats
+            # Traiter les rÃ©sultats
             $result.TestCount = $testResults.TotalCount
             $result.PassedCount = $testResults.PassedCount
             $result.FailedCount = $testResults.FailedCount
@@ -212,7 +212,7 @@ function Invoke-RoadmapTest {
                 }
             }
             
-            # Collecter les tests échoués
+            # Collecter les tests Ã©chouÃ©s
             if ($testResults.Failed) {
                 foreach ($failedTest in $testResults.Failed) {
                     $result.FailedTests += @{
@@ -224,7 +224,7 @@ function Invoke-RoadmapTest {
                 }
             }
             
-            # Générer un rapport de test
+            # GÃ©nÃ©rer un rapport de test
             if ($GenerateReport) {
                 $reportPath = Join-Path -Path $OutputPath -ChildPath "test_report.html"
                 
@@ -296,13 +296,13 @@ function Invoke-RoadmapTest {
     <h1>Rapport de test</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p><strong>Date du rapport :</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-        <p><strong>Module testé :</strong> $ModulePath</p>
-        <p><strong>Nombre de tests exécutés :</strong> $($result.TestCount)</p>
-        <p><strong>Tests réussis :</strong> <span class="success">$($result.PassedCount)</span></p>
-        <p><strong>Tests échoués :</strong> <span class="danger">$($result.FailedCount)</span></p>
-        <p><strong>Tests ignorés :</strong> <span class="warning">$($result.SkippedCount)</span></p>
+        <p><strong>Module testÃ© :</strong> $ModulePath</p>
+        <p><strong>Nombre de tests exÃ©cutÃ©s :</strong> $($result.TestCount)</p>
+        <p><strong>Tests rÃ©ussis :</strong> <span class="success">$($result.PassedCount)</span></p>
+        <p><strong>Tests Ã©chouÃ©s :</strong> <span class="danger">$($result.FailedCount)</span></p>
+        <p><strong>Tests ignorÃ©s :</strong> <span class="warning">$($result.SkippedCount)</span></p>
         <p><strong>Couverture de code :</strong> <span class="$(if ($result.Coverage -ge $CoverageThreshold) { "success" } else { "danger" })">$($result.Coverage)%</span></p>
         <p><strong>Seuil de couverture :</strong> $CoverageThreshold%</p>
         
@@ -312,11 +312,11 @@ function Invoke-RoadmapTest {
     </div>
 "@
                 
-                # Ajouter les tests échoués
+                # Ajouter les tests Ã©chouÃ©s
                 if ($result.FailedTests.Count -gt 0) {
                     $htmlReport += @"
     
-    <h2>Tests échoués</h2>
+    <h2>Tests Ã©chouÃ©s</h2>
     <table>
         <tr>
             <th>Nom</th>
@@ -342,7 +342,7 @@ function Invoke-RoadmapTest {
 "@
                 }
                 
-                # Ajouter les détails de couverture de code
+                # Ajouter les dÃ©tails de couverture de code
                 if ($IncludeCodeCoverage -and $testResults.CodeCoverage) {
                     $htmlReport += @"
     
@@ -350,7 +350,7 @@ function Invoke-RoadmapTest {
     <table>
         <tr>
             <th>Fichier</th>
-            <th>Lignes analysées</th>
+            <th>Lignes analysÃ©es</th>
             <th>Lignes couvertes</th>
             <th>Couverture</th>
         </tr>
@@ -391,11 +391,11 @@ function Invoke-RoadmapTest {
 </html>
 "@
                 
-                # Écrire le rapport dans un fichier
+                # Ã‰crire le rapport dans un fichier
                 Set-Content -Path $reportPath -Value $htmlReport -Encoding UTF8
                 $result.OutputFiles += $reportPath
                 
-                # Générer un rapport de couverture HTML
+                # GÃ©nÃ©rer un rapport de couverture HTML
                 if ($IncludeCodeCoverage) {
                     $coverageReportPath = Join-Path -Path $OutputPath -ChildPath "coverage_report.html"
                     
@@ -493,9 +493,9 @@ function Invoke-RoadmapTest {
     <h1>Rapport de couverture de code</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p><strong>Date du rapport :</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-        <p><strong>Module testé :</strong> $ModulePath</p>
+        <p><strong>Module testÃ© :</strong> $ModulePath</p>
         <p><strong>Couverture de code :</strong> <span class="$(if ($result.Coverage -ge $CoverageThreshold) { "success" } else { "danger" })">$($result.Coverage)%</span></p>
         <p><strong>Seuil de couverture :</strong> $CoverageThreshold%</p>
         
@@ -504,7 +504,7 @@ function Invoke-RoadmapTest {
         </div>
     </div>
     
-    <h2>Détails de couverture par fichier</h2>
+    <h2>DÃ©tails de couverture par fichier</h2>
 "@
                     
                     foreach ($fileCoverage in $filesCoverage) {
@@ -557,7 +557,7 @@ function Invoke-RoadmapTest {
 </html>
 "@
                     
-                    # Écrire le rapport dans un fichier
+                    # Ã‰crire le rapport dans un fichier
                     Set-Content -Path $coverageReportPath -Value $coverageReport -Encoding UTF8
                     $result.OutputFiles += $coverageReportPath
                 }
@@ -571,7 +571,7 @@ function Invoke-RoadmapTest {
         }
     }
     
-    # Vérifier si les tests ont réussi
+    # VÃ©rifier si les tests ont rÃ©ussi
     $result.Success = ($result.FailedCount -eq 0 -and $result.Coverage -ge $CoverageThreshold)
     
     return $result

@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Plugin d'analyse pour détecter les commentaires TODO, FIXME, etc. dans le code.
+    Plugin d'analyse pour dÃ©tecter les commentaires TODO, FIXME, etc. dans le code.
 
 .DESCRIPTION
-    Ce plugin analyse les fichiers à la recherche de commentaires TODO, FIXME, HACK, etc.
-    et les signale comme des problèmes à résoudre.
+    Ce plugin analyse les fichiers Ã  la recherche de commentaires TODO, FIXME, HACK, etc.
+    et les signale comme des problÃ¨mes Ã  rÃ©soudre.
 
 .NOTES
     Version:        1.0
@@ -30,7 +30,7 @@ $analyzeFunction = {
         [string]$Severity = "Information"
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
@@ -45,7 +45,7 @@ $analyzeFunction = {
         $line = $content[$i]
         $lineNumber = $i + 1
 
-        # Vérifier si la ligne contient un commentaire TODO
+        # VÃ©rifier si la ligne contient un commentaire TODO
         foreach ($keyword in $Keywords) {
             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
                 $todoKeyword = $matches[1]
@@ -59,7 +59,7 @@ $analyzeFunction = {
                     -Severity $Severity `
                     -Message "${todoKeyword}: $todoComment" `
                     -Category "Documentation" `
-                    -Suggestion "Résolvez ce $todoKeyword ou convertissez-le en tâche dans le système de suivi des problèmes."
+                    -Suggestion "RÃ©solvez ce $todoKeyword ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes."
 
                 $results += $result
             }

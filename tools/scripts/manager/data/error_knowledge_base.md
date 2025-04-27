@@ -1,12 +1,12 @@
-# Base de connaissances des erreurs
+﻿# Base de connaissances des erreurs
 
-Ce document centralise les erreurs rencontrées et leurs solutions pour faciliter le dépannage futur.
+Ce document centralise les erreurs rencontrÃ©es et leurs solutions pour faciliter le dÃ©pannage futur.
 
 ## Erreurs PowerShell
 
 ### PSUseApprovedVerbs
 
-**Description** : Utilisation d'un verbe non approuvé dans le nom d'une fonction ou cmdlet PowerShell.
+**Description** : Utilisation d'un verbe non approuvÃ© dans le nom d'une fonction ou cmdlet PowerShell.
 
 **Exemple d'erreur** :
 ```
@@ -14,24 +14,24 @@ The cmdlet 'Fix-NullComparisons' uses an unapproved verb.
 ```
 
 **Solution** :
-- Remplacer le verbe non approuvé par un verbe approuvé de la liste `Get-Verb`
+- Remplacer le verbe non approuvÃ© par un verbe approuvÃ© de la liste `Get-Verb`
 - Correspondances courantes :
-  - `Fix-` → `Repair-` ou `Update-`
-  - `Extract-` → `Get-` ou `Export-`
-  - `Create-` → `New-`
+  - `Fix-` â†’ `Repair-` ou `Update-`
+  - `Extract-` â†’ `Get-` ou `Export-`
+  - `Create-` â†’ `New-`
 
-**Code corrigé** :
+**Code corrigÃ©** :
 ```powershell
 # Avant
 function Fix-NullComparisons { ... }
 
-# Après
+# AprÃ¨s
 function Repair-NullComparisons { ... }
 ```
 
 ### PSAvoidAssignmentToAutomaticVariable
 
-**Description** : Assignation à une variable automatique de PowerShell, ce qui peut avoir des effets secondaires indésirables.
+**Description** : Assignation Ã  une variable automatique de PowerShell, ce qui peut avoir des effets secondaires indÃ©sirables.
 
 **Exemple d'erreur** :
 ```
@@ -39,15 +39,15 @@ The Variable 'Matches' is an automatic variable that is built into PowerShell, a
 ```
 
 **Solution** :
-- Utiliser un nom de variable différent
-- Pour les expressions régulières, utiliser `$RegexMatches` au lieu de `$Matches`
+- Utiliser un nom de variable diffÃ©rent
+- Pour les expressions rÃ©guliÃ¨res, utiliser `$RegexMatches` au lieu de `$Matches`
 
-**Code corrigé** :
+**Code corrigÃ©** :
 ```powershell
 # Avant
 $Matches = [regex]::Matches($Content, $Pattern)
 
-# Après
+# AprÃ¨s
 $RegexMatches = [regex]::Matches($Content, $Pattern)
 ```
 
@@ -55,21 +55,21 @@ $RegexMatches = [regex]::Matches($Content, $Pattern)
 
 **Description** : Accolade fermante manquante dans un bloc de code.
 
-**Cause** : Souvent causé par des problèmes d'échappement dans les expressions régulières ou les chaînes de caractères.
+**Cause** : Souvent causÃ© par des problÃ¨mes d'Ã©chappement dans les expressions rÃ©guliÃ¨res ou les chaÃ®nes de caractÃ¨res.
 
 **Solution** :
-- Vérifier l'équilibre des accolades dans le code
-- Utiliser des guillemets simples pour les expressions régulières
-- Échapper correctement les caractères spéciaux
+- VÃ©rifier l'Ã©quilibre des accolades dans le code
+- Utiliser des guillemets simples pour les expressions rÃ©guliÃ¨res
+- Ã‰chapper correctement les caractÃ¨res spÃ©ciaux
 
-**Code corrigé** :
+**Code corrigÃ©** :
 ```powershell
-# Avant (problématique)
+# Avant (problÃ©matique)
 if (-not ($Content -match "if\s+__name__\s*==\s*['""]__main__['""]")) {
     # Code
 }
 
-# Après (corrigé)
+# AprÃ¨s (corrigÃ©)
 if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
     # Code
 }
@@ -79,23 +79,23 @@ if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
 
 **Description** : Token inattendu dans une expression ou une instruction.
 
-**Cause** : Souvent causé par des problèmes d'échappement ou de syntaxe dans les expressions régulières.
+**Cause** : Souvent causÃ© par des problÃ¨mes d'Ã©chappement ou de syntaxe dans les expressions rÃ©guliÃ¨res.
 
 **Solution** :
-- Vérifier la syntaxe des expressions régulières
-- Utiliser des guillemets simples pour les expressions régulières complexes
-- Tester les expressions régulières séparément
+- VÃ©rifier la syntaxe des expressions rÃ©guliÃ¨res
+- Utiliser des guillemets simples pour les expressions rÃ©guliÃ¨res complexes
+- Tester les expressions rÃ©guliÃ¨res sÃ©parÃ©ment
 
 ## Erreurs d'encodage de fichiers
 
-### Problèmes d'encodage UTF-8 avec/sans BOM
+### ProblÃ¨mes d'encodage UTF-8 avec/sans BOM
 
-**Description** : Problèmes de compatibilité liés à l'encodage des fichiers.
+**Description** : ProblÃ¨mes de compatibilitÃ© liÃ©s Ã  l'encodage des fichiers.
 
-**Symptômes** :
-- Caractères spéciaux mal affichés
-- Erreurs d'exécution dans les scripts
-- Problèmes de compatibilité entre systèmes
+**SymptÃ´mes** :
+- CaractÃ¨res spÃ©ciaux mal affichÃ©s
+- Erreurs d'exÃ©cution dans les scripts
+- ProblÃ¨mes de compatibilitÃ© entre systÃ¨mes
 
 **Solution** :
 - Pour PowerShell : Utiliser UTF-8 avec BOM
@@ -110,23 +110,23 @@ if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
 
 ## Erreurs de manipulation de fichiers
 
-### Accès refusé ou fichier introuvable
+### AccÃ¨s refusÃ© ou fichier introuvable
 
-**Description** : Erreurs lors de la lecture, écriture ou modification de fichiers.
+**Description** : Erreurs lors de la lecture, Ã©criture ou modification de fichiers.
 
-**Symptômes** :
+**SymptÃ´mes** :
 - Exception "Access denied"
 - Exception "File not found"
 - Exception "Path too long"
 
 **Solution** :
-- Vérifier l'existence des chemins avant d'y accéder
+- VÃ©rifier l'existence des chemins avant d'y accÃ©der
   ```powershell
   if (Test-Path -Path $FilePath -ErrorAction SilentlyContinue) {
-      # Opérations sur le fichier
+      # OpÃ©rations sur le fichier
   }
   ```
-- Utiliser des blocs try/catch pour gérer les erreurs
+- Utiliser des blocs try/catch pour gÃ©rer les erreurs
   ```powershell
   try {
       $Content = Get-Content -Path $FilePath -Raw -ErrorAction Stop
@@ -134,18 +134,18 @@ if (-not ($Content -match 'if\s+__name__\s*==\s*[''"]__main__[''"]')) {
       Write-Log "Erreur lors de la lecture du fichier: $_" -Level "ERROR"
   }
   ```
-- Vérifier les chaînes nulles ou vides
+- VÃ©rifier les chaÃ®nes nulles ou vides
   ```powershell
   if (-not [string]::IsNullOrWhiteSpace($FilePath)) {
-      # Opérations sur le fichier
+      # OpÃ©rations sur le fichier
   }
   ```
 
-## Bonnes pratiques pour éviter les erreurs
+## Bonnes pratiques pour Ã©viter les erreurs
 
-### Système de journalisation unifié
+### SystÃ¨me de journalisation unifiÃ©
 
-Implémenter un système de journalisation cohérent pour faciliter le débogage :
+ImplÃ©menter un systÃ¨me de journalisation cohÃ©rent pour faciliter le dÃ©bogage :
 
 ```powershell
 function Write-Log {
@@ -169,7 +169,7 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\manager\data\log_file.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
@@ -177,7 +177,7 @@ function Write-Log {
 
 ### Mode simulation avant application
 
-Implémenter un mode simulation pour tester les modifications avant de les appliquer :
+ImplÃ©menter un mode simulation pour tester les modifications avant de les appliquer :
 
 ```powershell
 function Update-Files {
@@ -186,25 +186,25 @@ function Update-Files {
         [switch]$Apply
     )
     
-    # Logique de mise à jour
+    # Logique de mise Ã  jour
     
     if ($Apply) {
         # Appliquer les modifications
         Set-Content -Path $FilePath -Value $NewContent
-        Write-Log "Modifications appliquées" -Level "SUCCESS"
+        Write-Log "Modifications appliquÃ©es" -Level "SUCCESS"
     } else {
         # Simuler les modifications
-        Write-Log "Modifications simulées (non appliquées)" -Level "WARNING"
+        Write-Log "Modifications simulÃ©es (non appliquÃ©es)" -Level "WARNING"
     }
 }
 ```
 
 ### Tests unitaires pour les fonctions critiques
 
-Créer des tests unitaires pour les fonctions critiques :
+CrÃ©er des tests unitaires pour les fonctions critiques :
 
 ```powershell
-# Fonction à tester
+# Fonction Ã  tester
 function Repair-NullComparisons {
     param ([string]$Content)
     return $Content -replace "(\$[A-Za-z0-9_]+)\s+-eq\s+\$null", "`$null -eq `$1"
@@ -216,9 +216,9 @@ $ExpectedResult = '$null -eq $variable'
 $ActualResult = Repair-NullComparisons -Content $TestContent
 
 if ($ActualResult -eq $ExpectedResult) {
-    Write-Host "Test réussi" -ForegroundColor Green
+    Write-Host "Test rÃ©ussi" -ForegroundColor Green
 } else {
-    Write-Host "Test échoué" -ForegroundColor Red
+    Write-Host "Test Ã©chouÃ©" -ForegroundColor Red
     Write-Host "Attendu: $ExpectedResult" -ForegroundColor Yellow
     Write-Host "Obtenu: $ActualResult" -ForegroundColor Yellow
 }
@@ -233,4 +233,4 @@ if ($ActualResult -eq $ExpectedResult) {
 
 ---
 
-*Dernière mise à jour: 08/04/2025 19:45*
+*DerniÃ¨re mise Ã  jour: 08/04/2025 19:45*

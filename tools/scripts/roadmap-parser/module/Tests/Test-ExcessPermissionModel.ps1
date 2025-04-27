@@ -1,5 +1,5 @@
-# Test-ExcessPermissionModel.ps1
-# Tests unitaires pour la structure de données des permissions excédentaires
+﻿# Test-ExcessPermissionModel.ps1
+# Tests unitaires pour la structure de donnÃ©es des permissions excÃ©dentaires
 
 # Importer le module de test
 $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Test-Module.psm1"
@@ -9,7 +9,7 @@ Import-Module $testModulePath -Force
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\RoadmapParser.psm1"
 Import-Module $modulePath -Force
 
-# Charger directement le fichier de modèle de permissions excédentaires pour les tests
+# Charger directement le fichier de modÃ¨le de permissions excÃ©dentaires pour les tests
 $excessPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\ExcessPermissionModel.ps1"
 . $excessPermissionModelPath
 
@@ -39,7 +39,7 @@ Describe "ExcessPermissionModel" {
                 "GRANT",
                 "TestServer",
                 "SecurityModel",
-                "Élevé"
+                "Ã‰levÃ©"
             )
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "ALTER ANY LOGIN"
@@ -48,7 +48,7 @@ Describe "ExcessPermissionModel" {
             $permission.SecurableType | Should -Be "SERVER"
             $permission.SecurableName | Should -Be "TestServer"
             $permission.ModelName | Should -Be "SecurityModel"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should generate a fix script" {
@@ -67,7 +67,7 @@ Describe "ExcessPermissionModel" {
         It "Should generate a string representation" {
             $permission = [SqlServerExcessPermission]::new("CONNECT SQL", "TestLogin", "GRANT")
             $string = $permission.ToString()
-            $string | Should -Be "Permission excédentaire: GRANT CONNECT SQL pour le login [TestLogin]"
+            $string | Should -Be "Permission excÃ©dentaire: GRANT CONNECT SQL pour le login [TestLogin]"
         }
     }
 
@@ -137,7 +137,7 @@ Describe "ExcessPermissionModel" {
         It "Should generate a string representation" {
             $permission = [SqlDatabaseExcessPermission]::new("SELECT", "TestDB", "TestUser", "GRANT")
             $string = $permission.ToString()
-            $string | Should -Be "Permission excédentaire: GRANT SELECT pour l'utilisateur [TestUser] dans la base de données [TestDB]"
+            $string | Should -Be "Permission excÃ©dentaire: GRANT SELECT pour l'utilisateur [TestUser] dans la base de donnÃ©es [TestDB]"
         }
     }
 
@@ -237,7 +237,7 @@ Describe "ExcessPermissionModel" {
                 "Customers"
             )
             $string = $permission.ToString()
-            $string | Should -Be "Permission excédentaire: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] dans la base de données [TestDB]"
+            $string | Should -Be "Permission excÃ©dentaire: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] dans la base de donnÃ©es [TestDB]"
         }
 
         It "Should generate a string representation with column" {
@@ -254,7 +254,7 @@ Describe "ExcessPermissionModel" {
                 "Faible"
             )
             $string = $permission.ToString()
-            $string | Should -Be "Permission excédentaire: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] (colonne: CustomerID) dans la base de données [TestDB]"
+            $string | Should -Be "Permission excÃ©dentaire: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] (colonne: CustomerID) dans la base de donnÃ©es [TestDB]"
         }
     }
 
@@ -267,7 +267,7 @@ Describe "ExcessPermissionModel" {
             $permSet.ObjectPermissions | Should -Not -BeNullOrEmpty
             $permSet.TotalCount | Should -Be 0
             $permSet.RiskLevelCounts["Critique"] | Should -Be 0
-            $permSet.RiskLevelCounts["Élevé"] | Should -Be 0
+            $permSet.RiskLevelCounts["Ã‰levÃ©"] | Should -Be 0
             $permSet.RiskLevelCounts["Moyen"] | Should -Be 0
             $permSet.RiskLevelCounts["Faible"] | Should -Be 0
         }
@@ -304,12 +304,12 @@ Describe "ExcessPermissionModel" {
             $permSet.AddDatabasePermission($dbPerm1)
             
             $dbPerm2 = [SqlDatabaseExcessPermission]::new("CREATE TABLE", "TestDB", "Developer1", "GRANT")
-            $dbPerm2.RiskLevel = "Élevé"
+            $dbPerm2.RiskLevel = "Ã‰levÃ©"
             $permSet.AddDatabasePermission($dbPerm2)
             
             $permSet.DatabasePermissions.Count | Should -Be 2
             $permSet.TotalCount | Should -Be 2
-            $permSet.RiskLevelCounts["Élevé"] | Should -Be 1
+            $permSet.RiskLevelCounts["Ã‰levÃ©"] | Should -Be 1
             $permSet.RiskLevelCounts["Moyen"] | Should -Be 1
         }
 
@@ -364,7 +364,7 @@ Describe "ExcessPermissionModel" {
             $permSet.AddDatabasePermission($dbPerm1)
             
             $dbPerm2 = [SqlDatabaseExcessPermission]::new("CREATE TABLE", "TestDB", "Developer1", "GRANT")
-            $dbPerm2.RiskLevel = "Élevé"
+            $dbPerm2.RiskLevel = "Ã‰levÃ©"
             $permSet.AddDatabasePermission($dbPerm2)
             
             # Add object permissions
@@ -429,7 +429,7 @@ Describe "ExcessPermissionModel" {
             $permSet.AddObjectPermission($objPerm)
             
             $script = $permSet.GenerateFixScript()
-            $script | Should -Match "-- Script de correction des permissions excédentaires"
+            $script | Should -Match "-- Script de correction des permissions excÃ©dentaires"
             $script | Should -Match "REVOKE CONNECT SQL FROM \[User1\];"
             $script | Should -Match "USE \[TestDB\];"
             $script | Should -Match "REVOKE SELECT ON DATABASE::\[TestDB\] FROM \[User1\];"
@@ -459,17 +459,17 @@ Describe "ExcessPermissionModel" {
                 "dbo",
                 "Customers"
             )
-            $objPerm.RiskLevel = "Élevé"
+            $objPerm.RiskLevel = "Ã‰levÃ©"
             $permSet.AddObjectPermission($objPerm)
             
             $summary = $permSet.GetSummary()
-            $summary | Should -Match "Résumé des permissions excédentaires pour l'instance TestServer"
-            $summary | Should -Match "Comparaison avec le modèle: SecurityModel"
-            $summary | Should -Match "Nombre total de permissions excédentaires: 3"
+            $summary | Should -Match "RÃ©sumÃ© des permissions excÃ©dentaires pour l'instance TestServer"
+            $summary | Should -Match "Comparaison avec le modÃ¨le: SecurityModel"
+            $summary | Should -Match "Nombre total de permissions excÃ©dentaires: 3"
             $summary | Should -Match "- Permissions serveur: 1"
-            $summary | Should -Match "- Permissions base de données: 1"
+            $summary | Should -Match "- Permissions base de donnÃ©es: 1"
             $summary | Should -Match "- Permissions objet: 1"
-            $summary | Should -Match "- Élevé: 1"
+            $summary | Should -Match "- Ã‰levÃ©: 1"
             $summary | Should -Match "- Moyen: 1"
             $summary | Should -Match "- Faible: 1"
         }
@@ -484,11 +484,11 @@ Describe "ExcessPermissionModel" {
         }
 
         It "Should create a new SqlServerExcessPermission" {
-            $permission = New-SqlServerExcessPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -RiskLevel "Élevé"
+            $permission = New-SqlServerExcessPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -RiskLevel "Ã‰levÃ©"
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "CONNECT SQL"
             $permission.LoginName | Should -Be "TestLogin"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should create a new SqlDatabaseExcessPermission" {
@@ -514,5 +514,5 @@ Describe "ExcessPermissionModel" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

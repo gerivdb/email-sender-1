@@ -1,6 +1,6 @@
-# Script de sécurisation des entrées utilisateur
+﻿# Script de sÃ©curisation des entrÃ©es utilisateur
 
-# Fonction pour valider et nettoyer une chaîne de caractères
+# Fonction pour valider et nettoyer une chaÃ®ne de caractÃ¨res
 function Test-StringInput {
     param (
         [Parameter(Mandatory = $true)]
@@ -19,26 +19,26 @@ function Test-StringInput {
         [int]$MaxLength = 0
     )
     
-    # Vérifier si la chaîne est vide
+    # VÃ©rifier si la chaÃ®ne est vide
     if ([string]::IsNullOrEmpty($Input)) {
         return $AllowEmpty
     }
     
-    # Vérifier la longueur minimale
+    # VÃ©rifier la longueur minimale
     if ($MinLength -gt 0 -and $Input.Length -lt $MinLength) {
         return $false
     }
     
-    # Vérifier la longueur maximale
+    # VÃ©rifier la longueur maximale
     if ($MaxLength -gt 0 -and $Input.Length -gt $MaxLength) {
         return $false
     }
     
-    # Vérifier le motif
+    # VÃ©rifier le motif
     return $Input -match $Pattern
 }
 
-# Fonction pour nettoyer une chaîne de caractères
+# Fonction pour nettoyer une chaÃ®ne de caractÃ¨res
 function Get-SanitizedString {
     param (
         [Parameter(Mandatory = $true)]
@@ -59,11 +59,11 @@ function Get-SanitizedString {
     }
     
     if ($RemoveNonMatching) {
-        # Supprimer tous les caractères qui ne correspondent pas au motif
+        # Supprimer tous les caractÃ¨res qui ne correspondent pas au motif
         return [regex]::Replace($Input, "[^$Pattern]", $Replacement)
     }
     else {
-        # Remplacer les caractères spéciaux par leur équivalent HTML
+        # Remplacer les caractÃ¨res spÃ©ciaux par leur Ã©quivalent HTML
         $sanitized = $Input
         $sanitized = $sanitized.Replace("&", "&amp;")
         $sanitized = $sanitized.Replace("<", "&lt;")
@@ -94,7 +94,7 @@ function Test-SafePath {
     $normalizedPath = $Path.Replace('\', [System.IO.Path]::DirectorySeparatorChar)
     $normalizedPath = $normalizedPath.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
     
-    # Vérifier les chemins autorisés
+    # VÃ©rifier les chemins autorisÃ©s
     if ($AllowedPaths.Count -gt 0) {
         $isAllowed = $false
         foreach ($allowedPath in $AllowedPaths) {
@@ -109,7 +109,7 @@ function Test-SafePath {
         }
     }
     
-    # Vérifier les chemins interdits
+    # VÃ©rifier les chemins interdits
     if ($DisallowedPaths.Count -gt 0) {
         foreach ($disallowedPath in $DisallowedPaths) {
             if ($normalizedPath.StartsWith($disallowedPath)) {
@@ -118,7 +118,7 @@ function Test-SafePath {
         }
     }
     
-    # Vérifier la traversée de chemin
+    # VÃ©rifier la traversÃ©e de chemin
     if ($PreventPathTraversal) {
         if ($normalizedPath -match "\.\.") {
             return $false
@@ -144,12 +144,12 @@ function Test-SafeUrl {
         [switch]$AllowRelativeUrls
     )
     
-    # Vérifier si l'URL est vide
+    # VÃ©rifier si l'URL est vide
     if ([string]::IsNullOrEmpty($Url)) {
         return $false
     }
     
-    # Vérifier si c'est une URL relative
+    # VÃ©rifier si c'est une URL relative
     if ($Url.StartsWith("/") -or $Url.StartsWith("./") -or $Url.StartsWith("../")) {
         return $AllowRelativeUrls
     }
@@ -158,12 +158,12 @@ function Test-SafeUrl {
     try {
         $uri = [System.Uri]$Url
         
-        # Vérifier le schéma
+        # VÃ©rifier le schÃ©ma
         if ($AllowedSchemes.Count -gt 0 -and -not $AllowedSchemes.Contains($uri.Scheme)) {
             return $false
         }
         
-        # Vérifier le domaine
+        # VÃ©rifier le domaine
         if ($AllowedDomains.Count -gt 0) {
             $isAllowedDomain = $false
             foreach ($domain in $AllowedDomains) {
@@ -185,7 +185,7 @@ function Test-SafeUrl {
     }
 }
 
-# Fonction pour valider un paramètre de commande
+# Fonction pour valider un paramÃ¨tre de commande
 function Test-SafeCommandParameter {
     param (
         [Parameter(Mandatory = $true)]
@@ -195,14 +195,14 @@ function Test-SafeCommandParameter {
         [switch]$PreventCommandInjection
     )
     
-    # Vérifier si le paramètre est vide
+    # VÃ©rifier si le paramÃ¨tre est vide
     if ([string]::IsNullOrEmpty($Parameter)) {
         return $true
     }
     
-    # Vérifier l'injection de commande
+    # VÃ©rifier l'injection de commande
     if ($PreventCommandInjection) {
-        # Caractères suspects pour l'injection de commande
+        # CaractÃ¨res suspects pour l'injection de commande
         $suspiciousChars = @(';', '&', '|', '>', '<', '`', '$', '(', ')', '{', '}', '[', ']', '!', '#')
         
         foreach ($char in $suspiciousChars) {

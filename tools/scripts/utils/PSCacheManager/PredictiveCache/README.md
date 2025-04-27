@@ -1,34 +1,34 @@
-# Mise en Cache Prédictive et Adaptative
+﻿# Mise en Cache PrÃ©dictive et Adaptative
 
-Ce module étend le PSCacheManager avec des capacités de mise en cache prédictive et adaptative, permettant d'optimiser proactivement le cache en fonction des patterns d'utilisation.
+Ce module Ã©tend le PSCacheManager avec des capacitÃ©s de mise en cache prÃ©dictive et adaptative, permettant d'optimiser proactivement le cache en fonction des patterns d'utilisation.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Analyse des patterns d'utilisation** : Détecte les scripts et données fréquemment utilisés
-- **Prédiction des besoins futurs** : Anticipe les besoins en cache en fonction des tendances historiques
-- **Préchargement intelligent** : Charge proactivement les données susceptibles d'être utilisées
-- **Adaptation dynamique des TTL** : Ajuste les durées de vie en fonction de la fréquence d'utilisation
-- **Détection des séquences d'exécution** : Identifie les scripts souvent exécutés en séquence
-- **Optimisation des ressources** : Équilibre entre performance et consommation de ressources
+- **Analyse des patterns d'utilisation** : DÃ©tecte les scripts et donnÃ©es frÃ©quemment utilisÃ©s
+- **PrÃ©diction des besoins futurs** : Anticipe les besoins en cache en fonction des tendances historiques
+- **PrÃ©chargement intelligent** : Charge proactivement les donnÃ©es susceptibles d'Ãªtre utilisÃ©es
+- **Adaptation dynamique des TTL** : Ajuste les durÃ©es de vie en fonction de la frÃ©quence d'utilisation
+- **DÃ©tection des sÃ©quences d'exÃ©cution** : Identifie les scripts souvent exÃ©cutÃ©s en sÃ©quence
+- **Optimisation des ressources** : Ã‰quilibre entre performance et consommation de ressources
 
 ## Architecture
 
-Le système de cache prédictif est composé de plusieurs composants :
+Le systÃ¨me de cache prÃ©dictif est composÃ© de plusieurs composants :
 
-1. **Collecteur de données d'utilisation** : Enregistre les patterns d'utilisation du cache
-2. **Analyseur de tendances** : Identifie les tendances et patterns dans les données d'utilisation
-3. **Moteur de prédiction** : Prédit les besoins futurs en cache
-4. **Gestionnaire de préchargement** : Précharge les données susceptibles d'être utilisées
+1. **Collecteur de donnÃ©es d'utilisation** : Enregistre les patterns d'utilisation du cache
+2. **Analyseur de tendances** : Identifie les tendances et patterns dans les donnÃ©es d'utilisation
+3. **Moteur de prÃ©diction** : PrÃ©dit les besoins futurs en cache
+4. **Gestionnaire de prÃ©chargement** : PrÃ©charge les donnÃ©es susceptibles d'Ãªtre utilisÃ©es
 5. **Optimiseur de TTL** : Ajuste dynamiquement les TTL en fonction de l'utilisation
-6. **Gestionnaire de dépendances** : Détecte et gère les dépendances entre éléments du cache
+6. **Gestionnaire de dÃ©pendances** : DÃ©tecte et gÃ¨re les dÃ©pendances entre Ã©lÃ©ments du cache
 
-## Intégration
+## IntÃ©gration
 
-Le module s'intègre avec :
+Le module s'intÃ¨gre avec :
 
-- **PSCacheManager** : Utilise les fonctionnalités de base du gestionnaire de cache
-- **UsageMonitor** : Exploite les données d'utilisation collectées
-- **ProactiveOptimization** : S'intègre dans la stratégie globale d'optimisation proactive
+- **PSCacheManager** : Utilise les fonctionnalitÃ©s de base du gestionnaire de cache
+- **UsageMonitor** : Exploite les donnÃ©es d'utilisation collectÃ©es
+- **ProactiveOptimization** : S'intÃ¨gre dans la stratÃ©gie globale d'optimisation proactive
 
 ## Utilisation
 
@@ -36,30 +36,30 @@ Le module s'intègre avec :
 # Importer le module
 Import-Module .\PSCacheManager\PredictiveCache\PredictiveCache.psm1
 
-# Créer un cache prédictif
+# CrÃ©er un cache prÃ©dictif
 $cache = New-PredictiveCache -Name "ScriptCache" -UsageDatabase "path\to\usage.db"
 
-# Configurer les options prédictives
+# Configurer les options prÃ©dictives
 Set-PredictiveCacheOptions -Cache $cache -PreloadEnabled $true -AdaptiveTTL $true
 
 # Utiliser le cache comme d'habitude
 $result = Get-PSCacheItem -Cache $cache -Key "MyKey" -GenerateValue { ... }
 
-# Déclencher une analyse et optimisation manuelle
+# DÃ©clencher une analyse et optimisation manuelle
 Optimize-PredictiveCache -Cache $cache
 ```
 
-## Métriques et Monitoring
+## MÃ©triques et Monitoring
 
-Le module fournit des métriques détaillées sur l'efficacité du cache prédictif :
+Le module fournit des mÃ©triques dÃ©taillÃ©es sur l'efficacitÃ© du cache prÃ©dictif :
 
-- Taux de succès des prédictions
-- Économies de temps réalisées
+- Taux de succÃ¨s des prÃ©dictions
+- Ã‰conomies de temps rÃ©alisÃ©es
 - Utilisation des ressources
-- Statistiques de préchargement
+- Statistiques de prÃ©chargement
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-- Intégration d'algorithmes d'apprentissage automatique plus avancés
-- Support pour les caches distribués
-- Optimisation pour les environnements à haute charge
+- IntÃ©gration d'algorithmes d'apprentissage automatique plus avancÃ©s
+- Support pour les caches distribuÃ©s
+- Optimisation pour les environnements Ã  haute charge

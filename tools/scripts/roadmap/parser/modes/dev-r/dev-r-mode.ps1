@@ -1,91 +1,91 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour le mode DEV-R qui permet d'implémenter les tâches définies dans une roadmap.
+    Script pour le mode DEV-R qui permet d'implÃ©menter les tÃ¢ches dÃ©finies dans une roadmap.
 
 .DESCRIPTION
-    Ce script implémente le mode DEV-R (Roadmap Delivery) qui permet d'implémenter
-    les tâches définies dans une roadmap de manière séquentielle et méthodique.
+    Ce script implÃ©mente le mode DEV-R (Roadmap Delivery) qui permet d'implÃ©menter
+    les tÃ¢ches dÃ©finies dans une roadmap de maniÃ¨re sÃ©quentielle et mÃ©thodique.
     Il fait partie de la suite d'outils RoadmapParser pour la gestion de roadmaps.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à traiter.
+    Chemin vers le fichier de roadmap Ã  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (optionnel). Si non spécifié, toutes les tâches seront traitées.
+    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les fichiers de sortie. Par défaut, les fichiers sont générés dans le répertoire courant.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie. Par dÃ©faut, les fichiers sont gÃ©nÃ©rÃ©s dans le rÃ©pertoire courant.
 
 .PARAMETER ConfigFile
-    Chemin vers un fichier de configuration personnalisé. Si non spécifié, la configuration par défaut sera utilisée.
+    Chemin vers un fichier de configuration personnalisÃ©. Si non spÃ©cifiÃ©, la configuration par dÃ©faut sera utilisÃ©e.
 
 .PARAMETER LogLevel
-    Niveau de journalisation à utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
-    Par défaut, le niveau est INFO.
+    Niveau de journalisation Ã  utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
+    Par dÃ©faut, le niveau est INFO.
 
 .PARAMETER ProjectPath
-    Chemin vers le répertoire du projet.
+    Chemin vers le rÃ©pertoire du projet.
 
 .PARAMETER TestsPath
-    Chemin vers le répertoire des tests.
+    Chemin vers le rÃ©pertoire des tests.
 
 .PARAMETER AutoCommit
-    Indique si les changements doivent être automatiquement commités.
+    Indique si les changements doivent Ãªtre automatiquement commitÃ©s.
 
 .PARAMETER UpdateRoadmap
-    Indique si la roadmap doit être mise à jour automatiquement.
+    Indique si la roadmap doit Ãªtre mise Ã  jour automatiquement.
 
 .PARAMETER GenerateTests
-    Indique si des tests doivent être générés automatiquement.
+    Indique si des tests doivent Ãªtre gÃ©nÃ©rÃ©s automatiquement.
 
 .EXAMPLE
     .\dev-r-mode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.2.3" -OutputPath "output" -ProjectPath "project" -TestsPath "tests"
 
-    Traite la tâche 1.2.3 du fichier roadmap.md, implémente la fonctionnalité dans le répertoire "project", génère les tests dans le répertoire "tests" et génère des rapports dans le répertoire "output".
+    Traite la tÃ¢che 1.2.3 du fichier roadmap.md, implÃ©mente la fonctionnalitÃ© dans le rÃ©pertoire "project", gÃ©nÃ¨re les tests dans le rÃ©pertoire "tests" et gÃ©nÃ¨re des rapports dans le rÃ©pertoire "output".
 
 .EXAMPLE
     .\dev-r-mode.ps1 -FilePath "roadmap.md" -ProjectPath "project" -TestsPath "tests" -AutoCommit $true -UpdateRoadmap $true
 
-    Traite toutes les tâches du fichier roadmap.md, implémente les fonctionnalités dans le répertoire "project", génère les tests dans le répertoire "tests", commit automatiquement les changements et met à jour la roadmap.
+    Traite toutes les tÃ¢ches du fichier roadmap.md, implÃ©mente les fonctionnalitÃ©s dans le rÃ©pertoire "project", gÃ©nÃ¨re les tests dans le rÃ©pertoire "tests", commit automatiquement les changements et met Ã  jour la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap à traiter.")]
+    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap Ã  traiter.")]
     [ValidateNotNullOrEmpty()]
     [string]$FilePath,
     
-    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tâche à traiter (optionnel).")]
+    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tÃ¢che Ã  traiter (optionnel).")]
     [string]$TaskIdentifier,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin où seront générés les fichiers de sortie.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.")]
     [string]$OutputPath = (Get-Location).Path,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisé.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisÃ©.")]
     [string]$ConfigFile,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation à utiliser.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation Ã  utiliser.")]
     [ValidateSet("ERROR", "WARNING", "INFO", "VERBOSE", "DEBUG")]
     [string]$LogLevel = "INFO",
     
-    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le répertoire du projet.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃ©pertoire du projet.")]
     [string]$ProjectPath,
     
-    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le répertoire des tests.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃ©pertoire des tests.")]
     [string]$TestsPath,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si les changements doivent être automatiquement commités.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si les changements doivent Ãªtre automatiquement commitÃ©s.")]
     [bool]$AutoCommit = $false,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si la roadmap doit être mise à jour automatiquement.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si la roadmap doit Ãªtre mise Ã  jour automatiquement.")]
     [bool]$UpdateRoadmap = $true,
     
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si des tests doivent être générés automatiquement.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si des tests doivent Ãªtre gÃ©nÃ©rÃ©s automatiquement.")]
     [bool]$GenerateTests = $true
 )
 
@@ -95,9 +95,9 @@ param(
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path $scriptPath -ChildPath "roadmap-parser\module"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module RoadmapParser est introuvable à l'emplacement : $modulePath"
+    Write-Error "Le module RoadmapParser est introuvable Ã  l'emplacement : $modulePath"
     exit 1
 }
 
@@ -105,9 +105,9 @@ if (-not (Test-Path -Path $modulePath)) {
 $commonFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\CommonFunctions.ps1"
 if (Test-Path -Path $commonFunctionsPath) {
     . $commonFunctionsPath
-    Write-Host "Fonctions communes importées." -ForegroundColor Green
+    Write-Host "Fonctions communes importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions communes est introuvable à l'emplacement : $commonFunctionsPath"
+    Write-Error "Le fichier de fonctions communes est introuvable Ã  l'emplacement : $commonFunctionsPath"
     exit 1
 }
 
@@ -115,9 +115,9 @@ if (Test-Path -Path $commonFunctionsPath) {
 $loggingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\LoggingFunctions.ps1"
 if (Test-Path -Path $loggingFunctionsPath) {
     . $loggingFunctionsPath
-    Write-Host "Fonctions de journalisation importées." -ForegroundColor Green
+    Write-Host "Fonctions de journalisation importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de journalisation est introuvable à l'emplacement : $loggingFunctionsPath"
+    Write-Error "Le fichier de fonctions de journalisation est introuvable Ã  l'emplacement : $loggingFunctionsPath"
     exit 1
 }
 
@@ -128,9 +128,9 @@ Set-LoggingLevel -Level $LogLevel
 $validationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ValidationFunctions.ps1"
 if (Test-Path -Path $validationFunctionsPath) {
     . $validationFunctionsPath
-    Write-Host "Fonctions de validation importées." -ForegroundColor Green
+    Write-Host "Fonctions de validation importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de validation est introuvable à l'emplacement : $validationFunctionsPath"
+    Write-Error "Le fichier de fonctions de validation est introuvable Ã  l'emplacement : $validationFunctionsPath"
     exit 1
 }
 
@@ -138,9 +138,9 @@ if (Test-Path -Path $validationFunctionsPath) {
 $errorHandlingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ErrorHandlingFunctions.ps1"
 if (Test-Path -Path $errorHandlingFunctionsPath) {
     . $errorHandlingFunctionsPath
-    Write-Host "Fonctions de gestion des erreurs importées." -ForegroundColor Green
+    Write-Host "Fonctions de gestion des erreurs importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable à l'emplacement : $errorHandlingFunctionsPath"
+    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable Ã  l'emplacement : $errorHandlingFunctionsPath"
     exit 1
 }
 
@@ -148,9 +148,9 @@ if (Test-Path -Path $errorHandlingFunctionsPath) {
 $configurationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ConfigurationFunctions.ps1"
 if (Test-Path -Path $configurationFunctionsPath) {
     . $configurationFunctionsPath
-    Write-Host "Fonctions de configuration importées." -ForegroundColor Green
+    Write-Host "Fonctions de configuration importÃ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de configuration est introuvable à l'emplacement : $configurationFunctionsPath"
+    Write-Error "Le fichier de fonctions de configuration est introuvable Ã  l'emplacement : $configurationFunctionsPath"
     exit 1
 }
 
@@ -158,9 +158,9 @@ if (Test-Path -Path $configurationFunctionsPath) {
 $modeFunctionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapDevelopment.ps1"
 if (Test-Path -Path $modeFunctionPath) {
     . $modeFunctionPath
-    Write-Host "Fonction Invoke-RoadmapDevelopment importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapDevelopment importÃ©e." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonction du mode est introuvable à l'emplacement : $modeFunctionPath"
+    Write-Error "Le fichier de fonction du mode est introuvable Ã  l'emplacement : $modeFunctionPath"
     exit 1
 }
 
@@ -169,57 +169,57 @@ $config = Get-DefaultConfiguration
 if ($ConfigFile -and (Test-Path -Path $ConfigFile)) {
     $customConfig = Get-Configuration -ConfigFile $ConfigFile
     $config = Merge-Configuration -DefaultConfig $config -CustomConfig $customConfig
-    Write-LogInfo "Configuration personnalisée chargée depuis : $ConfigFile"
+    Write-LogInfo "Configuration personnalisÃ©e chargÃ©e depuis : $ConfigFile"
 } else {
-    Write-LogInfo "Configuration par défaut utilisée."
+    Write-LogInfo "Configuration par dÃ©faut utilisÃ©e."
 }
 
 #endregion
 
-#region Validation des entrées
+#region Validation des entrÃ©es
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 Assert-ValidFile -FilePath $FilePath -FileType ".md" -ParameterName "FilePath" -ErrorMessage "Le fichier de roadmap est introuvable ou n'est pas un fichier Markdown : $FilePath"
 
-# Vérifier si le répertoire du projet existe
-Assert-ValidDirectory -DirectoryPath $ProjectPath -ParameterName "ProjectPath" -ErrorMessage "Le répertoire du projet est introuvable : $ProjectPath"
+# VÃ©rifier si le rÃ©pertoire du projet existe
+Assert-ValidDirectory -DirectoryPath $ProjectPath -ParameterName "ProjectPath" -ErrorMessage "Le rÃ©pertoire du projet est introuvable : $ProjectPath"
 
-# Vérifier si le répertoire des tests existe
-Assert-ValidDirectory -DirectoryPath $TestsPath -ParameterName "TestsPath" -ErrorMessage "Le répertoire des tests est introuvable : $TestsPath"
+# VÃ©rifier si le rÃ©pertoire des tests existe
+Assert-ValidDirectory -DirectoryPath $TestsPath -ParameterName "TestsPath" -ErrorMessage "Le rÃ©pertoire des tests est introuvable : $TestsPath"
 
-# Vérifier si le répertoire de sortie existe, sinon le créer
+# VÃ©rifier si le rÃ©pertoire de sortie existe, sinon le crÃ©er
 if (-not (Test-Path -Path $OutputPath)) {
-    if ($PSCmdlet.ShouldProcess($OutputPath, "Créer le répertoire de sortie")) {
+    if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃ©er le rÃ©pertoire de sortie")) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "Répertoire de sortie créé : $OutputPath"
+        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
     } else {
-        Write-LogWarning "Création du répertoire de sortie annulée : $OutputPath"
+        Write-LogWarning "CrÃ©ation du rÃ©pertoire de sortie annulÃ©e : $OutputPath"
         exit 0
     }
 }
 
-# Vérifier si l'identifiant de tâche est valide
+# VÃ©rifier si l'identifiant de tÃ¢che est valide
 if ($TaskIdentifier) {
-    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tâche n'est pas valide : $TaskIdentifier. Il doit être au format 'X.Y.Z'."
+    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tÃ¢che n'est pas valide : $TaskIdentifier. Il doit Ãªtre au format 'X.Y.Z'."
 }
 
 #endregion
 
 #region Traitement principal
 
-Write-LogInfo "Début du traitement du mode DEV-R."
+Write-LogInfo "DÃ©but du traitement du mode DEV-R."
 Write-LogInfo "Fichier de roadmap : $FilePath"
 if ($TaskIdentifier) {
-    Write-LogInfo "Tâche à traiter : $TaskIdentifier"
+    Write-LogInfo "TÃ¢che Ã  traiter : $TaskIdentifier"
 } else {
-    Write-LogInfo "Toutes les tâches seront traitées."
+    Write-LogInfo "Toutes les tÃ¢ches seront traitÃ©es."
 }
-Write-LogInfo "Répertoire du projet : $ProjectPath"
-Write-LogInfo "Répertoire des tests : $TestsPath"
-Write-LogInfo "Répertoire de sortie : $OutputPath"
+Write-LogInfo "RÃ©pertoire du projet : $ProjectPath"
+Write-LogInfo "RÃ©pertoire des tests : $TestsPath"
+Write-LogInfo "RÃ©pertoire de sortie : $OutputPath"
 Write-LogInfo "Auto-commit : $AutoCommit"
-Write-LogInfo "Mise à jour de la roadmap : $UpdateRoadmap"
-Write-LogInfo "Génération de tests : $GenerateTests"
+Write-LogInfo "Mise Ã  jour de la roadmap : $UpdateRoadmap"
+Write-LogInfo "GÃ©nÃ©ration de tests : $GenerateTests"
 
 # Appeler la fonction principale du mode
 try {
@@ -237,53 +237,53 @@ try {
         $params.TaskIdentifier = $TaskIdentifier
     }
     
-    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapDevelopment", "Exécuter avec les paramètres spécifiés")) {
+    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapDevelopment", "ExÃ©cuter avec les paramÃ¨tres spÃ©cifiÃ©s")) {
         $result = Invoke-WithErrorHandling -Action {
             Invoke-RoadmapDevelopment @params
-        } -ErrorMessage "Une erreur s'est produite lors de l'exécution du mode DEV-R." -ExitOnError $false
+        } -ErrorMessage "Une erreur s'est produite lors de l'exÃ©cution du mode DEV-R." -ExitOnError $false
         
-        # Traiter les résultats
+        # Traiter les rÃ©sultats
         if ($result) {
-            Write-LogInfo "Traitement terminé avec succès."
+            Write-LogInfo "Traitement terminÃ© avec succÃ¨s."
             
-            # Afficher un résumé des résultats
-            Write-Host "`nRésumé des résultats :" -ForegroundColor Yellow
-            Write-Host "  - Nombre de tâches traitées : $($result.TaskCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tâches complétées : $($result.CompletedCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tâches échouées : $($result.FailedCount)" -ForegroundColor $(if ($result.FailedCount -eq 0) { "Green" } else { "Red" })
-            Write-Host "  - Nombre de tests générés : $($result.TestCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests réussis : $($result.PassedTestCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests échoués : $($result.FailedTestCount)" -ForegroundColor $(if ($result.FailedTestCount -eq 0) { "Green" } else { "Red" })
+            # Afficher un rÃ©sumÃ© des rÃ©sultats
+            Write-Host "`nRÃ©sumÃ© des rÃ©sultats :" -ForegroundColor Yellow
+            Write-Host "  - Nombre de tÃ¢ches traitÃ©es : $($result.TaskCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tÃ¢ches complÃ©tÃ©es : $($result.CompletedCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tÃ¢ches Ã©chouÃ©es : $($result.FailedCount)" -ForegroundColor $(if ($result.FailedCount -eq 0) { "Green" } else { "Red" })
+            Write-Host "  - Nombre de tests gÃ©nÃ©rÃ©s : $($result.TestCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tests rÃ©ussis : $($result.PassedTestCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tests Ã©chouÃ©s : $($result.FailedTestCount)" -ForegroundColor $(if ($result.FailedTestCount -eq 0) { "Green" } else { "Red" })
             
-            # Afficher les tâches échouées
+            # Afficher les tÃ¢ches Ã©chouÃ©es
             if ($result.FailedTasks -and $result.FailedTasks.Count -gt 0) {
-                Write-Host "`nTâches échouées :" -ForegroundColor Red
+                Write-Host "`nTÃ¢ches Ã©chouÃ©es :" -ForegroundColor Red
                 foreach ($task in $result.FailedTasks) {
                     Write-Host "  - $($task.Identifier) : $($task.Title)" -ForegroundColor Red
                     Write-Host "    Raison : $($task.FailureReason)" -ForegroundColor Gray
                 }
             }
             
-            # Indiquer les fichiers générés
+            # Indiquer les fichiers gÃ©nÃ©rÃ©s
             if ($result.OutputFiles -and $result.OutputFiles.Count -gt 0) {
-                Write-Host "`nFichiers générés :" -ForegroundColor Yellow
+                Write-Host "`nFichiers gÃ©nÃ©rÃ©s :" -ForegroundColor Yellow
                 foreach ($file in $result.OutputFiles) {
                     Write-Host "  - $file" -ForegroundColor Gray
                 }
             }
             
-            # Afficher les prochaines étapes
+            # Afficher les prochaines Ã©tapes
             if ($result.NextSteps -and $result.NextSteps.Count -gt 0) {
-                Write-Host "`nProchaines étapes :" -ForegroundColor Yellow
+                Write-Host "`nProchaines Ã©tapes :" -ForegroundColor Yellow
                 foreach ($step in $result.NextSteps) {
                     Write-Host "  - $step" -ForegroundColor Gray
                 }
             }
         } else {
-            Write-LogWarning "Aucun résultat n'a été retourné par la fonction Invoke-RoadmapDevelopment."
+            Write-LogWarning "Aucun rÃ©sultat n'a Ã©tÃ© retournÃ© par la fonction Invoke-RoadmapDevelopment."
         }
     } else {
-        Write-LogWarning "Exécution de Invoke-RoadmapDevelopment annulée."
+        Write-LogWarning "ExÃ©cution de Invoke-RoadmapDevelopment annulÃ©e."
     }
 } catch {
     Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du mode DEV-R." -ExitOnError $true
@@ -293,5 +293,5 @@ Write-LogInfo "Fin du traitement du mode DEV-R."
 
 #endregion
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $result

@@ -1,8 +1,8 @@
-# Script d'intégration avec Notion
+﻿# Script d'intÃ©gration avec Notion
 
-# Configuration de l'intégration Notion
+# Configuration de l'intÃ©gration Notion
 $script:NotionConfig = @{
-    # Clé d'API Notion
+    # ClÃ© d'API Notion
     ApiKey = ""
     
     # URL de base de l'API Notion
@@ -11,31 +11,31 @@ $script:NotionConfig = @{
     # Version de l'API Notion
     ApiVersion = "2022-06-28"
     
-    # ID de la base de données pour les erreurs
+    # ID de la base de donnÃ©es pour les erreurs
     ErrorDatabaseId = ""
     
-    # ID de la base de données pour les rapports
+    # ID de la base de donnÃ©es pour les rapports
     ReportDatabaseId = ""
     
-    # Mappage des propriétés
+    # Mappage des propriÃ©tÃ©s
     PropertyMapping = @{
         Error = @{
             Title = "Titre"
-            Severity = "Sévérité"
-            Category = "Catégorie"
+            Severity = "SÃ©vÃ©ritÃ©"
+            Category = "CatÃ©gorie"
             Source = "Source"
             Timestamp = "Date"
             Status = "Statut"
             Description = "Description"
             Solution = "Solution"
             ScriptPath = "Chemin du script"
-            LineNumber = "Numéro de ligne"
+            LineNumber = "NumÃ©ro de ligne"
         }
         Report = @{
             Title = "Titre"
             Date = "Date"
-            Summary = "Résumé"
-            Details = "Détails"
+            Summary = "RÃ©sumÃ©"
+            Details = "DÃ©tails"
             Status = "Statut"
             Source = "Source"
         }
@@ -58,27 +58,27 @@ function Initialize-NotionIntegration {
         [string]$ReportDatabaseId = ""
     )
     
-    # Charger la configuration depuis un fichier si spécifié
+    # Charger la configuration depuis un fichier si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($ConfigPath) -and (Test-Path -Path $ConfigPath)) {
         try {
             $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
             
-            # Mettre à jour la clé d'API
+            # Mettre Ã  jour la clÃ© d'API
             if ($config.ApiKey) {
                 $script:NotionConfig.ApiKey = $config.ApiKey
             }
             
-            # Mettre à jour l'URL de base
+            # Mettre Ã  jour l'URL de base
             if ($config.BaseUrl) {
                 $script:NotionConfig.BaseUrl = $config.BaseUrl
             }
             
-            # Mettre à jour la version de l'API
+            # Mettre Ã  jour la version de l'API
             if ($config.ApiVersion) {
                 $script:NotionConfig.ApiVersion = $config.ApiVersion
             }
             
-            # Mettre à jour les IDs de base de données
+            # Mettre Ã  jour les IDs de base de donnÃ©es
             if ($config.ErrorDatabaseId) {
                 $script:NotionConfig.ErrorDatabaseId = $config.ErrorDatabaseId
             }
@@ -87,54 +87,54 @@ function Initialize-NotionIntegration {
                 $script:NotionConfig.ReportDatabaseId = $config.ReportDatabaseId
             }
             
-            # Mettre à jour le mappage des propriétés
+            # Mettre Ã  jour le mappage des propriÃ©tÃ©s
             if ($config.PropertyMapping) {
                 $script:NotionConfig.PropertyMapping = $config.PropertyMapping
             }
             
-            Write-Verbose "Configuration Notion chargée depuis $ConfigPath"
+            Write-Verbose "Configuration Notion chargÃ©e depuis $ConfigPath"
         }
         catch {
             Write-Error "Erreur lors du chargement de la configuration Notion: $_"
         }
     }
     
-    # Mettre à jour la clé d'API si spécifiée
+    # Mettre Ã  jour la clÃ© d'API si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($ApiKey)) {
         $script:NotionConfig.ApiKey = $ApiKey
     }
     
-    # Mettre à jour l'ID de la base de données des erreurs si spécifié
+    # Mettre Ã  jour l'ID de la base de donnÃ©es des erreurs si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($ErrorDatabaseId)) {
         $script:NotionConfig.ErrorDatabaseId = $ErrorDatabaseId
     }
     
-    # Mettre à jour l'ID de la base de données des rapports si spécifié
+    # Mettre Ã  jour l'ID de la base de donnÃ©es des rapports si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($ReportDatabaseId)) {
         $script:NotionConfig.ReportDatabaseId = $ReportDatabaseId
     }
     
-    # Vérifier si la clé d'API est définie
+    # VÃ©rifier si la clÃ© d'API est dÃ©finie
     if ([string]::IsNullOrEmpty($script:NotionConfig.ApiKey)) {
-        Write-Warning "La clé d'API Notion n'est pas définie"
+        Write-Warning "La clÃ© d'API Notion n'est pas dÃ©finie"
         return $false
     }
     
-    # Tester la connexion à Notion
+    # Tester la connexion Ã  Notion
     $connected = Test-NotionConnection
     
     if ($connected) {
-        Write-Verbose "Connexion à Notion établie avec succès"
+        Write-Verbose "Connexion Ã  Notion Ã©tablie avec succÃ¨s"
         
-        # Vérifier les bases de données
+        # VÃ©rifier les bases de donnÃ©es
         if (-not [string]::IsNullOrEmpty($script:NotionConfig.ErrorDatabaseId)) {
             $errorDatabase = Get-NotionDatabase -DatabaseId $script:NotionConfig.ErrorDatabaseId
             
             if ($errorDatabase) {
-                Write-Verbose "Base de données des erreurs Notion vérifiée avec succès"
+                Write-Verbose "Base de donnÃ©es des erreurs Notion vÃ©rifiÃ©e avec succÃ¨s"
             }
             else {
-                Write-Warning "La base de données des erreurs Notion n'a pas pu être vérifiée"
+                Write-Warning "La base de donnÃ©es des erreurs Notion n'a pas pu Ãªtre vÃ©rifiÃ©e"
             }
         }
         
@@ -142,10 +142,10 @@ function Initialize-NotionIntegration {
             $reportDatabase = Get-NotionDatabase -DatabaseId $script:NotionConfig.ReportDatabaseId
             
             if ($reportDatabase) {
-                Write-Verbose "Base de données des rapports Notion vérifiée avec succès"
+                Write-Verbose "Base de donnÃ©es des rapports Notion vÃ©rifiÃ©e avec succÃ¨s"
             }
             else {
-                Write-Warning "La base de données des rapports Notion n'a pas pu être vérifiée"
+                Write-Warning "La base de donnÃ©es des rapports Notion n'a pas pu Ãªtre vÃ©rifiÃ©e"
             }
         }
     }
@@ -153,7 +153,7 @@ function Initialize-NotionIntegration {
     return $script:NotionConfig
 }
 
-# Fonction pour tester la connexion à Notion
+# Fonction pour tester la connexion Ã  Notion
 function Test-NotionConnection {
     try {
         $response = Invoke-NotionApiRequest -Endpoint "/users/me"
@@ -162,17 +162,17 @@ function Test-NotionConnection {
             return $true
         }
         else {
-            Write-Warning "La connexion à Notion a échoué"
+            Write-Warning "La connexion Ã  Notion a Ã©chouÃ©"
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors du test de connexion à Notion: $_"
+        Write-Error "Erreur lors du test de connexion Ã  Notion: $_"
         return $false
     }
 }
 
-# Fonction pour effectuer une requête à l'API Notion
+# Fonction pour effectuer une requÃªte Ã  l'API Notion
 function Invoke-NotionApiRequest {
     param (
         [Parameter(Mandatory = $true)]
@@ -186,34 +186,34 @@ function Invoke-NotionApiRequest {
         [object]$Body = $null
     )
     
-    # Vérifier si la clé d'API est définie
+    # VÃ©rifier si la clÃ© d'API est dÃ©finie
     if ([string]::IsNullOrEmpty($script:NotionConfig.ApiKey)) {
-        throw "La clé d'API Notion n'est pas définie"
+        throw "La clÃ© d'API Notion n'est pas dÃ©finie"
     }
     
-    # Construire l'URL complète
+    # Construire l'URL complÃ¨te
     $url = "$($script:NotionConfig.BaseUrl)$Endpoint"
     
-    # Préparer les en-têtes
+    # PrÃ©parer les en-tÃªtes
     $headers = @{
         "Authorization" = "Bearer $($script:NotionConfig.ApiKey)"
         "Notion-Version" = $script:NotionConfig.ApiVersion
         "Content-Type" = "application/json"
     }
     
-    # Paramètres de la requête
+    # ParamÃ¨tres de la requÃªte
     $params = @{
         Uri = $url
         Method = $Method
         Headers = $headers
     }
     
-    # Ajouter le corps si spécifié
+    # Ajouter le corps si spÃ©cifiÃ©
     if ($null -ne $Body) {
         $params.Body = if ($Body -is [string]) { $Body } else { $Body | ConvertTo-Json -Depth 10 }
     }
     
-    # Effectuer la requête
+    # Effectuer la requÃªte
     try {
         $response = Invoke-RestMethod @params -ErrorAction Stop
         return $response
@@ -222,12 +222,12 @@ function Invoke-NotionApiRequest {
         $statusCode = $_.Exception.Response.StatusCode.value__
         $statusDescription = $_.Exception.Response.StatusDescription
         
-        Write-Error "Erreur lors de la requête à l'API Notion: $Method $url - Code d'état: $statusCode - Description: $statusDescription"
+        Write-Error "Erreur lors de la requÃªte Ã  l'API Notion: $Method $url - Code d'Ã©tat: $statusCode - Description: $statusDescription"
         throw $_
     }
 }
 
-# Fonction pour récupérer une base de données Notion
+# Fonction pour rÃ©cupÃ©rer une base de donnÃ©es Notion
 function Get-NotionDatabase {
     param (
         [Parameter(Mandatory = $true)]
@@ -239,12 +239,12 @@ function Get-NotionDatabase {
         return $response
     }
     catch {
-        Write-Error "Erreur lors de la récupération de la base de données Notion: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration de la base de donnÃ©es Notion: $_"
         return $null
     }
 }
 
-# Fonction pour créer une page dans une base de données Notion
+# Fonction pour crÃ©er une page dans une base de donnÃ©es Notion
 function New-NotionPage {
     param (
         [Parameter(Mandatory = $true)]
@@ -257,7 +257,7 @@ function New-NotionPage {
         [object]$Content = $null
     )
     
-    # Préparer le corps de la requête
+    # PrÃ©parer le corps de la requÃªte
     $body = @{
         parent = @{
             database_id = $DatabaseId
@@ -265,7 +265,7 @@ function New-NotionPage {
         properties = $Properties
     }
     
-    # Ajouter le contenu si spécifié
+    # Ajouter le contenu si spÃ©cifiÃ©
     if ($null -ne $Content) {
         $body.children = $Content
     }
@@ -275,12 +275,12 @@ function New-NotionPage {
         return $response
     }
     catch {
-        Write-Error "Erreur lors de la création de la page Notion: $_"
+        Write-Error "Erreur lors de la crÃ©ation de la page Notion: $_"
         return $null
     }
 }
 
-# Fonction pour mettre à jour une page Notion
+# Fonction pour mettre Ã  jour une page Notion
 function Update-NotionPage {
     param (
         [Parameter(Mandatory = $true)]
@@ -293,13 +293,13 @@ function Update-NotionPage {
         [object]$Content = $null
     )
     
-    # Mettre à jour les propriétés
+    # Mettre Ã  jour les propriÃ©tÃ©s
     try {
         $propertiesResponse = Invoke-NotionApiRequest -Endpoint "/pages/$PageId" -Method "PATCH" -Body @{
             properties = $Properties
         }
         
-        # Mettre à jour le contenu si spécifié
+        # Mettre Ã  jour le contenu si spÃ©cifiÃ©
         if ($null -ne $Content) {
             $contentResponse = Invoke-NotionApiRequest -Endpoint "/blocks/$PageId/children" -Method "PATCH" -Body @{
                 children = $Content
@@ -309,12 +309,12 @@ function Update-NotionPage {
         return $propertiesResponse
     }
     catch {
-        Write-Error "Erreur lors de la mise à jour de la page Notion: $_"
+        Write-Error "Erreur lors de la mise Ã  jour de la page Notion: $_"
         return $null
     }
 }
 
-# Fonction pour rechercher des pages dans une base de données Notion
+# Fonction pour rechercher des pages dans une base de donnÃ©es Notion
 function Search-NotionDatabase {
     param (
         [Parameter(Mandatory = $true)]
@@ -333,7 +333,7 @@ function Search-NotionDatabase {
         [string]$StartCursor = $null
     )
     
-    # Préparer le corps de la requête
+    # PrÃ©parer le corps de la requÃªte
     $body = @{
         filter = @{
             property = "object"
@@ -342,7 +342,7 @@ function Search-NotionDatabase {
         page_size = $PageSize
     }
     
-    # Ajouter le filtre de base de données
+    # Ajouter le filtre de base de donnÃ©es
     $body.filter = @{
         and = @(
             @{
@@ -354,17 +354,17 @@ function Search-NotionDatabase {
         )
     }
     
-    # Ajouter le filtre personnalisé si spécifié
+    # Ajouter le filtre personnalisÃ© si spÃ©cifiÃ©
     if ($null -ne $Filter) {
         $body.filter.and += $Filter
     }
     
-    # Ajouter le tri si spécifié
+    # Ajouter le tri si spÃ©cifiÃ©
     if ($null -ne $Sorts) {
         $body.sorts = $Sorts
     }
     
-    # Ajouter le curseur de départ si spécifié
+    # Ajouter le curseur de dÃ©part si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($StartCursor)) {
         $body.start_cursor = $StartCursor
     }
@@ -374,12 +374,12 @@ function Search-NotionDatabase {
         return $response
     }
     catch {
-        Write-Error "Erreur lors de la recherche dans la base de données Notion: $_"
+        Write-Error "Erreur lors de la recherche dans la base de donnÃ©es Notion: $_"
         return $null
     }
 }
 
-# Fonction pour créer une entrée d'erreur dans Notion
+# Fonction pour crÃ©er une entrÃ©e d'erreur dans Notion
 function New-NotionErrorEntry {
     param (
         [Parameter(Mandatory = $true)]
@@ -392,13 +392,13 @@ function New-NotionErrorEntry {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si la base de données des erreurs est configurée
+    # VÃ©rifier si la base de donnÃ©es des erreurs est configurÃ©e
     if ([string]::IsNullOrEmpty($script:NotionConfig.ErrorDatabaseId)) {
-        Write-Error "La base de données des erreurs Notion n'est pas configurée"
+        Write-Error "La base de donnÃ©es des erreurs Notion n'est pas configurÃ©e"
         return $null
     }
     
-    # Préparer les propriétés
+    # PrÃ©parer les propriÃ©tÃ©s
     $properties = @{}
     
     # Titre
@@ -413,14 +413,14 @@ function New-NotionErrorEntry {
         )
     }
     
-    # Sévérité
+    # SÃ©vÃ©ritÃ©
     $properties[$script:NotionConfig.PropertyMapping.Error.Severity] = @{
         select = @{
             name = $Error.Severity
         }
     }
     
-    # Catégorie
+    # CatÃ©gorie
     if ($Error.Category) {
         $properties[$script:NotionConfig.PropertyMapping.Error.Category] = @{
             select = @{
@@ -488,7 +488,7 @@ function New-NotionErrorEntry {
         }
     }
     
-    # Numéro de ligne
+    # NumÃ©ro de ligne
     if ($Error.Line -or $Error.LineNumber) {
         $lineNumber = if ($Error.Line) { $Error.Line } else { $Error.LineNumber }
         $properties[$script:NotionConfig.PropertyMapping.Error.LineNumber] = @{
@@ -496,7 +496,7 @@ function New-NotionErrorEntry {
         }
     }
     
-    # Préparer le contenu
+    # PrÃ©parer le contenu
     $content = @(
         @{
             object = "block"
@@ -505,7 +505,7 @@ function New-NotionErrorEntry {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Détails de l'erreur"
+                            content = "DÃ©tails de l'erreur"
                         }
                     }
                 )
@@ -526,7 +526,7 @@ function New-NotionErrorEntry {
         }
     )
     
-    # Ajouter les métadonnées
+    # Ajouter les mÃ©tadonnÃ©es
     if ($Metadata.Count -gt 0) {
         $content += @{
             object = "block"
@@ -535,7 +535,7 @@ function New-NotionErrorEntry {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Métadonnées"
+                            content = "MÃ©tadonnÃ©es"
                         }
                     }
                 )
@@ -559,13 +559,13 @@ function New-NotionErrorEntry {
         }
     }
     
-    # Créer la page
+    # CrÃ©er la page
     $page = New-NotionPage -DatabaseId $script:NotionConfig.ErrorDatabaseId -Properties $properties -Content $content
     
     return $page
 }
 
-# Fonction pour créer un rapport d'erreur dans Notion
+# Fonction pour crÃ©er un rapport d'erreur dans Notion
 function New-NotionErrorReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -584,13 +584,13 @@ function New-NotionErrorReport {
         [hashtable]$Metadata = @{}
     )
     
-    # Vérifier si la base de données des rapports est configurée
+    # VÃ©rifier si la base de donnÃ©es des rapports est configurÃ©e
     if ([string]::IsNullOrEmpty($script:NotionConfig.ReportDatabaseId)) {
-        Write-Error "La base de données des rapports Notion n'est pas configurée"
+        Write-Error "La base de donnÃ©es des rapports Notion n'est pas configurÃ©e"
         return $null
     }
     
-    # Préparer les propriétés
+    # PrÃ©parer les propriÃ©tÃ©s
     $properties = @{}
     
     # Titre
@@ -611,7 +611,7 @@ function New-NotionErrorReport {
         }
     }
     
-    # Résumé
+    # RÃ©sumÃ©
     $properties[$script:NotionConfig.PropertyMapping.Report.Summary] = @{
         rich_text = @(
             @{
@@ -636,7 +636,7 @@ function New-NotionErrorReport {
         }
     }
     
-    # Préparer le contenu
+    # PrÃ©parer le contenu
     $content = @(
         @{
             object = "block"
@@ -645,7 +645,7 @@ function New-NotionErrorReport {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Résumé"
+                            content = "RÃ©sumÃ©"
                         }
                     }
                 )
@@ -671,7 +671,7 @@ function New-NotionErrorReport {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Erreurs détectées"
+                            content = "Erreurs dÃ©tectÃ©es"
                         }
                     }
                 )
@@ -706,7 +706,7 @@ function New-NotionErrorReport {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Sévérité: $errorSeverity"
+                            content = "SÃ©vÃ©ritÃ©: $errorSeverity"
                         }
                     }
                 )
@@ -777,7 +777,7 @@ function New-NotionErrorReport {
         }
     }
     
-    # Ajouter les métadonnées
+    # Ajouter les mÃ©tadonnÃ©es
     if ($Metadata.Count -gt 0) {
         $content += @{
             object = "block"
@@ -786,7 +786,7 @@ function New-NotionErrorReport {
                 rich_text = @(
                     @{
                         text = @{
-                            content = "Métadonnées"
+                            content = "MÃ©tadonnÃ©es"
                         }
                     }
                 )
@@ -810,13 +810,13 @@ function New-NotionErrorReport {
         }
     }
     
-    # Créer la page
+    # CrÃ©er la page
     $page = New-NotionPage -DatabaseId $script:NotionConfig.ReportDatabaseId -Properties $properties -Content $content
     
     return $page
 }
 
-# Fonction pour configurer l'intégration Notion
+# Fonction pour configurer l'intÃ©gration Notion
 function Set-NotionConfiguration {
     param (
         [Parameter(Mandatory = $false)]

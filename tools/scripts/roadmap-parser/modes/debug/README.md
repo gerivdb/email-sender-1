@@ -1,6 +1,6 @@
-# debug - modes
+﻿# debug - modes
 
-Cette section contient les scripts liés à debug dans la catégorie modes.
+Cette section contient les scripts liÃ©s Ã  debug dans la catÃ©gorie modes.
 
 ## Scripts disponibles
 
@@ -14,9 +14,9 @@ Cette section contient les scripts liés à debug dans la catégorie modes.
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - oadmap-parser - Module principal de parsing de roadmap
 
 ## Tests

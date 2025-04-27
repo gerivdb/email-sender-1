@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Envoie des notifications sur l'état de la roadmap.
+    Envoie des notifications sur l'Ã©tat de la roadmap.
 .DESCRIPTION
     Ce script envoie des notifications par email ou via Teams/Slack
-    sur l'état de la roadmap, les tâches en retard, et les prochaines échéances.
+    sur l'Ã©tat de la roadmap, les tÃ¢ches en retard, et les prochaines Ã©chÃ©ances.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -43,92 +43,92 @@ $indexPath = Join-Path -Path $journalRoot -ChildPath "index.json"
 $statusPath = Join-Path -Path $journalRoot -ChildPath "status.json"
 $configPath = Join-Path -Path $journalRoot -ChildPath "config"
 
-# Créer le dossier de configuration si nécessaire
+# CrÃ©er le dossier de configuration si nÃ©cessaire
 if (-not (Test-Path -Path $configPath)) {
     New-Item -Path $configPath -ItemType Directory -Force | Out-Null
 }
 
-# Mettre à jour le statut global
+# Mettre Ã  jour le statut global
 $status = Get-RoadmapJournalStatus
 
 # Charger l'index
 $index = Get-Content -Path $indexPath -Raw | ConvertFrom-Json
 
-# Vérifier s'il y a des tâches en retard
+# VÃ©rifier s'il y a des tÃ¢ches en retard
 $hasOverdueTasks = $status.overdueTasks.Count -gt 0
 
-# Si OnlyIfOverdue est spécifié et qu'il n'y a pas de tâches en retard, quitter
+# Si OnlyIfOverdue est spÃ©cifiÃ© et qu'il n'y a pas de tÃ¢ches en retard, quitter
 if ($OnlyIfOverdue -and -not $hasOverdueTasks) {
-    Write-Host "Aucune tâche en retard. Aucune notification envoyée." -ForegroundColor Green
+    Write-Host "Aucune tÃ¢che en retard. Aucune notification envoyÃ©e." -ForegroundColor Green
     exit 0
 }
 
-# Fonction pour générer le contenu de la notification
+# Fonction pour gÃ©nÃ©rer le contenu de la notification
 function Get-NotificationContent {
     $content = @"
-# État de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")
+# Ã‰tat de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")
 
-## Résumé
+## RÃ©sumÃ©
 
 - Progression globale: $($status.globalProgress)%
-- Total des tâches: $($index.statistics.totalEntries)
-- Tâches non commencées: $($index.statistics.notStarted)
-- Tâches en cours: $($index.statistics.inProgress)
-- Tâches terminées: $($index.statistics.completed)
-- Tâches bloquées: $($index.statistics.blocked)
+- Total des tÃ¢ches: $($index.statistics.totalEntries)
+- TÃ¢ches non commencÃ©es: $($index.statistics.notStarted)
+- TÃ¢ches en cours: $($index.statistics.inProgress)
+- TÃ¢ches terminÃ©es: $($index.statistics.completed)
+- TÃ¢ches bloquÃ©es: $($index.statistics.blocked)
 
 "@
     
-    # Ajouter les tâches en retard
+    # Ajouter les tÃ¢ches en retard
     if ($status.overdueTasks.Count -gt 0) {
         $content += @"
-## Tâches en retard
+## TÃ¢ches en retard
 
 "@
         
         foreach ($task in $status.overdueTasks) {
             $content += @"
-- $($task.id): $($task.title) - En retard de $($task.daysOverdue) jours (Échéance: $($task.dueDate))
+- $($task.id): $($task.title) - En retard de $($task.daysOverdue) jours (Ã‰chÃ©ance: $($task.dueDate))
 
 "@
         }
     }
     else {
         $content += @"
-## Tâches en retard
+## TÃ¢ches en retard
 
-Aucune tâche en retard.
+Aucune tÃ¢che en retard.
 
 "@
     }
     
-    # Ajouter les prochaines échéances
+    # Ajouter les prochaines Ã©chÃ©ances
     if ($status.upcomingDeadlines.Count -gt 0) {
         $content += @"
-## Prochaines échéances
+## Prochaines Ã©chÃ©ances
 
 "@
         
         foreach ($task in $status.upcomingDeadlines) {
             $content += @"
-- $($task.id): $($task.title) - Dans $($task.daysRemaining) jours (Échéance: $($task.dueDate))
+- $($task.id): $($task.title) - Dans $($task.daysRemaining) jours (Ã‰chÃ©ance: $($task.dueDate))
 
 "@
         }
     }
     else {
         $content += @"
-## Prochaines échéances
+## Prochaines Ã©chÃ©ances
 
-Aucune échéance à venir dans les 7 prochains jours.
+Aucune Ã©chÃ©ance Ã  venir dans les 7 prochains jours.
 
 "@
     }
     
-    # Ajouter les tâches bloquées
+    # Ajouter les tÃ¢ches bloquÃ©es
     if ($status.blockedTasks.Count -gt 0) {
         $content += @"
-## Tâches bloquées
+## TÃ¢ches bloquÃ©es
 
 "@
         
@@ -141,16 +141,16 @@ Aucune échéance à venir dans les 7 prochains jours.
     }
     else {
         $content += @"
-## Tâches bloquées
+## TÃ¢ches bloquÃ©es
 
-Aucune tâche bloquée.
+Aucune tÃ¢che bloquÃ©e.
 
 "@
     }
     
-    # Ajouter le rapport complet si demandé
+    # Ajouter le rapport complet si demandÃ©
     if ($IncludeFullReport) {
-        # Générer un rapport complet
+        # GÃ©nÃ©rer un rapport complet
         $reportScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Generate-RoadmapJournalReport.ps1"
         $reportPath = & $reportScriptPath -Format "Markdown" -OutputFolder $configPath
         
@@ -183,9 +183,9 @@ function Send-EmailNotification {
     )
     
     try {
-        # Vérifier si le module Send-MailMessage est disponible
+        # VÃ©rifier si le module Send-MailMessage est disponible
         if (-not (Get-Command -Name Send-MailMessage -ErrorAction SilentlyContinue)) {
-            Write-Warning "La commande Send-MailMessage n'est pas disponible. L'email ne sera pas envoyé."
+            Write-Warning "La commande Send-MailMessage n'est pas disponible. L'email ne sera pas envoyÃ©."
             return $false
         }
         
@@ -198,10 +198,10 @@ function Send-EmailNotification {
         
         $htmlContent = "<html><body>$htmlContent</body></html>"
         
-        # Créer le sujet de l'email
-        $subject = "État de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
+        # CrÃ©er le sujet de l'email
+        $subject = "Ã‰tat de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
         if ($hasOverdueTasks) {
-            $subject = "[URGENT] $subject - Tâches en retard"
+            $subject = "[URGENT] $subject - TÃ¢ches en retard"
         }
         
         # Envoyer l'email
@@ -215,7 +215,7 @@ function Send-EmailNotification {
                          -UseSsl `
                          -Credential (Get-Credential -Message "Entrez les identifiants pour l'envoi d'email")
         
-        Write-Host "Notification envoyée par email à $To" -ForegroundColor Green
+        Write-Host "Notification envoyÃ©e par email Ã  $To" -ForegroundColor Green
         return $true
     }
     catch {
@@ -238,13 +238,13 @@ function Send-TeamsNotification {
         # Convertir le contenu Markdown pour Teams
         $teamsContent = $Content
         
-        # Créer le message Teams
+        # CrÃ©er le message Teams
         $payload = @{
             "@type" = "MessageCard"
             "@context" = "http://schema.org/extensions"
-            "summary" = "État de la Roadmap"
+            "summary" = "Ã‰tat de la Roadmap"
             "themeColor" = if ($hasOverdueTasks) { "FF0000" } else { "0078D7" }
-            "title" = "État de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
+            "title" = "Ã‰tat de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
             "sections" = @(
                 @{
                     "text" = $teamsContent
@@ -256,7 +256,7 @@ function Send-TeamsNotification {
         $jsonPayload = $payload | ConvertTo-Json -Depth 10
         Invoke-RestMethod -Uri $WebhookUrl -Method Post -Body $jsonPayload -ContentType "application/json"
         
-        Write-Host "Notification envoyée via Teams" -ForegroundColor Green
+        Write-Host "Notification envoyÃ©e via Teams" -ForegroundColor Green
         return $true
     }
     catch {
@@ -279,9 +279,9 @@ function Send-SlackNotification {
         # Convertir le contenu Markdown pour Slack
         $slackContent = $Content
         
-        # Créer le message Slack
+        # CrÃ©er le message Slack
         $payload = @{
-            "text" = "État de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
+            "text" = "Ã‰tat de la Roadmap - $(Get-Date -Format "yyyy-MM-dd")"
             "blocks" = @(
                 @{
                     "type" = "section"
@@ -297,7 +297,7 @@ function Send-SlackNotification {
         $jsonPayload = $payload | ConvertTo-Json -Depth 10
         Invoke-RestMethod -Uri $WebhookUrl -Method Post -Body $jsonPayload -ContentType "application/json"
         
-        Write-Host "Notification envoyée via Slack" -ForegroundColor Green
+        Write-Host "Notification envoyÃ©e via Slack" -ForegroundColor Green
         return $true
     }
     catch {
@@ -306,10 +306,10 @@ function Send-SlackNotification {
     }
 }
 
-# Générer le contenu de la notification
+# GÃ©nÃ©rer le contenu de la notification
 $notificationContent = Get-NotificationContent
 
-# Envoyer les notifications selon le type spécifié
+# Envoyer les notifications selon le type spÃ©cifiÃ©
 switch ($NotificationType) {
     "Email" {
         Send-EmailNotification -Content $notificationContent -To $EmailTo
@@ -321,7 +321,7 @@ switch ($NotificationType) {
                 $TeamsWebhookUrl = Get-Content -Path $webhookPath -Raw
             }
             else {
-                Write-Warning "URL du webhook Teams non spécifiée et non trouvée dans le fichier de configuration."
+                Write-Warning "URL du webhook Teams non spÃ©cifiÃ©e et non trouvÃ©e dans le fichier de configuration."
                 break
             }
         }
@@ -335,7 +335,7 @@ switch ($NotificationType) {
                 $SlackWebhookUrl = Get-Content -Path $webhookPath -Raw
             }
             else {
-                Write-Warning "URL du webhook Slack non spécifiée et non trouvée dans le fichier de configuration."
+                Write-Warning "URL du webhook Slack non spÃ©cifiÃ©e et non trouvÃ©e dans le fichier de configuration."
                 break
             }
         }
@@ -369,4 +369,4 @@ switch ($NotificationType) {
     }
 }
 
-Write-Host "`nEnvoi des notifications terminé." -ForegroundColor Green
+Write-Host "`nEnvoi des notifications terminÃ©." -ForegroundColor Green

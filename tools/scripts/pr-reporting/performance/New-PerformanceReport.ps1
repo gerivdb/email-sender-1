@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport HTML détaillé à partir des résultats de tests de performance.
+    GÃ©nÃ¨re un rapport HTML dÃ©taillÃ© Ã  partir des rÃ©sultats de tests de performance.
 .DESCRIPTION
-    Ce script prend les fichiers JSON de résultats de tests de performance et génère
-    un rapport HTML détaillé avec des graphiques et des analyses.
+    Ce script prend les fichiers JSON de rÃ©sultats de tests de performance et gÃ©nÃ¨re
+    un rapport HTML dÃ©taillÃ© avec des graphiques et des analyses.
 .PARAMETER ResultsPath
-    Chemin vers le fichier JSON de résultats de test de performance ou un tableau de chemins.
+    Chemin vers le fichier JSON de rÃ©sultats de test de performance ou un tableau de chemins.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport HTML généré.
+    Chemin oÃ¹ enregistrer le rapport HTML gÃ©nÃ©rÃ©.
 .PARAMETER Title
-    Titre du rapport. Par défaut: "Rapport de performance".
+    Titre du rapport. Par dÃ©faut: "Rapport de performance".
 .PARAMETER CompareMode
-    Si spécifié, génère un rapport de comparaison entre plusieurs fichiers de résultats.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport de comparaison entre plusieurs fichiers de rÃ©sultats.
 .EXAMPLE
     .\New-PerformanceReport.ps1 -ResultsPath "load_test_results.json" -OutputPath "performance_report.html"
 .EXAMPLE
@@ -38,14 +38,14 @@ param (
     [switch]$CompareMode
 )
 
-# Fonction pour charger les résultats de test
+# Fonction pour charger les rÃ©sultats de test
 function Get-TestResults {
     param (
         [string]$Path
     )
     
     if (-not (Test-Path -Path $Path)) {
-        throw "Le fichier de résultats n'existe pas: $Path"
+        throw "Le fichier de rÃ©sultats n'existe pas: $Path"
     }
     
     try {
@@ -53,11 +53,11 @@ function Get-TestResults {
         return $results
     }
     catch {
-        throw "Erreur lors du chargement des résultats: $_"
+        throw "Erreur lors du chargement des rÃ©sultats: $_"
     }
 }
 
-# Fonction pour générer un graphique en HTML/CSS/JS
+# Fonction pour gÃ©nÃ©rer un graphique en HTML/CSS/JS
 function New-Chart {
     param (
         [string]$ChartId,
@@ -94,30 +94,30 @@ function New-Chart {
     return $chartHtml
 }
 
-# Fonction pour générer un rapport de test unique
+# Fonction pour gÃ©nÃ©rer un rapport de test unique
 function New-SingleTestReport {
     param (
         [object]$Results,
         [string]$Title
     )
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $responseTimeData = @{
-        label = "Temps de réponse (ms)"
+        label = "Temps de rÃ©ponse (ms)"
         data = @($Results.MinResponseMs, $Results.MedianResponseMs, $Results.AvgResponseMs, $Results.P90ResponseMs, $Results.P95ResponseMs, $Results.P99ResponseMs, $Results.MaxResponseMs)
         backgroundColor = "rgba(54, 162, 235, 0.5)"
         borderColor = "rgba(54, 162, 235, 1)"
         borderWidth = 1
     }
     
-    $responseTimeLabels = @("Min", "Médiane", "Moyenne", "P90", "P95", "P99", "Max")
+    $responseTimeLabels = @("Min", "MÃ©diane", "Moyenne", "P90", "P95", "P99", "Max")
     
     $responseTimeOptions = @{
         responsive = $true
         plugins = @{
             title = @{
                 display = $true
-                text = "Distribution des temps de réponse"
+                text = "Distribution des temps de rÃ©ponse"
             }
             legend = @{
                 display = $false
@@ -134,10 +134,10 @@ function New-SingleTestReport {
         }
     }
     
-    # Créer le graphique de temps de réponse
-    $responseTimeChart = New-Chart -ChartId "responseTimeChart" -ChartType "bar" -Title "Distribution des temps de réponse" -Labels $responseTimeLabels -Datasets @($responseTimeData) -Options $responseTimeOptions
+    # CrÃ©er le graphique de temps de rÃ©ponse
+    $responseTimeChart = New-Chart -ChartId "responseTimeChart" -ChartType "bar" -Title "Distribution des temps de rÃ©ponse" -Labels $responseTimeLabels -Datasets @($responseTimeData) -Options $responseTimeOptions
     
-    # Si des données de performance sont disponibles, créer un graphique de performance
+    # Si des donnÃ©es de performance sont disponibles, crÃ©er un graphique de performance
     $performanceChart = ""
     if ($Results.Performance -and $Results.Performance.Count -gt 0) {
         $timestamps = @($Results.Performance | ForEach-Object { $_.Timestamp })
@@ -154,7 +154,7 @@ function New-SingleTestReport {
         }
         
         $memoryDataset = @{
-            label = "Mémoire (MB)"
+            label = "MÃ©moire (MB)"
             data = $memoryData
             backgroundColor = "rgba(75, 192, 192, 0.2)"
             borderColor = "rgba(75, 192, 192, 1)"
@@ -186,7 +186,7 @@ function New-SingleTestReport {
                     position = "right"
                     title = @{
                         display = $true
-                        text = "Mémoire (MB)"
+                        text = "MÃ©moire (MB)"
                     }
                     grid = @{
                         drawOnChartArea = $false
@@ -198,7 +198,7 @@ function New-SingleTestReport {
         $performanceChart = New-Chart -ChartId "performanceChart" -ChartType "line" -Title "Utilisation des ressources" -Labels $timestamps -Datasets @($cpuDataset, $memoryDataset) -Options $performanceOptions
     }
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -288,57 +288,57 @@ function New-SingleTestReport {
 <body>
     <div class="header">
         <h1>$Title</h1>
-        <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
     <div class="section">
-        <h2>Résumé du test</h2>
+        <h2>RÃ©sumÃ© du test</h2>
         <div class="summary">
             <div class="metric-card">
-                <div class="metric-title">Durée du test</div>
+                <div class="metric-title">DurÃ©e du test</div>
                 <div class="metric-value">$([Math]::Round($Results.TotalExecTime, 2))<span class="metric-unit">s</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Requêtes totales</div>
+                <div class="metric-title">RequÃªtes totales</div>
                 <div class="metric-value">$($Results.TotalRequests)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Requêtes par seconde</div>
+                <div class="metric-title">RequÃªtes par seconde</div>
                 <div class="metric-value">$([Math]::Round($Results.RequestsPerSecond, 2))</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps de réponse moyen</div>
+                <div class="metric-title">Temps de rÃ©ponse moyen</div>
                 <div class="metric-value">$([Math]::Round($Results.AvgResponseMs, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps de réponse médian</div>
+                <div class="metric-title">Temps de rÃ©ponse mÃ©dian</div>
                 <div class="metric-value">$([Math]::Round($Results.MedianResponseMs, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Écart type</div>
+                <div class="metric-title">Ã‰cart type</div>
                 <div class="metric-value">$([Math]::Round($Results.StandardDeviation, 2))<span class="metric-unit">ms</span></div>
             </div>
         </div>
     </div>
     
     <div class="section">
-        <h2>Temps de réponse</h2>
+        <h2>Temps de rÃ©ponse</h2>
         $responseTimeChart
     </div>
     
     <div class="section">
-        <h2>Détails du test</h2>
+        <h2>DÃ©tails du test</h2>
         <table>
             <tr>
-                <th>Métrique</th>
+                <th>MÃ©trique</th>
                 <th>Valeur</th>
             </tr>
             <tr>
-                <td>Date de début</td>
+                <td>Date de dÃ©but</td>
                 <td>$($Results.StartTime)</td>
             </tr>
             <tr>
-                <td>Durée configurée</td>
+                <td>DurÃ©e configurÃ©e</td>
                 <td>$($Results.Duration) secondes</td>
             </tr>
             <tr>
@@ -346,11 +346,11 @@ function New-SingleTestReport {
                 <td>$($Results.Concurrency)</td>
             </tr>
             <tr>
-                <td>Requêtes réussies</td>
+                <td>RequÃªtes rÃ©ussies</td>
                 <td>$($Results.SuccessCount)</td>
             </tr>
             <tr>
-                <td>Requêtes en erreur</td>
+                <td>RequÃªtes en erreur</td>
                 <td>$($Results.ErrorCount)</td>
             </tr>
             <tr>
@@ -358,11 +358,11 @@ function New-SingleTestReport {
                 <td>$([Math]::Round(($Results.ErrorCount / $Results.TotalRequests) * 100, 2))%</td>
             </tr>
             <tr>
-                <td>Temps de réponse minimum</td>
+                <td>Temps de rÃ©ponse minimum</td>
                 <td>$([Math]::Round($Results.MinResponseMs, 2)) ms</td>
             </tr>
             <tr>
-                <td>Temps de réponse maximum</td>
+                <td>Temps de rÃ©ponse maximum</td>
                 <td>$([Math]::Round($Results.MaxResponseMs, 2)) ms</td>
             </tr>
             <tr>
@@ -381,10 +381,10 @@ function New-SingleTestReport {
     </div>
     
     <div class="section">
-        <h2>Informations système</h2>
+        <h2>Informations systÃ¨me</h2>
         <table>
             <tr>
-                <th>Métrique</th>
+                <th>MÃ©trique</th>
                 <th>Valeur</th>
             </tr>
             <tr>
@@ -392,7 +392,7 @@ function New-SingleTestReport {
                 <td>$($Results.System.PSVersion)</td>
             </tr>
             <tr>
-                <td>Système d'exploitation</td>
+                <td>SystÃ¨me d'exploitation</td>
                 <td>$($Results.System.OS)</td>
             </tr>
             <tr>
@@ -400,7 +400,7 @@ function New-SingleTestReport {
                 <td>$($Results.System.ProcessorCount)</td>
             </tr>
             <tr>
-                <td>Mémoire (GB)</td>
+                <td>MÃ©moire (GB)</td>
                 <td>$($Results.System.Memory)</td>
             </tr>
         </table>
@@ -416,7 +416,7 @@ function New-SingleTestReport {
     })
     
     <div class="footer">
-        <p>Rapport généré par Simple-PRLoadTest.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par Simple-PRLoadTest.ps1</p>
     </div>
 </body>
 </html>
@@ -425,7 +425,7 @@ function New-SingleTestReport {
     return $html
 }
 
-# Fonction pour générer un rapport de comparaison
+# Fonction pour gÃ©nÃ©rer un rapport de comparaison
 function New-ComparisonReport {
     param (
         [array]$ResultsList,
@@ -433,7 +433,7 @@ function New-ComparisonReport {
         [string]$Title
     )
     
-    # Préparer les données pour les graphiques de comparaison
+    # PrÃ©parer les donnÃ©es pour les graphiques de comparaison
     $rpsData = @()
     $responseTimeData = @()
     $p95Data = @()
@@ -467,13 +467,13 @@ function New-ComparisonReport {
         }
     }
     
-    # Créer les graphiques de comparaison
+    # CrÃ©er les graphiques de comparaison
     $rpsOptions = @{
         responsive = $true
         plugins = @{
             title = @{
                 display = $true
-                text = "Comparaison des requêtes par seconde"
+                text = "Comparaison des requÃªtes par seconde"
             }
         }
         scales = @{
@@ -481,7 +481,7 @@ function New-ComparisonReport {
                 beginAtZero = $true
                 title = @{
                     display = $true
-                    text = "Requêtes par seconde"
+                    text = "RequÃªtes par seconde"
                 }
             }
         }
@@ -492,7 +492,7 @@ function New-ComparisonReport {
         plugins = @{
             title = @{
                 display = $true
-                text = "Comparaison des temps de réponse moyens"
+                text = "Comparaison des temps de rÃ©ponse moyens"
             }
         }
         scales = @{
@@ -511,7 +511,7 @@ function New-ComparisonReport {
         plugins = @{
             title = @{
                 display = $true
-                text = "Comparaison des temps de réponse P95"
+                text = "Comparaison des temps de rÃ©ponse P95"
             }
         }
         scales = @{
@@ -525,14 +525,14 @@ function New-ComparisonReport {
         }
     }
     
-    $rpsChart = New-Chart -ChartId "rpsComparisonChart" -ChartType "bar" -Title "Comparaison des requêtes par seconde" -Labels @("Requêtes par seconde") -Datasets $rpsData -Options $rpsOptions
+    $rpsChart = New-Chart -ChartId "rpsComparisonChart" -ChartType "bar" -Title "Comparaison des requÃªtes par seconde" -Labels @("RequÃªtes par seconde") -Datasets $rpsData -Options $rpsOptions
     
-    $responseTimeChart = New-Chart -ChartId "responseTimeComparisonChart" -ChartType "bar" -Title "Comparaison des temps de réponse moyens" -Labels @("Temps de réponse moyen") -Datasets $responseTimeData -Options $responseTimeOptions
+    $responseTimeChart = New-Chart -ChartId "responseTimeComparisonChart" -ChartType "bar" -Title "Comparaison des temps de rÃ©ponse moyens" -Labels @("Temps de rÃ©ponse moyen") -Datasets $responseTimeData -Options $responseTimeOptions
     
-    $p95Chart = New-Chart -ChartId "p95ComparisonChart" -ChartType "bar" -Title "Comparaison des temps de réponse P95" -Labels @("P95") -Datasets $p95Data -Options $p95Options
+    $p95Chart = New-Chart -ChartId "p95ComparisonChart" -ChartType "bar" -Title "Comparaison des temps de rÃ©ponse P95" -Labels @("P95") -Datasets $p95Data -Options $p95Options
     
-    # Préparer le tableau de comparaison détaillé
-    $comparisonTable = "<table><tr><th>Métrique</th>"
+    # PrÃ©parer le tableau de comparaison dÃ©taillÃ©
+    $comparisonTable = "<table><tr><th>MÃ©trique</th>"
     
     foreach ($label in $Labels) {
         $comparisonTable += "<th>$label</th>"
@@ -541,17 +541,17 @@ function New-ComparisonReport {
     $comparisonTable += "</tr>"
     
     $metrics = @(
-        @{ Name = "Durée du test (s)"; Property = "TotalExecTime" },
-        @{ Name = "Requêtes totales"; Property = "TotalRequests" },
-        @{ Name = "Requêtes par seconde"; Property = "RequestsPerSecond" },
-        @{ Name = "Temps de réponse min (ms)"; Property = "MinResponseMs" },
-        @{ Name = "Temps de réponse médian (ms)"; Property = "MedianResponseMs" },
-        @{ Name = "Temps de réponse moyen (ms)"; Property = "AvgResponseMs" },
-        @{ Name = "Temps de réponse max (ms)"; Property = "MaxResponseMs" },
+        @{ Name = "DurÃ©e du test (s)"; Property = "TotalExecTime" },
+        @{ Name = "RequÃªtes totales"; Property = "TotalRequests" },
+        @{ Name = "RequÃªtes par seconde"; Property = "RequestsPerSecond" },
+        @{ Name = "Temps de rÃ©ponse min (ms)"; Property = "MinResponseMs" },
+        @{ Name = "Temps de rÃ©ponse mÃ©dian (ms)"; Property = "MedianResponseMs" },
+        @{ Name = "Temps de rÃ©ponse moyen (ms)"; Property = "AvgResponseMs" },
+        @{ Name = "Temps de rÃ©ponse max (ms)"; Property = "MaxResponseMs" },
         @{ Name = "P90 (ms)"; Property = "P90ResponseMs" },
         @{ Name = "P95 (ms)"; Property = "P95ResponseMs" },
         @{ Name = "P99 (ms)"; Property = "P99ResponseMs" },
-        @{ Name = "Écart type (ms)"; Property = "StandardDeviation" }
+        @{ Name = "Ã‰cart type (ms)"; Property = "StandardDeviation" }
     )
     
     foreach ($metric in $metrics) {
@@ -570,7 +570,7 @@ function New-ComparisonReport {
     
     $comparisonTable += "</table>"
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -634,7 +634,7 @@ function New-ComparisonReport {
 <body>
     <div class="header">
         <h1>$Title</h1>
-        <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
     <div class="section">
@@ -651,13 +651,13 @@ function New-ComparisonReport {
     </div>
     
     <div class="section">
-        <h2>Comparaison détaillée</h2>
+        <h2>Comparaison dÃ©taillÃ©e</h2>
         $comparisonTable
     </div>
     
     <div class="section">
         <h2>Analyse</h2>
-        <p>Ce rapport compare les performances entre différents tests. Voici quelques observations :</p>
+        <p>Ce rapport compare les performances entre diffÃ©rents tests. Voici quelques observations :</p>
         <ul>
             $(
                 $baselineRps = $ResultsList[0].RequestsPerSecond
@@ -670,14 +670,14 @@ function New-ComparisonReport {
                     $rpsChangeText = if ($rpsChange -ge 0) { "augmentation" } else { "diminution" }
                     $responseTimeChangeText = if ($responseTimeChange -ge 0) { "augmentation" } else { "diminution" }
                     
-                    "<li>Comparaison entre $($Labels[0]) et $($Labels[$i]) : $([Math]::Abs([Math]::Round($rpsChange, 2)))% de $rpsChangeText des requêtes par seconde et $([Math]::Abs([Math]::Round($responseTimeChange, 2)))% de $responseTimeChangeText du temps de réponse moyen.</li>"
+                    "<li>Comparaison entre $($Labels[0]) et $($Labels[$i]) : $([Math]::Abs([Math]::Round($rpsChange, 2)))% de $rpsChangeText des requÃªtes par seconde et $([Math]::Abs([Math]::Round($responseTimeChange, 2)))% de $responseTimeChangeText du temps de rÃ©ponse moyen.</li>"
                 }
             )
         </ul>
     </div>
     
     <div class="footer">
-        <p>Rapport généré par New-PerformanceReport.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par New-PerformanceReport.ps1</p>
     </div>
 </body>
 </html>
@@ -688,10 +688,10 @@ function New-ComparisonReport {
 
 # Fonction principale
 function Main {
-    # Vérifier que le répertoire de sortie existe
+    # VÃ©rifier que le rÃ©pertoire de sortie existe
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
-        if ($PSCmdlet.ShouldProcess($outputDir, "Créer le répertoire")) {
+        if ($PSCmdlet.ShouldProcess($outputDir, "CrÃ©er le rÃ©pertoire")) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
     }
@@ -703,7 +703,7 @@ function Main {
         }
         
         if ($ResultsPath.Count -lt 2) {
-            throw "Le mode comparaison nécessite au moins deux fichiers de résultats."
+            throw "Le mode comparaison nÃ©cessite au moins deux fichiers de rÃ©sultats."
         }
         
         $resultsList = @()
@@ -714,7 +714,7 @@ function Main {
             $results = Get-TestResults -Path $path
             $resultsList += $results
             
-            # Utiliser le nom du fichier comme étiquette par défaut
+            # Utiliser le nom du fichier comme Ã©tiquette par dÃ©faut
             $label = [System.IO.Path]::GetFileNameWithoutExtension($path)
             $labels += $label
         }
@@ -734,9 +734,9 @@ function Main {
     # Enregistrer le rapport HTML
     if ($PSCmdlet.ShouldProcess($OutputPath, "Enregistrer le rapport HTML")) {
         $html | Set-Content -Path $OutputPath -Encoding UTF8
-        Write-Host "Rapport HTML généré: $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
     }
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

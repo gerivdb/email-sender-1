@@ -1,6 +1,6 @@
-# Scripts de migration
+﻿# Scripts de migration
 
-Ce répertoire contient des scripts pour migrer des fichiers d'un répertoire à un autre.
+Ce rÃ©pertoire contient des scripts pour migrer des fichiers d'un rÃ©pertoire Ã  un autre.
 
 ## Utilisation avec Hygen
 
@@ -10,7 +10,7 @@ hygen maintenance migrate
 
 ## Bonnes pratiques
 
-1. Toujours exécuter les scripts en mode simulation (`-DryRun`) avant de les exécuter réellement
-2. Créer des sauvegardes avant d'effectuer des opérations potentiellement destructives
-3. Journaliser toutes les actions effectuées
-4. Tester les scripts de rollback après une migration réussie
+1. Toujours exÃ©cuter les scripts en mode simulation (`-DryRun`) avant de les exÃ©cuter rÃ©ellement
+2. CrÃ©er des sauvegardes avant d'effectuer des opÃ©rations potentiellement destructives
+3. Journaliser toutes les actions effectuÃ©es
+4. Tester les scripts de rollback aprÃ¨s une migration rÃ©ussie

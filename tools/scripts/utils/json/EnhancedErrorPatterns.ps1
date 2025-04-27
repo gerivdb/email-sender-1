@@ -1,4 +1,4 @@
-param (
+﻿param (
     [Parameter(Mandatory=$false)]
     [string]$Path = (Get-Location).Path,
 
@@ -6,7 +6,7 @@ param (
     [switch]$Recurse
 )
 
-# Script simplifié pour la détection des patterns d'erreur PowerShell
+# Script simplifiÃ© pour la dÃ©tection des patterns d'erreur PowerShell
 
 # Initialiser les patterns d'erreur
 $ErrorPatterns = @{
@@ -16,56 +16,56 @@ $ErrorPatterns = @{
             Description = 'Chemin introuvable'
             Category = 'FileSystem'
             Severity = 'Error'
-            Suggestion = 'Vérifier si le chemin existe avec Test-Path avant utilisation'
+            Suggestion = 'VÃ©rifier si le chemin existe avec Test-Path avant utilisation'
         },
         @{
             Pattern = 'The term ''(.+)'' is not recognized as the name of a cmdlet'
             Description = 'Commande introuvable'
             Category = 'Command'
             Severity = 'Error'
-            Suggestion = 'Vérifier l''orthographe ou installer le module nécessaire'
+            Suggestion = 'VÃ©rifier l''orthographe ou installer le module nÃ©cessaire'
         },
         @{
             Pattern = 'Cannot bind argument to parameter ''(.+)'' because it is null'
-            Description = 'Paramètre null'
+            Description = 'ParamÃ¨tre null'
             Category = 'Parameter'
             Severity = 'Error'
-            Suggestion = 'Vérifier que la variable a une valeur avant utilisation'
+            Suggestion = 'VÃ©rifier que la variable a une valeur avant utilisation'
         },
         @{
             Pattern = 'Cannot index into a null array'
             Description = 'Tableau null'
             Category = 'Array'
             Severity = 'Error'
-            Suggestion = 'Vérifier l''initialisation du tableau avant accès'
+            Suggestion = 'VÃ©rifier l''initialisation du tableau avant accÃ¨s'
         },
         @{
             Pattern = 'The property ''(.+)'' cannot be found on this object'
-            Description = 'Propriété introuvable'
+            Description = 'PropriÃ©tÃ© introuvable'
             Category = 'Object'
             Severity = 'Error'
-            Suggestion = 'Vérifier que l''objet possède cette propriété'
+            Suggestion = 'VÃ©rifier que l''objet possÃ¨de cette propriÃ©tÃ©'
         },
         @{
             Pattern = 'You cannot call a method on a null-valued expression'
-            Description = 'Méthode sur null'
+            Description = 'MÃ©thode sur null'
             Category = 'NullReference'
             Severity = 'Error'
-            Suggestion = 'Vérifier que l''objet n''est pas null avant appel de méthode'
+            Suggestion = 'VÃ©rifier que l''objet n''est pas null avant appel de mÃ©thode'
         },
         @{
             Pattern = '\[void\]\s*='
             Description = 'Affectation void incorrecte'
             Category = 'Syntax'
             Severity = 'Error'
-            Suggestion = 'Remplacer par [void] sans signe égal'
+            Suggestion = 'Remplacer par [void] sans signe Ã©gal'
         },
         @{
             Pattern = 'return\s*\(.+\)'
-            Description = 'Return avec parenthèses inutiles'
+            Description = 'Return avec parenthÃ¨ses inutiles'
             Category = 'Syntax'
             Severity = 'Warning'
-            Suggestion = 'Supprimer les parenthèses après return'
+            Suggestion = 'Supprimer les parenthÃ¨ses aprÃ¨s return'
         },
         @{
             Pattern = 'Write-Output\s+.+\s*\|'
@@ -76,24 +76,24 @@ $ErrorPatterns = @{
         },
         @{
             Pattern = '\$error\s*='
-            Description = 'Assignation à variable automatique'
+            Description = 'Assignation Ã  variable automatique'
             Category = 'Syntax'
             Severity = 'Error'
-            Suggestion = 'Utiliser un nom différent de variable ($error est en lecture seule)'
+            Suggestion = 'Utiliser un nom diffÃ©rent de variable ($error est en lecture seule)'
         },
         @{
             Pattern = '\$(foreach|true|false|null|args|input|this)\s*='
-            Description = 'Assignation à variable réservée'
+            Description = 'Assignation Ã  variable rÃ©servÃ©e'
             Category = 'Syntax'
             Severity = 'Error'
-            Suggestion = 'Choisir un nom de variable différent ($1 est réservé)'
+            Suggestion = 'Choisir un nom de variable diffÃ©rent ($1 est rÃ©servÃ©)'
         },
         @{
             Pattern = 'throw\s+[''"][^''"]*[''"]\s*$'
-            Description = 'Throw avec message littéral'
+            Description = 'Throw avec message littÃ©ral'
             Category = 'ErrorHandling'
             Severity = 'Warning'
-            Suggestion = 'Privilégier les exceptions spécifiques avec [System.Exception]'
+            Suggestion = 'PrivilÃ©gier les exceptions spÃ©cifiques avec [System.Exception]'
         }
     )
 }
@@ -120,7 +120,7 @@ function Find-ErrorPatterns {
             continue
         }
 
-        # Vérifier que le pattern et le contenu sont valides avant de rechercher les correspondances
+        # VÃ©rifier que le pattern et le contenu sont valides avant de rechercher les correspondances
         if ([string]::IsNullOrEmpty($content) -or [string]::IsNullOrEmpty($pattern.Pattern)) {
             Write-Verbose "Contenu ou pattern vide pour le fichier: $FilePath"
             continue
@@ -168,15 +168,15 @@ function Find-ErrorPatternsInDirectory {
         [string[]]$Categories = @()
     )
 
-    Write-Verbose "Analyse du répertoire: $Path (Récursif: $Recurse)"
+    Write-Verbose "Analyse du rÃ©pertoire: $Path (RÃ©cursif: $Recurse)"
     $files = Get-ChildItem -Path $Path -Filter $Filter -File -Recurse:$Recurse
 
     if (-not $files) {
-        Write-Warning "Aucun fichier trouvé dans $Path avec le filtre $Filter"
+        Write-Warning "Aucun fichier trouvÃ© dans $Path avec le filtre $Filter"
         return $null
     }
 
-    Write-Verbose "Fichiers trouvés:"
+    Write-Verbose "Fichiers trouvÃ©s:"
     $files | ForEach-Object { Write-Verbose "- $_" }
 
     $results = @()
@@ -195,7 +195,7 @@ if ($MyInvocation.InvocationName -ne '.') {
         if ($results) {
             $results | Format-Table -Property FilePath,LineNumber,Description,Category,Severity,Suggestion -AutoSize
         } else {
-            Write-Host "Aucune erreur détectée dans les fichiers analysés." -ForegroundColor Green
+            Write-Host "Aucune erreur dÃ©tectÃ©e dans les fichiers analysÃ©s." -ForegroundColor Green
         }
     }
     catch {

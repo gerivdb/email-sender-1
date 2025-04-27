@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) applicatifs - Partie 1.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) applicatifs - Partie 1.
 .DESCRIPTION
-    Calcule les KPIs applicatifs à partir des données de performance collectées.
+    Calcule les KPIs applicatifs Ã  partir des donnÃ©es de performance collectÃ©es.
     Cette partie contient les fonctions de base et de journalisation.
 #>
 
@@ -34,7 +34,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données
+# Fonction pour charger les donnÃ©es
 function Import-ApplicationData {
     [CmdletBinding()]
     param (
@@ -42,19 +42,19 @@ function Import-ApplicationData {
         [string]$FilePath
     )
     
-    Write-Log -Message "Chargement des données depuis $FilePath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es depuis $FilePath" -Level "Info"
     
     try {
         if (Test-Path -Path $FilePath) {
             $Data = Import-Csv -Path $FilePath
-            Write-Log -Message "Chargement réussi: $($Data.Count) entrées" -Level "Info"
+            Write-Log -Message "Chargement rÃ©ussi: $($Data.Count) entrÃ©es" -Level "Info"
             return $Data
         } else {
-            Write-Log -Message "Fichier non trouvé: $FilePath" -Level "Error"
+            Write-Log -Message "Fichier non trouvÃ©: $FilePath" -Level "Error"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
@@ -72,18 +72,18 @@ function Import-KpiConfig {
     try {
         if (Test-Path -Path $ConfigPath) {
             $Config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
-            Write-Log -Message "Configuration chargée avec succès: $($Config.kpis.Count) KPIs définis" -Level "Info"
+            Write-Log -Message "Configuration chargÃ©e avec succÃ¨s: $($Config.kpis.Count) KPIs dÃ©finis" -Level "Info"
             return $Config
         } else {
-            Write-Log -Message "Fichier de configuration non trouvé: $ConfigPath" -Level "Warning"
+            Write-Log -Message "Fichier de configuration non trouvÃ©: $ConfigPath" -Level "Warning"
             
-            # Créer une configuration par défaut simplifiée
+            # CrÃ©er une configuration par dÃ©faut simplifiÃ©e
             $DefaultConfig = @{
                 kpis = @(
                     @{
                         id = "APP_RESPONSE_TIME"
-                        name = "Temps de réponse"
-                        description = "Temps de réponse moyen des requêtes applicatives"
+                        name = "Temps de rÃ©ponse"
+                        description = "Temps de rÃ©ponse moyen des requÃªtes applicatives"
                         category = "Performance"
                         unit = "ms"
                         formula = "AVG"
@@ -96,8 +96,8 @@ function Import-KpiConfig {
                     @{
                         id = "APP_ERROR_RATE"
                         name = "Taux d'erreur"
-                        description = "Pourcentage de requêtes ayant généré une erreur"
-                        category = "Fiabilité"
+                        description = "Pourcentage de requÃªtes ayant gÃ©nÃ©rÃ© une erreur"
+                        category = "FiabilitÃ©"
                         unit = "%"
                         formula = "PERCENTAGE"
                         sources = @("ErrorCount", "TotalRequests")
@@ -109,16 +109,16 @@ function Import-KpiConfig {
                 )
             }
             
-            # Créer le répertoire de configuration s'il n'existe pas
+            # CrÃ©er le rÃ©pertoire de configuration s'il n'existe pas
             $ConfigDir = Split-Path -Parent $ConfigPath
             if (-not (Test-Path -Path $ConfigDir)) {
                 New-Item -Path $ConfigDir -ItemType Directory -Force | Out-Null
             }
             
-            # Sauvegarder la configuration par défaut
+            # Sauvegarder la configuration par dÃ©faut
             $DefaultConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $ConfigPath -Encoding UTF8
             
-            Write-Log -Message "Configuration par défaut créée: $ConfigPath" -Level "Info"
+            Write-Log -Message "Configuration par dÃ©faut crÃ©Ã©e: $ConfigPath" -Level "Info"
             return $DefaultConfig
         }
     } catch {

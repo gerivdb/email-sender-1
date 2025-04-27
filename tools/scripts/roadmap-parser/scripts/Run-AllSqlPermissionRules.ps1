@@ -1,5 +1,5 @@
-# Run-AllSqlPermissionRules.ps1
-# Script pour exécuter toutes les règles de détection d'anomalies SQL Server et générer un rapport complet
+﻿# Run-AllSqlPermissionRules.ps1
+# Script pour exÃ©cuter toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server et gÃ©nÃ©rer un rapport complet
 
 [CmdletBinding()]
 param (
@@ -39,7 +39,7 @@ begin {
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\module" -Resolve
     Import-Module $modulePath -Force
 
-    # Paramètres de connexion SQL Server
+    # ParamÃ¨tres de connexion SQL Server
     $sqlParams = @{
         ServerInstance = $ServerInstance
         Database = "master"
@@ -49,13 +49,13 @@ begin {
         $sqlParams.Credential = $Credential
     }
 
-    # Créer le dossier de sortie si nécessaire
+    # CrÃ©er le dossier de sortie si nÃ©cessaire
     $outputFolder = Split-Path -Path $OutputPath -Parent
     if ($outputFolder -and -not (Test-Path -Path $outputFolder)) {
         New-Item -Path $outputFolder -ItemType Directory -Force | Out-Null
     }
 
-    # Fonction pour générer un rapport HTML
+    # Fonction pour gÃ©nÃ©rer un rapport HTML
     function Generate-HtmlReport {
         param (
             [Parameter(Mandatory = $true)]
@@ -94,18 +94,18 @@ begin {
     <p><strong>Date du rapport:</strong> $reportDate</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p><strong>Nombre total d'anomalies:</strong> $totalAnomalies</p>
 "@
 
-        # Compter les anomalies par sévérité
+        # Compter les anomalies par sÃ©vÃ©ritÃ©
         $severityCounts = @{
-            "Élevée" = 0
+            "Ã‰levÃ©e" = 0
             "Moyenne" = 0
             "Faible" = 0
         }
 
-        # Compter les anomalies par règle
+        # Compter les anomalies par rÃ¨gle
         $ruleCounts = @{}
 
         # Compter les anomalies au niveau serveur
@@ -122,7 +122,7 @@ begin {
             $ruleCounts[$anomaly.RuleId].Count++
         }
 
-        # Compter les anomalies au niveau base de données
+        # Compter les anomalies au niveau base de donnÃ©es
         foreach ($anomaly in $AnalysisResult.DatabaseAnomalies) {
             $severityCounts[$anomaly.Severity]++
 
@@ -150,28 +150,28 @@ begin {
             $ruleCounts[$anomaly.RuleId].Count++
         }
 
-        # Ajouter les compteurs par sévérité au rapport
+        # Ajouter les compteurs par sÃ©vÃ©ritÃ© au rapport
         $htmlReport += @"
-        <p><strong>Anomalies de sévérité élevée:</strong> $($severityCounts["Élevée"])</p>
-        <p><strong>Anomalies de sévérité moyenne:</strong> $($severityCounts["Moyenne"])</p>
-        <p><strong>Anomalies de sévérité faible:</strong> $($severityCounts["Faible"])</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e:</strong> $($severityCounts["Ã‰levÃ©e"])</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© moyenne:</strong> $($severityCounts["Moyenne"])</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© faible:</strong> $($severityCounts["Faible"])</p>
     </div>
 
     <div class="rule-summary">
-        <h2>Résumé par règle</h2>
+        <h2>RÃ©sumÃ© par rÃ¨gle</h2>
         <table>
             <tr>
-                <th>ID de règle</th>
+                <th>ID de rÃ¨gle</th>
                 <th>Nom</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Nombre d'anomalies</th>
             </tr>
 "@
 
-        # Ajouter les compteurs par règle au rapport
+        # Ajouter les compteurs par rÃ¨gle au rapport
         foreach ($ruleId in $ruleCounts.Keys | Sort-Object) {
             $ruleSeverityClass = switch ($ruleCounts[$ruleId].Severity) {
-                "Élevée" { "high" }
+                "Ã‰levÃ©e" { "high" }
                 "Moyenne" { "medium" }
                 "Faible" { "low" }
                 default { "" }
@@ -191,27 +191,27 @@ begin {
         </table>
     </div>
 
-    <h2>Détails des anomalies</h2>
+    <h2>DÃ©tails des anomalies</h2>
 "@
 
-        # Ajouter les détails des anomalies au niveau serveur
+        # Ajouter les dÃ©tails des anomalies au niveau serveur
         if ($AnalysisResult.ServerAnomalies.Count -gt 0) {
             $htmlReport += @"
     <h3>Anomalies au niveau serveur</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
             <th>Login</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
 
             foreach ($anomaly in $AnalysisResult.ServerAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
@@ -234,25 +234,25 @@ begin {
 "@
         }
 
-        # Ajouter les détails des anomalies au niveau base de données
+        # Ajouter les dÃ©tails des anomalies au niveau base de donnÃ©es
         if ($AnalysisResult.DatabaseAnomalies.Count -gt 0) {
             $htmlReport += @"
-    <h3>Anomalies au niveau base de données</h3>
+    <h3>Anomalies au niveau base de donnÃ©es</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
 
             foreach ($anomaly in $AnalysisResult.DatabaseAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
@@ -276,26 +276,26 @@ begin {
 "@
         }
 
-        # Ajouter les détails des anomalies au niveau objet
+        # Ajouter les dÃ©tails des anomalies au niveau objet
         if ($AnalysisResult.ObjectAnomalies.Count -gt 0) {
             $htmlReport += @"
     <h3>Anomalies au niveau objet</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
-            <th>Objets affectés</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
+            <th>Objets affectÃ©s</th>
         </tr>
 "@
 
             foreach ($anomaly in $AnalysisResult.ObjectAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
@@ -328,7 +328,7 @@ begin {
 
         $htmlReport += @"
     <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; color: #666;">
-        <p>Rapport généré le $reportDate par le module RoadmapParser.</p>
+        <p>Rapport gÃ©nÃ©rÃ© le $reportDate par le module RoadmapParser.</p>
     </div>
 </body>
 </html>
@@ -336,7 +336,7 @@ begin {
 
         # Enregistrer le rapport HTML
         $htmlReport | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Verbose "Rapport d'anomalies enregistré: $OutputPath"
+        Write-Verbose "Rapport d'anomalies enregistrÃ©: $OutputPath"
 
         return $OutputPath
     }
@@ -344,46 +344,46 @@ begin {
 
 process {
     try {
-        Write-Verbose "Exécution de toutes les règles de détection d'anomalies SQL Server pour l'instance: $ServerInstance"
+        Write-Verbose "ExÃ©cution de toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server pour l'instance: $ServerInstance"
 
-        # Obtenir toutes les règles disponibles
+        # Obtenir toutes les rÃ¨gles disponibles
         $serverRules = Get-SqlPermissionRules -RuleType "Server"
         $databaseRules = Get-SqlPermissionRules -RuleType "Database"
         $objectRules = Get-SqlPermissionRules -RuleType "Object"
 
-        Write-Verbose "Nombre de règles disponibles: $($serverRules.Count + $databaseRules.Count + $objectRules.Count)"
-        Write-Verbose "  - Règles au niveau serveur: $($serverRules.Count)"
-        Write-Verbose "  - Règles au niveau base de données: $($databaseRules.Count)"
-        Write-Verbose "  - Règles au niveau objet: $($objectRules.Count)"
+        Write-Verbose "Nombre de rÃ¨gles disponibles: $($serverRules.Count + $databaseRules.Count + $objectRules.Count)"
+        Write-Verbose "  - RÃ¨gles au niveau serveur: $($serverRules.Count)"
+        Write-Verbose "  - RÃ¨gles au niveau base de donnÃ©es: $($databaseRules.Count)"
+        Write-Verbose "  - RÃ¨gles au niveau objet: $($objectRules.Count)"
 
-        # Extraire les IDs de règles
+        # Extraire les IDs de rÃ¨gles
         $serverRuleIds = $serverRules | ForEach-Object { $_.RuleId }
         $databaseRuleIds = $databaseRules | ForEach-Object { $_.RuleId }
         $objectRuleIds = $objectRules | ForEach-Object { $_.RuleId }
 
-        # Analyser les permissions SQL Server avec toutes les règles
+        # Analyser les permissions SQL Server avec toutes les rÃ¨gles
         $analyzeParams = $sqlParams.Clone()
         $analyzeParams.IncludeObjectLevel = $IncludeObjectLevel
         $analyzeParams.ExcludeDatabases = $ExcludeDatabases
         $analyzeParams.OutputFormat = "JSON"
         $analyzeParams.RuleIds = $serverRuleIds + $databaseRuleIds + $objectRuleIds
 
-        Write-Verbose "Exécution de l'analyse avec $($analyzeParams.RuleIds.Count) règles..."
+        Write-Verbose "ExÃ©cution de l'analyse avec $($analyzeParams.RuleIds.Count) rÃ¨gles..."
         $result = Analyze-SqlServerPermission @analyzeParams
 
-        Write-Verbose "Analyse terminée. Nombre total d'anomalies détectées: $($result.TotalAnomalies)"
+        Write-Verbose "Analyse terminÃ©e. Nombre total d'anomalies dÃ©tectÃ©es: $($result.TotalAnomalies)"
         Write-Verbose "  - Anomalies au niveau serveur: $($result.ServerAnomalies.Count)"
-        Write-Verbose "  - Anomalies au niveau base de données: $($result.DatabaseAnomalies.Count)"
+        Write-Verbose "  - Anomalies au niveau base de donnÃ©es: $($result.DatabaseAnomalies.Count)"
         Write-Verbose "  - Anomalies au niveau objet: $($result.ObjectAnomalies.Count)"
 
-        # Générer le rapport HTML
+        # GÃ©nÃ©rer le rapport HTML
         $reportPath = Generate-HtmlReport -AnalysisResult $result -OutputPath $OutputPath
-        Write-Verbose "Rapport HTML généré: $reportPath"
+        Write-Verbose "Rapport HTML gÃ©nÃ©rÃ©: $reportPath"
 
-        # Envoyer le rapport par email si demandé
+        # Envoyer le rapport par email si demandÃ©
         if ($SendEmail) {
             if (-not $SmtpServer -or -not $FromAddress -or -not $ToAddress) {
-                Write-Warning "Paramètres d'email manquants. Le rapport n'a pas été envoyé par email."
+                Write-Warning "ParamÃ¨tres d'email manquants. Le rapport n'a pas Ã©tÃ© envoyÃ© par email."
             }
             else {
                 $htmlContent = Get-Content -Path $reportPath -Raw
@@ -397,7 +397,7 @@ process {
                 }
 
                 Send-MailMessage @emailParams
-                Write-Verbose "Rapport d'anomalies envoyé par email à: $($ToAddress -join ', ')"
+                Write-Verbose "Rapport d'anomalies envoyÃ© par email Ã : $($ToAddress -join ', ')"
             }
         }
 
@@ -413,6 +413,6 @@ process {
         }
     }
     catch {
-        Write-Error "Erreur lors de l'exécution des règles de détection d'anomalies: $_"
+        Write-Error "Erreur lors de l'exÃ©cution des rÃ¨gles de dÃ©tection d'anomalies: $_"
     }
 }

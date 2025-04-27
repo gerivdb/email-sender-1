@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module SyntaxAnalyzer.
@@ -13,18 +13,18 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\SyntaxAnalyzer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Module SyntaxAnalyzer non trouvé à l'emplacement: $moduleToTest"
+    throw "Module SyntaxAnalyzer non trouvÃ© Ã  l'emplacement: $moduleToTest"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $moduleToTest -Force
 
 # Importer le module de cache pour les tests
@@ -33,11 +33,11 @@ if (Test-Path -Path $cacheModulePath) {
     Import-Module $cacheModulePath -Force
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SyntaxAnalyzerTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -55,7 +55,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test avec différents types d'erreurs
+# CrÃ©er des fichiers de test avec diffÃ©rents types d'erreurs
 $psScriptWithErrors = @'
 function Test-Function {
     param(
@@ -63,11 +63,11 @@ function Test-Function {
         [int]$Parameter2 = 0
     )
 
-    # Variable non déclarée
+    # Variable non dÃ©clarÃ©e
     $result = $undeclaredVariable + $Parameter2
 
     # Ligne trop longue
-    $veryLongLine = "Cette ligne est très longue et dépasse la limite recommandée de 120 caractères pour les scripts PowerShell, ce qui peut rendre le code difficile à lire et à maintenir."
+    $veryLongLine = "Cette ligne est trÃ¨s longue et dÃ©passe la limite recommandÃ©e de 120 caractÃ¨res pour les scripts PowerShell, ce qui peut rendre le code difficile Ã  lire et Ã  maintenir."
 
     return $result
 }
@@ -91,7 +91,7 @@ class TestClass:
         return f"Hello, {param1}!"
 
 # Ligne trop longue
-very_long_line = "Cette ligne est très longue et dépasse la limite recommandée de 79 caractères pour les scripts Python, ce qui peut rendre le code difficile à lire et à maintenir."
+very_long_line = "Cette ligne est trÃ¨s longue et dÃ©passe la limite recommandÃ©e de 79 caractÃ¨res pour les scripts Python, ce qui peut rendre le code difficile Ã  lire et Ã  maintenir."
 
 # Syntaxe incorrecte
 if condition:
@@ -107,7 +107,7 @@ $htmlWithErrors = @'
 <body>
     <div>
         <p>Test paragraph</p>
-        <!-- Balise non fermée -->
+        <!-- Balise non fermÃ©e -->
         <span>Test span
     </div>
 
@@ -129,7 +129,7 @@ body {
     margin: 0 auto;
 }
 
-/* Accolade non fermée */
+/* Accolade non fermÃ©e */
 .header {
     padding: 20px;
     background-color: #333;
@@ -144,7 +144,7 @@ $testCssFile = New-TestFile -Path "test_file_with_errors.css" -Content $cssWithE
 # Tests Pester
 Describe "SyntaxAnalyzer Module Tests" {
     BeforeAll {
-        # Créer un cache pour les tests
+        # CrÃ©er un cache pour les tests
         $cachePath = Join-Path -Path $testDir -ChildPath "cache"
         New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
 
@@ -154,17 +154,17 @@ Describe "SyntaxAnalyzer Module Tests" {
             $script:cache = $null
         }
 
-        # Créer un analyseur pour les tests
+        # CrÃ©er un analyseur pour les tests
         $script:analyzer = New-SyntaxAnalyzer -UseCache ($null -ne $script:cache) -Cache $script:cache
     }
 
     Context "New-SyntaxAnalyzer" {
-        It "Crée un nouvel analyseur" {
+        It "CrÃ©e un nouvel analyseur" {
             $analyzer | Should -Not -BeNullOrEmpty
             $analyzer.GetType().Name | Should -Be "SyntaxAnalyzer"
         }
 
-        It "Initialise correctement les propriétés" {
+        It "Initialise correctement les propriÃ©tÃ©s" {
             $analyzer.LanguageHandlers | Should -Not -BeNullOrEmpty
             $analyzer.RuleSet | Should -Not -BeNullOrEmpty
             $analyzer.UseCache | Should -Be ($null -ne $script:cache)
@@ -180,11 +180,11 @@ Describe "SyntaxAnalyzer Module Tests" {
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins une erreur de syntaxe
+            # VÃ©rifier qu'il y a au moins une erreur de syntaxe
             $syntaxErrors = $results | Where-Object { $_.Type -eq "Syntax" }
             $syntaxErrors.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins un avertissement de style
+            # VÃ©rifier qu'il y a au moins un avertissement de style
             $styleWarnings = $results | Where-Object { $_.Type -eq "Style" }
             $styleWarnings.Count | Should -BeGreaterThan 0
         }
@@ -194,9 +194,9 @@ Describe "SyntaxAnalyzer Module Tests" {
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins une erreur d'indentation
+            # VÃ©rifier qu'il y a au moins une erreur d'indentation
             $indentationErrors = $results | Where-Object { $_.Message -like "*indentation*" }
-            $indentationErrors.Count | Should -BeGreaterOrEqual 0  # Peut être 0 si pylint n'est pas disponible
+            $indentationErrors.Count | Should -BeGreaterOrEqual 0  # Peut Ãªtre 0 si pylint n'est pas disponible
         }
 
         It "Analyse un fichier HTML avec erreurs" {
@@ -204,7 +204,7 @@ Describe "SyntaxAnalyzer Module Tests" {
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins une erreur de balise non fermée
+            # VÃ©rifier qu'il y a au moins une erreur de balise non fermÃ©e
             $tagErrors = $results | Where-Object { $_.Rule -eq "UnclosedTag" -or $_.Rule -eq "UnmatchedTag" }
             $tagErrors.Count | Should -BeGreaterThan 0
         }
@@ -214,11 +214,11 @@ Describe "SyntaxAnalyzer Module Tests" {
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins une erreur de point-virgule manquant
+            # VÃ©rifier qu'il y a au moins une erreur de point-virgule manquant
             $semicolonErrors = $results | Where-Object { $_.Rule -eq "MissingSemicolon" }
             $semicolonErrors.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'il y a au moins une erreur d'accolade non fermée
+            # VÃ©rifier qu'il y a au moins une erreur d'accolade non fermÃ©e
             $braceErrors = $results | Where-Object { $_.Rule -eq "UnbalancedBraces" }
             $braceErrors.Count | Should -BeGreaterThan 0
         }
@@ -231,7 +231,7 @@ Describe "SyntaxAnalyzer Module Tests" {
     }
 
     Context "Invoke-BatchSyntaxAnalysis" {
-        It "Analyse plusieurs fichiers en parallèle" {
+        It "Analyse plusieurs fichiers en parallÃ¨le" {
             $filePaths = @($testPsScript, $testHtmlFile, $testCssFile)
             $results = Invoke-BatchSyntaxAnalysis -Analyzer $analyzer -FilePaths $filePaths
             $results | Should -Not -BeNullOrEmpty
@@ -247,7 +247,7 @@ Describe "SyntaxAnalyzer Module Tests" {
             $results[$testCssFile].Count | Should -BeGreaterThan 0
         }
 
-        It "Gère correctement les fichiers inexistants" {
+        It "GÃ¨re correctement les fichiers inexistants" {
             $filePaths = @($testPsScript, "fichier_inexistant.txt")
             $results = Invoke-BatchSyntaxAnalysis -Analyzer $analyzer -FilePaths $filePaths
             $results | Should -Not -BeNullOrEmpty
@@ -262,10 +262,10 @@ Describe "SyntaxAnalyzer Module Tests" {
     }
 
     Context "Register-SyntaxRule" {
-        It "Enregistre une règle personnalisée" {
-            # Créer une règle personnalisée
+        It "Enregistre une rÃ¨gle personnalisÃ©e" {
+            # CrÃ©er une rÃ¨gle personnalisÃ©e
             $ruleName = "TEST001"
-            $ruleDescription = "Règle de test"
+            $ruleDescription = "RÃ¨gle de test"
             $ruleHandler = {
                 param($content, $tokens)
 
@@ -281,17 +281,17 @@ Describe "SyntaxAnalyzer Module Tests" {
                 return $results
             }
 
-            # Enregistrer la règle
+            # Enregistrer la rÃ¨gle
             Register-SyntaxRule -Analyzer $analyzer -ID $ruleName -Language "All" -Description $ruleDescription -Handler $ruleHandler
 
-            # Vérifier que la règle a été enregistrée
+            # VÃ©rifier que la rÃ¨gle a Ã©tÃ© enregistrÃ©e
             $analyzer.RuleSet[$ruleName] | Should -Not -BeNullOrEmpty
             $analyzer.RuleSet[$ruleName].ID | Should -Be $ruleName
             $analyzer.RuleSet[$ruleName].Description | Should -Be $ruleDescription
             $analyzer.RuleSet[$ruleName].Language | Should -Be "All"
             $analyzer.RuleSet[$ruleName].Handler | Should -Not -BeNullOrEmpty
 
-            # Tester la règle
+            # Tester la rÃ¨gle
             $results = Invoke-SyntaxAnalysis -Analyzer $analyzer -FilePath $testPsScript
             $testRuleResults = $results | Where-Object { $_.Rule -eq $ruleName }
             $testRuleResults | Should -Not -BeNullOrEmpty
@@ -307,5 +307,5 @@ Describe "SyntaxAnalyzer Module Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

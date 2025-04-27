@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-PerformanceMeasurementFunctions.ps1
 #
 # Script pour tester les fonctions de mesure de performance
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $performanceFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance\PerformanceMeasurementFunctions.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $performanceFunctionsDir = Split-Path -Parent $performanceFunctionsPath
 if (-not (Test-Path -Path $performanceFunctionsDir)) {
     New-Item -Path $performanceFunctionsDir -ItemType Directory -Force | Out-Null
@@ -18,10 +18,10 @@ if (-not (Test-Path -Path $performanceFunctionsDir)) {
 # Importer le script
 . $performanceFunctionsPath
 
-Write-Host "Début des tests des fonctions de mesure de performance..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests des fonctions de mesure de performance..." -ForegroundColor Cyan
 
-# Test 1: Vérifier que les fonctions sont définies
-Write-Host "`nTest 1: Vérifier que les fonctions sont définies" -ForegroundColor Cyan
+# Test 1: VÃ©rifier que les fonctions sont dÃ©finies
+Write-Host "`nTest 1: VÃ©rifier que les fonctions sont dÃ©finies" -ForegroundColor Cyan
 
 $functions = @(
     "Set-PerformanceMeasurementConfiguration",
@@ -41,20 +41,20 @@ foreach ($function in $functions) {
     $command = Get-Command -Name $function -ErrorAction SilentlyContinue
     $success = $null -ne $command
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
-    Write-Host "  Vérification de la fonction $function : $status" -ForegroundColor $color
+    Write-Host "  VÃ©rification de la fonction $function : $status" -ForegroundColor $color
 
     if ($success) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    La fonction $function n'est pas définie" -ForegroundColor Red
+        Write-Host "    La fonction $function n'est pas dÃ©finie" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Tester la configuration de la mesure de performance
 Write-Host "`nTest 2: Tester la configuration de la mesure de performance" -ForegroundColor Cyan
@@ -65,11 +65,11 @@ Set-PerformanceMeasurementConfiguration -Enabled $true -Category "TestPerformanc
 # Obtenir la configuration
 $config = Get-PerformanceMeasurementConfiguration
 
-# Vérifier la configuration
+# VÃ©rifier la configuration
 $success = $config.Enabled -eq $true -and
 $config.Category -eq "TestPerformance"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Configuration de la mesure de performance: $status" -ForegroundColor $color
@@ -79,67 +79,67 @@ if (-not $success) {
     Write-Host "    Configuration obtenue: Enabled=$($config.Enabled), Category=$($config.Category)" -ForegroundColor Red
 }
 
-# Test 3: Tester les fonctions de chronomètre
-Write-Host "`nTest 3: Tester les fonctions de chronomètre" -ForegroundColor Cyan
+# Test 3: Tester les fonctions de chronomÃ¨tre
+Write-Host "`nTest 3: Tester les fonctions de chronomÃ¨tre" -ForegroundColor Cyan
 
-# Démarrer un chronomètre
+# DÃ©marrer un chronomÃ¨tre
 $timerName = "TestTimer"
 Start-PerformanceTimer -Name $timerName
 
 # Attendre un peu
 Start-Sleep -Milliseconds 100
 
-# Arrêter le chronomètre
+# ArrÃªter le chronomÃ¨tre
 $elapsedMilliseconds = Stop-PerformanceTimer -Name $timerName
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $elapsedMilliseconds -ge 100
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Chronomètre simple: $status" -ForegroundColor $color
+Write-Host "  ChronomÃ¨tre simple: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Temps écoulé attendu: >= 100 ms" -ForegroundColor Red
-    Write-Host "    Temps écoulé obtenu: $elapsedMilliseconds ms" -ForegroundColor Red
+    Write-Host "    Temps Ã©coulÃ© attendu: >= 100 ms" -ForegroundColor Red
+    Write-Host "    Temps Ã©coulÃ© obtenu: $elapsedMilliseconds ms" -ForegroundColor Red
 }
 
-# Test 4: Tester la réinitialisation du chronomètre
-Write-Host "`nTest 4: Tester la réinitialisation du chronomètre" -ForegroundColor Cyan
+# Test 4: Tester la rÃ©initialisation du chronomÃ¨tre
+Write-Host "`nTest 4: Tester la rÃ©initialisation du chronomÃ¨tre" -ForegroundColor Cyan
 
-# Démarrer un chronomètre
+# DÃ©marrer un chronomÃ¨tre
 Start-PerformanceTimer -Name $timerName
 
 # Attendre un peu
 Start-Sleep -Milliseconds 50
 
-# Réinitialiser le chronomètre
+# RÃ©initialiser le chronomÃ¨tre
 Reset-PerformanceTimer -Name $timerName
 
 # Attendre un peu plus
 Start-Sleep -Milliseconds 50
 
-# Arrêter le chronomètre
+# ArrÃªter le chronomÃ¨tre
 $elapsedMilliseconds = Stop-PerformanceTimer -Name $timerName
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $elapsedMilliseconds -ge 50 -and $elapsedMilliseconds -lt 100
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Réinitialisation du chronomètre: $status" -ForegroundColor $color
+Write-Host "  RÃ©initialisation du chronomÃ¨tre: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Temps écoulé attendu: >= 50 ms et < 100 ms" -ForegroundColor Red
-    Write-Host "    Temps écoulé obtenu: $elapsedMilliseconds ms" -ForegroundColor Red
+    Write-Host "    Temps Ã©coulÃ© attendu: >= 50 ms et < 100 ms" -ForegroundColor Red
+    Write-Host "    Temps Ã©coulÃ© obtenu: $elapsedMilliseconds ms" -ForegroundColor Red
 }
 
 # Test 5: Tester les statistiques de performance
 Write-Host "`nTest 5: Tester les statistiques de performance" -ForegroundColor Cyan
 
-# Exécuter plusieurs mesures
+# ExÃ©cuter plusieurs mesures
 for ($i = 0; $i -lt 5; $i++) {
     Start-PerformanceTimer -Name $timerName
     Start-Sleep -Milliseconds (10 * ($i + 1))
@@ -149,13 +149,13 @@ for ($i = 0; $i -lt 5; $i++) {
 # Obtenir les statistiques
 $stats = Get-PerformanceStatistics -Name $timerName
 
-# Vérifier les statistiques
+# VÃ©rifier les statistiques
 $success = $stats.Count -eq 7 -and
 $stats.MinMilliseconds -gt 0 -and
 $stats.MaxMilliseconds -gt 0 -and
 $stats.AverageMilliseconds -gt 0
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Statistiques de performance: $status" -ForegroundColor $color
@@ -168,54 +168,54 @@ if (-not $success) {
 # Test 6: Tester la fonction Measure-ExecutionTime
 Write-Host "`nTest 6: Tester la fonction Measure-ExecutionTime" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code
+# Mesurer le temps d'exÃ©cution d'un bloc de code
 $result = Measure-ExecutionTime -Name "TestMeasure" -ScriptBlock {
     Start-Sleep -Milliseconds 100
-    return "Test réussi"
+    return "Test rÃ©ussi"
 }
 
-# Vérifier le résultat
-$success = $result.Result -eq "Test réussi" -and
+# VÃ©rifier le rÃ©sultat
+$success = $result.Result -eq "Test rÃ©ussi" -and
 $result.ElapsedMilliseconds -ge 100
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result='Test réussi', ElapsedMilliseconds>=100" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result='Test rÃ©ussi', ElapsedMilliseconds>=100" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
-# Test 7: Tester la fonction Measure-ExecutionTime avec des paramètres
-Write-Host "`nTest 7: Tester la fonction Measure-ExecutionTime avec des paramètres" -ForegroundColor Cyan
+# Test 7: Tester la fonction Measure-ExecutionTime avec des paramÃ¨tres
+Write-Host "`nTest 7: Tester la fonction Measure-ExecutionTime avec des paramÃ¨tres" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code avec des paramètres
+# Mesurer le temps d'exÃ©cution d'un bloc de code avec des paramÃ¨tres
 $result = Measure-ExecutionTime -Name "TestMeasureWithParams" -ScriptBlock {
     param($a, $b)
     Start-Sleep -Milliseconds 50
     return $a + $b
 } -ArgumentList 10, 20
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result.Result -eq 30 -and
 $result.ElapsedMilliseconds -ge 50
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution avec paramètres: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution avec paramÃ¨tres: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
 # Test 8: Tester la fonction Measure-ExecutionTime avec pipeline
 Write-Host "`nTest 8: Tester la fonction Measure-ExecutionTime avec pipeline" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code avec pipeline
+# Mesurer le temps d'exÃ©cution d'un bloc de code avec pipeline
 $result = Measure-ExecutionTime -Name "TestMeasureWithPipeline" -ScriptBlock {
     process {
         Start-Sleep -Milliseconds 50
@@ -223,44 +223,44 @@ $result = Measure-ExecutionTime -Name "TestMeasureWithPipeline" -ScriptBlock {
     }
 } -InputObject 15
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result.Result -eq 30 -and
 $result.ElapsedMilliseconds -ge 50
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution avec pipeline: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution avec pipeline: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
 # Test 9: Tester la fonction Set-PerformanceThreshold
 Write-Host "`nTest 9: Tester la fonction Set-PerformanceThreshold" -ForegroundColor Cyan
 
-# Définir un seuil
+# DÃ©finir un seuil
 Set-PerformanceThreshold -Name "TestThreshold" -ThresholdMilliseconds 10
 
-# Mesurer le temps d'exécution d'un bloc de code qui dépasse le seuil
+# Mesurer le temps d'exÃ©cution d'un bloc de code qui dÃ©passe le seuil
 $result = Measure-ExecutionTime -Name "TestThreshold" -ScriptBlock {
     Start-Sleep -Milliseconds 50
-    return "Test seuil dépassé"
+    return "Test seuil dÃ©passÃ©"
 }
 
-# Vérifier le résultat
-$success = $result.Result -eq "Test seuil dépassé" -and
+# VÃ©rifier le rÃ©sultat
+$success = $result.Result -eq "Test seuil dÃ©passÃ©" -and
 $result.ElapsedMilliseconds -ge 50
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Seuil de performance: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result='Test seuil dépassé', ElapsedMilliseconds>=50" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result='Test seuil dÃ©passÃ©', ElapsedMilliseconds>=50" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
-Write-Host "`nTests des fonctions de mesure de performance terminés." -ForegroundColor Cyan
+Write-Host "`nTests des fonctions de mesure de performance terminÃ©s." -ForegroundColor Cyan

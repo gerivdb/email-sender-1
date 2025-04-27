@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fournit des mécanismes de reprise après erreur (retry logic) pour les opérations sujettes aux échecs temporaires.
+    Fournit des mÃ©canismes de reprise aprÃ¨s erreur (retry logic) pour les opÃ©rations sujettes aux Ã©checs temporaires.
 
 .DESCRIPTION
-    Ce script implémente différentes stratégies de reprise après erreur pour les opérations
-    qui peuvent échouer temporairement en raison de problèmes de réseau, de verrouillage de ressources,
-    ou d'autres conditions transitoires. Il prend en charge plusieurs stratégies de temporisation
-    (fixe, exponentielle, aléatoire) et permet de spécifier des conditions personnalisées pour les reprises.
+    Ce script implÃ©mente diffÃ©rentes stratÃ©gies de reprise aprÃ¨s erreur pour les opÃ©rations
+    qui peuvent Ã©chouer temporairement en raison de problÃ¨mes de rÃ©seau, de verrouillage de ressources,
+    ou d'autres conditions transitoires. Il prend en charge plusieurs stratÃ©gies de temporisation
+    (fixe, exponentielle, alÃ©atoire) et permet de spÃ©cifier des conditions personnalisÃ©es pour les reprises.
 
 .EXAMPLE
     . .\RetryLogic.ps1
     $result = Invoke-WithRetry -ScriptBlock { Invoke-RestMethod -Uri "https://api.example.com/data" } -MaxRetries 5 -DelaySeconds 2 -BackoffMultiplier 2
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Définir les stratégies de temporisation
+# DÃ©finir les stratÃ©gies de temporisation
 enum RetryBackoffStrategy {
-    Fixed = 0       # Délai fixe entre les tentatives
-    Linear = 1      # Délai augmentant linéairement (délai * numéro de tentative)
-    Exponential = 2 # Délai augmentant exponentiellement (délai * (multiplicateur ^ numéro de tentative))
-    Random = 3      # Délai aléatoire entre min et max
+    Fixed = 0       # DÃ©lai fixe entre les tentatives
+    Linear = 1      # DÃ©lai augmentant linÃ©airement (dÃ©lai * numÃ©ro de tentative)
+    Exponential = 2 # DÃ©lai augmentant exponentiellement (dÃ©lai * (multiplicateur ^ numÃ©ro de tentative))
+    Random = 3      # DÃ©lai alÃ©atoire entre min et max
 }
 
-# Fonction principale pour exécuter une opération avec reprise
+# Fonction principale pour exÃ©cuter une opÃ©ration avec reprise
 function Invoke-WithRetry {
     [CmdletBinding()]
     param (
@@ -78,34 +78,34 @@ function Invoke-WithRetry {
         $attempt++
         
         try {
-            # Exécuter le bloc de script
+            # ExÃ©cuter le bloc de script
             $result = & $ScriptBlock
             
-            # Si nous arrivons ici, l'opération a réussi
+            # Si nous arrivons ici, l'opÃ©ration a rÃ©ussi
             return $result
         }
         catch {
             $lastException = $_
             $shouldRetry = $false
             
-            # Vérifier si nous devons réessayer en fonction du type d'exception
+            # VÃ©rifier si nous devons rÃ©essayer en fonction du type d'exception
             if ($RetryOnExceptionTypes.Count -gt 0) {
                 $exceptionType = $_.Exception.GetType().FullName
                 $shouldRetry = $RetryOnExceptionTypes | Where-Object { $exceptionType -match $_ } | Select-Object -First 1
             }
             
-            # Vérifier si nous devons réessayer en fonction du message d'exception
+            # VÃ©rifier si nous devons rÃ©essayer en fonction du message d'exception
             if (-not $shouldRetry -and $RetryOnExceptionMessages.Count -gt 0) {
                 $exceptionMessage = $_.Exception.Message
                 $shouldRetry = $RetryOnExceptionMessages | Where-Object { $exceptionMessage -match $_ } | Select-Object -First 1
             }
             
-            # Vérifier la condition de reprise personnalisée
+            # VÃ©rifier la condition de reprise personnalisÃ©e
             if (-not $shouldRetry -and $RetryOnExceptionTypes.Count -eq 0 -and $RetryOnExceptionMessages.Count -eq 0) {
                 $shouldRetry = & $RetryCondition -Exception $_
             }
             
-            # Si nous ne devons pas réessayer ou si nous avons atteint le nombre maximal de tentatives, lever l'exception
+            # Si nous ne devons pas rÃ©essayer ou si nous avons atteint le nombre maximal de tentatives, lever l'exception
             if (-not $shouldRetry -or $attempt -ge $MaxRetries) {
                 if ($ThrowOnFailure) {
                     throw
@@ -115,7 +115,7 @@ function Invoke-WithRetry {
                 }
             }
             
-            # Calculer le délai avant la prochaine tentative
+            # Calculer le dÃ©lai avant la prochaine tentative
             $delay = switch ($BackoffStrategy) {
                 ([RetryBackoffStrategy]::Fixed) {
                     $DelaySeconds
@@ -134,10 +134,10 @@ function Invoke-WithRetry {
                 }
             }
             
-            # Limiter le délai au maximum spécifié
+            # Limiter le dÃ©lai au maximum spÃ©cifiÃ©
             $delay = [Math]::Min($delay, $MaxTotalDelaySeconds - $totalDelay)
             
-            # Si le délai est négatif ou nul, ne pas attendre
+            # Si le dÃ©lai est nÃ©gatif ou nul, ne pas attendre
             if ($delay -le 0) {
                 if ($ThrowOnFailure) {
                     throw
@@ -147,10 +147,10 @@ function Invoke-WithRetry {
                 }
             }
             
-            # Mettre à jour le délai total
+            # Mettre Ã  jour le dÃ©lai total
             $totalDelay += $delay
             
-            # Exécuter le bloc OnRetry
+            # ExÃ©cuter le bloc OnRetry
             & $OnRetry -Exception $_ -RetryCount $attempt -DelaySeconds $delay
             
             # Attendre avant la prochaine tentative
@@ -158,7 +158,7 @@ function Invoke-WithRetry {
         }
     } while ($attempt -lt $MaxRetries)
     
-    # Si nous arrivons ici, toutes les tentatives ont échoué
+    # Si nous arrivons ici, toutes les tentatives ont Ã©chouÃ©
     if ($ThrowOnFailure) {
         throw $lastException
     }
@@ -167,7 +167,7 @@ function Invoke-WithRetry {
     }
 }
 
-# Fonction pour exécuter une opération avec reprise et journalisation
+# Fonction pour exÃ©cuter une opÃ©ration avec reprise et journalisation
 function Invoke-WithRetryAndLogging {
     [CmdletBinding()]
     param (
@@ -193,7 +193,7 @@ function Invoke-WithRetryAndLogging {
         [switch]$ThrowOnFailure = $true
     )
     
-    # Vérifier si le module de journalisation est disponible
+    # VÃ©rifier si le module de journalisation est disponible
     $loggerAvailable = $false
     $loggerPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "CentralizedLogger.ps1"
     
@@ -207,11 +207,11 @@ function Invoke-WithRetryAndLogging {
         }
     }
     
-    # Définir le bloc OnRetry avec journalisation
+    # DÃ©finir le bloc OnRetry avec journalisation
     $onRetryBlock = {
         param($exception, $retryCount, $delaySeconds)
         
-        $message = "Tentative $retryCount/$MaxRetries pour '$OperationName' après $delaySeconds secondes. Erreur: $($exception.Exception.Message)"
+        $message = "Tentative $retryCount/$MaxRetries pour '$OperationName' aprÃ¨s $delaySeconds secondes. Erreur: $($exception.Exception.Message)"
         
         if ($loggerAvailable) {
             Write-LogWarning -Message $message -Source "RetryLogic"
@@ -221,32 +221,32 @@ function Invoke-WithRetryAndLogging {
         }
     }
     
-    # Exécuter l'opération avec reprise
+    # ExÃ©cuter l'opÃ©ration avec reprise
     try {
         if ($loggerAvailable) {
-            Write-LogInfo -Message "Démarrage de l'opération '$OperationName' avec $MaxRetries tentatives maximum" -Source "RetryLogic"
+            Write-LogInfo -Message "DÃ©marrage de l'opÃ©ration '$OperationName' avec $MaxRetries tentatives maximum" -Source "RetryLogic"
         }
         else {
-            Write-Verbose "Démarrage de l'opération '$OperationName' avec $MaxRetries tentatives maximum"
+            Write-Verbose "DÃ©marrage de l'opÃ©ration '$OperationName' avec $MaxRetries tentatives maximum"
         }
         
         $result = Invoke-WithRetry -ScriptBlock $ScriptBlock -MaxRetries $MaxRetries -DelaySeconds $DelaySeconds -BackoffStrategy $BackoffStrategy -BackoffMultiplier $BackoffMultiplier -OnRetry $onRetryBlock -ThrowOnFailure $ThrowOnFailure
         
         if ($loggerAvailable) {
-            Write-LogInfo -Message "Opération '$OperationName' réussie" -Source "RetryLogic"
+            Write-LogInfo -Message "OpÃ©ration '$OperationName' rÃ©ussie" -Source "RetryLogic"
         }
         else {
-            Write-Verbose "Opération '$OperationName' réussie"
+            Write-Verbose "OpÃ©ration '$OperationName' rÃ©ussie"
         }
         
         return $result
     }
     catch {
         if ($loggerAvailable) {
-            Write-LogError -Message "Échec de l'opération '$OperationName' après $MaxRetries tentatives" -Source "RetryLogic" -ErrorRecord $_
+            Write-LogError -Message "Ã‰chec de l'opÃ©ration '$OperationName' aprÃ¨s $MaxRetries tentatives" -Source "RetryLogic" -ErrorRecord $_
         }
         else {
-            Write-Error "Échec de l'opération '$OperationName' après $MaxRetries tentatives: $_"
+            Write-Error "Ã‰chec de l'opÃ©ration '$OperationName' aprÃ¨s $MaxRetries tentatives: $_"
         }
         
         if ($ThrowOnFailure) {
@@ -258,7 +258,7 @@ function Invoke-WithRetryAndLogging {
     }
 }
 
-# Fonction pour exécuter une opération avec reprise sur des exceptions spécifiques
+# Fonction pour exÃ©cuter une opÃ©ration avec reprise sur des exceptions spÃ©cifiques
 function Invoke-WithRetryOnException {
     [CmdletBinding()]
     param (
@@ -315,11 +315,11 @@ function Invoke-WithRetryOnException {
         [switch]$ThrowOnFailure = $true
     )
     
-    # Exécuter l'opération avec reprise sur les exceptions spécifiées
+    # ExÃ©cuter l'opÃ©ration avec reprise sur les exceptions spÃ©cifiÃ©es
     return Invoke-WithRetryAndLogging -ScriptBlock $ScriptBlock -MaxRetries $MaxRetries -DelaySeconds $DelaySeconds -BackoffStrategy $BackoffStrategy -BackoffMultiplier $BackoffMultiplier -OperationName $OperationName -ThrowOnFailure $ThrowOnFailure
 }
 
-# Fonction pour exécuter une opération avec reprise et circuit breaker
+# Fonction pour exÃ©cuter une opÃ©ration avec reprise et circuit breaker
 function Invoke-WithRetryAndCircuitBreaker {
     [CmdletBinding()]
     param (
@@ -351,7 +351,7 @@ function Invoke-WithRetryAndCircuitBreaker {
         [switch]$ThrowOnFailure = $true
     )
     
-    # Variables statiques pour le circuit breaker (partagées entre les appels)
+    # Variables statiques pour le circuit breaker (partagÃ©es entre les appels)
     if (-not [PSCustomObject].Assembly.GetType("RetryLogic.CircuitBreaker")) {
         Add-Type -TypeDefinition @"
 namespace RetryLogic {
@@ -364,19 +364,19 @@ namespace RetryLogic {
 "@
     }
     
-    # Vérifier si le circuit breaker est ouvert
+    # VÃ©rifier si le circuit breaker est ouvert
     if ([RetryLogic.CircuitBreaker]::IsOpen) {
         $timeSinceLastFailure = (Get-Date) - [RetryLogic.CircuitBreaker]::LastFailureTime
         
         if ($timeSinceLastFailure.TotalSeconds -ge $CircuitBreakerResetSeconds) {
-            # Réinitialiser le circuit breaker après le délai de réinitialisation
+            # RÃ©initialiser le circuit breaker aprÃ¨s le dÃ©lai de rÃ©initialisation
             [RetryLogic.CircuitBreaker]::IsOpen = $false
             [RetryLogic.CircuitBreaker]::FailureCount = 0
-            Write-Verbose "Circuit breaker réinitialisé pour l'opération '$OperationName'"
+            Write-Verbose "Circuit breaker rÃ©initialisÃ© pour l'opÃ©ration '$OperationName'"
         }
         else {
             # Le circuit breaker est toujours ouvert
-            $message = "Circuit breaker ouvert pour l'opération '$OperationName'. Réessayez dans $([Math]::Ceiling($CircuitBreakerResetSeconds - $timeSinceLastFailure.TotalSeconds)) secondes."
+            $message = "Circuit breaker ouvert pour l'opÃ©ration '$OperationName'. RÃ©essayez dans $([Math]::Ceiling($CircuitBreakerResetSeconds - $timeSinceLastFailure.TotalSeconds)) secondes."
             Write-Warning $message
             
             if ($ThrowOnFailure) {
@@ -388,24 +388,24 @@ namespace RetryLogic {
         }
     }
     
-    # Exécuter l'opération avec reprise
+    # ExÃ©cuter l'opÃ©ration avec reprise
     try {
         $result = Invoke-WithRetryAndLogging -ScriptBlock $ScriptBlock -MaxRetries $MaxRetries -DelaySeconds $DelaySeconds -BackoffStrategy $BackoffStrategy -BackoffMultiplier $BackoffMultiplier -OperationName $OperationName -ThrowOnFailure $ThrowOnFailure
         
-        # Réinitialiser le compteur d'échecs en cas de succès
+        # RÃ©initialiser le compteur d'Ã©checs en cas de succÃ¨s
         [RetryLogic.CircuitBreaker]::FailureCount = 0
         
         return $result
     }
     catch {
-        # Incrémenter le compteur d'échecs
+        # IncrÃ©menter le compteur d'Ã©checs
         [RetryLogic.CircuitBreaker]::FailureCount++
         [RetryLogic.CircuitBreaker]::LastFailureTime = Get-Date
         
-        # Vérifier si le seuil du circuit breaker est atteint
+        # VÃ©rifier si le seuil du circuit breaker est atteint
         if ([RetryLogic.CircuitBreaker]::FailureCount -ge $CircuitBreakerThreshold) {
             [RetryLogic.CircuitBreaker]::IsOpen = $true
-            $message = "Circuit breaker ouvert pour l'opération '$OperationName' après $([RetryLogic.CircuitBreaker]::FailureCount) échecs consécutifs."
+            $message = "Circuit breaker ouvert pour l'opÃ©ration '$OperationName' aprÃ¨s $([RetryLogic.CircuitBreaker]::FailureCount) Ã©checs consÃ©cutifs."
             Write-Warning $message
         }
         
@@ -418,7 +418,7 @@ namespace RetryLogic {
     }
 }
 
-# Fonction pour exécuter une opération avec reprise et timeout
+# Fonction pour exÃ©cuter une opÃ©ration avec reprise et timeout
 function Invoke-WithRetryAndTimeout {
     [CmdletBinding()]
     param (
@@ -447,18 +447,18 @@ function Invoke-WithRetryAndTimeout {
         [switch]$ThrowOnFailure = $true
     )
     
-    # Créer un bloc de script qui exécute l'opération avec timeout
+    # CrÃ©er un bloc de script qui exÃ©cute l'opÃ©ration avec timeout
     $scriptBlockWithTimeout = {
         $timeoutMilliseconds = $TimeoutSeconds * 1000
         
-        # Créer un objet de synchronisation pour la communication entre les threads
+        # CrÃ©er un objet de synchronisation pour la communication entre les threads
         $sync = [System.Collections.Hashtable]::Synchronized(@{
             Result = $null
             Error = $null
             Completed = $false
         })
         
-        # Créer un thread pour exécuter l'opération
+        # CrÃ©er un thread pour exÃ©cuter l'opÃ©ration
         $thread = [System.Threading.Thread]::new([System.Threading.ThreadStart]{
             try {
                 $sync.Result = & $ScriptBlock
@@ -470,34 +470,34 @@ function Invoke-WithRetryAndTimeout {
             }
         })
         
-        # Démarrer le thread
+        # DÃ©marrer le thread
         $thread.Start()
         
         # Attendre que le thread se termine ou que le timeout soit atteint
         $completed = $thread.Join($timeoutMilliseconds)
         
         if (-not $completed) {
-            # Le timeout a été atteint, essayer d'arrêter le thread
+            # Le timeout a Ã©tÃ© atteint, essayer d'arrÃªter le thread
             try {
                 $thread.Abort()
             }
             catch {
-                Write-Warning "Impossible d'arrêter le thread: $_"
+                Write-Warning "Impossible d'arrÃªter le thread: $_"
             }
             
-            throw [System.TimeoutException]::new("L'opération '$OperationName' a dépassé le délai d'attente de $TimeoutSeconds secondes.")
+            throw [System.TimeoutException]::new("L'opÃ©ration '$OperationName' a dÃ©passÃ© le dÃ©lai d'attente de $TimeoutSeconds secondes.")
         }
         
-        # Vérifier si une erreur s'est produite
+        # VÃ©rifier si une erreur s'est produite
         if ($sync.Error -ne $null) {
             throw $sync.Error
         }
         
-        # Retourner le résultat
+        # Retourner le rÃ©sultat
         return $sync.Result
     }
     
-    # Exécuter l'opération avec reprise et timeout
+    # ExÃ©cuter l'opÃ©ration avec reprise et timeout
     return Invoke-WithRetryAndLogging -ScriptBlock $scriptBlockWithTimeout -MaxRetries $MaxRetries -DelaySeconds $DelaySeconds -BackoffStrategy $BackoffStrategy -BackoffMultiplier $BackoffMultiplier -OperationName $OperationName -ThrowOnFailure $ThrowOnFailure
 }
 

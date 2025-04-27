@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-TracingFunctions.ps1
 #
 # Script pour tester les fonctions de trace
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $tracingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Logging\TracingFunctions.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $tracingFunctionsDir = Split-Path -Parent $tracingFunctionsPath
 if (-not (Test-Path -Path $tracingFunctionsDir)) {
     New-Item -Path $tracingFunctionsDir -ItemType Directory -Force | Out-Null
@@ -18,10 +18,10 @@ if (-not (Test-Path -Path $tracingFunctionsDir)) {
 # Importer le script
 . $tracingFunctionsPath
 
-Write-Host "Début des tests des fonctions de trace..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests des fonctions de trace..." -ForegroundColor Cyan
 
-# Test 1: Vérifier que les fonctions sont définies
-Write-Host "`nTest 1: Vérifier que les fonctions sont définies" -ForegroundColor Cyan
+# Test 1: VÃ©rifier que les fonctions sont dÃ©finies
+Write-Host "`nTest 1: VÃ©rifier que les fonctions sont dÃ©finies" -ForegroundColor Cyan
 
 $functions = @(
     "Set-TracingConfiguration",
@@ -38,20 +38,20 @@ foreach ($function in $functions) {
     $command = Get-Command -Name $function -ErrorAction SilentlyContinue
     $success = $null -ne $command
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
-    Write-Host "  Vérification de la fonction $function : $status" -ForegroundColor $color
+    Write-Host "  VÃ©rification de la fonction $function : $status" -ForegroundColor $color
 
     if ($success) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    La fonction $function n'est pas définie" -ForegroundColor Red
+        Write-Host "    La fonction $function n'est pas dÃ©finie" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Tester la configuration de la trace
 Write-Host "`nTest 2: Tester la configuration de la trace" -ForegroundColor Cyan
@@ -62,14 +62,14 @@ Set-TracingConfiguration -Enabled $true -IndentSize 4 -IndentChar "-" -MaxDepth 
 # Obtenir la configuration
 $config = Get-TracingConfiguration
 
-# Vérifier la configuration
+# VÃ©rifier la configuration
 $success = $config.Enabled -eq $true -and
 $config.IndentSize -eq 4 -and
 $config.IndentChar -eq "-" -and
 $config.MaxDepth -eq 5 -and
 $config.Category -eq "TestTracing"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Configuration de la trace: $status" -ForegroundColor $color
@@ -82,7 +82,7 @@ if (-not $success) {
 # Test 3: Tester les fonctions de trace
 Write-Host "`nTest 3: Tester les fonctions de trace" -ForegroundColor Cyan
 
-# Définir une fonction de test
+# DÃ©finir une fonction de test
 function Test-TraceFunction {
     [CmdletBinding()]
     param (
@@ -93,16 +93,16 @@ function Test-TraceFunction {
         [int]$Param2 = 42
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-FunctionEntry
 
-    # Tracer une étape intermédiaire
-    Trace-FunctionStep -StepName "Préparation" -StepData "Préparation des données"
+    # Tracer une Ã©tape intermÃ©diaire
+    Trace-FunctionStep -StepName "PrÃ©paration" -StepData "PrÃ©paration des donnÃ©es"
 
     # Faire quelque chose
     $result = "$Param1 - $Param2"
 
-    # Tracer une autre étape intermédiaire
+    # Tracer une autre Ã©tape intermÃ©diaire
     Trace-FunctionStep -StepName "Traitement" -StepData $result
 
     # Tracer la sortie de la fonction
@@ -115,26 +115,26 @@ function Test-TraceFunction {
 Set-TracingConfiguration -Enabled $true -Level "Debug" -IndentSize 2 -IndentChar " " -Category "TestTracing"
 
 # Appeler la fonction de test
-Write-Host "  Appel de la fonction Test-TraceFunction avec des paramètres simples:" -ForegroundColor Cyan
+Write-Host "  Appel de la fonction Test-TraceFunction avec des paramÃ¨tres simples:" -ForegroundColor Cyan
 $result = Test-TraceFunction -Param1 "Test"
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "Test - 42"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Test - 42" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Test - 42" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
-# Test 4: Tester la fonction Trace-FunctionEntry avec des paramètres complexes
-Write-Host "`nTest 4: Tester la fonction Trace-FunctionEntry avec des paramètres complexes" -ForegroundColor Cyan
+# Test 4: Tester la fonction Trace-FunctionEntry avec des paramÃ¨tres complexes
+Write-Host "`nTest 4: Tester la fonction Trace-FunctionEntry avec des paramÃ¨tres complexes" -ForegroundColor Cyan
 
-# Définir une fonction de test avec des paramètres complexes
+# DÃ©finir une fonction de test avec des paramÃ¨tres complexes
 function Test-TraceFunctionComplex {
     [CmdletBinding()]
     param (
@@ -145,7 +145,7 @@ function Test-TraceFunctionComplex {
         [array]$ArrayParam = @(1, 2, 3)
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-FunctionEntry
 
     # Faire quelque chose
@@ -157,8 +157,8 @@ function Test-TraceFunctionComplex {
     return $result
 }
 
-# Appeler la fonction de test avec des paramètres complexes
-Write-Host "  Appel de la fonction Test-TraceFunctionComplex avec des paramètres complexes:" -ForegroundColor Cyan
+# Appeler la fonction de test avec des paramÃ¨tres complexes
+Write-Host "  Appel de la fonction Test-TraceFunctionComplex avec des paramÃ¨tres complexes:" -ForegroundColor Cyan
 $complexParam = @{
     Key1 = "Value1"
     Key2 = 42
@@ -169,23 +169,23 @@ $complexParam = @{
 $arrayParam = @("One", "Two", "Three", "Four")
 $result = Test-TraceFunctionComplex -ComplexParam $complexParam -ArrayParam $arrayParam
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "3 - 4"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: 3 - 4" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: 3 - 4" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
 # Test 5: Tester la gestion de la profondeur
 Write-Host "`nTest 5: Tester la gestion de la profondeur" -ForegroundColor Cyan
 
-# Définir des fonctions imbriquées
+# DÃ©finir des fonctions imbriquÃ©es
 function Test-OuterFunction {
     [CmdletBinding()]
     param (
@@ -193,7 +193,7 @@ function Test-OuterFunction {
         [string]$Param
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-FunctionEntry
 
     # Appeler la fonction interne
@@ -215,7 +215,7 @@ function Test-MiddleFunction {
         [string]$Param
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-FunctionEntry
 
     # Appeler la fonction interne
@@ -237,7 +237,7 @@ function Test-InnerFunction {
         [string]$Param
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-FunctionEntry
 
     # Faire quelque chose
@@ -253,20 +253,20 @@ function Test-InnerFunction {
 Set-TracingConfiguration -Enabled $true -Level "Debug" -IndentSize 2 -IndentChar " " -MaxDepth 10 -Category "TestTracing"
 
 # Appeler la fonction externe
-Write-Host "  Appel de fonctions imbriquées avec gestion de la profondeur:" -ForegroundColor Cyan
+Write-Host "  Appel de fonctions imbriquÃ©es avec gestion de la profondeur:" -ForegroundColor Cyan
 $result = Test-OuterFunction -Param "DepthTest"
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "Outer: DepthTest"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Outer: DepthTest" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Outer: DepthTest" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
 # Test 6: Tester la limitation de profondeur
@@ -276,23 +276,23 @@ Write-Host "`nTest 6: Tester la limitation de profondeur" -ForegroundColor Cyan
 Set-TracingConfiguration -Enabled $true -Level "Debug" -MaxDepth 1 -Category "TestTracing"
 
 # Appeler la fonction externe
-Write-Host "  Appel de fonctions imbriquées avec limitation de profondeur:" -ForegroundColor Cyan
+Write-Host "  Appel de fonctions imbriquÃ©es avec limitation de profondeur:" -ForegroundColor Cyan
 $result = Test-OuterFunction -Param "DepthLimitTest"
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "Outer: DepthLimitTest"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Outer: DepthLimitTest" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Outer: DepthLimitTest" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
-# Réinitialiser la configuration
+# RÃ©initialiser la configuration
 Set-TracingConfiguration -Enabled $true -Level "Debug" -IndentSize 2 -IndentChar " " -MaxDepth 10 -Category "Tracing"
 
-Write-Host "`nTests des fonctions de trace terminés." -ForegroundColor Cyan
+Write-Host "`nTests des fonctions de trace terminÃ©s." -ForegroundColor Cyan

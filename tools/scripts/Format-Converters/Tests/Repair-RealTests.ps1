@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Diagnostique et répare les problèmes dans les tests réels.
+    Diagnostique et rÃ©pare les problÃ¨mes dans les tests rÃ©els.
 
 .DESCRIPTION
-    Ce script analyse les tests réels pour identifier les problèmes courants
-    et propose des corrections pour les résoudre.
+    Ce script analyse les tests rÃ©els pour identifier les problÃ¨mes courants
+    et propose des corrections pour les rÃ©soudre.
 
 .PARAMETER Fix
-    Indique si les problèmes détectés doivent être corrigés automatiquement.
-    Par défaut, cette option est désactivée.
+    Indique si les problÃ¨mes dÃ©tectÃ©s doivent Ãªtre corrigÃ©s automatiquement.
+    Par dÃ©faut, cette option est dÃ©sactivÃ©e.
 
 .PARAMETER Verbose
-    Affiche des informations détaillées sur les problèmes détectés.
+    Affiche des informations dÃ©taillÃ©es sur les problÃ¨mes dÃ©tectÃ©s.
 
 .EXAMPLE
     .\Repair-RealTests.ps1 -Verbose
-    Analyse les tests réels et affiche les problèmes détectés.
+    Analyse les tests rÃ©els et affiche les problÃ¨mes dÃ©tectÃ©s.
 
 .EXAMPLE
     .\Repair-RealTests.ps1 -Fix
-    Analyse les tests réels et corrige automatiquement les problèmes détectés.
+    Analyse les tests rÃ©els et corrige automatiquement les problÃ¨mes dÃ©tectÃ©s.
 #>
 
 [CmdletBinding()]
@@ -38,7 +38,7 @@ function Analyze-TestFile {
 
     Write-Verbose "Analyse du fichier : $FilePath"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return $null
@@ -47,7 +47,7 @@ function Analyze-TestFile {
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
 
-    # Créer un objet pour stocker les problèmes détectés
+    # CrÃ©er un objet pour stocker les problÃ¨mes dÃ©tectÃ©s
     $issues = @{
         FilePath = $FilePath
         MissingImports = @()
@@ -57,7 +57,7 @@ function Analyze-TestFile {
         Fixes = @()
     }
 
-    # Vérifier les imports de module
+    # VÃ©rifier les imports de module
     if (-not ($content -match "Import-Module.*Format-Converters")) {
         $issues.MissingImports += "Import-Module Format-Converters"
         $issues.Fixes += @{
@@ -79,13 +79,13 @@ if (Test-Path -Path `$modulePath) {
     Import-Module `$modulePath -Force
 }
 else {
-    Write-Error "Le module Format-Converters n'a pas été trouvé à l'emplacement : `$modulePath"
+    Write-Error "Le module Format-Converters n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : `$modulePath"
     exit 1
 }
 
 "@
 
-                # Ajouter l'import après les commentaires initiaux
+                # Ajouter l'import aprÃ¨s les commentaires initiaux
                 if ($content -match "^#.*\n+") {
                     $content = $content -replace "^(#.*\n+)", "`$1$importStatement"
                 }
@@ -94,72 +94,72 @@ else {
                 }
 
                 Set-Content -Path $FilePath -Value $content
-                Write-Host "Import du module ajouté à $FilePath" -ForegroundColor Green
+                Write-Host "Import du module ajoutÃ© Ã  $FilePath" -ForegroundColor Green
             }
         }
     }
 
-    # Vérifier les paramètres null
+    # VÃ©rifier les paramÃ¨tres null
     if ($content -match "Get-Command.*-Name.*null") {
         $issues.NullParameters += "Get-Command -Name `$null"
         $issues.Fixes += @{
             Type = "NullParameter"
-            Description = "Corriger l'appel à Get-Command avec un paramètre null"
+            Description = "Corriger l'appel Ã  Get-Command avec un paramÃ¨tre null"
             Fix = {
                 param($FilePath)
                 $content = Get-Content -Path $FilePath -Raw
                 $content = $content -replace "Get-Command.*-Name.*null", "Get-Command -Name 'Format-Converters'"
                 Set-Content -Path $FilePath -Value $content
-                Write-Host "Paramètre null corrigé dans $FilePath" -ForegroundColor Green
+                Write-Host "ParamÃ¨tre null corrigÃ© dans $FilePath" -ForegroundColor Green
             }
         }
     }
 
-    # Vérifier les chemins null
+    # VÃ©rifier les chemins null
     if ($content -match "Test-Path.*-Path.*null") {
         $issues.NullParameters += "Test-Path -Path `$null"
         $issues.Fixes += @{
             Type = "NullParameter"
-            Description = "Corriger l'appel à Test-Path avec un paramètre null"
+            Description = "Corriger l'appel Ã  Test-Path avec un paramÃ¨tre null"
             Fix = {
                 param($FilePath)
                 $content = Get-Content -Path $FilePath -Raw
                 $content = $content -replace "Test-Path.*-Path.*null", "Test-Path -Path `$PSScriptRoot"
                 Set-Content -Path $FilePath -Value $content
-                Write-Host "Paramètre null corrigé dans $FilePath" -ForegroundColor Green
+                Write-Host "ParamÃ¨tre null corrigÃ© dans $FilePath" -ForegroundColor Green
             }
         }
     }
 
-    # Vérifier les fonctions manquantes
+    # VÃ©rifier les fonctions manquantes
     $functionMatches = [regex]::Matches($content, "(?<=\s|^)([A-Z][a-z]+-[A-Za-z]+)")
     $functions = $functionMatches | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique
 
     foreach ($function in $functions) {
-        # Vérifier si la fonction existe dans le module
+        # VÃ©rifier si la fonction existe dans le module
         if (-not (Get-Command -Name $function -ErrorAction SilentlyContinue)) {
             $issues.MissingFunctions += $function
 
-            # Vérifier s'il s'agit d'une fonction avec un verbe non approuvé
+            # VÃ©rifier s'il s'agit d'une fonction avec un verbe non approuvÃ©
             if ($function -match "^Detect-") {
                 $newFunction = $function -replace "^Detect-", "Test-"
                 $issues.Fixes += @{
                     Type = "MissingFunction"
-                    Description = "Créer un alias pour la fonction $function vers $newFunction"
+                    Description = "CrÃ©er un alias pour la fonction $function vers $newFunction"
                     Fix = {
                         param($FilePath, $Function, $NewFunction)
                         $content = Get-Content -Path $FilePath -Raw
 
                         $aliasStatement = @"
 
-# Créer un alias pour la fonction $NewFunction vers $Function
+# CrÃ©er un alias pour la fonction $NewFunction vers $Function
 if (Get-Command -Name "$NewFunction" -ErrorAction SilentlyContinue) {
     New-Alias -Name "$Function" -Value "$NewFunction" -Scope Script
 }
 
 "@
 
-                        # Ajouter l'alias après les imports
+                        # Ajouter l'alias aprÃ¨s les imports
                         if ($content -match "Import-Module.*\n") {
                             $content = $content -replace "(Import-Module.*\n)", "`$1$aliasStatement"
                         }
@@ -168,7 +168,7 @@ if (Get-Command -Name "$NewFunction" -ErrorAction SilentlyContinue) {
                         }
 
                         Set-Content -Path $FilePath -Value $content
-                        Write-Host "Alias pour $Function vers $NewFunction ajouté à $FilePath" -ForegroundColor Green
+                        Write-Host "Alias pour $Function vers $NewFunction ajoutÃ© Ã  $FilePath" -ForegroundColor Green
                     }
                     Parameters = @{
                         Function = $function
@@ -206,7 +206,7 @@ function $Function {
 
 "@
 
-                        # Ajouter la fonction stub après les imports
+                        # Ajouter la fonction stub aprÃ¨s les imports
                         if ($content -match "Import-Module.*\n") {
                             $content = $content -replace "(Import-Module.*\n)", "`$1$stubFunction"
                         }
@@ -215,7 +215,7 @@ function $Function {
                         }
 
                         Set-Content -Path $FilePath -Value $content
-                        Write-Host "Fonction stub pour $Function ajoutée à $FilePath" -ForegroundColor Green
+                        Write-Host "Fonction stub pour $Function ajoutÃ©e Ã  $FilePath" -ForegroundColor Green
                     }
                     Parameters = @{
                         Function = $function
@@ -228,14 +228,14 @@ function $Function {
     return $issues
 }
 
-# Fonction pour afficher les problèmes détectés
+# Fonction pour afficher les problÃ¨mes dÃ©tectÃ©s
 function Show-Issues {
     param (
         [Parameter(Mandatory = $true)]
         [object]$Issues
     )
 
-    Write-Host "`nProblèmes détectés dans le fichier : $($Issues.FilePath)" -ForegroundColor Yellow
+    Write-Host "`nProblÃ¨mes dÃ©tectÃ©s dans le fichier : $($Issues.FilePath)" -ForegroundColor Yellow
 
     if ($Issues.MissingImports.Count -gt 0) {
         Write-Host "  Imports manquants :" -ForegroundColor Yellow
@@ -245,7 +245,7 @@ function Show-Issues {
     }
 
     if ($Issues.NullParameters.Count -gt 0) {
-        Write-Host "  Paramètres null :" -ForegroundColor Yellow
+        Write-Host "  ParamÃ¨tres null :" -ForegroundColor Yellow
         foreach ($param in $Issues.NullParameters) {
             Write-Host "    - $param" -ForegroundColor Gray
         }
@@ -259,14 +259,14 @@ function Show-Issues {
     }
 
     if ($Issues.OtherIssues.Count -gt 0) {
-        Write-Host "  Autres problèmes :" -ForegroundColor Yellow
+        Write-Host "  Autres problÃ¨mes :" -ForegroundColor Yellow
         foreach ($issue in $Issues.OtherIssues) {
             Write-Host "    - $issue" -ForegroundColor Gray
         }
     }
 
     if ($Issues.Fixes.Count -gt 0) {
-        Write-Host "  Corrections proposées :" -ForegroundColor Green
+        Write-Host "  Corrections proposÃ©es :" -ForegroundColor Green
         foreach ($fix in $Issues.Fixes) {
             Write-Host "    - $($fix.Description)" -ForegroundColor Gray
         }
@@ -295,7 +295,7 @@ function Apply-Fixes {
     }
 }
 
-# Obtenir tous les fichiers de test réels
+# Obtenir tous les fichiers de test rÃ©els
 $realTestFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" |
     Where-Object { $_.Name -notlike "*.Simplified.ps1" } |
     ForEach-Object { $_.FullName }
@@ -316,18 +316,18 @@ foreach ($file in $realTestFiles) {
     }
 }
 
-# Afficher un résumé
-Write-Host "`n===== Résumé =====" -ForegroundColor Cyan
-Write-Host "Fichiers analysés : $($realTestFiles.Count)" -ForegroundColor Gray
-Write-Host "Fichiers avec problèmes : $($allIssues.Count)" -ForegroundColor Gray
+# Afficher un rÃ©sumÃ©
+Write-Host "`n===== RÃ©sumÃ© =====" -ForegroundColor Cyan
+Write-Host "Fichiers analysÃ©s : $($realTestFiles.Count)" -ForegroundColor Gray
+Write-Host "Fichiers avec problÃ¨mes : $($allIssues.Count)" -ForegroundColor Gray
 
 $totalFixes = ($allIssues | ForEach-Object { $_.Fixes.Count } | Measure-Object -Sum).Sum
-Write-Host "Corrections proposées : $totalFixes" -ForegroundColor Gray
+Write-Host "Corrections proposÃ©es : $totalFixes" -ForegroundColor Gray
 
 if ($Fix) {
-    Write-Host "`nLes corrections ont été appliquées." -ForegroundColor Green
-    Write-Host "Exécutez les tests pour vérifier si les problèmes ont été résolus." -ForegroundColor Green
+    Write-Host "`nLes corrections ont Ã©tÃ© appliquÃ©es." -ForegroundColor Green
+    Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green
 }
 else {
-    Write-Host "`nPour appliquer les corrections, exécutez ce script avec le paramètre -Fix." -ForegroundColor Yellow
+    Write-Host "`nPour appliquer les corrections, exÃ©cutez ce script avec le paramÃ¨tre -Fix." -ForegroundColor Yellow
 }

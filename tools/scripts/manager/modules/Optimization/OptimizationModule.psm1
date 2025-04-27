@@ -1,4 +1,4 @@
-# Module d'optimisation pour le Script Manager
+﻿# Module d'optimisation pour le Script Manager
 # Ce module coordonne l'optimisation et l'intelligence des scripts
 # Author: Script Manager
 # Version: 1.0
@@ -25,16 +25,16 @@ foreach ($Module in $SubModules) {
 function Invoke-ScriptOptimization {
     <#
     .SYNOPSIS
-        Optimise les scripts et fournit des suggestions d'amélioration intelligentes
+        Optimise les scripts et fournit des suggestions d'amÃ©lioration intelligentes
     .DESCRIPTION
-        Analyse les scripts, détecte les anti-patterns, suggère des améliorations
+        Analyse les scripts, dÃ©tecte les anti-patterns, suggÃ¨re des amÃ©liorations
         et assiste dans le refactoring du code
     .PARAMETER AnalysisPath
         Chemin vers le fichier d'analyse JSON
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de l'optimisation
+        Chemin oÃ¹ enregistrer les rÃ©sultats de l'optimisation
     .PARAMETER LearningEnabled
-        Active l'apprentissage des modèles de code
+        Active l'apprentissage des modÃ¨les de code
     .PARAMETER RefactoringMode
         Mode de refactoring (Suggestion, Interactive, Automatic)
     .EXAMPLE
@@ -54,9 +54,9 @@ function Invoke-ScriptOptimization {
         [string]$RefactoringMode = "Suggestion"
     )
     
-    # Vérifier si le fichier d'analyse existe
+    # VÃ©rifier si le fichier d'analyse existe
     if (-not (Test-Path -Path $AnalysisPath)) {
-        Write-Error "Fichier d'analyse non trouvé: $AnalysisPath"
+        Write-Error "Fichier d'analyse non trouvÃ©: $AnalysisPath"
         return $null
     }
     
@@ -69,37 +69,37 @@ function Invoke-ScriptOptimization {
     }
     
     Write-Host "Optimisation des scripts en cours..." -ForegroundColor Cyan
-    Write-Host "Nombre de scripts à optimiser: $($Analysis.TotalScripts)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts Ã  optimiser: $($Analysis.TotalScripts)" -ForegroundColor Cyan
     Write-Host "Mode de refactoring: $RefactoringMode" -ForegroundColor Cyan
-    Write-Host "Apprentissage: $(if ($LearningEnabled) { 'Activé' } else { 'Désactivé' })" -ForegroundColor Cyan
+    Write-Host "Apprentissage: $(if ($LearningEnabled) { 'ActivÃ©' } else { 'DÃ©sactivÃ©' })" -ForegroundColor Cyan
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
     }
     
-    # Créer un tableau pour stocker les résultats de l'optimisation
+    # CrÃ©er un tableau pour stocker les rÃ©sultats de l'optimisation
     $OptimizationResults = @()
     
-    # Étape 1: Détecter les anti-patterns
-    Write-Host "Étape 1: Détection des anti-patterns..." -ForegroundColor Yellow
+    # Ã‰tape 1: DÃ©tecter les anti-patterns
+    Write-Host "Ã‰tape 1: DÃ©tection des anti-patterns..." -ForegroundColor Yellow
     $AntiPatterns = Find-CodeAntiPatterns -Analysis $Analysis -OutputPath $OutputPath
     
-    # Étape 2: Générer des suggestions d'amélioration
-    Write-Host "Étape 2: Génération des suggestions d'amélioration..." -ForegroundColor Yellow
+    # Ã‰tape 2: GÃ©nÃ©rer des suggestions d'amÃ©lioration
+    Write-Host "Ã‰tape 2: GÃ©nÃ©ration des suggestions d'amÃ©lioration..." -ForegroundColor Yellow
     $Suggestions = Get-CodeImprovementSuggestions -Analysis $Analysis -AntiPatterns $AntiPatterns -OutputPath $OutputPath
     
-    # Étape 3: Apprentissage des modèles de code (si activé)
+    # Ã‰tape 3: Apprentissage des modÃ¨les de code (si activÃ©)
     if ($LearningEnabled) {
-        Write-Host "Étape 3: Apprentissage des modèles de code..." -ForegroundColor Yellow
+        Write-Host "Ã‰tape 3: Apprentissage des modÃ¨les de code..." -ForegroundColor Yellow
         $LearningModel = Start-CodeLearning -Analysis $Analysis -OutputPath $OutputPath
     }
     
-    # Étape 4: Assistance au refactoring
-    Write-Host "Étape 4: Assistance au refactoring..." -ForegroundColor Yellow
+    # Ã‰tape 4: Assistance au refactoring
+    Write-Host "Ã‰tape 4: Assistance au refactoring..." -ForegroundColor Yellow
     $RefactoringResults = Invoke-CodeRefactoring -Analysis $Analysis -Suggestions $Suggestions -Mode $RefactoringMode -OutputPath $OutputPath
     
-    # Créer un objet avec les résultats de l'optimisation
+    # CrÃ©er un objet avec les rÃ©sultats de l'optimisation
     $Optimization = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $Analysis.TotalScripts
@@ -114,7 +114,7 @@ function Invoke-ScriptOptimization {
     $OptimizationPath = Join-Path -Path $OutputPath -ChildPath "optimization.json"
     $Optimization | ConvertTo-Json -Depth 10 | Set-Content -Path $OptimizationPath
     
-    Write-Host "Optimisation terminée. Résultats enregistrés dans: $OptimizationPath" -ForegroundColor Green
+    Write-Host "Optimisation terminÃ©e. RÃ©sultats enregistrÃ©s dans: $OptimizationPath" -ForegroundColor Green
     
     return $Optimization
 }

@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour le statut d'une tâche dans un fichier de roadmap.
+    Met Ã  jour le statut d'une tÃ¢che dans un fichier de roadmap.
 
 .DESCRIPTION
-    Cette fonction met à jour le statut d'une tâche dans un fichier de roadmap en modifiant
-    la case à cocher correspondante. Elle peut marquer une tâche comme terminée ou en cours.
+    Cette fonction met Ã  jour le statut d'une tÃ¢che dans un fichier de roadmap en modifiant
+    la case Ã  cocher correspondante. Elle peut marquer une tÃ¢che comme terminÃ©e ou en cours.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à modifier.
+    Chemin vers le fichier de roadmap Ã  modifier.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à mettre à jour (par exemple, "1.2.1.3.2.3").
+    Identifiant de la tÃ¢che Ã  mettre Ã  jour (par exemple, "1.2.1.3.2.3").
 
 .PARAMETER Status
-    Statut à appliquer à la tâche. Valeurs possibles : "Completed", "InProgress".
-    Par défaut : "Completed".
+    Statut Ã  appliquer Ã  la tÃ¢che. Valeurs possibles : "Completed", "InProgress".
+    Par dÃ©faut : "Completed".
 
 .EXAMPLE
     Update-RoadmapTaskStatus -FilePath "Roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Status "Completed"
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 function Update-RoadmapTaskStatus {
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -38,15 +38,15 @@ function Update-RoadmapTaskStatus {
         [string]$Status = "Completed"
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        throw "Le fichier spécifié n'existe pas : $FilePath"
+        throw "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
     }
 
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Encoding UTF8
     
-    # Trouver la ligne contenant la tâche à mettre à jour
+    # Trouver la ligne contenant la tÃ¢che Ã  mettre Ã  jour
     $taskLineIndex = -1
     $taskLinePattern = ".*\b$([regex]::Escape($TaskIdentifier))\b.*"
     
@@ -58,10 +58,10 @@ function Update-RoadmapTaskStatus {
     }
     
     if ($taskLineIndex -eq -1) {
-        throw "Tâche avec l'identifiant '$TaskIdentifier' non trouvée dans le fichier."
+        throw "TÃ¢che avec l'identifiant '$TaskIdentifier' non trouvÃ©e dans le fichier."
     }
     
-    # Modifier la case à cocher selon le statut demandé
+    # Modifier la case Ã  cocher selon le statut demandÃ©
     $taskLine = $content[$taskLineIndex]
     $newTaskLine = $taskLine
     
@@ -73,18 +73,18 @@ function Update-RoadmapTaskStatus {
         $newTaskLine = $taskLine -replace "\[\s*x\s*\]", "[ ]"
     }
     
-    # Si la ligne n'a pas changé, c'est que le statut est déjà correct
+    # Si la ligne n'a pas changÃ©, c'est que le statut est dÃ©jÃ  correct
     if ($newTaskLine -eq $taskLine) {
-        Write-Verbose "La tâche '$TaskIdentifier' a déjà le statut '$Status'."
+        Write-Verbose "La tÃ¢che '$TaskIdentifier' a dÃ©jÃ  le statut '$Status'."
         return
     }
     
-    # Mettre à jour le contenu
+    # Mettre Ã  jour le contenu
     $content[$taskLineIndex] = $newTaskLine
     
-    # Écrire le contenu modifié dans le fichier
-    if ($PSCmdlet.ShouldProcess($FilePath, "Mettre à jour le statut de la tâche '$TaskIdentifier' à '$Status'")) {
+    # Ã‰crire le contenu modifiÃ© dans le fichier
+    if ($PSCmdlet.ShouldProcess($FilePath, "Mettre Ã  jour le statut de la tÃ¢che '$TaskIdentifier' Ã  '$Status'")) {
         $content | Set-Content -Path $FilePath -Encoding UTF8
-        Write-Output "Statut de la tâche '$TaskIdentifier' mis à jour à '$Status'."
+        Write-Output "Statut de la tÃ¢che '$TaskIdentifier' mis Ã  jour Ã  '$Status'."
     }
 }

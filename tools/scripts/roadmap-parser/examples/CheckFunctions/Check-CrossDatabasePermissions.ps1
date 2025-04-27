@@ -1,7 +1,7 @@
-    param($ServerLogins, $ServerRoles, $ServerPermissions, $DatabaseRoles, $DatabasePermissions, $DatabaseUsers)
+﻿    param($ServerLogins, $ServerRoles, $ServerPermissions, $DatabaseRoles, $DatabasePermissions, $DatabaseUsers)
     $results = @()
     
-    # 1. Identifier les utilisateurs présents dans plusieurs bases de données
+    # 1. Identifier les utilisateurs prÃ©sents dans plusieurs bases de donnÃ©es
     $userDatabases = @{}
     
     foreach ($dbUser in $DatabaseUsers) {
@@ -16,7 +16,7 @@
         }
     }
     
-    # 2. Identifier les utilisateurs avec des permissions élevées dans plusieurs bases de données
+    # 2. Identifier les utilisateurs avec des permissions Ã©levÃ©es dans plusieurs bases de donnÃ©es
     $highPrivilegeRoles = @("db_owner", "db_securityadmin", "db_accessadmin", "db_ddladmin")
     $userHighPrivDatabases = @{}
     
@@ -38,7 +38,7 @@
         }
     }
     
-    # 3. Identifier les utilisateurs avec des permissions CONTROL DATABASE dans plusieurs bases de données
+    # 3. Identifier les utilisateurs avec des permissions CONTROL DATABASE dans plusieurs bases de donnÃ©es
     $userControlDatabases = @{}
     
     foreach ($dbPerm in $DatabasePermissions) {
@@ -63,12 +63,12 @@
         }
     }
     
-    # 4. Analyser les résultats et générer les anomalies
+    # 4. Analyser les rÃ©sultats et gÃ©nÃ©rer les anomalies
     
-    # 4.1. Utilisateurs avec des permissions élevées dans plusieurs bases de données
+    # 4.1. Utilisateurs avec des permissions Ã©levÃ©es dans plusieurs bases de donnÃ©es
     foreach ($login in $userHighPrivDatabases.Keys) {
         if ($userHighPrivDatabases[$login].Count -gt 1) {
-            # Exclure les comptes système et les comptes administratifs connus
+            # Exclure les comptes systÃ¨me et les comptes administratifs connus
             if (-not $login.StartsWith("##") -and 
                 $login -ne "sa" -and
                 -not $login.StartsWith("NT ")) {
@@ -77,17 +77,17 @@
                 
                 $results += [PSCustomObject]@{
                     LoginName = $login
-                    Description = "Le login possède des permissions élevées (rôles db_owner, db_securityadmin, etc.) dans plusieurs bases de données: $databaseList"
-                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire dans toutes ces bases de données"
+                    Description = "Le login possÃ¨de des permissions Ã©levÃ©es (rÃ´les db_owner, db_securityadmin, etc.) dans plusieurs bases de donnÃ©es: $databaseList"
+                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire dans toutes ces bases de donnÃ©es"
                 }
             }
         }
     }
     
-    # 4.2. Utilisateurs avec des permissions CONTROL DATABASE dans plusieurs bases de données
+    # 4.2. Utilisateurs avec des permissions CONTROL DATABASE dans plusieurs bases de donnÃ©es
     foreach ($login in $userControlDatabases.Keys) {
         if ($userControlDatabases[$login].Count -gt 1) {
-            # Exclure les comptes système et les comptes administratifs connus
+            # Exclure les comptes systÃ¨me et les comptes administratifs connus
             if (-not $login.StartsWith("##") -and 
                 $login -ne "sa" -and
                 -not $login.StartsWith("NT ")) {
@@ -96,19 +96,19 @@
                 
                 $results += [PSCustomObject]@{
                     LoginName = $login
-                    Description = "Le login possède la permission CONTROL DATABASE dans plusieurs bases de données: $databaseList"
-                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire dans toutes ces bases de données"
+                    Description = "Le login possÃ¨de la permission CONTROL DATABASE dans plusieurs bases de donnÃ©es: $databaseList"
+                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire dans toutes ces bases de donnÃ©es"
                 }
             }
         }
     }
     
-    # 4.3. Utilisateurs non-administratifs présents dans un grand nombre de bases de données
-    $databaseThreshold = 5  # Seuil à partir duquel le nombre de bases de données est considéré comme élevé
+    # 4.3. Utilisateurs non-administratifs prÃ©sents dans un grand nombre de bases de donnÃ©es
+    $databaseThreshold = 5  # Seuil Ã  partir duquel le nombre de bases de donnÃ©es est considÃ©rÃ© comme Ã©levÃ©
     
     foreach ($login in $userDatabases.Keys) {
         if ($userDatabases[$login].Count -gt $databaseThreshold) {
-            # Exclure les comptes système, les comptes administratifs connus et les comptes de service
+            # Exclure les comptes systÃ¨me, les comptes administratifs connus et les comptes de service
             if (-not $login.StartsWith("##") -and 
                 $login -ne "sa" -and
                 -not $login.StartsWith("NT ") -and
@@ -121,20 +121,20 @@
                 
                 $results += [PSCustomObject]@{
                     LoginName = $login
-                    Description = "Le login non-administratif est présent dans un nombre élevé de bases de données ($($userDatabases[$login].Count) > $databaseThreshold): $databaseList"
-                    RecommendedAction = "Vérifier si cet accès étendu est nécessaire ou s'il peut être limité"
+                    Description = "Le login non-administratif est prÃ©sent dans un nombre Ã©levÃ© de bases de donnÃ©es ($($userDatabases[$login].Count) > $databaseThreshold): $databaseList"
+                    RecommendedAction = "VÃ©rifier si cet accÃ¨s Ã©tendu est nÃ©cessaire ou s'il peut Ãªtre limitÃ©"
                 }
             }
         }
     }
     
-    # 4.4. Utilisateurs avec des permissions dans des bases de données de différents environnements
+    # 4.4. Utilisateurs avec des permissions dans des bases de donnÃ©es de diffÃ©rents environnements
     $environmentPatterns = @(
-        @{ Pattern = "*dev*"; Environment = "Développement" },
+        @{ Pattern = "*dev*"; Environment = "DÃ©veloppement" },
         @{ Pattern = "*test*"; Environment = "Test" },
-        @{ Pattern = "*qa*"; Environment = "Assurance qualité" },
+        @{ Pattern = "*qa*"; Environment = "Assurance qualitÃ©" },
         @{ Pattern = "*prod*"; Environment = "Production" },
-        @{ Pattern = "*stage*"; Environment = "Préproduction" }
+        @{ Pattern = "*stage*"; Environment = "PrÃ©production" }
     )
     
     foreach ($login in $userDatabases.Keys) {
@@ -153,7 +153,7 @@
         }
         
         if ($userEnvironments.Keys.Count -gt 1) {
-            # Exclure les comptes système et les comptes administratifs connus
+            # Exclure les comptes systÃ¨me et les comptes administratifs connus
             if (-not $login.StartsWith("##") -and 
                 $login -ne "sa" -and
                 -not $login.StartsWith("NT ")) {
@@ -162,8 +162,8 @@
                 
                 $results += [PSCustomObject]@{
                     LoginName = $login
-                    Description = "Le login possède des permissions dans des bases de données de différents environnements: $environmentList"
-                    RecommendedAction = "Séparer les accès par environnement pour respecter la séparation des environnements"
+                    Description = "Le login possÃ¨de des permissions dans des bases de donnÃ©es de diffÃ©rents environnements: $environmentList"
+                    RecommendedAction = "SÃ©parer les accÃ¨s par environnement pour respecter la sÃ©paration des environnements"
                 }
             }
         }

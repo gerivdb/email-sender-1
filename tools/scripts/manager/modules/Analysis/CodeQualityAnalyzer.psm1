@@ -1,5 +1,5 @@
-# Module d'analyse de la qualité du code pour le Script Manager
-# Ce module évalue la qualité du code des scripts
+﻿# Module d'analyse de la qualitÃ© du code pour le Script Manager
+# Ce module Ã©value la qualitÃ© du code des scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: analysis, quality, code
@@ -7,11 +7,11 @@
 function Measure-CodeQuality {
     <#
     .SYNOPSIS
-        Évalue la qualité du code d'un script
+        Ã‰value la qualitÃ© du code d'un script
     .DESCRIPTION
-        Analyse le code pour évaluer sa qualité selon plusieurs critères
+        Analyse le code pour Ã©valuer sa qualitÃ© selon plusieurs critÃ¨res
     .PARAMETER Content
-        Contenu du script à analyser
+        Contenu du script Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -27,7 +27,7 @@ function Measure-CodeQuality {
         [string]$ScriptType
     )
     
-    # Initialiser l'objet de qualité
+    # Initialiser l'objet de qualitÃ©
     $Quality = @{
         Score = 0
         MaxScore = 100
@@ -36,7 +36,7 @@ function Measure-CodeQuality {
         Recommendations = @()
     }
     
-    # Définir les métriques de base
+    # DÃ©finir les mÃ©triques de base
     $Metrics = @{
         LineCount = 0
         CommentRatio = 0
@@ -59,7 +59,7 @@ function Measure-CodeQuality {
     $Metrics.AverageLineLength = if ($LineLengths.Count -gt 0) { ($LineLengths | Measure-Object -Average).Average } else { 0 }
     $Metrics.MaxLineLength = if ($LineLengths.Count -gt 0) { ($LineLengths | Measure-Object -Maximum).Maximum } else { 0 }
     
-    # Analyse spécifique au type de script
+    # Analyse spÃ©cifique au type de script
     switch ($ScriptType) {
         "PowerShell" {
             # Compter les commentaires et calculer le ratio
@@ -70,15 +70,15 @@ function Measure-CodeQuality {
             $FunctionMatches = [regex]::Matches($Content, "function\s+([a-zA-Z0-9_-]+)")
             $Metrics.FunctionCount = $FunctionMatches.Count
             
-            # Calculer la complexité
+            # Calculer la complexitÃ©
             $Conditionals = ([regex]::Matches($Content, "if\s*\(")).Count + ([regex]::Matches($Content, "elseif\s*\(")).Count + ([regex]::Matches($Content, "switch\s*\(")).Count
             $Loops = ([regex]::Matches($Content, "foreach\s*\(")).Count + ([regex]::Matches($Content, "for\s*\(")).Count + ([regex]::Matches($Content, "while\s*\(")).Count + ([regex]::Matches($Content, "do\s*\{")).Count
             $Metrics.ComplexityScore = $Metrics.FunctionCount + $Conditionals + $Loops
             
-            # Vérifier les problèmes courants
+            # VÃ©rifier les problÃ¨mes courants
             if ($Metrics.MaxLineLength -gt 120) {
-                $Quality.Issues += "Lignes trop longues (max: $($Metrics.MaxLineLength) caractères)"
-                $Quality.Recommendations += "Limiter la longueur des lignes à 120 caractères maximum"
+                $Quality.Issues += "Lignes trop longues (max: $($Metrics.MaxLineLength) caractÃ¨res)"
+                $Quality.Recommendations += "Limiter la longueur des lignes Ã  120 caractÃ¨res maximum"
             }
             
             if ($Metrics.CommentRatio -lt 0.1) {
@@ -88,17 +88,17 @@ function Measure-CodeQuality {
             
             if ($Metrics.EmptyLineRatio -gt 0.3) {
                 $Quality.Issues += "Trop de lignes vides ($([math]::Round($Metrics.EmptyLineRatio * 100, 1))%)"
-                $Quality.Recommendations += "Réduire le nombre de lignes vides"
+                $Quality.Recommendations += "RÃ©duire le nombre de lignes vides"
             }
             
-            # Vérifier l'utilisation de $null à gauche des comparaisons
+            # VÃ©rifier l'utilisation de $null Ã  gauche des comparaisons
             $NullComparisons = [regex]::Matches($Content, "if\s*\(\s*(\$\w+)\s*-eq\s*\$null\s*\)")
             if ($NullComparisons.Count -gt 0) {
-                $Quality.Issues += "Comparaisons avec `$null du mauvais côté"
-                $Quality.Recommendations += "Placer `$null à gauche des comparaisons: if (`$null -eq `$variable)"
+                $Quality.Issues += "Comparaisons avec `$null du mauvais cÃ´tÃ©"
+                $Quality.Recommendations += "Placer `$null Ã  gauche des comparaisons: if (`$null -eq `$variable)"
             }
             
-            # Vérifier l'utilisation des verbes approuvés
+            # VÃ©rifier l'utilisation des verbes approuvÃ©s
             $UnapprovedVerbs = @()
             $FunctionNames = $FunctionMatches | ForEach-Object { $_.Groups[1].Value }
             foreach ($Function in $FunctionNames) {
@@ -109,8 +109,8 @@ function Measure-CodeQuality {
             }
             
             if ($UnapprovedVerbs.Count -gt 0) {
-                $Quality.Issues += "Utilisation de verbes non approuvés: $($UnapprovedVerbs -join ", ")"
-                $Quality.Recommendations += "Utiliser uniquement des verbes approuvés pour les fonctions PowerShell"
+                $Quality.Issues += "Utilisation de verbes non approuvÃ©s: $($UnapprovedVerbs -join ", ")"
+                $Quality.Recommendations += "Utiliser uniquement des verbes approuvÃ©s pour les fonctions PowerShell"
             }
         }
         "Python" {
@@ -122,15 +122,15 @@ function Measure-CodeQuality {
             $FunctionMatches = [regex]::Matches($Content, "def\s+([a-zA-Z0-9_]+)")
             $Metrics.FunctionCount = $FunctionMatches.Count
             
-            # Calculer la complexité
+            # Calculer la complexitÃ©
             $Conditionals = ([regex]::Matches($Content, "if\s+")).Count + ([regex]::Matches($Content, "elif\s+")).Count
             $Loops = ([regex]::Matches($Content, "for\s+")).Count + ([regex]::Matches($Content, "while\s+")).Count
             $Metrics.ComplexityScore = $Metrics.FunctionCount + $Conditionals + $Loops
             
-            # Vérifier les problèmes courants
+            # VÃ©rifier les problÃ¨mes courants
             if ($Metrics.MaxLineLength -gt 79) {
-                $Quality.Issues += "Lignes trop longues (max: $($Metrics.MaxLineLength) caractères)"
-                $Quality.Recommendations += "Limiter la longueur des lignes à 79 caractères (PEP 8)"
+                $Quality.Issues += "Lignes trop longues (max: $($Metrics.MaxLineLength) caractÃ¨res)"
+                $Quality.Recommendations += "Limiter la longueur des lignes Ã  79 caractÃ¨res (PEP 8)"
             }
             
             if ($Metrics.CommentRatio -lt 0.1) {
@@ -138,11 +138,11 @@ function Measure-CodeQuality {
                 $Quality.Recommendations += "Ajouter plus de commentaires pour expliquer le code"
             }
             
-            # Vérifier l'utilisation de docstrings
+            # VÃ©rifier l'utilisation de docstrings
             $DocstringCount = ([regex]::Matches($Content, '""".*?"""')).Count + ([regex]::Matches($Content, "'''.*?'''")).Count
             if ($Metrics.FunctionCount > 0 -and $DocstringCount < $Metrics.FunctionCount) {
                 $Quality.Issues += "Manque de docstrings pour certaines fonctions"
-                $Quality.Recommendations += "Ajouter des docstrings à toutes les fonctions"
+                $Quality.Recommendations += "Ajouter des docstrings Ã  toutes les fonctions"
             }
         }
         "Batch" {
@@ -154,18 +154,18 @@ function Measure-CodeQuality {
             $LabelMatches = [regex]::Matches($Content, "^:([a-zA-Z0-9_-]+)")
             $Metrics.FunctionCount = $LabelMatches.Count
             
-            # Calculer la complexité
+            # Calculer la complexitÃ©
             $Conditionals = ([regex]::Matches($Content, "if\s+")).Count
             $Loops = ([regex]::Matches($Content, "for\s+")).Count
             $Metrics.ComplexityScore = $Metrics.FunctionCount + $Conditionals + $Loops
             
-            # Vérifier les problèmes courants
+            # VÃ©rifier les problÃ¨mes courants
             if ($Metrics.CommentRatio -lt 0.1) {
                 $Quality.Issues += "Ratio de commentaires faible ($([math]::Round($Metrics.CommentRatio * 100, 1))%)"
                 $Quality.Recommendations += "Ajouter plus de commentaires pour expliquer le code"
             }
             
-            # Vérifier l'utilisation de chemins absolus
+            # VÃ©rifier l'utilisation de chemins absolus
             $AbsolutePaths = [regex]::Matches($Content, "[C-Z]:\\")
             if ($AbsolutePaths.Count -gt 0) {
                 $Quality.Issues += "Utilisation de chemins absolus"
@@ -181,18 +181,18 @@ function Measure-CodeQuality {
             $FunctionMatches = [regex]::Matches($Content, "function\s+([a-zA-Z0-9_-]+)|([a-zA-Z0-9_-]+)\(\)")
             $Metrics.FunctionCount = $FunctionMatches.Count
             
-            # Calculer la complexité
+            # Calculer la complexitÃ©
             $Conditionals = ([regex]::Matches($Content, "if\s+")).Count + ([regex]::Matches($Content, "elif\s+")).Count + ([regex]::Matches($Content, "case\s+")).Count
             $Loops = ([regex]::Matches($Content, "for\s+")).Count + ([regex]::Matches($Content, "while\s+")).Count + ([regex]::Matches($Content, "until\s+")).Count
             $Metrics.ComplexityScore = $Metrics.FunctionCount + $Conditionals + $Loops
             
-            # Vérifier les problèmes courants
+            # VÃ©rifier les problÃ¨mes courants
             if ($Metrics.CommentRatio -lt 0.1) {
                 $Quality.Issues += "Ratio de commentaires faible ($([math]::Round($Metrics.CommentRatio * 100, 1))%)"
                 $Quality.Recommendations += "Ajouter plus de commentaires pour expliquer le code"
             }
             
-            # Vérifier l'utilisation de chemins absolus
+            # VÃ©rifier l'utilisation de chemins absolus
             $AbsolutePaths = [regex]::Matches($Content, "^/")
             if ($AbsolutePaths.Count -gt 0) {
                 $Quality.Issues += "Utilisation de chemins absolus"
@@ -201,10 +201,10 @@ function Measure-CodeQuality {
         }
     }
     
-    # Calculer le score de qualité (formule simple)
+    # Calculer le score de qualitÃ© (formule simple)
     $BaseScore = 100
     
-    # Pénalités pour les problèmes
+    # PÃ©nalitÃ©s pour les problÃ¨mes
     $Penalties = @{
         LongLines = if ($Metrics.MaxLineLength -gt 120) { 10 } else { 0 }
         LowCommentRatio = if ($Metrics.CommentRatio -lt 0.1) { 15 } else { 0 }
@@ -223,7 +223,7 @@ function Measure-CodeQuality {
     $TotalBonuses = ($Bonuses.Values | Measure-Object -Sum).Sum
     $Quality.Score = [math]::Max(0, [math]::Min(100, $BaseScore - $TotalPenalties + $TotalBonuses))
     
-    # Ajouter les métriques à l'objet de qualité
+    # Ajouter les mÃ©triques Ã  l'objet de qualitÃ©
     $Quality.Metrics = $Metrics
     
     return $Quality

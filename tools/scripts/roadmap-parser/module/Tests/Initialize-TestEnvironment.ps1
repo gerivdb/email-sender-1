@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
     Configure l'environnement de test pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script configure l'environnement de test pour le module RoadmapParser en créant
-    les répertoires et fichiers nécessaires, et en définissant les variables globales
-    utilisées par les tests.
+    Ce script configure l'environnement de test pour le module RoadmapParser en crÃ©ant
+    les rÃ©pertoires et fichiers nÃ©cessaires, et en dÃ©finissant les variables globales
+    utilisÃ©es par les tests.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
-# Définir les chemins de base
+# DÃ©finir les chemins de base
 $script:TestRoot = Join-Path -Path $env:TEMP -ChildPath "RoadmapParserTests"
 $script:TestDataDir = Join-Path -Path $script:TestRoot -ChildPath "Data"
 $script:TestConfigDir = Join-Path -Path $script:TestRoot -ChildPath "Config"
@@ -21,12 +21,12 @@ $script:TestLogDir = Join-Path -Path $script:TestRoot -ChildPath "Logs"
 $script:TestOutputDir = Join-Path -Path $script:TestRoot -ChildPath "Output"
 $script:TestReportDir = Join-Path -Path $script:TestRoot -ChildPath "Reports"
 
-# Créer les répertoires de test
+# CrÃ©er les rÃ©pertoires de test
 function Initialize-TestDirectories {
     [CmdletBinding()]
     param()
 
-    # Créer les répertoires s'ils n'existent pas
+    # CrÃ©er les rÃ©pertoires s'ils n'existent pas
     $directories = @(
         $script:TestRoot,
         $script:TestDataDir,
@@ -39,19 +39,19 @@ function Initialize-TestDirectories {
     foreach ($dir in $directories) {
         if (-not (Test-Path -Path $dir -PathType Container)) {
             New-Item -Path $dir -ItemType Directory -Force | Out-Null
-            Write-Verbose "Répertoire créé: $dir"
+            Write-Verbose "RÃ©pertoire crÃ©Ã©: $dir"
         } else {
-            Write-Verbose "Répertoire existant: $dir"
+            Write-Verbose "RÃ©pertoire existant: $dir"
         }
     }
 }
 
-# Nettoyer les répertoires de test
+# Nettoyer les rÃ©pertoires de test
 function Clear-TestDirectories {
     [CmdletBinding()]
     param()
 
-    # Nettoyer les répertoires
+    # Nettoyer les rÃ©pertoires
     $directories = @(
         $script:TestDataDir,
         $script:TestConfigDir,
@@ -63,17 +63,17 @@ function Clear-TestDirectories {
     foreach ($dir in $directories) {
         if (Test-Path -Path $dir -PathType Container) {
             Get-ChildItem -Path $dir -Recurse | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
-            Write-Verbose "Répertoire nettoyé: $dir"
+            Write-Verbose "RÃ©pertoire nettoyÃ©: $dir"
         }
     }
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 function Initialize-TestFiles {
     [CmdletBinding()]
     param()
 
-    # Créer un fichier de configuration de test
+    # CrÃ©er un fichier de configuration de test
     $configFile = Join-Path -Path $script:TestConfigDir -ChildPath "test-config.json"
     $config = @{
         LogLevel = "Debug"
@@ -85,9 +85,9 @@ function Initialize-TestFiles {
         MaxLogFiles = 5
     }
     $config | ConvertTo-Json | Set-Content -Path $configFile -Force
-    Write-Verbose "Fichier de configuration créé: $configFile"
+    Write-Verbose "Fichier de configuration crÃ©Ã©: $configFile"
 
-    # Créer un fichier de données de test
+    # CrÃ©er un fichier de donnÃ©es de test
     $dataFile = Join-Path -Path $script:TestDataDir -ChildPath "test-data.json"
     $data = @(
         [PSCustomObject]@{
@@ -113,31 +113,31 @@ function Initialize-TestFiles {
         }
     )
     $data | ConvertTo-Json | Set-Content -Path $dataFile -Force
-    Write-Verbose "Fichier de données créé: $dataFile"
+    Write-Verbose "Fichier de donnÃ©es crÃ©Ã©: $dataFile"
 
-    # Créer un fichier de roadmap de test
+    # CrÃ©er un fichier de roadmap de test
     $roadmapFile = Join-Path -Path $script:TestDataDir -ChildPath "test-roadmap.md"
     $roadmapContent = @"
 # Roadmap de test
 
 ## Section 1
-- [ ] Tâche 1
-  - [ ] Sous-tâche 1.1
-  - [ ] Sous-tâche 1.2
-- [ ] Tâche 2
-  - [ ] Sous-tâche 2.1
-  - [ ] Sous-tâche 2.2
+- [ ] TÃ¢che 1
+  - [ ] Sous-tÃ¢che 1.1
+  - [ ] Sous-tÃ¢che 1.2
+- [ ] TÃ¢che 2
+  - [ ] Sous-tÃ¢che 2.1
+  - [ ] Sous-tÃ¢che 2.2
 
 ## Section 2
-- [ ] Tâche 3
-  - [ ] Sous-tâche 3.1
-  - [ ] Sous-tâche 3.2
-- [ ] Tâche 4
-  - [ ] Sous-tâche 4.1
-  - [ ] Sous-tâche 4.2
+- [ ] TÃ¢che 3
+  - [ ] Sous-tÃ¢che 3.1
+  - [ ] Sous-tÃ¢che 3.2
+- [ ] TÃ¢che 4
+  - [ ] Sous-tÃ¢che 4.1
+  - [ ] Sous-tÃ¢che 4.2
 "@
     Set-Content -Path $roadmapFile -Value $roadmapContent -Force
-    Write-Verbose "Fichier de roadmap créé: $roadmapFile"
+    Write-Verbose "Fichier de roadmap crÃ©Ã©: $roadmapFile"
 }
 
 # Fonction principale pour initialiser l'environnement de test
@@ -149,21 +149,21 @@ function Initialize-TestEnvironment {
 
     Write-Host "Initialisation de l'environnement de test..."
 
-    # Nettoyer les répertoires si demandé
+    # Nettoyer les rÃ©pertoires si demandÃ©
     if ($Clean) {
-        Write-Host "Nettoyage des répertoires de test..."
+        Write-Host "Nettoyage des rÃ©pertoires de test..."
         Clear-TestDirectories
     }
 
-    # Créer les répertoires
-    Write-Host "Création des répertoires de test..."
+    # CrÃ©er les rÃ©pertoires
+    Write-Host "CrÃ©ation des rÃ©pertoires de test..."
     Initialize-TestDirectories
 
-    # Créer les fichiers de test
-    Write-Host "Création des fichiers de test..."
+    # CrÃ©er les fichiers de test
+    Write-Host "CrÃ©ation des fichiers de test..."
     Initialize-TestFiles
 
-    # Définir les variables globales pour les tests
+    # DÃ©finir les variables globales pour les tests
     $Global:TestRoot = $script:TestRoot
     $Global:TestDataDir = $script:TestDataDir
     $Global:TestConfigDir = $script:TestConfigDir
@@ -171,8 +171,8 @@ function Initialize-TestEnvironment {
     $Global:TestOutputDir = $script:TestOutputDir
     $Global:TestReportDir = $script:TestReportDir
 
-    Write-Host "Environnement de test initialisé avec succès."
-    Write-Host "Répertoire racine des tests: $script:TestRoot"
+    Write-Host "Environnement de test initialisÃ© avec succÃ¨s."
+    Write-Host "RÃ©pertoire racine des tests: $script:TestRoot"
 }
 
 # Exporter les fonctions

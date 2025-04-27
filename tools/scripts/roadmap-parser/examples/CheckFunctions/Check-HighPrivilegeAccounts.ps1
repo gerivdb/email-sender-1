@@ -1,27 +1,27 @@
-    param($ServerLogins, $ServerRoles, $ServerPermissions)
+﻿    param($ServerLogins, $ServerRoles, $ServerPermissions)
     $results = @()
     
-    # Liste des rôles à privilèges élevés
+    # Liste des rÃ´les Ã  privilÃ¨ges Ã©levÃ©s
     $highPrivilegeRoles = @("sysadmin", "securityadmin", "serveradmin", "setupadmin", "dbcreator")
     
-    # 1. Détecter les comptes membres de rôles à privilèges élevés
+    # 1. DÃ©tecter les comptes membres de rÃ´les Ã  privilÃ¨ges Ã©levÃ©s
     foreach ($role in $ServerRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
         foreach ($member in $role.Members) {
-            # Exclure les comptes système
+            # Exclure les comptes systÃ¨me
             if (-not $member.MemberName.StartsWith("##") -and 
                 -not $member.MemberName.StartsWith("NT ") -and
                 -not $member.MemberName -eq "sa") {
                 
                 $results += [PSCustomObject]@{
                     LoginName = $member.MemberName
-                    Description = "Le login est membre du rôle serveur à privilèges élevés: $($role.RoleName)"
-                    RecommendedAction = "Vérifier si ce niveau de privilège est nécessaire et conforme à la politique de sécurité"
+                    Description = "Le login est membre du rÃ´le serveur Ã  privilÃ¨ges Ã©levÃ©s: $($role.RoleName)"
+                    RecommendedAction = "VÃ©rifier si ce niveau de privilÃ¨ge est nÃ©cessaire et conforme Ã  la politique de sÃ©curitÃ©"
                 }
             }
         }
     }
     
-    # 2. Détecter les comptes avec des permissions équivalentes à des privilèges élevés
+    # 2. DÃ©tecter les comptes avec des permissions Ã©quivalentes Ã  des privilÃ¨ges Ã©levÃ©s
     $elevatedPermissions = @(
         "CONTROL SERVER", 
         "ALTER ANY LOGIN", 
@@ -50,15 +50,15 @@
             
             $results += [PSCustomObject]@{
                 LoginName = $login.GranteeName
-                Description = "Le login possède des permissions à privilèges élevés: $elevatedPermList"
-                RecommendedAction = "Vérifier si ces permissions sont nécessaires et conformes à la politique de sécurité"
+                Description = "Le login possÃ¨de des permissions Ã  privilÃ¨ges Ã©levÃ©s: $elevatedPermList"
+                RecommendedAction = "VÃ©rifier si ces permissions sont nÃ©cessaires et conformes Ã  la politique de sÃ©curitÃ©"
             }
         }
     }
     
-    # 3. Vérifier si des comptes non-administratifs ont des permissions administratives
+    # 3. VÃ©rifier si des comptes non-administratifs ont des permissions administratives
     $nonAdminWithAdminPerms = $ServerLogins | Where-Object {
-        # Exclure les comptes système et administratifs connus
+        # Exclure les comptes systÃ¨me et administratifs connus
         -not $_.LoginName.StartsWith("##") -and
         -not $_.LoginName.StartsWith("NT ") -and
         -not $_.LoginName -eq "sa" -and
@@ -67,7 +67,7 @@
     }
     
     foreach ($login in $nonAdminWithAdminPerms) {
-        # Vérifier si le login est membre d'un rôle à privilèges élevés
+        # VÃ©rifier si le login est membre d'un rÃ´le Ã  privilÃ¨ges Ã©levÃ©s
         $isHighPrivMember = $false
         foreach ($role in $ServerRoles | Where-Object { $highPrivilegeRoles -contains $_.RoleName }) {
             if ($role.Members | Where-Object { $_.MemberName -eq $login.LoginName }) {
@@ -79,8 +79,8 @@
         if ($isHighPrivMember) {
             $results += [PSCustomObject]@{
                 LoginName = $login.LoginName
-                Description = "Le login avec un nom non-administratif possède des privilèges administratifs"
-                RecommendedAction = "Vérifier si ce compte devrait avoir des privilèges administratifs"
+                Description = "Le login avec un nom non-administratif possÃ¨de des privilÃ¨ges administratifs"
+                RecommendedAction = "VÃ©rifier si ce compte devrait avoir des privilÃ¨ges administratifs"
             }
         }
     }

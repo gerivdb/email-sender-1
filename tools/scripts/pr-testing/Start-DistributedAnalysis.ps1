@@ -1,29 +1,29 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute une analyse distribuée sur plusieurs machines.
+    ExÃ©cute une analyse distribuÃ©e sur plusieurs machines.
 
 .DESCRIPTION
-    Ce script permet d'exécuter une analyse de code distribuée sur plusieurs machines
-    en parallèle, en coordonnant les tâches et en fusionnant les résultats.
+    Ce script permet d'exÃ©cuter une analyse de code distribuÃ©e sur plusieurs machines
+    en parallÃ¨le, en coordonnant les tÃ¢ches et en fusionnant les rÃ©sultats.
 
 .PARAMETER RepositoryPath
-    Chemin du dépôt Git à analyser.
+    Chemin du dÃ©pÃ´t Git Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport d'analyse.
+    Chemin oÃ¹ enregistrer le rapport d'analyse.
 
 .PARAMETER ComputerNames
-    Liste des noms d'ordinateurs sur lesquels exécuter l'analyse.
+    Liste des noms d'ordinateurs sur lesquels exÃ©cuter l'analyse.
 
 .PARAMETER MaxConcurrentJobs
-    Nombre maximum de tâches concurrentes à exécuter.
+    Nombre maximum de tÃ¢ches concurrentes Ã  exÃ©cuter.
 
 .PARAMETER ChunkSize
-    Nombre de fichiers à analyser par tâche.
+    Nombre de fichiers Ã  analyser par tÃ¢che.
 
 .PARAMETER UseCache
-    Indique s'il faut utiliser le cache pour améliorer les performances.
+    Indique s'il faut utiliser le cache pour amÃ©liorer les performances.
 
 .EXAMPLE
     .\Start-DistributedAnalysis.ps1 -RepositoryPath "C:\Repos\MyProject" -ComputerNames "Server1", "Server2"
@@ -55,7 +55,7 @@ param(
     [switch]$UseCache
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 Import-Module "$modulesPath\FileContentIndexer.psm1" -Force -ErrorAction SilentlyContinue
 Import-Module "$modulesPath\SyntaxAnalyzer.psm1" -Force -ErrorAction SilentlyContinue
@@ -88,10 +88,10 @@ function Split-FilesIntoChunks {
 function Invoke-ChunkAnalysis {
     param([string[]]$FilePaths, [switch]$UseCache)
     
-    # Créer un cache si demandé
+    # CrÃ©er un cache si demandÃ©
     $cache = if ($UseCache) { New-PRAnalysisCache -MaxMemoryItems 1000 } else { $null }
     
-    # Créer un analyseur de syntaxe
+    # CrÃ©er un analyseur de syntaxe
     $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
     
     # Analyser les fichiers
@@ -129,7 +129,7 @@ function Invoke-ChunkAnalysis {
     return $results
 }
 
-# Fonction pour fusionner les résultats
+# Fonction pour fusionner les rÃ©sultats
 function Merge-AnalysisResults {
     param([array]$Results)
     
@@ -157,7 +157,7 @@ function Merge-AnalysisResults {
     return $mergedResults
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-AnalysisReport {
     param([hashtable]$Results, [string]$OutputPath)
     
@@ -168,7 +168,7 @@ function New-AnalysisReport {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport d'analyse distribuée</title>
+    <title>Rapport d'analyse distribuÃ©e</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2, h3 { color: #0066cc; }
@@ -182,41 +182,41 @@ function New-AnalysisReport {
     </style>
 </head>
 <body>
-    <h1>Rapport d'analyse distribuée</h1>
+    <h1>Rapport d'analyse distribuÃ©e</h1>
     <p><strong>Date du rapport:</strong> $reportDate</p>
     <p><strong>Ordinateur:</strong> $computerName</p>
-    <p><strong>Dépôt:</strong> $RepositoryPath</p>
+    <p><strong>DÃ©pÃ´t:</strong> $RepositoryPath</p>
     
-    <h2>Résumé de l'analyse</h2>
+    <h2>RÃ©sumÃ© de l'analyse</h2>
     <table>
         <tr>
-            <th>Métrique</th>
+            <th>MÃ©trique</th>
             <th>Valeur</th>
         </tr>
         <tr>
-            <td>Nombre de fichiers analysés</td>
+            <td>Nombre de fichiers analysÃ©s</td>
             <td>$($Results.Count)</td>
         </tr>
         <tr>
-            <td>Nombre de problèmes détectés</td>
+            <td>Nombre de problÃ¨mes dÃ©tectÃ©s</td>
             <td>$($Results.Values | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum | Select-Object -ExpandProperty Sum)</td>
         </tr>
         <tr>
-            <td>Nombre d'ordinateurs utilisés</td>
+            <td>Nombre d'ordinateurs utilisÃ©s</td>
             <td>$($ComputerNames.Count)</td>
         </tr>
     </table>
     
-    <h2>Fichiers avec problèmes</h2>
+    <h2>Fichiers avec problÃ¨mes</h2>
     <table>
         <tr>
             <th>Fichier</th>
-            <th>Problèmes</th>
-            <th>Détails</th>
+            <th>ProblÃ¨mes</th>
+            <th>DÃ©tails</th>
         </tr>
 "@
 
-    # Trier les résultats par nombre de problèmes (décroissant)
+    # Trier les rÃ©sultats par nombre de problÃ¨mes (dÃ©croissant)
     $sortedResults = $Results.Values | Where-Object { $_.Issues.Count -gt 0 } | Sort-Object -Property { $_.Issues.Count } -Descending
     
     foreach ($result in $sortedResults) {
@@ -232,7 +232,7 @@ function New-AnalysisReport {
                     <tr>
                         <th>Ligne</th>
                         <th>Message</th>
-                        <th>Sévérité</th>
+                        <th>SÃ©vÃ©ritÃ©</th>
                     </tr>
 "@
 
@@ -269,19 +269,19 @@ function New-AnalysisReport {
     return $OutputPath
 }
 
-# Obtenir la liste des fichiers à analyser
-Write-Host "Obtention de la liste des fichiers à analyser..." -ForegroundColor Cyan
+# Obtenir la liste des fichiers Ã  analyser
+Write-Host "Obtention de la liste des fichiers Ã  analyser..." -ForegroundColor Cyan
 $files = Get-ChildItem -Path $RepositoryPath -Recurse -File | Where-Object {
     $_.Extension -in @(".ps1", ".psm1", ".py", ".js", ".html", ".css")
 }
 
-Write-Host "  $($files.Count) fichiers trouvés" -ForegroundColor Green
+Write-Host "  $($files.Count) fichiers trouvÃ©s" -ForegroundColor Green
 
 # Diviser les fichiers en lots
 Write-Host "Division des fichiers en lots..." -ForegroundColor Cyan
 $chunks = Split-FilesIntoChunks -FilePaths $files.FullName -ChunkSize $ChunkSize
 
-Write-Host "  $($chunks.Count) lots créés" -ForegroundColor Green
+Write-Host "  $($chunks.Count) lots crÃ©Ã©s" -ForegroundColor Green
 
 # Distribuer les lots sur les ordinateurs disponibles
 Write-Host "Distribution des lots sur les ordinateurs disponibles..." -ForegroundColor Cyan
@@ -290,15 +290,15 @@ $jobs = @()
 $jobIndex = 0
 
 foreach ($chunk in $chunks) {
-    # Sélectionner l'ordinateur à utiliser
+    # SÃ©lectionner l'ordinateur Ã  utiliser
     $computerIndex = $jobIndex % $ComputerNames.Count
     $computerName = $ComputerNames[$computerIndex]
     
-    # Créer un job pour analyser le lot
+    # CrÃ©er un job pour analyser le lot
     $job = Start-Job -ScriptBlock {
         param($Chunk, $UseCache, $ModulesPath)
         
-        # Importer les modules nécessaires
+        # Importer les modules nÃ©cessaires
         Import-Module "$ModulesPath\FileContentIndexer.psm1" -Force -ErrorAction SilentlyContinue
         Import-Module "$ModulesPath\SyntaxAnalyzer.psm1" -Force -ErrorAction SilentlyContinue
         Import-Module "$ModulesPath\PRAnalysisCache.psm1" -Force -ErrorAction SilentlyContinue
@@ -306,10 +306,10 @@ foreach ($chunk in $chunks) {
         # Analyser les fichiers
         $results = @()
         
-        # Créer un cache si demandé
+        # CrÃ©er un cache si demandÃ©
         $cache = if ($UseCache) { New-PRAnalysisCache -MaxMemoryItems 1000 } else { $null }
         
-        # Créer un analyseur de syntaxe
+        # CrÃ©er un analyseur de syntaxe
         $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
         
         foreach ($filePath in $Chunk) {
@@ -347,22 +347,22 @@ foreach ($chunk in $chunks) {
     $jobs += $job
     $jobIndex++
     
-    Write-Host "  Job $jobIndex démarré sur $computerName" -ForegroundColor Yellow
+    Write-Host "  Job $jobIndex dÃ©marrÃ© sur $computerName" -ForegroundColor Yellow
     
     # Limiter le nombre de jobs concurrents
     while ((Get-Job -State Running).Count -ge $MaxConcurrentJobs) {
         Start-Sleep -Milliseconds 500
         
-        # Récupérer les jobs terminés
+        # RÃ©cupÃ©rer les jobs terminÃ©s
         $completedJobs = Get-Job -State Completed
         foreach ($completedJob in $completedJobs) {
-            Write-Host "  Job $($completedJob.Id) terminé" -ForegroundColor Green
+            Write-Host "  Job $($completedJob.Id) terminÃ©" -ForegroundColor Green
             $completedJob | Receive-Job -Keep | Out-Null
         }
     }
 }
 
-# Attendre que tous les jobs soient terminés
+# Attendre que tous les jobs soient terminÃ©s
 Write-Host "Attente de la fin des jobs..." -ForegroundColor Cyan
 $remainingJobs = $jobs | Where-Object { $_.State -ne "Completed" }
 while ($remainingJobs.Count -gt 0) {
@@ -372,35 +372,35 @@ while ($remainingJobs.Count -gt 0) {
     # Afficher la progression
     $completedCount = $jobs.Count - $remainingJobs.Count
     $progress = [Math]::Round(($completedCount / $jobs.Count) * 100)
-    Write-Progress -Activity "Analyse distribuée" -Status "$completedCount / $($jobs.Count) jobs terminés" -PercentComplete $progress
+    Write-Progress -Activity "Analyse distribuÃ©e" -Status "$completedCount / $($jobs.Count) jobs terminÃ©s" -PercentComplete $progress
 }
 
-Write-Progress -Activity "Analyse distribuée" -Completed
+Write-Progress -Activity "Analyse distribuÃ©e" -Completed
 
-# Récupérer les résultats
-Write-Host "Récupération des résultats..." -ForegroundColor Cyan
+# RÃ©cupÃ©rer les rÃ©sultats
+Write-Host "RÃ©cupÃ©ration des rÃ©sultats..." -ForegroundColor Cyan
 $results = @()
 foreach ($job in $jobs) {
     $results += $job | Receive-Job
     Remove-Job -Job $job
 }
 
-# Fusionner les résultats
-Write-Host "Fusion des résultats..." -ForegroundColor Cyan
+# Fusionner les rÃ©sultats
+Write-Host "Fusion des rÃ©sultats..." -ForegroundColor Cyan
 $mergedResults = Merge-AnalysisResults -Results $results
 
-Write-Host "  $($mergedResults.Count) fichiers analysés" -ForegroundColor Green
+Write-Host "  $($mergedResults.Count) fichiers analysÃ©s" -ForegroundColor Green
 
-# Générer le rapport
-Write-Host "Génération du rapport..." -ForegroundColor Cyan
+# GÃ©nÃ©rer le rapport
+Write-Host "GÃ©nÃ©ration du rapport..." -ForegroundColor Cyan
 $reportPath = New-AnalysisReport -Results $mergedResults -OutputPath $OutputPath
 
-Write-Host "  Rapport généré: $reportPath" -ForegroundColor Green
+Write-Host "  Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 
-# Ouvrir le rapport dans le navigateur par défaut
+# Ouvrir le rapport dans le navigateur par dÃ©faut
 Start-Process $reportPath
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return @{
     Results = $mergedResults
     ReportPath = $reportPath

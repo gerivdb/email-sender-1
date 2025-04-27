@@ -1,4 +1,4 @@
-{
+﻿{
   "http": {
     "default_ttl": 3600,
     "methods_to_cache": ["GET", "HEAD"],

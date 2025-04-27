@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Corrects multiple PowerShell scripts in parallel using efficient Runspace Pools.
 .DESCRIPTION
@@ -30,7 +30,7 @@
         @{
             Name = "OldCmdlet"
             Pattern = 'Resolve-DnsName' # Example: Find an old cmdlet
-            Description = "Utilisation de Resolve-DnsName détectée"
+            Description = "Utilisation de Resolve-DnsName dÃ©tectÃ©e"
             Correction = { param($Line) $Line -replace 'Resolve-DnsName', 'AlternativeCmdlet' }
         }
     )
@@ -62,7 +62,7 @@ if ($null -eq $ErrorPatterns) {
             Name        = "HardcodedPath"
             # Improved regex: Looks for drive letter or UNC path, avoids escaped quotes. Handles single/double quotes.
             Pattern     = '(?<![\\])(["''])((?:[A-Za-z]:[\\/]|\\\\)[^''"]+)\1'
-            Description = "Chemin absolu codé en dur détecté"
+            Description = "Chemin absolu codÃ© en dur dÃ©tectÃ©"
             Correction  = {
                 param($Line)
                 # Extract the matched path for potential smarter replacement later
@@ -91,7 +91,7 @@ if ($null -eq $ErrorPatterns) {
         @{
             Name        = "WriteHostForOutput"
             Pattern     = '\bWrite-Host\b'
-            Description = "Utilisation de Write-Host détectée (préférer Write-Output pour les données, Write-Verbose/Information pour le statut)"
+            Description = "Utilisation de Write-Host dÃ©tectÃ©e (prÃ©fÃ©rer Write-Output pour les donnÃ©es, Write-Verbose/Information pour le statut)"
             Correction  = {
                 param($Line)
                 # Recommend specific alternative based on context would be ideal, but simple switch is often okay.

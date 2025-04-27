@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste uniquement la Phase 1 (détection des références brisées) sur un fichier spécifique.
+    Teste uniquement la Phase 1 (dÃ©tection des rÃ©fÃ©rences brisÃ©es) sur un fichier spÃ©cifique.
 .DESCRIPTION
-    Ce script exécute un test ciblé sur le script Detect-BrokenReferences.ps1
-    pour vérifier qu'il fonctionne correctement.
+    Ce script exÃ©cute un test ciblÃ© sur le script Detect-BrokenReferences.ps1
+    pour vÃ©rifier qu'il fonctionne correctement.
 .PARAMETER TestFile
-    Chemin du fichier à tester. Par défaut: scripts\maintenance\encoding\Detect-BrokenReferences.ps1
+    Chemin du fichier Ã  tester. Par dÃ©faut: scripts\maintenance\encoding\Detect-BrokenReferences.ps1
 .EXAMPLE
     .\Test-Phase1Only.ps1
     Teste le script Detect-BrokenReferences.ps1.
@@ -15,7 +15,7 @@ param (
     [string]$TestFile = "scripts\maintenance\encoding\Detect-BrokenReferences.ps1"
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -38,15 +38,15 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour tester la Phase 1 : Mise à jour des références
+# Fonction pour tester la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences
 function Test-Phase1 {
     param (
         [string]$TestFile
     )
     
-    Write-Log "Test de la Phase 1 : Mise à jour des références" -Level "TITLE"
+    Write-Log "Test de la Phase 1 : Mise Ã  jour des rÃ©fÃ©rences" -Level "TITLE"
     
-    # Vérifier si le fichier de test existe
+    # VÃ©rifier si le fichier de test existe
     if (-not (Test-Path -Path $TestFile)) {
         Write-Log "Le fichier de test n'existe pas: $TestFile" -Level "ERROR"
         return $false
@@ -54,7 +54,7 @@ function Test-Phase1 {
     
     Write-Log "Le fichier de test existe: $TestFile" -Level "SUCCESS"
     
-    # Créer un fichier de test temporaire
+    # CrÃ©er un fichier de test temporaire
     $TestDir = "scripts\tests\temp"
     if (-not (Test-Path -Path $TestDir)) {
         New-Item -ItemType Directory -Path $TestDir -Force | Out-Null
@@ -63,26 +63,26 @@ function Test-Phase1 {
     $TestFileCopy = Join-Path -Path $TestDir -ChildPath "test_script.ps1"
     Copy-Item -Path $TestFile -Destination $TestFileCopy -Force
     
-    Write-Log "Fichier de test copié: $TestFileCopy" -Level "INFO"
+    Write-Log "Fichier de test copiÃ©: $TestFileCopy" -Level "INFO"
     
-    # Exécuter le script de test
-    Write-Log "Exécution du script de test..." -Level "INFO"
+    # ExÃ©cuter le script de test
+    Write-Log "ExÃ©cution du script de test..." -Level "INFO"
     
     try {
         $OutputPath = Join-Path -Path $TestDir -ChildPath "test_report.json"
         $Result = & $TestFile -Path $TestDir -OutputPath $OutputPath -ShowDetails
         
-        # Vérifier si le rapport a été généré
+        # VÃ©rifier si le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
         if (Test-Path -Path $OutputPath) {
-            Write-Log "Rapport généré avec succès: $OutputPath" -Level "SUCCESS"
+            Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "SUCCESS"
             
             # Analyser le rapport (si possible)
             try {
                 $Report = Get-Content -Path $OutputPath -Raw | ConvertFrom-Json
-                Write-Log "Rapport analysé avec succès" -Level "SUCCESS"
+                Write-Log "Rapport analysÃ© avec succÃ¨s" -Level "SUCCESS"
                 Write-Log "Timestamp: $($Report.Timestamp)" -Level "INFO"
-                Write-Log "Nombre total de fichiers analysés: $($Report.TotalFiles)" -Level "INFO"
-                Write-Log "Nombre de références brisées: $($Report.BrokenReferences.Count)" -Level "INFO"
+                Write-Log "Nombre total de fichiers analysÃ©s: $($Report.TotalFiles)" -Level "INFO"
+                Write-Log "Nombre de rÃ©fÃ©rences brisÃ©es: $($Report.BrokenReferences.Count)" -Level "INFO"
             } catch {
                 Write-Log "Impossible d'analyser le rapport: $_" -Level "WARNING"
             }
@@ -93,23 +93,23 @@ function Test-Phase1 {
             
             return $true
         } else {
-            Write-Log "Le rapport n'a pas été généré: $OutputPath" -Level "WARNING"
+            Write-Log "Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $OutputPath" -Level "WARNING"
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du script de test: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du script de test: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 $Success = Test-Phase1 -TestFile $TestFile
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 if ($Success) {
-    Write-Log "Test réussi!" -Level "SUCCESS"
+    Write-Log "Test rÃ©ussi!" -Level "SUCCESS"
     exit 0
 } else {
-    Write-Log "Test échoué!" -Level "ERROR"
+    Write-Log "Test Ã©chouÃ©!" -Level "ERROR"
     exit 1
 }

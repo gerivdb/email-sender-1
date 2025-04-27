@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de détection des anomalies dans les données historiques de performance.
+    Script de dÃ©tection des anomalies dans les donnÃ©es historiques de performance.
 .DESCRIPTION
-    Identifie les valeurs aberrantes et les comportements anormaux dans les données.
+    Identifie les valeurs aberrantes et les comportements anormaux dans les donnÃ©es.
 .PARAMETER DataPath
-    Chemin vers les données préparées.
+    Chemin vers les donnÃ©es prÃ©parÃ©es.
 .PARAMETER OutputPath
-    Chemin où les résultats seront sauvegardés.
+    Chemin oÃ¹ les rÃ©sultats seront sauvegardÃ©s.
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
 #>
@@ -52,7 +52,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données
+# Fonction pour charger les donnÃ©es
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -60,24 +60,24 @@ function Import-PerformanceData {
         [string]$FilePath
     )
     
-    Write-Log -Message "Chargement des données depuis $FilePath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es depuis $FilePath" -Level "Info"
     
     try {
         if (Test-Path -Path $FilePath) {
             $Data = Import-Csv -Path $FilePath
-            Write-Log -Message "Chargement réussi: $($Data.Count) entrées" -Level "Info"
+            Write-Log -Message "Chargement rÃ©ussi: $($Data.Count) entrÃ©es" -Level "Info"
             return $Data
         } else {
-            Write-Log -Message "Fichier non trouvé: $FilePath" -Level "Error"
+            Write-Log -Message "Fichier non trouvÃ©: $FilePath" -Level "Error"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour détecter les anomalies par la méthode IQR
+# Fonction pour dÃ©tecter les anomalies par la mÃ©thode IQR
 function Get-IQROutliers {
     [CmdletBinding()]
     param (
@@ -94,18 +94,18 @@ function Get-IQROutliers {
         [double]$Multiplier = 1.5
     )
     
-    Write-Log -Message "Détection des anomalies par méthode IQR (Multiplier=$Multiplier)" -Level "Info"
+    Write-Log -Message "DÃ©tection des anomalies par mÃ©thode IQR (Multiplier=$Multiplier)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
         $Outliers = @()
         
-        # Grouper les données si nécessaire
+        # Grouper les donnÃ©es si nÃ©cessaire
         if ($GroupColumn) {
             $GroupedData = $Data | Group-Object -Property $GroupColumn
             
@@ -120,7 +120,7 @@ function Get-IQROutliers {
                 $Q3 = $SortedValues[$Q3Index]
                 $IQR = $Q3 - $Q1
                 
-                # Définir les limites pour les valeurs aberrantes
+                # DÃ©finir les limites pour les valeurs aberrantes
                 $LowerBound = $Q1 - ($Multiplier * $IQR)
                 $UpperBound = $Q3 + ($Multiplier * $IQR)
                 
@@ -155,7 +155,7 @@ function Get-IQROutliers {
             $Q3 = $SortedValues[$Q3Index]
             $IQR = $Q3 - $Q1
             
-            # Définir les limites pour les valeurs aberrantes
+            # DÃ©finir les limites pour les valeurs aberrantes
             $LowerBound = $Q1 - ($Multiplier * $IQR)
             $UpperBound = $Q3 + ($Multiplier * $IQR)
             
@@ -180,15 +180,15 @@ function Get-IQROutliers {
             }
         }
         
-        Write-Log -Message "Détection terminée: $($Outliers.Count) anomalies identifiées" -Level "Info"
+        Write-Log -Message "DÃ©tection terminÃ©e: $($Outliers.Count) anomalies identifiÃ©es" -Level "Info"
         return $Outliers
     } catch {
-        Write-Log -Message "Erreur lors de la détection des anomalies par IQR: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des anomalies par IQR: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour détecter les anomalies par la méthode Z-Score
+# Fonction pour dÃ©tecter les anomalies par la mÃ©thode Z-Score
 function Get-ZScoreOutliers {
     [CmdletBinding()]
     param (
@@ -205,25 +205,25 @@ function Get-ZScoreOutliers {
         [double]$Threshold = 3.0
     )
     
-    Write-Log -Message "Détection des anomalies par méthode Z-Score (Threshold=$Threshold)" -Level "Info"
+    Write-Log -Message "DÃ©tection des anomalies par mÃ©thode Z-Score (Threshold=$Threshold)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
         $Outliers = @()
         
-        # Grouper les données si nécessaire
+        # Grouper les donnÃ©es si nÃ©cessaire
         if ($GroupColumn) {
             $GroupedData = $Data | Group-Object -Property $GroupColumn
             
             foreach ($Group in $GroupedData) {
                 $Values = $Group.Group | ForEach-Object { [double]$_.$ValueColumn }
                 
-                # Calculer la moyenne et l'écart-type
+                # Calculer la moyenne et l'Ã©cart-type
                 $Mean = ($Values | Measure-Object -Average).Average
                 $StdDev = [Math]::Sqrt(($Values | ForEach-Object { [Math]::Pow($_ - $Mean, 2) } | Measure-Object -Average).Average)
                 
@@ -253,12 +253,12 @@ function Get-ZScoreOutliers {
         } else {
             $Values = $Data | ForEach-Object { [double]$_.$ValueColumn }
             
-            # Calculer la moyenne et l'écart-type
+            # Calculer la moyenne et l'Ã©cart-type
             $Mean = ($Values | Measure-Object -Average).Average
             $StdDev = [Math]::Sqrt(($Values | ForEach-Object { [Math]::Pow($_ - $Mean, 2) } | Measure-Object -Average).Average)
             
             if ($StdDev -eq 0) {
-                Write-Log -Message "Écart-type nul, impossible de calculer les Z-Scores" -Level "Warning"
+                Write-Log -Message "Ã‰cart-type nul, impossible de calculer les Z-Scores" -Level "Warning"
                 return $null
             }
             
@@ -282,15 +282,15 @@ function Get-ZScoreOutliers {
             }
         }
         
-        Write-Log -Message "Détection terminée: $($Outliers.Count) anomalies identifiées" -Level "Info"
+        Write-Log -Message "DÃ©tection terminÃ©e: $($Outliers.Count) anomalies identifiÃ©es" -Level "Info"
         return $Outliers
     } catch {
-        Write-Log -Message "Erreur lors de la détection des anomalies par Z-Score: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des anomalies par Z-Score: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour détecter les anomalies par la méthode de la fenêtre glissante
+# Fonction pour dÃ©tecter les anomalies par la mÃ©thode de la fenÃªtre glissante
 function Get-MovingWindowOutliers {
     [CmdletBinding()]
     param (
@@ -313,12 +313,12 @@ function Get-MovingWindowOutliers {
         [double]$Threshold = 2.0
     )
     
-    Write-Log -Message "Détection des anomalies par fenêtre glissante (WindowSize=$WindowSize, Threshold=$Threshold)" -Level "Info"
+    Write-Log -Message "DÃ©tection des anomalies par fenÃªtre glissante (WindowSize=$WindowSize, Threshold=$Threshold)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
@@ -329,20 +329,20 @@ function Get-MovingWindowOutliers {
         
         $Outliers = @()
         
-        # Grouper les données si nécessaire
+        # Grouper les donnÃ©es si nÃ©cessaire
         if ($GroupColumn) {
             $GroupedData = $Data | Group-Object -Property $GroupColumn
             
             foreach ($Group in $GroupedData) {
-                # Trier les données par timestamp
+                # Trier les donnÃ©es par timestamp
                 $SortedData = $Group.Group | Sort-Object -Property $TimeColumn
                 
-                # Appliquer la fenêtre glissante
+                # Appliquer la fenÃªtre glissante
                 for ($i = $WindowSize; $i -lt $SortedData.Count; $i++) {
                     $WindowData = $SortedData[($i - $WindowSize)..($i - 1)]
                     $CurrentPoint = $SortedData[$i]
                     
-                    # Calculer la moyenne et l'écart-type de la fenêtre
+                    # Calculer la moyenne et l'Ã©cart-type de la fenÃªtre
                     $WindowValues = $WindowData | ForEach-Object { [double]$_.$ValueColumn }
                     $Mean = ($WindowValues | Measure-Object -Average).Average
                     $StdDev = [Math]::Sqrt(($WindowValues | ForEach-Object { [Math]::Pow($_ - $Mean, 2) } | Measure-Object -Average).Average)
@@ -354,7 +354,7 @@ function Get-MovingWindowOutliers {
                     # Calculer le Z-Score du point courant
                     $ZScore = [Math]::Abs(([double]$CurrentPoint.$ValueColumn - $Mean) / $StdDev)
                     
-                    # Vérifier si c'est une anomalie
+                    # VÃ©rifier si c'est une anomalie
                     if ($ZScore -gt $Threshold) {
                         $Outliers += [PSCustomObject]@{
                             Group = $Group.Name
@@ -368,15 +368,15 @@ function Get-MovingWindowOutliers {
                 }
             }
         } else {
-            # Trier les données par timestamp
+            # Trier les donnÃ©es par timestamp
             $SortedData = $Data | Sort-Object -Property $TimeColumn
             
-            # Appliquer la fenêtre glissante
+            # Appliquer la fenÃªtre glissante
             for ($i = $WindowSize; $i -lt $SortedData.Count; $i++) {
                 $WindowData = $SortedData[($i - $WindowSize)..($i - 1)]
                 $CurrentPoint = $SortedData[$i]
                 
-                # Calculer la moyenne et l'écart-type de la fenêtre
+                # Calculer la moyenne et l'Ã©cart-type de la fenÃªtre
                 $WindowValues = $WindowData | ForEach-Object { [double]$_.$ValueColumn }
                 $Mean = ($WindowValues | Measure-Object -Average).Average
                 $StdDev = [Math]::Sqrt(($WindowValues | ForEach-Object { [Math]::Pow($_ - $Mean, 2) } | Measure-Object -Average).Average)
@@ -388,7 +388,7 @@ function Get-MovingWindowOutliers {
                 # Calculer le Z-Score du point courant
                 $ZScore = [Math]::Abs(([double]$CurrentPoint.$ValueColumn - $Mean) / $StdDev)
                 
-                # Vérifier si c'est une anomalie
+                # VÃ©rifier si c'est une anomalie
                 if ($ZScore -gt $Threshold) {
                     $Outliers += [PSCustomObject]@{
                         Group = "All"
@@ -402,15 +402,15 @@ function Get-MovingWindowOutliers {
             }
         }
         
-        Write-Log -Message "Détection terminée: $($Outliers.Count) anomalies identifiées" -Level "Info"
+        Write-Log -Message "DÃ©tection terminÃ©e: $($Outliers.Count) anomalies identifiÃ©es" -Level "Info"
         return $Outliers
     } catch {
-        Write-Log -Message "Erreur lors de la détection des anomalies par fenêtre glissante: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des anomalies par fenÃªtre glissante: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour exporter les résultats
+# Fonction pour exporter les rÃ©sultats
 function Export-AnalysisResults {
     [CmdletBinding()]
     param (
@@ -424,22 +424,22 @@ function Export-AnalysisResults {
         [string]$Format = "CSV" # CSV, JSON
     )
     
-    Write-Log -Message "Exportation des résultats au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des rÃ©sultats au format $Format vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results -or $Results.Count -eq 0) {
-            Write-Log -Message "Aucun résultat à exporter" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat Ã  exporter" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Exporter les résultats selon le format spécifié
+        # Exporter les rÃ©sultats selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
                 $Results | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
@@ -453,10 +453,10 @@ function Export-AnalysisResults {
             }
         }
         
-        Write-Log -Message "Exportation réussie vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des résultats: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des rÃ©sultats: $_" -Level "Error"
         return $false
     }
 }
@@ -472,41 +472,41 @@ function Start-AnomalyDetection {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Début de la détection des anomalies" -Level "Info"
+    Write-Log -Message "DÃ©but de la dÃ©tection des anomalies" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $PerformanceDataPath = Join-Path -Path $DataPath -ChildPath "prepared_performance_data.csv"
     $PerformanceData = Import-PerformanceData -FilePath $PerformanceDataPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # 2. Détecter les anomalies
+    # 2. DÃ©tecter les anomalies
     if ($PerformanceData -and $PerformanceData.Count -gt 0) {
-        # Méthode IQR
+        # MÃ©thode IQR
         $IQROutliers = Get-IQROutliers -Data $PerformanceData -ValueColumn "Value" -GroupColumn "Path" -Multiplier 1.5
         if ($IQROutliers -and $IQROutliers.Count -gt 0) {
             $IQROutputPath = Join-Path -Path $OutputPath -ChildPath "iqr_outliers.csv"
             Export-AnalysisResults -Results $IQROutliers -OutputPath $IQROutputPath -Format "CSV"
         }
         
-        # Méthode Z-Score
+        # MÃ©thode Z-Score
         $ZScoreOutliers = Get-ZScoreOutliers -Data $PerformanceData -ValueColumn "Value" -GroupColumn "Path" -Threshold 3.0
         if ($ZScoreOutliers -and $ZScoreOutliers.Count -gt 0) {
             $ZScoreOutputPath = Join-Path -Path $OutputPath -ChildPath "zscore_outliers.csv"
             Export-AnalysisResults -Results $ZScoreOutliers -OutputPath $ZScoreOutputPath -Format "CSV"
         }
         
-        # Méthode de la fenêtre glissante
+        # MÃ©thode de la fenÃªtre glissante
         $WindowOutliers = Get-MovingWindowOutliers -Data $PerformanceData -TimeColumn "Timestamp" -ValueColumn "Value" -GroupColumn "Path" -WindowSize 10 -Threshold 2.0
         if ($WindowOutliers -and $WindowOutliers.Count -gt 0) {
             $WindowOutputPath = Join-Path -Path $OutputPath -ChildPath "window_outliers.csv"
             Export-AnalysisResults -Results $WindowOutliers -OutputPath $WindowOutputPath -Format "CSV"
         }
         
-        # Consolider les résultats
+        # Consolider les rÃ©sultats
         $AllOutliers = @()
         if ($IQROutliers) { $AllOutliers += $IQROutliers | Add-Member -NotePropertyName Method -NotePropertyValue "IQR" -PassThru }
         if ($ZScoreOutliers) { $AllOutliers += $ZScoreOutliers | Add-Member -NotePropertyName Method -NotePropertyValue "Z-Score" -PassThru }
@@ -517,10 +517,10 @@ function Start-AnomalyDetection {
             Export-AnalysisResults -Results $AllOutliers -OutputPath $AllOutputPath -Format "CSV"
         }
     } else {
-        Write-Log -Message "Aucune donnée de performance disponible pour l'analyse" -Level "Warning"
+        Write-Log -Message "Aucune donnÃ©e de performance disponible pour l'analyse" -Level "Warning"
     }
     
-    Write-Log -Message "Détection des anomalies terminée" -Level "Info"
+    Write-Log -Message "DÃ©tection des anomalies terminÃ©e" -Level "Info"
     
     return @{
         Success = $true
@@ -531,13 +531,13 @@ function Start-AnomalyDetection {
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-AnomalyDetection -DataPath $DataPath -OutputPath $OutputPath
 
 if ($Result.Success) {
-    Write-Log -Message "Détection des anomalies réussie" -Level "Info"
+    Write-Log -Message "DÃ©tection des anomalies rÃ©ussie" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec de la détection des anomalies" -Level "Error"
+    Write-Log -Message "Ã‰chec de la dÃ©tection des anomalies" -Level "Error"
     return 1
 }

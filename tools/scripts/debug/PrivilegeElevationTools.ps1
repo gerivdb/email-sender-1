@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Outils d'élévation de privilèges temporaires pour résoudre les problèmes d'accès.
+    Outils d'Ã©lÃ©vation de privilÃ¨ges temporaires pour rÃ©soudre les problÃ¨mes d'accÃ¨s.
 .DESCRIPTION
-    Ce script fournit des fonctions pour élever temporairement les privilèges afin de résoudre
-    les problèmes d'accès, en particulier pour les erreurs UnauthorizedAccessException.
+    Ce script fournit des fonctions pour Ã©lever temporairement les privilÃ¨ges afin de rÃ©soudre
+    les problÃ¨mes d'accÃ¨s, en particulier pour les erreurs UnauthorizedAccessException.
 .NOTES
     Auteur: Augment Code
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 
 function Start-ElevatedProcess {
     <#
     .SYNOPSIS
-        Lance un nouveau processus PowerShell avec des privilèges administratifs.
+        Lance un nouveau processus PowerShell avec des privilÃ¨ges administratifs.
     
     .DESCRIPTION
-        Cette fonction lance un nouveau processus PowerShell avec des privilèges administratifs
-        et exécute le script ou la commande spécifiée.
+        Cette fonction lance un nouveau processus PowerShell avec des privilÃ¨ges administratifs
+        et exÃ©cute le script ou la commande spÃ©cifiÃ©e.
     
     .PARAMETER ScriptBlock
-        Le bloc de script à exécuter avec des privilèges élevés.
+        Le bloc de script Ã  exÃ©cuter avec des privilÃ¨ges Ã©levÃ©s.
     
     .PARAMETER ScriptPath
-        Le chemin d'un script PowerShell à exécuter avec des privilèges élevés.
+        Le chemin d'un script PowerShell Ã  exÃ©cuter avec des privilÃ¨ges Ã©levÃ©s.
     
     .PARAMETER ArgumentList
-        Les arguments à passer au script ou à la commande.
+        Les arguments Ã  passer au script ou Ã  la commande.
     
     .PARAMETER NoExit
-        Indique si la fenêtre PowerShell doit rester ouverte après l'exécution.
+        Indique si la fenÃªtre PowerShell doit rester ouverte aprÃ¨s l'exÃ©cution.
     
     .PARAMETER Wait
-        Indique si la fonction doit attendre la fin de l'exécution du processus.
+        Indique si la fonction doit attendre la fin de l'exÃ©cution du processus.
     
     .EXAMPLE
-        Start-ElevatedProcess -ScriptBlock { Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Nouvelle entrée" }
+        Start-ElevatedProcess -ScriptBlock { Set-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "# Nouvelle entrÃ©e" }
     
     .EXAMPLE
         Start-ElevatedProcess -ScriptPath "C:\Scripts\ModifyHosts.ps1" -ArgumentList "param1", "param2"
@@ -60,13 +60,13 @@ function Start-ElevatedProcess {
         [switch]$Wait
     )
     
-    # Vérifier si nous sommes déjà en mode administrateur
+    # VÃ©rifier si nous sommes dÃ©jÃ  en mode administrateur
     $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
     
     if ($isAdmin) {
-        Write-Warning "Le processus actuel est déjà en mode administrateur."
+        Write-Warning "Le processus actuel est dÃ©jÃ  en mode administrateur."
         
-        # Exécuter directement le code si nous sommes déjà en mode administrateur
+        # ExÃ©cuter directement le code si nous sommes dÃ©jÃ  en mode administrateur
         if ($PSCmdlet.ParameterSetName -eq "ScriptBlock") {
             return & $ScriptBlock
         } else {
@@ -75,7 +75,7 @@ function Start-ElevatedProcess {
         }
     }
     
-    # Préparer la commande PowerShell
+    # PrÃ©parer la commande PowerShell
     $arguments = @()
     
     if ($NoExit) {
@@ -100,7 +100,7 @@ function Start-ElevatedProcess {
     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
     $startInfo.FileName = "powershell.exe"
     $startInfo.Arguments = $arguments -join " "
-    $startInfo.Verb = "runas"  # Demande d'élévation de privilèges
+    $startInfo.Verb = "runas"  # Demande d'Ã©lÃ©vation de privilÃ¨ges
     $startInfo.UseShellExecute = $true
     
     try {
@@ -113,7 +113,7 @@ function Start-ElevatedProcess {
         
         return $process
     } catch {
-        Write-Error "Impossible de lancer le processus avec des privilèges élevés : $($_.Exception.Message)"
+        Write-Error "Impossible de lancer le processus avec des privilÃ¨ges Ã©levÃ©s : $($_.Exception.Message)"
         return $null
     }
 }
@@ -121,18 +121,18 @@ function Start-ElevatedProcess {
 function Invoke-WithImpersonation {
     <#
     .SYNOPSIS
-        Exécute une opération en utilisant les informations d'identification d'un autre utilisateur.
+        ExÃ©cute une opÃ©ration en utilisant les informations d'identification d'un autre utilisateur.
     
     .DESCRIPTION
-        Cette fonction utilise l'impersonation pour exécuter un bloc de code avec les informations
-        d'identification d'un autre utilisateur, ce qui peut être utile pour accéder à des ressources
-        auxquelles l'utilisateur actuel n'a pas accès.
+        Cette fonction utilise l'impersonation pour exÃ©cuter un bloc de code avec les informations
+        d'identification d'un autre utilisateur, ce qui peut Ãªtre utile pour accÃ©der Ã  des ressources
+        auxquelles l'utilisateur actuel n'a pas accÃ¨s.
     
     .PARAMETER Credential
-        Les informations d'identification à utiliser pour l'impersonation.
+        Les informations d'identification Ã  utiliser pour l'impersonation.
     
     .PARAMETER ScriptBlock
-        Le bloc de code à exécuter avec les informations d'identification spécifiées.
+        Le bloc de code Ã  exÃ©cuter avec les informations d'identification spÃ©cifiÃ©es.
     
     .EXAMPLE
         $cred = Get-Credential
@@ -141,7 +141,7 @@ function Invoke-WithImpersonation {
         }
     
     .OUTPUTS
-        Le résultat du bloc de code exécuté avec les informations d'identification spécifiées.
+        Le rÃ©sultat du bloc de code exÃ©cutÃ© avec les informations d'identification spÃ©cifiÃ©es.
     #>
     [CmdletBinding()]
     param (
@@ -152,7 +152,7 @@ function Invoke-WithImpersonation {
         [scriptblock]$ScriptBlock
     )
     
-    # Ajouter les types nécessaires
+    # Ajouter les types nÃ©cessaires
     Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -217,7 +217,7 @@ public class ImpersonationHelper
         
         if (-not $result) {
             $errorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
-            throw "Échec de LogonUser. Code d'erreur : $errorCode"
+            throw "Ã‰chec de LogonUser. Code d'erreur : $errorCode"
         }
         
         # Impersonate l'utilisateur
@@ -225,13 +225,13 @@ public class ImpersonationHelper
         
         if (-not $result) {
             $errorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
-            throw "Échec de ImpersonateLoggedOnUser. Code d'erreur : $errorCode"
+            throw "Ã‰chec de ImpersonateLoggedOnUser. Code d'erreur : $errorCode"
         }
         
-        # Exécuter le bloc de code
+        # ExÃ©cuter le bloc de code
         return & $ScriptBlock
     } finally {
-        # Revenir à l'identité originale
+        # Revenir Ã  l'identitÃ© originale
         [void][ImpersonationHelper]::RevertToSelf()
         
         # Fermer le handle du token
@@ -239,7 +239,7 @@ public class ImpersonationHelper
             [void][ImpersonationHelper]::CloseHandle($tokenHandle)
         }
         
-        # Libérer la mémoire allouée pour le mot de passe
+        # LibÃ©rer la mÃ©moire allouÃ©e pour le mot de passe
         if ($passwordPtr -ne [IntPtr]::Zero) {
             [System.Runtime.InteropServices.Marshal]::ZeroFreeGlobalAllocUnicode($passwordPtr)
         }
@@ -249,24 +249,24 @@ public class ImpersonationHelper
 function Edit-ProtectedFile {
     <#
     .SYNOPSIS
-        Modifie un fichier protégé en utilisant une copie temporaire.
+        Modifie un fichier protÃ©gÃ© en utilisant une copie temporaire.
     
     .DESCRIPTION
-        Cette fonction permet de modifier un fichier protégé en le copiant dans un emplacement
-        temporaire, en le modifiant, puis en le recopiant à son emplacement d'origine avec
-        des privilèges élevés.
+        Cette fonction permet de modifier un fichier protÃ©gÃ© en le copiant dans un emplacement
+        temporaire, en le modifiant, puis en le recopiant Ã  son emplacement d'origine avec
+        des privilÃ¨ges Ã©levÃ©s.
     
     .PARAMETER Path
-        Le chemin du fichier protégé à modifier.
+        Le chemin du fichier protÃ©gÃ© Ã  modifier.
     
     .PARAMETER EditScriptBlock
         Le bloc de code qui effectue les modifications sur la copie temporaire.
     
     .PARAMETER ElevationMethod
-        La méthode d'élévation de privilèges à utiliser (NewProcess ou Impersonation).
+        La mÃ©thode d'Ã©lÃ©vation de privilÃ¨ges Ã  utiliser (NewProcess ou Impersonation).
     
     .PARAMETER Credential
-        Les informations d'identification à utiliser pour l'impersonation (si ElevationMethod est Impersonation).
+        Les informations d'identification Ã  utiliser pour l'impersonation (si ElevationMethod est Impersonation).
     
     .EXAMPLE
         Edit-ProtectedFile -Path "C:\Windows\System32\drivers\etc\hosts" -EditScriptBlock {
@@ -275,7 +275,7 @@ function Edit-ProtectedFile {
         }
     
     .OUTPUTS
-        [PSCustomObject] avec des informations sur le résultat de l'opération
+        [PSCustomObject] avec des informations sur le rÃ©sultat de l'opÃ©ration
     #>
     [CmdletBinding()]
     param (
@@ -293,7 +293,7 @@ function Edit-ProtectedFile {
         [System.Management.Automation.PSCredential]$Credential
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
         return [PSCustomObject]@{
             Success = $false
@@ -303,11 +303,11 @@ function Edit-ProtectedFile {
         }
     }
     
-    # Créer un répertoire temporaire
+    # CrÃ©er un rÃ©pertoire temporaire
     $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
     New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
     
-    # Créer le chemin du fichier temporaire
+    # CrÃ©er le chemin du fichier temporaire
     $tempFile = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($Path))
     
     try {
@@ -317,27 +317,27 @@ function Edit-ProtectedFile {
         # Appliquer les modifications au fichier temporaire
         & $EditScriptBlock $tempFile
         
-        # Vérifier si le fichier temporaire existe toujours
+        # VÃ©rifier si le fichier temporaire existe toujours
         if (-not (Test-Path -Path $tempFile -ErrorAction SilentlyContinue)) {
             return [PSCustomObject]@{
                 Success = $false
-                Message = "Le fichier temporaire a été supprimé pendant l'édition."
+                Message = "Le fichier temporaire a Ã©tÃ© supprimÃ© pendant l'Ã©dition."
                 OriginalPath = $Path
                 TempPath = $tempFile
             }
         }
         
-        # Copier le fichier temporaire vers le fichier original avec élévation de privilèges
+        # Copier le fichier temporaire vers le fichier original avec Ã©lÃ©vation de privilÃ¨ges
         switch ($ElevationMethod) {
             "NewProcess" {
-                # Utiliser un nouveau processus avec privilèges élevés
+                # Utiliser un nouveau processus avec privilÃ¨ges Ã©levÃ©s
                 $copyScript = {
                     param($Source, $Destination)
                     Copy-Item -Path $Source -Destination $Destination -Force
                     if ($?) {
-                        return "Succès"
+                        return "SuccÃ¨s"
                     } else {
-                        return "Échec"
+                        return "Ã‰chec"
                     }
                 }
                 
@@ -346,7 +346,7 @@ function Edit-ProtectedFile {
                 if ($result -eq 0) {
                     return [PSCustomObject]@{
                         Success = $true
-                        Message = "Le fichier a été modifié avec succès."
+                        Message = "Le fichier a Ã©tÃ© modifiÃ© avec succÃ¨s."
                         OriginalPath = $Path
                         TempPath = $tempFile
                     }
@@ -360,7 +360,7 @@ function Edit-ProtectedFile {
                 }
             }
             "Impersonation" {
-                # Vérifier si les informations d'identification sont fournies
+                # VÃ©rifier si les informations d'identification sont fournies
                 if (-not $Credential) {
                     return [PSCustomObject]@{
                         Success = $false
@@ -384,7 +384,7 @@ function Edit-ProtectedFile {
                 if ($result) {
                     return [PSCustomObject]@{
                         Success = $true
-                        Message = "Le fichier a été modifié avec succès."
+                        Message = "Le fichier a Ã©tÃ© modifiÃ© avec succÃ¨s."
                         OriginalPath = $Path
                         TempPath = $tempFile
                     }
@@ -406,7 +406,7 @@ function Edit-ProtectedFile {
             TempPath = $tempFile
         }
     } finally {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
@@ -418,19 +418,19 @@ function Set-TemporaryPermission {
     
     .DESCRIPTION
         Cette fonction modifie temporairement les permissions d'un fichier ou d'un dossier
-        pour effectuer une opération, puis restaure les permissions d'origine.
+        pour effectuer une opÃ©ration, puis restaure les permissions d'origine.
     
     .PARAMETER Path
-        Le chemin du fichier ou du dossier à modifier.
+        Le chemin du fichier ou du dossier Ã  modifier.
     
     .PARAMETER Identity
-        L'identité à laquelle accorder les permissions temporaires.
+        L'identitÃ© Ã  laquelle accorder les permissions temporaires.
     
     .PARAMETER Permission
-        Les permissions à accorder temporairement.
+        Les permissions Ã  accorder temporairement.
     
     .PARAMETER ScriptBlock
-        Le bloc de code à exécuter avec les permissions temporaires.
+        Le bloc de code Ã  exÃ©cuter avec les permissions temporaires.
     
     .EXAMPLE
         Set-TemporaryPermission -Path "C:\Data\Confidential" -Identity "DOMAIN\User" -Permission "Read" -ScriptBlock {
@@ -438,7 +438,7 @@ function Set-TemporaryPermission {
         }
     
     .OUTPUTS
-        Le résultat du bloc de code exécuté avec les permissions temporaires.
+        Le rÃ©sultat du bloc de code exÃ©cutÃ© avec les permissions temporaires.
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -456,13 +456,13 @@ function Set-TemporaryPermission {
         [scriptblock]$ScriptBlock
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
         Write-Error "Le chemin '$Path' n'existe pas."
         return
     }
     
-    # Convertir la permission en droit du système de fichiers
+    # Convertir la permission en droit du systÃ¨me de fichiers
     $fileSystemRight = switch ($Permission) {
         "Read" { [System.Security.AccessControl.FileSystemRights]::Read }
         "Write" { [System.Security.AccessControl.FileSystemRights]::Write }
@@ -475,7 +475,7 @@ function Set-TemporaryPermission {
     $acl = Get-Acl -Path $Path
     $originalAcl = $acl.Clone()
     
-    # Créer une nouvelle règle d'accès
+    # CrÃ©er une nouvelle rÃ¨gle d'accÃ¨s
     $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
         $Identity,
         $fileSystemRight,
@@ -485,7 +485,7 @@ function Set-TemporaryPermission {
     )
     
     try {
-        # Ajouter la nouvelle règle d'accès
+        # Ajouter la nouvelle rÃ¨gle d'accÃ¨s
         $acl.AddAccessRule($accessRule)
         
         # Appliquer les nouvelles ACL
@@ -493,7 +493,7 @@ function Set-TemporaryPermission {
             Set-Acl -Path $Path -AclObject $acl
         }
         
-        # Exécuter le bloc de code
+        # ExÃ©cuter le bloc de code
         return & $ScriptBlock
     } finally {
         # Restaurer les ACL d'origine
@@ -506,20 +506,20 @@ function Set-TemporaryPermission {
 function Enable-Privilege {
     <#
     .SYNOPSIS
-        Active un privilège spécifique pour le processus actuel.
+        Active un privilÃ¨ge spÃ©cifique pour le processus actuel.
     
     .DESCRIPTION
-        Cette fonction utilise l'API Windows pour activer un privilège spécifique pour le processus
-        actuel, ce qui peut être utile pour effectuer certaines opérations système.
+        Cette fonction utilise l'API Windows pour activer un privilÃ¨ge spÃ©cifique pour le processus
+        actuel, ce qui peut Ãªtre utile pour effectuer certaines opÃ©rations systÃ¨me.
     
     .PARAMETER Privilege
-        Le privilège à activer.
+        Le privilÃ¨ge Ã  activer.
     
     .EXAMPLE
         Enable-Privilege -Privilege "SeBackupPrivilege"
     
     .OUTPUTS
-        [bool] Indique si le privilège a été activé avec succès.
+        [bool] Indique si le privilÃ¨ge a Ã©tÃ© activÃ© avec succÃ¨s.
     #>
     [CmdletBinding()]
     param (
@@ -541,7 +541,7 @@ function Enable-Privilege {
         [string]$Privilege
     )
     
-    # Ajouter les types nécessaires
+    # Ajouter les types nÃ©cessaires
     Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -618,26 +618,26 @@ public class PrivilegeHelper
         
         if (-not $result) {
             $errorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
-            Write-Error "Échec de OpenProcessToken. Code d'erreur : $errorCode"
+            Write-Error "Ã‰chec de OpenProcessToken. Code d'erreur : $errorCode"
             return $false
         }
         
-        # Rechercher la valeur du privilège
+        # Rechercher la valeur du privilÃ¨ge
         $result = [PrivilegeHelper]::LookupPrivilegeValue($null, $Privilege, [ref]$luid)
         
         if (-not $result) {
             $errorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
-            Write-Error "Échec de LookupPrivilegeValue. Code d'erreur : $errorCode"
+            Write-Error "Ã‰chec de LookupPrivilegeValue. Code d'erreur : $errorCode"
             return $false
         }
         
-        # Préparer la structure TOKEN_PRIVILEGES
+        # PrÃ©parer la structure TOKEN_PRIVILEGES
         $tokenPrivileges = New-Object PrivilegeHelper+TOKEN_PRIVILEGES
         $tokenPrivileges.PrivilegeCount = 1
         $tokenPrivileges.Privileges.Luid = $luid
         $tokenPrivileges.Privileges.Attributes = $SE_PRIVILEGE_ENABLED
         
-        # Ajuster les privilèges du token
+        # Ajuster les privilÃ¨ges du token
         $result = [PrivilegeHelper]::AdjustTokenPrivileges(
             $tokenHandle,
             $false,
@@ -648,7 +648,7 @@ public class PrivilegeHelper
         
         if (-not $result) {
             $errorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
-            Write-Error "Échec de AdjustTokenPrivileges. Code d'erreur : $errorCode"
+            Write-Error "Ã‰chec de AdjustTokenPrivileges. Code d'erreur : $errorCode"
             return $false
         }
         

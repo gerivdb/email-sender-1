@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
-    Mesure le temps d'exécution d'un bloc de code.
+    Mesure le temps d'exÃ©cution d'un bloc de code.
 
 .DESCRIPTION
-    La fonction Measure-RoadmapExecutionTime mesure le temps d'exécution d'un bloc de code.
-    Elle démarre un chronomètre, exécute le bloc de code, puis arrête le chronomètre.
+    La fonction Measure-RoadmapExecutionTime mesure le temps d'exÃ©cution d'un bloc de code.
+    Elle dÃ©marre un chronomÃ¨tre, exÃ©cute le bloc de code, puis arrÃªte le chronomÃ¨tre.
 
 .PARAMETER Name
-    Le nom du chronomètre.
+    Le nom du chronomÃ¨tre.
 
 .PARAMETER ScriptBlock
-    Le bloc de code à exécuter.
+    Le bloc de code Ã  exÃ©cuter.
 
 .PARAMETER InputObject
-    L'objet à passer au bloc de code.
+    L'objet Ã  passer au bloc de code.
 
 .PARAMETER ArgumentList
-    Les arguments à passer au bloc de code.
+    Les arguments Ã  passer au bloc de code.
 
 .EXAMPLE
     Measure-RoadmapExecutionTime -Name "MaFonction" -ScriptBlock { Get-Process }
-    Mesure le temps d'exécution de la commande Get-Process.
+    Mesure le temps d'exÃ©cution de la commande Get-Process.
 
 .OUTPUTS
-    [PSCustomObject] Un objet contenant le résultat du bloc de code et le temps d'exécution.
+    [PSCustomObject] Un objet contenant le rÃ©sultat du bloc de code et le temps d'exÃ©cution.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Measure-RoadmapExecutionTime {
     [CmdletBinding()]
@@ -55,15 +55,15 @@ function Measure-RoadmapExecutionTime {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction de mesure de temps d'exécution
+    # Appeler la fonction de mesure de temps d'exÃ©cution
     $params = @{
         Name = $Name
         ScriptBlock = $ScriptBlock

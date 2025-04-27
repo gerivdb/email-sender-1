@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des benchmarks de performance en parallèle avec optimisation des ressources.
+    ExÃ©cute des benchmarks de performance en parallÃ¨le avec optimisation des ressources.
 .DESCRIPTION
-    Ce script combine les fonctionnalités de Invoke-PRPerformanceBenchmark et
-    la parallélisation optimisée pour exécuter des benchmarks de performance
+    Ce script combine les fonctionnalitÃ©s de Invoke-PRPerformanceBenchmark et
+    la parallÃ©lisation optimisÃ©e pour exÃ©cuter des benchmarks de performance
     plus efficacement.
 .PARAMETER Functions
-    Tableau de noms de fonctions à tester.
+    Tableau de noms de fonctions Ã  tester.
 .PARAMETER ModulePaths
-    Tableau de chemins vers les modules contenant les fonctions à tester.
+    Tableau de chemins vers les modules contenant les fonctions Ã  tester.
 .PARAMETER DataSizes
-    Tailles de données à utiliser pour les tests. Par défaut: "Small", "Medium", "Large".
+    Tailles de donnÃ©es Ã  utiliser pour les tests. Par dÃ©faut: "Small", "Medium", "Large".
 .PARAMETER Iterations
-    Nombre d'itérations à exécuter pour chaque test. Par défaut: 5.
+    Nombre d'itÃ©rations Ã  exÃ©cuter pour chaque test. Par dÃ©faut: 5.
 .PARAMETER AdaptiveParallelization
-    Si spécifié, ajuste dynamiquement le nombre de tests en parallèle en fonction de l'utilisation des ressources.
+    Si spÃ©cifiÃ©, ajuste dynamiquement le nombre de tests en parallÃ¨le en fonction de l'utilisation des ressources.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats agrégés. Par défaut: "./benchmark-results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats agrÃ©gÃ©s. Par dÃ©faut: "./benchmark-results.json".
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .EXAMPLE
     .\Invoke-ParallelBenchmark.ps1 -Functions @("Get-Data", "Process-Data") -ModulePaths @(".\DataModule.psm1") -Iterations 10
 .NOTES
@@ -52,15 +52,15 @@ param (
     [switch]$GenerateReport
 )
 
-# Importer le module de parallélisation optimisée
+# Importer le module de parallÃ©lisation optimisÃ©e
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\OptimizedParallel.psm1"
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module de parallélisation optimisée non trouvé: $modulePath"
+    throw "Module de parallÃ©lisation optimisÃ©e non trouvÃ©: $modulePath"
 }
 
 Import-Module $modulePath -Force
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     param (
         [string]$Size
@@ -110,7 +110,7 @@ function New-TestData {
     return $data
 }
 
-# Fonction pour exécuter un benchmark sur une fonction
+# Fonction pour exÃ©cuter un benchmark sur une fonction
 function Invoke-FunctionBenchmark {
     param (
         [string]$FunctionName,
@@ -123,17 +123,17 @@ function Invoke-FunctionBenchmark {
         # Importer le module
         Import-Module $ModulePath -Force
 
-        # Vérifier que la fonction existe
+        # VÃ©rifier que la fonction existe
         if (-not (Get-Command -Name $FunctionName -ErrorAction SilentlyContinue)) {
             return [PSCustomObject]@{
                 FunctionName = $FunctionName
                 ModulePath   = $ModulePath
                 Success      = $false
-                Error        = "Fonction non trouvée: $FunctionName"
+                Error        = "Fonction non trouvÃ©e: $FunctionName"
             }
         }
 
-        # Exécuter le benchmark
+        # ExÃ©cuter le benchmark
         $results = @()
         $totalTime = 0
         $minTime = [double]::MaxValue
@@ -142,7 +142,7 @@ function Invoke-FunctionBenchmark {
         for ($i = 1; $i -le $Iterations; $i++) {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
-            # Exécuter la fonction
+            # ExÃ©cuter la fonction
             $result = & $FunctionName -InputData $TestData
 
             $sw.Stop()
@@ -168,7 +168,7 @@ function Invoke-FunctionBenchmark {
         $variance = $variance / $Iterations
         $stdDev = [Math]::Sqrt($variance)
 
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return [PSCustomObject]@{
             FunctionName = $FunctionName
             ModulePath   = $ModulePath
@@ -193,14 +193,14 @@ function Invoke-FunctionBenchmark {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-BenchmarkReport {
     param (
         [object]$Results,
         [string]$OutputPath
     )
 
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $functionNames = @()
     $avgTimes = @{}
     $stdDevs = @{}
@@ -229,7 +229,7 @@ function New-BenchmarkReport {
         }
     }
 
-    # Générer les datasets pour les graphiques
+    # GÃ©nÃ©rer les datasets pour les graphiques
     $datasets = @()
     $colors = @(
         @{ backgroundColor = "rgba(54, 162, 235, 0.5)"; borderColor = "rgba(54, 162, 235, 1)" },
@@ -250,7 +250,7 @@ function New-BenchmarkReport {
         }
     }
 
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -340,49 +340,49 @@ function New-BenchmarkReport {
 <body>
     <div class="header">
         <h1>Rapport de benchmark de performance</h1>
-        <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
 
     <div class="section">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <div class="summary">
             <div class="metric-card">
-                <div class="metric-title">Fonctions testées</div>
+                <div class="metric-title">Fonctions testÃ©es</div>
                 <div class="metric-value">$($Functions.Count)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Tailles de données</div>
+                <div class="metric-title">Tailles de donnÃ©es</div>
                 <div class="metric-value">$($DataSizes.Count)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Itérations par test</div>
+                <div class="metric-title">ItÃ©rations par test</div>
                 <div class="metric-value">$Iterations</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Durée totale</div>
+                <div class="metric-title">DurÃ©e totale</div>
                 <div class="metric-value">$([Math]::Round($Results.TotalDuration, 2))<span class="metric-unit">s</span></div>
             </div>
         </div>
     </div>
 
     <div class="section">
-        <h2>Temps d'exécution moyen par fonction</h2>
+        <h2>Temps d'exÃ©cution moyen par fonction</h2>
         <div class="chart-container">
             <canvas id="executionTimeChart"></canvas>
         </div>
     </div>
 
     <div class="section">
-        <h2>Détails des benchmarks</h2>
+        <h2>DÃ©tails des benchmarks</h2>
         <table>
             <tr>
                 <th>Fonction</th>
-                <th>Taille de données</th>
-                <th>Itérations</th>
+                <th>Taille de donnÃ©es</th>
+                <th>ItÃ©rations</th>
                 <th>Temps moyen (ms)</th>
                 <th>Temps min (ms)</th>
                 <th>Temps max (ms)</th>
-                <th>Écart type</th>
+                <th>Ã‰cart type</th>
             </tr>
             $(
                 foreach ($result in $Results.BenchmarkResults) {
@@ -401,12 +401,12 @@ function New-BenchmarkReport {
     </div>
 
     <div class="footer">
-        <p>Rapport généré par Invoke-ParallelBenchmark.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par Invoke-ParallelBenchmark.ps1</p>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Graphique des temps d'exécution
+            // Graphique des temps d'exÃ©cution
             const executionTimeCtx = document.getElementById('executionTimeChart').getContext('2d');
             new Chart(executionTimeCtx, {
                 type: 'bar',
@@ -419,7 +419,7 @@ function New-BenchmarkReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Temps d\'exécution moyen par fonction et taille de données'
+                            text: 'Temps d\'exÃ©cution moyen par fonction et taille de donnÃ©es'
                         }
                     },
                     scales: {
@@ -440,34 +440,34 @@ function New-BenchmarkReport {
 "@
 
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier que les modules existent
+    # VÃ©rifier que les modules existent
     foreach ($modulePath in $ModulePaths) {
         if (-not (Test-Path -Path $modulePath)) {
-            throw "Module non trouvé: $modulePath"
+            throw "Module non trouvÃ©: $modulePath"
         }
     }
 
-    # Vérifier que le répertoire de sortie existe
+    # VÃ©rifier que le rÃ©pertoire de sortie existe
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de sortie créé: $outputDir" -ForegroundColor Cyan
+        Write-Host "RÃ©pertoire de sortie crÃ©Ã©: $outputDir" -ForegroundColor Cyan
     }
 
     # Afficher les informations de configuration
-    Write-Host "Exécution des benchmarks de performance en parallèle..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des benchmarks de performance en parallÃ¨le..." -ForegroundColor Cyan
     Write-Host "  Fonctions: $($Functions -join ', ')"
     Write-Host "  Modules: $($ModulePaths -join ', ')"
-    Write-Host "  Tailles de données: $($DataSizes -join ', ')"
-    Write-Host "  Itérations: $Iterations"
-    Write-Host "  Parallélisation adaptative: $($AdaptiveParallelization.IsPresent)"
+    Write-Host "  Tailles de donnÃ©es: $($DataSizes -join ', ')"
+    Write-Host "  ItÃ©rations: $Iterations"
+    Write-Host "  ParallÃ©lisation adaptative: $($AdaptiveParallelization.IsPresent)"
 
-    # Préparer les tâches de benchmark
+    # PrÃ©parer les tÃ¢ches de benchmark
     $benchmarkTasks = @()
 
     foreach ($function in $Functions) {
@@ -485,7 +485,7 @@ function Main {
         }
     }
 
-    # Initialiser le pool de parallélisation
+    # Initialiser le pool de parallÃ©lisation
     $resourceLimits = $null
     if ($AdaptiveParallelization) {
         $resourceLimits = @{
@@ -496,7 +496,7 @@ function Main {
 
     Initialize-ParallelPool -ResourceLimits $resourceLimits
 
-    # Exécuter les benchmarks en parallèle
+    # ExÃ©cuter les benchmarks en parallÃ¨le
     $startTime = Get-Date
 
     $scriptBlock = {
@@ -510,7 +510,7 @@ function Main {
     $endTime = Get-Date
     $totalDuration = ($endTime - $startTime).TotalSeconds
 
-    # Agréger les résultats
+    # AgrÃ©ger les rÃ©sultats
     $results = [PSCustomObject]@{
         StartTime        = $startTime
         EndTime          = $endTime
@@ -522,11 +522,11 @@ function Main {
         BenchmarkResults = $benchmarkResults
     }
 
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Résultats enregistrés: $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©sultats enregistrÃ©s: $OutputPath" -ForegroundColor Green
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateReport) {
         $reportPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         New-BenchmarkReport -Results $results -OutputPath $reportPath
@@ -535,13 +535,13 @@ function Main {
     # Nettoyer les ressources
     Clear-ParallelPool -Force
 
-    # Afficher un résumé
-    Write-Host "`nRésumé des benchmarks:" -ForegroundColor Cyan
-    Write-Host "  Benchmarks exécutés: $($benchmarkResults.Count)"
-    Write-Host "  Durée totale: $([Math]::Round($totalDuration, 2)) secondes"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© des benchmarks:" -ForegroundColor Cyan
+    Write-Host "  Benchmarks exÃ©cutÃ©s: $($benchmarkResults.Count)"
+    Write-Host "  DurÃ©e totale: $([Math]::Round($totalDuration, 2)) secondes"
 
-    # Afficher les temps moyens par fonction et taille de données
-    Write-Host "`nTemps d'exécution moyens (ms):" -ForegroundColor Yellow
+    # Afficher les temps moyens par fonction et taille de donnÃ©es
+    Write-Host "`nTemps d'exÃ©cution moyens (ms):" -ForegroundColor Yellow
 
     $table = @{}
     foreach ($function in $Functions) {
@@ -580,5 +580,5 @@ function Main {
     return $results
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

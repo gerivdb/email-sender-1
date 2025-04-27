@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module PRReportFilters.
@@ -13,25 +13,25 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRReportFilters.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Module PRReportFilters non trouvé à l'emplacement: $moduleToTest"
+    throw "Module PRReportFilters non trouvÃ© Ã  l'emplacement: $moduleToTest"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $moduleToTest -Force
 
 # Tests Pester
 Describe "PRReportFilters Module Tests" {
     Context "Add-FilterControls" {
-        It "Génère des contrôles de filtrage HTML" {
-            # Données de test
+        It "GÃ©nÃ¨re des contrÃ´les de filtrage HTML" {
+            # DonnÃ©es de test
             $issues = @(
                 [PSCustomObject]@{
                     Type     = "Syntax"
@@ -59,10 +59,10 @@ Describe "PRReportFilters Module Tests" {
                 }
             )
 
-            # Générer les contrôles de filtrage
+            # GÃ©nÃ©rer les contrÃ´les de filtrage
             $filterControls = Add-FilterControls -Issues $issues
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $filterControls | Should -Not -BeNullOrEmpty
             $filterControls | Should -BeOfType [string]
             $filterControls | Should -BeLike "*pr-filter-container*"
@@ -78,8 +78,8 @@ Describe "PRReportFilters Module Tests" {
             $filterControls | Should -BeLike "*Information*"
         }
 
-        It "Utilise les paramètres personnalisés" {
-            # Données de test
+        It "Utilise les paramÃ¨tres personnalisÃ©s" {
+            # DonnÃ©es de test
             $issues = @(
                 [PSCustomObject]@{
                     Category = "A"
@@ -88,27 +88,27 @@ Describe "PRReportFilters Module Tests" {
                 }
             )
 
-            # Générer les contrôles de filtrage avec des paramètres personnalisés
-            $filterControls = Add-FilterControls -Issues $issues -ContainerId "custom-filters" -TargetTableId "custom-table" -FilterProperties @("Category", "Priority") -CustomLabels @{ "Category" = "Catégorie"; "Priority" = "Priorité" }
+            # GÃ©nÃ©rer les contrÃ´les de filtrage avec des paramÃ¨tres personnalisÃ©s
+            $filterControls = Add-FilterControls -Issues $issues -ContainerId "custom-filters" -TargetTableId "custom-table" -FilterProperties @("Category", "Priority") -CustomLabels @{ "Category" = "CatÃ©gorie"; "Priority" = "PrioritÃ©" }
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $filterControls | Should -Not -BeNullOrEmpty
             $filterControls | Should -BeLike "*id=`"custom-filters`"*"
             $filterControls | Should -BeLike "*custom-table*"
-            $filterControls | Should -BeLike "*Catégorie*"
-            $filterControls | Should -BeLike "*Priorité*"
+            $filterControls | Should -BeLike "*CatÃ©gorie*"
+            $filterControls | Should -BeLike "*PrioritÃ©*"
             $filterControls | Should -BeLike "*data-filter=`"Category`"*"
             $filterControls | Should -BeLike "*data-filter=`"Priority`"*"
         }
 
-        It "Gère un ensemble de données vide" {
-            # Données de test vides
+        It "GÃ¨re un ensemble de donnÃ©es vide" {
+            # DonnÃ©es de test vides
             $issues = @()
 
-            # Générer les contrôles de filtrage
+            # GÃ©nÃ©rer les contrÃ´les de filtrage
             $filterControls = Add-FilterControls -Issues $issues
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $filterControls | Should -Not -BeNullOrEmpty
             $filterControls | Should -BeLike "*pr-filter-container*"
             $filterControls | Should -BeLike "*Filtres*"
@@ -116,11 +116,11 @@ Describe "PRReportFilters Module Tests" {
     }
 
     Context "Add-SortingCapabilities" {
-        It "Génère du JavaScript pour le tri de table" {
-            # Générer les capacités de tri
+        It "GÃ©nÃ¨re du JavaScript pour le tri de table" {
+            # GÃ©nÃ©rer les capacitÃ©s de tri
             $sortingCapabilities = Add-SortingCapabilities
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $sortingCapabilities | Should -Not -BeNullOrEmpty
             $sortingCapabilities | Should -BeOfType [string]
             $sortingCapabilities | Should -BeLike "*<script>*"
@@ -129,11 +129,11 @@ Describe "PRReportFilters Module Tests" {
             $sortingCapabilities | Should -BeLike "*pr-sort-indicator*"
         }
 
-        It "Utilise les paramètres personnalisés" {
-            # Générer les capacités de tri avec des paramètres personnalisés
+        It "Utilise les paramÃ¨tres personnalisÃ©s" {
+            # GÃ©nÃ©rer les capacitÃ©s de tri avec des paramÃ¨tres personnalisÃ©s
             $sortingCapabilities = Add-SortingCapabilities -TableId "custom-table" -SortableColumns @("Name", "Date") -DefaultSortColumn "Date" -DefaultSortDirection "asc"
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $sortingCapabilities | Should -Not -BeNullOrEmpty
             $sortingCapabilities | Should -BeLike "*custom-table*"
             $sortingCapabilities | Should -BeLike "*Name*"
@@ -143,11 +143,11 @@ Describe "PRReportFilters Module Tests" {
     }
 
     Context "New-CustomReportView" {
-        It "Génère une vue personnalisée" {
-            # Générer une vue personnalisée
+        It "GÃ©nÃ¨re une vue personnalisÃ©e" {
+            # GÃ©nÃ©rer une vue personnalisÃ©e
             $customView = New-CustomReportView -name "Erreurs critiques" -Filters @{ Severity = "Error" } -Description "Afficher uniquement les erreurs critiques"
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $customView | Should -Not -BeNullOrEmpty
             $customView | Should -BeOfType [string]
             $customView | Should -BeLike "*<div class=`"pr-custom-view`"*"
@@ -157,22 +157,22 @@ Describe "PRReportFilters Module Tests" {
             $customView | Should -BeLike "*Error*"
         }
 
-        It "Utilise les paramètres personnalisés" {
-            # Générer une vue personnalisée avec des paramètres personnalisés
-            $customView = New-CustomReportView -name "Vue personnalisée" -Filters @{ Type = "Custom" } -Description "Description personnalisée" -Icon "star" -TargetTableId "custom-table"
+        It "Utilise les paramÃ¨tres personnalisÃ©s" {
+            # GÃ©nÃ©rer une vue personnalisÃ©e avec des paramÃ¨tres personnalisÃ©s
+            $customView = New-CustomReportView -name "Vue personnalisÃ©e" -Filters @{ Type = "Custom" } -Description "Description personnalisÃ©e" -Icon "star" -TargetTableId "custom-table"
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $customView | Should -Not -BeNullOrEmpty
-            $customView | Should -BeLike "*Vue personnalisée*"
-            $customView | Should -BeLike "*Description personnalisée*"
+            $customView | Should -BeLike "*Vue personnalisÃ©e*"
+            $customView | Should -BeLike "*Description personnalisÃ©e*"
             $customView | Should -BeLike "*fa-star*"
             $customView | Should -BeLike "*custom-table*"
         }
     }
 
     Context "New-SearchableReport" {
-        It "Génère un rapport avec recherche avancée" {
-            # Données de test
+        It "GÃ©nÃ¨re un rapport avec recherche avancÃ©e" {
+            # DonnÃ©es de test
             $issues = @(
                 [PSCustomObject]@{
                     Type     = "Syntax"
@@ -192,10 +192,10 @@ Describe "PRReportFilters Module Tests" {
                 }
             )
 
-            # Générer le rapport avec recherche
+            # GÃ©nÃ©rer le rapport avec recherche
             $searchableReport = New-SearchableReport -Issues $issues -Title "Test Report" -Description "Test Description"
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $searchableReport | Should -Not -BeNullOrEmpty
             $searchableReport | Should -BeOfType [string]
             $searchableReport | Should -BeLike "*<div class=`"pr-searchable-report`"*"
@@ -214,8 +214,8 @@ Describe "PRReportFilters Module Tests" {
             $searchableReport | Should -BeLike "*test.ps1*"
         }
 
-        It "Utilise les paramètres personnalisés" {
-            # Données de test
+        It "Utilise les paramÃ¨tres personnalisÃ©s" {
+            # DonnÃ©es de test
             $issues = @(
                 [PSCustomObject]@{
                     Type  = "Custom"
@@ -223,10 +223,10 @@ Describe "PRReportFilters Module Tests" {
                 }
             )
 
-            # Générer le rapport avec recherche avec des paramètres personnalisés
+            # GÃ©nÃ©rer le rapport avec recherche avec des paramÃ¨tres personnalisÃ©s
             $searchableReport = New-SearchableReport -Issues $issues -Title "Custom Report" -Description "Custom Description" -TableId "custom-table" -SearchableProperties @("Type", "Value")
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $searchableReport | Should -Not -BeNullOrEmpty
             $searchableReport | Should -BeLike "*Custom Report*"
             $searchableReport | Should -BeLike "*Custom Description*"
@@ -235,14 +235,14 @@ Describe "PRReportFilters Module Tests" {
             $searchableReport | Should -BeLike "*Value*"
         }
 
-        It "Gère un ensemble de données vide" {
-            # Données de test vides
+        It "GÃ¨re un ensemble de donnÃ©es vide" {
+            # DonnÃ©es de test vides
             $issues = @()
 
-            # Générer le rapport avec recherche
+            # GÃ©nÃ©rer le rapport avec recherche
             $searchableReport = New-SearchableReport -Issues $issues -Title "Empty Report"
 
-            # Vérifier le résultat
+            # VÃ©rifier le rÃ©sultat
             $searchableReport | Should -Not -BeNullOrEmpty
             $searchableReport | Should -BeLike "*Empty Report*"
             $searchableReport | Should -BeLike "*pr-issues-table*"
@@ -251,5 +251,5 @@ Describe "PRReportFilters Module Tests" {
     }
 }
 
-# Note: Ne pas exécuter les tests directement ici pour éviter une récursion infinie
-# Utilisez plutôt: Invoke-Pester -Path $PSCommandPath
+# Note: Ne pas exÃ©cuter les tests directement ici pour Ã©viter une rÃ©cursion infinie
+# Utilisez plutÃ´t: Invoke-Pester -Path $PSCommandPath

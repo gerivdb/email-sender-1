@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les fonctions du système d'apprentissage des erreurs.
+    Tests unitaires pour les fonctions du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctions du système d'apprentissage des erreurs.
+    Ce script contient des tests unitaires pour les fonctions du systÃ¨me d'apprentissage des erreurs.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
-Describe "Tests des fonctions du système d'apprentissage des erreurs" {
+# DÃ©finir les tests Pester
+Describe "Tests des fonctions du systÃ¨me d'apprentissage des erreurs" {
     Context "Fonctions de base" {
-        It "Devrait pouvoir créer une erreur" {
-            # Créer une erreur factice
+        It "Devrait pouvoir crÃ©er une erreur" {
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -22,14 +22,14 @@ Describe "Tests des fonctions du système d'apprentissage des erreurs" {
                 $null
             )
             
-            # Vérifier que l'erreur a été créée correctement
+            # VÃ©rifier que l'erreur a Ã©tÃ© crÃ©Ã©e correctement
             $errorRecord | Should -Not -BeNullOrEmpty
             $errorRecord.Exception.Message | Should -Be "Erreur de test"
             $errorRecord.FullyQualifiedErrorId | Should -Be "TestError"
         }
         
-        It "Devrait pouvoir convertir une erreur en chaîne" {
-            # Créer une erreur factice
+        It "Devrait pouvoir convertir une erreur en chaÃ®ne" {
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -38,16 +38,16 @@ Describe "Tests des fonctions du système d'apprentissage des erreurs" {
                 $null
             )
             
-            # Convertir l'erreur en chaîne
+            # Convertir l'erreur en chaÃ®ne
             $errorString = $errorRecord.ToString()
             
-            # Vérifier que la chaîne contient les informations de l'erreur
+            # VÃ©rifier que la chaÃ®ne contient les informations de l'erreur
             $errorString | Should -Not -BeNullOrEmpty
             $errorString | Should -Match "Erreur de test"
         }
         
-        It "Devrait pouvoir créer un objet d'analyse d'erreur" {
-            # Créer un objet d'analyse d'erreur
+        It "Devrait pouvoir crÃ©er un objet d'analyse d'erreur" {
+            # CrÃ©er un objet d'analyse d'erreur
             $errorAnalysis = [PSCustomObject]@{
                 Errors = @(
                     [PSCustomObject]@{
@@ -78,7 +78,7 @@ Describe "Tests des fonctions du système d'apprentissage des erreurs" {
                 }
             }
             
-            # Vérifier que l'objet d'analyse d'erreur a été créé correctement
+            # VÃ©rifier que l'objet d'analyse d'erreur a Ã©tÃ© crÃ©Ã© correctement
             $errorAnalysis | Should -Not -BeNullOrEmpty
             $errorAnalysis.Errors.Count | Should -Be 2
             $errorAnalysis.Errors[0].ErrorId | Should -Be "TestError1"

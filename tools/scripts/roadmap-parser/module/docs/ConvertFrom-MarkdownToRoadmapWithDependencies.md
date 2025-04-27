@@ -1,8 +1,8 @@
-# ConvertFrom-MarkdownToRoadmapWithDependencies
+﻿# ConvertFrom-MarkdownToRoadmapWithDependencies
 
 ## SYNOPSIS
 
-Convertit un fichier markdown en structure d'objet PowerShell représentant une roadmap avec dépendances.
+Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec dÃ©pendances.
 
 ## SYNTAX
 
@@ -13,14 +13,14 @@ Convertit un fichier markdown en structure d'objet PowerShell représentant une 
 ## DESCRIPTION
 
 La fonction ConvertFrom-MarkdownToRoadmapWithDependencies lit un fichier markdown et le convertit en une structure d'objet PowerShell.
-Elle est spécialement conçue pour traiter les roadmaps au format markdown avec des tâches, des statuts, des identifiants,
-et des dépendances entre les tâches.
+Elle est spÃ©cialement conÃ§ue pour traiter les roadmaps au format markdown avec des tÃ¢ches, des statuts, des identifiants,
+et des dÃ©pendances entre les tÃ¢ches.
 
 ## PARAMETERS
 
 ### -FilePath
 
-Chemin du fichier markdown à convertir.
+Chemin du fichier markdown Ã  convertir.
 
 `yaml
 Type: String
@@ -36,7 +36,7 @@ Accept wildcard characters: false
 
 ### -IncludeMetadata
 
-Indique si les métadonnées supplémentaires doivent être extraites et incluses dans les objets.
+Indique si les mÃ©tadonnÃ©es supplÃ©mentaires doivent Ãªtre extraites et incluses dans les objets.
 
 `yaml
 Type: SwitchParameter
@@ -52,7 +52,7 @@ Accept wildcard characters: false
 
 ### -DetectDependencies
 
-Indique si les dépendances entre tâches doivent être détectées et incluses dans les objets.
+Indique si les dÃ©pendances entre tÃ¢ches doivent Ãªtre dÃ©tectÃ©es et incluses dans les objets.
 
 `yaml
 Type: SwitchParameter
@@ -68,7 +68,7 @@ Accept wildcard characters: false
 
 ### -ValidateStructure
 
-Indique si la structure de la roadmap doit être validée.
+Indique si la structure de la roadmap doit Ãªtre validÃ©e.
 
 `yaml
 Type: SwitchParameter
@@ -88,13 +88,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant la structure de la roadmap.
+[PSCustomObject] ReprÃ©sentant la structure de la roadmap.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -102,7 +102,7 @@ Date de création: 2023-07-10
 
 `powershell
 ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
-Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des métadonnées et détection des dépendances.
+Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des mÃ©tadonnÃ©es et dÃ©tection des dÃ©pendances.
 `
 
     

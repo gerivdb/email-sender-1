@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de performance avec une parallélisation optimisée.
+    ExÃ©cute des tests de performance avec une parallÃ©lisation optimisÃ©e.
 .DESCRIPTION
-    Ce script utilise des techniques avancées de parallélisation pour exécuter
-    des tests de performance tout en optimisant l'utilisation des ressources système.
+    Ce script utilise des techniques avancÃ©es de parallÃ©lisation pour exÃ©cuter
+    des tests de performance tout en optimisant l'utilisation des ressources systÃ¨me.
 .PARAMETER TestScripts
-    Tableau de chemins vers les scripts de test à exécuter.
+    Tableau de chemins vers les scripts de test Ã  exÃ©cuter.
 .PARAMETER TestParameters
-    Paramètres à passer aux scripts de test.
+    ParamÃ¨tres Ã  passer aux scripts de test.
 .PARAMETER Iterations
-    Nombre d'itérations à exécuter pour chaque test. Par défaut: 3.
+    Nombre d'itÃ©rations Ã  exÃ©cuter pour chaque test. Par dÃ©faut: 3.
 .PARAMETER ThrottleLimit
-    Nombre maximum de tests à exécuter en parallèle. Par défaut: nombre de processeurs - 1.
+    Nombre maximum de tests Ã  exÃ©cuter en parallÃ¨le. Par dÃ©faut: nombre de processeurs - 1.
 .PARAMETER AdaptiveThrottling
-    Si spécifié, ajuste dynamiquement le nombre de tests en parallèle en fonction de l'utilisation des ressources.
+    Si spÃ©cifiÃ©, ajuste dynamiquement le nombre de tests en parallÃ¨le en fonction de l'utilisation des ressources.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats agrégés. Par défaut: "./optimized-perf-results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats agrÃ©gÃ©s. Par dÃ©faut: "./optimized-perf-results.json".
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .EXAMPLE
     .\Invoke-OptimizedPerformanceTests.ps1 -TestScripts @(".\Simple-PRLoadTest.ps1") -Iterations 5 -AdaptiveThrottling
 .NOTES
@@ -51,35 +51,35 @@ param (
     [switch]$GenerateReport
 )
 
-# Importer le module de parallélisation optimisée
+# Importer le module de parallÃ©lisation optimisÃ©e
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\OptimizedParallel.psm1"
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module de parallélisation optimisée non trouvé: $modulePath"
+    throw "Module de parallÃ©lisation optimisÃ©e non trouvÃ©: $modulePath"
 }
 
 Import-Module $modulePath -Force
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-OptimizedTestReport {
     param (
         [object]$Results,
         [string]$OutputPath
     )
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $testNames = @()
     $avgResponseTimes = @()
     $successRates = @()
     $executionTimes = @()
     
-    # Regrouper les résultats par script de test
+    # Regrouper les rÃ©sultats par script de test
     $groupedResults = $Results.TestResults | Group-Object -Property TestScript
     
     foreach ($group in $groupedResults) {
         $testName = Split-Path -Path $group.Name -Leaf
         $testNames += $testName
         
-        # Calculer le temps de réponse moyen
+        # Calculer le temps de rÃ©ponse moyen
         $avgResponseTime = 0
         $successCount = 0
         $totalExecutionTime = 0
@@ -108,14 +108,14 @@ function New-OptimizedTestReport {
         $executionTimes += $totalExecutionTime
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de tests de performance optimisés</title>
+    <title>Rapport de tests de performance optimisÃ©s</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -197,19 +197,19 @@ function New-OptimizedTestReport {
 </head>
 <body>
     <div class="header">
-        <h1>Rapport de tests de performance optimisés</h1>
-        <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <h1>Rapport de tests de performance optimisÃ©s</h1>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
     <div class="section">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <div class="summary">
             <div class="metric-card">
-                <div class="metric-title">Tests exécutés</div>
+                <div class="metric-title">Tests exÃ©cutÃ©s</div>
                 <div class="metric-value">$($Results.TotalTests)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Tests réussis</div>
+                <div class="metric-title">Tests rÃ©ussis</div>
                 <div class="metric-value">$($Results.SuccessCount)</div>
             </div>
             <div class="metric-card">
@@ -217,43 +217,43 @@ function New-OptimizedTestReport {
                 <div class="metric-value">$($Results.ErrorCount)</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Taux de réussite</div>
+                <div class="metric-title">Taux de rÃ©ussite</div>
                 <div class="metric-value">$([Math]::Round(($Results.SuccessCount / $Results.TotalTests) * 100, 2))<span class="metric-unit">%</span></div>
             </div>
         </div>
     </div>
     
     <div class="section">
-        <h2>Temps de réponse moyen par test</h2>
+        <h2>Temps de rÃ©ponse moyen par test</h2>
         <div class="chart-container">
             <canvas id="responseTimeChart"></canvas>
         </div>
     </div>
     
     <div class="section">
-        <h2>Taux de réussite par test</h2>
+        <h2>Taux de rÃ©ussite par test</h2>
         <div class="chart-container">
             <canvas id="successRateChart"></canvas>
         </div>
     </div>
     
     <div class="section">
-        <h2>Temps d'exécution par test</h2>
+        <h2>Temps d'exÃ©cution par test</h2>
         <div class="chart-container">
             <canvas id="executionTimeChart"></canvas>
         </div>
     </div>
     
     <div class="section">
-        <h2>Détails des tests</h2>
+        <h2>DÃ©tails des tests</h2>
         <table>
             <tr>
                 <th>Test</th>
-                <th>Itérations</th>
-                <th>Réussites</th>
+                <th>ItÃ©rations</th>
+                <th>RÃ©ussites</th>
                 <th>Erreurs</th>
-                <th>Temps de réponse moyen (ms)</th>
-                <th>Temps d'exécution moyen (s)</th>
+                <th>Temps de rÃ©ponse moyen (ms)</th>
+                <th>Temps d'exÃ©cution moyen (s)</th>
             </tr>
             $(
                 foreach ($group in $groupedResults) {
@@ -298,19 +298,19 @@ function New-OptimizedTestReport {
     </div>
     
     <div class="footer">
-        <p>Rapport généré par Invoke-OptimizedPerformanceTests.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par Invoke-OptimizedPerformanceTests.ps1</p>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Graphique des temps de réponse
+            // Graphique des temps de rÃ©ponse
             const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
             new Chart(responseTimeCtx, {
                 type: 'bar',
                 data: {
                     labels: $($testNames | ConvertTo-Json),
                     datasets: [{
-                        label: 'Temps de réponse moyen (ms)',
+                        label: 'Temps de rÃ©ponse moyen (ms)',
                         data: $($avgResponseTimes | ConvertTo-Json),
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -322,7 +322,7 @@ function New-OptimizedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Temps de réponse moyen par test'
+                            text: 'Temps de rÃ©ponse moyen par test'
                         }
                     },
                     scales: {
@@ -337,14 +337,14 @@ function New-OptimizedTestReport {
                 }
             });
             
-            // Graphique des taux de réussite
+            // Graphique des taux de rÃ©ussite
             const successRateCtx = document.getElementById('successRateChart').getContext('2d');
             new Chart(successRateCtx, {
                 type: 'bar',
                 data: {
                     labels: $($testNames | ConvertTo-Json),
                     datasets: [{
-                        label: 'Taux de réussite (%)',
+                        label: 'Taux de rÃ©ussite (%)',
                         data: $($successRates | ConvertTo-Json),
                         backgroundColor: 'rgba(75, 192, 192, 0.5)',
                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -356,7 +356,7 @@ function New-OptimizedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Taux de réussite par test'
+                            text: 'Taux de rÃ©ussite par test'
                         }
                     },
                     scales: {
@@ -372,14 +372,14 @@ function New-OptimizedTestReport {
                 }
             });
             
-            // Graphique des temps d'exécution
+            // Graphique des temps d'exÃ©cution
             const executionTimeCtx = document.getElementById('executionTimeChart').getContext('2d');
             new Chart(executionTimeCtx, {
                 type: 'bar',
                 data: {
                     labels: $($testNames | ConvertTo-Json),
                     datasets: [{
-                        label: 'Temps d\'exécution moyen (s)',
+                        label: 'Temps d\'exÃ©cution moyen (s)',
                         data: $($executionTimes | ConvertTo-Json),
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -391,7 +391,7 @@ function New-OptimizedTestReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Temps d\'exécution moyen par test'
+                            text: 'Temps d\'exÃ©cution moyen par test'
                         }
                     },
                     scales: {
@@ -412,29 +412,29 @@ function New-OptimizedTestReport {
 "@
     
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier que les scripts de test existent
+    # VÃ©rifier que les scripts de test existent
     foreach ($testScript in $TestScripts) {
         if (-not (Test-Path -Path $testScript)) {
-            throw "Script de test non trouvé: $testScript"
+            throw "Script de test non trouvÃ©: $testScript"
         }
     }
     
-    # Vérifier que le répertoire de sortie existe
+    # VÃ©rifier que le rÃ©pertoire de sortie existe
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de sortie créé: $outputDir" -ForegroundColor Cyan
+        Write-Host "RÃ©pertoire de sortie crÃ©Ã©: $outputDir" -ForegroundColor Cyan
     }
     
-    # Préparer les paramètres de test
+    # PrÃ©parer les paramÃ¨tres de test
     $testParams = $TestParameters.Clone()
     
-    # Si le script est Simple-PRLoadTest.ps1, ajouter un paramètre OutputPath par défaut
+    # Si le script est Simple-PRLoadTest.ps1, ajouter un paramÃ¨tre OutputPath par dÃ©faut
     foreach ($testScript in $TestScripts) {
         $scriptName = Split-Path -Path $testScript -Leaf
         if ($scriptName -eq "Simple-PRLoadTest.ps1" -and -not $testParams.ContainsKey("OutputPath")) {
@@ -443,32 +443,32 @@ function Main {
     }
     
     # Afficher les informations de configuration
-    Write-Host "Exécution des tests de performance optimisés..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests de performance optimisÃ©s..." -ForegroundColor Cyan
     Write-Host "  Scripts de test: $($TestScripts -join ', ')"
-    Write-Host "  Itérations: $Iterations"
+    Write-Host "  ItÃ©rations: $Iterations"
     if ($ThrottleLimit -gt 0) {
-        Write-Host "  Limite de parallélisation: $ThrottleLimit"
+        Write-Host "  Limite de parallÃ©lisation: $ThrottleLimit"
     }
     else {
-        Write-Host "  Limite de parallélisation: Auto (basée sur le nombre de processeurs)"
+        Write-Host "  Limite de parallÃ©lisation: Auto (basÃ©e sur le nombre de processeurs)"
     }
-    Write-Host "  Parallélisation adaptative: $($AdaptiveThrottling.IsPresent)"
+    Write-Host "  ParallÃ©lisation adaptative: $($AdaptiveThrottling.IsPresent)"
     
-    # Exécuter les tests en parallèle
+    # ExÃ©cuter les tests en parallÃ¨le
     $startTime = Get-Date
     $results = Invoke-ParallelPerformanceTests -TestScripts $TestScripts -TestParameters $testParams -Iterations $Iterations -ThrottleLimit $ThrottleLimit -AdaptiveThrottling:$AdaptiveThrottling -OutputPath $OutputPath
     $endTime = Get-Date
     
-    # Ajouter des informations supplémentaires aux résultats
+    # Ajouter des informations supplÃ©mentaires aux rÃ©sultats
     $results | Add-Member -MemberType NoteProperty -Name "StartTime" -Value $startTime -Force
     $results | Add-Member -MemberType NoteProperty -Name "EndTime" -Value $endTime -Force
     $results | Add-Member -MemberType NoteProperty -Name "TotalDuration" -Value ($endTime - $startTime).TotalSeconds -Force
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Résultats enregistrés: $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©sultats enregistrÃ©s: $OutputPath" -ForegroundColor Green
     
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateReport) {
         $reportPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         New-OptimizedTestReport -Results $results -OutputPath $reportPath
@@ -477,15 +477,15 @@ function Main {
     # Nettoyer les ressources
     Clear-ParallelPool -Force
     
-    # Afficher un résumé
-    Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-    Write-Host "  Tests exécutés: $($results.TotalTests)"
-    Write-Host "  Tests réussis: $($results.SuccessCount)"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+    Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalTests)"
+    Write-Host "  Tests rÃ©ussis: $($results.SuccessCount)"
     Write-Host "  Tests en erreur: $($results.ErrorCount)"
-    Write-Host "  Durée totale: $([Math]::Round($results.TotalDuration, 2)) secondes"
+    Write-Host "  DurÃ©e totale: $([Math]::Round($results.TotalDuration, 2)) secondes"
     
     return $results
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

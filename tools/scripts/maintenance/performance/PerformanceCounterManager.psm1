@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de gestion robuste des compteurs de performance avec gestion d'erreurs avancée.
+    Module de gestion robuste des compteurs de performance avec gestion d'erreurs avancÃ©e.
 .DESCRIPTION
-    Ce module fournit des fonctions pour obtenir des compteurs de performance de manière fiable,
-    avec gestion d'erreurs intégrée, mécanismes alternatifs et valeurs par défaut intelligentes.
+    Ce module fournit des fonctions pour obtenir des compteurs de performance de maniÃ¨re fiable,
+    avec gestion d'erreurs intÃ©grÃ©e, mÃ©canismes alternatifs et valeurs par dÃ©faut intelligentes.
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
@@ -22,28 +22,28 @@ $script:RetryDelay = New-TimeSpan -Seconds 2
 
 <#
 .SYNOPSIS
-    Obtient les valeurs des compteurs de performance de manière fiable.
+    Obtient les valeurs des compteurs de performance de maniÃ¨re fiable.
 .DESCRIPTION
     Cette fonction est un wrapper autour de Get-Counter qui ajoute une gestion d'erreurs robuste,
-    des mécanismes de retry, et des valeurs par défaut intelligentes en cas d'échec.
+    des mÃ©canismes de retry, et des valeurs par dÃ©faut intelligentes en cas d'Ã©chec.
 .PARAMETER CounterPath
-    Chemin du compteur de performance à obtenir.
+    Chemin du compteur de performance Ã  obtenir.
 .PARAMETER SampleInterval
-    Intervalle entre les échantillons en secondes.
+    Intervalle entre les Ã©chantillons en secondes.
 .PARAMETER MaxSamples
-    Nombre maximum d'échantillons à collecter.
+    Nombre maximum d'Ã©chantillons Ã  collecter.
 .PARAMETER UseCache
-    Indique si le cache doit être utilisé pour les valeurs récentes.
+    Indique si le cache doit Ãªtre utilisÃ© pour les valeurs rÃ©centes.
 .PARAMETER CacheMaxAge
-    Âge maximum des valeurs en cache en minutes.
+    Ã‚ge maximum des valeurs en cache en minutes.
 .PARAMETER DefaultValue
-    Valeur par défaut à utiliser en cas d'échec.
+    Valeur par dÃ©faut Ã  utiliser en cas d'Ã©chec.
 .PARAMETER UseAlternativeMethods
-    Indique si des méthodes alternatives doivent être utilisées en cas d'échec de Get-Counter.
+    Indique si des mÃ©thodes alternatives doivent Ãªtre utilisÃ©es en cas d'Ã©chec de Get-Counter.
 .PARAMETER RetryCount
-    Nombre de tentatives en cas d'échec.
+    Nombre de tentatives en cas d'Ã©chec.
 .PARAMETER RetryDelaySeconds
-    Délai entre les tentatives en secondes.
+    DÃ©lai entre les tentatives en secondes.
 .EXAMPLE
     Get-SafeCounter -CounterPath "\Processor(_Total)\% Processor Time"
 .EXAMPLE
@@ -80,7 +80,7 @@ function Get-SafeCounter {
         [int]$RetryDelaySeconds = 2
     )
 
-    # Mettre à jour les variables globales si nécessaire
+    # Mettre Ã  jour les variables globales si nÃ©cessaire
     if ($CacheMaxAge -ne 5) {
         $script:MaxCacheAge = New-TimeSpan -Minutes $CacheMaxAge
     }
@@ -93,23 +93,23 @@ function Get-SafeCounter {
         $script:RetryDelay = New-TimeSpan -Seconds $RetryDelaySeconds
     }
 
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $results = @{}
 
     foreach ($counter in $CounterPath) {
-        # Vérifier si la valeur est dans le cache et si elle est encore valide
+        # VÃ©rifier si la valeur est dans le cache et si elle est encore valide
         if ($UseCache -and $script:CounterCache.ContainsKey($counter)) {
             $lastUpdate = $script:LastUpdateTime[$counter]
             $cacheAge = (Get-Date) - $lastUpdate
 
             if ($cacheAge -lt $script:MaxCacheAge) {
-                Write-Verbose "Utilisation de la valeur en cache pour $counter (âge: $($cacheAge.TotalMinutes) minutes)"
+                Write-Verbose "Utilisation de la valeur en cache pour $counter (Ã¢ge: $($cacheAge.TotalMinutes) minutes)"
                 $results[$counter] = $script:CounterCache[$counter]
                 continue
             }
         }
 
-        # Initialiser le compteur d'échecs si nécessaire
+        # Initialiser le compteur d'Ã©checs si nÃ©cessaire
         if (-not $script:FailureCount.ContainsKey($counter)) {
             $script:FailureCount[$counter] = 0
         }
@@ -129,66 +129,66 @@ function Get-SafeCounter {
                 # Extraire la valeur du compteur et la convertir en double
                 $counterValue = [double]$counterResult.CounterSamples[0].CookedValue
 
-                # Mettre à jour le cache
+                # Mettre Ã  jour le cache
                 $script:CounterCache[$counter] = $counterValue
                 $script:LastUpdateTime[$counter] = Get-Date
 
-                # Réinitialiser le compteur d'échecs
+                # RÃ©initialiser le compteur d'Ã©checs
                 $script:FailureCount[$counter] = 0
 
                 $success = $true
                 break
             } catch {
                 $errorInfo = $_
-                Write-Verbose "Échec de l'obtention du compteur $counter : $($_.Exception.Message)"
+                Write-Verbose "Ã‰chec de l'obtention du compteur $counter : $($_.Exception.Message)"
 
-                # Incrémenter le compteur d'échecs
+                # IncrÃ©menter le compteur d'Ã©checs
                 $script:FailureCount[$counter]++
 
-                # Attendre avant de réessayer
+                # Attendre avant de rÃ©essayer
                 if ($retry -lt $script:MaxRetryCount - 1) {
                     Start-Sleep -Seconds $script:RetryDelay.TotalSeconds
                 }
             }
         }
 
-        # Si Get-Counter a échoué et que les méthodes alternatives sont activées, essayer les méthodes alternatives
+        # Si Get-Counter a Ã©chouÃ© et que les mÃ©thodes alternatives sont activÃ©es, essayer les mÃ©thodes alternatives
         if (-not $success -and $UseAlternativeMethods) {
             try {
-                Write-Verbose "Tentative d'utilisation de méthodes alternatives pour $counter"
+                Write-Verbose "Tentative d'utilisation de mÃ©thodes alternatives pour $counter"
                 $alternativeValue = Get-AlternativeMetric -CounterPath $counter
 
                 if ($null -ne $alternativeValue) {
                     $counterValue = $alternativeValue
 
-                    # Mettre à jour le cache
+                    # Mettre Ã  jour le cache
                     $script:CounterCache[$counter] = $counterValue
                     $script:LastUpdateTime[$counter] = Get-Date
 
                     $success = $true
                 }
             } catch {
-                Write-Verbose "Échec des méthodes alternatives pour $counter : $($_.Exception.Message)"
+                Write-Verbose "Ã‰chec des mÃ©thodes alternatives pour $counter : $($_.Exception.Message)"
             }
         }
 
-        # Si toutes les méthodes ont échoué, utiliser une valeur par défaut intelligente
+        # Si toutes les mÃ©thodes ont Ã©chouÃ©, utiliser une valeur par dÃ©faut intelligente
         if (-not $success) {
-            Write-Warning "Impossible d'obtenir le compteur $counter. Utilisation d'une valeur par défaut."
+            Write-Warning "Impossible d'obtenir le compteur $counter. Utilisation d'une valeur par dÃ©faut."
 
-            # Obtenir une valeur par défaut intelligente
+            # Obtenir une valeur par dÃ©faut intelligente
             $defaultValueResult = Get-IntelligentDefaultValue -CounterPath $counter -DefaultValue $DefaultValue
             $counterValue = $defaultValueResult
 
-            # Enregistrer la valeur par défaut pour référence future
+            # Enregistrer la valeur par dÃ©faut pour rÃ©fÃ©rence future
             $script:DefaultValues[$counter] = $counterValue
         }
 
-        # Ajouter la valeur aux résultats
+        # Ajouter la valeur aux rÃ©sultats
         $results[$counter] = $counterValue
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     if ($CounterPath.Count -eq 1) {
         return $results[$CounterPath[0]]
     } else {
@@ -198,12 +198,12 @@ function Get-SafeCounter {
 
 <#
 .SYNOPSIS
-    Obtient des métriques système en utilisant des méthodes alternatives à Get-Counter.
+    Obtient des mÃ©triques systÃ¨me en utilisant des mÃ©thodes alternatives Ã  Get-Counter.
 .DESCRIPTION
-    Cette fonction utilise WMI/CIM ou d'autres méthodes pour obtenir des métriques système
-    équivalentes aux compteurs de performance, lorsque Get-Counter échoue.
+    Cette fonction utilise WMI/CIM ou d'autres mÃ©thodes pour obtenir des mÃ©triques systÃ¨me
+    Ã©quivalentes aux compteurs de performance, lorsque Get-Counter Ã©choue.
 .PARAMETER CounterPath
-    Chemin du compteur de performance pour lequel obtenir une métrique alternative.
+    Chemin du compteur de performance pour lequel obtenir une mÃ©trique alternative.
 .EXAMPLE
     Get-AlternativeMetric -CounterPath "\Processor(_Total)\% Processor Time"
 #>
@@ -220,9 +220,9 @@ function Get-AlternativeMetric {
     $instance = if ($counterPathParts[1] -match '\((.*)\)') { $matches[1] } else { "_Total" }
     $counter = $counterPathParts[2]
 
-    Write-Verbose "Recherche d'une métrique alternative pour Catégorie: $category, Instance: $instance, Compteur: $counter"
+    Write-Verbose "Recherche d'une mÃ©trique alternative pour CatÃ©gorie: $category, Instance: $instance, Compteur: $counter"
 
-    # Utiliser différentes méthodes en fonction de la catégorie et du compteur
+    # Utiliser diffÃ©rentes mÃ©thodes en fonction de la catÃ©gorie et du compteur
     switch ($category) {
         "Processor" {
             switch ($counter) {
@@ -232,25 +232,25 @@ function Get-AlternativeMetric {
                         $cpuLoad = Get-CimInstance -ClassName Win32_Processor | Measure-Object -Property LoadPercentage -Average
                         return $cpuLoad.Average
                     } catch {
-                        Write-Verbose "Échec de l'obtention de l'utilisation du processeur via CIM: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec de l'obtention de l'utilisation du processeur via CIM: $($_.Exception.Message)"
 
-                        # Essayer une autre méthode (WMI)
+                        # Essayer une autre mÃ©thode (WMI)
                         try {
                             $cpuLoad = Get-WmiObject -Class Win32_Processor | Measure-Object -Property LoadPercentage -Average
                             return $cpuLoad.Average
                         } catch {
-                            Write-Verbose "Échec de l'obtention de l'utilisation du processeur via WMI: $($_.Exception.Message)"
+                            Write-Verbose "Ã‰chec de l'obtention de l'utilisation du processeur via WMI: $($_.Exception.Message)"
                         }
                     }
                 }
 
                 "% Idle Time" {
-                    # Calculer le temps d'inactivité à partir du temps d'utilisation
+                    # Calculer le temps d'inactivitÃ© Ã  partir du temps d'utilisation
                     try {
                         $cpuLoad = Get-CimInstance -ClassName Win32_Processor | Measure-Object -Property LoadPercentage -Average
                         return 100 - $cpuLoad.Average
                     } catch {
-                        Write-Verbose "Échec du calcul du temps d'inactivité du processeur: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec du calcul du temps d'inactivitÃ© du processeur: $($_.Exception.Message)"
                     }
                 }
             }
@@ -259,25 +259,25 @@ function Get-AlternativeMetric {
         "Memory" {
             switch ($counter) {
                 "Available MBytes" {
-                    # Utiliser CIM pour obtenir la mémoire disponible
+                    # Utiliser CIM pour obtenir la mÃ©moire disponible
                     try {
                         $memory = Get-CimInstance -ClassName Win32_OperatingSystem
                         return [math]::Round($memory.FreePhysicalMemory / 1KB, 0)
                     } catch {
-                        Write-Verbose "Échec de l'obtention de la mémoire disponible via CIM: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec de l'obtention de la mÃ©moire disponible via CIM: $($_.Exception.Message)"
 
-                        # Essayer une autre méthode (WMI)
+                        # Essayer une autre mÃ©thode (WMI)
                         try {
                             $memory = Get-WmiObject -Class Win32_OperatingSystem
                             return [math]::Round($memory.FreePhysicalMemory / 1KB, 0)
                         } catch {
-                            Write-Verbose "Échec de l'obtention de la mémoire disponible via WMI: $($_.Exception.Message)"
+                            Write-Verbose "Ã‰chec de l'obtention de la mÃ©moire disponible via WMI: $($_.Exception.Message)"
                         }
                     }
                 }
 
                 "% Committed Bytes In Use" {
-                    # Calculer le pourcentage de mémoire utilisée
+                    # Calculer le pourcentage de mÃ©moire utilisÃ©e
                     try {
                         $memory = Get-CimInstance -ClassName Win32_OperatingSystem
                         $totalMemory = $memory.TotalVisibleMemorySize
@@ -285,7 +285,7 @@ function Get-AlternativeMetric {
                         $usedMemory = $totalMemory - $freeMemory
                         return [math]::Round(($usedMemory / $totalMemory) * 100, 2)
                     } catch {
-                        Write-Verbose "Échec du calcul du pourcentage de mémoire utilisée: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec du calcul du pourcentage de mÃ©moire utilisÃ©e: $($_.Exception.Message)"
                     }
                 }
             }
@@ -299,7 +299,7 @@ function Get-AlternativeMetric {
                         $diskStats = Get-CimInstance -ClassName Win32_PerfFormattedData_PerfDisk_PhysicalDisk | Where-Object { $_.Name -eq $instance -or ($instance -eq "_Total" -and $_.Name -eq "_Total") }
                         return $diskStats.PercentDiskTime
                     } catch {
-                        Write-Verbose "Échec de l'obtention de l'utilisation du disque via CIM: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec de l'obtention de l'utilisation du disque via CIM: $($_.Exception.Message)"
                     }
                 }
 
@@ -309,7 +309,7 @@ function Get-AlternativeMetric {
                         $diskStats = Get-CimInstance -ClassName Win32_PerfFormattedData_PerfDisk_PhysicalDisk | Where-Object { $_.Name -eq $instance -or ($instance -eq "_Total" -and $_.Name -eq "_Total") }
                         return $diskStats.AvgDiskQueueLength
                     } catch {
-                        Write-Verbose "Échec de l'obtention de la longueur de la file d'attente du disque via CIM: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec de l'obtention de la longueur de la file d'attente du disque via CIM: $($_.Exception.Message)"
                     }
                 }
             }
@@ -318,33 +318,33 @@ function Get-AlternativeMetric {
         "Network Interface" {
             switch ($counter) {
                 "Bytes Total/sec" {
-                    # Utiliser CIM pour obtenir le débit réseau
+                    # Utiliser CIM pour obtenir le dÃ©bit rÃ©seau
                     try {
                         $networkStats = Get-CimInstance -ClassName Win32_PerfFormattedData_Tcpip_NetworkInterface | Where-Object { $_.Name -eq $instance -or ($instance -eq "_Total" -and $_.Name -eq "_Total") }
                         return $networkStats.BytesTotalPersec
                     } catch {
-                        Write-Verbose "Échec de l'obtention du débit réseau via CIM: $($_.Exception.Message)"
+                        Write-Verbose "Ã‰chec de l'obtention du dÃ©bit rÃ©seau via CIM: $($_.Exception.Message)"
                     }
                 }
             }
         }
     }
 
-    # Si aucune méthode alternative n'a fonctionné, retourner null
-    Write-Verbose "Aucune méthode alternative disponible pour $CounterPath"
+    # Si aucune mÃ©thode alternative n'a fonctionnÃ©, retourner null
+    Write-Verbose "Aucune mÃ©thode alternative disponible pour $CounterPath"
     return $null
 }
 
 <#
 .SYNOPSIS
-    Obtient une valeur par défaut intelligente pour un compteur de performance.
+    Obtient une valeur par dÃ©faut intelligente pour un compteur de performance.
 .DESCRIPTION
-    Cette fonction calcule une valeur par défaut intelligente pour un compteur de performance
+    Cette fonction calcule une valeur par dÃ©faut intelligente pour un compteur de performance
     en se basant sur l'historique des valeurs, des tendances, ou des valeurs typiques.
 .PARAMETER CounterPath
-    Chemin du compteur de performance pour lequel obtenir une valeur par défaut.
+    Chemin du compteur de performance pour lequel obtenir une valeur par dÃ©faut.
 .PARAMETER DefaultValue
-    Valeur par défaut à utiliser si aucune valeur intelligente ne peut être calculée.
+    Valeur par dÃ©faut Ã  utiliser si aucune valeur intelligente ne peut Ãªtre calculÃ©e.
 .EXAMPLE
     Get-IntelligentDefaultValue -CounterPath "\Processor(_Total)\% Processor Time" -DefaultValue 50
 #>
@@ -364,9 +364,9 @@ function Get-IntelligentDefaultValue {
     $instance = if ($counterPathParts[1] -match '\((.*)\)') { $matches[1] } else { "_Total" }
     $counter = $counterPathParts[2]
 
-    Write-Verbose "Calcul d'une valeur par défaut intelligente pour Catégorie: $category, Instance: $instance, Compteur: $counter"
+    Write-Verbose "Calcul d'une valeur par dÃ©faut intelligente pour CatÃ©gorie: $category, Instance: $instance, Compteur: $counter"
 
-    # Vérifier si nous avons des valeurs précédentes dans le cache
+    # VÃ©rifier si nous avons des valeurs prÃ©cÃ©dentes dans le cache
     if ($script:CounterCache.ContainsKey($CounterPath)) {
         $cachedValue = $script:CounterCache[$CounterPath]
         $lastUpdateTime = $script:LastUpdateTime[$CounterPath]
@@ -374,17 +374,17 @@ function Get-IntelligentDefaultValue {
 
         # Si le cache n'est pas trop ancien, utiliser la valeur en cache
         if ($cacheAge -lt (New-TimeSpan -Hours 1)) {
-            Write-Verbose "Utilisation de la dernière valeur connue pour $CounterPath (âge: $($cacheAge.TotalMinutes) minutes)"
+            Write-Verbose "Utilisation de la derniÃ¨re valeur connue pour $CounterPath (Ã¢ge: $($cacheAge.TotalMinutes) minutes)"
             return $cachedValue
         }
     }
 
-    # Utiliser des valeurs typiques en fonction de la catégorie et du compteur
+    # Utiliser des valeurs typiques en fonction de la catÃ©gorie et du compteur
     switch ($category) {
         "Processor" {
             switch ($counter) {
                 "% Processor Time" { return [double]42 } # Valeur typique pour l'utilisation du processeur
-                "% Idle Time" { return 70 } # Valeur typique pour le temps d'inactivité du processeur
+                "% Idle Time" { return 70 } # Valeur typique pour le temps d'inactivitÃ© du processeur
                 default { return 0 }
             }
         }
@@ -392,16 +392,16 @@ function Get-IntelligentDefaultValue {
         "Memory" {
             switch ($counter) {
                 "Available MBytes" {
-                    # Estimer la mémoire disponible en fonction de la mémoire totale
+                    # Estimer la mÃ©moire disponible en fonction de la mÃ©moire totale
                     try {
                         $memory = Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction Stop
                         $totalMemory = $memory.TotalVisibleMemorySize / 1KB
-                        return [math]::Round($totalMemory * 0.3, 0) # Estimer 30% de mémoire disponible
+                        return [math]::Round($totalMemory * 0.3, 0) # Estimer 30% de mÃ©moire disponible
                     } catch {
-                        return 1024 # Valeur par défaut de 1 Go
+                        return 1024 # Valeur par dÃ©faut de 1 Go
                     }
                 }
-                "% Committed Bytes In Use" { return 70 } # Valeur typique pour le pourcentage de mémoire utilisée
+                "% Committed Bytes In Use" { return 70 } # Valeur typique pour le pourcentage de mÃ©moire utilisÃ©e
                 default { return 0 }
             }
         }
@@ -416,13 +416,13 @@ function Get-IntelligentDefaultValue {
 
         "Network Interface" {
             switch ($counter) {
-                "Bytes Total/sec" { return 1000 } # Valeur typique pour le débit réseau (1 Ko/s)
+                "Bytes Total/sec" { return 1000 } # Valeur typique pour le dÃ©bit rÃ©seau (1 Ko/s)
                 default { return 0 }
             }
         }
 
         default {
-            # Si aucune valeur typique n'est disponible, utiliser la valeur par défaut fournie
+            # Si aucune valeur typique n'est disponible, utiliser la valeur par dÃ©faut fournie
             return $DefaultValue
         }
     }
@@ -432,10 +432,10 @@ function Get-IntelligentDefaultValue {
 .SYNOPSIS
     Efface le cache des compteurs de performance.
 .DESCRIPTION
-    Cette fonction efface le cache des compteurs de performance, forçant ainsi
-    la récupération de nouvelles valeurs lors des prochains appels à Get-SafeCounter.
+    Cette fonction efface le cache des compteurs de performance, forÃ§ant ainsi
+    la rÃ©cupÃ©ration de nouvelles valeurs lors des prochains appels Ã  Get-SafeCounter.
 .PARAMETER CounterPath
-    Chemin du compteur de performance à effacer du cache. Si non spécifié, tout le cache est effacé.
+    Chemin du compteur de performance Ã  effacer du cache. Si non spÃ©cifiÃ©, tout le cache est effacÃ©.
 .EXAMPLE
     Clear-CounterCache
 .EXAMPLE
@@ -449,21 +449,21 @@ function Clear-CounterCache {
     )
 
     if ($CounterPath) {
-        # Effacer un compteur spécifique du cache
+        # Effacer un compteur spÃ©cifique du cache
         if ($script:CounterCache.ContainsKey($CounterPath)) {
             $script:CounterCache.Remove($CounterPath)
             $script:LastUpdateTime.Remove($CounterPath)
             $script:FailureCount.Remove($CounterPath)
-            Write-Verbose "Cache effacé pour $CounterPath"
+            Write-Verbose "Cache effacÃ© pour $CounterPath"
         } else {
-            Write-Verbose "Aucune entrée de cache trouvée pour $CounterPath"
+            Write-Verbose "Aucune entrÃ©e de cache trouvÃ©e pour $CounterPath"
         }
     } else {
         # Effacer tout le cache
         $script:CounterCache.Clear()
         $script:LastUpdateTime.Clear()
         $script:FailureCount.Clear()
-        Write-Verbose "Cache entièrement effacé"
+        Write-Verbose "Cache entiÃ¨rement effacÃ©"
     }
 }
 
@@ -472,10 +472,10 @@ function Clear-CounterCache {
     Obtient des statistiques sur les compteurs de performance.
 .DESCRIPTION
     Cette fonction retourne des statistiques sur les compteurs de performance,
-    comme le nombre de succès, d'échecs, et l'âge des valeurs en cache.
+    comme le nombre de succÃ¨s, d'Ã©checs, et l'Ã¢ge des valeurs en cache.
 .PARAMETER CounterPath
     Chemin du compteur de performance pour lequel obtenir des statistiques.
-    Si non spécifié, des statistiques pour tous les compteurs sont retournées.
+    Si non spÃ©cifiÃ©, des statistiques pour tous les compteurs sont retournÃ©es.
 .EXAMPLE
     Get-CounterStatistics
 .EXAMPLE
@@ -491,7 +491,7 @@ function Get-CounterStatistics {
     $statistics = @{}
 
     if ($CounterPath) {
-        # Obtenir des statistiques pour un compteur spécifique
+        # Obtenir des statistiques pour un compteur spÃ©cifique
         if ($script:CounterCache.ContainsKey($CounterPath)) {
             $lastUpdateTime = $script:LastUpdateTime[$CounterPath]
             $cacheAge = (Get-Date) - $lastUpdateTime

@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Intègre TestOmnibus avec Allure.
+    IntÃ¨gre TestOmnibus avec Allure.
 .DESCRIPTION
-    Ce script intègre TestOmnibus avec Allure en générant des rapports Allure
+    Ce script intÃ¨gre TestOmnibus avec Allure en gÃ©nÃ©rant des rapports Allure
     et en les publiant sur un serveur Allure.
 .PARAMETER TestPath
-    Chemin vers les tests à exécuter.
+    Chemin vers les tests Ã  exÃ©cuter.
 .PARAMETER AllureServerUrl
     L'URL du serveur Allure (optionnel).
 .PARAMETER AllureResultsPath
-    Chemin où enregistrer les résultats Allure.
+    Chemin oÃ¹ enregistrer les rÃ©sultats Allure.
 .PARAMETER AllureReportPath
-    Chemin où générer le rapport Allure.
+    Chemin oÃ¹ gÃ©nÃ©rer le rapport Allure.
 .PARAMETER OpenReport
-    Ouvre le rapport Allure après sa génération.
+    Ouvre le rapport Allure aprÃ¨s sa gÃ©nÃ©ration.
 .PARAMETER InstallAllure
-    Installe Allure s'il n'est pas déjà installé.
+    Installe Allure s'il n'est pas dÃ©jÃ  installÃ©.
 .EXAMPLE
     .\Integrate-Allure.ps1 -TestPath "D:\Tests" -OpenReport
 .EXAMPLE
@@ -47,13 +47,13 @@ param (
     [switch]$InstallAllure
 )
 
-# Vérifier que le chemin des tests existe
+# VÃ©rifier que le chemin des tests existe
 if (-not (Test-Path -Path $TestPath)) {
     Write-Error "Le chemin des tests n'existe pas: $TestPath"
     return 1
 }
 
-# Créer les répertoires de sortie s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires de sortie s'ils n'existent pas
 if (-not (Test-Path -Path $AllureResultsPath)) {
     New-Item -Path $AllureResultsPath -ItemType Directory -Force | Out-Null
 }
@@ -62,37 +62,37 @@ if (-not (Test-Path -Path $AllureReportPath)) {
     New-Item -Path $AllureReportPath -ItemType Directory -Force | Out-Null
 }
 
-# Vérifier si Allure est installé
+# VÃ©rifier si Allure est installÃ©
 $allureInstalled = $false
 try {
     $allureVersion = & allure --version 2>&1
     if ($LASTEXITCODE -eq 0) {
         $allureInstalled = $true
-        Write-Host "Allure est installé: $allureVersion" -ForegroundColor Green
+        Write-Host "Allure est installÃ©: $allureVersion" -ForegroundColor Green
     }
 }
 catch {
-    Write-Warning "Allure n'est pas installé."
+    Write-Warning "Allure n'est pas installÃ©."
 }
 
-# Installer Allure si demandé
+# Installer Allure si demandÃ©
 if (-not $allureInstalled -and $InstallAllure) {
     Write-Host "Installation d'Allure..." -ForegroundColor Cyan
     
-    # Vérifier si Chocolatey est installé
+    # VÃ©rifier si Chocolatey est installÃ©
     $chocoInstalled = $false
     try {
         $chocoVersion = & choco --version 2>&1
         if ($LASTEXITCODE -eq 0) {
             $chocoInstalled = $true
-            Write-Host "Chocolatey est installé: $chocoVersion" -ForegroundColor Green
+            Write-Host "Chocolatey est installÃ©: $chocoVersion" -ForegroundColor Green
         }
     }
     catch {
-        Write-Warning "Chocolatey n'est pas installé."
+        Write-Warning "Chocolatey n'est pas installÃ©."
     }
     
-    # Installer Chocolatey si nécessaire
+    # Installer Chocolatey si nÃ©cessaire
     if (-not $chocoInstalled) {
         Write-Host "Installation de Chocolatey..." -ForegroundColor Cyan
         try {
@@ -101,7 +101,7 @@ if (-not $allureInstalled -and $InstallAllure) {
             Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
             
             $chocoInstalled = $true
-            Write-Host "Chocolatey installé avec succès." -ForegroundColor Green
+            Write-Host "Chocolatey installÃ© avec succÃ¨s." -ForegroundColor Green
         }
         catch {
             Write-Error "Erreur lors de l'installation de Chocolatey: $_"
@@ -114,11 +114,11 @@ if (-not $allureInstalled -and $InstallAllure) {
         try {
             & choco install allure -y
             
-            # Vérifier si l'installation a réussi
+            # VÃ©rifier si l'installation a rÃ©ussi
             $allureVersion = & allure --version 2>&1
             if ($LASTEXITCODE -eq 0) {
                 $allureInstalled = $true
-                Write-Host "Allure installé avec succès: $allureVersion" -ForegroundColor Green
+                Write-Host "Allure installÃ© avec succÃ¨s: $allureVersion" -ForegroundColor Green
             }
             else {
                 Write-Warning "Erreur lors de l'installation d'Allure."
@@ -130,7 +130,7 @@ if (-not $allureInstalled -and $InstallAllure) {
     }
 }
 
-# Fonction pour convertir les résultats de TestOmnibus au format Allure
+# Fonction pour convertir les rÃ©sultats de TestOmnibus au format Allure
 function Convert-TestOmnibusToAllure {
     [CmdletBinding()]
     param (
@@ -142,13 +142,13 @@ function Convert-TestOmnibusToAllure {
     )
     
     try {
-        # Charger les résultats de TestOmnibus
+        # Charger les rÃ©sultats de TestOmnibus
         $results = Import-Clixml -Path $ResultsPath
         
-        # Créer un identifiant unique pour cette exécution
+        # CrÃ©er un identifiant unique pour cette exÃ©cution
         $executionId = [Guid]::NewGuid().ToString()
         
-        # Créer le fichier environment.properties
+        # CrÃ©er le fichier environment.properties
         $environmentPath = Join-Path -Path $AllureResultsPath -ChildPath "environment.properties"
         @"
 OS=Windows
@@ -157,7 +157,7 @@ ExecutionId=$executionId
 ExecutionDate=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@ | Out-File -FilePath $environmentPath -Encoding utf8 -Force
         
-        # Créer un fichier de résultat pour chaque test
+        # CrÃ©er un fichier de rÃ©sultat pour chaque test
         foreach ($result in $results) {
             $testName = $result.Name
             $testPath = $result.Path
@@ -167,10 +167,10 @@ ExecutionDate=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
             $startTime = $result.StartTime
             $endTime = $result.EndTime
             
-            # Créer un identifiant unique pour ce test
+            # CrÃ©er un identifiant unique pour ce test
             $testId = [Guid]::NewGuid().ToString()
             
-            # Créer le fichier de résultat au format Allure
+            # CrÃ©er le fichier de rÃ©sultat au format Allure
             $resultPath = Join-Path -Path $AllureResultsPath -ChildPath "$testId-result.json"
             
             $allureResult = @{
@@ -201,7 +201,7 @@ ExecutionDate=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
                 links = @()
             }
             
-            # Ajouter les détails d'erreur si le test a échoué
+            # Ajouter les dÃ©tails d'erreur si le test a Ã©chouÃ©
             if (-not $success) {
                 $allureResult.statusDetails = @{
                     known = $false
@@ -212,20 +212,20 @@ ExecutionDate=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
                 }
             }
             
-            # Enregistrer le résultat au format JSON
+            # Enregistrer le rÃ©sultat au format JSON
             $allureResult | ConvertTo-Json -Depth 10 | Out-File -FilePath $resultPath -Encoding utf8 -Force
         }
         
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la conversion des résultats au format Allure: $_"
+        Write-Error "Erreur lors de la conversion des rÃ©sultats au format Allure: $_"
         return $false
     }
 }
 
-# Exécuter TestOmnibus
-Write-Host "Exécution de TestOmnibus..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus
+Write-Host "ExÃ©cution de TestOmnibus..." -ForegroundColor Cyan
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 
 if (-not (Test-Path -Path $testOmnibusPath)) {
@@ -233,51 +233,51 @@ if (-not (Test-Path -Path $testOmnibusPath)) {
     return 1
 }
 
-# Exécuter TestOmnibus
+# ExÃ©cuter TestOmnibus
 $testOmnibusParams = @{
     Path = $TestPath
 }
 
 $result = & $testOmnibusPath @testOmnibusParams
 
-# Vérifier si des résultats ont été générés
+# VÃ©rifier si des rÃ©sultats ont Ã©tÃ© gÃ©nÃ©rÃ©s
 $resultsPath = Join-Path -Path (Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results") -ChildPath "results.xml"
 if (-not (Test-Path -Path $resultsPath)) {
-    Write-Error "Aucun résultat n'a été généré par TestOmnibus."
+    Write-Error "Aucun rÃ©sultat n'a Ã©tÃ© gÃ©nÃ©rÃ© par TestOmnibus."
     return 1
 }
 
-# Convertir les résultats au format Allure
-Write-Host "Conversion des résultats au format Allure..." -ForegroundColor Cyan
+# Convertir les rÃ©sultats au format Allure
+Write-Host "Conversion des rÃ©sultats au format Allure..." -ForegroundColor Cyan
 $conversionSuccess = Convert-TestOmnibusToAllure -ResultsPath $resultsPath -AllureResultsPath $AllureResultsPath
 
 if (-not $conversionSuccess) {
-    Write-Error "Erreur lors de la conversion des résultats au format Allure."
+    Write-Error "Erreur lors de la conversion des rÃ©sultats au format Allure."
     return 1
 }
 
-# Générer le rapport Allure si Allure est installé
+# GÃ©nÃ©rer le rapport Allure si Allure est installÃ©
 if ($allureInstalled) {
-    Write-Host "Génération du rapport Allure..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration du rapport Allure..." -ForegroundColor Cyan
     & allure generate $AllureResultsPath -o $AllureReportPath --clean
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Rapport Allure généré avec succès dans $AllureReportPath" -ForegroundColor Green
+        Write-Host "Rapport Allure gÃ©nÃ©rÃ© avec succÃ¨s dans $AllureReportPath" -ForegroundColor Green
         
-        # Ouvrir le rapport si demandé
+        # Ouvrir le rapport si demandÃ©
         if ($OpenReport) {
             Write-Host "Ouverture du rapport Allure..." -ForegroundColor Cyan
             & allure open $AllureReportPath
         }
     }
     else {
-        Write-Error "Erreur lors de la génération du rapport Allure."
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport Allure."
         return 1
     }
 }
 else {
-    Write-Warning "Allure n'est pas installé. Le rapport Allure n'a pas été généré."
-    Write-Warning "Pour installer Allure, utilisez le paramètre -InstallAllure ou consultez https://docs.qameta.io/allure/"
+    Write-Warning "Allure n'est pas installÃ©. Le rapport Allure n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
+    Write-Warning "Pour installer Allure, utilisez le paramÃ¨tre -InstallAllure ou consultez https://docs.qameta.io/allure/"
 }
 
 # Publier le rapport sur un serveur Allure si une URL est fournie
@@ -285,7 +285,7 @@ if ($AllureServerUrl) {
     Write-Host "Publication du rapport Allure sur $AllureServerUrl..." -ForegroundColor Cyan
     
     if ($allureInstalled) {
-        # Créer une archive des résultats Allure
+        # CrÃ©er une archive des rÃ©sultats Allure
         $archivePath = "allure-results.zip"
         Compress-Archive -Path "$AllureResultsPath\*" -DestinationPath $archivePath -Force
         
@@ -294,16 +294,16 @@ if ($AllureServerUrl) {
             $response = Invoke-RestMethod -Uri "$AllureServerUrl/allure-docker-service/send-results" -Method Post -InFile $archivePath -ContentType "application/zip"
             
             if ($response.status -eq "OK") {
-                Write-Host "Résultats publiés avec succès sur le serveur Allure." -ForegroundColor Green
+                Write-Host "RÃ©sultats publiÃ©s avec succÃ¨s sur le serveur Allure." -ForegroundColor Green
                 Write-Host "URL du rapport: $AllureServerUrl/allure-docker-service/latest-report" -ForegroundColor Cyan
             }
             else {
-                Write-Error "Erreur lors de la publication des résultats sur le serveur Allure: $($response.message)"
+                Write-Error "Erreur lors de la publication des rÃ©sultats sur le serveur Allure: $($response.message)"
                 return 1
             }
         }
         catch {
-            Write-Error "Erreur lors de la publication des résultats sur le serveur Allure: $_"
+            Write-Error "Erreur lors de la publication des rÃ©sultats sur le serveur Allure: $_"
             return 1
         }
         finally {
@@ -314,7 +314,7 @@ if ($AllureServerUrl) {
         }
     }
     else {
-        Write-Warning "Allure n'est pas installé. Impossible de publier les résultats sur le serveur Allure."
+        Write-Warning "Allure n'est pas installÃ©. Impossible de publier les rÃ©sultats sur le serveur Allure."
     }
 }
 

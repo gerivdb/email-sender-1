@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Classifie automatiquement les scripts en fonction de leur contenu
 .DESCRIPTION
     Ce script analyse le contenu des scripts et les classifie automatiquement
-    en fonction de règles prédéfinies et de l'apprentissage à partir des
+    en fonction de rÃ¨gles prÃ©dÃ©finies et de l'apprentissage Ã  partir des
     classifications existantes.
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .PARAMETER UpdateStructure
-    Indique s'il faut mettre à jour la structure des dossiers
+    Indique s'il faut mettre Ã  jour la structure des dossiers
 .PARAMETER Force
-    Indique s'il faut forcer la reclassification des scripts déjà classifiés
+    Indique s'il faut forcer la reclassification des scripts dÃ©jÃ  classifiÃ©s
 .EXAMPLE
     .\Auto-ClassifyScripts.ps1 -Path "C:\Scripts" -UpdateStructure
 .NOTES
@@ -32,25 +32,25 @@ param(
     [switch]$Force
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Définir la taxonomie des scripts
+# DÃ©finir la taxonomie des scripts
 $taxonomy = @{
     "Core" = @{
         Description = "Scripts fondamentaux du projet"
         SubCategories = @{
-            "Initialisation" = "Scripts de démarrage et configuration"
+            "Initialisation" = "Scripts de dÃ©marrage et configuration"
             "Configuration" = "Scripts de configuration"
-            "Utilitaires" = "Scripts utilitaires génériques"
+            "Utilitaires" = "Scripts utilitaires gÃ©nÃ©riques"
         }
     }
     "Analyse" = @{
-        Description = "Scripts d'analyse et de traitement de données"
+        Description = "Scripts d'analyse et de traitement de donnÃ©es"
         SubCategories = @{
-            "Données" = "Scripts de traitement de données"
-            "Rapports" = "Scripts de génération de rapports"
+            "DonnÃ©es" = "Scripts de traitement de donnÃ©es"
+            "Rapports" = "Scripts de gÃ©nÃ©ration de rapports"
             "Statistiques" = "Scripts de calcul de statistiques"
         }
     }
@@ -58,8 +58,8 @@ $taxonomy = @{
         Description = "Scripts de gestion et d'administration"
         SubCategories = @{
             "Utilisateurs" = "Scripts de gestion des utilisateurs"
-            "Système" = "Scripts de gestion du système"
-            "Réseau" = "Scripts de gestion du réseau"
+            "SystÃ¨me" = "Scripts de gestion du systÃ¨me"
+            "RÃ©seau" = "Scripts de gestion du rÃ©seau"
         }
     }
     "Interface" = @{
@@ -70,40 +70,40 @@ $taxonomy = @{
             "Console" = "Interfaces console"
         }
     }
-    "Intégration" = @{
-        Description = "Scripts d'intégration avec d'autres systèmes"
+    "IntÃ©gration" = @{
+        Description = "Scripts d'intÃ©gration avec d'autres systÃ¨mes"
         SubCategories = @{
-            "API" = "Intégrations API"
-            "Base de données" = "Intégrations avec des bases de données"
-            "Services" = "Intégrations avec des services externes"
+            "API" = "IntÃ©grations API"
+            "Base de donnÃ©es" = "IntÃ©grations avec des bases de donnÃ©es"
+            "Services" = "IntÃ©grations avec des services externes"
         }
     }
     "Tests" = @{
         Description = "Scripts de tests"
         SubCategories = @{
             "Unitaires" = "Tests unitaires"
-            "Intégration" = "Tests d'intégration"
+            "IntÃ©gration" = "Tests d'intÃ©gration"
             "Performance" = "Tests de performance"
         }
     }
     "Documentation" = @{
         Description = "Scripts de documentation"
         SubCategories = @{
-            "Générateurs" = "Générateurs de documentation"
+            "GÃ©nÃ©rateurs" = "GÃ©nÃ©rateurs de documentation"
             "Rapports" = "Rapports de documentation"
         }
     }
     "Automatisation" = @{
         Description = "Scripts d'automatisation"
         SubCategories = @{
-            "Tâches" = "Automatisation de tâches"
-            "Déploiement" = "Automatisation de déploiement"
+            "TÃ¢ches" = "Automatisation de tÃ¢ches"
+            "DÃ©ploiement" = "Automatisation de dÃ©ploiement"
             "Surveillance" = "Automatisation de surveillance"
         }
     }
 }
 
-# Définir les règles de classification
+# DÃ©finir les rÃ¨gles de classification
 $classificationRules = @{
     "Core" = @{
         Patterns = @("Init", "Config", "Setup", "Core", "Base", "Common", "Util")
@@ -121,7 +121,7 @@ $classificationRules = @{
         Patterns = @("GUI", "UI", "Interface", "Web", "Console", "Form")
         Keywords = @("GUI", "UI", "Interface", "Web", "Console", "Form", "Window", "Dialog")
     }
-    "Intégration" = @{
+    "IntÃ©gration" = @{
         Patterns = @("API", "Integration", "Connect", "DB", "Database", "Service")
         Keywords = @("API", "Integration", "Connect", "Database", "Service", "External")
     }
@@ -146,16 +146,16 @@ function Learn-Classifications {
         [array]$Scripts
     )
     
-    $classifiedScripts = $Scripts | Where-Object { $_.Category -ne "Non classé" }
+    $classifiedScripts = $Scripts | Where-Object { $_.Category -ne "Non classÃ©" }
     
     if ($classifiedScripts.Count -eq 0) {
-        Write-Host "Aucun script classifié trouvé pour l'apprentissage." -ForegroundColor Yellow
+        Write-Host "Aucun script classifiÃ© trouvÃ© pour l'apprentissage." -ForegroundColor Yellow
         return $classificationRules
     }
     
-    Write-Host "Apprentissage à partir de $($classifiedScripts.Count) scripts classifiés..." -ForegroundColor Cyan
+    Write-Host "Apprentissage Ã  partir de $($classifiedScripts.Count) scripts classifiÃ©s..." -ForegroundColor Cyan
     
-    # Améliorer les règles de classification en fonction des scripts déjà classifiés
+    # AmÃ©liorer les rÃ¨gles de classification en fonction des scripts dÃ©jÃ  classifiÃ©s
     foreach ($script in $classifiedScripts) {
         $category = $script.Category
         $content = Get-Content -Path $script.FullPath -Raw -ErrorAction SilentlyContinue
@@ -167,7 +167,7 @@ function Learn-Classifications {
         # Extraire les mots significatifs du contenu
         $words = $content -split '\W+' | Where-Object { $_.Length -gt 4 } | Select-Object -Unique
         
-        # Ajouter les mots significatifs aux règles de classification
+        # Ajouter les mots significatifs aux rÃ¨gles de classification
         if ($classificationRules.ContainsKey($category)) {
             # Ajouter le nom du fichier aux patterns
             $fileName = [System.IO.Path]::GetFileNameWithoutExtension($script.FileName)
@@ -187,7 +187,7 @@ function Learn-Classifications {
     return $classificationRules
 }
 
-# Fonction pour suggérer une classification
+# Fonction pour suggÃ©rer une classification
 function Get-SuggestedClassification {
     param (
         [Parameter(Mandatory = $true)]
@@ -204,7 +204,7 @@ function Get-SuggestedClassification {
     
     if (-not $content) {
         return @{
-            Category = "Non classé"
+            Category = "Non classÃ©"
             SubCategory = "Autre"
             Confidence = 0
         }
@@ -212,18 +212,18 @@ function Get-SuggestedClassification {
     
     $scores = @{}
     
-    # Calculer les scores pour chaque catégorie
+    # Calculer les scores pour chaque catÃ©gorie
     foreach ($category in $Rules.Keys) {
         $score = 0
         
-        # Vérifier les patterns dans le nom
+        # VÃ©rifier les patterns dans le nom
         foreach ($pattern in $Rules[$category].Patterns) {
             if ($FileName -like "*$pattern*") {
                 $score += 10
             }
         }
         
-        # Vérifier les keywords dans le contenu
+        # VÃ©rifier les keywords dans le contenu
         foreach ($keyword in $Rules[$category].Keywords) {
             if ($content -match $keyword) {
                 $score += 5
@@ -233,18 +233,18 @@ function Get-SuggestedClassification {
         $scores[$category] = $score
     }
     
-    # Trouver la catégorie avec le score le plus élevé
+    # Trouver la catÃ©gorie avec le score le plus Ã©levÃ©
     $bestCategory = $scores.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 1
     
     if ($bestCategory.Value -eq 0) {
         return @{
-            Category = "Non classé"
+            Category = "Non classÃ©"
             SubCategory = "Autre"
             Confidence = 0
         }
     }
     
-    # Trouver la sous-catégorie la plus appropriée
+    # Trouver la sous-catÃ©gorie la plus appropriÃ©e
     $subCategory = "Autre"
     $subCategoryScore = 0
     
@@ -277,13 +277,13 @@ function Get-SuggestedClassification {
     }
 }
 
-# Récupérer les scripts
-Write-Host "Récupération des scripts..." -ForegroundColor Cyan
+# RÃ©cupÃ©rer les scripts
+Write-Host "RÃ©cupÃ©ration des scripts..." -ForegroundColor Cyan
 $scripts = Get-ScriptInventory -Path $Path
 
-# Vérifier qu'il y a des scripts
+# VÃ©rifier qu'il y a des scripts
 if (-not $scripts -or $scripts.Count -eq 0) {
-    Write-Host "Aucun script trouvé dans le répertoire spécifié." -ForegroundColor Red
+    Write-Host "Aucun script trouvÃ© dans le rÃ©pertoire spÃ©cifiÃ©." -ForegroundColor Red
     exit
 }
 
@@ -291,10 +291,10 @@ if (-not $scripts -or $scripts.Count -eq 0) {
 $enhancedRules = Learn-Classifications -Scripts $scripts
 
 # Classifier les scripts
-$scriptsToClassify = if ($Force) { $scripts } else { $scripts | Where-Object { $_.Category -eq "Non classé" } }
+$scriptsToClassify = if ($Force) { $scripts } else { $scripts | Where-Object { $_.Category -eq "Non classÃ©" } }
 
 if ($scriptsToClassify.Count -eq 0) {
-    Write-Host "Aucun script à classifier." -ForegroundColor Yellow
+    Write-Host "Aucun script Ã  classifier." -ForegroundColor Yellow
     exit
 }
 
@@ -305,19 +305,19 @@ $moved = 0
 $results = @()
 
 foreach ($script in $scriptsToClassify) {
-    # Suggérer une classification
+    # SuggÃ©rer une classification
     $suggestion = Get-SuggestedClassification -FilePath $script.FullPath -FileName $script.FileName -Rules $enhancedRules
     
-    # Mettre à jour la classification du script
-    if ($suggestion.Category -ne "Non classé" -and $suggestion.Confidence -gt 50) {
+    # Mettre Ã  jour la classification du script
+    if ($suggestion.Category -ne "Non classÃ©" -and $suggestion.Confidence -gt 50) {
         $script.Category = $suggestion.Category
         $script.SubCategory = $suggestion.SubCategory
         $classified++
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         $result = [PSCustomObject]@{
             FileName = $script.FileName
-            OldCategory = "Non classé"
+            OldCategory = "Non classÃ©"
             NewCategory = $suggestion.Category
             SubCategory = $suggestion.SubCategory
             Confidence = "$($suggestion.Confidence)%"
@@ -331,54 +331,54 @@ foreach ($script in $scriptsToClassify) {
         
         $results += $result
         
-        # Déplacer le script si demandé
+        # DÃ©placer le script si demandÃ©
         if ($UpdateStructure) {
             $newDir = Join-Path -Path $Path -ChildPath "$($suggestion.Category)\$($suggestion.SubCategory)"
             $newPath = Join-Path -Path $newDir -ChildPath $script.FileName
             
-            # Créer le répertoire s'il n'existe pas
+            # CrÃ©er le rÃ©pertoire s'il n'existe pas
             if (-not (Test-Path $newDir)) {
                 New-Item -ItemType Directory -Path $newDir -Force | Out-Null
             }
             
-            # Déplacer le fichier
+            # DÃ©placer le fichier
             if ($script.FullPath -ne $newPath) {
                 try {
                     Move-Item -Path $script.FullPath -Destination $newPath -Force
                     $moved++
-                    Write-Host "Script déplacé: $($script.FullPath) -> $newPath" -ForegroundColor Green
+                    Write-Host "Script dÃ©placÃ©: $($script.FullPath) -> $newPath" -ForegroundColor Green
                 }
                 catch {
-                    Write-Host "Erreur lors du déplacement du script: $_" -ForegroundColor Red
+                    Write-Host "Erreur lors du dÃ©placement du script: $_" -ForegroundColor Red
                 }
             }
         }
     }
 }
 
-# Sauvegarder l'inventaire mis à jour
+# Sauvegarder l'inventaire mis Ã  jour
 if ($classified -gt 0) {
     [ScriptInventory]::SaveInventory()
 }
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($results.Count -gt 0) {
-    Write-Host "`nRésultats de la classification:" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sultats de la classification:" -ForegroundColor Cyan
     $results | Format-Table -Property FileName, NewCategory, SubCategory, Confidence -AutoSize
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé:" -ForegroundColor Cyan
-Write-Host "- $classified scripts classifiés" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ©:" -ForegroundColor Cyan
+Write-Host "- $classified scripts classifiÃ©s" -ForegroundColor Green
 if ($UpdateStructure) {
-    Write-Host "- $moved scripts déplacés" -ForegroundColor Green
+    Write-Host "- $moved scripts dÃ©placÃ©s" -ForegroundColor Green
 }
 
-# Exporter les résultats
+# Exporter les rÃ©sultats
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $outputPath = Join-Path -Path $Path -ChildPath "reports\classification_$timestamp.csv"
 
-# Créer le répertoire de rapports s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
 $reportsDir = Split-Path -Parent $outputPath
 if (-not (Test-Path $reportsDir)) {
     New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null
@@ -386,5 +386,5 @@ if (-not (Test-Path $reportsDir)) {
 
 if ($results.Count -gt 0) {
     $results | Export-Csv -Path $outputPath -NoTypeInformation -Encoding UTF8
-    Write-Host "Rapport exporté: $outputPath" -ForegroundColor Green
+    Write-Host "Rapport exportÃ©: $outputPath" -ForegroundColor Green
 }

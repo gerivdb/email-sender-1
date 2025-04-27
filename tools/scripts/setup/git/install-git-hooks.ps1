@@ -1,4 +1,4 @@
-# Script d'installation robuste pour les hooks Git
+﻿# Script d'installation robuste pour les hooks Git
 # Ce script installe les hooks Git en utilisant des liens symboliques ou des copies directes
 
 param (
@@ -19,7 +19,7 @@ param (
 $projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 Set-Location $projectRoot
 
-# Fonction pour afficher un message coloré
+# Fonction pour afficher un message colorÃ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -29,23 +29,23 @@ function Write-ColorMessage {
     Write-Host $Message -ForegroundColor $ForegroundColor
 }
 
-# Vérifier si nous sommes dans un dépôt Git
+# VÃ©rifier si nous sommes dans un dÃ©pÃ´t Git
 if (-not (Test-Path "$projectRoot\.git")) {
-    Write-ColorMessage "Ce dossier n'est pas un dépôt Git" -ForegroundColor "Red"
+    Write-ColorMessage "Ce dossier n'est pas un dÃ©pÃ´t Git" -ForegroundColor "Red"
     exit 1
 }
 
 Write-ColorMessage "Installation des hooks Git pour le projet n8n..." -ForegroundColor "Cyan"
 
-# Créer le dossier des hooks Git s'il n'existe pas
+# CrÃ©er le dossier des hooks Git s'il n'existe pas
 $gitHooksDir = "$projectRoot\.git\hooks"
 if (-not (Test-Path $gitHooksDir)) {
     try {
         New-Item -ItemType Directory -Path $gitHooksDir -Force | Out-Null
-        Write-ColorMessage "Dossier de hooks Git créé" -ForegroundColor "Green"
+        Write-ColorMessage "Dossier de hooks Git crÃ©Ã©" -ForegroundColor "Green"
     }
     catch {
-        Write-ColorMessage "Erreur lors de la création du dossier de hooks Git : $_" -ForegroundColor "Red"
+        Write-ColorMessage "Erreur lors de la crÃ©ation du dossier de hooks Git : $_" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
@@ -65,7 +65,7 @@ function Install-GitHook {
     if (Test-Path $hookPath) {
         try {
             Remove-Item -Path $hookPath -Force
-            Write-ColorMessage "Hook $HookName existant supprimé" -ForegroundColor "Yellow"
+            Write-ColorMessage "Hook $HookName existant supprimÃ©" -ForegroundColor "Yellow"
         }
         catch {
             Write-ColorMessage "Erreur lors de la suppression du hook $HookName existant : $_" -ForegroundColor "Red"
@@ -78,21 +78,21 @@ function Install-GitHook {
     # Installer le hook
     try {
         if ($UseSymlinks) {
-            # Créer un lien symbolique
+            # CrÃ©er un lien symbolique
             if ($IsWindows) {
                 # Sous Windows, utiliser mklink
                 $sourcePath = (Resolve-Path $SourcePath).Path
                 $targetPath = (Resolve-Path $gitHooksDir).Path
                 $hookFileName = Split-Path $SourcePath -Leaf
                 
-                # Utiliser cmd pour créer un lien symbolique
+                # Utiliser cmd pour crÃ©er un lien symbolique
                 $result = cmd /c mklink "$targetPath\$HookName" "$sourcePath"
                 
                 if ($LASTEXITCODE -ne 0) {
-                    throw "Erreur lors de la création du lien symbolique : $result"
+                    throw "Erreur lors de la crÃ©ation du lien symbolique : $result"
                 }
                 
-                Write-ColorMessage "Lien symbolique créé pour le hook $HookName" -ForegroundColor "Green"
+                Write-ColorMessage "Lien symbolique crÃ©Ã© pour le hook $HookName" -ForegroundColor "Green"
             }
             else {
                 # Sous Unix, utiliser ln -s
@@ -102,19 +102,19 @@ function Install-GitHook {
                 $result = & ln -s $sourcePath $targetPath
                 
                 if ($LASTEXITCODE -ne 0) {
-                    throw "Erreur lors de la création du lien symbolique : $result"
+                    throw "Erreur lors de la crÃ©ation du lien symbolique : $result"
                 }
                 
-                Write-ColorMessage "Lien symbolique créé pour le hook $HookName" -ForegroundColor "Green"
+                Write-ColorMessage "Lien symbolique crÃ©Ã© pour le hook $HookName" -ForegroundColor "Green"
             }
         }
         else {
             # Copier le fichier
             Copy-Item -Path $SourcePath -Destination $hookPath -Force
-            Write-ColorMessage "Hook $HookName installé par copie" -ForegroundColor "Green"
+            Write-ColorMessage "Hook $HookName installÃ© par copie" -ForegroundColor "Green"
         }
         
-        # Rendre le hook exécutable sous Unix
+        # Rendre le hook exÃ©cutable sous Unix
         if (-not $IsWindows) {
             & chmod +x $hookPath
         }
@@ -134,7 +134,7 @@ if (-not $SkipPreCommit) {
     $preCommitWrapperPath = Join-Path $projectRoot "..\..\D"
     
     if (-not (Test-Path $preCommitWrapperPath)) {
-        Write-ColorMessage "Wrapper pre-commit non trouvé : $preCommitWrapperPath" -ForegroundColor "Red"
+        Write-ColorMessage "Wrapper pre-commit non trouvÃ© : $preCommitWrapperPath" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
@@ -143,17 +143,17 @@ if (-not $SkipPreCommit) {
     $success = Install-GitHook -HookName "pre-commit" -SourcePath $preCommitWrapperPath
     
     if ($success) {
-        Write-ColorMessage "Hook pre-commit installé avec succès" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-commit installÃ© avec succÃ¨s" -ForegroundColor "Green"
     }
     else {
-        Write-ColorMessage "Échec de l'installation du hook pre-commit" -ForegroundColor "Red"
+        Write-ColorMessage "Ã‰chec de l'installation du hook pre-commit" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
     }
 }
 else {
-    Write-ColorMessage "`nInstallation du hook pre-commit ignorée (option -SkipPreCommit)" -ForegroundColor "Yellow"
+    Write-ColorMessage "`nInstallation du hook pre-commit ignorÃ©e (option -SkipPreCommit)" -ForegroundColor "Yellow"
 }
 
 # Installer le hook pre-push
@@ -163,7 +163,7 @@ if (-not $SkipPrePush) {
     $prePushWrapperPath = Join-Path $projectRoot "..\..\D"
     
     if (-not (Test-Path $prePushWrapperPath)) {
-        Write-ColorMessage "Wrapper pre-push non trouvé : $prePushWrapperPath" -ForegroundColor "Red"
+        Write-ColorMessage "Wrapper pre-push non trouvÃ© : $prePushWrapperPath" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
@@ -172,34 +172,34 @@ if (-not $SkipPrePush) {
     $success = Install-GitHook -HookName "pre-push" -SourcePath $prePushWrapperPath
     
     if ($success) {
-        Write-ColorMessage "Hook pre-push installé avec succès" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-push installÃ© avec succÃ¨s" -ForegroundColor "Green"
     }
     else {
-        Write-ColorMessage "Échec de l'installation du hook pre-push" -ForegroundColor "Red"
+        Write-ColorMessage "Ã‰chec de l'installation du hook pre-push" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
     }
 }
 else {
-    Write-ColorMessage "`nInstallation du hook pre-push ignorée (option -SkipPrePush)" -ForegroundColor "Yellow"
+    Write-ColorMessage "`nInstallation du hook pre-push ignorÃ©e (option -SkipPrePush)" -ForegroundColor "Yellow"
 }
 
-# Afficher un résumé
-Write-ColorMessage "`nRésumé de l'installation des hooks Git:" -ForegroundColor "Cyan"
-Write-ColorMessage "- Hook pre-commit: $(if (-not $SkipPreCommit) { 'Installé' } else { 'Ignoré' })" -ForegroundColor $(if (-not $SkipPreCommit) { "Green" } else { "Yellow" })
-Write-ColorMessage "- Hook pre-push: $(if (-not $SkipPrePush) { 'Installé' } else { 'Ignoré' })" -ForegroundColor $(if (-not $SkipPrePush) { "Green" } else { "Yellow" })
-Write-ColorMessage "- Méthode d'installation: $(if ($UseSymlinks) { 'Liens symboliques' } else { 'Copie directe' })" -ForegroundColor "White"
+# Afficher un rÃ©sumÃ©
+Write-ColorMessage "`nRÃ©sumÃ© de l'installation des hooks Git:" -ForegroundColor "Cyan"
+Write-ColorMessage "- Hook pre-commit: $(if (-not $SkipPreCommit) { 'InstallÃ©' } else { 'IgnorÃ©' })" -ForegroundColor $(if (-not $SkipPreCommit) { "Green" } else { "Yellow" })
+Write-ColorMessage "- Hook pre-push: $(if (-not $SkipPrePush) { 'InstallÃ©' } else { 'IgnorÃ©' })" -ForegroundColor $(if (-not $SkipPrePush) { "Green" } else { "Yellow" })
+Write-ColorMessage "- MÃ©thode d'installation: $(if ($UseSymlinks) { 'Liens symboliques' } else { 'Copie directe' })" -ForegroundColor "White"
 
 # Afficher des instructions d'utilisation
 Write-ColorMessage "`nInstructions d'utilisation:" -ForegroundColor "Cyan"
-Write-ColorMessage "1. Les hooks Git sont maintenant installés et s'exécuteront automatiquement lors des opérations Git." -ForegroundColor "White"
-Write-ColorMessage "2. Pour désactiver temporairement un hook, utilisez l'option --no-verify:" -ForegroundColor "White"
-Write-ColorMessage "   git commit --no-verify -m \"Commit sans vérification\"" -ForegroundColor "White"
+Write-ColorMessage "1. Les hooks Git sont maintenant installÃ©s et s'exÃ©cuteront automatiquement lors des opÃ©rations Git." -ForegroundColor "White"
+Write-ColorMessage "2. Pour dÃ©sactiver temporairement un hook, utilisez l'option --no-verify:" -ForegroundColor "White"
+Write-ColorMessage "   git commit --no-verify -m \"Commit sans vÃ©rification\"" -ForegroundColor "White"
 Write-ColorMessage "   git push --no-verify" -ForegroundColor "White"
 Write-ColorMessage "3. Pour plus d'informations, consultez le guide: docs/guides/GUIDE_HOOKS_GIT.md" -ForegroundColor "White"
 
-# Afficher l'aide si demandé
+# Afficher l'aide si demandÃ©
 if ($args -contains "-help" -or $args -contains "--help" -or $args -contains "/?") {
     Write-ColorMessage "`nUtilisation: .\install-git-hooks.ps1 [options]" -ForegroundColor "Cyan"
     Write-ColorMessage "`nOptions:" -ForegroundColor "Cyan"

@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de génération de rapports automatiques.
+    Script de gÃ©nÃ©ration de rapports automatiques.
 .DESCRIPTION
-    Ce script génère des rapports automatiques basés sur des templates
-    et des données de performance.
+    Ce script gÃ©nÃ¨re des rapports automatiques basÃ©s sur des templates
+    et des donnÃ©es de performance.
 .PARAMETER TemplateId
-    ID du template de rapport à utiliser.
+    ID du template de rapport Ã  utiliser.
 .PARAMETER OutputPath
-    Chemin où le rapport sera sauvegardé.
+    Chemin oÃ¹ le rapport sera sauvegardÃ©.
 .PARAMETER DataPath
-    Chemin vers les données de performance.
+    Chemin vers les donnÃ©es de performance.
 .PARAMETER StartDate
-    Date de début pour les données à inclure dans le rapport.
+    Date de dÃ©but pour les donnÃ©es Ã  inclure dans le rapport.
 .PARAMETER EndDate
-    Date de fin pour les données à inclure dans le rapport.
+    Date de fin pour les donnÃ©es Ã  inclure dans le rapport.
 .PARAMETER Format
     Format de sortie du rapport (html, pdf, excel).
 .PARAMETER NotifyRecipients
-    Indique si les destinataires doivent être notifiés.
+    Indique si les destinataires doivent Ãªtre notifiÃ©s.
 #>
 
 [CmdletBinding()]
@@ -45,13 +45,13 @@ param (
     [switch]$NotifyRecipients
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $TemplateLoaderPath = Join-Path -Path $ScriptPath -ChildPath "report_template_loader.ps1"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $TemplateLoaderPath)) {
-    Write-Error "Module de chargement des templates non trouvé: $TemplateLoaderPath"
+    Write-Error "Module de chargement des templates non trouvÃ©: $TemplateLoaderPath"
     exit 1
 }
 
@@ -80,7 +80,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données de performance
+# Fonction pour charger les donnÃ©es de performance
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -97,7 +97,7 @@ function Import-PerformanceData {
         [DateTime]$EndDate
     )
     
-    Write-Log -Message "Chargement des données de performance de type $MetricType" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es de performance de type $MetricType" -Level "Info"
     
     try {
         $DataFile = Join-Path -Path $DataPath -ChildPath "$($MetricType)_metrics.csv"
@@ -114,14 +114,14 @@ function Import-PerformanceData {
             # Filtrer par plage de temps
             $FilteredData = $Data | Where-Object { $_.DateTime -ge $StartDate -and $_.DateTime -le $EndDate }
             
-            Write-Log -Message "Données chargées avec succès: $($FilteredData.Count) entrées" -Level "Info"
+            Write-Log -Message "DonnÃ©es chargÃ©es avec succÃ¨s: $($FilteredData.Count) entrÃ©es" -Level "Info"
             return $FilteredData
         } else {
-            Write-Log -Message "Fichier de données non trouvé: $DataFile" -Level "Warning"
+            Write-Log -Message "Fichier de donnÃ©es non trouvÃ©: $DataFile" -Level "Warning"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
@@ -144,18 +144,18 @@ function Get-MetricStatistics {
     )
     
     try {
-        # Filtrer les données pour la métrique spécifiée
+        # Filtrer les donnÃ©es pour la mÃ©trique spÃ©cifiÃ©e
         $MetricData = $Data | Where-Object { $_.Metric -eq $Metric }
         
         if ($null -eq $MetricData -or $MetricData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée trouvée pour la métrique: $Metric" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour la mÃ©trique: $Metric" -Level "Warning"
             return $null
         }
         
         # Convertir les valeurs en nombres
         $Values = $MetricData | ForEach-Object { [double]$_.Value }
         
-        # Calculer la statistique demandée
+        # Calculer la statistique demandÃ©e
         switch ($Function) {
             "avg" {
                 $Result = ($Values | Measure-Object -Average).Average
@@ -211,7 +211,7 @@ function Get-MetricStatistics {
     }
 }
 
-# Fonction pour détecter les anomalies
+# Fonction pour dÃ©tecter les anomalies
 function Get-MetricAnomalies {
     [CmdletBinding()]
     param (
@@ -229,11 +229,11 @@ function Get-MetricAnomalies {
     )
     
     try {
-        # Filtrer les données pour la métrique spécifiée
+        # Filtrer les donnÃ©es pour la mÃ©trique spÃ©cifiÃ©e
         $MetricData = $Data | Where-Object { $_.Metric -eq $Metric }
         
         if ($null -eq $MetricData -or $MetricData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée trouvée pour la métrique: $Metric" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour la mÃ©trique: $Metric" -Level "Warning"
             return @()
         }
         
@@ -245,18 +245,18 @@ function Get-MetricAnomalies {
             }
         }
         
-        # Calculer la moyenne et l'écart-type
+        # Calculer la moyenne et l'Ã©cart-type
         $Avg = ($Values.Value | Measure-Object -Average).Average
         $SumOfSquares = $Values.Value | ForEach-Object { [Math]::Pow($_ - $Avg, 2) } | Measure-Object -Sum
         $StdDev = [Math]::Sqrt($SumOfSquares.Sum / $Values.Count)
         
-        # Détecter les anomalies (valeurs en dehors de la plage moyenne +/- threshold * écart-type)
+        # DÃ©tecter les anomalies (valeurs en dehors de la plage moyenne +/- threshold * Ã©cart-type)
         $LowerBound = $Avg - ($Threshold * $StdDev)
         $UpperBound = $Avg + ($Threshold * $StdDev)
         
         $Anomalies = $Values | Where-Object { $_.Value -lt $LowerBound -or $_.Value -gt $UpperBound } | Sort-Object -Property { [Math]::Abs($_.Value - $Avg) } -Descending | Select-Object -First $MaxAnomalies
         
-        # Créer des objets d'anomalie
+        # CrÃ©er des objets d'anomalie
         $AnomalyObjects = $Anomalies | ForEach-Object {
             $Deviation = [Math]::Abs(($_.Value - $Avg) / $StdDev)
             $Direction = if ($_.Value -gt $Avg) { "above" } else { "below" }
@@ -274,12 +274,12 @@ function Get-MetricAnomalies {
         
         return $AnomalyObjects
     } catch {
-        Write-Log -Message "Erreur lors de la détection des anomalies: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des anomalies: $_" -Level "Error"
         return @()
     }
 }
 
-# Fonction pour générer des recommandations
+# Fonction pour gÃ©nÃ©rer des recommandations
 function Get-MetricRecommendations {
     [CmdletBinding()]
     param (
@@ -294,11 +294,11 @@ function Get-MetricRecommendations {
         $Recommendations = @()
         
         foreach ($Metric in $Metrics) {
-            # Filtrer les données pour la métrique spécifiée
+            # Filtrer les donnÃ©es pour la mÃ©trique spÃ©cifiÃ©e
             $MetricData = $Data | Where-Object { $_.Metric -eq $Metric }
             
             if ($null -eq $MetricData -or $MetricData.Count -eq 0) {
-                Write-Log -Message "Aucune donnée trouvée pour la métrique: $Metric" -Level "Warning"
+                Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour la mÃ©trique: $Metric" -Level "Warning"
                 continue
             }
             
@@ -321,7 +321,7 @@ function Get-MetricRecommendations {
             $Trend = $SecondHalfAvg - $FirstHalfAvg
             $TrendPercent = if ($FirstHalfAvg -ne 0) { ($Trend / $FirstHalfAvg) * 100 } else { 0 }
             
-            # Générer des recommandations basées sur l'analyse
+            # GÃ©nÃ©rer des recommandations basÃ©es sur l'analyse
             switch ($Metric) {
                 "CPU" {
                     if ($Max -gt 90) {
@@ -329,7 +329,7 @@ function Get-MetricRecommendations {
                             Metric = $Metric
                             Priority = "high"
                             Description = "L'utilisation CPU a atteint un pic de $([Math]::Round($Max, 2))%. Envisagez d'augmenter les ressources CPU ou d'optimiser les processus consommateurs."
-                            Impact = "Amélioration des performances et réduction des temps de réponse"
+                            Impact = "AmÃ©lioration des performances et rÃ©duction des temps de rÃ©ponse"
                             Effort = "Moyen"
                         }
                     }
@@ -338,8 +338,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "medium"
-                            Description = "L'utilisation CPU montre une tendance à la hausse de $([Math]::Round($TrendPercent, 2))%. Surveillez cette métrique et planifiez une augmentation des ressources si la tendance se poursuit."
-                            Impact = "Prévention des problèmes de performance futurs"
+                            Description = "L'utilisation CPU montre une tendance Ã  la hausse de $([Math]::Round($TrendPercent, 2))%. Surveillez cette mÃ©trique et planifiez une augmentation des ressources si la tendance se poursuit."
+                            Impact = "PrÃ©vention des problÃ¨mes de performance futurs"
                             Effort = "Faible"
                         }
                     }
@@ -349,8 +349,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "L'utilisation mémoire a atteint un pic de $([Math]::Round($Max, 2))%. Envisagez d'augmenter la mémoire disponible ou d'optimiser l'utilisation mémoire des applications."
-                            Impact = "Réduction des risques de swapping et amélioration des performances"
+                            Description = "L'utilisation mÃ©moire a atteint un pic de $([Math]::Round($Max, 2))%. Envisagez d'augmenter la mÃ©moire disponible ou d'optimiser l'utilisation mÃ©moire des applications."
+                            Impact = "RÃ©duction des risques de swapping et amÃ©lioration des performances"
                             Effort = "Moyen"
                         }
                     }
@@ -359,8 +359,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "medium"
-                            Description = "L'utilisation mémoire montre une tendance à la hausse de $([Math]::Round($TrendPercent, 2))%. Surveillez cette métrique et recherchez d'éventuelles fuites mémoire."
-                            Impact = "Prévention des problèmes de performance et de stabilité"
+                            Description = "L'utilisation mÃ©moire montre une tendance Ã  la hausse de $([Math]::Round($TrendPercent, 2))%. Surveillez cette mÃ©trique et recherchez d'Ã©ventuelles fuites mÃ©moire."
+                            Impact = "PrÃ©vention des problÃ¨mes de performance et de stabilitÃ©"
                             Effort = "Moyen"
                         }
                     }
@@ -370,8 +370,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "L'utilisation disque a atteint $([Math]::Round($Max, 2))%. Envisagez d'augmenter l'espace disque ou de nettoyer les fichiers inutilisés."
-                            Impact = "Prévention des problèmes de manque d'espace disque"
+                            Description = "L'utilisation disque a atteint $([Math]::Round($Max, 2))%. Envisagez d'augmenter l'espace disque ou de nettoyer les fichiers inutilisÃ©s."
+                            Impact = "PrÃ©vention des problÃ¨mes de manque d'espace disque"
                             Effort = "Faible"
                         }
                     }
@@ -380,7 +380,7 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "medium"
-                            Description = "L'utilisation disque montre une tendance à la hausse de $([Math]::Round($TrendPercent, 2))%. Mettez en place une politique de rotation des logs et d'archivage."
+                            Description = "L'utilisation disque montre une tendance Ã  la hausse de $([Math]::Round($TrendPercent, 2))%. Mettez en place une politique de rotation des logs et d'archivage."
                             Impact = "Gestion proactive de l'espace disque"
                             Effort = "Moyen"
                         }
@@ -391,9 +391,9 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "Le temps de réponse moyen est de $([Math]::Round($Avg, 2)) ms, ce qui est élevé. Optimisez les requêtes de base de données et le code applicatif."
-                            Impact = "Amélioration de l'expérience utilisateur et des performances"
-                            Effort = "Élevé"
+                            Description = "Le temps de rÃ©ponse moyen est de $([Math]::Round($Avg, 2)) ms, ce qui est Ã©levÃ©. Optimisez les requÃªtes de base de donnÃ©es et le code applicatif."
+                            Impact = "AmÃ©lioration de l'expÃ©rience utilisateur et des performances"
+                            Effort = "Ã‰levÃ©"
                         }
                     }
                     
@@ -401,8 +401,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "medium"
-                            Description = "Le temps de réponse montre une tendance à la hausse de $([Math]::Round($TrendPercent, 2))%. Analysez les causes de cette dégradation."
-                            Impact = "Prévention de la dégradation de l'expérience utilisateur"
+                            Description = "Le temps de rÃ©ponse montre une tendance Ã  la hausse de $([Math]::Round($TrendPercent, 2))%. Analysez les causes de cette dÃ©gradation."
+                            Impact = "PrÃ©vention de la dÃ©gradation de l'expÃ©rience utilisateur"
                             Effort = "Moyen"
                         }
                     }
@@ -412,9 +412,9 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "Le taux d'erreur moyen est de $([Math]::Round($Avg, 2))%, ce qui est élevé. Analysez les logs d'erreur et corrigez les problèmes identifiés."
-                            Impact = "Amélioration de la fiabilité et de l'expérience utilisateur"
-                            Effort = "Élevé"
+                            Description = "Le taux d'erreur moyen est de $([Math]::Round($Avg, 2))%, ce qui est Ã©levÃ©. Analysez les logs d'erreur et corrigez les problÃ¨mes identifiÃ©s."
+                            Impact = "AmÃ©lioration de la fiabilitÃ© et de l'expÃ©rience utilisateur"
+                            Effort = "Ã‰levÃ©"
                         }
                     }
                     
@@ -422,8 +422,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "Le taux d'erreur a atteint un pic de $([Math]::Round($Max, 2))%. Mettez en place un système de détection et d'alerte pour les pics d'erreurs."
-                            Impact = "Détection rapide des problèmes"
+                            Description = "Le taux d'erreur a atteint un pic de $([Math]::Round($Max, 2))%. Mettez en place un systÃ¨me de dÃ©tection et d'alerte pour les pics d'erreurs."
+                            Impact = "DÃ©tection rapide des problÃ¨mes"
                             Effort = "Moyen"
                         }
                     }
@@ -433,8 +433,8 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "Le taux de livraison des emails est de $([Math]::Round($Avg, 2))%, ce qui est inférieur à l'objectif de 95%. Vérifiez la configuration SMTP et la réputation de l'expéditeur."
-                            Impact = "Amélioration de la délivrabilité des emails"
+                            Description = "Le taux de livraison des emails est de $([Math]::Round($Avg, 2))%, ce qui est infÃ©rieur Ã  l'objectif de 95%. VÃ©rifiez la configuration SMTP et la rÃ©putation de l'expÃ©diteur."
+                            Impact = "AmÃ©lioration de la dÃ©livrabilitÃ© des emails"
                             Effort = "Moyen"
                         }
                     }
@@ -444,7 +444,7 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "medium"
-                            Description = "Le taux d'ouverture des emails est de $([Math]::Round($Avg, 2))%, ce qui est faible. Améliorez les lignes d'objet et le contenu des emails."
+                            Description = "Le taux d'ouverture des emails est de $([Math]::Round($Avg, 2))%, ce qui est faible. AmÃ©liorez les lignes d'objet et le contenu des emails."
                             Impact = "Augmentation de l'engagement des destinataires"
                             Effort = "Moyen"
                         }
@@ -455,16 +455,16 @@ function Get-MetricRecommendations {
                         $Recommendations += [PSCustomObject]@{
                             Metric = $Metric
                             Priority = "high"
-                            Description = "Le taux de conversion est de $([Math]::Round($Avg, 2))%, ce qui est faible. Optimisez les pages de destination et les appels à l'action."
+                            Description = "Le taux de conversion est de $([Math]::Round($Avg, 2))%, ce qui est faible. Optimisez les pages de destination et les appels Ã  l'action."
                             Impact = "Augmentation des conversions et du ROI"
-                            Effort = "Élevé"
+                            Effort = "Ã‰levÃ©"
                         }
                     }
                 }
             }
         }
         
-        # Trier les recommandations par priorité
+        # Trier les recommandations par prioritÃ©
         $PriorityOrder = @{
             "high" = 1
             "medium" = 2
@@ -475,12 +475,12 @@ function Get-MetricRecommendations {
         
         return $SortedRecommendations
     } catch {
-        Write-Log -Message "Erreur lors de la génération des recommandations: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration des recommandations: $_" -Level "Error"
         return @()
     }
 }
 
-# Fonction principale pour générer un rapport
+# Fonction principale pour gÃ©nÃ©rer un rapport
 function New-Report {
     [CmdletBinding()]
     param (
@@ -509,25 +509,25 @@ function New-Report {
         $Template = Get-ReportTemplate -TemplateId $TemplateId
         
         if ($null -eq $Template) {
-            Write-Log -Message "Template non trouvé: $TemplateId" -Level "Error"
+            Write-Log -Message "Template non trouvÃ©: $TemplateId" -Level "Error"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Charger les données selon le type de rapport
+        # Charger les donnÃ©es selon le type de rapport
         $Data = Import-PerformanceData -DataPath $DataPath -MetricType $Template.type -StartDate $StartDate -EndDate $EndDate
         
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée disponible pour le type: $($Template.type)" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e disponible pour le type: $($Template.type)" -Level "Warning"
             return $false
         }
         
-        # Préparer la structure du rapport
+        # PrÃ©parer la structure du rapport
         $Report = @{
             id = $Template.id
             name = $Template.name
@@ -541,9 +541,9 @@ function New-Report {
             sections = @()
         }
         
-        # Générer chaque section du rapport
+        # GÃ©nÃ©rer chaque section du rapport
         foreach ($Section in $Template.sections) {
-            Write-Log -Message "Génération de la section: $($Section.id)" -Level "Verbose"
+            Write-Log -Message "GÃ©nÃ©ration de la section: $($Section.id)" -Level "Verbose"
             
             $SectionData = @{
                 id = $Section.id
@@ -587,11 +587,11 @@ function New-Report {
                     $SectionData.metrics = $Metrics
                 }
                 "chart" {
-                    # Pour l'instant, nous stockons simplement les données pour le graphique
-                    # La génération réelle du graphique sera effectuée par le module d'export
+                    # Pour l'instant, nous stockons simplement les donnÃ©es pour le graphique
+                    # La gÃ©nÃ©ration rÃ©elle du graphique sera effectuÃ©e par le module d'export
                     
                     if ($Section.PSObject.Properties.Name -contains "metrics") {
-                        # Graphique multi-métriques
+                        # Graphique multi-mÃ©triques
                         $ChartData = @()
                         
                         foreach ($Metric in $Section.metrics) {
@@ -612,7 +612,7 @@ function New-Report {
                         
                         $SectionData.chart_data = $ChartData
                     } else {
-                        # Graphique simple métrique
+                        # Graphique simple mÃ©trique
                         $MetricData = $Data | Where-Object { $_.Metric -eq $Section.metric } | Sort-Object -Property DateTime
                         
                         $Series = @{
@@ -639,7 +639,7 @@ function New-Report {
                         $AllAnomalies += $Anomalies
                     }
                     
-                    # Trier par déviation
+                    # Trier par dÃ©viation
                     $SortedAnomalies = $AllAnomalies | Sort-Object -Property Deviation -Descending | Select-Object -First $Section.max_anomalies
                     
                     $SectionData.anomalies = $SortedAnomalies
@@ -654,40 +654,40 @@ function New-Report {
             $Report.sections += $SectionData
         }
         
-        # Sauvegarder le rapport au format JSON (intermédiaire)
+        # Sauvegarder le rapport au format JSON (intermÃ©diaire)
         $ReportJson = $Report | ConvertTo-Json -Depth 10
         $JsonPath = [System.IO.Path]::ChangeExtension($OutputPath, "json")
         $ReportJson | Out-File -FilePath $JsonPath -Encoding UTF8
         
-        Write-Log -Message "Rapport généré avec succès: $JsonPath" -Level "Info"
+        Write-Log -Message "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $JsonPath" -Level "Info"
         
-        # TODO: Appeler le module d'export pour convertir le rapport au format demandé
-        # Cette partie sera implémentée dans le module report_exporter.ps1
+        # TODO: Appeler le module d'export pour convertir le rapport au format demandÃ©
+        # Cette partie sera implÃ©mentÃ©e dans le module report_exporter.ps1
         
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du rapport: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du rapport: $_" -Level "Error"
         return $false
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $Result = New-Report -TemplateId $TemplateId -OutputPath $OutputPath -DataPath $DataPath -StartDate $StartDate -EndDate $EndDate -Format $Format
     
     if ($Result) {
-        Write-Log -Message "Génération du rapport réussie" -Level "Info"
+        Write-Log -Message "GÃ©nÃ©ration du rapport rÃ©ussie" -Level "Info"
         
-        # TODO: Notifier les destinataires si demandé
-        # Cette partie sera implémentée dans le module report_distributor.ps1
+        # TODO: Notifier les destinataires si demandÃ©
+        # Cette partie sera implÃ©mentÃ©e dans le module report_distributor.ps1
         
         exit 0
     } else {
-        Write-Log -Message "Échec de la génération du rapport" -Level "Error"
+        Write-Log -Message "Ã‰chec de la gÃ©nÃ©ration du rapport" -Level "Error"
         exit 1
     }
 } catch {
-    Write-Log -Message "Erreur non gérée: $_" -Level "Error"
+    Write-Log -Message "Erreur non gÃ©rÃ©e: $_" -Level "Error"
     exit 1
 }

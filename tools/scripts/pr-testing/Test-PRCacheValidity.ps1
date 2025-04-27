@@ -1,35 +1,35 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste la validité du cache d'analyse des pull requests.
+    Teste la validitÃ© du cache d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script vérifie la validité et l'intégrité du cache utilisé pour
-    l'analyse des pull requests, en effectuant une série de tests.
+    Ce script vÃ©rifie la validitÃ© et l'intÃ©gritÃ© du cache utilisÃ© pour
+    l'analyse des pull requests, en effectuant une sÃ©rie de tests.
 
 .PARAMETER CachePath
-    Le chemin du cache à tester.
-    Par défaut: "cache\pr-analysis"
+    Le chemin du cache Ã  tester.
+    Par dÃ©faut: "cache\pr-analysis"
 
 .PARAMETER TestCount
-    Le nombre de tests à effectuer.
-    Par défaut: 10
+    Le nombre de tests Ã  effectuer.
+    Par dÃ©faut: 10
 
 .PARAMETER TestDataSize
-    La taille approximative des données de test en Ko.
-    Par défaut: 10
+    La taille approximative des donnÃ©es de test en Ko.
+    Par dÃ©faut: 10
 
 .PARAMETER DetailedReport
-    Indique s'il faut générer un rapport détaillé.
-    Par défaut: $false
+    Indique s'il faut gÃ©nÃ©rer un rapport dÃ©taillÃ©.
+    Par dÃ©faut: $false
 
 .EXAMPLE
     .\Test-PRCacheValidity.ps1
-    Teste le cache avec les paramètres par défaut.
+    Teste le cache avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Test-PRCacheValidity.ps1 -CachePath "D:\Cache\PR" -TestCount 50 -TestDataSize 100 -DetailedReport
-    Teste le cache avec des paramètres personnalisés et génère un rapport détaillé.
+    Teste le cache avec des paramÃ¨tres personnalisÃ©s et gÃ©nÃ¨re un rapport dÃ©taillÃ©.
 
 .NOTES
     Version: 1.0
@@ -57,11 +57,11 @@ $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\PRAnalysisCache.
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module PRAnalysisCache non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module PRAnalysisCache non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
-# Fonction pour générer des données de test
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de test
 function New-TestData {
     [CmdletBinding()]
     param(
@@ -70,12 +70,12 @@ function New-TestData {
     )
 
     try {
-        # Générer une chaîne aléatoire de la taille spécifiée
+        # GÃ©nÃ©rer une chaÃ®ne alÃ©atoire de la taille spÃ©cifiÃ©e
         $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         $random = New-Object System.Random
         $result = ""
         
-        # 1 Ko = environ 1024 caractères
+        # 1 Ko = environ 1024 caractÃ¨res
         $charCount = $SizeKB * 1024
         
         for ($i = 0; $i -lt $charCount; $i++) {
@@ -84,12 +84,12 @@ function New-TestData {
         
         return $result
     } catch {
-        Write-Error "Erreur lors de la génération des données de test: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration des donnÃ©es de test: $_"
         return $null
     }
 }
 
-# Fonction pour tester les opérations de base du cache
+# Fonction pour tester les opÃ©rations de base du cache
 function Test-BasicCacheOperations {
     [CmdletBinding()]
     param(
@@ -116,7 +116,7 @@ function Test-BasicCacheOperations {
             TestData = @()
         }
         
-        Write-Host "Exécution de $Count tests avec des données de $DataSizeKB Ko..." -ForegroundColor Cyan
+        Write-Host "ExÃ©cution de $Count tests avec des donnÃ©es de $DataSizeKB Ko..." -ForegroundColor Cyan
         
         for ($i = 1; $i -le $Count; $i++) {
             $testKey = "TestKey_$i"
@@ -178,7 +178,7 @@ function Test-BasicCacheOperations {
                             Key = $testKey
                             Operation = "Get"
                             Success = $false
-                            Error = "Données non trouvées dans le cache"
+                            Error = "DonnÃ©es non trouvÃ©es dans le cache"
                         }
                     }
                     
@@ -199,7 +199,7 @@ function Test-BasicCacheOperations {
                 continue
             }
             
-            # Test 3: Intégrité des données
+            # Test 3: IntÃ©gritÃ© des donnÃ©es
             if ($retrievedData -eq $testData) {
                 $results.DataIntegritySuccess++
                 
@@ -219,7 +219,7 @@ function Test-BasicCacheOperations {
                         Key = $testKey
                         Operation = "DataIntegrity"
                         Success = $false
-                        Error = "Les données récupérées ne correspondent pas aux données stockées"
+                        Error = "Les donnÃ©es rÃ©cupÃ©rÃ©es ne correspondent pas aux donnÃ©es stockÃ©es"
                     }
                 }
             }
@@ -250,7 +250,7 @@ function Test-BasicCacheOperations {
                 }
             }
             
-            # Vérifier que l'élément a bien été supprimé
+            # VÃ©rifier que l'Ã©lÃ©ment a bien Ã©tÃ© supprimÃ©
             $verifyRemoved = $Cache.Get($testKey)
             if ($null -ne $verifyRemoved) {
                 $results.RemoveFailure++
@@ -260,7 +260,7 @@ function Test-BasicCacheOperations {
                         Key = $testKey
                         Operation = "VerifyRemove"
                         Success = $false
-                        Error = "L'élément n'a pas été correctement supprimé du cache"
+                        Error = "L'Ã©lÃ©ment n'a pas Ã©tÃ© correctement supprimÃ© du cache"
                     }
                 }
             }
@@ -273,7 +273,7 @@ function Test-BasicCacheOperations {
         
         return $results
     } catch {
-        Write-Error "Erreur lors du test des opérations de base du cache: $_"
+        Write-Error "Erreur lors du test des opÃ©rations de base du cache: $_"
         return $null
     }
 }
@@ -349,7 +349,7 @@ function Test-CachePerformance {
     }
 }
 
-# Fonction pour générer un rapport
+# Fonction pour gÃ©nÃ©rer un rapport
 function New-CacheValidityReport {
     [CmdletBinding()]
     param(
@@ -398,77 +398,77 @@ function New-CacheValidityReport {
             Recommendations = @()
         }
         
-        # Ajouter les détails des tests si demandé
+        # Ajouter les dÃ©tails des tests si demandÃ©
         if ($Detailed) {
             $report | Add-Member -MemberType NoteProperty -Name "TestDetails" -Value $BasicResults.TestData
         }
         
-        # Générer des recommandations
+        # GÃ©nÃ©rer des recommandations
         if ($report.BasicTests.SuccessRate -lt 100) {
-            $report.Recommendations += "Le taux de réussite des opérations de base est inférieur à 100%. Vérifiez les erreurs détaillées et envisagez de réinitialiser le cache."
+            $report.Recommendations += "Le taux de rÃ©ussite des opÃ©rations de base est infÃ©rieur Ã  100%. VÃ©rifiez les erreurs dÃ©taillÃ©es et envisagez de rÃ©initialiser le cache."
         }
         
         if ($report.BasicTests.DataIntegrityFailure -gt 0) {
-            $report.Recommendations += "Des problèmes d'intégrité des données ont été détectés. Le cache pourrait être corrompu. Envisagez de le réinitialiser."
+            $report.Recommendations += "Des problÃ¨mes d'intÃ©gritÃ© des donnÃ©es ont Ã©tÃ© dÃ©tectÃ©s. Le cache pourrait Ãªtre corrompu. Envisagez de le rÃ©initialiser."
         }
         
         if ($report.PerformanceTests.GetAvgMs -gt 50) {
-            $report.Recommendations += "Les temps d'accès au cache sont élevés. Envisagez d'optimiser la configuration du cache ou de vérifier les performances du stockage."
+            $report.Recommendations += "Les temps d'accÃ¨s au cache sont Ã©levÃ©s. Envisagez d'optimiser la configuration du cache ou de vÃ©rifier les performances du stockage."
         }
         
         return $report
     } catch {
-        Write-Error "Erreur lors de la génération du rapport: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Résoudre le chemin complet du cache
+    # RÃ©soudre le chemin complet du cache
     $fullCachePath = $CachePath
     if (-not [System.IO.Path]::IsPathRooted($CachePath)) {
         $fullCachePath = Join-Path -Path $PWD -ChildPath $CachePath
     }
 
-    # Vérifier si le cache existe
+    # VÃ©rifier si le cache existe
     if (-not (Test-Path -Path $fullCachePath)) {
-        Write-Error "Le répertoire du cache n'existe pas: $fullCachePath"
+        Write-Error "Le rÃ©pertoire du cache n'existe pas: $fullCachePath"
         exit 1
     }
 
-    # Créer le cache
+    # CrÃ©er le cache
     $cache = New-PRAnalysisCache -Name "PRAnalysisCache" -CachePath $fullCachePath
     if ($null -eq $cache) {
-        Write-Error "Impossible de créer le cache."
+        Write-Error "Impossible de crÃ©er le cache."
         exit 1
     }
 
-    # Tester les opérations de base
+    # Tester les opÃ©rations de base
     $basicResults = Test-BasicCacheOperations -Cache $cache -Count $TestCount -DataSizeKB $TestDataSize
     if ($null -eq $basicResults) {
-        Write-Error "Échec des tests d'opérations de base."
+        Write-Error "Ã‰chec des tests d'opÃ©rations de base."
         exit 1
     }
 
     # Tester les performances
     $performanceResults = Test-CachePerformance -Cache $cache -Count $TestCount -DataSizeKB $TestDataSize
     if ($null -eq $performanceResults) {
-        Write-Error "Échec des tests de performance."
+        Write-Error "Ã‰chec des tests de performance."
         exit 1
     }
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $report = New-CacheValidityReport -BasicResults $basicResults -PerformanceResults $performanceResults -Cache $cache -CachePath $fullCachePath -Detailed $DetailedReport.IsPresent
     if ($null -eq $report) {
-        Write-Error "Échec de la génération du rapport."
+        Write-Error "Ã‰chec de la gÃ©nÃ©ration du rapport."
         exit 1
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé des tests de validité du cache:" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© des tests de validitÃ© du cache:" -ForegroundColor Cyan
     Write-Host "  Chemin du cache: $fullCachePath" -ForegroundColor White
-    Write-Host "  Taux de réussite: $($report.BasicTests.SuccessRate)%" -ForegroundColor White
+    Write-Host "  Taux de rÃ©ussite: $($report.BasicTests.SuccessRate)%" -ForegroundColor White
     Write-Host "  Temps moyen de Get: $($report.PerformanceTests.GetAvgMs) ms" -ForegroundColor White
     Write-Host "  Temps moyen de Set: $($report.PerformanceTests.SetAvgMs) ms" -ForegroundColor White
     Write-Host "  Temps moyen de Remove: $($report.PerformanceTests.RemoveAvgMs) ms" -ForegroundColor White
@@ -483,6 +483,6 @@ try {
     # Retourner le rapport
     return $report
 } catch {
-    Write-Error "Erreur lors du test de validité du cache: $_"
+    Write-Error "Erreur lors du test de validitÃ© du cache: $_"
     exit 1
 }

@@ -1,6 +1,6 @@
-# encoding - utils
+﻿# encoding - utils
 
-Cette section contient les scripts liés à encoding dans la catégorie utils.
+Cette section contient les scripts liÃ©s Ã  encoding dans la catÃ©gorie utils.
 
 ## Scripts disponibles
 
@@ -13,9 +13,9 @@ Aucun script n'est encore disponible dans cette section.
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - oadmap-parser - Module principal de parsing de roadmap
 
 ## Tests

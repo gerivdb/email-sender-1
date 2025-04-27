@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Système de monitoring et d'analyse comportementale des scripts.
+    SystÃ¨me de monitoring et d'analyse comportementale des scripts.
 .DESCRIPTION
-    Ce script implémente un système avancé de monitoring qui:
-    - Enregistre l'utilisation des scripts (fréquence, durée, succès/échec, ressources)
-    - Analyse les logs pour identifier les scripts les plus utilisés, lents ou problématiques
-    - Détecte les goulots d'étranglement dans les processus parallèles
+    Ce script implÃ©mente un systÃ¨me avancÃ© de monitoring qui:
+    - Enregistre l'utilisation des scripts (frÃ©quence, durÃ©e, succÃ¨s/Ã©chec, ressources)
+    - Analyse les logs pour identifier les scripts les plus utilisÃ©s, lents ou problÃ©matiques
+    - DÃ©tecte les goulots d'Ã©tranglement dans les processus parallÃ¨les
 .EXAMPLE
     .\Monitor-ScriptUsage.ps1 -EnableRealTimeMonitoring
 .NOTES
@@ -37,11 +37,11 @@ if (Test-Path -Path $usageMonitorPath) {
     Import-Module $usageMonitorPath -Force
 }
 else {
-    Write-Error "Module UsageMonitor non trouvé: $usageMonitorPath"
+    Write-Error "Module UsageMonitor non trouvÃ©: $usageMonitorPath"
     exit 1
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -77,10 +77,10 @@ function Analyze-UsageLogs {
     # Obtenir les statistiques d'utilisation
     $usageStats = Get-ScriptUsageStatistics -TopCount $TopCount
     
-    # Afficher les scripts les plus utilisés
-    Write-Log "Scripts les plus utilisés:" -Level "INFO"
+    # Afficher les scripts les plus utilisÃ©s
+    Write-Log "Scripts les plus utilisÃ©s:" -Level "INFO"
     $usageStats.TopUsedScripts.GetEnumerator() | ForEach-Object {
-        Write-Log "  - $($_.Key): $($_.Value) exécutions" -Level "INFO"
+        Write-Log "  - $($_.Key): $($_.Value) exÃ©cutions" -Level "INFO"
     }
     
     # Afficher les scripts les plus lents
@@ -89,10 +89,10 @@ function Analyze-UsageLogs {
         Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2)) ms en moyenne" -Level "INFO"
     }
     
-    # Afficher les scripts échouant le plus souvent
-    Write-Log "Scripts échouant le plus souvent:" -Level "INFO"
+    # Afficher les scripts Ã©chouant le plus souvent
+    Write-Log "Scripts Ã©chouant le plus souvent:" -Level "INFO"
     $usageStats.MostFailingScripts.GetEnumerator() | ForEach-Object {
-        Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2))% d'échecs" -Level "INFO"
+        Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2))% d'Ã©checs" -Level "INFO"
     }
     
     # Afficher les scripts consommant le plus de ressources
@@ -104,29 +104,29 @@ function Analyze-UsageLogs {
     return $usageStats
 }
 
-# Fonction pour détecter les goulots d'étranglement dans les processus parallèles
+# Fonction pour dÃ©tecter les goulots d'Ã©tranglement dans les processus parallÃ¨les
 function Detect-ParallelBottlenecks {
     [CmdletBinding()]
     param ()
     
-    Write-Log "Détection des goulots d'étranglement dans les processus parallèles..." -Level "TITLE"
+    Write-Log "DÃ©tection des goulots d'Ã©tranglement dans les processus parallÃ¨les..." -Level "TITLE"
     
-    # Utiliser la fonction existante pour trouver les goulots d'étranglement
+    # Utiliser la fonction existante pour trouver les goulots d'Ã©tranglement
     $bottlenecks = Find-ScriptBottlenecks
     
     if ($bottlenecks.Count -gt 0) {
-        Write-Log "Goulots d'étranglement détectés:" -Level "WARNING"
+        Write-Log "Goulots d'Ã©tranglement dÃ©tectÃ©s:" -Level "WARNING"
         foreach ($bottleneck in $bottlenecks) {
             Write-Log "  - Script: $($bottleneck.ScriptName)" -Level "WARNING"
-            Write-Log "    * Durée moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
+            Write-Log "    * DurÃ©e moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
             Write-Log "    * Seuil de lenteur: $([math]::Round($bottleneck.SlowThreshold, 2)) ms" -Level "INFO"
-            Write-Log "    * Exécutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
+            Write-Log "    * ExÃ©cutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
             
-            # Analyser les exécutions lentes pour détecter des patterns
+            # Analyser les exÃ©cutions lentes pour dÃ©tecter des patterns
             if ($bottleneck.SlowExecutions.Count -gt 0) {
                 $patterns = Analyze-SlowExecutionPatterns -SlowExecutions $bottleneck.SlowExecutions
                 if ($patterns.Count -gt 0) {
-                    Write-Log "    * Patterns détectés:" -Level "INFO"
+                    Write-Log "    * Patterns dÃ©tectÃ©s:" -Level "INFO"
                     foreach ($pattern in $patterns.GetEnumerator()) {
                         Write-Log "      - $($pattern.Key): $($pattern.Value)" -Level "INFO"
                     }
@@ -135,13 +135,13 @@ function Detect-ParallelBottlenecks {
         }
     }
     else {
-        Write-Log "Aucun goulot d'étranglement détecté." -Level "SUCCESS"
+        Write-Log "Aucun goulot d'Ã©tranglement dÃ©tectÃ©." -Level "SUCCESS"
     }
     
     return $bottlenecks
 }
 
-# Fonction pour analyser les patterns dans les exécutions lentes
+# Fonction pour analyser les patterns dans les exÃ©cutions lentes
 function Analyze-SlowExecutionPatterns {
     param (
         [array]$SlowExecutions
@@ -149,7 +149,7 @@ function Analyze-SlowExecutionPatterns {
     
     $patterns = @{}
     
-    # Analyser les paramètres communs
+    # Analyser les paramÃ¨tres communs
     $parameterCounts = @{}
     foreach ($execution in $SlowExecutions) {
         if ($execution.Parameters) {
@@ -163,15 +163,15 @@ function Analyze-SlowExecutionPatterns {
         }
     }
     
-    # Identifier les paramètres qui apparaissent fréquemment
-    $threshold = $SlowExecutions.Count * 0.5  # 50% des exécutions lentes
+    # Identifier les paramÃ¨tres qui apparaissent frÃ©quemment
+    $threshold = $SlowExecutions.Count * 0.5  # 50% des exÃ©cutions lentes
     foreach ($param in $parameterCounts.GetEnumerator()) {
         if ($param.Value -ge $threshold) {
-            $patterns["Paramètre fréquent"] = $param.Key
+            $patterns["ParamÃ¨tre frÃ©quent"] = $param.Key
         }
     }
     
-    # Analyser les heures d'exécution
+    # Analyser les heures d'exÃ©cution
     $hourCounts = @{}
     foreach ($execution in $SlowExecutions) {
         $hour = $execution.StartTime.Hour
@@ -181,7 +181,7 @@ function Analyze-SlowExecutionPatterns {
         $hourCounts[$hour]++
     }
     
-    # Identifier les heures problématiques
+    # Identifier les heures problÃ©matiques
     $maxHourCount = 0
     $maxHour = 0
     foreach ($hour in $hourCounts.GetEnumerator()) {
@@ -191,8 +191,8 @@ function Analyze-SlowExecutionPatterns {
         }
     }
     
-    if ($maxHourCount -ge ($SlowExecutions.Count * 0.3)) {  # 30% des exécutions lentes
-        $patterns["Heure problématique"] = "$maxHour:00 ($maxHourCount occurrences)"
+    if ($maxHourCount -ge ($SlowExecutions.Count * 0.3)) {  # 30% des exÃ©cutions lentes
+        $patterns["Heure problÃ©matique"] = "$maxHour:00 ($maxHourCount occurrences)"
     }
     
     # Analyser l'utilisation des ressources
@@ -222,17 +222,17 @@ function Analyze-SlowExecutionPatterns {
     }
     
     if ($highCpuCount -ge ($SlowExecutions.Count * 0.5)) {
-        $patterns["Utilisation CPU élevée"] = "$highCpuCount occurrences"
+        $patterns["Utilisation CPU Ã©levÃ©e"] = "$highCpuCount occurrences"
     }
     
     if ($highMemoryCount -ge ($SlowExecutions.Count * 0.5)) {
-        $patterns["Utilisation mémoire élevée"] = "$highMemoryCount occurrences"
+        $patterns["Utilisation mÃ©moire Ã©levÃ©e"] = "$highMemoryCount occurrences"
     }
     
     return $patterns
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-UsageReport {
     param (
         [PSCustomObject]$UsageStats,
@@ -240,9 +240,9 @@ function Generate-UsageReport {
         [string]$OutputPath
     )
     
-    Write-Log "Génération du rapport d'utilisation..." -Level "TITLE"
+    Write-Log "GÃ©nÃ©ration du rapport d'utilisation..." -Level "TITLE"
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $reportDir = Join-Path -Path $PSScriptRoot -ChildPath $OutputPath
     if (-not (Test-Path -Path $reportDir)) {
         New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
@@ -250,7 +250,7 @@ function Generate-UsageReport {
     
     $reportFile = Join-Path -Path $reportDir -ChildPath "usage_report_$(Get-Date -Format 'yyyy-MM-dd').html"
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -326,23 +326,23 @@ function Generate-UsageReport {
 <body>
     <div class="container">
         <h1>Rapport d'utilisation des scripts</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm")</p>
         
-        <h2>Résumé</h2>
-        <p>Ce rapport présente l'analyse de l'utilisation des scripts sur les $AnalysisPeriodDays derniers jours.</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Ce rapport prÃ©sente l'analyse de l'utilisation des scripts sur les $AnalysisPeriodDays derniers jours.</p>
         
-        <h2>Scripts les plus utilisés</h2>
+        <h2>Scripts les plus utilisÃ©s</h2>
         <div class="chart-container">
             <canvas id="usageChart"></canvas>
         </div>
         <table>
             <tr>
                 <th>Script</th>
-                <th>Nombre d'exécutions</th>
+                <th>Nombre d'exÃ©cutions</th>
             </tr>
 "@
 
-    # Ajouter les scripts les plus utilisés
+    # Ajouter les scripts les plus utilisÃ©s
     foreach ($script in $UsageStats.TopUsedScripts.GetEnumerator()) {
         $scriptName = Split-Path -Path $script.Key -Leaf
         $htmlContent += @"
@@ -363,7 +363,7 @@ function Generate-UsageReport {
         <table>
             <tr>
                 <th>Script</th>
-                <th>Durée moyenne (ms)</th>
+                <th>DurÃ©e moyenne (ms)</th>
             </tr>
 "@
 
@@ -382,18 +382,18 @@ function Generate-UsageReport {
     $htmlContent += @"
         </table>
         
-        <h2>Scripts échouant le plus souvent</h2>
+        <h2>Scripts Ã©chouant le plus souvent</h2>
         <div class="chart-container">
             <canvas id="failureChart"></canvas>
         </div>
         <table>
             <tr>
                 <th>Script</th>
-                <th>Taux d'échec (%)</th>
+                <th>Taux d'Ã©chec (%)</th>
             </tr>
 "@
 
-    # Ajouter les scripts échouant le plus souvent
+    # Ajouter les scripts Ã©chouant le plus souvent
     foreach ($script in $UsageStats.MostFailingScripts.GetEnumerator()) {
         $scriptName = Split-Path -Path $script.Key -Leaf
         $failureRate = [math]::Round($script.Value, 2)
@@ -409,7 +409,7 @@ function Generate-UsageReport {
     $htmlContent += @"
         </table>
         
-        <h2>Goulots d'étranglement détectés</h2>
+        <h2>Goulots d'Ã©tranglement dÃ©tectÃ©s</h2>
 "@
 
     if ($Bottlenecks.Count -gt 0) {
@@ -417,9 +417,9 @@ function Generate-UsageReport {
         <table>
             <tr>
                 <th>Script</th>
-                <th>Durée moyenne (ms)</th>
+                <th>DurÃ©e moyenne (ms)</th>
                 <th>Seuil de lenteur (ms)</th>
-                <th>Exécutions lentes</th>
+                <th>ExÃ©cutions lentes</th>
                 <th>Pourcentage</th>
             </tr>
 "@
@@ -446,17 +446,17 @@ function Generate-UsageReport {
         $htmlContent += "</table>"
     }
     else {
-        $htmlContent += "<p class='success'>Aucun goulot d'étranglement détecté.</p>"
+        $htmlContent += "<p class='success'>Aucun goulot d'Ã©tranglement dÃ©tectÃ©.</p>"
     }
 
     # Ajouter les scripts JavaScript pour les graphiques
     $htmlContent += @"
         <script>
-            // Données pour les graphiques
+            // DonnÃ©es pour les graphiques
             const usageData = {
                 labels: [$(($UsageStats.TopUsedScripts.GetEnumerator() | ForEach-Object { "'$(Split-Path -Path $_.Key -Leaf)'" }) -join ', ')],
                 datasets: [{
-                    label: 'Nombre d\'exécutions',
+                    label: 'Nombre d\'exÃ©cutions',
                     data: [$(($UsageStats.TopUsedScripts.GetEnumerator() | ForEach-Object { $_.Value }) -join ', ')],
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -467,7 +467,7 @@ function Generate-UsageReport {
             const durationData = {
                 labels: [$(($UsageStats.SlowestScripts.GetEnumerator() | ForEach-Object { "'$(Split-Path -Path $_.Key -Leaf)'" }) -join ', ')],
                 datasets: [{
-                    label: 'Durée moyenne (ms)',
+                    label: 'DurÃ©e moyenne (ms)',
                     data: [$(($UsageStats.SlowestScripts.GetEnumerator() | ForEach-Object { [math]::Round($_.Value, 2) }) -join ', ')],
                     backgroundColor: 'rgba(255, 159, 64, 0.5)',
                     borderColor: 'rgba(255, 159, 64, 1)',
@@ -478,7 +478,7 @@ function Generate-UsageReport {
             const failureData = {
                 labels: [$(($UsageStats.MostFailingScripts.GetEnumerator() | ForEach-Object { "'$(Split-Path -Path $_.Key -Leaf)'" }) -join ', ')],
                 datasets: [{
-                    label: 'Taux d\'échec (%)',
+                    label: 'Taux d\'Ã©chec (%)',
                     data: [$(($UsageStats.MostFailingScripts.GetEnumerator() | ForEach-Object { [math]::Round($_.Value, 2) }) -join ', ')],
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -486,7 +486,7 @@ function Generate-UsageReport {
                 }]
             };
             
-            // Créer les graphiques
+            // CrÃ©er les graphiques
             window.onload = function() {
                 const usageCtx = document.getElementById('usageChart').getContext('2d');
                 new Chart(usageCtx, {
@@ -534,7 +534,7 @@ function Generate-UsageReport {
         </script>
         
         <div class="footer">
-            <p>Rapport généré par le système de monitoring et d'analyse comportementale</p>
+            <p>Rapport gÃ©nÃ©rÃ© par le systÃ¨me de monitoring et d'analyse comportementale</p>
         </div>
     </div>
 </body>
@@ -544,33 +544,33 @@ function Generate-UsageReport {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $reportFile -Encoding utf8 -Force
     
-    Write-Log "Rapport généré avec succès: $reportFile" -Level "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $reportFile" -Level "SUCCESS"
     
     return $reportFile
 }
 
-# Fonction pour démarrer le monitoring en temps réel
+# Fonction pour dÃ©marrer le monitoring en temps rÃ©el
 function Start-RealTimeMonitoring {
     [CmdletBinding()]
     param (
         [int]$RefreshIntervalSeconds = 60
     )
     
-    Write-Log "Démarrage du monitoring en temps réel (intervalle: $RefreshIntervalSeconds secondes)..." -Level "TITLE"
+    Write-Log "DÃ©marrage du monitoring en temps rÃ©el (intervalle: $RefreshIntervalSeconds secondes)..." -Level "TITLE"
     
     try {
         while ($true) {
             Clear-Host
-            Write-Log "=== Monitoring en temps réel (Ctrl+C pour arrêter) ===" -Level "TITLE"
-            Write-Log "Dernière mise à jour: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -Level "INFO"
+            Write-Log "=== Monitoring en temps rÃ©el (Ctrl+C pour arrÃªter) ===" -Level "TITLE"
+            Write-Log "DerniÃ¨re mise Ã  jour: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -Level "INFO"
             
             # Analyser les logs d'utilisation
             $usageStats = Get-ScriptUsageStatistics -TopCount 5
             
-            # Afficher les scripts les plus utilisés
-            Write-Log "Top 5 des scripts les plus utilisés:" -Level "INFO"
+            # Afficher les scripts les plus utilisÃ©s
+            Write-Log "Top 5 des scripts les plus utilisÃ©s:" -Level "INFO"
             $usageStats.TopUsedScripts.GetEnumerator() | ForEach-Object {
-                Write-Log "  - $($_.Key): $($_.Value) exécutions" -Level "INFO"
+                Write-Log "  - $($_.Key): $($_.Value) exÃ©cutions" -Level "INFO"
             }
             
             # Afficher les scripts les plus lents
@@ -579,38 +579,38 @@ function Start-RealTimeMonitoring {
                 Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2)) ms en moyenne" -Level "INFO"
             }
             
-            # Afficher les scripts échouant le plus souvent
-            Write-Log "Top 5 des scripts échouant le plus souvent:" -Level "INFO"
+            # Afficher les scripts Ã©chouant le plus souvent
+            Write-Log "Top 5 des scripts Ã©chouant le plus souvent:" -Level "INFO"
             $usageStats.MostFailingScripts.GetEnumerator() | ForEach-Object {
-                Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2))% d'échecs" -Level "INFO"
+                Write-Log "  - $($_.Key): $([math]::Round($_.Value, 2))% d'Ã©checs" -Level "INFO"
             }
             
-            # Détecter les goulots d'étranglement
+            # DÃ©tecter les goulots d'Ã©tranglement
             $bottlenecks = Find-ScriptBottlenecks
             
             if ($bottlenecks.Count -gt 0) {
-                Write-Log "Goulots d'étranglement détectés:" -Level "WARNING"
+                Write-Log "Goulots d'Ã©tranglement dÃ©tectÃ©s:" -Level "WARNING"
                 foreach ($bottleneck in $bottlenecks) {
                     Write-Log "  - Script: $($bottleneck.ScriptName)" -Level "WARNING"
-                    Write-Log "    * Durée moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
-                    Write-Log "    * Exécutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
+                    Write-Log "    * DurÃ©e moyenne: $([math]::Round($bottleneck.AverageDuration, 2)) ms" -Level "INFO"
+                    Write-Log "    * ExÃ©cutions lentes: $($bottleneck.SlowExecutionsCount)/$($bottleneck.TotalExecutionsCount) ($([math]::Round($bottleneck.SlowExecutionPercentage, 2))%)" -Level "INFO"
                 }
             }
             else {
-                Write-Log "Aucun goulot d'étranglement détecté." -Level "SUCCESS"
+                Write-Log "Aucun goulot d'Ã©tranglement dÃ©tectÃ©." -Level "SUCCESS"
             }
             
-            # Attendre avant la prochaine mise à jour
-            Write-Log "Prochaine mise à jour dans $RefreshIntervalSeconds secondes..." -Level "INFO"
+            # Attendre avant la prochaine mise Ã  jour
+            Write-Log "Prochaine mise Ã  jour dans $RefreshIntervalSeconds secondes..." -Level "INFO"
             Start-Sleep -Seconds $RefreshIntervalSeconds
         }
     }
     catch {
-        Write-Log "Monitoring en temps réel arrêté: $_" -Level "WARNING"
+        Write-Log "Monitoring en temps rÃ©el arrÃªtÃ©: $_" -Level "WARNING"
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Initialiser le moniteur d'utilisation
     if ([string]::IsNullOrEmpty($DatabasePath)) {
@@ -618,30 +618,30 @@ try {
     }
     
     Initialize-UsageMonitor -DatabasePath $DatabasePath
-    Write-Log "Moniteur d'utilisation initialisé avec la base de données: $DatabasePath" -Level "SUCCESS"
+    Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
     
     # Analyser les logs d'utilisation
     $usageStats = Analyze-UsageLogs -PeriodDays $AnalysisPeriodDays
     
-    # Détecter les goulots d'étranglement
+    # DÃ©tecter les goulots d'Ã©tranglement
     $bottlenecks = Detect-ParallelBottlenecks
     
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
         $reportFile = Generate-UsageReport -UsageStats $usageStats -Bottlenecks $bottlenecks -OutputPath $ReportPath
         
-        # Ouvrir le rapport dans le navigateur par défaut
+        # Ouvrir le rapport dans le navigateur par dÃ©faut
         if (Test-Path -Path $reportFile) {
             Start-Process $reportFile
         }
     }
     
-    # Démarrer le monitoring en temps réel si demandé
+    # DÃ©marrer le monitoring en temps rÃ©el si demandÃ©
     if ($EnableRealTimeMonitoring) {
         Start-RealTimeMonitoring
     }
 }
 catch {
-    Write-Log "Erreur lors de l'exécution du script: $_" -Level "ERROR"
+    Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }

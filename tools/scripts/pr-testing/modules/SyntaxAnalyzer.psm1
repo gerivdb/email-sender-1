@@ -1,6 +1,6 @@
-#
+﻿#
 # Module SyntaxAnalyzer
-# Analyseur de syntaxe pour différents langages de programmation
+# Analyseur de syntaxe pour diffÃ©rents langages de programmation
 #
 
 # Classe SyntaxAnalyzer
@@ -16,13 +16,13 @@ class SyntaxAnalyzer {
     }
     
     [array] AnalyzeFile([string]$filePath) {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $filePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas: $filePath"
             return @()
         }
         
-        # Vérifier le cache si activé
+        # VÃ©rifier le cache si activÃ©
         if ($this.UseCache -and $this.Cache) {
             $cachedResult = $this.Cache.GetItem($filePath)
             if ($cachedResult) {
@@ -30,7 +30,7 @@ class SyntaxAnalyzer {
             }
         }
         
-        # Déterminer le langage en fonction de l'extension du fichier
+        # DÃ©terminer le langage en fonction de l'extension du fichier
         $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
         $language = switch ($extension) {
             { $_ -in @(".ps1", ".psm1", ".psd1") } { "PowerShell" }
@@ -46,7 +46,7 @@ class SyntaxAnalyzer {
             return @()
         }
         
-        # Obtenir l'analyseur de langage approprié
+        # Obtenir l'analyseur de langage appropriÃ©
         $analyzer = $this.GetLanguageAnalyzer($language)
         
         # Analyser le fichier
@@ -69,7 +69,7 @@ class SyntaxAnalyzer {
             Write-Error "Erreur lors de l'analyse du fichier $filePath : $_"
         }
         
-        # Mettre en cache le résultat si le cache est activé
+        # Mettre en cache le rÃ©sultat si le cache est activÃ©
         if ($this.UseCache -and $this.Cache) {
             $this.Cache.SetItem($filePath, $issues)
         }
@@ -87,12 +87,12 @@ class SyntaxAnalyzer {
                     $this.LanguageAnalyzers[$language] = New-LanguageAnalyzer -Language $language
                 }
                 else {
-                    Write-Warning "Module LanguageSpecificAnalyzer non trouvé: $modulePath"
+                    Write-Warning "Module LanguageSpecificAnalyzer non trouvÃ©: $modulePath"
                     $this.LanguageAnalyzers[$language] = $null
                 }
             }
             catch {
-                Write-Error "Erreur lors de la création de l'analyseur de langage pour $language : $_"
+                Write-Error "Erreur lors de la crÃ©ation de l'analyseur de langage pour $language : $_"
                 $this.LanguageAnalyzers[$language] = $null
             }
         }
@@ -104,7 +104,7 @@ class SyntaxAnalyzer {
         $issues = @()
         
         if ($analyzer) {
-            # Utiliser l'analyseur spécifique au langage
+            # Utiliser l'analyseur spÃ©cifique au langage
             $issues = $analyzer.AnalyzeFile($filePath)
         }
         else {
@@ -132,14 +132,14 @@ class SyntaxAnalyzer {
         $issues = @()
         
         if ($analyzer) {
-            # Utiliser l'analyseur spécifique au langage
+            # Utiliser l'analyseur spÃ©cifique au langage
             $issues = $analyzer.AnalyzeFile($filePath)
         }
         else {
             # Analyse de base
             $lines = $content -split "`n"
             
-            # Vérifier l'indentation
+            # VÃ©rifier l'indentation
             $indentLevel = 0
             $indentSize = 0
             $indentChar = $null
@@ -153,34 +153,34 @@ class SyntaxAnalyzer {
                     continue
                 }
                 
-                # Vérifier l'indentation
+                # VÃ©rifier l'indentation
                 if ($line -match "^\s+") {
                     $indent = $matches[0]
                     
-                    # Déterminer le caractère d'indentation
+                    # DÃ©terminer le caractÃ¨re d'indentation
                     if ($indentChar -eq $null) {
                         $indentChar = if ($indent.Contains("`t")) { "`t" } else { " " }
                         $indentSize = $indent.Length
                     }
                     
-                    # Vérifier la cohérence de l'indentation
+                    # VÃ©rifier la cohÃ©rence de l'indentation
                     if ($indent.Contains(" ") -and $indent.Contains("`t")) {
                         $issues += [PSCustomObject]@{
                             Line = $lineNumber
                             Column = 1
-                            Message = "Mélange d'espaces et de tabulations dans l'indentation"
+                            Message = "MÃ©lange d'espaces et de tabulations dans l'indentation"
                             Severity = "Warning"
                             Type = "IndentationError"
                             Category = "Style"
                         }
                     }
                     
-                    # Vérifier la taille de l'indentation
+                    # VÃ©rifier la taille de l'indentation
                     if ($indentSize -gt 0 -and $indent.Length % $indentSize -ne 0) {
                         $issues += [PSCustomObject]@{
                             Line = $lineNumber
                             Column = 1
-                            Message = "Indentation incohérente"
+                            Message = "Indentation incohÃ©rente"
                             Severity = "Warning"
                             Type = "IndentationError"
                             Category = "Style"
@@ -188,12 +188,12 @@ class SyntaxAnalyzer {
                     }
                 }
                 
-                # Vérifier les erreurs de syntaxe évidentes
+                # VÃ©rifier les erreurs de syntaxe Ã©videntes
                 if ($line -match ":\s*\w+") {
                     $issues += [PSCustomObject]@{
                         Line = $lineNumber
                         Column = $line.IndexOf(":") + 1
-                        Message = "Erreur de syntaxe: caractères après les deux-points"
+                        Message = "Erreur de syntaxe: caractÃ¨res aprÃ¨s les deux-points"
                         Severity = "Error"
                         Type = "SyntaxError"
                         Category = "Syntax"
@@ -209,7 +209,7 @@ class SyntaxAnalyzer {
         $issues = @()
         
         if ($analyzer) {
-            # Utiliser l'analyseur spécifique au langage
+            # Utiliser l'analyseur spÃ©cifique au langage
             $issues = $analyzer.AnalyzeFile($filePath)
         }
         else {
@@ -225,19 +225,19 @@ class SyntaxAnalyzer {
                     continue
                 }
                 
-                # Vérifier les points-virgules manquants
+                # VÃ©rifier les points-virgules manquants
                 if ($line -match "^\s*\w.*[^;,{}\[\]]\s*$" -and $line -notmatch "^\s*\/\/") {
                     $issues += [PSCustomObject]@{
                         Line = $lineNumber
                         Column = $line.Length
-                        Message = "Point-virgule manquant à la fin de l'instruction"
+                        Message = "Point-virgule manquant Ã  la fin de l'instruction"
                         Severity = "Warning"
                         Type = "SemicolonError"
                         Category = "Style"
                     }
                 }
                 
-                # Vérifier les accolades non fermées
+                # VÃ©rifier les accolades non fermÃ©es
                 $openBraces = ($line.ToCharArray() | Where-Object { $_ -eq '{' }).Count
                 $closeBraces = ($line.ToCharArray() | Where-Object { $_ -eq '}' }).Count
                 
@@ -245,7 +245,7 @@ class SyntaxAnalyzer {
                     $issues += [PSCustomObject]@{
                         Line = $lineNumber
                         Column = 1
-                        Message = "Accolades non équilibrées"
+                        Message = "Accolades non Ã©quilibrÃ©es"
                         Severity = "Warning"
                         Type = "BraceError"
                         Category = "Syntax"
@@ -300,7 +300,7 @@ class SyntaxAnalyzer {
                     $issues += [PSCustomObject]@{
                         Line = $lineNumber
                         Column = $match.Index + 1
-                        Message = "Balise fermante '$tagName' ne correspond pas à la dernière balise ouvrante '$($openTags[-1].Tag)'"
+                        Message = "Balise fermante '$tagName' ne correspond pas Ã  la derniÃ¨re balise ouvrante '$($openTags[-1].Tag)'"
                         Severity = "Error"
                         Type = "HTMLError"
                         Category = "Syntax"
@@ -312,7 +312,7 @@ class SyntaxAnalyzer {
             }
         }
         
-        # Vérifier les balises non fermées
+        # VÃ©rifier les balises non fermÃ©es
         foreach ($tag in $openTags) {
             $issues += [PSCustomObject]@{
                 Line = $tag.Line
@@ -342,7 +342,7 @@ class SyntaxAnalyzer {
             $lineNumber = $i + 1
             $line = $lines[$i]
             
-            # Gérer les commentaires
+            # GÃ©rer les commentaires
             if ($inComment) {
                 if ($line -match "\*/") {
                     $inComment = $false
@@ -363,7 +363,7 @@ class SyntaxAnalyzer {
                 continue
             }
             
-            # Vérifier les accolades
+            # VÃ©rifier les accolades
             if ($line -match "{") {
                 if ($inBlock) {
                     $issues += [PSCustomObject]@{
@@ -397,16 +397,16 @@ class SyntaxAnalyzer {
                 }
             }
             
-            # Vérifier les propriétés
+            # VÃ©rifier les propriÃ©tÃ©s
             if ($inBlock -and $line -match "([a-zA-Z-]+)\s*:") {
                 $property = $matches[1]
                 
-                # Vérifier les points-virgules manquants
+                # VÃ©rifier les points-virgules manquants
                 if ($line -notmatch ";") {
                     $issues += [PSCustomObject]@{
                         Line = $lineNumber
                         Column = $line.Length
-                        Message = "Point-virgule manquant à la fin de la propriété"
+                        Message = "Point-virgule manquant Ã  la fin de la propriÃ©tÃ©"
                         Severity = "Warning"
                         Type = "CSSError"
                         Category = "Style"
@@ -415,12 +415,12 @@ class SyntaxAnalyzer {
             }
         }
         
-        # Vérifier les blocs non fermés
+        # VÃ©rifier les blocs non fermÃ©s
         if ($inBlock) {
             $issues += [PSCustomObject]@{
                 Line = $selectorLine
                 Column = $selectorColumn
-                Message = "Bloc CSS non fermé"
+                Message = "Bloc CSS non fermÃ©"
                 Severity = "Error"
                 Type = "CSSError"
                 Category = "Syntax"
@@ -431,7 +431,7 @@ class SyntaxAnalyzer {
     }
 }
 
-# Fonction pour créer un nouvel analyseur de syntaxe
+# Fonction pour crÃ©er un nouvel analyseur de syntaxe
 function New-SyntaxAnalyzer {
     [CmdletBinding()]
     param(

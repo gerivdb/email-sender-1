@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module d'export Excel.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module excel_exporter.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le module à tester
+# Chemin vers le module Ã  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "excel_exporter.ps1"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Excel Exporter Module Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "excel_exporter_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
         
-        # Importer le module à tester
+        # Importer le module Ã  tester
         . $ModulePath
     }
     
@@ -166,6 +166,6 @@ Describe "Excel Exporter Module Tests" {
     }
 }
 
-# Ne pas exécuter les tests automatiquement à la fin du script
-# Pour exécuter les tests, utilisez la commande suivante :
+# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
+# Pour exÃ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\excel_exporter.tests.ps1 -Output Detailed

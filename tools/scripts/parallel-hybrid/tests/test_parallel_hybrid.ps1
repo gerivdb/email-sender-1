@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour l'architecture hybride PowerShell-Python.
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
-    de l'architecture hybride PowerShell-Python pour le traitement parallèle.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
+    de l'architecture hybride PowerShell-Python pour le traitement parallÃ¨le.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-04-10
-    Compatibilité: PowerShell 5.1 et supérieur, Python 3.6 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur, Python 3.6 et supÃ©rieur
 #>
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -25,7 +25,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script Python de test
+# CrÃ©er un script Python de test
 $pythonScriptPath = Join-Path -Path $scriptPath -ChildPath "test_process.py"
 if (-not (Test-Path -Path $pythonScriptPath)) {
     $pythonScript = @"
@@ -38,7 +38,7 @@ import json
 import argparse
 
 def process_data(data):
-    """Traite les données de test."""
+    """Traite les donnÃ©es de test."""
     if isinstance(data, (int, float)):
         return data * 2
     elif isinstance(data, str):
@@ -52,34 +52,34 @@ def process_data(data):
 
 def main():
     """Fonction principale."""
-    parser = argparse.ArgumentParser(description='Traitement de données de test')
-    parser.add_argument('--input', required=True, help='Fichier d\'entrée JSON')
+    parser = argparse.ArgumentParser(description='Traitement de donnÃ©es de test')
+    parser.add_argument('--input', required=True, help='Fichier d\'entrÃ©e JSON')
     parser.add_argument('--output', required=True, help='Fichier de sortie JSON')
-    parser.add_argument('--cache', help='Chemin vers le répertoire du cache')
+    parser.add_argument('--cache', help='Chemin vers le rÃ©pertoire du cache')
     
     args = parser.parse_args()
     
-    # Charger les données d'entrée
+    # Charger les donnÃ©es d'entrÃ©e
     try:
         with open(args.input, 'r', encoding='utf-8') as f:
             input_data = json.load(f)
     except Exception as e:
-        print(f"Erreur lors de la lecture du fichier d'entrée : {e}", file=sys.stderr)
+        print(f"Erreur lors de la lecture du fichier d'entrÃ©e : {e}", file=sys.stderr)
         sys.exit(1)
     
-    # Traiter les données
+    # Traiter les donnÃ©es
     try:
         results = process_data(input_data)
     except Exception as e:
-        print(f"Erreur lors du traitement des données : {e}", file=sys.stderr)
+        print(f"Erreur lors du traitement des donnÃ©es : {e}", file=sys.stderr)
         sys.exit(1)
     
-    # Écrire les résultats
+    # Ã‰crire les rÃ©sultats
     try:
         with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"Erreur lors de l'écriture du fichier de sortie : {e}", file=sys.stderr)
+        print(f"Erreur lors de l'Ã©criture du fichier de sortie : {e}", file=sys.stderr)
         sys.exit(1)
     
     sys.exit(0)
@@ -89,16 +89,16 @@ if __name__ == '__main__':
 "@
     
     $pythonScript | Out-File -FilePath $pythonScriptPath -Encoding utf8
-    Write-Host "Script Python de test créé : $pythonScriptPath" -ForegroundColor Green
+    Write-Host "Script Python de test crÃ©Ã© : $pythonScriptPath" -ForegroundColor Green
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "Architecture hybride PowerShell-Python" {
     BeforeAll {
         # Initialiser l'environnement hybride
         $env = Initialize-HybridEnvironment -InstallMissing
         
-        # Créer un répertoire de cache de test
+        # CrÃ©er un rÃ©pertoire de cache de test
         $testCachePath = Join-Path -Path $scriptPath -ChildPath "test_cache"
         if (-not (Test-Path -Path $testCachePath)) {
             New-Item -Path $testCachePath -ItemType Directory -Force | Out-Null
@@ -122,7 +122,7 @@ Describe "Architecture hybride PowerShell-Python" {
             $env.PythonInstalled | Should -Be $true
         }
         
-        It "Devrait vérifier les modules Python requis" {
+        It "Devrait vÃ©rifier les modules Python requis" {
             $moduleStatus = Test-PythonModules -RequiredModules @("json", "os")
             $moduleStatus | Should -Not -BeNullOrEmpty
             $moduleStatus["json"] | Should -Be $true
@@ -130,8 +130,8 @@ Describe "Architecture hybride PowerShell-Python" {
         }
     }
     
-    Context "Partitionnement des données" {
-        It "Devrait partitionner les données en lots" {
+    Context "Partitionnement des donnÃ©es" {
+        It "Devrait partitionner les donnÃ©es en lots" {
             $data = 1..100
             $batches = Split-DataIntoBatches -InputData $data -BatchSize 10
             $batches.Count | Should -Be 10
@@ -140,20 +140,20 @@ Describe "Architecture hybride PowerShell-Python" {
             $batches[9][9] | Should -Be 100
         }
         
-        It "Devrait gérer les données vides" {
+        It "Devrait gÃ©rer les donnÃ©es vides" {
             $data = @()
             $batches = Split-DataIntoBatches -InputData $data -BatchSize 10
             $batches.Count | Should -Be 0
         }
         
-        It "Devrait équilibrer la charge" {
+        It "Devrait Ã©quilibrer la charge" {
             $data = 1..100
             $batches = Split-DataIntoBatches -InputData $data -BatchSize 50 -BalanceLoad
             $batches.Count | Should -BeGreaterThan 1
         }
     }
     
-    Context "Fusion des résultats" {
+    Context "Fusion des rÃ©sultats" {
         It "Devrait fusionner des tableaux simples" {
             $results = @(
                 @(1, 2, 3),
@@ -205,8 +205,8 @@ Describe "Architecture hybride PowerShell-Python" {
         }
     }
     
-    Context "Traitement parallèle" {
-        It "Devrait traiter des données numériques en parallèle" {
+    Context "Traitement parallÃ¨le" {
+        It "Devrait traiter des donnÃ©es numÃ©riques en parallÃ¨le" {
             $data = 1..10
             $results = Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 5
             $results.Count | Should -Be 10
@@ -214,7 +214,7 @@ Describe "Architecture hybride PowerShell-Python" {
             $results[9] | Should -Be 20
         }
         
-        It "Devrait traiter des données textuelles en parallèle" {
+        It "Devrait traiter des donnÃ©es textuelles en parallÃ¨le" {
             $data = @("a", "b", "c", "d", "e")
             $results = Invoke-HybridParallelTask -PythonScript $pythonScriptPath -InputData $data -BatchSize 2
             $results.Count | Should -Be 5
@@ -222,7 +222,7 @@ Describe "Architecture hybride PowerShell-Python" {
             $results[4] | Should -Be "E"
         }
         
-        It "Devrait traiter des objets complexes en parallèle" {
+        It "Devrait traiter des objets complexes en parallÃ¨le" {
             $data = @(
                 @{id = 1; name = "item1"; values = @(1, 2, 3)},
                 @{id = 2; name = "item2"; values = @(4, 5, 6)}
@@ -237,13 +237,13 @@ Describe "Architecture hybride PowerShell-Python" {
     }
     
     Context "Surveillance des ressources" {
-        It "Devrait démarrer et arrêter la surveillance des ressources" {
+        It "Devrait dÃ©marrer et arrÃªter la surveillance des ressources" {
             $monitoring = Start-ResourceMonitoring -IntervalSeconds 0.1 -MaxSamples 5
             $monitoring | Should -Not -BeNullOrEmpty
             $monitoring.Process | Should -Not -BeNullOrEmpty
             $monitoring.OutputFile | Should -Not -BeNullOrEmpty
             
-            # Attendre que les échantillons soient collectés
+            # Attendre que les Ã©chantillons soient collectÃ©s
             Start-Sleep -Seconds 1
             
             $resourceData = Stop-ResourceMonitoring -MonitoringObject $monitoring

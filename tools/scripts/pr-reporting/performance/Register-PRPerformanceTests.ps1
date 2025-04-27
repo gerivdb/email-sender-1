@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Enregistre les tests de performance pour les modules de rapports PR dans le pipeline CI.
 .DESCRIPTION
-    Ce script configure les tests de performance pour qu'ils s'exécutent automatiquement
-    dans le pipeline CI. Il définit des seuils de performance acceptables et fait échouer
-    le pipeline si les performances se dégradent trop.
+    Ce script configure les tests de performance pour qu'ils s'exÃ©cutent automatiquement
+    dans le pipeline CI. Il dÃ©finit des seuils de performance acceptables et fait Ã©chouer
+    le pipeline si les performances se dÃ©gradent trop.
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration des tests de performance. Par défaut: ".\performance_tests_config.json".
+    Chemin vers le fichier de configuration des tests de performance. Par dÃ©faut: ".\performance_tests_config.json".
 .PARAMETER BaselineResultsPath
-    Chemin vers le fichier de résultats de référence. Si non spécifié, les résultats actuels seront utilisés comme référence.
+    Chemin vers le fichier de rÃ©sultats de rÃ©fÃ©rence. Si non spÃ©cifiÃ©, les rÃ©sultats actuels seront utilisÃ©s comme rÃ©fÃ©rence.
 .PARAMETER ThresholdPercent
-    Pourcentage d'augmentation du temps d'exécution considéré comme une régression. Par défaut: 10%.
+    Pourcentage d'augmentation du temps d'exÃ©cution considÃ©rÃ© comme une rÃ©gression. Par dÃ©faut: 10%.
 .PARAMETER OutputDir
-    Répertoire où enregistrer les résultats des tests. Par défaut: ".\performance_results".
+    RÃ©pertoire oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut: ".\performance_results".
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats de la comparaison.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats de la comparaison.
 .PARAMETER FailOnRegression
-    Fait échouer le script si des régressions de performance sont détectées.
+    Fait Ã©chouer le script si des rÃ©gressions de performance sont dÃ©tectÃ©es.
 .EXAMPLE
     .\Register-PRPerformanceTests.ps1 -BaselineResultsPath ".\baseline_results.json" -ThresholdPercent 5
 .NOTES
@@ -47,36 +47,36 @@ param (
     [switch]$FailOnRegression
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputDir)) {
     New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
 }
 
-# Définir les chemins des scripts de test de performance
+# DÃ©finir les chemins des scripts de test de performance
 $scriptsPath = $PSScriptRoot
 $benchmarkScript = Join-Path -Path $scriptsPath -ChildPath "Invoke-PRPerformanceBenchmark.ps1"
 $regressionScript = Join-Path -Path $scriptsPath -ChildPath "Test-PRPerformanceRegression.ps1"
 $loadTestScript = Join-Path -Path $scriptsPath -ChildPath "Start-PRLoadTest.ps1"
 $comparisonScript = Join-Path -Path $scriptsPath -ChildPath "Compare-PRPerformanceResults.ps1"
 
-# Vérifier que les scripts existent
+# VÃ©rifier que les scripts existent
 if (-not (Test-Path -Path $benchmarkScript)) {
-    throw "Script de benchmark non trouvé: $benchmarkScript"
+    throw "Script de benchmark non trouvÃ©: $benchmarkScript"
 }
 
 if (-not (Test-Path -Path $regressionScript)) {
-    throw "Script de test de régression non trouvé: $regressionScript"
+    throw "Script de test de rÃ©gression non trouvÃ©: $regressionScript"
 }
 
 if (-not (Test-Path -Path $loadTestScript)) {
-    throw "Script de test de charge non trouvé: $loadTestScript"
+    throw "Script de test de charge non trouvÃ©: $loadTestScript"
 }
 
 if (-not (Test-Path -Path $comparisonScript)) {
-    throw "Script de comparaison non trouvé: $comparisonScript"
+    throw "Script de comparaison non trouvÃ©: $comparisonScript"
 }
 
-# Fonction pour créer un fichier de configuration par défaut
+# Fonction pour crÃ©er un fichier de configuration par dÃ©faut
 function New-DefaultConfig {
     param (
         [string]$Path
@@ -120,14 +120,14 @@ function New-DefaultConfig {
     return $config
 }
 
-# Charger ou créer la configuration
+# Charger ou crÃ©er la configuration
 if (Test-Path -Path $ConfigPath) {
     $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 } else {
     $config = New-DefaultConfig -Path $ConfigPath
 }
 
-# Mettre à jour la configuration avec les paramètres
+# Mettre Ã  jour la configuration avec les paramÃ¨tres
 if ($PSBoundParameters.ContainsKey('ThresholdPercent')) {
     $config.Regression.ThresholdPercent = $ThresholdPercent
 }
@@ -148,10 +148,10 @@ if ($PSBoundParameters.ContainsKey('FailOnRegression')) {
     $config.CI.FailOnRegression = $FailOnRegression
 }
 
-# Enregistrer la configuration mise à jour
+# Enregistrer la configuration mise Ã  jour
 $config | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Encoding UTF8
 
-# Fonction pour exécuter les tests de performance
+# Fonction pour exÃ©cuter les tests de performance
 function Invoke-PerformanceTests {
     param (
         [object]$Config,
@@ -173,9 +173,9 @@ function Invoke-PerformanceTests {
         HasRegressions    = $false
     }
 
-    # Exécuter les tests de benchmark
+    # ExÃ©cuter les tests de benchmark
     if ($Config.Benchmark.Enabled) {
-        Write-Host "Exécution des tests de benchmark..."
+        Write-Host "ExÃ©cution des tests de benchmark..."
 
         $benchmarkParams = @{
             Iterations = $Config.Benchmark.Iterations
@@ -195,15 +195,15 @@ function Invoke-PerformanceTests {
 
         if (Test-Path -Path $benchmarkResultsPath) {
             $results.BenchmarkResults = $benchmarkResultsPath
-            Write-Host "Résultats de benchmark enregistrés: $benchmarkResultsPath"
+            Write-Host "RÃ©sultats de benchmark enregistrÃ©s: $benchmarkResultsPath"
         } else {
-            Write-Warning "Les tests de benchmark n'ont pas généré de résultats."
+            Write-Warning "Les tests de benchmark n'ont pas gÃ©nÃ©rÃ© de rÃ©sultats."
         }
     }
 
-    # Exécuter les tests de charge
+    # ExÃ©cuter les tests de charge
     if ($Config.LoadTest.Enabled) {
-        Write-Host "Exécution des tests de charge..."
+        Write-Host "ExÃ©cution des tests de charge..."
 
         $loadTestParams = @{
             Duration    = $Config.LoadTest.Duration
@@ -224,21 +224,21 @@ function Invoke-PerformanceTests {
 
         if (Test-Path -Path $loadTestResultsPath) {
             $results.LoadTestResults = $loadTestResultsPath
-            Write-Host "Résultats de test de charge enregistrés: $loadTestResultsPath"
+            Write-Host "RÃ©sultats de test de charge enregistrÃ©s: $loadTestResultsPath"
         } else {
-            Write-Warning "Les tests de charge n'ont pas généré de résultats."
+            Write-Warning "Les tests de charge n'ont pas gÃ©nÃ©rÃ© de rÃ©sultats."
         }
     }
 
-    # Exécuter les tests de régression
+    # ExÃ©cuter les tests de rÃ©gression
     if ($Config.Regression.Enabled -and $results.BenchmarkResults) {
-        Write-Host "Exécution des tests de régression..."
+        Write-Host "ExÃ©cution des tests de rÃ©gression..."
 
-        # Utiliser les résultats de référence spécifiés ou ceux par défaut
+        # Utiliser les rÃ©sultats de rÃ©fÃ©rence spÃ©cifiÃ©s ou ceux par dÃ©faut
         $baselineResults = $Config.CI.BaselineResultsPath
 
         if (-not $baselineResults -or -not (Test-Path -Path $baselineResults)) {
-            Write-Warning "Aucun résultat de référence spécifié ou trouvé. Les résultats actuels seront utilisés comme référence pour les prochains tests."
+            Write-Warning "Aucun rÃ©sultat de rÃ©fÃ©rence spÃ©cifiÃ© ou trouvÃ©. Les rÃ©sultats actuels seront utilisÃ©s comme rÃ©fÃ©rence pour les prochains tests."
             $baselineResults = $results.BenchmarkResults
         }
 
@@ -257,25 +257,25 @@ function Invoke-PerformanceTests {
 
         if (Test-Path -Path $regressionResultsPath) {
             $results.RegressionResults = $regressionResultsPath
-            Write-Host "Résultats de régression enregistrés: $regressionResultsPath"
+            Write-Host "RÃ©sultats de rÃ©gression enregistrÃ©s: $regressionResultsPath"
 
-            # Vérifier s'il y a des régressions
+            # VÃ©rifier s'il y a des rÃ©gressions
             $regressionContent = Get-Content -Path $regressionResultsPath -Raw | ConvertFrom-Json
             $results.HasRegressions = $regressionContent.Summary.Regressions -gt 0
 
             if ($results.HasRegressions) {
-                Write-Warning "Des régressions de performance ont été détectées!"
+                Write-Warning "Des rÃ©gressions de performance ont Ã©tÃ© dÃ©tectÃ©es!"
             } else {
-                Write-Host "Aucune régression de performance détectée." -ForegroundColor Green
+                Write-Host "Aucune rÃ©gression de performance dÃ©tectÃ©e." -ForegroundColor Green
             }
         } else {
-            Write-Warning "Les tests de régression n'ont pas généré de résultats."
+            Write-Warning "Les tests de rÃ©gression n'ont pas gÃ©nÃ©rÃ© de rÃ©sultats."
         }
     }
 
-    # Générer un rapport de comparaison
+    # GÃ©nÃ©rer un rapport de comparaison
     if ($Config.Comparison.Enabled -and $results.BenchmarkResults -and $Config.CI.BaselineResultsPath) {
-        Write-Host "Génération du rapport de comparaison..."
+        Write-Host "GÃ©nÃ©ration du rapport de comparaison..."
 
         $comparisonParams = @{
             ResultsPath = @($Config.CI.BaselineResultsPath, $results.BenchmarkResults)
@@ -287,63 +287,63 @@ function Invoke-PerformanceTests {
 
         if (Test-Path -Path $comparisonReportPath) {
             $results.ComparisonReport = $comparisonReportPath
-            Write-Host "Rapport de comparaison généré: $comparisonReportPath"
+            Write-Host "Rapport de comparaison gÃ©nÃ©rÃ©: $comparisonReportPath"
         } else {
-            Write-Warning "Le rapport de comparaison n'a pas été généré."
+            Write-Warning "Le rapport de comparaison n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
         }
     }
 
     return $results
 }
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $testResults = Invoke-PerformanceTests -Config $config -OutputDir $OutputDir
 
-# Mettre à jour le fichier de référence si nécessaire
+# Mettre Ã  jour le fichier de rÃ©fÃ©rence si nÃ©cessaire
 if ($testResults.BenchmarkResults -and (-not $config.CI.BaselineResultsPath -or -not (Test-Path -Path $config.CI.BaselineResultsPath))) {
     $config.CI.BaselineResultsPath = $testResults.BenchmarkResults
     $config | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Encoding UTF8
-    Write-Host "Fichier de référence mis à jour: $($config.CI.BaselineResultsPath)"
+    Write-Host "Fichier de rÃ©fÃ©rence mis Ã  jour: $($config.CI.BaselineResultsPath)"
 }
 
-# Faire échouer le pipeline si des régressions sont détectées
+# Faire Ã©chouer le pipeline si des rÃ©gressions sont dÃ©tectÃ©es
 if ($config.CI.FailOnRegression -and $testResults.HasRegressions) {
-    Write-Error "Des régressions de performance ont été détectées. Le pipeline a échoué."
+    Write-Error "Des rÃ©gressions de performance ont Ã©tÃ© dÃ©tectÃ©es. Le pipeline a Ã©chouÃ©."
     exit 1
 }
 
-# Créer un fichier de résumé pour le pipeline CI
+# CrÃ©er un fichier de rÃ©sumÃ© pour le pipeline CI
 $summaryPath = Join-Path -Path $OutputDir -ChildPath "performance_summary_$($testResults.Timestamp).md"
 $summary = @"
-# Résumé des tests de performance
+# RÃ©sumÃ© des tests de performance
 
 Date: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Résultats
+## RÃ©sultats
 
 - Tests de benchmark: $($null -ne $testResults.BenchmarkResults)
 - Tests de charge: $($null -ne $testResults.LoadTestResults)
-- Tests de régression: $($null -ne $testResults.RegressionResults)
+- Tests de rÃ©gression: $($null -ne $testResults.RegressionResults)
 - Rapport de comparaison: $($null -ne $testResults.ComparisonReport)
 
-## Régressions
+## RÃ©gressions
 
-Des régressions ont été détectées: $($testResults.HasRegressions)
+Des rÃ©gressions ont Ã©tÃ© dÃ©tectÃ©es: $($testResults.HasRegressions)
 
-## Fichiers générés
+## Fichiers gÃ©nÃ©rÃ©s
 
 "@
 
 if ($testResults.BenchmarkResults) {
-    $summary += "- [Résultats de benchmark]($($testResults.BenchmarkResults))`n"
+    $summary += "- [RÃ©sultats de benchmark]($($testResults.BenchmarkResults))`n"
 }
 
 if ($testResults.LoadTestResults) {
-    $summary += "- [Résultats de test de charge]($($testResults.LoadTestResults))`n"
+    $summary += "- [RÃ©sultats de test de charge]($($testResults.LoadTestResults))`n"
 }
 
 if ($testResults.RegressionResults) {
-    $summary += "- [Résultats de régression]($($testResults.RegressionResults))`n"
+    $summary += "- [RÃ©sultats de rÃ©gression]($($testResults.RegressionResults))`n"
 }
 
 if ($testResults.ComparisonReport) {
@@ -351,18 +351,18 @@ if ($testResults.ComparisonReport) {
 }
 
 $summary | Set-Content -Path $summaryPath -Encoding UTF8
-Write-Host "Résumé des tests de performance enregistré: $summaryPath"
+Write-Host "RÃ©sumÃ© des tests de performance enregistrÃ©: $summaryPath"
 
-# Créer un script pour exécuter les tests dans le pipeline CI
+# CrÃ©er un script pour exÃ©cuter les tests dans le pipeline CI
 $ciScriptPath = Join-Path -Path $OutputDir -ChildPath "Run-PRPerformanceTests.ps1"
 $ciScript = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests de performance pour les modules de rapports PR dans le pipeline CI.
+    ExÃ©cute les tests de performance pour les modules de rapports PR dans le pipeline CI.
 .DESCRIPTION
-    Ce script est généré automatiquement par Register-PRPerformanceTests.ps1 et est destiné
-    à être exécuté dans le pipeline CI pour tester les performances des modules de rapports PR.
+    Ce script est gÃ©nÃ©rÃ© automatiquement par Register-PRPerformanceTests.ps1 et est destinÃ©
+    Ã  Ãªtre exÃ©cutÃ© dans le pipeline CI pour tester les performances des modules de rapports PR.
 .EXAMPLE
     .\Run-PRPerformanceTests.ps1
 .NOTES
@@ -371,14 +371,14 @@ $ciScript = @"
     Date: $(Get-Date -Format "yyyy-MM-dd")
 #>
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 & "$scriptsPath\Register-PRPerformanceTests.ps1" -ConfigPath "$ConfigPath" -OutputDir "$OutputDir"
 "@
 
 $ciScript | Set-Content -Path $ciScriptPath -Encoding UTF8
-Write-Host "Script CI généré: $ciScriptPath"
+Write-Host "Script CI gÃ©nÃ©rÃ©: $ciScriptPath"
 
-# Créer un exemple de configuration pour Azure DevOps
+# CrÃ©er un exemple de configuration pour Azure DevOps
 $azureDevOpsConfigPath = Join-Path -Path $OutputDir -ChildPath "azure-pipelines-performance.yml"
 $azureDevOpsConfig = @"
 # Azure DevOps Pipeline pour les tests de performance
@@ -397,22 +397,22 @@ pool:
 
 steps:
 - task: PowerShell@2
-  displayName: 'Exécuter les tests de performance'
+  displayName: 'ExÃ©cuter les tests de performance'
   inputs:
     filePath: '$OutputDir/Run-PRPerformanceTests.ps1'
     failOnStderr: true
 
 - task: PublishPipelineArtifact@1
-  displayName: 'Publier les résultats de performance'
+  displayName: 'Publier les rÃ©sultats de performance'
   inputs:
     targetPath: '$OutputDir'
     artifact: 'PerformanceResults'
 "@
 
 $azureDevOpsConfig | Set-Content -Path $azureDevOpsConfigPath -Encoding UTF8
-Write-Host "Configuration Azure DevOps générée: $azureDevOpsConfigPath"
+Write-Host "Configuration Azure DevOps gÃ©nÃ©rÃ©e: $azureDevOpsConfigPath"
 
-# Créer un exemple de configuration pour GitHub Actions
+# CrÃ©er un exemple de configuration pour GitHub Actions
 $githubActionsConfigPath = Join-Path -Path $OutputDir -ChildPath "github-actions-performance.yml"
 $githubActionsConfig = @"
 # GitHub Actions Workflow pour les tests de performance
@@ -436,12 +436,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Exécuter les tests de performance
+    - name: ExÃ©cuter les tests de performance
       shell: pwsh
       run: |
         .\$OutputDir\Run-PRPerformanceTests.ps1
 
-    - name: Publier les résultats de performance
+    - name: Publier les rÃ©sultats de performance
       uses: actions/upload-artifact@v2
       with:
         name: performance-results
@@ -449,9 +449,9 @@ jobs:
 "@
 
 $githubActionsConfig | Set-Content -Path $githubActionsConfigPath -Encoding UTF8
-Write-Host "Configuration GitHub Actions générée: $githubActionsConfigPath"
+Write-Host "Configuration GitHub Actions gÃ©nÃ©rÃ©e: $githubActionsConfigPath"
 
-Write-Host "`nConfiguration des tests de performance terminée!"
-Write-Host "Pour exécuter les tests de performance dans le pipeline CI, utilisez le script: $ciScriptPath"
+Write-Host "`nConfiguration des tests de performance terminÃ©e!"
+Write-Host "Pour exÃ©cuter les tests de performance dans le pipeline CI, utilisez le script: $ciScriptPath"
 Write-Host "Pour configurer Azure DevOps, utilisez le fichier: $azureDevOpsConfigPath"
 Write-Host "Pour configurer GitHub Actions, utilisez le fichier: $githubActionsConfigPath"

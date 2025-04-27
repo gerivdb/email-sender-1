@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit une valeur vers un type spécifié.
+    Convertit une valeur vers un type spÃ©cifiÃ©.
 
 .DESCRIPTION
-    La fonction ConvertTo-Type convertit une valeur vers un type spécifié.
-    Elle prend en charge différents types de données courants et peut être utilisée pour
-    convertir les entrées des fonctions du module RoadmapParser.
+    La fonction ConvertTo-Type convertit une valeur vers un type spÃ©cifiÃ©.
+    Elle prend en charge diffÃ©rents types de donnÃ©es courants et peut Ãªtre utilisÃ©e pour
+    convertir les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à convertir.
+    La valeur Ã  convertir.
 
 .PARAMETER Type
     Le type cible de la conversion. Valeurs possibles :
-    - String : Convertit la valeur en chaîne de caractères
+    - String : Convertit la valeur en chaÃ®ne de caractÃ¨res
     - Integer : Convertit la valeur en entier
-    - Decimal : Convertit la valeur en nombre décimal
-    - Boolean : Convertit la valeur en booléen
+    - Decimal : Convertit la valeur en nombre dÃ©cimal
+    - Boolean : Convertit la valeur en boolÃ©en
     - DateTime : Convertit la valeur en date/heure
     - Array : Convertit la valeur en tableau
     - Hashtable : Convertit la valeur en table de hachage
@@ -24,33 +24,33 @@
     - Guid : Convertit la valeur en GUID
 
 .PARAMETER Format
-    Le format à utiliser pour la conversion (par exemple, format de date).
+    Le format Ã  utiliser pour la conversion (par exemple, format de date).
 
 .PARAMETER DefaultValue
-    La valeur par défaut à retourner en cas d'échec de la conversion.
+    La valeur par dÃ©faut Ã  retourner en cas d'Ã©chec de la conversion.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la conversion.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la conversion.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la conversion.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la conversion.
 
 .EXAMPLE
     ConvertTo-Type -Value "42" -Type Integer
-    Convertit la chaîne "42" en entier.
+    Convertit la chaÃ®ne "42" en entier.
 
 .EXAMPLE
     ConvertTo-Type -Value "2023-01-01" -Type DateTime -Format "yyyy-MM-dd" -ThrowOnFailure
-    Convertit la chaîne "2023-01-01" en date/heure en utilisant le format spécifié, et lève une exception si la conversion échoue.
+    Convertit la chaÃ®ne "2023-01-01" en date/heure en utilisant le format spÃ©cifiÃ©, et lÃ¨ve une exception si la conversion Ã©choue.
 
 .OUTPUTS
-    [object] La valeur convertie vers le type spécifié.
+    [object] La valeur convertie vers le type spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function ConvertTo-Type {
     [CmdletBinding()]
@@ -76,7 +76,7 @@ function ConvertTo-Type {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la conversion
+    # Initialiser le rÃ©sultat de la conversion
     $result = $null
     $conversionSucceeded = $false
 
@@ -107,7 +107,7 @@ function ConvertTo-Type {
                 } elseif ($Value -is [decimal] -or $Value -is [double] -or $Value -is [float]) {
                     $result = [decimal]$Value
                 } else {
-                    # Utiliser InvariantCulture pour gérer les décimaux avec point ou virgule
+                    # Utiliser InvariantCulture pour gÃ©rer les dÃ©cimaux avec point ou virgule
                     $result = [decimal]::Parse($Value.ToString(), [System.Globalization.CultureInfo]::InvariantCulture)
                 }
                 $conversionSucceeded = $true
@@ -208,7 +208,7 @@ function ConvertTo-Type {
         }
     }
 
-    # Gérer l'échec de la conversion
+    # GÃ©rer l'Ã©chec de la conversion
     if (-not $conversionSucceeded) {
         if ($PSBoundParameters.ContainsKey('DefaultValue')) {
             $result = $DefaultValue

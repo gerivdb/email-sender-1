@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Confirm-FormatDetection.
+    Tests unitaires simplifiÃ©s pour la fonction Confirm-FormatDetection.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Confirm-FormatDetection du module Format-Converters.
 
 .NOTES
@@ -15,7 +15,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -25,12 +25,12 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
 # Tests Pester
 Describe "Fonction Confirm-FormatDetection (Simplified)" {
     BeforeAll {
-        # Créer une fonction simplifiée Confirm-FormatDetection pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Confirm-FormatDetection pour les tests
         function global:Confirm-FormatDetection {
             [CmdletBinding()]
             param (
@@ -50,29 +50,29 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
                 [string]$DefaultFormat
             )
 
-            # Vérifier si les formats sont valides
+            # VÃ©rifier si les formats sont valides
             if ($null -eq $Formats -or $Formats.Count -eq 0) {
-                throw "Aucun format détecté."
+                throw "Aucun format dÃ©tectÃ©."
             }
 
-            # Si un seul format est détecté, le retourner directement
+            # Si un seul format est dÃ©tectÃ©, le retourner directement
             if ($Formats.Count -eq 1) {
                 return $Formats[0].Format
             }
 
-            # Si l'option AutoSelectHighestScore est activée, retourner le format avec le score le plus élevé
+            # Si l'option AutoSelectHighestScore est activÃ©e, retourner le format avec le score le plus Ã©levÃ©
             if ($AutoSelectHighestScore) {
                 $highestScoreFormat = $Formats | Sort-Object -Property Score -Descending | Select-Object -First 1
                 return $highestScoreFormat.Format
             }
 
-            # Si l'option AutoSelectHighestPriority est activée, retourner le format avec la priorité la plus élevée
+            # Si l'option AutoSelectHighestPriority est activÃ©e, retourner le format avec la prioritÃ© la plus Ã©levÃ©e
             if ($AutoSelectHighestPriority) {
                 $highestPriorityFormat = $Formats | Sort-Object -Property Priority -Descending | Select-Object -First 1
                 return $highestPriorityFormat.Format
             }
 
-            # Si un format par défaut est spécifié et qu'il existe dans la liste, le retourner
+            # Si un format par dÃ©faut est spÃ©cifiÃ© et qu'il existe dans la liste, le retourner
             if ($DefaultFormat) {
                 $defaultFormatObj = $Formats | Where-Object { $_.Format -eq $DefaultFormat }
                 if ($defaultFormatObj) {
@@ -81,10 +81,10 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             }
 
             # Simuler une interaction utilisateur (pour les tests)
-            # Dans une implémentation réelle, cela demanderait à l'utilisateur de choisir
+            # Dans une implÃ©mentation rÃ©elle, cela demanderait Ã  l'utilisateur de choisir
 
             # Afficher les formats disponibles
-            Write-Host "Plusieurs formats détectés. Veuillez choisir :"
+            Write-Host "Plusieurs formats dÃ©tectÃ©s. Veuillez choisir :"
             for ($i = 0; $i -lt $Formats.Count; $i++) {
                 $format = $Formats[$i]
                 $scoreInfo = if ($ShowConfidenceScore) { " (Score: $($format.Score)%)" } else { "" }
@@ -96,8 +96,8 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
         }
     }
 
-    Context "Sélection automatique de format" {
-        It "Retourne le format unique si un seul format est détecté" {
+    Context "SÃ©lection automatique de format" {
+        It "Retourne le format unique si un seul format est dÃ©tectÃ©" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 95; Priority = 5 }
             )
@@ -106,7 +106,7 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             $result | Should -Be "JSON"
         }
 
-        It "Retourne le format avec le score le plus élevé avec l'option -AutoSelectHighestScore" {
+        It "Retourne le format avec le score le plus Ã©levÃ© avec l'option -AutoSelectHighestScore" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 95; Priority = 5 },
                 [PSCustomObject]@{ Format = "XML"; Score = 80; Priority = 4 },
@@ -117,7 +117,7 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             $result | Should -Be "JSON"
         }
 
-        It "Retourne le format avec la priorité la plus élevée avec l'option -AutoSelectHighestPriority" {
+        It "Retourne le format avec la prioritÃ© la plus Ã©levÃ©e avec l'option -AutoSelectHighestPriority" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 80; Priority = 5 },
                 [PSCustomObject]@{ Format = "XML"; Score = 95; Priority = 4 },
@@ -128,7 +128,7 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             $result | Should -Be "JSON"
         }
 
-        It "Retourne le format par défaut s'il est spécifié et existe dans la liste" {
+        It "Retourne le format par dÃ©faut s'il est spÃ©cifiÃ© et existe dans la liste" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 95; Priority = 5 },
                 [PSCustomObject]@{ Format = "XML"; Score = 80; Priority = 4 },
@@ -139,14 +139,14 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             $result | Should -Be "XML"
         }
 
-        It "Ignore le format par défaut s'il n'existe pas dans la liste" {
+        It "Ignore le format par dÃ©faut s'il n'existe pas dans la liste" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 95; Priority = 5 },
                 [PSCustomObject]@{ Format = "XML"; Score = 80; Priority = 4 }
             )
 
             $result = Confirm-FormatDetection -Formats $formats -DefaultFormat "CSV"
-            $result | Should -Be "JSON"  # Retourne le premier format par défaut
+            $result | Should -Be "JSON"  # Retourne le premier format par dÃ©faut
         }
     }
 
@@ -157,24 +157,24 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
                 [PSCustomObject]@{ Format = "XML"; Score = 80; Priority = 4 }
             )
 
-            # Ce test est difficile à réaliser car il nécessite de capturer la sortie console
-            # Nous vérifions simplement que la fonction s'exécute sans erreur
+            # Ce test est difficile Ã  rÃ©aliser car il nÃ©cessite de capturer la sortie console
+            # Nous vÃ©rifions simplement que la fonction s'exÃ©cute sans erreur
             $result = Confirm-FormatDetection -Formats $formats -ShowConfidenceScore
             $result | Should -Be "JSON"
         }
     }
 
     Context "Gestion des erreurs" {
-        It "Lève une erreur si aucun format n'est fourni" {
+        It "LÃ¨ve une erreur si aucun format n'est fourni" {
             { Confirm-FormatDetection -Formats @() } | Should -Throw
         }
 
-        It "Lève une erreur si les formats sont null" {
+        It "LÃ¨ve une erreur si les formats sont null" {
             { Confirm-FormatDetection -Formats $null } | Should -Throw
         }
     }
 
-    Context "Priorité des options" {
+    Context "PrioritÃ© des options" {
         It "Priorise AutoSelectHighestScore sur AutoSelectHighestPriority" {
             $formats = @(
                 [PSCustomObject]@{ Format = "JSON"; Score = 80; Priority = 5 },
@@ -182,7 +182,7 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             )
 
             $result = Confirm-FormatDetection -Formats $formats -AutoSelectHighestScore -AutoSelectHighestPriority
-            $result | Should -Be "XML"  # XML a le score le plus élevé
+            $result | Should -Be "XML"  # XML a le score le plus Ã©levÃ©
         }
 
         It "Priorise AutoSelectHighestScore sur DefaultFormat" {
@@ -192,7 +192,7 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             )
 
             $result = Confirm-FormatDetection -Formats $formats -AutoSelectHighestScore -DefaultFormat "JSON"
-            $result | Should -Be "XML"  # XML a le score le plus élevé
+            $result | Should -Be "XML"  # XML a le score le plus Ã©levÃ©
         }
 
         It "Priorise AutoSelectHighestPriority sur DefaultFormat" {
@@ -202,11 +202,11 @@ Describe "Fonction Confirm-FormatDetection (Simplified)" {
             )
 
             $result = Confirm-FormatDetection -Formats $formats -AutoSelectHighestPriority -DefaultFormat "XML"
-            $result | Should -Be "JSON"  # JSON a la priorité la plus élevée
+            $result | Should -Be "JSON"  # JSON a la prioritÃ© la plus Ã©levÃ©e
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
         # Supprimer la fonction globale
         Remove-Item -Path function:global:Confirm-FormatDetection -ErrorAction SilentlyContinue

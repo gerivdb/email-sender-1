@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module TaskPriorityQueue.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour les fonctions du module TaskPriorityQueue.psm1
-    qui gère la file d'attente prioritaire des tâches.
+    qui gÃ¨re la file d'attente prioritaire des tÃ¢ches.
 .NOTES
     Author: Augment Agent
     Version: 1.0
@@ -12,26 +12,26 @@
     Requires: Pester v5.0+
 #>
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "TaskPriorityQueue.psm1"
 
-# Vérifier si le module existe, sinon créer un stub pour les tests
+# VÃ©rifier si le module existe, sinon crÃ©er un stub pour les tests
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Warning "Module TaskPriorityQueue.psm1 non trouvé. Création d'un stub pour les tests."
+    Write-Warning "Module TaskPriorityQueue.psm1 non trouvÃ©. CrÃ©ation d'un stub pour les tests."
     
-    # Créer un répertoire si nécessaire
+    # CrÃ©er un rÃ©pertoire si nÃ©cessaire
     $moduleDir = Split-Path -Parent $modulePath
     if (-not (Test-Path -Path $moduleDir)) {
         New-Item -Path $moduleDir -ItemType Directory -Force | Out-Null
     }
     
-    # Créer un stub du module pour les tests
+    # CrÃ©er un stub du module pour les tests
     @'
 # Module TaskPriorityQueue.psm1
-# Stub créé pour les tests unitaires
+# Stub crÃ©Ã© pour les tests unitaires
 
-# Classe pour représenter une tâche dans la file d'attente
+# Classe pour reprÃ©senter une tÃ¢che dans la file d'attente
 class PriorityTask {
     [string]$Id
     [string]$Name
@@ -82,7 +82,7 @@ class TaskPriorityQueue {
     }
     
     [void]SortTasks() {
-        # Trier par priorité (décroissante) puis par temps de création (croissant)
+        # Trier par prioritÃ© (dÃ©croissante) puis par temps de crÃ©ation (croissant)
         $this.Tasks.Sort({
             param($a, $b)
             if ($a.Priority -eq $b.Priority) {
@@ -114,7 +114,7 @@ class TaskPriorityQueue {
         if ($task) {
             $task.BlockCount++
             
-            # Augmenter la priorité en fonction du nombre de blocages
+            # Augmenter la prioritÃ© en fonction du nombre de blocages
             if ($task.Priority -lt $this.MaxPriority) {
                 $task.Priority = [Math]::Min($this.MaxPriority, $task.Priority + [Math]::Min(3, $task.BlockCount))
                 $task.LastPromotionTime = Get-Date
@@ -133,7 +133,7 @@ class TaskPriorityQueue {
     }
 }
 
-# Fonction pour créer une nouvelle file d'attente prioritaire
+# Fonction pour crÃ©er une nouvelle file d'attente prioritaire
 function New-TaskPriorityQueue {
     [CmdletBinding()]
     [OutputType([TaskPriorityQueue])]
@@ -148,7 +148,7 @@ function New-TaskPriorityQueue {
     return [TaskPriorityQueue]::new($PromotionThreshold, $MaxPriority)
 }
 
-# Fonction pour créer une nouvelle tâche
+# Fonction pour crÃ©er une nouvelle tÃ¢che
 function New-PriorityTask {
     [CmdletBinding()]
     [OutputType([PriorityTask])]
@@ -172,7 +172,7 @@ function New-PriorityTask {
     return $task
 }
 
-# Fonction pour ajouter une tâche à la file d'attente
+# Fonction pour ajouter une tÃ¢che Ã  la file d'attente
 function Add-TaskToQueue {
     [CmdletBinding()]
     param (
@@ -186,7 +186,7 @@ function Add-TaskToQueue {
     $Queue.Enqueue($Task)
 }
 
-# Fonction pour récupérer la prochaine tâche de la file d'attente
+# Fonction pour rÃ©cupÃ©rer la prochaine tÃ¢che de la file d'attente
 function Get-NextTask {
     [CmdletBinding()]
     [OutputType([PriorityTask])]
@@ -198,7 +198,7 @@ function Get-NextTask {
     return $Queue.Dequeue()
 }
 
-# Fonction pour promouvoir les tâches en attente
+# Fonction pour promouvoir les tÃ¢ches en attente
 function Invoke-TaskPromotion {
     [CmdletBinding()]
     param (
@@ -209,7 +209,7 @@ function Invoke-TaskPromotion {
     $Queue.PromoteWaitingTasks()
 }
 
-# Fonction pour signaler qu'une tâche est bloquée
+# Fonction pour signaler qu'une tÃ¢che est bloquÃ©e
 function Register-TaskBlocked {
     [CmdletBinding()]
     param (
@@ -230,19 +230,19 @@ Export-ModuleMember -Function New-TaskPriorityQueue, New-PriorityTask, Add-TaskT
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $modulePath -Force
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "TaskPriorityQueue Module Tests" {
     Context "New-TaskPriorityQueue Function" {
-        It "Devrait créer une nouvelle file d'attente prioritaire" {
+        It "Devrait crÃ©er une nouvelle file d'attente prioritaire" {
             # Act
             $queue = New-TaskPriorityQueue
             
@@ -253,7 +253,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $queue.MaxPriority | Should -Be 10
         }
         
-        It "Devrait accepter des paramètres personnalisés" {
+        It "Devrait accepter des paramÃ¨tres personnalisÃ©s" {
             # Arrange
             $promotionThreshold = 10
             $maxPriority = 20
@@ -268,7 +268,7 @@ Describe "TaskPriorityQueue Module Tests" {
     }
     
     Context "New-PriorityTask Function" {
-        It "Devrait créer une nouvelle tâche prioritaire" {
+        It "Devrait crÃ©er une nouvelle tÃ¢che prioritaire" {
             # Arrange
             $name = "Test Task"
             $scriptBlock = { param($data) return $data }
@@ -284,7 +284,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $task.Id | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait accepter une priorité personnalisée" {
+        It "Devrait accepter une prioritÃ© personnalisÃ©e" {
             # Arrange
             $name = "High Priority Task"
             $scriptBlock = { param($data) return $data }
@@ -297,7 +297,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $task.Priority | Should -Be $priority
         }
         
-        It "Devrait accepter des paramètres personnalisés" {
+        It "Devrait accepter des paramÃ¨tres personnalisÃ©s" {
             # Arrange
             $name = "Parameterized Task"
             $scriptBlock = { param($data) return $data }
@@ -318,7 +318,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $script:queue = New-TaskPriorityQueue
         }
         
-        It "Devrait ajouter et récupérer une tâche" {
+        It "Devrait ajouter et rÃ©cupÃ©rer une tÃ¢che" {
             # Arrange
             $task = New-PriorityTask -Name "Test Task" -ScriptBlock { return "Test" }
             
@@ -332,7 +332,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $script:queue.Count() | Should -Be 0
         }
         
-        It "Devrait retourner les tâches par ordre de priorité" {
+        It "Devrait retourner les tÃ¢ches par ordre de prioritÃ©" {
             # Arrange
             $lowPriorityTask = New-PriorityTask -Name "Low Priority" -ScriptBlock { return "Low" } -Priority 3
             $mediumPriorityTask = New-PriorityTask -Name "Medium Priority" -ScriptBlock { return "Medium" } -Priority 5
@@ -364,15 +364,15 @@ Describe "TaskPriorityQueue Module Tests" {
     
     Context "Invoke-TaskPromotion Function" {
         BeforeEach {
-            $script:queue = New-TaskPriorityQueue -PromotionThreshold 0 # Utiliser 0 pour accélérer les tests
+            $script:queue = New-TaskPriorityQueue -PromotionThreshold 0 # Utiliser 0 pour accÃ©lÃ©rer les tests
         }
         
-        It "Devrait promouvoir les tâches en attente" {
+        It "Devrait promouvoir les tÃ¢ches en attente" {
             # Arrange
             $task = New-PriorityTask -Name "Waiting Task" -ScriptBlock { return "Test" } -Priority 3
             Add-TaskToQueue -Queue $script:queue -Task $task
             
-            # Simuler un délai
+            # Simuler un dÃ©lai
             $task.LastPromotionTime = (Get-Date).AddMinutes(-10)
             
             # Act
@@ -383,12 +383,12 @@ Describe "TaskPriorityQueue Module Tests" {
             $promotedTask.Priority | Should -Be 4
         }
         
-        It "Ne devrait pas dépasser la priorité maximale" {
+        It "Ne devrait pas dÃ©passer la prioritÃ© maximale" {
             # Arrange
             $task = New-PriorityTask -Name "Max Priority Task" -ScriptBlock { return "Test" } -Priority 10
             Add-TaskToQueue -Queue $script:queue -Task $task
             
-            # Simuler un délai
+            # Simuler un dÃ©lai
             $task.LastPromotionTime = (Get-Date).AddMinutes(-10)
             
             # Act
@@ -405,7 +405,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $script:queue = New-TaskPriorityQueue
         }
         
-        It "Devrait augmenter la priorité d'une tâche bloquée" {
+        It "Devrait augmenter la prioritÃ© d'une tÃ¢che bloquÃ©e" {
             # Arrange
             $task = New-PriorityTask -Name "Blocked Task" -ScriptBlock { return "Test" } -Priority 5
             Add-TaskToQueue -Queue $script:queue -Task $task
@@ -419,7 +419,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $blockedTask.BlockCount | Should -Be 1
         }
         
-        It "Devrait augmenter davantage la priorité pour les tâches bloquées plusieurs fois" {
+        It "Devrait augmenter davantage la prioritÃ© pour les tÃ¢ches bloquÃ©es plusieurs fois" {
             # Arrange
             $task = New-PriorityTask -Name "Multiple Blocks Task" -ScriptBlock { return "Test" } -Priority 5
             Add-TaskToQueue -Queue $script:queue -Task $task
@@ -435,7 +435,7 @@ Describe "TaskPriorityQueue Module Tests" {
             $blockedTask.BlockCount | Should -Be 3
         }
         
-        It "Ne devrait pas dépasser la priorité maximale" {
+        It "Ne devrait pas dÃ©passer la prioritÃ© maximale" {
             # Arrange
             $task = New-PriorityTask -Name "Max Priority Blocked Task" -ScriptBlock { return "Test" } -Priority 9
             Add-TaskToQueue -Queue $script:queue -Task $task

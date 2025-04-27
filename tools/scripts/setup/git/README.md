@@ -1,4 +1,4 @@
-# git
+﻿# git
 
 Configuration Git
 

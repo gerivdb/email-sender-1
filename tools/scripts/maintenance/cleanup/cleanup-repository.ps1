@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Nettoie les fichiers originaux après l'organisation du dépôt.
+    Nettoie les fichiers originaux aprÃ¨s l'organisation du dÃ©pÃ´t.
 
 .DESCRIPTION
-    Ce script supprime les fichiers originaux qui ont été déplacés lors de l'organisation du dépôt.
-    Il ne supprime que les fichiers qui ont été correctement copiés vers leurs nouveaux emplacements.
+    Ce script supprime les fichiers originaux qui ont Ã©tÃ© dÃ©placÃ©s lors de l'organisation du dÃ©pÃ´t.
+    Il ne supprime que les fichiers qui ont Ã©tÃ© correctement copiÃ©s vers leurs nouveaux emplacements.
 
 .PARAMETER DryRun
-    Si spécifié, le script affiche les actions qui seraient effectuées sans les exécuter.
+    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
 
 .PARAMETER Force
-    Si spécifié, le script supprime les fichiers sans demander de confirmation.
+    Si spÃ©cifiÃ©, le script supprime les fichiers sans demander de confirmation.
 
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuées.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
 
 .EXAMPLE
     .\cleanup-repository.ps1 -DryRun
@@ -24,7 +24,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -38,16 +38,16 @@ param (
     [string]$LogFile
 )
 
-# Définir le répertoire racine du dépôt
+# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# Vérifier que le répertoire racine existe
+# VÃ©rifier que le rÃ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le répertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
 }
 
-Write-Host "Nettoyage du dépôt : $repoRoot" -ForegroundColor Cyan
+Write-Host "Nettoyage du dÃ©pÃ´t : $repoRoot" -ForegroundColor Cyan
 
 # Fonction pour journaliser les actions
 function Write-Log {
@@ -75,12 +75,12 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage démarré le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "Répertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage dÃ©marrÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# Définir les fichiers à supprimer
+# DÃ©finir les fichiers Ã  supprimer
 $filesToRemove = @(
     # Scripts de mode
     "scripts/archi-mode.ps1",
@@ -125,27 +125,27 @@ function Remove-FileIfExists {
             } else {
                 if ($PSCmdlet.ShouldProcess($FilePath, "Supprimer")) {
                     Remove-Item -Path $FilePath -Force
-                    Write-Log "Fichier supprimé : $FilePath"
+                    Write-Log "Fichier supprimÃ© : $FilePath"
                 }
             }
         } else {
-            Write-Log "Suppression ignorée : $FilePath"
+            Write-Log "Suppression ignorÃ©e : $FilePath"
         }
     } else {
         Write-Log "Le fichier n'existe pas : $FilePath"
     }
 }
 
-# Parcourir les fichiers à supprimer
+# Parcourir les fichiers Ã  supprimer
 foreach ($pattern in $filesToRemove) {
     $files = Get-ChildItem -Path (Join-Path -Path $repoRoot -ChildPath $pattern) -File -ErrorAction SilentlyContinue
     
     foreach ($file in $files) {
-        # Vérifier que le fichier a bien été copié vers son nouvel emplacement
+        # VÃ©rifier que le fichier a bien Ã©tÃ© copiÃ© vers son nouvel emplacement
         $fileName = $file.Name
         $baseName = $file.BaseName
         
-        # Extraire le nom du mode à partir du nom du fichier
+        # Extraire le nom du mode Ã  partir du nom du fichier
         if ($fileName -match "^([a-zA-Z0-9-]+)-mode\.ps1$") {
             $modeName = $matches[1]
             $destinationPath = Join-Path -Path $repoRoot -ChildPath "scripts/roadmap-parser/modes/$modeName/$fileName"
@@ -162,28 +162,28 @@ foreach ($pattern in $filesToRemove) {
         } elseif ($fileName -match "^programmation_(.+)\.md$") {
             $destinationPath = Join-Path -Path $repoRoot -ChildPath "docs/guides/methodologies/$fileName"
         } else {
-            # Pour les autres fichiers, on ne vérifie pas
+            # Pour les autres fichiers, on ne vÃ©rifie pas
             $destinationPath = $null
         }
         
         if ($destinationPath -and (Test-Path -Path $destinationPath)) {
             Remove-FileIfExists -FilePath $file.FullName
         } elseif ($destinationPath) {
-            Write-Log "Le fichier n'a pas été copié vers son nouvel emplacement : $destinationPath"
-            Write-Log "Suppression ignorée : $($file.FullName)"
+            Write-Log "Le fichier n'a pas Ã©tÃ© copiÃ© vers son nouvel emplacement : $destinationPath"
+            Write-Log "Suppression ignorÃ©e : $($file.FullName)"
         } else {
             Remove-FileIfExists -FilePath $file.FullName
         }
     }
 }
 
-# Résumé du nettoyage
-Write-Host "Nettoyage terminé." -ForegroundColor Cyan
+# RÃ©sumÃ© du nettoyage
+Write-Host "Nettoyage terminÃ©." -ForegroundColor Cyan
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage terminé le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage terminÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log de nettoyage enregistré dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log de nettoyage enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
 }

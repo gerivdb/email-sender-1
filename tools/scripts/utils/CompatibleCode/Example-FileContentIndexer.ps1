@@ -1,4 +1,4 @@
-#
+﻿#
 # Exemple d'utilisation du module FileContentIndexer
 # Compatible avec PowerShell 5.1 et PowerShell 7+
 #
@@ -14,8 +14,8 @@ Write-Host "PowerShell 7+: $($versionInfo.IsPowerShell7)" -ForegroundColor Cyan
 Write-Host "PowerShell 5.1: $($versionInfo.IsPowerShell5)" -ForegroundColor Cyan
 Write-Host ""
 
-# Vérifier la disponibilité des fonctionnalités
-Write-Host "Vérification des fonctionnalités disponibles:" -ForegroundColor Cyan
+# VÃ©rifier la disponibilitÃ© des fonctionnalitÃ©s
+Write-Host "VÃ©rification des fonctionnalitÃ©s disponibles:" -ForegroundColor Cyan
 $features = @('Classes', 'AdvancedClasses', 'Ternary', 'PipelineChain', 'NullCoalescing', 'ForEachParallel')
 foreach ($feature in $features) {
     $available = Test-FeatureAvailability -FeatureName $feature
@@ -23,27 +23,27 @@ foreach ($feature in $features) {
 }
 Write-Host ""
 
-# Créer une instance du module
-Write-Host "Création d'une instance de FileContentIndexer:" -ForegroundColor Cyan
+# CrÃ©er une instance du module
+Write-Host "CrÃ©ation d'une instance de FileContentIndexer:" -ForegroundColor Cyan
 $instance = New-FileContentIndexer -Name "MonInstance" -Properties @{
     Setting1 = "Valeur1"
     Setting2 = 42
 }
 
-Write-Host "Instance créée: $($instance.ToString())"
-Write-Host "Propriétés: $($instance.Properties | ConvertTo-Json -Compress)"
+Write-Host "Instance crÃ©Ã©e: $($instance.ToString())"
+Write-Host "PropriÃ©tÃ©s: $($instance.Properties | ConvertTo-Json -Compress)"
 Write-Host ""
 
-# Tester la méthode Process
-Write-Host "Test de la méthode Process:" -ForegroundColor Cyan
+# Tester la mÃ©thode Process
+Write-Host "Test de la mÃ©thode Process:" -ForegroundColor Cyan
 $result1 = $instance.Process("Test")
 $result2 = $instance.Process($null)
 Write-Host "  Process('Test'): $result1"
 Write-Host "  Process(null): $result2"
 Write-Host ""
 
-# Tester la parallélisation
-Write-Host "Test de parallélisation:" -ForegroundColor Cyan
+# Tester la parallÃ©lisation
+Write-Host "Test de parallÃ©lisation:" -ForegroundColor Cyan
 $items = 1..5
 $results = Invoke-Parallel -ScriptBlock {
     param($item)
@@ -57,5 +57,5 @@ $results = Invoke-Parallel -ScriptBlock {
     }
 } -InputObject $items -ThrottleLimit 3
 
-Write-Host "Résultats de la parallélisation:"
+Write-Host "RÃ©sultats de la parallÃ©lisation:"
 $results | Format-Table -AutoSize

@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'exécution des tests unitaires pour les templates Hygen scripts.
+    Script d'exÃ©cution des tests unitaires pour les templates Hygen scripts.
 
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour les templates Hygen scripts.
+    Ce script exÃ©cute les tests unitaires pour les templates Hygen scripts.
 
 .PARAMETER OutputPath
-    Chemin du fichier de rapport de tests. Par défaut, "scripts\docs\hygen-test-report.md".
+    Chemin du fichier de rapport de tests. Par dÃ©faut, "scripts\docs\hygen-test-report.md".
 
 .EXAMPLE
     .\run-script-hygen-tests.ps1
-    Exécute les tests unitaires et génère un rapport dans le chemin par défaut.
+    ExÃ©cute les tests unitaires et gÃ©nÃ¨re un rapport dans le chemin par dÃ©faut.
 
 .EXAMPLE
     .\run-script-hygen-tests.ps1 -OutputPath "C:\Temp\test-report.md"
-    Exécute les tests unitaires et génère un rapport dans le chemin spécifié.
+    ExÃ©cute les tests unitaires et gÃ©nÃ¨re un rapport dans le chemin spÃ©cifiÃ©.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
 [CmdletBinding(SupportsShouldProcess=$true)]
@@ -28,20 +28,20 @@ param (
     [string]$OutputPath = ""
 )
 
-# Définir les couleurs pour les messages
+# DÃ©finir les couleurs pour les messages
 $successColor = "Green"
 $errorColor = "Red"
 $infoColor = "Cyan"
 $warningColor = "Yellow"
 
-# Fonction pour afficher un message de succès
+# Fonction pour afficher un message de succÃ¨s
 function Write-Success {
     param (
         [Parameter(Mandatory=$true)]
         [string]$Message
     )
     
-    Write-Host "✓ $Message" -ForegroundColor $successColor
+    Write-Host "âœ“ $Message" -ForegroundColor $successColor
 }
 
 # Fonction pour afficher un message d'erreur
@@ -51,7 +51,7 @@ function Write-Error {
         [string]$Message
     )
     
-    Write-Host "✗ $Message" -ForegroundColor $errorColor
+    Write-Host "âœ— $Message" -ForegroundColor $errorColor
 }
 
 # Fonction pour afficher un message d'information
@@ -61,7 +61,7 @@ function Write-Info {
         [string]$Message
     )
     
-    Write-Host "ℹ $Message" -ForegroundColor $infoColor
+    Write-Host "â„¹ $Message" -ForegroundColor $infoColor
 }
 
 # Fonction pour afficher un message d'avertissement
@@ -71,7 +71,7 @@ function Write-Warning {
         [string]$Message
     )
     
-    Write-Host "⚠ $Message" -ForegroundColor $warningColor
+    Write-Host "âš  $Message" -ForegroundColor $warningColor
 }
 
 # Fonction pour obtenir le chemin du projet
@@ -81,16 +81,16 @@ function Get-ProjectPath {
     return $projectRoot
 }
 
-# Fonction pour exécuter les tests unitaires
+# Fonction pour exÃ©cuter les tests unitaires
 function Invoke-Tests {
     param (
         [Parameter(Mandatory=$true)]
         [string]$TestPath
     )
     
-    # Vérifier si Pester est installé
+    # VÃ©rifier si Pester est installÃ©
     if (-not (Get-Module -Name Pester -ListAvailable)) {
-        Write-Warning "Pester n'est pas installé. Installation en cours..."
+        Write-Warning "Pester n'est pas installÃ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
     
@@ -102,13 +102,13 @@ function Invoke-Tests {
     $pesterConfig.Run.Path = $TestPath
     $pesterConfig.Output.Verbosity = "Detailed"
     
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $testResults = Invoke-Pester -Configuration $pesterConfig -PassThru
     
     return $testResults
 }
 
-# Fonction pour générer un rapport de tests
+# Fonction pour gÃ©nÃ©rer un rapport de tests
 function New-TestReport {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param (
@@ -119,22 +119,22 @@ function New-TestReport {
         [string]$OutputPath
     )
     
-    if ($PSCmdlet.ShouldProcess($OutputPath, "Générer le rapport")) {
+    if ($PSCmdlet.ShouldProcess($OutputPath, "GÃ©nÃ©rer le rapport")) {
         $report = @"
 # Rapport de tests unitaires pour les templates Hygen scripts
 
 ## Date
 $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Tests exécutés**: $($TestResults.TotalCount)
-- **Tests réussis**: $($TestResults.PassedCount)
-- **Tests échoués**: $($TestResults.FailedCount)
-- **Tests ignorés**: $($TestResults.SkippedCount)
-- **Durée totale**: $($TestResults.Duration.TotalSeconds.ToString("0.00")) secondes
+- **Tests exÃ©cutÃ©s**: $($TestResults.TotalCount)
+- **Tests rÃ©ussis**: $($TestResults.PassedCount)
+- **Tests Ã©chouÃ©s**: $($TestResults.FailedCount)
+- **Tests ignorÃ©s**: $($TestResults.SkippedCount)
+- **DurÃ©e totale**: $($TestResults.Duration.TotalSeconds.ToString("0.00")) secondes
 
-## Détails des tests
+## DÃ©tails des tests
 
 "@
         
@@ -145,7 +145,7 @@ $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
                 $report += "`n#### $($block.Name)`n"
                 
                 foreach ($test in $block.Tests) {
-                    $status = if ($test.Result -eq "Passed") { "✓" } else { "✗" }
+                    $status = if ($test.Result -eq "Passed") { "âœ“" } else { "âœ—" }
                     $report += "`n- $status $($test.Name)"
                     
                     if ($test.Result -eq "Failed") {
@@ -162,13 +162,13 @@ $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
         
         if ($TestResults.FailedCount -eq 0) {
-            $report += "`nTous les tests ont réussi. Les templates Hygen scripts sont correctement installés et fonctionnent comme prévu."
+            $report += "`nTous les tests ont rÃ©ussi. Les templates Hygen scripts sont correctement installÃ©s et fonctionnent comme prÃ©vu."
         } else {
-            $report += "`nCertains tests ont échoué. Veuillez consulter les détails des tests pour plus d'informations."
+            $report += "`nCertains tests ont Ã©chouÃ©. Veuillez consulter les dÃ©tails des tests pour plus d'informations."
         }
         
         Set-Content -Path $OutputPath -Value $report
-        Write-Success "Rapport de tests généré: $OutputPath"
+        Write-Success "Rapport de tests gÃ©nÃ©rÃ©: $OutputPath"
         
         return $OutputPath
     } else {
@@ -178,9 +178,9 @@ $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Fonction principale
 function Start-TestExecution {
-    Write-Info "Exécution des tests unitaires pour les templates Hygen scripts..."
+    Write-Info "ExÃ©cution des tests unitaires pour les templates Hygen scripts..."
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     $projectRoot = Get-ProjectPath
     $scriptsRoot = Join-Path -Path $projectRoot -ChildPath "scripts"
     $docsFolder = Join-Path -Path $scriptsRoot -ChildPath "docs"
@@ -189,38 +189,38 @@ function Start-TestExecution {
         $OutputPath = Join-Path -Path $docsFolder -ChildPath "hygen-test-report.md"
     }
     
-    # Déterminer le chemin des tests
+    # DÃ©terminer le chemin des tests
     $testPath = Join-Path -Path $scriptsRoot -ChildPath "tests\ScriptHygen.Tests.ps1"
     
-    # Vérifier si le fichier de test existe
+    # VÃ©rifier si le fichier de test existe
     if (-not (Test-Path -Path $testPath)) {
         Write-Error "Le fichier de test n'existe pas: $testPath"
         return $false
     }
     
-    # Exécuter les tests
-    Write-Info "Exécution des tests: $testPath"
+    # ExÃ©cuter les tests
+    Write-Info "ExÃ©cution des tests: $testPath"
     $testResults = Invoke-Tests -TestPath $testPath
     
-    # Afficher les résultats
-    Write-Info "Tests exécutés: $($testResults.TotalCount)"
-    Write-Info "Tests réussis: $($testResults.PassedCount)"
-    Write-Info "Tests échoués: $($testResults.FailedCount)"
-    Write-Info "Tests ignorés: $($testResults.SkippedCount)"
-    Write-Info "Durée totale: $($testResults.Duration.TotalSeconds.ToString("0.00")) secondes"
+    # Afficher les rÃ©sultats
+    Write-Info "Tests exÃ©cutÃ©s: $($testResults.TotalCount)"
+    Write-Info "Tests rÃ©ussis: $($testResults.PassedCount)"
+    Write-Info "Tests Ã©chouÃ©s: $($testResults.FailedCount)"
+    Write-Info "Tests ignorÃ©s: $($testResults.SkippedCount)"
+    Write-Info "DurÃ©e totale: $($testResults.Duration.TotalSeconds.ToString("0.00")) secondes"
     
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $reportPath = New-TestReport -TestResults $testResults -OutputPath $OutputPath
     
-    # Afficher le résultat
+    # Afficher le rÃ©sultat
     if ($reportPath) {
-        Write-Success "Rapport de tests généré: $reportPath"
+        Write-Success "Rapport de tests gÃ©nÃ©rÃ©: $reportPath"
     } else {
-        Write-Error "Impossible de générer le rapport de tests"
+        Write-Error "Impossible de gÃ©nÃ©rer le rapport de tests"
     }
     
     return $testResults.FailedCount -eq 0
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Start-TestExecution

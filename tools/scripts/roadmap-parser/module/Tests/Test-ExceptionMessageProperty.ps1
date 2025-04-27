@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation de la propriété Message de System.Exception.
+    Tests pour valider la documentation de la propriÃ©tÃ© Message de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation de la propriété Message de System.Exception.
+    fournies dans la documentation de la propriÃ©tÃ© Message de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,25 +14,25 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la propriété Message de System.Exception" {
-    Context "Caractéristiques de base de la propriété Message" {
-        It "Devrait être en lecture seule" {
+# DÃ©finir les tests
+Describe "Tests de la propriÃ©tÃ© Message de System.Exception" {
+    Context "CaractÃ©ristiques de base de la propriÃ©tÃ© Message" {
+        It "Devrait Ãªtre en lecture seule" {
             $exception = [System.Exception]::new("Message de test")
             { $exception.Message = "Nouveau message" } | Should -Throw
         }
         
-        It "Devrait être initialisée via le constructeur" {
-            $testMessage = "Message de test personnalisé"
+        It "Devrait Ãªtre initialisÃ©e via le constructeur" {
+            $testMessage = "Message de test personnalisÃ©"
             $exception = [System.Exception]::new($testMessage)
             $exception.Message | Should -Be $testMessage
         }
         
-        It "Devrait être accessible via la propriété Message" {
+        It "Devrait Ãªtre accessible via la propriÃ©tÃ© Message" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Message | Should -Not -BeNullOrEmpty
             $exception.Message | Should -BeOfType [string]
@@ -40,7 +40,7 @@ Describe "Tests de la propriété Message de System.Exception" {
     }
     
     Context "Exemples de la documentation" {
-        It "Exemple 1: Accéder à la propriété Message d'une exception" {
+        It "Exemple 1: AccÃ©der Ã  la propriÃ©tÃ© Message d'une exception" {
             $errorMessage = $null
             try {
                 $null.ToString()
@@ -52,7 +52,7 @@ Describe "Tests de la propriété Message de System.Exception" {
             $errorMessage | Should -Match "Object reference not set to an instance of an object"
         }
         
-        It "Exemple 2: Créer une exception personnalisée avec un message spécifique" {
+        It "Exemple 2: CrÃ©er une exception personnalisÃ©e avec un message spÃ©cifique" {
             $exceptionType = $null
             $errorMessage = $null
             
@@ -67,7 +67,7 @@ Describe "Tests de la propriété Message de System.Exception" {
             $errorMessage | Should -Be "La valeur fournie n'est pas valide."
         }
         
-        It "Exemple 3: Accéder au message d'une exception interne" {
+        It "Exemple 3: AccÃ©der au message d'une exception interne" {
             $mainErrorMessage = $null
             $innerErrorMessage = $null
             
@@ -75,20 +75,20 @@ Describe "Tests de la propriété Message de System.Exception" {
                 try {
                     [int]::Parse("abc")
                 } catch {
-                    throw [System.InvalidOperationException]::new("Opération échouée", $_.Exception)
+                    throw [System.InvalidOperationException]::new("OpÃ©ration Ã©chouÃ©e", $_.Exception)
                 }
             } catch {
                 $mainErrorMessage = $_.Exception.Message
                 $innerErrorMessage = $_.Exception.InnerException.Message
             }
             
-            $mainErrorMessage | Should -Be "Opération échouée"
+            $mainErrorMessage | Should -Be "OpÃ©ration Ã©chouÃ©e"
             $innerErrorMessage | Should -Match "Input string was not in a correct format"
         }
     }
     
     Context "Structure typique des messages par type d'exception" {
-        It "ArgumentException devrait suivre le format documenté" {
+        It "ArgumentException devrait suivre le format documentÃ©" {
             $errorMessage = $null
             try {
                 throw [System.ArgumentException]::new("Value is invalid", "testParam")
@@ -99,7 +99,7 @@ Describe "Tests de la propriété Message de System.Exception" {
             $errorMessage | Should -Match "Value is invalid"
         }
         
-        It "ArgumentNullException devrait suivre le format documenté" {
+        It "ArgumentNullException devrait suivre le format documentÃ©" {
             $errorMessage = $null
             try {
                 throw [System.ArgumentNullException]::new("testParam")
@@ -111,7 +111,7 @@ Describe "Tests de la propriété Message de System.Exception" {
             $errorMessage | Should -Match "testParam"
         }
         
-        It "FileNotFoundException devrait suivre le format documenté" {
+        It "FileNotFoundException devrait suivre le format documentÃ©" {
             $errorMessage = $null
             try {
                 throw [System.IO.FileNotFoundException]::new("Could not find file", "C:\test.txt")
@@ -122,7 +122,7 @@ Describe "Tests de la propriété Message de System.Exception" {
             $errorMessage | Should -Match "Could not find file"
         }
         
-        It "NullReferenceException devrait suivre le format documenté" {
+        It "NullReferenceException devrait suivre le format documentÃ©" {
             $errorMessage = $null
             try {
                 $null.ToString()
@@ -135,7 +135,7 @@ Describe "Tests de la propriété Message de System.Exception" {
     }
     
     Context "Utilisation dans PowerShell" {
-        It "Devrait être accessible via l'objet ErrorRecord dans un bloc catch" {
+        It "Devrait Ãªtre accessible via l'objet ErrorRecord dans un bloc catch" {
             $errorMessage = $null
             try {
                 [int]::Parse("abc")
@@ -149,5 +149,5 @@ Describe "Tests de la propriété Message de System.Exception" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

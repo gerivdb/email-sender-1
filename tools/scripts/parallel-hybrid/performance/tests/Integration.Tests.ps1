@@ -1,7 +1,7 @@
-Describe "Tests d'intégration des scripts de performance" {
+﻿Describe "Tests d'intÃ©gration des scripts de performance" {
     Context "Interaction entre les fonctions" {
         BeforeAll {
-            # Fonction pour créer un répertoire
+            # Fonction pour crÃ©er un rÃ©pertoire
             function New-DirectoryIfNotExists {
                 [CmdletBinding(SupportsShouldProcess=$true)]
                 param(
@@ -10,7 +10,7 @@ Describe "Tests d'intégration des scripts de performance" {
                 )
 
                 if (-not (Test-Path -Path $Path -PathType Container)) {
-                    if ($PSCmdlet.ShouldProcess($Path, "Créer le répertoire pour $Purpose")) {
+                    if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le rÃ©pertoire pour $Purpose")) {
                         $null = New-Item -Path $Path -ItemType Directory -Force -ErrorAction Stop
                     }
                 }
@@ -18,7 +18,7 @@ Describe "Tests d'intégration des scripts de performance" {
                 return (Resolve-Path -Path $Path).Path
             }
 
-            # Fonction pour générer des fichiers de test
+            # Fonction pour gÃ©nÃ©rer des fichiers de test
             function New-TestFiles {
                 param (
                     [string]$OutputPath,
@@ -37,13 +37,13 @@ Describe "Tests d'intégration des scripts de performance" {
                     $fileName = "test_file_$i.txt"
                     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
 
-                    # Générer une taille aléatoire entre MinSize et MaxSize
+                    # GÃ©nÃ©rer une taille alÃ©atoire entre MinSize et MaxSize
                     $fileSize = Get-Random -Minimum $MinSize -Maximum $MaxSize
 
-                    # Générer le contenu du fichier
+                    # GÃ©nÃ©rer le contenu du fichier
                     $content = "A" * $fileSize
 
-                    # Créer le fichier
+                    # CrÃ©er le fichier
                     Set-Content -Path $filePath -Value $content | Out-Null
 
                     $generatedFiles += $filePath
@@ -89,7 +89,7 @@ Describe "Tests d'intégration des scripts de performance" {
                         $endWS = $process.WorkingSet64
                         $endPM = $process.PrivateMemorySize64
 
-                        # Calculer les métriques
+                        # Calculer les mÃ©triques
                         $result.ExecutionTimeS = ($endTime - $startTime).TotalSeconds
                         $result.ProcessorTimeS = ($endCpu - $startCpu).TotalSeconds
                         $result.WorkingSetMB = [Math]::Round(($endWS - $startWS) / 1MB, 2)
@@ -140,30 +140,30 @@ Describe "Tests d'intégration des scripts de performance" {
                 return $stats
             }
 
-            # Initialisation du répertoire de test
+            # Initialisation du rÃ©pertoire de test
             $testDataDir = Join-Path -Path $TestDrive -ChildPath "TestData"
         }
 
-        It "Intègre correctement la création de répertoires et la génération de fichiers" {
-            # Créer le répertoire de données
-            $dataDir = New-DirectoryIfNotExists -Path $testDataDir -Purpose "Données de test" -Confirm:$false
+        It "IntÃ¨gre correctement la crÃ©ation de rÃ©pertoires et la gÃ©nÃ©ration de fichiers" {
+            # CrÃ©er le rÃ©pertoire de donnÃ©es
+            $dataDir = New-DirectoryIfNotExists -Path $testDataDir -Purpose "DonnÃ©es de test" -Confirm:$false
 
-            # Générer des fichiers de test
+            # GÃ©nÃ©rer des fichiers de test
             $fileCount = 5
             $generatedFiles = New-TestFiles -OutputPath $dataDir -FileCount $fileCount
 
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $dataDir -PathType Container | Should -Be $true
 
-            # Vérifier que les fichiers ont été générés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© gÃ©nÃ©rÃ©s
             $generatedFiles.Count | Should -Be $fileCount
             foreach ($file in $generatedFiles) {
                 Test-Path -Path $file | Should -Be $true
             }
         }
 
-        It "Intègre correctement la mesure de performances et le calcul de statistiques" {
-            # Créer un script de test simple
+        It "IntÃ¨gre correctement la mesure de performances et le calcul de statistiques" {
+            # CrÃ©er un script de test simple
             $testScript = {
                 param($SleepTime)
                 Start-Sleep -Seconds $SleepTime
@@ -175,13 +175,13 @@ Describe "Tests d'intégration des scripts de performance" {
             # Calculer les statistiques
             $stats = Get-PerformanceStatistics -Results $results
 
-            # Vérifier que les résultats sont corrects
+            # VÃ©rifier que les rÃ©sultats sont corrects
             $results.Count | Should -Be 3
             $results[0].Success | Should -Be $true
             $results[0].ExecutionTimeS | Should -BeGreaterThan 0.9
             $results[0].ExecutionTimeS | Should -BeLessThan 1.5
 
-            # Vérifier que les statistiques sont correctes
+            # VÃ©rifier que les statistiques sont correctes
             $stats.TotalIterations | Should -Be 3
             $stats.SuccessfulIterations | Should -Be 3
             $stats.SuccessRatePercent | Should -Be 100
@@ -189,10 +189,10 @@ Describe "Tests d'intégration des scripts de performance" {
             $stats.AverageExecutionTimeS | Should -BeLessThan 1.5
         }
 
-        It "Gère correctement les erreurs dans les scripts" {
-            # Créer un script qui génère une erreur
+        It "GÃ¨re correctement les erreurs dans les scripts" {
+            # CrÃ©er un script qui gÃ©nÃ¨re une erreur
             $errorScript = {
-                throw "Erreur simulée pour les tests"
+                throw "Erreur simulÃ©e pour les tests"
             }
 
             # Mesurer les performances du script
@@ -201,12 +201,12 @@ Describe "Tests d'intégration des scripts de performance" {
             # Calculer les statistiques
             $stats = Get-PerformanceStatistics -Results $results
 
-            # Vérifier que les résultats sont corrects
+            # VÃ©rifier que les rÃ©sultats sont corrects
             $results.Count | Should -Be 2
             $results[0].Success | Should -Be $false
-            $results[0].ErrorMessage | Should -Be "Erreur simulée pour les tests"
+            $results[0].ErrorMessage | Should -Be "Erreur simulÃ©e pour les tests"
 
-            # Vérifier que les statistiques sont correctes
+            # VÃ©rifier que les statistiques sont correctes
             $stats.TotalIterations | Should -Be 2
             $stats.SuccessfulIterations | Should -Be 0
             $stats.SuccessRatePercent | Should -Be 0
@@ -224,8 +224,8 @@ Describe "Tests d'intégration des scripts de performance" {
                     [int]$Iterations = 3
                 )
 
-                # 1. Créer le répertoire de sortie
-                $outputDir = New-DirectoryIfNotExists -Path $OutputPath -Purpose "Résultats de performance" -Confirm:$false
+                # 1. CrÃ©er le rÃ©pertoire de sortie
+                $outputDir = New-DirectoryIfNotExists -Path $OutputPath -Purpose "RÃ©sultats de performance" -Confirm:$false
 
                 # 2. Mesurer les performances du script
                 $results = Measure-ScriptPerformance -ScriptBlock $TestScript -Parameters $Parameters -Iterations $Iterations
@@ -233,7 +233,7 @@ Describe "Tests d'intégration des scripts de performance" {
                 # 3. Calculer les statistiques
                 $stats = Get-PerformanceStatistics -Results $results
 
-                # 4. Enregistrer les résultats
+                # 4. Enregistrer les rÃ©sultats
                 $resultsPath = Join-Path -Path $outputDir -ChildPath "results.json"
                 $statsPath = Join-Path -Path $outputDir -ChildPath "stats.json"
 
@@ -249,19 +249,19 @@ Describe "Tests d'intégration des scripts de performance" {
                 }
             }
 
-            # Créer un répertoire de test pour les résultats du workflow
+            # CrÃ©er un rÃ©pertoire de test pour les rÃ©sultats du workflow
             $testOutputDir = Join-Path -Path $TestDrive -ChildPath "WorkflowOutput"
-            # Cette variable est utilisée plus loin dans le test
+            # Cette variable est utilisÃ©e plus loin dans le test
 
-            # Créer un script de test simple
+            # CrÃ©er un script de test simple
             $testScript = {
                 param($SleepTime)
                 Start-Sleep -Seconds $SleepTime
             }
         }
 
-        It "Exécute correctement le flux de travail complet" {
-            # Définir les fonctions nécessaires dans ce contexte
+        It "ExÃ©cute correctement le flux de travail complet" {
+            # DÃ©finir les fonctions nÃ©cessaires dans ce contexte
             function New-DirectoryIfNotExists {
                 [CmdletBinding(SupportsShouldProcess=$true)]
                 param(
@@ -270,7 +270,7 @@ Describe "Tests d'intégration des scripts de performance" {
                 )
 
                 if (-not (Test-Path -Path $Path -PathType Container)) {
-                    if ($PSCmdlet.ShouldProcess($Path, "Créer le répertoire pour $Purpose")) {
+                    if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le rÃ©pertoire pour $Purpose")) {
                         $null = New-Item -Path $Path -ItemType Directory -Force -ErrorAction Stop
                     }
                 }
@@ -314,7 +314,7 @@ Describe "Tests d'intégration des scripts de performance" {
                         $endWS = $process.WorkingSet64
                         $endPM = $process.PrivateMemorySize64
 
-                        # Calculer les métriques
+                        # Calculer les mÃ©triques
                         $result.ExecutionTimeS = ($endTime - $startTime).TotalSeconds
                         $result.ProcessorTimeS = ($endCpu - $startCpu).TotalSeconds
                         $result.WorkingSetMB = [Math]::Round(($endWS - $startWS) / 1MB, 2)
@@ -364,23 +364,23 @@ Describe "Tests d'intégration des scripts de performance" {
                 return $stats
             }
 
-            # Exécuter le flux de travail
+            # ExÃ©cuter le flux de travail
             $workflow = Invoke-PerformanceWorkflow -OutputPath $testOutputDir -TestScript $testScript -Parameters @{SleepTime = 1} -Iterations 2
 
-            # Vérifier que le répertoire de sortie a été créé
+            # VÃ©rifier que le rÃ©pertoire de sortie a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $workflow.OutputDirectory -PathType Container | Should -Be $true
 
-            # Vérifier que les fichiers de résultats ont été créés
+            # VÃ©rifier que les fichiers de rÃ©sultats ont Ã©tÃ© crÃ©Ã©s
             Test-Path -Path $workflow.ResultsPath | Should -Be $true
             Test-Path -Path $workflow.StatsPath | Should -Be $true
 
-            # Vérifier que les résultats sont corrects
+            # VÃ©rifier que les rÃ©sultats sont corrects
             $workflow.Results.Count | Should -Be 2
             $workflow.Results[0].Success | Should -Be $true
             $workflow.Results[0].ExecutionTimeS | Should -BeGreaterThan 0.9
             $workflow.Results[0].ExecutionTimeS | Should -BeLessThan 1.5
 
-            # Vérifier que les statistiques sont correctes
+            # VÃ©rifier que les statistiques sont correctes
             $workflow.Statistics.TotalIterations | Should -Be 2
             $workflow.Statistics.SuccessfulIterations | Should -Be 2
             $workflow.Statistics.SuccessRatePercent | Should -Be 100

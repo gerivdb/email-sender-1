@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
     Module de monitoring et d'analyse comportementale pour les scripts PowerShell.
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour collecter, stocker et analyser des métriques
-    d'utilisation des scripts PowerShell, permettant une optimisation proactive basée sur l'usage.
+    Ce module fournit des fonctionnalitÃ©s pour collecter, stocker et analyser des mÃ©triques
+    d'utilisation des scripts PowerShell, permettant une optimisation proactive basÃ©e sur l'usage.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
     Date: 2025-05-15
-    Compatibilité: PowerShell 5.1 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur
 #>
 
-# Définition des classes
+# DÃ©finition des classes
 class UsageMetric {
     [string]$ScriptPath
     [string]$ScriptName
@@ -78,13 +78,13 @@ class UsageDatabase {
         $this.DatabasePath = $databasePath
         $this.InMemoryData = [System.Collections.Concurrent.ConcurrentDictionary[string, System.Collections.ArrayList]]::new()
 
-        # Créer le répertoire de la base de données s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de la base de donnÃ©es s'il n'existe pas
         $dbDir = Split-Path -Path $databasePath -Parent
         if (-not (Test-Path -Path $dbDir -PathType Container)) {
             New-Item -Path $dbDir -ItemType Directory -Force | Out-Null
         }
 
-        # Charger les données existantes si le fichier existe
+        # Charger les donnÃ©es existantes si le fichier existe
         if (Test-Path -Path $databasePath -PathType Leaf) {
             try {
                 $data = Import-Clixml -Path $databasePath -ErrorAction Stop
@@ -96,7 +96,7 @@ class UsageDatabase {
                     $this.InMemoryData[$key] = $list
                 }
             } catch {
-                Write-Warning "Impossible de charger la base de données d'utilisation: $_"
+                Write-Warning "Impossible de charger la base de donnÃ©es d'utilisation: $_"
             }
         }
     }
@@ -111,12 +111,12 @@ class UsageDatabase {
 
         $this.InMemoryData[$key].Add($metric) | Out-Null
 
-        # Limiter le nombre d'entrées par script (garder les 100 dernières)
+        # Limiter le nombre d'entrÃ©es par script (garder les 100 derniÃ¨res)
         if ($this.InMemoryData[$key].Count -gt 100) {
             $this.InMemoryData[$key].RemoveAt(0)
         }
 
-        # Sauvegarder périodiquement (toutes les 10 entrées)
+        # Sauvegarder pÃ©riodiquement (toutes les 10 entrÃ©es)
         if ($this.InMemoryData.Values.Count % 10 -eq 0) {
             $this.SaveToFile()
         }
@@ -126,7 +126,7 @@ class UsageDatabase {
         try {
             $this.InMemoryData | Export-Clixml -Path $this.DatabasePath -Force -ErrorAction Stop
         } catch {
-            Write-Warning "Impossible de sauvegarder la base de données d'utilisation: $_"
+            Write-Warning "Impossible de sauvegarder la base de donnÃ©es d'utilisation: $_"
         }
     }
 
@@ -250,7 +250,7 @@ class UsageDatabase {
         foreach ($key in $this.InMemoryData.Keys) {
             $metrics = $this.InMemoryData[$key]
 
-            # Ignorer les scripts avec moins de 5 exécutions
+            # Ignorer les scripts avec moins de 5 exÃ©cutions
             if ($metrics.Count -lt 5) {
                 continue
             }
@@ -261,11 +261,11 @@ class UsageDatabase {
                 continue
             }
 
-            # Calculer la moyenne et l'écart-type
+            # Calculer la moyenne et l'Ã©cart-type
             $avgDuration = ($durations | Measure-Object -Average).Average
             $stdDeviation = [Math]::Sqrt(($durations | ForEach-Object { [Math]::Pow($_ - $avgDuration, 2) } | Measure-Object -Average).Average)
 
-            # Identifier les exécutions anormalement lentes (> moyenne + 2*écart-type)
+            # Identifier les exÃ©cutions anormalement lentes (> moyenne + 2*Ã©cart-type)
             $threshold = $avgDuration + (2 * $stdDeviation)
             $slowExecutions = $metrics | Where-Object { $_.Success -and $_.Duration.TotalMilliseconds -gt $threshold }
 
@@ -306,7 +306,7 @@ function Initialize-UsageMonitor {
     try {
         $script:UsageDatabase = [UsageDatabase]::new($DatabasePath)
         $script:IsInitialized = $true
-        Write-Verbose "UsageMonitor initialisé avec succès. Base de données: $DatabasePath"
+        Write-Verbose "UsageMonitor initialisÃ© avec succÃ¨s. Base de donnÃ©es: $DatabasePath"
     } catch {
         Write-Error "Impossible d'initialiser UsageMonitor: $_"
         $script:IsInitialized = $false
@@ -340,7 +340,7 @@ function Start-ScriptUsageTracking {
 
         return $metric.ExecutionId
     } catch {
-        Write-Error "Erreur lors du démarrage du suivi d'utilisation: $_"
+        Write-Error "Erreur lors du dÃ©marrage du suivi d'utilisation: $_"
         return $null
     }
 }
@@ -359,12 +359,12 @@ function Stop-ScriptUsageTracking {
     )
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return
     }
 
     if (-not $script:ActiveMetrics.ContainsKey($ExecutionId)) {
-        Write-Error "Aucun suivi d'utilisation trouvé pour l'ID d'exécution spécifié: $ExecutionId"
+        Write-Error "Aucun suivi d'utilisation trouvÃ© pour l'ID d'exÃ©cution spÃ©cifiÃ©: $ExecutionId"
         return
     }
 
@@ -376,9 +376,9 @@ function Stop-ScriptUsageTracking {
         $script:UsageDatabase.AddMetric($metric)
         $script:ActiveMetrics.Remove($ExecutionId)
 
-        Write-Verbose "Suivi d'utilisation terminé pour $($metric.ScriptPath). Durée: $($metric.Duration.TotalMilliseconds) ms"
+        Write-Verbose "Suivi d'utilisation terminÃ© pour $($metric.ScriptPath). DurÃ©e: $($metric.Duration.TotalMilliseconds) ms"
     } catch {
-        Write-Error "Erreur lors de l'arrêt du suivi d'utilisation: $_"
+        Write-Error "Erreur lors de l'arrÃªt du suivi d'utilisation: $_"
     }
 }
 
@@ -393,7 +393,7 @@ function Get-ScriptUsageStatistics {
     )
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return
     }
 
@@ -416,7 +416,7 @@ function Find-ScriptBottlenecks {
     param ()
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return
     }
 
@@ -428,12 +428,12 @@ function Save-UsageDatabase {
     param ()
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return
     }
 
     $script:UsageDatabase.SaveToFile()
-    Write-Verbose "Base de données d'utilisation sauvegardée avec succès."
+    Write-Verbose "Base de donnÃ©es d'utilisation sauvegardÃ©e avec succÃ¨s."
 }
 
 # Fonctions additionnelles pour les tests
@@ -442,7 +442,7 @@ function Get-AllScriptPaths {
     param ()
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return @()
     }
 
@@ -457,7 +457,7 @@ function Get-MetricsForScript {
     )
 
     if (-not $script:IsInitialized) {
-        Write-Error "UsageMonitor n'est pas initialisé. Appelez Initialize-UsageMonitor d'abord."
+        Write-Error "UsageMonitor n'est pas initialisÃ©. Appelez Initialize-UsageMonitor d'abord."
         return @()
     }
 

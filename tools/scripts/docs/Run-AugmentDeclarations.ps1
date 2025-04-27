@@ -1,64 +1,64 @@
-# Script pour exécuter les déclarations d'Augment
+﻿# Script pour exÃ©cuter les dÃ©clarations d'Augment
 
-# Importer le module d'intégration
+# Importer le module d'intÃ©gration
 $integrationPath = Join-Path -Path $PSScriptRoot -ChildPath "Augment-RoadmapIntegration.ps1"
 if (Test-Path -Path $integrationPath) {
     . $integrationPath
 }
 else {
-    Write-Error "Le module d'intégration est introuvable: $integrationPath"
+    Write-Error "Le module d'intÃ©gration est introuvable: $integrationPath"
     exit 1
 }
 
-# Chemin du fichier de déclarations
+# Chemin du fichier de dÃ©clarations
 $declarationsFile = Join-Path -Path $PSScriptRoot -ChildPath "augment-declarations.txt"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $declarationsFile)) {
-    Write-Error "Le fichier de déclarations n'existe pas: $declarationsFile"
+    Write-Error "Le fichier de dÃ©clarations n'existe pas: $declarationsFile"
     exit 1
 }
 
-# Lire les déclarations
+# Lire les dÃ©clarations
 $declarations = Get-Content -Path $declarationsFile
 
-# Traiter chaque déclaration
+# Traiter chaque dÃ©claration
 foreach ($declaration in $declarations) {
     if (-not [string]::IsNullOrWhiteSpace($declaration)) {
-        Write-Host "Traitement de la déclaration: $declaration"
+        Write-Host "Traitement de la dÃ©claration: $declaration"
         
-        # Analyser la déclaration
-        if ($declaration -match "(?i)phase\s+(.+?)\s+terminée") {
+        # Analyser la dÃ©claration
+        if ($declaration -match "(?i)phase\s+(.+?)\s+terminÃ©e") {
             $phaseTitle = $Matches[1].Trim()
-            Write-Host "Phase identifiée: $phaseTitle"
+            Write-Host "Phase identifiÃ©e: $phaseTitle"
             
-            # Marquer la phase comme terminée
-            $result = Complete-AugmentPhase -PhaseTitle $phaseTitle -Comment "Déclaration automatique par Augment"
+            # Marquer la phase comme terminÃ©e
+            $result = Complete-AugmentPhase -PhaseTitle $phaseTitle -Comment "DÃ©claration automatique par Augment"
             
             if ($result) {
-                Write-Host "Phase marquée comme terminée avec succès."
+                Write-Host "Phase marquÃ©e comme terminÃ©e avec succÃ¨s."
             }
             else {
-                Write-Host "Échec du marquage de la phase comme terminée."
+                Write-Host "Ã‰chec du marquage de la phase comme terminÃ©e."
             }
         }
         else {
-            Write-Host "Format de déclaration non reconnu."
+            Write-Host "Format de dÃ©claration non reconnu."
         }
         
         Write-Host ""
     }
 }
 
-# Mettre à jour la roadmap
-Write-Host "Mise à jour finale de la roadmap..."
+# Mettre Ã  jour la roadmap
+Write-Host "Mise Ã  jour finale de la roadmap..."
 $updaterPath = Join-Path -Path $PSScriptRoot -ChildPath "RoadmapUpdater.ps1"
 if (Test-Path -Path $updaterPath) {
     . $updaterPath
     Update-Roadmap
 }
 else {
-    Write-Host "Module de mise à jour de la roadmap introuvable: $updaterPath"
+    Write-Host "Module de mise Ã  jour de la roadmap introuvable: $updaterPath"
 }
 
-Write-Host "Traitement des déclarations terminé."
+Write-Host "Traitement des dÃ©clarations terminÃ©."

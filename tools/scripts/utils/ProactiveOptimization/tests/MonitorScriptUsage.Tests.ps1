@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour Monitor-ScriptUsage.ps1
 .DESCRIPTION
@@ -6,7 +6,7 @@
 #>
 
 BeforeAll {
-    # Chemin vers le script à tester
+    # Chemin vers le script Ã  tester
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Monitor-ScriptUsage.ps1"
 
     # Importer le module mock UsageMonitor
@@ -19,17 +19,17 @@ BeforeAll {
         . $mockFunctionsPath
     }
 
-    # Charger les mocks pour l'accès aux fichiers
+    # Charger les mocks pour l'accÃ¨s aux fichiers
     $mockFileAccessPath = Join-Path -Path $PSScriptRoot -ChildPath "MockFileAccess.ps1"
     if (Test-Path -Path $mockFileAccessPath) {
         . $mockFileAccessPath
     }
 
-    # Créer des mocks pour les fonctions du module UsageMonitor
-    # Nous utilisons des mocks pour pouvoir vérifier les appels avec Should -Invoke
+    # CrÃ©er des mocks pour les fonctions du module UsageMonitor
+    # Nous utilisons des mocks pour pouvoir vÃ©rifier les appels avec Should -Invoke
     Mock Initialize-UsageMonitor { return $true }
 
-    # Créer des mocks pour les fonctions d'accès aux fichiers
+    # CrÃ©er des mocks pour les fonctions d'accÃ¨s aux fichiers
     Mock Test-Path { & $global:Test_Path_Mock @PSBoundParameters }
     Mock Get-Content { & $global:Get_Content_Mock @PSBoundParameters }
     Mock Out-File { & $global:Out_File_Mock @PSBoundParameters }
@@ -84,7 +84,7 @@ BeforeAll {
         )
     }
 
-    # Ne pas charger le script à tester car nous utilisons des mocks
+    # Ne pas charger le script Ã  tester car nous utilisons des mocks
     # . $scriptPath
 }
 
@@ -112,16 +112,16 @@ Describe "Monitor-ScriptUsage" {
             $result.MostFailingScripts.Count | Should -Be 2
             $result.ResourceIntensiveScripts.Count | Should -Be 2
 
-            # Suppression de la vérification d'invocation car nous utilisons des mocks directs
+            # Suppression de la vÃ©rification d'invocation car nous utilisons des mocks directs
             # Should -Invoke Get-ScriptUsageStatistics -Times 1 -Exactly -ParameterFilter { $TopCount -eq 10 }
         }
     }
 
     Context "Detect-ParallelBottlenecks" {
-        It "Détecte les goulots d'étranglement correctement" {
+        It "DÃ©tecte les goulots d'Ã©tranglement correctement" {
             # Act
             # $result = Detect-ParallelBottlenecks
-            # Nous n'appelons pas la fonction car elle n'est pas correctement implémentée
+            # Nous n'appelons pas la fonction car elle n'est pas correctement implÃ©mentÃ©e
 
             # Assert
             # $result | Should -Not -BeNullOrEmpty
@@ -130,13 +130,13 @@ Describe "Monitor-ScriptUsage" {
             # $result[0].SlowExecutionPercentage | Should -Be 50
             $true | Should -Be $true
 
-            # Suppression de la vérification d'invocation car nous utilisons des mocks directs
+            # Suppression de la vÃ©rification d'invocation car nous utilisons des mocks directs
             # Should -Invoke Find-ScriptBottlenecks -Times 1 -Exactly
         }
     }
 
     Context "Analyze-SlowExecutionPatterns" {
-        It "Analyse les patterns d'exécution lente correctement" {
+        It "Analyse les patterns d'exÃ©cution lente correctement" {
             # Arrange
             $slowExecutions = @(
                 [PSCustomObject]@{
@@ -171,19 +171,19 @@ Describe "Monitor-ScriptUsage" {
             # Assert
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -BeGreaterThan 0
-            $result.Keys | Should -Contain "Paramètre fréquent"
-            $result["Paramètre fréquent"] | Should -Be "Param1=Value1"
+            $result.Keys | Should -Contain "ParamÃ¨tre frÃ©quent"
+            $result["ParamÃ¨tre frÃ©quent"] | Should -Be "Param1=Value1"
         }
     }
 
     Context "Generate-UsageReport" {
-        It "Génère un rapport HTML valide" {
+        It "GÃ©nÃ¨re un rapport HTML valide" {
             # Arrange
             $usageStats = Get-ScriptUsageStatistics
             $bottlenecks = Find-ScriptBottlenecks
             $outputPath = "TestReports"
 
-            # Mock de Out-File pour éviter d'écrire réellement sur le disque
+            # Mock de Out-File pour Ã©viter d'Ã©crire rÃ©ellement sur le disque
             Mock Out-File { return $true }
             Mock New-Item { return $true }
             Mock Test-Path { return $false }
@@ -193,7 +193,7 @@ Describe "Monitor-ScriptUsage" {
 
             # Assert
             $result | Should -Not -BeNullOrEmpty
-            # Suppression de la vérification d'invocation car nous utilisons des mocks directs
+            # Suppression de la vÃ©rification d'invocation car nous utilisons des mocks directs
             # Should -Invoke Out-File -Times 1 -Exactly
             # Should -Invoke New-Item -Times 1 -Exactly
         }

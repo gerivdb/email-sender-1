@@ -1,20 +1,20 @@
-# Simple-DependencyTest.ps1
+﻿# Simple-DependencyTest.ps1
 # Script simple pour tester la fonction Get-RoadmapDependencies
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $extendedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapExtended.ps1"
 $dependenciesFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\Get-RoadmapDependencies.ps1"
 
 . $extendedFunctionPath
 . $dependenciesFunctionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test simple
+# CrÃ©er un fichier markdown de test simple
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "simple-test.md"
 $testMarkdown = @"
 # Simple Test
@@ -27,32 +27,32 @@ $testMarkdown = @"
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
     # Convertir le markdown en roadmap
     $roadmap = ConvertFrom-MarkdownToRoadmapExtended -FilePath $testMarkdownPath -IncludeMetadata
     
-    # Vérifier les métadonnées
+    # VÃ©rifier les mÃ©tadonnÃ©es
     $taskA = $roadmap.AllTasks["A"]
     if ($taskA.Metadata.ContainsKey("DependsOn")) {
-        Write-Host "Métadonnées de dépendance trouvées: $($taskA.Metadata["DependsOn"] -join ', ')" -ForegroundColor Green
+        Write-Host "MÃ©tadonnÃ©es de dÃ©pendance trouvÃ©es: $($taskA.Metadata["DependsOn"] -join ', ')" -ForegroundColor Green
     } else {
-        Write-Host "Aucune métadonnée de dépendance trouvée" -ForegroundColor Red
+        Write-Host "Aucune mÃ©tadonnÃ©e de dÃ©pendance trouvÃ©e" -ForegroundColor Red
     }
     
-    # Analyser les dépendances
+    # Analyser les dÃ©pendances
     $dependencies = Get-RoadmapDependencies -Roadmap $roadmap -DetectionMode "All"
     
-    Write-Host "Dépendances explicites: $($dependencies.ExplicitDependencies.Count)" -ForegroundColor Yellow
-    Write-Host "Dépendances implicites: $($dependencies.ImplicitDependencies.Count)" -ForegroundColor Yellow
+    Write-Host "DÃ©pendances explicites: $($dependencies.ExplicitDependencies.Count)" -ForegroundColor Yellow
+    Write-Host "DÃ©pendances implicites: $($dependencies.ImplicitDependencies.Count)" -ForegroundColor Yellow
     
-    # Afficher les dépendances explicites
+    # Afficher les dÃ©pendances explicites
     foreach ($dep in $dependencies.ExplicitDependencies) {
-        Write-Host "  - $($dep.TaskId) dépend de $($dep.DependsOn)" -ForegroundColor Yellow
+        Write-Host "  - $($dep.TaskId) dÃ©pend de $($dep.DependsOn)" -ForegroundColor Yellow
     }
     
-    Write-Host "Test terminé." -ForegroundColor Green
+    Write-Host "Test terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors du test: $_" -ForegroundColor Red
@@ -62,6 +62,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "Répertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "RÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

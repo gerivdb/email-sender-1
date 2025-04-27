@@ -1,49 +1,49 @@
-# TestOmnibus
+﻿# TestOmnibus
 
-TestOmnibus est un outil d'exécution et d'analyse rapide des tests Python. Il permet d'exécuter les tests Python, d'analyser les erreurs, et de générer des rapports détaillés pour faciliter le débogage.
+TestOmnibus est un outil d'exÃ©cution et d'analyse rapide des tests Python. Il permet d'exÃ©cuter les tests Python, d'analyser les erreurs, et de gÃ©nÃ©rer des rapports dÃ©taillÃ©s pour faciliter le dÃ©bogage.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Exécution des tests**
-  - Exécution parallèle des tests avec pytest
-  - Support des patterns de test avancés
-  - Intégration avec pytest-testmon pour exécuter uniquement les tests affectés
-  - Support du débogage interactif avec pdb
+- **ExÃ©cution des tests**
+  - ExÃ©cution parallÃ¨le des tests avec pytest
+  - Support des patterns de test avancÃ©s
+  - IntÃ©gration avec pytest-testmon pour exÃ©cuter uniquement les tests affectÃ©s
+  - Support du dÃ©bogage interactif avec pdb
 
 - **Analyse des erreurs**
-  - Détection des patterns d'erreur
+  - DÃ©tection des patterns d'erreur
   - Analyse des tendances d'erreurs au fil du temps
   - Visualisation des erreurs avec des graphiques
 
 - **Rapports**
-  - Génération de rapports HTML détaillés
-  - Génération de rapports de couverture de code
-  - Intégration avec Allure pour des rapports interactifs
-  - Génération de rapports JUnit pour Jenkins
+  - GÃ©nÃ©ration de rapports HTML dÃ©taillÃ©s
+  - GÃ©nÃ©ration de rapports de couverture de code
+  - IntÃ©gration avec Allure pour des rapports interactifs
+  - GÃ©nÃ©ration de rapports JUnit pour Jenkins
 
-- **Intégration**
-  - Sauvegarde des erreurs dans une base de données
-  - Intégration avec le système d'apprentissage des erreurs
-  - Intégration avec Jenkins pour l'intégration continue
-  - Intégration avec Allure pour des rapports avancés
+- **IntÃ©gration**
+  - Sauvegarde des erreurs dans une base de donnÃ©es
+  - IntÃ©gration avec le systÃ¨me d'apprentissage des erreurs
+  - IntÃ©gration avec Jenkins pour l'intÃ©gration continue
+  - IntÃ©gration avec Allure pour des rapports avancÃ©s
 
-## Prérequis
+## PrÃ©requis
 
 - Python 3.6+
 - pytest
 - pytest-cov (pour la couverture de code)
-- pytest-xdist (pour l'exécution parallèle)
-- pytest-testmon (optionnel, pour l'exécution des tests affectés)
+- pytest-xdist (pour l'exÃ©cution parallÃ¨le)
+- pytest-testmon (optionnel, pour l'exÃ©cution des tests affectÃ©s)
 - allure-pytest (optionnel, pour les rapports Allure)
-- Allure (optionnel, pour générer les rapports Allure)
+- Allure (optionnel, pour gÃ©nÃ©rer les rapports Allure)
 
 ## Installation
 
 ```powershell
-# Installer les dépendances de base
+# Installer les dÃ©pendances de base
 python -m pip install pytest pytest-cov pytest-xdist pytest-testmon
 
-# Installer les dépendances pour Allure (optionnel)
+# Installer les dÃ©pendances pour Allure (optionnel)
 python -m pip install allure-pytest
 
 # Installer Allure avec Scoop (Windows, optionnel)
@@ -58,38 +58,38 @@ scoop install allure
 ### Utilisation directe du script Python
 
 ```bash
-# Exécuter tous les tests dans le répertoire tests/python
+# ExÃ©cuter tous les tests dans le rÃ©pertoire tests/python
 python run_testomnibus.py -d tests/python
 
-# Exécuter les tests avec des options avancées
+# ExÃ©cuter les tests avec des options avancÃ©es
 python run_testomnibus.py -d tests/python -p "test_*.py" -j 4 -v --analyze --report --report-dir reports
 
-# Exécuter les tests avec Allure
+# ExÃ©cuter les tests avec Allure
 python run_testomnibus.py -d tests/python --allure --allure-dir allure-results
 
-# Exécuter les tests avec Jenkins
+# ExÃ©cuter les tests avec Jenkins
 python run_testomnibus.py -d tests/python --jenkins --jenkins-dir jenkins-results
 
-# Exécuter les tests avec toutes les options
+# ExÃ©cuter les tests avec toutes les options
 python run_testomnibus.py -d tests/python -p "test_*.py" -j 4 -v --analyze --report --cov --allure --jenkins
 ```
 
 ### Utilisation du wrapper PowerShell
 
 ```powershell
-# Exécuter tous les tests dans le répertoire tests/python
+# ExÃ©cuter tous les tests dans le rÃ©pertoire tests/python
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python
 
-# Exécuter les tests avec des options avancées
+# ExÃ©cuter les tests avec des options avancÃ©es
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -Pattern "test_*.py" -Jobs 4 -VerboseOutput -Analyze -GenerateReport -ReportDirectory reports
 
-# Exécuter les tests avec Allure
+# ExÃ©cuter les tests avec Allure
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateAllureReport -AllureDirectory allure-results -OpenAllureReport
 
-# Exécuter les tests avec Jenkins
+# ExÃ©cuter les tests avec Jenkins
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateJenkinsReport -JenkinsDirectory jenkins-results
 
-# Exécuter les tests avec toutes les options
+# ExÃ©cuter les tests avec toutes les options
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -Pattern "test_*.py" -Jobs 4 -VerboseOutput -Analyze -GenerateReport -GenerateCoverage -GenerateAllureReport -GenerateJenkinsReport -InstallDependencies -OpenReport
 ```
 
@@ -105,138 +105,138 @@ usage: run_testomnibus.py [-h] [-d DIRECTORY] [-p PATTERN] [-j JOBS] [-v] [--pdb
                          [--allure] [--allure-dir ALLURE_DIR] [--jenkins]
                          [--jenkins-dir JENKINS_DIR]
 
-TestOmnibus - Exécution et analyse des tests Python
+TestOmnibus - ExÃ©cution et analyse des tests Python
 
 options:
   -h, --help            affiche ce message d'aide et quitte
   -d DIRECTORY, --directory DIRECTORY
-                        Répertoire des tests (défaut: tests)
+                        RÃ©pertoire des tests (dÃ©faut: tests)
   -p PATTERN, --pattern PATTERN
-                        Pattern des fichiers de test (défaut: test_*.py)
-  -j JOBS, --jobs JOBS  Nombre de processus parallèles (défaut: nombre de cœurs)
+                        Pattern des fichiers de test (dÃ©faut: test_*.py)
+  -j JOBS, --jobs JOBS  Nombre de processus parallÃ¨les (dÃ©faut: nombre de cÅ“urs)
   -v, --verbose         Mode verbeux
-  --pdb                 Lancer pdb en cas d'échec
-  --report              Générer un rapport HTML
+  --pdb                 Lancer pdb en cas d'Ã©chec
+  --report              GÃ©nÃ©rer un rapport HTML
   --report-dir REPORT_DIR
-                        Répertoire des rapports (défaut: test_reports)
+                        RÃ©pertoire des rapports (dÃ©faut: test_reports)
   --analyze             Analyser les erreurs
-  --save-errors         Sauvegarder les erreurs dans la base de données
-  --error-db ERROR_DB   Chemin de la base de données d'erreurs (défaut: error_database.json)
-  --testmon             Utiliser pytest-testmon pour exécuter uniquement les tests affectés
-  --cov                 Générer un rapport de couverture
+  --save-errors         Sauvegarder les erreurs dans la base de donnÃ©es
+  --error-db ERROR_DB   Chemin de la base de donnÃ©es d'erreurs (dÃ©faut: error_database.json)
+  --testmon             Utiliser pytest-testmon pour exÃ©cuter uniquement les tests affectÃ©s
+  --cov                 GÃ©nÃ©rer un rapport de couverture
   --cov-report COV_REPORT
-                        Format du rapport de couverture (html, xml, term) (défaut: html)
-  --tb TB               Format des tracebacks (auto, short, long, native) (défaut: auto)
-  --allure              Générer un rapport Allure
+                        Format du rapport de couverture (html, xml, term) (dÃ©faut: html)
+  --tb TB               Format des tracebacks (auto, short, long, native) (dÃ©faut: auto)
+  --allure              GÃ©nÃ©rer un rapport Allure
   --allure-dir ALLURE_DIR
-                        Répertoire des résultats Allure (défaut: allure-results)
-  --jenkins             Générer un rapport JUnit pour Jenkins
+                        RÃ©pertoire des rÃ©sultats Allure (dÃ©faut: allure-results)
+  --jenkins             GÃ©nÃ©rer un rapport JUnit pour Jenkins
   --jenkins-dir JENKINS_DIR
-                        Répertoire des résultats Jenkins (défaut: jenkins-results)
+                        RÃ©pertoire des rÃ©sultats Jenkins (dÃ©faut: jenkins-results)
 ```
 
 ### Options du wrapper PowerShell
 
 ```powershell
 .\Invoke-TestOmnibus.ps1
-    [-TestDirectory <string>]           # Répertoire des tests (défaut: tests/python)
-    [-Pattern <string>]                 # Pattern des fichiers de test (défaut: test_*.py)
-    [-Jobs <int>]                       # Nombre de processus parallèles (défaut: nombre de cœurs)
+    [-TestDirectory <string>]           # RÃ©pertoire des tests (dÃ©faut: tests/python)
+    [-Pattern <string>]                 # Pattern des fichiers de test (dÃ©faut: test_*.py)
+    [-Jobs <int>]                       # Nombre de processus parallÃ¨les (dÃ©faut: nombre de cÅ“urs)
     [-VerboseOutput]                    # Mode verbeux
-    [-Pdb]                              # Lancer pdb en cas d'échec
-    [-GenerateReport]                   # Générer un rapport HTML
-    [-ReportDirectory <string>]         # Répertoire des rapports (défaut: test_reports)
+    [-Pdb]                              # Lancer pdb en cas d'Ã©chec
+    [-GenerateReport]                   # GÃ©nÃ©rer un rapport HTML
+    [-ReportDirectory <string>]         # RÃ©pertoire des rapports (dÃ©faut: test_reports)
     [-Analyze]                          # Analyser les erreurs
-    [-SaveErrors]                       # Sauvegarder les erreurs dans la base de données
-    [-ErrorDatabase <string>]           # Chemin de la base de données d'erreurs (défaut: error_database.json)
-    [-UseTestmon]                       # Utiliser pytest-testmon pour exécuter uniquement les tests affectés
-    [-GenerateCoverage]                 # Générer un rapport de couverture
-    [-CoverageFormat <string>]          # Format du rapport de couverture (html, xml, term) (défaut: html)
-    [-TracebackFormat <string>]         # Format des tracebacks (auto, short, long, native) (défaut: auto)
-    [-InstallDependencies]              # Installer automatiquement les dépendances nécessaires
-    [-OpenReport]                       # Ouvrir le rapport HTML après sa génération
-    [-GenerateAllureReport]             # Générer un rapport Allure
-    [-AllureDirectory <string>]         # Répertoire des résultats Allure (défaut: allure-results)
-    [-GenerateJenkinsReport]            # Générer un rapport JUnit pour Jenkins
-    [-JenkinsDirectory <string>]        # Répertoire des résultats Jenkins (défaut: jenkins-results)
-    [-OpenAllureReport]                 # Ouvrir le rapport Allure après sa génération
+    [-SaveErrors]                       # Sauvegarder les erreurs dans la base de donnÃ©es
+    [-ErrorDatabase <string>]           # Chemin de la base de donnÃ©es d'erreurs (dÃ©faut: error_database.json)
+    [-UseTestmon]                       # Utiliser pytest-testmon pour exÃ©cuter uniquement les tests affectÃ©s
+    [-GenerateCoverage]                 # GÃ©nÃ©rer un rapport de couverture
+    [-CoverageFormat <string>]          # Format du rapport de couverture (html, xml, term) (dÃ©faut: html)
+    [-TracebackFormat <string>]         # Format des tracebacks (auto, short, long, native) (dÃ©faut: auto)
+    [-InstallDependencies]              # Installer automatiquement les dÃ©pendances nÃ©cessaires
+    [-OpenReport]                       # Ouvrir le rapport HTML aprÃ¨s sa gÃ©nÃ©ration
+    [-GenerateAllureReport]             # GÃ©nÃ©rer un rapport Allure
+    [-AllureDirectory <string>]         # RÃ©pertoire des rÃ©sultats Allure (dÃ©faut: allure-results)
+    [-GenerateJenkinsReport]            # GÃ©nÃ©rer un rapport JUnit pour Jenkins
+    [-JenkinsDirectory <string>]        # RÃ©pertoire des rÃ©sultats Jenkins (dÃ©faut: jenkins-results)
+    [-OpenAllureReport]                 # Ouvrir le rapport Allure aprÃ¨s sa gÃ©nÃ©ration
 ```
 
 ## Exemples d'utilisation
 
-### Exécution simple
+### ExÃ©cution simple
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python
 ```
 
-### Exécution avec génération de rapport
+### ExÃ©cution avec gÃ©nÃ©ration de rapport
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateReport -OpenReport
 ```
 
-### Exécution avec analyse des erreurs
+### ExÃ©cution avec analyse des erreurs
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -Analyze -SaveErrors
 ```
 
-### Exécution avec couverture de code
+### ExÃ©cution avec couverture de code
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateCoverage -CoverageFormat html
 ```
 
-### Exécution des tests affectés uniquement
+### ExÃ©cution des tests affectÃ©s uniquement
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -UseTestmon
 ```
 
-### Exécution en mode débogage
+### ExÃ©cution en mode dÃ©bogage
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -Pdb
 ```
 
-### Exécution avec Allure
+### ExÃ©cution avec Allure
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateAllureReport -OpenAllureReport
 ```
 
-### Exécution avec Jenkins
+### ExÃ©cution avec Jenkins
 
 ```powershell
 .\Invoke-TestOmnibus.ps1 -TestDirectory tests/python -GenerateJenkinsReport
 ```
 
-### Intégration avec Allure
+### IntÃ©gration avec Allure
 
 ```powershell
 .\Integrate-Allure.ps1 -TestDirectory tests/python -OpenReport -InstallAllure
 ```
 
-### Intégration avec Jenkins
+### IntÃ©gration avec Jenkins
 
 ```powershell
 .\Integrate-Jenkins.ps1 -TestDirectory tests/python -JenkinsUrl "http://jenkins.example.com" -JenkinsJob "python-tests" -JenkinsToken "token" -JenkinsUser "user"
 ```
 
-## Intégration avec le système d'apprentissage des erreurs
+## IntÃ©gration avec le systÃ¨me d'apprentissage des erreurs
 
-TestOmnibus peut être intégré avec votre système d'apprentissage des erreurs existant en utilisant l'option `--save-errors` (ou `-SaveErrors` en PowerShell). Cette option sauvegarde les erreurs détectées dans une base de données JSON qui peut être utilisée pour analyser les patterns d'erreur et suggérer des corrections.
+TestOmnibus peut Ãªtre intÃ©grÃ© avec votre systÃ¨me d'apprentissage des erreurs existant en utilisant l'option `--save-errors` (ou `-SaveErrors` en PowerShell). Cette option sauvegarde les erreurs dÃ©tectÃ©es dans une base de donnÃ©es JSON qui peut Ãªtre utilisÃ©e pour analyser les patterns d'erreur et suggÃ©rer des corrections.
 
-La base de données d'erreurs est structurée comme suit :
+La base de donnÃ©es d'erreurs est structurÃ©e comme suit :
 
 ```json
 {
   "errors": [
     {
-      "signature": "AssertionError: 1 + 1 devrait être égal à 2, pas à 3",
+      "signature": "AssertionError: 1 + 1 devrait Ãªtre Ã©gal Ã  2, pas Ã  3",
       "type": "AssertionError",
-      "message": "1 + 1 devrait être égal à 2, pas à 3",
+      "message": "1 + 1 devrait Ãªtre Ã©gal Ã  2, pas Ã  3",
       "files": ["tests/python/test_example.py"],
       "first_seen": "2025-04-11T10:15:30.123456",
       "last_seen": "2025-04-11T10:15:30.123456",
@@ -263,9 +263,9 @@ Vous pouvez personnaliser TestOmnibus en modifiant les fichiers suivants :
 - `run_testomnibus.py` : Script principal Python
 - `Invoke-TestOmnibus.ps1` : Wrapper PowerShell
 
-## Intégration avec CI/CD
+## IntÃ©gration avec CI/CD
 
-TestOmnibus peut être facilement intégré dans votre pipeline CI/CD. Voici des exemples d'utilisation :
+TestOmnibus peut Ãªtre facilement intÃ©grÃ© dans votre pipeline CI/CD. Voici des exemples d'utilisation :
 
 ### GitHub Actions
 

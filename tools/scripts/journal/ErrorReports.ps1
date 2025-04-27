@@ -1,12 +1,12 @@
-# Script pour générer des rapports d'erreurs
+﻿# Script pour gÃ©nÃ©rer des rapports d'erreurs
 
-# Importer le module de collecte de données
+# Importer le module de collecte de donnÃ©es
 $collectorPath = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath "ErrorDataCollector.ps1"
 if (Test-Path -Path $collectorPath) {
     . $collectorPath
 }
 else {
-    Write-Error "Le module de collecte de données est introuvable: $collectorPath"
+    Write-Error "Le module de collecte de donnÃ©es est introuvable: $collectorPath"
     return
 }
 
@@ -15,14 +15,14 @@ $ReportConfig = @{
     # Dossier de sortie des rapports
     OutputFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorReports"
     
-    # Format de sortie par défaut
+    # Format de sortie par dÃ©faut
     DefaultFormat = "HTML"
     
-    # Période par défaut (en jours)
+    # PÃ©riode par dÃ©faut (en jours)
     DefaultPeriod = 7
 }
 
-# Fonction pour initialiser le système de rapports
+# Fonction pour initialiser le systÃ¨me de rapports
 function Initialize-ErrorReports {
     param (
         [Parameter(Mandatory = $false)]
@@ -36,7 +36,7 @@ function Initialize-ErrorReports {
         [int]$DefaultPeriod = 0
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($OutputFolder)) {
         $ReportConfig.OutputFolder = $OutputFolder
     }
@@ -49,18 +49,18 @@ function Initialize-ErrorReports {
         $ReportConfig.DefaultPeriod = $DefaultPeriod
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $ReportConfig.OutputFolder)) {
         New-Item -Path $ReportConfig.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Initialiser le collecteur de données
+    # Initialiser le collecteur de donnÃ©es
     Initialize-ErrorDataCollector
     
     return $ReportConfig
 }
 
-# Fonction pour générer un rapport d'erreurs
+# Fonction pour gÃ©nÃ©rer un rapport d'erreurs
 function New-ErrorReport {
     param (
         [Parameter(Mandatory = $false)]
@@ -89,7 +89,7 @@ function New-ErrorReport {
         [switch]$OpenOutput
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($Days -le 0) {
         $Days = $ReportConfig.DefaultPeriod
     }
@@ -98,18 +98,18 @@ function New-ErrorReport {
         $Format = $ReportConfig.DefaultFormat
     }
     
-    # Obtenir les données
+    # Obtenir les donnÃ©es
     $errors = Get-ErrorData -Days $Days -Category $Category -Severity $Severity -Source $Source
     $stats = Get-ErrorStatistics
     
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if ([string]::IsNullOrEmpty($OutputPath)) {
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $fileName = "ErrorReport-$timestamp.$($Format.ToLower())"
         $OutputPath = Join-Path -Path $ReportConfig.OutputFolder -ChildPath $fileName
     }
     
-    # Générer le rapport selon le format
+    # GÃ©nÃ©rer le rapport selon le format
     switch ($Format) {
         "HTML" {
             $html = New-ErrorReportHtml -Title $Title -Errors $errors -Stats $stats -Days $Days
@@ -135,7 +135,7 @@ function New-ErrorReport {
             $report | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputPath -Encoding UTF8
         }
         "PDF" {
-            # Générer d'abord en HTML
+            # GÃ©nÃ©rer d'abord en HTML
             $html = New-ErrorReportHtml -Title $Title -Errors $errors -Stats $stats -Days $Days
             $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
             $html | Set-Content -Path $htmlPath -Encoding UTF8
@@ -148,7 +148,7 @@ function New-ErrorReport {
                 Remove-Item -Path $htmlPath -Force
             }
             else {
-                Write-Warning "wkhtmltopdf n'est pas installé. Le rapport a été généré en HTML à la place."
+                Write-Warning "wkhtmltopdf n'est pas installÃ©. Le rapport a Ã©tÃ© gÃ©nÃ©rÃ© en HTML Ã  la place."
                 $OutputPath = $htmlPath
             }
         }
@@ -158,7 +158,7 @@ function New-ErrorReport {
         }
     }
     
-    # Ouvrir le rapport si demandé
+    # Ouvrir le rapport si demandÃ©
     if ($OpenOutput) {
         Invoke-Item -Path $OutputPath
     }
@@ -166,7 +166,7 @@ function New-ErrorReport {
     return $OutputPath
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ErrorReportHtml {
     param (
         [Parameter(Mandatory = $true)]
@@ -182,9 +182,9 @@ function New-ErrorReportHtml {
         [int]$Days
     )
     
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $dailyErrorsData = @()
-    $daysToShow = [Math]::Min($Days, 30)  # Limiter à 30 jours pour le graphique
+    $daysToShow = [Math]::Min($Days, 30)  # Limiter Ã  30 jours pour le graphique
     
     for ($i = $daysToShow - 1; $i -ge 0; $i--) {
         $day = (Get-Date).AddDays(-$i).ToString("yyyy-MM-dd")
@@ -196,7 +196,7 @@ function New-ErrorReportHtml {
         }
     }
     
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -305,7 +305,7 @@ function New-ErrorReportHtml {
         <div class="header">
             <h1>$Title</h1>
             <div>
-                <span>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
+                <span>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</span>
             </div>
         </div>
         
@@ -316,7 +316,7 @@ function New-ErrorReportHtml {
             </div>
             
             <div class="summary-card">
-                <h3>Période</h3>
+                <h3>PÃ©riode</h3>
                 <div class="summary-value">$Days jours</div>
             </div>
             
@@ -326,11 +326,11 @@ function New-ErrorReportHtml {
             </div>
         </div>
         
-        <h2>Répartition des erreurs</h2>
+        <h2>RÃ©partition des erreurs</h2>
         
         <div class="summary">
             <div class="summary-card">
-                <h3>Par sévérité</h3>
+                <h3>Par sÃ©vÃ©ritÃ©</h3>
                 <ul>
                 $(foreach ($severity in $Stats.ErrorsBySeverity.PSObject.Properties) {
                     "<li><strong>$($severity.Name):</strong> $($severity.Value)</li>"
@@ -339,7 +339,7 @@ function New-ErrorReportHtml {
             </div>
             
             <div class="summary-card">
-                <h3>Par catégorie</h3>
+                <h3>Par catÃ©gorie</h3>
                 <ul>
                 $(foreach ($category in $Stats.ErrorsByCategory.PSObject.Properties) {
                     "<li><strong>$($category.Name):</strong> $($category.Value)</li>"
@@ -363,8 +363,8 @@ function New-ErrorReportHtml {
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Sévérité</th>
-                    <th>Catégorie</th>
+                    <th>SÃ©vÃ©ritÃ©</th>
+                    <th>CatÃ©gorie</th>
                     <th>Source</th>
                     <th>Message</th>
                 </tr>
@@ -392,7 +392,7 @@ function New-ErrorReportHtml {
         </table>
         
         <div class="footer">
-            <p>Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | Période: $Days jours</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss") | PÃ©riode: $Days jours</p>
         </div>
     </div>
 </body>
@@ -402,7 +402,7 @@ function New-ErrorReportHtml {
     return $html
 }
 
-# Fonction pour générer un rapport texte
+# Fonction pour gÃ©nÃ©rer un rapport texte
 function New-ErrorReportText {
     param (
         [Parameter(Mandatory = $true)]
@@ -422,27 +422,27 @@ function New-ErrorReportText {
 $Title
 $("=" * $Title.Length)
 
-Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-Période: $Days jours
+GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+PÃ©riode: $Days jours
 
-RÉSUMÉ
+RÃ‰SUMÃ‰
 ------
 Total des erreurs: $($Errors.Count)
 Moyenne par jour: $(if ($Days -gt 0) { [Math]::Round($Errors.Count / $Days, 1) } else { "N/A" })
 
-RÉPARTITION PAR SÉVÉRITÉ
+RÃ‰PARTITION PAR SÃ‰VÃ‰RITÃ‰
 ------------------------
 $(foreach ($severity in $Stats.ErrorsBySeverity.PSObject.Properties) {
     "$($severity.Name): $($severity.Value)"
 })
 
-RÉPARTITION PAR CATÉGORIE
+RÃ‰PARTITION PAR CATÃ‰GORIE
 -------------------------
 $(foreach ($category in $Stats.ErrorsByCategory.PSObject.Properties) {
     "$($category.Name): $($category.Value)"
 })
 
-RÉPARTITION PAR SOURCE
+RÃ‰PARTITION PAR SOURCE
 ---------------------
 $(foreach ($source in $Stats.ErrorsBySource.PSObject.Properties) {
     "$($source.Name): $($source.Value)"
@@ -485,7 +485,7 @@ function Register-ErrorReportSchedule {
         [switch]$Force
     )
     
-    # Utiliser les valeurs par défaut si non spécifiées
+    # Utiliser les valeurs par dÃ©faut si non spÃ©cifiÃ©es
     if ($Days -le 0) {
         $Days = $ReportConfig.DefaultPeriod
     }
@@ -498,20 +498,20 @@ function Register-ErrorReportSchedule {
         $OutputFolder = $ReportConfig.OutputFolder
     }
     
-    # Créer le dossier de tâches planifiées s'il n'existe pas
+    # CrÃ©er le dossier de tÃ¢ches planifiÃ©es s'il n'existe pas
     $scheduledTasksFolder = Join-Path -Path $OutputFolder -ChildPath "ScheduledTasks"
     if (-not (Test-Path -Path $scheduledTasksFolder)) {
         New-Item -Path $scheduledTasksFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le script de tâche planifiée
+    # CrÃ©er le script de tÃ¢che planifiÃ©e
     $scriptName = "ErrorReport-$Frequency.ps1"
     $scriptPath = Join-Path -Path $scheduledTasksFolder -ChildPath $scriptName
     
     $scriptContent = @"
-# Script de génération de rapport automatique
-# Fréquence: $Frequency
-# Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+# Script de gÃ©nÃ©ration de rapport automatique
+# FrÃ©quence: $Frequency
+# GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Importer le module de rapports
 `$reportModulePath = "$PSCommandPath"
@@ -523,14 +523,14 @@ else {
     exit 1
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 `$title = "Rapport d'erreurs $Frequency"
 `$outputPath = New-ErrorReport -Title `$title -Days $Days -Format "$Format" -OutputPath ""
 
-# Envoyer par email si des destinataires sont spécifiés
+# Envoyer par email si des destinataires sont spÃ©cifiÃ©s
 `$emailRecipients = @('$($EmailRecipients -join "', '")')
 if (`$emailRecipients.Count -gt 0 -and `$emailRecipients[0] -ne '') {
-    # Vérifier si le module de notifications est disponible
+    # VÃ©rifier si le module de notifications est disponible
     `$notificationModulePath = Join-Path -Path (Split-Path -Parent `$reportModulePath) -ChildPath "ErrorNotifications.ps1"
     if (Test-Path -Path `$notificationModulePath) {
         . `$notificationModulePath
@@ -556,58 +556,58 @@ if (`$emailRecipients.Count -gt 0 -and `$emailRecipients[0] -ne '') {
         
         try {
             Send-MailMessage @emailParams
-            Write-Host "Rapport envoyé par email à `$(`$emailRecipients -join ', ')"
+            Write-Host "Rapport envoyÃ© par email Ã  `$(`$emailRecipients -join ', ')"
         }
         catch {
             Write-Error "Erreur lors de l'envoi du rapport par email: `$_"
         }
     }
     else {
-        Write-Warning "Le module de notifications est introuvable. Le rapport n'a pas été envoyé par email."
+        Write-Warning "Le module de notifications est introuvable. Le rapport n'a pas Ã©tÃ© envoyÃ© par email."
     }
 }
 
-Write-Host "Rapport généré: `$outputPath"
+Write-Host "Rapport gÃ©nÃ©rÃ©: `$outputPath"
 "@
     
     $scriptContent | Set-Content -Path $scriptPath -Encoding UTF8
     
-    # Créer la tâche planifiée
+    # CrÃ©er la tÃ¢che planifiÃ©e
     $taskName = "ErrorReport-$Frequency"
-    $taskDescription = "Génération automatique de rapport d'erreurs ($Frequency)"
+    $taskDescription = "GÃ©nÃ©ration automatique de rapport d'erreurs ($Frequency)"
     
-    # Déterminer le déclencheur
+    # DÃ©terminer le dÃ©clencheur
     $trigger = switch ($Frequency) {
         "Daily" { New-ScheduledTaskTrigger -Daily -At "08:00" }
         "Weekly" { New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At "08:00" }
         "Monthly" { New-ScheduledTaskTrigger -Monthly -DaysOfMonth 1 -At "08:00" }
     }
     
-    # Créer l'action
+    # CrÃ©er l'action
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
     
     if ($existingTask -and -not $Force) {
-        Write-Warning "La tâche planifiée '$taskName' existe déjà. Utilisez -Force pour la remplacer."
+        Write-Warning "La tÃ¢che planifiÃ©e '$taskName' existe dÃ©jÃ . Utilisez -Force pour la remplacer."
         return $false
     }
     
-    # Supprimer la tâche existante si nécessaire
+    # Supprimer la tÃ¢che existante si nÃ©cessaire
     if ($existingTask) {
         Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     }
     
-    # Créer la tâche
+    # CrÃ©er la tÃ¢che
     $task = Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Trigger $trigger -Action $action -RunLevel Highest
     
     if ($task) {
-        Write-Host "Tâche planifiée '$taskName' créée avec succès."
+        Write-Host "TÃ¢che planifiÃ©e '$taskName' crÃ©Ã©e avec succÃ¨s."
         return $true
     }
     else {
-        Write-Error "Erreur lors de la création de la tâche planifiée '$taskName'."
+        Write-Error "Erreur lors de la crÃ©ation de la tÃ¢che planifiÃ©e '$taskName'."
         return $false
     }
 }

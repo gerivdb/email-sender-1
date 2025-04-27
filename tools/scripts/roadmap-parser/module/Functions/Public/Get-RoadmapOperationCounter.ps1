@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Obtient la valeur d'un compteur d'opérations.
+    Obtient la valeur d'un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Get-RoadmapOperationCounter obtient la valeur d'un compteur d'opérations.
+    La fonction Get-RoadmapOperationCounter obtient la valeur d'un compteur d'opÃ©rations.
     Elle retourne 0 si le compteur n'existe pas.
 
 .PARAMETER Name
@@ -11,7 +11,7 @@
 
 .EXAMPLE
     Get-RoadmapOperationCounter -Name "MaFonction"
-    Obtient la valeur du compteur d'opérations nommé "MaFonction".
+    Obtient la valeur du compteur d'opÃ©rations nommÃ© "MaFonction".
 
 .OUTPUTS
     [int] La valeur du compteur.
@@ -19,7 +19,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Get-RoadmapOperationCounter {
     [CmdletBinding()]
@@ -37,9 +37,9 @@ function Get-RoadmapOperationCounter {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions

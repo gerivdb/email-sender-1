@@ -1,5 +1,5 @@
-# Module de validation de refactoring pour le Script Manager
-# Ce module valide les résultats du refactoring
+﻿# Module de validation de refactoring pour le Script Manager
+# Ce module valide les rÃ©sultats du refactoring
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, refactoring, validation
@@ -7,13 +7,13 @@
 function New-RefactoringReport {
     <#
     .SYNOPSIS
-        Crée un rapport de refactoring
+        CrÃ©e un rapport de refactoring
     .DESCRIPTION
-        Génère un rapport HTML des résultats du refactoring
+        GÃ©nÃ¨re un rapport HTML des rÃ©sultats du refactoring
     .PARAMETER Results
-        Résultats du refactoring
+        RÃ©sultats du refactoring
     .PARAMETER OutputPath
-        Chemin où enregistrer le rapport
+        Chemin oÃ¹ enregistrer le rapport
     .EXAMPLE
         New-RefactoringReport -Results $results -OutputPath "refactoring\report.html"
     #>
@@ -26,7 +26,7 @@ function New-RefactoringReport {
         [string]$OutputPath
     )
     
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $HtmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -219,7 +219,7 @@ function New-RefactoringReport {
     <div class="container">
         <div class="header">
             <h1>Rapport de refactoring</h1>
-            <div class="timestamp">Généré le $($Results.Timestamp)</div>
+            <div class="timestamp">GÃ©nÃ©rÃ© le $($Results.Timestamp)</div>
         </div>
         
         <div class="summary">
@@ -228,15 +228,15 @@ function New-RefactoringReport {
                 <div class="value">$($Results.Mode)</div>
             </div>
             <div class="summary-card info">
-                <h3>Scripts traités</h3>
+                <h3>Scripts traitÃ©s</h3>
                 <div class="value">$($Results.TotalScripts)</div>
             </div>
             <div class="summary-card success">
-                <h3>Succès</h3>
+                <h3>SuccÃ¨s</h3>
                 <div class="value">$($Results.SuccessCount)</div>
             </div>
             <div class="summary-card failure">
-                <h3>Échecs</h3>
+                <h3>Ã‰checs</h3>
                 <div class="value">$($Results.TotalScripts - $Results.SuccessCount)</div>
             </div>
         </div>
@@ -249,11 +249,11 @@ function New-RefactoringReport {
         
         <div class="filters">
             <div class="filter active" data-filter="all">Tous</div>
-            <div class="filter" data-filter="success">Succès</div>
-            <div class="filter" data-filter="failure">Échecs</div>
+            <div class="filter" data-filter="success">SuccÃ¨s</div>
+            <div class="filter" data-filter="failure">Ã‰checs</div>
         </div>
         
-        <h2>Résultats par script</h2>
+        <h2>RÃ©sultats par script</h2>
         
         <div id="scripts">
 "@
@@ -273,13 +273,13 @@ function New-RefactoringReport {
                 })
                 
                 $(if ($Result.Operations) {
-                    "<h4>Opérations</h4>"
+                    "<h4>OpÃ©rations</h4>"
                 } elseif ($Result.Suggestions) {
                     "<h4>Suggestions</h4>"
                 })
 "@
         
-        # Ajouter chaque opération ou suggestion
+        # Ajouter chaque opÃ©ration ou suggestion
         if ($Result.Operations) {
             foreach ($Operation in $Result.Operations) {
                 $HtmlContent += @"
@@ -288,7 +288,7 @@ function New-RefactoringReport {
                         <h5 class="operation-title">$($Operation.Title)</h5>
                         <div>
                             <span class="operation-type">$($Operation.TransformationType)</span>
-                            <span class="operation-status $(if ($Operation.Success) { 'success' } else { 'failure' })">$(if ($Operation.Success) { 'Succès' } else { 'Échec' })</span>
+                            <span class="operation-status $(if ($Operation.Success) { 'success' } else { 'failure' })">$(if ($Operation.Success) { 'SuccÃ¨s' } else { 'Ã‰chec' })</span>
                         </div>
                     </div>
                     
@@ -302,7 +302,7 @@ function New-RefactoringReport {
                             $($Operation.BeforeCode)
                         </div>
                         <div class="code-block">
-                            <h4>Après</h4>
+                            <h4>AprÃ¨s</h4>
                             $($Operation.AfterCode)
                         </div>
                     </div>
@@ -323,7 +323,7 @@ function New-RefactoringReport {
                     
                     <p>$($Suggestion.Description)</p>
                     <p><strong>Recommandation:</strong> $($Suggestion.Recommendation)</p>
-                    <p><strong>Impact estimé:</strong> $($Suggestion.EstimatedImpact)</p>
+                    <p><strong>Impact estimÃ©:</strong> $($Suggestion.EstimatedImpact)</p>
                     <p><strong>Auto-corrigeable:</strong> $(if ($Suggestion.AutoFixable) { 'Oui' } else { 'Non' })</p>
                     
                     <div class="code-comparison">
@@ -332,7 +332,7 @@ function New-RefactoringReport {
                             $($Suggestion.BeforeCode)
                         </div>
                         <div class="code-block">
-                            <h4>Après</h4>
+                            <h4>AprÃ¨s</h4>
                             $($Suggestion.AfterCode)
                         </div>
                     </div>
@@ -351,7 +351,7 @@ function New-RefactoringReport {
         </div>
         
         <div class="footer">
-            <p>Généré par le Script Manager</p>
+            <p>GÃ©nÃ©rÃ© par le Script Manager</p>
         </div>
     </div>
     
@@ -397,19 +397,19 @@ function New-RefactoringReport {
     # Enregistrer le rapport HTML
     Set-Content -Path $OutputPath -Value $HtmlContent
     
-    Write-Host "  Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "  Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 function Test-RefactoredScript {
     <#
     .SYNOPSIS
-        Teste un script refactoré
+        Teste un script refactorÃ©
     .DESCRIPTION
-        Vérifie que le script refactoré est valide et fonctionne correctement
+        VÃ©rifie que le script refactorÃ© est valide et fonctionne correctement
     .PARAMETER OriginalPath
         Chemin du script original
     .PARAMETER RefactoredPath
-        Chemin du script refactoré
+        Chemin du script refactorÃ©
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -427,7 +427,7 @@ function Test-RefactoredScript {
         [string]$ScriptType
     )
     
-    # Créer un objet pour stocker les résultats
+    # CrÃ©er un objet pour stocker les rÃ©sultats
     $Result = [PSCustomObject]@{
         OriginalPath = $OriginalPath
         RefactoredPath = $RefactoredPath
@@ -437,18 +437,18 @@ function Test-RefactoredScript {
         ErrorMessage = $null
     }
     
-    # Vérifier que les fichiers existent
+    # VÃ©rifier que les fichiers existent
     if (-not (Test-Path -Path $OriginalPath)) {
         $Result.ErrorMessage = "Le script original n'existe pas: $OriginalPath"
         return $Result
     }
     
     if (-not (Test-Path -Path $RefactoredPath)) {
-        $Result.ErrorMessage = "Le script refactoré n'existe pas: $RefactoredPath"
+        $Result.ErrorMessage = "Le script refactorÃ© n'existe pas: $RefactoredPath"
         return $Result
     }
     
-    # Vérifier la syntaxe selon le type de script
+    # VÃ©rifier la syntaxe selon le type de script
     try {
         switch ($ScriptType) {
             "PowerShell" {
@@ -466,7 +466,7 @@ function Test-RefactoredScript {
                 $PythonPath = Get-Command python -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
                 
                 if (-not $PythonPath) {
-                    $Result.ErrorMessage = "Python n'est pas installé ou n'est pas dans le PATH"
+                    $Result.ErrorMessage = "Python n'est pas installÃ© ou n'est pas dans le PATH"
                     return $Result
                 }
                 
@@ -480,14 +480,14 @@ function Test-RefactoredScript {
                 $Result.SyntaxValid = $true
             }
             "Batch" {
-                # Pas de vérification de syntaxe simple pour les scripts Batch
+                # Pas de vÃ©rification de syntaxe simple pour les scripts Batch
                 $Result.SyntaxValid = $true
             }
             "Shell" {
                 $BashPath = Get-Command bash -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
                 
                 if (-not $BashPath) {
-                    $Result.ErrorMessage = "Bash n'est pas installé ou n'est pas dans le PATH"
+                    $Result.ErrorMessage = "Bash n'est pas installÃ© ou n'est pas dans le PATH"
                     return $Result
                 }
                 
@@ -506,11 +506,11 @@ function Test-RefactoredScript {
             }
         }
         
-        # Si la syntaxe est valide, marquer l'exécution comme réussie
-        # Note: Nous ne testons pas l'exécution réelle pour éviter les effets secondaires
+        # Si la syntaxe est valide, marquer l'exÃ©cution comme rÃ©ussie
+        # Note: Nous ne testons pas l'exÃ©cution rÃ©elle pour Ã©viter les effets secondaires
         $Result.ExecutionSuccessful = $true
     } catch {
-        $Result.ErrorMessage = "Erreur lors de la vérification de la syntaxe: $_"
+        $Result.ErrorMessage = "Erreur lors de la vÃ©rification de la syntaxe: $_"
     }
     
     return $Result

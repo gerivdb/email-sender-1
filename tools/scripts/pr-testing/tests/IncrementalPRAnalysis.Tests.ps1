@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-IncrementalPRAnalysis.
@@ -13,18 +13,18 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-IncrementalPRAnalysis.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Start-IncrementalPRAnalysis non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Start-IncrementalPRAnalysis non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modulesToImport = @(
     "FileContentIndexer.psm1",
@@ -39,30 +39,30 @@ foreach ($module in $modulesToImport) {
     }
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "IncrementalPRAnalysisTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer un dépôt Git de test
+# Fonction pour crÃ©er un dÃ©pÃ´t Git de test
 function New-TestRepository {
     param(
         [string]$Path
     )
 
-    # Créer le répertoire du dépôt
+    # CrÃ©er le rÃ©pertoire du dÃ©pÃ´t
     New-Item -Path $Path -ItemType Directory -Force | Out-Null
 
-    # Initialiser le dépôt Git
+    # Initialiser le dÃ©pÃ´t Git
     Push-Location -Path $Path
     try {
         git init
         git config user.name "Test User"
         git config user.email "test@example.com"
 
-        # Créer un fichier README
+        # CrÃ©er un fichier README
         Set-Content -Path "README.md" -Value "# Test Repository" -Encoding UTF8
 
-        # Créer un fichier PowerShell
+        # CrÃ©er un fichier PowerShell
         $psContent = @'
 function Test-Function {
     param(
@@ -83,7 +83,7 @@ foreach ($item in $collection) {
 '@
         Set-Content -Path "test_script.ps1" -Value $psContent -Encoding UTF8
 
-        # Créer un fichier Python
+        # CrÃ©er un fichier Python
         $pyContent = @'
 import os
 import sys
@@ -109,10 +109,10 @@ for item in collection:
         git add .
         git commit -m "Initial commit"
 
-        # Créer une branche de base
+        # CrÃ©er une branche de base
         git branch base
 
-        # Créer une branche de fonctionnalité
+        # CrÃ©er une branche de fonctionnalitÃ©
         git checkout -b feature
 
         # Modifier le fichier PowerShell
@@ -130,7 +130,7 @@ for item in collection:
         git add .
         git commit -m "Feature changes"
 
-        # Revenir à la branche principale
+        # Revenir Ã  la branche principale
         git checkout master
 
         return $Path
@@ -145,7 +145,7 @@ function New-MockGhCommand {
         [string]$RepoPath
     )
 
-    # Créer un script qui simule la commande gh
+    # CrÃ©er un script qui simule la commande gh
     $mockGhPath = Join-Path -Path $testDir -ChildPath "gh.ps1"
 
     $mockGhScript = @'
@@ -179,7 +179,7 @@ if ($Command -eq "pr" -and $Subcommand -eq "list") {
 
 # Simuler la commande gh pr view
 if ($Command -eq "pr" -and $Subcommand -eq "view") {
-    # Vérifier si on demande les fichiers
+    # VÃ©rifier si on demande les fichiers
     if ($RemainingArgs -contains "--json" -and $RemainingArgs -contains "files") {
         $json = @"
 {
@@ -226,29 +226,29 @@ if ($Command -eq "pr" -and $Subcommand -eq "view") {
     exit 0
 }
 
-# Si on arrive ici, c'est que la commande n'est pas supportée
-Write-Error "Commande non supportée: gh $Command $Subcommand $RemainingArgs"
+# Si on arrive ici, c'est que la commande n'est pas supportÃ©e
+Write-Error "Commande non supportÃ©e: gh $Command $Subcommand $RemainingArgs"
 exit 1
 '@
 
     Set-Content -Path $mockGhPath -Value $mockGhScript -Encoding UTF8
 
-    # Rendre le script exécutable
+    # Rendre le script exÃ©cutable
     if ($IsWindows -or $null -eq $IsWindows) {
-        # Sur Windows, pas besoin de rendre le script exécutable
+        # Sur Windows, pas besoin de rendre le script exÃ©cutable
     } else {
-        # Sur Linux/macOS, rendre le script exécutable
+        # Sur Linux/macOS, rendre le script exÃ©cutable
         chmod +x $mockGhPath
     }
 
     return $mockGhPath
 }
 
-# Créer un dépôt Git de test
+# CrÃ©er un dÃ©pÃ´t Git de test
 $testRepoPath = Join-Path -Path $testDir -ChildPath "test-repo"
 $repoPath = New-TestRepository -Path $testRepoPath
 
-# Créer un mock pour la commande gh
+# CrÃ©er un mock pour la commande gh
 $mockGhPath = New-MockGhCommand -RepoPath $repoPath
 
 # Tests Pester
@@ -257,21 +257,21 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
         # Sauvegarder le PATH original
         $script:originalPath = $env:PATH
 
-        # Ajouter le répertoire du mock gh au PATH
+        # Ajouter le rÃ©pertoire du mock gh au PATH
         $env:PATH = "$(Split-Path -Path $mockGhPath -Parent);$env:PATH"
 
-        # Créer un répertoire pour les rapports
+        # CrÃ©er un rÃ©pertoire pour les rapports
         $script:reportsDir = Join-Path -Path $testDir -ChildPath "reports"
         New-Item -Path $script:reportsDir -ItemType Directory -Force | Out-Null
 
-        # Créer un répertoire pour le cache
+        # CrÃ©er un rÃ©pertoire pour le cache
         $script:cacheDir = Join-Path -Path $testDir -ChildPath "cache"
         New-Item -Path $script:cacheDir -ItemType Directory -Force | Out-Null
     }
 
-    Context "Paramètres et validation" {
-        It "Accepte les paramètres requis" {
-            # Créer un script temporaire qui appelle le script à tester avec les paramètres minimaux
+    Context "ParamÃ¨tres et validation" {
+        It "Accepte les paramÃ¨tres requis" {
+            # CrÃ©er un script temporaire qui appelle le script Ã  tester avec les paramÃ¨tres minimaux
             $tempScript = Join-Path -Path $testDir -ChildPath "temp_script.ps1"
             $tempScriptContent = @"
 `$result = & '$scriptToTest' -RepositoryPath '$repoPath' -OutputPath '$script:reportsDir' -UseCache `$false -WhatIf
@@ -279,21 +279,21 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
 "@
             Set-Content -Path $tempScript -Value $tempScriptContent -Encoding UTF8
 
-            # Exécuter le script temporaire
+            # ExÃ©cuter le script temporaire
             $result = & $tempScript
 
-            # Le script ne devrait pas générer d'erreur
+            # Le script ne devrait pas gÃ©nÃ©rer d'erreur
             $LASTEXITCODE | Should -Be 0
         }
     }
 
     Context "Fonctions internes" {
         BeforeAll {
-            # Charger le script dans une portée temporaire pour accéder aux fonctions internes
+            # Charger le script dans une portÃ©e temporaire pour accÃ©der aux fonctions internes
             $scriptContent = Get-Content -Path $scriptToTest -Raw
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
 
-            # Créer un nouveau contexte de script
+            # CrÃ©er un nouveau contexte de script
             $script:tempModule = New-Module -Name "TempModule" -ScriptBlock $scriptBlock
 
             # Importer le module temporaire
@@ -301,7 +301,7 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
         }
 
         It "La fonction Get-PullRequestInfo fonctionne correctement" {
-            # Vérifier si la fonction existe
+            # VÃ©rifier si la fonction existe
             $function = Get-Command -name Get-PullRequestInfo -Module TempModule -ErrorAction SilentlyContinue
             if ($null -eq $function) {
                 Set-ItResult -Skipped -Because "La fonction Get-PullRequestInfo n'est pas accessible"
@@ -311,7 +311,7 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
             # Appeler la fonction
             $prInfo = & $function -RepoPath $repoPath
 
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $prInfo | Should -Not -BeNullOrEmpty
             $prInfo.Number | Should -Be 1
             $prInfo.Title | Should -Be "Feature changes"
@@ -326,19 +326,19 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
         }
     }
 
-    Context "Exécution du script" {
-        It "Génère un rapport d'analyse" -Skip {
-            # Ce test est ignoré car il nécessite une exécution complète du script
-            # qui peut prendre du temps et dépend de l'environnement
+    Context "ExÃ©cution du script" {
+        It "GÃ©nÃ¨re un rapport d'analyse" -Skip {
+            # Ce test est ignorÃ© car il nÃ©cessite une exÃ©cution complÃ¨te du script
+            # qui peut prendre du temps et dÃ©pend de l'environnement
 
-            # Exécuter le script avec les paramètres minimaux
+            # ExÃ©cuter le script avec les paramÃ¨tres minimaux
             & $scriptToTest -RepositoryPath $repoPath -PullRequestNumber 1 -OutputPath $script:reportsDir -UseCache $false
 
-            # Vérifier que le rapport a été généré
+            # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
             $reportPath = Join-Path -Path $script:reportsDir -ChildPath "incremental_analysis_1.json"
             Test-Path -Path $reportPath | Should -Be $true
 
-            # Vérifier le contenu du rapport
+            # VÃ©rifier le contenu du rapport
             $report = Get-Content -Path $reportPath -Raw | ConvertFrom-Json
             $report | Should -Not -BeNullOrEmpty
             $report.PullRequest.Number | Should -Be 1
@@ -355,7 +355,7 @@ Describe "Start-IncrementalPRAnalysis Script Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed
 
 # Nettoyer les fichiers de test
@@ -363,7 +363,7 @@ Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed
         
 # Nettoyer les fichiers de test
@@ -371,5 +371,5 @@ Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

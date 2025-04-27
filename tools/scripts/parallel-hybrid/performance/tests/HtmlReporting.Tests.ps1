@@ -1,7 +1,7 @@
-Describe "Fonctions de génération de rapports HTML" {
-    Context "Génération de graphiques" {
+﻿Describe "Fonctions de gÃ©nÃ©ration de rapports HTML" {
+    Context "GÃ©nÃ©ration de graphiques" {
         BeforeAll {
-            # Fonction pour générer un graphique Chart.js
+            # Fonction pour gÃ©nÃ©rer un graphique Chart.js
             function New-ChartJsGraph {
                 param (
                     [string]$ChartId,
@@ -38,11 +38,11 @@ Describe "Fonctions de génération de rapports HTML" {
                 return $chartHtml
             }
 
-            # Données de test
+            # DonnÃ©es de test
             $testLabels = '["Test1", "Test2", "Test3"]'
             $testDataSets = @"
 [{
-    label: 'Temps d\'exécution (s)',
+    label: 'Temps d\'exÃ©cution (s)',
     data: [5.2, 4.5, 4.8],
     backgroundColor: 'rgba(54, 162, 235, 0.2)',
     borderColor: 'rgba(54, 162, 235, 1)',
@@ -51,22 +51,22 @@ Describe "Fonctions de génération de rapports HTML" {
 "@
         }
 
-        It "Génère correctement un graphique Chart.js" {
-            # Générer un graphique
+        It "GÃ©nÃ¨re correctement un graphique Chart.js" {
+            # GÃ©nÃ©rer un graphique
             $chartHtml = New-ChartJsGraph -ChartId "testChart" -ChartType "bar" -Title "Test Chart" -Labels $testLabels -DataSets $testDataSets
 
-            # Vérifier que le HTML contient les éléments attendus
+            # VÃ©rifier que le HTML contient les Ã©lÃ©ments attendus
             $chartHtml | Should -Match "canvas id=`"testChart`""
             $chartHtml | Should -Match "type: 'bar'"
             $chartHtml | Should -Match "text: 'Test Chart'"
             $chartHtml | Should -Match $testLabels
-            $chartHtml | Should -Match "Temps d\\'exécution \(s\)"
+            $chartHtml | Should -Match "Temps d\\'exÃ©cution \(s\)"
         }
     }
 
-    Context "Génération de tableaux HTML" {
+    Context "GÃ©nÃ©ration de tableaux HTML" {
         BeforeAll {
-            # Fonction pour générer un tableau HTML
+            # Fonction pour gÃ©nÃ©rer un tableau HTML
             function New-HtmlTable {
                 param (
                     [array]$Data,
@@ -80,19 +80,19 @@ Describe "Fonctions de génération de rapports HTML" {
                 $tableHtml = "<table id='$TableId' class='$CssClass'>`n"
                 $tableHtml += "  <thead>`n    <tr>`n"
 
-                # Ajouter les en-têtes
+                # Ajouter les en-tÃªtes
                 foreach ($header in $Headers) {
                     $tableHtml += "      <th>$header</th>`n"
                 }
                 $tableHtml += "    </tr>`n  </thead>`n  <tbody>`n"
 
-                # Ajouter les lignes de données
+                # Ajouter les lignes de donnÃ©es
                 foreach ($row in $Data) {
                     $tableHtml += "    <tr>`n"
                     foreach ($col in $Columns) {
                         $value = $row.$col
 
-                        # Appliquer le formattage si défini
+                        # Appliquer le formattage si dÃ©fini
                         if ($Formatters.ContainsKey($col)) {
                             $format = $Formatters[$col]
                             $value = $value.ToString($format)
@@ -107,7 +107,7 @@ Describe "Fonctions de génération de rapports HTML" {
                 return $tableHtml
             }
 
-            # Données de test
+            # DonnÃ©es de test
             $testData = @(
                 [PSCustomObject]@{
                     BatchSize = 10
@@ -127,24 +127,24 @@ Describe "Fonctions de génération de rapports HTML" {
             )
         }
 
-        It "Génère correctement un tableau HTML" {
-            # Générer un tableau
-            $tableHtml = New-HtmlTable -Data $testData -TableId "testTable" -Columns @("BatchSize", "ExecutionTime", "SuccessRate") -Headers @("Taille du lot", "Temps d'exécution (s)", "Taux de succès (%)") -Formatters @{ExecutionTime = "F2"; SuccessRate = "F1"}
+        It "GÃ©nÃ¨re correctement un tableau HTML" {
+            # GÃ©nÃ©rer un tableau
+            $tableHtml = New-HtmlTable -Data $testData -TableId "testTable" -Columns @("BatchSize", "ExecutionTime", "SuccessRate") -Headers @("Taille du lot", "Temps d'exÃ©cution (s)", "Taux de succÃ¨s (%)") -Formatters @{ExecutionTime = "F2"; SuccessRate = "F1"}
 
-            # Vérifier que le HTML contient les éléments attendus
+            # VÃ©rifier que le HTML contient les Ã©lÃ©ments attendus
             $tableHtml | Should -Match "table id='testTable'"
             $tableHtml | Should -Match "<th>Taille du lot</th>"
-            $tableHtml | Should -Match "<th>Temps d'exécution \(s\)</th>"
-            $tableHtml | Should -Match "<th>Taux de succès \(%\)</th>"
+            $tableHtml | Should -Match "<th>Temps d'exÃ©cution \(s\)</th>"
+            $tableHtml | Should -Match "<th>Taux de succÃ¨s \(%\)</th>"
             $tableHtml | Should -Match "<td>10</td>"
             $tableHtml | Should -Match "<td>5.20</td>"
             $tableHtml | Should -Match "<td>100.0</td>"
         }
     }
 
-    Context "Génération de rapports complets" {
+    Context "GÃ©nÃ©ration de rapports complets" {
         BeforeAll {
-            # Fonction pour générer un rapport HTML complet
+            # Fonction pour gÃ©nÃ©rer un rapport HTML complet
             function New-HtmlReport {
                 param (
                     [string]$Title,
@@ -183,15 +183,15 @@ Describe "Fonctions de génération de rapports HTML" {
             }
         }
 
-        It "Génère correctement un rapport HTML complet" {
-            # Générer un rapport
+        It "GÃ©nÃ¨re correctement un rapport HTML complet" {
+            # GÃ©nÃ©rer un rapport
             $reportContent = "<p>Ceci est un rapport de test.</p>"
             $customCss = ".test { color: red; }"
             $customJs = "console.log('Test');"
 
             $reportHtml = New-HtmlReport -Title "Rapport de test" -Content $reportContent -CssStyles $customCss -JsScripts $customJs
 
-            # Vérifier que le HTML contient les éléments attendus
+            # VÃ©rifier que le HTML contient les Ã©lÃ©ments attendus
             $reportHtml | Should -Match "<title>Rapport de test</title>"
             $reportHtml | Should -Match "<h1>Rapport de test</h1>"
             $reportHtml | Should -Match "<p>Ceci est un rapport de test.</p>"

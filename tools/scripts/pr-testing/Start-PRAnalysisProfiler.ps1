@@ -1,46 +1,46 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démarre le profilage du système d'analyse des pull requests.
+    DÃ©marre le profilage du systÃ¨me d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script lance un profilage complet du système d'analyse des pull requests
-    pour identifier les goulots d'étranglement et les opportunités d'optimisation.
-    Il prend en charge plusieurs types de traceurs et génère des rapports détaillés.
+    Ce script lance un profilage complet du systÃ¨me d'analyse des pull requests
+    pour identifier les goulots d'Ã©tranglement et les opportunitÃ©s d'optimisation.
+    Il prend en charge plusieurs types de traceurs et gÃ©nÃ¨re des rapports dÃ©taillÃ©s.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt à analyser.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t Ã  analyser.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER PullRequestNumber
-    Le numéro de la pull request à analyser.
-    Si non spécifié, la dernière pull request sera utilisée.
+    Le numÃ©ro de la pull request Ã  analyser.
+    Si non spÃ©cifiÃ©, la derniÃ¨re pull request sera utilisÃ©e.
 
 .PARAMETER TracerTypes
-    Les types de traceurs à utiliser pour le profilage.
+    Les types de traceurs Ã  utiliser pour le profilage.
     Valeurs possibles: "CPU", "Memory", "IO", "All"
-    Par défaut: "All"
+    Par dÃ©faut: "All"
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats du profilage.
-    Par défaut: "reports\pr-analysis\profiling"
+    Le chemin oÃ¹ enregistrer les rÃ©sultats du profilage.
+    Par dÃ©faut: "reports\pr-analysis\profiling"
 
 .PARAMETER DetailLevel
-    Le niveau de détail du profilage.
+    Le niveau de dÃ©tail du profilage.
     Valeurs possibles: "Basic", "Detailed", "Comprehensive"
-    Par défaut: "Detailed"
+    Par dÃ©faut: "Detailed"
 
 .PARAMETER GenerateFlameGraph
-    Indique s'il faut générer un graphique de flamme (flamegraph).
-    Par défaut: $true
+    Indique s'il faut gÃ©nÃ©rer un graphique de flamme (flamegraph).
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\Start-PRAnalysisProfiler.ps1
-    Démarre le profilage de la dernière pull request avec tous les traceurs.
+    DÃ©marre le profilage de la derniÃ¨re pull request avec tous les traceurs.
 
 .EXAMPLE
     .\Start-PRAnalysisProfiler.ps1 -PullRequestNumber 42 -TracerTypes "CPU", "Memory" -DetailLevel "Comprehensive"
-    Démarre un profilage détaillé de la pull request #42 avec les traceurs CPU et mémoire.
+    DÃ©marre un profilage dÃ©taillÃ© de la pull request #42 avec les traceurs CPU et mÃ©moire.
 
 .NOTES
     Version: 1.0
@@ -71,12 +71,12 @@ param(
     [bool]$GenerateFlameGraph = $true
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules\PRPerformanceTracer.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module PRPerformanceTracer non trouvé à l'emplacement: $modulePath"
+    Write-Error "Module PRPerformanceTracer non trouvÃ© Ã  l'emplacement: $modulePath"
     exit 1
 }
 
@@ -92,33 +92,33 @@ function Get-PullRequestInfo {
     )
 
     try {
-        # Vérifier si le dépôt existe
+        # VÃ©rifier si le dÃ©pÃ´t existe
         if (-not (Test-Path -Path $RepoPath)) {
-            throw "Le dépôt n'existe pas à l'emplacement spécifié: $RepoPath"
+            throw "Le dÃ©pÃ´t n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $RepoPath"
         }
 
-        # Changer de répertoire vers le dépôt
+        # Changer de rÃ©pertoire vers le dÃ©pÃ´t
         Push-Location -Path $RepoPath
 
         try {
-            # Si aucun numéro de PR n'est spécifié, utiliser la dernière PR
+            # Si aucun numÃ©ro de PR n'est spÃ©cifiÃ©, utiliser la derniÃ¨re PR
             if ($PRNumber -eq 0) {
                 $prs = gh pr list --json number,title,headRefName,baseRefName,createdAt --limit 1 | ConvertFrom-Json
                 if ($prs.Count -eq 0) {
-                    throw "Aucune pull request trouvée dans le dépôt."
+                    throw "Aucune pull request trouvÃ©e dans le dÃ©pÃ´t."
                 }
                 $pr = $prs[0]
             } else {
                 $pr = gh pr view $PRNumber --json number,title,headRefName,baseRefName,createdAt | ConvertFrom-Json
                 if ($null -eq $pr) {
-                    throw "Pull request #$PRNumber non trouvée."
+                    throw "Pull request #$PRNumber non trouvÃ©e."
                 }
             }
 
-            # Obtenir les fichiers modifiés
+            # Obtenir les fichiers modifiÃ©s
             $files = gh pr view $pr.number --json files | ConvertFrom-Json
 
-            # Créer l'objet d'informations sur la PR
+            # CrÃ©er l'objet d'informations sur la PR
             $prInfo = [PSCustomObject]@{
                 Number     = $pr.number
                 Title      = $pr.title
@@ -134,16 +134,16 @@ function Get-PullRequestInfo {
 
             return $prInfo
         } finally {
-            # Revenir au répertoire précédent
+            # Revenir au rÃ©pertoire prÃ©cÃ©dent
             Pop-Location
         }
     } catch {
-        Write-Error "Erreur lors de la récupération des informations sur la pull request: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des informations sur la pull request: $_"
         return $null
     }
 }
 
-# Fonction pour démarrer le profilage
+# Fonction pour dÃ©marrer le profilage
 function Start-Profiling {
     [CmdletBinding()]
     param(
@@ -161,12 +161,12 @@ function Start-Profiling {
     )
 
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
 
-        # Déterminer les traceurs à utiliser
+        # DÃ©terminer les traceurs Ã  utiliser
         $enabledTracers = @()
         if ($Tracers -contains "All") {
             $enabledTracers = @("CPU", "Memory", "IO")
@@ -174,25 +174,25 @@ function Start-Profiling {
             $enabledTracers = $Tracers
         }
 
-        Write-Host "Démarrage du profilage de la pull request #$($PullRequestInfo.Number) avec les traceurs: $($enabledTracers -join ', ')" -ForegroundColor Cyan
+        Write-Host "DÃ©marrage du profilage de la pull request #$($PullRequestInfo.Number) avec les traceurs: $($enabledTracers -join ', ')" -ForegroundColor Cyan
 
         # Initialiser le traceur de performance
         $tracer = New-PRPerformanceTracer -TracerTypes $enabledTracers -DetailLevel $Detail -OutputPath $OutputDir
 
-        # Démarrer le traçage
+        # DÃ©marrer le traÃ§age
         $tracer.Start()
 
         # Simuler l'analyse de la pull request
         $analysisResults = Invoke-PRAnalysisWithTracing -PullRequestInfo $PullRequestInfo -Tracer $tracer
 
-        # Arrêter le traçage
+        # ArrÃªter le traÃ§age
         $tracer.Stop()
 
-        # Générer le rapport de performance
+        # GÃ©nÃ©rer le rapport de performance
         $reportPath = Join-Path -Path $OutputDir -ChildPath "performance_report_pr$($PullRequestInfo.Number).html"
         $report = Export-PRPerformanceReport -Tracer $tracer -OutputPath $reportPath -PullRequestInfo $PullRequestInfo
 
-        # Générer le flamegraph si demandé
+        # GÃ©nÃ©rer le flamegraph si demandÃ©
         if ($GenerateFlameGraph) {
             $flamegraphPath = Join-Path -Path $OutputDir -ChildPath "flamegraph_pr$($PullRequestInfo.Number).html"
             Export-PRPerformanceFlameGraph -Tracer $tracer -OutputPath $flamegraphPath
@@ -213,7 +213,7 @@ function Start-Profiling {
     }
 }
 
-# Fonction pour simuler l'analyse d'une pull request avec traçage
+# Fonction pour simuler l'analyse d'une pull request avec traÃ§age
 function Invoke-PRAnalysisWithTracing {
     [CmdletBinding()]
     param(
@@ -225,9 +225,9 @@ function Invoke-PRAnalysisWithTracing {
     )
 
     try {
-        Write-Host "Exécution de l'analyse de la pull request #$($PullRequestInfo.Number) avec traçage..." -ForegroundColor Yellow
+        Write-Host "ExÃ©cution de l'analyse de la pull request #$($PullRequestInfo.Number) avec traÃ§age..." -ForegroundColor Yellow
 
-        # Créer un objet pour stocker les résultats
+        # CrÃ©er un objet pour stocker les rÃ©sultats
         $results = [PSCustomObject]@{
             PullRequestNumber = $PullRequestInfo.Number
             FileResults = @()
@@ -237,40 +237,40 @@ function Invoke-PRAnalysisWithTracing {
             Duration = $null
         }
 
-        # Démarrer le traçage de l'opération principale
-        $Tracer.StartOperation("AnalysePR", "Analyse complète de la PR #$($PullRequestInfo.Number)")
+        # DÃ©marrer le traÃ§age de l'opÃ©ration principale
+        $Tracer.StartOperation("AnalysePR", "Analyse complÃ¨te de la PR #$($PullRequestInfo.Number)")
 
         # Analyser chaque fichier
         foreach ($file in $PullRequestInfo.Files) {
-            # Démarrer le traçage pour ce fichier
+            # DÃ©marrer le traÃ§age pour ce fichier
             $Tracer.StartOperation("AnalyseFichier", "Analyse du fichier: $($file.path)")
 
             # Simuler l'analyse du fichier
             $fileResult = Invoke-FileAnalysisWithTracing -FilePath $file.path -PullRequestInfo $PullRequestInfo -Tracer $Tracer
 
-            # Ajouter les résultats
+            # Ajouter les rÃ©sultats
             $results.FileResults += $fileResult
             $results.TotalIssues += $fileResult.Issues.Count
 
-            # Arrêter le traçage pour ce fichier
+            # ArrÃªter le traÃ§age pour ce fichier
             $Tracer.StopOperation("AnalyseFichier")
         }
 
-        # Finaliser les résultats
+        # Finaliser les rÃ©sultats
         $results.EndTime = Get-Date
         $results.Duration = $results.EndTime - $results.StartTime
 
-        # Arrêter le traçage de l'opération principale
+        # ArrÃªter le traÃ§age de l'opÃ©ration principale
         $Tracer.StopOperation("AnalysePR")
 
         return $results
     } catch {
-        Write-Error "Erreur lors de l'analyse avec traçage: $_"
+        Write-Error "Erreur lors de l'analyse avec traÃ§age: $_"
         return $null
     }
 }
 
-# Fonction pour simuler l'analyse d'un fichier avec traçage
+# Fonction pour simuler l'analyse d'un fichier avec traÃ§age
 function Invoke-FileAnalysisWithTracing {
     [CmdletBinding()]
     param(
@@ -285,7 +285,7 @@ function Invoke-FileAnalysisWithTracing {
     )
 
     try {
-        # Créer un objet pour stocker les résultats
+        # CrÃ©er un objet pour stocker les rÃ©sultats
         $fileResult = [PSCustomObject]@{
             FilePath = $FilePath
             Issues = @()
@@ -294,7 +294,7 @@ function Invoke-FileAnalysisWithTracing {
             Duration = $null
         }
 
-        # Simuler différentes étapes d'analyse avec traçage
+        # Simuler diffÃ©rentes Ã©tapes d'analyse avec traÃ§age
         
         # 1. Lecture du fichier
         $Tracer.StartOperation("LectureFichier", "Lecture du fichier: $FilePath")
@@ -305,7 +305,7 @@ function Invoke-FileAnalysisWithTracing {
         $Tracer.StartOperation("AnalyseSyntaxique", "Analyse syntaxique: $FilePath")
         Start-Sleep -Milliseconds (Get-Random -Minimum 50 -Maximum 200) # Simuler le temps d'analyse
         
-        # Simuler la détection d'erreurs syntaxiques
+        # Simuler la dÃ©tection d'erreurs syntaxiques
         $syntaxIssues = 0
         if ((Get-Random -Minimum 1 -Maximum 10) -gt 7) {
             $syntaxIssues = Get-Random -Minimum 1 -Maximum 3
@@ -313,7 +313,7 @@ function Invoke-FileAnalysisWithTracing {
                 $fileResult.Issues += [PSCustomObject]@{
                     Type = "Syntax"
                     Line = Get-Random -Minimum 1 -Maximum 100
-                    Message = "Erreur de syntaxe: $((Get-Random -InputObject @("Parenthèse manquante", "Accolade non fermée", "Point-virgule manquant")))"
+                    Message = "Erreur de syntaxe: $((Get-Random -InputObject @("ParenthÃ¨se manquante", "Accolade non fermÃ©e", "Point-virgule manquant")))"
                     Severity = "Error"
                 }
             }
@@ -324,7 +324,7 @@ function Invoke-FileAnalysisWithTracing {
         $Tracer.StartOperation("AnalyseStyle", "Analyse de style: $FilePath")
         Start-Sleep -Milliseconds (Get-Random -Minimum 30 -Maximum 150) # Simuler le temps d'analyse
         
-        # Simuler la détection de problèmes de style
+        # Simuler la dÃ©tection de problÃ¨mes de style
         $styleIssues = 0
         if ((Get-Random -Minimum 1 -Maximum 10) -gt 5) {
             $styleIssues = Get-Random -Minimum 1 -Maximum 5
@@ -332,7 +332,7 @@ function Invoke-FileAnalysisWithTracing {
                 $fileResult.Issues += [PSCustomObject]@{
                     Type = "Style"
                     Line = Get-Random -Minimum 1 -Maximum 100
-                    Message = "Problème de style: $((Get-Random -InputObject @("Indentation incorrecte", "Ligne trop longue", "Nom de variable non conforme")))"
+                    Message = "ProblÃ¨me de style: $((Get-Random -InputObject @("Indentation incorrecte", "Ligne trop longue", "Nom de variable non conforme")))"
                     Severity = "Warning"
                 }
             }
@@ -343,7 +343,7 @@ function Invoke-FileAnalysisWithTracing {
         $Tracer.StartOperation("AnalysePerformance", "Analyse de performance: $FilePath")
         Start-Sleep -Milliseconds (Get-Random -Minimum 40 -Maximum 180) # Simuler le temps d'analyse
         
-        # Simuler la détection de problèmes de performance
+        # Simuler la dÃ©tection de problÃ¨mes de performance
         $perfIssues = 0
         if ((Get-Random -Minimum 1 -Maximum 10) -gt 6) {
             $perfIssues = Get-Random -Minimum 1 -Maximum 3
@@ -351,18 +351,18 @@ function Invoke-FileAnalysisWithTracing {
                 $fileResult.Issues += [PSCustomObject]@{
                     Type = "Performance"
                     Line = Get-Random -Minimum 1 -Maximum 100
-                    Message = "Problème de performance: $((Get-Random -InputObject @("Boucle inefficace", "Allocation mémoire excessive", "Opération I/O dans une boucle")))"
+                    Message = "ProblÃ¨me de performance: $((Get-Random -InputObject @("Boucle inefficace", "Allocation mÃ©moire excessive", "OpÃ©ration I/O dans une boucle")))"
                     Severity = "Warning"
                 }
             }
         }
         $Tracer.StopOperation("AnalysePerformance")
 
-        # 5. Analyse de sécurité
-        $Tracer.StartOperation("AnalyseSécurité", "Analyse de sécurité: $FilePath")
+        # 5. Analyse de sÃ©curitÃ©
+        $Tracer.StartOperation("AnalyseSÃ©curitÃ©", "Analyse de sÃ©curitÃ©: $FilePath")
         Start-Sleep -Milliseconds (Get-Random -Minimum 60 -Maximum 250) # Simuler le temps d'analyse
         
-        # Simuler la détection de problèmes de sécurité
+        # Simuler la dÃ©tection de problÃ¨mes de sÃ©curitÃ©
         $secIssues = 0
         if ((Get-Random -Minimum 1 -Maximum 10) -gt 8) {
             $secIssues = Get-Random -Minimum 1 -Maximum 2
@@ -370,25 +370,25 @@ function Invoke-FileAnalysisWithTracing {
                 $fileResult.Issues += [PSCustomObject]@{
                     Type = "Security"
                     Line = Get-Random -Minimum 1 -Maximum 100
-                    Message = "Problème de sécurité: $((Get-Random -InputObject @("Injection possible", "Identifiants en clair", "Validation d'entrée manquante")))"
+                    Message = "ProblÃ¨me de sÃ©curitÃ©: $((Get-Random -InputObject @("Injection possible", "Identifiants en clair", "Validation d'entrÃ©e manquante")))"
                     Severity = "Critical"
                 }
             }
         }
-        $Tracer.StopOperation("AnalyseSécurité")
+        $Tracer.StopOperation("AnalyseSÃ©curitÃ©")
 
-        # Finaliser les résultats
+        # Finaliser les rÃ©sultats
         $fileResult.EndTime = Get-Date
         $fileResult.Duration = $fileResult.EndTime - $fileResult.StartTime
 
         return $fileResult
     } catch {
-        Write-Error "Erreur lors de l'analyse du fichier avec traçage: $_"
+        Write-Error "Erreur lors de l'analyse du fichier avec traÃ§age: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Obtenir les informations sur la pull request
     $prInfo = Get-PullRequestInfo -RepoPath $RepositoryPath -PRNumber $PullRequestNumber
@@ -399,35 +399,35 @@ try {
 
     # Afficher les informations sur la pull request
     Write-Host "Informations sur la pull request:" -ForegroundColor Cyan
-    Write-Host "  Numéro: #$($prInfo.Number)" -ForegroundColor White
+    Write-Host "  NumÃ©ro: #$($prInfo.Number)" -ForegroundColor White
     Write-Host "  Titre: $($prInfo.Title)" -ForegroundColor White
     Write-Host "  Branche source: $($prInfo.HeadBranch)" -ForegroundColor White
     Write-Host "  Branche cible: $($prInfo.BaseBranch)" -ForegroundColor White
-    Write-Host "  Fichiers modifiés: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  Fichiers modifiÃ©s: $($prInfo.FileCount)" -ForegroundColor White
     Write-Host "  Ajouts: $($prInfo.Additions)" -ForegroundColor White
     Write-Host "  Suppressions: $($prInfo.Deletions)" -ForegroundColor White
     Write-Host "  Modifications totales: $($prInfo.Changes)" -ForegroundColor White
 
-    # Démarrer le profilage
+    # DÃ©marrer le profilage
     $profilingResults = Start-Profiling -PullRequestInfo $prInfo -Tracers $TracerTypes -Detail $DetailLevel -OutputDir $OutputPath
     if ($null -eq $profilingResults) {
-        Write-Error "Échec du profilage."
+        Write-Error "Ã‰chec du profilage."
         exit 1
     }
 
-    # Afficher un résumé des résultats
-    Write-Host "`nRésumé du profilage:" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
+    Write-Host "`nRÃ©sumÃ© du profilage:" -ForegroundColor Cyan
     Write-Host "  Pull Request: #$($prInfo.Number) - $($prInfo.Title)" -ForegroundColor White
-    Write-Host "  Fichiers analysés: $($prInfo.FileCount)" -ForegroundColor White
-    Write-Host "  Problèmes détectés: $($profilingResults.AnalysisResults.TotalIssues)" -ForegroundColor White
-    Write-Host "  Durée totale: $($profilingResults.AnalysisResults.Duration.TotalSeconds) secondes" -ForegroundColor White
+    Write-Host "  Fichiers analysÃ©s: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  ProblÃ¨mes dÃ©tectÃ©s: $($profilingResults.AnalysisResults.TotalIssues)" -ForegroundColor White
+    Write-Host "  DurÃ©e totale: $($profilingResults.AnalysisResults.Duration.TotalSeconds) secondes" -ForegroundColor White
     Write-Host "  Rapport de performance: $($profilingResults.Report)" -ForegroundColor White
 
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     if (Test-Path -Path $profilingResults.Report) {
         Start-Process $profilingResults.Report
     }
 } catch {
-    Write-Error "Erreur lors de l'exécution du profilage: $_"
+    Write-Error "Erreur lors de l'exÃ©cution du profilage: $_"
     exit 1
 }

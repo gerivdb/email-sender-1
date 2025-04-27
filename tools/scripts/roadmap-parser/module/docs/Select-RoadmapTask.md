@@ -1,8 +1,8 @@
-# Select-RoadmapTask
+﻿# Select-RoadmapTask
 
 ## SYNOPSIS
 
-Sélectionne des tâches dans une roadmap selon différents critères.
+SÃ©lectionne des tÃ¢ches dans une roadmap selon diffÃ©rents critÃ¨res.
 
 ## SYNTAX
 
@@ -14,15 +14,15 @@ Sélectionne des tâches dans une roadmap selon différents critères.
 ```n
 ## DESCRIPTION
 
-La fonction Select-RoadmapTask permet de sélectionner des tâches dans une roadmap
-selon différents critères comme le statut, l'identifiant, le titre, les métadonnées, etc.
-Elle retourne un tableau de tâches correspondant aux critères spécifiés.
+La fonction Select-RoadmapTask permet de sÃ©lectionner des tÃ¢ches dans une roadmap
+selon diffÃ©rents critÃ¨res comme le statut, l'identifiant, le titre, les mÃ©tadonnÃ©es, etc.
+Elle retourne un tableau de tÃ¢ches correspondant aux critÃ¨res spÃ©cifiÃ©s.
 
 ## PARAMETERS
 
 ### -Roadmap
 
-L'objet roadmap contenant les tâches à sélectionner.
+L'objet roadmap contenant les tÃ¢ches Ã  sÃ©lectionner.
 
 `yaml
 Type: PSObject
@@ -38,8 +38,8 @@ Accept wildcard characters: false
 
 ### -Id
 
-L'identifiant ou le modèle d'identifiant des tâches à sélectionner.
-Accepte les caractères génériques (* et ?).
+L'identifiant ou le modÃ¨le d'identifiant des tÃ¢ches Ã  sÃ©lectionner.
+Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 `yaml
 Type: String
@@ -55,8 +55,8 @@ Accept wildcard characters: false
 
 ### -Title
 
-Le titre ou le modèle de titre des tâches à sélectionner.
-Accepte les caractères génériques (* et ?).
+Le titre ou le modÃ¨le de titre des tÃ¢ches Ã  sÃ©lectionner.
+Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 `yaml
 Type: String
@@ -72,7 +72,7 @@ Accept wildcard characters: false
 
 ### -Status
 
-Le statut des tâches à sélectionner.
+Le statut des tÃ¢ches Ã  sÃ©lectionner.
 Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked", "All".
 
 `yaml
@@ -89,8 +89,8 @@ Accept wildcard characters: false
 
 ### -Level
 
-Le niveau hiérarchique des tâches à sélectionner.
-0 = tâches de premier niveau, 1 = sous-tâches, etc.
+Le niveau hiÃ©rarchique des tÃ¢ches Ã  sÃ©lectionner.
+0 = tÃ¢ches de premier niveau, 1 = sous-tÃ¢ches, etc.
 
 `yaml
 Type: Int32
@@ -106,7 +106,7 @@ Accept wildcard characters: false
 
 ### -HasDependencies
 
-Indique si les tâches sélectionnées doivent avoir des dépendances.
+Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des dÃ©pendances.
 
 `yaml
 Type: SwitchParameter
@@ -122,7 +122,7 @@ Accept wildcard characters: false
 
 ### -HasDependentTasks
 
-Indique si les tâches sélectionnées doivent avoir des tâches dépendantes.
+Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des tÃ¢ches dÃ©pendantes.
 
 `yaml
 Type: SwitchParameter
@@ -138,7 +138,7 @@ Accept wildcard characters: false
 
 ### -HasMetadata
 
-Indique si les tâches sélectionnées doivent avoir des métadonnées.
+Indique si les tÃ¢ches sÃ©lectionnÃ©es doivent avoir des mÃ©tadonnÃ©es.
 
 `yaml
 Type: SwitchParameter
@@ -154,7 +154,7 @@ Accept wildcard characters: false
 
 ### -MetadataKey
 
-La clé de métadonnée que les tâches sélectionnées doivent avoir.
+La clÃ© de mÃ©tadonnÃ©e que les tÃ¢ches sÃ©lectionnÃ©es doivent avoir.
 
 `yaml
 Type: String
@@ -170,7 +170,7 @@ Accept wildcard characters: false
 
 ### -MetadataValue
 
-La valeur de métadonnée que les tâches sélectionnées doivent avoir.
+La valeur de mÃ©tadonnÃ©e que les tÃ¢ches sÃ©lectionnÃ©es doivent avoir.
 
 `yaml
 Type: String
@@ -186,8 +186,8 @@ Accept wildcard characters: false
 
 ### -SectionTitle
 
-Le titre ou le modèle de titre des sections dans lesquelles rechercher les tâches.
-Accepte les caractères génériques (* et ?).
+Le titre ou le modÃ¨le de titre des sections dans lesquelles rechercher les tÃ¢ches.
+Accepte les caractÃ¨res gÃ©nÃ©riques (* et ?).
 
 `yaml
 Type: String
@@ -203,7 +203,7 @@ Accept wildcard characters: false
 
 ### -IncludeSubTasks
 
-Indique si les sous-tâches des tâches correspondantes doivent être incluses dans les résultats.
+Indique si les sous-tÃ¢ches des tÃ¢ches correspondantes doivent Ãªtre incluses dans les rÃ©sultats.
 
 `yaml
 Type: SwitchParameter
@@ -219,7 +219,7 @@ Accept wildcard characters: false
 
 ### -Flatten
 
-Indique si les résultats doivent être aplatis (liste plate de tâches sans hiérarchie).
+Indique si les rÃ©sultats doivent Ãªtre aplatis (liste plate de tÃ¢ches sans hiÃ©rarchie).
 
 `yaml
 Type: SwitchParameter
@@ -235,7 +235,7 @@ Accept wildcard characters: false
 
 ### -First
 
-Nombre de tâches à retourner (prend les premières tâches correspondantes).
+Nombre de tÃ¢ches Ã  retourner (prend les premiÃ¨res tÃ¢ches correspondantes).
 
 `yaml
 Type: Int32
@@ -251,7 +251,7 @@ Accept wildcard characters: false
 
 ### -Last
 
-Nombre de tâches à retourner (prend les dernières tâches correspondantes).
+Nombre de tÃ¢ches Ã  retourner (prend les derniÃ¨res tÃ¢ches correspondantes).
 
 `yaml
 Type: Int32
@@ -267,7 +267,7 @@ Accept wildcard characters: false
 
 ### -Skip
 
-Nombre de tâches à ignorer avant de commencer à retourner des résultats.
+Nombre de tÃ¢ches Ã  ignorer avant de commencer Ã  retourner des rÃ©sultats.
 
 `yaml
 Type: Int32
@@ -287,13 +287,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject[]] Tableau de tâches correspondant aux critères spécifiés.
+[PSCustomObject[]] Tableau de tÃ¢ches correspondant aux critÃ¨res spÃ©cifiÃ©s.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -302,7 +302,7 @@ Date de création: 2023-07-10
 `powershell
 $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
 Select-RoadmapTask -Roadmap $roadmap -Status "Complete"
-Sélectionne toutes les tâches complétées dans la roadmap.
+SÃ©lectionne toutes les tÃ¢ches complÃ©tÃ©es dans la roadmap.
 `
 
     
@@ -312,7 +312,7 @@ Sélectionne toutes les tâches complétées dans la roadmap.
 `powershell
 $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
 Select-RoadmapTask -Roadmap $roadmap -Id "1.*" -Status "Incomplete" -HasDependencies
-Sélectionne toutes les tâches incomplètes dont l'identifiant commence par "1." et qui ont des dépendances.
+SÃ©lectionne toutes les tÃ¢ches incomplÃ¨tes dont l'identifiant commence par "1." et qui ont des dÃ©pendances.
 `
 
     

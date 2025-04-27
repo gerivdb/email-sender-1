@@ -1,4 +1,4 @@
-# Script de test manuel pour la fonction Inspect-Variable
+﻿# Script de test manuel pour la fonction Inspect-Variable
 
 # Importer la fonction
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path

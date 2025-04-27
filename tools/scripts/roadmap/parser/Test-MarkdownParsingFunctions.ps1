@@ -1,4 +1,4 @@
-# Test-MarkdownParsingFunctions.ps1
+﻿# Test-MarkdownParsingFunctions.ps1
 # Script pour tester les fonctions de parsing du markdown
 
 # Importer le module RoadmapParser3
@@ -11,10 +11,10 @@ Write-Host "Test des fonctions de parsing du markdown..." -ForegroundColor Cyan
 # Tester Get-MarkdownTaskIndentation
 Write-Host "`nTest de Get-MarkdownTaskIndentation..." -ForegroundColor Cyan
 $testLines = @(
-    "- [ ] Tâche sans indentation",
-    "  - [ ] Tâche avec 1 niveau d'indentation",
-    "    - [ ] Tâche avec 2 niveaux d'indentation",
-    "      - [ ] Tâche avec 3 niveaux d'indentation"
+    "- [ ] TÃ¢che sans indentation",
+    "  - [ ] TÃ¢che avec 1 niveau d'indentation",
+    "    - [ ] TÃ¢che avec 2 niveaux d'indentation",
+    "      - [ ] TÃ¢che avec 3 niveaux d'indentation"
 )
 
 foreach ($line in $testLines) {
@@ -36,9 +36,9 @@ foreach ($marker in $testMarkers) {
 # Tester Get-MarkdownTaskId
 Write-Host "`nTest de Get-MarkdownTaskId..." -ForegroundColor Cyan
 $testLines = @(
-    "- [ ] Tâche sans ID",
-    "- [ ] **1** Tâche avec ID simple",
-    "- [ ] **1.2.3** Tâche avec ID complexe"
+    "- [ ] TÃ¢che sans ID",
+    "- [ ] **1** TÃ¢che avec ID simple",
+    "- [ ] **1.2.3** TÃ¢che avec ID complexe"
 )
 
 foreach ($line in $testLines) {
@@ -50,9 +50,9 @@ foreach ($line in $testLines) {
 # Tester Get-MarkdownTaskTitle
 Write-Host "`nTest de Get-MarkdownTaskTitle..." -ForegroundColor Cyan
 $testLines = @(
-    "- [ ] Tâche sans ID",
-    "- [ ] **1** Tâche avec ID simple",
-    "- [ ] **1.2.3** Tâche avec ID complexe"
+    "- [ ] TÃ¢che sans ID",
+    "- [ ] **1** TÃ¢che avec ID simple",
+    "- [ ] **1.2.3** TÃ¢che avec ID complexe"
 )
 
 foreach ($line in $testLines) {
@@ -64,11 +64,11 @@ foreach ($line in $testLines) {
 # Tester Get-MarkdownTaskDescription
 Write-Host "`nTest de Get-MarkdownTaskDescription..." -ForegroundColor Cyan
 $testLines = @(
-    "- [ ] **1** Tâche 1",
-    "  Description de la tâche 1",
+    "- [ ] **1** TÃ¢che 1",
+    "  Description de la tÃ¢che 1",
     "  Suite de la description",
-    "- [ ] **2** Tâche 2",
-    "  Description de la tâche 2"
+    "- [ ] **2** TÃ¢che 2",
+    "  Description de la tÃ¢che 2"
 )
 
 $description1 = Get-MarkdownTaskDescription -Lines $testLines -StartIndex 0
@@ -76,17 +76,17 @@ $description2 = Get-MarkdownTaskDescription -Lines $testLines -StartIndex 3
 
 Write-Host "Lignes:" -ForegroundColor Gray
 $testLines | ForEach-Object { Write-Host "  $_" -ForegroundColor Gray }
-Write-Host "Description de la tâche 1: '$description1'" -ForegroundColor Green
-Write-Host "Description de la tâche 2: '$description2'" -ForegroundColor Green
+Write-Host "Description de la tÃ¢che 1: '$description1'" -ForegroundColor Green
+Write-Host "Description de la tÃ¢che 2: '$description2'" -ForegroundColor Green
 
 # Tester ConvertFrom-MarkdownTaskLine
 Write-Host "`nTest de ConvertFrom-MarkdownTaskLine..." -ForegroundColor Cyan
 $testLines = @(
-    "- [ ] Tâche sans ID",
-    "- [x] **1** Tâche complétée",
-    "- [~] **1.2** Tâche en cours",
-    "- [!] **1.2.3** Tâche bloquée",
-    "  - [ ] **1.2.3.1** Tâche avec indentation"
+    "- [ ] TÃ¢che sans ID",
+    "- [x] **1** TÃ¢che complÃ©tÃ©e",
+    "- [~] **1.2** TÃ¢che en cours",
+    "- [!] **1.2.3** TÃ¢che bloquÃ©e",
+    "  - [ ] **1.2.3.1** TÃ¢che avec indentation"
 )
 
 foreach ($line in $testLines) {
@@ -99,4 +99,4 @@ foreach ($line in $testLines) {
     Write-Host ""
 }
 
-Write-Host "Tests terminés!" -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s!" -ForegroundColor Cyan

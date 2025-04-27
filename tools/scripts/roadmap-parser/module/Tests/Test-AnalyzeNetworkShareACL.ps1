@@ -1,9 +1,9 @@
-Describe "Analyze-NetworkShareACL" {
+﻿Describe "Analyze-NetworkShareACL" {
     BeforeAll {
-        # Charger la fonction à tester
+        # Charger la fonction Ã  tester
         $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Public\Analyze-NetworkShareACL.ps1"
 
-        # Créer un mock de la fonction pour les tests
+        # CrÃ©er un mock de la fonction pour les tests
         function Analyze-NetworkShareACL {
             [CmdletBinding()]
             param (
@@ -35,7 +35,7 @@ Describe "Analyze-NetworkShareACL" {
                         AccountName = "DOMAIN\Group1"
                         SmbPermission = "Change"
                         NtfsPermission = "ReadAndExecute"
-                        Conflict = "SMB permet plus d'accès que NTFS"
+                        Conflict = "SMB permet plus d'accÃ¨s que NTFS"
                     }
                 )
                 EffectivePermissions = @(
@@ -46,16 +46,16 @@ Describe "Analyze-NetworkShareACL" {
                 )
             }
 
-            # Si un chemin de sortie est spécifié, générer un rapport
+            # Si un chemin de sortie est spÃ©cifiÃ©, gÃ©nÃ©rer un rapport
             if ($OutputPath) {
                 $report = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport d'analyse des ACL de partage réseau</title>
+    <title>Rapport d'analyse des ACL de partage rÃ©seau</title>
 </head>
 <body>
-    <h1>Rapport d'analyse des ACL de partage réseau</h1>
+    <h1>Rapport d'analyse des ACL de partage rÃ©seau</h1>
     <p>Ceci est un rapport de test</p>
 </body>
 </html>
@@ -66,17 +66,17 @@ Describe "Analyze-NetworkShareACL" {
             return $result
         }
 
-        # Créer un fichier temporaire pour les tests
+        # CrÃ©er un fichier temporaire pour les tests
         $testOutputPath = [System.IO.Path]::GetTempFileName() + ".html"
 
-        # Supprimer le fichier temporaire s'il existe déjà
+        # Supprimer le fichier temporaire s'il existe dÃ©jÃ 
         if (Test-Path -Path $testOutputPath) {
             Remove-Item -Path $testOutputPath -Force
         }
     }
 
-    Context "Fonctionnalités de base" {
-        It "Devrait retourner un objet avec les propriétés attendues" {
+    Context "FonctionnalitÃ©s de base" {
+        It "Devrait retourner un objet avec les propriÃ©tÃ©s attendues" {
             # Arranger
             $sharePath = "\\server\share"
 
@@ -91,11 +91,11 @@ Describe "Analyze-NetworkShareACL" {
             $result.Keys | Should -Contain "EffectivePermissions"
         }
 
-        It "Devrait générer un rapport lorsque OutputPath est spécifié" {
+        It "Devrait gÃ©nÃ©rer un rapport lorsque OutputPath est spÃ©cifiÃ©" {
             # Arranger
             $sharePath = "\\server\share"
 
-            # Supprimer le fichier temporaire s'il existe déjà
+            # Supprimer le fichier temporaire s'il existe dÃ©jÃ 
             if (Test-Path -Path $testOutputPath) {
                 Remove-Item -Path $testOutputPath -Force
             }
@@ -141,8 +141,8 @@ Describe "Analyze-NetworkShareACL" {
         }
     }
 
-    Context "Détection des conflits" {
-        It "Devrait détecter les conflits entre permissions de partage et NTFS" {
+    Context "DÃ©tection des conflits" {
+        It "Devrait dÃ©tecter les conflits entre permissions de partage et NTFS" {
             # Arranger
             $sharePath = "\\server\share"
 
@@ -158,7 +158,7 @@ Describe "Analyze-NetworkShareACL" {
     }
 
     Context "Analyse des permissions effectives" {
-        It "Devrait calculer correctement les permissions effectives résultantes" {
+        It "Devrait calculer correctement les permissions effectives rÃ©sultantes" {
             # Arranger
             $sharePath = "\\server\share"
 
@@ -173,12 +173,12 @@ Describe "Analyze-NetworkShareACL" {
         }
     }
 
-    Context "Génération de rapports" {
-        It "Devrait générer un rapport HTML valide" {
+    Context "GÃ©nÃ©ration de rapports" {
+        It "Devrait gÃ©nÃ©rer un rapport HTML valide" {
             # Arranger
             $sharePath = "\\server\share"
 
-            # Supprimer le fichier temporaire s'il existe déjà
+            # Supprimer le fichier temporaire s'il existe dÃ©jÃ 
             if (Test-Path -Path $testOutputPath) {
                 Remove-Item -Path $testOutputPath -Force
             }
@@ -190,11 +190,11 @@ Describe "Analyze-NetworkShareACL" {
             Test-Path -Path $testOutputPath | Should -BeTrue
             $content = Get-Content -Path $testOutputPath -Raw
             $content | Should -Match "<html>"
-            $content | Should -Match "Rapport d'analyse des ACL de partage réseau"
+            $content | Should -Match "Rapport d'analyse des ACL de partage rÃ©seau"
         }
 
         AfterAll {
-            # Nettoyer les fichiers temporaires après tous les tests
+            # Nettoyer les fichiers temporaires aprÃ¨s tous les tests
             if (Test-Path -Path $testOutputPath) {
                 Remove-Item -Path $testOutputPath -Force -ErrorAction SilentlyContinue
             }

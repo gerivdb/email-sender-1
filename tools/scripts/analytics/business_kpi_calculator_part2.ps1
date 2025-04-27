@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) métier - Partie 2.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) mÃ©tier - Partie 2.
 .DESCRIPTION
-    Calcule les KPIs métier à partir des données collectées.
+    Calcule les KPIs mÃ©tier Ã  partir des donnÃ©es collectÃ©es.
     Cette partie contient les fonctions de calcul des KPIs.
 #>
 
@@ -30,18 +30,18 @@ function Get-SimpleKpi {
     )
     
     try {
-        # Filtrer les données pour la source spécifiée
+        # Filtrer les donnÃ©es pour la source spÃ©cifiÃ©e
         $SourceData = $Data | Where-Object { $_.$SourceColumn -eq $Source }
         
         if (-not $SourceData -or $SourceData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée trouvée pour la source: $Source" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour la source: $Source" -Level "Warning"
             return $null
         }
         
         # Convertir les valeurs en nombres
         $Values = $SourceData | ForEach-Object { [double]$_.$ValueColumn }
         
-        # Calculer le KPI selon la formule spécifiée
+        # Calculer le KPI selon la formule spÃ©cifiÃ©e
         switch ($Formula) {
             "AVG" {
                 $Result = ($Values | Measure-Object -Average).Average
@@ -70,7 +70,7 @@ function Get-SimpleKpi {
                 }
             }
             "LAST" {
-                # Trier par timestamp et prendre la dernière valeur
+                # Trier par timestamp et prendre la derniÃ¨re valeur
                 $SortedData = $SourceData | Sort-Object -Property $TimeColumn
                 $Result = [double]($SortedData | Select-Object -Last 1).$ValueColumn
             }
@@ -109,7 +109,7 @@ function Get-PercentageKpi {
     
     try {
         if ($Sources.Count -ne 2) {
-            Write-Log -Message "Le calcul de pourcentage nécessite exactement 2 sources" -Level "Error"
+            Write-Log -Message "Le calcul de pourcentage nÃ©cessite exactement 2 sources" -Level "Error"
             return $null
         }
         
@@ -118,7 +118,7 @@ function Get-PercentageKpi {
         $Denominator = Get-SimpleKpi -Data $Data -Source $Sources[1] -Formula "SUM" -TimeColumn $TimeColumn -ValueColumn $ValueColumn -SourceColumn $SourceColumn
         
         if ($null -eq $Numerator -or $null -eq $Denominator -or $Denominator -eq 0) {
-            Write-Log -Message "Impossible de calculer le pourcentage: numérateur=$Numerator, dénominateur=$Denominator" -Level "Warning"
+            Write-Log -Message "Impossible de calculer le pourcentage: numÃ©rateur=$Numerator, dÃ©nominateur=$Denominator" -Level "Warning"
             return $null
         }
         
@@ -154,7 +154,7 @@ function Get-RatioKpi {
     
     try {
         if ($Sources.Count -ne 2) {
-            Write-Log -Message "Le calcul de ratio nécessite exactement 2 sources" -Level "Error"
+            Write-Log -Message "Le calcul de ratio nÃ©cessite exactement 2 sources" -Level "Error"
             return $null
         }
         
@@ -163,7 +163,7 @@ function Get-RatioKpi {
         $Denominator = Get-SimpleKpi -Data $Data -Source $Sources[1] -Formula "SUM" -TimeColumn $TimeColumn -ValueColumn $ValueColumn -SourceColumn $SourceColumn
         
         if ($null -eq $Numerator -or $null -eq $Denominator -or $Denominator -eq 0) {
-            Write-Log -Message "Impossible de calculer le ratio: numérateur=$Numerator, dénominateur=$Denominator" -Level "Warning"
+            Write-Log -Message "Impossible de calculer le ratio: numÃ©rateur=$Numerator, dÃ©nominateur=$Denominator" -Level "Warning"
             return $null
         }
         
@@ -199,7 +199,7 @@ function Get-GrowthKpi {
     
     try {
         if ($Sources.Count -ne 2) {
-            Write-Log -Message "Le calcul de croissance nécessite exactement 2 sources" -Level "Error"
+            Write-Log -Message "Le calcul de croissance nÃ©cessite exactement 2 sources" -Level "Error"
             return $null
         }
         
@@ -208,7 +208,7 @@ function Get-GrowthKpi {
         $Previous = Get-SimpleKpi -Data $Data -Source $Sources[1] -Formula "LAST" -TimeColumn $TimeColumn -ValueColumn $ValueColumn -SourceColumn $SourceColumn
         
         if ($null -eq $Current -or $null -eq $Previous -or $Previous -eq 0) {
-            Write-Log -Message "Impossible de calculer la croissance: actuel=$Current, précédent=$Previous" -Level "Warning"
+            Write-Log -Message "Impossible de calculer la croissance: actuel=$Current, prÃ©cÃ©dent=$Previous" -Level "Warning"
             return $null
         }
         
@@ -222,7 +222,7 @@ function Get-GrowthKpi {
     }
 }
 
-# Fonction pour calculer un KPI personnalisé
+# Fonction pour calculer un KPI personnalisÃ©
 function Get-CustomKpi {
     [CmdletBinding()]
     param (
@@ -246,7 +246,7 @@ function Get-CustomKpi {
     )
     
     try {
-        # Créer un hashtable pour stocker les valeurs des sources
+        # CrÃ©er un hashtable pour stocker les valeurs des sources
         $Values = @{}
         
         # Calculer les valeurs pour chaque source
@@ -267,12 +267,12 @@ function Get-CustomKpi {
             $EvaluableFormula = $EvaluableFormula -replace $Source, $Values[$Source]
         }
         
-        # Évaluer la formule
+        # Ã‰valuer la formule
         $Result = Invoke-Expression $EvaluableFormula
         
         return $Result
     } catch {
-        Write-Log -Message "Erreur lors du calcul du KPI personnalisé: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du calcul du KPI personnalisÃ©: $_" -Level "Error"
         return $null
     }
 }
@@ -305,13 +305,13 @@ function Get-CompositeKpi {
     
     try {
         if ($Sources.Count -ne $Weights.Count) {
-            Write-Log -Message "Le nombre de sources et de poids doit être identique" -Level "Error"
+            Write-Log -Message "Le nombre de sources et de poids doit Ãªtre identique" -Level "Error"
             return $null
         }
         
         $WeightSum = ($Weights | Measure-Object -Sum).Sum
         if ([Math]::Abs($WeightSum - 1) -gt 0.001) {
-            Write-Log -Message "La somme des poids doit être égale à 1" -Level "Warning"
+            Write-Log -Message "La somme des poids doit Ãªtre Ã©gale Ã  1" -Level "Warning"
             # Normaliser les poids
             $Weights = $Weights | ForEach-Object { $_ / $WeightSum }
         }
@@ -323,7 +323,7 @@ function Get-CompositeKpi {
             $Source = $Sources[$i]
             $Weight = $Weights[$i]
             
-            # Utiliser la valeur précalculée si disponible
+            # Utiliser la valeur prÃ©calculÃ©e si disponible
             if ($KpiValues.ContainsKey($Source)) {
                 $SourceValue = $KpiValues[$Source]
             } else {
@@ -344,7 +344,7 @@ function Get-CompositeKpi {
             return $null
         }
         
-        # Ajuster le résultat en fonction du nombre de composantes valides
+        # Ajuster le rÃ©sultat en fonction du nombre de composantes valides
         $CompositeValue = $CompositeValue * ($Sources.Count / $ValidComponents)
         
         return $CompositeValue

@@ -1,5 +1,5 @@
-# Script pour mettre à jour les références dans les fichiers de roadmap
-# Ce script met à jour les chemins dans les fichiers de roadmap pour qu'ils pointent vers les nouveaux emplacements
+﻿# Script pour mettre Ã  jour les rÃ©fÃ©rences dans les fichiers de roadmap
+# Ce script met Ã  jour les chemins dans les fichiers de roadmap pour qu'ils pointent vers les nouveaux emplacements
 
 # Configuration
 $roadmapFiles = @(
@@ -29,13 +29,13 @@ function Write-Log {
     }
 }
 
-# Fonction pour mettre à jour les références dans un fichier
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences dans un fichier
 function Update-References {
     param (
         [string]$FilePath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         Write-Log "Le fichier n'existe pas: $FilePath" "ERROR"
         return $false
@@ -44,30 +44,30 @@ function Update-References {
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
     
-    # Remplacer les références
+    # Remplacer les rÃ©fÃ©rences
     $updatedContent = $content -replace [regex]::Escape($oldPath), $newPath
     
-    # Vérifier si des modifications ont été apportées
+    # VÃ©rifier si des modifications ont Ã©tÃ© apportÃ©es
     if ($updatedContent -ne $content) {
         # Sauvegarder le fichier original
         $backupPath = "$FilePath.bak"
         Copy-Item -Path $FilePath -Destination $backupPath -Force
         
-        # Écrire le contenu mis à jour
+        # Ã‰crire le contenu mis Ã  jour
         Set-Content -Path $FilePath -Value $updatedContent -Encoding UTF8
         
-        Write-Log "Références mises à jour dans: $FilePath" "SUCCESS"
-        Write-Log "Sauvegarde créée: $backupPath" "INFO"
+        Write-Log "RÃ©fÃ©rences mises Ã  jour dans: $FilePath" "SUCCESS"
+        Write-Log "Sauvegarde crÃ©Ã©e: $backupPath" "INFO"
         
         return $true
     }
     else {
-        Write-Log "Aucune référence à mettre à jour dans: $FilePath" "INFO"
+        Write-Log "Aucune rÃ©fÃ©rence Ã  mettre Ã  jour dans: $FilePath" "INFO"
         return $false
     }
 }
 
-# Fonction pour mettre à jour les références dans les scripts
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences dans les scripts
 function Update-ScriptReferences {
     param (
         [string]$FolderPath
@@ -86,15 +86,15 @@ function Update-ScriptReferences {
         }
     }
     
-    Write-Log "Scripts mis à jour: $updatedCount" "INFO"
+    Write-Log "Scripts mis Ã  jour: $updatedCount" "INFO"
 }
 
-# Mettre à jour les références dans les fichiers de roadmap
+# Mettre Ã  jour les rÃ©fÃ©rences dans les fichiers de roadmap
 foreach ($file in $roadmapFiles) {
     Update-References -FilePath $file
 }
 
-# Mettre à jour les références dans les scripts
+# Mettre Ã  jour les rÃ©fÃ©rences dans les scripts
 Update-ScriptReferences -FolderPath $newPath
 
-Write-Log "Mise à jour des références terminée" "SUCCESS"
+Write-Log "Mise Ã  jour des rÃ©fÃ©rences terminÃ©e" "SUCCESS"

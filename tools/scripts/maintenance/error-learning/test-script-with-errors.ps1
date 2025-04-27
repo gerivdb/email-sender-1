@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de test avec des erreurs pour tester le système d'apprentissage des erreurs.
+    Script de test avec des erreurs pour tester le systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient intentionnellement des erreurs pour tester le système
+    Ce script contient intentionnellement des erreurs pour tester le systÃ¨me
     d'apprentissage des erreurs PowerShell.
 #>
 
-# Chemin codé en dur
+# Chemin codÃ© en dur
 $logPath = "D:\Logs\app.log"
 
-# Utilisation de séparateurs de chemin spécifiques à Windows
+# Utilisation de sÃ©parateurs de chemin spÃ©cifiques Ã  Windows
 $scriptPath = "scripts\\utils\\path-utils.ps1"
 
-# Commande spécifique à Windows
+# Commande spÃ©cifique Ã  Windows
 $result = cmd.exe /c "dir /b"
 
-# Variable non déclarée
+# Variable non dÃ©clarÃ©e
 $undeclaredVar = "Test"
 
 # Absence de gestion d'erreurs
@@ -24,7 +24,7 @@ $content = Get-Content -Path "C:\config.txt"
 # Utilisation de Write-Host
 Write-Host "Message de test"
 
-# Utilisation de cmdlet obsolète
+# Utilisation de cmdlet obsolÃ¨te
 $processes = Get-WmiObject -Class Win32_Process
 
 # Fonction sans commentaires
@@ -45,5 +45,5 @@ if ($true) {
 # Appel de la fonction
 $result = Test-Function -Param1 "Test" -Param2 123
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 Write-Output $result

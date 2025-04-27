@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fournit des mécanismes de communication inter-processus pour PowerShell.
+    Fournit des mÃ©canismes de communication inter-processus pour PowerShell.
 
 .DESCRIPTION
-    Ce script implémente plusieurs méthodes de communication inter-processus (IPC)
+    Ce script implÃ©mente plusieurs mÃ©thodes de communication inter-processus (IPC)
     pour permettre aux scripts PowerShell de communiquer entre eux, notamment via
-    des fichiers partagés, des pipes nommés, et des sockets.
+    des fichiers partagÃ©s, des pipes nommÃ©s, et des sockets.
 
 .EXAMPLE
     . .\InterProcessCommunication.ps1
@@ -15,12 +15,12 @@
     $message = Receive-IPCMessage -Connection $server
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Classe pour représenter une connexion IPC
+# Classe pour reprÃ©senter une connexion IPC
 class IPCConnection {
     [string]$Protocol
     [string]$Name
@@ -35,7 +35,7 @@ class IPCConnection {
     }
 }
 
-# Fonction pour démarrer un serveur IPC
+# Fonction pour dÃ©marrer un serveur IPC
 function Start-IPCServer {
     [CmdletBinding()]
     param (
@@ -68,27 +68,27 @@ function Start-IPCServer {
                 $pipeServer = New-Object System.IO.Pipes.NamedPipeServerStream($Name, [System.IO.Pipes.PipeDirection]::InOut)
                 
                 if (-not $Async) {
-                    Write-Verbose "Attente de connexion sur le pipe nommé '$pipeName'..."
+                    Write-Verbose "Attente de connexion sur le pipe nommÃ© '$pipeName'..."
                     $pipeServer.WaitForConnection()
                     $ipcConnection.IsConnected = $true
-                    Write-Verbose "Connexion établie sur le pipe nommé '$pipeName'."
+                    Write-Verbose "Connexion Ã©tablie sur le pipe nommÃ© '$pipeName'."
                 }
                 else {
-                    Write-Verbose "Démarrage du serveur de pipe nommé '$pipeName' en mode asynchrone..."
+                    Write-Verbose "DÃ©marrage du serveur de pipe nommÃ© '$pipeName' en mode asynchrone..."
                     $asyncResult = $pipeServer.BeginWaitForConnection($null, $null)
                 }
                 
                 $ipcConnection.Connection = $pipeServer
             }
             catch {
-                Write-Error "Erreur lors du démarrage du serveur de pipe nommé: $_"
+                Write-Error "Erreur lors du dÃ©marrage du serveur de pipe nommÃ©: $_"
                 return $null
             }
         }
         "Socket" {
             try {
                 if ($Port -eq 0) {
-                    $Port = 12345 # Port par défaut
+                    $Port = 12345 # Port par dÃ©faut
                 }
                 
                 $endpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Any, $Port)
@@ -104,10 +104,10 @@ function Start-IPCServer {
                         ClientSocket = $clientSocket
                     }
                     $ipcConnection.IsConnected = $true
-                    Write-Verbose "Connexion établie sur le socket '$($endpoint.ToString())'."
+                    Write-Verbose "Connexion Ã©tablie sur le socket '$($endpoint.ToString())'."
                 }
                 else {
-                    Write-Verbose "Démarrage du serveur de socket '$($endpoint.ToString())' en mode asynchrone..."
+                    Write-Verbose "DÃ©marrage du serveur de socket '$($endpoint.ToString())' en mode asynchrone..."
                     $asyncResult = $socket.BeginAccept($null, $null)
                     $ipcConnection.Connection = [PSCustomObject]@{
                         ServerSocket = $socket
@@ -116,7 +116,7 @@ function Start-IPCServer {
                 }
             }
             catch {
-                Write-Error "Erreur lors du démarrage du serveur de socket: $_"
+                Write-Error "Erreur lors du dÃ©marrage du serveur de socket: $_"
                 return $null
             }
         }
@@ -126,7 +126,7 @@ function Start-IPCServer {
                     $FilePath = Join-Path -Path $env:TEMP -ChildPath "$Name.ipc"
                 }
                 
-                # Créer le fichier s'il n'existe pas
+                # CrÃ©er le fichier s'il n'existe pas
                 if (-not (Test-Path -Path $FilePath)) {
                     $null = New-Item -Path $FilePath -ItemType File -Force
                 }
@@ -137,10 +137,10 @@ function Start-IPCServer {
                 }
                 $ipcConnection.IsConnected = $true
                 
-                Write-Verbose "Serveur de fichier IPC créé: '$FilePath'."
+                Write-Verbose "Serveur de fichier IPC crÃ©Ã©: '$FilePath'."
             }
             catch {
-                Write-Error "Erreur lors de la création du fichier IPC: $_"
+                Write-Error "Erreur lors de la crÃ©ation du fichier IPC: $_"
                 return $null
             }
         }
@@ -149,7 +149,7 @@ function Start-IPCServer {
     return $ipcConnection
 }
 
-# Fonction pour se connecter à un serveur IPC
+# Fonction pour se connecter Ã  un serveur IPC
 function Connect-IPCClient {
     [CmdletBinding()]
     param (
@@ -184,23 +184,23 @@ function Connect-IPCClient {
                 $pipeName = if ($Name.StartsWith("\\.\pipe\")) { $Name } else { "\\.\pipe\$Name" }
                 $pipeClient = New-Object System.IO.Pipes.NamedPipeClientStream($Server, $Name, [System.IO.Pipes.PipeDirection]::InOut)
                 
-                Write-Verbose "Connexion au pipe nommé '$pipeName'..."
+                Write-Verbose "Connexion au pipe nommÃ© '$pipeName'..."
                 $pipeClient.Connect($TimeoutMilliseconds)
                 
                 $ipcConnection.Connection = $pipeClient
                 $ipcConnection.IsConnected = $true
                 
-                Write-Verbose "Connexion établie au pipe nommé '$pipeName'."
+                Write-Verbose "Connexion Ã©tablie au pipe nommÃ© '$pipeName'."
             }
             catch {
-                Write-Error "Erreur lors de la connexion au pipe nommé: $_"
+                Write-Error "Erreur lors de la connexion au pipe nommÃ©: $_"
                 return $null
             }
         }
         "Socket" {
             try {
                 if ($Port -eq 0) {
-                    $Port = 12345 # Port par défaut
+                    $Port = 12345 # Port par dÃ©faut
                 }
                 
                 $socket = New-Object System.Net.Sockets.Socket([System.Net.Sockets.AddressFamily]::InterNetwork, [System.Net.Sockets.SocketType]::Stream, [System.Net.Sockets.ProtocolType]::Tcp)
@@ -211,7 +211,7 @@ function Connect-IPCClient {
                 $ipcConnection.Connection = $socket
                 $ipcConnection.IsConnected = $true
                 
-                Write-Verbose "Connexion établie au socket '$Server:$Port'."
+                Write-Verbose "Connexion Ã©tablie au socket '$Server:$Port'."
             }
             catch {
                 Write-Error "Erreur lors de la connexion au socket: $_"
@@ -224,7 +224,7 @@ function Connect-IPCClient {
                     $FilePath = Join-Path -Path $env:TEMP -ChildPath "$Name.ipc"
                 }
                 
-                # Vérifier si le fichier existe
+                # VÃ©rifier si le fichier existe
                 if (-not (Test-Path -Path $FilePath)) {
                     Write-Error "Le fichier IPC '$FilePath' n'existe pas."
                     return $null
@@ -236,7 +236,7 @@ function Connect-IPCClient {
                 }
                 $ipcConnection.IsConnected = $true
                 
-                Write-Verbose "Connexion établie au fichier IPC: '$FilePath'."
+                Write-Verbose "Connexion Ã©tablie au fichier IPC: '$FilePath'."
             }
             catch {
                 Write-Error "Erreur lors de la connexion au fichier IPC: $_"
@@ -263,11 +263,11 @@ function Send-IPCMessage {
     )
     
     if (-not $Connection.IsConnected) {
-        Write-Error "La connexion IPC n'est pas établie."
+        Write-Error "La connexion IPC n'est pas Ã©tablie."
         return $false
     }
     
-    # Ajouter un délimiteur de message
+    # Ajouter un dÃ©limiteur de message
     $messageWithDelimiter = "$Message`n"
     
     # Obtenir l'encodage
@@ -330,7 +330,7 @@ function Receive-IPCMessage {
     )
     
     if (-not $Connection.IsConnected) {
-        Write-Error "La connexion IPC n'est pas établie."
+        Write-Error "La connexion IPC n'est pas Ã©tablie."
         return $null
     }
     
@@ -345,7 +345,7 @@ function Receive-IPCMessage {
     try {
         switch ($Connection.Protocol) {
             "NamedPipe" {
-                # Créer un buffer pour recevoir les données
+                # CrÃ©er un buffer pour recevoir les donnÃ©es
                 $buffer = New-Object byte[] 4096
                 $stringBuilder = New-Object System.Text.StringBuilder
                 
@@ -354,24 +354,24 @@ function Receive-IPCMessage {
                 $Connection.Connection.ReadMode = [System.IO.Pipes.PipeTransmissionMode]::Message
                 
                 while ($true) {
-                    # Vérifier si le timeout est atteint
+                    # VÃ©rifier si le timeout est atteint
                     if (-not $NoWait -and ((Get-Date) - $startTime).TotalMilliseconds -gt $TimeoutMilliseconds) {
-                        Write-Warning "Timeout atteint lors de la réception du message."
+                        Write-Warning "Timeout atteint lors de la rÃ©ception du message."
                         return $null
                     }
                     
-                    # Vérifier si des données sont disponibles
+                    # VÃ©rifier si des donnÃ©es sont disponibles
                     if ($NoWait -and $Connection.Connection.InBufferSize -eq 0) {
                         return $null
                     }
                     
-                    # Lire les données
+                    # Lire les donnÃ©es
                     $bytesRead = $Connection.Connection.Read($buffer, 0, $buffer.Length)
                     
                     if ($bytesRead -gt 0) {
                         $stringBuilder.Append($encodingObj.GetString($buffer, 0, $bytesRead)) | Out-Null
                         
-                        # Vérifier si le message est complet
+                        # VÃ©rifier si le message est complet
                         if ($Connection.Connection.IsMessageComplete) {
                             break
                         }
@@ -381,7 +381,7 @@ function Receive-IPCMessage {
                             return $null
                         }
                         
-                        # Attendre un peu avant de réessayer
+                        # Attendre un peu avant de rÃ©essayer
                         Start-Sleep -Milliseconds 100
                     }
                 }
@@ -389,7 +389,7 @@ function Receive-IPCMessage {
                 $message = $stringBuilder.ToString().TrimEnd("`r`n")
             }
             "Socket" {
-                # Créer un buffer pour recevoir les données
+                # CrÃ©er un buffer pour recevoir les donnÃ©es
                 $buffer = New-Object byte[] 4096
                 $stringBuilder = New-Object System.Text.StringBuilder
                 
@@ -404,12 +404,12 @@ function Receive-IPCMessage {
                 # Configurer un timeout
                 $socket.ReceiveTimeout = $TimeoutMilliseconds
                 
-                # Vérifier si des données sont disponibles
+                # VÃ©rifier si des donnÃ©es sont disponibles
                 if ($NoWait -and $socket.Available -eq 0) {
                     return $null
                 }
                 
-                # Lire les données
+                # Lire les donnÃ©es
                 $bytesRead = $socket.Receive($buffer)
                 
                 if ($bytesRead -gt 0) {
@@ -431,13 +431,13 @@ function Receive-IPCMessage {
                     $startTime = Get-Date
                     
                     while ([string]::IsNullOrEmpty($content)) {
-                        # Vérifier si le timeout est atteint
+                        # VÃ©rifier si le timeout est atteint
                         if ((Get-Date) - $startTime).TotalMilliseconds -gt $TimeoutMilliseconds) {
-                            Write-Warning "Timeout atteint lors de la réception du message."
+                            Write-Warning "Timeout atteint lors de la rÃ©ception du message."
                             return $null
                         }
                         
-                        # Attendre un peu avant de réessayer
+                        # Attendre un peu avant de rÃ©essayer
                         Start-Sleep -Milliseconds 100
                         
                         # Relire le contenu
@@ -458,13 +458,13 @@ function Receive-IPCMessage {
                     $startTime = Get-Date
                     
                     while ($newLines.Count -eq 0) {
-                        # Vérifier si le timeout est atteint
+                        # VÃ©rifier si le timeout est atteint
                         if ((Get-Date) - $startTime).TotalMilliseconds -gt $TimeoutMilliseconds) {
-                            Write-Warning "Timeout atteint lors de la réception du message."
+                            Write-Warning "Timeout atteint lors de la rÃ©ception du message."
                             return $null
                         }
                         
-                        # Attendre un peu avant de réessayer
+                        # Attendre un peu avant de rÃ©essayer
                         Start-Sleep -Milliseconds 100
                         
                         # Relire le contenu
@@ -474,7 +474,7 @@ function Receive-IPCMessage {
                     }
                 }
                 
-                # Mettre à jour la position de lecture
+                # Mettre Ã  jour la position de lecture
                 $Connection.Connection.LastReadPosition = $lines.Length
                 
                 # Retourner le premier nouveau message
@@ -488,7 +488,7 @@ function Receive-IPCMessage {
         return $message
     }
     catch {
-        Write-Error "Erreur lors de la réception du message: $_"
+        Write-Error "Erreur lors de la rÃ©ception du message: $_"
         return $null
     }
 }
@@ -502,7 +502,7 @@ function Close-IPCConnection {
     )
     
     if (-not $Connection.IsConnected) {
-        Write-Warning "La connexion IPC n'est pas établie."
+        Write-Warning "La connexion IPC n'est pas Ã©tablie."
         return $true
     }
     
@@ -524,13 +524,13 @@ function Close-IPCConnection {
                 }
             }
             "File" {
-                # Rien à faire pour les fichiers
+                # Rien Ã  faire pour les fichiers
             }
         }
         
         $Connection.IsConnected = $false
         
-        Write-Verbose "Connexion IPC fermée."
+        Write-Verbose "Connexion IPC fermÃ©e."
         return $true
     }
     catch {
@@ -539,7 +539,7 @@ function Close-IPCConnection {
     }
 }
 
-# Fonction pour créer un mutex (verrou global)
+# Fonction pour crÃ©er un mutex (verrou global)
 function New-IPCMutex {
     [CmdletBinding()]
     param (
@@ -561,12 +561,12 @@ function New-IPCMutex {
         }
     }
     catch {
-        Write-Error "Erreur lors de la création du mutex: $_"
+        Write-Error "Erreur lors de la crÃ©ation du mutex: $_"
         return $null
     }
 }
 
-# Fonction pour acquérir un mutex
+# Fonction pour acquÃ©rir un mutex
 function Lock-IPCMutex {
     [CmdletBinding()]
     param (
@@ -585,7 +585,7 @@ function Lock-IPCMutex {
             return $true
         }
         else {
-            Write-Warning "Impossible d'acquérir le mutex '$($Mutex.Name)' dans le délai imparti."
+            Write-Warning "Impossible d'acquÃ©rir le mutex '$($Mutex.Name)' dans le dÃ©lai imparti."
             return $false
         }
     }
@@ -595,7 +595,7 @@ function Lock-IPCMutex {
     }
 }
 
-# Fonction pour libérer un mutex
+# Fonction pour libÃ©rer un mutex
 function Unlock-IPCMutex {
     [CmdletBinding()]
     param (
@@ -610,12 +610,12 @@ function Unlock-IPCMutex {
             return $true
         }
         else {
-            Write-Warning "Le mutex '$($Mutex.Name)' n'est pas détenu par ce processus."
+            Write-Warning "Le mutex '$($Mutex.Name)' n'est pas dÃ©tenu par ce processus."
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors de la libération du mutex: $_"
+        Write-Error "Erreur lors de la libÃ©ration du mutex: $_"
         return $false
     }
 }
@@ -645,7 +645,7 @@ function Close-IPCMutex {
     }
 }
 
-# Fonction pour créer un événement (signal global)
+# Fonction pour crÃ©er un Ã©vÃ©nement (signal global)
 function New-IPCEvent {
     [CmdletBinding()]
     param (
@@ -669,12 +669,12 @@ function New-IPCEvent {
         }
     }
     catch {
-        Write-Error "Erreur lors de la création de l'événement: $_"
+        Write-Error "Erreur lors de la crÃ©ation de l'Ã©vÃ©nement: $_"
         return $null
     }
 }
 
-# Fonction pour signaler un événement
+# Fonction pour signaler un Ã©vÃ©nement
 function Set-IPCEvent {
     [CmdletBinding()]
     param (
@@ -687,12 +687,12 @@ function Set-IPCEvent {
         return $true
     }
     catch {
-        Write-Error "Erreur lors du signalement de l'événement: $_"
+        Write-Error "Erreur lors du signalement de l'Ã©vÃ©nement: $_"
         return $false
     }
 }
 
-# Fonction pour réinitialiser un événement
+# Fonction pour rÃ©initialiser un Ã©vÃ©nement
 function Reset-IPCEvent {
     [CmdletBinding()]
     param (
@@ -705,12 +705,12 @@ function Reset-IPCEvent {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la réinitialisation de l'événement: $_"
+        Write-Error "Erreur lors de la rÃ©initialisation de l'Ã©vÃ©nement: $_"
         return $false
     }
 }
 
-# Fonction pour attendre un événement
+# Fonction pour attendre un Ã©vÃ©nement
 function Wait-IPCEvent {
     [CmdletBinding()]
     param (
@@ -728,17 +728,17 @@ function Wait-IPCEvent {
             return $true
         }
         else {
-            Write-Warning "L'événement '$($Event.Name)' n'a pas été signalé dans le délai imparti."
+            Write-Warning "L'Ã©vÃ©nement '$($Event.Name)' n'a pas Ã©tÃ© signalÃ© dans le dÃ©lai imparti."
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors de l'attente de l'événement: $_"
+        Write-Error "Erreur lors de l'attente de l'Ã©vÃ©nement: $_"
         return $false
     }
 }
 
-# Fonction pour fermer un événement
+# Fonction pour fermer un Ã©vÃ©nement
 function Close-IPCEvent {
     [CmdletBinding()]
     param (
@@ -753,7 +753,7 @@ function Close-IPCEvent {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la fermeture de l'événement: $_"
+        Write-Error "Erreur lors de la fermeture de l'Ã©vÃ©nement: $_"
         return $false
     }
 }

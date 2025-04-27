@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les duplications de code dans les scripts.
+    DÃ©tecte les duplications de code dans les scripts.
 .DESCRIPTION
-    Ce script analyse les scripts pour détecter les duplications de code et génère
-    un rapport détaillé des duplications trouvées. Il utilise plusieurs méthodes
-    pour identifier les duplications, y compris la comparaison de chaînes et
-    l'analyse de similarité.
+    Ce script analyse les scripts pour dÃ©tecter les duplications de code et gÃ©nÃ¨re
+    un rapport dÃ©taillÃ© des duplications trouvÃ©es. Il utilise plusieurs mÃ©thodes
+    pour identifier les duplications, y compris la comparaison de chaÃ®nes et
+    l'analyse de similaritÃ©.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à analyser. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par défaut: scripts\manager\data\duplication_report.json
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\manager\data\duplication_report.json
 .PARAMETER MinimumLineCount
-    Nombre minimum de lignes pour considérer une duplication. Par défaut: 5
+    Nombre minimum de lignes pour considÃ©rer une duplication. Par dÃ©faut: 5
 .PARAMETER SimilarityThreshold
-    Seuil de similarité (0-1) pour considérer deux blocs comme similaires. Par défaut: 0.8
+    Seuil de similaritÃ© (0-1) pour considÃ©rer deux blocs comme similaires. Par dÃ©faut: 0.8
 .PARAMETER ScriptType
-    Type de script à analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par défaut: All
+    Type de script Ã  analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER ShowDetails
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Find-CodeDuplication.ps1
-    Analyse tous les scripts dans le dossier scripts et génère un rapport.
+    Analyse tous les scripts dans le dossier scripts et gÃ©nÃ¨re un rapport.
 .EXAMPLE
     .\Find-CodeDuplication.ps1 -Path "scripts\maintenance" -MinimumLineCount 10
-    Analyse les scripts dans le dossier spécifié avec un seuil de 10 lignes.
+    Analyse les scripts dans le dossier spÃ©cifiÃ© avec un seuil de 10 lignes.
 #>
 
 param (
@@ -36,7 +36,7 @@ param (
     [switch]$ShowDetails
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -58,7 +58,7 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\manager\data\duplication_detection.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
@@ -94,7 +94,7 @@ function Get-ScriptFiles {
     return $Files
 }
 
-# Fonction pour déterminer le type de script
+# Fonction pour dÃ©terminer le type de script
 function Get-ScriptType {
     param (
         [string]$FilePath
@@ -176,14 +176,14 @@ function Get-CodeBlocks {
     return $Blocks
 }
 
-# Fonction pour calculer la similarité entre deux chaînes
+# Fonction pour calculer la similaritÃ© entre deux chaÃ®nes
 function Get-StringSimilarity {
     param (
         [string]$String1,
         [string]$String2
     )
     
-    # Utiliser la distance de Levenshtein pour calculer la similarité
+    # Utiliser la distance de Levenshtein pour calculer la similaritÃ©
     $MaxLength = [Math]::Max($String1.Length, $String2.Length)
     if ($MaxLength -eq 0) {
         return 1.0
@@ -205,10 +205,10 @@ function Get-LevenshteinDistance {
     $Len1 = $String1.Length
     $Len2 = $String2.Length
     
-    # Créer une matrice pour stocker les distances
+    # CrÃ©er une matrice pour stocker les distances
     $Matrix = New-Object 'int[,]' ($Len1 + 1), ($Len2 + 1)
     
-    # Initialiser la première colonne et la première ligne
+    # Initialiser la premiÃ¨re colonne et la premiÃ¨re ligne
     for ($i = 0; $i -le $Len1; $i++) {
         $Matrix[$i, 0] = $i
     }
@@ -272,7 +272,7 @@ function Find-DuplicationsInFile {
                         Similarity = 1.0
                     }
                 } else {
-                    # Sinon, calculer la similarité
+                    # Sinon, calculer la similaritÃ©
                     $Similarity = Get-StringSimilarity -String1 $Blocks[$i].Text -String2 $Blocks[$j].Text
                     
                     if ($Similarity -ge $SimilarityThreshold) {
@@ -348,7 +348,7 @@ function Find-DuplicationsBetweenFiles {
                             Similarity = 1.0
                         }
                     } else {
-                        # Sinon, calculer la similarité
+                        # Sinon, calculer la similaritÃ©
                         $Similarity = Get-StringSimilarity -String1 $Block1.Text -String2 $Block2.Text
                         
                         if ($Similarity -ge $SimilarityThreshold) {
@@ -381,32 +381,32 @@ function Start-DuplicationDetection {
         [switch]$ShowDetails
     )
     
-    Write-Log "Démarrage de la détection des duplications de code..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la dÃ©tection des duplications de code..." -Level "TITLE"
     Write-Log "Dossier des scripts: $Path" -Level "INFO"
     Write-Log "Nombre minimum de lignes: $MinimumLineCount" -Level "INFO"
-    Write-Log "Seuil de similarité: $SimilarityThreshold" -Level "INFO"
+    Write-Log "Seuil de similaritÃ©: $SimilarityThreshold" -Level "INFO"
     Write-Log "Type de script: $ScriptType" -Level "INFO"
     Write-Log "Fichier de sortie: $OutputPath" -Level "INFO"
     
-    # Vérifier si le dossier des scripts existe
+    # VÃ©rifier si le dossier des scripts existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log "Le dossier des scripts n'existe pas: $Path" -Level "ERROR"
         return
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "SUCCESS"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "SUCCESS"
     }
     
     # Obtenir tous les fichiers de script
     $ScriptFiles = Get-ScriptFiles -Path $Path -ScriptType $ScriptType
     $TotalFiles = $ScriptFiles.Count
-    Write-Log "Nombre de fichiers à analyser: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de fichiers Ã  analyser: $TotalFiles" -Level "INFO"
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalFiles = $TotalFiles
@@ -438,7 +438,7 @@ function Start-DuplicationDetection {
             }
             
             if ($ShowDetails) {
-                Write-Log "  Duplications trouvées: $($Duplications.Count)" -Level "WARNING"
+                Write-Log "  Duplications trouvÃ©es: $($Duplications.Count)" -Level "WARNING"
             }
         }
     }
@@ -450,20 +450,20 @@ function Start-DuplicationDetection {
     $InterFileDuplications = Find-DuplicationsBetweenFiles -Files $ScriptFiles -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold
     $Results.InterFileDuplications = $InterFileDuplications
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $IntraFileCount = ($Results.IntraFileDuplications | Measure-Object -Property Duplications -Sum).Sum
     $InterFileCount = $Results.InterFileDuplications.Count
-    Write-Log "Analyse terminée" -Level "SUCCESS"
-    Write-Log "Nombre total de fichiers analysés: $TotalFiles" -Level "INFO"
-    Write-Log "Nombre de duplications internes trouvées: $IntraFileCount" -Level "WARNING"
-    Write-Log "Nombre de duplications entre fichiers trouvées: $InterFileCount" -Level "WARNING"
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "Analyse terminÃ©e" -Level "SUCCESS"
+    Write-Log "Nombre total de fichiers analysÃ©s: $TotalFiles" -Level "INFO"
+    Write-Log "Nombre de duplications internes trouvÃ©es: $IntraFileCount" -Level "WARNING"
+    Write-Log "Nombre de duplications entre fichiers trouvÃ©es: $InterFileCount" -Level "WARNING"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
     return $Results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-DuplicationDetection -Path $Path -OutputPath $OutputPath -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -ScriptType $ScriptType -ShowDetails:$ShowDetails

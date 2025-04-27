@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module de gestion des plugins d'analyse pour l'intégration avec des outils tiers.
+    Module de gestion des plugins d'analyse pour l'intÃ©gration avec des outils tiers.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour enregistrer, découvrir et exécuter des plugins
-    d'analyse qui intègrent des outils tiers comme PSScriptAnalyzer, ESLint, Pylint, etc.
+    Ce module fournit des fonctions pour enregistrer, dÃ©couvrir et exÃ©cuter des plugins
+    d'analyse qui intÃ¨grent des outils tiers comme PSScriptAnalyzer, ESLint, Pylint, etc.
 
 .NOTES
     Version:        1.0
@@ -13,10 +13,10 @@
     Creation Date:  15/04/2025
 #>
 
-# Structure de données pour stocker les plugins enregistrés
+# Structure de donnÃ©es pour stocker les plugins enregistrÃ©s
 $script:AnalysisPlugins = @{}
 
-# Répertoire par défaut pour les plugins
+# RÃ©pertoire par dÃ©faut pour les plugins
 $script:DefaultPluginDirectory = Join-Path -Path $PSScriptRoot -ChildPath "../plugins"
 
 # Fonction pour enregistrer un nouveau plugin d'analyse
@@ -55,13 +55,13 @@ function Register-AnalysisPlugin {
         [switch]$Force
     )
     
-    # Vérifier si le plugin existe déjà
+    # VÃ©rifier si le plugin existe dÃ©jÃ 
     if ($script:AnalysisPlugins.ContainsKey($Name) -and -not $Force) {
-        Write-Error "Un plugin avec le nom '$Name' existe déjà. Utilisez -Force pour remplacer."
+        Write-Error "Un plugin avec le nom '$Name' existe dÃ©jÃ . Utilisez -Force pour remplacer."
         return $false
     }
     
-    # Créer l'objet plugin
+    # CrÃ©er l'objet plugin
     $plugin = [PSCustomObject]@{
         Name = $Name
         Description = $Description
@@ -81,14 +81,14 @@ function Register-AnalysisPlugin {
     # Enregistrer le plugin
     if ($PSCmdlet.ShouldProcess("Plugin $Name", "Enregistrer")) {
         $script:AnalysisPlugins[$Name] = $plugin
-        Write-Verbose "Plugin '$Name' enregistré avec succès."
+        Write-Verbose "Plugin '$Name' enregistrÃ© avec succÃ¨s."
         return $true
     }
     
     return $false
 }
 
-# Fonction pour obtenir un plugin enregistré
+# Fonction pour obtenir un plugin enregistrÃ©
 function Get-AnalysisPlugin {
     [CmdletBinding()]
     param (
@@ -103,18 +103,18 @@ function Get-AnalysisPlugin {
         [switch]$EnabledOnly
     )
     
-    # Si un nom est spécifié, retourner ce plugin spécifique
+    # Si un nom est spÃ©cifiÃ©, retourner ce plugin spÃ©cifique
     if ($Name) {
         if ($script:AnalysisPlugins.ContainsKey($Name)) {
             return $script:AnalysisPlugins[$Name]
         }
         else {
-            Write-Warning "Aucun plugin trouvé avec le nom '$Name'."
+            Write-Warning "Aucun plugin trouvÃ© avec le nom '$Name'."
             return $null
         }
     }
     
-    # Sinon, filtrer les plugins selon les critères
+    # Sinon, filtrer les plugins selon les critÃ¨res
     $plugins = $script:AnalysisPlugins.Values
     
     if ($Language -ne "All") {
@@ -128,7 +128,7 @@ function Get-AnalysisPlugin {
     return $plugins
 }
 
-# Fonction pour activer ou désactiver un plugin
+# Fonction pour activer ou dÃ©sactiver un plugin
 function Set-AnalysisPluginState {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -140,20 +140,20 @@ function Set-AnalysisPluginState {
     )
     
     if (-not $script:AnalysisPlugins.ContainsKey($Name)) {
-        Write-Error "Aucun plugin trouvé avec le nom '$Name'."
+        Write-Error "Aucun plugin trouvÃ© avec le nom '$Name'."
         return $false
     }
     
-    if ($PSCmdlet.ShouldProcess("Plugin $Name", "Définir l'état à $Enabled")) {
+    if ($PSCmdlet.ShouldProcess("Plugin $Name", "DÃ©finir l'Ã©tat Ã  $Enabled")) {
         $script:AnalysisPlugins[$Name].Enabled = $Enabled
-        Write-Verbose "État du plugin '$Name' défini à $Enabled."
+        Write-Verbose "Ã‰tat du plugin '$Name' dÃ©fini Ã  $Enabled."
         return $true
     }
     
     return $false
 }
 
-# Fonction pour exécuter un plugin d'analyse
+# Fonction pour exÃ©cuter un plugin d'analyse
 function Invoke-AnalysisPlugin {
     [CmdletBinding()]
     param (
@@ -168,26 +168,26 @@ function Invoke-AnalysisPlugin {
     )
     
     if (-not $script:AnalysisPlugins.ContainsKey($Name)) {
-        Write-Error "Aucun plugin trouvé avec le nom '$Name'."
+        Write-Error "Aucun plugin trouvÃ© avec le nom '$Name'."
         return $null
     }
     
     $plugin = $script:AnalysisPlugins[$Name]
     
     if (-not $plugin.Enabled) {
-        Write-Warning "Le plugin '$Name' est désactivé."
+        Write-Warning "Le plugin '$Name' est dÃ©sactivÃ©."
         return $null
     }
     
-    # Vérifier les dépendances
+    # VÃ©rifier les dÃ©pendances
     foreach ($dependency in $plugin.Dependencies) {
         if (-not (Get-Command -Name $dependency -ErrorAction SilentlyContinue)) {
-            Write-Error "Dépendance manquante pour le plugin '$Name': $dependency"
+            Write-Error "DÃ©pendance manquante pour le plugin '$Name': $dependency"
             return $null
         }
     }
     
-    # Exécuter le plugin et mesurer le temps d'exécution
+    # ExÃ©cuter le plugin et mesurer le temps d'exÃ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
     try {
@@ -195,7 +195,7 @@ function Invoke-AnalysisPlugin {
             FilePath = $FilePath
         }
         
-        # Ajouter les paramètres supplémentaires
+        # Ajouter les paramÃ¨tres supplÃ©mentaires
         foreach ($key in $AdditionalParameters.Keys) {
             $parameters[$key] = $AdditionalParameters[$key]
         }
@@ -207,10 +207,10 @@ function Invoke-AnalysisPlugin {
             }
         }
         
-        # Exécuter la fonction d'analyse
+        # ExÃ©cuter la fonction d'analyse
         $results = & $plugin.AnalyzeFunction @parameters
         
-        # Convertir les résultats si une fonction de conversion est définie
+        # Convertir les rÃ©sultats si une fonction de conversion est dÃ©finie
         if ($null -ne $plugin.ConvertFunction -and $null -ne $results) {
             $results = & $plugin.ConvertFunction -Results $results
         }
@@ -218,25 +218,25 @@ function Invoke-AnalysisPlugin {
         return $results
     }
     catch {
-        Write-Error "Erreur lors de l'exécution du plugin '$Name': $_"
+        Write-Error "Erreur lors de l'exÃ©cution du plugin '$Name': $_"
         return $null
     }
     finally {
         $stopwatch.Stop()
         
-        # Mettre à jour les statistiques d'exécution
+        # Mettre Ã  jour les statistiques d'exÃ©cution
         $plugin.LastExecutionTime = [datetime]::Now
         $plugin.ExecutionCount++
         
-        # Calculer le temps d'exécution moyen
+        # Calculer le temps d'exÃ©cution moyen
         $executionTime = $stopwatch.Elapsed.TotalMilliseconds
         $plugin.AverageExecutionTime = (($plugin.AverageExecutionTime * ($plugin.ExecutionCount - 1)) + $executionTime) / $plugin.ExecutionCount
         
-        Write-Verbose "Plugin '$Name' exécuté en $($stopwatch.Elapsed.TotalMilliseconds) ms."
+        Write-Verbose "Plugin '$Name' exÃ©cutÃ© en $($stopwatch.Elapsed.TotalMilliseconds) ms."
     }
 }
 
-# Fonction pour découvrir automatiquement les plugins dans un répertoire
+# Fonction pour dÃ©couvrir automatiquement les plugins dans un rÃ©pertoire
 function Find-AnalysisPlugins {
     [CmdletBinding()]
     param (
@@ -250,18 +250,18 @@ function Find-AnalysisPlugins {
         [switch]$Force
     )
     
-    # Vérifier si le répertoire existe
+    # VÃ©rifier si le rÃ©pertoire existe
     if (-not (Test-Path -Path $PluginDirectory -PathType Container)) {
-        Write-Warning "Le répertoire de plugins '$PluginDirectory' n'existe pas."
+        Write-Warning "Le rÃ©pertoire de plugins '$PluginDirectory' n'existe pas."
         
-        # Créer le répertoire si demandé
+        # CrÃ©er le rÃ©pertoire si demandÃ©
         if ($Register) {
             try {
                 New-Item -Path $PluginDirectory -ItemType Directory -Force | Out-Null
-                Write-Verbose "Répertoire de plugins '$PluginDirectory' créé."
+                Write-Verbose "RÃ©pertoire de plugins '$PluginDirectory' crÃ©Ã©."
             }
             catch {
-                Write-Error "Impossible de créer le répertoire de plugins '$PluginDirectory': $_"
+                Write-Error "Impossible de crÃ©er le rÃ©pertoire de plugins '$PluginDirectory': $_"
                 return @()
             }
         }
@@ -279,16 +279,16 @@ function Find-AnalysisPlugins {
             # Charger le script de plugin
             $pluginScript = Get-Content -Path $file.FullName -Raw
             
-            # Vérifier si le script contient un appel à Register-AnalysisPlugin
+            # VÃ©rifier si le script contient un appel Ã  Register-AnalysisPlugin
             if ($pluginScript -match "Register-AnalysisPlugin") {
-                Write-Verbose "Plugin trouvé: $($file.Name)"
+                Write-Verbose "Plugin trouvÃ©: $($file.Name)"
                 
-                # Exécuter le script pour enregistrer le plugin si demandé
+                # ExÃ©cuter le script pour enregistrer le plugin si demandÃ©
                 if ($Register) {
                     $params = @{}
                     if ($Force) { $params["Force"] = $true }
                     
-                    # Exécuter le script dans une nouvelle portée
+                    # ExÃ©cuter le script dans une nouvelle portÃ©e
                     $scriptBlock = [scriptblock]::Create($pluginScript)
                     $result = . $scriptBlock
                     
@@ -324,34 +324,34 @@ function Export-AnalysisPlugin {
     )
     
     if (-not $script:AnalysisPlugins.ContainsKey($Name)) {
-        Write-Error "Aucun plugin trouvé avec le nom '$Name'."
+        Write-Error "Aucun plugin trouvÃ© avec le nom '$Name'."
         return $false
     }
     
     $plugin = $script:AnalysisPlugins[$Name]
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputDirectory -PathType Container)) {
         try {
             New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
         }
         catch {
-            Write-Error "Impossible de créer le répertoire de sortie '$OutputDirectory': $_"
+            Write-Error "Impossible de crÃ©er le rÃ©pertoire de sortie '$OutputDirectory': $_"
             return $false
         }
     }
     
-    # Générer le nom de fichier
+    # GÃ©nÃ©rer le nom de fichier
     $fileName = "$($Name -replace '[^\w\-]', '_').ps1"
     $filePath = Join-Path -Path $OutputDirectory -ChildPath $fileName
     
-    # Vérifier si le fichier existe déjà
+    # VÃ©rifier si le fichier existe dÃ©jÃ 
     if ((Test-Path -Path $filePath) -and -not $Force) {
-        Write-Error "Le fichier '$filePath' existe déjà. Utilisez -Force pour remplacer."
+        Write-Error "Le fichier '$filePath' existe dÃ©jÃ . Utilisez -Force pour remplacer."
         return $false
     }
     
-    # Générer le contenu du fichier
+    # GÃ©nÃ©rer le contenu du fichier
     $content = @"
 #Requires -Version 5.1
 <#
@@ -373,7 +373,7 @@ function Export-AnalysisPlugin {
 $($plugin.AnalyzeFunction.ToString())
 }
 
-# Fonction de conversion (si définie)
+# Fonction de conversion (si dÃ©finie)
 `$convertFunction = $(if ($null -ne $plugin.ConvertFunction) { "{`n$($plugin.ConvertFunction.ToString())`n}" } else { "`$null" })
 
 # Configuration
@@ -406,11 +406,11 @@ Register-AnalysisPlugin -Name '$($plugin.Name)' `
                        -Force
 "@
     
-    # Écrire le fichier
+    # Ã‰crire le fichier
     if ($PSCmdlet.ShouldProcess("Plugin $Name", "Exporter vers $filePath")) {
         try {
             $content | Out-File -FilePath $filePath -Encoding utf8 -Force
-            Write-Verbose "Plugin '$Name' exporté vers '$filePath'."
+            Write-Verbose "Plugin '$Name' exportÃ© vers '$filePath'."
             return $true
         }
         catch {
@@ -442,29 +442,29 @@ function Import-AnalysisPlugin {
     try {
         $pluginScript = Get-Content -Path $Path -Raw
         
-        # Vérifier si le script contient un appel à Register-AnalysisPlugin
+        # VÃ©rifier si le script contient un appel Ã  Register-AnalysisPlugin
         if ($pluginScript -match "Register-AnalysisPlugin") {
-            # Exécuter le script pour enregistrer le plugin
+            # ExÃ©cuter le script pour enregistrer le plugin
             $params = @{}
             if ($Force) { $params["Force"] = $true }
             
             if ($PSCmdlet.ShouldProcess("Plugin $Path", "Importer")) {
-                # Exécuter le script dans une nouvelle portée
+                # ExÃ©cuter le script dans une nouvelle portÃ©e
                 $scriptBlock = [scriptblock]::Create($pluginScript)
                 $result = . $scriptBlock
                 
                 if ($result) {
-                    Write-Verbose "Plugin importé avec succès depuis '$Path'."
+                    Write-Verbose "Plugin importÃ© avec succÃ¨s depuis '$Path'."
                     return $true
                 }
                 else {
-                    Write-Warning "Échec de l'importation du plugin depuis '$Path'."
+                    Write-Warning "Ã‰chec de l'importation du plugin depuis '$Path'."
                     return $false
                 }
             }
         }
         else {
-            Write-Error "Le fichier '$Path' ne semble pas être un plugin d'analyse valide."
+            Write-Error "Le fichier '$Path' ne semble pas Ãªtre un plugin d'analyse valide."
             return $false
         }
     }
@@ -485,20 +485,20 @@ function Remove-AnalysisPlugin {
     )
     
     if (-not $script:AnalysisPlugins.ContainsKey($Name)) {
-        Write-Error "Aucun plugin trouvé avec le nom '$Name'."
+        Write-Error "Aucun plugin trouvÃ© avec le nom '$Name'."
         return $false
     }
     
     if ($PSCmdlet.ShouldProcess("Plugin $Name", "Supprimer")) {
         $script:AnalysisPlugins.Remove($Name)
-        Write-Verbose "Plugin '$Name' supprimé."
+        Write-Verbose "Plugin '$Name' supprimÃ©."
         return $true
     }
     
     return $false
 }
 
-# Fonction pour obtenir les statistiques d'exécution des plugins
+# Fonction pour obtenir les statistiques d'exÃ©cution des plugins
 function Get-AnalysisPluginStatistics {
     [CmdletBinding()]
     param (
@@ -508,7 +508,7 @@ function Get-AnalysisPluginStatistics {
     
     if ($Name) {
         if (-not $script:AnalysisPlugins.ContainsKey($Name)) {
-            Write-Error "Aucun plugin trouvé avec le nom '$Name'."
+            Write-Error "Aucun plugin trouvÃ© avec le nom '$Name'."
             return $null
         }
         
@@ -537,14 +537,14 @@ function Get-AnalysisPluginStatistics {
     }
 }
 
-# Créer le répertoire de plugins par défaut s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de plugins par dÃ©faut s'il n'existe pas
 if (-not (Test-Path -Path $script:DefaultPluginDirectory -PathType Container)) {
     try {
         New-Item -Path $script:DefaultPluginDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire de plugins par défaut '$script:DefaultPluginDirectory' créé."
+        Write-Verbose "RÃ©pertoire de plugins par dÃ©faut '$script:DefaultPluginDirectory' crÃ©Ã©."
     }
     catch {
-        Write-Warning "Impossible de créer le répertoire de plugins par défaut '$script:DefaultPluginDirectory': $_"
+        Write-Warning "Impossible de crÃ©er le rÃ©pertoire de plugins par dÃ©faut '$script:DefaultPluginDirectory': $_"
     }
 }
 

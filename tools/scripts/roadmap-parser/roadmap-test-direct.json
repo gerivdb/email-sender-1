@@ -1,13 +1,13 @@
-{
+﻿{
   "Title": "Roadmap de Test",
-  "Description": "Ceci est une roadmap de test pour valider le modèle objet.",
+  "Description": "Ceci est une roadmap de test pour valider le modÃ¨le objet.",
   "CreatedDate": "2025-04-24T03:25:11.8073383+02:00",
   "ModifiedDate": "2025-04-24T03:25:11.807413+02:00",
   "Tasks": [
     {
       "Id": "1",
-      "Title": "Tâche 1",
-      "Description": "Description de la tâche 1",
+      "Title": "TÃ¢che 1",
+      "Description": "Description de la tÃ¢che 1",
       "Status": 0,
       "Level": 0,
       "Order": 0,
@@ -16,8 +16,8 @@
     },
     {
       "Id": "1.1",
-      "Title": "Tâche 1.1",
-      "Description": "Description de la tâche 1.1",
+      "Title": "TÃ¢che 1.1",
+      "Description": "Description de la tÃ¢che 1.1",
       "Status": 0,
       "Level": 1,
       "Order": 0,
@@ -26,8 +26,8 @@
     },
     {
       "Id": "1.2",
-      "Title": "Tâche 1.2",
-      "Description": "Description de la tâche 1.2",
+      "Title": "TÃ¢che 1.2",
+      "Description": "Description de la tÃ¢che 1.2",
       "Status": 0,
       "Level": 1,
       "Order": 0,
@@ -36,8 +36,8 @@
     },
     {
       "Id": "1.2.1",
-      "Title": "Tâche 1.2.1",
-      "Description": "Description de la tâche 1.2.1",
+      "Title": "TÃ¢che 1.2.1",
+      "Description": "Description de la tÃ¢che 1.2.1",
       "Status": 0,
       "Level": 2,
       "Order": 0,
@@ -46,8 +46,8 @@
     },
     {
       "Id": "1.2.2",
-      "Title": "Tâche 1.2.2",
-      "Description": "Description de la tâche 1.2.2",
+      "Title": "TÃ¢che 1.2.2",
+      "Description": "Description de la tÃ¢che 1.2.2",
       "Status": 2,
       "Level": 2,
       "Order": 0,
@@ -56,8 +56,8 @@
     },
     {
       "Id": "2",
-      "Title": "Tâche 2",
-      "Description": "Description de la tâche 2",
+      "Title": "TÃ¢che 2",
+      "Description": "Description de la tÃ¢che 2",
       "Status": 0,
       "Level": 0,
       "Order": 0,
@@ -68,8 +68,8 @@
     },
     {
       "Id": "2.1",
-      "Title": "Tâche 2.1",
-      "Description": "Description de la tâche 2.1",
+      "Title": "TÃ¢che 2.1",
+      "Description": "Description de la tÃ¢che 2.1",
       "Status": 1,
       "Level": 1,
       "Order": 0,

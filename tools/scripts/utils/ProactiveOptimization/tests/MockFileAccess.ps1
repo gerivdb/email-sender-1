@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Mocks pour les fonctions d'accès aux fichiers.
+    Mocks pour les fonctions d'accÃ¨s aux fichiers.
 .DESCRIPTION
-    Ce script contient des mocks pour les fonctions d'accès aux fichiers.
+    Ce script contient des mocks pour les fonctions d'accÃ¨s aux fichiers.
 #>
 
 # Mock pour Test-Path
@@ -21,7 +21,7 @@ function Test-MockPath {
         return $true
     }
 
-    # Par défaut, retourner false
+    # Par dÃ©faut, retourner false
     return $false
 }
 
@@ -42,9 +42,9 @@ function Test-Function {
         [string]$InputData
     )
 
-    # Utilisation de la parallélisation
+    # Utilisation de la parallÃ©lisation
     $results = $InputData | ForEach-Object -Parallel {
-        # Traitement parallèle
+        # Traitement parallÃ¨le
         Start-Sleep -Milliseconds 100
         return "Processed: $_"
     } -ThrottleLimit 5
@@ -60,9 +60,9 @@ function Test-Function {
                 '        [string]$InputData',
                 '    )',
                 '    ',
-                '    # Utilisation de la parallélisation',
+                '    # Utilisation de la parallÃ©lisation',
                 '    $results = $InputData | ForEach-Object -Parallel {',
-                '        # Traitement parallèle',
+                '        # Traitement parallÃ¨le',
                 '        Start-Sleep -Milliseconds 100',
                 '        return "Processed: $_"',
                 '    } -ThrottleLimit 5',
@@ -202,7 +202,7 @@ function Out-MockFile {
         [string]$Encoding = "UTF8"
     )
 
-    # Simuler l'écriture dans un fichier
+    # Simuler l'Ã©criture dans un fichier
     return $true
 }
 
@@ -214,7 +214,7 @@ function New-MockItem {
         [switch]$Force
     )
 
-    # Simuler la création d'un élément
+    # Simuler la crÃ©ation d'un Ã©lÃ©ment
     return [PSCustomObject]@{
         Path     = $Path
         ItemType = $ItemType

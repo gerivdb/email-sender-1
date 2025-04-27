@@ -1,5 +1,5 @@
-# Module de système d'alertes pour le Script Manager
-# Ce module gère les alertes pour les problèmes détectés dans les scripts
+﻿# Module de systÃ¨me d'alertes pour le Script Manager
+# Ce module gÃ¨re les alertes pour les problÃ¨mes dÃ©tectÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: monitoring, alerts, scripts
@@ -7,13 +7,13 @@
 function Initialize-AlertSystem {
     <#
     .SYNOPSIS
-        Initialise le système d'alertes
+        Initialise le systÃ¨me d'alertes
     .DESCRIPTION
-        Configure le système d'alertes pour les scripts
+        Configure le systÃ¨me d'alertes pour les scripts
     .PARAMETER Inventory
         Objet d'inventaire des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer les alertes
+        Chemin oÃ¹ enregistrer les alertes
     .EXAMPLE
         Initialize-AlertSystem -Inventory $inventory -OutputPath "monitoring"
     #>
@@ -26,15 +26,15 @@ function Initialize-AlertSystem {
         [string]$OutputPath
     )
     
-    # Créer le dossier des alertes
+    # CrÃ©er le dossier des alertes
     $AlertsPath = Join-Path -Path $OutputPath -ChildPath "alerts"
     if (-not (Test-Path -Path $AlertsPath)) {
         New-Item -ItemType Directory -Path $AlertsPath -Force | Out-Null
     }
     
-    Write-Host "Initialisation du système d'alertes..." -ForegroundColor Cyan
+    Write-Host "Initialisation du systÃ¨me d'alertes..." -ForegroundColor Cyan
     
-    # Créer le fichier de configuration des alertes
+    # CrÃ©er le fichier de configuration des alertes
     $AlertConfigPath = Join-Path -Path $AlertsPath -ChildPath "alert_config.json"
     $AlertConfig = @{
         Enabled = $true
@@ -52,7 +52,7 @@ function Initialize-AlertSystem {
             ToAddress = @()
             Credentials = @{
                 Username = ""
-                Password = ""  # Note: Stocker les mots de passe en clair n'est pas recommandé
+                Password = ""  # Note: Stocker les mots de passe en clair n'est pas recommandÃ©
             }
         }
         TeamsConfig = @{
@@ -70,35 +70,35 @@ function Initialize-AlertSystem {
         AlertRules = @(
             @{
                 Name = "Erreur de syntaxe"
-                Description = "Détecte les erreurs de syntaxe dans les scripts"
+                Description = "DÃ©tecte les erreurs de syntaxe dans les scripts"
                 Enabled = $true
                 Level = "Critical"
                 Condition = "SyntaxError"
             },
             @{
                 Name = "Chemin absolu"
-                Description = "Détecte l'utilisation de chemins absolus dans les scripts"
+                Description = "DÃ©tecte l'utilisation de chemins absolus dans les scripts"
                 Enabled = $true
                 Level = "Warning"
                 Condition = "AbsolutePath"
             },
             @{
                 Name = "Comparaison $null incorrecte"
-                Description = "Détecte les comparaisons avec $null du mauvais côté"
+                Description = "DÃ©tecte les comparaisons avec $null du mauvais cÃ´tÃ©"
                 Enabled = $true
                 Level = "Warning"
                 Condition = "NullComparison"
             },
             @{
-                Name = "Script modifié"
-                Description = "Détecte les modifications de scripts"
+                Name = "Script modifiÃ©"
+                Description = "DÃ©tecte les modifications de scripts"
                 Enabled = $true
                 Level = "Info"
                 Condition = "ScriptModified"
             },
             @{
-                Name = "Script supprimé"
-                Description = "Détecte les suppressions de scripts"
+                Name = "Script supprimÃ©"
+                Description = "DÃ©tecte les suppressions de scripts"
                 Enabled = $true
                 Level = "Error"
                 Condition = "ScriptDeleted"
@@ -109,9 +109,9 @@ function Initialize-AlertSystem {
     # Enregistrer la configuration des alertes
     $AlertConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $AlertConfigPath
     
-    Write-Host "  Configuration des alertes créée: $AlertConfigPath" -ForegroundColor Green
+    Write-Host "  Configuration des alertes crÃ©Ã©e: $AlertConfigPath" -ForegroundColor Green
     
-    # Créer le fichier d'historique des alertes
+    # CrÃ©er le fichier d'historique des alertes
     $AlertHistoryPath = Join-Path -Path $AlertsPath -ChildPath "alert_history.json"
     $AlertHistory = @{
         LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -120,16 +120,16 @@ function Initialize-AlertSystem {
     
     Set-Content -Path $AlertHistoryPath -Value $AlertHistory
     
-    Write-Host "  Historique des alertes initialisé: $AlertHistoryPath" -ForegroundColor Green
+    Write-Host "  Historique des alertes initialisÃ©: $AlertHistoryPath" -ForegroundColor Green
     
-    # Créer le script de gestion des alertes
+    # CrÃ©er le script de gestion des alertes
     $AlertScriptPath = Join-Path -Path $AlertsPath -ChildPath "Send-Alert.ps1"
     $AlertScriptContent = @"
 <#
 .SYNOPSIS
-    Envoie une alerte pour un problème détecté
+    Envoie une alerte pour un problÃ¨me dÃ©tectÃ©
 .DESCRIPTION
-    Envoie une alerte via les méthodes configurées (console, email, Teams, Slack)
+    Envoie une alerte via les mÃ©thodes configurÃ©es (console, email, Teams, Slack)
 .PARAMETER AlertName
     Nom de l'alerte
 .PARAMETER Level
@@ -137,7 +137,7 @@ function Initialize-AlertSystem {
 .PARAMETER Message
     Message de l'alerte
 .PARAMETER ScriptPath
-    Chemin du script concerné
+    Chemin du script concernÃ©
 .PARAMETER ConfigPath
     Chemin vers le fichier de configuration des alertes
 .PARAMETER HistoryPath
@@ -167,14 +167,14 @@ param (
     [string]`$HistoryPath
 )
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path `$ConfigPath)) {
-    Write-Error "Fichier de configuration non trouvé: `$ConfigPath"
+    Write-Error "Fichier de configuration non trouvÃ©: `$ConfigPath"
     exit 1
 }
 
 if (-not (Test-Path -Path `$HistoryPath)) {
-    Write-Error "Fichier d'historique non trouvé: `$HistoryPath"
+    Write-Error "Fichier d'historique non trouvÃ©: `$HistoryPath"
     exit 1
 }
 
@@ -187,19 +187,19 @@ try {
     exit 1
 }
 
-# Vérifier si les alertes sont activées
+# VÃ©rifier si les alertes sont activÃ©es
 if (-not `$Config.Enabled) {
-    Write-Warning "Le système d'alertes est désactivé"
+    Write-Warning "Le systÃ¨me d'alertes est dÃ©sactivÃ©"
     exit 0
 }
 
-# Vérifier si le niveau d'alerte est activé
+# VÃ©rifier si le niveau d'alerte est activÃ©
 if (-not `$Config.AlertLevels.(`$Level)) {
-    Write-Warning "Les alertes de niveau `$Level sont désactivées"
+    Write-Warning "Les alertes de niveau `$Level sont dÃ©sactivÃ©es"
     exit 0
 }
 
-# Créer l'objet d'alerte
+# CrÃ©er l'objet d'alerte
 `$Alert = [PSCustomObject]@{
     Name = `$AlertName
     Level = `$Level
@@ -210,14 +210,14 @@ if (-not `$Config.AlertLevels.(`$Level)) {
     Acknowledged = `$false
 }
 
-# Ajouter l'alerte à l'historique
+# Ajouter l'alerte Ã  l'historique
 `$History.Alerts += `$Alert
 `$History.LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
-# Enregistrer l'historique mis à jour
+# Enregistrer l'historique mis Ã  jour
 `$History | ConvertTo-Json -Depth 10 | Set-Content -Path `$HistoryPath
 
-# Envoyer l'alerte via les méthodes configurées
+# Envoyer l'alerte via les mÃ©thodes configurÃ©es
 if (`$Config.NotificationMethods.Console) {
     # Afficher l'alerte dans la console
     `$Color = switch (`$Level) {
@@ -242,7 +242,7 @@ if (`$Config.NotificationMethods.Email) {
         if (-not [string]::IsNullOrEmpty(`$EmailConfig.SmtpServer) -and -not [string]::IsNullOrEmpty(`$EmailConfig.FromAddress) -and `$EmailConfig.ToAddress.Count -gt 0) {
             `$Subject = "ALERTE [`$Level] - `$AlertName"
             `$Body = @"
-Une alerte a été détectée par le Script Manager:
+Une alerte a Ã©tÃ© dÃ©tectÃ©e par le Script Manager:
 
 Nom: `$AlertName
 Niveau: `$Level
@@ -250,7 +250,7 @@ Script: `$ScriptPath
 Message: `$Message
 Timestamp: `$(`$Alert.Timestamp)
 
-Cette alerte a été générée automatiquement par le système d'alertes du Script Manager.
+Cette alerte a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement par le systÃ¨me d'alertes du Script Manager.
 "@
             
             `$EmailParams = @{
@@ -263,7 +263,7 @@ Cette alerte a été générée automatiquement par le système d'alertes du Scr
                 Body = `$Body
             }
             
-            # Ajouter les informations d'identification si nécessaire
+            # Ajouter les informations d'identification si nÃ©cessaire
             if (-not [string]::IsNullOrEmpty(`$EmailConfig.Credentials.Username) -and -not [string]::IsNullOrEmpty(`$EmailConfig.Credentials.Password)) {
                 `$SecurePassword = ConvertTo-SecureString `$EmailConfig.Credentials.Password -AsPlainText -Force
                 `$Credentials = New-Object System.Management.Automation.PSCredential(`$EmailConfig.Credentials.Username, `$SecurePassword)
@@ -271,9 +271,9 @@ Cette alerte a été générée automatiquement par le système d'alertes du Scr
             }
             
             Send-MailMessage @EmailParams
-            Write-Host "Alerte envoyée par email" -ForegroundColor Green
+            Write-Host "Alerte envoyÃ©e par email" -ForegroundColor Green
         } else {
-            Write-Warning "Configuration email incomplète"
+            Write-Warning "Configuration email incomplÃ¨te"
         }
     } catch {
         Write-Warning "Erreur lors de l'envoi de l'email: `$_"
@@ -301,7 +301,7 @@ if (`$Config.NotificationMethods.Teams) {
                 "sections" = @(
                     @{
                         "activityTitle" = "ALERTE [`$Level] - `$AlertName"
-                        "activitySubtitle" = "Générée le `$(`$Alert.Timestamp)"
+                        "activitySubtitle" = "GÃ©nÃ©rÃ©e le `$(`$Alert.Timestamp)"
                         "facts" = @(
                             @{
                                 "name" = "Script:"
@@ -323,7 +323,7 @@ if (`$Config.NotificationMethods.Teams) {
             `$TeamsMessageJson = `$TeamsMessage | ConvertTo-Json -Depth 10
             
             Invoke-RestMethod -Uri `$TeamsConfig.WebhookUrl -Method Post -Body `$TeamsMessageJson -ContentType "application/json"
-            Write-Host "Alerte envoyée via Teams" -ForegroundColor Green
+            Write-Host "Alerte envoyÃ©e via Teams" -ForegroundColor Green
         } else {
             Write-Warning "URL de webhook Teams manquante"
         }
@@ -350,7 +350,7 @@ if (`$Config.NotificationMethods.Slack) {
                     @{
                         "fallback" = "ALERTE [`$Level] - `$AlertName"
                         "color" = `$Color
-                        "pretext" = "Une alerte a été détectée par le Script Manager"
+                        "pretext" = "Une alerte a Ã©tÃ© dÃ©tectÃ©e par le Script Manager"
                         "title" = "ALERTE [`$Level] - `$AlertName"
                         "text" = `$Message
                         "fields" = @(
@@ -377,7 +377,7 @@ if (`$Config.NotificationMethods.Slack) {
             `$SlackMessageJson = `$SlackMessage | ConvertTo-Json -Depth 10
             
             Invoke-RestMethod -Uri `$SlackConfig.WebhookUrl -Method Post -Body `$SlackMessageJson -ContentType "application/json"
-            Write-Host "Alerte envoyée via Slack" -ForegroundColor Green
+            Write-Host "Alerte envoyÃ©e via Slack" -ForegroundColor Green
         } else {
             Write-Warning "URL de webhook Slack manquante"
         }
@@ -389,7 +389,7 @@ if (`$Config.NotificationMethods.Slack) {
     
     Set-Content -Path $AlertScriptPath -Value $AlertScriptContent
     
-    Write-Host "  Script d'envoi d'alertes créé: $AlertScriptPath" -ForegroundColor Green
+    Write-Host "  Script d'envoi d'alertes crÃ©Ã©: $AlertScriptPath" -ForegroundColor Green
     
     return [PSCustomObject]@{
         AlertsPath = $AlertsPath
@@ -402,9 +402,9 @@ if (`$Config.NotificationMethods.Slack) {
 function Send-ScriptAlert {
     <#
     .SYNOPSIS
-        Envoie une alerte pour un problème détecté dans un script
+        Envoie une alerte pour un problÃ¨me dÃ©tectÃ© dans un script
     .DESCRIPTION
-        Utilise le script d'envoi d'alertes pour notifier d'un problème
+        Utilise le script d'envoi d'alertes pour notifier d'un problÃ¨me
     .PARAMETER AlertName
         Nom de l'alerte
     .PARAMETER Level
@@ -412,7 +412,7 @@ function Send-ScriptAlert {
     .PARAMETER Message
         Message de l'alerte
     .PARAMETER ScriptPath
-        Chemin du script concerné
+        Chemin du script concernÃ©
     .PARAMETER AlertConfig
         Objet de configuration des alertes
     .EXAMPLE
@@ -437,13 +437,13 @@ function Send-ScriptAlert {
         [PSCustomObject]$AlertConfig
     )
     
-    # Vérifier si le script d'envoi d'alertes existe
+    # VÃ©rifier si le script d'envoi d'alertes existe
     if (-not (Test-Path -Path $AlertConfig.AlertScriptPath)) {
-        Write-Error "Script d'envoi d'alertes non trouvé: $($AlertConfig.AlertScriptPath)"
+        Write-Error "Script d'envoi d'alertes non trouvÃ©: $($AlertConfig.AlertScriptPath)"
         return $false
     }
     
-    # Exécuter le script d'envoi d'alertes
+    # ExÃ©cuter le script d'envoi d'alertes
     try {
         & $AlertConfig.AlertScriptPath -AlertName $AlertName -Level $Level -Message $Message -ScriptPath $ScriptPath -ConfigPath $AlertConfig.AlertConfigPath -HistoryPath $AlertConfig.AlertHistoryPath
         return $true
@@ -456,13 +456,13 @@ function Send-ScriptAlert {
 function Get-AlertHistory {
     <#
     .SYNOPSIS
-        Récupère l'historique des alertes
+        RÃ©cupÃ¨re l'historique des alertes
     .DESCRIPTION
         Charge et retourne l'historique des alertes
     .PARAMETER HistoryPath
         Chemin vers le fichier d'historique des alertes
     .PARAMETER MaxAlerts
-        Nombre maximum d'alertes à retourner
+        Nombre maximum d'alertes Ã  retourner
     .EXAMPLE
         Get-AlertHistory -HistoryPath "monitoring\alerts\alert_history.json" -MaxAlerts 10
     #>
@@ -475,9 +475,9 @@ function Get-AlertHistory {
         [int]$MaxAlerts = 0
     )
     
-    # Vérifier si le fichier d'historique existe
+    # VÃ©rifier si le fichier d'historique existe
     if (-not (Test-Path -Path $HistoryPath)) {
-        Write-Error "Fichier d'historique non trouvé: $HistoryPath"
+        Write-Error "Fichier d'historique non trouvÃ©: $HistoryPath"
         return $null
     }
     

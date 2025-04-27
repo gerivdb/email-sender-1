@@ -1,5 +1,5 @@
-# Module d'apprentissage des modèles de structure pour le Script Manager
-# Ce module apprend les modèles de structure utilisés dans les scripts
+﻿# Module d'apprentissage des modÃ¨les de structure pour le Script Manager
+# Ce module apprend les modÃ¨les de structure utilisÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, learning, structure
@@ -7,11 +7,11 @@
 function Learn-StructurePatterns {
     <#
     .SYNOPSIS
-        Apprend les modèles de structure utilisés dans les scripts
+        Apprend les modÃ¨les de structure utilisÃ©s dans les scripts
     .DESCRIPTION
-        Analyse les scripts pour apprendre les modèles de structure du code
+        Analyse les scripts pour apprendre les modÃ¨les de structure du code
     .PARAMETER Scripts
-        Scripts à analyser
+        Scripts Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -26,7 +26,7 @@ function Learn-StructurePatterns {
         [string]$ScriptType
     )
     
-    # Créer un objet pour stocker les modèles de structure
+    # CrÃ©er un objet pour stocker les modÃ¨les de structure
     $StructurePatterns = [PSCustomObject]@{
         HeaderPattern = $null
         FunctionStructure = $null
@@ -36,7 +36,7 @@ function Learn-StructurePatterns {
         FileOrganization = $null
     }
     
-    # Analyser les en-têtes
+    # Analyser les en-tÃªtes
     $StructurePatterns.HeaderPattern = Analyze-HeaderPattern -Scripts $Scripts -ScriptType $ScriptType
     
     # Analyser la structure des fonctions
@@ -60,11 +60,11 @@ function Learn-StructurePatterns {
 function Analyze-HeaderPattern {
     <#
     .SYNOPSIS
-        Analyse les modèles d'en-tête des scripts
+        Analyse les modÃ¨les d'en-tÃªte des scripts
     .DESCRIPTION
-        Détermine les modèles d'en-tête utilisés dans les scripts
+        DÃ©termine les modÃ¨les d'en-tÃªte utilisÃ©s dans les scripts
     .PARAMETER Scripts
-        Scripts à analyser
+        Scripts Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -79,7 +79,7 @@ function Analyze-HeaderPattern {
         [string]$ScriptType
     )
     
-    # Créer un objet pour stocker les résultats
+    # CrÃ©er un objet pour stocker les rÃ©sultats
     $Results = [PSCustomObject]@{
         HasHeader = 0
         HeaderLength = 0
@@ -87,12 +87,12 @@ function Analyze-HeaderPattern {
         HeaderStyle = $null
     }
     
-    # Compteurs pour les styles d'en-tête
+    # Compteurs pour les styles d'en-tÃªte
     $BlockCommentCount = 0
     $LineCommentCount = 0
     $DocstringCount = 0
     
-    # Compteurs pour les champs d'en-tête
+    # Compteurs pour les champs d'en-tÃªte
     $FieldCounts = @{
         "Author" = 0
         "Version" = 0
@@ -108,34 +108,34 @@ function Analyze-HeaderPattern {
     
     # Parcourir les scripts
     foreach ($Script in $Scripts) {
-        # Lire les premières lignes du script
+        # Lire les premiÃ¨res lignes du script
         $Content = Get-Content -Path $Script.Path -TotalCount 20 -ErrorAction SilentlyContinue
         
         if ($null -eq $Content) {
             continue
         }
         
-        # Vérifier si le script a un en-tête
+        # VÃ©rifier si le script a un en-tÃªte
         $HasHeader = $false
         $HeaderLines = 0
         
-        # Détecter le style d'en-tête selon le type de script
+        # DÃ©tecter le style d'en-tÃªte selon le type de script
         switch ($ScriptType) {
             "PowerShell" {
-                # Vérifier les commentaires de bloc
+                # VÃ©rifier les commentaires de bloc
                 if ($Content -join "`n" -match "<#(.*?)#>") {
                     $HasHeader = $true
                     $HeaderLines = ($Matches[1] -split "`n").Length + 2
                     $BlockCommentCount++
                     
-                    # Vérifier les champs
+                    # VÃ©rifier les champs
                     foreach ($Field in $FieldCounts.Keys) {
                         if ($Matches[1] -match "\.$Field") {
                             $FieldCounts[$Field]++
                         }
                     }
                 }
-                # Vérifier les commentaires de ligne
+                # VÃ©rifier les commentaires de ligne
                 elseif ($Content[0] -match "^#") {
                     $HasHeader = $true
                     $LineCount = 0
@@ -145,7 +145,7 @@ function Analyze-HeaderPattern {
                             $HeaderLines++
                             $LineCount++
                             
-                            # Vérifier les champs
+                            # VÃ©rifier les champs
                             foreach ($Field in $FieldCounts.Keys) {
                                 if ($Line -match "$Field:") {
                                     $FieldCounts[$Field]++
@@ -162,20 +162,20 @@ function Analyze-HeaderPattern {
                 }
             }
             "Python" {
-                # Vérifier les docstrings
+                # VÃ©rifier les docstrings
                 if ($Content -join "`n" -match '"""(.*?)"""' -or $Content -join "`n" -match "'''(.*?)'''") {
                     $HasHeader = $true
                     $HeaderLines = ($Matches[1] -split "`n").Length + 2
                     $DocstringCount++
                     
-                    # Vérifier les champs
+                    # VÃ©rifier les champs
                     foreach ($Field in $FieldCounts.Keys) {
                         if ($Matches[1] -match "$Field:") {
                             $FieldCounts[$Field]++
                         }
                     }
                 }
-                # Vérifier les commentaires de ligne
+                # VÃ©rifier les commentaires de ligne
                 elseif ($Content[0] -match "^#") {
                     $HasHeader = $true
                     $LineCount = 0
@@ -185,7 +185,7 @@ function Analyze-HeaderPattern {
                             $HeaderLines++
                             $LineCount++
                             
-                            # Vérifier les champs
+                            # VÃ©rifier les champs
                             foreach ($Field in $FieldCounts.Keys) {
                                 if ($Line -match "$Field:") {
                                     $FieldCounts[$Field]++
@@ -202,7 +202,7 @@ function Analyze-HeaderPattern {
                 }
             }
             "Batch" {
-                # Vérifier les commentaires REM ou ::
+                # VÃ©rifier les commentaires REM ou ::
                 if ($Content[0] -match "^(REM|::)") {
                     $HasHeader = $true
                     $LineCount = 0
@@ -212,7 +212,7 @@ function Analyze-HeaderPattern {
                             $HeaderLines++
                             $LineCount++
                             
-                            # Vérifier les champs
+                            # VÃ©rifier les champs
                             foreach ($Field in $FieldCounts.Keys) {
                                 if ($Line -match "$Field:") {
                                     $FieldCounts[$Field]++
@@ -229,7 +229,7 @@ function Analyze-HeaderPattern {
                 }
             }
             "Shell" {
-                # Vérifier les commentaires #
+                # VÃ©rifier les commentaires #
                 if ($Content[0] -match "^#") {
                     $HasHeader = $true
                     $LineCount = 0
@@ -239,7 +239,7 @@ function Analyze-HeaderPattern {
                             $HeaderLines++
                             $LineCount++
                             
-                            # Vérifier les champs
+                            # VÃ©rifier les champs
                             foreach ($Field in $FieldCounts.Keys) {
                                 if ($Line -match "$Field:") {
                                     $FieldCounts[$Field]++
@@ -263,12 +263,12 @@ function Analyze-HeaderPattern {
         }
     }
     
-    # Calculer la longueur moyenne des en-têtes
+    # Calculer la longueur moyenne des en-tÃªtes
     if ($Results.HasHeader -gt 0) {
         $Results.HeaderLength = [math]::Round($Results.HeaderLength / $Results.HasHeader, 1)
     }
     
-    # Déterminer le style d'en-tête prédominant
+    # DÃ©terminer le style d'en-tÃªte prÃ©dominant
     $MaxCount = [math]::Max($BlockCommentCount, [math]::Max($LineCommentCount, $DocstringCount))
     
     if ($MaxCount -eq $BlockCommentCount) {
@@ -279,7 +279,7 @@ function Analyze-HeaderPattern {
         $Results.HeaderStyle = "Docstring"
     }
     
-    # Déterminer les champs d'en-tête les plus courants
+    # DÃ©terminer les champs d'en-tÃªte les plus courants
     $SortedFields = $FieldCounts.GetEnumerator() | Sort-Object -Property Value -Descending | Where-Object { $_.Value -gt 0 } | Select-Object -First 5
     
     foreach ($Field in $SortedFields) {
@@ -294,9 +294,9 @@ function Analyze-FunctionStructure {
     .SYNOPSIS
         Analyse la structure des fonctions
     .DESCRIPTION
-        Détermine la structure des fonctions utilisée dans les scripts
+        DÃ©termine la structure des fonctions utilisÃ©e dans les scripts
     .PARAMETER Scripts
-        Scripts à analyser
+        Scripts Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
@@ -311,7 +311,7 @@ function Analyze-FunctionStructure {
         [string]$ScriptType
     )
     
-    # Créer un objet pour stocker les résultats
+    # CrÃ©er un objet pour stocker les rÃ©sultats
     $Results = [PSCustomObject]@{
         AverageFunctionCount = 0
         AverageFunctionLength = 0
@@ -325,7 +325,7 @@ function Analyze-FunctionStructure {
     $TotalFunctionLength = 0
     $DocumentedFunctions = 0
     
-    # Compteurs pour les styles de paramètres
+    # Compteurs pour les styles de paramÃ¨tres
     $NamedParameterCount = 0
     $PositionalParameterCount = 0
     $TypedParameterCount = 0
@@ -357,12 +357,12 @@ function Analyze-FunctionStructure {
                     $FunctionLines = ($FunctionBody -split "`n").Count
                     $TotalFunctionLength += $FunctionLines
                     
-                    # Vérifier la documentation
+                    # VÃ©rifier la documentation
                     if ($FunctionBody -match "<#(.*?)#>") {
                         $DocumentedFunctions++
                     }
                     
-                    # Vérifier le style de paramètres
+                    # VÃ©rifier le style de paramÃ¨tres
                     if ($FunctionBody -match "param\s*\(\s*\[Parameter") {
                         $NamedParameterCount++
                     }
@@ -371,7 +371,7 @@ function Analyze-FunctionStructure {
                         $TypedParameterCount++
                     }
                     
-                    # Vérifier le style de retour
+                    # VÃ©rifier le style de retour
                     if ($FunctionBody -match "return\s+") {
                         $ExplicitReturnCount++
                     } else {
@@ -388,12 +388,12 @@ function Analyze-FunctionStructure {
                     $FunctionLines = ($FunctionBody -split "`n").Count
                     $TotalFunctionLength += $FunctionLines
                     
-                    # Vérifier la documentation
+                    # VÃ©rifier la documentation
                     if ($FunctionBody -match '"""(.*?)"""' -or $FunctionBody -match "'''(.*?)'''") {
                         $DocumentedFunctions++
                     }
                     
-                    # Vérifier le style de paramètres
+                    # VÃ©rifier le style de paramÃ¨tres
                     $Parameters = $Match.Groups[2].Value
                     
                     if ($Parameters -match "=") {
@@ -406,7 +406,7 @@ function Analyze-FunctionStructure {
                         $TypedParameterCount++
                     }
                     
-                    # Vérifier le style de retour
+                    # VÃ©rifier le style de retour
                     if ($Match.Groups[3].Success) {
                         $ReturnTypeCount++
                     }
@@ -427,17 +427,17 @@ function Analyze-FunctionStructure {
                     $FunctionLines = ($FunctionBody -split "`n").Count
                     $TotalFunctionLength += $FunctionLines
                     
-                    # Vérifier la documentation
+                    # VÃ©rifier la documentation
                     if ($FunctionBody -match "^#") {
                         $DocumentedFunctions++
                     }
                     
-                    # Vérifier le style de paramètres
+                    # VÃ©rifier le style de paramÃ¨tres
                     if ($FunctionBody -match "\$\{[1-9]\}") {
                         $PositionalParameterCount++
                     }
                     
-                    # Vérifier le style de retour
+                    # VÃ©rifier le style de retour
                     if ($FunctionBody -match "return\s+") {
                         $ExplicitReturnCount++
                     } else {
@@ -458,7 +458,7 @@ function Analyze-FunctionStructure {
         $Results.HasDocumentation = [math]::Round(($DocumentedFunctions / $TotalFunctionCount) * 100, 1)
     }
     
-    # Déterminer le style de paramètres prédominant
+    # DÃ©terminer le style de paramÃ¨tres prÃ©dominant
     if ($NamedParameterCount -gt $PositionalParameterCount) {
         $Results.ParameterStyle = "Named"
     } else {
@@ -471,7 +471,7 @@ function Analyze-FunctionStructure {
         $Results.ParameterStyle += "Untyped"
     }
     
-    # Déterminer le style de retour prédominant
+    # DÃ©terminer le style de retour prÃ©dominant
     if ($ExplicitReturnCount -gt $ImplicitReturnCount) {
         $Results.ReturnStyle = "Explicit"
     } else {

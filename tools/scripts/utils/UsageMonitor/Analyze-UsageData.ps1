@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse les données d'utilisation collectées par le module UsageMonitor.
+    Analyse les donnÃ©es d'utilisation collectÃ©es par le module UsageMonitor.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation collectées par le module UsageMonitor
-    et génère des rapports détaillés sur les performances des scripts.
+    Ce script analyse les donnÃ©es d'utilisation collectÃ©es par le module UsageMonitor
+    et gÃ©nÃ¨re des rapports dÃ©taillÃ©s sur les performances des scripts.
 .PARAMETER DatabasePath
-    Chemin vers le fichier de base de données d'utilisation.
+    Chemin vers le fichier de base de donnÃ©es d'utilisation.
 .PARAMETER OutputPath
-    Chemin où les rapports seront générés.
+    Chemin oÃ¹ les rapports seront gÃ©nÃ©rÃ©s.
 .PARAMETER ReportFormat
-    Format des rapports à générer (HTML, CSV, JSON).
+    Format des rapports Ã  gÃ©nÃ©rer (HTML, CSV, JSON).
 .EXAMPLE
     .\Analyze-UsageData.ps1 -OutputPath "C:\Reports"
 .NOTES
@@ -35,7 +35,7 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "UsageMonitor.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -58,7 +58,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-HtmlReport {
     param (
         [PSCustomObject]$UsageData,
@@ -150,12 +150,12 @@ function Generate-HtmlReport {
 <body>
     <div class="container">
         <h1>Rapport d'utilisation des scripts</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 "@
     
     $htmlFooter = @"
         <div class="footer">
-            <p>Généré par le module UsageMonitor</p>
+            <p>GÃ©nÃ©rÃ© par le module UsageMonitor</p>
         </div>
     </div>
 </body>
@@ -172,7 +172,7 @@ function Generate-HtmlReport {
         )
         
         if ($Data.Count -eq 0) {
-            return "<p>Aucune donnée disponible pour $Title</p>"
+            return "<p>Aucune donnÃ©e disponible pour $Title</p>"
         }
         
         $html = "<h2>$Title</h2>"
@@ -189,26 +189,26 @@ function Generate-HtmlReport {
         return $html
     }
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = $htmlHeader
     
-    # Section des scripts les plus utilisés
-    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.TopUsedScripts -Title "Scripts les plus utilisés" -ValueHeader "Nombre d'exécutions"
+    # Section des scripts les plus utilisÃ©s
+    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.TopUsedScripts -Title "Scripts les plus utilisÃ©s" -ValueHeader "Nombre d'exÃ©cutions"
     
     # Section des scripts les plus lents
-    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.SlowestScripts -Title "Scripts les plus lents" -ValueHeader "Durée moyenne (ms)"
+    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.SlowestScripts -Title "Scripts les plus lents" -ValueHeader "DurÃ©e moyenne (ms)"
     
-    # Section des scripts avec le plus d'échecs
-    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.MostFailingScripts -Title "Scripts avec le plus d'échecs" -ValueHeader "Taux d'échec (%)"
+    # Section des scripts avec le plus d'Ã©checs
+    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.MostFailingScripts -Title "Scripts avec le plus d'Ã©checs" -ValueHeader "Taux d'Ã©chec (%)"
     
     # Section des scripts les plus intensifs en ressources
-    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.ResourceIntensiveScripts -Title "Scripts les plus intensifs en ressources" -ValueHeader "Utilisation mémoire moyenne (octets)"
+    $htmlContent += ConvertTo-HtmlTable -Data $UsageData.ResourceIntensiveScripts -Title "Scripts les plus intensifs en ressources" -ValueHeader "Utilisation mÃ©moire moyenne (octets)"
     
-    # Section des goulots d'étranglement
+    # Section des goulots d'Ã©tranglement
     if ($Bottlenecks.Count -gt 0) {
-        $htmlContent += "<h2>Goulots d'étranglement détectés</h2>"
+        $htmlContent += "<h2>Goulots d'Ã©tranglement dÃ©tectÃ©s</h2>"
         $htmlContent += "<table>"
-        $htmlContent += "<tr><th>Script</th><th>Durée moyenne (ms)</th><th>Seuil de lenteur (ms)</th><th>Exécutions lentes</th><th>Pourcentage</th></tr>"
+        $htmlContent += "<tr><th>Script</th><th>DurÃ©e moyenne (ms)</th><th>Seuil de lenteur (ms)</th><th>ExÃ©cutions lentes</th><th>Pourcentage</th></tr>"
         
         foreach ($bottleneck in $Bottlenecks) {
             $htmlContent += "<tr>"
@@ -223,15 +223,15 @@ function Generate-HtmlReport {
         $htmlContent += "</table>"
     }
     else {
-        $htmlContent += "<h2>Goulots d'étranglement</h2>"
-        $htmlContent += "<p>Aucun goulot d'étranglement détecté.</p>"
+        $htmlContent += "<h2>Goulots d'Ã©tranglement</h2>"
+        $htmlContent += "<p>Aucun goulot d'Ã©tranglement dÃ©tectÃ©.</p>"
     }
     
     # Ajouter des graphiques
     $htmlContent += @"
         <h2>Graphiques</h2>
         
-        <h3>Scripts les plus utilisés</h3>
+        <h3>Scripts les plus utilisÃ©s</h3>
         <div class="chart-container">
             <canvas id="usageChart"></canvas>
         </div>
@@ -242,11 +242,11 @@ function Generate-HtmlReport {
         </div>
         
         <script>
-            // Données pour les graphiques
+            // DonnÃ©es pour les graphiques
             const usageData = {
                 labels: [$(($UsageData.TopUsedScripts.Keys | ForEach-Object { "'" + (Split-Path -Path $_ -Leaf) + "'" }) -join ', ')],
                 datasets: [{
-                    label: 'Nombre d\'exécutions',
+                    label: 'Nombre d\'exÃ©cutions',
                     data: [$(($UsageData.TopUsedScripts.Values) -join ', ')],
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -257,7 +257,7 @@ function Generate-HtmlReport {
             const durationData = {
                 labels: [$(($UsageData.SlowestScripts.Keys | ForEach-Object { "'" + (Split-Path -Path $_ -Leaf) + "'" }) -join ', ')],
                 datasets: [{
-                    label: 'Durée moyenne (ms)',
+                    label: 'DurÃ©e moyenne (ms)',
                     data: [$(($UsageData.SlowestScripts.Values) -join ', ')],
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -300,13 +300,13 @@ function Generate-HtmlReport {
     
     $htmlContent += $htmlFooter
     
-    # Écrire le rapport HTML
+    # Ã‰crire le rapport HTML
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8 -Force
     
     return $reportPath
 }
 
-# Fonction pour générer un rapport CSV
+# Fonction pour gÃ©nÃ©rer un rapport CSV
 function Generate-CsvReport {
     param (
         [PSCustomObject]$UsageData,
@@ -353,7 +353,7 @@ function Generate-CsvReport {
         }
     }
     
-    # Exporter les données en CSV
+    # Exporter les donnÃ©es en CSV
     $topUsed | Export-Csv -Path $topUsedPath -NoTypeInformation -Encoding UTF8 -Force
     $slowest | Export-Csv -Path $slowestPath -NoTypeInformation -Encoding UTF8 -Force
     $failing | Export-Csv -Path $failingPath -NoTypeInformation -Encoding UTF8 -Force
@@ -373,7 +373,7 @@ function Generate-CsvReport {
     }
 }
 
-# Fonction pour générer un rapport JSON
+# Fonction pour gÃ©nÃ©rer un rapport JSON
 function Generate-JsonReport {
     param (
         [PSCustomObject]$UsageData,
@@ -397,57 +397,57 @@ function Generate-JsonReport {
     return $reportPath
 }
 
-# Point d'entrée principal
-Write-Log "Démarrage de l'analyse des données d'utilisation..." -Level "TITLE"
+# Point d'entrÃ©e principal
+Write-Log "DÃ©marrage de l'analyse des donnÃ©es d'utilisation..." -Level "TITLE"
 
-# Vérifier si le fichier de base de données existe
+# VÃ©rifier si le fichier de base de donnÃ©es existe
 if (-not (Test-Path -Path $DatabasePath)) {
-    Write-Log "Le fichier de base de données spécifié n'existe pas: $DatabasePath" -Level "ERROR"
+    Write-Log "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas: $DatabasePath" -Level "ERROR"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Initialiser le moniteur d'utilisation avec la base de données spécifiée
+# Initialiser le moniteur d'utilisation avec la base de donnÃ©es spÃ©cifiÃ©e
 Initialize-UsageMonitor -DatabasePath $DatabasePath
-Write-Log "Base de données d'utilisation chargée: $DatabasePath" -Level "INFO"
+Write-Log "Base de donnÃ©es d'utilisation chargÃ©e: $DatabasePath" -Level "INFO"
 
-# Récupérer les statistiques d'utilisation
+# RÃ©cupÃ©rer les statistiques d'utilisation
 $usageStats = Get-ScriptUsageStatistics
-Write-Log "Statistiques d'utilisation récupérées" -Level "INFO"
+Write-Log "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -Level "INFO"
 
-# Analyser les goulots d'étranglement
+# Analyser les goulots d'Ã©tranglement
 $bottlenecks = Find-ScriptBottlenecks
-Write-Log "Analyse des goulots d'étranglement terminée. $($bottlenecks.Count) goulots détectés." -Level "INFO"
+Write-Log "Analyse des goulots d'Ã©tranglement terminÃ©e. $($bottlenecks.Count) goulots dÃ©tectÃ©s." -Level "INFO"
 
-# Générer les rapports selon le format spécifié
+# GÃ©nÃ©rer les rapports selon le format spÃ©cifiÃ©
 $generatedReports = @()
 
 if ($ReportFormat -eq "HTML" -or $ReportFormat -eq "All") {
     $htmlReport = Generate-HtmlReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $htmlReport
-    Write-Log "Rapport HTML généré: $htmlReport" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlReport" -Level "SUCCESS"
 }
 
 if ($ReportFormat -eq "CSV" -or $ReportFormat -eq "All") {
     $csvReports = Generate-CsvReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $csvReports.Values
-    Write-Log "Rapports CSV générés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "Rapports CSV gÃ©nÃ©rÃ©s dans: $OutputPath" -Level "SUCCESS"
 }
 
 if ($ReportFormat -eq "JSON" -or $ReportFormat -eq "All") {
     $jsonReport = Generate-JsonReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $jsonReport
-    Write-Log "Rapport JSON généré: $jsonReport" -Level "SUCCESS"
+    Write-Log "Rapport JSON gÃ©nÃ©rÃ©: $jsonReport" -Level "SUCCESS"
 }
 
-Write-Log "Génération des rapports terminée." -Level "TITLE"
+Write-Log "GÃ©nÃ©ration des rapports terminÃ©e." -Level "TITLE"
 
-# Ouvrir le premier rapport généré si disponible
+# Ouvrir le premier rapport gÃ©nÃ©rÃ© si disponible
 if ($generatedReports.Count -gt 0 -and $ReportFormat -eq "HTML") {
     $reportToOpen = $generatedReports[0]
     Write-Log "Ouverture du rapport: $reportToOpen" -Level "INFO"

@@ -1,42 +1,42 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse et gère les dépendances entre les tâches d'une roadmap.
+    Analyse et gÃ¨re les dÃ©pendances entre les tÃ¢ches d'une roadmap.
 
 .DESCRIPTION
-    La fonction Get-RoadmapDependencies analyse une roadmap pour détecter et gérer les dépendances entre les tâches.
-    Elle peut détecter les dépendances explicites (via métadonnées) et implicites (via références dans le titre),
-    valider la cohérence des dépendances, détecter les cycles, et générer des visualisations des dépendances.
+    La fonction Get-RoadmapDependencies analyse une roadmap pour dÃ©tecter et gÃ©rer les dÃ©pendances entre les tÃ¢ches.
+    Elle peut dÃ©tecter les dÃ©pendances explicites (via mÃ©tadonnÃ©es) et implicites (via rÃ©fÃ©rences dans le titre),
+    valider la cohÃ©rence des dÃ©pendances, dÃ©tecter les cycles, et gÃ©nÃ©rer des visualisations des dÃ©pendances.
 
 .PARAMETER Roadmap
-    L'objet roadmap à analyser.
+    L'objet roadmap Ã  analyser.
 
 .PARAMETER DetectionMode
-    Mode de détection des dépendances. Valeurs possibles : "Explicit", "Implicit", "All". Par défaut, "All".
+    Mode de dÃ©tection des dÃ©pendances. Valeurs possibles : "Explicit", "Implicit", "All". Par dÃ©faut, "All".
 
 .PARAMETER ValidateDependencies
-    Indique si les dépendances doivent être validées.
+    Indique si les dÃ©pendances doivent Ãªtre validÃ©es.
 
 .PARAMETER DetectCycles
-    Indique si les cycles de dépendances doivent être détectés.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre dÃ©tectÃ©s.
 
 .PARAMETER GenerateVisualization
-    Indique si une visualisation des dépendances doit être générée.
+    Indique si une visualisation des dÃ©pendances doit Ãªtre gÃ©nÃ©rÃ©e.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour la visualisation des dépendances.
+    Chemin du fichier de sortie pour la visualisation des dÃ©pendances.
 
 .EXAMPLE
     $roadmap = ConvertFrom-MarkdownToRoadmapExtended -FilePath ".\roadmap.md"
     Get-RoadmapDependencies -Roadmap $roadmap -DetectCycles -GenerateVisualization -OutputPath ".\dependencies.md"
-    Analyse les dépendances de la roadmap, détecte les cycles et génère une visualisation.
+    Analyse les dÃ©pendances de la roadmap, dÃ©tecte les cycles et gÃ©nÃ¨re une visualisation.
 
 .OUTPUTS
-    [PSCustomObject] Représentant les dépendances de la roadmap.
+    [PSCustomObject] ReprÃ©sentant les dÃ©pendances de la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Get-RoadmapDependencies {
     [CmdletBinding()]
@@ -61,7 +61,7 @@ function Get-RoadmapDependencies {
         [string]$OutputPath
     )
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         DependencyCount      = 0
         ExplicitDependencies = [System.Collections.ArrayList]::new()
@@ -71,20 +71,20 @@ function Get-RoadmapDependencies {
         Visualization        = ""
     }
 
-    # Vérifier si la roadmap contient des tâches
+    # VÃ©rifier si la roadmap contient des tÃ¢ches
     if (-not $Roadmap.AllTasks -or $Roadmap.AllTasks.Count -eq 0) {
-        $result.ValidationIssues.Add("La roadmap ne contient pas de tâches.") | Out-Null
+        $result.ValidationIssues.Add("La roadmap ne contient pas de tÃ¢ches.") | Out-Null
         return $result
     }
 
-    # Réinitialiser les dépendances existantes
+    # RÃ©initialiser les dÃ©pendances existantes
     foreach ($id in $Roadmap.AllTasks.Keys) {
         $task = $Roadmap.AllTasks[$id]
         $task.Dependencies = [System.Collections.ArrayList]::new()
         $task.DependentTasks = [System.Collections.ArrayList]::new()
     }
 
-    # Détecter les dépendances explicites (via métadonnées)
+    # DÃ©tecter les dÃ©pendances explicites (via mÃ©tadonnÃ©es)
     if ($DetectionMode -eq "Explicit" -or $DetectionMode -eq "All") {
         foreach ($id in $Roadmap.AllTasks.Keys) {
             $task = $Roadmap.AllTasks[$id]
@@ -100,21 +100,21 @@ function Get-RoadmapDependencies {
                                 DependsOn = $dependencyId
                             }) | Out-Null
                     } elseif ($ValidateDependencies) {
-                        $result.ValidationIssues.Add("La tâche $id dépend de la tâche inexistante $dependencyId.") | Out-Null
+                        $result.ValidationIssues.Add("La tÃ¢che $id dÃ©pend de la tÃ¢che inexistante $dependencyId.") | Out-Null
                     }
                 }
             }
         }
     }
 
-    # Détecter les dépendances implicites (via références dans le titre ou la description)
+    # DÃ©tecter les dÃ©pendances implicites (via rÃ©fÃ©rences dans le titre ou la description)
     if ($DetectionMode -eq "Implicit" -or $DetectionMode -eq "All") {
         $refRegex = [regex]::new('\bref:([a-zA-Z0-9_.-]+)\b', [System.Text.RegularExpressions.RegexOptions]::Compiled)
 
         foreach ($id in $Roadmap.AllTasks.Keys) {
             $task = $Roadmap.AllTasks[$id]
 
-            # Chercher les références dans le titre
+            # Chercher les rÃ©fÃ©rences dans le titre
             $titleMatches = $refRegex.Matches($task.Title)
             foreach ($match in $titleMatches) {
                 $refId = $match.Groups[1].Value
@@ -131,11 +131,11 @@ function Get-RoadmapDependencies {
                             }) | Out-Null
                     }
                 } elseif ($ValidateDependencies -and $refId -ne $id) {
-                    $result.ValidationIssues.Add("La tâche $id fait référence à la tâche inexistante $refId.") | Out-Null
+                    $result.ValidationIssues.Add("La tÃ¢che $id fait rÃ©fÃ©rence Ã  la tÃ¢che inexistante $refId.") | Out-Null
                 }
             }
 
-            # Chercher les références dans la description (si elle existe)
+            # Chercher les rÃ©fÃ©rences dans la description (si elle existe)
             if ($task.PSObject.Properties.Name -contains "Description" -and -not [string]::IsNullOrEmpty($task.Description)) {
                 $descMatches = $refRegex.Matches($task.Description)
                 foreach ($match in $descMatches) {
@@ -153,12 +153,12 @@ function Get-RoadmapDependencies {
                                 }) | Out-Null
                         }
                     } elseif ($ValidateDependencies -and $refId -ne $id) {
-                        $result.ValidationIssues.Add("La tâche $id fait référence à la tâche inexistante $refId dans sa description.") | Out-Null
+                        $result.ValidationIssues.Add("La tÃ¢che $id fait rÃ©fÃ©rence Ã  la tÃ¢che inexistante $refId dans sa description.") | Out-Null
                     }
                 }
             }
 
-            # Détecter les dépendances basées sur les identifiants hiérarchiques
+            # DÃ©tecter les dÃ©pendances basÃ©es sur les identifiants hiÃ©rarchiques
             if ($id -match '^(.+)\.\d+$') {
                 $parentId = $matches[1]
                 if ($Roadmap.AllTasks.ContainsKey($parentId) -and $parentId -ne $id) {
@@ -178,10 +178,10 @@ function Get-RoadmapDependencies {
         }
     }
 
-    # Calculer le nombre total de dépendances
+    # Calculer le nombre total de dÃ©pendances
     $result.DependencyCount = $result.ExplicitDependencies.Count + $result.ImplicitDependencies.Count
 
-    # Détecter les cycles de dépendances si demandé
+    # DÃ©tecter les cycles de dÃ©pendances si demandÃ©
     if ($DetectCycles) {
         function Find-DependencyCycle {
             param (
@@ -192,7 +192,7 @@ function Get-RoadmapDependencies {
 
             if ($VisitedTasks.Contains($Task.Id)) {
                 if ($Path.Contains($Task.Id)) {
-                    # Cycle détecté
+                    # Cycle dÃ©tectÃ©
                     $cycle = @()
                     $found = $false
 
@@ -234,7 +234,7 @@ function Get-RoadmapDependencies {
             if ($null -ne $cycle -and $cycle.Count -gt 0) {
                 $cycleStr = $cycle -join " -> "
 
-                # Vérifier si ce cycle a déjà été détecté
+                # VÃ©rifier si ce cycle a dÃ©jÃ  Ã©tÃ© dÃ©tectÃ©
                 $cycleExists = $false
                 foreach ($existingCycle in $result.Cycles) {
                     if ($existingCycle.CycleString -eq $cycleStr) {
@@ -249,27 +249,27 @@ function Get-RoadmapDependencies {
                             CycleString = $cycleStr
                         }) | Out-Null
 
-                    $result.ValidationIssues.Add("Cycle de dépendances détecté: $cycleStr") | Out-Null
+                    $result.ValidationIssues.Add("Cycle de dÃ©pendances dÃ©tectÃ©: $cycleStr") | Out-Null
                 }
             }
         }
     }
 
-    # Générer une visualisation des dépendances si demandé
+    # GÃ©nÃ©rer une visualisation des dÃ©pendances si demandÃ©
     if ($GenerateVisualization) {
         $sb = [System.Text.StringBuilder]::new()
 
         $sb.AppendLine("```mermaid") | Out-Null
         $sb.AppendLine("graph TD") | Out-Null
 
-        # Ajouter les nœuds
+        # Ajouter les nÅ“uds
         foreach ($id in $Roadmap.AllTasks.Keys) {
             $task = $Roadmap.AllTasks[$id]
             $status = $task.Status.ToString()
             $sb.AppendLine("    $($task.Id)[$($task.Id): $($task.Title)]:::$status") | Out-Null
         }
 
-        # Ajouter les relations de dépendance
+        # Ajouter les relations de dÃ©pendance
         foreach ($id in $Roadmap.AllTasks.Keys) {
             $task = $Roadmap.AllTasks[$id]
             foreach ($dependency in $task.Dependencies) {
@@ -283,9 +283,9 @@ function Get-RoadmapDependencies {
         $sb.AppendLine("    classDef Blocked fill:#f99,stroke:#c66") | Out-Null
         $sb.AppendLine("    classDef Incomplete fill:#eee,stroke:#999") | Out-Null
 
-        # Mettre en évidence les cycles
+        # Mettre en Ã©vidence les cycles
         if ($result.Cycles.Count -gt 0) {
-            $sb.AppendLine("    %% Cycles de dépendances") | Out-Null
+            $sb.AppendLine("    %% Cycles de dÃ©pendances") | Out-Null
             foreach ($cycle in $result.Cycles) {
                 for ($i = 0; $i -lt $cycle.Nodes.Count - 1; $i++) {
                     $sb.AppendLine("    $($cycle.Nodes[$i]) --> $($cycle.Nodes[$i+1]):::cycle") | Out-Null
@@ -298,7 +298,7 @@ function Get-RoadmapDependencies {
 
         $result.Visualization = $sb.ToString()
 
-        # Écrire la visualisation dans un fichier si demandé
+        # Ã‰crire la visualisation dans un fichier si demandÃ©
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
             $result.Visualization | Out-File -FilePath $OutputPath -Encoding UTF8
         }

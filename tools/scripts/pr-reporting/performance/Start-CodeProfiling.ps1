@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Profile le code PowerShell pour identifier les goulots d'étranglement.
+    Profile le code PowerShell pour identifier les goulots d'Ã©tranglement.
 .DESCRIPTION
     Utilise les outils de profilage PowerShell pour analyser les performances du code
     et identifier les fonctions et lignes de code qui prennent le plus de temps.
 .PARAMETER ScriptPath
-    Chemin vers le script PowerShell à profiler.
+    Chemin vers le script PowerShell Ã  profiler.
 .PARAMETER FunctionName
-    Nom de la fonction à profiler dans le script. Si non spécifié, profile tout le script.
+    Nom de la fonction Ã  profiler dans le script. Si non spÃ©cifiÃ©, profile tout le script.
 .PARAMETER Parameters
-    Paramètres à passer au script ou à la fonction lors du profilage.
+    ParamÃ¨tres Ã  passer au script ou Ã  la fonction lors du profilage.
 .PARAMETER Iterations
-    Nombre d'itérations à exécuter pour le profilage. Par défaut: 5.
+    Nombre d'itÃ©rations Ã  exÃ©cuter pour le profilage. Par dÃ©faut: 5.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats du profilage. Par défaut: "./profiling-results.json".
+    Chemin oÃ¹ enregistrer les rÃ©sultats du profilage. Par dÃ©faut: "./profiling-results.json".
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats du profilage.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats du profilage.
 .EXAMPLE
     .\Start-CodeProfiling.ps1 -ScriptPath ".\MyScript.ps1" -FunctionName "Process-Data" -Parameters @{InputFile="data.csv"; MaxItems=1000}
 #>
@@ -53,11 +53,11 @@ function Measure-LineExecution {
     $lines = $ScriptContent -split "`n"
     $lineResults = @()
 
-    # Créer un script temporaire pour chaque ligne
+    # CrÃ©er un script temporaire pour chaque ligne
     $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
 
     try {
-        # Ajouter les paramètres au début du script temporaire
+        # Ajouter les paramÃ¨tres au dÃ©but du script temporaire
         $paramBlock = ""
         if ($Parameters.Count -gt 0) {
             $paramBlock = "param ("
@@ -83,11 +83,11 @@ function Measure-LineExecution {
                 continue
             }
 
-            # Créer un script temporaire avec cette ligne
+            # CrÃ©er un script temporaire avec cette ligne
             $tempScript = $paramBlock + $line
             $tempScript | Set-Content -Path $tempScriptPath -Encoding UTF8
 
-            # Mesurer l'exécution
+            # Mesurer l'exÃ©cution
             try {
                 $result = Measure-Command {
                     & $tempScriptPath @Parameters
@@ -99,7 +99,7 @@ function Measure-LineExecution {
                     ExecutionTime = $result.TotalMilliseconds
                 }
             } catch {
-                # Ignorer les erreurs, car certaines lignes peuvent ne pas être exécutables individuellement
+                # Ignorer les erreurs, car certaines lignes peuvent ne pas Ãªtre exÃ©cutables individuellement
             }
         }
     } finally {
@@ -121,7 +121,7 @@ function Start-Profiling {
         [int]$Iterations
     )
 
-    # Vérifier que le script existe
+    # VÃ©rifier que le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         throw "Le script n'existe pas: $ScriptPath"
     }
@@ -129,27 +129,27 @@ function Start-Profiling {
     # Charger le script
     $scriptContent = Get-Content -Path $ScriptPath -Raw
 
-    # Créer un script temporaire pour le profilage
+    # CrÃ©er un script temporaire pour le profilage
     $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
 
     try {
-        # Si une fonction spécifique est demandée, extraire cette fonction
+        # Si une fonction spÃ©cifique est demandÃ©e, extraire cette fonction
         if ($FunctionName) {
-            # Utiliser une expression régulière pour extraire la fonction
+            # Utiliser une expression rÃ©guliÃ¨re pour extraire la fonction
             $functionRegex = "function\s+$FunctionName\s*{[^{}]*(?:{[^{}]*}[^{}]*)*}"
             $functionMatch = [regex]::Match($scriptContent, $functionRegex, [System.Text.RegularExpressions.RegexOptions]::Singleline)
 
             if (-not $functionMatch.Success) {
-                throw "Fonction '$FunctionName' non trouvée dans le script."
+                throw "Fonction '$FunctionName' non trouvÃ©e dans le script."
             }
 
             $functionContent = $functionMatch.Value
 
-            # Créer un script temporaire avec juste cette fonction
+            # CrÃ©er un script temporaire avec juste cette fonction
             $tempScript = @"
 $functionContent
 
-# Appeler la fonction avec les paramètres spécifiés
+# Appeler la fonction avec les paramÃ¨tres spÃ©cifiÃ©s
 $FunctionName @Parameters
 "@
             $tempScript | Set-Content -Path $tempScriptPath -Encoding UTF8
@@ -162,7 +162,7 @@ $FunctionName @Parameters
         $traceResults = @()
 
         for ($i = 1; $i -le $Iterations; $i++) {
-            Write-Host "Exécution de l'itération $i sur $Iterations..." -ForegroundColor Cyan
+            Write-Host "ExÃ©cution de l'itÃ©ration $i sur $Iterations..." -ForegroundColor Cyan
 
             $traceFile = [System.IO.Path]::GetTempFileName()
 
@@ -172,7 +172,7 @@ $FunctionName @Parameters
                     & $tempScriptPath @Parameters
                 }
 
-                # Lire les résultats de trace
+                # Lire les rÃ©sultats de trace
                 $traceContent = Get-Content -Path $traceFile -Raw
                 $traceResults += $traceContent
             } finally {
@@ -182,16 +182,16 @@ $FunctionName @Parameters
             }
         }
 
-        # Mesurer le temps d'exécution global
+        # Mesurer le temps d'exÃ©cution global
         $executionTimes = @()
 
-        # Ajouter le paramètre OutputPath s'il n'est pas déjà fourni
+        # Ajouter le paramÃ¨tre OutputPath s'il n'est pas dÃ©jÃ  fourni
         if (-not $Parameters.ContainsKey("OutputPath")) {
             $Parameters["OutputPath"] = [System.IO.Path]::GetTempFileName() + ".json"
         }
 
         for ($i = 1; $i -le $Iterations; $i++) {
-            Write-Host "Mesure du temps d'exécution, itération $i sur $Iterations..." -ForegroundColor Cyan
+            Write-Host "Mesure du temps d'exÃ©cution, itÃ©ration $i sur $Iterations..." -ForegroundColor Cyan
 
             $result = Measure-Command {
                 & $tempScriptPath @Parameters
@@ -204,12 +204,12 @@ $FunctionName @Parameters
         Write-Host "Analyse des lignes de code..." -ForegroundColor Cyan
         $lineResults = Measure-LineExecution -ScriptContent $scriptContent -Parameters $Parameters
 
-        # Analyser les résultats
+        # Analyser les rÃ©sultats
         $avgExecutionTime = ($executionTimes | Measure-Object -Average).Average
         $minExecutionTime = ($executionTimes | Measure-Object -Minimum).Minimum
         $maxExecutionTime = ($executionTimes | Measure-Object -Maximum).Maximum
 
-        # Préparer les résultats
+        # PrÃ©parer les rÃ©sultats
         $profilingResults = [PSCustomObject]@{
             Timestamp            = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             ScriptPath           = $ScriptPath
@@ -233,7 +233,7 @@ $FunctionName @Parameters
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ProfilingReport {
     param (
         [object]$ProfilingResults,
@@ -345,11 +345,11 @@ function New-ProfilingReport {
 <body>
     <div class="header">
         <h1>Rapport de profilage de code</h1>
-        <p>Généré le $($ProfilingResults.Timestamp)</p>
+        <p>GÃ©nÃ©rÃ© le $($ProfilingResults.Timestamp)</p>
     </div>
 
     <div class="section">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <div class="summary">
             <div class="metric-card">
                 <div class="metric-title">Script</div>
@@ -360,19 +360,19 @@ function New-ProfilingReport {
                 <div class="metric-value">$(if ($null -ne $ProfilingResults.FunctionName -and $ProfilingResults.FunctionName -ne "") { $ProfilingResults.FunctionName } else { "Script complet" })</div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps d'exécution moyen</div>
+                <div class="metric-title">Temps d'exÃ©cution moyen</div>
                 <div class="metric-value">$([Math]::Round($ProfilingResults.AverageExecutionTime, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps d'exécution min</div>
+                <div class="metric-title">Temps d'exÃ©cution min</div>
                 <div class="metric-value">$([Math]::Round($ProfilingResults.MinExecutionTime, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Temps d'exécution max</div>
+                <div class="metric-title">Temps d'exÃ©cution max</div>
                 <div class="metric-value">$([Math]::Round($ProfilingResults.MaxExecutionTime, 2))<span class="metric-unit">ms</span></div>
             </div>
             <div class="metric-card">
-                <div class="metric-title">Itérations</div>
+                <div class="metric-title">ItÃ©rations</div>
                 <div class="metric-value">$($ProfilingResults.Iterations)</div>
             </div>
         </div>
@@ -380,12 +380,12 @@ function New-ProfilingReport {
 
     <div class="section">
         <h2>Points chauds (Hotspots)</h2>
-        <p>Les lignes de code qui prennent le plus de temps à s'exécuter :</p>
+        <p>Les lignes de code qui prennent le plus de temps Ã  s'exÃ©cuter :</p>
         <table>
             <tr>
                 <th>Ligne</th>
                 <th>Code</th>
-                <th>Temps d'exécution</th>
+                <th>Temps d'exÃ©cution</th>
             </tr>
             $hotspotRows
         </table>
@@ -393,46 +393,46 @@ function New-ProfilingReport {
 
     <div class="section">
         <h2>Recommandations</h2>
-        <p>Basé sur l'analyse de performance, voici quelques recommandations :</p>
+        <p>BasÃ© sur l'analyse de performance, voici quelques recommandations :</p>
         <ul>
-            <li>Concentrez-vous sur l'optimisation des lignes identifiées comme points chauds.</li>
-            <li>Envisagez d'utiliser des structures de données plus efficaces pour les opérations fréquentes.</li>
-            <li>Réduisez les appels redondants aux fonctions coûteuses.</li>
-            <li>Utilisez des techniques de mise en cache pour les opérations répétitives.</li>
-            <li>Envisagez la parallélisation pour les tâches indépendantes.</li>
+            <li>Concentrez-vous sur l'optimisation des lignes identifiÃ©es comme points chauds.</li>
+            <li>Envisagez d'utiliser des structures de donnÃ©es plus efficaces pour les opÃ©rations frÃ©quentes.</li>
+            <li>RÃ©duisez les appels redondants aux fonctions coÃ»teuses.</li>
+            <li>Utilisez des techniques de mise en cache pour les opÃ©rations rÃ©pÃ©titives.</li>
+            <li>Envisagez la parallÃ©lisation pour les tÃ¢ches indÃ©pendantes.</li>
         </ul>
     </div>
 
     <div class="footer">
-        <p>Rapport généré par Start-CodeProfiling.ps1</p>
+        <p>Rapport gÃ©nÃ©rÃ© par Start-CodeProfiling.ps1</p>
     </div>
 </body>
 </html>
 "@
 
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport HTML généré: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier que le répertoire de sortie existe
+    # VÃ©rifier que le rÃ©pertoire de sortie existe
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de sortie créé: $outputDir" -ForegroundColor Cyan
+        Write-Host "RÃ©pertoire de sortie crÃ©Ã©: $outputDir" -ForegroundColor Cyan
     }
 
-    # Exécuter le profilage
-    Write-Host "Démarrage du profilage..." -ForegroundColor Cyan
+    # ExÃ©cuter le profilage
+    Write-Host "DÃ©marrage du profilage..." -ForegroundColor Cyan
     Write-Host "  Script: $ScriptPath"
     if ($FunctionName) {
         Write-Host "  Fonction: $FunctionName"
     }
-    Write-Host "  Itérations: $Iterations"
+    Write-Host "  ItÃ©rations: $Iterations"
 
-    # Préparer les paramètres pour le script à profiler
-    # Ajouter un paramètre OutputPath temporaire si le script est Simple-PRLoadTest.ps1
+    # PrÃ©parer les paramÃ¨tres pour le script Ã  profiler
+    # Ajouter un paramÃ¨tre OutputPath temporaire si le script est Simple-PRLoadTest.ps1
     $scriptParams = $Parameters.Clone()
     if ([System.IO.Path]::GetFileName($ScriptPath) -eq "Simple-PRLoadTest.ps1" -and -not $scriptParams.ContainsKey("OutputPath")) {
         $scriptParams["OutputPath"] = [System.IO.Path]::GetTempFileName() + ".json"
@@ -441,22 +441,22 @@ function Main {
     try {
         $results = Start-Profiling -ScriptPath $ScriptPath -FunctionName $FunctionName -Parameters $scriptParams -Iterations $Iterations
 
-        # Enregistrer les résultats
+        # Enregistrer les rÃ©sultats
         $results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-        Write-Host "Résultats du profilage enregistrés: $OutputPath" -ForegroundColor Green
+        Write-Host "RÃ©sultats du profilage enregistrÃ©s: $OutputPath" -ForegroundColor Green
 
-        # Générer un rapport HTML si demandé
+        # GÃ©nÃ©rer un rapport HTML si demandÃ©
         if ($GenerateReport) {
             $reportPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
             New-ProfilingReport -ProfilingResults $results -OutputPath $reportPath
         }
 
-        # Afficher un résumé
-        Write-Host "`nRésumé du profilage:" -ForegroundColor Cyan
+        # Afficher un rÃ©sumÃ©
+        Write-Host "`nRÃ©sumÃ© du profilage:" -ForegroundColor Cyan
         Write-Host "===================" -ForegroundColor Cyan
-        Write-Host "Temps d'exécution moyen: $([Math]::Round($results.AverageExecutionTime, 2)) ms"
-        Write-Host "Temps d'exécution min: $([Math]::Round($results.MinExecutionTime, 2)) ms"
-        Write-Host "Temps d'exécution max: $([Math]::Round($results.MaxExecutionTime, 2)) ms"
+        Write-Host "Temps d'exÃ©cution moyen: $([Math]::Round($results.AverageExecutionTime, 2)) ms"
+        Write-Host "Temps d'exÃ©cution min: $([Math]::Round($results.MinExecutionTime, 2)) ms"
+        Write-Host "Temps d'exÃ©cution max: $([Math]::Round($results.MaxExecutionTime, 2)) ms"
 
         Write-Host "`nPoints chauds (Top 5):" -ForegroundColor Yellow
         $results.HotspotLines | Select-Object -First 5 | ForEach-Object {
@@ -470,5 +470,5 @@ function Main {
     }
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

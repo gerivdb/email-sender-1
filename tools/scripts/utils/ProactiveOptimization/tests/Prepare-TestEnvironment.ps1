@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Prépare l'environnement de test pour les tests unitaires du module ProactiveOptimization.
+    PrÃ©pare l'environnement de test pour les tests unitaires du module ProactiveOptimization.
 .DESCRIPTION
-    Ce script crée des mocks pour toutes les fonctions nécessaires aux tests unitaires.
+    Ce script crÃ©e des mocks pour toutes les fonctions nÃ©cessaires aux tests unitaires.
 #>
 
-# Créer des fonctions mock pour les tests
+# CrÃ©er des fonctions mock pour les tests
 function Test-ScriptUsesParallelization {
     param (
         [string]$ScriptPath
     )
 
-    # Simuler la détection de parallélisation
+    # Simuler la dÃ©tection de parallÃ©lisation
     if ($ScriptPath -like "*Test1.ps1") {
         return $true
     }
@@ -24,11 +24,11 @@ function Get-ParallelBottleneckAnalysis {
         [PSCustomObject]$Bottleneck
     )
 
-    # Simuler l'analyse d'un goulot d'étranglement
+    # Simuler l'analyse d'un goulot d'Ã©tranglement
     return @{
         ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
         ProbableCause       = "Saturation du CPU"
-        Recommendation      = "Réduire le nombre de threads parallèles"
+        Recommendation      = "RÃ©duire le nombre de threads parallÃ¨les"
     }
 }
 
@@ -38,7 +38,7 @@ function New-BottleneckReport {
         [string]$OutputPath
     )
 
-    # Simuler la génération d'un rapport
+    # Simuler la gÃ©nÃ©ration d'un rapport
     $reportFile = Join-Path -Path $OutputPath -ChildPath "bottleneck_report_$(Get-Date -Format 'yyyy-MM-dd').html"
     return $reportFile
 }
@@ -48,7 +48,7 @@ function Find-ParallelProcessBottlenecks {
         [switch]$DetailedAnalysis
     )
 
-    # Simuler la détection de goulots d'étranglement
+    # Simuler la dÃ©tection de goulots d'Ã©tranglement
     $bottlenecks = @(
         [PSCustomObject]@{
             ScriptPath              = "C:\Scripts\Test1.ps1"
@@ -81,7 +81,7 @@ function Find-ParallelProcessBottlenecks {
             $bottleneck | Add-Member -MemberType NoteProperty -Name "DetailedAnalysis" -Value @{
                 ParallelizationType = "ForEach-Object -Parallel (PowerShell 7+)"
                 ProbableCause       = "Saturation du CPU"
-                Recommendation      = "Réduire le nombre de threads parallèles"
+                Recommendation      = "RÃ©duire le nombre de threads parallÃ¨les"
             }
         }
     }

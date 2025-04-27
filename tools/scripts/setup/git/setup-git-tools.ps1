@@ -1,5 +1,5 @@
-# Script d'installation des outils Git
-# Ce script configure tous les outils Git développés pour le projet
+﻿# Script d'installation des outils Git
+# Ce script configure tous les outils Git dÃ©veloppÃ©s pour le projet
 
 param (
     [Parameter(Mandatory = $false)]
@@ -16,7 +16,7 @@ param (
 $projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 Set-Location $projectRoot
 
-# Fonction pour afficher un message coloré
+# Fonction pour afficher un message colorÃ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -26,15 +26,15 @@ function Write-ColorMessage {
     Write-Host $Message -ForegroundColor $ForegroundColor
 }
 
-# Vérifier si nous sommes dans un dépôt Git
+# VÃ©rifier si nous sommes dans un dÃ©pÃ´t Git
 if (-not (Test-Path "$projectRoot\.git")) {
-    Write-ColorMessage "Ce dossier n'est pas un dépôt Git" -ForegroundColor "Red"
+    Write-ColorMessage "Ce dossier n'est pas un dÃ©pÃ´t Git" -ForegroundColor "Red"
     exit 1
 }
 
 Write-ColorMessage "Configuration des outils Git pour le projet n8n..." -ForegroundColor "Cyan"
 
-# Étape 1: Vérifier que tous les scripts nécessaires existent
+# Ã‰tape 1: VÃ©rifier que tous les scripts nÃ©cessaires existent
 $requiredScripts = @(
     "..\..\D",
     "..\..\D",
@@ -57,23 +57,23 @@ if ($missingScripts.Count -gt 0) {
     }
     
     if (-not $Force) {
-        Write-ColorMessage "Installation annulée. Assurez-vous que tous les scripts nécessaires sont présents." -ForegroundColor "Red"
+        Write-ColorMessage "Installation annulÃ©e. Assurez-vous que tous les scripts nÃ©cessaires sont prÃ©sents." -ForegroundColor "Red"
         exit 1
     }
     else {
-        Write-ColorMessage "Continuation forcée malgré les scripts manquants" -ForegroundColor "Yellow"
+        Write-ColorMessage "Continuation forcÃ©e malgrÃ© les scripts manquants" -ForegroundColor "Yellow"
     }
 }
 
-# Étape 2: Configurer Git (si demandé)
+# Ã‰tape 2: Configurer Git (si demandÃ©)
 if ($ConfigureGit) {
     Write-ColorMessage "`nConfiguration de Git..." -ForegroundColor "Cyan"
     
     # Configurer les fins de ligne
     git config --global core.autocrlf true
-    Write-ColorMessage "core.autocrlf configuré à 'true'" -ForegroundColor "Green"
+    Write-ColorMessage "core.autocrlf configurÃ© Ã  'true'" -ForegroundColor "Green"
     
-    # Demander le nom d'utilisateur et l'email si non configurés
+    # Demander le nom d'utilisateur et l'email si non configurÃ©s
     $userName = git config --global user.name
     $userEmail = git config --global user.email
     
@@ -81,26 +81,26 @@ if ($ConfigureGit) {
         $newUserName = Read-Host "Entrez votre nom d'utilisateur Git"
         if (-not [string]::IsNullOrEmpty($newUserName)) {
             git config --global user.name $newUserName
-            Write-ColorMessage "user.name configuré à '$newUserName'" -ForegroundColor "Green"
+            Write-ColorMessage "user.name configurÃ© Ã  '$newUserName'" -ForegroundColor "Green"
         }
     }
     else {
-        Write-ColorMessage "user.name déjà configuré à '$userName'" -ForegroundColor "Green"
+        Write-ColorMessage "user.name dÃ©jÃ  configurÃ© Ã  '$userName'" -ForegroundColor "Green"
     }
     
     if ([string]::IsNullOrEmpty($userEmail)) {
         $newUserEmail = Read-Host "Entrez votre email Git"
         if (-not [string]::IsNullOrEmpty($newUserEmail)) {
             git config --global user.email $newUserEmail
-            Write-ColorMessage "user.email configuré à '$newUserEmail'" -ForegroundColor "Green"
+            Write-ColorMessage "user.email configurÃ© Ã  '$newUserEmail'" -ForegroundColor "Green"
         }
     }
     else {
-        Write-ColorMessage "user.email déjà configuré à '$userEmail'" -ForegroundColor "Green"
+        Write-ColorMessage "user.email dÃ©jÃ  configurÃ© Ã  '$userEmail'" -ForegroundColor "Green"
     }
 }
 
-# Étape 3: Configurer les hooks Git (si demandé)
+# Ã‰tape 3: Configurer les hooks Git (si demandÃ©)
 if ($SetupHooks) {
     Write-ColorMessage "`nConfiguration des hooks Git..." -ForegroundColor "Cyan"
     
@@ -119,7 +119,7 @@ if ($SetupHooks) {
 echo "Organisation automatique des fichiers avant commit..."
 powershell -ExecutionPolicy Bypass -File "$projectRoot\..\..\D"
 
-# Ajouter les fichiers déplacés au commit
+# Ajouter les fichiers dÃ©placÃ©s au commit
 git add .
 
 exit 0
@@ -127,9 +127,9 @@ exit 0
 
     try {
         Set-Content -Path $preCommitHookPath -Value $preCommitHookContent -NoNewline
-        Write-ColorMessage "Hook pre-commit configuré" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-commit configurÃ©" -ForegroundColor "Green"
         
-        # Rendre le hook exécutable sous Unix
+        # Rendre le hook exÃ©cutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $preCommitHookPath
         }
@@ -142,14 +142,14 @@ exit 0
     $prePushHookPath = "$gitHooksDir\pre-push"
     $prePushHookContent = @"
 #!/bin/sh
-# Pre-push hook pour vérifier les changements avant push
+# Pre-push hook pour vÃ©rifier les changements avant push
 
-echo "Vérification des changements avant push..."
+echo "VÃ©rification des changements avant push..."
 powershell -ExecutionPolicy Bypass -File "$projectRoot\..\..\D"
 
-# Si le script de vérification échoue, annuler le push
+# Si le script de vÃ©rification Ã©choue, annuler le push
 if [ \$? -ne 0 ]; then
-  echo "Vérification échouée. Push annulé."
+  echo "VÃ©rification Ã©chouÃ©e. Push annulÃ©."
   exit 1
 fi
 
@@ -158,9 +158,9 @@ exit 0
 
     try {
         Set-Content -Path $prePushHookPath -Value $prePushHookContent -NoNewline
-        Write-ColorMessage "Hook pre-push configuré" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-push configurÃ©" -ForegroundColor "Green"
         
-        # Rendre le hook exécutable sous Unix
+        # Rendre le hook exÃ©cutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $prePushHookPath
         }
@@ -170,8 +170,8 @@ exit 0
     }
 }
 
-# Étape 4: Créer des alias pour les scripts
-Write-ColorMessage "`nCréation d'alias pour les scripts..." -ForegroundColor "Cyan"
+# Ã‰tape 4: CrÃ©er des alias pour les scripts
+Write-ColorMessage "`nCrÃ©ation d'alias pour les scripts..." -ForegroundColor "Cyan"
 
 $profilePath = $PROFILE
 $profileDir = Split-Path $profilePath -Parent
@@ -198,34 +198,34 @@ $currentProfile = Get-Content $profilePath -Raw -ErrorAction SilentlyContinue
 
 if (-not $currentProfile -or -not $currentProfile.Contains("git-smart-commit")) {
     Add-Content -Path $profilePath -Value $aliasContent
-    Write-ColorMessage "Alias ajoutés au profil PowerShell" -ForegroundColor "Green"
+    Write-ColorMessage "Alias ajoutÃ©s au profil PowerShell" -ForegroundColor "Green"
 }
 else {
-    Write-ColorMessage "Les alias sont déjà présents dans le profil PowerShell" -ForegroundColor "Green"
+    Write-ColorMessage "Les alias sont dÃ©jÃ  prÃ©sents dans le profil PowerShell" -ForegroundColor "Green"
 }
 
-# Étape 5: Afficher un résumé
-Write-ColorMessage "`nRésumé de l'installation:" -ForegroundColor "Cyan"
-Write-ColorMessage "- Scripts vérifiés: $(if ($missingScripts.Count -eq 0) { 'Tous présents' } else { "$($requiredScripts.Count - $missingScripts.Count)/$($requiredScripts.Count) présents" })" -ForegroundColor $(if ($missingScripts.Count -eq 0) { "Green" } else { "Yellow" })
-Write-ColorMessage "- Configuration Git: $(if ($ConfigureGit) { 'Effectuée' } else { 'Ignorée' })" -ForegroundColor $(if ($ConfigureGit) { "Green" } else { "Yellow" })
-Write-ColorMessage "- Hooks Git: $(if ($SetupHooks) { 'Configurés' } else { 'Ignorés' })" -ForegroundColor $(if ($SetupHooks) { "Green" } else { "Yellow" })
-Write-ColorMessage "- Alias PowerShell: Configurés" -ForegroundColor "Green"
+# Ã‰tape 5: Afficher un rÃ©sumÃ©
+Write-ColorMessage "`nRÃ©sumÃ© de l'installation:" -ForegroundColor "Cyan"
+Write-ColorMessage "- Scripts vÃ©rifiÃ©s: $(if ($missingScripts.Count -eq 0) { 'Tous prÃ©sents' } else { "$($requiredScripts.Count - $missingScripts.Count)/$($requiredScripts.Count) prÃ©sents" })" -ForegroundColor $(if ($missingScripts.Count -eq 0) { "Green" } else { "Yellow" })
+Write-ColorMessage "- Configuration Git: $(if ($ConfigureGit) { 'EffectuÃ©e' } else { 'IgnorÃ©e' })" -ForegroundColor $(if ($ConfigureGit) { "Green" } else { "Yellow" })
+Write-ColorMessage "- Hooks Git: $(if ($SetupHooks) { 'ConfigurÃ©s' } else { 'IgnorÃ©s' })" -ForegroundColor $(if ($SetupHooks) { "Green" } else { "Yellow" })
+Write-ColorMessage "- Alias PowerShell: ConfigurÃ©s" -ForegroundColor "Green"
 
-# Étape 6: Instructions d'utilisation
+# Ã‰tape 6: Instructions d'utilisation
 Write-ColorMessage "`nInstructions d'utilisation:" -ForegroundColor "Cyan"
-Write-ColorMessage "1. Redémarrez votre terminal PowerShell pour activer les alias" -ForegroundColor "White"
+Write-ColorMessage "1. RedÃ©marrez votre terminal PowerShell pour activer les alias" -ForegroundColor "White"
 Write-ColorMessage "2. Utilisez les commandes suivantes:" -ForegroundColor "White"
 Write-ColorMessage "   - git-smart-commit : Pour un commit complet avec organisation automatique" -ForegroundColor "White"
-Write-ColorMessage "   - git-atomic-commit : Pour un commit ciblé par catégorie de fichiers" -ForegroundColor "White"
-Write-ColorMessage "   - git-pre-push-check : Pour vérifier les changements avant push" -ForegroundColor "White"
+Write-ColorMessage "   - git-atomic-commit : Pour un commit ciblÃ© par catÃ©gorie de fichiers" -ForegroundColor "White"
+Write-ColorMessage "   - git-pre-push-check : Pour vÃ©rifier les changements avant push" -ForegroundColor "White"
 Write-ColorMessage "   - auto-organize : Pour organiser les fichiers manuellement" -ForegroundColor "White"
 Write-ColorMessage "3. Consultez le guide des bonnes pratiques Git: docs/guides/GUIDE_BONNES_PRATIQUES_GIT.md" -ForegroundColor "White"
 
-# Afficher l'aide si demandé
+# Afficher l'aide si demandÃ©
 if ($args -contains "-help" -or $args -contains "--help" -or $args -contains "/?") {
     Write-ColorMessage "`nUtilisation: .\setup-git-tools.ps1 [options]" -ForegroundColor "Cyan"
     Write-ColorMessage "`nOptions:" -ForegroundColor "Cyan"
-    Write-ColorMessage "  -ConfigureGit  Configurer les paramètres globaux de Git" -ForegroundColor "Cyan"
+    Write-ColorMessage "  -ConfigureGit  Configurer les paramÃ¨tres globaux de Git" -ForegroundColor "Cyan"
     Write-ColorMessage "  -SetupHooks    Configurer les hooks Git pre-commit et pre-push" -ForegroundColor "Cyan"
     Write-ColorMessage "  -Force         Ignorer les erreurs et continuer l'installation" -ForegroundColor "Cyan"
     Write-ColorMessage "`nExemples:" -ForegroundColor "Cyan"

@@ -1,4 +1,4 @@
-#
+﻿#
 # Install-Module.ps1
 #
 # Script to install the RoadmapParser module

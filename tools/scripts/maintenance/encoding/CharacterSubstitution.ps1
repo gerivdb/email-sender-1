@@ -1,44 +1,44 @@
-<#
+﻿<#
 .SYNOPSIS
-    Effectue des substitutions automatiques pour les caractères problématiques dans les fichiers.
+    Effectue des substitutions automatiques pour les caractÃ¨res problÃ©matiques dans les fichiers.
 
 .DESCRIPTION
-    Ce script analyse les fichiers et remplace automatiquement les caractères qui peuvent causer des problèmes
-    dans certains environnements ou avec certains outils. Il peut remplacer les caractères spéciaux, les espaces
-    dans les noms de fichiers, et d'autres caractères problématiques.
+    Ce script analyse les fichiers et remplace automatiquement les caractÃ¨res qui peuvent causer des problÃ¨mes
+    dans certains environnements ou avec certains outils. Il peut remplacer les caractÃ¨res spÃ©ciaux, les espaces
+    dans les noms de fichiers, et d'autres caractÃ¨res problÃ©matiques.
 
 .PARAMETER Path
-    Chemin du fichier ou du dossier à traiter. Si un dossier est spécifié, tous les fichiers correspondant
-    au filtre seront traités.
+    Chemin du fichier ou du dossier Ã  traiter. Si un dossier est spÃ©cifiÃ©, tous les fichiers correspondant
+    au filtre seront traitÃ©s.
 
 .PARAMETER Filter
-    Filtre pour les fichiers à traiter. Par défaut, tous les fichiers sont traités.
+    Filtre pour les fichiers Ã  traiter. Par dÃ©faut, tous les fichiers sont traitÃ©s.
 
 .PARAMETER Recurse
-    Si spécifié, les sous-dossiers seront également traités.
+    Si spÃ©cifiÃ©, les sous-dossiers seront Ã©galement traitÃ©s.
 
 .PARAMETER RenameFiles
-    Si spécifié, les noms de fichiers contenant des caractères problématiques seront également renommés.
+    Si spÃ©cifiÃ©, les noms de fichiers contenant des caractÃ¨res problÃ©matiques seront Ã©galement renommÃ©s.
 
 .PARAMETER SubstituteInContent
-    Si spécifié, les caractères problématiques dans le contenu des fichiers seront remplacés.
+    Si spÃ©cifiÃ©, les caractÃ¨res problÃ©matiques dans le contenu des fichiers seront remplacÃ©s.
 
 .PARAMETER CreateBackup
-    Si spécifié, une copie de sauvegarde des fichiers originaux sera créée avant la substitution.
+    Si spÃ©cifiÃ©, une copie de sauvegarde des fichiers originaux sera crÃ©Ã©e avant la substitution.
 
 .PARAMETER BackupExtension
-    Extension à ajouter aux fichiers de sauvegarde. Par défaut, ".bak".
+    Extension Ã  ajouter aux fichiers de sauvegarde. Par dÃ©faut, ".bak".
 
 .PARAMETER CustomReplacements
-    Table de hachage contenant des paires clé-valeur pour des remplacements personnalisés.
-    Par exemple: @{"é"="e"; "à"="a"; "ç"="c"}
+    Table de hachage contenant des paires clÃ©-valeur pour des remplacements personnalisÃ©s.
+    Par exemple: @{"Ã©"="e"; "Ã "="a"; "Ã§"="c"}
 
 .EXAMPLE
     .\CharacterSubstitution.ps1 -Path "C:\Scripts" -Filter "*.ps1" -Recurse -SubstituteInContent
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
@@ -69,45 +69,45 @@ param (
     [hashtable]$CustomReplacements = @{}
 )
 
-# Table de remplacement par défaut pour les caractères problématiques
+# Table de remplacement par dÃ©faut pour les caractÃ¨res problÃ©matiques
 $defaultReplacements = @{
-    # Caractères accentués
-    'à' = 'a'; 'á' = 'a'; 'â' = 'a'; 'ã' = 'a'; 'ä' = 'a'; 'å' = 'a'; 'æ' = 'ae'
-    'ç' = 'c'; 'č' = 'c'
-    'è' = 'e'; 'é' = 'e'; 'ê' = 'e'; 'ë' = 'e'; 'ē' = 'e'; 'ė' = 'e'; 'ę' = 'e'
-    'ì' = 'i'; 'í' = 'i'; 'î' = 'i'; 'ï' = 'i'; 'ī' = 'i'; 'į' = 'i'
-    'ñ' = 'n'; 'ń' = 'n'
-    'ò' = 'o'; 'ó' = 'o'; 'ô' = 'o'; 'õ' = 'o'; 'ö' = 'o'; 'ø' = 'o'; 'ō' = 'o'; 'œ' = 'oe'
-    'ù' = 'u'; 'ú' = 'u'; 'û' = 'u'; 'ü' = 'u'; 'ū' = 'u'
-    'ý' = 'y'; 'ÿ' = 'y'
-    'ß' = 'ss'
-    'Þ' = 'th'
-    'À' = 'A'; 'Á' = 'A'; 'Â' = 'A'; 'Ã' = 'A'; 'Ä' = 'A'; 'Å' = 'A'; 'Æ' = 'AE'
-    'Ç' = 'C'; 'Č' = 'C'
-    'È' = 'E'; 'É' = 'E'; 'Ê' = 'E'; 'Ë' = 'E'; 'Ē' = 'E'; 'Ė' = 'E'; 'Ę' = 'E'
-    'Ì' = 'I'; 'Í' = 'I'; 'Î' = 'I'; 'Ï' = 'I'; 'Ī' = 'I'; 'Į' = 'I'
-    'Ñ' = 'N'; 'Ń' = 'N'
-    'Ò' = 'O'; 'Ó' = 'O'; 'Ô' = 'O'; 'Õ' = 'O'; 'Ö' = 'O'; 'Ø' = 'O'; 'Ō' = 'O'; 'Œ' = 'OE'
-    'Ù' = 'U'; 'Ú' = 'U'; 'Û' = 'U'; 'Ü' = 'U'; 'Ū' = 'U'
-    'Ý' = 'Y'; 'Ÿ' = 'Y'
+    # CaractÃ¨res accentuÃ©s
+    'Ã ' = 'a'; 'Ã¡' = 'a'; 'Ã¢' = 'a'; 'Ã£' = 'a'; 'Ã¤' = 'a'; 'Ã¥' = 'a'; 'Ã¦' = 'ae'
+    'Ã§' = 'c'; 'Ä' = 'c'
+    'Ã¨' = 'e'; 'Ã©' = 'e'; 'Ãª' = 'e'; 'Ã«' = 'e'; 'Ä“' = 'e'; 'Ä—' = 'e'; 'Ä™' = 'e'
+    'Ã¬' = 'i'; 'Ã­' = 'i'; 'Ã®' = 'i'; 'Ã¯' = 'i'; 'Ä«' = 'i'; 'Ä¯' = 'i'
+    'Ã±' = 'n'; 'Å„' = 'n'
+    'Ã²' = 'o'; 'Ã³' = 'o'; 'Ã´' = 'o'; 'Ãµ' = 'o'; 'Ã¶' = 'o'; 'Ã¸' = 'o'; 'Å' = 'o'; 'Å“' = 'oe'
+    'Ã¹' = 'u'; 'Ãº' = 'u'; 'Ã»' = 'u'; 'Ã¼' = 'u'; 'Å«' = 'u'
+    'Ã½' = 'y'; 'Ã¿' = 'y'
+    'ÃŸ' = 'ss'
+    'Ãž' = 'th'
+    'Ã€' = 'A'; 'Ã' = 'A'; 'Ã‚' = 'A'; 'Ãƒ' = 'A'; 'Ã„' = 'A'; 'Ã…' = 'A'; 'Ã†' = 'AE'
+    'Ã‡' = 'C'; 'ÄŒ' = 'C'
+    'Ãˆ' = 'E'; 'Ã‰' = 'E'; 'ÃŠ' = 'E'; 'Ã‹' = 'E'; 'Ä’' = 'E'; 'Ä–' = 'E'; 'Ä˜' = 'E'
+    'ÃŒ' = 'I'; 'Ã' = 'I'; 'ÃŽ' = 'I'; 'Ã' = 'I'; 'Äª' = 'I'; 'Ä®' = 'I'
+    'Ã‘' = 'N'; 'Åƒ' = 'N'
+    'Ã’' = 'O'; 'Ã“' = 'O'; 'Ã”' = 'O'; 'Ã•' = 'O'; 'Ã–' = 'O'; 'Ã˜' = 'O'; 'ÅŒ' = 'O'; 'Å’' = 'OE'
+    'Ã™' = 'U'; 'Ãš' = 'U'; 'Ã›' = 'U'; 'Ãœ' = 'U'; 'Åª' = 'U'
+    'Ã' = 'Y'; 'Å¸' = 'Y'
     
-    # Caractères spéciaux
-    '«' = '"'; '»' = '"'; '„' = '"'; '"' = '"'; '"' = '"'
+    # CaractÃ¨res spÃ©ciaux
+    'Â«' = '"'; 'Â»' = '"'; 'â€ž' = '"'; '"' = '"'; '"' = '"'
     ''' = "'"; ''' = "'"
-    '€' = 'EUR'; '£' = 'GBP'; '¥' = 'JPY'
-    '©' = '(c)'; '®' = '(r)'; '™' = '(tm)'
-    '°' = 'deg'
-    '±' = '+/-'
-    '×' = 'x'
-    '÷' = '/'
-    '…' = '...'
-    '•' = '*'
-    '·' = '-'
-    '¿' = '?'
-    '¡' = '!'
-    '¼' = '1/4'; '½' = '1/2'; '¾' = '3/4'
+    'â‚¬' = 'EUR'; 'Â£' = 'GBP'; 'Â¥' = 'JPY'
+    'Â©' = '(c)'; 'Â®' = '(r)'; 'â„¢' = '(tm)'
+    'Â°' = 'deg'
+    'Â±' = '+/-'
+    'Ã—' = 'x'
+    'Ã·' = '/'
+    'â€¦' = '...'
+    'â€¢' = '*'
+    'Â·' = '-'
+    'Â¿' = '?'
+    'Â¡' = '!'
+    'Â¼' = '1/4'; 'Â½' = '1/2'; 'Â¾' = '3/4'
     
-    # Caractères problématiques dans les noms de fichiers
+    # CaractÃ¨res problÃ©matiques dans les noms de fichiers
     ' ' = '_'
     '/' = '_'
     '\' = '_'
@@ -119,7 +119,7 @@ $defaultReplacements = @{
     '>' = '_'
     '|' = '_'
     
-    # Autres caractères problématiques
+    # Autres caractÃ¨res problÃ©matiques
     '`' = ''
     '$' = 'S'
     '^' = ''
@@ -130,7 +130,7 @@ $defaultReplacements = @{
     '~' = '-'
 }
 
-# Fusionner les remplacements par défaut avec les remplacements personnalisés
+# Fusionner les remplacements par dÃ©faut avec les remplacements personnalisÃ©s
 $replacements = $defaultReplacements.Clone()
 foreach ($key in $CustomReplacements.Keys) {
     $replacements[$key] = $CustomReplacements[$key]
@@ -148,11 +148,11 @@ function Get-FileEncodingInfo {
         return & $encodingDetectorPath -FilePath $FilePath
     }
     
-    # Méthode de secours si EncodingDetector.ps1 n'est pas disponible
+    # MÃ©thode de secours si EncodingDetector.ps1 n'est pas disponible
     try {
         $bytes = [System.IO.File]::ReadAllBytes($FilePath)
         
-        # Vérifier les différents BOM
+        # VÃ©rifier les diffÃ©rents BOM
         if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
             $encoding = "UTF-8 with BOM"
             $encodingObj = [System.Text.Encoding]::UTF8
@@ -176,7 +176,7 @@ function Get-FileEncodingInfo {
             $encodingObj = [System.Text.Encoding]::GetEncoding("utf-32BE")
         }
         else {
-            # Si aucun BOM n'est détecté, supposer UTF-8 sans BOM
+            # Si aucun BOM n'est dÃ©tectÃ©, supposer UTF-8 sans BOM
             $encoding = "UTF-8 (no BOM)"
             $encodingObj = New-Object System.Text.UTF8Encoding $false
         }
@@ -188,7 +188,7 @@ function Get-FileEncodingInfo {
         }
     }
     catch {
-        Write-Error "Erreur lors de la détection de l'encodage pour le fichier '$FilePath': $_"
+        Write-Error "Erreur lors de la dÃ©tection de l'encodage pour le fichier '$FilePath': $_"
         return $null
     }
 }
@@ -202,32 +202,32 @@ function Substitute-CharactersInContent {
     )
     
     try {
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             $backupPath = "$FilePath$BackupExtension"
             Copy-Item -Path $FilePath -Destination $backupPath -Force
-            Write-Verbose "Sauvegarde créée: $backupPath"
+            Write-Verbose "Sauvegarde crÃ©Ã©e: $backupPath"
         }
         
         # Obtenir l'encodage du fichier
         $encodingInfo = Get-FileEncodingInfo -FilePath $FilePath
         
         if ($null -eq $encodingInfo) {
-            Write-Error "Impossible de déterminer l'encodage du fichier '$FilePath'."
+            Write-Error "Impossible de dÃ©terminer l'encodage du fichier '$FilePath'."
             return $false
         }
         
         # Lire le contenu du fichier
         $content = [System.IO.File]::ReadAllText($FilePath, $encodingInfo.EncodingObj)
         
-        # Compter les caractères problématiques avant substitution
+        # Compter les caractÃ¨res problÃ©matiques avant substitution
         $problematicCharsCount = 0
         foreach ($char in $Replacements.Keys) {
             $problematicCharsCount += ($content.ToCharArray() | Where-Object { $_ -eq $char }).Count
         }
         
         if ($problematicCharsCount -eq 0) {
-            Write-Verbose "Aucun caractère problématique trouvé dans le fichier '$FilePath'."
+            Write-Verbose "Aucun caractÃ¨re problÃ©matique trouvÃ© dans le fichier '$FilePath'."
             return [PSCustomObject]@{
                 FilePath = $FilePath
                 Success = $true
@@ -242,10 +242,10 @@ function Substitute-CharactersInContent {
             $newContent = $newContent.Replace($char, $Replacements[$char])
         }
         
-        # Écrire le contenu modifié dans le fichier
+        # Ã‰crire le contenu modifiÃ© dans le fichier
         [System.IO.File]::WriteAllText($FilePath, $newContent, $encodingInfo.EncodingObj)
         
-        Write-Verbose "Caractères problématiques remplacés dans le fichier '$FilePath'. ($problematicCharsCount caractères remplacés)"
+        Write-Verbose "CaractÃ¨res problÃ©matiques remplacÃ©s dans le fichier '$FilePath'. ($problematicCharsCount caractÃ¨res remplacÃ©s)"
         
         return [PSCustomObject]@{
             FilePath = $FilePath
@@ -255,7 +255,7 @@ function Substitute-CharactersInContent {
         }
     }
     catch {
-        Write-Error "Erreur lors de la substitution des caractères dans le fichier '$FilePath': $_"
+        Write-Error "Erreur lors de la substitution des caractÃ¨res dans le fichier '$FilePath': $_"
         return [PSCustomObject]@{
             FilePath = $FilePath
             Success = $false
@@ -276,7 +276,7 @@ function Rename-FileWithSubstitution {
         $directory = [System.IO.Path]::GetDirectoryName($FilePath)
         $fileName = [System.IO.Path]::GetFileName($FilePath)
         
-        # Vérifier si le nom de fichier contient des caractères problématiques
+        # VÃ©rifier si le nom de fichier contient des caractÃ¨res problÃ©matiques
         $needsRenaming = $false
         foreach ($char in $Replacements.Keys) {
             if ($fileName.Contains($char)) {
@@ -286,7 +286,7 @@ function Rename-FileWithSubstitution {
         }
         
         if (-not $needsRenaming) {
-            Write-Verbose "Le nom de fichier '$fileName' ne contient pas de caractères problématiques."
+            Write-Verbose "Le nom de fichier '$fileName' ne contient pas de caractÃ¨res problÃ©matiques."
             return [PSCustomObject]@{
                 OriginalPath = $FilePath
                 NewPath = $FilePath
@@ -304,9 +304,9 @@ function Rename-FileWithSubstitution {
         # Construire le nouveau chemin complet
         $newFilePath = Join-Path -Path $directory -ChildPath $newFileName
         
-        # Vérifier si le nouveau chemin existe déjà
+        # VÃ©rifier si le nouveau chemin existe dÃ©jÃ 
         if (Test-Path -Path $newFilePath -PathType Leaf) {
-            Write-Warning "Le fichier '$newFilePath' existe déjà. Génération d'un nom unique."
+            Write-Warning "Le fichier '$newFilePath' existe dÃ©jÃ . GÃ©nÃ©ration d'un nom unique."
             $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($newFileName)
             $fileExt = [System.IO.Path]::GetExtension($newFileName)
             $counter = 1
@@ -321,7 +321,7 @@ function Rename-FileWithSubstitution {
         # Renommer le fichier
         Rename-Item -Path $FilePath -NewName $newFileName
         
-        Write-Verbose "Fichier renommé: '$fileName' -> '$newFileName'"
+        Write-Verbose "Fichier renommÃ©: '$fileName' -> '$newFileName'"
         
         return [PSCustomObject]@{
             OriginalPath = $FilePath
@@ -354,16 +354,16 @@ function Process-Files {
         [hashtable]$Replacements
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path)) {
         Write-Error "Le chemin '$Path' n'existe pas."
         return
     }
     
-    # Déterminer si le chemin est un fichier ou un dossier
+    # DÃ©terminer si le chemin est un fichier ou un dossier
     $isFile = Test-Path -Path $Path -PathType Leaf
     
-    # Obtenir la liste des fichiers à traiter
+    # Obtenir la liste des fichiers Ã  traiter
     $files = if ($isFile) {
         Get-Item -Path $Path
     }
@@ -377,7 +377,7 @@ function Process-Files {
     $errorFiles = 0
     $skippedFiles = 0
     
-    Write-Host "Traitement de $totalFiles fichiers pour la substitution de caractères..."
+    Write-Host "Traitement de $totalFiles fichiers pour la substitution de caractÃ¨res..."
     
     $results = @()
     
@@ -392,7 +392,7 @@ function Process-Files {
             Error = $null
         }
         
-        # Renommer le fichier si nécessaire
+        # Renommer le fichier si nÃ©cessaire
         if ($RenameFiles) {
             $renameResult = Rename-FileWithSubstitution -FilePath $file.FullName -Replacements $Replacements
             
@@ -409,12 +409,12 @@ function Process-Files {
                 $fileResult.Renamed = $true
                 $renamedFiles++
                 
-                # Mettre à jour le chemin du fichier pour les opérations suivantes
+                # Mettre Ã  jour le chemin du fichier pour les opÃ©rations suivantes
                 $file = Get-Item -Path $renameResult.NewPath
             }
         }
         
-        # Substituer les caractères dans le contenu si nécessaire
+        # Substituer les caractÃ¨res dans le contenu si nÃ©cessaire
         if ($SubstituteInContent) {
             $substituteResult = Substitute-CharactersInContent -FilePath $file.FullName -Replacements $Replacements -CreateBackup $CreateBackup -BackupExtension $BackupExtension
             
@@ -439,12 +439,12 @@ function Process-Files {
         $results += $fileResult
     }
     
-    # Afficher le résumé
-    Write-Host "`nRésumé de la substitution de caractères:"
-    Write-Host "  Total des fichiers traités: $totalFiles"
-    Write-Host "  Fichiers renommés: $renamedFiles"
-    Write-Host "  Fichiers avec contenu modifié: $contentModifiedFiles"
-    Write-Host "  Fichiers ignorés (aucune modification nécessaire): $skippedFiles"
+    # Afficher le rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la substitution de caractÃ¨res:"
+    Write-Host "  Total des fichiers traitÃ©s: $totalFiles"
+    Write-Host "  Fichiers renommÃ©s: $renamedFiles"
+    Write-Host "  Fichiers avec contenu modifiÃ©: $contentModifiedFiles"
+    Write-Host "  Fichiers ignorÃ©s (aucune modification nÃ©cessaire): $skippedFiles"
     Write-Host "  Fichiers en erreur: $errorFiles"
     
     return [PSCustomObject]@{
@@ -457,8 +457,8 @@ function Process-Files {
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 $result = Process-Files -Path $Path -Filter $Filter -Recurse $Recurse.IsPresent -RenameFiles $RenameFiles.IsPresent -SubstituteInContent $SubstituteInContent.IsPresent -CreateBackup $CreateBackup.IsPresent -BackupExtension $BackupExtension -Replacements $replacements
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $result

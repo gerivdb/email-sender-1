@@ -1,35 +1,35 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les scripts d'analyse des pull requests.
+    ExÃ©cute tous les tests unitaires pour les scripts d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les scripts d'analyse des pull requests
+    Ce script exÃ©cute tous les tests unitaires pour les scripts d'analyse des pull requests
     en utilisant le framework Pester.
 
 .PARAMETER TestName
-    Le nom des tests à exécuter. Si non spécifié, tous les tests seront exécutés.
+    Le nom des tests Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests seront exÃ©cutÃ©s.
 
 .PARAMETER OutputFormat
-    Le format de sortie des résultats des tests.
+    Le format de sortie des rÃ©sultats des tests.
     Valeurs possibles: "Normal", "Detailed", "Diagnostic", "Minimal", "None"
-    Par défaut: "Detailed"
+    Par dÃ©faut: "Detailed"
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats des tests.
-    Si non spécifié, les résultats ne seront pas enregistrés.
+    Le chemin oÃ¹ enregistrer les rÃ©sultats des tests.
+    Si non spÃ©cifiÃ©, les rÃ©sultats ne seront pas enregistrÃ©s.
 
 .PARAMETER ShowCodeCoverage
     Indique s'il faut afficher la couverture de code.
-    Par défaut: $false
+    Par dÃ©faut: $false
 
 .EXAMPLE
     .\Invoke-AllTests.ps1
-    Exécute tous les tests unitaires avec les paramètres par défaut.
+    ExÃ©cute tous les tests unitaires avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Invoke-AllTests.ps1 -TestName "FileContentIndexer" -OutputFormat "Diagnostic" -ShowCodeCoverage
-    Exécute uniquement les tests pour le module FileContentIndexer avec un format de sortie détaillé et affiche la couverture de code.
+    ExÃ©cute uniquement les tests pour le module FileContentIndexer avec un format de sortie dÃ©taillÃ© et affiche la couverture de code.
 
 .NOTES
     Version: 1.0
@@ -53,9 +53,9 @@ param(
     [switch]$ShowCodeCoverage
 )
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
     exit 1
 }
 
@@ -66,19 +66,19 @@ Import-Module Pester
 $testsPath = $PSScriptRoot
 $testFiles = Get-ChildItem -Path $testsPath -Filter "*.Tests.ps1" -Recurse
 
-# Filtrer les fichiers de test si un nom est spécifié
+# Filtrer les fichiers de test si un nom est spÃ©cifiÃ©
 if (-not [string]::IsNullOrWhiteSpace($TestName)) {
     $testFiles = $testFiles | Where-Object { $_.BaseName -like "*$TestName*" }
 }
 
-# Vérifier s'il y a des fichiers de test
+# VÃ©rifier s'il y a des fichiers de test
 if ($testFiles.Count -eq 0) {
-    Write-Warning "Aucun fichier de test trouvé."
+    Write-Warning "Aucun fichier de test trouvÃ©."
     exit 1
 }
 
 # Afficher les fichiers de test
-Write-Host "Fichiers de test trouvés:" -ForegroundColor Cyan
+Write-Host "Fichiers de test trouvÃ©s:" -ForegroundColor Cyan
 foreach ($file in $testFiles) {
     Write-Host "  $($file.Name)" -ForegroundColor White
 }
@@ -97,7 +97,7 @@ if (-not [string]::IsNullOrWhiteSpace($OutputPath)) {
 if ($ShowCodeCoverage) {
     $pesterConfig.CodeCoverage.Enabled = $true
     
-    # Obtenir les fichiers à couvrir
+    # Obtenir les fichiers Ã  couvrir
     $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
     $scriptsPath = Join-Path -Path $PSScriptRoot -ChildPath ".."
     
@@ -113,24 +113,24 @@ if ($ShowCodeCoverage) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Configuration $pesterConfig -PassThru
 
-# Afficher un résumé
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($results.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($results.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Durée totale: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale: $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
 
 if ($ShowCodeCoverage -and $pesterConfig.CodeCoverage.Enabled) {
     Write-Host "`nCouverture de code:" -ForegroundColor Cyan
-    Write-Host "  Fichiers analysés: $($results.CodeCoverage.NumberOfCommandsAnalyzed)" -ForegroundColor White
+    Write-Host "  Fichiers analysÃ©s: $($results.CodeCoverage.NumberOfCommandsAnalyzed)" -ForegroundColor White
     Write-Host "  Commandes couvertes: $($results.CodeCoverage.NumberOfCommandsExecuted)" -ForegroundColor White
     Write-Host "  Pourcentage de couverture: $($results.CodeCoverage.CoveragePercent)%" -ForegroundColor White
     Write-Host "  Rapport de couverture: $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor White
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

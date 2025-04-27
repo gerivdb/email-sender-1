@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Initialise le cache prédictif pour n8n.
+    Initialise le cache prÃ©dictif pour n8n.
 .DESCRIPTION
-    Ce script configure et initialise le cache prédictif pour n8n,
-    améliorant les performances des workflows en anticipant les besoins en données.
+    Ce script configure et initialise le cache prÃ©dictif pour n8n,
+    amÃ©liorant les performances des workflows en anticipant les besoins en donnÃ©es.
 .PARAMETER N8nApiUrl
-    URL de l'API n8n (par défaut: http://localhost:5678/api/v1).
+    URL de l'API n8n (par dÃ©faut: http://localhost:5678/api/v1).
 .PARAMETER ApiKey
-    Clé API pour l'authentification n8n.
+    ClÃ© API pour l'authentification n8n.
 .PARAMETER CachePath
     Chemin du dossier de cache.
 .PARAMETER MaxCacheSizeMB
-    Taille maximale du cache en MB (par défaut: 100).
+    Taille maximale du cache en MB (par dÃ©faut: 100).
 .PARAMETER DefaultTTL
-    Durée de vie par défaut des entrées du cache en secondes (par défaut: 3600).
+    DurÃ©e de vie par dÃ©faut des entrÃ©es du cache en secondes (par dÃ©faut: 3600).
 .EXAMPLE
     .\Initialize-N8nPredictiveCache.ps1 -ApiKey "n8n_api_key" -MaxCacheSizeMB 200
 #>
@@ -37,17 +37,17 @@ param (
     [int]$DefaultTTL = 3600
 )
 
-# Importer le module de cache prédictif
+# Importer le module de cache prÃ©dictif
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PredictiveCache.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module de cache prédictif introuvable: $modulePath"
+    Write-Error "Module de cache prÃ©dictif introuvable: $modulePath"
     exit 1
 }
 
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -73,7 +73,7 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Fonction pour tester la connexion à n8n
+# Fonction pour tester la connexion Ã  n8n
 function Test-N8nConnection {
     [CmdletBinding()]
     param (
@@ -96,21 +96,21 @@ function Test-N8nConnection {
         $response = Invoke-RestMethod -Uri "$ApiUrl/health" -Method Get -Headers $headers
         
         if ($response.status -eq "ok") {
-            Write-Log "Connexion à n8n établie. Version: $($response.version)" -Level "SUCCESS"
+            Write-Log "Connexion Ã  n8n Ã©tablie. Version: $($response.version)" -Level "SUCCESS"
             return $true
         }
         else {
-            Write-Log "n8n n'est pas disponible ou en bonne santé." -Level "ERROR"
+            Write-Log "n8n n'est pas disponible ou en bonne santÃ©." -Level "ERROR"
             return $false
         }
     }
     catch {
-        Write-Log "Erreur lors de la connexion à n8n: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la connexion Ã  n8n: $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour créer un webhook n8n pour le cache prédictif
+# Fonction pour crÃ©er un webhook n8n pour le cache prÃ©dictif
 function New-N8nCacheWebhook {
     [CmdletBinding()]
     param (
@@ -131,17 +131,17 @@ function New-N8nCacheWebhook {
             $headers["X-N8N-API-KEY"] = $ApiKey
         }
         
-        # Vérifier si le webhook existe déjà
+        # VÃ©rifier si le webhook existe dÃ©jÃ 
         $webhooks = Invoke-RestMethod -Uri "$ApiUrl/webhooks" -Method Get -Headers $headers
         
         $existingWebhook = $webhooks | Where-Object { $_.name -eq "predictive-cache-hook" }
         
         if ($existingWebhook) {
-            Write-Log "Le webhook pour le cache prédictif existe déjà." -Level "INFO"
+            Write-Log "Le webhook pour le cache prÃ©dictif existe dÃ©jÃ ." -Level "INFO"
             return $existingWebhook.id
         }
         
-        # Créer un nouveau webhook
+        # CrÃ©er un nouveau webhook
         $webhookData = @{
             name = "predictive-cache-hook"
             httpMethod = "POST"
@@ -153,16 +153,16 @@ function New-N8nCacheWebhook {
         
         $response = Invoke-RestMethod -Uri "$ApiUrl/webhooks" -Method Post -Headers $headers -Body ($webhookData | ConvertTo-Json)
         
-        Write-Log "Webhook pour le cache prédictif créé avec succès." -Level "SUCCESS"
+        Write-Log "Webhook pour le cache prÃ©dictif crÃ©Ã© avec succÃ¨s." -Level "SUCCESS"
         return $response.id
     }
     catch {
-        Write-Log "Erreur lors de la création du webhook: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation du webhook: $_" -Level "ERROR"
         return $null
     }
 }
 
-# Fonction pour créer un workflow n8n pour le cache prédictif
+# Fonction pour crÃ©er un workflow n8n pour le cache prÃ©dictif
 function New-N8nCacheWorkflow {
     [CmdletBinding()]
     param (
@@ -186,17 +186,17 @@ function New-N8nCacheWorkflow {
             $headers["X-N8N-API-KEY"] = $ApiKey
         }
         
-        # Vérifier si le workflow existe déjà
+        # VÃ©rifier si le workflow existe dÃ©jÃ 
         $workflows = Invoke-RestMethod -Uri "$ApiUrl/workflows" -Method Get -Headers $headers
         
         $existingWorkflow = $workflows | Where-Object { $_.name -eq "Predictive Cache Manager" }
         
         if ($existingWorkflow) {
-            Write-Log "Le workflow pour le cache prédictif existe déjà." -Level "INFO"
+            Write-Log "Le workflow pour le cache prÃ©dictif existe dÃ©jÃ ." -Level "INFO"
             return $existingWorkflow.id
         }
         
-        # Créer un nouveau workflow
+        # CrÃ©er un nouveau workflow
         $workflowData = @{
             name = "Predictive Cache Manager"
             active = $true
@@ -334,16 +334,16 @@ return response;
         
         $response = Invoke-RestMethod -Uri "$ApiUrl/workflows" -Method Post -Headers $headers -Body ($workflowData | ConvertTo-Json -Depth 10)
         
-        Write-Log "Workflow pour le cache prédictif créé avec succès." -Level "SUCCESS"
+        Write-Log "Workflow pour le cache prÃ©dictif crÃ©Ã© avec succÃ¨s." -Level "SUCCESS"
         return $response.id
     }
     catch {
-        Write-Log "Erreur lors de la création du workflow: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation du workflow: $_" -Level "ERROR"
         return $null
     }
 }
 
-# Fonction pour créer un exemple d'utilisation du cache prédictif
+# Fonction pour crÃ©er un exemple d'utilisation du cache prÃ©dictif
 function New-CacheUsageExample {
     [CmdletBinding()]
     param (
@@ -360,23 +360,23 @@ function New-CacheUsageExample {
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exemple d'utilisation du cache prédictif pour n8n.
+    Exemple d'utilisation du cache prÃ©dictif pour n8n.
 .DESCRIPTION
-    Ce script montre comment utiliser le cache prédictif pour améliorer
+    Ce script montre comment utiliser le cache prÃ©dictif pour amÃ©liorer
     les performances des workflows n8n.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: $(Get-Date -Format "yyyy-MM-dd")
+    Date de crÃ©ation: $(Get-Date -Format "yyyy-MM-dd")
 #>
 
-# Importer le module de cache prédictif
+# Importer le module de cache prÃ©dictif
 Import-Module "$PSScriptRoot\..\..\modules\PredictiveCache.psm1" -Force
 
-# Initialiser le cache prédictif
+# Initialiser le cache prÃ©dictif
 Initialize-PredictiveCache -Enabled $true -MaxCacheSize 100MB -DefaultTTL 3600
 
-# Fonction pour appeler l'API du cache prédictif
+# Fonction pour appeler l'API du cache prÃ©dictif
 function Invoke-PredictiveCache {
     [CmdletBinding()]
     param (
@@ -430,7 +430,7 @@ function Invoke-PredictiveCache {
         return $response
     }
     catch {
-        Write-Error "Erreur lors de l'appel au cache prédictif: $_"
+        Write-Error "Erreur lors de l'appel au cache prÃ©dictif: $_"
         return $null
     }
 }
@@ -443,15 +443,15 @@ $data = @{
     permissions = @("read", "write", "admin")
 }
 $result = Invoke-PredictiveCache -Operation "set" -Key "user:john.doe" -Value $data -WorkflowId "user-workflow" -NodeId "get-user"
-Write-Host "Résultat: $($result | ConvertTo-Json)" -ForegroundColor Green
+Write-Host "RÃ©sultat: $($result | ConvertTo-Json)" -ForegroundColor Green
 
-# Exemple 2: Récupérer une valeur du cache
-Write-Host "`nExemple 2: Récupérer une valeur du cache" -ForegroundColor Magenta
+# Exemple 2: RÃ©cupÃ©rer une valeur du cache
+Write-Host "`nExemple 2: RÃ©cupÃ©rer une valeur du cache" -ForegroundColor Magenta
 $result = Invoke-PredictiveCache -Operation "get" -Key "user:john.doe" -WorkflowId "user-workflow" -NodeId "get-user"
-Write-Host "Résultat: $($result | ConvertTo-Json)" -ForegroundColor Green
+Write-Host "RÃ©sultat: $($result | ConvertTo-Json)" -ForegroundColor Green
 
-# Exemple 3: Mettre en cache plusieurs valeurs liées
-Write-Host "`nExemple 3: Mettre en cache plusieurs valeurs liées" -ForegroundColor Magenta
+# Exemple 3: Mettre en cache plusieurs valeurs liÃ©es
+Write-Host "`nExemple 3: Mettre en cache plusieurs valeurs liÃ©es" -ForegroundColor Magenta
 for ($i = 1; $i -le 5; $i++) {
     $data = @{
         id = $i
@@ -462,20 +462,20 @@ for ($i = 1; $i -le 5; $i++) {
     Write-Host "Produit $i mis en cache" -ForegroundColor Green
 }
 
-# Exemple 4: Récupérer des valeurs en séquence (pour construire des prédictions)
-Write-Host "`nExemple 4: Récupérer des valeurs en séquence" -ForegroundColor Magenta
+# Exemple 4: RÃ©cupÃ©rer des valeurs en sÃ©quence (pour construire des prÃ©dictions)
+Write-Host "`nExemple 4: RÃ©cupÃ©rer des valeurs en sÃ©quence" -ForegroundColor Magenta
 for ($i = 1; $i -le 5; $i++) {
     $result = Invoke-PredictiveCache -Operation "get" -Key "product:$i" -WorkflowId "product-workflow" -NodeId "get-product"
-    Write-Host "Produit $i récupéré: $($result.value.name) - $($result.value.price)€" -ForegroundColor Green
+    Write-Host "Produit $i rÃ©cupÃ©rÃ©: $($result.value.name) - $($result.value.price)â‚¬" -ForegroundColor Green
 }
 
-# Exemple 5: Vérifier les prédictions
-Write-Host "`nExemple 5: Vérifier les prédictions" -ForegroundColor Magenta
+# Exemple 5: VÃ©rifier les prÃ©dictions
+Write-Host "`nExemple 5: VÃ©rifier les prÃ©dictions" -ForegroundColor Magenta
 $result = Invoke-PredictiveCache -Operation "get" -Key "product:1" -WorkflowId "product-workflow" -NodeId "get-product"
-Write-Host "Résultat: $($result | ConvertTo-Json)" -ForegroundColor Green
+Write-Host "RÃ©sultat: $($result | ConvertTo-Json)" -ForegroundColor Green
 
 if ($result.predictions) {
-    Write-Host "Prédictions:" -ForegroundColor Yellow
+    Write-Host "PrÃ©dictions:" -ForegroundColor Yellow
     foreach ($prediction in $result.predictions) {
         Write-Host "- $($prediction.key) (Score: $($prediction.score))" -ForegroundColor Yellow
     }
@@ -484,16 +484,16 @@ if ($result.predictions) {
 # Exemple 6: Supprimer une valeur du cache
 Write-Host "`nExemple 6: Supprimer une valeur du cache" -ForegroundColor Magenta
 $result = Invoke-PredictiveCache -Operation "remove" -Key "user:john.doe"
-Write-Host "Résultat: $($result | ConvertTo-Json)" -ForegroundColor Green
+Write-Host "RÃ©sultat: $($result | ConvertTo-Json)" -ForegroundColor Green
 "@
     
     try {
         $exampleContent | Out-File -FilePath $examplePath -Encoding utf8
-        Write-Log "Exemple d'utilisation créé: $examplePath" -Level "SUCCESS"
+        Write-Log "Exemple d'utilisation crÃ©Ã©: $examplePath" -Level "SUCCESS"
         return $true
     }
     catch {
-        Write-Log "Erreur lors de la création de l'exemple d'utilisation: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation de l'exemple d'utilisation: $_" -Level "ERROR"
         return $false
     }
 }
@@ -518,60 +518,60 @@ function Initialize-N8nPredictiveCache {
         [int]$DefaultTTL
     )
     
-    Write-Log "Initialisation du cache prédictif pour n8n..." -Level "TITLE"
+    Write-Log "Initialisation du cache prÃ©dictif pour n8n..." -Level "TITLE"
     
-    # Initialiser le module de cache prédictif
+    # Initialiser le module de cache prÃ©dictif
     Initialize-PredictiveCache -Enabled $true -CachePath $CachePath -MaxCacheSize ($MaxCacheSizeMB * 1MB) -DefaultTTL $DefaultTTL
     
-    # Tester la connexion à n8n
+    # Tester la connexion Ã  n8n
     $connected = Test-N8nConnection -ApiUrl $N8nApiUrl -ApiKey $ApiKey
     
     if (-not $connected) {
-        Write-Log "Impossible de se connecter à n8n. Vérifiez l'URL et la clé API." -Level "ERROR"
+        Write-Log "Impossible de se connecter Ã  n8n. VÃ©rifiez l'URL et la clÃ© API." -Level "ERROR"
         return $false
     }
     
-    # Créer le webhook n8n
+    # CrÃ©er le webhook n8n
     $webhookId = New-N8nCacheWebhook -ApiUrl $N8nApiUrl -ApiKey $ApiKey
     
     if (-not $webhookId) {
-        Write-Log "Échec de la création du webhook n8n." -Level "ERROR"
+        Write-Log "Ã‰chec de la crÃ©ation du webhook n8n." -Level "ERROR"
         return $false
     }
     
-    # Créer le workflow n8n
+    # CrÃ©er le workflow n8n
     $workflowId = New-N8nCacheWorkflow -ApiUrl $N8nApiUrl -ApiKey $ApiKey -WebhookId $webhookId
     
     if (-not $workflowId) {
-        Write-Log "Échec de la création du workflow n8n." -Level "ERROR"
+        Write-Log "Ã‰chec de la crÃ©ation du workflow n8n." -Level "ERROR"
         return $false
     }
     
-    # Créer l'exemple d'utilisation
+    # CrÃ©er l'exemple d'utilisation
     $exampleCreated = New-CacheUsageExample -N8nApiUrl $N8nApiUrl -ApiKey $ApiKey
     
     if (-not $exampleCreated) {
-        Write-Log "Échec de la création de l'exemple d'utilisation." -Level "WARNING"
+        Write-Log "Ã‰chec de la crÃ©ation de l'exemple d'utilisation." -Level "WARNING"
     }
     
     # Enregistrer le hook n8n
     $hookRegistered = Register-N8nCacheHook -N8nApiUrl $N8nApiUrl -ApiKey $ApiKey
     
     if (-not $hookRegistered) {
-        Write-Log "Échec de l'enregistrement du hook n8n." -Level "WARNING"
+        Write-Log "Ã‰chec de l'enregistrement du hook n8n." -Level "WARNING"
     }
     
-    Write-Log "Initialisation terminée." -Level "SUCCESS"
-    Write-Log "Cache prédictif pour n8n configuré avec succès." -Level "SUCCESS"
+    Write-Log "Initialisation terminÃ©e." -Level "SUCCESS"
+    Write-Log "Cache prÃ©dictif pour n8n configurÃ© avec succÃ¨s." -Level "SUCCESS"
     Write-Log "URL de l'API n8n: $N8nApiUrl" -Level "INFO"
     Write-Log "Chemin du cache: $CachePath" -Level "INFO"
     Write-Log "Taille maximale du cache: $MaxCacheSizeMB MB" -Level "INFO"
-    Write-Log "Durée de vie par défaut: $DefaultTTL secondes" -Level "INFO"
+    Write-Log "DurÃ©e de vie par dÃ©faut: $DefaultTTL secondes" -Level "INFO"
     Write-Log "ID du webhook: $webhookId" -Level "INFO"
     Write-Log "ID du workflow: $workflowId" -Level "INFO"
     
     return $true
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Initialize-N8nPredictiveCache -N8nApiUrl $N8nApiUrl -ApiKey $ApiKey -CachePath $CachePath -MaxCacheSizeMB $MaxCacheSizeMB -DefaultTTL $DefaultTTL

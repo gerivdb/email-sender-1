@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démontre l'utilisation de l'optimisation dynamique de la parallélisation.
+    DÃ©montre l'utilisation de l'optimisation dynamique de la parallÃ©lisation.
 .DESCRIPTION
     Ce script montre comment utiliser les modules Dynamic-ThreadManager et TaskPriorityQueue
-    pour optimiser dynamiquement la parallélisation des tâches.
+    pour optimiser dynamiquement la parallÃ©lisation des tÃ¢ches.
 .EXAMPLE
     .\Demo-DynamicParallelization.ps1
-    Exécute la démonstration avec les paramètres par défaut.
+    ExÃ©cute la dÃ©monstration avec les paramÃ¨tres par dÃ©faut.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Date: 12/04/2025
 #>
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $threadManagerPath = Join-Path -Path $moduleRoot -ChildPath "Dynamic-ThreadManager.psm1"
 $queueManagerPath = Join-Path -Path $moduleRoot -ChildPath "TaskPriorityQueue.psm1"
@@ -22,7 +22,7 @@ $queueManagerPath = Join-Path -Path $moduleRoot -ChildPath "TaskPriorityQueue.ps
 Import-Module $threadManagerPath -Force
 Import-Module $queueManagerPath -Force
 
-# Fonction pour simuler une tâche de traitement
+# Fonction pour simuler une tÃ¢che de traitement
 function Invoke-ProcessingTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -35,7 +35,7 @@ function Invoke-ProcessingTask {
         [int]$CpuIntensity = 50
     )
 
-    Write-Host "Démarrage de la tâche: $TaskName" -ForegroundColor Cyan
+    Write-Host "DÃ©marrage de la tÃ¢che: $TaskName" -ForegroundColor Cyan
 
     # Simuler une charge CPU
     $startTime = Get-Date
@@ -46,15 +46,15 @@ function Invoke-ProcessingTask {
         if ($CpuIntensity -gt 0) {
             # Simuler une charge CPU en effectuant des calculs
             $data = 1..$CpuIntensity
-            # Utiliser Out-Null pour éviter l'avertissement de variable non utilisée
+            # Utiliser Out-Null pour Ã©viter l'avertissement de variable non utilisÃ©e
             $data | ForEach-Object { [math]::Pow($_, 2) } | Out-Null
         }
 
-        # Pause courte pour éviter de saturer le CPU
+        # Pause courte pour Ã©viter de saturer le CPU
         Start-Sleep -Milliseconds 10
     }
 
-    Write-Host "Fin de la tâche: $TaskName (Durée: $((Get-Date) - $startTime))" -ForegroundColor Green
+    Write-Host "Fin de la tÃ¢che: $TaskName (DurÃ©e: $((Get-Date) - $startTime))" -ForegroundColor Green
 
     return @{
         TaskName     = $TaskName
@@ -63,7 +63,7 @@ function Invoke-ProcessingTask {
     }
 }
 
-# Fonction pour exécuter des tâches avec optimisation dynamique
+# Fonction pour exÃ©cuter des tÃ¢ches avec optimisation dynamique
 function Invoke-OptimizedParallelTasks {
     param (
         [Parameter(Mandatory = $true)]
@@ -76,12 +76,12 @@ function Invoke-OptimizedParallelTasks {
         [int]$AdjustmentIntervalSeconds = 2
     )
 
-    Write-Host "Démarrage de l'exécution optimisée de $($Tasks.Count) tâches..." -ForegroundColor Yellow
+    Write-Host "DÃ©marrage de l'exÃ©cution optimisÃ©e de $($Tasks.Count) tÃ¢ches..." -ForegroundColor Yellow
 
-    # Créer une file d'attente prioritaire
+    # CrÃ©er une file d'attente prioritaire
     $queue = New-TaskPriorityQueue
 
-    # Ajouter les tâches à la file d'attente
+    # Ajouter les tÃ¢ches Ã  la file d'attente
     foreach ($task in $Tasks) {
         $priorityTask = New-PriorityTask -Name $task.Name -ScriptBlock {
             param($taskParams)
@@ -97,11 +97,11 @@ function Invoke-OptimizedParallelTasks {
     $completedTasks = @()
     $startTime = Get-Date
 
-    # Démarrer le monitoring des threads
+    # DÃ©marrer le monitoring des threads
     $monitoringCallback = {
         param($optimalThreads)
 
-        # Mettre à jour le nombre de threads
+        # Mettre Ã  jour le nombre de threads
         $script:currentThreads = Update-ThreadCount -CurrentThreadCount $script:currentThreads -OptimalThreadCount $optimalThreads
 
         Write-Host "Ajustement du nombre de threads: $script:currentThreads (Optimal: $optimalThreads)" -ForegroundColor Magenta
@@ -112,29 +112,29 @@ function Invoke-OptimizedParallelTasks {
     try {
         # Boucle principale
         while ($queue.Count() -gt 0 -or $runningTasks.Count -gt 0) {
-            # Promouvoir les tâches en attente
+            # Promouvoir les tÃ¢ches en attente
             Invoke-TaskPromotion -Queue $queue
 
-            # Démarrer de nouvelles tâches si des threads sont disponibles
+            # DÃ©marrer de nouvelles tÃ¢ches si des threads sont disponibles
             while ($runningTasks.Count -lt $currentThreads -and $queue.Count() -gt 0) {
                 $task = Get-NextTask -Queue $queue
 
                 if ($task) {
-                    # Démarrer la tâche en arrière-plan
+                    # DÃ©marrer la tÃ¢che en arriÃ¨re-plan
                     $job = Start-Job -ScriptBlock $task.ScriptBlock -ArgumentList $task.Parameters
 
-                    # Enregistrer la tâche en cours d'exécution
+                    # Enregistrer la tÃ¢che en cours d'exÃ©cution
                     $runningTasks[$job.Id] = @{
                         Job       = $job
                         Task      = $task
                         StartTime = Get-Date
                     }
 
-                    Write-Host "Tâche démarrée: $($task.Name) (ID: $($job.Id), Priorité: $($task.Priority))" -ForegroundColor Yellow
+                    Write-Host "TÃ¢che dÃ©marrÃ©e: $($task.Name) (ID: $($job.Id), PrioritÃ©: $($task.Priority))" -ForegroundColor Yellow
                 }
             }
 
-            # Vérifier les tâches terminées
+            # VÃ©rifier les tÃ¢ches terminÃ©es
             $completedJobIds = @($runningTasks.Keys | Where-Object { $runningTasks[$_].Job.State -ne 'Running' })
 
             foreach ($jobId in $completedJobIds) {
@@ -142,11 +142,11 @@ function Invoke-OptimizedParallelTasks {
                 $job = $jobInfo.Job
                 $task = $jobInfo.Task
 
-                # Récupérer les résultats
+                # RÃ©cupÃ©rer les rÃ©sultats
                 $result = Receive-Job -Job $job
                 $job | Remove-Job -Force
 
-                # Enregistrer la tâche terminée
+                # Enregistrer la tÃ¢che terminÃ©e
                 $completedTasks += @{
                     TaskName = $task.Name
                     Priority = $task.Priority
@@ -154,49 +154,49 @@ function Invoke-OptimizedParallelTasks {
                     Result   = $result
                 }
 
-                Write-Host "Tâche terminée: $($task.Name) (ID: $jobId, Priorité: $($task.Priority))" -ForegroundColor Green
+                Write-Host "TÃ¢che terminÃ©e: $($task.Name) (ID: $jobId, PrioritÃ©: $($task.Priority))" -ForegroundColor Green
 
-                # Supprimer la tâche de la liste des tâches en cours
+                # Supprimer la tÃ¢che de la liste des tÃ¢ches en cours
                 $runningTasks.Remove($jobId)
             }
 
-            # Pause courte pour éviter de saturer le CPU
+            # Pause courte pour Ã©viter de saturer le CPU
             Start-Sleep -Milliseconds 100
         }
     } finally {
-        # Arrêter le monitoring
+        # ArrÃªter le monitoring
         Stop-ThreadMonitoring -MonitoringId $monitoring.MonitoringId
 
         # Nettoyer les jobs restants
         $runningTasks.Values | ForEach-Object { $_.Job | Remove-Job -Force -ErrorAction SilentlyContinue }
     }
 
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $totalDuration = ((Get-Date) - $startTime).TotalSeconds
 
-    Write-Host "`nRésumé de l'exécution:" -ForegroundColor Yellow
-    Write-Host "  Tâches exécutées: $($completedTasks.Count)" -ForegroundColor White
-    Write-Host "  Durée totale: $totalDuration secondes" -ForegroundColor White
-    Write-Host "  Tâches par seconde: $([math]::Round($completedTasks.Count / $totalDuration, 2))" -ForegroundColor White
+    Write-Host "`nRÃ©sumÃ© de l'exÃ©cution:" -ForegroundColor Yellow
+    Write-Host "  TÃ¢ches exÃ©cutÃ©es: $($completedTasks.Count)" -ForegroundColor White
+    Write-Host "  DurÃ©e totale: $totalDuration secondes" -ForegroundColor White
+    Write-Host "  TÃ¢ches par seconde: $([math]::Round($completedTasks.Count / $totalDuration, 2))" -ForegroundColor White
 
     return $completedTasks
 }
 
-# Créer des tâches de test
+# CrÃ©er des tÃ¢ches de test
 $tasks = @(
-    @{ Name = "Tâche légère 1"; Duration = 500; CpuIntensity = 10; Priority = 5 },
-    @{ Name = "Tâche légère 2"; Duration = 700; CpuIntensity = 20; Priority = 5 },
-    @{ Name = "Tâche légère 3"; Duration = 600; CpuIntensity = 15; Priority = 5 },
-    @{ Name = "Tâche moyenne 1"; Duration = 1500; CpuIntensity = 40; Priority = 7 },
-    @{ Name = "Tâche moyenne 2"; Duration = 1200; CpuIntensity = 50; Priority = 7 },
-    @{ Name = "Tâche lourde 1"; Duration = 3000; CpuIntensity = 80; Priority = 9 },
-    @{ Name = "Tâche lourde 2"; Duration = 2500; CpuIntensity = 70; Priority = 9 },
-    @{ Name = "Tâche bloquante"; Duration = 4000; CpuIntensity = 90; Priority = 10 }
+    @{ Name = "TÃ¢che lÃ©gÃ¨re 1"; Duration = 500; CpuIntensity = 10; Priority = 5 },
+    @{ Name = "TÃ¢che lÃ©gÃ¨re 2"; Duration = 700; CpuIntensity = 20; Priority = 5 },
+    @{ Name = "TÃ¢che lÃ©gÃ¨re 3"; Duration = 600; CpuIntensity = 15; Priority = 5 },
+    @{ Name = "TÃ¢che moyenne 1"; Duration = 1500; CpuIntensity = 40; Priority = 7 },
+    @{ Name = "TÃ¢che moyenne 2"; Duration = 1200; CpuIntensity = 50; Priority = 7 },
+    @{ Name = "TÃ¢che lourde 1"; Duration = 3000; CpuIntensity = 80; Priority = 9 },
+    @{ Name = "TÃ¢che lourde 2"; Duration = 2500; CpuIntensity = 70; Priority = 9 },
+    @{ Name = "TÃ¢che bloquante"; Duration = 4000; CpuIntensity = 90; Priority = 10 }
 )
 
-# Exécuter les tâches avec optimisation dynamique
+# ExÃ©cuter les tÃ¢ches avec optimisation dynamique
 $results = Invoke-OptimizedParallelTasks -Tasks $tasks -InitialThreads 4 -AdjustmentIntervalSeconds 1
 
-# Afficher les résultats détaillés
-Write-Host "`nRésultats détaillés:" -ForegroundColor Yellow
+# Afficher les rÃ©sultats dÃ©taillÃ©s
+Write-Host "`nRÃ©sultats dÃ©taillÃ©s:" -ForegroundColor Yellow
 $results | Sort-Object -Property Duration -Descending | Format-Table -Property TaskName, Priority, Duration -AutoSize

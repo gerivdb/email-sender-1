@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonctionnalité de gestion des erreurs avancée du système d'apprentissage des erreurs.
+    Tests unitaires simplifiÃ©s pour la fonctionnalitÃ© de gestion des erreurs avancÃ©e du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour la fonctionnalité de gestion des erreurs avancée du système d'apprentissage des erreurs.
+    Ce script contient des tests unitaires simplifiÃ©s pour la fonctionnalitÃ© de gestion des erreurs avancÃ©e du systÃ¨me d'apprentissage des erreurs.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
-Describe "Tests de gestion des erreurs avancée simplifiés" {
+# DÃ©finir les tests Pester
+Describe "Tests de gestion des erreurs avancÃ©e simplifiÃ©s" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "AdvancedErrorHandlingSimpleTests"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
         New-Item -Path $script:testRoot -ItemType Directory -Force | Out-Null
         
-        # Définir les fonctions de gestion des erreurs avancée
+        # DÃ©finir les fonctions de gestion des erreurs avancÃ©e
         function New-ErrorReport {
             [CmdletBinding()]
             param (
@@ -37,12 +37,12 @@ Describe "Tests de gestion des erreurs avancée simplifiés" {
             )
             
             try {
-                # Créer le dossier de sortie s'il n'existe pas
+                # CrÃ©er le dossier de sortie s'il n'existe pas
                 if (-not (Test-Path -Path $OutputPath)) {
                     New-Item -Path $OutputPath -ItemType Directory -Force -ErrorAction Stop | Out-Null
                 }
                 
-                # Générer un ID unique pour l'erreur
+                # GÃ©nÃ©rer un ID unique pour l'erreur
                 $errorId = [guid]::NewGuid().ToString()
                 
                 # Extraire les informations de l'erreur
@@ -75,7 +75,7 @@ Describe "Tests de gestion des erreurs avancée simplifiés" {
                 return $errorInfo
             }
             catch {
-                Write-Error "Erreur lors de la création du rapport d'erreur: $_"
+                Write-Error "Erreur lors de la crÃ©ation du rapport d'erreur: $_"
                 return $null
             }
         }
@@ -93,14 +93,14 @@ Describe "Tests de gestion des erreurs avancée simplifiés" {
             )
             
             try {
-                # Fonction simplifiée pour calculer la similarité entre deux chaînes
-                # Dans un environnement réel, on utiliserait un algorithme plus sophistiqué
+                # Fonction simplifiÃ©e pour calculer la similaritÃ© entre deux chaÃ®nes
+                # Dans un environnement rÃ©el, on utiliserait un algorithme plus sophistiquÃ©
                 
-                # Convertir les chaînes en minuscules
+                # Convertir les chaÃ®nes en minuscules
                 $s1 = $String1.ToLower()
                 $s2 = $String2.ToLower()
                 
-                # Calculer la distance de Levenshtein simplifiée
+                # Calculer la distance de Levenshtein simplifiÃ©e
                 $maxLength = [Math]::Max($s1.Length, $s2.Length)
                 if ($maxLength -eq 0) {
                     return 100
@@ -115,21 +115,21 @@ Describe "Tests de gestion des erreurs avancée simplifiés" {
                     }
                 }
                 
-                # Calculer le score de similarité
+                # Calculer le score de similaritÃ©
                 $similarityScore = ($commonChars / $maxLength) * 100
                 
                 return [Math]::Round($similarityScore, 2)
             }
             catch {
-                Write-Error "Erreur lors du calcul de la similarité entre les chaînes: $_"
+                Write-Error "Erreur lors du calcul de la similaritÃ© entre les chaÃ®nes: $_"
                 return 0
             }
         }
     }
     
     Context "Fonction New-ErrorReport" {
-        It "Devrait créer un rapport d'erreur" {
-            # Créer une erreur factice
+        It "Devrait crÃ©er un rapport d'erreur" {
+            # CrÃ©er une erreur factice
             $exception = New-Object System.Exception("Erreur de test")
             $errorRecord = New-Object System.Management.Automation.ErrorRecord(
                 $exception,
@@ -138,51 +138,51 @@ Describe "Tests de gestion des erreurs avancée simplifiés" {
                 $null
             )
             
-            # Créer un rapport d'erreur
+            # CrÃ©er un rapport d'erreur
             $errorReport = New-ErrorReport -ErrorRecord $errorRecord -Source "TestSource" -Category "TestCategory"
             
-            # Vérifier que le rapport a été créé correctement
+            # VÃ©rifier que le rapport a Ã©tÃ© crÃ©Ã© correctement
             $errorReport | Should -Not -BeNullOrEmpty
             $errorReport.ErrorId | Should -Not -BeNullOrEmpty
             $errorReport.Source | Should -Be "TestSource"
             $errorReport.Category | Should -Be "TestCategory"
             $errorReport.Message | Should -Be "Erreur de test"
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             $errorFilePath = Join-Path -Path (Join-Path -Path $script:testRoot -ChildPath "ErrorReports") -ChildPath "$($errorReport.ErrorId).json"
             Test-Path -Path $errorFilePath | Should -BeTrue
         }
     }
     
     Context "Fonction Get-StringSimilarity" {
-        It "Devrait calculer la similarité entre deux chaînes identiques" {
-            # Calculer la similarité entre deux chaînes identiques
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes identiques" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes identiques
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Test string"
             
-            # Vérifier que le score est de 100%
+            # VÃ©rifier que le score est de 100%
             $similarityScore | Should -Be 100
         }
         
-        It "Devrait calculer la similarité entre deux chaînes différentes" {
-            # Calculer la similarité entre deux chaînes différentes
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes diffÃ©rentes" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes diffÃ©rentes
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Test strong"
             
-            # Vérifier que le score est inférieur à 100%
+            # VÃ©rifier que le score est infÃ©rieur Ã  100%
             $similarityScore | Should -BeLessThan 100
             $similarityScore | Should -BeGreaterThan 0
         }
         
-        It "Devrait calculer la similarité entre deux chaînes complètement différentes" {
-            # Calculer la similarité entre deux chaînes complètement différentes
+        It "Devrait calculer la similaritÃ© entre deux chaÃ®nes complÃ¨tement diffÃ©rentes" {
+            # Calculer la similaritÃ© entre deux chaÃ®nes complÃ¨tement diffÃ©rentes
             $similarityScore = Get-StringSimilarity -String1 "Test string" -String2 "Completely different"
             
-            # Vérifier que le score est faible
+            # VÃ©rifier que le score est faible
             $similarityScore | Should -BeLessThan 50
         }
     }
     
     AfterAll {
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }

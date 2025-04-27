@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions pour l'analyse des stack traces PowerShell.
 
 .DESCRIPTION
     Ce script contient des fonctions pour analyser, parser et visualiser les stack traces
-    PowerShell afin de faciliter le débogage et l'analyse des erreurs.
+    PowerShell afin de faciliter le dÃ©bogage et l'analyse des erreurs.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
 #region Parseur de stack trace
@@ -20,11 +20,11 @@
 
 .DESCRIPTION
     Cette fonction analyse une stack trace PowerShell et extrait les informations
-    telles que les noms de fichiers, les numéros de ligne, les noms de fonctions
+    telles que les noms de fichiers, les numÃ©ros de ligne, les noms de fonctions
     et les messages d'erreur.
 
 .PARAMETER StackTrace
-    La stack trace à analyser. Peut être une chaîne ou un objet ErrorRecord.
+    La stack trace Ã  analyser. Peut Ãªtre une chaÃ®ne ou un objet ErrorRecord.
 
 .EXAMPLE
     $error[0] | Get-StackTraceInfo
@@ -33,13 +33,13 @@
     Get-StackTraceInfo -StackTrace "At C:\Scripts\test.ps1:23 char:1..."
 
 .OUTPUTS
-    System.Collections.ArrayList contenant des objets avec les propriétés suivantes :
+    System.Collections.ArrayList contenant des objets avec les propriÃ©tÃ©s suivantes :
     - File: Le chemin du fichier
-    - Line: Le numéro de ligne
-    - Column: Le numéro de colonne
+    - Line: Le numÃ©ro de ligne
+    - Column: Le numÃ©ro de colonne
     - Function: Le nom de la fonction
-    - Command: La commande exécutée
-    - ErrorMessage: Le message d'erreur (uniquement pour le premier élément)
+    - Command: La commande exÃ©cutÃ©e
+    - ErrorMessage: Le message d'erreur (uniquement pour le premier Ã©lÃ©ment)
 #>
 function Get-StackTraceInfo {
     [CmdletBinding()]
@@ -73,7 +73,7 @@ function Get-StackTraceInfo {
             }
         }
         else {
-            # Considérer l'entrée comme une chaîne de stack trace
+            # ConsidÃ©rer l'entrÃ©e comme une chaÃ®ne de stack trace
             $stackTraceText = $StackTrace.ToString()
             $errorMessage = $null
         }
@@ -120,14 +120,14 @@ function Get-StackTraceInfo {
 
 <#
 .SYNOPSIS
-    Extrait les informations de ligne et de fichier à partir d'une stack trace.
+    Extrait les informations de ligne et de fichier Ã  partir d'une stack trace.
 
 .DESCRIPTION
     Cette fonction analyse une stack trace et extrait les informations de ligne et de fichier
     pour chaque frame de la stack trace.
 
 .PARAMETER StackTrace
-    La stack trace à analyser. Peut être une chaîne ou un objet ErrorRecord.
+    La stack trace Ã  analyser. Peut Ãªtre une chaÃ®ne ou un objet ErrorRecord.
 
 .EXAMPLE
     $error[0] | Get-StackTraceLineInfo
@@ -136,12 +136,12 @@ function Get-StackTraceInfo {
     Get-StackTraceLineInfo -StackTrace "At C:\Scripts\test.ps1:23 char:1..."
 
 .OUTPUTS
-    System.Collections.ArrayList contenant des objets avec les propriétés suivantes :
+    System.Collections.ArrayList contenant des objets avec les propriÃ©tÃ©s suivantes :
     - File: Le chemin du fichier
-    - Line: Le numéro de ligne
-    - Column: Le numéro de colonne
+    - Line: Le numÃ©ro de ligne
+    - Column: Le numÃ©ro de colonne
     - LineContent: Le contenu de la ligne (si disponible)
-    - Context: Les lignes avant et après la ligne d'erreur (si disponible)
+    - Context: Les lignes avant et aprÃ¨s la ligne d'erreur (si disponible)
 #>
 function Get-StackTraceLineInfo {
     [CmdletBinding()]
@@ -168,7 +168,7 @@ function Get-StackTraceLineInfo {
                     if ($frame.Line -le $fileContent.Count) {
                         $frame | Add-Member -MemberType NoteProperty -Name "LineContent" -Value $fileContent[$frame.Line - 1]
                         
-                        # Ajouter le contexte (lignes avant et après)
+                        # Ajouter le contexte (lignes avant et aprÃ¨s)
                         $startLine = [Math]::Max(1, $frame.Line - $ContextLines)
                         $endLine = [Math]::Min($fileContent.Count, $frame.Line + $ContextLines)
                         
@@ -202,21 +202,21 @@ function Get-StackTraceLineInfo {
 
 <#
 .SYNOPSIS
-    Résout les chemins de fichiers dans une stack trace.
+    RÃ©sout les chemins de fichiers dans une stack trace.
 
 .DESCRIPTION
-    Cette fonction résout les chemins de fichiers relatifs ou incomplets dans une stack trace
-    en chemins absolus, en utilisant différentes stratégies de résolution.
+    Cette fonction rÃ©sout les chemins de fichiers relatifs ou incomplets dans une stack trace
+    en chemins absolus, en utilisant diffÃ©rentes stratÃ©gies de rÃ©solution.
 
 .PARAMETER StackTrace
-    La stack trace à analyser. Peut être une chaîne ou un objet ErrorRecord.
+    La stack trace Ã  analyser. Peut Ãªtre une chaÃ®ne ou un objet ErrorRecord.
 
 .PARAMETER BasePath
-    Le chemin de base à utiliser pour résoudre les chemins relatifs.
-    Par défaut, utilise le répertoire courant.
+    Le chemin de base Ã  utiliser pour rÃ©soudre les chemins relatifs.
+    Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER SearchPaths
-    Tableau de chemins supplémentaires à rechercher pour résoudre les fichiers.
+    Tableau de chemins supplÃ©mentaires Ã  rechercher pour rÃ©soudre les fichiers.
 
 .EXAMPLE
     $error[0] | Resolve-StackTracePaths -BasePath "C:\Projects\MyProject"
@@ -225,8 +225,8 @@ function Get-StackTraceLineInfo {
     Resolve-StackTracePaths -StackTrace $stackTrace -SearchPaths @("C:\Modules", "C:\Scripts")
 
 .OUTPUTS
-    System.Collections.ArrayList contenant des objets avec les propriétés de Get-StackTraceInfo
-    mais avec les chemins de fichiers résolus.
+    System.Collections.ArrayList contenant des objets avec les propriÃ©tÃ©s de Get-StackTraceInfo
+    mais avec les chemins de fichiers rÃ©solus.
 #>
 function Resolve-StackTracePaths {
     [CmdletBinding()]
@@ -245,23 +245,23 @@ function Resolve-StackTracePaths {
         # Obtenir les informations de base de la stack trace
         $stackFrames = Get-StackTraceInfo -StackTrace $StackTrace
         
-        # Ajouter le répertoire courant et le répertoire du script aux chemins de recherche
+        # Ajouter le rÃ©pertoire courant et le rÃ©pertoire du script aux chemins de recherche
         $allSearchPaths = @($BasePath) + $SearchPaths
         
-        # Si $PSScriptRoot est défini, l'ajouter aux chemins de recherche
+        # Si $PSScriptRoot est dÃ©fini, l'ajouter aux chemins de recherche
         if ($PSScriptRoot) {
             $allSearchPaths += $PSScriptRoot
         }
         
-        # Résoudre les chemins de fichiers pour chaque frame
+        # RÃ©soudre les chemins de fichiers pour chaque frame
         foreach ($frame in $stackFrames) {
             if ($frame.File) {
-                # Si le chemin est déjà absolu et existe, le conserver
+                # Si le chemin est dÃ©jÃ  absolu et existe, le conserver
                 if ([System.IO.Path]::IsPathRooted($frame.File) -and (Test-Path -Path $frame.File -PathType Leaf)) {
                     continue
                 }
                 
-                # Essayer de résoudre le chemin relatif
+                # Essayer de rÃ©soudre le chemin relatif
                 $fileName = Split-Path -Leaf $frame.File
                 $resolvedPath = $null
                 
@@ -281,7 +281,7 @@ function Resolve-StackTracePaths {
                         break
                     }
                     
-                    # Rechercher récursivement (limité à 3 niveaux pour éviter une recherche trop longue)
+                    # Rechercher rÃ©cursivement (limitÃ© Ã  3 niveaux pour Ã©viter une recherche trop longue)
                     try {
                         $foundFiles = Get-ChildItem -Path $searchPath -Filter $fileName -Recurse -Depth 3 -ErrorAction Stop
                         if ($foundFiles.Count -gt 0) {
@@ -294,7 +294,7 @@ function Resolve-StackTracePaths {
                     }
                 }
                 
-                # Mettre à jour le chemin du fichier s'il a été résolu
+                # Mettre Ã  jour le chemin du fichier s'il a Ã©tÃ© rÃ©solu
                 if ($resolvedPath) {
                     $frame.File = $resolvedPath
                 }
@@ -307,14 +307,14 @@ function Resolve-StackTracePaths {
 
 <#
 .SYNOPSIS
-    Analyse la séquence d'appels dans une stack trace.
+    Analyse la sÃ©quence d'appels dans une stack trace.
 
 .DESCRIPTION
-    Cette fonction analyse la séquence d'appels dans une stack trace pour identifier
-    les patterns d'appels, les récursions et les chemins d'exécution.
+    Cette fonction analyse la sÃ©quence d'appels dans une stack trace pour identifier
+    les patterns d'appels, les rÃ©cursions et les chemins d'exÃ©cution.
 
 .PARAMETER StackTrace
-    La stack trace à analyser. Peut être une chaîne ou un objet ErrorRecord.
+    La stack trace Ã  analyser. Peut Ãªtre une chaÃ®ne ou un objet ErrorRecord.
 
 .EXAMPLE
     $error[0] | Get-StackTraceCallSequence
@@ -323,11 +323,11 @@ function Resolve-StackTracePaths {
     Get-StackTraceCallSequence -StackTrace $stackTrace
 
 .OUTPUTS
-    PSCustomObject contenant les propriétés suivantes :
-    - CallPath: La séquence d'appels sous forme de chaîne
+    PSCustomObject contenant les propriÃ©tÃ©s suivantes :
+    - CallPath: La sÃ©quence d'appels sous forme de chaÃ®ne
     - CallDepth: La profondeur de la pile d'appels
-    - RecursionDetected: Indique si une récursion a été détectée
-    - RecursionPoints: Les points de récursion détectés
+    - RecursionDetected: Indique si une rÃ©cursion a Ã©tÃ© dÃ©tectÃ©e
+    - RecursionPoints: Les points de rÃ©cursion dÃ©tectÃ©s
     - CallGraph: Un graphe des appels au format DOT
 #>
 function Get-StackTraceCallSequence {
@@ -341,7 +341,7 @@ function Get-StackTraceCallSequence {
         # Obtenir les informations de base de la stack trace
         $stackFrames = Get-StackTraceInfo -StackTrace $StackTrace
         
-        # Extraire la séquence d'appels
+        # Extraire la sÃ©quence d'appels
         $callSequence = @()
         $functionCalls = @{}
         $recursionPoints = @()
@@ -350,10 +350,10 @@ function Get-StackTraceCallSequence {
             $frame = $stackFrames[$i]
             $functionName = if ($frame.Function) { $frame.Function } else { "Script" }
             
-            # Ajouter à la séquence d'appels
+            # Ajouter Ã  la sÃ©quence d'appels
             $callSequence += $functionName
             
-            # Vérifier la récursion
+            # VÃ©rifier la rÃ©cursion
             if ($functionCalls.ContainsKey($functionName)) {
                 $functionCalls[$functionName] += 1
                 $recursionPoints += @{
@@ -367,13 +367,13 @@ function Get-StackTraceCallSequence {
             }
         }
         
-        # Créer le chemin d'appel
+        # CrÃ©er le chemin d'appel
         $callPath = $callSequence -join " -> "
         
-        # Détecter la récursion
+        # DÃ©tecter la rÃ©cursion
         $recursionDetected = $recursionPoints.Count -gt 0
         
-        # Créer un graphe DOT pour visualiser les appels
+        # CrÃ©er un graphe DOT pour visualiser les appels
         $dotGraph = "digraph CallGraph {`n"
         $dotGraph += "  rankdir=LR;`n"
         $dotGraph += "  node [shape=box, style=filled, fillcolor=lightblue];`n`n"
@@ -384,7 +384,7 @@ function Get-StackTraceCallSequence {
             $dotGraph += "  `"$source`" -> `"$target`";`n"
         }
         
-        # Mettre en évidence les récursions
+        # Mettre en Ã©vidence les rÃ©cursions
         if ($recursionDetected) {
             $dotGraph += "`n  // Recursion points`n"
             foreach ($point in $recursionPoints) {
@@ -394,7 +394,7 @@ function Get-StackTraceCallSequence {
         
         $dotGraph += "}`n"
         
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             CallPath = $callPath
             CallDepth = $callSequence.Count
@@ -409,24 +409,24 @@ function Get-StackTraceCallSequence {
 
 <#
 .SYNOPSIS
-    Génère une visualisation hiérarchique d'une stack trace.
+    GÃ©nÃ¨re une visualisation hiÃ©rarchique d'une stack trace.
 
 .DESCRIPTION
-    Cette fonction génère une visualisation hiérarchique d'une stack trace pour
-    faciliter la compréhension de la séquence d'appels et des erreurs.
+    Cette fonction gÃ©nÃ¨re une visualisation hiÃ©rarchique d'une stack trace pour
+    faciliter la comprÃ©hension de la sÃ©quence d'appels et des erreurs.
 
 .PARAMETER StackTrace
-    La stack trace à visualiser. Peut être une chaîne ou un objet ErrorRecord.
+    La stack trace Ã  visualiser. Peut Ãªtre une chaÃ®ne ou un objet ErrorRecord.
 
 .PARAMETER Format
     Le format de sortie. Les valeurs possibles sont : Text, HTML, Markdown.
-    Par défaut, le format est Text.
+    Par dÃ©faut, le format est Text.
 
 .PARAMETER IncludeLineContent
-    Indique si le contenu des lignes doit être inclus dans la visualisation.
+    Indique si le contenu des lignes doit Ãªtre inclus dans la visualisation.
 
 .PARAMETER IncludeContext
-    Indique si le contexte des lignes doit être inclus dans la visualisation.
+    Indique si le contexte des lignes doit Ãªtre inclus dans la visualisation.
 
 .EXAMPLE
     $error[0] | Show-StackTraceHierarchy
@@ -435,7 +435,7 @@ function Get-StackTraceCallSequence {
     Show-StackTraceHierarchy -StackTrace $stackTrace -Format HTML -IncludeLineContent $true
 
 .OUTPUTS
-    String contenant la visualisation hiérarchique de la stack trace.
+    String contenant la visualisation hiÃ©rarchique de la stack trace.
 #>
 function Show-StackTraceHierarchy {
     [CmdletBinding()]
@@ -455,10 +455,10 @@ function Show-StackTraceHierarchy {
     )
 
     process {
-        # Obtenir les informations détaillées de la stack trace
+        # Obtenir les informations dÃ©taillÃ©es de la stack trace
         $stackFrames = Get-StackTraceLineInfo -StackTrace $StackTrace
         
-        # Générer la visualisation selon le format demandé
+        # GÃ©nÃ©rer la visualisation selon le format demandÃ©
         switch ($Format) {
             "Text" {
                 $output = "Stack Trace Hierarchy:`n"

@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les scripts d'amélioration et de test pour la détection de format.
+    ExÃ©cute tous les scripts d'amÃ©lioration et de test pour la dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute tous les scripts d'amélioration et de test pour la détection de format,
-    y compris la génération de fichiers d'échantillon, les tests de détection et la mise à jour
-    de la roadmap et du journal de développement.
+    Ce script exÃ©cute tous les scripts d'amÃ©lioration et de test pour la dÃ©tection de format,
+    y compris la gÃ©nÃ©ration de fichiers d'Ã©chantillon, les tests de dÃ©tection et la mise Ã  jour
+    de la roadmap et du journal de dÃ©veloppement.
 
 .PARAMETER SampleDirectory
-    Le répertoire où les fichiers d'échantillon seront enregistrés.
-    Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire oÃ¹ les fichiers d'Ã©chantillon seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER GenerateHtmlReports
-    Indique si des rapports HTML doivent être générés en plus des rapports JSON.
+    Indique si des rapports HTML doivent Ãªtre gÃ©nÃ©rÃ©s en plus des rapports JSON.
 
 .PARAMETER UpdateRoadmap
-    Indique si la roadmap doit être mise à jour avec les améliorations implémentées.
+    Indique si la roadmap doit Ãªtre mise Ã  jour avec les amÃ©liorations implÃ©mentÃ©es.
 
 .PARAMETER UpdateDevJournal
-    Indique si le journal de développement doit être mis à jour avec les améliorations implémentées.
+    Indique si le journal de dÃ©veloppement doit Ãªtre mis Ã  jour avec les amÃ©liorations implÃ©mentÃ©es.
 
 .EXAMPLE
     .\Run-FormatDetectionImprovements.ps1 -GenerateHtmlReports -UpdateRoadmap -UpdateDevJournal
@@ -45,20 +45,20 @@ param(
     [switch]$UpdateDevJournal
 )
 
-# Vérifier si le répertoire d'échantillons existe
+# VÃ©rifier si le rÃ©pertoire d'Ã©chantillons existe
 if (-not (Test-Path -Path $SampleDirectory -PathType Container)) {
     New-Item -Path $SampleDirectory -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire d'échantillons créé : $SampleDirectory" -ForegroundColor Green
+    Write-Host "RÃ©pertoire d'Ã©chantillons crÃ©Ã© : $SampleDirectory" -ForegroundColor Green
 }
 
-# Créer le répertoire d'échantillons pour les encodages
+# CrÃ©er le rÃ©pertoire d'Ã©chantillons pour les encodages
 $encodingSampleDirectory = Join-Path -Path $SampleDirectory -ChildPath "encoding"
 if (-not (Test-Path -Path $encodingSampleDirectory -PathType Container)) {
     New-Item -Path $encodingSampleDirectory -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire d'échantillons pour les encodages créé : $encodingSampleDirectory" -ForegroundColor Green
+    Write-Host "RÃ©pertoire d'Ã©chantillons pour les encodages crÃ©Ã© : $encodingSampleDirectory" -ForegroundColor Green
 }
 
-# Définir les chemins des scripts
+# DÃ©finir les chemins des scripts
 $defineFormatCriteriaScript = Join-Path -Path $PSScriptRoot -ChildPath "Define-FormatDetectionCriteria.ps1"
 $generateEncodingSamplesScript = Join-Path -Path $PSScriptRoot -ChildPath "Generate-EncodingSamples.ps1"
 $generateExpectedFormatsScript = Join-Path -Path $PSScriptRoot -ChildPath "Generate-ExpectedFormats.ps1"
@@ -66,32 +66,32 @@ $testEncodingDetectionScript = Join-Path -Path $PSScriptRoot -ChildPath "Test-En
 $updateRoadmapScript = Join-Path -Path $PSScriptRoot -ChildPath "Update-Roadmap.ps1"
 $updateDevJournalScript = Join-Path -Path $PSScriptRoot -ChildPath "Update-DevJournal.ps1"
 
-# Étape 1 : Définir les critères de détection de format
-Write-Host "`nÉtape 1 : Définition des critères de détection de format" -ForegroundColor Cyan
+# Ã‰tape 1 : DÃ©finir les critÃ¨res de dÃ©tection de format
+Write-Host "`nÃ‰tape 1 : DÃ©finition des critÃ¨res de dÃ©tection de format" -ForegroundColor Cyan
 if (Test-Path -Path $defineFormatCriteriaScript -PathType Leaf) {
     & $defineFormatCriteriaScript
 } else {
     Write-Warning "Le script $defineFormatCriteriaScript n'existe pas."
 }
 
-# Étape 2 : Générer des fichiers d'échantillon pour les encodages
-Write-Host "`nÉtape 2 : Génération des fichiers d'échantillon pour les encodages" -ForegroundColor Cyan
+# Ã‰tape 2 : GÃ©nÃ©rer des fichiers d'Ã©chantillon pour les encodages
+Write-Host "`nÃ‰tape 2 : GÃ©nÃ©ration des fichiers d'Ã©chantillon pour les encodages" -ForegroundColor Cyan
 if (Test-Path -Path $generateEncodingSamplesScript -PathType Leaf) {
     & $generateEncodingSamplesScript -OutputDirectory $encodingSampleDirectory -GenerateExpectedEncodings
 } else {
     Write-Warning "Le script $generateEncodingSamplesScript n'existe pas."
 }
 
-# Étape 3 : Générer les formats attendus pour les tests
-Write-Host "`nÉtape 3 : Génération des formats attendus pour les tests" -ForegroundColor Cyan
+# Ã‰tape 3 : GÃ©nÃ©rer les formats attendus pour les tests
+Write-Host "`nÃ‰tape 3 : GÃ©nÃ©ration des formats attendus pour les tests" -ForegroundColor Cyan
 if (Test-Path -Path $generateExpectedFormatsScript -PathType Leaf) {
     & $generateExpectedFormatsScript -SampleDirectory $SampleDirectory
 } else {
     Write-Warning "Le script $generateExpectedFormatsScript n'existe pas."
 }
 
-# Étape 4 : Tester la détection de format améliorée
-Write-Host "`nÉtape 4 : Test de la détection de format améliorée" -ForegroundColor Cyan
+# Ã‰tape 4 : Tester la dÃ©tection de format amÃ©liorÃ©e
+Write-Host "`nÃ‰tape 4 : Test de la dÃ©tection de format amÃ©liorÃ©e" -ForegroundColor Cyan
 $simpleTestScript = Join-Path -Path $PSScriptRoot -ChildPath "Simple-FormatDetectionTest.ps1"
 if (Test-Path -Path $simpleTestScript -PathType Leaf) {
     $params = @{
@@ -107,8 +107,8 @@ if (Test-Path -Path $simpleTestScript -PathType Leaf) {
     Write-Warning "Le script $simpleTestScript n'existe pas."
 }
 
-# Étape 5 : Tester la détection d'encodage
-Write-Host "`nÉtape 5 : Test de la détection d'encodage" -ForegroundColor Cyan
+# Ã‰tape 5 : Tester la dÃ©tection d'encodage
+Write-Host "`nÃ‰tape 5 : Test de la dÃ©tection d'encodage" -ForegroundColor Cyan
 if (Test-Path -Path $testEncodingDetectionScript -PathType Leaf) {
     $params = @{
         SampleDirectory = $encodingSampleDirectory
@@ -124,9 +124,9 @@ if (Test-Path -Path $testEncodingDetectionScript -PathType Leaf) {
     Write-Warning "Le script $testEncodingDetectionScript n'existe pas."
 }
 
-# Étape 6 : Mettre à jour la roadmap
+# Ã‰tape 6 : Mettre Ã  jour la roadmap
 if ($UpdateRoadmap) {
-    Write-Host "`nÉtape 6 : Mise à jour de la roadmap" -ForegroundColor Cyan
+    Write-Host "`nÃ‰tape 6 : Mise Ã  jour de la roadmap" -ForegroundColor Cyan
     if (Test-Path -Path $updateRoadmapScript -PathType Leaf) {
         & $updateRoadmapScript
     } else {
@@ -134,9 +134,9 @@ if ($UpdateRoadmap) {
     }
 }
 
-# Étape 7 : Mettre à jour le journal de développement
+# Ã‰tape 7 : Mettre Ã  jour le journal de dÃ©veloppement
 if ($UpdateDevJournal) {
-    Write-Host "`nÉtape 7 : Mise à jour du journal de développement" -ForegroundColor Cyan
+    Write-Host "`nÃ‰tape 7 : Mise Ã  jour du journal de dÃ©veloppement" -ForegroundColor Cyan
     if (Test-Path -Path $updateDevJournalScript -PathType Leaf) {
         & $updateDevJournalScript
     } else {
@@ -144,4 +144,4 @@ if ($UpdateDevJournal) {
     }
 }
 
-Write-Host "`nExécution des scripts d'amélioration et de test terminée." -ForegroundColor Green
+Write-Host "`nExÃ©cution des scripts d'amÃ©lioration et de test terminÃ©e." -ForegroundColor Green

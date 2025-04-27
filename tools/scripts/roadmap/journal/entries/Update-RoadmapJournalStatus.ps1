@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Met à jour le statut d'une tâche dans le journal de la roadmap.
+    Met Ã  jour le statut d'une tÃ¢che dans le journal de la roadmap.
 .DESCRIPTION
-    Ce script permet de mettre à jour interactivement le statut d'une tâche
-    dans le journal de la roadmap, ainsi que ses métadonnées.
+    Ce script permet de mettre Ã  jour interactivement le statut d'une tÃ¢che
+    dans le journal de la roadmap, ainsi que ses mÃ©tadonnÃ©es.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-16
+    Date de crÃ©ation: 2025-04-16
 #>
 
 [CmdletBinding()]
@@ -38,9 +38,9 @@ $indexPath = Join-Path -Path $journalRoot -ChildPath "index.json"
 # Charger l'index
 $index = Get-Content -Path $indexPath -Raw | ConvertFrom-Json
 
-# Fonction pour afficher les tâches disponibles
+# Fonction pour afficher les tÃ¢ches disponibles
 function Show-AvailableTasks {
-    Write-Host "`nTâches disponibles:" -ForegroundColor Cyan
+    Write-Host "`nTÃ¢ches disponibles:" -ForegroundColor Cyan
     
     $tasks = @()
     foreach ($entryId in $index.entries.PSObject.Properties.Name | Sort-Object) {
@@ -58,42 +58,42 @@ function Show-AvailableTasks {
     $tasks | Format-Table -AutoSize
 }
 
-# Fonction pour mettre à jour une tâche de manière interactive
+# Fonction pour mettre Ã  jour une tÃ¢che de maniÃ¨re interactive
 function Update-TaskInteractive {
     param (
         [Parameter(Mandatory=$true)]
         [string]$TaskId
     )
     
-    # Vérifier si la tâche existe
+    # VÃ©rifier si la tÃ¢che existe
     if ($index.entries.PSObject.Properties.Name -notcontains $TaskId) {
-        Write-Error "Aucune tâche avec l'ID '$TaskId' n'a été trouvée."
+        Write-Error "Aucune tÃ¢che avec l'ID '$TaskId' n'a Ã©tÃ© trouvÃ©e."
         return $false
     }
     
-    # Récupérer la tâche
+    # RÃ©cupÃ©rer la tÃ¢che
     $entryPath = $index.entries.$TaskId
     $entry = Get-Content -Path $entryPath -Raw | ConvertFrom-Json
     
     # Afficher les informations actuelles
-    Write-Host "`nInformations actuelles de la tâche:" -ForegroundColor Cyan
+    Write-Host "`nInformations actuelles de la tÃ¢che:" -ForegroundColor Cyan
     Write-Host "ID: $($entry.id)"
     Write-Host "Titre: $($entry.title)"
     Write-Host "Statut: $($entry.status)"
     Write-Host "Progression: $($entry.metadata.progress)%"
-    Write-Host "Complexité: $($entry.metadata.complexity)"
-    Write-Host "Temps estimé: $($entry.metadata.estimatedHours) heures"
+    Write-Host "ComplexitÃ©: $($entry.metadata.complexity)"
+    Write-Host "Temps estimÃ©: $($entry.metadata.estimatedHours) heures"
     
     if ($entry.metadata.startDate) {
-        Write-Host "Date de début: $([DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd"))"
+        Write-Host "Date de dÃ©but: $([DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd"))"
     }
     
     if ($entry.metadata.dueDate) {
-        Write-Host "Date d'échéance: $([DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd"))"
+        Write-Host "Date d'Ã©chÃ©ance: $([DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd"))"
     }
     
     if ($entry.metadata.completionDate) {
-        Write-Host "Date d'achèvement: $([DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd"))"
+        Write-Host "Date d'achÃ¨vement: $([DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd"))"
     }
     
     if ($entry.description) {
@@ -101,7 +101,7 @@ function Update-TaskInteractive {
     }
     
     # Demander les nouvelles valeurs
-    Write-Host "`nMise à jour de la tâche:" -ForegroundColor Cyan
+    Write-Host "`nMise Ã  jour de la tÃ¢che:" -ForegroundColor Cyan
     Write-Host "Laissez vide pour conserver la valeur actuelle."
     
     $newStatus = Read-Host "Nouveau statut (NotStarted, InProgress, Completed, Blocked) [$($entry.status)]"
@@ -118,30 +118,30 @@ function Update-TaskInteractive {
     }
     
     $newStartDate = $null
-    $startDateStr = Read-Host "Date de début (yyyy-MM-dd) [$(if ($entry.metadata.startDate) { [DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd") } else { "-" })]"
+    $startDateStr = Read-Host "Date de dÃ©but (yyyy-MM-dd) [$(if ($entry.metadata.startDate) { [DateTime]::Parse($entry.metadata.startDate).ToString("yyyy-MM-dd") } else { "-" })]"
     if ($startDateStr -and $startDateStr -ne "-") {
         try {
             $newStartDate = [DateTime]::ParseExact($startDateStr, "yyyy-MM-dd", $null).ToString("o")
         }
         catch {
-            Write-Warning "Format de date invalide. La date de début ne sera pas mise à jour."
+            Write-Warning "Format de date invalide. La date de dÃ©but ne sera pas mise Ã  jour."
         }
     }
     
     $newDueDate = $null
-    $dueDateStr = Read-Host "Date d'échéance (yyyy-MM-dd) [$(if ($entry.metadata.dueDate) { [DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd") } else { "-" })]"
+    $dueDateStr = Read-Host "Date d'Ã©chÃ©ance (yyyy-MM-dd) [$(if ($entry.metadata.dueDate) { [DateTime]::Parse($entry.metadata.dueDate).ToString("yyyy-MM-dd") } else { "-" })]"
     if ($dueDateStr -and $dueDateStr -ne "-") {
         try {
             $newDueDate = [DateTime]::ParseExact($dueDateStr, "yyyy-MM-dd", $null).ToString("o")
         }
         catch {
-            Write-Warning "Format de date invalide. La date d'échéance ne sera pas mise à jour."
+            Write-Warning "Format de date invalide. La date d'Ã©chÃ©ance ne sera pas mise Ã  jour."
         }
     }
     
     $newCompletionDate = $null
     if ($newStatus -eq "Completed") {
-        $completionDateStr = Read-Host "Date d'achèvement (yyyy-MM-dd) [$(if ($entry.metadata.completionDate) { [DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd") } else { "aujourd'hui" })]"
+        $completionDateStr = Read-Host "Date d'achÃ¨vement (yyyy-MM-dd) [$(if ($entry.metadata.completionDate) { [DateTime]::Parse($entry.metadata.completionDate).ToString("yyyy-MM-dd") } else { "aujourd'hui" })]"
         if (-not $completionDateStr) {
             $newCompletionDate = (Get-Date).ToString("o")
         }
@@ -150,7 +150,7 @@ function Update-TaskInteractive {
                 $newCompletionDate = [DateTime]::ParseExact($completionDateStr, "yyyy-MM-dd", $null).ToString("o")
             }
             catch {
-                Write-Warning "Format de date invalide. La date d'achèvement sera définie à aujourd'hui."
+                Write-Warning "Format de date invalide. La date d'achÃ¨vement sera dÃ©finie Ã  aujourd'hui."
                 $newCompletionDate = (Get-Date).ToString("o")
             }
         }
@@ -161,7 +161,7 @@ function Update-TaskInteractive {
         $newDescription = $entry.description
     }
     
-    # Préparer les métadonnées à mettre à jour
+    # PrÃ©parer les mÃ©tadonnÃ©es Ã  mettre Ã  jour
     $metadata = @{}
     
     if ($newProgress -ne $entry.metadata.progress) {
@@ -180,7 +180,7 @@ function Update-TaskInteractive {
         $metadata.completionDate = $newCompletionDate
     }
     
-    # Mettre à jour la tâche
+    # Mettre Ã  jour la tÃ¢che
     $updateParams = @{
         Id = $TaskId
     }
@@ -197,14 +197,14 @@ function Update-TaskInteractive {
         $updateParams.Metadata = $metadata
     }
     
-    # Effectuer la mise à jour si des changements ont été demandés
+    # Effectuer la mise Ã  jour si des changements ont Ã©tÃ© demandÃ©s
     if ($updateParams.Count -gt 1) {
         $result = Update-RoadmapJournalEntry @updateParams
         
         if ($result) {
-            Write-Host "Tâche mise à jour avec succès." -ForegroundColor Green
+            Write-Host "TÃ¢che mise Ã  jour avec succÃ¨s." -ForegroundColor Green
             
-            # Mettre à jour le statut global
+            # Mettre Ã  jour le statut global
             Get-RoadmapJournalStatus | Out-Null
             
             # Synchroniser avec la roadmap
@@ -214,23 +214,23 @@ function Update-TaskInteractive {
             return $true
         }
         else {
-            Write-Error "Échec de la mise à jour de la tâche."
+            Write-Error "Ã‰chec de la mise Ã  jour de la tÃ¢che."
             return $false
         }
     }
     else {
-        Write-Host "Aucun changement demandé. La tâche n'a pas été mise à jour." -ForegroundColor Yellow
+        Write-Host "Aucun changement demandÃ©. La tÃ¢che n'a pas Ã©tÃ© mise Ã  jour." -ForegroundColor Yellow
         return $true
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 if ($Interactive) {
     # Mode interactif
     Show-AvailableTasks
     
     if (-not $Id) {
-        $Id = Read-Host "Entrez l'ID de la tâche à mettre à jour"
+        $Id = Read-Host "Entrez l'ID de la tÃ¢che Ã  mettre Ã  jour"
     }
     
     Update-TaskInteractive -TaskId $Id
@@ -238,17 +238,17 @@ if ($Interactive) {
 else {
     # Mode non interactif
     if (-not $Id) {
-        Write-Error "L'ID de la tâche est requis en mode non interactif."
+        Write-Error "L'ID de la tÃ¢che est requis en mode non interactif."
         exit 1
     }
     
-    # Vérifier si la tâche existe
+    # VÃ©rifier si la tÃ¢che existe
     if ($index.entries.PSObject.Properties.Name -notcontains $Id) {
-        Write-Error "Aucune tâche avec l'ID '$Id' n'a été trouvée."
+        Write-Error "Aucune tÃ¢che avec l'ID '$Id' n'a Ã©tÃ© trouvÃ©e."
         exit 1
     }
     
-    # Préparer les paramètres de mise à jour
+    # PrÃ©parer les paramÃ¨tres de mise Ã  jour
     $updateParams = @{
         Id = $Id
     }
@@ -262,19 +262,19 @@ else {
             progress = $Progress
         }
         
-        # Si la tâche est marquée comme terminée, définir la date d'achèvement
+        # Si la tÃ¢che est marquÃ©e comme terminÃ©e, dÃ©finir la date d'achÃ¨vement
         if ($Status -eq "Completed") {
             $updateParams.Metadata.completionDate = (Get-Date).ToString("o")
         }
     }
     
-    # Effectuer la mise à jour
+    # Effectuer la mise Ã  jour
     $result = Update-RoadmapJournalEntry @updateParams
     
     if ($result) {
-        Write-Host "Tâche mise à jour avec succès." -ForegroundColor Green
+        Write-Host "TÃ¢che mise Ã  jour avec succÃ¨s." -ForegroundColor Green
         
-        # Mettre à jour le statut global
+        # Mettre Ã  jour le statut global
         Get-RoadmapJournalStatus | Out-Null
         
         # Synchroniser avec la roadmap
@@ -282,7 +282,7 @@ else {
         & $syncScriptPath -Direction "ToRoadmap"
     }
     else {
-        Write-Error "Échec de la mise à jour de la tâche."
+        Write-Error "Ã‰chec de la mise Ã  jour de la tÃ¢che."
         exit 1
     }
 }

@@ -1,46 +1,46 @@
-# Test-SqlPermissionRules.ps1
-# Tests unitaires pour les règles de détection d'anomalies SQL Server
+﻿# Test-SqlPermissionRules.ps1
+# Tests unitaires pour les rÃ¨gles de dÃ©tection d'anomalies SQL Server
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
 Import-Module $modulePath -Force
 
-Describe "Tests des règles de détection d'anomalies SQL Server" {
+Describe "Tests des rÃ¨gles de dÃ©tection d'anomalies SQL Server" {
     Context "Fonction Get-SqlPermissionRules" {
-        It "Devrait retourner des règles de niveau serveur" {
+        It "Devrait retourner des rÃ¨gles de niveau serveur" {
             $rules = Get-SqlPermissionRules -RuleType "Server"
             $rules | Should -Not -BeNullOrEmpty
             $rules.Count | Should -BeGreaterThan 0
             $rules | ForEach-Object { $_.RuleType | Should -Be "Server" }
         }
 
-        It "Devrait retourner des règles de niveau base de données" {
+        It "Devrait retourner des rÃ¨gles de niveau base de donnÃ©es" {
             $rules = Get-SqlPermissionRules -RuleType "Database"
             $rules | Should -Not -BeNullOrEmpty
             $rules.Count | Should -BeGreaterThan 0
             $rules | ForEach-Object { $_.RuleType | Should -Be "Database" }
         }
 
-        It "Devrait retourner des règles de niveau objet" {
+        It "Devrait retourner des rÃ¨gles de niveau objet" {
             $rules = Get-SqlPermissionRules -RuleType "Object"
             $rules | Should -Not -BeNullOrEmpty
             $rules.Count | Should -BeGreaterThan 0
             $rules | ForEach-Object { $_.RuleType | Should -Be "Object" }
         }
 
-        It "Devrait filtrer les règles par sévérité" {
+        It "Devrait filtrer les rÃ¨gles par sÃ©vÃ©ritÃ©" {
             $allRules = Get-SqlPermissionRules -RuleType "Server" -Severity "All"
-            $highRules = Get-SqlPermissionRules -RuleType "Server" -Severity "Élevée"
+            $highRules = Get-SqlPermissionRules -RuleType "Server" -Severity "Ã‰levÃ©e"
             $mediumRules = Get-SqlPermissionRules -RuleType "Server" -Severity "Moyenne"
             
             $highRules.Count | Should -BeLessThan $allRules.Count
-            $highRules | ForEach-Object { $_.Severity | Should -Be "Élevée" }
+            $highRules | ForEach-Object { $_.Severity | Should -Be "Ã‰levÃ©e" }
             $mediumRules | ForEach-Object { $_.Severity | Should -Be "Moyenne" }
         }
     }
 
-    Context "Fonctions de détection d'anomalies" {
-        # Données de test pour les logins serveur
+    Context "Fonctions de dÃ©tection d'anomalies" {
+        # DonnÃ©es de test pour les logins serveur
         $mockServerLogins = @(
             [PSCustomObject]@{
                 LoginName = "disabled_login"
@@ -80,7 +80,7 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        # Données de test pour les rôles serveur
+        # DonnÃ©es de test pour les rÃ´les serveur
         $mockServerRoles = @(
             [PSCustomObject]@{
                 RoleName = "sysadmin"
@@ -97,7 +97,7 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        # Données de test pour les permissions serveur
+        # DonnÃ©es de test pour les permissions serveur
         $mockServerPermissions = @(
             [PSCustomObject]@{
                 GranteeName = "active_login"
@@ -119,26 +119,26 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        It "Find-PermissionAnomalies devrait détecter les anomalies au niveau serveur" {
+        It "Find-PermissionAnomalies devrait dÃ©tecter les anomalies au niveau serveur" {
             $anomalies = Find-PermissionAnomalies -ServerRoles $mockServerRoles -ServerPermissions $mockServerPermissions -ServerLogins $mockServerLogins
             
             $anomalies | Should -Not -BeNullOrEmpty
             $anomalies.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les logins désactivés avec des permissions sont détectés
+            # VÃ©rifier que les logins dÃ©sactivÃ©s avec des permissions sont dÃ©tectÃ©s
             $disabledLoginAnomalies = $anomalies | Where-Object { $_.LoginName -eq "disabled_login" }
             $disabledLoginAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les comptes avec des permissions élevées sont détectés
+            # VÃ©rifier que les comptes avec des permissions Ã©levÃ©es sont dÃ©tectÃ©s
             $highPrivilegeAnomalies = $anomalies | Where-Object { $_.LoginName -eq "active_login" -and $_.AnomalyType -eq "HighPrivilegeAccount" }
             $highPrivilegeAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les comptes avec CONTROL SERVER sont détectés
+            # VÃ©rifier que les comptes avec CONTROL SERVER sont dÃ©tectÃ©s
             $controlServerAnomalies = $anomalies | Where-Object { $_.LoginName -eq "active_login" -and $_.AnomalyType -eq "ControlServerPermission" }
             $controlServerAnomalies | Should -Not -BeNullOrEmpty
         }
 
-        # Données de test pour les utilisateurs de base de données
+        # DonnÃ©es de test pour les utilisateurs de base de donnÃ©es
         $mockDatabaseUsers = @(
             [PSCustomObject]@{
                 DatabaseName = "TestDB"
@@ -163,7 +163,7 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        # Données de test pour les rôles de base de données
+        # DonnÃ©es de test pour les rÃ´les de base de donnÃ©es
         $mockDatabaseRoles = @(
             [PSCustomObject]@{
                 DatabaseName = "TestDB"
@@ -181,7 +181,7 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        # Données de test pour les permissions de base de données
+        # DonnÃ©es de test pour les permissions de base de donnÃ©es
         $mockDatabasePermissions = @(
             [PSCustomObject]@{
                 DatabaseName = "TestDB"
@@ -207,30 +207,30 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        It "Find-DatabasePermissionAnomalies devrait détecter les anomalies au niveau base de données" {
+        It "Find-DatabasePermissionAnomalies devrait dÃ©tecter les anomalies au niveau base de donnÃ©es" {
             $anomalies = Find-DatabasePermissionAnomalies -DatabaseRoles $mockDatabaseRoles -DatabasePermissions $mockDatabasePermissions -DatabaseUsers $mockDatabaseUsers -ServerLogins $mockServerLogins
             
             $anomalies | Should -Not -BeNullOrEmpty
             $anomalies.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les utilisateurs orphelins sont détectés
+            # VÃ©rifier que les utilisateurs orphelins sont dÃ©tectÃ©s
             $orphanedUserAnomalies = $anomalies | Where-Object { $_.UserName -eq "orphaned_user" }
             $orphanedUserAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les utilisateurs désactivés avec des permissions sont détectés
+            # VÃ©rifier que les utilisateurs dÃ©sactivÃ©s avec des permissions sont dÃ©tectÃ©s
             $disabledUserAnomalies = $anomalies | Where-Object { $_.UserName -eq "disabled_user" }
             $disabledUserAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les utilisateurs avec des permissions élevées sont détectés
+            # VÃ©rifier que les utilisateurs avec des permissions Ã©levÃ©es sont dÃ©tectÃ©s
             $highPrivilegeUserAnomalies = $anomalies | Where-Object { $_.UserName -eq "normal_user" -and $_.AnomalyType -eq "HighPrivilegeDatabaseAccount" }
             $highPrivilegeUserAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les permissions guest sont détectées
+            # VÃ©rifier que les permissions guest sont dÃ©tectÃ©es
             $guestPermissionAnomalies = $anomalies | Where-Object { $_.UserName -eq "guest" }
             $guestPermissionAnomalies | Should -Not -BeNullOrEmpty
         }
 
-        # Données de test pour les permissions d'objets
+        # DonnÃ©es de test pour les permissions d'objets
         $mockObjectPermissions = @(
             [PSCustomObject]@{
                 GranteeName = "disabled_user"
@@ -292,21 +292,21 @@ Describe "Tests des règles de détection d'anomalies SQL Server" {
             }
         )
 
-        It "Find-ObjectPermissionAnomalies devrait détecter les anomalies au niveau objet" {
+        It "Find-ObjectPermissionAnomalies devrait dÃ©tecter les anomalies au niveau objet" {
             $anomalies = Find-ObjectPermissionAnomalies -ObjectPermissions $mockObjectPermissions -DatabaseUsers $mockDatabaseUsers -DatabaseName "TestDB"
             
             $anomalies | Should -Not -BeNullOrEmpty
             $anomalies.Count | Should -BeGreaterThan 0
             
-            # Vérifier que les utilisateurs désactivés avec des permissions sur des objets sont détectés
+            # VÃ©rifier que les utilisateurs dÃ©sactivÃ©s avec des permissions sur des objets sont dÃ©tectÃ©s
             $disabledUserObjectAnomalies = $anomalies | Where-Object { $_.UserName -eq "disabled_user" }
             $disabledUserObjectAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les permissions guest sur des objets sont détectées
+            # VÃ©rifier que les permissions guest sur des objets sont dÃ©tectÃ©es
             $guestObjectAnomalies = $anomalies | Where-Object { $_.UserName -eq "guest" }
             $guestObjectAnomalies | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les permissions CONTROL sur des objets sont détectées
+            # VÃ©rifier que les permissions CONTROL sur des objets sont dÃ©tectÃ©es
             $controlObjectAnomalies = $anomalies | Where-Object { $_.UserName -eq "normal_user" }
             $controlObjectAnomalies | Should -Not -BeNullOrEmpty
         }

@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour la fonctionnalité de validation des corrections du système d'apprentissage des erreurs.
+    Tests unitaires pour la fonctionnalitÃ© de validation des corrections du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour la fonctionnalité de validation des corrections du système d'apprentissage des erreurs.
+    Ce script contient des tests unitaires pour la fonctionnalitÃ© de validation des corrections du systÃ¨me d'apprentissage des erreurs.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "Tests de validation des corrections" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "ValidationCorrectionsTests"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
         New-Item -Path $script:testRoot -ItemType Directory -Force | Out-Null
         
-        # Créer un script valide
+        # CrÃ©er un script valide
         $script:validScriptPath = Join-Path -Path $script:testRoot -ChildPath "ValidScript.ps1"
         $validScriptContent = @"
 # Script valide
@@ -43,11 +43,11 @@ function Get-TestData {
 # Appeler la fonction
 `$logPath = Join-Path -Path `$PSScriptRoot -ChildPath "logs\app.log"
 `$data = Get-TestData -Path `$logPath
-Write-Output "Données chargées: `$(`$data.Count) lignes"
+Write-Output "DonnÃ©es chargÃ©es: `$(`$data.Count) lignes"
 "@
         Set-Content -Path $script:validScriptPath -Value $validScriptContent
         
-        # Créer un script invalide
+        # CrÃ©er un script invalide
         $script:invalidScriptPath = Join-Path -Path $script:testRoot -ChildPath "InvalidScript.ps1"
         $invalidScriptContent = @"
 # Script invalide
@@ -71,7 +71,7 @@ function Get-TestData {
 # Appeler la fonction
 `$logPath = Join-Path -Path `$PSScriptRoot -ChildPath "logs\app.log"
 `$data = Get-TestData -Path `$logPath
-Write-Output "Données chargées: `$(`$data.Count) lignes"
+Write-Output "DonnÃ©es chargÃ©es: `$(`$data.Count) lignes"
 "@
         Set-Content -Path $script:invalidScriptPath -Value $invalidScriptContent
     }
@@ -82,17 +82,17 @@ Write-Output "Données chargées: `$(`$data.Count) lignes"
             $errors = $null
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:validScriptPath, [ref]$null, [ref]$errors)
             
-            # Vérifier que la syntaxe est valide
+            # VÃ©rifier que la syntaxe est valide
             $errors | Should -BeNullOrEmpty
             $ast | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait détecter les erreurs de syntaxe" {
+        It "Devrait dÃ©tecter les erreurs de syntaxe" {
             # Valider la syntaxe du script
             $errors = $null
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:invalidScriptPath, [ref]$null, [ref]$errors)
             
-            # Vérifier que des erreurs de syntaxe sont détectées
+            # VÃ©rifier que des erreurs de syntaxe sont dÃ©tectÃ©es
             $errors | Should -Not -BeNullOrEmpty
             $errors.Count | Should -BeGreaterThan 0
         }
@@ -100,7 +100,7 @@ Write-Output "Données chargées: `$(`$data.Count) lignes"
     
     Context "Validation des bonnes pratiques" {
         It "Devrait valider les bonnes pratiques dans un script" {
-            # Créer un script avec des bonnes pratiques
+            # CrÃ©er un script avec des bonnes pratiques
             $bestPracticesScriptPath = Join-Path -Path $script:testRoot -ChildPath "BestPracticesScript.ps1"
             $bestPracticesScriptContent = @"
 # Script avec des bonnes pratiques
@@ -110,13 +110,13 @@ param (
     [string]`$Path
 )
 
-# Utiliser des variables déclarées
+# Utiliser des variables dÃ©clarÃ©es
 [string]`$logFile = Join-Path -Path `$Path -ChildPath "app.log"
 
 # Utiliser try/catch pour la gestion des erreurs
 try {
     `$content = Get-Content -Path `$logFile -ErrorAction Stop
-    Write-Output "Contenu chargé: `$(`$content.Count) lignes"
+    Write-Output "Contenu chargÃ©: `$(`$content.Count) lignes"
 }
 catch {
     Write-Error "Erreur lors de la lecture du fichier: `$_"
@@ -128,11 +128,11 @@ catch {
             $errors = $null
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($bestPracticesScriptPath, [ref]$null, [ref]$errors)
             
-            # Vérifier que la syntaxe est valide
+            # VÃ©rifier que la syntaxe est valide
             $errors | Should -BeNullOrEmpty
             $ast | Should -Not -BeNullOrEmpty
             
-            # Vérifier les bonnes pratiques
+            # VÃ©rifier les bonnes pratiques
             $hasCmdletBinding = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.AttributeAst] -and $args[0].TypeName.Name -eq "CmdletBinding" }, $true).Count -gt 0
             $hasParameter = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ParameterAst] }, $true).Count -gt 0
             $hasTryCatch = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TryStatementAst] }, $true).Count -gt 0
@@ -144,20 +144,20 @@ catch {
             $hasErrorAction | Should -BeTrue
         }
         
-        It "Devrait détecter les mauvaises pratiques dans un script" {
-            # Créer un script avec des mauvaises pratiques
+        It "Devrait dÃ©tecter les mauvaises pratiques dans un script" {
+            # CrÃ©er un script avec des mauvaises pratiques
             $badPracticesScriptPath = Join-Path -Path $script:testRoot -ChildPath "BadPracticesScript.ps1"
             $badPracticesScriptContent = @"
 # Script avec des mauvaises pratiques
 # Pas de CmdletBinding
-# Pas de paramètres
+# Pas de paramÃ¨tres
 
-# Utiliser des chemins codés en dur
+# Utiliser des chemins codÃ©s en dur
 `$logFile = "C:\Logs\app.log"
 
 # Pas de gestion des erreurs
 `$content = Get-Content -Path `$logFile
-Write-Host "Contenu chargé: `$(`$content.Count) lignes"
+Write-Host "Contenu chargÃ©: `$(`$content.Count) lignes"
 "@
             Set-Content -Path $badPracticesScriptPath -Value $badPracticesScriptContent
             
@@ -165,11 +165,11 @@ Write-Host "Contenu chargé: `$(`$content.Count) lignes"
             $errors = $null
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($badPracticesScriptPath, [ref]$null, [ref]$errors)
             
-            # Vérifier que la syntaxe est valide
+            # VÃ©rifier que la syntaxe est valide
             $errors | Should -BeNullOrEmpty
             $ast | Should -Not -BeNullOrEmpty
             
-            # Vérifier les mauvaises pratiques
+            # VÃ©rifier les mauvaises pratiques
             $hasCmdletBinding = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.AttributeAst] -and $args[0].TypeName.Name -eq "CmdletBinding" }, $true).Count -gt 0
             $hasParameter = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ParameterAst] }, $true).Count -gt 0
             $hasTryCatch = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TryStatementAst] }, $true).Count -gt 0
@@ -187,8 +187,8 @@ Write-Host "Contenu chargé: `$(`$content.Count) lignes"
     }
     
     Context "Validation des corrections" {
-        It "Devrait valider les corrections appliquées à un script" {
-            # Créer un script avec des erreurs
+        It "Devrait valider les corrections appliquÃ©es Ã  un script" {
+            # CrÃ©er un script avec des erreurs
             $scriptWithErrorsPath = Join-Path -Path $script:testRoot -ChildPath "ScriptWithErrors.ps1"
             $scriptWithErrorsContent = @"
 # Script avec des erreurs
@@ -198,15 +198,15 @@ Write-Host "Log Path: `$logPath"
 # Absence de gestion d'erreurs
 `$content = Get-Content -Path "C:\config.txt"
 
-# Utilisation de cmdlet obsolète
+# Utilisation de cmdlet obsolÃ¨te
 `$processes = Get-WmiObject -Class Win32_Process
 "@
             Set-Content -Path $scriptWithErrorsPath -Value $scriptWithErrorsContent
             
-            # Créer un script corrigé
+            # CrÃ©er un script corrigÃ©
             $correctedScriptPath = Join-Path -Path $script:testRoot -ChildPath "CorrectedScript.ps1"
             $correctedScriptContent = @"
-# Script corrigé
+# Script corrigÃ©
 `$logPath = Join-Path -Path `$PSScriptRoot -ChildPath "logs\app.log"
 Write-Output "Log Path: `$logPath"
 
@@ -230,11 +230,11 @@ catch {
             $errorsCorrected = $null
             $astCorrected = [System.Management.Automation.Language.Parser]::ParseFile($correctedScriptPath, [ref]$null, [ref]$errorsCorrected)
             
-            # Vérifier que les scripts sont valides
+            # VÃ©rifier que les scripts sont valides
             $errorsOriginal | Should -BeNullOrEmpty
             $errorsCorrected | Should -BeNullOrEmpty
             
-            # Vérifier les corrections
+            # VÃ©rifier les corrections
             $originalHasHardcodedPath = $astOriginal.FindAll({ $args[0] -is [System.Management.Automation.Language.StringConstantExpressionAst] -and $args[0].Value -match "^[A-Z]:\\" }, $true).Count -gt 0
             $originalHasWriteHost = $astOriginal.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] -and $args[0].CommandElements[0].Value -eq "Write-Host" }, $true).Count -gt 0
             $originalHasWmiObject = $astOriginal.FindAll({ $args[0] -is [System.Management.Automation.Language.CommandAst] -and $args[0].CommandElements[0].Value -eq "Get-WmiObject" }, $true).Count -gt 0
@@ -262,7 +262,7 @@ catch {
     }
     
     AfterAll {
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }

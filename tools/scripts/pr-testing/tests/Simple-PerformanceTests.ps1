@@ -1,14 +1,14 @@
-# Tests unitaires simplifiés pour les fonctionnalités de performance
+﻿# Tests unitaires simplifiÃ©s pour les fonctionnalitÃ©s de performance
 
-# Importer le module simplifié
+# Importer le module simplifiÃ©
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "SimpleFileContentIndexer.psm1"
 Import-Module $moduleToTest -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SimplePerformanceTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -26,7 +26,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $testContent = @"
 # Test PowerShell Script
 function Test-Function {
@@ -44,7 +44,7 @@ Test-Function -param1 "Test" -param2 42
 
 $testFile = New-TestFile -Path "test.ps1" -Content $testContent
 
-# Créer un indexeur
+# CrÃ©er un indexeur
 $indexer = New-SimpleFileContentIndexer -IndexPath $testDir -PersistIndices $false
 
 # Test 1: Indexer un fichier et mesurer les performances
@@ -54,7 +54,7 @@ $index = New-SimpleFileIndex -Indexer $indexer -FilePath $testFile
 $stopwatch.Stop()
 $time = $stopwatch.ElapsedMilliseconds
 
-Write-Host "Fichier indexé en $time ms" -ForegroundColor Green
+Write-Host "Fichier indexÃ© en $time ms" -ForegroundColor Green
 Write-Host "Taille du fichier: $($index.FileSize) octets" -ForegroundColor Green
 Write-Host "Nombre de lignes: $($index.LineCount)" -ForegroundColor Green
 
@@ -73,10 +73,10 @@ foreach ($file in $files) {
 $stopwatch.Stop()
 $time = $stopwatch.ElapsedMilliseconds
 
-Write-Host "$($files.Count) fichiers indexés en $time ms" -ForegroundColor Green
+Write-Host "$($files.Count) fichiers indexÃ©s en $time ms" -ForegroundColor Green
 Write-Host "Temps moyen par fichier: $([Math]::Round($time / $files.Count, 2)) ms" -ForegroundColor Green
 
-# Test 3: Utiliser le cache pour améliorer les performances
+# Test 3: Utiliser le cache pour amÃ©liorer les performances
 Write-Host "`nTest 3: Utilisation du cache" -ForegroundColor Cyan
 $stopwatch1 = [System.Diagnostics.Stopwatch]::StartNew()
 New-SimpleFileIndex -Indexer $indexer -FilePath $testFile | Out-Null
@@ -88,15 +88,15 @@ New-SimpleFileIndex -Indexer $indexer -FilePath $testFile | Out-Null
 $stopwatch2.Stop()
 $time2 = $stopwatch2.ElapsedMilliseconds
 
-Write-Host "Première indexation: $time1 ms" -ForegroundColor Green
-Write-Host "Deuxième indexation: $time2 ms" -ForegroundColor Green
+Write-Host "PremiÃ¨re indexation: $time1 ms" -ForegroundColor Green
+Write-Host "DeuxiÃ¨me indexation: $time2 ms" -ForegroundColor Green
 if ($time2 -lt $time1) {
-    Write-Host "La deuxième indexation est plus rapide (utilisation du cache)" -ForegroundColor Green
+    Write-Host "La deuxiÃ¨me indexation est plus rapide (utilisation du cache)" -ForegroundColor Green
 } else {
-    Write-Host "La deuxième indexation n'est pas plus rapide" -ForegroundColor Yellow
+    Write-Host "La deuxiÃ¨me indexation n'est pas plus rapide" -ForegroundColor Yellow
 }
 
 # Nettoyer
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "`nTests terminés avec succès!" -ForegroundColor Green
+Write-Host "`nTests terminÃ©s avec succÃ¨s!" -ForegroundColor Green

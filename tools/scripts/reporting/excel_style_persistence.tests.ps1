@@ -1,11 +1,11 @@
-# Tests pour les fonctionnalités de persistance des styles Excel
+﻿# Tests pour les fonctionnalitÃ©s de persistance des styles Excel
 
 # Importer Pester
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 $StyleRegistryPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_style_registry.ps1"
 $PredefinedStylesPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_predefined_styles.ps1"
 . $StyleRegistryPath
@@ -13,7 +13,7 @@ $PredefinedStylesPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_predefin
 
 Describe "Excel Style Persistence" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $TestDir = Join-Path -Path $env:TEMP -ChildPath "ExcelStyleTests"
         if (-not (Test-Path -Path $TestDir)) {
             New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
@@ -22,15 +22,15 @@ Describe "Excel Style Persistence" {
         # Chemin du fichier de test
         $TestFilePath = Join-Path -Path $TestDir -ChildPath "TestStyles.json"
         
-        # Réinitialiser le registre avant chaque test
+        # RÃ©initialiser le registre avant chaque test
         Reset-ExcelStyleRegistry
         
-        # Initialiser les styles prédéfinis
+        # Initialiser les styles prÃ©dÃ©finis
         Initialize-ExcelPredefinedStyles -Force
         
-        # Créer quelques styles personnalisés pour les tests
-        $CustomStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style personnalisé 1" -Color "#00FF00" -Width 3
-        $CustomStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style personnalisé 2" -Color "#FF00FF" -Width 2
+        # CrÃ©er quelques styles personnalisÃ©s pour les tests
+        $CustomStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style personnalisÃ© 1" -Color "#00FF00" -Width 3
+        $CustomStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style personnalisÃ© 2" -Color "#FF00FF" -Width 2
     }
     
     AfterAll {
@@ -42,80 +42,80 @@ Describe "Excel Style Persistence" {
     
     Context "Export-ExcelStyles function" {
         It "Should export custom styles to a file" {
-            # Exporter les styles personnalisés
+            # Exporter les styles personnalisÃ©s
             $ExportedCount = Export-ExcelStyles -Path $TestFilePath
             
-            # Vérifier que des styles ont été exportés
+            # VÃ©rifier que des styles ont Ã©tÃ© exportÃ©s
             $ExportedCount | Should -BeGreaterThan 0
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $TestFilePath | Should -Be $true
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $Content = Get-Content -Path $TestFilePath -Raw
             $Content | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le fichier contient les styles personnalisés
-            $Content | Should -Match "Style personnalisé 1"
-            $Content | Should -Match "Style personnalisé 2"
+            # VÃ©rifier que le fichier contient les styles personnalisÃ©s
+            $Content | Should -Match "Style personnalisÃ© 1"
+            $Content | Should -Match "Style personnalisÃ© 2"
         }
         
         It "Should export built-in styles when IncludeBuiltIn is specified" {
-            # Exporter tous les styles, y compris les styles prédéfinis
+            # Exporter tous les styles, y compris les styles prÃ©dÃ©finis
             $ExportedCount = Export-ExcelStyles -Path $TestFilePath -IncludeBuiltIn -Force
             
-            # Vérifier que des styles ont été exportés
-            $ExportedCount | Should -BeGreaterThan 2  # Plus que juste les styles personnalisés
+            # VÃ©rifier que des styles ont Ã©tÃ© exportÃ©s
+            $ExportedCount | Should -BeGreaterThan 2  # Plus que juste les styles personnalisÃ©s
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $Content = Get-Content -Path $TestFilePath -Raw
             $Content | Should -Match "Ligne rouge"
             $Content | Should -Match "Ligne bleue"
         }
         
         It "Should filter styles by category" {
-            # Créer un style avec une catégorie spécifique
-            $CategoryStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style catégorisé" -Category "Catégorie de test"
+            # CrÃ©er un style avec une catÃ©gorie spÃ©cifique
+            $CategoryStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style catÃ©gorisÃ©" -Category "CatÃ©gorie de test"
             
-            # Exporter les styles de cette catégorie
-            $ExportedCount = Export-ExcelStyles -Path $TestFilePath -Category "Catégorie de test" -Force
+            # Exporter les styles de cette catÃ©gorie
+            $ExportedCount = Export-ExcelStyles -Path $TestFilePath -Category "CatÃ©gorie de test" -Force
             
-            # Vérifier que seul le style de la catégorie a été exporté
+            # VÃ©rifier que seul le style de la catÃ©gorie a Ã©tÃ© exportÃ©
             $ExportedCount | Should -Be 1
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $Content = Get-Content -Path $TestFilePath -Raw
-            $Content | Should -Match "Style catégorisé"
-            $Content | Should -Not -Match "Style personnalisé 1"
+            $Content | Should -Match "Style catÃ©gorisÃ©"
+            $Content | Should -Not -Match "Style personnalisÃ© 1"
         }
         
         It "Should filter styles by tag" {
-            # Créer un style avec un tag spécifique
-            $TaggedStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style tagué" -Tags @("Tag de test")
+            # CrÃ©er un style avec un tag spÃ©cifique
+            $TaggedStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style taguÃ©" -Tags @("Tag de test")
             
             # Exporter les styles avec ce tag
             $ExportedCount = Export-ExcelStyles -Path $TestFilePath -Tag "Tag de test" -Force
             
-            # Vérifier que seul le style avec le tag a été exporté
+            # VÃ©rifier que seul le style avec le tag a Ã©tÃ© exportÃ©
             $ExportedCount | Should -Be 1
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $Content = Get-Content -Path $TestFilePath -Raw
-            $Content | Should -Match "Style tagué"
-            $Content | Should -Not -Match "Style personnalisé 1"
+            $Content | Should -Match "Style taguÃ©"
+            $Content | Should -Not -Match "Style personnalisÃ© 1"
         }
         
         It "Should not overwrite existing file without Force" {
-            # Créer un fichier de test
+            # CrÃ©er un fichier de test
             Set-Content -Path $TestFilePath -Value "Test content"
             
             # Essayer d'exporter sans Force
             $ExportedCount = Export-ExcelStyles -Path $TestFilePath
             
-            # Vérifier que l'exportation a échoué
+            # VÃ©rifier que l'exportation a Ã©chouÃ©
             $ExportedCount | Should -Be 0
             
-            # Vérifier que le contenu du fichier n'a pas été modifié
+            # VÃ©rifier que le contenu du fichier n'a pas Ã©tÃ© modifiÃ©
             $Content = Get-Content -Path $TestFilePath -Raw
             $Content | Should -Be "Test content"
         }
@@ -123,20 +123,20 @@ Describe "Excel Style Persistence" {
     
     Context "Import-ExcelStyles function" {
         BeforeEach {
-            # Réinitialiser le registre avant chaque test
+            # RÃ©initialiser le registre avant chaque test
             Reset-ExcelStyleRegistry
             
-            # Initialiser les styles prédéfinis
+            # Initialiser les styles prÃ©dÃ©finis
             Initialize-ExcelPredefinedStyles -Force
             
-            # Créer quelques styles personnalisés pour les tests
-            $CustomStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style personnalisé 1" -Color "#00FF00" -Width 3
-            $CustomStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style personnalisé 2" -Color "#FF00FF" -Width 2
+            # CrÃ©er quelques styles personnalisÃ©s pour les tests
+            $CustomStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style personnalisÃ© 1" -Color "#00FF00" -Width 3
+            $CustomStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style personnalisÃ© 2" -Color "#FF00FF" -Width 2
             
             # Exporter les styles
             Export-ExcelStyles -Path $TestFilePath -Force
             
-            # Réinitialiser le registre pour les tests d'importation
+            # RÃ©initialiser le registre pour les tests d'importation
             Reset-ExcelStyleRegistry
             Initialize-ExcelPredefinedStyles -Force
         }
@@ -145,28 +145,28 @@ Describe "Excel Style Persistence" {
             # Importer les styles
             $ImportedCount = Import-ExcelStyles -Path $TestFilePath
             
-            # Vérifier que des styles ont été importés
+            # VÃ©rifier que des styles ont Ã©tÃ© importÃ©s
             $ImportedCount | Should -Be 2
             
-            # Vérifier que les styles sont dans le registre
+            # VÃ©rifier que les styles sont dans le registre
             $Registry = Get-ExcelStyleRegistry
             $Styles = $Registry.Search(@{ IsBuiltIn = $false })
             $Styles.Count | Should -Be 2
             
-            # Vérifier les propriétés des styles importés
-            $Style1 = $Registry.Search(@{ Name = "Style personnalisé 1" })
+            # VÃ©rifier les propriÃ©tÃ©s des styles importÃ©s
+            $Style1 = $Registry.Search(@{ Name = "Style personnalisÃ© 1" })
             $Style1.Count | Should -Be 1
             $Style1[0].LineConfig.Color | Should -Be "#00FF00"
             $Style1[0].LineConfig.Width | Should -Be 3
             
-            $Style2 = $Registry.Search(@{ Name = "Style personnalisé 2" })
+            $Style2 = $Registry.Search(@{ Name = "Style personnalisÃ© 2" })
             $Style2.Count | Should -Be 1
             $Style2[0].LineConfig.Color | Should -Be "#FF00FF"
             $Style2[0].LineConfig.Width | Should -Be 2
         }
         
         It "Should skip existing styles when SkipExisting is specified" {
-            # Créer un style avec le même ID que l'un des styles exportés
+            # CrÃ©er un style avec le mÃªme ID que l'un des styles exportÃ©s
             $ExistingStyles = Get-Content -Path $TestFilePath | ConvertFrom-Json
             $ExistingStyleId = $ExistingStyles.Styles[0].Id
             
@@ -181,59 +181,59 @@ Describe "Excel Style Persistence" {
             # Importer les styles en ignorant les existants
             $ImportedCount = Import-ExcelStyles -Path $TestFilePath -SkipExisting
             
-            # Vérifier que seul un style a été importé
+            # VÃ©rifier que seul un style a Ã©tÃ© importÃ©
             $ImportedCount | Should -Be 1
             
-            # Vérifier que le style existant n'a pas été remplacé
+            # VÃ©rifier que le style existant n'a pas Ã©tÃ© remplacÃ©
             $Style = $Registry.GetById($ExistingStyleId)
             $Style.Name | Should -Be "Style existant"
         }
         
         It "Should filter imported styles by category" {
-            # Exporter des styles avec différentes catégories
+            # Exporter des styles avec diffÃ©rentes catÃ©gories
             Reset-ExcelStyleRegistry
             Initialize-ExcelPredefinedStyles -Force
             
-            $CategoryStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style catégorie 1" -Category "Catégorie 1"
-            $CategoryStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style catégorie 2" -Category "Catégorie 2"
+            $CategoryStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style catÃ©gorie 1" -Category "CatÃ©gorie 1"
+            $CategoryStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style catÃ©gorie 2" -Category "CatÃ©gorie 2"
             
             Export-ExcelStyles -Path $TestFilePath -Force
             
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
             Initialize-ExcelPredefinedStyles -Force
             
-            # Importer uniquement les styles de la catégorie 1
-            $ImportedCount = Import-ExcelStyles -Path $TestFilePath -Category "Catégorie 1"
+            # Importer uniquement les styles de la catÃ©gorie 1
+            $ImportedCount = Import-ExcelStyles -Path $TestFilePath -Category "CatÃ©gorie 1"
             
-            # Vérifier que seul un style a été importé
+            # VÃ©rifier que seul un style a Ã©tÃ© importÃ©
             $ImportedCount | Should -Be 1
             
-            # Vérifier que seul le style de la catégorie 1 est dans le registre
+            # VÃ©rifier que seul le style de la catÃ©gorie 1 est dans le registre
             $Registry = Get-ExcelStyleRegistry
             $Styles = $Registry.Search(@{ IsBuiltIn = $false })
             $Styles.Count | Should -Be 1
-            $Styles[0].Name | Should -Be "Style catégorie 1"
+            $Styles[0].Name | Should -Be "Style catÃ©gorie 1"
         }
         
         It "Should handle invalid file path" {
             # Essayer d'importer depuis un fichier inexistant
             $ImportedCount = Import-ExcelStyles -Path "C:\NonExistentFile.json"
             
-            # Vérifier que l'importation a échoué
+            # VÃ©rifier que l'importation a Ã©chouÃ©
             $ImportedCount | Should -Be 0
         }
     }
     
     Context "Save-ExcelStylesConfiguration and Import-ExcelStylesConfiguration functions" {
         BeforeEach {
-            # Réinitialiser le registre avant chaque test
+            # RÃ©initialiser le registre avant chaque test
             Reset-ExcelStyleRegistry
             
-            # Initialiser les styles prédéfinis
+            # Initialiser les styles prÃ©dÃ©finis
             Initialize-ExcelPredefinedStyles -Force
             
-            # Créer quelques styles personnalisés pour les tests
+            # CrÃ©er quelques styles personnalisÃ©s pour les tests
             $CustomStyle1 = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style config 1" -Color "#00FF00" -Width 3
             $CustomStyle2 = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style config 2" -Color "#FF00FF" -Width 2
         }
@@ -242,36 +242,36 @@ Describe "Excel Style Persistence" {
             # Sauvegarder la configuration
             $SavedCount = Save-ExcelStylesConfiguration -Path $TestFilePath -Force
             
-            # Vérifier que des styles ont été sauvegardés
+            # VÃ©rifier que des styles ont Ã©tÃ© sauvegardÃ©s
             $SavedCount | Should -Be 2
             
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
             Initialize-ExcelPredefinedStyles -Force
             
             # Charger la configuration
             $LoadedCount = Import-ExcelStylesConfiguration -Path $TestFilePath
             
-            # Vérifier que des styles ont été chargés
+            # VÃ©rifier que des styles ont Ã©tÃ© chargÃ©s
             $LoadedCount | Should -Be 2
             
-            # Vérifier que les styles sont dans le registre
+            # VÃ©rifier que les styles sont dans le registre
             $Registry = Get-ExcelStyleRegistry
             $Styles = $Registry.Search(@{ IsBuiltIn = $false })
             $Styles.Count | Should -Be 2
             
-            # Vérifier les noms des styles chargés
+            # VÃ©rifier les noms des styles chargÃ©s
             $StyleNames = $Styles | ForEach-Object { $_.Name }
             $StyleNames | Should -Contain "Style config 1"
             $StyleNames | Should -Contain "Style config 2"
         }
         
         It "Should use default configuration path when none is specified" {
-            # Sauvegarder la configuration dans le chemin par défaut
+            # Sauvegarder la configuration dans le chemin par dÃ©faut
             $ConfigDir = Join-Path -Path $env:APPDATA -ChildPath "ExcelStyles"
             $DefaultPath = Join-Path -Path $ConfigDir -ChildPath "UserStyles.json"
             
-            # Supprimer le fichier s'il existe déjà
+            # Supprimer le fichier s'il existe dÃ©jÃ 
             if (Test-Path -Path $DefaultPath) {
                 Remove-Item -Path $DefaultPath -Force
             }
@@ -279,20 +279,20 @@ Describe "Excel Style Persistence" {
             # Sauvegarder la configuration
             $SavedCount = Save-ExcelStylesConfiguration -Force
             
-            # Vérifier que des styles ont été sauvegardés
+            # VÃ©rifier que des styles ont Ã©tÃ© sauvegardÃ©s
             $SavedCount | Should -Be 2
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $DefaultPath | Should -Be $true
             
-            # Réinitialiser le registre
+            # RÃ©initialiser le registre
             Reset-ExcelStyleRegistry
             Initialize-ExcelPredefinedStyles -Force
             
             # Charger la configuration
             $LoadedCount = Import-ExcelStylesConfiguration
             
-            # Vérifier que des styles ont été chargés
+            # VÃ©rifier que des styles ont Ã©tÃ© chargÃ©s
             $LoadedCount | Should -Be 2
             
             # Nettoyer

@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un tableau de bord HTML pour suivre l'évolution des performances.
+    GÃ©nÃ¨re un tableau de bord HTML pour suivre l'Ã©volution des performances.
 .DESCRIPTION
-    Ce script génère un tableau de bord HTML qui affiche l'évolution des performances
-    des différentes fonctions au fil du temps. Il utilise les données d'historique
-    des performances pour générer des graphiques et des tableaux.
+    Ce script gÃ©nÃ¨re un tableau de bord HTML qui affiche l'Ã©volution des performances
+    des diffÃ©rentes fonctions au fil du temps. Il utilise les donnÃ©es d'historique
+    des performances pour gÃ©nÃ©rer des graphiques et des tableaux.
 .PARAMETER HistoryDir
-    Le répertoire contenant les fichiers d'historique des performances.
+    Le rÃ©pertoire contenant les fichiers d'historique des performances.
 .PARAMETER OutputPath
-    Le chemin où le tableau de bord HTML sera généré.
+    Le chemin oÃ¹ le tableau de bord HTML sera gÃ©nÃ©rÃ©.
 .EXAMPLE
     .\Generate-PerformanceDashboard.ps1 -HistoryDir ".\PerformanceHistory" -OutputPath ".\Dashboard.html"
-    Génère un tableau de bord HTML à partir des fichiers d'historique dans le répertoire ".\PerformanceHistory".
+    GÃ©nÃ¨re un tableau de bord HTML Ã  partir des fichiers d'historique dans le rÃ©pertoire ".\PerformanceHistory".
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -28,15 +28,15 @@ param(
     [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "PerformanceDashboard.html")
 )
 
-# Créer le répertoire parent s'il n'existe pas
+# CrÃ©er le rÃ©pertoire parent s'il n'existe pas
 $parentDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $parentDir -PathType Container)) {
     New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
 }
 
-# Vérifier si le répertoire d'historique existe
+# VÃ©rifier si le rÃ©pertoire d'historique existe
 if (-not (Test-Path -Path $HistoryDir -PathType Container)) {
-    Write-Error "Le répertoire d'historique '$HistoryDir' n'existe pas."
+    Write-Error "Le rÃ©pertoire d'historique '$HistoryDir' n'existe pas."
     exit 1
 }
 
@@ -100,7 +100,7 @@ function Measure-PerformanceHistory {
     }
 }
 
-# Fonction pour générer des données de graphique pour Chart.js
+# Fonction pour gÃ©nÃ©rer des donnÃ©es de graphique pour Chart.js
 function New-ChartData {
     param (
         [Parameter(Mandatory = $true)]
@@ -117,11 +117,11 @@ function New-ChartData {
     # Trier l'historique par horodatage
     $sortedHistory = $History | Sort-Object -Property Timestamp
 
-    # Extraire les données pour le graphique
+    # Extraire les donnÃ©es pour le graphique
     $labels = $sortedHistory | ForEach-Object { $_.Timestamp }
     $data = $sortedHistory | ForEach-Object { $_.ExecutionTimeMs }
 
-    # Générer les données pour Chart.js
+    # GÃ©nÃ©rer les donnÃ©es pour Chart.js
     $chartData = @{
         labels = $labels
         datasets = @(
@@ -139,7 +139,7 @@ function New-ChartData {
     return $chartData | ConvertTo-Json -Depth 10
 }
 
-# Fonction pour générer le HTML du tableau de bord
+# Fonction pour gÃ©nÃ©rer le HTML du tableau de bord
 function New-DashboardHtml {
     param (
         [Parameter(Mandatory = $true)]
@@ -218,10 +218,10 @@ function New-DashboardHtml {
 </head>
 <body>
     <h1>Tableau de bord des performances</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Nombre de fonctions suivies : $($PerformanceData.Count)</p>
     </div>
 
@@ -234,15 +234,15 @@ function New-DashboardHtml {
         $chartData = $data.ChartData
 
         $trendClass = 'trend-neutral'
-        $trendSymbol = '→'
+        $trendSymbol = 'â†’'
 
         if ($analysis.TrendPercent -lt -5) {
             $trendClass = 'trend-positive'
-            $trendSymbol = '↓'
+            $trendSymbol = 'â†“'
         }
         elseif ($analysis.TrendPercent -gt 5) {
             $trendClass = 'trend-negative'
-            $trendSymbol = '↑'
+            $trendSymbol = 'â†‘'
         }
 
         $html += @"
@@ -253,7 +253,7 @@ function New-DashboardHtml {
             </div>
             <table>
                 <tr>
-                    <th>Métrique</th>
+                    <th>MÃ©trique</th>
                     <th>Valeur</th>
                 </tr>
                 <tr>
@@ -269,7 +269,7 @@ function New-DashboardHtml {
                     <td>$([Math]::Round($analysis.MinTimeMs, 2)) / $([Math]::Round($analysis.MaxTimeMs, 2)) ms</td>
                 </tr>
                 <tr>
-                    <td>Écart-type</td>
+                    <td>Ã‰cart-type</td>
                     <td>$([Math]::Round($analysis.StdDevMs, 2)) ms</td>
                 </tr>
                 <tr>
@@ -304,7 +304,7 @@ function New-DashboardHtml {
                         beginAtZero: false,
                         title: {
                             display: true,
-                            text: 'Temps d\'exécution (ms)'
+                            text: 'Temps d\'exÃ©cution (ms)'
                         }
                     },
                     x: {
@@ -332,29 +332,29 @@ function New-DashboardHtml {
 $historyFiles = Get-ChildItem -Path $HistoryDir -Filter "*_history.json" -File
 
 if ($historyFiles.Count -eq 0) {
-    Write-Warning "Aucun fichier d'historique trouvé dans le répertoire '$HistoryDir'."
+    Write-Warning "Aucun fichier d'historique trouvÃ© dans le rÃ©pertoire '$HistoryDir'."
 
-    # Créer des données de démonstration si aucun fichier d'historique n'est trouvé
-    Write-Host "Création de données de démonstration..." -ForegroundColor Yellow
+    # CrÃ©er des donnÃ©es de dÃ©monstration si aucun fichier d'historique n'est trouvÃ©
+    Write-Host "CrÃ©ation de donnÃ©es de dÃ©monstration..." -ForegroundColor Yellow
 
     $demoHistoryDir = Join-Path -Path $HistoryDir -ChildPath "Demo"
     New-Item -Path $demoHistoryDir -ItemType Directory -Force | Out-Null
 
-    $functions = @("Tri", "Filtrage", "Agrégation")
+    $functions = @("Tri", "Filtrage", "AgrÃ©gation")
 
     foreach ($function in $functions) {
         $historyPath = Join-Path -Path $demoHistoryDir -ChildPath "$($function.ToLower())_history.json"
         $history = @()
 
-        # Générer des données de démonstration pour les 30 derniers jours
+        # GÃ©nÃ©rer des donnÃ©es de dÃ©monstration pour les 30 derniers jours
         for ($i = 30; $i -ge 0; $i--) {
             $date = (Get-Date).AddDays(-$i)
             $timestamp = $date.ToString("yyyy-MM-dd HH:mm:ss")
 
-            # Simuler une tendance (amélioration progressive des performances)
+            # Simuler une tendance (amÃ©lioration progressive des performances)
             $baseTime = 100 - ($i * 0.5)
 
-            # Ajouter une variation aléatoire
+            # Ajouter une variation alÃ©atoire
             $variation = Get-Random -Minimum -10 -Maximum 10
             $executionTime = $baseTime + $variation
 
@@ -369,11 +369,11 @@ if ($historyFiles.Count -eq 0) {
         $history | ConvertTo-Json | Out-File -FilePath $historyPath -Encoding utf8
     }
 
-    # Mettre à jour la liste des fichiers d'historique
+    # Mettre Ã  jour la liste des fichiers d'historique
     $historyFiles = Get-ChildItem -Path $HistoryDir -Filter "*_history.json" -File -Recurse
 }
 
-# Préparer les données pour le tableau de bord
+# PrÃ©parer les donnÃ©es pour le tableau de bord
 $performanceData = @{}
 
 foreach ($file in $historyFiles) {
@@ -398,13 +398,13 @@ foreach ($file in $historyFiles) {
     }
 }
 
-# Générer le HTML du tableau de bord
+# GÃ©nÃ©rer le HTML du tableau de bord
 $dashboardHtml = New-DashboardHtml -PerformanceData $performanceData
 
 # Sauvegarder le tableau de bord
 $dashboardHtml | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Tableau de bord généré : $OutputPath" -ForegroundColor Green
+Write-Host "Tableau de bord gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 
-# Ouvrir le tableau de bord dans le navigateur par défaut
+# Ouvrir le tableau de bord dans le navigateur par dÃ©faut
 Start-Process $OutputPath

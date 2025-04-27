@@ -1,77 +1,77 @@
-# Test-MarkdownToRoadmapWithDependencies.ps1
+﻿# Test-MarkdownToRoadmapWithDependencies.ps1
 # Script pour tester la fonction ConvertFrom-MarkdownToRoadmapWithDependencies
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $functionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapWithDependencies.ps1"
 . $functionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test avec des dépendances
+# CrÃ©er un fichier markdown de test avec des dÃ©pendances
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "test-dependencies.md"
 $testMarkdown = @"
-# Roadmap avec Dépendances
+# Roadmap avec DÃ©pendances
 
-Ceci est une roadmap pour tester la détection et la gestion des dépendances.
+Ceci est une roadmap pour tester la dÃ©tection et la gestion des dÃ©pendances.
 
 ## Planification
 
 - [ ] **PLAN-1** Analyse des besoins
   - [x] **PLAN-1.1** Recueillir les exigences
-  - [ ] **PLAN-1.2** Analyser la faisabilité @depends:PLAN-1.1
-    - [~] **PLAN-1.2.1** Étude technique
-    - [!] **PLAN-1.2.2** Évaluation des coûts ref:PLAN-1.1
+  - [ ] **PLAN-1.2** Analyser la faisabilitÃ© @depends:PLAN-1.1
+    - [~] **PLAN-1.2.1** Ã‰tude technique
+    - [!] **PLAN-1.2.2** Ã‰valuation des coÃ»ts ref:PLAN-1.1
 
-## Développement
+## DÃ©veloppement
 
-- [ ] **DEV-1** Implémentation @depends:PLAN-1
-  - [ ] **DEV-1.1** Développer le backend
-  - [ ] **DEV-1.2** Créer l'interface utilisateur ref:DEV-1.1
+- [ ] **DEV-1** ImplÃ©mentation @depends:PLAN-1
+  - [ ] **DEV-1.1** DÃ©velopper le backend
+  - [ ] **DEV-1.2** CrÃ©er l'interface utilisateur ref:DEV-1.1
 
 ## Tests
 
 - [ ] **TEST-1** Tests unitaires @depends:DEV-1.1
-- [ ] **TEST-2** Tests d'intégration @depends:DEV-1,TEST-1
+- [ ] **TEST-2** Tests d'intÃ©gration @depends:DEV-1,TEST-1
 - [ ] **TEST-3** Tests de performance @depends:TEST-2
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
-    # Test 1: Conversion avec détection des dépendances
-    Write-Host "`nTest 1: Conversion avec détection des dépendances" -ForegroundColor Cyan
+    # Test 1: Conversion avec dÃ©tection des dÃ©pendances
+    Write-Host "`nTest 1: Conversion avec dÃ©tection des dÃ©pendances" -ForegroundColor Cyan
     $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath $testMarkdownPath -IncludeMetadata -DetectDependencies
     
     Write-Host "Titre: $($roadmap.Title)" -ForegroundColor Yellow
     Write-Host "Description: $($roadmap.Description)" -ForegroundColor Yellow
     Write-Host "Nombre de sections: $($roadmap.Sections.Count)" -ForegroundColor Yellow
-    Write-Host "Nombre de tâches: $($roadmap.AllTasks.Count)" -ForegroundColor Yellow
+    Write-Host "Nombre de tÃ¢ches: $($roadmap.AllTasks.Count)" -ForegroundColor Yellow
     
-    # Vérifier les dépendances
-    Write-Host "`nVérification des dépendances:" -ForegroundColor Cyan
+    # VÃ©rifier les dÃ©pendances
+    Write-Host "`nVÃ©rification des dÃ©pendances:" -ForegroundColor Cyan
     foreach ($id in $roadmap.AllTasks.Keys) {
         $task = $roadmap.AllTasks[$id]
         $dependencies = $task.Dependencies | ForEach-Object { $_.Id }
         
         if ($dependencies.Count -gt 0) {
-            Write-Host "  - $id dépend de: $($dependencies -join ', ')" -ForegroundColor Yellow
+            Write-Host "  - $id dÃ©pend de: $($dependencies -join ', ')" -ForegroundColor Yellow
         }
     }
     
-    # Vérifier les tâches dépendantes
-    Write-Host "`nVérification des tâches dépendantes:" -ForegroundColor Cyan
+    # VÃ©rifier les tÃ¢ches dÃ©pendantes
+    Write-Host "`nVÃ©rification des tÃ¢ches dÃ©pendantes:" -ForegroundColor Cyan
     foreach ($id in $roadmap.AllTasks.Keys) {
         $task = $roadmap.AllTasks[$id]
         $dependentTasks = $task.DependentTasks | ForEach-Object { $_.Id }
         
         if ($dependentTasks.Count -gt 0) {
-            Write-Host "  - $id est dépendance de: $($dependentTasks -join ', ')" -ForegroundColor Yellow
+            Write-Host "  - $id est dÃ©pendance de: $($dependentTasks -join ', ')" -ForegroundColor Yellow
         }
     }
     
@@ -79,17 +79,17 @@ try {
     Write-Host "`nTest 2: Validation de la structure" -ForegroundColor Cyan
     $roadmapWithValidation = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath $testMarkdownPath -ValidateStructure
     
-    Write-Host "Nombre de problèmes de validation: $($roadmapWithValidation.ValidationIssues.Count)" -ForegroundColor Yellow
+    Write-Host "Nombre de problÃ¨mes de validation: $($roadmapWithValidation.ValidationIssues.Count)" -ForegroundColor Yellow
     if ($roadmapWithValidation.ValidationIssues.Count -gt 0) {
-        Write-Host "Problèmes de validation:" -ForegroundColor Yellow
+        Write-Host "ProblÃ¨mes de validation:" -ForegroundColor Yellow
         foreach ($issue in $roadmapWithValidation.ValidationIssues) {
             Write-Host "  - $issue" -ForegroundColor Yellow
         }
     } else {
-        Write-Host "Aucun problème de validation détecté." -ForegroundColor Green
+        Write-Host "Aucun problÃ¨me de validation dÃ©tectÃ©." -ForegroundColor Green
     }
     
-    Write-Host "`nTest terminé." -ForegroundColor Green
+    Write-Host "`nTest terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors des tests: $_" -ForegroundColor Red
@@ -99,6 +99,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

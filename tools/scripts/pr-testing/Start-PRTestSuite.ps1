@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute une suite de tests pour le système d'analyse des pull requests.
+    ExÃ©cute une suite de tests pour le systÃ¨me d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script exécute une suite complète de tests pour le système d'analyse
-    des pull requests en générant différents types de pull requests et en
+    Ce script exÃ©cute une suite complÃ¨te de tests pour le systÃ¨me d'analyse
+    des pull requests en gÃ©nÃ©rant diffÃ©rents types de pull requests et en
     mesurant les performances de l'analyse.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt de test.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t de test.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER CreateRepository
-    Indique s'il faut créer un nouveau dépôt de test.
-    Par défaut: $true
+    Indique s'il faut crÃ©er un nouveau dÃ©pÃ´t de test.
+    Par dÃ©faut: $true
 
 .PARAMETER RunAllTests
-    Indique s'il faut exécuter tous les tests.
-    Par défaut: $true
+    Indique s'il faut exÃ©cuter tous les tests.
+    Par dÃ©faut: $true
 
 .PARAMETER GenerateReport
-    Indique s'il faut générer un rapport global.
-    Par défaut: $true
+    Indique s'il faut gÃ©nÃ©rer un rapport global.
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\Start-PRTestSuite.ps1
-    Exécute la suite complète de tests avec les paramètres par défaut.
+    ExÃ©cute la suite complÃ¨te de tests avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Start-PRTestSuite.ps1 -CreateRepository $false -RunAllTests $false
-    Exécute uniquement les tests spécifiés sans créer un nouveau dépôt.
+    ExÃ©cute uniquement les tests spÃ©cifiÃ©s sans crÃ©er un nouveau dÃ©pÃ´t.
 
 .NOTES
     Version: 1.0
@@ -56,32 +56,32 @@ param(
     [switch]$Force
 )
 
-# Définir le chemin des scripts
+# DÃ©finir le chemin des scripts
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-# Fonction pour créer le dépôt de test
+# Fonction pour crÃ©er le dÃ©pÃ´t de test
 function Initialize-TestRepository {
-    Write-Host "Initialisation du dépôt de test..." -ForegroundColor Cyan
+    Write-Host "Initialisation du dÃ©pÃ´t de test..." -ForegroundColor Cyan
 
     $newRepoScript = Join-Path -Path $scriptPath -ChildPath "New-TestRepository.ps1"
 
     if (-not (Test-Path -Path $newRepoScript)) {
-        Write-Error "Script New-TestRepository.ps1 non trouvé: $newRepoScript"
+        Write-Error "Script New-TestRepository.ps1 non trouvÃ©: $newRepoScript"
         return $false
     }
 
     & $newRepoScript -Path $RepositoryPath -Force:$Force
 
     if (-not (Test-Path -Path $RepositoryPath)) {
-        Write-Error "Échec de la création du dépôt de test: $RepositoryPath"
+        Write-Error "Ã‰chec de la crÃ©ation du dÃ©pÃ´t de test: $RepositoryPath"
         return $false
     }
 
-    Write-Host "Dépôt de test initialisé avec succès: $RepositoryPath" -ForegroundColor Green
+    Write-Host "DÃ©pÃ´t de test initialisÃ© avec succÃ¨s: $RepositoryPath" -ForegroundColor Green
     return $true
 }
 
-# Fonction pour exécuter un test de pull request
+# Fonction pour exÃ©cuter un test de pull request
 function Invoke-PRTest {
     param (
         [string]$TestName,
@@ -96,30 +96,30 @@ function Invoke-PRTest {
     $newPRScript = Join-Path -Path $scriptPath -ChildPath "New-TestPullRequest-Fixed.ps1"
 
     if (-not (Test-Path -Path $newPRScript)) {
-        Write-Error "Script New-TestPullRequest-Fixed.ps1 non trouvé: $newPRScript"
+        Write-Error "Script New-TestPullRequest-Fixed.ps1 non trouvÃ©: $newPRScript"
         return $null
     }
 
-    # Générer un nom de branche unique
+    # GÃ©nÃ©rer un nom de branche unique
     $branchName = "test/$ModificationType-$FileCount-$ErrorCount-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
-    # Exécuter le script pour créer la pull request
+    # ExÃ©cuter le script pour crÃ©er la pull request
     & $newPRScript -RepositoryPath $RepositoryPath -BranchName $branchName -ModificationTypes $ModificationType -FileCount $FileCount -ErrorCount $ErrorCount -ErrorTypes $ErrorTypes
 
-    # Attendre un peu pour s'assurer que la PR est créée
+    # Attendre un peu pour s'assurer que la PR est crÃ©Ã©e
     Start-Sleep -Seconds 2
 
     # Mesurer les performances
     $measureScript = Join-Path -Path $scriptPath -ChildPath "Measure-PRAnalysisPerformance.ps1"
 
     if (-not (Test-Path -Path $measureScript)) {
-        Write-Error "Script Measure-PRAnalysisPerformance.ps1 non trouvé: $measureScript"
+        Write-Error "Script Measure-PRAnalysisPerformance.ps1 non trouvÃ©: $measureScript"
         return $null
     }
 
     $reportPath = & $measureScript -RepositoryPath $RepositoryPath
 
-    # Créer un objet de résultat de test
+    # CrÃ©er un objet de rÃ©sultat de test
     $testResult = [PSCustomObject]@{
         TestName         = $TestName
         ModificationType = $ModificationType
@@ -134,34 +134,34 @@ function Invoke-PRTest {
     return $testResult
 }
 
-# Fonction pour générer un rapport global
+# Fonction pour gÃ©nÃ©rer un rapport global
 function New-GlobalTestReport {
     param (
         [array]$TestResults
     )
 
-    Write-Host "`nGénération du rapport global..." -ForegroundColor Cyan
+    Write-Host "`nGÃ©nÃ©ration du rapport global..." -ForegroundColor Cyan
 
-    # Créer le dossier de rapports s'il n'existe pas
+    # CrÃ©er le dossier de rapports s'il n'existe pas
     $reportsPath = Join-Path -Path $scriptPath -ChildPath "reports"
     if (-not (Test-Path -Path $reportsPath)) {
         New-Item -ItemType Directory -Path $reportsPath -Force | Out-Null
     }
 
-    # Définir le chemin du rapport global
+    # DÃ©finir le chemin du rapport global
     $globalReportPath = Join-Path -Path $reportsPath -ChildPath "PR-TestSuite-Report-$(Get-Date -Format 'yyyyMMdd-HHmmss').md"
 
-    # Générer le contenu du rapport
+    # GÃ©nÃ©rer le contenu du rapport
     $reportContent = @"
 # Rapport de la suite de tests d'analyse des pull requests
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Date d'exécution**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-- **Nombre de tests exécutés**: $($TestResults.Count)
-- **Dépôt de test**: $RepositoryPath
+- **Date d'exÃ©cution**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- **Nombre de tests exÃ©cutÃ©s**: $($TestResults.Count)
+- **DÃ©pÃ´t de test**: $RepositoryPath
 
-## Tests exécutés
+## Tests exÃ©cutÃ©s
 
 | Test | Type de modification | Fichiers | Erreurs | Types d'erreurs | Branche |
 |------|---------------------|----------|---------|-----------------|---------|
@@ -171,7 +171,7 @@ $(
     }
 )
 
-## Rapports détaillés
+## Rapports dÃ©taillÃ©s
 
 $(
     $TestResults | ForEach-Object {
@@ -181,23 +181,23 @@ $(
 
 ## Recommandations
 
-- Exécuter régulièrement cette suite de tests pour surveiller les performances du système d'analyse
-- Ajouter de nouveaux tests pour couvrir des scénarios spécifiques
-- Automatiser l'exécution de cette suite dans le pipeline CI/CD
+- ExÃ©cuter rÃ©guliÃ¨rement cette suite de tests pour surveiller les performances du systÃ¨me d'analyse
+- Ajouter de nouveaux tests pour couvrir des scÃ©narios spÃ©cifiques
+- Automatiser l'exÃ©cution de cette suite dans le pipeline CI/CD
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-1. Analyser les résultats pour identifier les opportunités d'optimisation
-2. Implémenter les améliorations suggérées dans les rapports individuels
-3. Mettre à jour la suite de tests avec de nouveaux scénarios
+1. Analyser les rÃ©sultats pour identifier les opportunitÃ©s d'optimisation
+2. ImplÃ©menter les amÃ©liorations suggÃ©rÃ©es dans les rapports individuels
+3. Mettre Ã  jour la suite de tests avec de nouveaux scÃ©narios
 
-Ce rapport a été généré automatiquement par Start-PRTestSuite.ps1.
+Ce rapport a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement par Start-PRTestSuite.ps1.
 "@
 
-    # Écrire le rapport dans le fichier
+    # Ã‰crire le rapport dans le fichier
     Set-Content -Path $globalReportPath -Value $reportContent -Encoding UTF8
 
-    Write-Host "Rapport global généré: $globalReportPath" -ForegroundColor Green
+    Write-Host "Rapport global gÃ©nÃ©rÃ©: $globalReportPath" -ForegroundColor Green
 
     return $globalReportPath
 }
@@ -206,7 +206,7 @@ Ce rapport a été généré automatiquement par Start-PRTestSuite.ps1.
 function Start-PRTestSuite {
     $testResults = @()
 
-    # Créer le dépôt de test si demandé
+    # CrÃ©er le dÃ©pÃ´t de test si demandÃ©
     if ($CreateRepository) {
         $repoResult = Initialize-TestRepository
         if (-not $repoResult) {
@@ -214,32 +214,32 @@ function Start-PRTestSuite {
         }
     }
 
-    # Définir les tests à exécuter
+    # DÃ©finir les tests Ã  exÃ©cuter
     $tests = @()
 
     if ($RunAllTests) {
-        # Tests avec différents types de modifications
+        # Tests avec diffÃ©rents types de modifications
         $tests += [PSCustomObject]@{ Name = "Ajout de fichiers"; ModificationType = "Add"; FileCount = 5; ErrorCount = 3; ErrorTypes = "All" }
         $tests += [PSCustomObject]@{ Name = "Modification de fichiers"; ModificationType = "Modify"; FileCount = 5; ErrorCount = 3; ErrorTypes = "All" }
         $tests += [PSCustomObject]@{ Name = "Suppression de fichiers"; ModificationType = "Delete"; FileCount = 3; ErrorCount = 0; ErrorTypes = "All" }
         $tests += [PSCustomObject]@{ Name = "Modifications mixtes"; ModificationType = "Mixed"; FileCount = 8; ErrorCount = 3; ErrorTypes = "All" }
 
-        # Tests avec différents nombres de fichiers
+        # Tests avec diffÃ©rents nombres de fichiers
         $tests += [PSCustomObject]@{ Name = "Petit volume"; ModificationType = "Mixed"; FileCount = 3; ErrorCount = 2; ErrorTypes = "All" }
         $tests += [PSCustomObject]@{ Name = "Volume moyen"; ModificationType = "Mixed"; FileCount = 10; ErrorCount = 2; ErrorTypes = "All" }
         $tests += [PSCustomObject]@{ Name = "Grand volume"; ModificationType = "Mixed"; FileCount = 20; ErrorCount = 2; ErrorTypes = "All" }
 
-        # Tests avec différents types d'erreurs
+        # Tests avec diffÃ©rents types d'erreurs
         $tests += [PSCustomObject]@{ Name = "Erreurs de syntaxe"; ModificationType = "Mixed"; FileCount = 5; ErrorCount = 3; ErrorTypes = "Syntax" }
         $tests += [PSCustomObject]@{ Name = "Erreurs de style"; ModificationType = "Mixed"; FileCount = 5; ErrorCount = 3; ErrorTypes = "Style" }
         $tests += [PSCustomObject]@{ Name = "Erreurs de performance"; ModificationType = "Mixed"; FileCount = 5; ErrorCount = 3; ErrorTypes = "Performance" }
-        $tests += [PSCustomObject]@{ Name = "Erreurs de sécurité"; ModificationType = "Mixed"; FileCount = 5; ErrorCount = 3; ErrorTypes = "Security" }
+        $tests += [PSCustomObject]@{ Name = "Erreurs de sÃ©curitÃ©"; ModificationType = "Mixed"; FileCount = 5; ErrorCount = 3; ErrorTypes = "Security" }
     } else {
         # Tests minimaux
         $tests += [PSCustomObject]@{ Name = "Test minimal"; ModificationType = "Mixed"; FileCount = 3; ErrorCount = 2; ErrorTypes = "All" }
     }
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     foreach ($test in $tests) {
         $result = Invoke-PRTest -TestName $test.Name -ModificationType $test.ModificationType -FileCount $test.FileCount -ErrorCount $test.ErrorCount -ErrorTypes $test.ErrorTypes
 
@@ -248,21 +248,21 @@ function Start-PRTestSuite {
         }
     }
 
-    # Générer le rapport global si demandé
+    # GÃ©nÃ©rer le rapport global si demandÃ©
     if ($GenerateReport -and $testResults.Count -gt 0) {
         $globalReportPath = New-GlobalTestReport -TestResults $testResults
 
-        Write-Host "`nSuite de tests terminée. Rapport global: $globalReportPath" -ForegroundColor Green
+        Write-Host "`nSuite de tests terminÃ©e. Rapport global: $globalReportPath" -ForegroundColor Green
     } else {
-        Write-Host "`nSuite de tests terminée." -ForegroundColor Green
+        Write-Host "`nSuite de tests terminÃ©e." -ForegroundColor Green
     }
 }
 
 # Exporter la fonction principale
 Export-ModuleMember -Function Start-PRTestSuite
 
-# Si le script est exécuté directement (pas importé comme module)
+# Si le script est exÃ©cutÃ© directement (pas importÃ© comme module)
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    # Exécuter la fonction principale
+    # ExÃ©cuter la fonction principale
     Start-PRTestSuite
 }

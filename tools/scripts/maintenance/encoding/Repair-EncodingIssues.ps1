@@ -1,4 +1,4 @@
-# Script pour corriger les problemes d'encodage dans les fichiers PowerShell
+﻿# Script pour corriger les problemes d'encodage dans les fichiers PowerShell
 # Version ASCII uniquement pour eviter les problemes d'encodage
 
 [CmdletBinding()]

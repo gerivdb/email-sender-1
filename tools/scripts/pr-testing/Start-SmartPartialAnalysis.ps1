@@ -1,39 +1,39 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démarre une analyse partielle intelligente des pull requests.
+    DÃ©marre une analyse partielle intelligente des pull requests.
 
 .DESCRIPTION
-    Ce script exécute une analyse partielle intelligente des pull requests,
-    en se concentrant sur les parties spécifiques des fichiers qui ont été modifiées.
+    Ce script exÃ©cute une analyse partielle intelligente des pull requests,
+    en se concentrant sur les parties spÃ©cifiques des fichiers qui ont Ã©tÃ© modifiÃ©es.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt à analyser.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t Ã  analyser.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER PullRequestNumber
-    Le numéro de la pull request à analyser.
-    Si non spécifié, la dernière pull request sera utilisée.
+    Le numÃ©ro de la pull request Ã  analyser.
+    Si non spÃ©cifiÃ©, la derniÃ¨re pull request sera utilisÃ©e.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer les résultats de l'analyse.
-    Par défaut: "reports\pr-analysis"
+    Le chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse.
+    Par dÃ©faut: "reports\pr-analysis"
 
 .PARAMETER UseCache
-    Indique s'il faut utiliser le cache pour améliorer les performances.
-    Par défaut: $true
+    Indique s'il faut utiliser le cache pour amÃ©liorer les performances.
+    Par dÃ©faut: $true
 
 .PARAMETER ContextLines
-    Le nombre de lignes de contexte à inclure autour des modifications.
-    Par défaut: 3
+    Le nombre de lignes de contexte Ã  inclure autour des modifications.
+    Par dÃ©faut: 3
 
 .EXAMPLE
     .\Start-SmartPartialAnalysis.ps1
-    Analyse de manière partielle intelligente la dernière pull request.
+    Analyse de maniÃ¨re partielle intelligente la derniÃ¨re pull request.
 
 .EXAMPLE
     .\Start-SmartPartialAnalysis.ps1 -PullRequestNumber 42 -ContextLines 5
-    Analyse de manière partielle intelligente la pull request #42 avec 5 lignes de contexte.
+    Analyse de maniÃ¨re partielle intelligente la pull request #42 avec 5 lignes de contexte.
 
 .NOTES
     Version: 1.0
@@ -59,7 +59,7 @@ param(
     [int]$ContextLines = 3
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "modules"
 $modulesToImport = @(
     "FileContentIndexer.psm1",
@@ -72,7 +72,7 @@ foreach ($module in $modulesToImport) {
     if (Test-Path -Path $modulePath) {
         Import-Module $modulePath -Force
     } else {
-        Write-Error "Module $module non trouvé à l'emplacement: $modulePath"
+        Write-Error "Module $module non trouvÃ© Ã  l'emplacement: $modulePath"
         exit 1
     }
 }
@@ -89,33 +89,33 @@ function Get-PullRequestInfo {
     )
 
     try {
-        # Vérifier si le dépôt existe
+        # VÃ©rifier si le dÃ©pÃ´t existe
         if (-not (Test-Path -Path $RepoPath)) {
-            throw "Le dépôt n'existe pas à l'emplacement spécifié: $RepoPath"
+            throw "Le dÃ©pÃ´t n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $RepoPath"
         }
 
-        # Changer de répertoire vers le dépôt
+        # Changer de rÃ©pertoire vers le dÃ©pÃ´t
         Push-Location -Path $RepoPath
 
         try {
-            # Si aucun numéro de PR n'est spécifié, utiliser la dernière PR
+            # Si aucun numÃ©ro de PR n'est spÃ©cifiÃ©, utiliser la derniÃ¨re PR
             if ($PRNumber -eq 0) {
                 $prs = gh pr list --json number, title, headRefName, baseRefName, createdAt --limit 1 | ConvertFrom-Json
                 if ($prs.Count -eq 0) {
-                    throw "Aucune pull request trouvée dans le dépôt."
+                    throw "Aucune pull request trouvÃ©e dans le dÃ©pÃ´t."
                 }
                 $pr = $prs[0]
             } else {
                 $pr = gh pr view $PRNumber --json number, title, headRefName, baseRefName, createdAt | ConvertFrom-Json
                 if ($null -eq $pr) {
-                    throw "Pull request #$PRNumber non trouvée."
+                    throw "Pull request #$PRNumber non trouvÃ©e."
                 }
             }
 
-            # Obtenir les fichiers modifiés
+            # Obtenir les fichiers modifiÃ©s
             $files = gh pr view $pr.number --json files | ConvertFrom-Json
 
-            # Créer l'objet d'informations sur la PR
+            # CrÃ©er l'objet d'informations sur la PR
             $prInfo = [PSCustomObject]@{
                 Number     = $pr.number
                 Title      = $pr.title
@@ -131,16 +131,16 @@ function Get-PullRequestInfo {
 
             return $prInfo
         } finally {
-            # Revenir au répertoire précédent
+            # Revenir au rÃ©pertoire prÃ©cÃ©dent
             Pop-Location
         }
     } catch {
-        Write-Error "Erreur lors de la récupération des informations sur la pull request: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des informations sur la pull request: $_"
         return $null
     }
 }
 
-# Fonction pour obtenir les différences entre deux versions d'un fichier
+# Fonction pour obtenir les diffÃ©rences entre deux versions d'un fichier
 function Get-FileDiff {
     [CmdletBinding()]
     param(
@@ -158,14 +158,14 @@ function Get-FileDiff {
     )
 
     try {
-        # Changer de répertoire vers le dépôt
+        # Changer de rÃ©pertoire vers le dÃ©pÃ´t
         Push-Location -Path $RepoPath
 
         try {
-            # Obtenir les différences
+            # Obtenir les diffÃ©rences
             $diff = git diff "$BaseBranch..$HeadBranch" -- "$FilePath"
 
-            # Analyser les différences pour obtenir les lignes modifiées
+            # Analyser les diffÃ©rences pour obtenir les lignes modifiÃ©es
             $changedLines = [System.Collections.Generic.List[PSCustomObject]]::new()
             $currentLine = 0
             $inHunk = $false
@@ -173,7 +173,7 @@ function Get-FileDiff {
             foreach ($line in ($diff -split "`n")) {
                 if ($line -match '^@@\s+-(\d+),(\d+)\s+\+(\d+),(\d+)\s+@@') {
                     $inHunk = $true
-                    # Variables utilisées uniquement pour le débogage, commentées pour éviter les avertissements
+                    # Variables utilisÃ©es uniquement pour le dÃ©bogage, commentÃ©es pour Ã©viter les avertissements
                     # $oldStart = [int]$Matches[1]
                     # $oldCount = [int]$Matches[2]
                     $newStart = [int]$Matches[3]
@@ -181,7 +181,7 @@ function Get-FileDiff {
                     $currentLine = $newStart
                 } elseif ($inHunk) {
                     if ($line.StartsWith('+') -and -not $line.StartsWith('++')) {
-                        # Ligne ajoutée
+                        # Ligne ajoutÃ©e
                         $changedLines.Add([PSCustomObject]@{
                                 LineNumber = $currentLine
                                 Type       = "Addition"
@@ -189,10 +189,10 @@ function Get-FileDiff {
                             })
                         $currentLine++
                     } elseif ($line.StartsWith('-') -and -not $line.StartsWith('--')) {
-                        # Ligne supprimée (ne pas incrémenter le numéro de ligne)
+                        # Ligne supprimÃ©e (ne pas incrÃ©menter le numÃ©ro de ligne)
                         # Nous ne l'ajoutons pas car elle n'existe plus dans la version actuelle
                     } elseif (-not $line.StartsWith('\\')) {
-                        # Ligne inchangée
+                        # Ligne inchangÃ©e
                         $currentLine++
                     }
                 }
@@ -200,11 +200,11 @@ function Get-FileDiff {
 
             return $changedLines
         } finally {
-            # Revenir au répertoire précédent
+            # Revenir au rÃ©pertoire prÃ©cÃ©dent
             Pop-Location
         }
     } catch {
-        Write-Error "Erreur lors de la récupération des différences du fichier $FilePath : $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des diffÃ©rences du fichier $FilePath : $_"
         return $null
     }
 }
@@ -245,10 +245,10 @@ function Invoke-PartialFileAnalysis {
     )
 
     try {
-        # Démarrer le chronomètre pour mesurer les performances
+        # DÃ©marrer le chronomÃ¨tre pour mesurer les performances
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-        # Créer un objet pour stocker les résultats
+        # CrÃ©er un objet pour stocker les rÃ©sultats
         $result = [PSCustomObject]@{
             FilePath        = $File.path
             Issues          = @()
@@ -269,10 +269,10 @@ function Invoke-PartialFileAnalysis {
             ContextStrategy = "Standard"
         }
 
-        # Générer une clé de cache unique
+        # GÃ©nÃ©rer une clÃ© de cache unique
         $cacheKey = "PartialAnalysis:$($File.path):$($File.sha):${Context}:${UseIntelligentContext}:${IncludeSymbolContext}"
 
-        # Essayer d'obtenir les résultats du cache
+        # Essayer d'obtenir les rÃ©sultats du cache
         if ($UseFileCache) {
             $cachedResult = $Cache.Get($cacheKey)
             if ($null -ne $cachedResult) {
@@ -288,7 +288,7 @@ function Invoke-PartialFileAnalysis {
         # Construire le chemin complet du fichier
         $filePath = Join-Path -Path $RepoPath -ChildPath $File.path
 
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $filePath)) {
             $result.EndTime = Get-Date
             $result.Duration = $result.EndTime - $result.StartTime
@@ -302,23 +302,23 @@ function Invoke-PartialFileAnalysis {
         $fileInfo = Get-Item -Path $filePath
         $result.FileSize = $fileInfo.Length
 
-        # Chronométrer l'obtention des différences
+        # ChronomÃ©trer l'obtention des diffÃ©rences
         $diffStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-        # Obtenir les lignes modifiées
+        # Obtenir les lignes modifiÃ©es
         $changedLines = Get-FileDiff -RepoPath $RepoPath -FilePath $File.path -BaseBranch $BaseBranch -HeadBranch $HeadBranch
 
         $diffStopwatch.Stop()
         $result.DiffTimeMs = $diffStopwatch.ElapsedMilliseconds
 
         if ($null -eq $changedLines -or $changedLines.Count -eq 0) {
-            # Analyser le fichier complet si nous ne pouvons pas obtenir les différences
+            # Analyser le fichier complet si nous ne pouvons pas obtenir les diffÃ©rences
             $analysisStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $issues = $Analyzer.AnalyzeFile($filePath)
             $analysisStopwatch.Stop()
             $result.AnalysisTimeMs = $analysisStopwatch.ElapsedMilliseconds
 
-            # Mettre à jour les résultats
+            # Mettre Ã  jour les rÃ©sultats
             $result.Issues = $issues
             $result.EndTime = Get-Date
             $result.Duration = $result.EndTime - $result.StartTime
@@ -333,15 +333,15 @@ function Invoke-PartialFileAnalysis {
             return $result
         }
 
-        # Chronométrer la détermination du contexte
+        # ChronomÃ©trer la dÃ©termination du contexte
         $contextStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-        # Déterminer les plages de lignes à analyser
+        # DÃ©terminer les plages de lignes Ã  analyser
         $linesToAnalyze = [System.Collections.Generic.HashSet[int]]::new()
 
-        # Ajouter les lignes modifiées et leur contexte
+        # Ajouter les lignes modifiÃ©es et leur contexte
         foreach ($line in $changedLines) {
-            # Ajouter la ligne modifiée
+            # Ajouter la ligne modifiÃ©e
             $linesToAnalyze.Add($line.LineNumber) | Out-Null
 
             # Ajouter les lignes de contexte standard
@@ -350,7 +350,7 @@ function Invoke-PartialFileAnalysis {
             }
         }
 
-        # Utiliser un contexte intelligent si demandé
+        # Utiliser un contexte intelligent si demandÃ©
         if ($UseIntelligentContext) {
             $result.ContextStrategy = "Intelligent"
 
@@ -360,7 +360,7 @@ function Invoke-PartialFileAnalysis {
             # Trouver les blocs logiques (fonctions, classes, etc.)
             $extension = [System.IO.Path]::GetExtension($filePath).ToLower()
 
-            # Utiliser des expressions régulières spécifiques au langage pour trouver les blocs
+            # Utiliser des expressions rÃ©guliÃ¨res spÃ©cifiques au langage pour trouver les blocs
             $blockPatterns = @{
                 ".ps1"  = '(?i)function\s+([a-z0-9_-]+)\s*\{|\s*class\s+([a-z0-9_-]+)\s*\{'
                 ".psm1" = '(?i)function\s+([a-z0-9_-]+)\s*\{|\s*class\s+([a-z0-9_-]+)\s*\{'
@@ -374,14 +374,14 @@ function Invoke-PartialFileAnalysis {
                 $pattern = $blockPatterns[$extension]
                 $blockMatches = [regex]::Matches($content, $pattern)
 
-                # Pour chaque bloc trouvé, vérifier s'il contient des lignes modifiées
+                # Pour chaque bloc trouvÃ©, vÃ©rifier s'il contient des lignes modifiÃ©es
                 foreach ($match in $blockMatches) {
                     $blockStartLine = $content.Substring(0, $match.Index).Split("`n").Count
 
                     # Trouver la fin du bloc (accolade fermante ou indentation)
                     $blockEndLine = $blockStartLine
 
-                    # Vérifier si une ligne modifiée est dans ce bloc
+                    # VÃ©rifier si une ligne modifiÃ©e est dans ce bloc
                     $blockContainsChanges = $changedLines | Where-Object { $_.LineNumber -ge $blockStartLine -and $_.LineNumber -le $blockEndLine }
 
                     if ($blockContainsChanges.Count -gt 0) {
@@ -394,7 +394,7 @@ function Invoke-PartialFileAnalysis {
             }
         }
 
-        # Ajouter le contexte des symboles si demandé
+        # Ajouter le contexte des symboles si demandÃ©
         if ($IncludeSymbolContext) {
             # Utiliser l'indexeur pour trouver les symboles (fonctions, variables, etc.)
             $indexer = New-FileContentIndexer
@@ -403,14 +403,14 @@ function Invoke-PartialFileAnalysis {
             if ($null -ne $index) {
                 $result.SymbolsAnalyzed = $index.Symbols.Count
 
-                # Pour chaque ligne modifiée, trouver les symboles utilisés
+                # Pour chaque ligne modifiÃ©e, trouver les symboles utilisÃ©s
                 foreach ($line in $changedLines) {
                     $lineNumber = $line.LineNumber
 
-                    # Trouver les symboles utilisés dans cette ligne
+                    # Trouver les symboles utilisÃ©s dans cette ligne
                     $lineSymbols = $index.Symbols.GetEnumerator() | Where-Object { $_.Value -eq $lineNumber }
 
-                    # Ajouter les lignes où ces symboles sont définis ou utilisés
+                    # Ajouter les lignes oÃ¹ ces symboles sont dÃ©finis ou utilisÃ©s
                     foreach ($symbol in $lineSymbols) {
                         $symbolName = $symbol.Key
 
@@ -428,7 +428,7 @@ function Invoke-PartialFileAnalysis {
         $contextStopwatch.Stop()
         $result.ContextTimeMs = $contextStopwatch.ElapsedMilliseconds
 
-        # Vérifier que le fichier existe et est lisible
+        # VÃ©rifier que le fichier existe et est lisible
         if (-not (Test-Path -Path $filePath -PathType Leaf)) {
             Write-Warning "Le fichier $filePath n'existe pas ou n'est pas accessible."
             $stopwatch.Stop()
@@ -436,7 +436,7 @@ function Invoke-PartialFileAnalysis {
             return $result
         }
 
-        # Chronométrer l'analyse
+        # ChronomÃ©trer l'analyse
         $analysisStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
         # Analyser le fichier complet
@@ -445,16 +445,16 @@ function Invoke-PartialFileAnalysis {
         $analysisStopwatch.Stop()
         $result.AnalysisTimeMs = $analysisStopwatch.ElapsedMilliseconds
 
-        # Chronométrer le filtrage
+        # ChronomÃ©trer le filtrage
         $filterStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-        # Filtrer les problèmes pour ne garder que ceux dans les lignes à analyser
+        # Filtrer les problÃ¨mes pour ne garder que ceux dans les lignes Ã  analyser
         $filteredIssues = $allIssues | Where-Object { $linesToAnalyze.Contains($_.Line) }
 
         $filterStopwatch.Stop()
         $result.FilterTimeMs = $filterStopwatch.ElapsedMilliseconds
 
-        # Mettre à jour les résultats
+        # Mettre Ã  jour les rÃ©sultats
         $result.Issues = $filteredIssues
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
@@ -462,7 +462,7 @@ function Invoke-PartialFileAnalysis {
         $result.ChangedLines = $changedLines.Count
         $result.AnalyzedLines = $linesToAnalyze.Count
 
-        # Stocker les résultats dans le cache
+        # Stocker les rÃ©sultats dans le cache
         if ($UseFileCache) {
             $Cache.Set($cacheKey, $result)
         }
@@ -472,7 +472,7 @@ function Invoke-PartialFileAnalysis {
 
         return $result
     } catch {
-        # Gérer les erreurs
+        # GÃ©rer les erreurs
         $result.EndTime = Get-Date
         $result.Duration = $result.EndTime - $result.StartTime
         $result.Success = $false
@@ -486,7 +486,7 @@ function Invoke-PartialFileAnalysis {
     }
 }
 
-# Fonction pour générer un rapport d'analyse
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse
 function New-AnalysisReport {
     [CmdletBinding()]
     param(
@@ -504,7 +504,7 @@ function New-AnalysisReport {
     )
 
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
@@ -523,7 +523,7 @@ function New-AnalysisReport {
         $totalChangedLines = ($Results | ForEach-Object { $_.ChangedLines } | Measure-Object -Sum).Sum
         $totalAnalyzedLines = ($Results | ForEach-Object { $_.AnalyzedLines } | Measure-Object -Sum).Sum
 
-        # Créer le rapport
+        # CrÃ©er le rapport
         $reportData = [PSCustomObject]@{
             PullRequest        = $PullRequestInfo
             Timestamp          = Get-Date
@@ -548,7 +548,7 @@ function New-AnalysisReport {
         $reportPath = Join-Path -Path $OutputDir -ChildPath "smart_partial_analysis_$($PullRequestInfo.Number).json"
         $reportData | ConvertTo-Json -Depth 10 | Set-Content -Path $reportPath -Encoding UTF8
 
-        # Générer un rapport HTML
+        # GÃ©nÃ©rer un rapport HTML
         $htmlReportPath = Join-Path -Path $OutputDir -ChildPath "smart_partial_analysis_$($PullRequestInfo.Number).html"
         $html = @"
 <!DOCTYPE html>
@@ -617,21 +617,21 @@ function New-AnalysisReport {
         <h1>Rapport d'Analyse Partielle Intelligente - Pull Request #$($PullRequestInfo.Number)</h1>
 
         <div class="summary">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <p><strong>Titre:</strong> $($PullRequestInfo.Title)</p>
             <p><strong>Branche source:</strong> $($PullRequestInfo.HeadBranch)</p>
             <p><strong>Branche cible:</strong> $($PullRequestInfo.BaseBranch)</p>
-            <p><strong>Fichiers analysés:</strong> $totalFiles</p>
-            <p><strong>Problèmes détectés:</strong> $totalIssues</p>
-            <p><strong>Durée totale:</strong> $([Math]::Round($totalDuration / 1000, 2)) secondes</p>
-            <p><strong>Durée moyenne par fichier:</strong> $([Math]::Round($averageDuration, 2)) ms</p>
+            <p><strong>Fichiers analysÃ©s:</strong> $totalFiles</p>
+            <p><strong>ProblÃ¨mes dÃ©tectÃ©s:</strong> $totalIssues</p>
+            <p><strong>DurÃ©e totale:</strong> $([Math]::Round($totalDuration / 1000, 2)) secondes</p>
+            <p><strong>DurÃ©e moyenne par fichier:</strong> $([Math]::Round($averageDuration, 2)) ms</p>
             <p><strong>Fichiers mis en cache:</strong> $cachedCount</p>
-            <p><strong>Lignes modifiées:</strong> $totalChangedLines</p>
-            <p><strong>Lignes analysées:</strong> $totalAnalyzedLines</p>
+            <p><strong>Lignes modifiÃ©es:</strong> $totalChangedLines</p>
+            <p><strong>Lignes analysÃ©es:</strong> $totalAnalyzedLines</p>
             <p><strong>Lignes de contexte:</strong> $ContextLines</p>
         </div>
 
-        <h2>Problèmes par Type</h2>
+        <h2>ProblÃ¨mes par Type</h2>
         <table>
             <tr>
                 <th>Type</th>
@@ -651,16 +651,16 @@ function New-AnalysisReport {
         $html += @"
         </table>
 
-        <h2>Fichiers avec Problèmes</h2>
+        <h2>Fichiers avec ProblÃ¨mes</h2>
         <table>
             <tr>
                 <th>Fichier</th>
-                <th>Problèmes</th>
-                <th>Lignes modifiées</th>
-                <th>Lignes analysées</th>
+                <th>ProblÃ¨mes</th>
+                <th>Lignes modifiÃ©es</th>
+                <th>Lignes analysÃ©es</th>
                 <th>Taille (KB)</th>
-                <th>Stratégie</th>
-                <th>Durée totale (ms)</th>
+                <th>StratÃ©gie</th>
+                <th>DurÃ©e totale (ms)</th>
                 <th>Analyse (ms)</th>
                 <th>Contexte (ms)</th>
                 <th>Diff (ms)</th>
@@ -689,7 +689,7 @@ function New-AnalysisReport {
         $html += @"
         </table>
 
-        <h2>Détails des Problèmes</h2>
+        <h2>DÃ©tails des ProblÃ¨mes</h2>
 "@
 
         foreach ($result in ($Results | Where-Object { $_.Success -and $_.Issues.Count -gt 0 } | Sort-Object -Property { $_.Issues.Count } -Descending)) {
@@ -701,8 +701,8 @@ function New-AnalysisReport {
                 <th>Ligne</th>
                 <th>Colonne</th>
                 <th>Message</th>
-                <th>Sévérité</th>
-                <th>Règle</th>
+                <th>SÃ©vÃ©ritÃ©</th>
+                <th>RÃ¨gle</th>
             </tr>
 "@
 
@@ -745,14 +745,14 @@ function New-AnalysisReport {
             HtmlPath = $htmlReportPath
         }
     } catch {
-        Write-Error "Erreur lors de la génération du rapport: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Obtenir les informations sur la pull request
@@ -764,11 +764,11 @@ try {
 
     # Afficher les informations sur la pull request
     Write-Host "Informations sur la pull request:" -ForegroundColor Cyan
-    Write-Host "  Numéro: #$($prInfo.Number)" -ForegroundColor White
+    Write-Host "  NumÃ©ro: #$($prInfo.Number)" -ForegroundColor White
     Write-Host "  Titre: $($prInfo.Title)" -ForegroundColor White
     Write-Host "  Branche source: $($prInfo.HeadBranch)" -ForegroundColor White
     Write-Host "  Branche cible: $($prInfo.BaseBranch)" -ForegroundColor White
-    Write-Host "  Fichiers modifiés: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  Fichiers modifiÃ©s: $($prInfo.FileCount)" -ForegroundColor White
     Write-Host "  Ajouts: $($prInfo.Additions)" -ForegroundColor White
     Write-Host "  Suppressions: $($prInfo.Deletions)" -ForegroundColor White
     Write-Host "  Modifications totales: $($prInfo.Changes)" -ForegroundColor White
@@ -779,15 +779,15 @@ try {
         $cachePath = Join-Path -Path $PSScriptRoot -ChildPath "cache\pr-analysis"
         $cache = New-PRAnalysisCache -Name "PRAnalysisCache" -CachePath $cachePath
         if ($null -eq $cache) {
-            Write-Warning "Impossible d'initialiser le cache. L'analyse sera effectuée sans cache."
+            Write-Warning "Impossible d'initialiser le cache. L'analyse sera effectuÃ©e sans cache."
             $UseCache = $false
         }
     }
 
-    # Créer l'analyseur syntaxique
+    # CrÃ©er l'analyseur syntaxique
     $analyzer = New-SyntaxAnalyzer -UseCache $UseCache -Cache $cache
     if ($null -eq $analyzer) {
-        Write-Error "Impossible de créer l'analyseur syntaxique."
+        Write-Error "Impossible de crÃ©er l'analyseur syntaxique."
         exit 1
     }
 
@@ -795,8 +795,8 @@ try {
     $results = [System.Collections.Generic.List[object]]::new()
     $totalFiles = $prInfo.Files.Count
 
-    Write-Host "`nDémarrage de l'analyse partielle intelligente..." -ForegroundColor Cyan
-    Write-Host "  Fichiers modifiés: $totalFiles" -ForegroundColor White
+    Write-Host "`nDÃ©marrage de l'analyse partielle intelligente..." -ForegroundColor Cyan
+    Write-Host "  Fichiers modifiÃ©s: $totalFiles" -ForegroundColor White
     Write-Host "  Lignes de contexte: $ContextLines" -ForegroundColor White
     Write-Host "  Utilisation du cache: $UseCache" -ForegroundColor White
 
@@ -811,28 +811,28 @@ try {
         # Analyser le fichier
         $fileResult = Invoke-PartialFileAnalysis -File $file -Analyzer $analyzer -Cache $cache -UseFileCache $UseCache -RepoPath $RepositoryPath -BaseBranch $prInfo.BaseBranch -HeadBranch $prInfo.HeadBranch -Context $ContextLines
 
-        # Ajouter le résultat à la liste
+        # Ajouter le rÃ©sultat Ã  la liste
         $results.Add($fileResult)
     }
 
     Write-Progress -Activity "Analyse partielle intelligente" -Completed
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $reportPaths = New-AnalysisReport -Results $results -PullRequestInfo $prInfo -OutputDir $OutputPath -ContextLines $ContextLines
     if ($null -eq $reportPaths) {
-        Write-Error "Impossible de générer le rapport d'analyse."
+        Write-Error "Impossible de gÃ©nÃ©rer le rapport d'analyse."
         exit 1
     }
 
-    # Arrêter le chronomètre
+    # ArrÃªter le chronomÃ¨tre
     $stopwatch.Stop()
 
-    # Afficher un résumé
-    Write-Host "`nAnalyse terminée en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
-    Write-Host "  Fichiers analysés: $totalFiles" -ForegroundColor White
-    Write-Host "  Problèmes détectés: $(($results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum)" -ForegroundColor White
-    Write-Host "  Lignes modifiées: $(($results | ForEach-Object { $_.ChangedLines } | Measure-Object -Sum).Sum)" -ForegroundColor White
-    Write-Host "  Lignes analysées: $(($results | ForEach-Object { $_.AnalyzedLines } | Measure-Object -Sum).Sum)" -ForegroundColor White
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nAnalyse terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
+    Write-Host "  Fichiers analysÃ©s: $totalFiles" -ForegroundColor White
+    Write-Host "  ProblÃ¨mes dÃ©tectÃ©s: $(($results | Where-Object { $_.Success } | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum)" -ForegroundColor White
+    Write-Host "  Lignes modifiÃ©es: $(($results | ForEach-Object { $_.ChangedLines } | Measure-Object -Sum).Sum)" -ForegroundColor White
+    Write-Host "  Lignes analysÃ©es: $(($results | ForEach-Object { $_.AnalyzedLines } | Measure-Object -Sum).Sum)" -ForegroundColor White
 
     if ($UseCache) {
         $cacheHits = ($results | Where-Object { $_.FromCache } | Measure-Object).Count
@@ -842,12 +842,12 @@ try {
     Write-Host "  Rapport JSON: $($reportPaths.JsonPath)" -ForegroundColor White
     Write-Host "  Rapport HTML: $($reportPaths.HtmlPath)" -ForegroundColor White
 
-    # Ouvrir le rapport HTML dans le navigateur par défaut
+    # Ouvrir le rapport HTML dans le navigateur par dÃ©faut
     if (Test-Path -Path $reportPaths.HtmlPath) {
         Start-Process $reportPaths.HtmlPath
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $results
 } catch {
     Write-Error "Erreur lors de l'analyse partielle intelligente: $_"

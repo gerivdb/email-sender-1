@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit un seuil d'opérations pour un compteur.
+    DÃ©finit un seuil d'opÃ©rations pour un compteur.
 
 .DESCRIPTION
-    La fonction Set-RoadmapOperationThreshold définit un seuil d'opérations pour un compteur.
-    Si le nombre d'opérations dépasse ce seuil, un avertissement sera journalisé.
+    La fonction Set-RoadmapOperationThreshold dÃ©finit un seuil d'opÃ©rations pour un compteur.
+    Si le nombre d'opÃ©rations dÃ©passe ce seuil, un avertissement sera journalisÃ©.
 
 .PARAMETER Name
     Le nom du compteur.
 
 .PARAMETER Threshold
-    Le seuil d'opérations.
+    Le seuil d'opÃ©rations.
 
 .EXAMPLE
     Set-RoadmapOperationThreshold -Name "MaFonction" -Threshold 1000
-    Définit un seuil de 1000 opérations pour le compteur nommé "MaFonction".
+    DÃ©finit un seuil de 1000 opÃ©rations pour le compteur nommÃ© "MaFonction".
 
 .OUTPUTS
     [void]
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Set-RoadmapOperationThreshold {
     [CmdletBinding()]
@@ -42,14 +42,14 @@ function Set-RoadmapOperationThreshold {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction de seuil d'opérations
+    # Appeler la fonction de seuil d'opÃ©rations
     Set-OperationThreshold -Name $Name -Threshold $Threshold
 }

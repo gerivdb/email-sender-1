@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse de scripts PowerShell à grande échelle avec l'architecture hybride (version simplifiée).
+    Analyse de scripts PowerShell Ã  grande Ã©chelle avec l'architecture hybride (version simplifiÃ©e).
 .DESCRIPTION
     Ce script utilise l'architecture hybride PowerShell-Python pour analyser
-    efficacement un grand nombre de scripts PowerShell en parallèle.
+    efficacement un grand nombre de scripts PowerShell en parallÃ¨le.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -30,7 +30,7 @@ param(
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le script Python d'analyse
+# CrÃ©er le script Python d'analyse
 $pythonScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "script_analyzer_simple.py"
 if (-not (Test-Path -Path $pythonScriptPath)) {
     $pythonScript = @"
@@ -66,7 +66,7 @@ def analyze_powershell_script(file_path):
         cmdlet_pattern = r'([A-Za-z0-9]+-[A-Za-z0-9]+)'
         cmdlets = re.findall(cmdlet_pattern, content)
 
-        # Calculer la complexité approximative
+        # Calculer la complexitÃ© approximative
         if_count = len(re.findall(r'\bif\b', content, re.IGNORECASE))
         for_count = len(re.findall(r'\bfor\b', content, re.IGNORECASE))
         foreach_count = len(re.findall(r'\bforeach\b', content, re.IGNORECASE))
@@ -74,7 +74,7 @@ def analyze_powershell_script(file_path):
         switch_count = len(re.findall(r'\bswitch\b', content, re.IGNORECASE))
         complexity = 1 + if_count + for_count + foreach_count + while_count + switch_count
 
-        # Résultat de l'analyse
+        # RÃ©sultat de l'analyse
         return {
             "file_path": file_path,
             "file_name": os.path.basename(file_path),
@@ -95,13 +95,13 @@ def analyze_powershell_script(file_path):
         }
 
 def analyze_scripts_batch(batch):
-    """Analyse un lot de scripts PowerShell en parallèle."""
-    # Utiliser tous les cœurs disponibles
+    """Analyse un lot de scripts PowerShell en parallÃ¨le."""
+    # Utiliser tous les cÅ“urs disponibles
     num_processes = min(multiprocessing.cpu_count(), len(batch))
 
-    # Créer un pool de processus
+    # CrÃ©er un pool de processus
     with multiprocessing.Pool(processes=num_processes) as pool:
-        # Exécuter l'analyse en parallèle
+        # ExÃ©cuter l'analyse en parallÃ¨le
         results = pool.map(analyze_powershell_script, batch)
 
     return results
@@ -109,17 +109,17 @@ def analyze_scripts_batch(batch):
 def main():
     """Fonction principale."""
     parser = argparse.ArgumentParser(description='Analyse de scripts PowerShell')
-    parser.add_argument('--input', required=True, help='Fichier JSON contenant la liste des fichiers à analyser')
+    parser.add_argument('--input', required=True, help='Fichier JSON contenant la liste des fichiers Ã  analyser')
     parser.add_argument('--output', required=True, help='Fichier de sortie JSON')
 
     args = parser.parse_args()
 
-    # Charger la liste des fichiers à analyser
+    # Charger la liste des fichiers Ã  analyser
     try:
         with open(args.input, 'r', encoding='utf-8') as f:
             file_paths = json.load(f)
     except Exception as e:
-        print(f"Erreur lors de la lecture du fichier d'entrée : {e}", file=sys.stderr)
+        print(f"Erreur lors de la lecture du fichier d'entrÃ©e : {e}", file=sys.stderr)
         sys.exit(1)
 
     # Analyser les scripts
@@ -129,12 +129,12 @@ def main():
         print(f"Erreur lors de l'analyse des scripts : {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Écrire les résultats
+    # Ã‰crire les rÃ©sultats
     try:
         with open(args.output, 'w', encoding='utf-8') as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"Erreur lors de l'écriture du fichier de sortie : {e}", file=sys.stderr)
+        print(f"Erreur lors de l'Ã©criture du fichier de sortie : {e}", file=sys.stderr)
         sys.exit(1)
 
     sys.exit(0)
@@ -144,7 +144,7 @@ if __name__ == '__main__':
 "@
 
     $pythonScript | Out-File -FilePath $pythonScriptPath -Encoding utf8
-    Write-Host "Script Python d'analyse créé : $pythonScriptPath" -ForegroundColor Green
+    Write-Host "Script Python d'analyse crÃ©Ã© : $pythonScriptPath" -ForegroundColor Green
 }
 
 # Fonction pour trouver tous les scripts PowerShell
@@ -185,7 +185,7 @@ function Start-ScriptAnalysis {
         [switch]$UseCache
     )
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -193,18 +193,18 @@ function Start-ScriptAnalysis {
     # Trouver tous les scripts PowerShell
     Write-Host "Recherche des scripts PowerShell dans $ScriptsPath..." -ForegroundColor Cyan
     $scriptFiles = Find-PowerShellScripts -Path $ScriptsPath -Patterns $FilePatterns
-    Write-Host "Nombre de scripts trouvés : $($scriptFiles.Count)" -ForegroundColor Green
+    Write-Host "Nombre de scripts trouvÃ©s : $($scriptFiles.Count)" -ForegroundColor Green
 
-    # Gestion du cache simplifiée
+    # Gestion du cache simplifiÃ©e
     if ($UseCache) {
-        # Implémentation simplifiée du cache pour les tests
-        # Utilise un cache en mémoire pour accélérer les analyses répétées
+        # ImplÃ©mentation simplifiÃ©e du cache pour les tests
+        # Utilise un cache en mÃ©moire pour accÃ©lÃ©rer les analyses rÃ©pÃ©tÃ©es
         $script:cachedResults = @{}
-        Write-Verbose "Cache activé pour l'analyse des scripts"
+        Write-Verbose "Cache activÃ© pour l'analyse des scripts"
     }
 
-    # Analyser les scripts en parallèle
-    Write-Host "Analyse des scripts en parallèle..." -ForegroundColor Cyan
+    # Analyser les scripts en parallÃ¨le
+    Write-Host "Analyse des scripts en parallÃ¨le..." -ForegroundColor Cyan
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Analyser les scripts directement en PowerShell pour simplifier
@@ -213,7 +213,7 @@ function Start-ScriptAnalysis {
     foreach ($scriptFile in $scriptFiles) {
         Write-Host "Analyse de $scriptFile..." -ForegroundColor Cyan
 
-        # Vérifier si le fichier est déjà en cache
+        # VÃ©rifier si le fichier est dÃ©jÃ  en cache
         $fileKey = [System.IO.Path]::GetFullPath($scriptFile)
         if ($UseCache -and $script:cachedResults.ContainsKey($fileKey)) {
             Write-Verbose "Utilisation du cache pour $scriptFile"
@@ -235,7 +235,7 @@ function Start-ScriptAnalysis {
             # Extraire les fonctions
             $functions = [regex]::Matches($content, 'function\s+([A-Za-z0-9_-]+)') | ForEach-Object { $_.Groups[1].Value }
 
-            # Calculer la complexité approximative
+            # Calculer la complexitÃ© approximative
             $ifCount = [regex]::Matches($content, '\bif\b').Count
             $forCount = [regex]::Matches($content, '\bfor\b').Count
             $foreachCount = [regex]::Matches($content, '\bforeach\b').Count
@@ -243,7 +243,7 @@ function Start-ScriptAnalysis {
             $switchCount = [regex]::Matches($content, '\bswitch\b').Count
             $complexity = 1 + $ifCount + $forCount + $foreachCount + $whileCount + $switchCount
 
-            # Créer le résultat
+            # CrÃ©er le rÃ©sultat
             $result = [PSCustomObject]@{
                 file_path = $scriptFile
                 file_name = [System.IO.Path]::GetFileName($scriptFile)
@@ -258,7 +258,7 @@ function Start-ScriptAnalysis {
 
             $results += $result
 
-            # Stocker le résultat dans le cache si activé
+            # Stocker le rÃ©sultat dans le cache si activÃ©
             if ($UseCache) {
                 $script:cachedResults[$fileKey] = $result
             }
@@ -275,26 +275,26 @@ function Start-ScriptAnalysis {
     }
 
     $stopwatch.Stop()
-    Write-Host "Analyse terminée en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
+    Write-Host "Analyse terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Green
 
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $resultsPath = Join-Path -Path $OutputPath -ChildPath "analysis-results.json"
     $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $resultsPath -Encoding utf8
-    Write-Host "Résultats enregistrés dans $resultsPath" -ForegroundColor Green
+    Write-Host "RÃ©sultats enregistrÃ©s dans $resultsPath" -ForegroundColor Green
 
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $totalFiles = $results.Count
     $totalLines = ($results | Measure-Object -Property total_lines -Sum).Sum
     $totalCodeLines = ($results | Measure-Object -Property code_lines -Sum).Sum
     $totalCommentLines = ($results | Measure-Object -Property comment_lines -Sum).Sum
     $averageComplexity = ($results | Measure-Object -Property complexity -Average).Average
 
-    Write-Host "`nRésumé de l'analyse :" -ForegroundColor Yellow
+    Write-Host "`nRÃ©sumÃ© de l'analyse :" -ForegroundColor Yellow
     Write-Host "  Nombre de fichiers : $totalFiles" -ForegroundColor Yellow
     Write-Host "  Nombre total de lignes : $totalLines" -ForegroundColor Yellow
     Write-Host "  Nombre de lignes de code : $totalCodeLines" -ForegroundColor Yellow
     Write-Host "  Nombre de lignes de commentaires : $totalCommentLines" -ForegroundColor Yellow
-    Write-Host "  Complexité moyenne : $([Math]::Round($averageComplexity, 2))" -ForegroundColor Yellow
+    Write-Host "  ComplexitÃ© moyenne : $([Math]::Round($averageComplexity, 2))" -ForegroundColor Yellow
 
     # Identifier les fichiers les plus complexes
     $complexFiles = $results |
@@ -305,14 +305,14 @@ function Start-ScriptAnalysis {
     if ($complexFiles) {
         Write-Host "`nFichiers les plus complexes :" -ForegroundColor Yellow
         foreach ($file in $complexFiles) {
-            Write-Host "  $($file.file_name) - Complexité : $($file.complexity)" -ForegroundColor Yellow
+            Write-Host "  $($file.file_name) - ComplexitÃ© : $($file.complexity)" -ForegroundColor Yellow
         }
     }
 
     return $results
 }
 
-# Exécuter l'analyse
+# ExÃ©cuter l'analyse
 try {
     $results = Start-ScriptAnalysis `
         -ScriptsPath $ScriptsPath `
@@ -320,9 +320,9 @@ try {
         -FilePatterns $FilePatterns `
         -UseCache:$UseCache
 
-    Write-Host "`nAnalyse terminée avec succès !" -ForegroundColor Green
+    Write-Host "`nAnalyse terminÃ©e avec succÃ¨s !" -ForegroundColor Green
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $results
 }
 catch {

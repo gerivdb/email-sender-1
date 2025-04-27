@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour la fonction de détection d'encodage.
+    Tests unitaires pour la fonction de dÃ©tection d'encodage.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider le bon fonctionnement
-    de la fonction de détection d'encodage développée dans le cadre de la
+    de la fonction de dÃ©tection d'encodage dÃ©veloppÃ©e dans le cadre de la
     section 2.1.2 de la roadmap.
 
 .NOTES
@@ -21,91 +21,91 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
         Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
     }
     catch {
-        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas être exécutés."
+        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas Ãªtre exÃ©cutÃ©s."
         return
     }
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-detection\analysis\Detect-FileEncoding.ps1"
 
-# Créer le répertoire de test si nécessaire
+# CrÃ©er le rÃ©pertoire de test si nÃ©cessaire
 $testSamplesPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\format-detection\tests\encoding_samples"
 if (-not (Test-Path -Path $testSamplesPath -PathType Container)) {
     New-Item -Path $testSamplesPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour créer des fichiers d'échantillon pour les tests
+# Fonction pour crÃ©er des fichiers d'Ã©chantillon pour les tests
 function New-EncodingSampleFiles {
     param (
         [string]$TestDirectory
     )
 
-    # Nettoyer le répertoire de test
+    # Nettoyer le rÃ©pertoire de test
     Get-ChildItem -Path $TestDirectory -File | Remove-Item -Force
 
     # Contenu multilingue pour les tests
     $multilingualContent = @"
-=== Test de détection d'encodage ===
+=== Test de dÃ©tection d'encodage ===
 
 == Texte latin (ASCII) ==
 The quick brown fox jumps over the lazy dog.
 0123456789 !@#$%^&*()_+-=[]{}|;':",./<>?
 
-== Texte français (Latin-1) ==
-Voici un texte en français avec des accents : éèêëàâäôöùûüÿç
-Les œufs et les bœufs sont dans le pré.
+== Texte franÃ§ais (Latin-1) ==
+Voici un texte en franÃ§ais avec des accents : Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§
+Les Å“ufs et les bÅ“ufs sont dans le prÃ©.
 
 == Texte grec (UTF-8) ==
-Ξεσκεπάζω την ψυχοφθόρα βδελυγμία.
-Καλημέρα, πώς είστε σήμερα;
+ÎžÎµÏƒÎºÎµÏ€Î¬Î¶Ï‰ Ï„Î·Î½ ÏˆÏ…Ï‡Î¿Ï†Î¸ÏŒÏÎ± Î²Î´ÎµÎ»Ï…Î³Î¼Î¯Î±.
+ÎšÎ±Î»Î·Î¼Î­ÏÎ±, Ï€ÏŽÏ‚ ÎµÎ¯ÏƒÏ„Îµ ÏƒÎ®Î¼ÎµÏÎ±;
 
 == Texte russe (UTF-8) ==
-Съешь же ещё этих мягких французских булок, да выпей чаю.
-Широкая электрификация южных губерний даст мощный толчок подъёму сельского хозяйства.
+Ð¡ÑŠÐµÑˆÑŒ Ð¶Ðµ ÐµÑ‰Ñ‘ ÑÑ‚Ð¸Ñ… Ð¼ÑÐ³ÐºÐ¸Ñ… Ñ„Ñ€Ð°Ð½Ñ†ÑƒÐ·ÑÐºÐ¸Ñ… Ð±ÑƒÐ»Ð¾Ðº, Ð´Ð° Ð²Ñ‹Ð¿ÐµÐ¹ Ñ‡Ð°ÑŽ.
+Ð¨Ð¸Ñ€Ð¾ÐºÐ°Ñ ÑÐ»ÐµÐºÑ‚Ñ€Ð¸Ñ„Ð¸ÐºÐ°Ñ†Ð¸Ñ ÑŽÐ¶Ð½Ñ‹Ñ… Ð³ÑƒÐ±ÐµÑ€Ð½Ð¸Ð¹ Ð´Ð°ÑÑ‚ Ð¼Ð¾Ñ‰Ð½Ñ‹Ð¹ Ñ‚Ð¾Ð»Ñ‡Ð¾Ðº Ð¿Ð¾Ð´ÑŠÑ‘Ð¼Ñƒ ÑÐµÐ»ÑŒÑÐºÐ¾Ð³Ð¾ Ñ…Ð¾Ð·ÑÐ¹ÑÑ‚Ð²Ð°.
 
 == Texte japonais (UTF-8) ==
-いろはにほへと ちりぬるを わかよたれそ つねならむ
-私は日本語を勉強しています。
+ã„ã‚ã¯ã«ã»ã¸ã¨ ã¡ã‚Šã¬ã‚‹ã‚’ ã‚ã‹ã‚ˆãŸã‚Œã ã¤ã­ãªã‚‰ã‚€
+ç§ã¯æ—¥æœ¬èªžã‚’å‹‰å¼·ã—ã¦ã„ã¾ã™ã€‚
 
 == Texte emoji (UTF-8) ==
-😀 😃 😄 😁 😆 😅 😂 🤣 🥲 ☺️ 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😗 😙 😚 😋 😛 😝 😜
+ðŸ˜€ ðŸ˜ƒ ðŸ˜„ ðŸ˜ ðŸ˜† ðŸ˜… ðŸ˜‚ ðŸ¤£ ðŸ¥² â˜ºï¸ ðŸ˜Š ðŸ˜‡ ðŸ™‚ ðŸ™ƒ ðŸ˜‰ ðŸ˜Œ ðŸ˜ ðŸ¥° ðŸ˜˜ ðŸ˜— ðŸ˜™ ðŸ˜š ðŸ˜‹ ðŸ˜› ðŸ˜ ðŸ˜œ
 "@
 
-    # Créer un fichier ASCII
+    # CrÃ©er un fichier ASCII
     $asciiContent = "This is a simple ASCII text file."
     $asciiPath = Join-Path -Path $TestDirectory -ChildPath "ascii.txt"
     [System.IO.File]::WriteAllText($asciiPath, $asciiContent, [System.Text.ASCIIEncoding]::new())
 
-    # Créer un fichier UTF-8 sans BOM
+    # CrÃ©er un fichier UTF-8 sans BOM
     $utf8Path = Join-Path -Path $TestDirectory -ChildPath "utf8.txt"
     [System.IO.File]::WriteAllText($utf8Path, $multilingualContent, [System.Text.UTF8Encoding]::new($false))
 
-    # Créer un fichier UTF-8 avec BOM
+    # CrÃ©er un fichier UTF-8 avec BOM
     $utf8BomPath = Join-Path -Path $TestDirectory -ChildPath "utf8-bom.txt"
     [System.IO.File]::WriteAllText($utf8BomPath, $multilingualContent, [System.Text.UTF8Encoding]::new($true))
 
-    # Créer un fichier UTF-16LE sans BOM
+    # CrÃ©er un fichier UTF-16LE sans BOM
     $utf16LEPath = Join-Path -Path $TestDirectory -ChildPath "utf16le.txt"
     [System.IO.File]::WriteAllText($utf16LEPath, $multilingualContent, [System.Text.UnicodeEncoding]::new($false, $false))
 
-    # Créer un fichier UTF-16LE avec BOM
+    # CrÃ©er un fichier UTF-16LE avec BOM
     $utf16LEBomPath = Join-Path -Path $TestDirectory -ChildPath "utf16le-bom.txt"
     [System.IO.File]::WriteAllText($utf16LEBomPath, $multilingualContent, [System.Text.UnicodeEncoding]::new($false, $true))
 
-    # Créer un fichier UTF-16BE sans BOM
+    # CrÃ©er un fichier UTF-16BE sans BOM
     $utf16BEPath = Join-Path -Path $TestDirectory -ChildPath "utf16be.txt"
     [System.IO.File]::WriteAllText($utf16BEPath, $multilingualContent, [System.Text.UnicodeEncoding]::new($true, $false))
 
-    # Créer un fichier UTF-16BE avec BOM
+    # CrÃ©er un fichier UTF-16BE avec BOM
     $utf16BEBomPath = Join-Path -Path $TestDirectory -ChildPath "utf16be-bom.txt"
     [System.IO.File]::WriteAllText($utf16BEBomPath, $multilingualContent, [System.Text.UnicodeEncoding]::new($true, $true))
 
-    # Créer un fichier Windows-1252
+    # CrÃ©er un fichier Windows-1252
     $windows1252Path = Join-Path -Path $TestDirectory -ChildPath "windows1252.txt"
     [System.IO.File]::WriteAllText($windows1252Path, $multilingualContent, [System.Text.Encoding]::GetEncoding(1252))
 
-    # Créer un fichier binaire
+    # CrÃ©er un fichier binaire
     $binaryPath = Join-Path -Path $TestDirectory -ChildPath "binary.bin"
     $binaryData = [byte[]]::new(256)
     for ($i = 0; $i -lt 256; $i++) {
@@ -113,7 +113,7 @@ Les œufs et les bœufs sont dans le pré.
     }
     [System.IO.File]::WriteAllBytes($binaryPath, $binaryData)
 
-    # Créer un fichier avec des octets nuls (simulant UTF-16)
+    # CrÃ©er un fichier avec des octets nuls (simulant UTF-16)
     $nullBytesPath = Join-Path -Path $TestDirectory -ChildPath "null_bytes.bin"
     $nullBytesData = [byte[]]::new(256)
     for ($i = 0; $i -lt 256; $i += 2) {
@@ -122,7 +122,7 @@ Les œufs et les bœufs sont dans le pré.
     }
     [System.IO.File]::WriteAllBytes($nullBytesPath, $nullBytesData)
 
-    # Retourner un dictionnaire des fichiers créés avec leurs encodages attendus
+    # Retourner un dictionnaire des fichiers crÃ©Ã©s avec leurs encodages attendus
     return @{
         $asciiPath = "ASCII"
         $utf8Path = "UTF-8"
@@ -137,32 +137,32 @@ Les œufs et les bœufs sont dans le pré.
     }
 }
 
-# Créer les fichiers d'échantillon
+# CrÃ©er les fichiers d'Ã©chantillon
 $expectedEncodings = New-EncodingSampleFiles -TestDirectory $testSamplesPath
 
-# Démarrer les tests Pester
-Describe "Tests de détection d'encodage" {
+# DÃ©marrer les tests Pester
+Describe "Tests de dÃ©tection d'encodage" {
     BeforeAll {
-        # Charger le script à tester
+        # Charger le script Ã  tester
         . $scriptPath
     }
 
-    Context "Détection des BOM" {
-        It "Détecte correctement l'encodage UTF-8 avec BOM" {
+    Context "DÃ©tection des BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-8 avec BOM" {
             $utf8BomPath = Join-Path -Path $testSamplesPath -ChildPath "utf8-bom.txt"
             $result = Get-FileEncoding -FilePath $utf8BomPath
             $result.Encoding | Should -Be "UTF-8-BOM"
             $result.BOM | Should -Be $true
         }
 
-        It "Détecte correctement l'encodage UTF-16LE avec BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-16LE avec BOM" {
             $utf16LEBomPath = Join-Path -Path $testSamplesPath -ChildPath "utf16le-bom.txt"
             $result = Get-FileEncoding -FilePath $utf16LEBomPath
             $result.Encoding | Should -Be "UTF-16LE"
             $result.BOM | Should -Be $true
         }
 
-        It "Détecte correctement l'encodage UTF-16BE avec BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-16BE avec BOM" {
             $utf16BEBomPath = Join-Path -Path $testSamplesPath -ChildPath "utf16be-bom.txt"
             $result = Get-FileEncoding -FilePath $utf16BEBomPath
             $result.Encoding | Should -Be "UTF-16BE"
@@ -170,36 +170,36 @@ Describe "Tests de détection d'encodage" {
         }
     }
 
-    Context "Détection sans BOM" {
-        It "Détecte correctement l'encodage ASCII" {
+    Context "DÃ©tection sans BOM" {
+        It "DÃ©tecte correctement l'encodage ASCII" {
             $asciiPath = Join-Path -Path $testSamplesPath -ChildPath "ascii.txt"
             $result = Get-FileEncoding -FilePath $asciiPath
             $result.Encoding | Should -Be "ASCII"
             $result.BOM | Should -Be $false
         }
 
-        It "Détecte correctement l'encodage UTF-8 sans BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-8 sans BOM" {
             $utf8Path = Join-Path -Path $testSamplesPath -ChildPath "utf8.txt"
             $result = Get-FileEncoding -FilePath $utf8Path
             $result.Encoding | Should -Be "UTF-8"
             $result.BOM | Should -Be $false
         }
 
-        It "Détecte correctement l'encodage UTF-16LE sans BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-16LE sans BOM" {
             $utf16LEPath = Join-Path -Path $testSamplesPath -ChildPath "utf16le.txt"
             $result = Get-FileEncoding -FilePath $utf16LEPath
             $result.Encoding | Should -Be "UTF-16LE"
             $result.BOM | Should -Be $false
         }
 
-        It "Détecte correctement l'encodage UTF-16BE sans BOM" {
+        It "DÃ©tecte correctement l'encodage UTF-16BE sans BOM" {
             $utf16BEPath = Join-Path -Path $testSamplesPath -ChildPath "utf16be.txt"
             $result = Get-FileEncoding -FilePath $utf16BEPath
             $result.Encoding | Should -Be "UTF-16BE"
             $result.BOM | Should -Be $false
         }
 
-        It "Détecte correctement l'encodage Windows-1252" {
+        It "DÃ©tecte correctement l'encodage Windows-1252" {
             $windows1252Path = Join-Path -Path $testSamplesPath -ChildPath "windows1252.txt"
             $result = Get-FileEncoding -FilePath $windows1252Path
             $result.Encoding | Should -Be "Windows-1252"
@@ -207,15 +207,15 @@ Describe "Tests de détection d'encodage" {
         }
     }
 
-    Context "Détection de fichiers binaires" {
-        It "Détecte correctement un fichier binaire" {
+    Context "DÃ©tection de fichiers binaires" {
+        It "DÃ©tecte correctement un fichier binaire" {
             $binaryPath = Join-Path -Path $testSamplesPath -ChildPath "binary.bin"
             $result = Get-FileEncoding -FilePath $binaryPath
             $result.Encoding | Should -Be "BINARY"
             $result.BOM | Should -Be $false
         }
 
-        It "Détecte correctement un fichier avec des octets nuls" {
+        It "DÃ©tecte correctement un fichier avec des octets nuls" {
             $nullBytesPath = Join-Path -Path $testSamplesPath -ChildPath "null_bytes.bin"
             $result = Get-FileEncoding -FilePath $nullBytesPath
             $result.Encoding | Should -Be "UTF-16LE"
@@ -232,7 +232,7 @@ Describe "Tests de détection d'encodage" {
     }
 
     AfterAll {
-        # Nettoyer les fichiers d'échantillon
+        # Nettoyer les fichiers d'Ã©chantillon
         Get-ChildItem -Path $testSamplesPath -File | Remove-Item -Force
     }
 }

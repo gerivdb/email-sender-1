@@ -1,4 +1,4 @@
-# Module manifest for module 'RoadmapParser'
+﻿# Module manifest for module 'RoadmapParser'
 @{
     # Script module or binary module file associated with this manifest.
     RootModule = 'RoadmapParser.psm1'

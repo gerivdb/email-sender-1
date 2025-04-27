@@ -1,4 +1,4 @@
-# Script pour detecter les references de variables dans les chaines accentuees
+﻿# Script pour detecter les references de variables dans les chaines accentuees
 # Version ASCII uniquement pour eviter les problemes d'encodage
 
 [CmdletBinding()]
@@ -79,9 +79,9 @@ function Find-VariableReferences {
             $lineNumber++
 
             # Verifier si la ligne contient des references de variables et des caracteres accentues
-            # S'assurer que les variables et les caractères accentués sont bien liés (proches l'un de l'autre)
+            # S'assurer que les variables et les caractÃ¨res accentuÃ©s sont bien liÃ©s (proches l'un de l'autre)
             if ($line -match $variablePattern -and $line -match $accentedPattern) {
-                # Vérifier si les variables et les caractères accentués sont proches l'un de l'autre
+                # VÃ©rifier si les variables et les caractÃ¨res accentuÃ©s sont proches l'un de l'autre
                 $variablePositions = [regex]::Matches($line, $variablePattern) | ForEach-Object { $_.Index }
                 $accentedPositions = [regex]::Matches($line, $accentedPattern) | ForEach-Object { $_.Index }
 
@@ -89,7 +89,7 @@ function Find-VariableReferences {
                 foreach ($varPos in $variablePositions) {
                     foreach ($accPos in $accentedPositions) {
                         if ([Math]::Abs($varPos - $accPos) -lt 20) {
-                            # 20 caractères de proximité
+                            # 20 caractÃ¨res de proximitÃ©
                             $closeProximity = $true
                             break
                         }

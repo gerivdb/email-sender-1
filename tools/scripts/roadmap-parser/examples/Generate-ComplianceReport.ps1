@@ -1,10 +1,10 @@
-# Generate-ComplianceReport.ps1
-# Exemple d'utilisation du script de génération de rapport de conformité
+﻿# Generate-ComplianceReport.ps1
+# Exemple d'utilisation du script de gÃ©nÃ©ration de rapport de conformitÃ©
 
-# Chemin du script de génération de rapport
+# Chemin du script de gÃ©nÃ©ration de rapport
 $reportScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\scripts\Generate-SqlPermissionComplianceReport.ps1"
 
-# Paramètres du rapport
+# ParamÃ¨tres du rapport
 $params = @{
     ServerInstance = "localhost\SQLEXPRESS"  # Remplacer par votre instance SQL Server
     OutputPath = "C:\Temp\SqlPermissionComplianceReport.html"
@@ -13,10 +13,10 @@ $params = @{
     Verbose = $true
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 & $reportScriptPath @params
 
-# Exemple avec envoi d'email (décommenter et modifier les paramètres pour utiliser)
+# Exemple avec envoi d'email (dÃ©commenter et modifier les paramÃ¨tres pour utiliser)
 <#
 $emailParams = @{
     ServerInstance = "localhost\SQLEXPRESS"
@@ -27,7 +27,7 @@ $emailParams = @{
     SmtpServer = "smtp.example.com"
     FromAddress = "reports@example.com"
     ToAddress = @("admin@example.com", "security@example.com")
-    Subject = "Rapport de conformité SQL Server - $(Get-Date -Format 'yyyy-MM-dd')"
+    Subject = "Rapport de conformitÃ© SQL Server - $(Get-Date -Format 'yyyy-MM-dd')"
     Verbose = $true
 }
 

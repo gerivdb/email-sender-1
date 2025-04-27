@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests pour le module TestHelpers.psm1.
 .DESCRIPTION
-    Ce script teste les fonctionnalités du module TestHelpers.psm1 qui est utilisé
-    pour faciliter les tests unitaires du système d'analyse de code.
+    Ce script teste les fonctionnalitÃ©s du module TestHelpers.psm1 qui est utilisÃ©
+    pour faciliter les tests unitaires du systÃ¨me d'analyse de code.
 .NOTES
     Auteur: Augment Agent
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
 # Importer le module Pester si disponible
@@ -16,10 +16,10 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     return
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Le module TestHelpers.psm1 n'existe pas à l'emplacement: $moduleToTest"
+    throw "Le module TestHelpers.psm1 n'existe pas Ã  l'emplacement: $moduleToTest"
 }
 
 # Importer le module
@@ -27,7 +27,7 @@ Import-Module -Name $moduleToTest -Force
 
 Describe "Module TestHelpers" {
     Context "Fonction New-TestEnvironment" {
-        It "Crée un environnement de test avec un nom par défaut" {
+        It "CrÃ©e un environnement de test avec un nom par dÃ©faut" {
             # Act
             $testEnv = New-TestEnvironment
 
@@ -40,7 +40,7 @@ Describe "Module TestHelpers" {
             Test-Path -Path $testEnv.TestJsonFile | Should -BeTrue
         }
 
-        It "Crée un environnement de test avec un nom personnalisé" {
+        It "CrÃ©e un environnement de test avec un nom personnalisÃ©" {
             # Act
             $testName = "CustomTest"
             $testEnv = New-TestEnvironment -TestName $testName
@@ -55,7 +55,7 @@ Describe "Module TestHelpers" {
             Test-Path -Path $testEnv.TestJsonFile | Should -BeTrue
         }
 
-        It "Crée des fichiers avec le contenu attendu" {
+        It "CrÃ©e des fichiers avec le contenu attendu" {
             # Act
             $testEnv = New-TestEnvironment
 
@@ -69,7 +69,7 @@ Describe "Module TestHelpers" {
             $htmlContent = Get-Content -Path $testEnv.TestHtmlFile -Raw
             $htmlContent | Should -Match "<!DOCTYPE html>"
             $htmlContent | Should -Match "<title>Test HTML</title>"
-            $htmlContent | Should -Match "éèêëàâäôöùûüÿç"
+            $htmlContent | Should -Match "Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§"
 
             $jsonContent = Get-Content -Path $testEnv.TestJsonFile -Raw
             $jsonContent | Should -Match "PSScriptAnalyzer"
@@ -80,7 +80,7 @@ Describe "Module TestHelpers" {
 
     Context "Fonction Invoke-ScriptWithParams" {
         BeforeAll {
-            # Créer un script de test simple
+            # CrÃ©er un script de test simple
             $testEnv = New-TestEnvironment -TestName "ScriptParamsTest"
             $testScriptPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "TestScript.ps1"
             $testScriptContent = @'
@@ -103,7 +103,7 @@ return $result
             Set-Content -Path $testScriptPath -Value $testScriptContent
         }
 
-        It "Exécute un script avec des paramètres de type string" {
+        It "ExÃ©cute un script avec des paramÃ¨tres de type string" {
             # Act
             $result = Invoke-ScriptWithParams -ScriptPath $testScriptPath -Parameters @{
                 StringParam = "Test"
@@ -114,7 +114,7 @@ return $result
             $result.StringParam | Should -Be "Test"
         }
 
-        It "Exécute un script avec des paramètres de type int" {
+        It "ExÃ©cute un script avec des paramÃ¨tres de type int" {
             # Act
             $result = Invoke-ScriptWithParams -ScriptPath $testScriptPath -Parameters @{
                 IntParam = 42
@@ -125,7 +125,7 @@ return $result
             $result.IntParam | Should -Be 42
         }
 
-        It "Exécute un script avec des paramètres de type switch" {
+        It "ExÃ©cute un script avec des paramÃ¨tres de type switch" {
             # Act
             $result = Invoke-ScriptWithParams -ScriptPath $testScriptPath -Parameters @{
                 SwitchParam = $true
@@ -136,7 +136,7 @@ return $result
             $result.SwitchParam | Should -BeTrue
         }
 
-        It "Exécute un script avec des paramètres de type array" {
+        It "ExÃ©cute un script avec des paramÃ¨tres de type array" {
             # Act
             $result = Invoke-ScriptWithParams -ScriptPath $testScriptPath -Parameters @{
                 ArrayParam = @("Item1", "Item2", "Item3")
@@ -151,7 +151,7 @@ return $result
             $result.ArrayParam[2] | Should -Be "Item3"
         }
 
-        It "Exécute un script avec plusieurs paramètres" {
+        It "ExÃ©cute un script avec plusieurs paramÃ¨tres" {
             # Act
             $result = Invoke-ScriptWithParams -ScriptPath $testScriptPath -Parameters @{
                 StringParam = "Test"
@@ -171,7 +171,7 @@ return $result
             $result.ArrayParam[1] | Should -Be "Item2"
         }
 
-        It "Lève une exception si le script n'existe pas" {
+        It "LÃ¨ve une exception si le script n'existe pas" {
             # Act & Assert
             { Invoke-ScriptWithParams -ScriptPath "C:\chemin\inexistant.ps1" -Parameters @{} } | Should -Throw
         }
@@ -179,7 +179,7 @@ return $result
 
     Context "Fonction New-PSScriptAnalyzerMock" {
         BeforeAll {
-            # Créer un module temporaire pour simuler PSScriptAnalyzer
+            # CrÃ©er un module temporaire pour simuler PSScriptAnalyzer
             $testEnv = New-TestEnvironment -TestName "PSScriptAnalyzerMockTest"
             $mockModulePath = Join-Path -Path $testEnv.TestDirectory -ChildPath "PSScriptAnalyzer.psm1"
             $mockModuleContent = @'
@@ -192,7 +192,7 @@ function Invoke-ScriptAnalyzer {
         [switch]$Recurse
     )
 
-    # Retourner des résultats simulés
+    # Retourner des rÃ©sultats simulÃ©s
     return @(
         [PSCustomObject]@{
             ScriptPath = $Path
@@ -223,7 +223,7 @@ Export-ModuleMember -Function Invoke-ScriptAnalyzer
             Import-Module -Name $mockModulePath -Force
         }
 
-        It "Crée un mock pour Invoke-ScriptAnalyzer" {
+        It "CrÃ©e un mock pour Invoke-ScriptAnalyzer" {
             # Act
             New-PSScriptAnalyzerMock
             $testPath = "C:\test\test.ps1"
@@ -245,7 +245,7 @@ Export-ModuleMember -Function Invoke-ScriptAnalyzer
 
     Context "Fonction New-UnifiedAnalysisResultMock" {
         BeforeAll {
-            # Créer une fonction locale pour simuler New-UnifiedAnalysisResult
+            # CrÃ©er une fonction locale pour simuler New-UnifiedAnalysisResult
             function Script:New-UnifiedAnalysisResult {
                 param (
                     [string]$ToolName,
@@ -260,7 +260,7 @@ Export-ModuleMember -Function Invoke-ScriptAnalyzer
                     [object]$OriginalObject
                 )
 
-                # Retourner un objet simulé
+                # Retourner un objet simulÃ©
                 return [PSCustomObject]@{
                     ToolName       = $ToolName
                     FilePath       = $FilePath
@@ -277,7 +277,7 @@ Export-ModuleMember -Function Invoke-ScriptAnalyzer
             }
         }
 
-        It "Crée un mock pour New-UnifiedAnalysisResult" {
+        It "CrÃ©e un mock pour New-UnifiedAnalysisResult" {
             # Act
             New-UnifiedAnalysisResultMock
             $testPath = "C:\test\test.ps1"

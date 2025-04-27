@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour les fonctionnalités de performance du script Start-IncrementalPRAnalysis.
+    Tests unitaires pour les fonctionnalitÃ©s de performance du script Start-IncrementalPRAnalysis.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctionnalités de performance
+    Ce script contient des tests unitaires pour les fonctionnalitÃ©s de performance
     du script Start-IncrementalPRAnalysis en utilisant le framework Pester.
 .NOTES
     Version: 1.0
@@ -13,18 +13,18 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-IncrementalPRAnalysis.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Start-IncrementalPRAnalysis non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Start-IncrementalPRAnalysis non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $modulesToImport = @(
     "FileContentIndexer.psm1",
@@ -39,11 +39,11 @@ foreach ($module in $modulesToImport) {
     }
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "IncrementalPRAnalysisPerformanceTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -61,7 +61,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @"
 # Test PowerShell Script
 Import-Module MyModule
@@ -103,7 +103,7 @@ function Test-FileAnalysisFunction {
         [int]$SignificanceScore = 0
     )
     
-    # Charger le script à tester
+    # Charger le script Ã  tester
     . $scriptToTest
     
     # Appeler la fonction Invoke-FileAnalysis
@@ -113,13 +113,13 @@ function Test-FileAnalysisFunction {
 # Tests Pester
 Describe "Start-IncrementalPRAnalysis Performance Tests" {
     BeforeAll {
-        # Créer un analyseur pour les tests
+        # CrÃ©er un analyseur pour les tests
         $script:analyzer = New-SyntaxAnalyzer
         
-        # Créer un cache pour les tests
+        # CrÃ©er un cache pour les tests
         $script:cache = New-PRAnalysisCache -MaxMemoryItems 100
         
-        # Créer un objet de fichier pour les tests
+        # CrÃ©er un objet de fichier pour les tests
         $script:fileObject = [PSCustomObject]@{
             path = "test_incremental.ps1"
             sha = "123456789abcdef"
@@ -128,8 +128,8 @@ Describe "Start-IncrementalPRAnalysis Performance Tests" {
         }
     }
     
-    Context "Invoke-FileAnalysis avec métriques de performance" {
-        It "Collecte des métriques de performance" {
+    Context "Invoke-FileAnalysis avec mÃ©triques de performance" {
+        It "Collecte des mÃ©triques de performance" {
             $result = Test-FileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -CollectPerformanceMetrics $true
             
             $result | Should -Not -BeNullOrEmpty
@@ -139,12 +139,12 @@ Describe "Start-IncrementalPRAnalysis Performance Tests" {
             $result.FileExtension | Should -Be ".ps1"
         }
         
-        It "Utilise l'analyse parallèle pour les grands fichiers" {
-            # Créer un grand fichier
+        It "Utilise l'analyse parallÃ¨le pour les grands fichiers" {
+            # CrÃ©er un grand fichier
             $largeContent = $psScriptContent * 10
             $largeFile = New-TestFile -Path "large_file.ps1" -Content $largeContent
             
-            # Créer un objet de fichier pour le grand fichier
+            # CrÃ©er un objet de fichier pour le grand fichier
             $largeFileObject = [PSCustomObject]@{
                 path = "large_file.ps1"
                 sha = "987654321fedcba"
@@ -158,14 +158,14 @@ Describe "Start-IncrementalPRAnalysis Performance Tests" {
             $result.FileSize | Should -BeGreaterThan 0
         }
         
-        It "Utilise le score de significativité" {
+        It "Utilise le score de significativitÃ©" {
             $result = Test-FileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -SignificanceScore 75
             
             $result | Should -Not -BeNullOrEmpty
             $result.SignificanceScore | Should -Be 75
         }
         
-        It "Groupe les problèmes par type et sévérité" {
+        It "Groupe les problÃ¨mes par type et sÃ©vÃ©ritÃ©" {
             $result = Test-FileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir -CollectPerformanceMetrics $true
             
             $result | Should -Not -BeNullOrEmpty
@@ -173,20 +173,20 @@ Describe "Start-IncrementalPRAnalysis Performance Tests" {
             $result.IssuesBySeverity | Should -Not -BeNullOrEmpty
         }
         
-        It "Utilise le cache pour améliorer les performances" {
-            # Première analyse (sans cache)
+        It "Utilise le cache pour amÃ©liorer les performances" {
+            # PremiÃ¨re analyse (sans cache)
             $startTime1 = [System.Diagnostics.Stopwatch]::StartNew()
             $result1 = Test-FileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir
             $startTime1.Stop()
             $time1 = $startTime1.ElapsedMilliseconds
             
-            # Deuxième analyse (avec cache)
+            # DeuxiÃ¨me analyse (avec cache)
             $startTime2 = [System.Diagnostics.Stopwatch]::StartNew()
             $result2 = Test-FileAnalysisFunction -File $script:fileObject -Analyzer $script:analyzer -Cache $script:cache -UseFileCache $true -RepoPath $testDir
             $startTime2.Stop()
             $time2 = $startTime2.ElapsedMilliseconds
             
-            # La deuxième analyse devrait être plus rapide
+            # La deuxiÃ¨me analyse devrait Ãªtre plus rapide
             $time2 | Should -BeLessThan $time1
             $result2.FromCache | Should -Be $true
         }
@@ -198,5 +198,5 @@ Describe "Start-IncrementalPRAnalysis Performance Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

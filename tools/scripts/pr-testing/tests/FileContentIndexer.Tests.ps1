@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module FileContentIndexer.
@@ -13,25 +13,25 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $moduleToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\FileContentIndexer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $moduleToTest)) {
-    throw "Module FileContentIndexer non trouvé à l'emplacement: $moduleToTest"
+    throw "Module FileContentIndexer non trouvÃ© Ã  l'emplacement: $moduleToTest"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $moduleToTest -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "FileContentIndexerTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -49,7 +49,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $psScriptContent = @'
 function Test-Function {
     param(
@@ -98,17 +98,17 @@ $testTxtFile = New-TestFile -Path "test_file.txt" -Content "This is a test file.
 # Tests Pester
 Describe "FileContentIndexer Module Tests" {
     BeforeAll {
-        # Créer un indexeur pour les tests
+        # CrÃ©er un indexeur pour les tests
         $script:indexer = New-FileContentIndexer -IndexPath $testDir -PersistIndices $true
     }
     
     Context "New-FileContentIndexer" {
-        It "Crée un nouvel indexeur" {
+        It "CrÃ©e un nouvel indexeur" {
             $indexer | Should -Not -BeNullOrEmpty
             $indexer.GetType().Name | Should -Be "FileContentIndexer"
         }
         
-        It "Initialise correctement les propriétés" {
+        It "Initialise correctement les propriÃ©tÃ©s" {
             $indexer.FileIndices | Should -Not -BeNullOrEmpty
             $indexer.SymbolMap | Should -Not -BeNullOrEmpty
             $indexer.IndexPath | Should -Be $testDir
@@ -157,7 +157,7 @@ Describe "FileContentIndexer Module Tests" {
     
     Context "Search-FileIndex" {
         BeforeAll {
-            # S'assurer que les fichiers sont indexés
+            # S'assurer que les fichiers sont indexÃ©s
             New-FileIndex -Indexer $indexer -FilePath $testPsScript | Out-Null
             New-FileIndex -Indexer $indexer -FilePath $testPyScript | Out-Null
         }
@@ -183,7 +183,7 @@ Describe "FileContentIndexer Module Tests" {
             $results | ForEach-Object { $_.FilePath | Should -BeLike "*.py" }
         }
         
-        It "Retourne un tableau vide pour une recherche sans résultat" {
+        It "Retourne un tableau vide pour une recherche sans rÃ©sultat" {
             $results = Search-FileIndex -Indexer $indexer -Query "MotInexistant123456789"
             $results | Should -BeOfType [array]
             $results.Count | Should -Be 0
@@ -233,5 +233,5 @@ Describe "FileContentIndexer Module Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

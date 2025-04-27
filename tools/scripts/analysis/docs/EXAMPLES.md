@@ -1,6 +1,6 @@
-# Exemples d'utilisation du système d'analyse
+﻿# Exemples d'utilisation du systÃ¨me d'analyse
 
-Ce document présente des exemples concrets d'utilisation du système d'analyse de code.
+Ce document prÃ©sente des exemples concrets d'utilisation du systÃ¨me d'analyse de code.
 
 ## Exemples de base
 
@@ -10,43 +10,43 @@ Ce document présente des exemples concrets d'utilisation du système d'analyse 
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools PSScriptAnalyzer
 ```
 
-Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et génère un fichier JSON avec les résultats.
+Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et gÃ©nÃ¨re un fichier JSON avec les rÃ©sultats.
 
-### Analyser un répertoire avec PSScriptAnalyzer et TodoAnalyzer
+### Analyser un rÃ©pertoire avec PSScriptAnalyzer et TodoAnalyzer
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -Recurse
 ```
 
-Cet exemple analyse tous les fichiers PowerShell dans le répertoire `.\scripts` et ses sous-répertoires avec PSScriptAnalyzer et TodoAnalyzer.
+Cet exemple analyse tous les fichiers PowerShell dans le rÃ©pertoire `.\scripts` et ses sous-rÃ©pertoires avec PSScriptAnalyzer et TodoAnalyzer.
 
-### Analyser un fichier avec tous les outils disponibles et générer un rapport HTML
+### Analyser un fichier avec tous les outils disponibles et gÃ©nÃ©rer un rapport HTML
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools All -GenerateHtmlReport
 ```
 
-Cet exemple analyse un fichier PowerShell avec tous les outils disponibles et génère un rapport HTML interactif.
+Cet exemple analyse un fichier PowerShell avec tous les outils disponibles et gÃ©nÃ¨re un rapport HTML interactif.
 
-### Analyser un répertoire avec tous les outils disponibles, générer un rapport HTML et l'ouvrir
+### Analyser un rÃ©pertoire avec tous les outils disponibles, gÃ©nÃ©rer un rapport HTML et l'ouvrir
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools All -GenerateHtmlReport -OpenReport -Recurse
 ```
 
-Cet exemple analyse tous les fichiers dans le répertoire `.\scripts` et ses sous-répertoires avec tous les outils disponibles, génère un rapport HTML interactif et l'ouvre dans le navigateur par défaut.
+Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, gÃ©nÃ¨re un rapport HTML interactif et l'ouvre dans le navigateur par dÃ©faut.
 
-## Exemples avancés
+## Exemples avancÃ©s
 
-### Analyser un fichier et spécifier le chemin de sortie
+### Analyser un fichier et spÃ©cifier le chemin de sortie
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools PSScriptAnalyzer -OutputPath ".\results\test-analysis.json"
 ```
 
-Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et génère un fichier JSON avec les résultats à l'emplacement spécifié.
+Cet exemple analyse un fichier PowerShell avec PSScriptAnalyzer et gÃ©nÃ¨re un fichier JSON avec les rÃ©sultats Ã  l'emplacement spÃ©cifiÃ©.
 
-### Analyser un répertoire et filtrer les résultats
+### Analyser un rÃ©pertoire et filtrer les rÃ©sultats
 
 ```powershell
 $results = .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools All -Recurse
@@ -59,36 +59,36 @@ Write-Host "Avertissements: $($warnings.Count)"
 Write-Host "Informations: $($information.Count)"
 ```
 
-Cet exemple analyse tous les fichiers dans le répertoire `.\scripts` et ses sous-répertoires avec tous les outils disponibles, puis filtre les résultats par sévérité.
+Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis filtre les rÃ©sultats par sÃ©vÃ©ritÃ©.
 
-### Analyser un fichier et intégrer les résultats avec GitHub Actions
+### Analyser un fichier et intÃ©grer les rÃ©sultats avec GitHub Actions
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts\test.ps1" -Tools All -OutputPath ".\results\test-analysis.json"
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\test-analysis.json" -Tool GitHub -OutputPath ".\results\github-annotations.json"
 ```
 
-Cet exemple analyse un fichier PowerShell avec tous les outils disponibles, puis convertit les résultats au format d'annotations GitHub Actions.
+Cet exemple analyse un fichier PowerShell avec tous les outils disponibles, puis convertit les rÃ©sultats au format d'annotations GitHub Actions.
 
-### Analyser un répertoire et intégrer les résultats avec SonarQube
+### Analyser un rÃ©pertoire et intÃ©grer les rÃ©sultats avec SonarQube
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools All -OutputPath ".\results\analysis-results.json" -Recurse
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool SonarQube -OutputPath ".\results\sonarqube-issues.json" -ProjectKey "my-project"
 ```
 
-Cet exemple analyse tous les fichiers dans le répertoire `.\scripts` et ses sous-répertoires avec tous les outils disponibles, puis convertit les résultats au format SonarQube.
+Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis convertit les rÃ©sultats au format SonarQube.
 
-### Analyser un répertoire et intégrer les résultats avec Azure DevOps
+### Analyser un rÃ©pertoire et intÃ©grer les rÃ©sultats avec Azure DevOps
 
 ```powershell
 .\Start-CodeAnalysis.ps1 -Path ".\scripts" -Tools All -OutputPath ".\results\analysis-results.json" -Recurse
 .\Integrate-ThirdPartyTools.ps1 -Path ".\results\analysis-results.json" -Tool AzureDevOps -OutputPath ".\results\azuredevops-issues.json"
 ```
 
-Cet exemple analyse tous les fichiers dans le répertoire `.\scripts` et ses sous-répertoires avec tous les outils disponibles, puis convertit les résultats au format Azure DevOps.
+Cet exemple analyse tous les fichiers dans le rÃ©pertoire `.\scripts` et ses sous-rÃ©pertoires avec tous les outils disponibles, puis convertit les rÃ©sultats au format Azure DevOps.
 
-## Exemples d'intégration continue
+## Exemples d'intÃ©gration continue
 
 ### GitHub Actions
 
@@ -122,7 +122,7 @@ jobs:
         path: .\results\github-annotations.json
 ```
 
-Cet exemple montre comment intégrer le système d'analyse dans un workflow GitHub Actions.
+Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un workflow GitHub Actions.
 
 ### Azure DevOps
 
@@ -162,7 +162,7 @@ steps:
     artifactName: 'analysis-results'
 ```
 
-Cet exemple montre comment intégrer le système d'analyse dans un pipeline Azure DevOps.
+Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un pipeline Azure DevOps.
 
 ### Jenkins
 
@@ -202,7 +202,7 @@ pipeline {
 }
 ```
 
-Cet exemple montre comment intégrer le système d'analyse dans un pipeline Jenkins.
+Cet exemple montre comment intÃ©grer le systÃ¨me d'analyse dans un pipeline Jenkins.
 
 ## Exemples de personnalisation
 
@@ -219,21 +219,21 @@ function Invoke-MyAnalyzerAnalysis {
     
     Write-Verbose "Analyse de '$FilePath' avec MyAnalyzer..."
     
-    # Vérifier si MyAnalyzer est disponible
+    # VÃ©rifier si MyAnalyzer est disponible
     $myAnalyzer = Get-Command -Name myanalyzer -ErrorAction SilentlyContinue
     if ($null -eq $myAnalyzer) {
         Write-Warning "MyAnalyzer n'est pas disponible. Installez-le avec 'npm install -g myanalyzer'."
         return @()
     }
     
-    # Exécuter MyAnalyzer
+    # ExÃ©cuter MyAnalyzer
     try {
         $output = & $myAnalyzer.Source --format json $FilePath 2>&1
         
         # Convertir la sortie JSON en objet PowerShell
         $results = $output | ConvertFrom-Json
         
-        # Convertir les résultats vers le format unifié
+        # Convertir les rÃ©sultats vers le format unifiÃ©
         $unifiedResults = @()
         
         foreach ($result in $results) {
@@ -271,7 +271,7 @@ function Invoke-FileAnalysis {
     
     $results = @()
     
-    # Déterminer les outils à utiliser
+    # DÃ©terminer les outils Ã  utiliser
     $useAll = $Tools -contains "All"
     $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
     $useESLint = $useAll -or ($Tools -contains "ESLint")
@@ -291,12 +291,12 @@ function Invoke-FileAnalysis {
 }
 ```
 
-Cet exemple montre comment ajouter un nouvel outil d'analyse au système d'analyse.
+Cet exemple montre comment ajouter un nouvel outil d'analyse au systÃ¨me d'analyse.
 
-### Ajouter un nouveau format de résultats
+### Ajouter un nouveau format de rÃ©sultats
 
 ```powershell
-# Ajouter une fonction pour convertir les résultats vers le nouveau format
+# Ajouter une fonction pour convertir les rÃ©sultats vers le nouveau format
 function ConvertTo-MyFormat {
     [CmdletBinding()]
     param (
@@ -328,12 +328,12 @@ function ConvertTo-MyFormat {
 }
 
 # Modifier le script principal pour utiliser le nouveau format
-# Convertir les résultats vers le format approprié
+# Convertir les rÃ©sultats vers le format appropriÃ©
 try {
     $convertedResults = switch ($Tool) {
         "SonarQube" {
             if (-not $ProjectKey) {
-                throw "Le paramètre ProjectKey est requis pour l'intégration avec SonarQube."
+                throw "Le paramÃ¨tre ProjectKey est requis pour l'intÃ©gration avec SonarQube."
             }
             
             ConvertTo-SonarQubeFormat -Results $results -ProjectKey $ProjectKey
@@ -356,8 +356,8 @@ try {
 }
 ```
 
-Cet exemple montre comment ajouter un nouveau format de résultats au système d'analyse.
+Cet exemple montre comment ajouter un nouveau format de rÃ©sultats au systÃ¨me d'analyse.
 
 ## Conclusion
 
-Ces exemples montrent comment utiliser le système d'analyse de code dans différents scénarios. Vous pouvez les adapter à vos besoins spécifiques pour améliorer la qualité de votre code.
+Ces exemples montrent comment utiliser le systÃ¨me d'analyse de code dans diffÃ©rents scÃ©narios. Vous pouvez les adapter Ã  vos besoins spÃ©cifiques pour amÃ©liorer la qualitÃ© de votre code.

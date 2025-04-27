@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Crée une nouvelle tâche dans la roadmap selon le template standard.
+    CrÃ©e une nouvelle tÃ¢che dans la roadmap selon le template standard.
 
 .DESCRIPTION
-    Ce script génère une nouvelle tâche dans un fichier de roadmap au format Markdown
-    en suivant le template standard. Il permet de spécifier les métadonnées de la tâche
-    et génère automatiquement la structure des sous-tâches.
+    Ce script gÃ©nÃ¨re une nouvelle tÃ¢che dans un fichier de roadmap au format Markdown
+    en suivant le template standard. Il permet de spÃ©cifier les mÃ©tadonnÃ©es de la tÃ¢che
+    et gÃ©nÃ¨re automatiquement la structure des sous-tÃ¢ches.
 
 .PARAMETER MarkdownPath
     Chemin vers le fichier Markdown de la roadmap.
@@ -17,34 +17,34 @@
     Identifiant de la sous-section (ex: 1, 2, 3).
 
 .PARAMETER TaskName
-    Nom de la tâche à créer.
+    Nom de la tÃ¢che Ã  crÃ©er.
 
 .PARAMETER Complexity
-    Complexité de la tâche (Faible, Moyenne, Élevée).
+    ComplexitÃ© de la tÃ¢che (Faible, Moyenne, Ã‰levÃ©e).
 
 .PARAMETER EstimatedDays
-    Nombre de jours estimés pour la tâche.
+    Nombre de jours estimÃ©s pour la tÃ¢che.
 
 .PARAMETER StartDate
-    Date de début prévue (format: JJ/MM/AAAA).
+    Date de dÃ©but prÃ©vue (format: JJ/MM/AAAA).
 
 .PARAMETER EndDate
-    Date d'achèvement prévue (format: JJ/MM/AAAA).
+    Date d'achÃ¨vement prÃ©vue (format: JJ/MM/AAAA).
 
 .PARAMETER Responsible
-    Personne ou équipe responsable de la tâche.
+    Personne ou Ã©quipe responsable de la tÃ¢che.
 
 .PARAMETER Tags
-    Tags associés à la tâche (séparés par des virgules).
+    Tags associÃ©s Ã  la tÃ¢che (sÃ©parÃ©s par des virgules).
 
 .PARAMETER FilesToCreate
-    Liste des fichiers à créer (format: chemin|description).
+    Liste des fichiers Ã  crÃ©er (format: chemin|description).
 
 .EXAMPLE
-    .\New-RoadmapTask.ps1 -MarkdownPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md" -SectionId 1 -SubsectionId 2 -TaskName "Implémentation du parser JSON" -Complexity "Moyenne" -EstimatedDays 3 -StartDate "15/06/2025" -EndDate "17/06/2025" -Responsible "Équipe Dev" -Tags "json,parser,optimisation" -FilesToCreate "src/parsers/json_parser.py|Parser JSON principal","tests/parsers/test_json_parser.py|Tests unitaires du parser JSON"
+    .\New-RoadmapTask.ps1 -MarkdownPath "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete.md" -SectionId 1 -SubsectionId 2 -TaskName "ImplÃ©mentation du parser JSON" -Complexity "Moyenne" -EstimatedDays 3 -StartDate "15/06/2025" -EndDate "17/06/2025" -Responsible "Ã‰quipe Dev" -Tags "json,parser,optimisation" -FilesToCreate "src/parsers/json_parser.py|Parser JSON principal","tests/parsers/test_json_parser.py|Tests unitaires du parser JSON"
 
 .NOTES
-    Auteur: Équipe DevOps
+    Auteur: Ã‰quipe DevOps
     Date: 2025-04-20
     Version: 1.0.0
 #>
@@ -64,7 +64,7 @@ param (
     [string]$TaskName,
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet("Faible", "Moyenne", "Élevée")]
+    [ValidateSet("Faible", "Moyenne", "Ã‰levÃ©e")]
     [string]$Complexity = "Moyenne",
 
     [Parameter(Mandatory = $true)]
@@ -102,7 +102,7 @@ function New-RoadmapTask {
         [string]$TaskName,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Faible", "Moyenne", "Élevée")]
+        [ValidateSet("Faible", "Moyenne", "Ã‰levÃ©e")]
         [string]$Complexity = "Moyenne",
 
         [Parameter(Mandatory = $true)]
@@ -124,7 +124,7 @@ function New-RoadmapTask {
         [string[]]$FilesToCreate = @()
     )
 
-    # Vérifier si le fichier de roadmap existe
+    # VÃ©rifier si le fichier de roadmap existe
     if (-not (Test-Path -Path $MarkdownPath)) {
         throw "Le fichier de roadmap '$MarkdownPath' n'existe pas."
     }
@@ -146,10 +146,10 @@ function New-RoadmapTask {
     }
 
     if (-not $subsectionFound) {
-        throw "La sous-section $SectionId.$SubsectionId n'a pas été trouvée dans le fichier de roadmap."
+        throw "La sous-section $SectionId.$SubsectionId n'a pas Ã©tÃ© trouvÃ©e dans le fichier de roadmap."
     }
 
-    # Trouver le prochain numéro de tâche
+    # Trouver le prochain numÃ©ro de tÃ¢che
     $taskPattern = "#### $SectionId\.$SubsectionId\.(\d+) "
     $nextTaskNumber = 1
 
@@ -161,7 +161,7 @@ function New-RoadmapTask {
             }
         }
         
-        # Arrêter la recherche si on atteint une autre sous-section
+        # ArrÃªter la recherche si on atteint une autre sous-section
         if ($i -gt $subsectionIndex && $content[$i] -match '^### ') {
             break
         }
@@ -175,15 +175,15 @@ function New-RoadmapTask {
         ""
     }
 
-    # Générer le contenu de la tâche
+    # GÃ©nÃ©rer le contenu de la tÃ¢che
     $taskId = "$SectionId.$SubsectionId.$nextTaskNumber"
     $taskContent = @(
         "#### $taskId $TaskName",
-        "**Complexité**: $Complexity",
-        "**Temps estimé**: $EstimatedDays jours",
-        "**Progression**: 0% - *Non commencé*",
-        "**Date de début prévue**: $StartDate",
-        "**Date d'achèvement prévue**: $EndDate",
+        "**ComplexitÃ©**: $Complexity",
+        "**Temps estimÃ©**: $EstimatedDays jours",
+        "**Progression**: 0% - *Non commencÃ©*",
+        "**Date de dÃ©but prÃ©vue**: $StartDate",
+        "**Date d'achÃ¨vement prÃ©vue**: $EndDate",
         "**Responsable**: $Responsible"
     )
 
@@ -193,15 +193,15 @@ function New-RoadmapTask {
 
     $taskContent += ""
 
-    # Ajouter les fichiers à créer/modifier
+    # Ajouter les fichiers Ã  crÃ©er/modifier
     if ($FilesToCreate.Count -gt 0) {
-        $taskContent += "##### Fichiers à créer/modifier"
+        $taskContent += "##### Fichiers Ã  crÃ©er/modifier"
         $taskContent += "| Chemin | Description | Statut |"
         $taskContent += "|--------|-------------|--------|"
         
         foreach ($fileInfo in $FilesToCreate) {
             $filePath, $fileDesc = $fileInfo -split '\|', 2
-            $taskContent += "| `$filePath` | $fileDesc | À créer |"
+            $taskContent += "| `$filePath` | $fileDesc | Ã€ crÃ©er |"
         }
         
         $taskContent += ""
@@ -215,14 +215,14 @@ function New-RoadmapTask {
     $taskContent += '  "version": "1.0.0",'
     $taskContent += '  "date": "' + ([DateTime]::ParseExact($EndDate, "dd/MM/yyyy", $null).ToString("yyyy-MM-dd")) + '",'
     $taskContent += '  "changes": ['
-    $taskContent += '    {"feature": "Fonctionnalité 1", "status": "Non commencé"},'
-    $taskContent += '    {"feature": "Fonctionnalité 2", "status": "Non commencé"}'
+    $taskContent += '    {"feature": "FonctionnalitÃ© 1", "status": "Non commencÃ©"},'
+    $taskContent += '    {"feature": "FonctionnalitÃ© 2", "status": "Non commencÃ©"}'
     $taskContent += '  ]'
     $taskContent += '}'
     $taskContent += '```'
     $taskContent += ""
 
-    # Générer les jours et sous-tâches
+    # GÃ©nÃ©rer les jours et sous-tÃ¢ches
     $hoursPerDay = 8
     for ($day = 1; $day -le $EstimatedDays; $day++) {
         $dayDesc = if ($day -eq 1) {
@@ -232,12 +232,12 @@ function New-RoadmapTask {
             "Tests et validation"
         }
         else {
-            "Implémentation - Jour $day"
+            "ImplÃ©mentation - Jour $day"
         }
         
         $taskContent += "##### Jour $day - $dayDesc (${hoursPerDay}h)"
         
-        # Générer des sous-tâches pour chaque jour
+        # GÃ©nÃ©rer des sous-tÃ¢ches pour chaque jour
         $subtasksPerDay = 4
         $hoursPerSubtask = $hoursPerDay / $subtasksPerDay
         
@@ -246,44 +246,44 @@ function New-RoadmapTask {
                 switch ($subtask) {
                     1 { "Analyser les besoins" }
                     2 { "Concevoir l'architecture" }
-                    3 { "Créer les tests unitaires initiaux (TDD)" }
-                    4 { "Préparer l'environnement de développement" }
+                    3 { "CrÃ©er les tests unitaires initiaux (TDD)" }
+                    4 { "PrÃ©parer l'environnement de dÃ©veloppement" }
                 }
             }
             elseif ($day -eq $EstimatedDays) {
                 switch ($subtask) {
-                    1 { "Exécuter les tests unitaires" }
-                    2 { "Corriger les bugs identifiés" }
+                    1 { "ExÃ©cuter les tests unitaires" }
+                    2 { "Corriger les bugs identifiÃ©s" }
                     3 { "Optimiser les performances" }
                     4 { "Documenter le module" }
                 }
             }
             else {
-                "Implémenter la fonctionnalité $subtask"
+                "ImplÃ©menter la fonctionnalitÃ© $subtask"
             }
             
-            $taskContent += "- [ ] **Sous-tâche $day.$subtask**: $subtaskDesc (${hoursPerSubtask}h)"
-            $taskContent += "  - **Description**: [Description détaillée]"
+            $taskContent += "- [ ] **Sous-tÃ¢che $day.$subtask**: $subtaskDesc (${hoursPerSubtask}h)"
+            $taskContent += "  - **Description**: [Description dÃ©taillÃ©e]"
             $taskContent += "  - **Livrable**: [Description du livrable]"
             $taskContent += "  - **Fichier**: `[chemin/vers/fichier]`"
-            $taskContent += "  - **Outils**: [Outils utilisés]"
-            $taskContent += "  - **Statut**: Non commencé"
+            $taskContent += "  - **Outils**: [Outils utilisÃ©s]"
+            $taskContent += "  - **Statut**: Non commencÃ©"
             $taskContent += ""
         }
     }
 
-    # Trouver l'emplacement où insérer la tâche
+    # Trouver l'emplacement oÃ¹ insÃ©rer la tÃ¢che
     $insertIndex = -1
     $inSubsection = $false
 
     for ($i = $subsectionIndex + 1; $i -lt $content.Count; $i++) {
-        # Si on trouve une autre sous-section ou section, insérer avant
+        # Si on trouve une autre sous-section ou section, insÃ©rer avant
         if ($content[$i] -match '^### ' || $content[$i] -match '^## ') {
             $insertIndex = $i
             break
         }
         
-        # Si on trouve une tâche avec un numéro supérieur, insérer avant
+        # Si on trouve une tÃ¢che avec un numÃ©ro supÃ©rieur, insÃ©rer avant
         if ($content[$i] -match "#### $SectionId\.$SubsectionId\.(\d+) ") {
             $currentTaskNumber = [int]$matches[1]
             if ($currentTaskNumber -gt $nextTaskNumber) {
@@ -292,17 +292,17 @@ function New-RoadmapTask {
             }
         }
         
-        # Garder trace de la dernière tâche de la sous-section
+        # Garder trace de la derniÃ¨re tÃ¢che de la sous-section
         if ($content[$i] -match "#### $SectionId\.$SubsectionId\.") {
             $inSubsection = $true
             $lastTaskIndex = $i
         }
     }
 
-    # Si on n'a pas trouvé d'emplacement mais qu'on a trouvé des tâches dans la sous-section,
-    # insérer après la dernière tâche
+    # Si on n'a pas trouvÃ© d'emplacement mais qu'on a trouvÃ© des tÃ¢ches dans la sous-section,
+    # insÃ©rer aprÃ¨s la derniÃ¨re tÃ¢che
     if ($insertIndex -eq -1 && $inSubsection) {
-        # Trouver la fin de la dernière tâche
+        # Trouver la fin de la derniÃ¨re tÃ¢che
         for ($i = $lastTaskIndex + 1; $i -lt $content.Count; $i++) {
             if ($content[$i] -match '^#### ' || $content[$i] -match '^### ' || $content[$i] -match '^## ') {
                 $insertIndex = $i
@@ -310,24 +310,24 @@ function New-RoadmapTask {
             }
         }
         
-        # Si on n'a toujours pas trouvé, insérer à la fin du fichier
+        # Si on n'a toujours pas trouvÃ©, insÃ©rer Ã  la fin du fichier
         if ($insertIndex -eq -1) {
             $insertIndex = $content.Count
         }
     }
-    # Si on n'a pas trouvé d'emplacement et qu'il n'y a pas de tâches dans la sous-section,
-    # insérer juste après la sous-section
+    # Si on n'a pas trouvÃ© d'emplacement et qu'il n'y a pas de tÃ¢ches dans la sous-section,
+    # insÃ©rer juste aprÃ¨s la sous-section
     elseif ($insertIndex -eq -1) {
         $insertIndex = $subsectionIndex + 1
         
-        # Sauter les métadonnées de la sous-section
+        # Sauter les mÃ©tadonnÃ©es de la sous-section
         while ($insertIndex -lt $content.Count && 
                ($content[$insertIndex] -match '^\*\*' || [string]::IsNullOrWhiteSpace($content[$insertIndex]))) {
             $insertIndex++
         }
     }
 
-    # Insérer la tâche
+    # InsÃ©rer la tÃ¢che
     $newContent = $content[0..($insertIndex - 1)]
     $newContent += $taskContent
     $newContent += $content[$insertIndex..($content.Count - 1)]
@@ -349,11 +349,11 @@ try {
                              -StartDate $StartDate -EndDate $EndDate -Responsible $Responsible `
                              -Tags $Tags -FilesToCreate $FilesToCreate
     
-    Write-Host "Tâche créée avec succès:"
+    Write-Host "TÃ¢che crÃ©Ã©e avec succÃ¨s:"
     Write-Host "  ID: $($result.taskId)"
     Write-Host "  Nom: $($result.taskName)"
-    Write-Host "  Insérée à la ligne: $($result.insertIndex)"
+    Write-Host "  InsÃ©rÃ©e Ã  la ligne: $($result.insertIndex)"
 }
 catch {
-    Write-Error "Erreur lors de la création de la tâche: $_"
+    Write-Error "Erreur lors de la crÃ©ation de la tÃ¢che: $_"
 }

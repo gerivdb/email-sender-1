@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour la fonction ConvertFrom-MarkdownToObject.
 
 .DESCRIPTION
     Ce script contient des tests pour valider le fonctionnement de la fonction ConvertFrom-MarkdownToObject.
-    Il utilise le framework Pester pour exécuter les tests.
+    Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $functionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToObject.ps1"
 . $functionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\roadmap-parser\tests\temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -24,7 +24,7 @@ if (-not (Test-Path -Path $testDir)) {
 
 Describe "ConvertFrom-MarkdownToObject" {
     BeforeAll {
-        # Créer un fichier markdown de test simple
+        # CrÃ©er un fichier markdown de test simple
         $simpleMarkdownPath = Join-Path -Path $testDir -ChildPath "simple.md"
         @"
 # Roadmap Simple
@@ -33,24 +33,24 @@ Ceci est une roadmap simple pour les tests.
 
 ## Section 1
 
-- [ ] Tâche 1
-  - [x] **1.1** Tâche 1.1
-  - [ ] **1.2** Tâche 1.2
-    - [~] **1.2.1** Tâche 1.2.1 @john #important
-    - [!] **1.2.2** Tâche 1.2.2 P1
+- [ ] TÃ¢che 1
+  - [x] **1.1** TÃ¢che 1.1
+  - [ ] **1.2** TÃ¢che 1.2
+    - [~] **1.2.1** TÃ¢che 1.2.1 @john #important
+    - [!] **1.2.2** TÃ¢che 1.2.2 P1
 
 ## Section 2
 
-- [ ] **2** Tâche 2
-  - [ ] **2.1** Tâche 2.1 @date:2023-12-31
+- [ ] **2** TÃ¢che 2
+  - [ ] **2.1** TÃ¢che 2.1 @date:2023-12-31
 "@ | Out-File -FilePath $simpleMarkdownPath -Encoding UTF8
 
-        # Créer un fichier markdown avec différents encodages
+        # CrÃ©er un fichier markdown avec diffÃ©rents encodages
         $utf8MarkdownPath = Join-Path -Path $testDir -ChildPath "utf8.md"
         $utf8WithBomMarkdownPath = Join-Path -Path $testDir -ChildPath "utf8-bom.md"
         $unicodeMarkdownPath = Join-Path -Path $testDir -ChildPath "unicode.md"
 
-        $content = "# Test d'encodage`n`n- [ ] Tâche avec caractères accentués"
+        $content = "# Test d'encodage`n`n- [ ] TÃ¢che avec caractÃ¨res accentuÃ©s"
 
         # UTF-8 sans BOM
         $content | Out-File -FilePath $utf8MarkdownPath -Encoding UTF8
@@ -72,7 +72,7 @@ Ceci est une roadmap simple pour les tests.
         }
     }
 
-    Context "Validation des paramètres" {
+    Context "Validation des paramÃ¨tres" {
         It "Devrait lever une exception si le fichier n'existe pas" {
             { ConvertFrom-MarkdownToObject -FilePath "fichier_inexistant.md" } | Should -Throw
         }
@@ -101,7 +101,7 @@ Ceci est une roadmap simple pour les tests.
             $result.Items[1].Title | Should -Be "Section 2"
         }
 
-        It "Devrait extraire les tâches avec leurs statuts" {
+        It "Devrait extraire les tÃ¢ches avec leurs statuts" {
             $simpleMarkdownPath = Join-Path -Path $testDir -ChildPath "simple.md"
             $result = ConvertFrom-MarkdownToObject -FilePath $simpleMarkdownPath
 
@@ -123,8 +123,8 @@ Ceci est une roadmap simple pour les tests.
         }
     }
 
-    Context "Extraction des métadonnées" {
-        It "Devrait extraire les métadonnées quand IncludeMetadata est spécifié" {
+    Context "Extraction des mÃ©tadonnÃ©es" {
+        It "Devrait extraire les mÃ©tadonnÃ©es quand IncludeMetadata est spÃ©cifiÃ©" {
             $simpleMarkdownPath = Join-Path -Path $testDir -ChildPath "simple.md"
             $result = ConvertFrom-MarkdownToObject -FilePath $simpleMarkdownPath -IncludeMetadata
 
@@ -141,7 +141,7 @@ Ceci est une roadmap simple pour les tests.
             $task2_1.Metadata["Date"] | Should -Be ([datetime]"2023-12-31")
         }
 
-        It "Ne devrait pas extraire les métadonnées quand IncludeMetadata n'est pas spécifié" {
+        It "Ne devrait pas extraire les mÃ©tadonnÃ©es quand IncludeMetadata n'est pas spÃ©cifiÃ©" {
             $simpleMarkdownPath = Join-Path -Path $testDir -ChildPath "simple.md"
             $result = ConvertFrom-MarkdownToObject -FilePath $simpleMarkdownPath
 
@@ -157,7 +157,7 @@ Ceci est une roadmap simple pour les tests.
             $result = ConvertFrom-MarkdownToObject -FilePath $utf8MarkdownPath
 
             $result.Title | Should -Be "Test d'encodage"
-            $result.Items[0].Title | Should -Match "caractères accentués"
+            $result.Items[0].Title | Should -Match "caractÃ¨res accentuÃ©s"
         }
 
         It "Devrait traiter correctement un fichier UTF-8 avec BOM" {
@@ -165,7 +165,7 @@ Ceci est une roadmap simple pour les tests.
             $result = ConvertFrom-MarkdownToObject -FilePath $utf8WithBomMarkdownPath
 
             $result.Title | Should -Be "Test d'encodage"
-            $result.Items[0].Title | Should -Match "caractères accentués"
+            $result.Items[0].Title | Should -Match "caractÃ¨res accentuÃ©s"
         }
 
         It "Devrait traiter correctement un fichier Unicode" {
@@ -173,12 +173,12 @@ Ceci est une roadmap simple pour les tests.
             $result = ConvertFrom-MarkdownToObject -FilePath $unicodeMarkdownPath -Encoding Unicode
 
             $result.Title | Should -Be "Test d'encodage"
-            $result.Items[0].Title | Should -Match "caractères accentués"
+            $result.Items[0].Title | Should -Match "caractÃ¨res accentuÃ©s"
         }
     }
 
-    Context "Marqueurs de statut personnalisés" {
-        It "Devrait utiliser des marqueurs de statut personnalisés" {
+    Context "Marqueurs de statut personnalisÃ©s" {
+        It "Devrait utiliser des marqueurs de statut personnalisÃ©s" {
             $simpleMarkdownPath = Join-Path -Path $testDir -ChildPath "simple.md"
             $customMarkers = @{
                 "x" = "InProgress"; # Remplacer Complete par InProgress
@@ -189,10 +189,10 @@ Ceci est une roadmap simple pour les tests.
 
             $section1 = $result.Items[0]
             $task1_1 = $section1.Items[0].Items[0]
-            $task1_1.Status | Should -Be "InProgress"  # Était Complete, maintenant InProgress
+            $task1_1.Status | Should -Be "InProgress"  # Ã‰tait Complete, maintenant InProgress
 
             $task1_2_1 = $section1.Items[0].Items[1].Items[0]
-            $task1_2_1.Status | Should -Be "Complete"  # Était InProgress, maintenant Complete
+            $task1_2_1.Status | Should -Be "Complete"  # Ã‰tait InProgress, maintenant Complete
         }
     }
 }

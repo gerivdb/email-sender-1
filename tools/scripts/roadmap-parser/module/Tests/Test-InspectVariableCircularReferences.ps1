@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour les références circulaires dans la fonction Inspect-Variable.
+    Tests pour les rÃ©fÃ©rences circulaires dans la fonction Inspect-Variable.
 
 .DESCRIPTION
-    Ce script contient des tests spécifiques pour la détection et la gestion des références circulaires
+    Ce script contient des tests spÃ©cifiques pour la dÃ©tection et la gestion des rÃ©fÃ©rences circulaires
     dans la fonction Inspect-Variable.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Chemin vers la fonction à tester
+# Chemin vers la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Inspect-Variable.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $functionPath)) {
-    throw "Le fichier Inspect-Variable.ps1 est introuvable à l'emplacement : $functionPath"
+    throw "Le fichier Inspect-Variable.ps1 est introuvable Ã  l'emplacement : $functionPath"
 }
 
 # Importer la fonction
 . $functionPath
 
-Write-Host "Tests de références circulaires pour Inspect-Variable" -ForegroundColor Cyan
+Write-Host "Tests de rÃ©fÃ©rences circulaires pour Inspect-Variable" -ForegroundColor Cyan
 Write-Host "=====================================================" -ForegroundColor Cyan
 
-# Test 1: Référence circulaire simple
-Write-Host "`nTest 1: Référence circulaire simple" -ForegroundColor Green
+# Test 1: RÃ©fÃ©rence circulaire simple
+Write-Host "`nTest 1: RÃ©fÃ©rence circulaire simple" -ForegroundColor Green
 $parent = [PSCustomObject]@{
     Name = "Parent"
 }
@@ -48,8 +48,8 @@ Inspect-Variable -InputObject $parent -Format "Text" -CircularReferenceHandling 
 Write-Host "DetectCircularReferences=`$false:" -ForegroundColor Yellow
 Inspect-Variable -InputObject $parent -Format "Text" -DetectCircularReferences $false
 
-# Test 2: Références circulaires complexes
-Write-Host "`nTest 2: Références circulaires complexes" -ForegroundColor Green
+# Test 2: RÃ©fÃ©rences circulaires complexes
+Write-Host "`nTest 2: RÃ©fÃ©rences circulaires complexes" -ForegroundColor Green
 $company = [PSCustomObject]@{
     Name = "ACME Corp"
     Departments = @()
@@ -97,19 +97,19 @@ Inspect-Variable -InputObject $company -Format "Text" -CircularReferenceHandling
 Write-Host "CircularReferenceHandling=Ignore:" -ForegroundColor Yellow
 Inspect-Variable -InputObject $company -Format "Text" -CircularReferenceHandling "Ignore" -MaxDepth 5
 
-# Test 3: Référence circulaire avec filtrage
-Write-Host "`nTest 3: Référence circulaire avec filtrage" -ForegroundColor Green
+# Test 3: RÃ©fÃ©rence circulaire avec filtrage
+Write-Host "`nTest 3: RÃ©fÃ©rence circulaire avec filtrage" -ForegroundColor Green
 Write-Host "PropertyFilter='Name|Employees' et CircularReferenceHandling=Mark:" -ForegroundColor Yellow
 Inspect-Variable -InputObject $company -Format "Text" -PropertyFilter "Name|Employees" -CircularReferenceHandling "Mark" -MaxDepth 5
 
-# Test 4: Référence circulaire avec exception
-Write-Host "`nTest 4: Référence circulaire avec exception" -ForegroundColor Green
+# Test 4: RÃ©fÃ©rence circulaire avec exception
+Write-Host "`nTest 4: RÃ©fÃ©rence circulaire avec exception" -ForegroundColor Green
 Write-Host "CircularReferenceHandling=Throw:" -ForegroundColor Yellow
 try {
     Inspect-Variable -InputObject $company -Format "Text" -CircularReferenceHandling "Throw" -MaxDepth 5
-    Write-Host "ERREUR: L'exception n'a pas été levée!" -ForegroundColor Red
+    Write-Host "ERREUR: L'exception n'a pas Ã©tÃ© levÃ©e!" -ForegroundColor Red
 } catch {
-    Write-Host "Exception levée comme prévu: $_" -ForegroundColor Green
+    Write-Host "Exception levÃ©e comme prÃ©vu: $_" -ForegroundColor Green
 }
 
-Write-Host "`nTests terminés" -ForegroundColor Cyan
+Write-Host "`nTests terminÃ©s" -ForegroundColor Cyan

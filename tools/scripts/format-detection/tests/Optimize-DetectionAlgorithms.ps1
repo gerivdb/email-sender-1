@@ -1,32 +1,32 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Optimise les algorithmes de détection de format en fonction des résultats de test.
+    Optimise les algorithmes de dÃ©tection de format en fonction des rÃ©sultats de test.
 
 .DESCRIPTION
-    Ce script analyse les résultats des tests de détection de format et propose des
-    optimisations pour améliorer la précision de la détection. Il identifie les cas
-    problématiques, ajuste les critères de détection et améliore les algorithmes
-    de résolution des cas ambigus.
+    Ce script analyse les rÃ©sultats des tests de dÃ©tection de format et propose des
+    optimisations pour amÃ©liorer la prÃ©cision de la dÃ©tection. Il identifie les cas
+    problÃ©matiques, ajuste les critÃ¨res de dÃ©tection et amÃ©liore les algorithmes
+    de rÃ©solution des cas ambigus.
 
 .PARAMETER AccuracyReportPath
-    Le chemin vers le rapport JSON de précision de détection.
-    Par défaut, utilise 'reports\DetectionAccuracy.json' dans le répertoire du script.
+    Le chemin vers le rapport JSON de prÃ©cision de dÃ©tection.
+    Par dÃ©faut, utilise 'reports\DetectionAccuracy.json' dans le rÃ©pertoire du script.
 
 .PARAMETER CriteriaPath
-    Le chemin vers le fichier JSON contenant les critères de détection.
-    Par défaut, utilise '..\analysis\FormatDetectionCriteria.json'.
+    Le chemin vers le fichier JSON contenant les critÃ¨res de dÃ©tection.
+    Par dÃ©faut, utilise '..\analysis\FormatDetectionCriteria.json'.
 
 .PARAMETER OutputCriteriaPath
-    Le chemin où enregistrer les critères optimisés.
-    Par défaut, utilise '..\analysis\OptimizedFormatDetectionCriteria.json'.
+    Le chemin oÃ¹ enregistrer les critÃ¨res optimisÃ©s.
+    Par dÃ©faut, utilise '..\analysis\OptimizedFormatDetectionCriteria.json'.
 
 .PARAMETER GenerateReport
-    Indique si un rapport d'optimisation doit être généré.
+    Indique si un rapport d'optimisation doit Ãªtre gÃ©nÃ©rÃ©.
 
 .PARAMETER ReportPath
-    Le chemin où enregistrer le rapport d'optimisation.
-    Par défaut, utilise 'reports\OptimizationReport.html'.
+    Le chemin oÃ¹ enregistrer le rapport d'optimisation.
+    Par dÃ©faut, utilise 'reports\OptimizationReport.html'.
 
 .EXAMPLE
     .\Optimize-DetectionAlgorithms.ps1 -GenerateReport
@@ -55,7 +55,7 @@ param(
     [string]$ReportPath = (Join-Path -Path $PSScriptRoot -ChildPath "reports\OptimizationReport.html")
 )
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -65,18 +65,18 @@ function New-DirectoryIfNotExists {
     
     if (-not (Test-Path -Path $directory -PathType Container)) {
         New-Item -Path $directory -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $directory"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $directory"
     }
 }
 
-# Fonction pour charger le rapport de précision
+# Fonction pour charger le rapport de prÃ©cision
 function Get-AccuracyReport {
     param (
         [string]$Path
     )
     
     if (-not (Test-Path -Path $Path)) {
-        Write-Error "Le rapport de précision '$Path' n'existe pas."
+        Write-Error "Le rapport de prÃ©cision '$Path' n'existe pas."
         return $null
     }
     
@@ -85,19 +85,19 @@ function Get-AccuracyReport {
         return $report
     }
     catch {
-        Write-Error "Erreur lors du chargement du rapport de précision : $_"
+        Write-Error "Erreur lors du chargement du rapport de prÃ©cision : $_"
         return $null
     }
 }
 
-# Fonction pour charger les critères de détection
+# Fonction pour charger les critÃ¨res de dÃ©tection
 function Get-DetectionCriteria {
     param (
         [string]$Path
     )
     
     if (-not (Test-Path -Path $Path)) {
-        Write-Error "Le fichier des critères de détection '$Path' n'existe pas."
+        Write-Error "Le fichier des critÃ¨res de dÃ©tection '$Path' n'existe pas."
         return $null
     }
     
@@ -106,12 +106,12 @@ function Get-DetectionCriteria {
         return $criteria
     }
     catch {
-        Write-Error "Erreur lors du chargement des critères de détection : $_"
+        Write-Error "Erreur lors du chargement des critÃ¨res de dÃ©tection : $_"
         return $null
     }
 }
 
-# Fonction pour identifier les cas problématiques
+# Fonction pour identifier les cas problÃ©matiques
 function Get-ProblematicCases {
     param (
         [PSCustomObject]$Report
@@ -128,7 +128,7 @@ function Get-ProblematicCases {
     return $problematicCases
 }
 
-# Fonction pour analyser les cas problématiques
+# Fonction pour analyser les cas problÃ©matiques
 function Get-CaseAnalysis {
     param (
         [array]$ProblematicCases,
@@ -188,7 +188,7 @@ function Get-CaseAnalysis {
     return $analysis
 }
 
-# Fonction pour optimiser les critères de détection
+# Fonction pour optimiser les critÃ¨res de dÃ©tection
 function Optimize-Criteria {
     param (
         [PSCustomObject]$Criteria,
@@ -203,7 +203,7 @@ function Optimize-Criteria {
         $formatCriteria = $optimizedCriteria.PSObject.Properties | Where-Object { $_.Name -eq $format } | Select-Object -First 1
         
         if ($null -eq $formatCriteria) {
-            Write-Warning "Aucun critère trouvé pour le format '$format'."
+            Write-Warning "Aucun critÃ¨re trouvÃ© pour le format '$format'."
             continue
         }
         
@@ -218,7 +218,7 @@ function Optimize-Criteria {
             $misclassifiedAs = $mostCommonMisclassification.Key
             $misclassificationCount = $mostCommonMisclassification.Value
             
-            # Optimiser les critères en fonction du type de problème le plus courant
+            # Optimiser les critÃ¨res en fonction du type de problÃ¨me le plus courant
             $mostCommonPattern = $formatAnalysis.CommonPatterns.GetEnumerator() | 
                 Sort-Object -Property Value -Descending | 
                 Select-Object -First 1
@@ -229,46 +229,46 @@ function Optimize-Criteria {
                 
                 switch ($pattern) {
                     "truncated" {
-                        # Améliorer la détection des fichiers tronqués
+                        # AmÃ©liorer la dÃ©tection des fichiers tronquÃ©s
                         if ($formatCriteriaValue.MinimumSize -lt 50) {
                             $oldValue = $formatCriteriaValue.MinimumSize
                             $formatCriteriaValue.MinimumSize = 10
-                            $optimizationLog += "Réduit la taille minimale pour le format '$format' de $oldValue à 10 octets pour mieux détecter les fichiers tronqués."
+                            $optimizationLog += "RÃ©duit la taille minimale pour le format '$format' de $oldValue Ã  10 octets pour mieux dÃ©tecter les fichiers tronquÃ©s."
                         }
                         
                         if ($formatCriteriaValue.ContentPatterns -and $formatCriteriaValue.ContentPatterns.Count -gt 0) {
                             $oldCount = $formatCriteriaValue.ContentPatterns.Count
                             
-                            # Réduire le nombre de motifs requis
+                            # RÃ©duire le nombre de motifs requis
                             $formatCriteriaValue.RequiredPatternCount = [Math]::Max(1, [Math]::Floor($formatCriteriaValue.RequiredPatternCount * 0.7))
                             
-                            $optimizationLog += "Réduit le nombre de motifs requis pour le format '$format' à $($formatCriteriaValue.RequiredPatternCount) pour mieux détecter les fichiers tronqués."
+                            $optimizationLog += "RÃ©duit le nombre de motifs requis pour le format '$format' Ã  $($formatCriteriaValue.RequiredPatternCount) pour mieux dÃ©tecter les fichiers tronquÃ©s."
                         }
                     }
                     "corrupted" {
-                        # Améliorer la détection des fichiers corrompus
+                        # AmÃ©liorer la dÃ©tection des fichiers corrompus
                         if ($formatCriteriaValue.ContentPatterns -and $formatCriteriaValue.ContentPatterns.Count -gt 0) {
                             $oldCount = $formatCriteriaValue.ContentPatterns.Count
                             
                             # Ajouter des motifs plus robustes
                             $formatCriteriaValue.RequiredPatternCount = [Math]::Max(1, [Math]::Floor($formatCriteriaValue.RequiredPatternCount * 0.6))
                             
-                            $optimizationLog += "Réduit le nombre de motifs requis pour le format '$format' à $($formatCriteriaValue.RequiredPatternCount) pour mieux détecter les fichiers corrompus."
+                            $optimizationLog += "RÃ©duit le nombre de motifs requis pour le format '$format' Ã  $($formatCriteriaValue.RequiredPatternCount) pour mieux dÃ©tecter les fichiers corrompus."
                         }
                         
-                        # Augmenter la priorité pour les cas ambigus
+                        # Augmenter la prioritÃ© pour les cas ambigus
                         $oldPriority = $formatCriteriaValue.Priority
                         $formatCriteriaValue.Priority += 5
                         
-                        $optimizationLog += "Augmenté la priorité pour le format '$format' de $oldPriority à $($formatCriteriaValue.Priority) pour mieux résoudre les cas ambigus."
+                        $optimizationLog += "AugmentÃ© la prioritÃ© pour le format '$format' de $oldPriority Ã  $($formatCriteriaValue.Priority) pour mieux rÃ©soudre les cas ambigus."
                     }
                     "incorrect_header" {
-                        # Améliorer la détection des fichiers avec en-tête incorrect
+                        # AmÃ©liorer la dÃ©tection des fichiers avec en-tÃªte incorrect
                         if ($formatCriteriaValue.HeaderPatterns -and $formatCriteriaValue.HeaderPatterns.Count -gt 0) {
                             $oldRequired = $formatCriteriaValue.RequireHeader
                             $formatCriteriaValue.RequireHeader = $false
                             
-                            $optimizationLog += "Désactivé l'exigence d'en-tête pour le format '$format' pour mieux détecter les fichiers avec en-tête incorrect."
+                            $optimizationLog += "DÃ©sactivÃ© l'exigence d'en-tÃªte pour le format '$format' pour mieux dÃ©tecter les fichiers avec en-tÃªte incorrect."
                         }
                         
                         # Augmenter l'importance des motifs de contenu
@@ -276,45 +276,45 @@ function Optimize-Criteria {
                             $oldWeight = $formatCriteriaValue.ContentWeight
                             $formatCriteriaValue.ContentWeight = [Math]::Min(100, $oldWeight * 1.5)
                             
-                            $optimizationLog += "Augmenté le poids du contenu pour le format '$format' de $oldWeight à $($formatCriteriaValue.ContentWeight) pour mieux détecter les fichiers avec en-tête incorrect."
+                            $optimizationLog += "AugmentÃ© le poids du contenu pour le format '$format' de $oldWeight Ã  $($formatCriteriaValue.ContentWeight) pour mieux dÃ©tecter les fichiers avec en-tÃªte incorrect."
                         }
                     }
                     "incorrect_extension" {
-                        # Améliorer la détection des fichiers avec extension incorrecte
+                        # AmÃ©liorer la dÃ©tection des fichiers avec extension incorrecte
                         $oldWeight = $formatCriteriaValue.ExtensionWeight
                         $formatCriteriaValue.ExtensionWeight = [Math]::Max(10, $oldWeight * 0.5)
                         
-                        $optimizationLog += "Réduit le poids de l'extension pour le format '$format' de $oldWeight à $($formatCriteriaValue.ExtensionWeight) pour mieux détecter les fichiers avec extension incorrecte."
+                        $optimizationLog += "RÃ©duit le poids de l'extension pour le format '$format' de $oldWeight Ã  $($formatCriteriaValue.ExtensionWeight) pour mieux dÃ©tecter les fichiers avec extension incorrecte."
                         
                         # Augmenter l'importance des motifs de contenu
                         if ($formatCriteriaValue.ContentPatterns -and $formatCriteriaValue.ContentPatterns.Count -gt 0) {
                             $oldWeight = $formatCriteriaValue.ContentWeight
                             $formatCriteriaValue.ContentWeight = [Math]::Min(100, $oldWeight * 1.5)
                             
-                            $optimizationLog += "Augmenté le poids du contenu pour le format '$format' de $oldWeight à $($formatCriteriaValue.ContentWeight) pour mieux détecter les fichiers avec extension incorrecte."
+                            $optimizationLog += "AugmentÃ© le poids du contenu pour le format '$format' de $oldWeight Ã  $($formatCriteriaValue.ContentWeight) pour mieux dÃ©tecter les fichiers avec extension incorrecte."
                         }
                     }
                     "hybrid" {
-                        # Améliorer la détection des fichiers hybrides
+                        # AmÃ©liorer la dÃ©tection des fichiers hybrides
                         $oldWeight = $formatCriteriaValue.StructureWeight
                         $formatCriteriaValue.StructureWeight = [Math]::Min(100, $oldWeight * 1.5)
                         
-                        $optimizationLog += "Augmenté le poids de la structure pour le format '$format' de $oldWeight à $($formatCriteriaValue.StructureWeight) pour mieux détecter les fichiers hybrides."
+                        $optimizationLog += "AugmentÃ© le poids de la structure pour le format '$format' de $oldWeight Ã  $($formatCriteriaValue.StructureWeight) pour mieux dÃ©tecter les fichiers hybrides."
                         
-                        # Ajuster la priorité pour les cas ambigus
+                        # Ajuster la prioritÃ© pour les cas ambigus
                         if ($misclassifiedAs -eq "TEXT" -or $misclassifiedAs -eq "BINARY") {
                             $oldPriority = $formatCriteriaValue.Priority
                             $formatCriteriaValue.Priority += 10
                             
-                            $optimizationLog += "Augmenté la priorité pour le format '$format' de $oldPriority à $($formatCriteriaValue.Priority) pour mieux le distinguer des formats génériques."
+                            $optimizationLog += "AugmentÃ© la prioritÃ© pour le format '$format' de $oldPriority Ã  $($formatCriteriaValue.Priority) pour mieux le distinguer des formats gÃ©nÃ©riques."
                         }
                     }
                     default {
-                        # Optimisations générales
+                        # Optimisations gÃ©nÃ©rales
                         $oldPriority = $formatCriteriaValue.Priority
                         $formatCriteriaValue.Priority += 2
                         
-                        $optimizationLog += "Augmenté la priorité pour le format '$format' de $oldPriority à $($formatCriteriaValue.Priority) pour améliorer la détection."
+                        $optimizationLog += "AugmentÃ© la prioritÃ© pour le format '$format' de $oldPriority Ã  $($formatCriteriaValue.Priority) pour amÃ©liorer la dÃ©tection."
                     }
                 }
                 
@@ -324,11 +324,11 @@ function Optimize-Criteria {
                 if ($null -ne $conflictingFormatCriteria) {
                     $conflictingFormatCriteriaValue = $conflictingFormatCriteria.Value
                     
-                    # Réduire légèrement la priorité du format conflictuel
+                    # RÃ©duire lÃ©gÃ¨rement la prioritÃ© du format conflictuel
                     $oldPriority = $conflictingFormatCriteriaValue.Priority
                     $conflictingFormatCriteriaValue.Priority = [Math]::Max(1, $oldPriority - 1)
                     
-                    $optimizationLog += "Réduit la priorité pour le format '$misclassifiedAs' de $oldPriority à $($conflictingFormatCriteriaValue.Priority) pour réduire les confusions avec '$format'."
+                    $optimizationLog += "RÃ©duit la prioritÃ© pour le format '$misclassifiedAs' de $oldPriority Ã  $($conflictingFormatCriteriaValue.Priority) pour rÃ©duire les confusions avec '$format'."
                 }
             }
         }
@@ -340,7 +340,7 @@ function Optimize-Criteria {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Export-OptimizationReport {
     param (
         [hashtable]$Analysis,
@@ -355,7 +355,7 @@ function Export-OptimizationReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport d'optimisation des algorithmes de détection</title>
+    <title>Rapport d'optimisation des algorithmes de dÃ©tection</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -473,13 +473,13 @@ function Export-OptimizationReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport d'optimisation des algorithmes de détection</h1>
+        <h1>Rapport d'optimisation des algorithmes de dÃ©tection</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Nombre de cas problématiques analysés:</strong> $($ProblematicCases.Count)</p>
-            <p><strong>Nombre de formats optimisés:</strong> $($Analysis.Count)</p>
-            <p><strong>Nombre d'optimisations effectuées:</strong> $($OptimizationLog.Count)</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Nombre de cas problÃ©matiques analysÃ©s:</strong> $($ProblematicCases.Count)</p>
+            <p><strong>Nombre de formats optimisÃ©s:</strong> $($Analysis.Count)</p>
+            <p><strong>Nombre d'optimisations effectuÃ©es:</strong> $($OptimizationLog.Count)</p>
             <p><strong>Date de l'optimisation:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
         
@@ -498,7 +498,7 @@ function Export-OptimizationReport {
             </ul>
         </div>
         
-        <h2>Analyse des cas problématiques</h2>
+        <h2>Analyse des cas problÃ©matiques</h2>
         <div class="analysis-section">
 "@
 
@@ -510,11 +510,11 @@ function Export-OptimizationReport {
                 <h3>Format: $format</h3>
                 <p><strong>Nombre total de mauvaises classifications:</strong> $($formatAnalysis.TotalMisclassifications)</p>
                 
-                <h4>Classifications erronées</h4>
+                <h4>Classifications erronÃ©es</h4>
                 <table class="misclassification-table">
                     <thead>
                         <tr>
-                            <th>Détecté comme</th>
+                            <th>DÃ©tectÃ© comme</th>
                             <th>Nombre</th>
                             <th>Pourcentage</th>
                         </tr>
@@ -553,9 +553,9 @@ function Export-OptimizationReport {
         foreach ($pattern in $formatAnalysis.CommonPatterns.GetEnumerator() | Sort-Object -Property Value -Descending) {
             $percentage = [Math]::Round(($pattern.Value / $formatAnalysis.TotalMisclassifications) * 100, 2)
             $patternName = switch ($pattern.Key) {
-                "truncated" { "Fichier tronqué" }
+                "truncated" { "Fichier tronquÃ©" }
                 "corrupted" { "Fichier corrompu" }
-                "incorrect_header" { "En-tête incorrect" }
+                "incorrect_header" { "En-tÃªte incorrect" }
                 "incorrect_extension" { "Extension incorrecte" }
                 "hybrid" { "Fichier hybride" }
                 default { "Autre" }
@@ -580,14 +580,14 @@ function Export-OptimizationReport {
     $html += @"
         </div>
         
-        <h2>Cas problématiques</h2>
+        <h2>Cas problÃ©matiques</h2>
         <div class="problematic-cases">
             <table class="case-table">
                 <thead>
                     <tr>
                         <th>Fichier</th>
                         <th>Format attendu</th>
-                        <th>Format détecté</th>
+                        <th>Format dÃ©tectÃ©</th>
                         <th>Score de confiance</th>
                     </tr>
                 </thead>
@@ -615,62 +615,62 @@ function Export-OptimizationReport {
 "@
 
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport d'optimisation exporté vers '$OutputPath'" -ForegroundColor Green
+    Write-Host "Rapport d'optimisation exportÃ© vers '$OutputPath'" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le rapport de précision existe
+    # VÃ©rifier si le rapport de prÃ©cision existe
     if (-not (Test-Path -Path $AccuracyReportPath)) {
-        Write-Error "Le rapport de précision '$AccuracyReportPath' n'existe pas."
+        Write-Error "Le rapport de prÃ©cision '$AccuracyReportPath' n'existe pas."
         exit 1
     }
     
-    # Vérifier si le fichier des critères de détection existe
+    # VÃ©rifier si le fichier des critÃ¨res de dÃ©tection existe
     if (-not (Test-Path -Path $CriteriaPath)) {
-        Write-Error "Le fichier des critères de détection '$CriteriaPath' n'existe pas."
+        Write-Error "Le fichier des critÃ¨res de dÃ©tection '$CriteriaPath' n'existe pas."
         exit 1
     }
     
-    # Charger le rapport de précision
+    # Charger le rapport de prÃ©cision
     $accuracyReport = Get-AccuracyReport -Path $AccuracyReportPath
     
     if ($null -eq $accuracyReport) {
         exit 1
     }
     
-    # Charger les critères de détection
+    # Charger les critÃ¨res de dÃ©tection
     $criteria = Get-DetectionCriteria -Path $CriteriaPath
     
     if ($null -eq $criteria) {
         exit 1
     }
     
-    Write-Host "Analyse des résultats de détection et optimisation des algorithmes..." -ForegroundColor Yellow
+    Write-Host "Analyse des rÃ©sultats de dÃ©tection et optimisation des algorithmes..." -ForegroundColor Yellow
     
-    # Identifier les cas problématiques
+    # Identifier les cas problÃ©matiques
     $problematicCases = Get-ProblematicCases -Report $accuracyReport
     
     if ($problematicCases.Count -eq 0) {
-        Write-Host "Aucun cas problématique trouvé. Les algorithmes de détection fonctionnent parfaitement !" -ForegroundColor Green
+        Write-Host "Aucun cas problÃ©matique trouvÃ©. Les algorithmes de dÃ©tection fonctionnent parfaitement !" -ForegroundColor Green
         return
     }
     
-    Write-Host "Nombre de cas problématiques identifiés : $($problematicCases.Count)" -ForegroundColor Cyan
+    Write-Host "Nombre de cas problÃ©matiques identifiÃ©s : $($problematicCases.Count)" -ForegroundColor Cyan
     
-    # Analyser les cas problématiques
+    # Analyser les cas problÃ©matiques
     $analysis = Get-CaseAnalysis -ProblematicCases $problematicCases -Criteria $criteria
     
-    # Optimiser les critères de détection
+    # Optimiser les critÃ¨res de dÃ©tection
     $optimizationResult = Optimize-Criteria -Criteria $criteria -Analysis $analysis
     $optimizedCriteria = $optimizationResult.OptimizedCriteria
     $optimizationLog = $optimizationResult.OptimizationLog
     
-    # Enregistrer les critères optimisés
+    # Enregistrer les critÃ¨res optimisÃ©s
     New-DirectoryIfNotExists -Path $OutputCriteriaPath
     $optimizedCriteria | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputCriteriaPath -Encoding UTF8
     
-    Write-Host "Critères de détection optimisés enregistrés dans '$OutputCriteriaPath'" -ForegroundColor Green
+    Write-Host "CritÃ¨res de dÃ©tection optimisÃ©s enregistrÃ©s dans '$OutputCriteriaPath'" -ForegroundColor Green
     
     # Afficher le journal d'optimisation
     Write-Host "`nJournal d'optimisation :" -ForegroundColor Yellow
@@ -679,7 +679,7 @@ function Main {
         Write-Host "- $log" -ForegroundColor White
     }
     
-    # Générer un rapport d'optimisation
+    # GÃ©nÃ©rer un rapport d'optimisation
     if ($GenerateReport) {
         New-DirectoryIfNotExists -Path $ReportPath
         Export-OptimizationReport -Analysis $analysis -OptimizationLog $optimizationLog -ProblematicCases $problematicCases -OutputPath $ReportPath
@@ -692,6 +692,6 @@ function Main {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $result = Main
 return $result

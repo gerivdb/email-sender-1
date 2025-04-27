@@ -1,21 +1,21 @@
-# RegistryACLAnalyzer
+﻿# RegistryACLAnalyzer
 
-RegistryACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gérer les listes de contrôle d'accès (ACL) sur les clés de registre Windows.
+RegistryACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser et gÃ©rer les listes de contrÃ´le d'accÃ¨s (ACL) sur les clÃ©s de registre Windows.
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-- **Analyse des permissions de registre** : Obtenir des informations détaillées sur les permissions des clés de registre
-- **Détection d'anomalies** : Identifier les configurations de permissions potentiellement risquées ou problématiques
-- **Analyse d'héritage** : Examiner la structure d'héritage des permissions et détecter les interruptions
-- **Analyse de propriété** : Obtenir des informations sur les propriétaires des clés de registre
-- **Génération de rapports** : Créer des rapports détaillés sur les permissions de registre dans différents formats
-- **Correction d'anomalies** : Corriger automatiquement les problèmes de permissions détectés
-- **Comparaison de permissions** : Comparer les permissions entre deux clés de registre et identifier les différences
+- **Analyse des permissions de registre** : Obtenir des informations dÃ©taillÃ©es sur les permissions des clÃ©s de registre
+- **DÃ©tection d'anomalies** : Identifier les configurations de permissions potentiellement risquÃ©es ou problÃ©matiques
+- **Analyse d'hÃ©ritage** : Examiner la structure d'hÃ©ritage des permissions et dÃ©tecter les interruptions
+- **Analyse de propriÃ©tÃ©** : Obtenir des informations sur les propriÃ©taires des clÃ©s de registre
+- **GÃ©nÃ©ration de rapports** : CrÃ©er des rapports dÃ©taillÃ©s sur les permissions de registre dans diffÃ©rents formats
+- **Correction d'anomalies** : Corriger automatiquement les problÃ¨mes de permissions dÃ©tectÃ©s
+- **Comparaison de permissions** : Comparer les permissions entre deux clÃ©s de registre et identifier les diffÃ©rences
 - **Exportation/Importation** : Sauvegarder et restaurer des configurations de permissions
 
 ## Installation
 
-1. Téléchargez le fichier `RegistryACLAnalyzer.ps1`
+1. TÃ©lÃ©chargez le fichier `RegistryACLAnalyzer.ps1`
 2. Importez le module dans votre script PowerShell :
 
 ```powershell
@@ -26,7 +26,7 @@ RegistryACLAnalyzer est un module PowerShell pour analyser, comparer, visualiser
 
 ### Get-RegistryPermission
 
-Analyse les permissions d'une clé de registre.
+Analyse les permissions d'une clÃ© de registre.
 
 ```powershell
 Get-RegistryPermission -Path "HKLM:\SOFTWARE" -Recurse $true -IncludeInherited $true
@@ -34,7 +34,7 @@ Get-RegistryPermission -Path "HKLM:\SOFTWARE" -Recurse $true -IncludeInherited $
 
 ### Find-RegistryPermissionAnomaly
 
-Détecte les anomalies dans les permissions de registre.
+DÃ©tecte les anomalies dans les permissions de registre.
 
 ```powershell
 Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -Recurse $true
@@ -42,7 +42,7 @@ Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -Recurse $true
 
 ### Get-RegistryPermissionInheritance
 
-Analyse l'héritage des permissions d'une clé de registre.
+Analyse l'hÃ©ritage des permissions d'une clÃ© de registre.
 
 ```powershell
 Get-RegistryPermissionInheritance -Path "HKLM:\SOFTWARE" -Recurse $false
@@ -50,7 +50,7 @@ Get-RegistryPermissionInheritance -Path "HKLM:\SOFTWARE" -Recurse $false
 
 ### Get-RegistryOwnershipInfo
 
-Analyse les propriétaires des clés de registre.
+Analyse les propriÃ©taires des clÃ©s de registre.
 
 ```powershell
 Get-RegistryOwnershipInfo -Path "HKLM:\SOFTWARE" -Recurse $true
@@ -58,7 +58,7 @@ Get-RegistryOwnershipInfo -Path "HKLM:\SOFTWARE" -Recurse $true
 
 ### New-RegistryPermissionReport
 
-Génère un rapport détaillé des permissions de registre.
+GÃ©nÃ¨re un rapport dÃ©taillÃ© des permissions de registre.
 
 ```powershell
 New-RegistryPermissionReport -Path "HKLM:\SOFTWARE" -OutputFormat "HTML"
@@ -66,7 +66,7 @@ New-RegistryPermissionReport -Path "HKLM:\SOFTWARE" -OutputFormat "HTML"
 
 ### Repair-RegistryPermissionAnomaly
 
-Corrige automatiquement les anomalies de permissions de registre détectées.
+Corrige automatiquement les anomalies de permissions de registre dÃ©tectÃ©es.
 
 ```powershell
 Repair-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -AnomalyType "HighRiskPermission" -WhatIf
@@ -74,7 +74,7 @@ Repair-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -AnomalyType "HighRiskPe
 
 ### Compare-RegistryPermission
 
-Compare les permissions entre deux clés de registre.
+Compare les permissions entre deux clÃ©s de registre.
 
 ```powershell
 Compare-RegistryPermission -ReferencePath "HKLM:\SOFTWARE\Microsoft" -DifferencePath "HKLM:\SOFTWARE\Classes" -IncludeInherited $true
@@ -82,7 +82,7 @@ Compare-RegistryPermission -ReferencePath "HKLM:\SOFTWARE\Microsoft" -Difference
 
 ### Export-RegistryPermission
 
-Exporte les permissions d'une clé de registre vers un fichier.
+Exporte les permissions d'une clÃ© de registre vers un fichier.
 
 ```powershell
 Export-RegistryPermission -Path "HKLM:\SOFTWARE\Microsoft" -OutputPath "C:\Backup\RegistryPermissions.json" -Format "JSON" -Recurse $true
@@ -90,97 +90,97 @@ Export-RegistryPermission -Path "HKLM:\SOFTWARE\Microsoft" -OutputPath "C:\Backu
 
 ### Import-RegistryPermission
 
-Importe les permissions de registre depuis un fichier et les applique à une clé de registre.
+Importe les permissions de registre depuis un fichier et les applique Ã  une clÃ© de registre.
 
 ```powershell
 Import-RegistryPermission -InputPath "C:\Backup\RegistryPermissions.json" -TargetPath "HKLM:\SOFTWARE\Test" -Format "JSON" -WhatIf
 ```
 
-## Types d'anomalies détectées
+## Types d'anomalies dÃ©tectÃ©es
 
-- **HighRiskPermission** : Permissions à risque élevé accordées à des groupes à risque élevé
+- **HighRiskPermission** : Permissions Ã  risque Ã©levÃ© accordÃ©es Ã  des groupes Ã  risque Ã©levÃ©
 - **PermissionConflict** : Conflits entre les permissions Allow et Deny
-- **RedundantPermission** : Permissions redondantes pour le même utilisateur ou groupe
-- **InheritanceBreak** : Interruptions dans l'héritage des permissions
+- **RedundantPermission** : Permissions redondantes pour le mÃªme utilisateur ou groupe
+- **InheritanceBreak** : Interruptions dans l'hÃ©ritage des permissions
 
 ## Formats de rapport pris en charge
 
 - **Text** : Rapport au format texte simple
 - **HTML** : Rapport au format HTML avec mise en forme et coloration
-- **JSON** : Rapport au format JSON pour l'intégration avec d'autres outils
+- **JSON** : Rapport au format JSON pour l'intÃ©gration avec d'autres outils
 
 ## Formats d'exportation/importation pris en charge
 
-- **JSON** : Format JSON pour une exportation complète avec métadonnées
-- **XML** : Format XML pour une exportation complète avec métadonnées
-- **CSV** : Format CSV pour une exportation simplifiée et compatible avec Excel
+- **JSON** : Format JSON pour une exportation complÃ¨te avec mÃ©tadonnÃ©es
+- **XML** : Format XML pour une exportation complÃ¨te avec mÃ©tadonnÃ©es
+- **CSV** : Format CSV pour une exportation simplifiÃ©e et compatible avec Excel
 
 ## Exemples d'utilisation
 
-### Analyser les permissions d'une clé de registre sensible
+### Analyser les permissions d'une clÃ© de registre sensible
 
 ```powershell
 # Obtenir les permissions
 $permissions = Get-RegistryPermission -Path "HKLM:\SYSTEM\CurrentControlSet\Services" -Recurse $true
 
-# Afficher les permissions à risque élevé
-$permissions | Where-Object { $_.RiskLevel -eq "Élevé" } | Format-Table -AutoSize
+# Afficher les permissions Ã  risque Ã©levÃ©
+$permissions | Where-Object { $_.RiskLevel -eq "Ã‰levÃ©" } | Format-Table -AutoSize
 ```
 
-### Détecter et analyser les anomalies
+### DÃ©tecter et analyser les anomalies
 
 ```powershell
-# Détecter les anomalies
+# DÃ©tecter les anomalies
 $anomalies = Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -Recurse $true
 
-# Afficher les anomalies à risque élevé
-$anomalies | Where-Object { $_.Severity -eq "Élevée" } | Format-Table -AutoSize
+# Afficher les anomalies Ã  risque Ã©levÃ©
+$anomalies | Where-Object { $_.Severity -eq "Ã‰levÃ©e" } | Format-Table -AutoSize
 ```
 
-### Générer un rapport complet
+### GÃ©nÃ©rer un rapport complet
 
 ```powershell
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $report = New-RegistryPermissionReport -Path "HKLM:\SOFTWARE\Microsoft" -OutputFormat "HTML"
 
 # Enregistrer le rapport dans un fichier
 $report | Out-File -FilePath "C:\Rapports\RegistryPermissions.html" -Encoding utf8
 ```
 
-### Analyser l'héritage des permissions
+### Analyser l'hÃ©ritage des permissions
 
 ```powershell
-# Obtenir les informations d'héritage
+# Obtenir les informations d'hÃ©ritage
 $inheritance = Get-RegistryPermissionInheritance -Path "HKLM:\SOFTWARE" -Recurse $true
 
-# Afficher les points d'interruption d'héritage
+# Afficher les points d'interruption d'hÃ©ritage
 $inheritance | Where-Object { $_.InheritanceEnabled -eq $false } | Format-Table -AutoSize
 ```
 
-### Analyser les propriétaires des clés de registre
+### Analyser les propriÃ©taires des clÃ©s de registre
 
 ```powershell
-# Obtenir les informations de propriété
+# Obtenir les informations de propriÃ©tÃ©
 $ownership = Get-RegistryOwnershipInfo -Path "HKLM:\SOFTWARE" -Recurse $true
 
-# Afficher les clés avec des risques de sécurité
+# Afficher les clÃ©s avec des risques de sÃ©curitÃ©
 $ownership | Where-Object { $_.SecurityRisk -eq $true } | Format-Table -AutoSize
 ```
 
 ### Corriger les anomalies de permissions
 
 ```powershell
-# Détecter les anomalies
+# DÃ©tecter les anomalies
 $anomalies = Find-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -Recurse $true
 
-# Afficher les anomalies à risque élevé
-$anomalies | Where-Object { $_.Severity -eq "Élevée" } | Format-Table -AutoSize
+# Afficher les anomalies Ã  risque Ã©levÃ©
+$anomalies | Where-Object { $_.Severity -eq "Ã‰levÃ©e" } | Format-Table -AutoSize
 
-# Corriger les anomalies à risque élevé
+# Corriger les anomalies Ã  risque Ã©levÃ©
 Repair-RegistryPermissionAnomaly -Path "HKLM:\SOFTWARE" -AnomalyType "HighRiskPermission" -WhatIf
 ```
 
-### Comparer les permissions entre deux clés de registre
+### Comparer les permissions entre deux clÃ©s de registre
 
 ```powershell
 # Comparer les permissions
@@ -189,10 +189,10 @@ $comparison = Compare-RegistryPermission -ReferencePath "HKLM:\SOFTWARE\Microsof
 # Afficher les permissions manquantes
 $comparison.MissingPermissions | Format-Table -AutoSize
 
-# Afficher les permissions supplémentaires
+# Afficher les permissions supplÃ©mentaires
 $comparison.AdditionalPermissions | Format-Table -AutoSize
 
-# Afficher les permissions modifiées
+# Afficher les permissions modifiÃ©es
 $comparison.ModifiedPermissions | Format-Table -AutoSize
 ```
 
@@ -202,20 +202,20 @@ $comparison.ModifiedPermissions | Format-Table -AutoSize
 # Sauvegarder les permissions
 Export-RegistryPermission -Path "HKLM:\SOFTWARE\Microsoft" -OutputPath "C:\Backup\RegistryPermissions.json" -Format "JSON" -Recurse $true
 
-# Restaurer les permissions sur une autre clé
+# Restaurer les permissions sur une autre clÃ©
 Import-RegistryPermission -InputPath "C:\Backup\RegistryPermissions.json" -TargetPath "HKLM:\SOFTWARE\Test" -Format "JSON" -WhatIf
 ```
 
 ## Remarques
 
-- Certaines fonctions nécessitent des privilèges d'administrateur pour fonctionner correctement
-- Les fonctions récursives sont limitées en profondeur pour éviter les boucles infinies
-- L'analyse des clés de registre système peut prendre du temps, utilisez la récursivité avec précaution
-- Les fonctions de correction et d'importation supportent les paramètres `-WhatIf` et `-Force`
+- Certaines fonctions nÃ©cessitent des privilÃ¨ges d'administrateur pour fonctionner correctement
+- Les fonctions rÃ©cursives sont limitÃ©es en profondeur pour Ã©viter les boucles infinies
+- L'analyse des clÃ©s de registre systÃ¨me peut prendre du temps, utilisez la rÃ©cursivitÃ© avec prÃ©caution
+- Les fonctions de correction et d'importation supportent les paramÃ¨tres `-WhatIf` et `-Force`
 
 ## Licence
 
-Ce module est distribué sous licence MIT.
+Ce module est distribuÃ© sous licence MIT.
 
 ## Auteur
 

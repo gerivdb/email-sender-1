@@ -1,27 +1,27 @@
-#
+﻿#
 # Test-PerformanceReport.ps1
 #
-# Script pour tester la fonction de génération de rapports de performance
+# Script pour tester la fonction de gÃ©nÃ©ration de rapports de performance
 #
 
-# Importer la fonction de génération de rapports
+# Importer la fonction de gÃ©nÃ©ration de rapports
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $publicPath = Join-Path -Path $modulePath -ChildPath "Functions\Public"
 $reportFunctionPath = Join-Path -Path $publicPath -ChildPath "New-RoadmapPerformanceReport.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $reportFunctionPath)) {
-    Write-Error "Le fichier New-RoadmapPerformanceReport.ps1 est introuvable à l'emplacement : $reportFunctionPath"
+    Write-Error "Le fichier New-RoadmapPerformanceReport.ps1 est introuvable Ã  l'emplacement : $reportFunctionPath"
     exit 1
 }
 
 # Importer la fonction
 . $reportFunctionPath
 
-Write-Host "Début des tests de génération de rapports de performance..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de gÃ©nÃ©ration de rapports de performance..." -ForegroundColor Cyan
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 $testData = [PSCustomObject]@{
     GeneratedAt = Get-Date
     Title = "Rapport de test"
@@ -70,24 +70,24 @@ $testData = [PSCustomObject]@{
     )
 }
 
-# Test 1: Générer un rapport au format texte
-Write-Host "`nTest 1: Génération d'un rapport au format texte" -ForegroundColor Cyan
+# Test 1: GÃ©nÃ©rer un rapport au format texte
+Write-Host "`nTest 1: GÃ©nÃ©ration d'un rapport au format texte" -ForegroundColor Cyan
 $textReport = New-TextPerformanceReport -PerformanceData $testData -IncludeTimestamp $true
-Write-Host "Rapport texte généré avec succès. Extrait :"
+Write-Host "Rapport texte gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($textReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-# Test 2: Générer un rapport au format HTML
-Write-Host "`nTest 2: Génération d'un rapport au format HTML" -ForegroundColor Cyan
+# Test 2: GÃ©nÃ©rer un rapport au format HTML
+Write-Host "`nTest 2: GÃ©nÃ©ration d'un rapport au format HTML" -ForegroundColor Cyan
 $htmlReport = New-HtmlPerformanceReport -PerformanceData $testData -IncludeTimestamp $true
-Write-Host "Rapport HTML généré avec succès. Extrait :"
+Write-Host "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($htmlReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
-# Test 3: Générer un rapport CSV
-Write-Host "`nTest 3: Génération d'un rapport au format CSV" -ForegroundColor Cyan
+# Test 3: GÃ©nÃ©rer un rapport CSV
+Write-Host "`nTest 3: GÃ©nÃ©ration d'un rapport au format CSV" -ForegroundColor Cyan
 $csvReport = New-CsvPerformanceReport -PerformanceData $testData
-Write-Host "Rapport CSV généré avec succès. Extrait :"
+Write-Host "Rapport CSV gÃ©nÃ©rÃ© avec succÃ¨s. Extrait :"
 Write-Host ($csvReport -split "`n" | Select-Object -First 10) -ForegroundColor Gray
 Write-Host "..."
 
@@ -96,7 +96,7 @@ Write-Host "`nTest 4: Enregistrement d'un rapport dans un fichier" -ForegroundCo
 $tempFolder = [System.IO.Path]::GetTempPath()
 $tempFile = Join-Path -Path $tempFolder -ChildPath "performance_report_test.html"
 
-# Créer une fonction de journalisation simplifiée pour le test
+# CrÃ©er une fonction de journalisation simplifiÃ©e pour le test
 function Write-Log {
     param (
         [string]$Message,
@@ -106,15 +106,15 @@ function Write-Log {
     Write-Host "[$Level] [$Source] $Message" -ForegroundColor Yellow
 }
 
-# Appeler la fonction avec les données de test
+# Appeler la fonction avec les donnÃ©es de test
 try {
-    # Définir les variables de script nécessaires
+    # DÃ©finir les variables de script nÃ©cessaires
     $script:LogLevelInfo = "INFO"
     
     # Simuler la fonction New-RoadmapPerformanceReport
     $htmlContent = New-HtmlPerformanceReport -PerformanceData $testData -IncludeTimestamp $true
     $htmlContent | Out-File -FilePath $tempFile -Encoding UTF8
-    Write-Log -Message "Rapport de performance enregistré dans : $tempFile" -Level $script:LogLevelInfo -Source "PerformanceReport"
+    Write-Log -Message "Rapport de performance enregistrÃ© dans : $tempFile" -Level $script:LogLevelInfo -Source "PerformanceReport"
     
     $fileExists = Test-Path -Path $tempFile
     Write-Host "Le fichier existe : $fileExists" -ForegroundColor $(if ($fileExists) { "Green" } else { "Red" })
@@ -129,4 +129,4 @@ try {
     Write-Host "Erreur lors de l'enregistrement du rapport : $_" -ForegroundColor Red
 }
 
-Write-Host "`nTests de génération de rapports de performance terminés." -ForegroundColor Cyan
+Write-Host "`nTests de gÃ©nÃ©ration de rapports de performance terminÃ©s." -ForegroundColor Cyan

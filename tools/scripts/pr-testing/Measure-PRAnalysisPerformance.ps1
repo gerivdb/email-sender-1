@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Mesure les performances du système d'analyse des pull requests.
+    Mesure les performances du systÃ¨me d'analyse des pull requests.
 
 .DESCRIPTION
-    Ce script mesure les performances du système d'analyse des pull requests
-    en collectant des métriques sur les temps d'exécution, la précision des
-    détections d'erreurs et l'utilisation des ressources.
+    Ce script mesure les performances du systÃ¨me d'analyse des pull requests
+    en collectant des mÃ©triques sur les temps d'exÃ©cution, la prÃ©cision des
+    dÃ©tections d'erreurs et l'utilisation des ressources.
 
 .PARAMETER RepositoryPath
-    Le chemin du dépôt de test.
-    Par défaut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
+    Le chemin du dÃ©pÃ´t de test.
+    Par dÃ©faut: "D:\DO\WEB\N8N_tests\PROJETS\PR-Analysis-TestRepo"
 
 .PARAMETER PullRequestNumber
-    Le numéro de la pull request à analyser.
-    Si non spécifié, la dernière pull request sera utilisée.
+    Le numÃ©ro de la pull request Ã  analyser.
+    Si non spÃ©cifiÃ©, la derniÃ¨re pull request sera utilisÃ©e.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le rapport de performances.
-    Par défaut: "reports\pr-analysis"
+    Le chemin oÃ¹ enregistrer le rapport de performances.
+    Par dÃ©faut: "reports\pr-analysis"
 
 .PARAMETER DetailedReport
-    Indique s'il faut générer un rapport détaillé.
-    Par défaut: $true
+    Indique s'il faut gÃ©nÃ©rer un rapport dÃ©taillÃ©.
+    Par dÃ©faut: $true
 
 .EXAMPLE
     .\Measure-PRAnalysisPerformance.ps1
-    Mesure les performances de l'analyse de la dernière pull request.
+    Mesure les performances de l'analyse de la derniÃ¨re pull request.
 
 .EXAMPLE
     .\Measure-PRAnalysisPerformance.ps1 -PullRequestNumber 42 -DetailedReport $true
-    Mesure les performances de l'analyse de la pull request #42 et génère un rapport détaillé.
+    Mesure les performances de l'analyse de la pull request #42 et gÃ©nÃ¨re un rapport dÃ©taillÃ©.
 
 .NOTES
     Version: 1.0
@@ -60,24 +60,24 @@ function Get-PullRequestInfo {
         [int]$PullRequestNumber
     )
 
-    Write-Host "Récupération des informations sur la pull request..." -ForegroundColor Cyan
+    Write-Host "RÃ©cupÃ©ration des informations sur la pull request..." -ForegroundColor Cyan
 
     Push-Location $RepositoryPath
     try {
-        # Vérifier si gh CLI est installé
+        # VÃ©rifier si gh CLI est installÃ©
         $ghInstalled = $null -ne (Get-Command -Name gh -ErrorAction SilentlyContinue)
 
         if (-not $ghInstalled) {
-            Write-Warning "GitHub CLI (gh) n'est pas installé. Impossible de récupérer les informations sur la pull request."
+            Write-Warning "GitHub CLI (gh) n'est pas installÃ©. Impossible de rÃ©cupÃ©rer les informations sur la pull request."
             return $null
         }
 
-        # Si aucun numéro de PR n'est spécifié, obtenir la dernière PR
+        # Si aucun numÃ©ro de PR n'est spÃ©cifiÃ©, obtenir la derniÃ¨re PR
         if ($PullRequestNumber -eq 0) {
             $prList = gh pr list --limit 1 --json number, title, headRefName, baseRefName, createdAt | ConvertFrom-Json
 
             if ($prList.Count -eq 0) {
-                Write-Warning "Aucune pull request trouvée."
+                Write-Warning "Aucune pull request trouvÃ©e."
                 return $null
             }
 
@@ -87,15 +87,15 @@ function Get-PullRequestInfo {
             $pr = gh pr view $PullRequestNumber --json number, title, headRefName, baseRefName, createdAt | ConvertFrom-Json
 
             if ($null -eq $pr) {
-                Write-Warning "Pull request #$PullRequestNumber non trouvée."
+                Write-Warning "Pull request #$PullRequestNumber non trouvÃ©e."
                 return $null
             }
         }
 
-        # Obtenir les fichiers modifiés
+        # Obtenir les fichiers modifiÃ©s
         $files = gh pr view $PullRequestNumber --json files | ConvertFrom-Json
 
-        # Créer l'objet d'informations sur la PR
+        # CrÃ©er l'objet d'informations sur la PR
         $prInfo = [PSCustomObject]@{
             Number     = $pr.number
             Title      = $pr.title
@@ -109,25 +109,25 @@ function Get-PullRequestInfo {
             Changes    = ($files.files | Measure-Object additions, deletions -Sum).Sum
         }
 
-        Write-Host "Informations récupérées pour la pull request #$($prInfo.Number): $($prInfo.Title)" -ForegroundColor Green
+        Write-Host "Informations rÃ©cupÃ©rÃ©es pour la pull request #$($prInfo.Number): $($prInfo.Title)" -ForegroundColor Green
         return $prInfo
     } catch {
-        Write-Error "Erreur lors de la récupération des informations sur la pull request: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration des informations sur la pull request: $_"
         return $null
     } finally {
         Pop-Location
     }
 }
 
-# Fonction pour exécuter l'analyse de la pull request
+# Fonction pour exÃ©cuter l'analyse de la pull request
 function Invoke-PRAnalysis {
     param (
         [PSCustomObject]$PullRequestInfo
     )
 
-    Write-Host "Exécution de l'analyse de la pull request #$($PullRequestInfo.Number)..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution de l'analyse de la pull request #$($PullRequestInfo.Number)..." -ForegroundColor Cyan
 
-    # Créer un objet pour stocker les métriques
+    # CrÃ©er un objet pour stocker les mÃ©triques
     $metrics = [PSCustomObject]@{
         PullRequestNumber       = $PullRequestInfo.Number
         StartTime               = Get-Date
@@ -159,7 +159,7 @@ function Invoke-PRAnalysis {
             $endTime = Get-Date
             $duration = ($endTime - $startTime).TotalMilliseconds
 
-            # Enregistrer les métriques
+            # Enregistrer les mÃ©triques
             $metrics.FileAnalysisDurations += [PSCustomObject]@{
                 FilePath  = $file.path
                 Duration  = $duration
@@ -168,7 +168,7 @@ function Invoke-PRAnalysis {
                 Changes   = $file.additions + $file.deletions
             }
 
-            # Enregistrer les erreurs détectées
+            # Enregistrer les erreurs dÃ©tectÃ©es
             $metrics.ErrorsDetected += $analysisResult
             $metrics.ErrorCount += $analysisResult.Count
 
@@ -176,11 +176,11 @@ function Invoke-PRAnalysis {
             $cpuUsage = Get-Process -Id $PID | Select-Object -ExpandProperty CPU
             $metrics.CPUUsage += $cpuUsage
 
-            Write-Host "    Analyse terminée en $([Math]::Round($duration, 2)) ms, $($analysisResult.Count) erreurs détectées." -ForegroundColor Yellow
+            Write-Host "    Analyse terminÃ©e en $([Math]::Round($duration, 2)) ms, $($analysisResult.Count) erreurs dÃ©tectÃ©es." -ForegroundColor Yellow
         }
     }
 
-    # Finaliser les métriques
+    # Finaliser les mÃ©triques
     $metrics.EndTime = Get-Date
     $metrics.TotalDuration = ($metrics.EndTime - $metrics.StartTime).TotalMilliseconds
     $metrics.MemoryUsageAfter = [System.GC]::GetTotalMemory($true)
@@ -193,7 +193,7 @@ function Invoke-PRAnalysis {
         $metrics.MinFileAnalysisTime = ($metrics.FileAnalysisDurations | Measure-Object -Property Duration -Minimum).Minimum
     }
 
-    Write-Host "Analyse terminée en $([Math]::Round($metrics.TotalDuration, 2)) ms, $($metrics.ErrorCount) erreurs détectées au total." -ForegroundColor Green
+    Write-Host "Analyse terminÃ©e en $([Math]::Round($metrics.TotalDuration, 2)) ms, $($metrics.ErrorCount) erreurs dÃ©tectÃ©es au total." -ForegroundColor Green
 
     return $metrics
 }
@@ -205,15 +205,15 @@ function Invoke-FileAnalysis {
         [PSCustomObject]$PullRequestInfo
     )
 
-    # Cette fonction simule l'analyse d'un fichier et retourne des erreurs détectées
-    # Dans une implémentation réelle, elle appellerait le véritable analyseur de code
+    # Cette fonction simule l'analyse d'un fichier et retourne des erreurs dÃ©tectÃ©es
+    # Dans une implÃ©mentation rÃ©elle, elle appellerait le vÃ©ritable analyseur de code
 
-    # Simuler un délai d'analyse proportionnel à la taille du fichier
+    # Simuler un dÃ©lai d'analyse proportionnel Ã  la taille du fichier
     $fileSize = ($PullRequestInfo.Files | Where-Object { $_.path -eq $FilePath } | Select-Object -First 1)
     $delay = [Math]::Max(100, ($fileSize.additions + $fileSize.deletions) * 5)
     Start-Sleep -Milliseconds $delay
 
-    # Simuler la détection d'erreurs
+    # Simuler la dÃ©tection d'erreurs
     $errorTypes = @("Syntax", "Style", "Performance", "Security")
     $errorCount = Get-Random -Minimum 0 -Maximum 10
 
@@ -241,7 +241,7 @@ function Invoke-FileAnalysis {
     return $errors
 }
 
-# Fonction pour générer un rapport de performances
+# Fonction pour gÃ©nÃ©rer un rapport de performances
 function New-PerformanceReport {
     param (
         [PSCustomObject]$Metrics,
@@ -250,17 +250,17 @@ function New-PerformanceReport {
         [bool]$DetailedReport
     )
 
-    Write-Host "Génération du rapport de performances..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration du rapport de performances..." -ForegroundColor Cyan
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
     }
 
-    # Définir le chemin du rapport
+    # DÃ©finir le chemin du rapport
     $reportPath = Join-Path -Path $OutputPath -ChildPath "PR-$($PullRequestInfo.Number)-Analysis-$(Get-Date -Format 'yyyyMMdd-HHmmss').md"
 
-    # Générer le contenu du rapport
+    # GÃ©nÃ©rer le contenu du rapport
     $reportContent = @"
 # Rapport d'analyse de performance - Pull Request #$($PullRequestInfo.Number)
 
@@ -269,22 +269,22 @@ function New-PerformanceReport {
 - **Titre**: $($PullRequestInfo.Title)
 - **Branche source**: $($PullRequestInfo.HeadBranch)
 - **Branche cible**: $($PullRequestInfo.BaseBranch)
-- **Créée le**: $($PullRequestInfo.CreatedAt)
+- **CrÃ©Ã©e le**: $($PullRequestInfo.CreatedAt)
 - **Nombre de fichiers**: $($PullRequestInfo.FileCount)
 - **Ajouts**: $($PullRequestInfo.Additions) lignes
 - **Suppressions**: $($PullRequestInfo.Deletions) lignes
 - **Modifications totales**: $($PullRequestInfo.Changes) lignes
 
-## Résumé des performances
+## RÃ©sumÃ© des performances
 
-- **Durée totale de l'analyse**: $([Math]::Round($Metrics.TotalDuration, 2)) ms
-- **Nombre d'erreurs détectées**: $($Metrics.ErrorCount)
+- **DurÃ©e totale de l'analyse**: $([Math]::Round($Metrics.TotalDuration, 2)) ms
+- **Nombre d'erreurs dÃ©tectÃ©es**: $($Metrics.ErrorCount)
 - **Temps moyen par fichier**: $([Math]::Round($Metrics.AverageFileAnalysisTime, 2)) ms
 - **Temps maximum par fichier**: $([Math]::Round($Metrics.MaxFileAnalysisTime, 2)) ms
 - **Temps minimum par fichier**: $([Math]::Round($Metrics.MinFileAnalysisTime, 2)) ms
-- **Utilisation mémoire**: $([Math]::Round($Metrics.MemoryUsageDelta / 1MB, 2)) MB
+- **Utilisation mÃ©moire**: $([Math]::Round($Metrics.MemoryUsageDelta / 1MB, 2)) MB
 
-## Répartition des erreurs par type
+## RÃ©partition des erreurs par type
 
 $(
     $errorsByType = $Metrics.ErrorsDetected | Group-Object -Property ErrorType
@@ -293,7 +293,7 @@ $(
     }
 )
 
-## Répartition des erreurs par sévérité
+## RÃ©partition des erreurs par sÃ©vÃ©ritÃ©
 
 $(
     $errorsBySeverity = $Metrics.ErrorsDetected | Group-Object -Property Severity
@@ -304,13 +304,13 @@ $(
 
 "@
 
-    # Ajouter les détails si demandé
+    # Ajouter les dÃ©tails si demandÃ©
     if ($DetailedReport) {
         $reportContent += @"
 
-## Détails des performances par fichier
+## DÃ©tails des performances par fichier
 
-| Fichier | Durée (ms) | Ajouts | Suppressions | Erreurs |
+| Fichier | DurÃ©e (ms) | Ajouts | Suppressions | Erreurs |
 |---------|------------|--------|--------------|---------|
 $(
     $Metrics.FileAnalysisDurations | ForEach-Object {
@@ -319,7 +319,7 @@ $(
     }
 )
 
-## Détails des erreurs détectées
+## DÃ©tails des erreurs dÃ©tectÃ©es
 
 $(
     $Metrics.ErrorsDetected | ForEach-Object {
@@ -337,27 +337,27 @@ $(
 
 $(
     if ($Metrics.AverageFileAnalysisTime -gt 1000) {
-        "- **Optimisation des performances**: Le temps moyen d'analyse par fichier est élevé. Envisagez d'optimiser l'algorithme d'analyse ou d'implémenter un système de cache."
+        "- **Optimisation des performances**: Le temps moyen d'analyse par fichier est Ã©levÃ©. Envisagez d'optimiser l'algorithme d'analyse ou d'implÃ©menter un systÃ¨me de cache."
     }
 
     if ($Metrics.ErrorCount -gt 20) {
-        "- **Amélioration de la qualité du code**: Un nombre élevé d'erreurs a été détecté. Envisagez d'implémenter des vérifications pré-commit pour réduire le nombre d'erreurs."
+        "- **AmÃ©lioration de la qualitÃ© du code**: Un nombre Ã©levÃ© d'erreurs a Ã©tÃ© dÃ©tectÃ©. Envisagez d'implÃ©menter des vÃ©rifications prÃ©-commit pour rÃ©duire le nombre d'erreurs."
     }
 
     if ($Metrics.MemoryUsageDelta / 1MB -gt 100) {
-        "- **Optimisation de la mémoire**: L'utilisation de la mémoire est élevée. Envisagez d'optimiser la gestion de la mémoire dans l'analyseur."
+        "- **Optimisation de la mÃ©moire**: L'utilisation de la mÃ©moire est Ã©levÃ©e. Envisagez d'optimiser la gestion de la mÃ©moire dans l'analyseur."
     }
 )
 
 ## Conclusion
 
-Cette analyse a été générée automatiquement par Measure-PRAnalysisPerformance.ps1 le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss").
+Cette analyse a Ã©tÃ© gÃ©nÃ©rÃ©e automatiquement par Measure-PRAnalysisPerformance.ps1 le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss").
 "@
 
-    # Écrire le rapport dans le fichier
+    # Ã‰crire le rapport dans le fichier
     Set-Content -Path $reportPath -Value $reportContent -Encoding UTF8
 
-    Write-Host "Rapport généré: $reportPath" -ForegroundColor Green
+    Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 
     return $reportPath
 }
@@ -371,26 +371,26 @@ function Measure-PRAnalysisPerformance {
         return
     }
 
-    # Exécuter l'analyse
+    # ExÃ©cuter l'analyse
     $metrics = Invoke-PRAnalysis -PullRequestInfo $prInfo
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $reportPath = New-PerformanceReport -Metrics $metrics -PullRequestInfo $prInfo -OutputPath $OutputPath -DetailedReport $DetailedReport
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de l'analyse:" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de l'analyse:" -ForegroundColor Cyan
     Write-Host "  Pull Request: #$($prInfo.Number) - $($prInfo.Title)" -ForegroundColor White
-    Write-Host "  Fichiers analysés: $($prInfo.FileCount)" -ForegroundColor White
-    Write-Host "  Durée totale: $([Math]::Round($metrics.TotalDuration, 2)) ms" -ForegroundColor White
-    Write-Host "  Erreurs détectées: $($metrics.ErrorCount)" -ForegroundColor White
+    Write-Host "  Fichiers analysÃ©s: $($prInfo.FileCount)" -ForegroundColor White
+    Write-Host "  DurÃ©e totale: $([Math]::Round($metrics.TotalDuration, 2)) ms" -ForegroundColor White
+    Write-Host "  Erreurs dÃ©tectÃ©es: $($metrics.ErrorCount)" -ForegroundColor White
     Write-Host "  Rapport: $reportPath" -ForegroundColor White
 }
 
 # Exporter la fonction principale
 Export-ModuleMember -Function Measure-PRAnalysisPerformance
 
-# Si le script est exécuté directement (pas importé comme module)
+# Si le script est exÃ©cutÃ© directement (pas importÃ© comme module)
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    # Exécuter la fonction principale
+    # ExÃ©cuter la fonction principale
     Measure-PRAnalysisPerformance
 }

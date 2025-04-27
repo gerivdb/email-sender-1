@@ -1,7 +1,7 @@
-# Test-PerformanceComparison.ps1
-# Script pour comparer les performances des différentes versions de la fonction de conversion markdown
+﻿# Test-PerformanceComparison.ps1
+# Script pour comparer les performances des diffÃ©rentes versions de la fonction de conversion markdown
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $baseFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmap.ps1"
 $extendedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapExtended.ps1"
 $optimizedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToRoadmapOptimized.ps1"
@@ -10,13 +10,13 @@ $optimizedFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\
 . $extendedFunctionPath
 . $optimizedFunctionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour générer un fichier markdown de test de taille spécifiée
+# Fonction pour gÃ©nÃ©rer un fichier markdown de test de taille spÃ©cifiÃ©e
 function New-TestMarkdownFile {
     param (
         [string]$FilePath,
@@ -31,15 +31,15 @@ function New-TestMarkdownFile {
     # Ajouter le titre et la description
     $sb.AppendLine("# Roadmap de Test Performance") | Out-Null
     $sb.AppendLine("") | Out-Null
-    $sb.AppendLine("Ceci est une roadmap générée pour tester les performances des fonctions de conversion.") | Out-Null
+    $sb.AppendLine("Ceci est une roadmap gÃ©nÃ©rÃ©e pour tester les performances des fonctions de conversion.") | Out-Null
     $sb.AppendLine("") | Out-Null
     
-    # Générer les sections
+    # GÃ©nÃ©rer les sections
     for ($s = 1; $s -le $SectionCount; $s++) {
         $sb.AppendLine("## Section $s") | Out-Null
         $sb.AppendLine("") | Out-Null
         
-        # Générer les tâches
+        # GÃ©nÃ©rer les tÃ¢ches
         for ($t = 1; $t -le $TasksPerSection; $t++) {
             $taskId = "S$s-T$t"
             $status = switch ($t % 4) {
@@ -49,9 +49,9 @@ function New-TestMarkdownFile {
                 3 { "[!]" }
             }
             
-            $sb.AppendLine("- $status **$taskId** Tâche $t de la section $s") | Out-Null
+            $sb.AppendLine("- $status **$taskId** TÃ¢che $t de la section $s") | Out-Null
             
-            # Générer les sous-tâches
+            # GÃ©nÃ©rer les sous-tÃ¢ches
             for ($st = 1; $st -le $SubTasksPerTask; $st++) {
                 $subTaskId = "$taskId.$st"
                 $subStatus = switch ($st % 4) {
@@ -61,9 +61,9 @@ function New-TestMarkdownFile {
                     3 { "[!]" }
                 }
                 
-                $sb.AppendLine("  - $subStatus **$subTaskId** Sous-tâche $st de la tâche $t") | Out-Null
+                $sb.AppendLine("  - $subStatus **$subTaskId** Sous-tÃ¢che $st de la tÃ¢che $t") | Out-Null
                 
-                # Générer les sous-sous-tâches
+                # GÃ©nÃ©rer les sous-sous-tÃ¢ches
                 for ($sst = 1; $sst -le $SubSubTasksPerSubTask; $sst++) {
                     $subSubTaskId = "$subTaskId.$sst"
                     $subSubStatus = switch ($sst % 4) {
@@ -73,7 +73,7 @@ function New-TestMarkdownFile {
                         3 { "[!]" }
                     }
                     
-                    # Ajouter des métadonnées aléatoires
+                    # Ajouter des mÃ©tadonnÃ©es alÃ©atoires
                     $metadata = @()
                     if ($sst % 3 -eq 0) {
                         $metadata += "@john"
@@ -93,7 +93,7 @@ function New-TestMarkdownFile {
                     
                     $metadataStr = if ($metadata.Count -gt 0) { " " + ($metadata -join " ") } else { "" }
                     
-                    $sb.AppendLine("    - $subSubStatus **$subSubTaskId** Sous-sous-tâche $sst de la sous-tâche $st$metadataStr") | Out-Null
+                    $sb.AppendLine("    - $subSubStatus **$subSubTaskId** Sous-sous-tÃ¢che $sst de la sous-tÃ¢che $st$metadataStr") | Out-Null
                 }
             }
             
@@ -101,10 +101,10 @@ function New-TestMarkdownFile {
         }
     }
     
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     $sb.ToString() | Out-File -FilePath $FilePath -Encoding UTF8
     
-    # Retourner des statistiques sur le fichier généré
+    # Retourner des statistiques sur le fichier gÃ©nÃ©rÃ©
     $stats = [PSCustomObject]@{
         FilePath = $FilePath
         SectionCount = $SectionCount
@@ -138,7 +138,7 @@ function Measure-FunctionPerformance {
         $startMemory = [System.GC]::GetTotalMemory($true)
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
-        # Exécuter la fonction
+        # ExÃ©cuter la fonction
         $Parameters["FilePath"] = $FilePath
         $result = & $FunctionName @Parameters
         
@@ -172,8 +172,8 @@ function Measure-FunctionPerformance {
 }
 
 try {
-    # Générer des fichiers de test de différentes tailles
-    Write-Host "Génération des fichiers de test..." -ForegroundColor Cyan
+    # GÃ©nÃ©rer des fichiers de test de diffÃ©rentes tailles
+    Write-Host "GÃ©nÃ©ration des fichiers de test..." -ForegroundColor Cyan
     
     $smallFilePath = Join-Path -Path $testDir -ChildPath "small.md"
     $smallFileStats = New-TestMarkdownFile -FilePath $smallFilePath -SectionCount 2 -TasksPerSection 5 -SubTasksPerTask 3 -SubSubTasksPerSubTask 2
@@ -184,11 +184,11 @@ try {
     $largeFilePath = Join-Path -Path $testDir -ChildPath "large.md"
     $largeFileStats = New-TestMarkdownFile -FilePath $largeFilePath -SectionCount 10 -TasksPerSection 20 -SubTasksPerTask 8 -SubSubTasksPerSubTask 5
     
-    # Afficher les statistiques des fichiers générés
-    Write-Host "`nStatistiques des fichiers générés:" -ForegroundColor Green
-    Write-Host "Petit fichier: $($smallFileStats.TotalTaskCount) tâches, $($smallFileStats.FileSizeKB) KB" -ForegroundColor Yellow
-    Write-Host "Fichier moyen: $($mediumFileStats.TotalTaskCount) tâches, $($mediumFileStats.FileSizeKB) KB" -ForegroundColor Yellow
-    Write-Host "Grand fichier: $($largeFileStats.TotalTaskCount) tâches, $($largeFileStats.FileSizeKB) KB" -ForegroundColor Yellow
+    # Afficher les statistiques des fichiers gÃ©nÃ©rÃ©s
+    Write-Host "`nStatistiques des fichiers gÃ©nÃ©rÃ©s:" -ForegroundColor Green
+    Write-Host "Petit fichier: $($smallFileStats.TotalTaskCount) tÃ¢ches, $($smallFileStats.FileSizeKB) KB" -ForegroundColor Yellow
+    Write-Host "Fichier moyen: $($mediumFileStats.TotalTaskCount) tÃ¢ches, $($mediumFileStats.FileSizeKB) KB" -ForegroundColor Yellow
+    Write-Host "Grand fichier: $($largeFileStats.TotalTaskCount) tÃ¢ches, $($largeFileStats.FileSizeKB) KB" -ForegroundColor Yellow
     
     # Tester les performances sur le petit fichier
     Write-Host "`nTest de performances sur le petit fichier:" -ForegroundColor Cyan
@@ -202,8 +202,8 @@ try {
     $optimizedPerf = Measure-FunctionPerformance -FunctionName "ConvertFrom-MarkdownToRoadmapOptimized" -FilePath $smallFilePath -Parameters $optimizedParams -Iterations 3
     
     Write-Host "Fonction de base: $($basePerf.AverageTimeMs) ms, $($basePerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction étendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction optimisée: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction Ã©tendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction optimisÃ©e: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
     
     # Tester les performances sur le fichier moyen
     Write-Host "`nTest de performances sur le fichier moyen:" -ForegroundColor Cyan
@@ -213,8 +213,8 @@ try {
     $optimizedPerf = Measure-FunctionPerformance -FunctionName "ConvertFrom-MarkdownToRoadmapOptimized" -FilePath $mediumFilePath -Parameters $optimizedParams -Iterations 2
     
     Write-Host "Fonction de base: $($basePerf.AverageTimeMs) ms, $($basePerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction étendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction optimisée: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction Ã©tendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction optimisÃ©e: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
     
     # Tester les performances sur le grand fichier
     Write-Host "`nTest de performances sur le grand fichier:" -ForegroundColor Cyan
@@ -224,10 +224,10 @@ try {
     $optimizedPerf = Measure-FunctionPerformance -FunctionName "ConvertFrom-MarkdownToRoadmapOptimized" -FilePath $largeFilePath -Parameters $optimizedParams -Iterations 1
     
     Write-Host "Fonction de base: $($basePerf.AverageTimeMs) ms, $($basePerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction étendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
-    Write-Host "Fonction optimisée: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction Ã©tendue: $($extendedPerf.AverageTimeMs) ms, $($extendedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
+    Write-Host "Fonction optimisÃ©e: $($optimizedPerf.AverageTimeMs) ms, $($optimizedPerf.AverageMemoryMB) MB" -ForegroundColor Yellow
     
-    Write-Host "`nTests de performance terminés." -ForegroundColor Green
+    Write-Host "`nTests de performance terminÃ©s." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors des tests de performance: $_" -ForegroundColor Red
@@ -237,6 +237,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

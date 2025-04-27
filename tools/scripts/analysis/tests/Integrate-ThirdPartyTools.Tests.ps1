@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Integrate-ThirdPartyTools.ps1.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le script Integrate-ThirdPartyTools.ps1
-    qui intègre les résultats d'analyse de code avec des outils tiers.
+    qui intÃ¨gre les rÃ©sultats d'analyse de code avec des outils tiers.
 #>
 
 # Importer le module Pester si disponible
@@ -18,37 +18,37 @@ $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 if (Test-Path -Path $testHelpersPath) {
     Import-Module -Name $testHelpersPath -Force
 } else {
-    throw "Le module TestHelpers.psm1 n'existe pas à l'emplacement: $testHelpersPath"
+    throw "Le module TestHelpers.psm1 n'existe pas Ã  l'emplacement: $testHelpersPath"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Integrate-ThirdPartyTools.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script Integrate-ThirdPartyTools.ps1 n'existe pas à l'emplacement: $scriptPath"
+    throw "Le script Integrate-ThirdPartyTools.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
 }
 
 Describe "Script Integrate-ThirdPartyTools" {
     BeforeAll {
-        # Créer un environnement de test
+        # CrÃ©er un environnement de test
         $testEnv = New-TestEnvironment -TestName "IntegrateThirdPartyToolsTests"
         $testDir = $testEnv.TestDirectory
         $testJsonPath = $testEnv.TestJsonFile
     }
 
-    Context "Paramètres et validation" {
-        It "Lève une exception si le chemin n'existe pas" {
+    Context "ParamÃ¨tres et validation" {
+        It "LÃ¨ve une exception si le chemin n'existe pas" {
             # Act & Assert
             { Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{ Path = "C:\chemin\inexistant"; Tool = "GitHub" } } | Should -Throw
         }
 
-        It "Lève une exception si ProjectKey est manquant pour SonarQube" {
+        It "LÃ¨ve une exception si ProjectKey est manquant pour SonarQube" {
             # Act & Assert
             { Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{ Path = $testEnv.TestJsonFile; Tool = "SonarQube" } } | Should -Throw
         }
     }
 
     Context "Conversion vers GitHub format" {
-        It "Convertit les résultats vers le format GitHub" {
+        It "Convertit les rÃ©sultats vers le format GitHub" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "github-results.json"
 
@@ -62,7 +62,7 @@ Describe "Script Integrate-ThirdPartyTools" {
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq $testEnv.TestJsonFile }
 
             # Mock la fonction Get-Content pour qu'elle retourne un JSON valide
-            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
+            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
 
             # Act
             Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{
@@ -80,7 +80,7 @@ Describe "Script Integrate-ThirdPartyTools" {
     }
 
     Context "Conversion vers SonarQube format" {
-        It "Convertit les résultats vers le format SonarQube" {
+        It "Convertit les rÃ©sultats vers le format SonarQube" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "sonarqube-results.json"
 
@@ -94,7 +94,7 @@ Describe "Script Integrate-ThirdPartyTools" {
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq $testEnv.TestJsonFile }
 
             # Mock la fonction Get-Content pour qu'elle retourne un JSON valide
-            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
+            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
 
             # Act
             Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{
@@ -113,7 +113,7 @@ Describe "Script Integrate-ThirdPartyTools" {
     }
 
     Context "Conversion vers AzureDevOps format" {
-        It "Convertit les résultats vers le format AzureDevOps" {
+        It "Convertit les rÃ©sultats vers le format AzureDevOps" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "azuredevops-results.json"
 
@@ -127,7 +127,7 @@ Describe "Script Integrate-ThirdPartyTools" {
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq $testEnv.TestJsonFile }
 
             # Mock la fonction Get-Content pour qu'elle retourne un JSON valide
-            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"Résolvez ce TODO ou convertissez-le en tâche dans le système de suivi des problèmes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
+            Mock Get-Content { return '[{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":10,"Column":1,"RuleId":"PSAvoidUsingWriteHost","Severity":"Warning","Message":"Avoid using Write-Host","Category":"Best Practice","Suggestion":"Use Write-Output instead","OriginalObject":null},{"ToolName":"TodoAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":5,"Column":7,"RuleId":"Todo.TODO","Severity":"Information","Message":"TODO: Add more robust error handling","Category":"Documentation","Suggestion":"RÃ©solvez ce TODO ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes.","OriginalObject":null},{"ToolName":"PSScriptAnalyzer","FilePath":"test.ps1","FileName":"test.ps1","Line":1,"Column":1,"RuleId":"PSUseDeclaredVarsMoreThanAssignments","Severity":"Error","Message":"Variable is assigned but never used","Category":"Best Practice","Suggestion":"Use the variable or remove it","OriginalObject":null}]' }
 
             # Act
             Invoke-ScriptWithParams -ScriptPath $scriptPath -Parameters @{
@@ -144,8 +144,8 @@ Describe "Script Integrate-ThirdPartyTools" {
         }
     }
 
-    Context "Envoi des résultats à l'API" {
-        It "Envoie les résultats à l'API SonarQube si ApiKey et ApiUrl sont spécifiés" {
+    Context "Envoi des rÃ©sultats Ã  l'API" {
+        It "Envoie les rÃ©sultats Ã  l'API SonarQube si ApiKey et ApiUrl sont spÃ©cifiÃ©s" {
             # Arrange
             $outputPath = Join-Path -Path $testEnv.TestDirectory -ChildPath "sonarqube-api-results.json"
 

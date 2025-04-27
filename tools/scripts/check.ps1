@@ -1,44 +1,50 @@
-﻿<#
+<#
 .SYNOPSIS
-    Script pour exÃ©cuter le mode CHECK amÃ©liorÃ© et mettre Ã  jour les cases Ã  cocher dans le document actif.
+    Script pour exécuter le mode CHECK amélioré et mettre à jour les cases à cocher dans le document actif.
 
 .DESCRIPTION
-    Ce script est un wrapper pour le mode CHECK amÃ©liorÃ© qui vÃ©rifie si les tÃ¢ches sont 100% implÃ©mentÃ©es
-    et testÃ©es avec succÃ¨s, puis met Ã  jour automatiquement les cases Ã  cocher dans le document actif.
-    Cette version amÃ©liorÃ©e garantit que tous les fichiers sont enregistrÃ©s en UTF-8 avec BOM.
+    Ce script est un wrapper pour le mode CHECK amélioré qui vérifie si les tâches sont 100% implémentées
+    et testées avec succès, puis met à jour automatiquement les cases à cocher dans le document actif.
+    Cette version améliorée garantit que tous les fichiers sont enregistrés en UTF-8 avec BOM et
+    utilise un système de configuration centralisé.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap Ã  vÃ©rifier.
-    Par dÃ©faut : "docs/plans/plan-modes-stepup.md"
+    Chemin vers le fichier de roadmap à vérifier.
+    Si non spécifié, la valeur sera récupérée depuis la configuration.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tÃ¢che Ã  vÃ©rifier (par exemple, "1.2.3").
-    Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront vÃ©rifiÃ©es.
+    Identifiant de la tâche à vérifier (par exemple, "1.2.3").
+    Si non spécifié, toutes les tâches seront vérifiées.
 
 .PARAMETER ActiveDocumentPath
-    Chemin vers le document actif Ã  mettre Ã  jour.
-    Si non spÃ©cifiÃ©, le script tentera de dÃ©tecter automatiquement le document actif.
+    Chemin vers le document actif à mettre à jour.
+    Si non spécifié, le script tentera de détecter automatiquement le document actif.
 
 .PARAMETER Force
-    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
+    Indique si les modifications doivent être appliquées sans confirmation.
+    Par défaut : $false (mode simulation).
+
+.PARAMETER ConfigPath
+    Chemin vers le fichier de configuration.
+    Par défaut : config.json dans le répertoire config.
 
 .EXAMPLE
-    .\check.ps1
+    .\check.ps1 -TaskIdentifier "1.2.3"
 
 .EXAMPLE
     .\check.ps1 -TaskIdentifier "1.2.3" -Force
 
 .NOTES
     Auteur: RoadmapParser Team
-    Version: 1.1
-    Date de crÃ©ation: 2023-09-15
-    Date de mise Ã  jour: 2025-05-01 - AmÃ©lioration de l'encodage UTF-8 avec BOM
+    Version: 1.2
+    Date de création: 2023-09-15
+    Date de mise à jour: 2025-05-01 - Amélioration de l'encodage UTF-8 avec BOM et système de configuration
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
     [Parameter(Mandatory = $false)]
-    [string]$FilePath = "docs/plans/plan-modes-stepup.md",
+    [string]$FilePath,
 
     [Parameter(Mandatory = $false)]
     [string]$TaskIdentifier,
@@ -47,7 +53,10 @@ param (
     [string]$ActiveDocumentPath,
 
     [Parameter(Mandatory = $false)]
-    [switch]$Force
+    [switch]$Force,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$ConfigPath
 )
 
 # Déterminer le chemin du script check-mode-enhanced.ps1
@@ -68,30 +77,47 @@ if (-not (Test-Path -Path $scriptPath)) {
     $scriptPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "roadmap-parser\modes\check\check-mode-enhanced.ps1"
 }
 
-# Si la version amÃ©liorÃ©e n'est pas trouvÃ©e, essayer la version standard
+# Si la version améliorée n'est pas trouvée, essayer la version standard
 if (-not (Test-Path -Path $scriptPath)) {
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-parser\modes\check\check-mode.ps1"
 
     if (Test-Path -Path $scriptPath) {
-        Write-Warning "La version amÃ©liorÃ©e du mode CHECK n'a pas Ã©tÃ© trouvÃ©e. Utilisation de la version standard."
+        Write-Warning "La version améliorée du mode CHECK n'a pas été trouvée. Utilisation de la version standard."
     }
 }
 
-# VÃ©rifier que le script existe
+# Vérifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
     Write-Error "Le script check-mode-enhanced.ps1 ou check-mode.ps1 est introuvable."
     exit 1
 }
 
-# Construire les paramÃ¨tres pour le script check-mode.ps1
-$params = @{
-    FilePath = $FilePath
-    CheckActiveDocument = $true
-    ImplementationPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Functions\Public"
-    TestsPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests"
+# Déterminer le chemin de configuration
+if (-not $ConfigPath) {
+    $ConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-parser\config\config.json"
+    
+    # Si le chemin n'existe pas, essayer un autre chemin
+    if (-not (Test-Path -Path $ConfigPath)) {
+        $ConfigPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "roadmap-parser\config\config.json"
+    }
 }
 
-# Ajouter les paramÃ¨tres optionnels s'ils sont spÃ©cifiÃ©s
+# Construire les paramètres pour le script check-mode.ps1
+$params = @{
+    CheckActiveDocument = $true
+}
+
+# Ajouter le chemin de configuration
+if ($ConfigPath -and (Test-Path -Path $ConfigPath)) {
+    $params.Add("ConfigPath", $ConfigPath)
+    Write-Host "Utilisation du fichier de configuration : $ConfigPath" -ForegroundColor Cyan
+}
+
+# Ajouter les paramètres optionnels s'ils sont spécifiés
+if ($FilePath) {
+    $params.Add("FilePath", $FilePath)
+}
+
 if ($TaskIdentifier) {
     $params.Add("TaskIdentifier", $TaskIdentifier)
 }
@@ -104,27 +130,68 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Afficher les informations de dÃ©marrage
-Write-Host "ExÃ©cution du mode CHECK amÃ©liorÃ©..." -ForegroundColor Cyan
-Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Cyan
-if ($TaskIdentifier) {
-    Write-Host "TÃ¢che Ã  vÃ©rifier : $TaskIdentifier" -ForegroundColor Cyan
-} else {
-    Write-Host "VÃ©rification de toutes les tÃ¢ches" -ForegroundColor Cyan
+# Convertir les chemins relatifs en chemins absolus
+$projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
+
+if ($FilePath -and -not [System.IO.Path]::IsPathRooted($FilePath)) {
+    $FilePath = Join-Path -Path $projectRoot -ChildPath $FilePath
+    $params["FilePath"] = $FilePath
 }
+
+if ($ActiveDocumentPath -and -not [System.IO.Path]::IsPathRooted($ActiveDocumentPath)) {
+    $ActiveDocumentPath = Join-Path -Path $projectRoot -ChildPath $ActiveDocumentPath
+    $params["ActiveDocumentPath"] = $ActiveDocumentPath
+}
+
+# Afficher les informations de démarrage
+Write-Host "Exécution du mode CHECK amélioré..." -ForegroundColor Cyan
+
+if ($FilePath) {
+    Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Cyan
+} else {
+    Write-Host "Fichier de roadmap : Utilisation de la valeur de configuration" -ForegroundColor Cyan
+}
+
+if ($TaskIdentifier) {
+    Write-Host "Tâche à vérifier : $TaskIdentifier" -ForegroundColor Cyan
+} else {
+    Write-Host "Vérification de toutes les tâches" -ForegroundColor Cyan
+}
+
 if ($ActiveDocumentPath) {
     Write-Host "Document actif : $ActiveDocumentPath" -ForegroundColor Cyan
 } else {
-    Write-Host "DÃ©tection automatique du document actif" -ForegroundColor Cyan
-}
-if ($Force) {
-    Write-Host "Mode force activÃ© : les modifications seront appliquÃ©es sans confirmation" -ForegroundColor Yellow
-} else {
-    Write-Host "Mode simulation activÃ© : les modifications ne seront pas appliquÃ©es" -ForegroundColor Gray
+    Write-Host "Détection automatique du document actif" -ForegroundColor Cyan
 }
 
-# ExÃ©cuter le script check-mode.ps1 avec les paramÃ¨tres
+if ($Force) {
+    Write-Host "Mode force activé : les modifications seront appliquées sans confirmation" -ForegroundColor Yellow
+} else {
+    Write-Host "Mode simulation activé : les modifications ne seront pas appliquées" -ForegroundColor Gray
+}
+
+# Vérifier si le fichier de roadmap existe
+if ($FilePath -and -not (Test-Path -Path $FilePath)) {
+    # Essayer de trouver le fichier de roadmap
+    $possiblePaths = @(
+        "docs\development\roadmap\roadmap_complete_converted.md",
+        "docs\plans\roadmap_complete_2.md",
+        "docs\development\roadmap\plans\roadmap_complete_2.md"
+    )
+    
+    foreach ($path in $possiblePaths) {
+        $fullPath = Join-Path -Path $projectRoot -ChildPath $path
+        if (Test-Path -Path $fullPath) {
+            Write-Host "Fichier de roadmap trouvé à l'emplacement : $fullPath" -ForegroundColor Green
+            $FilePath = $fullPath
+            $params["FilePath"] = $FilePath
+            break
+        }
+    }
+}
+
+# Exécuter le script check-mode.ps1 avec les paramètres
 & $scriptPath @params
 
 # Afficher un message de fin
-Write-Host "`nExÃ©cution du mode CHECK amÃ©liorÃ© terminÃ©e." -ForegroundColor Cyan
+Write-Host "`nExécution du mode CHECK amélioré terminée." -ForegroundColor Cyan

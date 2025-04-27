@@ -1,73 +1,73 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse et mesure un texte selon différents critères.
+    Analyse et mesure un texte selon diffÃ©rents critÃ¨res.
 
 .DESCRIPTION
-    La fonction Measure-RoadmapText analyse et mesure un texte selon différents critères.
-    Elle prend en charge différents types de mesures et peut être utilisée pour
+    La fonction Measure-RoadmapText analyse et mesure un texte selon diffÃ©rents critÃ¨res.
+    Elle prend en charge diffÃ©rents types de mesures et peut Ãªtre utilisÃ©e pour
     analyser les textes du module RoadmapParser.
 
 .PARAMETER Text
-    Le texte à analyser.
+    Le texte Ã  analyser.
 
 .PARAMETER MeasureType
-    Le type de mesure à effectuer. Valeurs possibles :
+    Le type de mesure Ã  effectuer. Valeurs possibles :
     - Length : Mesure la longueur du texte
     - Words : Compte le nombre de mots dans le texte
     - Lines : Compte le nombre de lignes dans le texte
-    - Characters : Compte le nombre de caractères dans le texte
+    - Characters : Compte le nombre de caractÃ¨res dans le texte
     - Paragraphs : Compte le nombre de paragraphes dans le texte
     - Sentences : Compte le nombre de phrases dans le texte
-    - Frequency : Compte la fréquence des mots dans le texte
+    - Frequency : Compte la frÃ©quence des mots dans le texte
     - ReadingTime : Estime le temps de lecture du texte
     - ReadingLevel : Estime le niveau de lecture du texte
     - Sentiment : Analyse le sentiment du texte
-    - Keywords : Extrait les mots-clés du texte
+    - Keywords : Extrait les mots-clÃ©s du texte
     - Statistics : Calcule des statistiques sur le texte
-    - Custom : Utilise une mesure personnalisée
+    - Custom : Utilise une mesure personnalisÃ©e
 
 .PARAMETER CustomMeasure
-    La fonction de mesure personnalisée à utiliser.
-    Utilisé uniquement lorsque MeasureType est "Custom".
+    La fonction de mesure personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque MeasureType est "Custom".
 
 .PARAMETER IgnoreCase
-    Indique si la casse doit être ignorée lors de l'analyse.
-    Par défaut, c'est $false.
+    Indique si la casse doit Ãªtre ignorÃ©e lors de l'analyse.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER IncludeEmptyLines
-    Indique si les lignes vides doivent être incluses dans le comptage des lignes.
-    Par défaut, c'est $false.
+    Indique si les lignes vides doivent Ãªtre incluses dans le comptage des lignes.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER WordsPerMinute
-    Le nombre de mots par minute à utiliser pour l'estimation du temps de lecture.
-    Par défaut, c'est 200.
+    Le nombre de mots par minute Ã  utiliser pour l'estimation du temps de lecture.
+    Par dÃ©faut, c'est 200.
 
 .PARAMETER IncludeSpecialCharacters
-    Indique si les caractères spéciaux doivent être inclus dans le comptage des caractères.
-    Par défaut, c'est $true.
+    Indique si les caractÃ¨res spÃ©ciaux doivent Ãªtre inclus dans le comptage des caractÃ¨res.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER IncludeWhitespace
-    Indique si les espaces doivent être inclus dans le comptage des caractères.
-    Par défaut, c'est $true.
+    Indique si les espaces doivent Ãªtre inclus dans le comptage des caractÃ¨res.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER IncludePunctuation
-    Indique si la ponctuation doit être incluse dans le comptage des caractères.
-    Par défaut, c'est $true.
+    Indique si la ponctuation doit Ãªtre incluse dans le comptage des caractÃ¨res.
+    Par dÃ©faut, c'est $true.
 
 .PARAMETER TopCount
-    Le nombre maximum d'éléments à retourner pour les mesures qui produisent des listes.
-    Par défaut, c'est 10.
+    Le nombre maximum d'Ã©lÃ©ments Ã  retourner pour les mesures qui produisent des listes.
+    Par dÃ©faut, c'est 10.
 
 .PARAMETER Culture
-    La culture à utiliser pour l'analyse.
-    Par défaut, c'est la culture actuelle.
+    La culture Ã  utiliser pour l'analyse.
+    Par dÃ©faut, c'est la culture actuelle.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de l'analyse.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de l'analyse.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de l'analyse.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de l'analyse.
 
 .EXAMPLE
     Measure-RoadmapText -Text "Hello World" -MeasureType Length
@@ -78,12 +78,12 @@
     Compte le nombre de mots dans le texte "Hello World".
 
 .OUTPUTS
-    [object] Le résultat de l'analyse.
+    [object] Le rÃ©sultat de l'analyse.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Measure-RoadmapText {
     [CmdletBinding()]
@@ -130,7 +130,7 @@ function Measure-RoadmapText {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de l'analyse
+    # Initialiser le rÃ©sultat de l'analyse
     $result = $null
     $measureSucceeded = $false
 
@@ -244,7 +244,7 @@ function Measure-RoadmapText {
                     $words = $Text -split '\s+' | Where-Object { $_ -ne "" }
                     $wordCount = $words.Count
                     $minutes = $wordCount / $WordsPerMinute
-                    $result = [math]::Ceiling($minutes * 60)  # Convertir en secondes et arrondir au supérieur
+                    $result = [math]::Ceiling($minutes * 60)  # Convertir en secondes et arrondir au supÃ©rieur
                 }
                 $measureSucceeded = $true
             }
@@ -252,7 +252,7 @@ function Measure-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = 0
                 } else {
-                    # Calculer le niveau de lecture en utilisant l'indice de lisibilité de Flesch-Kincaid
+                    # Calculer le niveau de lecture en utilisant l'indice de lisibilitÃ© de Flesch-Kincaid
                     $words = $Text -split '\s+' | Where-Object { $_ -ne "" }
                     $wordCount = $words.Count
                     
@@ -277,7 +277,7 @@ function Measure-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = 0
                 } else {
-                    # Analyse de sentiment simplifiée
+                    # Analyse de sentiment simplifiÃ©e
                     $positiveWords = @("good", "great", "excellent", "amazing", "wonderful", "fantastic", "happy", "joy", "love", "like", "best", "better", "positive", "success", "successful", "win", "winning", "won", "beautiful", "perfect")
                     $negativeWords = @("bad", "terrible", "horrible", "awful", "worst", "worse", "negative", "fail", "failure", "failed", "hate", "dislike", "sad", "unhappy", "angry", "mad", "upset", "disappointed", "disappointing", "poor")
                     
@@ -313,7 +313,7 @@ function Measure-RoadmapText {
                 if ([string]::IsNullOrEmpty($Text)) {
                     $result = @()
                 } else {
-                    # Extraire les mots-clés en utilisant la fréquence des mots
+                    # Extraire les mots-clÃ©s en utilisant la frÃ©quence des mots
                     $stopWords = @("a", "an", "the", "and", "or", "but", "is", "are", "was", "were", "be", "been", "being", "in", "on", "at", "to", "for", "with", "by", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "from", "up", "down", "of", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now")
                     
                     $words = $Text -split '\s+' | Where-Object { $_ -ne "" }
@@ -419,7 +419,7 @@ function Measure-RoadmapText {
             }
             "Custom" {
                 if ($null -eq $CustomMeasure) {
-                    throw "Le paramètre CustomMeasure est requis lorsque le type de mesure est Custom."
+                    throw "Le paramÃ¨tre CustomMeasure est requis lorsque le type de mesure est Custom."
                 } else {
                     $result = & $CustomMeasure $Text
                 }
@@ -433,7 +433,7 @@ function Measure-RoadmapText {
         }
     }
 
-    # Gérer l'échec de l'analyse
+    # GÃ©rer l'Ã©chec de l'analyse
     if (-not $measureSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage
@@ -458,7 +458,7 @@ function Measure-Syllables {
     
     $word = $Word.ToLower()
     
-    # Règles spéciales pour les mots se terminant par "e"
+    # RÃ¨gles spÃ©ciales pour les mots se terminant par "e"
     if ($word -match 'e$' -and $word.Length -gt 2) {
         $word = $word.Substring(0, $word.Length - 1)
     }
@@ -471,7 +471,7 @@ function Measure-Syllables {
     $diphtongs = $word | Select-String -Pattern 'ai|au|ay|ea|ee|ei|eu|ey|ie|oi|oo|ou|oy|ua|ue|ui|uy' -AllMatches
     $count -= $diphtongs.Matches.Count
     
-    # Ajuster pour les voyelles consécutives
+    # Ajuster pour les voyelles consÃ©cutives
     $consecutiveVowels = $word | Select-String -Pattern '[aeiouy]{2,}' -AllMatches
     $count -= $consecutiveVowels.Matches.Count
     

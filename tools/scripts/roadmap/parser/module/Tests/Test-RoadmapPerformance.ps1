@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-RoadmapPerformance.ps1
 #
 # Script pour tester les fonctions publiques de mesure de performance
@@ -22,14 +22,14 @@ foreach ($function in $publicFunctions) {
     if (Test-Path -Path $functionPath) {
         . $functionPath
     } else {
-        Write-Warning "La fonction $function est introuvable à l'emplacement : $functionPath"
+        Write-Warning "La fonction $function est introuvable Ã  l'emplacement : $functionPath"
     }
 }
 
-Write-Host "Début des tests des fonctions publiques de mesure de performance..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests des fonctions publiques de mesure de performance..." -ForegroundColor Cyan
 
-# Test 1: Vérifier que les fonctions sont définies
-Write-Host "`nTest 1: Vérifier que les fonctions sont définies" -ForegroundColor Cyan
+# Test 1: VÃ©rifier que les fonctions sont dÃ©finies
+Write-Host "`nTest 1: VÃ©rifier que les fonctions sont dÃ©finies" -ForegroundColor Cyan
 
 $functions = @(
     "Measure-RoadmapExecutionTime",
@@ -45,72 +45,72 @@ foreach ($function in $functions) {
     $command = Get-Command -Name $function -ErrorAction SilentlyContinue
     $success = $null -ne $command
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
-    Write-Host "  Vérification de la fonction $function : $status" -ForegroundColor $color
+    Write-Host "  VÃ©rification de la fonction $function : $status" -ForegroundColor $color
 
     if ($success) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    La fonction $function n'est pas définie" -ForegroundColor Red
+        Write-Host "    La fonction $function n'est pas dÃ©finie" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Tester la fonction Measure-RoadmapExecutionTime
 Write-Host "`nTest 2: Tester la fonction Measure-RoadmapExecutionTime" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code
+# Mesurer le temps d'exÃ©cution d'un bloc de code
 $result = Measure-RoadmapExecutionTime -Name "TestRoadmapMeasure" -ScriptBlock {
     Start-Sleep -Milliseconds 100
-    return "Test réussi"
+    return "Test rÃ©ussi"
 }
 
-# Vérifier le résultat
-$success = $result.Result -eq "Test réussi" -and
+# VÃ©rifier le rÃ©sultat
+$success = $result.Result -eq "Test rÃ©ussi" -and
 $result.ElapsedMilliseconds -ge 100
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result='Test réussi', ElapsedMilliseconds>=100" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result='Test rÃ©ussi', ElapsedMilliseconds>=100" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
 # Test 3: Tester les fonctions Start-RoadmapPerformanceTimer et Stop-RoadmapPerformanceTimer via Measure-RoadmapExecutionTime
 Write-Host "`nTest 3: Tester les fonctions Start-RoadmapPerformanceTimer et Stop-RoadmapPerformanceTimer via Measure-RoadmapExecutionTime" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code
+# Mesurer le temps d'exÃ©cution d'un bloc de code
 $timerName = "TestRoadmapTimer2"
 $result = Measure-RoadmapExecutionTime -Name $timerName -ScriptBlock {
     Start-Sleep -Milliseconds 100
-    return "Test réussi"
+    return "Test rÃ©ussi"
 }
 
-# Vérifier le résultat
-$success = $result.Result -eq "Test réussi" -and
+# VÃ©rifier le rÃ©sultat
+$success = $result.Result -eq "Test rÃ©ussi" -and
 $result.ElapsedMilliseconds -ge 100
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Chronomètre simple: $status" -ForegroundColor $color
+Write-Host "  ChronomÃ¨tre simple: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result='Test réussi', ElapsedMilliseconds>=100" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result='Test rÃ©ussi', ElapsedMilliseconds>=100" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result='$($result.Result)', ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
 # Test 4: Tester la fonction Get-RoadmapPerformanceStatistics via Measure-RoadmapExecutionTime
 Write-Host "`nTest 4: Tester la fonction Get-RoadmapPerformanceStatistics via Measure-RoadmapExecutionTime" -ForegroundColor Cyan
 
-# Exécuter plusieurs mesures
+# ExÃ©cuter plusieurs mesures
 for ($i = 0; $i -lt 5; $i++) {
     $result = Measure-RoadmapExecutionTime -Name $timerName -ScriptBlock {
         param($sleepTime)
@@ -126,14 +126,14 @@ $statsResult = Measure-RoadmapExecutionTime -Name "GetStats" -ScriptBlock {
 
 $stats = $statsResult.Result
 
-# Vérifier les statistiques
+# VÃ©rifier les statistiques
 $success = $null -ne $stats -and
 $stats.Count -gt 0 -and
 $stats.MinMilliseconds -gt 0 -and
 $stats.MaxMilliseconds -gt 0 -and
 $stats.AverageMilliseconds -gt 0
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Statistiques de performance: $status" -ForegroundColor $color
@@ -147,34 +147,34 @@ if (-not $success) {
     }
 }
 
-# Test 5: Tester la fonction Measure-RoadmapExecutionTime avec des paramètres
-Write-Host "`nTest 5: Tester la fonction Measure-RoadmapExecutionTime avec des paramètres" -ForegroundColor Cyan
+# Test 5: Tester la fonction Measure-RoadmapExecutionTime avec des paramÃ¨tres
+Write-Host "`nTest 5: Tester la fonction Measure-RoadmapExecutionTime avec des paramÃ¨tres" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code avec des paramètres
+# Mesurer le temps d'exÃ©cution d'un bloc de code avec des paramÃ¨tres
 $result = Measure-RoadmapExecutionTime -Name "TestRoadmapMeasureWithParams" -ScriptBlock {
     param($a, $b)
     Start-Sleep -Milliseconds 50
     return $a + $b
 } -ArgumentList 10, 20
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result.Result -eq 30 -and
 $result.ElapsedMilliseconds -ge 50
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution avec paramètres: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution avec paramÃ¨tres: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
 # Test 6: Tester la fonction Measure-RoadmapExecutionTime avec pipeline
 Write-Host "`nTest 6: Tester la fonction Measure-RoadmapExecutionTime avec pipeline" -ForegroundColor Cyan
 
-# Mesurer le temps d'exécution d'un bloc de code avec pipeline
+# Mesurer le temps d'exÃ©cution d'un bloc de code avec pipeline
 $result = Measure-RoadmapExecutionTime -Name "TestRoadmapMeasureWithPipeline" -ScriptBlock {
     process {
         Start-Sleep -Milliseconds 50
@@ -182,18 +182,18 @@ $result = Measure-RoadmapExecutionTime -Name "TestRoadmapMeasureWithPipeline" -S
     }
 } -InputObject 15
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result.Result -eq 30 -and
 $result.ElapsedMilliseconds -ge 50
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Mesure du temps d'exécution avec pipeline: $status" -ForegroundColor $color
+Write-Host "  Mesure du temps d'exÃ©cution avec pipeline: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Result=30, ElapsedMilliseconds>=50" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: Result=$($result.Result), ElapsedMilliseconds=$($result.ElapsedMilliseconds)" -ForegroundColor Red
 }
 
-Write-Host "`nTests des fonctions publiques de mesure de performance terminés." -ForegroundColor Cyan
+Write-Host "`nTests des fonctions publiques de mesure de performance terminÃ©s." -ForegroundColor Cyan

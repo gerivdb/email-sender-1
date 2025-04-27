@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
     Script pour collecter et analyser les erreurs PowerShell.
 .DESCRIPTION
-    Ce script collecte les erreurs PowerShell à partir des journaux d'événements et des fichiers de log.
+    Ce script collecte les erreurs PowerShell Ã  partir des journaux d'Ã©vÃ©nements et des fichiers de log.
 #>
 
 [CmdletBinding()]
@@ -24,10 +24,10 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorLearningSystem.psm1"
 Import-Module $modulePath -Force
 
-# Initialiser le système
+# Initialiser le systÃ¨me
 Initialize-ErrorLearningSystem
 
-# Fonction pour collecter les erreurs à partir des fichiers de log
+# Fonction pour collecter les erreurs Ã  partir des fichiers de log
 function Get-ErrorsFromLogs {
     [CmdletBinding()]
     param (
@@ -39,7 +39,7 @@ function Get-ErrorsFromLogs {
     )
 
     if (-not (Test-Path -Path $LogPath)) {
-        Write-Warning "Le chemin de log spécifié n'existe pas : $LogPath"
+        Write-Warning "Le chemin de log spÃ©cifiÃ© n'existe pas : $LogPath"
         return @()
     }
 
@@ -57,7 +57,7 @@ function Get-ErrorsFromLogs {
         foreach ($match in $errorMatches) {
             $errorMessage = $match.Groups[1].Value.Trim()
 
-            # Créer un objet d'erreur
+            # CrÃ©er un objet d'erreur
             $errorObject = @{
                 Source = $logFile.Name
                 ErrorMessage = $errorMessage
@@ -81,7 +81,7 @@ function Get-ErrorsFromLogs {
     return $errors
 }
 
-# Fonction pour collecter les erreurs à partir des journaux d'événements
+# Fonction pour collecter les erreurs Ã  partir des journaux d'Ã©vÃ©nements
 function Get-ErrorsFromEventLogs {
     [CmdletBinding()]
     param (
@@ -96,7 +96,7 @@ function Get-ErrorsFromEventLogs {
             Where-Object { $_.LevelDisplayName -eq "Error" }
 
         foreach ($event in $eventLogs) {
-            # Créer un objet d'erreur
+            # CrÃ©er un objet d'erreur
             $errorObject = @{
                 Source = "EventLog"
                 ErrorMessage = $event.Message
@@ -110,7 +110,7 @@ function Get-ErrorsFromEventLogs {
         }
     }
     catch {
-        Write-Warning "Impossible de récupérer les journaux d'événements : $_"
+        Write-Warning "Impossible de rÃ©cupÃ©rer les journaux d'Ã©vÃ©nements : $_"
     }
 
     return $errors
@@ -120,23 +120,23 @@ function Get-ErrorsFromEventLogs {
 $collectedErrors = @()
 
 if (-not $AnalyzeOnly) {
-    # Collecter les erreurs à partir des fichiers de log
+    # Collecter les erreurs Ã  partir des fichiers de log
     if ($LogPath) {
         $logErrors = Get-ErrorsFromLogs -LogPath $LogPath -MaxErrors $MaxErrors
         $collectedErrors += $logErrors
-        Write-Host "Erreurs collectées à partir des fichiers de log : $($logErrors.Count)"
+        Write-Host "Erreurs collectÃ©es Ã  partir des fichiers de log : $($logErrors.Count)"
     }
 
-    # Collecter les erreurs à partir des journaux d'événements
+    # Collecter les erreurs Ã  partir des journaux d'Ã©vÃ©nements
     if ($IncludeEventLogs) {
         $eventLogErrors = Get-ErrorsFromEventLogs -MaxErrors $MaxErrors
         $collectedErrors += $eventLogErrors
-        Write-Host "Erreurs collectées à partir des journaux d'événements : $($eventLogErrors.Count)"
+        Write-Host "Erreurs collectÃ©es Ã  partir des journaux d'Ã©vÃ©nements : $($eventLogErrors.Count)"
     }
 
-    # Enregistrer les erreurs collectées
+    # Enregistrer les erreurs collectÃ©es
     foreach ($error in $collectedErrors) {
-        # Créer un ErrorRecord factice pour l'enregistrement
+        # CrÃ©er un ErrorRecord factice pour l'enregistrement
         $exception = New-Object System.Exception($error.ErrorMessage)
         $errorRecord = New-Object System.Management.Automation.ErrorRecord(
             $exception,
@@ -149,7 +149,7 @@ if (-not $AnalyzeOnly) {
         Register-PowerShellError -ErrorRecord $errorRecord -Source $error.Source -Category $error.Category -AdditionalInfo $error
     }
 
-    Write-Host "Total des erreurs collectées et enregistrées : $($collectedErrors.Count)"
+    Write-Host "Total des erreurs collectÃ©es et enregistrÃ©es : $($collectedErrors.Count)"
 }
 
 # Analyser les erreurs
@@ -158,8 +158,8 @@ $totalErrors = $analysisResult.Statistics.TotalErrors
 $categories = $analysisResult.Statistics.CategorizedErrors
 
 Write-Host "`nAnalyse des erreurs :"
-Write-Host "Total des erreurs enregistrées : $totalErrors"
-Write-Host "`nRépartition par catégorie :"
+Write-Host "Total des erreurs enregistrÃ©es : $totalErrors"
+Write-Host "`nRÃ©partition par catÃ©gorie :"
 
 foreach ($category in $categories.Keys) {
     $count = $categories[$category]
@@ -167,15 +167,15 @@ foreach ($category in $categories.Keys) {
     Write-Host "  $category : $count ($percentage%)"
 }
 
-Write-Host "`nErreurs récentes :"
+Write-Host "`nErreurs rÃ©centes :"
 $recentErrors = $analysisResult.Errors | Select-Object -Last 5
 
 foreach ($error in $recentErrors) {
     Write-Host "`n  ID : $($error.Id)"
     Write-Host "  Timestamp : $($error.Timestamp)"
     Write-Host "  Source : $($error.Source)"
-    Write-Host "  Catégorie : $($error.Category)"
+    Write-Host "  CatÃ©gorie : $($error.Category)"
     Write-Host "  Message : $($error.ErrorMessage)"
 }
 
-Write-Host "`nAnalyse terminée."
+Write-Host "`nAnalyse terminÃ©e."

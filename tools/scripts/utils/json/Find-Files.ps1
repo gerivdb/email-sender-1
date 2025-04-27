@@ -1,13 +1,13 @@
-# Find-Files.ps1
+﻿# Find-Files.ps1
 # Script PowerShell pour rechercher des fichiers dans le projet
-# Ce script fournit des fonctionnalités avancées de recherche de fichiers
+# Ce script fournit des fonctionnalitÃ©s avancÃ©es de recherche de fichiers
 
 # Importer le module Path-Manager
 $PathManagerModule = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "path-utils\Path-Manager.psm1"
 if (Test-Path -Path $PathManagerModule) {
     Import-Module $PathManagerModule -Force
 } else {
-    Write-Error "Module Path-Manager non trouvé: $PathManagerModule"
+    Write-Error "Module Path-Manager non trouvÃ©: $PathManagerModule"
     exit 1
 }
 
@@ -16,14 +16,14 @@ $PathUtilsScript = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSSc
 if (Test-Path -Path $PathUtilsScript) {
     . $PathUtilsScript
 } else {
-    Write-Error "Script path-utils.ps1 non trouvé: $PathUtilsScript"
+    Write-Error "Script path-utils.ps1 non trouvÃ©: $PathUtilsScript"
     exit 1
 }
 
 # Initialiser le gestionnaire de chemins
 Initialize-PathManager
 
-# Paramètres du script
+# ParamÃ¨tres du script
 param (
     [Parameter(Mandatory = $false)]
     [string]$Directory = ".",
@@ -58,16 +58,16 @@ param (
 
 # Fonction principale
 function Main {
-    # Afficher les paramètres
+    # Afficher les paramÃ¨tres
     Write-Host "=== Recherche de fichiers ===" -ForegroundColor Cyan
-    Write-Host "Répertoire: $Directory"
-    Write-Host "Modèle(s): $($Pattern -join ', ')"
-    Write-Host "Récursif: $Recurse"
-    Write-Host "Répertoires exclus: $($ExcludeDirectories -join ', ')"
+    Write-Host "RÃ©pertoire: $Directory"
+    Write-Host "ModÃ¨le(s): $($Pattern -join ', ')"
+    Write-Host "RÃ©cursif: $Recurse"
+    Write-Host "RÃ©pertoires exclus: $($ExcludeDirectories -join ', ')"
     Write-Host "Fichiers exclus: $($ExcludeFiles -join ', ')"
-    Write-Host "Modèle d'inclusion: $IncludePattern"
+    Write-Host "ModÃ¨le d'inclusion: $IncludePattern"
     Write-Host "Chemins relatifs: $RelativePaths"
-    Write-Host "Afficher les détails: $ShowDetails"
+    Write-Host "Afficher les dÃ©tails: $ShowDetails"
     Write-Host "Exporter en CSV: $ExportCsv"
     Write-Host "Fichier de sortie: $OutputFile"
     Write-Host ""
@@ -75,16 +75,16 @@ function Main {
     # Rechercher les fichiers
     $files = Find-Files -Directory $Directory -Pattern $Pattern -Recurse:$Recurse -ExcludeDirectories $ExcludeDirectories -ExcludeFiles $ExcludeFiles -IncludePattern $IncludePattern
 
-    # Afficher le nombre de fichiers trouvés
-    Write-Host "Nombre de fichiers trouvés: $($files.Count)"
+    # Afficher le nombre de fichiers trouvÃ©s
+    Write-Host "Nombre de fichiers trouvÃ©s: $($files.Count)"
 
-    # Si aucun fichier n'est trouvé, sortir
+    # Si aucun fichier n'est trouvÃ©, sortir
     if ($files.Count -eq 0) {
-        Write-Host "Aucun fichier trouvé correspondant aux critères de recherche." -ForegroundColor Yellow
+        Write-Host "Aucun fichier trouvÃ© correspondant aux critÃ¨res de recherche." -ForegroundColor Yellow
         return
     }
 
-    # Préparer les résultats
+    # PrÃ©parer les rÃ©sultats
     $results = @()
     foreach ($file in $files) {
         $fileInfo = Get-Item -Path $file
@@ -100,7 +100,7 @@ function Main {
         $results += $result
     }
 
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     if ($ShowDetails) {
         $results | Format-Table -AutoSize
     } else {
@@ -113,13 +113,13 @@ function Main {
         }
     }
 
-    # Exporter les résultats en CSV si demandé
+    # Exporter les rÃ©sultats en CSV si demandÃ©
     if ($ExportCsv) {
         $results | Export-Csv -Path $OutputFile -NoTypeInformation
-        Write-Host "Résultats exportés dans le fichier: $OutputFile" -ForegroundColor Green
+        Write-Host "RÃ©sultats exportÃ©s dans le fichier: $OutputFile" -ForegroundColor Green
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main
 

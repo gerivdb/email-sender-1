@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour valider la documentation d'IndexOutOfRangeException et ses contextes.
 
@@ -14,24 +14,24 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes" {
     Context "IndexOutOfRangeException" {
-        It "Devrait être une sous-classe de SystemException" {
+        It "Devrait Ãªtre une sous-classe de SystemException" {
             [System.IndexOutOfRangeException] | Should -BeOfType [System.Type]
             [System.IndexOutOfRangeException].IsSubclassOf([System.SystemException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un message" {
+        It "Devrait permettre de spÃ©cifier un message" {
             $exception = [System.IndexOutOfRangeException]::new("Message de test")
             $exception.Message | Should -Be "Message de test"
         }
         
-        It "Exemple 1: Devrait simuler l'accès à un index négatif (style C#)" {
+        It "Exemple 1: Devrait simuler l'accÃ¨s Ã  un index nÃ©gatif (style C#)" {
             function Access-NegativeIndexCSharpStyle {
                 param (
                     [array]$Array,
@@ -48,7 +48,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             { Access-NegativeIndexCSharpStyle -Array $array -Index -1 } | Should -Throw -ExceptionType [System.IndexOutOfRangeException]
         }
         
-        It "Exemple 2: Devrait gérer l'accès à un index trop grand" {
+        It "Exemple 2: Devrait gÃ©rer l'accÃ¨s Ã  un index trop grand" {
             function Access-TooLargeIndex {
                 param (
                     [array]$Array,
@@ -66,7 +66,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             Access-TooLargeIndex -Array $array -Index 10 | Should -Be "Erreur: System.IndexOutOfRangeException"
         }
         
-        It "Exemple 3: Devrait gérer une erreur de calcul d'index" {
+        It "Exemple 3: Devrait gÃ©rer une erreur de calcul d'index" {
             function Calculate-InvalidIndex {
                 param (
                     [array]$Array,
@@ -77,16 +77,16 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                     $index = $Position * 2 - $Array.Length
                     return $Array[$index]
                 } catch [System.IndexOutOfRangeException] {
-                    return "Erreur d'index: L'index calculé ($index) est en dehors des limites du tableau (0..$($Array.Length - 1))"
+                    return "Erreur d'index: L'index calculÃ© ($index) est en dehors des limites du tableau (0..$($Array.Length - 1))"
                 }
             }
             
             $array = @(1, 2, 3, 4, 5)
             Calculate-InvalidIndex -Array $array -Index 4 | Should -Be 4  # Position 4 donne index 3
-            Calculate-InvalidIndex -Array $array -Position 5 | Should -Match "Erreur d'index: L'index calculé \(5\) est en dehors des limites du tableau \(0..4\)"
+            Calculate-InvalidIndex -Array $array -Position 5 | Should -Match "Erreur d'index: L'index calculÃ© \(5\) est en dehors des limites du tableau \(0..4\)"
         }
         
-        It "Exemple 4: Devrait gérer une boucle mal bornée" {
+        It "Exemple 4: Devrait gÃ©rer une boucle mal bornÃ©e" {
             function Iterate-WithInvalidBounds {
                 param (
                     [array]$Array
@@ -96,10 +96,10 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                 
                 try {
                     for ($i = 0; $i <= $Array.Length; $i++) {
-                        $result += "Élément à l'index $i : $($Array[$i])"
+                        $result += "Ã‰lÃ©ment Ã  l'index $i : $($Array[$i])"
                     }
                 } catch {
-                    $result += "Erreur à l'itération $i : $($_.Exception.GetType().FullName)"
+                    $result += "Erreur Ã  l'itÃ©ration $i : $($_.Exception.GetType().FullName)"
                 }
                 
                 return $result
@@ -108,11 +108,11 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             $array = @(1, 2, 3, 4, 5)
             $result = Iterate-WithInvalidBounds -Array $array
             
-            $result.Count | Should -Be 6  # 5 éléments + 1 message d'erreur
-            $result[5] | Should -Match "Erreur à l'itération 5 : System.IndexOutOfRangeException"
+            $result.Count | Should -Be 6  # 5 Ã©lÃ©ments + 1 message d'erreur
+            $result[5] | Should -Match "Erreur Ã  l'itÃ©ration 5 : System.IndexOutOfRangeException"
         }
         
-        It "Exemple 5: Devrait démontrer la confusion entre longueur et index maximal" {
+        It "Exemple 5: Devrait dÃ©montrer la confusion entre longueur et index maximal" {
             function Demonstrate-LengthVsMaxIndex {
                 param (
                     [array]$Array
@@ -126,14 +126,14 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                 $result += "Index maximal valide: $maxIndex"
                 
                 try {
-                    $result += "Tentative d'accès à l'index $length..."
+                    $result += "Tentative d'accÃ¨s Ã  l'index $length..."
                     $value = $Array[$length]
-                    $result += "Valeur: $value"  # Cette ligne ne sera jamais exécutée
+                    $result += "Valeur: $value"  # Cette ligne ne sera jamais exÃ©cutÃ©e
                 } catch {
                     $result += "Erreur: $($_.Exception.GetType().FullName)"
                 }
                 
-                $result += "Tentative d'accès à l'index $maxIndex..."
+                $result += "Tentative d'accÃ¨s Ã  l'index $maxIndex..."
                 $value = $Array[$maxIndex]
                 $result += "Valeur: $value"
                 
@@ -150,8 +150,8 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
         }
     }
     
-    Context "Prévention des IndexOutOfRangeException" {
-        It "Technique 1: Devrait vérifier les limites avant l'accès" {
+    Context "PrÃ©vention des IndexOutOfRangeException" {
+        It "Technique 1: Devrait vÃ©rifier les limites avant l'accÃ¨s" {
             function Access-ArraySafely {
                 param (
                     [array]$Array,
@@ -171,7 +171,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             Access-ArraySafely -Array $array -Index -1 | Should -Be "Index -1 hors limites (0..4)"
         }
         
-        It "Technique 2: Devrait utiliser des méthodes sécurisées pour les collections" {
+        It "Technique 2: Devrait utiliser des mÃ©thodes sÃ©curisÃ©es pour les collections" {
             function Get-ElementSafely {
                 param (
                     [System.Collections.ArrayList]$List,
@@ -200,7 +200,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                 
                 $result = @()
                 
-                # Utiliser foreach au lieu de for pour éviter les problèmes d'index
+                # Utiliser foreach au lieu de for pour Ã©viter les problÃ¨mes d'index
                 foreach ($item in $Array) {
                     $result += $item
                 }
@@ -216,18 +216,18 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             $result[4] | Should -Be 5
         }
         
-        It "Technique 5: Devrait utiliser des méthodes équivalentes à LINQ" {
+        It "Technique 5: Devrait utiliser des mÃ©thodes Ã©quivalentes Ã  LINQ" {
             function Get-ElementWithLinq {
                 param (
                     [array]$Array,
                     [int]$Index
                 )
                 
-                # Équivalent de LINQ FirstOrDefault en PowerShell
+                # Ã‰quivalent de LINQ FirstOrDefault en PowerShell
                 if ($Index -ge 0 -and $Index -lt $Array.Length) {
                     return $Array[$Index]
                 } else {
-                    return $null  # Valeur par défaut
+                    return $null  # Valeur par dÃ©faut
                 }
             }
             
@@ -237,8 +237,8 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
         }
     }
     
-    Context "Débogage des IndexOutOfRangeException" {
-        It "Devrait fournir des informations de débogage utiles" {
+    Context "DÃ©bogage des IndexOutOfRangeException" {
+        It "Devrait fournir des informations de dÃ©bogage utiles" {
             function Debug-IndexOutOfRange {
                 param (
                     [array]$Array,
@@ -247,22 +247,22 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                 
                 $result = @()
                 
-                $result += "Débogage d'accès au tableau:"
+                $result += "DÃ©bogage d'accÃ¨s au tableau:"
                 $result += "- Longueur du tableau: $($Array.Length)"
-                $result += "- Index demandé: $Index"
+                $result += "- Index demandÃ©: $Index"
                 $result += "- Limites valides: 0..$($Array.Length - 1)"
                 
                 if ($Index -lt 0) {
-                    $result += "ERREUR: Index négatif"
+                    $result += "ERREUR: Index nÃ©gatif"
                     return $result
                 }
                 
                 if ($Index -ge $Array.Length) {
-                    $result += "ERREUR: Index supérieur ou égal à la longueur du tableau"
+                    $result += "ERREUR: Index supÃ©rieur ou Ã©gal Ã  la longueur du tableau"
                     return $result
                 }
                 
-                $result += "Accès valide"
+                $result += "AccÃ¨s valide"
                 $result += "Valeur: $($Array[$Index])"
                 return $result
             }
@@ -270,19 +270,19 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             $array = @(1, 2, 3, 4, 5)
             
             $result1 = Debug-IndexOutOfRange -Array $array -Index 2
-            $result1 | Should -Contain "Accès valide"
+            $result1 | Should -Contain "AccÃ¨s valide"
             $result1 | Should -Contain "Valeur: 3"
             
             $result2 = Debug-IndexOutOfRange -Array $array -Index 5
-            $result2 | Should -Contain "ERREUR: Index supérieur ou égal à la longueur du tableau"
+            $result2 | Should -Contain "ERREUR: Index supÃ©rieur ou Ã©gal Ã  la longueur du tableau"
             
             $result3 = Debug-IndexOutOfRange -Array $array -Index -1
-            $result3 | Should -Contain "ERREUR: Index négatif"
+            $result3 | Should -Contain "ERREUR: Index nÃ©gatif"
         }
     }
     
-    Context "Différence entre IndexOutOfRangeException et ArgumentOutOfRangeException" {
-        It "Devrait montrer la différence entre les exceptions" {
+    Context "DiffÃ©rence entre IndexOutOfRangeException et ArgumentOutOfRangeException" {
+        It "Devrait montrer la diffÃ©rence entre les exceptions" {
             function Compare-OutOfRangeExceptions {
                 param (
                     [string]$TestCase
@@ -293,14 +293,14 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
                 try {
                     switch ($TestCase) {
                         "IndexOutOfRange" {
-                            # Génère IndexOutOfRangeException
+                            # GÃ©nÃ¨re IndexOutOfRangeException
                             return $array[10]
                         }
                         "ArgumentOutOfRange" {
-                            # Génère ArgumentOutOfRangeException
+                            # GÃ©nÃ¨re ArgumentOutOfRangeException
                             if (10 -lt 0 -or 10 -ge $array.Length) {
                                 throw [System.ArgumentOutOfRangeException]::new("Index", 10, 
-                                    "L'index doit être compris entre 0 et $($array.Length - 1)")
+                                    "L'index doit Ãªtre compris entre 0 et $($array.Length - 1)")
                             }
                             return $array[10]
                         }
@@ -316,5 +316,5 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

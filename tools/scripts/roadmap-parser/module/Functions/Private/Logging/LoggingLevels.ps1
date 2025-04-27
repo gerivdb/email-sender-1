@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit les niveaux de journalisation pour le module RoadmapParser.
+    DÃ©finit les niveaux de journalisation pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce script définit les niveaux de journalisation utilisés par le module RoadmapParser.
-    Il inclut une énumération pour les niveaux de journalisation et des constantes pour
+    Ce script dÃ©finit les niveaux de journalisation utilisÃ©s par le module RoadmapParser.
+    Il inclut une Ã©numÃ©ration pour les niveaux de journalisation et des constantes pour
     faciliter leur utilisation.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 
-# Définir l'énumération pour les niveaux de journalisation
+# DÃ©finir l'Ã©numÃ©ration pour les niveaux de journalisation
 Add-Type -TypeDefinition @"
     using System;
     
@@ -32,7 +32,7 @@ Add-Type -TypeDefinition @"
     }
 "@ -ErrorAction SilentlyContinue
 
-# Définir les constantes pour les niveaux de journalisation
+# DÃ©finir les constantes pour les niveaux de journalisation
 $script:LogLevelNone = [RoadmapParser.Logging.LogLevel]::None
 $script:LogLevelDebug = [RoadmapParser.Logging.LogLevel]::Debug
 $script:LogLevelVerbose = [RoadmapParser.Logging.LogLevel]::Verbose
@@ -42,7 +42,7 @@ $script:LogLevelError = [RoadmapParser.Logging.LogLevel]::Error
 $script:LogLevelCritical = [RoadmapParser.Logging.LogLevel]::Critical
 $script:LogLevelAll = [RoadmapParser.Logging.LogLevel]::All
 
-# Définir un tableau des niveaux de journalisation disponibles
+# DÃ©finir un tableau des niveaux de journalisation disponibles
 $script:AvailableLogLevels = @(
     $script:LogLevelNone,
     $script:LogLevelDebug,
@@ -54,7 +54,7 @@ $script:AvailableLogLevels = @(
     $script:LogLevelAll
 )
 
-# Définir un dictionnaire pour mapper les niveaux de journalisation aux couleurs
+# DÃ©finir un dictionnaire pour mapper les niveaux de journalisation aux couleurs
 $script:LogLevelColors = @{
     $script:LogLevelNone = "White"
     $script:LogLevelDebug = "Gray"
@@ -66,7 +66,7 @@ $script:LogLevelColors = @{
     $script:LogLevelAll = "White"
 }
 
-# Définir un dictionnaire pour mapper les niveaux de journalisation aux préfixes
+# DÃ©finir un dictionnaire pour mapper les niveaux de journalisation aux prÃ©fixes
 $script:LogLevelPrefixes = @{
     $script:LogLevelNone = ""
     $script:LogLevelDebug = "[DEBUG] "
@@ -78,7 +78,7 @@ $script:LogLevelPrefixes = @{
     $script:LogLevelAll = ""
 }
 
-# Définir un dictionnaire pour mapper les niveaux de journalisation aux noms
+# DÃ©finir un dictionnaire pour mapper les niveaux de journalisation aux noms
 $script:LogLevelNames = @{
     $script:LogLevelNone = "None"
     $script:LogLevelDebug = "Debug"
@@ -96,10 +96,10 @@ $script:LogLevelNames = @{
 
 .DESCRIPTION
     La fonction Test-LogLevel valide un niveau de journalisation.
-    Elle vérifie si le niveau de journalisation est valide et retourne un booléen.
+    Elle vÃ©rifie si le niveau de journalisation est valide et retourne un boolÃ©en.
 
 .PARAMETER LogLevel
-    Le niveau de journalisation à valider.
+    Le niveau de journalisation Ã  valider.
 
 .EXAMPLE
     Test-LogLevel -LogLevel $LogLevelDebug
@@ -116,14 +116,14 @@ function Test-LogLevel {
         [object]$LogLevel
     )
 
-    # Vérifier si le niveau de journalisation est une instance de LogLevel
+    # VÃ©rifier si le niveau de journalisation est une instance de LogLevel
     if ($LogLevel -is [RoadmapParser.Logging.LogLevel]) {
         return $true
     }
 
-    # Vérifier si le niveau de journalisation est une chaîne de caractères
+    # VÃ©rifier si le niveau de journalisation est une chaÃ®ne de caractÃ¨res
     if ($LogLevel -is [string]) {
-        # Vérifier si la chaîne de caractères peut être convertie en LogLevel
+        # VÃ©rifier si la chaÃ®ne de caractÃ¨res peut Ãªtre convertie en LogLevel
         try {
             $null = [RoadmapParser.Logging.LogLevel]::Parse([RoadmapParser.Logging.LogLevel], $LogLevel)
             return $true
@@ -132,9 +132,9 @@ function Test-LogLevel {
         }
     }
 
-    # Vérifier si le niveau de journalisation est un entier
+    # VÃ©rifier si le niveau de journalisation est un entier
     if ($LogLevel -is [int]) {
-        # Vérifier si l'entier est une valeur valide pour LogLevel
+        # VÃ©rifier si l'entier est une valeur valide pour LogLevel
         return [Enum]::IsDefined([RoadmapParser.Logging.LogLevel], $LogLevel)
     }
 
@@ -147,18 +147,18 @@ function Test-LogLevel {
 
 .DESCRIPTION
     La fonction ConvertTo-LogLevel convertit une valeur en niveau de journalisation.
-    Elle prend en charge les chaînes de caractères, les entiers et les instances de LogLevel.
+    Elle prend en charge les chaÃ®nes de caractÃ¨res, les entiers et les instances de LogLevel.
 
 .PARAMETER Value
-    La valeur à convertir en niveau de journalisation.
+    La valeur Ã  convertir en niveau de journalisation.
 
 .PARAMETER DefaultValue
-    La valeur par défaut à utiliser si la conversion échoue.
-    Par défaut, c'est LogLevelInformation.
+    La valeur par dÃ©faut Ã  utiliser si la conversion Ã©choue.
+    Par dÃ©faut, c'est LogLevelInformation.
 
 .EXAMPLE
     ConvertTo-LogLevel -Value "Debug"
-    Convertit la chaîne de caractères "Debug" en niveau de journalisation Debug.
+    Convertit la chaÃ®ne de caractÃ¨res "Debug" en niveau de journalisation Debug.
 
 .OUTPUTS
     [RoadmapParser.Logging.LogLevel] Le niveau de journalisation converti.
@@ -174,41 +174,41 @@ function ConvertTo-LogLevel {
         [RoadmapParser.Logging.LogLevel]$DefaultValue = $script:LogLevelInformation
     )
 
-    # Si la valeur est déjà un niveau de journalisation, la retourner
+    # Si la valeur est dÃ©jÃ  un niveau de journalisation, la retourner
     if ($Value -is [RoadmapParser.Logging.LogLevel]) {
         return $Value
     }
 
-    # Si la valeur est une chaîne de caractères, essayer de la convertir
+    # Si la valeur est une chaÃ®ne de caractÃ¨res, essayer de la convertir
     if ($Value -is [string]) {
-        # Vérifier si la chaîne de caractères correspond à un nom de niveau de journalisation
+        # VÃ©rifier si la chaÃ®ne de caractÃ¨res correspond Ã  un nom de niveau de journalisation
         foreach ($key in $script:LogLevelNames.Keys) {
             if ($script:LogLevelNames[$key] -eq $Value) {
                 return $key
             }
         }
 
-        # Essayer de convertir la chaîne de caractères en niveau de journalisation
+        # Essayer de convertir la chaÃ®ne de caractÃ¨res en niveau de journalisation
         try {
             return [RoadmapParser.Logging.LogLevel]::Parse([RoadmapParser.Logging.LogLevel], $Value)
         } catch {
-            # Retourner la valeur par défaut si la conversion échoue
+            # Retourner la valeur par dÃ©faut si la conversion Ã©choue
             return $DefaultValue
         }
     }
 
     # Si la valeur est un entier, essayer de la convertir
     if ($Value -is [int]) {
-        # Vérifier si l'entier est une valeur valide pour LogLevel
+        # VÃ©rifier si l'entier est une valeur valide pour LogLevel
         if ([Enum]::IsDefined([RoadmapParser.Logging.LogLevel], $Value)) {
             return [RoadmapParser.Logging.LogLevel]$Value
         } else {
-            # Retourner la valeur par défaut si la conversion échoue
+            # Retourner la valeur par dÃ©faut si la conversion Ã©choue
             return $DefaultValue
         }
     }
 
-    # Retourner la valeur par défaut si la conversion échoue
+    # Retourner la valeur par dÃ©faut si la conversion Ã©choue
     return $DefaultValue
 }
 
@@ -218,7 +218,7 @@ function ConvertTo-LogLevel {
 
 .DESCRIPTION
     La fonction Get-LogLevelName obtient le nom d'un niveau de journalisation.
-    Elle prend en charge les instances de LogLevel, les chaînes de caractères et les entiers.
+    Elle prend en charge les instances de LogLevel, les chaÃ®nes de caractÃ¨res et les entiers.
 
 .PARAMETER LogLevel
     Le niveau de journalisation dont on veut obtenir le nom.
@@ -255,7 +255,7 @@ function Get-LogLevelName {
 
 .DESCRIPTION
     La fonction Get-LogLevelColor obtient la couleur d'un niveau de journalisation.
-    Elle prend en charge les instances de LogLevel, les chaînes de caractères et les entiers.
+    Elle prend en charge les instances de LogLevel, les chaÃ®nes de caractÃ¨res et les entiers.
 
 .PARAMETER LogLevel
     Le niveau de journalisation dont on veut obtenir la couleur.
@@ -288,21 +288,21 @@ function Get-LogLevelColor {
 
 <#
 .SYNOPSIS
-    Obtient le préfixe d'un niveau de journalisation.
+    Obtient le prÃ©fixe d'un niveau de journalisation.
 
 .DESCRIPTION
-    La fonction Get-LogLevelPrefix obtient le préfixe d'un niveau de journalisation.
-    Elle prend en charge les instances de LogLevel, les chaînes de caractères et les entiers.
+    La fonction Get-LogLevelPrefix obtient le prÃ©fixe d'un niveau de journalisation.
+    Elle prend en charge les instances de LogLevel, les chaÃ®nes de caractÃ¨res et les entiers.
 
 .PARAMETER LogLevel
-    Le niveau de journalisation dont on veut obtenir le préfixe.
+    Le niveau de journalisation dont on veut obtenir le prÃ©fixe.
 
 .EXAMPLE
     Get-LogLevelPrefix -LogLevel $LogLevelDebug
-    Obtient le préfixe du niveau de journalisation Debug.
+    Obtient le prÃ©fixe du niveau de journalisation Debug.
 
 .OUTPUTS
-    [string] Le préfixe du niveau de journalisation.
+    [string] Le prÃ©fixe du niveau de journalisation.
 #>
 function Get-LogLevelPrefix {
     [CmdletBinding()]
@@ -315,7 +315,7 @@ function Get-LogLevelPrefix {
     # Convertir la valeur en niveau de journalisation
     $logLevelValue = ConvertTo-LogLevel -Value $LogLevel
 
-    # Retourner le préfixe du niveau de journalisation
+    # Retourner le prÃ©fixe du niveau de journalisation
     if ($script:LogLevelPrefixes.ContainsKey($logLevelValue)) {
         return $script:LogLevelPrefixes[$logLevelValue]
     } else {

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Trace la sortie d'une fonction.
 
@@ -8,14 +8,14 @@
 
 .PARAMETER FunctionName
     Le nom de la fonction.
-    Par défaut, c'est le nom de la fonction appelante.
+    Par dÃ©faut, c'est le nom de la fonction appelante.
 
 .PARAMETER ReturnValue
     La valeur de retour de la fonction.
 
 .PARAMETER DecreaseDepth
-    Indique si la profondeur doit être diminuée avant la trace.
-    Par défaut, c'est $true.
+    Indique si la profondeur doit Ãªtre diminuÃ©e avant la trace.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Trace-RoadmapFunctionExit
@@ -23,7 +23,7 @@
 
 .EXAMPLE
     Trace-RoadmapFunctionExit -FunctionName "Ma-Fonction" -ReturnValue $result
-    Trace la sortie de la fonction "Ma-Fonction" avec la valeur de retour spécifiée.
+    Trace la sortie de la fonction "Ma-Fonction" avec la valeur de retour spÃ©cifiÃ©e.
 
 .OUTPUTS
     [void]
@@ -31,7 +31,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-22
+    Date de crÃ©ation: 2023-07-22
 #>
 function Trace-RoadmapFunctionExit {
     [CmdletBinding()]
@@ -54,9 +54,9 @@ function Trace-RoadmapFunctionExit {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Logging"
     $tracingFunctionsPath = Join-Path -Path $privatePath -ChildPath "TracingFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $tracingFunctionsPath)) {
-        throw "Le fichier TracingFunctions.ps1 est introuvable à l'emplacement : $tracingFunctionsPath"
+        throw "Le fichier TracingFunctions.ps1 est introuvable Ã  l'emplacement : $tracingFunctionsPath"
     }
 
     # Importer les fonctions

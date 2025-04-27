@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour l'optimisation dynamique de la parallélisation.
+    ExÃ©cute tous les tests unitaires pour l'optimisation dynamique de la parallÃ©lisation.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour les modules liés à l'optimisation
-    dynamique de la parallélisation et génère un rapport de couverture.
+    Ce script exÃ©cute tous les tests unitaires pour les modules liÃ©s Ã  l'optimisation
+    dynamique de la parallÃ©lisation et gÃ©nÃ¨re un rapport de couverture.
 .PARAMETER OutputPath
-    Chemin où enregistrer les rapports de test. Par défaut, utilise le répertoire "TestResults"
-    dans le répertoire courant.
+    Chemin oÃ¹ enregistrer les rapports de test. Par dÃ©faut, utilise le rÃ©pertoire "TestResults"
+    dans le rÃ©pertoire courant.
 .EXAMPLE
     .\Run-ParallelizationTests.ps1
-    Exécute tous les tests et génère un rapport dans le répertoire par défaut.
+    ExÃ©cute tous les tests et gÃ©nÃ¨re un rapport dans le rÃ©pertoire par dÃ©faut.
 .EXAMPLE
     .\Run-ParallelizationTests.ps1 -OutputPath "C:\Reports"
-    Exécute tous les tests et génère un rapport dans le répertoire spécifié.
+    ExÃ©cute tous les tests et gÃ©nÃ¨re un rapport dans le rÃ©pertoire spÃ©cifiÃ©.
 .NOTES
     Author: Augment Agent
     Version: 1.0
@@ -25,14 +25,14 @@ param (
     [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "TestResults")
 )
 
-# Vérifier si le répertoire de sortie existe, sinon le créer
+# VÃ©rifier si le rÃ©pertoire de sortie existe, sinon le crÃ©er
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -54,22 +54,22 @@ $pesterConfig.CodeCoverage.Path = @(
     (Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "TaskPriorityQueue.psm1")
 )
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour l'optimisation dynamique de la parallélisation..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour l'optimisation dynamique de la parallÃ©lisation..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Tests non exécutés: $($testResults.NotRunCount)" -ForegroundColor Gray
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  Tests non exÃ©cutÃ©s: $($testResults.NotRunCount)" -ForegroundColor Gray
 
 # Afficher le chemin des rapports
-Write-Host "`nRapports générés:" -ForegroundColor Cyan
-Write-Host "  Résultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor White
+Write-Host "`nRapports gÃ©nÃ©rÃ©s:" -ForegroundColor Cyan
+Write-Host "  RÃ©sultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor White
 Write-Host "  Couverture de code: $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor White
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

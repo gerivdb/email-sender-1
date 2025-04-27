@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour valider la documentation d'InvalidOperationException et ses cas d'usage.
 
@@ -14,31 +14,31 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usage" {
     Context "InvalidOperationException" {
-        It "Devrait être une sous-classe de SystemException" {
+        It "Devrait Ãªtre une sous-classe de SystemException" {
             [System.InvalidOperationException] | Should -BeOfType [System.Type]
             [System.InvalidOperationException].IsSubclassOf([System.SystemException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un message" {
+        It "Devrait permettre de spÃ©cifier un message" {
             $exception = [System.InvalidOperationException]::new("Message de test")
             $exception.Message | Should -Be "Message de test"
         }
         
-        It "Exemple 1: Devrait gérer un état incorrect pour une opération" {
+        It "Exemple 1: Devrait gÃ©rer un Ã©tat incorrect pour une opÃ©ration" {
             function Start-Process {
                 param (
                     [PSCustomObject]$Process
                 )
                 
                 if ($Process.Status -eq "Running") {
-                    throw [System.InvalidOperationException]::new("Le processus est déjà en cours d'exécution")
+                    throw [System.InvalidOperationException]::new("Le processus est dÃ©jÃ  en cours d'exÃ©cution")
                 }
                 
                 $Process.Status = "Running"
@@ -63,31 +63,31 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 Start-Process -Process $runningProcess
             }
             catch {
-                $_.Exception.Message | Should -Be "Le processus est déjà en cours d'exécution"
+                $_.Exception.Message | Should -Be "Le processus est dÃ©jÃ  en cours d'exÃ©cution"
             }
             
             $result = Start-Process -Process $stoppedProcess
             $result.Status | Should -Be "Running"
         }
         
-        It "Exemple 2: Devrait gérer une violation de séquence d'opérations" {
+        It "Exemple 2: Devrait gÃ©rer une violation de sÃ©quence d'opÃ©rations" {
             class FileProcessor {
                 [bool]$IsOpen = $false
                 [string]$Content = $null
                 
                 [void] Open([string]$filePath) {
                     if ($this.IsOpen) {
-                        throw [System.InvalidOperationException]::new("Le fichier est déjà ouvert")
+                        throw [System.InvalidOperationException]::new("Le fichier est dÃ©jÃ  ouvert")
                     }
                     
                     # Simuler l'ouverture du fichier
-                    $this.Content = "Contenu simulé"
+                    $this.Content = "Contenu simulÃ©"
                     $this.IsOpen = $true
                 }
                 
                 [string] Read() {
                     if (-not $this.IsOpen) {
-                        throw [System.InvalidOperationException]::new("Le fichier doit être ouvert avant de pouvoir être lu")
+                        throw [System.InvalidOperationException]::new("Le fichier doit Ãªtre ouvert avant de pouvoir Ãªtre lu")
                     }
                     
                     return $this.Content
@@ -112,19 +112,19 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 $processor.Read()
             }
             catch {
-                $_.Exception.Message | Should -Be "Le fichier doit être ouvert avant de pouvoir être lu"
+                $_.Exception.Message | Should -Be "Le fichier doit Ãªtre ouvert avant de pouvoir Ãªtre lu"
             }
             
-            # Séquence correcte
+            # SÃ©quence correcte
             $processor.Open("test.txt")
-            $processor.Read() | Should -Be "Contenu simulé"
+            $processor.Read() | Should -Be "Contenu simulÃ©"
             $processor.Close()
             
-            # Tentative de fermeture après fermeture
+            # Tentative de fermeture aprÃ¨s fermeture
             { $processor.Close() } | Should -Throw -ExceptionType [System.InvalidOperationException]
         }
         
-        It "Exemple 3: Devrait implémenter une machine à états" {
+        It "Exemple 3: Devrait implÃ©menter une machine Ã  Ã©tats" {
             class StateMachine {
                 [string]$State = "Initial"
                 [hashtable]$AllowedTransitions = @{
@@ -137,7 +137,7 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 [void] TransitionTo([string]$newState) {
                     if (-not $this.AllowedTransitions[$this.State].Contains($newState)) {
                         throw [System.InvalidOperationException]::new(
-                            "Transition non autorisée de '$($this.State)' vers '$newState'")
+                            "Transition non autorisÃ©e de '$($this.State)' vers '$newState'")
                     }
                     
                     $this.State = $newState
@@ -161,11 +161,11 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 $machine.TransitionTo("Processing")
             }
             catch {
-                $_.Exception.Message | Should -Match "Transition non autorisée de 'Completed' vers 'Processing'"
+                $_.Exception.Message | Should -Match "Transition non autorisÃ©e de 'Completed' vers 'Processing'"
             }
         }
         
-        It "Exemple 4: Devrait gérer une opération non supportée dans le contexte actuel" {
+        It "Exemple 4: Devrait gÃ©rer une opÃ©ration non supportÃ©e dans le contexte actuel" {
             function Invoke-Operation {
                 param (
                     [string]$OperationType,
@@ -175,18 +175,18 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 switch ($OperationType) {
                     "Read" {
                         if ($Context.ReadOnly -eq $false) {
-                            throw [System.InvalidOperationException]::new("L'opération de lecture n'est pas autorisée dans un contexte en écriture")
+                            throw [System.InvalidOperationException]::new("L'opÃ©ration de lecture n'est pas autorisÃ©e dans un contexte en Ã©criture")
                         }
-                        return "Lecture effectuée"
+                        return "Lecture effectuÃ©e"
                     }
                     "Write" {
                         if ($Context.ReadOnly -eq $true) {
-                            throw [System.InvalidOperationException]::new("L'opération d'écriture n'est pas autorisée dans un contexte en lecture seule")
+                            throw [System.InvalidOperationException]::new("L'opÃ©ration d'Ã©criture n'est pas autorisÃ©e dans un contexte en lecture seule")
                         }
-                        return "Écriture effectuée"
+                        return "Ã‰criture effectuÃ©e"
                     }
                     default {
-                        throw [System.ArgumentException]::new("Type d'opération non reconnu", "OperationType")
+                        throw [System.ArgumentException]::new("Type d'opÃ©ration non reconnu", "OperationType")
                     }
                 }
             }
@@ -201,34 +201,34 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                 Name = "ContextTest"
             }
             
-            # Opération invalide
+            # OpÃ©ration invalide
             { Invoke-Operation -OperationType "Write" -Context $readOnlyContext } | Should -Throw -ExceptionType [System.InvalidOperationException]
             
             try {
                 Invoke-Operation -OperationType "Write" -Context $readOnlyContext
             }
             catch {
-                $_.Exception.Message | Should -Be "L'opération d'écriture n'est pas autorisée dans un contexte en lecture seule"
+                $_.Exception.Message | Should -Be "L'opÃ©ration d'Ã©criture n'est pas autorisÃ©e dans un contexte en lecture seule"
             }
             
-            # Opérations valides
-            Invoke-Operation -OperationType "Read" -Context $readOnlyContext | Should -Be "Lecture effectuée"
-            Invoke-Operation -OperationType "Write" -Context $writeContext | Should -Be "Écriture effectuée"
+            # OpÃ©rations valides
+            Invoke-Operation -OperationType "Read" -Context $readOnlyContext | Should -Be "Lecture effectuÃ©e"
+            Invoke-Operation -OperationType "Write" -Context $writeContext | Should -Be "Ã‰criture effectuÃ©e"
         }
     }
     
     Context "ObjectDisposedException" {
-        It "Devrait être une sous-classe d'InvalidOperationException" {
+        It "Devrait Ãªtre une sous-classe d'InvalidOperationException" {
             [System.ObjectDisposedException] | Should -BeOfType [System.Type]
             [System.ObjectDisposedException].IsSubclassOf([System.InvalidOperationException]) | Should -Be $true
         }
         
-        It "Devrait permettre de spécifier un nom d'objet" {
+        It "Devrait permettre de spÃ©cifier un nom d'objet" {
             $exception = [System.ObjectDisposedException]::new("TestObject")
             $exception.ObjectName | Should -Be "TestObject"
         }
         
-        It "Exemple: Devrait gérer un objet disposé" {
+        It "Exemple: Devrait gÃ©rer un objet disposÃ©" {
             class DisposableResource : System.IDisposable {
                 [bool]$IsDisposed = $false
                 
@@ -251,13 +251,13 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
             
             $resource = [DisposableResource]::new()
             
-            # Opération valide
+            # OpÃ©ration valide
             { $resource.DoWork() } | Should -Not -Throw
             
             # Disposer la ressource
             $resource.Dispose()
             
-            # Opération invalide après disposition
+            # OpÃ©ration invalide aprÃ¨s disposition
             { $resource.DoWork() } | Should -Throw -ExceptionType [System.ObjectDisposedException]
             
             try {
@@ -271,13 +271,13 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
     }
     
     Context "NotSupportedException" {
-        It "Devrait être une sous-classe d'InvalidOperationException" {
+        It "Devrait Ãªtre une sous-classe d'InvalidOperationException" {
             [System.NotSupportedException] | Should -BeOfType [System.Type]
-            [System.NotSupportedException].IsSubclassOf([System.InvalidOperationException]) | Should -Be $false  # Directement dérivée de SystemException
+            [System.NotSupportedException].IsSubclassOf([System.InvalidOperationException]) | Should -Be $false  # Directement dÃ©rivÃ©e de SystemException
             [System.NotSupportedException].IsSubclassOf([System.SystemException]) | Should -Be $true
         }
         
-        It "Exemple: Devrait gérer une opération non supportée" {
+        It "Exemple: Devrait gÃ©rer une opÃ©ration non supportÃ©e" {
             class ReadOnlyCollection {
                 [array]$Items
                 
@@ -296,10 +296,10 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
             
             $collection = [ReadOnlyCollection]::new(@(1, 2, 3))
             
-            # Opération valide
+            # OpÃ©ration valide
             $collection.GetItem(1) | Should -Be 2
             
-            # Opération non supportée
+            # OpÃ©ration non supportÃ©e
             { $collection.AddItem(4) } | Should -Throw -ExceptionType [System.NotSupportedException]
             
             try {
@@ -313,7 +313,7 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
     }
     
     Context "Interception et gestion en PowerShell" {
-        It "Devrait intercepter spécifiquement les exceptions liées aux opérations invalides" {
+        It "Devrait intercepter spÃ©cifiquement les exceptions liÃ©es aux opÃ©rations invalides" {
             function Test-OperationHandling {
                 param (
                     [string]$Operation
@@ -327,37 +327,37 @@ Describe "Tests de la documentation d'InvalidOperationException et ses cas d'usa
                             $stream.Write(@(1, 2, 3), 0, 3)
                         }
                         "Invalid" {
-                            throw [System.InvalidOperationException]::new("Opération invalide générique")
+                            throw [System.InvalidOperationException]::new("OpÃ©ration invalide gÃ©nÃ©rique")
                         }
                         "NotSupported" {
-                            throw [System.NotSupportedException]::new("Opération non supportée")
+                            throw [System.NotSupportedException]::new("OpÃ©ration non supportÃ©e")
                         }
                         default {
-                            throw [System.Exception]::new("Erreur générique")
+                            throw [System.Exception]::new("Erreur gÃ©nÃ©rique")
                         }
                     }
                 }
                 catch [System.ObjectDisposedException] {
-                    return "Objet disposé"
+                    return "Objet disposÃ©"
                 }
                 catch [System.NotSupportedException] {
-                    return "Non supporté"
+                    return "Non supportÃ©"
                 }
                 catch [System.InvalidOperationException] {
-                    return "Opération invalide"
+                    return "OpÃ©ration invalide"
                 }
                 catch {
-                    return "Erreur générique"
+                    return "Erreur gÃ©nÃ©rique"
                 }
             }
             
-            Test-OperationHandling -Operation "Disposed" | Should -Be "Objet disposé"
-            Test-OperationHandling -Operation "Invalid" | Should -Be "Opération invalide"
-            Test-OperationHandling -Operation "NotSupported" | Should -Be "Non supporté"
-            Test-OperationHandling -Operation "Other" | Should -Be "Erreur générique"
+            Test-OperationHandling -Operation "Disposed" | Should -Be "Objet disposÃ©"
+            Test-OperationHandling -Operation "Invalid" | Should -Be "OpÃ©ration invalide"
+            Test-OperationHandling -Operation "NotSupported" | Should -Be "Non supportÃ©"
+            Test-OperationHandling -Operation "Other" | Should -Be "Erreur gÃ©nÃ©rique"
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse les tendances des résultats des tests au fil du temps.
+    Analyse les tendances des rÃ©sultats des tests au fil du temps.
 .DESCRIPTION
-    Ce script analyse les résultats des tests au fil du temps pour identifier
-    les tendances, comme les tests qui échouent de plus en plus souvent,
+    Ce script analyse les rÃ©sultats des tests au fil du temps pour identifier
+    les tendances, comme les tests qui Ã©chouent de plus en plus souvent,
     les tests qui deviennent plus lents, etc.
 .PARAMETER HistoryPath
-    Chemin vers le répertoire contenant l'historique des résultats des tests.
+    Chemin vers le rÃ©pertoire contenant l'historique des rÃ©sultats des tests.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'analyse.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse.
 .PARAMETER DaysToAnalyze
-    Nombre de jours à analyser.
+    Nombre de jours Ã  analyser.
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats de l'analyse.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats de l'analyse.
 .EXAMPLE
     .\Analyze-TestTrends.ps1 -HistoryPath "D:\TestHistory" -OutputPath "D:\TestResults\Trends" -DaysToAnalyze 30 -GenerateReport
 .NOTES
@@ -36,18 +36,18 @@ param (
     [switch]$GenerateReport
 )
 
-# Vérifier que le chemin de l'historique existe
+# VÃ©rifier que le chemin de l'historique existe
 if (-not (Test-Path -Path $HistoryPath)) {
     Write-Error "Le chemin de l'historique n'existe pas: $HistoryPath"
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour charger l'historique des résultats des tests
+# Fonction pour charger l'historique des rÃ©sultats des tests
 function Get-TestHistory {
     [CmdletBinding()]
     param (
@@ -59,30 +59,30 @@ function Get-TestHistory {
     )
     
     try {
-        # Calculer la date de début
+        # Calculer la date de dÃ©but
         $startDate = (Get-Date).AddDays(-$DaysToAnalyze)
         
-        # Rechercher tous les fichiers de résultats
+        # Rechercher tous les fichiers de rÃ©sultats
         $resultFiles = Get-ChildItem -Path $HistoryPath -Filter "results_*.xml" -Recurse | 
                        Where-Object { $_.LastWriteTime -ge $startDate } |
                        Sort-Object LastWriteTime
         
         if ($resultFiles.Count -eq 0) {
-            Write-Warning "Aucun fichier de résultats trouvé pour la période spécifiée."
+            Write-Warning "Aucun fichier de rÃ©sultats trouvÃ© pour la pÃ©riode spÃ©cifiÃ©e."
             return @()
         }
         
-        # Charger les résultats
+        # Charger les rÃ©sultats
         $history = @()
         
         foreach ($file in $resultFiles) {
             try {
                 $results = Import-Clixml -Path $file.FullName
                 
-                # Ajouter la date d'exécution
+                # Ajouter la date d'exÃ©cution
                 $executionDate = $file.LastWriteTime
                 
-                # Créer un objet d'historique
+                # CrÃ©er un objet d'historique
                 $historyEntry = [PSCustomObject]@{
                     Date = $executionDate
                     Results = $results
@@ -104,7 +104,7 @@ function Get-TestHistory {
         return $history
     }
     catch {
-        Write-Error "Erreur lors du chargement de l'historique des résultats: $_"
+        Write-Error "Erreur lors du chargement de l'historique des rÃ©sultats: $_"
         return @()
     }
 }
@@ -118,13 +118,13 @@ function Get-TestTrends {
     )
     
     try {
-        # Vérifier qu'il y a suffisamment de données
+        # VÃ©rifier qu'il y a suffisamment de donnÃ©es
         if ($History.Count -lt 2) {
-            Write-Warning "Pas assez de données pour analyser les tendances (minimum 2 exécutions)."
+            Write-Warning "Pas assez de donnÃ©es pour analyser les tendances (minimum 2 exÃ©cutions)."
             return $null
         }
         
-        # Créer un dictionnaire pour stocker les tendances par test
+        # CrÃ©er un dictionnaire pour stocker les tendances par test
         $testTrends = @{}
         
         # Identifier tous les tests uniques
@@ -159,7 +159,7 @@ function Get-TestTrends {
             $successRate = ($testHistory | Where-Object { $_.Success } | Measure-Object).Count / $testHistory.Count
             $failureRate = 1 - $successRate
             
-            # Calculer la tendance de durée
+            # Calculer la tendance de durÃ©e
             $durationTrend = 0
             if ($testHistory.Count -gt 1) {
                 $firstDuration = $testHistory[0].Duration
@@ -170,7 +170,7 @@ function Get-TestTrends {
                 }
             }
             
-            # Calculer la tendance de stabilité
+            # Calculer la tendance de stabilitÃ©
             $stabilityTrend = 0
             if ($testHistory.Count -gt 1) {
                 $changes = 0
@@ -183,7 +183,7 @@ function Get-TestTrends {
                 $stabilityTrend = $changes / ($testHistory.Count - 1)
             }
             
-            # Déterminer si le test est flaky
+            # DÃ©terminer si le test est flaky
             $isFlaky = $stabilityTrend -gt 0.3  # Plus de 30% de changements
             
             # Ajouter les tendances au dictionnaire
@@ -208,7 +208,7 @@ function Get-TestTrends {
     }
 }
 
-# Fonction pour générer un rapport HTML des tendances
+# Fonction pour gÃ©nÃ©rer un rapport HTML des tendances
 function New-TrendReport {
     [CmdletBinding()]
     param (
@@ -223,10 +223,10 @@ function New-TrendReport {
     )
     
     try {
-        # Créer le chemin du rapport
+        # CrÃ©er le chemin du rapport
         $reportPath = Join-Path -Path $OutputPath -ChildPath "trend_report.html"
         
-        # Générer le contenu HTML
+        # GÃ©nÃ©rer le contenu HTML
         $htmlReport = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -366,12 +366,12 @@ function New-TrendReport {
 <body>
     <div class="container">
         <h1>Rapport de tendances des tests</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
-        <p>Période analysée: $($History[0].Date.ToString("dd/MM/yyyy")) - $($History[-1].Date.ToString("dd/MM/yyyy"))</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
+        <p>PÃ©riode analysÃ©e: $($History[0].Date.ToString("dd/MM/yyyy")) - $($History[-1].Date.ToString("dd/MM/yyyy"))</p>
         
         <div class="trend-summary">
             <div class="trend-item">
-                <h3>Taux de réussite global</h3>
+                <h3>Taux de rÃ©ussite global</h3>
                 <div class="trend-value $((if (($History[-1].PassedCount / $History[-1].TotalCount) -ge 0.9) { "trend-positive" } elseif (($History[-1].PassedCount / $History[-1].TotalCount) -ge 0.7) { "trend-neutral" } else { "trend-negative" }))">
                     $([math]::Round(($History[-1].PassedCount / $History[-1].TotalCount) * 100, 2))%
                 </div>
@@ -385,11 +385,11 @@ function New-TrendReport {
                 <p>sur $($TestTrends.Count) tests</p>
             </div>
             <div class="trend-item">
-                <h3>Durée moyenne</h3>
+                <h3>DurÃ©e moyenne</h3>
                 <div class="trend-value $((if ($History[-1].AverageDuration -lt $History[0].AverageDuration) { "trend-positive" } elseif ($History[-1].AverageDuration -le ($History[0].AverageDuration * 1.1)) { "trend-neutral" } else { "trend-negative" }))">
                     $([math]::Round($History[-1].AverageDuration, 2)) ms
                 </div>
-                <p>$([math]::Round(($History[-1].AverageDuration - $History[0].AverageDuration) / $History[0].AverageDuration * 100, 2))% depuis le début</p>
+                <p>$([math]::Round(($History[-1].AverageDuration - $History[0].AverageDuration) / $History[0].AverageDuration * 100, 2))% depuis le dÃ©but</p>
             </div>
         </div>
         
@@ -412,10 +412,10 @@ function New-TrendReport {
         <table>
             <tr>
                 <th>Test</th>
-                <th>Taux de réussite</th>
-                <th>Tendance de stabilité</th>
-                <th>Tendance de durée</th>
-                <th>Dernier résultat</th>
+                <th>Taux de rÃ©ussite</th>
+                <th>Tendance de stabilitÃ©</th>
+                <th>Tendance de durÃ©e</th>
+                <th>Dernier rÃ©sultat</th>
             </tr>
 "@
             
@@ -424,7 +424,7 @@ function New-TrendReport {
                 $stabilityTrendPercent = [math]::Round($test.StabilityTrend * 100, 2)
                 $durationTrendPercent = [math]::Round($test.DurationTrend * 100, 2)
                 $lastResultClass = if ($test.LastResult.Success) { "success" } else { "failure" }
-                $lastResultText = if ($test.LastResult.Success) { "Réussi" } else { "Échoué" }
+                $lastResultText = if ($test.LastResult.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
                 
                 $htmlReport += @"
             <tr class="flaky-test">
@@ -449,7 +449,7 @@ function New-TrendReport {
         }
         else {
             $htmlReport += @"
-        <p>Aucun test instable détecté.</p>
+        <p>Aucun test instable dÃ©tectÃ©.</p>
 "@
         }
         
@@ -459,10 +459,10 @@ function New-TrendReport {
         <table>
             <tr>
                 <th>Test</th>
-                <th>Taux de réussite</th>
-                <th>Tendance de durée</th>
-                <th>Stabilité</th>
-                <th>Dernier résultat</th>
+                <th>Taux de rÃ©ussite</th>
+                <th>Tendance de durÃ©e</th>
+                <th>StabilitÃ©</th>
+                <th>Dernier rÃ©sultat</th>
             </tr>
 "@
         
@@ -472,7 +472,7 @@ function New-TrendReport {
             $stabilityClass = if ($test.IsFlaky) { "warning" } else { "success" }
             $stabilityText = if ($test.IsFlaky) { "Instable" } else { "Stable" }
             $lastResultClass = if ($test.LastResult.Success) { "success" } else { "failure" }
-            $lastResultText = if ($test.LastResult.Success) { "Réussi" } else { "Échoué" }
+            $lastResultText = if ($test.LastResult.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
             
             $htmlReport += @"
             <tr>
@@ -494,14 +494,14 @@ function New-TrendReport {
         $htmlReport += @"
         </table>
         
-        <h2>Historique des exécutions</h2>
+        <h2>Historique des exÃ©cutions</h2>
         <table>
             <tr>
                 <th>Date</th>
-                <th>Tests réussis</th>
-                <th>Tests échoués</th>
-                <th>Durée totale</th>
-                <th>Durée moyenne</th>
+                <th>Tests rÃ©ussis</th>
+                <th>Tests Ã©chouÃ©s</th>
+                <th>DurÃ©e totale</th>
+                <th>DurÃ©e moyenne</th>
             </tr>
 "@
         
@@ -521,14 +521,14 @@ function New-TrendReport {
         </table>
         
         <script>
-            // Créer un graphique du taux de réussite
+            // CrÃ©er un graphique du taux de rÃ©ussite
             const successRateCtx = document.getElementById('successRateChart').getContext('2d');
             const successRateChart = new Chart(successRateCtx, {
                 type: 'line',
                 data: {
                     labels: [$(($History | ForEach-Object { "'" + $_.Date.ToString("dd/MM/yyyy") + "'" }) -join ", ")],
                     datasets: [{
-                        label: 'Taux de réussite (%)',
+                        label: 'Taux de rÃ©ussite (%)',
                         data: [$(($History | ForEach-Object { [math]::Round(($_.PassedCount / $_.TotalCount) * 100, 2) }) -join ", ")],
                         backgroundColor: 'rgba(46, 204, 113, 0.2)',
                         borderColor: 'rgba(46, 204, 113, 1)',
@@ -547,20 +547,20 @@ function New-TrendReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Évolution du taux de réussite'
+                            text: 'Ã‰volution du taux de rÃ©ussite'
                         }
                     }
                 }
             });
             
-            // Créer un graphique de la durée moyenne
+            // CrÃ©er un graphique de la durÃ©e moyenne
             const durationCtx = document.getElementById('durationChart').getContext('2d');
             const durationChart = new Chart(durationCtx, {
                 type: 'line',
                 data: {
                     labels: [$(($History | ForEach-Object { "'" + $_.Date.ToString("dd/MM/yyyy") + "'" }) -join ", ")],
                     datasets: [{
-                        label: 'Durée moyenne (ms)',
+                        label: 'DurÃ©e moyenne (ms)',
                         data: [$(($History | ForEach-Object { [math]::Round($_.AverageDuration, 2) }) -join ", ")],
                         backgroundColor: 'rgba(52, 152, 219, 0.2)',
                         borderColor: 'rgba(52, 152, 219, 1)',
@@ -578,7 +578,7 @@ function New-TrendReport {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Évolution de la durée moyenne des tests'
+                            text: 'Ã‰volution de la durÃ©e moyenne des tests'
                         }
                     }
                 }
@@ -586,7 +586,7 @@ function New-TrendReport {
         </script>
         
         <div class="footer">
-            <p>Généré par TestOmnibus Trend Analyzer</p>
+            <p>GÃ©nÃ©rÃ© par TestOmnibus Trend Analyzer</p>
         </div>
     </div>
 </body>
@@ -600,23 +600,23 @@ function New-TrendReport {
         return $reportPath
     }
     catch {
-        Write-Error "Erreur lors de la génération du rapport de tendances: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de tendances: $_"
         return $null
     }
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Charger l'historique des résultats des tests
-    Write-Host "Chargement de l'historique des résultats des tests..." -ForegroundColor Cyan
+    # Charger l'historique des rÃ©sultats des tests
+    Write-Host "Chargement de l'historique des rÃ©sultats des tests..." -ForegroundColor Cyan
     $history = Get-TestHistory -HistoryPath $HistoryPath -DaysToAnalyze $DaysToAnalyze
     
     if ($history.Count -eq 0) {
-        Write-Warning "Aucun historique de résultats trouvé."
+        Write-Warning "Aucun historique de rÃ©sultats trouvÃ©."
         return 1
     }
     
-    Write-Host "Historique chargé: $($history.Count) exécutions" -ForegroundColor Green
+    Write-Host "Historique chargÃ©: $($history.Count) exÃ©cutions" -ForegroundColor Green
     
     # Analyser les tendances
     Write-Host "Analyse des tendances..." -ForegroundColor Cyan
@@ -627,27 +627,27 @@ try {
         return 1
     }
     
-    Write-Host "Tendances analysées pour $($testTrends.Count) tests" -ForegroundColor Green
+    Write-Host "Tendances analysÃ©es pour $($testTrends.Count) tests" -ForegroundColor Green
     
     # Identifier les tests flaky
     $flakyTests = $testTrends.Values | Where-Object { $_.IsFlaky }
-    Write-Host "Tests instables (flaky) détectés: $($flakyTests.Count)" -ForegroundColor Yellow
+    Write-Host "Tests instables (flaky) dÃ©tectÃ©s: $($flakyTests.Count)" -ForegroundColor Yellow
     
     foreach ($test in $flakyTests) {
-        Write-Host "  - $($test.Name) (stabilité: $([math]::Round($test.StabilityTrend * 100, 2))%)" -ForegroundColor Yellow
+        Write-Host "  - $($test.Name) (stabilitÃ©: $([math]::Round($test.StabilityTrend * 100, 2))%)" -ForegroundColor Yellow
     }
     
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
-        Write-Host "Génération du rapport de tendances..." -ForegroundColor Cyan
+        Write-Host "GÃ©nÃ©ration du rapport de tendances..." -ForegroundColor Cyan
         $reportPath = New-TrendReport -TestTrends $testTrends -History $history -OutputPath $OutputPath
         
         if ($reportPath) {
-            Write-Host "Rapport de tendances généré: $reportPath" -ForegroundColor Green
+            Write-Host "Rapport de tendances gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
         }
     }
     
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return [PSCustomObject]@{
         History = $history
         Trends = $testTrends

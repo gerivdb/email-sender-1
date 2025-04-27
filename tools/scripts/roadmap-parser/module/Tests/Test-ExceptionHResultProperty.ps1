@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation de la propriété HResult de System.Exception.
+    Tests pour valider la documentation de la propriÃ©tÃ© HResult de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation de la propriété HResult de System.Exception.
+    fournies dans la documentation de la propriÃ©tÃ© HResult de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,20 +14,20 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la propriété HResult de System.Exception" {
-    Context "Caractéristiques de base de la propriété HResult" {
-        It "Devrait être modifiable" {
+# DÃ©finir les tests
+Describe "Tests de la propriÃ©tÃ© HResult de System.Exception" {
+    Context "CaractÃ©ristiques de base de la propriÃ©tÃ© HResult" {
+        It "Devrait Ãªtre modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.HResult = 0x80004005  # E_FAIL
             $exception.HResult | Should -Be 0x80004005
         }
         
-        It "Devrait être initialisée automatiquement" {
+        It "Devrait Ãªtre initialisÃ©e automatiquement" {
             try {
                 [int]::Parse("abc")
             }
@@ -36,14 +36,14 @@ Describe "Tests de la propriété HResult de System.Exception" {
             }
         }
         
-        It "Devrait être de type int" {
+        It "Devrait Ãªtre de type int" {
             $exception = [System.Exception]::new("Message de test")
             $exception.HResult | Should -BeOfType [int]
         }
     }
     
     Context "Structure d'un code HResult" {
-        It "Devrait avoir le bit de sévérité à 1 pour les erreurs" {
+        It "Devrait avoir le bit de sÃ©vÃ©ritÃ© Ã  1 pour les erreurs" {
             try {
                 [int]::Parse("abc")
             }
@@ -54,7 +54,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
             }
         }
         
-        It "Devrait avoir un code de facilité valide" {
+        It "Devrait avoir un code de facilitÃ© valide" {
             try {
                 [int]::Parse("abc")
             }
@@ -66,7 +66,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
             }
         }
         
-        It "Devrait avoir un code d'erreur spécifique" {
+        It "Devrait avoir un code d'erreur spÃ©cifique" {
             try {
                 [int]::Parse("abc")
             }
@@ -79,7 +79,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
     }
     
     Context "Exemples de la documentation" {
-        It "Exemple 1: Devrait accéder à la propriété HResult d'une exception" {
+        It "Exemple 1: Devrait accÃ©der Ã  la propriÃ©tÃ© HResult d'une exception" {
             $hresult = $null
             
             try {
@@ -91,16 +91,16 @@ Describe "Tests de la propriété HResult de System.Exception" {
             
             $hresult | Should -Not -Be 0
             $hresultHex = "0x$($hresult.ToString('X8'))"
-            $hresultHex | Should -Match "^0x8"  # Devrait commencer par 0x8 (bit de sévérité à 1)
+            $hresultHex | Should -Match "^0x8"  # Devrait commencer par 0x8 (bit de sÃ©vÃ©ritÃ© Ã  1)
         }
         
-        It "Exemple 2: Devrait définir manuellement la propriété HResult" {
+        It "Exemple 2: Devrait dÃ©finir manuellement la propriÃ©tÃ© HResult" {
             $exceptionType = $null
             $message = $null
             $hresult = $null
             
             try {
-                $exception = [System.InvalidOperationException]::new("Opération non valide")
+                $exception = [System.InvalidOperationException]::new("OpÃ©ration non valide")
                 $exception.HResult = 0x80004005  # E_FAIL
                 throw $exception
             }
@@ -111,12 +111,12 @@ Describe "Tests de la propriété HResult de System.Exception" {
             }
             
             $exceptionType | Should -Be "System.InvalidOperationException"
-            $message | Should -Be "Opération non valide"
+            $message | Should -Be "OpÃ©ration non valide"
             $hresult | Should -Be 0x80004005
         }
         
-        It "Exemple 3: Devrait identifier le type d'exception à partir du HResult" {
-            # Définir la fonction de l'exemple
+        It "Exemple 3: Devrait identifier le type d'exception Ã  partir du HResult" {
+            # DÃ©finir la fonction de l'exemple
             function Get-ExceptionTypeFromHResult {
                 param (
                     [int]$HResult
@@ -149,15 +149,15 @@ Describe "Tests de la propriété HResult de System.Exception" {
         }
     }
     
-    Context "Décomposition d'un HResult" {
-        It "Devrait décomposer correctement un HResult" {
-            # Définir la fonction de l'exemple
+    Context "DÃ©composition d'un HResult" {
+        It "Devrait dÃ©composer correctement un HResult" {
+            # DÃ©finir la fonction de l'exemple
             function Get-HResultComponents {
                 param (
                     [int]$HResult
                 )
                 
-                # Convertir en entier non signé pour faciliter les opérations bit à bit
+                # Convertir en entier non signÃ© pour faciliter les opÃ©rations bit Ã  bit
                 $uHResult = [uint32]$HResult
                 
                 # Extraire les composantes
@@ -167,7 +167,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
                 $facility = ($uHResult -shr 16) -band 0x7FF
                 $errorCode = $uHResult -band 0xFFFF
                 
-                # Créer et retourner un objet avec les composantes
+                # CrÃ©er et retourner un objet avec les composantes
                 return [PSCustomObject]@{
                     HResult = $HResult
                     HResultHex = "0x$($HResult.ToString('X8'))"
@@ -196,12 +196,12 @@ Describe "Tests de la propriété HResult de System.Exception" {
     }
     
     Context "Bonnes pratiques" {
-        It "Devrait permettre de préserver les valeurs standard" {
-            # Créer une exception standard
-            $exception = [System.IO.FileNotFoundException]::new("Fichier non trouvé", "test.txt")
+        It "Devrait permettre de prÃ©server les valeurs standard" {
+            # CrÃ©er une exception standard
+            $exception = [System.IO.FileNotFoundException]::new("Fichier non trouvÃ©", "test.txt")
             $originalHResult = $exception.HResult
             
-            # Vérifier que le HResult est standard
+            # VÃ©rifier que le HResult est standard
             $originalHResult | Should -Not -Be 0
             
             # Modifier et restaurer le HResult
@@ -212,10 +212,10 @@ Describe "Tests de la propriété HResult de System.Exception" {
             $exception.HResult | Should -Be $originalHResult
         }
         
-        It "Devrait permettre d'utiliser des valeurs personnalisées pour exceptions personnalisées" {
-            # Créer une exception personnalisée
-            $customHResult = 0x80040001  # Valeur personnalisée
-            $exception = [System.Exception]::new("Exception personnalisée")
+        It "Devrait permettre d'utiliser des valeurs personnalisÃ©es pour exceptions personnalisÃ©es" {
+            # CrÃ©er une exception personnalisÃ©e
+            $customHResult = 0x80040001  # Valeur personnalisÃ©e
+            $exception = [System.Exception]::new("Exception personnalisÃ©e")
             $exception.HResult = $customHResult
             
             $exception.HResult | Should -Be $customHResult
@@ -223,7 +223,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
     }
     
     Context "Utilisation dans PowerShell" {
-        It "Devrait être accessible via l'objet ErrorRecord dans un bloc catch" {
+        It "Devrait Ãªtre accessible via l'objet ErrorRecord dans un bloc catch" {
             $hresult = $null
             
             try {
@@ -236,7 +236,7 @@ Describe "Tests de la propriété HResult de System.Exception" {
             $hresult | Should -Not -Be 0
         }
         
-        It "Devrait permettre un traitement conditionnel basé sur le HResult" {
+        It "Devrait permettre un traitement conditionnel basÃ© sur le HResult" {
             $result = $null
             
             function Test-HResultSwitch {
@@ -246,27 +246,27 @@ Describe "Tests de la propriété HResult de System.Exception" {
                 
                 switch ($HResult) {
                     -2147024894 { # 0x80070002 - FileNotFoundException
-                        return "Fichier non trouvé"
+                        return "Fichier non trouvÃ©"
                     }
                     -2147024891 { # 0x80070005 - UnauthorizedAccessException
-                        return "Accès refusé"
+                        return "AccÃ¨s refusÃ©"
                     }
                     -2146233087 { # 0x80131501 - ArgumentNullException
                         return "Argument null"
                     }
                     default {
-                        return "Erreur non spécifique"
+                        return "Erreur non spÃ©cifique"
                     }
                 }
             }
             
-            Test-HResultSwitch -HResult -2147024894 | Should -Be "Fichier non trouvé"
-            Test-HResultSwitch -HResult -2147024891 | Should -Be "Accès refusé"
+            Test-HResultSwitch -HResult -2147024894 | Should -Be "Fichier non trouvÃ©"
+            Test-HResultSwitch -HResult -2147024891 | Should -Be "AccÃ¨s refusÃ©"
             Test-HResultSwitch -HResult -2146233087 | Should -Be "Argument null"
-            Test-HResultSwitch -HResult 0 | Should -Be "Erreur non spécifique"
+            Test-HResultSwitch -HResult 0 | Should -Be "Erreur non spÃ©cifique"
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

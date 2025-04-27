@@ -1,66 +1,66 @@
-<#
+﻿<#
 .SYNOPSIS
-    Gère les erreurs et les exceptions pour le module RoadmapParser.
+    GÃ¨re les erreurs et les exceptions pour le module RoadmapParser.
 
 .DESCRIPTION
-    La fonction Invoke-RoadmapErrorHandler gère les erreurs et les exceptions pour le module RoadmapParser.
-    Elle prend en charge différentes stratégies de récupération et peut journaliser les erreurs,
+    La fonction Invoke-RoadmapErrorHandler gÃ¨re les erreurs et les exceptions pour le module RoadmapParser.
+    Elle prend en charge diffÃ©rentes stratÃ©gies de rÃ©cupÃ©ration et peut journaliser les erreurs,
     les relancer, ou les ignorer selon les besoins.
 
 .PARAMETER ErrorRecord
-    L'enregistrement d'erreur à gérer.
+    L'enregistrement d'erreur Ã  gÃ©rer.
 
 .PARAMETER ErrorAction
-    L'action à effectuer en cas d'erreur. Valeurs possibles : Continue, SilentlyContinue, Stop, Retry, Ignore.
-    Par défaut : Continue.
+    L'action Ã  effectuer en cas d'erreur. Valeurs possibles : Continue, SilentlyContinue, Stop, Retry, Ignore.
+    Par dÃ©faut : Continue.
 
 .PARAMETER Category
-    La catégorie de l'erreur. Permet de regrouper les erreurs par catégorie.
-    Par défaut : General.
+    La catÃ©gorie de l'erreur. Permet de regrouper les erreurs par catÃ©gorie.
+    Par dÃ©faut : General.
 
 .PARAMETER MaxRetryCount
-    Le nombre maximum de tentatives de récupération. Utilisé uniquement avec ErrorAction = Retry.
-    Par défaut : 3.
+    Le nombre maximum de tentatives de rÃ©cupÃ©ration. UtilisÃ© uniquement avec ErrorAction = Retry.
+    Par dÃ©faut : 3.
 
 .PARAMETER RetryDelaySeconds
-    Le délai en secondes entre les tentatives de récupération. Utilisé uniquement avec ErrorAction = Retry.
-    Par défaut : 1.
+    Le dÃ©lai en secondes entre les tentatives de rÃ©cupÃ©ration. UtilisÃ© uniquement avec ErrorAction = Retry.
+    Par dÃ©faut : 1.
 
 .PARAMETER LogFilePath
-    Le chemin du fichier de journal. Si non spécifié, les erreurs seront journalisées uniquement dans la console.
+    Le chemin du fichier de journal. Si non spÃ©cifiÃ©, les erreurs seront journalisÃ©es uniquement dans la console.
 
 .PARAMETER NoConsole
-    Indique si les erreurs ne doivent pas être affichées dans la console.
+    Indique si les erreurs ne doivent pas Ãªtre affichÃ©es dans la console.
 
 .PARAMETER AdditionalInfo
-    Informations supplémentaires à inclure dans le message d'erreur.
+    Informations supplÃ©mentaires Ã  inclure dans le message d'erreur.
 
 .PARAMETER ScriptBlock
-    Le bloc de script à exécuter avec gestion des erreurs. Si spécifié, la fonction exécutera ce bloc
-    et gérera les erreurs qui surviennent.
+    Le bloc de script Ã  exÃ©cuter avec gestion des erreurs. Si spÃ©cifiÃ©, la fonction exÃ©cutera ce bloc
+    et gÃ©rera les erreurs qui surviennent.
 
 .PARAMETER ScriptBlockParams
-    Les paramètres à passer au bloc de script.
+    Les paramÃ¨tres Ã  passer au bloc de script.
 
 .EXAMPLE
     try {
-        # Code qui peut générer une erreur
+        # Code qui peut gÃ©nÃ©rer une erreur
     } catch {
         Invoke-RoadmapErrorHandler -ErrorRecord $_ -ErrorAction Stop -Category "Parsing" -LogFilePath ".\logs\roadmap-parser.log"
     }
-    Gère une erreur en la journalisant et en la relançant.
+    GÃ¨re une erreur en la journalisant et en la relanÃ§ant.
 
 .EXAMPLE
     Invoke-RoadmapErrorHandler -ScriptBlock { Get-Content -Path $filePath } -ErrorAction Retry -MaxRetryCount 5 -Category "IO" -LogFilePath ".\logs\roadmap-parser.log"
-    Exécute un bloc de script avec gestion des erreurs, en réessayant jusqu'à 5 fois en cas d'échec.
+    ExÃ©cute un bloc de script avec gestion des erreurs, en rÃ©essayant jusqu'Ã  5 fois en cas d'Ã©chec.
 
 .OUTPUTS
-    [PSObject] Le résultat du bloc de script si spécifié et exécuté avec succès.
+    [PSObject] Le rÃ©sultat du bloc de script si spÃ©cifiÃ© et exÃ©cutÃ© avec succÃ¨s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-15
+    Date de crÃ©ation: 2023-07-15
 #>
 function Invoke-RoadmapErrorHandler {
     [CmdletBinding(DefaultParameterSetName = "ErrorRecord")]
@@ -97,7 +97,7 @@ function Invoke-RoadmapErrorHandler {
         [System.Collections.Hashtable]$ScriptBlockParams
     )
 
-    # Vérifier si les fonctions requises sont déjà chargées
+    # VÃ©rifier si les fonctions requises sont dÃ©jÃ  chargÃ©es
     if (-not (Get-Command -Name "Write-RoadmapLog" -ErrorAction SilentlyContinue)) {
         # Importer les fonctions requises
         $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -117,7 +117,7 @@ function Invoke-RoadmapErrorHandler {
         }
     }
 
-    # Fonction pour gérer une erreur
+    # Fonction pour gÃ©rer une erreur
     function Invoke-ErrorHandler {
         param (
             [System.Management.Automation.ErrorRecord]$ErrorRecord,
@@ -174,30 +174,30 @@ function Invoke-RoadmapErrorHandler {
                     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
                     "[$timestamp] [Error] $errorMessage" | Out-File -FilePath $LogFilePath -Append -Encoding UTF8
                 } catch {
-                    Write-Error "Erreur lors de l'écriture dans le fichier de journal '$LogFilePath': $_"
+                    Write-Error "Erreur lors de l'Ã©criture dans le fichier de journal '$LogFilePath': $_"
                 }
             }
         }
 
-        # Gérer l'erreur selon l'action spécifiée
+        # GÃ©rer l'erreur selon l'action spÃ©cifiÃ©e
         switch ($ErrorHandlingAction) {
             "Continue" {
-                # Ne rien faire, l'erreur a été journalisée
+                # Ne rien faire, l'erreur a Ã©tÃ© journalisÃ©e
             }
             "SilentlyContinue" {
-                # Ne rien faire, l'erreur a été journalisée silencieusement
+                # Ne rien faire, l'erreur a Ã©tÃ© journalisÃ©e silencieusement
             }
             "Stop" {
                 # Relancer l'exception
                 throw $exception
             }
             "Ignore" {
-                # Ne rien faire, ignorer complètement l'erreur
+                # Ne rien faire, ignorer complÃ¨tement l'erreur
             }
         }
     }
 
-    # Exécuter le bloc de script avec gestion des erreurs
+    # ExÃ©cuter le bloc de script avec gestion des erreurs
     if ($PSCmdlet.ParameterSetName -eq "ScriptBlock") {
         $retryCount = 0
         $success = $false
@@ -216,9 +216,9 @@ function Invoke-RoadmapErrorHandler {
                 $retryCount++
 
                 if ($ErrorHandlingAction -eq "Retry" -and $retryCount -le $MaxRetryCount) {
-                    # Journaliser la tentative de récupération
+                    # Journaliser la tentative de rÃ©cupÃ©ration
                     $retryLogParams = @{
-                        Message   = "Tentative de récupération $retryCount/$MaxRetryCount après erreur: $($_.Exception.Message)"
+                        Message   = "Tentative de rÃ©cupÃ©ration $retryCount/$MaxRetryCount aprÃ¨s erreur: $($_.Exception.Message)"
                         Level     = "Warning"
                         Category  = $Category
                         NoConsole = $NoConsole
@@ -233,28 +233,28 @@ function Invoke-RoadmapErrorHandler {
                     } else {
                         # Fallback si Write-RoadmapLog n'est pas disponible
                         if (-not $NoConsole) {
-                            Write-Warning "[$Category] Tentative de récupération $retryCount/$MaxRetryCount après erreur: $($_.Exception.Message)"
+                            Write-Warning "[$Category] Tentative de rÃ©cupÃ©ration $retryCount/$MaxRetryCount aprÃ¨s erreur: $($_.Exception.Message)"
                         }
                     }
 
-                    # Attendre avant de réessayer
+                    # Attendre avant de rÃ©essayer
                     Start-Sleep -Seconds $RetryDelaySeconds
                 } else {
-                    # Gérer l'erreur finale
+                    # GÃ©rer l'erreur finale
                     Invoke-ErrorHandler -ErrorRecord $_ -ErrorHandlingAction $ErrorHandlingAction -Category $Category -LogFilePath $LogFilePath -NoConsole:$NoConsole -AdditionalInfo $AdditionalInfo
 
                     if ($ErrorHandlingAction -eq "Stop") {
-                        # L'erreur a été relancée, sortir de la fonction
+                        # L'erreur a Ã©tÃ© relancÃ©e, sortir de la fonction
                         return
                     }
                 }
             }
         }
 
-        # Journaliser le succès après plusieurs tentatives
+        # Journaliser le succÃ¨s aprÃ¨s plusieurs tentatives
         if ($success -and $retryCount -gt 0) {
             $successLogParams = @{
-                Message   = "Récupération réussie après $retryCount tentative(s)"
+                Message   = "RÃ©cupÃ©ration rÃ©ussie aprÃ¨s $retryCount tentative(s)"
                 Level     = "Info"
                 Category  = $Category
                 NoConsole = $NoConsole
@@ -269,14 +269,14 @@ function Invoke-RoadmapErrorHandler {
             } else {
                 # Fallback si Write-RoadmapLog n'est pas disponible
                 if (-not $NoConsole) {
-                    Write-Host "[$Category] Récupération réussie après $retryCount tentative(s)" -ForegroundColor Green
+                    Write-Host "[$Category] RÃ©cupÃ©ration rÃ©ussie aprÃ¨s $retryCount tentative(s)" -ForegroundColor Green
                 }
             }
         }
 
         return $result
     } else {
-        # Gérer l'erreur fournie
+        # GÃ©rer l'erreur fournie
         Invoke-ErrorHandler -ErrorRecord $ErrorRecord -ErrorHandlingAction $ErrorHandlingAction -Category $Category -LogFilePath $LogFilePath -NoConsole:$NoConsole -AdditionalInfo $AdditionalInfo
     }
 }

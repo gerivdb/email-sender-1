@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exporte un graphique de flamme (flamegraph) à partir des données de traçage.
+    Exporte un graphique de flamme (flamegraph) Ã  partir des donnÃ©es de traÃ§age.
 
 .DESCRIPTION
-    Ce script génère un graphique de flamme HTML interactif à partir des données
-    de traçage collectées par le module PRPerformanceTracer.
+    Ce script gÃ©nÃ¨re un graphique de flamme HTML interactif Ã  partir des donnÃ©es
+    de traÃ§age collectÃ©es par le module PRPerformanceTracer.
 
 .PARAMETER Tracer
-    L'objet traceur contenant les données de traçage.
+    L'objet traceur contenant les donnÃ©es de traÃ§age.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le graphique de flamme.
-    Par défaut: "reports\pr-analysis\profiling\flamegraph.html"
+    Le chemin oÃ¹ enregistrer le graphique de flamme.
+    Par dÃ©faut: "reports\pr-analysis\profiling\flamegraph.html"
 
 .EXAMPLE
     Export-PRPerformanceFlameGraph -Tracer $tracer -OutputPath "reports\flamegraph_pr42.html"
-    Génère un graphique de flamme à partir des données du traceur et l'enregistre dans le fichier spécifié.
+    GÃ©nÃ¨re un graphique de flamme Ã  partir des donnÃ©es du traceur et l'enregistre dans le fichier spÃ©cifiÃ©.
 
 .NOTES
     Version: 1.0
@@ -33,7 +33,7 @@ param(
     [string]$OutputPath = "reports\pr-analysis\profiling\flamegraph.html"
 )
 
-# Fonction pour convertir les données de traçage en format compatible avec d3-flame-graph
+# Fonction pour convertir les donnÃ©es de traÃ§age en format compatible avec d3-flame-graph
 function ConvertTo-FlameGraphData {
     [CmdletBinding()]
     param(
@@ -41,7 +41,7 @@ function ConvertTo-FlameGraphData {
         [object]$TracingData
     )
 
-    # Fonction récursive pour construire l'arbre
+    # Fonction rÃ©cursive pour construire l'arbre
     function Build-FlameNode {
         param(
             [Parameter(Mandatory = $true)]
@@ -51,7 +51,7 @@ function ConvertTo-FlameGraphData {
             [string]$ParentName = "root"
         )
 
-        # Créer le nœud
+        # CrÃ©er le nÅ“ud
         $node = [PSCustomObject]@{
             name = $Operation.Name
             value = [Math]::Max(1, [int]($Operation.Duration.TotalMilliseconds))
@@ -67,14 +67,14 @@ function ConvertTo-FlameGraphData {
         return $node
     }
 
-    # Construire l'arbre à partir des opérations
+    # Construire l'arbre Ã  partir des opÃ©rations
     $root = [PSCustomObject]@{
         name = "PR Analysis"
         value = [int]($TracingData.Duration.TotalMilliseconds)
         children = @()
     }
 
-    # Ajouter les opérations de premier niveau
+    # Ajouter les opÃ©rations de premier niveau
     foreach ($operation in $TracingData.Operations) {
         if ($null -eq $operation.Parent) {
             $node = Build-FlameNode -Operation $operation
@@ -85,7 +85,7 @@ function ConvertTo-FlameGraphData {
     return $root
 }
 
-# Fonction pour générer le HTML du graphique de flamme
+# Fonction pour gÃ©nÃ©rer le HTML du graphique de flamme
 function New-FlameGraphHtml {
     [CmdletBinding()]
     param(
@@ -93,10 +93,10 @@ function New-FlameGraphHtml {
         [object]$FlameData
     )
 
-    # Convertir les données en JSON
+    # Convertir les donnÃ©es en JSON
     $dataJson = $FlameData | ConvertTo-Json -Depth 10
 
-    # Créer le HTML
+    # CrÃ©er le HTML
     $html = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -151,17 +151,17 @@ function New-FlameGraphHtml {
     <div class="container">
         <h1>Graphique de Flamme - Analyse de Pull Request</h1>
         <div class="controls">
-            <button id="resetBtn">Réinitialiser</button>
+            <button id="resetBtn">RÃ©initialiser</button>
             <button id="searchBtn">Rechercher</button>
         </div>
         <div id="chart"></div>
     </div>
 
     <script>
-        // Données du graphique de flamme
+        // DonnÃ©es du graphique de flamme
         const flameData = $dataJson;
 
-        // Créer le graphique de flamme
+        // CrÃ©er le graphique de flamme
         const flamegraph = d3.flamegraph()
             .width(document.getElementById('chart').clientWidth)
             .cellHeight(20)
@@ -175,20 +175,20 @@ function New-FlameGraphHtml {
             .datum(flameData)
             .call(flamegraph);
 
-        // Bouton de réinitialisation
+        // Bouton de rÃ©initialisation
         document.getElementById('resetBtn').addEventListener('click', function() {
             flamegraph.resetZoom();
         });
 
         // Bouton de recherche
         document.getElementById('searchBtn').addEventListener('click', function() {
-            const term = prompt('Entrez un terme à rechercher:');
+            const term = prompt('Entrez un terme Ã  rechercher:');
             if (term) {
                 flamegraph.search(term);
             }
         });
 
-        // Redimensionner le graphique lors du redimensionnement de la fenêtre
+        // Redimensionner le graphique lors du redimensionnement de la fenÃªtre
         window.addEventListener('resize', function() {
             flamegraph.width(document.getElementById('chart').clientWidth);
             d3.select("#chart").call(flamegraph);
@@ -201,37 +201,37 @@ function New-FlameGraphHtml {
     return $html
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
-    # Vérifier que le traceur est valide
+    # VÃ©rifier que le traceur est valide
     if ($null -eq $Tracer) {
         throw "L'objet traceur est null."
     }
 
-    # Obtenir les données de traçage
+    # Obtenir les donnÃ©es de traÃ§age
     $tracingData = $Tracer.GetTracingData()
     if ($null -eq $tracingData) {
-        throw "Impossible d'obtenir les données de traçage."
+        throw "Impossible d'obtenir les donnÃ©es de traÃ§age."
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     }
 
-    # Convertir les données pour le graphique de flamme
+    # Convertir les donnÃ©es pour le graphique de flamme
     $flameData = ConvertTo-FlameGraphData -TracingData $tracingData
 
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = New-FlameGraphHtml -FlameData $flameData
 
     # Enregistrer le fichier HTML
     Set-Content -Path $OutputPath -Value $html -Encoding UTF8
 
-    Write-Host "Graphique de flamme généré avec succès: $OutputPath" -ForegroundColor Green
+    Write-Host "Graphique de flamme gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
     return $OutputPath
 } catch {
-    Write-Error "Erreur lors de la génération du graphique de flamme: $_"
+    Write-Error "Erreur lors de la gÃ©nÃ©ration du graphique de flamme: $_"
     return $null
 }

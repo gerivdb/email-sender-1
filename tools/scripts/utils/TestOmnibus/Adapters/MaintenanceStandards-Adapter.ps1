@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur TestOmnibus pour les tests du module Maintenance Standards.
 .DESCRIPTION
-    Cet adaptateur permet d'exécuter les tests du module Maintenance Standards
-    dans le cadre de TestOmnibus, en utilisant les mocks nécessaires.
+    Cet adaptateur permet d'exÃ©cuter les tests du module Maintenance Standards
+    dans le cadre de TestOmnibus, en utilisant les mocks nÃ©cessaires.
 .NOTES
     Auteur: Augment Agent
     Date: 2025-04-12
@@ -26,7 +26,7 @@ function Invoke-MaintenanceStandardsTests {
         [switch]$ShowDetailedResults
     )
 
-    # Vérifier que le chemin des tests existe
+    # VÃ©rifier que le chemin des tests existe
     if (-not (Test-Path -Path $TestPath)) {
         Write-Error "Le chemin des tests n'existe pas: $TestPath"
         return @{
@@ -39,14 +39,14 @@ function Invoke-MaintenanceStandardsTests {
         }
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
     # Importer Pester
     if (-not (Get-Module -ListAvailable -Name Pester)) {
-        Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+        Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
 
@@ -67,17 +67,17 @@ function Invoke-MaintenanceStandardsTests {
         $pesterConfig.CodeCoverage.OutputFormat = 'JaCoCo'
     }
 
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $startTime = Get-Date
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     try {
         $results = Invoke-Pester -Configuration $pesterConfig
     } catch {
-        Write-Error "Erreur lors de l'exécution des tests: $_"
+        Write-Error "Erreur lors de l'exÃ©cution des tests: $_"
         return @{
             Success      = $false
-            ErrorMessage = "Erreur lors de l'exécution des tests: $_"
+            ErrorMessage = "Erreur lors de l'exÃ©cution des tests: $_"
             TestsRun     = 0
             TestsPassed  = 0
             TestsFailed  = 0
@@ -88,11 +88,11 @@ function Invoke-MaintenanceStandardsTests {
     $endTime = Get-Date
     $duration = ($endTime - $startTime).TotalMilliseconds
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtmlReport) {
         $reportPath = Join-Path -Path $OutputPath -ChildPath "TestReport.html"
         
-        # Créer un rapport HTML simple
+        # CrÃ©er un rapport HTML simple
         $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -114,26 +114,26 @@ function Invoke-MaintenanceStandardsTests {
 <body>
     <h1>Rapport de tests - Maintenance Standards</h1>
     <div class="summary">
-        <p>Tests exécutés: $($results.TotalCount)</p>
-        <p>Tests réussis: <span class="success">$($results.PassedCount)</span></p>
-        <p>Tests échoués: <span class="failure">$($results.FailedCount)</span></p>
-        <p>Tests ignorés: $($results.SkippedCount)</p>
-        <p>Durée totale: $([math]::Round($duration / 1000, 2)) secondes</p>
+        <p>Tests exÃ©cutÃ©s: $($results.TotalCount)</p>
+        <p>Tests rÃ©ussis: <span class="success">$($results.PassedCount)</span></p>
+        <p>Tests Ã©chouÃ©s: <span class="failure">$($results.FailedCount)</span></p>
+        <p>Tests ignorÃ©s: $($results.SkippedCount)</p>
+        <p>DurÃ©e totale: $([math]::Round($duration / 1000, 2)) secondes</p>
     </div>
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
         foreach ($test in $results.Tests) {
             $result = if ($test.Result -eq "Passed") { 
-                "<span class='success'>Réussi</span>" 
+                "<span class='success'>RÃ©ussi</span>" 
             } else { 
-                "<span class='failure'>Échoué</span>" 
+                "<span class='failure'>Ã‰chouÃ©</span>" 
             }
             
             $htmlReport += @"
@@ -152,13 +152,13 @@ function Invoke-MaintenanceStandardsTests {
 "@
 
         $htmlReport | Out-File -FilePath $reportPath -Encoding utf8
-        Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return @{
         Success      = ($results.FailedCount -eq 0)
-        ErrorMessage = if ($results.FailedCount -gt 0) { "$($results.FailedCount) tests ont échoué" } else { "" }
+        ErrorMessage = if ($results.FailedCount -gt 0) { "$($results.FailedCount) tests ont Ã©chouÃ©" } else { "" }
         TestsRun     = $results.TotalCount
         TestsPassed  = $results.PassedCount
         TestsFailed  = $results.FailedCount

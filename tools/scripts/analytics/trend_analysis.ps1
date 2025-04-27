@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'analyse des tendances et patterns dans les données de performance.
+    Script d'analyse des tendances et patterns dans les donnÃ©es de performance.
 .DESCRIPTION
-    Analyse les données historiques pour identifier tendances, cycles et patterns.
+    Analyse les donnÃ©es historiques pour identifier tendances, cycles et patterns.
 .PARAMETER DataPath
-    Chemin vers les données préparées.
+    Chemin vers les donnÃ©es prÃ©parÃ©es.
 .PARAMETER OutputPath
-    Chemin où les résultats seront sauvegardés.
+    Chemin oÃ¹ les rÃ©sultats seront sauvegardÃ©s.
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
 #>
@@ -52,7 +52,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données
+# Fonction pour charger les donnÃ©es
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -60,19 +60,19 @@ function Import-PerformanceData {
         [string]$FilePath
     )
     
-    Write-Log -Message "Chargement des données depuis $FilePath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es depuis $FilePath" -Level "Info"
     
     try {
         if (Test-Path -Path $FilePath) {
             $Data = Import-Csv -Path $FilePath
-            Write-Log -Message "Chargement réussi: $($Data.Count) entrées" -Level "Info"
+            Write-Log -Message "Chargement rÃ©ussi: $($Data.Count) entrÃ©es" -Level "Info"
             return $Data
         } else {
-            Write-Log -Message "Fichier non trouvé: $FilePath" -Level "Error"
+            Write-Log -Message "Fichier non trouvÃ©: $FilePath" -Level "Error"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
@@ -97,9 +97,9 @@ function Get-Trends {
     Write-Log -Message "Analyse des tendances" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
@@ -108,10 +108,10 @@ function Get-Trends {
             $_.$TimeColumn = [DateTime]::Parse($_.$TimeColumn)
         }
         
-        # Trier les données par timestamp
+        # Trier les donnÃ©es par timestamp
         $SortedData = $Data | Sort-Object -Property $TimeColumn
         
-        # Grouper les données si nécessaire
+        # Grouper les donnÃ©es si nÃ©cessaire
         if ($GroupColumn) {
             $GroupedData = $SortedData | Group-Object -Property $GroupColumn
             $Results = @()
@@ -133,7 +133,7 @@ function Get-Trends {
                     0
                 }
                 
-                # Déterminer la direction de la tendance
+                # DÃ©terminer la direction de la tendance
                 $Direction = if ($Trend -gt 0) {
                     "Hausse"
                 } elseif ($Trend -lt 0) {
@@ -159,7 +159,7 @@ function Get-Trends {
             
             return $Results
         } else {
-            # Calculer les statistiques de tendance pour toutes les données
+            # Calculer les statistiques de tendance pour toutes les donnÃ©es
             $FirstValue = [double]($SortedData | Select-Object -First 1).$ValueColumn
             $LastValue = [double]($SortedData | Select-Object -Last 1).$ValueColumn
             $MinValue = [double]($SortedData | Measure-Object -Property $ValueColumn -Minimum).Minimum
@@ -173,7 +173,7 @@ function Get-Trends {
                 0
             }
             
-            # Déterminer la direction de la tendance
+            # DÃ©terminer la direction de la tendance
             $Direction = if ($Trend -gt 0) {
                 "Hausse"
             } elseif ($Trend -lt 0) {
@@ -201,7 +201,7 @@ function Get-Trends {
     }
 }
 
-# Fonction pour détecter les patterns saisonniers
+# Fonction pour dÃ©tecter les patterns saisonniers
 function Get-SeasonalPatterns {
     [CmdletBinding()]
     param (
@@ -219,12 +219,12 @@ function Get-SeasonalPatterns {
         [string]$Periodicity = "Daily"
     )
     
-    Write-Log -Message "Détection des patterns saisonniers ($Periodicity)" -Level "Info"
+    Write-Log -Message "DÃ©tection des patterns saisonniers ($Periodicity)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
@@ -233,7 +233,7 @@ function Get-SeasonalPatterns {
             $_.$TimeColumn = [DateTime]::Parse($_.$TimeColumn)
         }
         
-        # Grouper les données selon la périodicité
+        # Grouper les donnÃ©es selon la pÃ©riodicitÃ©
         switch ($Periodicity) {
             "Hourly" {
                 $GroupedData = $Data | Group-Object -Property { $_.$TimeColumn.Hour }
@@ -270,12 +270,12 @@ function Get-SeasonalPatterns {
         
         return $Results | Sort-Object -Property Period
     } catch {
-        Write-Log -Message "Erreur lors de la détection des patterns saisonniers: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des patterns saisonniers: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour détecter les cycles
+# Fonction pour dÃ©tecter les cycles
 function Get-Cycles {
     [CmdletBinding()]
     param (
@@ -292,19 +292,19 @@ function Get-Cycles {
         [int]$MaxLag = 10
     )
     
-    Write-Log -Message "Détection des cycles (MaxLag=$MaxLag)" -Level "Info"
+    Write-Log -Message "DÃ©tection des cycles (MaxLag=$MaxLag)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
         # Convertir les timestamps en objets DateTime et les valeurs en nombres
         $Values = $Data | ForEach-Object { [double]$_.$ValueColumn }
         
-        # Calculer l'autocorrélation pour différents lags
+        # Calculer l'autocorrÃ©lation pour diffÃ©rents lags
         $Results = @()
         
         for ($Lag = 1; $Lag -le $MaxLag; $Lag++) {
@@ -335,12 +335,12 @@ function Get-Cycles {
         
         return $Results
     } catch {
-        Write-Log -Message "Erreur lors de la détection des cycles: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la dÃ©tection des cycles: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour exporter les résultats
+# Fonction pour exporter les rÃ©sultats
 function Export-AnalysisResults {
     [CmdletBinding()]
     param (
@@ -354,22 +354,22 @@ function Export-AnalysisResults {
         [string]$Format = "CSV" # CSV, JSON
     )
     
-    Write-Log -Message "Exportation des résultats au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des rÃ©sultats au format $Format vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results) {
-            Write-Log -Message "Aucun résultat à exporter" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat Ã  exporter" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Exporter les résultats selon le format spécifié
+        # Exporter les rÃ©sultats selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
                 $Results | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
@@ -383,10 +383,10 @@ function Export-AnalysisResults {
             }
         }
         
-        Write-Log -Message "Exportation réussie vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des résultats: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des rÃ©sultats: $_" -Level "Error"
         return $false
     }
 }
@@ -402,13 +402,13 @@ function Start-TrendAnalysis {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Début de l'analyse des tendances et patterns" -Level "Info"
+    Write-Log -Message "DÃ©but de l'analyse des tendances et patterns" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $PerformanceDataPath = Join-Path -Path $DataPath -ChildPath "prepared_performance_data.csv"
     $PerformanceData = Import-PerformanceData -FilePath $PerformanceDataPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -419,7 +419,7 @@ function Start-TrendAnalysis {
         $TrendsOutputPath = Join-Path -Path $OutputPath -ChildPath "performance_trends.csv"
         Export-AnalysisResults -Results $Trends -OutputPath $TrendsOutputPath -Format "CSV"
         
-        # 3. Détecter les patterns saisonniers
+        # 3. DÃ©tecter les patterns saisonniers
         $HourlyPatterns = Get-SeasonalPatterns -Data $PerformanceData -TimeColumn "Timestamp" -ValueColumn "Value" -Periodicity "Hourly"
         $HourlyPatternsOutputPath = Join-Path -Path $OutputPath -ChildPath "hourly_patterns.csv"
         Export-AnalysisResults -Results $HourlyPatterns -OutputPath $HourlyPatternsOutputPath -Format "CSV"
@@ -428,15 +428,15 @@ function Start-TrendAnalysis {
         $DailyPatternsOutputPath = Join-Path -Path $OutputPath -ChildPath "daily_patterns.csv"
         Export-AnalysisResults -Results $DailyPatterns -OutputPath $DailyPatternsOutputPath -Format "CSV"
         
-        # 4. Détecter les cycles
+        # 4. DÃ©tecter les cycles
         $Cycles = Get-Cycles -Data $PerformanceData -TimeColumn "Timestamp" -ValueColumn "Value" -MaxLag 10
         $CyclesOutputPath = Join-Path -Path $OutputPath -ChildPath "performance_cycles.csv"
         Export-AnalysisResults -Results $Cycles -OutputPath $CyclesOutputPath -Format "CSV"
     } else {
-        Write-Log -Message "Aucune donnée de performance disponible pour l'analyse" -Level "Warning"
+        Write-Log -Message "Aucune donnÃ©e de performance disponible pour l'analyse" -Level "Warning"
     }
     
-    Write-Log -Message "Analyse des tendances et patterns terminée" -Level "Info"
+    Write-Log -Message "Analyse des tendances et patterns terminÃ©e" -Level "Info"
     
     return @{
         Success = $true
@@ -447,13 +447,13 @@ function Start-TrendAnalysis {
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-TrendAnalysis -DataPath $DataPath -OutputPath $OutputPath
 
 if ($Result.Success) {
-    Write-Log -Message "Analyse des tendances réussie" -Level "Info"
+    Write-Log -Message "Analyse des tendances rÃ©ussie" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec de l'analyse des tendances" -Level "Error"
+    Write-Log -Message "Ã‰chec de l'analyse des tendances" -Level "Error"
     return 1
 }

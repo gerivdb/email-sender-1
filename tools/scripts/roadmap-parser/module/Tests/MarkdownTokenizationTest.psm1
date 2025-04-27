@@ -1,9 +1,9 @@
-# Module temporaire pour les tests
+﻿# Module temporaire pour les tests
 $modulePath = (Split-Path -Parent $PSScriptRoot)
 $parsingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownParsingFunctions.ps1"
 $tokenizationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Parsing\MarkdownTokenizationFunctions.ps1"
 
-# Définir l'énumération MarkdownTokenType
+# DÃ©finir l'Ã©numÃ©ration MarkdownTokenType
 Add-Type -TypeDefinition @"
 public enum MarkdownTokenType {
     Header,
@@ -34,7 +34,7 @@ public enum MarkdownTokenType {
 }
 "@ -ErrorAction SilentlyContinue
 
-# Définir la classe MarkdownToken
+# DÃ©finir la classe MarkdownToken
 Add-Type -TypeDefinition @"
 using System;
 using System.Collections.Generic;
@@ -100,7 +100,7 @@ public class MarkdownToken {
 $parsingContent = Get-Content -Path $parsingFunctionsPath -Raw
 $tokenizationContent = Get-Content -Path $tokenizationFunctionsPath -Raw
 
-# Exécuter le contenu
+# ExÃ©cuter le contenu
 $parsingScriptBlock = [ScriptBlock]::Create($parsingContent)
 $tokenizationScriptBlock = [ScriptBlock]::Create($tokenizationContent)
 . $parsingScriptBlock

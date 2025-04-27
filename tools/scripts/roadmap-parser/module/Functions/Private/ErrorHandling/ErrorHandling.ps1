@@ -1,62 +1,62 @@
-<#
+﻿<#
 .SYNOPSIS
-    Gère les erreurs et les exceptions dans le module RoadmapParser.
+    GÃ¨re les erreurs et les exceptions dans le module RoadmapParser.
 
 .DESCRIPTION
-    Ce fichier contient des fonctions pour gérer les erreurs et les exceptions dans le module RoadmapParser.
-    Il inclut des fonctions pour journaliser les erreurs, les catégoriser, déterminer leur sévérité,
-    et implémenter des stratégies de nouvelle tentative.
+    Ce fichier contient des fonctions pour gÃ©rer les erreurs et les exceptions dans le module RoadmapParser.
+    Il inclut des fonctions pour journaliser les erreurs, les catÃ©goriser, dÃ©terminer leur sÃ©vÃ©ritÃ©,
+    et implÃ©menter des stratÃ©gies de nouvelle tentative.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-15
+    Date de crÃ©ation: 2023-07-15
 #>
 
 <#
 .SYNOPSIS
-    Gère une erreur en la journalisant et en effectuant des actions appropriées.
+    GÃ¨re une erreur en la journalisant et en effectuant des actions appropriÃ©es.
 
 .DESCRIPTION
     Cette fonction prend un enregistrement d'erreur, le journalise et effectue des actions
-    en fonction des paramètres spécifiés.
+    en fonction des paramÃ¨tres spÃ©cifiÃ©s.
 
 .PARAMETER ErrorRecord
-    L'enregistrement d'erreur à gérer.
+    L'enregistrement d'erreur Ã  gÃ©rer.
 
 .PARAMETER ErrorMessage
-    Un message d'erreur personnalisé à journaliser.
+    Un message d'erreur personnalisÃ© Ã  journaliser.
 
 .PARAMETER Context
-    Informations contextuelles supplémentaires sur l'erreur.
+    Informations contextuelles supplÃ©mentaires sur l'erreur.
 
 .PARAMETER LogFile
-    Le chemin du fichier de journal où enregistrer l'erreur.
+    Le chemin du fichier de journal oÃ¹ enregistrer l'erreur.
 
 .PARAMETER Category
-    La catégorie de l'erreur (par exemple, "IO", "Parsing", etc.).
+    La catÃ©gorie de l'erreur (par exemple, "IO", "Parsing", etc.).
 
 .PARAMETER Severity
-    La sévérité de l'erreur (1-5, où 5 est la plus sévère).
+    La sÃ©vÃ©ritÃ© de l'erreur (1-5, oÃ¹ 5 est la plus sÃ©vÃ¨re).
 
 .PARAMETER ExitCode
-    Le code de sortie à utiliser si ExitOnError est vrai.
+    Le code de sortie Ã  utiliser si ExitOnError est vrai.
 
 .PARAMETER ExitOnError
-    Indique si le script doit se terminer après avoir géré l'erreur.
+    Indique si le script doit se terminer aprÃ¨s avoir gÃ©rÃ© l'erreur.
 
 .PARAMETER ThrowException
-    Indique si l'exception doit être relancée après avoir été journalisée.
+    Indique si l'exception doit Ãªtre relancÃ©e aprÃ¨s avoir Ã©tÃ© journalisÃ©e.
 
 .EXAMPLE
     try {
-        # Code qui peut générer une erreur
+        # Code qui peut gÃ©nÃ©rer une erreur
     } catch {
-        Handle-Error -ErrorRecord $_ -ErrorMessage "Erreur lors du traitement du fichier" -Context "Traitement de données" -LogFile ".\logs\app.log"
+        Handle-Error -ErrorRecord $_ -ErrorMessage "Erreur lors du traitement du fichier" -Context "Traitement de donnÃ©es" -LogFile ".\logs\app.log"
     }
 
 .NOTES
-    Cette fonction est conçue pour standardiser la gestion des erreurs dans le module.
+    Cette fonction est conÃ§ue pour standardiser la gestion des erreurs dans le module.
 #>
 function Handle-Error {
     [CmdletBinding()]
@@ -93,12 +93,12 @@ function Handle-Error {
     # Enrichir l'erreur avec des informations contextuelles
     $exceptionInfo = Get-ExceptionInfo -Exception $ErrorRecord.Exception -Context $Context -IncludeStackTrace $true
 
-    # Déterminer la catégorie de l'erreur si non spécifiée
+    # DÃ©terminer la catÃ©gorie de l'erreur si non spÃ©cifiÃ©e
     if ($Category -eq "General") {
         $Category = Get-ExceptionCategory -Exception $ErrorRecord.Exception
     }
 
-    # Déterminer la sévérité de l'erreur si non spécifiée
+    # DÃ©terminer la sÃ©vÃ©ritÃ© de l'erreur si non spÃ©cifiÃ©e
     if ($Severity -eq 3) {
         $Severity = Get-ExceptionSeverity -Exception $ErrorRecord.Exception -Category $Category
     }
@@ -108,8 +108,8 @@ function Handle-Error {
 $ErrorMessage
 Type: $($exceptionInfo.Type)
 Message: $($exceptionInfo.Message)
-Catégorie: $Category
-Sévérité: $Severity
+CatÃ©gorie: $Category
+SÃ©vÃ©ritÃ©: $Severity
 "@
 
     # Ajouter des informations contextuelles si disponibles
@@ -123,14 +123,14 @@ Sévérité: $Severity
     # Journaliser l'erreur
     Write-LogError -Message $fullErrorMessage
 
-    # Journaliser dans un fichier si spécifié
+    # Journaliser dans un fichier si spÃ©cifiÃ©
     if ($LogFile) {
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $logEntry = "[$timestamp] ERROR: $fullErrorMessage`n"
         Add-Content -Path $LogFile -Value $logEntry -Encoding UTF8
     }
 
-    # Gérer l'erreur selon les paramètres
+    # GÃ©rer l'erreur selon les paramÃ¨tres
     if ($ThrowException) {
         throw $ErrorRecord
     }
@@ -142,41 +142,41 @@ Sévérité: $Severity
 
 <#
 .SYNOPSIS
-    Exécute une action avec des tentatives en cas d'échec.
+    ExÃ©cute une action avec des tentatives en cas d'Ã©chec.
 
 .DESCRIPTION
-    Cette fonction exécute un bloc de script et réessaie en cas d'échec,
-    selon une stratégie de nouvelle tentative spécifiée.
+    Cette fonction exÃ©cute un bloc de script et rÃ©essaie en cas d'Ã©chec,
+    selon une stratÃ©gie de nouvelle tentative spÃ©cifiÃ©e.
 
 .PARAMETER ScriptBlock
-    Le bloc de script à exécuter.
+    Le bloc de script Ã  exÃ©cuter.
 
 .PARAMETER MaxRetries
     Le nombre maximum de nouvelles tentatives.
 
 .PARAMETER RetryDelaySeconds
-    Le délai en secondes entre les tentatives.
+    Le dÃ©lai en secondes entre les tentatives.
 
 .PARAMETER RetryStrategy
-    La stratégie de nouvelle tentative à utiliser (Fixed, Exponential, ExponentialWithJitter).
+    La stratÃ©gie de nouvelle tentative Ã  utiliser (Fixed, Exponential, ExponentialWithJitter).
 
 .PARAMETER ExceptionTypes
-    Les types d'exceptions pour lesquels réessayer.
+    Les types d'exceptions pour lesquels rÃ©essayer.
 
 .PARAMETER OnRetry
-    Un bloc de script à exécuter avant chaque nouvelle tentative.
+    Un bloc de script Ã  exÃ©cuter avant chaque nouvelle tentative.
 
 .PARAMETER OnSuccess
-    Un bloc de script à exécuter en cas de succès.
+    Un bloc de script Ã  exÃ©cuter en cas de succÃ¨s.
 
 .PARAMETER OnFailure
-    Un bloc de script à exécuter en cas d'échec final.
+    Un bloc de script Ã  exÃ©cuter en cas d'Ã©chec final.
 
 .EXAMPLE
     $result = Invoke-WithRetry -ScriptBlock { Invoke-RestMethod -Uri $url } -MaxRetries 5 -RetryStrategy "ExponentialWithJitter"
 
 .NOTES
-    Cette fonction est utile pour les opérations qui peuvent échouer temporairement, comme les appels réseau.
+    Cette fonction est utile pour les opÃ©rations qui peuvent Ã©chouer temporairement, comme les appels rÃ©seau.
 #>
 function Invoke-WithRetry {
     [CmdletBinding()]
@@ -217,7 +217,7 @@ function Invoke-WithRetry {
             $result = & $ScriptBlock
             $success = $true
 
-            # Exécuter le script de succès si fourni
+            # ExÃ©cuter le script de succÃ¨s si fourni
             if ($OnSuccess -ne $null) {
                 & $OnSuccess -Result $result
             }
@@ -228,7 +228,7 @@ function Invoke-WithRetry {
             $lastException = $_
             $shouldRetry = $false
 
-            # Vérifier si l'exception est d'un type pour lequel on doit réessayer
+            # VÃ©rifier si l'exception est d'un type pour lequel on doit rÃ©essayer
             foreach ($exceptionType in $ExceptionTypes) {
                 if ($_.Exception -is $exceptionType) {
                     $shouldRetry = $true
@@ -237,7 +237,7 @@ function Invoke-WithRetry {
             }
 
             if (-not $shouldRetry -or $retryCount -ge $MaxRetries) {
-                # Exécuter le script d'échec si fourni
+                # ExÃ©cuter le script d'Ã©chec si fourni
                 if ($OnFailure -ne $null) {
                     & $OnFailure -Exception $lastException -RetryCount $retryCount
                 }
@@ -246,7 +246,7 @@ function Invoke-WithRetry {
 
             $retryCount++
 
-            # Calculer le délai selon la stratégie choisie
+            # Calculer le dÃ©lai selon la stratÃ©gie choisie
             $delay = switch ($RetryStrategy) {
                 "Fixed" { $RetryDelaySeconds }
                 "Exponential" { [math]::Pow(2, $retryCount - 1) * $RetryDelaySeconds }
@@ -257,12 +257,12 @@ function Invoke-WithRetry {
                 }
             }
 
-            # Exécuter le script de nouvelle tentative si fourni
+            # ExÃ©cuter le script de nouvelle tentative si fourni
             if ($OnRetry -ne $null) {
                 & $OnRetry -Exception $lastException -RetryCount $retryCount -Delay $delay
             }
 
-            Write-LogWarning -Message "Tentative $retryCount/$MaxRetries a échoué. Nouvelle tentative dans $delay secondes..."
+            Write-LogWarning -Message "Tentative $retryCount/$MaxRetries a Ã©chouÃ©. Nouvelle tentative dans $delay secondes..."
             Start-Sleep -Seconds $delay
         }
     } while ($retryCount -le $MaxRetries)
@@ -275,19 +275,19 @@ function Invoke-WithRetry {
     Capture et enrichit les informations d'une exception.
 
 .DESCRIPTION
-    Cette fonction capture les détails d'une exception et les enrichit avec des informations contextuelles.
+    Cette fonction capture les dÃ©tails d'une exception et les enrichit avec des informations contextuelles.
 
 .PARAMETER Exception
-    L'exception à analyser.
+    L'exception Ã  analyser.
 
 .PARAMETER Context
-    Informations contextuelles supplémentaires.
+    Informations contextuelles supplÃ©mentaires.
 
 .PARAMETER IncludeStackTrace
-    Indique si la pile d'appels doit être incluse.
+    Indique si la pile d'appels doit Ãªtre incluse.
 
 .PARAMETER IncludeInnerExceptions
-    Indique si les exceptions internes doivent être incluses.
+    Indique si les exceptions internes doivent Ãªtre incluses.
 
 .EXAMPLE
     $exceptionInfo = Get-ExceptionInfo -Exception $_.Exception -IncludeStackTrace $true
@@ -319,17 +319,17 @@ function Get-ExceptionInfo {
         Data = @{}
     }
 
-    # Ajouter les données de l'exception
+    # Ajouter les donnÃ©es de l'exception
     foreach ($key in $Exception.Data.Keys) {
         $exceptionInfo.Data[$key] = $Exception.Data[$key]
     }
 
-    # Ajouter la pile d'appels si demandé
+    # Ajouter la pile d'appels si demandÃ©
     if ($IncludeStackTrace) {
         $exceptionInfo.StackTrace = if ($Exception.StackTrace) { $Exception.StackTrace } else { "No stack trace available" }
     }
 
-    # Ajouter les exceptions internes si demandé
+    # Ajouter les exceptions internes si demandÃ©
     if ($IncludeInnerExceptions -and $Exception.InnerException) {
         $innerExceptions = @()
         $currentException = $Exception.InnerException
@@ -363,22 +363,22 @@ function Get-ExceptionInfo {
 
 <#
 .SYNOPSIS
-    Catégorise une exception en fonction de son type et de son message.
+    CatÃ©gorise une exception en fonction de son type et de son message.
 
 .DESCRIPTION
-    Cette fonction analyse une exception et la classe dans une catégorie prédéfinie.
+    Cette fonction analyse une exception et la classe dans une catÃ©gorie prÃ©dÃ©finie.
 
 .PARAMETER Exception
-    L'exception à catégoriser.
+    L'exception Ã  catÃ©goriser.
 
 .PARAMETER DefaultCategory
-    La catégorie par défaut si aucune correspondance n'est trouvée.
+    La catÃ©gorie par dÃ©faut si aucune correspondance n'est trouvÃ©e.
 
 .EXAMPLE
     $category = Get-ExceptionCategory -Exception $_.Exception
 
 .NOTES
-    Cette fonction aide à standardiser la catégorisation des erreurs pour une meilleure analyse.
+    Cette fonction aide Ã  standardiser la catÃ©gorisation des erreurs pour une meilleure analyse.
 #>
 function Get-ExceptionCategory {
     [CmdletBinding()]
@@ -391,7 +391,7 @@ function Get-ExceptionCategory {
         [string]$DefaultCategory = "Unknown"
     )
 
-    # Définir les mappages de types d'exceptions vers des catégories
+    # DÃ©finir les mappages de types d'exceptions vers des catÃ©gories
     $typeMappings = @{
         [System.ArgumentException] = "Syntax"
         [System.ArgumentNullException] = "Syntax"
@@ -409,7 +409,7 @@ function Get-ExceptionCategory {
         [System.Net.WebException] = "External"
     }
 
-    # Définir les mappages de mots-clés dans les messages d'erreur vers des catégories
+    # DÃ©finir les mappages de mots-clÃ©s dans les messages d'erreur vers des catÃ©gories
     $messageMappings = @{
         "permission denied" = "Permission"
         "access is denied" = "Permission"
@@ -430,14 +430,14 @@ function Get-ExceptionCategory {
         "sql" = "Data"
     }
 
-    # Vérifier d'abord le type d'exception
+    # VÃ©rifier d'abord le type d'exception
     foreach ($type in $typeMappings.Keys) {
         if ($Exception -is $type) {
             return $typeMappings[$type]
         }
     }
 
-    # Ensuite, vérifier le message d'erreur
+    # Ensuite, vÃ©rifier le message d'erreur
     $message = $Exception.Message.ToLower()
     foreach ($keyword in $messageMappings.Keys) {
         if ($message -match $keyword) {
@@ -445,31 +445,31 @@ function Get-ExceptionCategory {
         }
     }
 
-    # Si aucune correspondance n'est trouvée, retourner la catégorie par défaut
+    # Si aucune correspondance n'est trouvÃ©e, retourner la catÃ©gorie par dÃ©faut
     return $DefaultCategory
 }
 
 <#
 .SYNOPSIS
-    Détermine la sévérité d'une exception en fonction de son type et de son impact.
+    DÃ©termine la sÃ©vÃ©ritÃ© d'une exception en fonction de son type et de son impact.
 
 .DESCRIPTION
-    Cette fonction analyse une exception et détermine sa sévérité sur une échelle de 1 à 5.
+    Cette fonction analyse une exception et dÃ©termine sa sÃ©vÃ©ritÃ© sur une Ã©chelle de 1 Ã  5.
 
 .PARAMETER Exception
-    L'exception à évaluer.
+    L'exception Ã  Ã©valuer.
 
 .PARAMETER Category
-    La catégorie de l'exception.
+    La catÃ©gorie de l'exception.
 
 .PARAMETER DefaultSeverity
-    La sévérité par défaut si aucune correspondance n'est trouvée.
+    La sÃ©vÃ©ritÃ© par dÃ©faut si aucune correspondance n'est trouvÃ©e.
 
 .EXAMPLE
     $severity = Get-ExceptionSeverity -Exception $_.Exception -Category "Permission"
 
 .NOTES
-    Cette fonction aide à prioriser les erreurs en fonction de leur impact.
+    Cette fonction aide Ã  prioriser les erreurs en fonction de leur impact.
 #>
 function Get-ExceptionSeverity {
     [CmdletBinding()]
@@ -486,19 +486,19 @@ function Get-ExceptionSeverity {
         [int]$DefaultSeverity = 3
     )
 
-    # Définir les sévérités par catégorie (1 = faible, 5 = critique)
+    # DÃ©finir les sÃ©vÃ©ritÃ©s par catÃ©gorie (1 = faible, 5 = critique)
     $categorySeverities = @{
-        "Syntax" = 2        # Erreurs de syntaxe, généralement faciles à corriger
-        "Runtime" = 3       # Erreurs d'exécution, peuvent indiquer des bugs
-        "Configuration" = 3 # Erreurs de configuration, généralement corrigeables
-        "Permission" = 5    # Erreurs de permission, peuvent bloquer des fonctionnalités
-        "Resource" = 4      # Erreurs de ressources, peuvent indiquer des problèmes système
-        "Data" = 4          # Erreurs de données, peuvent indiquer une corruption
-        "External" = 3      # Erreurs externes, dépendent de services tiers
-        "Unknown" = 3       # Erreurs inconnues, sévérité moyenne par défaut
+        "Syntax" = 2        # Erreurs de syntaxe, gÃ©nÃ©ralement faciles Ã  corriger
+        "Runtime" = 3       # Erreurs d'exÃ©cution, peuvent indiquer des bugs
+        "Configuration" = 3 # Erreurs de configuration, gÃ©nÃ©ralement corrigeables
+        "Permission" = 5    # Erreurs de permission, peuvent bloquer des fonctionnalitÃ©s
+        "Resource" = 4      # Erreurs de ressources, peuvent indiquer des problÃ¨mes systÃ¨me
+        "Data" = 4          # Erreurs de donnÃ©es, peuvent indiquer une corruption
+        "External" = 3      # Erreurs externes, dÃ©pendent de services tiers
+        "Unknown" = 3       # Erreurs inconnues, sÃ©vÃ©ritÃ© moyenne par dÃ©faut
     }
 
-    # Définir les sévérités par type d'exception
+    # DÃ©finir les sÃ©vÃ©ritÃ©s par type d'exception
     $typeSeverities = @{
         "System.OutOfMemoryException" = 5
         "System.StackOverflowException" = 5
@@ -509,7 +509,7 @@ function Get-ExceptionSeverity {
         "System.FormatException" = 2
     }
 
-    # Définir les sévérités par mots-clés dans les messages
+    # DÃ©finir les sÃ©vÃ©ritÃ©s par mots-clÃ©s dans les messages
     $messageSeverities = @{
         "critical" = 5
         "fatal" = 5
@@ -526,7 +526,7 @@ function Get-ExceptionSeverity {
         "note" = 1
     }
 
-    # Vérifier d'abord le type d'exception
+    # VÃ©rifier d'abord le type d'exception
     foreach ($type in $typeSeverities.Keys) {
         try {
             $typeObj = [type]$type
@@ -539,7 +539,7 @@ function Get-ExceptionSeverity {
         }
     }
 
-    # Ensuite, vérifier le message d'erreur
+    # Ensuite, vÃ©rifier le message d'erreur
     $message = $Exception.Message.ToLower()
     foreach ($keyword in $messageSeverities.Keys) {
         if ($message -match $keyword) {
@@ -547,11 +547,11 @@ function Get-ExceptionSeverity {
         }
     }
 
-    # Si aucune correspondance par type ou message, utiliser la catégorie
+    # Si aucune correspondance par type ou message, utiliser la catÃ©gorie
     if ($categorySeverities.ContainsKey($Category)) {
         return $categorySeverities[$Category]
     }
 
-    # Si tout échoue, retourner la sévérité par défaut
+    # Si tout Ã©choue, retourner la sÃ©vÃ©ritÃ© par dÃ©faut
     return $DefaultSeverity
 }

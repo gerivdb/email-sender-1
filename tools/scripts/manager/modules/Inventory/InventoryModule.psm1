@@ -1,6 +1,6 @@
-# Module d'inventaire pour le Script Manager
-# Ce module permet de scanner récursivement les répertoires pour trouver tous les scripts
-# et extraire leurs métadonnées
+﻿# Module d'inventaire pour le Script Manager
+# Ce module permet de scanner rÃ©cursivement les rÃ©pertoires pour trouver tous les scripts
+# et extraire leurs mÃ©tadonnÃ©es
 # Author: Script Manager
 # Version: 2.0
 # Tags: inventory, scripts, manager
@@ -8,18 +8,18 @@
 function Invoke-ScriptInventory {
     <#
     .SYNOPSIS
-        Effectue un inventaire des scripts dans un répertoire.
+        Effectue un inventaire des scripts dans un rÃ©pertoire.
     .DESCRIPTION
-        Scanne récursivement un répertoire pour trouver tous les scripts
-        et extraire leurs métadonnées.
+        Scanne rÃ©cursivement un rÃ©pertoire pour trouver tous les scripts
+        et extraire leurs mÃ©tadonnÃ©es.
     .PARAMETER Path
-        Chemin du répertoire à scanner.
+        Chemin du rÃ©pertoire Ã  scanner.
     .PARAMETER OutputPath
         Chemin du fichier de sortie pour le rapport d'inventaire.
     .PARAMETER Extensions
-        Liste des extensions de fichiers à rechercher.
+        Liste des extensions de fichiers Ã  rechercher.
     .PARAMETER Verbose
-        Affiche des informations détaillées pendant l'exécution.
+        Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
     .EXAMPLE
         Invoke-ScriptInventory -Path "scripts" -OutputPath "inventory.json"
         Effectue un inventaire des scripts dans le dossier "scripts" et enregistre le rapport dans "inventory.json".
@@ -31,17 +31,17 @@ function Invoke-ScriptInventory {
         [switch]$Verbose
     )
     
-    Write-Host "Démarrage de l'inventaire des scripts dans: $Path" -ForegroundColor Cyan
+    Write-Host "DÃ©marrage de l'inventaire des scripts dans: $Path" -ForegroundColor Cyan
     
-    # Récupérer tous les fichiers avec les extensions spécifiées
+    # RÃ©cupÃ©rer tous les fichiers avec les extensions spÃ©cifiÃ©es
     $AllFiles = @()
     foreach ($Extension in $Extensions) {
         $AllFiles += Get-ChildItem -Path $Path -Filter $Extension -Recurse -File
     }
     
-    Write-Host "Nombre de scripts trouvés: $($AllFiles.Count)" -ForegroundColor Cyan
+    Write-Host "Nombre de scripts trouvÃ©s: $($AllFiles.Count)" -ForegroundColor Cyan
     
-    # Créer un tableau pour stocker les informations sur les scripts
+    # CrÃ©er un tableau pour stocker les informations sur les scripts
     $ScriptsInfo = @()
     
     # Traiter chaque fichier
@@ -50,7 +50,7 @@ function Invoke-ScriptInventory {
             Write-Host "Traitement du fichier: $($File.FullName)" -ForegroundColor Cyan
         }
         
-        # Déterminer le type de script en fonction de l'extension
+        # DÃ©terminer le type de script en fonction de l'extension
         $ScriptType = switch ($File.Extension) {
             ".ps1" { "PowerShell" }
             ".psm1" { "PowerShell" }
@@ -62,10 +62,10 @@ function Invoke-ScriptInventory {
             default { "Unknown" }
         }
         
-        # Extraire les métadonnées du script
+        # Extraire les mÃ©tadonnÃ©es du script
         $Metadata = Get-ScriptMetadata -FilePath $File.FullName -ScriptType $ScriptType
         
-        # Créer un objet avec les informations du script
+        # CrÃ©er un objet avec les informations du script
         $ScriptInfo = [PSCustomObject]@{
             Path = $File.FullName
             Name = $File.Name
@@ -82,7 +82,7 @@ function Invoke-ScriptInventory {
         $ScriptsInfo += $ScriptInfo
     }
     
-    # Créer un objet avec les informations de l'inventaire
+    # CrÃ©er un objet avec les informations de l'inventaire
     $Inventory = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $ScriptsInfo.Count
@@ -98,7 +98,7 @@ function Invoke-ScriptInventory {
     # Convertir l'objet en JSON et l'enregistrer dans un fichier
     $Inventory | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    Write-Host "Inventaire terminé. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
+    Write-Host "Inventaire terminÃ©. RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
     
     return $Inventory
 }
@@ -106,17 +106,17 @@ function Invoke-ScriptInventory {
 function Get-ScriptMetadata {
     <#
     .SYNOPSIS
-        Extrait les métadonnées d'un script.
+        Extrait les mÃ©tadonnÃ©es d'un script.
     .DESCRIPTION
-        Analyse le contenu d'un script pour extraire ses métadonnées
-        (auteur, description, version, tags, dépendances).
+        Analyse le contenu d'un script pour extraire ses mÃ©tadonnÃ©es
+        (auteur, description, version, tags, dÃ©pendances).
     .PARAMETER FilePath
-        Chemin du fichier à analyser.
+        Chemin du fichier Ã  analyser.
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell).
     .EXAMPLE
         Get-ScriptMetadata -FilePath "script.ps1" -ScriptType "PowerShell"
-        Extrait les métadonnées du script PowerShell "script.ps1".
+        Extrait les mÃ©tadonnÃ©es du script PowerShell "script.ps1".
     #>
     param (
         [string]$FilePath,
@@ -136,7 +136,7 @@ function Get-ScriptMetadata {
         }
     }
     
-    # Initialiser l'objet de métadonnées
+    # Initialiser l'objet de mÃ©tadonnÃ©es
     $Metadata = @{
         Author = ""
         Description = ""
@@ -145,7 +145,7 @@ function Get-ScriptMetadata {
         Dependencies = @()
     }
     
-    # Extraire les métadonnées en fonction du type de script
+    # Extraire les mÃ©tadonnÃ©es en fonction du type de script
     switch ($ScriptType) {
         "PowerShell" {
             # Extraire l'auteur (commentaire avec Author ou par)
@@ -153,7 +153,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (première ligne de commentaire ou bloc de commentaires)
+            # Extraire la description (premiÃ¨re ligne de commentaire ou bloc de commentaires)
             if ($Content -match '<#[\s\S]*?\.DESCRIPTION\s*([\s\S]*?)(\r?\n\s*\.[A-Za-z]|\r?\n\s*#>)') {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -166,13 +166,13 @@ function Get-ScriptMetadata {
                 $Metadata.Version = $matches[1].Trim()
             }
             
-            # Extraire les tags (commentaires avec Tags ou Mots-clés)
-            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$|^#\s*Mots-clés\s*:\s*(.+?)$') {
+            # Extraire les tags (commentaires avec Tags ou Mots-clÃ©s)
+            if ($Content -match '(?m)^#\s*Tags\s*:\s*(.+?)$|^#\s*Mots-clÃ©s\s*:\s*(.+?)$') {
                 $TagsString = if ($matches[1]) { $matches[1] } else { $matches[2] }
                 $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
             }
             
-            # Extraire les dépendances (Import-Module, . source, etc.)
+            # Extraire les dÃ©pendances (Import-Module, . source, etc.)
             $ImportMatches = [regex]::Matches($Content, '(?m)^Import-Module\s+(.+?)($|\s)|^\.\s+(.+?)($|\s)')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[3].Value }
@@ -185,7 +185,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (docstring ou première ligne de commentaire)
+            # Extraire la description (docstring ou premiÃ¨re ligne de commentaire)
             if ($Content -match '"""(.+?)"""' -or $Content -match "'''(.+?)'''") {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -204,7 +204,7 @@ function Get-ScriptMetadata {
                 $Metadata.Tags = $TagsString -split ',' | ForEach-Object { $_.Trim() }
             }
             
-            # Extraire les dépendances (import, from ... import)
+            # Extraire les dÃ©pendances (import, from ... import)
             $ImportMatches = [regex]::Matches($Content, '(?m)^import\s+(.+?)$|^from\s+(.+?)\s+import')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }
@@ -217,7 +217,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = ($matches[1] -or $matches[2] -or $matches[3] -or $matches[4]).Trim()
             }
             
-            # Extraire la description (première ligne de commentaire)
+            # Extraire la description (premiÃ¨re ligne de commentaire)
             if ($Content -match '(?m)^rem\s*(.+?)$|^::\s*(.+?)$') {
                 $Metadata.Description = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
@@ -233,7 +233,7 @@ function Get-ScriptMetadata {
                 $Metadata.Author = if ($matches[1]) { $matches[1].Trim() } else { $matches[2].Trim() }
             }
             
-            # Extraire la description (première ligne de commentaire)
+            # Extraire la description (premiÃ¨re ligne de commentaire)
             if ($Content -match '(?m)^#\s*(.+?)$') {
                 $Metadata.Description = $matches[1].Trim()
             }
@@ -243,7 +243,7 @@ function Get-ScriptMetadata {
                 $Metadata.Version = $matches[1].Trim()
             }
             
-            # Extraire les dépendances (source, ., etc.)
+            # Extraire les dÃ©pendances (source, ., etc.)
             $ImportMatches = [regex]::Matches($Content, '(?m)^source\s+(.+?)$|^\.\s+(.+?)$')
             foreach ($Match in $ImportMatches) {
                 $Dependency = if ($Match.Groups[1].Value) { $Match.Groups[1].Value } else { $Match.Groups[2].Value }

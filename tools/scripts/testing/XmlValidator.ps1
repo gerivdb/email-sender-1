@@ -1,9 +1,9 @@
-# Module de validation XML
-# Ce script implémente les fonctionnalités pour valider les fichiers XML
+﻿# Module de validation XML
+# Ce script implÃ©mente les fonctionnalitÃ©s pour valider les fichiers XML
 
 # Configuration
 $XmlValidatorConfig = @{
-    # Paramètres par défaut pour la validation XML
+    # ParamÃ¨tres par dÃ©faut pour la validation XML
     DefaultValidationSettings = @{
         CheckWellFormedness = $true
         ValidateAgainstSchema = $false
@@ -16,7 +16,7 @@ $XmlValidatorConfig = @{
     }
 }
 
-# Classe pour représenter une erreur de validation XML
+# Classe pour reprÃ©senter une erreur de validation XML
 class XmlValidationError {
     [string]$Message
     [string]$Type
@@ -33,11 +33,11 @@ class XmlValidationError {
     }
     
     [string] ToString() {
-        return "$($this.Type) à la ligne $($this.LineNumber), position $($this.LinePosition): $($this.Message)"
+        return "$($this.Type) Ã  la ligne $($this.LineNumber), position $($this.LinePosition): $($this.Message)"
     }
 }
 
-# Classe pour représenter le résultat d'une validation XML
+# Classe pour reprÃ©senter le rÃ©sultat d'une validation XML
 class XmlValidationResult {
     [bool]$IsValid
     [System.Collections.ArrayList]$Errors
@@ -56,7 +56,7 @@ class XmlValidationResult {
     }
     
     [string] ToString() {
-        $result = "Validation XML: " + $(if ($this.IsValid) { "Réussie" } else { "Échouée" })
+        $result = "Validation XML: " + $(if ($this.IsValid) { "RÃ©ussie" } else { "Ã‰chouÃ©e" })
         $result += "`nVersion XML: $($this.XmlVersion)"
         $result += "`nEncodage: $($this.Encoding)"
         $result += "`nAutonome: $($this.Standalone)"
@@ -67,7 +67,7 @@ class XmlValidationResult {
     }
 }
 
-# Fonction pour valider une chaîne XML
+# Fonction pour valider une chaÃ®ne XML
 function Test-XmlContent {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -78,7 +78,7 @@ function Test-XmlContent {
     )
     
     process {
-        # Utiliser les paramètres fournis ou les valeurs par défaut
+        # Utiliser les paramÃ¨tres fournis ou les valeurs par dÃ©faut
         $config = if ($Settings) { 
             $mergedSettings = $XmlValidatorConfig.DefaultValidationSettings.Clone()
             foreach ($key in $Settings.Keys) {
@@ -89,14 +89,14 @@ function Test-XmlContent {
             $XmlValidatorConfig.DefaultValidationSettings.Clone() 
         }
         
-        # Créer un résultat de validation
+        # CrÃ©er un rÃ©sultat de validation
         $result = [XmlValidationResult]::new()
         
-        # Créer un gestionnaire d'événements de validation
+        # CrÃ©er un gestionnaire d'Ã©vÃ©nements de validation
         $validationEventHandler = {
             param($sender, $e)
             
-            # Créer une erreur de validation
+            # CrÃ©er une erreur de validation
             $error = [XmlValidationError]::new(
                 $e.Message,
                 $(if ($e.Severity -eq [System.Xml.Schema.XmlSeverityType]::Error) { "Erreur" } else { "Avertissement" }),
@@ -105,7 +105,7 @@ function Test-XmlContent {
                 $e.Exception.SourceUri
             )
             
-            # Ajouter l'erreur au résultat
+            # Ajouter l'erreur au rÃ©sultat
             if ($e.Severity -eq [System.Xml.Schema.XmlSeverityType]::Error) {
                 [void]$result.Errors.Add($error)
                 $result.IsValid = $false
@@ -117,11 +117,11 @@ function Test-XmlContent {
             }
         }
         
-        # Créer un lecteur XML
+        # CrÃ©er un lecteur XML
         $stringReader = New-Object System.IO.StringReader($XmlContent)
         
         try {
-            # Créer les paramètres du lecteur XML
+            # CrÃ©er les paramÃ¨tres du lecteur XML
             $xmlReaderSettings = New-Object System.Xml.XmlReaderSettings
             $xmlReaderSettings.IgnoreComments = $config.IgnoreComments
             $xmlReaderSettings.IgnoreProcessingInstructions = $config.IgnoreProcessingInstructions
@@ -132,7 +132,7 @@ function Test-XmlContent {
                 $xmlReaderSettings.ValidationType = [System.Xml.ValidationType]::Schema
                 $xmlReaderSettings.ValidationFlags = [System.Xml.Schema.XmlSchemaValidationFlags]::ReportValidationWarnings
                 
-                # Charger le schéma
+                # Charger le schÃ©ma
                 $schemaSet = New-Object System.Xml.Schema.XmlSchemaSet
                 $schemaSet.Add($null, $config.SchemaPath) | Out-Null
                 $xmlReaderSettings.Schemas = $schemaSet
@@ -142,22 +142,22 @@ function Test-XmlContent {
                 $xmlReaderSettings.DtdProcessing = [System.Xml.DtdProcessing]::Parse
             }
             
-            # Ajouter le gestionnaire d'événements de validation
+            # Ajouter le gestionnaire d'Ã©vÃ©nements de validation
             $xmlReaderSettings.ValidationEventHandler = $validationEventHandler
             
-            # Créer le lecteur XML
+            # CrÃ©er le lecteur XML
             $xmlReader = [System.Xml.XmlReader]::Create($stringReader, $xmlReaderSettings)
             
             # Lire le document XML
             while ($xmlReader.Read()) {
-                # Extraire les informations de la déclaration XML
+                # Extraire les informations de la dÃ©claration XML
                 if ($xmlReader.NodeType -eq [System.Xml.XmlNodeType]::XmlDeclaration) {
                     $result.XmlVersion = $xmlReader.GetAttribute("version")
                     $result.Encoding = $xmlReader.GetAttribute("encoding")
                     $result.Standalone = $xmlReader.GetAttribute("standalone") -eq "yes"
                 }
                 
-                # Arrêter la lecture si le nombre maximal d'erreurs est atteint
+                # ArrÃªter la lecture si le nombre maximal d'erreurs est atteint
                 if ($config.MaxErrors -gt 0 -and $result.Errors.Count -ge $config.MaxErrors) {
                     break
                 }
@@ -167,7 +167,7 @@ function Test-XmlContent {
             $xmlReader.Close()
         }
         catch {
-            # Ajouter l'erreur au résultat
+            # Ajouter l'erreur au rÃ©sultat
             $error = [XmlValidationError]::new(
                 $_.Exception.Message,
                 "Erreur",
@@ -180,7 +180,7 @@ function Test-XmlContent {
             $result.IsValid = $false
         }
         finally {
-            # Fermer le lecteur de chaîne
+            # Fermer le lecteur de chaÃ®ne
             $stringReader.Close()
         }
         
@@ -198,7 +198,7 @@ function Test-XmlFile {
         [hashtable]$Settings
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $XmlPath)) {
         throw "Le fichier XML n'existe pas: $XmlPath"
     }
@@ -221,7 +221,7 @@ function Test-XmlFile {
     return $result
 }
 
-# Fonction pour générer un rapport de validation XML
+# Fonction pour gÃ©nÃ©rer un rapport de validation XML
 function Get-XmlValidationReport {
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -233,7 +233,7 @@ function Get-XmlValidationReport {
     
     process {
         if ($AsHtml) {
-            # Générer un rapport HTML
+            # GÃ©nÃ©rer un rapport HTML
             $html = @"
 <!DOCTYPE html>
 <html>
@@ -256,8 +256,8 @@ function Get-XmlValidationReport {
 <body>
     <h1>Rapport de validation XML</h1>
     
-    <h2>Résumé</h2>
-    <p>Validation: <span class="$($ValidationResult.IsValid ? "success" : "error")">$($ValidationResult.IsValid ? "Réussie" : "Échouée")</span></p>
+    <h2>RÃ©sumÃ©</h2>
+    <p>Validation: <span class="$($ValidationResult.IsValid ? "success" : "error")">$($ValidationResult.IsValid ? "RÃ©ussie" : "Ã‰chouÃ©e")</span></p>
     <p>Version XML: $($ValidationResult.XmlVersion)</p>
     <p>Encodage: $($ValidationResult.Encoding)</p>
     <p>Autonome: $($ValidationResult.Standalone)</p>
@@ -330,13 +330,13 @@ function Get-XmlValidationReport {
             return $html
         }
         else {
-            # Générer un rapport texte
+            # GÃ©nÃ©rer un rapport texte
             $report = "Rapport de validation XML`n"
             $report += "========================`n`n"
             
-            $report += "Résumé`n"
+            $report += "RÃ©sumÃ©`n"
             $report += "------`n"
-            $report += "Validation: $($ValidationResult.IsValid ? "Réussie" : "Échouée")`n"
+            $report += "Validation: $($ValidationResult.IsValid ? "RÃ©ussie" : "Ã‰chouÃ©e")`n"
             $report += "Version XML: $($ValidationResult.XmlVersion)`n"
             $report += "Encodage: $($ValidationResult.Encoding)`n"
             $report += "Autonome: $($ValidationResult.Standalone)`n"
@@ -376,7 +376,7 @@ function Get-XmlValidationReport {
     }
 }
 
-# Fonction pour valider un fichier XML et générer un rapport
+# Fonction pour valider un fichier XML et gÃ©nÃ©rer un rapport
 function Test-XmlFileWithReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -395,19 +395,19 @@ function Test-XmlFileWithReport {
     # Valider le fichier XML
     $result = Test-XmlFile -XmlPath $XmlPath -Settings $Settings
     
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $report = Get-XmlValidationReport -ValidationResult $result -AsHtml:$AsHtml
     
-    # Enregistrer le rapport si un chemin de sortie est spécifié
+    # Enregistrer le rapport si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
-        # Créer le répertoire de destination si nécessaire
+        # CrÃ©er le rÃ©pertoire de destination si nÃ©cessaire
         $outputDir = Split-Path -Path $OutputPath -Parent
         
         if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Déterminer l'encodage en fonction du format
+        # DÃ©terminer l'encodage en fonction du format
         $encoding = if ($AsHtml) { "UTF8" } else { "ASCII" }
         
         # Enregistrer le rapport
@@ -425,7 +425,7 @@ function Test-XmlFileWithReport {
     }
 }
 
-# Fonction pour valider un fichier XML par rapport à un schéma XSD
+# Fonction pour valider un fichier XML par rapport Ã  un schÃ©ma XSD
 function Test-XmlFileAgainstSchema {
     param (
         [Parameter(Mandatory = $true)]
@@ -438,16 +438,16 @@ function Test-XmlFileAgainstSchema {
         [hashtable]$Settings
     )
     
-    # Vérifier si les fichiers existent
+    # VÃ©rifier si les fichiers existent
     if (-not (Test-Path -Path $XmlPath)) {
         throw "Le fichier XML n'existe pas: $XmlPath"
     }
     
     if (-not (Test-Path -Path $SchemaPath)) {
-        throw "Le fichier de schéma n'existe pas: $SchemaPath"
+        throw "Le fichier de schÃ©ma n'existe pas: $SchemaPath"
     }
     
-    # Créer les paramètres de validation
+    # CrÃ©er les paramÃ¨tres de validation
     $validationSettings = if ($Settings) { 
         $mergedSettings = $XmlValidatorConfig.DefaultValidationSettings.Clone()
         foreach ($key in $Settings.Keys) {
@@ -458,7 +458,7 @@ function Test-XmlFileAgainstSchema {
         $XmlValidatorConfig.DefaultValidationSettings.Clone() 
     }
     
-    # Configurer la validation par rapport au schéma
+    # Configurer la validation par rapport au schÃ©ma
     $validationSettings.ValidateAgainstSchema = $true
     $validationSettings.SchemaPath = $SchemaPath
     
@@ -466,7 +466,7 @@ function Test-XmlFileAgainstSchema {
     return Test-XmlFile -XmlPath $XmlPath -Settings $validationSettings
 }
 
-# Fonction pour générer un schéma XSD à partir d'un fichier XML
+# Fonction pour gÃ©nÃ©rer un schÃ©ma XSD Ã  partir d'un fichier XML
 function New-XsdSchemaFromXml {
     param (
         [Parameter(Mandatory = $true)]
@@ -476,12 +476,12 @@ function New-XsdSchemaFromXml {
         [string]$SchemaPath
     )
     
-    # Vérifier si le fichier XML existe
+    # VÃ©rifier si le fichier XML existe
     if (-not (Test-Path -Path $XmlPath)) {
         throw "Le fichier XML n'existe pas: $XmlPath"
     }
     
-    # Créer le répertoire de destination si nécessaire
+    # CrÃ©er le rÃ©pertoire de destination si nÃ©cessaire
     $schemaDir = Split-Path -Path $SchemaPath -Parent
     
     if (-not [string]::IsNullOrEmpty($schemaDir) -and -not (Test-Path -Path $schemaDir)) {
@@ -493,32 +493,32 @@ function New-XsdSchemaFromXml {
         $xmlDoc = New-Object System.Xml.XmlDocument
         $xmlDoc.Load($XmlPath)
         
-        # Créer l'inférence de schéma
+        # CrÃ©er l'infÃ©rence de schÃ©ma
         $inference = New-Object System.Xml.Schema.XmlSchemaInference
         $inference.Occurrence = [System.Xml.Schema.XmlSchemaInference+InferenceOption]::Relaxed
         $inference.TypeInference = [System.Xml.Schema.XmlSchemaInference+InferenceOption]::Relaxed
         
-        # Créer un lecteur XML
+        # CrÃ©er un lecteur XML
         $xmlReader = [System.Xml.XmlReader]::Create($XmlPath)
         
-        # Inférer le schéma
+        # InfÃ©rer le schÃ©ma
         $schemas = $inference.InferSchema($xmlReader)
         
         # Fermer le lecteur
         $xmlReader.Close()
         
-        # Créer un ensemble de schémas
+        # CrÃ©er un ensemble de schÃ©mas
         $schemaSet = New-Object System.Xml.Schema.XmlSchemaSet
         
-        # Ajouter les schémas inférés
+        # Ajouter les schÃ©mas infÃ©rÃ©s
         foreach ($schema in $schemas) {
             $schemaSet.Add($schema) | Out-Null
         }
         
-        # Compiler les schémas
+        # Compiler les schÃ©mas
         $schemaSet.Compile()
         
-        # Créer un écrivain XML
+        # CrÃ©er un Ã©crivain XML
         $writerSettings = New-Object System.Xml.XmlWriterSettings
         $writerSettings.Indent = $true
         $writerSettings.IndentChars = "  "
@@ -526,18 +526,18 @@ function New-XsdSchemaFromXml {
         
         $writer = [System.Xml.XmlWriter]::Create($SchemaPath, $writerSettings)
         
-        # Écrire le schéma
+        # Ã‰crire le schÃ©ma
         foreach ($schema in $schemaSet.Schemas()) {
             $schema.Write($writer)
         }
         
-        # Fermer l'écrivain
+        # Fermer l'Ã©crivain
         $writer.Close()
         
         return $SchemaPath
     }
     catch {
-        throw "Erreur lors de la génération du schéma XSD: $_"
+        throw "Erreur lors de la gÃ©nÃ©ration du schÃ©ma XSD: $_"
     }
 }
 

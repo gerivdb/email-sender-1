@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-DataType.Tests.ps1
 #
 # Tests unitaires pour la fonction Test-DataType
 #
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-DataType.ps1"
@@ -12,7 +12,7 @@ $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Valida
 
 Describe "Test-DataType" {
     Context "Validation de type String" {
-        It "Devrait retourner True pour une chaîne de caractères" {
+        It "Devrait retourner True pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "String" | Should -Be $true
         }
 
@@ -26,27 +26,27 @@ Describe "Test-DataType" {
             Test-DataType -Value 42 -Type "Integer" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Integer" | Should -Be $false
         }
     }
 
     Context "Validation de type Decimal" {
-        It "Devrait retourner True pour un nombre décimal" {
+        It "Devrait retourner True pour un nombre dÃ©cimal" {
             Test-DataType -Value 3.14 -Type "Decimal" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Decimal" | Should -Be $false
         }
     }
 
     Context "Validation de type Boolean" {
-        It "Devrait retourner True pour un booléen" {
+        It "Devrait retourner True pour un boolÃ©en" {
             Test-DataType -Value $true -Type "Boolean" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Boolean" | Should -Be $false
         }
     }
@@ -56,7 +56,7 @@ Describe "Test-DataType" {
             Test-DataType -Value (Get-Date) -Type "DateTime" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "DateTime" | Should -Be $false
         }
     }
@@ -66,7 +66,7 @@ Describe "Test-DataType" {
             Test-DataType -Value @(1, 2, 3) -Type "Array" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Array" | Should -Be $false
         }
     }
@@ -76,7 +76,7 @@ Describe "Test-DataType" {
             Test-DataType -Value @{ Key = "Value" } -Type "Hashtable" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Hashtable" | Should -Be $false
         }
     }
@@ -86,7 +86,7 @@ Describe "Test-DataType" {
             Test-DataType -Value ([PSCustomObject]@{ Property = "Value" }) -Type "PSObject" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "PSObject" | Should -Be $false
         }
     }
@@ -96,7 +96,7 @@ Describe "Test-DataType" {
             Test-DataType -Value { Write-Host "Test" } -Type "ScriptBlock" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "ScriptBlock" | Should -Be $false
         }
     }
@@ -106,7 +106,7 @@ Describe "Test-DataType" {
             Test-DataType -Value $null -Type "Null" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne de caractères" {
+        It "Devrait retourner False pour une chaÃ®ne de caractÃ¨res" {
             Test-DataType -Value "Hello" -Type "Null" | Should -Be $false
         }
     }
@@ -122,7 +122,7 @@ Describe "Test-DataType" {
     }
 
     Context "Validation de type Empty" {
-        It "Devrait retourner True pour une chaîne vide" {
+        It "Devrait retourner True pour une chaÃ®ne vide" {
             Test-DataType -Value "" -Type "Empty" | Should -Be $true
         }
 
@@ -134,13 +134,13 @@ Describe "Test-DataType" {
             Test-DataType -Value @{} -Type "Empty" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne non vide" {
+        It "Devrait retourner False pour une chaÃ®ne non vide" {
             Test-DataType -Value "Hello" -Type "Empty" | Should -Be $false
         }
     }
 
     Context "Validation de type NotEmpty" {
-        It "Devrait retourner True pour une chaîne non vide" {
+        It "Devrait retourner True pour une chaÃ®ne non vide" {
             Test-DataType -Value "Hello" -Type "NotEmpty" | Should -Be $true
         }
 
@@ -152,24 +152,24 @@ Describe "Test-DataType" {
             Test-DataType -Value @{ Key = "Value" } -Type "NotEmpty" | Should -Be $true
         }
 
-        It "Devrait retourner False pour une chaîne vide" {
+        It "Devrait retourner False pour une chaÃ®ne vide" {
             Test-DataType -Value "" -Type "NotEmpty" | Should -Be $false
         }
     }
 
     Context "Validation avec ThrowOnFailure" {
-        It "Devrait lever une exception en cas d'échec avec ThrowOnFailure" {
+        It "Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure" {
             { Test-DataType -Value "Hello" -Type "Integer" -ThrowOnFailure } | Should -Throw
         }
 
-        It "Ne devrait pas lever d'exception en cas de succès avec ThrowOnFailure" {
+        It "Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure" {
             { Test-DataType -Value 42 -Type "Integer" -ThrowOnFailure } | Should -Not -Throw
         }
     }
 
-    Context "Validation avec message d'erreur personnalisé" {
-        It "Devrait utiliser le message d'erreur personnalisé en cas d'échec" {
-            $customErrorMessage = "Message d'erreur personnalisé"
+    Context "Validation avec message d'erreur personnalisÃ©" {
+        It "Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec" {
+            $customErrorMessage = "Message d'erreur personnalisÃ©"
             $exceptionMessage = $null
 
             try {

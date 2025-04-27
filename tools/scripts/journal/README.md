@@ -1,6 +1,6 @@
-# journal
+﻿# journal
 
-Système de journal
+SystÃ¨me de journal
 
 ## Sous-dossiers
 
@@ -10,11 +10,11 @@ Analyse des journaux
 
 ### integrations
 
-Intégrations avec d'autres systèmes
+IntÃ©grations avec d'autres systÃ¨mes
 
 ### rag
 
-Fonctionnalités RAG
+FonctionnalitÃ©s RAG
 
 ### web
 

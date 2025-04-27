@@ -1,4 +1,4 @@
-# Fonction pour exporter une visualisation MERMAID des cycles de dependances
+﻿# Fonction pour exporter une visualisation MERMAID des cycles de dependances
 function Export-CycleVisualizationMERMAID {
     [CmdletBinding()]
     param (

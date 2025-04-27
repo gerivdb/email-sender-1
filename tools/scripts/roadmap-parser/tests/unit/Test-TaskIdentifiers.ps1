@@ -1,12 +1,12 @@
-# Test-TaskIdentifiers.ps1
-# Script pour tester l'analyse des identifiants de tâches dans un fichier markdown de roadmap
+﻿# Test-TaskIdentifiers.ps1
+# Script pour tester l'analyse des identifiants de tÃ¢ches dans un fichier markdown de roadmap
 
 param (
     [Parameter(Mandatory = $false)]
     [string]$RoadmapFilePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\Roadmap\roadmap_complete_converted.md"
 )
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $RoadmapFilePath)) {
     Write-Error "Le fichier '$RoadmapFilePath' n'existe pas."
     exit 1
@@ -15,7 +15,7 @@ if (-not (Test-Path -Path $RoadmapFilePath)) {
 # Lire le contenu du fichier
 $content = Get-Content -Path $RoadmapFilePath -Encoding UTF8 -Raw
 
-# Fonction pour analyser les identifiants de tâches
+# Fonction pour analyser les identifiants de tÃ¢ches
 function Get-TaskIdentifiers {
     [CmdletBinding()]
     param (
@@ -28,13 +28,13 @@ function Get-TaskIdentifiers {
         Examples = @()
     }
 
-    # Détecter les identifiants de tâches
+    # DÃ©tecter les identifiants de tÃ¢ches
     $taskIdPatterns = @(
-        # Format numérique (1.2.3)
+        # Format numÃ©rique (1.2.3)
         '(?m)^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)+)(?:\*\*)?\s',
-        # Format alphanumérique (A.1.2)
+        # Format alphanumÃ©rique (A.1.2)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Za-z]+(\.\d+)+)(?:\*\*)?\s',
-        # Format avec préfixe (TASK-123)
+        # Format avec prÃ©fixe (TASK-123)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Z]+-\d+)(?:\*\*)?\s'
     )
 
@@ -52,21 +52,21 @@ function Get-TaskIdentifiers {
     return $taskIdentifiers
 }
 
-# Analyser les identifiants de tâches
-Write-Host "Analyse des identifiants de tâches dans: $RoadmapFilePath" -ForegroundColor Cyan
+# Analyser les identifiants de tÃ¢ches
+Write-Host "Analyse des identifiants de tÃ¢ches dans: $RoadmapFilePath" -ForegroundColor Cyan
 $taskIdentifiers = Get-TaskIdentifiers -Content $content
 
-# Afficher les résultats
-Write-Host "`nIdentifiants de tâches détectés:" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "`nIdentifiants de tÃ¢ches dÃ©tectÃ©s:" -ForegroundColor Green
 
 if ($null -eq $taskIdentifiers.Pattern) {
-    Write-Host "  Aucun format d'identifiant de tâche spécifique détecté."
+    Write-Host "  Aucun format d'identifiant de tÃ¢che spÃ©cifique dÃ©tectÃ©."
 } else {
-    Write-Host "  Format détecté: $($taskIdentifiers.Pattern)"
+    Write-Host "  Format dÃ©tectÃ©: $($taskIdentifiers.Pattern)"
     Write-Host "  Exemples:"
     foreach ($example in $taskIdentifiers.Examples) {
         Write-Host "    - $example"
     }
 }
 
-Write-Host "`nAnalyse terminée." -ForegroundColor Cyan
+Write-Host "`nAnalyse terminÃ©e." -ForegroundColor Cyan

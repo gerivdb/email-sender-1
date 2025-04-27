@@ -1,46 +1,46 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste les alertes de performance en simulant des dépassements de seuil.
+    Teste les alertes de performance en simulant des dÃ©passements de seuil.
 
 .DESCRIPTION
     La fonction Test-RoadmapPerformanceAlert permet de tester les alertes de performance
-    configurées avec Set-RoadmapPerformanceAlert en simulant des dépassements de seuil.
-    Elle peut tester une alerte spécifique ou toutes les alertes configurées.
+    configurÃ©es avec Set-RoadmapPerformanceAlert en simulant des dÃ©passements de seuil.
+    Elle peut tester une alerte spÃ©cifique ou toutes les alertes configurÃ©es.
 
 .PARAMETER Type
     Le type de mesure de performance. Les valeurs possibles sont : ExecutionTime, MemoryUsage, Operations.
-    Si non spécifié, toutes les alertes sont testées.
+    Si non spÃ©cifiÃ©, toutes les alertes sont testÃ©es.
 
 .PARAMETER Name
     Le nom de la mesure de performance pour laquelle tester les alertes.
-    Si non spécifié, toutes les alertes du type spécifié sont testées.
+    Si non spÃ©cifiÃ©, toutes les alertes du type spÃ©cifiÃ© sont testÃ©es.
 
 .PARAMETER SimulatedValue
-    La valeur simulée à utiliser pour le test. Si non spécifiée, une valeur supérieure au seuil est générée automatiquement.
+    La valeur simulÃ©e Ã  utiliser pour le test. Si non spÃ©cifiÃ©e, une valeur supÃ©rieure au seuil est gÃ©nÃ©rÃ©e automatiquement.
 
 .PARAMETER ExecuteActions
-    Indique si les actions configurées doivent être exécutées lors du test.
-    Par défaut : $false.
+    Indique si les actions configurÃ©es doivent Ãªtre exÃ©cutÃ©es lors du test.
+    Par dÃ©faut : $false.
 
 .EXAMPLE
     Test-RoadmapPerformanceAlert
-    Teste toutes les alertes de performance configurées.
+    Teste toutes les alertes de performance configurÃ©es.
 
 .EXAMPLE
     Test-RoadmapPerformanceAlert -Type ExecutionTime -Name "ParseRoadmap"
-    Teste l'alerte de performance pour la mesure de temps d'exécution "ParseRoadmap".
+    Teste l'alerte de performance pour la mesure de temps d'exÃ©cution "ParseRoadmap".
 
 .EXAMPLE
     Test-RoadmapPerformanceAlert -Type MemoryUsage -Name "LoadRoadmap" -SimulatedValue 2GB -ExecuteActions $true
-    Teste l'alerte de performance pour la mesure d'utilisation de mémoire "LoadRoadmap" avec une valeur simulée de 2 Go et exécute les actions configurées.
+    Teste l'alerte de performance pour la mesure d'utilisation de mÃ©moire "LoadRoadmap" avec une valeur simulÃ©e de 2 Go et exÃ©cute les actions configurÃ©es.
 
 .OUTPUTS
-    [PSCustomObject[]] Retourne un tableau d'objets représentant les résultats des tests d'alerte.
+    [PSCustomObject[]] Retourne un tableau d'objets reprÃ©sentant les rÃ©sultats des tests d'alerte.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-24
+    Date de crÃ©ation: 2023-07-24
 #>
 function Test-RoadmapPerformanceAlert {
     [CmdletBinding()]
@@ -67,19 +67,19 @@ function Test-RoadmapPerformanceAlert {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Obtenir les alertes à tester
+    # Obtenir les alertes Ã  tester
     $alertsToTest = Get-RoadmapPerformanceAlert -Type $Type -Name $Name -IncludeDisabled $false
 
     if (-not $alertsToTest -or $alertsToTest.Count -eq 0) {
-        Write-Log -Message "Aucune alerte trouvée à tester." -Level "Warning" -Source "PerformanceAlert"
+        Write-Log -Message "Aucune alerte trouvÃ©e Ã  tester." -Level "Warning" -Source "PerformanceAlert"
         return @()
     }
 
@@ -87,10 +87,10 @@ function Test-RoadmapPerformanceAlert {
 
     # Tester chaque alerte
     foreach ($alert in $alertsToTest) {
-        # Générer une valeur simulée si non spécifiée
+        # GÃ©nÃ©rer une valeur simulÃ©e si non spÃ©cifiÃ©e
         $valueToTest = if ($SimulatedValue) { $SimulatedValue } else { $alert.Threshold * 1.5 }
 
-        # Créer l'objet d'alerte
+        # CrÃ©er l'objet d'alerte
         $alertObject = [PSCustomObject]@{
             Type = $alert.Type
             Name = $alert.Name
@@ -101,20 +101,20 @@ function Test-RoadmapPerformanceAlert {
         }
 
         # Journaliser le test
-        $logMessage = "Test d'alerte pour $($alert.Type) '$($alert.Name)' : Valeur=$valueToTest, Seuil=$($alert.Threshold), Déclenché=$($alertObject.Triggered)"
+        $logMessage = "Test d'alerte pour $($alert.Type) '$($alert.Name)' : Valeur=$valueToTest, Seuil=$($alert.Threshold), DÃ©clenchÃ©=$($alertObject.Triggered)"
         Write-Log -Message $logMessage -Level "Info" -Source "PerformanceAlert"
 
-        # Exécuter l'action si configurée et demandée
+        # ExÃ©cuter l'action si configurÃ©e et demandÃ©e
         if ($alertObject.Triggered -and $ExecuteActions -and $alert.Action) {
             try {
-                Write-Log -Message "Exécution de l'action pour l'alerte $($alert.Type) '$($alert.Name)'." -Level "Info" -Source "PerformanceAlert"
+                Write-Log -Message "ExÃ©cution de l'action pour l'alerte $($alert.Type) '$($alert.Name)'." -Level "Info" -Source "PerformanceAlert"
                 & $alert.Action $alertObject
             } catch {
-                Write-Log -Message "Erreur lors de l'exécution de l'action pour l'alerte $($alert.Type) '$($alert.Name)' : $_" -Level "Error" -Source "PerformanceAlert"
+                Write-Log -Message "Erreur lors de l'exÃ©cution de l'action pour l'alerte $($alert.Type) '$($alert.Name)' : $_" -Level "Error" -Source "PerformanceAlert"
             }
         }
 
-        # Ajouter le résultat du test
+        # Ajouter le rÃ©sultat du test
         $testResults += [PSCustomObject]@{
             Type = $alert.Type
             Name = $alert.Name

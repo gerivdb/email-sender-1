@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Met à jour la progression globale de la section 1.1.2 dans la roadmap
+    Met Ã  jour la progression globale de la section 1.1.2 dans la roadmap
 .DESCRIPTION
-    Ce script calcule et met à jour la progression globale de la section 1.1.2
-    (Système de gestion centralisée des scripts) dans la roadmap en fonction
+    Ce script calcule et met Ã  jour la progression globale de la section 1.1.2
+    (SystÃ¨me de gestion centralisÃ©e des scripts) dans la roadmap en fonction
     des progressions des sous-sections.
 .PARAMETER RoadmapPath
-    Chemin du fichier roadmap à mettre à jour
+    Chemin du fichier roadmap Ã  mettre Ã  jour
 .EXAMPLE
     .\Update-RoadmapGlobalProgress.ps1 -RoadmapPath "Roadmap\roadmap_updated.md"
 .NOTES
@@ -20,7 +20,7 @@ param(
     [string]$RoadmapPath = "Roadmap\roadmap_updated.md"
 )
 
-# Vérifier que le fichier roadmap existe
+# VÃ©rifier que le fichier roadmap existe
 if (-not (Test-Path -Path $RoadmapPath -PathType Leaf)) {
     Write-Error "Le fichier roadmap n'existe pas: $RoadmapPath"
     exit 1
@@ -38,17 +38,17 @@ $subsections = [regex]::Matches($content, '### 1\.1\.2\.[1-5].*?\*\*Progression\
 foreach ($match in $subsections) {
     $progression = [int]$match.Groups[1].Value
     $progressions += $progression
-    Write-Host "Progression trouvée: $progression%" -ForegroundColor Yellow
+    Write-Host "Progression trouvÃ©e: $progression%" -ForegroundColor Yellow
 }
 
-# Ajouter manuellement les progressions connues si aucune n'a été trouvée
+# Ajouter manuellement les progressions connues si aucune n'a Ã©tÃ© trouvÃ©e
 if ($progressions.Count -eq 0) {
-    Write-Host "Aucune progression trouvée automatiquement, ajout manuel des valeurs connues" -ForegroundColor Yellow
-    # Section 1.1.2.1 - Terminée (100%)
+    Write-Host "Aucune progression trouvÃ©e automatiquement, ajout manuel des valeurs connues" -ForegroundColor Yellow
+    # Section 1.1.2.1 - TerminÃ©e (100%)
     $progressions += 100
-    # Section 1.1.2.5 - Terminée (100%)
+    # Section 1.1.2.5 - TerminÃ©e (100%)
     $progressions += 100
-    # Sections 1.1.2.2, 1.1.2.3, 1.1.2.4 - Non commencées (0%)
+    # Sections 1.1.2.2, 1.1.2.3, 1.1.2.4 - Non commencÃ©es (0%)
     $progressions += 0
     $progressions += 0
     $progressions += 0
@@ -60,16 +60,16 @@ if ($progressions.Count -gt 0) {
     $globalProgress = [Math]::Round(($progressions | Measure-Object -Average).Average)
 }
 
-# Déterminer le statut en fonction de la progression
-$status = "À commencer"
+# DÃ©terminer le statut en fonction de la progression
+$status = "Ã€ commencer"
 if ($globalProgress -eq 100) {
-    $status = "Terminé"
+    $status = "TerminÃ©"
 } elseif ($globalProgress -gt 0) {
     $status = "En cours"
 }
 
-# Mettre à jour la progression globale dans la roadmap
-$pattern = '(### 1\.1\.2 Système de gestion centralisée des scripts\s+\*\*Complexité\*\*:.*\s+\*\*Temps estimé\*\*:.*\s+\*\*Progression\*\*:) \d+% - \*.*\*'
+# Mettre Ã  jour la progression globale dans la roadmap
+$pattern = '(### 1\.1\.2 SystÃ¨me de gestion centralisÃ©e des scripts\s+\*\*ComplexitÃ©\*\*:.*\s+\*\*Temps estimÃ©\*\*:.*\s+\*\*Progression\*\*:) \d+% - \*.*\*'
 $replacement = "`$1 $globalProgress% - *$status*"
 
 $updatedContent = $content -replace $pattern, $replacement
@@ -77,14 +77,14 @@ $updatedContent = $content -replace $pattern, $replacement
 # Sauvegarder une copie de sauvegarde du fichier roadmap original
 $backupPath = "$RoadmapPath.bak"
 Copy-Item -Path $RoadmapPath -Destination $backupPath -Force
-Write-Host "Copie de sauvegarde créée: $backupPath" -ForegroundColor Green
+Write-Host "Copie de sauvegarde crÃ©Ã©e: $backupPath" -ForegroundColor Green
 
-# Écrire le contenu mis à jour dans le fichier roadmap
+# Ã‰crire le contenu mis Ã  jour dans le fichier roadmap
 Set-Content -Path $RoadmapPath -Value $updatedContent -Encoding UTF8
-Write-Host "Roadmap mise à jour avec succès: $RoadmapPath" -ForegroundColor Green
+Write-Host "Roadmap mise Ã  jour avec succÃ¨s: $RoadmapPath" -ForegroundColor Green
 
-# Afficher un résumé des modifications
-Write-Host "`nRésumé des modifications:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ© des modifications
+Write-Host "`nRÃ©sumÃ© des modifications:" -ForegroundColor Cyan
 Write-Host "- Progression globale de la section 1.1.2: $globalProgress%" -ForegroundColor White
 Write-Host "- Statut: $status" -ForegroundColor White
 Write-Host "- Progressions des sous-sections:" -ForegroundColor White

@@ -1,28 +1,28 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration simplifiés pour le système de cache d'analyse des pull requests.
+    Tests d'intÃ©gration simplifiÃ©s pour le systÃ¨me de cache d'analyse des pull requests.
 .DESCRIPTION
-    Ce fichier contient des tests d'intégration simplifiés pour le système de cache d'analyse
-    des pull requests, vérifiant les fonctionnalités de base du cache.
+    Ce fichier contient des tests d'intÃ©gration simplifiÃ©s pour le systÃ¨me de cache d'analyse
+    des pull requests, vÃ©rifiant les fonctionnalitÃ©s de base du cache.
 .NOTES
     Author: Augment Agent
     Version: 1.0
     Requires: Pester v5.0+, PRAnalysisCache.psm1
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\PRAnalysisCache.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Module PRAnalysisCache.psm1 non trouvé à l'emplacement: $modulePath"
+    throw "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $modulePath"
 }
 
 # Importer le module
@@ -32,44 +32,44 @@ Import-Module $modulePath -Force
 $script:testCachePath = Join-Path -Path $env:TEMP -ChildPath "PRCacheIntegration"
 Write-Host "Chemin du cache de test: $script:testCachePath"
 
-# Créer des données de test
+# CrÃ©er des donnÃ©es de test
 BeforeAll {
-    # Créer le répertoire de cache de test
+    # CrÃ©er le rÃ©pertoire de cache de test
     if (-not (Test-Path -Path $script:testCachePath)) {
         New-Item -Path $script:testCachePath -ItemType Directory -Force | Out-Null
     } else {
-        # Nettoyer le répertoire
+        # Nettoyer le rÃ©pertoire
         Get-ChildItem -Path $script:testCachePath -File | Remove-Item -Force
     }
 }
 
 Describe "PRCache Integration Tests" {
     Context "Basic Workflow" {
-        It "Exécute un flux de travail de base avec le cache" {
-            # Créer un cache
+        It "ExÃ©cute un flux de travail de base avec le cache" {
+            # CrÃ©er un cache
             $cache = New-PRAnalysisCache -MaxMemoryItems 100
             $cache | Should -Not -BeNullOrEmpty
             $cache.DiskCachePath = $script:testCachePath
 
-            # Ajouter des éléments au cache
+            # Ajouter des Ã©lÃ©ments au cache
             $cache.SetItem("TestKey1", "TestValue1", (New-TimeSpan -Hours 1))
             $cache.SetItem("TestKey2", @{ "Name" = "Test Object"; "Value" = 42 }, (New-TimeSpan -Hours 1))
             $cache.SetItem("TestKey3", @(1, 2, 3, 4, 5), (New-TimeSpan -Hours 1))
 
-            # Vérifier que les éléments ont été ajoutés
+            # VÃ©rifier que les Ã©lÃ©ments ont Ã©tÃ© ajoutÃ©s
             $cache.GetItem("TestKey1") | Should -Be "TestValue1"
             $cache.GetItem("TestKey2").Name | Should -Be "Test Object"
             $cache.GetItem("TestKey3")[2] | Should -Be 3
 
-            # Vérifier que les fichiers de cache ont été créés
+            # VÃ©rifier que les fichiers de cache ont Ã©tÃ© crÃ©Ã©s
             $cacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
             $cacheFiles.Count | Should -Be 3
 
-            # Supprimer un élément du cache
+            # Supprimer un Ã©lÃ©ment du cache
             $cache.RemoveItem("TestKey1")
             $cache.GetItem("TestKey1") | Should -BeNullOrEmpty
 
-            # Vérifier que le fichier de cache a été supprimé
+            # VÃ©rifier que le fichier de cache a Ã©tÃ© supprimÃ©
             $cacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
             $cacheFiles.Count | Should -Be 2
 
@@ -78,53 +78,53 @@ Describe "PRCache Integration Tests" {
             $cache.GetItem("TestKey2") | Should -BeNullOrEmpty
             $cache.GetItem("TestKey3") | Should -BeNullOrEmpty
 
-            # Vérifier que tous les fichiers de cache ont été supprimés
+            # VÃ©rifier que tous les fichiers de cache ont Ã©tÃ© supprimÃ©s
             $cacheFiles = Get-ChildItem -Path $script:testCachePath -Filter "*.xml"
             $cacheFiles.Count | Should -Be 0
         }
     }
 
     Context "Cache Expiration" {
-        It "Gère correctement l'expiration des éléments du cache" {
-            # Créer un cache
+        It "GÃ¨re correctement l'expiration des Ã©lÃ©ments du cache" {
+            # CrÃ©er un cache
             $cache = New-PRAnalysisCache -MaxMemoryItems 100
             $cache | Should -Not -BeNullOrEmpty
             $cache.DiskCachePath = $script:testCachePath
 
-            # Ajouter un élément avec une durée de vie courte
+            # Ajouter un Ã©lÃ©ment avec une durÃ©e de vie courte
             $cache.SetItem("ExpiringKey", "ExpiringValue", (New-TimeSpan -Seconds 1))
 
-            # Vérifier que l'élément existe initialement
+            # VÃ©rifier que l'Ã©lÃ©ment existe initialement
             $cache.GetItem("ExpiringKey") | Should -Be "ExpiringValue"
 
             # Attendre l'expiration
             Start-Sleep -Seconds 2
 
-            # Vérifier que l'élément a expiré
+            # VÃ©rifier que l'Ã©lÃ©ment a expirÃ©
             $cache.GetItem("ExpiringKey") | Should -BeNullOrEmpty
         }
     }
 
     Context "Memory Cache Cleanup" {
-        It "Nettoie le cache en mémoire lorsque la limite est atteinte" {
-            # Créer un cache avec une limite de 5 éléments
+        It "Nettoie le cache en mÃ©moire lorsque la limite est atteinte" {
+            # CrÃ©er un cache avec une limite de 5 Ã©lÃ©ments
             $cache = New-PRAnalysisCache -MaxMemoryItems 5
             $cache | Should -Not -BeNullOrEmpty
             $cache.DiskCachePath = $script:testCachePath
 
-            # Ajouter plus d'éléments que la limite
+            # Ajouter plus d'Ã©lÃ©ments que la limite
             for ($i = 1; $i -le 10; $i++) {
                 $cache.SetItem("Key$i", "Value$i", (New-TimeSpan -Hours 1))
             }
 
-            # Vérifier que le cache en mémoire contient au maximum 5 éléments
+            # VÃ©rifier que le cache en mÃ©moire contient au maximum 5 Ã©lÃ©ments
             $cache.MemoryCache.Count | Should -BeLessOrEqual 5
 
-            # Vérifier que les éléments les plus récents sont toujours en mémoire
+            # VÃ©rifier que les Ã©lÃ©ments les plus rÃ©cents sont toujours en mÃ©moire
             $cache.MemoryCache.ContainsKey($cache.NormalizeKey("Key10")) | Should -Be $true
             $cache.MemoryCache.ContainsKey($cache.NormalizeKey("Key9")) | Should -Be $true
 
-            # Vérifier que tous les éléments sont accessibles (même ceux qui ne sont plus en mémoire)
+            # VÃ©rifier que tous les Ã©lÃ©ments sont accessibles (mÃªme ceux qui ne sont plus en mÃ©moire)
             for ($i = 1; $i -le 10; $i++) {
                 $cache.GetItem("Key$i") | Should -Be "Value$i"
             }
@@ -132,26 +132,26 @@ Describe "PRCache Integration Tests" {
     }
 
     Context "Error Handling" {
-        It "Gère correctement les erreurs de lecture du cache" {
-            # Créer un cache
+        It "GÃ¨re correctement les erreurs de lecture du cache" {
+            # CrÃ©er un cache
             $cache = New-PRAnalysisCache -MaxMemoryItems 100
             $cache | Should -Not -BeNullOrEmpty
             $cache.DiskCachePath = $script:testCachePath
 
-            # Ajouter un élément au cache
+            # Ajouter un Ã©lÃ©ment au cache
             $cache.SetItem("TestKey", "TestValue", (New-TimeSpan -Hours 1))
 
             # Corrompre le fichier de cache
             $cacheFile = Join-Path -Path $script:testCachePath -ChildPath "$($cache.NormalizeKey("TestKey")).xml"
             Set-Content -Path $cacheFile -Value "Invalid XML Content"
 
-            # Vider le cache en mémoire
+            # Vider le cache en mÃ©moire
             $cache.MemoryCache.Clear()
 
-            # Vérifier que la lecture du cache corrompu ne provoque pas d'erreur
+            # VÃ©rifier que la lecture du cache corrompu ne provoque pas d'erreur
             { $cache.GetItem("TestKey") } | Should -Not -Throw
 
-            # Vérifier que la valeur retournée est null
+            # VÃ©rifier que la valeur retournÃ©e est null
             $cache.GetItem("TestKey") | Should -BeNullOrEmpty
         }
     }

@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exemples de débogage pour les scénarios courants d'accès refusé.
+    Exemples de dÃ©bogage pour les scÃ©narios courants d'accÃ¨s refusÃ©.
 .DESCRIPTION
-    Ce script fournit des exemples concrets pour déboguer différents scénarios
-    d'accès refusé, notamment pour les fichiers système protégés, les clés de registre,
-    les problèmes d'accès réseau et les bases de données.
+    Ce script fournit des exemples concrets pour dÃ©boguer diffÃ©rents scÃ©narios
+    d'accÃ¨s refusÃ©, notamment pour les fichiers systÃ¨me protÃ©gÃ©s, les clÃ©s de registre,
+    les problÃ¨mes d'accÃ¨s rÃ©seau et les bases de donnÃ©es.
 .NOTES
     Auteur: Augment Code
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 
 # Importer les fonctions de diagnostic des permissions
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "FilePermissionDiagnostic.ps1"
 . $scriptPath
 
-# Importer les fonctions d'élévation de privilèges
+# Importer les fonctions d'Ã©lÃ©vation de privilÃ¨ges
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "PrivilegeElevationTools.ps1"
 . $scriptPath
 
 function Debug-SystemFileAccess {
     <#
     .SYNOPSIS
-        Démontre et débogue l'accès à un fichier système protégé.
+        DÃ©montre et dÃ©bogue l'accÃ¨s Ã  un fichier systÃ¨me protÃ©gÃ©.
 
     .DESCRIPTION
-        Cette fonction tente d'accéder à un fichier système protégé de différentes manières
-        et montre comment déboguer et résoudre les problèmes d'accès.
+        Cette fonction tente d'accÃ©der Ã  un fichier systÃ¨me protÃ©gÃ© de diffÃ©rentes maniÃ¨res
+        et montre comment dÃ©boguer et rÃ©soudre les problÃ¨mes d'accÃ¨s.
 
     .PARAMETER FilePath
-        Le chemin du fichier système protégé à déboguer.
+        Le chemin du fichier systÃ¨me protÃ©gÃ© Ã  dÃ©boguer.
 
     .EXAMPLE
         Debug-SystemFileAccess -FilePath "C:\Windows\System32\config\SAM"
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différentes tentatives d'accès
+        [PSCustomObject] avec des informations sur les diffÃ©rentes tentatives d'accÃ¨s
     #>
     [CmdletBinding()]
     param (
@@ -53,12 +53,12 @@ function Debug-SystemFileAccess {
         Recommendations = @()
     }
 
-    # 1. Vérifier si le fichier existe
+    # 1. VÃ©rifier si le fichier existe
     $results.FileExists = Test-Path -Path $FilePath -ErrorAction SilentlyContinue
 
     if (-not $results.FileExists) {
         Write-Warning "Le fichier '$FilePath' n'existe pas."
-        $results.Recommendations += "Vérifiez que le chemin du fichier est correct."
+        $results.Recommendations += "VÃ©rifiez que le chemin du fichier est correct."
         return $results
     }
 
@@ -67,67 +67,67 @@ function Debug-SystemFileAccess {
     $permissionsResult = Test-PathPermissions -Path $FilePath -TestRead -TestWrite -Detailed
     Format-PathPermissionsReport -PermissionsResult $permissionsResult
 
-    # 3. Tenter un accès direct
-    Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
+    # 3. Tenter un accÃ¨s direct
+    Write-Host "`n=== Tentative d'accÃ¨s direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         Get-Content -Path $FilePath -TotalCount 1
     } -Path $FilePath -AnalyzePermissions
 
-    $results.DirectAccessResult = if ($directAccessResult.Success) { "Succès" } else { "Échec" }
+    $results.DirectAccessResult = if ($directAccessResult.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     if (-not $directAccessResult.Success) {
-        Write-Host "L'accès direct a échoué comme prévu pour un fichier système protégé." -ForegroundColor Yellow
+        Write-Host "L'accÃ¨s direct a Ã©chouÃ© comme prÃ©vu pour un fichier systÃ¨me protÃ©gÃ©." -ForegroundColor Yellow
         Format-UnauthorizedAccessReport -DebugResult $directAccessResult
     } else {
-        Write-Host "L'accès direct a réussi, ce qui est inhabituel pour un fichier système protégé." -ForegroundColor Green
+        Write-Host "L'accÃ¨s direct a rÃ©ussi, ce qui est inhabituel pour un fichier systÃ¨me protÃ©gÃ©." -ForegroundColor Green
     }
 
-    # 4. Tenter d'utiliser le privilège SeBackupPrivilege
-    Write-Host "`n=== Tentative avec le privilège SeBackupPrivilege ===" -ForegroundColor Cyan
+    # 4. Tenter d'utiliser le privilÃ¨ge SeBackupPrivilege
+    Write-Host "`n=== Tentative avec le privilÃ¨ge SeBackupPrivilege ===" -ForegroundColor Cyan
     $backupPrivilegeSuccess = $false
 
     try {
         $backupPrivilegeEnabled = Enable-Privilege -Privilege "SeBackupPrivilege"
 
         if ($backupPrivilegeEnabled) {
-            Write-Host "Privilège SeBackupPrivilege activé avec succès." -ForegroundColor Green
+            Write-Host "PrivilÃ¨ge SeBackupPrivilege activÃ© avec succÃ¨s." -ForegroundColor Green
 
-            # Créer un répertoire temporaire pour la sauvegarde
+            # CrÃ©er un rÃ©pertoire temporaire pour la sauvegarde
             $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
             New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
             $backupPath = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($FilePath))
 
             try {
-                # Tenter de copier le fichier avec le privilège de sauvegarde
+                # Tenter de copier le fichier avec le privilÃ¨ge de sauvegarde
                 Copy-Item -Path $FilePath -Destination $backupPath -ErrorAction Stop
                 $backupPrivilegeSuccess = $true
-                Write-Host "Fichier copié avec succès en utilisant le privilège SeBackupPrivilege." -ForegroundColor Green
+                Write-Host "Fichier copiÃ© avec succÃ¨s en utilisant le privilÃ¨ge SeBackupPrivilege." -ForegroundColor Green
                 Write-Host "Chemin de la copie: $backupPath"
             } catch {
-                Write-Host "Échec de la copie malgré l'activation du privilège SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "Ã‰chec de la copie malgrÃ© l'activation du privilÃ¨ge SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
             } finally {
                 # Nettoyer
                 Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
             }
         } else {
-            Write-Host "Impossible d'activer le privilège SeBackupPrivilege. Vous devez être administrateur." -ForegroundColor Red
+            Write-Host "Impossible d'activer le privilÃ¨ge SeBackupPrivilege. Vous devez Ãªtre administrateur." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de l'utilisation du privilège SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de l'utilisation du privilÃ¨ge SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "Succès" } else { "Échec" }
+    $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     # 5. Tenter de prendre possession du fichier
     Write-Host "`n=== Tentative de prise de possession du fichier ===" -ForegroundColor Cyan
     $takeOwnershipSuccess = $false
 
     try {
-        # Activer le privilège SeTakeOwnershipPrivilege
+        # Activer le privilÃ¨ge SeTakeOwnershipPrivilege
         $takeOwnershipEnabled = Enable-Privilege -Privilege "SeTakeOwnershipPrivilege"
 
         if ($takeOwnershipEnabled) {
-            Write-Host "Privilège SeTakeOwnershipPrivilege activé avec succès." -ForegroundColor Green
+            Write-Host "PrivilÃ¨ge SeTakeOwnershipPrivilege activÃ© avec succÃ¨s." -ForegroundColor Green
 
             # Tenter de prendre possession du fichier
             $acl = Get-Acl -Path $FilePath
@@ -137,7 +137,7 @@ function Debug-SystemFileAccess {
             try {
                 Set-Acl -Path $FilePath -AclObject $acl -ErrorAction Stop
                 $takeOwnershipSuccess = $true
-                Write-Host "Prise de possession du fichier réussie." -ForegroundColor Green
+                Write-Host "Prise de possession du fichier rÃ©ussie." -ForegroundColor Green
 
                 # Ajouter des droits de lecture
                 $acl = Get-Acl -Path $FilePath
@@ -149,30 +149,30 @@ function Debug-SystemFileAccess {
                 $acl.AddAccessRule($accessRule)
                 Set-Acl -Path $FilePath -AclObject $acl
 
-                Write-Host "Droits de lecture ajoutés avec succès." -ForegroundColor Green
+                Write-Host "Droits de lecture ajoutÃ©s avec succÃ¨s." -ForegroundColor Green
             } catch {
-                Write-Host "Échec de la prise de possession: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "Ã‰chec de la prise de possession: $($_.Exception.Message)" -ForegroundColor Red
             }
         } else {
-            Write-Host "Impossible d'activer le privilège SeTakeOwnershipPrivilege." -ForegroundColor Red
+            Write-Host "Impossible d'activer le privilÃ¨ge SeTakeOwnershipPrivilege." -ForegroundColor Red
         }
     } catch {
         Write-Host "Erreur lors de la prise de possession: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "Succès" } else { "Échec" }
+    $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
-    # 6. Tenter d'utiliser un processus élevé
-    Write-Host "`n=== Tentative avec un processus élevé ===" -ForegroundColor Cyan
+    # 6. Tenter d'utiliser un processus Ã©levÃ©
+    Write-Host "`n=== Tentative avec un processus Ã©levÃ© ===" -ForegroundColor Cyan
     $elevatedCopySuccess = $false
 
     try {
-        # Créer un répertoire temporaire pour la copie
+        # CrÃ©er un rÃ©pertoire temporaire pour la copie
         $tempDir = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.Guid]::NewGuid().ToString())
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
         $copyPath = Join-Path -Path $tempDir -ChildPath ([System.IO.Path]::GetFileName($FilePath))
 
-        # Tenter de copier le fichier avec un processus élevé
+        # Tenter de copier le fichier avec un processus Ã©levÃ©
         $result = Edit-ProtectedFile -Path $FilePath -EditScriptBlock {
             param($TempFile)
             # Ne pas modifier le fichier, juste le copier
@@ -181,25 +181,25 @@ function Debug-SystemFileAccess {
 
         if ($result.Success) {
             $elevatedCopySuccess = $true
-            Write-Host "Copie avec processus élevé réussie." -ForegroundColor Green
+            Write-Host "Copie avec processus Ã©levÃ© rÃ©ussie." -ForegroundColor Green
         } else {
-            Write-Host "Échec de la copie avec processus élevé: $($result.Message)" -ForegroundColor Red
+            Write-Host "Ã‰chec de la copie avec processus Ã©levÃ©: $($result.Message)" -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de la copie avec processus élevé: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de la copie avec processus Ã©levÃ©: $($_.Exception.Message)" -ForegroundColor Red
     } finally {
         # Nettoyer
         Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    $results.CopyWithElevationResult = if ($elevatedCopySuccess) { "Succès" } else { "Échec" }
+    $results.CopyWithElevationResult = if ($elevatedCopySuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     # 7. Recommandations
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     if ($backupPrivilegeSuccess) {
-        $results.Recommendations += "Utilisez le privilège SeBackupPrivilege pour accéder au fichier en lecture seule."
-        Write-Host "- Utilisez le privilège SeBackupPrivilege pour accéder au fichier en lecture seule." -ForegroundColor Green
+        $results.Recommendations += "Utilisez le privilÃ¨ge SeBackupPrivilege pour accÃ©der au fichier en lecture seule."
+        Write-Host "- Utilisez le privilÃ¨ge SeBackupPrivilege pour accÃ©der au fichier en lecture seule." -ForegroundColor Green
     }
 
     if ($takeOwnershipSuccess) {
@@ -208,18 +208,18 @@ function Debug-SystemFileAccess {
     }
 
     if ($elevatedCopySuccess) {
-        $results.Recommendations += "Utilisez un processus élevé pour copier le fichier."
-        Write-Host "- Utilisez un processus élevé pour copier le fichier." -ForegroundColor Green
+        $results.Recommendations += "Utilisez un processus Ã©levÃ© pour copier le fichier."
+        Write-Host "- Utilisez un processus Ã©levÃ© pour copier le fichier." -ForegroundColor Green
     }
 
     if (-not ($backupPrivilegeSuccess -or $takeOwnershipSuccess -or $elevatedCopySuccess)) {
-        $results.Recommendations += "Utilisez des outils système spécialisés comme 'ntdsutil' pour les fichiers de base de données Active Directory."
-        $results.Recommendations += "Créez une copie de volume shadow (VSS) pour accéder aux fichiers verrouillés par le système."
-        $results.Recommendations += "Démarrez en mode sans échec ou utilisez un environnement de récupération Windows pour accéder aux fichiers système."
+        $results.Recommendations += "Utilisez des outils systÃ¨me spÃ©cialisÃ©s comme 'ntdsutil' pour les fichiers de base de donnÃ©es Active Directory."
+        $results.Recommendations += "CrÃ©ez une copie de volume shadow (VSS) pour accÃ©der aux fichiers verrouillÃ©s par le systÃ¨me."
+        $results.Recommendations += "DÃ©marrez en mode sans Ã©chec ou utilisez un environnement de rÃ©cupÃ©ration Windows pour accÃ©der aux fichiers systÃ¨me."
 
-        Write-Host "- Utilisez des outils système spécialisés comme 'ntdsutil' pour les fichiers de base de données Active Directory." -ForegroundColor Yellow
-        Write-Host "- Créez une copie de volume shadow (VSS) pour accéder aux fichiers verrouillés par le système." -ForegroundColor Yellow
-        Write-Host "- Démarrez en mode sans échec ou utilisez un environnement de récupération Windows pour accéder aux fichiers système." -ForegroundColor Yellow
+        Write-Host "- Utilisez des outils systÃ¨me spÃ©cialisÃ©s comme 'ntdsutil' pour les fichiers de base de donnÃ©es Active Directory." -ForegroundColor Yellow
+        Write-Host "- CrÃ©ez une copie de volume shadow (VSS) pour accÃ©der aux fichiers verrouillÃ©s par le systÃ¨me." -ForegroundColor Yellow
+        Write-Host "- DÃ©marrez en mode sans Ã©chec ou utilisez un environnement de rÃ©cupÃ©ration Windows pour accÃ©der aux fichiers systÃ¨me." -ForegroundColor Yellow
     }
 
     return $results
@@ -228,20 +228,20 @@ function Debug-SystemFileAccess {
 function Debug-RegistryKeyAccess {
     <#
     .SYNOPSIS
-        Démontre et débogue l'accès à une clé de registre protégée.
+        DÃ©montre et dÃ©bogue l'accÃ¨s Ã  une clÃ© de registre protÃ©gÃ©e.
 
     .DESCRIPTION
-        Cette fonction tente d'accéder à une clé de registre protégée de différentes manières
-        et montre comment déboguer et résoudre les problèmes d'accès.
+        Cette fonction tente d'accÃ©der Ã  une clÃ© de registre protÃ©gÃ©e de diffÃ©rentes maniÃ¨res
+        et montre comment dÃ©boguer et rÃ©soudre les problÃ¨mes d'accÃ¨s.
 
     .PARAMETER RegistryPath
-        Le chemin de la clé de registre protégée à déboguer.
+        Le chemin de la clÃ© de registre protÃ©gÃ©e Ã  dÃ©boguer.
 
     .EXAMPLE
         Debug-RegistryKeyAccess -RegistryPath "HKLM:\SECURITY\Policy"
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différentes tentatives d'accès
+        [PSCustomObject] avec des informations sur les diffÃ©rentes tentatives d'accÃ¨s
     #>
     [CmdletBinding()]
     param (
@@ -259,42 +259,42 @@ function Debug-RegistryKeyAccess {
         Recommendations = @()
     }
 
-    # 1. Vérifier si la clé de registre existe
+    # 1. VÃ©rifier si la clÃ© de registre existe
     $results.KeyExists = Test-Path -Path $RegistryPath -ErrorAction SilentlyContinue
 
     if (-not $results.KeyExists) {
-        Write-Warning "La clé de registre '$RegistryPath' n'existe pas."
-        $results.Recommendations += "Vérifiez que le chemin de la clé de registre est correct."
+        Write-Warning "La clÃ© de registre '$RegistryPath' n'existe pas."
+        $results.Recommendations += "VÃ©rifiez que le chemin de la clÃ© de registre est correct."
         return $results
     }
 
-    # 2. Tenter un accès direct
-    Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
+    # 2. Tenter un accÃ¨s direct
+    Write-Host "`n=== Tentative d'accÃ¨s direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         Get-ItemProperty -Path $RegistryPath -ErrorAction Stop
     } -Path $RegistryPath
 
-    $results.DirectAccessResult = if ($directAccessResult.Success) { "Succès" } else { "Échec" }
+    $results.DirectAccessResult = if ($directAccessResult.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     if (-not $directAccessResult.Success) {
-        Write-Host "L'accès direct a échoué comme prévu pour une clé de registre protégée." -ForegroundColor Yellow
+        Write-Host "L'accÃ¨s direct a Ã©chouÃ© comme prÃ©vu pour une clÃ© de registre protÃ©gÃ©e." -ForegroundColor Yellow
         Format-UnauthorizedAccessReport -DebugResult $directAccessResult
     } else {
-        Write-Host "L'accès direct a réussi, ce qui est inhabituel pour une clé de registre protégée." -ForegroundColor Green
+        Write-Host "L'accÃ¨s direct a rÃ©ussi, ce qui est inhabituel pour une clÃ© de registre protÃ©gÃ©e." -ForegroundColor Green
     }
 
-    # 3. Tenter d'utiliser le privilège SeBackupPrivilege
-    Write-Host "`n=== Tentative avec le privilège SeBackupPrivilege ===" -ForegroundColor Cyan
+    # 3. Tenter d'utiliser le privilÃ¨ge SeBackupPrivilege
+    Write-Host "`n=== Tentative avec le privilÃ¨ge SeBackupPrivilege ===" -ForegroundColor Cyan
     $backupPrivilegeSuccess = $false
 
     try {
         $backupPrivilegeEnabled = Enable-Privilege -Privilege "SeBackupPrivilege"
 
         if ($backupPrivilegeEnabled) {
-            Write-Host "Privilège SeBackupPrivilege activé avec succès." -ForegroundColor Green
+            Write-Host "PrivilÃ¨ge SeBackupPrivilege activÃ© avec succÃ¨s." -ForegroundColor Green
 
             try {
-                # Tenter d'accéder à la clé de registre avec le privilège de sauvegarde
+                # Tenter d'accÃ©der Ã  la clÃ© de registre avec le privilÃ¨ge de sauvegarde
                 $regKey = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey(
                     [Microsoft.Win32.RegistryHive]::LocalMachine,
                     [Environment]::MachineName
@@ -303,50 +303,50 @@ function Debug-RegistryKeyAccess {
                 # Extraire le chemin relatif (sans HKLM:\)
                 $relativePath = $RegistryPath -replace "^HKLM:\\", ""
 
-                # Ouvrir la clé avec des droits de lecture
+                # Ouvrir la clÃ© avec des droits de lecture
                 $key = $regKey.OpenSubKey($relativePath, $false)
 
                 if ($key -ne $null) {
                     $backupPrivilegeSuccess = $true
-                    Write-Host "Accès à la clé de registre réussi en utilisant le privilège SeBackupPrivilege." -ForegroundColor Green
+                    Write-Host "AccÃ¨s Ã  la clÃ© de registre rÃ©ussi en utilisant le privilÃ¨ge SeBackupPrivilege." -ForegroundColor Green
 
-                    # Afficher les valeurs de la clé
-                    Write-Host "Valeurs de la clé:"
+                    # Afficher les valeurs de la clÃ©
+                    Write-Host "Valeurs de la clÃ©:"
                     foreach ($valueName in $key.GetValueNames()) {
                         $value = $key.GetValue($valueName)
                         $valueType = $key.GetValueKind($valueName)
                         Write-Host "  $valueName = $value ($valueType)"
                     }
 
-                    # Fermer la clé
+                    # Fermer la clÃ©
                     $key.Close()
                 } else {
-                    Write-Host "Impossible d'ouvrir la clé de registre malgré l'activation du privilège SeBackupPrivilege." -ForegroundColor Red
+                    Write-Host "Impossible d'ouvrir la clÃ© de registre malgrÃ© l'activation du privilÃ¨ge SeBackupPrivilege." -ForegroundColor Red
                 }
             } catch {
-                Write-Host "Échec de l'accès malgré l'activation du privilège SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "Ã‰chec de l'accÃ¨s malgrÃ© l'activation du privilÃ¨ge SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
             }
         } else {
-            Write-Host "Impossible d'activer le privilège SeBackupPrivilege. Vous devez être administrateur." -ForegroundColor Red
+            Write-Host "Impossible d'activer le privilÃ¨ge SeBackupPrivilege. Vous devez Ãªtre administrateur." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de l'utilisation du privilège SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de l'utilisation du privilÃ¨ge SeBackupPrivilege: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "Succès" } else { "Échec" }
+    $results.BackupPrivilegeResult = if ($backupPrivilegeSuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
-    # 4. Tenter de prendre possession de la clé de registre
-    Write-Host "`n=== Tentative de prise de possession de la clé de registre ===" -ForegroundColor Cyan
+    # 4. Tenter de prendre possession de la clÃ© de registre
+    Write-Host "`n=== Tentative de prise de possession de la clÃ© de registre ===" -ForegroundColor Cyan
     $takeOwnershipSuccess = $false
 
     try {
-        # Activer le privilège SeTakeOwnershipPrivilege
+        # Activer le privilÃ¨ge SeTakeOwnershipPrivilege
         $takeOwnershipEnabled = Enable-Privilege -Privilege "SeTakeOwnershipPrivilege"
 
         if ($takeOwnershipEnabled) {
-            Write-Host "Privilège SeTakeOwnershipPrivilege activé avec succès." -ForegroundColor Green
+            Write-Host "PrivilÃ¨ge SeTakeOwnershipPrivilege activÃ© avec succÃ¨s." -ForegroundColor Green
 
-            # Tenter de prendre possession de la clé de registre
+            # Tenter de prendre possession de la clÃ© de registre
             $script = {
                 param($Path)
 
@@ -354,7 +354,7 @@ function Debug-RegistryKeyAccess {
                     # Charger l'assembly pour les ACL de registre
                     Add-Type -AssemblyName System.Security
 
-                    # Obtenir la clé de registre
+                    # Obtenir la clÃ© de registre
                     $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey(
                         $Path.Replace("HKLM:\", ""),
                         [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,
@@ -365,17 +365,17 @@ function Debug-RegistryKeyAccess {
                         # Obtenir les ACL actuelles
                         $acl = $key.GetAccessControl()
 
-                        # Définir le propriétaire
+                        # DÃ©finir le propriÃ©taire
                         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().User
                         $acl.SetOwner($currentUser)
 
                         # Appliquer les nouvelles ACL
                         $key.SetAccessControl($acl)
 
-                        # Fermer la clé
+                        # Fermer la clÃ©
                         $key.Close()
 
-                        # Rouvrir la clé avec des droits complets
+                        # Rouvrir la clÃ© avec des droits complets
                         $key = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey(
                             $Path.Replace("HKLM:\", ""),
                             [Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,
@@ -385,7 +385,7 @@ function Debug-RegistryKeyAccess {
                         # Obtenir les ACL actuelles
                         $acl = $key.GetAccessControl()
 
-                        # Ajouter une règle d'accès pour l'utilisateur actuel
+                        # Ajouter une rÃ¨gle d'accÃ¨s pour l'utilisateur actuel
                         $rule = New-Object System.Security.AccessControl.RegistryAccessRule(
                             $currentUser,
                             [System.Security.AccessControl.RegistryRights]::FullControl,
@@ -399,7 +399,7 @@ function Debug-RegistryKeyAccess {
                         # Appliquer les nouvelles ACL
                         $key.SetAccessControl($acl)
 
-                        # Fermer la clé
+                        # Fermer la clÃ©
                         $key.Close()
 
                         return $true
@@ -412,26 +412,26 @@ function Debug-RegistryKeyAccess {
                 }
             }
 
-            # Exécuter le script avec des privilèges élevés
+            # ExÃ©cuter le script avec des privilÃ¨ges Ã©levÃ©s
             $result = Start-ElevatedProcess -ScriptBlock $script -ArgumentList $RegistryPath -Wait
 
             if ($result -eq 0) {
                 $takeOwnershipSuccess = $true
-                Write-Host "Prise de possession de la clé de registre réussie." -ForegroundColor Green
+                Write-Host "Prise de possession de la clÃ© de registre rÃ©ussie." -ForegroundColor Green
             } else {
-                Write-Host "Échec de la prise de possession de la clé de registre." -ForegroundColor Red
+                Write-Host "Ã‰chec de la prise de possession de la clÃ© de registre." -ForegroundColor Red
             }
         } else {
-            Write-Host "Impossible d'activer le privilège SeTakeOwnershipPrivilege." -ForegroundColor Red
+            Write-Host "Impossible d'activer le privilÃ¨ge SeTakeOwnershipPrivilege." -ForegroundColor Red
         }
     } catch {
         Write-Host "Erreur lors de la prise de possession: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "Succès" } else { "Échec" }
+    $results.TakeOwnershipResult = if ($takeOwnershipSuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
-    # 5. Tenter d'utiliser un processus élevé
-    Write-Host "`n=== Tentative avec un processus élevé ===" -ForegroundColor Cyan
+    # 5. Tenter d'utiliser un processus Ã©levÃ©
+    Write-Host "`n=== Tentative avec un processus Ã©levÃ© ===" -ForegroundColor Cyan
     $elevatedAccessSuccess = $false
 
     try {
@@ -467,42 +467,42 @@ function Debug-RegistryKeyAccess {
 
         if ($jsonResult -eq 0) {
             $elevatedAccessSuccess = $true
-            Write-Host "Accès avec processus élevé réussi." -ForegroundColor Green
+            Write-Host "AccÃ¨s avec processus Ã©levÃ© rÃ©ussi." -ForegroundColor Green
         } else {
-            Write-Host "Échec de l'accès avec processus élevé." -ForegroundColor Red
+            Write-Host "Ã‰chec de l'accÃ¨s avec processus Ã©levÃ©." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de l'accès avec processus élevé: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de l'accÃ¨s avec processus Ã©levÃ©: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    $results.ElevatedAccessResult = if ($elevatedAccessSuccess) { "Succès" } else { "Échec" }
+    $results.ElevatedAccessResult = if ($elevatedAccessSuccess) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     # 6. Recommandations
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
     if ($backupPrivilegeSuccess) {
-        $results.Recommendations += "Utilisez le privilège SeBackupPrivilege pour accéder à la clé de registre en lecture seule."
-        Write-Host "- Utilisez le privilège SeBackupPrivilege pour accéder à la clé de registre en lecture seule." -ForegroundColor Green
+        $results.Recommendations += "Utilisez le privilÃ¨ge SeBackupPrivilege pour accÃ©der Ã  la clÃ© de registre en lecture seule."
+        Write-Host "- Utilisez le privilÃ¨ge SeBackupPrivilege pour accÃ©der Ã  la clÃ© de registre en lecture seule." -ForegroundColor Green
     }
 
     if ($takeOwnershipSuccess) {
-        $results.Recommendations += "Prenez possession de la clé de registre pour modifier ses permissions."
-        Write-Host "- Prenez possession de la clé de registre pour modifier ses permissions." -ForegroundColor Green
+        $results.Recommendations += "Prenez possession de la clÃ© de registre pour modifier ses permissions."
+        Write-Host "- Prenez possession de la clÃ© de registre pour modifier ses permissions." -ForegroundColor Green
     }
 
     if ($elevatedAccessSuccess) {
-        $results.Recommendations += "Utilisez un processus élevé pour accéder à la clé de registre."
-        Write-Host "- Utilisez un processus élevé pour accéder à la clé de registre." -ForegroundColor Green
+        $results.Recommendations += "Utilisez un processus Ã©levÃ© pour accÃ©der Ã  la clÃ© de registre."
+        Write-Host "- Utilisez un processus Ã©levÃ© pour accÃ©der Ã  la clÃ© de registre." -ForegroundColor Green
     }
 
     if (-not ($backupPrivilegeSuccess -or $takeOwnershipSuccess -or $elevatedAccessSuccess)) {
-        $results.Recommendations += "Utilisez l'éditeur de registre (regedit.exe) en mode administrateur."
-        $results.Recommendations += "Utilisez l'outil de ligne de commande reg.exe avec des privilèges élevés."
-        $results.Recommendations += "Utilisez PowerShell avec le module PSRemoting pour accéder au registre à distance."
+        $results.Recommendations += "Utilisez l'Ã©diteur de registre (regedit.exe) en mode administrateur."
+        $results.Recommendations += "Utilisez l'outil de ligne de commande reg.exe avec des privilÃ¨ges Ã©levÃ©s."
+        $results.Recommendations += "Utilisez PowerShell avec le module PSRemoting pour accÃ©der au registre Ã  distance."
 
-        Write-Host "- Utilisez l'éditeur de registre (regedit.exe) en mode administrateur." -ForegroundColor Yellow
-        Write-Host "- Utilisez l'outil de ligne de commande reg.exe avec des privilèges élevés." -ForegroundColor Yellow
-        Write-Host "- Utilisez PowerShell avec le module PSRemoting pour accéder au registre à distance." -ForegroundColor Yellow
+        Write-Host "- Utilisez l'Ã©diteur de registre (regedit.exe) en mode administrateur." -ForegroundColor Yellow
+        Write-Host "- Utilisez l'outil de ligne de commande reg.exe avec des privilÃ¨ges Ã©levÃ©s." -ForegroundColor Yellow
+        Write-Host "- Utilisez PowerShell avec le module PSRemoting pour accÃ©der au registre Ã  distance." -ForegroundColor Yellow
     }
 
     return $results
@@ -511,17 +511,17 @@ function Debug-RegistryKeyAccess {
 function Debug-NetworkAccess {
     <#
     .SYNOPSIS
-        Démontre et débogue l'accès à une ressource réseau.
+        DÃ©montre et dÃ©bogue l'accÃ¨s Ã  une ressource rÃ©seau.
 
     .DESCRIPTION
-        Cette fonction tente d'accéder à une ressource réseau de différentes manières
-        et montre comment déboguer et résoudre les problèmes d'accès.
+        Cette fonction tente d'accÃ©der Ã  une ressource rÃ©seau de diffÃ©rentes maniÃ¨res
+        et montre comment dÃ©boguer et rÃ©soudre les problÃ¨mes d'accÃ¨s.
 
     .PARAMETER NetworkPath
-        Le chemin de la ressource réseau à déboguer (UNC).
+        Le chemin de la ressource rÃ©seau Ã  dÃ©boguer (UNC).
 
     .PARAMETER Credential
-        Les informations d'identification à utiliser pour l'accès réseau.
+        Les informations d'identification Ã  utiliser pour l'accÃ¨s rÃ©seau.
 
     .EXAMPLE
         Debug-NetworkAccess -NetworkPath "\\server\share\file.txt"
@@ -531,7 +531,7 @@ function Debug-NetworkAccess {
         Debug-NetworkAccess -NetworkPath "\\server\share\file.txt" -Credential $cred
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différentes tentatives d'accès
+        [PSCustomObject] avec des informations sur les diffÃ©rentes tentatives d'accÃ¨s
     #>
     [CmdletBinding()]
     param (
@@ -556,35 +556,35 @@ function Debug-NetworkAccess {
         Recommendations = @()
     }
 
-    # Extraire le serveur et le partage du chemin réseau
+    # Extraire le serveur et le partage du chemin rÃ©seau
     if ($NetworkPath -match "\\\\([^\\]+)\\([^\\]+)") {
         $results.Server = $matches[1]
         $results.Share = $matches[2]
     } else {
-        Write-Warning "Le chemin réseau '$NetworkPath' n'est pas un chemin UNC valide (format attendu: \\server\share\...)."
+        Write-Warning "Le chemin rÃ©seau '$NetworkPath' n'est pas un chemin UNC valide (format attendu: \\server\share\...)."
         $results.Recommendations += "Utilisez un chemin UNC valide au format \\server\share\..."
         return $results
     }
 
-    # 1. Vérifier si le serveur répond au ping
-    Write-Host "`n=== Test de connectivité réseau (Ping) ===" -ForegroundColor Cyan
+    # 1. VÃ©rifier si le serveur rÃ©pond au ping
+    Write-Host "`n=== Test de connectivitÃ© rÃ©seau (Ping) ===" -ForegroundColor Cyan
     try {
         $pingResult = Test-Connection -ComputerName $results.Server -Count 2 -Quiet
         $results.PingResult = $pingResult
 
         if ($pingResult) {
-            Write-Host "Le serveur '$($results.Server)' répond au ping." -ForegroundColor Green
+            Write-Host "Le serveur '$($results.Server)' rÃ©pond au ping." -ForegroundColor Green
         } else {
-            Write-Host "Le serveur '$($results.Server)' ne répond pas au ping." -ForegroundColor Red
-            Write-Host "Cela peut être dû à un pare-feu ou à un serveur hors ligne." -ForegroundColor Yellow
+            Write-Host "Le serveur '$($results.Server)' ne rÃ©pond pas au ping." -ForegroundColor Red
+            Write-Host "Cela peut Ãªtre dÃ» Ã  un pare-feu ou Ã  un serveur hors ligne." -ForegroundColor Yellow
         }
     } catch {
         Write-Host "Erreur lors du ping du serveur: $($_.Exception.Message)" -ForegroundColor Red
         $results.PingResult = $false
     }
 
-    # 2. Scanner les ports courants pour les partages réseau
-    Write-Host "`n=== Test des ports réseau ===" -ForegroundColor Cyan
+    # 2. Scanner les ports courants pour les partages rÃ©seau
+    Write-Host "`n=== Test des ports rÃ©seau ===" -ForegroundColor Cyan
     $ports = @(139, 445)  # Ports SMB/CIFS
     $portsOpen = @()
 
@@ -600,7 +600,7 @@ function Debug-NetworkAccess {
                     $portsOpen += $port
                     Write-Host "Port $port: Ouvert" -ForegroundColor Green
                 } catch {
-                    Write-Host "Port $port: Fermé" -ForegroundColor Red
+                    Write-Host "Port $port: FermÃ©" -ForegroundColor Red
                 }
             } else {
                 Write-Host "Port $port: Timeout" -ForegroundColor Red
@@ -615,23 +615,23 @@ function Debug-NetworkAccess {
     $results.PortScanResult = $portsOpen
 
     if ($portsOpen.Count -eq 0) {
-        Write-Host "Aucun port SMB/CIFS n'est ouvert sur le serveur. Les partages réseau ne sont pas accessibles." -ForegroundColor Red
-        $results.Recommendations += "Vérifiez que le service de partage de fichiers est activé sur le serveur."
-        $results.Recommendations += "Vérifiez que les ports 139 et 445 ne sont pas bloqués par un pare-feu."
+        Write-Host "Aucun port SMB/CIFS n'est ouvert sur le serveur. Les partages rÃ©seau ne sont pas accessibles." -ForegroundColor Red
+        $results.Recommendations += "VÃ©rifiez que le service de partage de fichiers est activÃ© sur le serveur."
+        $results.Recommendations += "VÃ©rifiez que les ports 139 et 445 ne sont pas bloquÃ©s par un pare-feu."
     }
 
-    # 3. Vérifier si le chemin réseau existe
-    Write-Host "`n=== Vérification de l'existence du chemin réseau ===" -ForegroundColor Cyan
+    # 3. VÃ©rifier si le chemin rÃ©seau existe
+    Write-Host "`n=== VÃ©rification de l'existence du chemin rÃ©seau ===" -ForegroundColor Cyan
     $results.PathExists = Test-Path -Path $NetworkPath -ErrorAction SilentlyContinue
 
     if ($results.PathExists) {
-        Write-Host "Le chemin réseau '$NetworkPath' existe." -ForegroundColor Green
+        Write-Host "Le chemin rÃ©seau '$NetworkPath' existe." -ForegroundColor Green
     } else {
-        Write-Host "Le chemin réseau '$NetworkPath' n'existe pas ou n'est pas accessible." -ForegroundColor Red
+        Write-Host "Le chemin rÃ©seau '$NetworkPath' n'existe pas ou n'est pas accessible." -ForegroundColor Red
     }
 
-    # 4. Tenter un accès direct
-    Write-Host "`n=== Tentative d'accès direct ===" -ForegroundColor Cyan
+    # 4. Tenter un accÃ¨s direct
+    Write-Host "`n=== Tentative d'accÃ¨s direct ===" -ForegroundColor Cyan
     $directAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
         if ((Get-Item -Path $NetworkPath -ErrorAction Stop).PSIsContainer) {
             Get-ChildItem -Path $NetworkPath -ErrorAction Stop
@@ -640,21 +640,21 @@ function Debug-NetworkAccess {
         }
     } -Path $NetworkPath
 
-    $results.DirectAccessResult = if ($directAccessResult.Success) { "Succès" } else { "Échec" }
+    $results.DirectAccessResult = if ($directAccessResult.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
 
     if ($directAccessResult.Success) {
-        Write-Host "L'accès direct a réussi." -ForegroundColor Green
+        Write-Host "L'accÃ¨s direct a rÃ©ussi." -ForegroundColor Green
     } else {
-        Write-Host "L'accès direct a échoué." -ForegroundColor Yellow
+        Write-Host "L'accÃ¨s direct a Ã©chouÃ©." -ForegroundColor Yellow
         Format-UnauthorizedAccessReport -DebugResult $directAccessResult
     }
 
-    # 5. Tenter un accès avec les informations d'identification fournies
+    # 5. Tenter un accÃ¨s avec les informations d'identification fournies
     if ($Credential) {
-        Write-Host "`n=== Tentative d'accès avec informations d'identification ===" -ForegroundColor Cyan
+        Write-Host "`n=== Tentative d'accÃ¨s avec informations d'identification ===" -ForegroundColor Cyan
 
         try {
-            # Créer un objet NetworkCredential
+            # CrÃ©er un objet NetworkCredential
             $netCred = $Credential.GetNetworkCredential()
 
             # Construire la commande net use
@@ -662,13 +662,13 @@ function Debug-NetworkAccess {
             $password = $netCred.Password
             $server = "\\" + $results.Server
 
-            # Utiliser la commande net use pour établir une connexion
+            # Utiliser la commande net use pour Ã©tablir une connexion
             $output = net use $server /user:$username $password 2>&1
 
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "Connexion établie avec le serveur en utilisant les informations d'identification fournies." -ForegroundColor Green
+                Write-Host "Connexion Ã©tablie avec le serveur en utilisant les informations d'identification fournies." -ForegroundColor Green
 
-                # Tester l'accès au chemin
+                # Tester l'accÃ¨s au chemin
                 $credAccessResult = Debug-UnauthorizedAccessException -ScriptBlock {
                     if ((Get-Item -Path $NetworkPath -ErrorAction Stop).PSIsContainer) {
                         Get-ChildItem -Path $NetworkPath -ErrorAction Stop
@@ -677,30 +677,30 @@ function Debug-NetworkAccess {
                     }
                 } -Path $NetworkPath
 
-                $results.CredentialAccessResult = if ($credAccessResult.Success) { "Succès" } else { "Échec" }
+                $results.CredentialAccessResult = if ($credAccessResult.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
 
                 if ($credAccessResult.Success) {
-                    Write-Host "L'accès avec informations d'identification a réussi." -ForegroundColor Green
+                    Write-Host "L'accÃ¨s avec informations d'identification a rÃ©ussi." -ForegroundColor Green
                 } else {
-                    Write-Host "L'accès avec informations d'identification a échoué malgré une connexion réussie au serveur." -ForegroundColor Yellow
+                    Write-Host "L'accÃ¨s avec informations d'identification a Ã©chouÃ© malgrÃ© une connexion rÃ©ussie au serveur." -ForegroundColor Yellow
                     Format-UnauthorizedAccessReport -DebugResult $credAccessResult
                 }
 
-                # Déconnecter la session
+                # DÃ©connecter la session
                 net use $server /delete | Out-Null
             } else {
-                Write-Host "Échec de la connexion au serveur avec les informations d'identification fournies: $output" -ForegroundColor Red
-                $results.CredentialAccessResult = "Échec"
+                Write-Host "Ã‰chec de la connexion au serveur avec les informations d'identification fournies: $output" -ForegroundColor Red
+                $results.CredentialAccessResult = "Ã‰chec"
             }
         } catch {
-            Write-Host "Erreur lors de l'accès avec informations d'identification: $($_.Exception.Message)" -ForegroundColor Red
-            $results.CredentialAccessResult = "Échec"
+            Write-Host "Erreur lors de l'accÃ¨s avec informations d'identification: $($_.Exception.Message)" -ForegroundColor Red
+            $results.CredentialAccessResult = "Ã‰chec"
         }
     }
 
-    # 6. Tenter un accès avec impersonation
+    # 6. Tenter un accÃ¨s avec impersonation
     if ($Credential) {
-        Write-Host "`n=== Tentative d'accès avec impersonation ===" -ForegroundColor Cyan
+        Write-Host "`n=== Tentative d'accÃ¨s avec impersonation ===" -ForegroundColor Cyan
 
         try {
             $impersonationResult = Invoke-WithImpersonation -Credential $Credential -ScriptBlock {
@@ -728,29 +728,29 @@ function Debug-NetworkAccess {
                 }
             }
 
-            $results.ImpersonationResult = if ($impersonationResult.Success) { "Succès" } else { "Échec" }
+            $results.ImpersonationResult = if ($impersonationResult.Success) { "SuccÃ¨s" } else { "Ã‰chec" }
 
             if ($impersonationResult.Success) {
-                Write-Host "L'accès avec impersonation a réussi." -ForegroundColor Green
+                Write-Host "L'accÃ¨s avec impersonation a rÃ©ussi." -ForegroundColor Green
 
                 if ($impersonationResult.IsContainer) {
-                    Write-Host "Le chemin est un dossier contenant $($impersonationResult.ItemCount) éléments." -ForegroundColor Green
+                    Write-Host "Le chemin est un dossier contenant $($impersonationResult.ItemCount) Ã©lÃ©ments." -ForegroundColor Green
                 } else {
-                    Write-Host "Le chemin est un fichier. Première ligne: $($impersonationResult.Content)" -ForegroundColor Green
+                    Write-Host "Le chemin est un fichier. PremiÃ¨re ligne: $($impersonationResult.Content)" -ForegroundColor Green
                 }
             } else {
-                Write-Host "L'accès avec impersonation a échoué: $($impersonationResult.Error)" -ForegroundColor Red
+                Write-Host "L'accÃ¨s avec impersonation a Ã©chouÃ©: $($impersonationResult.Error)" -ForegroundColor Red
             }
         } catch {
             Write-Host "Erreur lors de l'impersonation: $($_.Exception.Message)" -ForegroundColor Red
-            $results.ImpersonationResult = "Échec"
+            $results.ImpersonationResult = "Ã‰chec"
         }
     }
 
-    # 7. Diagnostics réseau supplémentaires
-    Write-Host "`n=== Diagnostics réseau supplémentaires ===" -ForegroundColor Cyan
+    # 7. Diagnostics rÃ©seau supplÃ©mentaires
+    Write-Host "`n=== Diagnostics rÃ©seau supplÃ©mentaires ===" -ForegroundColor Cyan
 
-    # Vérifier les partages disponibles sur le serveur
+    # VÃ©rifier les partages disponibles sur le serveur
     Write-Host "Partages disponibles sur le serveur '$($results.Server)':" -ForegroundColor Yellow
     try {
         $shares = net view $results.Server /all 2>&1
@@ -764,10 +764,10 @@ function Debug-NetworkAccess {
         }
     } catch {
         $results.NetworkDiagnostics["SharesAvailable"] = $false
-        Write-Host "Erreur lors de la récupération des partages: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de la rÃ©cupÃ©ration des partages: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    # Vérifier les sessions actives
+    # VÃ©rifier les sessions actives
     Write-Host "`nSessions actives:" -ForegroundColor Yellow
     try {
         $sessions = net session 2>&1
@@ -781,56 +781,56 @@ function Debug-NetworkAccess {
         }
     } catch {
         $results.NetworkDiagnostics["SessionsAvailable"] = $false
-        Write-Host "Erreur lors de la récupération des sessions: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Erreur lors de la rÃ©cupÃ©ration des sessions: $($_.Exception.Message)" -ForegroundColor Red
     }
 
     # 8. Recommandations
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
-    # Recommandations basées sur les résultats des tests
+    # Recommandations basÃ©es sur les rÃ©sultats des tests
     if (-not $results.PingResult) {
-        $results.Recommendations += "Vérifiez que le serveur est en ligne et accessible sur le réseau."
-        $results.Recommendations += "Vérifiez que le ping n'est pas bloqué par un pare-feu."
-        Write-Host "- Vérifiez que le serveur est en ligne et accessible sur le réseau." -ForegroundColor Yellow
-        Write-Host "- Vérifiez que le ping n'est pas bloqué par un pare-feu." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que le serveur est en ligne et accessible sur le rÃ©seau."
+        $results.Recommendations += "VÃ©rifiez que le ping n'est pas bloquÃ© par un pare-feu."
+        Write-Host "- VÃ©rifiez que le serveur est en ligne et accessible sur le rÃ©seau." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez que le ping n'est pas bloquÃ© par un pare-feu." -ForegroundColor Yellow
     }
 
     if ($results.PortScanResult.Count -eq 0) {
-        $results.Recommendations += "Vérifiez que les ports SMB (139, 445) sont ouverts sur le serveur."
-        Write-Host "- Vérifiez que les ports SMB (139, 445) sont ouverts sur le serveur." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que les ports SMB (139, 445) sont ouverts sur le serveur."
+        Write-Host "- VÃ©rifiez que les ports SMB (139, 445) sont ouverts sur le serveur." -ForegroundColor Yellow
     }
 
     if (-not $results.PathExists) {
-        $results.Recommendations += "Vérifiez que le chemin réseau existe et que vous avez les permissions nécessaires."
-        Write-Host "- Vérifiez que le chemin réseau existe et que vous avez les permissions nécessaires." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que le chemin rÃ©seau existe et que vous avez les permissions nÃ©cessaires."
+        Write-Host "- VÃ©rifiez que le chemin rÃ©seau existe et que vous avez les permissions nÃ©cessaires." -ForegroundColor Yellow
     }
 
-    if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Succès") {
-        $results.Recommendations += "Utilisez des informations d'identification explicites pour accéder à cette ressource."
-        Write-Host "- Utilisez des informations d'identification explicites pour accéder à cette ressource." -ForegroundColor Green
+    if ($results.DirectAccessResult -eq "Ã‰chec" -and $results.CredentialAccessResult -eq "SuccÃ¨s") {
+        $results.Recommendations += "Utilisez des informations d'identification explicites pour accÃ©der Ã  cette ressource."
+        Write-Host "- Utilisez des informations d'identification explicites pour accÃ©der Ã  cette ressource." -ForegroundColor Green
     }
 
-    if ($results.ImpersonationResult -eq "Succès") {
-        $results.Recommendations += "Utilisez l'impersonation pour accéder à cette ressource."
-        Write-Host "- Utilisez l'impersonation pour accéder à cette ressource." -ForegroundColor Green
+    if ($results.ImpersonationResult -eq "SuccÃ¨s") {
+        $results.Recommendations += "Utilisez l'impersonation pour accÃ©der Ã  cette ressource."
+        Write-Host "- Utilisez l'impersonation pour accÃ©der Ã  cette ressource." -ForegroundColor Green
     }
 
     if ($results.NetworkDiagnostics["SharesAvailable"] -eq $false) {
-        $results.Recommendations += "Vérifiez que le service de partage de fichiers est activé sur le serveur."
-        Write-Host "- Vérifiez que le service de partage de fichiers est activé sur le serveur." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que le service de partage de fichiers est activÃ© sur le serveur."
+        Write-Host "- VÃ©rifiez que le service de partage de fichiers est activÃ© sur le serveur." -ForegroundColor Yellow
     }
 
-    # Recommandations générales
-    if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Échec" -and $results.ImpersonationResult -eq "Échec") {
-        $results.Recommendations += "Vérifiez les permissions sur le partage réseau."
-        $results.Recommendations += "Vérifiez que le compte utilisé a accès au partage."
-        $results.Recommendations += "Essayez d'accéder au partage avec un compte administrateur."
-        $results.Recommendations += "Vérifiez les paramètres de sécurité du partage sur le serveur."
+    # Recommandations gÃ©nÃ©rales
+    if ($results.DirectAccessResult -eq "Ã‰chec" -and $results.CredentialAccessResult -eq "Ã‰chec" -and $results.ImpersonationResult -eq "Ã‰chec") {
+        $results.Recommendations += "VÃ©rifiez les permissions sur le partage rÃ©seau."
+        $results.Recommendations += "VÃ©rifiez que le compte utilisÃ© a accÃ¨s au partage."
+        $results.Recommendations += "Essayez d'accÃ©der au partage avec un compte administrateur."
+        $results.Recommendations += "VÃ©rifiez les paramÃ¨tres de sÃ©curitÃ© du partage sur le serveur."
 
-        Write-Host "- Vérifiez les permissions sur le partage réseau." -ForegroundColor Yellow
-        Write-Host "- Vérifiez que le compte utilisé a accès au partage." -ForegroundColor Yellow
-        Write-Host "- Essayez d'accéder au partage avec un compte administrateur." -ForegroundColor Yellow
-        Write-Host "- Vérifiez les paramètres de sécurité du partage sur le serveur." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez les permissions sur le partage rÃ©seau." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez que le compte utilisÃ© a accÃ¨s au partage." -ForegroundColor Yellow
+        Write-Host "- Essayez d'accÃ©der au partage avec un compte administrateur." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez les paramÃ¨tres de sÃ©curitÃ© du partage sur le serveur." -ForegroundColor Yellow
     }
 
     return $results
@@ -839,23 +839,23 @@ function Debug-NetworkAccess {
 function Debug-DatabaseAccess {
     <#
     .SYNOPSIS
-        Démontre et débogue l'accès à une base de données SQL Server.
+        DÃ©montre et dÃ©bogue l'accÃ¨s Ã  une base de donnÃ©es SQL Server.
 
     .DESCRIPTION
-        Cette fonction tente d'accéder à une base de données SQL Server de différentes manières
-        et montre comment déboguer et résoudre les problèmes d'accès.
+        Cette fonction tente d'accÃ©der Ã  une base de donnÃ©es SQL Server de diffÃ©rentes maniÃ¨res
+        et montre comment dÃ©boguer et rÃ©soudre les problÃ¨mes d'accÃ¨s.
 
     .PARAMETER ServerInstance
         Le nom de l'instance SQL Server (serveur\instance ou serveur).
 
     .PARAMETER Database
-        Le nom de la base de données à déboguer.
+        Le nom de la base de donnÃ©es Ã  dÃ©boguer.
 
     .PARAMETER Credential
-        Les informations d'identification à utiliser pour l'accès à la base de données.
+        Les informations d'identification Ã  utiliser pour l'accÃ¨s Ã  la base de donnÃ©es.
 
     .PARAMETER IntegratedSecurity
-        Indique si l'authentification Windows doit être utilisée.
+        Indique si l'authentification Windows doit Ãªtre utilisÃ©e.
 
     .EXAMPLE
         Debug-DatabaseAccess -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks" -IntegratedSecurity
@@ -865,7 +865,7 @@ function Debug-DatabaseAccess {
         Debug-DatabaseAccess -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks" -Credential $cred
 
     .OUTPUTS
-        [PSCustomObject] avec des informations sur les différentes tentatives d'accès
+        [PSCustomObject] avec des informations sur les diffÃ©rentes tentatives d'accÃ¨s
     #>
     [CmdletBinding()]
     param (
@@ -882,9 +882,9 @@ function Debug-DatabaseAccess {
         [switch]$IntegratedSecurity
     )
 
-    # Vérifier si le module SqlServer est installé
+    # VÃ©rifier si le module SqlServer est installÃ©
     if (-not (Get-Module -Name SqlServer -ListAvailable)) {
-        Write-Warning "Le module SqlServer n'est pas installé. Installation en cours..."
+        Write-Warning "Le module SqlServer n'est pas installÃ©. Installation en cours..."
         try {
             Install-Module -Name SqlServer -Force -AllowClobber -Scope CurrentUser
         } catch {
@@ -906,18 +906,18 @@ function Debug-DatabaseAccess {
         Recommendations = @()
     }
 
-    # 1. Vérifier si le serveur répond
-    Write-Host "`n=== Test de connectivité au serveur SQL ===" -ForegroundColor Cyan
+    # 1. VÃ©rifier si le serveur rÃ©pond
+    Write-Host "`n=== Test de connectivitÃ© au serveur SQL ===" -ForegroundColor Cyan
     try {
         $serverName = $ServerInstance.Split('\')[0]
         $pingResult = Test-Connection -ComputerName $serverName -Count 2 -Quiet
         $results.ConnectionDiagnostics["PingResult"] = $pingResult
 
         if ($pingResult) {
-            Write-Host "Le serveur '$serverName' répond au ping." -ForegroundColor Green
+            Write-Host "Le serveur '$serverName' rÃ©pond au ping." -ForegroundColor Green
         } else {
-            Write-Host "Le serveur '$serverName' ne répond pas au ping." -ForegroundColor Red
-            Write-Host "Cela peut être dû à un pare-feu ou à un serveur hors ligne." -ForegroundColor Yellow
+            Write-Host "Le serveur '$serverName' ne rÃ©pond pas au ping." -ForegroundColor Red
+            Write-Host "Cela peut Ãªtre dÃ» Ã  un pare-feu ou Ã  un serveur hors ligne." -ForegroundColor Yellow
         }
     } catch {
         Write-Host "Erreur lors du ping du serveur: $($_.Exception.Message)" -ForegroundColor Red
@@ -927,7 +927,7 @@ function Debug-DatabaseAccess {
     # 2. Scanner le port SQL Server
     Write-Host "`n=== Test du port SQL Server ===" -ForegroundColor Cyan
     try {
-        $port = 1433  # Port SQL Server par défaut
+        $port = 1433  # Port SQL Server par dÃ©faut
         $tcpClient = New-Object System.Net.Sockets.TcpClient
         $connectionResult = $tcpClient.BeginConnect($serverName, $port, $null, $null)
         $wait = $connectionResult.AsyncWaitHandle.WaitOne(1000, $false)
@@ -939,7 +939,7 @@ function Debug-DatabaseAccess {
                 Write-Host "Port $port: Ouvert" -ForegroundColor Green
             } catch {
                 $results.ConnectionDiagnostics["PortOpen"] = $false
-                Write-Host "Port $port: Fermé" -ForegroundColor Red
+                Write-Host "Port $port: FermÃ©" -ForegroundColor Red
             }
         } else {
             $results.ConnectionDiagnostics["PortOpen"] = $false
@@ -963,34 +963,34 @@ function Debug-DatabaseAccess {
 
             $results.ServerExists = $true
             $results.ConnectionDiagnostics["WindowsAuthConnection"] = $true
-            Write-Host "Connexion au serveur réussie avec l'authentification Windows." -ForegroundColor Green
+            Write-Host "Connexion au serveur rÃ©ussie avec l'authentification Windows." -ForegroundColor Green
 
-            # Vérifier si la base de données existe
+            # VÃ©rifier si la base de donnÃ©es existe
             $query = "SELECT name FROM sys.databases WHERE name = '$Database'"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
 
             if ($reader.Read()) {
                 $results.DatabaseExists = $true
-                Write-Host "La base de données '$Database' existe." -ForegroundColor Green
+                Write-Host "La base de donnÃ©es '$Database' existe." -ForegroundColor Green
             } else {
-                Write-Host "La base de données '$Database' n'existe pas." -ForegroundColor Red
-                $results.Recommendations += "Vérifiez que la base de données existe sur le serveur."
+                Write-Host "La base de donnÃ©es '$Database' n'existe pas." -ForegroundColor Red
+                $results.Recommendations += "VÃ©rifiez que la base de donnÃ©es existe sur le serveur."
             }
 
             $reader.Close()
 
-            # Si la base de données existe, tenter de s'y connecter
+            # Si la base de donnÃ©es existe, tenter de s'y connecter
             if ($results.DatabaseExists) {
                 $connection.Close()
                 $connectionString = "Server=$ServerInstance;Database=$Database;Integrated Security=True;"
                 $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
                 $connection.Open()
 
-                $results.DirectAccessResult = "Succès"
-                Write-Host "Connexion à la base de données '$Database' réussie avec l'authentification Windows." -ForegroundColor Green
+                $results.DirectAccessResult = "SuccÃ¨s"
+                Write-Host "Connexion Ã  la base de donnÃ©es '$Database' rÃ©ussie avec l'authentification Windows." -ForegroundColor Green
 
-                # Vérifier les permissions de l'utilisateur
+                # VÃ©rifier les permissions de l'utilisateur
                 $query = @"
 SELECT
     dp.name AS principal_name,
@@ -1030,30 +1030,30 @@ ORDER BY o.name, p.permission_name
                         Write-Host "  $($perm.PermissionState) $($perm.PermissionName) sur $($perm.ObjectName) ($($perm.ObjectType))" -ForegroundColor Gray
                     }
                 } else {
-                    Write-Host "`nL'utilisateur actuel n'a aucune permission explicite dans la base de données." -ForegroundColor Yellow
-                    $results.Recommendations += "Vérifiez que l'utilisateur a les permissions nécessaires dans la base de données."
+                    Write-Host "`nL'utilisateur actuel n'a aucune permission explicite dans la base de donnÃ©es." -ForegroundColor Yellow
+                    $results.Recommendations += "VÃ©rifiez que l'utilisateur a les permissions nÃ©cessaires dans la base de donnÃ©es."
                 }
             }
 
             $connection.Close()
         } catch {
             Write-Host "Erreur lors de la connexion avec l'authentification Windows: $($_.Exception.Message)" -ForegroundColor Red
-            $results.DirectAccessResult = "Échec"
+            $results.DirectAccessResult = "Ã‰chec"
 
             # Analyser l'erreur
             $errorMessage = $_.Exception.Message
 
             if ($errorMessage -match "Login failed for user") {
-                $results.Recommendations += "Vérifiez que l'utilisateur Windows actuel a accès au serveur SQL."
-                Write-Host "- Vérifiez que l'utilisateur Windows actuel a accès au serveur SQL." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que l'utilisateur Windows actuel a accÃ¨s au serveur SQL."
+                Write-Host "- VÃ©rifiez que l'utilisateur Windows actuel a accÃ¨s au serveur SQL." -ForegroundColor Yellow
             } elseif ($errorMessage -match "Cannot open database") {
-                $results.Recommendations += "Vérifiez que l'utilisateur a accès à la base de données spécifiée."
-                Write-Host "- Vérifiez que l'utilisateur a accès à la base de données spécifiée." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que l'utilisateur a accÃ¨s Ã  la base de donnÃ©es spÃ©cifiÃ©e."
+                Write-Host "- VÃ©rifiez que l'utilisateur a accÃ¨s Ã  la base de donnÃ©es spÃ©cifiÃ©e." -ForegroundColor Yellow
             } elseif ($errorMessage -match "network-related or instance-specific") {
-                $results.Recommendations += "Vérifiez que le serveur SQL est en cours d'exécution et accessible sur le réseau."
-                $results.Recommendations += "Vérifiez que le nom de l'instance est correct."
-                Write-Host "- Vérifiez que le serveur SQL est en cours d'exécution et accessible sur le réseau." -ForegroundColor Yellow
-                Write-Host "- Vérifiez que le nom de l'instance est correct." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que le serveur SQL est en cours d'exÃ©cution et accessible sur le rÃ©seau."
+                $results.Recommendations += "VÃ©rifiez que le nom de l'instance est correct."
+                Write-Host "- VÃ©rifiez que le serveur SQL est en cours d'exÃ©cution et accessible sur le rÃ©seau." -ForegroundColor Yellow
+                Write-Host "- VÃ©rifiez que le nom de l'instance est correct." -ForegroundColor Yellow
             }
         }
     }
@@ -1072,34 +1072,34 @@ ORDER BY o.name, p.permission_name
 
             $results.ServerExists = $true
             $results.ConnectionDiagnostics["SqlAuthConnection"] = $true
-            Write-Host "Connexion au serveur réussie avec l'authentification SQL." -ForegroundColor Green
+            Write-Host "Connexion au serveur rÃ©ussie avec l'authentification SQL." -ForegroundColor Green
 
-            # Vérifier si la base de données existe
+            # VÃ©rifier si la base de donnÃ©es existe
             $query = "SELECT name FROM sys.databases WHERE name = '$Database'"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
 
             if ($reader.Read()) {
                 $results.DatabaseExists = $true
-                Write-Host "La base de données '$Database' existe." -ForegroundColor Green
+                Write-Host "La base de donnÃ©es '$Database' existe." -ForegroundColor Green
             } else {
-                Write-Host "La base de données '$Database' n'existe pas." -ForegroundColor Red
-                $results.Recommendations += "Vérifiez que la base de données existe sur le serveur."
+                Write-Host "La base de donnÃ©es '$Database' n'existe pas." -ForegroundColor Red
+                $results.Recommendations += "VÃ©rifiez que la base de donnÃ©es existe sur le serveur."
             }
 
             $reader.Close()
 
-            # Si la base de données existe, tenter de s'y connecter
+            # Si la base de donnÃ©es existe, tenter de s'y connecter
             if ($results.DatabaseExists) {
                 $connection.Close()
                 $connectionString = "Server=$ServerInstance;Database=$Database;User Id=$username;Password=$password;"
                 $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
                 $connection.Open()
 
-                $results.CredentialAccessResult = "Succès"
-                Write-Host "Connexion à la base de données '$Database' réussie avec l'authentification SQL." -ForegroundColor Green
+                $results.CredentialAccessResult = "SuccÃ¨s"
+                Write-Host "Connexion Ã  la base de donnÃ©es '$Database' rÃ©ussie avec l'authentification SQL." -ForegroundColor Green
 
-                # Vérifier les permissions de l'utilisateur
+                # VÃ©rifier les permissions de l'utilisateur
                 $query = @"
 SELECT
     dp.name AS principal_name,
@@ -1139,44 +1139,44 @@ ORDER BY o.name, p.permission_name
                         Write-Host "  $($perm.PermissionState) $($perm.PermissionName) sur $($perm.ObjectName) ($($perm.ObjectType))" -ForegroundColor Gray
                     }
                 } else {
-                    Write-Host "`nL'utilisateur SQL n'a aucune permission explicite dans la base de données." -ForegroundColor Yellow
-                    $results.Recommendations += "Vérifiez que l'utilisateur SQL a les permissions nécessaires dans la base de données."
+                    Write-Host "`nL'utilisateur SQL n'a aucune permission explicite dans la base de donnÃ©es." -ForegroundColor Yellow
+                    $results.Recommendations += "VÃ©rifiez que l'utilisateur SQL a les permissions nÃ©cessaires dans la base de donnÃ©es."
                 }
             }
 
             $connection.Close()
         } catch {
             Write-Host "Erreur lors de la connexion avec l'authentification SQL: $($_.Exception.Message)" -ForegroundColor Red
-            $results.CredentialAccessResult = "Échec"
+            $results.CredentialAccessResult = "Ã‰chec"
 
             # Analyser l'erreur
             $errorMessage = $_.Exception.Message
 
             if ($errorMessage -match "Login failed for user") {
-                $results.Recommendations += "Vérifiez que le nom d'utilisateur et le mot de passe SQL sont corrects."
-                $results.Recommendations += "Vérifiez que l'authentification SQL est activée sur le serveur."
-                Write-Host "- Vérifiez que le nom d'utilisateur et le mot de passe SQL sont corrects." -ForegroundColor Yellow
-                Write-Host "- Vérifiez que l'authentification SQL est activée sur le serveur." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que le nom d'utilisateur et le mot de passe SQL sont corrects."
+                $results.Recommendations += "VÃ©rifiez que l'authentification SQL est activÃ©e sur le serveur."
+                Write-Host "- VÃ©rifiez que le nom d'utilisateur et le mot de passe SQL sont corrects." -ForegroundColor Yellow
+                Write-Host "- VÃ©rifiez que l'authentification SQL est activÃ©e sur le serveur." -ForegroundColor Yellow
             } elseif ($errorMessage -match "Cannot open database") {
-                $results.Recommendations += "Vérifiez que l'utilisateur SQL a accès à la base de données spécifiée."
-                Write-Host "- Vérifiez que l'utilisateur SQL a accès à la base de données spécifiée." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que l'utilisateur SQL a accÃ¨s Ã  la base de donnÃ©es spÃ©cifiÃ©e."
+                Write-Host "- VÃ©rifiez que l'utilisateur SQL a accÃ¨s Ã  la base de donnÃ©es spÃ©cifiÃ©e." -ForegroundColor Yellow
             } elseif ($errorMessage -match "network-related or instance-specific") {
-                $results.Recommendations += "Vérifiez que le serveur SQL est en cours d'exécution et accessible sur le réseau."
-                $results.Recommendations += "Vérifiez que le nom de l'instance est correct."
-                Write-Host "- Vérifiez que le serveur SQL est en cours d'exécution et accessible sur le réseau." -ForegroundColor Yellow
-                Write-Host "- Vérifiez que le nom de l'instance est correct." -ForegroundColor Yellow
+                $results.Recommendations += "VÃ©rifiez que le serveur SQL est en cours d'exÃ©cution et accessible sur le rÃ©seau."
+                $results.Recommendations += "VÃ©rifiez que le nom de l'instance est correct."
+                Write-Host "- VÃ©rifiez que le serveur SQL est en cours d'exÃ©cution et accessible sur le rÃ©seau." -ForegroundColor Yellow
+                Write-Host "- VÃ©rifiez que le nom de l'instance est correct." -ForegroundColor Yellow
             }
         }
     }
 
-    # 5. Tenter une connexion avec un processus élevé
-    Write-Host "`n=== Tentative de connexion avec un processus élevé ===" -ForegroundColor Cyan
+    # 5. Tenter une connexion avec un processus Ã©levÃ©
+    Write-Host "`n=== Tentative de connexion avec un processus Ã©levÃ© ===" -ForegroundColor Cyan
 
     $script = {
         param($ServerInstance, $Database, $IntegratedSecurity, $Username, $Password)
 
         try {
-            # Construire la chaîne de connexion
+            # Construire la chaÃ®ne de connexion
             if ($IntegratedSecurity) {
                 $connectionString = "Server=$ServerInstance;Database=$Database;Integrated Security=True;"
             } else {
@@ -1187,7 +1187,7 @@ ORDER BY o.name, p.permission_name
             $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
             $connection.Open()
 
-            # Exécuter une requête simple
+            # ExÃ©cuter une requÃªte simple
             $query = "SELECT DB_NAME() AS DatabaseName, CURRENT_USER AS CurrentUser"
             $command = New-Object System.Data.SqlClient.SqlCommand($query, $connection)
             $reader = $command.ExecuteReader()
@@ -1228,58 +1228,58 @@ ORDER BY o.name, p.permission_name
         }
 
         if ($scriptResult -eq 0) {
-            $results.ElevatedAccessResult = "Succès"
-            Write-Host "Connexion avec processus élevé réussie." -ForegroundColor Green
+            $results.ElevatedAccessResult = "SuccÃ¨s"
+            Write-Host "Connexion avec processus Ã©levÃ© rÃ©ussie." -ForegroundColor Green
         } else {
-            $results.ElevatedAccessResult = "Échec"
-            Write-Host "Échec de la connexion avec processus élevé." -ForegroundColor Red
+            $results.ElevatedAccessResult = "Ã‰chec"
+            Write-Host "Ã‰chec de la connexion avec processus Ã©levÃ©." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de la connexion avec processus élevé: $($_.Exception.Message)" -ForegroundColor Red
-        $results.ElevatedAccessResult = "Échec"
+        Write-Host "Erreur lors de la connexion avec processus Ã©levÃ©: $($_.Exception.Message)" -ForegroundColor Red
+        $results.ElevatedAccessResult = "Ã‰chec"
     }
 
     # 6. Recommandations
     Write-Host "`n=== Recommandations ===" -ForegroundColor Cyan
 
-    # Recommandations basées sur les résultats des tests
+    # Recommandations basÃ©es sur les rÃ©sultats des tests
     if (-not $results.ConnectionDiagnostics["PingResult"]) {
-        $results.Recommendations += "Vérifiez que le serveur est en ligne et accessible sur le réseau."
-        Write-Host "- Vérifiez que le serveur est en ligne et accessible sur le réseau." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que le serveur est en ligne et accessible sur le rÃ©seau."
+        Write-Host "- VÃ©rifiez que le serveur est en ligne et accessible sur le rÃ©seau." -ForegroundColor Yellow
     }
 
     if (-not $results.ConnectionDiagnostics["PortOpen"]) {
-        $results.Recommendations += "Vérifiez que le port SQL Server (1433 par défaut) est ouvert sur le serveur."
-        $results.Recommendations += "Vérifiez que le service SQL Server est en cours d'exécution."
-        Write-Host "- Vérifiez que le port SQL Server (1433 par défaut) est ouvert sur le serveur." -ForegroundColor Yellow
-        Write-Host "- Vérifiez que le service SQL Server est en cours d'exécution." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que le port SQL Server (1433 par dÃ©faut) est ouvert sur le serveur."
+        $results.Recommendations += "VÃ©rifiez que le service SQL Server est en cours d'exÃ©cution."
+        Write-Host "- VÃ©rifiez que le port SQL Server (1433 par dÃ©faut) est ouvert sur le serveur." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez que le service SQL Server est en cours d'exÃ©cution." -ForegroundColor Yellow
     }
 
     if (-not $results.DatabaseExists) {
-        $results.Recommendations += "Vérifiez que la base de données existe sur le serveur."
-        Write-Host "- Vérifiez que la base de données existe sur le serveur." -ForegroundColor Yellow
+        $results.Recommendations += "VÃ©rifiez que la base de donnÃ©es existe sur le serveur."
+        Write-Host "- VÃ©rifiez que la base de donnÃ©es existe sur le serveur." -ForegroundColor Yellow
     }
 
-    if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Succès") {
-        $results.Recommendations += "Utilisez l'authentification SQL pour accéder à cette base de données."
-        Write-Host "- Utilisez l'authentification SQL pour accéder à cette base de données." -ForegroundColor Green
+    if ($results.DirectAccessResult -eq "Ã‰chec" -and $results.CredentialAccessResult -eq "SuccÃ¨s") {
+        $results.Recommendations += "Utilisez l'authentification SQL pour accÃ©der Ã  cette base de donnÃ©es."
+        Write-Host "- Utilisez l'authentification SQL pour accÃ©der Ã  cette base de donnÃ©es." -ForegroundColor Green
     }
 
-    if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Échec" -and $results.ElevatedAccessResult -eq "Succès") {
-        $results.Recommendations += "Utilisez un processus élevé pour accéder à cette base de données."
-        Write-Host "- Utilisez un processus élevé pour accéder à cette base de données." -ForegroundColor Green
+    if ($results.DirectAccessResult -eq "Ã‰chec" -and $results.CredentialAccessResult -eq "Ã‰chec" -and $results.ElevatedAccessResult -eq "SuccÃ¨s") {
+        $results.Recommendations += "Utilisez un processus Ã©levÃ© pour accÃ©der Ã  cette base de donnÃ©es."
+        Write-Host "- Utilisez un processus Ã©levÃ© pour accÃ©der Ã  cette base de donnÃ©es." -ForegroundColor Green
     }
 
-    # Recommandations générales
-    if ($results.DirectAccessResult -eq "Échec" -and $results.CredentialAccessResult -eq "Échec" -and $results.ElevatedAccessResult -eq "Échec") {
-        $results.Recommendations += "Vérifiez les permissions de l'utilisateur dans SQL Server."
-        $results.Recommendations += "Vérifiez que l'authentification appropriée est activée sur le serveur."
-        $results.Recommendations += "Vérifiez les paramètres de sécurité de SQL Server."
+    # Recommandations gÃ©nÃ©rales
+    if ($results.DirectAccessResult -eq "Ã‰chec" -and $results.CredentialAccessResult -eq "Ã‰chec" -and $results.ElevatedAccessResult -eq "Ã‰chec") {
+        $results.Recommendations += "VÃ©rifiez les permissions de l'utilisateur dans SQL Server."
+        $results.Recommendations += "VÃ©rifiez que l'authentification appropriÃ©e est activÃ©e sur le serveur."
+        $results.Recommendations += "VÃ©rifiez les paramÃ¨tres de sÃ©curitÃ© de SQL Server."
         $results.Recommendations += "Consultez les journaux d'erreurs SQL Server pour plus d'informations."
 
-        Write-Host "- Vérifiez les permissions de l'utilisateur dans SQL Server." -ForegroundColor Yellow
-        Write-Host "- Vérifiez que l'authentification appropriée est activée sur le serveur." -ForegroundColor Yellow
-        Write-Host "- Vérifiez les paramètres de sécurité de SQL Server." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez les permissions de l'utilisateur dans SQL Server." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez que l'authentification appropriÃ©e est activÃ©e sur le serveur." -ForegroundColor Yellow
+        Write-Host "- VÃ©rifiez les paramÃ¨tres de sÃ©curitÃ© de SQL Server." -ForegroundColor Yellow
         Write-Host "- Consultez les journaux d'erreurs SQL Server pour plus d'informations." -ForegroundColor Yellow
     }
 

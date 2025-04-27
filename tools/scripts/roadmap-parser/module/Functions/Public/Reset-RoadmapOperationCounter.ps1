@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Réinitialise un compteur d'opérations.
+    RÃ©initialise un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Reset-RoadmapOperationCounter réinitialise un compteur d'opérations.
-    Elle met à jour les statistiques pour le compteur spécifié.
+    La fonction Reset-RoadmapOperationCounter rÃ©initialise un compteur d'opÃ©rations.
+    Elle met Ã  jour les statistiques pour le compteur spÃ©cifiÃ©.
 
 .PARAMETER Name
-    Le nom du compteur à réinitialiser.
+    Le nom du compteur Ã  rÃ©initialiser.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $true.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Reset-RoadmapOperationCounter -Name "MaFonction"
-    Réinitialise le compteur d'opérations nommé "MaFonction" et journalise le résultat.
+    RÃ©initialise le compteur d'opÃ©rations nommÃ© "MaFonction" et journalise le rÃ©sultat.
 
 .OUTPUTS
-    [int] La valeur du compteur avant la réinitialisation.
+    [int] La valeur du compteur avant la rÃ©initialisation.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Reset-RoadmapOperationCounter {
     [CmdletBinding()]
@@ -44,14 +44,14 @@ function Reset-RoadmapOperationCounter {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction de réinitialisation du compteur
+    # Appeler la fonction de rÃ©initialisation du compteur
     return Reset-OperationCounter -Name $Name -LogResult:$LogResult
 }

@@ -1,38 +1,38 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Affiche les résultats de détection de format.
+    Affiche les rÃ©sultats de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script affiche les résultats de détection de format de manière conviviale.
-    Il peut également exporter les résultats dans différents formats.
+    Ce script affiche les rÃ©sultats de dÃ©tection de format de maniÃ¨re conviviale.
+    Il peut Ã©galement exporter les rÃ©sultats dans diffÃ©rents formats.
 
 .PARAMETER FilePath
-    Le chemin du fichier analysé.
+    Le chemin du fichier analysÃ©.
 
 .PARAMETER DetectionResult
-    Le résultat de la détection de format.
+    Le rÃ©sultat de la dÃ©tection de format.
 
 .PARAMETER ShowAllFormats
-    Indique si tous les formats détectés doivent être affichés.
+    Indique si tous les formats dÃ©tectÃ©s doivent Ãªtre affichÃ©s.
 
 .PARAMETER ExportFormat
-    Le format d'exportation des résultats. Les valeurs possibles sont : "JSON", "CSV", "HTML".
+    Le format d'exportation des rÃ©sultats. Les valeurs possibles sont : "JSON", "CSV", "HTML".
 
 .PARAMETER OutputPath
-    Le chemin où exporter les résultats.
+    Le chemin oÃ¹ exporter les rÃ©sultats.
 
 .EXAMPLE
     Show-FormatDetectionResults -FilePath "C:\path\to\file.txt" -DetectionResult $result
-    Affiche les résultats de détection de format pour le fichier spécifié.
+    Affiche les rÃ©sultats de dÃ©tection de format pour le fichier spÃ©cifiÃ©.
 
 .EXAMPLE
     Show-FormatDetectionResults -FilePath "C:\path\to\file.txt" -DetectionResult $result -ShowAllFormats
-    Affiche tous les formats détectés pour le fichier spécifié.
+    Affiche tous les formats dÃ©tectÃ©s pour le fichier spÃ©cifiÃ©.
 
 .EXAMPLE
     Show-FormatDetectionResults -FilePath "C:\path\to\file.txt" -DetectionResult $result -ExportFormat "HTML" -OutputPath "C:\path\to\results.html"
-    Exporte les résultats de détection de format au format HTML.
+    Exporte les rÃ©sultats de dÃ©tection de format au format HTML.
 
 .NOTES
     Version: 1.0
@@ -61,15 +61,15 @@ function Show-FormatDetectionResults {
     )
     
     # Afficher les informations de base
-    Write-Host "Résultats de détection de format pour '$FilePath'" -ForegroundColor Cyan
+    Write-Host "RÃ©sultats de dÃ©tection de format pour '$FilePath'" -ForegroundColor Cyan
     Write-Host "Taille du fichier : $($DetectionResult.Size) octets" -ForegroundColor Gray
     Write-Host "Type de fichier : $(if ($DetectionResult.IsBinary) { 'Binaire' } else { 'Texte' })" -ForegroundColor Gray
     
-    # Afficher le format détecté
+    # Afficher le format dÃ©tectÃ©
     if ($DetectionResult.DetectedFormat) {
-        Write-Host "Format détecté: $($DetectionResult.DetectedFormat)" -ForegroundColor Green
+        Write-Host "Format dÃ©tectÃ©: $($DetectionResult.DetectedFormat)" -ForegroundColor Green
         
-        # Afficher le score de confiance avec une couleur appropriée
+        # Afficher le score de confiance avec une couleur appropriÃ©e
         $confidenceColor = switch ($DetectionResult.ConfidenceScore) {
             { $_ -ge 90 } { "Green" }
             { $_ -ge 70 } { "Yellow" }
@@ -77,15 +77,15 @@ function Show-FormatDetectionResults {
         }
         
         Write-Host "Score de confiance: $($DetectionResult.ConfidenceScore)%" -ForegroundColor $confidenceColor
-        Write-Host "Critères correspondants: $($DetectionResult.MatchedCriteria)" -ForegroundColor Gray
+        Write-Host "CritÃ¨res correspondants: $($DetectionResult.MatchedCriteria)" -ForegroundColor Gray
     }
     else {
-        Write-Host "Aucun format détecté." -ForegroundColor Red
+        Write-Host "Aucun format dÃ©tectÃ©." -ForegroundColor Red
     }
     
-    # Afficher tous les formats détectés si demandé
+    # Afficher tous les formats dÃ©tectÃ©s si demandÃ©
     if ($ShowAllFormats -and $DetectionResult.AllFormats) {
-        Write-Host "`nTous les formats détectés:" -ForegroundColor Cyan
+        Write-Host "`nTous les formats dÃ©tectÃ©s:" -ForegroundColor Cyan
         
         $sortedFormats = $DetectionResult.AllFormats | Sort-Object -Property Score, Priority -Descending
         
@@ -98,15 +98,15 @@ function Show-FormatDetectionResults {
             
             Write-Host "  - $($format.Format) (Score: " -NoNewline
             Write-Host "$($format.Score)%" -ForegroundColor $scoreColor -NoNewline
-            Write-Host ", Priorité: $($format.Priority))"
+            Write-Host ", PrioritÃ©: $($format.Priority))"
             
             if ($format.MatchedCriteria) {
-                Write-Host "    Critères: $($format.MatchedCriteria -join ", ")" -ForegroundColor Gray
+                Write-Host "    CritÃ¨res: $($format.MatchedCriteria -join ", ")" -ForegroundColor Gray
             }
         }
     }
     
-    # Exporter les résultats si demandé
+    # Exporter les rÃ©sultats si demandÃ©
     if ($ExportFormat) {
         if (-not $OutputPath) {
             $OutputPath = [System.IO.Path]::ChangeExtension($FilePath, "detection.$($ExportFormat.ToLower())")
@@ -151,7 +151,7 @@ function Show-FormatDetectionResults {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultats de détection de format</title>
+    <title>RÃ©sultats de dÃ©tection de format</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -224,7 +224,7 @@ function Show-FormatDetectionResults {
 </head>
 <body>
     <div class="container">
-        <h1>Résultats de détection de format</h1>
+        <h1>RÃ©sultats de dÃ©tection de format</h1>
         
         <div class="file-info">
             <h2>Informations sur le fichier</h2>
@@ -234,7 +234,7 @@ function Show-FormatDetectionResults {
         </div>
         
         <div class="detection-result">
-            <h2>Résultat de détection</h2>
+            <h2>RÃ©sultat de dÃ©tection</h2>
 "@
 
                 if ($DetectionResult.DetectedFormat) {
@@ -245,14 +245,14 @@ function Show-FormatDetectionResults {
                     }
                     
                     $html += @"
-            <p><strong>Format détecté:</strong> $($DetectionResult.DetectedFormat)</p>
+            <p><strong>Format dÃ©tectÃ©:</strong> $($DetectionResult.DetectedFormat)</p>
             <p><strong>Score de confiance:</strong> <span class="$scoreClass">$($DetectionResult.ConfidenceScore)%</span></p>
-            <p><strong>Critères correspondants:</strong> $($DetectionResult.MatchedCriteria)</p>
+            <p><strong>CritÃ¨res correspondants:</strong> $($DetectionResult.MatchedCriteria)</p>
 "@
                 }
                 else {
                     $html += @"
-            <p><strong>Aucun format détecté.</strong></p>
+            <p><strong>Aucun format dÃ©tectÃ©.</strong></p>
 "@
                 }
                 
@@ -262,14 +262,14 @@ function Show-FormatDetectionResults {
                 
                 if ($DetectionResult.AllFormats) {
                     $html += @"
-        <h2>Tous les formats détectés</h2>
+        <h2>Tous les formats dÃ©tectÃ©s</h2>
         <table class="format-list">
             <thead>
                 <tr>
                     <th>Format</th>
                     <th>Score</th>
-                    <th>Priorité</th>
-                    <th>Critères</th>
+                    <th>PrioritÃ©</th>
+                    <th>CritÃ¨res</th>
                 </tr>
             </thead>
             <tbody>
@@ -312,7 +312,7 @@ function Show-FormatDetectionResults {
             }
         }
         
-        Write-Host "`nRésultats exportés au format $ExportFormat : $OutputPath" -ForegroundColor Green
+        Write-Host "`nRÃ©sultats exportÃ©s au format $ExportFormat : $OutputPath" -ForegroundColor Green
     }
     
     return $DetectionResult

@@ -1,7 +1,7 @@
-# RoadmapParser.ps1
+﻿# RoadmapParser.ps1
 # Script pour parser un fichier markdown de roadmap
 
-# Fonction pour parser un fichier markdown en structure de tâches
+# Fonction pour parser un fichier markdown en structure de tÃ¢ches
 function ConvertFrom-MarkdownToTaskStructure {
     [CmdletBinding()]
     param (
@@ -24,7 +24,7 @@ function ConvertFrom-MarkdownToTaskStructure {
         if ($lines[$i] -match '^#\s+(.+)$') {
             $title = $matches[1]
 
-            # Extraire la description (lignes non vides après le titre jusqu'à la première section)
+            # Extraire la description (lignes non vides aprÃ¨s le titre jusqu'Ã  la premiÃ¨re section)
             $descLines = @()
             $j = $i + 1
             while ($j -lt $lines.Count -and -not ($lines[$j] -match '^#{2,}\s+')) {
@@ -42,7 +42,7 @@ function ConvertFrom-MarkdownToTaskStructure {
         }
     }
 
-    # Créer la structure de tâches
+    # CrÃ©er la structure de tÃ¢ches
     $taskStructure = @{
         Title        = $title
         Description  = $description
@@ -52,7 +52,7 @@ function ConvertFrom-MarkdownToTaskStructure {
         ModifiedDate = Get-Date
     }
 
-    # Parser les tâches
+    # Parser les tÃ¢ches
     $taskStack = @{}
 
     foreach ($line in $lines) {
@@ -62,7 +62,7 @@ function ConvertFrom-MarkdownToTaskStructure {
             $id = $matches[3]
             $title = $matches[4]
 
-            # Déterminer le statut
+            # DÃ©terminer le statut
             $status = switch ($statusMark) {
                 'x' { "Complete" }
                 'X' { "Complete" }
@@ -71,7 +71,7 @@ function ConvertFrom-MarkdownToTaskStructure {
                 default { "Incomplete" }
             }
 
-            # Créer la tâche
+            # CrÃ©er la tÃ¢che
             $task = @{
                 Id               = $id
                 Title            = $title
@@ -81,13 +81,13 @@ function ConvertFrom-MarkdownToTaskStructure {
                 OriginalMarkdown = $line
             }
 
-            # Déterminer le parent en fonction de l'indentation
+            # DÃ©terminer le parent en fonction de l'indentation
             if ($task.Level -eq 0) {
-                # Tâche de premier niveau
+                # TÃ¢che de premier niveau
                 $taskStructure.Tasks += $task
                 $taskStack[0] = $task
             } else {
-                # Trouver le parent approprié
+                # Trouver le parent appropriÃ©
                 $parentLevel = $task.Level - 1
                 while ($parentLevel -ge 0) {
                     if ($taskStack.ContainsKey($parentLevel)) {
@@ -105,7 +105,7 @@ function ConvertFrom-MarkdownToTaskStructure {
     return $taskStructure
 }
 
-# Fonction pour convertir une structure de tâches en markdown
+# Fonction pour convertir une structure de tÃ¢ches en markdown
 function ConvertTo-MarkdownFromTaskStructure {
     [CmdletBinding()]
     param (
@@ -122,7 +122,7 @@ function ConvertTo-MarkdownFromTaskStructure {
         $markdown += "$($TaskStructure.Description)`n`n"
     }
 
-    # Fonction récursive pour générer le markdown des tâches
+    # Fonction rÃ©cursive pour gÃ©nÃ©rer le markdown des tÃ¢ches
     function ConvertTaskToMarkdown {
         param (
             [Parameter(Mandatory = $true)]
@@ -150,12 +150,12 @@ function ConvertTo-MarkdownFromTaskStructure {
         return $markdown
     }
 
-    # Générer le markdown pour chaque tâche de premier niveau
+    # GÃ©nÃ©rer le markdown pour chaque tÃ¢che de premier niveau
     foreach ($task in $TaskStructure.Tasks) {
         $markdown += ConvertTaskToMarkdown -Task $task
     }
 
-    # Enregistrer le markdown dans un fichier si un chemin de sortie est spécifié
+    # Enregistrer le markdown dans un fichier si un chemin de sortie est spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($OutputPath)) {
         $markdown | Out-File -FilePath $OutputPath -Encoding UTF8
     }
@@ -218,7 +218,7 @@ function Get-RoadmapStructureInfo {
         }
     }
 
-    # Déterminer l'indentation la plus courante
+    # DÃ©terminer l'indentation la plus courante
     $spacesPerLevel = 2
     if ($indentDifferences.Count -gt 0) {
         $mostCommonDiff = $indentDifferences.GetEnumerator() |
@@ -275,7 +275,7 @@ function Get-RoadmapStructureInfo {
     $statusMarkers.Incomplete = if ($null -ne $incompleteMatches) { $incompleteMatches.Count } else { 0 }
     $statusMarkers.Complete = if ($null -ne $completeMatches) { $completeMatches.Count } else { 0 }
 
-    # Rechercher les marqueurs de statut personnalisés
+    # Rechercher les marqueurs de statut personnalisÃ©s
     $customPattern = "(?m)^\s*[-*+]\s*\[([^x ])\]"
     $customMatches = [regex]::Matches($content, $customPattern)
 
@@ -292,8 +292,8 @@ function Get-RoadmapStructureInfo {
 
     # Rechercher les indicateurs textuels de progression
     $textualIndicators = @(
-        "en cours", "en attente", "terminé", "complété", "bloqué",
-        "reporté", "annulé", "prioritaire", "urgent"
+        "en cours", "en attente", "terminÃ©", "complÃ©tÃ©", "bloquÃ©",
+        "reportÃ©", "annulÃ©", "prioritaire", "urgent"
     )
 
     foreach ($indicator in $textualIndicators) {
@@ -305,7 +305,7 @@ function Get-RoadmapStructureInfo {
         }
     }
 
-    # Analyser les conventions de numérotation
+    # Analyser les conventions de numÃ©rotation
     $numberingPatterns = @{}
     foreach ($line in $lines) {
         if ($line -match '^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)*|\w+\.)') {
@@ -330,7 +330,7 @@ function Get-RoadmapStructureInfo {
         0
     }
 
-    # Créer la structure d'information
+    # CrÃ©er la structure d'information
     $structureInfo = @{
         FilePath          = $FilePath
         ListMarkers       = $listMarkers
@@ -352,7 +352,7 @@ function Get-RoadmapStructureInfo {
     return $structureInfo
 }
 
-# Fonction pour générer un rapport de structure de roadmap
+# Fonction pour gÃ©nÃ©rer un rapport de structure de roadmap
 function New-RoadmapStructureReport {
     [CmdletBinding()]
     param (
@@ -364,13 +364,13 @@ function New-RoadmapStructureReport {
     )
 
     $report = "# Rapport d'Analyse de Structure de Roadmap`n`n"
-    $report += "**Fichier analysé:** $($StructureInfo.FilePath)`n"
+    $report += "**Fichier analysÃ©:** $($StructureInfo.FilePath)`n"
     $report += "**Date d'analyse:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n"
 
     # Marqueurs de liste
     $report += "## 1. Marqueurs de Liste`n`n"
     if ($StructureInfo.ListMarkers.Count -eq 0) {
-        $report += "Aucun marqueur de liste détecté.`n`n"
+        $report += "Aucun marqueur de liste dÃ©tectÃ©.`n`n"
     } else {
         $report += "| Marqueur | Occurrences |`n|----------|-------------|`n"
         foreach ($marker in $StructureInfo.ListMarkers.GetEnumerator()) {
@@ -382,13 +382,13 @@ function New-RoadmapStructureReport {
     # Conventions d'indentation
     $report += "## 2. Conventions d'Indentation`n`n"
     $report += "- **Espaces par niveau:** $($StructureInfo.Indentation.SpacesPerLevel)`n"
-    $report += "- **Indentation cohérente:** $($StructureInfo.Indentation.ConsistentIndentation)`n`n"
+    $report += "- **Indentation cohÃ©rente:** $($StructureInfo.Indentation.ConsistentIndentation)`n`n"
 
     # Formats de titres
     $report += "## 3. Formats de Titres et Sous-titres`n`n"
     $report += "### 3.1 Titres avec #`n`n"
     if ($StructureInfo.HeaderFormats.HashHeaders.Count -eq 0) {
-        $report += "Aucun titre avec # détecté.`n`n"
+        $report += "Aucun titre avec # dÃ©tectÃ©.`n`n"
     } else {
         $report += "| Niveau | Occurrences |`n|--------|-------------|`n"
         foreach ($level in $StructureInfo.HeaderFormats.HashHeaders.GetEnumerator() | Sort-Object -Property Key) {
@@ -399,7 +399,7 @@ function New-RoadmapStructureReport {
 
     $report += "### 3.2 Titres avec soulignement`n`n"
     if ($StructureInfo.HeaderFormats.UnderlineHeaders.Count -eq 0) {
-        $report += "Aucun titre avec soulignement détecté.`n`n"
+        $report += "Aucun titre avec soulignement dÃ©tectÃ©.`n`n"
     } else {
         $report += "| Type | Niveau | Occurrences |`n|------|--------|-------------|`n"
         foreach ($level in $StructureInfo.HeaderFormats.UnderlineHeaders.GetEnumerator() | Sort-Object -Property Key) {
@@ -414,9 +414,9 @@ function New-RoadmapStructureReport {
     $report += "- **Incomplet (`[ ]`):** $($StructureInfo.StatusMarkers.Incomplete) occurrences`n"
     $report += "- **Complet (`[x]`):** $($StructureInfo.StatusMarkers.Complete) occurrences`n`n"
 
-    $report += "### 4.1 Marqueurs Personnalisés`n`n"
+    $report += "### 4.1 Marqueurs PersonnalisÃ©s`n`n"
     if ($StructureInfo.StatusMarkers.Custom.Count -eq 0) {
-        $report += "Aucun marqueur personnalisé détecté.`n`n"
+        $report += "Aucun marqueur personnalisÃ© dÃ©tectÃ©.`n`n"
     } else {
         $report += "| Marqueur | Occurrences |`n|----------|-------------|`n"
         foreach ($marker in $StructureInfo.StatusMarkers.Custom.GetEnumerator()) {
@@ -427,7 +427,7 @@ function New-RoadmapStructureReport {
 
     $report += "### 4.2 Indicateurs Textuels de Progression`n`n"
     if ($StructureInfo.StatusMarkers.TextualIndicators.Count -eq 0) {
-        $report += "Aucun indicateur textuel détecté.`n`n"
+        $report += "Aucun indicateur textuel dÃ©tectÃ©.`n`n"
     } else {
         $report += "| Indicateur | Occurrences |`n|-----------|-------------|`n"
         foreach ($indicator in $StructureInfo.StatusMarkers.TextualIndicators.GetEnumerator()) {
@@ -436,10 +436,10 @@ function New-RoadmapStructureReport {
         $report += "`n"
     }
 
-    # Conventions de numérotation
-    $report += "## 5. Conventions de Numérotation`n`n"
+    # Conventions de numÃ©rotation
+    $report += "## 5. Conventions de NumÃ©rotation`n`n"
     if ($StructureInfo.NumberingPatterns.Count -eq 0) {
-        $report += "Aucune convention de numérotation détectée.`n`n"
+        $report += "Aucune convention de numÃ©rotation dÃ©tectÃ©e.`n`n"
     } else {
         $report += "| Format | Occurrences |`n|--------|-------------|`n"
         foreach ($pattern in $StructureInfo.NumberingPatterns.GetEnumerator() | Sort-Object -Property Value -Descending) {
@@ -450,12 +450,12 @@ function New-RoadmapStructureReport {
 
     # Progression
     $report += "## 6. Progression`n`n"
-    $report += "- **Tâches totales:** $($StructureInfo.Progress.TotalTasks)`n"
-    $report += "- **Tâches terminées:** $($StructureInfo.Progress.CompleteTasks)`n"
-    $report += "- **Tâches en cours:** $($StructureInfo.Progress.IncompleteTasks)`n"
-    $report += "- **Pourcentage de complétion:** $($StructureInfo.Progress.CompletionPercentage)%`n`n"
+    $report += "- **TÃ¢ches totales:** $($StructureInfo.Progress.TotalTasks)`n"
+    $report += "- **TÃ¢ches terminÃ©es:** $($StructureInfo.Progress.CompleteTasks)`n"
+    $report += "- **TÃ¢ches en cours:** $($StructureInfo.Progress.IncompleteTasks)`n"
+    $report += "- **Pourcentage de complÃ©tion:** $($StructureInfo.Progress.CompletionPercentage)%`n`n"
 
-    # Créer un graphique de progression en ASCII art
+    # CrÃ©er un graphique de progression en ASCII art
     $progressBarWidth = 50
     $completedChars = [Math]::Round(($StructureInfo.Progress.CompletionPercentage / 100) * $progressBarWidth)
     $remainingChars = $progressBarWidth - $completedChars
@@ -473,7 +473,7 @@ function New-RoadmapStructureReport {
     $report += $progressBar + " " + $StructureInfo.Progress.CompletionPercentage + "%\n"
     $report += "```\n"
 
-    # Enregistrer le rapport dans un fichier si un chemin de sortie est spécifié
+    # Enregistrer le rapport dans un fichier si un chemin de sortie est spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($OutputPath)) {
         $report | Out-File -FilePath $OutputPath -Encoding UTF8
     }
@@ -481,7 +481,7 @@ function New-RoadmapStructureReport {
     return $report
 }
 
-# Fonction pour mettre à jour le statut d'une tâche dans un fichier markdown
+# Fonction pour mettre Ã  jour le statut d'une tÃ¢che dans un fichier markdown
 function Update-TaskStatus {
     [CmdletBinding()]
     param (
@@ -530,7 +530,7 @@ function Update-TaskStatus {
     return $modified
 }
 
-# Fonction pour ajouter une nouvelle tâche à un fichier markdown
+# Fonction pour ajouter une nouvelle tÃ¢che Ã  un fichier markdown
 function Add-Task {
     [CmdletBinding()]
     param (
@@ -561,7 +561,7 @@ function Add-Task {
     $content = Get-Content -Path $FilePath -Encoding UTF8
     $modified = $false
 
-    # Déterminer le statut
+    # DÃ©terminer le statut
     $statusMark = switch ($Status) {
         "Complete" { "x" }
         "InProgress" { "~" }
@@ -569,15 +569,15 @@ function Add-Task {
         default { " " }
     }
 
-    # Créer la nouvelle ligne de tâche
+    # CrÃ©er la nouvelle ligne de tÃ¢che
     $newTaskLine = "- [$statusMark] **$TaskId** $Title"
 
     if ([string]::IsNullOrEmpty($ParentTaskId)) {
-        # Ajouter la tâche à la fin du fichier
+        # Ajouter la tÃ¢che Ã  la fin du fichier
         $content += $newTaskLine
         $modified = $true
     } else {
-        # Trouver la tâche parente
+        # Trouver la tÃ¢che parente
         $parentIndex = -1
         $parentIndent = 0
 
@@ -590,7 +590,7 @@ function Add-Task {
         }
 
         if ($parentIndex -ge 0) {
-            # Trouver l'endroit où insérer la nouvelle tâche (après la dernière sous-tâche de la tâche parente)
+            # Trouver l'endroit oÃ¹ insÃ©rer la nouvelle tÃ¢che (aprÃ¨s la derniÃ¨re sous-tÃ¢che de la tÃ¢che parente)
             $insertIndex = $parentIndex + 1
             $childIndent = $parentIndent + 2
 
@@ -607,7 +607,7 @@ function Add-Task {
                 $insertIndex++
             }
 
-            # Insérer la nouvelle tâche avec l'indentation appropriée
+            # InsÃ©rer la nouvelle tÃ¢che avec l'indentation appropriÃ©e
             $indentedTaskLine = (" " * $childIndent) + $newTaskLine
             $content = $content[0..($insertIndex - 1)] + $indentedTaskLine + $content[$insertIndex..($content.Count - 1)]
             $modified = $true
@@ -621,7 +621,7 @@ function Add-Task {
     return $modified
 }
 
-# Fonction pour supprimer une tâche d'un fichier markdown
+# Fonction pour supprimer une tÃ¢che d'un fichier markdown
 function Remove-Task {
     [CmdletBinding()]
     param (
@@ -645,7 +645,7 @@ function Remove-Task {
     $content = Get-Content -Path $FilePath -Encoding UTF8
     $modified = $false
 
-    # Trouver la tâche à supprimer
+    # Trouver la tÃ¢che Ã  supprimer
     $taskIndex = -1
     $taskIndent = 0
 
@@ -659,7 +659,7 @@ function Remove-Task {
 
     if ($taskIndex -ge 0) {
         if ($RemoveChildren) {
-            # Supprimer la tâche et toutes ses sous-tâches
+            # Supprimer la tÃ¢che et toutes ses sous-tÃ¢ches
             $endIndex = $taskIndex + 1
 
             while ($endIndex -lt $content.Count) {
@@ -677,7 +677,7 @@ function Remove-Task {
 
             $content = $content[0..($taskIndex - 1)] + $content[$endIndex..($content.Count - 1)]
         } else {
-            # Supprimer uniquement la tâche
+            # Supprimer uniquement la tÃ¢che
             $content = $content[0..($taskIndex - 1)] + $content[($taskIndex + 1)..($content.Count - 1)]
         }
 
@@ -691,7 +691,7 @@ function Remove-Task {
     return $modified
 }
 
-# Fonction pour générer un rapport de progression
+# Fonction pour gÃ©nÃ©rer un rapport de progression
 function New-ProgressReport {
     [CmdletBinding()]
     param (
@@ -709,18 +709,18 @@ function New-ProgressReport {
     # Analyser la structure du fichier
     $structureInfo = Get-RoadmapStructureInfo -FilePath $FilePath
 
-    # Générer le rapport de progression
+    # GÃ©nÃ©rer le rapport de progression
     $report = "# Rapport de Progression de la Roadmap`n`n"
-    $report += "**Fichier analysé:** $FilePath`n"
+    $report += "**Fichier analysÃ©:** $FilePath`n"
     $report += "**Date d'analyse:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n"
 
     $report += "## Progression Globale`n`n"
-    $report += "- **Tâches totales:** $($structureInfo.Progress.TotalTasks)`n"
-    $report += "- **Tâches terminées:** $($structureInfo.Progress.CompleteTasks)`n"
-    $report += "- **Tâches en cours:** $($structureInfo.Progress.IncompleteTasks)`n"
-    $report += "- **Pourcentage de complétion:** $($structureInfo.Progress.CompletionPercentage)%`n`n"
+    $report += "- **TÃ¢ches totales:** $($structureInfo.Progress.TotalTasks)`n"
+    $report += "- **TÃ¢ches terminÃ©es:** $($structureInfo.Progress.CompleteTasks)`n"
+    $report += "- **TÃ¢ches en cours:** $($structureInfo.Progress.IncompleteTasks)`n"
+    $report += "- **Pourcentage de complÃ©tion:** $($structureInfo.Progress.CompletionPercentage)%`n`n"
 
-    # Créer un graphique de progression en ASCII art
+    # CrÃ©er un graphique de progression en ASCII art
     $progressBarWidth = 50
     $completedChars = [Math]::Round(($structureInfo.Progress.CompletionPercentage / 100) * $progressBarWidth)
     $remainingChars = $progressBarWidth - $completedChars
@@ -738,7 +738,7 @@ function New-ProgressReport {
     $report += $progressBar + " " + $structureInfo.Progress.CompletionPercentage + "%\n"
     $report += "```\n"
 
-    # Enregistrer le rapport dans un fichier si un chemin de sortie est spécifié
+    # Enregistrer le rapport dans un fichier si un chemin de sortie est spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($OutputPath)) {
         $report | Out-File -FilePath $OutputPath -Encoding UTF8
     }

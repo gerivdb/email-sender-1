@@ -1,6 +1,6 @@
-# Module simplifié pour les tests
+﻿# Module simplifiÃ© pour les tests
 
-# Fonction pour créer un nouvel indexeur
+# Fonction pour crÃ©er un nouvel indexeur
 function New-SimpleFileContentIndexer {
     [CmdletBinding()]
     param(

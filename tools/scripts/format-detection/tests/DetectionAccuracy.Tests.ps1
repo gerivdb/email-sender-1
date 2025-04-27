@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour le script de mesure de la précision de détection.
+    Tests unitaires pour le script de mesure de la prÃ©cision de dÃ©tection.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement du script
-    de mesure de la précision de détection. Il utilise le framework Pester pour exécuter les tests.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement du script
+    de mesure de la prÃ©cision de dÃ©tection. Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .EXAMPLE
     Invoke-Pester -Path .\DetectionAccuracy.Tests.ps1
-    Exécute les tests unitaires pour le script de mesure de la précision de détection.
+    ExÃ©cute les tests unitaires pour le script de mesure de la prÃ©cision de dÃ©tection.
 
 .NOTES
     Auteur: Augment Agent
@@ -18,7 +18,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -28,13 +28,13 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Chemins des scripts à tester
+# Chemins des scripts Ã  tester
 $scriptRoot = Split-Path -Parent $PSScriptRoot
 $measureAccuracyScript = "$PSScriptRoot\Measure-DetectionAccuracy.ps1"
 $formatDetectionScript = "$scriptRoot\analysis\Improved-FormatDetection.ps1"
 $ambiguousHandlingScript = "$scriptRoot\analysis\Handle-AmbiguousFormats.ps1"
 
-# Vérifier si les scripts nécessaires existent
+# VÃ©rifier si les scripts nÃ©cessaires existent
 $missingScripts = @()
 
 if (-not (Test-Path -Path $measureAccuracyScript)) {
@@ -54,16 +54,16 @@ if ($missingScripts.Count -gt 0) {
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "DetectionAccuracyTests_$(Get-Random)"
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer un répertoire de test pour les échantillons
+# CrÃ©er un rÃ©pertoire de test pour les Ã©chantillons
 $testSamplesDir = Join-Path -Path $testTempDir -ChildPath "samples"
 New-Item -Path $testSamplesDir -ItemType Directory -Force | Out-Null
 New-Item -Path $testSamplesDir -ChildPath "formats" -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param (
         [string]$FileName,
@@ -76,7 +76,7 @@ function New-TestFile {
     return $filePath
 }
 
-# Créer des fichiers d'exemple pour les tests
+# CrÃ©er des fichiers d'exemple pour les tests
 $jsonContent = @"
 {
     "name": "Test",
@@ -102,7 +102,7 @@ $jsonPath = New-TestFile -FileName "sample.json" -Content $jsonContent -Director
 $xmlPath = New-TestFile -FileName "sample.xml" -Content $xmlContent -Directory (Join-Path -Path $testSamplesDir -ChildPath "formats")
 $textPath = New-TestFile -FileName "sample.txt" -Content $textContent -Directory (Join-Path -Path $testSamplesDir -ChildPath "formats")
 
-# Créer un fichier de formats attendus
+# CrÃ©er un fichier de formats attendus
 $expectedFormatsContent = @"
 {
     "sample.json": "JSON",
@@ -113,37 +113,37 @@ $expectedFormatsContent = @"
 
 $expectedFormatsPath = New-TestFile -FileName "ExpectedFormats.json" -Content $expectedFormatsContent -Directory $testSamplesDir
 
-# Créer un répertoire pour les rapports
+# CrÃ©er un rÃ©pertoire pour les rapports
 $testReportsDir = Join-Path -Path $testTempDir -ChildPath "reports"
 New-Item -Path $testReportsDir -ItemType Directory -Force | Out-Null
 
 # Tests Pester
-Describe "Script de mesure de la précision de détection" {
+Describe "Script de mesure de la prÃ©cision de dÃ©tection" {
     Context "Fonctions internes" {
-        It "La fonction New-DirectoryIfNotExists crée un répertoire s'il n'existe pas" {
-            # Créer un chemin de test
+        It "La fonction New-DirectoryIfNotExists crÃ©e un rÃ©pertoire s'il n'existe pas" {
+            # CrÃ©er un chemin de test
             $testPath = Join-Path -Path $testTempDir -ChildPath "test_directory"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $measureAccuracyScript
                 New-DirectoryIfNotExists -Path $testPath
             }
             
-            # Vérifier que le répertoire a été créé
+            # VÃ©rifier que le rÃ©pertoire a Ã©tÃ© crÃ©Ã©
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $testPath -PathType Container | Should -Be $true
         }
         
         It "La fonction Get-ExpectedFormats charge correctement les formats attendus" {
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $measureAccuracyScript
                 $formats = Get-ExpectedFormats -Path $expectedFormatsPath
                 return $formats
             }
             
-            # Vérifier que les formats ont été chargés correctement
+            # VÃ©rifier que les formats ont Ã©tÃ© chargÃ©s correctement
             $formats = & $scriptBlock
             $formats | Should -Not -BeNullOrEmpty
             $formats["sample.json"] | Should -Be "JSON"
@@ -151,8 +151,8 @@ Describe "Script de mesure de la précision de détection" {
             $formats["sample.txt"] | Should -Be "TEXT"
         }
         
-        It "La fonction Get-DetectionMetrics calcule correctement les métriques" {
-            # Créer des résultats de test
+        It "La fonction Get-DetectionMetrics calcule correctement les mÃ©triques" {
+            # CrÃ©er des rÃ©sultats de test
             $testResults = @(
                 [PSCustomObject]@{
                     FilePath = "sample.json"
@@ -188,14 +188,14 @@ Describe "Script de mesure de la précision de détection" {
                 }
             )
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $measureAccuracyScript
                 $metrics = Get-DetectionMetrics -Results $testResults
                 return $metrics
             }
             
-            # Vérifier que les métriques ont été calculées correctement
+            # VÃ©rifier que les mÃ©triques ont Ã©tÃ© calculÃ©es correctement
             $metrics = & $scriptBlock
             $metrics | Should -Not -BeNullOrEmpty
             $metrics.TotalFiles | Should -Be 4
@@ -206,8 +206,8 @@ Describe "Script de mesure de la précision de détection" {
             $metrics.AmbiguousResolutionRate | Should -Be 50
         }
         
-        It "La fonction Export-ResultsToJson exporte correctement les résultats" {
-            # Créer des résultats et métriques de test
+        It "La fonction Export-ResultsToJson exporte correctement les rÃ©sultats" {
+            # CrÃ©er des rÃ©sultats et mÃ©triques de test
             $testResults = @(
                 [PSCustomObject]@{
                     FilePath = "sample.json"
@@ -233,16 +233,16 @@ Describe "Script de mesure de la précision de détection" {
                 FormatCounts = @{}
             }
             
-            # Créer un chemin de sortie
+            # CrÃ©er un chemin de sortie
             $outputPath = Join-Path -Path $testTempDir -ChildPath "test_results.json"
             
-            # Exécuter la fonction via le script
+            # ExÃ©cuter la fonction via le script
             $scriptBlock = {
                 . $measureAccuracyScript
                 Export-ResultsToJson -Metrics $testMetrics -DetailedResults $testResults -OutputPath $outputPath
             }
             
-            # Vérifier que les résultats ont été exportés correctement
+            # VÃ©rifier que les rÃ©sultats ont Ã©tÃ© exportÃ©s correctement
             $scriptBlock | Should -Not -Throw
             Test-Path -Path $outputPath -PathType Leaf | Should -Be $true
             
@@ -255,22 +255,22 @@ Describe "Script de mesure de la précision de détection" {
         }
     }
     
-    Context "Exécution du script complet" {
-        It "Le script s'exécute sans erreur avec les paramètres par défaut" {
-            # Exécuter le script avec des paramètres minimaux
+    Context "ExÃ©cution du script complet" {
+        It "Le script s'exÃ©cute sans erreur avec les paramÃ¨tres par dÃ©faut" {
+            # ExÃ©cuter le script avec des paramÃ¨tres minimaux
             $scriptBlock = {
                 & $measureAccuracyScript -TestDirectory $testSamplesDir -ExpectedFormatsPath $expectedFormatsPath -OutputDirectory $testReportsDir
             }
             
-            # Vérifier que le script s'exécute sans erreur
+            # VÃ©rifier que le script s'exÃ©cute sans erreur
             $scriptBlock | Should -Not -Throw
         }
         
-        It "Le script génère un rapport JSON" {
-            # Exécuter le script
+        It "Le script gÃ©nÃ¨re un rapport JSON" {
+            # ExÃ©cuter le script
             & $measureAccuracyScript -TestDirectory $testSamplesDir -ExpectedFormatsPath $expectedFormatsPath -OutputDirectory $testReportsDir
             
-            # Vérifier que le rapport JSON a été créé
+            # VÃ©rifier que le rapport JSON a Ã©tÃ© crÃ©Ã©
             $jsonReportPath = Join-Path -Path $testReportsDir -ChildPath "DetectionAccuracy.json"
             Test-Path -Path $jsonReportPath -PathType Leaf | Should -Be $true
             
@@ -280,11 +280,11 @@ Describe "Script de mesure de la précision de détection" {
             $reportContent.DetailedResults | Should -Not -BeNullOrEmpty
         }
         
-        It "Le script génère un rapport HTML lorsque demandé" {
-            # Exécuter le script avec l'option de rapport HTML
+        It "Le script gÃ©nÃ¨re un rapport HTML lorsque demandÃ©" {
+            # ExÃ©cuter le script avec l'option de rapport HTML
             & $measureAccuracyScript -TestDirectory $testSamplesDir -ExpectedFormatsPath $expectedFormatsPath -OutputDirectory $testReportsDir -GenerateHtmlReport
             
-            # Vérifier que le rapport HTML a été créé
+            # VÃ©rifier que le rapport HTML a Ã©tÃ© crÃ©Ã©
             $htmlReportPath = Join-Path -Path $testReportsDir -ChildPath "DetectionAccuracy.html"
             Test-Path -Path $htmlReportPath -PathType Leaf | Should -Be $true
             
@@ -292,14 +292,14 @@ Describe "Script de mesure de la précision de détection" {
             $htmlContent | Should -Not -BeNullOrEmpty
             $htmlContent | Should -Match "<html"
             $htmlContent | Should -Match "</html>"
-            $htmlContent | Should -Match "Rapport de précision de détection de format"
+            $htmlContent | Should -Match "Rapport de prÃ©cision de dÃ©tection de format"
         }
     }
 }
 
-# Nettoyer après les tests
+# Nettoyer aprÃ¨s les tests
 AfterAll {
-    # Supprimer le répertoire temporaire
+    # Supprimer le rÃ©pertoire temporaire
     if (Test-Path -Path $testTempDir) {
         Remove-Item -Path $testTempDir -Recurse -Force
     }

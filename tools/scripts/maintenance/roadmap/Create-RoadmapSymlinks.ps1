@@ -1,5 +1,5 @@
-# Script pour créer des copies du fichier roadmap principal
-# Ce script crée des copies pour maintenir la compatibilité avec les scripts existants
+﻿# Script pour crÃ©er des copies du fichier roadmap principal
+# Ce script crÃ©e des copies pour maintenir la compatibilitÃ© avec les scripts existants
 
 param (
     [Parameter(Mandatory = $false)]
@@ -31,7 +31,7 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Créer le répertoire de logs si nécessaire
+    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -41,63 +41,63 @@ function Write-Log {
 }
 
 try {
-    # Définir le chemin absolu du fichier roadmap principal
+    # DÃ©finir le chemin absolu du fichier roadmap principal
     $projectRoot = Get-Location
     $roadmapPath = "Roadmap\roadmap_perso.md"""
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $roadmapPath -PathType Leaf)) {
         Write-Log -Level ERROR -Message "Le fichier roadmap principal n'existe pas: $roadmapPath"
         exit 1
     }
 
-    # Définir les chemins des liens symboliques à créer
+    # DÃ©finir les chemins des liens symboliques Ã  crÃ©er
     $symlinks = @(
         ("Roadmap\roadmap_perso.md"""),
         ("Roadmap\roadmap_perso.md""")
     )
 
-    # Créer les copies
+    # CrÃ©er les copies
     foreach ($copyPath in $symlinks) {
-        # Vérifier si le fichier existe déjà
+        # VÃ©rifier si le fichier existe dÃ©jÃ 
         if (Test-Path -Path $copyPath -PathType Leaf) {
             # Renommer le fichier existant
             $backupPath = "$copyPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
             if (-not $WhatIf) {
                 Move-Item -Path $copyPath -Destination $backupPath
-                Write-Log "Fichier existant renommé: $copyPath -> $backupPath" -Level "INFO"
+                Write-Log "Fichier existant renommÃ©: $copyPath -> $backupPath" -Level "INFO"
             } else {
-                Write-Log "WhatIf: Fichier existant renommé: $copyPath -> $backupPath" -Level "INFO"
+                Write-Log "WhatIf: Fichier existant renommÃ©: $copyPath -> $backupPath" -Level "INFO"
             }
         }
 
-        # Créer le répertoire parent si nécessaire
+        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
         $parentDir = Split-Path -Path $copyPath -Parent
         if (-not (Test-Path -Path $parentDir -PathType Container)) {
             if (-not $WhatIf) {
                 New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
-                Write-Log "Répertoire créé: $parentDir" -Level "INFO"
+                Write-Log "RÃ©pertoire crÃ©Ã©: $parentDir" -Level "INFO"
             } else {
-                Write-Log "WhatIf: Répertoire créé: $parentDir" -Level "INFO"
+                Write-Log "WhatIf: RÃ©pertoire crÃ©Ã©: $parentDir" -Level "INFO"
             }
         }
 
-        # Créer la copie
+        # CrÃ©er la copie
         if (-not $WhatIf) {
             Copy-Item -Path $roadmapPath -Destination $copyPath -Force
-            Write-Log "Copie créée: $copyPath <- $roadmapPath" -Level "INFO"
+            Write-Log "Copie crÃ©Ã©e: $copyPath <- $roadmapPath" -Level "INFO"
         } else {
-            Write-Log "WhatIf: Copie créée: $copyPath <- $roadmapPath" -Level "INFO"
+            Write-Log "WhatIf: Copie crÃ©Ã©e: $copyPath <- $roadmapPath" -Level "INFO"
         }
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de la création des copies :" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la crÃ©ation des copies :" -ForegroundColor Cyan
     Write-Host "----------------------------------------" -ForegroundColor Cyan
     Write-Host "Fichier roadmap principal : $roadmapPath" -ForegroundColor White
-    Write-Host "Copies créées : $($symlinks.Count)" -ForegroundColor Green
+    Write-Host "Copies crÃ©Ã©es : $($symlinks.Count)" -ForegroundColor Green
 
-    # Créer un fichier README.md dans le répertoire Roadmap
+    # CrÃ©er un fichier README.md dans le rÃ©pertoire Roadmap
     $readmePath = Join-Path -Path (Split-Path -Path $roadmapPath -Parent) -ChildPath "README.md"
     $readmeContent = @"
 # Gestion de la Roadmap
@@ -105,12 +105,12 @@ try {
 ## Structure des fichiers
 
 - `"Roadmap\roadmap_perso.md"` : Fichier principal de la roadmap
-- `roadmap_perso_new.md` : Ancienne version de la roadmap (conservée pour référence)
+- `roadmap_perso_new.md` : Ancienne version de la roadmap (conservÃ©e pour rÃ©fÃ©rence)
 - Les autres fichiers avec le suffixe `_backup_` sont des sauvegardes automatiques
 
-## Accès à la Roadmap
+## AccÃ¨s Ã  la Roadmap
 
-Pour accéder à la roadmap depuis les scripts, utilisez le script centralisé :
+Pour accÃ©der Ã  la roadmap depuis les scripts, utilisez le script centralisÃ© :
 
 ```powershell
 # Importer le module de gestion de la roadmap
@@ -128,29 +128,29 @@ else {
 
 ## Copies
 
-Des copies ont été créées pour maintenir la compatibilité avec les scripts existants :
+Des copies ont Ã©tÃ© crÃ©Ã©es pour maintenir la compatibilitÃ© avec les scripts existants :
 
-- `"Roadmap\roadmap_perso.md"` à la racine du projet
+- `"Roadmap\roadmap_perso.md"` Ã  la racine du projet
 - `md\"Roadmap\roadmap_perso.md"`
 
 Ces copies sont identiques au fichier principal `Roadmap\"Roadmap\roadmap_perso.md"`.
 
-## Mise à jour des références
+## Mise Ã  jour des rÃ©fÃ©rences
 
-Pour mettre à jour les références à la roadmap dans les scripts existants, utilisez le script :
+Pour mettre Ã  jour les rÃ©fÃ©rences Ã  la roadmap dans les scripts existants, utilisez le script :
 
 ```powershell
 .\scripts\maintenance\roadmap\Update-RoadmapReferences.ps1
 ```
 
-Dernière mise à jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
 
     if (-not $WhatIf) {
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Log "Fichier README.md créé: $readmePath" -Level "INFO"
+        Write-Log "Fichier README.md crÃ©Ã©: $readmePath" -Level "INFO"
     } else {
-        Write-Log "WhatIf: Fichier README.md créé: $readmePath" -Level "INFO"
+        Write-Log "WhatIf: Fichier README.md crÃ©Ã©: $readmePath" -Level "INFO"
     }
 }
 catch {
@@ -159,5 +159,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

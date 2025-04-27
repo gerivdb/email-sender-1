@@ -1,63 +1,63 @@
-<#
+﻿<#
 .SYNOPSIS
-    Génère un rapport de performance basé sur les mesures collectées.
+    GÃ©nÃ¨re un rapport de performance basÃ© sur les mesures collectÃ©es.
 
 .DESCRIPTION
-    La fonction New-RoadmapPerformanceReport génère un rapport détaillé des performances
-    basé sur les mesures de temps d'exécution, d'utilisation de mémoire et de comptage d'opérations.
-    Le rapport peut être généré dans différents formats (texte, HTML, JSON, CSV) et peut être
-    enregistré dans un fichier ou retourné sous forme d'objet.
+    La fonction New-RoadmapPerformanceReport gÃ©nÃ¨re un rapport dÃ©taillÃ© des performances
+    basÃ© sur les mesures de temps d'exÃ©cution, d'utilisation de mÃ©moire et de comptage d'opÃ©rations.
+    Le rapport peut Ãªtre gÃ©nÃ©rÃ© dans diffÃ©rents formats (texte, HTML, JSON, CSV) et peut Ãªtre
+    enregistrÃ© dans un fichier ou retournÃ© sous forme d'objet.
 
 .PARAMETER Format
     Le format du rapport. Les valeurs possibles sont : Text, HTML, JSON, CSV.
-    Par défaut : Text.
+    Par dÃ©faut : Text.
 
 .PARAMETER OutputPath
-    Le chemin du fichier où enregistrer le rapport. Si non spécifié, le rapport est retourné
-    sous forme d'objet ou de chaîne de caractères.
+    Le chemin du fichier oÃ¹ enregistrer le rapport. Si non spÃ©cifiÃ©, le rapport est retournÃ©
+    sous forme d'objet ou de chaÃ®ne de caractÃ¨res.
 
 .PARAMETER IncludeExecutionTime
-    Indique si les statistiques de temps d'exécution doivent être incluses dans le rapport.
-    Par défaut : $true.
+    Indique si les statistiques de temps d'exÃ©cution doivent Ãªtre incluses dans le rapport.
+    Par dÃ©faut : $true.
 
 .PARAMETER IncludeMemoryUsage
-    Indique si les statistiques d'utilisation de mémoire doivent être incluses dans le rapport.
-    Par défaut : $true.
+    Indique si les statistiques d'utilisation de mÃ©moire doivent Ãªtre incluses dans le rapport.
+    Par dÃ©faut : $true.
 
 .PARAMETER IncludeOperations
-    Indique si les statistiques de comptage d'opérations doivent être incluses dans le rapport.
-    Par défaut : $true.
+    Indique si les statistiques de comptage d'opÃ©rations doivent Ãªtre incluses dans le rapport.
+    Par dÃ©faut : $true.
 
 .PARAMETER TimerName
-    Le nom du chronomètre spécifique à inclure dans le rapport. Si non spécifié, tous les chronomètres sont inclus.
+    Le nom du chronomÃ¨tre spÃ©cifique Ã  inclure dans le rapport. Si non spÃ©cifiÃ©, tous les chronomÃ¨tres sont inclus.
 
 .PARAMETER MemoryName
-    Le nom de la mesure de mémoire spécifique à inclure dans le rapport. Si non spécifié, toutes les mesures de mémoire sont incluses.
+    Le nom de la mesure de mÃ©moire spÃ©cifique Ã  inclure dans le rapport. Si non spÃ©cifiÃ©, toutes les mesures de mÃ©moire sont incluses.
 
 .PARAMETER OperationName
-    Le nom du compteur d'opérations spécifique à inclure dans le rapport. Si non spécifié, tous les compteurs d'opérations sont inclus.
+    Le nom du compteur d'opÃ©rations spÃ©cifique Ã  inclure dans le rapport. Si non spÃ©cifiÃ©, tous les compteurs d'opÃ©rations sont inclus.
 
 .PARAMETER Title
-    Le titre du rapport. Par défaut : "Rapport de performance RoadmapParser".
+    Le titre du rapport. Par dÃ©faut : "Rapport de performance RoadmapParser".
 
 .PARAMETER IncludeTimestamp
-    Indique si l'horodatage doit être inclus dans le rapport. Par défaut : $true.
+    Indique si l'horodatage doit Ãªtre inclus dans le rapport. Par dÃ©faut : $true.
 
 .EXAMPLE
     New-RoadmapPerformanceReport -Format HTML -OutputPath "C:\Reports\performance_report.html"
-    Génère un rapport de performance au format HTML et l'enregistre dans le fichier spécifié.
+    GÃ©nÃ¨re un rapport de performance au format HTML et l'enregistre dans le fichier spÃ©cifiÃ©.
 
 .EXAMPLE
     New-RoadmapPerformanceReport -TimerName "ParseRoadmap" -IncludeMemoryUsage $false
-    Génère un rapport de performance au format texte pour le chronomètre "ParseRoadmap" sans inclure les statistiques d'utilisation de mémoire.
+    GÃ©nÃ¨re un rapport de performance au format texte pour le chronomÃ¨tre "ParseRoadmap" sans inclure les statistiques d'utilisation de mÃ©moire.
 
 .OUTPUTS
-    [string] ou [PSCustomObject] ou [void] selon le format et si un chemin de sortie est spécifié.
+    [string] ou [PSCustomObject] ou [void] selon le format et si un chemin de sortie est spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-24
+    Date de crÃ©ation: 2023-07-24
 #>
 function New-RoadmapPerformanceReport {
     [CmdletBinding()]
@@ -102,15 +102,15 @@ function New-RoadmapPerformanceReport {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Collecter les données de performance
+    # Collecter les donnÃ©es de performance
     $performanceData = [PSCustomObject]@{
         GeneratedAt   = Get-Date
         Title         = $Title
@@ -143,7 +143,7 @@ function New-RoadmapPerformanceReport {
         }
     }
 
-    # Générer le rapport selon le format demandé
+    # GÃ©nÃ©rer le rapport selon le format demandÃ©
     switch ($Format) {
         "Text" {
             $report = New-TextPerformanceReport -PerformanceData $performanceData -IncludeTimestamp $IncludeTimestamp
@@ -159,9 +159,9 @@ function New-RoadmapPerformanceReport {
         }
     }
 
-    # Enregistrer le rapport dans un fichier si un chemin est spécifié
+    # Enregistrer le rapport dans un fichier si un chemin est spÃ©cifiÃ©
     if ($OutputPath) {
-        # Créer le dossier parent s'il n'existe pas
+        # CrÃ©er le dossier parent s'il n'existe pas
         $parentFolder = Split-Path -Parent $OutputPath
         if (-not [string]::IsNullOrEmpty($parentFolder) -and -not (Test-Path -Path $parentFolder)) {
             New-Item -ItemType Directory -Path $parentFolder -Force | Out-Null
@@ -169,14 +169,14 @@ function New-RoadmapPerformanceReport {
 
         # Enregistrer le rapport
         $report | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Log -Message "Rapport de performance enregistré dans : $OutputPath" -Level $script:LogLevelInfo -Source "PerformanceReport"
+        Write-Log -Message "Rapport de performance enregistrÃ© dans : $OutputPath" -Level $script:LogLevelInfo -Source "PerformanceReport"
     } else {
         # Retourner le rapport
         return $report
     }
 }
 
-# Fonction privée pour générer un rapport au format texte
+# Fonction privÃ©e pour gÃ©nÃ©rer un rapport au format texte
 function New-TextPerformanceReport {
     [CmdletBinding()]
     param (
@@ -194,17 +194,17 @@ function New-TextPerformanceReport {
     [void]$sb.AppendLine("  $($PerformanceData.Title)")
     [void]$sb.AppendLine("=" * 80)
 
-    # Ajouter l'horodatage si demandé
+    # Ajouter l'horodatage si demandÃ©
     if ($IncludeTimestamp) {
-        [void]$sb.AppendLine("Généré le : $($PerformanceData.GeneratedAt)")
+        [void]$sb.AppendLine("GÃ©nÃ©rÃ© le : $($PerformanceData.GeneratedAt)")
         [void]$sb.AppendLine("-" * 80)
     }
 
-    # Ajouter les statistiques de temps d'exécution
+    # Ajouter les statistiques de temps d'exÃ©cution
     if ($PerformanceData.ExecutionTime) {
-        [void]$sb.AppendLine("`nSTATISTIQUES DE TEMPS D'EXÉCUTION")
+        [void]$sb.AppendLine("`nSTATISTIQUES DE TEMPS D'EXÃ‰CUTION")
         [void]$sb.AppendLine("-" * 80)
-        [void]$sb.AppendLine("| Nom | Exécutions | Min (ms) | Max (ms) | Moyenne (ms) | Total (ms) | Dernier (ms) |")
+        [void]$sb.AppendLine("| Nom | ExÃ©cutions | Min (ms) | Max (ms) | Moyenne (ms) | Total (ms) | Dernier (ms) |")
         [void]$sb.AppendLine("|" + "-" * 78 + "|")
 
         foreach ($stat in $PerformanceData.ExecutionTime) {
@@ -212,11 +212,11 @@ function New-TextPerformanceReport {
         }
     }
 
-    # Ajouter les statistiques d'utilisation de mémoire
+    # Ajouter les statistiques d'utilisation de mÃ©moire
     if ($PerformanceData.MemoryUsage) {
-        [void]$sb.AppendLine("`nSTATISTIQUES D'UTILISATION DE MÉMOIRE")
+        [void]$sb.AppendLine("`nSTATISTIQUES D'UTILISATION DE MÃ‰MOIRE")
         [void]$sb.AppendLine("-" * 80)
-        [void]$sb.AppendLine("| Nom | Exécutions | Min (octets) | Max (octets) | Moyenne (octets) | Total (octets) | Dernier (octets) |")
+        [void]$sb.AppendLine("| Nom | ExÃ©cutions | Min (octets) | Max (octets) | Moyenne (octets) | Total (octets) | Dernier (octets) |")
         [void]$sb.AppendLine("|" + "-" * 78 + "|")
 
         foreach ($stat in $PerformanceData.MemoryUsage) {
@@ -224,11 +224,11 @@ function New-TextPerformanceReport {
         }
     }
 
-    # Ajouter les statistiques de comptage d'opérations
+    # Ajouter les statistiques de comptage d'opÃ©rations
     if ($PerformanceData.Operations) {
-        [void]$sb.AppendLine("`nSTATISTIQUES DE COMPTAGE D'OPÉRATIONS")
+        [void]$sb.AppendLine("`nSTATISTIQUES DE COMPTAGE D'OPÃ‰RATIONS")
         [void]$sb.AppendLine("-" * 80)
-        [void]$sb.AppendLine("| Nom | Exécutions | Min (ops) | Max (ops) | Moyenne (ops) | Total (ops) | Dernier (ops) | Actuel |")
+        [void]$sb.AppendLine("| Nom | ExÃ©cutions | Min (ops) | Max (ops) | Moyenne (ops) | Total (ops) | Dernier (ops) | Actuel |")
         [void]$sb.AppendLine("|" + "-" * 78 + "|")
 
         foreach ($stat in $PerformanceData.Operations) {
@@ -239,7 +239,7 @@ function New-TextPerformanceReport {
     return $sb.ToString()
 }
 
-# Fonction privée pour générer un rapport au format HTML
+# Fonction privÃ©e pour gÃ©nÃ©rer un rapport au format HTML
 function New-HtmlPerformanceReport {
     [CmdletBinding()]
     param (
@@ -310,22 +310,22 @@ function New-HtmlPerformanceReport {
         <h1>$($PerformanceData.Title)</h1>
 "@
 
-    # Ajouter l'horodatage si demandé
+    # Ajouter l'horodatage si demandÃ©
     if ($IncludeTimestamp) {
         $html += @"
-        <div class="timestamp">Généré le : $($PerformanceData.GeneratedAt)</div>
+        <div class="timestamp">GÃ©nÃ©rÃ© le : $($PerformanceData.GeneratedAt)</div>
 "@
     }
 
-    # Ajouter les statistiques de temps d'exécution
+    # Ajouter les statistiques de temps d'exÃ©cution
     if ($PerformanceData.ExecutionTime) {
         $html += @"
-        <h2>Statistiques de temps d'exécution</h2>
+        <h2>Statistiques de temps d'exÃ©cution</h2>
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Exécutions</th>
+                    <th>ExÃ©cutions</th>
                     <th>Min (ms)</th>
                     <th>Max (ms)</th>
                     <th>Moyenne (ms)</th>
@@ -356,15 +356,15 @@ function New-HtmlPerformanceReport {
 "@
     }
 
-    # Ajouter les statistiques d'utilisation de mémoire
+    # Ajouter les statistiques d'utilisation de mÃ©moire
     if ($PerformanceData.MemoryUsage) {
         $html += @"
-        <h2>Statistiques d'utilisation de mémoire</h2>
+        <h2>Statistiques d'utilisation de mÃ©moire</h2>
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Exécutions</th>
+                    <th>ExÃ©cutions</th>
                     <th>Min (octets)</th>
                     <th>Max (octets)</th>
                     <th>Moyenne (octets)</th>
@@ -395,15 +395,15 @@ function New-HtmlPerformanceReport {
 "@
     }
 
-    # Ajouter les statistiques de comptage d'opérations
+    # Ajouter les statistiques de comptage d'opÃ©rations
     if ($PerformanceData.Operations) {
         $html += @"
-        <h2>Statistiques de comptage d'opérations</h2>
+        <h2>Statistiques de comptage d'opÃ©rations</h2>
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Exécutions</th>
+                    <th>ExÃ©cutions</th>
                     <th>Min (ops)</th>
                     <th>Max (ops)</th>
                     <th>Moyenne (ops)</th>
@@ -445,7 +445,7 @@ function New-HtmlPerformanceReport {
     return $html
 }
 
-# Fonction privée pour générer un rapport au format CSV
+# Fonction privÃ©e pour gÃ©nÃ©rer un rapport au format CSV
 function New-CsvPerformanceReport {
     [CmdletBinding()]
     param (
@@ -455,7 +455,7 @@ function New-CsvPerformanceReport {
 
     $csvData = @()
 
-    # Ajouter les statistiques de temps d'exécution
+    # Ajouter les statistiques de temps d'exÃ©cution
     if ($PerformanceData.ExecutionTime) {
         foreach ($stat in $PerformanceData.ExecutionTime) {
             $csvData += [PSCustomObject]@{
@@ -472,7 +472,7 @@ function New-CsvPerformanceReport {
         }
     }
 
-    # Ajouter les statistiques d'utilisation de mémoire
+    # Ajouter les statistiques d'utilisation de mÃ©moire
     if ($PerformanceData.MemoryUsage) {
         foreach ($stat in $PerformanceData.MemoryUsage) {
             $csvData += [PSCustomObject]@{
@@ -489,7 +489,7 @@ function New-CsvPerformanceReport {
         }
     }
 
-    # Ajouter les statistiques de comptage d'opérations
+    # Ajouter les statistiques de comptage d'opÃ©rations
     if ($PerformanceData.Operations) {
         foreach ($stat in $PerformanceData.Operations) {
             $csvData += [PSCustomObject]@{
@@ -506,7 +506,7 @@ function New-CsvPerformanceReport {
         }
     }
 
-    # Convertir les données en CSV
+    # Convertir les donnÃ©es en CSV
     return $csvData | ConvertTo-Csv -NoTypeInformation
 }
 

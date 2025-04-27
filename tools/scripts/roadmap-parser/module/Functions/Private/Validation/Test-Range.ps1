@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Valide si une valeur est dans une plage spécifiée.
+    Valide si une valeur est dans une plage spÃ©cifiÃ©e.
 
 .DESCRIPTION
-    La fonction Test-Range valide si une valeur est dans une plage spécifiée.
-    Elle prend en charge différents types de plages et peut être utilisée pour
-    valider les entrées des fonctions du module RoadmapParser.
+    La fonction Test-Range valide si une valeur est dans une plage spÃ©cifiÃ©e.
+    Elle prend en charge diffÃ©rents types de plages et peut Ãªtre utilisÃ©e pour
+    valider les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à valider.
+    La valeur Ã  valider.
 
 .PARAMETER Min
     La valeur minimale de la plage.
@@ -23,37 +23,37 @@
     La longueur maximale de la valeur.
 
 .PARAMETER MinCount
-    Le nombre minimal d'éléments dans la collection.
+    Le nombre minimal d'Ã©lÃ©ments dans la collection.
 
 .PARAMETER MaxCount
-    Le nombre maximal d'éléments dans la collection.
+    Le nombre maximal d'Ã©lÃ©ments dans la collection.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la validation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la validation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 .EXAMPLE
     Test-Range -Value 42 -Min 0 -Max 100
-    Vérifie que la valeur 42 est comprise entre 0 et 100.
+    VÃ©rifie que la valeur 42 est comprise entre 0 et 100.
 
 .EXAMPLE
     Test-Range -Value "Hello" -MinLength 3 -MaxLength 10 -ThrowOnFailure
-    Vérifie que la chaîne "Hello" a une longueur comprise entre 3 et 10 caractères, et lève une exception si ce n'est pas le cas.
+    VÃ©rifie que la chaÃ®ne "Hello" a une longueur comprise entre 3 et 10 caractÃ¨res, et lÃ¨ve une exception si ce n'est pas le cas.
 
 .EXAMPLE
     Test-Range -Value @(1, 2, 3) -MinCount 1 -MaxCount 5
-    Vérifie que le tableau @(1, 2, 3) contient entre 1 et 5 éléments.
+    VÃ©rifie que le tableau @(1, 2, 3) contient entre 1 et 5 Ã©lÃ©ments.
 
 .OUTPUTS
-    [bool] Indique si la validation a réussi.
+    [bool] Indique si la validation a rÃ©ussi.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function Test-Range {
     [CmdletBinding()]
@@ -87,7 +87,7 @@ function Test-Range {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $true
     $validationErrors = @()
 
@@ -95,17 +95,17 @@ function Test-Range {
     if ($PSBoundParameters.ContainsKey('Min') -and $PSBoundParameters.ContainsKey('Max')) {
         if ($Value -lt $Min -or $Value -gt $Max) {
             $isValid = $false
-            $validationErrors += "La valeur doit être comprise entre $Min et $Max."
+            $validationErrors += "La valeur doit Ãªtre comprise entre $Min et $Max."
         }
     } elseif ($PSBoundParameters.ContainsKey('Min')) {
         if ($Value -lt $Min) {
             $isValid = $false
-            $validationErrors += "La valeur doit être supérieure ou égale à $Min."
+            $validationErrors += "La valeur doit Ãªtre supÃ©rieure ou Ã©gale Ã  $Min."
         }
     } elseif ($PSBoundParameters.ContainsKey('Max')) {
         if ($Value -gt $Max) {
             $isValid = $false
-            $validationErrors += "La valeur doit être inférieure ou égale à $Max."
+            $validationErrors += "La valeur doit Ãªtre infÃ©rieure ou Ã©gale Ã  $Max."
         }
     }
 
@@ -113,7 +113,7 @@ function Test-Range {
     if ($PSBoundParameters.ContainsKey('MinLength') -or $PSBoundParameters.ContainsKey('MaxLength')) {
         if ($null -eq $Value) {
             $isValid = $false
-            $validationErrors += "La valeur ne peut pas être null pour valider la longueur."
+            $validationErrors += "La valeur ne peut pas Ãªtre null pour valider la longueur."
         } else {
             $length = 0
             if ($Value -is [string]) {
@@ -127,40 +127,40 @@ function Test-Range {
 
             if ($PSBoundParameters.ContainsKey('MinLength') -and $length -lt $MinLength) {
                 $isValid = $false
-                $validationErrors += "La longueur doit être supérieure ou égale à $MinLength."
+                $validationErrors += "La longueur doit Ãªtre supÃ©rieure ou Ã©gale Ã  $MinLength."
             }
 
             if ($PSBoundParameters.ContainsKey('MaxLength') -and $length -gt $MaxLength) {
                 $isValid = $false
-                $validationErrors += "La longueur doit être inférieure ou égale à $MaxLength."
+                $validationErrors += "La longueur doit Ãªtre infÃ©rieure ou Ã©gale Ã  $MaxLength."
             }
         }
     }
 
-    # Valider le nombre d'éléments
+    # Valider le nombre d'Ã©lÃ©ments
     if ($PSBoundParameters.ContainsKey('MinCount') -or $PSBoundParameters.ContainsKey('MaxCount')) {
         if ($null -eq $Value) {
             $isValid = $false
-            $validationErrors += "La valeur ne peut pas être null pour valider le nombre d'éléments."
+            $validationErrors += "La valeur ne peut pas Ãªtre null pour valider le nombre d'Ã©lÃ©ments."
         } elseif (-not ($Value -is [array] -or $Value -is [System.Collections.ICollection])) {
             $isValid = $false
-            $validationErrors += "La validation du nombre d'éléments n'est prise en charge que pour les collections."
+            $validationErrors += "La validation du nombre d'Ã©lÃ©ments n'est prise en charge que pour les collections."
         } else {
             $count = $Value.Count
 
             if ($PSBoundParameters.ContainsKey('MinCount') -and $count -lt $MinCount) {
                 $isValid = $false
-                $validationErrors += "Le nombre d'éléments doit être supérieur ou égal à $MinCount."
+                $validationErrors += "Le nombre d'Ã©lÃ©ments doit Ãªtre supÃ©rieur ou Ã©gal Ã  $MinCount."
             }
 
             if ($PSBoundParameters.ContainsKey('MaxCount') -and $count -gt $MaxCount) {
                 $isValid = $false
-                $validationErrors += "Le nombre d'éléments doit être inférieur ou égal à $MaxCount."
+                $validationErrors += "Le nombre d'Ã©lÃ©ments doit Ãªtre infÃ©rieur ou Ã©gal Ã  $MaxCount."
             }
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         $errorMsg = if (-not [string]::IsNullOrEmpty($ErrorMessage)) {
             $ErrorMessage

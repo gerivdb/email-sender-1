@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse avancée de la similarité entre les scripts
+    Analyse avancÃ©e de la similaritÃ© entre les scripts
 .DESCRIPTION
-    Ce script permet d'analyser la similarité entre les scripts du projet
-    en utilisant différents algorithmes (Levenshtein, Cosinus, Combiné).
-    Il génère des rapports détaillés avec visualisations.
+    Ce script permet d'analyser la similaritÃ© entre les scripts du projet
+    en utilisant diffÃ©rents algorithmes (Levenshtein, Cosinus, CombinÃ©).
+    Il gÃ©nÃ¨re des rapports dÃ©taillÃ©s avec visualisations.
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .PARAMETER Extensions
-    Extensions de fichiers à inclure
+    Extensions de fichiers Ã  inclure
 .PARAMETER Algorithm
-    Algorithme à utiliser (Levenshtein, Cosine, Combined)
+    Algorithme Ã  utiliser (Levenshtein, Cosine, Combined)
 .PARAMETER SimilarityThreshold
-    Seuil de similarité (0-100) pour considérer deux scripts comme similaires
+    Seuil de similaritÃ© (0-100) pour considÃ©rer deux scripts comme similaires
 .PARAMETER OutputFormat
     Format de sortie du rapport (Console, CSV, JSON, HTML)
 .PARAMETER OutputPath
@@ -23,7 +23,7 @@
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
-    Tags: analyse, similarité, scripts
+    Tags: analyse, similaritÃ©, scripts
 #>
 
 [CmdletBinding()]
@@ -49,14 +49,14 @@ param(
     [string]$OutputPath = "reports/script_similarity"
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
 $textSimilarityPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\TextSimilarity.psm1"
 Import-Module $textSimilarityPath -Force
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -72,18 +72,18 @@ function New-HtmlReport {
         [int]$SimilarityThreshold
     )
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
     }
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $html = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport de similarité des scripts</title>
+    <title>Rapport de similaritÃ© des scripts</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -151,17 +151,17 @@ function New-HtmlReport {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport de similarité des scripts</h1>
+        <h1>Rapport de similaritÃ© des scripts</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
+            <h2>RÃ©sumÃ©</h2>
             <p><strong>Date d'analyse:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-            <p><strong>Algorithme utilisé:</strong> $Algorithm</p>
-            <p><strong>Seuil de similarité:</strong> $SimilarityThreshold%</p>
-            <p><strong>Nombre de paires similaires trouvées:</strong> $($Results.Count)</p>
+            <p><strong>Algorithme utilisÃ©:</strong> $Algorithm</p>
+            <p><strong>Seuil de similaritÃ©:</strong> $SimilarityThreshold%</p>
+            <p><strong>Nombre de paires similaires trouvÃ©es:</strong> $($Results.Count)</p>
         </div>
         
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
         
         <div class="chart-container">
             <canvas id="similarityChart"></canvas>
@@ -171,7 +171,7 @@ function New-HtmlReport {
             <tr>
                 <th>Fichier A</th>
                 <th>Fichier B</th>
-                <th>Similarité</th>
+                <th>SimilaritÃ©</th>
                 <th>Visualisation</th>
             </tr>
 "@
@@ -203,11 +203,11 @@ function New-HtmlReport {
     </div>
     
     <script>
-        // Données pour le graphique
+        // DonnÃ©es pour le graphique
         const similarityData = [
 "@
 
-    # Générer les données pour le graphique
+    # GÃ©nÃ©rer les donnÃ©es pour le graphique
     $chartData = @()
     foreach ($result in $Results) {
         $fileA = Split-Path -Leaf $result.FileA
@@ -220,14 +220,14 @@ function New-HtmlReport {
     $html += @"
         ];
         
-        // Créer le graphique
+        // CrÃ©er le graphique
         const ctx = document.getElementById('similarityChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: similarityData.map(item => item.label),
                 datasets: [{
-                    label: 'Similarité (%)',
+                    label: 'SimilaritÃ© (%)',
                     data: similarityData.map(item => item.value),
                     backgroundColor: similarityData.map(item => {
                         if (item.value >= 95) return '#ff6666';
@@ -253,28 +253,28 @@ function New-HtmlReport {
 </html>
 "@
 
-    # Écrire le fichier HTML
+    # Ã‰crire le fichier HTML
     Set-Content -Path $OutputPath -Value $html -Encoding UTF8
     
     return $OutputPath
 }
 
-# Analyser la similarité des scripts
-Write-Host "Analyse de la similarité des scripts..." -ForegroundColor Cyan
-Write-Host "Répertoire: $Path" -ForegroundColor White
+# Analyser la similaritÃ© des scripts
+Write-Host "Analyse de la similaritÃ© des scripts..." -ForegroundColor Cyan
+Write-Host "RÃ©pertoire: $Path" -ForegroundColor White
 Write-Host "Algorithme: $Algorithm" -ForegroundColor White
-Write-Host "Seuil de similarité: $SimilarityThreshold%" -ForegroundColor White
+Write-Host "Seuil de similaritÃ©: $SimilarityThreshold%" -ForegroundColor White
 
 # Utiliser le module TextSimilarity pour trouver les fichiers similaires
 $results = Find-SimilarFiles -Path $Path -Extensions $Extensions -Algorithm $Algorithm -SimilarityThreshold $SimilarityThreshold
 
-# Afficher les résultats selon le format demandé
+# Afficher les rÃ©sultats selon le format demandÃ©
 switch ($OutputFormat) {
     "Console" {
-        Write-Host "`nRésultats de l'analyse:" -ForegroundColor Cyan
+        Write-Host "`nRÃ©sultats de l'analyse:" -ForegroundColor Cyan
         
         if ($results.Count -eq 0) {
-            Write-Host "Aucun script similaire trouvé." -ForegroundColor Yellow
+            Write-Host "Aucun script similaire trouvÃ©." -ForegroundColor Yellow
         } else {
             $results | Format-Table -Property @{
                 Label = "Fichier A"
@@ -283,7 +283,7 @@ switch ($OutputFormat) {
                 Label = "Fichier B"
                 Expression = { Split-Path -Leaf $_.FileB }
             }, @{
-                Label = "Similarité"
+                Label = "SimilaritÃ©"
                 Expression = { "$($_.Similarity)%" }
             }, @{
                 Label = "Algorithme"
@@ -300,7 +300,7 @@ switch ($OutputFormat) {
         }
         
         $results | Export-Csv -Path $outputFilePath -NoTypeInformation -Encoding UTF8
-        Write-Host "Rapport CSV généré: $outputFilePath" -ForegroundColor Green
+        Write-Host "Rapport CSV gÃ©nÃ©rÃ©: $outputFilePath" -ForegroundColor Green
     }
     "JSON" {
         $outputFilePath = if ($OutputPath -like "*.json") { $OutputPath } else { "$OutputPath.json" }
@@ -311,35 +311,35 @@ switch ($OutputFormat) {
         }
         
         $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $outputFilePath -Encoding UTF8
-        Write-Host "Rapport JSON généré: $outputFilePath" -ForegroundColor Green
+        Write-Host "Rapport JSON gÃ©nÃ©rÃ©: $outputFilePath" -ForegroundColor Green
     }
     "HTML" {
         $outputFilePath = if ($OutputPath -like "*.html") { $OutputPath } else { "$OutputPath.html" }
         $reportPath = New-HtmlReport -Results $results -OutputPath $outputFilePath -Algorithm $Algorithm -SimilarityThreshold $SimilarityThreshold
-        Write-Host "Rapport HTML généré: $reportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
         
-        # Ouvrir le rapport dans le navigateur par défaut
+        # Ouvrir le rapport dans le navigateur par dÃ©faut
         Start-Process $reportPath
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'analyse:" -ForegroundColor Cyan
-Write-Host "Nombre de paires de scripts similaires trouvées: $($results.Count)" -ForegroundColor White
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'analyse:" -ForegroundColor Cyan
+Write-Host "Nombre de paires de scripts similaires trouvÃ©es: $($results.Count)" -ForegroundColor White
 
 if ($results.Count -gt 0) {
     $highSimilarity = ($results | Where-Object { $_.Similarity -ge 95 }).Count
     $mediumSimilarity = ($results | Where-Object { $_.Similarity -ge 85 -and $_.Similarity -lt 95 }).Count
     $lowSimilarity = ($results | Where-Object { $_.Similarity -lt 85 }).Count
     
-    Write-Host "Similarité élevée (>= 95%): $highSimilarity" -ForegroundColor Red
-    Write-Host "Similarité moyenne (85-94%): $mediumSimilarity" -ForegroundColor Yellow
-    Write-Host "Similarité faible (< 85%): $lowSimilarity" -ForegroundColor Green
+    Write-Host "SimilaritÃ© Ã©levÃ©e (>= 95%): $highSimilarity" -ForegroundColor Red
+    Write-Host "SimilaritÃ© moyenne (85-94%): $mediumSimilarity" -ForegroundColor Yellow
+    Write-Host "SimilaritÃ© faible (< 85%): $lowSimilarity" -ForegroundColor Green
     
     # Afficher les recommandations
     if ($highSimilarity -gt 0) {
         Write-Host "`nRecommandations:" -ForegroundColor Cyan
-        Write-Host "- Envisagez de fusionner ou de supprimer les scripts avec une similarité élevée (>= 95%)" -ForegroundColor White
-        Write-Host "- Vérifiez les scripts avec une similarité moyenne (85-94%) pour identifier les parties redondantes" -ForegroundColor White
+        Write-Host "- Envisagez de fusionner ou de supprimer les scripts avec une similaritÃ© Ã©levÃ©e (>= 95%)" -ForegroundColor White
+        Write-Host "- VÃ©rifiez les scripts avec une similaritÃ© moyenne (85-94%) pour identifier les parties redondantes" -ForegroundColor White
     }
 }

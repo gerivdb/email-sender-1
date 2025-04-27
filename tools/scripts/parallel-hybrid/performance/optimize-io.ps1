@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Optimise les opérations d'E/S dans le traitement parallèle.
+    Optimise les opÃ©rations d'E/S dans le traitement parallÃ¨le.
 .DESCRIPTION
-    Ce script implémente des techniques pour réduire les opérations d'E/S redondantes
-    et améliorer les performances des opérations d'E/S.
+    Ce script implÃ©mente des techniques pour rÃ©duire les opÃ©rations d'E/S redondantes
+    et amÃ©liorer les performances des opÃ©rations d'E/S.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -20,16 +20,16 @@ param(
     [switch]$GenerateReport
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "ParallelHybrid.psm1"
 Import-Module $modulePath -Force
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer les performances des opérations d'E/S
+# Fonction pour mesurer les performances des opÃ©rations d'E/S
 function Measure-IOPerformance {
     [CmdletBinding()]
     param(
@@ -45,7 +45,7 @@ function Measure-IOPerformance {
     
     Write-Host "`n=== Mesure des performances d'E/S ===" -ForegroundColor Cyan
     
-    # Créer un répertoire pour les résultats
+    # CrÃ©er un rÃ©pertoire pour les rÃ©sultats
     $resultsPath = Join-Path -Path $OutputPath -ChildPath "io_optimization"
     if (-not (Test-Path -Path $resultsPath)) {
         New-Item -Path $resultsPath -ItemType Directory -Force | Out-Null
@@ -87,7 +87,7 @@ function Measure-IOPerformance {
                 $results = @()
                 $jobs = @()
                 
-                # Démarrer les jobs de lecture asynchrone
+                # DÃ©marrer les jobs de lecture asynchrone
                 foreach ($file in $files) {
                     $jobs += Start-Job -ScriptBlock {
                         param($FilePath)
@@ -104,10 +104,10 @@ function Measure-IOPerformance {
                     } -ArgumentList $file.FullName
                 }
                 
-                # Attendre que tous les jobs soient terminés
+                # Attendre que tous les jobs soient terminÃ©s
                 $jobs | Wait-Job | Out-Null
                 
-                # Récupérer les résultats
+                # RÃ©cupÃ©rer les rÃ©sultats
                 foreach ($job in $jobs) {
                     $results += Receive-Job -Job $job
                     Remove-Job -Job $job
@@ -162,7 +162,7 @@ function Measure-IOPerformance {
                 $fileCache = @{}
                 
                 foreach ($file in $files) {
-                    # Vérifier si le fichier est déjà en cache
+                    # VÃ©rifier si le fichier est dÃ©jÃ  en cache
                     if (-not $fileCache.ContainsKey($file.FullName)) {
                         $content = Get-Content -Path $file.FullName -Raw
                         $fileCache[$file.FullName] = @{
@@ -232,22 +232,22 @@ function Measure-IOPerformance {
         $techniqueResults = @()
         
         for ($i = 1; $i -le $Iterations; $i++) {
-            Write-Host "  Itération $i/$Iterations..." -ForegroundColor Yellow
+            Write-Host "  ItÃ©ration $i/$Iterations..." -ForegroundColor Yellow
             
-            # Nettoyer la mémoire avant chaque test
+            # Nettoyer la mÃ©moire avant chaque test
             [System.GC]::Collect()
             
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             
             try {
-                # Exécuter le script
+                # ExÃ©cuter le script
                 $scriptResult = & $technique.ScriptBlock $TestFilesPath (Join-Path -Path $resultsPath -ChildPath $technique.Name.Replace(" ", "_"))
                 $success = $true
                 $fileCount = $scriptResult.Count
             }
             catch {
-                Write-Error "Erreur lors de l'exécution de la technique '$($technique.Name)' : $_"
+                Write-Error "Erreur lors de l'exÃ©cution de la technique '$($technique.Name)' : $_"
                 $success = $false
                 $fileCount = 0
             }
@@ -255,7 +255,7 @@ function Measure-IOPerformance {
             $stopwatch.Stop()
             $executionTime = $stopwatch.Elapsed.TotalSeconds
             
-            # Enregistrer les résultats
+            # Enregistrer les rÃ©sultats
             $techniqueResults += [PSCustomObject]@{
                 Iteration = $i
                 ExecutionTime = $executionTime
@@ -263,9 +263,9 @@ function Measure-IOPerformance {
                 Success = $success
             }
             
-            Write-Host "    Temps d'exécution : $executionTime secondes" -ForegroundColor Yellow
-            Write-Host "    Nombre de fichiers traités : $fileCount" -ForegroundColor Yellow
-            Write-Host "    Succès : $success" -ForegroundColor ($success ? "Green" : "Red")
+            Write-Host "    Temps d'exÃ©cution : $executionTime secondes" -ForegroundColor Yellow
+            Write-Host "    Nombre de fichiers traitÃ©s : $fileCount" -ForegroundColor Yellow
+            Write-Host "    SuccÃ¨s : $success" -ForegroundColor ($success ? "Green" : "Red")
         }
         
         # Calculer les statistiques
@@ -274,10 +274,10 @@ function Measure-IOPerformance {
         $maxTime = ($techniqueResults | Measure-Object -Property ExecutionTime -Maximum).Maximum
         $successRate = ($techniqueResults | Where-Object { $_.Success } | Measure-Object).Count / $Iterations * 100
         
-        Write-Host "`n  Résultats pour '$($technique.Name)' :" -ForegroundColor Cyan
+        Write-Host "`n  RÃ©sultats pour '$($technique.Name)' :" -ForegroundColor Cyan
         Write-Host "    Temps moyen : $avgTime secondes" -ForegroundColor Green
         Write-Host "    Temps min/max : $minTime / $maxTime secondes" -ForegroundColor Green
-        Write-Host "    Taux de succès : $successRate%" -ForegroundColor Green
+        Write-Host "    Taux de succÃ¨s : $successRate%" -ForegroundColor Green
         
         $results += [PSCustomObject]@{
             Technique = $technique.Name
@@ -289,7 +289,7 @@ function Measure-IOPerformance {
         }
     }
     
-    # Déterminer la technique optimale
+    # DÃ©terminer la technique optimale
     $optimalTechnique = $results | 
         Where-Object { $_.SuccessRate -eq 100 } | 
         Sort-Object -Property AverageTime | 
@@ -302,18 +302,18 @@ function Measure-IOPerformance {
         Write-Host "  Temps min/max : $($optimalTechnique.MinTime) / $($optimalTechnique.MaxTime) secondes" -ForegroundColor Green
     }
     else {
-        Write-Warning "Impossible de déterminer la technique optimale. Aucun test n'a réussi à 100%."
+        Write-Warning "Impossible de dÃ©terminer la technique optimale. Aucun test n'a rÃ©ussi Ã  100%."
     }
     
     return $results
 }
 
-# Créer des fichiers de test si nécessaire
+# CrÃ©er des fichiers de test si nÃ©cessaire
 $testFilesPath = Join-Path -Path $OutputPath -ChildPath "test_files"
 if (-not (Test-Path -Path $testFilesPath)) {
-    Write-Host "Création des fichiers de test..." -ForegroundColor Yellow
+    Write-Host "CrÃ©ation des fichiers de test..." -ForegroundColor Yellow
     
-    # Importer le script de benchmark pour utiliser sa fonction de création de fichiers de test
+    # Importer le script de benchmark pour utiliser sa fonction de crÃ©ation de fichiers de test
     $benchmarkPath = Join-Path -Path $PSScriptRoot -ChildPath "benchmark.ps1"
     . $benchmarkPath
     
@@ -328,13 +328,13 @@ $results = Measure-IOPerformance `
     -TestFilesPath $testFilesPath `
     -OutputPath $OutputPath
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $OutputPath -ChildPath "io_optimization_results.json"
 $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $resultsPath -Encoding utf8
 
-Write-Host "`nRésultats enregistrés : $resultsPath" -ForegroundColor Green
+Write-Host "`nRÃ©sultats enregistrÃ©s : $resultsPath" -ForegroundColor Green
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
     $reportPath = Join-Path -Path $OutputPath -ChildPath "io_optimization_report.html"
     
@@ -393,14 +393,14 @@ if ($GenerateReport) {
 </head>
 <body>
     <h1>Rapport d'optimisation des E/S</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de techniques testées : $($results.Count)</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de techniques testÃ©es : $($results.Count)</p>
 "@
     
-    # Déterminer la technique optimale
+    # DÃ©terminer la technique optimale
     $optimalTechnique = $results | 
         Where-Object { $_.SuccessRate -eq 100 } | 
         Sort-Object -Property AverageTime | 
@@ -415,14 +415,14 @@ if ($GenerateReport) {
     }
     else {
         $htmlContent += @"
-        <p><strong>Impossible de déterminer la technique optimale. Aucun test n'a réussi à 100%.</strong></p>
+        <p><strong>Impossible de dÃ©terminer la technique optimale. Aucun test n'a rÃ©ussi Ã  100%.</strong></p>
 "@
     }
     
     $htmlContent += @"
     </div>
     
-    <h2>Résultats par technique</h2>
+    <h2>RÃ©sultats par technique</h2>
     <table>
         <thead>
             <tr>
@@ -430,7 +430,7 @@ if ($GenerateReport) {
                 <th>Temps moyen (s)</th>
                 <th>Temps min (s)</th>
                 <th>Temps max (s)</th>
-                <th>Taux de succès (%)</th>
+                <th>Taux de succÃ¨s (%)</th>
             </tr>
         </thead>
         <tbody>
@@ -457,19 +457,19 @@ if ($GenerateReport) {
     
     <h2>Graphiques</h2>
     
-    <h3>Temps d'exécution moyen par technique</h3>
+    <h3>Temps d'exÃ©cution moyen par technique</h3>
     <div class="chart-container">
         <canvas id="timeChart"></canvas>
     </div>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const techniques = [$(($results | ForEach-Object { "'$($_.Technique)'" }) -join ', ')];
         const avgTimes = [$(($results | ForEach-Object { [Math]::Round($_.AverageTime, 2) }) -join ', ')];
         const minTimes = [$(($results | ForEach-Object { [Math]::Round($_.MinTime, 2) }) -join ', ')];
         const maxTimes = [$(($results | ForEach-Object { [Math]::Round($_.MaxTime, 2) }) -join ', ')];
         
-        // Graphique des temps d'exécution
+        // Graphique des temps d'exÃ©cution
         const timeCtx = document.getElementById('timeChart').getContext('2d');
         new Chart(timeCtx, {
             type: 'bar',
@@ -518,11 +518,11 @@ if ($GenerateReport) {
     
     $htmlContent | Out-File -FilePath $reportPath -Encoding utf8
     
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
     
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

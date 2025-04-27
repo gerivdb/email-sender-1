@@ -1,69 +1,69 @@
-# Mode C-BREAK
+﻿# Mode C-BREAK
 
 ## Description
-Le mode C-BREAK (Cycle Breaker) est un mode opérationnel qui se concentre sur la détection et la résolution des dépendances circulaires dans le code et les workflows.
+Le mode C-BREAK (Cycle Breaker) est un mode opÃ©rationnel qui se concentre sur la dÃ©tection et la rÃ©solution des dÃ©pendances circulaires dans le code et les workflows.
 
 ## Objectif
-L'objectif principal du mode C-BREAK est d'identifier et d'éliminer les dépendances circulaires qui peuvent causer des problèmes de performance, de maintenabilité et de stabilité.
+L'objectif principal du mode C-BREAK est d'identifier et d'Ã©liminer les dÃ©pendances circulaires qui peuvent causer des problÃ¨mes de performance, de maintenabilitÃ© et de stabilitÃ©.
 
-## Fonctionnalités
-- Détection de dépendances circulaires
-- Analyse de graphe de dépendances
+## FonctionnalitÃ©s
+- DÃ©tection de dÃ©pendances circulaires
+- Analyse de graphe de dÃ©pendances
 - Suggestion de refactoring
 - Validation de workflows
-- Résolution automatique de cycles
+- RÃ©solution automatique de cycles
 
 ## Utilisation
 
 ```powershell
-# Détecter les dépendances circulaires dans un dossier
+# DÃ©tecter les dÃ©pendances circulaires dans un dossier
 .\c-break-mode.ps1 -FolderPath "src" -DetectCycles
 
-# Analyser un workflow spécifique
+# Analyser un workflow spÃ©cifique
 .\c-break-mode.ps1 -WorkflowPath "src/workflows/main.json" -ValidateWorkflow
 
-# Suggérer des solutions pour résoudre les cycles
+# SuggÃ©rer des solutions pour rÃ©soudre les cycles
 .\c-break-mode.ps1 -FolderPath "src" -DetectCycles -SuggestSolutions
 ```
 
-## Types de dépendances circulaires
-Le mode C-BREAK peut détecter différents types de dépendances circulaires :
-- **Dépendances de code** : Modules ou classes qui dépendent mutuellement
-- **Dépendances d'import** : Fichiers qui s'importent mutuellement
-- **Dépendances de workflow** : Étapes de workflow qui créent des boucles
-- **Dépendances de données** : Structures de données qui se référencent mutuellement
+## Types de dÃ©pendances circulaires
+Le mode C-BREAK peut dÃ©tecter diffÃ©rents types de dÃ©pendances circulaires :
+- **DÃ©pendances de code** : Modules ou classes qui dÃ©pendent mutuellement
+- **DÃ©pendances d'import** : Fichiers qui s'importent mutuellement
+- **DÃ©pendances de workflow** : Ã‰tapes de workflow qui crÃ©ent des boucles
+- **DÃ©pendances de donnÃ©es** : Structures de donnÃ©es qui se rÃ©fÃ©rencent mutuellement
 
-## Intégration avec d'autres modes
-Le mode C-BREAK peut être utilisé en combinaison avec d'autres modes :
-- **ARCHI** : Pour concevoir une architecture sans dépendances circulaires
-- **REVIEW** : Pour vérifier l'absence de dépendances circulaires
-- **OPTI** : Pour optimiser le code en éliminant les dépendances circulaires
+## IntÃ©gration avec d'autres modes
+Le mode C-BREAK peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
+- **ARCHI** : Pour concevoir une architecture sans dÃ©pendances circulaires
+- **REVIEW** : Pour vÃ©rifier l'absence de dÃ©pendances circulaires
+- **OPTI** : Pour optimiser le code en Ã©liminant les dÃ©pendances circulaires
 
-## Implémentation
-Le mode C-BREAK est implémenté dans le script `c-break-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/c-break`.
+## ImplÃ©mentation
+Le mode C-BREAK est implÃ©mentÃ© dans le script `c-break-mode.ps1` qui se trouve dans le dossier `tools/scripts/roadmap/modes/c-break`.
 
-## Exemple de rapport de dépendances circulaires
+## Exemple de rapport de dÃ©pendances circulaires
 ```
-Rapport de dépendances circulaires :
-- Cycles détectés : 3
+Rapport de dÃ©pendances circulaires :
+- Cycles dÃ©tectÃ©s : 3
 
 Cycle 1 :
   ModuleA -> ModuleB -> ModuleC -> ModuleA
-  Suggestion : Extraire les fonctionnalités communes dans un nouveau module
+  Suggestion : Extraire les fonctionnalitÃ©s communes dans un nouveau module
 
 Cycle 2 :
   FileX.ps1 -> FileY.ps1 -> FileZ.ps1 -> FileX.ps1
-  Suggestion : Utiliser l'injection de dépendances
+  Suggestion : Utiliser l'injection de dÃ©pendances
 
 Cycle 3 :
   WorkflowStep1 -> WorkflowStep2 -> WorkflowStep3 -> WorkflowStep1
-  Suggestion : Restructurer le workflow en phases séquentielles
+  Suggestion : Restructurer le workflow en phases sÃ©quentielles
 ```
 
 ## Bonnes pratiques
-- Détecter les dépendances circulaires tôt dans le processus de développement
-- Utiliser des patterns comme l'injection de dépendances pour éviter les cycles
-- Concevoir une architecture en couches pour minimiser les dépendances
-- Tester les modifications après avoir résolu les cycles
-- Documenter les décisions de conception pour éviter la réintroduction de cycles
-- Utiliser des outils d'analyse statique pour détecter les cycles automatiquement
+- DÃ©tecter les dÃ©pendances circulaires tÃ´t dans le processus de dÃ©veloppement
+- Utiliser des patterns comme l'injection de dÃ©pendances pour Ã©viter les cycles
+- Concevoir une architecture en couches pour minimiser les dÃ©pendances
+- Tester les modifications aprÃ¨s avoir rÃ©solu les cycles
+- Documenter les dÃ©cisions de conception pour Ã©viter la rÃ©introduction de cycles
+- Utiliser des outils d'analyse statique pour dÃ©tecter les cycles automatiquement

@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires simples pour vérifier que Pester fonctionne correctement.
+    Tests unitaires simples pour vÃ©rifier que Pester fonctionne correctement.
 .DESCRIPTION
-    Ce script contient des tests unitaires simples pour vérifier que Pester fonctionne correctement.
+    Ce script contient des tests unitaires simples pour vÃ©rifier que Pester fonctionne correctement.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 Describe "Tests simples" {
@@ -27,8 +27,8 @@ Describe "Tests simples" {
     }
 }
 
-# Ne pas exécuter les tests automatiquement pour éviter la récursion infinie
-# # # # # Invoke-Pester -Path $PSCommandPath -Output Detailed # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie # Commenté pour éviter la récursion infinie
+# Ne pas exÃ©cuter les tests automatiquement pour Ã©viter la rÃ©cursion infinie
+# # # # # Invoke-Pester -Path $PSCommandPath -Output Detailed # CommentÃ© pour Ã©viter la rÃ©cursion infinie # CommentÃ© pour Ã©viter la rÃ©cursion infinie # CommentÃ© pour Ã©viter la rÃ©cursion infinie # CommentÃ© pour Ã©viter la rÃ©cursion infinie
 
 
 

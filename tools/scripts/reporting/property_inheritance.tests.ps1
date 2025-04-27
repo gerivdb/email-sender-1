@@ -1,10 +1,10 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     . $PSScriptRoot/property_inheritance.ps1
 }
 
-Describe "Fonctions d'analyse de la hiérarchie" {
-    Context "Construction de l'arbre d'héritage" {
+Describe "Fonctions d'analyse de la hiÃ©rarchie" {
+    Context "Construction de l'arbre d'hÃ©ritage" {
         It "Should build inheritance tree for a type" {
             $tree = Get-TypeInheritanceTree -Type ([System.Exception])
 
@@ -57,36 +57,36 @@ Describe "Fonctions d'analyse de la hiérarchie" {
 
     Context "Parcours descendant" {
         It "Should get descendants of a type" {
-            # Utiliser un type simple pour éviter les performances médiocres
+            # Utiliser un type simple pour Ã©viter les performances mÃ©diocres
             $descendants = Get-TypeDescendants -Type ([System.Exception]) -Assembly ([System.Exception].Assembly)
 
-            # Le test peut échouer si aucun descendant n'est trouvé dans l'assembly spécifié
-            # Nous vérifions simplement que la fonction s'exécute sans erreur
+            # Le test peut Ã©chouer si aucun descendant n'est trouvÃ© dans l'assembly spÃ©cifiÃ©
+            # Nous vÃ©rifions simplement que la fonction s'exÃ©cute sans erreur
             $descendants | Should -Not -BeNull
         }
 
         It "Should handle interfaces in descendants" {
-            # Utiliser un type simple pour éviter les performances médiocres
+            # Utiliser un type simple pour Ã©viter les performances mÃ©diocres
             $descendants = Get-TypeDescendants -Type ([System.IDisposable]) -Assembly ([System.IDisposable].Assembly) -IncludeInterfaces
 
-            # Le test peut échouer si aucun descendant n'est trouvé dans l'assembly spécifié
-            # Nous vérifions simplement que la fonction s'exécute sans erreur
+            # Le test peut Ã©chouer si aucun descendant n'est trouvÃ© dans l'assembly spÃ©cifiÃ©
+            # Nous vÃ©rifions simplement que la fonction s'exÃ©cute sans erreur
             $descendants | Should -Not -BeNull
         }
 
         It "Should respect max depth in descendants" {
-            # Utiliser un type simple pour éviter les performances médiocres
+            # Utiliser un type simple pour Ã©viter les performances mÃ©diocres
             $descendants = Get-TypeDescendants -Type ([System.Exception]) -Assembly ([System.Exception].Assembly) -MaxDepth 1
 
-            # Le test peut échouer si aucun descendant n'est trouvé dans l'assembly spécifié
-            # Nous vérifions simplement que la fonction s'exécute sans erreur
+            # Le test peut Ã©chouer si aucun descendant n'est trouvÃ© dans l'assembly spÃ©cifiÃ©
+            # Nous vÃ©rifions simplement que la fonction s'exÃ©cute sans erreur
             $descendants | Should -Not -BeNull
         }
     }
 
-    Context "Détection des cycles" {
+    Context "DÃ©tection des cycles" {
         It "Should detect inheritance cycles" {
-            # Créer un type avec un cycle d'héritage pour le test
+            # CrÃ©er un type avec un cycle d'hÃ©ritage pour le test
             $cycleInfo = Test-TypeInheritanceCycles -Type ([System.Collections.Generic.IEnumerable`1[System.String]])
 
             $cycleInfo | Should -Not -BeNullOrEmpty
@@ -94,7 +94,7 @@ Describe "Fonctions d'analyse de la hiérarchie" {
         }
     }
 
-    Context "Visualisation de la hiérarchie" {
+    Context "Visualisation de la hiÃ©rarchie" {
         It "Should visualize inheritance hierarchy in ASCII format" {
             $visualization = Get-TypeInheritanceVisualization -Type ([System.Exception]) -Format "ASCII"
 
@@ -121,10 +121,10 @@ Describe "Fonctions d'analyse de la hiérarchie" {
     }
 }
 
-Describe "Fonctions de résolution des propriétés masquées" {
-    Context "Détection des mots-clés new et override" {
+Describe "Fonctions de rÃ©solution des propriÃ©tÃ©s masquÃ©es" {
+    Context "DÃ©tection des mots-clÃ©s new et override" {
         BeforeAll {
-            # Créer des classes de test avec des propriétés masquées et remplacées
+            # CrÃ©er des classes de test avec des propriÃ©tÃ©s masquÃ©es et remplacÃ©es
             $code = @"
             using System;
 
@@ -150,21 +150,21 @@ Describe "Fonctions de résolution des propriétés masquées" {
             $newOverrideProperties | Should -Not -BeNullOrEmpty
             $newOverrideProperties.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'au moins une propriété avec override est détectée
+            # VÃ©rifier qu'au moins une propriÃ©tÃ© avec override est dÃ©tectÃ©e
             $overrideProperty = $newOverrideProperties | Where-Object { $_.IsOverride }
             $overrideProperty | Should -Not -BeNullOrEmpty
             $overrideProperty.Property.Name | Should -Be "VirtualProperty"
 
-            # Vérifier qu'au moins une propriété avec new est détectée
+            # VÃ©rifier qu'au moins une propriÃ©tÃ© avec new est dÃ©tectÃ©e
             $newProperty = $newOverrideProperties | Where-Object { $_.IsNew }
             $newProperty | Should -Not -BeNullOrEmpty
             $newProperty.Property.Name | Should -Be "NonVirtualProperty"
         }
     }
 
-    Context "Résolution des conflits de noms" {
+    Context "RÃ©solution des conflits de noms" {
         BeforeAll {
-            # Créer des classes de test avec des conflits de noms
+            # CrÃ©er des classes de test avec des conflits de noms
             $code = @"
             using System;
 
@@ -177,7 +177,7 @@ Describe "Fonctions de résolution des propriétés masquées" {
             }
 
             public class DerivedClass : BaseClass, ITestInterface {
-                // Masque la propriété de BaseClass et implémente ITestInterface
+                // Masque la propriÃ©tÃ© de BaseClass et implÃ©mente ITestInterface
                 public new string CommonProperty { get; set; }
             }
 "@
@@ -190,7 +190,7 @@ Describe "Fonctions de résolution des propriétés masquées" {
             $nameConflicts | Should -Not -BeNullOrEmpty
             $nameConflicts.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'un conflit pour CommonProperty est détecté
+            # VÃ©rifier qu'un conflit pour CommonProperty est dÃ©tectÃ©
             $conflict = $nameConflicts | Where-Object { $_.PropertyName -eq "CommonProperty" }
             $conflict | Should -Not -BeNullOrEmpty
             $conflict.WinningType | Should -Be ([DerivedClass])
@@ -208,19 +208,19 @@ Describe "Fonctions de résolution des propriétés masquées" {
         }
     }
 
-    Context "Accès aux versions masquées" {
+    Context "AccÃ¨s aux versions masquÃ©es" {
         It "Should access shadowed property versions" {
             $shadowedVersions = Get-PropertyShadowedVersions -Type ([DerivedClass]) -PropertyName "CommonProperty"
 
             $shadowedVersions | Should -Not -BeNullOrEmpty
             $shadowedVersions.Count | Should -BeGreaterThan 1
 
-            # Vérifier que la version courante est incluse
+            # VÃ©rifier que la version courante est incluse
             $currentVersion = $shadowedVersions | Where-Object { $_.IsCurrent }
             $currentVersion | Should -Not -BeNullOrEmpty
             $currentVersion.Type | Should -Be ([DerivedClass])
 
-            # Vérifier que la version de base est incluse
+            # VÃ©rifier que la version de base est incluse
             $baseVersion = $shadowedVersions | Where-Object { $_.IsBase }
             $baseVersion | Should -Not -BeNullOrEmpty
             $baseVersion.Type | Should -Be ([BaseClass])
@@ -228,8 +228,8 @@ Describe "Fonctions de résolution des propriétés masquées" {
     }
 }
 
-Describe "Fonctions de fusion des propriétés" {
-    Context "Stratégies de fusion" {
+Describe "Fonctions de fusion des propriÃ©tÃ©s" {
+    Context "StratÃ©gies de fusion" {
         It "Should merge properties with Union strategy" {
             $mergedProperties = Merge-TypeProperties -Types @([System.String], [System.Object]) -Strategy "Union"
 
@@ -260,9 +260,9 @@ Describe "Fonctions de fusion des propriétés" {
         }
     }
 
-    Context "Résolution des conflits" {
+    Context "RÃ©solution des conflits" {
         BeforeAll {
-            # Créer des propriétés fusionnées pour les tests
+            # CrÃ©er des propriÃ©tÃ©s fusionnÃ©es pour les tests
             $mergedProperties = Merge-TypeProperties -Types @([System.String], [System.Object]) -Strategy "Union"
         }
 
@@ -308,9 +308,9 @@ Describe "Fonctions de fusion des propriétés" {
         }
     }
 
-    Context "Déduplication des propriétés" {
+    Context "DÃ©duplication des propriÃ©tÃ©s" {
         BeforeAll {
-            # Créer des propriétés pour les tests
+            # CrÃ©er des propriÃ©tÃ©s pour les tests
             $properties = [System.String].GetProperties()
         }
 
@@ -343,7 +343,7 @@ Describe "Fonctions de fusion des propriétés" {
         }
     }
 
-    Context "Personnalisation des stratégies" {
+    Context "Personnalisation des stratÃ©gies" {
         It "Should merge properties with custom rules" {
             $rules = @(
                 @{ PropertyName = "Length"; Strategy = "First"; Resolver = $null },

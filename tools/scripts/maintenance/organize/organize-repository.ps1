@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Organise la structure du dépôt selon une structure standardisée.
+    Organise la structure du dÃ©pÃ´t selon une structure standardisÃ©e.
 
 .DESCRIPTION
-    Ce script organise le dépôt selon une structure standardisée.
-    Il crée les dossiers nécessaires et déplace les fichiers vers leurs emplacements appropriés.
+    Ce script organise le dÃ©pÃ´t selon une structure standardisÃ©e.
+    Il crÃ©e les dossiers nÃ©cessaires et dÃ©place les fichiers vers leurs emplacements appropriÃ©s.
 
 .PARAMETER DryRun
-    Si spécifié, le script affiche les actions qui seraient effectuées sans les exécuter.
+    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
 
 .PARAMETER Force
-    Si spécifié, le script écrase les fichiers existants sans demander de confirmation.
+    Si spÃ©cifiÃ©, le script Ã©crase les fichiers existants sans demander de confirmation.
 
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuées.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
 
 .EXAMPLE
     .\organize-repository.ps1 -DryRun
@@ -24,7 +24,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -38,16 +38,16 @@ param (
     [string]$LogFile
 )
 
-# Définir le répertoire racine du dépôt
+# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# Vérifier que le répertoire racine existe
+# VÃ©rifier que le rÃ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le répertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
 }
 
-Write-Host "Organisation du dépôt : $repoRoot" -ForegroundColor Cyan
+Write-Host "Organisation du dÃ©pÃ´t : $repoRoot" -ForegroundColor Cyan
 
 # Fonction pour journaliser les actions
 function Write-Log {
@@ -75,12 +75,12 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Organisation démarrée le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "Répertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Organisation dÃ©marrÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# Définir la structure de dossiers à créer
+# DÃ©finir la structure de dossiers Ã  crÃ©er
 $folders = @(
     "scripts",
     "scripts/roadmap",
@@ -148,25 +148,25 @@ $folders = @(
     "_templates/maintenance"
 )
 
-# Créer les dossiers
+# CrÃ©er les dossiers
 foreach ($folder in $folders) {
     $folderPath = Join-Path -Path $repoRoot -ChildPath $folder
     
     if (-not (Test-Path -Path $folderPath)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Création du dossier : $folderPath"
+            Write-Log "[DRYRUN] CrÃ©ation du dossier : $folderPath"
         } else {
-            if ($PSCmdlet.ShouldProcess($folderPath, "Créer le dossier")) {
+            if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier")) {
                 New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-                Write-Log "Dossier créé : $folderPath"
+                Write-Log "Dossier crÃ©Ã© : $folderPath"
             }
         }
     } else {
-        Write-Log "Le dossier existe déjà : $folderPath"
+        Write-Log "Le dossier existe dÃ©jÃ  : $folderPath"
     }
 }
 
-# Définir les mappages de fichiers vers les nouveaux emplacements
+# DÃ©finir les mappages de fichiers vers les nouveaux emplacements
 $fileMappings = @{
     # Scripts de mode
     "scripts/*-mode.ps1" = "scripts/roadmap-parser/modes/{0}/{0}-mode.ps1"
@@ -187,7 +187,7 @@ $fileMappings = @{
     "templates/maintenance/*.ejs.t" = "_templates/maintenance/{0}"
 }
 
-# Fonction pour déplacer un fichier
+# Fonction pour dÃ©placer un fichier
 function Move-FileToNewLocation {
     param (
         [string]$SourceFile,
@@ -202,11 +202,11 @@ function Move-FileToNewLocation {
     $destinationDir = Split-Path -Path $DestinationPath -Parent
     if (-not (Test-Path -Path $destinationDir)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Création du répertoire : $destinationDir"
+            Write-Log "[DRYRUN] CrÃ©ation du rÃ©pertoire : $destinationDir"
         } else {
-            if ($PSCmdlet.ShouldProcess($destinationDir, "Créer le répertoire")) {
+            if ($PSCmdlet.ShouldProcess($destinationDir, "CrÃ©er le rÃ©pertoire")) {
                 New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-                Write-Log "Répertoire créé : $destinationDir"
+                Write-Log "RÃ©pertoire crÃ©Ã© : $destinationDir"
             }
         }
     }
@@ -215,7 +215,7 @@ function Move-FileToNewLocation {
         if ($Force) {
             $shouldContinue = $true
         } else {
-            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe déjà : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
+            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃ©jÃ  : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
         }
     } else {
         $shouldContinue = $true
@@ -223,15 +223,15 @@ function Move-FileToNewLocation {
     
     if ($shouldContinue) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Déplacement du fichier : $SourceFile -> $DestinationPath"
+            Write-Log "[DRYRUN] DÃ©placement du fichier : $SourceFile -> $DestinationPath"
         } else {
-            if ($PSCmdlet.ShouldProcess($SourceFile, "Déplacer vers $DestinationPath")) {
+            if ($PSCmdlet.ShouldProcess($SourceFile, "DÃ©placer vers $DestinationPath")) {
                 Copy-Item -Path $SourceFile -Destination $DestinationPath -Force
-                Write-Log "Fichier déplacé : $SourceFile -> $DestinationPath"
+                Write-Log "Fichier dÃ©placÃ© : $SourceFile -> $DestinationPath"
             }
         }
     } else {
-        Write-Log "Déplacement ignoré : $SourceFile"
+        Write-Log "DÃ©placement ignorÃ© : $SourceFile"
     }
 }
 
@@ -243,7 +243,7 @@ foreach ($pattern in $fileMappings.Keys) {
         $fileName = $file.Name
         $baseName = $file.BaseName
         
-        # Extraire le nom du mode à partir du nom du fichier
+        # Extraire le nom du mode Ã  partir du nom du fichier
         if ($fileName -match "^([a-zA-Z0-9-]+)-mode\.ps1$") {
             $modeName = $matches[1]
             $destinationPath = Join-Path -Path $repoRoot -ChildPath ($fileMappings[$pattern] -f $modeName)
@@ -255,13 +255,13 @@ foreach ($pattern in $fileMappings.Keys) {
     }
 }
 
-# Résumé de l'organisation
-Write-Host "Organisation terminée." -ForegroundColor Cyan
+# RÃ©sumÃ© de l'organisation
+Write-Host "Organisation terminÃ©e." -ForegroundColor Cyan
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Organisation terminée le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Organisation terminÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log d'organisation enregistré dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log d'organisation enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
 }

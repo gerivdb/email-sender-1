@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Exporte un rapport d'analyse de pull request au format PDF.
@@ -8,55 +8,55 @@
     Chrome ou Edge en mode headless.
 
 .PARAMETER InputPath
-    Le chemin du fichier HTML à convertir en PDF.
+    Le chemin du fichier HTML Ã  convertir en PDF.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le fichier PDF généré.
-    Si non spécifié, le même nom que le fichier HTML sera utilisé avec l'extension .pdf.
+    Le chemin oÃ¹ enregistrer le fichier PDF gÃ©nÃ©rÃ©.
+    Si non spÃ©cifiÃ©, le mÃªme nom que le fichier HTML sera utilisÃ© avec l'extension .pdf.
 
 .PARAMETER Browser
-    Le navigateur à utiliser pour la conversion.
+    Le navigateur Ã  utiliser pour la conversion.
     Valeurs possibles: "Chrome", "Edge"
-    Par défaut: "Chrome"
+    Par dÃ©faut: "Chrome"
 
 .PARAMETER PageSize
-    Le format de page à utiliser pour le PDF.
+    Le format de page Ã  utiliser pour le PDF.
     Valeurs possibles: "A4", "Letter", "Legal", "Tabloid"
-    Par défaut: "A4"
+    Par dÃ©faut: "A4"
 
 .PARAMETER Orientation
     L'orientation de la page.
     Valeurs possibles: "Portrait", "Landscape"
-    Par défaut: "Portrait"
+    Par dÃ©faut: "Portrait"
 
 .PARAMETER MarginTop
-    La marge supérieure en millimètres.
-    Par défaut: 10
+    La marge supÃ©rieure en millimÃ¨tres.
+    Par dÃ©faut: 10
 
 .PARAMETER MarginBottom
-    La marge inférieure en millimètres.
-    Par défaut: 10
+    La marge infÃ©rieure en millimÃ¨tres.
+    Par dÃ©faut: 10
 
 .PARAMETER MarginLeft
-    La marge gauche en millimètres.
-    Par défaut: 10
+    La marge gauche en millimÃ¨tres.
+    Par dÃ©faut: 10
 
 .PARAMETER MarginRight
-    La marge droite en millimètres.
-    Par défaut: 10
+    La marge droite en millimÃ¨tres.
+    Par dÃ©faut: 10
 
 .PARAMETER IncludeBackground
-    Indique s'il faut inclure les arrière-plans dans le PDF.
-    Par défaut: $true
+    Indique s'il faut inclure les arriÃ¨re-plans dans le PDF.
+    Par dÃ©faut: $true
 
 .PARAMETER WaitTime
     Le temps d'attente en secondes avant de capturer la page.
     Utile pour les pages avec du contenu dynamique.
-    Par défaut: 2
+    Par dÃ©faut: 2
 
 .EXAMPLE
     .\Export-ReportToPDF.ps1 -InputPath "reports\pr-analysis\interactive_report.html"
-    Convertit le rapport HTML en PDF avec les paramètres par défaut.
+    Convertit le rapport HTML en PDF avec les paramÃ¨tres par dÃ©faut.
 
 .EXAMPLE
     .\Export-ReportToPDF.ps1 -InputPath "reports\pr-analysis\interactive_report.html" -OutputPath "reports\pr-analysis\report.pdf" -PageSize "Letter" -Orientation "Landscape"
@@ -67,7 +67,7 @@
     Auteur: Augment Agent
     Date: 2025-04-29
     
-    Prérequis: Chrome ou Edge doit être installé sur le système.
+    PrÃ©requis: Chrome ou Edge doit Ãªtre installÃ© sur le systÃ¨me.
 #>
 
 [CmdletBinding()]
@@ -109,18 +109,18 @@ param(
     [int]$WaitTime = 2
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputPath)) {
-    Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
     exit 1
 }
 
-# Déterminer le chemin de sortie si non spécifié
+# DÃ©terminer le chemin de sortie si non spÃ©cifiÃ©
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     $OutputPath = [System.IO.Path]::ChangeExtension($InputPath, ".pdf")
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -130,7 +130,7 @@ if (-not [string]::IsNullOrWhiteSpace($outputDir) -and -not (Test-Path -Path $ou
 $InputPath = Resolve-Path -Path $InputPath
 $OutputPath = [System.IO.Path]::GetFullPath($OutputPath)
 
-# Déterminer le chemin du navigateur
+# DÃ©terminer le chemin du navigateur
 $browserPath = $null
 switch ($Browser) {
     "Chrome" {
@@ -161,7 +161,7 @@ switch ($Browser) {
 }
 
 if (-not $browserPath) {
-    Write-Error "Navigateur $Browser non trouvé sur le système."
+    Write-Error "Navigateur $Browser non trouvÃ© sur le systÃ¨me."
     exit 1
 }
 
@@ -176,7 +176,7 @@ $args = @(
     "--disable-extensions"
 )
 
-# Ajouter les paramètres de mise en page
+# Ajouter les paramÃ¨tres de mise en page
 $args += @(
     "--default-page-size=$PageSize",
     "--default-page-orientation=$Orientation",
@@ -187,18 +187,18 @@ $args += @(
     "--print-background=$printBackground"
 )
 
-# Ajouter le fichier d'entrée
+# Ajouter le fichier d'entrÃ©e
 $args += "file:///$InputPath"
 
-# Exécuter le navigateur en mode headless
+# ExÃ©cuter le navigateur en mode headless
 try {
     Write-Host "Conversion du rapport HTML en PDF..." -ForegroundColor Cyan
     Write-Host "  Navigateur: $Browser" -ForegroundColor White
-    Write-Host "  Fichier d'entrée: $InputPath" -ForegroundColor White
+    Write-Host "  Fichier d'entrÃ©e: $InputPath" -ForegroundColor White
     Write-Host "  Fichier de sortie: $OutputPath" -ForegroundColor White
     Write-Host "  Format de page: $PageSize ($Orientation)" -ForegroundColor White
     
-    # Démarrer le processus
+    # DÃ©marrer le processus
     $process = Start-Process -FilePath $browserPath -ArgumentList $args -NoNewWindow -PassThru
     
     # Attendre que le processus se termine
@@ -210,20 +210,20 @@ try {
     }
     
     if (-not $process.HasExited) {
-        Write-Warning "Le processus ne s'est pas terminé dans le délai imparti. Tentative d'arrêt forcé."
+        Write-Warning "Le processus ne s'est pas terminÃ© dans le dÃ©lai imparti. Tentative d'arrÃªt forcÃ©."
         $process.Kill()
     }
     
-    # Vérifier que le fichier PDF a été créé
+    # VÃ©rifier que le fichier PDF a Ã©tÃ© crÃ©Ã©
     if (Test-Path -Path $OutputPath) {
-        Write-Host "Conversion réussie. PDF généré: $OutputPath" -ForegroundColor Green
+        Write-Host "Conversion rÃ©ussie. PDF gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
         
-        # Ouvrir le PDF dans le lecteur par défaut
+        # Ouvrir le PDF dans le lecteur par dÃ©faut
         Start-Process $OutputPath
         
         return $OutputPath
     } else {
-        Write-Error "La conversion a échoué. Le fichier PDF n'a pas été créé."
+        Write-Error "La conversion a Ã©chouÃ©. Le fichier PDF n'a pas Ã©tÃ© crÃ©Ã©."
         exit 1
     }
 } catch {

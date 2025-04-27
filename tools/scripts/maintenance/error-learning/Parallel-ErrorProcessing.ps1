@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Traite les erreurs en parallèle pour améliorer les performances.
+    Traite les erreurs en parallÃ¨le pour amÃ©liorer les performances.
 .DESCRIPTION
     Ce script utilise la fonction Invoke-OptimizedParallel pour traiter les erreurs
-    en parallèle, ce qui améliore considérablement les performances lors du traitement
+    en parallÃ¨le, ce qui amÃ©liore considÃ©rablement les performances lors du traitement
     d'un grand nombre de fichiers ou d'erreurs.
 .PARAMETER ErrorLogPath
-    Chemin vers le fichier journal d'erreurs à traiter.
+    Chemin vers le fichier journal d'erreurs Ã  traiter.
 .PARAMETER MaxThreads
-    Nombre maximum de threads à utiliser pour le traitement parallèle.
+    Nombre maximum de threads Ã  utiliser pour le traitement parallÃ¨le.
 .EXAMPLE
     .\Parallel-ErrorProcessing.ps1 -ErrorLogPath "C:\Logs\errors.log" -MaxThreads 8
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
-    Compatibilité: PowerShell 5.1 et supérieur
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur
 #>
 [CmdletBinding()]
 param (
@@ -31,13 +31,13 @@ $parallelModulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPat
 
 if (Test-Path -Path $parallelModulePath) {
     . $parallelModulePath
-    Write-Verbose "Module Invoke-OptimizedParallel chargé avec succès."
+    Write-Verbose "Module Invoke-OptimizedParallel chargÃ© avec succÃ¨s."
 } else {
-    Write-Error "Module Invoke-OptimizedParallel introuvable à l'emplacement: $parallelModulePath"
+    Write-Error "Module Invoke-OptimizedParallel introuvable Ã  l'emplacement: $parallelModulePath"
     exit 1
 }
 
-# Vérifier si le fichier journal d'erreurs existe
+# VÃ©rifier si le fichier journal d'erreurs existe
 if (-not (Test-Path -Path $ErrorLogPath)) {
     Write-Error "Le fichier journal d'erreurs n'existe pas: $ErrorLogPath"
     exit 1
@@ -71,29 +71,29 @@ function Analyze-Error {
             PossibleSolutions = @()
         }
         
-        # Déterminer la catégorie et la sévérité de l'erreur
+        # DÃ©terminer la catÃ©gorie et la sÃ©vÃ©ritÃ© de l'erreur
         if ($errorMessage -match "Cannot find path") {
             $analysis.Category = "FileNotFound"
             $analysis.Severity = "High"
-            $analysis.PossibleSolutions += "Vérifier si le fichier existe à l'emplacement spécifié."
+            $analysis.PossibleSolutions += "VÃ©rifier si le fichier existe Ã  l'emplacement spÃ©cifiÃ©."
             $analysis.PossibleSolutions += "Utiliser des chemins relatifs ou des variables d'environnement."
         }
         elseif ($errorMessage -match "Access is denied") {
             $analysis.Category = "AccessDenied"
             $analysis.Severity = "High"
-            $analysis.PossibleSolutions += "Vérifier les permissions du fichier ou du répertoire."
-            $analysis.PossibleSolutions += "Exécuter le script avec des privilèges élevés si nécessaire."
+            $analysis.PossibleSolutions += "VÃ©rifier les permissions du fichier ou du rÃ©pertoire."
+            $analysis.PossibleSolutions += "ExÃ©cuter le script avec des privilÃ¨ges Ã©levÃ©s si nÃ©cessaire."
         }
         elseif ($errorMessage -match "The term '.*' is not recognized") {
             $analysis.Category = "CommandNotFound"
             $analysis.Severity = "Medium"
-            $analysis.PossibleSolutions += "Vérifier l'orthographe de la commande."
+            $analysis.PossibleSolutions += "VÃ©rifier l'orthographe de la commande."
             $analysis.PossibleSolutions += "Importer le module contenant la commande."
         }
         elseif ($errorMessage -match "Cannot convert") {
             $analysis.Category = "TypeConversion"
             $analysis.Severity = "Medium"
-            $analysis.PossibleSolutions += "Vérifier les types de données utilisés."
+            $analysis.PossibleSolutions += "VÃ©rifier les types de donnÃ©es utilisÃ©s."
             $analysis.PossibleSolutions += "Utiliser des conversions explicites."
         }
         else {
@@ -102,24 +102,24 @@ function Analyze-Error {
             $analysis.PossibleSolutions += "Examiner le contexte de l'erreur pour plus d'informations."
         }
         
-        # Vérifier si le script existe
+        # VÃ©rifier si le script existe
         if ($scriptPath -and (Test-Path -Path $scriptPath)) {
             # Lire le contenu du script
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Extraire la ligne qui a causé l'erreur
+            # Extraire la ligne qui a causÃ© l'erreur
             if ($lineNumber -gt 0) {
                 $scriptLines = $scriptContent -split "`n"
                 if ($lineNumber -le $scriptLines.Count) {
                     $errorLine = $scriptLines[$lineNumber - 1].Trim()
                     $analysis.ErrorLine = $errorLine
                     
-                    # Analyser la ligne d'erreur pour des suggestions supplémentaires
+                    # Analyser la ligne d'erreur pour des suggestions supplÃ©mentaires
                     if ($errorLine -match "Get-Content|Set-Content|Add-Content|Remove-Item" -and $errorLine -notmatch "-ErrorAction") {
                         $analysis.PossibleSolutions += "Ajouter -ErrorAction Stop pour capturer les erreurs."
                     }
                     if ($errorLine -match "\$\w+\.\w+" -and $errorLine -notmatch "\$null -ne") {
-                        $analysis.PossibleSolutions += "Ajouter une vérification de null avant d'accéder aux propriétés d'un objet."
+                        $analysis.PossibleSolutions += "Ajouter une vÃ©rification de null avant d'accÃ©der aux propriÃ©tÃ©s d'un objet."
                     }
                 }
             }
@@ -141,8 +141,8 @@ function Analyze-Error {
     }
 }
 
-# Traiter les erreurs en parallèle
-Write-Host "Traitement de $($errorEntries.Count) erreurs en parallèle..."
+# Traiter les erreurs en parallÃ¨le
+Write-Host "Traitement de $($errorEntries.Count) erreurs en parallÃ¨le..."
 $startTime = Get-Date
 
 $results = $errorEntries | Invoke-OptimizedParallel -ScriptBlock ${function:Analyze-Error} -MaxThreads $MaxThreads
@@ -150,15 +150,15 @@ $results = $errorEntries | Invoke-OptimizedParallel -ScriptBlock ${function:Anal
 $endTime = Get-Date
 $duration = $endTime - $startTime
 
-# Analyser les résultats
+# Analyser les rÃ©sultats
 $successCount = ($results | Where-Object { $_.Success } | Measure-Object).Count
 $failureCount = ($results | Where-Object { -not $_.Success } | Measure-Object).Count
 
-Write-Host "Traitement terminé en $($duration.TotalSeconds) secondes."
-Write-Host "Erreurs traitées avec succès: $successCount"
-Write-Host "Erreurs avec échec d'analyse: $failureCount"
+Write-Host "Traitement terminÃ© en $($duration.TotalSeconds) secondes."
+Write-Host "Erreurs traitÃ©es avec succÃ¨s: $successCount"
+Write-Host "Erreurs avec Ã©chec d'analyse: $failureCount"
 
-# Regrouper les erreurs par catégorie
+# Regrouper les erreurs par catÃ©gorie
 $categorySummary = $results | 
     Where-Object { $_.Success } | 
     ForEach-Object { $_.Result } | 
@@ -168,10 +168,10 @@ $categorySummary = $results |
         Expression = { [math]::Round(($_.Count / $successCount) * 100, 2) }
     }
 
-Write-Host "`nRépartition des erreurs par catégorie:"
+Write-Host "`nRÃ©partition des erreurs par catÃ©gorie:"
 $categorySummary | Format-Table -AutoSize
 
-# Regrouper les erreurs par sévérité
+# Regrouper les erreurs par sÃ©vÃ©ritÃ©
 $severitySummary = $results | 
     Where-Object { $_.Success } | 
     ForEach-Object { $_.Result } | 
@@ -181,10 +181,10 @@ $severitySummary = $results |
         Expression = { [math]::Round(($_.Count / $successCount) * 100, 2) }
     }
 
-Write-Host "`nRépartition des erreurs par sévérité:"
+Write-Host "`nRÃ©partition des erreurs par sÃ©vÃ©ritÃ©:"
 $severitySummary | Format-Table -AutoSize
 
-# Extraire les solutions les plus fréquentes
+# Extraire les solutions les plus frÃ©quentes
 $allSolutions = $results | 
     Where-Object { $_.Success } | 
     ForEach-Object { $_.Result.PossibleSolutions } | 
@@ -196,12 +196,12 @@ $solutionSummary = $allSolutions |
     Sort-Object -Property Count -Descending | 
     Select-Object -First 10
 
-Write-Host "`nTop 10 des solutions recommandées:"
+Write-Host "`nTop 10 des solutions recommandÃ©es:"
 $solutionSummary | Format-Table -AutoSize
 
-# Générer un rapport détaillé
+# GÃ©nÃ©rer un rapport dÃ©taillÃ©
 $reportPath = Join-Path -Path (Split-Path -Parent $ErrorLogPath) -ChildPath "ErrorAnalysisReport_$(Get-Date -Format 'yyyyMMdd_HHmmss').json"
 $analysisResults = $results | Where-Object { $_.Success } | ForEach-Object { $_.Result }
 $analysisResults | ConvertTo-Json -Depth 4 | Out-File -FilePath $reportPath -Encoding UTF8
 
-Write-Host "`nRapport détaillé généré: $reportPath"
+Write-Host "`nRapport dÃ©taillÃ© gÃ©nÃ©rÃ©: $reportPath"

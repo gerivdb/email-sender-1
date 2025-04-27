@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les fonctions du script Example-Usage.ps1.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour les fonctions Test-ScriptWithCache et
-    Get-FileEncodingWithCache définies dans le script Example-Usage.ps1.
+    Get-FileEncodingWithCache dÃ©finies dans le script Example-Usage.ps1.
 .NOTES
     Author: Augment Agent
     Version: 1.0

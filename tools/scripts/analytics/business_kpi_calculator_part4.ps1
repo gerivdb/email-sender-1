@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) métier - Partie 4.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) mÃ©tier - Partie 4.
 .DESCRIPTION
-    Calcule les KPIs métier à partir des données collectées.
-    Cette partie contient la fonction principale et l'exécution.
+    Calcule les KPIs mÃ©tier Ã  partir des donnÃ©es collectÃ©es.
+    Cette partie contient la fonction principale et l'exÃ©cution.
 #>
 
-# Fonction pour calculer tous les KPIs métier
+# Fonction pour calculer tous les KPIs mÃ©tier
 function Get-BusinessKpis {
     [CmdletBinding()]
     param (
@@ -17,7 +17,7 @@ function Get-BusinessKpis {
         [object]$Config
     )
     
-    Write-Log -Message "Calcul des KPIs métier" -Level "Info"
+    Write-Log -Message "Calcul des KPIs mÃ©tier" -Level "Info"
     
     try {
         $Results = @()
@@ -51,13 +51,13 @@ function Get-BusinessKpis {
             }
             
             if ($null -ne $KpiValue) {
-                # Stocker la valeur pour une utilisation ultérieure dans les KPIs composites
+                # Stocker la valeur pour une utilisation ultÃ©rieure dans les KPIs composites
                 $KpiValues[$Kpi.id] = $KpiValue
                 
-                # Inverser la logique des seuils si nécessaire
+                # Inverser la logique des seuils si nÃ©cessaire
                 $InverseSeuils = $Kpi.PSObject.Properties.Name -contains "inverse" -and $Kpi.inverse
                 
-                # Déterminer le statut en fonction des seuils
+                # DÃ©terminer le statut en fonction des seuils
                 $Status = "Normal"
                 if ($Kpi.thresholds.warning) {
                     if ($InverseSeuils) {
@@ -95,7 +95,7 @@ function Get-BusinessKpis {
             }
         }
         
-        Write-Log -Message "Calcul terminé: $($Results.Count) KPIs calculés" -Level "Info"
+        Write-Log -Message "Calcul terminÃ©: $($Results.Count) KPIs calculÃ©s" -Level "Info"
         return $Results
     } catch {
         Write-Log -Message "Erreur lors du calcul des KPIs: $_" -Level "Error"
@@ -117,16 +117,16 @@ function Start-BusinessKpiCalculation {
         [string]$ConfigPath
     )
     
-    Write-Log -Message "Début du calcul des KPIs métier" -Level "Info"
+    Write-Log -Message "DÃ©but du calcul des KPIs mÃ©tier" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $BusinessDataPath = Join-Path -Path $DataPath -ChildPath "business_metrics.csv"
     $BusinessData = Import-BusinessData -FilePath $BusinessDataPath
     
     # 2. Charger la configuration des KPIs
     $KpiConfig = Import-KpiConfig -ConfigPath $ConfigPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -136,7 +136,7 @@ function Start-BusinessKpiCalculation {
         $KpiResults = Get-BusinessKpis -Data $BusinessData -Config $KpiConfig
         
         if ($KpiResults -and $KpiResults.Count -gt 0) {
-            # 4. Exporter les résultats
+            # 4. Exporter les rÃ©sultats
             $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "business_kpis.csv"
             $JsonOutputPath = Join-Path -Path $OutputPath -ChildPath "business_kpis.json"
             $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "business_kpis_dashboard.json"
@@ -145,14 +145,14 @@ function Start-BusinessKpiCalculation {
             Export-KpiResults -Results $KpiResults -OutputPath $CsvOutputPath -Format "CSV"
             Export-KpiResults -Results $KpiResults -OutputPath $JsonOutputPath -Format "JSON"
             Export-KpiDashboard -Results $KpiResults -OutputPath $DashboardOutputPath
-            Export-KpiReport -Results $KpiResults -OutputPath $ReportOutputPath -ReportTitle "Rapport des KPIs métier" -Period "Dernier mois"
+            Export-KpiReport -Results $KpiResults -OutputPath $ReportOutputPath -ReportTitle "Rapport des KPIs mÃ©tier" -Period "Dernier mois"
         } else {
-            Write-Log -Message "Aucun KPI calculé" -Level "Warning"
+            Write-Log -Message "Aucun KPI calculÃ©" -Level "Warning"
         }
     } else {
-        Write-Log -Message "Données ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
+        Write-Log -Message "DonnÃ©es ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
         
-        # Créer des fichiers vides avec en-têtes
+        # CrÃ©er des fichiers vides avec en-tÃªtes
         $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "business_kpis.csv"
         "Id,Name,Description,Category,Value,Unit,Status,Timestamp" | Out-File -FilePath $CsvOutputPath -Encoding UTF8
         
@@ -161,7 +161,7 @@ function Start-BusinessKpiCalculation {
         
         $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "business_kpis_dashboard.json"
         @{
-            title = "Tableau de bord des KPIs métier"
+            title = "Tableau de bord des KPIs mÃ©tier"
             timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             panels = @()
         } | ConvertTo-Json -Depth 10 | Out-File -FilePath $DashboardOutputPath -Encoding UTF8
@@ -171,21 +171,21 @@ function Start-BusinessKpiCalculation {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport des KPIs métier</title>
+    <title>Rapport des KPIs mÃ©tier</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #2c3e50; }
     </style>
 </head>
 <body>
-    <h1>Rapport des KPIs métier</h1>
-    <p>Aucune donnée disponible pour la période sélectionnée.</p>
+    <h1>Rapport des KPIs mÃ©tier</h1>
+    <p>Aucune donnÃ©e disponible pour la pÃ©riode sÃ©lectionnÃ©e.</p>
 </body>
 </html>
 "@ | Out-File -FilePath $ReportOutputPath -Encoding UTF8
     }
     
-    Write-Log -Message "Calcul des KPIs métier terminé" -Level "Info"
+    Write-Log -Message "Calcul des KPIs mÃ©tier terminÃ©" -Level "Info"
     
     return @{
         Success = $true

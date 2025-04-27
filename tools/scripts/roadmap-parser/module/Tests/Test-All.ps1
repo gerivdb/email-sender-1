@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-All.ps1
 #
-# Script pour exécuter tous les tests du module
+# Script pour exÃ©cuter tous les tests du module
 #
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -23,22 +23,22 @@ $pesterConfig.Output.Verbosity = 'Detailed'
 $testHelpersPath = Join-Path -Path $PSScriptRoot -ChildPath "TestHelpers.psm1"
 Import-Module -Name $testHelpersPath -Force
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:"
-Write-Host "Tests exécutés: $($results.TotalCount)"
-Write-Host "Tests réussis: $($results.PassedCount)"
-Write-Host "Tests échoués: $($results.FailedCount)"
-Write-Host "Tests ignorés: $($results.SkippedCount)"
-Write-Host "Tests non exécutés: $($results.NotRunCount)"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:"
+Write-Host "Tests exÃ©cutÃ©s: $($results.TotalCount)"
+Write-Host "Tests rÃ©ussis: $($results.PassedCount)"
+Write-Host "Tests Ã©chouÃ©s: $($results.FailedCount)"
+Write-Host "Tests ignorÃ©s: $($results.SkippedCount)"
+Write-Host "Tests non exÃ©cutÃ©s: $($results.NotRunCount)"
 
-# Retourner un code d'erreur si des tests ont échoué
+# Retourner un code d'erreur si des tests ont Ã©chouÃ©
 if ($results.FailedCount -gt 0) {
-    Write-Host "`nDes tests ont échoué. Consultez les détails ci-dessus." -ForegroundColor Red
+    Write-Host "`nDes tests ont Ã©chouÃ©. Consultez les dÃ©tails ci-dessus." -ForegroundColor Red
     exit 1
 } else {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 }

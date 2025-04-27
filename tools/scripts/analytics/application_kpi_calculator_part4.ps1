@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de calcul des indicateurs clés de performance (KPIs) applicatifs - Partie 4.
+    Script de calcul des indicateurs clÃ©s de performance (KPIs) applicatifs - Partie 4.
 .DESCRIPTION
-    Calcule les KPIs applicatifs à partir des données de performance collectées.
-    Cette partie contient la fonction principale et l'exécution.
+    Calcule les KPIs applicatifs Ã  partir des donnÃ©es de performance collectÃ©es.
+    Cette partie contient la fonction principale et l'exÃ©cution.
 #>
 
 # Fonction pour calculer tous les KPIs applicatifs
@@ -42,13 +42,13 @@ function Get-ApplicationKpis {
             }
             
             if ($null -ne $KpiValue) {
-                # Stocker la valeur pour une utilisation ultérieure dans les KPIs composites
+                # Stocker la valeur pour une utilisation ultÃ©rieure dans les KPIs composites
                 $KpiValues[$Kpi.id] = $KpiValue
                 
-                # Inverser la logique des seuils si nécessaire
+                # Inverser la logique des seuils si nÃ©cessaire
                 $InverseSeuils = $Kpi.PSObject.Properties.Name -contains "inverse" -and $Kpi.inverse
                 
-                # Déterminer le statut en fonction des seuils
+                # DÃ©terminer le statut en fonction des seuils
                 $Status = "Normal"
                 if ($Kpi.thresholds.warning) {
                     if ($InverseSeuils) {
@@ -86,7 +86,7 @@ function Get-ApplicationKpis {
             }
         }
         
-        Write-Log -Message "Calcul terminé: $($Results.Count) KPIs calculés" -Level "Info"
+        Write-Log -Message "Calcul terminÃ©: $($Results.Count) KPIs calculÃ©s" -Level "Info"
         return $Results
     } catch {
         Write-Log -Message "Erreur lors du calcul des KPIs: $_" -Level "Error"
@@ -108,16 +108,16 @@ function Start-ApplicationKpiCalculation {
         [string]$ConfigPath
     )
     
-    Write-Log -Message "Début du calcul des KPIs applicatifs" -Level "Info"
+    Write-Log -Message "DÃ©but du calcul des KPIs applicatifs" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $ApplicationDataPath = Join-Path -Path $DataPath -ChildPath "application_metrics.csv"
     $ApplicationData = Import-ApplicationData -FilePath $ApplicationDataPath
     
     # 2. Charger la configuration des KPIs
     $KpiConfig = Import-KpiConfig -ConfigPath $ConfigPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
@@ -127,7 +127,7 @@ function Start-ApplicationKpiCalculation {
         $KpiResults = Get-ApplicationKpis -Data $ApplicationData -Config $KpiConfig
         
         if ($KpiResults -and $KpiResults.Count -gt 0) {
-            # 4. Exporter les résultats
+            # 4. Exporter les rÃ©sultats
             $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "application_kpis.csv"
             $JsonOutputPath = Join-Path -Path $OutputPath -ChildPath "application_kpis.json"
             $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "application_kpis_dashboard.json"
@@ -136,12 +136,12 @@ function Start-ApplicationKpiCalculation {
             Export-KpiResults -Results $KpiResults -OutputPath $JsonOutputPath -Format "JSON"
             Export-KpiDashboard -Results $KpiResults -OutputPath $DashboardOutputPath
         } else {
-            Write-Log -Message "Aucun KPI calculé" -Level "Warning"
+            Write-Log -Message "Aucun KPI calculÃ©" -Level "Warning"
         }
     } else {
-        Write-Log -Message "Données ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
+        Write-Log -Message "DonnÃ©es ou configuration insuffisantes pour calculer les KPIs" -Level "Warning"
         
-        # Créer des fichiers vides avec en-têtes
+        # CrÃ©er des fichiers vides avec en-tÃªtes
         $CsvOutputPath = Join-Path -Path $OutputPath -ChildPath "application_kpis.csv"
         "Id,Name,Description,Category,Value,Unit,Status,Timestamp" | Out-File -FilePath $CsvOutputPath -Encoding UTF8
         
@@ -156,7 +156,7 @@ function Start-ApplicationKpiCalculation {
         } | ConvertTo-Json -Depth 10 | Out-File -FilePath $DashboardOutputPath -Encoding UTF8
     }
     
-    Write-Log -Message "Calcul des KPIs applicatifs terminé" -Level "Info"
+    Write-Log -Message "Calcul des KPIs applicatifs terminÃ©" -Level "Info"
     
     return @{
         Success = $true

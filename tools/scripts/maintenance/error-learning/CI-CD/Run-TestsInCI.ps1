@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter les tests dans un pipeline CI/CD.
+    Script pour exÃ©cuter les tests dans un pipeline CI/CD.
 .DESCRIPTION
-    Ce script exécute tous les tests qui fonctionnent correctement du système d'apprentissage des erreurs
-    dans un pipeline CI/CD et génère un rapport des résultats.
+    Ce script exÃ©cute tous les tests qui fonctionnent correctement du systÃ¨me d'apprentissage des erreurs
+    dans un pipeline CI/CD et gÃ©nÃ¨re un rapport des rÃ©sultats.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des tests. Par défaut, utilise le répertoire courant.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut, utilise le rÃ©pertoire courant.
 .EXAMPLE
     .\Run-TestsInCI.ps1
-    Exécute tous les tests qui fonctionnent correctement et génère un rapport XML des résultats.
+    ExÃ©cute tous les tests qui fonctionnent correctement et gÃ©nÃ¨re un rapport XML des rÃ©sultats.
 #>
 
 [CmdletBinding()]
@@ -17,7 +17,7 @@ param (
     [string]$OutputPath = (Join-Path -Path $env:TEMP -ChildPath "TestResults")
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -26,7 +26,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests qui fonctionnent correctement
+# DÃ©finir le chemin des tests qui fonctionnent correctement
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $testFiles = @(
     (Join-Path -Path $scriptRoot -ChildPath "Tests\VeryBasic.Tests.ps1"),
@@ -35,12 +35,12 @@ $testFiles = @(
     (Join-Path -Path $scriptRoot -ChildPath "Tests\ErrorFunctions.Tests.ps1")
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Définir la configuration Pester
+# DÃ©finir la configuration Pester
 $pesterConfig = New-PesterConfiguration
 $pesterConfig.Run.Path = $testFiles
 $pesterConfig.Output.Verbosity = "Detailed"
@@ -58,40 +58,40 @@ $pesterConfig.CodeCoverage.Path = @(
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "CodeCoverage.xml"
 $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 
-# Exécuter les tests
-Write-Host "Exécution des tests..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests..." -ForegroundColor Cyan
 $totalTests = 0
 $passedTests = 0
 $failedTests = 0
 $skippedTests = 0
 
-# Exécuter chaque test individuellement
+# ExÃ©cuter chaque test individuellement
 foreach ($testFile in $testFiles) {
-    Write-Host "  Exécution de $([System.IO.Path]::GetFileName($testFile))..." -ForegroundColor Yellow
+    Write-Host "  ExÃ©cution de $([System.IO.Path]::GetFileName($testFile))..." -ForegroundColor Yellow
     
-    # Exécuter le test
+    # ExÃ©cuter le test
     $testConfig = New-PesterConfiguration
     $testConfig.Run.Path = $testFile
     $testConfig.Output.Verbosity = "Detailed"
     
     $result = Invoke-Pester -Configuration $testConfig -PassThru
     
-    # Mettre à jour les résultats
+    # Mettre Ã  jour les rÃ©sultats
     $totalTests += $result.TotalCount
     $passedTests += $result.PassedCount
     $failedTests += $result.FailedCount
     $skippedTests += $result.SkippedCount
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis: $passedTests" -ForegroundColor Green
-Write-Host "  Tests échoués: $failedTests" -ForegroundColor Red
-Write-Host "  Tests ignorés: $skippedTests" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $passedTests" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $failedTests" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $skippedTests" -ForegroundColor Yellow
 Write-Host
 
-# Générer un rapport XML des résultats
+# GÃ©nÃ©rer un rapport XML des rÃ©sultats
 $testResults = [PSCustomObject]@{
     TotalCount = $totalTests
     PassedCount = $passedTests
@@ -99,7 +99,7 @@ $testResults = [PSCustomObject]@{
     SkippedCount = $skippedTests
 }
 
-# Convertir les résultats en XML
+# Convertir les rÃ©sultats en XML
 $xmlWriter = New-Object System.Xml.XmlTextWriter((Join-Path -Path $OutputPath -ChildPath "TestResults.xml"), $null)
 $xmlWriter.Formatting = "Indented"
 $xmlWriter.Indentation = 4
@@ -115,10 +115,10 @@ $xmlWriter.WriteEndDocument()
 $xmlWriter.Flush()
 $xmlWriter.Close()
 
-# Afficher le chemin des résultats
-Write-Host "Résultats des tests enregistrés dans: $OutputPath" -ForegroundColor Cyan
-Write-Host "  Résultats des tests: $(Join-Path -Path $OutputPath -ChildPath "TestResults.xml")" -ForegroundColor Yellow
+# Afficher le chemin des rÃ©sultats
+Write-Host "RÃ©sultats des tests enregistrÃ©s dans: $OutputPath" -ForegroundColor Cyan
+Write-Host "  RÃ©sultats des tests: $(Join-Path -Path $OutputPath -ChildPath "TestResults.xml")" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $failedTests

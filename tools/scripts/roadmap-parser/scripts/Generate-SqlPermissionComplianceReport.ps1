@@ -1,5 +1,5 @@
-# Generate-SqlPermissionComplianceReport.ps1
-# Script pour générer un rapport de conformité des permissions SQL Server
+﻿# Generate-SqlPermissionComplianceReport.ps1
+# Script pour gÃ©nÃ©rer un rapport de conformitÃ© des permissions SQL Server
 
 [CmdletBinding()]
 param (
@@ -34,7 +34,7 @@ param (
     [string[]]$ToAddress,
 
     [Parameter(Mandatory = $false)]
-    [string]$Subject = "Rapport de conformité des permissions SQL Server - $ServerInstance"
+    [string]$Subject = "Rapport de conformitÃ© des permissions SQL Server - $ServerInstance"
 )
 
 begin {
@@ -42,7 +42,7 @@ begin {
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\module" -Resolve
     Import-Module $modulePath -Force
 
-    # Paramètres de connexion SQL Server
+    # ParamÃ¨tres de connexion SQL Server
     $sqlParams = @{
         ServerInstance = $ServerInstance
         Database = "master"
@@ -52,24 +52,24 @@ begin {
         $sqlParams.Credential = $Credential
     }
 
-    # Créer le dossier de sortie si nécessaire
+    # CrÃ©er le dossier de sortie si nÃ©cessaire
     $outputFolder = Split-Path -Path $OutputPath -Parent
     if ($outputFolder -and -not (Test-Path -Path $outputFolder)) {
         New-Item -Path $outputFolder -ItemType Directory -Force | Out-Null
     }
 
-    # Définir les règles critiques (qui nécessitent une attention immédiate)
+    # DÃ©finir les rÃ¨gles critiques (qui nÃ©cessitent une attention immÃ©diate)
     $criticalRules = @("SVR-002", "SVR-005", "DB-003", "DB-004", "OBJ-003")
 
-    # Définir les seuils d'alerte
+    # DÃ©finir les seuils d'alerte
     $thresholds = @{
         Critical = 0    # Aucune anomalie critique n'est acceptable
-        High = 5        # Jusqu'à 5 anomalies de sévérité élevée sont tolérées
-        Medium = 10     # Jusqu'à 10 anomalies de sévérité moyenne sont tolérées
-        Low = 20        # Jusqu'à 20 anomalies de sévérité faible sont tolérées
+        High = 5        # Jusqu'Ã  5 anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e sont tolÃ©rÃ©es
+        Medium = 10     # Jusqu'Ã  10 anomalies de sÃ©vÃ©ritÃ© moyenne sont tolÃ©rÃ©es
+        Low = 20        # Jusqu'Ã  20 anomalies de sÃ©vÃ©ritÃ© faible sont tolÃ©rÃ©es
     }
 
-    # Fonction pour déterminer le statut global
+    # Fonction pour dÃ©terminer le statut global
     function Get-ComplianceStatus {
         param (
             [int]$CriticalCount,
@@ -95,7 +95,7 @@ begin {
         }
     }
 
-    # Fonction pour générer un graphique de conformité
+    # Fonction pour gÃ©nÃ©rer un graphique de conformitÃ©
     function Get-ComplianceChart {
         param (
             [int]$CriticalCount,
@@ -117,7 +117,7 @@ begin {
         $totalIssues = $CriticalCount + $HighCount + $MediumCount + $LowCount
         $chartHtml = @"
 <div style="width: 100%; margin: 20px 0;">
-    <h3>Statut de conformité: <span style="color: $statusColor;">$Status</span></h3>
+    <h3>Statut de conformitÃ©: <span style="color: $statusColor;">$Status</span></h3>
     <div style="display: flex; height: 30px; width: 100%; border-radius: 5px; overflow: hidden;">
 "@
 
@@ -131,7 +131,7 @@ begin {
                 $chartHtml += "<div style='width: $($criticalWidth)%; background-color: red;' title='Critique: $CriticalCount'></div>"
             }
             if ($highWidth -gt 0) {
-                $chartHtml += "<div style='width: $($highWidth)%; background-color: orange;' title='Élevée: $HighCount'></div>"
+                $chartHtml += "<div style='width: $($highWidth)%; background-color: orange;' title='Ã‰levÃ©e: $HighCount'></div>"
             }
             if ($mediumWidth -gt 0) {
                 $chartHtml += "<div style='width: $($mediumWidth)%; background-color: yellow;' title='Moyenne: $MediumCount'></div>"
@@ -148,7 +148,7 @@ begin {
     </div>
     <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px;">
         <div><span style="display: inline-block; width: 10px; height: 10px; background-color: red;"></span> Critique: $CriticalCount</div>
-        <div><span style="display: inline-block; width: 10px; height: 10px; background-color: orange;"></span> Élevée: $HighCount</div>
+        <div><span style="display: inline-block; width: 10px; height: 10px; background-color: orange;"></span> Ã‰levÃ©e: $HighCount</div>
         <div><span style="display: inline-block; width: 10px; height: 10px; background-color: yellow;"></span> Moyenne: $MediumCount</div>
         <div><span style="display: inline-block; width: 10px; height: 10px; background-color: lightgreen;"></span> Faible: $LowCount</div>
     </div>
@@ -161,7 +161,7 @@ begin {
 
 process {
     try {
-        Write-Verbose "Génération du rapport de conformité des permissions SQL Server pour l'instance: $ServerInstance"
+        Write-Verbose "GÃ©nÃ©ration du rapport de conformitÃ© des permissions SQL Server pour l'instance: $ServerInstance"
 
         # Analyser les permissions SQL Server
         $analyzeParams = $sqlParams.Clone()
@@ -172,7 +172,7 @@ process {
 
         $result = Analyze-SqlServerPermission @analyzeParams
 
-        # Compter les anomalies par sévérité et par règle critique
+        # Compter les anomalies par sÃ©vÃ©ritÃ© et par rÃ¨gle critique
         $criticalCount = 0
         $highCount = 0
         $mediumCount = 0
@@ -184,7 +184,7 @@ process {
             if ($criticalRules -contains $anomaly.RuleId) {
                 $criticalCount++
             }
-            elseif ($anomaly.Severity -eq "Élevée") {
+            elseif ($anomaly.Severity -eq "Ã‰levÃ©e") {
                 $highCount++
             }
             elseif ($anomaly.Severity -eq "Moyenne") {
@@ -204,12 +204,12 @@ process {
             $ruleStats[$anomaly.RuleId].Count++
         }
 
-        # Compter les anomalies au niveau base de données
+        # Compter les anomalies au niveau base de donnÃ©es
         foreach ($anomaly in $result.DatabaseAnomalies) {
             if ($criticalRules -contains $anomaly.RuleId) {
                 $criticalCount++
             }
-            elseif ($anomaly.Severity -eq "Élevée") {
+            elseif ($anomaly.Severity -eq "Ã‰levÃ©e") {
                 $highCount++
             }
             elseif ($anomaly.Severity -eq "Moyenne") {
@@ -234,7 +234,7 @@ process {
             if ($criticalRules -contains $anomaly.RuleId) {
                 $criticalCount++
             }
-            elseif ($anomaly.Severity -eq "Élevée") {
+            elseif ($anomaly.Severity -eq "Ã‰levÃ©e") {
                 $highCount++
             }
             elseif ($anomaly.Severity -eq "Moyenne") {
@@ -254,10 +254,10 @@ process {
             $ruleStats[$anomaly.RuleId].Count++
         }
 
-        # Déterminer le statut global de conformité
+        # DÃ©terminer le statut global de conformitÃ©
         $status = Get-ComplianceStatus -CriticalCount $criticalCount -HighCount $highCount -MediumCount $mediumCount -LowCount $lowCount
 
-        # Générer le rapport HTML
+        # GÃ©nÃ©rer le rapport HTML
         $reportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $totalAnomalies = $result.TotalAnomalies
         $complianceChart = Get-ComplianceChart -CriticalCount $criticalCount -HighCount $highCount -MediumCount $mediumCount -LowCount $lowCount -Status $status
@@ -267,7 +267,7 @@ process {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Rapport de conformité des permissions SQL Server - $ServerInstance</title>
+    <title>Rapport de conformitÃ© des permissions SQL Server - $ServerInstance</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2, h3 { color: #333; }
@@ -284,43 +284,43 @@ process {
     </style>
 </head>
 <body>
-    <h1>Rapport de conformité des permissions SQL Server</h1>
+    <h1>Rapport de conformitÃ© des permissions SQL Server</h1>
     <p><strong>Instance:</strong> $ServerInstance</p>
     <p><strong>Date du rapport:</strong> $reportDate</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p><strong>Nombre total d'anomalies:</strong> $totalAnomalies</p>
         <p><strong>Anomalies critiques:</strong> $criticalCount</p>
-        <p><strong>Anomalies de sévérité élevée:</strong> $highCount</p>
-        <p><strong>Anomalies de sévérité moyenne:</strong> $mediumCount</p>
-        <p><strong>Anomalies de sévérité faible:</strong> $lowCount</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e:</strong> $highCount</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© moyenne:</strong> $mediumCount</p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© faible:</strong> $lowCount</p>
     </div>
 
     <div class="chart-container">
         $complianceChart
     </div>
 
-    <h2>Statistiques par règle</h2>
+    <h2>Statistiques par rÃ¨gle</h2>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Nom</th>
-            <th>Sévérité</th>
+            <th>SÃ©vÃ©ritÃ©</th>
             <th>Nombre d'anomalies</th>
         </tr>
 "@
 
-        # Ajouter les statistiques par règle
+        # Ajouter les statistiques par rÃ¨gle
         foreach ($ruleId in $ruleStats.Keys | Sort-Object) {
             $ruleSeverityClass = switch ($ruleStats[$ruleId].Severity) {
-                "Élevée" { "high" }
+                "Ã‰levÃ©e" { "high" }
                 "Moyenne" { "medium" }
                 "Faible" { "low" }
                 default { "" }
             }
             
-            # Marquer les règles critiques
+            # Marquer les rÃ¨gles critiques
             if ($criticalRules -contains $ruleId) {
                 $ruleSeverityClass = "critical"
             }
@@ -338,33 +338,33 @@ process {
         $htmlReport += @"
     </table>
 
-    <h2>Détails des anomalies</h2>
+    <h2>DÃ©tails des anomalies</h2>
 "@
 
-        # Ajouter les détails des anomalies au niveau serveur
+        # Ajouter les dÃ©tails des anomalies au niveau serveur
         if ($result.ServerAnomalies.Count -gt 0) {
             $htmlReport += @"
     <h3>Anomalies au niveau serveur</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
             <th>Login</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
 
             foreach ($anomaly in $result.ServerAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
                 }
                 
-                # Marquer les règles critiques
+                # Marquer les rÃ¨gles critiques
                 if ($criticalRules -contains $anomaly.RuleId) {
                     $anomalySeverityClass = "critical"
                 }
@@ -386,31 +386,31 @@ process {
 "@
         }
 
-        # Ajouter les détails des anomalies au niveau base de données
+        # Ajouter les dÃ©tails des anomalies au niveau base de donnÃ©es
         if ($result.DatabaseAnomalies.Count -gt 0) {
             $htmlReport += @"
-    <h3>Anomalies au niveau base de données</h3>
+    <h3>Anomalies au niveau base de donnÃ©es</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
         </tr>
 "@
 
             foreach ($anomaly in $result.DatabaseAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
                 }
                 
-                # Marquer les règles critiques
+                # Marquer les rÃ¨gles critiques
                 if ($criticalRules -contains $anomaly.RuleId) {
                     $anomalySeverityClass = "critical"
                 }
@@ -433,32 +433,32 @@ process {
 "@
         }
 
-        # Ajouter les détails des anomalies au niveau objet
+        # Ajouter les dÃ©tails des anomalies au niveau objet
         if ($result.ObjectAnomalies.Count -gt 0) {
             $htmlReport += @"
     <h3>Anomalies au niveau objet</h3>
     <table>
         <tr>
-            <th>ID de règle</th>
+            <th>ID de rÃ¨gle</th>
             <th>Type d'anomalie</th>
-            <th>Base de données</th>
+            <th>Base de donnÃ©es</th>
             <th>Utilisateur</th>
             <th>Description</th>
-            <th>Sévérité</th>
-            <th>Action recommandée</th>
-            <th>Objets affectés</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Action recommandÃ©e</th>
+            <th>Objets affectÃ©s</th>
         </tr>
 "@
 
             foreach ($anomaly in $result.ObjectAnomalies) {
                 $anomalySeverityClass = switch ($anomaly.Severity) {
-                    "Élevée" { "high" }
+                    "Ã‰levÃ©e" { "high" }
                     "Moyenne" { "medium" }
                     "Faible" { "low" }
                     default { "" }
                 }
                 
-                # Marquer les règles critiques
+                # Marquer les rÃ¨gles critiques
                 if ($criticalRules -contains $anomaly.RuleId) {
                     $anomalySeverityClass = "critical"
                 }
@@ -497,37 +497,37 @@ process {
         switch ($status) {
             "Non conforme" {
                 $htmlReport += @"
-        <li><strong>Critique:</strong> Résoudre immédiatement les anomalies critiques.</li>
-        <li>Mettre en place un plan d'action pour résoudre les anomalies de sévérité élevée.</li>
-        <li>Planifier la résolution des anomalies de sévérité moyenne et faible.</li>
+        <li><strong>Critique:</strong> RÃ©soudre immÃ©diatement les anomalies critiques.</li>
+        <li>Mettre en place un plan d'action pour rÃ©soudre les anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e.</li>
+        <li>Planifier la rÃ©solution des anomalies de sÃ©vÃ©ritÃ© moyenne et faible.</li>
 "@
             }
             "Partiellement conforme" {
                 $htmlReport += @"
-        <li><strong>Important:</strong> Résoudre les anomalies de sévérité élevée dans les plus brefs délais.</li>
-        <li>Planifier la résolution des anomalies de sévérité moyenne.</li>
-        <li>Évaluer l'impact des anomalies de sévérité faible.</li>
+        <li><strong>Important:</strong> RÃ©soudre les anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e dans les plus brefs dÃ©lais.</li>
+        <li>Planifier la rÃ©solution des anomalies de sÃ©vÃ©ritÃ© moyenne.</li>
+        <li>Ã‰valuer l'impact des anomalies de sÃ©vÃ©ritÃ© faible.</li>
 "@
             }
             "Majoritairement conforme" {
                 $htmlReport += @"
-        <li>Planifier la résolution des anomalies de sévérité moyenne.</li>
-        <li>Évaluer l'impact des anomalies de sévérité faible.</li>
-        <li>Mettre en place des contrôles pour éviter l'apparition de nouvelles anomalies.</li>
+        <li>Planifier la rÃ©solution des anomalies de sÃ©vÃ©ritÃ© moyenne.</li>
+        <li>Ã‰valuer l'impact des anomalies de sÃ©vÃ©ritÃ© faible.</li>
+        <li>Mettre en place des contrÃ´les pour Ã©viter l'apparition de nouvelles anomalies.</li>
 "@
             }
             "Presque conforme" {
                 $htmlReport += @"
-        <li>Résoudre les anomalies de sévérité faible lors des prochaines opérations de maintenance.</li>
-        <li>Mettre en place des contrôles pour éviter l'apparition de nouvelles anomalies.</li>
-        <li>Planifier des audits réguliers pour maintenir la conformité.</li>
+        <li>RÃ©soudre les anomalies de sÃ©vÃ©ritÃ© faible lors des prochaines opÃ©rations de maintenance.</li>
+        <li>Mettre en place des contrÃ´les pour Ã©viter l'apparition de nouvelles anomalies.</li>
+        <li>Planifier des audits rÃ©guliers pour maintenir la conformitÃ©.</li>
 "@
             }
             "Conforme" {
                 $htmlReport += @"
-        <li>Félicitations ! Votre instance SQL Server est conforme aux bonnes pratiques de sécurité.</li>
-        <li>Continuer à effectuer des audits réguliers pour maintenir la conformité.</li>
-        <li>Envisager d'ajouter des règles supplémentaires pour renforcer la sécurité.</li>
+        <li>FÃ©licitations ! Votre instance SQL Server est conforme aux bonnes pratiques de sÃ©curitÃ©.</li>
+        <li>Continuer Ã  effectuer des audits rÃ©guliers pour maintenir la conformitÃ©.</li>
+        <li>Envisager d'ajouter des rÃ¨gles supplÃ©mentaires pour renforcer la sÃ©curitÃ©.</li>
 "@
             }
         }
@@ -536,7 +536,7 @@ process {
     </ul>
 
     <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; color: #666;">
-        <p>Rapport généré le $reportDate par le module RoadmapParser.</p>
+        <p>Rapport gÃ©nÃ©rÃ© le $reportDate par le module RoadmapParser.</p>
     </div>
 </body>
 </html>
@@ -544,12 +544,12 @@ process {
 
         # Enregistrer le rapport HTML
         $htmlReport | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Verbose "Rapport de conformité enregistré: $OutputPath"
+        Write-Verbose "Rapport de conformitÃ© enregistrÃ©: $OutputPath"
 
-        # Envoyer le rapport par email si demandé
+        # Envoyer le rapport par email si demandÃ©
         if ($SendEmail) {
             if (-not $SmtpServer -or -not $FromAddress -or -not $ToAddress) {
-                Write-Warning "Paramètres d'email manquants. Le rapport n'a pas été envoyé par email."
+                Write-Warning "ParamÃ¨tres d'email manquants. Le rapport n'a pas Ã©tÃ© envoyÃ© par email."
             }
             else {
                 $emailParams = @{
@@ -562,11 +562,11 @@ process {
                 }
 
                 Send-MailMessage @emailParams
-                Write-Verbose "Rapport de conformité envoyé par email à: $($ToAddress -join ', ')"
+                Write-Verbose "Rapport de conformitÃ© envoyÃ© par email Ã : $($ToAddress -join ', ')"
             }
         }
 
-        # Retourner un objet avec les informations de conformité
+        # Retourner un objet avec les informations de conformitÃ©
         return [PSCustomObject]@{
             ServerInstance = $ServerInstance
             ReportDate = $reportDate
@@ -580,6 +580,6 @@ process {
         }
     }
     catch {
-        Write-Error "Erreur lors de la génération du rapport de conformité: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de conformitÃ©: $_"
     }
 }

@@ -1,32 +1,32 @@
-# Script d'exécution Augment
-# Ce script permet d'exécuter des tâches avec Augment de manière autonome
+﻿# Script d'exÃ©cution Augment
+# Ce script permet d'exÃ©cuter des tÃ¢ches avec Augment de maniÃ¨re autonome
 
 param (
     [Parameter(Mandatory = $true)]
     [string]$Task,
     [string]$OutputFile = "AugmentOutput.txt",
     [string]$LogFile = "AugmentExecutor.log",
-    [int]$Timeout = 1800  # 30 minutes par défaut
+    [int]$Timeout = 1800  # 30 minutes par dÃ©faut
 )
 
 # Configuration
-$augmentApiEndpoint = "http://localhost:3000/api/execute"  # Remplacer par l'URL réelle de l'API Augment
+$augmentApiEndpoint = "http://localhost:3000/api/execute"  # Remplacer par l'URL rÃ©elle de l'API Augment
 $promptTemplate = @"
-Je souhaite que tu m'aides à exécuter la tâche suivante de ma roadmap :
+Je souhaite que tu m'aides Ã  exÃ©cuter la tÃ¢che suivante de ma roadmap :
 
 {0}
 
 Voici ce que j'attends de toi :
-1. Analyse la tâche et décompose-la en étapes claires
-2. Exécute chaque étape de manière méthodique
-3. Respecte les principes de développement essentiels (SOLID, DRY, KISS, Clean Code)
+1. Analyse la tÃ¢che et dÃ©compose-la en Ã©tapes claires
+2. ExÃ©cute chaque Ã©tape de maniÃ¨re mÃ©thodique
+3. Respecte les principes de dÃ©veloppement essentiels (SOLID, DRY, KISS, Clean Code)
 4. Sois concis dans tes explications
-5. Concentre-toi uniquement sur la tâche demandée
+5. Concentre-toi uniquement sur la tÃ¢che demandÃ©e
 
-Commence par analyser la tâche puis propose un plan d'implémentation avant de commencer.
+Commence par analyser la tÃ¢che puis propose un plan d'implÃ©mentation avant de commencer.
 "@
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     param (
         [string]$Message,
@@ -36,7 +36,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     Add-Content -Path $LogFile -Value $logEntry
     
     # Afficher dans la console avec couleur
@@ -49,14 +49,14 @@ function Write-Log {
     }
 }
 
-# Fonction pour exécuter une tâche avec Augment via l'API
+# Fonction pour exÃ©cuter une tÃ¢che avec Augment via l'API
 function Invoke-AugmentApi {
     param (
         [string]$Prompt
     )
     
     try {
-        # Préparer les données pour l'API
+        # PrÃ©parer les donnÃ©es pour l'API
         $body = @{
             prompt = $Prompt
             max_tokens = 4000
@@ -69,12 +69,12 @@ function Invoke-AugmentApi {
         return $response.response
     }
     catch {
-        Write-Log "Erreur lors de l'appel à l'API Augment: $_" "ERROR"
+        Write-Log "Erreur lors de l'appel Ã  l'API Augment: $_" "ERROR"
         throw $_
     }
 }
 
-# Fonction pour exécuter une tâche avec Augment via le CLI
+# Fonction pour exÃ©cuter une tÃ¢che avec Augment via le CLI
 function Invoke-AugmentCli {
     param (
         [string]$Prompt
@@ -85,14 +85,14 @@ function Invoke-AugmentCli {
         $promptFile = [System.IO.Path]::GetTempFileName()
         Set-Content -Path $promptFile -Value $Prompt
         
-        # Exécuter la commande Augment CLI
+        # ExÃ©cuter la commande Augment CLI
         $outputFile = [System.IO.Path]::GetTempFileName()
         $process = Start-Process -FilePath "augment" -ArgumentList "execute --input `"$promptFile`" --output `"$outputFile`"" -NoNewWindow -PassThru -Wait
         
-        # Vérifier si le processus s'est terminé correctement
+        # VÃ©rifier si le processus s'est terminÃ© correctement
         if ($process.ExitCode -ne 0) {
-            Write-Log "Erreur lors de l'exécution d'Augment CLI (code de sortie: $($process.ExitCode))" "ERROR"
-            throw "Erreur lors de l'exécution d'Augment CLI"
+            Write-Log "Erreur lors de l'exÃ©cution d'Augment CLI (code de sortie: $($process.ExitCode))" "ERROR"
+            throw "Erreur lors de l'exÃ©cution d'Augment CLI"
         }
         
         # Lire la sortie
@@ -105,34 +105,34 @@ function Invoke-AugmentCli {
         return $output
     }
     catch {
-        Write-Log "Erreur lors de l'exécution d'Augment CLI: $_" "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution d'Augment CLI: $_" "ERROR"
         throw $_
     }
 }
 
-# Fonction pour exécuter une tâche avec Augment via un navigateur automatisé
+# Fonction pour exÃ©cuter une tÃ¢che avec Augment via un navigateur automatisÃ©
 function Invoke-AugmentBrowser {
     param (
         [string]$Prompt
     )
     
     try {
-        # Vérifier si le module Selenium est installé
+        # VÃ©rifier si le module Selenium est installÃ©
         if (-not (Get-Module -ListAvailable -Name Selenium)) {
-            Write-Log "Le module Selenium n'est pas installé. Installation en cours..." "WARNING"
+            Write-Log "Le module Selenium n'est pas installÃ©. Installation en cours..." "WARNING"
             Install-Module -Name Selenium -Force -Scope CurrentUser
         }
         
         # Importer le module Selenium
         Import-Module Selenium
         
-        # Créer une nouvelle instance du navigateur Chrome
+        # CrÃ©er une nouvelle instance du navigateur Chrome
         $driver = Start-SeChrome
         
         # Naviguer vers l'interface Augment
-        $driver.Navigate().GoToUrl("http://localhost:3000")  # Remplacer par l'URL réelle de l'interface Augment
+        $driver.Navigate().GoToUrl("http://localhost:3000")  # Remplacer par l'URL rÃ©elle de l'interface Augment
         
-        # Attendre que la page soit chargée
+        # Attendre que la page soit chargÃ©e
         Start-Sleep -Seconds 5
         
         # Trouver le champ de saisie et entrer le prompt
@@ -143,7 +143,7 @@ function Invoke-AugmentBrowser {
         $submitButton = $driver.FindElementByXPath("//button[contains(text(), 'Submit')]")
         $submitButton.Click()
         
-        # Attendre la réponse
+        # Attendre la rÃ©ponse
         $startTime = Get-Date
         $responseElement = $null
         
@@ -157,10 +157,10 @@ function Invoke-AugmentBrowser {
         }
         
         if ($responseElement -eq $null) {
-            throw "Timeout lors de l'attente de la réponse"
+            throw "Timeout lors de l'attente de la rÃ©ponse"
         }
         
-        # Récupérer la réponse
+        # RÃ©cupÃ©rer la rÃ©ponse
         $response = $responseElement.Text
         
         # Fermer le navigateur
@@ -169,19 +169,19 @@ function Invoke-AugmentBrowser {
         return $response
     }
     catch {
-        Write-Log "Erreur lors de l'exécution d'Augment via le navigateur: $_" "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution d'Augment via le navigateur: $_" "ERROR"
         throw $_
     }
 }
 
-# Fonction pour exécuter une tâche avec Augment via un script Python
+# Fonction pour exÃ©cuter une tÃ¢che avec Augment via un script Python
 function Invoke-AugmentPython {
     param (
         [string]$Prompt
     )
     
     try {
-        # Créer un script Python temporaire
+        # CrÃ©er un script Python temporaire
         $pythonScript = [System.IO.Path]::GetTempFileName() + ".py"
         
         $scriptContent = @"
@@ -192,7 +192,7 @@ import json
 import time
 
 # Configuration
-API_ENDPOINT = "http://localhost:3000/api/execute"  # Remplacer par l'URL réelle de l'API Augment
+API_ENDPOINT = "http://localhost:3000/api/execute"  # Remplacer par l'URL rÃ©elle de l'API Augment
 PROMPT = """$Prompt"""
 OUTPUT_FILE = "$OutputFile"
 TIMEOUT = $Timeout
@@ -211,28 +211,28 @@ def call_augment_api(prompt):
         
         return response.json()["response"]
     except Exception as e:
-        print(f"Erreur lors de l'appel à l'API Augment: {str(e)}")
+        print(f"Erreur lors de l'appel Ã  l'API Augment: {str(e)}")
         sys.exit(1)
 
-# Appeler l'API et enregistrer la réponse
+# Appeler l'API et enregistrer la rÃ©ponse
 response = call_augment_api(PROMPT)
 
-# Écrire la réponse dans le fichier de sortie
+# Ã‰crire la rÃ©ponse dans le fichier de sortie
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write(response)
 
-print(f"Réponse enregistrée dans {OUTPUT_FILE}")
+print(f"RÃ©ponse enregistrÃ©e dans {OUTPUT_FILE}")
 "@
         
         Set-Content -Path $pythonScript -Value $scriptContent -Encoding UTF8
         
-        # Exécuter le script Python
+        # ExÃ©cuter le script Python
         $process = Start-Process -FilePath "python" -ArgumentList $pythonScript -NoNewWindow -PassThru -Wait
         
-        # Vérifier si le processus s'est terminé correctement
+        # VÃ©rifier si le processus s'est terminÃ© correctement
         if ($process.ExitCode -ne 0) {
-            Write-Log "Erreur lors de l'exécution du script Python (code de sortie: $($process.ExitCode))" "ERROR"
-            throw "Erreur lors de l'exécution du script Python"
+            Write-Log "Erreur lors de l'exÃ©cution du script Python (code de sortie: $($process.ExitCode))" "ERROR"
+            throw "Erreur lors de l'exÃ©cution du script Python"
         }
         
         # Lire la sortie
@@ -244,30 +244,30 @@ print(f"Réponse enregistrée dans {OUTPUT_FILE}")
         return $output
     }
     catch {
-        Write-Log "Erreur lors de l'exécution d'Augment via Python: $_" "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution d'Augment via Python: $_" "ERROR"
         throw $_
     }
 }
 
-# Fonction principale pour exécuter une tâche avec Augment
+# Fonction principale pour exÃ©cuter une tÃ¢che avec Augment
 function Invoke-Augment {
     param (
         [string]$Task
     )
     
-    # Préparer le prompt
+    # PrÃ©parer le prompt
     $prompt = $promptTemplate -f $Task
     
-    Write-Log "Exécution de la tâche: $Task" "INFO"
-    Write-Log "Prompt préparé" "INFO"
+    Write-Log "ExÃ©cution de la tÃ¢che: $Task" "INFO"
+    Write-Log "Prompt prÃ©parÃ©" "INFO"
     
-    # Essayer différentes méthodes d'exécution
+    # Essayer diffÃ©rentes mÃ©thodes d'exÃ©cution
     $methods = @("Api", "Cli", "Python", "Browser")
     $response = $null
     
     foreach ($method in $methods) {
         try {
-            Write-Log "Tentative d'exécution avec la méthode: $method" "INFO"
+            Write-Log "Tentative d'exÃ©cution avec la mÃ©thode: $method" "INFO"
             
             switch ($method) {
                 "Api" {
@@ -285,35 +285,35 @@ function Invoke-Augment {
             }
             
             if (-not [string]::IsNullOrEmpty($response)) {
-                Write-Log "Exécution réussie avec la méthode: $method" "SUCCESS"
+                Write-Log "ExÃ©cution rÃ©ussie avec la mÃ©thode: $method" "SUCCESS"
                 break
             }
         }
         catch {
-            Write-Log "Échec de l'exécution avec la méthode: $method" "ERROR"
+            Write-Log "Ã‰chec de l'exÃ©cution avec la mÃ©thode: $method" "ERROR"
         }
     }
     
     if ([string]::IsNullOrEmpty($response)) {
-        Write-Log "Toutes les méthodes d'exécution ont échoué" "ERROR"
-        throw "Impossible d'exécuter la tâche avec Augment"
+        Write-Log "Toutes les mÃ©thodes d'exÃ©cution ont Ã©chouÃ©" "ERROR"
+        throw "Impossible d'exÃ©cuter la tÃ¢che avec Augment"
     }
     
-    # Enregistrer la réponse dans le fichier de sortie
+    # Enregistrer la rÃ©ponse dans le fichier de sortie
     Set-Content -Path $OutputFile -Value $response -Encoding UTF8
     
-    Write-Log "Réponse enregistrée dans: $OutputFile" "SUCCESS"
+    Write-Log "RÃ©ponse enregistrÃ©e dans: $OutputFile" "SUCCESS"
     
     return $response
 }
 
-# Démarrer le script
-Write-Log "Démarrage du script d'exécution Augment" "INFO"
+# DÃ©marrer le script
+Write-Log "DÃ©marrage du script d'exÃ©cution Augment" "INFO"
 $response = Invoke-Augment -Task $Task
-Write-Log "Fin du script d'exécution Augment" "INFO"
+Write-Log "Fin du script d'exÃ©cution Augment" "INFO"
 
-# Afficher un résumé de la réponse
+# Afficher un rÃ©sumÃ© de la rÃ©ponse
 $summary = $response.Substring(0, [Math]::Min(500, $response.Length)) + "..."
-Write-Log "Résumé de la réponse: $summary" "INFO"
+Write-Log "RÃ©sumÃ© de la rÃ©ponse: $summary" "INFO"
 
 return $response

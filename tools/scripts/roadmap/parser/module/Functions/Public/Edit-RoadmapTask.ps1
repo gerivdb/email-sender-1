@@ -1,47 +1,47 @@
-<#
+﻿<#
 .SYNOPSIS
-    Modifie une tâche dans une roadmap.
+    Modifie une tÃ¢che dans une roadmap.
 
 .DESCRIPTION
-    La fonction Edit-RoadmapTask permet de modifier une tâche dans une roadmap.
-    Elle peut modifier le titre, le statut, les métadonnées, etc.
+    La fonction Edit-RoadmapTask permet de modifier une tÃ¢che dans une roadmap.
+    Elle peut modifier le titre, le statut, les mÃ©tadonnÃ©es, etc.
 
 .PARAMETER Roadmap
-    L'objet roadmap contenant la tâche à modifier.
+    L'objet roadmap contenant la tÃ¢che Ã  modifier.
 
 .PARAMETER TaskId
-    L'identifiant de la tâche à modifier.
+    L'identifiant de la tÃ¢che Ã  modifier.
 
 .PARAMETER Title
-    Le nouveau titre de la tâche.
+    Le nouveau titre de la tÃ¢che.
 
 .PARAMETER Status
-    Le nouveau statut de la tâche. Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked".
+    Le nouveau statut de la tÃ¢che. Valeurs possibles : "Complete", "Incomplete", "InProgress", "Blocked".
 
 .PARAMETER Metadata
-    Les nouvelles métadonnées de la tâche.
+    Les nouvelles mÃ©tadonnÃ©es de la tÃ¢che.
 
 .PARAMETER AddDependency
-    L'identifiant d'une tâche dont la tâche à modifier dépendra.
+    L'identifiant d'une tÃ¢che dont la tÃ¢che Ã  modifier dÃ©pendra.
 
 .PARAMETER RemoveDependency
-    L'identifiant d'une tâche dont la dépendance doit être supprimée.
+    L'identifiant d'une tÃ¢che dont la dÃ©pendance doit Ãªtre supprimÃ©e.
 
 .PARAMETER PassThru
-    Indique si la roadmap modifiée doit être retournée.
+    Indique si la roadmap modifiÃ©e doit Ãªtre retournÃ©e.
 
 .EXAMPLE
     $roadmap = ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
     Edit-RoadmapTask -Roadmap $roadmap -TaskId "1.1" -Title "Nouveau titre" -Status "Complete"
-    Modifie le titre et le statut de la tâche 1.1.
+    Modifie le titre et le statut de la tÃ¢che 1.1.
 
 .OUTPUTS
-    [PSCustomObject] Représentant la roadmap modifiée si PassThru est spécifié.
+    [PSCustomObject] ReprÃ©sentant la roadmap modifiÃ©e si PassThru est spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Edit-RoadmapTask {
     [CmdletBinding()]
@@ -72,39 +72,39 @@ function Edit-RoadmapTask {
         [switch]$PassThru
     )
 
-    # Vérifier si la tâche existe
+    # VÃ©rifier si la tÃ¢che existe
     if (-not $Roadmap.AllTasks.ContainsKey($TaskId)) {
-        throw "La tâche '$TaskId' n'existe pas dans la roadmap."
+        throw "La tÃ¢che '$TaskId' n'existe pas dans la roadmap."
     }
 
     $task = $Roadmap.AllTasks[$TaskId]
 
-    # Modifier le titre si spécifié
+    # Modifier le titre si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($Title)) {
         $task.Title = $Title
     }
 
-    # Modifier le statut si spécifié
+    # Modifier le statut si spÃ©cifiÃ©
     if (-not [string]::IsNullOrEmpty($Status)) {
         $task.Status = $Status
     }
 
-    # Modifier les métadonnées si spécifiées
+    # Modifier les mÃ©tadonnÃ©es si spÃ©cifiÃ©es
     if ($null -ne $Metadata) {
         foreach ($key in $Metadata.Keys) {
             $task.Metadata[$key] = $Metadata[$key]
         }
     }
 
-    # Ajouter une dépendance si spécifiée
+    # Ajouter une dÃ©pendance si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($AddDependency)) {
         if (-not $Roadmap.AllTasks.ContainsKey($AddDependency)) {
-            throw "La tâche dépendante '$AddDependency' n'existe pas dans la roadmap."
+            throw "La tÃ¢che dÃ©pendante '$AddDependency' n'existe pas dans la roadmap."
         }
 
         $dependency = $Roadmap.AllTasks[$AddDependency]
 
-        # Vérifier si la dépendance existe déjà
+        # VÃ©rifier si la dÃ©pendance existe dÃ©jÃ 
         $dependencyExists = $false
         foreach ($dep in $task.Dependencies) {
             if ($dep.Id -eq $AddDependency) {
@@ -117,7 +117,7 @@ function Edit-RoadmapTask {
             $task.Dependencies.Add($dependency) | Out-Null
             $dependency.DependentTasks.Add($task) | Out-Null
 
-            # Ajouter aux métadonnées si elles existent
+            # Ajouter aux mÃ©tadonnÃ©es si elles existent
             if ($task.Metadata.ContainsKey("DependsOn")) {
                 if (-not $task.Metadata["DependsOn"].Contains($AddDependency)) {
                     $task.Metadata["DependsOn"] += $AddDependency
@@ -128,9 +128,9 @@ function Edit-RoadmapTask {
         }
     }
 
-    # Supprimer une dépendance si spécifiée
+    # Supprimer une dÃ©pendance si spÃ©cifiÃ©e
     if (-not [string]::IsNullOrEmpty($RemoveDependency)) {
-        # Trouver la dépendance à supprimer
+        # Trouver la dÃ©pendance Ã  supprimer
         $dependencyToRemove = $null
         foreach ($dep in $task.Dependencies) {
             if ($dep.Id -eq $RemoveDependency) {
@@ -140,7 +140,7 @@ function Edit-RoadmapTask {
         }
 
         if ($null -ne $dependencyToRemove) {
-            # Supprimer la dépendance de la liste des dépendances de la tâche
+            # Supprimer la dÃ©pendance de la liste des dÃ©pendances de la tÃ¢che
             $newDependencies = [System.Collections.ArrayList]::new()
             foreach ($dep in $task.Dependencies) {
                 if ($dep.Id -ne $RemoveDependency) {
@@ -149,7 +149,7 @@ function Edit-RoadmapTask {
             }
             $task.Dependencies = $newDependencies
 
-            # Supprimer la tâche de la liste des tâches dépendantes de la dépendance
+            # Supprimer la tÃ¢che de la liste des tÃ¢ches dÃ©pendantes de la dÃ©pendance
             $dependencyTask = $Roadmap.AllTasks[$RemoveDependency]
             $newDependentTasks = [System.Collections.ArrayList]::new()
             foreach ($depTask in $dependencyTask.DependentTasks) {
@@ -159,7 +159,7 @@ function Edit-RoadmapTask {
             }
             $dependencyTask.DependentTasks = $newDependentTasks
 
-            # Supprimer des métadonnées si elles existent
+            # Supprimer des mÃ©tadonnÃ©es si elles existent
             if ($task.Metadata.ContainsKey("DependsOn")) {
                 $newDependsOn = [System.Collections.ArrayList]::new()
                 foreach ($depId in $task.Metadata["DependsOn"]) {
@@ -177,7 +177,7 @@ function Edit-RoadmapTask {
         }
     }
 
-    # Retourner la roadmap si PassThru est spécifié
+    # Retourner la roadmap si PassThru est spÃ©cifiÃ©
     if ($PassThru) {
         return $Roadmap
     }

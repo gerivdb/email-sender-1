@@ -1,4 +1,4 @@
-# Script de test 3 avec plusieurs problèmes
+﻿# Script de test 3 avec plusieurs problÃ¨mes
 $dataPath = "D:\Data\output.csv"
 Write-Host "Data Path: $dataPath"
 

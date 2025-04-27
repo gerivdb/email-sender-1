@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour l'exécution parallèle optimisée des tests de performance.
+    Module pour l'exÃ©cution parallÃ¨le optimisÃ©e des tests de performance.
 .DESCRIPTION
-    Fournit des fonctions avancées pour exécuter des tests en parallèle tout en
-    optimisant l'utilisation des ressources système.
+    Fournit des fonctions avancÃ©es pour exÃ©cuter des tests en parallÃ¨le tout en
+    optimisant l'utilisation des ressources systÃ¨me.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
@@ -15,7 +15,7 @@
 $script:MaxConcurrency = [Environment]::ProcessorCount
 $script:ResourceThresholds = @{
     CPU = 85  # Pourcentage maximum d'utilisation CPU
-    Memory = 80  # Pourcentage maximum d'utilisation mémoire
+    Memory = 80  # Pourcentage maximum d'utilisation mÃ©moire
     DiskIO = 70  # Pourcentage maximum d'utilisation disque
 }
 $script:RunspacePool = $null
@@ -34,12 +34,12 @@ function Initialize-ParallelPool {
         [hashtable]$ResourceLimits
     )
     
-    # Déterminer le nombre optimal de threads
+    # DÃ©terminer le nombre optimal de threads
     if ($MaxThreads -le 0) {
         $MaxThreads = [Math]::Max(1, [Environment]::ProcessorCount - 1)
     }
     
-    # Mettre à jour les limites de ressources si spécifiées
+    # Mettre Ã  jour les limites de ressources si spÃ©cifiÃ©es
     if ($ResourceLimits) {
         foreach ($key in $ResourceLimits.Keys) {
             if ($script:ResourceThresholds.ContainsKey($key)) {
@@ -48,15 +48,15 @@ function Initialize-ParallelPool {
         }
     }
     
-    # Créer le pool de runspaces
+    # CrÃ©er le pool de runspaces
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $script:RunspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $sessionState, $Host)
     $script:RunspacePool.Open()
     
-    # Démarrer le moniteur de ressources
+    # DÃ©marrer le moniteur de ressources
     Start-ResourceMonitor
     
-    Write-Verbose "Pool de parallélisation initialisé avec $MaxThreads threads maximum"
+    Write-Verbose "Pool de parallÃ©lisation initialisÃ© avec $MaxThreads threads maximum"
     
     return @{
         MaxThreads = $MaxThreads
@@ -64,7 +64,7 @@ function Initialize-ParallelPool {
     }
 }
 
-# Fonction pour démarrer le moniteur de ressources
+# Fonction pour dÃ©marrer le moniteur de ressources
 function Start-ResourceMonitor {
     [CmdletBinding()]
     param()
@@ -77,7 +77,7 @@ function Start-ResourceMonitor {
         param($Interval = 2)
         
         while ($true) {
-            # Obtenir les métriques de ressources
+            # Obtenir les mÃ©triques de ressources
             $cpuCounter = Get-Counter '\Processor(_Total)\% Processor Time' -ErrorAction SilentlyContinue
             $memoryCounter = Get-Counter '\Memory\% Committed Bytes In Use' -ErrorAction SilentlyContinue
             $diskCounter = Get-Counter '\PhysicalDisk(_Total)\% Disk Time' -ErrorAction SilentlyContinue
@@ -86,7 +86,7 @@ function Start-ResourceMonitor {
             $memoryUsage = if ($memoryCounter) { $memoryCounter.CounterSamples[0].CookedValue } else { 0 }
             $diskUsage = if ($diskCounter) { $diskCounter.CounterSamples[0].CookedValue } else { 0 }
             
-            # Retourner les métriques
+            # Retourner les mÃ©triques
             [PSCustomObject]@{
                 Timestamp = Get-Date
                 CPU = $cpuUsage
@@ -94,7 +94,7 @@ function Start-ResourceMonitor {
                 Disk = $diskUsage
             }
             
-            # Attendre l'intervalle spécifié
+            # Attendre l'intervalle spÃ©cifiÃ©
             Start-Sleep -Seconds $Interval
         }
     }
@@ -102,20 +102,20 @@ function Start-ResourceMonitor {
     $script:ResourceMonitorJob = Start-Job -ScriptBlock $monitorScript -ArgumentList 2
 }
 
-# Fonction pour obtenir les métriques de ressources actuelles
+# Fonction pour obtenir les mÃ©triques de ressources actuelles
 function Get-CurrentResourceMetrics {
     [CmdletBinding()]
     param()
     
     if ($script:ResourceMonitorJob -eq $null -or $script:ResourceMonitorJob.State -ne 'Running') {
         Start-ResourceMonitor
-        Start-Sleep -Seconds 2  # Attendre que les premières métriques soient disponibles
+        Start-Sleep -Seconds 2  # Attendre que les premiÃ¨res mÃ©triques soient disponibles
     }
     
     $metrics = Receive-Job -Job $script:ResourceMonitorJob -Keep | Select-Object -Last 1
     
     if (-not $metrics) {
-        # Fallback si le job ne retourne pas de métriques
+        # Fallback si le job ne retourne pas de mÃ©triques
         $cpuCounter = Get-Counter '\Processor(_Total)\% Processor Time' -ErrorAction SilentlyContinue
         $memoryCounter = Get-Counter '\Memory\% Committed Bytes In Use' -ErrorAction SilentlyContinue
         $diskCounter = Get-Counter '\PhysicalDisk(_Total)\% Disk Time' -ErrorAction SilentlyContinue
@@ -135,7 +135,7 @@ function Get-CurrentResourceMetrics {
     return $metrics
 }
 
-# Fonction pour vérifier si les ressources sont disponibles pour exécuter plus de jobs
+# Fonction pour vÃ©rifier si les ressources sont disponibles pour exÃ©cuter plus de jobs
 function Test-ResourceAvailability {
     [CmdletBinding()]
     param()
@@ -155,7 +155,7 @@ function Test-ResourceAvailability {
     return $result
 }
 
-# Fonction pour exécuter une tâche en parallèle
+# Fonction pour exÃ©cuter une tÃ¢che en parallÃ¨le
 function Invoke-ParallelTask {
     [CmdletBinding()]
     param (
@@ -175,12 +175,12 @@ function Invoke-ParallelTask {
         [int]$TimeoutSeconds = 0
     )
     
-    # Initialiser le pool si nécessaire
+    # Initialiser le pool si nÃ©cessaire
     if ($script:RunspacePool -eq $null) {
         Initialize-ParallelPool
     }
     
-    # Créer un PowerShell pour exécuter le script
+    # CrÃ©er un PowerShell pour exÃ©cuter le script
     $ps = [powershell]::Create()
     $ps.RunspacePool = $script:RunspacePool
     
@@ -190,7 +190,7 @@ function Invoke-ParallelTask {
         [void]$ps.AddArgument($arg)
     }
     
-    # Créer un objet pour suivre le job
+    # CrÃ©er un objet pour suivre le job
     $jobInfo = [PSCustomObject]@{
         Id = [Guid]::NewGuid().ToString()
         PowerShell = $ps
@@ -200,16 +200,16 @@ function Invoke-ParallelTask {
         Timeout = if ($TimeoutSeconds -gt 0) { (Get-Date).AddSeconds($TimeoutSeconds) } else { $null }
     }
     
-    # Vérifier si les ressources sont disponibles
+    # VÃ©rifier si les ressources sont disponibles
     if (Test-ResourceAvailability) {
-        # Démarrer le job immédiatement
+        # DÃ©marrer le job immÃ©diatement
         $script:ActiveJobs[$jobInfo.Id] = $jobInfo
-        Write-Verbose "Tâche $($jobInfo.Id) démarrée"
+        Write-Verbose "TÃ¢che $($jobInfo.Id) dÃ©marrÃ©e"
     }
     else {
         # Mettre le job dans la file d'attente
         if ($Priority) {
-            # Insérer au début de la file d'attente pour les jobs prioritaires
+            # InsÃ©rer au dÃ©but de la file d'attente pour les jobs prioritaires
             $tempQueue = New-Object System.Collections.Generic.Queue[hashtable]
             $tempQueue.Enqueue(@{ JobInfo = $jobInfo })
             foreach ($item in $script:JobQueue) {
@@ -218,13 +218,13 @@ function Invoke-ParallelTask {
             $script:JobQueue = $tempQueue
         }
         else {
-            # Ajouter à la fin de la file d'attente
+            # Ajouter Ã  la fin de la file d'attente
             $script:JobQueue.Enqueue(@{ JobInfo = $jobInfo })
         }
-        Write-Verbose "Tâche $($jobInfo.Id) mise en file d'attente"
+        Write-Verbose "TÃ¢che $($jobInfo.Id) mise en file d'attente"
     }
     
-    # Attendre la fin du job si demandé
+    # Attendre la fin du job si demandÃ©
     if ($WaitForCompletion) {
         $result = Wait-ParallelTask -JobId $jobInfo.Id -TimeoutSeconds $TimeoutSeconds
         return $result
@@ -233,7 +233,7 @@ function Invoke-ParallelTask {
     return $jobInfo.Id
 }
 
-# Fonction pour attendre la fin d'une tâche parallèle
+# Fonction pour attendre la fin d'une tÃ¢che parallÃ¨le
 function Wait-ParallelTask {
     [CmdletBinding()]
     param (
@@ -246,9 +246,9 @@ function Wait-ParallelTask {
     
     $timeout = if ($TimeoutSeconds -gt 0) { (Get-Date).AddSeconds($TimeoutSeconds) } else { $null }
     
-    # Attendre que le job soit terminé
+    # Attendre que le job soit terminÃ©
     while ($script:ActiveJobs.ContainsKey($JobId) -or $script:JobQueue.Count -gt 0) {
-        # Vérifier si le job est dans la file d'attente
+        # VÃ©rifier si le job est dans la file d'attente
         $queuedJob = $null
         foreach ($item in $script:JobQueue) {
             if ($item.JobInfo.Id -eq $JobId) {
@@ -257,7 +257,7 @@ function Wait-ParallelTask {
             }
         }
         
-        # Si le job est dans la file d'attente et que des ressources sont disponibles, le démarrer
+        # Si le job est dans la file d'attente et que des ressources sont disponibles, le dÃ©marrer
         if ($queuedJob -ne $null -and (Test-ResourceAvailability)) {
             $script:JobQueue = New-Object System.Collections.Generic.Queue[hashtable]
             foreach ($item in $script:JobQueue) {
@@ -266,10 +266,10 @@ function Wait-ParallelTask {
                 }
             }
             $script:ActiveJobs[$JobId] = $queuedJob.JobInfo
-            Write-Verbose "Tâche $JobId démarrée depuis la file d'attente"
+            Write-Verbose "TÃ¢che $JobId dÃ©marrÃ©e depuis la file d'attente"
         }
         
-        # Si le job est actif et terminé, récupérer le résultat
+        # Si le job est actif et terminÃ©, rÃ©cupÃ©rer le rÃ©sultat
         if ($script:ActiveJobs.ContainsKey($JobId) -and $script:ActiveJobs[$JobId].Handle.IsCompleted) {
             $jobInfo = $script:ActiveJobs[$JobId]
             $result = $jobInfo.PowerShell.EndInvoke($jobInfo.Handle)
@@ -282,11 +282,11 @@ function Wait-ParallelTask {
             return $result
         }
         
-        # Vérifier le timeout
+        # VÃ©rifier le timeout
         if ($timeout -ne $null -and (Get-Date) -gt $timeout) {
-            Write-Warning "Timeout atteint pour la tâche $JobId"
+            Write-Warning "Timeout atteint pour la tÃ¢che $JobId"
             
-            # Si le job est actif, l'arrêter
+            # Si le job est actif, l'arrÃªter
             if ($script:ActiveJobs.ContainsKey($JobId)) {
                 $jobInfo = $script:ActiveJobs[$JobId]
                 $jobInfo.PowerShell.Stop()
@@ -305,7 +305,7 @@ function Wait-ParallelTask {
             return $null
         }
         
-        # Attendre un peu avant de vérifier à nouveau
+        # Attendre un peu avant de vÃ©rifier Ã  nouveau
         Start-Sleep -Milliseconds 100
         
         # Traiter la file d'attente si des ressources sont disponibles
@@ -320,12 +320,12 @@ function Process-JobQueue {
     [CmdletBinding()]
     param()
     
-    # Vérifier si des ressources sont disponibles
+    # VÃ©rifier si des ressources sont disponibles
     if (-not (Test-ResourceAvailability)) {
         return
     }
     
-    # Vérifier si la file d'attente est vide
+    # VÃ©rifier si la file d'attente est vide
     if ($script:JobQueue.Count -eq 0) {
         return
     }
@@ -333,12 +333,12 @@ function Process-JobQueue {
     # Obtenir le prochain job de la file d'attente
     $nextJob = $script:JobQueue.Dequeue().JobInfo
     
-    # Démarrer le job
+    # DÃ©marrer le job
     $script:ActiveJobs[$nextJob.Id] = $nextJob
-    Write-Verbose "Tâche $($nextJob.Id) démarrée depuis la file d'attente"
+    Write-Verbose "TÃ¢che $($nextJob.Id) dÃ©marrÃ©e depuis la file d'attente"
 }
 
-# Fonction pour obtenir l'état des tâches parallèles
+# Fonction pour obtenir l'Ã©tat des tÃ¢ches parallÃ¨les
 function Get-ParallelTaskStatus {
     [CmdletBinding()]
     param()
@@ -387,14 +387,14 @@ function Clear-ParallelPool {
         [switch]$Force
     )
     
-    # Arrêter le moniteur de ressources
+    # ArrÃªter le moniteur de ressources
     if ($script:ResourceMonitorJob -ne $null) {
         Stop-Job -Job $script:ResourceMonitorJob -ErrorAction SilentlyContinue
         Remove-Job -Job $script:ResourceMonitorJob -Force -ErrorAction SilentlyContinue
         $script:ResourceMonitorJob = $null
     }
     
-    # Arrêter tous les jobs actifs
+    # ArrÃªter tous les jobs actifs
     foreach ($jobId in @($script:ActiveJobs.Keys)) {
         $jobInfo = $script:ActiveJobs[$jobId]
         
@@ -404,7 +404,7 @@ function Clear-ParallelPool {
             $script:ActiveJobs.Remove($jobId)
         }
         elseif (-not $Force) {
-            Write-Warning "La tâche $jobId est toujours en cours d'exécution. Utilisez -Force pour l'arrêter."
+            Write-Warning "La tÃ¢che $jobId est toujours en cours d'exÃ©cution. Utilisez -Force pour l'arrÃªter."
             return $false
         }
     }
@@ -419,11 +419,11 @@ function Clear-ParallelPool {
         $script:RunspacePool = $null
     }
     
-    Write-Verbose "Pool de parallélisation nettoyé"
+    Write-Verbose "Pool de parallÃ©lisation nettoyÃ©"
     return $true
 }
 
-# Fonction pour exécuter plusieurs tâches en parallèle avec contrôle de ressources
+# Fonction pour exÃ©cuter plusieurs tÃ¢ches en parallÃ¨le avec contrÃ´le de ressources
 function Invoke-ParallelTasks {
     [CmdletBinding()]
     param (
@@ -446,7 +446,7 @@ function Invoke-ParallelTasks {
         [hashtable]$ResourceLimits
     )
     
-    # Initialiser le pool avec les limites spécifiées
+    # Initialiser le pool avec les limites spÃ©cifiÃ©es
     if ($ThrottleLimit -gt 0) {
         Initialize-ParallelPool -MaxThreads $ThrottleLimit -ResourceLimits $ResourceLimits
     }
@@ -459,13 +459,13 @@ function Invoke-ParallelTasks {
     $results = @()
     $jobIds = @()
     
-    # Démarrer tous les jobs
+    # DÃ©marrer tous les jobs
     foreach ($inputObject in $InputObjects) {
         $jobId = Invoke-ParallelTask -ScriptBlock $ScriptBlock -ArgumentList $inputObject
         $jobIds += $jobId
     }
     
-    # Attendre que tous les jobs soient terminés
+    # Attendre que tous les jobs soient terminÃ©s
     while ($jobIds.Count -gt 0) {
         $completedJobIds = @()
         
@@ -489,7 +489,7 @@ function Invoke-ParallelTasks {
                 Process-JobQueue
             }
             elseif ($jobInfo.Timeout -ne $null -and (Get-Date) -gt $jobInfo.Timeout) {
-                Write-Warning "Timeout atteint pour la tâche $jobId"
+                Write-Warning "Timeout atteint pour la tÃ¢che $jobId"
                 $jobInfo.PowerShell.Stop()
                 $jobInfo.PowerShell.Dispose()
                 $script:ActiveJobs.Remove($jobId)
@@ -499,18 +499,18 @@ function Invoke-ParallelTasks {
             }
         }
         
-        # Mettre à jour la liste des jobs en cours
+        # Mettre Ã  jour la liste des jobs en cours
         $jobIds = $jobIds | Where-Object { $completedJobIds -notcontains $_ }
         
-        # Afficher la progression si demandé
+        # Afficher la progression si demandÃ©
         if ($ShowProgress) {
             $percentComplete = [Math]::Min(100, [Math]::Round(($completedJobs / $totalJobs) * 100))
-            $status = "Traitement de $completedJobs/$totalJobs tâches ($percentComplete%)"
+            $status = "Traitement de $completedJobs/$totalJobs tÃ¢ches ($percentComplete%)"
             
-            Write-Progress -Activity "Exécution des tâches parallèles" -Status $status -PercentComplete $percentComplete
+            Write-Progress -Activity "ExÃ©cution des tÃ¢ches parallÃ¨les" -Status $status -PercentComplete $percentComplete
         }
         
-        # Attendre un peu avant de vérifier à nouveau
+        # Attendre un peu avant de vÃ©rifier Ã  nouveau
         if ($jobIds.Count -gt 0) {
             Start-Sleep -Milliseconds 100
         }
@@ -518,13 +518,13 @@ function Invoke-ParallelTasks {
     
     # Terminer la barre de progression
     if ($ShowProgress) {
-        Write-Progress -Activity "Exécution des tâches parallèles" -Completed
+        Write-Progress -Activity "ExÃ©cution des tÃ¢ches parallÃ¨les" -Completed
     }
     
     return $results
 }
 
-# Fonction pour exécuter des tests de performance en parallèle
+# Fonction pour exÃ©cuter des tests de performance en parallÃ¨le
 function Invoke-ParallelPerformanceTests {
     [CmdletBinding()]
     param (
@@ -547,18 +547,18 @@ function Invoke-ParallelPerformanceTests {
         [string]$OutputPath
     )
     
-    # Créer le script à exécuter pour chaque test
+    # CrÃ©er le script Ã  exÃ©cuter pour chaque test
     $scriptBlock = {
         param($TestScript, $Parameters, $Iteration)
         
         $testParams = $Parameters.Clone()
         
-        # Ajouter l'itération aux paramètres si nécessaire
+        # Ajouter l'itÃ©ration aux paramÃ¨tres si nÃ©cessaire
         if (-not $testParams.ContainsKey("Iteration")) {
             $testParams["Iteration"] = $Iteration
         }
         
-        # Générer un chemin de sortie unique si nécessaire
+        # GÃ©nÃ©rer un chemin de sortie unique si nÃ©cessaire
         if ($testParams.ContainsKey("OutputPath")) {
             $outputFile = [System.IO.Path]::GetFileNameWithoutExtension($testParams["OutputPath"])
             $outputExt = [System.IO.Path]::GetExtension($testParams["OutputPath"])
@@ -566,7 +566,7 @@ function Invoke-ParallelPerformanceTests {
         }
         
         try {
-            # Exécuter le script de test
+            # ExÃ©cuter le script de test
             $result = & $TestScript @testParams
             
             return [PSCustomObject]@{
@@ -588,7 +588,7 @@ function Invoke-ParallelPerformanceTests {
         }
     }
     
-    # Préparer les entrées pour les tâches parallèles
+    # PrÃ©parer les entrÃ©es pour les tÃ¢ches parallÃ¨les
     $inputs = @()
     foreach ($testScript in $TestScripts) {
         for ($i = 1; $i -le $Iterations; $i++) {
@@ -600,19 +600,19 @@ function Invoke-ParallelPerformanceTests {
         }
     }
     
-    # Configurer les limites de ressources pour l'exécution adaptative
+    # Configurer les limites de ressources pour l'exÃ©cution adaptative
     $resourceLimits = $null
     if ($AdaptiveThrottling) {
         $resourceLimits = @{
-            CPU = 75  # Limite CPU plus basse pour l'exécution adaptative
-            Memory = 70  # Limite mémoire plus basse pour l'exécution adaptative
+            CPU = 75  # Limite CPU plus basse pour l'exÃ©cution adaptative
+            Memory = 70  # Limite mÃ©moire plus basse pour l'exÃ©cution adaptative
         }
     }
     
-    # Exécuter les tests en parallèle
+    # ExÃ©cuter les tests en parallÃ¨le
     $results = Invoke-ParallelTasks -ScriptBlock $scriptBlock -InputObjects $inputs -ThrottleLimit $ThrottleLimit -ShowProgress -ResourceLimits $resourceLimits
     
-    # Agréger les résultats
+    # AgrÃ©ger les rÃ©sultats
     $aggregatedResults = [PSCustomObject]@{
         StartTime = Get-Date
         EndTime = Get-Date
@@ -622,7 +622,7 @@ function Invoke-ParallelPerformanceTests {
         TestResults = $results
     }
     
-    # Enregistrer les résultats si un chemin de sortie est spécifié
+    # Enregistrer les rÃ©sultats si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
         $aggregatedResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
     }

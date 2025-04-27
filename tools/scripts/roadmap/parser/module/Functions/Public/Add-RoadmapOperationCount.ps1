@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Incrémente un compteur d'opérations.
+    IncrÃ©mente un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Add-RoadmapOperationCount incrémente un compteur d'opérations.
-    Elle crée le compteur s'il n'existe pas.
+    La fonction Add-RoadmapOperationCount incrÃ©mente un compteur d'opÃ©rations.
+    Elle crÃ©e le compteur s'il n'existe pas.
 
 .PARAMETER Name
-    Le nom du compteur à incrémenter.
+    Le nom du compteur Ã  incrÃ©menter.
 
 .PARAMETER IncrementBy
-    La valeur à ajouter au compteur.
-    Par défaut, c'est 1.
+    La valeur Ã  ajouter au compteur.
+    Par dÃ©faut, c'est 1.
 
 .PARAMETER LogResult
-    Indique si le résultat doit être journalisé.
-    Par défaut, c'est $false.
+    Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+    Par dÃ©faut, c'est $false.
 
 .EXAMPLE
     Add-RoadmapOperationCount -Name "MaFonction"
-    Incrémente le compteur d'opérations nommé "MaFonction" de 1.
+    IncrÃ©mente le compteur d'opÃ©rations nommÃ© "MaFonction" de 1.
 
 .OUTPUTS
     [int] La nouvelle valeur du compteur.
@@ -27,7 +27,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-23
+    Date de crÃ©ation: 2023-07-23
 #>
 function Add-RoadmapOperationCount {
     [CmdletBinding()]
@@ -51,15 +51,15 @@ function Add-RoadmapOperationCount {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Performance"
     $performanceFunctionsPath = Join-Path -Path $privatePath -ChildPath "PerformanceMeasurementFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $performanceFunctionsPath)) {
-        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable à l'emplacement : $performanceFunctionsPath"
+        throw "Le fichier PerformanceMeasurementFunctions.ps1 est introuvable Ã  l'emplacement : $performanceFunctionsPath"
     }
 
     # Importer les fonctions
     . $performanceFunctionsPath
 
-    # Appeler la fonction d'incrémentation du compteur
+    # Appeler la fonction d'incrÃ©mentation du compteur
     $params = @{
         Name = $Name
         IncrementBy = $IncrementBy

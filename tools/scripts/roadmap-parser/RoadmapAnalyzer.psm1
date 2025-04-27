@@ -1,4 +1,4 @@
-# RoadmapAnalyzer.psm1
+﻿# RoadmapAnalyzer.psm1
 # Module pour l'analyse de la structure des fichiers markdown de roadmap
 
 # Fonction pour analyser la structure d'un fichier markdown de roadmap
@@ -10,7 +10,7 @@ function Get-MarkdownStructure {
     )
 
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath)) {
             throw "Le fichier '$FilePath' n'existe pas."
         }
@@ -35,7 +35,7 @@ function Get-MarkdownStructure {
     }
 }
 
-# Fonction pour analyser les marqueurs de liste utilisés dans le contenu markdown
+# Fonction pour analyser les marqueurs de liste utilisÃ©s dans le contenu markdown
 function Get-ListMarkers {
     [CmdletBinding()]
     param (
@@ -58,7 +58,7 @@ function Get-ListMarkers {
     return $usedMarkers
 }
 
-# Fonction pour analyser les conventions d'indentation utilisées dans le contenu markdown
+# Fonction pour analyser les conventions d'indentation utilisÃ©es dans le contenu markdown
 function Get-IndentationPattern {
     [CmdletBinding()]
     param (
@@ -102,7 +102,7 @@ function Get-IndentationPattern {
         }
     }
 
-    # Déterminer l'indentation la plus courante
+    # DÃ©terminer l'indentation la plus courante
     if ($indentDifferences.Count -gt 0) {
         $mostCommonDiff = $indentDifferences.GetEnumerator() |
             Sort-Object -Property Value -Descending |
@@ -110,7 +110,7 @@ function Get-IndentationPattern {
 
         $indentationPattern.SpacesPerLevel = $mostCommonDiff.Key
 
-        # Vérifier si l'indentation est cohérente
+        # VÃ©rifier si l'indentation est cohÃ©rente
         $totalDiffs = ($indentDifferences.Values | Measure-Object -Sum).Sum
         $consistencyRatio = $mostCommonDiff.Value / $totalDiffs
 
@@ -211,7 +211,7 @@ function Get-EmphasisStyles {
     return $emphasisStyles
 }
 
-# Fonction pour analyser la hiérarchie des tâches
+# Fonction pour analyser la hiÃ©rarchie des tÃ¢ches
 function Get-TaskHierarchy {
     [CmdletBinding()]
     param (
@@ -228,7 +228,7 @@ function Get-TaskHierarchy {
     # Diviser le contenu en lignes
     $lines = $Content -split "`n"
 
-    # Analyser la hiérarchie des tâches
+    # Analyser la hiÃ©rarchie des tÃ¢ches
     $currentDepth = 0
     $maxDepth = 0
     $numberingPatterns = @{}
@@ -241,7 +241,7 @@ function Get-TaskHierarchy {
         if ($line -match '^\s*[-*+]') {
             $indent = ($line -match '^\s*').Matches[0].Value.Length
 
-            # Déterminer la profondeur basée sur l'indentation
+            # DÃ©terminer la profondeur basÃ©e sur l'indentation
             if (-not $indentToDepth.ContainsKey($indent)) {
                 if ($indent -gt $previousIndent) {
                     $currentDepth++
@@ -261,7 +261,7 @@ function Get-TaskHierarchy {
 
             $maxDepth = [Math]::Max($maxDepth, $currentDepth)
 
-            # Analyser les conventions de numérotation
+            # Analyser les conventions de numÃ©rotation
             if ($line -match '^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)*|\w+\.)') {
                 $numberingPattern = $matches[1]
                 if (-not $numberingPatterns.ContainsKey($numberingPattern)) {
@@ -313,7 +313,7 @@ function Get-StatusMarkers {
     $statusMarkers.Incomplete = [regex]::Matches($Content, $incompletePattern).Count
     $statusMarkers.Complete = [regex]::Matches($Content, $completePattern).Count
 
-    # Rechercher les marqueurs de statut personnalisés
+    # Rechercher les marqueurs de statut personnalisÃ©s
     $customPattern = "(?m)^\s*[-*+]\s*\[([^x ])\]"
     $customMatches = [regex]::Matches($Content, $customPattern)
 
@@ -328,8 +328,8 @@ function Get-StatusMarkers {
 
     # Rechercher les indicateurs textuels de progression
     $textualIndicators = @(
-        "en cours", "en attente", "terminé", "complété", "bloqué",
-        "reporté", "annulé", "prioritaire", "urgent"
+        "en cours", "en attente", "terminÃ©", "complÃ©tÃ©", "bloquÃ©",
+        "reportÃ©", "annulÃ©", "prioritaire", "urgent"
     )
 
     foreach ($indicator in $textualIndicators) {
@@ -343,7 +343,7 @@ function Get-StatusMarkers {
     return $statusMarkers
 }
 
-# Fonction pour analyser les conventions spécifiques au projet
+# Fonction pour analyser les conventions spÃ©cifiques au projet
 function Get-ProjectConventions {
     [CmdletBinding()]
     param (
@@ -368,13 +368,13 @@ function Get-ProjectConventions {
         MetadataFormat     = $null
     }
 
-    # Détecter les identifiants de tâches
+    # DÃ©tecter les identifiants de tÃ¢ches
     $taskIdPatterns = @(
-        # Format numérique (1.2.3)
+        # Format numÃ©rique (1.2.3)
         '(?m)^\s*[-*+]\s*(?:\*\*)?(\d+(\.\d+)+)(?:\*\*)?\s',
-        # Format alphanumérique (A.1.2)
+        # Format alphanumÃ©rique (A.1.2)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Za-z]+(\.\d+)+)(?:\*\*)?\s',
-        # Format avec préfixe (TASK-123)
+        # Format avec prÃ©fixe (TASK-123)
         '(?m)^\s*[-*+]\s*(?:\*\*)?([A-Z]+-\d+)(?:\*\*)?\s'
     )
 
@@ -389,13 +389,13 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les indicateurs de priorité
+    # DÃ©tecter les indicateurs de prioritÃ©
     $priorityPatterns = @(
         # Format [PRIORITY: HIGH]
         '(?m)\[PRIORITY:\s*([A-Z]+)\]',
         # Format (P1), (P2), etc.
         '(?m)\(P(\d+)\)',
-        # Format !!! (haute priorité), !! (moyenne), ! (basse)
+        # Format !!! (haute prioritÃ©), !! (moyenne), ! (basse)
         '(?m)(!{1,3})'
     )
 
@@ -410,7 +410,7 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les indicateurs de statut spécifiques au projet
+    # DÃ©tecter les indicateurs de statut spÃ©cifiques au projet
     $statusPatterns = @(
         # Format [STATUS: IN_PROGRESS]
         '(?m)\[STATUS:\s*([A-Z_]+)\]',
@@ -431,11 +431,11 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter les sections spéciales
+    # DÃ©tecter les sections spÃ©ciales
     $specialSectionPatterns = @(
-        # Sections avec des titres spécifiques
+        # Sections avec des titres spÃ©cifiques
         '(?m)^#+\s*(TODO|DONE|IN PROGRESS|BACKLOG|ICEBOX|NOTES|REFERENCES)',
-        # Sections délimitées par des séparateurs
+        # Sections dÃ©limitÃ©es par des sÃ©parateurs
         '(?m)^-{3,}\s*([A-Z ]+)\s*-{3,}$'
     )
 
@@ -448,11 +448,11 @@ function Get-ProjectConventions {
         }
     }
 
-    # Détecter le format des métadonnées
+    # DÃ©tecter le format des mÃ©tadonnÃ©es
     $metadataPatterns = @(
         # Format YAML front matter
         '(?ms)^---\s*\n(.*?)\n---\s*\n',
-        # Format clé-valeur
+        # Format clÃ©-valeur
         '(?m)^([A-Za-z]+):\s*(.+)$'
     )
 

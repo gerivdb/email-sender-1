@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de génération de tableaux de bord pour les données de performance.
+    Script de gÃ©nÃ©ration de tableaux de bord pour les donnÃ©es de performance.
 .DESCRIPTION
-    Ce script génère des tableaux de bord pour visualiser les données de performance
-    du système, des applications et des métriques métier.
+    Ce script gÃ©nÃ¨re des tableaux de bord pour visualiser les donnÃ©es de performance
+    du systÃ¨me, des applications et des mÃ©triques mÃ©tier.
 .PARAMETER DataPath
-    Chemin vers les données de performance.
+    Chemin vers les donnÃ©es de performance.
 .PARAMETER OutputPath
-    Chemin où les tableaux de bord seront sauvegardés.
+    Chemin oÃ¹ les tableaux de bord seront sauvegardÃ©s.
 .PARAMETER TemplatesPath
     Chemin vers les templates de tableaux de bord.
 .PARAMETER DashboardType
-    Type de tableau de bord à générer (system, application, business).
+    Type de tableau de bord Ã  gÃ©nÃ©rer (system, application, business).
 .PARAMETER TimeRange
-    Plage de temps pour les données à visualiser.
+    Plage de temps pour les donnÃ©es Ã  visualiser.
 #>
 
 [CmdletBinding()]
@@ -71,10 +71,10 @@ function Import-DashboardTemplates {
     try {
         if (Test-Path -Path $TemplatesPath) {
             $Templates = Get-Content -Path $TemplatesPath -Raw | ConvertFrom-Json
-            Write-Log -Message "Templates chargés avec succès: $($Templates.templates.Count) templates disponibles" -Level "Info"
+            Write-Log -Message "Templates chargÃ©s avec succÃ¨s: $($Templates.templates.Count) templates disponibles" -Level "Info"
             return $Templates.templates
         } else {
-            Write-Log -Message "Fichier de templates non trouvé: $TemplatesPath" -Level "Error"
+            Write-Log -Message "Fichier de templates non trouvÃ©: $TemplatesPath" -Level "Error"
             return $null
         }
     } catch {
@@ -83,7 +83,7 @@ function Import-DashboardTemplates {
     }
 }
 
-# Fonction pour charger les données de performance
+# Fonction pour charger les donnÃ©es de performance
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -97,7 +97,7 @@ function Import-PerformanceData {
         [string]$TimeRange
     )
     
-    Write-Log -Message "Chargement des données de performance de type $MetricType" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es de performance de type $MetricType" -Level "Info"
     
     try {
         $DataFile = Join-Path -Path $DataPath -ChildPath "$($MetricType)_metrics.csv"
@@ -123,19 +123,19 @@ function Import-PerformanceData {
             
             $FilteredData = $Data | Where-Object { $_.DateTime -ge $StartDate -and $_.DateTime -le $EndDate }
             
-            Write-Log -Message "Données chargées avec succès: $($FilteredData.Count) entrées" -Level "Info"
+            Write-Log -Message "DonnÃ©es chargÃ©es avec succÃ¨s: $($FilteredData.Count) entrÃ©es" -Level "Info"
             return $FilteredData
         } else {
-            Write-Log -Message "Fichier de données non trouvé: $DataFile" -Level "Warning"
+            Write-Log -Message "Fichier de donnÃ©es non trouvÃ©: $DataFile" -Level "Warning"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour générer un panneau de tableau de bord
+# Fonction pour gÃ©nÃ©rer un panneau de tableau de bord
 function New-DashboardPanel {
     [CmdletBinding()]
     param (
@@ -149,30 +149,30 @@ function New-DashboardPanel {
         [hashtable]$AdditionalOptions = @{}
     )
     
-    Write-Log -Message "Génération du panneau: $($Panel.id)" -Level "Verbose"
+    Write-Log -Message "GÃ©nÃ©ration du panneau: $($Panel.id)" -Level "Verbose"
     
     try {
-        # Filtrer les données pour la métrique spécifiée
+        # Filtrer les donnÃ©es pour la mÃ©trique spÃ©cifiÃ©e
         $MetricData = if ($Panel.PSObject.Properties.Name -contains "metrics") {
-            # Plusieurs métriques
+            # Plusieurs mÃ©triques
             $Panel.metrics | ForEach-Object {
                 $Metric = $_
                 $Data | Where-Object { $_.Metric -eq $Metric }
             }
         } else {
-            # Une seule métrique
+            # Une seule mÃ©trique
             $Data | Where-Object { $_.Metric -eq $Panel.metric }
         }
         
         if (-not $MetricData -or $MetricData.Count -eq 0) {
-            Write-Log -Message "Aucune donnée trouvée pour le panneau: $($Panel.id)" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e trouvÃ©e pour le panneau: $($Panel.id)" -Level "Warning"
             return $null
         }
         
-        # Créer le panneau selon son type
+        # CrÃ©er le panneau selon son type
         $PanelConfig = switch ($Panel.type) {
             "gauge" {
-                # Calculer la dernière valeur
+                # Calculer la derniÃ¨re valeur
                 $LastValue = ($MetricData | Sort-Object -Property DateTime | Select-Object -Last 1).Value
                 
                 @{
@@ -187,9 +187,9 @@ function New-DashboardPanel {
                 }
             }
             "line" {
-                # Préparer les données pour le graphique
+                # PrÃ©parer les donnÃ©es pour le graphique
                 $Series = if ($Panel.PSObject.Properties.Name -contains "metrics") {
-                    # Plusieurs métriques
+                    # Plusieurs mÃ©triques
                     $Panel.metrics | ForEach-Object {
                         $Metric = $_
                         $MetricValues = $Data | Where-Object { $_.Metric -eq $Metric } | Sort-Object -Property DateTime
@@ -205,7 +205,7 @@ function New-DashboardPanel {
                         }
                     }
                 } else {
-                    # Une seule métrique
+                    # Une seule mÃ©trique
                     @(
                         @{
                             name = $Panel.metric
@@ -243,19 +243,19 @@ function New-DashboardPanel {
             }
         }
         
-        # Ajouter les options supplémentaires
+        # Ajouter les options supplÃ©mentaires
         foreach ($Key in $AdditionalOptions.Keys) {
             $PanelConfig[$Key] = $AdditionalOptions[$Key]
         }
         
         return $PanelConfig
     } catch {
-        Write-Log -Message "Erreur lors de la génération du panneau: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du panneau: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour générer un tableau de bord
+# Fonction pour gÃ©nÃ©rer un tableau de bord
 function New-Dashboard {
     [CmdletBinding()]
     param (
@@ -272,16 +272,16 @@ function New-Dashboard {
         [hashtable]$AdditionalOptions = @{}
     )
     
-    Write-Log -Message "Génération du tableau de bord: $($Template.name)" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du tableau de bord: $($Template.name)" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Préparer la structure du tableau de bord
+        # PrÃ©parer la structure du tableau de bord
         $Dashboard = @{
             id = $Template.id
             name = $Template.name
@@ -294,7 +294,7 @@ function New-Dashboard {
             panels = @()
         }
         
-        # Générer chaque panneau
+        # GÃ©nÃ©rer chaque panneau
         foreach ($Panel in $Template.layout.panels) {
             $PanelConfig = New-DashboardPanel -Panel $Panel -Data $Data -AdditionalOptions $AdditionalOptions
             
@@ -310,15 +310,15 @@ function New-Dashboard {
         # Sauvegarder le fichier de configuration du tableau de bord
         $DashboardJson | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Tableau de bord généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Tableau de bord gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du tableau de bord: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du tableau de bord: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction pour générer un fichier HTML pour le tableau de bord
+# Fonction pour gÃ©nÃ©rer un fichier HTML pour le tableau de bord
 function New-DashboardHtml {
     [CmdletBinding()]
     param (
@@ -332,13 +332,13 @@ function New-DashboardHtml {
         [string]$Title = "Tableau de bord"
     )
     
-    Write-Log -Message "Génération du fichier HTML pour le tableau de bord: $OutputPath" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du fichier HTML pour le tableau de bord: $OutputPath" -Level "Info"
     
     try {
         # Lire la configuration du tableau de bord
         $DashboardConfig = Get-Content -Path $DashboardConfigPath -Raw | ConvertFrom-Json
         
-        # Créer le contenu HTML
+        # CrÃ©er le contenu HTML
         $HtmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -426,7 +426,7 @@ function New-DashboardHtml {
     <div class="dashboard-header">
         <h1 class="dashboard-title">$($DashboardConfig.name)</h1>
         <p class="dashboard-description">$($DashboardConfig.description)</p>
-        <p class="dashboard-timestamp">Dernière mise à jour: $($DashboardConfig.timestamp)</p>
+        <p class="dashboard-timestamp">DerniÃ¨re mise Ã  jour: $($DashboardConfig.timestamp)</p>
     </div>
     
     <div class="dashboard-grid">
@@ -445,7 +445,7 @@ function New-DashboardHtml {
             <div class="panel-content">
 "@
             
-            # Contenu spécifique au type de panneau
+            # Contenu spÃ©cifique au type de panneau
             switch ($Panel.type) {
                 "gauge" {
                     $HtmlContent += @"
@@ -478,7 +478,7 @@ function New-DashboardHtml {
         
         // Initialiser les graphiques
         document.addEventListener('DOMContentLoaded', function() {
-            // Créer chaque graphique
+            // CrÃ©er chaque graphique
             dashboardConfig.panels.forEach(panel => {
                 switch (panel.type) {
                     case 'gauge':
@@ -491,15 +491,15 @@ function New-DashboardHtml {
             });
         });
         
-        // Fonction pour créer un gauge
+        // Fonction pour crÃ©er un gauge
         function createGauge(panel) {
             const canvas = document.getElementById(`gauge-\${panel.id}`);
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
             
-            // Trouver la couleur correspondant à la valeur
-            let color = '#73BF69'; // Couleur par défaut (vert)
+            // Trouver la couleur correspondant Ã  la valeur
+            let color = '#73BF69'; // Couleur par dÃ©faut (vert)
             for (let i = panel.thresholds.length - 1; i >= 0; i--) {
                 if (panel.value >= panel.thresholds[i].value) {
                     color = panel.thresholds[i].color;
@@ -536,7 +536,7 @@ function New-DashboardHtml {
             });
         }
         
-        // Fonction pour créer un graphique linéaire
+        // Fonction pour crÃ©er un graphique linÃ©aire
         function createLineChart(panel) {
             const canvas = document.getElementById(`chart-\${panel.id}`);
             if (!canvas) return;
@@ -620,15 +620,15 @@ function New-DashboardHtml {
         # Sauvegarder le fichier HTML
         $HtmlContent | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Fichier HTML généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Fichier HTML gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du fichier HTML: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du fichier HTML: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction principale pour générer les tableaux de bord
+# Fonction principale pour gÃ©nÃ©rer les tableaux de bord
 function Start-DashboardGeneration {
     [CmdletBinding()]
     param (
@@ -648,9 +648,9 @@ function Start-DashboardGeneration {
         [string]$TimeRange
     )
     
-    Write-Log -Message "Début de la génération des tableaux de bord" -Level "Info"
+    Write-Log -Message "DÃ©but de la gÃ©nÃ©ration des tableaux de bord" -Level "Info"
     
-    # Déterminer les types de tableaux de bord à générer
+    # DÃ©terminer les types de tableaux de bord Ã  gÃ©nÃ©rer
     $DashboardTypes = @()
     if ($DashboardType -eq "all") {
         $DashboardTypes = @("system", "application", "business")
@@ -658,47 +658,47 @@ function Start-DashboardGeneration {
         $DashboardTypes = @($DashboardType)
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # Générer les tableaux de bord pour chaque type
+    # GÃ©nÃ©rer les tableaux de bord pour chaque type
     foreach ($Type in $DashboardTypes) {
-        Write-Log -Message "Génération du tableau de bord de type: $Type" -Level "Info"
+        Write-Log -Message "GÃ©nÃ©ration du tableau de bord de type: $Type" -Level "Info"
         
         # Trouver le template correspondant
         $Template = $Templates | Where-Object { $_.id -eq "${Type}_dashboard" } | Select-Object -First 1
         
         if ($null -eq $Template) {
-            Write-Log -Message "Aucun template trouvé pour le type: $Type" -Level "Warning"
+            Write-Log -Message "Aucun template trouvÃ© pour le type: $Type" -Level "Warning"
             continue
         }
         
-        # Charger les données
+        # Charger les donnÃ©es
         $Data = Import-PerformanceData -DataPath $DataPath -MetricType $Type -TimeRange $TimeRange
         
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée disponible pour le type: $Type" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e disponible pour le type: $Type" -Level "Warning"
             continue
         }
         
-        # Générer le tableau de bord
+        # GÃ©nÃ©rer le tableau de bord
         $DashboardOutputPath = Join-Path -Path $OutputPath -ChildPath "${Type}_dashboard.json"
         $Success = New-Dashboard -Template $Template -Data $Data -OutputPath $DashboardOutputPath
         
         if ($Success) {
-            # Générer le fichier HTML
+            # GÃ©nÃ©rer le fichier HTML
             $HtmlOutputPath = Join-Path -Path $OutputPath -ChildPath "${Type}_dashboard.html"
             New-DashboardHtml -DashboardConfigPath $DashboardOutputPath -OutputPath $HtmlOutputPath -Title $Template.name
         }
     }
     
-    Write-Log -Message "Génération des tableaux de bord terminée" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration des tableaux de bord terminÃ©e" -Level "Info"
     return $true
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Charger les templates de tableaux de bord
     $Templates = Import-DashboardTemplates -TemplatesPath $TemplatesPath
@@ -708,17 +708,17 @@ try {
         exit 1
     }
     
-    # Générer les tableaux de bord
+    # GÃ©nÃ©rer les tableaux de bord
     $Result = Start-DashboardGeneration -DataPath $DataPath -OutputPath $OutputPath -Templates $Templates -DashboardType $DashboardType -TimeRange $TimeRange
     
     if ($Result) {
-        Write-Log -Message "Génération des tableaux de bord réussie" -Level "Info"
+        Write-Log -Message "GÃ©nÃ©ration des tableaux de bord rÃ©ussie" -Level "Info"
         exit 0
     } else {
-        Write-Log -Message "Échec de la génération des tableaux de bord" -Level "Error"
+        Write-Log -Message "Ã‰chec de la gÃ©nÃ©ration des tableaux de bord" -Level "Error"
         exit 1
     }
 } catch {
-    Write-Log -Message "Erreur non gérée: $_" -Level "Error"
+    Write-Log -Message "Erreur non gÃ©rÃ©e: $_" -Level "Error"
     exit 1
 }

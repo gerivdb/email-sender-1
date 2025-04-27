@@ -1,4 +1,4 @@
-# Create-JournalEntry-Enhanced.ps1
+﻿# Create-JournalEntry-Enhanced.ps1
 # Script ameliore pour creer des entrees de journal avec analyse des erreurs
 
 # Parametres
@@ -41,12 +41,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
 
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -54,8 +54,8 @@ function Write-Log {
 
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     } catch {
-        # Ignorer les erreurs d'écriture dans le journal
-        Write-Verbose "Erreur lors de l'écriture dans le journal: $_"
+        # Ignorer les erreurs d'Ã©criture dans le journal
+        Write-Verbose "Erreur lors de l'Ã©criture dans le journal: $_"
     }
 }
 
@@ -219,5 +219,5 @@ try {
     exit 1
 } finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

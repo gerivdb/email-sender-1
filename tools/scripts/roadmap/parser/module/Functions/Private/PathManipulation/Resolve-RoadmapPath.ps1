@@ -1,72 +1,72 @@
-<#
+﻿<#
 .SYNOPSIS
-    Résout un chemin de fichier ou de répertoire.
+    RÃ©sout un chemin de fichier ou de rÃ©pertoire.
 
 .DESCRIPTION
-    La fonction Resolve-RoadmapPath résout un chemin de fichier ou de répertoire.
-    Elle prend en charge différentes options de résolution et peut être utilisée pour
-    résoudre les chemins du module RoadmapParser.
+    La fonction Resolve-RoadmapPath rÃ©sout un chemin de fichier ou de rÃ©pertoire.
+    Elle prend en charge diffÃ©rentes options de rÃ©solution et peut Ãªtre utilisÃ©e pour
+    rÃ©soudre les chemins du module RoadmapParser.
 
 .PARAMETER Path
-    Le chemin à résoudre.
+    Le chemin Ã  rÃ©soudre.
 
 .PARAMETER ResolutionType
-    Le type de résolution à effectuer. Valeurs possibles :
-    - FullPath : Résout le chemin en chemin absolu complet
-    - RelativePath : Résout le chemin en chemin relatif par rapport à un chemin de base
-    - ParentPath : Résout le chemin parent
-    - FileName : Résout le nom de fichier
-    - FileNameWithoutExtension : Résout le nom de fichier sans extension
-    - Extension : Résout l'extension du fichier
-    - DirectoryName : Résout le nom du répertoire
-    - RootPath : Résout le chemin racine
-    - PathRoot : Résout la racine du chemin
-    - TempPath : Résout un chemin temporaire
-    - RandomPath : Résout un chemin aléatoire
-    - EnvironmentPath : Résout un chemin d'environnement
-    - Custom : Utilise une résolution personnalisée
+    Le type de rÃ©solution Ã  effectuer. Valeurs possibles :
+    - FullPath : RÃ©sout le chemin en chemin absolu complet
+    - RelativePath : RÃ©sout le chemin en chemin relatif par rapport Ã  un chemin de base
+    - ParentPath : RÃ©sout le chemin parent
+    - FileName : RÃ©sout le nom de fichier
+    - FileNameWithoutExtension : RÃ©sout le nom de fichier sans extension
+    - Extension : RÃ©sout l'extension du fichier
+    - DirectoryName : RÃ©sout le nom du rÃ©pertoire
+    - RootPath : RÃ©sout le chemin racine
+    - PathRoot : RÃ©sout la racine du chemin
+    - TempPath : RÃ©sout un chemin temporaire
+    - RandomPath : RÃ©sout un chemin alÃ©atoire
+    - EnvironmentPath : RÃ©sout un chemin d'environnement
+    - Custom : Utilise une rÃ©solution personnalisÃ©e
 
 .PARAMETER BasePath
-    Le chemin de base à utiliser pour la résolution de type RelativePath.
-    Par défaut, c'est le répertoire courant.
+    Le chemin de base Ã  utiliser pour la rÃ©solution de type RelativePath.
+    Par dÃ©faut, c'est le rÃ©pertoire courant.
 
 .PARAMETER CustomResolution
-    La fonction de résolution personnalisée à utiliser.
-    Utilisé uniquement lorsque ResolutionType est "Custom".
+    La fonction de rÃ©solution personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque ResolutionType est "Custom".
 
 .PARAMETER EnvironmentVariable
-    La variable d'environnement à utiliser pour la résolution de type EnvironmentPath.
+    La variable d'environnement Ã  utiliser pour la rÃ©solution de type EnvironmentPath.
 
 .PARAMETER CreateIfNotExists
-    Indique si le chemin doit être créé s'il n'existe pas.
-    Par défaut, c'est $false.
+    Indique si le chemin doit Ãªtre crÃ©Ã© s'il n'existe pas.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER Force
-    Indique si la résolution doit être forcée.
-    Par défaut, c'est $false.
+    Indique si la rÃ©solution doit Ãªtre forcÃ©e.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la résolution.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la rÃ©solution.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la résolution.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la rÃ©solution.
 
 .EXAMPLE
     Resolve-RoadmapPath -Path ".\folder\file.txt" -ResolutionType FullPath
-    Résout le chemin relatif ".\folder\file.txt" en chemin absolu complet.
+    RÃ©sout le chemin relatif ".\folder\file.txt" en chemin absolu complet.
 
 .EXAMPLE
     Resolve-RoadmapPath -Path "C:\folder\file.txt" -ResolutionType FileName
-    Résout le nom de fichier "file.txt" à partir du chemin "C:\folder\file.txt".
+    RÃ©sout le nom de fichier "file.txt" Ã  partir du chemin "C:\folder\file.txt".
 
 .OUTPUTS
-    [string] Le chemin résolu.
+    [string] Le chemin rÃ©solu.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Resolve-RoadmapPath {
     [CmdletBinding()]
@@ -101,23 +101,23 @@ function Resolve-RoadmapPath {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la résolution
+    # Initialiser le rÃ©sultat de la rÃ©solution
     $result = $null
     $resolutionSucceeded = $false
 
-    # Effectuer la résolution selon le type
+    # Effectuer la rÃ©solution selon le type
     try {
-        # Vérifier si le chemin est vide
+        # VÃ©rifier si le chemin est vide
         if ([string]::IsNullOrEmpty($Path)) {
             $result = ""
             $resolutionSucceeded = $true
             return $result
         }
 
-        # Préparer le chemin initial
+        # PrÃ©parer le chemin initial
         $workingPath = $Path.Trim()
 
-        # Effectuer la résolution selon le type
+        # Effectuer la rÃ©solution selon le type
         switch ($ResolutionType) {
             "FullPath" {
                 $result = [System.IO.Path]::GetFullPath($workingPath)
@@ -128,19 +128,19 @@ function Resolve-RoadmapPath {
                 $absolutePath = [System.IO.Path]::GetFullPath($workingPath)
                 $absoluteBasePath = [System.IO.Path]::GetFullPath($BasePath)
                 
-                # Vérifier si les chemins sont sur le même lecteur
+                # VÃ©rifier si les chemins sont sur le mÃªme lecteur
                 $pathDrive = [System.IO.Path]::GetPathRoot($absolutePath)
                 $basePathDrive = [System.IO.Path]::GetPathRoot($absoluteBasePath)
                 
                 if ($pathDrive -ne $basePathDrive) {
-                    # Garder le chemin absolu si les lecteurs sont différents
+                    # Garder le chemin absolu si les lecteurs sont diffÃ©rents
                     $result = $absolutePath
                 } else {
-                    # Créer un chemin relatif
+                    # CrÃ©er un chemin relatif
                     $pathParts = $absolutePath.Substring($pathDrive.Length).Split([System.IO.Path]::DirectorySeparatorChar, [System.StringSplitOptions]::RemoveEmptyEntries)
                     $basePathParts = $absoluteBasePath.Substring($basePathDrive.Length).Split([System.IO.Path]::DirectorySeparatorChar, [System.StringSplitOptions]::RemoveEmptyEntries)
                     
-                    # Trouver le préfixe commun
+                    # Trouver le prÃ©fixe commun
                     $commonPrefixLength = 0
                     $minLength = [Math]::Min($pathParts.Length, $basePathParts.Length)
                     
@@ -155,12 +155,12 @@ function Resolve-RoadmapPath {
                     # Construire le chemin relatif
                     $relativePathParts = @()
                     
-                    # Ajouter les ".." pour remonter au préfixe commun
+                    # Ajouter les ".." pour remonter au prÃ©fixe commun
                     for ($i = 0; $i -lt ($basePathParts.Length - $commonPrefixLength); $i++) {
                         $relativePathParts += ".."
                     }
                     
-                    # Ajouter les parties du chemin après le préfixe commun
+                    # Ajouter les parties du chemin aprÃ¨s le prÃ©fixe commun
                     for ($i = $commonPrefixLength; $i -lt $pathParts.Length; $i++) {
                         $relativePathParts += $pathParts[$i]
                     }
@@ -227,7 +227,7 @@ function Resolve-RoadmapPath {
             }
             "EnvironmentPath" {
                 if ([string]::IsNullOrEmpty($EnvironmentVariable)) {
-                    throw "Le paramètre EnvironmentVariable est requis pour la résolution de type EnvironmentPath."
+                    throw "Le paramÃ¨tre EnvironmentVariable est requis pour la rÃ©solution de type EnvironmentPath."
                 } else {
                     $envPath = [System.Environment]::GetEnvironmentVariable($EnvironmentVariable)
                     
@@ -246,7 +246,7 @@ function Resolve-RoadmapPath {
             }
             "Custom" {
                 if ($null -eq $CustomResolution) {
-                    throw "Le paramètre CustomResolution est requis lorsque le type de résolution est Custom."
+                    throw "Le paramÃ¨tre CustomResolution est requis lorsque le type de rÃ©solution est Custom."
                 } else {
                     $result = & $CustomResolution $workingPath
                 }
@@ -255,14 +255,14 @@ function Resolve-RoadmapPath {
             }
         }
 
-        # Créer le chemin si demandé
+        # CrÃ©er le chemin si demandÃ©
         if ($CreateIfNotExists -and -not [string]::IsNullOrEmpty($result)) {
             if (-not (Test-Path -Path $result -ErrorAction SilentlyContinue)) {
                 if ($result.EndsWith([System.IO.Path]::DirectorySeparatorChar) -or $result.EndsWith('/') -or (-not [System.IO.Path]::HasExtension($result))) {
-                    # Créer un répertoire
+                    # CrÃ©er un rÃ©pertoire
                     New-Item -Path $result -ItemType Directory -Force:$Force -ErrorAction Stop | Out-Null
                 } else {
-                    # Créer un fichier
+                    # CrÃ©er un fichier
                     $parentPath = [System.IO.Path]::GetDirectoryName($result)
                     
                     if (-not (Test-Path -Path $parentPath -ErrorAction SilentlyContinue)) {
@@ -276,11 +276,11 @@ function Resolve-RoadmapPath {
     } catch {
         $resolutionSucceeded = $false
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "Impossible de résoudre le chemin '$Path' avec le type de résolution $ResolutionType : $_"
+            $ErrorMessage = "Impossible de rÃ©soudre le chemin '$Path' avec le type de rÃ©solution $ResolutionType : $_"
         }
     }
 
-    # Gérer l'échec de la résolution
+    # GÃ©rer l'Ã©chec de la rÃ©solution
     if (-not $resolutionSucceeded) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

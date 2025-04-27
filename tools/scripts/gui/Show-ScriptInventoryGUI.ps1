@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Interface graphique pour visualiser l'inventaire des scripts
 .DESCRIPTION
     Ce script fournit une interface graphique WPF pour visualiser l'inventaire des scripts,
-    avec des filtres interactifs et des fonctionnalités d'export.
+    avec des filtres interactifs et des fonctionnalitÃ©s d'export.
 .PARAMETER Path
-    Chemin du répertoire à analyser
+    Chemin du rÃ©pertoire Ã  analyser
 .PARAMETER Update
-    Indique s'il faut mettre à jour l'inventaire avant de l'afficher
+    Indique s'il faut mettre Ã  jour l'inventaire avant de l'afficher
 .EXAMPLE
     .\Show-ScriptInventoryGUI.ps1 -Path "C:\Scripts" -Update
 .NOTES
@@ -26,16 +26,16 @@ param(
     [switch]$Update
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\ScriptInventoryManager.psm1"
 Import-Module $modulePath -Force
 
-# Mettre à jour l'inventaire si demandé
+# Mettre Ã  jour l'inventaire si demandÃ©
 if ($Update) {
     Update-ScriptInventory -Path $Path
 }
 
-# Définir l'interface XAML
+# DÃ©finir l'interface XAML
 [xml]$xaml = @"
 <Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -79,13 +79,13 @@ if ($Update) {
         
         <!-- Barre d'outils -->
         <ToolBar Grid.Row="0">
-            <Button x:Name="btnUpdate" Content="Mettre à jour l'inventaire" />
+            <Button x:Name="btnUpdate" Content="Mettre Ã  jour l'inventaire" />
             <Separator />
             <Button x:Name="btnExportCSV" Content="Exporter en CSV" />
             <Button x:Name="btnExportJSON" Content="Exporter en JSON" />
             <Button x:Name="btnExportHTML" Content="Exporter en HTML" />
             <Separator />
-            <Button x:Name="btnAnalyzeSimilarity" Content="Analyser la similarité" />
+            <Button x:Name="btnAnalyzeSimilarity" Content="Analyser la similaritÃ©" />
             <Button x:Name="btnShowStatistics" Content="Afficher les statistiques" />
         </ToolBar>
         
@@ -121,15 +121,15 @@ if ($Update) {
                 <DataGridTextColumn Header="Langage" Binding="{Binding Language}" Width="100" />
                 <DataGridTextColumn Header="Auteur" Binding="{Binding Author}" Width="100" />
                 <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="80" />
-                <DataGridTextColumn Header="Catégorie" Binding="{Binding Category}" Width="100" />
-                <DataGridTextColumn Header="Sous-catégorie" Binding="{Binding SubCategory}" Width="120" />
+                <DataGridTextColumn Header="CatÃ©gorie" Binding="{Binding Category}" Width="100" />
+                <DataGridTextColumn Header="Sous-catÃ©gorie" Binding="{Binding SubCategory}" Width="120" />
                 <DataGridTextColumn Header="Lignes" Binding="{Binding LineCount}" Width="60" />
-                <DataGridTextColumn Header="Dernière modification" Binding="{Binding LastModified}" Width="150" />
+                <DataGridTextColumn Header="DerniÃ¨re modification" Binding="{Binding LastModified}" Width="150" />
             </DataGrid.Columns>
         </DataGrid>
         
-        <!-- Détails du script sélectionné -->
-        <GroupBox Grid.Row="3" Header="Détails du script sélectionné" Margin="5">
+        <!-- DÃ©tails du script sÃ©lectionnÃ© -->
+        <GroupBox Grid.Row="3" Header="DÃ©tails du script sÃ©lectionnÃ©" Margin="5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -163,7 +163,7 @@ if ($Update) {
         <!-- Barre de statut -->
         <StatusBar Grid.Row="4">
             <StatusBarItem>
-                <TextBlock x:Name="txtStatus" Text="Prêt" />
+                <TextBlock x:Name="txtStatus" Text="PrÃªt" />
             </StatusBarItem>
         </StatusBar>
     </Grid>
@@ -174,7 +174,7 @@ if ($Update) {
 $reader = [System.Xml.XmlNodeReader]::new($xaml)
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
-# Récupérer les éléments de l'interface
+# RÃ©cupÃ©rer les Ã©lÃ©ments de l'interface
 $btnUpdate = $window.FindName("btnUpdate")
 $btnExportCSV = $window.FindName("btnExportCSV")
 $btnExportJSON = $window.FindName("btnExportJSON")
@@ -203,7 +203,7 @@ function Load-Scripts {
     
     $txtStatus.Text = "Chargement des scripts..."
     
-    # Récupérer les scripts
+    # RÃ©cupÃ©rer les scripts
     $scripts = Get-ScriptInventory
     
     # Appliquer les filtres
@@ -219,14 +219,14 @@ function Load-Scripts {
         $scripts = $scripts | Where-Object { $_.Language -eq $languageFilter }
     }
     
-    # Mettre à jour la liste
+    # Mettre Ã  jour la liste
     $dgScripts.ItemsSource = $scripts
     
-    # Mettre à jour le statut
+    # Mettre Ã  jour le statut
     $txtStatus.Text = "Nombre de scripts: $($scripts.Count)"
 }
 
-# Fonction pour mettre à jour les détails du script sélectionné
+# Fonction pour mettre Ã  jour les dÃ©tails du script sÃ©lectionnÃ©
 function Update-ScriptDetails {
     $script = $dgScripts.SelectedItem
     
@@ -254,11 +254,11 @@ function Export-Scripts {
     $scripts = $dgScripts.ItemsSource
     
     if (-not $scripts -or $scripts.Count -eq 0) {
-        [System.Windows.MessageBox]::Show("Aucun script à exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Aucun script Ã  exporter.", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
         return
     }
     
-    # Créer le répertoire de rapports s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
     $reportsDir = Join-Path -Path $Path -ChildPath "reports"
     if (-not (Test-Path $reportsDir)) {
         New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null
@@ -281,52 +281,52 @@ function Export-Scripts {
         }
     }
     
-    $txtStatus.Text = "Rapport exporté: $outputPath"
+    $txtStatus.Text = "Rapport exportÃ©: $outputPath"
     
-    # Demander à l'utilisateur s'il veut ouvrir le rapport
-    $result = [System.Windows.MessageBox]::Show("Rapport exporté avec succès. Voulez-vous l'ouvrir?", "Export terminé", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Question)
+    # Demander Ã  l'utilisateur s'il veut ouvrir le rapport
+    $result = [System.Windows.MessageBox]::Show("Rapport exportÃ© avec succÃ¨s. Voulez-vous l'ouvrir?", "Export terminÃ©", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Question)
     
     if ($result -eq [System.Windows.MessageBoxResult]::Yes) {
         Start-Process $outputPath
     }
 }
 
-# Événement: Mise à jour de l'inventaire
+# Ã‰vÃ©nement: Mise Ã  jour de l'inventaire
 $btnUpdate.Add_Click({
-    $txtStatus.Text = "Mise à jour de l'inventaire..."
+    $txtStatus.Text = "Mise Ã  jour de l'inventaire..."
     Update-ScriptInventory -Path $Path
     Load-Scripts
-    $txtStatus.Text = "Inventaire mis à jour."
+    $txtStatus.Text = "Inventaire mis Ã  jour."
 })
 
-# Événement: Export CSV
+# Ã‰vÃ©nement: Export CSV
 $btnExportCSV.Add_Click({
     Export-Scripts -format "CSV"
 })
 
-# Événement: Export JSON
+# Ã‰vÃ©nement: Export JSON
 $btnExportJSON.Add_Click({
     Export-Scripts -format "JSON"
 })
 
-# Événement: Export HTML
+# Ã‰vÃ©nement: Export HTML
 $btnExportHTML.Add_Click({
     Export-Scripts -format "HTML"
 })
 
-# Événement: Analyser la similarité
+# Ã‰vÃ©nement: Analyser la similaritÃ©
 $btnAnalyzeSimilarity.Add_Click({
     $analyzeScript = Join-Path -Path $PSScriptRoot -ChildPath "..\analysis\Analyze-ScriptSimilarity.ps1"
     
     if (Test-Path $analyzeScript) {
-        $txtStatus.Text = "Lancement de l'analyse de similarité..."
+        $txtStatus.Text = "Lancement de l'analyse de similaritÃ©..."
         Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$analyzeScript`" -Path `"$Path`" -OutputFormat HTML"
     } else {
-        [System.Windows.MessageBox]::Show("Script d'analyse de similarité non trouvé: $analyzeScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Script d'analyse de similaritÃ© non trouvÃ©: $analyzeScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
     }
 })
 
-# Événement: Afficher les statistiques
+# Ã‰vÃ©nement: Afficher les statistiques
 $btnShowStatistics.Add_Click({
     $statisticsScript = Join-Path -Path $PSScriptRoot -ChildPath "Show-ScriptStatistics.ps1"
     
@@ -334,16 +334,16 @@ $btnShowStatistics.Add_Click({
         $txtStatus.Text = "Lancement des statistiques..."
         Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$statisticsScript`" -Path `"$Path`""
     } else {
-        [System.Windows.MessageBox]::Show("Script de statistiques non trouvé: $statisticsScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
+        [System.Windows.MessageBox]::Show("Script de statistiques non trouvÃ©: $statisticsScript", "Erreur", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error)
     }
 })
 
-# Événement: Appliquer les filtres
+# Ã‰vÃ©nement: Appliquer les filtres
 $btnApplyFilters.Add_Click({
     Load-Scripts -nameFilter $txtFilterName.Text -authorFilter $txtFilterAuthor.Text -languageFilter $cmbFilterLanguage.SelectedItem
 })
 
-# Événement: Sélection d'un script
+# Ã‰vÃ©nement: SÃ©lection d'un script
 $dgScripts.Add_SelectionChanged({
     Update-ScriptDetails
 })
@@ -364,5 +364,5 @@ foreach ($language in $languages) {
 # Charger les scripts
 Load-Scripts
 
-# Afficher la fenêtre
+# Afficher la fenÃªtre
 $window.ShowDialog() | Out-Null

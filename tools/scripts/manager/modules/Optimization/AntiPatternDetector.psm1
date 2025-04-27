@@ -1,5 +1,5 @@
-# Module de détection des anti-patterns pour le Script Manager
-# Ce module détecte les anti-patterns dans les scripts
+﻿# Module de dÃ©tection des anti-patterns pour le Script Manager
+# Ce module dÃ©tecte les anti-patterns dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, anti-patterns, scripts
@@ -7,13 +7,13 @@
 function Find-CodeAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns dans les scripts
+        DÃ©tecte les anti-patterns dans les scripts
     .DESCRIPTION
-        Analyse les scripts pour détecter les anti-patterns courants
+        Analyse les scripts pour dÃ©tecter les anti-patterns courants
     .PARAMETER Analysis
         Objet d'analyse des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de la détection
+        Chemin oÃ¹ enregistrer les rÃ©sultats de la dÃ©tection
     .EXAMPLE
         Find-CodeAntiPatterns -Analysis $analysis -OutputPath "optimization"
     #>
@@ -26,15 +26,15 @@ function Find-CodeAntiPatterns {
         [string]$OutputPath
     )
     
-    # Créer le dossier des anti-patterns
+    # CrÃ©er le dossier des anti-patterns
     $AntiPatternsPath = Join-Path -Path $OutputPath -ChildPath "anti-patterns"
     if (-not (Test-Path -Path $AntiPatternsPath)) {
         New-Item -ItemType Directory -Path $AntiPatternsPath -Force | Out-Null
     }
     
-    Write-Host "Détection des anti-patterns..." -ForegroundColor Cyan
+    Write-Host "DÃ©tection des anti-patterns..." -ForegroundColor Cyan
     
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $ScriptResults = @()
     
     # Traiter chaque script
@@ -44,19 +44,19 @@ function Find-CodeAntiPatterns {
     foreach ($Script in $Analysis.Scripts) {
         $Counter++
         $Progress = [math]::Round(($Counter / $Total) * 100)
-        Write-Progress -Activity "Détection des anti-patterns" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "DÃ©tection des anti-patterns" -Status "$Counter / $Total ($Progress%)" -PercentComplete $Progress
         
-        # Détecter les anti-patterns selon le type de script
+        # DÃ©tecter les anti-patterns selon le type de script
         $Patterns = @()
         
         # Lire le contenu du script
         $Content = Get-Content -Path $Script.Path -Raw -ErrorAction SilentlyContinue
         
         if ($null -ne $Content) {
-            # Détecter les anti-patterns communs
+            # DÃ©tecter les anti-patterns communs
             $Patterns += Find-CommonAntiPatterns -Script $Script -Content $Content
             
-            # Détecter les anti-patterns spécifiques au type de script
+            # DÃ©tecter les anti-patterns spÃ©cifiques au type de script
             switch ($Script.Type) {
                 "PowerShell" {
                     $Patterns += Find-PowerShellAntiPatterns -Script $Script -Content $Content
@@ -73,7 +73,7 @@ function Find-CodeAntiPatterns {
             }
         }
         
-        # Ajouter les résultats au tableau
+        # Ajouter les rÃ©sultats au tableau
         if ($Patterns.Count -gt 0) {
             $ScriptResults += [PSCustomObject]@{
                 Path = $Script.Path
@@ -85,9 +85,9 @@ function Find-CodeAntiPatterns {
         }
     }
     
-    Write-Progress -Activity "Détection des anti-patterns" -Completed
+    Write-Progress -Activity "DÃ©tection des anti-patterns" -Completed
     
-    # Enregistrer les résultats dans un fichier
+    # Enregistrer les rÃ©sultats dans un fichier
     $AntiPatternsFilePath = Join-Path -Path $AntiPatternsPath -ChildPath "anti_patterns.json"
     $AntiPatternsObject = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -99,9 +99,9 @@ function Find-CodeAntiPatterns {
     
     $AntiPatternsObject | ConvertTo-Json -Depth 10 | Set-Content -Path $AntiPatternsFilePath
     
-    Write-Host "  Anti-patterns détectés dans $($ScriptResults.Count) scripts" -ForegroundColor Green
+    Write-Host "  Anti-patterns dÃ©tectÃ©s dans $($ScriptResults.Count) scripts" -ForegroundColor Green
     Write-Host "  Total des anti-patterns: $($AntiPatternsObject.TotalAntiPatterns)" -ForegroundColor Green
-    Write-Host "  Résultats enregistrés dans: $AntiPatternsFilePath" -ForegroundColor Green
+    Write-Host "  RÃ©sultats enregistrÃ©s dans: $AntiPatternsFilePath" -ForegroundColor Green
     
     return $AntiPatternsObject
 }

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour le script Start-RealTimeAnalysis.ps1.
+    Tests unitaires simplifiÃ©s pour le script Start-RealTimeAnalysis.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement
     du script Start-RealTimeAnalysis.ps1.
 
 .EXAMPLE
@@ -19,18 +19,18 @@
 [CmdletBinding()]
 param()
 
-# Fonction pour créer un environnement de test
+# Fonction pour crÃ©er un environnement de test
 function Initialize-TestEnvironment {
     param(
         [string]$TestDir = "$env:TEMP\RealTimeAnalysisTest_$(Get-Random)"
     )
     
-    # Créer le répertoire de test
+    # CrÃ©er le rÃ©pertoire de test
     if (-not (Test-Path -Path $TestDir)) {
         New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
     }
     
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $testFiles = @(
         @{
             Path = "PowerShell\test1.ps1"
@@ -64,7 +64,7 @@ def test_function(param1):
     # Erreur: Utilisation de eval()
     result = eval("2 + 2")
     
-    # Erreur: Exception générique
+    # Erreur: Exception gÃ©nÃ©rique
     try:
         x = 1 / 0
     except:
@@ -119,7 +119,7 @@ function Test-FileAnalysis {
                 [PSCustomObject]@{
                     Line = 8
                     Column = 5
-                    Message = "Utilisation de Invoke-Expression peut présenter des risques de sécurité"
+                    Message = "Utilisation de Invoke-Expression peut prÃ©senter des risques de sÃ©curitÃ©"
                     Severity = "Error"
                 }
             )
@@ -131,13 +131,13 @@ function Test-FileAnalysis {
             [PSCustomObject]@{
                 Line = 3
                 Column = 13
-                Message = "Utilisation de eval() peut présenter des risques de sécurité"
+                Message = "Utilisation de eval() peut prÃ©senter des risques de sÃ©curitÃ©"
                 Severity = "Error"
             },
             [PSCustomObject]@{
                 Line = 6
                 Column = 5
-                Message = "Exception générique détectée"
+                Message = "Exception gÃ©nÃ©rique dÃ©tectÃ©e"
                 Severity = "Warning"
             }
         )
@@ -146,7 +146,7 @@ function Test-FileAnalysis {
     }
 }
 
-# Fonction pour simuler un événement de modification de fichier
+# Fonction pour simuler un Ã©vÃ©nement de modification de fichier
 function Test-FileChangeEvent {
     param(
         [string]$FilePath,
@@ -156,7 +156,7 @@ function Test-FileChangeEvent {
     # Simuler l'analyse d'un fichier
     $issues = Test-FileAnalysis -FilePath $FilePath
     
-    # Créer un objet résultat
+    # CrÃ©er un objet rÃ©sultat
     $result = [PSCustomObject]@{
         FilePath = $FilePath
         Issues = $issues
@@ -165,13 +165,13 @@ function Test-FileChangeEvent {
         Error = $null
     }
     
-    # Créer une notification si des problèmes sont détectés
+    # CrÃ©er une notification si des problÃ¨mes sont dÃ©tectÃ©s
     $notification = $null
     
     if ($issues.Count -gt 0) {
-        $message = "Détecté $($issues.Count) problème(s) dans le fichier $FilePath"
+        $message = "DÃ©tectÃ© $($issues.Count) problÃ¨me(s) dans le fichier $FilePath"
         $notification = [PSCustomObject]@{
-            Title = "Analyse en temps réel"
+            Title = "Analyse en temps rÃ©el"
             Message = $message
             Type = $NotificationType
         }
@@ -187,105 +187,105 @@ function Test-FileChangeEvent {
 $testDir = Initialize-TestEnvironment
 
 try {
-    Write-Host "Exécution des tests unitaires simplifiés pour Start-RealTimeAnalysis.ps1" -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des tests unitaires simplifiÃ©s pour Start-RealTimeAnalysis.ps1" -ForegroundColor Cyan
     
-    # Test 1: Détecte correctement les problèmes dans un fichier PowerShell
-    Write-Host "Test 1: Détecte correctement les problèmes dans un fichier PowerShell" -ForegroundColor Yellow
+    # Test 1: DÃ©tecte correctement les problÃ¨mes dans un fichier PowerShell
+    Write-Host "Test 1: DÃ©tecte correctement les problÃ¨mes dans un fichier PowerShell" -ForegroundColor Yellow
     
-    # Tester l'analyse d'un fichier PowerShell avec des problèmes
+    # Tester l'analyse d'un fichier PowerShell avec des problÃ¨mes
     $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
     $issues = Test-FileAnalysis -FilePath $filePath
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($issues -and $issues.Count -eq 2 -and $issues[0].Message -match "alias" -and $issues[1].Message -match "Invoke-Expression") {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: 2 problèmes (alias, Invoke-Expression)" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($issues.Count) problèmes" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: 2 problÃ¨mes (alias, Invoke-Expression)" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($issues.Count) problÃ¨mes" -ForegroundColor Red
     }
     
-    # Test 2: Ne détecte pas de problèmes dans un fichier PowerShell valide
-    Write-Host "Test 2: Ne détecte pas de problèmes dans un fichier PowerShell valide" -ForegroundColor Yellow
+    # Test 2: Ne dÃ©tecte pas de problÃ¨mes dans un fichier PowerShell valide
+    Write-Host "Test 2: Ne dÃ©tecte pas de problÃ¨mes dans un fichier PowerShell valide" -ForegroundColor Yellow
     
     # Tester l'analyse d'un fichier PowerShell valide
     $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test2.ps1"
     $issues = Test-FileAnalysis -FilePath $filePath
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if (-not $issues -or $issues.Count -eq 0) {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: 0 problème" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($issues.Count) problèmes" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: 0 problÃ¨me" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($issues.Count) problÃ¨mes" -ForegroundColor Red
     }
     
-    # Test 3: Détecte correctement les problèmes dans un fichier Python
-    Write-Host "Test 3: Détecte correctement les problèmes dans un fichier Python" -ForegroundColor Yellow
+    # Test 3: DÃ©tecte correctement les problÃ¨mes dans un fichier Python
+    Write-Host "Test 3: DÃ©tecte correctement les problÃ¨mes dans un fichier Python" -ForegroundColor Yellow
     
-    # Tester l'analyse d'un fichier Python avec des problèmes
+    # Tester l'analyse d'un fichier Python avec des problÃ¨mes
     $filePath = Join-Path -Path $testDir -ChildPath "Python\test.py"
     $issues = Test-FileAnalysis -FilePath $filePath
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($issues -and $issues.Count -eq 2 -and $issues[0].Message -match "eval" -and $issues[1].Message -match "Exception") {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: 2 problèmes (eval, Exception)" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($issues.Count) problèmes" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: 2 problÃ¨mes (eval, Exception)" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($issues.Count) problÃ¨mes" -ForegroundColor Red
     }
     
-    # Test 4: Génère une notification pour un fichier avec des problèmes
-    Write-Host "Test 4: Génère une notification pour un fichier avec des problèmes" -ForegroundColor Yellow
+    # Test 4: GÃ©nÃ¨re une notification pour un fichier avec des problÃ¨mes
+    Write-Host "Test 4: GÃ©nÃ¨re une notification pour un fichier avec des problÃ¨mes" -ForegroundColor Yellow
     
-    # Tester un événement de modification de fichier pour un fichier avec des problèmes
+    # Tester un Ã©vÃ©nement de modification de fichier pour un fichier avec des problÃ¨mes
     $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
     $result = Test-FileChangeEvent -FilePath $filePath
     
-    # Vérifier les résultats
-    if ($result -and $result.Result -and $result.Result.Issues -and $result.Result.Issues.Count -eq 2 -and $result.Notification -and $result.Notification.Title -eq "Analyse en temps réel" -and $result.Notification.Message -match "Détecté 2 problème") {
-        Write-Host "  Test réussi" -ForegroundColor Green
+    # VÃ©rifier les rÃ©sultats
+    if ($result -and $result.Result -and $result.Result.Issues -and $result.Result.Issues.Count -eq 2 -and $result.Notification -and $result.Notification.Title -eq "Analyse en temps rÃ©el" -and $result.Notification.Message -match "DÃ©tectÃ© 2 problÃ¨me") {
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: Notification pour 2 problèmes" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($result.Notification.Message)" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: Notification pour 2 problÃ¨mes" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($result.Notification.Message)" -ForegroundColor Red
     }
     
-    # Test 5: Ne génère pas de notification pour un fichier sans problèmes
-    Write-Host "Test 5: Ne génère pas de notification pour un fichier sans problèmes" -ForegroundColor Yellow
+    # Test 5: Ne gÃ©nÃ¨re pas de notification pour un fichier sans problÃ¨mes
+    Write-Host "Test 5: Ne gÃ©nÃ¨re pas de notification pour un fichier sans problÃ¨mes" -ForegroundColor Yellow
     
-    # Tester un événement de modification de fichier pour un fichier sans problèmes
+    # Tester un Ã©vÃ©nement de modification de fichier pour un fichier sans problÃ¨mes
     $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test2.ps1"
     $result = Test-FileChangeEvent -FilePath $filePath
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($result -and $result.Result -and (-not $result.Result.Issues -or $result.Result.Issues.Count -eq 0) -and -not $result.Notification) {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: Pas de notification" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: $($result.Notification)" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: Pas de notification" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: $($result.Notification)" -ForegroundColor Red
     }
     
     # Test 6: Utilise correctement le type de notification
     Write-Host "Test 6: Utilise correctement le type de notification" -ForegroundColor Yellow
     
-    # Tester un événement de modification de fichier avec un type de notification spécifique
+    # Tester un Ã©vÃ©nement de modification de fichier avec un type de notification spÃ©cifique
     $filePath = Join-Path -Path $testDir -ChildPath "PowerShell\test1.ps1"
     $result = Test-FileChangeEvent -FilePath $filePath -NotificationType "Popup"
     
-    # Vérifier les résultats
+    # VÃ©rifier les rÃ©sultats
     if ($result -and $result.Notification -and $result.Notification.Type -eq "Popup") {
-        Write-Host "  Test réussi" -ForegroundColor Green
+        Write-Host "  Test rÃ©ussi" -ForegroundColor Green
     } else {
-        Write-Host "  Test échoué" -ForegroundColor Red
-        Write-Host "  Résultat attendu: Type de notification = Popup" -ForegroundColor Red
-        Write-Host "  Résultat obtenu: Type de notification = $($result.Notification.Type)" -ForegroundColor Red
+        Write-Host "  Test Ã©chouÃ©" -ForegroundColor Red
+        Write-Host "  RÃ©sultat attendu: Type de notification = Popup" -ForegroundColor Red
+        Write-Host "  RÃ©sultat obtenu: Type de notification = $($result.Notification.Type)" -ForegroundColor Red
     }
     
-    Write-Host "Tests terminés" -ForegroundColor Cyan
+    Write-Host "Tests terminÃ©s" -ForegroundColor Cyan
 } finally {
     # Nettoyer l'environnement de test
     Remove-TestEnvironment -TestDir $testDir

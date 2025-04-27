@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions de rotation des fichiers de journal pour le module RoadmapParser.
 
 .DESCRIPTION
-    Ce fichier contient des fonctions pour gérer la rotation des fichiers de journal
+    Ce fichier contient des fonctions pour gÃ©rer la rotation des fichiers de journal
     dans le module RoadmapParser, permettant de limiter la taille des fichiers et
     de conserver un historique.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-26
+    Date de crÃ©ation: 2025-04-26
 #>
 
 <#
@@ -19,22 +19,22 @@
 
 .DESCRIPTION
     Cette fonction effectue la rotation d'un fichier de journal en renommant les fichiers existants
-    et en créant un nouveau fichier vide.
+    et en crÃ©ant un nouveau fichier vide.
 
 .PARAMETER LogFile
-    Le chemin du fichier de journal à faire tourner.
+    Le chemin du fichier de journal Ã  faire tourner.
 
 .PARAMETER MaxLogFiles
-    Le nombre maximum de fichiers de journal à conserver.
+    Le nombre maximum de fichiers de journal Ã  conserver.
 
 .PARAMETER Compress
-    Indique si les anciens fichiers de journal doivent être compressés.
+    Indique si les anciens fichiers de journal doivent Ãªtre compressÃ©s.
 
 .EXAMPLE
     Invoke-LogRotation -LogFile "C:\Logs\roadmap-parser.log" -MaxLogFiles 5
 
 .NOTES
-    Cette fonction est appelée automatiquement par les fonctions de journalisation
+    Cette fonction est appelÃ©e automatiquement par les fonctions de journalisation
     lorsque la taille maximale d'un fichier est atteinte.
 #>
 function Invoke-LogRotation {
@@ -51,19 +51,19 @@ function Invoke-LogRotation {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $LogFile)) {
             Write-Warning "Le fichier de journal n'existe pas: $LogFile"
             return $false
         }
 
-        # Obtenir le répertoire et le nom de base du fichier
+        # Obtenir le rÃ©pertoire et le nom de base du fichier
         $logDir = Split-Path -Path $LogFile -Parent
         $logBaseName = Split-Path -Path $LogFile -Leaf
         $logBaseNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($logBaseName)
         $logExt = [System.IO.Path]::GetExtension($logBaseName)
 
-        # Supprimer le fichier le plus ancien si nécessaire
+        # Supprimer le fichier le plus ancien si nÃ©cessaire
         $oldestLogFile = Join-Path -Path $logDir -ChildPath "$logBaseNameWithoutExt.$MaxLogFiles$logExt"
         if (Test-Path -Path $oldestLogFile) {
             Remove-Item -Path $oldestLogFile -Force
@@ -76,7 +76,7 @@ function Invoke-LogRotation {
 
             if (Test-Path -Path $currentLogFile) {
                 if ($Compress -and $i -lt ($MaxLogFiles - 1)) {
-                    # Compresser le fichier si demandé
+                    # Compresser le fichier si demandÃ©
                     $compressedFile = "$nextLogFile.zip"
                     Compress-Archive -Path $currentLogFile -DestinationPath $compressedFile -Force
                     Remove-Item -Path $currentLogFile -Force
@@ -91,8 +91,8 @@ function Invoke-LogRotation {
         $newLogFile = Join-Path -Path $logDir -ChildPath "$logBaseNameWithoutExt.1$logExt"
         Move-Item -Path $LogFile -Destination $newLogFile -Force
 
-        # Créer un nouveau fichier vide
-        $header = "=== Nouveau fichier de journal créé après rotation le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
+        # CrÃ©er un nouveau fichier vide
+        $header = "=== Nouveau fichier de journal crÃ©Ã© aprÃ¨s rotation le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
         Set-Content -Path $LogFile -Value $header -Encoding UTF8
 
         return $true
@@ -108,22 +108,22 @@ function Invoke-LogRotation {
     Nettoie les anciens fichiers de journal.
 
 .DESCRIPTION
-    Cette fonction supprime les fichiers de journal plus anciens qu'une date spécifiée.
+    Cette fonction supprime les fichiers de journal plus anciens qu'une date spÃ©cifiÃ©e.
 
 .PARAMETER LogDirectory
-    Le répertoire contenant les fichiers de journal.
+    Le rÃ©pertoire contenant les fichiers de journal.
 
 .PARAMETER Pattern
-    Le modèle de nom de fichier à rechercher.
+    Le modÃ¨le de nom de fichier Ã  rechercher.
 
 .PARAMETER MaxAgeDays
-    L'âge maximum des fichiers en jours.
+    L'Ã¢ge maximum des fichiers en jours.
 
 .EXAMPLE
     Clear-OldLogFiles -LogDirectory "C:\Logs" -Pattern "roadmap-parser*.log" -MaxAgeDays 30
 
 .NOTES
-    Cette fonction est utile pour les tâches de maintenance périodiques.
+    Cette fonction est utile pour les tÃ¢ches de maintenance pÃ©riodiques.
 #>
 function Clear-OldLogFiles {
     [CmdletBinding()]
@@ -139,9 +139,9 @@ function Clear-OldLogFiles {
     )
 
     try {
-        # Vérifier que le répertoire existe
+        # VÃ©rifier que le rÃ©pertoire existe
         if (-not (Test-Path -Path $LogDirectory -PathType Container)) {
-            Write-Warning "Le répertoire de journaux n'existe pas: $LogDirectory"
+            Write-Warning "Le rÃ©pertoire de journaux n'existe pas: $LogDirectory"
             return $false
         }
 
@@ -152,16 +152,16 @@ function Clear-OldLogFiles {
         $oldFiles = Get-ChildItem -Path $LogDirectory -Filter $Pattern | Where-Object { $_.LastWriteTime -lt $cutoffDate }
 
         if ($oldFiles.Count -eq 0) {
-            Write-Verbose "Aucun fichier de journal plus ancien que $MaxAgeDays jours trouvé."
+            Write-Verbose "Aucun fichier de journal plus ancien que $MaxAgeDays jours trouvÃ©."
             return $true
         }
 
         foreach ($file in $oldFiles) {
             Remove-Item -Path $file.FullName -Force
-            Write-Verbose "Fichier de journal supprimé: $($file.FullName)"
+            Write-Verbose "Fichier de journal supprimÃ©: $($file.FullName)"
         }
 
-        Write-Verbose "$($oldFiles.Count) fichiers de journal supprimés."
+        Write-Verbose "$($oldFiles.Count) fichiers de journal supprimÃ©s."
         return $true
     }
     catch {
@@ -175,22 +175,22 @@ function Clear-OldLogFiles {
     Compresse les fichiers de journal.
 
 .DESCRIPTION
-    Cette fonction compresse les fichiers de journal pour économiser de l'espace disque.
+    Cette fonction compresse les fichiers de journal pour Ã©conomiser de l'espace disque.
 
 .PARAMETER LogFile
-    Le chemin du fichier de journal à compresser.
+    Le chemin du fichier de journal Ã  compresser.
 
 .PARAMETER ArchiveDirectory
-    Le répertoire où stocker les archives.
+    Le rÃ©pertoire oÃ¹ stocker les archives.
 
 .PARAMETER DeleteOriginal
-    Indique si le fichier original doit être supprimé après compression.
+    Indique si le fichier original doit Ãªtre supprimÃ© aprÃ¨s compression.
 
 .EXAMPLE
     Compress-LogFile -LogFile "C:\Logs\roadmap-parser.1.log" -ArchiveDirectory "C:\Logs\Archives"
 
 .NOTES
-    Cette fonction nécessite PowerShell 5.0 ou supérieur pour utiliser Compress-Archive.
+    Cette fonction nÃ©cessite PowerShell 5.0 ou supÃ©rieur pour utiliser Compress-Archive.
 #>
 function Compress-LogFile {
     [CmdletBinding()]
@@ -206,23 +206,23 @@ function Compress-LogFile {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $LogFile)) {
             Write-Warning "Le fichier de journal n'existe pas: $LogFile"
             return $false
         }
 
-        # Déterminer le répertoire d'archive
+        # DÃ©terminer le rÃ©pertoire d'archive
         if (-not $ArchiveDirectory) {
             $ArchiveDirectory = Split-Path -Path $LogFile -Parent
         }
 
-        # Créer le répertoire d'archive si nécessaire
+        # CrÃ©er le rÃ©pertoire d'archive si nÃ©cessaire
         if (-not (Test-Path -Path $ArchiveDirectory -PathType Container)) {
             New-Item -Path $ArchiveDirectory -ItemType Directory -Force | Out-Null
         }
 
-        # Générer le nom de l'archive
+        # GÃ©nÃ©rer le nom de l'archive
         $logBaseName = Split-Path -Path $LogFile -Leaf
         $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
         $archiveFile = Join-Path -Path $ArchiveDirectory -ChildPath "$logBaseName-$timestamp.zip"
@@ -230,12 +230,12 @@ function Compress-LogFile {
         # Compresser le fichier
         Compress-Archive -Path $LogFile -DestinationPath $archiveFile -Force
 
-        # Supprimer l'original si demandé
+        # Supprimer l'original si demandÃ©
         if ($DeleteOriginal) {
             Remove-Item -Path $LogFile -Force
         }
 
-        Write-Verbose "Fichier de journal compressé: $LogFile -> $archiveFile"
+        Write-Verbose "Fichier de journal compressÃ©: $LogFile -> $archiveFile"
         return $true
     }
     catch {
@@ -244,5 +244,5 @@ function Compress-LogFile {
     }
 }
 
-# Note: Les fonctions sont exportées lors de l'importation du module
+# Note: Les fonctions sont exportÃ©es lors de l'importation du module
 # Invoke-LogRotation, Clear-OldLogFiles, Compress-LogFile

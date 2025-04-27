@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour valider la documentation de la propriété Source de System.Exception.
+    Tests pour valider la documentation de la propriÃ©tÃ© Source de System.Exception.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider les exemples et les informations
-    fournies dans la documentation de la propriété Source de System.Exception.
+    fournies dans la documentation de la propriÃ©tÃ© Source de System.Exception.
 
 .NOTES
     Version:        1.0
@@ -14,20 +14,20 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Tests de la propriété Source de System.Exception" {
-    Context "Caractéristiques de base de la propriété Source" {
-        It "Devrait être modifiable" {
+# DÃ©finir les tests
+Describe "Tests de la propriÃ©tÃ© Source de System.Exception" {
+    Context "CaractÃ©ristiques de base de la propriÃ©tÃ© Source" {
+        It "Devrait Ãªtre modifiable" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Source = "SourceTest"
             $exception.Source | Should -Be "SourceTest"
         }
         
-        It "Devrait être initialisée automatiquement dans certains cas" {
+        It "Devrait Ãªtre initialisÃ©e automatiquement dans certains cas" {
             try {
                 [int]::Parse("abc")
             }
@@ -37,17 +37,17 @@ Describe "Tests de la propriété Source de System.Exception" {
             }
         }
         
-        It "Devrait être de type String" {
+        It "Devrait Ãªtre de type String" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Source = "SourceTest"
             $exception.Source | Should -BeOfType [string]
         }
         
-        It "Devrait être préservée lors de la sérialisation/désérialisation" {
+        It "Devrait Ãªtre prÃ©servÃ©e lors de la sÃ©rialisation/dÃ©sÃ©rialisation" {
             $exception = [System.Exception]::new("Message de test")
             $exception.Source = "SourceTest"
             
-            # Sérialiser et désérialiser l'exception
+            # SÃ©rialiser et dÃ©sÃ©rialiser l'exception
             $formatter = [System.Runtime.Serialization.Formatters.Binary.BinaryFormatter]::new()
             $stream = [System.IO.MemoryStream]::new()
             
@@ -60,7 +60,7 @@ Describe "Tests de la propriété Source de System.Exception" {
     }
     
     Context "Exemples de la documentation" {
-        It "Exemple 1: Devrait accéder à la propriété Source d'une exception" {
+        It "Exemple 1: Devrait accÃ©der Ã  la propriÃ©tÃ© Source d'une exception" {
             $source = $null
             
             try {
@@ -74,13 +74,13 @@ Describe "Tests de la propriété Source de System.Exception" {
             $source | Should -Match "System"
         }
         
-        It "Exemple 2: Devrait définir manuellement la propriété Source" {
+        It "Exemple 2: Devrait dÃ©finir manuellement la propriÃ©tÃ© Source" {
             $exceptionType = $null
             $message = $null
             $source = $null
             
             try {
-                $exception = [System.InvalidOperationException]::new("Opération non valide")
+                $exception = [System.InvalidOperationException]::new("OpÃ©ration non valide")
                 $exception.Source = "MonModule.MaFonction"
                 throw $exception
             }
@@ -91,13 +91,13 @@ Describe "Tests de la propriété Source de System.Exception" {
             }
             
             $exceptionType | Should -Be "System.InvalidOperationException"
-            $message | Should -Be "Opération non valide"
+            $message | Should -Be "OpÃ©ration non valide"
             $source | Should -Be "MonModule.MaFonction"
         }
     }
     
-    Context "Différence entre Source et autres propriétés d'identification" {
-        It "Source devrait être différente de StackTrace" {
+    Context "DiffÃ©rence entre Source et autres propriÃ©tÃ©s d'identification" {
+        It "Source devrait Ãªtre diffÃ©rente de StackTrace" {
             try {
                 [int]::Parse("abc")
             }
@@ -108,7 +108,7 @@ Describe "Tests de la propriété Source de System.Exception" {
             }
         }
         
-        It "Source devrait être différente de TargetSite" {
+        It "Source devrait Ãªtre diffÃ©rente de TargetSite" {
             try {
                 [int]::Parse("abc")
             }
@@ -123,11 +123,11 @@ Describe "Tests de la propriété Source de System.Exception" {
     Context "Bonnes pratiques" {
         It "Devrait permettre d'utiliser un nommage significatif" {
             $exception = [System.Exception]::new("Message de test")
-            $exception.Source = "Namespace.Classe.Méthode"
-            $exception.Source | Should -Be "Namespace.Classe.Méthode"
+            $exception.Source = "Namespace.Classe.MÃ©thode"
+            $exception.Source | Should -Be "Namespace.Classe.MÃ©thode"
         }
         
-        It "Devrait préserver la source lors de la capture et relance" {
+        It "Devrait prÃ©server la source lors de la capture et relance" {
             $originalSource = $null
             $preservedSource = $null
             
@@ -140,9 +140,9 @@ Describe "Tests de la propriété Source de System.Exception" {
                 catch {
                     $originalSource = $_.Exception.Source
                     
-                    # Créer une nouvelle exception qui préserve la source originale
+                    # CrÃ©er une nouvelle exception qui prÃ©serve la source originale
                     $newException = [System.InvalidOperationException]::new("Nouvelle erreur", $_.Exception)
-                    $newException.Source = $_.Exception.Source + ".Propagée"
+                    $newException.Source = $_.Exception.Source + ".PropagÃ©e"
                     throw $newException
                 }
             }
@@ -151,12 +151,12 @@ Describe "Tests de la propriété Source de System.Exception" {
             }
             
             $originalSource | Should -Be "SourceOriginale"
-            $preservedSource | Should -Be "SourceOriginale.Propagée"
+            $preservedSource | Should -Be "SourceOriginale.PropagÃ©e"
         }
     }
     
     Context "Utilisation dans PowerShell" {
-        It "Devrait être accessible via l'objet ErrorRecord dans un bloc catch" {
+        It "Devrait Ãªtre accessible via l'objet ErrorRecord dans un bloc catch" {
             $source = $null
             
             try {
@@ -169,7 +169,7 @@ Describe "Tests de la propriété Source de System.Exception" {
             $source | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait pouvoir être utilisée avec d'autres propriétés PowerShell" {
+        It "Devrait pouvoir Ãªtre utilisÃ©e avec d'autres propriÃ©tÃ©s PowerShell" {
             $source = $null
             $category = $null
             $command = $null
@@ -192,5 +192,5 @@ Describe "Tests de la propriété Source de System.Exception" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

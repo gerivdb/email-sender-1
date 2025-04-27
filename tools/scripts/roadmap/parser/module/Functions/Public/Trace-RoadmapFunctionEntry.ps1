@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
-    Trace l'entrée dans une fonction.
+    Trace l'entrÃ©e dans une fonction.
 
 .DESCRIPTION
-    La fonction Trace-RoadmapFunctionEntry trace l'entrée dans une fonction.
-    Elle enregistre le nom de la fonction et les paramètres d'entrée.
+    La fonction Trace-RoadmapFunctionEntry trace l'entrÃ©e dans une fonction.
+    Elle enregistre le nom de la fonction et les paramÃ¨tres d'entrÃ©e.
 
 .PARAMETER FunctionName
     Le nom de la fonction.
-    Par défaut, c'est le nom de la fonction appelante.
+    Par dÃ©faut, c'est le nom de la fonction appelante.
 
 .PARAMETER Parameters
-    Les paramètres de la fonction.
-    Par défaut, ce sont les paramètres liés de la fonction appelante.
+    Les paramÃ¨tres de la fonction.
+    Par dÃ©faut, ce sont les paramÃ¨tres liÃ©s de la fonction appelante.
 
 .PARAMETER CallerName
     Le nom de l'appelant.
-    Par défaut, c'est déterminé automatiquement.
+    Par dÃ©faut, c'est dÃ©terminÃ© automatiquement.
 
 .PARAMETER IncreaseDepth
-    Indique si la profondeur doit être augmentée après la trace.
-    Par défaut, c'est $true.
+    Indique si la profondeur doit Ãªtre augmentÃ©e aprÃ¨s la trace.
+    Par dÃ©faut, c'est $true.
 
 .EXAMPLE
     Trace-RoadmapFunctionEntry
-    Trace l'entrée dans la fonction appelante.
+    Trace l'entrÃ©e dans la fonction appelante.
 
 .EXAMPLE
     Trace-RoadmapFunctionEntry -FunctionName "Ma-Fonction" -Parameters $PSBoundParameters
-    Trace l'entrée dans la fonction "Ma-Fonction" avec les paramètres spécifiés.
+    Trace l'entrÃ©e dans la fonction "Ma-Fonction" avec les paramÃ¨tres spÃ©cifiÃ©s.
 
 .OUTPUTS
     [void]
@@ -36,7 +36,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-22
+    Date de crÃ©ation: 2023-07-22
 #>
 function Trace-RoadmapFunctionEntry {
     [CmdletBinding()]
@@ -62,9 +62,9 @@ function Trace-RoadmapFunctionEntry {
     $privatePath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Logging"
     $tracingFunctionsPath = Join-Path -Path $privatePath -ChildPath "TracingFunctions.ps1"
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $tracingFunctionsPath)) {
-        throw "Le fichier TracingFunctions.ps1 est introuvable à l'emplacement : $tracingFunctionsPath"
+        throw "Le fichier TracingFunctions.ps1 est introuvable Ã  l'emplacement : $tracingFunctionsPath"
     }
 
     # Importer les fonctions

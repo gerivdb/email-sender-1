@@ -1,4 +1,4 @@
-# Format-TextToRoadmap.ps1
+﻿# Format-TextToRoadmap.ps1
 # Script simple pour reformater du texte en format roadmap
 
 param (
@@ -15,39 +15,39 @@ param (
     [string]$TimeEstimate = "3-5 jours"
 )
 
-# Fonction pour détecter le niveau d'indentation d'une ligne
+# Fonction pour dÃ©tecter le niveau d'indentation d'une ligne
 function Get-IndentationLevel {
     param (
         [string]$Line
     )
 
-    # Compter le nombre d'espaces ou de tabulations au début de la ligne
+    # Compter le nombre d'espaces ou de tabulations au dÃ©but de la ligne
     if ($Line -match "^(\s*)(.*)$") {
         $indent = $matches[1]
         $content = $matches[2]
 
-        # Si la ligne commence par un tiret, c'est déjà une liste
+        # Si la ligne commence par un tiret, c'est dÃ©jÃ  une liste
         if ($content -match "^[-*]") {
             return $indent.Length
         }
 
-        # Sinon, on considère que c'est un niveau d'indentation basé sur les espaces
+        # Sinon, on considÃ¨re que c'est un niveau d'indentation basÃ© sur les espaces
         return [Math]::Floor($indent.Length / 2)
     }
 
     return 0
 }
 
-# Fonction pour détecter si une ligne est un titre de phase
+# Fonction pour dÃ©tecter si une ligne est un titre de phase
 function Test-PhaseTitle {
     param (
         [string]$Line
     )
 
-    # Un titre de phase est généralement en majuscules, contient "Phase" ou est numéroté
+    # Un titre de phase est gÃ©nÃ©ralement en majuscules, contient "Phase" ou est numÃ©rotÃ©
     # Ou commence par un mot en majuscules suivi de ":" (ex: "ANALYSE:")
     # Ou commence par un mot en majuscules suivi d'un chiffre (ex: "PHASE 1")
-    # Ou est entièrement en majuscules
+    # Ou est entiÃ¨rement en majuscules
     # Ou commence par un symbole de titre (#, ##, ###)
     return $Line -match "^(PHASE|Phase|\d+\.|\*\*|#+ )" -or
            $Line -match "^[A-Z][A-Z]+:" -or
@@ -71,28 +71,28 @@ function Format-LineByIndentation {
         return ""
     }
 
-    # Variables pour les métadonnées
+    # Variables pour les mÃ©tadonnÃ©es
     $isPriority = $false
     $timeEstimate = ""
 
-    # Détecter si la tâche est prioritaire (contient "prioritaire", "urgent", "important", "!" ou "*")
+    # DÃ©tecter si la tÃ¢che est prioritaire (contient "prioritaire", "urgent", "important", "!" ou "*")
     if ($Line -match "(prioritaire|urgent|important|!|\*)" -and -not (Test-PhaseTitle -Line $Line)) {
         $isPriority = $true
         $Line = $Line -replace "\s*\(?(prioritaire|urgent|important)\)?\s*", ""
         $Line = $Line -replace "\s*[!*]+\s*", ""
     }
 
-    # Détecter l'estimation de temps (format: (Xh), (X jours), (X-Y jours), etc.)
+    # DÃ©tecter l'estimation de temps (format: (Xh), (X jours), (X-Y jours), etc.)
     if ($Line -match "\(\s*(\d+(?:-\d+)?\s*(?:h|heure|heures|jour|jours|semaine|semaines|mois))\s*\)") {
         $timeEstimate = $Matches[1]
         $Line = $Line -replace "\s*\(\s*\d+(?:-\d+)?\s*(?:h|heure|heures|jour|jours|semaine|semaines|mois)\s*\)\s*", ""
     }
 
-    # Supprimer les puces ou numéros existants
-    $Line = $Line -replace "^[-*•]\s*", ""
+    # Supprimer les puces ou numÃ©ros existants
+    $Line = $Line -replace "^[-*â€¢]\s*", ""
     $Line = $Line -replace "^\d+\.\s*", ""
 
-    # Construire la ligne formatée
+    # Construire la ligne formatÃ©e
     $formattedLine = ""
     $indent = "  " * $Level
 
@@ -103,12 +103,12 @@ function Format-LineByIndentation {
     } else {
         # Autres niveaux
         if ($isPriority) {
-            $formattedLine = "$indent- [ ] **$Line** 🔴"
+            $formattedLine = "$indent- [ ] **$Line** ðŸ”´"
         } else {
             $formattedLine = "$indent- [ ] $Line"
         }
 
-        # Ajouter l'estimation de temps si présente
+        # Ajouter l'estimation de temps si prÃ©sente
         if (-not [string]::IsNullOrWhiteSpace($timeEstimate)) {
             $formattedLine += " ($timeEstimate)"
         }
@@ -117,7 +117,7 @@ function Format-LineByIndentation {
     return $formattedLine
 }
 
-# Initialiser le résultat
+# Initialiser le rÃ©sultat
 $result = @()
 $result += "## $SectionTitle"
 $result += "**Complexite**: $Complexity"
@@ -135,17 +135,17 @@ foreach ($line in $lines) {
         continue
     }
 
-    # Détecter le niveau d'indentation
+    # DÃ©tecter le niveau d'indentation
     $level = Get-IndentationLevel -Line $line
 
     # Formater la ligne
     $formattedLine = Format-LineByIndentation -Line $line -Level $level
 
-    # Ajouter la ligne au résultat
+    # Ajouter la ligne au rÃ©sultat
     if (-not [string]::IsNullOrWhiteSpace($formattedLine)) {
         $result += $formattedLine
     }
 }
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 $result -join "`n"

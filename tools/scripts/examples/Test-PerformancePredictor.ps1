@@ -1,4 +1,4 @@
-# Script de test simple pour le module PerformancePredictor
+﻿# Script de test simple pour le module PerformancePredictor
 # Auteur: EMAIL_SENDER_1 Team
 # Version: 1.0.0
 
@@ -6,13 +6,13 @@
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PerformancePredictor.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
-    Write-Host "Module PerformancePredictor importé avec succès." -ForegroundColor Green
+    Write-Host "Module PerformancePredictor importÃ© avec succÃ¨s." -ForegroundColor Green
 } else {
     Write-Error "Module not found: $modulePath"
     exit 1
 }
 
-# Créer un répertoire pour les tests
+# CrÃ©er un rÃ©pertoire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PerformancePredictorTest"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -22,8 +22,8 @@ if (-not (Test-Path -Path $testDir)) {
 Write-Host "Initialisation du module PerformancePredictor..." -ForegroundColor Cyan
 Initialize-PerformancePredictor -ConfigPath "$testDir\config.json" -LogPath "$testDir\logs.log" -ModelStoragePath "$testDir\models"
 
-# Créer des métriques de test simples
-Write-Host "Création de métriques de test..." -ForegroundColor Cyan
+# CrÃ©er des mÃ©triques de test simples
+Write-Host "CrÃ©ation de mÃ©triques de test..." -ForegroundColor Cyan
 $metrics = @()
 $startTime = (Get-Date).AddDays(-1)
 
@@ -39,11 +39,11 @@ for ($i = 0; $i -lt 24; $i++) {
     }
 }
 
-# Exporter les métriques au format JSON manuellement
-Write-Host "Exportation des métriques au format JSON..." -ForegroundColor Cyan
+# Exporter les mÃ©triques au format JSON manuellement
+Write-Host "Exportation des mÃ©triques au format JSON..." -ForegroundColor Cyan
 $jsonPath = Join-Path -Path $testDir -ChildPath "metrics.json"
 
-# Convertir les métriques au format JSON
+# Convertir les mÃ©triques au format JSON
 $formattedMetrics = $metrics | ForEach-Object {
     @{
         Timestamp   = if ($_.Timestamp -is [DateTime]) { $_.Timestamp.ToString('o') } else { $_.Timestamp }
@@ -51,17 +51,17 @@ $formattedMetrics = $metrics | ForEach-Object {
     }
 }
 
-# Exporter les métriques au format JSON
+# Exporter les mÃ©triques au format JSON
 $formattedMetrics | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonPath -Encoding utf8
 
-Write-Host "Métriques exportées vers: $jsonPath" -ForegroundColor Green
+Write-Host "MÃ©triques exportÃ©es vers: $jsonPath" -ForegroundColor Green
 
 # Afficher le contenu du fichier de configuration
 Write-Host "Contenu du fichier de configuration:" -ForegroundColor Cyan
 if (Test-Path -Path "$testDir\config.json") {
     Get-Content -Path "$testDir\config.json" | Out-Host
 } else {
-    Write-Warning "Le fichier de configuration n'a pas été créé."
+    Write-Warning "Le fichier de configuration n'a pas Ã©tÃ© crÃ©Ã©."
 }
 
-Write-Host "Test terminé. Les fichiers générés se trouvent dans $testDir" -ForegroundColor Yellow
+Write-Host "Test terminÃ©. Les fichiers gÃ©nÃ©rÃ©s se trouvent dans $testDir" -ForegroundColor Yellow

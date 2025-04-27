@@ -1,4 +1,4 @@
-#
+﻿#
 # RoadmapParser.psm1
 #
 # Main module file for the RoadmapParser module
@@ -171,7 +171,7 @@ $publicFunctions = @(
     'Write-RoadmapError',
     'Write-RoadmapCritical',
     'Inspect-Variable',
-    # Points d'arrêt conditionnels
+    # Points d'arrÃªt conditionnels
     'Set-RoadmapBreakpoint',
     'Test-RoadmapBreakpointCondition',
     'Invoke-RoadmapBreakpointAction',
@@ -198,10 +198,22 @@ $publicFunctions = @(
     # Fonctions d'analyse SQL Server
     'Analyze-SqlServerPermission',
     'Get-SqlPermissionRules',
-    'Find-SqlServerContradictoryPermission'
+    'Find-SqlServerContradictoryPermission',
+    # Fonctions de gestion des chemins
+    'Initialize-Paths',
+    'Test-Paths',
+    'Repair-Paths',
+    'Get-AbsolutePath',
+    'Get-RelativePath'
 )
 
 Export-ModuleMember -Function $publicFunctions
+
+# Exporter les fonctions privées pour les tests
+if ($env:ROADMAPPARSER_TEST_MODE -eq "true") {
+    Export-ModuleMember -Function Test-PathPermissions, Test-ReadAccess, Test-WriteAccess, Test-ExecuteAccess, New-DirectoryWithPermissions, Repair-PathPermissions
+    Export-ModuleMember -Function Resolve-RelativePath, Resolve-AbsolutePath, Normalize-Path, Find-ProjectRoot
+}
 
 # Cleanup function that will be called when the module is removed
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {

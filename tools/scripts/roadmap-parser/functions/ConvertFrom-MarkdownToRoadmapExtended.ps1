@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un fichier markdown en structure d'objet PowerShell représentant une roadmap avec fonctionnalités étendues.
+    Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec fonctionnalitÃ©s Ã©tendues.
 
 .DESCRIPTION
     La fonction ConvertFrom-MarkdownToRoadmapExtended lit un fichier markdown et le convertit en une structure d'objet PowerShell.
-    Elle est spécialement conçue pour traiter les roadmaps au format markdown avec des tâches, des statuts, des identifiants,
-    des dépendances et des métadonnées avancées.
+    Elle est spÃ©cialement conÃ§ue pour traiter les roadmaps au format markdown avec des tÃ¢ches, des statuts, des identifiants,
+    des dÃ©pendances et des mÃ©tadonnÃ©es avancÃ©es.
 
 .PARAMETER FilePath
-    Chemin du fichier markdown à convertir.
+    Chemin du fichier markdown Ã  convertir.
 
 .PARAMETER IncludeMetadata
-    Indique si les métadonnées supplémentaires doivent être extraites et incluses dans les objets.
+    Indique si les mÃ©tadonnÃ©es supplÃ©mentaires doivent Ãªtre extraites et incluses dans les objets.
 
 .PARAMETER CustomStatusMarkers
-    Hashtable définissant des marqueurs de statut personnalisés et leur correspondance avec les statuts standard.
+    Hashtable dÃ©finissant des marqueurs de statut personnalisÃ©s et leur correspondance avec les statuts standard.
 
 .PARAMETER DetectDependencies
-    Indique si les dépendances entre tâches doivent être détectées et incluses dans les objets.
+    Indique si les dÃ©pendances entre tÃ¢ches doivent Ãªtre dÃ©tectÃ©es et incluses dans les objets.
 
 .PARAMETER ValidateStructure
-    Indique si la structure de la roadmap doit être validée.
+    Indique si la structure de la roadmap doit Ãªtre validÃ©e.
 
 .EXAMPLE
     ConvertFrom-MarkdownToRoadmapExtended -FilePath ".\roadmap.md"
@@ -28,15 +28,15 @@
 
 .EXAMPLE
     ConvertFrom-MarkdownToRoadmapExtended -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
-    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des métadonnées et détection des dépendances.
+    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des mÃ©tadonnÃ©es et dÃ©tection des dÃ©pendances.
 
 .OUTPUTS
-    [PSCustomObject] Représentant la structure de la roadmap.
+    [PSCustomObject] ReprÃ©sentant la structure de la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function ConvertFrom-MarkdownToRoadmapExtended {
     [CmdletBinding()]
@@ -58,7 +58,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
         [switch]$ValidateStructure
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
@@ -67,13 +67,13 @@ function ConvertFrom-MarkdownToRoadmapExtended {
     $content = Get-Content -Path $FilePath -Encoding UTF8 -Raw
     $lines = $content -split "`r?`n"
 
-    # Créer l'objet roadmap
+    # CrÃ©er l'objet roadmap
     $roadmap = [PSCustomObject]@{
         Title            = "Roadmap"
         Description      = ""
         Sections         = @()
-        AllTasks         = @{}  # Dictionnaire de toutes les tâches par ID
-        ValidationIssues = @()  # Liste des problèmes de validation
+        AllTasks         = @{}  # Dictionnaire de toutes les tÃ¢ches par ID
+        ValidationIssues = @()  # Liste des problÃ¨mes de validation
     }
 
     # Extraire le titre et la description
@@ -83,7 +83,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Extraire le titre (première ligne commençant par #)
+        # Extraire le titre (premiÃ¨re ligne commenÃ§ant par #)
         if ($line -match '^#\s+(.+)$' -and -not $inDescription) {
             $roadmap.Title = $matches[1]
             $inDescription = $true
@@ -92,14 +92,14 @@ function ConvertFrom-MarkdownToRoadmapExtended {
 
         # Collecter les lignes de description
         if ($inDescription) {
-            # Si on trouve une section, on arrête la description
+            # Si on trouve une section, on arrÃªte la description
             if ($line -match '^##\s+') {
                 $inDescription = $false
                 $i-- # Reculer d'une ligne pour traiter la section au prochain tour
                 continue
             }
 
-            # Ignorer les lignes vides au début de la description
+            # Ignorer les lignes vides au dÃ©but de la description
             if ($descriptionLines.Count -eq 0 -and [string]::IsNullOrWhiteSpace($line)) {
                 continue
             }
@@ -108,19 +108,19 @@ function ConvertFrom-MarkdownToRoadmapExtended {
         }
     }
 
-    # Définir la description
+    # DÃ©finir la description
     if ($descriptionLines.Count -gt 0) {
-        # Supprimer les lignes vides à la fin
+        # Supprimer les lignes vides Ã  la fin
         while ($descriptionLines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($descriptionLines[-1])) {
             $descriptionLines = $descriptionLines[0..($descriptionLines.Count - 2)]
         }
         $roadmap.Description = $descriptionLines -join "`n"
     }
 
-    # Définir les marqueurs de statut standard
+    # DÃ©finir les marqueurs de statut standard
     $statusMarkers = @{
         "x" = "Complete"
-        # "X" = "Complete"  # Traité manuellement ci-dessous
+        # "X" = "Complete"  # TraitÃ© manuellement ci-dessous
         "~" = "InProgress"
         "!" = "Blocked"
         " " = "Incomplete"
@@ -130,14 +130,14 @@ function ConvertFrom-MarkdownToRoadmapExtended {
     # Ajouter manuellement le cas "X" (majuscule)
     $statusMarkers["X"] = "Complete"
 
-    # Fusionner avec les marqueurs personnalisés si fournis
+    # Fusionner avec les marqueurs personnalisÃ©s si fournis
     if ($null -ne $CustomStatusMarkers) {
         foreach ($key in $CustomStatusMarkers.Keys) {
             $statusMarkers[$key] = $CustomStatusMarkers[$key]
         }
     }
 
-    # Extraire les sections et les tâches
+    # Extraire les sections et les tÃ¢ches
     $currentSection = $null
     $taskStack = @()
     $currentLevel = 0
@@ -146,7 +146,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
     foreach ($line in $lines) {
         $lineNumber++
 
-        # Détecter les sections (lignes commençant par ##)
+        # DÃ©tecter les sections (lignes commenÃ§ant par ##)
         if ($line -match '^##\s+(.+)$') {
             $sectionTitle = $matches[1]
             $currentSection = [PSCustomObject]@{
@@ -160,24 +160,24 @@ function ConvertFrom-MarkdownToRoadmapExtended {
             continue
         }
 
-        # Détecter les tâches (lignes commençant par -, *, + avec ou sans case à cocher)
+        # DÃ©tecter les tÃ¢ches (lignes commenÃ§ant par -, *, + avec ou sans case Ã  cocher)
         if ($line -match '^(\s*)[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$' -and $null -ne $currentSection) {
             $indent = $matches[1].Length
             $statusMarker = $matches[2]
             $id = $matches[3]
             $title = $matches[4]
 
-            # Déterminer le statut
+            # DÃ©terminer le statut
             $status = if ($statusMarkers.ContainsKey($statusMarker)) {
                 $statusMarkers[$statusMarker]
             } else {
                 "Incomplete"
             }
 
-            # Extraire les métadonnées
+            # Extraire les mÃ©tadonnÃ©es
             $metadata = @{}
 
-            # Extraire les métadonnées avancées si demandé
+            # Extraire les mÃ©tadonnÃ©es avancÃ©es si demandÃ©
             if ($IncludeMetadata) {
                 # Extraire les assignations (@personne)
                 if ($title -match '@([a-zA-Z0-9_-]+)') {
@@ -198,7 +198,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
                     $title = $title -replace '#[a-zA-Z0-9_-]+', ''
                 }
 
-                # Extraire les priorités (P1, P2, etc.)
+                # Extraire les prioritÃ©s (P1, P2, etc.)
                 if ($title -match '\b(P[0-9])\b') {
                     $metadata["Priority"] = $matches[1]
                     # Nettoyer le titre
@@ -212,14 +212,14 @@ function ConvertFrom-MarkdownToRoadmapExtended {
                     $title = $title -replace '@date:\d{4}-\d{2}-\d{2}', ''
                 }
 
-                # Extraire les dépendances (format: @depends:ID1,ID2,...)
+                # Extraire les dÃ©pendances (format: @depends:ID1,ID2,...)
                 if ($title -match '@depends:([\w\.-]+)') {
                     $dependsOn = $matches[1] -split ','
                     $metadata["DependsOn"] = $dependsOn
                     # Nettoyer le titre
                     $title = $title -replace '@depends:[\w\.-]+', ''
 
-                    # Ajouter les dépendances explicites
+                    # Ajouter les dÃ©pendances explicites
                     foreach ($dependencyId in $dependsOn) {
                         if ($roadmap.AllTasks.ContainsKey($dependencyId)) {
                             $dependency = $roadmap.AllTasks[$dependencyId]
@@ -236,7 +236,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
                     $title = $title -replace '@estimate:\d+[hdjmw]', ''
                 }
 
-                # Extraire les dates de début (format: @start:YYYY-MM-DD)
+                # Extraire les dates de dÃ©but (format: @start:YYYY-MM-DD)
                 if ($title -match '@start:(\d{4}-\d{2}-\d{2})') {
                     $metadata["StartDate"] = $matches[1]
                     # Nettoyer le titre
@@ -254,21 +254,21 @@ function ConvertFrom-MarkdownToRoadmapExtended {
             # Nettoyer le titre (supprimer les espaces en trop)
             $title = $title.Trim()
 
-            # Créer l'objet tâche
+            # CrÃ©er l'objet tÃ¢che
             $task = [PSCustomObject]@{
                 Id             = $id
                 Title          = $title
                 Status         = $status
                 Level          = [int]($indent / 2)  # Supposer 2 espaces par niveau
                 SubTasks       = @()
-                Dependencies   = @()  # Liste des tâches dont cette tâche dépend
-                DependentTasks = @()  # Liste des tâches qui dépendent de cette tâche
+                Dependencies   = @()  # Liste des tÃ¢ches dont cette tÃ¢che dÃ©pend
+                DependentTasks = @()  # Liste des tÃ¢ches qui dÃ©pendent de cette tÃ¢che
                 Metadata       = $metadata
                 LineNumber     = $lineNumber
                 OriginalText   = $line
             }
 
-            # Ajouter la tâche au dictionnaire global
+            # Ajouter la tÃ¢che au dictionnaire global
             if (-not [string]::IsNullOrEmpty($id)) {
                 if ($roadmap.AllTasks.ContainsKey($id)) {
                     if ($ValidateStructure) {
@@ -279,21 +279,21 @@ function ConvertFrom-MarkdownToRoadmapExtended {
                 }
             }
 
-            # Déterminer le parent en fonction de l'indentation
+            # DÃ©terminer le parent en fonction de l'indentation
             if ($indent -eq 0) {
-                # Tâche de premier niveau
+                # TÃ¢che de premier niveau
                 $currentSection.Tasks += $task
                 $taskStack = @($task)
                 $currentLevel = 0
             } elseif ($indent -gt $currentLevel) {
-                # Sous-tâche
+                # Sous-tÃ¢che
                 if ($taskStack.Count -gt 0) {
                     $taskStack[-1].SubTasks += $task
                     $taskStack += $task
                     $currentLevel = $indent
                 }
             } elseif ($indent -eq $currentLevel) {
-                # Même niveau que la tâche précédente
+                # MÃªme niveau que la tÃ¢che prÃ©cÃ©dente
                 if ($taskStack.Count -gt 1) {
                     $taskStack = $taskStack[0..($taskStack.Count - 2)]
                     $taskStack[-1].SubTasks += $task
@@ -303,7 +303,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
                     $taskStack = @($task)
                 }
             } elseif ($indent -lt $currentLevel) {
-                # Remonter dans la hiérarchie
+                # Remonter dans la hiÃ©rarchie
                 $levelDiff = [int](($currentLevel - $indent) / 2)
                 if ($levelDiff -ge $taskStack.Count) {
                     $taskStack = @()
@@ -319,9 +319,9 @@ function ConvertFrom-MarkdownToRoadmapExtended {
         }
     }
 
-    # Détecter les dépendances entre tâches si demandé
+    # DÃ©tecter les dÃ©pendances entre tÃ¢ches si demandÃ©
     if ($DetectDependencies) {
-        # Traiter les dépendances explicites (via métadonnées)
+        # Traiter les dÃ©pendances explicites (via mÃ©tadonnÃ©es)
         foreach ($id in $roadmap.AllTasks.Keys) {
             $task = $roadmap.AllTasks[$id]
             if ($task.Metadata.ContainsKey("DependsOn")) {
@@ -337,7 +337,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
             }
         }
 
-        # Détecter les dépendances implicites (basées sur les références dans le titre)
+        # DÃ©tecter les dÃ©pendances implicites (basÃ©es sur les rÃ©fÃ©rences dans le titre)
         foreach ($id in $roadmap.AllTasks.Keys) {
             $task = $roadmap.AllTasks[$id]
             if ($task.Title -match '\bref:([a-zA-Z0-9_.-]+)\b') {
@@ -353,16 +353,16 @@ function ConvertFrom-MarkdownToRoadmapExtended {
         }
     }
 
-    # Valider la structure de la roadmap si demandé
+    # Valider la structure de la roadmap si demandÃ©
     if ($ValidateStructure) {
-        # Vérifier les IDs manquants
+        # VÃ©rifier les IDs manquants
         foreach ($section in $roadmap.Sections) {
             foreach ($task in $section.Tasks) {
                 if ([string]::IsNullOrEmpty($task.Id)) {
                     $roadmap.ValidationIssues += "Missing task ID at line $($task.LineNumber)"
                 }
 
-                # Vérifier récursivement les sous-tâches
+                # VÃ©rifier rÃ©cursivement les sous-tÃ¢ches
                 function Test-SubTasks {
                     param (
                         [PSCustomObject]$Task
@@ -380,7 +380,7 @@ function ConvertFrom-MarkdownToRoadmapExtended {
             }
         }
 
-        # Vérifier les dépendances circulaires
+        # VÃ©rifier les dÃ©pendances circulaires
         function Test-CircularDependencies {
             param (
                 [PSCustomObject]$Task,

@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
     Test simple du chargement du module RoadmapParserCore.
 
 .DESCRIPTION
-    Ce script teste le chargement du module RoadmapParserCore de manière simple.
+    Ce script teste le chargement du module RoadmapParserCore de maniÃ¨re simple.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Définir le chemin du module
+# DÃ©finir le chemin du module
 $modulePath = Split-Path -Parent $PSScriptRoot
 $moduleName = "RoadmapParserCore"
 $moduleManifestPath = Join-Path -Path $modulePath -ChildPath "$moduleName.psd1"
@@ -19,7 +19,7 @@ $moduleManifestPath = Join-Path -Path $modulePath -ChildPath "$moduleName.psd1"
 Write-Host "Test de chargement du module $moduleName"
 Write-Host "Chemin du manifeste: $moduleManifestPath"
 
-# Vérifier que le fichier manifeste existe
+# VÃ©rifier que le fichier manifeste existe
 if (Test-Path -Path $moduleManifestPath) {
     Write-Host "Le fichier manifeste du module existe" -ForegroundColor Green
 } else {
@@ -27,7 +27,7 @@ if (Test-Path -Path $moduleManifestPath) {
     exit 1
 }
 
-# Vérifier que le manifeste est valide
+# VÃ©rifier que le manifeste est valide
 try {
     $manifest = Test-ModuleManifest -Path $moduleManifestPath -ErrorAction Stop
     Write-Host "Le manifeste du module est valide" -ForegroundColor Green
@@ -41,29 +41,29 @@ try {
 # Essayer d'importer le module
 try {
     Import-Module -Name $moduleManifestPath -Force -ErrorAction Stop
-    Write-Host "Le module a été importé avec succès" -ForegroundColor Green
+    Write-Host "Le module a Ã©tÃ© importÃ© avec succÃ¨s" -ForegroundColor Green
 } catch {
     Write-Host "Erreur lors de l'importation du module: $_" -ForegroundColor Red
     exit 1
 }
 
-# Vérifier que le module est chargé
+# VÃ©rifier que le module est chargÃ©
 if (Get-Module -Name $moduleName) {
-    Write-Host "Le module est chargé" -ForegroundColor Green
+    Write-Host "Le module est chargÃ©" -ForegroundColor Green
 } else {
-    Write-Host "Le module n'est pas chargé" -ForegroundColor Red
+    Write-Host "Le module n'est pas chargÃ©" -ForegroundColor Red
     exit 1
 }
 
-# Obtenir les fonctions exportées
+# Obtenir les fonctions exportÃ©es
 $exportedFunctions = Get-Command -Module $moduleName
-Write-Host "Nombre de fonctions exportées: $($exportedFunctions.Count)" -ForegroundColor Cyan
+Write-Host "Nombre de fonctions exportÃ©es: $($exportedFunctions.Count)" -ForegroundColor Cyan
 
 if ($exportedFunctions.Count -gt 0) {
     Write-Host "Le module exporte des fonctions" -ForegroundColor Green
     
-    # Afficher les 10 premières fonctions
-    Write-Host "Premières fonctions exportées:" -ForegroundColor Cyan
+    # Afficher les 10 premiÃ¨res fonctions
+    Write-Host "PremiÃ¨res fonctions exportÃ©es:" -ForegroundColor Cyan
     $exportedFunctions | Select-Object -First 10 | ForEach-Object {
         Write-Host "  - $($_.Name)" -ForegroundColor Cyan
     }
@@ -72,7 +72,7 @@ if ($exportedFunctions.Count -gt 0) {
     exit 1
 }
 
-# Vérifier la structure des répertoires
+# VÃ©rifier la structure des rÃ©pertoires
 $expectedDirectories = @(
     (Join-Path -Path $modulePath -ChildPath "Functions"),
     (Join-Path -Path $modulePath -ChildPath "Functions\Common"),
@@ -87,18 +87,18 @@ $expectedDirectories = @(
 $allDirectoriesExist = $true
 foreach ($directory in $expectedDirectories) {
     if (Test-Path -Path $directory -PathType Container) {
-        Write-Host "Le répertoire $directory existe" -ForegroundColor Green
+        Write-Host "Le rÃ©pertoire $directory existe" -ForegroundColor Green
     } else {
-        Write-Host "Le répertoire $directory n'existe pas" -ForegroundColor Red
+        Write-Host "Le rÃ©pertoire $directory n'existe pas" -ForegroundColor Red
         $allDirectoriesExist = $false
     }
 }
 
 if ($allDirectoriesExist) {
-    Write-Host "Tous les répertoires requis existent" -ForegroundColor Green
+    Write-Host "Tous les rÃ©pertoires requis existent" -ForegroundColor Green
 } else {
-    Write-Host "Certains répertoires requis n'existent pas" -ForegroundColor Red
+    Write-Host "Certains rÃ©pertoires requis n'existent pas" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "Test de chargement du module terminé avec succès" -ForegroundColor Green
+Write-Host "Test de chargement du module terminÃ© avec succÃ¨s" -ForegroundColor Green

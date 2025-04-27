@@ -1,5 +1,5 @@
-# Script principal pour consolider les fichiers roadmap
-# Ce script exécute toutes les opérations nécessaires pour consolider les fichiers roadmap
+﻿# Script principal pour consolider les fichiers roadmap
+# Ce script exÃ©cute toutes les opÃ©rations nÃ©cessaires pour consolider les fichiers roadmap
 
 param (
     [Parameter(Mandatory = $false)]
@@ -34,7 +34,7 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Créer le répertoire de logs si nécessaire
+    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -44,10 +44,10 @@ function Write-Log {
 }
 
 try {
-    Write-Log "Démarrage de la consolidation des fichiers roadmap"
+    Write-Log "DÃ©marrage de la consolidation des fichiers roadmap"
 
-    # 1. Créer des sauvegardes des fichiers existants
-    Write-Log "Étape 1: Création des sauvegardes des fichiers existants"
+    # 1. CrÃ©er des sauvegardes des fichiers existants
+    Write-Log "Ã‰tape 1: CrÃ©ation des sauvegardes des fichiers existants"
 
     $projectRoot = Get-Location
     $roadmapFiles = @(
@@ -61,17 +61,17 @@ try {
             $backupPath = "$file.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
             if (-not $WhatIf) {
                 Copy-Item -Path $file -Destination $backupPath
-                Write-Log "Sauvegarde créée: $file -> $backupPath" -Level "INFO"
+                Write-Log "Sauvegarde crÃ©Ã©e: $file -> $backupPath" -Level "INFO"
             } else {
-                Write-Log "WhatIf: Sauvegarde créée: $file -> $backupPath" -Level "INFO"
+                Write-Log "WhatIf: Sauvegarde crÃ©Ã©e: $file -> $backupPath" -Level "INFO"
             }
         } else {
-            Write-Log "Fichier non trouvé: $file" -Level "WARNING"
+            Write-Log "Fichier non trouvÃ©: $file" -Level "WARNING"
         }
     }
 
-    # 2. Créer les copies
-    Write-Log "Étape 2: Création des copies"
+    # 2. CrÃ©er les copies
+    Write-Log "Ã‰tape 2: CrÃ©ation des copies"
 
     $createCopiesScript = Join-Path -Path $PSScriptRoot -ChildPath "Create-RoadmapCopies.ps1"
     if (Test-Path -Path $createCopiesScript -PathType Leaf) {
@@ -80,15 +80,15 @@ try {
         } else {
             & $createCopiesScript -WhatIf
         }
-        Write-Log "Copies créées avec succès" -Level "INFO"
+        Write-Log "Copies crÃ©Ã©es avec succÃ¨s" -Level "INFO"
     } else {
-        Write-Log "Script de création des copies non trouvé: $createCopiesScript" -Level "ERROR"
+        Write-Log "Script de crÃ©ation des copies non trouvÃ©: $createCopiesScript" -Level "ERROR"
         exit 1
     }
 
-    # 3. Mettre à jour les références dans les scripts existants (si demandé)
+    # 3. Mettre Ã  jour les rÃ©fÃ©rences dans les scripts existants (si demandÃ©)
     if ($UpdateReferences) {
-        Write-Log "Étape 3: Mise à jour des références dans les scripts existants"
+        Write-Log "Ã‰tape 3: Mise Ã  jour des rÃ©fÃ©rences dans les scripts existants"
 
         $updateReferencesScript = Join-Path -Path $PSScriptRoot -ChildPath "Update-RoadmapReferences.ps1"
         if (Test-Path -Path $updateReferencesScript -PathType Leaf) {
@@ -97,17 +97,17 @@ try {
             } else {
                 & $updateReferencesScript -CreateBackup -WhatIf
             }
-            Write-Log "Références mises à jour avec succès" -Level "INFO"
+            Write-Log "RÃ©fÃ©rences mises Ã  jour avec succÃ¨s" -Level "INFO"
         } else {
-            Write-Log "Script de mise à jour des références non trouvé: $updateReferencesScript" -Level "ERROR"
+            Write-Log "Script de mise Ã  jour des rÃ©fÃ©rences non trouvÃ©: $updateReferencesScript" -Level "ERROR"
             exit 1
         }
     } else {
-        Write-Log "Étape 3: Mise à jour des références dans les scripts existants (ignorée)" -Level "INFO"
+        Write-Log "Ã‰tape 3: Mise Ã  jour des rÃ©fÃ©rences dans les scripts existants (ignorÃ©e)" -Level "INFO"
     }
 
-    # 4. Mettre à jour le journal de développement
-    Write-Log "Étape 4: Mise à jour du journal de développement"
+    # 4. Mettre Ã  jour le journal de dÃ©veloppement
+    Write-Log "Ã‰tape 4: Mise Ã  jour du journal de dÃ©veloppement"
 
     $journalPath = Join-Path -Path $projectRoot -ChildPath "journal\development_log.md"
     if (Test-Path -Path $journalPath -PathType Leaf) {
@@ -115,48 +115,48 @@ try {
 
 ## $(Get-Date -Format "yyyy-MM-dd") - Consolidation des fichiers roadmap
 
-### Actions réalisées
-- Création de sauvegardes des fichiers roadmap existants
-- Centralisation du fichier roadmap principal dans le répertoire Roadmap
-- Création de copies pour maintenir la compatibilité
-- Création d'un script centralisé pour accéder à la roadmap
-$(if ($UpdateReferences) { "- Mise à jour des références à la roadmap dans les scripts existants" } else { "" })
+### Actions rÃ©alisÃ©es
+- CrÃ©ation de sauvegardes des fichiers roadmap existants
+- Centralisation du fichier roadmap principal dans le rÃ©pertoire Roadmap
+- CrÃ©ation de copies pour maintenir la compatibilitÃ©
+- CrÃ©ation d'un script centralisÃ© pour accÃ©der Ã  la roadmap
+$(if ($UpdateReferences) { "- Mise Ã  jour des rÃ©fÃ©rences Ã  la roadmap dans les scripts existants" } else { "" })
 
-### Problèmes résolus
-- Confusion due à la présence de plusieurs fichiers roadmap dans différents répertoires
-- Incohérences dans les mises à jour des différents fichiers roadmap
-- Difficultés à maintenir les références à la roadmap dans les scripts
+### ProblÃ¨mes rÃ©solus
+- Confusion due Ã  la prÃ©sence de plusieurs fichiers roadmap dans diffÃ©rents rÃ©pertoires
+- IncohÃ©rences dans les mises Ã  jour des diffÃ©rents fichiers roadmap
+- DifficultÃ©s Ã  maintenir les rÃ©fÃ©rences Ã  la roadmap dans les scripts
 
-### Leçons apprises
-- Importance de centraliser les ressources partagées
-- Utilité des liens symboliques pour maintenir la compatibilité
-- Avantages d'une approche modulaire pour l'accès aux ressources partagées
+### LeÃ§ons apprises
+- Importance de centraliser les ressources partagÃ©es
+- UtilitÃ© des liens symboliques pour maintenir la compatibilitÃ©
+- Avantages d'une approche modulaire pour l'accÃ¨s aux ressources partagÃ©es
 
 "@
 
         if (-not $WhatIf) {
             Add-Content -Path $journalPath -Value $journalEntry -Encoding UTF8
-            Write-Log "Journal de développement mis à jour: $journalPath" -Level "INFO"
+            Write-Log "Journal de dÃ©veloppement mis Ã  jour: $journalPath" -Level "INFO"
         } else {
-            Write-Log "WhatIf: Journal de développement mis à jour: $journalPath" -Level "INFO"
+            Write-Log "WhatIf: Journal de dÃ©veloppement mis Ã  jour: $journalPath" -Level "INFO"
         }
     } else {
-        Write-Log "Journal de développement non trouvé: $journalPath" -Level "WARNING"
+        Write-Log "Journal de dÃ©veloppement non trouvÃ©: $journalPath" -Level "WARNING"
     }
 
-    # Afficher un résumé
-    Write-Host "`nRésumé de la consolidation des fichiers roadmap :" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ©
+    Write-Host "`nRÃ©sumÃ© de la consolidation des fichiers roadmap :" -ForegroundColor Cyan
     Write-Host "----------------------------------------" -ForegroundColor Cyan
     Write-Host "Fichier roadmap principal : $("Roadmap\roadmap_perso.md""")" -ForegroundColor White
-    Write-Host "Sauvegardes créées : $($roadmapFiles.Count)" -ForegroundColor Green
-    Write-Host "Copies créées : 2" -ForegroundColor Green
+    Write-Host "Sauvegardes crÃ©Ã©es : $($roadmapFiles.Count)" -ForegroundColor Green
+    Write-Host "Copies crÃ©Ã©es : 2" -ForegroundColor Green
     if ($UpdateReferences) {
-        Write-Host "Références mises à jour : Oui" -ForegroundColor Green
+        Write-Host "RÃ©fÃ©rences mises Ã  jour : Oui" -ForegroundColor Green
     } else {
-        Write-Host "Références mises à jour : Non" -ForegroundColor Yellow
+        Write-Host "RÃ©fÃ©rences mises Ã  jour : Non" -ForegroundColor Yellow
     }
 
-    Write-Log "Consolidation des fichiers roadmap terminée avec succès" -Level "INFO"
+    Write-Log "Consolidation des fichiers roadmap terminÃ©e avec succÃ¨s" -Level "INFO"
 }
 catch {
     Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
@@ -164,5 +164,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

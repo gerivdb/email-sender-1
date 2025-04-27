@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Corrige l'association des fichiers .ps1 avec VS Code
 #>
@@ -13,8 +13,8 @@ $command = "`"$vscodePath`" `"%1`""
 
 try {
     reg add "HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\shell\open\command" /ve /d "$command" /f
-    Write-Host "Association .ps1 corrigée avec succès" -ForegroundColor Green
-    Write-Host "Redémarrez l'explorateur de fichiers pour voir les changements"
+    Write-Host "Association .ps1 corrigÃ©e avec succÃ¨s" -ForegroundColor Green
+    Write-Host "RedÃ©marrez l'explorateur de fichiers pour voir les changements"
 } catch {
     Write-Host "Erreur lors de la modification du registre: $_" -ForegroundColor Red
 }

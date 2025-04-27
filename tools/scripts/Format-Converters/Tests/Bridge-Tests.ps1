@@ -1,27 +1,27 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Pont entre les tests simplifiés et les tests réels.
+    Pont entre les tests simplifiÃ©s et les tests rÃ©els.
 
 .DESCRIPTION
-    Ce script permet d'exécuter et de comparer les tests simplifiés et les tests réels.
-    Il offre plusieurs modes d'exécution pour faciliter la transition entre les deux types de tests.
+    Ce script permet d'exÃ©cuter et de comparer les tests simplifiÃ©s et les tests rÃ©els.
+    Il offre plusieurs modes d'exÃ©cution pour faciliter la transition entre les deux types de tests.
 
 .PARAMETER Mode
-    Le mode d'exécution du script.
-    - Simplified : Exécute uniquement les tests simplifiés.
-    - Real : Exécute uniquement les tests réels.
-    - Compare : Exécute les deux types de tests et compare les résultats.
-    - Fix : Tente de corriger les problèmes dans les tests réels.
-    - All : Exécute tous les tests sans comparaison.
+    Le mode d'exÃ©cution du script.
+    - Simplified : ExÃ©cute uniquement les tests simplifiÃ©s.
+    - Real : ExÃ©cute uniquement les tests rÃ©els.
+    - Compare : ExÃ©cute les deux types de tests et compare les rÃ©sultats.
+    - Fix : Tente de corriger les problÃ¨mes dans les tests rÃ©els.
+    - All : ExÃ©cute tous les tests sans comparaison.
 
 .EXAMPLE
     .\Bridge-Tests.ps1 -Mode Simplified
-    Exécute uniquement les tests simplifiés.
+    ExÃ©cute uniquement les tests simplifiÃ©s.
 
 .EXAMPLE
     .\Bridge-Tests.ps1 -Mode Compare
-    Exécute les deux types de tests et compare les résultats.
+    ExÃ©cute les deux types de tests et compare les rÃ©sultats.
 #>
 
 [CmdletBinding()]
@@ -37,7 +37,7 @@ param(
     [string]$ReportPath = "$PSScriptRoot\Reports"
 )
 
-# Mappings entre les tests simplifiés et les tests réels
+# Mappings entre les tests simplifiÃ©s et les tests rÃ©els
 $testMappings = @{
     "Handle-AmbiguousFormats.Tests.Simplified.ps1" = "Handle-AmbiguousFormats.Tests.ps1"
     "Show-FormatDetectionResults.Tests.Simplified.ps1" = "Show-FormatDetectionResults.Tests.ps1"
@@ -49,7 +49,7 @@ $testMappings = @{
     "Integration.Tests.Simplified.ps1" = "Format-Converters.Tests.ps1"
 }
 
-# Fonction pour exécuter les tests et afficher les résultats
+# Fonction pour exÃ©cuter les tests et afficher les rÃ©sultats
 function Invoke-TestsWithSummary {
     param (
         [string[]]$TestFiles,
@@ -57,26 +57,26 @@ function Invoke-TestsWithSummary {
     )
 
     if ($TestFiles.Count -eq 0) {
-        Write-Warning "Aucun fichier de test $TestType trouvé."
+        Write-Warning "Aucun fichier de test $TestType trouvÃ©."
         return $null
     }
 
-    Write-Host "`n===== Exécution des tests $TestType =====" -ForegroundColor Cyan
-    Write-Host "Fichiers de test trouvés : $($TestFiles.Count)" -ForegroundColor Gray
+    Write-Host "`n===== ExÃ©cution des tests $TestType =====" -ForegroundColor Cyan
+    Write-Host "Fichiers de test trouvÃ©s : $($TestFiles.Count)" -ForegroundColor Gray
 
     $results = Invoke-Pester -Path $TestFiles -PassThru -Output Normal
 
-    Write-Host "`nRésumé des résultats de test $TestType :" -ForegroundColor Cyan
-    Write-Host "Tests exécutés : $($results.TotalCount)"
-    Write-Host "Tests réussis : $($results.PassedCount)" -ForegroundColor Green
-    Write-Host "Tests échoués : $($results.FailedCount)" -ForegroundColor Red
-    Write-Host "Tests ignorés : $($results.SkippedCount)" -ForegroundColor Yellow
-    Write-Host "Durée totale : $($results.Duration.TotalSeconds) secondes"
+    Write-Host "`nRÃ©sumÃ© des rÃ©sultats de test $TestType :" -ForegroundColor Cyan
+    Write-Host "Tests exÃ©cutÃ©s : $($results.TotalCount)"
+    Write-Host "Tests rÃ©ussis : $($results.PassedCount)" -ForegroundColor Green
+    Write-Host "Tests Ã©chouÃ©s : $($results.FailedCount)" -ForegroundColor Red
+    Write-Host "Tests ignorÃ©s : $($results.SkippedCount)" -ForegroundColor Yellow
+    Write-Host "DurÃ©e totale : $($results.Duration.TotalSeconds) secondes"
 
     return $results
 }
 
-# Fonction pour comparer les résultats des tests
+# Fonction pour comparer les rÃ©sultats des tests
 function Compare-TestResults {
     param (
         [PSObject]$SimplifiedResults,
@@ -84,7 +84,7 @@ function Compare-TestResults {
         [hashtable]$Mappings
     )
 
-    Write-Host "`n===== Comparaison des résultats =====" -ForegroundColor Cyan
+    Write-Host "`n===== Comparaison des rÃ©sultats =====" -ForegroundColor Cyan
 
     $comparisonTable = @()
 
@@ -104,12 +104,12 @@ function Compare-TestResults {
         $realCoverage = if ($realTestCount -gt 0) { [math]::Round(($realPassedCount / $realTestCount) * 100, 2) } else { 0 }
 
         $comparisonTable += [PSCustomObject]@{
-            "Test simplifié" = $simplifiedTestName
-            "Test réel" = $realTestName
-            "Tests simplifiés" = "$simplifiedPassedCount / $simplifiedTestCount"
-            "Tests réels" = "$realPassedCount / $realTestCount"
-            "Couverture simplifiée" = "$simplifiedCoverage%"
-            "Couverture réelle" = "$realCoverage%"
+            "Test simplifiÃ©" = $simplifiedTestName
+            "Test rÃ©el" = $realTestName
+            "Tests simplifiÃ©s" = "$simplifiedPassedCount / $simplifiedTestCount"
+            "Tests rÃ©els" = "$realPassedCount / $realTestCount"
+            "Couverture simplifiÃ©e" = "$simplifiedCoverage%"
+            "Couverture rÃ©elle" = "$realCoverage%"
         }
     }
 
@@ -121,39 +121,39 @@ function Initialize-ModuleStub {
     $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
 
     if (-not (Test-Path -Path $modulePath)) {
-        Write-Error "Le module Format-Converters n'existe pas à l'emplacement '$modulePath'."
+        Write-Error "Le module Format-Converters n'existe pas Ã  l'emplacement '$modulePath'."
         return $false
     }
 
-    # Exécuter le script d'initialisation du module
+    # ExÃ©cuter le script d'initialisation du module
     $initScript = Join-Path -Path $PSScriptRoot -ChildPath "Initialize-ModuleStub.ps1"
     if (Test-Path -Path $initScript) {
         & $initScript
         return $true
     }
     else {
-        Write-Error "Le script d'initialisation du module n'existe pas à l'emplacement '$initScript'."
+        Write-Error "Le script d'initialisation du module n'existe pas Ã  l'emplacement '$initScript'."
         return $false
     }
 }
 
-# Tenter de corriger les problèmes dans les tests réels
+# Tenter de corriger les problÃ¨mes dans les tests rÃ©els
 function Repair-RealTests {
-    Write-Host "`n=== Tentative de correction des tests réels ===" -ForegroundColor Cyan
+    Write-Host "`n=== Tentative de correction des tests rÃ©els ===" -ForegroundColor Cyan
 
-    # Exécuter le script de réparation des tests
+    # ExÃ©cuter le script de rÃ©paration des tests
     $repairScript = Join-Path -Path $PSScriptRoot -ChildPath "Fix-TestFiles.ps1"
     if (Test-Path -Path $repairScript) {
         & $repairScript
         return $true
     }
     else {
-        Write-Error "Le script de réparation des tests n'existe pas à l'emplacement '$repairScript'."
+        Write-Error "Le script de rÃ©paration des tests n'existe pas Ã  l'emplacement '$repairScript'."
         return $false
     }
 }
 
-# Générer un rapport de couverture de test
+# GÃ©nÃ©rer un rapport de couverture de test
 function Invoke-CoverageReport {
     [CmdletBinding()]
     param(
@@ -161,102 +161,102 @@ function Invoke-CoverageReport {
         [string]$OutputPath = "$PSScriptRoot\Reports"
     )
 
-    Write-Host "`n=== Génération du rapport de couverture de test ===" -ForegroundColor Cyan
+    Write-Host "`n=== GÃ©nÃ©ration du rapport de couverture de test ===" -ForegroundColor Cyan
 
-    # Créer le répertoire de rapport s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de rapport s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de rapport créé : $OutputPath" -ForegroundColor Yellow
+        Write-Host "RÃ©pertoire de rapport crÃ©Ã© : $OutputPath" -ForegroundColor Yellow
     }
 
     # Obtenir le chemin du module
     $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "Format-Converters.psm1"
     if (-not (Test-Path -Path $modulePath)) {
-        Write-Error "Le module Format-Converters n'existe pas à l'emplacement : $modulePath"
+        Write-Error "Le module Format-Converters n'existe pas Ã  l'emplacement : $modulePath"
         return $false
     }
 
-    # Obtenir tous les fichiers de test réels
+    # Obtenir tous les fichiers de test rÃ©els
     $testFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" |
         Where-Object { $_.Name -notlike "*.Simplified.ps1" } |
         ForEach-Object { $_.FullName }
 
     if ($testFiles.Count -eq 0) {
-        Write-Warning "Aucun fichier de test réel trouvé dans le répertoire : $PSScriptRoot"
+        Write-Warning "Aucun fichier de test rÃ©el trouvÃ© dans le rÃ©pertoire : $PSScriptRoot"
         return $false
     }
 
-    # Générer le rapport de couverture
+    # GÃ©nÃ©rer le rapport de couverture
     $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
     $reportFile = Join-Path -Path $OutputPath -ChildPath "CoverageReport_$timestamp.xml"
 
-    Write-Host "Génération du rapport de couverture pour le module : $modulePath" -ForegroundColor Yellow
+    Write-Host "GÃ©nÃ©ration du rapport de couverture pour le module : $modulePath" -ForegroundColor Yellow
     Write-Host "Fichiers de test : $($testFiles.Count) fichiers" -ForegroundColor Yellow
     Write-Host "Rapport de couverture : $reportFile" -ForegroundColor Yellow
 
     try {
         $results = Invoke-Pester -Path $testFiles -CodeCoverage $modulePath -PassThru
 
-        # Afficher un résumé de la couverture
-        Write-Host "`nRésumé de la couverture de test :" -ForegroundColor Cyan
-        Write-Host "Commandes exécutées : $($results.CodeCoverage.NumberOfCommandsExecuted)" -ForegroundColor Yellow
-        Write-Host "Commandes analysées : $($results.CodeCoverage.NumberOfCommandsAnalyzed)" -ForegroundColor Yellow
+        # Afficher un rÃ©sumÃ© de la couverture
+        Write-Host "`nRÃ©sumÃ© de la couverture de test :" -ForegroundColor Cyan
+        Write-Host "Commandes exÃ©cutÃ©es : $($results.CodeCoverage.NumberOfCommandsExecuted)" -ForegroundColor Yellow
+        Write-Host "Commandes analysÃ©es : $($results.CodeCoverage.NumberOfCommandsAnalyzed)" -ForegroundColor Yellow
         Write-Host "Pourcentage de couverture : $($results.CodeCoverage.CoveragePercent)%" -ForegroundColor Yellow
 
         # Enregistrer le rapport au format XML
         $results | Export-Clixml -Path $reportFile -Force
 
-        # Générer un rapport HTML si possible
+        # GÃ©nÃ©rer un rapport HTML si possible
         $htmlReportFile = Join-Path -Path $OutputPath -ChildPath "CoverageReport_$timestamp.html"
 
         try {
-            # Vérifier si le module ReportUnit est disponible
+            # VÃ©rifier si le module ReportUnit est disponible
             if (Get-Module -ListAvailable -Name ReportUnit) {
                 Import-Module -Name ReportUnit -Force
                 ConvertTo-PesterReport -InputFile $reportFile -OutputFile $htmlReportFile
-                Write-Host "Rapport HTML généré : $htmlReportFile" -ForegroundColor Green
+                Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportFile" -ForegroundColor Green
             }
             else {
-                Write-Warning "Le module ReportUnit n'est pas installé. Le rapport HTML n'a pas été généré."
-                Write-Warning "Pour installer le module, exécutez : Install-Module -Name ReportUnit -Scope CurrentUser"
+                Write-Warning "Le module ReportUnit n'est pas installÃ©. Le rapport HTML n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
+                Write-Warning "Pour installer le module, exÃ©cutez : Install-Module -Name ReportUnit -Scope CurrentUser"
             }
         }
         catch {
-            Write-Warning "Erreur lors de la génération du rapport HTML : $_"
+            Write-Warning "Erreur lors de la gÃ©nÃ©ration du rapport HTML : $_"
         }
 
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la génération du rapport de couverture : $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de couverture : $_"
         return $false
     }
 }
 
-# Initialiser le module si nécessaire
+# Initialiser le module si nÃ©cessaire
 if ($Mode -eq "Fix") {
     $moduleInitialized = Initialize-ModuleStub
     if (-not $moduleInitialized) {
-        Write-Error "Impossible d'initialiser le module. Arrêt du script."
+        Write-Error "Impossible d'initialiser le module. ArrÃªt du script."
         exit 1
     }
 
     $repaired = Repair-RealTests
     if ($repaired) {
-        Write-Host "`nExécution des tests réels après réparation :" -ForegroundColor Cyan
+        Write-Host "`nExÃ©cution des tests rÃ©els aprÃ¨s rÃ©paration :" -ForegroundColor Cyan
         $Mode = "Real"
     }
     else {
-        Write-Error "Impossible de réparer les tests réels. Arrêt du script."
+        Write-Error "Impossible de rÃ©parer les tests rÃ©els. ArrÃªt du script."
         exit 1
     }
 }
 
-# Générer un rapport de couverture si demandé
+# GÃ©nÃ©rer un rapport de couverture si demandÃ©
 if ($Mode -eq "Coverage") {
     $coverageGenerated = Invoke-CoverageReport -OutputPath $ReportPath
     if (-not $coverageGenerated) {
-        Write-Error "Impossible de générer le rapport de couverture. Arrêt du script."
+        Write-Error "Impossible de gÃ©nÃ©rer le rapport de couverture. ArrÃªt du script."
         exit 1
     }
 
@@ -267,65 +267,65 @@ if ($Mode -eq "Coverage") {
 $simplifiedTestFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.Simplified.ps1" | ForEach-Object { $_.FullName }
 $realTestFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" | Where-Object { $_.Name -notlike "*.Simplified.ps1" } | ForEach-Object { $_.FullName }
 
-# Exécuter les tests selon le mode spécifié
+# ExÃ©cuter les tests selon le mode spÃ©cifiÃ©
 $simplifiedResults = $null
 $realResults = $null
 
 if ($Mode -eq "All" -or $Mode -eq "Simplified") {
-    $simplifiedResults = Invoke-TestsWithSummary -TestFiles $simplifiedTestFiles -TestType "simplifiés"
+    $simplifiedResults = Invoke-TestsWithSummary -TestFiles $simplifiedTestFiles -TestType "simplifiÃ©s"
 }
 
 if ($Mode -eq "All" -or $Mode -eq "Real") {
-    $realResults = Invoke-TestsWithSummary -TestFiles $realTestFiles -TestType "réels"
+    $realResults = Invoke-TestsWithSummary -TestFiles $realTestFiles -TestType "rÃ©els"
 }
 
 if ($Mode -eq "All" -or $Mode -eq "Compare") {
     if ($null -eq $simplifiedResults -and $Mode -eq "Compare") {
-        $simplifiedResults = Invoke-TestsWithSummary -TestFiles $simplifiedTestFiles -TestType "simplifiés"
+        $simplifiedResults = Invoke-TestsWithSummary -TestFiles $simplifiedTestFiles -TestType "simplifiÃ©s"
     }
 
     if ($null -eq $realResults -and $Mode -eq "Compare") {
-        $realResults = Invoke-TestsWithSummary -TestFiles $realTestFiles -TestType "réels"
+        $realResults = Invoke-TestsWithSummary -TestFiles $realTestFiles -TestType "rÃ©els"
     }
 
     if ($null -ne $simplifiedResults -and $null -ne $realResults) {
         Compare-TestResults -SimplifiedResults $simplifiedResults -RealResults $realResults -Mappings $testMappings
     }
     else {
-        Write-Warning "Impossible de comparer les résultats. Assurez-vous que les deux types de tests ont été exécutés."
+        Write-Warning "Impossible de comparer les rÃ©sultats. Assurez-vous que les deux types de tests ont Ã©tÃ© exÃ©cutÃ©s."
     }
 }
 
-# Afficher un résumé global
+# Afficher un rÃ©sumÃ© global
 if (($Mode -eq "All" -or $Mode -eq "Compare") -and $null -ne $simplifiedResults -and $null -ne $realResults) {
-    Write-Host "`n===== Résumé global =====" -ForegroundColor Cyan
-    Write-Host "Tests simplifiés : $($simplifiedResults.TotalCount) tests, $($simplifiedResults.PassedCount) réussis, $($simplifiedResults.FailedCount) échoués"
-    Write-Host "Tests réels : $($realResults.TotalCount) tests, $($realResults.PassedCount) réussis, $($realResults.FailedCount) échoués"
+    Write-Host "`n===== RÃ©sumÃ© global =====" -ForegroundColor Cyan
+    Write-Host "Tests simplifiÃ©s : $($simplifiedResults.TotalCount) tests, $($simplifiedResults.PassedCount) rÃ©ussis, $($simplifiedResults.FailedCount) Ã©chouÃ©s"
+    Write-Host "Tests rÃ©els : $($realResults.TotalCount) tests, $($realResults.PassedCount) rÃ©ussis, $($realResults.FailedCount) Ã©chouÃ©s"
 
     $totalTests = $simplifiedResults.TotalCount + $realResults.TotalCount
     $passedTests = $simplifiedResults.PassedCount + $realResults.PassedCount
     $coveragePercentage = [math]::Round(($passedTests / $totalTests) * 100, 2)
 
-    Write-Host "Couverture totale : $coveragePercentage% ($passedTests/$totalTests tests réussis)" -ForegroundColor Cyan
+    Write-Host "Couverture totale : $coveragePercentage% ($passedTests/$totalTests tests rÃ©ussis)" -ForegroundColor Cyan
 }
 
-# Générer un rapport si demandé
+# GÃ©nÃ©rer un rapport si demandÃ©
 if ($GenerateReport) {
-    Write-Host "`n===== Génération du rapport =====" -ForegroundColor Cyan
+    Write-Host "`n===== GÃ©nÃ©ration du rapport =====" -ForegroundColor Cyan
 
-    # Créer le répertoire de rapport s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de rapport s'il n'existe pas
     if (-not (Test-Path -Path $ReportPath)) {
         New-Item -Path $ReportPath -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de rapport créé : $ReportPath" -ForegroundColor Yellow
+        Write-Host "RÃ©pertoire de rapport crÃ©Ã© : $ReportPath" -ForegroundColor Yellow
     }
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
     $reportFile = Join-Path -Path $ReportPath -ChildPath "TestReport_$timestamp.xml"
 
-    Write-Host "Génération du rapport de test : $reportFile" -ForegroundColor Yellow
+    Write-Host "GÃ©nÃ©ration du rapport de test : $reportFile" -ForegroundColor Yellow
 
-    # Créer un objet de rapport
+    # CrÃ©er un objet de rapport
     $report = [PSCustomObject]@{
         Timestamp = Get-Date
         SimplifiedTests = $simplifiedResults
@@ -344,9 +344,9 @@ if ($GenerateReport) {
     # Enregistrer le rapport
     $report | Export-Clixml -Path $reportFile -Force
 
-    Write-Host "Rapport de test généré : $reportFile" -ForegroundColor Green
+    Write-Host "Rapport de test gÃ©nÃ©rÃ© : $reportFile" -ForegroundColor Green
 
-    # Générer un rapport de couverture si les tests réels ont été exécutés
+    # GÃ©nÃ©rer un rapport de couverture si les tests rÃ©els ont Ã©tÃ© exÃ©cutÃ©s
     if ($Mode -eq "All" -or $Mode -eq "Real") {
         Invoke-CoverageReport -OutputPath $ReportPath
     }

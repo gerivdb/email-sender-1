@@ -1,4 +1,4 @@
-# Script de test 1 avec plusieurs problèmes
+﻿# Script de test 1 avec plusieurs problÃ¨mes
 $logPath = "D:\Logs\app1.log"
 Write-Host "Log Path: $logPath"
 

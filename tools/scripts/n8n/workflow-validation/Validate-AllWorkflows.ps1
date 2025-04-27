@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Valide tous les workflows n8n du projet.
 .DESCRIPTION
-    Ce script valide tous les workflows n8n du projet pour détecter les cycles,
-    les nœuds manquants, et autres problèmes potentiels.
+    Ce script valide tous les workflows n8n du projet pour dÃ©tecter les cycles,
+    les nÅ“uds manquants, et autres problÃ¨mes potentiels.
 .PARAMETER WorkflowsPath
     Chemin du dossier contenant les workflows n8n.
 .PARAMETER ReportsPath
     Chemin du dossier pour les rapports de validation.
 .PARAMETER FixIssues
-    Tente de corriger automatiquement les problèmes détectés.
+    Tente de corriger automatiquement les problÃ¨mes dÃ©tectÃ©s.
 .PARAMETER GenerateReport
-    Génère un rapport HTML détaillé.
+    GÃ©nÃ¨re un rapport HTML dÃ©taillÃ©.
 .EXAMPLE
     .\Validate-AllWorkflows.ps1 -WorkflowsPath ".\workflows" -ReportsPath ".\reports\workflows" -GenerateReport
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
+    Date de crÃ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -36,17 +36,17 @@ param (
     [switch]$GenerateReport
 )
 
-# Importer le module de détection de cycles
+# Importer le module de dÃ©tection de cycles
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\modules\CycleDetector.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module de détection de cycles introuvable: $modulePath"
+    Write-Error "Module de dÃ©tection de cycles introuvable: $modulePath"
     exit 1
 }
 
 Import-Module $modulePath -Force
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -88,11 +88,11 @@ function Test-N8nWorkflow {
         # Charger le workflow
         $workflow = Get-Content -Path $WorkflowPath -Raw | ConvertFrom-Json
         
-        # Vérifier si le workflow a des nœuds et des connexions
+        # VÃ©rifier si le workflow a des nÅ“uds et des connexions
         if (-not $workflow.nodes -or -not $workflow.connections) {
             $issues += [PSCustomObject]@{
                 Type = "StructureError"
-                Description = "Le workflow ne contient pas de nœuds ou de connexions"
+                Description = "Le workflow ne contient pas de nÅ“uds ou de connexions"
                 Severity = "High"
                 CanFix = $false
             }
@@ -100,26 +100,26 @@ function Test-N8nWorkflow {
             return $issues
         }
         
-        # Vérifier les cycles
+        # VÃ©rifier les cycles
         $hasCycles = -not (Test-N8nWorkflowCycles -WorkflowPath $WorkflowPath)
         
         if ($hasCycles) {
             $issues += [PSCustomObject]@{
                 Type = "CycleDetected"
-                Description = "Des cycles ont été détectés dans le workflow"
+                Description = "Des cycles ont Ã©tÃ© dÃ©tectÃ©s dans le workflow"
                 Severity = "High"
                 CanFix = $true
             }
         }
         
-        # Vérifier les nœuds manquants dans les connexions
+        # VÃ©rifier les nÅ“uds manquants dans les connexions
         $nodeIds = $workflow.nodes | ForEach-Object { $_.id }
         
         foreach ($sourceId in $workflow.connections.PSObject.Properties.Name) {
             if ($sourceId -notin $nodeIds) {
                 $issues += [PSCustomObject]@{
                     Type = "MissingNode"
-                    Description = "Connexion depuis un nœud inexistant: $sourceId"
+                    Description = "Connexion depuis un nÅ“ud inexistant: $sourceId"
                     Severity = "High"
                     CanFix = $true
                     NodeId = $sourceId
@@ -138,7 +138,7 @@ function Test-N8nWorkflow {
                         if ($targetId -notin $nodeIds) {
                             $issues += [PSCustomObject]@{
                                 Type = "MissingNode"
-                                Description = "Connexion vers un nœud inexistant: $targetId (depuis $sourceId)"
+                                Description = "Connexion vers un nÅ“ud inexistant: $targetId (depuis $sourceId)"
                                 Severity = "High"
                                 CanFix = $true
                                 NodeId = $targetId
@@ -152,18 +152,18 @@ function Test-N8nWorkflow {
             }
         }
         
-        # Vérifier les nœuds isolés (sans connexions)
+        # VÃ©rifier les nÅ“uds isolÃ©s (sans connexions)
         foreach ($node in $workflow.nodes) {
             $nodeId = $node.id
             $hasIncomingConnections = $false
             $hasOutgoingConnections = $false
             
-            # Vérifier les connexions sortantes
+            # VÃ©rifier les connexions sortantes
             if ($workflow.connections.$nodeId) {
                 $hasOutgoingConnections = $true
             }
             
-            # Vérifier les connexions entrantes
+            # VÃ©rifier les connexions entrantes
             foreach ($sourceId in $workflow.connections.PSObject.Properties.Name) {
                 $connections = $workflow.connections.$sourceId
                 
@@ -192,7 +192,7 @@ function Test-N8nWorkflow {
             if (-not $hasIncomingConnections -and -not $hasOutgoingConnections) {
                 $issues += [PSCustomObject]@{
                     Type = "IsolatedNode"
-                    Description = "Nœud isolé (sans connexions): $nodeId ($($node.name))"
+                    Description = "NÅ“ud isolÃ© (sans connexions): $nodeId ($($node.name))"
                     Severity = "Medium"
                     CanFix = $true
                     NodeId = $nodeId
@@ -200,23 +200,23 @@ function Test-N8nWorkflow {
             }
         }
         
-        # Vérifier les nœuds de début manquants
+        # VÃ©rifier les nÅ“uds de dÃ©but manquants
         $startNodes = $workflow.nodes | Where-Object { $_.type -like "*start*" -or $_.type -like "*trigger*" }
         
         if ($startNodes.Count -eq 0) {
             $issues += [PSCustomObject]@{
                 Type = "MissingStartNode"
-                Description = "Aucun nœud de début ou déclencheur trouvé dans le workflow"
+                Description = "Aucun nÅ“ud de dÃ©but ou dÃ©clencheur trouvÃ© dans le workflow"
                 Severity = "Medium"
                 CanFix = $false
             }
         }
         
-        # Vérifier les nœuds avec des paramètres manquants
+        # VÃ©rifier les nÅ“uds avec des paramÃ¨tres manquants
         foreach ($node in $workflow.nodes) {
             if ($node.parameters) {
-                # Vérifier les paramètres requis selon le type de nœud
-                # (Cette partie nécessiterait une connaissance spécifique des types de nœuds n8n)
+                # VÃ©rifier les paramÃ¨tres requis selon le type de nÅ“ud
+                # (Cette partie nÃ©cessiterait une connaissance spÃ©cifique des types de nÅ“uds n8n)
             }
         }
     }
@@ -232,7 +232,7 @@ function Test-N8nWorkflow {
     return $issues
 }
 
-# Fonction pour corriger les problèmes d'un workflow
+# Fonction pour corriger les problÃ¨mes d'un workflow
 function Repair-N8nWorkflow {
     [CmdletBinding()]
     param (
@@ -245,11 +245,11 @@ function Repair-N8nWorkflow {
     
     Write-Log "Correction du workflow: $WorkflowPath" -Level "INFO"
     
-    # Vérifier s'il y a des problèmes à corriger
+    # VÃ©rifier s'il y a des problÃ¨mes Ã  corriger
     $fixableIssues = $Issues | Where-Object { $_.CanFix }
     
     if ($fixableIssues.Count -eq 0) {
-        Write-Log "Aucun problème corrigible trouvé." -Level "INFO"
+        Write-Log "Aucun problÃ¨me corrigible trouvÃ©." -Level "INFO"
         return $false
     }
     
@@ -257,13 +257,13 @@ function Repair-N8nWorkflow {
         # Charger le workflow
         $workflow = Get-Content -Path $WorkflowPath -Raw | ConvertFrom-Json
         
-        # Créer une copie de sauvegarde
+        # CrÃ©er une copie de sauvegarde
         $backupPath = "$WorkflowPath.bak"
         Copy-Item -Path $WorkflowPath -Destination $backupPath -Force
         
         $modified = $false
         
-        # Corriger les problèmes
+        # Corriger les problÃ¨mes
         foreach ($issue in $fixableIssues) {
             switch ($issue.Type) {
                 "CycleDetected" {
@@ -273,7 +273,7 @@ function Repair-N8nWorkflow {
                     if (Test-Path -Path $validateScript) {
                         & $validateScript -WorkflowsPath $WorkflowPath -FixCycles
                         $modified = $true
-                        Write-Log "Cycles corrigés dans le workflow." -Level "SUCCESS"
+                        Write-Log "Cycles corrigÃ©s dans le workflow." -Level "SUCCESS"
                     }
                     else {
                         Write-Log "Script de validation des cycles introuvable: $validateScript" -Level "ERROR"
@@ -281,28 +281,28 @@ function Repair-N8nWorkflow {
                 }
                 "MissingNode" {
                     if ($issue.SourceId -and $issue.NodeId) {
-                        # Supprimer la connexion vers le nœud manquant
+                        # Supprimer la connexion vers le nÅ“ud manquant
                         $connections = $workflow.connections.$($issue.SourceId).main[$issue.OutputIndex]
                         $newConnections = $connections | Where-Object { $_.node -ne $issue.NodeId }
                         $workflow.connections.$($issue.SourceId).main[$issue.OutputIndex] = $newConnections
                         
                         $modified = $true
-                        Write-Log "Connexion vers le nœud manquant supprimée: $($issue.SourceId) -> $($issue.NodeId)" -Level "SUCCESS"
+                        Write-Log "Connexion vers le nÅ“ud manquant supprimÃ©e: $($issue.SourceId) -> $($issue.NodeId)" -Level "SUCCESS"
                     }
                     elseif ($issue.NodeId) {
-                        # Supprimer toutes les connexions depuis le nœud manquant
+                        # Supprimer toutes les connexions depuis le nÅ“ud manquant
                         $workflow.connections.PSObject.Properties.Remove($issue.NodeId)
                         
                         $modified = $true
-                        Write-Log "Connexions depuis le nœud manquant supprimées: $($issue.NodeId)" -Level "SUCCESS"
+                        Write-Log "Connexions depuis le nÅ“ud manquant supprimÃ©es: $($issue.NodeId)" -Level "SUCCESS"
                     }
                 }
                 "IsolatedNode" {
-                    # Supprimer le nœud isolé
+                    # Supprimer le nÅ“ud isolÃ©
                     $workflow.nodes = $workflow.nodes | Where-Object { $_.id -ne $issue.NodeId }
                     
                     $modified = $true
-                    Write-Log "Nœud isolé supprimé: $($issue.NodeId)" -Level "SUCCESS"
+                    Write-Log "NÅ“ud isolÃ© supprimÃ©: $($issue.NodeId)" -Level "SUCCESS"
                 }
             }
         }
@@ -310,11 +310,11 @@ function Repair-N8nWorkflow {
         # Enregistrer les modifications
         if ($modified) {
             $workflow | ConvertTo-Json -Depth 10 | Out-File -FilePath $WorkflowPath -Encoding utf8
-            Write-Log "Workflow corrigé et enregistré: $WorkflowPath (sauvegarde: $backupPath)" -Level "SUCCESS"
+            Write-Log "Workflow corrigÃ© et enregistrÃ©: $WorkflowPath (sauvegarde: $backupPath)" -Level "SUCCESS"
             return $true
         }
         else {
-            Write-Log "Aucune modification apportée au workflow." -Level "INFO"
+            Write-Log "Aucune modification apportÃ©e au workflow." -Level "INFO"
             Remove-Item -Path $backupPath -Force
             return $false
         }
@@ -325,7 +325,7 @@ function Repair-N8nWorkflow {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-ValidationReport {
     [CmdletBinding()]
     param (
@@ -455,20 +455,20 @@ function New-ValidationReport {
     <h1>Rapport de validation des workflows n8n</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Workflows analysés: <strong>$totalWorkflows</strong></p>
-        <p>Workflows avec problèmes: <strong>$workflowsWithIssues</strong></p>
-        <p>Problèmes détectés: <strong>$totalIssues</strong></p>
-        <p>Workflows corrigés: <strong>$fixedWorkflows</strong></p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Workflows analysÃ©s: <strong>$totalWorkflows</strong></p>
+        <p>Workflows avec problÃ¨mes: <strong>$workflowsWithIssues</strong></p>
+        <p>ProblÃ¨mes dÃ©tectÃ©s: <strong>$totalIssues</strong></p>
+        <p>Workflows corrigÃ©s: <strong>$fixedWorkflows</strong></p>
     </div>
     
-    <h2>Détails des workflows</h2>
+    <h2>DÃ©tails des workflows</h2>
 "@
     
     foreach ($result in $Results) {
         $workflowName = [System.IO.Path]::GetFileName($result.Path)
         $issuesCount = $result.Issues.Count
-        $status = if ($issuesCount -eq 0) { "OK" } elseif ($result.Fixed) { "Corrigé" } else { "Problèmes" }
+        $status = if ($issuesCount -eq 0) { "OK" } elseif ($result.Fixed) { "CorrigÃ©" } else { "ProblÃ¨mes" }
         $statusClass = if ($issuesCount -eq 0) { "status-ok" } elseif ($result.Fixed) { "status-warning" } else { "status-error" }
         
         $html += @"
@@ -482,14 +482,14 @@ function New-ValidationReport {
         
         if ($result.Fixed) {
             $html += @"
-        <p class="fixed">Workflow corrigé automatiquement</p>
+        <p class="fixed">Workflow corrigÃ© automatiquement</p>
 "@
         }
         
         if ($issuesCount -gt 0) {
             $html += @"
         <div class="issues">
-            <h4>Problèmes détectés ($issuesCount)</h4>
+            <h4>ProblÃ¨mes dÃ©tectÃ©s ($issuesCount)</h4>
 "@
             
             foreach ($issue in $result.Issues) {
@@ -499,7 +499,7 @@ function New-ValidationReport {
             <div class="issue $issueClass">
                 <p><strong>Type:</strong> $($issue.Type)</p>
                 <p><strong>Description:</strong> $($issue.Description)</p>
-                <p><strong>Sévérité:</strong> $($issue.Severity)</p>
+                <p><strong>SÃ©vÃ©ritÃ©:</strong> $($issue.Severity)</p>
                 <p><strong>Corrigible:</strong> $($issue.CanFix)</p>
             </div>
 "@
@@ -517,12 +517,12 @@ function New-ValidationReport {
     
     $html += @"
     
-    <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p class="timestamp">Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $outputDir = [System.IO.Path]::GetDirectoryName($ReportPath)
     
     if (-not (Test-Path -Path $outputDir)) {
@@ -532,7 +532,7 @@ function New-ValidationReport {
     # Enregistrer le rapport
     $html | Out-File -FilePath $ReportPath -Encoding utf8
     
-    Write-Log "Rapport généré: $ReportPath" -Level "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ©: $ReportPath" -Level "SUCCESS"
 }
 
 # Fonction principale
@@ -552,17 +552,17 @@ function Start-WorkflowValidation {
         [switch]$GenerateReport
     )
     
-    Write-Log "Démarrage de la validation des workflows n8n..." -Level "TITLE"
+    Write-Log "DÃ©marrage de la validation des workflows n8n..." -Level "TITLE"
     Write-Log "Dossier des workflows: $WorkflowsPath"
     Write-Log "Dossier des rapports: $ReportsPath"
     
-    # Vérifier si le dossier des workflows existe
+    # VÃ©rifier si le dossier des workflows existe
     if (-not (Test-Path -Path $WorkflowsPath)) {
         Write-Log "Le dossier des workflows n'existe pas: $WorkflowsPath" -Level "ERROR"
         return
     }
     
-    # Créer le dossier des rapports s'il n'existe pas
+    # CrÃ©er le dossier des rapports s'il n'existe pas
     if (-not (Test-Path -Path $ReportsPath)) {
         New-Item -Path $ReportsPath -ItemType Directory -Force | Out-Null
     }
@@ -570,7 +570,7 @@ function Start-WorkflowValidation {
     # Obtenir les fichiers de workflow
     $workflowFiles = Get-ChildItem -Path $WorkflowsPath -Filter "*.json" -Recurse
     
-    Write-Log "Nombre de fichiers JSON trouvés: $($workflowFiles.Count)"
+    Write-Log "Nombre de fichiers JSON trouvÃ©s: $($workflowFiles.Count)"
     
     # Filtrer pour ne garder que les workflows n8n
     $n8nWorkflows = @()
@@ -580,7 +580,7 @@ function Start-WorkflowValidation {
             $content = Get-Content -Path $file.FullName -Raw
             $json = ConvertFrom-Json -InputObject $content -ErrorAction Stop
             
-            # Vérifier si c'est un workflow n8n
+            # VÃ©rifier si c'est un workflow n8n
             if ($json.nodes -and $json.connections) {
                 $n8nWorkflows += $file
             }
@@ -590,7 +590,7 @@ function Start-WorkflowValidation {
         }
     }
     
-    Write-Log "Nombre de workflows n8n identifiés: $($n8nWorkflows.Count)"
+    Write-Log "Nombre de workflows n8n identifiÃ©s: $($n8nWorkflows.Count)"
     
     # Valider les workflows
     $results = @()
@@ -601,7 +601,7 @@ function Start-WorkflowValidation {
         $issues = Test-N8nWorkflow -WorkflowPath $workflow.FullName
         
         if ($issues.Count -gt 0) {
-            Write-Log "Problèmes détectés: $($issues.Count)" -Level "WARNING"
+            Write-Log "ProblÃ¨mes dÃ©tectÃ©s: $($issues.Count)" -Level "WARNING"
             
             foreach ($issue in $issues) {
                 Write-Log "- $($issue.Type): $($issue.Description)" -Level "WARNING"
@@ -614,7 +614,7 @@ function Start-WorkflowValidation {
             }
         }
         else {
-            Write-Log "Aucun problème détecté." -Level "SUCCESS"
+            Write-Log "Aucun problÃ¨me dÃ©tectÃ©." -Level "SUCCESS"
         }
         
         $results += [PSCustomObject]@{
@@ -625,7 +625,7 @@ function Start-WorkflowValidation {
         }
     }
     
-    # Générer le rapport JSON
+    # GÃ©nÃ©rer le rapport JSON
     $reportJson = [PSCustomObject]@{
         GeneratedAt = (Get-Date).ToString("o")
         WorkflowsPath = $WorkflowsPath
@@ -638,30 +638,30 @@ function Start-WorkflowValidation {
     $jsonReportPath = Join-Path -Path $ReportsPath -ChildPath "workflow_validation_$(Get-Date -Format 'yyyyMMdd_HHmmss').json"
     $reportJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonReportPath -Encoding utf8
     
-    Write-Log "Rapport JSON généré: $jsonReportPath" -Level "SUCCESS"
+    Write-Log "Rapport JSON gÃ©nÃ©rÃ©: $jsonReportPath" -Level "SUCCESS"
     
-    # Générer le rapport HTML si demandé
+    # GÃ©nÃ©rer le rapport HTML si demandÃ©
     if ($GenerateReport) {
         $htmlReportPath = Join-Path -Path $ReportsPath -ChildPath "workflow_validation_$(Get-Date -Format 'yyyyMMdd_HHmmss').html"
         New-ValidationReport -Results $results -ReportPath $htmlReportPath
     }
     
-    # Afficher le résumé
+    # Afficher le rÃ©sumÃ©
     $workflowsWithIssues = ($results | Where-Object { $_.Issues.Count -gt 0 }).Count
     $totalIssues = ($results | ForEach-Object { $_.Issues.Count } | Measure-Object -Sum).Sum
     $fixedWorkflows = ($results | Where-Object { $_.Fixed }).Count
     
-    Write-Log "Résumé:" -Level "TITLE"
-    Write-Log "Workflows analysés: $($n8nWorkflows.Count)"
-    Write-Log "Workflows avec problèmes: $workflowsWithIssues"
-    Write-Log "Problèmes détectés: $totalIssues"
+    Write-Log "RÃ©sumÃ©:" -Level "TITLE"
+    Write-Log "Workflows analysÃ©s: $($n8nWorkflows.Count)"
+    Write-Log "Workflows avec problÃ¨mes: $workflowsWithIssues"
+    Write-Log "ProblÃ¨mes dÃ©tectÃ©s: $totalIssues"
     
     if ($FixIssues) {
-        Write-Log "Workflows corrigés: $fixedWorkflows"
+        Write-Log "Workflows corrigÃ©s: $fixedWorkflows"
     }
     
     return $reportJson
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-WorkflowValidation -WorkflowsPath $WorkflowsPath -ReportsPath $ReportsPath -FixIssues:$FixIssues -GenerateReport:$GenerateReport

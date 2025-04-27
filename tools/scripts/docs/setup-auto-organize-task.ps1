@@ -1,4 +1,4 @@
-# Script pour configurer une tache planifiee pour l'organisation automatique des fichiers
+﻿# Script pour configurer une tache planifiee pour l'organisation automatique des fichiers
 
 Write-Host "=== Configuration de la tache planifiee pour l'organisation automatique ===" -ForegroundColor Cyan
 

@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour la fonction de calcul du score de risque.
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
     de la fonction de calcul du score de risque.
 .EXAMPLE
     .\Test-RiskScoreCalculation.ps1
@@ -16,11 +16,11 @@
 [CmdletBinding()]
 param()
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "RiskScoreUnitTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour créer des fichiers de test
+# Fonction pour crÃ©er des fichiers de test
 function New-TestFile {
     param(
         [string]$Path,
@@ -38,7 +38,7 @@ function New-TestFile {
     return $fullPath
 }
 
-# Créer des fichiers de test avec différents niveaux de risque
+# CrÃ©er des fichiers de test avec diffÃ©rents niveaux de risque
 $lowRiskScript = @"
 # Test PowerShell Script (Low Risk)
 function Test-Function {
@@ -90,7 +90,7 @@ function Test-Function {
     # Utilisation de Invoke-Expression
     Invoke-Expression "Get-Process"
 
-    # Suppression récursive
+    # Suppression rÃ©cursive
     Remove-Item -Path "C:\Temp\*" -Recurse -Force
 
     # Mot de passe en clair
@@ -102,17 +102,17 @@ function Test-Function {
 Test-Function -param1 "Test" -password "SuperSecret123"
 "@
 
-# Créer les fichiers de test
+# CrÃ©er les fichiers de test
 $testFiles = @{
     LowRisk    = New-TestFile -Path "powershell/low_risk.ps1" -Content $lowRiskScript
     MediumRisk = New-TestFile -Path "powershell/medium_risk.ps1" -Content $mediumRiskScript
     HighRisk   = New-TestFile -Path "powershell/high_risk.ps1" -Content $highRiskScript
 }
 
-# Chemin du script d'analyse prédictive
+# Chemin du script d'analyse prÃ©dictive
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-PredictiveFileAnalysis.ps1"
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-SimpleTest {
     param(
         [string]$Name,
@@ -123,15 +123,15 @@ function Invoke-SimpleTest {
 
     try {
         & $Test
-        Write-Host "  Réussi" -ForegroundColor Green
+        Write-Host "  RÃ©ussi" -ForegroundColor Green
         return $true
     } catch {
-        Write-Host "  Échoué: $_" -ForegroundColor Red
+        Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
         return $false
     }
 }
 
-# Fonction pour vérifier si une condition est vraie
+# Fonction pour vÃ©rifier si une condition est vraie
 function Assert-True {
     param(
         [bool]$Condition,
@@ -139,11 +139,11 @@ function Assert-True {
     )
 
     if (-not $Condition) {
-        throw "Assertion échouée: $Message"
+        throw "Assertion Ã©chouÃ©e: $Message"
     }
 }
 
-# Fonction pour vérifier si deux valeurs sont égales
+# Fonction pour vÃ©rifier si deux valeurs sont Ã©gales
 function Assert-Equal {
     param(
         $Expected,
@@ -152,11 +152,11 @@ function Assert-Equal {
     )
 
     if ($Expected -ne $Actual) {
-        throw "Assertion échouée: $Message. Attendu: $Expected, Obtenu: $Actual"
+        throw "Assertion Ã©chouÃ©e: $Message. Attendu: $Expected, Obtenu: $Actual"
     }
 }
 
-# Fonction pour vérifier si une valeur est supérieure à une autre
+# Fonction pour vÃ©rifier si une valeur est supÃ©rieure Ã  une autre
 function Assert-Greater {
     param(
         $Value,
@@ -165,11 +165,11 @@ function Assert-Greater {
     )
 
     if (-not ($Value -gt $Threshold)) {
-        throw "Assertion échouée: $Message. La valeur $Value n'est pas supérieure à $Threshold"
+        throw "Assertion Ã©chouÃ©e: $Message. La valeur $Value n'est pas supÃ©rieure Ã  $Threshold"
     }
 }
 
-# Fonction pour vérifier si une valeur est inférieure à une autre
+# Fonction pour vÃ©rifier si une valeur est infÃ©rieure Ã  une autre
 function Assert-Less {
     param(
         $Value,
@@ -178,55 +178,55 @@ function Assert-Less {
     )
 
     if (-not ($Value -lt $Threshold)) {
-        throw "Assertion échouée: $Message. La valeur $Value n'est pas inférieure à $Threshold"
+        throw "Assertion Ã©chouÃ©e: $Message. La valeur $Value n'est pas infÃ©rieure Ã  $Threshold"
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = @()
 
-# Test 1: Vérifier que le script existe
-$testResults += Invoke-SimpleTest -Name "Le script d'analyse prédictive existe" {
-    Assert-True (Test-Path -Path $scriptPath) "Le script d'analyse prédictive n'existe pas: $scriptPath"
+# Test 1: VÃ©rifier que le script existe
+$testResults += Invoke-SimpleTest -Name "Le script d'analyse prÃ©dictive existe" {
+    Assert-True (Test-Path -Path $scriptPath) "Le script d'analyse prÃ©dictive n'existe pas: $scriptPath"
 }
 
-# Test 2: Vérifier que le script peut être exécuté
-$testResults += Invoke-SimpleTest -Name "Le script d'analyse prédictive peut être exécuté" {
+# Test 2: VÃ©rifier que le script peut Ãªtre exÃ©cutÃ©
+$testResults += Invoke-SimpleTest -Name "Le script d'analyse prÃ©dictive peut Ãªtre exÃ©cutÃ©" {
     $null = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
-    Assert-True (Test-Path -Path "$testDir\report.html") "Le rapport n'a pas été généré"
+    Assert-True (Test-Path -Path "$testDir\report.html") "Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©"
 }
 
-# Test 3: Vérifier que les scores de risque sont cohérents
-$testResults += Invoke-SimpleTest -Name "Les scores de risque sont cohérents" {
+# Test 3: VÃ©rifier que les scores de risque sont cohÃ©rents
+$testResults += Invoke-SimpleTest -Name "Les scores de risque sont cohÃ©rents" {
     $result = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
 
     $lowRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.LowRisk }
     $mediumRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.MediumRisk }
     $highRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.HighRisk }
 
-    Assert-True ($lowRiskFile.RiskScore -lt $mediumRiskFile.RiskScore) "Le score de risque du fichier à faible risque n'est pas inférieur à celui du fichier à risque moyen"
-    Assert-True ($mediumRiskFile.RiskScore -lt $highRiskFile.RiskScore) "Le score de risque du fichier à risque moyen n'est pas inférieur à celui du fichier à haut risque"
+    Assert-True ($lowRiskFile.RiskScore -lt $mediumRiskFile.RiskScore) "Le score de risque du fichier Ã  faible risque n'est pas infÃ©rieur Ã  celui du fichier Ã  risque moyen"
+    Assert-True ($mediumRiskFile.RiskScore -lt $highRiskFile.RiskScore) "Le score de risque du fichier Ã  risque moyen n'est pas infÃ©rieur Ã  celui du fichier Ã  haut risque"
 }
 
-# Test 4: Vérifier que les niveaux de risque sont cohérents
-$testResults += Invoke-SimpleTest -Name "Les niveaux de risque sont cohérents" {
+# Test 4: VÃ©rifier que les niveaux de risque sont cohÃ©rents
+$testResults += Invoke-SimpleTest -Name "Les niveaux de risque sont cohÃ©rents" {
     $result = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
 
     $lowRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.LowRisk }
     $mediumRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.MediumRisk }
     $highRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.HighRisk }
 
-    # Vérifier que les scores sont cohérents plutôt que de vérifier des niveaux spécifiques
-    Assert-True ($lowRiskFile.RiskScore -lt $highRiskFile.RiskScore) "Le score de risque du fichier à faible risque n'est pas inférieur à celui du fichier à haut risque"
+    # VÃ©rifier que les scores sont cohÃ©rents plutÃ´t que de vÃ©rifier des niveaux spÃ©cifiques
+    Assert-True ($lowRiskFile.RiskScore -lt $highRiskFile.RiskScore) "Le score de risque du fichier Ã  faible risque n'est pas infÃ©rieur Ã  celui du fichier Ã  haut risque"
 
-    # Vérifier que les niveaux de risque ne sont pas vides
-    Assert-True (-not [string]::IsNullOrEmpty($lowRiskFile.RiskLevel)) "Le niveau de risque du fichier à faible risque est vide"
-    Assert-True (-not [string]::IsNullOrEmpty($mediumRiskFile.RiskLevel)) "Le niveau de risque du fichier à risque moyen est vide"
-    Assert-True (-not [string]::IsNullOrEmpty($highRiskFile.RiskLevel)) "Le niveau de risque du fichier à haut risque est vide"
+    # VÃ©rifier que les niveaux de risque ne sont pas vides
+    Assert-True (-not [string]::IsNullOrEmpty($lowRiskFile.RiskLevel)) "Le niveau de risque du fichier Ã  faible risque est vide"
+    Assert-True (-not [string]::IsNullOrEmpty($mediumRiskFile.RiskLevel)) "Le niveau de risque du fichier Ã  risque moyen est vide"
+    Assert-True (-not [string]::IsNullOrEmpty($highRiskFile.RiskLevel)) "Le niveau de risque du fichier Ã  haut risque est vide"
 }
 
-# Test 5: Vérifier que les raisons du score de risque sont présentes
-$testResults += Invoke-SimpleTest -Name "Les raisons du score de risque sont présentes" {
+# Test 5: VÃ©rifier que les raisons du score de risque sont prÃ©sentes
+$testResults += Invoke-SimpleTest -Name "Les raisons du score de risque sont prÃ©sentes" {
     $result = & $scriptPath -RepositoryPath $testDir -OutputPath "$testDir\report.html" -ErrorHistoryPath "$testDir\error_history.json" -UseCache
 
     $highRiskFile = $result.Results | Where-Object { $_.FilePath -eq $testFiles.HighRisk }
@@ -234,25 +234,25 @@ $testResults += Invoke-SimpleTest -Name "Les raisons du score de risque sont pr�
     Assert-True ($highRiskFile.RiskReasons.Count -gt 0) "Aucune raison n'est fournie pour le score de risque"
 }
 
-# Afficher un résumé des tests
+# Afficher un rÃ©sumÃ© des tests
 $successCount = ($testResults | Where-Object { $_ -eq $true }).Count
 $failureCount = ($testResults | Where-Object { $_ -eq $false }).Count
 $totalCount = $testResults.Count
 
 Write-Host ""
-Write-Host "Résumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests réussis: $successCount" -ForegroundColor Green
-Write-Host "  Tests échoués: $failureCount" -ForegroundColor Red
+Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis: $successCount" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $failureCount" -ForegroundColor Red
 Write-Host "  Total: $totalCount" -ForegroundColor White
 Write-Host ""
 
 # Nettoyer
 Write-Host "Nettoyage..." -ForegroundColor Cyan
 Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
-Write-Host "  Répertoire de test supprimé" -ForegroundColor Green
+Write-Host "  RÃ©pertoire de test supprimÃ©" -ForegroundColor Green
 Write-Host ""
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 $success = $failureCount -eq 0
-Write-Host "Résultat global: $(if ($success) { "Succès" } else { "Échec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
+Write-Host "RÃ©sultat global: $(if ($success) { "SuccÃ¨s" } else { "Ã‰chec" })" -ForegroundColor $(if ($success) { "Green" } else { "Red" })
 exit $(if ($success) { 0 } else { 1 })

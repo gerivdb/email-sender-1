@@ -1,5 +1,5 @@
-# Module de génération de README pour le Script Manager
-# Ce module génère des fichiers README pour chaque dossier de scripts
+﻿# Module de gÃ©nÃ©ration de README pour le Script Manager
+# Ce module gÃ©nÃ¨re des fichiers README pour chaque dossier de scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: documentation, readme, scripts
@@ -7,14 +7,14 @@
 function New-FolderReadmes {
     <#
     .SYNOPSIS
-        Génère des fichiers README pour chaque dossier de scripts
+        GÃ©nÃ¨re des fichiers README pour chaque dossier de scripts
     .DESCRIPTION
-        Analyse la structure des dossiers et génère un README.md pour chaque dossier
+        Analyse la structure des dossiers et gÃ©nÃ¨re un README.md pour chaque dossier
         contenant une description, la liste des scripts et des exemples d'utilisation
     .PARAMETER Analysis
         Objet d'analyse des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer les fichiers README
+        Chemin oÃ¹ enregistrer les fichiers README
     .EXAMPLE
         New-FolderReadmes -Analysis $analysis -OutputPath "docs"
     #>
@@ -27,13 +27,13 @@ function New-FolderReadmes {
         [string]$OutputPath
     )
     
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $Results = @()
     
     # Obtenir tous les dossiers uniques contenant des scripts
     $Folders = $Analysis.Scripts | ForEach-Object { Split-Path -Parent $_.Path } | Sort-Object -Unique
     
-    Write-Host "Génération de README pour $($Folders.Count) dossiers..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration de README pour $($Folders.Count) dossiers..." -ForegroundColor Cyan
     
     # Traiter chaque dossier
     foreach ($Folder in $Folders) {
@@ -43,18 +43,18 @@ function New-FolderReadmes {
         # Obtenir les scripts dans ce dossier
         $FolderScripts = $Analysis.Scripts | Where-Object { (Split-Path -Parent $_.Path) -eq $Folder }
         
-        # Créer le chemin du README
+        # CrÃ©er le chemin du README
         $ReadmePath = Join-Path -Path $Folder -ChildPath "README.md"
         
-        # Générer le contenu du README
+        # GÃ©nÃ©rer le contenu du README
         $ReadmeContent = Get-ReadmeContent -FolderName $FolderName -FolderScripts $FolderScripts
         
         # Enregistrer le README
         try {
             Set-Content -Path $ReadmePath -Value $ReadmeContent
-            Write-Host "  README généré: $ReadmePath" -ForegroundColor Green
+            Write-Host "  README gÃ©nÃ©rÃ©: $ReadmePath" -ForegroundColor Green
             
-            # Ajouter le résultat au tableau
+            # Ajouter le rÃ©sultat au tableau
             $Results += [PSCustomObject]@{
                 FolderPath = $Folder
                 FolderName = $FolderName
@@ -63,9 +63,9 @@ function New-FolderReadmes {
                 Success = $true
             }
         } catch {
-            Write-Warning "Erreur lors de la création du README pour $Folder : $_"
+            Write-Warning "Erreur lors de la crÃ©ation du README pour $Folder : $_"
             
-            # Ajouter le résultat au tableau
+            # Ajouter le rÃ©sultat au tableau
             $Results += [PSCustomObject]@{
                 FolderPath = $Folder
                 FolderName = $FolderName
@@ -77,7 +77,7 @@ function New-FolderReadmes {
         }
     }
     
-    # Créer une copie des README dans le dossier de documentation
+    # CrÃ©er une copie des README dans le dossier de documentation
     foreach ($Result in $Results | Where-Object { $_.Success }) {
         $DocsFolderPath = Join-Path -Path $OutputPath -ChildPath "folders"
         $DocsFolderPath = Join-Path -Path $DocsFolderPath -ChildPath $Result.FolderName
@@ -101,9 +101,9 @@ function New-FolderReadmes {
 function Get-ReadmeContent {
     <#
     .SYNOPSIS
-        Génère le contenu d'un fichier README pour un dossier
+        GÃ©nÃ¨re le contenu d'un fichier README pour un dossier
     .DESCRIPTION
-        Crée un contenu de README adapté au dossier et aux scripts qu'il contient
+        CrÃ©e un contenu de README adaptÃ© au dossier et aux scripts qu'il contient
     .PARAMETER FolderName
         Nom du dossier
     .PARAMETER FolderScripts
@@ -120,7 +120,7 @@ function Get-ReadmeContent {
         [array]$FolderScripts
     )
     
-    # Déterminer la catégorie du dossier
+    # DÃ©terminer la catÃ©gorie du dossier
     $Category = switch -Regex ($FolderName.ToLower()) {
         "utils?" { "Utilitaires" }
         "doc(s|umentation)?" { "Documentation" }
@@ -133,38 +133,38 @@ function Get-ReadmeContent {
         "git" { "Gestion de Git" }
         "journal" { "Journal de bord" }
         "roadmap" { "Gestion de la roadmap" }
-        "n8n" { "Intégration n8n" }
+        "n8n" { "IntÃ©gration n8n" }
         "mcp" { "Model Context Protocol" }
         "encoding" { "Gestion de l'encodage" }
-        "security" { "Sécurité" }
-        "database" { "Base de données" }
+        "security" { "SÃ©curitÃ©" }
+        "database" { "Base de donnÃ©es" }
         "maintenance" { "Maintenance" }
         default { "Scripts" }
     }
     
-    # Générer une description
+    # GÃ©nÃ©rer une description
     $Description = switch -Regex ($FolderName.ToLower()) {
-        "utils?" { "Scripts utilitaires pour diverses tâches courantes." }
-        "doc(s|umentation)?" { "Scripts liés à la génération et la gestion de la documentation." }
+        "utils?" { "Scripts utilitaires pour diverses tÃ¢ches courantes." }
+        "doc(s|umentation)?" { "Scripts liÃ©s Ã  la gÃ©nÃ©ration et la gestion de la documentation." }
         "test(s|ing)?" { "Scripts de test pour valider le fonctionnement des autres scripts." }
-        "api" { "Scripts d'intégration avec diverses API." }
+        "api" { "Scripts d'intÃ©gration avec diverses API." }
         "setup" { "Scripts d'installation et de configuration de l'environnement." }
         "config(uration)?" { "Scripts et fichiers de configuration." }
-        "workflow" { "Scripts liés à la gestion des workflows." }
+        "workflow" { "Scripts liÃ©s Ã  la gestion des workflows." }
         "email" { "Scripts pour la gestion et l'envoi d'emails." }
-        "git" { "Scripts d'intégration avec Git." }
-        "journal" { "Scripts liés au journal de bord et à la documentation des activités." }
-        "roadmap" { "Scripts pour la gestion et la mise à jour de la roadmap." }
-        "n8n" { "Scripts d'intégration avec la plateforme n8n." }
-        "mcp" { "Scripts liés au Model Context Protocol." }
+        "git" { "Scripts d'intÃ©gration avec Git." }
+        "journal" { "Scripts liÃ©s au journal de bord et Ã  la documentation des activitÃ©s." }
+        "roadmap" { "Scripts pour la gestion et la mise Ã  jour de la roadmap." }
+        "n8n" { "Scripts d'intÃ©gration avec la plateforme n8n." }
+        "mcp" { "Scripts liÃ©s au Model Context Protocol." }
         "encoding" { "Scripts pour la gestion de l'encodage des fichiers." }
-        "security" { "Scripts liés à la sécurité et à l'authentification." }
-        "database" { "Scripts d'interaction avec les bases de données." }
-        "maintenance" { "Scripts de maintenance du système." }
-        default { "Collection de scripts pour diverses tâches." }
+        "security" { "Scripts liÃ©s Ã  la sÃ©curitÃ© et Ã  l'authentification." }
+        "database" { "Scripts d'interaction avec les bases de donnÃ©es." }
+        "maintenance" { "Scripts de maintenance du systÃ¨me." }
+        default { "Collection de scripts pour diverses tÃ¢ches." }
     }
     
-    # Générer la liste des scripts
+    # GÃ©nÃ©rer la liste des scripts
     $ScriptsList = $FolderScripts | ForEach-Object {
         $ScriptName = $_.Name
         $ScriptDescription = if ($_.StaticAnalysis.CommentCount -gt 0) {
@@ -182,7 +182,7 @@ function Get-ReadmeContent {
         "- **[$ScriptName]($ScriptName)** - $ScriptDescription"
     }
     
-    # Générer des exemples d'utilisation
+    # GÃ©nÃ©rer des exemples d'utilisation
     $Examples = $FolderScripts | Where-Object { $_.Type -eq "PowerShell" } | Select-Object -First 3 | ForEach-Object {
         $ScriptName = $_.Name
         $ScriptPath = $_.Path
@@ -191,16 +191,16 @@ function Get-ReadmeContent {
 ### Exemple d'utilisation de $ScriptName
 
 ```powershell
-# Exécuter le script
+# ExÃ©cuter le script
 .\$ScriptName
 
-# Ou avec des paramètres (si applicable)
+# Ou avec des paramÃ¨tres (si applicable)
 # .\$ScriptName -Param1 Value1 -Param2 Value2
 ```
 "@
     }
     
-    # Générer le contenu complet du README
+    # GÃ©nÃ©rer le contenu complet du README
     $Content = @"
 # $Category - $FolderName
 
@@ -225,13 +225,13 @@ $($Examples -join "`n`n")
 
 ## Maintenance
 
-Ce README est généré automatiquement par le Script Manager. Pour mettre à jour la documentation, exécutez :
+Ce README est gÃ©nÃ©rÃ© automatiquement par le Script Manager. Pour mettre Ã  jour la documentation, exÃ©cutez :
 
 ```powershell
 .\scripts\manager\Phase3-DocumentAndMonitor.ps1
 ```
 
-Dernière mise à jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
     
     return $Content

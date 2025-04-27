@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Intègre TestOmnibus avec Allure.
+    IntÃ¨gre TestOmnibus avec Allure.
 .DESCRIPTION
-    Ce script intègre TestOmnibus avec Allure en générant des rapports Allure
+    Ce script intÃ¨gre TestOmnibus avec Allure en gÃ©nÃ©rant des rapports Allure
     et en les publiant sur un serveur Allure.
 .PARAMETER TestDirectory
-    Le répertoire contenant les tests Python.
+    Le rÃ©pertoire contenant les tests Python.
 .PARAMETER AllureServerUrl
     L'URL du serveur Allure (optionnel).
 .PARAMETER OpenReport
-    Ouvre le rapport Allure après sa génération.
+    Ouvre le rapport Allure aprÃ¨s sa gÃ©nÃ©ration.
 .PARAMETER InstallAllure
-    Installe Allure s'il n'est pas déjà installé.
+    Installe Allure s'il n'est pas dÃ©jÃ  installÃ©.
 .EXAMPLE
     .\Integrate-Allure.ps1 -TestDirectory "tests/python" -OpenReport
 .EXAMPLE
@@ -33,23 +33,23 @@ param(
     [switch]$InstallAllure
 )
 
-# Vérifier si Allure est installé
+# VÃ©rifier si Allure est installÃ©
 $allureInstalled = $false
 try {
     $allureVersion = & allure --version 2>&1
     if ($LASTEXITCODE -eq 0) {
         $allureInstalled = $true
-        Write-Host "Allure est installé: $allureVersion" -ForegroundColor Green
+        Write-Host "Allure est installÃ©: $allureVersion" -ForegroundColor Green
     }
 } catch {
     $allureInstalled = $false
 }
 
-# Installer Allure si nécessaire
+# Installer Allure si nÃ©cessaire
 if (-not $allureInstalled -and $InstallAllure) {
     Write-Host "Installation d'Allure..." -ForegroundColor Cyan
     
-    # Vérifier si Scoop est installé
+    # VÃ©rifier si Scoop est installÃ©
     $scoopInstalled = $false
     try {
         $scoopVersion = & scoop --version 2>&1
@@ -60,7 +60,7 @@ if (-not $allureInstalled -and $InstallAllure) {
         $scoopInstalled = $false
     }
     
-    # Installer Scoop si nécessaire
+    # Installer Scoop si nÃ©cessaire
     if (-not $scoopInstalled) {
         Write-Host "Installation de Scoop..." -ForegroundColor Yellow
         try {
@@ -80,7 +80,7 @@ if (-not $allureInstalled -and $InstallAllure) {
         
         if ($LASTEXITCODE -eq 0) {
             $allureInstalled = $true
-            Write-Host "Allure a été installé avec succès." -ForegroundColor Green
+            Write-Host "Allure a Ã©tÃ© installÃ© avec succÃ¨s." -ForegroundColor Green
         } else {
             Write-Error "Impossible d'installer Allure avec Scoop."
             Write-Host "Veuillez installer Allure manuellement: https://docs.qameta.io/allure/" -ForegroundColor Red
@@ -89,65 +89,65 @@ if (-not $allureInstalled -and $InstallAllure) {
     }
 }
 
-# Vérifier si le module allure-pytest est installé
+# VÃ©rifier si le module allure-pytest est installÃ©
 $allurePytestInstalled = $false
 try {
     $pipList = & python -m pip list 2>&1
     if ($pipList -match "allure-pytest") {
         $allurePytestInstalled = $true
-        Write-Host "Le module allure-pytest est installé." -ForegroundColor Green
+        Write-Host "Le module allure-pytest est installÃ©." -ForegroundColor Green
     } else {
         Write-Host "Installation du module allure-pytest..." -ForegroundColor Yellow
         & python -m pip install allure-pytest
         
         if ($LASTEXITCODE -eq 0) {
             $allurePytestInstalled = $true
-            Write-Host "Le module allure-pytest a été installé avec succès." -ForegroundColor Green
+            Write-Host "Le module allure-pytest a Ã©tÃ© installÃ© avec succÃ¨s." -ForegroundColor Green
         } else {
             Write-Error "Impossible d'installer le module allure-pytest."
             return 1
         }
     }
 } catch {
-    Write-Error "Erreur lors de la vérification du module allure-pytest: $_"
+    Write-Error "Erreur lors de la vÃ©rification du module allure-pytest: $_"
     return 1
 }
 
-# Définir le répertoire des résultats Allure
+# DÃ©finir le rÃ©pertoire des rÃ©sultats Allure
 $allureDir = "allure-results"
 
-# Exécuter TestOmnibus avec l'option Allure
-Write-Host "Exécution de TestOmnibus avec génération de rapports Allure..." -ForegroundColor Cyan
+# ExÃ©cuter TestOmnibus avec l'option Allure
+Write-Host "ExÃ©cution de TestOmnibus avec gÃ©nÃ©ration de rapports Allure..." -ForegroundColor Cyan
 $testOmnibusScript = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-TestOmnibus.ps1"
 & $testOmnibusScript -TestDirectory $TestDirectory -GenerateAllureReport -AllureDirectory $allureDir -Analyze -GenerateReport
 
-# Vérifier si des résultats Allure ont été générés
+# VÃ©rifier si des rÃ©sultats Allure ont Ã©tÃ© gÃ©nÃ©rÃ©s
 if (-not (Test-Path -Path $allureDir) -or (Get-ChildItem -Path $allureDir).Count -eq 0) {
-    Write-Error "Aucun résultat Allure n'a été généré."
+    Write-Error "Aucun rÃ©sultat Allure n'a Ã©tÃ© gÃ©nÃ©rÃ©."
     return 1
 }
 
-# Générer le rapport Allure
+# GÃ©nÃ©rer le rapport Allure
 $allureReportDir = "allure-report"
 if ($allureInstalled) {
-    Write-Host "Génération du rapport Allure..." -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration du rapport Allure..." -ForegroundColor Cyan
     & allure generate $allureDir -o $allureReportDir --clean
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Rapport Allure généré avec succès dans $allureReportDir" -ForegroundColor Green
+        Write-Host "Rapport Allure gÃ©nÃ©rÃ© avec succÃ¨s dans $allureReportDir" -ForegroundColor Green
         
-        # Ouvrir le rapport si demandé
+        # Ouvrir le rapport si demandÃ©
         if ($OpenReport) {
             Write-Host "Ouverture du rapport Allure..." -ForegroundColor Cyan
             & allure open $allureReportDir
         }
     } else {
-        Write-Error "Erreur lors de la génération du rapport Allure."
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport Allure."
         return 1
     }
 } else {
-    Write-Warning "Allure n'est pas installé. Le rapport Allure n'a pas été généré."
-    Write-Warning "Pour installer Allure, utilisez le paramètre -InstallAllure ou consultez https://docs.qameta.io/allure/"
+    Write-Warning "Allure n'est pas installÃ©. Le rapport Allure n'a pas Ã©tÃ© gÃ©nÃ©rÃ©."
+    Write-Warning "Pour installer Allure, utilisez le paramÃ¨tre -InstallAllure ou consultez https://docs.qameta.io/allure/"
 }
 
 # Publier le rapport sur un serveur Allure si une URL est fournie
@@ -155,7 +155,7 @@ if ($AllureServerUrl) {
     Write-Host "Publication du rapport Allure sur $AllureServerUrl..." -ForegroundColor Cyan
     
     if ($allureInstalled) {
-        # Créer une archive des résultats Allure
+        # CrÃ©er une archive des rÃ©sultats Allure
         $archivePath = "allure-results.zip"
         Compress-Archive -Path "$allureDir\*" -DestinationPath $archivePath -Force
         
@@ -164,14 +164,14 @@ if ($AllureServerUrl) {
             $response = Invoke-RestMethod -Uri "$AllureServerUrl/allure-docker-service/send-results" -Method Post -InFile $archivePath -ContentType "application/zip"
             
             if ($response.status -eq "OK") {
-                Write-Host "Résultats publiés avec succès sur le serveur Allure." -ForegroundColor Green
+                Write-Host "RÃ©sultats publiÃ©s avec succÃ¨s sur le serveur Allure." -ForegroundColor Green
                 Write-Host "URL du rapport: $AllureServerUrl/allure-docker-service/latest-report" -ForegroundColor Cyan
             } else {
-                Write-Error "Erreur lors de la publication des résultats sur le serveur Allure: $($response.message)"
+                Write-Error "Erreur lors de la publication des rÃ©sultats sur le serveur Allure: $($response.message)"
                 return 1
             }
         } catch {
-            Write-Error "Erreur lors de la publication des résultats sur le serveur Allure: $_"
+            Write-Error "Erreur lors de la publication des rÃ©sultats sur le serveur Allure: $_"
             return 1
         } finally {
             # Supprimer l'archive temporaire
@@ -180,7 +180,7 @@ if ($AllureServerUrl) {
             }
         }
     } else {
-        Write-Error "Allure n'est pas installé. Impossible de publier les résultats sur le serveur Allure."
+        Write-Error "Allure n'est pas installÃ©. Impossible de publier les rÃ©sultats sur le serveur Allure."
         return 1
     }
 }

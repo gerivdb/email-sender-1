@@ -1,36 +1,36 @@
-# Phase 2 : Analyse et organisation avancées
+﻿# Phase 2 : Analyse et organisation avancÃ©es
 
-Cette documentation décrit la Phase 2 du Script Manager, qui se concentre sur l'analyse approfondie des scripts et leur organisation intelligente selon les principes SOLID, DRY, KISS et Clean Code.
+Cette documentation dÃ©crit la Phase 2 du Script Manager, qui se concentre sur l'analyse approfondie des scripts et leur organisation intelligente selon les principes SOLID, DRY, KISS et Clean Code.
 
-## Table des matières
+## Table des matiÃ¨res
 
 1. [Vue d'ensemble](#vue-densemble)
 2. [Modules](#modules)
    - [Module d'analyse](#module-danalyse)
    - [Module d'organisation](#module-dorganisation)
-3. [Fonctionnalités](#fonctionnalités)
+3. [FonctionnalitÃ©s](#fonctionnalitÃ©s)
    - [Analyse statique](#analyse-statique)
-   - [Détection des dépendances](#détection-des-dépendances)
-   - [Analyse de la qualité du code](#analyse-de-la-qualité-du-code)
-   - [Détection des problèmes](#détection-des-problèmes)
+   - [DÃ©tection des dÃ©pendances](#dÃ©tection-des-dÃ©pendances)
+   - [Analyse de la qualitÃ© du code](#analyse-de-la-qualitÃ©-du-code)
+   - [DÃ©tection des problÃ¨mes](#dÃ©tection-des-problÃ¨mes)
    - [Classification des scripts](#classification-des-scripts)
    - [Organisation intelligente](#organisation-intelligente)
-   - [Mise à jour des références](#mise-à-jour-des-références)
+   - [Mise Ã  jour des rÃ©fÃ©rences](#mise-Ã -jour-des-rÃ©fÃ©rences)
 4. [Utilisation](#utilisation)
 5. [Tests](#tests)
 6. [Bonnes pratiques](#bonnes-pratiques)
 
 ## Vue d'ensemble
 
-La Phase 2 du Script Manager étend les fonctionnalités de base de la Phase 1 en ajoutant des capacités d'analyse approfondie et d'organisation intelligente. Elle permet de :
+La Phase 2 du Script Manager Ã©tend les fonctionnalitÃ©s de base de la Phase 1 en ajoutant des capacitÃ©s d'analyse approfondie et d'organisation intelligente. Elle permet de :
 
 - Analyser statiquement le code des scripts pour en extraire des informations structurelles
-- Détecter les dépendances entre les scripts
-- Évaluer la qualité du code selon plusieurs métriques
-- Identifier les problèmes potentiels et proposer des solutions
-- Classifier les scripts selon des règles définies
-- Organiser les scripts dans une structure de dossiers sémantiques
-- Mettre à jour les références entre scripts après déplacement
+- DÃ©tecter les dÃ©pendances entre les scripts
+- Ã‰valuer la qualitÃ© du code selon plusieurs mÃ©triques
+- Identifier les problÃ¨mes potentiels et proposer des solutions
+- Classifier les scripts selon des rÃ¨gles dÃ©finies
+- Organiser les scripts dans une structure de dossiers sÃ©mantiques
+- Mettre Ã  jour les rÃ©fÃ©rences entre scripts aprÃ¨s dÃ©placement
 
 Cette phase suit les principes SOLID, DRY, KISS et Clean Code pour offrir une solution modulaire, maintenable et extensible.
 
@@ -38,25 +38,25 @@ Cette phase suit les principes SOLID, DRY, KISS et Clean Code pour offrir une so
 
 ### Module d'analyse
 
-Le module d'analyse est responsable de l'analyse approfondie des scripts. Il est composé des sous-modules suivants :
+Le module d'analyse est responsable de l'analyse approfondie des scripts. Il est composÃ© des sous-modules suivants :
 
 - **AnalysisModule.psm1** : Module principal qui coordonne l'analyse
 - **StaticAnalyzer.psm1** : Analyse statique du code
-- **DependencyDetector.psm1** : Détection des dépendances entre scripts
-- **CodeQualityAnalyzer.psm1** : Évaluation de la qualité du code
-- **ProblemDetector.psm1** : Détection des problèmes potentiels
+- **DependencyDetector.psm1** : DÃ©tection des dÃ©pendances entre scripts
+- **CodeQualityAnalyzer.psm1** : Ã‰valuation de la qualitÃ© du code
+- **ProblemDetector.psm1** : DÃ©tection des problÃ¨mes potentiels
 
 ### Module d'organisation
 
-Le module d'organisation est responsable de l'organisation intelligente des scripts. Il est composé des sous-modules suivants :
+Le module d'organisation est responsable de l'organisation intelligente des scripts. Il est composÃ© des sous-modules suivants :
 
 - **OrganizationModule.psm1** : Module principal qui coordonne l'organisation
-- **ClassificationEngine.psm1** : Classification des scripts selon des règles
-- **ScriptMover.psm1** : Déplacement des scripts
-- **ReferenceUpdater.psm1** : Mise à jour des références entre scripts
-- **FolderStructureCreator.psm1** : Création de la structure de dossiers
+- **ClassificationEngine.psm1** : Classification des scripts selon des rÃ¨gles
+- **ScriptMover.psm1** : DÃ©placement des scripts
+- **ReferenceUpdater.psm1** : Mise Ã  jour des rÃ©fÃ©rences entre scripts
+- **FolderStructureCreator.psm1** : CrÃ©ation de la structure de dossiers
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
 ### Analyse statique
 
@@ -66,38 +66,38 @@ L'analyse statique extrait des informations structurelles du code, telles que :
 - Nombre de commentaires
 - Nombre de fonctions et leurs noms
 - Nombre de variables et leurs noms
-- Imports et dépendances
+- Imports et dÃ©pendances
 - Structures conditionnelles et boucles
-- Classes et méthodes (pour les langages orientés objet)
+- Classes et mÃ©thodes (pour les langages orientÃ©s objet)
 
-Cette analyse est adaptée au type de script (PowerShell, Python, Batch, Shell) et peut être effectuée à différents niveaux de profondeur (Basic, Standard, Advanced).
+Cette analyse est adaptÃ©e au type de script (PowerShell, Python, Batch, Shell) et peut Ãªtre effectuÃ©e Ã  diffÃ©rents niveaux de profondeur (Basic, Standard, Advanced).
 
-### Détection des dépendances
+### DÃ©tection des dÃ©pendances
 
-La détection des dépendances identifie les relations entre les scripts, telles que :
+La dÃ©tection des dÃ©pendances identifie les relations entre les scripts, telles que :
 
 - Imports de modules
 - Sources de scripts
-- Appels à d'autres scripts
-- Exécutions de scripts
+- Appels Ã  d'autres scripts
+- ExÃ©cutions de scripts
 
-Ces dépendances sont utilisées pour construire un graphe de dépendances et pour mettre à jour les références lors du déplacement des scripts.
+Ces dÃ©pendances sont utilisÃ©es pour construire un graphe de dÃ©pendances et pour mettre Ã  jour les rÃ©fÃ©rences lors du dÃ©placement des scripts.
 
-### Analyse de la qualité du code
+### Analyse de la qualitÃ© du code
 
-L'analyse de la qualité du code évalue plusieurs métriques, telles que :
+L'analyse de la qualitÃ© du code Ã©value plusieurs mÃ©triques, telles que :
 
 - Ratio de commentaires
 - Longueur moyenne et maximale des lignes
 - Ratio de lignes vides
-- Complexité du code
+- ComplexitÃ© du code
 - Duplication de code
 
-Ces métriques sont utilisées pour calculer un score de qualité global et pour proposer des recommandations d'amélioration.
+Ces mÃ©triques sont utilisÃ©es pour calculer un score de qualitÃ© global et pour proposer des recommandations d'amÃ©lioration.
 
-### Détection des problèmes
+### DÃ©tection des problÃ¨mes
 
-La détection des problèmes identifie les problèmes potentiels dans le code, tels que :
+La dÃ©tection des problÃ¨mes identifie les problÃ¨mes potentiels dans le code, tels que :
 
 - Lignes trop longues
 - Utilisation de chemins absolus
@@ -106,11 +106,11 @@ La détection des problèmes identifie les problèmes potentiels dans le code, t
 - Absence de @ECHO OFF (Batch)
 - Absence de shebang (Shell)
 
-Ces problèmes sont classés par type (Style, BestPractice, Portability, Encoding) et par sévérité (Low, Medium, High).
+Ces problÃ¨mes sont classÃ©s par type (Style, BestPractice, Portability, Encoding) et par sÃ©vÃ©ritÃ© (Low, Medium, High).
 
 ### Classification des scripts
 
-La classification des scripts utilise des règles définies pour déterminer la catégorie et la sous-catégorie de chaque script. Ces règles peuvent être basées sur :
+La classification des scripts utilise des rÃ¨gles dÃ©finies pour dÃ©terminer la catÃ©gorie et la sous-catÃ©gorie de chaque script. Ces rÃ¨gles peuvent Ãªtre basÃ©es sur :
 
 - Le contenu du script
 - Le chemin du script
@@ -119,24 +119,24 @@ La classification des scripts utilise des règles définies pour déterminer la 
 
 ### Organisation intelligente
 
-L'organisation intelligente déplace les scripts vers une structure de dossiers sémantiques basée sur leur classification. Cette structure suit les principes SOLID, avec une séparation claire des responsabilités :
+L'organisation intelligente dÃ©place les scripts vers une structure de dossiers sÃ©mantiques basÃ©e sur leur classification. Cette structure suit les principes SOLID, avec une sÃ©paration claire des responsabilitÃ©s :
 
-- Chaque dossier a une responsabilité unique
-- Les scripts sont organisés par fonction, pas par type
-- Les dépendances sont clairement identifiées
-- Les interfaces sont stables et bien définies
+- Chaque dossier a une responsabilitÃ© unique
+- Les scripts sont organisÃ©s par fonction, pas par type
+- Les dÃ©pendances sont clairement identifiÃ©es
+- Les interfaces sont stables et bien dÃ©finies
 
-### Mise à jour des références
+### Mise Ã  jour des rÃ©fÃ©rences
 
-La mise à jour des références modifie les références entre scripts après déplacement pour maintenir la cohérence du système. Elle prend en compte :
+La mise Ã  jour des rÃ©fÃ©rences modifie les rÃ©fÃ©rences entre scripts aprÃ¨s dÃ©placement pour maintenir la cohÃ©rence du systÃ¨me. Elle prend en compte :
 
 - Les chemins relatifs
-- Les différents types d'imports selon le langage
-- Les dépendances directes et indirectes
+- Les diffÃ©rents types d'imports selon le langage
+- Les dÃ©pendances directes et indirectes
 
 ## Utilisation
 
-Pour utiliser la Phase 2 du Script Manager, exécutez le script `Phase2-AnalyzeAndOrganize.ps1` :
+Pour utiliser la Phase 2 du Script Manager, exÃ©cutez le script `Phase2-AnalyzeAndOrganize.ps1` :
 
 ```powershell
 # Mode simulation (sans appliquer les changements)
@@ -148,8 +148,8 @@ Pour utiliser la Phase 2 du Script Manager, exécutez le script `Phase2-AnalyzeA
 
 Options disponibles :
 
-- `-InventoryPath` : Chemin vers le fichier d'inventaire (par défaut : scripts\manager\data\inventory.json)
-- `-RulesPath` : Chemin vers le fichier de règles (par défaut : scripts\manager\config\rules.json)
+- `-InventoryPath` : Chemin vers le fichier d'inventaire (par dÃ©faut : scripts\manager\data\inventory.json)
+- `-RulesPath` : Chemin vers le fichier de rÃ¨gles (par dÃ©faut : scripts\manager\config\rules.json)
 - `-AnalysisDepth` : Niveau de profondeur de l'analyse (Basic, Standard, Advanced)
 - `-AutoApply` : Applique automatiquement les recommandations d'organisation
 
@@ -173,29 +173,29 @@ La Phase 2 du Script Manager suit les bonnes pratiques suivantes :
 
 ### SOLID
 
-- **S**ingle Responsibility Principle : Chaque module a une responsabilité unique
-- **O**pen/Closed Principle : Les modules sont ouverts à l'extension mais fermés à la modification
-- **L**iskov Substitution Principle : Les sous-modules peuvent être remplacés sans affecter le comportement
-- **I**nterface Segregation Principle : Les interfaces sont spécifiques et cohérentes
-- **D**ependency Inversion Principle : Les modules dépendent d'abstractions, pas d'implémentations
+- **S**ingle Responsibility Principle : Chaque module a une responsabilitÃ© unique
+- **O**pen/Closed Principle : Les modules sont ouverts Ã  l'extension mais fermÃ©s Ã  la modification
+- **L**iskov Substitution Principle : Les sous-modules peuvent Ãªtre remplacÃ©s sans affecter le comportement
+- **I**nterface Segregation Principle : Les interfaces sont spÃ©cifiques et cohÃ©rentes
+- **D**ependency Inversion Principle : Les modules dÃ©pendent d'abstractions, pas d'implÃ©mentations
 
 ### DRY (Don't Repeat Yourself)
 
-- Factorisation du code commun dans des fonctions réutilisables
-- Utilisation de modules pour éviter la duplication de code
-- Centralisation des configurations et des règles
+- Factorisation du code commun dans des fonctions rÃ©utilisables
+- Utilisation de modules pour Ã©viter la duplication de code
+- Centralisation des configurations et des rÃ¨gles
 
 ### KISS (Keep It Simple, Stupid)
 
-- Fonctions courtes et focalisées
+- Fonctions courtes et focalisÃ©es
 - Noms de variables et de fonctions explicites
 - Documentation claire et concise
-- Éviter les solutions complexes quand des solutions simples existent
+- Ã‰viter les solutions complexes quand des solutions simples existent
 
 ### Clean Code
 
-- Code lisible et bien commenté
+- Code lisible et bien commentÃ©
 - Nommage significatif
-- Gestion des erreurs appropriée
+- Gestion des erreurs appropriÃ©e
 - Tests unitaires
-- Documentation à jour
+- Documentation Ã  jour

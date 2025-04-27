@@ -1,53 +1,53 @@
-<#
+﻿<#
 .SYNOPSIS
-    Valide si une valeur correspond à un type de données spécifique.
+    Valide si une valeur correspond Ã  un type de donnÃ©es spÃ©cifique.
 
 .DESCRIPTION
-    La fonction Test-DataType valide si une valeur correspond à un type de données spécifique.
-    Elle prend en charge différents types de données courants et peut être utilisée pour
-    valider les entrées des fonctions du module RoadmapParser.
+    La fonction Test-DataType valide si une valeur correspond Ã  un type de donnÃ©es spÃ©cifique.
+    Elle prend en charge diffÃ©rents types de donnÃ©es courants et peut Ãªtre utilisÃ©e pour
+    valider les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à valider.
+    La valeur Ã  valider.
 
 .PARAMETER Type
-    Le type de données à valider. Valeurs possibles :
-    - String : Vérifie que la valeur est une chaîne de caractères
-    - Integer : Vérifie que la valeur est un entier
-    - Decimal : Vérifie que la valeur est un nombre décimal
-    - Boolean : Vérifie que la valeur est un booléen
-    - DateTime : Vérifie que la valeur est une date/heure
-    - Array : Vérifie que la valeur est un tableau
-    - Hashtable : Vérifie que la valeur est une table de hachage
-    - PSObject : Vérifie que la valeur est un objet PowerShell
-    - ScriptBlock : Vérifie que la valeur est un bloc de script
-    - Null : Vérifie que la valeur est null
-    - NotNull : Vérifie que la valeur n'est pas null
-    - Empty : Vérifie que la valeur est vide
-    - NotEmpty : Vérifie que la valeur n'est pas vide
+    Le type de donnÃ©es Ã  valider. Valeurs possibles :
+    - String : VÃ©rifie que la valeur est une chaÃ®ne de caractÃ¨res
+    - Integer : VÃ©rifie que la valeur est un entier
+    - Decimal : VÃ©rifie que la valeur est un nombre dÃ©cimal
+    - Boolean : VÃ©rifie que la valeur est un boolÃ©en
+    - DateTime : VÃ©rifie que la valeur est une date/heure
+    - Array : VÃ©rifie que la valeur est un tableau
+    - Hashtable : VÃ©rifie que la valeur est une table de hachage
+    - PSObject : VÃ©rifie que la valeur est un objet PowerShell
+    - ScriptBlock : VÃ©rifie que la valeur est un bloc de script
+    - Null : VÃ©rifie que la valeur est null
+    - NotNull : VÃ©rifie que la valeur n'est pas null
+    - Empty : VÃ©rifie que la valeur est vide
+    - NotEmpty : VÃ©rifie que la valeur n'est pas vide
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la validation.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la validation.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la validation.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la validation.
 
 .EXAMPLE
     Test-DataType -Value "Hello" -Type String
-    Vérifie que la valeur "Hello" est une chaîne de caractères.
+    VÃ©rifie que la valeur "Hello" est une chaÃ®ne de caractÃ¨res.
 
 .EXAMPLE
     Test-DataType -Value 42 -Type Integer -ThrowOnFailure
-    Vérifie que la valeur 42 est un entier, et lève une exception si ce n'est pas le cas.
+    VÃ©rifie que la valeur 42 est un entier, et lÃ¨ve une exception si ce n'est pas le cas.
 
 .OUTPUTS
-    [bool] Indique si la validation a réussi.
+    [bool] Indique si la validation a rÃ©ussi.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function Test-DataType {
     [CmdletBinding()]
@@ -67,7 +67,7 @@ function Test-DataType {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
     # Effectuer la validation selon le type
@@ -75,67 +75,67 @@ function Test-DataType {
         "String" {
             $isValid = $Value -is [string]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une chaîne de caractères."
+                $ErrorMessage = "La valeur doit Ãªtre une chaÃ®ne de caractÃ¨res."
             }
         }
         "Integer" {
             $isValid = $Value -is [int]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un entier."
+                $ErrorMessage = "La valeur doit Ãªtre un entier."
             }
         }
         "Decimal" {
             $isValid = $Value -is [decimal] -or $Value -is [double] -or $Value -is [float]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un nombre décimal."
+                $ErrorMessage = "La valeur doit Ãªtre un nombre dÃ©cimal."
             }
         }
         "Boolean" {
             $isValid = $Value -is [bool]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un booléen."
+                $ErrorMessage = "La valeur doit Ãªtre un boolÃ©en."
             }
         }
         "DateTime" {
             $isValid = $Value -is [datetime]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une date/heure."
+                $ErrorMessage = "La valeur doit Ãªtre une date/heure."
             }
         }
         "Array" {
             $isValid = $Value -is [array]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un tableau."
+                $ErrorMessage = "La valeur doit Ãªtre un tableau."
             }
         }
         "Hashtable" {
             $isValid = $Value -is [hashtable]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une table de hachage."
+                $ErrorMessage = "La valeur doit Ãªtre une table de hachage."
             }
         }
         "PSObject" {
             $isValid = $Value -is [PSObject]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un objet PowerShell."
+                $ErrorMessage = "La valeur doit Ãªtre un objet PowerShell."
             }
         }
         "ScriptBlock" {
             $isValid = $Value -is [scriptblock]
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un bloc de script."
+                $ErrorMessage = "La valeur doit Ãªtre un bloc de script."
             }
         }
         "Null" {
             $isValid = $null -eq $Value
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être null."
+                $ErrorMessage = "La valeur doit Ãªtre null."
             }
         }
         "NotNull" {
             $isValid = $null -ne $Value
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur ne peut pas être null."
+                $ErrorMessage = "La valeur ne peut pas Ãªtre null."
             }
         }
         "Empty" {
@@ -151,7 +151,7 @@ function Test-DataType {
                 $isValid = $false
             }
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être vide."
+                $ErrorMessage = "La valeur doit Ãªtre vide."
             }
         }
         "NotEmpty" {
@@ -167,12 +167,12 @@ function Test-DataType {
                 $isValid = $true
             }
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur ne peut pas être vide."
+                $ErrorMessage = "La valeur ne peut pas Ãªtre vide."
             }
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage

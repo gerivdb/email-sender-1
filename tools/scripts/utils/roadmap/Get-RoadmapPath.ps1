@@ -1,4 +1,4 @@
-# Script pour centraliser l'accès au fichier roadmap
+﻿# Script pour centraliser l'accÃ¨s au fichier roadmap
 # Ce script retourne le chemin absolu du fichier roadmap principal
 
 # Configuration de la gestion d'erreurs
@@ -23,12 +23,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) -ChildPath "logs"
         $logPath = Join-Path -Path $logDir -ChildPath "roadmap_access.log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         if (-not (Test-Path -Path $logDir -PathType Container)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
@@ -36,16 +36,16 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 
 try {
-    # Définir le chemin absolu du fichier roadmap principal
+    # DÃ©finir le chemin absolu du fichier roadmap principal
     $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
     $roadmapPath = "Roadmap\roadmap_perso.md"""
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $roadmapPath -PathType Leaf)) {
         Write-Log -Level ERROR -Message "Le fichier roadmap principal n'existe pas: $roadmapPath"
         throw "Le fichier roadmap principal n'existe pas: $roadmapPath"
@@ -55,6 +55,6 @@ try {
     return $roadmapPath
 }
 catch {
-    Write-Log -Level ERROR -Message "Une erreur s'est produite lors de l'accès au fichier roadmap: $_"
+    Write-Log -Level ERROR -Message "Une erreur s'est produite lors de l'accÃ¨s au fichier roadmap: $_"
     throw $_
 }

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module Dynamic-ThreadManager.
 .DESCRIPTION
     Ce fichier contient des tests unitaires pour les fonctions du module Dynamic-ThreadManager.psm1
-    qui gère l'ajustement dynamique du nombre de threads en fonction de la charge système.
+    qui gÃ¨re l'ajustement dynamique du nombre de threads en fonction de la charge systÃ¨me.
 .NOTES
     Author: Augment Agent
     Version: 1.0
@@ -12,24 +12,24 @@
     Requires: Pester v5.0+
 #>
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "Dynamic-ThreadManager.psm1"
 
-# Vérifier si le module existe, sinon créer un stub pour les tests
+# VÃ©rifier si le module existe, sinon crÃ©er un stub pour les tests
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Warning "Module Dynamic-ThreadManager.psm1 non trouvé. Création d'un stub pour les tests."
+    Write-Warning "Module Dynamic-ThreadManager.psm1 non trouvÃ©. CrÃ©ation d'un stub pour les tests."
     
-    # Créer un répertoire si nécessaire
+    # CrÃ©er un rÃ©pertoire si nÃ©cessaire
     $moduleDir = Split-Path -Parent $modulePath
     if (-not (Test-Path -Path $moduleDir)) {
         New-Item -Path $moduleDir -ItemType Directory -Force | Out-Null
     }
     
-    # Créer un stub du module pour les tests
+    # CrÃ©er un stub du module pour les tests
     @'
 # Module Dynamic-ThreadManager.psm1
-# Stub créé pour les tests unitaires
+# Stub crÃ©Ã© pour les tests unitaires
 
 function Get-OptimalThreadCount {
     [CmdletBinding()]
@@ -47,14 +47,14 @@ function Get-OptimalThreadCount {
         [int]$MaxThreads = 0
     )
     
-    # Logique par défaut pour les tests
+    # Logique par dÃ©faut pour les tests
     $logicalCores = [Environment]::ProcessorCount
     
     if ($MaxThreads -le 0) {
         $MaxThreads = $logicalCores * 2
     }
     
-    # Obtenir les métriques système
+    # Obtenir les mÃ©triques systÃ¨me
     $cpuUsage = Get-CpuUsage
     $memoryAvailable = Get-MemoryAvailable
     
@@ -74,7 +74,7 @@ function Get-CpuUsage {
 }
 
 function Get-MemoryAvailable {
-    # Simuler la mémoire disponible pour les tests
+    # Simuler la mÃ©moire disponible pour les tests
     return 50
 }
 
@@ -88,7 +88,7 @@ function Start-ThreadMonitoring {
         [scriptblock]$AdjustmentCallback
     )
     
-    # Simuler le démarrage du monitoring pour les tests
+    # Simuler le dÃ©marrage du monitoring pour les tests
     return [PSCustomObject]@{
         MonitoringId = [Guid]::NewGuid().ToString()
         StartTime = Get-Date
@@ -104,7 +104,7 @@ function Stop-ThreadMonitoring {
         [string]$MonitoringId
     )
     
-    # Simuler l'arrêt du monitoring pour les tests
+    # Simuler l'arrÃªt du monitoring pour les tests
     return $true
 }
 
@@ -121,10 +121,10 @@ function Update-ThreadCount {
         [int]$MaxAdjustmentStep = 2
     )
     
-    # Calculer la différence
+    # Calculer la diffÃ©rence
     $difference = $OptimalThreadCount - $CurrentThreadCount
     
-    # Limiter l'ajustement à MaxAdjustmentStep
+    # Limiter l'ajustement Ã  MaxAdjustmentStep
     if ($difference -gt $MaxAdjustmentStep) {
         $difference = $MaxAdjustmentStep
     }
@@ -145,16 +145,16 @@ Export-ModuleMember -Function Get-OptimalThreadCount, Start-ThreadMonitoring, St
 
 # Importer le module Pester
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $modulePath -Force
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Dynamic-ThreadManager Module Tests" {
     Context "Get-OptimalThreadCount Function" {
         It "Devrait retourner un nombre de threads valide" {
@@ -199,7 +199,7 @@ Describe "Dynamic-ThreadManager Module Tests" {
             $highCpuResult | Should -BeLessOrEqual $lowCpuResult
         }
         
-        It "Devrait ajuster le nombre de threads en fonction de la mémoire disponible" {
+        It "Devrait ajuster le nombre de threads en fonction de la mÃ©moire disponible" {
             # Arrange
             Mock Get-MemoryAvailable { return 10 }
             
@@ -218,7 +218,7 @@ Describe "Dynamic-ThreadManager Module Tests" {
     }
     
     Context "Start-ThreadMonitoring Function" {
-        It "Devrait démarrer le monitoring et retourner un ID" {
+        It "Devrait dÃ©marrer le monitoring et retourner un ID" {
             # Act
             $result = Start-ThreadMonitoring
             
@@ -242,7 +242,7 @@ Describe "Dynamic-ThreadManager Module Tests" {
     }
     
     Context "Stop-ThreadMonitoring Function" {
-        It "Devrait arrêter le monitoring" {
+        It "Devrait arrÃªter le monitoring" {
             # Arrange
             $monitoring = Start-ThreadMonitoring
             

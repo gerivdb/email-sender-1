@@ -1,5 +1,5 @@
-# Test-SqlServerPermissionGaps.ps1
-# Tests unitaires pour l'algorithme de détection des permissions manquantes au niveau serveur
+﻿# Test-SqlServerPermissionGaps.ps1
+# Tests unitaires pour l'algorithme de dÃ©tection des permissions manquantes au niveau serveur
 
 # Importer le module de test
 $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Test-Module.psm1"
@@ -9,7 +9,7 @@ Import-Module $testModulePath -Force
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\RoadmapParser.psm1"
 Import-Module $modulePath -Force
 
-# Charger directement les fichiers nécessaires pour les tests
+# Charger directement les fichiers nÃ©cessaires pour les tests
 $missingPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\MissingPermissionModel.ps1"
 . $missingPermissionModelPath
 
@@ -54,7 +54,7 @@ Describe "SqlServerPermissionGaps" {
     
     Context "Find-SqlServerPermissionGaps" {
         BeforeAll {
-            # Créer un modèle de référence
+            # CrÃ©er un modÃ¨le de rÃ©fÃ©rence
             $referenceModel = [PSCustomObject]@{
                 ModelName = "TestModel"
                 ServerPermissions = @(
@@ -76,7 +76,7 @@ Describe "SqlServerPermissionGaps" {
                 )
             }
             
-            # Créer les permissions actuelles (avec certaines permissions manquantes)
+            # CrÃ©er les permissions actuelles (avec certaines permissions manquantes)
             $currentPermissions = @(
                 [PSCustomObject]@{
                     PermissionName = "CONNECT SQL"
@@ -223,7 +223,7 @@ Describe "SqlServerPermissionGaps" {
     
     Context "New-SqlServerPermissionComplianceReport" {
         BeforeAll {
-            # Créer un modèle de référence
+            # CrÃ©er un modÃ¨le de rÃ©fÃ©rence
             $referenceModel = [PSCustomObject]@{
                 ModelName = "TestModel"
                 ServerPermissions = @(
@@ -245,7 +245,7 @@ Describe "SqlServerPermissionGaps" {
                 )
             }
             
-            # Créer les permissions actuelles (avec certaines permissions manquantes)
+            # CrÃ©er les permissions actuelles (avec certaines permissions manquantes)
             $currentPermissions = @(
                 [PSCustomObject]@{
                     PermissionName = "CONNECT SQL"
@@ -260,7 +260,7 @@ Describe "SqlServerPermissionGaps" {
                 # VIEW SERVER STATE pour MonitorUser est manquant
             )
             
-            # Créer un ensemble de permissions manquantes
+            # CrÃ©er un ensemble de permissions manquantes
             $missingPermissions = Find-SqlServerPermissionGaps `
                 -CurrentPermissions $currentPermissions `
                 -ReferenceModel $referenceModel `
@@ -276,10 +276,10 @@ Describe "SqlServerPermissionGaps" {
                 -Format "Text"
             
             $report | Should -Not -BeNullOrEmpty
-            $report | Should -Match "Rapport de conformité"
+            $report | Should -Match "Rapport de conformitÃ©"
             $report | Should -Match "TestServer"
             $report | Should -Match "TestModel"
-            $report | Should -Match "Score de conformité"
+            $report | Should -Match "Score de conformitÃ©"
             $report | Should -Match "VIEW SERVER STATE"
             $report | Should -Match "MonitorUser"
         }
@@ -292,7 +292,7 @@ Describe "SqlServerPermissionGaps" {
             
             $report | Should -Not -BeNullOrEmpty
             $report | Should -Match "<html>"
-            $report | Should -Match "<title>Rapport de conformité"
+            $report | Should -Match "<title>Rapport de conformitÃ©"
             $report | Should -Match "TestServer"
             $report | Should -Match "TestModel"
             $report | Should -Match "<td>VIEW SERVER STATE</td>"
@@ -353,5 +353,5 @@ Describe "SqlServerPermissionGaps" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

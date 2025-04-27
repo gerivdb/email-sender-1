@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
-    Génère un rapport de test pour le module ProactiveOptimization.
+    GÃ©nÃ¨re un rapport de test pour le module ProactiveOptimization.
 .DESCRIPTION
-    Ce script génère un rapport de test pour le module ProactiveOptimization.
-    Il exécute les tests unitaires et génère un rapport HTML.
+    Ce script gÃ©nÃ¨re un rapport de test pour le module ProactiveOptimization.
+    Il exÃ©cute les tests unitaires et gÃ©nÃ¨re un rapport HTML.
 #>
 
 [CmdletBinding()]
@@ -16,16 +16,16 @@ param (
 $testsPath = $PSScriptRoot
 $modulePath = Split-Path -Path $testsPath -Parent
 
-# Créer le dossier de rapport s'il n'existe pas
+# CrÃ©er le dossier de rapport s'il n'existe pas
 $reportPath = Join-Path -Path $modulePath -ChildPath $OutputPath
 if (-not (Test-Path -Path $reportPath)) {
     New-Item -Path $reportPath -ItemType Directory -Force | Out-Null
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour le module ProactiveOptimization..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour le module ProactiveOptimization..." -ForegroundColor Cyan
 
-# Paramètres pour Invoke-Pester
+# ParamÃ¨tres pour Invoke-Pester
 $pesterParams = @{
     Path       = $testsPath
     PassThru   = $true
@@ -37,7 +37,7 @@ $pesterParams = @{
     )
 }
 
-# Exécuter les tests avec les mocks
+# ExÃ©cuter les tests avec les mocks
 $mockScriptPath = Join-Path -Path $testsPath -ChildPath "Run-AllTestsWithMocks.ps1"
 if (Test-Path -Path $mockScriptPath) {
     & $mockScriptPath -ShowDetailedResults
@@ -46,7 +46,7 @@ if (Test-Path -Path $mockScriptPath) {
     $results = Invoke-Pester @pesterParams
 }
 
-# Générer le rapport HTML
+# GÃ©nÃ©rer le rapport HTML
 $reportFile = Join-Path -Path $reportPath -ChildPath "test_report_$(Get-Date -Format 'yyyy-MM-dd').html"
 
 $htmlHeader = @"
@@ -173,7 +173,7 @@ $htmlHeader = @"
 
 $htmlFooter = @"
         <footer>
-            <p>Rapport généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+            <p>Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
         </footer>
     </div>
 </body>
@@ -188,7 +188,7 @@ $skippedTests = $results.SkippedCount
 $notRunTests = $results.NotRunCount
 $successRate = if ($totalTests -gt 0) { [math]::Round(($passedTests / ($totalTests - $notRunTests)) * 100, 2) } else { 0 }
 
-# Générer le résumé
+# GÃ©nÃ©rer le rÃ©sumÃ©
 $htmlSummary = @"
         <div class="summary">
             <div class="summary-item info">
@@ -196,38 +196,38 @@ $htmlSummary = @"
                 <p>$totalTests tests</p>
             </div>
             <div class="summary-item success">
-                <h3>Réussis</h3>
+                <h3>RÃ©ussis</h3>
                 <p>$passedTests tests</p>
             </div>
             <div class="summary-item danger">
-                <h3>Échoués</h3>
+                <h3>Ã‰chouÃ©s</h3>
                 <p>$failedTests tests</p>
             </div>
             <div class="summary-item warning">
-                <h3>Ignorés</h3>
+                <h3>IgnorÃ©s</h3>
                 <p>$skippedTests tests</p>
             </div>
             <div class="summary-item info">
-                <h3>Non exécutés</h3>
+                <h3>Non exÃ©cutÃ©s</h3>
                 <p>$notRunTests tests</p>
             </div>
         </div>
 
-        <h2>Taux de réussite</h2>
+        <h2>Taux de rÃ©ussite</h2>
         <div class="progress-bar">
             <div class="progress" style="width: $successRate%">$successRate%</div>
         </div>
 "@
 
-# Générer le rapport complet
+# GÃ©nÃ©rer le rapport complet
 $htmlContent = $htmlHeader + $htmlSummary + $htmlFooter
 
-# Écrire le rapport dans un fichier
+# Ã‰crire le rapport dans un fichier
 $htmlContent | Out-File -FilePath $reportFile -Encoding UTF8
 
-Write-Host "Rapport de test généré avec succès: $reportFile" -ForegroundColor Green
+Write-Host "Rapport de test gÃ©nÃ©rÃ© avec succÃ¨s: $reportFile" -ForegroundColor Green
 
-# Ouvrir le rapport dans le navigateur par défaut
+# Ouvrir le rapport dans le navigateur par dÃ©faut
 if (Test-Path -Path $reportFile) {
     Start-Process $reportFile
 }

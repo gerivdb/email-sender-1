@@ -1,28 +1,28 @@
-# Script d'installation des dépendances pour les modèles prédictifs
+﻿# Script d'installation des dÃ©pendances pour les modÃ¨les prÃ©dictifs
 # Auteur: EMAIL_SENDER_1 Team
 # Version: 1.0.0
 
-# Vérifier si Python est installé
+# VÃ©rifier si Python est installÃ©
 try {
     $pythonVersion = python --version
-    Write-Host "Python détecté: $pythonVersion" -ForegroundColor Green
+    Write-Host "Python dÃ©tectÃ©: $pythonVersion" -ForegroundColor Green
 }
 catch {
-    Write-Error "Python n'est pas installé ou n'est pas dans le PATH. Veuillez installer Python 3.8+ et réessayer."
+    Write-Error "Python n'est pas installÃ© ou n'est pas dans le PATH. Veuillez installer Python 3.8+ et rÃ©essayer."
     exit 1
 }
 
-# Vérifier si pip est installé
+# VÃ©rifier si pip est installÃ©
 try {
     $pipVersion = pip --version
-    Write-Host "Pip détecté: $pipVersion" -ForegroundColor Green
+    Write-Host "Pip dÃ©tectÃ©: $pipVersion" -ForegroundColor Green
 }
 catch {
-    Write-Error "Pip n'est pas installé ou n'est pas dans le PATH. Veuillez installer pip et réessayer."
+    Write-Error "Pip n'est pas installÃ© ou n'est pas dans le PATH. Veuillez installer pip et rÃ©essayer."
     exit 1
 }
 
-# Liste des dépendances à installer
+# Liste des dÃ©pendances Ã  installer
 $dependencies = @(
     "numpy",
     "pandas",
@@ -31,8 +31,8 @@ $dependencies = @(
     "matplotlib"
 )
 
-# Installer les dépendances
-Write-Host "Installation des dépendances Python..." -ForegroundColor Cyan
+# Installer les dÃ©pendances
+Write-Host "Installation des dÃ©pendances Python..." -ForegroundColor Cyan
 foreach ($dependency in $dependencies) {
     Write-Host "Installation de $dependency..." -ForegroundColor Yellow
     pip install $dependency
@@ -42,5 +42,5 @@ foreach ($dependency in $dependencies) {
     }
 }
 
-Write-Host "Toutes les dépendances ont été installées avec succès." -ForegroundColor Green
+Write-Host "Toutes les dÃ©pendances ont Ã©tÃ© installÃ©es avec succÃ¨s." -ForegroundColor Green
 Write-Host "Vous pouvez maintenant utiliser le module PerformancePredictor." -ForegroundColor Green

@@ -1,5 +1,5 @@
-# Generate-SqlPermissionDashboard.ps1
-# Script pour générer un tableau de bord HTML interactif pour suivre l'évolution des anomalies SQL Server
+﻿# Generate-SqlPermissionDashboard.ps1
+# Script pour gÃ©nÃ©rer un tableau de bord HTML interactif pour suivre l'Ã©volution des anomalies SQL Server
 
 [CmdletBinding()]
 param (
@@ -17,18 +17,18 @@ param (
 )
 
 begin {
-    # Vérifier que le dossier de rapports existe
+    # VÃ©rifier que le dossier de rapports existe
     if (-not (Test-Path -Path $ReportsFolder)) {
         throw "Le dossier de rapports n'existe pas: $ReportsFolder"
     }
 
-    # Créer le dossier parent du tableau de bord si nécessaire
+    # CrÃ©er le dossier parent du tableau de bord si nÃ©cessaire
     $dashboardFolder = Split-Path -Path $DashboardPath -Parent
     if ($dashboardFolder -and -not (Test-Path -Path $dashboardFolder)) {
         New-Item -Path $dashboardFolder -ItemType Directory -Force | Out-Null
     }
 
-    # Fonction pour extraire les données d'anomalies d'un rapport HTML
+    # Fonction pour extraire les donnÃ©es d'anomalies d'un rapport HTML
     function Extract-AnomalyData {
         param (
             [Parameter(Mandatory = $true)]
@@ -59,24 +59,24 @@ begin {
                 0
             }
 
-            # Extraire les compteurs par sévérité
-            $highMatch = [regex]::Match($content, '<p><strong>Anomalies de sévérité élevée:</strong>\s*(\d+)</p>')
-            $mediumMatch = [regex]::Match($content, '<p><strong>Anomalies de sévérité moyenne:</strong>\s*(\d+)</p>')
-            $lowMatch = [regex]::Match($content, '<p><strong>Anomalies de sévérité faible:</strong>\s*(\d+)</p>')
+            # Extraire les compteurs par sÃ©vÃ©ritÃ©
+            $highMatch = [regex]::Match($content, '<p><strong>Anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e:</strong>\s*(\d+)</p>')
+            $mediumMatch = [regex]::Match($content, '<p><strong>Anomalies de sÃ©vÃ©ritÃ© moyenne:</strong>\s*(\d+)</p>')
+            $lowMatch = [regex]::Match($content, '<p><strong>Anomalies de sÃ©vÃ©ritÃ© faible:</strong>\s*(\d+)</p>')
 
             $highCount = if ($highMatch.Success) { [int]::Parse($highMatch.Groups[1].Value) } else { 0 }
             $mediumCount = if ($mediumMatch.Success) { [int]::Parse($mediumMatch.Groups[1].Value) } else { 0 }
             $lowCount = if ($lowMatch.Success) { [int]::Parse($lowMatch.Groups[1].Value) } else { 0 }
 
-            # Extraire les compteurs par règle
+            # Extraire les compteurs par rÃ¨gle
             $ruleCounts = @{}
-            $ruleTableMatch = [regex]::Match($content, '<h2>Résumé par règle</h2>.*?<table>(.*?)</table>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            $ruleTableMatch = [regex]::Match($content, '<h2>RÃ©sumÃ© par rÃ¨gle</h2>.*?<table>(.*?)</table>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
             
             if ($ruleTableMatch.Success) {
                 $ruleTableContent = $ruleTableMatch.Groups[1].Value
                 $ruleRowMatches = [regex]::Matches($ruleTableContent, '<tr.*?>(.*?)</tr>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
                 
-                # Ignorer la première ligne (en-têtes)
+                # Ignorer la premiÃ¨re ligne (en-tÃªtes)
                 for ($i = 1; $i -lt $ruleRowMatches.Count; $i++) {
                     $rowContent = $ruleRowMatches[$i].Groups[1].Value
                     $cellMatches = [regex]::Matches($rowContent, '<td.*?>(.*?)</td>', [System.Text.RegularExpressions.RegexOptions]::Singleline)
@@ -96,7 +96,7 @@ begin {
                 }
             }
 
-            # Retourner les données extraites
+            # Retourner les donnÃ©es extraites
             return [PSCustomObject]@{
                 ReportDate = $reportDate
                 TotalAnomalies = $totalAnomalies
@@ -107,7 +107,7 @@ begin {
             }
         }
         catch {
-            Write-Warning "Erreur lors de l'extraction des données du rapport $ReportPath : $_"
+            Write-Warning "Erreur lors de l'extraction des donnÃ©es du rapport $ReportPath : $_"
             return $null
         }
     }
@@ -115,7 +115,7 @@ begin {
 
 process {
     try {
-        Write-Verbose "Génération du tableau de bord pour l'instance SQL Server: $ServerInstance"
+        Write-Verbose "GÃ©nÃ©ration du tableau de bord pour l'instance SQL Server: $ServerInstance"
 
         # Obtenir la date limite pour l'historique
         $cutoffDate = (Get-Date).AddDays(-$HistoryDays)
@@ -126,13 +126,13 @@ process {
                        Sort-Object -Property CreationTime
 
         if ($reportFiles.Count -eq 0) {
-            Write-Warning "Aucun rapport trouvé dans le dossier $ReportsFolder pour les $HistoryDays derniers jours."
+            Write-Warning "Aucun rapport trouvÃ© dans le dossier $ReportsFolder pour les $HistoryDays derniers jours."
             return
         }
 
-        Write-Verbose "Nombre de rapports trouvés: $($reportFiles.Count)"
+        Write-Verbose "Nombre de rapports trouvÃ©s: $($reportFiles.Count)"
 
-        # Extraire les données de chaque rapport
+        # Extraire les donnÃ©es de chaque rapport
         $reportData = @()
         foreach ($file in $reportFiles) {
             $data = Extract-AnomalyData -ReportPath $file.FullName
@@ -141,16 +141,16 @@ process {
             }
         }
 
-        Write-Verbose "Nombre de rapports analysés avec succès: $($reportData.Count)"
+        Write-Verbose "Nombre de rapports analysÃ©s avec succÃ¨s: $($reportData.Count)"
 
-        # Préparer les données pour les graphiques
+        # PrÃ©parer les donnÃ©es pour les graphiques
         $dates = $reportData | ForEach-Object { $_.ReportDate.ToString("yyyy-MM-dd") } | ConvertTo-Json
         $totalAnomalies = $reportData | ForEach-Object { $_.TotalAnomalies } | ConvertTo-Json
         $highCounts = $reportData | ForEach-Object { $_.HighCount } | ConvertTo-Json
         $mediumCounts = $reportData | ForEach-Object { $_.MediumCount } | ConvertTo-Json
         $lowCounts = $reportData | ForEach-Object { $_.LowCount } | ConvertTo-Json
 
-        # Préparer les données pour le graphique par règle
+        # PrÃ©parer les donnÃ©es pour le graphique par rÃ¨gle
         $allRuleIds = $reportData | ForEach-Object { $_.RuleCounts.Keys } | Select-Object -Unique
         $ruleData = @{}
 
@@ -174,7 +174,7 @@ process {
 
         $ruleDataJson = $ruleData | ConvertTo-Json -Depth 3
 
-        # Générer le tableau de bord HTML
+        # GÃ©nÃ©rer le tableau de bord HTML
         $dashboardHtml = @"
 <!DOCTYPE html>
 <html>
@@ -202,56 +202,56 @@ process {
 <body>
     <h1>Tableau de bord des anomalies de permissions SQL Server</h1>
     <p><strong>Instance:</strong> $ServerInstance</p>
-    <p><strong>Période:</strong> Derniers $HistoryDays jours</p>
-    <p><strong>Nombre de rapports analysés:</strong> $($reportData.Count)</p>
+    <p><strong>PÃ©riode:</strong> Derniers $HistoryDays jours</p>
+    <p><strong>Nombre de rapports analysÃ©s:</strong> $($reportData.Count)</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
-        <p><strong>Dernière analyse:</strong> $($reportData[-1].ReportDate.ToString("yyyy-MM-dd HH:mm:ss"))</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p><strong>DerniÃ¨re analyse:</strong> $($reportData[-1].ReportDate.ToString("yyyy-MM-dd HH:mm:ss"))</p>
         <p><strong>Nombre total d'anomalies:</strong> $($reportData[-1].TotalAnomalies)</p>
-        <p><strong>Anomalies de sévérité élevée:</strong> <span class="severity-high">$($reportData[-1].HighCount)</span></p>
-        <p><strong>Anomalies de sévérité moyenne:</strong> <span class="severity-medium">$($reportData[-1].MediumCount)</span></p>
-        <p><strong>Anomalies de sévérité faible:</strong> <span class="severity-low">$($reportData[-1].LowCount)</span></p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© Ã©levÃ©e:</strong> <span class="severity-high">$($reportData[-1].HighCount)</span></p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© moyenne:</strong> <span class="severity-medium">$($reportData[-1].MediumCount)</span></p>
+        <p><strong>Anomalies de sÃ©vÃ©ritÃ© faible:</strong> <span class="severity-low">$($reportData[-1].LowCount)</span></p>
     </div>
 
     <div class="dashboard-container">
         <div class="chart-container">
-            <h2>Évolution du nombre total d'anomalies</h2>
+            <h2>Ã‰volution du nombre total d'anomalies</h2>
             <canvas id="totalAnomaliesChart"></canvas>
         </div>
 
         <div class="chart-container">
-            <h2>Évolution des anomalies par sévérité</h2>
+            <h2>Ã‰volution des anomalies par sÃ©vÃ©ritÃ©</h2>
             <canvas id="severityChart"></canvas>
         </div>
 
         <div class="chart-container">
-            <h2>Évolution des anomalies par règle</h2>
+            <h2>Ã‰volution des anomalies par rÃ¨gle</h2>
             <div class="rule-selector">
-                <label for="ruleSelect">Sélectionner une règle:</label>
+                <label for="ruleSelect">SÃ©lectionner une rÃ¨gle:</label>
                 <select id="ruleSelect" onchange="updateRuleChart()"></select>
             </div>
             <canvas id="ruleChart"></canvas>
         </div>
 
         <div class="chart-container half">
-            <h2>Répartition des anomalies par sévérité</h2>
+            <h2>RÃ©partition des anomalies par sÃ©vÃ©ritÃ©</h2>
             <canvas id="severityPieChart"></canvas>
         </div>
 
         <div class="chart-container half">
-            <h2>Top 5 des règles avec le plus d'anomalies</h2>
+            <h2>Top 5 des rÃ¨gles avec le plus d'anomalies</h2>
             <canvas id="topRulesChart"></canvas>
         </div>
     </div>
 
     <div>
-        <h2>Dernières anomalies par règle</h2>
+        <h2>DerniÃ¨res anomalies par rÃ¨gle</h2>
         <table id="ruleTable">
             <tr>
-                <th>ID de règle</th>
+                <th>ID de rÃ¨gle</th>
                 <th>Nom</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Nombre d'anomalies</th>
                 <th>Tendance</th>
             </tr>
@@ -259,7 +259,7 @@ process {
     </div>
 
     <script>
-        // Données des rapports
+        // DonnÃ©es des rapports
         const dates = $dates;
         const totalAnomalies = $totalAnomalies;
         const highCounts = $highCounts;
@@ -267,7 +267,7 @@ process {
         const lowCounts = $lowCounts;
         const ruleData = $ruleDataJson;
 
-        // Graphique d'évolution du nombre total d'anomalies
+        // Graphique d'Ã©volution du nombre total d'anomalies
         const totalCtx = document.getElementById('totalAnomaliesChart').getContext('2d');
         const totalChart = new Chart(totalCtx, {
             type: 'line',
@@ -287,7 +287,7 @@ process {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Évolution du nombre total d\'anomalies'
+                        text: 'Ã‰volution du nombre total d\'anomalies'
                     }
                 },
                 scales: {
@@ -298,7 +298,7 @@ process {
             }
         });
 
-        // Graphique d'évolution des anomalies par sévérité
+        // Graphique d'Ã©volution des anomalies par sÃ©vÃ©ritÃ©
         const severityCtx = document.getElementById('severityChart').getContext('2d');
         const severityChart = new Chart(severityCtx, {
             type: 'line',
@@ -306,7 +306,7 @@ process {
                 labels: dates,
                 datasets: [
                     {
-                        label: 'Élevée',
+                        label: 'Ã‰levÃ©e',
                         data: highCounts,
                         borderColor: '#ff6384',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -336,7 +336,7 @@ process {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Évolution des anomalies par sévérité'
+                        text: 'Ã‰volution des anomalies par sÃ©vÃ©ritÃ©'
                     }
                 },
                 scales: {
@@ -347,12 +347,12 @@ process {
             }
         });
 
-        // Graphique de répartition des anomalies par sévérité
+        // Graphique de rÃ©partition des anomalies par sÃ©vÃ©ritÃ©
         const pieSeverityCtx = document.getElementById('severityPieChart').getContext('2d');
         const pieSeverityChart = new Chart(pieSeverityCtx, {
             type: 'pie',
             data: {
-                labels: ['Élevée', 'Moyenne', 'Faible'],
+                labels: ['Ã‰levÃ©e', 'Moyenne', 'Faible'],
                 datasets: [{
                     data: [
                         highCounts[highCounts.length - 1],
@@ -377,13 +377,13 @@ process {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Répartition des anomalies par sévérité'
+                        text: 'RÃ©partition des anomalies par sÃ©vÃ©ritÃ©'
                     }
                 }
             }
         });
 
-        // Remplir le sélecteur de règles
+        // Remplir le sÃ©lecteur de rÃ¨gles
         const ruleSelect = document.getElementById('ruleSelect');
         for (const ruleId in ruleData) {
             const option = document.createElement('option');
@@ -392,7 +392,7 @@ process {
             ruleSelect.appendChild(option);
         }
 
-        // Graphique d'évolution des anomalies par règle
+        // Graphique d'Ã©volution des anomalies par rÃ¨gle
         const ruleCtx = document.getElementById('ruleChart').getContext('2d');
         let ruleChart = null;
 
@@ -401,9 +401,9 @@ process {
             if (!selectedRuleId) return;
 
             const selectedRule = ruleData[selectedRuleId];
-            const color = selectedRule.Severity === 'Élevée' ? '#ff6384' : 
+            const color = selectedRule.Severity === 'Ã‰levÃ©e' ? '#ff6384' : 
                           selectedRule.Severity === 'Moyenne' ? '#ffcd56' : '#4bc0c0';
-            const bgColor = selectedRule.Severity === 'Élevée' ? 'rgba(255, 99, 132, 0.2)' : 
+            const bgColor = selectedRule.Severity === 'Ã‰levÃ©e' ? 'rgba(255, 99, 132, 0.2)' : 
                             selectedRule.Severity === 'Moyenne' ? 'rgba(255, 205, 86, 0.2)' : 'rgba(75, 192, 192, 0.2)';
 
             if (ruleChart) {
@@ -428,7 +428,7 @@ process {
                     plugins: {
                         title: {
                             display: true,
-                            text: `Évolution des anomalies pour la règle ${selectedRuleId}`
+                            text: `Ã‰volution des anomalies pour la rÃ¨gle ${selectedRuleId}`
                         }
                     },
                     scales: {
@@ -440,13 +440,13 @@ process {
             });
         }
 
-        // Initialiser le graphique de règle avec la première règle
+        // Initialiser le graphique de rÃ¨gle avec la premiÃ¨re rÃ¨gle
         if (Object.keys(ruleData).length > 0) {
             ruleSelect.value = Object.keys(ruleData)[0];
             updateRuleChart();
         }
 
-        // Top 5 des règles avec le plus d'anomalies
+        // Top 5 des rÃ¨gles avec le plus d'anomalies
         const topRules = Object.keys(ruleData)
             .map(ruleId => ({
                 id: ruleId,
@@ -466,11 +466,11 @@ process {
                     label: 'Nombre d\'anomalies',
                     data: topRules.map(rule => rule.count),
                     backgroundColor: topRules.map(rule => 
-                        rule.severity === 'Élevée' ? 'rgba(255, 99, 132, 0.7)' : 
+                        rule.severity === 'Ã‰levÃ©e' ? 'rgba(255, 99, 132, 0.7)' : 
                         rule.severity === 'Moyenne' ? 'rgba(255, 205, 86, 0.7)' : 'rgba(75, 192, 192, 0.7)'
                     ),
                     borderColor: topRules.map(rule => 
-                        rule.severity === 'Élevée' ? 'rgb(255, 99, 132)' : 
+                        rule.severity === 'Ã‰levÃ©e' ? 'rgb(255, 99, 132)' : 
                         rule.severity === 'Moyenne' ? 'rgb(255, 205, 86)' : 'rgb(75, 192, 192)'
                     ),
                     borderWidth: 1
@@ -481,7 +481,7 @@ process {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Top 5 des règles avec le plus d\'anomalies'
+                        text: 'Top 5 des rÃ¨gles avec le plus d\'anomalies'
                     },
                     tooltip: {
                         callbacks: {
@@ -500,7 +500,7 @@ process {
             }
         });
 
-        // Remplir le tableau des règles
+        // Remplir le tableau des rÃ¨gles
         const ruleTable = document.getElementById('ruleTable');
         const sortedRules = Object.keys(ruleData)
             .map(ruleId => ({
@@ -536,13 +536,13 @@ process {
             
             const trendCell = document.createElement('td');
             if (rule.trend > 0) {
-                trendCell.textContent = `↑ +${rule.trend}`;
+                trendCell.textContent = `â†‘ +${rule.trend}`;
                 trendCell.style.color = 'red';
             } else if (rule.trend < 0) {
-                trendCell.textContent = `↓ ${rule.trend}`;
+                trendCell.textContent = `â†“ ${rule.trend}`;
                 trendCell.style.color = 'green';
             } else {
-                trendCell.textContent = '→ 0';
+                trendCell.textContent = 'â†’ 0';
                 trendCell.style.color = 'gray';
             }
             row.appendChild(trendCell);
@@ -556,7 +556,7 @@ process {
 
         # Enregistrer le tableau de bord HTML
         $dashboardHtml | Out-File -FilePath $DashboardPath -Encoding UTF8
-        Write-Verbose "Tableau de bord généré: $DashboardPath"
+        Write-Verbose "Tableau de bord gÃ©nÃ©rÃ©: $DashboardPath"
 
         # Retourner un objet avec les informations du tableau de bord
         return [PSCustomObject]@{
@@ -569,6 +569,6 @@ process {
         }
     }
     catch {
-        Write-Error "Erreur lors de la génération du tableau de bord: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du tableau de bord: $_"
     }
 }

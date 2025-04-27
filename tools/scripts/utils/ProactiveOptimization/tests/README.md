@@ -1,4 +1,4 @@
-# Tests Unitaires pour le Module ProactiveOptimization
+﻿# Tests Unitaires pour le Module ProactiveOptimization
 
 Ce dossier contient des tests unitaires pour le module ProactiveOptimization, utilisant le framework Pester.
 
@@ -7,30 +7,30 @@ Ce dossier contient des tests unitaires pour le module ProactiveOptimization, ut
 - **MonitorScriptUsage.Tests.ps1** : Tests pour le script Monitor-ScriptUsage.ps1
 - **DetectBottlenecks.Tests.ps1** : Tests pour le script Detect-Bottlenecks.ps1
 - **AnalyzeUsageTrends.Tests.ps1** : Tests pour le script Analyze-UsageTrends.ps1
-- **Run-AllTests.ps1** : Script pour exécuter tous les tests et générer un rapport de couverture
+- **Run-AllTests.ps1** : Script pour exÃ©cuter tous les tests et gÃ©nÃ©rer un rapport de couverture
 
-## État actuel des tests
+## Ã‰tat actuel des tests
 
-Les tests actuels sont des exemples qui montrent comment les fonctionnalités du module ProactiveOptimization devraient être testées. Cependant, ils nécessitent des modifications pour fonctionner correctement, car ils dépendent de modules externes qui ne sont pas encore implémentés.
+Les tests actuels sont des exemples qui montrent comment les fonctionnalitÃ©s du module ProactiveOptimization devraient Ãªtre testÃ©es. Cependant, ils nÃ©cessitent des modifications pour fonctionner correctement, car ils dÃ©pendent de modules externes qui ne sont pas encore implÃ©mentÃ©s.
 
-## Problèmes connus
+## ProblÃ¨mes connus
 
-1. **Dépendance au module UsageMonitor**: Les tests dépendent du module UsageMonitor qui n'est pas encore implémenté. Pour exécuter les tests, vous devez d'abord implémenter ce module ou modifier les tests pour utiliser des mocks.
+1. **DÃ©pendance au module UsageMonitor**: Les tests dÃ©pendent du module UsageMonitor qui n'est pas encore implÃ©mentÃ©. Pour exÃ©cuter les tests, vous devez d'abord implÃ©menter ce module ou modifier les tests pour utiliser des mocks.
 
-2. **Fonctions non disponibles**: Certaines fonctions comme `Test-ScriptUsesParallelization`, `Analyze-ParallelBottleneck` et `Generate-BottleneckReport` ne sont pas correctement chargées ou ne sont pas disponibles.
+2. **Fonctions non disponibles**: Certaines fonctions comme `Test-ScriptUsesParallelization`, `Analyze-ParallelBottleneck` et `Generate-BottleneckReport` ne sont pas correctement chargÃ©es ou ne sont pas disponibles.
 
-3. **Problèmes de mock**: Les mocks ne fonctionnent pas correctement, car ils essaient d'appeler des fonctions qui n'existent pas.
+3. **ProblÃ¨mes de mock**: Les mocks ne fonctionnent pas correctement, car ils essaient d'appeler des fonctions qui n'existent pas.
 
 ## Comment corriger les tests
 
 Pour faire fonctionner les tests, vous devez:
 
-1. Implémenter le module UsageMonitor avec les fonctions requises:
+1. ImplÃ©menter le module UsageMonitor avec les fonctions requises:
    - `Initialize-UsageMonitor`
    - `Get-ScriptUsageStatistics`
    - `Find-ScriptBottlenecks`
 
-2. Modifier les tests pour utiliser des mocks simples qui ne dépendent pas de fonctions externes:
+2. Modifier les tests pour utiliser des mocks simples qui ne dÃ©pendent pas de fonctions externes:
 
 ```powershell
 # Exemple de mock simple
@@ -40,28 +40,28 @@ Mock Get-ScriptUsageStatistics {
             "C:\Scripts\Test1.ps1" = 10
             "C:\Scripts\Test2.ps1" = 5
         }
-        # Autres propriétés...
+        # Autres propriÃ©tÃ©s...
     }
 }
 ```
 
-3. S'assurer que toutes les fonctions testées sont correctement définies et chargées avant d'exécuter les tests.
+3. S'assurer que toutes les fonctions testÃ©es sont correctement dÃ©finies et chargÃ©es avant d'exÃ©cuter les tests.
 
-## Exécution des Tests
+## ExÃ©cution des Tests
 
-Une fois les problèmes ci-dessus résolus, vous pouvez exécuter les tests avec:
+Une fois les problÃ¨mes ci-dessus rÃ©solus, vous pouvez exÃ©cuter les tests avec:
 
 ```powershell
-# Exécuter tous les tests
+# ExÃ©cuter tous les tests
 .\Run-AllTests.ps1
 
-# Exécuter les tests avec génération de rapport de couverture
+# ExÃ©cuter les tests avec gÃ©nÃ©ration de rapport de couverture
 .\Run-AllTests.ps1 -GenerateCodeCoverage
 
-# Exécuter les tests avec affichage détaillé des résultats
+# ExÃ©cuter les tests avec affichage dÃ©taillÃ© des rÃ©sultats
 .\Run-AllTests.ps1 -ShowDetailedResults
 
-# Exécuter un test spécifique
+# ExÃ©cuter un test spÃ©cifique
 Invoke-Pester -Path .\MonitorScriptUsage.Tests.ps1
 ```
 
@@ -69,27 +69,27 @@ Invoke-Pester -Path .\MonitorScriptUsage.Tests.ps1
 
 Les tests unitaires suivent une approche AAA (Arrange-Act-Assert) :
 
-1. **Arrange** : Préparation des données et des mocks nécessaires
-2. **Act** : Exécution de la fonction à tester
-3. **Assert** : Vérification des résultats
+1. **Arrange** : PrÃ©paration des donnÃ©es et des mocks nÃ©cessaires
+2. **Act** : ExÃ©cution de la fonction Ã  tester
+3. **Assert** : VÃ©rification des rÃ©sultats
 
 ## Mocks
 
-Les tests utilisent des mocks pour simuler le comportement des dépendances externes, notamment :
+Les tests utilisent des mocks pour simuler le comportement des dÃ©pendances externes, notamment :
 
 - Le module UsageMonitor
-- Les fonctions d'accès aux fichiers (Get-Content, Test-Path)
-- Les fonctions d'écriture de fichiers (Out-File, New-Item)
+- Les fonctions d'accÃ¨s aux fichiers (Get-Content, Test-Path)
+- Les fonctions d'Ã©criture de fichiers (Out-File, New-Item)
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-1. Implémenter le module UsageMonitor
-2. Corriger les tests pour qu'ils fonctionnent avec le module implémenté
-3. Ajouter plus de tests pour couvrir toutes les fonctionnalités du module ProactiveOptimization
+1. ImplÃ©menter le module UsageMonitor
+2. Corriger les tests pour qu'ils fonctionnent avec le module implÃ©mentÃ©
+3. Ajouter plus de tests pour couvrir toutes les fonctionnalitÃ©s du module ProactiveOptimization
 
-## Intégration Continue (Future)
+## IntÃ©gration Continue (Future)
 
-Une fois les tests corrigés, ils pourront être intégrés dans un pipeline CI/CD pour assurer la qualité du code :
+Une fois les tests corrigÃ©s, ils pourront Ãªtre intÃ©grÃ©s dans un pipeline CI/CD pour assurer la qualitÃ© du code :
 
 ```yaml
 # Exemple pour Azure DevOps

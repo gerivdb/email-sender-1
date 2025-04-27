@@ -1,4 +1,4 @@
-# Module manifest for module 'RoadmapParser3'
+﻿# Module manifest for module 'RoadmapParser3'
 @{
     # Script module or binary module file associated with this manifest.
     RootModule = 'RoadmapParser3.psm1'
@@ -19,7 +19,7 @@
     Copyright = '(c) 2023. All rights reserved.'
     
     # Description of the functionality provided by this module
-    Description = 'Module avancé pour parser, manipuler et générer des roadmaps en format markdown'
+    Description = 'Module avancÃ© pour parser, manipuler et gÃ©nÃ©rer des roadmaps en format markdown'
     
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.1'
@@ -47,7 +47,7 @@
         'Get-RoadmapTaskDependencies',
         'Get-RoadmapTaskDependents',
         
-        # Fonctions d'export et de génération
+        # Fonctions d'export et de gÃ©nÃ©ration
         'Export-RoadmapTreeToJson',
         'Export-RoadmapTreeToMarkdown',
         'ConvertTo-MarkdownTask',

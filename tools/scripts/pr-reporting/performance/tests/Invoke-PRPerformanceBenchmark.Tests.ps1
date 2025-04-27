@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Invoke-PRPerformanceBenchmark.ps1.
@@ -13,31 +13,31 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation recommandée: Install-Module -Name Pester -Force -SkipPublisherCheck"
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation recommandÃ©e: Install-Module -Name Pester -Force -SkipPublisherCheck"
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptToTest = Join-Path -Path $PSScriptRoot -ChildPath "..\Invoke-PRPerformanceBenchmark.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptToTest)) {
-    throw "Script Invoke-PRPerformanceBenchmark.ps1 non trouvé à l'emplacement: $scriptToTest"
+    throw "Script Invoke-PRPerformanceBenchmark.ps1 non trouvÃ© Ã  l'emplacement: $scriptToTest"
 }
 
 # Tests Pester
 Describe "Invoke-PRPerformanceBenchmark Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testDir = Join-Path -Path $env:TEMP -ChildPath "PRPerformanceBenchmarkTests_$(Get-Random)"
         New-Item -Path $script:testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de sortie temporaire
+        # CrÃ©er un fichier de sortie temporaire
         $script:outputPath = Join-Path -Path $script:testDir -ChildPath "benchmark_results.json"
         
-        # Créer un mock pour les modules
+        # CrÃ©er un mock pour les modules
         Mock Import-Module { } -ModuleName $scriptToTest
         
-        # Créer un mock pour les fonctions
+        # CrÃ©er un mock pour les fonctions
         Mock Get-Command { 
             return @(
                 [PSCustomObject]@{
@@ -51,72 +51,72 @@ Describe "Invoke-PRPerformanceBenchmark Tests" {
             )
         } -ModuleName $scriptToTest
         
-        # Créer un mock pour l'exécution des fonctions
+        # CrÃ©er un mock pour l'exÃ©cution des fonctions
         Mock Test-Function1 { return "Test result 1" } -ModuleName $scriptToTest
         Mock Test-Function2 { return "Test result 2" } -ModuleName $scriptToTest
     }
     
-    Context "Validation des paramètres" {
-        It "Accepte le paramètre ModuleName" {
+    Context "Validation des paramÃ¨tres" {
+        It "Accepte le paramÃ¨tre ModuleName" {
             { & $scriptToTest -ModuleName "PRVisualization" -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre FunctionName" {
+        It "Accepte le paramÃ¨tre FunctionName" {
             { & $scriptToTest -FunctionName "New-PRBarChart" -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre Iterations" {
+        It "Accepte le paramÃ¨tre Iterations" {
             { & $scriptToTest -Iterations 3 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre DataSize" {
+        It "Accepte le paramÃ¨tre DataSize" {
             { & $scriptToTest -DataSize "Small" -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre OutputPath" {
+        It "Accepte le paramÃ¨tre OutputPath" {
             { & $scriptToTest -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
         
-        It "Accepte le paramètre IncludeDetails" {
+        It "Accepte le paramÃ¨tre IncludeDetails" {
             { & $scriptToTest -IncludeDetails -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw
         }
     }
     
-    Context "Génération de données de test" {
-        It "Génère des données de test de taille Small" {
-            # Exécuter la fonction New-TestData avec la taille Small
+    Context "GÃ©nÃ©ration de donnÃ©es de test" {
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Small" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Small
             $testData = & $scriptToTest -DataSize "Small" -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
         
-        It "Génère des données de test de taille Medium" {
-            # Exécuter la fonction New-TestData avec la taille Medium
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Medium" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Medium
             $testData = & $scriptToTest -DataSize "Medium" -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
         
-        It "Génère des données de test de taille Large" {
-            # Exécuter la fonction New-TestData avec la taille Large
+        It "GÃ©nÃ¨re des donnÃ©es de test de taille Large" {
+            # ExÃ©cuter la fonction New-TestData avec la taille Large
             $testData = & $scriptToTest -DataSize "Large" -OutputPath $script:outputPath -WhatIf
             
-            # Vérifier que les données ont été générées
+            # VÃ©rifier que les donnÃ©es ont Ã©tÃ© gÃ©nÃ©rÃ©es
             $testData | Should -Not -BeNullOrEmpty
         }
     }
     
-    Context "Exécution des benchmarks" {
-        It "Exécute les benchmarks pour toutes les fonctions" {
-            # Exécuter le script avec un petit nombre d'itérations
+    Context "ExÃ©cution des benchmarks" {
+        It "ExÃ©cute les benchmarks pour toutes les fonctions" {
+            # ExÃ©cuter le script avec un petit nombre d'itÃ©rations
             & $scriptToTest -Iterations 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty
@@ -125,14 +125,14 @@ Describe "Invoke-PRPerformanceBenchmark Tests" {
             $results.System | Should -Not -BeNullOrEmpty
         }
         
-        It "Exécute les benchmarks pour un module spécifique" {
-            # Exécuter le script avec un module spécifique
+        It "ExÃ©cute les benchmarks pour un module spÃ©cifique" {
+            # ExÃ©cuter le script avec un module spÃ©cifique
             & $scriptToTest -ModuleName "PRVisualization" -Iterations 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty
@@ -141,14 +141,14 @@ Describe "Invoke-PRPerformanceBenchmark Tests" {
             $results.System | Should -Not -BeNullOrEmpty
         }
         
-        It "Exécute les benchmarks pour une fonction spécifique" {
-            # Exécuter le script avec une fonction spécifique
+        It "ExÃ©cute les benchmarks pour une fonction spÃ©cifique" {
+            # ExÃ©cuter le script avec une fonction spÃ©cifique
             & $scriptToTest -FunctionName "New-PRBarChart" -Iterations 1 -DataSize "Small" -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des données valides
+            # VÃ©rifier que le fichier de rÃ©sultats contient des donnÃ©es valides
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty
@@ -157,14 +157,14 @@ Describe "Invoke-PRPerformanceBenchmark Tests" {
             $results.System | Should -Not -BeNullOrEmpty
         }
         
-        It "Inclut les détails des itérations si demandé" {
-            # Exécuter le script avec l'option IncludeDetails
+        It "Inclut les dÃ©tails des itÃ©rations si demandÃ©" {
+            # ExÃ©cuter le script avec l'option IncludeDetails
             & $scriptToTest -Iterations 2 -DataSize "Small" -IncludeDetails -OutputPath $script:outputPath
             
-            # Vérifier que le fichier de résultats a été créé
+            # VÃ©rifier que le fichier de rÃ©sultats a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $script:outputPath | Should -Be $true
             
-            # Vérifier que le fichier de résultats contient des détails d'itération
+            # VÃ©rifier que le fichier de rÃ©sultats contient des dÃ©tails d'itÃ©ration
             $results = Get-Content -Path $script:outputPath -Raw | ConvertFrom-Json
             $results | Should -Not -BeNullOrEmpty
             $results.Results | Should -Not -BeNullOrEmpty

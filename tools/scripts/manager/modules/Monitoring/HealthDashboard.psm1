@@ -1,5 +1,5 @@
-# Module de tableau de bord de santé pour le Script Manager
-# Ce module génère un tableau de bord de santé des scripts
+﻿# Module de tableau de bord de santÃ© pour le Script Manager
+# Ce module gÃ©nÃ¨re un tableau de bord de santÃ© des scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: monitoring, health, dashboard
@@ -7,13 +7,13 @@
 function Initialize-HealthDashboard {
     <#
     .SYNOPSIS
-        Initialise le tableau de bord de santé
+        Initialise le tableau de bord de santÃ©
     .DESCRIPTION
-        Configure le tableau de bord de santé pour les scripts
+        Configure le tableau de bord de santÃ© pour les scripts
     .PARAMETER Inventory
         Objet d'inventaire des scripts
     .PARAMETER OutputPath
-        Chemin où enregistrer le tableau de bord
+        Chemin oÃ¹ enregistrer le tableau de bord
     .EXAMPLE
         Initialize-HealthDashboard -Inventory $inventory -OutputPath "monitoring"
     #>
@@ -26,18 +26,18 @@ function Initialize-HealthDashboard {
         [string]$OutputPath
     )
     
-    # Créer le dossier du tableau de bord
+    # CrÃ©er le dossier du tableau de bord
     $DashboardPath = Join-Path -Path $OutputPath -ChildPath "dashboard"
     if (-not (Test-Path -Path $DashboardPath)) {
         New-Item -ItemType Directory -Path $DashboardPath -Force | Out-Null
     }
     
-    Write-Host "Initialisation du tableau de bord de santé..." -ForegroundColor Cyan
+    Write-Host "Initialisation du tableau de bord de santÃ©..." -ForegroundColor Cyan
     
-    # Créer le fichier de données du tableau de bord
+    # CrÃ©er le fichier de donnÃ©es du tableau de bord
     $DashboardDataPath = Join-Path -Path $DashboardPath -ChildPath "dashboard_data.json"
     
-    # Générer les données initiales du tableau de bord
+    # GÃ©nÃ©rer les donnÃ©es initiales du tableau de bord
     $DashboardData = @{
         LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $Inventory.TotalScripts
@@ -51,12 +51,12 @@ function Initialize-HealthDashboard {
         Scripts = @()
     }
     
-    # Enregistrer les données du tableau de bord
+    # Enregistrer les donnÃ©es du tableau de bord
     $DashboardData | ConvertTo-Json -Depth 10 | Set-Content -Path $DashboardDataPath
     
-    Write-Host "  Données du tableau de bord initialisées: $DashboardDataPath" -ForegroundColor Green
+    Write-Host "  DonnÃ©es du tableau de bord initialisÃ©es: $DashboardDataPath" -ForegroundColor Green
     
-    # Créer le fichier HTML du tableau de bord
+    # CrÃ©er le fichier HTML du tableau de bord
     $DashboardHtmlPath = Join-Path -Path $DashboardPath -ChildPath "dashboard.html"
     $DashboardHtmlContent = @"
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ function Initialize-HealthDashboard {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord de santé des scripts</title>
+    <title>Tableau de bord de santÃ© des scripts</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -212,8 +212,8 @@ function Initialize-HealthDashboard {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Tableau de bord de santé des scripts</h1>
-            <div class="last-update">Dernière mise à jour: <span id="lastUpdate">Chargement...</span></div>
+            <h1>Tableau de bord de santÃ© des scripts</h1>
+            <div class="last-update">DerniÃ¨re mise Ã  jour: <span id="lastUpdate">Chargement...</span></div>
         </div>
         
         <div class="stats">
@@ -225,27 +225,27 @@ function Initialize-HealthDashboard {
             <div class="stat-card warning">
                 <h3>Avertissements</h3>
                 <div class="value" id="warningCount">0</div>
-                <div class="description">Scripts avec problèmes mineurs</div>
+                <div class="description">Scripts avec problÃ¨mes mineurs</div>
             </div>
             <div class="stat-card critical">
                 <h3>Critiques</h3>
                 <div class="value" id="criticalCount">0</div>
-                <div class="description">Scripts avec problèmes majeurs</div>
+                <div class="description">Scripts avec problÃ¨mes majeurs</div>
             </div>
             <div class="stat-card unknown">
-                <h3>Non vérifiés</h3>
+                <h3>Non vÃ©rifiÃ©s</h3>
                 <div class="value" id="unknownCount">0</div>
-                <div class="description">Scripts non encore vérifiés</div>
+                <div class="description">Scripts non encore vÃ©rifiÃ©s</div>
             </div>
         </div>
         
         <div class="chart-container">
             <div class="chart">
-                <h3>Répartition par état</h3>
+                <h3>RÃ©partition par Ã©tat</h3>
                 <canvas id="healthChart"></canvas>
             </div>
             <div class="chart">
-                <h3>Répartition par type</h3>
+                <h3>RÃ©partition par type</h3>
                 <canvas id="typeChart"></canvas>
             </div>
         </div>
@@ -261,7 +261,7 @@ function Initialize-HealthDashboard {
             <div class="filter" data-filter="healthy">Sains</div>
             <div class="filter" data-filter="warning">Avertissements</div>
             <div class="filter" data-filter="critical">Critiques</div>
-            <div class="filter" data-filter="unknown">Non vérifiés</div>
+            <div class="filter" data-filter="unknown">Non vÃ©rifiÃ©s</div>
         </div>
         
         <table id="scriptsTable">
@@ -270,63 +270,63 @@ function Initialize-HealthDashboard {
                     <th>Nom</th>
                     <th>Type</th>
                     <th>Chemin</th>
-                    <th>État</th>
-                    <th>Dernière vérification</th>
+                    <th>Ã‰tat</th>
+                    <th>DerniÃ¨re vÃ©rification</th>
                 </tr>
             </thead>
             <tbody id="scriptsTableBody">
                 <tr>
-                    <td colspan="5" style="text-align: center;">Chargement des données...</td>
+                    <td colspan="5" style="text-align: center;">Chargement des donnÃ©es...</td>
                 </tr>
             </tbody>
         </table>
         
         <div class="footer">
-            <p>Généré par le Script Manager</p>
+            <p>GÃ©nÃ©rÃ© par le Script Manager</p>
         </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Fonction pour charger les données du tableau de bord
+        // Fonction pour charger les donnÃ©es du tableau de bord
         async function loadDashboardData() {
             try {
                 const response = await fetch('dashboard_data.json');
                 const data = await response.json();
                 updateDashboard(data);
             } catch (error) {
-                console.error('Erreur lors du chargement des données:', error);
-                document.getElementById('scriptsTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center;">Erreur lors du chargement des données</td></tr>';
+                console.error('Erreur lors du chargement des donnÃ©es:', error);
+                document.getElementById('scriptsTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center;">Erreur lors du chargement des donnÃ©es</td></tr>';
             }
         }
         
-        // Fonction pour mettre à jour le tableau de bord
+        // Fonction pour mettre Ã  jour le tableau de bord
         function updateDashboard(data) {
-            // Mettre à jour la dernière mise à jour
+            // Mettre Ã  jour la derniÃ¨re mise Ã  jour
             document.getElementById('lastUpdate').textContent = data.LastUpdate;
             
-            // Mettre à jour les compteurs
+            // Mettre Ã  jour les compteurs
             document.getElementById('healthyCount').textContent = data.HealthStatus.Healthy;
             document.getElementById('warningCount').textContent = data.HealthStatus.Warning;
             document.getElementById('criticalCount').textContent = data.HealthStatus.Critical;
             document.getElementById('unknownCount').textContent = data.HealthStatus.Unknown;
             
-            // Mettre à jour les graphiques
+            // Mettre Ã  jour les graphiques
             updateHealthChart(data.HealthStatus);
             updateTypeChart(data.ScriptsByType);
             
-            // Mettre à jour la table des scripts
+            // Mettre Ã  jour la table des scripts
             updateScriptsTable(data.Scripts);
         }
         
-        // Fonction pour mettre à jour le graphique de santé
+        // Fonction pour mettre Ã  jour le graphique de santÃ©
         function updateHealthChart(healthStatus) {
             const ctx = document.getElementById('healthChart').getContext('2d');
             
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Sains', 'Avertissements', 'Critiques', 'Non vérifiés'],
+                    labels: ['Sains', 'Avertissements', 'Critiques', 'Non vÃ©rifiÃ©s'],
                     datasets: [{
                         data: [
                             healthStatus.Healthy,
@@ -349,7 +349,7 @@ function Initialize-HealthDashboard {
             });
         }
         
-        // Fonction pour mettre à jour le graphique de types
+        // Fonction pour mettre Ã  jour le graphique de types
         function updateTypeChart(scriptsByType) {
             const ctx = document.getElementById('typeChart').getContext('2d');
             
@@ -381,12 +381,12 @@ function Initialize-HealthDashboard {
             });
         }
         
-        // Fonction pour mettre à jour la table des scripts
+        // Fonction pour mettre Ã  jour la table des scripts
         function updateScriptsTable(scripts) {
             const tableBody = document.getElementById('scriptsTableBody');
             
             if (scripts.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Aucun script trouvé</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Aucun script trouvÃ©</td></tr>';
                 return;
             }
             
@@ -422,7 +422,7 @@ function Initialize-HealthDashboard {
                 case 'healthy': return 'Sain';
                 case 'warning': return 'Avertissement';
                 case 'critical': return 'Critique';
-                default: return 'Non vérifié';
+                default: return 'Non vÃ©rifiÃ©';
             }
         }
         
@@ -433,7 +433,7 @@ function Initialize-HealthDashboard {
             
             filters.forEach(filter => {
                 filter.addEventListener('click', () => {
-                    // Mettre à jour la classe active
+                    // Mettre Ã  jour la classe active
                     filters.forEach(f => f.classList.remove('active'));
                     filter.classList.add('active');
                     
@@ -471,10 +471,10 @@ function Initialize-HealthDashboard {
             });
         }
         
-        // Charger les données au chargement de la page
+        // Charger les donnÃ©es au chargement de la page
         document.addEventListener('DOMContentLoaded', loadDashboardData);
         
-        // Recharger les données toutes les 5 minutes
+        // Recharger les donnÃ©es toutes les 5 minutes
         setInterval(loadDashboardData, 5 * 60 * 1000);
     </script>
 </body>
@@ -483,20 +483,20 @@ function Initialize-HealthDashboard {
     
     Set-Content -Path $DashboardHtmlPath -Value $DashboardHtmlContent
     
-    Write-Host "  Tableau de bord HTML créé: $DashboardHtmlPath" -ForegroundColor Green
+    Write-Host "  Tableau de bord HTML crÃ©Ã©: $DashboardHtmlPath" -ForegroundColor Green
     
-    # Créer le script de mise à jour du tableau de bord
+    # CrÃ©er le script de mise Ã  jour du tableau de bord
     $UpdateScriptPath = Join-Path -Path $DashboardPath -ChildPath "Update-Dashboard.ps1"
     $UpdateScriptContent = @"
 <#
 .SYNOPSIS
-    Met à jour le tableau de bord de santé des scripts
+    Met Ã  jour le tableau de bord de santÃ© des scripts
 .DESCRIPTION
-    Analyse les scripts et met à jour le tableau de bord de santé
+    Analyse les scripts et met Ã  jour le tableau de bord de santÃ©
 .PARAMETER InventoryPath
     Chemin vers le fichier d'inventaire
 .PARAMETER DashboardDataPath
-    Chemin vers le fichier de données du tableau de bord
+    Chemin vers le fichier de donnÃ©es du tableau de bord
 .EXAMPLE
     .\Update-Dashboard.ps1 -InventoryPath "data\inventory.json" -DashboardDataPath "monitoring\dashboard\dashboard_data.json"
 #>
@@ -509,18 +509,18 @@ param (
     [string]`$DashboardDataPath
 )
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path `$InventoryPath)) {
-    Write-Error "Fichier d'inventaire non trouvé: `$InventoryPath"
+    Write-Error "Fichier d'inventaire non trouvÃ©: `$InventoryPath"
     exit 1
 }
 
 if (-not (Test-Path -Path `$DashboardDataPath)) {
-    Write-Error "Fichier de données du tableau de bord non trouvé: `$DashboardDataPath"
+    Write-Error "Fichier de donnÃ©es du tableau de bord non trouvÃ©: `$DashboardDataPath"
     exit 1
 }
 
-# Charger l'inventaire et les données du tableau de bord
+# Charger l'inventaire et les donnÃ©es du tableau de bord
 try {
     `$Inventory = Get-Content -Path `$InventoryPath -Raw | ConvertFrom-Json
     `$DashboardData = Get-Content -Path `$DashboardDataPath -Raw | ConvertFrom-Json
@@ -529,28 +529,28 @@ try {
     exit 1
 }
 
-# Mettre à jour les données du tableau de bord
+# Mettre Ã  jour les donnÃ©es du tableau de bord
 `$DashboardData.LastUpdate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 `$DashboardData.TotalScripts = `$Inventory.TotalScripts
 `$DashboardData.ScriptsByType = `$Inventory.ScriptsByType
 
-# Réinitialiser les compteurs de santé
+# RÃ©initialiser les compteurs de santÃ©
 `$DashboardData.HealthStatus.Healthy = 0
 `$DashboardData.HealthStatus.Warning = 0
 `$DashboardData.HealthStatus.Critical = 0
 `$DashboardData.HealthStatus.Unknown = 0
 
-# Mettre à jour la liste des scripts
+# Mettre Ã  jour la liste des scripts
 `$DashboardData.Scripts = @()
 
 foreach (`$Script in `$Inventory.Scripts) {
-    # Vérifier l'état du script
+    # VÃ©rifier l'Ã©tat du script
     `$Status = Get-ScriptHealth -ScriptPath `$Script.Path
     
-    # Incrémenter le compteur correspondant
+    # IncrÃ©menter le compteur correspondant
     `$DashboardData.HealthStatus.(`$Status) += 1
     
-    # Ajouter le script à la liste
+    # Ajouter le script Ã  la liste
     `$DashboardData.Scripts += [PSCustomObject]@{
         Name = `$Script.Name
         Type = `$Script.Type
@@ -560,19 +560,19 @@ foreach (`$Script in `$Inventory.Scripts) {
     }
 }
 
-# Enregistrer les données mises à jour
+# Enregistrer les donnÃ©es mises Ã  jour
 `$DashboardData | ConvertTo-Json -Depth 10 | Set-Content -Path `$DashboardDataPath
 
-Write-Host "Tableau de bord mis à jour: `$DashboardDataPath" -ForegroundColor Green
+Write-Host "Tableau de bord mis Ã  jour: `$DashboardDataPath" -ForegroundColor Green
 
 function Get-ScriptHealth {
     <#
     .SYNOPSIS
-        Vérifie l'état de santé d'un script
+        VÃ©rifie l'Ã©tat de santÃ© d'un script
     .DESCRIPTION
-        Analyse un script pour déterminer son état de santé
+        Analyse un script pour dÃ©terminer son Ã©tat de santÃ©
     .PARAMETER ScriptPath
-        Chemin vers le script à vérifier
+        Chemin vers le script Ã  vÃ©rifier
     .EXAMPLE
         Get-ScriptHealth -ScriptPath "scripts\myscript.ps1"
     #>
@@ -582,7 +582,7 @@ function Get-ScriptHealth {
         [string]`$ScriptPath
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path `$ScriptPath)) {
         return "Critical"
     }
@@ -590,10 +590,10 @@ function Get-ScriptHealth {
     # Obtenir l'extension du fichier
     `$Extension = [System.IO.Path]::GetExtension(`$ScriptPath).ToLower()
     
-    # Vérifier le script selon son type
+    # VÃ©rifier le script selon son type
     switch (`$Extension) {
         ".ps1" {
-            # Vérifier la syntaxe PowerShell
+            # VÃ©rifier la syntaxe PowerShell
             try {
                 `$Errors = `$null
                 [void][System.Management.Automation.PSParser]::Tokenize((Get-Content -Path `$ScriptPath -Raw), [ref]`$Errors)
@@ -603,31 +603,31 @@ function Get-ScriptHealth {
                     return "Critical"
                 }
                 
-                # Vérifier les problèmes courants
+                # VÃ©rifier les problÃ¨mes courants
                 `$Content = Get-Content -Path `$ScriptPath -Raw
                 
-                # Vérifier l'utilisation de chemins absolus
+                # VÃ©rifier l'utilisation de chemins absolus
                 if (`$Content -match "[A-Z]:\\") {
                     return "Warning"
                 }
                 
-                # Vérifier l'utilisation de $null à droite des comparaisons
+                # VÃ©rifier l'utilisation de $null Ã  droite des comparaisons
                 if (`$Content -match "\`$\w+\s*-eq\s*\`$null") {
                     return "Warning"
                 }
                 
                 return "Healthy"
             } catch {
-                # Erreur lors de la vérification
+                # Erreur lors de la vÃ©rification
                 return "Critical"
             }
         }
         ".py" {
-            # Pour les scripts Python, vérifier simplement s'ils peuvent être lus
+            # Pour les scripts Python, vÃ©rifier simplement s'ils peuvent Ãªtre lus
             try {
                 `$Content = Get-Content -Path `$ScriptPath -Raw
                 
-                # Vérifier les problèmes courants
+                # VÃ©rifier les problÃ¨mes courants
                 if (`$Content -match "print\s*\(" -and -not (`$Content -match "import\s+logging")) {
                     return "Warning"
                 }
@@ -642,11 +642,11 @@ function Get-ScriptHealth {
             }
         }
         ".cmd" {
-            # Pour les scripts Batch, vérifier simplement s'ils peuvent être lus
+            # Pour les scripts Batch, vÃ©rifier simplement s'ils peuvent Ãªtre lus
             try {
                 `$Content = Get-Content -Path `$ScriptPath -Raw
                 
-                # Vérifier les problèmes courants
+                # VÃ©rifier les problÃ¨mes courants
                 if (-not (`$Content -match "@ECHO OFF")) {
                     return "Warning"
                 }
@@ -657,11 +657,11 @@ function Get-ScriptHealth {
             }
         }
         ".bat" {
-            # Pour les scripts Batch, vérifier simplement s'ils peuvent être lus
+            # Pour les scripts Batch, vÃ©rifier simplement s'ils peuvent Ãªtre lus
             try {
                 `$Content = Get-Content -Path `$ScriptPath -Raw
                 
-                # Vérifier les problèmes courants
+                # VÃ©rifier les problÃ¨mes courants
                 if (-not (`$Content -match "@ECHO OFF")) {
                     return "Warning"
                 }
@@ -672,11 +672,11 @@ function Get-ScriptHealth {
             }
         }
         ".sh" {
-            # Pour les scripts Shell, vérifier simplement s'ils peuvent être lus
+            # Pour les scripts Shell, vÃ©rifier simplement s'ils peuvent Ãªtre lus
             try {
                 `$Content = Get-Content -Path `$ScriptPath -Raw
                 
-                # Vérifier les problèmes courants
+                # VÃ©rifier les problÃ¨mes courants
                 if (-not (`$Content -match "^#!/bin/(bash|sh)")) {
                     return "Warning"
                 }
@@ -696,7 +696,7 @@ function Get-ScriptHealth {
     
     Set-Content -Path $UpdateScriptPath -Value $UpdateScriptContent
     
-    Write-Host "  Script de mise à jour créé: $UpdateScriptPath" -ForegroundColor Green
+    Write-Host "  Script de mise Ã  jour crÃ©Ã©: $UpdateScriptPath" -ForegroundColor Green
     
     return [PSCustomObject]@{
         DashboardPath = $DashboardPath

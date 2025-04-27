@@ -1,65 +1,65 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit une valeur vers un type complexe spécifié.
+    Convertit une valeur vers un type complexe spÃ©cifiÃ©.
 
 .DESCRIPTION
-    La fonction ConvertTo-ComplexType convertit une valeur vers un type complexe spécifié.
-    Elle prend en charge différents types complexes et peut être utilisée pour
-    convertir les entrées des fonctions du module RoadmapParser.
+    La fonction ConvertTo-ComplexType convertit une valeur vers un type complexe spÃ©cifiÃ©.
+    Elle prend en charge diffÃ©rents types complexes et peut Ãªtre utilisÃ©e pour
+    convertir les entrÃ©es des fonctions du module RoadmapParser.
 
 .PARAMETER Value
-    La valeur à convertir.
+    La valeur Ã  convertir.
 
 .PARAMETER Type
     Le type complexe cible de la conversion. Valeurs possibles :
     - XmlDocument : Convertit la valeur en document XML
     - JsonObject : Convertit la valeur en objet JSON
-    - CsvData : Convertit la valeur en données CSV
+    - CsvData : Convertit la valeur en donnÃ©es CSV
     - MarkdownDocument : Convertit la valeur en document Markdown
     - HtmlDocument : Convertit la valeur en document HTML
     - YamlDocument : Convertit la valeur en document YAML
-    - Base64 : Convertit la valeur en chaîne Base64
-    - SecureString : Convertit la valeur en chaîne sécurisée
+    - Base64 : Convertit la valeur en chaÃ®ne Base64
+    - SecureString : Convertit la valeur en chaÃ®ne sÃ©curisÃ©e
     - Credential : Convertit la valeur en objet d'identification
     - Uri : Convertit la valeur en URI
     - Version : Convertit la valeur en version
-    - Custom : Utilise un type personnalisé
+    - Custom : Utilise un type personnalisÃ©
 
 .PARAMETER CustomType
-    Le type personnalisé à utiliser pour la conversion.
-    Utilisé uniquement lorsque Type est "Custom".
+    Le type personnalisÃ© Ã  utiliser pour la conversion.
+    UtilisÃ© uniquement lorsque Type est "Custom".
 
 .PARAMETER Format
-    Le format à utiliser pour la conversion.
+    Le format Ã  utiliser pour la conversion.
 
 .PARAMETER Encoding
-    L'encodage à utiliser pour la conversion.
+    L'encodage Ã  utiliser pour la conversion.
 
 .PARAMETER DefaultValue
-    La valeur par défaut à retourner en cas d'échec de la conversion.
+    La valeur par dÃ©faut Ã  retourner en cas d'Ã©chec de la conversion.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la conversion.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la conversion.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la conversion.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la conversion.
 
 .EXAMPLE
     ConvertTo-ComplexType -Value "<root><item>value</item></root>" -Type XmlDocument
-    Convertit la chaîne XML en document XML.
+    Convertit la chaÃ®ne XML en document XML.
 
 .EXAMPLE
     ConvertTo-ComplexType -Value '{"name":"John","age":30}' -Type JsonObject -ThrowOnFailure
-    Convertit la chaîne JSON en objet JSON, et lève une exception si la conversion échoue.
+    Convertit la chaÃ®ne JSON en objet JSON, et lÃ¨ve une exception si la conversion Ã©choue.
 
 .OUTPUTS
-    [object] La valeur convertie vers le type complexe spécifié.
+    [object] La valeur convertie vers le type complexe spÃ©cifiÃ©.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 function ConvertTo-ComplexType {
     [CmdletBinding()]
@@ -91,7 +91,7 @@ function ConvertTo-ComplexType {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la conversion
+    # Initialiser le rÃ©sultat de la conversion
     $result = $null
     $conversionSucceeded = $false
 
@@ -129,13 +129,13 @@ function ConvertTo-ComplexType {
                 } elseif ($Value -is [array]) {
                     $result = $Value
                 } elseif ($Value -is [string]) {
-                    # Utiliser un fichier temporaire pour éviter les problèmes de formatage
+                    # Utiliser un fichier temporaire pour Ã©viter les problÃ¨mes de formatage
                     $tempFile = [System.IO.Path]::GetTempFileName()
                     $Value | Out-File -FilePath $tempFile -Encoding $Encoding
                     $result = Import-Csv -Path $tempFile
                     Remove-Item -Path $tempFile -Force
                 } else {
-                    throw "Impossible de convertir la valeur en données CSV."
+                    throw "Impossible de convertir la valeur en donnÃ©es CSV."
                 }
                 $conversionSucceeded = $true
             }
@@ -143,7 +143,7 @@ function ConvertTo-ComplexType {
                 if ($null -eq $Value) {
                     $result = ""
                 } elseif ($Value -is [string]) {
-                    # Pour l'instant, nous considérons simplement le texte comme du Markdown
+                    # Pour l'instant, nous considÃ©rons simplement le texte comme du Markdown
                     $result = $Value
                 } else {
                     $result = $Value.ToString()
@@ -154,7 +154,7 @@ function ConvertTo-ComplexType {
                 if ($null -eq $Value) {
                     $result = "<html><body></body></html>"
                 } elseif ($Value -is [string]) {
-                    # Pour l'instant, nous considérons simplement le texte comme du HTML
+                    # Pour l'instant, nous considÃ©rons simplement le texte comme du HTML
                     $result = $Value
                 } else {
                     $result = $Value.ToString()
@@ -167,8 +167,8 @@ function ConvertTo-ComplexType {
                 } elseif ($Value -is [PSObject] -or $Value -is [hashtable]) {
                     $result = $Value
                 } elseif ($Value -is [string]) {
-                    # PowerShell ne dispose pas de convertisseur YAML intégré
-                    # Nous utilisons une approche simplifiée ici
+                    # PowerShell ne dispose pas de convertisseur YAML intÃ©grÃ©
+                    # Nous utilisons une approche simplifiÃ©e ici
                     $yamlLines = $Value -split "`n"
                     $yamlObject = @{}
 
@@ -210,7 +210,7 @@ function ConvertTo-ComplexType {
                     }
                     $result = $secureString
                 } else {
-                    throw "Impossible de convertir la valeur en chaîne sécurisée."
+                    throw "Impossible de convertir la valeur en chaÃ®ne sÃ©curisÃ©e."
                 }
                 $conversionSucceeded = $true
             }
@@ -257,7 +257,7 @@ function ConvertTo-ComplexType {
             }
             "Custom" {
                 if ([string]::IsNullOrEmpty($CustomType)) {
-                    throw "Le paramètre CustomType est requis lorsque le type est Custom."
+                    throw "Le paramÃ¨tre CustomType est requis lorsque le type est Custom."
                 }
 
                 if ($null -eq $Value) {
@@ -265,7 +265,7 @@ function ConvertTo-ComplexType {
                 } else {
                     $targetType = $CustomType -as [Type]
                     if ($null -eq $targetType) {
-                        throw "Le type personnalisé '$CustomType' n'est pas valide."
+                        throw "Le type personnalisÃ© '$CustomType' n'est pas valide."
                     }
 
                     $result = [System.Convert]::ChangeType($Value, $targetType)
@@ -280,7 +280,7 @@ function ConvertTo-ComplexType {
         }
     }
 
-    # Gérer l'échec de la conversion
+    # GÃ©rer l'Ã©chec de la conversion
     if (-not $conversionSucceeded) {
         if ($PSBoundParameters.ContainsKey('DefaultValue')) {
             $result = $DefaultValue

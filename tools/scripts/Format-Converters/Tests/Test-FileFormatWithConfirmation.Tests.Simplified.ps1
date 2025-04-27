@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires simplifiés pour la fonction Test-FileFormatWithConfirmation.
+    Tests unitaires simplifiÃ©s pour la fonction Test-FileFormatWithConfirmation.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires simplifiés pour vérifier le bon fonctionnement de la fonction
+    Ce script contient des tests unitaires simplifiÃ©s pour vÃ©rifier le bon fonctionnement de la fonction
     Test-FileFormatWithConfirmation du module Format-Converters.
-    Note: Nous utilisons un nom de fonction avec un verbe approuvé (Test) au lieu de Detect.
+    Note: Nous utilisons un nom de fonction avec un verbe approuvÃ© (Test) au lieu de Detect.
 
 .NOTES
     Version: 1.0
@@ -16,7 +16,7 @@
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
@@ -26,17 +26,17 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     }
 }
 
-# Note: Cette version simplifiée n'utilise pas le module réel
+# Note: Cette version simplifiÃ©e n'utilise pas le module rÃ©el
 
 # Tests Pester
 Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testTempDir = Join-Path -Path $env:TEMP -ChildPath "FileFormatConfirmationTests_$(Get-Random)"
         New-Item -Path $script:testTempDir -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire temporaire créé : $script:testTempDir"
+        Write-Verbose "RÃ©pertoire temporaire crÃ©Ã© : $script:testTempDir"
 
-        # Créer des fichiers de test avec différents formats
+        # CrÃ©er des fichiers de test avec diffÃ©rents formats
         $script:jsonFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.json"
         $jsonContent = @"
 {
@@ -46,7 +46,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
 }
 "@
         $jsonContent | Set-Content -Path $script:jsonFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:jsonFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:jsonFilePath"
 
         $script:xmlFilePath = Join-Path -Path $script:testTempDir -ChildPath "test.xml"
         $xmlContent = @"
@@ -58,7 +58,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
 </root>
 "@
         $xmlContent | Set-Content -Path $script:xmlFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:xmlFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:xmlFilePath"
 
         $script:ambiguousFilePath = Join-Path -Path $script:testTempDir -ChildPath "ambiguous.txt"
         $ambiguousContent = @"
@@ -68,9 +68,9 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
 }
 "@
         $ambiguousContent | Set-Content -Path $script:ambiguousFilePath -Encoding UTF8
-        Write-Verbose "Fichier créé : $script:ambiguousFilePath"
+        Write-Verbose "Fichier crÃ©Ã© : $script:ambiguousFilePath"
 
-        # Vérifier que les fichiers de test existent
+        # VÃ©rifier que les fichiers de test existent
         $testFiles = @(
             $script:jsonFilePath,
             $script:xmlFilePath,
@@ -85,7 +85,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
 
         Write-Verbose "Tous les fichiers de test existent."
 
-        # Créer une fonction simplifiée Test-DetectedFileFormat pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Test-DetectedFileFormat pour les tests
         function global:Test-DetectedFileFormat {
             [CmdletBinding()]
             param (
@@ -96,18 +96,18 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
                 [switch]$IncludeAllFormats
             )
             
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
             
-            # Déterminer le format en fonction de l'extension et du contenu
+            # DÃ©terminer le format en fonction de l'extension et du contenu
             $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
             $detectedFormat = "UNKNOWN"
             $score = 0
             $allFormats = @()
             
-            # Simuler la détection de format
+            # Simuler la dÃ©tection de format
             switch ($extension) {
                 ".json" {
                     $detectedFormat = "JSON"
@@ -124,7 +124,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
                     )
                 }
                 ".txt" {
-                    # Pour les fichiers .txt, simuler une détection ambiguë
+                    # Pour les fichiers .txt, simuler une dÃ©tection ambiguÃ«
                     if ($FilePath -like "*ambiguous*") {
                         $detectedFormat = "JSON"
                         $score = 75
@@ -148,7 +148,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
                 }
             }
             
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 FilePath = $FilePath
                 DetectedFormat = $detectedFormat
@@ -159,7 +159,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
             return $result
         }
 
-        # Créer une fonction simplifiée Confirm-FormatDetection pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Confirm-FormatDetection pour les tests
         function global:Confirm-FormatDetection {
             [CmdletBinding()]
             param (
@@ -179,29 +179,29 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
                 [string]$DefaultFormat
             )
             
-            # Vérifier si les formats sont valides
+            # VÃ©rifier si les formats sont valides
             if ($null -eq $Formats -or $Formats.Count -eq 0) {
-                throw "Aucun format détecté."
+                throw "Aucun format dÃ©tectÃ©."
             }
             
-            # Si un seul format est détecté, le retourner directement
+            # Si un seul format est dÃ©tectÃ©, le retourner directement
             if ($Formats.Count -eq 1) {
                 return $Formats[0].Format
             }
             
-            # Si l'option AutoSelectHighestScore est activée, retourner le format avec le score le plus élevé
+            # Si l'option AutoSelectHighestScore est activÃ©e, retourner le format avec le score le plus Ã©levÃ©
             if ($AutoSelectHighestScore) {
                 $highestScoreFormat = $Formats | Sort-Object -Property Score -Descending | Select-Object -First 1
                 return $highestScoreFormat.Format
             }
             
-            # Si l'option AutoSelectHighestPriority est activée, retourner le format avec la priorité la plus élevée
+            # Si l'option AutoSelectHighestPriority est activÃ©e, retourner le format avec la prioritÃ© la plus Ã©levÃ©e
             if ($AutoSelectHighestPriority) {
                 $highestPriorityFormat = $Formats | Sort-Object -Property Priority -Descending | Select-Object -First 1
                 return $highestPriorityFormat.Format
             }
             
-            # Si un format par défaut est spécifié et qu'il existe dans la liste, le retourner
+            # Si un format par dÃ©faut est spÃ©cifiÃ© et qu'il existe dans la liste, le retourner
             if ($DefaultFormat) {
                 $defaultFormatObj = $Formats | Where-Object { $_.Format -eq $DefaultFormat }
                 if ($defaultFormatObj) {
@@ -213,7 +213,7 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
             return $Formats[0].Format
         }
 
-        # Créer une fonction simplifiée Test-FileFormatWithConfirmation pour les tests
+        # CrÃ©er une fonction simplifiÃ©e Test-FileFormatWithConfirmation pour les tests
         function global:Test-FileFormatWithConfirmation {
             [CmdletBinding()]
             param (
@@ -236,37 +236,37 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
                 [double]$AmbiguityThreshold = 15
             )
             
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 throw "Le fichier '$FilePath' n'existe pas."
             }
             
-            # Détecter le format du fichier
+            # DÃ©tecter le format du fichier
             $detectionResult = Test-DetectedFileFormat -FilePath $FilePath -IncludeAllFormats
             
-            # Si un seul format est détecté, le retourner directement
+            # Si un seul format est dÃ©tectÃ©, le retourner directement
             if ($detectionResult.AllFormats.Count -le 1) {
                 return $detectionResult
             }
             
-            # Vérifier si le format est ambigu
+            # VÃ©rifier si le format est ambigu
             $topFormat = $detectionResult.AllFormats[0]
             $secondFormat = $detectionResult.AllFormats[1]
             $scoreDifference = $topFormat.Score - $secondFormat.Score
             
-            # Si la différence de score est inférieure au seuil d'ambiguïté, demander confirmation
+            # Si la diffÃ©rence de score est infÃ©rieure au seuil d'ambiguÃ¯tÃ©, demander confirmation
             if ($scoreDifference -lt $AmbiguityThreshold) {
-                # Demander confirmation à l'utilisateur
+                # Demander confirmation Ã  l'utilisateur
                 $confirmedFormat = Confirm-FormatDetection -Formats $detectionResult.AllFormats `
                     -ShowConfidenceScore:$ShowConfidenceScore `
                     -AutoSelectHighestScore:$AutoSelectHighestScore `
                     -AutoSelectHighestPriority:$AutoSelectHighestPriority `
                     -DefaultFormat $DefaultFormat
                 
-                # Mettre à jour le format détecté
+                # Mettre Ã  jour le format dÃ©tectÃ©
                 $detectionResult.DetectedFormat = $confirmedFormat
                 
-                # Mettre à jour le score
+                # Mettre Ã  jour le score
                 $confirmedFormatObj = $detectionResult.AllFormats | Where-Object { $_.Format -eq $confirmedFormat }
                 if ($confirmedFormatObj) {
                     $detectionResult.Score = $confirmedFormatObj.Score
@@ -277,15 +277,15 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
         }
     }
 
-    Context "Détection de format non ambigu" {
-        It "Détecte correctement un format JSON non ambigu" {
+    Context "DÃ©tection de format non ambigu" {
+        It "DÃ©tecte correctement un format JSON non ambigu" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:jsonFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "JSON"
             $result.Score | Should -BeGreaterThan 90
         }
 
-        It "Détecte correctement un format XML non ambigu" {
+        It "DÃ©tecte correctement un format XML non ambigu" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:xmlFilePath
             $result | Should -Not -BeNullOrEmpty
             $result.DetectedFormat | Should -Be "XML"
@@ -293,23 +293,23 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
         }
     }
 
-    Context "Détection de format ambigu" {
-        It "Détecte correctement un format ambigu et demande confirmation" {
+    Context "DÃ©tection de format ambigu" {
+        It "DÃ©tecte correctement un format ambigu et demande confirmation" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:ambiguousFilePath -AmbiguityThreshold 20
             $result | Should -Not -BeNullOrEmpty
-            $result.DetectedFormat | Should -Be "JSON"  # Le premier format est retourné par défaut
+            $result.DetectedFormat | Should -Be "JSON"  # Le premier format est retournÃ© par dÃ©faut
         }
 
         It "Utilise l'option AutoSelectHighestScore pour les formats ambigus" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:ambiguousFilePath -AutoSelectHighestScore -AmbiguityThreshold 20
             $result | Should -Not -BeNullOrEmpty
-            $result.DetectedFormat | Should -Be "JSON"  # JSON a le score le plus élevé
+            $result.DetectedFormat | Should -Be "JSON"  # JSON a le score le plus Ã©levÃ©
         }
 
         It "Utilise l'option AutoSelectHighestPriority pour les formats ambigus" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:ambiguousFilePath -AutoSelectHighestPriority -AmbiguityThreshold 20
             $result | Should -Not -BeNullOrEmpty
-            $result.DetectedFormat | Should -Be "JSON"  # JSON a la priorité la plus élevée
+            $result.DetectedFormat | Should -Be "JSON"  # JSON a la prioritÃ© la plus Ã©levÃ©e
         }
 
         It "Utilise l'option DefaultFormat pour les formats ambigus" {
@@ -319,29 +319,29 @@ Describe "Fonction Test-FileFormatWithConfirmation (Simplified)" {
         }
     }
 
-    Context "Seuil d'ambiguïté" {
-        It "Ne demande pas confirmation si la différence de score est supérieure au seuil" {
+    Context "Seuil d'ambiguÃ¯tÃ©" {
+        It "Ne demande pas confirmation si la diffÃ©rence de score est supÃ©rieure au seuil" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:ambiguousFilePath -AmbiguityThreshold 5
             $result | Should -Not -BeNullOrEmpty
-            $result.DetectedFormat | Should -Be "JSON"  # Le format détecté initialement
+            $result.DetectedFormat | Should -Be "JSON"  # Le format dÃ©tectÃ© initialement
         }
 
-        It "Demande confirmation si la différence de score est inférieure au seuil" {
+        It "Demande confirmation si la diffÃ©rence de score est infÃ©rieure au seuil" {
             $result = Test-FileFormatWithConfirmation -FilePath $script:ambiguousFilePath -AmbiguityThreshold 20
             $result | Should -Not -BeNullOrEmpty
-            $result.DetectedFormat | Should -Be "JSON"  # Le premier format est retourné par défaut
+            $result.DetectedFormat | Should -Be "JSON"  # Le premier format est retournÃ© par dÃ©faut
         }
     }
 
     Context "Gestion des erreurs" {
-        It "Lève une erreur si le fichier n'existe pas" {
+        It "LÃ¨ve une erreur si le fichier n'existe pas" {
             { Test-FileFormatWithConfirmation -FilePath "fichier_inexistant.txt" } | Should -Throw
         }
     }
 
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     AfterAll {
-        # Supprimer le répertoire temporaire
+        # Supprimer le rÃ©pertoire temporaire
         if (Test-Path -Path $script:testTempDir) {
             Remove-Item -Path $script:testTempDir -Recurse -Force
         }

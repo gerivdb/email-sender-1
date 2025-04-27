@@ -1,35 +1,35 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte le format d'un fichier en utilisant des critères avancés.
+    DÃ©tecte le format d'un fichier en utilisant des critÃ¨res avancÃ©s.
 
 .DESCRIPTION
-    Ce script détecte le format d'un fichier en utilisant des critères avancés tels que
-    l'extension, les motifs d'en-tête, les motifs de contenu, les motifs de structure,
-    et les signatures binaires. Il attribue un score de confiance à chaque format
+    Ce script dÃ©tecte le format d'un fichier en utilisant des critÃ¨res avancÃ©s tels que
+    l'extension, les motifs d'en-tÃªte, les motifs de contenu, les motifs de structure,
+    et les signatures binaires. Il attribue un score de confiance Ã  chaque format
     potentiel et retourne le format le plus probable.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser.
+    Le chemin du fichier Ã  analyser.
 
 .PARAMETER CriteriaPath
-    Le chemin vers le fichier JSON contenant les critères de détection.
-    Par défaut, utilise 'FormatDetectionCriteria.json' dans le même répertoire que ce script.
+    Le chemin vers le fichier JSON contenant les critÃ¨res de dÃ©tection.
+    Par dÃ©faut, utilise 'FormatDetectionCriteria.json' dans le mÃªme rÃ©pertoire que ce script.
 
 .PARAMETER IncludeAllFormats
-    Indique si tous les formats détectés doivent être inclus dans le résultat.
+    Indique si tous les formats dÃ©tectÃ©s doivent Ãªtre inclus dans le rÃ©sultat.
 
 .PARAMETER MinimumScore
-    Le score minimum requis pour qu'un format soit considéré comme valide.
-    Par défaut, la valeur est 50.
+    Le score minimum requis pour qu'un format soit considÃ©rÃ© comme valide.
+    Par dÃ©faut, la valeur est 50.
 
 .EXAMPLE
     Detect-FileFormat -FilePath "C:\path\to\file.txt"
-    Détecte le format du fichier spécifié.
+    DÃ©tecte le format du fichier spÃ©cifiÃ©.
 
 .EXAMPLE
     Detect-FileFormat -FilePath "C:\path\to\file.txt" -IncludeAllFormats
-    Détecte le format du fichier spécifié et inclut tous les formats détectés dans le résultat.
+    DÃ©tecte le format du fichier spÃ©cifiÃ© et inclut tous les formats dÃ©tectÃ©s dans le rÃ©sultat.
 
 .NOTES
     Version: 2.0
@@ -53,22 +53,22 @@ function Detect-FileFormat {
         [int]$MinimumScore = 50
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
     
-    # Vérifier si le fichier de critères existe
+    # VÃ©rifier si le fichier de critÃ¨res existe
     if (-not (Test-Path -Path $CriteriaPath -PathType Leaf)) {
-        throw "Le fichier de critères '$CriteriaPath' n'existe pas."
+        throw "Le fichier de critÃ¨res '$CriteriaPath' n'existe pas."
     }
     
-    # Charger les critères de détection
+    # Charger les critÃ¨res de dÃ©tection
     try {
         $criteria = Get-Content -Path $CriteriaPath -Raw | ConvertFrom-Json
     }
     catch {
-        throw "Erreur lors du chargement des critères de détection : $_"
+        throw "Erreur lors du chargement des critÃ¨res de dÃ©tection : $_"
     }
     
     # Obtenir les informations sur le fichier
@@ -93,24 +93,24 @@ function Detect-FileFormat {
         }
     }
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $formatScores = @{}
     
-    # Évaluer chaque format
+    # Ã‰valuer chaque format
     foreach ($format in $criteria.PSObject.Properties) {
         $formatName = $format.Name
         $formatCriteria = $format.Value
         
-        # Ignorer les formats qui ne correspondent pas à la taille minimale
+        # Ignorer les formats qui ne correspondent pas Ã  la taille minimale
         if ($fileSize -lt $formatCriteria.MinimumSize) {
             continue
         }
         
-        # Initialiser le score et les critères correspondants
+        # Initialiser le score et les critÃ¨res correspondants
         $score = 0
         $matchedCriteria = @()
         
-        # Vérifier l'extension
+        # VÃ©rifier l'extension
         $extensionScore = 0
         if ($formatCriteria.Extensions -and $formatCriteria.Extensions.Count -gt 0) {
             foreach ($extension in $formatCriteria.Extensions) {
@@ -123,7 +123,7 @@ function Detect-FileFormat {
         }
         $score += $extensionScore
         
-        # Vérifier les signatures binaires pour les fichiers binaires
+        # VÃ©rifier les signatures binaires pour les fichiers binaires
         $binaryScore = 0
         if ($isBinary -and $formatCriteria.BinarySignatures -and $formatCriteria.BinarySignatures.Count -gt 0) {
             foreach ($signature in $formatCriteria.BinarySignatures) {
@@ -149,22 +149,22 @@ function Detect-FileFormat {
         }
         $score += $binaryScore
         
-        # Pour les fichiers non binaires, vérifier les motifs d'en-tête, de contenu et de structure
+        # Pour les fichiers non binaires, vÃ©rifier les motifs d'en-tÃªte, de contenu et de structure
         if (-not $isBinary) {
-            # Vérifier les motifs d'en-tête
+            # VÃ©rifier les motifs d'en-tÃªte
             $headerScore = 0
             if ($formatCriteria.HeaderPatterns -and $formatCriteria.HeaderPatterns.Count -gt 0) {
                 foreach ($pattern in $formatCriteria.HeaderPatterns) {
                     if ($fileContent -match $pattern) {
                         $headerScore = $formatCriteria.HeaderWeight
-                        $matchedCriteria += "En-tête ($pattern)"
+                        $matchedCriteria += "En-tÃªte ($pattern)"
                         break
                     }
                 }
             }
             $score += $headerScore
             
-            # Vérifier les motifs de contenu
+            # VÃ©rifier les motifs de contenu
             $contentScore = 0
             $contentMatches = 0
             if ($formatCriteria.ContentPatterns -and $formatCriteria.ContentPatterns.Count -gt 0) {
@@ -181,7 +181,7 @@ function Detect-FileFormat {
             }
             $score += $contentScore
             
-            # Vérifier les motifs de structure
+            # VÃ©rifier les motifs de structure
             $structureScore = 0
             if ($formatCriteria.StructurePatterns -and $formatCriteria.StructurePatterns.Count -gt 0) {
                 foreach ($pattern in $formatCriteria.StructurePatterns) {
@@ -194,13 +194,13 @@ function Detect-FileFormat {
             }
             $score += $structureScore
             
-            # Vérifier si l'en-tête est requis mais manquant
+            # VÃ©rifier si l'en-tÃªte est requis mais manquant
             if ($formatCriteria.RequireHeader -and $headerScore -eq 0) {
                 $score = 0
             }
         }
         
-        # Ajouter le format au résultat si le score est suffisant
+        # Ajouter le format au rÃ©sultat si le score est suffisant
         if ($score -ge $MinimumScore) {
             $formatScores[$formatName] = @{
                 Format = $formatName
@@ -211,7 +211,7 @@ function Detect-FileFormat {
         }
     }
     
-    # Déterminer le format le plus probable
+    # DÃ©terminer le format le plus probable
     $bestFormat = $null
     $bestScore = 0
     $bestPriority = 0
@@ -227,7 +227,7 @@ function Detect-FileFormat {
         }
     }
     
-    # Créer le résultat
+    # CrÃ©er le rÃ©sultat
     $result = [PSCustomObject]@{
         FilePath = $FilePath
         Size = $fileSize
@@ -237,7 +237,7 @@ function Detect-FileFormat {
         MatchedCriteria = $formatScores[$bestFormat].MatchedCriteria -join ", "
     }
     
-    # Ajouter tous les formats détectés si demandé
+    # Ajouter tous les formats dÃ©tectÃ©s si demandÃ©
     if ($IncludeAllFormats) {
         $allFormats = @()
         
@@ -256,7 +256,7 @@ function Detect-FileFormat {
     return $result
 }
 
-# Fonction pour vérifier si un fichier est binaire
+# Fonction pour vÃ©rifier si un fichier est binaire
 function Test-BinaryFile {
     [CmdletBinding()]
     param(
@@ -271,7 +271,7 @@ function Test-BinaryFile {
         $bytesRead = $stream.Read($buffer, 0, 1024)
         $stream.Close()
         
-        # Vérifier si le fichier contient des caractères nuls ou non imprimables
+        # VÃ©rifier si le fichier contient des caractÃ¨res nuls ou non imprimables
         $nonPrintableCount = 0
         for ($i = 0; $i -lt $bytesRead; $i++) {
             if ($buffer[$i] -eq 0 -or ($buffer[$i] -lt 32 -and $buffer[$i] -ne 9 -and $buffer[$i] -ne 10 -and $buffer[$i] -ne 13)) {
@@ -279,11 +279,11 @@ function Test-BinaryFile {
             }
         }
         
-        # Si plus de 10% des caractères sont non imprimables, considérer le fichier comme binaire
+        # Si plus de 10% des caractÃ¨res sont non imprimables, considÃ©rer le fichier comme binaire
         return ($nonPrintableCount / $bytesRead) -gt 0.1
     }
     catch {
-        Write-Warning "Erreur lors de la vérification du fichier binaire : $_"
+        Write-Warning "Erreur lors de la vÃ©rification du fichier binaire : $_"
         return $false
     }
 }
@@ -306,7 +306,7 @@ function Get-BinaryContent {
         $bytesRead = $stream.Read($buffer, 0, $MaxBytes)
         $stream.Close()
         
-        # Redimensionner le tableau si nécessaire
+        # Redimensionner le tableau si nÃ©cessaire
         if ($bytesRead -lt $MaxBytes) {
             $result = [byte[]]::new($bytesRead)
             [Array]::Copy($buffer, $result, $bytesRead)

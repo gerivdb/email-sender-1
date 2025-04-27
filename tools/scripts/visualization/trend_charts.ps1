@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de génération de graphiques de tendances pour les données de performance.
+    Script de gÃ©nÃ©ration de graphiques de tendances pour les donnÃ©es de performance.
 .DESCRIPTION
-    Ce script génère des graphiques de tendances pour visualiser les données de performance
-    du système, des applications et des métriques métier.
+    Ce script gÃ©nÃ¨re des graphiques de tendances pour visualiser les donnÃ©es de performance
+    du systÃ¨me, des applications et des mÃ©triques mÃ©tier.
 .PARAMETER DataPath
-    Chemin vers les données de performance.
+    Chemin vers les donnÃ©es de performance.
 .PARAMETER OutputPath
-    Chemin où les graphiques seront sauvegardés.
+    Chemin oÃ¹ les graphiques seront sauvegardÃ©s.
 .PARAMETER TemplatesPath
     Chemin vers les templates de graphiques.
 .PARAMETER ChartType
-    Type de graphique à générer (line, area, bar, scatter).
+    Type de graphique Ã  gÃ©nÃ©rer (line, area, bar, scatter).
 .PARAMETER MetricType
-    Type de métrique (system, application, business).
+    Type de mÃ©trique (system, application, business).
 .PARAMETER StartDate
-    Date de début pour les données à visualiser.
+    Date de dÃ©but pour les donnÃ©es Ã  visualiser.
 .PARAMETER EndDate
-    Date de fin pour les données à visualiser.
+    Date de fin pour les donnÃ©es Ã  visualiser.
 #>
 
 [CmdletBinding()]
@@ -81,10 +81,10 @@ function Import-ChartTemplates {
     try {
         if (Test-Path -Path $TemplatesPath) {
             $Templates = Get-Content -Path $TemplatesPath -Raw | ConvertFrom-Json
-            Write-Log -Message "Templates chargés avec succès: $($Templates.templates.Count) templates disponibles" -Level "Info"
+            Write-Log -Message "Templates chargÃ©s avec succÃ¨s: $($Templates.templates.Count) templates disponibles" -Level "Info"
             return $Templates.templates
         } else {
-            Write-Log -Message "Fichier de templates non trouvé: $TemplatesPath" -Level "Error"
+            Write-Log -Message "Fichier de templates non trouvÃ©: $TemplatesPath" -Level "Error"
             return $null
         }
     } catch {
@@ -93,7 +93,7 @@ function Import-ChartTemplates {
     }
 }
 
-# Fonction pour charger les données de performance
+# Fonction pour charger les donnÃ©es de performance
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -110,7 +110,7 @@ function Import-PerformanceData {
         [DateTime]$EndDate
     )
     
-    Write-Log -Message "Chargement des données de performance de type $MetricType" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es de performance de type $MetricType" -Level "Info"
     
     try {
         $DataFile = Join-Path -Path $DataPath -ChildPath "$($MetricType)_metrics.csv"
@@ -127,19 +127,19 @@ function Import-PerformanceData {
             # Filtrer par plage de dates
             $FilteredData = $Data | Where-Object { $_.DateTime -ge $StartDate -and $_.DateTime -le $EndDate }
             
-            Write-Log -Message "Données chargées avec succès: $($FilteredData.Count) entrées" -Level "Info"
+            Write-Log -Message "DonnÃ©es chargÃ©es avec succÃ¨s: $($FilteredData.Count) entrÃ©es" -Level "Info"
             return $FilteredData
         } else {
-            Write-Log -Message "Fichier de données non trouvé: $DataFile" -Level "Warning"
+            Write-Log -Message "Fichier de donnÃ©es non trouvÃ©: $DataFile" -Level "Warning"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour générer un graphique de tendance
+# Fonction pour gÃ©nÃ©rer un graphique de tendance
 function New-TrendChart {
     [CmdletBinding()]
     param (
@@ -162,16 +162,16 @@ function New-TrendChart {
         [hashtable]$AdditionalOptions = @{}
     )
     
-    Write-Log -Message "Génération d'un graphique de type $($Template.type) pour la métrique $MetricName" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration d'un graphique de type $($Template.type) pour la mÃ©trique $MetricName" -Level "Info"
     
     try {
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Préparer les données pour le graphique
+        # PrÃ©parer les donnÃ©es pour le graphique
         $ChartData = @{
             type = $Template.type
             data = @{
@@ -220,7 +220,7 @@ function New-TrendChart {
             }
         }
         
-        # Ajouter les options supplémentaires
+        # Ajouter les options supplÃ©mentaires
         foreach ($Key in $AdditionalOptions.Keys) {
             $ChartData.options[$Key] = $AdditionalOptions[$Key]
         }
@@ -231,15 +231,15 @@ function New-TrendChart {
         # Sauvegarder le fichier de configuration du graphique
         $ChartJson | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Graphique généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Graphique gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du graphique: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du graphique: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction pour générer un graphique HTML
+# Fonction pour gÃ©nÃ©rer un graphique HTML
 function New-HtmlChart {
     [CmdletBinding()]
     param (
@@ -253,13 +253,13 @@ function New-HtmlChart {
         [string]$Title = "Graphique de tendance"
     )
     
-    Write-Log -Message "Génération du fichier HTML pour le graphique: $OutputPath" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration du fichier HTML pour le graphique: $OutputPath" -Level "Info"
     
     try {
         # Lire la configuration du graphique
         $ChartConfig = Get-Content -Path $ChartConfigPath -Raw
         
-        # Créer le contenu HTML
+        # CrÃ©er le contenu HTML
         $HtmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -285,7 +285,7 @@ function New-HtmlChart {
         // Configuration du graphique
         var config = $ChartConfig;
         
-        // Créer le graphique
+        // CrÃ©er le graphique
         var ctx = document.getElementById('chart').getContext('2d');
         var chart = new Chart(ctx, config);
     </script>
@@ -296,15 +296,15 @@ function New-HtmlChart {
         # Sauvegarder le fichier HTML
         $HtmlContent | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Log -Message "Fichier HTML généré avec succès: $OutputPath" -Level "Info"
+        Write-Log -Message "Fichier HTML gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de la génération du fichier HTML: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de la gÃ©nÃ©ration du fichier HTML: $_" -Level "Error"
         return $false
     }
 }
 
-# Fonction principale pour générer les graphiques de tendances
+# Fonction principale pour gÃ©nÃ©rer les graphiques de tendances
 function Start-TrendChartGeneration {
     [CmdletBinding()]
     param (
@@ -330,9 +330,9 @@ function Start-TrendChartGeneration {
         [DateTime]$EndDate
     )
     
-    Write-Log -Message "Début de la génération des graphiques de tendances" -Level "Info"
+    Write-Log -Message "DÃ©but de la gÃ©nÃ©ration des graphiques de tendances" -Level "Info"
     
-    # Déterminer les types de métriques à traiter
+    # DÃ©terminer les types de mÃ©triques Ã  traiter
     $MetricTypes = @()
     if ($MetricType -eq "all") {
         $MetricTypes = @("system", "application", "business")
@@ -340,7 +340,7 @@ function Start-TrendChartGeneration {
         $MetricTypes = @($MetricType)
     }
     
-    # Déterminer les types de graphiques à générer
+    # DÃ©terminer les types de graphiques Ã  gÃ©nÃ©rer
     $ChartTypes = @()
     if ($ChartType -eq "all") {
         $ChartTypes = @("line", "area", "bar", "scatter")
@@ -348,31 +348,31 @@ function Start-TrendChartGeneration {
         $ChartTypes = @($ChartType)
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # Générer les graphiques pour chaque type de métrique
+    # GÃ©nÃ©rer les graphiques pour chaque type de mÃ©trique
     foreach ($Type in $MetricTypes) {
-        Write-Log -Message "Traitement des métriques de type: $Type" -Level "Info"
+        Write-Log -Message "Traitement des mÃ©triques de type: $Type" -Level "Info"
         
-        # Charger les données
+        # Charger les donnÃ©es
         $Data = Import-PerformanceData -DataPath $DataPath -MetricType $Type -StartDate $StartDate -EndDate $EndDate
         
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée disponible pour le type: $Type" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e disponible pour le type: $Type" -Level "Warning"
             continue
         }
         
-        # Obtenir la liste des métriques uniques
+        # Obtenir la liste des mÃ©triques uniques
         $Metrics = $Data | Select-Object -Property Metric -Unique
         
         foreach ($Metric in $Metrics) {
             $MetricName = $Metric.Metric
-            Write-Log -Message "Traitement de la métrique: $MetricName" -Level "Info"
+            Write-Log -Message "Traitement de la mÃ©trique: $MetricName" -Level "Info"
             
-            # Filtrer les données pour cette métrique
+            # Filtrer les donnÃ©es pour cette mÃ©trique
             $MetricData = $Data | Where-Object { $_.Metric -eq $MetricName }
             
             foreach ($CType in $ChartTypes) {
@@ -380,16 +380,16 @@ function Start-TrendChartGeneration {
                 $Template = $Templates | Where-Object { $_.type -eq $CType } | Select-Object -First 1
                 
                 if ($null -eq $Template) {
-                    Write-Log -Message "Aucun template trouvé pour le type de graphique: $CType" -Level "Warning"
+                    Write-Log -Message "Aucun template trouvÃ© pour le type de graphique: $CType" -Level "Warning"
                     continue
                 }
                 
-                # Générer le graphique
+                # GÃ©nÃ©rer le graphique
                 $ChartOutputPath = Join-Path -Path $OutputPath -ChildPath "${Type}_${MetricName}_${CType}.json"
                 $Success = New-TrendChart -Data $MetricData -Template $Template -OutputPath $ChartOutputPath -MetricName $MetricName -Title "$MetricName ($Type)"
                 
                 if ($Success) {
-                    # Générer le fichier HTML
+                    # GÃ©nÃ©rer le fichier HTML
                     $HtmlOutputPath = Join-Path -Path $OutputPath -ChildPath "${Type}_${MetricName}_${CType}.html"
                     New-HtmlChart -ChartConfigPath $ChartOutputPath -OutputPath $HtmlOutputPath -Title "$MetricName ($Type)"
                 }
@@ -397,11 +397,11 @@ function Start-TrendChartGeneration {
         }
     }
     
-    Write-Log -Message "Génération des graphiques de tendances terminée" -Level "Info"
+    Write-Log -Message "GÃ©nÃ©ration des graphiques de tendances terminÃ©e" -Level "Info"
     return $true
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Charger les templates de graphiques
     $Templates = Import-ChartTemplates -TemplatesPath $TemplatesPath
@@ -411,17 +411,17 @@ try {
         exit 1
     }
     
-    # Générer les graphiques
+    # GÃ©nÃ©rer les graphiques
     $Result = Start-TrendChartGeneration -DataPath $DataPath -OutputPath $OutputPath -Templates $Templates -ChartType $ChartType -MetricType $MetricType -StartDate $StartDate -EndDate $EndDate
     
     if ($Result) {
-        Write-Log -Message "Génération des graphiques réussie" -Level "Info"
+        Write-Log -Message "GÃ©nÃ©ration des graphiques rÃ©ussie" -Level "Info"
         exit 0
     } else {
-        Write-Log -Message "Échec de la génération des graphiques" -Level "Error"
+        Write-Log -Message "Ã‰chec de la gÃ©nÃ©ration des graphiques" -Level "Error"
         exit 1
     }
 } catch {
-    Write-Log -Message "Erreur non gérée: $_" -Level "Error"
+    Write-Log -Message "Erreur non gÃ©rÃ©e: $_" -Level "Error"
     exit 1
 }

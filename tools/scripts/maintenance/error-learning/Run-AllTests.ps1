@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter tous les tests unitaires et d'intégration du système d'apprentissage des erreurs.
+    Script pour exÃ©cuter tous les tests unitaires et d'intÃ©gration du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et d'intégration du système d'apprentissage des erreurs
-    et génère un rapport des résultats.
+    Ce script exÃ©cute tous les tests unitaires et d'intÃ©gration du systÃ¨me d'apprentissage des erreurs
+    et gÃ©nÃ¨re un rapport des rÃ©sultats.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des tests. Par défaut, utilise le répertoire courant.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des tests. Par dÃ©faut, utilise le rÃ©pertoire courant.
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport HTML des résultats des tests.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .PARAMETER TestType
-    Type de tests à exécuter. Valeurs possibles : 'All', 'Unit', 'Integration'. Par défaut, 'All'.
+    Type de tests Ã  exÃ©cuter. Valeurs possibles : 'All', 'Unit', 'Integration'. Par dÃ©faut, 'All'.
 .EXAMPLE
     .\Run-AllTests.ps1 -GenerateReport
-    Exécute tous les tests unitaires et d'intégration et génère un rapport HTML des résultats.
+    ExÃ©cute tous les tests unitaires et d'intÃ©gration et gÃ©nÃ¨re un rapport HTML des rÃ©sultats.
 .EXAMPLE
     .\Run-AllTests.ps1 -TestType Unit
-    Exécute uniquement les tests unitaires.
+    ExÃ©cute uniquement les tests unitaires.
 .EXAMPLE
     .\Run-AllTests.ps1 -TestType Integration
-    Exécute uniquement les tests d'intégration.
+    ExÃ©cute uniquement les tests d'intÃ©gration.
 #>
 
 [CmdletBinding()]
@@ -34,7 +34,7 @@ param (
     [string]$TestType = 'All'
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -43,31 +43,31 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests
+# DÃ©finir le chemin des tests
 $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "Tests"
 
-# Filtrer les tests en fonction du type de test demandé
+# Filtrer les tests en fonction du type de test demandÃ©
 if ($TestType -eq 'Unit') {
     $testFiles = Get-ChildItem -Path $testRoot -Filter "*.Tests.ps1" -Recurse | Where-Object { $_.Name -notmatch '\.Integration\.Tests\.ps1$' }
-    Write-Host "Tests unitaires trouvés :" -ForegroundColor Cyan
+    Write-Host "Tests unitaires trouvÃ©s :" -ForegroundColor Cyan
 }
 elseif ($TestType -eq 'Integration') {
     $testFiles = Get-ChildItem -Path $testRoot -Filter "*.Integration.Tests.ps1" -Recurse
-    Write-Host "Tests d'intégration trouvés :" -ForegroundColor Cyan
+    Write-Host "Tests d'intÃ©gration trouvÃ©s :" -ForegroundColor Cyan
 }
 else {
     $testFiles = Get-ChildItem -Path $testRoot -Filter "*.Tests.ps1" -Recurse
-    Write-Host "Tous les tests trouvés :" -ForegroundColor Cyan
+    Write-Host "Tous les tests trouvÃ©s :" -ForegroundColor Cyan
 }
 
-# Afficher les tests trouvés
+# Afficher les tests trouvÃ©s
 foreach ($testFile in $testFiles) {
     Write-Host "  $($testFile.Name)" -ForegroundColor Yellow
 }
 
-# Définir la configuration Pester
+# DÃ©finir la configuration Pester
 $pesterConfig = New-PesterConfiguration
-$pesterConfig.Run.Path = @() # Nous allons exécuter les tests un par un
+$pesterConfig.Run.Path = @() # Nous allons exÃ©cuter les tests un par un
 $pesterConfig.Output.Verbosity = "Detailed"
 
 if ($GenerateReport) {
@@ -92,20 +92,20 @@ if ($GenerateReport) {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 }
 
-# Exécuter les tests un par un
-Write-Host "`nExécution des tests..." -ForegroundColor Cyan
+# ExÃ©cuter les tests un par un
+Write-Host "`nExÃ©cution des tests..." -ForegroundColor Cyan
 
-# Initialiser les résultats
+# Initialiser les rÃ©sultats
 $totalTests = 0
 $passedTests = 0
 $failedTests = 0
 $skippedTests = 0
 
-# Exécuter chaque test individuellement
+# ExÃ©cuter chaque test individuellement
 foreach ($testFile in $testFiles) {
-    Write-Host "  Exécution de $($testFile.Name)..." -ForegroundColor Yellow
+    Write-Host "  ExÃ©cution de $($testFile.Name)..." -ForegroundColor Yellow
 
-    # Exécuter le test avec Invoke-Pester directement (sans utiliser le fichier de test)
+    # ExÃ©cuter le test avec Invoke-Pester directement (sans utiliser le fichier de test)
     $testConfig = New-PesterConfiguration
     $testConfig.Run.Path = $testFile.FullName
     $testConfig.Output.Verbosity = "Detailed"
@@ -118,14 +118,14 @@ foreach ($testFile in $testFiles) {
 
     $result = Invoke-Pester -Configuration $testConfig
 
-    # Mettre à jour les résultats
+    # Mettre Ã  jour les rÃ©sultats
     $totalTests += $result.TotalCount
     $passedTests += $result.PassedCount
     $failedTests += $result.FailedCount
     $skippedTests += $result.SkippedCount
 }
 
-# Créer un objet de résultats global
+# CrÃ©er un objet de rÃ©sultats global
 $testResults = [PSCustomObject]@{
     TotalCount = $totalTests
     PassedCount = $passedTests
@@ -133,20 +133,20 @@ $testResults = [PSCustomObject]@{
     SkippedCount = $skippedTests
 }
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Yellow
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Yellow
 
-    # Vérifier si ReportUnit est installé
+    # VÃ©rifier si ReportUnit est installÃ©
     $reportUnitPath = Join-Path -Path $env:TEMP -ChildPath "ReportUnit.exe"
 
     if (-not (Test-Path -Path $reportUnitPath)) {
-        Write-Host "Téléchargement de ReportUnit..." -ForegroundColor Yellow
+        Write-Host "TÃ©lÃ©chargement de ReportUnit..." -ForegroundColor Yellow
         $reportUnitUrl = "https://github.com/reportunit/reportunit/releases/download/1.2.1/ReportUnit.exe"
         Invoke-WebRequest -Uri $reportUnitUrl -OutFile $reportUnitPath
     }
 
-    # Générer le rapport HTML
+    # GÃ©nÃ©rer le rapport HTML
     $reportXmlPath = Join-Path -Path $reportPath -ChildPath "TestResults.xml"
     $reportHtmlPath = Join-Path -Path $reportPath -ChildPath "TestResults.html"
 
@@ -154,28 +154,28 @@ if ($GenerateReport) {
         & $reportUnitPath $reportXmlPath $reportPath
 
         if (Test-Path -Path $reportHtmlPath) {
-            Write-Host "Rapport HTML généré: $reportHtmlPath" -ForegroundColor Green
+            Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $reportHtmlPath" -ForegroundColor Green
             Start-Process $reportHtmlPath
         }
         else {
-            Write-Warning "Échec de la génération du rapport HTML."
+            Write-Warning "Ã‰chec de la gÃ©nÃ©ration du rapport HTML."
         }
     }
     else {
-        Write-Warning "Fichier de résultats XML non trouvé: $reportXmlPath"
+        Write-Warning "Fichier de rÃ©sultats XML non trouvÃ©: $reportXmlPath"
     }
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
 
-# Afficher le type de tests exécutés
-Write-Host "`nType de tests exécutés: $TestType" -ForegroundColor Cyan
+# Afficher le type de tests exÃ©cutÃ©s
+Write-Host "`nType de tests exÃ©cutÃ©s: $TestType" -ForegroundColor Cyan
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $testResults.FailedCount

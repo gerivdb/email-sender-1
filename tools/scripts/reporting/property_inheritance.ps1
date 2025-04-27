@@ -1,31 +1,31 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions pour la récupération et l'analyse des propriétés héritées dans les types .NET.
+    Fonctions pour la rÃ©cupÃ©ration et l'analyse des propriÃ©tÃ©s hÃ©ritÃ©es dans les types .NET.
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser la hiérarchie d'héritage des types, résoudre les propriétés masquées,
-    fusionner les propriétés héritées et gérer les propriétés virtuelles.
+    Ce module fournit des fonctions pour analyser la hiÃ©rarchie d'hÃ©ritage des types, rÃ©soudre les propriÃ©tÃ©s masquÃ©es,
+    fusionner les propriÃ©tÃ©s hÃ©ritÃ©es et gÃ©rer les propriÃ©tÃ©s virtuelles.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
 #>
 
-#region Analyse de la hiérarchie
+#region Analyse de la hiÃ©rarchie
 
 <#
 .SYNOPSIS
-    Construit l'arbre d'héritage d'un type.
+    Construit l'arbre d'hÃ©ritage d'un type.
 .DESCRIPTION
-    Cette fonction construit l'arbre d'héritage complet d'un type, incluant les classes de base et les interfaces implémentées.
+    Cette fonction construit l'arbre d'hÃ©ritage complet d'un type, incluant les classes de base et les interfaces implÃ©mentÃ©es.
 .PARAMETER Type
-    Le type dont on veut construire l'arbre d'héritage.
+    Le type dont on veut construire l'arbre d'hÃ©ritage.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans l'arbre d'héritage.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans l'arbre d'hÃ©ritage.
 .PARAMETER MaxDepth
-    La profondeur maximale de l'arbre d'héritage. Par défaut, il n'y a pas de limite.
+    La profondeur maximale de l'arbre d'hÃ©ritage. Par dÃ©faut, il n'y a pas de limite.
 .EXAMPLE
     $inheritanceTree = Get-TypeInheritanceTree -Type ([System.String])
 .OUTPUTS
-    PSObject - Un objet représentant l'arbre d'héritage du type.
+    PSObject - Un objet reprÃ©sentant l'arbre d'hÃ©ritage du type.
 #>
 function Get-TypeInheritanceTree {
     [CmdletBinding()]
@@ -40,7 +40,7 @@ function Get-TypeInheritanceTree {
         [int]$MaxDepth = -1  # -1 signifie pas de limite
     )
 
-    # Fonction récursive pour construire l'arbre
+    # Fonction rÃ©cursive pour construire l'arbre
     function Build-InheritanceTree {
         param (
             [type]$CurrentType,
@@ -48,20 +48,20 @@ function Get-TypeInheritanceTree {
             [System.Collections.Generic.HashSet[type]]$VisitedTypes = (New-Object System.Collections.Generic.HashSet[type])
         )
 
-        # Vérifier si le type a déjà été visité (pour éviter les cycles)
+        # VÃ©rifier si le type a dÃ©jÃ  Ã©tÃ© visitÃ© (pour Ã©viter les cycles)
         if ($VisitedTypes.Contains($CurrentType)) {
             return $null
         }
 
-        # Vérifier si la profondeur maximale est atteinte
+        # VÃ©rifier si la profondeur maximale est atteinte
         if ($MaxDepth -ne -1 -and $CurrentDepth -gt $MaxDepth) {
             return $null
         }
 
-        # Ajouter le type courant aux types visités
+        # Ajouter le type courant aux types visitÃ©s
         [void]$VisitedTypes.Add($CurrentType)
 
-        # Créer le nœud pour le type courant
+        # CrÃ©er le nÅ“ud pour le type courant
         $node = [PSCustomObject]@{
             Type       = $CurrentType
             BaseType   = $null
@@ -79,11 +79,11 @@ function Get-TypeInheritanceTree {
             }
         }
 
-        # Ajouter les interfaces implémentées si demandé
+        # Ajouter les interfaces implÃ©mentÃ©es si demandÃ©
         if ($IncludeInterfaces) {
             $interfaces = $CurrentType.GetInterfaces()
             foreach ($interface in $interfaces) {
-                # Vérifier si l'interface est directement implémentée par ce type
+                # VÃ©rifier si l'interface est directement implÃ©mentÃ©e par ce type
                 # (et non par un type de base)
                 $isDirectlyImplemented = $true
                 if ($null -ne $CurrentType.BaseType) {
@@ -106,7 +106,7 @@ function Get-TypeInheritanceTree {
         return $node
     }
 
-    # Construire l'arbre d'héritage
+    # Construire l'arbre d'hÃ©ritage
     $visitedTypes = New-Object System.Collections.Generic.HashSet[type]
     $tree = Build-InheritanceTree -CurrentType $Type -VisitedTypes $visitedTypes
 
@@ -115,19 +115,19 @@ function Get-TypeInheritanceTree {
 
 <#
 .SYNOPSIS
-    Parcourt l'arbre d'héritage d'un type de manière ascendante.
+    Parcourt l'arbre d'hÃ©ritage d'un type de maniÃ¨re ascendante.
 .DESCRIPTION
-    Cette fonction parcourt l'arbre d'héritage d'un type de manière ascendante (du type vers ses ancêtres).
+    Cette fonction parcourt l'arbre d'hÃ©ritage d'un type de maniÃ¨re ascendante (du type vers ses ancÃªtres).
 .PARAMETER Type
-    Le type dont on veut parcourir l'arbre d'héritage.
+    Le type dont on veut parcourir l'arbre d'hÃ©ritage.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans le parcours.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans le parcours.
 .PARAMETER MaxDepth
-    La profondeur maximale du parcours. Par défaut, il n'y a pas de limite.
+    La profondeur maximale du parcours. Par dÃ©faut, il n'y a pas de limite.
 .EXAMPLE
     $ancestors = Get-TypeAncestors -Type ([System.String])
 .OUTPUTS
-    Type[] - Un tableau des types ancêtres du type spécifié.
+    Type[] - Un tableau des types ancÃªtres du type spÃ©cifiÃ©.
 #>
 function Get-TypeAncestors {
     [CmdletBinding()]
@@ -142,15 +142,15 @@ function Get-TypeAncestors {
         [int]$MaxDepth = -1  # -1 signifie pas de limite
     )
 
-    # Créer un tableau pour stocker les ancêtres
+    # CrÃ©er un tableau pour stocker les ancÃªtres
     $ancestors = @()
 
-    # Parcourir la hiérarchie des classes de base
+    # Parcourir la hiÃ©rarchie des classes de base
     $currentType = $Type.BaseType
     $currentDepth = 1
 
     while ($null -ne $currentType -and $currentType -ne [object]) {
-        # Vérifier si la profondeur maximale est atteinte
+        # VÃ©rifier si la profondeur maximale est atteinte
         if ($MaxDepth -ne -1 -and $currentDepth -gt $MaxDepth) {
             break
         }
@@ -160,7 +160,7 @@ function Get-TypeAncestors {
         $currentDepth++
     }
 
-    # Ajouter les interfaces si demandé
+    # Ajouter les interfaces si demandÃ©
     if ($IncludeInterfaces) {
         $interfaces = $Type.GetInterfaces()
         $ancestors += $interfaces
@@ -171,21 +171,21 @@ function Get-TypeAncestors {
 
 <#
 .SYNOPSIS
-    Parcourt l'arbre d'héritage d'un type de manière descendante.
+    Parcourt l'arbre d'hÃ©ritage d'un type de maniÃ¨re descendante.
 .DESCRIPTION
-    Cette fonction parcourt l'arbre d'héritage d'un type de manière descendante (du type vers ses descendants).
+    Cette fonction parcourt l'arbre d'hÃ©ritage d'un type de maniÃ¨re descendante (du type vers ses descendants).
 .PARAMETER Type
-    Le type dont on veut parcourir l'arbre d'héritage.
+    Le type dont on veut parcourir l'arbre d'hÃ©ritage.
 .PARAMETER Assembly
-    L'assembly dans lequel rechercher les types descendants. Par défaut, tous les assemblies chargés sont analysés.
+    L'assembly dans lequel rechercher les types descendants. Par dÃ©faut, tous les assemblies chargÃ©s sont analysÃ©s.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans le parcours.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans le parcours.
 .PARAMETER MaxDepth
-    La profondeur maximale du parcours. Par défaut, il n'y a pas de limite.
+    La profondeur maximale du parcours. Par dÃ©faut, il n'y a pas de limite.
 .EXAMPLE
     $descendants = Get-TypeDescendants -Type ([System.Exception])
 .OUTPUTS
-    Type[] - Un tableau des types descendants du type spécifié.
+    Type[] - Un tableau des types descendants du type spÃ©cifiÃ©.
 #>
 function Get-TypeDescendants {
     [CmdletBinding()]
@@ -203,7 +203,7 @@ function Get-TypeDescendants {
         [int]$MaxDepth = -1  # -1 signifie pas de limite
     )
 
-    # Fonction récursive pour trouver les descendants
+    # Fonction rÃ©cursive pour trouver les descendants
     function Find-Descendants {
         param (
             [type]$CurrentType,
@@ -211,20 +211,20 @@ function Get-TypeDescendants {
             [System.Collections.Generic.HashSet[type]]$VisitedTypes = (New-Object System.Collections.Generic.HashSet[type])
         )
 
-        # Vérifier si le type a déjà été visité (pour éviter les cycles)
+        # VÃ©rifier si le type a dÃ©jÃ  Ã©tÃ© visitÃ© (pour Ã©viter les cycles)
         if ($VisitedTypes.Contains($CurrentType)) {
             return @()
         }
 
-        # Vérifier si la profondeur maximale est atteinte
+        # VÃ©rifier si la profondeur maximale est atteinte
         if ($MaxDepth -ne -1 -and $CurrentDepth -gt $MaxDepth) {
             return @()
         }
 
-        # Ajouter le type courant aux types visités
+        # Ajouter le type courant aux types visitÃ©s
         [void]$VisitedTypes.Add($CurrentType)
 
-        # Récupérer tous les types à analyser
+        # RÃ©cupÃ©rer tous les types Ã  analyser
         $typesToAnalyze = if ($null -ne $Assembly) {
             $Assembly.GetTypes()
         } else {
@@ -237,7 +237,7 @@ function Get-TypeDescendants {
             ($IncludeInterfaces -and $CurrentType.IsInterface -and $_.GetInterfaces() -contains $CurrentType)
         }
 
-        # Récupérer les descendants indirects (récursivement)
+        # RÃ©cupÃ©rer les descendants indirects (rÃ©cursivement)
         $allDescendants = $directDescendants
         foreach ($descendant in $directDescendants) {
             $indirectDescendants = Find-Descendants -CurrentType $descendant -CurrentDepth ($CurrentDepth + 1) -VisitedTypes $VisitedTypes
@@ -250,7 +250,7 @@ function Get-TypeDescendants {
     # Trouver tous les descendants
     $visitedTypes = New-Object System.Collections.Generic.HashSet[type]
 
-    # Limiter la recherche à l'assembly courant pour éviter les performances médiocres
+    # Limiter la recherche Ã  l'assembly courant pour Ã©viter les performances mÃ©diocres
     $assembly = if ($null -ne $Assembly) { $Assembly } else { $Type.Assembly }
 
     try {
@@ -264,17 +264,17 @@ function Get-TypeDescendants {
 
 <#
 .SYNOPSIS
-    Détecte les cycles d'héritage dans un type.
+    DÃ©tecte les cycles d'hÃ©ritage dans un type.
 .DESCRIPTION
-    Cette fonction détecte les cycles d'héritage dans un type, ce qui peut se produire avec des interfaces génériques.
+    Cette fonction dÃ©tecte les cycles d'hÃ©ritage dans un type, ce qui peut se produire avec des interfaces gÃ©nÃ©riques.
 .PARAMETER Type
-    Le type à analyser pour détecter les cycles d'héritage.
+    Le type Ã  analyser pour dÃ©tecter les cycles d'hÃ©ritage.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans l'analyse.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $cycles = Test-TypeInheritanceCycles -Type ([System.Collections.Generic.IEnumerable`1[System.String]])
 .OUTPUTS
-    PSObject - Un objet contenant des informations sur les cycles d'héritage détectés.
+    PSObject - Un objet contenant des informations sur les cycles d'hÃ©ritage dÃ©tectÃ©s.
 #>
 function Test-TypeInheritanceCycles {
     [CmdletBinding()]
@@ -286,7 +286,7 @@ function Test-TypeInheritanceCycles {
         [switch]$IncludeInterfaces
     )
 
-    # Fonction récursive pour détecter les cycles
+    # Fonction rÃ©cursive pour dÃ©tecter les cycles
     function Find-InheritanceCycles {
         param (
             [type]$CurrentType,
@@ -294,9 +294,9 @@ function Test-TypeInheritanceCycles {
             [System.Collections.Generic.List[type]]$Path = (New-Object System.Collections.Generic.List[type])
         )
 
-        # Vérifier si le type a déjà été visité
+        # VÃ©rifier si le type a dÃ©jÃ  Ã©tÃ© visitÃ©
         if ($Path.Contains($CurrentType)) {
-            # Cycle détecté
+            # Cycle dÃ©tectÃ©
             $cycleStart = $Path.IndexOf($CurrentType)
             $cycle = $Path.GetRange($cycleStart, $Path.Count - $cycleStart)
             $cycle.Add($CurrentType)
@@ -311,7 +311,7 @@ function Test-TypeInheritanceCycles {
         # Ajouter le type courant au chemin
         $Path.Add($CurrentType)
 
-        # Vérifier le type de base
+        # VÃ©rifier le type de base
         if ($null -ne $CurrentType.BaseType -and $CurrentType.BaseType -ne [object]) {
             $result = Detect-Cycles -CurrentType $CurrentType.BaseType -Depth ($Depth + 1) -Path $Path
             if ($result.HasCycle) {
@@ -319,7 +319,7 @@ function Test-TypeInheritanceCycles {
             }
         }
 
-        # Vérifier les interfaces si demandé
+        # VÃ©rifier les interfaces si demandÃ©
         if ($IncludeInterfaces) {
             $interfaces = $CurrentType.GetInterfaces()
             foreach ($interface in $interfaces) {
@@ -333,7 +333,7 @@ function Test-TypeInheritanceCycles {
         # Retirer le type courant du chemin
         $Path.RemoveAt($Path.Count - 1)
 
-        # Aucun cycle détecté
+        # Aucun cycle dÃ©tectÃ©
         return @{
             HasCycle   = $false
             Cycle      = $null
@@ -341,11 +341,11 @@ function Test-TypeInheritanceCycles {
         }
     }
 
-    # Détecter les cycles
+    # DÃ©tecter les cycles
     $path = New-Object System.Collections.Generic.List[type]
     $result = Find-InheritanceCycles -CurrentType $Type -Path $path
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $cycleInfo = [PSCustomObject]@{
         Type       = $Type
         HasCycles  = $result.HasCycle
@@ -358,21 +358,21 @@ function Test-TypeInheritanceCycles {
 
 <#
 .SYNOPSIS
-    Visualise la hiérarchie d'héritage d'un type.
+    Visualise la hiÃ©rarchie d'hÃ©ritage d'un type.
 .DESCRIPTION
-    Cette fonction génère une représentation visuelle de la hiérarchie d'héritage d'un type.
+    Cette fonction gÃ©nÃ¨re une reprÃ©sentation visuelle de la hiÃ©rarchie d'hÃ©ritage d'un type.
 .PARAMETER Type
-    Le type dont on veut visualiser la hiérarchie d'héritage.
+    Le type dont on veut visualiser la hiÃ©rarchie d'hÃ©ritage.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans la visualisation.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans la visualisation.
 .PARAMETER MaxDepth
-    La profondeur maximale de la hiérarchie à visualiser. Par défaut, il n'y a pas de limite.
+    La profondeur maximale de la hiÃ©rarchie Ã  visualiser. Par dÃ©faut, il n'y a pas de limite.
 .PARAMETER Format
     Le format de la visualisation. Les valeurs possibles sont : "Text", "ASCII", "Markdown".
 .EXAMPLE
     $visualization = Get-TypeInheritanceVisualization -Type ([System.String]) -Format "ASCII"
 .OUTPUTS
-    String - Une représentation visuelle de la hiérarchie d'héritage du type.
+    String - Une reprÃ©sentation visuelle de la hiÃ©rarchie d'hÃ©ritage du type.
 #>
 function Get-TypeInheritanceVisualization {
     [CmdletBinding()]
@@ -391,10 +391,10 @@ function Get-TypeInheritanceVisualization {
         [string]$Format = "ASCII"
     )
 
-    # Récupérer l'arbre d'héritage
+    # RÃ©cupÃ©rer l'arbre d'hÃ©ritage
     $tree = Get-TypeInheritanceTree -Type $Type -IncludeInterfaces:$IncludeInterfaces -MaxDepth $MaxDepth
 
-    # Fonction récursive pour générer la visualisation
+    # Fonction rÃ©cursive pour gÃ©nÃ©rer la visualisation
     function Format-InheritanceTree {
         param (
             [PSObject]$Node,
@@ -403,7 +403,7 @@ function Get-TypeInheritanceVisualization {
             [string]$Format = "ASCII"
         )
 
-        # Définir les caractères de formatage en fonction du format
+        # DÃ©finir les caractÃ¨res de formatage en fonction du format
         $connector = ""
         $childConnector = ""
         $lastChildConnector = ""
@@ -430,7 +430,7 @@ function Get-TypeInheritanceVisualization {
             }
         }
 
-        # Générer la ligne pour le nœud courant
+        # GÃ©nÃ©rer la ligne pour le nÅ“ud courant
         $line = ""
         if ($Node.Depth -eq 0) {
             $line = $Node.Type.FullName
@@ -438,10 +438,10 @@ function Get-TypeInheritanceVisualization {
             $line = "$Indent$connector$($Node.Type.FullName)"
         }
 
-        # Ajouter la ligne à la sortie
+        # Ajouter la ligne Ã  la sortie
         $output = $line + "`n"
 
-        # Générer les lignes pour les enfants
+        # GÃ©nÃ©rer les lignes pour les enfants
         $childCount = $Node.Children.Count
         for ($i = 0; $i -lt $childCount; $i++) {
             $child = $Node.Children[$i]
@@ -461,7 +461,7 @@ function Get-TypeInheritanceVisualization {
         return $output
     }
 
-    # Générer la visualisation
+    # GÃ©nÃ©rer la visualisation
     $visualization = Format-InheritanceTree -Node $tree -Format $Format
 
     return $visualization
@@ -469,21 +469,21 @@ function Get-TypeInheritanceVisualization {
 
 #endregion
 
-#region Résolution des propriétés masquées
+#region RÃ©solution des propriÃ©tÃ©s masquÃ©es
 
 <#
 .SYNOPSIS
-    Détecte les mots-clés new et override dans les propriétés.
+    DÃ©tecte les mots-clÃ©s new et override dans les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction détecte les propriétés qui utilisent les mots-clés new et override pour masquer ou remplacer des propriétés héritées.
+    Cette fonction dÃ©tecte les propriÃ©tÃ©s qui utilisent les mots-clÃ©s new et override pour masquer ou remplacer des propriÃ©tÃ©s hÃ©ritÃ©es.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans l'analyse.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $newOverrideProperties = Get-TypeNewOverrideProperties -Type ([System.Exception])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les propriétés qui utilisent new ou override.
+    PSObject[] - Un tableau d'objets contenant des informations sur les propriÃ©tÃ©s qui utilisent new ou override.
 #>
 function Get-TypeNewOverrideProperties {
     [CmdletBinding()]
@@ -495,7 +495,7 @@ function Get-TypeNewOverrideProperties {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -503,7 +503,7 @@ function Get-TypeNewOverrideProperties {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Récupérer les propriétés des types de base
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s des types de base
     $baseProperties = @{}
     $currentType = $Type.BaseType
 
@@ -517,12 +517,12 @@ function Get-TypeNewOverrideProperties {
         $currentType = $currentType.BaseType
     }
 
-    # Créer un tableau pour stocker les résultats
+    # CrÃ©er un tableau pour stocker les rÃ©sultats
     $results = @()
 
-    # Analyser chaque propriété
+    # Analyser chaque propriÃ©tÃ©
     foreach ($property in $properties) {
-        # Vérifier si la propriété masque ou remplace une propriété héritée
+        # VÃ©rifier si la propriÃ©tÃ© masque ou remplace une propriÃ©tÃ© hÃ©ritÃ©e
         $isNew = $false
         $isOverride = $false
         $baseProperty = $null
@@ -530,18 +530,18 @@ function Get-TypeNewOverrideProperties {
         if ($baseProperties.ContainsKey($property.Name)) {
             $baseProperty = $baseProperties[$property.Name]
 
-            # Vérifier si la propriété utilise new (masquage)
+            # VÃ©rifier si la propriÃ©tÃ© utilise new (masquage)
             if ($null -ne $property.GetMethod -and $null -ne $baseProperty.GetMethod) {
                 $isNew = -not $property.GetMethod.IsVirtual -and -not $baseProperty.GetMethod.IsFinal
             }
 
-            # Vérifier si la propriété utilise override (remplacement)
+            # VÃ©rifier si la propriÃ©tÃ© utilise override (remplacement)
             if ($null -ne $property.GetMethod -and $null -ne $baseProperty.GetMethod) {
                 $isOverride = $property.GetMethod.IsVirtual -and $property.GetMethod.GetBaseDefinition() -ne $property.GetMethod
             }
         }
 
-        # Créer l'objet résultat si la propriété utilise new ou override
+        # CrÃ©er l'objet rÃ©sultat si la propriÃ©tÃ© utilise new ou override
         if ($isNew -or $isOverride) {
             $result = [PSCustomObject]@{
                 Property     = $property
@@ -561,19 +561,19 @@ function Get-TypeNewOverrideProperties {
 
 <#
 .SYNOPSIS
-    Résout les conflits de noms entre les propriétés.
+    RÃ©sout les conflits de noms entre les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction résout les conflits de noms entre les propriétés d'un type et de ses types de base ou interfaces.
+    Cette fonction rÃ©sout les conflits de noms entre les propriÃ©tÃ©s d'un type et de ses types de base ou interfaces.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces implémentées doivent être incluses dans l'analyse.
+    Indique si les interfaces implÃ©mentÃ©es doivent Ãªtre incluses dans l'analyse.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans l'analyse.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $nameConflicts = Resolve-TypePropertyNameConflicts -Type ([System.Exception])
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les conflits de noms résolus.
+    PSObject[] - Un tableau d'objets contenant des informations sur les conflits de noms rÃ©solus.
 #>
 function Resolve-TypePropertyNameConflicts {
     [CmdletBinding()]
@@ -588,7 +588,7 @@ function Resolve-TypePropertyNameConflicts {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer toutes les propriétés du type
+    # RÃ©cupÃ©rer toutes les propriÃ©tÃ©s du type
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
@@ -596,7 +596,7 @@ function Resolve-TypePropertyNameConflicts {
 
     $properties = $Type.GetProperties($bindingFlags)
 
-    # Créer un dictionnaire pour stocker les propriétés par nom
+    # CrÃ©er un dictionnaire pour stocker les propriÃ©tÃ©s par nom
     $propertyMap = @{}
     foreach ($property in $properties) {
         if (-not $propertyMap.ContainsKey($property.Name)) {
@@ -605,7 +605,7 @@ function Resolve-TypePropertyNameConflicts {
         $propertyMap[$property.Name] += @{ Property = $property; Type = $Type }
     }
 
-    # Récupérer les propriétés des types de base
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s des types de base
     $currentType = $Type.BaseType
     while ($null -ne $currentType -and $currentType -ne [object]) {
         $baseProps = $currentType.GetProperties($bindingFlags)
@@ -618,7 +618,7 @@ function Resolve-TypePropertyNameConflicts {
         $currentType = $currentType.BaseType
     }
 
-    # Récupérer les propriétés des interfaces si demandé
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s des interfaces si demandÃ©
     if ($IncludeInterfaces) {
         $interfaces = $Type.GetInterfaces()
         foreach ($interface in $interfaces) {
@@ -638,7 +638,7 @@ function Resolve-TypePropertyNameConflicts {
         $propertiesWithSameName = $propertyMap[$propertyName]
 
         if ($propertiesWithSameName.Count -gt 1) {
-            # Déterminer la propriété qui a préséance
+            # DÃ©terminer la propriÃ©tÃ© qui a prÃ©sÃ©ance
             $precedence = $propertiesWithSameName | Sort-Object { $_.Type.IsInterface }, { [array]::IndexOf(($Type.GetInterfaces()), $_.Type) }, { Get-TypeAncestors -Type $Type | ForEach-Object { $_ } | Select-Object -First 1 | ForEach-Object { [array]::IndexOf($_, $_.Type) } }
 
             $winningProperty = $precedence[0]
@@ -664,11 +664,11 @@ function Resolve-TypePropertyNameConflicts {
 .SYNOPSIS
     Analyse les patterns de shadowing dans un type.
 .DESCRIPTION
-    Cette fonction analyse les patterns de shadowing (masquage) dans un type, comme les propriétés qui masquent des propriétés héritées.
+    Cette fonction analyse les patterns de shadowing (masquage) dans un type, comme les propriÃ©tÃ©s qui masquent des propriÃ©tÃ©s hÃ©ritÃ©es.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans l'analyse.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $shadowingPatterns = Get-TypeShadowingPatterns -Type ([System.Exception])
 .OUTPUTS
@@ -684,19 +684,19 @@ function Get-TypeShadowingPatterns {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer les propriétés qui utilisent new ou override
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s qui utilisent new ou override
     $newOverrideProperties = Get-TypeNewOverrideProperties -Type $Type -IncludeNonPublic:$IncludeNonPublic
 
-    # Récupérer les conflits de noms
+    # RÃ©cupÃ©rer les conflits de noms
     $nameConflicts = Resolve-TypePropertyNameConflicts -Type $Type -IncludeInterfaces -IncludeNonPublic:$IncludeNonPublic
 
-    # Identifier les différents patterns de shadowing
+    # Identifier les diffÃ©rents patterns de shadowing
     $newProperties = $newOverrideProperties | Where-Object { $_.IsNew }
     $overrideProperties = $newOverrideProperties | Where-Object { $_.IsOverride }
     $interfaceConflicts = $nameConflicts | Where-Object { $_.ResolutionMethod -eq "Interface" }
     $inheritedConflicts = $nameConflicts | Where-Object { $_.ResolutionMethod -eq "Inherited" }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Type               = $Type
         NewProperties      = $newProperties
@@ -714,19 +714,19 @@ function Get-TypeShadowingPatterns {
 
 <#
 .SYNOPSIS
-    Accède aux versions masquées des propriétés.
+    AccÃ¨de aux versions masquÃ©es des propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction permet d'accéder aux versions masquées des propriétés dans un type.
+    Cette fonction permet d'accÃ©der aux versions masquÃ©es des propriÃ©tÃ©s dans un type.
 .PARAMETER Type
-    Le type à analyser.
+    Le type Ã  analyser.
 .PARAMETER PropertyName
-    Le nom de la propriété dont on veut accéder aux versions masquées.
+    Le nom de la propriÃ©tÃ© dont on veut accÃ©der aux versions masquÃ©es.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans l'analyse.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans l'analyse.
 .EXAMPLE
     $shadowedVersions = Get-PropertyShadowedVersions -Type ([System.Exception]) -PropertyName "Message"
 .OUTPUTS
-    PSObject[] - Un tableau d'objets contenant des informations sur les versions masquées de la propriété.
+    PSObject[] - Un tableau d'objets contenant des informations sur les versions masquÃ©es de la propriÃ©tÃ©.
 #>
 function Get-PropertyShadowedVersions {
     [CmdletBinding()]
@@ -741,19 +741,19 @@ function Get-PropertyShadowedVersions {
         [switch]$IncludeNonPublic
     )
 
-    # Récupérer les flags de liaison
+    # RÃ©cupÃ©rer les flags de liaison
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
     }
 
-    # Récupérer la propriété dans le type courant
+    # RÃ©cupÃ©rer la propriÃ©tÃ© dans le type courant
     $property = $Type.GetProperty($PropertyName, $bindingFlags)
 
-    # Créer un tableau pour stocker les versions masquées
+    # CrÃ©er un tableau pour stocker les versions masquÃ©es
     $shadowedVersions = @()
 
-    # Ajouter la propriété courante si elle existe
+    # Ajouter la propriÃ©tÃ© courante si elle existe
     if ($null -ne $property) {
         $shadowedVersions += [PSCustomObject]@{
             Property    = $property
@@ -765,7 +765,7 @@ function Get-PropertyShadowedVersions {
         }
     }
 
-    # Récupérer les versions masquées dans les types de base
+    # RÃ©cupÃ©rer les versions masquÃ©es dans les types de base
     $currentType = $Type.BaseType
     $level = 1
 
@@ -787,7 +787,7 @@ function Get-PropertyShadowedVersions {
         $level++
     }
 
-    # Récupérer les versions masquées dans les interfaces
+    # RÃ©cupÃ©rer les versions masquÃ©es dans les interfaces
     $interfaces = $Type.GetInterfaces()
     foreach ($interface in $interfaces) {
         $interfaceProperty = $interface.GetProperty($PropertyName, $bindingFlags)
@@ -799,7 +799,7 @@ function Get-PropertyShadowedVersions {
                 IsCurrent   = $false
                 IsBase      = $false
                 IsInterface = $true
-                Level       = 0  # Les interfaces sont au même niveau
+                Level       = 0  # Les interfaces sont au mÃªme niveau
             }
         }
     }
@@ -809,23 +809,23 @@ function Get-PropertyShadowedVersions {
 
 #endregion
 
-#region Fusion des propriétés
+#region Fusion des propriÃ©tÃ©s
 
 <#
 .SYNOPSIS
-    Implémente les stratégies de fusion pour les propriétés.
+    ImplÃ©mente les stratÃ©gies de fusion pour les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction implémente différentes stratégies de fusion (union, intersection, etc.) pour les propriétés de plusieurs types.
+    Cette fonction implÃ©mente diffÃ©rentes stratÃ©gies de fusion (union, intersection, etc.) pour les propriÃ©tÃ©s de plusieurs types.
 .PARAMETER Types
-    Les types dont on veut fusionner les propriétés.
+    Les types dont on veut fusionner les propriÃ©tÃ©s.
 .PARAMETER Strategy
-    La stratégie de fusion à utiliser. Les valeurs possibles sont : "Union", "Intersection", "Difference", "SymmetricDifference".
+    La stratÃ©gie de fusion Ã  utiliser. Les valeurs possibles sont : "Union", "Intersection", "Difference", "SymmetricDifference".
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans la fusion.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans la fusion.
 .EXAMPLE
     $mergedProperties = Merge-TypeProperties -Types @([System.String], [System.Object]) -Strategy "Union"
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés fusionnées selon la stratégie spécifiée.
+    PSObject - Un objet contenant les propriÃ©tÃ©s fusionnÃ©es selon la stratÃ©gie spÃ©cifiÃ©e.
 #>
 function Merge-TypeProperties {
     [CmdletBinding()]
@@ -841,58 +841,58 @@ function Merge-TypeProperties {
         [switch]$IncludeNonPublic
     )
 
-    # Vérifier qu'il y a au moins un type
+    # VÃ©rifier qu'il y a au moins un type
     if ($Types.Count -eq 0) {
-        throw "Au moins un type doit être spécifié."
+        throw "Au moins un type doit Ãªtre spÃ©cifiÃ©."
     }
 
-    # Récupérer les flags de liaison
+    # RÃ©cupÃ©rer les flags de liaison
     $bindingFlags = [System.Reflection.BindingFlags]::Public -bor [System.Reflection.BindingFlags]::Instance
     if ($IncludeNonPublic) {
         $bindingFlags = $bindingFlags -bor [System.Reflection.BindingFlags]::NonPublic
     }
 
-    # Récupérer les propriétés de chaque type
+    # RÃ©cupÃ©rer les propriÃ©tÃ©s de chaque type
     $propertiesByType = @{}
     foreach ($type in $Types) {
         $properties = $type.GetProperties($bindingFlags)
         $propertiesByType[$type.FullName] = $properties
     }
 
-    # Créer des ensembles de noms de propriétés pour chaque type
+    # CrÃ©er des ensembles de noms de propriÃ©tÃ©s pour chaque type
     $propertyNameSets = @{}
     foreach ($typeName in $propertiesByType.Keys) {
         $propertyNames = $propertiesByType[$typeName] | ForEach-Object { $_.Name }
         $propertyNameSets[$typeName] = [System.Collections.Generic.HashSet[string]]::new($propertyNames)
     }
 
-    # Appliquer la stratégie de fusion
+    # Appliquer la stratÃ©gie de fusion
     $resultPropertyNames = $null
 
     switch ($Strategy) {
         "Union" {
-            # Union de toutes les propriétés
+            # Union de toutes les propriÃ©tÃ©s
             $resultPropertyNames = [System.Collections.Generic.HashSet[string]]::new()
             foreach ($set in $propertyNameSets.Values) {
                 $resultPropertyNames.UnionWith($set)
             }
         }
         "Intersection" {
-            # Intersection de toutes les propriétés
+            # Intersection de toutes les propriÃ©tÃ©s
             $resultPropertyNames = $propertyNameSets[$propertyNameSets.Keys[0]].Clone()
             for ($i = 1; $i -lt $propertyNameSets.Count; $i++) {
                 $resultPropertyNames.IntersectWith($propertyNameSets[$propertyNameSets.Keys[$i]])
             }
         }
         "Difference" {
-            # Différence entre le premier type et tous les autres
+            # DiffÃ©rence entre le premier type et tous les autres
             $resultPropertyNames = $propertyNameSets[$propertyNameSets.Keys[0]].Clone()
             for ($i = 1; $i -lt $propertyNameSets.Count; $i++) {
                 $resultPropertyNames.ExceptWith($propertyNameSets[$propertyNameSets.Keys[$i]])
             }
         }
         "SymmetricDifference" {
-            # Différence symétrique entre tous les types
+            # DiffÃ©rence symÃ©trique entre tous les types
             $resultPropertyNames = [System.Collections.Generic.HashSet[string]]::new()
             foreach ($set in $propertyNameSets.Values) {
                 $resultPropertyNames.SymmetricExceptWith($set)
@@ -900,10 +900,10 @@ function Merge-TypeProperties {
         }
     }
 
-    # Créer un dictionnaire pour stocker les propriétés fusionnées
+    # CrÃ©er un dictionnaire pour stocker les propriÃ©tÃ©s fusionnÃ©es
     $mergedProperties = @{}
 
-    # Pour chaque nom de propriété dans le résultat, récupérer les propriétés correspondantes
+    # Pour chaque nom de propriÃ©tÃ© dans le rÃ©sultat, rÃ©cupÃ©rer les propriÃ©tÃ©s correspondantes
     foreach ($propertyName in $resultPropertyNames) {
         $propertiesWithName = @()
 
@@ -914,7 +914,7 @@ function Merge-TypeProperties {
         $mergedProperties[$propertyName] = $propertiesWithName
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Types            = $Types
         Strategy         = $Strategy
@@ -928,19 +928,19 @@ function Merge-TypeProperties {
 
 <#
 .SYNOPSIS
-    Résout les conflits de fusion entre les propriétés.
+    RÃ©sout les conflits de fusion entre les propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction résout les conflits de fusion entre les propriétés de plusieurs types, en utilisant différentes stratégies de résolution.
+    Cette fonction rÃ©sout les conflits de fusion entre les propriÃ©tÃ©s de plusieurs types, en utilisant diffÃ©rentes stratÃ©gies de rÃ©solution.
 .PARAMETER MergedProperties
-    Les propriétés fusionnées à résoudre.
+    Les propriÃ©tÃ©s fusionnÃ©es Ã  rÃ©soudre.
 .PARAMETER ResolutionStrategy
-    La stratégie de résolution à utiliser. Les valeurs possibles sont : "First", "Last", "MostDerived", "LeastDerived", "Custom".
+    La stratÃ©gie de rÃ©solution Ã  utiliser. Les valeurs possibles sont : "First", "Last", "MostDerived", "LeastDerived", "Custom".
 .PARAMETER CustomResolver
-    Un script block personnalisé pour résoudre les conflits. Utilisé uniquement avec la stratégie "Custom".
+    Un script block personnalisÃ© pour rÃ©soudre les conflits. UtilisÃ© uniquement avec la stratÃ©gie "Custom".
 .EXAMPLE
     $resolvedProperties = Resolve-PropertyMergeConflicts -MergedProperties $mergedProperties -ResolutionStrategy "MostDerived"
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés résolues selon la stratégie spécifiée.
+    PSObject - Un objet contenant les propriÃ©tÃ©s rÃ©solues selon la stratÃ©gie spÃ©cifiÃ©e.
 #>
 function Resolve-PropertyMergeConflicts {
     [CmdletBinding()]
@@ -956,46 +956,46 @@ function Resolve-PropertyMergeConflicts {
         [scriptblock]$CustomResolver
     )
 
-    # Vérifier que le résolveur personnalisé est spécifié si la stratégie est "Custom"
+    # VÃ©rifier que le rÃ©solveur personnalisÃ© est spÃ©cifiÃ© si la stratÃ©gie est "Custom"
     if ($ResolutionStrategy -eq "Custom" -and $null -eq $CustomResolver) {
-        throw "Un résolveur personnalisé doit être spécifié avec la stratégie 'Custom'."
+        throw "Un rÃ©solveur personnalisÃ© doit Ãªtre spÃ©cifiÃ© avec la stratÃ©gie 'Custom'."
     }
 
-    # Créer un dictionnaire pour stocker les propriétés résolues
+    # CrÃ©er un dictionnaire pour stocker les propriÃ©tÃ©s rÃ©solues
     $resolvedProperties = @{}
 
-    # Pour chaque nom de propriété, résoudre les conflits
+    # Pour chaque nom de propriÃ©tÃ©, rÃ©soudre les conflits
     foreach ($propertyName in $MergedProperties.PropertyNames) {
         $propertiesWithName = $MergedProperties.MergedProperties[$propertyName]
 
-        # S'il n'y a qu'une seule propriété, il n'y a pas de conflit
+        # S'il n'y a qu'une seule propriÃ©tÃ©, il n'y a pas de conflit
         if ($propertiesWithName.Count -eq 1) {
             $resolvedProperties[$propertyName] = $propertiesWithName[0]
             continue
         }
 
-        # Résoudre le conflit selon la stratégie spécifiée
+        # RÃ©soudre le conflit selon la stratÃ©gie spÃ©cifiÃ©e
         $resolvedProperty = $null
 
         switch ($ResolutionStrategy) {
             "First" {
-                # Prendre la première propriété
+                # Prendre la premiÃ¨re propriÃ©tÃ©
                 $resolvedProperty = $propertiesWithName[0]
             }
             "Last" {
-                # Prendre la dernière propriété
+                # Prendre la derniÃ¨re propriÃ©tÃ©
                 $resolvedProperty = $propertiesWithName[-1]
             }
             "MostDerived" {
-                # Prendre la propriété du type le plus dérivé
+                # Prendre la propriÃ©tÃ© du type le plus dÃ©rivÃ©
                 $resolvedProperty = $propertiesWithName | Sort-Object { $_.DeclaringType.IsSubclassOf($_.DeclaringType) } -Descending | Select-Object -First 1
             }
             "LeastDerived" {
-                # Prendre la propriété du type le moins dérivé
+                # Prendre la propriÃ©tÃ© du type le moins dÃ©rivÃ©
                 $resolvedProperty = $propertiesWithName | Sort-Object { $_.DeclaringType.IsSubclassOf($_.DeclaringType) } | Select-Object -First 1
             }
             "Custom" {
-                # Utiliser le résolveur personnalisé
+                # Utiliser le rÃ©solveur personnalisÃ©
                 $resolvedProperty = & $CustomResolver -Properties $propertiesWithName
             }
         }
@@ -1003,7 +1003,7 @@ function Resolve-PropertyMergeConflicts {
         $resolvedProperties[$propertyName] = $resolvedProperty
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         OriginalProperties = $MergedProperties
         ResolutionStrategy = $ResolutionStrategy
@@ -1016,17 +1016,17 @@ function Resolve-PropertyMergeConflicts {
 
 <#
 .SYNOPSIS
-    Développe les fonctions de déduplication des propriétés.
+    DÃ©veloppe les fonctions de dÃ©duplication des propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction déduplique les propriétés en fonction de différents critères, comme le nom, le type, ou les attributs.
+    Cette fonction dÃ©duplique les propriÃ©tÃ©s en fonction de diffÃ©rents critÃ¨res, comme le nom, le type, ou les attributs.
 .PARAMETER Properties
-    Les propriétés à dédupliquer.
+    Les propriÃ©tÃ©s Ã  dÃ©dupliquer.
 .PARAMETER DeduplicationCriteria
-    Les critères de déduplication à utiliser. Les valeurs possibles sont : "Name", "Type", "Attributes", "All".
+    Les critÃ¨res de dÃ©duplication Ã  utiliser. Les valeurs possibles sont : "Name", "Type", "Attributes", "All".
 .EXAMPLE
     $deduplicatedProperties = Get-DeduplicatedProperties -Properties $properties -DeduplicationCriteria "Name"
 .OUTPUTS
-    System.Reflection.PropertyInfo[] - Un tableau des propriétés dédupliquées selon les critères spécifiés.
+    System.Reflection.PropertyInfo[] - Un tableau des propriÃ©tÃ©s dÃ©dupliquÃ©es selon les critÃ¨res spÃ©cifiÃ©s.
 #>
 function Get-DeduplicatedProperties {
     [CmdletBinding()]
@@ -1039,30 +1039,30 @@ function Get-DeduplicatedProperties {
         [string]$DeduplicationCriteria = "Name"
     )
 
-    # Créer un dictionnaire pour stocker les propriétés dédupliquées
+    # CrÃ©er un dictionnaire pour stocker les propriÃ©tÃ©s dÃ©dupliquÃ©es
     $deduplicatedProperties = @{}
 
-    # Dédupliquer les propriétés selon les critères spécifiés
+    # DÃ©dupliquer les propriÃ©tÃ©s selon les critÃ¨res spÃ©cifiÃ©s
     foreach ($property in $Properties) {
         $key = $null
 
         switch ($DeduplicationCriteria) {
             "Name" {
-                # Dédupliquer par nom
+                # DÃ©dupliquer par nom
                 $key = $property.Name
             }
             "Type" {
-                # Dédupliquer par type
+                # DÃ©dupliquer par type
                 $key = "$($property.Name)_$($property.PropertyType.FullName)"
             }
             "Attributes" {
-                # Dédupliquer par attributs
+                # DÃ©dupliquer par attributs
                 $attributes = $property.GetCustomAttributes($false) | ForEach-Object { $_.GetType().FullName }
                 $attributesKey = $attributes -join "_"
                 $key = "$($property.Name)_$($property.PropertyType.FullName)_$attributesKey"
             }
             "All" {
-                # Dédupliquer par tous les critères
+                # DÃ©dupliquer par tous les critÃ¨res
                 $attributes = $property.GetCustomAttributes($false) | ForEach-Object { $_.GetType().FullName }
                 $attributesKey = $attributes -join "_"
                 $declaringType = $property.DeclaringType.FullName
@@ -1080,17 +1080,17 @@ function Get-DeduplicatedProperties {
 
 <#
 .SYNOPSIS
-    Personnalise les stratégies de fusion des propriétés.
+    Personnalise les stratÃ©gies de fusion des propriÃ©tÃ©s.
 .DESCRIPTION
-    Cette fonction permet de personnaliser les stratégies de fusion des propriétés en spécifiant des règles personnalisées.
+    Cette fonction permet de personnaliser les stratÃ©gies de fusion des propriÃ©tÃ©s en spÃ©cifiant des rÃ¨gles personnalisÃ©es.
 .PARAMETER Types
-    Les types dont on veut fusionner les propriétés.
+    Les types dont on veut fusionner les propriÃ©tÃ©s.
 .PARAMETER Rules
-    Les règles de fusion personnalisées. Chaque règle est un hashtable avec les clés "PropertyName", "Strategy", et "Resolver".
+    Les rÃ¨gles de fusion personnalisÃ©es. Chaque rÃ¨gle est un hashtable avec les clÃ©s "PropertyName", "Strategy", et "Resolver".
 .PARAMETER DefaultStrategy
-    La stratégie de fusion par défaut à utiliser pour les propriétés qui ne correspondent à aucune règle.
+    La stratÃ©gie de fusion par dÃ©faut Ã  utiliser pour les propriÃ©tÃ©s qui ne correspondent Ã  aucune rÃ¨gle.
 .PARAMETER IncludeNonPublic
-    Indique si les propriétés non publiques doivent être incluses dans la fusion.
+    Indique si les propriÃ©tÃ©s non publiques doivent Ãªtre incluses dans la fusion.
 .EXAMPLE
     $rules = @(
         @{ PropertyName = "Length"; Strategy = "First"; Resolver = $null },
@@ -1098,7 +1098,7 @@ function Get-DeduplicatedProperties {
     )
     $customMergedProperties = Merge-TypePropertiesWithRules -Types @([System.String], [System.Object]) -Rules $rules
 .OUTPUTS
-    PSObject - Un objet contenant les propriétés fusionnées selon les règles spécifiées.
+    PSObject - Un objet contenant les propriÃ©tÃ©s fusionnÃ©es selon les rÃ¨gles spÃ©cifiÃ©es.
 #>
 function Merge-TypePropertiesWithRules {
     [CmdletBinding()]
@@ -1117,17 +1117,17 @@ function Merge-TypePropertiesWithRules {
         [switch]$IncludeNonPublic
     )
 
-    # Fusionner les propriétés avec la stratégie par défaut
+    # Fusionner les propriÃ©tÃ©s avec la stratÃ©gie par dÃ©faut
     $mergedProperties = Merge-TypeProperties -Types $Types -Strategy $DefaultStrategy -IncludeNonPublic:$IncludeNonPublic
 
-    # Créer un dictionnaire pour stocker les propriétés résolues
+    # CrÃ©er un dictionnaire pour stocker les propriÃ©tÃ©s rÃ©solues
     $resolvedProperties = @{}
 
-    # Pour chaque nom de propriété, appliquer les règles correspondantes
+    # Pour chaque nom de propriÃ©tÃ©, appliquer les rÃ¨gles correspondantes
     foreach ($propertyName in $mergedProperties.PropertyNames) {
         $propertiesWithName = $mergedProperties.MergedProperties[$propertyName]
 
-        # Trouver la règle correspondante
+        # Trouver la rÃ¨gle correspondante
         $matchingRule = $null
 
         foreach ($rule in $Rules) {
@@ -1137,26 +1137,26 @@ function Merge-TypePropertiesWithRules {
             }
         }
 
-        # S'il n'y a pas de règle correspondante, utiliser la stratégie par défaut
+        # S'il n'y a pas de rÃ¨gle correspondante, utiliser la stratÃ©gie par dÃ©faut
         if ($null -eq $matchingRule) {
             $resolvedProperty = Resolve-PropertyMergeConflicts -MergedProperties $mergedProperties -ResolutionStrategy "MostDerived"
             $resolvedProperties[$propertyName] = $resolvedProperty.ResolvedProperties[$propertyName]
             continue
         }
 
-        # Appliquer la règle
+        # Appliquer la rÃ¨gle
         $resolutionStrategy = $matchingRule.Strategy
         $resolver = $matchingRule.Resolver
 
         if ($resolutionStrategy -eq "Custom" -and $null -eq $resolver) {
-            throw "Un résolveur personnalisé doit être spécifié avec la stratégie 'Custom'."
+            throw "Un rÃ©solveur personnalisÃ© doit Ãªtre spÃ©cifiÃ© avec la stratÃ©gie 'Custom'."
         }
 
         $resolvedProperty = Resolve-PropertyMergeConflicts -MergedProperties $mergedProperties -ResolutionStrategy $resolutionStrategy -CustomResolver $resolver
         $resolvedProperties[$propertyName] = $resolvedProperty.ResolvedProperties[$propertyName]
     }
 
-    # Créer l'objet résultat
+    # CrÃ©er l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Types              = $Types
         Rules              = $Rules

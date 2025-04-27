@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-RoadmapStringOperation.ps1
 #
 # Script pour tester la fonction Invoke-RoadmapStringOperation
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\StringManipulation\Invoke-RoadmapStringOperation.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,13 +18,13 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-# Ajouter les références nécessaires pour les opérations d'encodage/décodage
+# Ajouter les rÃ©fÃ©rences nÃ©cessaires pour les opÃ©rations d'encodage/dÃ©codage
 Add-Type -AssemblyName System.Web
 
-Write-Host "Début des tests de la fonction Invoke-RoadmapStringOperation..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Invoke-RoadmapStringOperation..." -ForegroundColor Cyan
 
-# Test 1: Opérations de base
-Write-Host "`nTest 1: Opérations de base" -ForegroundColor Cyan
+# Test 1: OpÃ©rations de base
+Write-Host "`nTest 1: OpÃ©rations de base" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = "Hello World"; Operation = "Split"; Expected = @("Hello", "World"); Description = "Split" }
@@ -34,8 +34,8 @@ $testCases = @(
     @{ Text = "Hello World"; Operation = "Extract"; StartIndex = 0; Length = 5; Expected = "Hello"; Description = "Extract avec StartIndex et Length" }
     @{ Text = "Hello World Hello"; Operation = "Count"; Pattern = "Hello"; Expected = 2; Description = "Count" }
     @{ Text = "Hello World"; Operation = "Measure"; Expected = 11; Description = "Measure" }
-    @{ Text = "Hello"; Operation = "Compare"; Pattern = "hello"; Expected = 1; Description = "Compare (sensible à la casse)" }
-    @{ Text = "Hello"; Operation = "Compare"; Pattern = "hello"; IgnoreCase = $true; Expected = 0; Description = "Compare (insensible à la casse)" }
+    @{ Text = "Hello"; Operation = "Compare"; Pattern = "hello"; Expected = 1; Description = "Compare (sensible Ã  la casse)" }
+    @{ Text = "Hello"; Operation = "Compare"; Pattern = "hello"; IgnoreCase = $true; Expected = 0; Description = "Compare (insensible Ã  la casse)" }
 )
 
 $successCount = 0
@@ -69,7 +69,7 @@ foreach ($testCase in $testCases) {
 
     $result = Invoke-RoadmapStringOperation @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     if ($testCase.Operation -eq "Split") {
@@ -78,7 +78,7 @@ foreach ($testCase in $testCases) {
         $success = $result -eq $testCase.Expected
     }
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -87,20 +87,20 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 2: Opérations de manipulation de texte
-Write-Host "`nTest 2: Opérations de manipulation de texte" -ForegroundColor Cyan
+# Test 2: OpÃ©rations de manipulation de texte
+Write-Host "`nTest 2: OpÃ©rations de manipulation de texte" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = "Hello`r`nWorld`r`nHello"; Operation = "Sort"; Expected = "Hello`r`nHello`r`nWorld"; Description = "Sort" }
     @{ Text = "Hello`r`nWorld`r`nHello"; Operation = "Unique"; Expected = "Hello`r`nWorld"; Description = "Unique" }
-    @{ Text = "Hello"; Operation = "Reverse"; Expected = "olleH"; Description = "Reverse (caractères)" }
+    @{ Text = "Hello"; Operation = "Reverse"; Expected = "olleH"; Description = "Reverse (caractÃ¨res)" }
     @{ Text = "Hello`r`nWorld"; Operation = "Reverse"; ByLine = $true; Expected = "World`r`nHello"; Description = "Reverse (lignes)" }
 )
 
@@ -123,7 +123,7 @@ foreach ($testCase in $testCases) {
 
     $result = Invoke-RoadmapStringOperation @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $false
 
     # Normaliser les sauts de ligne pour la comparaison
@@ -131,7 +131,7 @@ foreach ($testCase in $testCases) {
     $normalizedExpected = $testCase.Expected -replace "`r`n|`r|`n", "`r`n"
     $success = $normalizedResult -eq $normalizedExpected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -140,15 +140,15 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 3: Opérations d'encodage/décodage
-Write-Host "`nTest 3: Opérations d'encodage/décodage" -ForegroundColor Cyan
+# Test 3: OpÃ©rations d'encodage/dÃ©codage
+Write-Host "`nTest 3: OpÃ©rations d'encodage/dÃ©codage" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = "Hello World"; Operation = "Base64Encode"; Expected = "SGVsbG8gV29ybGQ="; Description = "Base64Encode" }
@@ -172,10 +172,10 @@ foreach ($testCase in $testCases) {
 
     $result = Invoke-RoadmapStringOperation @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -184,15 +184,15 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 4: Opérations de chiffrement/déchiffrement
-Write-Host "`nTest 4: Opérations de chiffrement/déchiffrement" -ForegroundColor Cyan
+# Test 4: OpÃ©rations de chiffrement/dÃ©chiffrement
+Write-Host "`nTest 4: OpÃ©rations de chiffrement/dÃ©chiffrement" -ForegroundColor Cyan
 
 $testCases = @(
     @{ Text = "Hello World"; Operation = "Hash"; Expected = "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e"; Description = "Hash (SHA256)" }
@@ -217,10 +217,10 @@ foreach ($testCase in $testCases) {
 
     $result = Invoke-RoadmapStringOperation @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -229,12 +229,12 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-# Test de chiffrement/déchiffrement
+# Test de chiffrement/dÃ©chiffrement
 $text = "Hello World"
 $key = "MySecretKey"
 
@@ -243,7 +243,7 @@ $decrypted = Invoke-RoadmapStringOperation -Text $encrypted -Operation "Decrypt"
 
 $success = $decrypted -eq $text
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
 Write-Host "  Encrypt/Decrypt: $status" -ForegroundColor $color
@@ -253,13 +253,13 @@ if ($success) {
 } else {
     $failureCount++
     Write-Host "    Texte original: '$text'" -ForegroundColor Red
-    Write-Host "    Texte déchiffré: '$decrypted'" -ForegroundColor Red
+    Write-Host "    Texte dÃ©chiffrÃ©: '$decrypted'" -ForegroundColor Red
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 5: Opération personnalisée
-Write-Host "`nTest 5: Opération personnalisée" -ForegroundColor Cyan
+# Test 5: OpÃ©ration personnalisÃ©e
+Write-Host "`nTest 5: OpÃ©ration personnalisÃ©e" -ForegroundColor Cyan
 
 $customOperation = {
     param($Text)
@@ -273,7 +273,7 @@ $customOperation = {
 }
 
 $testCases = @(
-    @{ Text = "Hello World"; Operation = "Custom"; CustomOperation = $customOperation; Expected = "World Hello"; Description = "Opération personnalisée" }
+    @{ Text = "Hello World"; Operation = "Custom"; CustomOperation = $customOperation; Expected = "World Hello"; Description = "OpÃ©ration personnalisÃ©e" }
 )
 
 $successCount = 0
@@ -288,10 +288,10 @@ foreach ($testCase in $testCases) {
 
     $result = Invoke-RoadmapStringOperation @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -300,12 +300,12 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 6: Gestion des erreurs
 Write-Host "`nTest 6: Gestion des erreurs" -ForegroundColor Cyan
@@ -331,10 +331,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -344,13 +344,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Invoke-RoadmapStringOperation terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Invoke-RoadmapStringOperation terminÃ©s." -ForegroundColor Cyan

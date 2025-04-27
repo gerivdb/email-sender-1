@@ -1,37 +1,37 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonction principale du mode ARCHI qui permet de concevoir l'architecture d'un projet.
 
 .DESCRIPTION
-    Cette fonction analyse un projet et génère des diagrammes d'architecture
-    en fonction des tâches spécifiées dans un fichier de roadmap.
+    Cette fonction analyse un projet et gÃ©nÃ¨re des diagrammes d'architecture
+    en fonction des tÃ¢ches spÃ©cifiÃ©es dans un fichier de roadmap.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à traiter.
+    Chemin vers le fichier de roadmap Ã  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (optionnel). Si non spécifié, toutes les tâches seront traitées.
+    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
 
 .PARAMETER ProjectPath
-    Chemin vers le répertoire du projet à analyser.
+    Chemin vers le rÃ©pertoire du projet Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les fichiers de sortie.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.
 
 .PARAMETER DiagramType
-    Type de diagramme à générer. Les valeurs possibles sont : C4, UML, Mermaid.
+    Type de diagramme Ã  gÃ©nÃ©rer. Les valeurs possibles sont : C4, UML, Mermaid.
 
 .PARAMETER IncludeComponents
-    Indique si les composants doivent être inclus dans les diagrammes.
+    Indique si les composants doivent Ãªtre inclus dans les diagrammes.
 
 .PARAMETER IncludeInterfaces
-    Indique si les interfaces doivent être incluses dans les diagrammes.
+    Indique si les interfaces doivent Ãªtre incluses dans les diagrammes.
 
 .PARAMETER IncludeDependencies
-    Indique si les dépendances doivent être incluses dans les diagrammes.
+    Indique si les dÃ©pendances doivent Ãªtre incluses dans les diagrammes.
 
 .PARAMETER DependencyGraph
-    Chemin vers un fichier de graphe de dépendances existant à utiliser.
+    Chemin vers un fichier de graphe de dÃ©pendances existant Ã  utiliser.
 
 .EXAMPLE
     Invoke-RoadmapArchitecture -FilePath "roadmap.md" -TaskIdentifier "1.1" -ProjectPath "project" -OutputPath "output" -DiagramType "C4"
@@ -71,7 +71,7 @@ function Invoke-RoadmapArchitecture {
         [string]$DependencyGraph
     )
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $result = @{
         Success = $false
         DiagramCount = 0
@@ -81,29 +81,29 @@ function Invoke-RoadmapArchitecture {
         OutputFiles = @()
     }
     
-    # Extraire les tâches de la roadmap
+    # Extraire les tÃ¢ches de la roadmap
     $tasks = Get-RoadmapTasks -FilePath $FilePath -TaskIdentifier $TaskIdentifier
     
     if ($tasks.Count -eq 0) {
-        Write-LogWarning "Aucune tâche trouvée dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
+        Write-LogWarning "Aucune tÃ¢che trouvÃ©e dans le fichier de roadmap pour l'identifiant : $TaskIdentifier"
         return $result
     }
     
-    Write-LogInfo "Nombre de tâches trouvées : $($tasks.Count)"
+    Write-LogInfo "Nombre de tÃ¢ches trouvÃ©es : $($tasks.Count)"
     
     # Analyser le projet
     Write-LogInfo "Analyse du projet : $ProjectPath"
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "Répertoire de sortie créé : $OutputPath"
+        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
     }
     
     # Analyser les fichiers du projet
     $files = Get-ChildItem -Path $ProjectPath -Recurse -File | Where-Object { $_.Extension -in ".ps1", ".psm1", ".psd1", ".py", ".js", ".ts", ".cs", ".java", ".cpp", ".h", ".hpp" }
     
-    Write-LogInfo "Nombre de fichiers trouvés : $($files.Count)"
+    Write-LogInfo "Nombre de fichiers trouvÃ©s : $($files.Count)"
     
     # Analyser les composants
     $components = @()
@@ -195,26 +195,26 @@ function Invoke-RoadmapArchitecture {
         }
     }
     
-    Write-LogInfo "Nombre de composants trouvés : $($components.Count)"
-    Write-LogInfo "Nombre de dépendances trouvées : $($dependencies.Count)"
+    Write-LogInfo "Nombre de composants trouvÃ©s : $($components.Count)"
+    Write-LogInfo "Nombre de dÃ©pendances trouvÃ©es : $($dependencies.Count)"
     
-    # Mettre à jour les résultats
+    # Mettre Ã  jour les rÃ©sultats
     $result.ComponentCount = $components.Count
     $result.InterfaceCount = $interfaces.Count
     $result.DependencyCount = $dependencies.Count
     
-    # Générer les diagrammes
-    Write-LogInfo "Génération des diagrammes de type : $DiagramType"
+    # GÃ©nÃ©rer les diagrammes
+    Write-LogInfo "GÃ©nÃ©ration des diagrammes de type : $DiagramType"
     
     # Chemin du fichier de diagramme
     $diagramFileName = "architecture_diagram"
     
     switch ($DiagramType) {
         "C4" {
-            # Générer un diagramme C4 en Markdown
+            # GÃ©nÃ©rer un diagramme C4 en Markdown
             $diagramPath = Join-Path -Path $OutputPath -ChildPath "$diagramFileName.md"
             
-            # Créer le contenu du diagramme
+            # CrÃ©er le contenu du diagramme
             $diagramContent = @"
 # Diagramme d'architecture C4
 
@@ -226,8 +226,8 @@ function Invoke-RoadmapArchitecture {
 
 title Architecture du projet
 
-Person(user, "Utilisateur", "Utilisateur du système")
-System(system, "Système", "Le système complet")
+Person(user, "Utilisateur", "Utilisateur du systÃ¨me")
+System(system, "SystÃ¨me", "Le systÃ¨me complet")
 
 Rel(user, system, "Utilise")
 @enduml
@@ -239,24 +239,24 @@ Rel(user, system, "Utilise")
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title Conteneurs du système
+title Conteneurs du systÃ¨me
 
-Person(user, "Utilisateur", "Utilisateur du système")
-System_Boundary(system, "Système") {
-    Container(api, "API", "PowerShell", "Fournit les fonctionnalités via une API")
-    Container(core, "Core", "PowerShell", "Logique métier principale")
-    Container(data, "Data", "Fichiers", "Stockage des données")
+Person(user, "Utilisateur", "Utilisateur du systÃ¨me")
+System_Boundary(system, "SystÃ¨me") {
+    Container(api, "API", "PowerShell", "Fournit les fonctionnalitÃ©s via une API")
+    Container(core, "Core", "PowerShell", "Logique mÃ©tier principale")
+    Container(data, "Data", "Fichiers", "Stockage des donnÃ©es")
 }
 
 Rel(user, api, "Utilise", "HTTP")
 Rel(api, core, "Appelle")
-Rel(core, data, "Lit/Écrit")
+Rel(core, data, "Lit/Ã‰crit")
 @enduml
 ```
 
 "@
             
-            # Ajouter les composants si demandé
+            # Ajouter les composants si demandÃ©
             if ($IncludeComponents) {
                 $diagramContent += @"
 
@@ -266,21 +266,21 @@ Rel(core, data, "Lit/Écrit")
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Composants du système
+title Composants du systÃ¨me
 
 Container_Boundary(api, "API") {
-    Component(api_controller, "Contrôleur API", "PowerShell", "Gère les requêtes API")
-    Component(api_validator, "Validateur", "PowerShell", "Valide les entrées")
+    Component(api_controller, "ContrÃ´leur API", "PowerShell", "GÃ¨re les requÃªtes API")
+    Component(api_validator, "Validateur", "PowerShell", "Valide les entrÃ©es")
 }
 
 Container_Boundary(core, "Core") {
-    Component(core_service, "Service", "PowerShell", "Implémente la logique métier")
+    Component(core_service, "Service", "PowerShell", "ImplÃ©mente la logique mÃ©tier")
     Component(core_helper, "Helper", "PowerShell", "Fonctions utilitaires")
 }
 
 Container_Boundary(data, "Data") {
-    Component(data_repository, "Repository", "PowerShell", "Accès aux données")
-    Component(data_model, "Modèle", "PowerShell", "Modèle de données")
+    Component(data_repository, "Repository", "PowerShell", "AccÃ¨s aux donnÃ©es")
+    Component(data_model, "ModÃ¨le", "PowerShell", "ModÃ¨le de donnÃ©es")
 }
 
 Rel(api_controller, api_validator, "Utilise")
@@ -294,17 +294,17 @@ Rel(data_repository, data_model, "Utilise")
 "@
             }
             
-            # Ajouter les composants réels
+            # Ajouter les composants rÃ©els
             if ($components.Count -gt 0) {
                 $diagramContent += @"
 
-## Composants réels
+## Composants rÃ©els
 
 ```plantuml
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Composants réels du système
+title Composants rÃ©els du systÃ¨me
 
 "@
                 
@@ -321,7 +321,7 @@ title Composants réels du système
                     $diagramContent += "}`n"
                 }
                 
-                # Ajouter les dépendances
+                # Ajouter les dÃ©pendances
                 if ($IncludeDependencies -and $dependencies.Count -gt 0) {
                     $diagramContent += "`n"
                     
@@ -339,18 +339,18 @@ title Composants réels du système
 "@
             }
             
-            # Écrire le contenu dans le fichier
+            # Ã‰crire le contenu dans le fichier
             Set-Content -Path $diagramPath -Value $diagramContent -Encoding UTF8
             
-            # Ajouter le fichier à la liste des fichiers générés
+            # Ajouter le fichier Ã  la liste des fichiers gÃ©nÃ©rÃ©s
             $result.OutputFiles += $diagramPath
             $result.DiagramCount++
         }
         "UML" {
-            # Générer un diagramme UML en Markdown
+            # GÃ©nÃ©rer un diagramme UML en Markdown
             $diagramPath = Join-Path -Path $OutputPath -ChildPath "$diagramFileName.md"
             
-            # Créer le contenu du diagramme
+            # CrÃ©er le contenu du diagramme
             $diagramContent = @"
 # Diagramme d'architecture UML
 
@@ -371,7 +371,7 @@ title Diagramme de classes
                 }
             }
             
-            # Ajouter les dépendances
+            # Ajouter les dÃ©pendances
             if ($IncludeDependencies -and $dependencies.Count -gt 0) {
                 $diagramContent += "`n"
                 
@@ -415,18 +415,18 @@ title Diagramme de packages
 
 "@
             
-            # Écrire le contenu dans le fichier
+            # Ã‰crire le contenu dans le fichier
             Set-Content -Path $diagramPath -Value $diagramContent -Encoding UTF8
             
-            # Ajouter le fichier à la liste des fichiers générés
+            # Ajouter le fichier Ã  la liste des fichiers gÃ©nÃ©rÃ©s
             $result.OutputFiles += $diagramPath
             $result.DiagramCount++
         }
         "Mermaid" {
-            # Générer un diagramme Mermaid en Markdown
+            # GÃ©nÃ©rer un diagramme Mermaid en Markdown
             $diagramPath = Join-Path -Path $OutputPath -ChildPath "$diagramFileName.md"
             
-            # Créer le contenu du diagramme
+            # CrÃ©er le contenu du diagramme
             $diagramContent = @"
 # Diagramme d'architecture Mermaid
 
@@ -434,7 +434,7 @@ title Diagramme de packages
 
 ```mermaid
 graph TD
-    User[Utilisateur] --> System[Système]
+    User[Utilisateur] --> System[SystÃ¨me]
     System --> API[API]
     API --> Core[Core]
     Core --> Data[Data]
@@ -450,7 +450,7 @@ graph TD
                 }
             }
             
-            # Ajouter les dépendances
+            # Ajouter les dÃ©pendances
             if ($IncludeDependencies -and $dependencies.Count -gt 0) {
                 $diagramContent += "`n"
                 
@@ -505,33 +505,33 @@ classDiagram
 
 "@
             
-            # Écrire le contenu dans le fichier
+            # Ã‰crire le contenu dans le fichier
             Set-Content -Path $diagramPath -Value $diagramContent -Encoding UTF8
             
-            # Ajouter le fichier à la liste des fichiers générés
+            # Ajouter le fichier Ã  la liste des fichiers gÃ©nÃ©rÃ©s
             $result.OutputFiles += $diagramPath
             $result.DiagramCount++
         }
     }
     
-    # Générer un document d'architecture
+    # GÃ©nÃ©rer un document d'architecture
     $architectureDocPath = Join-Path -Path $OutputPath -ChildPath "architecture_document.md"
     
-    # Créer le contenu du document
+    # CrÃ©er le contenu du document
     $documentContent = @"
 # Document d'architecture
 
 ## Vue d'ensemble
 
-Ce document décrit l'architecture du projet situé dans le répertoire : $ProjectPath
+Ce document dÃ©crit l'architecture du projet situÃ© dans le rÃ©pertoire : $ProjectPath
 
 ## Structure du projet
 
-Le projet est structuré comme suit :
+Le projet est structurÃ© comme suit :
 
 "@
     
-    # Ajouter la structure des répertoires
+    # Ajouter la structure des rÃ©pertoires
     $directories = Get-ChildItem -Path $ProjectPath -Directory -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.Replace($ProjectPath, '').TrimStart('\') }
     
     foreach ($directory in $directories) {
@@ -556,13 +556,13 @@ Le projet contient les composants suivants :
         }
     }
     
-    # Ajouter les dépendances
+    # Ajouter les dÃ©pendances
     if ($dependencies.Count -gt 0) {
         $documentContent += @"
 
-## Dépendances
+## DÃ©pendances
 
-Le projet contient les dépendances suivantes :
+Le projet contient les dÃ©pendances suivantes :
 
 | Source | Cible | Type |
 |--------|-------|------|
@@ -578,7 +578,7 @@ Le projet contient les dépendances suivantes :
 
 ## Diagrammes
 
-Les diagrammes suivants ont été générés :
+Les diagrammes suivants ont Ã©tÃ© gÃ©nÃ©rÃ©s :
 
 "@
     
@@ -587,13 +587,13 @@ Les diagrammes suivants ont été générés :
         $documentContent += "- [$relativePath]($relativePath)`n"
     }
     
-    # Écrire le contenu dans le fichier
+    # Ã‰crire le contenu dans le fichier
     Set-Content -Path $architectureDocPath -Value $documentContent -Encoding UTF8
     
-    # Ajouter le fichier à la liste des fichiers générés
+    # Ajouter le fichier Ã  la liste des fichiers gÃ©nÃ©rÃ©s
     $result.OutputFiles += $architectureDocPath
     
-    # Mettre à jour le résultat
+    # Mettre Ã  jour le rÃ©sultat
     $result.Success = $true
     
     return $result

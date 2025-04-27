@@ -1,46 +1,46 @@
-# Script pour configurer l'organisation automatique des fichiers et dossiers
-# Ce script configure des tâches planifiées pour organiser automatiquement les fichiers et dossiers
+﻿# Script pour configurer l'organisation automatique des fichiers et dossiers
+# Ce script configure des tÃ¢ches planifiÃ©es pour organiser automatiquement les fichiers et dossiers
 
-# Vérifier si le script est exécuté en tant qu'administrateur
+# VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    Write-Host "Ce script doit être exécuté en tant qu'administrateur pour créer des tâches planifiées." -ForegroundColor Red
-    Write-Host "Veuillez relancer le script avec des privilèges d'administrateur." -ForegroundColor Red
+    Write-Host "Ce script doit Ãªtre exÃ©cutÃ© en tant qu'administrateur pour crÃ©er des tÃ¢ches planifiÃ©es." -ForegroundColor Red
+    Write-Host "Veuillez relancer le script avec des privilÃ¨ges d'administrateur." -ForegroundColor Red
     exit
 }
 
-# Obtenir le chemin absolu du répertoire du projet
+# Obtenir le chemin absolu du rÃ©pertoire du projet
 $projectPath = (Get-Location).Path
 
-# Créer les chemins absolus vers les scripts
+# CrÃ©er les chemins absolus vers les scripts
 $organizeScriptsPath = Join-Path -Path $projectPath -ChildPath "..\email\Organize-Scripts.ps1"
 $autoOrganizeFoldersPath = Join-Path -Path $projectPath -ChildPath "..\..\D"
 $manageLogsPath = Join-Path -Path $projectPath -ChildPath "..\..\D"
 $organizeDocsPath = Join-Path -Path $projectPath -ChildPath "..\..\D"
 
-# Vérifier si les scripts existent
+# VÃ©rifier si les scripts existent
 if (-not (Test-Path -Path $organizeScriptsPath)) {
-    Write-Host "Le script 'organize-scripts.ps1' n'existe pas à l'emplacement: $organizeScriptsPath" -ForegroundColor Red
+    Write-Host "Le script 'organize-scripts.ps1' n'existe pas Ã  l'emplacement: $organizeScriptsPath" -ForegroundColor Red
     exit
 }
 
 if (-not (Test-Path -Path $autoOrganizeFoldersPath)) {
-    Write-Host "Le script 'auto-organize-folders.ps1' n'existe pas à l'emplacement: $autoOrganizeFoldersPath" -ForegroundColor Red
+    Write-Host "Le script 'auto-organize-folders.ps1' n'existe pas Ã  l'emplacement: $autoOrganizeFoldersPath" -ForegroundColor Red
     exit
 }
 
 if (-not (Test-Path -Path $manageLogsPath)) {
-    Write-Host "Le script 'manage-logs.ps1' n'existe pas à l'emplacement: $manageLogsPath" -ForegroundColor Red
+    Write-Host "Le script 'manage-logs.ps1' n'existe pas Ã  l'emplacement: $manageLogsPath" -ForegroundColor Red
     exit
 }
 
 if (-not (Test-Path -Path $organizeDocsPath)) {
-    Write-Host "Le script 'organize-docs-fixed.ps1' n'existe pas à l'emplacement: $organizeDocsPath" -ForegroundColor Red
+    Write-Host "Le script 'organize-docs-fixed.ps1' n'existe pas Ã  l'emplacement: $organizeDocsPath" -ForegroundColor Red
     exit
 }
 
-# Fonction pour créer une tâche planifiée
+# Fonction pour crÃ©er une tÃ¢che planifiÃ©e
 function Create-ScheduledTask {
     param (
         [string]$TaskName,
@@ -50,18 +50,18 @@ function Create-ScheduledTask {
         [string]$Description
     )
 
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 
     if ($existingTask) {
-        Write-Host "La tâche '$TaskName' existe déjà. Suppression de la tâche existante..." -ForegroundColor Yellow
+        Write-Host "La tÃ¢che '$TaskName' existe dÃ©jÃ . Suppression de la tÃ¢che existante..." -ForegroundColor Yellow
         Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
     }
 
-    # Créer l'action
+    # CrÃ©er l'action
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`" $Arguments" -WorkingDirectory $projectPath
 
-    # Créer le déclencheur
+    # CrÃ©er le dÃ©clencheur
     $triggerParams = @{}
 
     switch ($Trigger) {
@@ -90,7 +90,7 @@ function Create-ScheduledTask {
                 Daily = $true
                 At = "12:00AM"
             }
-            # Ajouter une répétition toutes les heures
+            # Ajouter une rÃ©pÃ©tition toutes les heures
             $repetitionParams = @{
                 RepetitionInterval = (New-TimeSpan -Hours 1)
                 RepetitionDuration = (New-TimeSpan -Hours 24)
@@ -106,58 +106,58 @@ function Create-ScheduledTask {
 
     $scheduledTaskTrigger = New-ScheduledTaskTrigger @triggerParams
 
-    # Ajouter la répétition si nécessaire
+    # Ajouter la rÃ©pÃ©tition si nÃ©cessaire
     if ($Trigger -eq "Hourly") {
         $scheduledTaskTrigger.Repetition = $repetitionParams
     }
 
-    # Créer les paramètres principaux
+    # CrÃ©er les paramÃ¨tres principaux
     $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 
-    # Créer les paramètres
+    # CrÃ©er les paramÃ¨tres
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -RunOnlyIfNetworkAvailable -WakeToRun
 
-    # Créer la tâche
+    # CrÃ©er la tÃ¢che
     Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $scheduledTaskTrigger -Principal $principal -Settings $settings -Description $Description
 
-    Write-Host "Tâche planifiée '$TaskName' créée avec succès." -ForegroundColor Green
+    Write-Host "TÃ¢che planifiÃ©e '$TaskName' crÃ©Ã©e avec succÃ¨s." -ForegroundColor Green
 }
 
-# Créer les tâches planifiées
-Write-Host "Configuration des tâches planifiées pour l'organisation automatique..." -ForegroundColor Cyan
+# CrÃ©er les tÃ¢ches planifiÃ©es
+Write-Host "Configuration des tÃ¢ches planifiÃ©es pour l'organisation automatique..." -ForegroundColor Cyan
 
-# 1. Tâche pour organiser les scripts (hebdomadaire)
+# 1. TÃ¢che pour organiser les scripts (hebdomadaire)
 Create-ScheduledTask -TaskName "OrganizeScripts" `
                     -ScriptPath $organizeScriptsPath `
                     -Arguments "" `
                     -Trigger "Weekly" `
-                    -Description "Organise les scripts en sous-dossiers sémantiques"
+                    -Description "Organise les scripts en sous-dossiers sÃ©mantiques"
 
-# 2. Tâche pour organiser les dossiers (quotidienne)
+# 2. TÃ¢che pour organiser les dossiers (quotidienne)
 Create-ScheduledTask -TaskName "OrganizeFolders" `
                     -ScriptPath $autoOrganizeFoldersPath `
                     -Arguments "-MaxFilesPerFolder 15" `
                     -Trigger "Daily" `
                     -Description "Organise les dossiers contenant trop de fichiers"
 
-# 3. Tâche pour gérer les logs (quotidienne)
+# 3. TÃ¢che pour gÃ©rer les logs (quotidienne)
 Create-ScheduledTask -TaskName "ManageLogs" `
                     -ScriptPath $manageLogsPath `
                     -Arguments "daily-log scripts" `
                     -Trigger "Daily" `
-                    -Description "Gère les logs par unité de temps"
+                    -Description "GÃ¨re les logs par unitÃ© de temps"
 
-# 4. Tâche pour organiser les documents (hebdomadaire)
+# 4. TÃ¢che pour organiser les documents (hebdomadaire)
 Create-ScheduledTask -TaskName "OrganizeDocs" `
                     -ScriptPath $organizeDocsPath `
                     -Arguments "" `
                     -Trigger "Weekly" `
-                    -Description "Organise les documents en sous-dossiers sémantiques"
+                    -Description "Organise les documents en sous-dossiers sÃ©mantiques"
 
-Write-Host "`nConfiguration des tâches planifiées terminée avec succès!" -ForegroundColor Green
-Write-Host "Les tâches suivantes ont été créées:" -ForegroundColor Cyan
-Write-Host "  - OrganizeScripts: Exécution hebdomadaire (dimanche à 3h00)" -ForegroundColor Cyan
-Write-Host "  - OrganizeFolders: Exécution quotidienne (3h00)" -ForegroundColor Cyan
-Write-Host "  - ManageLogs: Exécution quotidienne (3h00)" -ForegroundColor Cyan
-Write-Host "  - OrganizeDocs: Exécution hebdomadaire (dimanche à 3h00)" -ForegroundColor Cyan
+Write-Host "`nConfiguration des tÃ¢ches planifiÃ©es terminÃ©e avec succÃ¨s!" -ForegroundColor Green
+Write-Host "Les tÃ¢ches suivantes ont Ã©tÃ© crÃ©Ã©es:" -ForegroundColor Cyan
+Write-Host "  - OrganizeScripts: ExÃ©cution hebdomadaire (dimanche Ã  3h00)" -ForegroundColor Cyan
+Write-Host "  - OrganizeFolders: ExÃ©cution quotidienne (3h00)" -ForegroundColor Cyan
+Write-Host "  - ManageLogs: ExÃ©cution quotidienne (3h00)" -ForegroundColor Cyan
+Write-Host "  - OrganizeDocs: ExÃ©cution hebdomadaire (dimanche Ã  3h00)" -ForegroundColor Cyan
 

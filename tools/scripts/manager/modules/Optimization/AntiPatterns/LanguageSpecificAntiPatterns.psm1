@@ -1,5 +1,5 @@
-# Module de détection des anti-patterns spécifiques aux langages pour le Script Manager
-# Ce module détecte les anti-patterns spécifiques à chaque langage de script
+﻿# Module de dÃ©tection des anti-patterns spÃ©cifiques aux langages pour le Script Manager
+# Ce module dÃ©tecte les anti-patterns spÃ©cifiques Ã  chaque langage de script
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, anti-patterns, language-specific
@@ -7,11 +7,11 @@
 function Find-PowerShellAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns spécifiques à PowerShell
+        DÃ©tecte les anti-patterns spÃ©cifiques Ã  PowerShell
     .DESCRIPTION
-        Analyse le script pour détecter les anti-patterns spécifiques à PowerShell
+        Analyse le script pour dÃ©tecter les anti-patterns spÃ©cifiques Ã  PowerShell
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -26,20 +26,20 @@ function Find-PowerShellAntiPatterns {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les anti-patterns
+    # CrÃ©er un tableau pour stocker les anti-patterns
     $Patterns = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Détecter l'utilisation de variables globales
+    # DÃ©tecter l'utilisation de variables globales
     $GlobalVariables = Find-PowerShellGlobalVariables -Content $Content
     
     if ($GlobalVariables.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "GlobalVariable"
             Description = "Utilisation de variables globales"
-            Recommendation = "Passer les variables en paramètres aux fonctions plutôt que d'utiliser des variables globales"
+            Recommendation = "Passer les variables en paramÃ¨tres aux fonctions plutÃ´t que d'utiliser des variables globales"
             CodeSnippet = $GlobalVariables[0].CodeSnippet
             LineNumbers = $GlobalVariables.LineNumber
             Details = @{
@@ -48,14 +48,14 @@ function Find-PowerShellAntiPatterns {
         }
     }
     
-    # Détecter les comparaisons incorrectes avec $null
+    # DÃ©tecter les comparaisons incorrectes avec $null
     $NullComparisons = Find-PowerShellNullComparisons -Content $Content
     
     if ($NullComparisons.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "NullComparison"
             Description = "Comparaison incorrecte avec `$null"
-            Recommendation = "Placer `$null à gauche des comparaisons: if (`$null -eq `$variable) au lieu de if (`$variable -eq `$null)"
+            Recommendation = "Placer `$null Ã  gauche des comparaisons: if (`$null -eq `$variable) au lieu de if (`$variable -eq `$null)"
             CodeSnippet = $NullComparisons[0].CodeSnippet
             LineNumbers = $NullComparisons.LineNumber
             Details = @{
@@ -64,14 +64,14 @@ function Find-PowerShellAntiPatterns {
         }
     }
     
-    # Détecter l'absence de gestion des erreurs
+    # DÃ©tecter l'absence de gestion des erreurs
     $NoErrorHandling = Find-PowerShellNoErrorHandling -Content $Content
     
     if ($NoErrorHandling.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "NoErrorHandling"
-            Description = "Absence de gestion des erreurs pour des opérations critiques"
-            Recommendation = "Utiliser try/catch ou -ErrorAction pour gérer les erreurs potentielles"
+            Description = "Absence de gestion des erreurs pour des opÃ©rations critiques"
+            Recommendation = "Utiliser try/catch ou -ErrorAction pour gÃ©rer les erreurs potentielles"
             CodeSnippet = $NoErrorHandling[0].CodeSnippet
             LineNumbers = $NoErrorHandling.LineNumber
             Details = @{
@@ -80,14 +80,14 @@ function Find-PowerShellAntiPatterns {
         }
     }
     
-    # Détecter l'utilisation de verbes non approuvés
+    # DÃ©tecter l'utilisation de verbes non approuvÃ©s
     $UnapprovedVerbs = Find-PowerShellUnapprovedVerbs -Script $Script
     
     if ($UnapprovedVerbs.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "UnapprovedVerb"
-            Description = "Utilisation de verbes non approuvés dans les noms de fonctions"
-            Recommendation = "Utiliser uniquement des verbes approuvés (Get-Verb)"
+            Description = "Utilisation de verbes non approuvÃ©s dans les noms de fonctions"
+            Recommendation = "Utiliser uniquement des verbes approuvÃ©s (Get-Verb)"
             CodeSnippet = $null
             LineNumbers = $null
             Details = @{
@@ -102,11 +102,11 @@ function Find-PowerShellAntiPatterns {
 function Find-PythonAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns spécifiques à Python
+        DÃ©tecte les anti-patterns spÃ©cifiques Ã  Python
     .DESCRIPTION
-        Analyse le script pour détecter les anti-patterns spécifiques à Python
+        Analyse le script pour dÃ©tecter les anti-patterns spÃ©cifiques Ã  Python
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -121,13 +121,13 @@ function Find-PythonAntiPatterns {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les anti-patterns
+    # CrÃ©er un tableau pour stocker les anti-patterns
     $Patterns = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Détecter l'utilisation de print au lieu de logging
+    # DÃ©tecter l'utilisation de print au lieu de logging
     $PrintUsage = Find-PythonPrintUsage -Content $Content
     
     if ($PrintUsage.Count -gt 0) {
@@ -143,14 +143,14 @@ function Find-PythonAntiPatterns {
         }
     }
     
-    # Détecter les blocs except génériques
+    # DÃ©tecter les blocs except gÃ©nÃ©riques
     $GenericExcepts = Find-PythonGenericExcepts -Content $Content
     
     if ($GenericExcepts.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "CatchAll"
-            Description = "Utilisation de blocs except génériques"
-            Recommendation = "Spécifier le type d'exception à capturer"
+            Description = "Utilisation de blocs except gÃ©nÃ©riques"
+            Recommendation = "SpÃ©cifier le type d'exception Ã  capturer"
             CodeSnippet = $GenericExcepts[0].CodeSnippet
             LineNumbers = $GenericExcepts.LineNumber
             Details = @{
@@ -159,12 +159,12 @@ function Find-PythonAntiPatterns {
         }
     }
     
-    # Détecter l'absence de if __name__ == "__main__"
+    # DÃ©tecter l'absence de if __name__ == "__main__"
     if (-not ($Content -match 'if\s+__name__\s*==\s*[\'"]__main__[\'"]\s*:')) {
         $Patterns += [PSCustomObject]@{
             Type = "NoMainGuard"
             Description = "Absence de if __name__ == \"__main__\""
-            Recommendation = "Ajouter un bloc if __name__ == \"__main__\": pour le code qui doit être exécuté uniquement lorsque le script est exécuté directement"
+            Recommendation = "Ajouter un bloc if __name__ == \"__main__\": pour le code qui doit Ãªtre exÃ©cutÃ© uniquement lorsque le script est exÃ©cutÃ© directement"
             CodeSnippet = $null
             LineNumbers = $null
             Details = @{
@@ -173,14 +173,14 @@ function Find-PythonAntiPatterns {
         }
     }
     
-    # Détecter l'utilisation de variables globales
+    # DÃ©tecter l'utilisation de variables globales
     $GlobalVariables = Find-PythonGlobalVariables -Content $Content
     
     if ($GlobalVariables.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "GlobalVariable"
             Description = "Utilisation de variables globales"
-            Recommendation = "Passer les variables en paramètres aux fonctions plutôt que d'utiliser des variables globales"
+            Recommendation = "Passer les variables en paramÃ¨tres aux fonctions plutÃ´t que d'utiliser des variables globales"
             CodeSnippet = $GlobalVariables[0].CodeSnippet
             LineNumbers = $GlobalVariables.LineNumber
             Details = @{
@@ -195,11 +195,11 @@ function Find-PythonAntiPatterns {
 function Find-BatchAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns spécifiques aux scripts Batch
+        DÃ©tecte les anti-patterns spÃ©cifiques aux scripts Batch
     .DESCRIPTION
-        Analyse le script pour détecter les anti-patterns spécifiques aux scripts Batch
+        Analyse le script pour dÃ©tecter les anti-patterns spÃ©cifiques aux scripts Batch
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -214,18 +214,18 @@ function Find-BatchAntiPatterns {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les anti-patterns
+    # CrÃ©er un tableau pour stocker les anti-patterns
     $Patterns = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Détecter l'absence de @ECHO OFF
+    # DÃ©tecter l'absence de @ECHO OFF
     if (-not ($Content -match "@ECHO OFF")) {
         $Patterns += [PSCustomObject]@{
             Type = "NoEchoOff"
             Description = "Absence de @ECHO OFF"
-            Recommendation = "Ajouter @ECHO OFF au début du script pour désactiver l'affichage des commandes"
+            Recommendation = "Ajouter @ECHO OFF au dÃ©but du script pour dÃ©sactiver l'affichage des commandes"
             CodeSnippet = $Lines[0]
             LineNumbers = @(1)
             Details = @{
@@ -234,12 +234,12 @@ function Find-BatchAntiPatterns {
         }
     }
     
-    # Détecter l'absence de SETLOCAL
+    # DÃ©tecter l'absence de SETLOCAL
     if (-not ($Content -match "SETLOCAL")) {
         $Patterns += [PSCustomObject]@{
             Type = "NoSetlocal"
             Description = "Absence de SETLOCAL"
-            Recommendation = "Ajouter SETLOCAL au début du script pour limiter la portée des variables au script"
+            Recommendation = "Ajouter SETLOCAL au dÃ©but du script pour limiter la portÃ©e des variables au script"
             CodeSnippet = $Lines[0]
             LineNumbers = @(1)
             Details = @{
@@ -248,12 +248,12 @@ function Find-BatchAntiPatterns {
         }
     }
     
-    # Détecter l'absence de vérification des erreurs
+    # DÃ©tecter l'absence de vÃ©rification des erreurs
     if (-not ($Content -match "IF %ERRORLEVEL% NEQ 0")) {
         $Patterns += [PSCustomObject]@{
             Type = "NoErrorHandling"
-            Description = "Absence de vérification des erreurs"
-            Recommendation = "Ajouter des vérifications IF %ERRORLEVEL% NEQ 0 après les commandes critiques"
+            Description = "Absence de vÃ©rification des erreurs"
+            Recommendation = "Ajouter des vÃ©rifications IF %ERRORLEVEL% NEQ 0 aprÃ¨s les commandes critiques"
             CodeSnippet = $null
             LineNumbers = $null
             Details = @{
@@ -262,14 +262,14 @@ function Find-BatchAntiPatterns {
         }
     }
     
-    # Détecter l'utilisation de GOTO
+    # DÃ©tecter l'utilisation de GOTO
     $GotoUsage = Find-BatchGotoUsage -Content $Content
     
     if ($GotoUsage.Count -gt 3) {
         $Patterns += [PSCustomObject]@{
             Type = "ExcessiveGoto"
             Description = "Utilisation excessive de GOTO"
-            Recommendation = "Restructurer le script pour utiliser des fonctions (CALL :label) plutôt que des GOTO"
+            Recommendation = "Restructurer le script pour utiliser des fonctions (CALL :label) plutÃ´t que des GOTO"
             CodeSnippet = $GotoUsage[0].CodeSnippet
             LineNumbers = $GotoUsage.LineNumber
             Details = @{
@@ -284,11 +284,11 @@ function Find-BatchAntiPatterns {
 function Find-ShellAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns spécifiques aux scripts Shell
+        DÃ©tecte les anti-patterns spÃ©cifiques aux scripts Shell
     .DESCRIPTION
-        Analyse le script pour détecter les anti-patterns spécifiques aux scripts Shell
+        Analyse le script pour dÃ©tecter les anti-patterns spÃ©cifiques aux scripts Shell
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -303,18 +303,18 @@ function Find-ShellAntiPatterns {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les anti-patterns
+    # CrÃ©er un tableau pour stocker les anti-patterns
     $Patterns = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Détecter l'absence de shebang
+    # DÃ©tecter l'absence de shebang
     if (-not ($Content -match "^#!/bin/(bash|sh)")) {
         $Patterns += [PSCustomObject]@{
             Type = "NoShebang"
             Description = "Absence de shebang"
-            Recommendation = "Ajouter #!/bin/bash ou #!/bin/sh en première ligne du script"
+            Recommendation = "Ajouter #!/bin/bash ou #!/bin/sh en premiÃ¨re ligne du script"
             CodeSnippet = $Lines[0]
             LineNumbers = @(1)
             Details = @{
@@ -323,12 +323,12 @@ function Find-ShellAntiPatterns {
         }
     }
     
-    # Détecter l'absence de set -e
+    # DÃ©tecter l'absence de set -e
     if (-not ($Content -match "set -e")) {
         $Patterns += [PSCustomObject]@{
             Type = "NoSetE"
             Description = "Absence de set -e"
-            Recommendation = "Ajouter set -e au début du script pour qu'il s'arrête en cas d'erreur"
+            Recommendation = "Ajouter set -e au dÃ©but du script pour qu'il s'arrÃªte en cas d'erreur"
             CodeSnippet = $null
             LineNumbers = $null
             Details = @{
@@ -337,7 +337,7 @@ function Find-ShellAntiPatterns {
         }
     }
     
-    # Détecter l'utilisation de [ ] au lieu de [[ ]]
+    # DÃ©tecter l'utilisation de [ ] au lieu de [[ ]]
     $SingleBracketUsage = Find-ShellSingleBracketUsage -Content $Content
     
     if ($SingleBracketUsage.Count -gt 0) {
@@ -353,13 +353,13 @@ function Find-ShellAntiPatterns {
         }
     }
     
-    # Détecter l'absence de guillemets autour des variables
+    # DÃ©tecter l'absence de guillemets autour des variables
     $UnquotedVariables = Find-ShellUnquotedVariables -Content $Content
     
     if ($UnquotedVariables.Count -gt 0) {
         $Patterns += [PSCustomObject]@{
             Type = "UnquotedVariables"
-            Description = "Variables non entourées de guillemets"
+            Description = "Variables non entourÃ©es de guillemets"
             Recommendation = "Entourer les variables de guillemets: \"$var\" au lieu de $var"
             CodeSnippet = $UnquotedVariables[0].CodeSnippet
             LineNumbers = $UnquotedVariables.LineNumber
@@ -438,7 +438,7 @@ function Find-PowerShellNoErrorHandling {
         $Line = $Lines[$i]
         $LineNumber = $i + 1
         
-        # Vérifier si la ligne contient une opération critique
+        # VÃ©rifier si la ligne contient une opÃ©ration critique
         foreach ($Operation in $CriticalOperations) {
             if ($Line -match $Operation -and -not ($Line -match "try|catch|-ErrorAction|-EA")) {
                 $NoErrorHandling += [PSCustomObject]@{
@@ -478,7 +478,7 @@ function Find-PythonPrintUsage {
     $PrintUsage = @()
     $Lines = $Content -split "`n"
     
-    # Vérifier si le module logging est importé
+    # VÃ©rifier si le module logging est importÃ©
     $HasLogging = $Content -match "import\s+logging"
     
     if (-not $HasLogging) {
@@ -486,7 +486,7 @@ function Find-PythonPrintUsage {
             $Line = $Lines[$i]
             $LineNumber = $i + 1
             
-            # Rechercher les appels à print()
+            # Rechercher les appels Ã  print()
             if ($Line -match "print\s*\(") {
                 $PrintUsage += [PSCustomObject]@{
                     LineNumber = $LineNumber
@@ -509,7 +509,7 @@ function Find-PythonGenericExcepts {
         $Line = $Lines[$i]
         $LineNumber = $i + 1
         
-        # Rechercher les blocs except génériques
+        # Rechercher les blocs except gÃ©nÃ©riques
         if ($Line -match "except\s*:") {
             $GenericExcepts += [PSCustomObject]@{
                 LineNumber = $LineNumber
@@ -601,7 +601,7 @@ function Find-ShellUnquotedVariables {
         $Line = $Lines[$i]
         $LineNumber = $i + 1
         
-        # Rechercher les variables non entourées de guillemets
+        # Rechercher les variables non entourÃ©es de guillemets
         if ($Line -match "\$\w+\b" -and -not ($Line -match "\"\$\w+\"|\'\$\w+\'")) {
             $UnquotedVariables += [PSCustomObject]@{
                 LineNumber = $LineNumber

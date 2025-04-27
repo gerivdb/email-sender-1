@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse et gère les dépendances entre les tâches d'une roadmap.
+    Analyse et gÃ¨re les dÃ©pendances entre les tÃ¢ches d'une roadmap.
 
 .DESCRIPTION
-    La fonction Get-TaskDependencies analyse une roadmap pour détecter et gérer les dépendances entre les tâches.
-    Elle peut détecter les dépendances explicites et implicites, et générer une visualisation des dépendances.
+    La fonction Get-TaskDependencies analyse une roadmap pour dÃ©tecter et gÃ©rer les dÃ©pendances entre les tÃ¢ches.
+    Elle peut dÃ©tecter les dÃ©pendances explicites et implicites, et gÃ©nÃ©rer une visualisation des dÃ©pendances.
 
 .PARAMETER FilePath
-    Chemin du fichier markdown à analyser.
+    Chemin du fichier markdown Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour la visualisation des dépendances.
+    Chemin du fichier de sortie pour la visualisation des dÃ©pendances.
 
 .EXAMPLE
     Get-TaskDependencies -FilePath ".\roadmap.md" -OutputPath ".\dependencies.md"
-    Analyse les dépendances de la roadmap et génère une visualisation.
+    Analyse les dÃ©pendances de la roadmap et gÃ©nÃ¨re une visualisation.
 
 .OUTPUTS
-    [PSCustomObject] Représentant les dépendances de la roadmap.
+    [PSCustomObject] ReprÃ©sentant les dÃ©pendances de la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Get-TaskDependencies {
     [CmdletBinding()]
@@ -34,12 +34,12 @@ function Get-TaskDependencies {
         [string]$OutputPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
 
-    # Créer l'objet de résultat
+    # CrÃ©er l'objet de rÃ©sultat
     $result = [PSCustomObject]@{
         FilePath      = $FilePath
         Tasks         = @{}
@@ -51,7 +51,7 @@ function Get-TaskDependencies {
     $content = Get-Content -Path $FilePath -Encoding UTF8 -Raw
     $lines = $content -split "`r?`n"
 
-    # Extraire les tâches et les dépendances
+    # Extraire les tÃ¢ches et les dÃ©pendances
     $taskRegex = [regex]::new('^\s*[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$')
     $dependsRegex = [regex]::new('@depends:([\w\.-]+)')
     $refRegex = [regex]::new('ref:([\w\.-]+)')
@@ -63,14 +63,14 @@ function Get-TaskDependencies {
             $title = $taskMatch.Groups[3].Value
 
             if (-not [string]::IsNullOrEmpty($id)) {
-                # Ajouter la tâche au dictionnaire
+                # Ajouter la tÃ¢che au dictionnaire
                 $result.Tasks[$id] = [PSCustomObject]@{
                     Id    = $id
                     Title = $title
                     Line  = $line
                 }
 
-                # Détecter les dépendances explicites
+                # DÃ©tecter les dÃ©pendances explicites
                 $dependsMatch = $dependsRegex.Match($title)
                 if ($dependsMatch.Success) {
                     $dependsOn = $dependsMatch.Groups[1].Value
@@ -81,7 +81,7 @@ function Get-TaskDependencies {
                     }
                 }
 
-                # Détecter les dépendances implicites
+                # DÃ©tecter les dÃ©pendances implicites
                 $refMatch = $refRegex.Match($title)
                 if ($refMatch.Success) {
                     $refId = $refMatch.Groups[1].Value
@@ -95,20 +95,20 @@ function Get-TaskDependencies {
         }
     }
 
-    # Générer une visualisation des dépendances
+    # GÃ©nÃ©rer une visualisation des dÃ©pendances
     if ($result.Dependencies.Count -gt 0) {
         $sb = [System.Text.StringBuilder]::new()
 
         $sb.AppendLine('```mermaid') | Out-Null
         $sb.AppendLine('graph TD') | Out-Null
 
-        # Ajouter les nœuds
+        # Ajouter les nÅ“uds
         foreach ($id in $result.Tasks.Keys) {
             $task = $result.Tasks[$id]
             $sb.AppendLine("    $id[$($id): $($task.Title)]") | Out-Null
         }
 
-        # Ajouter les relations de dépendance
+        # Ajouter les relations de dÃ©pendance
         foreach ($dependency in $result.Dependencies) {
             $sb.AppendLine("    $($dependency.DependsOn) --> $($dependency.TaskId)") | Out-Null
         }
@@ -117,7 +117,7 @@ function Get-TaskDependencies {
 
         $result.Visualization = $sb.ToString()
 
-        # Écrire la visualisation dans un fichier si demandé
+        # Ã‰crire la visualisation dans un fichier si demandÃ©
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
             $result.Visualization | Out-File -FilePath $OutputPath -Encoding UTF8
         }

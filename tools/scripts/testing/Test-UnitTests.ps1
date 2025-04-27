@@ -1,5 +1,5 @@
-# Tests unitaires pour les modules XML et HTML
-# Ce script implémente des tests unitaires complets pour les modules XML et HTML
+﻿# Tests unitaires pour les modules XML et HTML
+# Ce script implÃ©mente des tests unitaires complets pour les modules XML et HTML
 
 # Importer les modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -11,7 +11,7 @@ $roadmapXmlConverterPath = Join-Path -Path $implementationPath -ChildPath "Roadm
 $xmlElementDetectorPath = Join-Path -Path $implementationPath -ChildPath "XmlElementDetector.ps1"
 $xmlValidatorPath = Join-Path -Path $implementationPath -ChildPath "XmlValidator.ps1"
 
-# Créer le dossier de sortie des tests
+# CrÃ©er le dossier de sortie des tests
 $testOutputPath = Join-Path -Path $scriptPath -ChildPath "Output"
 if (-not (Test-Path -Path $testOutputPath)) {
     New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
@@ -38,14 +38,14 @@ if (Test-Path -Path $xmlValidatorPath) {
     . $xmlValidatorPath
 }
 
-# Fonction pour exécuter les tests unitaires
+# Fonction pour exÃ©cuter les tests unitaires
 function Invoke-UnitTests {
     # Compteurs de tests
     $totalTests = 0
     $passedTests = 0
     $failedTests = 0
 
-    # Fonction pour exécuter un test
+    # Fonction pour exÃ©cuter un test
     function Test-Case {
         param (
             [string]$Name,
@@ -57,11 +57,11 @@ function Invoke-UnitTests {
 
         try {
             & $Test
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             $script:passedTests++
         }
         catch {
-            Write-Host "  Échoué: $_" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©: $_" -ForegroundColor Red
             $script:failedTests++
         }
 
@@ -82,16 +82,16 @@ function Invoke-UnitTests {
         $xmlDoc = ConvertFrom-Xml -XmlString $xmlString
 
         if (-not ($xmlDoc -is [System.Xml.XmlDocument])) {
-            throw "Le résultat n'est pas un XmlDocument"
+            throw "Le rÃ©sultat n'est pas un XmlDocument"
         }
 
         $element = $xmlDoc.SelectSingleNode("//element")
         if (-not $element -or $element.InnerText -ne "Valeur") {
-            throw "L'élément n'a pas été correctement parsé"
+            throw "L'Ã©lÃ©ment n'a pas Ã©tÃ© correctement parsÃ©"
         }
     }
 
-    Test-Case -Name "XMLFormatHandler - Génération XML" -Test {
+    Test-Case -Name "XMLFormatHandler - GÃ©nÃ©ration XML" -Test {
         $data = @{
             element = "Valeur"
             nested = @{
@@ -102,11 +102,11 @@ function Invoke-UnitTests {
         $xmlString = ConvertTo-Xml -InputObject $data
 
         if (-not $xmlString.Contains("<element>Valeur</element>")) {
-            throw "L'élément n'a pas été correctement généré"
+            throw "L'Ã©lÃ©ment n'a pas Ã©tÃ© correctement gÃ©nÃ©rÃ©"
         }
 
         if (-not $xmlString.Contains("<subelement>Sous-valeur</subelement>")) {
-            throw "Le sous-élément n'a pas été correctement généré"
+            throw "Le sous-Ã©lÃ©ment n'a pas Ã©tÃ© correctement gÃ©nÃ©rÃ©"
         }
     }
 
@@ -120,26 +120,26 @@ function Invoke-UnitTests {
 
         $xmlPath = Join-Path -Path $testOutputPath -ChildPath "test_xml_handler.xml"
 
-        # Exporter les données
+        # Exporter les donnÃ©es
         Export-XmlFile -InputObject $data -FilePath $xmlPath
 
-        # Vérifier que le fichier a été créé
+        # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
         if (-not (Test-Path -Path $xmlPath)) {
-            throw "Le fichier XML n'a pas été créé"
+            throw "Le fichier XML n'a pas Ã©tÃ© crÃ©Ã©"
         }
 
-        # Importer les données
+        # Importer les donnÃ©es
         $importedData = Import-XmlFile -FilePath $xmlPath
 
-        # Vérifier que les données ont été correctement importées
+        # VÃ©rifier que les donnÃ©es ont Ã©tÃ© correctement importÃ©es
         $element = $importedData.SelectSingleNode("//element")
         if (-not $element -or $element.InnerText -ne "Valeur") {
-            throw "L'élément n'a pas été correctement importé"
+            throw "L'Ã©lÃ©ment n'a pas Ã©tÃ© correctement importÃ©"
         }
 
         $subelement = $importedData.SelectSingleNode("//subelement")
         if (-not $subelement -or $subelement.InnerText -ne "Sous-valeur") {
-            throw "Le sous-élément n'a pas été correctement importé"
+            throw "Le sous-Ã©lÃ©ment n'a pas Ã©tÃ© correctement importÃ©"
         }
     }
 
@@ -160,7 +160,7 @@ function Invoke-UnitTests {
 </html>
 "@
 
-        # Vérifier si HtmlAgilityPack est disponible
+        # VÃ©rifier si HtmlAgilityPack est disponible
         if (-not (Test-HtmlAgilityPackAvailable)) {
             Write-Host "  Installation de HtmlAgilityPack..." -ForegroundColor Yellow
             Install-HtmlAgilityPack
@@ -169,17 +169,17 @@ function Invoke-UnitTests {
         $htmlDoc = ConvertFrom-Html -HtmlString $htmlString
 
         if (-not ($htmlDoc -is [HtmlAgilityPack.HtmlDocument])) {
-            throw "Le résultat n'est pas un HtmlDocument"
+            throw "Le rÃ©sultat n'est pas un HtmlDocument"
         }
 
         $h1 = $htmlDoc.DocumentNode.SelectSingleNode("//h1")
         if (-not $h1 -or $h1.InnerText -ne "Titre") {
-            throw "L'élément h1 n'a pas été correctement parsé"
+            throw "L'Ã©lÃ©ment h1 n'a pas Ã©tÃ© correctement parsÃ©"
         }
 
         $p = $htmlDoc.DocumentNode.SelectSingleNode("//p")
         if (-not $p -or $p.InnerText -ne "Paragraphe") {
-            throw "L'élément p n'a pas été correctement parsé"
+            throw "L'Ã©lÃ©ment p n'a pas Ã©tÃ© correctement parsÃ©"
         }
     }
 
@@ -193,38 +193,38 @@ function Invoke-UnitTests {
     <script>alert('XSS');</script>
     <iframe src="https://malicious.com"></iframe>
     <a href="javascript:alert('XSS')">Lien malveillant</a>
-    <a href="https://example.com">Lien sûr</a>
+    <a href="https://example.com">Lien sÃ»r</a>
 </body>
 </html>
 "@
 
         $htmlDoc = ConvertFrom-Html -HtmlString $htmlString -Sanitize
 
-        # Vérifier que les éléments dangereux ont été supprimés
+        # VÃ©rifier que les Ã©lÃ©ments dangereux ont Ã©tÃ© supprimÃ©s
         $script = $htmlDoc.DocumentNode.SelectSingleNode("//script")
         if (-not ($null -eq $script)) {
-            throw "L'élément script n'a pas été supprimé"
+            throw "L'Ã©lÃ©ment script n'a pas Ã©tÃ© supprimÃ©"
         }
 
         $iframe = $htmlDoc.DocumentNode.SelectSingleNode("//iframe")
         if (-not ($null -eq $iframe)) {
-            throw "L'élément iframe n'a pas été supprimé"
+            throw "L'Ã©lÃ©ment iframe n'a pas Ã©tÃ© supprimÃ©"
         }
 
-        # Vérifier que les liens malveillants ont été nettoyés
+        # VÃ©rifier que les liens malveillants ont Ã©tÃ© nettoyÃ©s
         $maliciousLink = $htmlDoc.DocumentNode.SelectSingleNode("//a[@href='javascript:alert(\'XSS\')']")
         if (-not ($null -eq $maliciousLink)) {
-            throw "Le lien malveillant n'a pas été nettoyé"
+            throw "Le lien malveillant n'a pas Ã©tÃ© nettoyÃ©"
         }
 
-        # Vérifier que les liens sûrs sont conservés
+        # VÃ©rifier que les liens sÃ»rs sont conservÃ©s
         $safeLink = $htmlDoc.DocumentNode.SelectSingleNode("//a[@href='https://example.com']")
         if ($null -eq $safeLink) {
-            throw "Le lien sûr a été supprimé"
+            throw "Le lien sÃ»r a Ã©tÃ© supprimÃ©"
         }
     }
 
-    Test-Case -Name "HTMLFormatHandler - Requête CSS" -Test {
+    Test-Case -Name "HTMLFormatHandler - RequÃªte CSS" -Test {
         $htmlString = @"
 <!DOCTYPE html>
 <html>
@@ -241,28 +241,28 @@ function Invoke-UnitTests {
 
         $htmlDoc = ConvertFrom-Html -HtmlString $htmlString
 
-        # Requête par balise
+        # RequÃªte par balise
         $paragraphs = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "p"
         if ($paragraphs.Count -ne 3) {
             throw "Nombre incorrect de paragraphes: $($paragraphs.Count)"
         }
 
-        # Requête par classe
+        # RequÃªte par classe
         $importantParagraphs = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "p.important"
         if ($importantParagraphs.Count -ne 1 -or $importantParagraphs[0].InnerText -ne "Paragraphe important") {
-            throw "Paragraphe important non trouvé"
+            throw "Paragraphe important non trouvÃ©"
         }
 
-        # Requête par ID
+        # RequÃªte par ID
         $content = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "#content"
         if ($content.Count -ne 1) {
-            throw "Div content non trouvé"
+            throw "Div content non trouvÃ©"
         }
 
-        # Requête imbriquée
+        # RequÃªte imbriquÃ©e
         $contentParagraphs = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "#content p"
         if ($contentParagraphs.Count -ne 1 -or $contentParagraphs[0].InnerText -ne "Paragraphe dans div") {
-            throw "Paragraphe dans div non trouvé"
+            throw "Paragraphe dans div non trouvÃ©"
         }
     }
 
@@ -290,12 +290,12 @@ function Invoke-UnitTests {
         $htmlDoc = ConvertFrom-XmlToHtml -XmlDocument $xmlDoc
 
         if (-not ($htmlDoc -is [HtmlAgilityPack.HtmlDocument])) {
-            throw "Le résultat n'est pas un HtmlDocument"
+            throw "Le rÃ©sultat n'est pas un HtmlDocument"
         }
 
         $persons = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector ".xml-element"
         if ($persons.Count -lt 2) {
-            throw "Nombre incorrect d'éléments convertis"
+            throw "Nombre incorrect d'Ã©lÃ©ments convertis"
         }
 
         $names = Invoke-CssQuery -HtmlDocument $htmlDoc -CssSelector "h3"
@@ -306,7 +306,7 @@ function Invoke-UnitTests {
         $htmlPath = Join-Path -Path $testOutputPath -ChildPath "xml_to_html_converter.html"
         Export-HtmlFile -HtmlDocument $htmlDoc -FilePath $htmlPath
 
-        Write-Host "  HTML généré enregistré dans: $htmlPath"
+        Write-Host "  HTML gÃ©nÃ©rÃ© enregistrÃ© dans: $htmlPath"
     }
 
     Test-Case -Name "FormatConverter - Conversion HTML vers XML" -Test {
@@ -331,23 +331,23 @@ function Invoke-UnitTests {
         $xmlDoc = ConvertFrom-HtmlToXml -HtmlDocument $htmlDoc
 
         if (-not ($xmlDoc -is [System.Xml.XmlDocument])) {
-            throw "Le résultat n'est pas un XmlDocument"
+            throw "Le rÃ©sultat n'est pas un XmlDocument"
         }
 
         $h1 = $xmlDoc.SelectSingleNode("//h1")
         if (-not $h1 -or $h1.InnerText -ne "Titre") {
-            throw "L'élément h1 n'a pas été correctement converti"
+            throw "L'Ã©lÃ©ment h1 n'a pas Ã©tÃ© correctement converti"
         }
 
         $li = $xmlDoc.SelectNodes("//li")
         if ($li.Count -ne 2) {
-            throw "Nombre incorrect d'éléments li: $($li.Count)"
+            throw "Nombre incorrect d'Ã©lÃ©ments li: $($li.Count)"
         }
 
         $xmlPath = Join-Path -Path $testOutputPath -ChildPath "html_to_xml_converter.xml"
         $xmlDoc.Save($xmlPath)
 
-        Write-Host "  XML généré enregistré dans: $xmlPath"
+        Write-Host "  XML gÃ©nÃ©rÃ© enregistrÃ© dans: $xmlPath"
     }
 
     # Tests pour RoadmapXmlConverter
@@ -367,24 +367,24 @@ Ceci est une vue d'ensemble de test.
 **Progression**: 50%
 
 - [ ] **Phase 1: Test**
-  - [x] Tâche 1 (1 jour) - *Démarrée le 01/01/2025*
-    - [x] Sous-tâche 1
-    - [ ] Sous-tâche 2
-  - [ ] Tâche 2 (2 jours)
+  - [x] TÃ¢che 1 (1 jour) - *DÃ©marrÃ©e le 01/01/2025*
+    - [x] Sous-tÃ¢che 1
+    - [ ] Sous-tÃ¢che 2
+  - [ ] TÃ¢che 2 (2 jours)
   > *Note: Ceci est une note*
 
 "@
 
         $xmlContent = ConvertFrom-RoadmapToXml -RoadmapContent $roadmapContent
 
-        # Vérifier que le XML est valide
+        # VÃ©rifier que le XML est valide
         $xmlDoc = New-Object System.Xml.XmlDocument
         $xmlDoc.LoadXml($xmlContent)
 
-        # Vérifier la structure du XML
+        # VÃ©rifier la structure du XML
         $rootElement = $xmlDoc.DocumentElement
         if ($rootElement.Name -ne "roadmap") {
-            throw "L'élément racine n'est pas 'roadmap'"
+            throw "L'Ã©lÃ©ment racine n'est pas 'roadmap'"
         }
 
         if ($rootElement.GetAttribute("title") -ne "Roadmap de test") {
@@ -402,13 +402,13 @@ Ceci est une vue d'ensemble de test.
         }
 
         $taskElement = $phaseElement.SelectSingleNode("task")
-        if (-not $taskElement -or $taskElement.GetAttribute("title") -ne "Tâche 1") {
-            throw "La tâche est incorrecte"
+        if (-not $taskElement -or $taskElement.GetAttribute("title") -ne "TÃ¢che 1") {
+            throw "La tÃ¢che est incorrecte"
         }
 
         $subtaskElement = $taskElement.SelectSingleNode("subtask")
-        if (-not $subtaskElement -or $subtaskElement.GetAttribute("title") -ne "Sous-tâche 1") {
-            throw "La sous-tâche est incorrecte"
+        if (-not $subtaskElement -or $subtaskElement.GetAttribute("title") -ne "Sous-tÃ¢che 1") {
+            throw "La sous-tÃ¢che est incorrecte"
         }
 
         $noteElement = $phaseElement.SelectSingleNode("note")
@@ -416,11 +416,11 @@ Ceci est une vue d'ensemble de test.
             throw "La note est incorrecte"
         }
 
-        # Enregistrer le XML généré pour inspection
+        # Enregistrer le XML gÃ©nÃ©rÃ© pour inspection
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "roadmap_to_xml_converter.xml"
         Set-Content -Path $outputPath -Value $xmlContent -Encoding UTF8
 
-        Write-Host "  XML généré enregistré dans: $outputPath"
+        Write-Host "  XML gÃ©nÃ©rÃ© enregistrÃ© dans: $outputPath"
     }
 
     Test-Case -Name "RoadmapXmlConverter - Conversion XML vers Roadmap" -Test {
@@ -435,11 +435,11 @@ Ceci est une vue d'ensemble de test.
       <Progression>50%</Progression>
     </metadata>
     <phase id="1" title="Test" completed="false">
-      <task title="Tâche 1" estimatedTime="1 jour" startDate="Démarrée le 01/01/2025" completed="true">
-        <subtask title="Sous-tâche 1" completed="true" />
-        <subtask title="Sous-tâche 2" completed="false" />
+      <task title="TÃ¢che 1" estimatedTime="1 jour" startDate="DÃ©marrÃ©e le 01/01/2025" completed="true">
+        <subtask title="Sous-tÃ¢che 1" completed="true" />
+        <subtask title="Sous-tÃ¢che 2" completed="false" />
       </task>
-      <task title="Tâche 2" estimatedTime="2 jours" completed="false" />
+      <task title="TÃ¢che 2" estimatedTime="2 jours" completed="false" />
       <note>Ceci est une note</note>
     </phase>
   </section>
@@ -448,7 +448,7 @@ Ceci est une vue d'ensemble de test.
 
         $roadmapContent = ConvertFrom-XmlToRoadmap -XmlContent $xmlContent
 
-        # Vérifier que le Markdown est valide
+        # VÃ©rifier que le Markdown est valide
         if (-not $roadmapContent.StartsWith("# Roadmap de test")) {
             throw "Le titre est incorrect"
         }
@@ -462,36 +462,36 @@ Ceci est une vue d'ensemble de test.
         }
 
         if (-not $roadmapContent.Contains("**Complexite**: Moyenne")) {
-            throw "La complexité est incorrecte"
+            throw "La complexitÃ© est incorrecte"
         }
 
         if (-not $roadmapContent.Contains("- [ ] **Phase 1: Test**")) {
             throw "La phase est incorrecte"
         }
 
-        if (-not $roadmapContent.Contains("  - [x] Tâche 1 (1 jour) - *Démarrée le 01/01/2025*")) {
-            throw "La tâche est incorrecte"
+        if (-not $roadmapContent.Contains("  - [x] TÃ¢che 1 (1 jour) - *DÃ©marrÃ©e le 01/01/2025*")) {
+            throw "La tÃ¢che est incorrecte"
         }
 
-        if (-not $roadmapContent.Contains("    - [x] Sous-tâche 1")) {
-            throw "La sous-tâche est incorrecte"
+        if (-not $roadmapContent.Contains("    - [x] Sous-tÃ¢che 1")) {
+            throw "La sous-tÃ¢che est incorrecte"
         }
 
         if (-not $roadmapContent.Contains("  > *Note: Ceci est une note*")) {
             throw "La note est incorrecte"
         }
 
-        # Enregistrer le Markdown généré pour inspection
+        # Enregistrer le Markdown gÃ©nÃ©rÃ© pour inspection
         $outputPath = Join-Path -Path $testOutputPath -ChildPath "xml_to_roadmap_converter.md"
         Set-Content -Path $outputPath -Value $roadmapContent -Encoding UTF8
 
-        Write-Host "  Markdown généré enregistré dans: $outputPath"
+        Write-Host "  Markdown gÃ©nÃ©rÃ© enregistrÃ© dans: $outputPath"
     }
 
     # Tests pour XmlElementDetector
     Write-Host "Tests pour XmlElementDetector" -ForegroundColor Yellow
 
-    Test-Case -Name "XmlElementDetector - Détection des éléments XML" -Test {
+    Test-Case -Name "XmlElementDetector - DÃ©tection des Ã©lÃ©ments XML" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root attr1="value1" attr2="value2">
@@ -506,39 +506,39 @@ Ceci est une vue d'ensemble de test.
         $elements = Get-XmlElements -XmlContent $xmlContent
 
         if ($elements.Count -lt 4) { # root, element1, element2, nested, element3
-            throw "Nombre d'éléments détectés insuffisant: $($elements.Count)"
+            throw "Nombre d'Ã©lÃ©ments dÃ©tectÃ©s insuffisant: $($elements.Count)"
         }
 
         $rootElement = $elements | Where-Object { $_.Depth -eq 0 }
         if (-not $rootElement -or $rootElement.Name -ne "root") {
-            throw "Élément racine incorrect: $($rootElement.Name)"
+            throw "Ã‰lÃ©ment racine incorrect: $($rootElement.Name)"
         }
 
         if ($rootElement.Attributes.Count -ne 2) {
-            throw "Nombre d'attributs de l'élément racine incorrect: $($rootElement.Attributes.Count)"
+            throw "Nombre d'attributs de l'Ã©lÃ©ment racine incorrect: $($rootElement.Attributes.Count)"
         }
 
         if ($rootElement.Attributes["attr1"] -ne "value1" -or $rootElement.Attributes["attr2"] -ne "value2") {
-            throw "Attributs de l'élément racine incorrects"
+            throw "Attributs de l'Ã©lÃ©ment racine incorrects"
         }
 
         $element1 = $elements | Where-Object { $_.Name -eq "element1" }
         if (-not $element1 -or $element1.Value -ne "Text content") {
-            throw "Élément element1 incorrect"
+            throw "Ã‰lÃ©ment element1 incorrect"
         }
 
         $nested = $elements | Where-Object { $_.Name -eq "nested" }
         if (-not $nested -or $nested.Value -ne "Nested content") {
-            throw "Élément nested incorrect"
+            throw "Ã‰lÃ©ment nested incorrect"
         }
 
         $element3 = $elements | Where-Object { $_.Name -eq "element3" }
         if (-not $element3 -or $element3.Attributes["attr3"] -ne "value3") {
-            throw "Élément element3 incorrect"
+            throw "Ã‰lÃ©ment element3 incorrect"
         }
     }
 
-    Test-Case -Name "XmlElementDetector - Génération de rapport de structure" -Test {
+    Test-Case -Name "XmlElementDetector - GÃ©nÃ©ration de rapport de structure" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -557,7 +557,7 @@ Ceci est une vue d'ensemble de test.
         }
 
         if (-not $report.Contains("root")) {
-            throw "Le rapport ne contient pas l'élément racine"
+            throw "Le rapport ne contient pas l'Ã©lÃ©ment racine"
         }
 
         if (-not $report.Contains("element1")) {
@@ -572,16 +572,16 @@ Ceci est une vue d'ensemble de test.
             throw "Le rapport ne contient pas l'attribut attr3"
         }
 
-        # Générer un rapport HTML
+        # GÃ©nÃ©rer un rapport HTML
         $htmlReport = Get-XmlStructureReport -XmlContent $xmlContent -AsHtml
 
         if (-not $htmlReport.Contains("<title>Rapport de structure XML</title>")) {
             throw "Le rapport HTML ne contient pas le titre"
         }
 
-        # Vérifier que le rapport HTML contient l'élément racine
+        # VÃ©rifier que le rapport HTML contient l'Ã©lÃ©ment racine
         if (-not $htmlReport.Contains("<td class=`"element-name`">root</td>")) {
-            throw "Le rapport HTML ne contient pas l'élément racine"
+            throw "Le rapport HTML ne contient pas l'Ã©lÃ©ment racine"
         }
 
         # Enregistrer les rapports pour inspection
@@ -591,14 +591,14 @@ Ceci est une vue d'ensemble de test.
         $htmlReportPath = Join-Path -Path $testOutputPath -ChildPath "xml_structure_report_unit.html"
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
 
-        Write-Host "  Rapport de structure généré: $reportPath"
-        Write-Host "  Rapport de structure HTML généré: $htmlReportPath"
+        Write-Host "  Rapport de structure gÃ©nÃ©rÃ©: $reportPath"
+        Write-Host "  Rapport de structure HTML gÃ©nÃ©rÃ©: $htmlReportPath"
     }
 
     # Tests pour XmlValidator
     Write-Host "Tests pour XmlValidator" -ForegroundColor Yellow
 
-    Test-Case -Name "XmlValidator - Validation XML bien formé" -Test {
+    Test-Case -Name "XmlValidator - Validation XML bien formÃ©" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -609,11 +609,11 @@ Ceci est une vue d'ensemble de test.
         $result = Test-XmlContent -XmlContent $xmlContent
 
         if (-not $result.IsValid) {
-            throw "Le XML bien formé a été validé comme invalide"
+            throw "Le XML bien formÃ© a Ã©tÃ© validÃ© comme invalide"
         }
 
         if ($result.Errors.Count -ne 0) {
-            throw "Des erreurs ont été détectées dans le XML bien formé"
+            throw "Des erreurs ont Ã©tÃ© dÃ©tectÃ©es dans le XML bien formÃ©"
         }
 
         if ($result.XmlVersion -ne "1.0") {
@@ -625,7 +625,7 @@ Ceci est une vue d'ensemble de test.
         }
     }
 
-    Test-Case -Name "XmlValidator - Validation XML mal formé" -Test {
+    Test-Case -Name "XmlValidator - Validation XML mal formÃ©" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -636,15 +636,15 @@ Ceci est une vue d'ensemble de test.
         $result = Test-XmlContent -XmlContent $xmlContent
 
         if ($result.IsValid) {
-            throw "Le XML mal formé a été validé comme valide"
+            throw "Le XML mal formÃ© a Ã©tÃ© validÃ© comme valide"
         }
 
         if ($result.Errors.Count -eq 0) {
-            throw "Aucune erreur détectée dans le XML mal formé"
+            throw "Aucune erreur dÃ©tectÃ©e dans le XML mal formÃ©"
         }
     }
 
-    Test-Case -Name "XmlValidator - Génération de rapport de validation" -Test {
+    Test-Case -Name "XmlValidator - GÃ©nÃ©ration de rapport de validation" -Test {
         $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -659,7 +659,7 @@ Ceci est une vue d'ensemble de test.
             throw "Le rapport ne contient pas le titre"
         }
 
-        if (-not $report.Contains("Validation: Réussie")) {
+        if (-not $report.Contains("Validation: RÃ©ussie")) {
             throw "Le rapport ne contient pas le statut de validation"
         }
 
@@ -671,15 +671,15 @@ Ceci est une vue d'ensemble de test.
             throw "Le rapport ne contient pas l'encodage"
         }
 
-        # Générer un rapport HTML
+        # GÃ©nÃ©rer un rapport HTML
         $htmlReport = Get-XmlValidationReport -ValidationResult $result -AsHtml
 
         if (-not $htmlReport.Contains("<title>Rapport de validation XML</title>")) {
             throw "Le rapport HTML ne contient pas le titre"
         }
 
-        # Vérifier que le rapport HTML contient le statut de validation
-        if (-not $htmlReport.Contains("<span class=`"success`">Réussie</span>")) {
+        # VÃ©rifier que le rapport HTML contient le statut de validation
+        if (-not $htmlReport.Contains("<span class=`"success`">RÃ©ussie</span>")) {
             throw "Le rapport HTML ne contient pas le statut de validation"
         }
 
@@ -690,15 +690,15 @@ Ceci est une vue d'ensemble de test.
         $htmlReportPath = Join-Path -Path $testOutputPath -ChildPath "xml_validation_report_unit.html"
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
 
-        Write-Host "  Rapport de validation généré: $reportPath"
-        Write-Host "  Rapport de validation HTML généré: $htmlReportPath"
+        Write-Host "  Rapport de validation gÃ©nÃ©rÃ©: $reportPath"
+        Write-Host "  Rapport de validation HTML gÃ©nÃ©rÃ©: $htmlReportPath"
     }
 
-    # Afficher le résumé des tests
-    Write-Host "Résumé des tests:" -ForegroundColor Yellow
+    # Afficher le rÃ©sumÃ© des tests
+    Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Yellow
     Write-Host "  Total: $totalTests" -ForegroundColor Cyan
-    Write-Host "  Réussis: $passedTests" -ForegroundColor Green
-    Write-Host "  Échoués: $failedTests" -ForegroundColor Red
+    Write-Host "  RÃ©ussis: $passedTests" -ForegroundColor Green
+    Write-Host "  Ã‰chouÃ©s: $failedTests" -ForegroundColor Red
 
     return @{
         TotalTests = $totalTests
@@ -707,12 +707,12 @@ Ceci est une vue d'ensemble de test.
     }
 }
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Yellow
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Yellow
 $results = Invoke-UnitTests
 
 # Afficher le chemin des fichiers de sortie
 Write-Host "Les fichiers de sortie des tests sont disponibles dans: $testOutputPath" -ForegroundColor Cyan
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

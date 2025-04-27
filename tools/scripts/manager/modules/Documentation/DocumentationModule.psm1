@@ -1,5 +1,5 @@
-# Module de documentation pour le Script Manager
-# Ce module coordonne la génération de documentation pour les scripts
+﻿# Module de documentation pour le Script Manager
+# Ce module coordonne la gÃ©nÃ©ration de documentation pour les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: documentation, scripts, manager
@@ -25,13 +25,13 @@ foreach ($Module in $SubModules) {
 function Invoke-ScriptDocumentation {
     <#
     .SYNOPSIS
-        Génère la documentation pour les scripts
+        GÃ©nÃ¨re la documentation pour les scripts
     .DESCRIPTION
-        Génère des README, de la documentation pour les scripts et un index global
+        GÃ©nÃ¨re des README, de la documentation pour les scripts et un index global
     .PARAMETER AnalysisPath
         Chemin vers le fichier d'analyse JSON
     .PARAMETER OutputPath
-        Chemin où enregistrer les résultats de la documentation
+        Chemin oÃ¹ enregistrer les rÃ©sultats de la documentation
     .PARAMETER IncludeExamples
         Inclut des exemples d'utilisation dans la documentation
     .EXAMPLE
@@ -48,9 +48,9 @@ function Invoke-ScriptDocumentation {
         [switch]$IncludeExamples
     )
     
-    # Vérifier si le fichier d'analyse existe
+    # VÃ©rifier si le fichier d'analyse existe
     if (-not (Test-Path -Path $AnalysisPath)) {
-        Write-Error "Fichier d'analyse non trouvé: $AnalysisPath"
+        Write-Error "Fichier d'analyse non trouvÃ©: $AnalysisPath"
         return $null
     }
     
@@ -62,27 +62,27 @@ function Invoke-ScriptDocumentation {
         return $null
     }
     
-    Write-Host "Génération de la documentation en cours..." -ForegroundColor Cyan
-    Write-Host "Nombre de scripts à documenter: $($Analysis.TotalScripts)" -ForegroundColor Cyan
+    Write-Host "GÃ©nÃ©ration de la documentation en cours..." -ForegroundColor Cyan
+    Write-Host "Nombre de scripts Ã  documenter: $($Analysis.TotalScripts)" -ForegroundColor Cyan
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
     }
     
-    # Créer un tableau pour stocker les résultats de la documentation
+    # CrÃ©er un tableau pour stocker les rÃ©sultats de la documentation
     $DocumentationResults = @()
     
-    # Générer les README pour chaque dossier
+    # GÃ©nÃ©rer les README pour chaque dossier
     $FolderReadmes = New-FolderReadmes -Analysis $Analysis -OutputPath $OutputPath
     
-    # Générer la documentation pour chaque script
+    # GÃ©nÃ©rer la documentation pour chaque script
     $ScriptDocs = New-ScriptDocumentation -Analysis $Analysis -OutputPath $OutputPath -IncludeExamples:$IncludeExamples
     
-    # Générer l'index global
+    # GÃ©nÃ©rer l'index global
     $GlobalIndex = New-GlobalIndex -Analysis $Analysis -OutputPath $OutputPath -FolderReadmes $FolderReadmes -ScriptDocs $ScriptDocs
     
-    # Créer un objet avec les résultats de la documentation
+    # CrÃ©er un objet avec les rÃ©sultats de la documentation
     $Documentation = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalScripts = $Analysis.TotalScripts
@@ -95,7 +95,7 @@ function Invoke-ScriptDocumentation {
     $DocumentationPath = Join-Path -Path $OutputPath -ChildPath "documentation.json"
     $Documentation | ConvertTo-Json -Depth 10 | Set-Content -Path $DocumentationPath
     
-    Write-Host "Documentation terminée. Résultats enregistrés dans: $OutputPath" -ForegroundColor Green
+    Write-Host "Documentation terminÃ©e. RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
     
     return $Documentation
 }

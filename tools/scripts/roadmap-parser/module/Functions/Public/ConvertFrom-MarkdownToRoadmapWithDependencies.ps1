@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un fichier markdown en structure d'objet PowerShell représentant une roadmap avec dépendances.
+    Convertit un fichier markdown en structure d'objet PowerShell reprÃ©sentant une roadmap avec dÃ©pendances.
 
 .DESCRIPTION
     La fonction ConvertFrom-MarkdownToRoadmapWithDependencies lit un fichier markdown et le convertit en une structure d'objet PowerShell.
-    Elle est spécialement conçue pour traiter les roadmaps au format markdown avec des tâches, des statuts, des identifiants,
-    et des dépendances entre les tâches.
+    Elle est spÃ©cialement conÃ§ue pour traiter les roadmaps au format markdown avec des tÃ¢ches, des statuts, des identifiants,
+    et des dÃ©pendances entre les tÃ¢ches.
 
 .PARAMETER FilePath
-    Chemin du fichier markdown à convertir.
+    Chemin du fichier markdown Ã  convertir.
 
 .PARAMETER IncludeMetadata
-    Indique si les métadonnées supplémentaires doivent être extraites et incluses dans les objets.
+    Indique si les mÃ©tadonnÃ©es supplÃ©mentaires doivent Ãªtre extraites et incluses dans les objets.
 
 .PARAMETER DetectDependencies
-    Indique si les dépendances entre tâches doivent être détectées et incluses dans les objets.
+    Indique si les dÃ©pendances entre tÃ¢ches doivent Ãªtre dÃ©tectÃ©es et incluses dans les objets.
 
 .PARAMETER ValidateStructure
-    Indique si la structure de la roadmap doit être validée.
+    Indique si la structure de la roadmap doit Ãªtre validÃ©e.
 
 .EXAMPLE
     ConvertFrom-MarkdownToRoadmapWithDependencies -FilePath ".\roadmap.md" -IncludeMetadata -DetectDependencies
-    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des métadonnées et détection des dépendances.
+    Convertit le fichier roadmap.md en structure d'objet PowerShell avec extraction des mÃ©tadonnÃ©es et dÃ©tection des dÃ©pendances.
 
 .OUTPUTS
-    [PSCustomObject] Représentant la structure de la roadmap.
+    [PSCustomObject] ReprÃ©sentant la structure de la roadmap.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function ConvertFrom-MarkdownToRoadmapWithDependencies {
     [CmdletBinding()]
@@ -48,7 +48,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
         [switch]$ValidateStructure
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
@@ -57,7 +57,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
     $content = Get-Content -Path $FilePath -Encoding UTF8 -Raw
     $lines = $content -split "`r?`n"
 
-    # Créer l'objet roadmap
+    # CrÃ©er l'objet roadmap
     $roadmap = [PSCustomObject]@{
         Title            = "Roadmap"
         Description      = ""
@@ -73,7 +73,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Extraire le titre (première ligne commençant par #)
+        # Extraire le titre (premiÃ¨re ligne commenÃ§ant par #)
         if ($line -match '^#\s+(.+)$' -and -not $inDescription) {
             $roadmap.Title = $matches[1]
             $inDescription = $true
@@ -82,14 +82,14 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
 
         # Collecter les lignes de description
         if ($inDescription) {
-            # Si on trouve une section, on arrête la description
+            # Si on trouve une section, on arrÃªte la description
             if ($line -match '^##\s+') {
                 $inDescription = $false
                 $i-- # Reculer d'une ligne pour traiter la section au prochain tour
                 continue
             }
 
-            # Ignorer les lignes vides au début de la description
+            # Ignorer les lignes vides au dÃ©but de la description
             if ($descriptionLines.Count -eq 0 -and [string]::IsNullOrWhiteSpace($line)) {
                 continue
             }
@@ -98,16 +98,16 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
         }
     }
 
-    # Définir la description
+    # DÃ©finir la description
     if ($descriptionLines.Count -gt 0) {
-        # Supprimer les lignes vides à la fin
+        # Supprimer les lignes vides Ã  la fin
         while ($descriptionLines.Count -gt 0 -and [string]::IsNullOrWhiteSpace($descriptionLines[$descriptionLines.Count - 1])) {
             $descriptionLines.RemoveAt($descriptionLines.Count - 1)
         }
         $roadmap.Description = [string]::Join("`n", $descriptionLines)
     }
 
-    # Définir les marqueurs de statut standard
+    # DÃ©finir les marqueurs de statut standard
     $statusMarkers = [System.Collections.Generic.Dictionary[string, string]]::new([StringComparer]::OrdinalIgnoreCase)
     $statusMarkers["x"] = "Complete"
     $statusMarkers["X"] = "Complete"
@@ -116,7 +116,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
     $statusMarkers[" "] = "Incomplete"
     $statusMarkers[""] = "Incomplete"
 
-    # Première passe : extraire les sections et les tâches
+    # PremiÃ¨re passe : extraire les sections et les tÃ¢ches
     $currentSection = $null
     $taskStack = [System.Collections.Generic.Stack[object]]::new()
     $currentLevel = 0
@@ -125,7 +125,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
     foreach ($line in $lines) {
         $lineNumber++
 
-        # Détecter les sections (lignes commençant par ##)
+        # DÃ©tecter les sections (lignes commenÃ§ant par ##)
         if ($line -match '^##\s+(.+)$') {
             $sectionTitle = $matches[1]
             $currentSection = [PSCustomObject]@{
@@ -139,24 +139,24 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
             continue
         }
 
-        # Détecter les tâches (lignes commençant par -, *, + avec ou sans case à cocher)
+        # DÃ©tecter les tÃ¢ches (lignes commenÃ§ant par -, *, + avec ou sans case Ã  cocher)
         if ($null -ne $currentSection -and $line -match '^(\s*)[-*+]\s*(?:\[([ xX~!])\])?\s*(?:\*\*([^*]+)\*\*)?\s*(.*)$') {
             $indent = $matches[1].Length
             $statusMarker = $matches[2]
             $id = $matches[3]
             $title = $matches[4]
 
-            # Déterminer le statut
+            # DÃ©terminer le statut
             $status = if ($statusMarkers.ContainsKey($statusMarker)) {
                 $statusMarkers[$statusMarker]
             } else {
                 "Incomplete"
             }
 
-            # Extraire les métadonnées
+            # Extraire les mÃ©tadonnÃ©es
             $metadata = [System.Collections.Generic.Dictionary[string, object]]::new()
 
-            # Extraire les métadonnées avancées si demandé
+            # Extraire les mÃ©tadonnÃ©es avancÃ©es si demandÃ©
             if ($IncludeMetadata) {
                 # Extraire les assignations (@personne)
                 if ($title -match '@([a-zA-Z0-9_-]+)') {
@@ -177,7 +177,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                     $title = $title -replace '#[a-zA-Z0-9_-]+', ''
                 }
 
-                # Extraire les priorités (P1, P2, etc.)
+                # Extraire les prioritÃ©s (P1, P2, etc.)
                 if ($title -match '\b(P[0-9])\b') {
                     $metadata["Priority"] = $matches[1]
                     # Nettoyer le titre
@@ -191,7 +191,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                     $title = $title -replace '@date:\d{4}-\d{2}-\d{2}', ''
                 }
 
-                # Extraire les dépendances (format: @depends:ID1,ID2,...)
+                # Extraire les dÃ©pendances (format: @depends:ID1,ID2,...)
                 if ($title -match '@depends:([\w\.-]+)') {
                     $dependsOn = $matches[1] -split ','
                     $metadata["DependsOn"] = $dependsOn
@@ -206,7 +206,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                     $title = $title -replace '@estimate:\d+[hdjmw]', ''
                 }
 
-                # Extraire les dates de début (format: @start:YYYY-MM-DD)
+                # Extraire les dates de dÃ©but (format: @start:YYYY-MM-DD)
                 if ($title -match '@start:(\d{4}-\d{2}-\d{2})') {
                     $metadata["StartDate"] = $matches[1]
                     # Nettoyer le titre
@@ -224,7 +224,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
             # Nettoyer le titre (supprimer les espaces en trop)
             $title = $title.Trim()
 
-            # Créer l'objet tâche
+            # CrÃ©er l'objet tÃ¢che
             $task = [PSCustomObject]@{
                 Id             = $id
                 Title          = $title
@@ -238,7 +238,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                 OriginalText   = $line
             }
 
-            # Ajouter la tâche au dictionnaire global
+            # Ajouter la tÃ¢che au dictionnaire global
             if (-not [string]::IsNullOrEmpty($id)) {
                 if ($roadmap.AllTasks.ContainsKey($id)) {
                     if ($ValidateStructure) {
@@ -249,15 +249,15 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                 }
             }
 
-            # Déterminer le parent en fonction de l'indentation
+            # DÃ©terminer le parent en fonction de l'indentation
             if ($indent -eq 0) {
-                # Tâche de premier niveau
+                # TÃ¢che de premier niveau
                 $currentSection.Tasks.Add($task) | Out-Null
                 $taskStack.Clear()
                 $taskStack.Push($task)
                 $currentLevel = 0
             } elseif ($indent -gt $currentLevel) {
-                # Sous-tâche
+                # Sous-tÃ¢che
                 if ($taskStack.Count -gt 0) {
                     $parent = $taskStack.Peek()
                     $parent.SubTasks.Add($task) | Out-Null
@@ -265,7 +265,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                     $currentLevel = $indent
                 }
             } elseif ($indent -eq $currentLevel) {
-                # Même niveau que la tâche précédente
+                # MÃªme niveau que la tÃ¢che prÃ©cÃ©dente
                 if ($taskStack.Count -gt 1) {
                     $taskStack.Pop() | Out-Null
                     $parent = $taskStack.Peek()
@@ -277,7 +277,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                     $taskStack.Push($task)
                 }
             } elseif ($indent -lt $currentLevel) {
-                # Remonter dans la hiérarchie
+                # Remonter dans la hiÃ©rarchie
                 $levelDiff = [int](($currentLevel - $indent) / 2)
                 for ($i = 0; $i -lt $levelDiff + 1; $i++) {
                     if ($taskStack.Count -gt 0) {
@@ -298,9 +298,9 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
         }
     }
 
-    # Deuxième passe : traiter les dépendances
+    # DeuxiÃ¨me passe : traiter les dÃ©pendances
     if ($DetectDependencies) {
-        # Traiter les dépendances explicites (via métadonnées)
+        # Traiter les dÃ©pendances explicites (via mÃ©tadonnÃ©es)
         foreach ($id in $roadmap.AllTasks.Keys) {
             $task = $roadmap.AllTasks[$id]
             if ($task.Metadata.ContainsKey("DependsOn")) {
@@ -316,13 +316,13 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
             }
         }
 
-        # Détecter les dépendances implicites (basées sur les références dans le titre)
+        # DÃ©tecter les dÃ©pendances implicites (basÃ©es sur les rÃ©fÃ©rences dans le titre)
         $refRegex = [regex]::new('\bref:([\w\.-]+)\b', [System.Text.RegularExpressions.RegexOptions]::Compiled)
 
         foreach ($id in $roadmap.AllTasks.Keys) {
             $task = $roadmap.AllTasks[$id]
 
-            # Chercher les références dans le titre
+            # Chercher les rÃ©fÃ©rences dans le titre
             $titleMatches = $refRegex.Matches($task.Title)
             foreach ($match in $titleMatches) {
                 $refId = $match.Groups[1].Value
@@ -337,7 +337,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
                 }
             }
 
-            # Détecter les dépendances basées sur les identifiants hiérarchiques
+            # DÃ©tecter les dÃ©pendances basÃ©es sur les identifiants hiÃ©rarchiques
             if ($id -match '^(.+)\.\d+$') {
                 $parentId = $matches[1]
                 if ($roadmap.AllTasks.ContainsKey($parentId) -and $parentId -ne $id) {
@@ -351,16 +351,16 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
         }
     }
 
-    # Valider la structure de la roadmap si demandé
+    # Valider la structure de la roadmap si demandÃ©
     if ($ValidateStructure) {
-        # Vérifier les IDs manquants
+        # VÃ©rifier les IDs manquants
         foreach ($section in $roadmap.Sections) {
             foreach ($task in $section.Tasks) {
                 if ([string]::IsNullOrEmpty($task.Id)) {
                     $roadmap.ValidationIssues.Add("Missing task ID at line $($task.LineNumber)") | Out-Null
                 }
 
-                # Vérifier récursivement les sous-tâches
+                # VÃ©rifier rÃ©cursivement les sous-tÃ¢ches
                 function Test-SubTasks {
                     param (
                         [PSCustomObject]$Task
@@ -378,7 +378,7 @@ function ConvertFrom-MarkdownToRoadmapWithDependencies {
             }
         }
 
-        # Vérifier les dépendances circulaires
+        # VÃ©rifier les dÃ©pendances circulaires
         function Test-CircularDependencies {
             param (
                 [PSCustomObject]$Task,

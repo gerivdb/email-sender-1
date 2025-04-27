@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute tous les tests pour les modes et génère un rapport de couverture.
+    ExÃ©cute tous les tests pour les modes et gÃ©nÃ¨re un rapport de couverture.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et d'intégration pour les différents modes
-    et génère un rapport de couverture global. Il permet de s'assurer que tous les modes
+    Ce script exÃ©cute tous les tests unitaires et d'intÃ©gration pour les diffÃ©rents modes
+    et gÃ©nÃ¨re un rapport de couverture global. Il permet de s'assurer que tous les modes
     fonctionnent correctement individuellement et ensemble.
 
 .PARAMETER OutputPath
-    Chemin où seront générés les rapports de test et de couverture.
+    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les rapports de test et de couverture.
 
 .PARAMETER ShowResults
-    Indique si les résultats des tests doivent être affichés dans la console.
+    Indique si les rÃ©sultats des tests doivent Ãªtre affichÃ©s dans la console.
 
 .PARAMETER GenerateReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     .\Invoke-AllTests.ps1 -OutputPath "test-reports" -ShowResults $true -GenerateReport $true
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 [CmdletBinding()]
@@ -37,33 +37,33 @@ param(
     [bool]$GenerateReport = $true
 )
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     try {
         Install-Module -Name Pester -Force -SkipPublisherCheck
         Import-Module Pester
-        Write-Host "Module Pester installé avec succès." -ForegroundColor Green
+        Write-Host "Module Pester installÃ© avec succÃ¨s." -ForegroundColor Green
     } catch {
         Write-Error "Impossible d'installer le module Pester : $_"
         exit 1
     }
 } else {
     Import-Module Pester
-    Write-Host "Module Pester déjà installé." -ForegroundColor Green
+    Write-Host "Module Pester dÃ©jÃ  installÃ©." -ForegroundColor Green
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de sortie créé : $OutputPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath" -ForegroundColor Green
 }
 
 # Chemin vers les tests
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $testFiles = Get-ChildItem -Path $scriptPath -Filter "Test-*.ps1" | Where-Object { $_.Name -ne "Test-Template.ps1" }
 
-Write-Host "Tests trouvés : $($testFiles.Count)" -ForegroundColor Green
+Write-Host "Tests trouvÃ©s : $($testFiles.Count)" -ForegroundColor Green
 foreach ($testFile in $testFiles) {
     Write-Host "  - $($testFile.Name)" -ForegroundColor Gray
 }
@@ -81,21 +81,21 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "test-results.xml"
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests..." -ForegroundColor Yellow
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests..." -ForegroundColor Yellow
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($ShowResults) {
-    Write-Host "`nRésultats des tests :" -ForegroundColor Yellow
-    Write-Host "  - Tests exécutés : $($testResults.TotalCount)" -ForegroundColor $(if ($testResults.TotalCount -gt 0) { "Green" } else { "Red" })
-    Write-Host "  - Tests réussis : $($testResults.PassedCount)" -ForegroundColor $(if ($testResults.PassedCount -eq $testResults.TotalCount) { "Green" } else { "Yellow" })
-    Write-Host "  - Tests échoués : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -eq 0) { "Green" } else { "Red" })
-    Write-Host "  - Tests ignorés : $($testResults.SkippedCount)" -ForegroundColor $(if ($testResults.SkippedCount -eq 0) { "Green" } else { "Yellow" })
-    Write-Host "  - Durée totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Gray
+    Write-Host "`nRÃ©sultats des tests :" -ForegroundColor Yellow
+    Write-Host "  - Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor $(if ($testResults.TotalCount -gt 0) { "Green" } else { "Red" })
+    Write-Host "  - Tests rÃ©ussis : $($testResults.PassedCount)" -ForegroundColor $(if ($testResults.PassedCount -eq $testResults.TotalCount) { "Green" } else { "Yellow" })
+    Write-Host "  - Tests Ã©chouÃ©s : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -eq 0) { "Green" } else { "Red" })
+    Write-Host "  - Tests ignorÃ©s : $($testResults.SkippedCount)" -ForegroundColor $(if ($testResults.SkippedCount -eq 0) { "Green" } else { "Yellow" })
+    Write-Host "  - DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Gray
     
     if ($testResults.FailedCount -gt 0) {
-        Write-Host "`nTests échoués :" -ForegroundColor Red
+        Write-Host "`nTests Ã©chouÃ©s :" -ForegroundColor Red
         foreach ($failedTest in $testResults.Failed) {
             Write-Host "  - $($failedTest.Name)" -ForegroundColor Red
             Write-Host "    $($failedTest.ErrorRecord)" -ForegroundColor Gray
@@ -103,11 +103,11 @@ if ($ShowResults) {
     }
 }
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 if ($GenerateReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Yellow
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Yellow
     
-    # Créer le rapport HTML
+    # CrÃ©er le rapport HTML
     $reportPath = Join-Path -Path $OutputPath -ChildPath "test-report.html"
     
     $htmlReport = @"
@@ -177,26 +177,26 @@ if ($GenerateReport) {
 <body>
     <h1>Rapport de tests - Modes RoadmapParser</h1>
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Date d'exécution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Date d'exÃ©cution : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         <div class="progress-container">
             <div class="progress-bar" style="width: $([Math]::Round(($testResults.PassedCount / $testResults.TotalCount) * 100))%">
                 $([Math]::Round(($testResults.PassedCount / $testResults.TotalCount) * 100))%
             </div>
         </div>
-        <p>Tests exécutés : <strong>$($testResults.TotalCount)</strong></p>
-        <p>Tests réussis : <span class="success"><strong>$($testResults.PassedCount)</strong></span></p>
-        <p>Tests échoués : <span class="danger"><strong>$($testResults.FailedCount)</strong></span></p>
-        <p>Tests ignorés : <span class="warning"><strong>$($testResults.SkippedCount)</strong></span></p>
-        <p>Durée totale : <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
+        <p>Tests exÃ©cutÃ©s : <strong>$($testResults.TotalCount)</strong></p>
+        <p>Tests rÃ©ussis : <span class="success"><strong>$($testResults.PassedCount)</strong></span></p>
+        <p>Tests Ã©chouÃ©s : <span class="danger"><strong>$($testResults.FailedCount)</strong></span></p>
+        <p>Tests ignorÃ©s : <span class="warning"><strong>$($testResults.SkippedCount)</strong></span></p>
+        <p>DurÃ©e totale : <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
@@ -220,7 +220,7 @@ if ($GenerateReport) {
     $htmlReport += @"
     </table>
     
-    <h2>Tests échoués</h2>
+    <h2>Tests Ã©chouÃ©s</h2>
 "@
 
     if ($testResults.FailedCount -gt 0) {
@@ -246,7 +246,7 @@ if ($GenerateReport) {
 "@
     } else {
         $htmlReport += @"
-    <p class="success">Aucun test n'a échoué.</p>
+    <p class="success">Aucun test n'a Ã©chouÃ©.</p>
 "@
     }
 
@@ -256,16 +256,16 @@ if ($GenerateReport) {
 "@
 
     $htmlReport | Set-Content -Path $reportPath -Encoding UTF8
-    Write-Host "Rapport HTML généré : $reportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
 }
 
 # Afficher le chemin des rapports
-Write-Host "`nRapports générés :" -ForegroundColor Yellow
+Write-Host "`nRapports gÃ©nÃ©rÃ©s :" -ForegroundColor Yellow
 Write-Host "  - Rapport de tests : $(Join-Path -Path $OutputPath -ChildPath "test-results.xml")" -ForegroundColor Gray
 Write-Host "  - Rapport de couverture : $(Join-Path -Path $OutputPath -ChildPath "coverage.xml")" -ForegroundColor Gray
 if ($GenerateReport) {
     Write-Host "  - Rapport HTML : $(Join-Path -Path $OutputPath -ChildPath "test-report.html")" -ForegroundColor Gray
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

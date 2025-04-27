@@ -1,10 +1,10 @@
-#
+﻿#
 # Test-Custom.Tests.ps1
 #
 # Tests unitaires pour la fonction Test-Custom
 #
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-Custom.ps1"
@@ -32,18 +32,18 @@ Describe "Test-Custom" {
     }
 
     Context "Validation avec ThrowOnFailure" {
-        It "Devrait lever une exception en cas d'échec avec ThrowOnFailure" {
+        It "Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure" {
             { Test-Custom -Value -1 -ValidationFunction { param($val) $val -gt 0 -and $val -lt 100 } -ThrowOnFailure } | Should -Throw
         }
 
-        It "Ne devrait pas lever d'exception en cas de succès avec ThrowOnFailure" {
+        It "Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure" {
             { Test-Custom -Value 42 -ValidationFunction { param($val) $val -gt 0 -and $val -lt 100 } -ThrowOnFailure } | Should -Not -Throw
         }
     }
 
-    Context "Validation avec message d'erreur personnalisé" {
-        It "Devrait utiliser le message d'erreur personnalisé en cas d'échec" {
-            $customErrorMessage = "Message d'erreur personnalisé"
+    Context "Validation avec message d'erreur personnalisÃ©" {
+        It "Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec" {
+            $customErrorMessage = "Message d'erreur personnalisÃ©"
             $exceptionMessage = $null
 
             try {
@@ -57,11 +57,11 @@ Describe "Test-Custom" {
     }
 
     Context "Gestion des erreurs dans la fonction de validation" {
-        It "Devrait retourner False si la fonction de validation lève une exception" {
+        It "Devrait retourner False si la fonction de validation lÃ¨ve une exception" {
             Test-Custom -Value "Hello" -ValidationFunction { param($val) throw "Erreur dans la fonction de validation" } | Should -Be $false
         }
 
-        It "Devrait utiliser un message d'erreur par défaut si la fonction de validation lève une exception" {
+        It "Devrait utiliser un message d'erreur par dÃ©faut si la fonction de validation lÃ¨ve une exception" {
             $exceptionMessage = $null
 
             try {
@@ -70,7 +70,7 @@ Describe "Test-Custom" {
                 $exceptionMessage = $_.Exception.Message
             }
 
-            $exceptionMessage | Should -Match "Erreur lors de l'exécution de la validation personnalisée"
+            $exceptionMessage | Should -Match "Erreur lors de l'exÃ©cution de la validation personnalisÃ©e"
         }
     }
 }

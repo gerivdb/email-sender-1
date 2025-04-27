@@ -1,30 +1,30 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Mesure la précision de la détection automatique de format.
+    Mesure la prÃ©cision de la dÃ©tection automatique de format.
 
 .DESCRIPTION
-    Ce script mesure la précision de la détection automatique de format en comparant
-    les résultats de détection avec les formats attendus. Il calcule des métriques
-    telles que la précision, le rappel et le F1-score, et génère des rapports détaillés.
+    Ce script mesure la prÃ©cision de la dÃ©tection automatique de format en comparant
+    les rÃ©sultats de dÃ©tection avec les formats attendus. Il calcule des mÃ©triques
+    telles que la prÃ©cision, le rappel et le F1-score, et gÃ©nÃ¨re des rapports dÃ©taillÃ©s.
 
 .PARAMETER TestDirectory
-    Le répertoire contenant les fichiers de test.
-    Par défaut, utilise le répertoire 'samples' dans le répertoire du script.
+    Le rÃ©pertoire contenant les fichiers de test.
+    Par dÃ©faut, utilise le rÃ©pertoire 'samples' dans le rÃ©pertoire du script.
 
 .PARAMETER ExpectedFormatsPath
     Le chemin vers le fichier JSON contenant les formats attendus pour chaque fichier.
-    Par défaut, utilise 'ExpectedFormats.json' dans le répertoire de test.
+    Par dÃ©faut, utilise 'ExpectedFormats.json' dans le rÃ©pertoire de test.
 
 .PARAMETER OutputDirectory
-    Le répertoire où les rapports seront enregistrés.
-    Par défaut, utilise le répertoire 'reports' dans le répertoire du script.
+    Le rÃ©pertoire oÃ¹ les rapports seront enregistrÃ©s.
+    Par dÃ©faut, utilise le rÃ©pertoire 'reports' dans le rÃ©pertoire du script.
 
 .PARAMETER IncludeMalformedSamples
-    Indique si les échantillons malformés doivent être inclus dans l'évaluation.
+    Indique si les Ã©chantillons malformÃ©s doivent Ãªtre inclus dans l'Ã©valuation.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 
 .EXAMPLE
     .\Measure-DetectionAccuracy.ps1 -GenerateHtmlReport
@@ -53,12 +53,12 @@ param(
     [switch]$GenerateHtmlReport
 )
 
-# Importer les scripts nécessaires
+# Importer les scripts nÃ©cessaires
 $formatDetectionScript = "$PSScriptRoot\..\analysis\Improved-FormatDetection.ps1"
 $ambiguousHandlingScript = "$PSScriptRoot\..\analysis\Handle-AmbiguousFormats.ps1"
 
 if (-not (Test-Path -Path $formatDetectionScript)) {
-    Write-Error "Le script de détection de format '$formatDetectionScript' n'existe pas."
+    Write-Error "Le script de dÃ©tection de format '$formatDetectionScript' n'existe pas."
     exit 1
 }
 
@@ -67,7 +67,7 @@ if (-not (Test-Path -Path $ambiguousHandlingScript)) {
     exit 1
 }
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function New-DirectoryIfNotExists {
     param (
         [string]$Path
@@ -75,7 +75,7 @@ function New-DirectoryIfNotExists {
     
     if (-not (Test-Path -Path $Path -PathType Container)) {
         New-Item -Path $Path -ItemType Directory -Force | Out-Null
-        Write-Verbose "Répertoire créé : $Path"
+        Write-Verbose "RÃ©pertoire crÃ©Ã© : $Path"
     }
 }
 
@@ -100,7 +100,7 @@ function Get-ExpectedFormats {
     }
 }
 
-# Fonction pour calculer les métriques
+# Fonction pour calculer les mÃ©triques
 function Get-DetectionMetrics {
     param (
         [array]$Results
@@ -160,7 +160,7 @@ function Get-DetectionMetrics {
         }
     }
     
-    # Calculer la précision, le rappel et le F1-score pour chaque format
+    # Calculer la prÃ©cision, le rappel et le F1-score pour chaque format
     foreach ($format in $formatMetrics.Keys) {
         $metrics = $formatMetrics[$format]
         
@@ -186,7 +186,7 @@ function Get-DetectionMetrics {
         }
     }
     
-    # Calculer les métriques globales
+    # Calculer les mÃ©triques globales
     $totalTruePositives = ($formatMetrics.Values | Measure-Object -Property TruePositives -Sum).Sum
     $totalFalsePositives = ($formatMetrics.Values | Measure-Object -Property FalsePositives -Sum).Sum
     $totalFalseNegatives = ($formatMetrics.Values | Measure-Object -Property FalseNegatives -Sum).Sum
@@ -227,7 +227,7 @@ function Get-DetectionMetrics {
     }
 }
 
-# Fonction pour générer un rapport JSON
+# Fonction pour gÃ©nÃ©rer un rapport JSON
 function Export-ResultsToJson {
     param (
         [hashtable]$Metrics,
@@ -241,10 +241,10 @@ function Export-ResultsToJson {
     }
     
     $report | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport JSON exporté vers '$OutputPath'" -ForegroundColor Green
+    Write-Host "Rapport JSON exportÃ© vers '$OutputPath'" -ForegroundColor Green
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Export-ResultsToHtml {
     param (
         [hashtable]$Metrics,
@@ -258,7 +258,7 @@ function Export-ResultsToHtml {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de précision de détection de format</title>
+    <title>Rapport de prÃ©cision de dÃ©tection de format</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -384,42 +384,42 @@ function Export-ResultsToHtml {
 </head>
 <body>
     <div class="container">
-        <h1>Rapport de précision de détection de format</h1>
+        <h1>Rapport de prÃ©cision de dÃ©tection de format</h1>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p><strong>Nombre de fichiers testés:</strong> $($Metrics.TotalFiles)</p>
-            <p><strong>Détections correctes:</strong> $($Metrics.CorrectDetections) ($([Math]::Round($Metrics.Accuracy, 2))%)</p>
-            <p><strong>Cas ambigus:</strong> $($Metrics.AmbiguousCases) (dont $($Metrics.ResolvedAmbiguousCases) résolus correctement, soit $([Math]::Round($Metrics.AmbiguousResolutionRate, 2))%)</p>
+            <h2>RÃ©sumÃ©</h2>
+            <p><strong>Nombre de fichiers testÃ©s:</strong> $($Metrics.TotalFiles)</p>
+            <p><strong>DÃ©tections correctes:</strong> $($Metrics.CorrectDetections) ($([Math]::Round($Metrics.Accuracy, 2))%)</p>
+            <p><strong>Cas ambigus:</strong> $($Metrics.AmbiguousCases) (dont $($Metrics.ResolvedAmbiguousCases) rÃ©solus correctement, soit $([Math]::Round($Metrics.AmbiguousResolutionRate, 2))%)</p>
             <p><strong>Date du test:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         </div>
         
-        <h2>Métriques globales</h2>
+        <h2>MÃ©triques globales</h2>
         <div class="metrics">
             <div class="metric-card">
-                <h3>Précision</h3>
+                <h3>PrÃ©cision</h3>
                 <div class="metric-value">$([Math]::Round($Metrics.GlobalPrecision, 2))%</div>
-                <p>Pourcentage de détections correctes parmi toutes les détections</p>
+                <p>Pourcentage de dÃ©tections correctes parmi toutes les dÃ©tections</p>
             </div>
             <div class="metric-card">
                 <h3>Rappel</h3>
                 <div class="metric-value">$([Math]::Round($Metrics.GlobalRecall, 2))%</div>
-                <p>Pourcentage de formats correctement identifiés</p>
+                <p>Pourcentage de formats correctement identifiÃ©s</p>
             </div>
             <div class="metric-card">
                 <h3>F1-Score</h3>
                 <div class="metric-value">$([Math]::Round($Metrics.GlobalF1Score, 2))%</div>
-                <p>Moyenne harmonique de la précision et du rappel</p>
+                <p>Moyenne harmonique de la prÃ©cision et du rappel</p>
             </div>
         </div>
         
-        <h2>Métriques par format</h2>
+        <h2>MÃ©triques par format</h2>
         <table class="format-metrics">
             <thead>
                 <tr>
                     <th>Format</th>
                     <th>Nombre de fichiers</th>
-                    <th>Précision</th>
+                    <th>PrÃ©cision</th>
                     <th>Rappel</th>
                     <th>F1-Score</th>
                 </tr>
@@ -446,15 +446,15 @@ function Export-ResultsToHtml {
             </tbody>
         </table>
         
-        <h2>Résultats détaillés</h2>
+        <h2>RÃ©sultats dÃ©taillÃ©s</h2>
         <table class="results-table">
             <thead>
                 <tr>
                     <th>Fichier</th>
                     <th>Format attendu</th>
-                    <th>Format détecté</th>
+                    <th>Format dÃ©tectÃ©</th>
                     <th>Score de confiance</th>
-                    <th>Résultat</th>
+                    <th>RÃ©sultat</th>
                     <th>Ambigu</th>
                 </tr>
             </thead>
@@ -486,44 +486,44 @@ function Export-ResultsToHtml {
 "@
 
     $html | Set-Content -Path $OutputPath -Encoding UTF8
-    Write-Host "Rapport HTML exporté vers '$OutputPath'" -ForegroundColor Green
+    Write-Host "Rapport HTML exportÃ© vers '$OutputPath'" -ForegroundColor Green
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le répertoire de test existe
+    # VÃ©rifier si le rÃ©pertoire de test existe
     if (-not (Test-Path -Path $TestDirectory -PathType Container)) {
-        Write-Error "Le répertoire de test '$TestDirectory' n'existe pas."
+        Write-Error "Le rÃ©pertoire de test '$TestDirectory' n'existe pas."
         exit 1
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     New-DirectoryIfNotExists -Path $OutputDirectory
     
     # Charger les formats attendus
     $expectedFormats = Get-ExpectedFormats -Path $ExpectedFormatsPath
     
     if ($expectedFormats.Count -eq 0) {
-        Write-Error "Aucun format attendu n'a été chargé."
+        Write-Error "Aucun format attendu n'a Ã©tÃ© chargÃ©."
         exit 1
     }
     
-    # Récupérer les fichiers de test
+    # RÃ©cupÃ©rer les fichiers de test
     $testFiles = @()
     
     if ($IncludeMalformedSamples) {
-        # Inclure les échantillons malformés
+        # Inclure les Ã©chantillons malformÃ©s
         $malformedSamplesDir = Join-Path -Path $PSScriptRoot -ChildPath "malformed_samples"
         
         if (Test-Path -Path $malformedSamplesDir -PathType Container) {
             $testFiles += Get-ChildItem -Path $malformedSamplesDir -File -Recurse
         }
         else {
-            Write-Warning "Le répertoire des échantillons malformés '$malformedSamplesDir' n'existe pas."
+            Write-Warning "Le rÃ©pertoire des Ã©chantillons malformÃ©s '$malformedSamplesDir' n'existe pas."
         }
     }
     
-    # Ajouter les fichiers d'échantillon normaux
+    # Ajouter les fichiers d'Ã©chantillon normaux
     $formatSamplesDir = Join-Path -Path $TestDirectory -ChildPath "formats"
     
     if (Test-Path -Path $formatSamplesDir -PathType Container) {
@@ -534,11 +534,11 @@ function Main {
     }
     
     if ($testFiles.Count -eq 0) {
-        Write-Error "Aucun fichier de test n'a été trouvé."
+        Write-Error "Aucun fichier de test n'a Ã©tÃ© trouvÃ©."
         exit 1
     }
     
-    Write-Host "Évaluation de la précision de détection sur $($testFiles.Count) fichiers..." -ForegroundColor Yellow
+    Write-Host "Ã‰valuation de la prÃ©cision de dÃ©tection sur $($testFiles.Count) fichiers..." -ForegroundColor Yellow
     
     # Tester chaque fichier
     $results = @()
@@ -549,7 +549,7 @@ function Main {
         
         Write-Verbose "Test du fichier : $fileName"
         
-        # Déterminer le format attendu
+        # DÃ©terminer le format attendu
         $expectedFormat = $null
         
         foreach ($pattern in $expectedFormats.Keys) {
@@ -560,21 +560,21 @@ function Main {
         }
         
         if ($null -eq $expectedFormat) {
-            Write-Warning "Aucun format attendu trouvé pour le fichier '$fileName'. Ce fichier sera ignoré."
+            Write-Warning "Aucun format attendu trouvÃ© pour le fichier '$fileName'. Ce fichier sera ignorÃ©."
             continue
         }
         
-        # Exécuter la détection de format
+        # ExÃ©cuter la dÃ©tection de format
         $detectionResult = & $ambiguousHandlingScript -FilePath $filePath -AutoResolve
         
-        # Déterminer si le cas est ambigu
+        # DÃ©terminer si le cas est ambigu
         $topFormats = $detectionResult.AllFormats | Sort-Object -Property Score, Priority -Descending | Select-Object -First 2
         $isAmbiguous = ($topFormats.Count -ge 2) -and (($topFormats[0].Score - $topFormats[1].Score) -lt 20)
         
-        # Déterminer si la détection est correcte
+        # DÃ©terminer si la dÃ©tection est correcte
         $isCorrect = $detectionResult.DetectedFormat -eq $expectedFormat
         
-        # Ajouter le résultat à la liste
+        # Ajouter le rÃ©sultat Ã  la liste
         $results += [PSCustomObject]@{
             FilePath = $fileName
             ExpectedFormat = $expectedFormat
@@ -585,35 +585,35 @@ function Main {
         }
     }
     
-    # Calculer les métriques
+    # Calculer les mÃ©triques
     $metrics = Get-DetectionMetrics -Results $results
     
-    # Afficher les résultats
-    Write-Host "`n===== RÉSULTATS DE L'ÉVALUATION =====" -ForegroundColor Cyan
-    Write-Host "Nombre de fichiers testés : $($metrics.TotalFiles)" -ForegroundColor White
-    Write-Host "Détections correctes : $($metrics.CorrectDetections) ($([Math]::Round($metrics.Accuracy, 2))%)" -ForegroundColor White
-    Write-Host "Cas ambigus : $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) résolus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)" -ForegroundColor White
+    # Afficher les rÃ©sultats
+    Write-Host "`n===== RÃ‰SULTATS DE L'Ã‰VALUATION =====" -ForegroundColor Cyan
+    Write-Host "Nombre de fichiers testÃ©s : $($metrics.TotalFiles)" -ForegroundColor White
+    Write-Host "DÃ©tections correctes : $($metrics.CorrectDetections) ($([Math]::Round($metrics.Accuracy, 2))%)" -ForegroundColor White
+    Write-Host "Cas ambigus : $($metrics.AmbiguousCases) (dont $($metrics.ResolvedAmbiguousCases) rÃ©solus correctement, soit $([Math]::Round($metrics.AmbiguousResolutionRate, 2))%)" -ForegroundColor White
     
-    Write-Host "`nMétriques globales :" -ForegroundColor Yellow
-    Write-Host "Précision : $([Math]::Round($metrics.GlobalPrecision, 2))%" -ForegroundColor White
+    Write-Host "`nMÃ©triques globales :" -ForegroundColor Yellow
+    Write-Host "PrÃ©cision : $([Math]::Round($metrics.GlobalPrecision, 2))%" -ForegroundColor White
     Write-Host "Rappel : $([Math]::Round($metrics.GlobalRecall, 2))%" -ForegroundColor White
     Write-Host "F1-Score : $([Math]::Round($metrics.GlobalF1Score, 2))%" -ForegroundColor White
     
-    Write-Host "`nMétriques par format :" -ForegroundColor Yellow
+    Write-Host "`nMÃ©triques par format :" -ForegroundColor Yellow
     
     foreach ($format in $metrics.FormatMetrics.Keys | Sort-Object) {
         $formatMetrics = $metrics.FormatMetrics[$format]
         $formatCount = if ($metrics.FormatCounts.ContainsKey($format)) { $metrics.FormatCounts[$format] } else { 0 }
         
         Write-Host "$format ($formatCount fichiers) :" -ForegroundColor Cyan
-        Write-Host "  Précision : $([Math]::Round($formatMetrics.Precision, 2))%" -ForegroundColor White
+        Write-Host "  PrÃ©cision : $([Math]::Round($formatMetrics.Precision, 2))%" -ForegroundColor White
         Write-Host "  Rappel : $([Math]::Round($formatMetrics.Recall, 2))%" -ForegroundColor White
         Write-Host "  F1-Score : $([Math]::Round($formatMetrics.F1Score, 2))%" -ForegroundColor White
     }
     
     Write-Host "`n==========================================" -ForegroundColor Cyan
     
-    # Exporter les résultats
+    # Exporter les rÃ©sultats
     $jsonOutputPath = Join-Path -Path $OutputDirectory -ChildPath "DetectionAccuracy.json"
     Export-ResultsToJson -Metrics $metrics -DetailedResults $results -OutputPath $jsonOutputPath
     
@@ -628,6 +628,6 @@ function Main {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $result = Main
 return $result

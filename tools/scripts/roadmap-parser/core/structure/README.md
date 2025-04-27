@@ -1,6 +1,6 @@
-# structure - core
+﻿# structure - core
 
-Cette section contient les scripts liés à structure dans la catégorie core.
+Cette section contient les scripts liÃ©s Ã  structure dans la catÃ©gorie core.
 
 ## Scripts disponibles
 
@@ -15,9 +15,9 @@ Cette section contient les scripts liés à structure dans la catégorie core.
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 `
 
-## Dépendances
+## DÃ©pendances
 
-Ces scripts peuvent dépendre des modules suivants :
+Ces scripts peuvent dÃ©pendre des modules suivants :
 - oadmap-parser - Module principal de parsing de roadmap
 
 ## Tests

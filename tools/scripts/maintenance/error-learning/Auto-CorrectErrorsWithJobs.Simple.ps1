@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Version simplifiée pour corriger plusieurs scripts PowerShell en parallèle avec Jobs PowerShell.
+    Version simplifiÃ©e pour corriger plusieurs scripts PowerShell en parallÃ¨le avec Jobs PowerShell.
 .DESCRIPTION
-    Ce script utilise des Jobs PowerShell pour corriger plusieurs scripts PowerShell simultanément.
+    Ce script utilise des Jobs PowerShell pour corriger plusieurs scripts PowerShell simultanÃ©ment.
     Compatible avec PowerShell 5.1.
 #>
 
@@ -19,10 +19,10 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ErrorLearningSystem.psm1"
 Import-Module $modulePath -Force
 
-# Initialiser le système
+# Initialiser le systÃ¨me
 Initialize-ErrorLearningSystem
 
-# Vérifier que les chemins existent et convertir en chemins absolus
+# VÃ©rifier que les chemins existent et convertir en chemins absolus
 $validPaths = @()
 foreach ($path in $ScriptPaths) {
     # Convertir en chemin absolu
@@ -35,23 +35,23 @@ foreach ($path in $ScriptPaths) {
         $validPaths += $absolutePath
     }
     else {
-        Write-Warning "Le chemin spécifié n'existe pas : $absolutePath"
+        Write-Warning "Le chemin spÃ©cifiÃ© n'existe pas : $absolutePath"
     }
 }
 
 if ($validPaths.Count -eq 0) {
-    Write-Error "Aucun script valide à corriger."
+    Write-Error "Aucun script valide Ã  corriger."
     exit 1
 }
 
-Write-Host "Correction de $($validPaths.Count) scripts en parallèle (MaxJobs: $MaxJobs)..."
+Write-Host "Correction de $($validPaths.Count) scripts en parallÃ¨le (MaxJobs: $MaxJobs)..."
 
-# Définir les patterns d'erreurs courantes et leurs corrections
+# DÃ©finir les patterns d'erreurs courantes et leurs corrections
 $errorPatterns = @(
     @{
         Name = "HardcodedPath"
         Pattern = '(?<!\\)["''](?:[A-Z]:\\|\\\\)[^"'']*["'']'
-        Description = "Chemin codé en dur détecté"
+        Description = "Chemin codÃ© en dur dÃ©tectÃ©"
         Correction = {
             param($Line)
             $Line -replace '(?<!\\)["'']([A-Z]:\\|\\\\)[^"'']*["'']', '(Join-Path -Path $PSScriptRoot -ChildPath "CHEMIN_RELATIF")'
@@ -60,7 +60,7 @@ $errorPatterns = @(
     @{
         Name = "NoErrorHandling"
         Pattern = '(?<!try\s*\{\s*)(?:Get-Content|Set-Content)(?!\s*-ErrorAction)'
-        Description = "Absence de gestion d'erreurs détecté"
+        Description = "Absence de gestion d'erreurs dÃ©tectÃ©"
         Correction = {
             param($Line)
             $Line -replace '(Get-Content|Set-Content)(?!\s*-ErrorAction)', '$1 -ErrorAction Stop'
@@ -69,7 +69,7 @@ $errorPatterns = @(
     @{
         Name = "WriteHostUsage"
         Pattern = 'Write-Host'
-        Description = "Utilisation de Write-Host détecté"
+        Description = "Utilisation de Write-Host dÃ©tectÃ©"
         Correction = {
             param($Line)
             $Line -replace 'Write-Host', 'Write-Output'
@@ -77,7 +77,7 @@ $errorPatterns = @(
     }
 )
 
-# Créer un script block pour la correction d'un script
+# CrÃ©er un script block pour la correction d'un script
 $scriptBlock = {
     param($scriptPath, $patterns, $whatIf)
     
@@ -97,10 +97,10 @@ $scriptBlock = {
             
             if ($regexMatches.Count -gt 0) {
                 foreach ($match in $regexMatches) {
-                    # Trouver le numéro de ligne
+                    # Trouver le numÃ©ro de ligne
                     $lineNumber = ($scriptContent.Substring(0, $match.Index).Split("`n")).Length
                     
-                    # Créer un objet pour l'erreur détectée
+                    # CrÃ©er un objet pour l'erreur dÃ©tectÃ©e
                     $issue = [PSCustomObject]@{
                         Name = $pattern.Name
                         Description = $pattern.Description
@@ -115,9 +115,9 @@ $scriptBlock = {
             }
         }
         
-        # Si aucune erreur n'est détectée, retourner un résultat vide
+        # Si aucune erreur n'est dÃ©tectÃ©e, retourner un rÃ©sultat vide
         if ($detectedIssues.Count -eq 0) {
-            Write-Host "Aucune erreur détectée dans $scriptPath."
+            Write-Host "Aucune erreur dÃ©tectÃ©e dans $scriptPath."
             return [PSCustomObject]@{
                 ScriptPath = $scriptPath
                 IssuesCount = 0
@@ -126,10 +126,10 @@ $scriptBlock = {
             }
         }
         
-        # Trier les problèmes par numéro de ligne (décroissant) pour éviter les décalages
+        # Trier les problÃ¨mes par numÃ©ro de ligne (dÃ©croissant) pour Ã©viter les dÃ©calages
         $sortedIssues = $detectedIssues | Sort-Object -Property LineNumber -Descending
         
-        # Créer une sauvegarde du script original
+        # CrÃ©er une sauvegarde du script original
         $backupPath = "$scriptPath.bak"
         
         if (-not $whatIf) {
@@ -149,7 +149,7 @@ $scriptBlock = {
                 if ($whatIf) {
                     Write-Host "WhatIf: Ligne $($issue.LineNumber) - $($issue.Description)"
                     Write-Host "  Avant: $originalLine"
-                    Write-Host "  Après: $newLine"
+                    Write-Host "  AprÃ¨s: $newLine"
                 }
                 else {
                     $scriptLines[$lineIndex] = $newLine
@@ -158,16 +158,16 @@ $scriptBlock = {
                 $correctionsApplied++
             }
             catch {
-                Write-Warning "Impossible d'appliquer une correction pour l'erreur à la ligne $($issue.LineNumber) : $($issue.Description)"
+                Write-Warning "Impossible d'appliquer une correction pour l'erreur Ã  la ligne $($issue.LineNumber) : $($issue.Description)"
             }
         }
         
-        # Sauvegarder le script corrigé
+        # Sauvegarder le script corrigÃ©
         if (-not $whatIf) {
             $scriptLines | Out-File -FilePath $scriptPath -Force -Encoding UTF8
         }
         
-        Write-Host "Correction terminée pour $scriptPath. Corrections appliquées : $correctionsApplied"
+        Write-Host "Correction terminÃ©e pour $scriptPath. Corrections appliquÃ©es : $correctionsApplied"
         
         return [PSCustomObject]@{
             ScriptPath = $scriptPath
@@ -182,16 +182,16 @@ $scriptBlock = {
     }
 }
 
-# Créer un tableau pour stocker les résultats
+# CrÃ©er un tableau pour stocker les rÃ©sultats
 $results = @()
 
-# Créer un tableau pour stocker les jobs
+# CrÃ©er un tableau pour stocker les jobs
 $jobs = @()
 
 # Traiter les scripts par lots
 $scriptIndex = 0
 while ($scriptIndex -lt $validPaths.Count) {
-    # Vérifier le nombre de jobs en cours d'exécution
+    # VÃ©rifier le nombre de jobs en cours d'exÃ©cution
     $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
     
     # Si nous avons atteint le nombre maximum de jobs, attendre qu'un job se termine
@@ -200,12 +200,12 @@ while ($scriptIndex -lt $validPaths.Count) {
         $runningJobs = $jobs | Where-Object { $_.State -eq "Running" }
     }
     
-    # Démarrer un nouveau job
+    # DÃ©marrer un nouveau job
     $scriptPath = $validPaths[$scriptIndex]
     $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath, $errorPatterns, $WhatIfPreference
     $jobs += $job
     
-    # Incrémenter l'index
+    # IncrÃ©menter l'index
     $scriptIndex++
 }
 
@@ -213,7 +213,7 @@ while ($scriptIndex -lt $validPaths.Count) {
 Write-Host "Attente de la fin de tous les jobs..."
 $jobs | Wait-Job | Out-Null
 
-# Récupérer les résultats
+# RÃ©cupÃ©rer les rÃ©sultats
 foreach ($job in $jobs) {
     $jobResult = Receive-Job -Job $job
     if ($jobResult) {
@@ -222,10 +222,10 @@ foreach ($job in $jobs) {
     Remove-Job -Job $job
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des corrections :"
-Write-Host "  Scripts traités : $($results.Count)"
-Write-Host "  Total des problèmes détectés : $(($results | Measure-Object -Property IssuesCount -Sum).Sum)"
-Write-Host "  Total des corrections appliquées : $(($results | Measure-Object -Property CorrectionCount -Sum).Sum)"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des corrections :"
+Write-Host "  Scripts traitÃ©s : $($results.Count)"
+Write-Host "  Total des problÃ¨mes dÃ©tectÃ©s : $(($results | Measure-Object -Property IssuesCount -Sum).Sum)"
+Write-Host "  Total des corrections appliquÃ©es : $(($results | Measure-Object -Property CorrectionCount -Sum).Sum)"
 
-Write-Host "`nTraitement terminé."
+Write-Host "`nTraitement terminÃ©."

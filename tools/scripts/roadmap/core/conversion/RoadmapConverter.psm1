@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
     Module pour convertir une roadmap existante vers le nouveau format de template.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser une roadmap existante au format Markdown,
-    extraire les informations pertinentes et générer une nouvelle roadmap selon le template spécifié.
+    extraire les informations pertinentes et gÃ©nÃ©rer une nouvelle roadmap selon le template spÃ©cifiÃ©.
 
 .NOTES
-    Auteur: Équipe DevOps
+    Auteur: Ã‰quipe DevOps
     Date: 2025-04-20
     Version: 1.0.0
 #>
@@ -19,7 +19,7 @@ function Get-RoadmapStructure {
 
     .DESCRIPTION
         Cette fonction lit un fichier Markdown contenant une roadmap, analyse sa structure
-        et extrait les informations pertinentes (sections, sous-sections, tâches, etc.).
+        et extrait les informations pertinentes (sections, sous-sections, tÃ¢ches, etc.).
 
     .PARAMETER Path
         Chemin vers le fichier Markdown de la roadmap.
@@ -33,7 +33,7 @@ function Get-RoadmapStructure {
         [string]$Path
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         throw "Le fichier '$Path' n'existe pas."
     }
@@ -69,8 +69,8 @@ function Get-RoadmapStructure {
         $sectionRespMatch = [regex]::Match($sectionText, '\*\*Responsable\*\*: (.+?)(?=\r?\n)')
         $sectionStatusMatch = [regex]::Match($sectionText, '\*\*Statut global\*\*: (.+?) - (\d+)%')
         
-        $sectionDesc = if ($sectionDescMatch.Success) { $sectionDescMatch.Groups[1].Value } else { "Modules et fonctionnalités de la section $sectionName." }
-        $sectionResp = if ($sectionRespMatch.Success) { $sectionRespMatch.Groups[1].Value } else { "Équipe de développement" }
+        $sectionDesc = if ($sectionDescMatch.Success) { $sectionDescMatch.Groups[1].Value } else { "Modules et fonctionnalitÃ©s de la section $sectionName." }
+        $sectionResp = if ($sectionRespMatch.Success) { $sectionRespMatch.Groups[1].Value } else { "Ã‰quipe de dÃ©veloppement" }
         $sectionStatus = if ($sectionStatusMatch.Success) { $sectionStatusMatch.Groups[1].Value } else { "En cours" }
         $sectionProgress = if ($sectionStatusMatch.Success) { [int]$sectionStatusMatch.Groups[2].Value } else { 0 }
         
@@ -85,7 +85,7 @@ function Get-RoadmapStructure {
         }
         
         # Extraire les sous-sections (niveau 3)
-        # Essayer plusieurs patterns pour capturer différents formats
+        # Essayer plusieurs patterns pour capturer diffÃ©rents formats
         $subsectionPatterns = @(
             "### $sectionId\.(\d+) (.+?)(?=\r?\n)",
             "### (\d+\.\d+) (.+?)(?=\r?\n)",
@@ -101,7 +101,7 @@ function Get-RoadmapStructure {
         }
         
         foreach ($subsectionMatch in $subsectionMatches) {
-            # Adapter l'extraction selon le pattern qui a fonctionné
+            # Adapter l'extraction selon le pattern qui a fonctionnÃ©
             if ($pattern -eq "### $sectionId\.(\d+) (.+?)(?=\r?\n)") {
                 $subsectionId = "$sectionId." + $subsectionMatch.Groups[1].Value
                 $subsectionName = $subsectionMatch.Groups[2].Value
@@ -111,7 +111,7 @@ function Get-RoadmapStructure {
                 $subsectionName = $subsectionMatch.Groups[2].Value
             }
             else {
-                $subsectionId = "$sectionId.1" # Valeur par défaut
+                $subsectionId = "$sectionId.1" # Valeur par dÃ©faut
                 $subsectionName = $subsectionMatch.Groups[1].Value
             }
             
@@ -122,11 +122,11 @@ function Get-RoadmapStructure {
                 $subsectionText = $subsectionText.Substring(0, $subsectionMatch.Length + $nextSubsectionMatch.Index)
             }
             
-            # Extraire les métadonnées de la sous-section
-            $subsectionComplexityMatch = [regex]::Match($subsectionText, '\*\*Complexité\*\*: (.+?)(?=\r?\n)')
-            $subsectionTimeMatch = [regex]::Match($subsectionText, '\*\*Temps estimé total\*\*: (\d+) jours')
+            # Extraire les mÃ©tadonnÃ©es de la sous-section
+            $subsectionComplexityMatch = [regex]::Match($subsectionText, '\*\*ComplexitÃ©\*\*: (.+?)(?=\r?\n)')
+            $subsectionTimeMatch = [regex]::Match($subsectionText, '\*\*Temps estimÃ© total\*\*: (\d+) jours')
             $subsectionProgressMatch = [regex]::Match($subsectionText, '\*\*Progression globale\*\*: (\d+)%')
-            $subsectionDependenciesMatch = [regex]::Match($subsectionText, '\*\*Dépendances\*\*: (.+?)(?=\r?\n)')
+            $subsectionDependenciesMatch = [regex]::Match($subsectionText, '\*\*DÃ©pendances\*\*: (.+?)(?=\r?\n)')
             
             $subsectionComplexity = if ($subsectionComplexityMatch.Success) { $subsectionComplexityMatch.Groups[1].Value } else { "Moyenne" }
             $subsectionTime = if ($subsectionTimeMatch.Success) { [int]$subsectionTimeMatch.Groups[1].Value } else { 0 }
@@ -143,7 +143,7 @@ function Get-RoadmapStructure {
                 tasks = @()
             }
             
-            # Extraire les tâches (niveau 4)
+            # Extraire les tÃ¢ches (niveau 4)
             $taskPatterns = @(
                 "#### $subsectionId\.(\d+) (.+?)(?=\r?\n)",
                 "#### (\d+\.\d+\.\d+) (.+?)(?=\r?\n)",
@@ -159,7 +159,7 @@ function Get-RoadmapStructure {
             }
             
             foreach ($taskMatch in $taskMatches) {
-                # Adapter l'extraction selon le pattern qui a fonctionné
+                # Adapter l'extraction selon le pattern qui a fonctionnÃ©
                 if ($taskPattern -eq "#### $subsectionId\.(\d+) (.+?)(?=\r?\n)") {
                     $taskId = "$subsectionId." + $taskMatch.Groups[1].Value
                     $taskName = $taskMatch.Groups[2].Value
@@ -169,28 +169,28 @@ function Get-RoadmapStructure {
                     $taskName = $taskMatch.Groups[2].Value
                 }
                 else {
-                    $taskId = "$subsectionId.1" # Valeur par défaut
+                    $taskId = "$subsectionId.1" # Valeur par dÃ©faut
                     $taskName = $taskMatch.Groups[1].Value
                 }
                 
-                # Extraire le texte de la tâche
+                # Extraire le texte de la tÃ¢che
                 $taskText = $subsectionText.Substring($taskMatch.Index)
                 $nextTaskMatch = [regex]::Match($taskText.Substring($taskMatch.Length), "####")
                 if ($nextTaskMatch.Success) {
                     $taskText = $taskText.Substring(0, $taskMatch.Length + $nextTaskMatch.Index)
                 }
                 
-                # Extraire les métadonnées de la tâche
-                $taskComplexityMatch = [regex]::Match($taskText, '\*\*Complexité\*\*: (.+?)(?=\r?\n)')
-                $taskTimeMatch = [regex]::Match($taskText, '\*\*Temps estimé\*\*: (\d+) jours')
+                # Extraire les mÃ©tadonnÃ©es de la tÃ¢che
+                $taskComplexityMatch = [regex]::Match($taskText, '\*\*ComplexitÃ©\*\*: (.+?)(?=\r?\n)')
+                $taskTimeMatch = [regex]::Match($taskText, '\*\*Temps estimÃ©\*\*: (\d+) jours')
                 $taskProgressMatch = [regex]::Match($taskText, '\*\*Progression\*\*: (\d+)% - \*(.+?)\*')
-                $taskStartMatch = [regex]::Match($taskText, '\*\*Date de début prévue\*\*: (\d{2}/\d{2}/\d{4})')
-                $taskEndMatch = [regex]::Match($taskText, '\*\*Date d''achèvement prévue\*\*: (\d{2}/\d{2}/\d{4})')
+                $taskStartMatch = [regex]::Match($taskText, '\*\*Date de dÃ©but prÃ©vue\*\*: (\d{2}/\d{2}/\d{4})')
+                $taskEndMatch = [regex]::Match($taskText, '\*\*Date d''achÃ¨vement prÃ©vue\*\*: (\d{2}/\d{2}/\d{4})')
                 
                 $taskComplexity = if ($taskComplexityMatch.Success) { $taskComplexityMatch.Groups[1].Value } else { "Moyenne" }
                 $taskTime = if ($taskTimeMatch.Success) { [int]$taskTimeMatch.Groups[1].Value } else { 0 }
                 $taskProgress = if ($taskProgressMatch.Success) { [int]$taskProgressMatch.Groups[1].Value } else { 0 }
-                $taskStatus = if ($taskProgressMatch.Success) { $taskProgressMatch.Groups[2].Value } else { "Non commencé" }
+                $taskStatus = if ($taskProgressMatch.Success) { $taskProgressMatch.Groups[2].Value } else { "Non commencÃ©" }
                 $taskStart = if ($taskStartMatch.Success) { $taskStartMatch.Groups[1].Value } else { "" }
                 $taskEnd = if ($taskEndMatch.Success) { $taskEndMatch.Groups[1].Value } else { "" }
                 
@@ -206,8 +206,8 @@ function Get-RoadmapStructure {
                     subtasks = @()
                 }
                 
-                # Extraire les sous-tâches
-                $subtaskPattern = "- \[([ x])\] \*\*Sous-tâche (\d+\.\d+)\*\*: (.+?) \((\d+)h\)"
+                # Extraire les sous-tÃ¢ches
+                $subtaskPattern = "- \[([ x])\] \*\*Sous-tÃ¢che (\d+\.\d+)\*\*: (.+?) \((\d+)h\)"
                 $subtaskMatches = [regex]::Matches($taskText, $subtaskPattern)
                 
                 foreach ($subtaskMatch in $subtaskMatches) {
@@ -245,7 +245,7 @@ function Get-TemplateContent {
 
     .DESCRIPTION
         Cette fonction lit un fichier Markdown contenant un template de roadmap
-        et extrait sa structure pour servir de base à la génération de la nouvelle roadmap.
+        et extrait sa structure pour servir de base Ã  la gÃ©nÃ©ration de la nouvelle roadmap.
 
     .PARAMETER Path
         Chemin vers le fichier Markdown du template.
@@ -259,7 +259,7 @@ function Get-TemplateContent {
         [string]$Path
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         throw "Le fichier '$Path' n'existe pas."
     }
@@ -284,7 +284,7 @@ function ConvertTo-NewRoadmap {
 
     .DESCRIPTION
         Cette fonction prend la structure extraite de la roadmap existante et la transforme
-        selon le format du template spécifié.
+        selon le format du template spÃ©cifiÃ©.
 
     .PARAMETER RoadmapStructure
         Structure de la roadmap existante (hashtable).
@@ -304,7 +304,7 @@ function ConvertTo-NewRoadmap {
         [string]$TemplateContent
     )
     
-    # Créer la nouvelle roadmap
+    # CrÃ©er la nouvelle roadmap
     $newRoadmap = "# Roadmap $($RoadmapStructure.project)`n`n"
     
     foreach ($section in $RoadmapStructure.sections) {
@@ -315,10 +315,10 @@ function ConvertTo-NewRoadmap {
         
         foreach ($subsection in $section.subsections) {
             $newRoadmap += "### $($subsection.id) $($subsection.name)`n"
-            $newRoadmap += "**Complexité**: $($subsection.complexity)`n"
-            $newRoadmap += "**Temps estimé total**: $($subsection.estimated_days) jours`n"
+            $newRoadmap += "**ComplexitÃ©**: $($subsection.complexity)`n"
+            $newRoadmap += "**Temps estimÃ© total**: $($subsection.estimated_days) jours`n"
             $newRoadmap += "**Progression globale**: $($subsection.progress)%`n"
-            $newRoadmap += "**Dépendances**: $($subsection.dependencies)`n`n"
+            $newRoadmap += "**DÃ©pendances**: $($subsection.dependencies)`n`n"
             
             # Ajouter les sections standard du template
             $newRoadmap += "#### Outils et technologies`n"
@@ -335,31 +335,31 @@ function ConvertTo-NewRoadmap {
             $newRoadmap += "| `tests/unit/$($subsection.name -replace ' ', '').Tests.ps1` | Tests unitaires |`n`n"
             
             $newRoadmap += "#### Guidelines`n"
-            $newRoadmap += "- **Codage**: Suivre les conventions PowerShell (PascalCase pour fonctions, verbes approuvés)`n"
+            $newRoadmap += "- **Codage**: Suivre les conventions PowerShell (PascalCase pour fonctions, verbes approuvÃ©s)`n"
             $newRoadmap += "- **Tests**: Appliquer TDD avec Pester, viser 100% de couverture`n"
             $newRoadmap += "- **Documentation**: Utiliser le format d'aide PowerShell et XML pour la documentation`n"
-            $newRoadmap += "- **Sécurité**: Valider tous les inputs, éviter l'utilisation d'Invoke-Expression`n"
-            $newRoadmap += "- **Performance**: Optimiser pour les grands volumes de données`n`n"
+            $newRoadmap += "- **SÃ©curitÃ©**: Valider tous les inputs, Ã©viter l'utilisation d'Invoke-Expression`n"
+            $newRoadmap += "- **Performance**: Optimiser pour les grands volumes de donnÃ©es`n`n"
             
             foreach ($task in $subsection.tasks) {
                 $newRoadmap += "#### $($task.id) $($task.name)`n"
-                $newRoadmap += "**Complexité**: $($task.complexity)`n"
-                $newRoadmap += "**Temps estimé**: $($task.estimated_days) jours`n"
+                $newRoadmap += "**ComplexitÃ©**: $($task.complexity)`n"
+                $newRoadmap += "**Temps estimÃ©**: $($task.estimated_days) jours`n"
                 $newRoadmap += "**Progression**: $($task.progress)% - *$($task.status)*`n"
                 
                 if ($task.start_date) {
-                    $newRoadmap += "**Date de début prévue**: $($task.start_date)`n"
-                    $newRoadmap += "**Date d'achèvement prévue**: $($task.end_date)`n"
+                    $newRoadmap += "**Date de dÃ©but prÃ©vue**: $($task.start_date)`n"
+                    $newRoadmap += "**Date d'achÃ¨vement prÃ©vue**: $($task.end_date)`n"
                 }
                 
-                $newRoadmap += "**Responsable**: Équipe de développement`n"
-                $newRoadmap += "**Tags**: #développement #qualité #performance`n`n"
+                $newRoadmap += "**Responsable**: Ã‰quipe de dÃ©veloppement`n"
+                $newRoadmap += "**Tags**: #dÃ©veloppement #qualitÃ© #performance`n`n"
                 
-                $newRoadmap += "##### Fichiers à créer/modifier`n"
+                $newRoadmap += "##### Fichiers Ã  crÃ©er/modifier`n"
                 $newRoadmap += "| Chemin | Description | Statut |`n"
                 $newRoadmap += "|--------|-------------|--------|`n"
-                $newRoadmap += "| `modules/$($subsection.id)/$($task.name -replace ' ', '').ps1` | Module principal | À créer |`n"
-                $newRoadmap += "| `tests/unit/$($task.name -replace ' ', '').Tests.ps1` | Tests unitaires | À créer |`n`n"
+                $newRoadmap += "| `modules/$($subsection.id)/$($task.name -replace ' ', '').ps1` | Module principal | Ã€ crÃ©er |`n"
+                $newRoadmap += "| `tests/unit/$($task.name -replace ' ', '').Tests.ps1` | Tests unitaires | Ã€ crÃ©er |`n`n"
                 
                 $newRoadmap += "##### Format de journalisation`n"
                 $newRoadmap += '```json`n'
@@ -368,12 +368,12 @@ function ConvertTo-NewRoadmap {
                 $newRoadmap += '  "version": "1.0.0",`n'
                 $newRoadmap += '  "date": "' + (Get-Date -Format 'yyyy-MM-dd') + '",`n'
                 $newRoadmap += '  "changes": [`n'
-                $newRoadmap += '    {"feature": "Implémentation", "status": "' + $task.status + '"}`n'
+                $newRoadmap += '    {"feature": "ImplÃ©mentation", "status": "' + $task.status + '"}`n'
                 $newRoadmap += '  ]`n'
                 $newRoadmap += '}`n'
                 $newRoadmap += '```' + "`n`n"
                 
-                # Ajouter les sous-tâches regroupées par jour
+                # Ajouter les sous-tÃ¢ches regroupÃ©es par jour
                 if ($task.subtasks.Count -gt 0) {
                     $dayGroups = $task.subtasks | Group-Object -Property { [int]($_.id -split '\.')[0] }
                     
@@ -381,16 +381,16 @@ function ConvertTo-NewRoadmap {
                         $dayNumber = $dayGroup.Name
                         $totalHours = ($dayGroup.Group | Measure-Object -Property estimated_hours -Sum).Sum
                         
-                        $newRoadmap += "##### Jour $dayNumber - Développement et tests ($totalHours`h)`n"
+                        $newRoadmap += "##### Jour $dayNumber - DÃ©veloppement et tests ($totalHours`h)`n"
                         
                         foreach ($subtask in $dayGroup.Group) {
                             $checkBox = if ($subtask.completed) { "[x]" } else { "[ ]" }
-                            $newRoadmap += "- $checkBox **Sous-tâche $($subtask.id)**: $($subtask.name) ($($subtask.estimated_hours)h)`n"
-                            $newRoadmap += "  - **Description**: Développer la fonctionnalité $($subtask.name)`n"
-                            $newRoadmap += "  - **Livrable**: Fonctionnalité implémentée et testée`n"
+                            $newRoadmap += "- $checkBox **Sous-tÃ¢che $($subtask.id)**: $($subtask.name) ($($subtask.estimated_hours)h)`n"
+                            $newRoadmap += "  - **Description**: DÃ©velopper la fonctionnalitÃ© $($subtask.name)`n"
+                            $newRoadmap += "  - **Livrable**: FonctionnalitÃ© implÃ©mentÃ©e et testÃ©e`n"
                             $newRoadmap += "  - **Fichier**: `modules/$($subsection.id)/$($task.name -replace ' ', '').ps1``n"
                             $newRoadmap += "  - **Outils**: VS Code, PowerShell`n"
-                            $newRoadmap += "  - **Statut**: " + (if ($subtask.completed) { "Terminé" } else { "Non commencé" }) + "`n`n"
+                            $newRoadmap += "  - **Statut**: " + (if ($subtask.completed) { "TerminÃ©" } else { "Non commencÃ©" }) + "`n`n"
                         }
                     }
                 }
@@ -404,7 +404,7 @@ function ConvertTo-NewRoadmap {
 function Out-RoadmapFile {
     <#
     .SYNOPSIS
-        Génère une nouvelle roadmap à partir du contenu transformé.
+        GÃ©nÃ¨re une nouvelle roadmap Ã  partir du contenu transformÃ©.
 
     .DESCRIPTION
         Cette fonction enregistre le contenu de la nouvelle roadmap dans un fichier.
@@ -413,7 +413,7 @@ function Out-RoadmapFile {
         Contenu de la nouvelle roadmap.
 
     .PARAMETER Path
-        Chemin où la nouvelle roadmap sera enregistrée.
+        Chemin oÃ¹ la nouvelle roadmap sera enregistrÃ©e.
 
     .EXAMPLE
         Out-RoadmapFile -Content $newRoadmap -Path "Roadmap/roadmap_complete_new.md"
@@ -431,7 +431,7 @@ function Out-RoadmapFile {
     $utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $false
     [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBomEncoding)
     
-    Write-Host "Nouvelle roadmap générée avec succès: $Path"
+    Write-Host "Nouvelle roadmap gÃ©nÃ©rÃ©e avec succÃ¨s: $Path"
 }
 
 # Exporter les fonctions

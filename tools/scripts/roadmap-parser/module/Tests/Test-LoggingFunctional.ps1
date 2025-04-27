@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Test fonctionnel pour les fonctions de journalisation.
 

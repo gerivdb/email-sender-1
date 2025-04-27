@@ -1,34 +1,34 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Fusionne les résultats d'analyse de différentes sources.
+    Fusionne les rÃ©sultats d'analyse de diffÃ©rentes sources.
 
 .DESCRIPTION
-    Ce script permet de fusionner les résultats d'analyse provenant de différentes sources
-    (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) dans un format unifié. Il peut
-    également filtrer les résultats par sévérité, outil ou catégorie, et supprimer les doublons.
+    Ce script permet de fusionner les rÃ©sultats d'analyse provenant de diffÃ©rentes sources
+    (PSScriptAnalyzer, ESLint, Pylint, SonarQube, etc.) dans un format unifiÃ©. Il peut
+    Ã©galement filtrer les rÃ©sultats par sÃ©vÃ©ritÃ©, outil ou catÃ©gorie, et supprimer les doublons.
 
 .PARAMETER InputPath
-    Chemin du fichier ou des fichiers contenant les résultats d'analyse à fusionner.
-    Peut être un tableau de chemins ou un chemin avec des caractères génériques.
+    Chemin du fichier ou des fichiers contenant les rÃ©sultats d'analyse Ã  fusionner.
+    Peut Ãªtre un tableau de chemins ou un chemin avec des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats fusionnés. Si non spécifié, les résultats sont affichés dans la console.
+    Chemin du fichier de sortie pour les rÃ©sultats fusionnÃ©s. Si non spÃ©cifiÃ©, les rÃ©sultats sont affichÃ©s dans la console.
 
 .PARAMETER RemoveDuplicates
-    Supprimer les résultats en double.
+    Supprimer les rÃ©sultats en double.
 
 .PARAMETER Severity
-    Filtrer les résultats par sévérité. Valeurs possibles: Error, Warning, Information, All.
+    Filtrer les rÃ©sultats par sÃ©vÃ©ritÃ©. Valeurs possibles: Error, Warning, Information, All.
 
 .PARAMETER ToolName
-    Filtrer les résultats par outil d'analyse.
+    Filtrer les rÃ©sultats par outil d'analyse.
 
 .PARAMETER Category
-    Filtrer les résultats par catégorie.
+    Filtrer les rÃ©sultats par catÃ©gorie.
 
 .PARAMETER GenerateHtmlReport
-    Générer un rapport HTML en plus du fichier JSON.
+    GÃ©nÃ©rer un rapport HTML en plus du fichier JSON.
 
 .EXAMPLE
     .\Merge-AnalysisResults.ps1 -InputPath "C:\Results\pssa-results.json", "C:\Results\eslint-results.json" -OutputPath "C:\Results\merged-results.json" -RemoveDuplicates
@@ -78,7 +78,7 @@ else {
     throw "Module UnifiedResultsFormat.psm1 introuvable."
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param (
@@ -89,7 +89,7 @@ function New-HtmlReport {
         [string]$OutputPath
     )
     
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -174,7 +174,7 @@ function New-HtmlReport {
     <h1>Rapport d'analyse</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <div class="summary-item error-count">
             <strong>Erreurs:</strong> <span id="error-count">$($Results | Where-Object { $_.Severity -eq "Error" } | Measure-Object).Count</span>
         </div>
@@ -192,7 +192,7 @@ function New-HtmlReport {
     <div class="filters">
         <h2>Filtres</h2>
         <div class="filter-group">
-            <label>Sévérité:</label>
+            <label>SÃ©vÃ©ritÃ©:</label>
             <input type="checkbox" id="filter-error" checked> Erreurs
             <input type="checkbox" id="filter-warning" checked> Avertissements
             <input type="checkbox" id="filter-info" checked> Informations
@@ -210,7 +210,7 @@ $(
             </select>
         </div>
         <div class="filter-group">
-            <label>Catégorie:</label>
+            <label>CatÃ©gorie:</label>
             <select id="filter-category">
                 <option value="all">Toutes</option>
 $(
@@ -223,17 +223,17 @@ $(
         </div>
     </div>
     
-    <h2>Résultats détaillés</h2>
+    <h2>RÃ©sultats dÃ©taillÃ©s</h2>
     <table id="results-table">
         <thead>
             <tr>
                 <th>Fichier</th>
                 <th>Ligne</th>
                 <th>Colonne</th>
-                <th>Sévérité</th>
+                <th>SÃ©vÃ©ritÃ©</th>
                 <th>Outil</th>
-                <th>Règle</th>
-                <th>Catégorie</th>
+                <th>RÃ¨gle</th>
+                <th>CatÃ©gorie</th>
                 <th>Message</th>
             </tr>
         </thead>
@@ -257,7 +257,7 @@ $(
     </table>
     
     <script>
-        // Filtrage des résultats
+        // Filtrage des rÃ©sultats
         function applyFilters() {
             const showError = document.getElementById('filter-error').checked;
             const showWarning = document.getElementById('filter-warning').checked;
@@ -301,7 +301,7 @@ $(
             document.getElementById('total-count').textContent = visibleCount;
         }
         
-        // Ajouter les écouteurs d'événements
+        // Ajouter les Ã©couteurs d'Ã©vÃ©nements
         document.getElementById('filter-error').addEventListener('change', applyFilters);
         document.getElementById('filter-warning').addEventListener('change', applyFilters);
         document.getElementById('filter-info').addEventListener('change', applyFilters);
@@ -315,14 +315,14 @@ $(
 </html>
 "@
     
-    # Écrire le fichier HTML
+    # Ã‰crire le fichier HTML
     try {
         $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-        Write-Verbose "Rapport HTML généré avec succès: $OutputPath"
+        Write-Verbose "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath"
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la génération du rapport HTML: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport HTML: $_"
         return $false
     }
 }
@@ -354,16 +354,16 @@ function Merge-Results {
         [switch]$GenerateHtmlReport
     )
     
-    # Récupérer tous les fichiers correspondant aux chemins spécifiés
+    # RÃ©cupÃ©rer tous les fichiers correspondant aux chemins spÃ©cifiÃ©s
     $files = @()
     foreach ($path in $InputPath) {
         if ($path -match '\*') {
-            # Chemin avec caractères génériques
+            # Chemin avec caractÃ¨res gÃ©nÃ©riques
             $matchingFiles = Get-ChildItem -Path $path -File
             $files += $matchingFiles
         }
         else {
-            # Chemin spécifique
+            # Chemin spÃ©cifique
             if (Test-Path -Path $path -PathType Leaf) {
                 $files += Get-Item -Path $path
             }
@@ -374,11 +374,11 @@ function Merge-Results {
     }
     
     if ($files.Count -eq 0) {
-        Write-Error "Aucun fichier trouvé correspondant aux chemins spécifiés."
+        Write-Error "Aucun fichier trouvÃ© correspondant aux chemins spÃ©cifiÃ©s."
         return $null
     }
     
-    # Charger et fusionner les résultats
+    # Charger et fusionner les rÃ©sultats
     $allResults = @()
     
     foreach ($file in $files) {
@@ -386,14 +386,14 @@ function Merge-Results {
             $content = Get-Content -Path $file.FullName -Raw
             $results = $content | ConvertFrom-Json
             
-            # Vérifier si les résultats sont déjà au format unifié
+            # VÃ©rifier si les rÃ©sultats sont dÃ©jÃ  au format unifiÃ©
             $isUnified = $results | Where-Object { $_.ToolName -ne $null -and $_.Severity -ne $null -and $_.FilePath -ne $null }
             
             if ($isUnified) {
                 $allResults += $results
             }
             else {
-                # Essayer de déterminer le format des résultats
+                # Essayer de dÃ©terminer le format des rÃ©sultats
                 $toolName = if ($file.Name -match 'pssa|scriptanalyzer') {
                     "PSScriptAnalyzer"
                 }
@@ -410,7 +410,7 @@ function Merge-Results {
                     "Unknown"
                 }
                 
-                # Convertir les résultats selon le format détecté
+                # Convertir les rÃ©sultats selon le format dÃ©tectÃ©
                 switch ($toolName) {
                     "PSScriptAnalyzer" {
                         $allResults += ConvertFrom-PSScriptAnalyzerResult -Results $results
@@ -425,7 +425,7 @@ function Merge-Results {
                         $allResults += ConvertFrom-SonarQubeResult -Results $results
                     }
                     default {
-                        Write-Warning "Format de résultats inconnu dans le fichier '$($file.FullName)'. Ignoré."
+                        Write-Warning "Format de rÃ©sultats inconnu dans le fichier '$($file.FullName)'. IgnorÃ©."
                     }
                 }
             }
@@ -435,74 +435,74 @@ function Merge-Results {
         }
     }
     
-    # Supprimer les doublons si demandé
+    # Supprimer les doublons si demandÃ©
     if ($RemoveDuplicates) {
         $allResults = Merge-AnalysisResults -Results $allResults -RemoveDuplicates
     }
     
-    # Filtrer par sévérité si spécifié
+    # Filtrer par sÃ©vÃ©ritÃ© si spÃ©cifiÃ©
     if ($Severity -notcontains "All") {
         $allResults = Filter-AnalysisResultsBySeverity -Results $allResults -Severity $Severity
     }
     
-    # Filtrer par outil si spécifié
+    # Filtrer par outil si spÃ©cifiÃ©
     if ($ToolName) {
         $allResults = Filter-AnalysisResultsByTool -Results $allResults -ToolName $ToolName
     }
     
-    # Filtrer par catégorie si spécifié
+    # Filtrer par catÃ©gorie si spÃ©cifiÃ©
     if ($Category) {
         $allResults = Filter-AnalysisResultsByCategory -Results $allResults -Category $Category
     }
     
-    # Enregistrer les résultats dans un fichier si demandé
+    # Enregistrer les rÃ©sultats dans un fichier si demandÃ©
     if ($OutputPath) {
         try {
             $allResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-            Write-Host "Résultats fusionnés enregistrés dans '$OutputPath'." -ForegroundColor Green
+            Write-Host "RÃ©sultats fusionnÃ©s enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
             
-            # Générer un rapport HTML si demandé
+            # GÃ©nÃ©rer un rapport HTML si demandÃ©
             if ($GenerateHtmlReport) {
                 $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
                 New-HtmlReport -Results $allResults -OutputPath $htmlPath
-                Write-Host "Rapport HTML généré dans '$htmlPath'." -ForegroundColor Green
+                Write-Host "Rapport HTML gÃ©nÃ©rÃ© dans '$htmlPath'." -ForegroundColor Green
             }
         }
         catch {
-            Write-Error "Erreur lors de l'enregistrement des résultats: $_"
+            Write-Error "Erreur lors de l'enregistrement des rÃ©sultats: $_"
         }
     }
     
     return $allResults
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $results = Merge-Results -InputPath $InputPath -OutputPath $OutputPath -RemoveDuplicates:$RemoveDuplicates -Severity $Severity -ToolName $ToolName -Category $Category -GenerateHtmlReport:$GenerateHtmlReport
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 if ($null -ne $results) {
     $totalIssues = $results.Count
     $errorCount = ($results | Where-Object { $_.Severity -eq "Error" }).Count
     $warningCount = ($results | Where-Object { $_.Severity -eq "Warning" }).Count
     $infoCount = ($results | Where-Object { $_.Severity -eq "Information" }).Count
     
-    Write-Host "Fusion terminée avec $totalIssues problèmes au total:" -ForegroundColor Cyan
+    Write-Host "Fusion terminÃ©e avec $totalIssues problÃ¨mes au total:" -ForegroundColor Cyan
     Write-Host "  - Erreurs: $errorCount" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Green" })
     Write-Host "  - Avertissements: $warningCount" -ForegroundColor $(if ($warningCount -gt 0) { "Yellow" } else { "Green" })
     Write-Host "  - Informations: $infoCount" -ForegroundColor "Blue"
     
-    # Afficher la répartition par outil
+    # Afficher la rÃ©partition par outil
     $toolCounts = $results | Group-Object -Property ToolName | Select-Object Name, Count
     
-    Write-Host "`nRépartition par outil:" -ForegroundColor Cyan
+    Write-Host "`nRÃ©partition par outil:" -ForegroundColor Cyan
     foreach ($toolCount in $toolCounts) {
         Write-Host "  - $($toolCount.Name): $($toolCount.Count)" -ForegroundColor "White"
     }
     
-    # Afficher la répartition par catégorie
+    # Afficher la rÃ©partition par catÃ©gorie
     $categoryCounts = $results | Group-Object -Property Category | Select-Object Name, Count
     
-    Write-Host "`nRépartition par catégorie:" -ForegroundColor Cyan
+    Write-Host "`nRÃ©partition par catÃ©gorie:" -ForegroundColor Cyan
     foreach ($categoryCount in $categoryCounts) {
         Write-Host "  - $($categoryCount.Name): $($categoryCount.Count)" -ForegroundColor "White"
     }

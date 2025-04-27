@@ -1,5 +1,5 @@
-Describe "Tests de benchmark de performance" {
-    Context "Comparaison des performances entre différentes implémentations" {
+﻿Describe "Tests de benchmark de performance" {
+    Context "Comparaison des performances entre diffÃ©rentes implÃ©mentations" {
         BeforeAll {
             # Fonction pour mesurer les performances d'une fonction
             function Measure-FunctionPerformance {
@@ -20,34 +20,34 @@ Describe "Tests de benchmark de performance" {
                     [int]$WarmupIterations = 1
                 )
                 
-                # Exécuter des itérations de préchauffage pour éviter les biais de démarrage à froid
+                # ExÃ©cuter des itÃ©rations de prÃ©chauffage pour Ã©viter les biais de dÃ©marrage Ã  froid
                 for ($i = 1; $i -le $WarmupIterations; $i++) {
                     & $ScriptBlock @Parameters | Out-Null
                 }
                 
                 $results = @()
                 
-                # Exécuter les itérations de mesure
+                # ExÃ©cuter les itÃ©rations de mesure
                 for ($i = 1; $i -le $Iterations; $i++) {
-                    # Nettoyer la mémoire avant chaque test
+                    # Nettoyer la mÃ©moire avant chaque test
                     [System.GC]::Collect()
                     
-                    # Mesurer l'utilisation de la mémoire avant
+                    # Mesurer l'utilisation de la mÃ©moire avant
                     $process = Get-Process -Id $PID
                     $startCpu = $process.TotalProcessorTime
                     $startWS = $process.WorkingSet64
                     $startPM = $process.PrivateMemorySize64
                     
-                    # Mesurer le temps d'exécution
+                    # Mesurer le temps d'exÃ©cution
                     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
                     
                     try {
-                        # Exécuter la fonction
+                        # ExÃ©cuter la fonction
                         $result = & $ScriptBlock @Parameters
                         $success = $true
                     }
                     catch {
-                        Write-Error "Erreur lors de l'exécution de '$Name' : $_"
+                        Write-Error "Erreur lors de l'exÃ©cution de '$Name' : $_"
                         $success = $false
                         $result = $null
                     }
@@ -55,18 +55,18 @@ Describe "Tests de benchmark de performance" {
                     $stopwatch.Stop()
                     $executionTime = $stopwatch.Elapsed.TotalMilliseconds
                     
-                    # Mesurer l'utilisation de la mémoire après
+                    # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
                     $process = Get-Process -Id $PID
                     $endCpu = $process.TotalProcessorTime
                     $endWS = $process.WorkingSet64
                     $endPM = $process.PrivateMemorySize64
                     
-                    # Calculer les différences
+                    # Calculer les diffÃ©rences
                     $cpuTime = ($endCpu - $startCpu).TotalMilliseconds
                     $workingSetDiff = ($endWS - $startWS) / 1MB
                     $privateMemoryDiff = ($endPM - $startPM) / 1MB
                     
-                    # Enregistrer les résultats
+                    # Enregistrer les rÃ©sultats
                     $results += [PSCustomObject]@{
                         Iteration = $i
                         ExecutionTimeMs = $executionTime
@@ -102,7 +102,7 @@ Describe "Tests de benchmark de performance" {
                 }
             }
             
-            # Fonction pour comparer les performances de deux implémentations
+            # Fonction pour comparer les performances de deux implÃ©mentations
             function Compare-Implementations {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -121,13 +121,13 @@ Describe "Tests de benchmark de performance" {
                     [int]$Iterations = 5
                 )
                 
-                # Mesurer les performances de la première implémentation
-                $result1 = Measure-FunctionPerformance -Name "$Name (Implémentation 1)" -ScriptBlock $Implementation1 -Parameters $Parameters -Iterations $Iterations
+                # Mesurer les performances de la premiÃ¨re implÃ©mentation
+                $result1 = Measure-FunctionPerformance -Name "$Name (ImplÃ©mentation 1)" -ScriptBlock $Implementation1 -Parameters $Parameters -Iterations $Iterations
                 
-                # Mesurer les performances de la seconde implémentation
-                $result2 = Measure-FunctionPerformance -Name "$Name (Implémentation 2)" -ScriptBlock $Implementation2 -Parameters $Parameters -Iterations $Iterations
+                # Mesurer les performances de la seconde implÃ©mentation
+                $result2 = Measure-FunctionPerformance -Name "$Name (ImplÃ©mentation 2)" -ScriptBlock $Implementation2 -Parameters $Parameters -Iterations $Iterations
                 
-                # Calculer l'amélioration en pourcentage
+                # Calculer l'amÃ©lioration en pourcentage
                 $timeImprovement = ($result1.AverageExecutionTimeMs - $result2.AverageExecutionTimeMs) / $result1.AverageExecutionTimeMs * 100
                 $memoryImprovement = ($result1.AverageWorkingSetDiffMB - $result2.AverageWorkingSetDiffMB) / $result1.AverageWorkingSetDiffMB * 100
                 
@@ -140,7 +140,7 @@ Describe "Tests de benchmark de performance" {
                 }
             }
             
-            # Fonction pour générer un grand tableau de données
+            # Fonction pour gÃ©nÃ©rer un grand tableau de donnÃ©es
             function New-LargeDataArray {
                 param (
                     [Parameter(Mandatory = $false)]
@@ -163,7 +163,7 @@ Describe "Tests de benchmark de performance" {
                 return $data
             }
             
-            # Fonction pour générer des fichiers de test
+            # Fonction pour gÃ©nÃ©rer des fichiers de test
             function New-TestFiles {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -189,13 +189,13 @@ Describe "Tests de benchmark de performance" {
                     $fileName = "test_file_$i.txt"
                     $filePath = Join-Path -Path $OutputPath -ChildPath $fileName
                     
-                    # Générer une taille aléatoire entre MinSize et MaxSize
+                    # GÃ©nÃ©rer une taille alÃ©atoire entre MinSize et MaxSize
                     $fileSize = Get-Random -Minimum $MinSize -Maximum $MaxSize
                     
-                    # Générer le contenu du fichier
+                    # GÃ©nÃ©rer le contenu du fichier
                     $content = "A" * $fileSize
                     
-                    # Créer le fichier
+                    # CrÃ©er le fichier
                     Set-Content -Path $filePath -Value $content | Out-Null
                     
                     $filePaths += $filePath
@@ -204,19 +204,19 @@ Describe "Tests de benchmark de performance" {
                 return $filePaths
             }
             
-            # Créer un répertoire temporaire pour les tests
+            # CrÃ©er un rÃ©pertoire temporaire pour les tests
             $testRootDir = Join-Path -Path $TestDrive -ChildPath "PerformanceTests"
             New-Item -Path $testRootDir -ItemType Directory -Force | Out-Null
             
-            # Générer des données de test
+            # GÃ©nÃ©rer des donnÃ©es de test
             $testData = New-LargeDataArray -Size 1000
             
-            # Générer des fichiers de test
+            # GÃ©nÃ©rer des fichiers de test
             $testFiles = New-TestFiles -OutputPath $testRootDir -FileCount 20 -MinSize 1KB -MaxSize 10KB
         }
         
-        It "Compare les performances du tri avec différentes approches" {
-            # Définir les implémentations à comparer
+        It "Compare les performances du tri avec diffÃ©rentes approches" {
+            # DÃ©finir les implÃ©mentations Ã  comparer
             $implementation1 = {
                 param($data)
                 # Tri simple
@@ -225,31 +225,31 @@ Describe "Tests de benchmark de performance" {
             
             $implementation2 = {
                 param($data)
-                # Tri optimisé avec sélection des propriétés
+                # Tri optimisÃ© avec sÃ©lection des propriÃ©tÃ©s
                 return $data | Select-Object Id, Name, Value | Sort-Object -Property Value
             }
             
-            # Comparer les implémentations
-            $comparison = Compare-Implementations -Name "Tri de données" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 3
+            # Comparer les implÃ©mentations
+            $comparison = Compare-Implementations -Name "Tri de donnÃ©es" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 3
             
-            # Vérifier que les deux implémentations produisent des résultats valides
+            # VÃ©rifier que les deux implÃ©mentations produisent des rÃ©sultats valides
             $comparison.Result1.SuccessRate | Should -Be 100
             $comparison.Result2.SuccessRate | Should -Be 100
             
-            # Afficher les résultats pour information
-            Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
-            Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
-            Write-Host "Amélioration du temps: $($comparison.TimeImprovementPercent) %"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
+            Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
+            Write-Host "AmÃ©lioration du temps: $($comparison.TimeImprovementPercent) %"
             
-            # Note: Nous ne faisons pas d'assertion sur l'amélioration car cela dépend de l'environnement d'exécution
-            # et pourrait rendre les tests instables. Nous vérifions simplement que les deux implémentations fonctionnent.
+            # Note: Nous ne faisons pas d'assertion sur l'amÃ©lioration car cela dÃ©pend de l'environnement d'exÃ©cution
+            # et pourrait rendre les tests instables. Nous vÃ©rifions simplement que les deux implÃ©mentations fonctionnent.
         }
         
-        It "Compare les performances du traitement de fichiers avec différentes approches" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
-            # Définir les implémentations à comparer
+        It "Compare les performances du traitement de fichiers avec diffÃ©rentes approches" -Skip:($PSVersionTable.PSVersion.Major -lt 7 -and -not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
+            # DÃ©finir les implÃ©mentations Ã  comparer
             $implementation1 = {
                 param($files)
-                # Traitement séquentiel
+                # Traitement sÃ©quentiel
                 $results = @()
                 foreach ($file in $files) {
                     $content = Get-Content -Path $file -Raw
@@ -265,7 +265,7 @@ Describe "Tests de benchmark de performance" {
             
             $implementation2 = {
                 param($files)
-                # Traitement parallèle
+                # Traitement parallÃ¨le
                 $results = $files | ForEach-Object -Parallel {
                     $file = $_
                     $content = Get-Content -Path $file -Raw
@@ -279,25 +279,25 @@ Describe "Tests de benchmark de performance" {
                 return $results
             }
             
-            # Comparer les implémentations
+            # Comparer les implÃ©mentations
             $comparison = Compare-Implementations -Name "Traitement de fichiers" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ files = $testFiles } -Iterations 3
             
-            # Vérifier que les deux implémentations produisent des résultats valides
+            # VÃ©rifier que les deux implÃ©mentations produisent des rÃ©sultats valides
             $comparison.Result1.SuccessRate | Should -Be 100
             $comparison.Result2.SuccessRate | Should -Be 100
             
-            # Afficher les résultats pour information
-            Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
-            Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
-            Write-Host "Amélioration du temps: $($comparison.TimeImprovementPercent) %"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
+            Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
+            Write-Host "AmÃ©lioration du temps: $($comparison.TimeImprovementPercent) %"
             
-            # Vérifier que le traitement parallèle est plus rapide (au moins 10% d'amélioration)
-            # Note: Cette assertion peut être instable selon l'environnement d'exécution
+            # VÃ©rifier que le traitement parallÃ¨le est plus rapide (au moins 10% d'amÃ©lioration)
+            # Note: Cette assertion peut Ãªtre instable selon l'environnement d'exÃ©cution
             # $comparison.TimeImprovementPercent | Should -BeGreaterThan 10
         }
         
-        It "Compare les performances de la recherche avec différentes approches" {
-            # Définir les implémentations à comparer
+        It "Compare les performances de la recherche avec diffÃ©rentes approches" {
+            # DÃ©finir les implÃ©mentations Ã  comparer
             $implementation1 = {
                 param($data, $searchValue)
                 # Recherche simple avec Where-Object
@@ -306,25 +306,25 @@ Describe "Tests de benchmark de performance" {
             
             $implementation2 = {
                 param($data, $searchValue)
-                # Recherche optimisée avec .Where()
+                # Recherche optimisÃ©e avec .Where()
                 return $data.Where({ $_.Value -gt $searchValue })
             }
             
-            # Comparer les implémentations
-            $comparison = Compare-Implementations -Name "Recherche de données" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData; searchValue = 500 } -Iterations 3
+            # Comparer les implÃ©mentations
+            $comparison = Compare-Implementations -Name "Recherche de donnÃ©es" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData; searchValue = 500 } -Iterations 3
             
-            # Vérifier que les deux implémentations produisent des résultats valides
+            # VÃ©rifier que les deux implÃ©mentations produisent des rÃ©sultats valides
             $comparison.Result1.SuccessRate | Should -Be 100
             $comparison.Result2.SuccessRate | Should -Be 100
             
-            # Afficher les résultats pour information
-            Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
-            Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
-            Write-Host "Amélioration du temps: $($comparison.TimeImprovementPercent) %"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
+            Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
+            Write-Host "AmÃ©lioration du temps: $($comparison.TimeImprovementPercent) %"
         }
         
-        It "Compare les performances de la conversion JSON avec différentes approches" {
-            # Définir les implémentations à comparer
+        It "Compare les performances de la conversion JSON avec diffÃ©rentes approches" {
+            # DÃ©finir les implÃ©mentations Ã  comparer
             $implementation1 = {
                 param($data)
                 # Conversion JSON simple
@@ -333,28 +333,28 @@ Describe "Tests de benchmark de performance" {
             
             $implementation2 = {
                 param($data)
-                # Conversion JSON avec sélection des propriétés essentielles
+                # Conversion JSON avec sÃ©lection des propriÃ©tÃ©s essentielles
                 return $data | Select-Object Id, Name, Value | ConvertTo-Json -Depth 3 -Compress
             }
             
-            # Comparer les implémentations
+            # Comparer les implÃ©mentations
             $comparison = Compare-Implementations -Name "Conversion JSON" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 3
             
-            # Vérifier que les deux implémentations produisent des résultats valides
+            # VÃ©rifier que les deux implÃ©mentations produisent des rÃ©sultats valides
             $comparison.Result1.SuccessRate | Should -Be 100
             $comparison.Result2.SuccessRate | Should -Be 100
             
-            # Afficher les résultats pour information
-            Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
-            Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
-            Write-Host "Amélioration du temps: $($comparison.TimeImprovementPercent) %"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
+            Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
+            Write-Host "AmÃ©lioration du temps: $($comparison.TimeImprovementPercent) %"
         }
         
-        It "Compare les performances de l'agrégation de données avec différentes approches" {
-            # Définir les implémentations à comparer
+        It "Compare les performances de l'agrÃ©gation de donnÃ©es avec diffÃ©rentes approches" {
+            # DÃ©finir les implÃ©mentations Ã  comparer
             $implementation1 = {
                 param($data)
-                # Agrégation avec Group-Object
+                # AgrÃ©gation avec Group-Object
                 return $data | Group-Object -Property Category | ForEach-Object {
                     [PSCustomObject]@{
                         Category = $_.Name
@@ -366,7 +366,7 @@ Describe "Tests de benchmark de performance" {
             
             $implementation2 = {
                 param($data)
-                # Agrégation optimisée avec dictionnaire
+                # AgrÃ©gation optimisÃ©e avec dictionnaire
                 $categories = @{}
                 
                 foreach ($item in $data) {
@@ -396,23 +396,23 @@ Describe "Tests de benchmark de performance" {
                 return $results
             }
             
-            # Comparer les implémentations
-            $comparison = Compare-Implementations -Name "Agrégation de données" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 3
+            # Comparer les implÃ©mentations
+            $comparison = Compare-Implementations -Name "AgrÃ©gation de donnÃ©es" -Implementation1 $implementation1 -Implementation2 $implementation2 -Parameters @{ data = $testData } -Iterations 3
             
-            # Vérifier que les deux implémentations produisent des résultats valides
+            # VÃ©rifier que les deux implÃ©mentations produisent des rÃ©sultats valides
             $comparison.Result1.SuccessRate | Should -Be 100
             $comparison.Result2.SuccessRate | Should -Be 100
             
-            # Afficher les résultats pour information
-            Write-Host "Temps moyen (Implémentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
-            Write-Host "Temps moyen (Implémentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
-            Write-Host "Amélioration du temps: $($comparison.TimeImprovementPercent) %"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Temps moyen (ImplÃ©mentation 1): $($comparison.Result1.AverageExecutionTimeMs) ms"
+            Write-Host "Temps moyen (ImplÃ©mentation 2): $($comparison.Result2.AverageExecutionTimeMs) ms"
+            Write-Host "AmÃ©lioration du temps: $($comparison.TimeImprovementPercent) %"
         }
     }
     
-    Context "Tests de charge avec différentes tailles de données" {
+    Context "Tests de charge avec diffÃ©rentes tailles de donnÃ©es" {
         BeforeAll {
-            # Fonction pour mesurer les performances en fonction de la taille des données
+            # Fonction pour mesurer les performances en fonction de la taille des donnÃ©es
             function Measure-ScalabilityPerformance {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -431,7 +431,7 @@ Describe "Tests de benchmark de performance" {
                 $results = @()
                 
                 foreach ($size in $DataSizes) {
-                    # Générer les données de test
+                    # GÃ©nÃ©rer les donnÃ©es de test
                     $data = New-LargeDataArray -Size $size
                     
                     # Mesurer les performances
@@ -444,7 +444,7 @@ Describe "Tests de benchmark de performance" {
                     $stopwatch.Stop()
                     $executionTime = $stopwatch.Elapsed.TotalMilliseconds / $Iterations
                     
-                    # Enregistrer les résultats
+                    # Enregistrer les rÃ©sultats
                     $results += [PSCustomObject]@{
                         Size = $size
                         ExecutionTimeMs = $executionTime
@@ -455,7 +455,7 @@ Describe "Tests de benchmark de performance" {
                 return $results
             }
             
-            # Fonction pour générer un tableau de données de taille variable
+            # Fonction pour gÃ©nÃ©rer un tableau de donnÃ©es de taille variable
             function New-LargeDataArray {
                 param (
                     [Parameter(Mandatory = $false)]
@@ -478,10 +478,10 @@ Describe "Tests de benchmark de performance" {
                 return $data
             }
             
-            # Définir les tailles de données à tester
+            # DÃ©finir les tailles de donnÃ©es Ã  tester
             $dataSizes = @(100, 1000, 10000)
             
-            # Définir les fonctions à tester
+            # DÃ©finir les fonctions Ã  tester
             $sortFunction = {
                 param($data)
                 return $data | Sort-Object -Property Value
@@ -504,62 +504,62 @@ Describe "Tests de benchmark de performance" {
             }
         }
         
-        It "Mesure la scalabilité du tri" {
-            # Mesurer les performances du tri avec différentes tailles de données
+        It "Mesure la scalabilitÃ© du tri" {
+            # Mesurer les performances du tri avec diffÃ©rentes tailles de donnÃ©es
             $results = Measure-ScalabilityPerformance -Name "Tri" -ScriptBlock $sortFunction -DataSizes $dataSizes -Iterations 2
             
-            # Afficher les résultats pour information
+            # Afficher les rÃ©sultats pour information
             Write-Host "Performances du tri :"
             foreach ($result in $results) {
-                Write-Host "  Taille: $($result.Size) éléments, Temps: $($result.ExecutionTimeMs) ms, Débit: $($result.ItemsPerMs) éléments/ms"
+                Write-Host "  Taille: $($result.Size) Ã©lÃ©ments, Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
             }
             
-            # Vérifier que les performances se dégradent de manière prévisible
-            # Le tri a une complexité O(n log n), donc le temps par élément devrait augmenter légèrement avec la taille des données
+            # VÃ©rifier que les performances se dÃ©gradent de maniÃ¨re prÃ©visible
+            # Le tri a une complexitÃ© O(n log n), donc le temps par Ã©lÃ©ment devrait augmenter lÃ©gÃ¨rement avec la taille des donnÃ©es
             $smallSizeItemsPerMs = $results[0].ItemsPerMs
             $largeSizeItemsPerMs = $results[-1].ItemsPerMs
             
-            # Le débit (éléments/ms) devrait diminuer avec l'augmentation de la taille des données
+            # Le dÃ©bit (Ã©lÃ©ments/ms) devrait diminuer avec l'augmentation de la taille des donnÃ©es
             $largeSizeItemsPerMs | Should -BeLessThan $smallSizeItemsPerMs
         }
         
-        It "Mesure la scalabilité du filtrage" {
-            # Mesurer les performances du filtrage avec différentes tailles de données
+        It "Mesure la scalabilitÃ© du filtrage" {
+            # Mesurer les performances du filtrage avec diffÃ©rentes tailles de donnÃ©es
             $results = Measure-ScalabilityPerformance -Name "Filtrage" -ScriptBlock $filterFunction -DataSizes $dataSizes -Iterations 2
             
-            # Afficher les résultats pour information
+            # Afficher les rÃ©sultats pour information
             Write-Host "Performances du filtrage :"
             foreach ($result in $results) {
-                Write-Host "  Taille: $($result.Size) éléments, Temps: $($result.ExecutionTimeMs) ms, Débit: $($result.ItemsPerMs) éléments/ms"
+                Write-Host "  Taille: $($result.Size) Ã©lÃ©ments, Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
             }
             
-            # Vérifier que les performances se dégradent de manière prévisible
-            # Le filtrage a une complexité O(n), donc le temps par élément devrait rester relativement constant
+            # VÃ©rifier que les performances se dÃ©gradent de maniÃ¨re prÃ©visible
+            # Le filtrage a une complexitÃ© O(n), donc le temps par Ã©lÃ©ment devrait rester relativement constant
             $smallSizeItemsPerMs = $results[0].ItemsPerMs
             $largeSizeItemsPerMs = $results[-1].ItemsPerMs
             
-            # Le débit (éléments/ms) devrait rester relativement stable
-            # Nous permettons une certaine dégradation due aux effets de cache et autres facteurs
+            # Le dÃ©bit (Ã©lÃ©ments/ms) devrait rester relativement stable
+            # Nous permettons une certaine dÃ©gradation due aux effets de cache et autres facteurs
             $largeSizeItemsPerMs | Should -BeGreaterThan ($smallSizeItemsPerMs * 0.5)
         }
         
-        It "Mesure la scalabilité de l'agrégation" {
-            # Mesurer les performances de l'agrégation avec différentes tailles de données
-            $results = Measure-ScalabilityPerformance -Name "Agrégation" -ScriptBlock $aggregateFunction -DataSizes $dataSizes -Iterations 2
+        It "Mesure la scalabilitÃ© de l'agrÃ©gation" {
+            # Mesurer les performances de l'agrÃ©gation avec diffÃ©rentes tailles de donnÃ©es
+            $results = Measure-ScalabilityPerformance -Name "AgrÃ©gation" -ScriptBlock $aggregateFunction -DataSizes $dataSizes -Iterations 2
             
-            # Afficher les résultats pour information
-            Write-Host "Performances de l'agrégation :"
+            # Afficher les rÃ©sultats pour information
+            Write-Host "Performances de l'agrÃ©gation :"
             foreach ($result in $results) {
-                Write-Host "  Taille: $($result.Size) éléments, Temps: $($result.ExecutionTimeMs) ms, Débit: $($result.ItemsPerMs) éléments/ms"
+                Write-Host "  Taille: $($result.Size) Ã©lÃ©ments, Temps: $($result.ExecutionTimeMs) ms, DÃ©bit: $($result.ItemsPerMs) Ã©lÃ©ments/ms"
             }
             
-            # Vérifier que les performances se dégradent de manière prévisible
-            # L'agrégation avec Group-Object a une complexité qui dépend de l'implémentation,
-            # mais devrait être au moins O(n)
+            # VÃ©rifier que les performances se dÃ©gradent de maniÃ¨re prÃ©visible
+            # L'agrÃ©gation avec Group-Object a une complexitÃ© qui dÃ©pend de l'implÃ©mentation,
+            # mais devrait Ãªtre au moins O(n)
             $smallSizeItemsPerMs = $results[0].ItemsPerMs
             $largeSizeItemsPerMs = $results[-1].ItemsPerMs
             
-            # Le débit (éléments/ms) devrait diminuer avec l'augmentation de la taille des données
+            # Le dÃ©bit (Ã©lÃ©ments/ms) devrait diminuer avec l'augmentation de la taille des donnÃ©es
             $largeSizeItemsPerMs | Should -BeLessThan $smallSizeItemsPerMs
         }
     }

@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit la structure de données pour la taxonomie des exceptions PowerShell.
+    DÃ©finit la structure de donnÃ©es pour la taxonomie des exceptions PowerShell.
 
 .DESCRIPTION
-    Ce script définit les classes et fonctions nécessaires pour représenter et manipuler
+    Ce script dÃ©finit les classes et fonctions nÃ©cessaires pour reprÃ©senter et manipuler
     la taxonomie des exceptions PowerShell. Il identifie les informations essentielles
-    à stocker pour chaque type d'exception et établit les relations entre elles.
+    Ã  stocker pour chaque type d'exception et Ã©tablit les relations entre elles.
 
 .NOTES
     Version:        1.0
@@ -15,7 +15,7 @@
 
 #Requires -Version 5.1
 
-# Classe représentant une exception dans la taxonomie
+# Classe reprÃ©sentant une exception dans la taxonomie
 class ExceptionInfo {
     # Informations d'identification
     [string]$TypeName                # Nom complet du type d'exception (ex: System.ArgumentException)
@@ -24,38 +24,38 @@ class ExceptionInfo {
     [guid]$Id                        # Identifiant unique pour cette exception dans la taxonomie
 
     # Informations de classification
-    [string]$Category                # Catégorie principale (ex: Argument, IO, Security)
-    [string]$Severity                # Sévérité (ex: Critical, Error, Warning)
+    [string]$Category                # CatÃ©gorie principale (ex: Argument, IO, Security)
+    [string]$Severity                # SÃ©vÃ©ritÃ© (ex: Critical, Error, Warning)
     [string[]]$Tags                  # Tags pour la recherche et le filtrage
-    [bool]$IsPowerShellSpecific      # Indique si l'exception est spécifique à PowerShell
+    [bool]$IsPowerShellSpecific      # Indique si l'exception est spÃ©cifique Ã  PowerShell
 
-    # Informations de hiérarchie
-    [string]$ParentType              # Type parent dans la hiérarchie d'héritage
-    [string[]]$ChildTypes            # Types enfants dans la hiérarchie d'héritage
-    [int]$HierarchyLevel             # Niveau dans la hiérarchie (0 = System.Exception)
+    # Informations de hiÃ©rarchie
+    [string]$ParentType              # Type parent dans la hiÃ©rarchie d'hÃ©ritage
+    [string[]]$ChildTypes            # Types enfants dans la hiÃ©rarchie d'hÃ©ritage
+    [int]$HierarchyLevel             # Niveau dans la hiÃ©rarchie (0 = System.Exception)
 
     # Informations de diagnostic
-    [string]$DefaultMessage          # Message d'erreur par défaut ou modèle
-    [string]$ErrorCategory           # Catégorie d'erreur PowerShell associée
-    [string]$ErrorId                 # ID d'erreur PowerShell associé (si applicable)
+    [string]$DefaultMessage          # Message d'erreur par dÃ©faut ou modÃ¨le
+    [string]$ErrorCategory           # CatÃ©gorie d'erreur PowerShell associÃ©e
+    [string]$ErrorId                 # ID d'erreur PowerShell associÃ© (si applicable)
     [string]$CommonCause             # Cause commune de cette exception
     [string[]]$PossibleCauses        # Liste des causes possibles
-    [string[]]$PreventionTips        # Conseils pour éviter cette exception
+    [string[]]$PreventionTips        # Conseils pour Ã©viter cette exception
 
     # Informations de correction
-    [string[]]$ResolutionSteps       # Étapes pour résoudre cette exception
-    [string]$CodeExample             # Exemple de code qui peut générer cette exception
+    [string[]]$ResolutionSteps       # Ã‰tapes pour rÃ©soudre cette exception
+    [string]$CodeExample             # Exemple de code qui peut gÃ©nÃ©rer cette exception
     [string]$FixExample              # Exemple de code pour corriger l'exception
 
     # Informations de contexte
-    [string[]]$RelatedCmdlets        # Cmdlets qui peuvent générer cette exception
-    [string[]]$RelatedModules        # Modules qui peuvent générer cette exception
-    [string[]]$RelatedExceptions     # Exceptions similaires ou liées
+    [string[]]$RelatedCmdlets        # Cmdlets qui peuvent gÃ©nÃ©rer cette exception
+    [string[]]$RelatedModules        # Modules qui peuvent gÃ©nÃ©rer cette exception
+    [string[]]$RelatedExceptions     # Exceptions similaires ou liÃ©es
 
     # Informations de documentation
     [string]$DocumentationUrl        # URL vers la documentation officielle
-    [string]$AdditionalNotes         # Notes supplémentaires
-    [datetime]$LastUpdated           # Date de dernière mise à jour de cette entrée
+    [string]$AdditionalNotes         # Notes supplÃ©mentaires
+    [datetime]$LastUpdated           # Date de derniÃ¨re mise Ã  jour de cette entrÃ©e
 
     # Constructeur minimal
     ExceptionInfo([string]$typeName) {
@@ -95,32 +95,32 @@ class ExceptionInfo {
         $this.LastUpdated = [datetime]::Now
     }
 
-    # Méthode pour obtenir une représentation textuelle de l'exception
+    # MÃ©thode pour obtenir une reprÃ©sentation textuelle de l'exception
     [string] ToString() {
         return "$($this.TypeName) [$($this.Category)] - $($this.DefaultMessage)"
     }
 }
 
-# Classe représentant la taxonomie complète des exceptions
+# Classe reprÃ©sentant la taxonomie complÃ¨te des exceptions
 class ExceptionTaxonomy {
     [hashtable]$Exceptions = @{}     # Table de hachage des exceptions par TypeName
-    [hashtable]$Categories = @{}     # Table de hachage des exceptions par catégorie
+    [hashtable]$Categories = @{}     # Table de hachage des exceptions par catÃ©gorie
     [hashtable]$Tags = @{}           # Table de hachage des exceptions par tag
     [hashtable]$Modules = @{}        # Table de hachage des exceptions par module
     [hashtable]$Cmdlets = @{}        # Table de hachage des exceptions par cmdlet
-    [datetime]$LastUpdated           # Date de dernière mise à jour de la taxonomie
+    [datetime]$LastUpdated           # Date de derniÃ¨re mise Ã  jour de la taxonomie
 
     # Constructeur
     ExceptionTaxonomy() {
         $this.LastUpdated = [datetime]::Now
     }
 
-    # Méthode pour ajouter une exception à la taxonomie
+    # MÃ©thode pour ajouter une exception Ã  la taxonomie
     [void] AddException([ExceptionInfo]$exception) {
-        # Ajouter à la table des exceptions
+        # Ajouter Ã  la table des exceptions
         $this.Exceptions[$exception.TypeName] = $exception
 
-        # Ajouter à la table des catégories
+        # Ajouter Ã  la table des catÃ©gories
         if (-not [string]::IsNullOrEmpty($exception.Category)) {
             if (-not $this.Categories.ContainsKey($exception.Category)) {
                 $this.Categories[$exception.Category] = @()
@@ -128,7 +128,7 @@ class ExceptionTaxonomy {
             $this.Categories[$exception.Category] += $exception
         }
 
-        # Ajouter à la table des tags
+        # Ajouter Ã  la table des tags
         foreach ($tag in $exception.Tags) {
             if (-not $this.Tags.ContainsKey($tag)) {
                 $this.Tags[$tag] = @()
@@ -136,7 +136,7 @@ class ExceptionTaxonomy {
             $this.Tags[$tag] += $exception
         }
 
-        # Ajouter à la table des modules
+        # Ajouter Ã  la table des modules
         foreach ($module in $exception.RelatedModules) {
             if (-not $this.Modules.ContainsKey($module)) {
                 $this.Modules[$module] = @()
@@ -144,7 +144,7 @@ class ExceptionTaxonomy {
             $this.Modules[$module] += $exception
         }
 
-        # Ajouter à la table des cmdlets
+        # Ajouter Ã  la table des cmdlets
         foreach ($cmdlet in $exception.RelatedCmdlets) {
             if (-not $this.Cmdlets.ContainsKey($cmdlet)) {
                 $this.Cmdlets[$cmdlet] = @()
@@ -152,46 +152,46 @@ class ExceptionTaxonomy {
             $this.Cmdlets[$cmdlet] += $exception
         }
 
-        # Mettre à jour la date de dernière mise à jour
+        # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
         $this.LastUpdated = [datetime]::Now
     }
 
-    # Méthode pour obtenir une exception par son nom de type
+    # MÃ©thode pour obtenir une exception par son nom de type
     [ExceptionInfo] GetExceptionByType([string]$typeName) {
         return $this.Exceptions[$typeName]
     }
 
-    # Méthode pour obtenir des exceptions par catégorie
+    # MÃ©thode pour obtenir des exceptions par catÃ©gorie
     [ExceptionInfo[]] GetExceptionsByCategory([string]$category) {
         return $this.Categories[$category]
     }
 
-    # Méthode pour obtenir des exceptions par tag
+    # MÃ©thode pour obtenir des exceptions par tag
     [ExceptionInfo[]] GetExceptionsByTag([string]$tag) {
         return $this.Tags[$tag]
     }
 
-    # Méthode pour obtenir des exceptions par module
+    # MÃ©thode pour obtenir des exceptions par module
     [ExceptionInfo[]] GetExceptionsByModule([string]$module) {
         return $this.Modules[$module]
     }
 
-    # Méthode pour obtenir des exceptions par cmdlet
+    # MÃ©thode pour obtenir des exceptions par cmdlet
     [ExceptionInfo[]] GetExceptionsByCmdlet([string]$cmdlet) {
         return $this.Cmdlets[$cmdlet]
     }
 
-    # Méthode pour obtenir des exceptions par niveau de sévérité
+    # MÃ©thode pour obtenir des exceptions par niveau de sÃ©vÃ©ritÃ©
     [ExceptionInfo[]] GetExceptionsBySeverity([string]$severity) {
         return $this.Exceptions.Values | Where-Object { $_.Severity -eq $severity }
     }
 
-    # Méthode pour obtenir des exceptions spécifiques à PowerShell
+    # MÃ©thode pour obtenir des exceptions spÃ©cifiques Ã  PowerShell
     [ExceptionInfo[]] GetPowerShellSpecificExceptions() {
         return $this.Exceptions.Values | Where-Object { $_.IsPowerShellSpecific -eq $true }
     }
 
-    # Méthode pour obtenir la hiérarchie d'une exception
+    # MÃ©thode pour obtenir la hiÃ©rarchie d'une exception
     [hashtable] GetExceptionHierarchy([string]$typeName) {
         $result = @{
             Parent   = $null
@@ -217,16 +217,16 @@ class ExceptionTaxonomy {
         return $result
     }
 
-    # Méthode pour exporter la taxonomie au format JSON
+    # MÃ©thode pour exporter la taxonomie au format JSON
     [string] ExportToJson() {
         return $this | ConvertTo-Json -Depth 10
     }
 
-    # Méthode pour importer la taxonomie depuis un fichier JSON
+    # MÃ©thode pour importer la taxonomie depuis un fichier JSON
     [void] ImportFromJson([string]$jsonContent) {
         $importedData = $jsonContent | ConvertFrom-Json
 
-        # Réinitialiser les tables
+        # RÃ©initialiser les tables
         $this.Exceptions = @{}
         $this.Categories = @{}
         $this.Tags = @{}
@@ -238,23 +238,23 @@ class ExceptionTaxonomy {
             $exceptionObj = $exceptionData.Value
             $exception = [ExceptionInfo]::new($exceptionObj.TypeName)
 
-            # Copier les propriétés
+            # Copier les propriÃ©tÃ©s
             foreach ($property in $exceptionObj.PSObject.Properties) {
                 if ($property.Name -ne "TypeName" -and $exception.PSObject.Properties.Name -contains $property.Name) {
                     $exception.$($property.Name) = $property.Value
                 }
             }
 
-            # Ajouter l'exception à la taxonomie
+            # Ajouter l'exception Ã  la taxonomie
             $this.AddException($exception)
         }
 
-        # Mettre à jour la date de dernière mise à jour
+        # Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
         $this.LastUpdated = [datetime]::Now
     }
 }
 
-# Fonction pour créer une nouvelle taxonomie d'exceptions
+# Fonction pour crÃ©er une nouvelle taxonomie d'exceptions
 function New-ExceptionTaxonomy {
     [CmdletBinding()]
     [OutputType([ExceptionTaxonomy])]
@@ -263,7 +263,7 @@ function New-ExceptionTaxonomy {
     return [ExceptionTaxonomy]::new()
 }
 
-# Fonction pour créer une nouvelle entrée d'exception
+# Fonction pour crÃ©er une nouvelle entrÃ©e d'exception
 function New-ExceptionInfo {
     [CmdletBinding()]
     [OutputType([ExceptionInfo])]
@@ -313,7 +313,7 @@ function New-ExceptionInfo {
     )
 }
 
-# Fonction pour ajouter une exception à la taxonomie
+# Fonction pour ajouter une exception Ã  la taxonomie
 function Add-ExceptionToTaxonomy {
     [CmdletBinding()]
     param(
@@ -352,7 +352,7 @@ function Import-ExceptionTaxonomy {
     )
 
     if (-not (Test-Path -Path $FilePath)) {
-        throw "Le fichier spécifié n'existe pas: $FilePath"
+        throw "Le fichier spÃ©cifiÃ© n'existe pas: $FilePath"
     }
 
     $jsonContent = Get-Content -Path $FilePath -Raw
@@ -375,8 +375,8 @@ function Get-ExampleExceptionTaxonomy {
         -Tags @("Base", "Common") -IsPowerShellSpecific $false `
         -DefaultMessage "Une exception s'est produite." `
         -ErrorCategory "NotSpecified" `
-        -PossibleCauses @("Erreur générique", "Exception non gérée") `
-        -ResolutionSteps @("Vérifier le message d'erreur pour plus de détails", "Consulter la stack trace")
+        -PossibleCauses @("Erreur gÃ©nÃ©rique", "Exception non gÃ©rÃ©e") `
+        -ResolutionSteps @("VÃ©rifier le message d'erreur pour plus de dÃ©tails", "Consulter la stack trace")
 
     Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $baseException
 
@@ -387,7 +387,7 @@ function Get-ExampleExceptionTaxonomy {
         -DefaultMessage "La valeur fournie pour l'argument n'est pas valide." `
         -ErrorCategory "InvalidArgument" `
         -PossibleCauses @("Valeur d'argument invalide", "Format d'argument incorrect") `
-        -ResolutionSteps @("Vérifier la valeur de l'argument", "Consulter la documentation pour les valeurs acceptées")
+        -ResolutionSteps @("VÃ©rifier la valeur de l'argument", "Consulter la documentation pour les valeurs acceptÃ©es")
 
     Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $argumentException
 
@@ -395,10 +395,10 @@ function Get-ExampleExceptionTaxonomy {
     $argumentNullException = New-ExceptionInfo -TypeName "System.ArgumentNullException" -Category "Argument" -Severity "Error" `
         -Tags @("Argument", "Null", "Validation") -IsPowerShellSpecific $false `
         -ParentType "System.ArgumentException" `
-        -DefaultMessage "La valeur fournie pour l'argument ne peut pas être null." `
+        -DefaultMessage "La valeur fournie pour l'argument ne peut pas Ãªtre null." `
         -ErrorCategory "InvalidArgument" `
-        -PossibleCauses @("Argument null", "Variable non initialisée") `
-        -ResolutionSteps @("Initialiser la variable avant de l'utiliser", "Ajouter une vérification de null")
+        -PossibleCauses @("Argument null", "Variable non initialisÃ©e") `
+        -ResolutionSteps @("Initialiser la variable avant de l'utiliser", "Ajouter une vÃ©rification de null")
 
     Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $argumentNullException
 
@@ -406,25 +406,25 @@ function Get-ExampleExceptionTaxonomy {
     $ioException = New-ExceptionInfo -TypeName "System.IO.IOException" -Category "IO" -Severity "Error" `
         -Tags @("IO", "File", "Network") -IsPowerShellSpecific $false `
         -ParentType "System.Exception" `
-        -DefaultMessage "Une erreur d'entrée/sortie s'est produite." `
+        -DefaultMessage "Une erreur d'entrÃ©e/sortie s'est produite." `
         -ErrorCategory "WriteError" `
-        -PossibleCauses @("Fichier inaccessible", "Réseau indisponible", "Périphérique plein") `
-        -ResolutionSteps @("Vérifier les permissions du fichier", "Vérifier la connexion réseau", "Libérer de l'espace disque")
+        -PossibleCauses @("Fichier inaccessible", "RÃ©seau indisponible", "PÃ©riphÃ©rique plein") `
+        -ResolutionSteps @("VÃ©rifier les permissions du fichier", "VÃ©rifier la connexion rÃ©seau", "LibÃ©rer de l'espace disque")
 
     Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $ioException
 
-    # Ajouter System.Management.Automation.CommandNotFoundException (spécifique à PowerShell)
+    # Ajouter System.Management.Automation.CommandNotFoundException (spÃ©cifique Ã  PowerShell)
     $cmdNotFoundException = New-ExceptionInfo -TypeName "System.Management.Automation.CommandNotFoundException" -Category "PowerShell" -Severity "Error" `
         -Tags @("PowerShell", "Command", "NotFound") -IsPowerShellSpecific $true `
         -ParentType "System.Exception" `
-        -DefaultMessage "La commande spécifiée n'a pas été trouvée." `
+        -DefaultMessage "La commande spÃ©cifiÃ©e n'a pas Ã©tÃ© trouvÃ©e." `
         -ErrorCategory "ObjectNotFound" `
-        -PossibleCauses @("Commande mal orthographiée", "Module non importé", "Commande non installée") `
-        -ResolutionSteps @("Vérifier l'orthographe de la commande", "Importer le module requis", "Installer le module manquant")
+        -PossibleCauses @("Commande mal orthographiÃ©e", "Module non importÃ©", "Commande non installÃ©e") `
+        -ResolutionSteps @("VÃ©rifier l'orthographe de la commande", "Importer le module requis", "Installer le module manquant")
 
     Add-ExceptionToTaxonomy -Taxonomy $taxonomy -Exception $cmdNotFoundException
 
-    # Mettre à jour les relations parent-enfant
+    # Mettre Ã  jour les relations parent-enfant
     $baseException.ChildTypes = @("System.ArgumentException", "System.IO.IOException", "System.Management.Automation.CommandNotFoundException")
     $argumentException.ChildTypes = @("System.ArgumentNullException")
     $argumentException.HierarchyLevel = 1

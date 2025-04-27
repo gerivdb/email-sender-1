@@ -1,14 +1,18 @@
-# Test-ContradictoryPermissionModel.ps1
-# Tests unitaires pour la structure de données des permissions contradictoires
+﻿# Test-ContradictoryPermissionModel.ps1
+# Tests unitaires pour la structure de donnÃ©es des permissions contradictoires
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Charger le fichier de modèle de permissions contradictoires
+# Charger le fichier de modÃ¨le de permissions contradictoires
 $contradictoryPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\ContradictoryPermissionModel.ps1"
-. $contradictoryPermissionModelPath
+if (Test-Path $contradictoryPermissionModelPath) {
+    . $contradictoryPermissionModelPath
+} else {
+    Write-Error "Le fichier ContradictoryPermissionModel.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $contradictoryPermissionModelPath"
+}
 
 Describe "ContradictoryPermissionModel" {
     Context "SqlServerContradictoryPermission Class" {
@@ -36,44 +40,62 @@ Describe "ContradictoryPermissionModel" {
                 "ALTER ANY LOGIN",
                 "AdminLogin",
                 "TestServer",
-                "Héritage",
+                "HÃ©ritage",
                 "SecurityModel",
-                "Élevé"
+                "Ã‰levÃ©"
             )
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "ALTER ANY LOGIN"
             $permission.LoginName | Should -Be "AdminLogin"
             $permission.SecurableType | Should -Be "SERVER"
             $permission.SecurableName | Should -Be "TestServer"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should generate a fix script for GRANT/DENY contradiction" {
             $permission = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
             $permission.ContradictionType = "GRANT/DENY"
+            $permission.RiskLevel = "Ã‰levÃ©"
+            $permission.Impact = "Impact test"
+            $permission.RecommendedAction = "Action test"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
+            $script | Should -Match "Niveau de risque: Ã‰levÃ©"
+            $script | Should -Match "Impact: Impact test"
+            $script | Should -Match "Action recommandÃ©e: Action test"
+            $script | Should -Match "Analyse de la contradiction GRANT/DENY"
+            $script | Should -Match "Option 1: Supprimer la permission DENY"
             $script | Should -Match "REVOKE CONNECT SQL FROM \[TestLogin\]"
             $script | Should -Match "GRANT CONNECT SQL TO \[TestLogin\]"
+            $script | Should -Match "Option 2: Supprimer la permission GRANT"
             $script | Should -Match "DENY CONNECT SQL TO \[TestLogin\]"
+            $script | Should -Match "Option 3: Supprimer complÃ¨tement la permission"
         }
 
         It "Should generate a fix script for inheritance contradiction" {
             $permission = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $permission.ContradictionType = "Héritage"
+            $permission.ContradictionType = "HÃ©ritage"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction d'héritage"
+            $script | Should -Match "Analyse de la contradiction d'hÃ©ritage"
+            $script | Should -Match "Option 1: Ajuster l'appartenance aux rÃ´les"
+            $script | Should -Match "Option 2: DÃ©finir une permission explicite"
+            $script | Should -Match "GRANT CONNECT SQL TO \[TestLogin\]"
+            $script | Should -Match "DENY CONNECT SQL TO \[TestLogin\]"
         }
 
         It "Should generate a fix script for role/user contradiction" {
             $permission = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $permission.ContradictionType = "Rôle/Utilisateur"
+            $permission.ContradictionType = "RÃ´le/Utilisateur"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction entre rôle et utilisateur"
+            $script | Should -Match "Analyse de la contradiction entre rÃ´le et utilisateur"
+            $script | Should -Match "Option 1: Supprimer la permission directe"
+            $script | Should -Match "Option 2: Retirer le login du rÃ´le"
+            $script | Should -Match "Option 3: DÃ©finir une permission explicite qui remplace l'hÃ©ritage"
+            $script | Should -Match "DENY CONNECT SQL TO \[TestLogin\]"
         }
 
         It "Should generate a string representation" {
@@ -84,15 +106,15 @@ Describe "ContradictoryPermissionModel" {
 
         It "Should generate a detailed description" {
             $permission = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $permission.Impact = "Accès incohérent au serveur"
+            $permission.Impact = "AccÃ¨s incohÃ©rent au serveur"
             $permission.RecommendedAction = "Supprimer la permission DENY"
             $description = $permission.GetDetailedDescription()
             $description | Should -Not -BeNullOrEmpty
             $description | Should -Match "Permission: CONNECT SQL"
             $description | Should -Match "Login: TestLogin"
             $description | Should -Match "Type de contradiction: GRANT/DENY"
-            $description | Should -Match "Impact potentiel: Accès incohérent au serveur"
-            $description | Should -Match "Action recommandée: Supprimer la permission DENY"
+            $description | Should -Match "Impact potentiel: AccÃ¨s incohÃ©rent au serveur"
+            $description | Should -Match "Action recommandÃ©e: Supprimer la permission DENY"
         }
     }
 
@@ -123,9 +145,9 @@ Describe "ContradictoryPermissionModel" {
                 "UPDATE",
                 "AppUser",
                 "AppDB",
-                "Héritage",
+                "HÃ©ritage",
                 "SecurityModel",
-                "Élevé",
+                "Ã‰levÃ©",
                 "AppLogin"
             )
             $permission | Should -Not -BeNullOrEmpty
@@ -134,58 +156,78 @@ Describe "ContradictoryPermissionModel" {
             $permission.DatabaseName | Should -Be "AppDB"
             $permission.SecurableType | Should -Be "DATABASE"
             $permission.SecurableName | Should -Be "AppDB"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
             $permission.LoginName | Should -Be "AppLogin"
         }
 
         It "Should generate a fix script for GRANT/DENY contradiction" {
             $permission = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $permission.ContradictionType = "GRANT/DENY"
+            $permission.RiskLevel = "Ã‰levÃ©"
+            $permission.Impact = "Impact test"
+            $permission.RecommendedAction = "Action test"
+            $permission.LoginName = "TestLogin"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
+            $script | Should -Match "Login associÃ©: TestLogin"
+            $script | Should -Match "Niveau de risque: Ã‰levÃ©"
+            $script | Should -Match "Impact: Impact test"
+            $script | Should -Match "Action recommandÃ©e: Action test"
+            $script | Should -Match "Analyse de la contradiction GRANT/DENY"
+            $script | Should -Match "Option 1: Supprimer la permission DENY"
             $script | Should -Match "REVOKE SELECT FROM \[TestUser\]"
             $script | Should -Match "GRANT SELECT TO \[TestUser\]"
+            $script | Should -Match "Option 2: Supprimer la permission GRANT"
             $script | Should -Match "DENY SELECT TO \[TestUser\]"
+            $script | Should -Match "Option 3: Supprimer complÃ¨tement la permission"
         }
 
         It "Should generate a fix script for inheritance contradiction" {
             $permission = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
-            $permission.ContradictionType = "Héritage"
+            $permission.ContradictionType = "HÃ©ritage"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction d'héritage"
+            $script | Should -Match "Analyse de la contradiction d'hÃ©ritage"
+            $script | Should -Match "Option 1: Ajuster l'appartenance aux rÃ´les"
+            $script | Should -Match "Option 2: DÃ©finir une permission explicite"
+            $script | Should -Match "GRANT SELECT TO \[TestUser\]"
+            $script | Should -Match "DENY SELECT TO \[TestUser\]"
         }
 
         It "Should generate a fix script for role/user contradiction" {
             $permission = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
-            $permission.ContradictionType = "Rôle/Utilisateur"
+            $permission.ContradictionType = "RÃ´le/Utilisateur"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction entre rôle et utilisateur"
+            $script | Should -Match "Analyse de la contradiction entre rÃ´le et utilisateur"
+            $script | Should -Match "Option 1: Supprimer la permission directe"
+            $script | Should -Match "Option 2: Retirer l'utilisateur du rÃ´le"
+            $script | Should -Match "Option 3: DÃ©finir une permission explicite qui remplace l'hÃ©ritage"
+            $script | Should -Match "DENY SELECT TO \[TestUser\]"
         }
 
         It "Should generate a string representation" {
             $permission = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $string = $permission.ToString()
-            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] dans la base de données [TestDB] (Type: GRANT/DENY)"
+            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] dans la base de donnÃ©es [TestDB] (Type: GRANT/DENY)"
         }
 
         It "Should generate a detailed description" {
             $permission = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $permission.LoginName = "TestLogin"
-            $permission.Impact = "Accès incohérent aux données"
+            $permission.Impact = "AccÃ¨s incohÃ©rent aux donnÃ©es"
             $permission.RecommendedAction = "Supprimer la permission DENY"
             $description = $permission.GetDetailedDescription()
             $description | Should -Not -BeNullOrEmpty
             $description | Should -Match "Permission: SELECT"
-            $description | Should -Match "Base de données: TestDB"
+            $description | Should -Match "Base de donnÃ©es: TestDB"
             $description | Should -Match "Utilisateur: TestUser"
-            $description | Should -Match "Login associé: TestLogin"
+            $description | Should -Match "Login associÃ©: TestLogin"
             $description | Should -Match "Type de contradiction: GRANT/DENY"
-            $description | Should -Match "Impact potentiel: Accès incohérent aux données"
-            $description | Should -Match "Action recommandée: Supprimer la permission DENY"
+            $description | Should -Match "Impact potentiel: AccÃ¨s incohÃ©rent aux donnÃ©es"
+            $description | Should -Match "Action recommandÃ©e: Supprimer la permission DENY"
         }
     }
 
@@ -220,9 +262,9 @@ Describe "ContradictoryPermissionModel" {
                 "dbo",
                 "Customers",
                 "TABLE",
-                "Héritage",
+                "HÃ©ritage",
                 "SecurityModel",
-                "Élevé",
+                "Ã‰levÃ©",
                 "AppLogin",
                 "CustomerID"
             )
@@ -236,9 +278,9 @@ Describe "ContradictoryPermissionModel" {
             $permission.ColumnName | Should -Be "CustomerID"
             $permission.SecurableType | Should -Be "OBJECT"
             $permission.SecurableName | Should -Be "dbo.Customers"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
             $permission.LoginName | Should -Be "AppLogin"
         }
 
@@ -246,11 +288,25 @@ Describe "ContradictoryPermissionModel" {
             $permission = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $permission.SchemaName = "dbo"
             $permission.ContradictionType = "GRANT/DENY"
+            $permission.RiskLevel = "Ã‰levÃ©"
+            $permission.Impact = "Impact test"
+            $permission.RecommendedAction = "Action test"
+            $permission.LoginName = "TestLogin"
+            $permission.ObjectType = "TABLE"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
+            $script | Should -Match "Type d'objet: TABLE"
+            $script | Should -Match "Login associÃ©: TestLogin"
+            $script | Should -Match "Niveau de risque: Ã‰levÃ©"
+            $script | Should -Match "Impact: Impact test"
+            $script | Should -Match "Action recommandÃ©e: Action test"
+            $script | Should -Match "Analyse de la contradiction GRANT/DENY"
+            $script | Should -Match "Option 1: Supprimer la permission DENY"
             $script | Should -Match "REVOKE SELECT ON \[dbo\].\[TestTable\] FROM \[TestUser\]"
             $script | Should -Match "GRANT SELECT ON \[dbo\].\[TestTable\] TO \[TestUser\]"
+            $script | Should -Match "Option 2: Supprimer la permission GRANT"
             $script | Should -Match "DENY SELECT ON \[dbo\].\[TestTable\] TO \[TestUser\]"
+            $script | Should -Match "Option 3: Supprimer complÃ¨tement la permission"
         }
 
         It "Should generate a fix script for column-level permission" {
@@ -268,26 +324,34 @@ Describe "ContradictoryPermissionModel" {
         It "Should generate a fix script for inheritance contradiction" {
             $permission = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $permission.SchemaName = "dbo"
-            $permission.ContradictionType = "Héritage"
+            $permission.ContradictionType = "HÃ©ritage"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction d'héritage"
+            $script | Should -Match "Analyse de la contradiction d'hÃ©ritage"
+            $script | Should -Match "Option 1: Ajuster l'appartenance aux rÃ´les"
+            $script | Should -Match "Option 2: DÃ©finir une permission explicite au niveau objet"
+            $script | Should -Match "GRANT SELECT ON \[dbo\].\[TestTable\] TO \[TestUser\]"
+            $script | Should -Match "DENY SELECT ON \[dbo\].\[TestTable\] TO \[TestUser\]"
         }
 
         It "Should generate a fix script for role/user contradiction" {
             $permission = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $permission.SchemaName = "dbo"
-            $permission.ContradictionType = "Rôle/Utilisateur"
+            $permission.ContradictionType = "RÃ´le/Utilisateur"
             $script = $permission.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Résoudre la contradiction entre rôle et utilisateur"
+            $script | Should -Match "Analyse de la contradiction entre rÃ´le et utilisateur"
+            $script | Should -Match "Option 1: Supprimer la permission directe"
+            $script | Should -Match "Option 2: Retirer l'utilisateur du rÃ´le"
+            $script | Should -Match "Option 3: DÃ©finir une permission explicite qui remplace l'hÃ©ritage"
+            $script | Should -Match "DENY SELECT ON \[dbo\].\[TestTable\] TO \[TestUser\]"
         }
 
         It "Should generate a string representation" {
             $permission = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $permission.SchemaName = "dbo"
             $string = $permission.ToString()
-            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[TestTable] dans la base de données [TestDB] (Type: GRANT/DENY)"
+            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[TestTable] dans la base de donnÃ©es [TestDB] (Type: GRANT/DENY)"
         }
 
         It "Should generate a string representation with column" {
@@ -295,7 +359,7 @@ Describe "ContradictoryPermissionModel" {
             $permission.SchemaName = "dbo"
             $permission.ColumnName = "TestColumn"
             $string = $permission.ToString()
-            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[TestTable] (colonne: TestColumn) dans la base de données [TestDB] (Type: GRANT/DENY)"
+            $string | Should -Be "Contradiction de permission: SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[TestTable] (colonne: TestColumn) dans la base de donnÃ©es [TestDB] (Type: GRANT/DENY)"
         }
 
         It "Should generate a detailed description" {
@@ -304,21 +368,21 @@ Describe "ContradictoryPermissionModel" {
             $permission.ObjectType = "TABLE"
             $permission.ColumnName = "TestColumn"
             $permission.LoginName = "TestLogin"
-            $permission.Impact = "Accès incohérent aux données"
+            $permission.Impact = "AccÃ¨s incohÃ©rent aux donnÃ©es"
             $permission.RecommendedAction = "Supprimer la permission DENY"
             $description = $permission.GetDetailedDescription()
             $description | Should -Not -BeNullOrEmpty
             $description | Should -Match "Permission: SELECT"
-            $description | Should -Match "Base de données: TestDB"
-            $description | Should -Match "Schéma: dbo"
+            $description | Should -Match "Base de donnÃ©es: TestDB"
+            $description | Should -Match "SchÃ©ma: dbo"
             $description | Should -Match "Objet: TestTable"
             $description | Should -Match "Type d'objet: TABLE"
             $description | Should -Match "Colonne: TestColumn"
             $description | Should -Match "Utilisateur: TestUser"
-            $description | Should -Match "Login associé: TestLogin"
+            $description | Should -Match "Login associÃ©: TestLogin"
             $description | Should -Match "Type de contradiction: GRANT/DENY"
-            $description | Should -Match "Impact potentiel: Accès incohérent aux données"
-            $description | Should -Match "Action recommandée: Supprimer la permission DENY"
+            $description | Should -Match "Impact potentiel: AccÃ¨s incohÃ©rent aux donnÃ©es"
+            $description | Should -Match "Action recommandÃ©e: Supprimer la permission DENY"
         }
     }
 
@@ -354,27 +418,27 @@ Describe "ContradictoryPermissionModel" {
         It "Should add server contradictions correctly" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
             $serverContradiction = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $serverContradiction.RiskLevel = "Élevé"
+            $serverContradiction.RiskLevel = "Ã‰levÃ©"
 
             $permissionsSet.AddServerContradiction($serverContradiction)
 
             $permissionsSet.ServerContradictions.Count | Should -Be 1
             $permissionsSet.TotalContradictions | Should -Be 1
             $permissionsSet.ContradictionsByType["GRANT/DENY"] | Should -Be 1
-            $permissionsSet.ContradictionsByRisk["Élevé"] | Should -Be 1
+            $permissionsSet.ContradictionsByRisk["Ã‰levÃ©"] | Should -Be 1
         }
 
         It "Should add database contradictions correctly" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
             $dbContradiction = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $dbContradiction.RiskLevel = "Moyen"
-            $dbContradiction.ContradictionType = "Héritage"
+            $dbContradiction.ContradictionType = "HÃ©ritage"
 
             $permissionsSet.AddDatabaseContradiction($dbContradiction)
 
             $permissionsSet.DatabaseContradictions.Count | Should -Be 1
             $permissionsSet.TotalContradictions | Should -Be 1
-            $permissionsSet.ContradictionsByType["Héritage"] | Should -Be 1
+            $permissionsSet.ContradictionsByType["HÃ©ritage"] | Should -Be 1
             $permissionsSet.ContradictionsByRisk["Moyen"] | Should -Be 1
         }
 
@@ -382,13 +446,13 @@ Describe "ContradictoryPermissionModel" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
             $objContradiction = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $objContradiction.RiskLevel = "Critique"
-            $objContradiction.ContradictionType = "Rôle/Utilisateur"
+            $objContradiction.ContradictionType = "RÃ´le/Utilisateur"
 
             $permissionsSet.AddObjectContradiction($objContradiction)
 
             $permissionsSet.ObjectContradictions.Count | Should -Be 1
             $permissionsSet.TotalContradictions | Should -Be 1
-            $permissionsSet.ContradictionsByType["Rôle/Utilisateur"] | Should -Be 1
+            $permissionsSet.ContradictionsByType["RÃ´le/Utilisateur"] | Should -Be 1
             $permissionsSet.ContradictionsByRisk["Critique"] | Should -Be 1
         }
 
@@ -411,19 +475,19 @@ Describe "ContradictoryPermissionModel" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
 
             $serverContradiction = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $serverContradiction.RiskLevel = "Élevé"
+            $serverContradiction.RiskLevel = "Ã‰levÃ©"
 
             $dbContradiction = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $dbContradiction.RiskLevel = "Moyen"
 
             $objContradiction = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
-            $objContradiction.RiskLevel = "Élevé"
+            $objContradiction.RiskLevel = "Ã‰levÃ©"
 
             $permissionsSet.AddServerContradiction($serverContradiction)
             $permissionsSet.AddDatabaseContradiction($dbContradiction)
             $permissionsSet.AddObjectContradiction($objContradiction)
 
-            $highRiskContradictions = $permissionsSet.FilterByRiskLevel("Élevé")
+            $highRiskContradictions = $permissionsSet.FilterByRiskLevel("Ã‰levÃ©")
             $highRiskContradictions.Count | Should -Be 2
         }
 
@@ -434,7 +498,7 @@ Describe "ContradictoryPermissionModel" {
             $serverContradiction.ContradictionType = "GRANT/DENY"
 
             $dbContradiction = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
-            $dbContradiction.ContradictionType = "Héritage"
+            $dbContradiction.ContradictionType = "HÃ©ritage"
 
             $objContradiction = [SqlObjectContradictoryPermission]::new("SELECT", "TestUser", "TestDB", "TestTable")
             $objContradiction.ContradictionType = "GRANT/DENY"
@@ -469,7 +533,7 @@ Describe "ContradictoryPermissionModel" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
 
             $serverContradiction = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $serverContradiction.RiskLevel = "Élevé"
+            $serverContradiction.RiskLevel = "Ã‰levÃ©"
 
             $dbContradiction = [SqlDatabaseContradictoryPermission]::new("SELECT", "TestUser", "TestDB")
             $dbContradiction.RiskLevel = "Moyen"
@@ -480,19 +544,19 @@ Describe "ContradictoryPermissionModel" {
             $report = $permissionsSet.GenerateSummaryReport()
             $report | Should -Not -BeNullOrEmpty
             $report | Should -Match "Serveur: TestServer"
-            $report | Should -Match "Modèle de référence: TestModel"
+            $report | Should -Match "ModÃ¨le de rÃ©fÃ©rence: TestModel"
             $report | Should -Match "Nombre total de contradictions: 2"
-            $report | Should -Match "- Élevé: 1"
+            $report | Should -Match "- Ã‰levÃ©: 1"
             $report | Should -Match "- Moyen: 1"
             $report | Should -Match "- Niveau serveur: 1"
-            $report | Should -Match "- Niveau base de données: 1"
+            $report | Should -Match "- Niveau base de donnÃ©es: 1"
         }
 
         It "Should generate a detailed report correctly" {
             $permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
 
             $serverContradiction = [SqlServerContradictoryPermission]::new("CONNECT SQL", "TestLogin")
-            $serverContradiction.RiskLevel = "Élevé"
+            $serverContradiction.RiskLevel = "Ã‰levÃ©"
             $serverContradiction.Impact = "Impact test"
             $serverContradiction.RecommendedAction = "Action test"
 
@@ -502,11 +566,11 @@ Describe "ContradictoryPermissionModel" {
             $report | Should -Not -BeNullOrEmpty
             $report | Should -Match "Serveur: TestServer"
             $report | Should -Match "Nombre total de contradictions: 1"
-            $report | Should -Match "Détail des contradictions au niveau serveur:"
+            $report | Should -Match "DÃ©tail des contradictions au niveau serveur:"
             $report | Should -Match "Contradiction de permission: CONNECT SQL pour le login \[TestLogin\]"
-            $report | Should -Match "Niveau de risque: Élevé"
+            $report | Should -Match "Niveau de risque: Ã‰levÃ©"
             $report | Should -Match "Impact: Impact test"
-            $report | Should -Match "Action recommandée: Action test"
+            $report | Should -Match "Action recommandÃ©e: Action test"
         }
 
         It "Should generate a fix script correctly" {
@@ -520,12 +584,12 @@ Describe "ContradictoryPermissionModel" {
 
             $script = $permissionsSet.GenerateFixScript()
             $script | Should -Not -BeNullOrEmpty
-            $script | Should -Match "Script pour résoudre toutes les contradictions de permissions"
+            $script | Should -Match "Script pour rÃ©soudre toutes les contradictions de permissions"
             $script | Should -Match "Serveur: TestServer"
             $script | Should -Match "Nombre total de contradictions: 2"
-            $script | Should -Match "Résolution des contradictions au niveau serveur"
+            $script | Should -Match "RÃ©solution des contradictions au niveau serveur"
             $script | Should -Match "REVOKE CONNECT SQL FROM \[TestLogin\]"
-            $script | Should -Match "Résolution des contradictions au niveau base de données"
+            $script | Should -Match "RÃ©solution des contradictions au niveau base de donnÃ©es"
             $script | Should -Match "REVOKE SELECT FROM \[TestUser\]"
         }
 
@@ -545,11 +609,11 @@ Describe "ContradictoryPermissionModel" {
 
     Context "Helper Functions" {
         It "Should create a new SqlServerContradictoryPermission" {
-            $permission = New-SqlServerContradictoryPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -RiskLevel "Élevé"
+            $permission = New-SqlServerContradictoryPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -RiskLevel "Ã‰levÃ©"
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "CONNECT SQL"
             $permission.LoginName | Should -Be "TestLogin"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should create a new SqlServerContradictoryPermission with all parameters" {
@@ -557,30 +621,30 @@ Describe "ContradictoryPermissionModel" {
                 -PermissionName "ALTER ANY LOGIN" `
                 -LoginName "AdminLogin" `
                 -SecurableName "TestServer" `
-                -ContradictionType "Héritage" `
+                -ContradictionType "HÃ©ritage" `
                 -ModelName "SecurityModel" `
                 -RiskLevel "Critique" `
-                -Impact "Risque de sécurité élevé" `
-                -RecommendedAction "Vérifier les rôles du login"
+                -Impact "Risque de sÃ©curitÃ© Ã©levÃ©" `
+                -RecommendedAction "VÃ©rifier les rÃ´les du login"
 
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "ALTER ANY LOGIN"
             $permission.LoginName | Should -Be "AdminLogin"
             $permission.SecurableName | Should -Be "TestServer"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
             $permission.RiskLevel | Should -Be "Critique"
-            $permission.Impact | Should -Be "Risque de sécurité élevé"
-            $permission.RecommendedAction | Should -Be "Vérifier les rôles du login"
+            $permission.Impact | Should -Be "Risque de sÃ©curitÃ© Ã©levÃ©"
+            $permission.RecommendedAction | Should -Be "VÃ©rifier les rÃ´les du login"
         }
 
         It "Should create a new SqlDatabaseContradictoryPermission" {
-            $permission = New-SqlDatabaseContradictoryPermission -PermissionName "SELECT" -UserName "TestUser" -DatabaseName "TestDB" -RiskLevel "Élevé"
+            $permission = New-SqlDatabaseContradictoryPermission -PermissionName "SELECT" -UserName "TestUser" -DatabaseName "TestDB" -RiskLevel "Ã‰levÃ©"
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "SELECT"
             $permission.UserName | Should -Be "TestUser"
             $permission.DatabaseName | Should -Be "TestDB"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should create a new SqlDatabaseContradictoryPermission with all parameters" {
@@ -588,35 +652,35 @@ Describe "ContradictoryPermissionModel" {
                 -PermissionName "UPDATE" `
                 -UserName "AppUser" `
                 -DatabaseName "AppDB" `
-                -ContradictionType "Héritage" `
+                -ContradictionType "HÃ©ritage" `
                 -ModelName "SecurityModel" `
                 -RiskLevel "Critique" `
                 -LoginName "AppLogin" `
-                -Impact "Risque de sécurité élevé" `
-                -RecommendedAction "Vérifier les rôles de l'utilisateur"
+                -Impact "Risque de sÃ©curitÃ© Ã©levÃ©" `
+                -RecommendedAction "VÃ©rifier les rÃ´les de l'utilisateur"
 
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "UPDATE"
             $permission.UserName | Should -Be "AppUser"
             $permission.DatabaseName | Should -Be "AppDB"
             $permission.SecurableName | Should -Be "AppDB"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
             $permission.RiskLevel | Should -Be "Critique"
             $permission.LoginName | Should -Be "AppLogin"
-            $permission.Impact | Should -Be "Risque de sécurité élevé"
-            $permission.RecommendedAction | Should -Be "Vérifier les rôles de l'utilisateur"
+            $permission.Impact | Should -Be "Risque de sÃ©curitÃ© Ã©levÃ©"
+            $permission.RecommendedAction | Should -Be "VÃ©rifier les rÃ´les de l'utilisateur"
         }
 
         It "Should create a new SqlObjectContradictoryPermission" {
-            $permission = New-SqlObjectContradictoryPermission -PermissionName "SELECT" -UserName "TestUser" -DatabaseName "TestDB" -ObjectName "TestTable" -RiskLevel "Élevé"
+            $permission = New-SqlObjectContradictoryPermission -PermissionName "SELECT" -UserName "TestUser" -DatabaseName "TestDB" -ObjectName "TestTable" -RiskLevel "Ã‰levÃ©"
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "SELECT"
             $permission.UserName | Should -Be "TestUser"
             $permission.DatabaseName | Should -Be "TestDB"
             $permission.ObjectName | Should -Be "TestTable"
             $permission.SchemaName | Should -Be "dbo"
-            $permission.RiskLevel | Should -Be "Élevé"
+            $permission.RiskLevel | Should -Be "Ã‰levÃ©"
         }
 
         It "Should create a new SqlObjectContradictoryPermission with all parameters" {
@@ -628,12 +692,12 @@ Describe "ContradictoryPermissionModel" {
                 -ObjectName "Customers" `
                 -ObjectType "TABLE" `
                 -ColumnName "CustomerID" `
-                -ContradictionType "Héritage" `
+                -ContradictionType "HÃ©ritage" `
                 -ModelName "SecurityModel" `
                 -RiskLevel "Critique" `
                 -LoginName "AppLogin" `
-                -Impact "Risque de sécurité élevé" `
-                -RecommendedAction "Vérifier les rôles de l'utilisateur"
+                -Impact "Risque de sÃ©curitÃ© Ã©levÃ©" `
+                -RecommendedAction "VÃ©rifier les rÃ´les de l'utilisateur"
 
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "UPDATE"
@@ -644,12 +708,12 @@ Describe "ContradictoryPermissionModel" {
             $permission.ObjectType | Should -Be "TABLE"
             $permission.ColumnName | Should -Be "CustomerID"
             $permission.SecurableName | Should -Be "Sales.Customers"
-            $permission.ContradictionType | Should -Be "Héritage"
+            $permission.ContradictionType | Should -Be "HÃ©ritage"
             $permission.ModelName | Should -Be "SecurityModel"
             $permission.RiskLevel | Should -Be "Critique"
             $permission.LoginName | Should -Be "AppLogin"
-            $permission.Impact | Should -Be "Risque de sécurité élevé"
-            $permission.RecommendedAction | Should -Be "Vérifier les rôles de l'utilisateur"
+            $permission.Impact | Should -Be "Risque de sÃ©curitÃ© Ã©levÃ©"
+            $permission.RecommendedAction | Should -Be "VÃ©rifier les rÃ´les de l'utilisateur"
         }
 
         It "Should create a new SqlContradictoryPermissionsSet" {

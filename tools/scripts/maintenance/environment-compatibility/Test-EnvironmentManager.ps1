@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
     Script de test pour le module EnvironmentManager.
 
 .DESCRIPTION
-    Ce script teste les fonctionnalités du module EnvironmentManager.
+    Ce script teste les fonctionnalitÃ©s du module EnvironmentManager.
 
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
 # Importer le module EnvironmentManager
@@ -17,7 +17,7 @@ if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
 }
 else {
-    Write-Error "Module EnvironmentManager non trouvé: $modulePath"
+    Write-Error "Module EnvironmentManager non trouvÃ©: $modulePath"
     exit 1
 }
 
@@ -33,7 +33,7 @@ function Write-TestSection {
     Write-Host "`n=== $Title ===" -ForegroundColor Cyan
 }
 
-# Fonction pour afficher un résultat de test
+# Fonction pour afficher un rÃ©sultat de test
 function Write-TestResult {
     param (
         [string]$Name,
@@ -44,20 +44,20 @@ function Write-TestResult {
     Write-Host $Result -ForegroundColor Green
 }
 
-# Test 1 : Détection d'environnement
-Write-TestSection "Test de détection d'environnement"
+# Test 1 : DÃ©tection d'environnement
+Write-TestSection "Test de dÃ©tection d'environnement"
 
 $envInfo = Get-EnvironmentInfo
-Write-TestResult "Système d'exploitation" $envInfo.OSName
+Write-TestResult "SystÃ¨me d'exploitation" $envInfo.OSName
 Write-TestResult "Version PowerShell" $envInfo.PSVersion
-Write-TestResult "Édition PowerShell" $envInfo.PSEdition
+Write-TestResult "Ã‰dition PowerShell" $envInfo.PSEdition
 Write-TestResult "Est Windows" $envInfo.IsWindows
 Write-TestResult "Est Linux" $envInfo.IsLinux
 Write-TestResult "Est macOS" $envInfo.IsMacOS
-Write-TestResult "Séparateur de chemin" $envInfo.PathSeparator
+Write-TestResult "SÃ©parateur de chemin" $envInfo.PathSeparator
 
-# Test 2 : Compatibilité d'environnement
-Write-TestSection "Test de compatibilité d'environnement"
+# Test 2 : CompatibilitÃ© d'environnement
+Write-TestSection "Test de compatibilitÃ© d'environnement"
 
 $compatWindows = Test-EnvironmentCompatibility -TargetOS "Windows"
 Write-TestResult "Compatible avec Windows" $compatWindows.IsCompatible
@@ -79,11 +79,11 @@ Write-TestSection "Test de gestion des chemins"
 
 $testPath = "C:\Users\user\Documents\file.txt"
 $normalizedPath = ConvertTo-CrossPlatformPath -Path $testPath
-Write-TestResult "Chemin normalisé" $normalizedPath
+Write-TestResult "Chemin normalisÃ©" $normalizedPath
 
 $testPath2 = "/home/user/documents/file.txt"
 $normalizedPath2 = ConvertTo-CrossPlatformPath -Path $testPath2 -TargetOS "Windows"
-Write-TestResult "Chemin normalisé pour Windows" $normalizedPath2
+Write-TestResult "Chemin normalisÃ© pour Windows" $normalizedPath2
 
 $joinedPath = Join-CrossPlatformPath -Path "C:\Users" -ChildPath "user", "Documents", "file.txt"
 Write-TestResult "Chemin joint" $joinedPath
@@ -95,16 +95,16 @@ Write-TestResult "Chemin joint pour Linux" $joinedPath2
 Write-TestSection "Test de wrappers de commandes"
 
 $command = Invoke-CrossPlatformCommand -WindowsCommand "dir" -UnixCommand "ls -la" -PassThru
-Write-TestResult "Commande à exécuter" $command
+Write-TestResult "Commande Ã  exÃ©cuter" $command
 
-# Test 5 : Création et lecture de fichiers
-Write-TestSection "Test de création et lecture de fichiers"
+# Test 5 : CrÃ©ation et lecture de fichiers
+Write-TestSection "Test de crÃ©ation et lecture de fichiers"
 
 $tempFile = [System.IO.Path]::GetTempFileName()
 $testContent = "Test de contenu`nLigne 2`nLigne 3"
 
 $writeResult = Set-CrossPlatformContent -Path $tempFile -Content $testContent -Force
-Write-TestResult "Écriture dans le fichier" $writeResult
+Write-TestResult "Ã‰criture dans le fichier" $writeResult
 
 $readContent = Get-CrossPlatformContent -Path $tempFile
 Write-TestResult "Contenu lu" ([bool]$readContent -and $readContent.TrimEnd() -eq $testContent.TrimEnd())
@@ -112,4 +112,4 @@ Write-TestResult "Contenu lu" ([bool]$readContent -and $readContent.TrimEnd() -e
 # Nettoyage
 Remove-Item -Path $tempFile -Force
 
-Write-Host "`nTests terminés avec succès !" -ForegroundColor Green
+Write-Host "`nTests terminÃ©s avec succÃ¨s !" -ForegroundColor Green

@@ -1,5 +1,5 @@
-# Module principal pour le support XML
-# Ce script sert de point d'entrée pour utiliser toutes les fonctionnalités XML
+﻿# Module principal pour le support XML
+# Ce script sert de point d'entrÃ©e pour utiliser toutes les fonctionnalitÃ©s XML
 
 # Importer les modules
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -18,32 +18,32 @@ function Show-XmlSupportHelp {
     Write-Host "Module de support XML" -ForegroundColor Cyan
     Write-Host "===================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "Ce module fournit des fonctionnalités pour travailler avec les fichiers XML," -ForegroundColor Yellow
+    Write-Host "Ce module fournit des fonctionnalitÃ©s pour travailler avec les fichiers XML," -ForegroundColor Yellow
     Write-Host "notamment pour convertir entre le format Roadmap (Markdown) et XML." -ForegroundColor Yellow
     Write-Host ""
     
     Write-Host "Fonctions de conversion Roadmap-XML:" -ForegroundColor Green
-    Write-Host "  ConvertFrom-RoadmapToXml           - Convertit une chaîne Roadmap en XML"
-    Write-Host "  ConvertFrom-XmlToRoadmap           - Convertit une chaîne XML en Roadmap"
+    Write-Host "  ConvertFrom-RoadmapToXml           - Convertit une chaÃ®ne Roadmap en XML"
+    Write-Host "  ConvertFrom-XmlToRoadmap           - Convertit une chaÃ®ne XML en Roadmap"
     Write-Host "  ConvertFrom-RoadmapFileToXmlFile   - Convertit un fichier Roadmap en fichier XML"
     Write-Host "  ConvertFrom-XmlFileToRoadmapFile   - Convertit un fichier XML en fichier Roadmap"
     Write-Host ""
     
-    Write-Host "Fonctions de détection XML:" -ForegroundColor Green
-    Write-Host "  Get-XmlElements                    - Détecte les éléments XML dans une chaîne"
-    Write-Host "  Get-XmlElementsFromFile            - Détecte les éléments XML dans un fichier"
-    Write-Host "  Get-XmlStructureReport             - Génère un rapport sur la structure XML"
-    Write-Host "  Get-XmlStructureReportFromFile     - Génère un rapport sur la structure XML d'un fichier"
-    Write-Host "  ConvertTo-RoadmapMapping           - Mappe les éléments XML vers la structure de roadmap"
+    Write-Host "Fonctions de dÃ©tection XML:" -ForegroundColor Green
+    Write-Host "  Get-XmlElements                    - DÃ©tecte les Ã©lÃ©ments XML dans une chaÃ®ne"
+    Write-Host "  Get-XmlElementsFromFile            - DÃ©tecte les Ã©lÃ©ments XML dans un fichier"
+    Write-Host "  Get-XmlStructureReport             - GÃ©nÃ¨re un rapport sur la structure XML"
+    Write-Host "  Get-XmlStructureReportFromFile     - GÃ©nÃ¨re un rapport sur la structure XML d'un fichier"
+    Write-Host "  ConvertTo-RoadmapMapping           - Mappe les Ã©lÃ©ments XML vers la structure de roadmap"
     Write-Host ""
     
     Write-Host "Fonctions de validation XML:" -ForegroundColor Green
-    Write-Host "  Test-XmlContent                    - Valide une chaîne XML"
+    Write-Host "  Test-XmlContent                    - Valide une chaÃ®ne XML"
     Write-Host "  Test-XmlFile                       - Valide un fichier XML"
-    Write-Host "  Get-XmlValidationReport            - Génère un rapport de validation XML"
-    Write-Host "  Test-XmlFileWithReport             - Valide un fichier XML et génère un rapport"
-    Write-Host "  Test-XmlFileAgainstSchema          - Valide un fichier XML par rapport à un schéma XSD"
-    Write-Host "  New-XsdSchemaFromXml               - Génère un schéma XSD à partir d'un fichier XML"
+    Write-Host "  Get-XmlValidationReport            - GÃ©nÃ¨re un rapport de validation XML"
+    Write-Host "  Test-XmlFileWithReport             - Valide un fichier XML et gÃ©nÃ¨re un rapport"
+    Write-Host "  Test-XmlFileAgainstSchema          - Valide un fichier XML par rapport Ã  un schÃ©ma XSD"
+    Write-Host "  New-XsdSchemaFromXml               - GÃ©nÃ¨re un schÃ©ma XSD Ã  partir d'un fichier XML"
     Write-Host ""
     
     Write-Host "Exemples:" -ForegroundColor Yellow
@@ -55,7 +55,7 @@ function Show-XmlSupportHelp {
     Write-Host "  ConvertFrom-XmlFileToRoadmapFile -XmlPath 'roadmap.xml' -RoadmapPath 'roadmap.md'"
     Write-Host ""
     
-    Write-Host "  # Générer un rapport sur la structure XML"
+    Write-Host "  # GÃ©nÃ©rer un rapport sur la structure XML"
     Write-Host "  Get-XmlStructureReportFromFile -XmlPath 'roadmap.xml' -OutputPath 'report.html' -AsHtml"
     Write-Host ""
     
@@ -64,13 +64,13 @@ function Show-XmlSupportHelp {
     Write-Host ""
 }
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-XmlSupportTests {
     $testsPath = Join-Path -Path $scriptPath -ChildPath "Tests"
     $converterTestPath = Join-Path -Path $testsPath -ChildPath "Test-RoadmapXmlConverter.ps1"
     $toolsTestPath = Join-Path -Path $testsPath -ChildPath "Test-XmlTools.ps1"
     
-    Write-Host "Exécution des tests du module de support XML..." -ForegroundColor Yellow
+    Write-Host "ExÃ©cution des tests du module de support XML..." -ForegroundColor Yellow
     
     $results = @{
         TotalTests = 0
@@ -78,9 +78,9 @@ function Invoke-XmlSupportTests {
         FailedTests = 0
     }
     
-    # Exécuter les tests du convertisseur
+    # ExÃ©cuter les tests du convertisseur
     if (Test-Path -Path $converterTestPath) {
-        Write-Host "Exécution des tests du convertisseur Roadmap-XML..." -ForegroundColor Cyan
+        Write-Host "ExÃ©cution des tests du convertisseur Roadmap-XML..." -ForegroundColor Cyan
         $converterResults = & $converterTestPath
         
         $results.TotalTests += $converterResults.TotalTests
@@ -91,9 +91,9 @@ function Invoke-XmlSupportTests {
         Write-Host "Le script de tests du convertisseur est introuvable: $converterTestPath" -ForegroundColor Red
     }
     
-    # Exécuter les tests des outils XML
+    # ExÃ©cuter les tests des outils XML
     if (Test-Path -Path $toolsTestPath) {
-        Write-Host "Exécution des tests des outils XML..." -ForegroundColor Cyan
+        Write-Host "ExÃ©cution des tests des outils XML..." -ForegroundColor Cyan
         $toolsResults = & $toolsTestPath
         
         $results.TotalTests += $toolsResults.TotalTests
@@ -104,16 +104,16 @@ function Invoke-XmlSupportTests {
         Write-Host "Le script de tests des outils XML est introuvable: $toolsTestPath" -ForegroundColor Red
     }
     
-    # Afficher le résumé des tests
-    Write-Host "Résumé des tests:" -ForegroundColor Yellow
+    # Afficher le rÃ©sumÃ© des tests
+    Write-Host "RÃ©sumÃ© des tests:" -ForegroundColor Yellow
     Write-Host "  Total: $($results.TotalTests)" -ForegroundColor Cyan
-    Write-Host "  Réussis: $($results.PassedTests)" -ForegroundColor Green
-    Write-Host "  Échoués: $($results.FailedTests)" -ForegroundColor Red
+    Write-Host "  RÃ©ussis: $($results.PassedTests)" -ForegroundColor Green
+    Write-Host "  Ã‰chouÃ©s: $($results.FailedTests)" -ForegroundColor Red
     
     return $results
 }
 
-# Fonction pour convertir un fichier d'un format à un autre
+# Fonction pour convertir un fichier d'un format Ã  un autre
 function Convert-FormatFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -134,15 +134,15 @@ function Convert-FormatFile {
         [hashtable]$ConversionSettings
     )
     
-    # Vérifier si les formats d'entrée et de sortie sont identiques
+    # VÃ©rifier si les formats d'entrÃ©e et de sortie sont identiques
     if ($InputFormat -eq $OutputFormat) {
-        Write-Error "Les formats d'entrée et de sortie sont identiques: $InputFormat"
+        Write-Error "Les formats d'entrÃ©e et de sortie sont identiques: $InputFormat"
         return $false
     }
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath)) {
-        Write-Error "Le fichier d'entrée n'existe pas: $InputPath"
+        Write-Error "Le fichier d'entrÃ©e n'existe pas: $InputPath"
         return $false
     }
     
@@ -161,7 +161,7 @@ function Convert-FormatFile {
             }
         }
         
-        Write-Host "Conversion réussie: $InputPath -> $OutputPath" -ForegroundColor Green
+        Write-Host "Conversion rÃ©ussie: $InputPath -> $OutputPath" -ForegroundColor Green
         return $true
     }
     catch {
@@ -192,13 +192,13 @@ function Invoke-XmlAnalysis {
         [switch]$IncludeMapping
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $InputPath)) {
         Write-Error "Le fichier XML n'existe pas: $InputPath"
         return $false
     }
     
-    # Créer le répertoire de sortie si nécessaire
+    # CrÃ©er le rÃ©pertoire de sortie si nÃ©cessaire
     if ($OutputPath) {
         $outputDir = Split-Path -Path $OutputPath -Parent
         
@@ -213,7 +213,7 @@ function Invoke-XmlAnalysis {
     # Initialiser le rapport
     $report = ""
     
-    # Ajouter l'en-tête du rapport
+    # Ajouter l'en-tÃªte du rapport
     if ($AsHtml) {
         $report += @"
 <!DOCTYPE html>
@@ -249,7 +249,7 @@ function Invoke-XmlAnalysis {
         
         if ($AsHtml) {
             $report += "<h2>Validation XML</h2>`n"
-            $report += "<p>Validation: <span class=`"$($validationResult.IsValid ? "success" : "error")`">$($validationResult.IsValid ? "Réussie" : "Échouée")</span></p>`n"
+            $report += "<p>Validation: <span class=`"$($validationResult.IsValid ? "success" : "error")`">$($validationResult.IsValid ? "RÃ©ussie" : "Ã‰chouÃ©e")</span></p>`n"
             $report += "<p>Version XML: $($validationResult.XmlVersion)</p>`n"
             $report += "<p>Encodage: $($validationResult.Encoding)</p>`n"
             $report += "<p>Autonome: $($validationResult.Standalone)</p>`n"
@@ -281,7 +281,7 @@ function Invoke-XmlAnalysis {
         else {
             $report += "Validation XML`n"
             $report += "-------------`n`n"
-            $report += "Validation: $($validationResult.IsValid ? "Réussie" : "Échouée")`n"
+            $report += "Validation: $($validationResult.IsValid ? "RÃ©ussie" : "Ã‰chouÃ©e")`n"
             $report += "Version XML: $($validationResult.XmlVersion)`n"
             $report += "Encodage: $($validationResult.Encoding)`n"
             $report += "Autonome: $($validationResult.Standalone)`n"
@@ -316,10 +316,10 @@ function Invoke-XmlAnalysis {
         
         if ($AsHtml) {
             $report += "<h2>Structure XML</h2>`n"
-            $report += "<p>Nombre d'éléments: $($elements.Count)</p>`n"
+            $report += "<p>Nombre d'Ã©lÃ©ments: $($elements.Count)</p>`n"
             $report += "<p>Profondeur maximale: $($elements | Measure-Object -Property Depth -Maximum | Select-Object -ExpandProperty Maximum)</p>`n"
             
-            $report += "<h3>Éléments</h3>`n"
+            $report += "<h3>Ã‰lÃ©ments</h3>`n"
             $report += "<table>`n"
             $report += "<tr><th>Nom</th><th>Chemin</th><th>Profondeur</th><th>Attributs</th><th>Valeur</th></tr>`n"
             
@@ -350,10 +350,10 @@ function Invoke-XmlAnalysis {
         else {
             $report += "Structure XML`n"
             $report += "------------`n`n"
-            $report += "Nombre d'éléments: $($elements.Count)`n"
+            $report += "Nombre d'Ã©lÃ©ments: $($elements.Count)`n"
             $report += "Profondeur maximale: $($elements | Measure-Object -Property Depth -Maximum | Select-Object -ExpandProperty Maximum)`n`n"
             
-            $report += "Éléments:`n"
+            $report += "Ã‰lÃ©ments:`n"
             
             foreach ($element in $elements) {
                 $indent = "  " * $element.Depth
@@ -384,7 +384,7 @@ function Invoke-XmlAnalysis {
         if ($AsHtml) {
             $report += "<h2>Mapping XML vers Roadmap</h2>`n"
             
-            $report += "<h3>Élément racine</h3>`n"
+            $report += "<h3>Ã‰lÃ©ment racine</h3>`n"
             $report += "<p>$($mapping.RootElement.Name) ($($mapping.RootElement.Path))</p>`n"
             
             $report += "<h3>Sections ($($mapping.Sections.Count))</h3>`n"
@@ -409,37 +409,37 @@ function Invoke-XmlAnalysis {
                 $report += "<ul>`n"
                 $report += "<li>ID: $($phase.Attributes["id"])</li>`n"
                 $report += "<li>Titre: $($phase.Attributes["title"])</li>`n"
-                $report += "<li>Terminée: $($phase.Attributes["completed"])</li>`n"
+                $report += "<li>TerminÃ©e: $($phase.Attributes["completed"])</li>`n"
                 $report += "</ul>`n"
                 $report += "</li>`n"
             }
             
             $report += "</ul>`n"
             
-            $report += "<h3>Tâches ($($mapping.Tasks.Count))</h3>`n"
+            $report += "<h3>TÃ¢ches ($($mapping.Tasks.Count))</h3>`n"
             $report += "<ul>`n"
             
             foreach ($task in $mapping.Tasks) {
                 $report += "<li>$($task.Name) ($($task.Path))`n"
                 $report += "<ul>`n"
                 $report += "<li>Titre: $($task.Attributes["title"])</li>`n"
-                $report += "<li>Temps estimé: $($task.Attributes["estimatedTime"])</li>`n"
-                $report += "<li>Date de début: $($task.Attributes["startDate"])</li>`n"
-                $report += "<li>Terminée: $($task.Attributes["completed"])</li>`n"
+                $report += "<li>Temps estimÃ©: $($task.Attributes["estimatedTime"])</li>`n"
+                $report += "<li>Date de dÃ©but: $($task.Attributes["startDate"])</li>`n"
+                $report += "<li>TerminÃ©e: $($task.Attributes["completed"])</li>`n"
                 $report += "</ul>`n"
                 $report += "</li>`n"
             }
             
             $report += "</ul>`n"
             
-            $report += "<h3>Sous-tâches ($($mapping.Subtasks.Count))</h3>`n"
+            $report += "<h3>Sous-tÃ¢ches ($($mapping.Subtasks.Count))</h3>`n"
             $report += "<ul>`n"
             
             foreach ($subtask in $mapping.Subtasks) {
                 $report += "<li>$($subtask.Name) ($($subtask.Path))`n"
                 $report += "<ul>`n"
                 $report += "<li>Titre: $($subtask.Attributes["title"])</li>`n"
-                $report += "<li>Terminée: $($subtask.Attributes["completed"])</li>`n"
+                $report += "<li>TerminÃ©e: $($subtask.Attributes["completed"])</li>`n"
                 $report += "</ul>`n"
                 $report += "</li>`n"
             }
@@ -463,7 +463,7 @@ function Invoke-XmlAnalysis {
             $report += "Mapping XML vers Roadmap`n"
             $report += "======================`n`n"
             
-            $report += "Élément racine: $($mapping.RootElement.Name) ($($mapping.RootElement.Path))`n`n"
+            $report += "Ã‰lÃ©ment racine: $($mapping.RootElement.Name) ($($mapping.RootElement.Path))`n`n"
             
             $report += "Sections ($($mapping.Sections.Count)):`n"
             
@@ -479,25 +479,25 @@ function Invoke-XmlAnalysis {
                 $report += "  - $($phase.Name) ($($phase.Path))`n"
                 $report += "    ID: $($phase.Attributes["id"])`n"
                 $report += "    Titre: $($phase.Attributes["title"])`n"
-                $report += "    Terminée: $($phase.Attributes["completed"])`n`n"
+                $report += "    TerminÃ©e: $($phase.Attributes["completed"])`n`n"
             }
             
-            $report += "Tâches ($($mapping.Tasks.Count)):`n"
+            $report += "TÃ¢ches ($($mapping.Tasks.Count)):`n"
             
             foreach ($task in $mapping.Tasks) {
                 $report += "  - $($task.Name) ($($task.Path))`n"
                 $report += "    Titre: $($task.Attributes["title"])`n"
-                $report += "    Temps estimé: $($task.Attributes["estimatedTime"])`n"
-                $report += "    Date de début: $($task.Attributes["startDate"])`n"
-                $report += "    Terminée: $($task.Attributes["completed"])`n`n"
+                $report += "    Temps estimÃ©: $($task.Attributes["estimatedTime"])`n"
+                $report += "    Date de dÃ©but: $($task.Attributes["startDate"])`n"
+                $report += "    TerminÃ©e: $($task.Attributes["completed"])`n`n"
             }
             
-            $report += "Sous-tâches ($($mapping.Subtasks.Count)):`n"
+            $report += "Sous-tÃ¢ches ($($mapping.Subtasks.Count)):`n"
             
             foreach ($subtask in $mapping.Subtasks) {
                 $report += "  - $($subtask.Name) ($($subtask.Path))`n"
                 $report += "    Titre: $($subtask.Attributes["title"])`n"
-                $report += "    Terminée: $($subtask.Attributes["completed"])`n`n"
+                $report += "    TerminÃ©e: $($subtask.Attributes["completed"])`n`n"
             }
             
             $report += "Notes ($($mapping.Notes.Count)):`n"
@@ -517,15 +517,15 @@ function Invoke-XmlAnalysis {
 "@
     }
     
-    # Enregistrer le rapport si un chemin de sortie est spécifié
+    # Enregistrer le rapport si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
-        # Déterminer l'encodage en fonction du format
+        # DÃ©terminer l'encodage en fonction du format
         $encoding = if ($AsHtml) { "UTF8" } else { "ASCII" }
         
         # Enregistrer le rapport
         Set-Content -Path $OutputPath -Value $report -Encoding $encoding
         
-        Write-Host "Rapport d'analyse XML généré: $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport d'analyse XML gÃ©nÃ©rÃ©: $OutputPath" -ForegroundColor Green
         return $OutputPath
     }
     
@@ -535,7 +535,7 @@ function Invoke-XmlAnalysis {
 # Exporter les fonctions
 Export-ModuleMember -Function Show-XmlSupportHelp, Invoke-XmlSupportTests, Convert-FormatFile, Invoke-XmlAnalysis
 
-# Exporter les fonctions des modules importés
+# Exporter les fonctions des modules importÃ©s
 Export-ModuleMember -Function ConvertFrom-RoadmapToXml, ConvertFrom-XmlToRoadmap
 Export-ModuleMember -Function ConvertFrom-RoadmapFileToXmlFile, ConvertFrom-XmlFileToRoadmapFile
 Export-ModuleMember -Function Get-XmlElements, Get-XmlElementsFromFile
@@ -546,5 +546,5 @@ Export-ModuleMember -Function Get-XmlValidationReport, Test-XmlFileWithReport
 Export-ModuleMember -Function Test-XmlFileAgainstSchema, New-XsdSchemaFromXml
 
 # Afficher un message d'accueil
-Write-Host "Module de support XML chargé." -ForegroundColor Cyan
+Write-Host "Module de support XML chargÃ©." -ForegroundColor Cyan
 Write-Host "Utilisez Show-XmlSupportHelp pour afficher l'aide." -ForegroundColor Cyan

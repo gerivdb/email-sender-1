@@ -1,7 +1,7 @@
-# RoadmapModel.psm1
-# Module pour représenter le modèle objet de la roadmap
+﻿# RoadmapModel.psm1
+# Module pour reprÃ©senter le modÃ¨le objet de la roadmap
 
-# Énumération pour représenter le statut d'une tâche
+# Ã‰numÃ©ration pour reprÃ©senter le statut d'une tÃ¢che
 Add-Type -TypeDefinition @"
     public enum TaskStatus {
         Incomplete,
@@ -11,7 +11,7 @@ Add-Type -TypeDefinition @"
     }
 "@
 
-# Fonction pour créer une nouvelle tâche
+# Fonction pour crÃ©er une nouvelle tÃ¢che
 function New-RoadmapTask {
     [CmdletBinding()]
     param (
@@ -29,26 +29,26 @@ function New-RoadmapTask {
     )
 
     $task = [PSCustomObject]@{
-        # Propriétés essentielles
+        # PropriÃ©tÃ©s essentielles
         Id               = $Id
         Title            = $Title
         Description      = $Description
         Status           = $Status
 
-        # Propriétés de relation
+        # PropriÃ©tÃ©s de relation
         Parent           = $null
         Children         = New-Object System.Collections.ArrayList
         Dependencies     = New-Object System.Collections.ArrayList
         DependentTasks   = New-Object System.Collections.ArrayList
 
-        # Propriétés additionnelles
+        # PropriÃ©tÃ©s additionnelles
         Level            = 0
         Order            = 0
         CreatedDate      = Get-Date
         ModifiedDate     = Get-Date
         OriginalMarkdown = ""
 
-        # Méthodes
+        # MÃ©thodes
         ChangeStatus     = {
             param([TaskStatus]$newStatus)
             $this.Status = $newStatus
@@ -71,7 +71,7 @@ function New-RoadmapTask {
                 $this.Children.RemoveAt($index)
                 $child.Parent = $null
 
-                # Réorganiser les ordres des enfants restants
+                # RÃ©organiser les ordres des enfants restants
                 for ($i = $index; $i -lt $this.Children.Count; $i++) {
                     $this.Children[$i].Order = $i
                 }
@@ -134,7 +134,7 @@ function New-RoadmapTask {
     return $task
 }
 
-# Fonction pour créer un nouvel arbre de roadmap
+# Fonction pour crÃ©er un nouvel arbre de roadmap
 function New-RoadmapTree {
     [CmdletBinding()]
     param (
@@ -149,7 +149,7 @@ function New-RoadmapTree {
     $root.Level = -1
 
     $tree = [PSCustomObject]@{
-        # Propriétés
+        # PropriÃ©tÃ©s
         Root                        = $root
         AllTasks                    = New-Object System.Collections.ArrayList
         TasksById                   = @{}
@@ -159,7 +159,7 @@ function New-RoadmapTree {
         ModifiedDate                = Get-Date
         FilePath                    = ""
 
-        # Méthodes
+        # MÃ©thodes
         AddTask                     = {
             param(
                 [Parameter(Mandatory = $true)]
@@ -186,12 +186,12 @@ function New-RoadmapTree {
                 $task.Parent.RemoveChild.Invoke($task)
             }
 
-            # Supprimer récursivement tous les enfants
+            # Supprimer rÃ©cursivement tous les enfants
             foreach ($child in $task.Children.ToArray()) {
                 $this.RemoveTask.Invoke($child)
             }
 
-            # Supprimer les références dans les dépendances
+            # Supprimer les rÃ©fÃ©rences dans les dÃ©pendances
             foreach ($dependency in $task.Dependencies.ToArray()) {
                 $task.RemoveDependency.Invoke($dependency)
             }
@@ -284,7 +284,7 @@ function New-RoadmapTree {
         }
 
         ValidateStructure           = {
-            # Vérifier que tous les IDs sont uniques
+            # VÃ©rifier que tous les IDs sont uniques
             $uniqueIds = @{}
             foreach ($task in $this.AllTasks) {
                 if ($uniqueIds.ContainsKey($task.Id)) {
@@ -293,7 +293,7 @@ function New-RoadmapTree {
                 $uniqueIds[$task.Id] = $true
             }
 
-            # Vérifier que chaque tâche a un parent correct
+            # VÃ©rifier que chaque tÃ¢che a un parent correct
             foreach ($task in $this.AllTasks) {
                 if ($null -eq $task.Parent) {
                     return $false
@@ -304,7 +304,7 @@ function New-RoadmapTree {
                 }
             }
 
-            # Vérifier la cohérence des niveaux
+            # VÃ©rifier la cohÃ©rence des niveaux
             foreach ($task in $this.AllTasks) {
                 if ($task.Parent -eq $this.Root) {
                     if ($task.Level -ne 0) {
@@ -350,7 +350,7 @@ function New-RoadmapTree {
     return $tree
 }
 
-# Fonction pour créer une nouvelle tâche
+# Fonction pour crÃ©er une nouvelle tÃ¢che
 function New-RoadmapTask {
     [CmdletBinding()]
     param (
@@ -367,28 +367,28 @@ function New-RoadmapTask {
         [TaskStatus]$Status = [TaskStatus]::Incomplete
     )
 
-    # Créer une nouvelle tâche directement
+    # CrÃ©er une nouvelle tÃ¢che directement
     $task = [PSCustomObject]@{
-        # Propriétés essentielles
+        # PropriÃ©tÃ©s essentielles
         Id               = $Id
         Title            = $Title
         Description      = $Description
         Status           = $Status
 
-        # Propriétés de relation
+        # PropriÃ©tÃ©s de relation
         Parent           = $null
         Children         = New-Object System.Collections.ArrayList
         Dependencies     = New-Object System.Collections.ArrayList
         DependentTasks   = New-Object System.Collections.ArrayList
 
-        # Propriétés additionnelles
+        # PropriÃ©tÃ©s additionnelles
         Level            = 0
         Order            = 0
         CreatedDate      = Get-Date
         ModifiedDate     = Get-Date
         OriginalMarkdown = ""
 
-        # Méthodes
+        # MÃ©thodes
         ChangeStatus     = {
             param([TaskStatus]$newStatus)
             $this.Status = $newStatus
@@ -411,7 +411,7 @@ function New-RoadmapTask {
                 $this.Children.RemoveAt($index)
                 $child.Parent = $null
 
-                # Réorganiser les ordres des enfants restants
+                # RÃ©organiser les ordres des enfants restants
                 for ($i = $index; $i -lt $this.Children.Count; $i++) {
                     $this.Children[$i].Order = $i
                 }
@@ -474,7 +474,7 @@ function New-RoadmapTask {
     return $task
 }
 
-# Fonction pour charger un arbre de roadmap à partir d'un fichier JSON
+# Fonction pour charger un arbre de roadmap Ã  partir d'un fichier JSON
 function Import-RoadmapTreeFromJson {
     [CmdletBinding()]
     param (
@@ -488,11 +488,11 @@ function Import-RoadmapTreeFromJson {
 
     $json = Get-Content -Path $FilePath -Raw | ConvertFrom-Json
 
-    # Créer un nouvel arbre
+    # CrÃ©er un nouvel arbre
     $tree = New-RoadmapTree -Title $json.Title -Description $json.Description
     $tree.FilePath = $FilePath
 
-    # Reconstruire l'arbre à partir des données JSON
+    # Reconstruire l'arbre Ã  partir des donnÃ©es JSON
     foreach ($taskData in $json.Tasks) {
         $task = New-RoadmapTask -Id $taskData.Id -Title $taskData.Title -Description $taskData.Description -Status $taskData.Status
         $parentId = $taskData.ParentId
@@ -505,7 +505,7 @@ function Import-RoadmapTreeFromJson {
         }
     }
 
-    # Reconstruire les dépendances
+    # Reconstruire les dÃ©pendances
     foreach ($taskData in $json.Tasks) {
         $task = $tree.TasksById[$taskData.Id]
 
@@ -538,7 +538,7 @@ function Export-RoadmapTreeToJson {
         Tasks        = @()
     }
 
-    # Ajouter toutes les tâches
+    # Ajouter toutes les tÃ¢ches
     foreach ($task in $RoadmapTree.AllTasks) {
         $taskObj = [PSCustomObject]@{
             Id           = $task.Id
@@ -551,7 +551,7 @@ function Export-RoadmapTreeToJson {
             Dependencies = @()
         }
 
-        # Ajouter les dépendances
+        # Ajouter les dÃ©pendances
         foreach ($dependency in $task.Dependencies) {
             $taskObj.Dependencies += $dependency.Id
         }
@@ -575,14 +575,14 @@ function Export-RoadmapTreeToMarkdown {
         [string]$FilePath
     )
 
-    # Générer le markdown
+    # GÃ©nÃ©rer le markdown
     $markdown = "# $($RoadmapTree.Title)`n`n"
 
     if (-not [string]::IsNullOrEmpty($RoadmapTree.Description)) {
         $markdown += "$($RoadmapTree.Description)`n`n"
     }
 
-    # Fonction récursive pour générer le markdown des tâches
+    # Fonction rÃ©cursive pour gÃ©nÃ©rer le markdown des tÃ¢ches
     function Get-TaskMarkdown {
         param(
             [PSCustomObject]$Task
@@ -609,7 +609,7 @@ function Export-RoadmapTreeToMarkdown {
         return $result
     }
 
-    # Ajouter toutes les tâches de premier niveau
+    # Ajouter toutes les tÃ¢ches de premier niveau
     foreach ($task in $RoadmapTree.Root.Children) {
         $markdown += Get-TaskMarkdown -Task $task
     }

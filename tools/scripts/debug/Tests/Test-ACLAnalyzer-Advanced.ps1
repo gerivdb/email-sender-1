@@ -1,33 +1,33 @@
-# Test pour les fonctions avancées de ACLAnalyzer.ps1
-# Importer le module à tester
+﻿# Test pour les fonctions avancÃ©es de ACLAnalyzer.ps1
+# Importer le module Ã  tester
 $scriptPath = Split-Path -Parent $PSCommandPath
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ACLAnalyzer.ps1"
 . $modulePath
 
-# Créer un dossier de test unique
+# CrÃ©er un dossier de test unique
 $testGuid = [System.Guid]::NewGuid().ToString()
 $testFolder = Join-Path -Path $env:TEMP -ChildPath "ACLTest_$testGuid"
 $testSubFolder = Join-Path -Path $testFolder -ChildPath "SubFolder"
 $testReferenceFolder = Join-Path -Path $env:TEMP -ChildPath "ACLTest_Ref_$testGuid"
 
-# Créer les dossiers pour les tests
+# CrÃ©er les dossiers pour les tests
 New-Item -Path $testFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $testSubFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $testReferenceFolder -ItemType Directory -Force | Out-Null
 
-# Ajouter une permission "Everyone" pour tester la détection et la correction d'anomalies
+# Ajouter une permission "Everyone" pour tester la dÃ©tection et la correction d'anomalies
 $acl = Get-Acl -Path $testFolder
 $everyone = New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::WorldSid, $null)
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($everyone, "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
 $acl.AddAccessRule($rule)
 Set-Acl -Path $testFolder -AclObject $acl
 
-# Désactiver l'héritage sur le sous-dossier pour les tests
+# DÃ©sactiver l'hÃ©ritage sur le sous-dossier pour les tests
 $acl = Get-Acl -Path $testSubFolder
-$acl.SetAccessRuleProtection($true, $true)  # Désactiver l'héritage mais conserver les règles héritées
+$acl.SetAccessRuleProtection($true, $true)  # DÃ©sactiver l'hÃ©ritage mais conserver les rÃ¨gles hÃ©ritÃ©es
 Set-Acl -Path $testSubFolder -AclObject $acl
 
-# Fonction pour afficher les résultats des tests
+# Fonction pour afficher les rÃ©sultats des tests
 function Test-Result {
     param (
         [string]$TestName,
@@ -41,9 +41,9 @@ function Test-Result {
         $valid = & $ValidationScript $result
         
         if ($valid) {
-            Write-Host "  RÉUSSI: $TestName" -ForegroundColor Green
+            Write-Host "  RÃ‰USSI: $TestName" -ForegroundColor Green
         } else {
-            Write-Host "  ÉCHEC: $TestName - Validation échouée" -ForegroundColor Red
+            Write-Host "  Ã‰CHEC: $TestName - Validation Ã©chouÃ©e" -ForegroundColor Red
         }
     } catch {
         Write-Host "  ERREUR: $TestName - $($_.Exception.Message)" -ForegroundColor Red
@@ -62,7 +62,7 @@ $result1 = Test-Result -TestName "Repair-NTFSPermissionAnomaly avec WhatIf" -Tes
 
 # Test 2: Compare-NTFSPermission
 $result2 = Test-Result -TestName "Compare-NTFSPermission entre deux dossiers" -TestScript {
-    # Ajouter une permission différente au dossier de référence
+    # Ajouter une permission diffÃ©rente au dossier de rÃ©fÃ©rence
     $acl = Get-Acl -Path $testReferenceFolder
     $users = New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::BuiltinUsersSid, $null)
     $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($users, "ReadAndExecute", "ContainerInherit,ObjectInherit", "None", "Allow")
@@ -81,9 +81,9 @@ $result3 = Test-Result -TestName "Repair-NTFSPermissionAnomaly avec Force" -Test
     Repair-NTFSPermissionAnomaly -Path $testSubFolder -AnomalyType "InheritanceBreak" -Force
 } -ValidationScript {
     param($r)
-    # Vérifier si la correction a été appliquée
+    # VÃ©rifier si la correction a Ã©tÃ© appliquÃ©e
     if ($r -and $r.Count -gt 0 -and $r[0].CorrectionApplied -eq $true) {
-        # Vérifier si l'héritage a été réactivé
+        # VÃ©rifier si l'hÃ©ritage a Ã©tÃ© rÃ©activÃ©
         $acl = Get-Acl -Path $testSubFolder
         return -not $acl.AreAccessRulesProtected
     }
@@ -95,4 +95,4 @@ Write-Host "Nettoyage des fichiers de test..."
 Remove-Item -Path $testFolder -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path $testReferenceFolder -Recurse -Force -ErrorAction SilentlyContinue
 
-Write-Host "Tests terminés."
+Write-Host "Tests terminÃ©s."

@@ -1,17 +1,17 @@
-# Test-MarkdownParser.ps1
+﻿# Test-MarkdownParser.ps1
 # Script pour tester la fonction ConvertFrom-MarkdownToObject
 
-# Importer la fonction à tester
+# Importer la fonction Ã  tester
 $functionPath = Join-Path -Path $PSScriptRoot -ChildPath "..\functions\ConvertFrom-MarkdownToObject.ps1"
 . $functionPath
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test
+# CrÃ©er un fichier markdown de test
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 $testMarkdown = @"
 # Roadmap de Test
@@ -20,21 +20,21 @@ Ceci est une roadmap de test pour valider la fonction ConvertFrom-MarkdownToObje
 
 ## Section 1
 
-- [ ] **1** Tâche 1
-  - [x] **1.1** Tâche 1.1
-  - [ ] **1.2** Tâche 1.2
-    - [~] **1.2.1** Tâche 1.2.1 @john #important
-    - [!] **1.2.2** Tâche 1.2.2 P1
+- [ ] **1** TÃ¢che 1
+  - [x] **1.1** TÃ¢che 1.1
+  - [ ] **1.2** TÃ¢che 1.2
+    - [~] **1.2.1** TÃ¢che 1.2.1 @john #important
+    - [!] **1.2.2** TÃ¢che 1.2.2 P1
 
 ## Section 2
 
-- [ ] **2** Tâche 2
-  - [ ] **2.1** Tâche 2.1 @date:2023-12-31
+- [ ] **2** TÃ¢che 2
+  - [ ] **2.1** TÃ¢che 2.1 @date:2023-12-31
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
     # Test 1: Conversion de base
@@ -45,75 +45,75 @@ try {
     Write-Host "Description: $($result.Description)" -ForegroundColor Yellow
     Write-Host "Nombre de sections: $($result.Items.Count)" -ForegroundColor Yellow
     
-    # Vérifier les sections
+    # VÃ©rifier les sections
     if ($result.Items.Count -eq 2) {
-        Write-Host "✓ Nombre de sections correct" -ForegroundColor Green
+        Write-Host "âœ“ Nombre de sections correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Nombre de sections incorrect" -ForegroundColor Red
+        Write-Host "âœ— Nombre de sections incorrect" -ForegroundColor Red
     }
     
-    # Vérifier le titre de la première section
+    # VÃ©rifier le titre de la premiÃ¨re section
     if ($result.Items[0].Title -eq "Section 1") {
-        Write-Host "✓ Titre de la première section correct" -ForegroundColor Green
+        Write-Host "âœ“ Titre de la premiÃ¨re section correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Titre de la première section incorrect" -ForegroundColor Red
+        Write-Host "âœ— Titre de la premiÃ¨re section incorrect" -ForegroundColor Red
     }
     
-    # Vérifier les tâches de la première section
+    # VÃ©rifier les tÃ¢ches de la premiÃ¨re section
     $section1 = $result.Items[0]
     if ($section1.Items.Count -gt 0) {
-        Write-Host "✓ La première section contient des tâches" -ForegroundColor Green
+        Write-Host "âœ“ La premiÃ¨re section contient des tÃ¢ches" -ForegroundColor Green
         
-        # Vérifier la première tâche
+        # VÃ©rifier la premiÃ¨re tÃ¢che
         $task1 = $section1.Items[0]
         if ($task1.Id -eq "1" -and $task1.Status -eq "Incomplete") {
-            Write-Host "✓ ID et statut de la première tâche corrects" -ForegroundColor Green
+            Write-Host "âœ“ ID et statut de la premiÃ¨re tÃ¢che corrects" -ForegroundColor Green
         } else {
-            Write-Host "✗ ID ou statut de la première tâche incorrect" -ForegroundColor Red
+            Write-Host "âœ— ID ou statut de la premiÃ¨re tÃ¢che incorrect" -ForegroundColor Red
         }
         
-        # Vérifier les sous-tâches
+        # VÃ©rifier les sous-tÃ¢ches
         if ($task1.Items.Count -eq 2) {
-            Write-Host "✓ Nombre de sous-tâches correct" -ForegroundColor Green
+            Write-Host "âœ“ Nombre de sous-tÃ¢ches correct" -ForegroundColor Green
             
-            # Vérifier la première sous-tâche
+            # VÃ©rifier la premiÃ¨re sous-tÃ¢che
             $subtask1 = $task1.Items[0]
             if ($subtask1.Id -eq "1.1" -and $subtask1.Status -eq "Complete") {
-                Write-Host "✓ ID et statut de la première sous-tâche corrects" -ForegroundColor Green
+                Write-Host "âœ“ ID et statut de la premiÃ¨re sous-tÃ¢che corrects" -ForegroundColor Green
             } else {
-                Write-Host "✗ ID ou statut de la première sous-tâche incorrect" -ForegroundColor Red
+                Write-Host "âœ— ID ou statut de la premiÃ¨re sous-tÃ¢che incorrect" -ForegroundColor Red
             }
         } else {
-            Write-Host "✗ Nombre de sous-tâches incorrect" -ForegroundColor Red
+            Write-Host "âœ— Nombre de sous-tÃ¢ches incorrect" -ForegroundColor Red
         }
     } else {
-        Write-Host "✗ La première section ne contient pas de tâches" -ForegroundColor Red
+        Write-Host "âœ— La premiÃ¨re section ne contient pas de tÃ¢ches" -ForegroundColor Red
     }
     
-    # Test 2: Conversion avec métadonnées
-    Write-Host "`nTest 2: Conversion avec métadonnées" -ForegroundColor Cyan
+    # Test 2: Conversion avec mÃ©tadonnÃ©es
+    Write-Host "`nTest 2: Conversion avec mÃ©tadonnÃ©es" -ForegroundColor Cyan
     $resultWithMetadata = ConvertFrom-MarkdownToObject -FilePath $testMarkdownPath -IncludeMetadata
     
-    # Vérifier les métadonnées
+    # VÃ©rifier les mÃ©tadonnÃ©es
     $section1 = $resultWithMetadata.Items[0]
     $task1 = $section1.Items[0]
     $subtask2 = $task1.Items[1]
     $subsubtask1 = $subtask2.Items[0]
     
     if ($subsubtask1.Metadata.ContainsKey("Assignee") -and $subsubtask1.Metadata["Assignee"] -eq "john") {
-        Write-Host "✓ Assignation correcte" -ForegroundColor Green
+        Write-Host "âœ“ Assignation correcte" -ForegroundColor Green
     } else {
-        Write-Host "✗ Assignation incorrecte" -ForegroundColor Red
+        Write-Host "âœ— Assignation incorrecte" -ForegroundColor Red
     }
     
     if ($subsubtask1.Metadata.ContainsKey("Tags") -and $subsubtask1.Metadata["Tags"] -contains "important") {
-        Write-Host "✓ Tags corrects" -ForegroundColor Green
+        Write-Host "âœ“ Tags corrects" -ForegroundColor Green
     } else {
-        Write-Host "✗ Tags incorrects" -ForegroundColor Red
+        Write-Host "âœ— Tags incorrects" -ForegroundColor Red
     }
     
-    # Test 3: Marqueurs de statut personnalisés
-    Write-Host "`nTest 3: Marqueurs de statut personnalisés" -ForegroundColor Cyan
+    # Test 3: Marqueurs de statut personnalisÃ©s
+    Write-Host "`nTest 3: Marqueurs de statut personnalisÃ©s" -ForegroundColor Cyan
     $customMarkers = @{
         "x" = "InProgress";  # Remplacer Complete par InProgress
         "~" = "Complete"     # Remplacer InProgress par Complete
@@ -128,18 +128,18 @@ try {
     $subsubtask1 = $subtask2.Items[0]
     
     if ($subtask1.Status -eq "InProgress") {
-        Write-Host "✓ Marqueur personnalisé 'x' correct" -ForegroundColor Green
+        Write-Host "âœ“ Marqueur personnalisÃ© 'x' correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Marqueur personnalisé 'x' incorrect" -ForegroundColor Red
+        Write-Host "âœ— Marqueur personnalisÃ© 'x' incorrect" -ForegroundColor Red
     }
     
     if ($subsubtask1.Status -eq "Complete") {
-        Write-Host "✓ Marqueur personnalisé '~' correct" -ForegroundColor Green
+        Write-Host "âœ“ Marqueur personnalisÃ© '~' correct" -ForegroundColor Green
     } else {
-        Write-Host "✗ Marqueur personnalisé '~' incorrect" -ForegroundColor Red
+        Write-Host "âœ— Marqueur personnalisÃ© '~' incorrect" -ForegroundColor Red
     }
     
-    Write-Host "`nTous les tests sont terminés." -ForegroundColor Green
+    Write-Host "`nTous les tests sont terminÃ©s." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors des tests: $_" -ForegroundColor Red
@@ -149,6 +149,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Génère un rapport de couverture de code pour TestOmnibus.
+    GÃ©nÃ¨re un rapport de couverture de code pour TestOmnibus.
 .DESCRIPTION
-    Ce script génère un rapport de couverture de code pour TestOmnibus en utilisant
-    les données de couverture générées par Pester.
+    Ce script gÃ©nÃ¨re un rapport de couverture de code pour TestOmnibus en utilisant
+    les donnÃ©es de couverture gÃ©nÃ©rÃ©es par Pester.
 .PARAMETER CoveragePath
     Chemin vers le fichier de couverture de code au format JaCoCo.
 .PARAMETER OutputPath
-    Chemin où enregistrer le rapport de couverture de code.
+    Chemin oÃ¹ enregistrer le rapport de couverture de code.
 .PARAMETER SourcePath
-    Chemin vers les fichiers source à analyser.
+    Chemin vers les fichiers source Ã  analyser.
 .EXAMPLE
     .\Generate-CodeCoverageReport.ps1 -CoveragePath "D:\TestResults\coverage.xml" -OutputPath "D:\TestResults\coverage_report.html" -SourcePath "D:\Scripts"
 .NOTES
@@ -30,13 +30,13 @@ param (
     [string]$SourcePath
 )
 
-# Vérifier que le fichier de couverture existe
+# VÃ©rifier que le fichier de couverture existe
 if (-not (Test-Path -Path $CoveragePath)) {
     Write-Error "Le fichier de couverture n'existe pas: $CoveragePath"
     return 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -54,7 +54,7 @@ function Get-JaCoCoData {
         # Charger le fichier XML
         $xml = [xml](Get-Content -Path $CoveragePath -Encoding UTF8)
         
-        # Extraire les données de couverture
+        # Extraire les donnÃ©es de couverture
         $coverageData = @{
             Packages = @()
             TotalLines = 0
@@ -94,7 +94,7 @@ function Get-JaCoCoData {
                     LinesNotCovered = @()
                 }
                 
-                # Parcourir les méthodes
+                # Parcourir les mÃ©thodes
                 foreach ($method in $class.method) {
                     $methodData = @{
                         Name = $method.name
@@ -124,7 +124,7 @@ function Get-JaCoCoData {
                         }
                     }
                     
-                    # Ajouter les données de la méthode à la classe
+                    # Ajouter les donnÃ©es de la mÃ©thode Ã  la classe
                     $classData.Methods += $methodData
                     $classData.TotalLines += $methodData.TotalLines
                     $classData.CoveredLines += $methodData.CoveredLines
@@ -144,7 +144,7 @@ function Get-JaCoCoData {
                     }
                 }
                 
-                # Ajouter les données de la classe au package
+                # Ajouter les donnÃ©es de la classe au package
                 $packageData.Classes += $classData
                 $packageData.TotalLines += $classData.TotalLines
                 $packageData.CoveredLines += $classData.CoveredLines
@@ -154,7 +154,7 @@ function Get-JaCoCoData {
                 $packageData.CoveredInstructions += $classData.CoveredInstructions
             }
             
-            # Ajouter les données du package au rapport
+            # Ajouter les donnÃ©es du package au rapport
             $coverageData.Packages += $packageData
             $coverageData.TotalLines += $packageData.TotalLines
             $coverageData.CoveredLines += $packageData.CoveredLines
@@ -172,7 +172,7 @@ function Get-JaCoCoData {
     }
 }
 
-# Fonction pour générer le rapport HTML
+# Fonction pour gÃ©nÃ©rer le rapport HTML
 function New-CoverageReport {
     [CmdletBinding()]
     param (
@@ -191,7 +191,7 @@ function New-CoverageReport {
     $branchCoveragePercent = if ($CoverageData.TotalBranches -gt 0) { [math]::Round(($CoverageData.CoveredBranches / $CoverageData.TotalBranches) * 100, 2) } else { 0 }
     $instructionCoveragePercent = if ($CoverageData.TotalInstructions -gt 0) { [math]::Round(($CoverageData.CoveredInstructions / $CoverageData.TotalInstructions) * 100, 2) } else { 0 }
     
-    # Générer le rapport HTML
+    # GÃ©nÃ©rer le rapport HTML
     $htmlReport = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -330,7 +330,7 @@ function New-CoverageReport {
 <body>
     <div class="container">
         <h1>Rapport de couverture de code</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
         
         <div class="coverage-summary">
             <div class="coverage-item">
@@ -467,7 +467,7 @@ function New-CoverageReport {
         </table>
 "@
 
-    # Ajouter le code source avec la couverture si le chemin source est spécifié
+    # Ajouter le code source avec la couverture si le chemin source est spÃ©cifiÃ©
     if ($SourcePath -and (Test-Path -Path $SourcePath)) {
         $htmlReport += @"
         <h2>Code source avec couverture</h2>
@@ -512,7 +512,7 @@ function New-CoverageReport {
 
     $htmlReport += @"
         <script>
-            // Créer un graphique de couverture
+            // CrÃ©er un graphique de couverture
             const ctx = document.getElementById('coverageChart').getContext('2d');
             const coverageChart = new Chart(ctx, {
                 type: 'bar',
@@ -556,7 +556,7 @@ function New-CoverageReport {
         </script>
         
         <div class="footer">
-            <p>Généré par TestOmnibus Code Coverage</p>
+            <p>GÃ©nÃ©rÃ© par TestOmnibus Code Coverage</p>
         </div>
     </div>
 </body>
@@ -570,7 +570,7 @@ function New-CoverageReport {
     return $OutputPath
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Analyser le fichier de couverture
     Write-Host "Analyse du fichier de couverture: $CoveragePath" -ForegroundColor Cyan
@@ -581,15 +581,15 @@ try {
         return 1
     }
     
-    # Générer le rapport HTML
-    Write-Host "Génération du rapport de couverture de code..." -ForegroundColor Cyan
+    # GÃ©nÃ©rer le rapport HTML
+    Write-Host "GÃ©nÃ©ration du rapport de couverture de code..." -ForegroundColor Cyan
     $reportPath = New-CoverageReport -CoverageData $coverageData -OutputPath $OutputPath -SourcePath $SourcePath
     
-    Write-Host "Rapport de couverture de code généré: $reportPath" -ForegroundColor Green
+    Write-Host "Rapport de couverture de code gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
     
     return $reportPath
 }
 catch {
-    Write-Error "Erreur lors de la génération du rapport de couverture de code: $_"
+    Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport de couverture de code: $_"
     return 1
 }

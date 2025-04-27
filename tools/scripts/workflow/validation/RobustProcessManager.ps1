@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Gestionnaire de processus robuste pour PowerShell.
 
 .DESCRIPTION
-    Ce script fournit des fonctions pour gérer les processus de manière robuste,
-    avec des fonctionnalités de surveillance, de redémarrage automatique, et de
+    Ce script fournit des fonctions pour gÃ©rer les processus de maniÃ¨re robuste,
+    avec des fonctionnalitÃ©s de surveillance, de redÃ©marrage automatique, et de
     gestion des erreurs.
 
 .EXAMPLE
@@ -12,12 +12,12 @@
     $process = Start-ManagedProcess -FilePath "notepad.exe" -MonitorHealth -RestartOnCrash
 
 .NOTES
-    Auteur: Système d'analyse d'erreurs
-    Date de création: 07/04/2025
+    Auteur: SystÃ¨me d'analyse d'erreurs
+    Date de crÃ©ation: 07/04/2025
     Version: 1.0
 #>
 
-# Classe pour stocker les informations sur un processus géré
+# Classe pour stocker les informations sur un processus gÃ©rÃ©
 class ManagedProcess {
     [int]$Id
     [string]$Name
@@ -63,10 +63,10 @@ class ManagedProcess {
     }
 }
 
-# Liste des processus gérés
+# Liste des processus gÃ©rÃ©s
 $script:ManagedProcesses = [System.Collections.Generic.List[ManagedProcess]]::new()
 
-# Fonction pour démarrer un processus géré
+# Fonction pour dÃ©marrer un processus gÃ©rÃ©
 function Start-ManagedProcess {
     [CmdletBinding()]
     param (
@@ -122,7 +122,7 @@ function Start-ManagedProcess {
         [PSCustomObject]$Metadata = $null
     )
     
-    # Créer un nouvel objet de processus géré
+    # CrÃ©er un nouvel objet de processus gÃ©rÃ©
     $managedProcess = [ManagedProcess]::new()
     $managedProcess.FilePath = $FilePath
     $managedProcess.Arguments = $Arguments
@@ -140,7 +140,7 @@ function Start-ManagedProcess {
     $managedProcess.ErrorFile = $ErrorFile
     $managedProcess.Metadata = if ($null -ne $Metadata) { $Metadata } else { [PSCustomObject]@{} }
     
-    # Créer un objet Process
+    # CrÃ©er un objet Process
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo.FileName = $FilePath
     $process.StartInfo.Arguments = $Arguments -join " "
@@ -149,7 +149,7 @@ function Start-ManagedProcess {
         $process.StartInfo.WorkingDirectory = $WorkingDirectory
     }
     
-    # Configurer la redirection de sortie si demandé
+    # Configurer la redirection de sortie si demandÃ©
     if ($RedirectOutput) {
         $process.StartInfo.UseShellExecute = $false
         $process.StartInfo.RedirectStandardOutput = $true
@@ -157,7 +157,7 @@ function Start-ManagedProcess {
         $process.StartInfo.CreateNoWindow = $true
     }
     
-    # Ajouter des variables d'environnement si spécifiées
+    # Ajouter des variables d'environnement si spÃ©cifiÃ©es
     if ($EnvironmentVariables.Count -gt 0) {
         $process.StartInfo.UseShellExecute = $false
         
@@ -166,10 +166,10 @@ function Start-ManagedProcess {
         }
     }
     
-    # Configurer les gestionnaires d'événements
+    # Configurer les gestionnaires d'Ã©vÃ©nements
     $process.EnableRaisingEvents = $true
     
-    # Gestionnaire d'événement pour la sortie standard
+    # Gestionnaire d'Ã©vÃ©nement pour la sortie standard
     if ($RedirectOutput) {
         $outputHandler = {
             param($sender, $e)
@@ -186,7 +186,7 @@ function Start-ManagedProcess {
         $process.OutputDataReceived += $outputHandler
     }
     
-    # Gestionnaire d'événement pour la sortie d'erreur
+    # Gestionnaire d'Ã©vÃ©nement pour la sortie d'erreur
     if ($RedirectOutput) {
         $errorHandler = {
             param($sender, $e)
@@ -203,46 +203,46 @@ function Start-ManagedProcess {
         $process.ErrorDataReceived += $errorHandler
     }
     
-    # Gestionnaire d'événement pour la sortie du processus
+    # Gestionnaire d'Ã©vÃ©nement pour la sortie du processus
     $exitHandler = {
         param($sender, $e)
         $proc = [System.Diagnostics.Process]$sender
         $managedProcess.IsRunning = $false
         
-        # Exécuter le script OnExit
+        # ExÃ©cuter le script OnExit
         if ($null -ne $managedProcess.OnExit) {
             try {
                 & $managedProcess.OnExit -Process $managedProcess
             }
             catch {
-                Write-Warning "Erreur lors de l'exécution du script OnExit: $_"
+                Write-Warning "Erreur lors de l'exÃ©cution du script OnExit: $_"
             }
         }
         
-        # Vérifier si le processus s'est arrêté de manière inattendue
+        # VÃ©rifier si le processus s'est arrÃªtÃ© de maniÃ¨re inattendue
         $crashed = $proc.ExitCode -ne 0
         
         if ($crashed) {
-            # Exécuter le script OnCrash
+            # ExÃ©cuter le script OnCrash
             if ($null -ne $managedProcess.OnCrash) {
                 try {
                     & $managedProcess.OnCrash -Process $managedProcess
                 }
                 catch {
-                    Write-Warning "Erreur lors de l'exécution du script OnCrash: $_"
+                    Write-Warning "Erreur lors de l'exÃ©cution du script OnCrash: $_"
                 }
             }
             
-            # Redémarrer le processus si demandé
+            # RedÃ©marrer le processus si demandÃ©
             if ($managedProcess.RestartOnCrash -and $managedProcess.RestartCount -lt $managedProcess.MaxRestarts) {
                 $managedProcess.RestartCount++
                 $managedProcess.LastRestartTime = Get-Date
                 
-                Write-Warning "Le processus $($managedProcess.Name) (ID: $($managedProcess.Id)) s'est arrêté de manière inattendue. Redémarrage dans $($managedProcess.RestartDelaySeconds) secondes... (Tentative $($managedProcess.RestartCount)/$($managedProcess.MaxRestarts))"
+                Write-Warning "Le processus $($managedProcess.Name) (ID: $($managedProcess.Id)) s'est arrÃªtÃ© de maniÃ¨re inattendue. RedÃ©marrage dans $($managedProcess.RestartDelaySeconds) secondes... (Tentative $($managedProcess.RestartCount)/$($managedProcess.MaxRestarts))"
                 
                 Start-Sleep -Seconds $managedProcess.RestartDelaySeconds
                 
-                # Redémarrer le processus
+                # RedÃ©marrer le processus
                 $restartArgs = @{
                     FilePath = $managedProcess.FilePath
                     Arguments = $managedProcess.Arguments
@@ -272,46 +272,46 @@ function Start-ManagedProcess {
                 Start-ManagedProcess @restartArgs
             }
             else {
-                Write-Warning "Le processus $($managedProcess.Name) (ID: $($managedProcess.Id)) s'est arrêté de manière inattendue et ne sera pas redémarré."
+                Write-Warning "Le processus $($managedProcess.Name) (ID: $($managedProcess.Id)) s'est arrÃªtÃ© de maniÃ¨re inattendue et ne sera pas redÃ©marrÃ©."
             }
         }
     }
     
     $process.Exited += $exitHandler
     
-    # Démarrer le processus
+    # DÃ©marrer le processus
     try {
         $started = $process.Start()
         
         if (-not $started) {
-            Write-Error "Impossible de démarrer le processus $FilePath"
+            Write-Error "Impossible de dÃ©marrer le processus $FilePath"
             return $null
         }
         
-        # Démarrer la lecture de la sortie si la redirection est activée
+        # DÃ©marrer la lecture de la sortie si la redirection est activÃ©e
         if ($RedirectOutput) {
             $process.BeginOutputReadLine()
             $process.BeginErrorReadLine()
         }
         
-        # Mettre à jour les propriétés du processus géré
+        # Mettre Ã  jour les propriÃ©tÃ©s du processus gÃ©rÃ©
         $managedProcess.Process = $process
         $managedProcess.Id = $process.Id
         $managedProcess.Name = $process.ProcessName
         $managedProcess.IsRunning = $true
         $managedProcess.StartTime = Get-Date
         
-        # Exécuter le script OnStart
+        # ExÃ©cuter le script OnStart
         if ($null -ne $OnStart) {
             try {
                 & $OnStart -Process $managedProcess
             }
             catch {
-                Write-Warning "Erreur lors de l'exécution du script OnStart: $_"
+                Write-Warning "Erreur lors de l'exÃ©cution du script OnStart: $_"
             }
         }
         
-        # Configurer la surveillance de la santé si demandé
+        # Configurer la surveillance de la santÃ© si demandÃ©
         if ($MonitorHealth) {
             $healthCheckCallback = {
                 param($state)
@@ -323,19 +323,19 @@ function Start-ManagedProcess {
                         $isHealthy = & $mp.HealthCheck -Process $mp
                         
                         if (-not $isHealthy) {
-                            Write-Warning "Le processus $($mp.Name) (ID: $($mp.Id)) n'est pas en bonne santé. Tentative de redémarrage..."
+                            Write-Warning "Le processus $($mp.Name) (ID: $($mp.Id)) n'est pas en bonne santÃ©. Tentative de redÃ©marrage..."
                             
-                            # Arrêter le processus
+                            # ArrÃªter le processus
                             Stop-ManagedProcess -Id $mp.Id -Force
                             
-                            # Redémarrer le processus si demandé
+                            # RedÃ©marrer le processus si demandÃ©
                             if ($mp.RestartOnCrash -and $mp.RestartCount -lt $mp.MaxRestarts) {
                                 $mp.RestartCount++
                                 $mp.LastRestartTime = Get-Date
                                 
                                 Start-Sleep -Seconds $mp.RestartDelaySeconds
                                 
-                                # Redémarrer le processus
+                                # RedÃ©marrer le processus
                                 $restartArgs = @{
                                     FilePath = $mp.FilePath
                                     Arguments = $mp.Arguments
@@ -359,12 +359,12 @@ function Start-ManagedProcess {
                         }
                     }
                     catch {
-                        Write-Warning "Erreur lors de la vérification de la santé du processus $($mp.Name) (ID: $($mp.Id)): $_"
+                        Write-Warning "Erreur lors de la vÃ©rification de la santÃ© du processus $($mp.Name) (ID: $($mp.Id)): $_"
                     }
                 }
             }
             
-            # Créer un timer pour la vérification de la santé
+            # CrÃ©er un timer pour la vÃ©rification de la santÃ©
             $timer = New-Object System.Threading.Timer(
                 $healthCheckCallback,
                 $managedProcess,
@@ -375,18 +375,18 @@ function Start-ManagedProcess {
             $managedProcess.HealthCheckTimer = $timer
         }
         
-        # Ajouter le processus à la liste des processus gérés
+        # Ajouter le processus Ã  la liste des processus gÃ©rÃ©s
         $script:ManagedProcesses.Add($managedProcess)
         
         return $managedProcess
     }
     catch {
-        Write-Error "Erreur lors du démarrage du processus $FilePath : $_"
+        Write-Error "Erreur lors du dÃ©marrage du processus $FilePath : $_"
         return $null
     }
 }
 
-# Fonction pour arrêter un processus géré
+# Fonction pour arrÃªter un processus gÃ©rÃ©
 function Stop-ManagedProcess {
     [CmdletBinding()]
     param (
@@ -403,7 +403,7 @@ function Stop-ManagedProcess {
         [int]$TimeoutSeconds = 10
     )
     
-    # Trouver le processus géré
+    # Trouver le processus gÃ©rÃ©
     $managedProcess = if ($PSCmdlet.ParameterSetName -eq "ById") {
         $script:ManagedProcesses | Where-Object { $_.Id -eq $Id } | Select-Object -First 1
     }
@@ -412,17 +412,17 @@ function Stop-ManagedProcess {
     }
     
     if ($null -eq $managedProcess) {
-        Write-Error "Processus géré non trouvé."
+        Write-Error "Processus gÃ©rÃ© non trouvÃ©."
         return $false
     }
     
-    # Arrêter le timer de vérification de la santé
+    # ArrÃªter le timer de vÃ©rification de la santÃ©
     if ($null -ne $managedProcess.HealthCheckTimer) {
         $managedProcess.HealthCheckTimer.Dispose()
         $managedProcess.HealthCheckTimer = $null
     }
     
-    # Arrêter le processus
+    # ArrÃªter le processus
     try {
         if (-not $managedProcess.Process.HasExited) {
             if ($Force) {
@@ -433,7 +433,7 @@ function Stop-ManagedProcess {
                 
                 # Attendre que le processus se termine
                 if (-not $managedProcess.Process.WaitForExit($TimeoutSeconds * 1000)) {
-                    Write-Warning "Le processus ne s'est pas arrêté dans le délai imparti. Utilisation de Kill()."
+                    Write-Warning "Le processus ne s'est pas arrÃªtÃ© dans le dÃ©lai imparti. Utilisation de Kill()."
                     $managedProcess.Process.Kill()
                 }
             }
@@ -441,18 +441,18 @@ function Stop-ManagedProcess {
         
         $managedProcess.IsRunning = $false
         
-        # Supprimer le processus de la liste des processus gérés
+        # Supprimer le processus de la liste des processus gÃ©rÃ©s
         $script:ManagedProcesses.Remove($managedProcess)
         
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'arrêt du processus : $_"
+        Write-Error "Erreur lors de l'arrÃªt du processus : $_"
         return $false
     }
 }
 
-# Fonction pour obtenir la liste des processus gérés
+# Fonction pour obtenir la liste des processus gÃ©rÃ©s
 function Get-ManagedProcesses {
     [CmdletBinding()]
     param (
@@ -468,7 +468,7 @@ function Get-ManagedProcesses {
     }
 }
 
-# Fonction pour obtenir la sortie d'un processus géré
+# Fonction pour obtenir la sortie d'un processus gÃ©rÃ©
 function Get-ManagedProcessOutput {
     [CmdletBinding()]
     param (
@@ -486,7 +486,7 @@ function Get-ManagedProcessOutput {
         [int]$Tail = 0
     )
     
-    # Trouver le processus géré
+    # Trouver le processus gÃ©rÃ©
     $managedProcess = if ($PSCmdlet.ParameterSetName -eq "ById") {
         $script:ManagedProcesses | Where-Object { $_.Id -eq $Id } | Select-Object -First 1
     }
@@ -495,11 +495,11 @@ function Get-ManagedProcessOutput {
     }
     
     if ($null -eq $managedProcess) {
-        Write-Error "Processus géré non trouvé."
+        Write-Error "Processus gÃ©rÃ© non trouvÃ©."
         return $null
     }
     
-    # Obtenir la sortie demandée
+    # Obtenir la sortie demandÃ©e
     $output = [PSCustomObject]@{
         ProcessId = $managedProcess.Id
         ProcessName = $managedProcess.Name
@@ -528,7 +528,7 @@ function Get-ManagedProcessOutput {
     return $output
 }
 
-# Fonction pour envoyer une entrée à un processus géré
+# Fonction pour envoyer une entrÃ©e Ã  un processus gÃ©rÃ©
 function Send-ManagedProcessInput {
     [CmdletBinding()]
     param (
@@ -542,7 +542,7 @@ function Send-ManagedProcessInput {
         [string]$Input
     )
     
-    # Trouver le processus géré
+    # Trouver le processus gÃ©rÃ©
     $managedProcess = if ($PSCmdlet.ParameterSetName -eq "ById") {
         $script:ManagedProcesses | Where-Object { $_.Id -eq $Id } | Select-Object -First 1
     }
@@ -551,34 +551,34 @@ function Send-ManagedProcessInput {
     }
     
     if ($null -eq $managedProcess) {
-        Write-Error "Processus géré non trouvé."
+        Write-Error "Processus gÃ©rÃ© non trouvÃ©."
         return $false
     }
     
-    # Vérifier si le processus est en cours d'exécution
+    # VÃ©rifier si le processus est en cours d'exÃ©cution
     if (-not $managedProcess.IsRunning -or $managedProcess.Process.HasExited) {
-        Write-Error "Le processus n'est pas en cours d'exécution."
+        Write-Error "Le processus n'est pas en cours d'exÃ©cution."
         return $false
     }
     
-    # Vérifier si la redirection de sortie est activée
+    # VÃ©rifier si la redirection de sortie est activÃ©e
     if (-not $managedProcess.Process.StartInfo.RedirectStandardInput) {
-        Write-Error "La redirection d'entrée n'est pas activée pour ce processus."
+        Write-Error "La redirection d'entrÃ©e n'est pas activÃ©e pour ce processus."
         return $false
     }
     
-    # Envoyer l'entrée au processus
+    # Envoyer l'entrÃ©e au processus
     try {
         $managedProcess.Process.StandardInput.WriteLine($Input)
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'envoi de l'entrée au processus : $_"
+        Write-Error "Erreur lors de l'envoi de l'entrÃ©e au processus : $_"
         return $false
     }
 }
 
-# Fonction pour nettoyer les ressources des processus gérés
+# Fonction pour nettoyer les ressources des processus gÃ©rÃ©s
 function Clear-ManagedProcesses {
     [CmdletBinding()]
     param (
@@ -586,12 +586,12 @@ function Clear-ManagedProcesses {
         [switch]$Force
     )
     
-    # Arrêter tous les processus gérés
+    # ArrÃªter tous les processus gÃ©rÃ©s
     foreach ($process in $script:ManagedProcesses.ToArray()) {
         Stop-ManagedProcess -Id $process.Id -Force:$Force
     }
     
-    # Vider la liste des processus gérés
+    # Vider la liste des processus gÃ©rÃ©s
     $script:ManagedProcesses.Clear()
 }
 

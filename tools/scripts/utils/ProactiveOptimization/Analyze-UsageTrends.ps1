@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
     Analyse les tendances d'utilisation des scripts.
 .DESCRIPTION
-    Ce script analyse les données d'utilisation pour identifier les tendances
+    Ce script analyse les donnÃ©es d'utilisation pour identifier les tendances
     et les patterns d'utilisation des scripts au fil du temps.
 .EXAMPLE
     .\Analyze-UsageTrends.ps1 -PeriodDays 30
@@ -31,11 +31,11 @@ $usageMonitorPath = Join-Path -Path $PSScriptRoot -ChildPath "..\UsageMonitor\Us
 if (Test-Path -Path $usageMonitorPath) {
     Import-Module $usageMonitorPath -Force
 } else {
-    Write-Error "Module UsageMonitor non trouvé: $usageMonitorPath"
+    Write-Error "Module UsageMonitor non trouvÃ©: $usageMonitorPath"
     exit 1
 }
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -67,17 +67,17 @@ function Analyze-ScriptUsageTrends {
 
     Write-Log "Analyse des tendances d'utilisation sur les $PeriodDays derniers jours..." -Level "TITLE"
 
-    # Obtenir toutes les métriques d'utilisation
+    # Obtenir toutes les mÃ©triques d'utilisation
     $allMetrics = @{}
     $startDate = (Get-Date).AddDays(-$PeriodDays)
 
-    # Récupérer les métriques pour chaque script
+    # RÃ©cupÃ©rer les mÃ©triques pour chaque script
     $scriptPaths = Get-AllScriptPaths
 
     foreach ($scriptPath in $scriptPaths) {
         $metrics = Get-MetricsForScript -ScriptPath $scriptPath
 
-        # Filtrer les métriques par période
+        # Filtrer les mÃ©triques par pÃ©riode
         $filteredMetrics = $metrics | Where-Object { $_.StartTime -ge $startDate }
 
         if ($filteredMetrics.Count -gt 0) {
@@ -167,7 +167,7 @@ function Analyze-ScriptUsageTrends {
 
     $trends.PerformanceTrends = $performanceTrends
 
-    # Analyser les tendances de taux d'échec
+    # Analyser les tendances de taux d'Ã©chec
     $failureRateTrends = @{}
 
     foreach ($scriptPath in $allMetrics.Keys) {
@@ -226,13 +226,13 @@ function Analyze-ScriptUsageTrends {
 
     $trends.ResourceUsageTrends = $resourceUsageTrends
 
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     Write-Log "Tendances d'utilisation quotidienne:" -Level "INFO"
     $topDays = $dailyUsage.GetEnumerator() | Sort-Object -Property { ($_.Value.Values | Measure-Object -Sum).Sum } -Descending | Select-Object -First 5
 
     foreach ($day in $topDays) {
         $totalUsage = ($day.Value.Values | Measure-Object -Sum).Sum
-        Write-Log "  - $($day.Key): $totalUsage exécutions" -Level "INFO"
+        Write-Log "  - $($day.Key): $totalUsage exÃ©cutions" -Level "INFO"
     }
 
     Write-Log "Tendances d'utilisation horaire:" -Level "INFO"
@@ -240,10 +240,10 @@ function Analyze-ScriptUsageTrends {
 
     foreach ($hour in $topHours) {
         $totalUsage = ($hour.Value.Values | Measure-Object -Sum).Sum
-        Write-Log "  - $($hour.Key):00: $totalUsage exécutions" -Level "INFO"
+        Write-Log "  - $($hour.Key):00: $totalUsage exÃ©cutions" -Level "INFO"
     }
 
-    Write-Log "Scripts avec amélioration de performance:" -Level "INFO"
+    Write-Log "Scripts avec amÃ©lioration de performance:" -Level "INFO"
     $improvingScripts = @()
 
     foreach ($scriptName in $performanceTrends.Keys) {
@@ -271,10 +271,10 @@ function Analyze-ScriptUsageTrends {
     $improvingScripts = $improvingScripts | Sort-Object -Property Improvement -Descending | Select-Object -First 5
 
     foreach ($script in $improvingScripts) {
-        Write-Log "  - $($script.ScriptName): Amélioration de $($script.Improvement)% ($($script.FirstWeekPerf) ms -> $($script.LastWeekPerf) ms)" -Level "SUCCESS"
+        Write-Log "  - $($script.ScriptName): AmÃ©lioration de $($script.Improvement)% ($($script.FirstWeekPerf) ms -> $($script.LastWeekPerf) ms)" -Level "SUCCESS"
     }
 
-    Write-Log "Scripts avec dégradation de performance:" -Level "INFO"
+    Write-Log "Scripts avec dÃ©gradation de performance:" -Level "INFO"
     $degradingScripts = @()
 
     foreach ($scriptName in $performanceTrends.Keys) {
@@ -302,22 +302,22 @@ function Analyze-ScriptUsageTrends {
     $degradingScripts = $degradingScripts | Sort-Object -Property Degradation -Descending | Select-Object -First 5
 
     foreach ($script in $degradingScripts) {
-        Write-Log "  - $($script.ScriptName): Dégradation de $($script.Degradation)% ($($script.FirstWeekPerf) ms -> $($script.LastWeekPerf) ms)" -Level "WARNING"
+        Write-Log "  - $($script.ScriptName): DÃ©gradation de $($script.Degradation)% ($($script.FirstWeekPerf) ms -> $($script.LastWeekPerf) ms)" -Level "WARNING"
     }
 
     return $trends
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-TrendReport {
     param (
         [hashtable]$Trends,
         [string]$OutputPath
     )
 
-    Write-Log "Génération du rapport de tendances d'utilisation..." -Level "TITLE"
+    Write-Log "GÃ©nÃ©ration du rapport de tendances d'utilisation..." -Level "TITLE"
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $reportDir = Join-Path -Path $PSScriptRoot -ChildPath $OutputPath
     if (-not (Test-Path -Path $reportDir)) {
         New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
@@ -325,7 +325,7 @@ function Generate-TrendReport {
 
     $reportFile = Join-Path -Path $reportDir -ChildPath "usage_trends_$(Get-Date -Format 'yyyy-MM-dd').html"
 
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -381,7 +381,7 @@ function Generate-TrendReport {
 <body>
     <div class="container">
         <h1>Rapport des tendances d'utilisation des scripts</h1>
-        <p>Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm")</p>
 
         <h2>Utilisation quotidienne</h2>
         <div class="chart-container">
@@ -398,7 +398,7 @@ function Generate-TrendReport {
             <canvas id="performanceChart"></canvas>
         </div>
 
-        <h2>Tendances de taux d'échec</h2>
+        <h2>Tendances de taux d'Ã©chec</h2>
         <div class="chart-container">
             <canvas id="failureRateChart"></canvas>
         </div>
@@ -409,7 +409,7 @@ function Generate-TrendReport {
         </div>
 
         <script>
-            // Données pour les graphiques
+            // DonnÃ©es pour les graphiques
             const dailyUsageData = {
                 labels: [$(($Trends.DailyUsage.Keys | Sort-Object | ForEach-Object { "'$_'" }) -join ', ')],
                 datasets: [
@@ -569,7 +569,7 @@ function Generate-TrendReport {
                 datasets: [
 "@
 
-    # Ajouter les datasets pour les tendances de taux d'échec
+    # Ajouter les datasets pour les tendances de taux d'Ã©chec
     $topScripts = $Trends.FailureRateTrends.Keys | Select-Object -First 5
     $colorIndex = 0
 
@@ -655,7 +655,7 @@ function Generate-TrendReport {
                         borderWidth: 1
                     },
                     {
-                        label: '$script (Mémoire)',
+                        label: '$script (MÃ©moire)',
                         data: [$(($memoryData) -join ', ')],
                         backgroundColor: '$memoryColor',
                         borderColor: '$memoryBorderColor',
@@ -673,7 +673,7 @@ function Generate-TrendReport {
                 ]
             };
 
-            // Créer les graphiques
+            // CrÃ©er les graphiques
             window.onload = function() {
                 const dailyUsageCtx = document.getElementById('dailyUsageChart').getContext('2d');
                 new Chart(dailyUsageCtx, {
@@ -749,7 +749,7 @@ function Generate-TrendReport {
         </script>
 
         <div class="footer">
-            <p>Rapport généré par le système d'analyse des tendances d'utilisation</p>
+            <p>Rapport gÃ©nÃ©rÃ© par le systÃ¨me d'analyse des tendances d'utilisation</p>
         </div>
     </div>
 </body>
@@ -759,12 +759,12 @@ function Generate-TrendReport {
     # Enregistrer le rapport HTML
     $htmlContent | Out-File -FilePath $reportFile -Encoding utf8 -Force
 
-    Write-Log "Rapport généré avec succès: $reportFile" -Level "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $reportFile" -Level "SUCCESS"
 
     return $reportFile
 }
 
-# Point d'entrée principal
+# Point d'entrÃ©e principal
 try {
     # Initialiser le moniteur d'utilisation
     if ([string]::IsNullOrEmpty($DatabasePath)) {
@@ -772,21 +772,21 @@ try {
     }
 
     Initialize-UsageMonitor -DatabasePath $DatabasePath
-    Write-Log "Moniteur d'utilisation initialisé avec la base de données: $DatabasePath" -Level "SUCCESS"
+    Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
 
     # Analyser les tendances d'utilisation
     $trends = Analyze-ScriptUsageTrends -PeriodDays $PeriodDays
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
         $reportFile = Generate-TrendReport -Trends $trends -OutputPath $ReportPath
 
-        # Ouvrir le rapport dans le navigateur par défaut
+        # Ouvrir le rapport dans le navigateur par dÃ©faut
         if (Test-Path -Path $reportFile) {
             Start-Process $reportFile
         }
     }
 } catch {
-    Write-Log "Erreur lors de l'exécution du script: $_" -Level "ERROR"
+    Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }

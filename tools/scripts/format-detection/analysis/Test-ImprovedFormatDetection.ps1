@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste en parallèle la détection de format améliorée sur un ensemble de fichiers
-    et compare les résultats aux formats attendus (si fournis).
+    Teste en parallÃ¨le la dÃ©tection de format amÃ©liorÃ©e sur un ensemble de fichiers
+    et compare les rÃ©sultats aux formats attendus (si fournis).
 
 .DESCRIPTION
-    Ce script exécute en parallèle le script 'Improved-FormatDetection.ps1' sur chaque fichier
-    d'un répertoire spécifié. Il collecte les résultats détaillés (format détecté, confiance,
+    Ce script exÃ©cute en parallÃ¨le le script 'Improved-FormatDetection.ps1' sur chaque fichier
+    d'un rÃ©pertoire spÃ©cifiÃ©. Il collecte les rÃ©sultats dÃ©taillÃ©s (format dÃ©tectÃ©, confiance,
     encodage, etc.). Si un fichier de formats attendus est fourni (via -ExpectedFormatsPath),
-    il compare le format détecté au format attendu et marque le résultat comme correct ou incorrect.
-    Il génère un rapport JSON détaillé et un rapport HTML optionnel résumant les performances
-    de la détection.
+    il compare le format dÃ©tectÃ© au format attendu et marque le rÃ©sultat comme correct ou incorrect.
+    Il gÃ©nÃ¨re un rapport JSON dÃ©taillÃ© et un rapport HTML optionnel rÃ©sumant les performances
+    de la dÃ©tection.
 
 .PARAMETER SampleDirectory
-    Le répertoire contenant les fichiers à analyser. Par défaut, utilise le répertoire 'samples'.
+    Le rÃ©pertoire contenant les fichiers Ã  analyser. Par dÃ©faut, utilise le rÃ©pertoire 'samples'.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport d'analyse JSON sera enregistré. Par défaut, 'ImprovedFormatDetectionResults.json'.
+    Le chemin oÃ¹ le rapport d'analyse JSON sera enregistrÃ©. Par dÃ©faut, 'ImprovedFormatDetectionResults.json'.
 
 .PARAMETER DetectionScriptPath
-    Le chemin vers le script de détection améliorée à tester.
-    Par défaut, 'Improved-FormatDetection.ps1' dans le même répertoire.
+    Le chemin vers le script de dÃ©tection amÃ©liorÃ©e Ã  tester.
+    Par dÃ©faut, 'Improved-FormatDetection.ps1' dans le mÃªme rÃ©pertoire.
 
 .PARAMETER ExpectedFormatsPath
     Chemin optionnel vers un fichier JSON contenant un hashtable { "Chemin/Complet/Fichier": "FORMAT_ATTENDU" }.
-    Permet de calculer le taux de succès de la détection.
+    Permet de calculer le taux de succÃ¨s de la dÃ©tection.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport JSON.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport JSON.
 
 .PARAMETER MaxThreads
-    Nombre maximum de threads à utiliser pour l'analyse parallèle. Par défaut, le nombre de processeurs logiques.
+    Nombre maximum de threads Ã  utiliser pour l'analyse parallÃ¨le. Par dÃ©faut, le nombre de processeurs logiques.
 
 .EXAMPLE
     .\Test-ImprovedFormatDetection.ps1 -SampleDirectory "C:\MesTests\Echantillons" -GenerateHtmlReport
@@ -40,37 +40,37 @@
 
 .NOTES
     Version: 2.0
-    Auteur: Augment Agent (Amélioré par IA)
+    Auteur: Augment Agent (AmÃ©liorÃ© par IA)
     Date: 2025-04-12
-    Dépendances: Nécessite le script spécifié par -DetectionScriptPath (par défaut 'Improved-FormatDetection.ps1')
-                qui doit accepter -FilePath et retourner un objet structuré.
-    Améliorations v2.0:
-    - Parallélisation des tests via Runspace Pools.
-    - Gestion améliorée des erreurs et des formats attendus.
-    - Rapport HTML retravaillé pour une meilleure lisibilité et information.
-    - Optimisation de la collecte des résultats.
+    DÃ©pendances: NÃ©cessite le script spÃ©cifiÃ© par -DetectionScriptPath (par dÃ©faut 'Improved-FormatDetection.ps1')
+                qui doit accepter -FilePath et retourner un objet structurÃ©.
+    AmÃ©liorations v2.0:
+    - ParallÃ©lisation des tests via Runspace Pools.
+    - Gestion amÃ©liorÃ©e des erreurs et des formats attendus.
+    - Rapport HTML retravaillÃ© pour une meilleure lisibilitÃ© et information.
+    - Optimisation de la collecte des rÃ©sultats.
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(HelpMessage = "Répertoire contenant les fichiers d'échantillons à tester.")]
+    [Parameter(HelpMessage = "RÃ©pertoire contenant les fichiers d'Ã©chantillons Ã  tester.")]
     [ValidateScript({ Test-Path -Path $_ -PathType Container })]
     [string]$SampleDirectory = (Join-Path -Path $PSScriptRoot -ChildPath "samples"),
 
     [Parameter(HelpMessage = "Chemin pour le rapport JSON de sortie.")]
     [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "ImprovedFormatDetectionResults.json"),
 
-    [Parameter(HelpMessage = "Chemin vers le script de détection de format à tester.")]
+    [Parameter(HelpMessage = "Chemin vers le script de dÃ©tection de format Ã  tester.")]
     [ValidateScript({ Test-Path -Path $_ -PathType Leaf })]
     [string]$DetectionScriptPath = (Join-Path -Path $PSScriptRoot -ChildPath "Improved-FormatDetection.ps1"),
 
     [Parameter(HelpMessage = "Chemin optionnel vers le fichier JSON des formats attendus.")]
     [string]$ExpectedFormatsPath,
 
-    [Parameter(HelpMessage = "Générer un rapport HTML en plus du JSON.")]
+    [Parameter(HelpMessage = "GÃ©nÃ©rer un rapport HTML en plus du JSON.")]
     [switch]$GenerateHtmlReport,
 
-    [Parameter(HelpMessage = "Nombre maximum de threads pour l'analyse parallèle.")]
+    [Parameter(HelpMessage = "Nombre maximum de threads pour l'analyse parallÃ¨le.")]
     [ValidateRange(1, 64)]
     [int]$MaxThreads = [System.Environment]::ProcessorCount
 )
@@ -80,36 +80,36 @@ $global:ScriptStartTime = Get-Date
 $global:ExpectedFormats = $null
 $global:UseExpectedFormats = $false
 
-# Vérifier l'existence du script de détection
+# VÃ©rifier l'existence du script de dÃ©tection
 if (-not (Test-Path -Path $DetectionScriptPath -PathType Leaf)) {
-    Write-Error "Le script de détection spécifié '$DetectionScriptPath' n'a pas été trouvé."
+    Write-Error "Le script de dÃ©tection spÃ©cifiÃ© '$DetectionScriptPath' n'a pas Ã©tÃ© trouvÃ©."
     exit 1
 }
-Write-Verbose "Utilisation du script de détection : $DetectionScriptPath"
+Write-Verbose "Utilisation du script de dÃ©tection : $DetectionScriptPath"
 
-# Charger les formats attendus si le chemin est spécifié et valide
+# Charger les formats attendus si le chemin est spÃ©cifiÃ© et valide
 if (-not [string]::IsNullOrWhiteSpace($ExpectedFormatsPath)) {
     if (Test-Path -Path $ExpectedFormatsPath -PathType Leaf) {
         try {
             $jsonContent = Get-Content -Path $ExpectedFormatsPath -Raw -Encoding UTF8 -ErrorAction Stop
-            # Utiliser -AsHashTable est crucial pour un accès rapide par clé
+            # Utiliser -AsHashTable est crucial pour un accÃ¨s rapide par clÃ©
             $global:ExpectedFormats = ConvertFrom-Json -InputObject $jsonContent -AsHashtable -ErrorAction Stop
             if ($global:ExpectedFormats -and $global:ExpectedFormats.Count -gt 0) {
                 $global:UseExpectedFormats = $true
-                Write-Host "Formats attendus chargés avec succès depuis '$ExpectedFormatsPath' ($($global:ExpectedFormats.Count) entrées)." -ForegroundColor Green
+                Write-Host "Formats attendus chargÃ©s avec succÃ¨s depuis '$ExpectedFormatsPath' ($($global:ExpectedFormats.Count) entrÃ©es)." -ForegroundColor Green
             } else {
-                Write-Warning "Le fichier de formats attendus '$ExpectedFormatsPath' est vide ou n'a pas pu être interprété comme une table de hachage."
+                Write-Warning "Le fichier de formats attendus '$ExpectedFormatsPath' est vide ou n'a pas pu Ãªtre interprÃ©tÃ© comme une table de hachage."
             }
         } catch {
             Write-Error "Erreur critique lors du chargement ou de la conversion des formats attendus depuis '$ExpectedFormatsPath': $($_.Exception.Message)"
-            # On pourrait choisir de continuer sans les formats attendus ou d'arrêter. Ici, on arrête.
+            # On pourrait choisir de continuer sans les formats attendus ou d'arrÃªter. Ici, on arrÃªte.
             exit 1
         }
     } else {
-        Write-Warning "Le fichier de formats attendus spécifié '$ExpectedFormatsPath' n'existe pas. L'analyse se fera sans comparaison."
+        Write-Warning "Le fichier de formats attendus spÃ©cifiÃ© '$ExpectedFormatsPath' n'existe pas. L'analyse se fera sans comparaison."
     }
 } else {
-     Write-Verbose "Aucun fichier de formats attendus spécifié. Aucune comparaison ne sera effectuée."
+     Write-Verbose "Aucun fichier de formats attendus spÃ©cifiÃ©. Aucune comparaison ne sera effectuÃ©e."
 }
 #endregion
 
@@ -126,20 +126,20 @@ function Invoke-DetectionScript_Parallel {
         [hashtable]$FormatsAttendus = $null # Passer la table de hachage
     )
 
-    Write-Host "Récupération de la liste des fichiers dans '$Directory'..." -ForegroundColor Cyan
+    Write-Host "RÃ©cupÃ©ration de la liste des fichiers dans '$Directory'..." -ForegroundColor Cyan
     $files = Get-ChildItem -Path $Directory -File -Recurse -ErrorAction SilentlyContinue
 
     if (-not $files) {
-        Write-Warning "Aucun fichier trouvé dans le répertoire '$Directory'."
+        Write-Warning "Aucun fichier trouvÃ© dans le rÃ©pertoire '$Directory'."
         return @()
     }
 
-    Write-Host "$($files.Count) fichiers trouvés. Démarrage des tests parallèles avec $NumberOfThreads threads..." -ForegroundColor Cyan
+    Write-Host "$($files.Count) fichiers trouvÃ©s. DÃ©marrage des tests parallÃ¨les avec $NumberOfThreads threads..." -ForegroundColor Cyan
 
-    # Version simplifiée sans parallélisme pour éviter les erreurs
+    # Version simplifiÃ©e sans parallÃ©lisme pour Ã©viter les erreurs
     $results = @()
 
-    # Traitement séquentiel simple
+    # Traitement sÃ©quentiel simple
     foreach ($file in $files) {
         $filePath = $file.FullName
 
@@ -150,30 +150,30 @@ function Invoke-DetectionScript_Parallel {
         $resultObject = $null
 
         try {
-            # Exécuter le script de détection fourni
-            # Assurez-vous que le script cible retourne bien UN SEUL objet ou une collection gérable
-            $detectionResult = & $detectionScriptPath -FilePath $filePath # -DetectEncoding -DetailedOutput # Ajouter si nécessaire par le script cible
+            # ExÃ©cuter le script de dÃ©tection fourni
+            # Assurez-vous que le script cible retourne bien UN SEUL objet ou une collection gÃ©rable
+            $detectionResult = & $detectionScriptPath -FilePath $filePath # -DetectEncoding -DetailedOutput # Ajouter si nÃ©cessaire par le script cible
 
             if ($null -eq $detectionResult) {
-                 throw "Le script de détection n'a retourné aucun résultat pour $filePath."
+                 throw "Le script de dÃ©tection n'a retournÃ© aucun rÃ©sultat pour $filePath."
             }
-             # Si le script retourne plusieurs objets, prendre le premier ? Ou gérer ? Supposons un seul objet.
+             # Si le script retourne plusieurs objets, prendre le premier ? Ou gÃ©rer ? Supposons un seul objet.
              if ($detectionResult -is [array]) { $detectionResult = $detectionResult[0] }
 
 
-            # Vérifier si le format détecté correspond au format attendu (si disponible)
+            # VÃ©rifier si le format dÃ©tectÃ© correspond au format attendu (si disponible)
             $expectedFormat = $null
-            $isCorrect = $null # Null signifie "non testé"
+            $isCorrect = $null # Null signifie "non testÃ©"
 
-            # Utiliser la hashtable passée en argument
+            # Utiliser la hashtable passÃ©e en argument
             if ($null -ne $expectedFormatsHashTable -and $expectedFormatsHashTable.ContainsKey($filePath)) {
                 $expectedFormat = $expectedFormatsHashTable[$filePath]
-                # Comparaison insensible à la casse par sécurité
+                # Comparaison insensible Ã  la casse par sÃ©curitÃ©
                 $isCorrect = $detectionResult.DetectedFormat -eq $expectedFormat
             }
 
-            # Construire l'objet résultat à partir des propriétés retournées par le script de détection
-            # Utilisation de ?. pour éviter les erreurs si une propriété manque dans l'objet retourné
+            # Construire l'objet rÃ©sultat Ã  partir des propriÃ©tÃ©s retournÃ©es par le script de dÃ©tection
+            # Utilisation de ?. pour Ã©viter les erreurs si une propriÃ©tÃ© manque dans l'objet retournÃ©
             $resultObject = [PSCustomObject]@{
                 FilePath = $filePath;
                 FileName = try { (Get-Item $filePath -ErrorAction SilentlyContinue).Name } catch { 'N/A' };
@@ -203,7 +203,7 @@ function Invoke-DetectionScript_Parallel {
                 MatchedCriteria = $null;
                 Encoding = $null;
                 ExpectedFormat = if ($null -ne $expectedFormatsHashTable -and $expectedFormatsHashTable.ContainsKey($filePath)) { $expectedFormatsHashTable[$filePath] } else { $null };
-                IsCorrect = $false; # Une erreur est considérée comme incorrecte si un format était attendu
+                IsCorrect = $false; # Une erreur est considÃ©rÃ©e comme incorrecte si un format Ã©tait attendu
                 AllFormats = $null;
                 Error = $_.Exception.Message
             }
@@ -212,7 +212,7 @@ function Invoke-DetectionScript_Parallel {
         return $resultObject
     }
 
-    # Logique de gestion des tâches parallèles (identique à Analyze-FormatDetectionFailures)
+    # Logique de gestion des tÃ¢ches parallÃ¨les (identique Ã  Analyze-FormatDetectionFailures)
     $progressCount = 0
     $totalCount = $files.Count
     $updateInterval = [Math]::Max(1, [Math]::Floor($totalCount / 100))
@@ -233,12 +233,12 @@ function Invoke-DetectionScript_Parallel {
                 } catch { Write-Warning "Erreur EndInvoke: $($_.Exception.Message)"; $results.Add([PSCustomObject]@{ Error = "Erreur EndInvoke: $($_.Exception.Message)"; FilePath = "N/A" }) }
                 finally { $completedTask.Dispose(); $handles.RemoveAt($completedIndex); $tasks.RemoveAt($completedIndex); $progressCount++ }
             }
-            if (($progressCount % $updateInterval) -eq 0 -or $progressCount -eq $totalCount) { Write-Progress -Activity "Test des fichiers" -Status "Progrès: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1 }
+            if (($progressCount % $updateInterval) -eq 0 -or $progressCount -eq $totalCount) { Write-Progress -Activity "Test des fichiers" -Status "ProgrÃ¨s: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1 }
         }
-         if (($progressCount + $handles.Count) % $updateInterval -eq 0) { Write-Progress -Activity "Test des fichiers" -Status "Progrès: $($progressCount + $handles.Count)/$totalCount" -PercentComplete (($progressCount + $handles.Count) / $totalCount * 100) -Id 1 }
+         if (($progressCount + $handles.Count) % $updateInterval -eq 0) { Write-Progress -Activity "Test des fichiers" -Status "ProgrÃ¨s: $($progressCount + $handles.Count)/$totalCount" -PercentComplete (($progressCount + $handles.Count) / $totalCount * 100) -Id 1 }
     }
 
-    Write-Verbose "Attente de la fin des tâches restantes..."
+    Write-Verbose "Attente de la fin des tÃ¢ches restantes..."
     while ($handles.Count -gt 0) {
         $completedIndex = [System.Threading.WaitHandle]::WaitAny($handles.ToArray(), 500)
         if ($completedIndex -ne [System.Threading.WaitHandle]::WaitTimeout) {
@@ -248,16 +248,16 @@ function Invoke-DetectionScript_Parallel {
                 if ($taskResult) { $results.Add($taskResult) }
             } catch { Write-Warning "Erreur EndInvoke final: $($_.Exception.Message)"; $results.Add([PSCustomObject]@{ Error = "Erreur EndInvoke final: $($_.Exception.Message)"; FilePath = "N/A" }) }
             finally { $completedTask.Dispose(); $handles.RemoveAt($completedIndex); $tasks.RemoveAt($completedIndex); $progressCount++ }
-            Write-Progress -Activity "Test des fichiers" -Status "Terminé: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
+            Write-Progress -Activity "Test des fichiers" -Status "TerminÃ©: $progressCount/$totalCount" -PercentComplete ($progressCount / $totalCount * 100) -Id 1
         } else {
-            # Gestion du timeout (similaire à l'autre script)
+            # Gestion du timeout (similaire Ã  l'autre script)
              $stillRunning = $handles | Where-Object { -not $_.IsCompleted }
              if ($stillRunning.Count -eq 0) {
-                Write-Verbose "Timeout détecté mais toutes les tâches restantes semblent terminées."
+                Write-Verbose "Timeout dÃ©tectÃ© mais toutes les tÃ¢ches restantes semblent terminÃ©es."
                 for($i = $handles.Count - 1; $i -ge 0; $i--) {
                      $completedTask = $tasks[$i]
                      try { if($handles[$i].IsCompleted) { $taskResult = $completedTask.EndInvoke($handles[$i]); if ($taskResult) { $results.Add($taskResult) } } }
-                     catch { Write-Warning "Erreur récupération post-timeout: $($_.Exception.Message)"}
+                     catch { Write-Warning "Erreur rÃ©cupÃ©ration post-timeout: $($_.Exception.Message)"}
                      finally { $completedTask.Dispose(); $handles.RemoveAt($i); $tasks.RemoveAt($i); $progressCount++ }
                 }
              }
@@ -265,7 +265,7 @@ function Invoke-DetectionScript_Parallel {
     }
 
     Write-Progress -Activity "Test des fichiers" -Completed -Id 1
-    Write-Host "Tests parallèles terminés." -ForegroundColor Green
+    Write-Host "Tests parallÃ¨les terminÃ©s." -ForegroundColor Green
 
     $runspacePool.Close()
     $runspacePool.Dispose()
@@ -292,7 +292,7 @@ function New-HtmlReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de Test - Détection de Format</title>
+    <title>Rapport de Test - DÃ©tection de Format</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f8f9fa; color: #212529; }
         .container { max-width: 1400px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -325,13 +325,13 @@ function New-HtmlReport {
 </head>
 <body>
     <div class="container">
-    <h1>Rapport de Test - Détection de Format</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
-    <p>Script testé : $TestedScriptPath</p>
-    <p>Répertoire des échantillons : $($Results[0].FilePath | Split-Path -Parent | Split-Path -Parent) </p>
+    <h1>Rapport de Test - DÃ©tection de Format</h1>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Script testÃ© : $TestedScriptPath</p>
+    <p>RÃ©pertoire des Ã©chantillons : $($Results[0].FilePath | Split-Path -Parent | Split-Path -Parent) </p>
 "@
 
-    # Filtrer les résultats
+    # Filtrer les rÃ©sultats
     $validResults = $Results | Where-Object { $_.DetectedFormat -ne 'ERROR' }
     $errorResults = $Results | Where-Object { $_.DetectedFormat -eq 'ERROR' }
     $testedResults = if ($HasExpectedFormats) { $Results | Where-Object { $null -ne $_.ExpectedFormat } } else { @() }
@@ -353,7 +353,7 @@ function New-HtmlReport {
     $lowConfidence = ($validResults | Where-Object { $_.ConfidenceScore -lt 50 -and $_.ConfidenceScore -ge 0 }).Count # Inclure 0
     $unknownConfidence = ($validResults | Where-Object { $null -eq $_.ConfidenceScore -or $_.ConfidenceScore -lt 0 }).Count
 
-    # Compter les formats détectés (parmi les valides)
+    # Compter les formats dÃ©tectÃ©s (parmi les valides)
     $formatCounts = $validResults | Group-Object -Property DetectedFormat | Select-Object @{N = 'Format'; E = { $_.Name } }, Count
     $sortedFormats = $formatCounts | Sort-Object -Property Count -Descending
     $formatLabels = $sortedFormats | ForEach-Object { "'$($_.Format -replace "'", "\'")'" }
@@ -361,33 +361,33 @@ function New-HtmlReport {
 
     $htmlSummary = @"
     <div class="summary">
-        <h2>Résumé des Tests</h2>
-        <p>Nombre total de fichiers trouvés : $totalFiles</p>
-        <p>Nombre de fichiers analysés sans erreur : $analyzedFiles</p>
+        <h2>RÃ©sumÃ© des Tests</h2>
+        <p>Nombre total de fichiers trouvÃ©s : $totalFiles</p>
+        <p>Nombre de fichiers analysÃ©s sans erreur : $analyzedFiles</p>
         <p>Nombre de fichiers en erreur lors de l'analyse : $errorFiles ($errorPercent%)</p>
 "@
     if ($HasExpectedFormats) {
         $htmlSummary += @"
         <hr>
         <p><b>Comparaison avec les formats attendus :</b></p>
-        <p>Nombre de fichiers avec format attendu défini : $($testedResults.Count)</p>
-        <p style="color: green;">  ↳ Détections correctes : $correctDetections ($correctPercent% des testés)</p>
-        <p style="color: red;">  ↳ Détections incorrectes : $incorrectDetections</p>
-        <p><small>Note : Les fichiers en erreur avec un format attendu sont comptés comme incorrects.</small></p>
-        <p>Nombre de fichiers sans format attendu défini : $untestedCount</p>
+        <p>Nombre de fichiers avec format attendu dÃ©fini : $($testedResults.Count)</p>
+        <p style="color: green;">Â Â â†³ DÃ©tections correctes : $correctDetections ($correctPercent% des testÃ©s)</p>
+        <p style="color: red;">Â Â â†³ DÃ©tections incorrectes : $incorrectDetections</p>
+        <p><small>Note : Les fichiers en erreur avec un format attendu sont comptÃ©s comme incorrects.</small></p>
+        <p>Nombre de fichiers sans format attendu dÃ©fini : $untestedCount</p>
 "@
     } else {
          $htmlSummary += "<p><i>Aucun fichier de formats attendus fourni pour comparaison.</i></p>"
     }
     $htmlSummary += @"
         <hr>
-        <p><b>Distribution des scores de confiance (sur fichiers analysés) :</b></p>
-        <p style="color: #198754;">  ↳ Confiance élevée (>= 80%) : $highConfidence</p>
-        <p style="color: #fd7e14;">  ↳ Confiance moyenne (50-79%) : $mediumConfidence</p>
-        <p style="color: #dc3545;">  ↳ Confiance faible (< 50%) : $lowConfidence</p>
-        <p style="color: #6c757d;">  ↳ Confiance non définie/invalide : $unknownConfidence</p>
+        <p><b>Distribution des scores de confiance (sur fichiers analysÃ©s) :</b></p>
+        <p style="color: #198754;">Â Â â†³ Confiance Ã©levÃ©e (>= 80%) : $highConfidence</p>
+        <p style="color: #fd7e14;">Â Â â†³ Confiance moyenne (50-79%) : $mediumConfidence</p>
+        <p style="color: #dc3545;">Â Â â†³ Confiance faible (< 50%) : $lowConfidence</p>
+        <p style="color: #6c757d;">Â Â â†³ Confiance non dÃ©finie/invalide : $unknownConfidence</p>
 
-        <h3>Distribution des formats détectés (hors erreurs)</h3>
+        <h3>Distribution des formats dÃ©tectÃ©s (hors erreurs)</h3>
         <div class="chart-container">
             <canvas id="formatsChart"></canvas>
         </div>
@@ -407,7 +407,7 @@ function New-HtmlReport {
                     borderWidth: 1
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Nombre de fichiers' } }, x: { title: { display: true, text: 'Format Détecté' } } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Nombre de fichiers' } }, x: { title: { display: true, text: 'Format DÃ©tectÃ©' } } } }
         });
     </script>
 "@
@@ -432,25 +432,25 @@ function New-HtmlReport {
         $htmlErrors += "</table>"
     }
 
-    # Section des Résultats Détaillés
+    # Section des RÃ©sultats DÃ©taillÃ©s
     $htmlResults = @"
-    <h2>Résultats détaillés ($totalFiles fichiers)</h2>
+    <h2>RÃ©sultats dÃ©taillÃ©s ($totalFiles fichiers)</h2>
     <table>
         <tr>
             <th>Fichier</th>
             <th>Taille (octets)</th>
-            <th>Format Détecté</th>
+            <th>Format DÃ©tectÃ©</th>
             <th>Confiance</th>
-            <th>Catégorie</th>
+            <th>CatÃ©gorie</th>
             <th>Encodage</th>
-            <th>Critères</th>
+            <th>CritÃ¨res</th>
 "@
     if ($HasExpectedFormats) {
         $htmlResults += "<th>Format Attendu</th><th>Statut</th>"
     }
     $htmlResults += "</tr>"
 
-    # Trier les résultats pour l'affichage
+    # Trier les rÃ©sultats pour l'affichage
     $sortedAllResults = $Results | Sort-Object @{ Expression = { $_.DetectedFormat -eq 'ERROR'}}, @{Expression = 'IsCorrect'; Descending = $true}, FileName
 
     foreach ($result in $sortedAllResults) {
@@ -461,7 +461,7 @@ function New-HtmlReport {
              $rowClass = ' style="background-color: #f8d7da;"' # Light red
         } elseif ($HasExpectedFormats) {
             if ($null -eq $result.ExpectedFormat) {
-                 $statusBadge = '<span class="badge badge-unknown">Non Testé</span>'
+                 $statusBadge = '<span class="badge badge-unknown">Non TestÃ©</span>'
                  $rowClass = ' style="background-color: #fff3cd;"' # Light yellow
             } elseif ($result.IsCorrect -eq $true) {
                 $statusBadge = '<span class="badge badge-correct">Correct</span>'
@@ -481,7 +481,7 @@ function New-HtmlReport {
             else { $confidenceClass = "confidence-low" }
         }
 
-        # Formatter les critères pour l'affichage (peut être long)
+        # Formatter les critÃ¨res pour l'affichage (peut Ãªtre long)
         $criteriaDisplay = $result.MatchedCriteria
         if ($criteriaDisplay -is [string] -and $criteriaDisplay.Length -gt 100) {
              $criteriaDisplay = "$($criteriaDisplay.Substring(0,100))..."
@@ -512,7 +512,7 @@ function New-HtmlReport {
 
     $htmlFooter = @"
     <div class="footer">
-        Test exécuté par le script Test-ImprovedFormatDetection.ps1 (v2.0)
+        Test exÃ©cutÃ© par le script Test-ImprovedFormatDetection.ps1 (v2.0)
     </div>
     </div> <!-- /container -->
 </body>
@@ -525,43 +525,43 @@ function New-HtmlReport {
     # Enregistrer le rapport HTML
     try {
         $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Host "Rapport HTML généré avec succès : $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s : $OutputPath" -ForegroundColor Green
     } catch {
-        Write-Error "Impossible d'écrire le rapport HTML sur '$OutputPath': $($_.Exception.Message)"
+        Write-Error "Impossible d'Ã©crire le rapport HTML sur '$OutputPath': $($_.Exception.Message)"
     }
 }
 #endregion
 
 #region Main Execution Logic
 
-if ($PSCmdlet.ShouldProcess($SampleDirectory, "Tester la détection de format (parallèle)")) {
+if ($PSCmdlet.ShouldProcess($SampleDirectory, "Tester la dÃ©tection de format (parallÃ¨le)")) {
 
     $results = Invoke-DetectionScript_Parallel -Directory $SampleDirectory `
                                                -ScriptToRun $DetectionScriptPath `
                                                -NumberOfThreads $MaxThreads `
-                                               -FormatsAttendus $global:ExpectedFormats # Passer la hashtable chargée
+                                               -FormatsAttendus $global:ExpectedFormats # Passer la hashtable chargÃ©e
 
     if ($null -eq $results -or $results.Count -eq 0) {
-        Write-Host "Aucun résultat de test à rapporter." -ForegroundColor Yellow
+        Write-Host "Aucun rÃ©sultat de test Ã  rapporter." -ForegroundColor Yellow
         exit 0
     }
 
-    # Enregistrer les résultats au format JSON
+    # Enregistrer les rÃ©sultats au format JSON
     try {
         # Utiliser Depth 5 ou plus si AllFormats contient des objets complexes
         $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force -ErrorAction Stop
-        Write-Host "Rapport JSON généré avec succès : $OutputPath" -ForegroundColor Green
+        Write-Host "Rapport JSON gÃ©nÃ©rÃ© avec succÃ¨s : $OutputPath" -ForegroundColor Green
     } catch {
-        Write-Error "Impossible d'écrire le rapport JSON sur '$OutputPath': $($_.Exception.Message)"
+        Write-Error "Impossible d'Ã©crire le rapport JSON sur '$OutputPath': $($_.Exception.Message)"
     }
 
-    # Générer un rapport HTML si demandé
+    # GÃ©nÃ©rer un rapport HTML si demandÃ©
     if ($GenerateHtmlReport) {
         $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         New-HtmlReport -Results $results -OutputPath $htmlOutputPath -HasExpectedFormats $global:UseExpectedFormats -TestedScriptPath $DetectionScriptPath
     }
 
-    # Afficher un résumé final dans la console
+    # Afficher un rÃ©sumÃ© final dans la console
     $endTime = Get-Date
     $duration = New-TimeSpan -Start $global:ScriptStartTime -End $endTime
 
@@ -574,25 +574,25 @@ if ($PSCmdlet.ShouldProcess($SampleDirectory, "Tester la détection de format (p
     $correctPercent = if ($testableCount -gt 0) { [Math]::Round(($correctDetections / $testableCount) * 100, 2) } else { 0 }
     $totalCount = $results.Count
 
-    Write-Host "`n--- Résumé Final des Tests ---" -ForegroundColor Cyan
-    Write-Host " Temps total d'exécution : $($duration.ToString('g'))" -ForegroundColor White
-    Write-Host " Fichiers trouvés au total : $totalCount" -ForegroundColor White
-    Write-Host " Fichiers testés sans erreur : $($validResults.Count)" -ForegroundColor White
+    Write-Host "`n--- RÃ©sumÃ© Final des Tests ---" -ForegroundColor Cyan
+    Write-Host " Temps total d'exÃ©cution : $($duration.ToString('g'))" -ForegroundColor White
+    Write-Host " Fichiers trouvÃ©s au total : $totalCount" -ForegroundColor White
+    Write-Host " Fichiers testÃ©s sans erreur : $($validResults.Count)" -ForegroundColor White
     Write-Host " Erreurs lors des tests   : $errorFilesCount" -ForegroundColor $(if ($errorFilesCount -gt 0) { 'Red' } else { 'Green' })
 
     if ($global:UseExpectedFormats) {
         Write-Host "--- Comparaison avec Formats Attendus ---" -ForegroundColor Cyan
         Write-Host " Fichiers avec format attendu : $($testedResults.Count)" -ForegroundColor White
-        Write-Host "   ↳ Détections correctes : $correctDetections ($correctPercent%)" -ForegroundColor $(if ($correctPercent -ge 95) { 'Green' } elseif ($correctPercent -ge 80) { 'Yellow' } else { 'Red' })
-        Write-Host "   ↳ Détections incorrectes (ou erreurs) : $incorrectDetections" -ForegroundColor $(if ($incorrectDetections -gt 0) { 'Red' } else { 'Green' })
+        Write-Host "   â†³ DÃ©tections correctes : $correctDetections ($correctPercent%)" -ForegroundColor $(if ($correctPercent -ge 95) { 'Green' } elseif ($correctPercent -ge 80) { 'Yellow' } else { 'Red' })
+        Write-Host "   â†³ DÃ©tections incorrectes (ou erreurs) : $incorrectDetections" -ForegroundColor $(if ($incorrectDetections -gt 0) { 'Red' } else { 'Green' })
         if ($incorrectDetections -gt 0) {
-             Write-Host "`n Détails des erreurs/incorrects :" -ForegroundColor Red
+             Write-Host "`n DÃ©tails des erreurs/incorrects :" -ForegroundColor Red
              $incorrectResults = $results | Where-Object { ($_.DetectedFormat -eq 'ERROR' -and $null -ne $_.ExpectedFormat) -or $_.IsCorrect -eq $false } | Select-Object -First 10 FileName, DetectedFormat, ExpectedFormat, Error
              $incorrectResults | Format-Table -AutoSize | Out-String | Write-Host -ForegroundColor White
              if (($results | Where-Object { ($_.DetectedFormat -eq 'ERROR' -and $null -ne $_.ExpectedFormat) -or $_.IsCorrect -eq $false }).Count -gt 10) { Write-Host "  (et autres... voir rapports JSON/HTML)" -ForegroundColor White}
         }
     } else {
-        Write-Host "--- Aucune comparaison effectuée (pas de fichier de formats attendus) ---" -ForegroundColor Yellow
+        Write-Host "--- Aucune comparaison effectuÃ©e (pas de fichier de formats attendus) ---" -ForegroundColor Yellow
     }
      Write-Host "--- Fin des tests ---" -ForegroundColor Cyan
 }

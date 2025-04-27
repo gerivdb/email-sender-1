@@ -1,17 +1,17 @@
-# Script de test pour le module CycleVisualization
+﻿# Script de test pour le module CycleVisualization
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "modules/CycleVisualization.psm1"
 Import-Module $modulePath -Force
 
-# Créer des données de test pour simuler un graphe de dépendances
+# CrÃ©er des donnÃ©es de test pour simuler un graphe de dÃ©pendances
 $testData = [PSCustomObject]@{
     DependencyGraph = @{
         "ScriptA" = @("ScriptB", "ScriptC")
         "ScriptB" = @("ScriptD")
         "ScriptC" = @("ScriptE")
         "ScriptD" = @("ScriptF")
-        "ScriptE" = @("ScriptA")  # Crée un cycle: ScriptA -> ScriptC -> ScriptE -> ScriptA
+        "ScriptE" = @("ScriptA")  # CrÃ©e un cycle: ScriptA -> ScriptC -> ScriptE -> ScriptA
         "ScriptF" = @()
     }
     HasCycles = $true
@@ -19,7 +19,7 @@ $testData = [PSCustomObject]@{
     NonCyclicScripts = @("ScriptB", "ScriptD", "ScriptF")
 }
 
-# Tester les différents formats
+# Tester les diffÃ©rents formats
 $outputDir = Join-Path -Path $PSScriptRoot -ChildPath "reports"
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
@@ -27,22 +27,22 @@ if (-not (Test-Path -Path $outputDir)) {
 
 # Tester le format HTML
 $htmlPath = Export-CycleVisualization -CycleData $testData -Format "HTML" -OutputPath "$outputDir/test_html.html" -HighlightCycles -IncludeStatistics
-Write-Host "Visualisation HTML générée: $htmlPath"
+Write-Host "Visualisation HTML gÃ©nÃ©rÃ©e: $htmlPath"
 
 # Tester le format DOT
 $dotPath = Export-CycleVisualization -CycleData $testData -Format "DOT" -OutputPath "$outputDir/test_dot.dot" -HighlightCycles -IncludeStatistics
-Write-Host "Fichier DOT généré: $dotPath"
+Write-Host "Fichier DOT gÃ©nÃ©rÃ©: $dotPath"
 
 # Tester le format JSON
 $jsonPath = Export-CycleVisualization -CycleData $testData -Format "JSON" -OutputPath "$outputDir/test_json.json" -HighlightCycles -IncludeStatistics
-Write-Host "Fichier JSON généré: $jsonPath"
+Write-Host "Fichier JSON gÃ©nÃ©rÃ©: $jsonPath"
 
 # Tester le format MERMAID
 $mermaidPath = Export-CycleVisualization -CycleData $testData -Format "MERMAID" -OutputPath "$outputDir/test_mermaid.md" -HighlightCycles -IncludeStatistics
-Write-Host "Diagramme Mermaid généré: $mermaidPath"
+Write-Host "Diagramme Mermaid gÃ©nÃ©rÃ©: $mermaidPath"
 
 # Tester la fonction Show-CycleGraph
 Write-Host "Ouverture du graphe dans le navigateur..."
 Show-CycleGraph -CycleData $testData -HighlightCycles -IncludeStatistics -OutputPath "$outputDir/test_browser.html"
 
-Write-Host "Tests terminés avec succès!"
+Write-Host "Tests terminÃ©s avec succÃ¨s!"

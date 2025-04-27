@@ -1,5 +1,5 @@
-# Module d'analyse des dépendances pour le Script Manager
-# Ce module détecte les dépendances entre les scripts
+﻿# Module d'analyse des dÃ©pendances pour le Script Manager
+# Ce module dÃ©tecte les dÃ©pendances entre les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: analysis, dependencies, scripts
@@ -7,18 +7,18 @@
 function Find-ScriptDependencies {
     <#
     .SYNOPSIS
-        Détecte les dépendances d'un script
+        DÃ©tecte les dÃ©pendances d'un script
     .DESCRIPTION
-        Analyse un script pour détecter ses dépendances (imports, sources, etc.)
+        Analyse un script pour dÃ©tecter ses dÃ©pendances (imports, sources, etc.)
     .PARAMETER FilePath
-        Chemin du fichier à analyser
+        Chemin du fichier Ã  analyser
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .PARAMETER Verbose
-        Affiche des informations détaillées pendant l'exécution
+        Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution
     .EXAMPLE
         Find-ScriptDependencies -FilePath "script.ps1" -ScriptType "PowerShell"
-        Détecte les dépendances du script PowerShell "script.ps1"
+        DÃ©tecte les dÃ©pendances du script PowerShell "script.ps1"
     #>
     [CmdletBinding()]
     param (
@@ -39,13 +39,13 @@ function Find-ScriptDependencies {
         return @()
     }
     
-    # Initialiser le tableau des dépendances
+    # Initialiser le tableau des dÃ©pendances
     $Dependencies = @()
     
-    # Détecter les dépendances selon le type de script
+    # DÃ©tecter les dÃ©pendances selon le type de script
     switch ($ScriptType) {
         "PowerShell" {
-            # Détecter les Import-Module
+            # DÃ©tecter les Import-Module
             $ImportMatches = [regex]::Matches($Content, "Import-Module\s+([a-zA-Z0-9_\.-]+)")
             foreach ($Match in $ImportMatches) {
                 $Dependencies += [PSCustomObject]@{
@@ -55,7 +55,7 @@ function Find-ScriptDependencies {
                 }
             }
             
-            # Détecter les . (dot sourcing)
+            # DÃ©tecter les . (dot sourcing)
             $DotMatches = [regex]::Matches($Content, "\.\s+([a-zA-Z0-9_\.-\\\/]+)")
             foreach ($Match in $DotMatches) {
                 $Path = $Match.Groups[1].Value
@@ -66,7 +66,7 @@ function Find-ScriptDependencies {
                 }
             }
             
-            # Détecter les using module
+            # DÃ©tecter les using module
             $UsingMatches = [regex]::Matches($Content, "using\s+module\s+([a-zA-Z0-9_\.-]+)")
             foreach ($Match in $UsingMatches) {
                 $Dependencies += [PSCustomObject]@{
@@ -77,7 +77,7 @@ function Find-ScriptDependencies {
             }
         }
         "Python" {
-            # Détecter les import
+            # DÃ©tecter les import
             $ImportMatches = [regex]::Matches($Content, "import\s+([a-zA-Z0-9_\.]+)")
             foreach ($Match in $ImportMatches) {
                 $Dependencies += [PSCustomObject]@{
@@ -87,7 +87,7 @@ function Find-ScriptDependencies {
                 }
             }
             
-            # Détecter les from ... import
+            # DÃ©tecter les from ... import
             $FromMatches = [regex]::Matches($Content, "from\s+([a-zA-Z0-9_\.]+)\s+import")
             foreach ($Match in $FromMatches) {
                 $Dependencies += [PSCustomObject]@{
@@ -97,7 +97,7 @@ function Find-ScriptDependencies {
                 }
             }
             
-            # Détecter les exec(open(...))
+            # DÃ©tecter les exec(open(...))
             $ExecMatches = [regex]::Matches($Content, "exec\(open\(['\"]([^'\"]+)['\"]")
             foreach ($Match in $ExecMatches) {
                 $Path = $Match.Groups[1].Value
@@ -109,7 +109,7 @@ function Find-ScriptDependencies {
             }
         }
         "Batch" {
-            # Détecter les call
+            # DÃ©tecter les call
             $CallMatches = [regex]::Matches($Content, "call\s+([a-zA-Z0-9_\.-\\\/]+)")
             foreach ($Match in $CallMatches) {
                 $Path = $Match.Groups[1].Value
@@ -121,7 +121,7 @@ function Find-ScriptDependencies {
             }
         }
         "Shell" {
-            # Détecter les source
+            # DÃ©tecter les source
             $SourceMatches = [regex]::Matches($Content, "source\s+([a-zA-Z0-9_\.-\\\/]+)")
             foreach ($Match in $SourceMatches) {
                 $Path = $Match.Groups[1].Value
@@ -132,7 +132,7 @@ function Find-ScriptDependencies {
                 }
             }
             
-            # Détecter les . (dot sourcing)
+            # DÃ©tecter les . (dot sourcing)
             $DotMatches = [regex]::Matches($Content, "\.\s+([a-zA-Z0-9_\.-\\\/]+)")
             foreach ($Match in $DotMatches) {
                 $Path = $Match.Groups[1].Value
@@ -145,7 +145,7 @@ function Find-ScriptDependencies {
         }
     }
     
-    # Éliminer les doublons
+    # Ã‰liminer les doublons
     $Dependencies = $Dependencies | Sort-Object -Property Name -Unique
     
     return $Dependencies

@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour les fonctions auxiliaires du système d'apprentissage des erreurs.
+    Tests unitaires pour les fonctions auxiliaires du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctions auxiliaires du système d'apprentissage des erreurs.
+    Ce script contient des tests unitaires pour les fonctions auxiliaires du systÃ¨me d'apprentissage des erreurs.
 .NOTES
     Version:        1.0
     Auteur:         Augment Agent
-    Date création:  09/04/2025
+    Date crÃ©ation:  09/04/2025
 #>
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "Tests des fonctions auxiliaires" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:testRoot = Join-Path -Path $env:TEMP -ChildPath "HelperFunctionsTests"
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }
         New-Item -Path $script:testRoot -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de log
+        # CrÃ©er un fichier de log
         $script:logPath = Join-Path -Path $script:testRoot -ChildPath "test.log"
         Set-Content -Path $script:logPath -Value "Test log content"
         
-        # Créer un fichier de configuration
+        # CrÃ©er un fichier de configuration
         $script:configPath = Join-Path -Path $script:testRoot -ChildPath "config.json"
         $configContent = @"
 {
@@ -39,7 +39,7 @@ Describe "Tests des fonctions auxiliaires" {
 "@
         Set-Content -Path $script:configPath -Value $configContent
         
-        # Définir les fonctions auxiliaires
+        # DÃ©finir les fonctions auxiliaires
         function Get-ConfigValue {
             [CmdletBinding()]
             param (
@@ -56,7 +56,7 @@ Describe "Tests des fonctions auxiliaires" {
                     return $config.$Key
                 }
                 else {
-                    Write-Warning "La clé '$Key' n'existe pas dans le fichier de configuration."
+                    Write-Warning "La clÃ© '$Key' n'existe pas dans le fichier de configuration."
                     return $null
                 }
             }
@@ -87,7 +87,7 @@ Describe "Tests des fonctions auxiliaires" {
                 return $true
             }
             catch {
-                Write-Error "Erreur lors de l'écriture dans le fichier de log: $_"
+                Write-Error "Erreur lors de l'Ã©criture dans le fichier de log: $_"
                 return $false
             }
         }
@@ -107,7 +107,7 @@ Describe "Tests des fonctions auxiliaires" {
                 $sizeKB = [math]::Round($file.Length / 1KB, 2)
                 
                 if ($sizeKB -gt $MaxSizeKB) {
-                    Write-Warning "Le fichier '$FilePath' dépasse la taille maximale autorisée ($sizeKB KB > $MaxSizeKB KB)."
+                    Write-Warning "Le fichier '$FilePath' dÃ©passe la taille maximale autorisÃ©e ($sizeKB KB > $MaxSizeKB KB)."
                     return $false
                 }
                 else {
@@ -115,7 +115,7 @@ Describe "Tests des fonctions auxiliaires" {
                 }
             }
             catch {
-                Write-Error "Erreur lors de la vérification de la taille du fichier: $_"
+                Write-Error "Erreur lors de la vÃ©rification de la taille du fichier: $_"
                 return $false
             }
         }
@@ -134,13 +134,13 @@ Describe "Tests des fonctions auxiliaires" {
             )
             
             try {
-                # Vérifier que le fichier existe
+                # VÃ©rifier que le fichier existe
                 if (-not (Test-Path -Path $FilePath -ErrorAction Stop)) {
                     Write-Error "Le fichier '$FilePath' n'existe pas."
                     return $false
                 }
                 
-                # Créer le dossier de backup si nécessaire
+                # CrÃ©er le dossier de backup si nÃ©cessaire
                 if (-not (Test-Path -Path $BackupFolder) -and $CreateBackupFolder) {
                     New-Item -Path $BackupFolder -ItemType Directory -Force -ErrorAction Stop | Out-Null
                 }
@@ -149,7 +149,7 @@ Describe "Tests des fonctions auxiliaires" {
                     return $false
                 }
                 
-                # Générer le nom du fichier de backup
+                # GÃ©nÃ©rer le nom du fichier de backup
                 $fileName = Split-Path -Path $FilePath -Leaf
                 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
                 $backupFileName = "$($fileName.Split('.')[0])_$timestamp.$($fileName.Split('.')[1])"
@@ -161,27 +161,27 @@ Describe "Tests des fonctions auxiliaires" {
                 return $backupFilePath
             }
             catch {
-                Write-Error "Erreur lors de la création du backup: $_"
+                Write-Error "Erreur lors de la crÃ©ation du backup: $_"
                 return $false
             }
         }
     }
     
     Context "Fonction Get-ConfigValue" {
-        It "Devrait récupérer une valeur de configuration" {
-            # Récupérer une valeur de configuration
+        It "Devrait rÃ©cupÃ©rer une valeur de configuration" {
+            # RÃ©cupÃ©rer une valeur de configuration
             $logPath = Get-ConfigValue -ConfigPath $script:configPath -Key "LogPath"
             
-            # Vérifier que la valeur a été récupérée correctement
+            # VÃ©rifier que la valeur a Ã©tÃ© rÃ©cupÃ©rÃ©e correctement
             $logPath | Should -Not -BeNullOrEmpty
             $logPath | Should -Be $script:logPath
         }
         
-        It "Devrait récupérer une valeur de configuration de type tableau" {
-            # Récupérer une valeur de configuration de type tableau
+        It "Devrait rÃ©cupÃ©rer une valeur de configuration de type tableau" {
+            # RÃ©cupÃ©rer une valeur de configuration de type tableau
             $errorCategories = Get-ConfigValue -ConfigPath $script:configPath -Key "ErrorCategories"
             
-            # Vérifier que la valeur a été récupérée correctement
+            # VÃ©rifier que la valeur a Ã©tÃ© rÃ©cupÃ©rÃ©e correctement
             $errorCategories | Should -Not -BeNullOrEmpty
             $errorCategories.Count | Should -Be 3
             $errorCategories | Should -Contain "Syntax"
@@ -189,59 +189,59 @@ Describe "Tests des fonctions auxiliaires" {
             $errorCategories | Should -Contain "Logic"
         }
         
-        It "Devrait récupérer une valeur de configuration de type booléen" {
-            # Récupérer une valeur de configuration de type booléen
+        It "Devrait rÃ©cupÃ©rer une valeur de configuration de type boolÃ©en" {
+            # RÃ©cupÃ©rer une valeur de configuration de type boolÃ©en
             $enableVerboseLogging = Get-ConfigValue -ConfigPath $script:configPath -Key "EnableVerboseLogging"
             
-            # Vérifier que la valeur a été récupérée correctement
+            # VÃ©rifier que la valeur a Ã©tÃ© rÃ©cupÃ©rÃ©e correctement
             $enableVerboseLogging | Should -Not -BeNullOrEmpty
             $enableVerboseLogging | Should -BeTrue
         }
         
-        It "Devrait retourner null pour une clé inexistante" {
-            # Récupérer une valeur de configuration inexistante
+        It "Devrait retourner null pour une clÃ© inexistante" {
+            # RÃ©cupÃ©rer une valeur de configuration inexistante
             $value = Get-ConfigValue -ConfigPath $script:configPath -Key "NonExistentKey"
             
-            # Vérifier que la valeur est null
+            # VÃ©rifier que la valeur est null
             $value | Should -BeNullOrEmpty
         }
     }
     
     Context "Fonction Write-LogMessage" {
-        It "Devrait écrire un message de log" {
-            # Écrire un message de log
+        It "Devrait Ã©crire un message de log" {
+            # Ã‰crire un message de log
             $result = Write-LogMessage -LogPath $script:logPath -Message "Test message" -Level "Information"
             
-            # Vérifier que le message a été écrit correctement
+            # VÃ©rifier que le message a Ã©tÃ© Ã©crit correctement
             $result | Should -BeTrue
             
-            # Vérifier que le message est présent dans le fichier de log
+            # VÃ©rifier que le message est prÃ©sent dans le fichier de log
             $logContent = Get-Content -Path $script:logPath -Raw
             $logContent | Should -Match "Test message"
             $logContent | Should -Match "\[Information\]"
         }
         
-        It "Devrait écrire un message de log de niveau Warning" {
-            # Écrire un message de log de niveau Warning
+        It "Devrait Ã©crire un message de log de niveau Warning" {
+            # Ã‰crire un message de log de niveau Warning
             $result = Write-LogMessage -LogPath $script:logPath -Message "Test warning" -Level "Warning"
             
-            # Vérifier que le message a été écrit correctement
+            # VÃ©rifier que le message a Ã©tÃ© Ã©crit correctement
             $result | Should -BeTrue
             
-            # Vérifier que le message est présent dans le fichier de log
+            # VÃ©rifier que le message est prÃ©sent dans le fichier de log
             $logContent = Get-Content -Path $script:logPath -Raw
             $logContent | Should -Match "Test warning"
             $logContent | Should -Match "\[Warning\]"
         }
         
-        It "Devrait écrire un message de log de niveau Error" {
-            # Écrire un message de log de niveau Error
+        It "Devrait Ã©crire un message de log de niveau Error" {
+            # Ã‰crire un message de log de niveau Error
             $result = Write-LogMessage -LogPath $script:logPath -Message "Test error" -Level "Error"
             
-            # Vérifier que le message a été écrit correctement
+            # VÃ©rifier que le message a Ã©tÃ© Ã©crit correctement
             $result | Should -BeTrue
             
-            # Vérifier que le message est présent dans le fichier de log
+            # VÃ©rifier que le message est prÃ©sent dans le fichier de log
             $logContent = Get-Content -Path $script:logPath -Raw
             $logContent | Should -Match "Test error"
             $logContent | Should -Match "\[Error\]"
@@ -249,71 +249,71 @@ Describe "Tests des fonctions auxiliaires" {
     }
     
     Context "Fonction Test-FileSize" {
-        It "Devrait retourner true pour un fichier de taille inférieure à la limite" {
-            # Vérifier la taille du fichier
+        It "Devrait retourner true pour un fichier de taille infÃ©rieure Ã  la limite" {
+            # VÃ©rifier la taille du fichier
             $result = Test-FileSize -FilePath $script:logPath -MaxSizeKB 1024
             
-            # Vérifier que le résultat est correct
+            # VÃ©rifier que le rÃ©sultat est correct
             $result | Should -BeTrue
         }
         
-        It "Devrait retourner false pour un fichier de taille supérieure à la limite" {
-            # Créer un fichier de grande taille
+        It "Devrait retourner false pour un fichier de taille supÃ©rieure Ã  la limite" {
+            # CrÃ©er un fichier de grande taille
             $largeFilePath = Join-Path -Path $script:testRoot -ChildPath "large.txt"
             $largeContent = "X" * 1024 * 2 # 2 KB
             Set-Content -Path $largeFilePath -Value $largeContent
             
-            # Vérifier la taille du fichier
+            # VÃ©rifier la taille du fichier
             $result = Test-FileSize -FilePath $largeFilePath -MaxSizeKB 1
             
-            # Vérifier que le résultat est correct
+            # VÃ©rifier que le rÃ©sultat est correct
             $result | Should -BeFalse
         }
     }
     
     Context "Fonction Backup-File" {
-        It "Devrait créer un backup d'un fichier" {
-            # Créer un dossier de backup
+        It "Devrait crÃ©er un backup d'un fichier" {
+            # CrÃ©er un dossier de backup
             $backupFolder = Join-Path -Path $script:testRoot -ChildPath "Backup"
             New-Item -Path $backupFolder -ItemType Directory -Force | Out-Null
             
-            # Créer un backup du fichier
+            # CrÃ©er un backup du fichier
             $backupPath = Backup-File -FilePath $script:logPath -BackupFolder $backupFolder
             
-            # Vérifier que le backup a été créé correctement
+            # VÃ©rifier que le backup a Ã©tÃ© crÃ©Ã© correctement
             $backupPath | Should -Not -BeNullOrEmpty
             Test-Path -Path $backupPath | Should -BeTrue
             
-            # Vérifier que le contenu du backup est identique à l'original
+            # VÃ©rifier que le contenu du backup est identique Ã  l'original
             $originalContent = Get-Content -Path $script:logPath -Raw
             $backupContent = Get-Content -Path $backupPath -Raw
             $backupContent | Should -Be $originalContent
         }
         
-        It "Devrait créer un dossier de backup si nécessaire" {
-            # Créer un backup du fichier avec création du dossier
+        It "Devrait crÃ©er un dossier de backup si nÃ©cessaire" {
+            # CrÃ©er un backup du fichier avec crÃ©ation du dossier
             $backupFolder = Join-Path -Path $script:testRoot -ChildPath "NewBackupFolder"
             $backupPath = Backup-File -FilePath $script:logPath -BackupFolder $backupFolder -CreateBackupFolder
             
-            # Vérifier que le backup a été créé correctement
+            # VÃ©rifier que le backup a Ã©tÃ© crÃ©Ã© correctement
             $backupPath | Should -Not -BeNullOrEmpty
             Test-Path -Path $backupPath | Should -BeTrue
             
-            # Vérifier que le dossier de backup a été créé
+            # VÃ©rifier que le dossier de backup a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $backupFolder | Should -BeTrue
         }
         
         It "Devrait retourner false pour un fichier inexistant" {
-            # Créer un backup d'un fichier inexistant
+            # CrÃ©er un backup d'un fichier inexistant
             $backupPath = Backup-File -FilePath (Join-Path -Path $script:testRoot -ChildPath "nonexistent.txt") -BackupFolder (Join-Path -Path $script:testRoot -ChildPath "Backup")
             
-            # Vérifier que le résultat est correct
+            # VÃ©rifier que le rÃ©sultat est correct
             $backupPath | Should -BeFalse
         }
     }
     
     AfterAll {
-        # Supprimer le répertoire de test
+        # Supprimer le rÃ©pertoire de test
         if (Test-Path -Path $script:testRoot) {
             Remove-Item -Path $script:testRoot -Recurse -Force
         }

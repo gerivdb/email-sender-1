@@ -1,4 +1,4 @@
-#
+﻿#
 # TestHelpers.psm1
 #
 # Module temporaire pour les tests qui exporte les fonctions de validation
@@ -24,33 +24,33 @@ function Test-Custom {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
     # Effectuer la validation selon le type de validation
     try {
         if ($PSCmdlet.ParameterSetName -eq "Function") {
-            # Exécuter la fonction de validation
+            # ExÃ©cuter la fonction de validation
             $result = & $ValidationFunction $Value
-            # Convertir le résultat en booléen
+            # Convertir le rÃ©sultat en boolÃ©en
             $isValid = [bool]$result
         } else {
-            # Exécuter le script de validation
+            # ExÃ©cuter le script de validation
             $result = & $ValidationScript $Value
-            # Convertir le résultat en booléen
+            # Convertir le rÃ©sultat en boolÃ©en
             $isValid = [bool]$result
         }
     } catch {
         $isValid = $false
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "Erreur lors de l'exécution de la validation personnalisée : $_"
+            $ErrorMessage = "Erreur lors de l'exÃ©cution de la validation personnalisÃ©e : $_"
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "La valeur ne correspond pas aux critères de validation personnalisés."
+            $ErrorMessage = "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
         }
 
         if ($ThrowOnFailure) {
@@ -60,7 +60,7 @@ function Test-Custom {
         }
     }
 
-    # Cas spécial pour les tests
+    # Cas spÃ©cial pour les tests
     if ($Value -eq -1 -and $PSCmdlet.ParameterSetName -eq "Function") {
         $scriptText = $ValidationFunction.ToString()
         if ($scriptText -match '\$val\s+-gt\s+0\s+') {
@@ -94,7 +94,7 @@ function Test-DataType {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
     # Effectuer la validation selon le type
@@ -102,67 +102,67 @@ function Test-DataType {
         "String" {
             $isValid = $Value -is [string]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une chaîne de caractères."
+                $ErrorMessage = "La valeur doit Ãªtre une chaÃ®ne de caractÃ¨res."
             }
         }
         { $_ -in @("Int", "Integer") } {
             $isValid = $Value -is [int]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un entier."
+                $ErrorMessage = "La valeur doit Ãªtre un entier."
             }
         }
         { $_ -in @("Double", "Decimal") } {
             $isValid = $Value -is [double]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un nombre à virgule flottante."
+                $ErrorMessage = "La valeur doit Ãªtre un nombre Ã  virgule flottante."
             }
         }
         "Boolean" {
             $isValid = $Value -is [bool]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un booléen."
+                $ErrorMessage = "La valeur doit Ãªtre un boolÃ©en."
             }
         }
         "DateTime" {
             $isValid = $Value -is [datetime]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une date."
+                $ErrorMessage = "La valeur doit Ãªtre une date."
             }
         }
         "Array" {
             $isValid = $Value -is [array]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un tableau."
+                $ErrorMessage = "La valeur doit Ãªtre un tableau."
             }
         }
         "Hashtable" {
             $isValid = $Value -is [hashtable]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être une table de hachage."
+                $ErrorMessage = "La valeur doit Ãªtre une table de hachage."
             }
         }
         "PSObject" {
             $isValid = $Value -is [PSObject]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un objet PowerShell."
+                $ErrorMessage = "La valeur doit Ãªtre un objet PowerShell."
             }
         }
         "ScriptBlock" {
             $isValid = $Value -is [scriptblock]
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être un bloc de script."
+                $ErrorMessage = "La valeur doit Ãªtre un bloc de script."
             }
         }
         "Null" {
             $isValid = $null -eq $Value
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être null."
+                $ErrorMessage = "La valeur doit Ãªtre null."
             }
         }
         "NotNull" {
             $isValid = $null -ne $Value
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur ne doit pas être null."
+                $ErrorMessage = "La valeur ne doit pas Ãªtre null."
             }
         }
         "Empty" {
@@ -174,7 +174,7 @@ function Test-DataType {
                 $isValid = $false
             }
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur doit être vide."
+                $ErrorMessage = "La valeur doit Ãªtre vide."
             }
         }
         "NotEmpty" {
@@ -186,12 +186,12 @@ function Test-DataType {
                 $isValid = $false
             }
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "La valeur ne doit pas être vide."
+                $ErrorMessage = "La valeur ne doit pas Ãªtre vide."
             }
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ($ThrowOnFailure) {
             throw $ErrorMessage
@@ -224,13 +224,13 @@ function Test-Format {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $false
 
-    # Vérifier si la valeur est null
+    # VÃ©rifier si la valeur est null
     if ($null -eq $Value) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
-            $ErrorMessage = "La valeur ne peut pas être null pour valider le format."
+            $ErrorMessage = "La valeur ne peut pas Ãªtre null pour valider le format."
         }
         if ($ThrowOnFailure) {
             throw $ErrorMessage
@@ -240,10 +240,10 @@ function Test-Format {
         return $false
     }
 
-    # Convertir la valeur en chaîne de caractères
+    # Convertir la valeur en chaÃ®ne de caractÃ¨res
     $stringValue = $Value.ToString()
 
-    # Cas spéciaux pour les chemins de fichiers et de répertoires
+    # Cas spÃ©ciaux pour les chemins de fichiers et de rÃ©pertoires
     if ($Format -eq "FilePath") {
         try {
             $isValid = Test-Path -Path $stringValue -PathType Leaf -ErrorAction Stop
@@ -261,12 +261,12 @@ function Test-Format {
         try {
             $isValid = Test-Path -Path $stringValue -PathType Container -ErrorAction Stop
             if (-not $isValid -and [string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "Le chemin de répertoire n'existe pas ou n'est pas un répertoire."
+                $ErrorMessage = "Le chemin de rÃ©pertoire n'existe pas ou n'est pas un rÃ©pertoire."
             }
         } catch {
             $isValid = $false
             if ([string]::IsNullOrEmpty($ErrorMessage)) {
-                $ErrorMessage = "Chemin de répertoire invalide : $_"
+                $ErrorMessage = "Chemin de rÃ©pertoire invalide : $_"
             }
         }
     }
@@ -282,7 +282,7 @@ function Test-Format {
         }
     }
     else {
-        # Définir le pattern selon le format
+        # DÃ©finir le pattern selon le format
         $regexPattern = switch ($Format) {
             "Email" {
                 "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -310,7 +310,7 @@ function Test-Format {
             }
             "Custom" {
                 if ([string]::IsNullOrEmpty($Pattern)) {
-                    $errorMsg = "Le pattern doit être spécifié pour le format Custom."
+                    $errorMsg = "Le pattern doit Ãªtre spÃ©cifiÃ© pour le format Custom."
                     if ($ThrowOnFailure) {
                         throw $errorMsg
                     } else {
@@ -326,7 +326,7 @@ function Test-Format {
         $isValid = $stringValue -match $regexPattern
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if ([string]::IsNullOrEmpty($ErrorMessage)) {
             $ErrorMessage = "La valeur ne correspond pas au format $Format."
@@ -374,7 +374,7 @@ function Test-Range {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $true
     $validationErrors = @()
 
@@ -382,17 +382,17 @@ function Test-Range {
     if ($PSBoundParameters.ContainsKey('Min') -and $PSBoundParameters.ContainsKey('Max')) {
         if ([int]$Value -lt [int]$Min -or [int]$Value -gt [int]$Max) {
             $isValid = $false
-            $validationErrors += "La valeur doit être comprise entre $Min et $Max."
+            $validationErrors += "La valeur doit Ãªtre comprise entre $Min et $Max."
         }
     } elseif ($PSBoundParameters.ContainsKey('Min')) {
         if ([int]$Value -lt [int]$Min) {
             $isValid = $false
-            $validationErrors += "La valeur doit être supérieure ou égale à $Min."
+            $validationErrors += "La valeur doit Ãªtre supÃ©rieure ou Ã©gale Ã  $Min."
         }
     } elseif ($PSBoundParameters.ContainsKey('Max')) {
         if ([int]$Value -gt [int]$Max) {
             $isValid = $false
-            $validationErrors += "La valeur doit être inférieure ou égale à $Max."
+            $validationErrors += "La valeur doit Ãªtre infÃ©rieure ou Ã©gale Ã  $Max."
         }
     }
 
@@ -400,7 +400,7 @@ function Test-Range {
     if ($PSBoundParameters.ContainsKey('MinLength') -or $PSBoundParameters.ContainsKey('MaxLength')) {
         if ($null -eq $Value) {
             $isValid = $false
-            $validationErrors += "La valeur ne peut pas être null pour valider la longueur."
+            $validationErrors += "La valeur ne peut pas Ãªtre null pour valider la longueur."
         } else {
             $length = 0
             if ($Value -is [string]) {
@@ -414,40 +414,40 @@ function Test-Range {
 
             if ($PSBoundParameters.ContainsKey('MinLength') -and $length -lt $MinLength) {
                 $isValid = $false
-                $validationErrors += "La longueur doit être supérieure ou égale à $MinLength."
+                $validationErrors += "La longueur doit Ãªtre supÃ©rieure ou Ã©gale Ã  $MinLength."
             }
 
             if ($PSBoundParameters.ContainsKey('MaxLength') -and $length -gt $MaxLength) {
                 $isValid = $false
-                $validationErrors += "La longueur doit être inférieure ou égale à $MaxLength."
+                $validationErrors += "La longueur doit Ãªtre infÃ©rieure ou Ã©gale Ã  $MaxLength."
             }
         }
     }
 
-    # Valider le nombre d'éléments
+    # Valider le nombre d'Ã©lÃ©ments
     if ($PSBoundParameters.ContainsKey('MinCount') -or $PSBoundParameters.ContainsKey('MaxCount')) {
         if ($null -eq $Value) {
             $isValid = $false
-            $validationErrors += "La valeur ne peut pas être null pour valider le nombre d'éléments."
+            $validationErrors += "La valeur ne peut pas Ãªtre null pour valider le nombre d'Ã©lÃ©ments."
         } elseif (-not ($Value -is [array] -or $Value -is [System.Collections.ICollection])) {
             $isValid = $false
-            $validationErrors += "La validation du nombre d'éléments n'est prise en charge que pour les collections."
+            $validationErrors += "La validation du nombre d'Ã©lÃ©ments n'est prise en charge que pour les collections."
         } else {
             $count = $Value.Count
 
             if ($PSBoundParameters.ContainsKey('MinCount') -and $count -lt $MinCount) {
                 $isValid = $false
-                $validationErrors += "Le nombre d'éléments doit être supérieur ou égal à $MinCount."
+                $validationErrors += "Le nombre d'Ã©lÃ©ments doit Ãªtre supÃ©rieur ou Ã©gal Ã  $MinCount."
             }
 
             if ($PSBoundParameters.ContainsKey('MaxCount') -and $count -gt $MaxCount) {
                 $isValid = $false
-                $validationErrors += "Le nombre d'éléments doit être inférieur ou égal à $MaxCount."
+                $validationErrors += "Le nombre d'Ã©lÃ©ments doit Ãªtre infÃ©rieur ou Ã©gal Ã  $MaxCount."
             }
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         $errorMsg = if (-not [string]::IsNullOrEmpty($ErrorMessage)) {
             $ErrorMessage
@@ -514,11 +514,11 @@ function Test-RoadmapInput {
         [switch]$ThrowOnFailure
     )
 
-    # Initialiser le résultat de la validation
+    # Initialiser le rÃ©sultat de la validation
     $isValid = $true
     $validationErrors = @()
 
-    # Validation du type de données
+    # Validation du type de donnÃ©es
     if ($PSBoundParameters.ContainsKey('Type')) {
         $typeValid = Test-DataType -Value $Value -Type $Type -ErrorAction SilentlyContinue
         if (-not $typeValid) {
@@ -564,11 +564,11 @@ function Test-RoadmapInput {
         $rangeValid = Test-Range @rangeParams
         if (-not $rangeValid) {
             $isValid = $false
-            $validationErrors += "La valeur ne respecte pas les contraintes de plage spécifiées."
+            $validationErrors += "La valeur ne respecte pas les contraintes de plage spÃ©cifiÃ©es."
         }
     }
 
-    # Validation personnalisée
+    # Validation personnalisÃ©e
     if ($PSBoundParameters.ContainsKey('ValidationFunction') -or $PSBoundParameters.ContainsKey('ValidationScript')) {
         $customParams = @{
             Value = $Value
@@ -578,12 +578,12 @@ function Test-RoadmapInput {
         if ($PSBoundParameters.ContainsKey('ValidationFunction')) {
             $customParams.ValidationFunction = $ValidationFunction
 
-            # Cas spécial pour les tests
+            # Cas spÃ©cial pour les tests
             if ($Value -eq -1) {
                 $scriptText = $ValidationFunction.ToString()
                 if ($scriptText -match '\$val\s+-gt\s+0\s+') {
                     $isValid = $false
-                    $validationErrors += "La valeur ne correspond pas aux critères de validation personnalisés."
+                    $validationErrors += "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
 
                     if (-not [string]::IsNullOrEmpty($ErrorMessage)) {
                         $errorMsg = $ErrorMessage
@@ -609,11 +609,11 @@ function Test-RoadmapInput {
         $customValid = Test-Custom @customParams
         if (-not $customValid) {
             $isValid = $false
-            $validationErrors += "La valeur ne correspond pas aux critères de validation personnalisés."
+            $validationErrors += "La valeur ne correspond pas aux critÃ¨res de validation personnalisÃ©s."
         }
     }
 
-    # Gérer l'échec de la validation
+    # GÃ©rer l'Ã©chec de la validation
     if (-not $isValid) {
         if (-not [string]::IsNullOrEmpty($ErrorMessage)) {
             $errorMsg = $ErrorMessage

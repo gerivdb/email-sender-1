@@ -1,41 +1,41 @@
-# Debug-DependsOnExtraction.ps1
-# Script pour déboguer l'extraction des dépendances
+﻿# Debug-DependsOnExtraction.ps1
+# Script pour dÃ©boguer l'extraction des dÃ©pendances
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier markdown de test simple
+# CrÃ©er un fichier markdown de test simple
 $testMarkdownPath = Join-Path -Path $testDir -ChildPath "debug-depends.md"
 $testMarkdown = @"
 # Debug Depends
 
-## Tâches
+## TÃ¢ches
 
-- [ ] **A** Tâche A
-- [ ] **B** Tâche B @depends:A
-- [ ] **C** Tâche C @depends:B
+- [ ] **A** TÃ¢che A
+- [ ] **B** TÃ¢che B @depends:A
+- [ ] **C** TÃ¢che C @depends:B
 "@
 
 $testMarkdown | Out-File -FilePath $testMarkdownPath -Encoding UTF8
 
-Write-Host "Fichier de test créé: $testMarkdownPath" -ForegroundColor Green
+Write-Host "Fichier de test crÃ©Ã©: $testMarkdownPath" -ForegroundColor Green
 
 try {
     # Lire le contenu du fichier
     $content = Get-Content -Path $testMarkdownPath -Raw
     $lines = $content -split "`r?`n"
     
-    # Trouver les lignes avec des dépendances
+    # Trouver les lignes avec des dÃ©pendances
     $dependsLines = $lines | Where-Object { $_ -match '@depends:' }
-    Write-Host "`nLignes avec dépendances:" -ForegroundColor Cyan
+    Write-Host "`nLignes avec dÃ©pendances:" -ForegroundColor Cyan
     foreach ($line in $dependsLines) {
         Write-Host "  $line" -ForegroundColor Yellow
     }
     
-    # Tester différentes expressions régulières
+    # Tester diffÃ©rentes expressions rÃ©guliÃ¨res
     $regexTests = @(
         '@depends:(\w+)',
         '@depends:([\w\.-]+)',
@@ -47,18 +47,18 @@ try {
         
         foreach ($line in $dependsLines) {
             if ($line -match $regex) {
-                Write-Host "  Match trouvé: $($matches[1])" -ForegroundColor Green
+                Write-Host "  Match trouvÃ©: $($matches[1])" -ForegroundColor Green
                 
                 # Tester le remplacement
                 $newLine = $line -replace $regex, ''
-                Write-Host "  Après remplacement: $newLine" -ForegroundColor Yellow
+                Write-Host "  AprÃ¨s remplacement: $newLine" -ForegroundColor Yellow
             } else {
-                Write-Host "  Aucun match trouvé" -ForegroundColor Red
+                Write-Host "  Aucun match trouvÃ©" -ForegroundColor Red
             }
         }
     }
     
-    Write-Host "`nTest terminé." -ForegroundColor Green
+    Write-Host "`nTest terminÃ©." -ForegroundColor Green
 }
 catch {
     Write-Host "Erreur lors du test: $_" -ForegroundColor Red
@@ -68,6 +68,6 @@ finally {
     # Nettoyer les fichiers de test
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
-        Write-Host "`nRépertoire de test nettoyé: $testDir" -ForegroundColor Gray
+        Write-Host "`nRÃ©pertoire de test nettoyÃ©: $testDir" -ForegroundColor Gray
     }
 }

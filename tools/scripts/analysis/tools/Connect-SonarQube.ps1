@@ -1,15 +1,15 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Connecteur pour SonarQube permettant d'analyser des projets avec SonarQube Scanner.
 
 .DESCRIPTION
     Ce script fournit une interface pour analyser des projets avec SonarQube Scanner
-    et récupérer les résultats depuis l'API SonarQube. Il peut être utilisé comme
-    un plugin pour le système d'analyse ou comme un script autonome.
+    et rÃ©cupÃ©rer les rÃ©sultats depuis l'API SonarQube. Il peut Ãªtre utilisÃ© comme
+    un plugin pour le systÃ¨me d'analyse ou comme un script autonome.
 
 .PARAMETER ProjectKey
-    Clé du projet SonarQube.
+    ClÃ© du projet SonarQube.
 
 .PARAMETER ProjectName
     Nom du projet SonarQube.
@@ -18,19 +18,19 @@
     Version du projet SonarQube.
 
 .PARAMETER SourceDirectory
-    Répertoire contenant les sources à analyser.
+    RÃ©pertoire contenant les sources Ã  analyser.
 
 .PARAMETER SonarQubeUrl
-    URL du serveur SonarQube. Par défaut: http://localhost:9000
+    URL du serveur SonarQube. Par dÃ©faut: http://localhost:9000
 
 .PARAMETER Token
     Token d'authentification pour l'API SonarQube.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats. Si non spécifié, les résultats sont affichés dans la console.
+    Chemin du fichier de sortie pour les rÃ©sultats. Si non spÃ©cifiÃ©, les rÃ©sultats sont affichÃ©s dans la console.
 
 .PARAMETER RegisterAsPlugin
-    Enregistrer ce connecteur comme un plugin dans le système d'analyse.
+    Enregistrer ce connecteur comme un plugin dans le systÃ¨me d'analyse.
 
 .EXAMPLE
     .\Connect-SonarQube.ps1 -ProjectKey "my-project" -ProjectName "My Project" -ProjectVersion "1.0" -SourceDirectory "C:\Projects\MyProject"
@@ -110,19 +110,19 @@ function Invoke-SonarQubeAnalysis {
         [string]$Token
     )
     
-    # Vérifier si SonarQube Scanner est disponible
+    # VÃ©rifier si SonarQube Scanner est disponible
     if (-not (Test-AnalysisTool -ToolName "SonarQube")) {
         Write-Error "SonarQube Scanner n'est pas disponible. Installez-le et ajoutez-le au PATH."
         return $null
     }
     
-    # Vérifier si le répertoire source existe
+    # VÃ©rifier si le rÃ©pertoire source existe
     if (-not (Test-Path -Path $SourceDirectory -PathType Container)) {
-        Write-Error "Le répertoire source '$SourceDirectory' n'existe pas."
+        Write-Error "Le rÃ©pertoire source '$SourceDirectory' n'existe pas."
         return $null
     }
     
-    # Préparer les paramètres pour l'analyse
+    # PrÃ©parer les paramÃ¨tres pour l'analyse
     $params = @{
         ProjectKey = $ProjectKey
         ProjectName = $ProjectName
@@ -136,7 +136,7 @@ function Invoke-SonarQubeAnalysis {
         $params["Token"] = $Token
     }
     
-    # Exécuter l'analyse
+    # ExÃ©cuter l'analyse
     try {
         $results = Invoke-SonarQubeTool @params
         return $results
@@ -147,7 +147,7 @@ function Invoke-SonarQubeAnalysis {
     }
 }
 
-# Enregistrer le plugin si demandé
+# Enregistrer le plugin si demandÃ©
 if ($RegisterAsPlugin) {
     $analyzeFunction = {
         param (
@@ -159,7 +159,7 @@ if ($RegisterAsPlugin) {
             [string]$Token = ""
         )
         
-        # Utiliser le répertoire du fichier comme répertoire source si c'est un fichier
+        # Utiliser le rÃ©pertoire du fichier comme rÃ©pertoire source si c'est un fichier
         $sourceDirectory = if (Test-Path -Path $FilePath -PathType Leaf) {
             Split-Path -Path $FilePath -Parent
         }
@@ -167,17 +167,17 @@ if ($RegisterAsPlugin) {
             $FilePath
         }
         
-        # Générer un nom de projet par défaut si non spécifié
+        # GÃ©nÃ©rer un nom de projet par dÃ©faut si non spÃ©cifiÃ©
         if (-not $ProjectName) {
             $ProjectName = Split-Path -Path $sourceDirectory -Leaf
         }
         
-        # Générer une clé de projet par défaut si non spécifiée
+        # GÃ©nÃ©rer une clÃ© de projet par dÃ©faut si non spÃ©cifiÃ©e
         if (-not $ProjectKey) {
             $ProjectKey = $ProjectName.ToLower() -replace '[^a-z0-9_-]', '-'
         }
         
-        # Utiliser "1.0" comme version par défaut si non spécifiée
+        # Utiliser "1.0" comme version par dÃ©faut si non spÃ©cifiÃ©e
         if (-not $ProjectVersion) {
             $ProjectVersion = "1.0"
         }
@@ -212,27 +212,27 @@ if ($RegisterAsPlugin) {
                            -Dependencies @("sonar-scanner") `
                            -Force
     
-    Write-Host "Plugin SonarQube enregistré avec succès." -ForegroundColor Green
+    Write-Host "Plugin SonarQube enregistrÃ© avec succÃ¨s." -ForegroundColor Green
     return
 }
 
-# Exécuter l'analyse si les paramètres requis sont spécifiés
+# ExÃ©cuter l'analyse si les paramÃ¨tres requis sont spÃ©cifiÃ©s
 if ($ProjectKey -and $ProjectName -and $ProjectVersion -and $SourceDirectory) {
     $results = Invoke-SonarQubeAnalysis -ProjectKey $ProjectKey -ProjectName $ProjectName -ProjectVersion $ProjectVersion -SourceDirectory $SourceDirectory -SonarQubeUrl $SonarQubeUrl -Token $Token
     
-    # Afficher un résumé des résultats
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
     if ($null -ne $results) {
         $totalIssues = $results.Count
         $errorCount = ($results | Where-Object { $_.Severity -eq "Error" }).Count
         $warningCount = ($results | Where-Object { $_.Severity -eq "Warning" }).Count
         $infoCount = ($results | Where-Object { $_.Severity -eq "Information" }).Count
         
-        Write-Host "Analyse terminée avec $totalIssues problèmes détectés:" -ForegroundColor Cyan
+        Write-Host "Analyse terminÃ©e avec $totalIssues problÃ¨mes dÃ©tectÃ©s:" -ForegroundColor Cyan
         Write-Host "  - Erreurs: $errorCount" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Green" })
         Write-Host "  - Avertissements: $warningCount" -ForegroundColor $(if ($warningCount -gt 0) { "Yellow" } else { "Green" })
         Write-Host "  - Informations: $infoCount" -ForegroundColor "Blue"
         
-        # Afficher les résultats détaillés
+        # Afficher les rÃ©sultats dÃ©taillÃ©s
         if ($totalIssues -gt 0) {
             $results | ForEach-Object {
                 $severityColor = switch ($_.Severity) {
@@ -245,23 +245,23 @@ if ($ProjectKey -and $ProjectName -and $ProjectVersion -and $SourceDirectory) {
                 Write-Host ""
                 Write-Host "$($_.FileName) - Ligne $($_.Line)" -ForegroundColor Cyan
                 Write-Host "[$($_.Severity)] $($_.RuleId): $($_.Message)" -ForegroundColor $severityColor
-                Write-Host "Catégorie: $($_.Category)" -ForegroundColor "Gray"
+                Write-Host "CatÃ©gorie: $($_.Category)" -ForegroundColor "Gray"
             }
         }
         
-        # Enregistrer les résultats dans un fichier si demandé
+        # Enregistrer les rÃ©sultats dans un fichier si demandÃ©
         if ($OutputPath) {
             try {
                 $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-                Write-Host "Résultats enregistrés dans '$OutputPath'." -ForegroundColor Green
+                Write-Host "RÃ©sultats enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
             }
             catch {
-                Write-Error "Erreur lors de l'enregistrement des résultats: $_"
+                Write-Error "Erreur lors de l'enregistrement des rÃ©sultats: $_"
             }
         }
     }
 }
 else {
-    Write-Host "Paramètres requis manquants. Utilisez les paramètres -ProjectKey, -ProjectName, -ProjectVersion et -SourceDirectory pour exécuter une analyse." -ForegroundColor Yellow
+    Write-Host "ParamÃ¨tres requis manquants. Utilisez les paramÃ¨tres -ProjectKey, -ProjectName, -ProjectVersion et -SourceDirectory pour exÃ©cuter une analyse." -ForegroundColor Yellow
     Write-Host "Exemple: .\Connect-SonarQube.ps1 -ProjectKey 'my-project' -ProjectName 'My Project' -ProjectVersion '1.0' -SourceDirectory 'C:\Projects\MyProject'" -ForegroundColor Yellow
 }

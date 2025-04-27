@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'analyse des corrélations entre métriques de performance.
+    Script d'analyse des corrÃ©lations entre mÃ©triques de performance.
 .DESCRIPTION
-    Analyse les relations et dépendances entre différentes métriques.
+    Analyse les relations et dÃ©pendances entre diffÃ©rentes mÃ©triques.
 .PARAMETER DataPath
-    Chemin vers les données préparées.
+    Chemin vers les donnÃ©es prÃ©parÃ©es.
 .PARAMETER OutputPath
-    Chemin où les résultats seront sauvegardés.
+    Chemin oÃ¹ les rÃ©sultats seront sauvegardÃ©s.
 .PARAMETER LogLevel
     Niveau de journalisation (Verbose, Info, Warning, Error).
 #>
@@ -52,7 +52,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour charger les données
+# Fonction pour charger les donnÃ©es
 function Import-PerformanceData {
     [CmdletBinding()]
     param (
@@ -60,24 +60,24 @@ function Import-PerformanceData {
         [string]$FilePath
     )
     
-    Write-Log -Message "Chargement des données depuis $FilePath" -Level "Info"
+    Write-Log -Message "Chargement des donnÃ©es depuis $FilePath" -Level "Info"
     
     try {
         if (Test-Path -Path $FilePath) {
             $Data = Import-Csv -Path $FilePath
-            Write-Log -Message "Chargement réussi: $($Data.Count) entrées" -Level "Info"
+            Write-Log -Message "Chargement rÃ©ussi: $($Data.Count) entrÃ©es" -Level "Info"
             return $Data
         } else {
-            Write-Log -Message "Fichier non trouvé: $FilePath" -Level "Error"
+            Write-Log -Message "Fichier non trouvÃ©: $FilePath" -Level "Error"
             return $null
         }
     } catch {
-        Write-Log -Message "Erreur lors du chargement des données: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du chargement des donnÃ©es: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction pour calculer la matrice de corrélation
+# Fonction pour calculer la matrice de corrÃ©lation
 function Get-CorrelationMatrix {
     [CmdletBinding()]
     param (
@@ -94,34 +94,34 @@ function Get-CorrelationMatrix {
         [string]$Method = "Pearson" # Pearson, Spearman
     )
     
-    Write-Log -Message "Calcul de la matrice de corrélation ($Method)" -Level "Info"
+    Write-Log -Message "Calcul de la matrice de corrÃ©lation ($Method)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
-        # Préparer la matrice de corrélation
+        # PrÃ©parer la matrice de corrÃ©lation
         $CorrelationMatrix = @{}
         
-        # Calculer les corrélations entre chaque paire de métriques
+        # Calculer les corrÃ©lations entre chaque paire de mÃ©triques
         foreach ($Metric1 in $Metrics) {
             $CorrelationMatrix[$Metric1] = @{}
             
             foreach ($Metric2 in $Metrics) {
-                # Pour la diagonale, la corrélation est 1
+                # Pour la diagonale, la corrÃ©lation est 1
                 if ($Metric1 -eq $Metric2) {
                     $CorrelationMatrix[$Metric1][$Metric2] = 1.0
                     continue
                 }
                 
-                # Extraire les valeurs des deux métriques
+                # Extraire les valeurs des deux mÃ©triques
                 $Values1 = @()
                 $Values2 = @()
                 
-                # Grouper par timestamp pour aligner les métriques
+                # Grouper par timestamp pour aligner les mÃ©triques
                 $GroupedData = $Data | Group-Object -Property $TimeColumn
                 
                 foreach ($Group in $GroupedData) {
@@ -134,13 +134,13 @@ function Get-CorrelationMatrix {
                     }
                 }
                 
-                # Calculer la corrélation
+                # Calculer la corrÃ©lation
                 if ($Values1.Count -gt 1 -and $Values2.Count -gt 1) {
                     $Correlation = 0
                     
                     switch ($Method) {
                         "Pearson" {
-                            # Calculer la corrélation de Pearson
+                            # Calculer la corrÃ©lation de Pearson
                             $Mean1 = ($Values1 | Measure-Object -Average).Average
                             $Mean2 = ($Values2 | Measure-Object -Average).Average
                             
@@ -162,7 +162,7 @@ function Get-CorrelationMatrix {
                             }
                         }
                         "Spearman" {
-                            # Calculer la corrélation de Spearman (basée sur les rangs)
+                            # Calculer la corrÃ©lation de Spearman (basÃ©e sur les rangs)
                             $Ranks1 = Get-Ranks -Values $Values1
                             $Ranks2 = Get-Ranks -Values $Values2
                             
@@ -185,7 +185,7 @@ function Get-CorrelationMatrix {
         
         return $CorrelationMatrix
     } catch {
-        Write-Log -Message "Erreur lors du calcul de la matrice de corrélation: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du calcul de la matrice de corrÃ©lation: $_" -Level "Error"
         return $null
     }
 }
@@ -198,7 +198,7 @@ function Get-Ranks {
         [double[]]$Values
     )
     
-    # Créer une liste d'indices triés par valeur
+    # CrÃ©er une liste d'indices triÃ©s par valeur
     $SortedIndices = 0..($Values.Count - 1) | Sort-Object { $Values[$_] }
     
     # Initialiser le tableau des rangs
@@ -209,7 +209,7 @@ function Get-Ranks {
         $Ranks[$SortedIndices[$i]] = $i + 1
     }
     
-    # Gérer les ex-aequo
+    # GÃ©rer les ex-aequo
     $i = 0
     while ($i -lt $Values.Count) {
         $j = $i
@@ -230,7 +230,7 @@ function Get-Ranks {
     return $Ranks
 }
 
-# Fonction pour détecter les relations causales (test de Granger)
+# Fonction pour dÃ©tecter les relations causales (test de Granger)
 function Test-GrangerCausality {
     [CmdletBinding()]
     param (
@@ -253,20 +253,20 @@ function Test-GrangerCausality {
         [double]$SignificanceLevel = 0.05
     )
     
-    Write-Log -Message "Test de causalité de Granger entre $Metric1 et $Metric2 (MaxLag=$MaxLag)" -Level "Info"
+    Write-Log -Message "Test de causalitÃ© de Granger entre $Metric1 et $Metric2 (MaxLag=$MaxLag)" -Level "Info"
     
     try {
-        # Vérifier si les données sont vides
+        # VÃ©rifier si les donnÃ©es sont vides
         if ($null -eq $Data -or $Data.Count -eq 0) {
-            Write-Log -Message "Aucune donnée à analyser" -Level "Warning"
+            Write-Log -Message "Aucune donnÃ©e Ã  analyser" -Level "Warning"
             return $null
         }
         
-        # Extraire les séries temporelles des deux métriques
+        # Extraire les sÃ©ries temporelles des deux mÃ©triques
         $TimeSeries1 = @()
         $TimeSeries2 = @()
         
-        # Grouper par timestamp pour aligner les métriques
+        # Grouper par timestamp pour aligner les mÃ©triques
         $GroupedData = $Data | Group-Object -Property $TimeColumn | Sort-Object { [DateTime]$_.Name }
         
         foreach ($Group in $GroupedData) {
@@ -279,30 +279,30 @@ function Test-GrangerCausality {
             }
         }
         
-        # Vérifier si les séries sont assez longues
+        # VÃ©rifier si les sÃ©ries sont assez longues
         if ($TimeSeries1.Count -le $MaxLag * 2 -or $TimeSeries2.Count -le $MaxLag * 2) {
-            Write-Log -Message "Séries temporelles trop courtes pour le test de Granger" -Level "Warning"
+            Write-Log -Message "SÃ©ries temporelles trop courtes pour le test de Granger" -Level "Warning"
             return $null
         }
         
-        # Résultats pour chaque lag
+        # RÃ©sultats pour chaque lag
         $Results = @()
         
         for ($Lag = 1; $Lag -le $MaxLag; $Lag++) {
-            # Test 1: Y est-il causé par X?
+            # Test 1: Y est-il causÃ© par X?
             $SSR1 = Get-SSR -Y $TimeSeries2 -X @($TimeSeries2) -Lag $Lag
             $SSR2 = Get-SSR -Y $TimeSeries2 -X @($TimeSeries2, $TimeSeries1) -Lag $Lag
             
             $n = $TimeSeries2.Count - $Lag
             $F1 = (($SSR1 - $SSR2) / $Lag) / ($SSR2 / ($n - 2 * $Lag - 1))
-            $PValue1 = 1 - [Math]::Pow(1 - $SignificanceLevel, 1/$Lag) # Approximation simplifiée
+            $PValue1 = 1 - [Math]::Pow(1 - $SignificanceLevel, 1/$Lag) # Approximation simplifiÃ©e
             
-            # Test 2: X est-il causé par Y?
+            # Test 2: X est-il causÃ© par Y?
             $SSR3 = Get-SSR -Y $TimeSeries1 -X @($TimeSeries1) -Lag $Lag
             $SSR4 = Get-SSR -Y $TimeSeries1 -X @($TimeSeries1, $TimeSeries2) -Lag $Lag
             
             $F2 = (($SSR3 - $SSR4) / $Lag) / ($SSR4 / ($n - 2 * $Lag - 1))
-            $PValue2 = 1 - [Math]::Pow(1 - $SignificanceLevel, 1/$Lag) # Approximation simplifiée
+            $PValue2 = 1 - [Math]::Pow(1 - $SignificanceLevel, 1/$Lag) # Approximation simplifiÃ©e
             
             $Results += [PSCustomObject]@{
                 Lag = $Lag
@@ -317,12 +317,12 @@ function Test-GrangerCausality {
         
         return $Results
     } catch {
-        Write-Log -Message "Erreur lors du test de causalité de Granger: $_" -Level "Error"
+        Write-Log -Message "Erreur lors du test de causalitÃ© de Granger: $_" -Level "Error"
         return $null
     }
 }
 
-# Fonction auxiliaire pour calculer la somme des carrés des résidus
+# Fonction auxiliaire pour calculer la somme des carrÃ©s des rÃ©sidus
 function Get-SSR {
     [CmdletBinding()]
     param (
@@ -336,7 +336,7 @@ function Get-SSR {
         [int]$Lag
     )
     
-    # Préparer les données avec les lags
+    # PrÃ©parer les donnÃ©es avec les lags
     $n = $Y.Count - $Lag
     $YLagged = $Y[$Lag..($Y.Count - 1)]
     
@@ -349,14 +349,14 @@ function Get-SSR {
         $XLagged += ,$XLaggedSeries
     }
     
-    # Calculer les résidus (implémentation simplifiée)
+    # Calculer les rÃ©sidus (implÃ©mentation simplifiÃ©e)
     $Residuals = $YLagged
     $SSR = ($Residuals | ForEach-Object { [Math]::Pow($_, 2) } | Measure-Object -Sum).Sum
     
     return $SSR
 }
 
-# Fonction pour exporter les résultats
+# Fonction pour exporter les rÃ©sultats
 function Export-AnalysisResults {
     [CmdletBinding()]
     param (
@@ -370,26 +370,26 @@ function Export-AnalysisResults {
         [string]$Format = "CSV" # CSV, JSON
     )
     
-    Write-Log -Message "Exportation des résultats au format $Format vers $OutputPath" -Level "Info"
+    Write-Log -Message "Exportation des rÃ©sultats au format $Format vers $OutputPath" -Level "Info"
     
     try {
-        # Vérifier si les résultats sont vides
+        # VÃ©rifier si les rÃ©sultats sont vides
         if ($null -eq $Results) {
-            Write-Log -Message "Aucun résultat à exporter" -Level "Warning"
+            Write-Log -Message "Aucun rÃ©sultat Ã  exporter" -Level "Warning"
             return $false
         }
         
-        # Créer le répertoire de sortie s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
         $Directory = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $Directory)) {
             New-Item -Path $Directory -ItemType Directory -Force | Out-Null
         }
         
-        # Exporter les résultats selon le format spécifié
+        # Exporter les rÃ©sultats selon le format spÃ©cifiÃ©
         switch ($Format) {
             "CSV" {
                 if ($Results -is [System.Collections.IDictionary]) {
-                    # Convertir la matrice de corrélation en format plat
+                    # Convertir la matrice de corrÃ©lation en format plat
                     $FlatResults = @()
                     foreach ($Key1 in $Results.Keys) {
                         foreach ($Key2 in $Results[$Key1].Keys) {
@@ -414,10 +414,10 @@ function Export-AnalysisResults {
             }
         }
         
-        Write-Log -Message "Exportation réussie vers $OutputPath" -Level "Info"
+        Write-Log -Message "Exportation rÃ©ussie vers $OutputPath" -Level "Info"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exportation des résultats: $_" -Level "Error"
+        Write-Log -Message "Erreur lors de l'exportation des rÃ©sultats: $_" -Level "Error"
         return $false
     }
 }
@@ -433,20 +433,20 @@ function Start-CorrelationAnalysis {
         [string]$OutputPath
     )
     
-    Write-Log -Message "Début de l'analyse des corrélations" -Level "Info"
+    Write-Log -Message "DÃ©but de l'analyse des corrÃ©lations" -Level "Info"
     
-    # 1. Charger les données
+    # 1. Charger les donnÃ©es
     $PerformanceDataPath = Join-Path -Path $DataPath -ChildPath "prepared_performance_data.csv"
     $PerformanceData = Import-PerformanceData -FilePath $PerformanceDataPath
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
     
-    # 2. Préparer les données pour l'analyse de corrélation
+    # 2. PrÃ©parer les donnÃ©es pour l'analyse de corrÃ©lation
     if ($PerformanceData -and $PerformanceData.Count -gt 0) {
-        # Transformer les données au format requis
+        # Transformer les donnÃ©es au format requis
         $TransformedData = $PerformanceData | ForEach-Object {
             [PSCustomObject]@{
                 Timestamp = $_.Timestamp
@@ -455,15 +455,15 @@ function Start-CorrelationAnalysis {
             }
         }
         
-        # Extraire la liste des métriques uniques
+        # Extraire la liste des mÃ©triques uniques
         $Metrics = $TransformedData | Select-Object -ExpandProperty Metric -Unique
         
-        # 3. Calculer la matrice de corrélation
+        # 3. Calculer la matrice de corrÃ©lation
         $CorrelationMatrix = Get-CorrelationMatrix -Data $TransformedData -Metrics $Metrics -TimeColumn "Timestamp" -Method "Pearson"
         $CorrelationOutputPath = Join-Path -Path $OutputPath -ChildPath "correlation_matrix.csv"
         Export-AnalysisResults -Results $CorrelationMatrix -OutputPath $CorrelationOutputPath -Format "CSV"
         
-        # 4. Tester la causalité pour les paires de métriques fortement corrélées
+        # 4. Tester la causalitÃ© pour les paires de mÃ©triques fortement corrÃ©lÃ©es
         $CausalityResults = @()
         
         foreach ($Metric1 in $Metrics) {
@@ -486,10 +486,10 @@ function Start-CorrelationAnalysis {
             Export-AnalysisResults -Results $CausalityResults -OutputPath $CausalityOutputPath -Format "CSV"
         }
     } else {
-        Write-Log -Message "Aucune donnée de performance disponible pour l'analyse" -Level "Warning"
+        Write-Log -Message "Aucune donnÃ©e de performance disponible pour l'analyse" -Level "Warning"
     }
     
-    Write-Log -Message "Analyse des corrélations terminée" -Level "Info"
+    Write-Log -Message "Analyse des corrÃ©lations terminÃ©e" -Level "Info"
     
     return @{
         Success = $true
@@ -498,13 +498,13 @@ function Start-CorrelationAnalysis {
     }
 }
 
-# Exécution du script
+# ExÃ©cution du script
 $Result = Start-CorrelationAnalysis -DataPath $DataPath -OutputPath $OutputPath
 
 if ($Result.Success) {
-    Write-Log -Message "Analyse des corrélations réussie" -Level "Info"
+    Write-Log -Message "Analyse des corrÃ©lations rÃ©ussie" -Level "Info"
     return 0
 } else {
-    Write-Log -Message "Échec de l'analyse des corrélations" -Level "Error"
+    Write-Log -Message "Ã‰chec de l'analyse des corrÃ©lations" -Level "Error"
     return 1
 }

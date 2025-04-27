@@ -1,9 +1,9 @@
-# Capture-Request.ps1
-# Script pour capturer une demande spontanée et l'ajouter à la roadmap
+﻿# Capture-Request.ps1
+# Script pour capturer une demande spontanÃ©e et l'ajouter Ã  la roadmap
 
 
 # Capture-Request.ps1
-# Script pour capturer une demande spontanée et l'ajouter à la roadmap
+# Script pour capturer une demande spontanÃ©e et l'ajouter Ã  la roadmap
 
 param (
     [Parameter(Mandatory = $true)
@@ -29,12 +29,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -43,7 +43,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
@@ -69,16 +69,16 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $roadmapPath = "Roadmap\roadmap_perso.md"""
 $requestsLogPath = Join-Path -Path $scriptPath -ChildPath "requests-log.txt"
 
-# Vérifier si le fichier roadmap existe
+# VÃ©rifier si le fichier roadmap existe
 if (-not (Test-Path -Path $roadmapPath)) {
-    Write-Error "Fichier roadmap non trouvé: $roadmapPath"
+    Write-Error "Fichier roadmap non trouvÃ©: $roadmapPath"
     exit 1
 }
 
 # Lire le contenu du fichier Markdown
 $content = Get-Content -Path $roadmapPath -Encoding UTF8
 
-# Vérifier si la catégorie "Demandes spontanées" existe, sinon la créer
+# VÃ©rifier si la catÃ©gorie "Demandes spontanÃ©es" existe, sinon la crÃ©er
 $categoryPattern = "^## $Category\. (.+)"
 $categoryFound = $false
 $categoryLine = -1
@@ -94,7 +94,7 @@ for ($i = 0; $i -lt $content.Length; $i++) {
 }
 
 if (-not $categoryFound) {
-    # Trouver la position pour insérer la nouvelle catégorie (avant le plan d'implémentation)
+    # Trouver la position pour insÃ©rer la nouvelle catÃ©gorie (avant le plan d'implÃ©mentation)
     $insertPosition = $content.Length
     for ($i = 0; $i -lt $content.Length; $i++) {
         if ($content[$i] -match "^## Plan d'implementation") {
@@ -103,7 +103,7 @@ if (-not $categoryFound) {
         }
     }
 
-    # Créer la nouvelle catégorie
+    # CrÃ©er la nouvelle catÃ©gorie
     $newCategory = @"
 
 ## $Category. $categoryName
@@ -113,16 +113,16 @@ if (-not $categoryFound) {
 
 "@
 
-    # Insérer la nouvelle catégorie
+    # InsÃ©rer la nouvelle catÃ©gorie
     $content = $content[0..($insertPosition - 1)] + $newCategory + $content[$insertPosition..($content.Length - 1)]
     $categoryLine = $insertPosition
     $insertPosition += 4
 
-    # Mettre à jour les variables pour la suite du script
+    # Mettre Ã  jour les variables pour la suite du script
     $taskInsertPosition = $categoryLine + 4
 }
 else {
-    # Trouver la fin de la section pour insérer la nouvelle tâche
+    # Trouver la fin de la section pour insÃ©rer la nouvelle tÃ¢che
     $insertPosition = $content.Length
     for ($i = $categoryLine + 1; $i -lt $content.Length; $i++) {
         if ($content[$i] -match "^## ") {
@@ -132,7 +132,7 @@ else {
     }
 }
 
-# Compter les tâches existantes dans cette catégorie pour déterminer le nouvel ID
+# Compter les tÃ¢ches existantes dans cette catÃ©gorie pour dÃ©terminer le nouvel ID
 $taskCount = 0
 $taskPattern = "- \[([ x])\] (.+?) \((.+?)\)"
 for ($i = $categoryLine; $i -lt $insertPosition; $i++) {
@@ -143,13 +143,13 @@ for ($i = $categoryLine; $i -lt $insertPosition; $i++) {
 
 $newTaskId = "$Category.$($taskCount + 1)"
 
-# Créer la nouvelle tâche
+# CrÃ©er la nouvelle tÃ¢che
 $newTask = "- [ ] $Request ($EstimatedDays jours)"
 if ($Start) {
     $newTask += " - *Demarre le $(Get-Date -Format 'dd/MM/yyyy')*"
 }
 
-# Trouver la position exacte pour insérer la nouvelle tâche
+# Trouver la position exacte pour insÃ©rer la nouvelle tÃ¢che
 $taskInsertPosition = $insertPosition
 for ($i = $categoryLine + 4; $i -lt $insertPosition; $i++) {
     if ($content[$i] -match $taskPattern) {
@@ -157,9 +157,9 @@ for ($i = $categoryLine + 4; $i -lt $insertPosition; $i++) {
     }
 }
 
-# Insérer la nouvelle tâche
+# InsÃ©rer la nouvelle tÃ¢che
 if ($taskInsertPosition -eq $insertPosition && $taskCount -eq 0) {
-    # Première tâche dans la catégorie
+    # PremiÃ¨re tÃ¢che dans la catÃ©gorie
     $content = $content[0..($categoryLine + 3)] + $newTask + $content[($categoryLine + 4)..($content.Length - 1)]
     $taskInsertPosition = $categoryLine + 4
 }
@@ -167,13 +167,13 @@ else {
     $content = $content[0..($taskInsertPosition - 1)] + $newTask + $content[$taskInsertPosition..($content.Length - 1)]
 }
 
-# Ajouter une note si spécifiée
+# Ajouter une note si spÃ©cifiÃ©e
 if ($Note) {
     $content = $content[0..($taskInsertPosition)] + "  > *Note: $Note*" + $content[($taskInsertPosition + 1)..($content.Length - 1)]
     $taskInsertPosition++
 }
 
-# Mettre à jour le pourcentage de progression de la section
+# Mettre Ã  jour le pourcentage de progression de la section
 $totalTasks = $taskCount + 1
 $completedTasks = 0
 for ($i = $categoryLine; $i -lt $insertPosition + 1; $i++) {
@@ -192,7 +192,7 @@ for ($i = $categoryLine + 1; $i -lt $categoryLine + 5; $i++) {
     }
 }
 
-# Mettre à jour la date de dernière mise à jour
+# Mettre Ã  jour la date de derniÃ¨re mise Ã  jour
 $dateUpdated = $false
 for ($i = 0; $i -lt $content.Length; $i++) {
     if ($content[$i] -match "\*Derniere mise a jour:") {
@@ -212,13 +212,13 @@ $content | Out-File -FilePath $roadmapPath -Encoding ascii
 
 # Enregistrer la demande dans le journal des demandes
 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-$logEntry = "[$timestamp] Catégorie: $Category, ID: $newTaskId, Demande: $Request"
+$logEntry = "[$timestamp] CatÃ©gorie: $Category, ID: $newTaskId, Demande: $Request"
 if (-not (Test-Path -Path $requestsLogPath)) {
     New-Item -Path $requestsLogPath -ItemType File -Force | Out-Null
 }
 Add-Content -Path $requestsLogPath -Value $logEntry
 
-Write-Host "Demande spontanée ajoutée avec succès à la roadmap (ID: $newTaskId)."
+Write-Host "Demande spontanÃ©e ajoutÃ©e avec succÃ¨s Ã  la roadmap (ID: $newTaskId)."
 
 }
 catch {
@@ -227,5 +227,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

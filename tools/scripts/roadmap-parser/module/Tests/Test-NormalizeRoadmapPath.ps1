@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-NormalizeRoadmapPath.ps1
 #
 # Script pour tester la fonction Normalize-RoadmapPath
@@ -9,7 +9,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\PathManipulation\Normalize-RoadmapPath.ps1"
 
-# Créer le répertoire s'il n'existe pas
+# CrÃ©er le rÃ©pertoire s'il n'existe pas
 $functionDir = Split-Path -Parent $functionPath
 if (-not (Test-Path -Path $functionDir)) {
     New-Item -Path $functionDir -ItemType Directory -Force | Out-Null
@@ -18,7 +18,7 @@ if (-not (Test-Path -Path $functionDir)) {
 # Importer la fonction
 . $functionPath
 
-Write-Host "Début des tests de la fonction Normalize-RoadmapPath..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests de la fonction Normalize-RoadmapPath..." -ForegroundColor Cyan
 
 # Test 1: Normalisation en chemin absolu
 Write-Host "`nTest 1: Normalisation en chemin absolu" -ForegroundColor Cyan
@@ -42,10 +42,10 @@ foreach ($testCase in $testCases) {
 
     $result = Normalize-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -54,21 +54,21 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Normalisation en chemin relatif
 Write-Host "`nTest 2: Normalisation en chemin relatif" -ForegroundColor Cyan
 
 $basePath = "C:\base\folder"
 $testCases = @(
-    @{ Path = "C:\base\folder\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "file.txt"; Description = "Fichier dans le même répertoire" }
-    @{ Path = "C:\base\folder\subfolder\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "subfolder\file.txt"; Description = "Fichier dans un sous-répertoire" }
-    @{ Path = "C:\base\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "..\file.txt"; Description = "Fichier dans le répertoire parent" }
+    @{ Path = "C:\base\folder\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "file.txt"; Description = "Fichier dans le mÃªme rÃ©pertoire" }
+    @{ Path = "C:\base\folder\subfolder\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "subfolder\file.txt"; Description = "Fichier dans un sous-rÃ©pertoire" }
+    @{ Path = "C:\base\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "..\file.txt"; Description = "Fichier dans le rÃ©pertoire parent" }
     @{ Path = "D:\other\file.txt"; NormalizationType = "RelativePath"; BasePath = $basePath; Expected = "D:\other\file.txt"; Description = "Fichier sur un autre lecteur" }
 )
 
@@ -84,10 +84,10 @@ foreach ($testCase in $testCases) {
 
     $result = Normalize-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -96,12 +96,12 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 3: Conversion de format
 Write-Host "`nTest 3: Conversion de format" -ForegroundColor Cyan
@@ -124,10 +124,10 @@ foreach ($testCase in $testCases) {
 
     $result = Normalize-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -136,12 +136,12 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 4: Options de normalisation
 Write-Host "`nTest 4: Options de normalisation" -ForegroundColor Cyan
@@ -180,10 +180,10 @@ foreach ($testCase in $testCases) {
 
     $result = Normalize-RoadmapPath @params
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $result -eq $testCase.Expected
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -192,20 +192,20 @@ foreach ($testCase in $testCases) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    Résultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
-        Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat attendu: '$($testCase.Expected)'" -ForegroundColor Red
+        Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-# Test 5: Normalisation personnalisée
-Write-Host "`nTest 5: Normalisation personnalisée" -ForegroundColor Cyan
+# Test 5: Normalisation personnalisÃ©e
+Write-Host "`nTest 5: Normalisation personnalisÃ©e" -ForegroundColor Cyan
 
 $customNormalization = {
     param($Path)
 
-    # Exemple : Ajouter un préfixe "custom:" au chemin
+    # Exemple : Ajouter un prÃ©fixe "custom:" au chemin
     return "custom:$Path"
 }
 
@@ -214,23 +214,23 @@ $result = Normalize-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType "C
 $expected = "custom:C:\folder\file.txt"
 $success = $result -eq $expected
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Normalisation personnalisée: $status" -ForegroundColor $color
+Write-Host "  Normalisation personnalisÃ©e: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: '$expected'" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: '$result'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: '$expected'" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: '$result'" -ForegroundColor Red
 }
 
 # Test 6: Gestion des erreurs
 Write-Host "`nTest 6: Gestion des erreurs" -ForegroundColor Cyan
 
 $testCases = @(
-    @{ Test = "Normalize-RoadmapPath sans CustomNormalization pour Custom"; Function = { Normalize-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Normalisation personnalisée sans CustomNormalization" }
+    @{ Test = "Normalize-RoadmapPath sans CustomNormalization pour Custom"; Function = { Normalize-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType "Custom" -ThrowOnFailure }; ShouldThrow = $true; Description = "Normalisation personnalisÃ©e sans CustomNormalization" }
     @{ Test = "Normalize-RoadmapPath avec erreur sans ThrowOnFailure"; Function = {
-            # Ce test est censé générer un warning, c'est normal
+            # Ce test est censÃ© gÃ©nÃ©rer un warning, c'est normal
             Write-Host "Note: Le warning suivant est attendu dans le cadre du test:" -ForegroundColor Yellow
             $result = Normalize-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType "Custom"
             return $result
@@ -250,10 +250,10 @@ foreach ($testCase in $testCases) {
         $exceptionThrown = $true
     }
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $success = $testCase.ShouldThrow -eq $exceptionThrown
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
     Write-Host "  $($testCase.Description): $status" -ForegroundColor $color
@@ -263,13 +263,13 @@ foreach ($testCase in $testCases) {
     } else {
         $failureCount++
         if ($testCase.ShouldThrow) {
-            Write-Host "    Exception attendue mais non levée" -ForegroundColor Red
+            Write-Host "    Exception attendue mais non levÃ©e" -ForegroundColor Red
         } else {
-            Write-Host "    Exception non attendue mais levée" -ForegroundColor Red
+            Write-Host "    Exception non attendue mais levÃ©e" -ForegroundColor Red
         }
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
-Write-Host "`nTests de la fonction Normalize-RoadmapPath terminés." -ForegroundColor Cyan
+Write-Host "`nTests de la fonction Normalize-RoadmapPath terminÃ©s." -ForegroundColor Cyan

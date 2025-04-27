@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte l'encodage des fichiers texte.
+    DÃ©tecte l'encodage des fichiers texte.
 
 .DESCRIPTION
-    Ce script détecte l'encodage des fichiers texte en analysant les premiers octets
+    Ce script dÃ©tecte l'encodage des fichiers texte en analysant les premiers octets
     du fichier (BOM) et en effectuant une analyse heuristique du contenu.
 
 .PARAMETER FilePath
-    Le chemin du fichier à analyser.
+    Le chemin du fichier Ã  analyser.
 
 .PARAMETER SampleSize
-    La taille de l'échantillon à analyser (en octets). Par défaut, 4096 octets.
+    La taille de l'Ã©chantillon Ã  analyser (en octets). Par dÃ©faut, 4096 octets.
 
 .EXAMPLE
     .\Detect-FileEncoding.ps1 -FilePath "C:\Temp\document.txt"
@@ -36,7 +36,7 @@ param(
 )
 
 begin {
-    # Fonction pour détecter l'encodage d'un fichier
+    # Fonction pour dÃ©tecter l'encodage d'un fichier
     function Get-FileEncoding {
         param (
             [Parameter(Mandatory = $true)]
@@ -47,16 +47,16 @@ begin {
         )
         
         try {
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
                 Write-Error "Le fichier $FilePath n'existe pas."
                 return "FILE_NOT_FOUND"
             }
             
-            # Lire les premiers octets du fichier pour détecter les BOM
+            # Lire les premiers octets du fichier pour dÃ©tecter les BOM
             $bytes = [System.IO.File]::ReadAllBytes($FilePath)
             
-            # Vérifier les BOM (Byte Order Mark)
+            # VÃ©rifier les BOM (Byte Order Mark)
             if ($bytes.Length -ge 4 -and $bytes[0] -eq 0x00 -and $bytes[1] -eq 0x00 -and $bytes[2] -eq 0xFE -and $bytes[3] -eq 0xFF) {
                 return [PSCustomObject]@{
                     FilePath = $FilePath
@@ -103,12 +103,12 @@ begin {
                 }
             }
             
-            # Si aucun BOM n'est détecté, essayer de déterminer l'encodage par analyse du contenu
-            # Limiter la taille de l'échantillon
+            # Si aucun BOM n'est dÃ©tectÃ©, essayer de dÃ©terminer l'encodage par analyse du contenu
+            # Limiter la taille de l'Ã©chantillon
             $sampleSize = [Math]::Min($SampleSize, $bytes.Length)
             $sample = $bytes[0..($sampleSize - 1)]
             
-            # Vérifier si le fichier est binaire
+            # VÃ©rifier si le fichier est binaire
             $binaryCount = 0
             $controlCharsAllowed = @(9, 10, 13)  # TAB, LF, CR
             
@@ -126,11 +126,11 @@ begin {
                     Encoding = "BINARY"
                     BOM = $false
                     Confidence = [Math]::Round($binaryRatio * 100)
-                    Description = "Fichier binaire (ratio de caractères binaires: $([Math]::Round($binaryRatio * 100))%)"
+                    Description = "Fichier binaire (ratio de caractÃ¨res binaires: $([Math]::Round($binaryRatio * 100))%)"
                 }
             }
             
-            # Vérifier si le fichier contient des octets nuls (caractéristique de UTF-16/UTF-32)
+            # VÃ©rifier si le fichier contient des octets nuls (caractÃ©ristique de UTF-16/UTF-32)
             $containsNulls = $false
             for ($i = 0; $i -lt $sample.Length; $i++) {
                 if ($sample[$i] -eq 0) {
@@ -140,7 +140,7 @@ begin {
             }
             
             if ($containsNulls) {
-                # Vérifier les motifs de nulls pour UTF-16/UTF-32
+                # VÃ©rifier les motifs de nulls pour UTF-16/UTF-32
                 $utf16LEPattern = $true
                 $utf16BEPattern = $true
                 $nullCount = 0
@@ -166,7 +166,7 @@ begin {
                         Encoding = "UTF-16LE"
                         BOM = $false
                         Confidence = 80
-                        Description = "UTF-16 Little Endian sans BOM (détecté par motif d'octets nuls)"
+                        Description = "UTF-16 Little Endian sans BOM (dÃ©tectÃ© par motif d'octets nuls)"
                     }
                 }
                 if ($utf16BEPattern) {
@@ -175,11 +175,11 @@ begin {
                         Encoding = "UTF-16BE"
                         BOM = $false
                         Confidence = 80
-                        Description = "UTF-16 Big Endian sans BOM (détecté par motif d'octets nuls)"
+                        Description = "UTF-16 Big Endian sans BOM (dÃ©tectÃ© par motif d'octets nuls)"
                     }
                 }
                 
-                # Si les motifs ne correspondent pas clairement, considérer comme binaire
+                # Si les motifs ne correspondent pas clairement, considÃ©rer comme binaire
                 return [PSCustomObject]@{
                     FilePath = $FilePath
                     Encoding = "BINARY"
@@ -189,13 +189,13 @@ begin {
                 }
             }
             
-            # Vérifier si le fichier est probablement UTF-8
+            # VÃ©rifier si le fichier est probablement UTF-8
             $isUtf8 = $true
             $utf8Sequences = 0
             $i = 0
             
             while ($i -lt $sample.Length) {
-                # Vérifier les séquences UTF-8 valides
+                # VÃ©rifier les sÃ©quences UTF-8 valides
                 if ($sample[$i] -lt 0x80) {
                     # ASCII (0xxxxxxx)
                     $i++
@@ -227,14 +227,14 @@ begin {
                     $utf8Sequences++
                     $i += 4
                 } else {
-                    # Séquence invalide
+                    # SÃ©quence invalide
                     $isUtf8 = $false
                     break
                 }
             }
             
             if ($isUtf8 -and $utf8Sequences -gt 0) {
-                # Si des séquences UTF-8 multi-octets sont détectées, c'est probablement de l'UTF-8
+                # Si des sÃ©quences UTF-8 multi-octets sont dÃ©tectÃ©es, c'est probablement de l'UTF-8
                 $confidence = [Math]::Min(90, 50 + ($utf8Sequences * 5))
                 
                 return [PSCustomObject]@{
@@ -242,11 +242,11 @@ begin {
                     Encoding = "UTF-8"
                     BOM = $false
                     Confidence = $confidence
-                    Description = "UTF-8 sans BOM (détecté $utf8Sequences séquences multi-octets)"
+                    Description = "UTF-8 sans BOM (dÃ©tectÃ© $utf8Sequences sÃ©quences multi-octets)"
                 }
             }
             
-            # Vérifier si le fichier est probablement ASCII
+            # VÃ©rifier si le fichier est probablement ASCII
             $isAscii = $true
             foreach ($byte in $sample) {
                 if ($byte -gt 0x7F) {
@@ -261,11 +261,11 @@ begin {
                     Encoding = "ASCII"
                     BOM = $false
                     Confidence = 90
-                    Description = "ASCII (tous les caractères < 128)"
+                    Description = "ASCII (tous les caractÃ¨res < 128)"
                 }
             }
             
-            # Vérifier les encodages Windows-1252 et ISO-8859-1
+            # VÃ©rifier les encodages Windows-1252 et ISO-8859-1
             $windows1252Count = 0
             $iso88591Count = 0
             
@@ -283,7 +283,7 @@ begin {
                     Encoding = "Windows-1252"
                     BOM = $false
                     Confidence = 70
-                    Description = "Windows-1252 (détecté $windows1252Count caractères spécifiques)"
+                    Description = "Windows-1252 (dÃ©tectÃ© $windows1252Count caractÃ¨res spÃ©cifiques)"
                 }
             }
             
@@ -297,16 +297,16 @@ begin {
                 }
             }
             
-            # Si aucun encodage spécifique n'est détecté, supposer UTF-8 par défaut
+            # Si aucun encodage spÃ©cifique n'est dÃ©tectÃ©, supposer UTF-8 par dÃ©faut
             return [PSCustomObject]@{
                 FilePath = $FilePath
                 Encoding = "UTF-8"
                 BOM = $false
                 Confidence = 50
-                Description = "UTF-8 sans BOM (par défaut)"
+                Description = "UTF-8 sans BOM (par dÃ©faut)"
             }
         } catch {
-            Write-Error "Erreur lors de la détection de l'encodage du fichier $FilePath : $_"
+            Write-Error "Erreur lors de la dÃ©tection de l'encodage du fichier $FilePath : $_"
             return [PSCustomObject]@{
                 FilePath = $FilePath
                 Encoding = "ERROR"
@@ -319,13 +319,13 @@ begin {
 }
 
 process {
-    # Détecter l'encodage du fichier
+    # DÃ©tecter l'encodage du fichier
     $result = Get-FileEncoding -FilePath $FilePath -SampleSize $SampleSize
     
-    # Retourner le résultat
+    # Retourner le rÃ©sultat
     return $result
 }
 
 end {
-    # Rien à faire ici
+    # Rien Ã  faire ici
 }

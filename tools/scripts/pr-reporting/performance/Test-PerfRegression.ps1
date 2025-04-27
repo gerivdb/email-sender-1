@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte automatiquement les régressions de performance.
+    DÃ©tecte automatiquement les rÃ©gressions de performance.
 .DESCRIPTION
-    Compare les résultats de performance actuels avec une référence et détecte les régressions.
+    Compare les rÃ©sultats de performance actuels avec une rÃ©fÃ©rence et dÃ©tecte les rÃ©gressions.
 .PARAMETER CurrentResultsPath
-    Chemin vers le fichier JSON des résultats actuels.
+    Chemin vers le fichier JSON des rÃ©sultats actuels.
 .PARAMETER BaselineResultsPath
-    Chemin vers le fichier JSON des résultats de référence.
+    Chemin vers le fichier JSON des rÃ©sultats de rÃ©fÃ©rence.
 .PARAMETER ThresholdPercent
-    Pourcentage d'augmentation considéré comme une régression. Par défaut: 10%.
+    Pourcentage d'augmentation considÃ©rÃ© comme une rÃ©gression. Par dÃ©faut: 10%.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats de l'analyse. Si non spécifié, les résultats sont uniquement affichés.
+    Chemin oÃ¹ enregistrer les rÃ©sultats de l'analyse. Si non spÃ©cifiÃ©, les rÃ©sultats sont uniquement affichÃ©s.
 .PARAMETER AlertLevel
-    Niveau d'alerte (Info, Warning, Error). Par défaut: Warning.
+    Niveau d'alerte (Info, Warning, Error). Par dÃ©faut: Warning.
 .EXAMPLE
     .\Test-PerfRegression.ps1 -CurrentResultsPath "current.json" -BaselineResultsPath "baseline.json" -ThresholdPercent 5
 #>
@@ -37,7 +37,7 @@ param (
     [string]$AlertLevel = "Warning"
 )
 
-# Fonction pour analyser les métriques et détecter les régressions
+# Fonction pour analyser les mÃ©triques et dÃ©tecter les rÃ©gressions
 function Test-MetricRegression {
     param (
         [string]$MetricName,
@@ -54,11 +54,11 @@ function Test-MetricRegression {
         $diff = $CurrentValue - $BaselineValue
         $percentChange = $diff / $BaselineValue * 100
         
-        # Pour les métriques où une augmentation est une régression (temps de réponse)
+        # Pour les mÃ©triques oÃ¹ une augmentation est une rÃ©gression (temps de rÃ©ponse)
         if ($MetricName -match "ResponseMs|Latency|Duration") {
             $isRegression = $percentChange -gt $Threshold
         }
-        # Pour les métriques où une diminution est une régression (RPS, throughput)
+        # Pour les mÃ©triques oÃ¹ une diminution est une rÃ©gression (RPS, throughput)
         elseif ($MetricName -match "RPS|RequestsPerSecond|Throughput") {
             $isRegression = $percentChange -lt -$Threshold
         }
@@ -75,7 +75,7 @@ function Test-MetricRegression {
     }
 }
 
-# Fonction pour analyser les résultats et détecter les anomalies statistiques
+# Fonction pour analyser les rÃ©sultats et dÃ©tecter les anomalies statistiques
 function Test-StatisticalAnomaly {
     param (
         [object]$CurrentResults,
@@ -84,7 +84,7 @@ function Test-StatisticalAnomaly {
     
     $anomalies = @()
     
-    # Vérifier si les résultats contiennent des données de performance
+    # VÃ©rifier si les rÃ©sultats contiennent des donnÃ©es de performance
     if ($CurrentResults.Performance -and $BaselineResults.Performance) {
         # Calculer les statistiques de base pour les deux ensembles
         $currentCPU = $CurrentResults.Performance | ForEach-Object { $_.CPU }
@@ -100,14 +100,14 @@ function Test-StatisticalAnomaly {
         $currentMemoryAvg = ($currentMemory | Measure-Object -Average).Average
         $baselineMemoryAvg = ($baselineMemory | Measure-Object -Average).Average
         
-        # Détecter les anomalies de CPU
+        # DÃ©tecter les anomalies de CPU
         if ($baselineCPUAvg -ne 0 -and (($currentCPUAvg - $baselineCPUAvg) / $baselineCPUAvg * 100) -gt 20) {
-            $anomalies += "Utilisation CPU anormalement élevée: $([Math]::Round($currentCPUAvg, 2))% vs $([Math]::Round($baselineCPUAvg, 2))% (référence)"
+            $anomalies += "Utilisation CPU anormalement Ã©levÃ©e: $([Math]::Round($currentCPUAvg, 2))% vs $([Math]::Round($baselineCPUAvg, 2))% (rÃ©fÃ©rence)"
         }
         
-        # Détecter les anomalies de mémoire
+        # DÃ©tecter les anomalies de mÃ©moire
         if ($baselineMemoryAvg -ne 0 -and (($currentMemoryAvg - $baselineMemoryAvg) / $baselineMemoryAvg * 100) -gt 20) {
-            $anomalies += "Utilisation mémoire anormalement élevée: $([Math]::Round($currentMemoryAvg, 2)) MB vs $([Math]::Round($baselineMemoryAvg, 2)) MB (référence)"
+            $anomalies += "Utilisation mÃ©moire anormalement Ã©levÃ©e: $([Math]::Round($currentMemoryAvg, 2)) MB vs $([Math]::Round($baselineMemoryAvg, 2)) MB (rÃ©fÃ©rence)"
         }
     }
     
@@ -116,41 +116,41 @@ function Test-StatisticalAnomaly {
 
 # Fonction principale
 function Main {
-    # Vérifier que les fichiers existent
+    # VÃ©rifier que les fichiers existent
     if (-not (Test-Path -Path $CurrentResultsPath)) {
-        Write-Error "Le fichier de résultats actuels n'existe pas: $CurrentResultsPath"
+        Write-Error "Le fichier de rÃ©sultats actuels n'existe pas: $CurrentResultsPath"
         return
     }
     
     if (-not (Test-Path -Path $BaselineResultsPath)) {
-        Write-Error "Le fichier de résultats de référence n'existe pas: $BaselineResultsPath"
+        Write-Error "Le fichier de rÃ©sultats de rÃ©fÃ©rence n'existe pas: $BaselineResultsPath"
         return
     }
     
-    # Charger les résultats
+    # Charger les rÃ©sultats
     try {
         $currentResults = Get-Content -Path $CurrentResultsPath -Raw | ConvertFrom-Json
         $baselineResults = Get-Content -Path $BaselineResultsPath -Raw | ConvertFrom-Json
     }
     catch {
-        Write-Error "Erreur lors du chargement des résultats: $_"
+        Write-Error "Erreur lors du chargement des rÃ©sultats: $_"
         return
     }
     
-    # Définir les métriques à analyser
+    # DÃ©finir les mÃ©triques Ã  analyser
     $metrics = @(
-        @{ Name = "AvgResponseMs"; DisplayName = "Temps de réponse moyen" },
+        @{ Name = "AvgResponseMs"; DisplayName = "Temps de rÃ©ponse moyen" },
         @{ Name = "P95ResponseMs"; DisplayName = "P95" },
-        @{ Name = "MaxResponseMs"; DisplayName = "Temps de réponse maximum" },
-        @{ Name = "RequestsPerSecond"; DisplayName = "Requêtes par seconde" }
+        @{ Name = "MaxResponseMs"; DisplayName = "Temps de rÃ©ponse maximum" },
+        @{ Name = "RequestsPerSecond"; DisplayName = "RequÃªtes par seconde" }
     )
     
-    # Analyser chaque métrique
+    # Analyser chaque mÃ©trique
     $regressions = @()
     $improvements = @()
     
     foreach ($metric in $metrics) {
-        # Vérifier si la métrique existe dans les deux résultats
+        # VÃ©rifier si la mÃ©trique existe dans les deux rÃ©sultats
         if ($currentResults.PSObject.Properties.Name -contains $metric.Name -and 
             $baselineResults.PSObject.Properties.Name -contains $metric.Name) {
             
@@ -163,16 +163,16 @@ function Main {
                 $regressions += $result
             }
             elseif ([Math]::Abs($result.PercentChange) -gt 5) {
-                # Considérer comme une amélioration si le changement est significatif
+                # ConsidÃ©rer comme une amÃ©lioration si le changement est significatif
                 $improvements += $result
             }
         }
     }
     
-    # Détecter les anomalies statistiques
+    # DÃ©tecter les anomalies statistiques
     $anomalies = Test-StatisticalAnomaly -CurrentResults $currentResults -BaselineResults $baselineResults
     
-    # Préparer les résultats
+    # PrÃ©parer les rÃ©sultats
     $analysisResults = [PSCustomObject]@{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         CurrentResults = $CurrentResultsPath
@@ -190,18 +190,18 @@ function Main {
         }
     }
     
-    # Afficher les résultats
-    Write-Host "`nAnalyse de régression de performance" -ForegroundColor Cyan
+    # Afficher les rÃ©sultats
+    Write-Host "`nAnalyse de rÃ©gression de performance" -ForegroundColor Cyan
     Write-Host "=================================" -ForegroundColor Cyan
-    Write-Host "Résultats actuels: $CurrentResultsPath"
-    Write-Host "Référence: $BaselineResultsPath"
-    Write-Host "Seuil de régression: $ThresholdPercent%"
+    Write-Host "RÃ©sultats actuels: $CurrentResultsPath"
+    Write-Host "RÃ©fÃ©rence: $BaselineResultsPath"
+    Write-Host "Seuil de rÃ©gression: $ThresholdPercent%"
     
     if ($regressions.Count -gt 0) {
-        Write-Host "`nRégressions détectées:" -ForegroundColor Red
+        Write-Host "`nRÃ©gressions dÃ©tectÃ©es:" -ForegroundColor Red
         
         foreach ($regression in $regressions) {
-            $message = "$($regression.MetricName): $([Math]::Round($regression.CurrentValue, 2)) vs $([Math]::Round($regression.BaselineValue, 2)) (référence), changement: $([Math]::Round($regression.PercentChange, 2))%"
+            $message = "$($regression.MetricName): $([Math]::Round($regression.CurrentValue, 2)) vs $([Math]::Round($regression.BaselineValue, 2)) (rÃ©fÃ©rence), changement: $([Math]::Round($regression.PercentChange, 2))%"
             
             switch ($AlertLevel) {
                 "Info" { Write-Host "  - $message" -ForegroundColor Yellow }
@@ -211,34 +211,34 @@ function Main {
         }
     }
     else {
-        Write-Host "`nAucune régression détectée." -ForegroundColor Green
+        Write-Host "`nAucune rÃ©gression dÃ©tectÃ©e." -ForegroundColor Green
     }
     
     if ($improvements.Count -gt 0) {
-        Write-Host "`nAméliorations détectées:" -ForegroundColor Green
+        Write-Host "`nAmÃ©liorations dÃ©tectÃ©es:" -ForegroundColor Green
         
         foreach ($improvement in $improvements) {
-            Write-Host "  - $($improvement.MetricName): $([Math]::Round($improvement.CurrentValue, 2)) vs $([Math]::Round($improvement.BaselineValue, 2)) (référence), changement: $([Math]::Round($improvement.PercentChange, 2))%" -ForegroundColor Green
+            Write-Host "  - $($improvement.MetricName): $([Math]::Round($improvement.CurrentValue, 2)) vs $([Math]::Round($improvement.BaselineValue, 2)) (rÃ©fÃ©rence), changement: $([Math]::Round($improvement.PercentChange, 2))%" -ForegroundColor Green
         }
     }
     
     if ($anomalies.Count -gt 0) {
-        Write-Host "`nAnomalies détectées:" -ForegroundColor Yellow
+        Write-Host "`nAnomalies dÃ©tectÃ©es:" -ForegroundColor Yellow
         
         foreach ($anomaly in $anomalies) {
             Write-Host "  - $anomaly" -ForegroundColor Yellow
         }
     }
     
-    # Enregistrer les résultats si un chemin de sortie est spécifié
+    # Enregistrer les rÃ©sultats si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
         $analysisResults | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-        Write-Host "`nRésultats de l'analyse enregistrés: $OutputPath" -ForegroundColor Cyan
+        Write-Host "`nRÃ©sultats de l'analyse enregistrÃ©s: $OutputPath" -ForegroundColor Cyan
     }
     
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $analysisResults
 }
 
-# Exécuter le script
+# ExÃ©cuter le script
 Main

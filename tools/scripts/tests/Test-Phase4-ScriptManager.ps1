@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la Phase 4 : Amélioration du système de gestion de scripts.
+    Teste la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts.
 .DESCRIPTION
-    Ce script teste spécifiquement la Phase 4 du projet de réorganisation des scripts,
-    qui concerne l'amélioration du système de gestion de scripts. Il vérifie que le
-    ScriptManager fonctionne correctement et qu'il intègre toutes les fonctionnalités
-    des phases précédentes.
+    Ce script teste spÃ©cifiquement la Phase 4 du projet de rÃ©organisation des scripts,
+    qui concerne l'amÃ©lioration du systÃ¨me de gestion de scripts. Il vÃ©rifie que le
+    ScriptManager fonctionne correctement et qu'il intÃ¨gre toutes les fonctionnalitÃ©s
+    des phases prÃ©cÃ©dentes.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à tester. Par défaut: scripts
+    Chemin du dossier contenant les scripts Ã  tester. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport de test. Par défaut: scripts\tests\scriptmanager_test_report.json
+    Chemin du fichier de sortie pour le rapport de test. Par dÃ©faut: scripts\tests\scriptmanager_test_report.json
 .PARAMETER Verbose
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Test-Phase4-ScriptManager.ps1
     Teste la Phase 4 sur tous les scripts du dossier "scripts".
 .EXAMPLE
     .\Test-Phase4-ScriptManager.ps1 -Path "scripts\maintenance" -Verbose
-    Teste la Phase 4 sur les scripts du dossier "scripts\maintenance" avec des informations détaillées.
+    Teste la Phase 4 sur les scripts du dossier "scripts\maintenance" avec des informations dÃ©taillÃ©es.
 #>
 
 param (
@@ -26,7 +26,7 @@ param (
     [switch]$Verbose
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -49,12 +49,12 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "scripts\tests\test_results.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
-# Fonction pour tester une fonctionnalité du ScriptManager
+# Fonction pour tester une fonctionnalitÃ© du ScriptManager
 function Test-ScriptManagerFeature {
     param (
         [string]$Name,
@@ -63,27 +63,27 @@ function Test-ScriptManagerFeature {
         [switch]$Verbose
     )
     
-    Write-Log "Test de la fonctionnalité: $Name" -Level "TEST"
+    Write-Log "Test de la fonctionnalitÃ©: $Name" -Level "TEST"
     
     if ($Verbose) {
-        Write-Log "Exécution de la commande: $Command" -Level "INFO"
+        Write-Log "ExÃ©cution de la commande: $Command" -Level "INFO"
     }
     
     try {
-        # Exécuter la commande
+        # ExÃ©cuter la commande
         Invoke-Expression $Command
         
-        # Vérifier si un fichier de sortie est attendu
+        # VÃ©rifier si un fichier de sortie est attendu
         if ($ExpectedOutputPath -and -not (Test-Path -Path $ExpectedOutputPath)) {
-            Write-Log "Le fichier de sortie n'a pas été généré: $ExpectedOutputPath" -Level "ERROR"
+            Write-Log "Le fichier de sortie n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $ExpectedOutputPath" -Level "ERROR"
             return @{
                 Name = $Name
                 Success = $false
-                Error = "Le fichier de sortie n'a pas été généré: $ExpectedOutputPath"
+                Error = "Le fichier de sortie n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $ExpectedOutputPath"
             }
         }
         
-        Write-Log "Test réussi: $Name" -Level "SUCCESS"
+        Write-Log "Test rÃ©ussi: $Name" -Level "SUCCESS"
         return @{
             Name = $Name
             Success = $true
@@ -107,17 +107,17 @@ function Test-ScriptManager {
         [switch]$Verbose
     )
     
-    Write-Log "=== Test de la Phase 4 : Amélioration du système de gestion de scripts ===" -Level "TITLE"
-    Write-Log "Chemin des scripts à tester: $Path" -Level "INFO"
+    Write-Log "=== Test de la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts ===" -Level "TITLE"
+    Write-Log "Chemin des scripts Ã  tester: $Path" -Level "INFO"
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir)) {
         New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-        Write-Log "Dossier de sortie créé: $OutputDir" -Level "INFO"
+        Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "INFO"
     }
     
-    # Vérifier si le ScriptManager existe
+    # VÃ©rifier si le ScriptManager existe
     $ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
     if (-not (Test-Path -Path $ScriptManagerPath)) {
         Write-Log "Le ScriptManager n'existe pas: $ScriptManagerPath" -Level "ERROR"
@@ -134,7 +134,7 @@ function Test-ScriptManager {
         return $false
     }
     
-    # Définir les tests à exécuter
+    # DÃ©finir les tests Ã  exÃ©cuter
     $Tests = @(
         @{
             Name = "Inventaire"
@@ -152,7 +152,7 @@ function Test-ScriptManager {
             ExpectedOutputPath = $null
         },
         @{
-            Name = "Élimination des duplications"
+            Name = "Ã‰limination des duplications"
             Command = "& '$ScriptManagerPath' -Action deduplicate -Path '$Path'"
             ExpectedOutputPath = $null
         },
@@ -168,19 +168,19 @@ function Test-ScriptManager {
         }
     )
     
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $TestResults = @()
     foreach ($Test in $Tests) {
         $Result = Test-ScriptManagerFeature -Name $Test.Name -Command $Test.Command -ExpectedOutputPath $Test.ExpectedOutputPath -Verbose:$Verbose
         $TestResults += $Result
     }
     
-    # Calculer le résultat global
+    # Calculer le rÃ©sultat global
     $SuccessCount = ($TestResults | Where-Object { $_.Success -eq $true }).Count
     $TotalCount = $TestResults.Count
     $Success = $SuccessCount -ge ($TotalCount / 2)
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         Success = $Success
@@ -191,13 +191,13 @@ function Test-ScriptManager {
     
     $Results | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
     
-    # Afficher un résumé
-    Write-Log "Tests terminés" -Level "SUCCESS"
-    Write-Log "Nombre de tests réussis: $SuccessCount / $TotalCount" -Level $(if ($Success) { "SUCCESS" } else { "WARNING" })
+    # Afficher un rÃ©sumÃ©
+    Write-Log "Tests terminÃ©s" -Level "SUCCESS"
+    Write-Log "Nombre de tests rÃ©ussis: $SuccessCount / $TotalCount" -Level $(if ($Success) { "SUCCESS" } else { "WARNING" })
     
     foreach ($Result in $TestResults) {
         $StatusColor = if ($Result.Success) { "SUCCESS" } else { "ERROR" }
-        $StatusText = if ($Result.Success) { "RÉUSSI" } else { "ÉCHOUÉ" }
+        $StatusText = if ($Result.Success) { "RÃ‰USSI" } else { "Ã‰CHOUÃ‰" }
         Write-Log "  $($Result.Name): $StatusText" -Level $StatusColor
         
         if (-not $Result.Success) {
@@ -205,26 +205,26 @@ function Test-ScriptManager {
         }
     }
     
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
-    # Déterminer si le test est réussi
+    # DÃ©terminer si le test est rÃ©ussi
     if ($SuccessCount -eq $TotalCount) {
-        Write-Log "Tous les tests ont réussi" -Level "SUCCESS"
-        Write-Log "La Phase 4 a réussi" -Level "SUCCESS"
+        Write-Log "Tous les tests ont rÃ©ussi" -Level "SUCCESS"
+        Write-Log "La Phase 4 a rÃ©ussi" -Level "SUCCESS"
         return $true
     } elseif ($Success) {
-        Write-Log "La plupart des tests ont réussi" -Level "WARNING"
-        Write-Log "La Phase 4 a partiellement réussi" -Level "WARNING"
+        Write-Log "La plupart des tests ont rÃ©ussi" -Level "WARNING"
+        Write-Log "La Phase 4 a partiellement rÃ©ussi" -Level "WARNING"
         return $true
     } else {
-        Write-Log "La plupart des tests ont échoué" -Level "ERROR"
-        Write-Log "La Phase 4 n'a pas réussi" -Level "ERROR"
+        Write-Log "La plupart des tests ont Ã©chouÃ©" -Level "ERROR"
+        Write-Log "La Phase 4 n'a pas rÃ©ussi" -Level "ERROR"
         return $false
     }
 }
 
-# Exécuter le test
+# ExÃ©cuter le test
 $Success = Test-ScriptManager -Path $Path -OutputPath $OutputPath -Verbose:$Verbose
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $Success

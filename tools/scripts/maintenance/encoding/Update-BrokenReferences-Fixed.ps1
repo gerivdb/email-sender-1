@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour les références brisées dans les scripts suite à la réorganisation.
+    Met Ã  jour les rÃ©fÃ©rences brisÃ©es dans les scripts suite Ã  la rÃ©organisation.
 .DESCRIPTION
-    Ce script utilise le rapport généré par Detect-BrokenReferences-Fixed.ps1 pour mettre à jour
-    automatiquement les références brisées dans les scripts. Il crée un journal des modifications
-    effectuées et permet de valider les changements avant de les appliquer.
+    Ce script utilise le rapport gÃ©nÃ©rÃ© par Detect-BrokenReferences-Fixed.ps1 pour mettre Ã  jour
+    automatiquement les rÃ©fÃ©rences brisÃ©es dans les scripts. Il crÃ©e un journal des modifications
+    effectuÃ©es et permet de valider les changements avant de les appliquer.
 .PARAMETER InputPath
-    Chemin du fichier de rapport généré par Detect-BrokenReferences-Fixed.ps1.
-    Par défaut: ..\..\D
+    Chemin du fichier de rapport gÃ©nÃ©rÃ© par Detect-BrokenReferences-Fixed.ps1.
+    Par dÃ©faut: ..\..\D
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le journal des modifications.
-    Par défaut: ..\..\D
+    Par dÃ©faut: ..\..\D
 .PARAMETER AutoApply
     Applique automatiquement les modifications sans demander de confirmation.
 .PARAMETER ShowDetails
-    Affiche des informations détaillées pendant l'exécution.
+    Affiche des informations dÃ©taillÃ©es pendant l'exÃ©cution.
 .EXAMPLE
     .\Update-BrokenReferences-Fixed.ps1
-    Analyse le rapport et propose des mises à jour pour les références brisées.
+    Analyse le rapport et propose des mises Ã  jour pour les rÃ©fÃ©rences brisÃ©es.
 .EXAMPLE
     .\Update-BrokenReferences-Fixed.ps1 -AutoApply
-    Analyse le rapport et applique automatiquement les mises à jour pour les références brisées.
+    Analyse le rapport et applique automatiquement les mises Ã  jour pour les rÃ©fÃ©rences brisÃ©es.
 #>
 
 param (
@@ -30,7 +30,7 @@ param (
     [switch]$ShowDetails
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     param (
         [string]$Message,
@@ -52,7 +52,7 @@ function Write-Log {
     
     Write-Host $FormattedMessage -ForegroundColor $Color
     
-    # Écrire dans un fichier de log
+    # Ã‰crire dans un fichier de log
     $LogFile = "..\..\D"
     Add-Content -Path $LogFile -Value $FormattedMessage
 }
@@ -64,7 +64,7 @@ function Find-NewPath {
         [string]$ScriptPath
     )
     
-    # Vérifier si le chemin est vide
+    # VÃ©rifier si le chemin est vide
     if ([string]::IsNullOrWhiteSpace($OldPath)) {
         return $null
     }
@@ -94,7 +94,7 @@ function Find-NewPath {
     foreach ($NewPath in $NewPaths) {
         $Score = 0
         
-        # Vérifier si le nouveau chemin contient des éléments de l'ancien chemin
+        # VÃ©rifier si le nouveau chemin contient des Ã©lÃ©ments de l'ancien chemin
         $OldPathParts = $OldPath.Split('\')
         foreach ($Part in $OldPathParts) {
             if ($Part -and $NewPath -match [regex]::Escape($Part)) {
@@ -102,7 +102,7 @@ function Find-NewPath {
             }
         }
         
-        # Vérifier si le nouveau chemin est dans le même dossier que le script
+        # VÃ©rifier si le nouveau chemin est dans le mÃªme dossier que le script
         if ($NewPath -match [regex]::Escape($ScriptDir)) {
             $Score += 2
         }
@@ -123,7 +123,7 @@ function Convert-ToRelativePath {
         [string]$BasePath
     )
     
-    # Vérifier si les chemins sont vides
+    # VÃ©rifier si les chemins sont vides
     if ([string]::IsNullOrWhiteSpace($Path) -or [string]::IsNullOrWhiteSpace($BasePath)) {
         return $Path
     }
@@ -133,7 +133,7 @@ function Convert-ToRelativePath {
         $Path = [System.IO.Path]::GetFullPath($Path)
         $BasePath = [System.IO.Path]::GetFullPath($BasePath)
         
-        # Si les chemins sont sur des lecteurs différents, retourner le chemin absolu
+        # Si les chemins sont sur des lecteurs diffÃ©rents, retourner le chemin absolu
         if ([System.IO.Path]::GetPathRoot($Path) -ne [System.IO.Path]::GetPathRoot($BasePath)) {
             return $Path
         }
@@ -152,7 +152,7 @@ function Convert-ToRelativePath {
     }
 }
 
-# Fonction pour mettre à jour les références dans un fichier
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences dans un fichier
 function Update-References {
     param (
         [string]$FilePath,
@@ -160,7 +160,7 @@ function Update-References {
         [switch]$Apply
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -ErrorAction SilentlyContinue)) {
         Write-Log "  Le fichier n'existe pas: $FilePath" -Level "ERROR"
         return @()
@@ -178,7 +178,7 @@ function Update-References {
     foreach ($Reference in $BrokenReferences) {
         $OldPath = $Reference.ReferencePath
         
-        # Vérifier si le chemin est vide
+        # VÃ©rifier si le chemin est vide
         if ([string]::IsNullOrWhiteSpace($OldPath)) {
             continue
         }
@@ -186,7 +186,7 @@ function Update-References {
         $NewPath = Find-NewPath -OldPath $OldPath -ScriptPath $FilePath
         
         if ($NewPath) {
-            # Convertir le nouveau chemin en chemin relatif si l'ancien chemin était relatif
+            # Convertir le nouveau chemin en chemin relatif si l'ancien chemin Ã©tait relatif
             if (-not ($OldPath -match '^[A-Za-z]:\\' -or $OldPath -match '^\\\\')) {
                 $ScriptDir = Split-Path -Path $FilePath -Parent
                 $NewPath = Convert-ToRelativePath -Path $NewPath -BasePath $ScriptDir
@@ -206,9 +206,9 @@ function Update-References {
                 $Update.Applied = $true
                 $Modified = $true
                 
-                Write-Log "  Mise à jour appliquée: $OldPath -> $NewPath" -Level "SUCCESS"
+                Write-Log "  Mise Ã  jour appliquÃ©e: $OldPath -> $NewPath" -Level "SUCCESS"
             } else {
-                Write-Log "  Mise à jour proposée: $OldPath -> $NewPath" -Level "INFO"
+                Write-Log "  Mise Ã  jour proposÃ©e: $OldPath -> $NewPath" -Level "INFO"
             }
             
             $Updates += $Update
@@ -217,11 +217,11 @@ function Update-References {
         }
     }
     
-    # Enregistrer le fichier modifié
+    # Enregistrer le fichier modifiÃ©
     if ($Modified) {
         try {
             Set-Content -Path $FilePath -Value $Content -ErrorAction Stop
-            Write-Log "  Fichier mis à jour: $FilePath" -Level "SUCCESS"
+            Write-Log "  Fichier mis Ã  jour: $FilePath" -Level "SUCCESS"
         } catch {
             Write-Log "  Erreur lors de l'enregistrement du fichier: $FilePath - $_" -Level "ERROR"
         }
@@ -238,26 +238,26 @@ function Update-BrokenReferences {
         [switch]$AutoApply
     )
     
-    Write-Log "Démarrage de la mise à jour des références brisées..." -Level "TITLE"
-    Write-Log "Fichier d'entrée: $InputPath" -Level "INFO"
+    Write-Log "DÃ©marrage de la mise Ã  jour des rÃ©fÃ©rences brisÃ©es..." -Level "TITLE"
+    Write-Log "Fichier d'entrÃ©e: $InputPath" -Level "INFO"
     Write-Log "Fichier de sortie: $OutputPath" -Level "INFO"
     Write-Log "Mode: $(if ($AutoApply) { 'Application automatique' } else { 'Simulation' })" -Level "INFO"
     
-    # Vérifier si le fichier d'entrée existe
+    # VÃ©rifier si le fichier d'entrÃ©e existe
     if (-not (Test-Path -Path $InputPath -ErrorAction SilentlyContinue)) {
-        Write-Log "Le fichier d'entrée n'existe pas: $InputPath" -Level "ERROR"
-        Write-Log "Exécutez d'abord Detect-BrokenReferences-Fixed.ps1 pour générer le rapport." -Level "ERROR"
+        Write-Log "Le fichier d'entrÃ©e n'existe pas: $InputPath" -Level "ERROR"
+        Write-Log "ExÃ©cutez d'abord Detect-BrokenReferences-Fixed.ps1 pour gÃ©nÃ©rer le rapport." -Level "ERROR"
         return $false
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $OutputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $OutputDir -ErrorAction SilentlyContinue)) {
         try {
             New-Item -ItemType Directory -Path $OutputDir -Force -ErrorAction Stop | Out-Null
-            Write-Log "Dossier de sortie créé: $OutputDir" -Level "SUCCESS"
+            Write-Log "Dossier de sortie crÃ©Ã©: $OutputDir" -Level "SUCCESS"
         } catch {
-            Write-Log "Erreur lors de la création du dossier de sortie: $_" -Level "ERROR"
+            Write-Log "Erreur lors de la crÃ©ation du dossier de sortie: $_" -Level "ERROR"
             return $false
         }
     }
@@ -266,20 +266,20 @@ function Update-BrokenReferences {
     try {
         $Report = Get-Content -Path $InputPath -Raw -ErrorAction Stop | ConvertFrom-Json
         $TotalReferences = $Report.BrokenReferences.Count
-        Write-Log "Nombre de références brisées à traiter: $TotalReferences" -Level "INFO"
+        Write-Log "Nombre de rÃ©fÃ©rences brisÃ©es Ã  traiter: $TotalReferences" -Level "INFO"
     } catch {
         Write-Log "Erreur lors du chargement du rapport: $_" -Level "ERROR"
         return $false
     }
     
-    # Initialiser les résultats
+    # Initialiser les rÃ©sultats
     $Results = @{
         Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         TotalReferences = $TotalReferences
         Updates = @()
     }
     
-    # Regrouper les références par fichier
+    # Regrouper les rÃ©fÃ©rences par fichier
     $ReferencesByFile = @{}
     foreach ($Reference in $Report.BrokenReferences) {
         $ScriptPath = $Reference.ScriptPath
@@ -295,42 +295,42 @@ function Update-BrokenReferences {
     foreach ($FilePath in $ReferencesByFile.Keys) {
         $FileCounter++
         $Progress = [math]::Round(($FileCounter / $TotalFiles) * 100)
-        Write-Progress -Activity "Mise à jour des références" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
+        Write-Progress -Activity "Mise Ã  jour des rÃ©fÃ©rences" -Status "$FileCounter / $TotalFiles ($Progress%)" -PercentComplete $Progress
         
         Write-Log "Traitement du fichier: $FilePath" -Level "INFO"
         
-        # Mettre à jour les références
+        # Mettre Ã  jour les rÃ©fÃ©rences
         $Updates = Update-References -FilePath $FilePath -BrokenReferences $ReferencesByFile[$FilePath] -Apply:$AutoApply
         $Results.Updates += $Updates
     }
     
-    Write-Progress -Activity "Mise à jour des références" -Completed
+    Write-Progress -Activity "Mise Ã  jour des rÃ©fÃ©rences" -Completed
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     try {
         $Results | ConvertTo-Json -Depth 10 -ErrorAction Stop | Set-Content -Path $OutputPath -ErrorAction Stop
     } catch {
-        Write-Log "Erreur lors de l'enregistrement des résultats: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'enregistrement des rÃ©sultats: $_" -Level "ERROR"
         return $false
     }
     
-    # Afficher un résumé
+    # Afficher un rÃ©sumÃ©
     $UpdateCount = ($Results.Updates | Where-Object { $_.Applied } | Measure-Object).Count
     $TotalUpdates = $Results.Updates.Count
-    Write-Log "Mise à jour terminée" -Level "SUCCESS"
-    Write-Log "Nombre total de références traitées: $TotalReferences" -Level "INFO"
-    Write-Log "Nombre de mises à jour proposées: $TotalUpdates" -Level "INFO"
+    Write-Log "Mise Ã  jour terminÃ©e" -Level "SUCCESS"
+    Write-Log "Nombre total de rÃ©fÃ©rences traitÃ©es: $TotalReferences" -Level "INFO"
+    Write-Log "Nombre de mises Ã  jour proposÃ©es: $TotalUpdates" -Level "INFO"
     if ($AutoApply) {
-        Write-Log "Nombre de mises à jour appliquées: $UpdateCount" -Level "SUCCESS"
+        Write-Log "Nombre de mises Ã  jour appliquÃ©es: $UpdateCount" -Level "SUCCESS"
     } else {
-        Write-Log "Pour appliquer les mises à jour, exécutez la commande suivante:" -Level "WARNING"
+        Write-Log "Pour appliquer les mises Ã  jour, exÃ©cutez la commande suivante:" -Level "WARNING"
         Write-Log ".\Update-BrokenReferences-Fixed.ps1 -AutoApply" -Level "INFO"
     }
-    Write-Log "Résultats enregistrés dans: $OutputPath" -Level "SUCCESS"
+    Write-Log "RÃ©sultats enregistrÃ©s dans: $OutputPath" -Level "SUCCESS"
     
     return $true
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Update-BrokenReferences -InputPath $InputPath -OutputPath $OutputPath -AutoApply:$AutoApply
 

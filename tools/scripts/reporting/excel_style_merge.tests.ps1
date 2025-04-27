@@ -1,11 +1,11 @@
-# Tests pour les fonctionnalités de fusion des styles Excel
+﻿# Tests pour les fonctionnalitÃ©s de fusion des styles Excel
 
 # Importer Pester
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 $StyleRegistryPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_style_registry.ps1"
 $PredefinedStylesPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_predefined_styles.ps1"
 . $StyleRegistryPath
@@ -13,10 +13,10 @@ $PredefinedStylesPath = Join-Path -Path $PSScriptRoot -ChildPath "excel_predefin
 
 Describe "Excel Style Merge" {
     BeforeAll {
-        # Réinitialiser le registre avant chaque test
+        # RÃ©initialiser le registre avant chaque test
         Reset-ExcelStyleRegistry
 
-        # Initialiser les styles prédéfinis
+        # Initialiser les styles prÃ©dÃ©finis
         Initialize-ExcelPredefinedStyles -Force
     }
 
@@ -54,7 +54,7 @@ Describe "Excel Style Merge" {
             $Result | Should -Contain 2
             $Result | Should -Contain 3
 
-            # Fusionner avec stratégie SourceWins
+            # Fusionner avec stratÃ©gie SourceWins
             $Result = Merge-ExcelStyleCollections -SourceCollection @(1, 2, 3) -TargetCollection @(3, 4, 5) -Strategy "SourceWins"
             $Result | Should -BeOfType [array]
             $Result.Count | Should -Be 3
@@ -64,7 +64,7 @@ Describe "Excel Style Merge" {
             $Result | Should -Not -Contain 4
             $Result | Should -Not -Contain 5
 
-            # Fusionner avec stratégie TargetWins
+            # Fusionner avec stratÃ©gie TargetWins
             $Result = Merge-ExcelStyleCollections -SourceCollection @(1, 2, 3) -TargetCollection @(3, 4, 5) -Strategy "TargetWins"
             $Result | Should -BeOfType [array]
             $Result.Count | Should -Be 3
@@ -74,7 +74,7 @@ Describe "Excel Style Merge" {
             $Result | Should -Contain 4
             $Result | Should -Contain 5
 
-            # Fusionner avec stratégie MergeAll
+            # Fusionner avec stratÃ©gie MergeAll
             $Result = Merge-ExcelStyleCollections -SourceCollection @(1, 2, 3) -TargetCollection @(3, 4, 5) -Strategy "MergeAll"
             $Result | Should -BeOfType [array]
             $Result.Count | Should -Be 5
@@ -90,23 +90,23 @@ Describe "Excel Style Merge" {
             $Result = Merge-ExcelStyleValues -SourceValue $null -TargetValue $null -Type "String"
             $Result | Should -Be ""
 
-            # Fusionner avec stratégie SourceWins
+            # Fusionner avec stratÃ©gie SourceWins
             $Result = Merge-ExcelStyleValues -SourceValue "Source" -TargetValue "Target" -Type "String" -Strategy "SourceWins"
             $Result | Should -Be "Source"
 
-            # Fusionner avec stratégie TargetWins
+            # Fusionner avec stratÃ©gie TargetWins
             $Result = Merge-ExcelStyleValues -SourceValue "Source" -TargetValue "Target" -Type "String" -Strategy "TargetWins"
             $Result | Should -Be "Target"
 
-            # Fusionner avec stratégie MergeNonNull (Target non vide)
+            # Fusionner avec stratÃ©gie MergeNonNull (Target non vide)
             $Result = Merge-ExcelStyleValues -SourceValue "Source" -TargetValue "Target" -Type "String" -Strategy "MergeNonNull"
             $Result | Should -Be "Target"
 
-            # Fusionner avec stratégie MergeNonNull (Target vide)
+            # Fusionner avec stratÃ©gie MergeNonNull (Target vide)
             $Result = Merge-ExcelStyleValues -SourceValue "Source" -TargetValue "" -Type "String" -Strategy "MergeNonNull"
             $Result | Should -Be "Source"
 
-            # Fusionner des tableaux avec stratégie MergeAll
+            # Fusionner des tableaux avec stratÃ©gie MergeAll
             $Result = Merge-ExcelStyleValues -SourceValue @(1, 2, 3) -TargetValue @(3, 4, 5) -Type "Array" -Strategy "MergeAll"
             $Result | Should -BeOfType [array]
             $Result.Count | Should -Be 5
@@ -120,188 +120,188 @@ Describe "Excel Style Merge" {
 
     Context "Default merge strategy functions" {
         It "Should get the default merge strategy" {
-            # Obtenir la stratégie par défaut
+            # Obtenir la stratÃ©gie par dÃ©faut
             $DefaultStrategy = Get-ExcelStyleMergeDefaultStrategy
 
-            # Vérifier que la stratégie par défaut est "MergeNonNull"
+            # VÃ©rifier que la stratÃ©gie par dÃ©faut est "MergeNonNull"
             $DefaultStrategy | Should -Be "MergeNonNull"
         }
 
         It "Should set the default merge strategy" {
-            # Obtenir la stratégie par défaut actuelle
+            # Obtenir la stratÃ©gie par dÃ©faut actuelle
             $OldStrategy = Get-ExcelStyleMergeDefaultStrategy
 
-            # Définir une nouvelle stratégie par défaut
+            # DÃ©finir une nouvelle stratÃ©gie par dÃ©faut
             $ReturnedStrategy = Set-ExcelStyleMergeDefaultStrategy -Strategy "SourceWins"
 
-            # Vérifier que la fonction a retourné l'ancienne stratégie
+            # VÃ©rifier que la fonction a retournÃ© l'ancienne stratÃ©gie
             $ReturnedStrategy | Should -Be $OldStrategy
 
-            # Vérifier que la stratégie par défaut a été changée
+            # VÃ©rifier que la stratÃ©gie par dÃ©faut a Ã©tÃ© changÃ©e
             $NewStrategy = Get-ExcelStyleMergeDefaultStrategy
             $NewStrategy | Should -Be "SourceWins"
 
-            # Restaurer la stratégie par défaut
+            # Restaurer la stratÃ©gie par dÃ©faut
             Set-ExcelStyleMergeDefaultStrategy -Strategy "MergeNonNull" | Out-Null
         }
 
         It "Should use the default merge strategy when none is specified" {
-            # Définir une stratégie par défaut
+            # DÃ©finir une stratÃ©gie par dÃ©faut
             Set-ExcelStyleMergeDefaultStrategy -Strategy "TargetWins"
 
-            # Obtenir deux styles prédéfinis
+            # Obtenir deux styles prÃ©dÃ©finis
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
 
-            # Fusionner les styles sans spécifier de stratégie
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné avec stratégie par défaut"
+            # Fusionner les styles sans spÃ©cifier de stratÃ©gie
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© avec stratÃ©gie par dÃ©faut"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la stratégie par défaut (TargetWins) a été utilisée
+            # VÃ©rifier que la stratÃ©gie par dÃ©faut (TargetWins) a Ã©tÃ© utilisÃ©e
             $MergedStyle.LineConfig.Color | Should -Be $TargetStyle.LineConfig.Color
 
-            # Restaurer la stratégie par défaut
+            # Restaurer la stratÃ©gie par dÃ©faut
             Set-ExcelStyleMergeDefaultStrategy -Strategy "MergeNonNull" | Out-Null
         }
     }
 
     Context "Merge-ExcelLineStyles function" {
         It "Should merge two styles with SourceWins strategy" {
-            # Obtenir deux styles prédéfinis
+            # Obtenir deux styles prÃ©dÃ©finis
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
 
-            # Fusionner les styles avec la stratégie SourceWins
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné SourceWins" -MergeStrategy "SourceWins"
+            # Fusionner les styles avec la stratÃ©gie SourceWins
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© SourceWins" -MergeStrategy "SourceWins"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné SourceWins"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© SourceWins"
 
-            # Vérifier que les propriétés du style source ont été utilisées
+            # VÃ©rifier que les propriÃ©tÃ©s du style source ont Ã©tÃ© utilisÃ©es
             $MergedStyle.LineConfig.Color | Should -Be $SourceStyle.LineConfig.Color
             $MergedStyle.LineConfig.Width | Should -Be $SourceStyle.LineConfig.Width
             $MergedStyle.LineConfig.Style | Should -Be $SourceStyle.LineConfig.Style
 
-            # Vérifier que le style fusionné a le tag "Fusionné"
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            # VÃ©rifier que le style fusionnÃ© a le tag "FusionnÃ©"
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
 
         It "Should merge two styles with TargetWins strategy" {
-            # Obtenir deux styles prédéfinis
+            # Obtenir deux styles prÃ©dÃ©finis
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
 
-            # Fusionner les styles avec la stratégie TargetWins
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné TargetWins" -MergeStrategy "TargetWins"
+            # Fusionner les styles avec la stratÃ©gie TargetWins
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© TargetWins" -MergeStrategy "TargetWins"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné TargetWins"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© TargetWins"
 
-            # Vérifier que les propriétés du style cible ont été utilisées
+            # VÃ©rifier que les propriÃ©tÃ©s du style cible ont Ã©tÃ© utilisÃ©es
             $MergedStyle.LineConfig.Color | Should -Be $TargetStyle.LineConfig.Color
             $MergedStyle.LineConfig.Width | Should -Be $TargetStyle.LineConfig.Width
             $MergedStyle.LineConfig.Style | Should -Be $TargetStyle.LineConfig.Style
 
-            # Vérifier que le style fusionné a le tag "Fusionné"
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            # VÃ©rifier que le style fusionnÃ© a le tag "FusionnÃ©"
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
 
         It "Should merge two styles with MergeNonNull strategy" {
-            # Créer deux styles personnalisés avec des propriétés différentes
+            # CrÃ©er deux styles personnalisÃ©s avec des propriÃ©tÃ©s diffÃ©rentes
             $SourceStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style source" -Color "#FF0000" -Width 3
             $TargetStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style cible"
 
-            # Modifier certaines propriétés du style cible pour tester la fusion
+            # Modifier certaines propriÃ©tÃ©s du style cible pour tester la fusion
             $TargetStyle.LineConfig.Color = "#0000FF"
             $TargetStyle.LineConfig.Width = 0  # Valeur nulle pour tester la fusion
 
-            # Fusionner les styles avec la stratégie MergeNonNull
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné MergeNonNull" -MergeStrategy "MergeNonNull"
+            # Fusionner les styles avec la stratÃ©gie MergeNonNull
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© MergeNonNull" -MergeStrategy "MergeNonNull"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné MergeNonNull"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© MergeNonNull"
 
-            # Vérifier que les propriétés non nulles du style cible ont été utilisées
+            # VÃ©rifier que les propriÃ©tÃ©s non nulles du style cible ont Ã©tÃ© utilisÃ©es
             $MergedStyle.LineConfig.Color | Should -Be $TargetStyle.LineConfig.Color
 
-            # Vérifier que les propriétés nulles du style cible ont été remplacées par celles du style source
+            # VÃ©rifier que les propriÃ©tÃ©s nulles du style cible ont Ã©tÃ© remplacÃ©es par celles du style source
             $MergedStyle.LineConfig.Width | Should -Be $SourceStyle.LineConfig.Width
 
-            # Vérifier que le style fusionné a le tag "Fusionné"
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            # VÃ©rifier que le style fusionnÃ© a le tag "FusionnÃ©"
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
 
         It "Should merge tags when MergeTags is specified" {
-            # Créer deux styles personnalisés avec des tags différents
+            # CrÃ©er deux styles personnalisÃ©s avec des tags diffÃ©rents
             $SourceStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style source" -Tags @("Tag1", "Tag2")
             $TargetStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style cible" -Tags @("Tag3", "Tag4")
 
             # Fusionner les styles avec l'option MergeTags
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné avec tags" -MergeTags
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© avec tags" -MergeTags
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
 
-            # Vérifier que tous les tags ont été fusionnés
+            # VÃ©rifier que tous les tags ont Ã©tÃ© fusionnÃ©s
             $MergedStyle.HasTag("Tag1") | Should -Be $true
             $MergedStyle.HasTag("Tag2") | Should -Be $true
             $MergedStyle.HasTag("Tag3") | Should -Be $true
             $MergedStyle.HasTag("Tag4") | Should -Be $true
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
 
         It "Should use custom category when specified" {
-            # Obtenir deux styles prédéfinis
+            # Obtenir deux styles prÃ©dÃ©finis
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
 
-            # Fusionner les styles avec une catégorie personnalisée
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné avec catégorie" -Category "Catégorie personnalisée"
+            # Fusionner les styles avec une catÃ©gorie personnalisÃ©e
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© avec catÃ©gorie" -Category "CatÃ©gorie personnalisÃ©e"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la catégorie personnalisée a été utilisée
-            $MergedStyle.Category | Should -Be "Catégorie personnalisée"
+            # VÃ©rifier que la catÃ©gorie personnalisÃ©e a Ã©tÃ© utilisÃ©e
+            $MergedStyle.Category | Should -Be "CatÃ©gorie personnalisÃ©e"
         }
 
         It "Should use custom description when specified" {
-            # Obtenir deux styles prédéfinis
+            # Obtenir deux styles prÃ©dÃ©finis
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
 
-            # Fusionner les styles avec une description personnalisée
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné avec description" -Description "Description personnalisée"
+            # Fusionner les styles avec une description personnalisÃ©e
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© avec description" -Description "Description personnalisÃ©e"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la description personnalisée a été utilisée
-            $MergedStyle.Description | Should -Be "Description personnalisée"
+            # VÃ©rifier que la description personnalisÃ©e a Ã©tÃ© utilisÃ©e
+            $MergedStyle.Description | Should -Be "Description personnalisÃ©e"
         }
 
         It "Should merge advanced properties" {
-            # Créer deux styles personnalisés avec des propriétés avancées
-            $SourceStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style source avancé"
+            # CrÃ©er deux styles personnalisÃ©s avec des propriÃ©tÃ©s avancÃ©es
+            $SourceStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne rouge" -NewName "Style source avancÃ©"
             $SourceStyle.LineConfig.GradientEnabled = $true
             $SourceStyle.LineConfig.GradientEndColor = "#00FF00"
 
-            $TargetStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style cible avancé"
+            $TargetStyle = Copy-ExcelLineStyleWithModifications -Name "Ligne bleue" -NewName "Style cible avancÃ©"
             $TargetStyle.LineConfig.VariableColorEnabled = $true
             $TargetStyle.LineConfig.VariableColors = @("#FF0000", "#00FF00", "#0000FF")
 
             # Fusionner les styles
-            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionné avancé" -MergeStrategy "MergeNonNull"
+            $MergedStyle = Merge-ExcelLineStyles -SourceStyle $SourceStyle -TargetStyle $TargetStyle -NewName "Style fusionnÃ© avancÃ©" -MergeStrategy "MergeNonNull"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les propriétés avancées ont été fusionnées
+            # VÃ©rifier que les propriÃ©tÃ©s avancÃ©es ont Ã©tÃ© fusionnÃ©es
             $MergedStyle.LineConfig.GradientEnabled | Should -Be $SourceStyle.LineConfig.GradientEnabled
             $MergedStyle.LineConfig.GradientEndColor | Should -Be $SourceStyle.LineConfig.GradientEndColor
             $MergedStyle.LineConfig.VariableColorEnabled | Should -Be $TargetStyle.LineConfig.VariableColorEnabled
@@ -311,92 +311,92 @@ Describe "Excel Style Merge" {
 
     Context "Custom merge rules functions" {
         It "Should define and retrieve merge rules" {
-            # Définir une règle de fusion
+            # DÃ©finir une rÃ¨gle de fusion
             $Result = Set-ExcelStyleMergeRule -RuleName "TestRule" -PropertyName "Color" -Strategy "SourceWins" -Priority 10
             $Result | Should -Be $true
 
-            # Obtenir la règle de fusion
+            # Obtenir la rÃ¨gle de fusion
             $Rule = Get-ExcelStyleMergeRule -RuleName "TestRule"
             $Rule | Should -Not -BeNullOrEmpty
             $Rule.PropertyName | Should -Be "Color"
             $Rule.Strategy | Should -Be "SourceWins"
             $Rule.Priority | Should -Be 10
 
-            # Obtenir toutes les règles de fusion
+            # Obtenir toutes les rÃ¨gles de fusion
             $Rules = Get-ExcelStyleMergeRules
             $Rules.Count | Should -BeGreaterThan 0
             $Rules.ContainsKey("TestRule") | Should -Be $true
 
-            # Filtrer les règles par nom de propriété
+            # Filtrer les rÃ¨gles par nom de propriÃ©tÃ©
             $ColorRules = Get-ExcelStyleMergeRules -PropertyName "Color"
             $ColorRules.Count | Should -BeGreaterThan 0
             $ColorRules.ContainsKey("TestRule") | Should -Be $true
 
-            # Supprimer la règle de fusion
+            # Supprimer la rÃ¨gle de fusion
             $Result = Remove-ExcelStyleMergeRule -RuleName "TestRule"
             $Result | Should -Be $true
 
-            # Vérifier que la règle a été supprimée
+            # VÃ©rifier que la rÃ¨gle a Ã©tÃ© supprimÃ©e
             $Rule = Get-ExcelStyleMergeRule -RuleName "TestRule"
             $Rule | Should -BeNullOrEmpty
         }
 
         It "Should manage rule priorities" {
-            # Définir deux règles de fusion avec des priorités différentes
+            # DÃ©finir deux rÃ¨gles de fusion avec des prioritÃ©s diffÃ©rentes
             Set-ExcelStyleMergeRule -RuleName "LowPriorityRule" -PropertyName "Color" -Strategy "SourceWins" -Priority 5
             Set-ExcelStyleMergeRule -RuleName "HighPriorityRule" -PropertyName "Color" -Strategy "TargetWins" -Priority 10
 
-            # Obtenir la stratégie pour la propriété Color
+            # Obtenir la stratÃ©gie pour la propriÃ©tÃ© Color
             $Strategy = Get-ExcelStyleMergeStrategyForProperty -PropertyName "Color"
             $Strategy | Should -Be "TargetWins"
 
-            # Modifier la priorité de la règle
+            # Modifier la prioritÃ© de la rÃ¨gle
             $Result = Set-ExcelStyleMergeRulePriority -RuleName "LowPriorityRule" -Priority 15
             $Result | Should -Be $true
 
-            # Vérifier que la priorité a été mise à jour
+            # VÃ©rifier que la prioritÃ© a Ã©tÃ© mise Ã  jour
             $Priority = Get-ExcelStyleMergeRulePriority -RuleName "LowPriorityRule"
             $Priority | Should -Be 15
 
-            # Vérifier que la stratégie a changé
+            # VÃ©rifier que la stratÃ©gie a changÃ©
             $Strategy = Get-ExcelStyleMergeStrategyForProperty -PropertyName "Color"
             $Strategy | Should -Be "SourceWins"
 
-            # Définir une règle par défaut
+            # DÃ©finir une rÃ¨gle par dÃ©faut
             $Result = Set-ExcelStyleMergeDefaultRule -PropertyName "Width" -Strategy "MergeNonNull"
             $Result | Should -Be $true
 
-            # Vérifier que la règle par défaut a été créée
+            # VÃ©rifier que la rÃ¨gle par dÃ©faut a Ã©tÃ© crÃ©Ã©e
             $Rule = Get-ExcelStyleMergeRule -RuleName "Default_Width"
             $Rule | Should -Not -BeNullOrEmpty
             $Rule.PropertyName | Should -Be "Width"
             $Rule.Strategy | Should -Be "MergeNonNull"
 
-            # Nettoyer les règles de test
+            # Nettoyer les rÃ¨gles de test
             Remove-ExcelStyleMergeRule -RuleName "LowPriorityRule"
             Remove-ExcelStyleMergeRule -RuleName "HighPriorityRule"
             Remove-ExcelStyleMergeRule -RuleName "Default_Width"
         }
 
         It "Should export and import rules" {
-            # Définir quelques règles de fusion
+            # DÃ©finir quelques rÃ¨gles de fusion
             Set-ExcelStyleMergeRule -RuleName "ExportRule1" -PropertyName "Color" -Strategy "SourceWins" -Priority 5
             Set-ExcelStyleMergeRule -RuleName "ExportRule2" -PropertyName "Width" -Strategy "TargetWins" -Priority 10
 
-            # Exporter les règles
+            # Exporter les rÃ¨gles
             $TempFile = [System.IO.Path]::GetTempFileName()
             $ExportCount = Export-ExcelStyleMergeRules -Path $TempFile -Force
             $ExportCount | Should -BeGreaterThan 0
 
-            # Supprimer les règles
+            # Supprimer les rÃ¨gles
             Remove-ExcelStyleMergeRule -RuleName "ExportRule1"
             Remove-ExcelStyleMergeRule -RuleName "ExportRule2"
 
-            # Importer les règles
+            # Importer les rÃ¨gles
             $ImportCount = Import-ExcelStyleMergeRules -Path $TempFile
             $ImportCount | Should -BeGreaterThan 0
 
-            # Vérifier que les règles ont été importées
+            # VÃ©rifier que les rÃ¨gles ont Ã©tÃ© importÃ©es
             $Rule1 = Get-ExcelStyleMergeRule -RuleName "ExportRule1"
             $Rule1 | Should -Not -BeNullOrEmpty
             $Rule1.PropertyName | Should -Be "Color"
@@ -407,7 +407,7 @@ Describe "Excel Style Merge" {
             $Rule2.PropertyName | Should -Be "Width"
             $Rule2.Strategy | Should -Be "TargetWins"
 
-            # Nettoyer les règles de test
+            # Nettoyer les rÃ¨gles de test
             Remove-ExcelStyleMergeRule -RuleName "ExportRule1"
             Remove-ExcelStyleMergeRule -RuleName "ExportRule2"
 
@@ -416,27 +416,27 @@ Describe "Excel Style Merge" {
         }
 
         It "Should merge rule sets" {
-            # Définir quelques règles de fusion
+            # DÃ©finir quelques rÃ¨gles de fusion
             Set-ExcelStyleMergeRule -RuleName "MergeRule1" -PropertyName "Color" -Strategy "SourceWins" -Priority 5
 
-            # Exporter les règles
+            # Exporter les rÃ¨gles
             $TempFile = [System.IO.Path]::GetTempFileName()
             Export-ExcelStyleMergeRules -Path $TempFile -Force
 
-            # Modifier la règle existante et ajouter une nouvelle règle
+            # Modifier la rÃ¨gle existante et ajouter une nouvelle rÃ¨gle
             Set-ExcelStyleMergeRule -RuleName "MergeRule1" -PropertyName "Color" -Strategy "TargetWins" -Priority 10
             Set-ExcelStyleMergeRule -RuleName "MergeRule2" -PropertyName "Width" -Strategy "MergeNonNull" -Priority 15
 
-            # Fusionner les règles avec la stratégie KeepExisting
+            # Fusionner les rÃ¨gles avec la stratÃ©gie KeepExisting
             $MergeCount = Merge-ExcelStyleMergeRules -Path $TempFile -Strategy "KeepExisting"
             $MergeCount | Should -BeGreaterThan 0
 
-            # Vérifier que la règle existante n'a pas été modifiée
+            # VÃ©rifier que la rÃ¨gle existante n'a pas Ã©tÃ© modifiÃ©e
             $Rule1 = Get-ExcelStyleMergeRule -RuleName "MergeRule1"
             $Rule1.Strategy | Should -Be "TargetWins"
             $Rule1.Priority | Should -Be 10
 
-            # Nettoyer les règles de test
+            # Nettoyer les rÃ¨gles de test
             Remove-ExcelStyleMergeRule -RuleName "MergeRule1"
             Remove-ExcelStyleMergeRule -RuleName "MergeRule2"
 
@@ -447,23 +447,23 @@ Describe "Excel Style Merge" {
 
     Context "Manual resolution functions" {
         It "Should handle Manual strategy without interactive mode" {
-            # Fusionner deux styles avec la stratégie Manual mais sans mode interactif
-            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionné manuel non interactif" -MergeStrategy "Manual"
+            # Fusionner deux styles avec la stratÃ©gie Manual mais sans mode interactif
+            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionnÃ© manuel non interactif" -MergeStrategy "Manual"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné manuel non interactif"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© manuel non interactif"
 
-            # Vérifier que la stratégie Manual sans mode interactif se comporte comme MergeNonNull
+            # VÃ©rifier que la stratÃ©gie Manual sans mode interactif se comporte comme MergeNonNull
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
             $MergedStyle.LineConfig.Color | Should -Be $TargetStyle.LineConfig.Color
         }
 
-        # Note: Les tests interactifs ne sont pas inclus car ils nécessitent une interaction utilisateur
+        # Note: Les tests interactifs ne sont pas inclus car ils nÃ©cessitent une interaction utilisateur
         # Mais nous pouvons tester les fonctions auxiliaires
 
         It "Should correctly detect empty values" {
-            # Tester la détection des valeurs vides pour différents types
+            # Tester la dÃ©tection des valeurs vides pour diffÃ©rents types
             Test-ExcelStyleValueEmpty -Value $null -Type "String" | Should -Be $true
             Test-ExcelStyleValueEmpty -Value "" -Type "String" | Should -Be $true
             Test-ExcelStyleValueEmpty -Value "Test" -Type "String" | Should -Be $false
@@ -481,39 +481,39 @@ Describe "Excel Style Merge" {
     Context "Merge-ExcelLineStylesByName function" {
         It "Should merge two styles by name" {
             # Fusionner deux styles par leur nom
-            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionné par nom"
+            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionnÃ© par nom"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné par nom"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© par nom"
 
-            # Vérifier que le style fusionné a le tag "Fusionné"
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            # VÃ©rifier que le style fusionnÃ© a le tag "FusionnÃ©"
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
 
         It "Should handle invalid style names" {
             # Essayer de fusionner avec un nom de style inexistant
-            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Style inexistant" -TargetStyleName "Ligne bleue" -NewName "Style fusionné invalide"
+            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Style inexistant" -TargetStyleName "Ligne bleue" -NewName "Style fusionnÃ© invalide"
 
-            # Vérifier que la fusion a échoué
+            # VÃ©rifier que la fusion a Ã©chouÃ©
             $MergedStyle | Should -BeNullOrEmpty
         }
 
         It "Should pass all parameters to Merge-ExcelLineStyles" {
-            # Fusionner deux styles avec tous les paramètres
-            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionné complet" -Description "Description complète" -MergeStrategy "TargetWins" -MergeTags -Category "Catégorie complète"
+            # Fusionner deux styles avec tous les paramÃ¨tres
+            $MergedStyle = Merge-ExcelLineStylesByName -SourceStyleName "Ligne rouge" -TargetStyleName "Ligne bleue" -NewName "Style fusionnÃ© complet" -Description "Description complÃ¨te" -MergeStrategy "TargetWins" -MergeTags -Category "CatÃ©gorie complÃ¨te"
 
-            # Vérifier que le style fusionné a été créé
+            # VÃ©rifier que le style fusionnÃ© a Ã©tÃ© crÃ©Ã©
             $MergedStyle | Should -Not -BeNullOrEmpty
-            $MergedStyle.Name | Should -Be "Style fusionné complet"
-            $MergedStyle.Description | Should -Be "Description complète"
-            $MergedStyle.Category | Should -Be "Catégorie complète"
+            $MergedStyle.Name | Should -Be "Style fusionnÃ© complet"
+            $MergedStyle.Description | Should -Be "Description complÃ¨te"
+            $MergedStyle.Category | Should -Be "CatÃ©gorie complÃ¨te"
 
-            # Vérifier que les propriétés du style cible ont été utilisées (TargetWins)
+            # VÃ©rifier que les propriÃ©tÃ©s du style cible ont Ã©tÃ© utilisÃ©es (TargetWins)
             $TargetStyle = Get-ExcelPredefinedLineStyle -Name "Ligne bleue"
             $MergedStyle.LineConfig.Color | Should -Be $TargetStyle.LineConfig.Color
 
-            # Vérifier que les tags ont été fusionnés
+            # VÃ©rifier que les tags ont Ã©tÃ© fusionnÃ©s
             $SourceStyle = Get-ExcelPredefinedLineStyle -Name "Ligne rouge"
             foreach ($Tag in $SourceStyle.Tags) {
                 $MergedStyle.HasTag($Tag) | Should -Be $true
@@ -521,7 +521,7 @@ Describe "Excel Style Merge" {
             foreach ($Tag in $TargetStyle.Tags) {
                 $MergedStyle.HasTag($Tag) | Should -Be $true
             }
-            $MergedStyle.HasTag("Fusionné") | Should -Be $true
+            $MergedStyle.HasTag("FusionnÃ©") | Should -Be $true
         }
     }
 }

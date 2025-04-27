@@ -1,11 +1,11 @@
-<#
+﻿<#
 .SYNOPSIS
-    Gestionnaire de dépendances centralisé pour les scripts PowerShell.
+    Gestionnaire de dÃ©pendances centralisÃ© pour les scripts PowerShell.
 .DESCRIPTION
-    Gère les dépendances des scripts PowerShell de manière centralisée.
+    GÃ¨re les dÃ©pendances des scripts PowerShell de maniÃ¨re centralisÃ©e.
 #>
 
-# Configuration des dépendances
+# Configuration des dÃ©pendances
 $script:DependencyConfig = @{
     RepositoryPath = Join-Path -Path $env:TEMP -ChildPath "Dependencies"
     Repositories = @{
@@ -29,7 +29,7 @@ function Initialize-DependencyManager {
     if ($Repositories) { $script:DependencyConfig.Repositories = $Repositories }
     if ($LockFilePath) { $script:DependencyConfig.LockFile = $LockFilePath }
     
-    # Créer les dossiers nécessaires
+    # CrÃ©er les dossiers nÃ©cessaires
     if (-not (Test-Path -Path $script:DependencyConfig.RepositoryPath)) {
         New-Item -Path $script:DependencyConfig.RepositoryPath -ItemType Directory -Force | Out-Null
     }
@@ -74,12 +74,12 @@ function Install-Dependency {
         [switch]$Force
     )
     
-    # Vérifier si le module est déjà installé
+    # VÃ©rifier si le module est dÃ©jÃ  installÃ©
     if (-not $Force -and $script:DependencyConfig.InstalledModules.ContainsKey($Name)) {
         $installedVersion = $script:DependencyConfig.InstalledModules[$Name].Version
         
         if (-not $Version -or [version]$installedVersion -ge [version]$Version) {
-            Write-Verbose "Le module $Name (version $installedVersion) est déjà installé."
+            Write-Verbose "Le module $Name (version $installedVersion) est dÃ©jÃ  installÃ©."
             return $script:DependencyConfig.InstalledModules[$Name]
         }
     }
@@ -106,7 +106,7 @@ function Install-Dependency {
             Dependencies = @()
         }
         
-        # Mettre à jour le fichier de verrouillage
+        # Mettre Ã  jour le fichier de verrouillage
         Update-DependencyLock
         
         return $script:DependencyConfig.InstalledModules[$Name]
@@ -131,15 +131,15 @@ function Import-Dependency {
         [switch]$Force
     )
     
-    # Vérifier si le module est installé
+    # VÃ©rifier si le module est installÃ©
     if (-not $script:DependencyConfig.InstalledModules.ContainsKey($Name)) {
-        Write-Error "Le module $Name n'est pas installé. Utilisez Install-Dependency pour l'installer."
+        Write-Error "Le module $Name n'est pas installÃ©. Utilisez Install-Dependency pour l'installer."
         return $false
     }
     
-    # Vérifier la version
+    # VÃ©rifier la version
     if ($Version -and [version]$script:DependencyConfig.InstalledModules[$Name].Version -lt [version]$Version) {
-        Write-Error "La version installée du module $Name ($($script:DependencyConfig.InstalledModules[$Name].Version)) est inférieure à la version requise ($Version)."
+        Write-Error "La version installÃ©e du module $Name ($($script:DependencyConfig.InstalledModules[$Name].Version)) est infÃ©rieure Ã  la version requise ($Version)."
         return $false
     }
     
@@ -154,7 +154,7 @@ function Import-Dependency {
     }
 }
 
-# Mettre à jour le fichier de verrouillage
+# Mettre Ã  jour le fichier de verrouillage
 function Update-DependencyLock {
     [CmdletBinding()]
     param ()
@@ -180,7 +180,7 @@ function Update-DependencyLock {
     return $true
 }
 
-# Obtenir les dépendances installées
+# Obtenir les dÃ©pendances installÃ©es
 function Get-InstalledDependencies {
     [CmdletBinding()]
     param ()

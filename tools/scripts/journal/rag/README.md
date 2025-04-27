@@ -1,5 +1,5 @@
-# rag
+﻿# rag
 
-Fonctionnalités RAG
+FonctionnalitÃ©s RAG
 
-Ce dossier fait partie de la section [journal](..) qui contient syst�me de journal.
+Ce dossier fait partie de la section [journal](..) qui contient systã¨me de journal.

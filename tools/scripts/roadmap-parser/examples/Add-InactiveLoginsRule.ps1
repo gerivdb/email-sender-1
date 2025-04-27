@@ -1,24 +1,24 @@
-# Add-InactiveLoginsRule.ps1
-# Exemple d'ajout d'une nouvelle règle pour détecter les logins inactifs
+﻿# Add-InactiveLoginsRule.ps1
+# Exemple d'ajout d'une nouvelle rÃ¨gle pour dÃ©tecter les logins inactifs
 
-# Chemin du script d'ajout de règle
+# Chemin du script d'ajout de rÃ¨gle
 $addRuleScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\scripts\Add-SqlPermissionRule.ps1"
 
-# Chemin de la fonction de vérification
+# Chemin de la fonction de vÃ©rification
 $checkFunctionPath = Join-Path -Path $PSScriptRoot -ChildPath "CheckFunctions\Check-InactiveLogins.ps1"
 
-# Paramètres de la règle
+# ParamÃ¨tres de la rÃ¨gle
 $params = @{
     RuleId = "SVR-007"
     Name = "InactiveLogins"
-    Description = "Détecte les logins SQL qui n'ont pas été utilisés depuis plus de 90 jours"
+    Description = "DÃ©tecte les logins SQL qui n'ont pas Ã©tÃ© utilisÃ©s depuis plus de 90 jours"
     RuleType = "Server"
     Severity = "Moyenne"
     CheckFunctionPath = $checkFunctionPath
 }
 
-# Ajouter la règle
+# Ajouter la rÃ¨gle
 & $addRuleScriptPath @params -WhatIf
 
-# Pour ajouter réellement la règle, exécutez la commande suivante :
+# Pour ajouter rÃ©ellement la rÃ¨gle, exÃ©cutez la commande suivante :
 # & $addRuleScriptPath @params

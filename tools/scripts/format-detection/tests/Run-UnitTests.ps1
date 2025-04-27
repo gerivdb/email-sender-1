@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour les fonctionnalités de détection de format.
+    ExÃ©cute tous les tests unitaires pour les fonctionnalitÃ©s de dÃ©tection de format.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour valider le bon fonctionnement
-    des fonctionnalités de détection de format développées dans le cadre de la
+    Ce script exÃ©cute tous les tests unitaires pour valider le bon fonctionnement
+    des fonctionnalitÃ©s de dÃ©tection de format dÃ©veloppÃ©es dans le cadre de la
     section 2.1.2 de la roadmap.
 
 .PARAMETER OutputPath
-    Le chemin où le rapport de test sera enregistré. Par défaut, 'TestResults.xml'.
+    Le chemin oÃ¹ le rapport de test sera enregistrÃ©. Par dÃ©faut, 'TestResults.xml'.
 
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit être généré en plus du rapport XML.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ© en plus du rapport XML.
 
 .EXAMPLE
     .\Run-UnitTests.ps1 -GenerateHtmlReport
@@ -39,7 +39,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
         Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
     }
     catch {
-        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas être exécutés."
+        Write-Error "Impossible d'installer le module Pester. Les tests ne peuvent pas Ãªtre exÃ©cutÃ©s."
         return
     }
 }
@@ -56,33 +56,33 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = $OutputPath
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires..." -ForegroundColor Cyan
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $($testResults.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis  : $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
-Write-Host "  Tests ignorés  : $($testResults.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Tests non exécutés : $($testResults.NotRunCount)" -ForegroundColor Yellow
-Write-Host "  Durée totale   : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $($testResults.FailedCount)" -ForegroundColor $(if ($testResults.FailedCount -gt 0) { "Red" } else { "Green" })
+Write-Host "  Tests ignorÃ©s  : $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  Tests non exÃ©cutÃ©s : $($testResults.NotRunCount)" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale   : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHtmlReport) {
     $htmlOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
 
-    # Vérifier si le module ReportUnit est disponible
+    # VÃ©rifier si le module ReportUnit est disponible
     if (-not (Get-Module -Name ReportUnit -ListAvailable)) {
         Write-Warning "Le module ReportUnit n'est pas disponible. Installation..."
         try {
             Install-Module -Name ReportUnit -Force -Scope CurrentUser
         }
         catch {
-            Write-Warning "Impossible d'installer le module ReportUnit. Génération d'un rapport HTML simple..."
+            Write-Warning "Impossible d'installer le module ReportUnit. GÃ©nÃ©ration d'un rapport HTML simple..."
 
-            # Générer un rapport HTML simple
+            # GÃ©nÃ©rer un rapport HTML simple
             $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -140,24 +140,24 @@ if ($GenerateHtmlReport) {
 </head>
 <body>
     <h1>Rapport de tests unitaires</h1>
-    <p>Date de génération : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
+    <p>Date de gÃ©nÃ©ration : $(Get-Date -Format "dd/MM/yyyy HH:mm:ss")</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés : $($testResults.TotalCount)</p>
-        <p>Tests réussis : <span class="passed">$($testResults.PassedCount)</span></p>
-        <p>Tests échoués : <span class="failed">$($testResults.FailedCount)</span></p>
-        <p>Tests ignorés : <span class="skipped">$($testResults.SkippedCount)</span></p>
-        <p>Tests non exécutés : <span class="skipped">$($testResults.NotRunCount)</span></p>
-        <p>Durée totale : $($testResults.Duration.TotalSeconds) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s : $($testResults.TotalCount)</p>
+        <p>Tests rÃ©ussis : <span class="passed">$($testResults.PassedCount)</span></p>
+        <p>Tests Ã©chouÃ©s : <span class="failed">$($testResults.FailedCount)</span></p>
+        <p>Tests ignorÃ©s : <span class="skipped">$($testResults.SkippedCount)</span></p>
+        <p>Tests non exÃ©cutÃ©s : <span class="skipped">$($testResults.NotRunCount)</span></p>
+        <p>DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes</p>
     </div>
 
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom du test</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
@@ -194,18 +194,18 @@ if ($GenerateHtmlReport) {
     }
 
     if (Get-Module -Name ReportUnit -ListAvailable) {
-        # Utiliser ReportUnit pour générer un rapport HTML
+        # Utiliser ReportUnit pour gÃ©nÃ©rer un rapport HTML
         try {
             Import-Module ReportUnit
             ConvertTo-ReportUnit -InputPath $OutputPath -OutputPath $htmlOutputPath
         }
         catch {
-            Write-Warning "Erreur lors de la génération du rapport HTML avec ReportUnit : $_"
+            Write-Warning "Erreur lors de la gÃ©nÃ©ration du rapport HTML avec ReportUnit : $_"
         }
     }
 
-    Write-Host "`nRapport HTML généré : $htmlOutputPath" -ForegroundColor Green
+    Write-Host "`nRapport HTML gÃ©nÃ©rÃ© : $htmlOutputPath" -ForegroundColor Green
 }
 
-# Retourner les résultats des tests
+# Retourner les rÃ©sultats des tests
 return $testResults

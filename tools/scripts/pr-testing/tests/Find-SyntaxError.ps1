@@ -1,13 +1,13 @@
-# Script pour trouver les erreurs de syntaxe dans un fichier PowerShell
+﻿# Script pour trouver les erreurs de syntaxe dans un fichier PowerShell
 
 param(
     [Parameter(Mandatory = $true)]
     [string]$FilePath
 )
 
-# Vérifier que le fichier existe
+# VÃ©rifier que le fichier existe
 if (-not (Test-Path -Path $FilePath)) {
-    Write-Error "Fichier non trouvé: $FilePath"
+    Write-Error "Fichier non trouvÃ©: $FilePath"
     exit 1
 }
 
@@ -31,9 +31,9 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
     try {
         [System.Management.Automation.PSParser]::Tokenize($line, [ref]$null) | Out-Null
     } catch {
-        Write-Host "Erreur de syntaxe à la ligne $lineNumber : $line" -ForegroundColor Red
+        Write-Host "Erreur de syntaxe Ã  la ligne $lineNumber : $line" -ForegroundColor Red
         Write-Host "Message d'erreur : $_" -ForegroundColor Yellow
     }
 }
 
-Write-Host "Analyse terminée." -ForegroundColor Green
+Write-Host "Analyse terminÃ©e." -ForegroundColor Green

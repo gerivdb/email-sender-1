@@ -1,9 +1,9 @@
-# Analyze-PhaseCompletion.ps1
-# Script pour analyser la fin d'une phase et mettre à jour le journal
+﻿# Analyze-PhaseCompletion.ps1
+# Script pour analyser la fin d'une phase et mettre Ã  jour le journal
 
 
 # Analyze-PhaseCompletion.ps1
-# Script pour analyser la fin d'une phase et mettre à jour le journal
+# Script pour analyser la fin d'une phase et mettre Ã  jour le journal
 
 param (
     [Parameter(Mandatory = $true)
@@ -29,12 +29,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -43,7 +43,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
@@ -82,7 +82,7 @@ function Get-PhaseInfo {
     $currentCategory = ""
 
     foreach ($line in $lines) {
-        # Détecter la catégorie
+        # DÃ©tecter la catÃ©gorie
         if ($line -match "^## (\d+)\. (.+)") {
             $categoryId = $matches[1]
             $categoryName = $matches[2]
@@ -91,12 +91,12 @@ function Get-PhaseInfo {
             continue
         }
 
-        # Si on n'est pas dans la phase recherchée, passer à la ligne suivante
+        # Si on n'est pas dans la phase recherchÃ©e, passer Ã  la ligne suivante
         if (-not $inPhase) {
             continue
         }
 
-        # Détecter les tâches
+        # DÃ©tecter les tÃ¢ches
         if ($line -match "^- \[([ x])\] (.+?) \((.+?)\)") {
             $completed = ($matches[1] -eq "x")
             $description = $matches[2]
@@ -122,7 +122,7 @@ function Get-PhaseInfo {
             }
         }
 
-        # Détecter le nom de la phase
+        # DÃ©tecter le nom de la phase
         if ([string]::IsNullOrEmpty($phaseInfo.Name) -and $line -match "^\*\*Complexite\*\*:") {
             $phaseInfo.Name = $currentCategory
         }
@@ -251,7 +251,7 @@ function Update-Journal {
 
 # Fonction principale
 function Main {
-    # Vérifier que le fichier roadmap existe
+    # VÃ©rifier que le fichier roadmap existe
     if (-not (Test-Path -Path $RoadmapPath)) {
         Write-Error "Le fichier roadmap '$RoadmapPath' n'existe pas."
         return
@@ -263,13 +263,13 @@ function Main {
     # Extraire les informations de la phase
     $phaseInfo = Get-PhaseInfo -Content $roadmapContent -PhaseId $PhaseId
 
-    # Vérifier si la phase existe
+    # VÃ©rifier si la phase existe
     if ([string]::IsNullOrEmpty($phaseInfo.Name)) {
-        Write-Error "La phase avec l'ID '$PhaseId' n'a pas été trouvée dans la roadmap."
+        Write-Error "La phase avec l'ID '$PhaseId' n'a pas Ã©tÃ© trouvÃ©e dans la roadmap."
         return
     }
 
-    # Vérifier si la phase est terminée
+    # VÃ©rifier si la phase est terminÃ©e
     $isCompleted = ($phaseInfo.Tasks.Count -gt 0) -and ($phaseInfo.CompletedTasks.Count -eq $phaseInfo.Tasks.Count)
 
     if (-not $isCompleted) {
@@ -280,18 +280,18 @@ function Main {
     # Generer l'analyse de la phase
     $analysis = New-PhaseAnalysis -PhaseInfo $phaseInfo
 
-    # Mettre à jour le journal
+    # Mettre Ã  jour le journal
     $success = Update-Journal -JournalPath $JournalPath -Analysis $analysis -WhatIf:$WhatIf
 
     if (-not $success) {
-        Write-Error "La mise à jour du journal a échoué."
+        Write-Error "La mise Ã  jour du journal a Ã©chouÃ©."
         return
     }
 
-    Write-Output "L'analyse de la phase '$($phaseInfo.Name)' a été générée et ajoutée au journal."
+    Write-Output "L'analyse de la phase '$($phaseInfo.Name)' a Ã©tÃ© gÃ©nÃ©rÃ©e et ajoutÃ©e au journal."
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main
 
 }
@@ -301,5 +301,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

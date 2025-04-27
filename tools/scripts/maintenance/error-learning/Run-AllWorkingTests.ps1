@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter tous les tests qui fonctionnent correctement du système d'apprentissage des erreurs.
+    Script pour exÃ©cuter tous les tests qui fonctionnent correctement du systÃ¨me d'apprentissage des erreurs.
 .DESCRIPTION
-    Ce script exécute tous les tests qui fonctionnent correctement du système d'apprentissage des erreurs.
+    Ce script exÃ©cute tous les tests qui fonctionnent correctement du systÃ¨me d'apprentissage des erreurs.
 .EXAMPLE
     .\Run-AllWorkingTests.ps1
-    Exécute tous les tests qui fonctionnent correctement.
+    ExÃ©cute tous les tests qui fonctionnent correctement.
 #>
 
 [CmdletBinding()]
 param ()
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Write-Host "Installation du module Pester..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
@@ -20,7 +20,7 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests qui fonctionnent correctement
+# DÃ©finir le chemin des tests qui fonctionnent correctement
 $testFiles = @(
     # Tests originaux
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\VeryBasic.Tests.ps1"),
@@ -33,49 +33,49 @@ $testFiles = @(
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\HelperFunctions.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdvancedErrorHandling.Simple.ps1"),
 
-    # Nouveaux tests simplifiés
+    # Nouveaux tests simplifiÃ©s
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\ErrorLearningSystem.Integration.Simplified.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\ScriptAnalysis.Tests.ps1"),
     (Join-Path -Path $PSScriptRoot -ChildPath "Tests\AdaptiveCorrection.Tests.ps1")
 )
 
-# Afficher les tests trouvés
-Write-Host "Tests qui fonctionnent correctement trouvés :" -ForegroundColor Cyan
+# Afficher les tests trouvÃ©s
+Write-Host "Tests qui fonctionnent correctement trouvÃ©s :" -ForegroundColor Cyan
 foreach ($testFile in $testFiles) {
     Write-Host "  $([System.IO.Path]::GetFileName($testFile))" -ForegroundColor Yellow
 }
 
-# Exécuter les tests
-Write-Host "`nExécution des tests qui fonctionnent correctement..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "`nExÃ©cution des tests qui fonctionnent correctement..." -ForegroundColor Cyan
 $totalTests = 0
 $passedTests = 0
 $failedTests = 0
 $skippedTests = 0
 
-# Exécuter chaque test individuellement
+# ExÃ©cuter chaque test individuellement
 foreach ($testFile in $testFiles) {
-    Write-Host "  Exécution de $([System.IO.Path]::GetFileName($testFile))..." -ForegroundColor Yellow
+    Write-Host "  ExÃ©cution de $([System.IO.Path]::GetFileName($testFile))..." -ForegroundColor Yellow
 
-    # Exécuter le test
+    # ExÃ©cuter le test
     $result = Invoke-Pester -Path $testFile -Output Detailed -PassThru
 
-    # Mettre à jour les résultats
+    # Mettre Ã  jour les rÃ©sultats
     $totalTests += $result.TotalCount
     $passedTests += $result.PassedCount
     $failedTests += $result.FailedCount
     $skippedTests += $result.SkippedCount
 
-    # Attendre un peu entre chaque test pour éviter les conflits d'accès aux fichiers
+    # Attendre un peu entre chaque test pour Ã©viter les conflits d'accÃ¨s aux fichiers
     Start-Sleep -Seconds 1
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "  Tests exécutés: $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis: $passedTests" -ForegroundColor Green
-Write-Host "  Tests échoués: $failedTests" -ForegroundColor Red
-Write-Host "  Tests ignorés: $skippedTests" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s: $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $passedTests" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $failedTests" -ForegroundColor Red
+Write-Host "  Tests ignorÃ©s: $skippedTests" -ForegroundColor Yellow
 Write-Host
 
-# Retourner un code de sortie basé sur les résultats des tests
+# Retourner un code de sortie basÃ© sur les rÃ©sultats des tests
 exit $failedTests

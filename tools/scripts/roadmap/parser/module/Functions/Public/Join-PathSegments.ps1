@@ -1,52 +1,52 @@
-<#
+﻿<#
 .SYNOPSIS
     Joint plusieurs segments de chemin en un seul chemin.
 
 .DESCRIPTION
     La fonction Join-PathSegments joint plusieurs segments de chemin en un seul chemin.
-    Elle prend en charge différentes options de jointure et peut être utilisée pour
+    Elle prend en charge diffÃ©rentes options de jointure et peut Ãªtre utilisÃ©e pour
     joindre les chemins du module RoadmapParser.
 
 .PARAMETER Path
     Le chemin de base.
 
 .PARAMETER ChildPath
-    Les chemins enfants à joindre au chemin de base.
+    Les chemins enfants Ã  joindre au chemin de base.
 
 .PARAMETER JoinType
-    Le type de jointure à effectuer. Valeurs possibles :
+    Le type de jointure Ã  effectuer. Valeurs possibles :
     - Simple : Jointure simple (utilise [System.IO.Path]::Combine)
-    - Normalized : Jointure normalisée (normalise les chemins avant de les joindre)
-    - Relative : Jointure relative (crée un chemin relatif)
-    - Absolute : Jointure absolue (crée un chemin absolu)
-    - Unix : Jointure Unix (utilise des séparateurs Unix)
-    - Windows : Jointure Windows (utilise des séparateurs Windows)
-    - UNC : Jointure UNC (crée un chemin UNC)
-    - URL : Jointure URL (crée un chemin URL)
-    - Custom : Jointure personnalisée
+    - Normalized : Jointure normalisÃ©e (normalise les chemins avant de les joindre)
+    - Relative : Jointure relative (crÃ©e un chemin relatif)
+    - Absolute : Jointure absolue (crÃ©e un chemin absolu)
+    - Unix : Jointure Unix (utilise des sÃ©parateurs Unix)
+    - Windows : Jointure Windows (utilise des sÃ©parateurs Windows)
+    - UNC : Jointure UNC (crÃ©e un chemin UNC)
+    - URL : Jointure URL (crÃ©e un chemin URL)
+    - Custom : Jointure personnalisÃ©e
 
 .PARAMETER CustomJoin
-    La fonction de jointure personnalisée à utiliser.
-    Utilisé uniquement lorsque JoinType est "Custom".
+    La fonction de jointure personnalisÃ©e Ã  utiliser.
+    UtilisÃ© uniquement lorsque JoinType est "Custom".
 
 .PARAMETER Separator
-    Le séparateur à utiliser pour la jointure.
-    Par défaut, c'est le séparateur de répertoire du système.
+    Le sÃ©parateur Ã  utiliser pour la jointure.
+    Par dÃ©faut, c'est le sÃ©parateur de rÃ©pertoire du systÃ¨me.
 
 .PARAMETER NormalizePaths
-    Indique si les chemins doivent être normalisés avant la jointure.
-    Par défaut, c'est $false.
+    Indique si les chemins doivent Ãªtre normalisÃ©s avant la jointure.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ResolveRelativePaths
-    Indique si les chemins relatifs doivent être résolus.
-    Par défaut, c'est $false.
+    Indique si les chemins relatifs doivent Ãªtre rÃ©solus.
+    Par dÃ©faut, c'est $false.
 
 .PARAMETER ErrorMessage
-    Le message d'erreur à afficher en cas d'échec de la jointure.
-    Si non spécifié, un message par défaut sera utilisé.
+    Le message d'erreur Ã  afficher en cas d'Ã©chec de la jointure.
+    Si non spÃ©cifiÃ©, un message par dÃ©faut sera utilisÃ©.
 
 .PARAMETER ThrowOnFailure
-    Indique si une exception doit être levée en cas d'échec de la jointure.
+    Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la jointure.
 
 .EXAMPLE
     Join-PathSegments -Path "C:\folder" -ChildPath "file.txt"
@@ -62,7 +62,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-21
+    Date de crÃ©ation: 2023-07-21
 #>
 function Join-PathSegments {
     [CmdletBinding()]
@@ -103,9 +103,9 @@ function Join-PathSegments {
     $privatePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Private\PathManipulation"
     $joinPath = Join-Path -Path $privatePath -ChildPath "Join-RoadmapPath.ps1"
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $joinPath)) {
-        $errorMsg = "Le fichier Join-RoadmapPath.ps1 est introuvable à l'emplacement : $joinPath"
+        $errorMsg = "Le fichier Join-RoadmapPath.ps1 est introuvable Ã  l'emplacement : $joinPath"
         if ($ThrowOnFailure) {
             throw $errorMsg
         } else {

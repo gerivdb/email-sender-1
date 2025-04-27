@@ -1,5 +1,5 @@
-# Test-MissingPermissionModel.ps1
-# Tests unitaires pour la structure de données des permissions manquantes
+﻿# Test-MissingPermissionModel.ps1
+# Tests unitaires pour la structure de donnÃ©es des permissions manquantes
 
 # Importer le module de test
 $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Test-Module.psm1"
@@ -9,7 +9,7 @@ Import-Module $testModulePath -Force
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\RoadmapParser.psm1"
 Import-Module $modulePath -Force
 
-# Charger directement le fichier de modèle de permissions manquantes pour les tests
+# Charger directement le fichier de modÃ¨le de permissions manquantes pour les tests
 $missingPermissionModelPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Private\SqlPermissionModels\MissingPermissionModel.ps1"
 . $missingPermissionModelPath
 
@@ -39,7 +39,7 @@ Describe "MissingPermissionModel" {
                 "GRANT",
                 "TestServer",
                 "SecurityModel",
-                "Élevée"
+                "Ã‰levÃ©e"
             )
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "ALTER ANY LOGIN"
@@ -48,7 +48,7 @@ Describe "MissingPermissionModel" {
             $permission.SecurableType | Should -Be "SERVER"
             $permission.SecurableName | Should -Be "TestServer"
             $permission.ExpectedInModel | Should -Be "SecurityModel"
-            $permission.Severity | Should -Be "Élevée"
+            $permission.Severity | Should -Be "Ã‰levÃ©e"
         }
 
         It "Should generate a fix script" {
@@ -137,7 +137,7 @@ Describe "MissingPermissionModel" {
         It "Should generate a string representation" {
             $permission = [SqlDatabaseMissingPermission]::new("SELECT", "TestDB", "TestUser", "GRANT")
             $string = $permission.ToString()
-            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] dans la base de données [TestDB]"
+            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] dans la base de donnÃ©es [TestDB]"
         }
     }
 
@@ -237,7 +237,7 @@ Describe "MissingPermissionModel" {
                 "Customers"
             )
             $string = $permission.ToString()
-            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] dans la base de données [TestDB]"
+            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] dans la base de donnÃ©es [TestDB]"
         }
 
         It "Should generate a string representation with column" {
@@ -254,7 +254,7 @@ Describe "MissingPermissionModel" {
                 "Faible"
             )
             $string = $permission.ToString()
-            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] (colonne: CustomerID) dans la base de données [TestDB]"
+            $string | Should -Be "Permission manquante: GRANT SELECT pour l'utilisateur [TestUser] sur l'objet [dbo].[Customers] (colonne: CustomerID) dans la base de donnÃ©es [TestDB]"
         }
     }
 
@@ -267,7 +267,7 @@ Describe "MissingPermissionModel" {
             $permSet.ObjectPermissions | Should -Not -BeNullOrEmpty
             $permSet.TotalCount | Should -Be 0
             $permSet.SeverityCounts["Critique"] | Should -Be 0
-            $permSet.SeverityCounts["Élevée"] | Should -Be 0
+            $permSet.SeverityCounts["Ã‰levÃ©e"] | Should -Be 0
             $permSet.SeverityCounts["Moyenne"] | Should -Be 0
             $permSet.SeverityCounts["Faible"] | Should -Be 0
         }
@@ -304,12 +304,12 @@ Describe "MissingPermissionModel" {
             $permSet.AddDatabasePermission($dbPerm1)
             
             $dbPerm2 = [SqlDatabaseMissingPermission]::new("CREATE TABLE", "TestDB", "Developer1", "GRANT")
-            $dbPerm2.Severity = "Élevée"
+            $dbPerm2.Severity = "Ã‰levÃ©e"
             $permSet.AddDatabasePermission($dbPerm2)
             
             $permSet.DatabasePermissions.Count | Should -Be 2
             $permSet.TotalCount | Should -Be 2
-            $permSet.SeverityCounts["Élevée"] | Should -Be 1
+            $permSet.SeverityCounts["Ã‰levÃ©e"] | Should -Be 1
             $permSet.SeverityCounts["Moyenne"] | Should -Be 1
         }
 
@@ -364,7 +364,7 @@ Describe "MissingPermissionModel" {
             $permSet.AddDatabasePermission($dbPerm1)
             
             $dbPerm2 = [SqlDatabaseMissingPermission]::new("CREATE TABLE", "TestDB", "Developer1", "GRANT")
-            $dbPerm2.Severity = "Élevée"
+            $dbPerm2.Severity = "Ã‰levÃ©e"
             $permSet.AddDatabasePermission($dbPerm2)
             
             # Add object permissions
@@ -459,17 +459,17 @@ Describe "MissingPermissionModel" {
                 "dbo",
                 "Customers"
             )
-            $objPerm.Severity = "Élevée"
+            $objPerm.Severity = "Ã‰levÃ©e"
             $permSet.AddObjectPermission($objPerm)
             
             $summary = $permSet.GetSummary()
-            $summary | Should -Match "Résumé des permissions manquantes pour l'instance TestServer"
-            $summary | Should -Match "Comparaison avec le modèle: SecurityModel"
+            $summary | Should -Match "RÃ©sumÃ© des permissions manquantes pour l'instance TestServer"
+            $summary | Should -Match "Comparaison avec le modÃ¨le: SecurityModel"
             $summary | Should -Match "Nombre total de permissions manquantes: 3"
             $summary | Should -Match "- Permissions serveur: 1"
-            $summary | Should -Match "- Permissions base de données: 1"
+            $summary | Should -Match "- Permissions base de donnÃ©es: 1"
             $summary | Should -Match "- Permissions objet: 1"
-            $summary | Should -Match "- Élevée: 1"
+            $summary | Should -Match "- Ã‰levÃ©e: 1"
             $summary | Should -Match "- Moyenne: 1"
             $summary | Should -Match "- Faible: 1"
         }
@@ -484,11 +484,11 @@ Describe "MissingPermissionModel" {
         }
 
         It "Should create a new SqlServerMissingPermission" {
-            $permission = New-SqlServerMissingPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -Severity "Élevée"
+            $permission = New-SqlServerMissingPermission -PermissionName "CONNECT SQL" -LoginName "TestLogin" -Severity "Ã‰levÃ©e"
             $permission | Should -Not -BeNullOrEmpty
             $permission.PermissionName | Should -Be "CONNECT SQL"
             $permission.LoginName | Should -Be "TestLogin"
-            $permission.Severity | Should -Be "Élevée"
+            $permission.Severity | Should -Be "Ã‰levÃ©e"
         }
 
         It "Should create a new SqlDatabaseMissingPermission" {
@@ -514,5 +514,5 @@ Describe "MissingPermissionModel" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed

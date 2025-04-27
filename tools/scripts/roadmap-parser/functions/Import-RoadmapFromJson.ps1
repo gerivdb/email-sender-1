@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
-    Importe une roadmap à partir d'un fichier JSON.
+    Importe une roadmap Ã  partir d'un fichier JSON.
 
 .DESCRIPTION
-    La fonction Import-RoadmapFromJson importe une roadmap à partir d'un fichier JSON.
-    Elle peut reconstruire la structure complète de la roadmap, y compris les métadonnées et les dépendances.
+    La fonction Import-RoadmapFromJson importe une roadmap Ã  partir d'un fichier JSON.
+    Elle peut reconstruire la structure complÃ¨te de la roadmap, y compris les mÃ©tadonnÃ©es et les dÃ©pendances.
 
 .PARAMETER FilePath
-    Chemin du fichier JSON à importer.
+    Chemin du fichier JSON Ã  importer.
 
 .PARAMETER DetectDependencies
-    Indique si les dépendances doivent être détectées et reconstruites.
+    Indique si les dÃ©pendances doivent Ãªtre dÃ©tectÃ©es et reconstruites.
 
 .EXAMPLE
     $roadmap = Import-RoadmapFromJson -FilePath ".\roadmap.json" -DetectDependencies
-    Importe une roadmap à partir d'un fichier JSON et reconstruit les dépendances.
+    Importe une roadmap Ã  partir d'un fichier JSON et reconstruit les dÃ©pendances.
 
 .OUTPUTS
-    [PSCustomObject] Représentant la roadmap importée.
+    [PSCustomObject] ReprÃ©sentant la roadmap importÃ©e.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-07-10
+    Date de crÃ©ation: 2023-07-10
 #>
 function Import-RoadmapFromJson {
     [CmdletBinding()]
@@ -34,7 +34,7 @@ function Import-RoadmapFromJson {
         [switch]$DetectDependencies
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
         throw "Le fichier '$FilePath' n'existe pas."
     }
@@ -43,7 +43,7 @@ function Import-RoadmapFromJson {
     $jsonContent = Get-Content -Path $FilePath -Raw -Encoding UTF8
     $jsonObject = $jsonContent | ConvertFrom-Json
 
-    # Créer l'objet roadmap
+    # CrÃ©er l'objet roadmap
     $roadmap = [PSCustomObject]@{
         Title = $jsonObject.Title
         Description = $jsonObject.Description
@@ -51,7 +51,7 @@ function Import-RoadmapFromJson {
         AllTasks = [System.Collections.Generic.Dictionary[string, object]]::new([StringComparer]::OrdinalIgnoreCase)
     }
 
-    # Fonction récursive pour convertir un objet JSON en tâche
+    # Fonction rÃ©cursive pour convertir un objet JSON en tÃ¢che
     function ConvertFrom-JsonTask {
         param (
             [PSCustomObject]$JsonTask,
@@ -69,19 +69,19 @@ function Import-RoadmapFromJson {
             Metadata = [System.Collections.Generic.Dictionary[string, object]]::new()
         }
         
-        # Ajouter les métadonnées si présentes
+        # Ajouter les mÃ©tadonnÃ©es si prÃ©sentes
         if ($JsonTask.PSObject.Properties.Name -contains "Metadata") {
             foreach ($key in $JsonTask.Metadata.PSObject.Properties.Name) {
                 $task.Metadata[$key] = $JsonTask.Metadata.$key
             }
         }
         
-        # Ajouter les dépendances si présentes (on les traitera plus tard)
+        # Ajouter les dÃ©pendances si prÃ©sentes (on les traitera plus tard)
         if ($JsonTask.PSObject.Properties.Name -contains "DependsOn") {
             $task | Add-Member -MemberType NoteProperty -Name "_DependsOn" -Value $JsonTask.DependsOn
         }
         
-        # Ajouter les sous-tâches
+        # Ajouter les sous-tÃ¢ches
         foreach ($jsonSubTask in $JsonTask.SubTasks) {
             $subTask = ConvertFrom-JsonTask -JsonTask $jsonSubTask -Level ($Level + 1)
             $task.SubTasks.Add($subTask) | Out-Null
@@ -90,24 +90,24 @@ function Import-RoadmapFromJson {
         return $task
     }
 
-    # Importer les sections et les tâches
+    # Importer les sections et les tÃ¢ches
     foreach ($jsonSection in $jsonObject.Sections) {
         $section = [PSCustomObject]@{
             Title = $jsonSection.Title
             Tasks = [System.Collections.ArrayList]::new()
         }
         
-        # Importer les tâches
+        # Importer les tÃ¢ches
         foreach ($jsonTask in $jsonSection.Tasks) {
             $task = ConvertFrom-JsonTask -JsonTask $jsonTask
             $section.Tasks.Add($task) | Out-Null
             
-            # Ajouter la tâche au dictionnaire global
+            # Ajouter la tÃ¢che au dictionnaire global
             if (-not [string]::IsNullOrEmpty($task.Id)) {
                 $roadmap.AllTasks[$task.Id] = $task
             }
             
-            # Ajouter récursivement les sous-tâches au dictionnaire global
+            # Ajouter rÃ©cursivement les sous-tÃ¢ches au dictionnaire global
             function Add-SubTasksToDict {
                 param (
                     [PSCustomObject]$Task
@@ -128,9 +128,9 @@ function Import-RoadmapFromJson {
         $roadmap.Sections.Add($section) | Out-Null
     }
 
-    # Reconstruire les dépendances si demandé
+    # Reconstruire les dÃ©pendances si demandÃ©
     if ($DetectDependencies) {
-        # Traiter les dépendances explicites
+        # Traiter les dÃ©pendances explicites
         foreach ($id in $roadmap.AllTasks.Keys) {
             $task = $roadmap.AllTasks[$id]
             if ($task.PSObject.Properties.Name -contains "_DependsOn") {
@@ -142,7 +142,7 @@ function Import-RoadmapFromJson {
                     }
                 }
                 
-                # Supprimer la propriété temporaire
+                # Supprimer la propriÃ©tÃ© temporaire
                 $task.PSObject.Properties.Remove("_DependsOn")
             }
         }

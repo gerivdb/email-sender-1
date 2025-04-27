@@ -1,5 +1,5 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $ModulePath = Join-Path $PSScriptRoot "excel_property_selection.ps1"
     . $ModulePath
 }
@@ -88,7 +88,7 @@ Describe "Fonctions d'introspection des types" {
 
         It "Should throw for non-existent types when ThrowOnError is specified" {
             { Get-TypeByQualifiedName -TypeName "NonExistentNamespace.NonExistentType" -ThrowOnError } |
-                Should -Throw "Le type 'NonExistentNamespace.NonExistentType' n'a pas été trouvé dans les assemblies spécifiées."
+                Should -Throw "Le type 'NonExistentNamespace.NonExistentType' n'a pas Ã©tÃ© trouvÃ© dans les assemblies spÃ©cifiÃ©es."
         }
     }
 
@@ -106,13 +106,13 @@ Describe "Fonctions d'introspection des types" {
         }
 
         It "Should handle errors gracefully" {
-            # Utiliser une assembly réelle mais avec un type qui n'existe pas
+            # Utiliser une assembly rÃ©elle mais avec un type qui n'existe pas
             $assembly = [System.Reflection.Assembly]::GetAssembly([string])
 
             # Appeler la fonction avec un type qui n'existe pas
             $results = Search-TypeInAssemblies -TypeName "NonExistentType" -Assemblies @($assembly) -IncludeErrors
 
-            # Vérifier que nous avons un résultat vide ou null
+            # VÃ©rifier que nous avons un rÃ©sultat vide ou null
             $results | Should -BeNullOrEmpty
         }
     }
@@ -160,7 +160,7 @@ Describe "Fonctions d'introspection des types" {
 
     Context "Get-NonPublicType function" {
         It "Should find nested types" {
-            # Utiliser un type imbriqué connu dans le framework .NET
+            # Utiliser un type imbriquÃ© connu dans le framework .NET
             $result = Get-NonPublicType -TypeName "System.RuntimeType+RuntimeTypeCache" -IncludeNestedTypes
             $result | Should -Not -BeNullOrEmpty
             $result.Name | Should -Be "RuntimeTypeCache"
@@ -173,7 +173,7 @@ Describe "Fonctions d'introspection des types" {
 
         It "Should throw for non-existent types when ThrowOnError is specified" {
             { Get-NonPublicType -TypeName "NonExistentNamespace.NonExistentType" -ThrowOnError } |
-                Should -Throw "Le type non-public 'NonExistentNamespace.NonExistentType' n'a pas été trouvé dans les assemblies spécifiées."
+                Should -Throw "Le type non-public 'NonExistentNamespace.NonExistentType' n'a pas Ã©tÃ© trouvÃ© dans les assemblies spÃ©cifiÃ©es."
         }
     }
 
@@ -187,16 +187,16 @@ Describe "Fonctions d'introspection des types" {
         It "Should find types in sub-namespaces when specified" {
             $result = Find-TypesByNamespace -Namespace "System" -Filter "*List*" -IncludeSubNamespaces
             $result | Should -Not -BeNullOrEmpty
-            # Vérifier qu'au moins un type contient 'List' dans son nom
+            # VÃ©rifier qu'au moins un type contient 'List' dans son nom
             $result | Where-Object { $_.Name -like "*List*" } | Should -Not -BeNullOrEmpty
         }
 
         It "Should respect case sensitivity" {
-            # Vérifier que la recherche est sensible à la casse par défaut
+            # VÃ©rifier que la recherche est sensible Ã  la casse par dÃ©faut
             $result = Find-TypesByNamespace -Namespace "System" -Filter "String"
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que la recherche insensible à la casse fonctionne
+            # VÃ©rifier que la recherche insensible Ã  la casse fonctionne
             $result = Find-TypesByNamespace -Namespace "System" -Filter "string" -IgnoreCase
             $result | Should -Not -BeNullOrEmpty
             $result[0].FullName | Should -Be "System.String"
@@ -219,11 +219,11 @@ Describe "Fonctions d'introspection des types" {
         }
 
         It "Should respect case sensitivity" {
-            # Vérifier que la recherche est sensible à la casse par défaut
+            # VÃ©rifier que la recherche est sensible Ã  la casse par dÃ©faut
             $result = Find-TypesByRegex -Pattern "^system\.string$" -SearchFullName
             $result | Should -BeNullOrEmpty
 
-            # Vérifier que la recherche insensible à la casse fonctionne
+            # VÃ©rifier que la recherche insensible Ã  la casse fonctionne
             $result = Find-TypesByRegex -Pattern "^system\.string$" -IgnoreCase -SearchFullName
             $result | Should -Not -BeNullOrEmpty
             $result[0].FullName | Should -Be "System.String"
@@ -274,20 +274,20 @@ Describe "Fonctions d'introspection des types" {
         It "Should resolve aliases" {
             Set-TypeAlias -Alias "str" -TypeName "System.String" | Should -Be $true
             Resolve-TypeAlias -TypeName "str" | Should -Be "System.String"
-            # Un nom qui n'est pas un alias devrait être retourné tel quel
+            # Un nom qui n'est pas un alias devrait Ãªtre retournÃ© tel quel
             Resolve-TypeAlias -TypeName "System.Int32" | Should -Be "System.Int32"
         }
 
         It "Should export and import aliases" {
-            # Créer un fichier temporaire pour les tests
+            # CrÃ©er un fichier temporaire pour les tests
             $tempFile = [System.IO.Path]::GetTempFileName()
-            # Supprimer le fichier pour éviter les problèmes d'existence
+            # Supprimer le fichier pour Ã©viter les problÃ¨mes d'existence
             if (Test-Path -Path $tempFile) {
                 Remove-Item -Path $tempFile -Force
             }
 
             try {
-                # Définir quelques alias
+                # DÃ©finir quelques alias
                 Set-TypeAlias -Alias "str" -TypeName "System.String" | Should -Be $true
                 Set-TypeAlias -Alias "int" -TypeName "System.Int32" | Should -Be $true
 
@@ -300,7 +300,7 @@ Describe "Fonctions d'introspection des types" {
                 # Importer les alias
                 Import-TypeAliases -Path $tempFile | Should -Be 2
 
-                # Vérifier que les alias ont été importés correctement
+                # VÃ©rifier que les alias ont Ã©tÃ© importÃ©s correctement
                 Get-TypeAlias -Alias "str" | Should -Be "System.String"
                 Get-TypeAlias -Alias "int" | Should -Be "System.Int32"
             } finally {
@@ -314,15 +314,15 @@ Describe "Fonctions d'introspection des types" {
 
     Context "Generic type functions" {
         It "Should create generic types" -Skip {
-            # Utiliser un type générique simple pour éviter les problèmes de version
-            # Créer d'abord une liste de chaînes pour avoir une référence
+            # Utiliser un type gÃ©nÃ©rique simple pour Ã©viter les problÃ¨mes de version
+            # CrÃ©er d'abord une liste de chaÃ®nes pour avoir une rÃ©fÃ©rence
             $referenceType = [System.Collections.Generic.List[string]]
             $referenceType | Should -Not -BeNullOrEmpty
 
             # Tester la fonction avec un type connu
             $listOfString = New-GenericType -GenericTypeName "System.Collections.Generic.List`1" -TypeArguments @([string])
             $listOfString | Should -Not -BeNullOrEmpty
-            # Vérifier que le type est bien une liste de chaînes
+            # VÃ©rifier que le type est bien une liste de chaÃ®nes
             $listOfString.IsGenericType | Should -Be $true
         }
 
@@ -371,14 +371,14 @@ Describe "Fonctions d'introspection des types" {
         }
 
         It "Should create nullable types" {
-            # Créer d'abord un type nullable de référence
+            # CrÃ©er d'abord un type nullable de rÃ©fÃ©rence
             $referenceType = [System.Nullable[int]]
             $referenceType | Should -Not -BeNullOrEmpty
 
             # Tester la fonction
             $nullableInt = New-NullableType -ValueType ([int])
             $nullableInt | Should -Not -BeNullOrEmpty
-            # Vérifier que le type est bien un nullable
+            # VÃ©rifier que le type est bien un nullable
             $nullableInt.IsGenericType | Should -Be $true
             $nullableInt.GetGenericTypeDefinition() | Should -Be ([System.Nullable`1])
         }
@@ -420,7 +420,7 @@ Describe "Fonctions d'introspection des types" {
             # Utiliser un type qui a des attributs connus
             $attributeType = [System.AttributeUsageAttribute]
             $attributeMembers = Get-TypeMembersByAttribute -Type $attributeType -AttributeType ([System.ObsoleteAttribute])
-            # Si aucun membre n'a cet attribut, vérifions au moins que la fonction s'exécute sans erreur
+            # Si aucun membre n'a cet attribut, vÃ©rifions au moins que la fonction s'exÃ©cute sans erreur
             $attributeMembers | Should -Not -BeNull
         }
 

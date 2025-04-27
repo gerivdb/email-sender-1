@@ -1,4 +1,4 @@
-# Script pour automatiser l'exécution des scripts d'analyse
+﻿# Script pour automatiser l'exÃ©cution des scripts d'analyse
 
 # Configuration
 $AnalysisConfig = @{
@@ -8,16 +8,16 @@ $AnalysisConfig = @{
     # Dossier des scripts d'analyse
     ScriptsFolder = Join-Path -Path (Split-Path -Parent $PSCommandPath) -ChildPath ".."
     
-    # Dossier des résultats
+    # Dossier des rÃ©sultats
     ResultsFolder = Join-Path -Path $env:TEMP -ChildPath "ErrorAnalysis\Results"
     
-    # Fichier de configuration des tâches
+    # Fichier de configuration des tÃ¢ches
     TasksFile = Join-Path -Path $env:TEMP -ChildPath "ErrorAnalysis\analysis-tasks.json"
     
-    # Nombre maximum d'exécutions parallèles
+    # Nombre maximum d'exÃ©cutions parallÃ¨les
     MaxParallelJobs = 3
     
-    # Délai d'attente maximum (en secondes)
+    # DÃ©lai d'attente maximum (en secondes)
     MaxWaitTime = 3600
     
     # Journalisation
@@ -43,7 +43,7 @@ function Initialize-AutomatedAnalysis {
         [int]$MaxWaitTime = 0
     )
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if (-not [string]::IsNullOrEmpty($RootFolder)) {
         $AnalysisConfig.RootFolder = $RootFolder
     }
@@ -64,14 +64,14 @@ function Initialize-AutomatedAnalysis {
         $AnalysisConfig.MaxWaitTime = $MaxWaitTime
     }
     
-    # Créer les dossiers s'ils n'existent pas
+    # CrÃ©er les dossiers s'ils n'existent pas
     foreach ($folder in @($AnalysisConfig.RootFolder, $AnalysisConfig.ResultsFolder)) {
         if (-not (Test-Path -Path $folder)) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
         }
     }
     
-    # Créer le fichier de configuration des tâches s'il n'existe pas
+    # CrÃ©er le fichier de configuration des tÃ¢ches s'il n'existe pas
     if (-not (Test-Path -Path $AnalysisConfig.TasksFile)) {
         $initialTasks = @{
             Tasks = @()
@@ -81,7 +81,7 @@ function Initialize-AutomatedAnalysis {
         $initialTasks | ConvertTo-Json -Depth 5 | Set-Content -Path $AnalysisConfig.TasksFile
     }
     
-    # Vérifier si les scripts d'analyse existent
+    # VÃ©rifier si les scripts d'analyse existent
     $scriptsExist = Test-Path -Path $AnalysisConfig.ScriptsFolder
     
     if (-not $scriptsExist) {
@@ -92,7 +92,7 @@ function Initialize-AutomatedAnalysis {
     return $AnalysisConfig
 }
 
-# Fonction pour ajouter une tâche d'analyse
+# Fonction pour ajouter une tÃ¢che d'analyse
 function Add-AnalysisTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -127,30 +127,30 @@ function Add-AnalysisTask {
         [switch]$Enabled = $true
     )
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         Write-Error "Le script n'existe pas: $ScriptPath"
         return $false
     }
     
-    # Charger les tâches existantes
+    # Charger les tÃ¢ches existantes
     $tasksFile = $AnalysisConfig.TasksFile
     $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $existingTask = $tasks.Tasks | Where-Object { $_.Name -eq $Name }
     
     if ($existingTask) {
-        Write-Warning "La tâche '$Name' existe déjà. Elle sera mise à jour."
+        Write-Warning "La tÃ¢che '$Name' existe dÃ©jÃ . Elle sera mise Ã  jour."
         $tasks.Tasks = $tasks.Tasks | Where-Object { $_.Name -ne $Name }
     }
     
-    # Déterminer le dossier de sortie
+    # DÃ©terminer le dossier de sortie
     if ([string]::IsNullOrEmpty($OutputFolder)) {
         $OutputFolder = Join-Path -Path $AnalysisConfig.ResultsFolder -ChildPath $Name
     }
     
-    # Créer la tâche
+    # CrÃ©er la tÃ¢che
     $task = @{
         Name = $Name
         ScriptPath = $ScriptPath
@@ -167,17 +167,17 @@ function Add-AnalysisTask {
         Status = "Pending"
     }
     
-    # Calculer la prochaine exécution
+    # Calculer la prochaine exÃ©cution
     $task.NextRun = Get-NextRunTime -Task $task
     
-    # Ajouter la tâche
+    # Ajouter la tÃ¢che
     $tasks.Tasks += $task
     $tasks.LastUpdate = Get-Date -Format "o"
     
-    # Enregistrer les tâches
+    # Enregistrer les tÃ¢ches
     $tasks | ConvertTo-Json -Depth 5 | Set-Content -Path $tasksFile
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputFolder)) {
         New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
     }
@@ -185,37 +185,37 @@ function Add-AnalysisTask {
     return $task
 }
 
-# Fonction pour calculer la prochaine exécution d'une tâche
+# Fonction pour calculer la prochaine exÃ©cution d'une tÃ¢che
 function Get-NextRunTime {
     param (
         [Parameter(Mandatory = $true)]
         [object]$Task
     )
     
-    # Si la tâche n'est pas activée, pas de prochaine exécution
+    # Si la tÃ¢che n'est pas activÃ©e, pas de prochaine exÃ©cution
     if (-not $Task.Enabled) {
         return $null
     }
     
-    # Si la tâche est à la demande ou sur événement, pas de prochaine exécution planifiée
+    # Si la tÃ¢che est Ã  la demande ou sur Ã©vÃ©nement, pas de prochaine exÃ©cution planifiÃ©e
     if ($Task.Schedule -in @("OnDemand", "OnEvent")) {
         return $null
     }
     
-    # Obtenir l'heure d'exécution
+    # Obtenir l'heure d'exÃ©cution
     $timeComponents = $Task.Time -split ":"
     $hour = [int]$timeComponents[0]
     $minute = [int]$timeComponents[1]
     
-    # Date de base (aujourd'hui à l'heure spécifiée)
+    # Date de base (aujourd'hui Ã  l'heure spÃ©cifiÃ©e)
     $baseDate = (Get-Date).Date.AddHours($hour).AddMinutes($minute)
     
-    # Si l'heure est déjà passée, commencer à partir de demain
+    # Si l'heure est dÃ©jÃ  passÃ©e, commencer Ã  partir de demain
     if ($baseDate -lt (Get-Date)) {
         $baseDate = $baseDate.AddDays(1)
     }
     
-    # Calculer la prochaine exécution selon le calendrier
+    # Calculer la prochaine exÃ©cution selon le calendrier
     switch ($Task.Schedule) {
         "Daily" {
             return $baseDate
@@ -230,7 +230,7 @@ function Get-NextRunTime {
                 $daysUntil = ($targetDay - (Get-Date).DayOfWeek + 7) % 7
                 
                 if ($daysUntil -eq 0 -and $baseDate -gt (Get-Date)) {
-                    # C'est aujourd'hui et l'heure n'est pas encore passée
+                    # C'est aujourd'hui et l'heure n'est pas encore passÃ©e
                     $daysUntilNext = 0
                     break
                 }
@@ -243,15 +243,15 @@ function Get-NextRunTime {
             return $baseDate.AddDays($daysUntilNext)
         }
         "Monthly" {
-            # Trouver le prochain mois avec le jour spécifié
+            # Trouver le prochain mois avec le jour spÃ©cifiÃ©
             $day = $Task.DayOfMonth
             $currentMonth = (Get-Date).Month
             $currentYear = (Get-Date).Year
             
-            # Créer une date pour le jour spécifié de ce mois
+            # CrÃ©er une date pour le jour spÃ©cifiÃ© de ce mois
             $targetDate = Get-Date -Year $currentYear -Month $currentMonth -Day $day -Hour $hour -Minute $minute -Second 0
             
-            # Si la date est déjà passée, passer au mois suivant
+            # Si la date est dÃ©jÃ  passÃ©e, passer au mois suivant
             if ($targetDate -lt (Get-Date)) {
                 $currentMonth++
                 if ($currentMonth -gt 12) {
@@ -269,7 +269,7 @@ function Get-NextRunTime {
     return $null
 }
 
-# Fonction pour exécuter une tâche d'analyse
+# Fonction pour exÃ©cuter une tÃ¢che d'analyse
 function Invoke-AnalysisTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -282,61 +282,61 @@ function Invoke-AnalysisTask {
         [switch]$Wait
     )
     
-    # Charger les tâches
+    # Charger les tÃ¢ches
     $tasksFile = $AnalysisConfig.TasksFile
     $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
     
-    # Trouver la tâche
+    # Trouver la tÃ¢che
     $task = $tasks.Tasks | Where-Object { $_.Name -eq $TaskName }
     
     if (-not $task) {
-        Write-Error "La tâche '$TaskName' n'existe pas."
+        Write-Error "La tÃ¢che '$TaskName' n'existe pas."
         return $false
     }
     
-    # Vérifier si la tâche est activée
+    # VÃ©rifier si la tÃ¢che est activÃ©e
     if (-not $task.Enabled -and -not $Force) {
-        Write-Warning "La tâche '$TaskName' est désactivée. Utilisez -Force pour l'exécuter quand même."
+        Write-Warning "La tÃ¢che '$TaskName' est dÃ©sactivÃ©e. Utilisez -Force pour l'exÃ©cuter quand mÃªme."
         return $false
     }
     
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $task.ScriptPath)) {
         Write-Error "Le script n'existe pas: $($task.ScriptPath)"
         return $false
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $task.OutputFolder)) {
         New-Item -Path $task.OutputFolder -ItemType Directory -Force | Out-Null
     }
     
-    # Préparer les paramètres du script
+    # PrÃ©parer les paramÃ¨tres du script
     $scriptParams = @{}
     
     foreach ($param in $task.Parameters.PSObject.Properties) {
         $scriptParams[$param.Name] = $param.Value
     }
     
-    # Ajouter le dossier de sortie aux paramètres
+    # Ajouter le dossier de sortie aux paramÃ¨tres
     $scriptParams["OutputFolder"] = $task.OutputFolder
     
-    # Mettre à jour le statut de la tâche
+    # Mettre Ã  jour le statut de la tÃ¢che
     $task.Status = "Running"
     $task.LastRun = Get-Date -Format "o"
     $tasks.LastUpdate = Get-Date -Format "o"
     $tasks | ConvertTo-Json -Depth 5 | Set-Content -Path $tasksFile
     
-    # Journaliser le début de l'exécution
-    Write-Log -Message "Début de l'exécution de la tâche '$TaskName'"
+    # Journaliser le dÃ©but de l'exÃ©cution
+    Write-Log -Message "DÃ©but de l'exÃ©cution de la tÃ¢che '$TaskName'"
     
-    # Exécuter le script
+    # ExÃ©cuter le script
     $jobName = "AnalysisTask_$TaskName"
     $scriptBlock = {
         param($scriptPath, $params, $outputFolder, $logFile)
         
         try {
-            # Créer un dossier pour cette exécution
+            # CrÃ©er un dossier pour cette exÃ©cution
             $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
             $runFolder = Join-Path -Path $outputFolder -ChildPath $timestamp
             New-Item -Path $runFolder -ItemType Directory -Force | Out-Null
@@ -345,21 +345,21 @@ function Invoke-AnalysisTask {
             $logPath = Join-Path -Path $runFolder -ChildPath "execution.log"
             Start-Transcript -Path $logPath
             
-            # Exécuter le script
-            Write-Host "Exécution du script: $scriptPath"
-            Write-Host "Paramètres: $($params | ConvertTo-Json -Compress)"
+            # ExÃ©cuter le script
+            Write-Host "ExÃ©cution du script: $scriptPath"
+            Write-Host "ParamÃ¨tres: $($params | ConvertTo-Json -Compress)"
             
-            # Ajouter le dossier de sortie aux paramètres
+            # Ajouter le dossier de sortie aux paramÃ¨tres
             $params["OutputFolder"] = $runFolder
             
-            # Charger et exécuter le script
+            # Charger et exÃ©cuter le script
             $scriptContent = Get-Content -Path $scriptPath -Raw
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script avec les paramètres
+            # ExÃ©cuter le script avec les paramÃ¨tres
             & $scriptBlock @params
             
-            # Créer un fichier de statut
+            # CrÃ©er un fichier de statut
             $status = @{
                 Success = $true
                 CompletedAt = Get-Date -Format "o"
@@ -368,7 +368,7 @@ function Invoke-AnalysisTask {
             
             $status | ConvertTo-Json | Set-Content -Path (Join-Path -Path $runFolder -ChildPath "status.json")
             
-            Write-Host "Exécution terminée avec succès."
+            Write-Host "ExÃ©cution terminÃ©e avec succÃ¨s."
             Stop-Transcript
             
             return @{
@@ -378,9 +378,9 @@ function Invoke-AnalysisTask {
         }
         catch {
             # Journaliser l'erreur
-            Write-Host "Erreur lors de l'exécution du script: $_"
+            Write-Host "Erreur lors de l'exÃ©cution du script: $_"
             
-            # Créer un fichier de statut
+            # CrÃ©er un fichier de statut
             $status = @{
                 Success = $false
                 CompletedAt = Get-Date -Format "o"
@@ -399,29 +399,29 @@ function Invoke-AnalysisTask {
         }
     }
     
-    # Démarrer le job
+    # DÃ©marrer le job
     $job = Start-Job -Name $jobName -ScriptBlock $scriptBlock -ArgumentList $task.ScriptPath, $scriptParams, $task.OutputFolder, $AnalysisConfig.LogFile
     
-    # Attendre si demandé
+    # Attendre si demandÃ©
     if ($Wait) {
         $job | Wait-Job -Timeout $AnalysisConfig.MaxWaitTime | Out-Null
         $result = $job | Receive-Job
         $job | Remove-Job
         
-        # Mettre à jour le statut de la tâche
+        # Mettre Ã  jour le statut de la tÃ¢che
         $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
         $task = $tasks.Tasks | Where-Object { $_.Name -eq $TaskName }
         
         if ($result.Success) {
             $task.Status = "Completed"
-            Write-Log -Message "Tâche '$TaskName' terminée avec succès."
+            Write-Log -Message "TÃ¢che '$TaskName' terminÃ©e avec succÃ¨s."
         }
         else {
             $task.Status = "Failed"
-            Write-Log -Message "Tâche '$TaskName' échouée: $($result.Error)"
+            Write-Log -Message "TÃ¢che '$TaskName' Ã©chouÃ©e: $($result.Error)"
         }
         
-        # Calculer la prochaine exécution
+        # Calculer la prochaine exÃ©cution
         $task.NextRun = Get-NextRunTime -Task $task
         
         $tasks.LastUpdate = Get-Date -Format "o"
@@ -430,12 +430,12 @@ function Invoke-AnalysisTask {
         return $result
     }
     else {
-        Write-Log -Message "Tâche '$TaskName' démarrée en arrière-plan (Job ID: $($job.Id))"
+        Write-Log -Message "TÃ¢che '$TaskName' dÃ©marrÃ©e en arriÃ¨re-plan (Job ID: $($job.Id))"
         return $job
     }
 }
 
-# Fonction pour exécuter les tâches planifiées
+# Fonction pour exÃ©cuter les tÃ¢ches planifiÃ©es
 function Invoke-ScheduledAnalysisTasks {
     param (
         [Parameter(Mandatory = $false)]
@@ -445,11 +445,11 @@ function Invoke-ScheduledAnalysisTasks {
         [switch]$WaitForCompletion
     )
     
-    # Charger les tâches
+    # Charger les tÃ¢ches
     $tasksFile = $AnalysisConfig.TasksFile
     $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
     
-    # Obtenir les tâches à exécuter
+    # Obtenir les tÃ¢ches Ã  exÃ©cuter
     $now = Get-Date
     $tasksToRun = @()
     
@@ -464,16 +464,16 @@ function Invoke-ScheduledAnalysisTasks {
     }
     
     if ($tasksToRun.Count -eq 0) {
-        Write-Verbose "Aucune tâche à exécuter."
+        Write-Verbose "Aucune tÃ¢che Ã  exÃ©cuter."
         return $null
     }
     
-    # Exécuter les tâches
+    # ExÃ©cuter les tÃ¢ches
     $results = @()
     $runningJobs = @()
     
     foreach ($task in $tasksToRun) {
-        # Vérifier le nombre de jobs en cours
+        # VÃ©rifier le nombre de jobs en cours
         $currentJobs = Get-Job -Name "AnalysisTask_*" -ErrorAction SilentlyContinue
         
         while ($currentJobs.Count -ge $AnalysisConfig.MaxParallelJobs) {
@@ -482,7 +482,7 @@ function Invoke-ScheduledAnalysisTasks {
             $currentJobs = Get-Job -Name "AnalysisTask_*" -ErrorAction SilentlyContinue
         }
         
-        # Exécuter la tâche
+        # ExÃ©cuter la tÃ¢che
         $job = Invoke-AnalysisTask -TaskName $task.Name -Force:$Force
         
         if ($job -is [System.Management.Automation.Job]) {
@@ -496,7 +496,7 @@ function Invoke-ScheduledAnalysisTasks {
         }
     }
     
-    # Attendre la fin des jobs si demandé
+    # Attendre la fin des jobs si demandÃ©
     if ($WaitForCompletion -and $runningJobs.Count -gt 0) {
         Write-Verbose "Attente de la fin des jobs..."
         $runningJobs | Wait-Job -Timeout $AnalysisConfig.MaxWaitTime | Out-Null
@@ -512,20 +512,20 @@ function Invoke-ScheduledAnalysisTasks {
                 Result = $result
             }
             
-            # Mettre à jour le statut de la tâche
+            # Mettre Ã  jour le statut de la tÃ¢che
             $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
             $task = $tasks.Tasks | Where-Object { $_.Name -eq $taskName }
             
             if ($result.Success) {
                 $task.Status = "Completed"
-                Write-Log -Message "Tâche '$taskName' terminée avec succès."
+                Write-Log -Message "TÃ¢che '$taskName' terminÃ©e avec succÃ¨s."
             }
             else {
                 $task.Status = "Failed"
-                Write-Log -Message "Tâche '$taskName' échouée: $($result.Error)"
+                Write-Log -Message "TÃ¢che '$taskName' Ã©chouÃ©e: $($result.Error)"
             }
             
-            # Calculer la prochaine exécution
+            # Calculer la prochaine exÃ©cution
             $task.NextRun = Get-NextRunTime -Task $task
             
             $tasks.LastUpdate = Get-Date -Format "o"
@@ -536,7 +536,7 @@ function Invoke-ScheduledAnalysisTasks {
     return $results
 }
 
-# Fonction pour démarrer le service d'analyse automatique
+# Fonction pour dÃ©marrer le service d'analyse automatique
 function Start-AnalysisService {
     param (
         [Parameter(Mandatory = $false)]
@@ -550,32 +550,32 @@ function Start-AnalysisService {
     Initialize-AutomatedAnalysis
     
     if ($RunOnce) {
-        # Exécuter une seule fois
+        # ExÃ©cuter une seule fois
         $results = Invoke-ScheduledAnalysisTasks -WaitForCompletion
         
         if ($results) {
-            Write-Host "Tâches exécutées: $($results.Count)"
+            Write-Host "TÃ¢ches exÃ©cutÃ©es: $($results.Count)"
         }
         else {
-            Write-Host "Aucune tâche exécutée."
+            Write-Host "Aucune tÃ¢che exÃ©cutÃ©e."
         }
         
         return $results
     }
     else {
-        # Exécuter en boucle
-        Write-Host "Service d'analyse démarré. Intervalle de vérification: $CheckIntervalSeconds secondes."
-        Write-Host "Appuyez sur Ctrl+C pour arrêter le service."
+        # ExÃ©cuter en boucle
+        Write-Host "Service d'analyse dÃ©marrÃ©. Intervalle de vÃ©rification: $CheckIntervalSeconds secondes."
+        Write-Host "Appuyez sur Ctrl+C pour arrÃªter le service."
         
         try {
             while ($true) {
                 $results = Invoke-ScheduledAnalysisTasks
                 
                 if ($results) {
-                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Tâches démarrées: $($results.Count)"
+                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - TÃ¢ches dÃ©marrÃ©es: $($results.Count)"
                 }
                 else {
-                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Aucune tâche à exécuter."
+                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Aucune tÃ¢che Ã  exÃ©cuter."
                 }
                 
                 # Attendre l'intervalle
@@ -583,7 +583,7 @@ function Start-AnalysisService {
             }
         }
         finally {
-            Write-Host "Service d'analyse arrêté."
+            Write-Host "Service d'analyse arrÃªtÃ©."
         }
     }
 }
@@ -599,7 +599,7 @@ function Write-Log {
         [string]$Level = "Information"
     )
     
-    # Créer le dossier de log s'il n'existe pas
+    # CrÃ©er le dossier de log s'il n'existe pas
     $logFolder = Split-Path -Path $AnalysisConfig.LogFile -Parent
     if (-not (Test-Path -Path $logFolder)) {
         New-Item -Path $logFolder -ItemType Directory -Force | Out-Null
@@ -609,7 +609,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $formattedMessage = "[$timestamp] [$Level] $Message"
     
-    # Écrire dans le fichier de log
+    # Ã‰crire dans le fichier de log
     $formattedMessage | Out-File -FilePath $AnalysisConfig.LogFile -Append
     
     # Afficher le message
@@ -620,7 +620,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour obtenir les tâches d'analyse
+# Fonction pour obtenir les tÃ¢ches d'analyse
 function Get-AnalysisTasks {
     param (
         [Parameter(Mandatory = $false)]
@@ -631,11 +631,11 @@ function Get-AnalysisTasks {
         [string]$Status = ""
     )
     
-    # Charger les tâches
+    # Charger les tÃ¢ches
     $tasksFile = $AnalysisConfig.TasksFile
     $tasks = Get-Content -Path $tasksFile -Raw | ConvertFrom-Json
     
-    # Filtrer les tâches
+    # Filtrer les tÃ¢ches
     $filteredTasks = $tasks.Tasks
     
     if ($EnabledOnly) {
@@ -649,7 +649,7 @@ function Get-AnalysisTasks {
     return $filteredTasks
 }
 
-# Fonction pour créer une tâche planifiée Windows
+# Fonction pour crÃ©er une tÃ¢che planifiÃ©e Windows
 function Register-AnalysisScheduledTask {
     param (
         [Parameter(Mandatory = $true)]
@@ -669,13 +669,13 @@ function Register-AnalysisScheduledTask {
         [int]$DayOfMonth = 1
     )
     
-    # Vérifier si le module ScheduledTasks est disponible
+    # VÃ©rifier si le module ScheduledTasks est disponible
     if (-not (Get-Module -ListAvailable -Name ScheduledTasks)) {
         Write-Error "Le module ScheduledTasks n'est pas disponible."
         return $false
     }
     
-    # Créer le script d'exécution
+    # CrÃ©er le script d'exÃ©cution
     $scriptFolder = Join-Path -Path $AnalysisConfig.RootFolder -ChildPath "ScheduledTasks"
     if (-not (Test-Path -Path $scriptFolder)) {
         New-Item -Path $scriptFolder -ItemType Directory -Force | Out-Null
@@ -684,8 +684,8 @@ function Register-AnalysisScheduledTask {
     $scriptPath = Join-Path -Path $scriptFolder -ChildPath "$TaskName.ps1"
     
     $scriptContent = @"
-# Script d'exécution automatique pour la tâche '$TaskName'
-# Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+# Script d'exÃ©cution automatique pour la tÃ¢che '$TaskName'
+# GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Importer le module d'analyse
 `$modulePath = "$PSCommandPath"
@@ -700,39 +700,39 @@ else {
 # Initialiser l'automatisation
 Initialize-AutomatedAnalysis
 
-# Exécuter la tâche
+# ExÃ©cuter la tÃ¢che
 Invoke-AnalysisTask -TaskName "$TaskName" -Wait
 "@
     
     $scriptContent | Set-Content -Path $scriptPath -Encoding UTF8
     
-    # Créer le déclencheur
+    # CrÃ©er le dÃ©clencheur
     $trigger = switch ($Schedule) {
         "Daily" { New-ScheduledTaskTrigger -Daily -At $Time }
         "Weekly" { New-ScheduledTaskTrigger -Weekly -DaysOfWeek $DaysOfWeek -At $Time }
         "Monthly" { New-ScheduledTaskTrigger -Monthly -DaysOfMonth $DayOfMonth -At $Time }
     }
     
-    # Créer l'action
+    # CrÃ©er l'action
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
     
-    # Vérifier si la tâche existe déjà
+    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
     $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
     
     if ($existingTask) {
-        Write-Warning "La tâche planifiée '$TaskName' existe déjà. Elle sera remplacée."
+        Write-Warning "La tÃ¢che planifiÃ©e '$TaskName' existe dÃ©jÃ . Elle sera remplacÃ©e."
         Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
     }
     
-    # Créer la tâche
+    # CrÃ©er la tÃ¢che
     $task = Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -RunLevel Highest
     
     if ($task) {
-        Write-Host "Tâche planifiée '$TaskName' créée avec succès."
+        Write-Host "TÃ¢che planifiÃ©e '$TaskName' crÃ©Ã©e avec succÃ¨s."
         return $true
     }
     else {
-        Write-Error "Erreur lors de la création de la tâche planifiée '$TaskName'."
+        Write-Error "Erreur lors de la crÃ©ation de la tÃ¢che planifiÃ©e '$TaskName'."
         return $false
     }
 }

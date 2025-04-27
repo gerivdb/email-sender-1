@@ -1,5 +1,5 @@
-# Module de déplacement des scripts pour le Script Manager
-# Ce module gère le déplacement des scripts
+﻿# Module de dÃ©placement des scripts pour le Script Manager
+# Ce module gÃ¨re le dÃ©placement des scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: organization, scripts, move
@@ -7,11 +7,11 @@
 function Move-Script {
     <#
     .SYNOPSIS
-        Déplace un script vers son emplacement cible
+        DÃ©place un script vers son emplacement cible
     .DESCRIPTION
-        Déplace un script vers son emplacement cible en créant les dossiers nécessaires
+        DÃ©place un script vers son emplacement cible en crÃ©ant les dossiers nÃ©cessaires
     .PARAMETER MoveInfo
-        Informations sur le déplacement à effectuer
+        Informations sur le dÃ©placement Ã  effectuer
     .EXAMPLE
         Move-Script -MoveInfo $moveInfo
     #>
@@ -21,31 +21,31 @@ function Move-Script {
         [PSCustomObject]$MoveInfo
     )
     
-    # Initialiser l'objet de résultat
+    # Initialiser l'objet de rÃ©sultat
     $Result = [PSCustomObject]@{
         Success = $false
         Message = ""
     }
     
-    # Vérifier si le fichier source existe
+    # VÃ©rifier si le fichier source existe
     if (-not (Test-Path -Path $MoveInfo.SourcePath)) {
-        $Result.Message = "Fichier source non trouvé: $($MoveInfo.SourcePath)"
+        $Result.Message = "Fichier source non trouvÃ©: $($MoveInfo.SourcePath)"
         return $Result
     }
     
-    # Créer le dossier cible s'il n'existe pas
+    # CrÃ©er le dossier cible s'il n'existe pas
     $TargetDir = Split-Path -Path $MoveInfo.TargetPath -Parent
     if (-not (Test-Path -Path $TargetDir)) {
         try {
             New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
-            Write-Host "  Dossier créé: $TargetDir" -ForegroundColor Green
+            Write-Host "  Dossier crÃ©Ã©: $TargetDir" -ForegroundColor Green
         } catch {
-            $Result.Message = "Erreur lors de la création du dossier: $_"
+            $Result.Message = "Erreur lors de la crÃ©ation du dossier: $_"
             return $Result
         }
     }
     
-    # Vérifier si le fichier cible existe déjà
+    # VÃ©rifier si le fichier cible existe dÃ©jÃ 
     if (Test-Path -Path $MoveInfo.TargetPath) {
         # Comparer les fichiers
         $SourceContent = Get-Content -Path $MoveInfo.SourcePath -Raw
@@ -56,20 +56,20 @@ function Move-Script {
             try {
                 Remove-Item -Path $MoveInfo.SourcePath -Force
                 $Result.Success = $true
-                $Result.Message = "Fichier source supprimé (fichier cible identique)"
+                $Result.Message = "Fichier source supprimÃ© (fichier cible identique)"
                 return $Result
             } catch {
                 $Result.Message = "Erreur lors de la suppression du fichier source: $_"
                 return $Result
             }
         } else {
-            # Les fichiers sont différents, renommer le fichier cible
+            # Les fichiers sont diffÃ©rents, renommer le fichier cible
             $NewName = [System.IO.Path]::GetFileNameWithoutExtension($MoveInfo.TargetPath) + "_old" + [System.IO.Path]::GetExtension($MoveInfo.TargetPath)
             $NewPath = Join-Path -Path (Split-Path -Path $MoveInfo.TargetPath -Parent) -ChildPath $NewName
             
             try {
                 Move-Item -Path $MoveInfo.TargetPath -Destination $NewPath -Force
-                Write-Host "  Fichier cible renommé: $NewPath" -ForegroundColor Yellow
+                Write-Host "  Fichier cible renommÃ©: $NewPath" -ForegroundColor Yellow
             } catch {
                 $Result.Message = "Erreur lors du renommage du fichier cible: $_"
                 return $Result
@@ -77,14 +77,14 @@ function Move-Script {
         }
     }
     
-    # Déplacer le fichier
+    # DÃ©placer le fichier
     try {
         Move-Item -Path $MoveInfo.SourcePath -Destination $MoveInfo.TargetPath -Force
         $Result.Success = $true
-        $Result.Message = "Fichier déplacé avec succès"
-        Write-Host "  Fichier déplacé: $($MoveInfo.SourcePath) -> $($MoveInfo.TargetPath)" -ForegroundColor Green
+        $Result.Message = "Fichier dÃ©placÃ© avec succÃ¨s"
+        Write-Host "  Fichier dÃ©placÃ©: $($MoveInfo.SourcePath) -> $($MoveInfo.TargetPath)" -ForegroundColor Green
     } catch {
-        $Result.Message = "Erreur lors du déplacement du fichier: $_"
+        $Result.Message = "Erreur lors du dÃ©placement du fichier: $_"
     }
     
     return $Result

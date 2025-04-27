@@ -1,5 +1,5 @@
-# Module de détection des anti-patterns communs pour le Script Manager
-# Ce module détecte les anti-patterns communs à tous les types de scripts
+﻿# Module de dÃ©tection des anti-patterns communs pour le Script Manager
+# Ce module dÃ©tecte les anti-patterns communs Ã  tous les types de scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, anti-patterns, common
@@ -7,11 +7,11 @@
 function Find-CommonAntiPatterns {
     <#
     .SYNOPSIS
-        Détecte les anti-patterns communs dans les scripts
+        DÃ©tecte les anti-patterns communs dans les scripts
     .DESCRIPTION
-        Analyse le script pour détecter les anti-patterns communs à tous les types de scripts
+        Analyse le script pour dÃ©tecter les anti-patterns communs Ã  tous les types de scripts
     .PARAMETER Script
-        Objet script à analyser
+        Objet script Ã  analyser
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -26,17 +26,17 @@ function Find-CommonAntiPatterns {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les anti-patterns
+    # CrÃ©er un tableau pour stocker les anti-patterns
     $Patterns = @()
     
-    # Détecter le code mort (commenté)
+    # DÃ©tecter le code mort (commentÃ©)
     $CommentedCodeBlocks = Find-CommentedCodeBlocks -Content $Content -ScriptType $Script.Type
     
     foreach ($Block in $CommentedCodeBlocks) {
         $Patterns += [PSCustomObject]@{
             Type = "DeadCode"
-            Description = "Code commenté détecté"
-            Recommendation = "Supprimer le code mort ou documenter pourquoi il est conservé"
+            Description = "Code commentÃ© dÃ©tectÃ©"
+            Recommendation = "Supprimer le code mort ou documenter pourquoi il est conservÃ©"
             CodeSnippet = $Block.CodeSnippet
             LineNumbers = $Block.LineNumbers
             Details = @{
@@ -45,14 +45,14 @@ function Find-CommonAntiPatterns {
         }
     }
     
-    # Détecter le code dupliqué
+    # DÃ©tecter le code dupliquÃ©
     $DuplicateCodeBlocks = Find-DuplicateCodeBlocks -Content $Content
     
     foreach ($Block in $DuplicateCodeBlocks) {
         $Patterns += [PSCustomObject]@{
             Type = "DuplicateCode"
-            Description = "Code dupliqué détecté"
-            Recommendation = "Extraire le code dupliqué dans une fonction réutilisable"
+            Description = "Code dupliquÃ© dÃ©tectÃ©"
+            Recommendation = "Extraire le code dupliquÃ© dans une fonction rÃ©utilisable"
             CodeSnippet = $Block.CodeSnippet
             LineNumbers = $Block.LineNumbers
             Details = @{
@@ -62,14 +62,14 @@ function Find-CommonAntiPatterns {
         }
     }
     
-    # Détecter les nombres magiques
+    # DÃ©tecter les nombres magiques
     $MagicNumbers = Find-MagicNumbers -Content $Content -ScriptType $Script.Type
     
     foreach ($Number in $MagicNumbers) {
         $Patterns += [PSCustomObject]@{
             Type = "MagicNumber"
-            Description = "Nombre magique détecté: $($Number.Value)"
-            Recommendation = "Remplacer le nombre magique par une constante nommée"
+            Description = "Nombre magique dÃ©tectÃ©: $($Number.Value)"
+            Recommendation = "Remplacer le nombre magique par une constante nommÃ©e"
             CodeSnippet = $Number.CodeSnippet
             LineNumbers = @($Number.LineNumber)
             Details = @{
@@ -78,14 +78,14 @@ function Find-CommonAntiPatterns {
         }
     }
     
-    # Détecter les méthodes trop longues
+    # DÃ©tecter les mÃ©thodes trop longues
     $LongMethods = Find-LongMethods -Script $Script -Content $Content
     
     foreach ($Method in $LongMethods) {
         $Patterns += [PSCustomObject]@{
             Type = "LongMethod"
-            Description = "Méthode trop longue détectée: $($Method.Name)"
-            Recommendation = "Diviser la méthode en plusieurs méthodes plus petites"
+            Description = "MÃ©thode trop longue dÃ©tectÃ©e: $($Method.Name)"
+            Recommendation = "Diviser la mÃ©thode en plusieurs mÃ©thodes plus petites"
             CodeSnippet = $Method.CodeSnippet
             LineNumbers = $Method.LineNumbers
             Details = @{
@@ -95,14 +95,14 @@ function Find-CommonAntiPatterns {
         }
     }
     
-    # Détecter les imbrications profondes
+    # DÃ©tecter les imbrications profondes
     $DeepNestings = Find-DeepNestings -Content $Content -ScriptType $Script.Type
     
     foreach ($Nesting in $DeepNestings) {
         $Patterns += [PSCustomObject]@{
             Type = "DeepNesting"
-            Description = "Imbrication profonde détectée (niveau $($Nesting.Depth))"
-            Recommendation = "Réduire la profondeur d'imbrication en extrayant des méthodes ou en utilisant des clauses de garde"
+            Description = "Imbrication profonde dÃ©tectÃ©e (niveau $($Nesting.Depth))"
+            Recommendation = "RÃ©duire la profondeur d'imbrication en extrayant des mÃ©thodes ou en utilisant des clauses de garde"
             CodeSnippet = $Nesting.CodeSnippet
             LineNumbers = $Nesting.LineNumbers
             Details = @{
@@ -111,13 +111,13 @@ function Find-CommonAntiPatterns {
         }
     }
     
-    # Détecter les chemins codés en dur
+    # DÃ©tecter les chemins codÃ©s en dur
     $HardcodedPaths = Find-HardcodedPaths -Content $Content
     
     foreach ($Path in $HardcodedPaths) {
         $Patterns += [PSCustomObject]@{
             Type = "HardcodedPath"
-            Description = "Chemin codé en dur détecté: $($Path.Value)"
+            Description = "Chemin codÃ© en dur dÃ©tectÃ©: $($Path.Value)"
             Recommendation = "Utiliser des chemins relatifs ou des variables d'environnement"
             CodeSnippet = $Path.CodeSnippet
             LineNumbers = @($Path.LineNumber)
@@ -133,9 +133,9 @@ function Find-CommonAntiPatterns {
 function Find-CommentedCodeBlocks {
     <#
     .SYNOPSIS
-        Détecte les blocs de code commentés
+        DÃ©tecte les blocs de code commentÃ©s
     .DESCRIPTION
-        Analyse le contenu pour détecter les blocs de code commentés
+        Analyse le contenu pour dÃ©tecter les blocs de code commentÃ©s
     .PARAMETER Content
         Contenu du script
     .PARAMETER ScriptType
@@ -152,10 +152,10 @@ function Find-CommentedCodeBlocks {
         [string]$ScriptType
     )
     
-    # Créer un tableau pour stocker les blocs de code commentés
+    # CrÃ©er un tableau pour stocker les blocs de code commentÃ©s
     $CommentedCodeBlocks = @()
     
-    # Définir le marqueur de commentaire selon le type de script
+    # DÃ©finir le marqueur de commentaire selon le type de script
     $CommentMarker = switch ($ScriptType) {
         "PowerShell" { "#" }
         "Python" { "#" }
@@ -177,12 +177,12 @@ function Find-CommentedCodeBlocks {
         $Line = $Lines[$i]
         $LineNumber = $i + 1
         
-        # Vérifier si la ligne est un commentaire
+        # VÃ©rifier si la ligne est un commentaire
         if ($Line -match "^\s*($CommentMarker)") {
-            # Extraire le code commenté
+            # Extraire le code commentÃ©
             $CommentedCode = $Line -replace "^\s*($CommentMarker)\s*", ""
             
-            # Vérifier si le commentaire contient du code
+            # VÃ©rifier si le commentaire contient du code
             if ($CommentedCode -match "[\{\}\[\]\(\)=><\+\-\*\/]" -and $CommentedCode -notmatch "^[A-Za-z\s]+$") {
                 if (-not $InBlock) {
                     $InBlock = $true
@@ -206,7 +206,7 @@ function Find-CommentedCodeBlocks {
                 }
             }
         } else {
-            # Terminer le bloc si on trouve une ligne non commentée
+            # Terminer le bloc si on trouve une ligne non commentÃ©e
             if ($InBlock) {
                 if ($CurrentBlock.Count -ge 3) {
                     $CommentedCodeBlocks += [PSCustomObject]@{
@@ -234,9 +234,9 @@ function Find-CommentedCodeBlocks {
 function Find-DuplicateCodeBlocks {
     <#
     .SYNOPSIS
-        Détecte les blocs de code dupliqués
+        DÃ©tecte les blocs de code dupliquÃ©s
     .DESCRIPTION
-        Analyse le contenu pour détecter les blocs de code dupliqués
+        Analyse le contenu pour dÃ©tecter les blocs de code dupliquÃ©s
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
@@ -248,21 +248,21 @@ function Find-DuplicateCodeBlocks {
         [string]$Content
     )
     
-    # Créer un tableau pour stocker les blocs de code dupliqués
+    # CrÃ©er un tableau pour stocker les blocs de code dupliquÃ©s
     $DuplicateCodeBlocks = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Définir la taille minimale des blocs à rechercher
+    # DÃ©finir la taille minimale des blocs Ã  rechercher
     $MinBlockSize = 4
     
-    # Créer un dictionnaire pour stocker les blocs de code
+    # CrÃ©er un dictionnaire pour stocker les blocs de code
     $CodeBlocks = @{}
     
     # Parcourir les lignes
     for ($i = 0; $i -le $Lines.Count - $MinBlockSize; $i++) {
-        # Créer des blocs de différentes tailles
+        # CrÃ©er des blocs de diffÃ©rentes tailles
         for ($BlockSize = $MinBlockSize; $BlockSize -le [Math]::Min(10, $Lines.Count - $i); $BlockSize++) {
             # Extraire le bloc
             $Block = $Lines[$i..($i + $BlockSize - 1)] -join "`n"
@@ -281,10 +281,10 @@ function Find-DuplicateCodeBlocks {
         }
     }
     
-    # Filtrer les blocs dupliqués
+    # Filtrer les blocs dupliquÃ©s
     foreach ($Block in $CodeBlocks.Keys) {
         if ($CodeBlocks[$Block].Count -gt 1) {
-            # Calculer les numéros de ligne
+            # Calculer les numÃ©ros de ligne
             $LineNumbers = @()
             foreach ($StartLine in $CodeBlocks[$Block]) {
                 $BlockLines = $Block -split "`n"
@@ -302,16 +302,16 @@ function Find-DuplicateCodeBlocks {
     # Trier les blocs par taille (du plus grand au plus petit)
     $DuplicateCodeBlocks = $DuplicateCodeBlocks | Sort-Object -Property { ($_.CodeSnippet -split "`n").Count } -Descending
     
-    # Limiter le nombre de blocs retournés
+    # Limiter le nombre de blocs retournÃ©s
     return $DuplicateCodeBlocks | Select-Object -First 5
 }
 
 function Find-MagicNumbers {
     <#
     .SYNOPSIS
-        Détecte les nombres magiques
+        DÃ©tecte les nombres magiques
     .DESCRIPTION
-        Analyse le contenu pour détecter les nombres magiques (nombres codés en dur)
+        Analyse le contenu pour dÃ©tecter les nombres magiques (nombres codÃ©s en dur)
     .PARAMETER Content
         Contenu du script
     .PARAMETER ScriptType
@@ -328,13 +328,13 @@ function Find-MagicNumbers {
         [string]$ScriptType
     )
     
-    # Créer un tableau pour stocker les nombres magiques
+    # CrÃ©er un tableau pour stocker les nombres magiques
     $MagicNumbers = @()
     
     # Diviser le contenu en lignes
     $Lines = $Content -split "`n"
     
-    # Définir les nombres à ignorer
+    # DÃ©finir les nombres Ã  ignorer
     $IgnoredNumbers = @(0, 1, -1, 2, 10, 100)
     
     # Parcourir les lignes
@@ -358,7 +358,7 @@ function Find-MagicNumbers {
                 continue
             }
             
-            # Ignorer les nombres dans les chaînes de caractères
+            # Ignorer les nombres dans les chaÃ®nes de caractÃ¨res
             $Position = $Match.Index
             $InString = $false
             

@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
     Fonctions communes pour les modes RoadmapParser.
 
 .DESCRIPTION
-    Ce script contient des fonctions communes utilisées par tous les modes de RoadmapParser.
+    Ce script contient des fonctions communes utilisÃ©es par tous les modes de RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 <#
 .SYNOPSIS
-    Vérifie si un fichier existe et lève une exception si ce n'est pas le cas.
+    VÃ©rifie si un fichier existe et lÃ¨ve une exception si ce n'est pas le cas.
 
 .DESCRIPTION
-    Cette fonction vérifie si un fichier existe et lève une exception si ce n'est pas le cas.
+    Cette fonction vÃ©rifie si un fichier existe et lÃ¨ve une exception si ce n'est pas le cas.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à vérifier.
+    Chemin vers le fichier Ã  vÃ©rifier.
 
 .PARAMETER ErrorMessage
-    Message d'erreur à afficher si le fichier n'existe pas.
+    Message d'erreur Ã  afficher si le fichier n'existe pas.
 
 .EXAMPLE
     Assert-FileExists -FilePath "roadmap.md" -ErrorMessage "Le fichier de roadmap est introuvable."
@@ -37,7 +37,7 @@ function Assert-FileExists {
         [string]$FilePath,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Le fichier est introuvable à l'emplacement : $FilePath"
+        [string]$ErrorMessage = "Le fichier est introuvable Ã  l'emplacement : $FilePath"
     )
     
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
@@ -47,19 +47,19 @@ function Assert-FileExists {
 
 <#
 .SYNOPSIS
-    Vérifie si un répertoire existe et le crée s'il n'existe pas.
+    VÃ©rifie si un rÃ©pertoire existe et le crÃ©e s'il n'existe pas.
 
 .DESCRIPTION
-    Cette fonction vérifie si un répertoire existe et le crée s'il n'existe pas.
+    Cette fonction vÃ©rifie si un rÃ©pertoire existe et le crÃ©e s'il n'existe pas.
 
 .PARAMETER DirectoryPath
-    Chemin vers le répertoire à vérifier.
+    Chemin vers le rÃ©pertoire Ã  vÃ©rifier.
 
 .PARAMETER CreateIfNotExists
-    Indique si le répertoire doit être créé s'il n'existe pas.
+    Indique si le rÃ©pertoire doit Ãªtre crÃ©Ã© s'il n'existe pas.
 
 .PARAMETER ErrorMessage
-    Message d'erreur à afficher si le répertoire n'existe pas et ne doit pas être créé.
+    Message d'erreur Ã  afficher si le rÃ©pertoire n'existe pas et ne doit pas Ãªtre crÃ©Ã©.
 
 .EXAMPLE
     Assert-DirectoryExists -DirectoryPath "output" -CreateIfNotExists $true
@@ -77,7 +77,7 @@ function Assert-DirectoryExists {
         [bool]$CreateIfNotExists = $true,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Le répertoire est introuvable à l'emplacement : $DirectoryPath"
+        [string]$ErrorMessage = "Le rÃ©pertoire est introuvable Ã  l'emplacement : $DirectoryPath"
     )
     
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
@@ -91,19 +91,19 @@ function Assert-DirectoryExists {
 
 <#
 .SYNOPSIS
-    Crée une sauvegarde d'un fichier.
+    CrÃ©e une sauvegarde d'un fichier.
 
 .DESCRIPTION
-    Cette fonction crée une sauvegarde d'un fichier dans un répertoire spécifié.
+    Cette fonction crÃ©e une sauvegarde d'un fichier dans un rÃ©pertoire spÃ©cifiÃ©.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à sauvegarder.
+    Chemin vers le fichier Ã  sauvegarder.
 
 .PARAMETER BackupPath
-    Chemin vers le répertoire de sauvegarde.
+    Chemin vers le rÃ©pertoire de sauvegarde.
 
 .PARAMETER Timestamp
-    Indique si un horodatage doit être ajouté au nom du fichier de sauvegarde.
+    Indique si un horodatage doit Ãªtre ajoutÃ© au nom du fichier de sauvegarde.
 
 .EXAMPLE
     Backup-File -FilePath "roadmap.md" -BackupPath "backup" -Timestamp $true
@@ -124,16 +124,16 @@ function Backup-File {
         [bool]$Timestamp = $true
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     Assert-FileExists -FilePath $FilePath
     
-    # Créer le répertoire de sauvegarde s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sauvegarde s'il n'existe pas
     Assert-DirectoryExists -DirectoryPath $BackupPath -CreateIfNotExists $true
     
     # Obtenir le nom du fichier
     $fileName = Split-Path -Leaf $FilePath
     
-    # Ajouter un horodatage si demandé
+    # Ajouter un horodatage si demandÃ©
     if ($Timestamp) {
         $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
         $backupFileName = [System.IO.Path]::GetFileNameWithoutExtension($fileName) + "_" + $timestamp + [System.IO.Path]::GetExtension($fileName)
@@ -152,16 +152,16 @@ function Backup-File {
 
 <#
 .SYNOPSIS
-    Restaure un fichier à partir d'une sauvegarde.
+    Restaure un fichier Ã  partir d'une sauvegarde.
 
 .DESCRIPTION
-    Cette fonction restaure un fichier à partir d'une sauvegarde.
+    Cette fonction restaure un fichier Ã  partir d'une sauvegarde.
 
 .PARAMETER BackupFilePath
     Chemin vers le fichier de sauvegarde.
 
 .PARAMETER OriginalFilePath
-    Chemin vers le fichier original à restaurer.
+    Chemin vers le fichier original Ã  restaurer.
 
 .EXAMPLE
     Restore-File -BackupFilePath "backup\roadmap_20230815_120000.md" -OriginalFilePath "roadmap.md"
@@ -179,8 +179,8 @@ function Restore-File {
         [string]$OriginalFilePath
     )
     
-    # Vérifier si le fichier de sauvegarde existe
-    Assert-FileExists -FilePath $BackupFilePath -ErrorMessage "Le fichier de sauvegarde est introuvable à l'emplacement : $BackupFilePath"
+    # VÃ©rifier si le fichier de sauvegarde existe
+    Assert-FileExists -FilePath $BackupFilePath -ErrorMessage "Le fichier de sauvegarde est introuvable Ã  l'emplacement : $BackupFilePath"
     
     # Copier le fichier de sauvegarde vers le fichier original
     Copy-Item -Path $BackupFilePath -Destination $OriginalFilePath -Force
@@ -194,7 +194,7 @@ function Restore-File {
     Cette fonction convertit un fichier Markdown en HTML.
 
 .PARAMETER MarkdownFile
-    Chemin vers le fichier Markdown à convertir.
+    Chemin vers le fichier Markdown Ã  convertir.
 
 .PARAMETER HtmlFile
     Chemin vers le fichier HTML de sortie.
@@ -203,7 +203,7 @@ function Restore-File {
     Titre de la page HTML.
 
 .PARAMETER Css
-    Contenu CSS à inclure dans la page HTML.
+    Contenu CSS Ã  inclure dans la page HTML.
 
 .EXAMPLE
     Convert-MarkdownToHtml -MarkdownFile "roadmap.md" -HtmlFile "roadmap.html" -Title "Roadmap"
@@ -283,10 +283,10 @@ tr:nth-child(even) {
 "@
     )
     
-    # Vérifier si le fichier Markdown existe
-    Assert-FileExists -FilePath $MarkdownFile -ErrorMessage "Le fichier Markdown est introuvable à l'emplacement : $MarkdownFile"
+    # VÃ©rifier si le fichier Markdown existe
+    Assert-FileExists -FilePath $MarkdownFile -ErrorMessage "Le fichier Markdown est introuvable Ã  l'emplacement : $MarkdownFile"
     
-    # Créer le répertoire parent du fichier HTML s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire parent du fichier HTML s'il n'existe pas
     $htmlDir = Split-Path -Parent $HtmlFile
     if (-not [string]::IsNullOrEmpty($htmlDir)) {
         Assert-DirectoryExists -DirectoryPath $htmlDir -CreateIfNotExists $true
@@ -296,8 +296,8 @@ tr:nth-child(even) {
     $markdownContent = Get-Content -Path $MarkdownFile -Raw
     
     # Convertir le Markdown en HTML
-    # Note: Cette implémentation est simplifiée et ne gère pas toutes les fonctionnalités de Markdown
-    # Pour une conversion complète, il faudrait utiliser une bibliothèque comme Markdig
+    # Note: Cette implÃ©mentation est simplifiÃ©e et ne gÃ¨re pas toutes les fonctionnalitÃ©s de Markdown
+    # Pour une conversion complÃ¨te, il faudrait utiliser une bibliothÃ¨que comme Markdig
     
     # Remplacer les titres
     $htmlContent = $markdownContent -replace '# (.*)', '<h1>$1</h1>'
@@ -333,7 +333,7 @@ tr:nth-child(even) {
     # Remplacer les sauts de ligne
     $htmlContent = $htmlContent -replace '\r\n', '<br>'
     
-    # Créer le document HTML complet
+    # CrÃ©er le document HTML complet
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -350,22 +350,22 @@ $htmlContent
 </html>
 "@
     
-    # Écrire le contenu HTML dans le fichier de sortie
+    # Ã‰crire le contenu HTML dans le fichier de sortie
     Set-Content -Path $HtmlFile -Value $html -Encoding UTF8
 }
 
 <#
 .SYNOPSIS
-    Extrait les tâches d'un fichier de roadmap.
+    Extrait les tÃ¢ches d'un fichier de roadmap.
 
 .DESCRIPTION
-    Cette fonction extrait les tâches d'un fichier de roadmap au format Markdown.
+    Cette fonction extrait les tÃ¢ches d'un fichier de roadmap au format Markdown.
 
 .PARAMETER FilePath
     Chemin vers le fichier de roadmap.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à extraire. Si non spécifié, toutes les tâches sont extraites.
+    Identifiant de la tÃ¢che Ã  extraire. Si non spÃ©cifiÃ©, toutes les tÃ¢ches sont extraites.
 
 .EXAMPLE
     $tasks = Get-RoadmapTasks -FilePath "roadmap.md" -TaskIdentifier "1.1"
@@ -383,16 +383,16 @@ function Get-RoadmapTasks {
         [string]$TaskIdentifier
     )
     
-    # Vérifier si le fichier existe
-    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable à l'emplacement : $FilePath"
+    # VÃ©rifier si le fichier existe
+    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
     
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
     
-    # Extraire les tâches
+    # Extraire les tÃ¢ches
     $tasks = New-Object System.Collections.ArrayList
     
-    # Expression régulière pour extraire les tâches
+    # Expression rÃ©guliÃ¨re pour extraire les tÃ¢ches
     $taskRegex = '- \[([ x])\] \*\*([0-9.]+)\*\* (.*)'
     
     # Parcourir chaque ligne du fichier
@@ -402,7 +402,7 @@ function Get-RoadmapTasks {
             $id = $matches[2]
             $description = $matches[3]
             
-            # Vérifier si l'identifiant correspond à celui demandé
+            # VÃ©rifier si l'identifiant correspond Ã  celui demandÃ©
             if (-not $TaskIdentifier -or $id -eq $TaskIdentifier -or $id.StartsWith("$TaskIdentifier.")) {
                 $task = [PSCustomObject]@{
                     ID = $id
@@ -421,25 +421,25 @@ function Get-RoadmapTasks {
 
 <#
 .SYNOPSIS
-    Met à jour l'état d'une tâche dans un fichier de roadmap.
+    Met Ã  jour l'Ã©tat d'une tÃ¢che dans un fichier de roadmap.
 
 .DESCRIPTION
-    Cette fonction met à jour l'état d'une tâche dans un fichier de roadmap au format Markdown.
+    Cette fonction met Ã  jour l'Ã©tat d'une tÃ¢che dans un fichier de roadmap au format Markdown.
 
 .PARAMETER FilePath
     Chemin vers le fichier de roadmap.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à mettre à jour.
+    Identifiant de la tÃ¢che Ã  mettre Ã  jour.
 
 .PARAMETER Completed
-    Indique si la tâche est complétée.
+    Indique si la tÃ¢che est complÃ©tÃ©e.
 
 .PARAMETER BackupFile
-    Indique si une sauvegarde du fichier doit être créée avant la modification.
+    Indique si une sauvegarde du fichier doit Ãªtre crÃ©Ã©e avant la modification.
 
 .PARAMETER BackupPath
-    Chemin vers le répertoire de sauvegarde.
+    Chemin vers le rÃ©pertoire de sauvegarde.
 
 .EXAMPLE
     Update-RoadmapTask -FilePath "roadmap.md" -TaskIdentifier "1.1" -Completed $true -BackupFile $true
@@ -466,19 +466,19 @@ function Update-RoadmapTask {
         [string]$BackupPath = "backup"
     )
     
-    # Vérifier si le fichier existe
-    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable à l'emplacement : $FilePath"
+    # VÃ©rifier si le fichier existe
+    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
     
-    # Créer une sauvegarde si demandé
+    # CrÃ©er une sauvegarde si demandÃ©
     if ($BackupFile) {
         $backupFilePath = Backup-File -FilePath $FilePath -BackupPath $BackupPath -Timestamp $true
-        Write-LogInfo "Sauvegarde créée : $backupFilePath"
+        Write-LogInfo "Sauvegarde crÃ©Ã©e : $backupFilePath"
     }
     
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath
     
-    # Expression régulière pour identifier la tâche
+    # Expression rÃ©guliÃ¨re pour identifier la tÃ¢che
     $taskRegex = "- \[([ x])\] \*\*$([regex]::Escape($TaskIdentifier))\*\* (.*)"
     
     # Parcourir chaque ligne du fichier
@@ -492,33 +492,33 @@ function Update-RoadmapTask {
         }
     }
     
-    # Écrire le contenu modifié dans le fichier
+    # Ã‰crire le contenu modifiÃ© dans le fichier
     if ($modified) {
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
-        Write-LogInfo "Tâche $TaskIdentifier mise à jour : Completed = $Completed"
+        Write-LogInfo "TÃ¢che $TaskIdentifier mise Ã  jour : Completed = $Completed"
     } else {
-        Write-LogWarning "Tâche $TaskIdentifier non trouvée dans le fichier $FilePath"
+        Write-LogWarning "TÃ¢che $TaskIdentifier non trouvÃ©e dans le fichier $FilePath"
     }
 }
 
 <#
 .SYNOPSIS
-    Génère un rapport sur l'état des tâches d'un fichier de roadmap.
+    GÃ©nÃ¨re un rapport sur l'Ã©tat des tÃ¢ches d'un fichier de roadmap.
 
 .DESCRIPTION
-    Cette fonction génère un rapport sur l'état des tâches d'un fichier de roadmap au format Markdown.
+    Cette fonction gÃ©nÃ¨re un rapport sur l'Ã©tat des tÃ¢ches d'un fichier de roadmap au format Markdown.
 
 .PARAMETER FilePath
     Chemin vers le fichier de roadmap.
 
 .PARAMETER OutputPath
-    Chemin vers le répertoire de sortie.
+    Chemin vers le rÃ©pertoire de sortie.
 
 .PARAMETER Format
     Format du rapport (Markdown, HTML, JSON, CSV).
 
 .PARAMETER IncludeSubtasks
-    Indique si les sous-tâches doivent être incluses dans le rapport.
+    Indique si les sous-tÃ¢ches doivent Ãªtre incluses dans le rapport.
 
 .EXAMPLE
     Generate-RoadmapReport -FilePath "roadmap.md" -OutputPath "reports" -Format "HTML" -IncludeSubtasks $true
@@ -543,16 +543,16 @@ function Generate-RoadmapReport {
         [bool]$IncludeSubtasks = $true
     )
     
-    # Vérifier si le fichier existe
-    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable à l'emplacement : $FilePath"
+    # VÃ©rifier si le fichier existe
+    Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     Assert-DirectoryExists -DirectoryPath $OutputPath -CreateIfNotExists $true
     
-    # Extraire les tâches
+    # Extraire les tÃ¢ches
     $tasks = Get-RoadmapTasks -FilePath $FilePath
     
-    # Filtrer les sous-tâches si demandé
+    # Filtrer les sous-tÃ¢ches si demandÃ©
     if (-not $IncludeSubtasks) {
         $tasks = $tasks | Where-Object { $_.ID -notmatch '\.[0-9]+$' }
     }
@@ -562,31 +562,31 @@ function Generate-RoadmapReport {
     $completedTasks = ($tasks | Where-Object { $_.Completed }).Count
     $completionRate = if ($totalTasks -gt 0) { [Math]::Round(($completedTasks / $totalTasks) * 100, 2) } else { 0 }
     
-    # Générer le rapport selon le format demandé
+    # GÃ©nÃ©rer le rapport selon le format demandÃ©
     $reportFileName = "roadmap_report_$(Get-Date -Format 'yyyyMMdd_HHmmss').$($Format.ToLower())"
     $reportFilePath = Join-Path -Path $OutputPath -ChildPath $reportFileName
     
     switch ($Format) {
         "Markdown" {
             $report = @"
-# Rapport de l'état de la roadmap
+# Rapport de l'Ã©tat de la roadmap
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Date du rapport :** $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
-- **Fichier analysé :** $FilePath
-- **Nombre total de tâches :** $totalTasks
-- **Tâches complétées :** $completedTasks
-- **Taux de complétion :** $completionRate%
+- **Fichier analysÃ© :** $FilePath
+- **Nombre total de tÃ¢ches :** $totalTasks
+- **TÃ¢ches complÃ©tÃ©es :** $completedTasks
+- **Taux de complÃ©tion :** $completionRate%
 
-## Détail des tâches
+## DÃ©tail des tÃ¢ches
 
-| ID | Description | État |
+| ID | Description | Ã‰tat |
 |---|---|---|
 "@
             
             foreach ($task in $tasks) {
-                $status = if ($task.Completed) { "✅ Complétée" } else { "⏳ En cours" }
+                $status = if ($task.Completed) { "âœ… ComplÃ©tÃ©e" } else { "â³ En cours" }
                 $report += "`n| $($task.ID) | $($task.Description) | $status |"
             }
             
@@ -598,7 +598,7 @@ function Generate-RoadmapReport {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Rapport de l'état de la roadmap</title>
+    <title>Rapport de l'Ã©tat de la roadmap</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -649,31 +649,31 @@ function Generate-RoadmapReport {
     </style>
 </head>
 <body>
-    <h1>Rapport de l'état de la roadmap</h1>
+    <h1>Rapport de l'Ã©tat de la roadmap</h1>
     
-    <h2>Résumé</h2>
+    <h2>RÃ©sumÃ©</h2>
     <p><strong>Date du rapport :</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-    <p><strong>Fichier analysé :</strong> $FilePath</p>
-    <p><strong>Nombre total de tâches :</strong> $totalTasks</p>
-    <p><strong>Tâches complétées :</strong> $completedTasks</p>
-    <p><strong>Taux de complétion :</strong> $completionRate%</p>
+    <p><strong>Fichier analysÃ© :</strong> $FilePath</p>
+    <p><strong>Nombre total de tÃ¢ches :</strong> $totalTasks</p>
+    <p><strong>TÃ¢ches complÃ©tÃ©es :</strong> $completedTasks</p>
+    <p><strong>Taux de complÃ©tion :</strong> $completionRate%</p>
     
     <div class="progress-bar">
         <div class="progress" style="width: $completionRate%">$completionRate%</div>
     </div>
     
-    <h2>Détail des tâches</h2>
+    <h2>DÃ©tail des tÃ¢ches</h2>
     <table>
         <tr>
             <th>ID</th>
             <th>Description</th>
-            <th>État</th>
+            <th>Ã‰tat</th>
         </tr>
 "@
             
             foreach ($task in $tasks) {
                 $statusClass = if ($task.Completed) { "completed" } else { "in-progress" }
-                $status = if ($task.Completed) { "✅ Complétée" } else { "⏳ En cours" }
+                $status = if ($task.Completed) { "âœ… ComplÃ©tÃ©e" } else { "â³ En cours" }
                 $report += @"
         <tr>
             <td>$($task.ID)</td>

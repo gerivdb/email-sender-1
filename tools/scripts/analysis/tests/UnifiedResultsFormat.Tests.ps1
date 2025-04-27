@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module UnifiedResultsFormat.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le module UnifiedResultsFormat
-    qui définit un format unifié pour les résultats d'analyse de différents outils.
+    qui dÃ©finit un format unifiÃ© pour les rÃ©sultats d'analyse de diffÃ©rents outils.
 #>
 
 # Importer le module Pester si disponible
@@ -13,17 +13,17 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
     return
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "modules\UnifiedResultsFormat.psm1"
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module UnifiedResultsFormat.psm1 n'existe pas à l'emplacement: $modulePath"
+    throw "Le module UnifiedResultsFormat.psm1 n'existe pas Ã  l'emplacement: $modulePath"
 }
 
 Import-Module -Name $modulePath -Force
 
 Describe "Module UnifiedResultsFormat" {
     Context "New-UnifiedAnalysisResult" {
-        It "Crée un résultat d'analyse avec les propriétés requises" {
+        It "CrÃ©e un rÃ©sultat d'analyse avec les propriÃ©tÃ©s requises" {
             # Arrange
             $toolName = "TestTool"
             $filePath = "C:\test\file.ps1"
@@ -48,7 +48,7 @@ Describe "Module UnifiedResultsFormat" {
             $result.Message | Should -Be $message
         }
 
-        It "Accepte des paramètres optionnels" {
+        It "Accepte des paramÃ¨tres optionnels" {
             # Arrange
             $toolName = "TestTool"
             $filePath = "C:\test\file.ps1"
@@ -68,7 +68,7 @@ Describe "Module UnifiedResultsFormat" {
             $result.Suggestion | Should -Be $suggestion
         }
 
-        It "Valide les valeurs de sévérité" {
+        It "Valide les valeurs de sÃ©vÃ©ritÃ©" {
             # Arrange
             $toolName = "TestTool"
             $filePath = "C:\test\file.ps1"
@@ -86,7 +86,7 @@ Describe "Module UnifiedResultsFormat" {
     }
 
     Context "ConvertFrom-PSScriptAnalyzerResult" {
-        It "Convertit les résultats de PSScriptAnalyzer vers le format unifié" {
+        It "Convertit les rÃ©sultats de PSScriptAnalyzer vers le format unifiÃ©" {
             # Arrange
             $psaResult = [PSCustomObject]@{
                 ScriptPath        = "C:\test\file.ps1"
@@ -114,7 +114,7 @@ Describe "Module UnifiedResultsFormat" {
             $result[0].Category | Should -Be $psaResult.RuleSuppressionID
         }
 
-        It "Gère correctement un tableau vide" {
+        It "GÃ¨re correctement un tableau vide" {
             # Act
             $result = ConvertFrom-PSScriptAnalyzerResult -Results @()
 
@@ -122,7 +122,7 @@ Describe "Module UnifiedResultsFormat" {
             $result | Should -BeNullOrEmpty
         }
 
-        It "Mappe correctement les sévérités" {
+        It "Mappe correctement les sÃ©vÃ©ritÃ©s" {
             # Arrange
             $severities = @("Error", "Warning", "Information", "Unknown")
             $results = @()
@@ -147,9 +147,9 @@ Describe "Module UnifiedResultsFormat" {
             $convertedResults[0].Severity | Should -Be "Error"
             $convertedResults[1].Severity | Should -Be "Warning"
             $convertedResults[2].Severity | Should -Be "Information"
-            $convertedResults[3].Severity | Should -Be "Information" # Unknown devrait être mappé à Information
+            $convertedResults[3].Severity | Should -Be "Information" # Unknown devrait Ãªtre mappÃ© Ã  Information
         }
     }
 
-    # Ajouter d'autres tests pour les fonctions du module si nécessaire
+    # Ajouter d'autres tests pour les fonctions du module si nÃ©cessaire
 }

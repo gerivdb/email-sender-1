@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Affiche l'inventaire des scripts avec des options de filtrage et d'export
 
@@ -6,8 +6,8 @@ Affiche l'inventaire des scripts avec des options de filtrage et d'export
 Ce script permet de :
 - Lister tous les scripts du projet
 - Filtrer par nom, auteur, tags ou langage
-- Exporter les résultats en CSV, JSON ou HTML
-- Générer des statistiques sur l'utilisation des scripts
+- Exporter les rÃ©sultats en CSV, JSON ou HTML
+- GÃ©nÃ©rer des statistiques sur l'utilisation des scripts
 #>
 
 param(
@@ -24,18 +24,18 @@ param(
 # Charger le module d'inventaire
 Import-Module $PSScriptRoot/../../modules/ScriptInventoryManager.psm1 -Force
 
-# Mettre à jour l'inventaire si demandé
+# Mettre Ã  jour l'inventaire si demandÃ©
 if ($Update) {
     Update-ScriptInventory -Path $PSScriptRoot/../..
 }
 
-# Récupérer les scripts avec les filtres
+# RÃ©cupÃ©rer les scripts avec les filtres
 $scripts = Find-Script -Name $Name -Author $Author -Tag $Tag -Language $Language
 
-# Afficher les résultats en console
+# Afficher les rÃ©sultats en console
 $scripts | Format-Table -Property FileName, Language, Author, Version, Tags, LastModified -AutoSize
 
-# Générer des statistiques
+# GÃ©nÃ©rer des statistiques
 $stats = @{
     TotalScripts    = $scripts.Count
     PowerShell      = ($scripts | Where-Object { $_.Language -eq 'PowerShell' }).Count
@@ -49,7 +49,7 @@ $stats.GetEnumerator() | ForEach-Object {
     Write-Host ("- {0}: {1}" -f $_.Key, $_.Value)
 }
 
-# Exporter les résultats si demandé
+# Exporter les rÃ©sultats si demandÃ©
 if ($ExportFormat -ne 'None') {
     if (-not (Test-Path $OutputPath)) {
         New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
@@ -61,12 +61,12 @@ if ($ExportFormat -ne 'None') {
         'CSV' {
             $exportFile += '.csv'
             $scripts | Export-Csv -Path $exportFile -NoTypeInformation -Encoding UTF8
-            Write-Host "`nInventaire exporté au format CSV: $exportFile"
+            Write-Host "`nInventaire exportÃ© au format CSV: $exportFile"
         }
         'JSON' {
             $exportFile += '.json'
             $scripts | ConvertTo-Json -Depth 5 | Out-File -FilePath $exportFile -Encoding UTF8
-            Write-Host "`nInventaire exporté au format JSON: $exportFile"
+            Write-Host "`nInventaire exportÃ© au format JSON: $exportFile"
         }
         'HTML' {
             $exportFile += '.html'
@@ -85,7 +85,7 @@ if ($ExportFormat -ne 'None') {
 </head>
 <body>
     <h1>Inventaire des Scripts</h1>
-    <p>Généré le $(Get-Date)</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date)</p>
     <h2>Statistiques</h2>
     <ul>
 "@
@@ -96,7 +96,7 @@ if ($ExportFormat -ne 'None') {
 
             $html += @"
     </ul>
-    <h2>Détail des Scripts</h2>
+    <h2>DÃ©tail des Scripts</h2>
     <table>
         <tr>
             <th>Nom</th>
@@ -104,7 +104,7 @@ if ($ExportFormat -ne 'None') {
             <th>Auteur</th>
             <th>Version</th>
             <th>Tags</th>
-            <th>Dernière modification</th>
+            <th>DerniÃ¨re modification</th>
         </tr>
 "@
 
@@ -128,7 +128,7 @@ if ($ExportFormat -ne 'None') {
 "@
 
             $html | Out-File -FilePath $exportFile -Encoding UTF8
-            Write-Host "`nInventaire exporté au format HTML: $exportFile"
+            Write-Host "`nInventaire exportÃ© au format HTML: $exportFile"
         }
     }
 }

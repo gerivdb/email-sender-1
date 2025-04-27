@@ -1,8 +1,8 @@
-# Import-RoadmapFromJson
+﻿# Import-RoadmapFromJson
 
 ## SYNOPSIS
 
-Importe une roadmap à partir d'un fichier JSON.
+Importe une roadmap Ã  partir d'un fichier JSON.
 
 ## SYNTAX
 
@@ -12,14 +12,14 @@ Importe une roadmap à partir d'un fichier JSON.
 ```n
 ## DESCRIPTION
 
-La fonction Import-RoadmapFromJson importe une roadmap à partir d'un fichier JSON.
-Elle peut reconstruire la structure complète de la roadmap, y compris les métadonnées et les dépendances.
+La fonction Import-RoadmapFromJson importe une roadmap Ã  partir d'un fichier JSON.
+Elle peut reconstruire la structure complÃ¨te de la roadmap, y compris les mÃ©tadonnÃ©es et les dÃ©pendances.
 
 ## PARAMETERS
 
 ### -FilePath
 
-Chemin du fichier JSON à importer.
+Chemin du fichier JSON Ã  importer.
 
 `yaml
 Type: String
@@ -35,7 +35,7 @@ Accept wildcard characters: false
 
 ### -DetectDependencies
 
-Indique si les dépendances doivent être détectées et reconstruites.
+Indique si les dÃ©pendances doivent Ãªtre dÃ©tectÃ©es et reconstruites.
 
 `yaml
 Type: SwitchParameter
@@ -55,13 +55,13 @@ Accept wildcard characters: false
 
 ## OUTPUTS
 
-[PSCustomObject] Représentant la roadmap importée.
+[PSCustomObject] ReprÃ©sentant la roadmap importÃ©e.
 
 ## NOTES
 
 Auteur: RoadmapParser Team
 Version: 1.0
-Date de création: 2023-07-10
+Date de crÃ©ation: 2023-07-10
 
 ## EXAMPLES
 
@@ -69,7 +69,7 @@ Date de création: 2023-07-10
 
 `powershell
 $roadmap = Import-RoadmapFromJson -FilePath ".\roadmap.json" -DetectDependencies
-Importe une roadmap à partir d'un fichier JSON et reconstruit les dépendances.
+Importe une roadmap Ã  partir d'un fichier JSON et reconstruit les dÃ©pendances.
 `
 
     

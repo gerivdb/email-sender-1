@@ -1,4 +1,4 @@
-#
+﻿#
 # Test-RoadmapTracing.ps1
 #
 # Script pour tester les fonctions publiques de trace
@@ -21,14 +21,14 @@ foreach ($function in $publicFunctions) {
     if (Test-Path -Path $functionPath) {
         . $functionPath
     } else {
-        Write-Warning "La fonction $function est introuvable à l'emplacement : $functionPath"
+        Write-Warning "La fonction $function est introuvable Ã  l'emplacement : $functionPath"
     }
 }
 
-Write-Host "Début des tests des fonctions publiques de trace..." -ForegroundColor Cyan
+Write-Host "DÃ©but des tests des fonctions publiques de trace..." -ForegroundColor Cyan
 
-# Test 1: Vérifier que les fonctions sont définies
-Write-Host "`nTest 1: Vérifier que les fonctions sont définies" -ForegroundColor Cyan
+# Test 1: VÃ©rifier que les fonctions sont dÃ©finies
+Write-Host "`nTest 1: VÃ©rifier que les fonctions sont dÃ©finies" -ForegroundColor Cyan
 
 $functions = @(
     "Trace-RoadmapFunctionEntry",
@@ -43,25 +43,25 @@ foreach ($function in $functions) {
     $command = Get-Command -Name $function -ErrorAction SilentlyContinue
     $success = $null -ne $command
 
-    $status = if ($success) { "Réussi" } else { "Échoué" }
+    $status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($success) { "Green" } else { "Red" }
 
-    Write-Host "  Vérification de la fonction $function : $status" -ForegroundColor $color
+    Write-Host "  VÃ©rification de la fonction $function : $status" -ForegroundColor $color
 
     if ($success) {
         $successCount++
     } else {
         $failureCount++
-        Write-Host "    La fonction $function n'est pas définie" -ForegroundColor Red
+        Write-Host "    La fonction $function n'est pas dÃ©finie" -ForegroundColor Red
     }
 }
 
-Write-Host "  Résultats: $successCount réussis, $failureCount échoués" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
+Write-Host "  RÃ©sultats: $successCount rÃ©ussis, $failureCount Ã©chouÃ©s" -ForegroundColor $(if ($failureCount -eq 0) { "Green" } else { "Red" })
 
 # Test 2: Tester la fonction Trace-RoadmapFunctionEntry
 Write-Host "`nTest 2: Tester la fonction Trace-RoadmapFunctionEntry" -ForegroundColor Cyan
 
-# Définir une fonction de test
+# DÃ©finir une fonction de test
 function Test-RoadmapTraceFunction {
     [CmdletBinding()]
     param (
@@ -72,16 +72,16 @@ function Test-RoadmapTraceFunction {
         [int]$Param2 = 42
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-RoadmapFunctionEntry
 
-    # Tracer une étape intermédiaire
-    Trace-RoadmapFunctionStep -StepName "Préparation" -StepData "Préparation des données"
+    # Tracer une Ã©tape intermÃ©diaire
+    Trace-RoadmapFunctionStep -StepName "PrÃ©paration" -StepData "PrÃ©paration des donnÃ©es"
 
     # Faire quelque chose
     $result = "$Param1 - $Param2"
 
-    # Tracer une autre étape intermédiaire
+    # Tracer une autre Ã©tape intermÃ©diaire
     Trace-RoadmapFunctionStep -StepName "Traitement" -StepData $result
 
     # Tracer la sortie de la fonction
@@ -91,26 +91,26 @@ function Test-RoadmapTraceFunction {
 }
 
 # Appeler la fonction de test
-Write-Host "  Appel de la fonction Test-RoadmapTraceFunction avec des paramètres simples:" -ForegroundColor Cyan
+Write-Host "  Appel de la fonction Test-RoadmapTraceFunction avec des paramÃ¨tres simples:" -ForegroundColor Cyan
 $result = Test-RoadmapTraceFunction -Param1 "Test"
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "Test - 42"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: Test - 42" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: Test - 42" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
-# Test 3: Tester la fonction Trace-RoadmapFunctionEntry avec des paramètres complexes
-Write-Host "`nTest 3: Tester la fonction Trace-RoadmapFunctionEntry avec des paramètres complexes" -ForegroundColor Cyan
+# Test 3: Tester la fonction Trace-RoadmapFunctionEntry avec des paramÃ¨tres complexes
+Write-Host "`nTest 3: Tester la fonction Trace-RoadmapFunctionEntry avec des paramÃ¨tres complexes" -ForegroundColor Cyan
 
-# Définir une fonction de test avec des paramètres complexes
+# DÃ©finir une fonction de test avec des paramÃ¨tres complexes
 function Test-RoadmapTraceFunctionComplex {
     [CmdletBinding()]
     param (
@@ -121,11 +121,11 @@ function Test-RoadmapTraceFunctionComplex {
         [array]$ArrayParam = @(1, 2, 3)
     )
 
-    # Tracer l'entrée dans la fonction
+    # Tracer l'entrÃ©e dans la fonction
     Trace-RoadmapFunctionEntry
 
-    # Tracer une étape intermédiaire
-    Trace-RoadmapFunctionStep -StepName "Analyse des paramètres" -StepData @{
+    # Tracer une Ã©tape intermÃ©diaire
+    Trace-RoadmapFunctionStep -StepName "Analyse des paramÃ¨tres" -StepData @{
         ComplexParamCount = $ComplexParam.Count
         ArrayParamCount   = $ArrayParam.Count
     }
@@ -133,8 +133,8 @@ function Test-RoadmapTraceFunctionComplex {
     # Faire quelque chose
     $result = "$($ComplexParam.Count) - $($ArrayParam.Count)"
 
-    # Tracer une autre étape intermédiaire
-    Trace-RoadmapFunctionStep -StepName "Résultat" -StepData $result
+    # Tracer une autre Ã©tape intermÃ©diaire
+    Trace-RoadmapFunctionStep -StepName "RÃ©sultat" -StepData $result
 
     # Tracer la sortie de la fonction
     Trace-RoadmapFunctionExit -ReturnValue $result
@@ -142,8 +142,8 @@ function Test-RoadmapTraceFunctionComplex {
     return $result
 }
 
-# Appeler la fonction de test avec des paramètres complexes
-Write-Host "  Appel de la fonction Test-RoadmapTraceFunctionComplex avec des paramètres complexes:" -ForegroundColor Cyan
+# Appeler la fonction de test avec des paramÃ¨tres complexes
+Write-Host "  Appel de la fonction Test-RoadmapTraceFunctionComplex avec des paramÃ¨tres complexes:" -ForegroundColor Cyan
 $complexParam = @{
     Key1 = "Value1"
     Key2 = 42
@@ -154,17 +154,17 @@ $complexParam = @{
 $arrayParam = @("One", "Two", "Three", "Four")
 $result = Test-RoadmapTraceFunctionComplex -ComplexParam $complexParam -ArrayParam $arrayParam
 
-# Vérifier le résultat
+# VÃ©rifier le rÃ©sultat
 $success = $result -eq "3 - 4"
 
-$status = if ($success) { "Réussi" } else { "Échoué" }
+$status = if ($success) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
 $color = if ($success) { "Green" } else { "Red" }
 
-Write-Host "  Résultat de la fonction: $status" -ForegroundColor $color
+Write-Host "  RÃ©sultat de la fonction: $status" -ForegroundColor $color
 
 if (-not $success) {
-    Write-Host "    Résultat attendu: 3 - 4" -ForegroundColor Red
-    Write-Host "    Résultat obtenu: $result" -ForegroundColor Red
+    Write-Host "    RÃ©sultat attendu: 3 - 4" -ForegroundColor Red
+    Write-Host "    RÃ©sultat obtenu: $result" -ForegroundColor Red
 }
 
-Write-Host "`nTests des fonctions publiques de trace terminés." -ForegroundColor Cyan
+Write-Host "`nTests des fonctions publiques de trace terminÃ©s." -ForegroundColor Cyan

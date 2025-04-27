@@ -1,17 +1,17 @@
-function Analyze-NetworkShareACL {
+﻿function Analyze-NetworkShareACL {
     <#
     .SYNOPSIS
-        Analyse les ACL (Access Control Lists) des partages réseau.
+        Analyse les ACL (Access Control Lists) des partages rÃ©seau.
 
     .DESCRIPTION
         Cette fonction analyse les permissions de partage SMB et les permissions NTFS sous-jacentes,
-        détecte les conflits entre ces permissions, et génère un rapport des permissions effectives.
+        dÃ©tecte les conflits entre ces permissions, et gÃ©nÃ¨re un rapport des permissions effectives.
 
     .PARAMETER SharePath
-        Chemin du partage réseau à analyser.
+        Chemin du partage rÃ©seau Ã  analyser.
 
     .PARAMETER OutputPath
-        Chemin où enregistrer le rapport d'analyse.
+        Chemin oÃ¹ enregistrer le rapport d'analyse.
 
     .EXAMPLE
         Analyze-NetworkShareACL -SharePath "\\server\share" -OutputPath "C:\Reports\share_acl_report.html"
@@ -19,7 +19,7 @@ function Analyze-NetworkShareACL {
     .NOTES
         Auteur: RoadmapParser Team
         Version: 1.0
-        Date de création: 2023-09-15
+        Date de crÃ©ation: 2023-09-15
     #>
     [CmdletBinding()]
     param (
@@ -31,28 +31,28 @@ function Analyze-NetworkShareACL {
     )
 
     begin {
-        Write-Verbose "Démarrage de l'analyse des ACL pour le partage: $SharePath"
+        Write-Verbose "DÃ©marrage de l'analyse des ACL pour le partage: $SharePath"
     }
 
     process {
-        # Implémenter l'analyse des permissions de partage SMB
+        # ImplÃ©menter l'analyse des permissions de partage SMB
         $smbPermissions = Get-SmbSharePermission -SharePath $SharePath
 
-        # Implémenter l'analyse des permissions NTFS sous-jacentes
+        # ImplÃ©menter l'analyse des permissions NTFS sous-jacentes
         $ntfsPermissions = Get-NtfsPermission -Path $SharePath
 
-        # Implémenter la détection des conflits entre permissions de partage et NTFS
+        # ImplÃ©menter la dÃ©tection des conflits entre permissions de partage et NTFS
         $conflicts = Find-PermissionConflicts -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions
 
-        # Implémenter l'analyse des permissions effectives résultantes
+        # ImplÃ©menter l'analyse des permissions effectives rÃ©sultantes
         $effectivePermissions = Calculate-EffectivePermissions -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions
 
-        # Implémenter la génération de rapports de permissions réseau
+        # ImplÃ©menter la gÃ©nÃ©ration de rapports de permissions rÃ©seau
         if ($OutputPath) {
             Export-PermissionReport -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions -Conflicts $conflicts -EffectivePermissions $effectivePermissions -OutputPath $OutputPath
         }
 
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return @{
             SmbPermissions = $smbPermissions
             NtfsPermissions = $ntfsPermissions
@@ -62,7 +62,7 @@ function Analyze-NetworkShareACL {
     }
 
     end {
-        Write-Verbose "Analyse des ACL terminée pour le partage: $SharePath"
+        Write-Verbose "Analyse des ACL terminÃ©e pour le partage: $SharePath"
     }
 }
 
@@ -74,7 +74,7 @@ function Get-SmbSharePermission {
     )
 
     # Simuler l'obtention des permissions SMB
-    # Dans une implémentation réelle, cela utiliserait Get-SmbShareAccess ou WMI
+    # Dans une implÃ©mentation rÃ©elle, cela utiliserait Get-SmbShareAccess ou WMI
     return @(
         [PSCustomObject]@{
             AccountName = "DOMAIN\User1"
@@ -97,7 +97,7 @@ function Get-NtfsPermission {
     )
 
     # Simuler l'obtention des permissions NTFS
-    # Dans une implémentation réelle, cela utiliserait Get-Acl
+    # Dans une implÃ©mentation rÃ©elle, cela utiliserait Get-Acl
     return @(
         [PSCustomObject]@{
             AccountName = "DOMAIN\User1"
@@ -122,14 +122,14 @@ function Find-PermissionConflicts {
         [array]$NtfsPermissions
     )
 
-    # Simuler la détection des conflits
-    # Dans une implémentation réelle, cela comparerait les permissions
+    # Simuler la dÃ©tection des conflits
+    # Dans une implÃ©mentation rÃ©elle, cela comparerait les permissions
     return @(
         [PSCustomObject]@{
             AccountName = "DOMAIN\Group1"
             SmbPermission = "Change"
             NtfsPermission = "ReadAndExecute"
-            Conflict = "SMB permet plus d'accès que NTFS"
+            Conflict = "SMB permet plus d'accÃ¨s que NTFS"
         }
     )
 }
@@ -145,7 +145,7 @@ function Calculate-EffectivePermissions {
     )
 
     # Simuler le calcul des permissions effectives
-    # Dans une implémentation réelle, cela combinerait les permissions
+    # Dans une implÃ©mentation rÃ©elle, cela combinerait les permissions
     return @(
         [PSCustomObject]@{
             AccountName = "DOMAIN\User1"
@@ -178,12 +178,12 @@ function Export-PermissionReport {
     )
 
     # Simuler l'exportation du rapport
-    # Dans une implémentation réelle, cela générerait un rapport HTML ou CSV
+    # Dans une implÃ©mentation rÃ©elle, cela gÃ©nÃ©rerait un rapport HTML ou CSV
     $report = @"
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rapport d'analyse des ACL de partage réseau</title>
+    <title>Rapport d'analyse des ACL de partage rÃ©seau</title>
     <style>
         body { font-family: Arial, sans-serif; }
         table { border-collapse: collapse; width: 100%; }
@@ -193,28 +193,28 @@ function Export-PermissionReport {
     </style>
 </head>
 <body>
-    <h1>Rapport d'analyse des ACL de partage réseau</h1>
+    <h1>Rapport d'analyse des ACL de partage rÃ©seau</h1>
     <h2>Permissions SMB</h2>
     <table>
         <tr>
             <th>Compte</th>
-            <th>Droit d'accès</th>
-            <th>Type de contrôle</th>
+            <th>Droit d'accÃ¨s</th>
+            <th>Type de contrÃ´le</th>
         </tr>
-        <!-- Données SMB ici -->
+        <!-- DonnÃ©es SMB ici -->
     </table>
 
     <h2>Permissions NTFS</h2>
     <table>
         <tr>
             <th>Compte</th>
-            <th>Droits système de fichiers</th>
-            <th>Type de contrôle</th>
+            <th>Droits systÃ¨me de fichiers</th>
+            <th>Type de contrÃ´le</th>
         </tr>
-        <!-- Données NTFS ici -->
+        <!-- DonnÃ©es NTFS ici -->
     </table>
 
-    <h2>Conflits détectés</h2>
+    <h2>Conflits dÃ©tectÃ©s</h2>
     <table>
         <tr>
             <th>Compte</th>
@@ -222,7 +222,7 @@ function Export-PermissionReport {
             <th>Permission NTFS</th>
             <th>Conflit</th>
         </tr>
-        <!-- Données de conflits ici -->
+        <!-- DonnÃ©es de conflits ici -->
     </table>
 
     <h2>Permissions effectives</h2>
@@ -231,14 +231,14 @@ function Export-PermissionReport {
             <th>Compte</th>
             <th>Permission effective</th>
         </tr>
-        <!-- Données de permissions effectives ici -->
+        <!-- DonnÃ©es de permissions effectives ici -->
     </table>
 </body>
 </html>
 "@
 
-    # Écrire le rapport dans le fichier
+    # Ã‰crire le rapport dans le fichier
     $report | Out-File -FilePath $OutputPath -Encoding UTF8
 }
 
-# La fonction sera exportée automatiquement lorsqu'elle sera chargée dans un module
+# La fonction sera exportÃ©e automatiquement lorsqu'elle sera chargÃ©e dans un module

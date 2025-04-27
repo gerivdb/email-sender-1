@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la compatibilité des scripts entre différents environnements.
+    Teste la compatibilitÃ© des scripts entre diffÃ©rents environnements.
 .DESCRIPTION
-    Ce script teste la compatibilité des scripts PowerShell entre différents environnements (Windows, Linux, macOS).
+    Ce script teste la compatibilitÃ© des scripts PowerShell entre diffÃ©rents environnements (Windows, Linux, macOS).
 #>
 
 [CmdletBinding()]
@@ -26,15 +26,15 @@ function Write-Log {
         default { Write-Host $logEntry }
     }
     
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $LogFilePath -Parent
         if (-not (Test-Path -Path $logDir)) { New-Item -Path $logDir -ItemType Directory -Force | Out-Null }
         Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
-    } catch { Write-Warning "Impossible d'écrire dans le journal: $_" }
+    } catch { Write-Warning "Impossible d'Ã©crire dans le journal: $_" }
 }
 
-# Fonction pour détecter l'environnement d'exécution
+# Fonction pour dÃ©tecter l'environnement d'exÃ©cution
 function Get-ScriptEnvironment {
     $environment = [PSCustomObject]@{
         IsWindows = $false
@@ -44,7 +44,7 @@ function Get-ScriptEnvironment {
         PathSeparator = [System.IO.Path]::DirectorySeparatorChar
     }
     
-    # Détecter le système d'exploitation
+    # DÃ©tecter le systÃ¨me d'exploitation
     if ($PSVersionTable.PSVersion.Major -ge 6) {
         # PowerShell Core (6+)
         $environment.IsWindows = $IsWindows
@@ -58,12 +58,12 @@ function Get-ScriptEnvironment {
     return $environment
 }
 
-# Fonction pour vérifier la compatibilité d'un script
+# Fonction pour vÃ©rifier la compatibilitÃ© d'un script
 function Test-ScriptCompatibility {
     param ([string]$ScriptPath)
     
     if (-not (Test-Path -Path $ScriptPath)) {
-        Write-Log "Script non trouvé: $ScriptPath" -Level "ERROR"
+        Write-Log "Script non trouvÃ©: $ScriptPath" -Level "ERROR"
         return $false
     }
     
@@ -75,31 +75,31 @@ function Test-ScriptCompatibility {
     
     $issues = @()
     
-    # Vérifier les chemins absolus Windows
+    # VÃ©rifier les chemins absolus Windows
     if ($content -match "[A-Za-z]:\\") {
-        $issues += "Chemins absolus Windows détectés"
+        $issues += "Chemins absolus Windows dÃ©tectÃ©s"
     }
     
-    # Vérifier les chemins UNC
+    # VÃ©rifier les chemins UNC
     if ($content -match "\\\\") {
-        $issues += "Chemins UNC détectés"
+        $issues += "Chemins UNC dÃ©tectÃ©s"
     }
     
-    # Vérifier les commandes spécifiques à Windows
+    # VÃ©rifier les commandes spÃ©cifiques Ã  Windows
     $windowsCommands = @("cmd.exe", "powershell.exe", "explorer.exe", "regedit", "reg.exe", "net.exe", "netsh.exe")
     foreach ($command in $windowsCommands) {
         if ($content -match $command) {
-            $issues += "Commande spécifique à Windows détectée: $command"
+            $issues += "Commande spÃ©cifique Ã  Windows dÃ©tectÃ©e: $command"
         }
     }
     
-    # Vérifier l'utilisation de fonctions de gestion de chemins
+    # VÃ©rifier l'utilisation de fonctions de gestion de chemins
     $hasPathFunctions = $content -match "Join-Path|Split-Path|Test-Path.*-PathType|System\.IO\.Path|Get-NormalizedPath"
     
-    # Vérifier la présence de détection d'environnement
+    # VÃ©rifier la prÃ©sence de dÃ©tection d'environnement
     $hasEnvironmentDetection = $content -match "Get-ScriptEnvironment|Test-Environment|\$IsWindows|\$IsLinux|\$IsMacOS"
     
-    # Déterminer si le script est compatible
+    # DÃ©terminer si le script est compatible
     $isCompatible = ($issues.Count -eq 0) -or $hasPathFunctions -or $hasEnvironmentDetection
     
     return [PSCustomObject]@{
@@ -115,25 +115,25 @@ function Test-ScriptCompatibility {
 function Test-EnvironmentCompatibility {
     param ([string]$ScriptsDirectory)
     
-    Write-Log "Démarrage des tests de compatibilité entre environnements"
+    Write-Log "DÃ©marrage des tests de compatibilitÃ© entre environnements"
     
-    # Vérifier si le répertoire des scripts existe
+    # VÃ©rifier si le rÃ©pertoire des scripts existe
     if (-not (Test-Path -Path $ScriptsDirectory)) {
-        Write-Log "Répertoire des scripts non trouvé: $ScriptsDirectory" -Level "ERROR"
+        Write-Log "RÃ©pertoire des scripts non trouvÃ©: $ScriptsDirectory" -Level "ERROR"
         return $false
     }
     
-    # Récupérer l'environnement actuel
+    # RÃ©cupÃ©rer l'environnement actuel
     $environment = Get-ScriptEnvironment
-    Write-Log "Environnement détecté: $(if ($environment.IsWindows) { 'Windows' } elseif ($environment.IsLinux) { 'Linux' } elseif ($environment.IsMacOS) { 'macOS' } else { 'Inconnu' })"
+    Write-Log "Environnement dÃ©tectÃ©: $(if ($environment.IsWindows) { 'Windows' } elseif ($environment.IsLinux) { 'Linux' } elseif ($environment.IsMacOS) { 'macOS' } else { 'Inconnu' })"
     Write-Log "Version PowerShell: $($environment.PSVersion)"
-    Write-Log "Séparateur de chemin: '$($environment.PathSeparator)'"
+    Write-Log "SÃ©parateur de chemin: '$($environment.PathSeparator)'"
     
-    # Récupérer les scripts PowerShell
+    # RÃ©cupÃ©rer les scripts PowerShell
     $scripts = Get-ChildItem -Path $ScriptsDirectory -Recurse -File -Filter "*.ps1" | 
                Where-Object { -not $_.FullName.Contains(".bak") }
     
-    Write-Log "Scripts trouvés: $($scripts.Count)"
+    Write-Log "Scripts trouvÃ©s: $($scripts.Count)"
     
     $results = @{
         Total = $scripts.Count
@@ -143,7 +143,7 @@ function Test-EnvironmentCompatibility {
     }
     
     foreach ($script in $scripts) {
-        Write-Log "Test de compatibilité pour: $($script.FullName)" -Level "INFO"
+        Write-Log "Test de compatibilitÃ© pour: $($script.FullName)" -Level "INFO"
         $compatibility = Test-ScriptCompatibility -ScriptPath $script.FullName
         
         if ($compatibility.IsCompatible) {
@@ -160,25 +160,25 @@ function Test-EnvironmentCompatibility {
         $results.Details += $compatibility
     }
     
-    Write-Log "Tests de compatibilité terminés: $($results.Compatible)/$($results.Total) compatibles"
+    Write-Log "Tests de compatibilitÃ© terminÃ©s: $($results.Compatible)/$($results.Total) compatibles"
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "environment_compatibility_report.json"
     $results | ConvertTo-Json -Depth 5 | Set-Content -Path $reportPath
-    Write-Log "Rapport enregistré: $reportPath"
+    Write-Log "Rapport enregistrÃ©: $reportPath"
     
     return $results
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $result = Test-EnvironmentCompatibility -ScriptsDirectory $ScriptsDirectory
 
-# Afficher un résumé
-Write-Host "`nRésumé des tests de compatibilité:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests de compatibilitÃ©:" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
-Write-Host "Scripts testés: $($result.Total)" -ForegroundColor White
+Write-Host "Scripts testÃ©s: $($result.Total)" -ForegroundColor White
 Write-Host "Compatibles: $($result.Compatible)" -ForegroundColor Green
 Write-Host "Incompatibles: $($result.Incompatible)" -ForegroundColor Red
-Write-Host "Taux de compatibilité: $(if ($result.Total -gt 0) { [math]::Round(($result.Compatible / $result.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.Total -gt 0 -and ($result.Compatible / $result.Total) -ge 0.8) { "Green" } else { "Yellow" })
+Write-Host "Taux de compatibilitÃ©: $(if ($result.Total -gt 0) { [math]::Round(($result.Compatible / $result.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.Total -gt 0 -and ($result.Compatible / $result.Total) -ge 0.8) { "Green" } else { "Yellow" })
 Write-Host "Journal: $LogFilePath" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
