@@ -589,14 +589,61 @@
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.8** Développer les tests unitaires pour valider la détection des permissions excédentaires
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3** Développer l'algorithme de détection des permissions contradictoires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1** Définir la structure de données pour représenter les permissions contradictoires
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1** Créer les classes pour représenter les permissions contradictoires au niveau serveur
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2** Développer les classes pour représenter les permissions contradictoires au niveau base de données
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3** Implémenter les classes pour représenter les permissions contradictoires au niveau objet
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5** Développer les méthodes pour générer des scripts de résolution de contradictions
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6** Implémenter les méthodes pour obtenir des représentations textuelles des contradictions
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7** Créer les fonctions d'aide pour faciliter la création d'instances
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8** Développer les tests unitaires pour valider la structure de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1** Créer les classes pour représenter les permissions contradictoires au niveau serveur
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.1** Définir la classe SqlServerContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.2** Implémenter les propriétés pour identifier le login et les permissions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.3** Développer les propriétés pour décrire le type de contradiction
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.4** Créer les méthodes pour générer des scripts de résolution
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.5** Implémenter les méthodes de représentation textuelle
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1.6** Développer les constructeurs avec différentes signatures
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2** Développer les classes pour représenter les permissions contradictoires au niveau base de données
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.1** Définir la classe SqlDatabaseContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.2** Implémenter les propriétés pour identifier la base de données et l'utilisateur
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.3** Développer les propriétés pour décrire le type de contradiction
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.4** Créer les méthodes pour générer des scripts de résolution
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.5** Implémenter les méthodes de représentation textuelle
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2.6** Développer les constructeurs avec différentes signatures
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3** Implémenter les classes pour représenter les permissions contradictoires au niveau objet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.1** Définir la classe SqlObjectContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.2** Implémenter les propriétés pour identifier l'objet et l'utilisateur
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.3** Développer les propriétés pour décrire le type de contradiction
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.4** Créer les propriétés pour le schéma, le type d'objet et la colonne
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.5** Implémenter les méthodes pour générer des scripts de résolution
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.6** Développer les méthodes de représentation textuelle
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.7** Créer les constructeurs avec différentes signatures
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.1** Définir la classe SqlContradictoryPermissionsSet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.2** Implémenter les collections pour les différents niveaux de contradictions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.3** Développer les propriétés pour les métadonnées (serveur, date, etc.)
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.4** Créer les méthodes d'ajout de permissions contradictoires
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.5** Implémenter les méthodes de filtrage et de recherche
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.6** Développer les méthodes de génération de rapports
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.7** Créer les méthodes de statistiques et d'analyse
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5** Développer les méthodes pour générer des scripts de résolution de contradictions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.1** Implémenter la méthode GenerateFixScript pour les contradictions serveur
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.2** Développer la méthode GenerateFixScript pour les contradictions base de données
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.3** Créer la méthode GenerateFixScript pour les contradictions objet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.4** Implémenter la méthode GenerateFixScript pour l'ensemble des contradictions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.5** Développer les méthodes d'ordonnancement des scripts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6** Implémenter les méthodes pour obtenir des représentations textuelles des contradictions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6.1** Créer la méthode ToString pour les contradictions serveur
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6.2** Développer la méthode ToString pour les contradictions base de données
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6.3** Implémenter la méthode ToString pour les contradictions objet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6.4** Créer la méthode ToString pour l'ensemble des contradictions
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6.5** Développer les méthodes de formatage personnalisé
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7** Créer les fonctions d'aide pour faciliter la création d'instances
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.1** Implémenter la fonction New-SqlServerContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.2** Développer la fonction New-SqlDatabaseContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.3** Créer la fonction New-SqlObjectContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.4** Implémenter la fonction New-SqlContradictoryPermissionsSet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.5** Développer les fonctions d'aide pour les cas d'usage courants
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8** Développer les tests unitaires pour valider la structure de données
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.1** Créer les tests pour SqlServerContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.2** Implémenter les tests pour SqlDatabaseContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.3** Développer les tests pour SqlObjectContradictoryPermission
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.4** Créer les tests pour SqlContradictoryPermissionsSet
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.5** Implémenter les tests pour les méthodes de génération de scripts
+                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.6** Développer les tests pour les fonctions d'aide
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.1** Développer l'algorithme de détection des contradictions GRANT/DENY au niveau serveur
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.2** Implémenter l'algorithme de détection des contradictions GRANT/DENY au niveau base de données
@@ -858,6 +905,36 @@
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.4** Développer les tests pour les recommandations contextuelles
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.5** Implémenter les tests d'intégration pour la génération de recommandations
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5** Implémenter les tests unitaires pour les fonctions de détection d'écarts
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1** Développer les tests pour la détection des permissions manquantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1.1** Créer les tests pour la détection au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1.2** Implémenter les tests pour la détection au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1.3** Développer les tests pour la détection au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1.4** Créer les tests avec des jeux de données variés
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.1.5** Implémenter les tests de performance pour la détection
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2** Développer les tests pour la détection des permissions excédentaires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2.1** Créer les tests pour la détection au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2.2** Implémenter les tests pour la détection au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2.3** Développer les tests pour la détection au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2.4** Créer les tests avec des jeux de données variés
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.2.5** Implémenter les tests de performance pour la détection
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3** Développer les tests pour la détection des permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3.1** Créer les tests pour les contradictions GRANT/DENY
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3.2** Implémenter les tests pour les contradictions entre niveaux hiérarchiques
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3.3** Développer les tests pour les contradictions entre rôles et utilisateurs
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3.4** Créer les tests pour les contradictions d'héritage
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.3.5** Implémenter les tests de performance pour la détection
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4** Créer les tests pour la classification des écarts par sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4.1** Développer les tests pour la classification des écarts critiques
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4.2** Implémenter les tests pour la classification des écarts importants
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4.3** Créer les tests pour la classification des écarts mineurs
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4.4** Développer les tests pour le système de scoring de sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.4.5** Implémenter les tests pour la visualisation des écarts par sévérité
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5** Développer les tests d'intégration pour les fonctions de détection
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5.1** Créer les tests d'intégration pour les scénarios complexes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5.2** Implémenter les tests de bout en bout pour le processus de détection
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5.3** Développer les tests de régression pour les fonctionnalités existantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5.4** Créer les tests de charge pour les grands volumes de permissions
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5.5.5** Implémenter les tests de compatibilité avec différentes versions SQL Server
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4** Implémenter la génération de rapports de conformité
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1** Développer les templates de rapports
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1** Créer le template de rapport HTML détaillé
