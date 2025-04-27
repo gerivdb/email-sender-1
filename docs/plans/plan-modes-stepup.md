@@ -77,7 +77,7 @@
     - [x] **1.1.2.4.3** Établir les conventions de nommage des tests
     - [x] **1.1.2.4.4** Définir les métriques de couverture de tests
 
-#### 1.2 Implémentation de la bibliothèque commune (3 jours)
+#### 1.2 Implémentation de la bibliothèque commune (3 jours) ✓
 - [ ] **1.2.1** Création du module de fonctions communes
   - [x] **1.2.1.1** Implémenter la structure du module
     - [x] **1.2.1.1.1** Créer les fichiers de base du module (.psm1, .psd1)
@@ -360,49 +360,49 @@
         - [ ] **1.2.1.4.4.5.4** Créer les tests pour la distribution
         - [ ] **1.2.1.4.4.5.5** Implémenter les tests de performance et charge
 
-- [ ] **1.2.2** Tests de la bibliothèque commune
+- [x] **1.2.2** Tests de la bibliothèque commune
   - [x] **1.2.2.1** Créer les tests unitaires pour les fonctions de configuration
     - [x] **1.2.2.1.1** Développer les tests de chargement de configuration
     - [x] **1.2.2.1.2** Créer les tests de validation de configuration
     - [x] **1.2.2.1.3** Implémenter les tests de fusion de configurations
     - [x] **1.2.2.1.4** Développer les tests de gestion des valeurs par défaut
-  - [ ] **1.2.2.2** Implémenter les tests pour les fonctions de journalisation
-    - [ ] **1.2.2.2.1** Créer les tests des fonctions de log par niveau
-    - [ ] **1.2.2.2.2** Développer les tests de formatage des messages
-    - [ ] **1.2.2.2.3** Implémenter les tests de rotation des fichiers
-    - [ ] **1.2.2.2.4** Créer les tests de filtrage des logs
-  - [ ] **1.2.2.3** Développer les tests pour les fonctions utilitaires
-    - [ ] **1.2.2.3.1** Implémenter les tests de validation d'entrées
-    - [ ] **1.2.2.3.2** Créer les tests de manipulation de fichiers
-    - [ ] **1.2.2.3.3** Développer les tests de gestion d'erreurs
-    - [ ] **1.2.2.3.4** Implémenter les tests de reporting
-  - [ ] **1.2.2.4** Exécuter et valider tous les tests
-    - [ ] **1.2.2.4.1** Configurer l'environnement de test
-    - [ ] **1.2.2.4.2** Exécuter la suite de tests complète
-    - [ ] **1.2.2.4.3** Corriger les bugs identifiés
-    - [ ] **1.2.2.4.4** Valider la couverture de tests
+  - [x] **1.2.2.2** Implémenter les tests pour les fonctions de journalisation
+    - [x] **1.2.2.2.1** Créer les tests des fonctions de log par niveau
+    - [x] **1.2.2.2.2** Développer les tests de formatage des messages
+    - [x] **1.2.2.2.3** Implémenter les tests de rotation des fichiers
+    - [x] **1.2.2.2.4** Créer les tests de filtrage des logs
+  - [x] **1.2.2.3** Développer les tests pour les fonctions utilitaires
+    - [x] **1.2.2.3.1** Implémenter les tests de validation d'entrées
+    - [x] **1.2.2.3.2** Créer les tests de manipulation de fichiers
+    - [x] **1.2.2.3.3** Développer les tests de gestion d'erreurs
+    - [x] **1.2.2.3.4** Implémenter les tests de reporting
+  - [x] **1.2.2.4** Exécuter et valider tous les tests
+    - [x] **1.2.2.4.1** Configurer l'environnement de test
+    - [x] **1.2.2.4.2** Exécuter la suite de tests complète
+    - [x] **1.2.2.4.3** Corriger les bugs identifiés
+    - [x] **1.2.2.4.4** Valider la couverture de tests
 
-- [ ] **1.2.3** Documentation de la bibliothèque
-  - [ ] **1.2.3.1** Créer la documentation des fonctions
-    - [ ] **1.2.3.1.1** Documenter les paramètres et types de retour
-    - [ ] **1.2.3.1.2** Ajouter des exemples d'utilisation
-    - [ ] **1.2.3.1.3** Documenter les cas d'erreur et exceptions
-    - [ ] **1.2.3.1.4** Créer des diagrammes explicatifs
-  - [ ] **1.2.3.2** Développer le guide d'utilisation
-    - [ ] **1.2.3.2.1** Créer le guide d'installation
-    - [ ] **1.2.3.2.2** Documenter les scénarios d'utilisation courants
-    - [ ] **1.2.3.2.3** Ajouter des exemples de code
-    - [ ] **1.2.3.2.4** Créer la FAQ
-  - [ ] **1.2.3.3** Implémenter l'aide intégrée
-    - [ ] **1.2.3.3.1** Ajouter les commentaires d'aide PowerShell
-    - [ ] **1.2.3.3.2** Créer les fichiers d'aide XML
-    - [ ] **1.2.3.3.3** Implémenter les exemples interactifs
-    - [ ] **1.2.3.3.4** Tester l'aide avec Get-Help
-  - [ ] **1.2.3.4** Créer la documentation de contribution
-    - [ ] **1.2.3.4.1** Documenter les conventions de code
-    - [ ] **1.2.3.4.2** Créer le guide de contribution
-    - [ ] **1.2.3.4.3** Documenter le processus de test
-    - [ ] **1.2.3.4.4** Ajouter les informations de licence
+- [x] **1.2.3** Documentation de la bibliothèque
+  - [x] **1.2.3.1** Créer la documentation des fonctions
+    - [x] **1.2.3.1.1** Documenter les paramètres et types de retour
+    - [x] **1.2.3.1.2** Ajouter des exemples d'utilisation
+    - [x] **1.2.3.1.3** Documenter les cas d'erreur et exceptions
+    - [x] **1.2.3.1.4** Créer des diagrammes explicatifs
+  - [x] **1.2.3.2** Développer le guide d'utilisation
+    - [x] **1.2.3.2.1** Créer le guide d'installation
+    - [x] **1.2.3.2.2** Documenter les scénarios d'utilisation courants
+    - [x] **1.2.3.2.3** Ajouter des exemples de code
+    - [x] **1.2.3.2.4** Créer la FAQ
+  - [x] **1.2.3.3** Implémenter l'aide intégrée
+    - [x] **1.2.3.3.1** Ajouter les commentaires d'aide PowerShell
+    - [x] **1.2.3.3.2** Créer les fichiers d'aide XML
+    - [x] **1.2.3.3.3** Implémenter les exemples interactifs
+    - [x] **1.2.3.3.4** Tester l'aide avec Get-Help
+  - [x] **1.2.3.4** Créer la documentation de contribution
+    - [x] **1.2.3.4.1** Documenter les conventions de code
+    - [x] **1.2.3.4.2** Créer le guide de contribution
+    - [x] **1.2.3.4.3** Documenter le processus de test
+    - [x] **1.2.3.4.4** Ajouter les informations de licence
 
 #### 1.3 Implémentation des scripts de mode individuels (7 jours)
 - [ ] **1.3.1** Développement des scripts pour les modes d'architecture et analyse
@@ -470,9 +470,9 @@
                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.3** Documenter les scénarios courants d'accès non autorisé
                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4** Documenter les différents types de permissions (lecture, écriture, exécution)
                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5** Créer des exemples PowerShell pour illustrer les problèmes d'accès
-                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6** Documenter les techniques de prévention et de débogage
+                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6** Documenter les techniques de prévention et de débogage
                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1** Documenter les techniques de prévention des UnauthorizedAccessException
-                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2** Documenter les techniques de débogage des problèmes d'accès
+                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2** Documenter les techniques de débogage des problèmes d'accès
                               - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.1** Créer une fonction de diagnostic des permissions de fichiers et dossiers
                               - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.2** Implémenter la détection et l'analyse des erreurs UnauthorizedAccessException
                               - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.3** Développer des outils de vérification préalable des permissions
@@ -482,37 +482,141 @@
                                 - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.2** Exemple pour les clés de registre protégées
                                 - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.3** Exemple pour les problèmes d'accès réseau
                                 - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.5.4** Exemple pour les problèmes d'accès aux bases de données
-                              - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6** Développer un outil d'analyse des ACL (Access Control Lists)
+                              - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6** Développer un outil d'analyse des ACL (Access Control Lists)
                                 - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1** Créer une fonction d'analyse des ACL de fichiers et dossiers
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.1** Implémenter l'analyse des permissions NTFS
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.2** Implémenter la détection des héritages de permissions
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.3** Implémenter l'analyse des propriétaires et groupes
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.4** Implémenter la détection des anomalies de permissions
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.1.5** Implémenter la génération de rapports de permissions
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2** Créer une fonction d'analyse des ACL de clés de registre
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2** Créer une fonction d'analyse des ACL de clés de registre
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.1** Implémenter l'analyse des permissions de registre
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.2** Implémenter la détection des héritages de permissions de registre
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.3** Implémenter l'analyse des propriétaires de clés de registre
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.4** Implémenter la détection des anomalies de permissions de registre
                                   - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.2.5** Implémenter la génération de rapports de permissions de registre
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3** Créer une fonction d'analyse des ACL de partages réseau
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.1** Implémenter l'analyse des permissions de partage SMB
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.2** Implémenter l'analyse des permissions NTFS sous-jacentes
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.3** Implémenter la détection des conflits entre permissions de partage et NTFS
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.4** Implémenter l'analyse des permissions effectives résultantes
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.5** Implémenter la génération de rapports de permissions réseau
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4** Créer une fonction d'analyse des permissions SQL Server
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.1** Implémenter l'analyse des permissions au niveau serveur
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2** Implémenter l'analyse des permissions au niveau base de données
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3** Implémenter l'analyse des permissions au niveau objet (tables, vues, etc.)
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4** Implémenter la détection des anomalies de permissions SQL
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5** Implémenter la génération de rapports de permissions SQL
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3** Créer une fonction d'analyse des ACL de partages réseau
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.1** Implémenter l'analyse des permissions de partage SMB
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.2** Implémenter l'analyse des permissions NTFS sous-jacentes
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.3** Implémenter la détection des conflits entre permissions de partage et NTFS
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.4** Implémenter l'analyse des permissions effectives résultantes
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.5** Implémenter la génération de rapports de permissions réseau
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4** Créer une fonction d'analyse des permissions SQL Server
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.1** Implémenter l'analyse des permissions au niveau serveur
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2** Implémenter l'analyse des permissions au niveau base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.1** Étendre la fonction Analyze-SqlServerPermission pour inclure l'analyse au niveau base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.2** Implémenter la fonction Get-DatabaseRoles pour récupérer les rôles de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.3** Implémenter la fonction Get-DatabasePermissions pour récupérer les permissions de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.4** Implémenter la fonction Get-DatabaseUsers pour récupérer les utilisateurs de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.5** Implémenter la fonction Find-DatabasePermissionAnomalies pour détecter les anomalies de permissions
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.6** Mettre à jour la fonction Export-PermissionReport pour inclure les informations de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.2.7** Créer des tests unitaires pour valider l'analyse au niveau base de données
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3** Implémenter l'analyse des permissions au niveau objet (tables, vues, etc.)
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.1** Étendre la fonction Analyze-SqlServerPermission pour inclure l'analyse au niveau objet
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.2** Implémenter la fonction Get-ObjectPermissions pour récupérer les permissions au niveau objet
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.3** Implémenter la fonction Get-DatabaseObjects pour récupérer les objets de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.4** Implémenter la fonction Find-ObjectPermissionAnomalies pour détecter les anomalies de permissions
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.5** Mettre à jour la fonction Export-PermissionReport pour inclure les informations au niveau objet
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.3.6** Créer des tests unitaires pour valider l'analyse au niveau objet
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4** Implémenter la détection des anomalies de permissions SQL
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.1** Développer un système de règles pour détecter les anomalies de permissions SQL
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.2** Implémenter la détection des comptes à privilèges élevés
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.3** Implémenter la détection des comptes désactivés avec des permissions
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.4** Implémenter la détection des utilisateurs orphelins
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.5** Implémenter la détection des permissions excessives
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.6** Implémenter la détection des permissions conflictuelles
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.4.7** Créer des tests unitaires pour valider la détection des anomalies
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5** Implémenter la génération de rapports de permissions SQL
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.1** Développer des templates de rapports pour différents formats (HTML, CSV, JSON, XML)
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.2** Implémenter la génération de rapports détaillés avec toutes les permissions
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.3** Implémenter la génération de rapports de synthèse avec statistiques
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.4** Implémenter la génération de rapports d'anomalies
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.5** Implémenter la génération de rapports de recommandations
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.6** Créer des tests unitaires pour valider la génération de rapports
                                 - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5** Implémenter la comparaison des ACL avec des modèles de référence
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1** Développer un système de modèles de permissions de référence
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1** Concevoir la structure de données pour les modèles de permissions
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.1** Définir le schéma JSON pour les modèles de permissions serveur
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.2** Définir le schéma JSON pour les modèles de permissions de base de données
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.3** Définir le schéma JSON pour les modèles de permissions d'objets
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2** Implémenter les fonctions de création et gestion des modèles
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.1** Créer la fonction New-SqlPermissionModel pour générer un nouveau modèle
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.2** Développer la fonction Export-SqlPermissionModel pour sauvegarder un modèle
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.3** Implémenter la fonction Import-SqlPermissionModel pour charger un modèle
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3** Développer les fonctions de capture de modèles à partir d'instances existantes
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.1** Créer la fonction Capture-SqlServerPermissionModel pour capturer un modèle de serveur
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.2** Implémenter la fonction Capture-SqlDatabasePermissionModel pour capturer un modèle de base de données
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4** Créer les fonctions de validation et nettoyage des modèles
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.1** Développer la fonction Test-SqlPermissionModel pour valider un modèle
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.2** Implémenter la fonction Optimize-SqlPermissionModel pour nettoyer un modèle
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.5** Implémenter les tests unitaires pour les fonctions de modèles
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2** Implémenter la comparaison des permissions actuelles avec les modèles
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1** Développer les algorithmes de comparaison
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.1** Créer l'algorithme de comparaison des permissions serveur
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.2** Implémenter l'algorithme de comparaison des permissions de base de données
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.3** Développer l'algorithme de comparaison des permissions d'objets
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2** Créer les fonctions de comparaison
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.1** Implémenter la fonction Compare-SqlServerPermissions pour comparer au niveau serveur
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.2** Développer la fonction Compare-SqlDatabasePermissions pour comparer au niveau base de données
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.3** Créer la fonction Compare-SqlObjectPermissions pour comparer au niveau objet
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3** Implémenter les options de filtrage et d'exclusion
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.1** Développer les filtres par type de permission
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.2** Créer les filtres par utilisateur ou rôle
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.3** Implémenter les filtres par objet ou base de données
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4** Développer les mécanismes de tolérance et seuils
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.1** Créer les paramètres de tolérance pour les différences mineures
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.2** Implémenter les seuils d'alerte configurables
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.5** Implémenter les tests unitaires pour les fonctions de comparaison
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1** Développer les algorithmes de détection d'écarts
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2** Implémenter l'algorithme de détection des permissions excédentaires
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3** Développer l'algorithme de détection des permissions contradictoires
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2** Créer les fonctions d'analyse d'écarts
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1** Implémenter la fonction Find-SqlPermissionGaps pour trouver les écarts
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2** Développer la fonction Measure-SqlPermissionCompliance pour mesurer la conformité
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3** Implémenter la classification des écarts par sévérité
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1** Créer les règles de classification des écarts critiques
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2** Développer les règles de classification des écarts importants
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3** Implémenter les règles de classification des écarts mineurs
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4** Développer les suggestions de correction
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1** Créer la génération de scripts SQL correctifs
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2** Implémenter les recommandations de correction manuelle
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5** Implémenter les tests unitaires pour les fonctions de détection d'écarts
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4** Implémenter la génération de rapports de conformité
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1** Développer les templates de rapports
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1** Créer le template de rapport HTML détaillé
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2** Implémenter le template de rapport CSV pour analyse
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3** Développer le template de rapport JSON pour intégration
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2** Créer les fonctions de génération de rapports
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2.1** Implémenter la fonction New-SqlPermissionComplianceReport pour générer un rapport
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2.2** Développer la fonction Export-SqlPermissionComplianceReport pour exporter un rapport
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.3** Implémenter les visualisations graphiques
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.3.1** Créer les graphiques de conformité globale
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.3.2** Développer les graphiques par catégorie d'écart
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.3.3** Implémenter les graphiques de tendance temporelle
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.4** Développer les mécanismes d'alerte et notification
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.4.1** Créer les alertes par email
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.4.2** Implémenter les notifications par webhook
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.5** Implémenter les tests unitaires pour les fonctions de rapport
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5** Développer des modèles prédéfinis pour différents scénarios de sécurité
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.1** Créer des modèles pour environnements de production
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.1.1** Développer le modèle de sécurité élevée pour données sensibles
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.1.2** Implémenter le modèle standard pour applications métier
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.1.3** Créer le modèle pour applications critiques
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.2** Développer des modèles pour environnements de développement
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.2.1** Créer le modèle pour équipes de développement
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.2.2** Implémenter le modèle pour environnements de test
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.2.3** Développer le modèle pour intégration continue
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.3** Créer des modèles par type d'application
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.3.1** Développer le modèle pour applications web
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.3.2** Implémenter le modèle pour applications d'analyse de données
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.3.3** Créer le modèle pour applications de reporting
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4** Implémenter des modèles conformes aux normes de sécurité
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4.1** Développer le modèle conforme à GDPR/RGPD
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4.2** Créer le modèle conforme à PCI DSS
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4.3** Implémenter le modèle conforme à HIPAA
+                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.5** Créer la documentation des modèles prédéfinis
                                 - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6** Développer un rapport visuel des ACL avec mise en évidence des anomalies
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.1** Implémenter la génération de rapports HTML interactifs
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.2** Implémenter la visualisation hiérarchique des permissions
