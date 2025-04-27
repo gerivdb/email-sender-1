@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests pour vérifier la fonctionnalité de mise à jour des cases à cocher dans le document actif du mode CHECK.
 
@@ -76,7 +76,7 @@ if (-not (Test-Path -Path $checkModePath)) {
 # nous allons tester directement la fonction Update-ActiveDocumentCheckboxes
 
 # Importer la fonction Update-ActiveDocumentCheckboxes
-$updateCheckboxesPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Functions\Public\Update-ActiveDocumentCheckboxes.ps1"
+$updateCheckboxesPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Functions\Public\Update-ActiveDocumentCheckboxes-Enhanced.ps1"
 if (Test-Path -Path $updateCheckboxesPath) {
     . $updateCheckboxesPath
     Write-Host "`nFonction Update-ActiveDocumentCheckboxes importée." -ForegroundColor Green

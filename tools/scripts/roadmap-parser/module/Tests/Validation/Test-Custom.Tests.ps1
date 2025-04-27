@@ -4,11 +4,9 @@
 # Tests unitaires pour la fonction Test-Custom
 #
 
-# Importer la fonction à tester
-$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
-$functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-Custom.ps1"
-. $functionPath
+# Importer le module TestHelpers qui contient la fonction Test-Custom
+$testHelpersPath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "TestHelpers.psm1"
+Import-Module -Name $testHelpersPath -Force
 
 Describe "Test-Custom" {
     Context "Validation avec ValidationFunction" {

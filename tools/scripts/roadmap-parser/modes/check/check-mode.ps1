@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Script pour vérifier si les tâches sélectionnées ont été implémentées à 100% et testées avec succès à 100% (Mode CHECK).
 
@@ -74,10 +74,33 @@ param (
 
 # Importer les fonctions nécessaires
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$modulePath = Join-Path -Path $scriptPath -ChildPath "roadmap-parser\module\Functions\Public"
+$modulePath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "module\Functions\Public"
 $invokeCheckPath = Join-Path -Path $modulePath -ChildPath "Invoke-RoadmapCheck.ps1"
 $updateTaskPath = Join-Path -Path $modulePath -ChildPath "Update-RoadmapTaskStatus.ps1"
-$updateCheckboxesPath = Join-Path -Path $modulePath -ChildPath "Update-ActiveDocumentCheckboxes.ps1"
+$updateCheckboxesPath = Join-Path -Path $modulePath -ChildPath "Update-ActiveDocumentCheckboxes-Enhanced.ps1"
+
+# Si les chemins n'existent pas, essayer d'autres chemins
+if (-not (Test-Path -Path $modulePath)) {
+    $modulePath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath "module\Functions\Public"
+    $invokeCheckPath = Join-Path -Path $modulePath -ChildPath "Invoke-RoadmapCheck.ps1"
+    $updateTaskPath = Join-Path -Path $modulePath -ChildPath "Update-RoadmapTaskStatus.ps1"
+    $updateCheckboxesPath = Join-Path -Path $modulePath -ChildPath "Update-ActiveDocumentCheckboxes-Enhanced.ps1"
+}
+
+# Si les chemins n'existent toujours pas, essayer d'autres chemins
+if (-not (Test-Path -Path $modulePath)) {
+    $modulePath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath)))) -ChildPath "module\Functions\Public"
+    $invokeCheckPath = Join-Path -Path $modulePath -ChildPath "Invoke-RoadmapCheck.ps1"
+    $updateTaskPath = Join-Path -Path $modulePath -ChildPath "Update-RoadmapTaskStatus.ps1"
+    $updateCheckboxesPath = Join-Path -Path $modulePath -ChildPath "Update-ActiveDocumentCheckboxes-Enhanced.ps1"
+}
+
+# Afficher les chemins pour le débogage
+Write-Host "Chemin du script : $scriptPath" -ForegroundColor Yellow
+Write-Host "Chemin du module : $modulePath" -ForegroundColor Yellow
+Write-Host "Chemin de Invoke-RoadmapCheck : $invokeCheckPath" -ForegroundColor Yellow
+Write-Host "Chemin de Update-RoadmapTaskStatus : $updateTaskPath" -ForegroundColor Yellow
+Write-Host "Chemin de Update-ActiveDocumentCheckboxes : $updateCheckboxesPath" -ForegroundColor Yellow
 
 if (Test-Path -Path $invokeCheckPath) {
     . $invokeCheckPath

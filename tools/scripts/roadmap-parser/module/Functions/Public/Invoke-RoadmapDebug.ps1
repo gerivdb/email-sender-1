@@ -570,34 +570,34 @@ $fixCode
         switch -Regex ($errorItem.Type) {
             "NullReferenceException" {
                 $testCase.TestCode = "# Test pour NullReferenceException`nDescribe `"Test pour $($errorItem.File)`" { `n    It `"Ne devrait pas lever NullReferenceException à la ligne $($errorItem.Line)`" { `n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
-                    }
-                    "ArgumentNullException" {
-                        $testCase.TestCode = "# Test pour ArgumentNullException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever ArgumentNullException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un argument null } | Should -Throw -ExceptionType ([ArgumentNullException])`n    }`n}"
-                    }
-                    "IndexOutOfRangeException" {
-                        $testCase.TestCode = "# Test pour IndexOutOfRangeException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever IndexOutOfRangeException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un index hors limites } | Should -Not -Throw`n    }`n}"
-                    }
-                    "DivideByZeroException" {
-                        $testCase.TestCode = "# Test pour DivideByZeroException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever DivideByZeroException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un diviseur égal à zéro } | Should -Not -Throw`n    }`n}"
-                    }
-                    default {
-                        $testCase.TestCode = "# Test pour $($errorItem.Type)`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever $($errorItem.Type) à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
-                    }
-                }
-
-                $testCases += $testCase
             }
-
-            # Écrire les cas de test dans un fichier JSON
-            $testCasesJson = $testCases | ConvertTo-Json -Depth 10
-            Set-Content -Path $testCasesPath -Value $testCasesJson -Encoding UTF8
-            $result.OutputFiles += $testCasesPath
-
-            # Mettre à jour le résultat
-            $result.Success = $true
-
-            return $result
+            "ArgumentNullException" {
+                $testCase.TestCode = "# Test pour ArgumentNullException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever ArgumentNullException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un argument null } | Should -Throw -ExceptionType ([ArgumentNullException])`n    }`n}"
+            }
+            "IndexOutOfRangeException" {
+                $testCase.TestCode = "# Test pour IndexOutOfRangeException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever IndexOutOfRangeException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un index hors limites } | Should -Not -Throw`n    }`n}"
+            }
+            "DivideByZeroException" {
+                $testCase.TestCode = "# Test pour DivideByZeroException`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever DivideByZeroException à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur avec un diviseur égal à zéro } | Should -Not -Throw`n    }`n}"
+            }
+            default {
+                $testCase.TestCode = "# Test pour $($errorItem.Type)`nDescribe `"Test pour $($errorItem.File)`" {`n    It `"Ne devrait pas lever $($errorItem.Type) à la ligne $($errorItem.Line)`" {`n        # Arrange`n        # TODO: Initialiser les variables nécessaires`n        `n        # Act & Assert`n        { # TODO: Appeler la fonction qui contient l'erreur } | Should -Not -Throw`n    }`n}"
+            }
         }
 
-        # Exporter la fonction
-        Export-ModuleMember -Function Invoke-RoadmapDebug
+        $testCases += $testCase
+    }
+
+    # Écrire les cas de test dans un fichier JSON
+    $testCasesJson = $testCases | ConvertTo-Json -Depth 10
+    Set-Content -Path $testCasesPath -Value $testCasesJson -Encoding UTF8
+    $result.OutputFiles += $testCasesPath
+
+    # Mettre à jour le résultat
+    $result.Success = $true
+
+    return $result
+}
+
+# Exporter la fonction
+Export-ModuleMember -Function Invoke-RoadmapDebug

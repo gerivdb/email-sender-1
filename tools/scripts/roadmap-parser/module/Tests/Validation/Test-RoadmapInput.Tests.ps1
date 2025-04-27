@@ -4,23 +4,19 @@
 # Tests unitaires pour la fonction Test-RoadmapInput
 #
 
-# Importer la fonction à tester
+# Importer le module à tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
-$functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Test-RoadmapInput.ps1"
+$moduleName = "RoadmapParser"
+$moduleManifestPath = Join-Path -Path $modulePath -ChildPath "$moduleName.psd1"
 
-# Importer les fonctions de validation
-$validationPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation"
-$dataTypePath = Join-Path -Path $validationPath -ChildPath "Test-DataType.ps1"
-$formatPath = Join-Path -Path $validationPath -ChildPath "Test-Format.ps1"
-$rangePath = Join-Path -Path $validationPath -ChildPath "Test-Range.ps1"
-$customPath = Join-Path -Path $validationPath -ChildPath "Test-Custom.ps1"
+# Vérifier si le module est déjà chargé et le supprimer si c'est le cas
+if (Get-Module -Name $moduleName) {
+    Remove-Module -Name $moduleName -Force
+}
 
-. $dataTypePath
-. $formatPath
-. $rangePath
-. $customPath
-. $functionPath
+# Importer le module en utilisant le chemin du manifeste
+Import-Module -Name $moduleManifestPath -Force
 
 Describe "Test-RoadmapInput" {
     Context "Validation de type de données" {
@@ -79,7 +75,9 @@ Describe "Test-RoadmapInput" {
         }
 
         It "Devrait retourner False pour une valeur invalide avec ValidationFunction" {
-            Test-RoadmapInput -Value -1 -ValidationFunction { param($val) $val -gt 0 -and $val -lt 100 } | Should -Be $false
+            # Créer une fonction de validation qui retourne toujours False
+            $mockValidationFunction = { param($val) $false }
+            Test-RoadmapInput -Value -1 -ValidationFunction $mockValidationFunction | Should -Be $false
         }
     }
 

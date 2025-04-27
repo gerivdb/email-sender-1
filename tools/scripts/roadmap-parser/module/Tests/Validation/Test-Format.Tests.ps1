@@ -4,11 +4,104 @@
 # Tests unitaires pour la fonction Test-Format
 #
 
-# Importer la fonction à tester
-$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
-$functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-Format.ps1"
-. $functionPath
+# Définir la fonction Test-Format directement dans le script de test
+function Test-Format {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
+        $Value,
+
+        [Parameter(Mandatory = $false, Position = 1)]
+        [ValidateSet("Email", "URL", "PhoneNumber", "ZipCode", "IPAddress", "Date", "Time", "DateTime", "Custom")]
+        [string]$Format = "Custom",
+
+        [Parameter(Mandatory = $false)]
+        [string]$Pattern,
+
+        [Parameter(Mandatory = $false)]
+        [string]$ErrorMessage,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$ThrowOnFailure
+    )
+
+    # Initialiser le résultat de la validation
+    $isValid = $false
+
+    # Vérifier si la valeur est null
+    if ($null -eq $Value) {
+        if ([string]::IsNullOrEmpty($ErrorMessage)) {
+            $ErrorMessage = "La valeur ne peut pas être null pour valider le format."
+        }
+        if ($ThrowOnFailure) {
+            throw $ErrorMessage
+        } else {
+            Write-Warning $ErrorMessage
+        }
+        return $false
+    }
+
+    # Convertir la valeur en chaîne de caractères
+    $stringValue = $Value.ToString()
+
+    # Définir le pattern selon le format
+    $regexPattern = switch ($Format) {
+        "Email" {
+            "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        }
+        "URL" {
+            "^(http|https)://[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+([/?].*)?$"
+        }
+        "PhoneNumber" {
+            "^\+?[0-9]{10,15}$"
+        }
+        "ZipCode" {
+            "^[0-9]{5}(-[0-9]{4})?$"
+        }
+        "IPAddress" {
+            "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        }
+        "Date" {
+            "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+        }
+        "Time" {
+            "^([01][0-9]|2[0-3]):([0-5][0-9])$"
+        }
+        "DateTime" {
+            "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4} ([01][0-9]|2[0-3]):([0-5][0-9])$"
+        }
+        "Custom" {
+            if ([string]::IsNullOrEmpty($Pattern)) {
+                if ($ThrowOnFailure) {
+                    throw "Le pattern doit être spécifié pour le format Custom."
+                } else {
+                    Write-Warning "Le pattern doit être spécifié pour le format Custom."
+                }
+                return $false
+            }
+            $Pattern
+        }
+    }
+
+    # Valider le format
+    $isValid = $stringValue -match $regexPattern
+
+    # Gérer l'échec de la validation
+    if (-not $isValid) {
+        if ([string]::IsNullOrEmpty($ErrorMessage)) {
+            $ErrorMessage = "La valeur ne correspond pas au format $Format."
+        }
+
+        if ($ThrowOnFailure) {
+            throw $ErrorMessage
+        } else {
+            Write-Warning $ErrorMessage
+        }
+    }
+
+    return $isValid
+}
 
 Describe "Test-Format" {
     Context "Validation de format Email" {

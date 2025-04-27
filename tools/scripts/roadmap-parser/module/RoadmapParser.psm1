@@ -194,7 +194,10 @@ $publicFunctions = @(
     # Fonctions de rotation des logs
     'Invoke-LogRotation',
     'Clear-OldLogFiles',
-    'Compress-LogFile'
+    'Compress-LogFile',
+    # Fonctions d'analyse SQL Server
+    'Analyze-SqlServerPermission',
+    'Get-SqlPermissionRules'
 )
 
 Export-ModuleMember -Function $publicFunctions

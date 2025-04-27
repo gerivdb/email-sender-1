@@ -1,8 +1,8 @@
-# Script pour mettre à jour directement les cases à cocher des tâches de registre dans le document actif
+﻿# Script pour mettre à jour directement les cases à cocher des tâches de registre dans le document actif
 
 # Importer la fonction Update-ActiveDocumentCheckboxes
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$updateCheckboxesPath = Join-Path -Path $scriptPath -ChildPath "tools\scripts\roadmap-parser\module\Functions\Public\Update-ActiveDocumentCheckboxes.ps1"
+$updateCheckboxesPath = Join-Path -Path $scriptPath -ChildPath "tools\scripts\roadmap-parser\module\Functions\Public\Update-ActiveDocumentCheckboxes-Enhanced.ps1"
 
 if (Test-Path -Path $updateCheckboxesPath) {
     . $updateCheckboxesPath

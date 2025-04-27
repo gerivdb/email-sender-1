@@ -131,7 +131,10 @@
         # Fonctions de rotation des logs
         'Invoke-LogRotation',
         'Clear-OldLogFiles',
-        'Compress-LogFile'
+        'Compress-LogFile',
+        # Fonctions d'analyse SQL Server
+        'Analyze-SqlServerPermission',
+        'Get-SqlPermissionRules'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

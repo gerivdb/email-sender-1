@@ -87,7 +87,7 @@ function Get-ModuleAData {
     param (
         [string]`$Input
     )
-    
+
     `$processedData = Get-ModuleBData -Input `$Input
     return "ModuleA: `$processedData"
 }
@@ -101,7 +101,7 @@ function Get-ModuleBData {
     param (
         [string]`$Input
     )
-    
+
     `$processedData = Get-ModuleCData -Input `$Input
     return "ModuleB: `$processedData"
 }
@@ -115,7 +115,7 @@ function Get-ModuleCData {
     param (
         [string]`$Input
     )
-    
+
     `$processedData = Get-ModuleAData -Input `$Input
     return "ModuleC: `$processedData"
 }
@@ -157,11 +157,11 @@ Describe "Invoke-RoadmapCycleBreaker" {
         # Appeler la fonction et vérifier la détection des dépendances circulaires
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -ModulePath $testModulePath -OutputPath $testOutputPath -AutoFix $false
-            
+
             # Vérifier que les cycles sont détectés
             $result.Cycles | Should -Not -BeNullOrEmpty
             $result.Cycles.Count | Should -BeGreaterThan 0
-            
+
             # Vérifier que le cycle A -> B -> C -> A est détecté
             $result.Cycles | Should -Contain "ModuleA -> ModuleB -> ModuleC -> ModuleA"
         } else {
@@ -173,7 +173,7 @@ Describe "Invoke-RoadmapCycleBreaker" {
         # Appeler la fonction et vérifier la génération de suggestions
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -ModulePath $testModulePath -OutputPath $testOutputPath -AutoFix $false
-            
+
             # Vérifier que des suggestions sont générées
             $result.Suggestions | Should -Not -BeNullOrEmpty
             $result.Suggestions.Count | Should -BeGreaterThan 0
@@ -186,7 +186,7 @@ Describe "Invoke-RoadmapCycleBreaker" {
         # Appeler la fonction et vérifier la génération du graphe
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -ModulePath $testModulePath -OutputPath $testOutputPath -AutoFix $false -GenerateGraph $true
-            
+
             # Vérifier que le graphe est généré
             $graphPath = Join-Path -Path $testOutputPath -ChildPath "dependency_graph.html"
             Test-Path -Path $graphPath | Should -Be $true
@@ -201,25 +201,25 @@ Describe "Invoke-RoadmapCycleBreaker" {
             # Créer une copie du module pour le test
             $testModuleCopyPath = Join-Path -Path $env:TEMP -ChildPath "TestModuleCopy_$(Get-Random)"
             Copy-Item -Path $testModulePath -Destination $testModuleCopyPath -Recurse
-            
+
             $result = Invoke-RoadmapCycleBreaker -ModulePath $testModuleCopyPath -OutputPath $testOutputPath -AutoFix $true -BackupPath (Join-Path -Path $testOutputPath -ChildPath "backup")
-            
+
             # Vérifier que des corrections sont appliquées
             $result.FixedCycles | Should -Not -BeNullOrEmpty
             $result.FixedCycles.Count | Should -BeGreaterThan 0
-            
+
             # Vérifier que les fichiers sont modifiés
             $moduleAPath = Join-Path -Path $testModuleCopyPath -ChildPath "ModuleA\ModuleA.ps1"
             $moduleBPath = Join-Path -Path $testModuleCopyPath -ChildPath "ModuleB\ModuleB.ps1"
             $moduleCPath = Join-Path -Path $testModuleCopyPath -ChildPath "ModuleC\ModuleC.ps1"
-            
+
             $moduleAContent = Get-Content -Path $moduleAPath -Raw
             $moduleBContent = Get-Content -Path $moduleBPath -Raw
             $moduleCContent = Get-Content -Path $moduleCPath -Raw
-            
+
             # Au moins un des fichiers devrait être modifié
             ($moduleAContent -notmatch "ModuleB\.ps1" -or $moduleBContent -notmatch "ModuleC\.ps1" -or $moduleCContent -notmatch "ModuleA\.ps1") | Should -Be $true
-            
+
             # Supprimer la copie du module
             Remove-Item -Path $testModuleCopyPath -Recurse -Force
         } else {
@@ -234,10 +234,10 @@ Describe "c-break-mode.ps1 Integration" {
         if (Test-Path -Path $cBreakModePath) {
             # Exécuter le script
             $output = & $cBreakModePath -ModulePath $testModulePath -OutputPath $testOutputPath -AutoFix $false -GenerateGraph $true
-            
+
             # Vérifier que le script s'est exécuté sans erreur
             $LASTEXITCODE | Should -Be 0
-            
+
             # Vérifier que les fichiers attendus existent
             $graphPath = Join-Path -Path $testOutputPath -ChildPath "dependency_graph.html"
             Test-Path -Path $graphPath | Should -Be $true
@@ -263,9 +263,5 @@ if (Test-Path -Path $testOutputPath) {
     Write-Host "Répertoire de sortie supprimé." -ForegroundColor Gray
 }
 
-# Exécuter les tests si Pester est disponible
-if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
-    Invoke-Pester -Path $MyInvocation.MyCommand.Path
-} else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
-}
+# Ne pas exécuter les tests ici pour éviter les dépendances circulaires
+Write-Host "Tests définis. Ils seront exécutés par le framework Pester." -ForegroundColor Yellow

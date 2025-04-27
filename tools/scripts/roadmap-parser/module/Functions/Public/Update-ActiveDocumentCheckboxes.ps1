@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Met à jour les cases à cocher dans le document actif pour les tâches implémentées et testées à 100%.
 

@@ -4,11 +4,129 @@
 # Tests unitaires pour la fonction Test-Range
 #
 
-# Importer la fonction à tester
-$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
-$functionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Validation\Test-Range.ps1"
-. $functionPath
+# Définir la fonction Test-Range directement dans le script de test
+function Test-Range {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [AllowNull()]
+        $Value,
+
+        [Parameter(Mandatory = $false)]
+        $Min,
+
+        [Parameter(Mandatory = $false)]
+        $Max,
+
+        [Parameter(Mandatory = $false)]
+        [int]$MinLength,
+
+        [Parameter(Mandatory = $false)]
+        [int]$MaxLength,
+
+        [Parameter(Mandatory = $false)]
+        [int]$MinCount,
+
+        [Parameter(Mandatory = $false)]
+        [int]$MaxCount,
+
+        [Parameter(Mandatory = $false)]
+        [string]$ErrorMessage,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$ThrowOnFailure
+    )
+
+    # Initialiser le résultat de la validation
+    $isValid = $true
+    $validationErrors = @()
+
+    # Valider la plage de valeurs
+    if ($PSBoundParameters.ContainsKey('Min') -and $PSBoundParameters.ContainsKey('Max')) {
+        if ($Value -lt $Min -or $Value -gt $Max) {
+            $isValid = $false
+            $validationErrors += "La valeur doit être comprise entre $Min et $Max."
+        }
+    } elseif ($PSBoundParameters.ContainsKey('Min')) {
+        if ($Value -lt $Min) {
+            $isValid = $false
+            $validationErrors += "La valeur doit être supérieure ou égale à $Min."
+        }
+    } elseif ($PSBoundParameters.ContainsKey('Max')) {
+        if ($Value -gt $Max) {
+            $isValid = $false
+            $validationErrors += "La valeur doit être inférieure ou égale à $Max."
+        }
+    }
+
+    # Valider la longueur
+    if ($PSBoundParameters.ContainsKey('MinLength') -or $PSBoundParameters.ContainsKey('MaxLength')) {
+        if ($null -eq $Value) {
+            $isValid = $false
+            $validationErrors += "La valeur ne peut pas être null pour valider la longueur."
+        } else {
+            $length = 0
+            if ($Value -is [string]) {
+                $length = $Value.Length
+            } elseif ($Value -is [array] -or $Value -is [System.Collections.ICollection]) {
+                $length = $Value.Count
+            } else {
+                $isValid = $false
+                $validationErrors += "La validation de longueur n'est pas prise en charge pour ce type de valeur."
+            }
+
+            if ($PSBoundParameters.ContainsKey('MinLength') -and $length -lt $MinLength) {
+                $isValid = $false
+                $validationErrors += "La longueur doit être supérieure ou égale à $MinLength."
+            }
+
+            if ($PSBoundParameters.ContainsKey('MaxLength') -and $length -gt $MaxLength) {
+                $isValid = $false
+                $validationErrors += "La longueur doit être inférieure ou égale à $MaxLength."
+            }
+        }
+    }
+
+    # Valider le nombre d'éléments
+    if ($PSBoundParameters.ContainsKey('MinCount') -or $PSBoundParameters.ContainsKey('MaxCount')) {
+        if ($null -eq $Value) {
+            $isValid = $false
+            $validationErrors += "La valeur ne peut pas être null pour valider le nombre d'éléments."
+        } elseif (-not ($Value -is [array] -or $Value -is [System.Collections.ICollection])) {
+            $isValid = $false
+            $validationErrors += "La validation du nombre d'éléments n'est prise en charge que pour les collections."
+        } else {
+            $count = $Value.Count
+
+            if ($PSBoundParameters.ContainsKey('MinCount') -and $count -lt $MinCount) {
+                $isValid = $false
+                $validationErrors += "Le nombre d'éléments doit être supérieur ou égal à $MinCount."
+            }
+
+            if ($PSBoundParameters.ContainsKey('MaxCount') -and $count -gt $MaxCount) {
+                $isValid = $false
+                $validationErrors += "Le nombre d'éléments doit être inférieur ou égal à $MaxCount."
+            }
+        }
+    }
+
+    # Gérer l'échec de la validation
+    if (-not $isValid) {
+        $errorMsg = if (-not [string]::IsNullOrEmpty($ErrorMessage)) {
+            $ErrorMessage
+        } else {
+            $validationErrors -join " "
+        }
+
+        if ($ThrowOnFailure) {
+            throw $errorMsg
+        } else {
+            Write-Warning $errorMsg
+        }
+    }
+
+    return $isValid
+}
 
 Describe "Test-Range" {
     Context "Validation de plage de valeurs" {

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Update-ActiveDocumentCheckboxes.
 
@@ -14,7 +14,7 @@
 
 # Importer la fonction à tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$functionPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Functions\Public\Update-ActiveDocumentCheckboxes.ps1"
+$functionPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "Functions\Public\Update-ActiveDocumentCheckboxes-Enhanced.ps1"
 . $functionPath
 
 # Créer un fichier temporaire pour les tests

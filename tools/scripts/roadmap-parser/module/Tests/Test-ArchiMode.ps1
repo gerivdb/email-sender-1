@@ -200,9 +200,5 @@ if (Test-Path -Path $testOutputPath) {
     Write-Host "Répertoire de sortie supprimé." -ForegroundColor Gray
 }
 
-# Exécuter les tests si Pester est disponible
-if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
-    Invoke-Pester -Path $MyInvocation.MyCommand.Path
-} else {
-    Write-Host "Tests terminés. Utilisez Invoke-Pester pour exécuter les tests avec le framework Pester." -ForegroundColor Yellow
-}
+# Ne pas exécuter les tests ici pour éviter les dépendances circulaires
+Write-Host "Tests définis. Ils seront exécutés par le framework Pester." -ForegroundColor Yellow
