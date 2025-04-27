@@ -745,23 +745,118 @@
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7.6** Créer les tests pour la génération de rapports
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3** Implémenter la classification des écarts par sévérité
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1** Créer les règles de classification des écarts critiques
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.1** Définir les critères de classification des permissions critiques au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.2** Développer les critères de classification des permissions critiques au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.3** Implémenter les critères de classification des permissions critiques au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.4** Créer les règles de détection des permissions à haut risque de sécurité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.5** Développer les règles de détection des permissions d'administration système
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.6** Implémenter les règles de détection des permissions de modification de structure
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1.7** Créer les tests unitaires pour valider la classification des écarts critiques
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2** Développer les règles de classification des écarts importants
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.1** Définir les critères de classification des permissions importantes au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.2** Développer les critères de classification des permissions importantes au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.3** Implémenter les critères de classification des permissions importantes au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.4** Créer les règles de détection des permissions de modification de données sensibles
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.5** Développer les règles de détection des permissions d'accès étendu
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.6** Implémenter les règles de détection des permissions de configuration système
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2.7** Créer les tests unitaires pour valider la classification des écarts importants
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3** Implémenter les règles de classification des écarts mineurs
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.1** Définir les critères de classification des permissions mineures au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.2** Développer les critères de classification des permissions mineures au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.3** Implémenter les critères de classification des permissions mineures au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.4** Créer les règles de détection des permissions de lecture non sensibles
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.5** Développer les règles de détection des permissions de connexion standard
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.6** Implémenter les règles de détection des permissions d'exécution limitée
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3.7** Créer les tests unitaires pour valider la classification des écarts mineurs
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4** Développer le système de scoring de sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4.1** Créer l'algorithme de calcul de score de sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4.2** Implémenter la pondération des différents facteurs de risque
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4.3** Développer le système de seuils configurables
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4.4** Créer les mécanismes d'ajustement contextuel des scores
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.4.5** Implémenter les tests unitaires pour valider le système de scoring
+                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5** Créer le système de visualisation des écarts par sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5.1** Développer le code couleur pour les niveaux de sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5.2** Implémenter les graphiques de distribution par sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5.3** Créer les tableaux de synthèse par niveau de sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5.4** Développer les filtres de visualisation par sévérité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.5.5** Implémenter les tests unitaires pour valider la visualisation
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4** Développer les suggestions de correction
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1** Créer la génération de scripts SQL correctifs
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1** Développer les templates de scripts pour corriger les permissions manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.1** Créer les templates pour les permissions manquantes au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.2** Développer les templates pour les permissions manquantes au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.3** Implémenter les templates pour les permissions manquantes au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.4** Créer les templates pour les permissions de rôles manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.5** Développer les templates pour les permissions d'utilisateurs manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1.6** Implémenter les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2** Implémenter les templates de scripts pour supprimer les permissions excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.1** Créer les templates pour les permissions excédentaires au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.2** Développer les templates pour les permissions excédentaires au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.3** Implémenter les templates pour les permissions excédentaires au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.4** Créer les templates pour les permissions de rôles excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.5** Développer les templates pour les permissions d'utilisateurs excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2.6** Implémenter les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3** Créer les templates de scripts pour résoudre les permissions contradictoires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3.1** Développer les templates pour les contradictions GRANT/DENY
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3.2** Implémenter les templates pour les contradictions entre niveaux hiérarchiques
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3.3** Créer les templates pour les contradictions entre rôles et utilisateurs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3.4** Développer les templates pour les contradictions d'héritage
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3.5** Implémenter les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4** Développer la fonction de génération de scripts correctifs complets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4.1** Créer l'algorithme d'assemblage des scripts correctifs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4.2** Implémenter l'ordonnancement optimal des opérations
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4.3** Développer la gestion des dépendances entre corrections
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4.4** Créer les mécanismes de transaction et rollback
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4.5** Implémenter les tests unitaires pour valider la génération
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5** Implémenter la validation des scripts générés
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5.1** Créer les mécanismes de validation syntaxique
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5.2** Développer la validation sémantique des scripts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5.3** Implémenter la détection des effets secondaires potentiels
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5.4** Créer les mécanismes de simulation d'exécution
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5.5** Implémenter les tests unitaires pour valider la validation
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6** Créer les tests unitaires pour valider la génération de scripts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6.1** Développer les tests pour les scripts de permissions manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6.2** Implémenter les tests pour les scripts de permissions excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6.3** Créer les tests pour les scripts de résolution de contradictions
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6.4** Développer les tests pour les scripts correctifs complets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6.5** Implémenter les tests d'intégration pour la génération de scripts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2** Implémenter les recommandations de correction manuelle
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1** Développer les templates de recommandations pour les permissions manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1.1** Créer les templates de recommandations pour les permissions critiques
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1.2** Développer les templates de recommandations pour les permissions importantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1.3** Implémenter les templates de recommandations pour les permissions mineures
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1.4** Créer les templates de recommandations par niveau (serveur, base de données, objet)
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1.5** Développer les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2** Implémenter les templates de recommandations pour les permissions excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2.1** Créer les templates de recommandations pour les permissions à haut risque
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2.2** Développer les templates de recommandations pour les permissions à risque moyen
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2.3** Implémenter les templates de recommandations pour les permissions à faible risque
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2.4** Créer les templates de recommandations par niveau (serveur, base de données, objet)
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2.5** Développer les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3** Créer les templates de recommandations pour les permissions contradictoires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3.1** Développer les templates pour les contradictions GRANT/DENY
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3.2** Implémenter les templates pour les contradictions entre niveaux hiérarchiques
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3.3** Créer les templates pour les contradictions entre rôles et utilisateurs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3.4** Développer les templates pour les contradictions d'héritage
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3.5** Implémenter les tests unitaires pour valider les templates
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4** Développer la fonction de génération de recommandations contextuelles
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4.1** Créer l'algorithme d'analyse du contexte de sécurité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4.2** Implémenter la génération de recommandations adaptées au contexte
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4.3** Développer les mécanismes d'explication des recommandations
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4.4** Créer les fonctions de personnalisation des recommandations
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4.5** Implémenter les tests unitaires pour valider la génération
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5** Implémenter la priorisation des recommandations par impact
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5.1** Créer l'algorithme d'évaluation d'impact des écarts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5.2** Développer le système de scoring d'impact sur la sécurité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5.3** Implémenter l'algorithme de priorisation des recommandations
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5.4** Créer les mécanismes de présentation des recommandations par priorité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5.5** Développer les tests unitaires pour valider la priorisation
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6** Créer les tests unitaires pour valider la génération de recommandations
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.1** Développer les tests pour les recommandations de permissions manquantes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.2** Implémenter les tests pour les recommandations de permissions excédentaires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.3** Créer les tests pour les recommandations de permissions contradictoires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.4** Développer les tests pour les recommandations contextuelles
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6.5** Implémenter les tests d'intégration pour la génération de recommandations
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5** Implémenter les tests unitaires pour les fonctions de détection d'écarts
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4** Implémenter la génération de rapports de conformité
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1** Développer les templates de rapports
