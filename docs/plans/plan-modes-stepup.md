@@ -533,40 +533,40 @@
                                     - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.4** Implémenter la génération de rapports d'anomalies
                                     - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.5** Implémenter la génération de rapports de recommandations
                                     - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.5.6** Créer des tests unitaires pour valider la génération de rapports
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5** Implémenter la comparaison des ACL avec des modèles de référence
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1** Développer un système de modèles de permissions de référence
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1** Concevoir la structure de données pour les modèles de permissions
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.1** Définir le schéma JSON pour les modèles de permissions serveur
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.2** Définir le schéma JSON pour les modèles de permissions de base de données
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.3** Définir le schéma JSON pour les modèles de permissions d'objets
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2** Implémenter les fonctions de création et gestion des modèles
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.1** Créer la fonction New-SqlPermissionModel pour générer un nouveau modèle
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.2** Développer la fonction Export-SqlPermissionModel pour sauvegarder un modèle
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.3** Implémenter la fonction Import-SqlPermissionModel pour charger un modèle
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3** Développer les fonctions de capture de modèles à partir d'instances existantes
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.1** Créer la fonction Capture-SqlServerPermissionModel pour capturer un modèle de serveur
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.2** Implémenter la fonction Capture-SqlDatabasePermissionModel pour capturer un modèle de base de données
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4** Créer les fonctions de validation et nettoyage des modèles
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.1** Développer la fonction Test-SqlPermissionModel pour valider un modèle
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.2** Implémenter la fonction Optimize-SqlPermissionModel pour nettoyer un modèle
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.5** Implémenter les tests unitaires pour les fonctions de modèles
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2** Implémenter la comparaison des permissions actuelles avec les modèles
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1** Développer les algorithmes de comparaison
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.1** Créer l'algorithme de comparaison des permissions serveur
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.2** Implémenter l'algorithme de comparaison des permissions de base de données
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.3** Développer l'algorithme de comparaison des permissions d'objets
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2** Créer les fonctions de comparaison
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.1** Implémenter la fonction Compare-SqlServerPermissions pour comparer au niveau serveur
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.2** Développer la fonction Compare-SqlDatabasePermissions pour comparer au niveau base de données
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.3** Créer la fonction Compare-SqlObjectPermissions pour comparer au niveau objet
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3** Implémenter les options de filtrage et d'exclusion
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.1** Développer les filtres par type de permission
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.2** Créer les filtres par utilisateur ou rôle
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.3** Implémenter les filtres par objet ou base de données
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4** Développer les mécanismes de tolérance et seuils
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.1** Créer les paramètres de tolérance pour les différences mineures
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.2** Implémenter les seuils d'alerte configurables
-                                    - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.5** Implémenter les tests unitaires pour les fonctions de comparaison
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5** Implémenter la comparaison des ACL avec des modèles de référence
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1** Développer un système de modèles de permissions de référence
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1** Concevoir la structure de données pour les modèles de permissions
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.1** Définir le schéma JSON pour les modèles de permissions serveur
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.2** Définir le schéma JSON pour les modèles de permissions de base de données
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.1.3** Définir le schéma JSON pour les modèles de permissions d'objets
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2** Implémenter les fonctions de création et gestion des modèles
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.1** Créer la fonction New-SqlPermissionModel pour générer un nouveau modèle
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.2** Développer la fonction Export-SqlPermissionModel pour sauvegarder un modèle
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.2.3** Implémenter la fonction Import-SqlPermissionModel pour charger un modèle
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3** Développer les fonctions de capture de modèles à partir d'instances existantes
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.1** Créer la fonction Capture-SqlServerPermissionModel pour capturer un modèle de serveur
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.3.2** Implémenter la fonction Capture-SqlDatabasePermissionModel pour capturer un modèle de base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4** Créer les fonctions de validation et nettoyage des modèles
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.1** Développer la fonction Test-SqlPermissionModel pour valider un modèle
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.4.2** Implémenter la fonction Optimize-SqlPermissionModel pour nettoyer un modèle
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.1.5** Implémenter les tests unitaires pour les fonctions de modèles
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2** Implémenter la comparaison des permissions actuelles avec les modèles
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1** Développer les algorithmes de comparaison
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.1** Créer l'algorithme de comparaison des permissions serveur
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.2** Implémenter l'algorithme de comparaison des permissions de base de données
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.1.3** Développer l'algorithme de comparaison des permissions d'objets
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2** Créer les fonctions de comparaison
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.1** Implémenter la fonction Compare-SqlServerPermissions pour comparer au niveau serveur
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.2** Développer la fonction Compare-SqlDatabasePermissions pour comparer au niveau base de données
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.2.3** Créer la fonction Compare-SqlObjectPermissions pour comparer au niveau objet
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3** Implémenter les options de filtrage et d'exclusion
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.1** Développer les filtres par type de permission
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.2** Créer les filtres par utilisateur ou rôle
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.3.3** Implémenter les filtres par objet ou base de données
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4** Développer les mécanismes de tolérance et seuils
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.1** Créer les paramètres de tolérance pour les différences mineures
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.4.2** Implémenter les seuils d'alerte configurables
+                                    - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.2.5** Implémenter les tests unitaires pour les fonctions de comparaison
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1** Développer les algorithmes de détection d'écarts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
@@ -617,19 +617,19 @@
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4.2** Créer le modèle conforme à PCI DSS
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.4.3** Implémenter le modèle conforme à HIPAA
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.5.5** Créer la documentation des modèles prédéfinis
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6** Développer un rapport visuel des ACL avec mise en évidence des anomalies
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.1** Implémenter la génération de rapports HTML interactifs
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.2** Implémenter la visualisation hiérarchique des permissions
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.3** Implémenter le code couleur pour les niveaux de risque
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.4** Implémenter des filtres interactifs pour l'analyse des permissions
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.5** Implémenter l'exportation des rapports en différents formats
-                                - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7** Créer une fonction de correction automatique des ACL problématiques
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.1** Implémenter la correction des permissions de fichiers et dossiers
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.2** Implémenter la correction des permissions de registre
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.3** Implémenter la correction des permissions de partages réseau
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.4** Implémenter la correction des permissions SQL Server
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.5** Implémenter un mode simulation pour tester les corrections
-                                  - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.6** Implémenter la sauvegarde des ACL avant correction
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6** Développer un rapport visuel des ACL avec mise en évidence des anomalies
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.1** Implémenter la génération de rapports HTML interactifs
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.2** Implémenter la visualisation hiérarchique des permissions
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.3** Implémenter le code couleur pour les niveaux de risque
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.4** Implémenter des filtres interactifs pour l'analyse des permissions
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.6.5** Implémenter l'exportation des rapports en différents formats
+                                - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7** Créer une fonction de correction automatique des ACL problématiques
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.1** Implémenter la correction des permissions de fichiers et dossiers
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.2** Implémenter la correction des permissions de registre
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.3** Implémenter la correction des permissions de partages réseau
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.4** Implémenter la correction des permissions SQL Server
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.5** Implémenter un mode simulation pour tester les corrections
+                                  - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.7.6** Implémenter la sauvegarde des ACL avant correction
                               - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7** Documenter les codes d'erreur HResult spécifiques aux problèmes d'accès
                                 - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.1** Compiler une liste des codes HResult liés aux permissions
                                 - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.7.2** Créer une fonction de traduction des codes HResult en messages explicatifs
