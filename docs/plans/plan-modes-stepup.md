@@ -570,24 +570,88 @@
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3** Implémenter la détection des écarts de permissions
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1** Développer les algorithmes de détection d'écarts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1** Créer l'algorithme de détection des permissions manquantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.1** Définir la structure de données pour représenter les permissions manquantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions absentes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.3** Développer l'algorithme de détection des permissions manquantes au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.4** Développer l'algorithme de détection des permissions manquantes au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.5** Développer l'algorithme de détection des permissions manquantes au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.6** Implémenter la classification des permissions manquantes par criticité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.7** Créer la fonction d'agrégation des résultats de détection
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.8** Développer les tests unitaires pour valider la détection des permissions manquantes
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2** Implémenter l'algorithme de détection des permissions excédentaires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.1** Définir la structure de données pour représenter les permissions excédentaires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions en trop
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.3** Développer l'algorithme de détection des permissions excédentaires au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.4** Développer l'algorithme de détection des permissions excédentaires au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.5** Développer l'algorithme de détection des permissions excédentaires au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.6** Implémenter la classification des permissions excédentaires par niveau de risque
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.7** Créer la fonction d'agrégation des résultats de détection
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.8** Développer les tests unitaires pour valider la détection des permissions excédentaires
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3** Développer l'algorithme de détection des permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1** Définir la structure de données pour représenter les permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3** Développer l'algorithme de détection des permissions contradictoires au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4** Développer l'algorithme de détection des permissions contradictoires au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5** Développer l'algorithme de détection des permissions contradictoires au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6** Implémenter la détection des contradictions entre permissions directes et héritées
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7** Créer la fonction d'agrégation et de résolution des contradictions
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8** Développer les tests unitaires pour valider la détection des permissions contradictoires
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2** Créer les fonctions d'analyse d'écarts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1** Implémenter la fonction Find-SqlPermissionGaps pour trouver les écarts
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1** Définir les paramètres d'entrée et de sortie de la fonction
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2** Implémenter la logique de détection des écarts au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3** Implémenter la logique de détection des écarts au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4** Implémenter la logique de détection des écarts au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5** Développer les options de filtrage des résultats
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6** Implémenter la génération de rapports d'écarts
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7** Créer les tests unitaires pour valider la fonction
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2** Développer la fonction Measure-SqlPermissionCompliance pour mesurer la conformité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1** Définir les métriques de conformité à mesurer
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2** Implémenter l'algorithme de calcul du score de conformité global
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.3** Développer l'algorithme de calcul des scores par catégorie de permission
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.4** Implémenter l'algorithme de calcul des scores par niveau (serveur, base de données, objet)
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.5** Développer les seuils de conformité configurables
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.6** Implémenter la génération de rapports de conformité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.7** Créer les tests unitaires pour valider la fonction
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3** Implémenter la classification des écarts par sévérité
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.1** Créer les règles de classification des écarts critiques
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.2** Développer les règles de classification des écarts importants
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.3.3** Implémenter les règles de classification des écarts mineurs
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4** Développer les suggestions de correction
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1** Créer la génération de scripts SQL correctifs
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.1** Développer les templates de scripts pour corriger les permissions manquantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.2** Implémenter les templates de scripts pour supprimer les permissions excédentaires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.3** Créer les templates de scripts pour résoudre les permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.4** Développer la fonction de génération de scripts correctifs complets
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.5** Implémenter la validation des scripts générés
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.1.6** Créer les tests unitaires pour valider la génération de scripts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2** Implémenter les recommandations de correction manuelle
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.1** Développer les templates de recommandations pour les permissions manquantes
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.2** Implémenter les templates de recommandations pour les permissions excédentaires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.3** Créer les templates de recommandations pour les permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.4** Développer la fonction de génération de recommandations contextuelles
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.5** Implémenter la priorisation des recommandations par impact
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.4.2.6** Créer les tests unitaires pour valider la génération de recommandations
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.5** Implémenter les tests unitaires pour les fonctions de détection d'écarts
                                   - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4** Implémenter la génération de rapports de conformité
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1** Développer les templates de rapports
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1** Créer le template de rapport HTML détaillé
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.1** Concevoir la structure du rapport HTML
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.2** Développer les styles CSS pour le rapport
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.3** Implémenter la section de résumé de conformité
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.4** Créer la section de détails des écarts
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.5** Développer la section de recommandations
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.1.6** Implémenter les fonctionnalités interactives JavaScript
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2** Implémenter le template de rapport CSV pour analyse
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2.1** Définir la structure des données CSV
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2.2** Implémenter la génération d'en-têtes CSV
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2.3** Développer la conversion des données d'écarts en format CSV
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.2.4** Créer les fonctions d'exportation CSV
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3** Développer le template de rapport JSON pour intégration
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3.1** Définir le schéma JSON pour les rapports
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3.2** Implémenter la sérialisation des données d'écarts en JSON
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3.3** Développer la structure hiérarchique des données JSON
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.1.3.4** Créer les fonctions d'exportation JSON
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2** Créer les fonctions de génération de rapports
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2.1** Implémenter la fonction New-SqlPermissionComplianceReport pour générer un rapport
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.4.2.2** Développer la fonction Export-SqlPermissionComplianceReport pour exporter un rapport
