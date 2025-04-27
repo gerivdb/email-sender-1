@@ -589,13 +589,58 @@
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.8** Développer les tests unitaires pour valider la détection des permissions excédentaires
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3** Développer l'algorithme de détection des permissions contradictoires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1** Définir la structure de données pour représenter les permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.1** Créer les classes pour représenter les permissions contradictoires au niveau serveur
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.2** Développer les classes pour représenter les permissions contradictoires au niveau base de données
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3** Implémenter les classes pour représenter les permissions contradictoires au niveau objet
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5** Développer les méthodes pour générer des scripts de résolution de contradictions
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.6** Implémenter les méthodes pour obtenir des représentations textuelles des contradictions
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7** Créer les fonctions d'aide pour faciliter la création d'instances
+                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8** Développer les tests unitaires pour valider la structure de données
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.1** Développer l'algorithme de détection des contradictions GRANT/DENY au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.2** Implémenter l'algorithme de détection des contradictions GRANT/DENY au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.3** Créer l'algorithme de détection des contradictions GRANT/DENY au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.4** Développer la fonction d'analyse des contradictions entre utilisateurs et rôles
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.5** Implémenter la détection des contradictions entre permissions directes et héritées
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.6** Créer les tests unitaires pour valider la détection des contradictions GRANT/DENY
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3** Développer l'algorithme de détection des permissions contradictoires au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3.1** Implémenter la détection des contradictions entre permissions de serveur et de base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3.2** Développer la détection des contradictions entre permissions de serveur et rôles fixes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3.3** Créer la détection des contradictions entre permissions explicites et implicites
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3.4** Implémenter l'analyse des contradictions entre logins et utilisateurs mappés
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3.5** Développer les tests unitaires pour valider la détection au niveau serveur
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4** Développer l'algorithme de détection des permissions contradictoires au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4.1** Implémenter la détection des contradictions entre permissions de base de données et de schéma
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4.2** Développer la détection des contradictions entre permissions de base de données et rôles fixes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4.3** Créer la détection des contradictions entre permissions de base de données et d'objets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4.4** Implémenter l'analyse des contradictions entre utilisateurs et rôles de base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.4.5** Développer les tests unitaires pour valider la détection au niveau base de données
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5** Développer l'algorithme de détection des permissions contradictoires au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5.1** Implémenter la détection des contradictions entre permissions d'objets et de colonnes
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5.2** Développer la détection des contradictions entre permissions d'objets et de schémas
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5.3** Créer la détection des contradictions entre permissions sur différents types d'objets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5.4** Implémenter l'analyse des contradictions entre permissions d'objets et de procédures
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.5.5** Développer les tests unitaires pour valider la détection au niveau objet
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6** Implémenter la détection des contradictions entre permissions directes et héritées
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6.1** Développer l'algorithme de détection des contradictions d'héritage au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6.2** Implémenter l'algorithme de détection des contradictions d'héritage au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6.3** Créer l'algorithme de détection des contradictions d'héritage au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6.4** Développer la détection des contradictions entre permissions de rôles et d'utilisateurs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.6.5** Implémenter les tests unitaires pour valider la détection des contradictions d'héritage
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7** Créer la fonction d'agrégation et de résolution des contradictions
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7.1** Développer l'algorithme de regroupement des contradictions par type
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7.2** Implémenter les règles de priorité pour la résolution des contradictions
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7.3** Créer les mécanismes de génération de scripts correctifs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7.4** Développer les fonctions de rapport de contradictions
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.7.5** Implémenter les tests unitaires pour valider l'agrégation et la résolution
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8** Développer les tests unitaires pour valider la détection des permissions contradictoires
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.1** Créer les tests pour la détection des contradictions GRANT/DENY
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.2** Développer les tests pour la détection des contradictions au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.3** Implémenter les tests pour la détection des contradictions au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.4** Créer les tests pour la détection des contradictions au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.5** Développer les tests pour la détection des contradictions d'héritage
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.8.6** Implémenter les tests pour l'agrégation et la résolution des contradictions
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2** Créer les fonctions d'analyse d'écarts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1** Implémenter la fonction Find-SqlPermissionGaps pour trouver les écarts
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1** Définir les paramètres d'entrée et de sortie de la fonction
