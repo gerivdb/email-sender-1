@@ -202,4 +202,87 @@ Write-Host "LoginName: $($newObjPermission.LoginName)"
 Write-Host "Impact: $($newObjPermission.Impact)"
 Write-Host "RecommendedAction: $($newObjPermission.RecommendedAction)"
 
+Write-Host "`n=== Tests de la classe SqlContradictoryPermissionsSet ==="
+Write-Host "================================================"
+
+# Créer une instance de SqlContradictoryPermissionsSet
+Write-Host "Création d'une instance de SqlContradictoryPermissionsSet..."
+$permissionsSet = [SqlContradictoryPermissionsSet]::new("TestServer", "TestModel")
+
+# Vérifier que l'instance a été créée correctement
+Write-Host "Vérification des propriétés de l'instance..."
+Write-Host "ServerName: $($permissionsSet.ServerName)"
+Write-Host "ModelName: $($permissionsSet.ModelName)"
+Write-Host "AnalysisDate: $($permissionsSet.AnalysisDate)"
+Write-Host "AnalysisUser: $($permissionsSet.AnalysisUser)"
+Write-Host "TotalContradictions: $($permissionsSet.TotalContradictions)"
+
+# Ajouter des contradictions
+Write-Host "`nAjout de contradictions à l'ensemble..."
+$permissionsSet.AddServerContradiction($serverPermission)
+$permissionsSet.AddDatabaseContradiction($dbPermission)
+$permissionsSet.AddObjectContradiction($objPermission)
+
+# Vérifier que les contradictions ont été ajoutées
+Write-Host "Vérification des contradictions ajoutées..."
+Write-Host "Nombre total de contradictions: $($permissionsSet.TotalContradictions)"
+Write-Host "Contradictions au niveau serveur: $($permissionsSet.ServerContradictions.Count)"
+Write-Host "Contradictions au niveau base de données: $($permissionsSet.DatabaseContradictions.Count)"
+Write-Host "Contradictions au niveau objet: $($permissionsSet.ObjectContradictions.Count)"
+
+# Tester la méthode GetAllContradictions
+Write-Host "`nTest de la méthode GetAllContradictions()..."
+$allContradictions = $permissionsSet.GetAllContradictions()
+Write-Host "Nombre total de contradictions récupérées: $($allContradictions.Count)"
+
+# Tester la méthode FilterByRiskLevel
+Write-Host "`nTest de la méthode FilterByRiskLevel()..."
+$moyenContradictions = $permissionsSet.FilterByRiskLevel("Moyen")
+Write-Host "Nombre de contradictions de niveau Moyen: $($moyenContradictions.Count)"
+
+# Tester la méthode FilterByType
+Write-Host "`nTest de la méthode FilterByType()..."
+$grantDenyContradictions = $permissionsSet.FilterByType("GRANT/DENY")
+Write-Host "Nombre de contradictions de type GRANT/DENY: $($grantDenyContradictions.Count)"
+
+# Tester la méthode FilterByUser
+Write-Host "`nTest de la méthode FilterByUser()..."
+$testUserContradictions = $permissionsSet.FilterByUser("TestUser")
+Write-Host "Nombre de contradictions pour l'utilisateur TestUser: $($testUserContradictions.Count)"
+
+# Tester la méthode GenerateSummaryReport
+Write-Host "`nTest de la méthode GenerateSummaryReport()..."
+$summaryReport = $permissionsSet.GenerateSummaryReport()
+Write-Host "Rapport de synthèse généré avec succès."
+
+# Tester la méthode GenerateDetailedReport
+Write-Host "`nTest de la méthode GenerateDetailedReport()..."
+$detailedReport = $permissionsSet.GenerateDetailedReport()
+Write-Host "Rapport détaillé généré avec succès."
+
+# Tester la méthode GenerateFixScript
+Write-Host "`nTest de la méthode GenerateFixScript()..."
+$fixScript = $permissionsSet.GenerateFixScript()
+Write-Host "Script de résolution généré avec succès."
+
+# Tester la méthode ToString
+Write-Host "`nTest de la méthode ToString()..."
+$toString = $permissionsSet.ToString()
+Write-Host "ToString(): $toString"
+
+# Tester la fonction New-SqlContradictoryPermissionsSet
+Write-Host "`nTest de la fonction New-SqlContradictoryPermissionsSet..."
+$newPermissionsSet = New-SqlContradictoryPermissionsSet `
+    -ServerName "ProdServer" `
+    -ModelName "ProductionModel" `
+    -Description "Test description" `
+    -ReportTitle "Test report title"
+
+# Vérifier que l'instance a été créée correctement
+Write-Host "Vérification des propriétés de l'instance créée avec New-SqlContradictoryPermissionsSet..."
+Write-Host "ServerName: $($newPermissionsSet.ServerName)"
+Write-Host "ModelName: $($newPermissionsSet.ModelName)"
+Write-Host "Description: $($newPermissionsSet.Description)"
+Write-Host "ReportTitle: $($newPermissionsSet.ReportTitle)"
+
 Write-Host "`nTous les tests terminés avec succès!"

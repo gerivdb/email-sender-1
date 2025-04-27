@@ -587,5 +587,365 @@ function New-SqlObjectContradictoryPermission {
     return $permission
 }
 
+# Classe pour représenter un ensemble de permissions contradictoires
+class SqlContradictoryPermissionsSet {
+    # Collections pour stocker les différents types de permissions contradictoires
+    [System.Collections.Generic.List[SqlServerContradictoryPermission]]$ServerContradictions
+    [System.Collections.Generic.List[SqlDatabaseContradictoryPermission]]$DatabaseContradictions
+    [System.Collections.Generic.List[SqlObjectContradictoryPermission]]$ObjectContradictions
+
+    # Métadonnées
+    [string]$ServerName                # Nom du serveur SQL
+    [string]$AnalysisDate              # Date de l'analyse
+    [string]$AnalysisUser              # Utilisateur ayant effectué l'analyse
+    [string]$ModelName                 # Nom du modèle de référence utilisé
+    [int]$TotalContradictions          # Nombre total de contradictions
+    [hashtable]$ContradictionsByType   # Nombre de contradictions par type
+    [hashtable]$ContradictionsByRisk   # Nombre de contradictions par niveau de risque
+    [string]$Description               # Description de l'ensemble de contradictions
+    [string]$ReportTitle               # Titre du rapport
+
+    # Constructeur par défaut
+    SqlContradictoryPermissionsSet() {
+        $this.ServerContradictions = New-Object System.Collections.Generic.List[SqlServerContradictoryPermission]
+        $this.DatabaseContradictions = New-Object System.Collections.Generic.List[SqlDatabaseContradictoryPermission]
+        $this.ObjectContradictions = New-Object System.Collections.Generic.List[SqlObjectContradictoryPermission]
+        $this.AnalysisDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $this.AnalysisUser = $env:USERNAME
+        $this.ContradictionsByType = @{
+            "GRANT/DENY"       = 0
+            "Héritage"         = 0
+            "Rôle/Utilisateur" = 0
+        }
+        $this.ContradictionsByRisk = @{
+            "Critique" = 0
+            "Élevé"    = 0
+            "Moyen"    = 0
+            "Faible"   = 0
+        }
+    }
+
+    # Constructeur avec paramètres de base
+    SqlContradictoryPermissionsSet([string]$serverName, [string]$modelName) {
+        $this.ServerContradictions = New-Object System.Collections.Generic.List[SqlServerContradictoryPermission]
+        $this.DatabaseContradictions = New-Object System.Collections.Generic.List[SqlDatabaseContradictoryPermission]
+        $this.ObjectContradictions = New-Object System.Collections.Generic.List[SqlObjectContradictoryPermission]
+        $this.ServerName = $serverName
+        $this.ModelName = $modelName
+        $this.AnalysisDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $this.AnalysisUser = $env:USERNAME
+        $this.ContradictionsByType = @{
+            "GRANT/DENY"       = 0
+            "Héritage"         = 0
+            "Rôle/Utilisateur" = 0
+        }
+        $this.ContradictionsByRisk = @{
+            "Critique" = 0
+            "Élevé"    = 0
+            "Moyen"    = 0
+            "Faible"   = 0
+        }
+    }
+
+    # Méthode pour ajouter une contradiction au niveau serveur
+    [void] AddServerContradiction([SqlServerContradictoryPermission]$contradiction) {
+        $this.ServerContradictions.Add($contradiction)
+        $this.UpdateStatistics($contradiction.ContradictionType, $contradiction.RiskLevel)
+    }
+
+    # Méthode pour ajouter une contradiction au niveau base de données
+    [void] AddDatabaseContradiction([SqlDatabaseContradictoryPermission]$contradiction) {
+        $this.DatabaseContradictions.Add($contradiction)
+        $this.UpdateStatistics($contradiction.ContradictionType, $contradiction.RiskLevel)
+    }
+
+    # Méthode pour ajouter une contradiction au niveau objet
+    [void] AddObjectContradiction([SqlObjectContradictoryPermission]$contradiction) {
+        $this.ObjectContradictions.Add($contradiction)
+        $this.UpdateStatistics($contradiction.ContradictionType, $contradiction.RiskLevel)
+    }
+
+    # Méthode privée pour mettre à jour les statistiques
+    hidden [void] UpdateStatistics([string]$contradictionType, [string]$riskLevel) {
+        $this.TotalContradictions++
+
+        if ($this.ContradictionsByType.ContainsKey($contradictionType)) {
+            $this.ContradictionsByType[$contradictionType]++
+        } else {
+            $this.ContradictionsByType[$contradictionType] = 1
+        }
+
+        if ($this.ContradictionsByRisk.ContainsKey($riskLevel)) {
+            $this.ContradictionsByRisk[$riskLevel]++
+        } else {
+            $this.ContradictionsByRisk[$riskLevel] = 1
+        }
+    }
+
+    # Méthode pour obtenir toutes les contradictions
+    [array] GetAllContradictions() {
+        $allContradictions = @()
+        $allContradictions += $this.ServerContradictions
+        $allContradictions += $this.DatabaseContradictions
+        $allContradictions += $this.ObjectContradictions
+        return $allContradictions
+    }
+
+    # Méthode pour filtrer les contradictions par niveau de risque
+    [array] FilterByRiskLevel([string]$riskLevel) {
+        $filtered = @()
+
+        foreach ($contradiction in $this.ServerContradictions) {
+            if ($contradiction.RiskLevel -eq $riskLevel) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.DatabaseContradictions) {
+            if ($contradiction.RiskLevel -eq $riskLevel) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.ObjectContradictions) {
+            if ($contradiction.RiskLevel -eq $riskLevel) {
+                $filtered += $contradiction
+            }
+        }
+
+        return $filtered
+    }
+
+    # Méthode pour filtrer les contradictions par type
+    [array] FilterByType([string]$contradictionType) {
+        $filtered = @()
+
+        foreach ($contradiction in $this.ServerContradictions) {
+            if ($contradiction.ContradictionType -eq $contradictionType) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.DatabaseContradictions) {
+            if ($contradiction.ContradictionType -eq $contradictionType) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.ObjectContradictions) {
+            if ($contradiction.ContradictionType -eq $contradictionType) {
+                $filtered += $contradiction
+            }
+        }
+
+        return $filtered
+    }
+
+    # Méthode pour filtrer les contradictions par login/utilisateur
+    [array] FilterByUser([string]$userName) {
+        $filtered = @()
+
+        foreach ($contradiction in $this.ServerContradictions) {
+            if ($contradiction.LoginName -eq $userName) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.DatabaseContradictions) {
+            if ($contradiction.UserName -eq $userName -or $contradiction.LoginName -eq $userName) {
+                $filtered += $contradiction
+            }
+        }
+
+        foreach ($contradiction in $this.ObjectContradictions) {
+            if ($contradiction.UserName -eq $userName -or $contradiction.LoginName -eq $userName) {
+                $filtered += $contradiction
+            }
+        }
+
+        return $filtered
+    }
+
+    # Méthode pour générer un rapport de synthèse
+    [string] GenerateSummaryReport() {
+        $report = "Rapport de synthèse des permissions contradictoires`n"
+        $report += "================================================`n`n"
+        $report += "Serveur: $($this.ServerName)`n"
+        $report += "Date d'analyse: $($this.AnalysisDate)`n"
+        $report += "Utilisateur: $($this.AnalysisUser)`n"
+
+        if ($this.ModelName) {
+            $report += "Modèle de référence: $($this.ModelName)`n"
+        }
+
+        $report += "`nNombre total de contradictions: $($this.TotalContradictions)`n`n"
+
+        $report += "Répartition par niveau de risque:`n"
+        foreach ($key in $this.ContradictionsByRisk.Keys | Sort-Object @{Expression = {
+                    switch ($_) {
+                        "Critique" { 0 }
+                        "Élevé" { 1 }
+                        "Moyen" { 2 }
+                        "Faible" { 3 }
+                        default { 4 }
+                    }
+                }
+            }) {
+            $report += "- $($key): $($this.ContradictionsByRisk[$key])`n"
+        }
+
+        $report += "`nRépartition par type de contradiction:`n"
+        foreach ($key in $this.ContradictionsByType.Keys) {
+            $report += "- $($key): $($this.ContradictionsByType[$key])`n"
+        }
+
+        $report += "`nDétail des contradictions:`n"
+        $report += "- Niveau serveur: $($this.ServerContradictions.Count)`n"
+        $report += "- Niveau base de données: $($this.DatabaseContradictions.Count)`n"
+        $report += "- Niveau objet: $($this.ObjectContradictions.Count)`n"
+
+        return $report
+    }
+
+    # Méthode pour générer un rapport détaillé
+    [string] GenerateDetailedReport() {
+        $report = $this.GenerateSummaryReport()
+        $report += "`n`nDétail des contradictions au niveau serveur:`n"
+        $report += "-------------------------------------------`n"
+
+        if ($this.ServerContradictions.Count -eq 0) {
+            $report += "Aucune contradiction détectée au niveau serveur.`n"
+        } else {
+            foreach ($contradiction in $this.ServerContradictions) {
+                $report += "`n$($contradiction.ToString())`n"
+                $report += "Niveau de risque: $($contradiction.RiskLevel)`n"
+                if ($contradiction.Impact) {
+                    $report += "Impact: $($contradiction.Impact)`n"
+                }
+                if ($contradiction.RecommendedAction) {
+                    $report += "Action recommandée: $($contradiction.RecommendedAction)`n"
+                }
+                $report += "---`n"
+            }
+        }
+
+        $report += "`n`nDétail des contradictions au niveau base de données:`n"
+        $report += "---------------------------------------------------`n"
+
+        if ($this.DatabaseContradictions.Count -eq 0) {
+            $report += "Aucune contradiction détectée au niveau base de données.`n"
+        } else {
+            foreach ($contradiction in $this.DatabaseContradictions) {
+                $report += "`n$($contradiction.ToString())`n"
+                $report += "Niveau de risque: $($contradiction.RiskLevel)`n"
+                if ($contradiction.Impact) {
+                    $report += "Impact: $($contradiction.Impact)`n"
+                }
+                if ($contradiction.RecommendedAction) {
+                    $report += "Action recommandée: $($contradiction.RecommendedAction)`n"
+                }
+                $report += "---`n"
+            }
+        }
+
+        $report += "`n`nDétail des contradictions au niveau objet:`n"
+        $report += "-------------------------------------------`n"
+
+        if ($this.ObjectContradictions.Count -eq 0) {
+            $report += "Aucune contradiction détectée au niveau objet.`n"
+        } else {
+            foreach ($contradiction in $this.ObjectContradictions) {
+                $report += "`n$($contradiction.ToString())`n"
+                $report += "Niveau de risque: $($contradiction.RiskLevel)`n"
+                if ($contradiction.Impact) {
+                    $report += "Impact: $($contradiction.Impact)`n"
+                }
+                if ($contradiction.RecommendedAction) {
+                    $report += "Action recommandée: $($contradiction.RecommendedAction)`n"
+                }
+                $report += "---`n"
+            }
+        }
+
+        return $report
+    }
+
+    # Méthode pour générer un script de résolution pour toutes les contradictions
+    [string] GenerateFixScript() {
+        $script = "-- Script pour résoudre toutes les contradictions de permissions`n"
+        $script += "-- Serveur: $($this.ServerName)`n"
+        $script += "-- Date de génération: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")`n"
+        $script += "-- Nombre total de contradictions: $($this.TotalContradictions)`n`n"
+
+        $script += "-- Résolution des contradictions au niveau serveur`n"
+        $script += "-- ------------------------------------------------`n"
+
+        if ($this.ServerContradictions.Count -eq 0) {
+            $script += "-- Aucune contradiction détectée au niveau serveur.`n"
+        } else {
+            foreach ($contradiction in $this.ServerContradictions) {
+                $script += "`n$($contradiction.GenerateFixScript())`n"
+            }
+        }
+
+        $script += "`n-- Résolution des contradictions au niveau base de données`n"
+        $script += "-- --------------------------------------------------------`n"
+
+        if ($this.DatabaseContradictions.Count -eq 0) {
+            $script += "-- Aucune contradiction détectée au niveau base de données.`n"
+        } else {
+            foreach ($contradiction in $this.DatabaseContradictions) {
+                $script += "`n$($contradiction.GenerateFixScript())`n"
+            }
+        }
+
+        $script += "`n-- Résolution des contradictions au niveau objet`n"
+        $script += "-- ------------------------------------------------`n"
+
+        if ($this.ObjectContradictions.Count -eq 0) {
+            $script += "-- Aucune contradiction détectée au niveau objet.`n"
+        } else {
+            foreach ($contradiction in $this.ObjectContradictions) {
+                $script += "`n$($contradiction.GenerateFixScript())`n"
+            }
+        }
+
+        return $script
+    }
+
+    # Méthode pour obtenir une représentation textuelle
+    [string] ToString() {
+        return "Ensemble de $($this.TotalContradictions) permissions contradictoires sur le serveur $($this.ServerName)"
+    }
+}
+
+# Fonction pour créer un nouvel ensemble de permissions contradictoires
+function New-SqlContradictoryPermissionsSet {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]$ServerName = $env:COMPUTERNAME,
+
+        [Parameter(Mandatory = $false)]
+        [string]$ModelName,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Description,
+
+        [Parameter(Mandatory = $false)]
+        [string]$ReportTitle = "Rapport de permissions contradictoires"
+    )
+
+    $permissionsSet = [SqlContradictoryPermissionsSet]::new($ServerName, $ModelName)
+
+    if ($Description) {
+        $permissionsSet.Description = $Description
+    }
+
+    $permissionsSet.ReportTitle = $ReportTitle
+
+    return $permissionsSet
+}
+
 # Note: Les fonctions seront exportées par le module principal
-# Export-ModuleMember -Function New-SqlServerContradictoryPermission, New-SqlDatabaseContradictoryPermission, New-SqlObjectContradictoryPermission
+# Export-ModuleMember -Function New-SqlServerContradictoryPermission, New-SqlDatabaseContradictoryPermission, New-SqlObjectContradictoryPermission, New-SqlContradictoryPermissionsSet

@@ -611,14 +611,14 @@
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.5** Implémenter les méthodes pour générer des scripts de résolution
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.6** Développer les méthodes de représentation textuelle
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.3.7** Créer les constructeurs avec différentes signatures
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.1** Définir la classe SqlContradictoryPermissionsSet
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.2** Implémenter les collections pour les différents niveaux de contradictions
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.3** Développer les propriétés pour les métadonnées (serveur, date, etc.)
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.4** Créer les méthodes d'ajout de permissions contradictoires
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.5** Implémenter les méthodes de filtrage et de recherche
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.6** Développer les méthodes de génération de rapports
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.7** Créer les méthodes de statistiques et d'analyse
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4** Créer la classe pour représenter un ensemble de permissions contradictoires
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.1** Définir la classe SqlContradictoryPermissionsSet
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.2** Implémenter les collections pour les différents niveaux de contradictions
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.3** Développer les propriétés pour les métadonnées (serveur, date, etc.)
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.4** Créer les méthodes d'ajout de permissions contradictoires
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.5** Implémenter les méthodes de filtrage et de recherche
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.6** Développer les méthodes de génération de rapports
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.4.7** Créer les méthodes de statistiques et d'analyse
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5** Développer les méthodes pour générer des scripts de résolution de contradictions
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.1** Implémenter la méthode GenerateFixScript pour les contradictions serveur
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.5.2** Développer la méthode GenerateFixScript pour les contradictions base de données
@@ -635,13 +635,13 @@
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.1** Implémenter la fonction New-SqlServerContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.2** Développer la fonction New-SqlDatabaseContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.3** Créer la fonction New-SqlObjectContradictoryPermission
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.4** Implémenter la fonction New-SqlContradictoryPermissionsSet
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.4** Implémenter la fonction New-SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.7.5** Développer les fonctions d'aide pour les cas d'usage courants
                                           - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8** Développer les tests unitaires pour valider la structure de données
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.1** Créer les tests pour SqlServerContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.2** Implémenter les tests pour SqlDatabaseContradictoryPermission
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.3** Développer les tests pour SqlObjectContradictoryPermission
-                                            - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.4** Créer les tests pour SqlContradictoryPermissionsSet
+                                            - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.4** Créer les tests pour SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.5** Implémenter les tests pour les méthodes de génération de scripts
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.6** Développer les tests pour les fonctions d'aide
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet

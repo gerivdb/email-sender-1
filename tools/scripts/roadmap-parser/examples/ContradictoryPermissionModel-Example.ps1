@@ -84,13 +84,67 @@ Write-Host "Script de résolution:"
 Write-Host "--------------------"
 Write-Host $objectContradiction.GenerateFixScript()
 
+# Créer un ensemble de permissions contradictoires
+$permissionsSet = New-SqlContradictoryPermissionsSet `
+    -ServerName "SQLSERVER01" `
+    -ModelName "ProductionSecurityModel" `
+    -Description "Analyse des permissions contradictoires sur le serveur de production" `
+    -ReportTitle "Rapport de permissions contradictoires - Serveur de production"
+
+# Ajouter les contradictions à l'ensemble
+$permissionsSet.AddServerContradiction($serverContradiction)
+$permissionsSet.AddDatabaseContradiction($databaseContradiction)
+$permissionsSet.AddObjectContradiction($objectContradiction)
+
+# Afficher les informations de l'ensemble de permissions contradictoires
+Write-Host "`nEnsemble de permissions contradictoires:"
+Write-Host "--------------------------------------"
+Write-Host $permissionsSet.ToString()
+Write-Host ""
+Write-Host "Nombre total de contradictions: $($permissionsSet.TotalContradictions)"
+Write-Host "Contradictions au niveau serveur: $($permissionsSet.ServerContradictions.Count)"
+Write-Host "Contradictions au niveau base de données: $($permissionsSet.DatabaseContradictions.Count)"
+Write-Host "Contradictions au niveau objet: $($permissionsSet.ObjectContradictions.Count)"
+
+# Générer un rapport de synthèse
+Write-Host "`nRapport de synthèse:"
+Write-Host "-----------------"
+Write-Host $permissionsSet.GenerateSummaryReport()
+
+# Générer un script de résolution pour toutes les contradictions
+Write-Host "`nScript de résolution pour toutes les contradictions:"
+Write-Host "----------------------------------------------"
+Write-Host $permissionsSet.GenerateFixScript()
+
+# Filtrer les contradictions par niveau de risque
+$highRiskContradictions = $permissionsSet.FilterByRiskLevel("Élevé")
+Write-Host "`nContradictions de niveau de risque élevé: $($highRiskContradictions.Count)"
+foreach ($contradiction in $highRiskContradictions) {
+    Write-Host "- $($contradiction.ToString())"
+}
+
+# Filtrer les contradictions par type
+$grantDenyContradictions = $permissionsSet.FilterByType("GRANT/DENY")
+Write-Host "`nContradictions de type GRANT/DENY: $($grantDenyContradictions.Count)"
+foreach ($contradiction in $grantDenyContradictions) {
+    Write-Host "- $($contradiction.ToString())"
+}
+
+# Filtrer les contradictions par utilisateur
+$appUserContradictions = $permissionsSet.FilterByUser("AppUser")
+Write-Host "`nContradictions pour l'utilisateur AppUser: $($appUserContradictions.Count)"
+foreach ($contradiction in $appUserContradictions) {
+    Write-Host "- $($contradiction.ToString())"
+}
+
 # Exemple d'utilisation dans un scénario de détection
 Write-Host "`nExemple de scénario de détection de contradictions:"
 Write-Host "------------------------------------------------"
 Write-Host "1. Récupérer les permissions actuelles du serveur SQL, des bases de données et des objets"
 Write-Host "2. Analyser les permissions pour détecter les contradictions GRANT/DENY"
 Write-Host "3. Créer des objets SqlServerContradictoryPermission, SqlDatabaseContradictoryPermission et SqlObjectContradictoryPermission pour chaque contradiction"
-Write-Host "4. Générer des rapports et des scripts de résolution"
+Write-Host "4. Ajouter les contradictions à un objet SqlContradictoryPermissionsSet"
+Write-Host "5. Générer des rapports et des scripts de résolution"
 Write-Host ""
 
 # Exemple de code pour détecter les contradictions au niveau serveur (pseudo-code)
