@@ -644,12 +644,59 @@
                                     - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2** Créer les fonctions d'analyse d'écarts
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1** Implémenter la fonction Find-SqlPermissionGaps pour trouver les écarts
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1** Définir les paramètres d'entrée et de sortie de la fonction
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.1** Définir les paramètres pour la connexion SQL Server
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.2** Définir les paramètres pour spécifier le modèle de référence
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.3** Définir les paramètres de filtrage des résultats
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.4** Définir les paramètres pour le format de sortie
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.5** Définir les paramètres pour les options avancées
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.6** Implémenter la validation des paramètres d'entrée
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.1.7** Définir la structure des objets de sortie
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2** Implémenter la logique de détection des écarts au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.1** Développer la récupération des permissions actuelles du serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.2** Implémenter la récupération des permissions du modèle de référence
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.3** Créer l'algorithme de comparaison des permissions serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.4** Développer la détection des permissions manquantes au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.5** Implémenter la détection des permissions excédentaires au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.6** Créer la détection des permissions contradictoires au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.2.7** Développer les tests unitaires pour la détection au niveau serveur
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3** Implémenter la logique de détection des écarts au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.1** Développer la récupération des permissions actuelles des bases de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.2** Implémenter la récupération des permissions de base de données du modèle
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.3** Créer l'algorithme de comparaison des permissions de base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.4** Développer la détection des permissions manquantes au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.5** Implémenter la détection des permissions excédentaires au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.6** Créer la détection des permissions contradictoires au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.3.7** Développer les tests unitaires pour la détection au niveau base de données
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4** Implémenter la logique de détection des écarts au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.1** Développer la récupération des permissions actuelles des objets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.2** Implémenter la récupération des permissions d'objets du modèle
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.3** Créer l'algorithme de comparaison des permissions d'objets
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.4** Développer la détection des permissions manquantes au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.5** Implémenter la détection des permissions excédentaires au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.6** Créer la détection des permissions contradictoires au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.4.7** Développer les tests unitaires pour la détection au niveau objet
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5** Développer les options de filtrage des résultats
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.1** Implémenter le filtrage par type de permission
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.2** Développer le filtrage par niveau de sécurité
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.3** Créer le filtrage par utilisateur ou rôle
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.4** Implémenter le filtrage par base de données ou objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.5** Développer le filtrage par niveau de risque
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.5.6** Créer les tests unitaires pour valider les options de filtrage
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6** Implémenter la génération de rapports d'écarts
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.1** Développer la génération de rapports textuels
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.2** Implémenter la génération de rapports HTML
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.3** Créer la génération de rapports CSV
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.4** Développer la génération de rapports JSON
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.5** Implémenter la génération de scripts correctifs
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.6.6** Créer les tests unitaires pour valider la génération de rapports
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7** Créer les tests unitaires pour valider la fonction
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.1** Développer les tests pour les paramètres d'entrée et de sortie
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.2** Implémenter les tests pour la détection au niveau serveur
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.3** Créer les tests pour la détection au niveau base de données
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.4** Développer les tests pour la détection au niveau objet
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.5** Implémenter les tests pour les options de filtrage
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.6** Créer les tests pour la génération de rapports
+                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.1.7.7** Développer les tests d'intégration pour la fonction complète
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2** Développer la fonction Measure-SqlPermissionCompliance pour mesurer la conformité
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.1** Définir les métriques de conformité à mesurer
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.2.2.2** Implémenter l'algorithme de calcul du score de conformité global
