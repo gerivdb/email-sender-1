@@ -578,15 +578,15 @@
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.6** Implémenter la classification des permissions manquantes par criticité
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.7** Créer la fonction d'agrégation des résultats de détection
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.1.8** Développer les tests unitaires pour valider la détection des permissions manquantes
-                                      - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2** Implémenter l'algorithme de détection des permissions excédentaires
+                                      - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2** Implémenter l'algorithme de détection des permissions excédentaires
                                         - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.1** Définir la structure de données pour représenter les permissions excédentaires
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions en trop
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.3** Développer l'algorithme de détection des permissions excédentaires au niveau serveur
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.4** Développer l'algorithme de détection des permissions excédentaires au niveau base de données
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.5** Développer l'algorithme de détection des permissions excédentaires au niveau objet
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.6** Implémenter la classification des permissions excédentaires par niveau de risque
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.7** Créer la fonction d'agrégation des résultats de détection
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.8** Développer les tests unitaires pour valider la détection des permissions excédentaires
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.2** Implémenter la fonction de comparaison ensembliste pour identifier les permissions en trop
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.3** Développer l'algorithme de détection des permissions excédentaires au niveau serveur
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.4** Développer l'algorithme de détection des permissions excédentaires au niveau base de données
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.5** Développer l'algorithme de détection des permissions excédentaires au niveau objet
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.6** Implémenter la classification des permissions excédentaires par niveau de risque
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.7** Créer la fonction d'agrégation des résultats de détection
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.2.8** Développer les tests unitaires pour valider la détection des permissions excédentaires
                                       - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3** Développer l'algorithme de détection des permissions contradictoires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1** Définir la structure de données pour représenter les permissions contradictoires
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
