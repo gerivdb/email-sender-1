@@ -644,11 +644,11 @@
                                             - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.4** Créer les tests pour SqlContradictoryPermissionsSet
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.5** Implémenter les tests pour les méthodes de génération de scripts
                                             - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.1.8.6** Développer les tests pour les fonctions d'aide
-                                        - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.1** Développer l'algorithme de détection des contradictions GRANT/DENY au niveau serveur
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.2** Implémenter l'algorithme de détection des contradictions GRANT/DENY au niveau base de données
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.3** Créer l'algorithme de détection des contradictions GRANT/DENY au niveau objet
-                                          - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.4** Développer la fonction d'analyse des contradictions entre utilisateurs et rôles
+                                        - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2** Implémenter la fonction de détection des permissions GRANT et DENY sur le même objet
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.1** Développer l'algorithme de détection des contradictions GRANT/DENY au niveau serveur
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.2** Implémenter l'algorithme de détection des contradictions GRANT/DENY au niveau base de données
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.3** Créer l'algorithme de détection des contradictions GRANT/DENY au niveau objet
+                                          - [x] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.4** Développer la fonction d'analyse des contradictions entre utilisateurs et rôles
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.5** Implémenter la détection des contradictions entre permissions directes et héritées
                                           - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.2.6** Créer les tests unitaires pour valider la détection des contradictions GRANT/DENY
                                         - [ ] **1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.5.3.1.3.3** Développer l'algorithme de détection des permissions contradictoires au niveau serveur
