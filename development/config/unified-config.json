@@ -1,0 +1,248 @@
+{
+  "General": {
+    "RoadmapPath": "projet\\roadmaps\\Roadmap\\roadmap_complete_converted.md",
+    "ActiveDocumentPath": "docs\\plans\\plan-modes-stepup.md",
+    "ReportPath": "reports",
+    "LogPath": "logs",
+    "DefaultLanguage": "fr-FR",
+    "DefaultEncoding": "UTF8-BOM",
+    "ProjectRoot": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+  },
+  "Modes": {
+    "Archi": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\archi-mode.ps1",
+      "DiagramType": "C4",
+      "IncludeComponents": true,
+      "IncludeInterfaces": true,
+      "IncludeDependencies": true,
+      "OutputFormats": ["Markdown", "PlantUML", "Mermaid"]
+    },
+    "Check": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\check.ps1",
+      "DefaultRoadmapFile": "docs\\plans\\roadmap_complete_2.md",
+      "DefaultActiveDocumentPath": "docs\\plans\\plan-modes-stepup.md",
+      "AutoUpdateRoadmap": true,
+      "GenerateReport": true,
+      "ReportPath": "reports",
+      "AutoUpdateCheckboxes": true,
+      "RequireFullTestCoverage": true,
+      "SimulationModeDefault": true
+    },
+    "CBreak": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\c-break-mode.ps1",
+      "MaxRecursionDepth": 10,
+      "AnalyzeImports": true,
+      "AnalyzeReferences": true,
+      "GenerateGraph": true,
+      "SuggestFixes": true
+    },
+    "Debug": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\debug\\debug-mode.ps1",
+      "GeneratePatch": true,
+      "IncludeStackTrace": true,
+      "MaxStackTraceDepth": 10,
+      "AnalyzePerformance": true,
+      "SuggestFixes": true,
+      "ErrorLog": "logs\\error.log"
+    },
+    "DevR": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\dev-r\\dev-r-mode.ps1",
+      "GenerateTests": true,
+      "TestsPath": "tests",
+      "ImplementationPath": "src",
+      "AutoDocumentation": true,
+      "CodeStyle": "Standard",
+      "MaxFunctionSize": 100
+    },
+    "Gran": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\gran\\gran-mode.ps1",
+      "MaxTaskSize": 5,
+      "MaxComplexity": 7,
+      "AutoIndent": true,
+      "GenerateSubtasks": true,
+      "UpdateInPlace": true,
+      "SubTasksFile": "templates\\subtasks.txt",
+      "IndentationStyle": "Spaces",
+      "CheckboxStyle": "GitHub"
+    },
+    "Opti": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\opti-mode.ps1",
+      "PerformanceThreshold": 80,
+      "MemoryThreshold": 80,
+      "ComplexityThreshold": 10,
+      "GenerateReport": true,
+      "SuggestFixes": true,
+      "OptimizationTarget": "All",
+      "ProfileDepth": 5,
+      "TimeThreshold": 1000
+    },
+    "Predic": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\predic-mode.ps1",
+      "HistoryDepth": 30,
+      "PredictionHorizon": 7,
+      "ConfidenceThreshold": 0.8,
+      "GenerateCharts": true,
+      "AlertThreshold": 0.9,
+      "AnomalyDetection": true,
+      "TrendAnalysis": true
+    },
+    "Review": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\review-mode.ps1",
+      "CodeStyleRules": "Standard",
+      "DocumentationRequired": true,
+      "TestCoverageThreshold": 80,
+      "ComplexityThreshold": 10,
+      "GenerateReport": true
+    },
+    "Test": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\test\\test-mode.ps1",
+      "TestsPath": "tests",
+      "CoverageThreshold": 80,
+      "IncludeUnitTests": true,
+      "IncludeIntegrationTests": true,
+      "GenerateReport": true,
+      "ReportPath": "reports\\tests"
+    },
+    "Manager": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\manager\\mode-manager.ps1"
+    },
+    "RoadmapSync": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\roadmap-sync-mode.ps1",
+      "DefaultSourceFormat": "Markdown",
+      "DefaultTargetFormat": "JSON",
+      "DefaultSourcePath": "projet\\roadmaps\\Roadmap\\roadmap_complete_converted.md",
+      "DefaultTargetPath": "projet\\roadmaps\\Roadmap\\roadmap_complete.json"
+    },
+    "RoadmapReport": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\roadmap-report-mode.ps1",
+      "DefaultReportFormat": "HTML",
+      "DefaultOutputPath": "projet\\roadmaps\\Reports",
+      "IncludeCharts": true,
+      "IncludeTrends": true,
+      "IncludePredictions": true,
+      "DaysToAnalyze": 30
+    },
+    "RoadmapPlan": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\roadmap-plan-mode.ps1",
+      "DefaultOutputPath": "projet\\roadmaps\\Plans",
+      "DaysToForecast": 30
+    }
+  },
+  "Roadmaps": {
+    "Main": {
+      "Path": "projet\\roadmaps\\Roadmap\\roadmap_complete_converted.md",
+      "Description": "Roadmap principale du projet",
+      "Format": "Markdown",
+      "AutoUpdate": true,
+      "GitIntegration": true,
+      "ReportPath": "projet\\roadmaps\\Reports"
+    },
+    "Development": {
+      "Path": "projet\\roadmaps\\plans\\plan-modes-stepup.md",
+      "Description": "Plan de développement des modes",
+      "Format": "Markdown",
+      "AutoUpdate": true,
+      "GitIntegration": true,
+      "ReportPath": "projet\\roadmaps\\Reports"
+    },
+    "Personal": {
+      "Path": "projet\\roadmaps\\mes-plans\\roadmap_perso.md",
+      "Description": "Roadmap personnelle",
+      "Format": "Markdown",
+      "AutoUpdate": false,
+      "GitIntegration": false,
+      "ReportPath": "projet\\roadmaps\\Reports"
+    }
+  },
+  "RoadmapManager": {
+    "DefaultRoadmapPath": "projet\\roadmaps\\Roadmap\\roadmap_perso.md",
+    "ReportsFolder": "projet\\roadmaps\\Reports",
+    "GitRepo": ".",
+    "DaysToAnalyze": 7,
+    "AutoUpdate": true,
+    "GenerateReport": true,
+    "JournalPath": "projet\\roadmaps\\journal",
+    "LogFile": "projet\\roadmaps\\logs\\RoadmapManager.log",
+    "BackupFolder": "projet\\roadmaps\\backup",
+    "Scripts": {
+      "Manager": "projet\\roadmaps\\scripts\\RoadmapManager.ps1",
+      "Analyzer": "projet\\roadmaps\\scripts\\RoadmapAnalyzer.ps1",
+      "GitUpdater": "projet\\roadmaps\\scripts\\RoadmapGitUpdater.ps1",
+      "Cleanup": "projet\\roadmaps\\scripts\\CleanupRoadmapFiles.ps1",
+      "Organize": "projet\\roadmaps\\scripts\\OrganizeRoadmapScripts.ps1",
+      "Execute": "projet\\roadmaps\\scripts\\StartRoadmapExecution.ps1",
+      "Sync": "projet\\roadmaps\\scripts\\Sync-RoadmapWithJournal.ps1"
+    }
+  },
+  "Workflows": {
+    "Development": {
+      "Description": "Workflow de développement complet",
+      "Modes": ["GRAN", "DEV-R", "TEST", "CHECK"],
+      "AutoContinue": true,
+      "StopOnError": true
+    },
+    "Optimization": {
+      "Description": "Workflow d'optimisation",
+      "Modes": ["REVIEW", "OPTI", "TEST", "CHECK"],
+      "AutoContinue": true,
+      "StopOnError": true
+    },
+    "Debugging": {
+      "Description": "Workflow de débogage",
+      "Modes": ["DEBUG", "TEST", "CHECK"],
+      "AutoContinue": true,
+      "StopOnError": true
+    },
+    "Architecture": {
+      "Description": "Workflow d'architecture",
+      "Modes": ["ARCHI", "C-BREAK", "REVIEW"],
+      "AutoContinue": true,
+      "StopOnError": true
+    },
+    "Analysis": {
+      "Description": "Workflow d'analyse",
+      "Modes": ["CHECK", "PREDIC", "REVIEW"],
+      "AutoContinue": true,
+      "StopOnError": false
+    },
+    "RoadmapManagement": {
+      "Description": "Workflow de gestion de roadmap",
+      "Modes": ["ROADMAP-SYNC", "ROADMAP-REPORT", "ROADMAP-PLAN"],
+      "AutoContinue": true,
+      "StopOnError": true
+    }
+  },
+  "Integration": {
+    "EnabledByDefault": true,
+    "DefaultWorkflow": "Development",
+    "DefaultRoadmap": "Main",
+    "AutoSaveResults": true,
+    "ResultsPath": "reports\\integration",
+    "LogLevel": "Info",
+    "NotifyOnCompletion": true,
+    "MaxConcurrentTasks": 4
+  },
+  "Paths": {
+    "OutputDirectory": "output",
+    "TestsDirectory": "tests",
+    "ScriptsDirectory": "development\\scripts",
+    "ModulePath": "development\\roadmap\\parser\\module",
+    "FunctionsPath": "development\\roadmap\\parser\\module\\Functions",
+    "TemplatesPath": "development\\roadmap\\parser\\module\\Templates",
+    "BackupPath": "backup"
+  }
+}

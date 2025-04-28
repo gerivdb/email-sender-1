@@ -31,7 +31,7 @@ param (
     [switch]$GenerateHTML,
 
     [Parameter(Mandatory = $false)]
-    [ValidateSet("All", "Unit", "Integration", "Performance", "Workflow", "Error", "Config", "Simple", "PerformanceAdvanced", "WorkflowAdvanced", "UI", "Security", "Documentation", "Installation", "Regression", "Load", "IntegrationRoadmapParser", "Compatibility", "Localization", "LongTermPerformance", "IntegrationReporting", "SimpleTest")]
+    [ValidateSet("All", "Unit", "Integration", "Performance", "Workflow", "Error", "Config", "Simple", "PerformanceAdvanced", "WorkflowAdvanced", "UI", "Security", "Documentation", "Installation", "Regression", "Load", "IntegrationRoadmapParser", "Compatibility", "Localization", "LongTermPerformance", "IntegrationReporting", "SimpleTest", "SimpleIntegratedManager", "SimpleRoadmapModes", "SimpleWorkflows", "UnitIntegratedManager", "UnitRoadmapModes", "UnitWorkflows", "IntegratedManager")]
     [string]$TestType = "All",
 
     [Parameter(Mandatory = $false)]
@@ -107,6 +107,7 @@ $testFiles = @()
 
 switch ($TestType) {
     "All" {
+        # Tests du mode manager
         $testFiles += "Test-ModeManager.ps1"
         $testFiles += "Test-ModeManagerIntegration.ps1"
         $testFiles += "Simple-Test.ps1"
@@ -123,6 +124,15 @@ switch ($TestType) {
         $testFiles += "Test-ModeManagerCompatibility.ps1"
         $testFiles += "Test-ModeManagerLocalization.ps1"
         $testFiles += "Test-ModeManagerIntegrationReporting.ps1"
+
+        # Tests du gestionnaire intégré
+        $testFiles += "Test-SimpleIntegratedManager.ps1"
+        $testFiles += "Test-SimpleRoadmapModes.ps1"
+        $testFiles += "Test-SimpleWorkflows.ps1"
+        $testFiles += "Test-UnitIntegratedManager.ps1"
+        $testFiles += "Test-UnitRoadmapModes.ps1"
+        $testFiles += "Test-UnitWorkflows.ps1"
+
         if (-not $SkipPerformanceTests) {
             $testFiles += "Test-ModeManagerPerformance.ps1"
             $testFiles += "Test-ModeManagerPerformanceAdvanced.ps1"
@@ -192,6 +202,32 @@ switch ($TestType) {
     }
     "IntegrationReporting" {
         $testFiles += "Test-ModeManagerIntegrationReporting.ps1"
+    }
+    "SimpleIntegratedManager" {
+        $testFiles += "Test-SimpleIntegratedManager.ps1"
+    }
+    "SimpleRoadmapModes" {
+        $testFiles += "Test-SimpleRoadmapModes.ps1"
+    }
+    "SimpleWorkflows" {
+        $testFiles += "Test-SimpleWorkflows.ps1"
+    }
+    "UnitIntegratedManager" {
+        $testFiles += "Test-UnitIntegratedManager.ps1"
+    }
+    "UnitRoadmapModes" {
+        $testFiles += "Test-UnitRoadmapModes.ps1"
+    }
+    "UnitWorkflows" {
+        $testFiles += "Test-UnitWorkflows.ps1"
+    }
+    "IntegratedManager" {
+        $testFiles += "Test-SimpleIntegratedManager.ps1"
+        $testFiles += "Test-SimpleRoadmapModes.ps1"
+        $testFiles += "Test-SimpleWorkflows.ps1"
+        $testFiles += "Test-UnitIntegratedManager.ps1"
+        $testFiles += "Test-UnitRoadmapModes.ps1"
+        $testFiles += "Test-UnitWorkflows.ps1"
     }
 }
 
