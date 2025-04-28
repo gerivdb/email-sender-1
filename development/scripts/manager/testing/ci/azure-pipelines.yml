@@ -1,0 +1,238 @@
+# Azure DevOps Pipeline pour les tests du script manager
+# Fichier: azure-pipelines.yml
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    include:
+    - development/scripts/manager/**
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  testOutputPath: '$(Build.ArtifactStagingDirectory)/test-results'
+  coverageOutputPath: '$(Build.ArtifactStagingDirectory)/coverage-results'
+  performanceOutputPath: '$(Build.ArtifactStagingDirectory)/performance-results'
+  mutationOutputPath: '$(Build.ArtifactStagingDirectory)/mutation-results'
+  documentationOutputPath: '$(Build.ArtifactStagingDirectory)/documentation'
+
+stages:
+- stage: Test
+  displayName: 'Tests unitaires'
+  jobs:
+  - job: RunTests
+    displayName: 'Exécuter les tests'
+    steps:
+    - checkout: self
+      fetchDepth: 1
+    
+    - task: PowerShell@2
+      displayName: 'Installer les dépendances'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
+    
+    - task: PowerShell@2
+      displayName: 'Analyse statique du code'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $results = Invoke-ScriptAnalyzer -Path "$(Build.SourcesDirectory)/development/scripts/manager" -Recurse -Severity Error,Warning
+          $results | Format-Table -AutoSize
+          
+          if ($results.Count -gt 0) {
+            Write-Host "##vso[task.logissue type=warning;]$($results.Count) problèmes détectés par PSScriptAnalyzer"
+          }
+          
+          $results | ConvertTo-Json -Depth 5 | Out-File -FilePath "$(Build.ArtifactStagingDirectory)/psscriptanalyzer-results.json"
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests simplifiés'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-SimplifiedTests.ps1'
+        arguments: '-OutputPath "$(testOutputPath)/simplified" -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests corrigés'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-FixedTests.ps1'
+        arguments: '-OutputPath "$(testOutputPath)/fixed" -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests avec couverture de code'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-TestsWithCoverage.ps1'
+        arguments: '-OutputPath "$(coverageOutputPath)" -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests de performance'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-PerformanceTests.ps1'
+        arguments: '-OutputPath "$(performanceOutputPath)" -Iterations 3 -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests paramétrés'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-ParameterizedTests.ps1'
+        arguments: '-OutputPath "$(testOutputPath)/parameterized" -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Exécuter les tests de mutation'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Run-MutationTests.ps1'
+        arguments: '-OutputPath "$(mutationOutputPath)" -MaxMutations 3 -GenerateHTML'
+    
+    - task: PowerShell@2
+      displayName: 'Générer la documentation des tests'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/testing/Generate-TestDocumentation.ps1'
+        arguments: '-OutputPath "$(documentationOutputPath)"'
+    
+    - task: PublishTestResults@2
+      displayName: 'Publier les résultats des tests'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(testOutputPath)/**/*.xml'
+        mergeTestResults: true
+        testRunTitle: 'Tests du script manager'
+    
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publier les résultats de couverture de code'
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(coverageOutputPath)/CodeCoverage.xml'
+        reportDirectory: '$(coverageOutputPath)'
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publier les artefacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'test-results'
+        publishLocation: 'Container'
+
+- stage: Report
+  displayName: 'Génération des rapports'
+  dependsOn: Test
+  jobs:
+  - job: GenerateReports
+    displayName: 'Générer les rapports'
+    steps:
+    - checkout: none
+    
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Télécharger les artefacts'
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'test-results'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    
+    - task: PowerShell@2
+      displayName: 'Générer le rapport global'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $reportPath = "$(System.ArtifactsDirectory)/test-results/global-report"
+          New-Item -Path $reportPath -ItemType Directory -Force | Out-Null
+          
+          $htmlContent = @"
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Rapport global des tests du script manager</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 20px; }
+                  h1, h2, h3 { color: #333; }
+                  .summary { margin-bottom: 20px; }
+                  .success { color: green; }
+                  .error { color: red; }
+                  .warning { color: orange; }
+                  table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+                  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                  th { background-color: #f2f2f2; }
+                  tr:nth-child(even) { background-color: #f9f9f9; }
+                  iframe { width: 100%; height: 600px; border: 1px solid #ddd; }
+              </style>
+          </head>
+          <body>
+              <h1>Rapport global des tests du script manager</h1>
+              <p>Généré le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
+              
+              <h2>Résumé</h2>
+              <p>Ce rapport présente les résultats des différents types de tests exécutés sur le script manager.</p>
+              
+              <h2>Tests unitaires</h2>
+              <h3>Tests simplifiés</h3>
+              <iframe src="../simplified/SimplifiedTestResults.html"></iframe>
+              
+              <h3>Tests corrigés</h3>
+              <iframe src="../fixed/FixedTestResults.html"></iframe>
+              
+              <h3>Tests paramétrés</h3>
+              <iframe src="../parameterized/ParameterizedTestResults.html"></iframe>
+              
+              <h2>Couverture de code</h2>
+              <iframe src="../../coverage-results/TestResultsWithCoverage.html"></iframe>
+              
+              <h2>Tests de performance</h2>
+              <iframe src="../../performance-results/PerformanceResults.html"></iframe>
+              
+              <h2>Tests de mutation</h2>
+              <iframe src="../../mutation-results/MutationResults.html"></iframe>
+              
+              <h2>Documentation des tests</h2>
+              <iframe src="../../documentation/TestDocumentation.html"></iframe>
+          </body>
+          </html>
+          "@
+          
+          $htmlContent | Out-File -FilePath "$reportPath/GlobalReport.html" -Encoding utf8
+          
+          Write-Host "Rapport global généré: $reportPath/GlobalReport.html"
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publier le rapport global'
+      inputs:
+        PathtoPublish: '$(System.ArtifactsDirectory)/test-results/global-report'
+        ArtifactName: 'global-report'
+        publishLocation: 'Container'
+
+- stage: Notify
+  displayName: 'Notification'
+  dependsOn: Report
+  jobs:
+  - job: SendNotification
+    displayName: 'Envoyer une notification'
+    steps:
+    - checkout: none
+    
+    - task: PowerShell@2
+      displayName: 'Envoyer une notification par e-mail'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $buildUrl = "$(System.TeamFoundationCollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)"
+          
+          $body = @"
+          <html>
+          <body>
+              <h1>Résultats des tests du script manager</h1>
+              <p>Build: $(Build.BuildNumber)</p>
+              <p>Branche: $(Build.SourceBranchName)</p>
+              <p>Commit: $(Build.SourceVersion)</p>
+              <p>Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
+              
+              <p>Pour consulter les résultats détaillés, cliquez sur le lien suivant:</p>
+              <p><a href="$buildUrl">Résultats de la build</a></p>
+          </body>
+          </html>
+          "@
+          
+          Write-Host "Une notification serait envoyée avec le contenu suivant:"
+          Write-Host $body

@@ -1,0 +1,50 @@
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "npx",
+      "args": ["-y", "@wonderwhy-er/desktop-commander"]
+    }
+  },
+  "commands": {
+    "manager": {
+      "description": "Commandes du Script Manager",
+      "subcommands": {
+        "organize": {
+          "description": "Organiser les scripts du manager",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "development/scripts/manager/organization/Organize-ManagerScripts.ps1", "-Force"]
+        },
+        "create-script": {
+          "description": "Créer un nouveau script avec Hygen",
+          "command": "npx",
+          "args": ["hygen", "script", "new"]
+        },
+        "create-module": {
+          "description": "Créer un nouveau module avec Hygen",
+          "command": "npx",
+          "args": ["hygen", "module", "new"]
+        },
+        "inventory": {
+          "description": "Afficher l'inventaire des scripts",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "development/scripts/manager/inventory/Show-ScriptInventory.ps1"]
+        },
+        "analyze": {
+          "description": "Analyser les scripts",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "development/scripts/manager/analysis/Analyze-Scripts.ps1"]
+        },
+        "list-categories": {
+          "description": "Lister les catégories de scripts disponibles",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "Get-ChildItem -Path 'development/scripts/manager' -Directory | Select-Object -ExpandProperty Name | Sort-Object"]
+        },
+        "list-scripts": {
+          "description": "Lister tous les scripts par catégorie",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "Get-ChildItem -Path 'development/scripts/manager' -Directory | ForEach-Object { Write-Host \"\\n[$($_.Name)]\" -ForegroundColor Cyan; Get-ChildItem -Path $_.FullName -File -Filter '*.ps1' | Select-Object -ExpandProperty Name | Sort-Object }"]
+        }
+      }
+    }
+  }
+}
