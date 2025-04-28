@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="0" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-04-28" time="22:03:35">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\manager\tests" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="1.1654" asserts="0" description="Pester">
+    <results />
+  </test-suite>
+</test-results>

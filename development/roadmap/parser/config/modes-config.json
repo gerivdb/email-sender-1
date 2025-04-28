@@ -1,0 +1,139 @@
+{
+  "General": {
+    "RoadmapPath": "docs\\plans\\roadmap_complete_2.md",
+    "ActiveDocumentPath": "docs\\plans\\plan-modes-stepup.md",
+    "ReportPath": "reports",
+    "LogPath": "logs",
+    "DefaultEncoding": "UTF8-BOM",
+    "ProjectRoot": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
+  },
+  "Modes": {
+    "Archi": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\archi-mode.ps1",
+      "DiagramType": "C4",
+      "IncludeComponents": true,
+      "IncludeInterfaces": true,
+      "IncludeDependencies": true,
+      "OutputFormats": ["Markdown", "PlantUML", "Mermaid"]
+    },
+    "Check": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\check.ps1",
+      "DefaultRoadmapFile": "docs\\plans\\roadmap_complete_2.md",
+      "DefaultActiveDocumentPath": "docs\\plans\\plan-modes-stepup.md",
+      "AutoUpdateRoadmap": true,
+      "GenerateReport": true,
+      "ReportPath": "reports",
+      "AutoUpdateCheckboxes": true,
+      "RequireFullTestCoverage": true,
+      "SimulationModeDefault": true
+    },
+    "CBreak": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\c-break-mode.ps1",
+      "AutoFix": false,
+      "GenerateGraph": true,
+      "MaxCycleDepth": 10,
+      "BackupBeforeFix": true,
+      "SuggestRefactoring": true
+    },
+    "Debug": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\debug\\debug-mode.ps1",
+      "GeneratePatch": true,
+      "IncludeStackTrace": true,
+      "MaxStackTraceDepth": 10,
+      "AnalyzePerformance": true,
+      "SuggestFixes": true,
+      "ErrorLog": "logs\\error.log"
+    },
+    "DevR": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\dev-r\\dev-r-mode.ps1",
+      "GenerateTests": true,
+      "UpdateRoadmap": true,
+      "ImplementationStyle": "TDD",
+      "DocumentationStyle": "XML",
+      "IncludeExamples": true
+    },
+    "Gran": {
+      "Enabled": true,
+      "ScriptPath": "development\\roadmap\\parser\\modes\\gran\\gran-mode.ps1",
+      "SubTasksFile": "templates\\subtasks.txt",
+      "IndentationStyle": "Spaces",
+      "CheckboxStyle": "GitHub"
+    },
+    "Opti": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\opti-mode.ps1",
+      "OptimizationTarget": "All",
+      "ProfileDepth": 5,
+      "MemoryThreshold": 100,
+      "TimeThreshold": 1000,
+      "GenerateReport": true
+    },
+    "Predic": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\predic-mode.ps1",
+      "PredictionHorizon": 30,
+      "AnomalyDetection": true,
+      "TrendAnalysis": true,
+      "AlertThreshold": 0.95,
+      "GenerateReport": true
+    },
+    "Review": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\review-mode.ps1",
+      "CheckStandards": true,
+      "CheckDocumentation": true,
+      "CheckComplexity": true,
+      "MaxComplexity": 10,
+      "MinDocRatio": 0.2,
+      "StandardsFile": "standards.json"
+    },
+    "Test": {
+      "Enabled": true,
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\test-mode.ps1",
+      "CoverageThreshold": 80,
+      "GenerateReport": true,
+      "IncludeCodeCoverage": true,
+      "TestFramework": "Pester",
+      "ParallelTests": true
+    }
+  },
+  "Workflows": {
+    "Development": {
+      "Description": "Workflow de développement complet",
+      "Modes": ["Gran", "DevR", "Test", "Check"],
+      "AutoContinue": true
+    },
+    "Optimization": {
+      "Description": "Workflow d'optimisation",
+      "Modes": ["Review", "Opti", "Test", "Check"],
+      "AutoContinue": true
+    },
+    "Debugging": {
+      "Description": "Workflow de débogage",
+      "Modes": ["Debug", "Test", "Check"],
+      "AutoContinue": true
+    },
+    "Architecture": {
+      "Description": "Workflow d'architecture",
+      "Modes": ["Archi", "CBreak", "Review"],
+      "AutoContinue": true
+    },
+    "Quality": {
+      "Description": "Workflow de qualité",
+      "Modes": ["Review", "Test", "Check"],
+      "AutoContinue": true
+    }
+  },
+  "Tests": {
+    "Framework": "Pester",
+    "Coverage": true,
+    "CoverageThreshold": 80,
+    "OutputFormat": "NUnitXml",
+    "TestsPath": "tests"
+  }
+}

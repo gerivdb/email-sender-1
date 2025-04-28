@@ -1,0 +1,163 @@
+trigger:
+  branches:
+    include:
+    - main
+    - master
+    - develop
+  paths:
+    include:
+    - development/scripts/manager/**
+    - azure-pipelines/mode-manager-tests.yml
+
+pr:
+  branches:
+    include:
+    - main
+    - master
+    - develop
+  paths:
+    include:
+    - development/scripts/manager/**
+    - azure-pipelines/mode-manager-tests.yml
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  reportsPath: '$(Build.SourcesDirectory)/reports/tests'
+
+stages:
+- stage: Test
+  displayName: 'Run Tests'
+  jobs:
+  - job: TestOnWindows
+    displayName: 'Test on Windows'
+    steps:
+    - checkout: self
+      fetchDepth: 0
+    
+    - task: PowerShell@2
+      displayName: 'Install PowerShell modules'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+    
+    - task: PowerShell@2
+      displayName: 'Run tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/tests/Run-AllTestsCI.ps1'
+        arguments: '-OutputPath "$(reportsPath)" -GenerateHTML -FailOnError'
+        errorActionPreference: 'Stop'
+        pwsh: true
+    
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(reportsPath)/**/*.xml'
+        mergeTestResults: true
+        testRunTitle: 'Mode Manager Tests'
+      condition: always()
+    
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(reportsPath)/mode-manager-coverage.xml'
+        reportDirectory: '$(reportsPath)'
+      condition: always()
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish test artifacts'
+      inputs:
+        PathtoPublish: '$(reportsPath)'
+        ArtifactName: 'test-results'
+        publishLocation: 'Container'
+      condition: always()
+
+  - job: TestOnPowerShell5
+    displayName: 'Test on PowerShell 5.1'
+    steps:
+    - checkout: self
+      fetchDepth: 0
+    
+    - task: PowerShell@2
+      displayName: 'Install PowerShell modules'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+        pwsh: false
+    
+    - task: PowerShell@2
+      displayName: 'Run tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/tests/Run-AllTestsCI.ps1'
+        arguments: '-OutputPath "$(reportsPath)-ps5" -GenerateHTML -FailOnError'
+        errorActionPreference: 'Stop'
+        pwsh: false
+    
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(reportsPath)-ps5/**/*.xml'
+        mergeTestResults: true
+        testRunTitle: 'Mode Manager Tests (PowerShell 5.1)'
+      condition: always()
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish test artifacts'
+      inputs:
+        PathtoPublish: '$(reportsPath)-ps5'
+        ArtifactName: 'test-results-ps5'
+        publishLocation: 'Container'
+      condition: always()
+
+  - job: TestOnLinux
+    displayName: 'Test on Linux'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+      fetchDepth: 0
+    
+    - task: PowerShell@2
+      displayName: 'Install PowerShell modules'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
+        pwsh: true
+    
+    - task: PowerShell@2
+      displayName: 'Run compatibility tests'
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(Build.SourcesDirectory)/development/scripts/manager/tests/Run-AllTests.ps1'
+        arguments: '-TestType "Compatibility" -OutputPath "$(reportsPath)-linux" -GenerateHTML'
+        errorActionPreference: 'Stop'
+        pwsh: true
+    
+    - task: PublishTestResults@2
+      displayName: 'Publish test results'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(reportsPath)-linux/**/*.xml'
+        mergeTestResults: true
+        testRunTitle: 'Mode Manager Tests (Linux)'
+      condition: always()
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish test artifacts'
+      inputs:
+        PathtoPublish: '$(reportsPath)-linux'
+        ArtifactName: 'test-results-linux'
+        publishLocation: 'Container'
+      condition: always()
