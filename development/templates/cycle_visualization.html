@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualisation des cycles de dépendances</title>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body, html { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #mynetwork { height: 80%; border: 1px solid lightgray; }
+        .controls { padding: 10px; background-color: #f0f0f0; }
+        .stats { margin-top: 10px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ddd; }
+        .cyclic { background-color: #ffcccc; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="zoomIn()">Zoom +</button>
+        <button onclick="zoomOut()">Zoom -</button>
+        <button onclick="resetView()">Réinitialiser</button>
+        <button onclick="highlightCycles()">Mettre en évidence les cycles</button>
+    </div>
+    <div id="mynetwork"></div>
+    <!-- STATS_PLACEHOLDER -->
+    <script>
+        // Données du graphe
+        var nodes = new vis.DataSet(/* NODES_PLACEHOLDER */);
+        var edges = new vis.DataSet(/* EDGES_PLACEHOLDER */);
+        var cyclicNodes = /* CYCLES_PLACEHOLDER */;
+
+        // Configuration du graphe
+        var container = document.getElementById('mynetwork');
+        var data = { nodes: nodes, edges: edges };
+        var options = {
+            nodes: { shape: 'box', font: { size: 14 } },
+            edges: { width: 2 },
+            groups: { cyclic: { color: {background: '#ffcccc', border: '#ff0000'} } },
+            physics: { stabilization: true }
+        };
+
+        // Créer le graphe
+        var network = new vis.Network(container, data, options);
+
+        // Fonctions pour les contrôles
+        function zoomIn() {
+            var scale = network.getScale() * 1.2;
+            network.moveTo({ scale: scale });
+        }
+
+        function zoomOut() {
+            var scale = network.getScale() * 0.8;
+            network.moveTo({ scale: scale });
+        }
+
+        function resetView() {
+            network.fit();
+        }
+
+        function highlightCycles() {
+            nodes.forEach(function(node) {
+                var isCyclic = cyclicNodes.includes(node.label);
+                nodes.update({
+                    id: node.id,
+                    group: isCyclic ? 'cyclic' : ''
+                });
+            });
+
+            edges.forEach(function(edge) {
+                var fromNode = nodes.get(edge.from);
+                var toNode = nodes.get(edge.to);
+                var isCyclicEdge = cyclicNodes.includes(fromNode.label) && cyclicNodes.includes(toNode.label);
+                edges.update({
+                    id: edge.id,
+                    color: isCyclicEdge ? '#ff0000' : '#848484'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

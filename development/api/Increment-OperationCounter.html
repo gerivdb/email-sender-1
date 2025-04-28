@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Increment-OperationCounter - Documentation RoadmapParser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .parameter {
+            margin-bottom: 20px;
+        }
+        .parameter h3 {
+            margin-bottom: 5px;
+        }
+        .parameter-details {
+            margin-left: 20px;
+        }
+        .example {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Increment-OperationCounter</h1>
+    
+    <h2>RÃ©sumÃ©</h2>
+    <p>IncrÃ©mente un compteur d'opÃ©rations.</p>
+    
+    <h2>Description</h2>
+    <p>La fonction Increment-OperationCounter incrÃ©mente un compteur d'opÃ©rations.
+Elle crÃ©e le compteur s'il n'existe pas.</p>
+    
+    <h2>Syntaxe</h2>
+    <pre><code>Increment-OperationCounter [-Name &lt;&gt;]  [-IncrementBy &lt;&gt;]  [-LogResult &lt;&gt;] </code></pre>
+    
+    <h2>ParamÃ¨tres</h2>    <div class="parameter">
+        <h3>-Name</h3>
+        <p>Le nom du compteur Ã  incrÃ©menter.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> String</p>
+            <p><strong>Position:</strong> 1</p>
+            <p><strong>DÃ©faut:</strong> </p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-IncrementBy</h3>
+        <p>La valeur Ã  ajouter au compteur.
+Par dÃ©faut, c'est 1.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> Int32</p>
+            <p><strong>Position:</strong> named</p>
+            <p><strong>DÃ©faut:</strong> 1</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-LogResult</h3>
+        <p>Indique si le rÃ©sultat doit Ãªtre journalisÃ©.
+Par dÃ©faut, c'est $false.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> SwitchParameter</p>
+            <p><strong>Position:</strong> named</p>
+            <p><strong>DÃ©faut:</strong> False</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <h2>Sorties</h2>
+    <p>[int] La nouvelle valeur du compteur.</p>    <h2>Exemples</h2>    <div class="example">
+        <h3>Exemple 1</h3>
+        <pre><code>Increment-OperationCounter -Name "MaFonction"</code></pre>
+        <p>IncrÃ©mente le compteur d'opÃ©rations nommÃ© "MaFonction" de 1.    </p>
+    </div>    <h2>Liens</h2>
+    <ul>
+        <li><a href="Functions\Private\Performance\PerformanceMeasurementFunctions.ps1">Source</a></li>
+        <li><a href="../index.html">Module RoadmapParser</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,251 @@
+{
+  "kpis": [
+    {
+      "id": "EMAIL_DELIVERY_RATE",
+      "name": "Taux de livraison des emails",
+      "description": "Pourcentage d'emails correctement livrés",
+      "category": "Efficacité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["DeliveredEmails", "TotalEmails"],
+      "thresholds": {
+        "warning": 95,
+        "critical": 90
+      },
+      "inverse": true
+    },
+    {
+      "id": "EMAIL_OPEN_RATE",
+      "name": "Taux d'ouverture des emails",
+      "description": "Pourcentage d'emails ouverts par les destinataires",
+      "category": "Engagement",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["OpenedEmails", "DeliveredEmails"],
+      "thresholds": {
+        "warning": 15,
+        "critical": 10
+      },
+      "inverse": true
+    },
+    {
+      "id": "EMAIL_CLICK_RATE",
+      "name": "Taux de clic des emails",
+      "description": "Pourcentage d'emails ayant généré au moins un clic",
+      "category": "Engagement",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["ClickedEmails", "DeliveredEmails"],
+      "thresholds": {
+        "warning": 5,
+        "critical": 2
+      },
+      "inverse": true
+    },
+    {
+      "id": "EMAIL_BOUNCE_RATE",
+      "name": "Taux de rebond des emails",
+      "description": "Pourcentage d'emails ayant généré un rebond",
+      "category": "Qualité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["BouncedEmails", "TotalEmails"],
+      "thresholds": {
+        "warning": 3,
+        "critical": 5
+      }
+    },
+    {
+      "id": "EMAIL_COMPLAINT_RATE",
+      "name": "Taux de plainte",
+      "description": "Pourcentage d'emails ayant généré une plainte (spam)",
+      "category": "Qualité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["ComplaintEmails", "DeliveredEmails"],
+      "thresholds": {
+        "warning": 0.1,
+        "critical": 0.5
+      }
+    },
+    {
+      "id": "EMAIL_PROCESSING_TIME",
+      "name": "Temps de traitement des emails",
+      "description": "Temps moyen de traitement d'un email (de la demande à l'envoi)",
+      "category": "Performance",
+      "unit": "s",
+      "formula": "AVG",
+      "source": "EmailProcessingTime",
+      "thresholds": {
+        "warning": 5,
+        "critical": 10
+      }
+    },
+    {
+      "id": "CAMPAIGN_COMPLETION_RATE",
+      "name": "Taux de complétion des campagnes",
+      "description": "Pourcentage de campagnes terminées avec succès",
+      "category": "Efficacité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["CompletedCampaigns", "TotalCampaigns"],
+      "thresholds": {
+        "warning": 95,
+        "critical": 90
+      },
+      "inverse": true
+    },
+    {
+      "id": "CAMPAIGN_EXECUTION_TIME",
+      "name": "Temps d'exécution des campagnes",
+      "description": "Temps moyen d'exécution d'une campagne",
+      "category": "Performance",
+      "unit": "min",
+      "formula": "AVG",
+      "source": "CampaignExecutionTime",
+      "thresholds": {
+        "warning": 30,
+        "critical": 60
+      }
+    },
+    {
+      "id": "WORKFLOW_COMPLETION_RATE",
+      "name": "Taux de complétion des workflows",
+      "description": "Pourcentage de workflows terminés avec succès",
+      "category": "Efficacité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["CompletedWorkflows", "TotalWorkflows"],
+      "thresholds": {
+        "warning": 95,
+        "critical": 90
+      },
+      "inverse": true
+    },
+    {
+      "id": "SUBSCRIBER_GROWTH_RATE",
+      "name": "Taux de croissance des abonnés",
+      "description": "Pourcentage de croissance du nombre d'abonnés",
+      "category": "Croissance",
+      "unit": "%",
+      "formula": "GROWTH",
+      "sources": ["CurrentSubscribers", "PreviousSubscribers"],
+      "thresholds": {
+        "warning": 1,
+        "critical": 0
+      },
+      "inverse": true
+    },
+    {
+      "id": "UNSUBSCRIBE_RATE",
+      "name": "Taux de désabonnement",
+      "description": "Pourcentage d'abonnés qui se désabonnent",
+      "category": "Engagement",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["Unsubscribes", "TotalSubscribers"],
+      "thresholds": {
+        "warning": 0.5,
+        "critical": 1
+      }
+    },
+    {
+      "id": "COST_PER_EMAIL",
+      "name": "Coût par email",
+      "description": "Coût moyen d'envoi d'un email",
+      "category": "Coût",
+      "unit": "€",
+      "formula": "RATIO",
+      "sources": ["TotalCost", "TotalEmails"],
+      "thresholds": {
+        "warning": 0.01,
+        "critical": 0.02
+      }
+    },
+    {
+      "id": "ROI",
+      "name": "Retour sur investissement",
+      "description": "Retour sur investissement des campagnes email",
+      "category": "Valeur",
+      "unit": "%",
+      "formula": "CUSTOM",
+      "sources": ["Revenue", "TotalCost"],
+      "customFormula": "(Revenue - TotalCost) / TotalCost * 100",
+      "thresholds": {
+        "warning": 200,
+        "critical": 100
+      },
+      "inverse": true
+    },
+    {
+      "id": "REVENUE_PER_EMAIL",
+      "name": "Revenu par email",
+      "description": "Revenu moyen généré par email envoyé",
+      "category": "Valeur",
+      "unit": "€",
+      "formula": "RATIO",
+      "sources": ["Revenue", "TotalEmails"],
+      "thresholds": {
+        "warning": 0.05,
+        "critical": 0.02
+      },
+      "inverse": true
+    },
+    {
+      "id": "CONVERSION_RATE",
+      "name": "Taux de conversion",
+      "description": "Pourcentage d'emails ayant généré une conversion",
+      "category": "Valeur",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["Conversions", "DeliveredEmails"],
+      "thresholds": {
+        "warning": 1,
+        "critical": 0.5
+      },
+      "inverse": true
+    },
+    {
+      "id": "EMAIL_DELIVERABILITY_INDEX",
+      "name": "Indice de délivrabilité",
+      "description": "Indice composite de la délivrabilité des emails",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["EMAIL_DELIVERY_RATE", "EMAIL_BOUNCE_RATE", "EMAIL_COMPLAINT_RATE"],
+      "weights": [0.5, 0.3, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "EMAIL_ENGAGEMENT_INDEX",
+      "name": "Indice d'engagement",
+      "description": "Indice composite de l'engagement des destinataires",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["EMAIL_OPEN_RATE", "EMAIL_CLICK_RATE", "UNSUBSCRIBE_RATE"],
+      "weights": [0.4, 0.4, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "EMAIL_BUSINESS_VALUE_INDEX",
+      "name": "Indice de valeur métier",
+      "description": "Indice composite de la valeur métier des campagnes email",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["CONVERSION_RATE", "ROI", "REVENUE_PER_EMAIL"],
+      "weights": [0.3, 0.4, 0.3],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    }
+  ]
+}

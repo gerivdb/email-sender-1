@@ -1,0 +1,21 @@
+Voici ma réponse à votre question sur l'implémentation d'une nouvelle fonctionnalité.
+
+Je vous recommande d'utiliser l'approche X pour résoudre ce problème. Vous devrez d'abord installer les dépendances nécessaires, puis configurer le système comme suit...
+
+Pour résumer, cette solution devrait résoudre votre problème de manière efficace.
+
+<task category="2" priority="high" estimate="3-5" start="true">
+Implémenter la fonctionnalité de normalisation des chemins
+</task>
+
+J'ai également remarqué que vous pourriez avoir besoin d'une documentation pour cette nouvelle fonctionnalité.
+
+<task category="1" estimate="1-2">
+Créer une documentation pour la fonctionnalité de normalisation des chemins
+</task>
+
+Et n'oubliez pas de mettre à jour les tests unitaires.
+
+<task category="3" priority="medium">
+Mettre à jour les tests unitaires pour la compatibilité multi-terminaux
+</task>

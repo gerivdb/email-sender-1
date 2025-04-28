@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Handle-Exception - Documentation RoadmapParser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .parameter {
+            margin-bottom: 20px;
+        }
+        .parameter h3 {
+            margin-bottom: 5px;
+        }
+        .parameter-details {
+            margin-left: 20px;
+        }
+        .example {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Handle-Exception</h1>
+    
+    <h2>RÃ©sumÃ©</h2>
+    <p>GÃ¨re une exception et affiche un message d'erreur.</p>
+    
+    <h2>Description</h2>
+    <p>Cette fonction gÃ¨re une exception et affiche un message d'erreur.</p>
+    
+    <h2>Syntaxe</h2>
+    <pre><code>Handle-Exception [-Exception &lt;&gt;]  [-ErrorMessage &lt;&gt;]  [-LogFile &lt;&gt;]  [-ExitCode &lt;&gt;]  [-ExitOnError &lt;&gt;] </code></pre>
+    
+    <h2>ParamÃ¨tres</h2>    <div class="parameter">
+        <h3>-Exception</h3>
+        <p>Exception Ã  gÃ©rer.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> Exception</p>
+            <p><strong>Position:</strong> 1</p>
+            <p><strong>DÃ©faut:</strong> </p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-ErrorMessage</h3>
+        <p>Message d'erreur personnalisÃ©.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> String</p>
+            <p><strong>Position:</strong> 2</p>
+            <p><strong>DÃ©faut:</strong> Une erreur s'est produite.</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-LogFile</h3>
+        <p>Chemin vers le fichier de journalisation.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> String</p>
+            <p><strong>Position:</strong> 3</p>
+            <p><strong>DÃ©faut:</strong> </p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-ExitCode</h3>
+        <p>Code de sortie Ã  retourner.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> Int32</p>
+            <p><strong>Position:</strong> 4</p>
+            <p><strong>DÃ©faut:</strong> 1</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <div class="parameter">
+        <h3>-ExitOnError</h3>
+        <p>Indique si le script doit se terminer en cas d'erreur.</p>
+        <div class="parameter-details">
+            <p><strong>Type:</strong> Boolean</p>
+            <p><strong>Position:</strong> 5</p>
+            <p><strong>DÃ©faut:</strong> False</p>
+            <p><strong>Accepte les entrÃ©es de pipeline:</strong> false</p>
+            <p><strong>Accepte les caractÃ¨res gÃ©nÃ©riques:</strong> false</p>
+        </div>
+    </div>    <h2>Sorties</h2>
+    <p>None</p>    <h2>Exemples</h2>    <div class="example">
+        <h3>Exemple 1</h3>
+        <pre><code>Handle-Exception -Exception $_ -ErrorMessage "Une erreur s'est produite lors du traitement du fichier." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true</code></pre>
+        <p>    </p>
+    </div>    <h2>Liens</h2>
+    <ul>
+        <li><a href="Functions\Common\ErrorHandlingFunctions.ps1">Source</a></li>
+        <li><a href="../index.html">Module RoadmapParser</a></li>
+    </ul>
+</body>
+</html>

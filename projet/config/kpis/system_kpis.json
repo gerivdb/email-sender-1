@@ -1,0 +1,242 @@
+{
+  "kpis": [
+    {
+      "id": "CPU_UTILIZATION",
+      "name": "Utilisation CPU",
+      "description": "Pourcentage moyen d'utilisation du CPU",
+      "category": "Système",
+      "unit": "%",
+      "formula": "AVG",
+      "source": "Processor",
+      "thresholds": {
+        "warning": 70,
+        "critical": 90
+      }
+    },
+    {
+      "id": "CPU_PEAK",
+      "name": "Pic d'utilisation CPU",
+      "description": "Valeur maximale d'utilisation du CPU",
+      "category": "Système",
+      "unit": "%",
+      "formula": "MAX",
+      "source": "Processor",
+      "thresholds": {
+        "warning": 85,
+        "critical": 95
+      }
+    },
+    {
+      "id": "MEMORY_UTILIZATION",
+      "name": "Utilisation mémoire",
+      "description": "Pourcentage d'utilisation de la mémoire physique",
+      "category": "Système",
+      "unit": "%",
+      "formula": "AVG",
+      "source": "Memory",
+      "thresholds": {
+        "warning": 80,
+        "critical": 95
+      }
+    },
+    {
+      "id": "MEMORY_AVAILABLE",
+      "name": "Mémoire disponible",
+      "description": "Quantité de mémoire physique disponible",
+      "category": "Système",
+      "unit": "MB",
+      "formula": "AVG",
+      "source": "Memory Available",
+      "thresholds": {
+        "warning": 1024,
+        "critical": 512
+      },
+      "inverse": true
+    },
+    {
+      "id": "DISK_UTILIZATION",
+      "name": "Utilisation disque",
+      "description": "Pourcentage d'utilisation de l'espace disque",
+      "category": "Système",
+      "unit": "%",
+      "formula": "AVG",
+      "source": "PhysicalDisk",
+      "thresholds": {
+        "warning": 85,
+        "critical": 95
+      }
+    },
+    {
+      "id": "DISK_READ_RATE",
+      "name": "Taux de lecture disque",
+      "description": "Nombre d'opérations de lecture par seconde",
+      "category": "Système",
+      "unit": "IOPS",
+      "formula": "AVG",
+      "source": "Disk Reads/sec",
+      "thresholds": {
+        "warning": 5000,
+        "critical": 10000
+      }
+    },
+    {
+      "id": "DISK_WRITE_RATE",
+      "name": "Taux d'écriture disque",
+      "description": "Nombre d'opérations d'écriture par seconde",
+      "category": "Système",
+      "unit": "IOPS",
+      "formula": "AVG",
+      "source": "Disk Writes/sec",
+      "thresholds": {
+        "warning": 3000,
+        "critical": 7000
+      }
+    },
+    {
+      "id": "DISK_QUEUE_LENGTH",
+      "name": "Longueur de la file d'attente disque",
+      "description": "Nombre moyen de requêtes en attente",
+      "category": "Système",
+      "unit": "Requêtes",
+      "formula": "AVG",
+      "source": "Disk Queue Length",
+      "thresholds": {
+        "warning": 2,
+        "critical": 5
+      }
+    },
+    {
+      "id": "NETWORK_THROUGHPUT_IN",
+      "name": "Débit réseau entrant",
+      "description": "Débit réseau entrant",
+      "category": "Système",
+      "unit": "MB/s",
+      "formula": "AVG",
+      "source": "Network In",
+      "thresholds": {
+        "warning": 50,
+        "critical": 80
+      }
+    },
+    {
+      "id": "NETWORK_THROUGHPUT_OUT",
+      "name": "Débit réseau sortant",
+      "description": "Débit réseau sortant",
+      "category": "Système",
+      "unit": "MB/s",
+      "formula": "AVG",
+      "source": "Network Out",
+      "thresholds": {
+        "warning": 50,
+        "critical": 80
+      }
+    },
+    {
+      "id": "NETWORK_ERRORS",
+      "name": "Erreurs réseau",
+      "description": "Nombre d'erreurs réseau par minute",
+      "category": "Système",
+      "unit": "Erreurs/min",
+      "formula": "SUM",
+      "source": "Network Errors",
+      "thresholds": {
+        "warning": 10,
+        "critical": 50
+      }
+    },
+    {
+      "id": "SYSTEM_UPTIME",
+      "name": "Temps de fonctionnement",
+      "description": "Durée depuis le dernier redémarrage",
+      "category": "Système",
+      "unit": "Heures",
+      "formula": "MAX",
+      "source": "System Uptime",
+      "thresholds": {
+        "warning": 720,
+        "critical": 1440
+      }
+    },
+    {
+      "id": "PROCESS_COUNT",
+      "name": "Nombre de processus",
+      "description": "Nombre total de processus en cours d'exécution",
+      "category": "Système",
+      "unit": "Processus",
+      "formula": "AVG",
+      "source": "Process Count",
+      "thresholds": {
+        "warning": 200,
+        "critical": 300
+      }
+    },
+    {
+      "id": "THREAD_COUNT",
+      "name": "Nombre de threads",
+      "description": "Nombre total de threads en cours d'exécution",
+      "category": "Système",
+      "unit": "Threads",
+      "formula": "AVG",
+      "source": "Thread Count",
+      "thresholds": {
+        "warning": 2000,
+        "critical": 3000
+      }
+    },
+    {
+      "id": "HANDLE_COUNT",
+      "name": "Nombre de handles",
+      "description": "Nombre total de handles ouverts",
+      "category": "Système",
+      "unit": "Handles",
+      "formula": "AVG",
+      "source": "Handle Count",
+      "thresholds": {
+        "warning": 50000,
+        "critical": 100000
+      }
+    },
+    {
+      "id": "SYSTEM_LOAD",
+      "name": "Charge système",
+      "description": "Indice de charge système composite (CPU, mémoire, disque)",
+      "category": "Système",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["Processor", "Memory", "PhysicalDisk"],
+      "weights": [0.4, 0.3, 0.3],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "IO_PERFORMANCE",
+      "name": "Performance E/S",
+      "description": "Indice de performance des opérations d'entrée/sortie",
+      "category": "Système",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["Disk Reads/sec", "Disk Writes/sec", "Disk Queue Length"],
+      "weights": [0.35, 0.35, 0.3],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "NETWORK_PERFORMANCE",
+      "name": "Performance réseau",
+      "description": "Indice de performance réseau",
+      "category": "Système",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["Network In", "Network Out", "Network Errors"],
+      "weights": [0.4, 0.4, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    }
+  ]
+}

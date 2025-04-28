@@ -1,0 +1,285 @@
+{
+  "schedules": [
+    {
+      "id": "daily_system_report",
+      "name": "Rapport système quotidien",
+      "description": "Génération quotidienne du rapport de performance système",
+      "template_id": "system_performance_report",
+      "enabled": true,
+      "frequency": {
+        "type": "daily",
+        "time": "06:00",
+        "days": []
+      },
+      "data_range": {
+        "type": "relative",
+        "value": 1,
+        "unit": "day"
+      },
+      "output": {
+        "formats": ["html", "pdf"],
+        "destination": {
+          "type": "file",
+          "path": "output/reports/system/daily"
+        }
+      },
+      "recipients": [
+        {
+          "id": "admin_group",
+          "type": "group"
+        }
+      ],
+      "notification": {
+        "on_success": true,
+        "on_failure": true,
+        "include_summary": true
+      }
+    },
+    {
+      "id": "weekly_system_report",
+      "name": "Rapport système hebdomadaire",
+      "description": "Génération hebdomadaire du rapport de performance système",
+      "template_id": "system_performance_report",
+      "enabled": true,
+      "frequency": {
+        "type": "weekly",
+        "time": "08:00",
+        "days": ["Monday"]
+      },
+      "data_range": {
+        "type": "relative",
+        "value": 7,
+        "unit": "day"
+      },
+      "output": {
+        "formats": ["html", "pdf", "excel"],
+        "destination": {
+          "type": "file",
+          "path": "output/reports/system/weekly"
+        }
+      },
+      "recipients": [
+        {
+          "id": "admin_group",
+          "type": "group"
+        },
+        {
+          "id": "manager_group",
+          "type": "group"
+        }
+      ],
+      "notification": {
+        "on_success": true,
+        "on_failure": true,
+        "include_summary": true
+      }
+    },
+    {
+      "id": "daily_application_report",
+      "name": "Rapport application quotidien",
+      "description": "Génération quotidienne du rapport de performance application",
+      "template_id": "application_performance_report",
+      "enabled": true,
+      "frequency": {
+        "type": "daily",
+        "time": "07:00",
+        "days": []
+      },
+      "data_range": {
+        "type": "relative",
+        "value": 1,
+        "unit": "day"
+      },
+      "output": {
+        "formats": ["html", "pdf"],
+        "destination": {
+          "type": "file",
+          "path": "output/reports/application/daily"
+        }
+      },
+      "recipients": [
+        {
+          "id": "dev_group",
+          "type": "group"
+        }
+      ],
+      "notification": {
+        "on_success": true,
+        "on_failure": true,
+        "include_summary": true
+      }
+    },
+    {
+      "id": "weekly_business_report",
+      "name": "Rapport métier hebdomadaire",
+      "description": "Génération hebdomadaire du rapport de performance métier",
+      "template_id": "business_performance_report",
+      "enabled": true,
+      "frequency": {
+        "type": "weekly",
+        "time": "09:00",
+        "days": ["Monday"]
+      },
+      "data_range": {
+        "type": "relative",
+        "value": 7,
+        "unit": "day"
+      },
+      "output": {
+        "formats": ["pdf", "excel"],
+        "destination": {
+          "type": "file",
+          "path": "output/reports/business/weekly"
+        }
+      },
+      "recipients": [
+        {
+          "id": "marketing_group",
+          "type": "group"
+        },
+        {
+          "id": "executive_group",
+          "type": "group"
+        }
+      ],
+      "notification": {
+        "on_success": true,
+        "on_failure": true,
+        "include_summary": true
+      }
+    },
+    {
+      "id": "monthly_business_report",
+      "name": "Rapport métier mensuel",
+      "description": "Génération mensuelle du rapport de performance métier",
+      "template_id": "business_performance_report",
+      "enabled": true,
+      "frequency": {
+        "type": "monthly",
+        "time": "08:00",
+        "days": [1]
+      },
+      "data_range": {
+        "type": "relative",
+        "value": 30,
+        "unit": "day"
+      },
+      "output": {
+        "formats": ["pdf", "excel"],
+        "destination": {
+          "type": "file",
+          "path": "output/reports/business/monthly"
+        }
+      },
+      "recipients": [
+        {
+          "id": "executive_group",
+          "type": "group"
+        }
+      ],
+      "notification": {
+        "on_success": true,
+        "on_failure": true,
+        "include_summary": true
+      }
+    }
+  ],
+  "recipient_groups": [
+    {
+      "id": "admin_group",
+      "name": "Administrateurs système",
+      "description": "Groupe des administrateurs système",
+      "members": [
+        {
+          "email": "admin1@example.com",
+          "name": "Admin 1"
+        },
+        {
+          "email": "admin2@example.com",
+          "name": "Admin 2"
+        }
+      ]
+    },
+    {
+      "id": "dev_group",
+      "name": "Développeurs",
+      "description": "Groupe des développeurs",
+      "members": [
+        {
+          "email": "dev1@example.com",
+          "name": "Dev 1"
+        },
+        {
+          "email": "dev2@example.com",
+          "name": "Dev 2"
+        }
+      ]
+    },
+    {
+      "id": "manager_group",
+      "name": "Responsables",
+      "description": "Groupe des responsables",
+      "members": [
+        {
+          "email": "manager1@example.com",
+          "name": "Manager 1"
+        },
+        {
+          "email": "manager2@example.com",
+          "name": "Manager 2"
+        }
+      ]
+    },
+    {
+      "id": "marketing_group",
+      "name": "Marketing",
+      "description": "Groupe marketing",
+      "members": [
+        {
+          "email": "marketing1@example.com",
+          "name": "Marketing 1"
+        },
+        {
+          "email": "marketing2@example.com",
+          "name": "Marketing 2"
+        }
+      ]
+    },
+    {
+      "id": "executive_group",
+      "name": "Direction",
+      "description": "Groupe de direction",
+      "members": [
+        {
+          "email": "ceo@example.com",
+          "name": "CEO"
+        },
+        {
+          "email": "cto@example.com",
+          "name": "CTO"
+        }
+      ]
+    }
+  ],
+  "email_settings": {
+    "smtp_server": "smtp.example.com",
+    "smtp_port": 587,
+    "use_ssl": true,
+    "sender_email": "reports@example.com",
+    "sender_name": "Système de rapports automatiques",
+    "retry_count": 3,
+    "retry_delay_minutes": 5
+  },
+  "notification_templates": {
+    "success": {
+      "subject": "Rapport {report_name} généré avec succès",
+      "body_html": "<html><body><h1>Rapport généré avec succès</h1><p>Le rapport <strong>{report_name}</strong> a été généré avec succès le {generation_date}.</p><p>Vous pouvez consulter le rapport en pièce jointe ou à l'emplacement suivant : {report_path}</p></body></html>",
+      "body_text": "Rapport généré avec succès\n\nLe rapport {report_name} a été généré avec succès le {generation_date}.\n\nVous pouvez consulter le rapport en pièce jointe ou à l'emplacement suivant : {report_path}"
+    },
+    "failure": {
+      "subject": "Échec de génération du rapport {report_name}",
+      "body_html": "<html><body><h1>Échec de génération du rapport</h1><p>La génération du rapport <strong>{report_name}</strong> a échoué le {generation_date}.</p><p>Erreur : {error_message}</p></body></html>",
+      "body_text": "Échec de génération du rapport\n\nLa génération du rapport {report_name} a échoué le {generation_date}.\n\nErreur : {error_message}"
+    }
+  }
+}

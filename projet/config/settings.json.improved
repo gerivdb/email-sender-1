@@ -1,0 +1,137 @@
+{
+    // ===== Paramètres d'interface utilisateur =====
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.editor.enablePreview": false,
+    "workbench.startupEditor": "none",
+    "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.lineHeight": 24,
+    "editor.rulers": [120],
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.minimap.enabled": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.suggestSelection": "first",
+    "editor.wordWrap": "on",
+    "editor.linkedEditing": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.renderWhitespace": "boundary",
+    "editor.renderControlCharacters": true,
+    "editor.inlineSuggest.enabled": true,
+    
+    // ===== Paramètres de fichiers =====
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true
+    },
+    "files.eol": "\r\n",
+    "files.encoding": "utf8bom",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.maxMemoryForLargeFilesMB": 4096,
+    
+    // ===== Paramètres Git =====
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "git.fetchOnPull": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    
+    // ===== Paramètres Terminal =====
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.env.windows": {
+        "AUGMENT_TERMINAL_INTEGRATION": "true",
+        "LC_ALL": "fr_FR.UTF-8"
+    },
+    "terminal.integrated.automationProfile.windows": {
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    },
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.gpuAcceleration": "on",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.cursorStyle": "line",
+    
+    // ===== Paramètres PowerShell =====
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.codeFormatting.autoCorrectAliases": true,
+    "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+    "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
+    "powershell.codeFormatting.preset": "OTBS",
+    "powershell.integratedConsole.focusConsoleOnExecute": false,
+    "powershell.integratedConsole.showOnStartup": false,
+    "powershell.promptToUpdatePowerShell": true,
+    "powershell.scriptAnalysis.enable": true,
+    
+    // ===== Paramètres Augment =====
+    "augment.ui.suppressDialogs": [
+        "keepAll",
+        "largeOutput"
+    ],
+    "augment.ui.autoConfirmKeepAll": true,
+    "augment.ui.autoConfirmLargeOutput": true,
+    "augment.chat.maxMessageSizeKB": 100,
+    "augment.chat.autoConfirmLargeMessages": true,
+    "augment.chat.guidelinesPath": ".\\augment\\chat_guidelines.md",
+    "augment.chat.defaultModel": "claude-3-sonnet-20240229",
+    "augment.chat.useMarkdownForCodeBlocks": true,
+    "augment.codebase.maxFileSizeKB": 5000,
+    "augment.codebase.excludePatterns": [
+        "node_modules/**",
+        ".git/**",
+        "**/*.min.js",
+        "**/*.bundle.js",
+        "**/*.map",
+        "**/dist/**",
+        "**/build/**"
+    ],
+    "augment.nextEdit.enableGlobalBackgroundSuggestions": true,
+    "augment.nextEdit.highlightSuggestionsInTheEditor": true,
+    "augment.nextEdit.showDiffInHover": false,
+    "augment.advanced": {},
+    
+    // ===== Paramètres MCP =====
+    "mcp": {
+        "servers": {
+            "my-mcp-server-e826b8a1": {
+                "type": "stdio",
+                "command": "MCP",
+                "args": [
+                    "Git",
+                    "Ingest"
+                ]
+            }
+        }
+    },
+    "augment.mcpServers": [
+        {
+            "name": "MCP Git Ingest",
+            "type": "command",
+            "command": "D:\\\\DO\\\\WEB\\\\N8N tests\\\\scripts json à tester\\\\EMAIL SENDER 1\\\\scripts\\\\cmd\\\\augment\\\\augment-mcp-git-ingest.cmd"
+        }
+    ],
+    
+    // ===== Autres paramètres =====
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "problems.decorations.enabled": false,
+    "problems.showCurrentInStatus": false,
+    "json.validate.enable": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "github.copilot.enable": {
+        "*": false
+    },
+    "window.zoomLevel": 0,
+    "telemetry.telemetryLevel": "off"
+}

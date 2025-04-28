@@ -1,0 +1,288 @@
+﻿{
+    "title":  "Tableau de bord des KPIs mÃ©tier",
+    "timestamp":  "2025-04-22 23:39:54",
+    "panels":  [
+                   {
+                       "title":  "EfficacitÃ©",
+                       "panels":  [
+                                      {
+                                          "id":  "EMAIL_DELIVERY_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de livraison des emails",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails correctement livrÃ©s",
+                                          "status":  "Warning",
+                                          "value":  94.5,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "CAMPAIGN_COMPLETION_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de complÃ©tion des campagnes",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage de campagnes terminÃ©es avec succÃ¨s",
+                                          "status":  "Warning",
+                                          "value":  92.5,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "WORKFLOW_COMPLETION_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de complÃ©tion des workflows",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage de workflows terminÃ©s avec succÃ¨s",
+                                          "status":  "Normal",
+                                          "value":  95.5,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "Engagement",
+                       "panels":  [
+                                      {
+                                          "id":  "EMAIL_OPEN_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux d\u0027ouverture des emails",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails ouverts par les destinataires",
+                                          "status":  "Normal",
+                                          "value":  29.365079365079367,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "EMAIL_CLICK_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de clic des emails",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© au moins un clic",
+                                          "status":  "Normal",
+                                          "value":  9.5238095238095237,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "UNSUBSCRIBE_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de dÃ©sabonnement",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027abonnÃ©s qui se dÃ©sabonnent",
+                                          "status":  "Normal",
+                                          "value":  0.37969624300559551,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "QualitÃ©",
+                       "panels":  [
+                                      {
+                                          "id":  "EMAIL_BOUNCE_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de rebond des emails",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© un rebond",
+                                          "status":  "Critical",
+                                          "value":  5,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "EMAIL_COMPLAINT_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de plainte",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© une plainte (spam)",
+                                          "status":  "Critical",
+                                          "value":  0.52910052910052907,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "Performance",
+                       "panels":  [
+                                      {
+                                          "id":  "EMAIL_PROCESSING_TIME",
+                                          "unit":  "s",
+                                          "title":  "Temps de traitement des emails",
+                                          "type":  "gauge",
+                                          "description":  "Temps moyen de traitement d\u0027un email (de la demande Ã  l\u0027envoi)",
+                                          "status":  "Normal",
+                                          "value":  3.65,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "CAMPAIGN_EXECUTION_TIME",
+                                          "unit":  "min",
+                                          "title":  "Temps d\u0027exÃ©cution des campagnes",
+                                          "type":  "gauge",
+                                          "description":  "Temps moyen d\u0027exÃ©cution d\u0027une campagne",
+                                          "status":  "Normal",
+                                          "value":  26.85,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "Croissance",
+                       "panels":  [
+                                      {
+                                          "id":  "SUBSCRIBER_GROWTH_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de croissance des abonnÃ©s",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage de croissance du nombre d\u0027abonnÃ©s",
+                                          "status":  "Warning",
+                                          "value":  0.16,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "CoÃ»t",
+                       "panels":  [
+                                      {
+                                          "id":  "COST_PER_EMAIL",
+                                          "unit":  "â‚¬",
+                                          "title":  "CoÃ»t par email",
+                                          "type":  "gauge",
+                                          "description":  "CoÃ»t moyen d\u0027envoi d\u0027un email",
+                                          "status":  "Critical",
+                                          "value":  0.51,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "Valeur",
+                       "panels":  [
+                                      {
+                                          "id":  "ROI",
+                                          "unit":  "%",
+                                          "title":  "Retour sur investissement",
+                                          "type":  "gauge",
+                                          "description":  "Retour sur investissement des campagnes email",
+                                          "status":  "Normal",
+                                          "value":  400,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "REVENUE_PER_EMAIL",
+                                          "unit":  "â‚¬",
+                                          "title":  "Revenu par email",
+                                          "type":  "gauge",
+                                          "description":  "Revenu moyen gÃ©nÃ©rÃ© par email envoyÃ©",
+                                          "status":  "Normal",
+                                          "value":  2.55,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "CONVERSION_RATE",
+                                          "unit":  "%",
+                                          "title":  "Taux de conversion",
+                                          "type":  "gauge",
+                                          "description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© une conversion",
+                                          "status":  "Normal",
+                                          "value":  3.8624338624338623,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   },
+                   {
+                       "title":  "Global",
+                       "panels":  [
+                                      {
+                                          "id":  "EMAIL_DELIVERABILITY_INDEX",
+                                          "unit":  "Score",
+                                          "title":  "Indice de dÃ©livrabilitÃ©",
+                                          "type":  "gauge",
+                                          "description":  "Indice composite de la dÃ©livrabilitÃ© des emails",
+                                          "status":  "Normal",
+                                          "value":  0.488558201058201,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "EMAIL_ENGAGEMENT_INDEX",
+                                          "unit":  "Score",
+                                          "title":  "Indice d\u0027engagement",
+                                          "type":  "gauge",
+                                          "description":  "Indice composite de l\u0027engagement des destinataires",
+                                          "status":  "Normal",
+                                          "value":  0.15631494804156676,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      },
+                                      {
+                                          "id":  "EMAIL_BUSINESS_VALUE_INDEX",
+                                          "unit":  "Score",
+                                          "title":  "Indice de valeur mÃ©tier",
+                                          "type":  "gauge",
+                                          "description":  "Indice composite de la valeur mÃ©tier des campagnes email",
+                                          "status":  "Critical",
+                                          "value":  1.6192373015873016,
+                                          "thresholds":  {
+                                                             "critical":  90,
+                                                             "warning":  70
+                                                         }
+                                      }
+                                  ],
+                       "type":  "section"
+                   }
+               ]
+}

@@ -1,0 +1,108 @@
+<!-- Template pour une section de texte -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    <div class="text-content">
+        {{section_content}}
+    </div>
+</section>
+
+<!-- Template pour une section de résumé des métriques -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    <div class="metrics-summary">
+        {{#each metrics}}
+        <div class="metric-card">
+            <h3 class="metric-name">{{name}}</h3>
+            <p class="metric-value">{{formatted_value}}</p>
+            {{#if trend}}
+            <div class="metric-trend {{trend_class}}">
+                <span class="trend-icon">{{trend_icon}}</span>
+                <span class="trend-value">{{trend_value}}</span>
+            </div>
+            {{/if}}
+        </div>
+        {{/each}}
+    </div>
+</section>
+
+<!-- Template pour une section de graphique -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    <div class="chart-container">
+        <canvas id="chart-{{section_id}}"></canvas>
+    </div>
+    {{#if chart_description}}
+    <div class="chart-description">
+        {{chart_description}}
+    </div>
+    {{/if}}
+</section>
+
+<!-- Template pour une section de tableau -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    {{#each columns}}
+                    <th>{{this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each rows}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Template pour une section d'anomalies -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    {{#if anomalies.length}}
+    <ul class="anomalies-list">
+        {{#each anomalies}}
+        <li class="anomaly-item">
+            <h3 class="anomaly-metric">{{metric}}</h3>
+            <p class="anomaly-description">{{description}}</p>
+            <p class="anomaly-time">Détecté le {{datetime}}</p>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>Aucune anomalie détectée pendant la période analysée.</p>
+    {{/if}}
+</section>
+
+<!-- Template pour une section de recommandations -->
+<section id="{{section_id}}" class="report-section">
+    <h2 class="section-title">{{section_title}}</h2>
+    {{#if recommendations.length}}
+    <ul class="recommendations-list">
+        {{#each recommendations}}
+        <li class="recommendation-item priority-{{priority}}">
+            <h3 class="recommendation-title">{{title}}</h3>
+            <p class="recommendation-description">{{description}}</p>
+            <div class="recommendation-meta">
+                <span class="recommendation-impact">Impact: {{impact}}</span>
+                <span class="recommendation-effort">Effort: {{effort}}</span>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>Aucune recommandation pour la période analysée.</p>
+    {{/if}}
+</section>
+
+<!-- Template pour un élément de la table des matières -->
+<li class="toc-item">
+    <a href="#{{section_id}}" class="toc-link">{{section_title}}</a>
+</li>

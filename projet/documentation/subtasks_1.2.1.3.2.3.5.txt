@@ -1,0 +1,10 @@
+Implémenter le suivi des objets déjà visités
+Créer une table de hachage d'objets référencés
+Implémenter l'algorithme de comparaison d'identité d'objets
+Gérer les cas particuliers (WeakReference, etc.)
+Créer un formatage spécial pour les références circulaires
+Ajouter l'indication du chemin de référence
+Implémenter les options pour résoudre ou ignorer les cycles
+Ajouter la limitation de profondeur pour les références circulaires
+Optimiser la détection pour les grands objets
+Implémenter la gestion de la mémoire pour éviter les fuites

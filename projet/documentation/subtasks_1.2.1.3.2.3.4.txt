@@ -1,0 +1,9 @@
+Implémenter le filtrage par nom de propriété (inclusion/exclusion)
+Ajouter le filtrage par type de propriété
+Créer le filtrage par valeur ou motif
+Implémenter le filtrage des propriétés système vs personnalisées
+Ajouter le paramètre IncludeInternalProperties
+Créer le paramètre PropertyFilter avec support des expressions régulières
+Implémenter les options de filtrage pour les propriétés calculées
+Créer la logique d'application des filtres à chaque niveau
+Optimiser les performances des opérations de filtrage

@@ -1,0 +1,5 @@
+Analyser les besoins
+Concevoir l'architecture
+Implémenter le code
+Tester la fonctionnalité
+Documenter l'implémentation

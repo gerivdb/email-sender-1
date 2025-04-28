@@ -1,0 +1,243 @@
+{
+  "kpis": [
+    {
+      "id": "APP_RESPONSE_TIME",
+      "name": "Temps de réponse",
+      "description": "Temps de réponse moyen des requêtes applicatives",
+      "category": "Performance",
+      "unit": "ms",
+      "formula": "AVG",
+      "source": "ResponseTime",
+      "thresholds": {
+        "warning": 500,
+        "critical": 1000
+      }
+    },
+    {
+      "id": "APP_ERROR_RATE",
+      "name": "Taux d'erreur",
+      "description": "Pourcentage de requêtes ayant généré une erreur",
+      "category": "Fiabilité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["ErrorCount", "TotalRequests"],
+      "thresholds": {
+        "warning": 1,
+        "critical": 5
+      }
+    },
+    {
+      "id": "APP_THROUGHPUT",
+      "name": "Débit de requêtes",
+      "description": "Nombre de requêtes traitées par seconde",
+      "category": "Performance",
+      "unit": "req/s",
+      "formula": "AVG",
+      "source": "RequestRate",
+      "thresholds": {
+        "warning": 100,
+        "critical": 200
+      }
+    },
+    {
+      "id": "APP_CONCURRENT_USERS",
+      "name": "Utilisateurs concurrents",
+      "description": "Nombre d'utilisateurs actifs simultanément",
+      "category": "Charge",
+      "unit": "utilisateurs",
+      "formula": "AVG",
+      "source": "ActiveUsers",
+      "thresholds": {
+        "warning": 50,
+        "critical": 100
+      }
+    },
+    {
+      "id": "APP_CPU_USAGE",
+      "name": "Utilisation CPU par l'application",
+      "description": "Pourcentage d'utilisation CPU par les processus de l'application",
+      "category": "Ressources",
+      "unit": "%",
+      "formula": "AVG",
+      "source": "AppCpuUsage",
+      "thresholds": {
+        "warning": 60,
+        "critical": 80
+      }
+    },
+    {
+      "id": "APP_MEMORY_USAGE",
+      "name": "Utilisation mémoire par l'application",
+      "description": "Quantité de mémoire utilisée par les processus de l'application",
+      "category": "Ressources",
+      "unit": "MB",
+      "formula": "AVG",
+      "source": "AppMemoryUsage",
+      "thresholds": {
+        "warning": 1024,
+        "critical": 2048
+      }
+    },
+    {
+      "id": "N8N_WORKFLOW_SUCCESS_RATE",
+      "name": "Taux de succès des workflows n8n",
+      "description": "Pourcentage de workflows n8n exécutés avec succès",
+      "category": "Fiabilité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["SuccessfulWorkflows", "TotalWorkflows"],
+      "thresholds": {
+        "warning": 95,
+        "critical": 90
+      },
+      "inverse": true
+    },
+    {
+      "id": "N8N_WORKFLOW_EXECUTION_TIME",
+      "name": "Temps d'exécution des workflows n8n",
+      "description": "Temps moyen d'exécution des workflows n8n",
+      "category": "Performance",
+      "unit": "s",
+      "formula": "AVG",
+      "source": "WorkflowExecutionTime",
+      "thresholds": {
+        "warning": 10,
+        "critical": 30
+      }
+    },
+    {
+      "id": "N8N_ACTIVE_WORKFLOWS",
+      "name": "Workflows n8n actifs",
+      "description": "Nombre de workflows n8n actifs",
+      "category": "Utilisation",
+      "unit": "workflows",
+      "formula": "COUNT",
+      "source": "ActiveWorkflows",
+      "thresholds": {
+        "warning": 20,
+        "critical": 30
+      }
+    },
+    {
+      "id": "API_SUCCESS_RATE",
+      "name": "Taux de succès des appels API",
+      "description": "Pourcentage d'appels API réussis (code 2xx/3xx)",
+      "category": "Fiabilité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["SuccessfulApiCalls", "TotalApiCalls"],
+      "thresholds": {
+        "warning": 98,
+        "critical": 95
+      },
+      "inverse": true
+    },
+    {
+      "id": "API_RESPONSE_TIME",
+      "name": "Temps de réponse API",
+      "description": "Temps de réponse moyen des appels API",
+      "category": "Performance",
+      "unit": "ms",
+      "formula": "AVG",
+      "source": "ApiResponseTime",
+      "thresholds": {
+        "warning": 200,
+        "critical": 500
+      }
+    },
+    {
+      "id": "API_RATE_LIMIT",
+      "name": "Utilisation des limites d'API",
+      "description": "Pourcentage d'utilisation des limites de taux d'API",
+      "category": "Utilisation",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["ApiCallsCount", "ApiRateLimit"],
+      "thresholds": {
+        "warning": 80,
+        "critical": 95
+      }
+    },
+    {
+      "id": "SCRIPT_EXECUTION_TIME",
+      "name": "Temps d'exécution des scripts",
+      "description": "Temps moyen d'exécution des scripts PowerShell",
+      "category": "Performance",
+      "unit": "s",
+      "formula": "AVG",
+      "source": "ScriptExecutionTime",
+      "thresholds": {
+        "warning": 5,
+        "critical": 15
+      }
+    },
+    {
+      "id": "SCRIPT_ERROR_RATE",
+      "name": "Taux d'erreur des scripts",
+      "description": "Pourcentage de scripts ayant généré une erreur",
+      "category": "Fiabilité",
+      "unit": "%",
+      "formula": "PERCENTAGE",
+      "sources": ["ScriptErrors", "ScriptExecutions"],
+      "thresholds": {
+        "warning": 2,
+        "critical": 5
+      }
+    },
+    {
+      "id": "SCRIPT_CPU_USAGE",
+      "name": "Utilisation CPU par les scripts",
+      "description": "Pourcentage d'utilisation CPU par les scripts PowerShell",
+      "category": "Ressources",
+      "unit": "%",
+      "formula": "AVG",
+      "source": "ScriptCpuUsage",
+      "thresholds": {
+        "warning": 50,
+        "critical": 70
+      }
+    },
+    {
+      "id": "APP_HEALTH_INDEX",
+      "name": "Indice de santé applicative",
+      "description": "Indice composite de santé des applications",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["APP_RESPONSE_TIME", "APP_ERROR_RATE", "APP_THROUGHPUT"],
+      "weights": [0.4, 0.4, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "N8N_HEALTH_INDEX",
+      "name": "Indice de santé n8n",
+      "description": "Indice composite de santé de n8n",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["N8N_WORKFLOW_SUCCESS_RATE", "N8N_WORKFLOW_EXECUTION_TIME", "N8N_ACTIVE_WORKFLOWS"],
+      "weights": [0.5, 0.3, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    },
+    {
+      "id": "API_HEALTH_INDEX",
+      "name": "Indice de santé API",
+      "description": "Indice composite de santé des API",
+      "category": "Global",
+      "unit": "Score",
+      "formula": "COMPOSITE",
+      "sources": ["API_SUCCESS_RATE", "API_RESPONSE_TIME", "API_RATE_LIMIT"],
+      "weights": [0.5, 0.3, 0.2],
+      "thresholds": {
+        "warning": 0.7,
+        "critical": 0.9
+      }
+    }
+  ]
+}

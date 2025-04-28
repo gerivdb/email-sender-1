@@ -1,0 +1,102 @@
+<#
+.SYNOPSIS
+    RÃ©organise les scripts de roadmap dans la nouvelle structure de dossiers.
+
+.DESCRIPTION
+    Ce script dÃ©place les fichiers existants dans le dossier development/roadmap/scripts vers la nouvelle structure
+    de dossiers organisÃ©e par catÃ©gories et sous-catÃ©gories.
+
+.NOTES
+    Auteur: RoadmapTools Team
+    Version: 1.0
+    Date de crÃ©ation: 2023-08-15
+#>
+
+# DÃ©finir les mappages de fichiers vers les nouveaux emplacements
+$fileMappings = @{
+    # Core - Conversion
+    "Convert-Roadmap.ps1" = "core/conversion/Convert-Roadmap.ps1"
+    "RoadmapConverter.psm1" = "core/conversion/RoadmapConverter.psm1"
+    
+    # Core - Structure
+    "Restore-RoadmapStructure.ps1" = "core/structure/Restore-RoadmapStructure.ps1"
+    "Clean-ArchiveSections.ps1" = "core/structure/Clean-ArchiveSections.ps1"
+    
+    # Core - Validation
+    "Test-RoadmapConverter.ps1" = "core/validation/Test-RoadmapConverter.ps1"
+    
+    # Journal - Entries
+    "Add-RoadmapJournalEntry.ps1" = "journal/entries/Add-RoadmapJournalEntry.ps1"
+    "Import-ExistingRoadmapToJournal.ps1" = "journal/entries/Import-ExistingRoadmapToJournal.ps1"
+    "Update-RoadmapJournalStatus.ps1" = "journal/entries/Update-RoadmapJournalStatus.ps1"
+    
+    # Journal - Notifications
+    "Send-RoadmapJournalNotification.ps1" = "journal/notifications/Send-RoadmapJournalNotification.ps1"
+    "Register-RoadmapJournalWatcher.ps1" = "journal/notifications/Register-RoadmapJournalWatcher.ps1"
+    
+    # Journal - Reports
+    "Analyze-RoadmapJournal.ps1" = "journal/reports/Analyze-RoadmapJournal.ps1"
+    "Generate-RoadmapJournalReport.ps1" = "journal/reports/Generate-RoadmapJournalReport.ps1"
+    "Show-RoadmapJournalDashboard.ps1" = "journal/reports/Show-RoadmapJournalDashboard.ps1"
+    
+    # Management - Archive
+    "Archive-CompletedTasks.ps1" = "management/archive/Archive-CompletedTasks.ps1"
+    "Move-CompletedTasks.ps1" = "management/archive/Move-CompletedTasks.ps1"
+    
+    # Management - Creation
+    "New-RoadmapTask.ps1" = "management/creation/New-RoadmapTask.ps1"
+    
+    # Management - Progress
+    "Update-RoadmapProgress.ps1" = "management/progress/Update-RoadmapProgress.ps1"
+    "Sync-RoadmapWithJournal.ps1" = "management/progress/Sync-RoadmapWithJournal.ps1"
+    
+    # Utils - Encoding
+    "Fix-RoadmapEncoding.ps1" = "utils/encoding/Fix-RoadmapEncoding.ps1"
+    "fix_encoding.py" = "utils/encoding/fix_encoding.py"
+    "fix_encoding_simple.py" = "utils/encoding/fix_encoding_simple.py"
+    
+    # Utils - Export
+    "Export-RoadmapToJSON.ps1" = "utils/export/Export-RoadmapToJSON.ps1"
+}
+
+# Fonction pour dÃ©placer un fichier
+function Move-FileToNewLocation {
+    param (
+        [string]$SourceFile,
+        [string]$DestinationPath
+    )
+    
+    $sourcePath = Join-Path -Path $PSScriptRoot -ChildPath $SourceFile
+    $destinationPath = Join-Path -Path $PSScriptRoot -ChildPath $DestinationPath
+    
+    # VÃ©rifier si le fichier source existe
+    if (-not (Test-Path -Path $sourcePath)) {
+        Write-Warning "Le fichier source n'existe pas : $sourcePath"
+        return
+    }
+    
+    # CrÃ©er le dossier de destination s'il n'existe pas
+    $destinationDir = Split-Path -Path $destinationPath -Parent
+    if (-not (Test-Path -Path $destinationDir)) {
+        New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
+        Write-Host "Dossier crÃ©Ã© : $destinationDir"
+    }
+    
+    # DÃ©placer le fichier
+    try {
+        Copy-Item -Path $sourcePath -Destination $destinationPath -Force
+        Write-Host "Fichier copiÃ© : $SourceFile -> $DestinationPath"
+    }
+    catch {
+        Write-Error "Erreur lors de la copie du fichier $SourceFile : $_"
+    }
+}
+
+# DÃ©placer les fichiers
+foreach ($file in $fileMappings.Keys) {
+    Move-FileToNewLocation -SourceFile $file -DestinationPath $fileMappings[$file]
+}
+
+Write-Host "RÃ©organisation terminÃ©e. Les fichiers ont Ã©tÃ© copiÃ©s vers leurs nouveaux emplacements."
+Write-Host "Vous pouvez maintenant vÃ©rifier que tout fonctionne correctement avant de supprimer les fichiers originaux."
+

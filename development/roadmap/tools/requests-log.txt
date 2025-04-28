@@ -1,0 +1,3 @@
+[2025-04-07 01:39:55] Catégorie: 7, ID: 7.2, Demande: Ajouter un systeme de recherche dans la roadmap
+[2025-04-07 02:23:46] Catégorie: 1, ID: 1.4, Demande: Implementer un systeme d'automatisation de detection des taches par balises speciales
+[2025-04-07 03:08:24] Catégorie: 3, ID: 3.4, Demande: Mettre a jour les tests unitaires pour la compatibilite multi-terminaux

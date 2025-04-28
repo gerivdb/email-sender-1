@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{report_title}}</title>
+    <style>
+        /* Variables CSS pour les thèmes */
+        :root {
+            /* Thème clair (par défaut) */
+            --bg-color: #f5f5f5;
+            --bg-card: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: #dddddd;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+            --success-color: #2ecc71;
+            --header-bg: #3498db;
+            --header-text: #ffffff;
+            --footer-bg: #f0f0f0;
+            --footer-text: #666666;
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Thème sombre */
+        .dark-theme {
+            --bg-color: #222222;
+            --bg-card: #333333;
+            --text-color: #f5f5f5;
+            --text-muted: #aaaaaa;
+            --border-color: #444444;
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+            --success-color: #2ecc71;
+            --header-bg: #1a1a1a;
+            --header-text: #ffffff;
+            --footer-bg: #1a1a1a;
+            --footer-text: #aaaaaa;
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styles de base */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* En-tête du rapport */
+        .report-header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .report-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .report-description {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .report-metadata {
+            margin-top: 15px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .report-period, .report-generated {
+            opacity: 0.8;
+        }
+
+        /* Table des matières */
+        .toc {
+            background-color: var(--bg-card);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .toc-title {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toc-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-item {
+            margin-bottom: 8px;
+        }
+
+        .toc-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .toc-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Sections du rapport */
+        .report-section {
+            background-color: var(--bg-card);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            margin-top: 0;
+            font-size: 20px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Contenu texte */
+        .text-content {
+            line-height: 1.7;
+        }
+
+        /* Résumé des métriques */
+        .metrics-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-name {
+            font-size: 14px;
+            margin: 0 0 10px;
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .trend-up {
+            color: var(--success-color);
+        }
+
+        .trend-down {
+            color: var(--danger-color);
+        }
+
+        /* Graphiques */
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        /* Tableaux */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        /* Anomalies */
+        .anomalies-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .anomaly-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--warning-color);
+            background-color: rgba(243, 156, 18, 0.05);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .anomaly-metric {
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+
+        .anomaly-description {
+            margin: 0 0 10px;
+        }
+
+        .anomaly-time {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Recommandations */
+        .recommendations-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .recommendation-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .priority-high {
+            border-left: 4px solid var(--danger-color);
+            background-color: rgba(231, 76, 60, 0.05);
+        }
+
+        .priority-medium {
+            border-left: 4px solid var(--warning-color);
+            background-color: rgba(243, 156, 18, 0.05);
+        }
+
+        .priority-low {
+            border-left: 4px solid var(--info-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+
+        .recommendation-description {
+            margin: 0 0 10px;
+        }
+
+        .recommendation-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Pied de page */
+        .report-footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--footer-text);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Bouton de changement de thème */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .metrics-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-header, .report-section {
+                padding: 15px;
+            }
+            
+            .report-title {
+                font-size: 20px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+    <!-- Inclusion de Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- Bouton de changement de thème -->
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+
+    <div class="container">
+        <!-- En-tête du rapport -->
+        <header class="report-header">
+            <h1 class="report-title">{{report_title}}</h1>
+            <p class="report-description">{{report_description}}</p>
+            <div class="report-metadata">
+                <span class="report-period">Période: {{report_period_start}} - {{report_period_end}}</span>
+                <span class="report-generated">Généré le: {{report_generated_at}}</span>
+            </div>
+        </header>
+
+        <!-- Table des matières -->
+        <div class="toc">
+            <h2 class="toc-title">Table des matières</h2>
+            <ul class="toc-list">
+                {{toc_items}}
+            </ul>
+        </div>
+
+        <!-- Contenu du rapport (sections) -->
+        <div class="report-content">
+            {{report_sections}}
+        </div>
+
+        <!-- Pied de page -->
+        <footer class="report-footer">
+            <p>Rapport généré automatiquement par le système de surveillance de performance.</p>
+            <p>© {{current_year}} - Tous droits réservés</p>
+        </footer>
+    </div>
+
+    <!-- Script pour le changement de thème -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Vérifier si un thème est déjà enregistré
+            const savedTheme = localStorage.getItem('reportTheme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+            }
+            
+            // Gérer le changement de thème
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-theme');
+                
+                // Enregistrer la préférence
+                if (body.classList.contains('dark-theme')) {
+                    localStorage.setItem('reportTheme', 'dark');
+                } else {
+                    localStorage.setItem('reportTheme', 'light');
+                }
+            });
+            
+            // Initialiser les graphiques
+            initCharts();
+        });
+        
+        // Fonction pour initialiser les graphiques
+        function initCharts() {
+            {{chart_initialization}}
+        }
+    </script>
+</body>
+</html>

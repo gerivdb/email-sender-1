@@ -1,0 +1,57 @@
+﻿[
+    {
+        "message":  "Potential null reference: user may be null",
+        "id":  "null-reference",
+        "suggestion":  "Add a null check before accessing properties",
+        "severity":  "warning",
+        "description":  "This line accesses a property of user without checking if it\u0027s null",
+        "codeExample":  "if ($user -ne $null) { ... }",
+        "endColumn":  14,
+        "lineNumber":  4,
+        "startColumn":  8
+    },
+    {
+        "message":  "Potential array index out of bounds: array[5]",
+        "id":  "index-out-of-bounds",
+        "suggestion":  "Add a bounds check before accessing array elements",
+        "severity":  "warning",
+        "description":  "This line accesses an array element without checking the array bounds",
+        "codeExample":  "if ($array.Length -gt 5) { ... }",
+        "endColumn":  18,
+        "lineNumber":  8,
+        "startColumn":  9
+    },
+    {
+        "message":  "Potential type conversion error: [int]$input",
+        "id":  "type-conversion",
+        "suggestion":  "Add a type check before converting",
+        "severity":  "warning",
+        "description":  "This line attempts to convert a variable to a specific type without checking if the conversion is valid",
+        "codeExample":  "if ($input -as [int]) { ... }",
+        "endColumn":  21,
+        "lineNumber":  12,
+        "startColumn":  10
+    },
+    {
+        "message":  "Potential null reference: obj may be null",
+        "id":  "null-reference",
+        "suggestion":  "Add a null check before accessing properties",
+        "severity":  "warning",
+        "description":  "This line accesses a property of obj without checking if it\u0027s null",
+        "codeExample":  "if ($obj -ne $null) { ... }",
+        "endColumn":  14,
+        "lineNumber":  23,
+        "startColumn":  9
+    },
+    {
+        "message":  "Potential type conversion error: [string]$Name",
+        "id":  "type-conversion",
+        "suggestion":  "Add a type check before converting",
+        "severity":  "warning",
+        "description":  "This line attempts to convert a variable to a specific type without checking if the conversion is valid",
+        "codeExample":  "if ($Name -as [string]) { ... }",
+        "endColumn":  21,
+        "lineNumber":  29,
+        "startColumn":  8
+    }
+]

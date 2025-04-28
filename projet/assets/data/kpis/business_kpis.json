@@ -1,0 +1,182 @@
+﻿[
+    {
+        "Id":  "EMAIL_DELIVERY_RATE",
+        "Name":  "Taux de livraison des emails",
+        "Description":  "Pourcentage d\u0027emails correctement livrÃ©s",
+        "Category":  "EfficacitÃ©",
+        "Value":  94.5,
+        "Unit":  "%",
+        "Status":  "Warning",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_OPEN_RATE",
+        "Name":  "Taux d\u0027ouverture des emails",
+        "Description":  "Pourcentage d\u0027emails ouverts par les destinataires",
+        "Category":  "Engagement",
+        "Value":  29.365079365079367,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_CLICK_RATE",
+        "Name":  "Taux de clic des emails",
+        "Description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© au moins un clic",
+        "Category":  "Engagement",
+        "Value":  9.5238095238095237,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_BOUNCE_RATE",
+        "Name":  "Taux de rebond des emails",
+        "Description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© un rebond",
+        "Category":  "QualitÃ©",
+        "Value":  5,
+        "Unit":  "%",
+        "Status":  "Critical",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_COMPLAINT_RATE",
+        "Name":  "Taux de plainte",
+        "Description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© une plainte (spam)",
+        "Category":  "QualitÃ©",
+        "Value":  0.52910052910052907,
+        "Unit":  "%",
+        "Status":  "Critical",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_PROCESSING_TIME",
+        "Name":  "Temps de traitement des emails",
+        "Description":  "Temps moyen de traitement d\u0027un email (de la demande Ã  l\u0027envoi)",
+        "Category":  "Performance",
+        "Value":  3.65,
+        "Unit":  "s",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "CAMPAIGN_COMPLETION_RATE",
+        "Name":  "Taux de complÃ©tion des campagnes",
+        "Description":  "Pourcentage de campagnes terminÃ©es avec succÃ¨s",
+        "Category":  "EfficacitÃ©",
+        "Value":  92.5,
+        "Unit":  "%",
+        "Status":  "Warning",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "CAMPAIGN_EXECUTION_TIME",
+        "Name":  "Temps d\u0027exÃ©cution des campagnes",
+        "Description":  "Temps moyen d\u0027exÃ©cution d\u0027une campagne",
+        "Category":  "Performance",
+        "Value":  26.85,
+        "Unit":  "min",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "WORKFLOW_COMPLETION_RATE",
+        "Name":  "Taux de complÃ©tion des workflows",
+        "Description":  "Pourcentage de workflows terminÃ©s avec succÃ¨s",
+        "Category":  "EfficacitÃ©",
+        "Value":  95.5,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "SUBSCRIBER_GROWTH_RATE",
+        "Name":  "Taux de croissance des abonnÃ©s",
+        "Description":  "Pourcentage de croissance du nombre d\u0027abonnÃ©s",
+        "Category":  "Croissance",
+        "Value":  0.16,
+        "Unit":  "%",
+        "Status":  "Warning",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "UNSUBSCRIBE_RATE",
+        "Name":  "Taux de dÃ©sabonnement",
+        "Description":  "Pourcentage d\u0027abonnÃ©s qui se dÃ©sabonnent",
+        "Category":  "Engagement",
+        "Value":  0.37969624300559551,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "COST_PER_EMAIL",
+        "Name":  "CoÃ»t par email",
+        "Description":  "CoÃ»t moyen d\u0027envoi d\u0027un email",
+        "Category":  "CoÃ»t",
+        "Value":  0.51,
+        "Unit":  "â‚¬",
+        "Status":  "Critical",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "ROI",
+        "Name":  "Retour sur investissement",
+        "Description":  "Retour sur investissement des campagnes email",
+        "Category":  "Valeur",
+        "Value":  400,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "REVENUE_PER_EMAIL",
+        "Name":  "Revenu par email",
+        "Description":  "Revenu moyen gÃ©nÃ©rÃ© par email envoyÃ©",
+        "Category":  "Valeur",
+        "Value":  2.55,
+        "Unit":  "â‚¬",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "CONVERSION_RATE",
+        "Name":  "Taux de conversion",
+        "Description":  "Pourcentage d\u0027emails ayant gÃ©nÃ©rÃ© une conversion",
+        "Category":  "Valeur",
+        "Value":  3.8624338624338623,
+        "Unit":  "%",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_DELIVERABILITY_INDEX",
+        "Name":  "Indice de dÃ©livrabilitÃ©",
+        "Description":  "Indice composite de la dÃ©livrabilitÃ© des emails",
+        "Category":  "Global",
+        "Value":  0.488558201058201,
+        "Unit":  "Score",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_ENGAGEMENT_INDEX",
+        "Name":  "Indice d\u0027engagement",
+        "Description":  "Indice composite de l\u0027engagement des destinataires",
+        "Category":  "Global",
+        "Value":  0.15631494804156676,
+        "Unit":  "Score",
+        "Status":  "Normal",
+        "Timestamp":  "2025-04-22 23:39:54"
+    },
+    {
+        "Id":  "EMAIL_BUSINESS_VALUE_INDEX",
+        "Name":  "Indice de valeur mÃ©tier",
+        "Description":  "Indice composite de la valeur mÃ©tier des campagnes email",
+        "Category":  "Global",
+        "Value":  1.6192373015873016,
+        "Unit":  "Score",
+        "Status":  "Critical",
+        "Timestamp":  "2025-04-22 23:39:54"
+    }
+]

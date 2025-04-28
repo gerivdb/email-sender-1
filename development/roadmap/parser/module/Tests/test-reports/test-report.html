@@ -1,0 +1,977 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport de tests - Modes RoadmapParser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .summary {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #28a745;
+        }
+        .warning {
+            color: #ffc107;
+        }
+        .danger {
+            color: #dc3545;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapport de tests - Modes RoadmapParser</h1>
+    <div class="summary">
+        <h2>RÃ©sumÃ©</h2>
+        <p>Date d'exÃ©cution : 2025-04-26 21:43:24</p>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 5%">
+                5%
+            </div>
+        </div>
+        <p>Tests exÃ©cutÃ©s : <strong>123</strong></p>
+        <p>Tests rÃ©ussis : <span class="success"><strong>6</strong></span></p>
+        <p>Tests Ã©chouÃ©s : <span class="danger"><strong>117</strong></span></p>
+        <p>Tests ignorÃ©s : <span class="warning"><strong>0</strong></span></p>
+        <p>DurÃ©e totale : <strong>44.4791077 secondes</strong></p>
+    </div>
+    
+    <h2>DÃ©tails des tests</h2>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide</td>
+            <td class="danger">Failed</td>
+            <td>758.4509</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide</td>
+            <td class="danger">Failed</td>
+            <td>261.39</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide</td>
+            <td class="danger">Failed</td>
+            <td>226.9046</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide</td>
+            <td class="danger">Failed</td>
+            <td>225.3573</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure</td>
+            <td class="success">Passed</td>
+            <td>358.359</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td class="danger">Failed</td>
+            <td>330.2266</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td class="danger">Failed</td>
+            <td>578.519</td>
+        </tr>        <tr>
+            <td>Devrait retourner False si la fonction de validation lÃ¨ve une exception</td>
+            <td class="danger">Failed</td>
+            <td>283.8265</td>
+        </tr>        <tr>
+            <td>Devrait utiliser un message d'erreur par dÃ©faut si la fonction de validation lÃ¨ve une exception</td>
+            <td class="danger">Failed</td>
+            <td>300.3461</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>282.4125</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un entier</td>
+            <td class="danger">Failed</td>
+            <td>216.5614</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un entier</td>
+            <td class="danger">Failed</td>
+            <td>250.7955</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>228.2507</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un nombre dÃ©cimal</td>
+            <td class="danger">Failed</td>
+            <td>233.9571</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>214.4527</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un boolÃ©en</td>
+            <td class="danger">Failed</td>
+            <td>267.5324</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>257.1422</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date/heure</td>
+            <td class="danger">Failed</td>
+            <td>279.7924</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>225.8094</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau</td>
+            <td class="danger">Failed</td>
+            <td>250.0446</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>235.5473</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage</td>
+            <td class="danger">Failed</td>
+            <td>236.6098</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>232.1973</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un objet PowerShell</td>
+            <td class="danger">Failed</td>
+            <td>235.4489</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>287.8557</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un bloc de script</td>
+            <td class="danger">Failed</td>
+            <td>260.5826</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>246.2654</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour null</td>
+            <td class="danger">Failed</td>
+            <td>245.8175</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>280.8036</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur non null</td>
+            <td class="danger">Failed</td>
+            <td>227.1629</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour null</td>
+            <td class="danger">Failed</td>
+            <td>260.1162</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne vide</td>
+            <td class="danger">Failed</td>
+            <td>288.1842</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau vide</td>
+            <td class="danger">Failed</td>
+            <td>267.3156</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage vide</td>
+            <td class="danger">Failed</td>
+            <td>295.1729</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne non vide</td>
+            <td class="danger">Failed</td>
+            <td>324.7962</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne non vide</td>
+            <td class="danger">Failed</td>
+            <td>223.4726</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau non vide</td>
+            <td class="danger">Failed</td>
+            <td>218.5656</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage non vide</td>
+            <td class="danger">Failed</td>
+            <td>214.2369</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne vide</td>
+            <td class="danger">Failed</td>
+            <td>271.3704</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure</td>
+            <td class="success">Passed</td>
+            <td>222.8626</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td class="danger">Failed</td>
+            <td>258.0768</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td class="danger">Failed</td>
+            <td>320.5761</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse email valide</td>
+            <td class="danger">Failed</td>
+            <td>250.7018</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse email invalide</td>
+            <td class="danger">Failed</td>
+            <td>217.5584</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une URL valide</td>
+            <td class="danger">Failed</td>
+            <td>262.1376</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une URL invalide</td>
+            <td class="danger">Failed</td>
+            <td>220.796</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse IP valide</td>
+            <td class="danger">Failed</td>
+            <td>232.0339</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse IP invalide</td>
+            <td class="danger">Failed</td>
+            <td>224.0215</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un numÃ©ro de tÃ©lÃ©phone valide</td>
+            <td class="danger">Failed</td>
+            <td>267.0854</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un numÃ©ro de tÃ©lÃ©phone invalide</td>
+            <td class="danger">Failed</td>
+            <td>257.6025</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un code postal valide</td>
+            <td class="danger">Failed</td>
+            <td>240.1384</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un code postal invalide</td>
+            <td class="danger">Failed</td>
+            <td>251.6049</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date valide</td>
+            <td class="danger">Failed</td>
+            <td>247.51</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une date invalide</td>
+            <td class="danger">Failed</td>
+            <td>215.9091</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une heure valide</td>
+            <td class="danger">Failed</td>
+            <td>242.6042</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une heure invalide</td>
+            <td class="danger">Failed</td>
+            <td>230.954</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date/heure valide</td>
+            <td class="danger">Failed</td>
+            <td>254.8968</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une date/heure invalide</td>
+            <td class="danger">Failed</td>
+            <td>241.2317</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un GUID valide</td>
+            <td class="danger">Failed</td>
+            <td>236.9766</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un GUID invalide</td>
+            <td class="danger">Failed</td>
+            <td>302.3248</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un chemin de fichier valide</td>
+            <td class="danger">Failed</td>
+            <td>281.9525</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un chemin de fichier invalide</td>
+            <td class="danger">Failed</td>
+            <td>228.726</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un chemin de rÃ©pertoire valide</td>
+            <td class="danger">Failed</td>
+            <td>254.1357</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un chemin de rÃ©pertoire invalide</td>
+            <td class="danger">Failed</td>
+            <td>242.4124</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur correspondant au pattern personnalisÃ©</td>
+            <td class="danger">Failed</td>
+            <td>229.7944</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisÃ©</td>
+            <td class="danger">Failed</td>
+            <td>225.3097</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception si le pattern n'est pas spÃ©cifiÃ©</td>
+            <td class="success">Passed</td>
+            <td>192.1532</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure</td>
+            <td class="success">Passed</td>
+            <td>231.5074</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td class="danger">Failed</td>
+            <td>250.3473</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td class="danger">Failed</td>
+            <td>481.3892</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur dans la plage</td>
+            <td class="danger">Failed</td>
+            <td>241.4189</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  la borne infÃ©rieure</td>
+            <td class="danger">Failed</td>
+            <td>248.4652</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  la borne supÃ©rieure</td>
+            <td class="danger">Failed</td>
+            <td>227.3678</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur infÃ©rieure Ã  la borne infÃ©rieure</td>
+            <td class="danger">Failed</td>
+            <td>232.9997</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur supÃ©rieure Ã  la borne supÃ©rieure</td>
+            <td class="danger">Failed</td>
+            <td>229.2058</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur supÃ©rieure Ã  Min</td>
+            <td class="danger">Failed</td>
+            <td>236.2206</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  Min</td>
+            <td class="danger">Failed</td>
+            <td>237.8678</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur infÃ©rieure Ã  Min</td>
+            <td class="danger">Failed</td>
+            <td>261.8647</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur infÃ©rieure Ã  Max</td>
+            <td class="danger">Failed</td>
+            <td>235.6162</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  Max</td>
+            <td class="danger">Failed</td>
+            <td>218.7651</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur supÃ©rieure Ã  Max</td>
+            <td class="danger">Failed</td>
+            <td>259.5549</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur valide</td>
+            <td class="danger">Failed</td>
+            <td>242.1261</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MinLength</td>
+            <td class="danger">Failed</td>
+            <td>223.6743</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MaxLength</td>
+            <td class="danger">Failed</td>
+            <td>241.5399</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop courte</td>
+            <td class="danger">Failed</td>
+            <td>259.2204</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop longue</td>
+            <td class="danger">Failed</td>
+            <td>218.6346</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne plus longue que MinLength</td>
+            <td class="danger">Failed</td>
+            <td>245.4229</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MinLength</td>
+            <td class="danger">Failed</td>
+            <td>223.7685</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne plus courte que MinLength</td>
+            <td class="danger">Failed</td>
+            <td>282.8599</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne plus courte que MaxLength</td>
+            <td class="danger">Failed</td>
+            <td>264.5607</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MaxLength</td>
+            <td class="danger">Failed</td>
+            <td>226.0616</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne plus longue que MaxLength</td>
+            <td class="danger">Failed</td>
+            <td>234.2046</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments valide</td>
+            <td class="danger">Failed</td>
+            <td>243.3581</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MinCount</td>
+            <td class="danger">Failed</td>
+            <td>244.8573</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MaxCount</td>
+            <td class="danger">Failed</td>
+            <td>231.3195</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop peu d'Ã©lÃ©ments</td>
+            <td class="danger">Failed</td>
+            <td>242.4653</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop d'Ã©lÃ©ments</td>
+            <td class="danger">Failed</td>
+            <td>224.2308</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec plus d'Ã©lÃ©ments que MinCount</td>
+            <td class="danger">Failed</td>
+            <td>391.7583</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MinCount</td>
+            <td class="danger">Failed</td>
+            <td>242.4923</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec moins d'Ã©lÃ©ments que MinCount</td>
+            <td class="danger">Failed</td>
+            <td>261.679</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec moins d'Ã©lÃ©ments que MaxCount</td>
+            <td class="danger">Failed</td>
+            <td>238.7426</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MaxCount</td>
+            <td class="danger">Failed</td>
+            <td>214.0563</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec plus d'Ã©lÃ©ments que MaxCount</td>
+            <td class="danger">Failed</td>
+            <td>405.1182</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure</td>
+            <td class="success">Passed</td>
+            <td>216.7638</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td class="danger">Failed</td>
+            <td>265.6143</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td class="danger">Failed</td>
+            <td>313.2143</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de caractÃ¨res</td>
+            <td class="danger">Failed</td>
+            <td>261.3072</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un entier lorsque le type attendu est String</td>
+            <td class="danger">Failed</td>
+            <td>221.7933</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse email valide</td>
+            <td class="danger">Failed</td>
+            <td>244.1009</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse email invalide</td>
+            <td class="danger">Failed</td>
+            <td>237.4076</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur dans la plage</td>
+            <td class="danger">Failed</td>
+            <td>258.8142</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur hors de la plage</td>
+            <td class="danger">Failed</td>
+            <td>235.9006</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur valide</td>
+            <td class="danger">Failed</td>
+            <td>255.0311</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop courte</td>
+            <td class="danger">Failed</td>
+            <td>234.396</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments valide</td>
+            <td class="danger">Failed</td>
+            <td>243.5899</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop d'Ã©lÃ©ments</td>
+            <td class="danger">Failed</td>
+            <td>219.3655</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide avec ValidationFunction</td>
+            <td class="danger">Failed</td>
+            <td>251.4076</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide avec ValidationFunction</td>
+            <td class="danger">Failed</td>
+            <td>224.0027</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide avec plusieurs validations</td>
+            <td class="danger">Failed</td>
+            <td>265.0681</td>
+        </tr>        <tr>
+            <td>Devrait retourner False si une des validations Ã©choue</td>
+            <td class="danger">Failed</td>
+            <td>241.4558</td>
+        </tr>        <tr>
+            <td>Devrait lever une exception en cas d'Ã©chec avec ThrowOnFailure</td>
+            <td class="success">Passed</td>
+            <td>238.1245</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td class="danger">Failed</td>
+            <td>292.2134</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td class="danger">Failed</td>
+            <td>338.8819</td>
+        </tr>    </table>
+    
+    <h2>Tests Ã©chouÃ©s</h2>    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Message d'erreur</th>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide</td>
+            <td>Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide</td>
+            <td>Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide</td>
+            <td>Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide</td>
+            <td>Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td>Expected no exception to be thrown, but an exception "Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests\Validation\Test-Custom.Tests.ps1:40 : 15
+    +             { Test-Custom -Value 42 -ValidationFunction { param($val) ...
+    +               ~~~~~~~~~~~.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td>Expected strings to be the same, but they were different.
+Expected length: 30
+Actual length:   247
+Strings differ at index 0.
+Expected: 'Message d'erreur personnalisÃ©'
+But was:  'Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, ...'
+           ^</td>
+        </tr>        <tr>
+            <td>Devrait retourner False si la fonction de validation lÃ¨ve une exception</td>
+            <td>Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser un message d'erreur par dÃ©faut si la fonction de validation lÃ¨ve une exception</td>
+            <td>Expected regular expression 'Erreur lors de l'exÃ©cution de la validation personnalisÃ©e' to match 'Le terme « Test-Custom » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.', but it did not match.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un entier</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un entier</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un nombre dÃ©cimal</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un boolÃ©en</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date/heure</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un objet PowerShell</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un bloc de script</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour null</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur non null</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour null</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne non vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne non vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau non vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une table de hachage non vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne vide</td>
+            <td>Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td>Expected no exception to be thrown, but an exception "Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests\Validation\Test-DataType.Tests.ps1:166 : 15
+    +             { Test-DataType -Value 42 -Type "Integer" -ThrowOnFailure ...
+    +               ~~~~~~~~~~~~~.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td>Expected strings to be the same, but they were different.
+Expected length: 30
+Actual length:   249
+Strings differ at index 0.
+Expected: 'Message d'erreur personnalisÃ©'
+But was:  'Le terme « Test-DataType » n'est pas reconnu comme nom d'applet de commande, fonction...'
+           ^</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse email valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse email invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une URL valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une URL invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse IP valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse IP invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un numÃ©ro de tÃ©lÃ©phone valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un numÃ©ro de tÃ©lÃ©phone invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un code postal valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un code postal invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une date invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une heure valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une heure invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une date/heure valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une date/heure invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un GUID valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un GUID invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un chemin de fichier valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un chemin de fichier invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un chemin de rÃ©pertoire valide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un chemin de rÃ©pertoire invalide</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur correspondant au pattern personnalisÃ©</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur ne correspondant pas au pattern personnalisÃ©</td>
+            <td>Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td>Expected no exception to be thrown, but an exception "Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests\Validation\Test-Format.Tests.ps1:144 : 15
+    +             { Test-Format -Value "user@example.com" -Format "Email" - ...
+    +               ~~~~~~~~~~~.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td>Expected strings to be the same, but they were different.
+Expected length: 30
+Actual length:   247
+Strings differ at index 0.
+Expected: 'Message d'erreur personnalisÃ©'
+But was:  'Le terme « Test-Format » n'est pas reconnu comme nom d'applet de commande, fonction, ...'
+           ^</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur dans la plage</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  la borne infÃ©rieure</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  la borne supÃ©rieure</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur infÃ©rieure Ã  la borne infÃ©rieure</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur supÃ©rieure Ã  la borne supÃ©rieure</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur supÃ©rieure Ã  Min</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  Min</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur infÃ©rieure Ã  Min</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur infÃ©rieure Ã  Max</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur Ã©gale Ã  Max</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur supÃ©rieure Ã  Max</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur valide</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MinLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MaxLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop courte</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop longue</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne plus longue que MinLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MinLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne plus courte que MinLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne plus courte que MaxLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur Ã©gale Ã  MaxLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne plus longue que MaxLength</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments valide</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MinCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MaxCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop peu d'Ã©lÃ©ments</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop d'Ã©lÃ©ments</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec plus d'Ã©lÃ©ments que MinCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MinCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec moins d'Ã©lÃ©ments que MinCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec moins d'Ã©lÃ©ments que MaxCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments Ã©gal Ã  MaxCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec plus d'Ã©lÃ©ments que MaxCount</td>
+            <td>Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td>Expected no exception to be thrown, but an exception "Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests\Validation\Test-Range.Tests.ps1:170 : 15
+    +             { Test-Range -Value 42 -Min 0 -Max 100 -ThrowOnFailure }  ...
+    +               ~~~~~~~~~~.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td>Expected strings to be the same, but they were different.
+Expected length: 30
+Actual length:   246
+Strings differ at index 0.
+Expected: 'Message d'erreur personnalisÃ©'
+But was:  'Le terme « Test-Range » n'est pas reconnu comme nom d'applet de commande, fonction, f...'
+           ^</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de caractÃ¨res</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un entier lorsque le type attendu est String</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une adresse email valide</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une adresse email invalide</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur dans la plage</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur hors de la plage</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une chaÃ®ne de longueur valide</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une chaÃ®ne trop courte</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour un tableau avec un nombre d'Ã©lÃ©ments valide</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour un tableau avec trop d'Ã©lÃ©ments</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide avec ValidationFunction</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False pour une valeur invalide avec ValidationFunction</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner True pour une valeur valide avec plusieurs validations</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Devrait retourner False si une des validations Ã©choue</td>
+            <td>Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez.</td>
+        </tr>        <tr>
+            <td>Ne devrait pas lever d'exception en cas de succÃ¨s avec ThrowOnFailure</td>
+            <td>Expected no exception to be thrown, but an exception "Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonction, fichier de script ou programme exécutable. Vérifiez l'orthographe du nom, ou si un chemin d'accès existe, vérifiez que le chemin d'accès est correct et réessayez." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\tools\scripts\roadmap-parser\module\Tests\Validation\Test-RoadmapInput.Tests.ps1:102 : 15
+    +             { Test-RoadmapInput -Value "user@example.com" -Format "Em ...
+    +               ~~~~~~~~~~~~~~~~~.</td>
+        </tr>        <tr>
+            <td>Devrait utiliser le message d'erreur personnalisÃ© en cas d'Ã©chec</td>
+            <td>Expected strings to be the same, but they were different.
+Expected length: 30
+Actual length:   253
+Strings differ at index 0.
+Expected: 'Message d'erreur personnalisÃ©'
+But was:  'Le terme « Test-RoadmapInput » n'est pas reconnu comme nom d'applet de commande, fonc...'
+           ^</td>
+        </tr>    </table></body>
+</html>
