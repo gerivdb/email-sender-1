@@ -40,6 +40,10 @@ function Update-AllReferences {
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-source-references.ps1"
                 Description = "Mise à jour des références dans les fichiers de code source"
+            },
+            @{
+                Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-documentation-references.ps1"
+                Description = "Mise à jour des références dans les fichiers de documentation"
             }
         )
     }
