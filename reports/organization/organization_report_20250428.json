@@ -1,0 +1,508 @@
+{
+  "FilesPerSubDir": [
+    {
+      "Name": "api",
+      "Count": 1,
+      "Files": "Analyze-Feedback.ps1"
+    },
+    {
+      "Name": "augment",
+      "Count": 6,
+      "Files": [
+        "AugmentMemoriesManager.ps1",
+        "Export-AugmentMemories.ps1",
+        "Install-AugmentMemoriesModule.ps1",
+        "sync-augment-settings.ps1",
+        "Test-Simple.ps1",
+        "Update-AugmentMemories.ps1"
+      ]
+    },
+    {
+      "Name": "CI-CD",
+      "Count": 2,
+      "Files": [
+        "Run-TestsInCI.ps1",
+        "Run-TestsInPipeline.ps1"
+      ]
+    },
+    {
+      "Name": "cleanup",
+      "Count": 12,
+      "Files": [
+        "autoprefixer.ps1",
+        "cleanup-mode-scripts.ps1",
+        "cleanup-repository-v2.ps1",
+        "cleanup-repository.ps1",
+        "Consolidate-AnalysisDirectories-Final.ps1",
+        "Consolidate-AnalysisDirectories.ps1",
+        "consolidate-n8n.ps1",
+        "finalize-n8n-consolidation.ps1",
+        "fix-n8n-folders.ps1",
+        "Fix-PSScriptAnalyzerIssues.ps1",
+        "rename-n8n-folders.ps1",
+        "Repair-PSScriptAnalyzerIssues.ps1"
+      ]
+    },
+    {
+      "Name": "docs",
+      "Count": 1,
+      "Files": "Reorganize-DocsStructure.ps1"
+    },
+    {
+      "Name": "duplication",
+      "Count": 3,
+      "Files": [
+        "Find-CodeDuplication.ps1",
+        "Manage-Duplications.ps1",
+        "Merge-SimilarScripts.ps1"
+      ]
+    },
+    {
+      "Name": "encoding",
+      "Count": 40,
+      "Files": [
+        "CharacterNormalizer-Cached.ps1",
+        "CharacterNormalizer.ps1",
+        "CharacterSubstitution.ps1",
+        "convert_encoding_fixed.ps1",
+        "convert_encoding.ps1",
+        "delete-all-workflows-auto.ps1",
+        "Detect-BrokenReferences-Cached.ps1",
+        "Detect-BrokenReferences-Fixed.ps1",
+        "Detect-BrokenReferences.ps1",
+        "Detect-VariableReferences.ps1",
+        "Detect-VariableReferencesInAccentedStrings.ps1",
+        "encoding-tools.ps1",
+        "EncodingConverter.ps1",
+        "EncodingDetector.ps1",
+        "EncodingStandardizer.ps1",
+        "fix_encoding.ps1",
+        "fix-all-encodings.ps1",
+        "fix-detector-encoding.ps1",
+        "fix-encoding-basic.ps1",
+        "fix-encoding-cmd.ps1",
+        "fix-encoding-minimal.ps1",
+        "fix-encoding-scripts.ps1",
+        "fix-encoding-simple.ps1",
+        "fix-encoding-utf8.ps1",
+        "Fix-Encoding.ps1",
+        "Fix-VariableReferences.ps1",
+        "fix-workflow-names.ps1",
+        "get-workflows.ps1",
+        "import-fixed-all-workflows.ps1",
+        "list-workflows.ps1",
+        "Manage-References-Fixed.ps1",
+        "Manage-References.ps1",
+        "organize-encoding-tools.ps1",
+        "remove-accents-simple.ps1",
+        "Repair-EncodingIssues.ps1",
+        "Roadmap-Format-Converter.ps1",
+        "Test-FormatExamples.ps1",
+        "TestEncoding.ps1",
+        "Update-BrokenReferences-Fixed.ps1",
+        "Update-BrokenReferences.ps1"
+      ]
+    },
+    {
+      "Name": "environment-compatibility",
+      "Count": 9,
+      "Files": [
+        "EnvironmentManager.psm1",
+        "EnvironmentManager.Tests.ps1",
+        "Improve-ScriptCompatibility.ps1",
+        "Improve-ScriptCompatibility.Tests.ps1",
+        "init-maintenance.ps1",
+        "Run-Tests.ps1",
+        "Simple-Tests.ps1",
+        "Test-EnvironmentManager.ps1",
+        "test-script.ps1"
+      ]
+    },
+    {
+      "Name": "error-handling",
+      "Count": 7,
+      "Files": [
+        "Add-ErrorHandlingToScripts.ps1",
+        "ErrorHandling.psm1",
+        "ErrorHandling.Tests.ps1",
+        "Run-Tests.ps1",
+        "SimpleErrorHandling.ps1",
+        "Test-AddErrorHandlingToScripts.ps1",
+        "Test-SimpleErrorHandling.ps1"
+      ]
+    },
+    {
+      "Name": "error-learning",
+      "Count": 45,
+      "Files": [
+        "Adaptive-ErrorCorrection.ps1",
+        "Analyze-ErrorPatterns.ps1",
+        "Analyze-ScriptForErrors.ps1",
+        "Analyze-ScriptsWithJobs.Simple.ps1",
+        "Auto-CorrectErrorsWithJobs.Simple.ps1",
+        "Collect-ErrorData.ps1",
+        "Correct-ScriptsParallel.ps1",
+        "ErrorLearningSystem.psm1",
+        "ErrorPatternAnalyzer.psm1",
+        "Fix-InvokePester.ps1",
+        "Fix-TestFiles.ps1",
+        "Generate-ErrorDashboard.ps1",
+        "Install-ErrorLearningSystem.ps1",
+        "Install-PowerShell7.ps1",
+        "Integrate-WithTestOmnibus.ps1",
+        "Manage-KnowledgeBase.ps1",
+        "Parallel-ErrorProcessing.ps1",
+        "Predict-ErrorCascades.ps1",
+        "Run-AdaptiveCorrectionTests.ps1",
+        "Run-AdaptiveLearningTests.ps1",
+        "Run-AdvancedErrorHandlingSimpleTests.ps1",
+        "Run-AdvancedErrorHandlingTests.ps1",
+        "Run-AllTests.ps1",
+        "Run-AllWorkingTests.ps1",
+        "Run-BasicTests.ps1",
+        "Run-ErrorHandlingTests.ps1",
+        "Run-FixedIntegrationTests.ps1",
+        "Run-FunctionTests.ps1",
+        "Run-HelperFunctionsTests.ps1",
+        "Run-IntegrationTests.ps1",
+        "Run-JobsProcessingTests.ps1",
+        "Run-ParallelProcessingTests.ps1",
+        "Run-ScriptAnalysisTests.ps1",
+        "Run-SimpleIntegrationTests.ps1",
+        "Run-SimpleIntegrationTests2.ps1",
+        "Run-SimplifiedIntegrationTests.ps1",
+        "Run-ValidationCorrectionsTests.ps1",
+        "Run-VeryBasicTests.ps1",
+        "Run-WorkingTests.ps1",
+        "Show-ErrorPatterns.ps1",
+        "Test-ErrorLearningSystem.ps1",
+        "Test-ParallelPerformance.ps1",
+        "test-script-with-errors.ps1",
+        "Train-ErrorPatternModel.ps1",
+        "Validate-ErrorCorrections.ps1"
+      ]
+    },
+    {
+      "Name": "error-prevention",
+      "Count": 2,
+      "Files": [
+        "Detect-CyclicDependencies.ps1",
+        "Test-CycleDetection.ps1"
+      ]
+    },
+    {
+      "Name": "git",
+      "Count": 2,
+      "Files": [
+        "Fix-LineEndings.ps1",
+        "Install-PreCommitHook.ps1"
+      ]
+    },
+    {
+      "Name": "mcp",
+      "Count": 1,
+      "Files": "Detect-MCPServers.ps1"
+    },
+    {
+      "Name": "modes",
+      "Count": 7,
+      "Files": [
+        "archi-mode.ps1",
+        "c-break-mode.ps1",
+        "check-enhanced.ps1",
+        "check.ps1",
+        "create-checkbox-symlinks.ps1",
+        "install-check-enhanced.ps1",
+        "update-checkbox-function.ps1"
+      ]
+    },
+    {
+      "Name": "monitoring",
+      "Count": 2,
+      "Files": [
+        "Check-ScriptsOrganization.ps1",
+        "Install-OrganizationCheckTask.ps1"
+      ]
+    },
+    {
+      "Name": "organize",
+      "Count": 4,
+      "Files": [
+        "Move-ExistingScripts.ps1",
+        "Organize-MaintenanceScripts.ps1",
+        "organize-repository-v2.ps1",
+        "organize-repository.ps1"
+      ]
+    },
+    {
+      "Name": "parallel-processing",
+      "Count": 6,
+      "Files": [
+        "Example-Usage.ps1",
+        "Invoke-OptimizedParallel-Simple.ps1",
+        "Invoke-OptimizedParallel.ps1",
+        "ParallelProcessing.psd1",
+        "ParallelProcessing.psm1",
+        "Test-ParallelPerformance.ps1"
+      ]
+    },
+    {
+      "Name": "paths",
+      "Count": 4,
+      "Files": [
+        "normalize-project-paths.ps1",
+        "PathResolver.psm1",
+        "Resolve-ProjectPaths.ps1",
+        "update-project-paths.ps1"
+      ]
+    },
+    {
+      "Name": "performance",
+      "Count": 1,
+      "Files": "PerformanceCounterManager.psm1"
+    },
+    {
+      "Name": "phase6",
+      "Count": 13,
+      "Files": [
+        "Add-ErrorHandling.ps1",
+        "Implement-CentralizedLogging.ps1",
+        "Implement-Phase6-Simple.ps1",
+        "Improve-EnvironmentCompatibility.ps1",
+        "Minimal-Test.ps1",
+        "Simple-Test.ps1",
+        "Start-Phase6.ps1",
+        "Test-EnvironmentCompatibility.ps1",
+        "Test-Phase6-Simple.ps1",
+        "Test-Phase6Implementation.ps1",
+        "Test-Phase6Prerequisites.ps1",
+        "Update-Phase6Paths.ps1",
+        "Update-Roadmap.ps1"
+      ]
+    },
+    {
+      "Name": "ps7-migration",
+      "Count": 1,
+      "Files": "Test-PSVersionCompatibility.ps1"
+    },
+    {
+      "Name": "references",
+      "Count": 17,
+      "Files": [
+        "Detect-BrokenReferences.ps1",
+        "Start-ReferenceManager.ps1",
+        "Test-ReferenceUpdater.ps1",
+        "update-additional-references.ps1",
+        "update-all-references.ps1",
+        "update-config-references.ps1",
+        "update-documentation-references.ps1",
+        "update-path-references.ps1",
+        "update-project-structure-references.ps1",
+        "Update-References.ps1",
+        "update-roadmap-declarations-references.ps1",
+        "update-roadmap-references.ps1",
+        "update-roadmap-structure-references.ps1",
+        "update-source-references.ps1",
+        "update-structure-references-2.ps1",
+        "update-structure-references.ps1",
+        "update-tools-references.ps1"
+      ]
+    },
+    {
+      "Name": "registry",
+      "Count": 5,
+      "Files": [
+        "fix-registry-tasks-indentation-level.ps1",
+        "fix-registry-tasks-indentation.ps1",
+        "update-registry-tasks-direct.ps1",
+        "update-registry-tasks-fixed.ps1",
+        "update-registry-tasks.ps1"
+      ]
+    },
+    {
+      "Name": "repo",
+      "Count": 33,
+      "Files": [
+        "auto-organize-silent-improved.ps1",
+        "auto-organize-silent.ps1",
+        "auto-organize.ps1",
+        "check-repo-structure-fixed.ps1",
+        "check-repo-structure.ps1",
+        "check-structure.ps1",
+        "Clean-Repository-v2.ps1",
+        "fix-tools-subfolders.ps1",
+        "initialize-project.ps1",
+        "Invoke-RepoStandardization.ps1",
+        "Merge-JournalFiles.ps1",
+        "merge-roadmap-folders.ps1",
+        "merge-scripts-folders.ps1",
+        "move-roadmap-content.ps1",
+        "move-utils-to-tools.ps1",
+        "new-script.ps1",
+        "organize-all-files.ps1",
+        "organize-files-fixed.ps1",
+        "organize-files-simple.ps1",
+        "organize-python-files.ps1",
+        "organize-repo-fixed.ps1",
+        "organize-repo-structure.ps1",
+        "organize-repo.ps1",
+        "Organize-RootFiles.ps1",
+        "organize-scripts.ps1",
+        "rename-tools-subfolders.ps1",
+        "reorganize-docs.ps1",
+        "Reorganize-Repository.ps1",
+        "reorganize-tools-utils-fixed.ps1",
+        "reorganize-tools-utils-simple.ps1",
+        "reorganize-tools-utils.ps1",
+        "Test-RepoScripts.ps1",
+        "Test-RepoStructure.ps1"
+      ]
+    },
+    {
+      "Name": "roadmap",
+      "Count": 8,
+      "Files": [
+        "Consolidate-RoadmapFiles.ps1",
+        "Create-RoadmapCopies.ps1",
+        "Create-RoadmapSymlinks.ps1",
+        "Fix-RoadmapReferences.ps1",
+        "Fix-RoadmapScripts.ps1",
+        "Simplify-Roadmap.ps1",
+        "Update-Roadmap.ps1",
+        "Update-RoadmapReferences.ps1"
+      ]
+    },
+    {
+      "Name": "services",
+      "Count": 3,
+      "Files": [
+        "check-services.ps1",
+        "diagnose-services.ps1",
+        "start-local-services.ps1"
+      ]
+    },
+    {
+      "Name": "standards",
+      "Count": 8,
+      "Files": [
+        "Demo-PreventiveInspection.ps1",
+        "Format-Script-Fixed.ps1",
+        "Format-Script.ps1",
+        "Inspect-ScriptPreventively.ps1",
+        "Manage-Standards-Fixed.ps1",
+        "Manage-Standards.ps1",
+        "Test-ScriptCompliance-Fixed.ps1",
+        "Test-ScriptCompliance.ps1"
+      ]
+    },
+    {
+      "Name": "test",
+      "Count": 14,
+      "Files": [
+        "Check-ScriptsOrganization.Tests.ps1",
+        "Get-CodeCoverage.ps1",
+        "Install-PreCommitHook.Tests.ps1",
+        "Move-ExistingScripts.Tests.ps1",
+        "OrganizationFunctions.Tests.ps1",
+        "Organize-MaintenanceScripts.Tests.ps1",
+        "Run-AllTests.ps1",
+        "Run-Tests.ps1",
+        "Run-TestSuite.ps1",
+        "Test-ConsolidateAnalysisDirectories-Final.ps1",
+        "Test-Integration.ps1",
+        "test-powershell-script.ps1",
+        "test-script-at-root.ps1",
+        "test-script-at-root2.ps1"
+      ]
+    },
+    {
+      "Name": "tests",
+      "Count": 23,
+      "Files": [
+        "Repair-PSScriptAnalyzerIssues.Tests.ps1",
+        "Run-Tests.ps1",
+        "Adaptive-ErrorCorrection.Tests.ps1",
+        "AdaptiveCorrection.Tests.ps1",
+        "AdvancedErrorHandling.Simple.ps1",
+        "AdvancedErrorHandling.Tests.ps1",
+        "Basic.Tests.ps1",
+        "ErrorFunctions.Tests.ps1",
+        "ErrorHandling.Tests.ps1",
+        "ErrorLearningSystem.Integration.Fixed.ps1",
+        "ErrorLearningSystem.Integration.Simple.ps1",
+        "ErrorLearningSystem.Integration.Simplified.ps1",
+        "ErrorLearningSystem.Integration.Tests.ps1",
+        "ErrorLearningSystem.Tests.ps1",
+        "Get-PowerShellErrorAnalysis.Tests.ps1",
+        "HelperFunctions.Tests.ps1",
+        "Simple.Tests.ps1",
+        "SimpleIntegration.Tests.ps1",
+        "Validate-ErrorCorrections.Tests.ps1",
+        "ValidationCorrections.Tests.ps1",
+        "VeryBasic.Tests.ps1",
+        "Inspect-ScriptPreventively.Tests.ps1",
+        "Run-Tests.ps1"
+      ]
+    },
+    {
+      "Name": "TestScripts",
+      "Count": 3,
+      "Files": [
+        "Script1.ps1",
+        "Script2.ps1",
+        "Script3.ps1"
+      ]
+    },
+    {
+      "Name": "vscode",
+      "Count": 3,
+      "Files": [
+        "optimize-vscode-for-augment.ps1",
+        "update-vscode-cache.ps1",
+        "update-vscode-config.ps1"
+      ]
+    }
+  ],
+  "SubDirs": [
+    "_templates",
+    "api",
+    "augment",
+    "backups",
+    "cleanup",
+    "docs",
+    "duplication",
+    "encoding",
+    "environment-compatibility",
+    "error-handling",
+    "error-learning",
+    "error-prevention",
+    "git",
+    "logs",
+    "mcp",
+    "migrate",
+    "modes",
+    "monitoring",
+    "organize",
+    "parallel-processing",
+    "paths",
+    "performance",
+    "phase6",
+    "ps7-migration",
+    "references",
+    "registry",
+    "repo",
+    "roadmap",
+    "services",
+    "standards",
+    "test",
+    "utils",
+    "vscode"
+  ],
+  "GeneratedAt": "2025-04-28 17:55:02",
+  "MaintenanceDir": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\maintenance",
+  "SubDirsCount": 33,
+  "OrganizationStatus": "OK",
+  "RootFiles": null,
+  "SubDirFilesCount": 286,
+  "RootFilesCount": 0
+}

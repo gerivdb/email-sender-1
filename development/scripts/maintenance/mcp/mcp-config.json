@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "npx",
+      "args": ["-y", "@wonderwhy-er/desktop-commander"]
+    }
+  },
+  "commands": {
+    "maintenance": {
+      "description": "Commandes de maintenance du projet",
+      "subcommands": {
+        "organize": {
+          "description": "Organiser les scripts de maintenance",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "development/scripts/maintenance/organize/Organize-MaintenanceScripts.ps1", "-Force"]
+        },
+        "create-script": {
+          "description": "Créer un nouveau script avec Hygen",
+          "command": "npx",
+          "args": ["hygen", "script", "new"]
+        },
+        "install-hooks": {
+          "description": "Installer les hooks Git",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "development/scripts/maintenance/git/Install-PreCommitHook.ps1", "-Force"]
+        },
+        "list-categories": {
+          "description": "Lister les catégories de scripts disponibles",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "Get-ChildItem -Path 'development/scripts/maintenance' -Directory | Select-Object -ExpandProperty Name | Sort-Object"]
+        },
+        "list-scripts": {
+          "description": "Lister tous les scripts par catégorie",
+          "command": "powershell.exe",
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "Get-ChildItem -Path 'development/scripts/maintenance' -Directory | ForEach-Object { Write-Host \"\\n[$($_.Name)]\" -ForegroundColor Cyan; Get-ChildItem -Path $_.FullName -File -Filter '*.ps1' | Select-Object -ExpandProperty Name | Sort-Object }"]
+        }
+      }
+    }
+  }
+}

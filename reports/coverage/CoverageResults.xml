@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="40" errors="0" failures="40" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-04-28" time="17:45:38">
+  <environment platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" nunit-version="2.5.8.0" user="user" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1" os-version="10.0.19045" user-domain="DESKTOP-ORG3GN0" machine-name="DESKTOP-ORG3GN0" clr-version="9.0.1" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="4.7641" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1" executed="True" result="Failure" success="False" time="1.2538" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests du script Check-ScriptsOrganization.ps1" executed="True" result="Failure" success="False" time="0.7797" asserts="0" description="Tests du script Check-ScriptsOrganization.ps1">
+            <results>
+              <test-suite type="TestFixture" name="Tests du script Check-ScriptsOrganization.ps1.Tests de fonctionnalité" executed="True" result="Failure" success="False" time="0.3342" asserts="0" description="Tests du script Check-ScriptsOrganization.ps1.Tests de fonctionnalité">
+                <results>
+                  <test-case description="Le script devrait exister" name="Tests du script Check-ScriptsOrganization.ps1.Tests de fonctionnalité.Le script devrait exister" time="0.2273" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, but got $null.</message>
+                      <stack-trace>at Test-Path -Path $scriptPath | Should -Be $true, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:85
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait être un fichier PowerShell valide" name="Tests du script Check-ScriptsOrganization.ps1.Tests de fonctionnalité.Le script devrait être un fichier PowerShell valide" time="0.0508" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "The expression after '.' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object." was thrown from D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:89 char:17
+    +             { . $scriptPath } | Should -Not -Throw
+    +                 ~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptPath } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:89
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:89</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la fonction Write-Log" name="Tests du script Check-ScriptsOrganization.ps1.Tests de fonctionnalité.Le script devrait contenir la fonction Write-Log" time="0.0129" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:93</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation correcte" executed="True" result="Failure" success="False" time="0.4465" asserts="0" description="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation correcte">
+                <results>
+                  <test-case description="Devrait générer un rapport d'organisation" name="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation correcte.Devrait générer un rapport d'organisation" time="0.0219" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:101</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le rapport devrait indiquer que l'organisation est correcte" name="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation correcte.Le rapport devrait indiquer que l'organisation est correcte" time="0.0624" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:111</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation incorrecte" executed="True" result="Failure" success="False" time="0.5756" asserts="0" description="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation incorrecte">
+                <results>
+                  <test-case description="Devrait détecter les fichiers à la racine" name="Tests du script Check-ScriptsOrganization.ps1.Tests d'intégration - Organisation incorrecte.Devrait détecter les fichiers à la racine" time="0.1069" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Check-ScriptsOrganization.Tests.ps1:142</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1" executed="True" result="Failure" success="False" time="0.5281" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests du script Install-PreCommitHook.ps1" executed="True" result="Failure" success="False" time="0.3055" asserts="0" description="Tests du script Install-PreCommitHook.ps1">
+            <results>
+              <test-suite type="TestFixture" name="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité" executed="True" result="Failure" success="False" time="0.1311" asserts="0" description="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité">
+                <results>
+                  <test-case description="Le script devrait exister" name="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité.Le script devrait exister" time="0.0484" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, but got $null.</message>
+                      <stack-trace>at Test-Path -Path $scriptPath | Should -Be $true, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:61
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:61</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait être un fichier PowerShell valide" name="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité.Le script devrait être un fichier PowerShell valide" time="0.0252" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "The expression after '.' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object." was thrown from D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:65 char:17
+    +             { . $scriptPath } | Should -Not -Throw
+    +                 ~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptPath } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:65
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:65</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la fonction Write-Log" name="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité.Le script devrait contenir la fonction Write-Log" time="0.017" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:69</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir le contenu du hook pre-commit" name="Tests du script Install-PreCommitHook.ps1.Tests de fonctionnalité.Le script devrait contenir le contenu du hook pre-commit" time="0.0109" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:74</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests du script Install-PreCommitHook.ps1.Tests d'intégration" executed="True" result="Failure" success="False" time="0.1978" asserts="0" description="Tests du script Install-PreCommitHook.ps1.Tests d'intégration">
+                <results>
+                  <test-case description="Devrait créer le hook pre-commit" name="Tests du script Install-PreCommitHook.ps1.Tests d'intégration.Devrait créer le hook pre-commit" time="0.0422" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Install-PreCommitHook.Tests.ps1:92</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1" executed="True" result="Failure" success="False" time="0.6861" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests du script Move-ExistingScripts.ps1" executed="True" result="Failure" success="False" time="0.4761" asserts="0" description="Tests du script Move-ExistingScripts.ps1">
+            <results>
+              <test-suite type="TestFixture" name="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité" executed="True" result="Failure" success="False" time="0.097" asserts="0" description="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité">
+                <results>
+                  <test-case description="Le script devrait exister" name="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité.Le script devrait exister" time="0.0364" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, but got $null.</message>
+                      <stack-trace>at Test-Path -Path $scriptPath | Should -Be $true, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:93
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:93</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait être un fichier PowerShell valide" name="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité.Le script devrait être un fichier PowerShell valide" time="0.019" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "The expression after '.' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object." was thrown from D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:97 char:17
+    +             { . $scriptPath } | Should -Not -Throw
+    +                 ~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptPath } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:97
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:97</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la variable scriptClassification" name="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité.Le script devrait contenir la variable scriptClassification" time="0.0112" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:101</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la fonction Move-ScriptToCategory" name="Tests du script Move-ExistingScripts.ps1.Tests de fonctionnalité.Le script devrait contenir la fonction Move-ScriptToCategory" time="0.0129" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:106</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests du script Move-ExistingScripts.ps1.Tests d'intégration" executed="True" result="Failure" success="False" time="0.2147" asserts="0" description="Tests du script Move-ExistingScripts.ps1.Tests d'intégration">
+                <results>
+                  <test-case description="Devrait déplacer les fichiers dans les bons sous-dossiers selon la classification prédéfinie" name="Tests du script Move-ExistingScripts.ps1.Tests d'intégration.Devrait déplacer les fichiers dans les bons sous-dossiers selon la classification prédéfinie" time="0.0171" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:114</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Ne devrait plus y avoir de fichiers à la racine du dossier maintenance" name="Tests du script Move-ExistingScripts.ps1.Tests d'intégration.Ne devrait plus y avoir de fichiers à la racine du dossier maintenance" time="0.0776" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 0, but got 19.</message>
+                      <stack-trace>at $rootFiles.Count | Should -Be 0, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:140
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Move-ExistingScripts.Tests.ps1:140</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1" executed="True" result="Failure" success="False" time="1.6663" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests des fonctions d'organisation des scripts" executed="True" result="Failure" success="False" time="1.4222" asserts="0" description="Tests des fonctions d'organisation des scripts">
+            <results>
+              <test-suite type="TestFixture" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory" executed="True" result="Failure" success="False" time="1.3996" asserts="0" description="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory">
+                <results>
+                  <test-case description="Devrait retourner 'roadmap' pour un fichier contenant 'roadmap' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'roadmap' pour un fichier contenant 'roadmap' dans son nom" time="0.0808" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:83</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'paths' pour un fichier contenant 'path' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'paths' pour un fichier contenant 'path' dans son nom" time="0.0692" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:87</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'modes' pour un fichier contenant 'checkbox' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'modes' pour un fichier contenant 'checkbox' dans son nom" time="0.0869" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:91</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'api' pour un fichier contenant 'analyze' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'api' pour un fichier contenant 'analyze' dans son nom" time="0.087" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:95</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'test' pour un fichier contenant 'test' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'test' pour un fichier contenant 'test' dans son nom" time="0.0758" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:99</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'vscode' pour un fichier contenant 'vscode' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'vscode' pour un fichier contenant 'vscode' dans son nom" time="0.0809" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:103</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'git' pour un fichier contenant 'git' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'git' pour un fichier contenant 'git' dans son nom" time="0.0722" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:107</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'cleanup' pour un fichier contenant 'fix' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'cleanup' pour un fichier contenant 'fix' dans son nom" time="0.0728" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:111</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'modes' pour un fichier contenant 'mode' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'modes' pour un fichier contenant 'mode' dans son nom" time="0.0869" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:115</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'encoding' pour un fichier contenant 'encoding' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'encoding' pour un fichier contenant 'encoding' dans son nom" time="0.0716" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:119</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'logs' pour un fichier contenant 'log' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'logs' pour un fichier contenant 'log' dans son nom" time="0.0836" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:123</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'performance' pour un fichier contenant 'performance' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'performance' pour un fichier contenant 'performance' dans son nom" time="0.0869" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:127</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'backups' pour un fichier contenant 'backup' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'backups' pour un fichier contenant 'backup' dans son nom" time="0.0849" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:131</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'environment-compatibility' pour un fichier contenant 'init' dans son nom" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'environment-compatibility' pour un fichier contenant 'init' dans son nom" time="0.0937" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:135</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'utils' pour un fichier sans mot-clé reconnu" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'utils' pour un fichier sans mot-clé reconnu" time="0.0722" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:139</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait analyser le contenu si le nom ne contient pas de mot-clé reconnu" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait analyser le contenu si le nom ne contient pas de mot-clé reconnu" time="0.078" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:144</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Devrait retourner 'utils' si ni le nom ni le contenu ne contiennent de mot-clé reconnu" name="Tests des fonctions d'organisation des scripts.Tests de la fonction Get-ScriptCategory.Devrait retourner 'utils' si ni le nom ni le contenu ne contiennent de mot-clé reconnu" time="0.0947" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: The term 'Get-ScriptCategory' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\OrganizationFunctions.Tests.ps1:149</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1" executed="True" result="Failure" success="False" time="0.6299" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tests du script Organize-MaintenanceScripts.ps1" executed="True" result="Failure" success="False" time="0.3563" asserts="0" description="Tests du script Organize-MaintenanceScripts.ps1">
+            <results>
+              <test-suite type="TestFixture" name="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité" executed="True" result="Failure" success="False" time="0.105" asserts="0" description="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité">
+                <results>
+                  <test-case description="Le script devrait exister" name="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité.Le script devrait exister" time="0.028" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected $true, but got $null.</message>
+                      <stack-trace>at Test-Path -Path $scriptPath | Should -Be $true, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:79
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:79</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait être un fichier PowerShell valide" name="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité.Le script devrait être un fichier PowerShell valide" time="0.0208" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "The expression after '.' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object." was thrown from D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:83 char:17
+    +             { . $scriptPath } | Should -Not -Throw
+    +                 ~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptPath } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:83
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:83</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la fonction Get-ScriptCategory" name="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité.Le script devrait contenir la fonction Get-ScriptCategory" time="0.0155" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:87</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Le script devrait contenir la fonction Move-ScriptToCategory" name="Tests du script Organize-MaintenanceScripts.ps1.Tests de fonctionnalité.Le script devrait contenir la fonction Move-ScriptToCategory" time="0.0227" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Cannot bind argument to parameter 'Path' because it is null.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:92</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Tests du script Organize-MaintenanceScripts.ps1.Tests d'intégration" executed="True" result="Failure" success="False" time="0.1872" asserts="0" description="Tests du script Organize-MaintenanceScripts.ps1.Tests d'intégration">
+                <results>
+                  <test-case description="Devrait déplacer les fichiers dans les bons sous-dossiers" name="Tests du script Organize-MaintenanceScripts.ps1.Tests d'intégration.Devrait déplacer les fichiers dans les bons sous-dossiers" time="0.0142" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                      <stack-trace>at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:100</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Ne devrait plus y avoir de fichiers à la racine du dossier maintenance" name="Tests du script Organize-MaintenanceScripts.ps1.Tests d'intégration.Ne devrait plus y avoir de fichiers à la racine du dossier maintenance" time="0.0503" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 0, but got 5.</message>
+                      <stack-trace>at $rootFiles.Count | Should -Be 0, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:112
+at &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\maintenance\test\Organize-MaintenanceScripts.Tests.ps1:112</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
