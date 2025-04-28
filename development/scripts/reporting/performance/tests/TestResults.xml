@@ -1,0 +1,1583 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="62" errors="0" failures="61" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-04-15" time="02:39:19">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="4.6213" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1" executed="True" result="Failure" success="False" time="0.8596" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Compare-PRPerformanceResults Tests" executed="True" result="Failure" success="False" time="0.6155" asserts="0" description="Compare-PRPerformanceResults Tests">
+            <results>
+              <test-suite type="TestFixture" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0.2873" asserts="0" description="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre ResultsPath" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ResultsPath" time="0.065" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:122 : 17
+    +             { . $scriptToTest -ResultsPath @($script:result1Path, $sc ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -ResultsPath @($script:result1Path, $script:result2Path) -Labels @("Result1", "Result2") -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:122
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 122
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Labels" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Labels" time="0.0614" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:126 : 17
+    +             { . $scriptToTest -ResultsPath @($script:result1Path, $sc ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -ResultsPath @($script:result1Path, $script:result2Path) -Labels @("Result1", "Result2") -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:126
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 126
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre OutputPath" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputPath" time="0.0625" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:130 : 17
+    +             { . $scriptToTest -ResultsPath @($script:result1Path, $sc ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -ResultsPath @($script:result1Path, $script:result2Path) -Labels @("Result1", "Result2") -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:130
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 130
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre IncludeRawData" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre IncludeRawData" time="0.0456" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:134 : 17
+    +             { . $scriptToTest -ResultsPath @($script:result1Path, $sc ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -ResultsPath @($script:result1Path, $script:result2Path) -Labels @("Result1", "Result2") -OutputPath $script:outputPath -IncludeRawData -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1:134
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 134
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="VÃ©rifie que ResultsPath et Labels ont la mÃªme longueur" name="Compare-PRPerformanceResults Tests.Validation des paramÃ¨tres.VÃ©rifie que ResultsPath et Labels ont la mÃªme longueur" time="0.0317" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Compare-PRPerformanceResults Tests.Chargement des rÃ©sultats" executed="True" result="Failure" success="False" time="0.3524" asserts="0" description="Compare-PRPerformanceResults Tests.Chargement des rÃ©sultats">
+                <results>
+                  <test-case description="Charge correctement les rÃ©sultats" name="Compare-PRPerformanceResults Tests.Chargement des rÃ©sultats.Charge correctement les rÃ©sultats" time="0.0505" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 145
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Compare-PRPerformanceResults Tests.Comparaison des rÃ©sultats" executed="True" result="Failure" success="False" time="0.461" asserts="0" description="Compare-PRPerformanceResults Tests.Comparaison des rÃ©sultats">
+                <results>
+                  <test-case description="Compare correctement les rÃ©sultats" name="Compare-PRPerformanceResults Tests.Comparaison des rÃ©sultats.Compare correctement les rÃ©sultats" time="0.0585" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 159
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Inclut les donnÃ©es brutes si demandÃ©" name="Compare-PRPerformanceResults Tests.Comparaison des rÃ©sultats.Inclut les donnÃ©es brutes si demandÃ©" time="0.0347" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Compare-PRPerformanceResults.Tests.ps1 : ligne 167
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1" executed="True" result="Failure" success="False" time="1.1201" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Invoke-AllPerformanceTests Tests" executed="True" result="Failure" success="False" time="0.8801" asserts="0" description="Invoke-AllPerformanceTests Tests">
+            <results>
+              <test-suite type="TestFixture" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0.3052" asserts="0" description="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre OutputDir" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputDir" time="0.0652" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:56 : 17
+    +             { . $scriptToTest -OutputDir $script:outputDir -WhatIf }  ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:56
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 56
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre DataSize" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre DataSize" time="0.0483" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:60 : 17
+    +             { . $scriptToTest -DataSize "Small" -OutputDir $script:ou ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -DataSize "Small" -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:60
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 60
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Iterations" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Iterations" time="0.0422" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:64 : 17
+    +             { . $scriptToTest -Iterations 3 -OutputDir $script:output ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -Iterations 3 -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:64
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 64
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Duration" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Duration" time="0.0447" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:68 : 17
+    +             { . $scriptToTest -Duration 10 -OutputDir $script:outputD ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -Duration 10 -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:68
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 68
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Concurrency" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Concurrency" time="0.0443" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:72 : 17
+    +             { . $scriptToTest -Concurrency 2 -OutputDir $script:outpu ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -Concurrency 2 -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:72
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 72
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre GenerateReport" name="Invoke-AllPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre GenerateReport" time="0.0432" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:76 : 17
+    +             { . $scriptToTest -GenerateReport -OutputDir $script:outp ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -GenerateReport -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1:76
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 76
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-AllPerformanceTests Tests.ExÃ©cution des tests de performance" executed="True" result="Failure" success="False" time="0.455" asserts="0" description="Invoke-AllPerformanceTests Tests.ExÃ©cution des tests de performance">
+                <results>
+                  <test-case description="ExÃ©cute tous les tests de performance" name="Invoke-AllPerformanceTests Tests.ExÃ©cution des tests de performance.ExÃ©cute tous les tests de performance" time="0.0685" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 115
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re un rapport de comparaison si demandÃ©" name="Invoke-AllPerformanceTests Tests.ExÃ©cution des tests de performance.GÃ©nÃ¨re un rapport de comparaison si demandÃ©" time="0.0661" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceTests.Tests.ps1 : ligne 168
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-PRPerformanceBenchmark.Tests.ps1" executed="True" result="Failure" success="False" time="0.4029" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-PRPerformanceBenchmark.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Invoke-PRPerformanceBenchmark Tests" executed="True" result="Failure" success="False" time="0.1515" asserts="0" description="Invoke-PRPerformanceBenchmark Tests">
+            <results>
+              <test-suite type="TestFixture" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0" asserts="0" description="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre ModuleName" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ModuleName" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre FunctionName" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre FunctionName" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Iterations" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Iterations" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre DataSize" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre DataSize" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre OutputPath" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputPath" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre IncludeDetails" name="Invoke-PRPerformanceBenchmark Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre IncludeDetails" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-PRPerformanceBenchmark Tests.GÃ©nÃ©ration de donnÃ©es de test" executed="True" result="Failure" success="False" time="0" asserts="0" description="Invoke-PRPerformanceBenchmark Tests.GÃ©nÃ©ration de donnÃ©es de test">
+                <results>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Small" name="Invoke-PRPerformanceBenchmark Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Small" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Medium" name="Invoke-PRPerformanceBenchmark Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Medium" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Large" name="Invoke-PRPerformanceBenchmark Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Large" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks" executed="True" result="Failure" success="False" time="0" asserts="0" description="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks">
+                <results>
+                  <test-case description="ExÃ©cute les benchmarks pour toutes les fonctions" name="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks.ExÃ©cute les benchmarks pour toutes les fonctions" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="ExÃ©cute les benchmarks pour un module spÃ©cifique" name="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks.ExÃ©cute les benchmarks pour un module spÃ©cifique" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="ExÃ©cute les benchmarks pour une fonction spÃ©cifique" name="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks.ExÃ©cute les benchmarks pour une fonction spÃ©cifique" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Inclut les dÃ©tails des itÃ©rations si demandÃ©" name="Invoke-PRPerformanceBenchmark Tests.ExÃ©cution des benchmarks.Inclut les dÃ©tails des itÃ©rations si demandÃ©" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1" executed="True" result="Failure" success="False" time="0.9272" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Register-PRPerformanceTests Tests" executed="True" result="Failure" success="False" time="0.6417" asserts="0" description="Register-PRPerformanceTests Tests">
+            <results>
+              <test-suite type="TestFixture" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0.3035" asserts="0" description="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre ConfigPath" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ConfigPath" time="0.0691" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:83 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:83
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 83
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre BaselineResultsPath" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre BaselineResultsPath" time="0.0409" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:87 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:87
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 87
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre ThresholdPercent" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ThresholdPercent" time="0.0404" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:91 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -ThresholdPercent 5 -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:91
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 91
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre OutputDir" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputDir" time="0.0405" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:95 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:95
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 95
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre GenerateReport" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre GenerateReport" time="0.0433" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:99 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -GenerateReport -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:99
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 99
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre FailOnRegression" name="Register-PRPerformanceTests Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre FailOnRegression" time="0.0441" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:103 : 17
+    +             { &amp; $scriptToTest -ConfigPath $script:configPath -Baselin ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { &amp; $scriptToTest -ConfigPath $script:configPath -BaselineResultsPath $script:baselineResultsPath -OutputDir $script:outputDir -FailOnRegression -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1:103
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 103
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Register-PRPerformanceTests Tests.CrÃ©ation de configuration" executed="True" result="Failure" success="False" time="0.3995" asserts="0" description="Register-PRPerformanceTests Tests.CrÃ©ation de configuration">
+                <results>
+                  <test-case description="CrÃ©e un fichier de configuration par dÃ©faut si non existant" name="Register-PRPerformanceTests Tests.CrÃ©ation de configuration.CrÃ©e un fichier de configuration par dÃ©faut si non existant" time="0.0377" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 110
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Met Ã  jour la configuration existante avec les paramÃ¨tres spÃ©cifiÃ©s" name="Register-PRPerformanceTests Tests.CrÃ©ation de configuration.Met Ã  jour la configuration existante avec les paramÃ¨tres spÃ©cifiÃ©s" time="0.0385" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 127
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Register-PRPerformanceTests Tests.GÃ©nÃ©ration de scripts CI" executed="True" result="Failure" success="False" time="0.5412" asserts="0" description="Register-PRPerformanceTests Tests.GÃ©nÃ©ration de scripts CI">
+                <results>
+                  <test-case description="GÃ©nÃ¨re un script CI" name="Register-PRPerformanceTests Tests.GÃ©nÃ©ration de scripts CI.GÃ©nÃ¨re un script CI" time="0.043" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 143
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re une configuration Azure DevOps" name="Register-PRPerformanceTests Tests.GÃ©nÃ©ration de scripts CI.GÃ©nÃ¨re une configuration Azure DevOps" time="0.0421" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 157
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re une configuration GitHub Actions" name="Register-PRPerformanceTests Tests.GÃ©nÃ©ration de scripts CI.GÃ©nÃ¨re une configuration GitHub Actions" time="0.0348" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « &amp; » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Register-PRPerformanceTests.Tests.ps1 : ligne 171
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Start-PRLoadTest.Tests.ps1" executed="True" result="Failure" success="False" time="0.3412" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Start-PRLoadTest.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Start-PRLoadTest Tests" executed="True" result="Failure" success="False" time="0.1252" asserts="0" description="Start-PRLoadTest Tests">
+            <results>
+              <test-suite type="TestFixture" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0" asserts="0" description="Start-PRLoadTest Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre ModuleName" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ModuleName" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre FunctionName" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre FunctionName" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Duration" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Duration" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre Concurrency" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre Concurrency" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre DataSize" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre DataSize" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre OutputPath" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputPath" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre MonitorInterval" name="Start-PRLoadTest Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre MonitorInterval" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test" executed="True" result="Failure" success="False" time="0" asserts="0" description="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test">
+                <results>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Small" name="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Small" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Medium" name="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Medium" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille Large" name="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille Large" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re des donnÃ©es de test de taille ExtraLarge" name="Start-PRLoadTest Tests.GÃ©nÃ©ration de donnÃ©es de test.GÃ©nÃ¨re des donnÃ©es de test de taille ExtraLarge" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Start-PRLoadTest Tests.ExÃ©cution des tests de charge" executed="True" result="Failure" success="False" time="0" asserts="0" description="Start-PRLoadTest Tests.ExÃ©cution des tests de charge">
+                <results>
+                  <test-case description="ExÃ©cute les tests de charge pour toutes les fonctions" name="Start-PRLoadTest Tests.ExÃ©cution des tests de charge.ExÃ©cute les tests de charge pour toutes les fonctions" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="ExÃ©cute les tests de charge pour un module spÃ©cifique" name="Start-PRLoadTest Tests.ExÃ©cution des tests de charge.ExÃ©cute les tests de charge pour un module spÃ©cifique" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                  <test-case description="ExÃ©cute les tests de charge pour une fonction spÃ©cifique" name="Start-PRLoadTest Tests.ExÃ©cution des tests de charge.ExÃ©cute les tests de charge pour une fonction spÃ©cifique" time="0" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>This test should run but it did not. Most likely a setup in some parent block failed.</message>
+                      <stack-trace />
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1" executed="True" result="Failure" success="False" time="0.9703" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Test-PRPerformanceRegression Tests" executed="True" result="Failure" success="False" time="0.7215" asserts="0" description="Test-PRPerformanceRegression Tests">
+            <results>
+              <test-suite type="TestFixture" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres" executed="True" result="Failure" success="False" time="0.2812" asserts="0" description="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres">
+                <results>
+                  <test-case description="Accepte le paramÃ¨tre CurrentResults" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre CurrentResults" time="0.054" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:113 : 17
+    +             { . $scriptToTest -CurrentResults $script:currentResultsP ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:113
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 113
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre BaselineResults" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre BaselineResults" time="0.0545" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:117 : 17
+    +             { . $scriptToTest -CurrentResults $script:currentResultsP ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:117
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 117
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre ThresholdPercent" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre ThresholdPercent" time="0.0555" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:121 : 17
+    +             { . $scriptToTest -CurrentResults $script:currentResultsP ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -ThresholdPercent 5 -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:121
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 121
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre OutputPath" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre OutputPath" time="0.0533" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:125 : 17
+    +             { . $scriptToTest -CurrentResults $script:currentResultsP ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:125
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 125
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Accepte le paramÃ¨tre GenerateReport" name="Test-PRPerformanceRegression Tests.Validation des paramÃ¨tres.Accepte le paramÃ¨tre GenerateReport" time="0.0478" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected no exception to be thrown, but an exception "L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo." was thrown Au caractère D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:129 : 17
+    +             { . $scriptToTest -CurrentResults $script:currentResultsP ...
+    +                 ~~~~~~~~~~~~~.</message>
+                      <stack-trace>at { . $scriptToTest -CurrentResults $script:currentResultsPath -BaselineResults $script:baselineResultsPath -OutputPath $script:outputPath -GenerateReport -WhatIf } | Should -Not -Throw, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1:129
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8193
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 129
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Test-PRPerformanceRegression Tests.DÃ©tection des rÃ©gressions" executed="True" result="Failure" success="False" time="0.5563" asserts="0" description="Test-PRPerformanceRegression Tests.DÃ©tection des rÃ©gressions">
+                <results>
+                  <test-case description="DÃ©tecte les rÃ©gressions de performance" name="Test-PRPerformanceRegression Tests.DÃ©tection des rÃ©gressions.DÃ©tecte les rÃ©gressions de performance" time="0.1181" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 184
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Respecte le seuil de rÃ©gression spÃ©cifiÃ©" name="Test-PRPerformanceRegression Tests.DÃ©tection des rÃ©gressions.Respecte le seuil de rÃ©gression spÃ©cifiÃ©" time="0.131" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 231
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Test-PRPerformanceRegression Tests.GÃ©nÃ©ration de rapports" executed="True" result="Failure" success="False" time="0.6576" asserts="0" description="Test-PRPerformanceRegression Tests.GÃ©nÃ©ration de rapports">
+                <results>
+                  <test-case description="GÃ©nÃ¨re un rapport HTML si demandÃ©" name="Test-PRPerformanceRegression Tests.GÃ©nÃ©ration de rapports.GÃ©nÃ¨re un rapport HTML si demandÃ©" time="0.0877" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>RuntimeException: L’expression située après « . » dans un élément de pipeline a généré un objet non valide. Elle doit générer un nom de commande, un bloc de script ou un objet CommandInfo.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Test-PRPerformanceRegression.Tests.ps1 : ligne 248
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\pr-reporting\performance\tests\Invoke-AllPerformanceUnitTests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, &lt;Aucun fichier&gt; : ligne 1</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

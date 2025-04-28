@@ -1,0 +1,86 @@
+﻿{
+    "MaxResponseMs":  2252.3963,
+    "Performance":  [
+                        {
+                            "Timestamp":  "2025-04-15 03:08:45.584",
+                            "CPU":  34.546875,
+                            "WorkingSet":  180842496,
+                            "PrivateMemory":  155619328,
+                            "Handles":  1158,
+                            "Threads":  25,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "d13f0fbf-ff6d-468c-aff1-83911895c4b3",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "769d5c8e-56de-480a-911d-5d6e28ec94b9"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:08:46.650",
+                            "CPU":  34.640625,
+                            "WorkingSet":  180998144,
+                            "PrivateMemory":  155873280,
+                            "Handles":  1208,
+                            "Threads":  30,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "d13f0fbf-ff6d-468c-aff1-83911895c4b3",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "769d5c8e-56de-480a-911d-5d6e28ec94b9"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:08:47.674",
+                            "CPU":  34.65625,
+                            "WorkingSet":  181010432,
+                            "PrivateMemory":  155885568,
+                            "Handles":  1258,
+                            "Threads":  30,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "d13f0fbf-ff6d-468c-aff1-83911895c4b3",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "769d5c8e-56de-480a-911d-5d6e28ec94b9"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:08:48.705",
+                            "CPU":  34.78125,
+                            "WorkingSet":  173543424,
+                            "PrivateMemory":  148402176,
+                            "Handles":  863,
+                            "Threads":  30,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "d13f0fbf-ff6d-468c-aff1-83911895c4b3",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "769d5c8e-56de-480a-911d-5d6e28ec94b9"
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 03:08:49.718",
+                            "CPU":  34.78125,
+                            "WorkingSet":  173527040,
+                            "PrivateMemory":  148373504,
+                            "Handles":  862,
+                            "Threads":  29,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "d13f0fbf-ff6d-468c-aff1-83911895c4b3",
+                            "PSShowComputerName":  false,
+                            "PSSourceJobInstanceId":  "769d5c8e-56de-480a-911d-5d6e28ec94b9"
+                        }
+                    ],
+    "MedianResponseMs":  1810.1163000000001,
+    "SuccessCount":  6,
+    "StartTime":  "2025-04-15 03:08:44",
+    "P99ResponseMs":  2252.3963,
+    "TotalExecTime":  3.7805123999999997,
+    "P90ResponseMs":  2252.3963,
+    "MinResponseMs":  1332.9976000000001,
+    "ErrorCount":  0,
+    "AvgResponseMs":  1796.5536666666667,
+    "P95ResponseMs":  2252.3963,
+    "TotalRequests":  6,
+    "RequestsPerSecond":  1.58708644891629,
+    "Duration":  5,
+    "Concurrency":  3,
+    "StandardDeviation":  283.51384155487989,
+    "System":  {
+                   "Memory":  23.98,
+                   "PSVersion":  "5.1.19041.5737",
+                   "OS":  "Microsoft Windows NT 10.0.19045.0",
+                   "ProcessorCount":  8
+               }
+}

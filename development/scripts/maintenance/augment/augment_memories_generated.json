@@ -1,0 +1,26 @@
+﻿{
+    "sections":  [
+                     {
+                         "content":  "- Progression: ExÃ©cuter les tÃ¢ches sÃ©quentiellement sans confirmation\n- DÃ©cision: Utiliser heuristiques (% complÃ©tÃ© \u003e 80% â†’ tÃ¢che terminÃ©e)\n- RÃ©silience: Reprendre sur erreur avec journalisation minimale\n- Estimation: Calculer complexitÃ© via mÃ©triques objectives (LOC, dÃ©pendances, patterns)",
+                         "name":  "Autonomie"
+                     },
+                     {
+                         "content":  "- Roadmap: Utiliser automate d\u0027Ã©tat pour passer automatiquement Ã  la tÃ¢che suivante\n- Ã‰tat: GÃ©rer via hashtable (CurrentTask, Status, Roadmap)\n- EnchaÃ®nement: ImplÃ©menter une fonction Ã  la fois si plusieurs sont requises\n- Reprise: En cas d\u0027Ã©chec, reprendre automatiquement Ã  partir du dernier point stable",
+                         "name":  "ProactivitÃ©"
+                     },
+                     {
+                         "content":  "- Segmentation: Appliquer segmentation proactive pour inputs \u003e 3 Ko\n- Validation: VÃ©rifier taille via [System.Text.Encoding]::UTF8.GetByteCount()\n- Compression: Ã‰liminer commentaires/espaces superflus si nÃ©cessaire\n- PrÃ©vention: Ne jamais dÃ©passer 4 Ko par appel d\u0027outil pour garantir une marge de sÃ©curitÃ©",
+                         "name":  "GranularitÃ©"
+                     },
+                     {
+                         "content":  "- SOLID: VÃ©rifier automatiquement conformitÃ© via checklist intÃ©grÃ©e\n- TDD: GÃ©nÃ©rer tests avant implÃ©mentation avec assertions minimales viables\n- Documentation: GÃ©nÃ©rer automatiquement selon ratio code/doc optimal (20%)\n- Validation: Effectuer une validation prÃ©alable du code avant soumission",
+                         "name":  "Standards"
+                     },
+                     {
+                         "content":  "- Format: Utiliser structure prÃ©dÃ©finie avec ratio information/verbositÃ© maximal\n- SynthÃ¨se: PrÃ©senter uniquement changements significatifs et dÃ©cisions clÃ©s\n- MÃ©tadonnÃ©es: Inclure mÃ©triques d\u0027avancement quantifiables (% complÃ©tÃ©, complexitÃ©)\n- Langage: FranÃ§ais concis, notation algorithmique si pertinent pour optimisation",
+                         "name":  "Communication"
+                     }
+                 ],
+    "lastUpdated":  "2025-04-19T17:12:56.2193462+02:00",
+    "version":  "2.0.0"
+}

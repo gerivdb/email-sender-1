@@ -1,0 +1,134 @@
+﻿{
+    "annotations":  [
+                        {
+                            "end_column":  6,
+                            "start_column":  5,
+                            "end_line":  14,
+                            "title":  "PSScriptAnalyzer: PSAvoidUsingWriteHost",
+                            "start_line":  14,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "File \u0027test_script.ps1\u0027 uses Write-Host. Avoid using Write-Host because it might not work in all hosts, does not work when there is no host, and (prior to PS 5.0) cannot be suppressed, captured, or redirected. Instead, use Write-Output, Write-Verbose, or Write-Information.",
+                            "annotation_level":  "warning"
+                        },
+                        {
+                            "end_column":  18,
+                            "start_column":  17,
+                            "end_line":  5,
+                            "title":  "PSScriptAnalyzer: PSReviewUnusedParameter",
+                            "start_line":  5,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "The parameter \u0027Parameter\u0027 has been declared but not used.",
+                            "annotation_level":  "warning"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  7,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  7,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  9,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  9,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  41,
+                            "start_column":  40,
+                            "end_line":  10,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  10,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  11,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  11,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  13,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  13,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  15,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  15,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  2,
+                            "start_column":  1,
+                            "end_line":  17,
+                            "title":  "PSScriptAnalyzer: PSAvoidTrailingWhitespace",
+                            "start_line":  17,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "Line has trailing whitespace",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  7,
+                            "start_column":  6,
+                            "end_line":  8,
+                            "title":  "TodoAnalyzer: Todo.TODO",
+                            "start_line":  8,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "TODO: Add more robust error handling",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  7,
+                            "start_column":  6,
+                            "end_line":  12,
+                            "title":  "TodoAnalyzer: Todo.FIXME",
+                            "start_line":  12,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "FIXME: Fix performance issue",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  7,
+                            "start_column":  6,
+                            "end_line":  16,
+                            "title":  "TodoAnalyzer: Todo.HACK",
+                            "start_line":  16,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "HACK: Temporary workaround for bug #123",
+                            "annotation_level":  "notice"
+                        },
+                        {
+                            "end_column":  7,
+                            "start_column":  6,
+                            "end_line":  18,
+                            "title":  "TodoAnalyzer: Todo.NOTE",
+                            "start_line":  18,
+                            "path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                            "message":  "NOTE: This function could be improved",
+                            "annotation_level":  "notice"
+                        }
+                    ]
+}

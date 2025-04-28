@@ -1,0 +1,18 @@
+﻿# email
+
+FonctionnalitÃ©s liÃ©es aux emails
+
+## Sous-dossiers
+
+### processing
+
+Traitement d'emails
+
+### sending
+
+Envoi d'emails
+
+### templates
+
+Templates d'emails
+

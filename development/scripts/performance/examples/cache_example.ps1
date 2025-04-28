@@ -1,0 +1,563 @@
+﻿#Requires -Version 5.1
+<#
+.SYNOPSIS
+    Exemple d'utilisation du cache distribuÃ© multi-langage.
+.DESCRIPTION
+    Ce script montre comment utiliser le cache distribuÃ© multi-langage
+    pour partager des donnÃ©es entre PowerShell et Python.
+.NOTES
+    Version: 1.0
+    Auteur: Augment Agent
+    Date: 2025-04-10
+    CompatibilitÃ©: PowerShell 5.1 et supÃ©rieur, Python 3.6 et supÃ©rieur
+#>
+
+# Importer le module d'architecture hybride
+$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
+$modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "ParallelHybrid.psm1"
+Import-Module $modulePath -Force
+
+# CrÃ©er un script Python pour tester le cache
+$pythonScriptPath = Join-Path -Path $scriptPath -ChildPath "test_cache.py"
+if (-not (Test-Path -Path $pythonScriptPath)) {
+    $pythonScript = @"
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import json
+import argparse
+import time
+import random
+from shared_cache import SharedCache
+
+def test_cache(cache_path, operation, key=None, value=None, ttl=None, dependencies=None):
+    """Teste les opÃ©rations du cache."""
+    # Initialiser le cache
+    cache = SharedCache(cache_path=cache_path)
+    
+    if operation == "get":
+        # RÃ©cupÃ©rer une valeur du cache
+        result = cache.get(key)
+        return {
+            "operation": "get",
+            "key": key,
+            "result": result,
+            "found": result is not None
+        }
+    
+    elif operation == "set":
+        # Stocker une valeur dans le cache
+        cache.set(key, value, ttl, dependencies)
+        return {
+            "operation": "set",
+            "key": key,
+            "value": value,
+            "ttl": ttl,
+            "dependencies": dependencies
+        }
+    
+    elif operation == "remove":
+        # Supprimer une valeur du cache
+        cache.remove(key)
+        return {
+            "operation": "remove",
+            "key": key
+        }
+    
+    elif operation == "invalidate":
+        # Invalider une valeur du cache et ses dÃ©pendances
+        count = cache.invalidate(key)
+        return {
+            "operation": "invalidate",
+            "key": key,
+            "invalidated_count": count
+        }
+    
+    elif operation == "stats":
+        # RÃ©cupÃ©rer les statistiques du cache
+        stats = cache.get_stats()
+        return {
+            "operation": "stats",
+            "stats": stats
+        }
+    
+    elif operation == "clear":
+        # Vider le cache
+        cache.clear()
+        return {
+            "operation": "clear"
+        }
+    
+    else:
+        return {
+            "error": f"OpÃ©ration inconnue : {operation}"
+        }
+
+def main():
+    """Fonction principale."""
+    parser = argparse.ArgumentParser(description='Test du cache distribuÃ© multi-langage')
+    parser.add_argument('--cache-path', required=True, help='Chemin vers le rÃ©pertoire du cache')
+    parser.add_argument('--operation', required=True, choices=['get', 'set', 'remove', 'invalidate', 'stats', 'clear'], help='OpÃ©ration Ã  effectuer')
+    parser.add_argument('--key', help='ClÃ© pour les opÃ©rations get, set, remove, invalidate')
+    parser.add_argument('--value', help='Valeur pour l\'opÃ©ration set')
+    parser.add_argument('--ttl', type=int, help='DurÃ©e de vie pour l\'opÃ©ration set')
+    parser.add_argument('--dependencies', help='DÃ©pendances pour l\'opÃ©ration set (sÃ©parÃ©es par des virgules)')
+    parser.add_argument('--output', required=True, help='Fichier de sortie JSON')
+    
+    args = parser.parse_args()
+    
+    # Convertir les dÃ©pendances en liste
+    dependencies = None
+    if args.dependencies:
+        dependencies = args.dependencies.split(',')
+    
+    # ExÃ©cuter l'opÃ©ration demandÃ©e
+    result = test_cache(
+        cache_path=args.cache_path,
+        operation=args.operation,
+        key=args.key,
+        value=args.value,
+        ttl=args.ttl,
+        dependencies=dependencies
+    )
+    
+    # Ã‰crire le rÃ©sultat
+    try:
+        with open(args.output, 'w', encoding='utf-8') as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Erreur lors de l'Ã©criture du fichier de sortie : {e}", file=sys.stderr)
+        sys.exit(1)
+    
+    sys.exit(0)
+
+if __name__ == '__main__':
+    main()
+"@
+    
+    $pythonScript | Out-File -FilePath $pythonScriptPath -Encoding utf8
+    Write-Host "Script Python de test du cache crÃ©Ã© : $pythonScriptPath" -ForegroundColor Green
+}
+
+# Fonction pour exÃ©cuter une opÃ©ration de cache via Python
+function Invoke-PythonCacheOperation {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$CachePath,
+        
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("get", "set", "remove", "invalidate", "stats", "clear")]
+        [string]$Operation,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$Key,
+        
+        [Parameter(Mandatory = $false)]
+        [object]$Value,
+        
+        [Parameter(Mandatory = $false)]
+        [int]$TTL,
+        
+        [Parameter(Mandatory = $false)]
+        [string[]]$Dependencies
+    )
+    
+    # CrÃ©er des fichiers temporaires pour l'entrÃ©e et la sortie
+    $outputFile = [System.IO.Path]::GetTempFileName()
+    
+    # PrÃ©parer les arguments pour le script Python
+    $pythonArgs = @(
+        $pythonScriptPath,
+        "--cache-path", $CachePath,
+        "--operation", $Operation,
+        "--output", $outputFile
+    )
+    
+    if ($Key) {
+        $pythonArgs += @("--key", $Key)
+    }
+    
+    if ($Value -ne $null) {
+        $pythonArgs += @("--value", $Value.ToString())
+    }
+    
+    if ($TTL) {
+        $pythonArgs += @("--ttl", $TTL.ToString())
+    }
+    
+    if ($Dependencies) {
+        $pythonArgs += @("--dependencies", ($Dependencies -join ","))
+    }
+    
+    # ExÃ©cuter le script Python
+    try {
+        $process = Start-Process -FilePath "python" -ArgumentList $pythonArgs -NoNewWindow -PassThru -Wait
+        
+        if ($process.ExitCode -ne 0) {
+            Write-Error "Le script Python a Ã©chouÃ© avec le code de sortie $($process.ExitCode)"
+            return $null
+        }
+        
+        # Lire le rÃ©sultat
+        $result = Get-Content -Path $outputFile -Raw | ConvertFrom-Json
+        return $result
+    }
+    finally {
+        # Nettoyer les fichiers temporaires
+        if (Test-Path -Path $outputFile) {
+            Remove-Item -Path $outputFile -Force
+        }
+    }
+}
+
+# Fonction pour exÃ©cuter une opÃ©ration de cache via PowerShell
+function Invoke-PowerShellCacheOperation {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]$Cache,
+        
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("get", "set", "remove", "clear", "stats")]
+        [string]$Operation,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$Key,
+        
+        [Parameter(Mandatory = $false)]
+        [object]$Value,
+        
+        [Parameter(Mandatory = $false)]
+        [int]$TTL
+    )
+    
+    switch ($Operation) {
+        "get" {
+            $result = Get-SharedCacheItem -Cache $Cache -Key $Key
+            return @{
+                operation = "get"
+                key = $Key
+                result = $result
+                found = $result -ne $null
+            }
+        }
+        "set" {
+            $result = Set-SharedCacheItem -Cache $Cache -Key $Key -Value $Value -TTL $TTL
+            return @{
+                operation = "set"
+                key = $Key
+                value = $Value
+                ttl = $TTL
+            }
+        }
+        "remove" {
+            Remove-SharedCacheItem -Cache $Cache -Key $Key
+            return @{
+                operation = "remove"
+                key = $Key
+            }
+        }
+        "clear" {
+            Clear-SharedCache -Cache $Cache
+            return @{
+                operation = "clear"
+            }
+        }
+        "stats" {
+            $stats = Get-SharedCacheStatistics -Cache $Cache
+            return @{
+                operation = "stats"
+                stats = $stats
+            }
+        }
+    }
+}
+
+# Fonction pour mesurer les performances
+function Measure-Performance {
+    param(
+        [scriptblock]$ScriptBlock,
+        [string]$Name = "OpÃ©ration"
+    )
+    
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    $result = & $ScriptBlock
+    $stopwatch.Stop()
+    
+    Write-Host "$Name terminÃ© en $($stopwatch.Elapsed.TotalSeconds) secondes" -ForegroundColor Cyan
+    
+    return $result
+}
+
+# Exemple 1 : Utilisation du cache distribuÃ© multi-langage
+function Example-DistributedCache {
+    Write-Host "`n=== Exemple 1 : Utilisation du cache distribuÃ© multi-langage ===" -ForegroundColor Yellow
+    
+    # CrÃ©er un rÃ©pertoire pour le cache
+    $cachePath = Join-Path -Path $scriptPath -ChildPath "cache"
+    if (-not (Test-Path -Path $cachePath)) {
+        New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
+    }
+    
+    # Initialiser le cache partagÃ©
+    $cacheConfig = @{
+        CachePath = $cachePath
+        CacheType = "Hybrid"
+        MaxMemorySize = 50
+        MaxDiskSize = 100
+        DefaultTTL = 3600
+        EvictionPolicy = "LRU"
+        Partitions = 4
+        PreloadFactor = 0.2
+    }
+    
+    $cache = Initialize-SharedCache -Config $cacheConfig
+    Write-Host "Cache partagÃ© initialisÃ© : $($cache.CachePath)" -ForegroundColor Green
+    
+    # Stocker une valeur dans le cache depuis PowerShell
+    $psResult = Measure-Performance -ScriptBlock {
+        Invoke-PowerShellCacheOperation -Cache $cache -Operation "set" -Key "ps_key1" -Value "Valeur depuis PowerShell" -TTL 3600
+    } -Name "Stockage depuis PowerShell"
+    
+    Write-Host "RÃ©sultat : $($psResult | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # RÃ©cupÃ©rer la valeur depuis Python
+    $pyResult = Measure-Performance -ScriptBlock {
+        Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "ps_key1"
+    } -Name "RÃ©cupÃ©ration depuis Python"
+    
+    Write-Host "RÃ©sultat : $($pyResult | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # Stocker une valeur dans le cache depuis Python
+    $pyResult = Measure-Performance -ScriptBlock {
+        Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key "py_key1" -Value "Valeur depuis Python" -TTL 3600
+    } -Name "Stockage depuis Python"
+    
+    Write-Host "RÃ©sultat : $($pyResult | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # RÃ©cupÃ©rer la valeur depuis PowerShell
+    $psResult = Measure-Performance -ScriptBlock {
+        Invoke-PowerShellCacheOperation -Cache $cache -Operation "get" -Key "py_key1"
+    } -Name "RÃ©cupÃ©ration depuis PowerShell"
+    
+    Write-Host "RÃ©sultat : $($psResult | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # Afficher les statistiques du cache
+    $statsPs = Invoke-PowerShellCacheOperation -Cache $cache -Operation "stats"
+    $statsPy = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "stats"
+    
+    Write-Host "`nStatistiques du cache (PowerShell) :" -ForegroundColor Cyan
+    $statsPs.stats | Format-Table -AutoSize
+    
+    Write-Host "`nStatistiques du cache (Python) :" -ForegroundColor Cyan
+    $statsPy.stats | Format-Table -AutoSize
+}
+
+# Exemple 2 : Utilisation des dÃ©pendances et de l'invalidation sÃ©lective
+function Example-DependenciesAndInvalidation {
+    Write-Host "`n=== Exemple 2 : Utilisation des dÃ©pendances et de l'invalidation sÃ©lective ===" -ForegroundColor Yellow
+    
+    # CrÃ©er un rÃ©pertoire pour le cache
+    $cachePath = Join-Path -Path $scriptPath -ChildPath "cache"
+    if (-not (Test-Path -Path $cachePath)) {
+        New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
+    }
+    
+    # Stocker des valeurs avec des dÃ©pendances
+    Write-Host "Stockage de valeurs avec des dÃ©pendances..." -ForegroundColor Cyan
+    
+    # Stocker une valeur de base
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key "base_key" -Value "Valeur de base"
+    Write-Host "Valeur de base stockÃ©e : $($result | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # Stocker des valeurs dÃ©pendantes
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key "dependent_key1" -Value "Valeur dÃ©pendante 1" -Dependencies @("base_key")
+    Write-Host "Valeur dÃ©pendante 1 stockÃ©e : $($result | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key "dependent_key2" -Value "Valeur dÃ©pendante 2" -Dependencies @("base_key")
+    Write-Host "Valeur dÃ©pendante 2 stockÃ©e : $($result | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # Stocker une valeur dÃ©pendante de niveau 2
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key "dependent_key3" -Value "Valeur dÃ©pendante 3" -Dependencies @("dependent_key1")
+    Write-Host "Valeur dÃ©pendante 3 stockÃ©e : $($result | ConvertTo-Json -Compress)" -ForegroundColor Green
+    
+    # VÃ©rifier que toutes les valeurs sont dans le cache
+    Write-Host "`nVÃ©rification des valeurs dans le cache..." -ForegroundColor Cyan
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "base_key"
+    Write-Host "Valeur de base : $($result.result)" -ForegroundColor Green
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key1"
+    Write-Host "Valeur dÃ©pendante 1 : $($result.result)" -ForegroundColor Green
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key2"
+    Write-Host "Valeur dÃ©pendante 2 : $($result.result)" -ForegroundColor Green
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key3"
+    Write-Host "Valeur dÃ©pendante 3 : $($result.result)" -ForegroundColor Green
+    
+    # Invalider la valeur de base
+    Write-Host "`nInvalidation de la valeur de base..." -ForegroundColor Cyan
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "invalidate" -Key "base_key"
+    Write-Host "RÃ©sultat de l'invalidation : $($result | ConvertTo-Json -Compress)" -ForegroundColor Green
+    Write-Host "Nombre d'Ã©lÃ©ments invalidÃ©s : $($result.invalidated_count)" -ForegroundColor Green
+    
+    # VÃ©rifier que toutes les valeurs dÃ©pendantes ont Ã©tÃ© invalidÃ©es
+    Write-Host "`nVÃ©rification des valeurs aprÃ¨s invalidation..." -ForegroundColor Cyan
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "base_key"
+    Write-Host "Valeur de base : $($result.result)" -ForegroundColor ($result.found ? "Green" : "Red")
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key1"
+    Write-Host "Valeur dÃ©pendante 1 : $($result.result)" -ForegroundColor ($result.found ? "Green" : "Red")
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key2"
+    Write-Host "Valeur dÃ©pendante 2 : $($result.result)" -ForegroundColor ($result.found ? "Green" : "Red")
+    
+    $result = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key "dependent_key3"
+    Write-Host "Valeur dÃ©pendante 3 : $($result.result)" -ForegroundColor ($result.found ? "Green" : "Red")
+}
+
+# Exemple 3 : Test de performance du cache distribuÃ©
+function Example-CachePerformance {
+    Write-Host "`n=== Exemple 3 : Test de performance du cache distribuÃ© ===" -ForegroundColor Yellow
+    
+    # CrÃ©er un rÃ©pertoire pour le cache
+    $cachePath = Join-Path -Path $scriptPath -ChildPath "cache"
+    if (-not (Test-Path -Path $cachePath)) {
+        New-Item -Path $cachePath -ItemType Directory -Force | Out-Null
+    }
+    
+    # Initialiser le cache partagÃ©
+    $cacheConfig = @{
+        CachePath = $cachePath
+        CacheType = "Hybrid"
+        MaxMemorySize = 100
+        MaxDiskSize = 200
+        DefaultTTL = 3600
+        EvictionPolicy = "LRU"
+        Partitions = 8
+        PreloadFactor = 0.2
+    }
+    
+    $cache = Initialize-SharedCache -Config $cacheConfig
+    
+    # Vider le cache
+    Clear-SharedCache -Cache $cache
+    
+    # GÃ©nÃ©rer des donnÃ©es de test
+    $numItems = 1000
+    Write-Host "GÃ©nÃ©ration de $numItems Ã©lÃ©ments de test..." -ForegroundColor Cyan
+    
+    $keys = 1..$numItems | ForEach-Object { "test_key_$_" }
+    $values = 1..$numItems | ForEach-Object { "test_value_$_" }
+    
+    # Test d'Ã©criture depuis PowerShell
+    Write-Host "`nTest d'Ã©criture depuis PowerShell..." -ForegroundColor Cyan
+    
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    
+    for ($i = 0; $i -lt $numItems; $i++) {
+        Set-SharedCacheItem -Cache $cache -Key $keys[$i] -Value $values[$i]
+    }
+    
+    $stopwatch.Stop()
+    $writeTimePs = $stopwatch.Elapsed.TotalSeconds
+    
+    Write-Host "Temps d'Ã©criture PowerShell : $writeTimePs secondes" -ForegroundColor Green
+    Write-Host "Vitesse d'Ã©criture PowerShell : $([Math]::Round($numItems / $writeTimePs, 2)) Ã©lÃ©ments/seconde" -ForegroundColor Green
+    
+    # Vider le cache
+    Clear-SharedCache -Cache $cache
+    
+    # Test d'Ã©criture depuis Python
+    Write-Host "`nTest d'Ã©criture depuis Python..." -ForegroundColor Cyan
+    
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    
+    for ($i = 0; $i -lt $numItems; $i++) {
+        Invoke-PythonCacheOperation -CachePath $cachePath -Operation "set" -Key $keys[$i] -Value $values[$i] | Out-Null
+    }
+    
+    $stopwatch.Stop()
+    $writeTimePy = $stopwatch.Elapsed.TotalSeconds
+    
+    Write-Host "Temps d'Ã©criture Python : $writeTimePy secondes" -ForegroundColor Green
+    Write-Host "Vitesse d'Ã©criture Python : $([Math]::Round($numItems / $writeTimePy, 2)) Ã©lÃ©ments/seconde" -ForegroundColor Green
+    
+    # Test de lecture depuis PowerShell
+    Write-Host "`nTest de lecture depuis PowerShell..." -ForegroundColor Cyan
+    
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    
+    for ($i = 0; $i -lt $numItems; $i++) {
+        $value = Get-SharedCacheItem -Cache $cache -Key $keys[$i]
+    }
+    
+    $stopwatch.Stop()
+    $readTimePs = $stopwatch.Elapsed.TotalSeconds
+    
+    Write-Host "Temps de lecture PowerShell : $readTimePs secondes" -ForegroundColor Green
+    Write-Host "Vitesse de lecture PowerShell : $([Math]::Round($numItems / $readTimePs, 2)) Ã©lÃ©ments/seconde" -ForegroundColor Green
+    
+    # Test de lecture depuis Python
+    Write-Host "`nTest de lecture depuis Python..." -ForegroundColor Cyan
+    
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+    
+    for ($i = 0; $i -lt $numItems; $i++) {
+        $value = Invoke-PythonCacheOperation -CachePath $cachePath -Operation "get" -Key $keys[$i] | Out-Null
+    }
+    
+    $stopwatch.Stop()
+    $readTimePy = $stopwatch.Elapsed.TotalSeconds
+    
+    Write-Host "Temps de lecture Python : $readTimePy secondes" -ForegroundColor Green
+    Write-Host "Vitesse de lecture Python : $([Math]::Round($numItems / $readTimePy, 2)) Ã©lÃ©ments/seconde" -ForegroundColor Green
+    
+    # Afficher les statistiques du cache
+    $stats = Get-SharedCacheStatistics -Cache $cache
+    
+    Write-Host "`nStatistiques du cache :" -ForegroundColor Cyan
+    $stats | Format-Table -AutoSize
+}
+
+# ExÃ©cuter les exemples
+try {
+    # Installer les dÃ©pendances Python
+    $installPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "install_dependencies.ps1"
+    if (Test-Path -Path $installPath) {
+        Write-Host "Installation des dÃ©pendances Python..." -ForegroundColor Yellow
+        & $installPath
+    }
+    
+    # Copier le module shared_cache.py dans le rÃ©pertoire des exemples
+    $sharedCachePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "python\shared_cache.py"
+    $targetPath = Join-Path -Path $scriptPath -ChildPath "shared_cache.py"
+    
+    if (Test-Path -Path $sharedCachePath) {
+        Copy-Item -Path $sharedCachePath -Destination $targetPath -Force
+        Write-Host "Module shared_cache.py copiÃ© dans le rÃ©pertoire des exemples." -ForegroundColor Green
+    }
+    
+    # ExÃ©cuter les exemples
+    Example-DistributedCache
+    Example-DependenciesAndInvalidation
+    Example-CachePerformance
+}
+catch {
+    Write-Error "Erreur lors de l'exÃ©cution des exemples : $_"
+}
+finally {
+    # Nettoyer les ressources
+    Write-Host "`nNettoyage des ressources..." -ForegroundColor Yellow
+    
+    # Supprimer les fichiers temporaires
+    Get-ChildItem -Path $env:TEMP -Filter "tmp*" | Where-Object { $_.CreationTime -gt (Get-Date).AddHours(-1) } | Remove-Item -Force
+    
+    Write-Host "Nettoyage terminÃ©" -ForegroundColor Green
+}

@@ -1,0 +1,330 @@
+﻿[
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  10,
+        "Column":  17,
+        "RuleId":  "PSReviewUnusedParameter",
+        "Severity":  "Warning",
+        "Message":  "The parameter \u0027Parameter\u0027 has been declared but not used.",
+        "Category":  "Parameter",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "The parameter \u0027Parameter\u0027 has been declared but not used.",
+                               "Extent":  {
+                                              "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                              "StartScriptPosition":  {
+                                                                          "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                          "LineNumber":  10,
+                                                                          "ColumnNumber":  17,
+                                                                          "Line":  "        [string]$Parameter\n",
+                                                                          "Offset":  306
+                                                                      },
+                                              "EndScriptPosition":  {
+                                                                        "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                        "LineNumber":  10,
+                                                                        "ColumnNumber":  27,
+                                                                        "Line":  "        [string]$Parameter\n",
+                                                                        "Offset":  316
+                                                                    },
+                                              "StartLineNumber":  10,
+                                              "StartColumnNumber":  17,
+                                              "EndLineNumber":  10,
+                                              "EndColumnNumber":  27,
+                                              "Text":  "$Parameter",
+                                              "StartOffset":  306,
+                                              "EndOffset":  316
+                                          },
+                               "RuleName":  "PSReviewUnusedParameter",
+                               "Severity":  1,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  "Parameter",
+                               "SuggestedCorrections":  null,
+                               "IsSuppressed":  false,
+                               "Line":  10,
+                               "Column":  17
+                           }
+    },
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  17,
+        "Column":  5,
+        "RuleId":  "PSAvoidUsingWriteHost",
+        "Severity":  "Warning",
+        "Message":  "File \u0027test_script.ps1\u0027 uses Write-Host. Avoid using Write-Host because it might not work in all hosts, does not work when there is no host, and (prior to PS 5.0) cannot be suppressed, captured, or redirected. Instead, use Write-Output, Write-Verbose, or Write-Information.",
+        "Category":  "",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "File \u0027test_script.ps1\u0027 uses Write-Host. Avoid using Write-Host because it might not work in all hosts, does not work when there is no host, and (prior to PS 5.0) cannot be suppressed, captured, or redirected. Instead, use Write-Output, Write-Verbose, or Write-Information.",
+                               "Extent":  {
+                                              "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                              "StartScriptPosition":  {
+                                                                          "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                          "LineNumber":  17,
+                                                                          "ColumnNumber":  5,
+                                                                          "Line":  "    Write-Host \"RÃ©sultat: $result\"\n",
+                                                                          "Offset":  504
+                                                                      },
+                                              "EndScriptPosition":  {
+                                                                        "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                        "LineNumber":  17,
+                                                                        "ColumnNumber":  36,
+                                                                        "Line":  "    Write-Host \"RÃ©sultat: $result\"\n",
+                                                                        "Offset":  535
+                                                                    },
+                                              "StartLineNumber":  17,
+                                              "StartColumnNumber":  5,
+                                              "EndLineNumber":  17,
+                                              "EndColumnNumber":  36,
+                                              "Text":  "Write-Host \"RÃ©sultat: $result\"",
+                                              "StartOffset":  504,
+                                              "EndOffset":  535
+                                          },
+                               "RuleName":  "PSAvoidUsingWriteHost",
+                               "Severity":  1,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  null,
+                               "SuggestedCorrections":  null,
+                               "IsSuppressed":  false,
+                               "Line":  17,
+                               "Column":  5
+                           }
+    },
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  0,
+        "Column":  0,
+        "RuleId":  "PSUseBOMForUnicodeEncodedFile",
+        "Severity":  "Warning",
+        "Message":  "Missing BOM encoding for non-ASCII encoded file \u0027test_script.ps1\u0027",
+        "Category":  "",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "Missing BOM encoding for non-ASCII encoded file \u0027test_script.ps1\u0027",
+                               "Extent":  null,
+                               "RuleName":  "PSUseBOMForUnicodeEncodedFile",
+                               "Severity":  1,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  null,
+                               "SuggestedCorrections":  null,
+                               "IsSuppressed":  false,
+                               "Line":  null,
+                               "Column":  null
+                           }
+    },
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  12,
+        "Column":  1,
+        "RuleId":  "PSAvoidTrailingWhitespace",
+        "Severity":  "Information",
+        "Message":  "Line has trailing whitespace",
+        "Category":  "",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "Line has trailing whitespace",
+                               "Extent":  {
+                                              "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                              "StartScriptPosition":  {
+                                                                          "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                          "LineNumber":  12,
+                                                                          "ColumnNumber":  1,
+                                                                          "Offset":  0,
+                                                                          "Line":  "    "
+                                                                      },
+                                              "EndScriptPosition":  {
+                                                                        "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                        "LineNumber":  12,
+                                                                        "ColumnNumber":  5,
+                                                                        "Offset":  0,
+                                                                        "Line":  "    "
+                                                                    },
+                                              "StartLineNumber":  12,
+                                              "StartColumnNumber":  1,
+                                              "EndLineNumber":  12,
+                                              "EndColumnNumber":  5,
+                                              "StartOffset":  0,
+                                              "EndOffset":  0,
+                                              "Text":  "    "
+                                          },
+                               "RuleName":  "PSAvoidTrailingWhitespace",
+                               "Severity":  0,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  null,
+                               "SuggestedCorrections":  [
+                                                            {
+                                                                "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                "Description":  null,
+                                                                "StartLineNumber":  12,
+                                                                "StartColumnNumber":  1,
+                                                                "EndLineNumber":  12,
+                                                                "EndColumnNumber":  5,
+                                                                "Text":  "",
+                                                                "Lines":  [
+                                                                              ""
+                                                                          ],
+                                                                "Start":  {
+                                                                              "Line":  12,
+                                                                              "Column":  1
+                                                                          },
+                                                                "End":  {
+                                                                            "Line":  12,
+                                                                            "Column":  5
+                                                                        }
+                                                            }
+                                                        ],
+                               "IsSuppressed":  false,
+                               "Line":  12,
+                               "Column":  1
+                           }
+    },
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  15,
+        "Column":  1,
+        "RuleId":  "PSAvoidTrailingWhitespace",
+        "Severity":  "Information",
+        "Message":  "Line has trailing whitespace",
+        "Category":  "",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "Line has trailing whitespace",
+                               "Extent":  {
+                                              "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                              "StartScriptPosition":  {
+                                                                          "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                          "LineNumber":  15,
+                                                                          "ColumnNumber":  1,
+                                                                          "Offset":  0,
+                                                                          "Line":  "    "
+                                                                      },
+                                              "EndScriptPosition":  {
+                                                                        "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                        "LineNumber":  15,
+                                                                        "ColumnNumber":  5,
+                                                                        "Offset":  0,
+                                                                        "Line":  "    "
+                                                                    },
+                                              "StartLineNumber":  15,
+                                              "StartColumnNumber":  1,
+                                              "EndLineNumber":  15,
+                                              "EndColumnNumber":  5,
+                                              "StartOffset":  0,
+                                              "EndOffset":  0,
+                                              "Text":  "    "
+                                          },
+                               "RuleName":  "PSAvoidTrailingWhitespace",
+                               "Severity":  0,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  null,
+                               "SuggestedCorrections":  [
+                                                            {
+                                                                "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                "Description":  null,
+                                                                "StartLineNumber":  15,
+                                                                "StartColumnNumber":  1,
+                                                                "EndLineNumber":  15,
+                                                                "EndColumnNumber":  5,
+                                                                "Text":  "",
+                                                                "Lines":  [
+                                                                              ""
+                                                                          ],
+                                                                "Start":  {
+                                                                              "Line":  15,
+                                                                              "Column":  1
+                                                                          },
+                                                                "End":  {
+                                                                            "Line":  15,
+                                                                            "Column":  5
+                                                                        }
+                                                            }
+                                                        ],
+                               "IsSuppressed":  false,
+                               "Line":  15,
+                               "Column":  1
+                           }
+    },
+    {
+        "ToolName":  "PSScriptAnalyzer",
+        "FilePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+        "FileName":  "test_script.ps1",
+        "Line":  18,
+        "Column":  1,
+        "RuleId":  "PSAvoidTrailingWhitespace",
+        "Severity":  "Information",
+        "Message":  "Line has trailing whitespace",
+        "Category":  "",
+        "Suggestion":  "",
+        "OriginalObject":  {
+                               "Message":  "Line has trailing whitespace",
+                               "Extent":  {
+                                              "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                              "StartScriptPosition":  {
+                                                                          "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                          "LineNumber":  18,
+                                                                          "ColumnNumber":  1,
+                                                                          "Offset":  0,
+                                                                          "Line":  "    "
+                                                                      },
+                                              "EndScriptPosition":  {
+                                                                        "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                        "LineNumber":  18,
+                                                                        "ColumnNumber":  5,
+                                                                        "Offset":  0,
+                                                                        "Line":  "    "
+                                                                    },
+                                              "StartLineNumber":  18,
+                                              "StartColumnNumber":  1,
+                                              "EndLineNumber":  18,
+                                              "EndColumnNumber":  5,
+                                              "StartOffset":  0,
+                                              "EndOffset":  0,
+                                              "Text":  "    "
+                                          },
+                               "RuleName":  "PSAvoidTrailingWhitespace",
+                               "Severity":  0,
+                               "ScriptName":  "test_script.ps1",
+                               "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                               "RuleSuppressionID":  null,
+                               "SuggestedCorrections":  [
+                                                            {
+                                                                "File":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\analysis\\tests\\test_script.ps1",
+                                                                "Description":  null,
+                                                                "StartLineNumber":  18,
+                                                                "StartColumnNumber":  1,
+                                                                "EndLineNumber":  18,
+                                                                "EndColumnNumber":  5,
+                                                                "Text":  "",
+                                                                "Lines":  [
+                                                                              ""
+                                                                          ],
+                                                                "Start":  {
+                                                                              "Line":  18,
+                                                                              "Column":  1
+                                                                          },
+                                                                "End":  {
+                                                                            "Line":  18,
+                                                                            "Column":  5
+                                                                        }
+                                                            }
+                                                        ],
+                               "IsSuppressed":  false,
+                               "Line":  18,
+                               "Column":  1
+                           }
+    }
+]

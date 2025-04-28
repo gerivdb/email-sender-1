@@ -1,0 +1,27 @@
+﻿{
+    "SearchPaths": [
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts",
+        "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\tests"
+    ],
+    "PathMappings": [
+        {
+            "Prefix": "scripts",
+            "Target": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts"
+        },
+        {
+            "Prefix": "tests",
+            "Target": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\tests"
+        },
+        {
+            "Prefix": "config",
+            "Target": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\config"
+        },
+        {
+            "Prefix": "docs",
+            "Target": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\docs"
+        }
+    ],
+    "CacheMaxAgeHours": 2,
+    "DisableCache": false
+}

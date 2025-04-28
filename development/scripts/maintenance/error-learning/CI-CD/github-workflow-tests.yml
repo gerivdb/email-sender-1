@@ -1,0 +1,46 @@
+name: Tests du système d'apprentissage des erreurs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'development/scripts/maintenance/error-learning/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'development/scripts/maintenance/error-learning/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Installer les dépendances
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -Force -SkipPublisherCheck
+        Install-Module -Name PSScriptAnalyzer -Force -SkipPublisherCheck
+    
+    - name: Exécuter l'analyse de code
+      shell: pwsh
+      run: |
+        $results = Invoke-ScriptAnalyzer -Path ./development/development/scripts/maintenance/error-learning -Recurse -ExcludeRule PSAvoidUsingWriteHost
+        $results | Format-Table -AutoSize
+        if ($results.Count -gt 0) {
+          Write-Warning "L'analyse de code a détecté $($results.Count) problèmes."
+        }
+    
+    - name: Exécuter les tests
+      shell: pwsh
+      run: |
+        cd ./development/development/scripts/maintenance/error-learning
+        ./CI-CD/Run-TestsInCI.ps1 -OutputPath ./TestResults
+    
+    - name: Publier les résultats des tests
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./development/development/scripts/maintenance/error-learning/TestResults

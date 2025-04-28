@@ -1,0 +1,628 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="23" errors="0" failures="15" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-04-15" time="16:12:38">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="9.7112" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Fix-HtmlReportEncoding.Tests.ps1" executed="True" result="Failure" success="False" time="4.3076" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Fix-HtmlReportEncoding.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Script Fix-HtmlReportEncoding" executed="True" result="Failure" success="False" time="2.2983" asserts="0" description="Script Fix-HtmlReportEncoding">
+            <results>
+              <test-suite type="TestFixture" name="Script Fix-HtmlReportEncoding.ParamÃ¨tres et validation" executed="True" result="Success" success="True" time="0.9827" asserts="0" description="Script Fix-HtmlReportEncoding.ParamÃ¨tres et validation">
+                <results>
+                  <test-case description="LÃ¨ve une exception si le chemin n'existe pas" name="Script Fix-HtmlReportEncoding.ParamÃ¨tres et validation.LÃ¨ve une exception si le chemin n'existe pas" time="0.7927" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Fix-HtmlReportEncoding.Correction d'encodage pour un fichier" executed="True" result="Failure" success="False" time="1.3625" asserts="0" description="Script Fix-HtmlReportEncoding.Correction d'encodage pour un fichier">
+                <results>
+                  <test-case description="Corrige l'encodage d'un fichier HTML" name="Script Fix-HtmlReportEncoding.Correction d'encodage pour un fichier.Corrige l'encodage d'un fichier HTML" time="0.3529" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: Could not find Command ReadAllBytes</message>
+                      <stack-trace>à Resolve-Command, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 11723
+à Mock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 14978
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Fix-HtmlReportEncoding.Tests.ps1 : ligne 51
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Fix-HtmlReportEncoding.Correction d'encodage pour un rÃ©pertoire" executed="True" result="Failure" success="False" time="2.1581" asserts="0" description="Script Fix-HtmlReportEncoding.Correction d'encodage pour un rÃ©pertoire">
+                <results>
+                  <test-case description="Corrige l'encodage de tous les fichiers HTML dans un rÃ©pertoire" name="Script Fix-HtmlReportEncoding.Correction d'encodage pour un rÃ©pertoire.Corrige l'encodage de tous les fichiers HTML dans un rÃ©pertoire" time="0.5626" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: Could not find Command ReadAllBytes</message>
+                      <stack-trace>à Resolve-Command, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 11723
+à Mock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 14978
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Fix-HtmlReportEncoding.Tests.ps1 : ligne 85
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Corrige l'encodage rÃ©cursivement avec le paramÃ¨tre -Recurse" name="Script Fix-HtmlReportEncoding.Correction d'encodage pour un rÃ©pertoire.Corrige l'encodage rÃ©cursivement avec le paramÃ¨tre -Recurse" time="0.1999" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>CommandNotFoundException: Could not find Command ReadAllBytes</message>
+                      <stack-trace>à Resolve-Command, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 11723
+à Mock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 14978
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Fix-HtmlReportEncoding.Tests.ps1 : ligne 122
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1" executed="True" result="Failure" success="False" time="1.8489" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools" executed="True" result="Failure" success="False" time="1.5284" asserts="0" description="Script Integrate-ThirdPartyTools">
+            <results>
+              <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools.ParamÃ¨tres et validation" executed="True" result="Success" success="True" time="0.1822" asserts="0" description="Script Integrate-ThirdPartyTools.ParamÃ¨tres et validation">
+                <results>
+                  <test-case description="LÃ¨ve une exception si le chemin n'existe pas" name="Script Integrate-ThirdPartyTools.ParamÃ¨tres et validation.LÃ¨ve une exception si le chemin n'existe pas" time="0.0817" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="LÃ¨ve une exception si ProjectKey est manquant pour SonarQube" name="Script Integrate-ThirdPartyTools.ParamÃ¨tres et validation.LÃ¨ve une exception si ProjectKey est manquant pour SonarQube" time="0.0656" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools.Conversion vers GitHub format" executed="True" result="Failure" success="False" time="0.7053" asserts="0" description="Script Integrate-ThirdPartyTools.Conversion vers GitHub format">
+                <results>
+                  <test-case description="Convertit les rÃ©sultats vers le format GitHub" name="Script Integrate-ThirdPartyTools.Conversion vers GitHub format.Convertit les rÃ©sultats vers le format GitHub" time="0.2819" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1 : ligne 68
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools.Conversion vers SonarQube format" executed="True" result="Failure" success="False" time="1.0041" asserts="0" description="Script Integrate-ThirdPartyTools.Conversion vers SonarQube format">
+                <results>
+                  <test-case description="Convertit les rÃ©sultats vers le format SonarQube" name="Script Integrate-ThirdPartyTools.Conversion vers SonarQube format.Convertit les rÃ©sultats vers le format SonarQube" time="0.2504" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1 : ligne 100
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools.Conversion vers AzureDevOps format" executed="True" result="Failure" success="False" time="1.2393" asserts="0" description="Script Integrate-ThirdPartyTools.Conversion vers AzureDevOps format">
+                <results>
+                  <test-case description="Convertit les rÃ©sultats vers le format AzureDevOps" name="Script Integrate-ThirdPartyTools.Conversion vers AzureDevOps format.Convertit les rÃ©sultats vers le format AzureDevOps" time="0.1983" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1 : ligne 133
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Integrate-ThirdPartyTools.Envoi des rÃ©sultats Ã  l'API" executed="True" result="Failure" success="False" time="1.4457" asserts="0" description="Script Integrate-ThirdPartyTools.Envoi des rÃ©sultats Ã  l'API">
+                <results>
+                  <test-case description="Envoie les rÃ©sultats Ã  l'API SonarQube si ApiKey et ApiUrl sont spÃ©cifiÃ©s" name="Script Integrate-ThirdPartyTools.Envoi des rÃ©sultats Ã  l'API.Envoie les rÃ©sultats Ã  l'API SonarQube si ApiKey et ApiUrl sont spÃ©cifiÃ©s" time="0.1651" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Integrate-ThirdPartyTools.Tests.ps1 : ligne 168
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1" executed="True" result="Failure" success="False" time="2.3381" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Script Start-CodeAnalysis" executed="True" result="Failure" success="False" time="1.9262" asserts="0" description="Script Start-CodeAnalysis">
+            <results>
+              <test-suite type="TestFixture" name="Script Start-CodeAnalysis.ParamÃ¨tres et validation" executed="True" result="Success" success="True" time="0.0801" asserts="0" description="Script Start-CodeAnalysis.ParamÃ¨tres et validation">
+                <results>
+                  <test-case description="LÃ¨ve une exception si le chemin n'existe pas" name="Script Start-CodeAnalysis.ParamÃ¨tres et validation.LÃ¨ve une exception si le chemin n'existe pas" time="0.0458" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Start-CodeAnalysis.Analyse d'un fichier unique" executed="True" result="Failure" success="False" time="0.5951" asserts="0" description="Script Start-CodeAnalysis.Analyse d'un fichier unique">
+                <results>
+                  <test-case description="Analyse un fichier PowerShell avec PSScriptAnalyzer" name="Script Start-CodeAnalysis.Analyse d'un fichier unique.Analyse un fichier PowerShell avec PSScriptAnalyzer" time="0.1638" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 70
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Analyse un fichier PowerShell avec TodoAnalyzer" name="Script Start-CodeAnalysis.Analyse d'un fichier unique.Analyse un fichier PowerShell avec TodoAnalyzer" time="0.1282" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 98
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ©nÃ¨re un rapport HTML si demandÃ©" name="Script Start-CodeAnalysis.Analyse d'un fichier unique.GÃ©nÃ¨re un rapport HTML si demandÃ©" time="0.1799" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 127
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Start-CodeAnalysis.Analyse d'un rÃ©pertoire" executed="True" result="Failure" success="False" time="1.0853" asserts="0" description="Script Start-CodeAnalysis.Analyse d'un rÃ©pertoire">
+                <results>
+                  <test-case description="Analyse rÃ©cursivement un rÃ©pertoire avec le paramÃ¨tre -Recurse" name="Script Start-CodeAnalysis.Analyse d'un rÃ©pertoire.Analyse rÃ©cursivement un rÃ©pertoire avec le paramÃ¨tre -Recurse" time="0.4587" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 158
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Start-CodeAnalysis.Analyse avec plusieurs outils" executed="True" result="Failure" success="False" time="1.5239" asserts="0" description="Script Start-CodeAnalysis.Analyse avec plusieurs outils">
+                <results>
+                  <test-case description="Analyse avec tous les outils disponibles si Tools=All" name="Script Start-CodeAnalysis.Analyse avec plusieurs outils.Analyse avec tous les outils disponibles si Tools=All" time="0.405" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 189
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Script Start-CodeAnalysis.Analyse parallÃ¨le" executed="True" result="Failure" success="False" time="1.8161" asserts="0" description="Script Start-CodeAnalysis.Analyse parallÃ¨le">
+                <results>
+                  <test-case description="Analyse en parallÃ¨le avec le paramÃ¨tre -UseParallel" name="Script Start-CodeAnalysis.Analyse parallÃ¨le.Analyse en parallÃ¨le avec le paramÃ¨tre -UseParallel" time="0.2442" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « ScriptPath », car il s'agit d'une chaîne vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Start-CodeAnalysis.Tests.ps1 : ligne 219
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\UnifiedResultsFormat.Tests.ps1" executed="True" result="Failure" success="False" time="1.2166" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\UnifiedResultsFormat.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Module UnifiedResultsFormat" executed="True" result="Failure" success="False" time="0.7905" asserts="0" description="Module UnifiedResultsFormat">
+            <results>
+              <test-suite type="TestFixture" name="Module UnifiedResultsFormat.New-UnifiedAnalysisResult" executed="True" result="Success" success="True" time="0.4405" asserts="0" description="Module UnifiedResultsFormat.New-UnifiedAnalysisResult">
+                <results>
+                  <test-case description="CrÃ©e un rÃ©sultat d'analyse avec les propriÃ©tÃ©s requises" name="Module UnifiedResultsFormat.New-UnifiedAnalysisResult.CrÃ©e un rÃ©sultat d'analyse avec les propriÃ©tÃ©s requises" time="0.3133" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Accepte des paramÃ¨tres optionnels" name="Module UnifiedResultsFormat.New-UnifiedAnalysisResult.Accepte des paramÃ¨tres optionnels" time="0.0379" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="Valide les valeurs de sÃ©vÃ©ritÃ©" name="Module UnifiedResultsFormat.New-UnifiedAnalysisResult.Valide les valeurs de sÃ©vÃ©ritÃ©" time="0.0703" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Module UnifiedResultsFormat.ConvertFrom-PSScriptAnalyzerResult" executed="True" result="Failure" success="False" time="0.7714" asserts="0" description="Module UnifiedResultsFormat.ConvertFrom-PSScriptAnalyzerResult">
+                <results>
+                  <test-case description="Convertit les rÃ©sultats de PSScriptAnalyzer vers le format unifiÃ©" name="Module UnifiedResultsFormat.ConvertFrom-PSScriptAnalyzerResult.Convertit les rÃ©sultats de PSScriptAnalyzer vers le format unifiÃ©" time="0.2078" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>Expected 1, but got $null.</message>
+                      <stack-trace>at $result.Count | Should -Be 1, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\UnifiedResultsFormat.Tests.ps1:106
+à Invoke-Assertion, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8250
+à Should&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 8189
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\UnifiedResultsFormat.Tests.ps1 : ligne 106
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="GÃ¨re correctement un tableau vide" name="Module UnifiedResultsFormat.ConvertFrom-PSScriptAnalyzerResult.GÃ¨re correctement un tableau vide" time="0.0497" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>ParameterBindingValidationException: Impossible de lier l'argument au paramètre « Results », car il s'agit d'un tableau vide.</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\UnifiedResultsFormat.Tests.ps1 : ligne 119
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\analysis\tests\Run-AllTests.ps1 : ligne 85</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Mappe correctement les sÃ©vÃ©ritÃ©s" name="Module UnifiedResultsFormat.ConvertFrom-PSScriptAnalyzerResult.Mappe correctement les sÃ©vÃ©ritÃ©s" time="0.0565" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

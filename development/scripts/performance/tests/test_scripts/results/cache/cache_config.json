@@ -1,0 +1,8 @@
+﻿{
+    "DefaultTTL":  3600,
+    "MaxDiskSize":  100,
+    "CachePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\parallel-hybrid\\tests\\test_scripts\\results\\cache",
+    "MaxMemorySize":  50,
+    "EvictionPolicy":  "LRU",
+    "CacheType":  "Hybrid"
+}

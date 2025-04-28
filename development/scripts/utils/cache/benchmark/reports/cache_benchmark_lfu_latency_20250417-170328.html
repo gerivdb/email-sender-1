@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de benchmark - lfu - latency</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .success {
+            color: #27ae60;
+        }
+        .failure {
+            color: #e74c3c;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .recommendation {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2980b9;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Rapport de benchmark - lfu - latency</h1>
+    
+    <h2>Résumé</h2>
+    <p>
+        <strong>Statut:</strong> 
+        <span class="success">
+            Succès
+        </span>
+    </p>
+    <p><strong>Date:</strong> 20250417-170328</p>
+    <p><strong>Durée:</strong> 30.00 secondes</p>
+    <p><strong>Opérations totales:</strong> 278133</p>
+    <p><strong>Débit:</strong> 9271.00 opérations/seconde</p>
+    
+    <h2>Configuration</h2>
+    <table>
+        <tr>
+            <th>Paramètre</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Type de cache</td>
+            <td>lfu</td>
+        </tr>
+        <tr>
+            <td>Type de benchmark</td>
+            <td>latency</td>
+        </tr>
+        <tr>
+            <td>Taille du jeu de données</td>
+            <td>10000 éléments</td>
+        </tr>
+        <tr>
+            <td>Taille des valeurs</td>
+            <td>1024 octets</td>
+        </tr>
+        <tr>
+            <td>Distribution des données</td>
+            <td>uniform</td>
+        </tr>
+        <tr>
+            <td>Niveau de concurrence</td>
+            <td>1 threads</td>
+        </tr>
+    </table>
+    
+    <h2>Résultats détaillés</h2>
+    
+    <h3>Latence (ms)</h3>
+    <table>
+        <tr>
+            <th>Opération</th>
+            <th>Moyenne</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>P50</th>
+            <th>P95</th>
+            <th>P99</th>
+        </tr>
+
+        <tr>
+            <td>GET</td>
+            <td>0.01</td>
+            <td>0.00</td>
+            <td>4.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+        </tr>
+        <tr>
+            <td>SET</td>
+            <td>0.01</td>
+            <td>0.00</td>
+            <td>2.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.69</td>
+        </tr>
+        <tr>
+            <td>DELETE</td>
+            <td>0.01</td>
+            <td>0.00</td>
+            <td>1.04</td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+        </tr>
+    </table>
+    
+    <h3>Taux de succès du cache</h3>
+
+    <p>Aucune donnée disponible sur le taux de succès.</p>
+
+    <h3>Utilisation de la mémoire</h3>
+
+    <p><strong>Moyenne:</strong> 63.67 Mo</p>
+    <p><strong>Min:</strong> 53.77 Mo</p>
+    <p><strong>Max:</strong> 67.61 Mo</p>
+
+    <h2>Recommandations</h2>
+
+    <div class="recommendation">
+        <p>Les performances du cache sont bonnes. Aucune optimisation n'est nécessaire.</p>
+    </div>
+
+    <script>
+        // Code JavaScript pour les graphiques (à implémenter)
+    </script>
+</body>
+</html>

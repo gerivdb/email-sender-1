@@ -1,0 +1,75 @@
+﻿{
+    "MinResponseMs":  2583.9532,
+    "MaxResponseMs":  6776.2986,
+    "Performance":  [
+                        {
+                            "Timestamp":  "2025-04-15 02:58:37.801",
+                            "CPU":  29.703125,
+                            "WorkingSet":  172273664,
+                            "PrivateMemory":  147591168,
+                            "Handles":  918,
+                            "Threads":  26,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "340a6f9e-845c-4fba-a326-e90c236588f0",
+                            "PSShowComputerName":  false
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 02:58:38.892",
+                            "CPU":  29.78125,
+                            "WorkingSet":  172290048,
+                            "PrivateMemory":  147607552,
+                            "Handles":  966,
+                            "Threads":  26,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "340a6f9e-845c-4fba-a326-e90c236588f0",
+                            "PSShowComputerName":  false
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 02:58:39.921",
+                            "CPU":  29.9375,
+                            "WorkingSet":  172371968,
+                            "PrivateMemory":  147693568,
+                            "Handles":  996,
+                            "Threads":  27,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "340a6f9e-845c-4fba-a326-e90c236588f0",
+                            "PSShowComputerName":  false
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 02:58:40.954",
+                            "CPU":  29.9375,
+                            "WorkingSet":  172388352,
+                            "PrivateMemory":  147730432,
+                            "Handles":  1001,
+                            "Threads":  28,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "340a6f9e-845c-4fba-a326-e90c236588f0",
+                            "PSShowComputerName":  false
+                        },
+                        {
+                            "Timestamp":  "2025-04-15 02:58:41.973",
+                            "CPU":  29.9375,
+                            "WorkingSet":  172417024,
+                            "PrivateMemory":  147783680,
+                            "Handles":  1007,
+                            "Threads":  29,
+                            "PSComputerName":  "localhost",
+                            "RunspaceId":  "340a6f9e-845c-4fba-a326-e90c236588f0",
+                            "PSShowComputerName":  false
+                        }
+                    ],
+    "TotalExecTime":  7.7942978,
+    "Concurrency":  1,
+    "AvgResponseMs":  5595.0558666666666,
+    "TotalRequests":  6,
+    "System":  {
+                   "Memory":  23.98,
+                   "PSVersion":  "5.1.19041.5737",
+                   "OS":  "Microsoft Windows NT 10.0.19045.0",
+                   "ProcessorCount":  8
+               },
+    "StartTime":  "2025-04-15 02:58:36",
+    "ErrorCount":  0,
+    "Duration":  5,
+    "SuccessCount":  6
+}
