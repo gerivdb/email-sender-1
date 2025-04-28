@@ -66,3 +66,6 @@ terminal_settings.json
 
 # Tokens d'authentification
 mcp-servers/gcp-mcp/token.json
+
+# Fichiers binaires volumineux
+projet/mcp/dependencies/binary/gateway/gateway-windows-amd64.exe
