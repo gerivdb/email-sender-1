@@ -1,0 +1,27 @@
+{
+  "rootPath": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+  "allowedExtensions": [
+    ".txt",
+    ".md",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".ps1",
+    ".psm1",
+    ".psd1",
+    ".py",
+    ".js",
+    ".ts",
+    ".html",
+    ".css"
+  ],
+  "excludedPaths": [
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    "__pycache__"
+  ],
+  "maxFileSize": 10485760,
+  "readOnly": false
+}

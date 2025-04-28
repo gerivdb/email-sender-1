@@ -1,0 +1,265 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "functionName": "listRepositories",
+        "arguments": {}
+      },
+      "name": "MCP GitHub - List Repositories",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        660,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP github"
+      }
+    },
+    {
+      "parameters": {
+        "functionName": "listFiles",
+        "arguments": {
+          "owner": "={{ $json.owner || $json.repository?.owner?.login }}",
+          "repo": "={{ $json.repo || $json.repository?.name }}",
+          "path": "={{ $json.path || '.' }}"
+        }
+      },
+      "name": "MCP GitHub - List Files",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP github"
+      }
+    },
+    {
+      "parameters": {
+        "mode": "mergeByPosition",
+        "join": {
+          "output": "allItems"
+        },
+        "options": {}
+      },
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionName": "getFileContent",
+        "arguments": {
+          "owner": "={{ $json.owner || $json.repository?.owner?.login }}",
+          "repo": "={{ $json.repo || $json.repository?.name }}",
+          "path": "={{ $json.path }}"
+        }
+      },
+      "name": "MCP GitHub - Get File Content",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP github"
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.type }}",
+              "operation": "contains",
+              "value2": "file"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "=## GitHub Explorer\n\n**Repository**: {{ $json.repository?.full_name || $json.owner + '/' + $json.repo }}\n**Current Path**: {{ $json.path || '.' }}\n\n### Files and Directories\n\n```json\n{{ $json.result }}\n```\n\n### File Content\n\n```\n{{ $json.content || 'Select a file to view its content' }}\n```",
+        "height": 500,
+        "width": 600
+      },
+      "name": "GitHub Explorer",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "owner",
+              "value": "={{ $json.owner || $json.repository?.owner?.login }}"
+            },
+            {
+              "name": "repo",
+              "value": "={{ $json.repo || $json.repository?.name }}"
+            },
+            {
+              "name": "path",
+              "value": "={{ $json.path }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Navigate to Path",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        880,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "owner",
+              "value": "gerivonderbitsh"
+            },
+            {
+              "name": "repo",
+              "value": "EMAIL_SENDER_1"
+            },
+            {
+              "name": "path",
+              "value": "."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Initial Repository",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        440,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "MCP GitHub - List Files": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "MCP GitHub - Get File Content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Navigate to Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Navigate to Path": {
+      "main": [
+        [
+          {
+            "node": "MCP GitHub - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initial Repository": {
+      "main": [
+        [
+          {
+            "node": "MCP GitHub - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP GitHub - Get File Content": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "MCP GitHub - List Repositories": {
+      "main": [
+        [
+          {
+            "node": "MCP GitHub - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "id": "2",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    },
+    {
+      "name": "GitHub",
+      "color": "#6E5494"
+    }
+  ]
+}

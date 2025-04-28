@@ -1,0 +1,20 @@
+{
+  "token": "{{GITHUB_TOKEN}}",
+  "repositories": [
+    {
+      "owner": "gerivonderbitsh",
+      "repo": "EMAIL_SENDER_1",
+      "branch": "main"
+    }
+  ],
+  "cacheEnabled": true,
+  "cacheDirectory": "servers/github/cache",
+  "cacheTTL": 3600,
+  "maxFileSize": 10485760,
+  "excludedPaths": [
+    "node_modules",
+    "dist",
+    "build",
+    "__pycache__"
+  ]
+}

@@ -1,0 +1,2 @@
+pymcpfy>=0.1.0
+mcp-git-ingest>=0.1.0

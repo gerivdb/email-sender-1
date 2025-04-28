@@ -1,0 +1,61 @@
+# Configuration du serveur Gateway MCP
+server:
+  host: localhost
+  port: 8080
+  debug: false
+  cors:
+    enabled: true
+    origins:
+      - "*"
+
+databases:
+  - name: main
+    type: sqlite
+    connection: "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/data/database.sqlite"
+    tables:
+      - name: users
+        description: "Table des utilisateurs"
+        columns:
+          - name: id
+            type: INTEGER
+            primary_key: true
+          - name: username
+            type: TEXT
+            description: "Nom d'utilisateur"
+          - name: email
+            type: TEXT
+            description: "Adresse e-mail"
+          - name: created_at
+            type: TIMESTAMP
+            description: "Date de création"
+      - name: emails
+        description: "Table des e-mails"
+        columns:
+          - name: id
+            type: INTEGER
+            primary_key: true
+          - name: user_id
+            type: INTEGER
+            foreign_key: users.id
+          - name: subject
+            type: TEXT
+            description: "Sujet de l'e-mail"
+          - name: body
+            type: TEXT
+            description: "Corps de l'e-mail"
+          - name: sent_at
+            type: TIMESTAMP
+            description: "Date d'envoi"
+
+security:
+  enabled: true
+  api_key: "{{API_KEY}}"
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+
+logging:
+  level: info
+  file: "monitoring/logs/gateway.log"
+  max_size: 10485760
+  max_files: 5

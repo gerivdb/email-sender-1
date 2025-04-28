@@ -1,0 +1,211 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "functionName": "listFiles",
+        "arguments": {
+          "path": "{{ $json.path || '.' }}"
+        }
+      },
+      "name": "MCP Filesystem - List Files",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP filesystem"
+      }
+    },
+    {
+      "parameters": {
+        "mode": "mergeByPosition",
+        "join": {
+          "output": "allItems"
+        },
+        "options": {}
+      },
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionName": "readFile",
+        "arguments": {
+          "path": "{{ $json.path }}"
+        }
+      },
+      "name": "MCP Filesystem - Read File",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP filesystem"
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.type }}",
+              "operation": "contains",
+              "value2": "file"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "=## File Explorer\n\n**Current Path**: {{ $json.path || '.' }}\n\n### Files and Directories\n\n```json\n{{ $json.result }}\n```\n\n### File Content\n\n```\n{{ $json.content || 'Select a file to view its content' }}\n```",
+        "height": 500,
+        "width": 600
+      },
+      "name": "File Explorer",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "path": "={{ $json.path }}",
+        "options": {}
+      },
+      "name": "Navigate to Path",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        880,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "path",
+              "value": "."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Initial Path",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        660,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "MCP Filesystem - List Files": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "MCP Filesystem - Read File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Navigate to Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Navigate to Path": {
+      "main": [
+        [
+          {
+            "node": "MCP Filesystem - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initial Path": {
+      "main": [
+        [
+          {
+            "node": "MCP Filesystem - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Filesystem - Read File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "id": "1",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    },
+    {
+      "name": "Filesystem",
+      "color": "#0000FF"
+    }
+  ]
+}

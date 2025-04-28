@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "functionName": "listDatabases",
+        "arguments": {}
+      },
+      "name": "MCP Gateway - List Databases",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        660,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP gateway"
+      }
+    },
+    {
+      "parameters": {
+        "functionName": "listTables",
+        "arguments": {
+          "database": "={{ $json.database || 'main' }}"
+        }
+      },
+      "name": "MCP Gateway - List Tables",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP gateway"
+      }
+    },
+    {
+      "parameters": {
+        "mode": "mergeByPosition",
+        "join": {
+          "output": "allItems"
+        },
+        "options": {}
+      },
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionName": "queryDatabase",
+        "arguments": {
+          "database": "={{ $json.database || 'main' }}",
+          "query": "={{ 'SELECT * FROM ' + $json.table + ' LIMIT 100' }}"
+        }
+      },
+      "name": "MCP Gateway - Query Table",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP gateway"
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.table }}",
+              "operation": "exists"
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "=## Database Explorer\n\n**Database**: {{ $json.database || 'main' }}\n**Table**: {{ $json.table || 'Select a table' }}\n\n### Tables\n\n```json\n{{ $json.tables || $json.result }}\n```\n\n### Query Results\n\n```json\n{{ $json.rows || 'Select a table to view its data' }}\n```",
+        "height": 500,
+        "width": 600
+      },
+      "name": "Database Explorer",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "database",
+              "value": "={{ $json.database }}"
+            },
+            {
+              "name": "table",
+              "value": "={{ $json.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Select Table",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        880,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "database",
+              "value": "main"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Initial Database",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        440,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "MCP Gateway - List Tables": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "MCP Gateway - Query Table",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Select Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Table": {
+      "main": [
+        [
+          {
+            "node": "MCP Gateway - List Tables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initial Database": {
+      "main": [
+        [
+          {
+            "node": "MCP Gateway - List Databases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Gateway - Query Table": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "MCP Gateway - List Databases": {
+      "main": [
+        [
+          {
+            "node": "MCP Gateway - List Tables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "id": "3",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    },
+    {
+      "name": "Gateway",
+      "color": "#FF0000"
+    }
+  ]
+}

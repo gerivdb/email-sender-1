@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "functionName": "listFiles",
+        "arguments": {
+          "path": "."
+        }
+      },
+      "name": "MCP Filesystem",
+      "type": "n8n-nodes-mcp.mcpClientApi",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": "MCP filesystem"
+      }
+    },
+    {
+      "parameters": {
+        "content": "=## Files in root directory\n\n```json\n{{ $json.result }}\n```",
+        "height": 400,
+        "width": 400
+      },
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "1",
+  "id": "1",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    }
+  ]
+}

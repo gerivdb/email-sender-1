@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "enabled": true
+    },
+    "github": {
+      "enabled": true
+    },
+    "gcp": {
+      "enabled": true
+    },
+    "notion": {
+      "enabled": true
+    },
+    "gateway": {
+      "enabled": true
+    },
+    "n8n": {
+      "enabled": true,
+      "url": "http://localhost:5678/sse"
+    }
+  },
+  "global": {
+    "logLevel": "info",
+    "autoStart": true,
+    "notificationEnabled": true,
+    "logPath": "monitoring/logs/mcp-prod.log"
+  }
+}

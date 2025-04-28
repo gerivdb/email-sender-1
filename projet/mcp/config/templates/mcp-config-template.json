@@ -1,0 +1,59 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "{{PROJECT_ROOT_FORWARD_SLASH}}"
+      ],
+      "enabled": true,
+      "configPath": "config/servers/filesystem.json"
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-github",
+        "--config",
+        "config/servers/github.json"
+      ],
+      "enabled": true,
+      "configPath": "config/servers/github.json"
+    },
+    "gcp": {
+      "command": "npx",
+      "args": ["gcp-mcp"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "config/credentials/gcp-token.json"
+      },
+      "enabled": true,
+      "configPath": "config/servers/gcp.json"
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@suekou/mcp-notion-server"],
+      "env": {
+        "NOTION_API_TOKEN": "config/credentials/notion-token.json"
+      },
+      "enabled": true,
+      "configPath": "config/servers/notion.json"
+    },
+    "gateway": {
+      "command": "gateway.exe",
+      "args": ["start", "--config", "config/servers/gateway.yaml", "mcp-stdio"],
+      "enabled": true,
+      "configPath": "config/servers/gateway.yaml"
+    },
+    "n8n": {
+      "url": "http://localhost:5678/sse",
+      "enabled": true
+    }
+  },
+  "global": {
+    "logLevel": "info",
+    "autoStart": true,
+    "notificationEnabled": true,
+    "logPath": "monitoring/logs/mcp.log",
+    "maxLogSize": 10485760,
+    "maxLogFiles": 5
+  }
+}

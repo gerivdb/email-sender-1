@@ -1,0 +1,11 @@
+{
+  "name": "mcp-dependencies",
+  "version": "1.0.0",
+  "description": "Dépendances MCP pour EMAIL_SENDER_1",
+  "dependencies": {
+    "@modelcontextprotocol/server-filesystem": "latest",
+    "@modelcontextprotocol/server-github": "latest",
+    "gcp-mcp": "latest",
+    "@suekou/mcp-notion-server": "latest"
+  }
+}
