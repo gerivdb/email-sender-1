@@ -1,0 +1,35 @@
+﻿{
+    "GlobalStats":  {
+                        "Blocked":  0,
+                        "NotStarted":  1,
+                        "Completed":  2,
+                        "UpcomingDeadlines":  0,
+                        "Progress":  67,
+                        "TotalTasks":  3,
+                        "InProgress":  0,
+                        "OverdueTasks":  0
+                    },
+    "Forecasts":  {
+
+                  },
+    "GeneratedAt":  "2025-04-17T03:08:43.4893596Z",
+    "SectionStats":  {
+                         "1":  {
+                                   "Total":  3,
+                                   "UpcomingDeadlines":  0,
+                                   "OverdueTasks":  0,
+                                   "CompletedHours":  48,
+                                   "Completed":  2,
+                                   "NotStarted":  1,
+                                   "EstimatedHours":  84,
+                                   "InProgress":  0,
+                                   "Blocked":  0
+                               }
+                     },
+    "MonthlyStats":  {
+                         "2025-04":  {
+                                         "EstimatedHours":  0,
+                                         "CompletedTasks":  0
+                                     }
+                     }
+}

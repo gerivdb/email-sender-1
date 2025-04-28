@@ -1,0 +1,27 @@
+﻿{
+    "id":  "1.1.2.7",
+    "title":  "SystÃ¨me de journalisation de la roadmap",
+    "status":  "NotStarted",
+    "createdAt":  "2025-04-16T19:50:07.2097391Z",
+    "updatedAt":  "2025-04-16T19:50:07.2097391Z",
+    "metadata":  {
+                     "complexity":  3,
+                     "estimatedHours":  36,
+                     "progress":  0,
+                     "dueDate":  null,
+                     "startDate":  null,
+                     "completionDate":  null,
+                     "owner":  ""
+                 },
+    "description":  "Mettre en place un systÃ¨me de journalisation de la roadmap pour faciliter son parsing automatique et archiver efficacement les parties rÃ©alisÃ©es, amÃ©liorant ainsi la traÃ§abilitÃ© et le suivi du projet.",
+    "subTasks":  [
+
+                 ],
+    "parentId":  "",
+    "files":  [
+
+              ],
+    "tags":  [
+
+             ]
+}

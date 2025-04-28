@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "title", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)*$",
+      "description": "Identifiant unique de la tâche, suivant le format de numérotation hiérarchique (ex: 1.1.2.3)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Titre de la tâche"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["NotStarted", "InProgress", "Completed", "Blocked"],
+      "description": "Statut actuel de la tâche"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure de création de l'entrée (format ISO 8601)"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure de dernière mise à jour de l'entrée (format ISO 8601)"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "complexity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Niveau de complexité de la tâche (0-5)"
+        },
+        "estimatedHours": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Temps estimé pour compléter la tâche (en heures)"
+        },
+        "progress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Pourcentage de progression de la tâche (0-100)"
+        },
+        "dueDate": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Date d'échéance prévue (format ISO 8601)"
+        },
+        "startDate": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Date de début réelle (format ISO 8601)"
+        },
+        "completionDate": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Date d'achèvement réelle (format ISO 8601)"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Personne responsable de la tâche"
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "Description détaillée de la tâche"
+    },
+    "subTasks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\d+(\\.\\d+)*$"
+      },
+      "description": "Liste des identifiants des sous-tâches"
+    },
+    "parentId": {
+      "type": ["string", "null"],
+      "pattern": "^\\d+(\\.\\d+)*$",
+      "description": "Identifiant de la tâche parente"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des fichiers associés à la tâche"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des tags associés à la tâche"
+    }
+  }
+}
