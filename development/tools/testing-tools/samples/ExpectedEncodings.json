@@ -1,0 +1,11 @@
+﻿{
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf16le.txt":  "UTF-16LE",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\ascii.txt":  "ASCII",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\null_bytes.bin":  "UTF-16LE",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf16be-bom.txt":  "UTF-16BE",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf16be.txt":  "UTF-16BE",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf8-bom.txt":  "UTF-8-BOM",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf16le-bom.txt":  "UTF-16LE",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\utf8.txt":  "UTF-8",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\tests\\samples\\encodings\\windows1252.txt":  "Windows-1252"
+}

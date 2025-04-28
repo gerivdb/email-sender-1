@@ -1,0 +1,15 @@
+﻿{
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-8.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_binary_with_text.bin":  "BINARY",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_Windows-1252.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-16LE.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_ASCII.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_binary.bin":  "BINARY",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\ExpectedEncodings.json":  "JSON",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_ISO-8859-1.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-8-BOM.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-16BE-BOM.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-16LE-BOM.txt":  "TEXT",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_binary_with_nulls.bin":  "BINARY",
+    "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\format-detection\\samples\\encoding\\sample_UTF-16BE.txt":  "TEXT"
+}

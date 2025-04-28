@@ -1,0 +1,508 @@
+{
+  "title": "Tableau de bord des KPIs métier",
+  "description": "Vue d'ensemble des indicateurs clés de performance métier",
+  "refresh": "1h",
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": "business_overview",
+      "title": "Vue d'ensemble métier",
+      "type": "stat-panel",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 3
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_DELIVERABILITY_INDEX",
+          "label": "Délivrabilité"
+        },
+        {
+          "kpi": "EMAIL_ENGAGEMENT_INDEX",
+          "label": "Engagement"
+        },
+        {
+          "kpi": "EMAIL_BUSINESS_VALUE_INDEX",
+          "label": "Valeur métier"
+        }
+      ]
+    },
+    {
+      "id": "efficacite_panel",
+      "title": "Efficacité",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 3,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "delivery_rate_panel",
+      "title": "Taux de livraison des emails",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 100,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 90, "color": "orange" },
+          { "value": 95, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_DELIVERY_RATE",
+          "label": "Taux de livraison (%)"
+        }
+      ]
+    },
+    {
+      "id": "campaign_completion_panel",
+      "title": "Taux de complétion des campagnes",
+      "type": "gauge",
+      "gridPos": {
+        "x": 8,
+        "y": 4,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 100,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 90, "color": "orange" },
+          { "value": 95, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "CAMPAIGN_COMPLETION_RATE",
+          "label": "Taux de complétion (%)"
+        }
+      ]
+    },
+    {
+      "id": "workflow_completion_panel",
+      "title": "Taux de complétion des workflows",
+      "type": "gauge",
+      "gridPos": {
+        "x": 16,
+        "y": 4,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 100,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 90, "color": "orange" },
+          { "value": 95, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "WORKFLOW_COMPLETION_RATE",
+          "label": "Taux de complétion (%)"
+        }
+      ]
+    },
+    {
+      "id": "engagement_panel",
+      "title": "Engagement",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "open_rate_panel",
+      "title": "Taux d'ouverture des emails",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 30,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 10, "color": "orange" },
+          { "value": 15, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_OPEN_RATE",
+          "label": "Taux d'ouverture (%)"
+        }
+      ]
+    },
+    {
+      "id": "click_rate_panel",
+      "title": "Taux de clic des emails",
+      "type": "gauge",
+      "gridPos": {
+        "x": 8,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 10,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 2, "color": "orange" },
+          { "value": 5, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_CLICK_RATE",
+          "label": "Taux de clic (%)"
+        }
+      ]
+    },
+    {
+      "id": "unsubscribe_rate_panel",
+      "title": "Taux de désabonnement",
+      "type": "gauge",
+      "gridPos": {
+        "x": 16,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 2,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 0.5, "color": "orange" },
+          { "value": 1, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "UNSUBSCRIBE_RATE",
+          "label": "Taux de désabonnement (%)"
+        }
+      ]
+    },
+    {
+      "id": "qualite_panel",
+      "title": "Qualité",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "bounce_rate_panel",
+      "title": "Taux de rebond des emails",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 10,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 3, "color": "orange" },
+          { "value": 5, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_BOUNCE_RATE",
+          "label": "Taux de rebond (%)"
+        }
+      ]
+    },
+    {
+      "id": "complaint_rate_panel",
+      "title": "Taux de plainte",
+      "type": "gauge",
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 1,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 0.1, "color": "orange" },
+          { "value": 0.5, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_COMPLAINT_RATE",
+          "label": "Taux de plainte (%)"
+        }
+      ]
+    },
+    {
+      "id": "performance_panel",
+      "title": "Performance",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 30,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "processing_time_panel",
+      "title": "Temps de traitement des emails",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 31,
+        "w": 12,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 15,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 5, "color": "orange" },
+          { "value": 10, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "EMAIL_PROCESSING_TIME",
+          "label": "Temps de traitement (s)"
+        }
+      ]
+    },
+    {
+      "id": "campaign_execution_time_panel",
+      "title": "Temps d'exécution des campagnes",
+      "type": "gauge",
+      "gridPos": {
+        "x": 12,
+        "y": 31,
+        "w": 12,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 90,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 30, "color": "orange" },
+          { "value": 60, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "CAMPAIGN_EXECUTION_TIME",
+          "label": "Temps d'exécution (min)"
+        }
+      ]
+    },
+    {
+      "id": "croissance_panel",
+      "title": "Croissance",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 39,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "subscriber_growth_panel",
+      "title": "Taux de croissance des abonnés",
+      "type": "graph",
+      "gridPos": {
+        "x": 0,
+        "y": 40,
+        "w": 24,
+        "h": 8
+      },
+      "options": {
+        "legend": {
+          "show": true,
+          "values": true,
+          "min": true,
+          "max": true,
+          "avg": true
+        }
+      },
+      "targets": [
+        {
+          "kpi": "SUBSCRIBER_GROWTH_RATE",
+          "label": "Taux de croissance (%)"
+        }
+      ]
+    },
+    {
+      "id": "valeur_panel",
+      "title": "Valeur",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "roi_panel",
+      "title": "Retour sur investissement",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 49,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 400,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 100, "color": "orange" },
+          { "value": 200, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "ROI",
+          "label": "ROI (%)"
+        }
+      ]
+    },
+    {
+      "id": "revenue_per_email_panel",
+      "title": "Revenu par email",
+      "type": "gauge",
+      "gridPos": {
+        "x": 8,
+        "y": 49,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 0.1,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 0.02, "color": "orange" },
+          { "value": 0.05, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "REVENUE_PER_EMAIL",
+          "label": "Revenu par email (€)"
+        }
+      ]
+    },
+    {
+      "id": "conversion_rate_panel",
+      "title": "Taux de conversion",
+      "type": "gauge",
+      "gridPos": {
+        "x": 16,
+        "y": 49,
+        "w": 8,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 2,
+        "thresholds": [
+          { "value": 0, "color": "red" },
+          { "value": 0.5, "color": "orange" },
+          { "value": 1, "color": "green" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "CONVERSION_RATE",
+          "label": "Taux de conversion (%)"
+        }
+      ]
+    },
+    {
+      "id": "cout_panel",
+      "title": "Coût",
+      "type": "section",
+      "gridPos": {
+        "x": 0,
+        "y": 57,
+        "w": 24,
+        "h": 1
+      }
+    },
+    {
+      "id": "cost_per_email_panel",
+      "title": "Coût par email",
+      "type": "gauge",
+      "gridPos": {
+        "x": 0,
+        "y": 58,
+        "w": 24,
+        "h": 8
+      },
+      "options": {
+        "min": 0,
+        "max": 0.03,
+        "thresholds": [
+          { "value": 0, "color": "green" },
+          { "value": 0.01, "color": "orange" },
+          { "value": 0.02, "color": "red" }
+        ]
+      },
+      "targets": [
+        {
+          "kpi": "COST_PER_EMAIL",
+          "label": "Coût par email (€)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        h2 {
+            margin-top: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .success {
+            color: #2ecc71;
+        }
+        .failure {
+            color: #e74c3c;
+        }
+        .slow {
+            color: #f39c12;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rapport de Tests</h1>
+        <p>G&eacute;n&eacute;r&eacute; le 12/04/2025 &agrave; 05:45:03</p>
+
+        <h2>R&eacute;sum&eacute;</h2>
+        <p>
+            <strong>Tests ex&eacute;cut&eacute;s:</strong> 3<br>
+            <strong>Tests r&eacute;ussis:</strong> 3<br>
+            <strong>Tests &eacute;chou&eacute;s:</strong> 0<br>
+            <strong>Dur&eacute;e totale:</strong> 351.02 ms<br>
+            <strong>Threads utilis&eacute;s:</strong> 4
+        </p>
+
+        <h2>R&eacute;sultats d&eacute;taill&eacute;s</h2>
+        <table>
+            <tr>
+                <th>Test</th>
+                <th>R&eacute;sultat</th>
+                <th>Dur&eacute;e (ms)</th>
+                <th>D&eacute;tails</th>
+            </tr>            <tr>
+                <td>AnalyzeUsageTrends</td>
+                <td class="success">Succ&egrave;s</td>
+                <td>127.01</td>
+                <td></td>
+            </tr>            <tr>
+                <td>DetectBottlenecks</td>
+                <td class="success">Succ&egrave;s</td>
+                <td>107</td>
+                <td></td>
+            </tr>            <tr>
+                <td>MonitorScriptUsage</td>
+                <td class="success">Succ&egrave;s</td>
+                <td>109</td>
+                <td></td>
+            </tr>        </table>
+
+        <div class="footer">
+            <p>G&eacute;n&eacute;r&eacute; par TestOmnibus</p>
+        </div>
+    </div>
+</body>
+</html>

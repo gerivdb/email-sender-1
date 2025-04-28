@@ -1,0 +1,50 @@
+{
+    "MaxThreads": 4,
+    "OutputPath": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Results",
+    "GenerateHtmlReport": true,
+    "CollectPerformanceData": true,
+    "TestModules": [
+        {
+            "Name": "ProactiveOptimization",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/ProactiveOptimization/tests",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/ProactiveOptimization-Adapter.ps1",
+            "Priority": 1,
+            "Tags": ["PowerShell", "Optimization", "Monitoring"]
+        },
+        {
+            "Name": "MaintenanceStandards",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/maintenance/standards/tests",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/MaintenanceStandards-Adapter.ps1",
+            "Priority": 2,
+            "Tags": ["PowerShell", "Maintenance", "Standards"]
+        },
+        {
+            "Name": "MaintenanceCleanup",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/maintenance/cleanup/tests",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/MaintenanceCleanup-Adapter.ps1",
+            "Priority": 3,
+            "Tags": ["PowerShell", "Maintenance", "Cleanup"]
+        },
+        {
+            "Name": "EncodingErrorDetection",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/testing/tests/TestOmnibus",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/EncodingErrorDetection-Adapter.ps1",
+            "Priority": 4,
+            "Tags": ["PowerShell", "Maintenance", "Encoding", "ErrorDetection"]
+        },
+        {
+            "Name": "PerformanceCounterManager",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/tests",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/PerformanceCounterManager-Adapter.ps1",
+            "Priority": 5,
+            "Tags": ["PowerShell", "Performance", "Monitoring", "ErrorHandling"]
+        },
+        {
+            "Name": "PathResolver",
+            "Path": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/tests",
+            "Adapter": "D:/DO/WEB/N8N_development/testing/tests/PROJETS/EMAIL_SENDER_1/development/scripts/utils/TestOmnibus/Adapters/PathResolver-Adapter.ps1",
+            "Priority": 6,
+            "Tags": ["PowerShell", "Paths", "FileSystem", "ErrorHandling"]
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+﻿{
+    "statistics":  {
+                       "cyclicScripts":  3,
+                       "nonCyclicScripts":  3,
+                       "totalScripts":  6
+                   },
+    "cycles":  [
+                   "ScriptA",
+                   "ScriptC",
+                   "ScriptE"
+               ],
+    "edges":  [
+                  {
+                      "target":  "ScriptE",
+                      "isCyclic":  true,
+                      "source":  "ScriptC"
+                  },
+                  {
+                      "target":  "ScriptA",
+                      "isCyclic":  true,
+                      "source":  "ScriptE"
+                  },
+                  {
+                      "target":  "ScriptB",
+                      "isCyclic":  false,
+                      "source":  "ScriptA"
+                  },
+                  {
+                      "target":  "ScriptC",
+                      "isCyclic":  true,
+                      "source":  "ScriptA"
+                  },
+                  {
+                      "target":  "ScriptD",
+                      "isCyclic":  false,
+                      "source":  "ScriptB"
+                  },
+                  {
+                      "target":  "ScriptF",
+                      "isCyclic":  false,
+                      "source":  "ScriptD"
+                  }
+              ],
+    "nodes":  [
+                  {
+                      "label":  "ScriptF",
+                      "isCyclic":  false,
+                      "id":  "ScriptF"
+                  },
+                  {
+                      "label":  "ScriptC",
+                      "isCyclic":  true,
+                      "id":  "ScriptC"
+                  },
+                  {
+                      "label":  "ScriptE",
+                      "isCyclic":  true,
+                      "id":  "ScriptE"
+                  },
+                  {
+                      "label":  "ScriptA",
+                      "isCyclic":  true,
+                      "id":  "ScriptA"
+                  },
+                  {
+                      "label":  "ScriptB",
+                      "isCyclic":  false,
+                      "id":  "ScriptB"
+                  },
+                  {
+                      "label":  "ScriptD",
+                      "isCyclic":  false,
+                      "id":  "ScriptD"
+                  }
+              ]
+}
