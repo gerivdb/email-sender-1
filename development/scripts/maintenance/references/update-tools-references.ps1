@@ -25,100 +25,100 @@ function Update-ToolsReferences {
 
         # Définir les mappages de chemins
         $pathMappings = @(            @{
-                OldPath     = "development/tools/optimization"
-                NewPath     = "development/tools/optimization-tools"
+                OldPath     = "development/tools/optimization-tools"
+                NewPath     = "development/tools/optimization-tools-tools"
                 Description = "Renommage du dossier optimization en optimization-tools"
             }, @{
-                OldPath     = "development/tools/swe-bench"
-                NewPath     = "development/tools/swe-bench-tools"
+                OldPath     = "development/tools/swe-bench-tools"
+                NewPath     = "development/tools/swe-bench-tools-tools"
                 Description = "Renommage du dossier swe-bench en swe-bench-tools"
             }, @{
-                OldPath     = "development/tools/documentation"
-                NewPath     = "development/tools/documentation-tools"
+                OldPath     = "development/tools/documentation-tools"
+                NewPath     = "development/tools/documentation-tools-tools"
                 Description = "Renommage du dossier documentation en documentation-tools"
             }, @{
-                OldPath     = "development/tools/dashboards"
-                NewPath     = "development/tools/dashboards-tools"
+                OldPath     = "development/tools/dashboards-tools"
+                NewPath     = "development/tools/dashboards-tools-tools"
                 Description = "Renommage du dossier dashboards en dashboards-tools"
             }, @{
-                OldPath     = "development/tools/reports"
-                NewPath     = "development/tools/reports-tools"
+                OldPath     = "development/tools/reports-tools"
+                NewPath     = "development/tools/reports-tools-tools"
                 Description = "Renommage du dossier reports en reports-tools"
             }, @{
-                OldPath     = "development/tools/path-utils"
-                NewPath     = "development/tools/path-utils-tools"
+                OldPath     = "development/tools/path-utils-tools"
+                NewPath     = "development/tools/path-utils-tools-tools"
                 Description = "Renommage du dossier path-utils en path-utils-tools"
             }, @{
-                OldPath     = "development/tools/analysis"
-                NewPath     = "development/tools/analysis-tools"
+                OldPath     = "development/tools/analysis-tools"
+                NewPath     = "development/tools/analysis-tools-tools"
                 Description = "Renommage du dossier analysis en analysis-tools"
             }, @{
-                OldPath     = "development/tools/converters"
-                NewPath     = "development/tools/converters-tools"
+                OldPath     = "development/tools/converters-tools"
+                NewPath     = "development/tools/converters-tools-tools"
                 Description = "Renommage du dossier converters en converters-tools"
             }, @{
-                OldPath     = "development/tools/error-handling"
-                NewPath     = "development/tools/error-handling-tools"
+                OldPath     = "development/tools/error-handling-tools"
+                NewPath     = "development/tools/error-handling-tools-tools"
                 Description = "Renommage du dossier error-handling en error-handling-tools"
             }, @{
-                OldPath     = "development/tools/detectors"
-                NewPath     = "development/tools/detectors-tools"
+                OldPath     = "development/tools/detectors-tools"
+                NewPath     = "development/tools/detectors-tools-tools"
                 Description = "Renommage du dossier detectors en detectors-tools"
             }, @{
-                OldPath     = "development/tools/markdown"
-                NewPath     = "development/tools/markdown-tools"
+                OldPath     = "development/tools/markdown-tools"
+                NewPath     = "development/tools/markdown-tools-tools"
                 Description = "Renommage du dossier markdown en markdown-tools"
             }, @{
-                OldPath     = "development/tools/examples"
-                NewPath     = "development/tools/examples-tools"
+                OldPath     = "development/tools/examples-tools"
+                NewPath     = "development/tools/examples-tools-tools"
                 Description = "Renommage du dossier examples en examples-tools"
             }, @{
-                OldPath     = "development/tools/git"
-                NewPath     = "development/tools/git-tools"
+                OldPath     = "development/tools/git-tools"
+                NewPath     = "development/tools/git-tools-tools"
                 Description = "Renommage du dossier git en git-tools"
             }, @{
-                OldPath     = "development/tools/journal"
-                NewPath     = "development/tools/journal-tools"
+                OldPath     = "development/tools/journal-tools"
+                NewPath     = "development/tools/journal-tools-tools"
                 Description = "Renommage du dossier journal en journal-tools"
             }, @{
-                OldPath     = "development/tools/roadmap"
-                NewPath     = "development/tools/roadmap-tools"
+                OldPath     = "development/tools/roadmap-tools"
+                NewPath     = "development/tools/roadmap-tools-tools"
                 Description = "Renommage du dossier roadmap en roadmap-tools"
             }, @{
-                OldPath     = "development/tools/generators"
-                NewPath     = "development/tools/generators-tools"
+                OldPath     = "development/tools/generators-tools"
+                NewPath     = "development/tools/generators-tools-tools"
                 Description = "Renommage du dossier generators en generators-tools"
             }, @{
-                OldPath     = "development/tools/integrations"
-                NewPath     = "development/tools/integrations-tools"
+                OldPath     = "development/tools/integrations-tools"
+                NewPath     = "development/tools/integrations-tools-tools"
                 Description = "Renommage du dossier integrations en integrations-tools"
             }, @{
-                OldPath     = "development/tools/insights"
-                NewPath     = "development/tools/insights-tools"
+                OldPath     = "development/tools/insights-tools"
+                NewPath     = "development/tools/insights-tools-tools"
                 Description = "Renommage du dossier insights en insights-tools"
             }, @{
-                OldPath     = "development/tools/testing"
-                NewPath     = "development/tools/testing-tools"
+                OldPath     = "development/tools/testing-tools"
+                NewPath     = "development/tools/testing-tools-tools"
                 Description = "Renommage du dossier testing en testing-tools"
             }, @{
-                OldPath     = "development/tools/cmd"
-                NewPath     = "development/tools/cmd-tools"
+                OldPath     = "development/tools/cmd-tools"
+                NewPath     = "development/tools/cmd-tools-tools"
                 Description = "Renommage du dossier cmd en cmd-tools"
             }, @{
-                OldPath     = "development/tools/augment"
-                NewPath     = "development/tools/augment-tools"
+                OldPath     = "development/tools/augment-tools"
+                NewPath     = "development/tools/augment-tools-tools"
                 Description = "Renommage du dossier augment en augment-tools"
             }, @{
-                OldPath     = "development/tools/json"
-                NewPath     = "development/tools/json-tools"
+                OldPath     = "development/tools/json-tools"
+                NewPath     = "development/tools/json-tools-tools"
                 Description = "Renommage du dossier json en json-tools"
             }, @{
-                OldPath     = "development/tools/utilities"
-                NewPath     = "development/tools/utilities-tools"
+                OldPath     = "development/tools/utilities-tools"
+                NewPath     = "development/tools/utilities-tools-tools"
                 Description = "Renommage du dossier utilities en utilities-tools"
             }, @{
-                OldPath     = "development/tools/cache"
-                NewPath     = "development/tools/cache-tools"
+                OldPath     = "development/tools/cache-tools"
+                NewPath     = "development/tools/cache-tools-tools"
                 Description = "Renommage du dossier cache en cache-tools"
             }
         )
@@ -127,7 +127,6 @@ function Update-ToolsReferences {
     process {
         try {
             # Obtenir tous les fichiers texte du projet
-            $excludedPaths = @("*\node_modules\*", "*\.git\*", "*\dist\*", "*\cache\*", "*\logs\*", "*\temp\*", "*\tmp\*")
             $textFiles = @()
 
             # Dossiers à exclure
@@ -226,4 +225,5 @@ Récapitulatif des modifications :" -ForegroundColor Yellow
 
 # Appel de la fonction principale
 Update-ToolsReferences
+
 
