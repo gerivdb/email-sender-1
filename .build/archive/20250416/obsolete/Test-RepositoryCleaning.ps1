@@ -20,7 +20,7 @@ if (-not (Get-Module -Name Pester)) {
 }
 
 # Chemin du script à tester
-$scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\scripts\maintenance\repo\Clean-Repository.ps1"
+$scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\maintenance\repo\Clean-Repository.ps1"
 
 # Vérifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {

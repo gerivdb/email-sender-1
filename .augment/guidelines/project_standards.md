@@ -54,7 +54,7 @@ Ce document définit les standards et bonnes pratiques générales pour tout le 
 
 - Documenter l'intention et le "pourquoi", pas seulement le "comment"
 - Maintenir des README à jour pour chaque module
-- Utiliser des commentaires de documentation (docstrings) pour les fonctions/méthodes
+- Utiliser des commentaires de documentation (projet/documentationtrings) pour les fonctions/méthodes
 - Documenter les décisions d'architecture importantes (ADRs)
 
 ## Tests

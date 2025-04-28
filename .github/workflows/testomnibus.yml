@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'scripts/utils/ProactiveOptimization/**'
-      - 'scripts/utils/TestOmnibus/**'
+      - 'development/scripts/utils/ProactiveOptimization/**'
+      - 'development/scripts/utils/TestOmnibus/**'
   pull_request:
     branches: [ main, master ]
     paths:
-      - 'scripts/utils/ProactiveOptimization/**'
-      - 'scripts/utils/TestOmnibus/**'
+      - 'development/scripts/utils/ProactiveOptimization/**'
+      - 'development/scripts/utils/TestOmnibus/**'
   schedule:
     # Exécuter tous les jours à minuit
     - cron: '0 0 * * *'
@@ -38,7 +38,7 @@ jobs:
       - name: Run TestOmnibus
         shell: pwsh
         run: |
-          cd scripts/utils/TestOmnibus
+          cd development/scripts/utils/TestOmnibus
           $results = ./Run-ProactiveOptimizationTests.ps1
           
           # Afficher les résultats
@@ -55,7 +55,7 @@ jobs:
       - name: Generate Code Coverage Report
         shell: pwsh
         run: |
-          cd scripts/utils/TestOmnibus
+          cd development/scripts/utils/TestOmnibus
           $coveragePath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\Results\coverage.xml"
           if (Test-Path -Path $coveragePath) {
             ./Generate-CodeCoverageReport.ps1 -CoveragePath $coveragePath -OutputPath "./coverage_report.html"
@@ -70,7 +70,7 @@ jobs:
           path: |
             ${{ env.TEMP }}/TestOmnibus/Results/results.xml
             ${{ env.TEMP }}/TestOmnibus/Results/report.html
-            scripts/utils/TestOmnibus/coverage_report.html
+            development/scripts/utils/TestOmnibus/coverage_report.html
       
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2

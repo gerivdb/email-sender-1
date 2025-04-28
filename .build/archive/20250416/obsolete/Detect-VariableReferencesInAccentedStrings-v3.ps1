@@ -18,7 +18,7 @@
     Par defaut : "Text".
 
 .EXAMPLE
-    .\Detect-VariableReferencesInAccentedStrings-v3.ps1 -Path .\scripts -Recurse
+    .\Detect-VariableReferencesInAccentedStrings-v3.ps1 -Path .\development\scripts -Recurse
 
 .NOTES
     Auteur: Systeme d'analyse d'erreurs

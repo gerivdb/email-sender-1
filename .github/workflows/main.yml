@@ -38,7 +38,7 @@ jobs:
     - name: Analyser le code avec PSScriptAnalyzer
       run: |
         try {
-          $results = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Error
+          $results = Invoke-ScriptAnalyzer -Path ./development/scripts -Recurse -Severity Error
           if ($results) {
             $results | Format-Table -AutoSize
             Write-Error "Des erreurs ont été détectées par PSScriptAnalyzer"
@@ -60,7 +60,7 @@ jobs:
           }
           
           # Exécuter TestOmnibus
-          .\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath '.\scripts\utils\ProactiveOptimization\tests' -UseAdvancedOptimization
+          .\development\scripts\utils\TestOmnibus\Invoke-EnhancedTestOmnibus.ps1 -TestPath '.\development\scripts\utils\ProactiveOptimization\tests' -UseAdvancedOptimization
           
           # Vérifier si des erreurs se sont produites
           if ($LASTEXITCODE -ne 0) {
@@ -79,8 +79,8 @@ jobs:
       with:
         name: test-results
         path: |
-          scripts/utils/TestOmnibus/Results/**
-          scripts/utils/ProactiveOptimization/tests/results/**
+          development/scripts/utils/TestOmnibus/Results/**
+          development/scripts/utils/ProactiveOptimization/development/testing/tests/results/**
         if-no-files-found: warn  # Ne pas échouer si aucun fichier n'est trouvé
       
     # Préparation pour l'utilisation future de Node.js

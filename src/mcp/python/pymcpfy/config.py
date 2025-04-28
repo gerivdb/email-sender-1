@@ -8,11 +8,11 @@ import yaml
 @dataclass
 class TransportConfig:
     """Configuration for MCP transport."""
-    type: str = "websocket"  # "websocket" or "http"
-    host: str = "localhost"
+    type: str = "websocket"
+    host: str = "0.0.0.0"
     port: int = 8765
-    ping_interval: int = 20
-    ping_timeout: int = 20
+    ping_interval: int = 30
+    ping_timeout: int = 30
 
 @dataclass
 class MCPConfig:
@@ -20,7 +20,11 @@ class MCPConfig:
     transport: TransportConfig = TransportConfig()
     backend_url: Optional[str] = None
     debug: bool = False
-    cors_origins: list[str] = None
+    cors_origins: list[str] = []
+
+    def __post_init__(self):
+        if self.cors_origins is None:
+            self.cors_origins = []
 
     @classmethod
     def from_file(cls, path: str) -> "MCPConfig":

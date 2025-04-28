@@ -1,4 +1,4 @@
-﻿# Script pour organiser automatiquement les dossiers contenant trop de fichiers
+# Script pour organiser automatiquement les dossiers contenant trop de fichiers
 # Ce script vÃ©rifie si un dossier contient trop de fichiers et les organise en sous-dossiers
 
 
@@ -236,7 +236,7 @@ function Organize-AllFolders {
     $foldersToCheck = @(
         "scripts",
         "workflows",
-        "docs",
+        "projet/documentation",
         "logs",
         "config",
         "mcp"
@@ -250,7 +250,7 @@ function Organize-AllFolders {
             $method = switch ($folder) {
                 "scripts" { "type" }
                 "workflows" { "type" }
-                "docs" { "alpha" }
+                "projet/documentation" { "alpha" }
                 "logs" { "date" }
                 "config" { "type" }
                 "mcp" { "type" }
@@ -265,13 +265,13 @@ function Organize-AllFolders {
 # Fonction pour organiser les documents
 function Organize-Documents {
     # Verifier si le script d'organisation des documents existe
-    $organizeDocsScript = "..\..\D"
+    $organizeprojet/documentationScript = "..\..\D"
 
-    if (Test-Path -Path $organizeDocsScript) {
+    if (Test-Path -Path $organizeprojet/documentationScript) {
         Write-Host "Organisation des documents..." -ForegroundColor Cyan
-        & powershell -File $organizeDocsScript
+        & powershell -File $organizeprojet/documentationScript
     } else {
-        Write-Host "Le script d'organisation des documents n'existe pas: $organizeDocsScript" -ForegroundColor Red
+        Write-Host "Le script d'organisation des documents n'existe pas: $organizeprojet/documentationScript" -ForegroundColor Red
     }
 }
 
@@ -286,8 +286,8 @@ if ($FolderPath -eq ".") {
     # Mode spÃ©cifique: organiser un dossier particulier
     Organize-Folder -FolderPath $FolderPath -MaxFilesPerFolder $MaxFilesPerFolder -OrganizationMethod $OrganizationMethod
 
-    # Si le dossier est docs, organiser les documents
-    if ($FolderPath -eq "docs" -or $FolderPath -like "*\docs*") {
+    # Si le dossier est projet/documentation, organiser les documents
+    if ($FolderPath -eq "projet/documentation" -or $FolderPath -like "*\projet/documentation*") {
         Organize-Documents
     }
 }

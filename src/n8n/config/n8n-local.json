@@ -48,5 +48,6 @@
   "host": "localhost",
   "port": 5678,
   "protocol": "http",
-  "listen_address": "0.0.0.0"
+  "listen_address": "127.0.0.1"
 }
+

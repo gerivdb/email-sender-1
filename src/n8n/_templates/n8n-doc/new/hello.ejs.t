@@ -1,5 +1,5 @@
 ---
-to: n8n/docs/<%= category %>/<%= name %>.md
+to: ../../../../docs/<%= category %>/<%= name %>.md
 ---
 # <%= name.charAt(0).toUpperCase() + name.slice(1) %>
 

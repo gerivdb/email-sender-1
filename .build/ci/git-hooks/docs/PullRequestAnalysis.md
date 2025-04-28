@@ -16,7 +16,7 @@ Le système d'analyse des pull requests offre les fonctionnalités suivantes :
 
 Le système d'analyse des pull requests est composé des éléments suivants :
 
-1. **Script Python d'intégration avec l'API GitHub** (`scripts/journal/web/pr_integration.py`)
+1. **Script Python d'intégration avec l'API GitHub** (`development/scripts/journal/web/pr_integration.py`)
    - Récupère les pull requests et les fichiers modifiés
    - Analyse les fichiers PowerShell pour détecter les erreurs potentielles
    - Génère des rapports d'analyse

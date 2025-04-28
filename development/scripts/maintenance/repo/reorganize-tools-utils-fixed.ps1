@@ -297,31 +297,32 @@ Veuillez utiliser les outils dans le dossier `development/tools` à la place.
 
 Les fichiers de ce dossier ont été migrés vers les sous-dossiers suivants dans `development/tools` :
 
-- **analysis/** -> `development/tools/analysis/`
-- **automation/** -> `development/tools/utilities/`
-- **cache/** -> `development/tools/cache/`
-- **CompatibleCode/** -> `development/tools/utilities/`
-- **Converters/** -> `development/tools/converters/`
-- **Detectors/** -> `development/tools/detectors/`
-- **Docs/** -> `development/tools/documentation/`
-- **ErrorHandling/** -> `development/tools/error-handling/`
-- **Examples/** -> `development/tools/examples/`
-- **git/** -> `development/tools/git/`
-- **Integrations/** -> `development/tools/integrations/`
-- **json/** -> `development/tools/json/`
-- **markdown/** -> `development/tools/markdown/`
-- **ProactiveOptimization/** -> `development/tools/optimization/`
-- **PSCacheManager/** -> `development/tools/cache/`
-- **roadmap/** -> `development/tools/roadmap/`
-- **samples/** -> `development/tools/examples/`
-- **TestOmnibus/** -> `development/tools/testing/`
-- **TestOmnibusOptimizer/** -> `development/tools/testing/`
-- **Tests/** -> `development/tools/testing/`
-- **UsageMonitor/** -> `development/tools/utilities/`
-- **utils/** -> `development/tools/utilities/`
+- **analysis/** -> `development/tools/analysis-tools/`
+- **automation/** -> `development/tools/utilities-tools/`
+- **cache/** -> `development/tools/cache-tools/`
+- **CompatibleCode/** -> `development/tools/utilities-tools/`
+- **Converters/** -> `development/tools/converters-tools/`
+- **Detectors/** -> `development/tools/detectors-tools/`
+- **Docs/** -> `development/tools/documentation-tools/`
+- **ErrorHandling/** -> `development/tools/error-handling-tools/`
+- **Examples/** -> `development/tools/examples-tools/`
+- **git/** -> `development/tools/git-tools/`
+- **Integrations/** -> `development/tools/integrations-tools/`
+- **json/** -> `development/tools/json-tools/`
+- **markdown/** -> `development/tools/markdown-tools/`
+- **ProactiveOptimization/** -> `development/tools/optimization-tools/`
+- **PSCacheManager/** -> `development/tools/cache-tools/`
+- **roadmap/** -> `development/tools/roadmap-tools/`
+- **samples/** -> `development/tools/examples-tools/`
+- **TestOmnibus/** -> `development/tools/testing-tools/`
+- **TestOmnibusOptimizer/** -> `development/tools/testing-tools/`
+- **Tests/** -> `development/tools/testing-tools/`
+- **UsageMonitor/** -> `development/tools/utilities-tools/`
+- **utils/** -> `development/tools/utilities-tools/`
 "@
 
 Set-Content -Path $utilsReadmePath -Value $utilsReadmeContent -Force -WhatIf
 Write-Host "  Fichier README.md créé : $utilsReadmePath" -ForegroundColor Green
 
 Write-Host "`nRéorganisation des dossiers terminée !" -ForegroundColor Cyan
+

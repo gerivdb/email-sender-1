@@ -1,1 +1,0 @@
-﻿Write-Host 'Exécution des tests fonctionnels du cache prédictif' -ForegroundColor Cyan; Write-Host ''; Write-Host 'Test de base :' -ForegroundColor Yellow; ./Basic-Test.ps1; Write-Host ''; Write-Host 'Test complet :' -ForegroundColor Yellow; ./Complete-Test.ps1

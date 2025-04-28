@@ -1,4 +1,4 @@
-﻿# Script pour mettre à jour les chemins du projet
+# Script pour mettre à jour les chemins du projet
 # Ce script remplace les anciens chemins par les nouveaux chemins dans tous les fichiers pertinents
 
 Write-Host "=== Mise à jour des chemins du projet ===" -ForegroundColor Cyan
@@ -17,7 +17,7 @@ $oldPathVariants = @(
     
     # Variante avec espaces et accents
     "D:\\DO\\WEB\\N8N tests\\scripts json à tester\\EMAIL SENDER 1",
-    "D:/DO/WEB/N8N tests/scripts json à tester/EMAIL SENDER 1",
+    "D:/DO/WEB/N8N development/testing/tests/scripts json à tester/EMAIL SENDER 1",
     "D:\DO\WEB\N8N tests\scripts json à tester\EMAIL SENDER 1"
 )
 

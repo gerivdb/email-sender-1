@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'scripts/parallel-hybrid/performance/**'
+      - 'development/scripts/parallel-hybrid/performance/**'
       - '.github/workflows/run-tests.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'scripts/parallel-hybrid/performance/**'
+      - 'development/scripts/parallel-hybrid/performance/**'
       - '.github/workflows/run-tests.yml'
   workflow_dispatch:
 
@@ -28,7 +28,7 @@ jobs:
     - name: Run Tests
       shell: pwsh
       run: |
-        $testResults = & "./scripts/parallel-hybrid/performance/tests/Run-CITests.ps1" -ThresholdPercent 60
+        $testResults = & "./development/development/scripts/parallel-hybrid/performance/development/testing/tests/Run-CITests.ps1" -ThresholdPercent 60
         
         # Afficher les résultats
         Write-Host "Tests exécutés : $($testResults.TotalCount)"
@@ -46,16 +46,16 @@ jobs:
       if: always()
       with:
         name: test-results
-        path: scripts/parallel-hybrid/performance/tests/TestResults/
+        path: development/scripts/parallel-hybrid/performance/development/testing/tests/TestResults/
     
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
-        nunit_files: scripts/parallel-hybrid/performance/tests/TestResults/TestResults.xml
+        nunit_files: development/scripts/parallel-hybrid/performance/development/testing/tests/TestResults/TestResults.xml
     
     - name: Publish Code Coverage
       uses: codecov/codecov-action@v3
       with:
-        files: scripts/parallel-hybrid/performance/tests/TestResults/coverage.xml
+        files: development/scripts/parallel-hybrid/performance/development/testing/tests/TestResults/coverage.xml
         fail_ci_if_error: true

@@ -1,4 +1,0 @@
-﻿This is a plain text file.
-It contains multiple lines.
-No special formatting.
-Just plain text.

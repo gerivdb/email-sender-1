@@ -10,17 +10,17 @@ $mtimeCachePath = "c:\Users\user\AppData\Roaming\Code\User\workspaceStorage\ea77
 $oldPathVariants = @(
     # Variante avec espaces et underscores
     "D:\\DO\\WEB\\N8N_tests\\scripts_ json_a_ tester\\EMAIL_SENDER_1",
-    "D:/DO/WEB/N8N_tests/scripts_ json_a_ tester/EMAIL_SENDER_1",
+    "D:/DO/WEB/N8N_development/testing/tests/scripts_ json_a_ tester/EMAIL_SENDER_1",
     "D:\DO\WEB\N8N_tests\scripts_ json_a_ tester\EMAIL_SENDER_1",
     
     # Variante sans espaces
     "D:\\DO\\WEB\\N8N_tests\\scripts_json_a_tester\\EMAIL_SENDER_1",
-    "D:/DO/WEB/N8N_tests/scripts_json_a_tester/EMAIL_SENDER_1",
+    "D:/DO/WEB/N8N_development/testing/tests/scripts_json_a_tester/EMAIL_SENDER_1",
     "D:\DO\WEB\N8N_tests\scripts_json_a_tester\EMAIL_SENDER_1",
     
     # Variante avec espaces et accents
     "D:\\DO\\WEB\\N8N tests\\scripts json a tester\\EMAIL SENDER 1",
-    "D:/DO/WEB/N8N tests/scripts json a tester/EMAIL SENDER 1",
+    "D:/DO/WEB/N8N development/testing/tests/scripts json a tester/EMAIL SENDER 1",
     "D:\DO\WEB\N8N tests\scripts json a tester\EMAIL SENDER 1"
 )
 

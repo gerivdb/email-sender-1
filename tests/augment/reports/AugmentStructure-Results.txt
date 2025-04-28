@@ -1,6 +1,0 @@
-Rapport des tests de structure Augment - 2025-04-14 17:53:52
-
-
-Tests exécutés: 0
-Tests réussis: 16
-Tests échoués: 0

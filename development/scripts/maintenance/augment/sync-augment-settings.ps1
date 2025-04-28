@@ -4,12 +4,12 @@
 
 .DESCRIPTION
     Ce script synchronise le fichier de configuration Augment entre la racine du projet
-    et le dossier development/tools/augment.
+    et le dossier development/tools/augment-tools.
 
 .PARAMETER Direction
     Direction de la synchronisation : 'ToRoot' ou 'FromRoot'.
-    - ToRoot : Copie le fichier de development/tools/augment vers la racine
-    - FromRoot : Copie le fichier de la racine vers development/tools/augment
+    - ToRoot : Copie le fichier de development/tools/augment-tools vers la racine
+    - FromRoot : Copie le fichier de la racine vers development/tools/augment-tools
 
 .EXAMPLE
     .\sync-augment-settings.ps1 -Direction ToRoot
@@ -60,7 +60,7 @@ function Sync-AugmentSettings {
                     $content = Get-Content -Path $developmentFile -Raw
                     
                     # Ajouter un commentaire indiquant qu'il s'agit d'une copie
-                    $content = $content -replace '{\s*', "{\n    // ATTENTION: Ce fichier est une copie de development/tools/augment/augment-optimized-settings.json`n    // Veuillez modifier le fichier original plutôt que cette copie`n    `n    "
+                    $content = $content -replace '{\s*', "{\n    // ATTENTION: Ce fichier est une copie de development/tools/augment-tools/augment-optimized-settings.json`n    // Veuillez modifier le fichier original plutôt que cette copie`n    `n    "
                     
                     Set-Content -Path $rootFile -Value $content -Force
                     Write-Host "Le fichier à la racine a été mis à jour depuis le fichier dans development." -ForegroundColor Green
@@ -94,3 +94,4 @@ function Sync-AugmentSettings {
 
 # Appel de la fonction principale
 Sync-AugmentSettings -Direction $Direction
+

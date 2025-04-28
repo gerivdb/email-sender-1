@@ -1,9 +1,0 @@
-﻿{
-    "FilePath":  "test.json",
-    "DetectedFormat":  "JSON",
-    "Confidence":  90,
-    "AllFormats":  {
-                       "JSON":  90,
-                       "TEXT":  50
-                   }
-}

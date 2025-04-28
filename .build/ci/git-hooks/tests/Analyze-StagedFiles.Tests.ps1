@@ -45,7 +45,7 @@ function git {
         return @(
             "git-hooks/test-files/test-script-with-errors.ps1",
             "git-hooks/test-files/test-script-without-errors.ps1",
-            "scripts/maintenance/error-learning/ErrorPatternAnalyzer.psm1"
+            "development/scripts/maintenance/error-learning/ErrorPatternAnalyzer.psm1"
         )
     }
 }

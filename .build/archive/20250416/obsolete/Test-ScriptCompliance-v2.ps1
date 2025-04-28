@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse la conformitÃ© des scripts aux standards de codage dÃ©finis.
 .DESCRIPTION
@@ -225,11 +225,11 @@ function Test-ScriptHeader {
             }
         }
         "Python" {
-            # VÃ©rifier la prÃ©sence d'un docstring
+            # VÃ©rifier la prÃ©sence d'un projet/documentationtring
             if (-not ($Content -match '"""[\s\S]*?"""' -or $Content -match "'''[\s\S]*?'''")) {
                 $Issues += [PSCustomObject]@{
                     Rule = "Header"
-                    Description = "Le script ne contient pas de docstring d'en-tÃªte"
+                    Description = "Le script ne contient pas de projet/documentationtring d'en-tÃªte"
                     Severity = "High"
                 }
             } else {

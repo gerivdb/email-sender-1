@@ -1,3 +1,0 @@
-@echo off
-echo Démarrage de la surveillance des fichiers...
-powershell -ExecutionPolicy Bypass -File "%~dp0scripts\maintenance\watch-and-organize.ps1"

@@ -1,3 +1,0 @@
-﻿Ceci est un fichier texte simple.
-Il contient plusieurs lignes de texte.
-Ce fichier est utilisÃ© pour tester la dÃ©tection de format.

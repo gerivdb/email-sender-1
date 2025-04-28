@@ -14,7 +14,7 @@
 
 BeforeAll {
     # Chemin du script à tester
-    $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\scripts\maintenance\repo\Clean-Repository.ps1"
+    $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\maintenance\repo\Clean-Repository.ps1"
 
     # Vérifier que le script existe
     if (-not (Test-Path -Path $scriptPath)) {
@@ -30,7 +30,7 @@ BeforeAll {
         "scripts",
         "scripts\old",
         "scripts\utils",
-        "docs",
+        "projet/documentation",
         "archive"
     )
 
@@ -57,7 +57,7 @@ BeforeAll {
             Content = "# Utility script v2`nfunction Get-Utility { return 'Utility v2' }"
         },
         @{
-            Path    = Join-Path -Path $testDir -ChildPath "docs\README.md"
+            Path    = Join-Path -Path $testDir -ChildPath "projet/documentation\README.md"
             Content = "# Test Repository`nThis is a test repository."
         }
     )

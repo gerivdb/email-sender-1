@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DÃ©tecte les rÃ©fÃ©rences de variables dans les chaÃ®nes accentuÃ©es qui peuvent causer des problÃ¨mes.
 
@@ -18,7 +18,7 @@
     Par dÃ©faut : "Text".
 
 .EXAMPLE
-    .\Detect-VariableReferencesInAccentedStrings-v2.ps1 -Path .\scripts -Recurse
+    .\Detect-VariableReferencesInAccentedStrings-v2.ps1 -Path .\development\scripts -Recurse
 
 .NOTES
     Auteur: SystÃ¨me d'analyse d'erreurs

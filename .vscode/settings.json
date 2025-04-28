@@ -24,7 +24,7 @@
         "supergateway",
         "start",
         "--config",
-        "D:\\\\DO\\\\WEB\\\\N8N_tests\\\\PROJETS\\\\EMAIL_SENDER_1\\\\src\\\\mcp\\\\config\\\\gateway.yaml",
+        "D:\\\\DO\\\\WEB\\\\N8N_tests\\\\PROJETS\\\\EMAIL_SENDER_1\\\\src\\\\mcp\\\\projet\\config\\\\gateway.yaml",
         "mcp-stdio"
       ]
     }
@@ -128,5 +128,9 @@
     "**/cache/**",
     "**/temp/**",
     "**/tmp/**"
-  ]
+  ],
+  "augment.browser.type": "chrome",
+  "augment.browser.userProfile": "gerivonderbitsh@gmail.com",
+  "augment.browser.forceSingle": true,
+  "augment.browser.allowFallback": false
 }

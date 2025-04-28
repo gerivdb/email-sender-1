@@ -239,8 +239,8 @@ $directoryMappings = @{
     "assets"                     = "assets"
     "logs"                       = ".build/logs"
     "cache"                      = ".build/cache"
-    "dashboards"                 = "development/tools/dashboards"
-    "reports"                    = "development/tools/reports"
+    "dashboards"                 = "development/tools/dashboards-tools"
+    "reports"                    = "development/tools/reports-tools"
     "tools"                      = "tools"
     "mcp"                        = "src/mcp"
     "data"                       = "projet/assets/data"
@@ -251,10 +251,10 @@ $directoryMappings = @{
     "ProjectManagement"          = "docs/project-management"
     "ErrorManagement"            = "src/error-management"
     "FormatSupport"              = "src/format-support"
-    "Insights"                   = "development/tools/insights"
+    "Insights"                   = "development/tools/insights-tools"
     "output"                     = ".build/output"
-    "SWE-bench"                  = "development/tools/swe-bench"
-    "cmd"                        = "development/tools/cmd"
+    "SWE-bench"                  = "development/tools/swe-bench-tools"
+    "cmd"                        = "development/tools/cmd-tools"
     "md"                         = "docs/md"
     "archive"                    = ".build/archive"
 }
@@ -714,6 +714,7 @@ if ($LogFile) {
 # Avertissement final
 Write-Log "IMPORTANT : Ce script a copiÃ© les fichiers vers la nouvelle structure, mais n'a pas supprimÃ© les fichiers originaux." -Color Yellow
 Write-Log "Une fois que vous avez vÃ©rifiÃ© que tout fonctionne correctement, vous pouvez exÃ©cuter un script de nettoyage pour supprimer les fichiers originaux." -Color Yellow
+
 
 
 

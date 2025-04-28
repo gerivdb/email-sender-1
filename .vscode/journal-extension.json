@@ -1,8 +1,8 @@
 {
   "journal": {
-    "entriesDir": "docs/journal_de_bord/entries",
-    "tagsDir": "docs/journal_de_bord/tags",
-    "indexFile": "docs/journal_de_bord/index.md",
+    "entriesDir": "projet/roadmaps/journal/entries",
+    "tagsDir": "projet/roadmaps/journal/tags",
+    "indexFile": "projet/roadmaps/journal/index.md",
     "templates": {
       "daily": {
         "title": "Journal quotidien - ${date}",

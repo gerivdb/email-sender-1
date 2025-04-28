@@ -237,8 +237,8 @@ $directoryMappings = @{
     "assets"                     = "assets"
     "logs"                       = ".build/logs"
     "cache"                      = ".build/cache"
-    "dashboards"                 = "development/tools/dashboards"
-    "reports"                    = "development/tools/reports"
+    "dashboards"                 = "development/tools/dashboards-tools"
+    "reports"                    = "development/tools/reports-tools"
     "tools"                      = "tools"
     "mcp"                        = "src/mcp"
     "data"                       = "projet/assets/data"
@@ -249,10 +249,10 @@ $directoryMappings = @{
     "ProjectManagement"          = "docs/project-management"
     "ErrorManagement"            = "src/error-management"
     "FormatSupport"              = "src/format-support"
-    "Insights"                   = "development/tools/insights"
+    "Insights"                   = "development/tools/insights-tools"
     "output"                     = ".build/output"
-    "SWE-bench"                  = "development/tools/swe-bench"
-    "cmd"                        = "development/tools/cmd"
+    "SWE-bench"                  = "development/tools/swe-bench-tools"
+    "cmd"                        = "development/tools/cmd-tools"
     "md"                         = "docs/md"
     "archive"                    = ".build/archive"
 }
@@ -385,6 +385,7 @@ if ($LogFile) {
     
     Write-Host "Log de nettoyage enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
 }
+
 
 
 

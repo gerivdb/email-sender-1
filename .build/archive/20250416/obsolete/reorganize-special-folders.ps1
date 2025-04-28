@@ -1,4 +1,4 @@
-﻿
+
 
 
 # Configuration de la gestion d'erreurs
@@ -193,8 +193,8 @@ if (-not (Test-Path $cmdFolder)) {
 
 # Fichiers .cmd Ã  conserver Ã  la racine
 $keepCmdFiles = @(
-    "commit-docs.cmd",
-    "commit-final-docs.cmd"
+    "commit-projet/documentation.cmd",
+    "commit-final-projet/documentation.cmd"
 )
 
 # Trouver tous les fichiers .cmd Ã  la racine qui ne sont pas dans la liste Ã  conserver
@@ -233,9 +233,9 @@ Write-Host "`n4. Mise Ã  jour des rÃ¨gles d'organisation automatique..." -Fo
 
 # Fichiers Ã  mettre Ã  jour
 $autoOrganizeFiles = @(
-    "scripts/maintenance/auto-organize.ps1",
-    "scripts/maintenance/auto-organize-silent.ps1",
-    "scripts/maintenance/watch-and-organize.ps1"
+    "development/scripts/maintenance/auto-organize.ps1",
+    "development/scripts/maintenance/auto-organize-silent.ps1",
+    "development/scripts/maintenance/watch-and-organize.ps1"
 )
 
 foreach ($file in $autoOrganizeFiles) {
@@ -246,7 +246,7 @@ foreach ($file in $autoOrganizeFiles) {
         $content = Get-Content $file -Raw
         
         # Mettre Ã  jour les rÃ¨gles pour les fichiers .md
-        $content = $content -replace '(@\("GUIDE_\*.md", "docs/guides", "Guides d''utilisation"\))', '$1,
+        $content = $content -replace '(@\("GUIDE_\*.md", "projet/guides", "Guides d''utilisation"\))', '$1,
     @("*.md", "md", "Fichiers Markdown (sauf standards GitHub)")'
         
         # Mettre Ã  jour les rÃ¨gles pour les fichiers .cmd
@@ -267,8 +267,8 @@ foreach ($file in $autoOrganizeFiles) {
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",
     "JOURNAL_DE_BORD.md",
-    "commit-docs.cmd",
-    "commit-final-docs.cmd"
+    "commit-projet/documentation.cmd",
+    "commit-final-projet/documentation.cmd"
 $3'
         
         # Ã‰crire le contenu mis Ã  jour

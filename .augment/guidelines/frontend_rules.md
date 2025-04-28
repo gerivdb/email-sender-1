@@ -56,5 +56,5 @@ component/
 ## Ressources
 
 - [Guide de style Airbnb pour React](https://github.com/airbnb/javascript/tree/master/react)
-- [Documentation React](https://reactjs.org/docs/getting-started.html)
-- [MDN Web Docs](https://developer.mozilla.org/fr/)
+- [Documentation React](https://reactjs.org/projet/documentation/getting-started.html)
+- [MDN Web projet/documentation](https://developer.mozilla.org/fr/)

@@ -100,7 +100,7 @@ Tests et validation
 
 ### utils
 
-Utilitaires divers (déprécié, utiliser `development/tools/utilities` à la place)
+Utilitaires divers (déprécié, utiliser `development/tools/utilities-tools` à la place)
 
 - **automation**: Automatisation
 - **git**: Utilitaires Git
@@ -143,3 +143,4 @@ Les scripts de ce projet suivent les principes suivants:
 - **DRY** (Don't Repeat Yourself): Évite la duplication de code
 - **KISS** (Keep It Simple, Stupid): Privilégie les solutions simples et compréhensibles
 - **Clean Code**: Code lisible, bien commenté et facile à maintenir
+

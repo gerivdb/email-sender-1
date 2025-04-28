@@ -98,4 +98,4 @@ git commit --no-verify -m "Message de commit"
 
 ## Dépendances
 
-Les hooks dépendent du module `ErrorPatternAnalyzer` qui doit être présent dans le répertoire `scripts/maintenance/error-learning` du dépôt.
+Les hooks dépendent du module `ErrorPatternAnalyzer` qui doit être présent dans le répertoire `development/scripts/maintenance/error-learning` du dépôt.

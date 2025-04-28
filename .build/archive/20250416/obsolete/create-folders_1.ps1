@@ -1,4 +1,4 @@
-﻿
+
 
 
 # Configuration de la gestion d'erreurs
@@ -53,13 +53,13 @@ $folders = @(
     "src/mcp/batch",
     "src/mcp/config",
     "scripts",
-    "scripts/setup",
-    "scripts/maintenance",
+    "development/scripts/setup",
+    "development/scripts/maintenance",
     "config",
     "logs",
-    "docs",
-    "docs/guides",
-    "docs/api",
+    "projet/documentation",
+    "projet/guides",
+    "development/api",
     "tests",
     "tools",
     "assets"

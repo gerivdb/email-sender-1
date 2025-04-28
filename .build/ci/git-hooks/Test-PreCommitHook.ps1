@@ -7,7 +7,7 @@
 .PARAMETER FilePath
     Chemin du fichier PowerShell à tester.
 .EXAMPLE
-    .\Test-PreCommitHook.ps1 -FilePath ".\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
+    .\Test-PreCommitHook.ps1 -FilePath ".\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 .NOTES
     Auteur: Augment Code
     Date: 14/04/2025

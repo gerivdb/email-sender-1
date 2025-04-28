@@ -1,0 +1,10 @@
+{
+  "browser": {
+    "type": "chrome",
+    "userDataDir": "C:\\Users\\user\\AppData\\Local\\Google\\Chrome\\User Data",
+    "profile": "gerivonderbitsh@gmail.com",
+    "binary": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "fallback": false
+  }
+}
+

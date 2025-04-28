@@ -41,8 +41,8 @@ function Update-StructureReferences {
                 Description = "Fusion des dossiers de templates"
             },
             @{
-                OldPath     = "development/tools/analysis"
-                NewPath     = "development/tools/analysis"
+                OldPath     = "development/tools/analysis-tools"
+                NewPath     = "development/tools/analysis-tools"
                 Description = "Fusion des dossiers d'analyse"
             }
         )
@@ -147,4 +147,5 @@ function Update-StructureReferences {
 
 # Appel de la fonction principale
 Update-StructureReferences
+
 

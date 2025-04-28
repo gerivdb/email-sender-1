@@ -1,7 +1,0 @@
-﻿{
-  "DefaultEncoding": "UTF8",
-  "MaxRetryCount": 3,
-  "LogLevel": "Info",
-  "RetryDelaySeconds": 1,
-  "LogPath": "C:\\Users\\user\\AppData\\Local\\Temp\\RoadmapParser.log"
-}

@@ -1,4 +1,7 @@
 {
+    // ATTENTION: Ce fichier est une copie de development/tools/augment-tools/augment-optimized-settings.json
+    // Veuillez modifier le fichier original plutôt que cette copie
+    
     // Configuration MCP existante (à conserver)
     "mcpServers": {
         "filesystem": {
@@ -138,3 +141,4 @@
     "explorer.confirmDelete": true,
     "explorer.confirmDragAndDrop": false
 }
+

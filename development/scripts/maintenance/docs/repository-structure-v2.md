@@ -157,8 +157,8 @@ projet/assets/
 | projet/assets/ | projet/assets/ |
 | logs/ | .build/logs/ |
 | cache/ | .build/cache/ |
-| dashboards/ | development/tools/dashboards/ |
-| reports/ | development/tools/reports/ |
+| dashboards/ | development/tools/dashboards-tools/ |
+| reports/ | development/tools/reports-tools/ |
 | development/tools/ | development/tools/ |
 | mcp/ | src/mcp/ |
 | data/ | projet/assets/data/ |
@@ -169,10 +169,10 @@ projet/assets/
 | ProjectManagement/ | docs/project-management/ |
 | ErrorManagement/ | src/error-management/ |
 | FormatSupport/ | src/format-support/ |
-| Insights/ | development/tools/insights/ |
+| Insights/ | development/tools/insights-tools/ |
 | output/ | .build/output/ |
-| SWE-bench/ | development/tools/swe-bench/ |
-| cmd/ | development/tools/cmd/ |
+| SWE-bench/ | development/tools/swe-bench-tools/ |
+| cmd/ | development/tools/cmd-tools/ |
 | md/ | docs/md/ |
 | archive/ | .build/archive/ |
 
@@ -260,5 +260,6 @@ Les dossiers suivants sont conservÃ©s Ã  la racine du dÃ©pÃ´t :
 2. Utiliser les scripts de gÃ©nÃ©ration pour crÃ©er de nouveaux fichiers au bon emplacement.
 3. Mettre Ã  jour la documentation en cas de modification de la structure.
 4. ExÃ©cuter rÃ©guliÃ¨rement le script d'organisation pour maintenir la structure cohÃ©rente.
+
 
 

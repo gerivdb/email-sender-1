@@ -1,4 +1,8 @@
 {
+  "browser_config": {
+    "path": ".augment/browser-config.json",
+    "force_single_browser": true
+  },
   "memories": {
     "sources": [
       {
@@ -13,7 +17,7 @@
     {
       "name": "journal_de_bord",
       "type": "custom",
-      "command": "python scripts/python/journal/journal_rag_simple.py --query \"${query}\"",
+      "command": "python development/scripts/python/journal/journal_rag_simple.py --query \"${query}\"",
       "working_directory": "${workspace_root}"
     },
     {
@@ -44,7 +48,7 @@
     {
       "name": "documentation",
       "type": "file",
-      "path": "docs/**/*.md"
+      "path": "projet/documentation/**/*.md"
     }
   ],
   "exclude_patterns": [
@@ -92,3 +96,4 @@
     }
   }
 }
+

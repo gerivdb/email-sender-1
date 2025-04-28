@@ -97,7 +97,7 @@ Le dossier `development/roadmap` contient les outils et scripts pour gérer et a
 - **declarations/** - Déclarations et exemples pour la roadmap (anciennement Roadmap)
 - **parser/** - Outils d'analyse et de parsing de la roadmap (anciennement dans development/scripts/roadmap-parser)
 - **scripts/** - Scripts liés à la roadmap (anciennement dans development/scripts/roadmap)
-- **tools/** - Outils pour la roadmap (anciennement dans development/tools/roadmap)
+- **tools/** - Outils pour la roadmap (anciennement dans development/tools/roadmap-tools)
 
 Note: Les roadmaps et plans du projet ont été déplacés vers le dossier `projet/roadmaps`.
 
@@ -141,3 +141,4 @@ Le dossier `projet` contient tous les éléments liés au projet lui-même :
    - `development/scripts/maintenance/references/update-roadmap-structure-references.ps1` pour les changements de structure de la roadmap
    - `development/scripts/maintenance/references/update-roadmap-declarations-references.ps1` pour le renommage du dossier Roadmap en declarations
 5. **Documenter les changements** : Mettre à jour ce document lorsque la structure du projet change
+

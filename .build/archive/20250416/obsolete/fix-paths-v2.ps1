@@ -1,4 +1,4 @@
-﻿# Script pour corriger les chemins dans les fichiers de configuration
+# Script pour corriger les chemins dans les fichiers de configuration
 # Ce script remplace les anciens chemins par les nouveaux chemins dans les fichiers de configuration
 
 Write-Host "=== Correction des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
@@ -131,7 +131,7 @@ if ($correctedFiles.Count -eq 0) {
 
 Write-Host "`n=== Correction terminee ===" -ForegroundColor Cyan
 Write-Host "Pour vÃ©rifier que tous les chemins ont Ã©tÃ© corrigÃ©s, exÃ©cutez :"
-Write-Host "   .\scripts\maintenance\check-paths.ps1"
+Write-Host "   .\development\scripts\maintenance\check-paths.ps1"
 
 }
 catch {
