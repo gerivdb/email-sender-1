@@ -167,26 +167,151 @@
               - [x] **3.1.2.4.3.1.3.3.2.5** Créer une matrice de compétences par gestionnaire
             - [ ] **3.1.2.4.3.1.3.3.3** Évaluer le niveau d'expertise nécessaire pour chaque compétence
               - [ ] **3.1.2.4.3.1.3.3.3.1** Appliquer la matrice d'évaluation des compétences
-                - [ ] **3.1.2.4.3.1.3.3.3.1.1** Créer un script d'application de la matrice d'évaluation
-                  - [ ] **3.1.2.4.3.1.3.3.3.1.1.1** Définir la structure du script et les paramètres d'entrée
-                  - [ ] **3.1.2.4.3.1.3.3.3.1.1.2** Implémenter les fonctions d'extraction des critères d'évaluation
-                  - [ ] **3.1.2.4.3.1.3.3.3.1.1.3** Implémenter les fonctions d'application de la matrice
-                  - [ ] **3.1.2.4.3.1.3.3.3.1.1.4** Implémenter les fonctions de génération de rapport
+                - [x] **3.1.2.4.3.1.3.3.3.1.1** Créer un script d'application de la matrice d'évaluation
+                  - [x] **3.1.2.4.3.1.3.3.3.1.1.1** Définir la structure du script et les paramètres d'entrée
+                  - [x] **3.1.2.4.3.1.3.3.3.1.1.2** Implémenter les fonctions d'extraction des critères d'évaluation
+                  - [x] **3.1.2.4.3.1.3.3.3.1.1.3** Implémenter les fonctions d'application de la matrice
+                  - [x] **3.1.2.4.3.1.3.3.3.1.1.4** Implémenter les fonctions de génération de rapport
                 - [ ] **3.1.2.4.3.1.3.3.3.1.2** Extraire les critères d'évaluation du document des niveaux d'expertise
                   - [ ] **3.1.2.4.3.1.3.3.3.1.2.1** Analyser la structure du document des niveaux d'expertise
+                    - [x] **3.1.2.4.3.1.3.3.3.1.2.1.1** Identifier les sections principales du document
+                    - [x] **3.1.2.4.3.1.3.3.3.1.2.1.2** Analyser la hiérarchie des titres et sous-titres
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3** Identifier les conventions de formatage utilisées
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.1** Analyser les styles de formatage des titres
+                        - [x] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.1** Identifier les conventions de casse (CamelCase, TitleCase, etc.)
+                        - [x] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.2** Analyser l'utilisation de la ponctuation dans les titres
+                        - [x] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.3** Détecter les préfixes et suffixes récurrents
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4** Évaluer la cohérence des styles entre niveaux de titres
+                          - [x] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4.1** Comparer les conventions de casse entre niveaux
+                          - [x] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4.2** Analyser la cohérence de la ponctuation entre niveaux
+                          - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4.3** Évaluer la cohérence des préfixes et suffixes entre niveaux
+                          - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4.4** Mesurer la longueur moyenne des titres par niveau
+                          - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.1.4.5** Générer un rapport de cohérence globale des styles
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.2** Analyser les conventions de formatage du contenu
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.2.1** Identifier les styles d'emphase (gras, italique, souligné)
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.2.2** Analyser l'utilisation des listes (à puces, numérotées)
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.2.3** Détecter les conventions de citation et de code
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.2.4** Évaluer l'utilisation des tableaux et autres éléments structurés
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.3** Identifier les conventions de mise en page
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.3.1** Analyser l'espacement entre sections
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.3.2** Détecter les règles de séparation visuelle
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.3.3** Évaluer la cohérence des indentations
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.3.4** Identifier les conventions d'alignement
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.4** Analyser les conventions de métadonnées
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.4.1** Identifier les balises et annotations spéciales
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.4.2** Détecter les formats de date et d'horodatage
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.4.3** Analyser les conventions d'attribution et d'auteur
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.3.4.4** Évaluer les systèmes de versionnage utilisés
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4** Déterminer les patterns de présentation des critères
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.1** Identifier les structures récurrentes de présentation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.1.1** Analyser les modèles d'introduction des critères
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.1.2** Identifier les patterns de regroupement des critères
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.1.3** Détecter les conventions de séquençage
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.1.4** Analyser les structures de transition entre critères
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.2** Analyser les patterns linguistiques
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.2.1** Identifier les formulations verbales récurrentes
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.2.2** Analyser les structures grammaticales utilisées
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.2.3** Détecter les marqueurs linguistiques de niveau d'expertise
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.2.4** Évaluer la cohérence terminologique
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.3** Identifier les patterns de quantification
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.3.1** Analyser les échelles d'évaluation utilisées
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.3.2** Identifier les indicateurs de mesure
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.3.3** Détecter les seuils et valeurs de référence
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.3.4** Évaluer les méthodes de comparaison utilisées
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.4** Analyser les patterns de contextualisation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.4.1** Identifier les références à des situations pratiques
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.4.2** Analyser les exemples et cas d'utilisation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.4.3** Détecter les conditions et contraintes associées
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.4.4.4** Évaluer les patterns de mise en relation avec d'autres critères
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5** Documenter la structure identifiée pour référence future
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.1** Créer une documentation formelle de la structure
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.1.1** Élaborer un schéma visuel de la hiérarchie des sections
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.1.2** Documenter les conventions de formatage identifiées
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.1.3** Créer un glossaire des termes et expressions clés
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.1.4** Rédiger un guide de référence des patterns de présentation
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.2** Développer des modèles d'extraction basés sur la structure
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.2.1** Créer des templates d'extraction pour chaque type de section
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.2.2** Élaborer des expressions régulières basées sur les patterns identifiés
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.2.3** Développer des règles de transformation structurelle
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.2.4** Documenter les algorithmes d'extraction proposés
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.3** Créer une documentation technique pour les développeurs
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.3.1** Rédiger les spécifications techniques d'implémentation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.3.2** Documenter les algorithmes de parsing recommandés
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.3.3** Élaborer des exemples de code pour l'extraction
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.3.4** Créer un guide de résolution des cas particuliers
+                      - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.4** Valider et maintenir la documentation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.4.1** Vérifier l'exactitude de la documentation avec des exemples
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.4.2** Tester les modèles d'extraction sur différents documents
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.4.3** Établir un processus de mise à jour de la documentation
+                        - [ ] **3.1.2.4.3.1.3.3.3.1.2.1.5.4.4** Créer un système de versionnage de la documentation
                   - [ ] **3.1.2.4.3.1.3.3.3.1.2.2** Extraire la matrice d'évaluation des compétences
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.2.1** Développer les expressions régulières pour l'extraction des critères
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.2.2** Implémenter la fonction d'extraction des catégories de critères
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.2.3** Créer la fonction d'extraction des critères individuels
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.2.4** Développer la fonction d'extraction des poids et priorités
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.2.5** Implémenter la validation des critères extraits
                   - [ ] **3.1.2.4.3.1.3.3.3.1.2.3** Extraire les descripteurs pour chaque niveau d'expertise
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.3.1** Identifier les sections de niveaux d'expertise dans le document
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.3.2** Développer les expressions régulières pour l'extraction des niveaux
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.3.3** Implémenter la fonction d'extraction des descripteurs par niveau
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.3.4** Créer la fonction d'association des descripteurs aux critères
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.3.5** Développer la validation des descripteurs extraits
                   - [ ] **3.1.2.4.3.1.3.3.3.1.2.4** Structurer les critères dans un format exploitable
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.4.1** Concevoir la structure de données pour représenter les critères
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.4.2** Implémenter la conversion des données extraites vers cette structure
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.4.3** Développer les fonctions de sérialisation/désérialisation
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.4.4** Créer les mécanismes de validation de la structure finale
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.2.4.5** Implémenter les fonctions d'accès et de manipulation des critères
                 - [ ] **3.1.2.4.3.1.3.3.3.1.3** Appliquer les critères à chaque compétence identifiée
                   - [ ] **3.1.2.4.3.1.3.3.3.1.3.1** Développer un algorithme d'évaluation automatique
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.1.1** Concevoir la logique d'analyse textuelle des justifications
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.1.2** Implémenter la détection de correspondance exacte avec les descripteurs
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.1.3** Développer l'analyse de correspondance partielle basée sur les mots-clés
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.1.4** Créer le système de scoring avec pondération des correspondances
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.1.5** Implémenter la logique de décision pour l'attribution des niveaux
                   - [ ] **3.1.2.4.3.1.3.3.3.1.3.2** Appliquer l'algorithme à chaque compétence
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.2.1** Développer la fonction d'application par lot pour toutes les compétences
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.2.2** Implémenter le traitement parallèle pour améliorer les performances
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.2.3** Créer le mécanisme de journalisation détaillée du processus d'évaluation
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.2.4** Développer la gestion des erreurs et exceptions pendant l'évaluation
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.2.5** Implémenter le suivi de progression pour les évaluations de longue durée
                   - [ ] **3.1.2.4.3.1.3.3.3.1.3.3** Valider les résultats de l'évaluation automatique
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.3.1** Développer les tests de cohérence interne des évaluations
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.3.2** Implémenter la détection des anomalies dans les résultats
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.3.3** Créer le système de validation croisée entre critères similaires
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.3.4** Développer les mécanismes de comparaison avec des évaluations de référence
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.3.5** Implémenter la génération de rapports de validation
                   - [ ] **3.1.2.4.3.1.3.3.3.1.3.4** Ajuster les évaluations si nécessaire
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.4.1** Développer l'interface d'ajustement manuel des évaluations
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.4.2** Implémenter le système de suggestions d'ajustements automatiques
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.4.3** Créer le mécanisme de journalisation des ajustements effectués
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.4.4** Développer la fonction de recalcul des scores globaux après ajustement
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.3.4.5** Implémenter la validation des ajustements pour maintenir la cohérence
                 - [ ] **3.1.2.4.3.1.3.3.3.1.4** Générer un rapport d'évaluation des compétences
                   - [ ] **3.1.2.4.3.1.3.3.3.1.4.1** Définir la structure du rapport d'évaluation
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.1.1** Concevoir le modèle de rapport standard
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.1.2** Définir les sections obligatoires et optionnelles
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.1.3** Créer les templates pour différents niveaux de détail
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.1.4** Développer la structure de métadonnées du rapport
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.1.5** Implémenter le système de personnalisation de la structure
                   - [ ] **3.1.2.4.3.1.3.3.3.1.4.2** Créer des visualisations des résultats d'évaluation
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.2.1** Développer les graphiques de distribution des niveaux d'expertise
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.2.2** Implémenter les tableaux comparatifs par catégorie
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.2.3** Créer les visualisations de scores détaillés par critère
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.2.4** Développer les cartes thermiques de compétences
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.2.5** Implémenter les graphiques d'évolution temporelle si disponible
                   - [ ] **3.1.2.4.3.1.3.3.3.1.4.3** Générer des recommandations basées sur les résultats
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.3.1** Développer l'algorithme d'analyse des écarts de compétences
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.3.2** Implémenter le système de génération de recommandations par catégorie
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.3.3** Créer le mécanisme de priorisation des recommandations
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.3.4** Développer les suggestions de formation personnalisées
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.3.5** Implémenter l'estimation des impacts des recommandations
                   - [ ] **3.1.2.4.3.1.3.3.3.1.4.4** Produire le rapport final au format demandé
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.4.1** Développer les fonctions d'export au format Markdown
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.4.2** Implémenter l'export au format HTML avec styles
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.4.3** Créer les fonctions d'export au format JSON pour l'intégration
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.4.4** Développer l'export au format CSV pour l'analyse externe
+                    - [ ] **3.1.2.4.3.1.3.3.3.1.4.4.5** Implémenter le système de génération de rapports PDF
               - [ ] **3.1.2.4.3.1.3.3.3.2** Évaluer la complexité des tâches pour chaque compétence
                 - [ ] **3.1.2.4.3.1.3.3.3.2.1** Définir les critères de complexité des tâches
                   - [ ] **3.1.2.4.3.1.3.3.3.2.1.1** Identifier les dimensions de complexité (algorithmique, technique, fonctionnelle)
