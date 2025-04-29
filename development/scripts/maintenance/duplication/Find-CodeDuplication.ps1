@@ -9,7 +9,7 @@
 .PARAMETER Path
     Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\manager\data\duplication_report.json
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\\mode-manager\data\duplication_report.json
 .PARAMETER MinimumLineCount
     Nombre minimum de lignes pour considÃ©rer une duplication. Par dÃ©faut: 5
 .PARAMETER SimilarityThreshold
@@ -28,7 +28,7 @@
 
 param (
     [string]$Path = "scripts",
-    [string]$OutputPath = "scripts\manager\data\duplication_report.json",
+    [string]$OutputPath = "scripts\\mode-manager\data\duplication_report.json",
     [int]$MinimumLineCount = 5,
     [double]$SimilarityThreshold = 0.8,
     [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
@@ -59,7 +59,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\duplication_detection.log"
+    $LogFile = "scripts\\mode-manager\data\duplication_detection.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -467,3 +467,4 @@ function Start-DuplicationDetection {
 
 # ExÃ©cuter la fonction principale
 Start-DuplicationDetection -Path $Path -OutputPath $OutputPath -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -ScriptType $ScriptType -ShowDetails:$ShowDetails
+

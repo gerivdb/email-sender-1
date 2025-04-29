@@ -1,0 +1,32 @@
+{
+  "Enabled": true,
+  "LogLevel": "Info",
+  "LogPath": "logs/process-manager",
+  "Managers": {
+    "ModeManager": {
+      "Path": "development/managers/mode-manager/scripts/mode-manager.ps1",
+      "Enabled": true,
+      "RegisteredAt": "2025-05-02 10:00:00"
+    },
+    "RoadmapManager": {
+      "Path": "development/managers/roadmap-manager/scripts/roadmap-manager.ps1",
+      "Enabled": true,
+      "RegisteredAt": "2025-05-02 10:00:00"
+    },
+    "ScriptManager": {
+      "Path": "development/managers/script-manager/scripts/script-manager.ps1",
+      "Enabled": true,
+      "RegisteredAt": "2025-05-02 10:00:00"
+    },
+    "ErrorManager": {
+      "Path": "development/managers/error-manager/scripts/error-manager.ps1",
+      "Enabled": true,
+      "RegisteredAt": "2025-05-02 10:00:00"
+    },
+    "IntegratedManager": {
+      "Path": "development/managers/integrated-manager/scripts/integrated-manager.ps1",
+      "Enabled": true,
+      "RegisteredAt": "2025-05-02 10:00:00"
+    }
+  }
+}

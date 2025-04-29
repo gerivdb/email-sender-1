@@ -1,0 +1,449 @@
+{
+  "Criteria": {
+    "Impact": {
+      "Description": "Impact potentiel de l'amélioration sur la qualité du code et la productivité",
+      "Weight": 0.3
+    },
+    "Effort": {
+      "Description": "Effort requis pour implémenter l'amélioration (inversement proportionnel)",
+      "Weight": 0.2
+    },
+    "Urgency": {
+      "Description": "Urgence du besoin pour l'amélioration",
+      "Weight": 0.2
+    },
+    "Alignment": {
+      "Description": "Alignement avec les objectifs stratégiques",
+      "Weight": 0.15
+    },
+    "Risk": {
+      "Description": "Risque associé à l'implémentation (inversement proportionnel)",
+      "Weight": 0.15
+    }
+  },
+  "Thresholds": {
+    "HighPriorityThreshold": 8.0,
+    "MediumPriorityThreshold": 6.0
+  },
+  "Managers": [
+    {
+      "Name": "Process Manager",
+      "Category": "Infrastructure",
+      "Improvements": [
+        {
+          "Name": "Ajouter la gestion des dépendances entre processus",
+          "Description": "Implémenter un mécanisme pour gérer les dépendances entre les processus et assurer leur exécution dans le bon ordre.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [
+            "Refactoring du système de gestion des processus"
+          ],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 6,
+            "Urgency": 8,
+            "Alignment": 9,
+            "Risk": 7
+          }
+        },
+        {
+          "Name": "Améliorer la journalisation des événements",
+          "Description": "Améliorer le système de journalisation pour capturer plus de détails sur les événements et faciliter le débogage.",
+          "Type": "Amélioration",
+          "Effort": "Faible",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 3,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 2
+          }
+        },
+        {
+          "Name": "Optimiser les performances pour les systèmes à forte charge",
+          "Description": "Optimiser les performances du Process Manager pour gérer efficacement les systèmes avec un grand nombre de processus.",
+          "Type": "Optimisation",
+          "Effort": "Élevé",
+          "Impact": "Élevé",
+          "Dependencies": [
+            "Profilage des performances actuelles",
+            "Refactoring du système de gestion des processus"
+          ],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 8,
+            "Urgency": 7,
+            "Alignment": 8,
+            "Risk": 6
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Mode Manager",
+      "Category": "Configuration",
+      "Improvements": [
+        {
+          "Name": "Ajouter la possibilité de définir des modes personnalisés",
+          "Description": "Permettre aux utilisateurs de définir leurs propres modes opérationnels avec des comportements personnalisés.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 8,
+            "Effort": 6,
+            "Urgency": 7,
+            "Alignment": 9,
+            "Risk": 5
+          }
+        },
+        {
+          "Name": "Améliorer la transition entre les modes",
+          "Description": "Améliorer le mécanisme de transition entre les modes pour éviter les problèmes de cohérence.",
+          "Type": "Amélioration",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 5,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Ajouter des hooks pour les événements de changement de mode",
+          "Description": "Implémenter un système de hooks pour permettre aux autres composants de réagir aux changements de mode.",
+          "Type": "Fonctionnalité",
+          "Effort": "Faible",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 8,
+            "Effort": 4,
+            "Urgency": 7,
+            "Alignment": 8,
+            "Risk": 3
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Roadmap Manager",
+      "Category": "Planification",
+      "Improvements": [
+        {
+          "Name": "Améliorer la détection des dépendances entre tâches",
+          "Description": "Améliorer l'algorithme de détection des dépendances entre les tâches pour éviter les cycles et les incohérences.",
+          "Type": "Amélioration",
+          "Effort": "Élevé",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 8,
+            "Urgency": 8,
+            "Alignment": 9,
+            "Risk": 7
+          }
+        },
+        {
+          "Name": "Ajouter des métriques de progression",
+          "Description": "Implémenter des métriques de progression pour suivre l'avancement des tâches et générer des rapports.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 5,
+            "Urgency": 6,
+            "Alignment": 8,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Intégrer avec des systèmes de gestion de projet externes",
+          "Description": "Ajouter des connecteurs pour intégrer le Roadmap Manager avec des systèmes de gestion de projet externes comme Jira, Trello, etc.",
+          "Type": "Intégration",
+          "Effort": "Élevé",
+          "Impact": "Moyen",
+          "Dependencies": [
+            "Définition des API d'intégration"
+          ],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 8,
+            "Urgency": 5,
+            "Alignment": 7,
+            "Risk": 6
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Integrated Manager",
+      "Category": "Intégration",
+      "Improvements": [
+        {
+          "Name": "Ajouter plus d'adaptateurs pour les systèmes externes",
+          "Description": "Développer des adaptateurs supplémentaires pour intégrer avec d'autres systèmes externes.",
+          "Type": "Fonctionnalité",
+          "Effort": "Élevé",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 8,
+            "Effort": 7,
+            "Urgency": 7,
+            "Alignment": 9,
+            "Risk": 5
+          }
+        },
+        {
+          "Name": "Améliorer la gestion des erreurs d'intégration",
+          "Description": "Renforcer la gestion des erreurs lors des intégrations avec des systèmes externes pour améliorer la robustesse.",
+          "Type": "Amélioration",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 6,
+            "Urgency": 8,
+            "Alignment": 8,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Optimiser les performances des opérations d'intégration",
+          "Description": "Améliorer les performances des opérations d'intégration, notamment pour les transferts de données volumineux.",
+          "Type": "Optimisation",
+          "Effort": "Élevé",
+          "Impact": "Moyen",
+          "Dependencies": [
+            "Profilage des performances actuelles"
+          ],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 8,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 6
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Script Manager",
+      "Category": "Exécution",
+      "Improvements": [
+        {
+          "Name": "Ajouter la validation des scripts avant exécution",
+          "Description": "Implémenter un mécanisme de validation des scripts avant leur exécution pour détecter les erreurs potentielles.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 6,
+            "Urgency": 8,
+            "Alignment": 8,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Améliorer la gestion des dépendances entre scripts",
+          "Description": "Renforcer le mécanisme de gestion des dépendances entre les scripts pour assurer leur exécution dans le bon ordre.",
+          "Type": "Amélioration",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 5,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Ajouter des mécanismes de cache pour les scripts fréquemment utilisés",
+          "Description": "Implémenter un système de cache pour améliorer les performances des scripts fréquemment utilisés.",
+          "Type": "Optimisation",
+          "Effort": "Faible",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 4,
+            "Urgency": 5,
+            "Alignment": 6,
+            "Risk": 3
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Error Manager",
+      "Category": "Diagnostic",
+      "Improvements": [
+        {
+          "Name": "Améliorer la catégorisation des erreurs",
+          "Description": "Affiner le système de catégorisation des erreurs pour faciliter leur analyse et leur résolution.",
+          "Type": "Amélioration",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 5,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 3
+          }
+        },
+        {
+          "Name": "Ajouter des mécanismes de récupération automatique",
+          "Description": "Implémenter des mécanismes de récupération automatique pour certaines erreurs courantes.",
+          "Type": "Fonctionnalité",
+          "Effort": "Élevé",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 8,
+            "Urgency": 7,
+            "Alignment": 8,
+            "Risk": 7
+          }
+        },
+        {
+          "Name": "Intégrer avec des systèmes de monitoring externes",
+          "Description": "Ajouter des connecteurs pour intégrer l'Error Manager avec des systèmes de monitoring externes.",
+          "Type": "Intégration",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 6,
+            "Urgency": 5,
+            "Alignment": 7,
+            "Risk": 4
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Configuration Manager",
+      "Category": "Configuration",
+      "Improvements": [
+        {
+          "Name": "Ajouter la validation des configurations",
+          "Description": "Implémenter un mécanisme de validation des configurations pour détecter les erreurs et les incohérences.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 8,
+            "Effort": 6,
+            "Urgency": 7,
+            "Alignment": 8,
+            "Risk": 4
+          }
+        },
+        {
+          "Name": "Améliorer la gestion des configurations par environnement",
+          "Description": "Renforcer le mécanisme de gestion des configurations spécifiques à chaque environnement.",
+          "Type": "Amélioration",
+          "Effort": "Faible",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 4,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 3
+          }
+        },
+        {
+          "Name": "Ajouter des mécanismes de chiffrement pour les données sensibles",
+          "Description": "Implémenter des mécanismes de chiffrement pour protéger les données sensibles dans les configurations.",
+          "Type": "Sécurité",
+          "Effort": "Moyen",
+          "Impact": "Élevé",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 9,
+            "Effort": 6,
+            "Urgency": 8,
+            "Alignment": 9,
+            "Risk": 5
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Logging Manager",
+      "Category": "Diagnostic",
+      "Improvements": [
+        {
+          "Name": "Ajouter plus de formats de sortie",
+          "Description": "Ajouter la prise en charge de formats de sortie supplémentaires pour les journaux (JSON, XML, etc.).",
+          "Type": "Fonctionnalité",
+          "Effort": "Faible",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 6,
+            "Effort": 3,
+            "Urgency": 5,
+            "Alignment": 6,
+            "Risk": 2
+          }
+        },
+        {
+          "Name": "Améliorer les performances pour les systèmes à forte charge",
+          "Description": "Optimiser les performances du Logging Manager pour les systèmes générant un grand volume de journaux.",
+          "Type": "Optimisation",
+          "Effort": "Élevé",
+          "Impact": "Élevé",
+          "Dependencies": [
+            "Profilage des performances actuelles"
+          ],
+          "Scores": {
+            "Impact": 8,
+            "Effort": 7,
+            "Urgency": 7,
+            "Alignment": 7,
+            "Risk": 5
+          }
+        },
+        {
+          "Name": "Ajouter des mécanismes de rotation et d'archivage des journaux",
+          "Description": "Implémenter des mécanismes avancés de rotation et d'archivage des journaux pour gérer efficacement leur cycle de vie.",
+          "Type": "Fonctionnalité",
+          "Effort": "Moyen",
+          "Impact": "Moyen",
+          "Dependencies": [],
+          "Scores": {
+            "Impact": 7,
+            "Effort": 5,
+            "Urgency": 6,
+            "Alignment": 7,
+            "Risk": 3
+          }
+        }
+      ]
+    }
+  ]
+}

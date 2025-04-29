@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration pour le script manager.
+    Tests d'intÃ©gration pour le script manager.
 .DESCRIPTION
-    Ce script contient des tests d'intégration pour le script manager,
+    Ce script contient des tests d'intÃ©gration pour le script manager,
     en utilisant le framework Pester.
 .EXAMPLE
     Invoke-Pester -Path ".\Integration.Tests.ps1"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Tests Pester
-Describe "Tests d'intégration du script manager" {
+Describe "Tests d'intÃ©gration du script manager" {
     Context "Tests d'initialisation de l'environnement" {
         BeforeAll {
-            # Créer un dossier temporaire pour les tests
+            # CrÃ©er un dossier temporaire pour les tests
             $testDir = Join-Path -Path $env:TEMP -ChildPath "ManagerIntegrationTests"
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer une structure de dossiers simulée
+            # CrÃ©er une structure de dossiers simulÃ©e
             $managerDir = Join-Path -Path $testDir -ChildPath "manager"
             $organizationDir = Join-Path -Path $managerDir -ChildPath "organization"
             $analysisDir = Join-Path -Path $managerDir -ChildPath "analysis"
@@ -43,8 +43,8 @@ Describe "Tests d'intégration du script manager" {
             New-Item -Path $inventoryDir -ItemType Directory -Force | Out-Null
             New-Item -Path $testingDir -ItemType Directory -Force | Out-Null
 
-            # Créer des scripts de test
-            $initScriptPath = Join-Path -Path $managerDir -ChildPath "Initialize-ManagerEnvironment.ps1"
+            # CrÃ©er des scripts de test
+            $initScriptPath = Join-Path -Path $managerDir -ChildPath "script-manager.ps1"
             $organizeScriptPath = Join-Path -Path $organizationDir -ChildPath "Organize-ManagerScripts.ps1"
             $analyzeScriptPath = Join-Path -Path $analysisDir -ChildPath "Analyze-Scripts.ps1"
             $inventoryScriptPath = Join-Path -Path $inventoryDir -ChildPath "Show-ScriptInventory.ps1"
@@ -103,7 +103,7 @@ Write-Host "Affichage de l'inventaire des scripts..."
 .DESCRIPTION
     Ce script contient des tests unitaires pour les scripts du manager.
 #>
-Write-Host "Exécution des tests unitaires..."
+Write-Host "ExÃ©cution des tests unitaires..."
 "@
             
             Set-Content -Path $initScriptPath -Value $initScriptContent -Encoding UTF8
@@ -127,7 +127,7 @@ Write-Host "Exécution des tests unitaires..."
         }
 
         AfterAll {
-            # Nettoyer après les tests
+            # Nettoyer aprÃ¨s les tests
             if (Test-Path -Path $script:testDir) {
                 Remove-Item -Path $script:testDir -Recurse -Force
             }
@@ -165,12 +165,12 @@ Write-Host "Exécution des tests unitaires..."
     }
 
     Context "Tests de flux de travail" {
-        It "Devrait pouvoir exécuter le flux de travail complet" -Skip {
-            # Ce test est ignoré car il nécessite un environnement complet
-            # Il est fourni à titre d'exemple de test d'intégration
+        It "Devrait pouvoir exÃ©cuter le flux de travail complet" -Skip {
+            # Ce test est ignorÃ© car il nÃ©cessite un environnement complet
+            # Il est fourni Ã  titre d'exemple de test d'intÃ©gration
             
             # 1. Initialiser l'environnement
-            & "$PSScriptRoot/../Initialize-ManagerEnvironment.ps1" -Force
+            & "$PSScriptRoot/../script-manager.ps1" -Force
             $LASTEXITCODE | Should -Be 0
             
             # 2. Organiser les scripts
@@ -185,18 +185,18 @@ Write-Host "Exécution des tests unitaires..."
             & "$PSScriptRoot/../inventory/Show-ScriptInventory.ps1"
             $LASTEXITCODE | Should -Be 0
             
-            # 5. Exécuter les tests
+            # 5. ExÃ©cuter les tests
             & "$PSScriptRoot/../testing/Test-ManagerScripts.ps1"
             $LASTEXITCODE | Should -Be 0
         }
     }
 
-    Context "Tests de compatibilité avec les scripts de maintenance" {
-        It "Devrait être compatible avec les scripts de maintenance" -Skip {
-            # Ce test est ignoré car il nécessite un environnement complet
-            # Il est fourni à titre d'exemple de test d'intégration
+    Context "Tests de compatibilitÃ© avec les scripts de maintenance" {
+        It "Devrait Ãªtre compatible avec les scripts de maintenance" -Skip {
+            # Ce test est ignorÃ© car il nÃ©cessite un environnement complet
+            # Il est fourni Ã  titre d'exemple de test d'intÃ©gration
             
-            # 1. Vérifier que le hook pre-commit est compatible
+            # 1. VÃ©rifier que le hook pre-commit est compatible
             $hookPath = ".git/hooks/pre-commit"
             if (Test-Path -Path $hookPath) {
                 $hookContent = Get-Content -Path $hookPath -Raw
@@ -204,7 +204,7 @@ Write-Host "Exécution des tests unitaires..."
                 $hookContent | Should -Match "manager"
             }
             
-            # 2. Vérifier que les scripts de maintenance sont correctement organisés
+            # 2. VÃ©rifier que les scripts de maintenance sont correctement organisÃ©s
             $maintenanceDir = "development/scripts/maintenance"
             if (Test-Path -Path $maintenanceDir) {
                 $rootFiles = Get-ChildItem -Path $maintenanceDir -File | Where-Object { 
@@ -215,12 +215,12 @@ Write-Host "Exécution des tests unitaires..."
                 $rootFiles.Count | Should -Be 0
             }
             
-            # 3. Vérifier que les scripts du manager sont correctement organisés
-            $managerDir = "development/scripts/manager"
+            # 3. VÃ©rifier que les scripts du manager sont correctement organisÃ©s
+            $managerDir = "development/scripts/mode-manager"
             if (Test-Path -Path $managerDir) {
                 $rootFiles = Get-ChildItem -Path $managerDir -File | Where-Object { 
                     $_.Extension -in '.ps1', '.psm1', '.psd1' -and 
-                    $_.Name -ne 'Initialize-ManagerEnvironment.ps1' -and
+                    $_.Name -ne 'script-manager.ps1' -and
                     $_.Name -ne 'README.md'
                 }
                 $rootFiles.Count | Should -Be 0
@@ -228,3 +228,5 @@ Write-Host "Exécution des tests unitaires..."
         }
     }
 }
+
+

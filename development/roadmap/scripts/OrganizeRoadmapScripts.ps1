@@ -1,6 +1,6 @@
-# Script d'organisation des scripts de roadmap
-# Ce script réunit tous les scripts liés à la roadmap dans un dossier dédié
-# et génère une visualisation des processus
+﻿# Script d'organisation des scripts de roadmap
+# Ce script rÃ©unit tous les scripts liÃ©s Ã  la roadmap dans un dossier dÃ©diÃ©
+# et gÃ©nÃ¨re une visualisation des processus
 
 # Configuration de la gestion d'erreurs
 $ErrorActionPreference = 'Stop'
@@ -33,18 +33,18 @@ try {
     $mermaidFile = "$roadmapFolder\RoadmapProcesses.mmd"
     $htmlVisualizationFile = "$roadmapFolder\RoadmapProcesses.html"
     
-    # Créer le dossier roadmap s'il n'existe pas
+    # CrÃ©er le dossier roadmap s'il n'existe pas
     if (-not (Test-Path -Path $roadmapFolder)) {
         New-Item -Path $roadmapFolder -ItemType Directory -Force | Out-Null
-        Write-Log -Message "Dossier '$roadmapFolder' créé." -Level "SUCCESS"
+        Write-Log -Message "Dossier '$roadmapFolder' crÃ©Ã©." -Level "SUCCESS"
     } else {
-        Write-Log -Message "Le dossier '$roadmapFolder' existe déjà." -Level "INFO"
+        Write-Log -Message "Le dossier '$roadmapFolder' existe dÃ©jÃ ." -Level "INFO"
     }
     
-    # Liste des scripts à copier
+    # Liste des scripts Ã  copier
     $scripts = @(
         "Roadmap\roadmap_perso.md",
-        "RoadmapManager.ps1",
+        "roadmap-manager.ps1",
         "RoadmapAnalyzer.ps1",
         "RoadmapGitUpdater.ps1",
         "CleanupRoadmapFiles.ps1"
@@ -55,31 +55,31 @@ try {
         if (Test-Path -Path $script) {
             $destination = Join-Path -Path $roadmapFolder -ChildPath (Split-Path -Path $script -Leaf)
             Copy-Item -Path $script -Destination $destination -Force
-            Write-Log -Message "Script '$script' copié vers '$destination'." -Level "SUCCESS"
+            Write-Log -Message "Script '$script' copiÃ© vers '$destination'." -Level "SUCCESS"
         } else {
             Write-Log -Message "Script '$script' introuvable." -Level "WARNING"
         }
     }
     
-    # Générer une visualisation des processus
+    # GÃ©nÃ©rer une visualisation des processus
     $mermaidContent = @"
 graph TD
     subgraph Processus de gestion de la roadmap
-        Admin[Administrateur] --> RoadmapManager[RoadmapManager.ps1]
-        RoadmapManager --> Analyze[Analyser la roadmap]
-        RoadmapManager --> Execute[Exécuter la roadmap]
-        RoadmapManager --> GitUpdate[Mettre à jour avec Git]
-        RoadmapManager --> Cleanup[Nettoyer les fichiers]
-        RoadmapManager --> Organize[Organiser les scripts]
+        Admin[Administrateur] --> roadmap-manager[roadmap-manager.ps1]
+        roadmap-manager --> Analyze[Analyser la roadmap]
+        roadmap-manager --> Execute[ExÃ©cuter la roadmap]
+        roadmap-manager --> GitUpdate[Mettre Ã  jour avec Git]
+        roadmap-manager --> Cleanup[Nettoyer les fichiers]
+        roadmap-manager --> Organize[Organiser les scripts]
         
         Analyze --> RoadmapAnalyzer[RoadmapAnalyzer.ps1]
         GitUpdate --> RoadmapGitUpdater[RoadmapGitUpdater.ps1]
         Cleanup --> CleanupRoadmapFiles[CleanupRoadmapFiles.ps1]
         Organize --> OrganizeRoadmapScripts[OrganizeRoadmapScripts.ps1]
         
-        RoadmapAnalyzer --> Reports[Générer des rapports]
+        RoadmapAnalyzer --> Reports[GÃ©nÃ©rer des rapports]
         RoadmapGitUpdater --> Commits[Analyser les commits]
-        RoadmapGitUpdater --> UpdateRoadmap[Mettre à jour la roadmap]
+        RoadmapGitUpdater --> UpdateRoadmap[Mettre Ã  jour la roadmap]
         CleanupRoadmapFiles --> CleanFiles[Nettoyer les fichiers]
         OrganizeRoadmapScripts --> OrganizeFiles[Organiser les scripts]
         
@@ -87,18 +87,18 @@ graph TD
         Reports --> JSON[Rapport JSON]
         Reports --> Chart[Graphique de progression]
         
-        Commits --> MatchTasks[Correspondre aux tâches]
-        UpdateRoadmap --> MarkCompleted[Marquer comme terminé]
+        Commits --> MatchTasks[Correspondre aux tÃ¢ches]
+        UpdateRoadmap --> MarkCompleted[Marquer comme terminÃ©]
         
         Admin --> Roadmap["Roadmap\roadmap_perso.md"]
     end
 "@
     
-    # Écrire le contenu Mermaid dans un fichier
+    # Ã‰crire le contenu Mermaid dans un fichier
     Set-Content -Path $mermaidFile -Value $mermaidContent -Encoding UTF8
-    Write-Log -Message "Fichier Mermaid généré: $mermaidFile" -Level "SUCCESS"
+    Write-Log -Message "Fichier Mermaid gÃ©nÃ©rÃ©: $mermaidFile" -Level "SUCCESS"
     
-    # Générer un fichier HTML avec le diagramme Mermaid
+    # GÃ©nÃ©rer un fichier HTML avec le diagramme Mermaid
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -144,45 +144,45 @@ $mermaidContent
 </html>
 "@
     
-    # Écrire le contenu HTML dans un fichier
+    # Ã‰crire le contenu HTML dans un fichier
     Set-Content -Path $htmlVisualizationFile -Value $htmlContent -Encoding UTF8
-    Write-Log -Message "Fichier HTML généré: $htmlVisualizationFile" -Level "SUCCESS"
+    Write-Log -Message "Fichier HTML gÃ©nÃ©rÃ©: $htmlVisualizationFile" -Level "SUCCESS"
     
-    # Générer un fichier Markdown avec la documentation
+    # GÃ©nÃ©rer un fichier Markdown avec la documentation
     $markdownContent = @"
 # Processus de gestion de la roadmap
 
-Ce document décrit les processus de gestion de la roadmap du projet.
+Ce document dÃ©crit les processus de gestion de la roadmap du projet.
 
 ## Scripts principaux
 
-- `RoadmapManager.ps1` - Script principal de gestion de la roadmap
-- `RoadmapAnalyzer.ps1` - Analyse et génération de rapports
-- `RoadmapGitUpdater.ps1` - Intégration avec Git pour mettre à jour la roadmap
+- `roadmap-manager.ps1` - Script principal de gestion de la roadmap
+- `RoadmapAnalyzer.ps1` - Analyse et gÃ©nÃ©ration de rapports
+- `RoadmapGitUpdater.ps1` - IntÃ©gration avec Git pour mettre Ã  jour la roadmap
 - `CleanupRoadmapFiles.ps1` - Nettoyage et organisation des fichiers
 - `OrganizeRoadmapScripts.ps1` - Organisation des scripts
 
 ## Utilisation
 
-Pour accéder à toutes les fonctionnalités, exécutez :
+Pour accÃ©der Ã  toutes les fonctionnalitÃ©s, exÃ©cutez :
 
 ```powershell
-.\RoadmapManager.ps1
+.\roadmap-manager.ps1
 ```
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
 ### Analyse de la roadmap
 
-Pour analyser la roadmap et générer des rapports, exécutez :
+Pour analyser la roadmap et gÃ©nÃ©rer des rapports, exÃ©cutez :
 
 ```powershell
 .\RoadmapAnalyzer.ps1
 ```
 
-### Mise à jour avec Git
+### Mise Ã  jour avec Git
 
-Pour mettre à jour la roadmap en fonction des commits Git, exécutez :
+Pour mettre Ã  jour la roadmap en fonction des commits Git, exÃ©cutez :
 
 ```powershell
 .\RoadmapGitUpdater.ps1
@@ -190,7 +190,7 @@ Pour mettre à jour la roadmap en fonction des commits Git, exécutez :
 
 ### Nettoyage des fichiers
 
-Pour nettoyer et organiser les fichiers liés à la roadmap, exécutez :
+Pour nettoyer et organiser les fichiers liÃ©s Ã  la roadmap, exÃ©cutez :
 
 ```powershell
 .\CleanupRoadmapFiles.ps1
@@ -198,36 +198,36 @@ Pour nettoyer et organiser les fichiers liés à la roadmap, exécutez :
 
 ### Organisation des scripts
 
-Pour organiser les scripts liés à la roadmap, exécutez :
+Pour organiser les scripts liÃ©s Ã  la roadmap, exÃ©cutez :
 
 ```powershell
 .\OrganizeRoadmapScripts.ps1
 ```
 
-## Exécution automatique
+## ExÃ©cution automatique
 
-Pour démarrer l'exécution automatique de la roadmap, exécutez :
+Pour dÃ©marrer l'exÃ©cution automatique de la roadmap, exÃ©cutez :
 
 ```powershell
 .\StartRoadmapExecution.ps1
 ```
 
-Cela lancera l'exécution automatique de la roadmap avec les paramètres par défaut.
+Cela lancera l'exÃ©cution automatique de la roadmap avec les paramÃ¨tres par dÃ©faut.
 "@
     
-    # Écrire le contenu Markdown dans un fichier
+    # Ã‰crire le contenu Markdown dans un fichier
     Set-Content -Path $visualizationFile -Value $markdownContent -Encoding UTF8
-    Write-Log -Message "Fichier Markdown généré: $visualizationFile" -Level "SUCCESS"
+    Write-Log -Message "Fichier Markdown gÃ©nÃ©rÃ©: $visualizationFile" -Level "SUCCESS"
     
-    # Ouvrir le fichier HTML dans le navigateur par défaut
+    # Ouvrir le fichier HTML dans le navigateur par dÃ©faut
     Start-Process $htmlVisualizationFile
     
     # Ouvrir le dossier roadmap
     Invoke-Item $roadmapFolder
     
-    Write-Log -Message "Organisation des scripts de roadmap terminée !" -Level "SUCCESS"
-    Write-Log -Message "Tous les scripts ont été copiés dans le dossier '$roadmapFolder'." -Level "SUCCESS"
-    Write-Log -Message "Une visualisation des processus a été générée." -Level "SUCCESS"
+    Write-Log -Message "Organisation des scripts de roadmap terminÃ©e !" -Level "SUCCESS"
+    Write-Log -Message "Tous les scripts ont Ã©tÃ© copiÃ©s dans le dossier '$roadmapFolder'." -Level "SUCCESS"
+    Write-Log -Message "Une visualisation des processus a Ã©tÃ© gÃ©nÃ©rÃ©e." -Level "SUCCESS"
 }
 catch {
     Write-Log -Message "Une erreur critique s'est produite: $_" -Level "ERROR"
@@ -235,5 +235,6 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Message "Exécution du script terminée." -Level "INFO"
+    Write-Log -Message "ExÃ©cution du script terminÃ©e." -Level "INFO"
 }
+

@@ -8,9 +8,9 @@
 .PARAMETER InventoryPath
     Chemin vers le fichier d'inventaire (par dÃ©faut : ..\D)
 .PARAMETER AnalysisPath
-    Chemin vers le fichier d'analyse (par dÃ©faut : scripts\manager\data\analysis_advanced.json)
+    Chemin vers le fichier d'analyse (par dÃ©faut : scripts\\mode-manager\data\analysis_advanced.json)
 .PARAMETER OutputPath
-    Chemin oÃ¹ enregistrer la documentation et les donnÃ©es de surveillance (par dÃ©faut : scripts\manager\docs)
+    Chemin oÃ¹ enregistrer la documentation et les donnÃ©es de surveillance (par dÃ©faut : scripts\\mode-manager\docs)
 .PARAMETER MonitoringInterval
     Intervalle de surveillance en minutes (par dÃ©faut : 60)
 .PARAMETER EnableAlerts
@@ -27,8 +27,8 @@
 
 param (
     [string]$InventoryPath = "..\D",
-    [string]$AnalysisPath = "scripts\manager\data\analysis_advanced.json",
-    [string]$OutputPath = "scripts\manager\docs",
+    [string]$AnalysisPath = "scripts\\mode-manager\data\analysis_advanced.json",
+    [string]$OutputPath = "scripts\\mode-manager\docs",
     [int]$MonitoringInterval = 60,
     [switch]$EnableAlerts,
     [switch]$IncludeExamples
@@ -151,12 +151,12 @@ $UpdateScriptContent = @"
 .PARAMETER EnableAlerts
     Active le systÃ¨me d'alertes
 .EXAMPLE
-    .\Update-Monitoring.ps1 -InventoryPath "..\D" -OutputPath "scripts\manager\docs\monitoring" -EnableAlerts
+    .\Update-Monitoring.ps1 -InventoryPath "..\D" -OutputPath "scripts\\mode-manager\docs\monitoring" -EnableAlerts
 #>
 
 param (
     [string]`$InventoryPath = "..\D",
-    [string]`$OutputPath = "scripts\manager\docs\monitoring",
+    [string]`$OutputPath = "scripts\\mode-manager\docs\monitoring",
     [switch]`$EnableAlerts
 )
 
@@ -362,4 +362,5 @@ Write-Host "$($Monitoring.HealthDashboard.DashboardHtmlPath)" -ForegroundColor C
 Write-Host ""
 
 Write-Host "Phase 3 terminÃ©e avec succÃ¨s!" -ForegroundColor Green
+
 

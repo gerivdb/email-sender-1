@@ -62,8 +62,8 @@ Import-Module $AnalysisModulePath -Force
 Import-Module $OrganizationModulePath -Force
 
 # DÃ©finir les chemins de sortie
-$AnalysisPath = "scripts\manager\data\analysis_advanced.json"
-$OrganizationPath = "scripts\manager\data\organization_advanced.json"
+$AnalysisPath = "scripts\\mode-manager\data\analysis_advanced.json"
+$OrganizationPath = "scripts\\mode-manager\data\organization_advanced.json"
 
 # Afficher la banniÃ¨re
 Write-Host "=== Phase 2: Analyse et organisation avancÃ©es ===" -ForegroundColor Cyan
@@ -125,4 +125,5 @@ if (-not $AutoApply) {
 
 Write-Host ""
 Write-Host "Phase 2 terminÃ©e avec succÃ¨s!" -ForegroundColor Green
+
 

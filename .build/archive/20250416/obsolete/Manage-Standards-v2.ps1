@@ -62,7 +62,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\standards_management.log"
+    $LogFile = "scripts\\mode-manager\data\standards_management.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -77,7 +77,7 @@ function Start-ComplianceAnalysis {
     Write-Log "DÃ©marrage de l'analyse des scripts..." -Level "TITLE"
     
     $AnalyzeScript = "scripts\maintenance\standards\Test-ScriptCompliance-v2.ps1"
-    $OutputPath = "scripts\manager\data\compliance_report.json"
+    $OutputPath = "scripts\\mode-manager\data\compliance_report.json"
     
     # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $AnalyzeScript -ErrorAction SilentlyContinue)) {
@@ -129,8 +129,8 @@ function Start-ScriptStandardization {
     Write-Log "DÃ©marrage de la standardisation des scripts..." -Level "TITLE"
     
     $FormatScript = "scripts\maintenance\standards\Format-Script-v2.ps1"
-    $ComplianceReportPath = "scripts\manager\data\compliance_report.json"
-    $OutputPath = "scripts\manager\data\standardization_report.json"
+    $ComplianceReportPath = "scripts\\mode-manager\data\compliance_report.json"
+    $OutputPath = "scripts\\mode-manager\data\standardization_report.json"
     
     # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $FormatScript -ErrorAction SilentlyContinue)) {
@@ -234,3 +234,4 @@ function Start-StandardsManagement {
 
 # ExÃ©cuter la fonction principale
 Start-StandardsManagement -Action $Action -Path $Path -ScriptType $ScriptType -Rules $Rules -AutoApply:$AutoApply -ShowDetails:$ShowDetails
+

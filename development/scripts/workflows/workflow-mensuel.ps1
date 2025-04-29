@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'automatisation pour les tâches mensuelles de gestion de roadmap.
+    Script d'automatisation pour les tÃ¢ches mensuelles de gestion de roadmap.
 
 .DESCRIPTION
-    Ce script exécute les tâches mensuelles de gestion de roadmap :
+    Ce script exÃ©cute les tÃ¢ches mensuelles de gestion de roadmap :
     1. Synchronisation de toutes les roadmaps
-    2. Génération de rapports mensuels détaillés
-    3. Planification des tâches pour le mois à venir
-    4. Analyse des tendances et prévisions
-    5. Journalisation des résultats
+    2. GÃ©nÃ©ration de rapports mensuels dÃ©taillÃ©s
+    3. Planification des tÃ¢ches pour le mois Ã  venir
+    4. Analyse des tendances et prÃ©visions
+    5. Journalisation des rÃ©sultats
 
 .PARAMETER RoadmapPaths
-    Tableau des chemins vers les fichiers de roadmap à traiter.
-    Par défaut : @("projet\roadmaps\Roadmap\roadmap_complete_converted.md")
+    Tableau des chemins vers les fichiers de roadmap Ã  traiter.
+    Par dÃ©faut : @("projet\roadmaps\Roadmap\roadmap_complete_converted.md")
 
 .PARAMETER OutputPath
-    Chemin vers le répertoire de sortie pour les rapports et les plans.
-    Par défaut : "projet\roadmaps"
+    Chemin vers le rÃ©pertoire de sortie pour les rapports et les plans.
+    Par dÃ©faut : "projet\roadmaps"
 
 .PARAMETER LogPath
-    Chemin vers le répertoire de journalisation.
-    Par défaut : "projet\roadmaps\Logs"
+    Chemin vers le rÃ©pertoire de journalisation.
+    Par dÃ©faut : "projet\roadmaps\Logs"
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration unifiée.
-    Par défaut : "development\config\unified-config.json"
+    Chemin vers le fichier de configuration unifiÃ©e.
+    Par dÃ©faut : "development\config\unified-config.json"
 
 .EXAMPLE
     .\workflow-mensuel.ps1
@@ -35,7 +35,7 @@
 .NOTES
     Auteur: Integrated Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding()]
 param (
@@ -52,7 +52,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and 
        -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -62,7 +62,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -90,15 +90,15 @@ if (-not [System.IO.Path]::IsPathRooted($ConfigPath)) {
     $ConfigPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 }
 
-# Vérifier que les fichiers de roadmap existent
+# VÃ©rifier que les fichiers de roadmap existent
 foreach ($path in $RoadmapPaths) {
     if (-not (Test-Path -Path $path)) {
-        Write-Error "Le fichier de roadmap spécifié n'existe pas : $path"
+        Write-Error "Le fichier de roadmap spÃ©cifiÃ© n'existe pas : $path"
         exit 1
     }
 }
 
-# Créer les répertoires nécessaires s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires nÃ©cessaires s'ils n'existent pas
 $reportsPath = Join-Path -Path $OutputPath -ChildPath "Reports"
 $plansPath = Join-Path -Path $OutputPath -ChildPath "Plans"
 $analysisPath = Join-Path -Path $OutputPath -ChildPath "Analysis"
@@ -109,7 +109,7 @@ foreach ($path in @($LogPath, $reportsPath, $plansPath, $analysisPath)) {
     }
 }
 
-# Définir le chemin du fichier de journal
+# DÃ©finir le chemin du fichier de journal
 $yearMonth = Get-Date -Format "yyyy-MM"
 $date = Get-Date -Format "yyyy-MM-dd"
 $logFile = Join-Path -Path $LogPath -ChildPath "workflow-mensuel-$yearMonth.log"
@@ -140,25 +140,25 @@ function Write-Log {
     $logMessage | Out-File -FilePath $logFile -Append
 }
 
-# Définir le chemin du gestionnaire intégré
-$integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
+# DÃ©finir le chemin du gestionnaire intÃ©grÃ©
+$integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\\managers\\integrated-manager\\scripts\\integrated-manager\.ps1"
 
-# Vérifier que le gestionnaire intégré existe
+# VÃ©rifier que le gestionnaire intÃ©grÃ© existe
 if (-not (Test-Path -Path $integratedManagerPath)) {
-    Write-Log "Le gestionnaire intégré est introuvable : $integratedManagerPath" -Level "ERROR"
+    Write-Log "Le gestionnaire intÃ©grÃ© est introuvable : $integratedManagerPath" -Level "ERROR"
     exit 1
 }
 
-# Journaliser le début du workflow
-Write-Log "Début du workflow mensuel" -Level "INFO"
+# Journaliser le dÃ©but du workflow
+Write-Log "DÃ©but du workflow mensuel" -Level "INFO"
 Write-Log "Fichiers de roadmap : $($RoadmapPaths -join ', ')" -Level "INFO"
-Write-Log "Répertoire de sortie : $OutputPath" -Level "INFO"
+Write-Log "RÃ©pertoire de sortie : $OutputPath" -Level "INFO"
 Write-Log "Fichier de journal : $logFile" -Level "INFO"
 Write-Log "Fichier de configuration : $ConfigPath" -Level "INFO"
 
 try {
-    # Étape 1: Synchronisation de toutes les roadmaps
-    Write-Log "Étape 1: Synchronisation de toutes les roadmaps" -Level "INFO"
+    # Ã‰tape 1: Synchronisation de toutes les roadmaps
+    Write-Log "Ã‰tape 1: Synchronisation de toutes les roadmaps" -Level "INFO"
     
     # Synchroniser toutes les roadmaps vers tous les formats
     $syncResults = @()
@@ -172,9 +172,9 @@ try {
             $syncResult = & $integratedManagerPath -Mode "ROADMAP-SYNC" -SourcePath $roadmapPath -TargetFormat $format -ConfigPath $ConfigPath
             
             if ($syncResult.Success) {
-                Write-Log "Synchronisation vers $format réussie : $($syncResult.TargetPath)" -Level "SUCCESS"
+                Write-Log "Synchronisation vers $format rÃ©ussie : $($syncResult.TargetPath)" -Level "SUCCESS"
             } else {
-                Write-Log "Échec de la synchronisation vers $format : $($syncResult.TargetPath)" -Level "ERROR"
+                Write-Log "Ã‰chec de la synchronisation vers $format : $($syncResult.TargetPath)" -Level "ERROR"
             }
             
             $syncResults += @{
@@ -185,8 +185,8 @@ try {
         }
     }
     
-    # Étape 2: Génération de rapports mensuels détaillés
-    Write-Log "Étape 2: Génération de rapports mensuels détaillés" -Level "INFO"
+    # Ã‰tape 2: GÃ©nÃ©ration de rapports mensuels dÃ©taillÃ©s
+    Write-Log "Ã‰tape 2: GÃ©nÃ©ration de rapports mensuels dÃ©taillÃ©s" -Level "INFO"
     
     $reportResults = @()
     
@@ -194,14 +194,14 @@ try {
         $roadmapName = [System.IO.Path]::GetFileNameWithoutExtension($roadmapPath)
         $reportPath = Join-Path -Path $reportsPath -ChildPath "mensuel-$roadmapName-$yearMonth"
         
-        Write-Log "Génération du rapport mensuel pour : $roadmapPath" -Level "INFO"
+        Write-Log "GÃ©nÃ©ration du rapport mensuel pour : $roadmapPath" -Level "INFO"
         $reportResult = & $integratedManagerPath -Mode "ROADMAP-REPORT" -RoadmapPath $roadmapPath -OutputPath $reportPath -ReportFormat "All" -IncludeCharts -IncludeTrends -IncludePredictions -DaysToAnalyze 30 -ConfigPath $ConfigPath
         
         if ($reportResult) {
-            Write-Log "Génération du rapport mensuel réussie" -Level "SUCCESS"
-            Write-Log "Rapports générés : $($reportResult.GeneratedReports -join ', ')" -Level "INFO"
+            Write-Log "GÃ©nÃ©ration du rapport mensuel rÃ©ussie" -Level "SUCCESS"
+            Write-Log "Rapports gÃ©nÃ©rÃ©s : $($reportResult.GeneratedReports -join ', ')" -Level "INFO"
         } else {
-            Write-Log "Échec de la génération du rapport mensuel" -Level "ERROR"
+            Write-Log "Ã‰chec de la gÃ©nÃ©ration du rapport mensuel" -Level "ERROR"
         }
         
         $reportResults += @{
@@ -211,8 +211,8 @@ try {
         }
     }
     
-    # Étape 3: Planification des tâches pour le mois à venir
-    Write-Log "Étape 3: Planification des tâches pour le mois à venir" -Level "INFO"
+    # Ã‰tape 3: Planification des tÃ¢ches pour le mois Ã  venir
+    Write-Log "Ã‰tape 3: Planification des tÃ¢ches pour le mois Ã  venir" -Level "INFO"
     
     $planResults = @()
     
@@ -220,14 +220,14 @@ try {
         $roadmapName = [System.IO.Path]::GetFileNameWithoutExtension($roadmapPath)
         $planPath = Join-Path -Path $plansPath -ChildPath "mensuel-$roadmapName-$yearMonth.md"
         
-        Write-Log "Génération du plan mensuel pour : $roadmapPath" -Level "INFO"
+        Write-Log "GÃ©nÃ©ration du plan mensuel pour : $roadmapPath" -Level "INFO"
         $planResult = & $integratedManagerPath -Mode "ROADMAP-PLAN" -RoadmapPath $roadmapPath -OutputPath $planPath -DaysToForecast 30 -ConfigPath $ConfigPath
         
         if ($planResult) {
-            Write-Log "Génération du plan mensuel réussie" -Level "SUCCESS"
-            Write-Log "Plan généré : $planPath" -Level "INFO"
+            Write-Log "GÃ©nÃ©ration du plan mensuel rÃ©ussie" -Level "SUCCESS"
+            Write-Log "Plan gÃ©nÃ©rÃ© : $planPath" -Level "INFO"
         } else {
-            Write-Log "Échec de la génération du plan mensuel" -Level "ERROR"
+            Write-Log "Ã‰chec de la gÃ©nÃ©ration du plan mensuel" -Level "ERROR"
         }
         
         $planResults += @{
@@ -237,8 +237,8 @@ try {
         }
     }
     
-    # Étape 4: Analyse des tendances et prévisions
-    Write-Log "Étape 4: Analyse des tendances et prévisions" -Level "INFO"
+    # Ã‰tape 4: Analyse des tendances et prÃ©visions
+    Write-Log "Ã‰tape 4: Analyse des tendances et prÃ©visions" -Level "INFO"
     
     $analysisResults = @()
     
@@ -246,53 +246,53 @@ try {
         $roadmapName = [System.IO.Path]::GetFileNameWithoutExtension($roadmapPath)
         $analysisPath = Join-Path -Path $analysisPath -ChildPath "analyse-$roadmapName-$yearMonth.md"
         
-        Write-Log "Génération de l'analyse pour : $roadmapPath" -Level "INFO"
+        Write-Log "GÃ©nÃ©ration de l'analyse pour : $roadmapPath" -Level "INFO"
         
-        # Créer un rapport d'analyse personnalisé
+        # CrÃ©er un rapport d'analyse personnalisÃ©
         $analysisContent = @"
-# Analyse des tendances et prévisions - $roadmapName - $yearMonth
+# Analyse des tendances et prÃ©visions - $roadmapName - $yearMonth
 
-## Résumé
+## RÃ©sumÃ©
 
-Ce rapport présente une analyse des tendances et des prévisions pour la roadmap "$roadmapName" pour le mois de $yearMonth.
+Ce rapport prÃ©sente une analyse des tendances et des prÃ©visions pour la roadmap "$roadmapName" pour le mois de $yearMonth.
 
 ## Tendances
 
 ### Progression globale
 
-La progression globale de la roadmap est analysée sur les 30 derniers jours.
+La progression globale de la roadmap est analysÃ©e sur les 30 derniers jours.
 
-### Tâches complétées
+### TÃ¢ches complÃ©tÃ©es
 
-Le nombre de tâches complétées est analysé sur les 30 derniers jours.
+Le nombre de tÃ¢ches complÃ©tÃ©es est analysÃ© sur les 30 derniers jours.
 
-### Tâches en cours
+### TÃ¢ches en cours
 
-Le nombre de tâches en cours est analysé sur les 30 derniers jours.
+Le nombre de tÃ¢ches en cours est analysÃ© sur les 30 derniers jours.
 
-## Prévisions
+## PrÃ©visions
 
 ### Estimation de la date de fin
 
-En fonction des tendances actuelles, la date de fin estimée pour la roadmap est calculée.
+En fonction des tendances actuelles, la date de fin estimÃ©e pour la roadmap est calculÃ©e.
 
-### Tâches à risque
+### TÃ¢ches Ã  risque
 
-Les tâches qui présentent un risque de retard sont identifiées.
+Les tÃ¢ches qui prÃ©sentent un risque de retard sont identifiÃ©es.
 
 ### Recommandations
 
-Des recommandations sont formulées pour améliorer la progression de la roadmap.
+Des recommandations sont formulÃ©es pour amÃ©liorer la progression de la roadmap.
 
 ## Conclusion
 
-Cette analyse permet de mieux comprendre l'état d'avancement de la roadmap et de prendre des décisions éclairées pour la suite du projet.
+Cette analyse permet de mieux comprendre l'Ã©tat d'avancement de la roadmap et de prendre des dÃ©cisions Ã©clairÃ©es pour la suite du projet.
 "@
         
         # Enregistrer le rapport d'analyse
         $analysisContent | Out-File -FilePath $analysisPath -Encoding UTF8
         
-        Write-Log "Analyse générée : $analysisPath" -Level "SUCCESS"
+        Write-Log "Analyse gÃ©nÃ©rÃ©e : $analysisPath" -Level "SUCCESS"
         
         $analysisResults += @{
             RoadmapPath = $roadmapPath
@@ -300,46 +300,46 @@ Cette analyse permet de mieux comprendre l'état d'avancement de la roadmap et d
         }
     }
     
-    # Étape 5: Création d'un rapport de synthèse
-    Write-Log "Étape 5: Création d'un rapport de synthèse" -Level "INFO"
+    # Ã‰tape 5: CrÃ©ation d'un rapport de synthÃ¨se
+    Write-Log "Ã‰tape 5: CrÃ©ation d'un rapport de synthÃ¨se" -Level "INFO"
     
     $synthesisPath = Join-Path -Path $reportsPath -ChildPath "synthese-$yearMonth.md"
     
-    # Créer un rapport de synthèse
+    # CrÃ©er un rapport de synthÃ¨se
     $synthesisContent = @"
-# Rapport de synthèse - $yearMonth
+# Rapport de synthÃ¨se - $yearMonth
 
-## Résumé
+## RÃ©sumÃ©
 
-Ce rapport présente une synthèse des activités de gestion de roadmap pour le mois de $yearMonth.
+Ce rapport prÃ©sente une synthÃ¨se des activitÃ©s de gestion de roadmap pour le mois de $yearMonth.
 
-## Roadmaps traitées
+## Roadmaps traitÃ©es
 
-Les roadmaps suivantes ont été traitées :
+Les roadmaps suivantes ont Ã©tÃ© traitÃ©es :
 
 $(foreach ($roadmapPath in $RoadmapPaths) {
     "- $roadmapPath"
 })
 
-## Rapports générés
+## Rapports gÃ©nÃ©rÃ©s
 
-Les rapports suivants ont été générés :
+Les rapports suivants ont Ã©tÃ© gÃ©nÃ©rÃ©s :
 
 $(foreach ($reportResult in $reportResults) {
     "- $($reportResult.ReportPath)"
 })
 
-## Plans générés
+## Plans gÃ©nÃ©rÃ©s
 
-Les plans suivants ont été générés :
+Les plans suivants ont Ã©tÃ© gÃ©nÃ©rÃ©s :
 
 $(foreach ($planResult in $planResults) {
     "- $($planResult.PlanPath)"
 })
 
-## Analyses générées
+## Analyses gÃ©nÃ©rÃ©es
 
-Les analyses suivantes ont été générées :
+Les analyses suivantes ont Ã©tÃ© gÃ©nÃ©rÃ©es :
 
 $(foreach ($analysisResult in $analysisResults) {
     "- $($analysisResult.AnalysisPath)"
@@ -347,24 +347,24 @@ $(foreach ($analysisResult in $analysisResults) {
 
 ## Conclusion
 
-Ce rapport de synthèse permet de suivre l'ensemble des activités de gestion de roadmap pour le mois de $yearMonth.
+Ce rapport de synthÃ¨se permet de suivre l'ensemble des activitÃ©s de gestion de roadmap pour le mois de $yearMonth.
 "@
     
-    # Enregistrer le rapport de synthèse
+    # Enregistrer le rapport de synthÃ¨se
     $synthesisContent | Out-File -FilePath $synthesisPath -Encoding UTF8
     
-    Write-Log "Rapport de synthèse généré : $synthesisPath" -Level "SUCCESS"
+    Write-Log "Rapport de synthÃ¨se gÃ©nÃ©rÃ© : $synthesisPath" -Level "SUCCESS"
     
     # Journaliser la fin du workflow
     Write-Log "Fin du workflow mensuel" -Level "SUCCESS"
 } catch {
     # Journaliser l'erreur
-    Write-Log "Erreur lors de l'exécution du workflow mensuel : $_" -Level "ERROR"
+    Write-Log "Erreur lors de l'exÃ©cution du workflow mensuel : $_" -Level "ERROR"
     Write-Log "Trace de la pile : $($_.ScriptStackTrace)" -Level "ERROR"
     exit 1
 }
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     RoadmapPaths = $RoadmapPaths
     OutputPath = $OutputPath
@@ -376,3 +376,4 @@ return @{
     SynthesisPath = $synthesisPath
     Success = $true
 }
+

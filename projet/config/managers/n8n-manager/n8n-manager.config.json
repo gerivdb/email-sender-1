@@ -1,0 +1,11 @@
+{
+  "N8nRootFolder": "n8n",
+  "WorkflowFolder": "n8n/data/.n8n/workflows",
+  "ReferenceFolder": "n8n/core/workflows/local",
+  "LogFolder": "n8n/logs",
+  "DefaultPort": 5678,
+  "DefaultProtocol": "http",
+  "DefaultHostname": "localhost",
+  "AutoRestart": false,
+  "NotificationEnabled": true
+}

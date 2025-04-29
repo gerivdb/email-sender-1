@@ -1,0 +1,10 @@
+﻿{
+    "settings":  {
+                     "logPath":  "logs/mode-manager.log",
+                     "logLevel":  "Info"
+                 },
+    "description":  "Configuration du gestionnaire mode-manager",
+    "name":  "mode-manager",
+    "version":  "1.0.0",
+    "enabled":  true
+}

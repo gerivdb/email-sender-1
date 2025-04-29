@@ -1,0 +1,462 @@
+{
+  "EvaluationDate": "2025-05-05",
+  "Criteria": {
+    "Modularity": {
+      "Description": "Capacité du gestionnaire à être divisé en modules indépendants",
+      "Weight": 0.15
+    },
+    "Extensibility": {
+      "Description": "Facilité avec laquelle le gestionnaire peut être étendu",
+      "Weight": 0.15
+    },
+    "Maintainability": {
+      "Description": "Facilité avec laquelle le gestionnaire peut être maintenu",
+      "Weight": 0.2
+    },
+    "Testability": {
+      "Description": "Facilité avec laquelle le gestionnaire peut être testé",
+      "Weight": 0.1
+    },
+    "Performance": {
+      "Description": "Efficacité du gestionnaire en termes de temps d'exécution et d'utilisation des ressources",
+      "Weight": 0.1
+    },
+    "Documentation": {
+      "Description": "Qualité et complétude de la documentation du gestionnaire",
+      "Weight": 0.1
+    },
+    "ErrorHandling": {
+      "Description": "Robustesse du gestionnaire face aux erreurs et exceptions",
+      "Weight": 0.1
+    },
+    "Integration": {
+      "Description": "Facilité d'intégration avec d'autres composants et systèmes",
+      "Weight": 0.1
+    }
+  },
+  "Pillars": [
+    {
+      "Name": "Abstraction",
+      "Description": "Capacité à masquer les détails d'implémentation et à exposer uniquement les fonctionnalités essentielles"
+    },
+    {
+      "Name": "Encapsulation",
+      "Description": "Regroupement des données et des comportements associés dans une unité cohérente"
+    },
+    {
+      "Name": "Modularité",
+      "Description": "Division du système en modules indépendants et interchangeables"
+    },
+    {
+      "Name": "Hiérarchie",
+      "Description": "Organisation des composants dans une structure hiérarchique"
+    },
+    {
+      "Name": "Polymorphisme",
+      "Description": "Capacité à traiter différents types d'objets de manière uniforme"
+    },
+    {
+      "Name": "Découplage",
+      "Description": "Réduction des dépendances entre les composants"
+    },
+    {
+      "Name": "Réutilisabilité",
+      "Description": "Capacité à réutiliser des composants dans différents contextes"
+    },
+    {
+      "Name": "Extensibilité",
+      "Description": "Facilité avec laquelle le système peut être étendu"
+    },
+    {
+      "Name": "Séparation des préoccupations",
+      "Description": "Division du système en parties distinctes qui traitent des préoccupations spécifiques"
+    },
+    {
+      "Name": "Cohésion",
+      "Description": "Degré de relation entre les éléments d'un module"
+    },
+    {
+      "Name": "Couplage faible",
+      "Description": "Minimisation des dépendances entre les modules"
+    },
+    {
+      "Name": "Composition",
+      "Description": "Construction de systèmes complexes à partir de composants plus simples"
+    },
+    {
+      "Name": "Adaptabilité",
+      "Description": "Capacité à s'adapter à différents environnements et exigences"
+    },
+    {
+      "Name": "Testabilité",
+      "Description": "Facilité avec laquelle le système peut être testé"
+    },
+    {
+      "Name": "Maintenabilité",
+      "Description": "Facilité avec laquelle le système peut être maintenu"
+    },
+    {
+      "Name": "Évolutivité",
+      "Description": "Capacité à évoluer pour répondre à de nouvelles exigences"
+    }
+  ],
+  "Managers": [
+    {
+      "Name": "Process Manager",
+      "Description": "Gère le cycle de vie des processus et des gestionnaires",
+      "Category": "Infrastructure",
+      "Scores": {
+        "Modularity": 8,
+        "Extensibility": 7,
+        "Maintainability": 7,
+        "Testability": 6,
+        "Performance": 8,
+        "Documentation": 7,
+        "ErrorHandling": 8,
+        "Integration": 9
+      },
+      "Strengths": [
+        "Bonne gestion des erreurs",
+        "Excellente intégration avec d'autres gestionnaires",
+        "Performance optimisée"
+      ],
+      "Weaknesses": [
+        "Testabilité limitée",
+        "Documentation incomplète pour certaines fonctionnalités avancées"
+      ],
+      "PillarCoverage": {
+        "Modularité": 80,
+        "Découplage": 70,
+        "Réutilisabilité": 75,
+        "Extensibilité": 70,
+        "Séparation des préoccupations": 85,
+        "Couplage faible": 65,
+        "Composition": 80,
+        "Adaptabilité": 75,
+        "Maintenabilité": 70,
+        "Évolutivité": 75
+      }
+    },
+    {
+      "Name": "Mode Manager",
+      "Description": "Gère les différents modes opérationnels du système",
+      "Category": "Configuration",
+      "Scores": {
+        "Modularity": 7,
+        "Extensibility": 8,
+        "Maintainability": 8,
+        "Testability": 7,
+        "Performance": 7,
+        "Documentation": 8,
+        "ErrorHandling": 7,
+        "Integration": 8
+      },
+      "Strengths": [
+        "Bonne extensibilité pour ajouter de nouveaux modes",
+        "Documentation complète",
+        "Facilité d'intégration"
+      ],
+      "Weaknesses": [
+        "Performance moyenne pour les opérations complexes",
+        "Modularité perfectible"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 75,
+        "Encapsulation": 80,
+        "Modularité": 70,
+        "Hiérarchie": 65,
+        "Polymorphisme": 60,
+        "Découplage": 75,
+        "Réutilisabilité": 80,
+        "Extensibilité": 85,
+        "Séparation des préoccupations": 80,
+        "Adaptabilité": 85,
+        "Maintenabilité": 80,
+        "Évolutivité": 85
+      }
+    },
+    {
+      "Name": "Roadmap Manager",
+      "Description": "Gère les roadmaps et les tâches associées",
+      "Category": "Planification",
+      "Scores": {
+        "Modularity": 6,
+        "Extensibility": 7,
+        "Maintainability": 6,
+        "Testability": 5,
+        "Performance": 7,
+        "Documentation": 6,
+        "ErrorHandling": 6,
+        "Integration": 7
+      },
+      "Strengths": [
+        "Bonne intégration avec d'autres gestionnaires",
+        "Performance acceptable pour les opérations courantes"
+      ],
+      "Weaknesses": [
+        "Testabilité limitée",
+        "Modularité perfectible",
+        "Documentation incomplète"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 60,
+        "Encapsulation": 65,
+        "Modularité": 60,
+        "Hiérarchie": 70,
+        "Découplage": 55,
+        "Réutilisabilité": 65,
+        "Extensibilité": 70,
+        "Séparation des préoccupations": 60,
+        "Cohésion": 65,
+        "Couplage faible": 55,
+        "Testabilité": 50,
+        "Maintenabilité": 60,
+        "Évolutivité": 70
+      }
+    },
+    {
+      "Name": "Integrated Manager",
+      "Description": "Intègre les différents gestionnaires et systèmes externes",
+      "Category": "Intégration",
+      "Scores": {
+        "Modularity": 7,
+        "Extensibility": 8,
+        "Maintainability": 7,
+        "Testability": 6,
+        "Performance": 6,
+        "Documentation": 7,
+        "ErrorHandling": 7,
+        "Integration": 9
+      },
+      "Strengths": [
+        "Excellente intégration avec d'autres systèmes",
+        "Bonne extensibilité",
+        "Documentation complète"
+      ],
+      "Weaknesses": [
+        "Performance moyenne pour les opérations complexes",
+        "Testabilité limitée"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 70,
+        "Encapsulation": 75,
+        "Modularité": 70,
+        "Découplage": 65,
+        "Réutilisabilité": 75,
+        "Extensibilité": 80,
+        "Séparation des préoccupations": 75,
+        "Couplage faible": 60,
+        "Composition": 75,
+        "Adaptabilité": 80,
+        "Maintenabilité": 70,
+        "Évolutivité": 75
+      }
+    },
+    {
+      "Name": "Script Manager",
+      "Description": "Gère les scripts et leur exécution",
+      "Category": "Exécution",
+      "Scores": {
+        "Modularity": 7,
+        "Extensibility": 7,
+        "Maintainability": 7,
+        "Testability": 6,
+        "Performance": 8,
+        "Documentation": 6,
+        "ErrorHandling": 7,
+        "Integration": 7
+      },
+      "Strengths": [
+        "Bonne performance",
+        "Gestion des erreurs robuste",
+        "Modularité acceptable"
+      ],
+      "Weaknesses": [
+        "Documentation incomplète",
+        "Testabilité limitée"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 65,
+        "Encapsulation": 70,
+        "Modularité": 70,
+        "Découplage": 65,
+        "Réutilisabilité": 70,
+        "Extensibilité": 70,
+        "Séparation des préoccupations": 70,
+        "Cohésion": 75,
+        "Couplage faible": 60,
+        "Composition": 70,
+        "Adaptabilité": 75,
+        "Testabilité": 60,
+        "Maintenabilité": 70,
+        "Évolutivité": 70
+      }
+    },
+    {
+      "Name": "Error Manager",
+      "Description": "Gère les erreurs et les exceptions",
+      "Category": "Diagnostic",
+      "Scores": {
+        "Modularity": 8,
+        "Extensibility": 7,
+        "Maintainability": 8,
+        "Testability": 7,
+        "Performance": 7,
+        "Documentation": 8,
+        "ErrorHandling": 9,
+        "Integration": 8
+      },
+      "Strengths": [
+        "Excellente gestion des erreurs",
+        "Bonne modularité",
+        "Documentation complète"
+      ],
+      "Weaknesses": [
+        "Performance moyenne pour les opérations complexes"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 75,
+        "Encapsulation": 80,
+        "Modularité": 80,
+        "Découplage": 70,
+        "Réutilisabilité": 75,
+        "Extensibilité": 70,
+        "Séparation des préoccupations": 85,
+        "Cohésion": 80,
+        "Couplage faible": 70,
+        "Adaptabilité": 75,
+        "Testabilité": 70,
+        "Maintenabilité": 80,
+        "Évolutivité": 70
+      }
+    },
+    {
+      "Name": "Configuration Manager",
+      "Description": "Gère les configurations et les paramètres",
+      "Category": "Configuration",
+      "Scores": {
+        "Modularity": 8,
+        "Extensibility": 8,
+        "Maintainability": 7,
+        "Testability": 7,
+        "Performance": 7,
+        "Documentation": 7,
+        "ErrorHandling": 7,
+        "Integration": 8
+      },
+      "Strengths": [
+        "Bonne modularité",
+        "Excellente extensibilité",
+        "Facilité d'intégration"
+      ],
+      "Weaknesses": [
+        "Documentation incomplète pour certaines fonctionnalités avancées"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 75,
+        "Encapsulation": 80,
+        "Modularité": 80,
+        "Hiérarchie": 70,
+        "Découplage": 75,
+        "Réutilisabilité": 80,
+        "Extensibilité": 85,
+        "Séparation des préoccupations": 80,
+        "Cohésion": 75,
+        "Couplage faible": 70,
+        "Composition": 75,
+        "Adaptabilité": 80,
+        "Testabilité": 70,
+        "Maintenabilité": 75,
+        "Évolutivité": 80
+      }
+    },
+    {
+      "Name": "Logging Manager",
+      "Description": "Gère la journalisation des événements et des activités",
+      "Category": "Diagnostic",
+      "Scores": {
+        "Modularity": 8,
+        "Extensibility": 8,
+        "Maintainability": 8,
+        "Testability": 7,
+        "Performance": 6,
+        "Documentation": 8,
+        "ErrorHandling": 8,
+        "Integration": 8
+      },
+      "Strengths": [
+        "Excellente modularité",
+        "Bonne extensibilité",
+        "Documentation complète",
+        "Gestion des erreurs robuste"
+      ],
+      "Weaknesses": [
+        "Performance moyenne pour les opérations à haute fréquence"
+      ],
+      "PillarCoverage": {
+        "Abstraction": 80,
+        "Encapsulation": 85,
+        "Modularité": 85,
+        "Hiérarchie": 75,
+        "Découplage": 80,
+        "Réutilisabilité": 85,
+        "Extensibilité": 85,
+        "Séparation des préoccupations": 85,
+        "Cohésion": 80,
+        "Couplage faible": 75,
+        "Composition": 80,
+        "Adaptabilité": 80,
+        "Testabilité": 75,
+        "Maintenabilité": 80,
+        "Évolutivité": 80
+      }
+    }
+  ],
+  "Thresholds": {
+    "StrengthThreshold": 8,
+    "WeaknessThreshold": 6,
+    "TargetPillarCoverage": 80,
+    "HighImpactThreshold": 20,
+    "MediumImpactThreshold": 10
+  },
+  "ImpactConsequences": {
+    "Élevé": [
+      "Risque élevé de dette technique",
+      "Difficultés majeures pour l'évolution du système",
+      "Problèmes potentiels de stabilité et de fiabilité",
+      "Coûts de maintenance significativement plus élevés"
+    ],
+    "Moyen": [
+      "Augmentation modérée de la dette technique",
+      "Certaines limitations pour l'évolution du système",
+      "Risques modérés pour la stabilité et la fiabilité",
+      "Augmentation des coûts de maintenance"
+    ],
+    "Faible": [
+      "Impact minimal sur la dette technique",
+      "Limitations mineures pour l'évolution du système",
+      "Risques faibles pour la stabilité et la fiabilité",
+      "Légère augmentation des coûts de maintenance"
+    ]
+  },
+  "RecommendedActions": {
+    "Élevé": [
+      "Refactoring complet du gestionnaire",
+      "Mise en place d'un plan d'amélioration prioritaire",
+      "Allocation de ressources dédiées",
+      "Formation de l'équipe sur les bonnes pratiques"
+    ],
+    "Moyen": [
+      "Refactoring ciblé des composants problématiques",
+      "Mise en place d'un plan d'amélioration à moyen terme",
+      "Allocation de ressources partielles",
+      "Revue de code régulière"
+    ],
+    "Faible": [
+      "Améliorations incrémentales lors des développements futurs",
+      "Documentation des points d'amélioration",
+      "Surveillance régulière de l'évolution",
+      "Intégration dans le backlog avec priorité basse"
+    ]
+  }
+}

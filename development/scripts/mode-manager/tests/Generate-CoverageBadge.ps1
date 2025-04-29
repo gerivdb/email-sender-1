@@ -1,0 +1,101 @@
+# Script pour générer un badge de couverture de code pour le README.md
+
+# Définir les paramètres
+param (
+    [Parameter(Mandatory = $false)]
+    [string]$CoverageReportPath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\reports\tests\mode-manager-coverage.xml"),
+
+    [Parameter(Mandatory = $false)]
+    [string]$OutputPath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\reports\badges"),
+
+    [Parameter(Mandatory = $false)]
+    [string]$ReadmePath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\README.md")
+)
+
+# Vérifier que le fichier de rapport de couverture existe
+if (-not (Test-Path -Path $CoverageReportPath)) {
+    Write-Error "Le fichier de rapport de couverture est introuvable à l'emplacement : $CoverageReportPath"
+    exit 1
+}
+
+# Créer le répertoire de sortie s'il n'existe pas
+if (-not (Test-Path -Path $OutputPath)) {
+    New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
+}
+
+# Lire le fichier de rapport de couverture
+$coverageReport = [xml](Get-Content -Path $CoverageReportPath -Encoding UTF8)
+
+# Calculer le pourcentage de couverture
+$totalLines = 0
+$coveredLines = 0
+
+foreach ($package in $coverageReport.report.package) {
+    foreach ($class in $package.class) {
+        foreach ($line in $class.line) {
+            $totalLines++
+            if ($line.ci -eq "true") {
+                $coveredLines++
+            }
+        }
+    }
+}
+
+$coveragePercentage = if ($totalLines -gt 0) { [math]::Round(($coveredLines / $totalLines) * 100, 2) } else { 0 }
+
+# Déterminer la couleur du badge
+$color = switch ($coveragePercentage) {
+    { $_ -ge 90 } { "brightgreen" }
+    { $_ -ge 80 } { "green" }
+    { $_ -ge 70 } { "yellowgreen" }
+    { $_ -ge 60 } { "yellow" }
+    { $_ -ge 50 } { "orange" }
+    default { "red" }
+}
+
+# Générer l'URL du badge
+$badgeUrl = "https://img.shields.io/badge/coverage-$coveragePercentage%25-$color"
+
+# Télécharger le badge
+$badgePath = Join-Path -Path $OutputPath -ChildPath "coverage-badge.svg"
+Invoke-WebRequest -Uri $badgeUrl -OutFile $badgePath
+
+# Afficher les informations
+Write-Host "Couverture de code : $coveragePercentage%" -ForegroundColor Cyan
+Write-Host "Badge généré : $badgePath" -ForegroundColor Cyan
+
+# Mettre à jour le README.md si le fichier existe
+if (Test-Path -Path $ReadmePath) {
+    $readme = Get-Content -Path $ReadmePath -Raw
+    
+    # Vérifier si le badge existe déjà
+    $badgePattern = "!\[Coverage\]\(https://img\.shields\.io/badge/coverage-[0-9\.]+%25-[a-z]+\)"
+    
+    if ($readme -match $badgePattern) {
+        # Mettre à jour le badge existant
+        $newBadge = "![Coverage]($badgeUrl)"
+        $readme = $readme -replace $badgePattern, $newBadge
+    } else {
+        # Ajouter le badge
+        $newBadge = "![Coverage]($badgeUrl)"
+        $readme = $readme -replace "# Mode Manager", "# Mode Manager`n`n$newBadge"
+    }
+    
+    # Enregistrer le README.md
+    $readme | Set-Content -Path $ReadmePath -Encoding UTF8
+    
+    Write-Host "README.md mis à jour avec le badge de couverture" -ForegroundColor Green
+}
+
+# Générer un fichier JSON pour les services de badge
+$jsonPath = Join-Path -Path $OutputPath -ChildPath "coverage.json"
+@{
+    schemaVersion = 1
+    label = "coverage"
+    message = "$coveragePercentage%"
+    color = $color
+} | ConvertTo-Json | Set-Content -Path $jsonPath -Encoding UTF8
+
+Write-Host "Fichier JSON généré : $jsonPath" -ForegroundColor Cyan
+
+exit 0

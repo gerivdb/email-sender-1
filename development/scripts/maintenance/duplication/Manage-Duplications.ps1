@@ -78,7 +78,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\duplication_management.log"
+    $LogFile = "scripts\\mode-manager\data\duplication_management.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -95,7 +95,7 @@ function Start-DuplicationDetectionPS {
     Write-Log "DÃ©marrage de la dÃ©tection des duplications de code avec PowerShell..." -Level "TITLE"
     
     $DetectScript = "scripts\maintenance\duplication\Find-CodeDuplication.ps1"
-    $OutputPath = "scripts\manager\data\duplication_report.json"
+    $OutputPath = "scripts\\mode-manager\data\duplication_report.json"
     
     # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $DetectScript -ErrorAction SilentlyContinue)) {
@@ -146,7 +146,7 @@ function Start-DuplicationDetectionPY {
     Write-Log "DÃ©marrage de la dÃ©tection des duplications de code avec Python..." -Level "TITLE"
     
     $DetectScript = "scripts\maintenance\duplication\Find-CodeDuplication.py"
-    $OutputPath = "scripts\manager\data\duplication_report.json"
+    $OutputPath = "scripts\\mode-manager\data\duplication_report.json"
     
     # VÃ©rifier si le script existe
     if (-not (Test-Path -Path $DetectScript -ErrorAction SilentlyContinue)) {
@@ -205,8 +205,8 @@ function Start-ScriptMergePS {
     Write-Log "DÃ©marrage de la fusion des scripts similaires avec PowerShell..." -Level "TITLE"
     
     $MergeScript = "scripts\maintenance\duplication\Merge-SimilarScripts.ps1"
-    $InputPath = "scripts\manager\data\duplication_report.json"
-    $OutputPath = "scripts\manager\data\merge_report.json"
+    $InputPath = "scripts\\mode-manager\data\duplication_report.json"
+    $OutputPath = "scripts\\mode-manager\data\merge_report.json"
     $LibraryPath = "scripts\common\lib"
     
     # VÃ©rifier si le script existe
@@ -269,8 +269,8 @@ function Start-ScriptMergePY {
     Write-Log "DÃ©marrage de la fusion des scripts similaires avec Python..." -Level "TITLE"
     
     $MergeScript = "scripts\maintenance\duplication\Merge-SimilarScripts.py"
-    $InputPath = "scripts\manager\data\duplication_report.json"
-    $OutputPath = "scripts\manager\data\merge_report.json"
+    $InputPath = "scripts\\mode-manager\data\duplication_report.json"
+    $OutputPath = "scripts\\mode-manager\data\merge_report.json"
     $LibraryPath = "scripts\common\lib"
     
     # VÃ©rifier si le script existe
@@ -392,3 +392,4 @@ function Start-DuplicationManagement {
 
 # ExÃ©cuter la fonction principale
 Start-DuplicationManagement -Action $Action -Path $Path -MinimumLineCount $MinimumLineCount -SimilarityThreshold $SimilarityThreshold -MinimumDuplicationCount $MinimumDuplicationCount -ScriptType $ScriptType -AutoApply:$AutoApply -Interactive:$Interactive -ShowDetails:$ShowDetails -UsePython:$UsePython
+

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les scripts du manager.
@@ -10,7 +10,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -22,7 +22,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -47,19 +47,19 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 # Configuration de Pester
@@ -70,11 +70,11 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "TestResults.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Nous n'exécutons pas les tests individuels directement car ils nécessitent des modifications
-# pour fonctionner correctement. Nous allons plutôt exécuter des tests simplifiés ici.
-Write-Log "Les tests individuels seront exécutés séparément après correction" -Level "INFO"
+# Nous n'exÃ©cutons pas les tests individuels directement car ils nÃ©cessitent des modifications
+# pour fonctionner correctement. Nous allons plutÃ´t exÃ©cuter des tests simplifiÃ©s ici.
+Write-Log "Les tests individuels seront exÃ©cutÃ©s sÃ©parÃ©ment aprÃ¨s correction" -Level "INFO"
 
-# Tests Pester supplémentaires
+# Tests Pester supplÃ©mentaires
 Describe "Tests de la structure du script manager" {
     Context "Tests de la structure des dossiers" {
         It "Le dossier manager devrait exister" {
@@ -111,8 +111,8 @@ Describe "Tests de la structure du script manager" {
     }
 
     Context "Tests des scripts principaux" {
-        It "Le script Initialize-ManagerEnvironment.ps1 devrait exister" {
-            Test-Path -Path "$PSScriptRoot/../Initialize-ManagerEnvironment.ps1" | Should -Be $true
+        It "Le script script-manager.ps1 devrait exister" {
+            Test-Path -Path "$PSScriptRoot/../script-manager.ps1" | Should -Be $true
         }
 
         It "Le script Organize-ManagerScripts.ps1 devrait exister" {
@@ -143,44 +143,45 @@ Describe "Tests de la structure du script manager" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Log "`nRésumé des tests:" -Level "INFO"
-Write-Log "  Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "  Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "  Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
-Write-Log "  Tests ignorés: $($testResults.SkippedCount)" -Level "WARNING"
-Write-Log "  Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "`nRÃ©sumÃ© des tests:" -Level "INFO"
+Write-Log "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "  Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
+Write-Log "  Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "WARNING"
+Write-Log "  DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "TestResults.html"
 
-    # Vérifier si ReportUnit est installé
+    # VÃ©rifier si ReportUnit est installÃ©
     $reportUnitPath = Join-Path -Path $env:TEMP -ChildPath "ReportUnit.exe"
     if (-not (Test-Path -Path $reportUnitPath)) {
-        Write-Log "Téléchargement de ReportUnit..." -Level "INFO"
+        Write-Log "TÃ©lÃ©chargement de ReportUnit..." -Level "INFO"
         $reportUnitUrl = "https://github.com/reportunit/reportunit/releases/download/1.2.1/ReportUnit.exe"
         Invoke-WebRequest -Uri $reportUnitUrl -OutFile $reportUnitPath
     }
 
-    # Générer le rapport HTML
-    Write-Log "Génération du rapport HTML..." -Level "INFO"
+    # GÃ©nÃ©rer le rapport HTML
+    Write-Log "GÃ©nÃ©ration du rapport HTML..." -Level "INFO"
     & $reportUnitPath $pesterConfig.TestResult.OutputPath $htmlPath
 
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
 # Afficher le chemin du rapport XML
-Write-Log "Rapport XML généré: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML gÃ©nÃ©rÃ©: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 } else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }
+

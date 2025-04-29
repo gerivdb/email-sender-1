@@ -1,4 +1,4 @@
-{
+﻿{
     "BrokenReferences":  [
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\api\\external\\AugmentExecutor.ps1",
@@ -68,7 +68,7 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\api\\external\\AugmentExecutor.ps1",
-                                 "ReferencePath":  "@\n\n# Fonction pour écrire dans le journal\nfunction Write-Log {\n    param (\n        [string]$Message,\n        [string]$Level = ",
+                                 "ReferencePath":  "@\n\n# Fonction pour Ã©crire dans le journal\nfunction Write-Log {\n    param (\n        [string]$Message,\n        [string]$Level = ",
                                  "LineNumbers":  [
 
                                                  ]
@@ -89,14 +89,14 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\api\\external\\explore-n8n-api.ps1",
-                                 "ReferencePath":  "@\n\n# Préparation des en-têtes pour les requêtes API\n$headers = @{\n    ",
+                                 "ReferencePath":  "@\n\n# PrÃ©paration des en-tÃªtes pour les requÃªtes API\n$headers = @{\n    ",
                                  "LineNumbers":  [
 
                                                  ]
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\api\\external\\explore-n8n-api.ps1",
-                                 "ReferencePath":  "@\n\n# Écriture de la documentation dans le fichier de sortie\n$documentation | Out-File -FilePath $outputFile -Encoding utf8\nWrite-Host ",
+                                 "ReferencePath":  "@\n\n# Ã‰criture de la documentation dans le fichier de sortie\n$documentation | Out-File -FilePath $outputFile -Encoding utf8\nWrite-Host ",
                                  "LineNumbers":  [
 
                                                  ]
@@ -268,7 +268,7 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\CleanupRoadmapFiles.ps1",
-                                 "ReferencePath":  ".\\Roadmap\\RoadmapManager.ps1",
+                                 "ReferencePath":  ".\\Roadmap\\roadmap-manager.ps1",
                                  "LineNumbers":  [
                                                      149
                                                  ]
@@ -535,7 +535,7 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\KnowledgeSharing.ps1",
-                                 "ReferencePath":  "@\n        \n        $indexContent | Set-Content -Path $KnowledgeConfig.IndexFile -Encoding UTF8\n    }\n    \n    # Initialiser le module de documentation des erreurs\n    Initialize-ErrorDocumentation\n    \n    return $KnowledgeConfig\n}\n\n# Fonction pour créer un nouvel article\nfunction New-KnowledgeArticle {\n    param (\n        [Parameter(Mandatory = $true)]\n        [string]$Title,\n        \n        [Parameter(Mandatory = $true)]\n        [ValidateSet(",
+                                 "ReferencePath":  "@\n        \n        $indexContent | Set-Content -Path $KnowledgeConfig.IndexFile -Encoding UTF8\n    }\n    \n    # Initialiser le module de documentation des erreurs\n    Initialize-ErrorDocumentation\n    \n    return $KnowledgeConfig\n}\n\n# Fonction pour crÃ©er un nouvel article\nfunction New-KnowledgeArticle {\n    param (\n        [Parameter(Mandatory = $true)]\n        [string]$Title,\n        \n        [Parameter(Mandatory = $true)]\n        [ValidateSet(",
                                  "LineNumbers":  [
 
                                                  ]
@@ -651,7 +651,7 @@
                                                  ]
                              },
                              {
-                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\RoadmapManager.ps1",
+                                 "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\roadmap-manager.ps1",
                                  "ReferencePath":  "$scriptPath",
                                  "LineNumbers":  [
                                                      16,
@@ -721,7 +721,7 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\StartRoadmap.ps1",
-                                 "ReferencePath":  ".\\Roadmap\\RoadmapManager.ps1",
+                                 "ReferencePath":  ".\\Roadmap\\roadmap-manager.ps1",
                                  "LineNumbers":  [
                                                      5
                                                  ]
@@ -3573,7 +3573,7 @@
                              },
                              {
                                  "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\utils\\automation\\organize-docs.ps1",
-                                 "ReferencePath":  "docs\\plans\\plan de départ",
+                                 "ReferencePath":  "docs\\plans\\plan de dÃ©part",
                                  "LineNumbers":  [
                                                      93
                                                  ]
@@ -16721,3 +16721,4 @@
     "Timestamp":  "2025-04-08 18:07:00",
     "TotalFiles":  750
 }
+

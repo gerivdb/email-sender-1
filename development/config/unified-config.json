@@ -1,4 +1,4 @@
-{
+﻿{
   "General": {
     "RoadmapPath": "projet\\roadmaps\\Roadmap\\roadmap_complete_converted.md",
     "ActiveDocumentPath": "docs\\plans\\plan-modes-stepup.md",
@@ -153,7 +153,7 @@
     },
     "Development": {
       "Path": "projet\\roadmaps\\plans\\plan-modes-stepup.md",
-      "Description": "Plan de développement des modes",
+      "Description": "Plan de dÃ©veloppement des modes",
       "Format": "Markdown",
       "AutoUpdate": true,
       "GitIntegration": true,
@@ -168,7 +168,7 @@
       "ReportPath": "projet\\roadmaps\\Reports"
     }
   },
-  "RoadmapManager": {
+  "roadmap-manager": {
     "DefaultRoadmapPath": "projet\\roadmaps\\Roadmap\\roadmap_perso.md",
     "ReportsFolder": "projet\\roadmaps\\Reports",
     "GitRepo": ".",
@@ -176,10 +176,10 @@
     "AutoUpdate": true,
     "GenerateReport": true,
     "JournalPath": "projet\\roadmaps\\journal",
-    "LogFile": "projet\\roadmaps\\logs\\RoadmapManager.log",
+    "LogFile": "projet\\roadmaps\\logs\\roadmap-manager.log",
     "BackupFolder": "projet\\roadmaps\\backup",
     "Scripts": {
-      "Manager": "projet\\roadmaps\\scripts\\RoadmapManager.ps1",
+      "Manager": "projet\\roadmaps\\scripts\\roadmap-manager.ps1",
       "Analyzer": "projet\\roadmaps\\scripts\\RoadmapAnalyzer.ps1",
       "GitUpdater": "projet\\roadmaps\\scripts\\RoadmapGitUpdater.ps1",
       "Cleanup": "projet\\roadmaps\\scripts\\CleanupRoadmapFiles.ps1",
@@ -190,7 +190,7 @@
   },
   "Workflows": {
     "Development": {
-      "Description": "Workflow de développement complet",
+      "Description": "Workflow de dÃ©veloppement complet",
       "Modes": ["GRAN", "DEV-R", "TEST", "CHECK"],
       "AutoContinue": true,
       "StopOnError": true
@@ -202,7 +202,7 @@
       "StopOnError": true
     },
     "Debugging": {
-      "Description": "Workflow de débogage",
+      "Description": "Workflow de dÃ©bogage",
       "Modes": ["DEBUG", "TEST", "CHECK"],
       "AutoContinue": true,
       "StopOnError": true
@@ -246,3 +246,4 @@
     "BackupPath": "backup"
   }
 }
+

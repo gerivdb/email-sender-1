@@ -2,7 +2,7 @@
 # Ce script permet de lancer rapidement le gestionnaire de roadmap
 
 # Chemin du script principal
-$scriptPath = "Roadmap\scripts\RoadmapManager.ps1"
+$scriptPath = "Roadmap\scripts\roadmap-manager.ps1"
 
 # VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
@@ -22,3 +22,4 @@ Write-Host ""
 # Afficher un message de fin
 Write-Host ""
 Write-Host "ExÃ©cution terminÃ©e." -ForegroundColor Green
+

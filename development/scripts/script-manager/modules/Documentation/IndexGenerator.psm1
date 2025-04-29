@@ -119,7 +119,7 @@ Utilisez la fonction de recherche de votre navigateur (Ctrl+F) pour trouver rapi
 Pour mettre Ã  jour cette documentation, exÃ©cutez :
 
 ```powershell
-.\scripts\manager\Phase3-DocumentAndMonitor.ps1
+.\scripts\\mode-manager\Phase3-DocumentAndMonitor.ps1
 ```
 
 ---
@@ -154,3 +154,4 @@ Pour mettre Ã  jour cette documentation, exÃ©cutez :
 
 # Exporter les fonctions
 Export-ModuleMember -Function New-GlobalIndex
+

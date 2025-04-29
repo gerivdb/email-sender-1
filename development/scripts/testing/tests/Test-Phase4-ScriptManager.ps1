@@ -118,7 +118,7 @@ function Test-ScriptManager {
     }
     
     # VÃ©rifier si le ScriptManager existe
-    $ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
+    $ScriptManagerPath = "scripts\\mode-manager\ScriptManager.ps1"
     if (-not (Test-Path -Path $ScriptManagerPath)) {
         Write-Log "Le ScriptManager n'existe pas: $ScriptManagerPath" -Level "ERROR"
         
@@ -139,12 +139,12 @@ function Test-ScriptManager {
         @{
             Name = "Inventaire"
             Command = "& '$ScriptManagerPath' -Action inventory -Path '$Path'"
-            ExpectedOutputPath = "scripts\manager\data\inventory.json"
+            ExpectedOutputPath = "scripts\\mode-manager\data\inventory.json"
         },
         @{
             Name = "Analyse"
             Command = "& '$ScriptManagerPath' -Action analyze -Path '$Path'"
-            ExpectedOutputPath = "scripts\manager\data\analysis.json"
+            ExpectedOutputPath = "scripts\\mode-manager\data\analysis.json"
         },
         @{
             Name = "Standardisation"
@@ -159,7 +159,7 @@ function Test-ScriptManager {
         @{
             Name = "Documentation"
             Command = "& '$ScriptManagerPath' -Action document -Path '$Path' -Format Markdown"
-            ExpectedOutputPath = "scripts\manager\docs\script_documentation.markdown"
+            ExpectedOutputPath = "scripts\\mode-manager\docs\script_documentation.markdown"
         },
         @{
             Name = "Tableau de bord"
@@ -228,3 +228,4 @@ $Success = Test-ScriptManager -Path $Path -OutputPath $OutputPath -Verbose:$Verb
 
 # Retourner le rÃ©sultat
 return $Success
+

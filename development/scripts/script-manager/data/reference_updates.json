@@ -1,4 +1,4 @@
-{
+﻿{
     "TotalReferences":  1425,
     "Timestamp":  "2025-04-08 18:12:15",
     "Updates":  [
@@ -368,7 +368,7 @@
                     },
                     {
                         "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\CleanupRoadmapFiles.ps1",
-                        "OldPath":  ".\\Roadmap\\RoadmapManager.ps1",
+                        "OldPath":  ".\\Roadmap\\roadmap-manager.ps1",
                         "NewPath":  "..\\D",
                         "LineNumbers":  [
                                             149
@@ -877,7 +877,7 @@
                     },
                     {
                         "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\scripts\\docs\\StartRoadmap.ps1",
-                        "OldPath":  ".\\Roadmap\\RoadmapManager.ps1",
+                        "OldPath":  ".\\Roadmap\\roadmap-manager.ps1",
                         "NewPath":  "..\\D",
                         "LineNumbers":  [
                                             5
@@ -1428,3 +1428,4 @@
                     }
                 ]
 }
+

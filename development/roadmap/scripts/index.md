@@ -1,6 +1,6 @@
-# Scripts
+﻿# Scripts
 
-Cette section contient la documentation relative à Scripts.
+Cette section contient la documentation relative Ã  Scripts.
 
 ## Contenu
 
@@ -14,8 +14,9 @@ Cette section contient la documentation relative à Scripts.
 - [README](./README.md)
 - [Roadmapanalyzer](./RoadmapAnalyzer.ps1)
 - [Roadmapgitupdater](./RoadmapGitUpdater.ps1)
-- [Roadmapmanager](./RoadmapManager.ps1)
+- [roadmap-manager](./roadmap-manager.ps1)
 - [Startroadmapexecution](./StartRoadmapExecution.ps1)
 - [Sync Roadmapwithjournal](./Sync-RoadmapWithJournal.ps1)
 - [Test Optimization Enhancements](./test_optimization_enhancements.txt)
 - [Testomnibus Enhancements](./testomnibus_enhancements.txt)
+

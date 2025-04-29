@@ -228,7 +228,7 @@ $($Examples -join "`n`n")
 Ce README est gÃ©nÃ©rÃ© automatiquement par le Script Manager. Pour mettre Ã  jour la documentation, exÃ©cutez :
 
 ```powershell
-.\scripts\manager\Phase3-DocumentAndMonitor.ps1
+.\scripts\\mode-manager\Phase3-DocumentAndMonitor.ps1
 ```
 
 DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
@@ -239,3 +239,4 @@ DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Exporter les fonctions
 Export-ModuleMember -Function New-FolderReadmes, Get-ReadmeContent
+

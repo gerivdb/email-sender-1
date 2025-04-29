@@ -170,7 +170,7 @@ function Test-Phase4 {
     Write-Log "Test de la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts" -Level "TITLE"
     
     # VÃ©rifier si le ScriptManager existe
-    $ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
+    $ScriptManagerPath = "scripts\\mode-manager\ScriptManager.ps1"
     if (-not (Test-Path -Path $ScriptManagerPath)) {
         Write-Log "Le ScriptManager n'existe pas: $ScriptManagerPath" -Level "ERROR"
         return $false
@@ -185,7 +185,7 @@ function Test-Phase4 {
         & $ScriptManagerPath -Action inventory -Path $Path
         
         # VÃ©rifier si le fichier d'inventaire a Ã©tÃ© gÃ©nÃ©rÃ©
-        $InventoryPath = "scripts\manager\data\inventory.json"
+        $InventoryPath = "scripts\\mode-manager\data\inventory.json"
         if (Test-Path -Path $InventoryPath) {
             Write-Log "Fichier d'inventaire gÃ©nÃ©rÃ© avec succÃ¨s: $InventoryPath" -Level "SUCCESS"
             
@@ -211,7 +211,7 @@ function Test-Phase4 {
         & $ScriptManagerPath -Action analyze -Path $Path
         
         # VÃ©rifier si le fichier d'analyse a Ã©tÃ© gÃ©nÃ©rÃ©
-        $AnalysisPath = "scripts\manager\data\analysis.json"
+        $AnalysisPath = "scripts\\mode-manager\data\analysis.json"
         if (Test-Path -Path $AnalysisPath) {
             Write-Log "Fichier d'analyse gÃ©nÃ©rÃ© avec succÃ¨s: $AnalysisPath" -Level "SUCCESS"
         } else {
@@ -229,7 +229,7 @@ function Test-Phase4 {
         & $ScriptManagerPath -Action document -Path $Path -Format Markdown
         
         # VÃ©rifier si le fichier de documentation a Ã©tÃ© gÃ©nÃ©rÃ©
-        $DocumentationPath = "scripts\manager\docs\script_documentation.markdown"
+        $DocumentationPath = "scripts\\mode-manager\docs\script_documentation.markdown"
         if (Test-Path -Path $DocumentationPath) {
             Write-Log "Fichier de documentation gÃ©nÃ©rÃ© avec succÃ¨s: $DocumentationPath" -Level "SUCCESS"
         } else {
@@ -306,3 +306,4 @@ $Success = Test-AllPhases -Path $Path
 
 # Retourner le rÃ©sultat
 return $Success
+

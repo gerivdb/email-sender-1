@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Organise les fichiers en vrac Ã  la racine du dÃ©pÃ´t dans les sous-dossiers appropriÃ©s.
+    Organise les fichiers en vrac ÃƒÂ  la racine du dÃƒÂ©pÃƒÂ´t dans les sous-dossiers appropriÃƒÂ©s.
 .DESCRIPTION
-    Ce script identifie les fichiers en vrac Ã  la racine du dÃ©pÃ´t et les dÃ©place
-    dans les sous-dossiers appropriÃ©s selon leur type et leur fonction.
+    Ce script identifie les fichiers en vrac ÃƒÂ  la racine du dÃƒÂ©pÃƒÂ´t et les dÃƒÂ©place
+    dans les sous-dossiers appropriÃƒÂ©s selon leur type et leur fonction.
 .PARAMETER DryRun
-    Si spÃ©cifiÃ©, simule les opÃ©rations sans effectuer de dÃ©placements rÃ©els.
+    Si spÃƒÂ©cifiÃƒÂ©, simule les opÃƒÂ©rations sans effectuer de dÃƒÂ©placements rÃƒÂ©els.
 .EXAMPLE
     .\Organize-RootFiles.ps1
-    # Organise les fichiers Ã  la racine du dÃ©pÃ´t.
+    # Organise les fichiers ÃƒÂ  la racine du dÃƒÂ©pÃƒÂ´t.
 .EXAMPLE
     .\Organize-RootFiles.ps1 -DryRun
-    # Simule l'organisation des fichiers sans effectuer de dÃ©placements rÃ©els.
+    # Simule l'organisation des fichiers sans effectuer de dÃƒÂ©placements rÃƒÂ©els.
 .NOTES
     Auteur: Augment Agent
     Version: 1.0
@@ -47,7 +47,7 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $colorMap[$Level]
 }
 
-# Fonction pour dÃ©placer un fichier
+# Fonction pour dÃƒÂ©placer un fichier
 function Move-FileToDestination {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -68,35 +68,35 @@ function Move-FileToDestination {
         $fileName = Split-Path $SourcePath -Leaf
         $destinationPath = Join-Path $DestinationFolder $fileName
         
-        # CrÃ©er le dossier de destination s'il n'existe pas
+        # CrÃƒÂ©er le dossier de destination s'il n'existe pas
         if (-not (Test-Path -Path $DestinationFolder)) {
             if ($DryRun) {
-                Write-Log -Message "CrÃ©ation du dossier: $DestinationFolder (simulation)" -Level "INFO"
+                Write-Log -Message "CrÃƒÂ©ation du dossier: $DestinationFolder (simulation)" -Level "INFO"
             } else {
                 New-Item -ItemType Directory -Path $DestinationFolder -Force | Out-Null
-                Write-Log -Message "Dossier crÃ©Ã©: $DestinationFolder" -Level "SUCCESS"
+                Write-Log -Message "Dossier crÃƒÂ©ÃƒÂ©: $DestinationFolder" -Level "SUCCESS"
             }
         }
         
-        # VÃ©rifier si le fichier existe dÃ©jÃ  Ã  destination
+        # VÃƒÂ©rifier si le fichier existe dÃƒÂ©jÃƒÂ  ÃƒÂ  destination
         if (Test-Path -Path $destinationPath) {
-            Write-Log -Message "Le fichier $fileName existe dÃ©jÃ  dans $DestinationFolder" -Level "WARNING"
+            Write-Log -Message "Le fichier $fileName existe dÃƒÂ©jÃƒÂ  dans $DestinationFolder" -Level "WARNING"
             return
         }
         
-        # DÃ©placer le fichier
+        # DÃƒÂ©placer le fichier
         if ($DryRun) {
-            Write-Log -Message "DÃ©placement de $fileName vers $DestinationFolder (simulation)" -Level "INFO"
+            Write-Log -Message "DÃƒÂ©placement de $fileName vers $DestinationFolder (simulation)" -Level "INFO"
         } else {
             Move-Item -Path $SourcePath -Destination $destinationPath -Force
-            Write-Log -Message "Fichier dÃ©placÃ©: $fileName -> $DestinationFolder" -Level "SUCCESS"
+            Write-Log -Message "Fichier dÃƒÂ©placÃƒÂ©: $fileName -> $DestinationFolder" -Level "SUCCESS"
         }
     } catch {
-        Write-Log -Message "Erreur lors du dÃ©placement de $SourcePath vers $DestinationFolder : $_" -Level "ERROR"
+        Write-Log -Message "Erreur lors du dÃƒÂ©placement de $SourcePath vers $DestinationFolder : $_" -Level "ERROR"
     }
 }
 
-# Fichiers Ã  conserver Ã  la racine
+# Fichiers ÃƒÂ  conserver ÃƒÂ  la racine
 $keepFiles = @(
     "README.md",
     ".gitignore",
@@ -109,7 +109,7 @@ $keepFiles = @(
     "CODE_OF_CONDUCT.md"
 )
 
-# RÃ¨gles d'organisation des fichiers
+# RÃƒÂ¨gles d'organisation des fichiers
 $organizationRules = @(
     # Format: [pattern, destination, description]
     # Tests
@@ -128,7 +128,7 @@ $organizationRules = @(
     # Scripts PowerShell
     @("*.ps1", "scripts", "Scripts PowerShell"),
     @("Run-FunctionalTests.ps1", "development/scripts/tests", "Scripts de tests fonctionnels"),
-    @("Start-MCPManager.ps1", "development/scripts/mcp", "Scripts MCP"),
+    @("mcp-manager.ps1", "development/scripts/mcp", "Scripts MCP"),
     @("TestOmnibus-*.ps1", "development/scripts/tests", "Scripts TestOmnibus"),
     @("test_extension*.ps1", "development/scripts/tests", "Scripts de tests d'extension"),
     
@@ -143,27 +143,27 @@ $organizationRules = @(
     @("README_*.md", "docs", "Documentation README"),
     
     # Fichiers de configuration
-    @("*.json.improved", "config", "Fichiers de configuration amÃ©liorÃ©s"),
+    @("*.json.improved", "config", "Fichiers de configuration amÃƒÂ©liorÃƒÂ©s"),
     
     # Fichiers de journalisation
     @("*.log", "logs", "Fichiers de journalisation"),
     
-    # Fichiers de donnÃ©es
+    # Fichiers de donnÃƒÂ©es
     @("*.txt", "data", "Fichiers texte"),
-    @("test_results.json", "data", "Fichiers de rÃ©sultats de tests")
+    @("test_results.json", "data", "Fichiers de rÃƒÂ©sultats de tests")
 )
 
-# DÃ©but du script principal
-Write-Log -Message "=== Organisation des fichiers Ã  la racine du dÃ©pÃ´t ===" -Level "INFO"
+# DÃƒÂ©but du script principal
+Write-Log -Message "=== Organisation des fichiers ÃƒÂ  la racine du dÃƒÂ©pÃƒÂ´t ===" -Level "INFO"
 
 if ($DryRun) {
-    Write-Log -Message "Mode simulation activÃ© - aucun fichier ne sera dÃ©placÃ©" -Level "WARNING"
+    Write-Log -Message "Mode simulation activÃƒÂ© - aucun fichier ne sera dÃƒÂ©placÃƒÂ©" -Level "WARNING"
 }
 
-# Obtenir tous les fichiers Ã  la racine
+# Obtenir tous les fichiers ÃƒÂ  la racine
 $rootFiles = Get-ChildItem -Path . -File
 
-Write-Log -Message "Nombre de fichiers Ã  la racine: $($rootFiles.Count)" -Level "INFO"
+Write-Log -Message "Nombre de fichiers ÃƒÂ  la racine: $($rootFiles.Count)" -Level "INFO"
 
 # Compteurs pour le rapport
 $processedCount = 0
@@ -174,16 +174,16 @@ foreach ($file in $rootFiles) {
     $processedCount++
     $fileName = $file.Name
     
-    # VÃ©rifier si le fichier doit Ãªtre conservÃ© Ã  la racine
+    # VÃƒÂ©rifier si le fichier doit ÃƒÂªtre conservÃƒÂ© ÃƒÂ  la racine
     if ($keepFiles -contains $fileName) {
-        Write-Log -Message "Conservation Ã  la racine: $fileName" -Level "INFO"
+        Write-Log -Message "Conservation ÃƒÂ  la racine: $fileName" -Level "INFO"
         $skippedCount++
         continue
     }
     
     $moved = $false
     
-    # Appliquer les rÃ¨gles d'organisation
+    # Appliquer les rÃƒÂ¨gles d'organisation
     foreach ($rule in $organizationRules) {
         $pattern = $rule[0]
         $destination = $rule[1]
@@ -197,29 +197,29 @@ foreach ($file in $rootFiles) {
         }
     }
     
-    # Si aucune rÃ¨gle ne correspond, dÃ©placer dans un dossier par dÃ©faut selon l'extension
+    # Si aucune rÃƒÂ¨gle ne correspond, dÃƒÂ©placer dans un dossier par dÃƒÂ©faut selon l'extension
     if (-not $moved) {
         $extension = $file.Extension
         
         switch ($extension) {
             ".ps1" { 
-                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "scripts" -Description "Scripts PowerShell (par dÃ©faut)" -DryRun:$DryRun
+                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "scripts" -Description "Scripts PowerShell (par dÃƒÂ©faut)" -DryRun:$DryRun
                 $movedCount++
             }
             ".py" { 
-                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "development/scripts/python" -Description "Scripts Python (par dÃ©faut)" -DryRun:$DryRun
+                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "development/scripts/python" -Description "Scripts Python (par dÃƒÂ©faut)" -DryRun:$DryRun
                 $movedCount++
             }
             ".md" { 
-                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "docs" -Description "Documentation (par dÃ©faut)" -DryRun:$DryRun
+                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "docs" -Description "Documentation (par dÃƒÂ©faut)" -DryRun:$DryRun
                 $movedCount++
             }
             ".json" { 
-                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "config" -Description "Configuration (par dÃ©faut)" -DryRun:$DryRun
+                Move-FileToDestination -SourcePath $file.FullName -DestinationFolder "config" -Description "Configuration (par dÃƒÂ©faut)" -DryRun:$DryRun
                 $movedCount++
             }
             default {
-                Write-Log -Message "Aucune rÃ¨gle pour $fileName (extension: $extension)" -Level "WARNING"
+                Write-Log -Message "Aucune rÃƒÂ¨gle pour $fileName (extension: $extension)" -Level "WARNING"
                 $skippedCount++
             }
         }
@@ -228,13 +228,14 @@ foreach ($file in $rootFiles) {
 
 # Rapport final
 Write-Log -Message "=== Rapport d'organisation ===" -Level "INFO"
-Write-Log -Message "Fichiers traitÃ©s: $processedCount" -Level "INFO"
-Write-Log -Message "Fichiers dÃ©placÃ©s: $movedCount" -Level "SUCCESS"
-Write-Log -Message "Fichiers conservÃ©s/ignorÃ©s: $skippedCount" -Level "INFO"
+Write-Log -Message "Fichiers traitÃƒÂ©s: $processedCount" -Level "INFO"
+Write-Log -Message "Fichiers dÃƒÂ©placÃƒÂ©s: $movedCount" -Level "SUCCESS"
+Write-Log -Message "Fichiers conservÃƒÂ©s/ignorÃƒÂ©s: $skippedCount" -Level "INFO"
 
 if ($DryRun) {
-    Write-Log -Message "Mode simulation - Aucun fichier n'a Ã©tÃ© rÃ©ellement dÃ©placÃ©" -Level "WARNING"
-    Write-Log -Message "Pour effectuer les dÃ©placements, exÃ©cutez le script sans le paramÃ¨tre -DryRun" -Level "INFO"
+    Write-Log -Message "Mode simulation - Aucun fichier n'a ÃƒÂ©tÃƒÂ© rÃƒÂ©ellement dÃƒÂ©placÃƒÂ©" -Level "WARNING"
+    Write-Log -Message "Pour effectuer les dÃƒÂ©placements, exÃƒÂ©cutez le script sans le paramÃƒÂ¨tre -DryRun" -Level "INFO"
 } else {
-    Write-Log -Message "Organisation terminÃ©e avec succÃ¨s" -Level "SUCCESS"
+    Write-Log -Message "Organisation terminÃƒÂ©e avec succÃƒÂ¨s" -Level "SUCCESS"
 }
+

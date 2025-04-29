@@ -1,30 +1,30 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Analyse les scripts du manager.
 .DESCRIPTION
     Ce script analyse les scripts du manager pour en extraire des informations
-    structurelles, détecter les problèmes potentiels et évaluer la qualité du code.
+    structurelles, dÃ©tecter les problÃ¨mes potentiels et Ã©valuer la qualitÃ© du code.
 .PARAMETER Path
-    Chemin du dossier contenant les scripts à analyser.
+    Chemin du dossier contenant les scripts Ã  analyser.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports d'analyse.
 .PARAMETER ScriptType
-    Type de script à analyser (All, PowerShell, Python, Batch, Shell).
+    Type de script Ã  analyser (All, PowerShell, Python, Batch, Shell).
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats de l'analyse.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats de l'analyse.
 .EXAMPLE
-    .\Analyze-Scripts.ps1 -Path "development\scripts\manager" -OutputPath ".\reports\analysis"
+    .\Analyze-Scripts.ps1 -Path "development\\scripts\\mode-manager" -OutputPath ".\reports\analysis"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
-    [string]$Path = "development\scripts\manager",
+    [string]$Path = "development\\scripts\\mode-manager",
     
     [Parameter(Mandatory = $false)]
     [string]$OutputPath = ".\reports\analysis",
@@ -37,7 +37,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -99,7 +99,7 @@ function Get-ScriptInfo {
     }
 }
 
-# Fonction pour évaluer la qualité d'un script
+# Fonction pour Ã©valuer la qualitÃ© d'un script
 function Test-ScriptQuality {
     [CmdletBinding()]
     param (
@@ -107,7 +107,7 @@ function Test-ScriptQuality {
         [hashtable]$ScriptInfo
     )
     
-    # Définir les seuils de qualité
+    # DÃ©finir les seuils de qualitÃ©
     $thresholds = @{
         MinLineCount = 10
         MaxLineCount = 1000
@@ -116,21 +116,21 @@ function Test-ScriptQuality {
         RequiredElements = @("HasSynopsis", "HasDescription", "HasExample")
     }
     
-    # Calculer les métriques
+    # Calculer les mÃ©triques
     $metrics = @{
         CommentRatio = if ($ScriptInfo.LineCount -gt 0) { $ScriptInfo.CommentLineCount / $ScriptInfo.LineCount } else { 0 }
         EmptyLineRatio = if ($ScriptInfo.LineCount -gt 0) { $ScriptInfo.EmptyLineCount / $ScriptInfo.LineCount } else { 0 }
         MissingElements = @()
     }
     
-    # Vérifier les éléments requis
+    # VÃ©rifier les Ã©lÃ©ments requis
     foreach ($element in $thresholds.RequiredElements) {
         if (-not $ScriptInfo[$element]) {
             $metrics.MissingElements += $element
         }
     }
     
-    # Évaluer la qualité
+    # Ã‰valuer la qualitÃ©
     $quality = @{
         IsValid = $true
         Issues = @()
@@ -153,24 +153,24 @@ function Test-ScriptQuality {
     
     if ($metrics.EmptyLineRatio -gt $thresholds.MaxEmptyLineRatio) {
         $quality.IsValid = $false
-        $quality.Issues += "Le ratio de lignes vides est trop élevé (plus de $($thresholds.MaxEmptyLineRatio * 100)%)"
+        $quality.Issues += "Le ratio de lignes vides est trop Ã©levÃ© (plus de $($thresholds.MaxEmptyLineRatio * 100)%)"
     }
     
     if ($metrics.MissingElements.Count -gt 0) {
         $quality.IsValid = $false
-        $quality.Issues += "Éléments manquants : $($metrics.MissingElements -join ', ')"
+        $quality.Issues += "Ã‰lÃ©ments manquants : $($metrics.MissingElements -join ', ')"
     }
     
     return $quality
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Récupérer les scripts à analyser
+# RÃ©cupÃ©rer les scripts Ã  analyser
 $scriptExtensions = switch ($ScriptType) {
     "PowerShell" { @(".ps1", ".psm1", ".psd1") }
     "Python" { @(".py") }
@@ -182,7 +182,7 @@ $scriptExtensions = switch ($ScriptType) {
 $scripts = Get-ChildItem -Path $Path -Recurse -File | Where-Object { $scriptExtensions -contains $_.Extension }
 
 if ($scripts.Count -eq 0) {
-    Write-Log "Aucun script trouvé." -Level "WARNING"
+    Write-Log "Aucun script trouvÃ©." -Level "WARNING"
     exit 0
 }
 
@@ -252,12 +252,12 @@ foreach ($script in $scripts) {
 
 Write-Progress -Activity "Analyse des scripts" -Completed
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $jsonPath = Join-Path -Path $OutputPath -ChildPath "analysis_results.json"
 $analysisResults | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonPath -Encoding utf8
-Write-Log "Résultats enregistrés: $jsonPath" -Level "SUCCESS"
+Write-Log "RÃ©sultats enregistrÃ©s: $jsonPath" -Level "SUCCESS"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "analysis_results.html"
     
@@ -281,16 +281,16 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport d'analyse des scripts</h1>
-    <p>Généré le $($analysisResults.GeneratedAt)</p>
+    <p>GÃ©nÃ©rÃ© le $($analysisResults.GeneratedAt)</p>
     
-    <h2>Résumé</h2>
+    <h2>RÃ©sumÃ©</h2>
     <div class="summary">
         <div>Nombre total de scripts: $($analysisResults.TotalScripts)</div>
         <div>Scripts valides: <span class="valid">$($analysisResults.ScriptsByQuality.Valid)</span></div>
         <div>Scripts invalides: <span class="invalid">$($analysisResults.ScriptsByQuality.Invalid)</span></div>
     </div>
     
-    <h2>Répartition par extension</h2>
+    <h2>RÃ©partition par extension</h2>
     <table>
         <tr>
             <th>Extension</th>
@@ -315,7 +315,7 @@ if ($GenerateHTML) {
         <tr>
             <th>Nom</th>
             <th>Chemin</th>
-            <th>Problèmes</th>
+            <th>ProblÃ¨mes</th>
         </tr>
 "@
     
@@ -333,7 +333,7 @@ if ($GenerateHTML) {
     $html += @"
     </table>
     
-    <h2>Détail des scripts</h2>
+    <h2>DÃ©tail des scripts</h2>
     <table>
         <tr>
             <th>Nom</th>
@@ -341,15 +341,15 @@ if ($GenerateHTML) {
             <th>Taille (octets)</th>
             <th>Lignes</th>
             <th>Fonctions</th>
-            <th>Paramètres</th>
+            <th>ParamÃ¨tres</th>
             <th>Commentaires</th>
             <th>Lignes vides</th>
             <th>Synopsis</th>
             <th>Description</th>
             <th>Exemple</th>
-            <th>Paramètre</th>
+            <th>ParamÃ¨tre</th>
             <th>Notes</th>
-            <th>Validité</th>
+            <th>ValiditÃ©</th>
         </tr>
 "@
     
@@ -384,16 +384,16 @@ if ($GenerateHTML) {
 "@
     
     $html | Out-File -FilePath $htmlPath -Encoding utf8
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
-# Afficher un résumé
-Write-Log "`nRésumé de l'analyse:" -Level "INFO"
+# Afficher un rÃ©sumÃ©
+Write-Log "`nRÃ©sumÃ© de l'analyse:" -Level "INFO"
 Write-Log "  Nombre total de scripts: $($analysisResults.TotalScripts)" -Level "INFO"
 Write-Log "  Scripts valides: $($analysisResults.ScriptsByQuality.Valid)" -Level "SUCCESS"
 Write-Log "  Scripts invalides: $($analysisResults.ScriptsByQuality.Invalid)" -Level $(if ($analysisResults.ScriptsByQuality.Invalid -eq 0) { "SUCCESS" } else { "WARNING" })
 
-Write-Log "`nRépartition par extension:" -Level "INFO"
+Write-Log "`nRÃ©partition par extension:" -Level "INFO"
 foreach ($extension in $analysisResults.ScriptsByExtension.Keys | Sort-Object) {
     Write-Log "  $extension: $($analysisResults.ScriptsByExtension[$extension])" -Level "INFO"
 }
@@ -409,4 +409,5 @@ if ($analysisResults.ScriptsByQuality.Invalid -gt 0) {
     }
 }
 
-Write-Log "`nAnalyse terminée." -Level "SUCCESS"
+Write-Log "`nAnalyse terminÃ©e." -Level "SUCCESS"
+

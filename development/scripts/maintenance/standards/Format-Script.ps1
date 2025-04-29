@@ -8,9 +8,9 @@
 .PARAMETER Path
     Chemin vers le rÃ©pertoire contenant les scripts Ã  analyser. Par dÃ©faut: "scripts".
 .PARAMETER ComplianceReportPath
-    Chemin oÃ¹ enregistrer le rapport de conformitÃ©. Par dÃ©faut: "scripts\manager\data\compliance_report.json".
+    Chemin oÃ¹ enregistrer le rapport de conformitÃ©. Par dÃ©faut: "scripts\\mode-manager\data\compliance_report.json".
 .PARAMETER OutputPath
-    Chemin oÃ¹ enregistrer le rapport de standardisation. Par dÃ©faut: "scripts\manager\data\standardization_report.json".
+    Chemin oÃ¹ enregistrer le rapport de standardisation. Par dÃ©faut: "scripts\\mode-manager\data\standardization_report.json".
 .PARAMETER ScriptType
     Type de scripts Ã  analyser. Valeurs possibles: "All", "PowerShell", "Python", "Batch", "Shell". Par dÃ©faut: "All".
 .PARAMETER Rules
@@ -33,8 +33,8 @@
 
 param (
     [string]$Path = "scripts",
-    [string]$ComplianceReportPath = "scripts\manager\data\compliance_report.json",
-    [string]$OutputPath = "scripts\manager\data\standardization_report.json",
+    [string]$ComplianceReportPath = "scripts\\mode-manager\data\compliance_report.json",
+    [string]$OutputPath = "scripts\\mode-manager\data\standardization_report.json",
     [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")]
     [string]$ScriptType = "All",
     [string[]]$Rules = @(),
@@ -57,7 +57,7 @@ function Write-Log {
         [string]$Level = "INFO",
         
         [Parameter(Mandatory = $false)]
-        [string]$LogFilePath = "scripts\manager\logs\standardization.log"
+        [string]$LogFilePath = "scripts\\mode-manager\logs\standardization.log"
     )
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -458,3 +458,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

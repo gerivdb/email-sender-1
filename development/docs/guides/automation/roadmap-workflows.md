@@ -1,84 +1,84 @@
-# Workflows automatisés pour la gestion des roadmaps
+﻿# Workflows automatisÃ©s pour la gestion des roadmaps
 
-Ce document présente les workflows automatisés pour la gestion des roadmaps, qui permettent d'exécuter régulièrement les tâches de synchronisation, de génération de rapports et de planification.
+Ce document prÃ©sente les workflows automatisÃ©s pour la gestion des roadmaps, qui permettent d'exÃ©cuter rÃ©guliÃ¨rement les tÃ¢ches de synchronisation, de gÃ©nÃ©ration de rapports et de planification.
 
 ## Workflows disponibles
 
 ### Workflow quotidien
 
-Le workflow quotidien exécute les tâches suivantes :
+Le workflow quotidien exÃ©cute les tÃ¢ches suivantes :
 
 1. Synchronisation de la roadmap principale vers les formats JSON et HTML
-2. Vérification de l'état d'avancement des tâches
-3. Génération d'un rapport quotidien
-4. Journalisation des résultats
+2. VÃ©rification de l'Ã©tat d'avancement des tÃ¢ches
+3. GÃ©nÃ©ration d'un rapport quotidien
+4. Journalisation des rÃ©sultats
 
-**Fréquence d'exécution** : Tous les jours à 9h00
+**FrÃ©quence d'exÃ©cution** : Tous les jours Ã  9h00
 
 **Script** : `development\scripts\workflows\workflow-quotidien.ps1`
 
-**Tâche planifiée** : `RoadmapManager-Quotidien`
+**TÃ¢che planifiÃ©e** : `roadmap-manager-Quotidien`
 
 ### Workflow hebdomadaire
 
-Le workflow hebdomadaire exécute les tâches suivantes :
+Le workflow hebdomadaire exÃ©cute les tÃ¢ches suivantes :
 
 1. Synchronisation de toutes les roadmaps vers les formats JSON et HTML
-2. Génération de rapports hebdomadaires détaillés
-3. Planification des tâches pour la semaine à venir
-4. Exécution du workflow de gestion de roadmap
-5. Journalisation des résultats
+2. GÃ©nÃ©ration de rapports hebdomadaires dÃ©taillÃ©s
+3. Planification des tÃ¢ches pour la semaine Ã  venir
+4. ExÃ©cution du workflow de gestion de roadmap
+5. Journalisation des rÃ©sultats
 
-**Fréquence d'exécution** : Tous les vendredis à 16h00
+**FrÃ©quence d'exÃ©cution** : Tous les vendredis Ã  16h00
 
 **Script** : `development\scripts\workflows\workflow-hebdomadaire.ps1`
 
-**Tâche planifiée** : `RoadmapManager-Hebdomadaire`
+**TÃ¢che planifiÃ©e** : `roadmap-manager-Hebdomadaire`
 
 ### Workflow mensuel
 
-Le workflow mensuel exécute les tâches suivantes :
+Le workflow mensuel exÃ©cute les tÃ¢ches suivantes :
 
 1. Synchronisation de toutes les roadmaps vers tous les formats (JSON, HTML, CSV)
-2. Génération de rapports mensuels détaillés avec graphiques, tendances et prévisions
-3. Planification des tâches pour le mois à venir
-4. Analyse des tendances et prévisions
-5. Création d'un rapport de synthèse
-6. Journalisation des résultats
+2. GÃ©nÃ©ration de rapports mensuels dÃ©taillÃ©s avec graphiques, tendances et prÃ©visions
+3. Planification des tÃ¢ches pour le mois Ã  venir
+4. Analyse des tendances et prÃ©visions
+5. CrÃ©ation d'un rapport de synthÃ¨se
+6. Journalisation des rÃ©sultats
 
-**Fréquence d'exécution** : Le premier jour de chaque mois à 10h00
+**FrÃ©quence d'exÃ©cution** : Le premier jour de chaque mois Ã  10h00
 
 **Script** : `development\scripts\workflows\workflow-mensuel.ps1`
 
-**Tâche planifiée** : `RoadmapManager-Mensuel`
+**TÃ¢che planifiÃ©e** : `roadmap-manager-Mensuel`
 
-## Installation des tâches planifiées
+## Installation des tÃ¢ches planifiÃ©es
 
-Pour installer les tâches planifiées qui exécuteront automatiquement les workflows, utilisez le script `install-scheduled-tasks.ps1` :
+Pour installer les tÃ¢ches planifiÃ©es qui exÃ©cuteront automatiquement les workflows, utilisez le script `install-scheduled-tasks.ps1` :
 
 ```powershell
-# Installer les tâches planifiées avec les paramètres par défaut
+# Installer les tÃ¢ches planifiÃ©es avec les paramÃ¨tres par dÃ©faut
 .\development\scripts\workflows\install-scheduled-tasks.ps1
 
-# Installer les tâches planifiées avec un préfixe personnalisé
+# Installer les tÃ¢ches planifiÃ©es avec un prÃ©fixe personnalisÃ©
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -TaskPrefix "MonProjet"
 
-# Remplacer les tâches existantes
+# Remplacer les tÃ¢ches existantes
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
 ```
 
-## Exécution manuelle des workflows
+## ExÃ©cution manuelle des workflows
 
-Vous pouvez également exécuter manuellement les workflows :
+Vous pouvez Ã©galement exÃ©cuter manuellement les workflows :
 
 ```powershell
-# Exécuter le workflow quotidien
+# ExÃ©cuter le workflow quotidien
 .\development\scripts\workflows\workflow-quotidien.ps1
 
-# Exécuter le workflow hebdomadaire
+# ExÃ©cuter le workflow hebdomadaire
 .\development\scripts\workflows\workflow-hebdomadaire.ps1
 
-# Exécuter le workflow mensuel
+# ExÃ©cuter le workflow mensuel
 .\development\scripts\workflows\workflow-mensuel.ps1
 ```
 
@@ -86,10 +86,10 @@ Vous pouvez également exécuter manuellement les workflows :
 
 ### Modification des chemins de roadmap
 
-Vous pouvez spécifier les chemins des roadmaps à traiter :
+Vous pouvez spÃ©cifier les chemins des roadmaps Ã  traiter :
 
 ```powershell
-# Workflow quotidien avec un chemin de roadmap personnalisé
+# Workflow quotidien avec un chemin de roadmap personnalisÃ©
 .\development\scripts\workflows\workflow-quotidien.ps1 -RoadmapPath "projet\roadmaps\mes-plans\roadmap_perso.md"
 
 # Workflow hebdomadaire avec plusieurs chemins de roadmap
@@ -103,36 +103,36 @@ $roadmapPaths = @(
 .\development\scripts\workflows\workflow-mensuel.ps1 -RoadmapPaths $roadmapPaths
 ```
 
-### Modification des répertoires de sortie
+### Modification des rÃ©pertoires de sortie
 
-Vous pouvez spécifier les répertoires de sortie pour les rapports et les plans :
+Vous pouvez spÃ©cifier les rÃ©pertoires de sortie pour les rapports et les plans :
 
 ```powershell
-# Workflow hebdomadaire avec un répertoire de sortie personnalisé
+# Workflow hebdomadaire avec un rÃ©pertoire de sortie personnalisÃ©
 .\development\scripts\workflows\workflow-hebdomadaire.ps1 -OutputPath "projet\roadmaps\output"
 
-# Workflow mensuel avec un répertoire de sortie personnalisé
+# Workflow mensuel avec un rÃ©pertoire de sortie personnalisÃ©
 .\development\scripts\workflows\workflow-mensuel.ps1 -OutputPath "projet\roadmaps\output"
 ```
 
 ### Modification du fichier de configuration
 
-Vous pouvez spécifier un fichier de configuration personnalisé :
+Vous pouvez spÃ©cifier un fichier de configuration personnalisÃ© :
 
 ```powershell
-# Workflow quotidien avec un fichier de configuration personnalisé
+# Workflow quotidien avec un fichier de configuration personnalisÃ©
 .\development\scripts\workflows\workflow-quotidien.ps1 -ConfigPath "development\config\my-config.json"
 
-# Workflow hebdomadaire avec un fichier de configuration personnalisé
+# Workflow hebdomadaire avec un fichier de configuration personnalisÃ©
 .\development\scripts\workflows\workflow-hebdomadaire.ps1 -ConfigPath "development\config\my-config.json"
 
-# Workflow mensuel avec un fichier de configuration personnalisé
+# Workflow mensuel avec un fichier de configuration personnalisÃ©
 .\development\scripts\workflows\workflow-mensuel.ps1 -ConfigPath "development\config\my-config.json"
 ```
 
-## Structure des répertoires
+## Structure des rÃ©pertoires
 
-Les workflows génèrent des fichiers dans les répertoires suivants :
+Les workflows gÃ©nÃ¨rent des fichiers dans les rÃ©pertoires suivants :
 
 ```
 projet/
@@ -146,7 +146,7 @@ projet/
       quotidien-YYYY-MM-DD/          # Rapports quotidiens
       hebdomadaire-ROADMAP-YYYY-MM-DD/ # Rapports hebdomadaires
       mensuel-ROADMAP-YYYY-MM/       # Rapports mensuels
-      synthese-YYYY-MM.md            # Rapport de synthèse mensuel
+      synthese-YYYY-MM.md            # Rapport de synthÃ¨se mensuel
     Plans/
       hebdomadaire-ROADMAP-YYYY-MM-DD.md # Plans hebdomadaires
       mensuel-ROADMAP-YYYY-MM.md     # Plans mensuels
@@ -160,39 +160,39 @@ projet/
 
 ## Journalisation
 
-Tous les workflows génèrent des journaux détaillés qui incluent les informations suivantes :
+Tous les workflows gÃ©nÃ¨rent des journaux dÃ©taillÃ©s qui incluent les informations suivantes :
 
-- Date et heure d'exécution
-- Étapes exécutées
-- Résultats des opérations
-- Erreurs rencontrées
+- Date et heure d'exÃ©cution
+- Ã‰tapes exÃ©cutÃ©es
+- RÃ©sultats des opÃ©rations
+- Erreurs rencontrÃ©es
 
-Les journaux sont stockés dans le répertoire `projet\roadmaps\Logs` et sont nommés selon le format suivant :
+Les journaux sont stockÃ©s dans le rÃ©pertoire `projet\roadmaps\Logs` et sont nommÃ©s selon le format suivant :
 
 - `workflow-quotidien-YYYY-MM-DD.log` pour le workflow quotidien
 - `workflow-hebdomadaire-YYYY-MM-DD.log` pour le workflow hebdomadaire
 - `workflow-mensuel-YYYY-MM.log` pour le workflow mensuel
 
-## Intégration avec d'autres outils
+## IntÃ©gration avec d'autres outils
 
 ### Git
 
-Vous pouvez intégrer les workflows avec Git en ajoutant des commandes Git dans les scripts :
+Vous pouvez intÃ©grer les workflows avec Git en ajoutant des commandes Git dans les scripts :
 
 ```powershell
-# Ajouter à la fin du workflow quotidien
+# Ajouter Ã  la fin du workflow quotidien
 git add "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 git add "projet\roadmaps\Roadmap\roadmap_complete.json"
-git commit -m "Mise à jour quotidienne de la roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
+git commit -m "Mise Ã  jour quotidienne de la roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
 git push
 ```
 
 ### n8n
 
-Vous pouvez créer un workflow n8n qui exécute les scripts PowerShell et traite les résultats :
+Vous pouvez crÃ©er un workflow n8n qui exÃ©cute les scripts PowerShell et traite les rÃ©sultats :
 
 ```javascript
-// Exemple de nœud Execute Command dans n8n
+// Exemple de nÅ“ud Execute Command dans n8n
 {
   "parameters": {
     "command": "powershell.exe",
@@ -207,70 +207,71 @@ Vous pouvez créer un workflow n8n qui exécute les scripts PowerShell et traite
 Vous pouvez ajouter des notifications par e-mail dans les scripts :
 
 ```powershell
-# Ajouter à la fin du workflow hebdomadaire
+# Ajouter Ã  la fin du workflow hebdomadaire
 $emailParams = @{
     From = "roadmap@example.com"
     To = "equipe@example.com"
     Subject = "Rapport hebdomadaire de roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
-    Body = "Le rapport hebdomadaire de roadmap est disponible à l'adresse suivante : $reportPath"
+    Body = "Le rapport hebdomadaire de roadmap est disponible Ã  l'adresse suivante : $reportPath"
     SmtpServer = "smtp.example.com"
 }
 Send-MailMessage @emailParams
 ```
 
-## Résolution des problèmes
+## RÃ©solution des problÃ¨mes
 
-### Problème: Les tâches planifiées ne s'exécutent pas
+### ProblÃ¨me: Les tÃ¢ches planifiÃ©es ne s'exÃ©cutent pas
 
-**Symptôme**: Les tâches planifiées sont installées mais ne s'exécutent pas.
+**SymptÃ´me**: Les tÃ¢ches planifiÃ©es sont installÃ©es mais ne s'exÃ©cutent pas.
 
 **Solution**:
-1. Vérifiez que le service de planification des tâches est en cours d'exécution.
-2. Vérifiez que l'utilisateur qui exécute les tâches a les droits nécessaires.
-3. Vérifiez les journaux d'événements Windows pour les erreurs.
+1. VÃ©rifiez que le service de planification des tÃ¢ches est en cours d'exÃ©cution.
+2. VÃ©rifiez que l'utilisateur qui exÃ©cute les tÃ¢ches a les droits nÃ©cessaires.
+3. VÃ©rifiez les journaux d'Ã©vÃ©nements Windows pour les erreurs.
 
 ```powershell
-# Vérifier l'état du service de planification des tâches
+# VÃ©rifier l'Ã©tat du service de planification des tÃ¢ches
 Get-Service -Name "Schedule"
 
-# Vérifier les tâches planifiées
-Get-ScheduledTask -TaskName "RoadmapManager-*"
+# VÃ©rifier les tÃ¢ches planifiÃ©es
+Get-ScheduledTask -TaskName "roadmap-manager-*"
 
-# Vérifier l'historique d'exécution des tâches
-Get-ScheduledTaskInfo -TaskName "RoadmapManager-Quotidien"
+# VÃ©rifier l'historique d'exÃ©cution des tÃ¢ches
+Get-ScheduledTaskInfo -TaskName "roadmap-manager-Quotidien"
 ```
 
-### Problème: Les workflows échouent avec des erreurs
+### ProblÃ¨me: Les workflows Ã©chouent avec des erreurs
 
-**Symptôme**: Les workflows s'exécutent mais échouent avec des erreurs.
+**SymptÃ´me**: Les workflows s'exÃ©cutent mais Ã©chouent avec des erreurs.
 
 **Solution**:
-1. Vérifiez les journaux pour identifier les erreurs.
-2. Vérifiez que les chemins des fichiers sont corrects.
-3. Vérifiez que les répertoires de sortie existent et sont accessibles en écriture.
+1. VÃ©rifiez les journaux pour identifier les erreurs.
+2. VÃ©rifiez que les chemins des fichiers sont corrects.
+3. VÃ©rifiez que les rÃ©pertoires de sortie existent et sont accessibles en Ã©criture.
 
 ```powershell
-# Vérifier les journaux
+# VÃ©rifier les journaux
 Get-Content -Path "projet\roadmaps\Logs\workflow-quotidien-$(Get-Date -Format 'yyyy-MM-dd').log"
 
-# Exécuter le workflow en mode verbose
+# ExÃ©cuter le workflow en mode verbose
 .\development\scripts\workflows\workflow-quotidien.ps1 -Verbose
 ```
 
-### Problème: Les rapports ne sont pas générés
+### ProblÃ¨me: Les rapports ne sont pas gÃ©nÃ©rÃ©s
 
-**Symptôme**: Les workflows s'exécutent mais les rapports ne sont pas générés.
+**SymptÃ´me**: Les workflows s'exÃ©cutent mais les rapports ne sont pas gÃ©nÃ©rÃ©s.
 
 **Solution**:
-1. Vérifiez que les roadmaps existent et sont correctement formatées.
-2. Vérifiez que les répertoires de sortie existent et sont accessibles en écriture.
-3. Exécutez manuellement le mode ROADMAP-REPORT pour vérifier qu'il fonctionne correctement.
+1. VÃ©rifiez que les roadmaps existent et sont correctement formatÃ©es.
+2. VÃ©rifiez que les rÃ©pertoires de sortie existent et sont accessibles en Ã©criture.
+3. ExÃ©cutez manuellement le mode ROADMAP-REPORT pour vÃ©rifier qu'il fonctionne correctement.
 
 ```powershell
-# Exécuter manuellement le mode ROADMAP-REPORT
+# ExÃ©cuter manuellement le mode ROADMAP-REPORT
 .\development\scripts\integrated-manager.ps1 -Mode "ROADMAP-REPORT" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML"
 ```
 
 ## Conclusion
 
-Les workflows automatisés pour la gestion des roadmaps permettent d'exécuter régulièrement les tâches de synchronisation, de génération de rapports et de planification. Ils facilitent le suivi de l'avancement des projets et la prise de décision.
+Les workflows automatisÃ©s pour la gestion des roadmaps permettent d'exÃ©cuter rÃ©guliÃ¨rement les tÃ¢ches de synchronisation, de gÃ©nÃ©ration de rapports et de planification. Ils facilitent le suivi de l'avancement des projets et la prise de dÃ©cision.
+

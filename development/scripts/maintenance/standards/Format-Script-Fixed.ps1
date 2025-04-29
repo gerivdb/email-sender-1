@@ -8,10 +8,10 @@
     Chemin du fichier ou du dossier contenant les scripts Ã  standardiser. Par dÃ©faut: scripts
 .PARAMETER ComplianceReportPath
     Chemin du rapport de conformitÃ© gÃ©nÃ©rÃ© par Test-ScriptCompliance-Fixed.ps1.
-    Par dÃ©faut: scripts\manager\data\compliance_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\compliance_report.json
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport des modifications.
-    Par dÃ©faut: scripts\manager\data\standardization_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\standardization_report.json
 .PARAMETER ScriptType
     Type de script Ã  standardiser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER Rules
@@ -37,10 +37,10 @@
     Chemin du fichier ou du dossier contenant les scripts Ã  standardiser. Par dÃ©faut: scripts
 .PARAMETER ComplianceReportPath
     Chemin du rapport de conformitÃ© gÃ©nÃ©rÃ© par Test-ScriptCompliance-Fixed.ps1.
-    Par dÃ©faut: scripts\manager\data\compliance_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\compliance_report.json
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport des modifications.
-    Par dÃ©faut: scripts\manager\data\standardization_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\standardization_report.json
 .PARAMETER ScriptType
     Type de script Ã  standardiser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER Rules
@@ -59,8 +59,8 @@
 
 param (
     [string]$Path = "scripts",
-    [string]$ComplianceReportPath = "scripts\manager\data\compliance_report.json",
-    [string]$OutputPath = "scripts\manager\data\standardization_report.json",
+    [string]$ComplianceReportPath = "scripts\\mode-manager\data\compliance_report.json",
+    [string]$OutputPath = "scripts\\mode-manager\data\standardization_report.json",
     [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")
 
 # Configuration de la gestion d'erreurs
@@ -133,7 +133,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\standardization.log"
+    $LogFile = "scripts\\mode-manager\data\standardization.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -704,3 +704,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

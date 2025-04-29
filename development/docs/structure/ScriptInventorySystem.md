@@ -1,20 +1,20 @@
-# Système d'Inventaire et de Classification des Scripts
+﻿# SystÃ¨me d'Inventaire et de Classification des Scripts
 
 ## Objectifs
-Ce système permet de :
+Ce systÃ¨me permet de :
 - Centraliser l'inventaire de tous les scripts PowerShell et Python du projet
-- Détecter les scripts redondants ou similaires
-- Classifier automatiquement les scripts selon une taxonomie définie
-- Générer des rapports d'analyse
+- DÃ©tecter les scripts redondants ou similaires
+- Classifier automatiquement les scripts selon une taxonomie dÃ©finie
+- GÃ©nÃ©rer des rapports d'analyse
 
 ## Composants principaux
 
 ### 1. Module ScriptInventoryManager
 **Fichier**: `modules/ScriptInventoryManager.psm1`
 
-Fonctionnalités :
-- Scan des répertoires pour trouver les scripts
-- Extraction des métadonnées (auteur, version, description, tags)
+FonctionnalitÃ©s :
+- Scan des rÃ©pertoires pour trouver les scripts
+- Extraction des mÃ©tadonnÃ©es (auteur, version, description, tags)
 - Sauvegarde de l'inventaire dans un fichier JSON
 - Recherche et filtrage des scripts
 
@@ -28,7 +28,7 @@ Find-Script [-Name] <string> [-Author] <string> [-Tag] <string> [-Language] <str
 ### 2. Scripts d'analyse
 
 #### Show-ScriptInventory.ps1
-**Fichier**: `development/scripts/manager/Show-ScriptInventory.ps1`
+**Fichier**: `development/scripts/mode-manager/Show-ScriptInventory.ps1`
 
 Affiche l'inventaire avec options de filtrage et d'export.
 
@@ -40,7 +40,7 @@ Exemple :
 #### Find-RedundantScripts.ps1
 **Fichier**: `development/scripts/analysis/Find-RedundantScripts.ps1`
 
-Détecte les scripts similaires ou redondants.
+DÃ©tecte les scripts similaires ou redondants.
 
 Exemple :
 ```powershell
@@ -50,7 +50,7 @@ Exemple :
 #### Classify-Scripts.ps1
 **Fichier**: `development/scripts/analysis/Classify-Scripts.ps1`
 
-Classifie les scripts et peut réorganiser la structure des dossiers.
+Classifie les scripts et peut rÃ©organiser la structure des dossiers.
 
 Exemple :
 ```powershell
@@ -60,16 +60,16 @@ Exemple :
 ### 3. Tests
 **Fichier**: `development/scripts/development/testing/tests/Test-ScriptInventory.ps1`
 
-Tests unitaires et d'intégration pour valider le système.
+Tests unitaires et d'intÃ©gration pour valider le systÃ¨me.
 
-Exécution :
+ExÃ©cution :
 ```powershell
 Invoke-Pester .\Test-ScriptInventory.ps1
 ```
 
-## Workflow recommandé
+## Workflow recommandÃ©
 
-1. Mettre à jour l'inventaire :
+1. Mettre Ã  jour l'inventaire :
 ```powershell
 Update-ScriptInventory
 ```
@@ -79,23 +79,23 @@ Update-ScriptInventory
 .\Find-RedundantScripts.ps1 -SimilarityThreshold 80
 ```
 
-3. Classifier et réorganiser les scripts :
+3. Classifier et rÃ©organiser les scripts :
 ```powershell
 .\Classify-Scripts.ps1 -UpdateStructure
 ```
 
-4. Générer un rapport complet :
+4. GÃ©nÃ©rer un rapport complet :
 ```powershell
 .\Show-ScriptInventory.ps1 -ExportFormat HTML
 ```
 
-## Intégration avec Git
-Des hooks Git peuvent être configurés pour :
-- Mettre à jour automatiquement l'inventaire après un commit
-- Vérifier les métadonnées des nouveaux scripts
-- Empêcher l'ajout de scripts sans métadonnées minimales
+## IntÃ©gration avec Git
+Des hooks Git peuvent Ãªtre configurÃ©s pour :
+- Mettre Ã  jour automatiquement l'inventaire aprÃ¨s un commit
+- VÃ©rifier les mÃ©tadonnÃ©es des nouveaux scripts
+- EmpÃªcher l'ajout de scripts sans mÃ©tadonnÃ©es minimales
 
-Exemple de hook (à placer dans `.git/hooks/post-commit`) :
+Exemple de hook (Ã  placer dans `.git/hooks/post-commit`) :
 ```powershell
 #!/usr/bin/env pwsh
 Import-Module ./modules/ScriptInventoryManager.psm1
@@ -104,7 +104,7 @@ Update-ScriptInventory
 
 ## Bonnes pratiques
 
-1. **Métadonnées** :
+1. **MÃ©tadonnÃ©es** :
    Toujours inclure dans les scripts :
    ```powershell
    <#
@@ -116,10 +116,11 @@ Update-ScriptInventory
    ```
 
 2. **Classification** :
-   Utiliser des noms explicites qui correspondent aux catégories définies.
+   Utiliser des noms explicites qui correspondent aux catÃ©gories dÃ©finies.
 
-3. **Mises à jour** :
-   Exécuter `Update-ScriptInventory` après des modifications importantes.
+3. **Mises Ã  jour** :
+   ExÃ©cuter `Update-ScriptInventory` aprÃ¨s des modifications importantes.
 
 4. **Tests** :
-   Lancer les tests avant de pousser des modifications sur le système d'inventaire.
+   Lancer les tests avant de pousser des modifications sur le systÃ¨me d'inventaire.
+

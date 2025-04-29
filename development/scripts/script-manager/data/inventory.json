@@ -1,4 +1,4 @@
-{
+﻿{
     "Timestamp":  "2025-04-08 17:33:35",
     "TotalScripts":  789,
     "ScriptsByType":  [
@@ -30,7 +30,7 @@
                         "CreationTime":  "\/Date(1744056373030)\/",
                         "LastWriteTime":  "\/Date(1744056373032)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger l\u0027erreur de [void] = à la ligne 435",
+                                         "Description":  "Script pour corriger l\u0027erreur de [void] = Ã  la ligne 435",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -93,7 +93,7 @@
                         "CreationTime":  "\/Date(1743868228360)\/",
                         "LastWriteTime":  "\/Date(1743868228360)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifier si Python est installé",
+                                         "Description":  "VÃ©rifier si Python est installÃ©",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -135,7 +135,7 @@
                         "CreationTime":  "\/Date(1743868041040)\/",
                         "LastWriteTime":  "\/Date(1743868041040)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifier si Python est installé",
+                                         "Description":  "VÃ©rifier si Python est installÃ©",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -156,7 +156,7 @@
                         "CreationTime":  "\/Date(1744015053822)\/",
                         "LastWriteTime":  "\/Date(1744015053822)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour automatiser l\u0027exécution des scripts d\u0027analyse",
+                                         "Description":  "Script pour automatiser l\u0027exÃ©cution des scripts d\u0027analyse",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -177,7 +177,7 @@
                         "CreationTime":  "\/Date(1744036222047)\/",
                         "LastWriteTime":  "\/Date(1744036222048)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour comparer les erreurs entre différentes versions",
+                                         "Description":  "Script pour comparer les erreurs entre diffÃ©rentes versions",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -198,7 +198,7 @@
                         "CreationTime":  "\/Date(1744036307033)\/",
                         "LastWriteTime":  "\/Date(1744036307056)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié pour l\u0027analyse prédictive des erreurs",
+                                         "Description":  "Script simplifiÃ© pour l\u0027analyse prÃ©dictive des erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -219,7 +219,7 @@
                         "CreationTime":  "\/Date(1744015900707)\/",
                         "LastWriteTime":  "\/Date(1744015900708)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour analyser l\u0027évolution des erreurs",
+                                         "Description":  "Script pour analyser l\u0027Ã©volution des erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -240,7 +240,7 @@
                         "CreationTime":  "\/Date(1744036126018)\/",
                         "LastWriteTime":  "\/Date(1744036126019)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié pour analyser les tendances d\u0027erreurs",
+                                         "Description":  "Script simplifiÃ© pour analyser les tendances d\u0027erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -261,7 +261,7 @@
                         "CreationTime":  "\/Date(1744012476327)\/",
                         "LastWriteTime":  "\/Date(1744092382410)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié pour la détection des patterns d\u0027erreur PowerShell",
+                                         "Description":  "Script simplifiÃ© pour la dÃ©tection des patterns d\u0027erreur PowerShell",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -282,7 +282,7 @@
                         "CreationTime":  "\/Date(1744012581193)\/",
                         "LastWriteTime":  "\/Date(1744012581193)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour améliorer la catégorisation des erreurs",
+                                         "Description":  "Script pour amÃ©liorer la catÃ©gorisation des erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -303,7 +303,7 @@
                         "CreationTime":  "\/Date(1744012950046)\/",
                         "LastWriteTime":  "\/Date(1744012950046)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour générer des recommandations spécifiques",
+                                         "Description":  "Script pour gÃ©nÃ©rer des recommandations spÃ©cifiques",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -324,7 +324,7 @@
                         "CreationTime":  "\/Date(1744012202944)\/",
                         "LastWriteTime":  "\/Date(1744012202944)\/",
                         "Metadata":  {
-                                         "Description":  "Script de test pour la compatibilité entre environnements",
+                                         "Description":  "Script de test pour la compatibilitÃ© entre environnements",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -345,7 +345,7 @@
                         "CreationTime":  "\/Date(1744012163460)\/",
                         "LastWriteTime":  "\/Date(1744012163461)\/",
                         "Metadata":  {
-                                         "Description":  "Wrappers pour les commandes spécifiques à l\u0027OS",
+                                         "Description":  "Wrappers pour les commandes spÃ©cifiques Ã  l\u0027OS",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -471,7 +471,7 @@
                         "CreationTime":  "\/Date(1744036627939)\/",
                         "LastWriteTime":  "\/Date(1744036628339)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour définir un format standardisé de documentation des erreurs",
+                                         "Description":  "Script pour dÃ©finir un format standardisÃ© de documentation des erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -492,7 +492,7 @@
                         "CreationTime":  "\/Date(1744036723653)\/",
                         "LastWriteTime":  "\/Date(1744036723654)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour intégrer la documentation des erreurs dans le journal",
+                                         "Description":  "Script pour intÃ©grer la documentation des erreurs dans le journal",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -912,7 +912,7 @@
                         "CreationTime":  "\/Date(1744040389178)\/",
                         "LastWriteTime":  "\/Date(1744040389179)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour détecter de nouveaux patterns d\u0027erreur",
+                                         "Description":  "Script pour dÃ©tecter de nouveaux patterns d\u0027erreur",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -933,7 +933,7 @@
                         "CreationTime":  "\/Date(1744040807311)\/",
                         "LastWriteTime":  "\/Date(1744040807311)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour améliorer les recommandations d\u0027erreurs",
+                                         "Description":  "Script pour amÃ©liorer les recommandations d\u0027erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -954,7 +954,7 @@
                         "CreationTime":  "\/Date(1744040297961)\/",
                         "LastWriteTime":  "\/Date(1744040297962)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour évaluer les outils d\u0027analyse d\u0027erreurs",
+                                         "Description":  "Script pour Ã©valuer les outils d\u0027analyse d\u0027erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -975,7 +975,7 @@
                         "CreationTime":  "\/Date(1744013382885)\/",
                         "LastWriteTime":  "\/Date(1744013382886)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour les alertes automatiques d\u0027erreurs récurrentes",
+                                         "Description":  "Script pour les alertes automatiques d\u0027erreurs rÃ©currentes",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -996,7 +996,7 @@
                         "CreationTime":  "\/Date(1744013447816)\/",
                         "LastWriteTime":  "\/Date(1744013447816)\/",
                         "Metadata":  {
-                                         "Description":  "Script d\u0027intégration avec n8n",
+                                         "Description":  "Script d\u0027intÃ©gration avec n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1017,7 +1017,7 @@
                         "CreationTime":  "\/Date(1744013536373)\/",
                         "LastWriteTime":  "\/Date(1744013536373)\/",
                         "Metadata":  {
-                                         "Description":  "Script d\u0027intégration avec Notion",
+                                         "Description":  "Script d\u0027intÃ©gration avec Notion",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1122,7 +1122,7 @@
                         "CreationTime":  "\/Date(1744012234570)\/",
                         "LastWriteTime":  "\/Date(1744012234570)\/",
                         "Metadata":  {
-                                         "Description":  "Script de sécurisation des entrées utilisateur",
+                                         "Description":  "Script de sÃ©curisation des entrÃ©es utilisateur",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1143,7 +1143,7 @@
                         "CreationTime":  "\/Date(1744012274152)\/",
                         "LastWriteTime":  "\/Date(1744012274152)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour sécuriser les opérations de fichiers",
+                                         "Description":  "Script pour sÃ©curiser les opÃ©rations de fichiers",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1164,7 +1164,7 @@
                         "CreationTime":  "\/Date(1744012330999)\/",
                         "LastWriteTime":  "\/Date(1744012331000)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour sécuriser les communications réseau",
+                                         "Description":  "Script pour sÃ©curiser les communications rÃ©seau",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1185,7 +1185,7 @@
                         "CreationTime":  "\/Date(1744014405467)\/",
                         "LastWriteTime":  "\/Date(1744014405467)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour générer un tableau de bord de suivi des erreurs",
+                                         "Description":  "Script pour gÃ©nÃ©rer un tableau de bord de suivi des erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1206,7 +1206,7 @@
                         "CreationTime":  "\/Date(1744014310654)\/",
                         "LastWriteTime":  "\/Date(1744081233511)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour collecter les données d\u0027erreurs",
+                                         "Description":  "Script pour collecter les donnÃ©es d\u0027erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1248,7 +1248,7 @@
                         "CreationTime":  "\/Date(1744014702293)\/",
                         "LastWriteTime":  "\/Date(1744014702293)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour générer des rapports d\u0027erreurs",
+                                         "Description":  "Script pour gÃ©nÃ©rer des rapports d\u0027erreurs",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1378,7 +1378,7 @@
                         "CreationTime":  "\/Date(1744045376590)\/",
                         "LastWriteTime":  "\/Date(1744045376591)\/",
                         "Metadata":  {
-                                         "Description":  "Module de détection des éléments XML",
+                                         "Description":  "Module de dÃ©tection des Ã©lÃ©ments XML",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1441,7 +1441,7 @@
                         "CreationTime":  "\/Date(1744047093284)\/",
                         "LastWriteTime":  "\/Date(1744047093285)\/",
                         "Metadata":  {
-                                         "Description":  "Script d\u0027intégration pour le module Format-Converters",
+                                         "Description":  "Script d\u0027intÃ©gration pour le module Format-Converters",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1463,7 +1463,7 @@
                         "CreationTime":  "\/Date(1744047346756)\/",
                         "LastWriteTime":  "\/Date(1744047346771)\/",
                         "Metadata":  {
-                                         "Description":  "Script de test d\u0027intégration",
+                                         "Description":  "Script de test d\u0027intÃ©gration",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1484,7 +1484,7 @@
                         "CreationTime":  "\/Date(1744047212769)\/",
                         "LastWriteTime":  "\/Date(1744047212769)\/",
                         "Metadata":  {
-                                         "Description":  "Script de mise à jour de l\u0027interface utilisateur",
+                                         "Description":  "Script de mise Ã  jour de l\u0027interface utilisateur",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -1570,7 +1570,7 @@
                         "CreationTime":  "\/Date(1744045554069)\/",
                         "LastWriteTime":  "\/Date(1744045554070)\/",
                         "Metadata":  {
-                                         "Description":  "Script de test pour les outils XML (détecteur et validateur)",
+                                         "Description":  "Script de test pour les outils XML (dÃ©tecteur et validateur)",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -5162,7 +5162,7 @@
                         "CreationTime":  "\/Date(1743727298088)\/",
                         "LastWriteTime":  "\/Date(1743728476411)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifier si le fichier token.json existe",
+                                         "Description":  "VÃ©rifier si le fichier token.json existe",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -5309,7 +5309,7 @@
                         "CreationTime":  "\/Date(1743780474991)\/",
                         "LastWriteTime":  "\/Date(1743993073817)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour mettre à jour les identifiants GCP MCP",
+                                         "Description":  "Script pour mettre Ã  jour les identifiants GCP MCP",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6506,7 +6506,7 @@
                         "CreationTime":  "\/Date(1743976197047)\/",
                         "LastWriteTime":  "\/Date(1743976197048)\/",
                         "Metadata":  {
-                                         "Description":  "Démarrer le serveur",
+                                         "Description":  "DÃ©marrer le serveur",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6884,7 +6884,7 @@
                         "CreationTime":  "\/Date(1744041711235)\/",
                         "LastWriteTime":  "\/Date(1744041711236)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour la conception de l\u0027architecture du système",
+                                         "Description":  "Script pour la conception de l\u0027architecture du systÃ¨me",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6905,7 +6905,7 @@
                         "CreationTime":  "\/Date(1744041828928)\/",
                         "LastWriteTime":  "\/Date(1744041828928)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour la planification de l\u0027implémentation",
+                                         "Description":  "Script pour la planification de l\u0027implÃ©mentation",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6947,7 +6947,7 @@
                         "CreationTime":  "\/Date(1744042756152)\/",
                         "LastWriteTime":  "\/Date(1744042976881)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour permettre à Augment de déclarer des tâches terminées",
+                                         "Description":  "Script pour permettre Ã  Augment de dÃ©clarer des tÃ¢ches terminÃ©es",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6968,7 +6968,7 @@
                         "CreationTime":  "\/Date(1744042717341)\/",
                         "LastWriteTime":  "\/Date(1744043341316)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour intégrer Augment avec la mise à jour automatique de la roadmap",
+                                         "Description":  "Script pour intÃ©grer Augment avec la mise Ã  jour automatique de la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -6989,7 +6989,7 @@
                         "CreationTime":  "\/Date(1744042404267)\/",
                         "LastWriteTime":  "\/Date(1744042404268)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour installer un hook Git qui met à jour automatiquement la roadmap",
+                                         "Description":  "Script pour installer un hook Git qui met Ã  jour automatiquement la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7010,7 +7010,7 @@
                         "CreationTime":  "\/Date(1744042359141)\/",
                         "LastWriteTime":  "\/Date(1744043396023)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour mettre à jour automatiquement la roadmap",
+                                         "Description":  "Script pour mettre Ã  jour automatiquement la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7031,7 +7031,7 @@
                         "CreationTime":  "\/Date(1744043279068)\/",
                         "LastWriteTime":  "\/Date(1744043279069)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour exécuter les déclarations d\u0027Augment",
+                                         "Description":  "Script pour exÃ©cuter les dÃ©clarations d\u0027Augment",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7052,7 +7052,7 @@
                         "CreationTime":  "\/Date(1744042441606)\/",
                         "LastWriteTime":  "\/Date(1744043213549)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour mettre à jour manuellement la roadmap",
+                                         "Description":  "Script pour mettre Ã  jour manuellement la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7073,7 +7073,7 @@
                         "CreationTime":  "\/Date(1744050839852)\/",
                         "LastWriteTime":  "\/Date(1744050210747)\/",
                         "Metadata":  {
-                                         "Description":  "Script d\u0027exécution Augment",
+                                         "Description":  "Script d\u0027exÃ©cution Augment",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7115,7 +7115,7 @@
                         "CreationTime":  "\/Date(1744054122280)\/",
                         "LastWriteTime":  "\/Date(1744054122281)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour copier le fichier RoadmapAdmin.ps1 corrigé à l\u0027emplacement original",
+                                         "Description":  "Script pour copier le fichier RoadmapAdmin.ps1 corrigÃ© Ã  l\u0027emplacement original",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7199,7 +7199,7 @@
                         "CreationTime":  "\/Date(1744053798718)\/",
                         "LastWriteTime":  "\/Date(1744053798719)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les problèmes dans le fichier RoadmapAdmin.ps1 original",
+                                         "Description":  "Script pour corriger les problÃ¨mes dans le fichier RoadmapAdmin.ps1 original",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7220,7 +7220,7 @@
                         "CreationTime":  "\/Date(1744052631112)\/",
                         "LastWriteTime":  "\/Date(1744052631116)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger automatiquement les problèmes courants détectés par PSScriptAnalyzer",
+                                         "Description":  "Script pour corriger automatiquement les problÃ¨mes courants dÃ©tectÃ©s par PSScriptAnalyzer",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7241,7 +7241,7 @@
                         "CreationTime":  "\/Date(1744053840310)\/",
                         "LastWriteTime":  "\/Date(1744053906842)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les problèmes dans RoadmapAdmin.ps1 individuellement",
+                                         "Description":  "Script pour corriger les problÃ¨mes dans RoadmapAdmin.ps1 individuellement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7262,7 +7262,7 @@
                         "CreationTime":  "\/Date(1744053119788)\/",
                         "LastWriteTime":  "\/Date(1744053119789)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les problèmes spécifiques dans RoadmapAdmin.ps1",
+                                         "Description":  "Script pour corriger les problÃ¨mes spÃ©cifiques dans RoadmapAdmin.ps1",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7283,7 +7283,7 @@
                         "CreationTime":  "\/Date(1744053382154)\/",
                         "LastWriteTime":  "\/Date(1744053382155)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les problèmes dans RoadmapAdmin.ps1",
+                                         "Description":  "Script pour corriger les problÃ¨mes dans RoadmapAdmin.ps1",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7304,7 +7304,7 @@
                         "CreationTime":  "\/Date(1744053579238)\/",
                         "LastWriteTime":  "\/Date(1744053579238)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les problèmes dans RoadmapAdmin.ps1 avec des méthodes simples",
+                                         "Description":  "Script pour corriger les problÃ¨mes dans RoadmapAdmin.ps1 avec des mÃ©thodes simples",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7346,7 +7346,7 @@
                         "CreationTime":  "\/Date(1744052667902)\/",
                         "LastWriteTime":  "\/Date(1744052667903)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger automatiquement les problèmes dans les scripts de la roadmap",
+                                         "Description":  "Script pour corriger automatiquement les problÃ¨mes dans les scripts de la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7367,7 +7367,7 @@
                         "CreationTime":  "\/Date(1744056275771)\/",
                         "LastWriteTime":  "\/Date(1744056275772)\/",
                         "Metadata":  {
-                                         "Description":  "Script simple pour corriger l\u0027erreur de token $null à la ligne 435",
+                                         "Description":  "Script simple pour corriger l\u0027erreur de token $null Ã  la ligne 435",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7430,7 +7430,7 @@
                         "CreationTime":  "\/Date(1744050767599)\/",
                         "LastWriteTime":  "\/Date(1744050767600)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié d\u0027organisation des scripts de roadmap",
+                                         "Description":  "Script simplifiÃ© d\u0027organisation des scripts de roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7451,7 +7451,7 @@
                         "CreationTime":  "\/Date(1744050839854)\/",
                         "LastWriteTime":  "\/Date(1744050256487)\/",
                         "Metadata":  {
-                                         "Description":  "Script de redémarrage Augment",
+                                         "Description":  "Script de redÃ©marrage Augment",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7535,7 +7535,7 @@
                         "CreationTime":  "\/Date(1744050839862)\/",
                         "LastWriteTime":  "\/Date(1744050616051)\/",
                         "Metadata":  {
-                                         "Description":  "Script de mise à jour de la roadmap en fonction des commits Git",
+                                         "Description":  "Script de mise Ã  jour de la roadmap en fonction des commits Git",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7547,8 +7547,8 @@
                                      }
                     },
                     {
-                        "Path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\RoadmapManager.ps1",
-                        "Name":  "RoadmapManager.ps1",
+                        "Path":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\roadmap-manager.ps1",
+                        "Name":  "roadmap-manager.ps1",
                         "Directory":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap",
                         "Extension":  ".ps1",
                         "Type":  "PowerShell",
@@ -7598,7 +7598,7 @@
                         "CreationTime":  "\/Date(1744050839856)\/",
                         "LastWriteTime":  "\/Date(1744050283210)\/",
                         "Metadata":  {
-                                         "Description":  "Script de démarrage rapide pour l\u0027exécution de la roadmap",
+                                         "Description":  "Script de dÃ©marrage rapide pour l\u0027exÃ©cution de la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7619,7 +7619,7 @@
                         "CreationTime":  "\/Date(1743829049641)\/",
                         "LastWriteTime":  "\/Date(1743993075044)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour lancer l\u0027installation complète du système de journal de bord",
+                                         "Description":  "Script PowerShell pour lancer l\u0027installation complÃ¨te du systÃ¨me de journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7640,7 +7640,7 @@
                         "CreationTime":  "\/Date(1743795396055)\/",
                         "LastWriteTime":  "\/Date(1743993075108)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour remplacer les caractères accentués par des caractères non accentués dans les fichiers JSON",
+                                         "Description":  "Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7661,7 +7661,7 @@
                         "CreationTime":  "\/Date(1743795917568)\/",
                         "LastWriteTime":  "\/Date(1743993075135)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour remplacer les caractères accentués par des caractères non accentués dans les fichiers JSON de référence",
+                                         "Description":  "Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON de rÃ©fÃ©rence",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7682,7 +7682,7 @@
                         "CreationTime":  "\/Date(1743795953611)\/",
                         "LastWriteTime":  "\/Date(1743993075183)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour remplacer les caractères accentués par des caractères non accentués dans les fichiers JSON",
+                                         "Description":  "Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7724,7 +7724,7 @@
                         "CreationTime":  "\/Date(1743792717651)\/",
                         "LastWriteTime":  "\/Date(1743993075280)\/",
                         "Metadata":  {
-                                         "Description":  "Définir les variables d\u0027environnement essentielles",
+                                         "Description":  "DÃ©finir les variables d\u0027environnement essentielles",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7745,7 +7745,7 @@
                         "CreationTime":  "\/Date(1743792826479)\/",
                         "LastWriteTime":  "\/Date(1743993075329)\/",
                         "Metadata":  {
-                                         "Description":  "Définir les variables d\u0027environnement essentielles",
+                                         "Description":  "DÃ©finir les variables d\u0027environnement essentielles",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7766,7 +7766,7 @@
                         "CreationTime":  "\/Date(1743792635105)\/",
                         "LastWriteTime":  "\/Date(1743993075385)\/",
                         "Metadata":  {
-                                         "Description":  "Définir les variables d\u0027environnement",
+                                         "Description":  "DÃ©finir les variables d\u0027environnement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7829,7 +7829,7 @@
                         "CreationTime":  "\/Date(1743871977482)\/",
                         "LastWriteTime":  "\/Date(1743993075508)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour mettre à jour le README principal avec le README mis à jour",
+                                         "Description":  "Script pour mettre Ã  jour le README principal avec le README mis Ã  jour",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7871,7 +7871,7 @@
                         "CreationTime":  "\/Date(1743949706044)\/",
                         "LastWriteTime":  "\/Date(1743993075560)\/",
                         "Metadata":  {
-                                         "Description":  "Script de déploiement réel",
+                                         "Description":  "Script de dÃ©ploiement rÃ©el",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7892,7 +7892,7 @@
                         "CreationTime":  "\/Date(1743921251553)\/",
                         "LastWriteTime":  "\/Date(1743993075619)\/",
                         "Metadata":  {
-                                         "Description":  "Script de déploiement automatisé",
+                                         "Description":  "Script de dÃ©ploiement automatisÃ©",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7934,7 +7934,7 @@
                         "CreationTime":  "\/Date(1743916815450)\/",
                         "LastWriteTime":  "\/Date(1743993075662)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour exécuter les vérifications CI/CD",
+                                         "Description":  "Script pour exÃ©cuter les vÃ©rifications CI/CD",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7955,7 +7955,7 @@
                         "CreationTime":  "\/Date(1743959896608)\/",
                         "LastWriteTime":  "\/Date(1743993075853)\/",
                         "Metadata":  {
-                                         "Description":  "Script de vérification de sécurité de base",
+                                         "Description":  "Script de vÃ©rification de sÃ©curitÃ© de base",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7976,7 +7976,7 @@
                         "CreationTime":  "\/Date(1743830619040)\/",
                         "LastWriteTime":  "\/Date(1743993075888)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour générer la documentation complète du système de journal de bord RAG",
+                                         "Description":  "Script PowerShell pour gÃ©nÃ©rer la documentation complÃ¨te du systÃ¨me de journal de bord RAG",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -7997,7 +7997,7 @@
                         "CreationTime":  "\/Date(1743828997455)\/",
                         "LastWriteTime":  "\/Date(1743993075917)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour installer toutes les dépendances du système de journal de bord",
+                                         "Description":  "Script PowerShell pour installer toutes les dÃ©pendances du systÃ¨me de journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8018,7 +8018,7 @@
                         "CreationTime":  "\/Date(1743819828150)\/",
                         "LastWriteTime":  "\/Date(1743993075951)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour la création automatique d\u0027entrées quotidiennes dans le journal de bord",
+                                         "Description":  "Script PowerShell pour la crÃ©ation automatique d\u0027entrÃ©es quotidiennes dans le journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8039,7 +8039,7 @@
                         "CreationTime":  "\/Date(1743818848448)\/",
                         "LastWriteTime":  "\/Date(1743993075977)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour le système RAG du journal de bord",
+                                         "Description":  "Script PowerShell pour le systÃ¨me RAG du journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8081,7 +8081,7 @@
                         "CreationTime":  "\/Date(1743828409496)\/",
                         "LastWriteTime":  "\/Date(1743993076042)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer l\u0027intégration GitHub avec le journal de bord",
+                                         "Description":  "Script PowerShell pour configurer l\u0027intÃ©gration GitHub avec le journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8102,7 +8102,7 @@
                         "CreationTime":  "\/Date(1743828530563)\/",
                         "LastWriteTime":  "\/Date(1743993076071)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer et exécuter l\u0027analyse du journal de bord",
+                                         "Description":  "Script PowerShell pour configurer et exÃ©cuter l\u0027analyse du journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8123,7 +8123,7 @@
                         "CreationTime":  "\/Date(1743827034427)\/",
                         "LastWriteTime":  "\/Date(1743993076101)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer une tâche planifiée de synchronisation du journal",
+                                         "Description":  "Script PowerShell pour configurer une tÃ¢che planifiÃ©e de synchronisation du journal",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8144,7 +8144,7 @@
                         "CreationTime":  "\/Date(1743820153118)\/",
                         "LastWriteTime":  "\/Date(1743993076133)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer l\u0027ensemble du système de journal de bord RAG",
+                                         "Description":  "Script PowerShell pour configurer l\u0027ensemble du systÃ¨me de journal de bord RAG",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8165,7 +8165,7 @@
                         "CreationTime":  "\/Date(1743819844920)\/",
                         "LastWriteTime":  "\/Date(1743993076155)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer les tâches planifiées du journal de bord",
+                                         "Description":  "Script PowerShell pour configurer les tÃ¢ches planifiÃ©es du journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8207,7 +8207,7 @@
                         "CreationTime":  "\/Date(1743826910343)\/",
                         "LastWriteTime":  "\/Date(1743993076222)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour démarrer le serveur MCP avec le provider du journal de bord",
+                                         "Description":  "Script PowerShell pour dÃ©marrer le serveur MCP avec le provider du journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8228,7 +8228,7 @@
                         "CreationTime":  "\/Date(1743828956625)\/",
                         "LastWriteTime":  "\/Date(1743993076256)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour configurer et démarrer l\u0027application web du journal de bord",
+                                         "Description":  "Script PowerShell pour configurer et dÃ©marrer l\u0027application web du journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8270,7 +8270,7 @@
                         "CreationTime":  "\/Date(1743827012088)\/",
                         "LastWriteTime":  "\/Date(1743993076309)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour synchroniser le journal de bord avec l\u0027écosystème (Augment, MCP, Documentation)",
+                                         "Description":  "Script PowerShell pour synchroniser le journal de bord avec l\u0027Ã©cosystÃ¨me (Augment, MCP, Documentation)",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8312,7 +8312,7 @@
                         "CreationTime":  "\/Date(1743751296621)\/",
                         "LastWriteTime":  "\/Date(1743744578251)\/",
                         "Metadata":  {
-                                         "Description":  "Définir les variables d\u0027environnement",
+                                         "Description":  "DÃ©finir les variables d\u0027environnement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8354,7 +8354,7 @@
                         "CreationTime":  "\/Date(1743965522747)\/",
                         "LastWriteTime":  "\/Date(1743965522749)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifier si un token GitHub est configuré",
+                                         "Description":  "VÃ©rifier si un token GitHub est configurÃ©",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8375,7 +8375,7 @@
                         "CreationTime":  "\/Date(1743751296623)\/",
                         "LastWriteTime":  "\/Date(1743744561466)\/",
                         "Metadata":  {
-                                         "Description":  "Définir les variables d\u0027environnement",
+                                         "Description":  "DÃ©finir les variables d\u0027environnement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8396,7 +8396,7 @@
                         "CreationTime":  "\/Date(1743751296624)\/",
                         "LastWriteTime":  "\/Date(1743743173002)\/",
                         "Metadata":  {
-                                         "Description":  "Utiliser npx pour exécuter directement",
+                                         "Description":  "Utiliser npx pour exÃ©cuter directement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8564,7 +8564,7 @@
                         "CreationTime":  "\/Date(1743806757309)\/",
                         "LastWriteTime":  "\/Date(1743993076701)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour supprimer les anciens dossiers workflows après la réorganisation",
+                                         "Description":  "Script pour supprimer les anciens dossiers workflows aprÃ¨s la rÃ©organisation",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8654,7 +8654,7 @@
                         "CreationTime":  "\/Date(1743777019017)\/",
                         "LastWriteTime":  "\/Date(1743993076755)\/",
                         "Metadata":  {
-                                         "Description":  "Script global pour corriger tous les problèmes d\u0027encodage dans le projet",
+                                         "Description":  "Script global pour corriger tous les problÃ¨mes d\u0027encodage dans le projet",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8864,7 +8864,7 @@
                         "CreationTime":  "\/Date(1743776818142)\/",
                         "LastWriteTime":  "\/Date(1743993077138)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour résoudre les problèmes de suivi Git dans VS Code",
+                                         "Description":  "Script pour rÃ©soudre les problÃ¨mes de suivi Git dans VS Code",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -8948,7 +8948,7 @@
                         "CreationTime":  "\/Date(1743808272918)\/",
                         "LastWriteTime":  "\/Date(1743993077499)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour déplacer les fichiers spécifiques qui peuvent être rangés",
+                                         "Description":  "Script pour dÃ©placer les fichiers spÃ©cifiques qui peuvent Ãªtre rangÃ©s",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9102,7 +9102,7 @@
                         "CreationTime":  "\/Date(1743806538885)\/",
                         "LastWriteTime":  "\/Date(1743993077974)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour réorganiser les dossiers workflows et les fichiers .md et .cmd",
+                                         "Description":  "Script pour rÃ©organiser les dossiers workflows et les fichiers .md et .cmd",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9123,7 +9123,7 @@
                         "CreationTime":  "\/Date(1743801002394)\/",
                         "LastWriteTime":  "\/Date(1743993078021)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour configurer toutes les méthodes d\u0027organisation automatique",
+                                         "Description":  "Script pour configurer toutes les mÃ©thodes d\u0027organisation automatique",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9165,7 +9165,7 @@
                         "CreationTime":  "\/Date(1743800940792)\/",
                         "LastWriteTime":  "\/Date(1743993078094)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour configurer le démarrage automatique de la surveillance des fichiers",
+                                         "Description":  "Script pour configurer le dÃ©marrage automatique de la surveillance des fichiers",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9249,7 +9249,7 @@
                         "CreationTime":  "\/Date(1743800924216)\/",
                         "LastWriteTime":  "\/Date(1743993078335)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour surveiller en temps réel les nouveaux fichiers à la racine et les organiser automatiquement",
+                                         "Description":  "Script pour surveiller en temps rÃ©el les nouveaux fichiers Ã  la racine et les organiser automatiquement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9417,7 +9417,7 @@
                         "CreationTime":  "\/Date(1743796870747)\/",
                         "LastWriteTime":  "\/Date(1743796870749)\/",
                         "Metadata":  {
-                                         "Description":  "Script de lancement rapide pour les outils de gestion des caractères accentués",
+                                         "Description":  "Script de lancement rapide pour les outils de gestion des caractÃ¨res accentuÃ©s",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9483,7 +9483,7 @@
                         "CreationTime":  "\/Date(1743796842497)\/",
                         "LastWriteTime":  "\/Date(1743993078744)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour organiser les outils de gestion des caractères accentués",
+                                         "Description":  "Script pour organiser les outils de gestion des caractÃ¨res accentuÃ©s",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9630,7 +9630,7 @@
                         "CreationTime":  "\/Date(1743796870695)\/",
                         "LastWriteTime":  "\/Date(1743993078867)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour importer les workflows corrigés dans n8n",
+                                         "Description":  "Script pour importer les workflows corrigÃ©s dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -9935,7 +9935,7 @@
                         "CreationTime":  "\/Date(1743726046577)\/",
                         "LastWriteTime":  "\/Date(1743993076522)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour vérifier la structure du dépôt GitHub",
+                                         "Description":  "Script pour vÃ©rifier la structure du dÃ©pÃ´t GitHub",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10040,7 +10040,7 @@
                         "CreationTime":  "\/Date(1743750944758)\/",
                         "LastWriteTime":  "\/Date(1743993079116)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié pour organiser les fichiers",
+                                         "Description":  "Script simplifiÃ© pour organiser les fichiers",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10124,7 +10124,7 @@
                         "CreationTime":  "\/Date(1743784867414)\/",
                         "LastWriteTime":  "\/Date(1743993079275)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour organiser la structure du dépôt",
+                                         "Description":  "Script pour organiser la structure du dÃ©pÃ´t",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10166,7 +10166,7 @@
                         "CreationTime":  "\/Date(1743726693597)\/",
                         "LastWriteTime":  "\/Date(1743993079379)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour organiser les scripts en sous-dossiers sémantiques",
+                                         "Description":  "Script pour organiser les scripts en sous-dossiers sÃ©mantiques",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10482,7 +10482,7 @@
                         "CreationTime":  "\/Date(1743815286083)\/",
                         "LastWriteTime":  "\/Date(1743815286084)\/",
                         "Metadata":  {
-                                         "Description":  "Extrait la description d\u0027un script à partir de ses commentaires.",
+                                         "Description":  "Extrait la description d\u0027un script Ã  partir de ses commentaires.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10505,7 +10505,7 @@
                         "CreationTime":  "\/Date(1743815078612)\/",
                         "LastWriteTime":  "\/Date(1743815078612)\/",
                         "Metadata":  {
-                                         "Description":  "Organise les scripts workflow en les déplaçant vers les sous-dossiers appropriés.",
+                                         "Description":  "Organise les scripts workflow en les dÃ©plaÃ§ant vers les sous-dossiers appropriÃ©s.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10528,7 +10528,7 @@
                         "CreationTime":  "\/Date(1743814671044)\/",
                         "LastWriteTime":  "\/Date(1743814671045)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour démarrer le serveur MCP Filesystem pour notre projet n8n",
+                                         "Description":  "Script pour dÃ©marrer le serveur MCP Filesystem pour notre projet n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10549,7 +10549,7 @@
                         "CreationTime":  "\/Date(1743965477546)\/",
                         "LastWriteTime":  "\/Date(1743965477547)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour démarrer le serveur MCP GitHub pour notre projet",
+                                         "Description":  "Script pour dÃ©marrer le serveur MCP GitHub pour notre projet",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10570,7 +10570,7 @@
                         "CreationTime":  "\/Date(1743814697769)\/",
                         "LastWriteTime":  "\/Date(1743993079408)\/",
                         "Metadata":  {
-                                         "Description":  "Script PowerShell pour démarrer le serveur MCP Filesystem avec des options avancées",
+                                         "Description":  "Script PowerShell pour dÃ©marrer le serveur MCP Filesystem avec des options avancÃ©es",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10591,7 +10591,7 @@
                         "CreationTime":  "\/Date(1743965466687)\/",
                         "LastWriteTime":  "\/Date(1743993079416)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour démarrer le serveur MCP GitHub",
+                                         "Description":  "Script pour dÃ©marrer le serveur MCP GitHub",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10637,7 +10637,7 @@
                         "CreationTime":  "\/Date(1743826821902)\/",
                         "LastWriteTime":  "\/Date(1743826821902)\/",
                         "Metadata":  {
-                                         "Description":  "Exporte les entrées du journal vers Augment Memories.",
+                                         "Description":  "Exporte les entrÃ©es du journal vers Augment Memories.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10665,7 +10665,7 @@
                         "CreationTime":  "\/Date(1743870760882)\/",
                         "LastWriteTime":  "\/Date(1743870886906)\/",
                         "Metadata":  {
-                                         "Description":  "Construit le fichier d\u0027intégration ERPNext à partir des fichiers partiels.",
+                                         "Description":  "Construit le fichier d\u0027intÃ©gration ERPNext Ã  partir des fichiers partiels.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10717,7 +10717,7 @@
                         "CreationTime":  "\/Date(1743828371624)\/",
                         "LastWriteTime":  "\/Date(1743828371625)\/",
                         "Metadata":  {
-                                         "Description":  "Récupère les commits récents du dépôt Git local.",
+                                         "Description":  "RÃ©cupÃ¨re les commits rÃ©cents du dÃ©pÃ´t Git local.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10744,7 +10744,7 @@
                         "CreationTime":  "\/Date(1743828494219)\/",
                         "LastWriteTime":  "\/Date(1743828494221)\/",
                         "Metadata":  {
-                                         "Description":  "Charge toutes les entrées du journal.",
+                                         "Description":  "Charge toutes les entrÃ©es du journal.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10770,7 +10770,7 @@
                         "CreationTime":  "\/Date(1743818689671)\/",
                         "LastWriteTime":  "\/Date(1743826184220)\/",
                         "Metadata":  {
-                                         "Description":  "Normalise les caractères accentués.",
+                                         "Description":  "Normalise les caractÃ¨res accentuÃ©s.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10926,7 +10926,7 @@
                         "CreationTime":  "\/Date(1743819873499)\/",
                         "LastWriteTime":  "\/Date(1743819873500)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifie s\u0027il faut reconstruire les index et le fait si nécessaire.",
+                                         "Description":  "VÃ©rifie s\u0027il faut reconstruire les index et le fait si nÃ©cessaire.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -10979,7 +10979,7 @@
                         "CreationTime":  "\/Date(1743819923572)\/",
                         "LastWriteTime":  "\/Date(1743826299749)\/",
                         "Metadata":  {
-                                         "Description":  "Crée une entrée de journal pour une action sur un workflow n8n.",
+                                         "Description":  "CrÃ©e une entrÃ©e de journal pour une action sur un workflow n8n.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11007,7 +11007,7 @@
                         "CreationTime":  "\/Date(1743867991328)\/",
                         "LastWriteTime":  "\/Date(1743867991329)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifie que l\u0027environnement est correctement configuré.",
+                                         "Description":  "VÃ©rifie que l\u0027environnement est correctement configurÃ©.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11032,7 +11032,7 @@
                         "CreationTime":  "\/Date(1743869379194)\/",
                         "LastWriteTime":  "\/Date(1743869379195)\/",
                         "Metadata":  {
-                                         "Description":  "Exécute toutes les intégrations.",
+                                         "Description":  "ExÃ©cute toutes les intÃ©grations.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11057,7 +11057,7 @@
                         "CreationTime":  "\/Date(1743869340004)\/",
                         "LastWriteTime":  "\/Date(1743869340004)\/",
                         "Metadata":  {
-                                         "Description":  "Génère les embeddings pour toutes les entrées du journal.",
+                                         "Description":  "GÃ©nÃ¨re les embeddings pour toutes les entrÃ©es du journal.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11082,7 +11082,7 @@
                         "CreationTime":  "\/Date(1743818833213)\/",
                         "LastWriteTime":  "\/Date(1743819109803)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifie si les dépendances sont installées.",
+                                         "Description":  "VÃ©rifie si les dÃ©pendances sont installÃ©es.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11187,7 +11187,7 @@
                         "CreationTime":  "\/Date(1743870429224)\/",
                         "LastWriteTime":  "\/Date(1743870902110)\/",
                         "Metadata":  {
-                                         "Description":  "Classe pour l\u0027intégration avec ERPNext.",
+                                         "Description":  "Classe pour l\u0027intÃ©gration avec ERPNext.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11214,7 +11214,7 @@
                         "CreationTime":  "\/Date(1743835295862)\/",
                         "LastWriteTime":  "\/Date(1743835295862)\/",
                         "Metadata":  {
-                                         "Description":  "Classe de base pour toutes les intégrations.",
+                                         "Description":  "Classe de base pour toutes les intÃ©grations.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11239,7 +11239,7 @@
                         "CreationTime":  "\/Date(1743835372766)\/",
                         "LastWriteTime":  "\/Date(1743835372766)\/",
                         "Metadata":  {
-                                         "Description":  "Intégration avec Jira.",
+                                         "Description":  "IntÃ©gration avec Jira.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11266,7 +11266,7 @@
                         "CreationTime":  "\/Date(1743869072907)\/",
                         "LastWriteTime":  "\/Date(1743869072912)\/",
                         "Metadata":  {
-                                         "Description":  "Classe pour l\u0027intégration avec n8n.",
+                                         "Description":  "Classe pour l\u0027intÃ©gration avec n8n.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11293,7 +11293,7 @@
                         "CreationTime":  "\/Date(1743835475786)\/",
                         "LastWriteTime":  "\/Date(1743835475786)\/",
                         "Metadata":  {
-                                         "Description":  "Intégration avec Notion.",
+                                         "Description":  "IntÃ©gration avec Notion.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11321,7 +11321,7 @@
                         "CreationTime":  "\/Date(1743835277356)\/",
                         "LastWriteTime":  "\/Date(1743835277357)\/",
                         "Metadata":  {
-                                         "Description":  "Intégrations pour le journal de bord",
+                                         "Description":  "IntÃ©grations pour le journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11342,7 +11342,7 @@
                         "CreationTime":  "\/Date(1743835009339)\/",
                         "LastWriteTime":  "\/Date(1743835009340)\/",
                         "Metadata":  {
-                                         "Description":  "Détecteur de patterns dans le journal de bord.",
+                                         "Description":  "DÃ©tecteur de patterns dans le journal de bord.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11529,7 +11529,7 @@
                         "CreationTime":  "\/Date(1743833347237)\/",
                         "LastWriteTime":  "\/Date(1743833347238)\/",
                         "Metadata":  {
-                                         "Description":  "Gestion des embeddings pour les entrées du journal.",
+                                         "Description":  "Gestion des embeddings pour les entrÃ©es du journal.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11555,7 +11555,7 @@
                         "CreationTime":  "\/Date(1743833486557)\/",
                         "LastWriteTime":  "\/Date(1743833486558)\/",
                         "Metadata":  {
-                                         "Description":  "Analyse de sentiment pour les entrées du journal.",
+                                         "Description":  "Analyse de sentiment pour les entrÃ©es du journal.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11581,7 +11581,7 @@
                         "CreationTime":  "\/Date(1743833423434)\/",
                         "LastWriteTime":  "\/Date(1743833423435)\/",
                         "Metadata":  {
-                                         "Description":  "Modélisation de sujets pour les entrées du journal.",
+                                         "Description":  "ModÃ©lisation de sujets pour les entrÃ©es du journal.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11607,7 +11607,7 @@
                         "CreationTime":  "\/Date(1743868332667)\/",
                         "LastWriteTime":  "\/Date(1743868332669)\/",
                         "Metadata":  {
-                                         "Description":  "Module d\u0027analyse sémantique pour le journal de bord",
+                                         "Description":  "Module d\u0027analyse sÃ©mantique pour le journal de bord",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11628,7 +11628,7 @@
                         "CreationTime":  "\/Date(1743828789381)\/",
                         "LastWriteTime":  "\/Date(1743828789383)\/",
                         "Metadata":  {
-                                         "Description":  "Récupère l\u0027analyse de fréquence des termes.",
+                                         "Description":  "RÃ©cupÃ¨re l\u0027analyse de frÃ©quence des termes.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11654,7 +11654,7 @@
                         "CreationTime":  "\/Date(1743828815405)\/",
                         "LastWriteTime":  "\/Date(1743828815408)\/",
                         "Metadata":  {
-                                         "Description":  "Récupère les commits récents.",
+                                         "Description":  "RÃ©cupÃ¨re les commits rÃ©cents.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11679,7 +11679,7 @@
                         "CreationTime":  "\/Date(1743867887406)\/",
                         "LastWriteTime":  "\/Date(1743867887408)\/",
                         "Metadata":  {
-                                         "Description":  "Récupère le statut des intégrations.",
+                                         "Description":  "RÃ©cupÃ¨re le statut des intÃ©grations.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11706,7 +11706,7 @@
                         "CreationTime":  "\/Date(1743828767600)\/",
                         "LastWriteTime":  "\/Date(1743828767601)\/",
                         "Metadata":  {
-                                         "Description":  "Liste les entrées du journal avec filtrage optionnel.",
+                                         "Description":  "Liste les entrÃ©es du journal avec filtrage optionnel.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11733,7 +11733,7 @@
                         "CreationTime":  "\/Date(1743867844680)\/",
                         "LastWriteTime":  "\/Date(1743867844681)\/",
                         "Metadata":  {
-                                         "Description":  "Récupère les notifications.",
+                                         "Description":  "RÃ©cupÃ¨re les notifications.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -11970,7 +11970,7 @@
                         "CreationTime":  "\/Date(1743966530055)\/",
                         "LastWriteTime":  "\/Date(1743993079705)\/",
                         "Metadata":  {
-                                         "Description":  "Script simplifié pour configurer le token GitHub",
+                                         "Description":  "Script simplifiÃ© pour configurer le token GitHub",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12201,7 +12201,7 @@
                         "CreationTime":  "\/Date(1743786890869)\/",
                         "LastWriteTime":  "\/Date(1743993080099)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour mettre à jour les paramètres VS Code avec la configuration MCP Git Ingest",
+                                         "Description":  "Script pour mettre Ã  jour les paramÃ¨tres VS Code avec la configuration MCP Git Ingest",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12390,7 +12390,7 @@
                         "CreationTime":  "\/Date(1743777031783)\/",
                         "LastWriteTime":  "\/Date(1743993080669)\/",
                         "Metadata":  {
-                                         "Description":  "Modèle de script PowerShell avec encodage UTF-8 avec BOM",
+                                         "Description":  "ModÃ¨le de script PowerShell avec encodage UTF-8 avec BOM",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12516,7 +12516,7 @@
                         "CreationTime":  "\/Date(1743726725296)\/",
                         "LastWriteTime":  "\/Date(1743993080818)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour gérer automatiquement les logs par unité de temps",
+                                         "Description":  "Script pour gÃ©rer automatiquement les logs par unitÃ© de temps",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12621,7 +12621,7 @@
                         "CreationTime":  "\/Date(1743788400803)\/",
                         "LastWriteTime":  "\/Date(1743993081007)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour exécuter des opérations Git de manière fiable",
+                                         "Description":  "Script pour exÃ©cuter des opÃ©rations Git de maniÃ¨re fiable",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12684,7 +12684,7 @@
                         "CreationTime":  "\/Date(1743916704371)\/",
                         "LastWriteTime":  "\/Date(1743921133591)\/",
                         "Metadata":  {
-                                         "Description":  "Wrapper amélioré pour le hook pre-commit qui appelle le script PowerShell",
+                                         "Description":  "Wrapper amÃ©liorÃ© pour le hook pre-commit qui appelle le script PowerShell",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12726,7 +12726,7 @@
                         "CreationTime":  "\/Date(1743916713180)\/",
                         "LastWriteTime":  "\/Date(1743921157843)\/",
                         "Metadata":  {
-                                         "Description":  "Wrapper amélioré pour le hook pre-push qui appelle le script PowerShell",
+                                         "Description":  "Wrapper amÃ©liorÃ© pour le hook pre-push qui appelle le script PowerShell",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12865,7 +12865,7 @@
                         "CreationTime":  "\/Date(1743704266072)\/",
                         "LastWriteTime":  "\/Date(1743704266179)\/",
                         "Metadata":  {
-                                         "Description":  "Normalise un titre en supprimant les caractères spéciaux et en standardisant le format.",
+                                         "Description":  "Normalise un titre en supprimant les caractÃ¨res spÃ©ciaux et en standardisant le format.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12893,7 +12893,7 @@
                         "CreationTime":  "\/Date(1743706349372)\/",
                         "LastWriteTime":  "\/Date(1743706349372)\/",
                         "Metadata":  {
-                                         "Description":  "Crée un slug type GitHub/GitLab à partir d\u0027un titre.",
+                                         "Description":  "CrÃ©e un slug type GitHub/GitLab Ã  partir d\u0027un titre.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -12944,7 +12944,7 @@
                         "CreationTime":  "\/Date(1743795845931)\/",
                         "LastWriteTime":  "\/Date(1743993074973)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour obtenir les détails des workflows existants dans n8n",
+                                         "Description":  "Script pour obtenir les dÃ©tails des workflows existants dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13028,7 +13028,7 @@
                         "CreationTime":  "\/Date(1743797952256)\/",
                         "LastWriteTime":  "\/Date(1743993075248)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour supprimer les workflows dupliqués dans n8n",
+                                         "Description":  "Script pour supprimer les workflows dupliquÃ©s dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13112,7 +13112,7 @@
                         "CreationTime":  "\/Date(1743811728419)\/",
                         "LastWriteTime":  "\/Date(1743993081469)\/",
                         "Metadata":  {
-                                         "Description":  "Script amélioré pour supprimer les workflows dans n8n",
+                                         "Description":  "Script amÃ©liorÃ© pour supprimer les workflows dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13154,7 +13154,7 @@
                         "CreationTime":  "\/Date(1743794781010)\/",
                         "LastWriteTime":  "\/Date(1743993081516)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger l\u0027encodage des caractères accentués dans les fichiers JSON",
+                                         "Description":  "Script pour corriger l\u0027encodage des caractÃ¨res accentuÃ©s dans les fichiers JSON",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13196,7 +13196,7 @@
                         "CreationTime":  "\/Date(1743794753785)\/",
                         "LastWriteTime":  "\/Date(1743993081578)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger l\u0027encodage des caractères accentués dans les fichiers JSON",
+                                         "Description":  "Script pour corriger l\u0027encodage des caractÃ¨res accentuÃ©s dans les fichiers JSON",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13217,7 +13217,7 @@
                         "CreationTime":  "\/Date(1743796028177)\/",
                         "LastWriteTime":  "\/Date(1743993081612)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour corriger les noms des workflows en remplaçant les caractères accentués",
+                                         "Description":  "Script pour corriger les noms des workflows en remplaÃ§ant les caractÃ¨res accentuÃ©s",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13238,7 +13238,7 @@
                         "CreationTime":  "\/Date(1743796216852)\/",
                         "LastWriteTime":  "\/Date(1743993081638)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour importer les workflows corrigés dans n8n",
+                                         "Description":  "Script pour importer les workflows corrigÃ©s dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13259,7 +13259,7 @@
                         "CreationTime":  "\/Date(1743794824541)\/",
                         "LastWriteTime":  "\/Date(1743993081659)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour importer les workflows corrigés dans n8n",
+                                         "Description":  "Script pour importer les workflows corrigÃ©s dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13301,7 +13301,7 @@
                         "CreationTime":  "\/Date(1743795089459)\/",
                         "LastWriteTime":  "\/Date(1743993081705)\/",
                         "Metadata":  {
-                                         "Description":  "Script pour importer les workflows corrigés dans n8n",
+                                         "Description":  "Script pour importer les workflows corrigÃ©s dans n8n",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13810,7 +13810,7 @@
                         "CreationTime":  "\/Date(1743812991000)\/",
                         "LastWriteTime":  "\/Date(1743812991001)\/",
                         "Metadata":  {
-                                         "Description":  "Fonction principale pour l\u0027exécution en ligne de commande.",
+                                         "Description":  "Fonction principale pour l\u0027exÃ©cution en ligne de commande.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13928,7 +13928,7 @@
                         "CreationTime":  "\/Date(1743813060536)\/",
                         "LastWriteTime":  "\/Date(1743813060537)\/",
                         "Metadata":  {
-                                         "Description":  "Fonction principale pour l\u0027exécution en ligne de commande.",
+                                         "Description":  "Fonction principale pour l\u0027exÃ©cution en ligne de commande.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -13978,7 +13978,7 @@
                         "CreationTime":  "\/Date(1743813023940)\/",
                         "LastWriteTime":  "\/Date(1743813023941)\/",
                         "Metadata":  {
-                                         "Description":  "Fonction principale pour l\u0027exécution en ligne de commande.",
+                                         "Description":  "Fonction principale pour l\u0027exÃ©cution en ligne de commande.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -14110,7 +14110,7 @@
                         "CreationTime":  "\/Date(1744008015004)\/",
                         "LastWriteTime":  "\/Date(1744008015004)\/",
                         "Metadata":  {
-                                         "Description":  "Explorer la structure du dépôt",
+                                         "Description":  "Explorer la structure du dÃ©pÃ´t",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -14133,7 +14133,7 @@
                         "CreationTime":  "\/Date(1743707627694)\/",
                         "LastWriteTime":  "\/Date(1743707627695)\/",
                         "Metadata":  {
-                                         "Description":  "Classe pour traduire des fichiers texte avec préservation d\u0027éléments techniques.",
+                                         "Description":  "Classe pour traduire des fichiers texte avec prÃ©servation d\u0027Ã©lÃ©ments techniques.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -14243,7 +14243,7 @@
                         "CreationTime":  "\/Date(1743965516064)\/",
                         "LastWriteTime":  "\/Date(1743965516065)\/",
                         "Metadata":  {
-                                         "Description":  "Vérifier si un token GitHub est configuré",
+                                         "Description":  "VÃ©rifier si un token GitHub est configurÃ©",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -14306,7 +14306,7 @@
                         "CreationTime":  "\/Date(1743991326385)\/",
                         "LastWriteTime":  "\/Date(1743991326386)\/",
                         "Metadata":  {
-                                         "Description":  "Fonction principale pour l\u0027exécution en ligne de commande.",
+                                         "Description":  "Fonction principale pour l\u0027exÃ©cution en ligne de commande.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -14361,7 +14361,7 @@
                         "CreationTime":  "\/Date(1743991290353)\/",
                         "LastWriteTime":  "\/Date(1743991290376)\/",
                         "Metadata":  {
-                                         "Description":  "Fonction principale pour l\u0027exécution en ligne de commande.",
+                                         "Description":  "Fonction principale pour l\u0027exÃ©cution en ligne de commande.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15192,7 +15192,7 @@
                         "CreationTime":  "\/Date(1743949444327)\/",
                         "LastWriteTime":  "\/Date(1743993082707)\/",
                         "Metadata":  {
-                                         "Description":  "Tests unitaires pour le script de déploiement",
+                                         "Description":  "Tests unitaires pour le script de dÃ©ploiement",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15234,7 +15234,7 @@
                         "CreationTime":  "\/Date(1743921214688)\/",
                         "LastWriteTime":  "\/Date(1743921214688)\/",
                         "Metadata":  {
-                                         "Description":  "Tests pour l\u0027intégration CI/CD",
+                                         "Description":  "Tests pour l\u0027intÃ©gration CI/CD",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15579,7 +15579,7 @@
                         "CreationTime":  "\/Date(1743982784165)\/",
                         "LastWriteTime":  "\/Date(1743982784166)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour capturer une demande spontanée et l\u0027ajouter à la roadmap",
+                                         "Description":  "Script batch pour capturer une demande spontanÃ©e et l\u0027ajouter Ã  la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15621,7 +15621,7 @@
                         "CreationTime":  "\/Date(1743982492618)\/",
                         "LastWriteTime":  "\/Date(1743982492620)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour faciliter l\u0027ajout de tâches à la roadmap",
+                                         "Description":  "Script batch pour faciliter l\u0027ajout de tÃ¢ches Ã  la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15663,7 +15663,7 @@
                         "CreationTime":  "\/Date(1743989866242)\/",
                         "LastWriteTime":  "\/Date(1743990690413)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour analyser une phase terminée et mettre à jour le journal",
+                                         "Description":  "Script batch pour analyser une phase terminÃ©e et mettre Ã  jour le journal",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15747,7 +15747,7 @@
                         "CreationTime":  "\/Date(1743982534358)\/",
                         "LastWriteTime":  "\/Date(1743982534359)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour capturer une demande spontanée et l\u0027ajouter à la roadmap",
+                                         "Description":  "Script batch pour capturer une demande spontanÃ©e et l\u0027ajouter Ã  la roadmap",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15852,7 +15852,7 @@
                         "CreationTime":  "\/Date(1743994786183)\/",
                         "LastWriteTime":  "\/Date(1743994786183)\/",
                         "Metadata":  {
-                                         "Description":  "Détermine le niveau d\u0027indentation d\u0027une ligne.",
+                                         "Description":  "DÃ©termine le niveau d\u0027indentation d\u0027une ligne.",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -15921,7 +15921,7 @@
                         "CreationTime":  "\/Date(1743989218779)\/",
                         "LastWriteTime":  "\/Date(1743989282179)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour mettre à jour les cases à cocher de la roadmap et analyser les phases terminées",
+                                         "Description":  "Script batch pour mettre Ã  jour les cases Ã  cocher de la roadmap et analyser les phases terminÃ©es",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -16005,7 +16005,7 @@
                         "CreationTime":  "\/Date(1743981609768)\/",
                         "LastWriteTime":  "\/Date(1743981609769)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch simplifié pour faciliter l\u0027utilisation du script PowerShell Update-Roadmap-Simple.ps1",
+                                         "Description":  "Script batch simplifiÃ© pour faciliter l\u0027utilisation du script PowerShell Update-Roadmap-Simple.ps1",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -16656,7 +16656,7 @@
                         "CreationTime":  "\/Date(1743986822462)\/",
                         "LastWriteTime":  "\/Date(1743986822465)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour déployer le système de détection automatique des tâches",
+                                         "Description":  "Script batch pour dÃ©ployer le systÃ¨me de dÃ©tection automatique des tÃ¢ches",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -16887,7 +16887,7 @@
                         "CreationTime":  "\/Date(1743987602767)\/",
                         "LastWriteTime":  "\/Date(1743987774546)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour tester la compatibilité multi-terminaux",
+                                         "Description":  "Script batch pour tester la compatibilitÃ© multi-terminaux",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -16908,7 +16908,7 @@
                         "CreationTime":  "\/Date(1743987618997)\/",
                         "LastWriteTime":  "\/Date(1743987618998)\/",
                         "Metadata":  {
-                                         "Description":  "Script batch pour mettre à jour les tests unitaires pour la compatibilité multi-terminaux",
+                                         "Description":  "Script batch pour mettre Ã  jour les tests unitaires pour la compatibilitÃ© multi-terminaux",
                                          "Version":  "",
                                          "Tags":  [
 
@@ -16984,3 +16984,4 @@
                     }
                 ]
 }
+

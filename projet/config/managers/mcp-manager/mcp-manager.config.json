@@ -1,0 +1,10 @@
+﻿{
+    "settings":  {
+                     "logPath":  "logs/mcp-manager.log",
+                     "logLevel":  "Info"
+                 },
+    "description":  "Configuration du gestionnaire mcp-manager",
+    "name":  "mcp-manager",
+    "version":  "1.0.0",
+    "enabled":  true
+}

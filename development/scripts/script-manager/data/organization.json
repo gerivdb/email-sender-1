@@ -1,4 +1,4 @@
-{
+﻿{
     "Timestamp":  "2025-04-08 00:06:47",
     "TotalScripts":  769,
     "SuccessCount":  0,
@@ -3230,9 +3230,9 @@
                         "Error":  null
                     },
                     {
-                        "Name":  "RoadmapManager.ps1",
-                        "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\RoadmapManager.ps1",
-                        "TargetPath":  "scripts\\roadmap\\RoadmapManager.ps1",
+                        "Name":  "roadmap-manager.ps1",
+                        "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Roadmap\\roadmap-manager.ps1",
+                        "TargetPath":  "scripts\\roadmap\\roadmap-manager.ps1",
                         "Category":  "Roadmap",
                         "SubCategory":  "General",
                         "Success":  false,
@@ -6930,3 +6930,4 @@
                     }
                 ]
 }
+

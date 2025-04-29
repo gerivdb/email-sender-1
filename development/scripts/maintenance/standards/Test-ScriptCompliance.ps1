@@ -8,7 +8,7 @@
 .PARAMETER Path
     Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\manager\data\compliance_report.json
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\\mode-manager\data\compliance_report.json
 .PARAMETER ScriptType
     Type de script Ã  analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER ShowDetails
@@ -30,7 +30,7 @@
 .PARAMETER Path
     Chemin du dossier contenant les scripts Ã  analyser. Par dÃ©faut: scripts
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\manager\data\compliance_report.json
+    Chemin du fichier de sortie pour le rapport. Par dÃ©faut: scripts\\mode-manager\data\compliance_report.json
 .PARAMETER ScriptType
     Type de script Ã  analyser. Valeurs possibles: All, PowerShell, Python, Batch, Shell. Par dÃ©faut: All
 .PARAMETER ShowDetails
@@ -45,7 +45,7 @@
 
 param (
     [string]$Path = "scripts",
-    [string]$OutputPath = "scripts\manager\data\compliance_report.json",
+    [string]$OutputPath = "scripts\\mode-manager\data\compliance_report.json",
     [ValidateSet("All", "PowerShell", "Python", "Batch", "Shell")
 
 # Configuration de la gestion d'erreurs
@@ -116,7 +116,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\compliance_check.log"
+    $LogFile = "scripts\\mode-manager\data\compliance_check.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -637,3 +637,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

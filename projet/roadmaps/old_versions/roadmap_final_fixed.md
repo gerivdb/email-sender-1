@@ -1,84 +1,84 @@
-# Roadmap du projet EMAIL_SENDER_1
+﻿# Roadmap du projet EMAIL_SENDER_1
 
-## 1. AmÃ©lioration de l'infrastructure et de la gestion des scripts
+## 1. AmÃƒÂ©lioration de l'infrastructure et de la gestion des scripts
 
-### 1.1.2 SystÃ¨me de gestion centralisÃ©e des scripts
-**ComplexitÃ©**: Ã‰levÃ©e
-**Temps estimÃ©**: 2 semaines
+### 1.1.2 SystÃƒÂ¨me de gestion centralisÃƒÂ©e des scripts
+**ComplexitÃƒÂ©**: Ãƒâ€°levÃƒÂ©e
+**Temps estimÃƒÂ©**: 2 semaines
 **Progression**: 50% - *En cours*
-**Date de dÃ©but**: 15/04/2025
-**Date d'achÃ¨vement prÃ©vue**: 29/04/2025
+**Date de dÃƒÂ©but**: 15/04/2025
+**Date d'achÃƒÂ¨vement prÃƒÂ©vue**: 29/04/2025
 
-**Objectif**: RÃ©soudre les problÃ¨mes de prolifÃ©ration de scripts, de duplication et d'organisation dans le dÃ©pÃ´t pour amÃ©liorer la maintenabilitÃ© et la qualitÃ© du code.
+**Objectif**: RÃƒÂ©soudre les problÃƒÂ¨mes de prolifÃƒÂ©ration de scripts, de duplication et d'organisation dans le dÃƒÂ©pÃƒÂ´t pour amÃƒÂ©liorer la maintenabilitÃƒÂ© et la qualitÃƒÂ© du code.
 
-### 1.1.2.1 SystÃ¨me d'inventaire et de classification des scripts
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 3-5 jours
-**Progression**: 100% - *TerminÃ©*
-**Date de dÃ©but**: 15/04/2025
-**Date d'achÃ¨vement**: 15/04/2025
+### 1.1.2.1 SystÃƒÂ¨me d'inventaire et de classification des scripts
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 3-5 jours
+**Progression**: 100% - *TerminÃƒÂ©*
+**Date de dÃƒÂ©but**: 15/04/2025
+**Date d'achÃƒÂ¨vement**: 15/04/2025
 
-**Fichiers implÃ©mentÃ©s**:
+**Fichiers implÃƒÂ©mentÃƒÂ©s**:
 - `modules/ScriptInventoryManager.psm1`
-- `development/scripts/manager/Show-ScriptInventory.ps1`
+- `development/scripts/mode-manager/Show-ScriptInventory.ps1`
 - `development/scripts/analysis/Find-RedundantScripts.ps1`
 - `development/scripts/analysis/Classify-Scripts.ps1`
 - `development/scripts/development/testing/tests/Test-ScriptInventory.ps1`
 - `projet/documentation/development/ScriptInventorySystem.md`
 
-#### A. Mise en place d'un systÃ¨me d'inventaire complet
-- [x] DÃ©velopper un module PowerShell `ScriptInventoryManager.psm1` pour centraliser l'inventaire
-  - [x] IntÃ©grer les fonctionnalitÃ©s de `script_inventory.py` et `script_database.py` existants
-  - [x] Ajouter la dÃ©tection automatique des mÃ©tadonnÃ©es (auteur, version, description)
-  - [x] ImplÃ©menter un systÃ¨me de tags pour catÃ©goriser les scripts
-  - [x] CrÃ©er une base de donnÃ©es JSON pour stocker les informations d'inventaire
-- [x] DÃ©velopper une interface de consultation de l'inventaire
-  - [x] CrÃ©er un script `Show-ScriptInventory.ps1` avec filtrage et tri
-  - [x] ImplÃ©menter l'exportation des rÃ©sultats en diffÃ©rents formats (CSV, JSON, HTML)
-  - [x] Ajouter des visualisations statistiques (nombre de scripts par catÃ©gorie, etc.)
-  - [x] IntÃ©grer avec le systÃ¨me de documentation
+#### A. Mise en place d'un systÃƒÂ¨me d'inventaire complet
+- [x] DÃƒÂ©velopper un module PowerShell `ScriptInventoryManager.psm1` pour centraliser l'inventaire
+  - [x] IntÃƒÂ©grer les fonctionnalitÃƒÂ©s de `script_inventory.py` et `script_database.py` existants
+  - [x] Ajouter la dÃƒÂ©tection automatique des mÃƒÂ©tadonnÃƒÂ©es (auteur, version, description)
+  - [x] ImplÃƒÂ©menter un systÃƒÂ¨me de tags pour catÃƒÂ©goriser les scripts
+  - [x] CrÃƒÂ©er une base de donnÃƒÂ©es JSON pour stocker les informations d'inventaire
+- [x] DÃƒÂ©velopper une interface de consultation de l'inventaire
+  - [x] CrÃƒÂ©er un script `Show-ScriptInventory.ps1` avec filtrage et tri
+  - [x] ImplÃƒÂ©menter l'exportation des rÃƒÂ©sultats en diffÃƒÂ©rents formats (CSV, JSON, HTML)
+  - [x] Ajouter des visualisations statistiques (nombre de scripts par catÃƒÂ©gorie, etc.)
+  - [x] IntÃƒÂ©grer avec le systÃƒÂ¨me de documentation
 
-#### B. Analyse et dÃ©tection des scripts redondants
-- [x] DÃ©velopper un module `ScriptAnalyzer.psm1` pour l'analyse des scripts
-  - [x] ImplÃ©menter la dÃ©tection des scripts similaires par analyse de contenu
-  - [x] CrÃ©er un algorithme de comparaison basÃ© sur la similaritÃ© de Levenshtein
-  - [x] GÃ©nÃ©rer des rapports de duplication avec recommandations
-  - [x] Ajouter la dÃ©tection des versions multiples du mÃªme script
-- [x] CrÃ©er un script Find-RedundantScripts.ps1 pour la dÃ©tection des scripts redondants
-  - [x] ImplÃ©menter des filtres par seuil de similaritÃ©
-  - [x] Ajouter l'export des rÃ©sultats en diffÃ©rents formats
-  - [x] GÃ©nÃ©rer des rapports dÃ©taillÃ©s avec recommandations
+#### B. Analyse et dÃƒÂ©tection des scripts redondants
+- [x] DÃƒÂ©velopper un module `ScriptAnalyzer.psm1` pour l'analyse des scripts
+  - [x] ImplÃƒÂ©menter la dÃƒÂ©tection des scripts similaires par analyse de contenu
+  - [x] CrÃƒÂ©er un algorithme de comparaison basÃƒÂ© sur la similaritÃƒÂ© de Levenshtein
+  - [x] GÃƒÂ©nÃƒÂ©rer des rapports de duplication avec recommandations
+  - [x] Ajouter la dÃƒÂ©tection des versions multiples du mÃƒÂªme script
+- [x] CrÃƒÂ©er un script Find-RedundantScripts.ps1 pour la dÃƒÂ©tection des scripts redondants
+  - [x] ImplÃƒÂ©menter des filtres par seuil de similaritÃƒÂ©
+  - [x] Ajouter l'export des rÃƒÂ©sultats en diffÃƒÂ©rents formats
+  - [x] GÃƒÂ©nÃƒÂ©rer des rapports dÃƒÂ©taillÃƒÂ©s avec recommandations
 
-#### C. SystÃ¨me de classification hiÃ©rarchique
-- [x] CrÃ©er un module `ScriptClassifier.psm1` pour la classification des scripts
-  - [x] DÃ©finir une taxonomie claire pour les types de scripts
-  - [x] ImplÃ©menter un systÃ¨me de classification automatique basÃ© sur le contenu
-  - [x] GÃ©nÃ©rer une structure de dossiers basÃ©e sur la classification
-- [x] DÃ©velopper un systÃ¨me de mÃ©tadonnÃ©es standardisÃ©es
-  - [x] DÃ©finir un format de mÃ©tadonnÃ©es commun (auteur, version, description, etc.)
-  - [x] CrÃ©er un script `Update-ScriptMetadata.ps1` pour la mise Ã  jour des mÃ©tadonnÃ©es
-  - [x] GÃ©nÃ©rer des rapports de conformitÃ© des mÃ©tadonnÃ©es
+#### C. SystÃƒÂ¨me de classification hiÃƒÂ©rarchique
+- [x] CrÃƒÂ©er un module `ScriptClassifier.psm1` pour la classification des scripts
+  - [x] DÃƒÂ©finir une taxonomie claire pour les types de scripts
+  - [x] ImplÃƒÂ©menter un systÃƒÂ¨me de classification automatique basÃƒÂ© sur le contenu
+  - [x] GÃƒÂ©nÃƒÂ©rer une structure de dossiers basÃƒÂ©e sur la classification
+- [x] DÃƒÂ©velopper un systÃƒÂ¨me de mÃƒÂ©tadonnÃƒÂ©es standardisÃƒÂ©es
+  - [x] DÃƒÂ©finir un format de mÃƒÂ©tadonnÃƒÂ©es commun (auteur, version, description, etc.)
+  - [x] CrÃƒÂ©er un script `Update-ScriptMetadata.ps1` pour la mise ÃƒÂ  jour des mÃƒÂ©tadonnÃƒÂ©es
+  - [x] GÃƒÂ©nÃƒÂ©rer des rapports de conformitÃƒÂ© des mÃƒÂ©tadonnÃƒÂ©es
 
 #### D. Tests et documentation
-- [x] CrÃ©er des tests unitaires pour le systÃ¨me d'inventaire
-  - [x] DÃ©velopper Test-ScriptInventorySystem.ps1 pour tester les fonctionnalitÃ©s
-  - [x] ImplÃ©menter des tests pour la dÃ©tection des scripts dupliquÃ©s
+- [x] CrÃƒÂ©er des tests unitaires pour le systÃƒÂ¨me d'inventaire
+  - [x] DÃƒÂ©velopper Test-ScriptInventorySystem.ps1 pour tester les fonctionnalitÃƒÂ©s
+  - [x] ImplÃƒÂ©menter des tests pour la dÃƒÂ©tection des scripts dupliquÃƒÂ©s
   - [x] Ajouter des tests pour la classification des scripts
-- [x] Documenter le systÃ¨me d'inventaire
-  - [x] CrÃ©er un guide d'utilisation avec exemples
+- [x] Documenter le systÃƒÂ¨me d'inventaire
+  - [x] CrÃƒÂ©er un guide d'utilisation avec exemples
   - [x] Documenter l'API du module ScriptInventoryManager
   - [x] Ajouter des exemples de scripts d'utilisation
 
-### 1.1.2.5 AmÃ©liorations avancÃ©es du systÃ¨me d'inventaire et de classification
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 4 jours
-**Progression**: 100% - *TerminÃ©*
-**Date de dÃ©but**: 20/04/2025
-**Date d'achÃ¨vement**: -
+### 1.1.2.5 AmÃƒÂ©liorations avancÃƒÂ©es du systÃƒÂ¨me d'inventaire et de classification
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 4 jours
+**Progression**: 100% - *TerminÃƒÂ©*
+**Date de dÃƒÂ©but**: 20/04/2025
+**Date d'achÃƒÂ¨vement**: -
 
-**Objectif**: AmÃ©liorer le systÃ¨me d'inventaire et de classification des scripts avec des fonctionnalitÃ©s avancÃ©es de dÃ©tection de similaritÃ©, une interface utilisateur amÃ©liorÃ©e, et des intÃ©grations avec d'autres systÃ¨mes.
+**Objectif**: AmÃƒÂ©liorer le systÃƒÂ¨me d'inventaire et de classification des scripts avec des fonctionnalitÃƒÂ©s avancÃƒÂ©es de dÃƒÂ©tection de similaritÃƒÂ©, une interface utilisateur amÃƒÂ©liorÃƒÂ©e, et des intÃƒÂ©grations avec d'autres systÃƒÂ¨mes.
 
-**Fichiers implÃ©mentÃ©s**:
+**Fichiers implÃƒÂ©mentÃƒÂ©s**:
 - `modules/TextSimilarity.psm1`
 - `development/scripts/analysis/Analyze-ScriptSimilarity.ps1`
 - `development/scripts/gui/Show-ScriptInventoryGUI.ps1`
@@ -89,357 +89,357 @@
 - `development/scripts/automation/Register-InventoryWatcher.ps1`
 - `development/scripts/automation/Auto-ClassifyScripts.ps1`
 
-#### A. AmÃ©lioration de la dÃ©tection des scripts dupliquÃ©s
-- [x] ImplÃ©menter des algorithmes de similaritÃ© avancÃ©s
-  - [x] DÃ©velopper un module `TextSimilarity.psm1` avec des algorithmes avancÃ©s
-  - [x] ImplÃ©menter l'algorithme de Levenshtein amÃ©liorÃ©
-  - [x] ImplÃ©menter l'algorithme de similaritÃ© cosinus
-  - [x] ImplÃ©menter l'algorithme TF-IDF pour l'analyse du contenu
-- [x] IntÃ©grer avec le module ScriptInventoryManager
-  - [x] Ajouter une mÃ©thode `CalculateContentSimilarity` pour comparer le contenu des scripts
-  - [x] AmÃ©liorer la mÃ©thode `DetectSimilarScripts` pour utiliser les nouveaux algorithmes
-  - [x] Ajouter des options de configuration pour les seuils de similaritÃ©
-- [x] CrÃ©er un script d'analyse avancÃ©e
-  - [x] DÃ©velopper `Analyze-ScriptSimilarity.ps1` pour l'analyse de similaritÃ©
-  - [x] Ajouter des options pour diffÃ©rents algorithmes et seuils
-  - [x] GÃ©nÃ©rer des rapports dÃ©taillÃ©s avec visualisations
+#### A. AmÃƒÂ©lioration de la dÃƒÂ©tection des scripts dupliquÃƒÂ©s
+- [x] ImplÃƒÂ©menter des algorithmes de similaritÃƒÂ© avancÃƒÂ©s
+  - [x] DÃƒÂ©velopper un module `TextSimilarity.psm1` avec des algorithmes avancÃƒÂ©s
+  - [x] ImplÃƒÂ©menter l'algorithme de Levenshtein amÃƒÂ©liorÃƒÂ©
+  - [x] ImplÃƒÂ©menter l'algorithme de similaritÃƒÂ© cosinus
+  - [x] ImplÃƒÂ©menter l'algorithme TF-IDF pour l'analyse du contenu
+- [x] IntÃƒÂ©grer avec le module ScriptInventoryManager
+  - [x] Ajouter une mÃƒÂ©thode `CalculateContentSimilarity` pour comparer le contenu des scripts
+  - [x] AmÃƒÂ©liorer la mÃƒÂ©thode `DetectSimilarScripts` pour utiliser les nouveaux algorithmes
+  - [x] Ajouter des options de configuration pour les seuils de similaritÃƒÂ©
+- [x] CrÃƒÂ©er un script d'analyse avancÃƒÂ©e
+  - [x] DÃƒÂ©velopper `Analyze-ScriptSimilarity.ps1` pour l'analyse de similaritÃƒÂ©
+  - [x] Ajouter des options pour diffÃƒÂ©rents algorithmes et seuils
+  - [x] GÃƒÂ©nÃƒÂ©rer des rapports dÃƒÂ©taillÃƒÂ©s avec visualisations
 
-#### B. AmÃ©lioration de l'interface utilisateur
-- [x] CrÃ©er une interface graphique WPF
-  - [x] DÃ©velopper `Show-ScriptInventoryGUI.ps1` pour visualiser l'inventaire
+#### B. AmÃƒÂ©lioration de l'interface utilisateur
+- [x] CrÃƒÂ©er une interface graphique WPF
+  - [x] DÃƒÂ©velopper `Show-ScriptInventoryGUI.ps1` pour visualiser l'inventaire
   - [x] Ajouter des filtres interactifs pour rechercher des scripts
-  - [x] Afficher les dÃ©tails des scripts sÃ©lectionnÃ©s
-  - [x] Visualiser les scripts similaires ou dupliquÃ©s
-- [x] ImplÃ©menter des graphiques et statistiques
-  - [x] DÃ©velopper `Show-ScriptStatistics.ps1` pour gÃ©nÃ©rer des statistiques
-  - [x] CrÃ©er des graphiques sur la distribution des scripts par catÃ©gorie
-  - [x] CrÃ©er des graphiques sur la distribution des scripts par langage
-  - [x] CrÃ©er des graphiques sur la distribution des scripts par auteur
-- [x] CrÃ©er un tableau de bord unifiÃ©
-  - [x] DÃ©velopper `Show-ScriptDashboard.ps1` combinant toutes les fonctionnalitÃ©s
-  - [x] Ajouter une navigation par onglets entre les diffÃ©rentes fonctionnalitÃ©s
-  - [x] ImplÃ©menter l'exportation des rapports et graphiques
+  - [x] Afficher les dÃƒÂ©tails des scripts sÃƒÂ©lectionnÃƒÂ©s
+  - [x] Visualiser les scripts similaires ou dupliquÃƒÂ©s
+- [x] ImplÃƒÂ©menter des graphiques et statistiques
+  - [x] DÃƒÂ©velopper `Show-ScriptStatistics.ps1` pour gÃƒÂ©nÃƒÂ©rer des statistiques
+  - [x] CrÃƒÂ©er des graphiques sur la distribution des scripts par catÃƒÂ©gorie
+  - [x] CrÃƒÂ©er des graphiques sur la distribution des scripts par langage
+  - [x] CrÃƒÂ©er des graphiques sur la distribution des scripts par auteur
+- [x] CrÃƒÂ©er un tableau de bord unifiÃƒÂ©
+  - [x] DÃƒÂ©velopper `Show-ScriptDashboard.ps1` combinant toutes les fonctionnalitÃƒÂ©s
+  - [x] Ajouter une navigation par onglets entre les diffÃƒÂ©rentes fonctionnalitÃƒÂ©s
+  - [x] ImplÃƒÂ©menter l'exportation des rapports et graphiques
 
-#### C. IntÃ©gration avec d'autres systÃ¨mes
-- [x] IntÃ©grer avec le systÃ¨me de documentation
-  - [x] DÃ©velopper `Sync-ScriptDocumentation.ps1` pour gÃ©nÃ©rer la documentation
-  - [x] Extraire automatiquement les commentaires et mÃ©tadonnÃ©es des scripts
-  - [x] GÃ©nÃ©rer des fichiers Markdown pour chaque script
-  - [x] CrÃ©er un index de documentation central
-- [x] IntÃ©grer avec le systÃ¨me de gestion de version
-  - [x] DÃ©velopper `Register-GitHooks.ps1` pour installer des hooks Git
-  - [x] ImplÃ©menter un hook pre-commit pour vÃ©rifier les mÃ©tadonnÃ©es
-  - [x] CrÃ©er un hook post-commit pour mettre Ã  jour l'inventaire
+#### C. IntÃƒÂ©gration avec d'autres systÃƒÂ¨mes
+- [x] IntÃƒÂ©grer avec le systÃƒÂ¨me de documentation
+  - [x] DÃƒÂ©velopper `Sync-ScriptDocumentation.ps1` pour gÃƒÂ©nÃƒÂ©rer la documentation
+  - [x] Extraire automatiquement les commentaires et mÃƒÂ©tadonnÃƒÂ©es des scripts
+  - [x] GÃƒÂ©nÃƒÂ©rer des fichiers Markdown pour chaque script
+  - [x] CrÃƒÂ©er un index de documentation central
+- [x] IntÃƒÂ©grer avec le systÃƒÂ¨me de gestion de version
+  - [x] DÃƒÂ©velopper `Register-GitHooks.ps1` pour installer des hooks Git
+  - [x] ImplÃƒÂ©menter un hook pre-commit pour vÃƒÂ©rifier les mÃƒÂ©tadonnÃƒÂ©es
+  - [x] CrÃƒÂ©er un hook post-commit pour mettre ÃƒÂ  jour l'inventaire
   - [x] Ajouter un hook post-merge pour synchroniser l'inventaire
 
 #### D. Automatisation
-- [x] Automatiser la mise Ã  jour de l'inventaire
-  - [x] DÃ©velopper `Register-InventoryWatcher.ps1` pour surveiller les modifications
-  - [x] Utiliser FileSystemWatcher pour dÃ©tecter les changements de fichiers
-  - [x] Mettre Ã  jour automatiquement l'inventaire lors de la crÃ©ation ou modification
+- [x] Automatiser la mise ÃƒÂ  jour de l'inventaire
+  - [x] DÃƒÂ©velopper `Register-InventoryWatcher.ps1` pour surveiller les modifications
+  - [x] Utiliser FileSystemWatcher pour dÃƒÂ©tecter les changements de fichiers
+  - [x] Mettre ÃƒÂ  jour automatiquement l'inventaire lors de la crÃƒÂ©ation ou modification
   - [x] Ajouter des notifications pour les changements importants
 - [x] Automatiser la classification des scripts
-  - [x] DÃ©velopper `Auto-ClassifyScripts.ps1` pour la classification automatique
-  - [x] ImplÃ©menter l'apprentissage Ã  partir des classifications existantes
-  - [x] Ajouter des suggestions de classification pour les scripts non classifiÃ©s
-  - [x] GÃ©nÃ©rer des rapports de classification
+  - [x] DÃƒÂ©velopper `Auto-ClassifyScripts.ps1` pour la classification automatique
+  - [x] ImplÃƒÂ©menter l'apprentissage ÃƒÂ  partir des classifications existantes
+  - [x] Ajouter des suggestions de classification pour les scripts non classifiÃƒÂ©s
+  - [x] GÃƒÂ©nÃƒÂ©rer des rapports de classification
 
-### Avantages des amÃ©liorations
+### Avantages des amÃƒÂ©liorations
 
-1. **DÃ©tection plus prÃ©cise des scripts similaires** : Les algorithmes avancÃ©s permettent une dÃ©tection plus prÃ©cise des scripts similaires ou dupliquÃ©s, facilitant la consolidation et la rÃ©duction de la duplication de code.
+1. **DÃƒÂ©tection plus prÃƒÂ©cise des scripts similaires** : Les algorithmes avancÃƒÂ©s permettent une dÃƒÂ©tection plus prÃƒÂ©cise des scripts similaires ou dupliquÃƒÂ©s, facilitant la consolidation et la rÃƒÂ©duction de la duplication de code.
 
-2. **Interface utilisateur intuitive** : L'interface graphique WPF rend l'exploration et la gestion de l'inventaire des scripts plus facile et intuitive, amÃ©liorant ainsi l'expÃ©rience utilisateur.
+2. **Interface utilisateur intuitive** : L'interface graphique WPF rend l'exploration et la gestion de l'inventaire des scripts plus facile et intuitive, amÃƒÂ©liorant ainsi l'expÃƒÂ©rience utilisateur.
 
-3. **Visualisations informatives** : Les graphiques et statistiques fournissent des informations prÃ©cieuses sur la distribution et l'organisation des scripts, aidant Ã  identifier les tendances et les problÃ¨mes potentiels.
+3. **Visualisations informatives** : Les graphiques et statistiques fournissent des informations prÃƒÂ©cieuses sur la distribution et l'organisation des scripts, aidant ÃƒÂ  identifier les tendances et les problÃƒÂ¨mes potentiels.
 
-4. **IntÃ©gration transparente** : L'intÃ©gration avec le systÃ¨me de documentation et Git permet une gestion plus cohÃ©rente et automatisÃ©e des scripts, rÃ©duisant le travail manuel et les erreurs.
+4. **IntÃƒÂ©gration transparente** : L'intÃƒÂ©gration avec le systÃƒÂ¨me de documentation et Git permet une gestion plus cohÃƒÂ©rente et automatisÃƒÂ©e des scripts, rÃƒÂ©duisant le travail manuel et les erreurs.
 
-5. **Automatisation efficace** : L'automatisation de la mise Ã  jour de l'inventaire et de la classification des scripts rÃ©duit considÃ©rablement le travail manuel et garantit que l'inventaire est toujours Ã  jour.
+5. **Automatisation efficace** : L'automatisation de la mise ÃƒÂ  jour de l'inventaire et de la classification des scripts rÃƒÂ©duit considÃƒÂ©rablement le travail manuel et garantit que l'inventaire est toujours ÃƒÂ  jour.
 
-### Prochaines Ã©tapes possibles
+### Prochaines ÃƒÂ©tapes possibles
 
-1. **AmÃ©lioration continue des algorithmes** : Continuer Ã  affiner les algorithmes de similaritÃ© pour une dÃ©tection encore plus prÃ©cise des scripts similaires.
+1. **AmÃƒÂ©lioration continue des algorithmes** : Continuer ÃƒÂ  affiner les algorithmes de similaritÃƒÂ© pour une dÃƒÂ©tection encore plus prÃƒÂ©cise des scripts similaires.
 
-2. **Extension des intÃ©grations** : Ajouter des intÃ©grations avec d'autres systÃ¨mes comme Jira, Notion, ou des outils CI/CD.
+2. **Extension des intÃƒÂ©grations** : Ajouter des intÃƒÂ©grations avec d'autres systÃƒÂ¨mes comme Jira, Notion, ou des outils CI/CD.
 
-3. **Apprentissage automatique avancÃ©** : ImplÃ©menter des algorithmes d'apprentissage automatique plus sophistiquÃ©s pour amÃ©liorer la classification automatique des scripts.
+3. **Apprentissage automatique avancÃƒÂ©** : ImplÃƒÂ©menter des algorithmes d'apprentissage automatique plus sophistiquÃƒÂ©s pour amÃƒÂ©liorer la classification automatique des scripts.
 
-4. **Optimisation des performances** : Optimiser les performances pour gÃ©rer de trÃ¨s grands ensembles de scripts efficacement.
+4. **Optimisation des performances** : Optimiser les performances pour gÃƒÂ©rer de trÃƒÂ¨s grands ensembles de scripts efficacement.
 
-5. **Internationalisation** : Ajouter la prise en charge de plusieurs langues pour l'interface utilisateur et la documentation gÃ©nÃ©rÃ©e.
+5. **Internationalisation** : Ajouter la prise en charge de plusieurs langues pour l'interface utilisateur et la documentation gÃƒÂ©nÃƒÂ©rÃƒÂ©e.
 
-### 1.1.2.6 AmÃ©lioration des scripts MCP et rÃ©solution des notifications d'erreur
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 2 jours
-**Progression**: 100% - *TerminÃ©*
-**Date de dÃ©but**: 16/04/2025
-**Date d'achÃ¨vement**: -
+### 1.1.2.6 AmÃƒÂ©lioration des scripts MCP et rÃƒÂ©solution des notifications d'erreur
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 2 jours
+**Progression**: 100% - *TerminÃƒÂ©*
+**Date de dÃƒÂ©but**: 16/04/2025
+**Date d'achÃƒÂ¨vement**: -
 
-**Objectif**: AmÃ©liorer les scripts de gestion des serveurs MCP (Model Context Protocol) pour Ã©liminer les notifications d'erreur au dÃ©marrage, optimiser le dÃ©marrage des serveurs et amÃ©liorer l'expÃ©rience utilisateur.
+**Objectif**: AmÃƒÂ©liorer les scripts de gestion des serveurs MCP (Model Context Protocol) pour ÃƒÂ©liminer les notifications d'erreur au dÃƒÂ©marrage, optimiser le dÃƒÂ©marrage des serveurs et amÃƒÂ©liorer l'expÃƒÂ©rience utilisateur.
 
-**Fichiers implÃ©mentÃ©s**:
+**Fichiers implÃƒÂ©mentÃƒÂ©s**:
 - `development/scripts/mcp/clear-mcp-notifications.ps1`
-- `development/scripts/mcp/configure-vscode-mcp.ps1` (modifiÃ©)
-- `development/scripts/mcp/start-all-mcp-complete-v2.ps1` (modifiÃ©)
-- `development/scripts/mcp/check-mcp-servers-v2-noadmin.ps1` (modifiÃ©)
-- `development/scripts/mcp/development/testing/tests/CheckMcpServers.Tests.ps1` (modifiÃ©)
-- `development/scripts/mcp/development/testing/tests/StartAllMcpComplete.Tests.ps1` (modifiÃ©)
-- `development/scripts/mcp/development/testing/tests/TestOmnibus.ps1` (modifiÃ©)
-- `projet/guides/RESOLUTION_PROBLEMES_MCP.md` (modifiÃ©)
+- `development/scripts/mcp/configure-vscode-mcp.ps1` (modifiÃƒÂ©)
+- `development/scripts/mcp/start-all-mcp-complete-v2.ps1` (modifiÃƒÂ©)
+- `development/scripts/mcp/check-mcp-servers-v2-noadmin.ps1` (modifiÃƒÂ©)
+- `development/scripts/mcp/development/testing/tests/CheckMcpServers.Tests.ps1` (modifiÃƒÂ©)
+- `development/scripts/mcp/development/testing/tests/StartAllMcpComplete.Tests.ps1` (modifiÃƒÂ©)
+- `development/scripts/mcp/development/testing/tests/TestOmnibus.ps1` (modifiÃƒÂ©)
+- `projet/guides/RESOLUTION_PROBLEMES_MCP.md` (modifiÃƒÂ©)
 - `projet/roadmaps/journal/entries/2025-04-16-amelioration-scripts-mcp.md`
 
 #### A. Nettoyage des notifications d'erreur
-- [x] DÃ©velopper un script pour nettoyer les notifications d'erreur
-  - [x] CrÃ©er `clear-mcp-notifications.ps1` pour supprimer les notifications existantes
-  - [x] ImplÃ©menter la recherche des fichiers de notification dans les rÃ©pertoires de VS Code
-  - [x] Ajouter le filtrage des notifications liÃ©es aux serveurs MCP
-  - [x] GÃ©rer les erreurs et fournir des messages de journalisation clairs
+- [x] DÃƒÂ©velopper un script pour nettoyer les notifications d'erreur
+  - [x] CrÃƒÂ©er `clear-mcp-notifications.ps1` pour supprimer les notifications existantes
+  - [x] ImplÃƒÂ©menter la recherche des fichiers de notification dans les rÃƒÂ©pertoires de VS Code
+  - [x] Ajouter le filtrage des notifications liÃƒÂ©es aux serveurs MCP
+  - [x] GÃƒÂ©rer les erreurs et fournir des messages de journalisation clairs
 - [x] Modifier le script de configuration VS Code
-  - [x] Mettre Ã  jour `configure-vscode-mcp.ps1` pour ajouter des paramÃ¨tres d'exclusion de notifications
-  - [x] Configurer les patterns d'exclusion pour les notifications liÃ©es aux serveurs MCP
-  - [x] Assurer la compatibilitÃ© avec les paramÃ¨tres existants
+  - [x] Mettre ÃƒÂ  jour `configure-vscode-mcp.ps1` pour ajouter des paramÃƒÂ¨tres d'exclusion de notifications
+  - [x] Configurer les patterns d'exclusion pour les notifications liÃƒÂ©es aux serveurs MCP
+  - [x] Assurer la compatibilitÃƒÂ© avec les paramÃƒÂ¨tres existants
 
-#### B. AmÃ©lioration du dÃ©marrage des serveurs MCP
-- [x] Optimiser le script de dÃ©marrage des serveurs MCP
-  - [x] Modifier `start-all-mcp-complete-v2.ps1` pour intÃ©grer le nettoyage des notifications
-  - [x] Ajouter une vÃ©rification des serveurs dÃ©jÃ  en cours d'exÃ©cution
-  - [x] AmÃ©liorer la dÃ©tection des processus en cours d'exÃ©cution
-  - [x] Optimiser le dÃ©marrage des serveurs pour Ã©viter les dÃ©marrages multiples
-- [x] AmÃ©liorer le script de vÃ©rification des serveurs MCP
-  - [x] Mettre Ã  jour `check-mcp-servers-v2-noadmin.ps1` pour amÃ©liorer la dÃ©tection des serveurs
-  - [x] Ajouter l'affichage des PID des processus trouvÃ©s
-  - [x] AmÃ©liorer la prÃ©sentation des rÃ©sultats
+#### B. AmÃƒÂ©lioration du dÃƒÂ©marrage des serveurs MCP
+- [x] Optimiser le script de dÃƒÂ©marrage des serveurs MCP
+  - [x] Modifier `start-all-mcp-complete-v2.ps1` pour intÃƒÂ©grer le nettoyage des notifications
+  - [x] Ajouter une vÃƒÂ©rification des serveurs dÃƒÂ©jÃƒÂ  en cours d'exÃƒÂ©cution
+  - [x] AmÃƒÂ©liorer la dÃƒÂ©tection des processus en cours d'exÃƒÂ©cution
+  - [x] Optimiser le dÃƒÂ©marrage des serveurs pour ÃƒÂ©viter les dÃƒÂ©marrages multiples
+- [x] AmÃƒÂ©liorer le script de vÃƒÂ©rification des serveurs MCP
+  - [x] Mettre ÃƒÂ  jour `check-mcp-servers-v2-noadmin.ps1` pour amÃƒÂ©liorer la dÃƒÂ©tection des serveurs
+  - [x] Ajouter l'affichage des PID des processus trouvÃƒÂ©s
+  - [x] AmÃƒÂ©liorer la prÃƒÂ©sentation des rÃƒÂ©sultats
 
 #### C. Tests unitaires et documentation
-- [x] DÃ©velopper des tests unitaires pour les scripts MCP
-  - [x] CrÃ©er des tests pour la fonction `Test-McpServerRunning`
-  - [x] ImplÃ©menter des tests pour la fonction `Write-LogInternal`
+- [x] DÃƒÂ©velopper des tests unitaires pour les scripts MCP
+  - [x] CrÃƒÂ©er des tests pour la fonction `Test-McpServerRunning`
+  - [x] ImplÃƒÂ©menter des tests pour la fonction `Write-LogInternal`
   - [x] Ajouter des tests pour la fonction `Start-McpServer`
-  - [x] DÃ©velopper des tests pour la fonction `Start-McpServerWithScript`
-  - [x] CrÃ©er un test d'intÃ©gration pour vÃ©rifier que les scripts s'exÃ©cutent sans erreur
-- [x] Mettre Ã  jour la documentation
-  - [x] Mettre Ã  jour `projet/guides/RESOLUTION_PROBLEMES_MCP.md` avec les nouvelles instructions
-  - [x] CrÃ©er une entrÃ©e dans le journal de bord pour documenter les amÃ©liorations
-  - [x] Mettre Ã  jour les tags du journal de bord pour inclure les nouvelles entrÃ©es
+  - [x] DÃƒÂ©velopper des tests pour la fonction `Start-McpServerWithScript`
+  - [x] CrÃƒÂ©er un test d'intÃƒÂ©gration pour vÃƒÂ©rifier que les scripts s'exÃƒÂ©cutent sans erreur
+- [x] Mettre ÃƒÂ  jour la documentation
+  - [x] Mettre ÃƒÂ  jour `projet/guides/RESOLUTION_PROBLEMES_MCP.md` avec les nouvelles instructions
+  - [x] CrÃƒÂ©er une entrÃƒÂ©e dans le journal de bord pour documenter les amÃƒÂ©liorations
+  - [x] Mettre ÃƒÂ  jour les tags du journal de bord pour inclure les nouvelles entrÃƒÂ©es
 
-#### D. IntÃ©gration et dÃ©ploiement
-- [x] IntÃ©grer les amÃ©liorations dans le workflow de dÃ©marrage
-  - [x] Assurer la compatibilitÃ© avec les scripts existants
-  - [x] Tester le dÃ©marrage complet des serveurs MCP
-  - [x] VÃ©rifier l'absence de notifications d'erreur aprÃ¨s le dÃ©marrage
-- [x] Mettre Ã  jour la roadmap
-  - [x] Ajouter les amÃ©liorations des scripts MCP Ã  la roadmap
-  - [x] Mettre Ã  jour l'Ã©tat d'avancement
+#### D. IntÃƒÂ©gration et dÃƒÂ©ploiement
+- [x] IntÃƒÂ©grer les amÃƒÂ©liorations dans le workflow de dÃƒÂ©marrage
+  - [x] Assurer la compatibilitÃƒÂ© avec les scripts existants
+  - [x] Tester le dÃƒÂ©marrage complet des serveurs MCP
+  - [x] VÃƒÂ©rifier l'absence de notifications d'erreur aprÃƒÂ¨s le dÃƒÂ©marrage
+- [x] Mettre ÃƒÂ  jour la roadmap
+  - [x] Ajouter les amÃƒÂ©liorations des scripts MCP ÃƒÂ  la roadmap
+  - [x] Mettre ÃƒÂ  jour l'ÃƒÂ©tat d'avancement
 
-### Avantages des amÃ©liorations
+### Avantages des amÃƒÂ©liorations
 
-1. **Ã‰limination des notifications d'erreur** : Les notifications d'erreur liÃ©es aux serveurs MCP ne s'affichent plus au dÃ©marrage de VS Code, amÃ©liorant ainsi l'expÃ©rience utilisateur.
+1. **Ãƒâ€°limination des notifications d'erreur** : Les notifications d'erreur liÃƒÂ©es aux serveurs MCP ne s'affichent plus au dÃƒÂ©marrage de VS Code, amÃƒÂ©liorant ainsi l'expÃƒÂ©rience utilisateur.
 
-2. **PrÃ©vention des dÃ©marrages multiples** : Les serveurs dÃ©jÃ  en cours d'exÃ©cution ne sont pas redÃ©marrÃ©s, Ã©vitant ainsi la consommation inutile de ressources systÃ¨me.
+2. **PrÃƒÂ©vention des dÃƒÂ©marrages multiples** : Les serveurs dÃƒÂ©jÃƒÂ  en cours d'exÃƒÂ©cution ne sont pas redÃƒÂ©marrÃƒÂ©s, ÃƒÂ©vitant ainsi la consommation inutile de ressources systÃƒÂ¨me.
 
-3. **Meilleure expÃ©rience utilisateur** : DÃ©marrage plus rapide et plus fiable des serveurs MCP, avec moins d'erreurs et de messages d'avertissement.
+3. **Meilleure expÃƒÂ©rience utilisateur** : DÃƒÂ©marrage plus rapide et plus fiable des serveurs MCP, avec moins d'erreurs et de messages d'avertissement.
 
-4. **Tests unitaires complets** : Les tests unitaires assurent que les scripts fonctionnent correctement et permettent de dÃ©tecter rapidement les problÃ¨mes en cas de modification.
+4. **Tests unitaires complets** : Les tests unitaires assurent que les scripts fonctionnent correctement et permettent de dÃƒÂ©tecter rapidement les problÃƒÂ¨mes en cas de modification.
 
-5. **Documentation amÃ©liorÃ©e** : La documentation mise Ã  jour facilite la rÃ©solution des problÃ¨mes liÃ©s aux serveurs MCP.
+5. **Documentation amÃƒÂ©liorÃƒÂ©e** : La documentation mise ÃƒÂ  jour facilite la rÃƒÂ©solution des problÃƒÂ¨mes liÃƒÂ©s aux serveurs MCP.
 
-### Prochaines Ã©tapes possibles
+### Prochaines ÃƒÂ©tapes possibles
 
-1. **IntÃ©gration au dÃ©marrage automatique** : IntÃ©grer le nettoyage des notifications dans le script de dÃ©marrage automatique de VS Code.
+1. **IntÃƒÂ©gration au dÃƒÂ©marrage automatique** : IntÃƒÂ©grer le nettoyage des notifications dans le script de dÃƒÂ©marrage automatique de VS Code.
 
-2. **Options de configuration avancÃ©es** : Ajouter des options de configuration pour personnaliser le comportement des scripts MCP.
+2. **Options de configuration avancÃƒÂ©es** : Ajouter des options de configuration pour personnaliser le comportement des scripts MCP.
 
-3. **DÃ©tection avancÃ©e des serveurs** : AmÃ©liorer la dÃ©tection des serveurs MCP pour prendre en compte les serveurs exÃ©cutÃ©s sur des ports diffÃ©rents.
+3. **DÃƒÂ©tection avancÃƒÂ©e des serveurs** : AmÃƒÂ©liorer la dÃƒÂ©tection des serveurs MCP pour prendre en compte les serveurs exÃƒÂ©cutÃƒÂ©s sur des ports diffÃƒÂ©rents.
 
-4. **Interface utilisateur graphique** : CrÃ©er une interface utilisateur graphique pour la gestion des serveurs MCP.
+4. **Interface utilisateur graphique** : CrÃƒÂ©er une interface utilisateur graphique pour la gestion des serveurs MCP.
 
-### 1.1.2.2 RÃ©organisation et standardisation du dÃ©pÃ´t
-**ComplexitÃ©**: Ã‰levÃ©e
-**Temps estimÃ©**: 5-7 jours
-**Progression**: 0% - *Ã€ commencer*
+### 1.1.2.2 RÃƒÂ©organisation et standardisation du dÃƒÂ©pÃƒÂ´t
+**ComplexitÃƒÂ©**: Ãƒâ€°levÃƒÂ©e
+**Temps estimÃƒÂ©**: 5-7 jours
+**Progression**: 0% - *Ãƒâ‚¬ commencer*
 
-#### A. DÃ©finition d'une structure de dossiers standardisÃ©e
-- [ ] CrÃ©er un document `RepoStructureStandard.md` dÃ©finissant la structure
-  - [ ] DÃ©finir les dossiers principaux (scripts, tools, projet/documentation, tests, etc.)
-  - [ ] Ã‰tablir des sous-dossiers par domaine fonctionnel
+#### A. DÃƒÂ©finition d'une structure de dossiers standardisÃƒÂ©e
+- [ ] CrÃƒÂ©er un document `RepoStructureStandard.md` dÃƒÂ©finissant la structure
+  - [ ] DÃƒÂ©finir les dossiers principaux (scripts, tools, projet/documentation, tests, etc.)
+  - [ ] Ãƒâ€°tablir des sous-dossiers par domaine fonctionnel
   - [ ] Documenter les conventions de nommage des fichiers
-  - [ ] DÃ©finir les rÃ¨gles de placement des scripts
-- [ ] DÃ©velopper un modÃ¨le de validation de la structure
-  - [ ] CrÃ©er un script `Test-RepoStructure.ps1` pour valider la conformitÃ©
-  - [ ] ImplÃ©menter des rÃ¨gles de validation configurables
-  - [ ] GÃ©nÃ©rer des rapports de non-conformitÃ©
-  - [ ] IntÃ©grer avec le systÃ¨me de CI/CD
+  - [ ] DÃƒÂ©finir les rÃƒÂ¨gles de placement des scripts
+- [ ] DÃƒÂ©velopper un modÃƒÂ¨le de validation de la structure
+  - [ ] CrÃƒÂ©er un script `Test-RepoStructure.ps1` pour valider la conformitÃƒÂ©
+  - [ ] ImplÃƒÂ©menter des rÃƒÂ¨gles de validation configurables
+  - [ ] GÃƒÂ©nÃƒÂ©rer des rapports de non-conformitÃƒÂ©
+  - [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me de CI/CD
 
 #### B. Migration des scripts vers la nouvelle structure
-- [ ] DÃ©velopper un script `Reorganize-Repository.ps1` pour la migration
-  - [ ] ImplÃ©menter la crÃ©ation automatique de la structure de dossiers
-  - [ ] Ajouter la migration des scripts avec prÃ©servation de l'historique Git
-  - [ ] CrÃ©er un systÃ¨me de journalisation des dÃ©placements
-  - [ ] Ajouter des vÃ©rifications de sÃ©curitÃ© pour Ã©viter les pertes de donnÃ©es
-- [ ] CrÃ©er un plan de migration par phases
-  - [ ] Identifier les groupes de scripts Ã  migrer ensemble
-  - [ ] Ã‰tablir un calendrier de migration
-  - [ ] DÃ©finir des points de contrÃ´le et de validation
-  - [ ] PrÃ©voir des procÃ©dures de rollback en cas de problÃ¨me
+- [ ] DÃƒÂ©velopper un script `Reorganize-Repository.ps1` pour la migration
+  - [ ] ImplÃƒÂ©menter la crÃƒÂ©ation automatique de la structure de dossiers
+  - [ ] Ajouter la migration des scripts avec prÃƒÂ©servation de l'historique Git
+  - [ ] CrÃƒÂ©er un systÃƒÂ¨me de journalisation des dÃƒÂ©placements
+  - [ ] Ajouter des vÃƒÂ©rifications de sÃƒÂ©curitÃƒÂ© pour ÃƒÂ©viter les pertes de donnÃƒÂ©es
+- [ ] CrÃƒÂ©er un plan de migration par phases
+  - [ ] Identifier les groupes de scripts ÃƒÂ  migrer ensemble
+  - [ ] Ãƒâ€°tablir un calendrier de migration
+  - [ ] DÃƒÂ©finir des points de contrÃƒÂ´le et de validation
+  - [ ] PrÃƒÂ©voir des procÃƒÂ©dures de rollback en cas de problÃƒÂ¨me
 
-#### C. Nettoyage des scripts obsolÃ¨tes et redondants
-- [ ] CrÃ©er un script `Clean-Repository.ps1` pour le nettoyage
-  - [ ] ImplÃ©menter la dÃ©tection et l'archivage des scripts obsolÃ¨tes
+#### C. Nettoyage des scripts obsolÃƒÂ¨tes et redondants
+- [ ] CrÃƒÂ©er un script `Clean-Repository.ps1` pour le nettoyage
+  - [ ] ImplÃƒÂ©menter la dÃƒÂ©tection et l'archivage des scripts obsolÃƒÂ¨tes
   - [ ] Ajouter la consolidation des scripts redondants
-  - [ ] CrÃ©er un mÃ©canisme de sauvegarde avant suppression
-  - [ ] GÃ©nÃ©rer des rapports de nettoyage dÃ©taillÃ©s
-- [ ] DÃ©velopper une stratÃ©gie d'archivage
-  - [ ] CrÃ©er un systÃ¨me d'archivage des scripts obsolÃ¨tes
-  - [ ] ImplÃ©menter un mÃ©canisme de restauration
-  - [ ] Documenter l'historique des scripts archivÃ©s
-  - [ ] Ã‰tablir des politiques de rÃ©tention
+  - [ ] CrÃƒÂ©er un mÃƒÂ©canisme de sauvegarde avant suppression
+  - [ ] GÃƒÂ©nÃƒÂ©rer des rapports de nettoyage dÃƒÂ©taillÃƒÂ©s
+- [ ] DÃƒÂ©velopper une stratÃƒÂ©gie d'archivage
+  - [ ] CrÃƒÂ©er un systÃƒÂ¨me d'archivage des scripts obsolÃƒÂ¨tes
+  - [ ] ImplÃƒÂ©menter un mÃƒÂ©canisme de restauration
+  - [ ] Documenter l'historique des scripts archivÃƒÂ©s
+  - [ ] Ãƒâ€°tablir des politiques de rÃƒÂ©tention
 
 #### D. Tests unitaires et validation
-- [ ] DÃ©velopper des tests unitaires pour la structure de dossiers
-  - [ ] CrÃ©er un script `Test-RepoStructureUnit.ps1` pour tester la validation de structure
-  - [ ] ImplÃ©menter des tests pour les rÃ¨gles de validation
-  - [ ] Ajouter des tests pour les rapports de non-conformitÃ©
-  - [ ] CrÃ©er des cas de test pour diffÃ©rentes structures de dÃ©pÃ´t
-- [ ] DÃ©velopper des tests unitaires pour la migration
-  - [ ] CrÃ©er un script `Test-RepositoryMigration.ps1` pour tester la migration
-  - [ ] ImplÃ©menter des tests pour la prÃ©servation de l'historique Git
-  - [ ] Ajouter des tests pour la journalisation des dÃ©placements
-  - [ ] CrÃ©er des tests pour les vÃ©rifications de sÃ©curitÃ©
-- [ ] DÃ©velopper des tests unitaires pour le nettoyage
-  - [ ] CrÃ©er un script `Test-RepositoryCleaning.ps1` pour tester le nettoyage
-  - [ ] ImplÃ©menter des tests pour la dÃ©tection des scripts obsolÃ¨tes
+- [ ] DÃƒÂ©velopper des tests unitaires pour la structure de dossiers
+  - [ ] CrÃƒÂ©er un script `Test-RepoStructureUnit.ps1` pour tester la validation de structure
+  - [ ] ImplÃƒÂ©menter des tests pour les rÃƒÂ¨gles de validation
+  - [ ] Ajouter des tests pour les rapports de non-conformitÃƒÂ©
+  - [ ] CrÃƒÂ©er des cas de test pour diffÃƒÂ©rentes structures de dÃƒÂ©pÃƒÂ´t
+- [ ] DÃƒÂ©velopper des tests unitaires pour la migration
+  - [ ] CrÃƒÂ©er un script `Test-RepositoryMigration.ps1` pour tester la migration
+  - [ ] ImplÃƒÂ©menter des tests pour la prÃƒÂ©servation de l'historique Git
+  - [ ] Ajouter des tests pour la journalisation des dÃƒÂ©placements
+  - [ ] CrÃƒÂ©er des tests pour les vÃƒÂ©rifications de sÃƒÂ©curitÃƒÂ©
+- [ ] DÃƒÂ©velopper des tests unitaires pour le nettoyage
+  - [ ] CrÃƒÂ©er un script `Test-RepositoryCleaning.ps1` pour tester le nettoyage
+  - [ ] ImplÃƒÂ©menter des tests pour la dÃƒÂ©tection des scripts obsolÃƒÂ¨tes
   - [ ] Ajouter des tests pour la consolidation des scripts redondants
-  - [ ] CrÃ©er des tests pour les mÃ©canismes de sauvegarde et restauration
-- [ ] IntÃ©grer les tests dans le systÃ¨me TestOmnibus
-  - [ ] Ajouter les tests Ã  la suite de tests automatisÃ©s
-  - [ ] ImplÃ©menter des tests d'intÃ©gration entre les diffÃ©rents composants
-  - [ ] CrÃ©er des rapports de couverture de tests
-  - [ ] Configurer l'exÃ©cution automatique des tests lors des modifications
+  - [ ] CrÃƒÂ©er des tests pour les mÃƒÂ©canismes de sauvegarde et restauration
+- [ ] IntÃƒÂ©grer les tests dans le systÃƒÂ¨me TestOmnibus
+  - [ ] Ajouter les tests ÃƒÂ  la suite de tests automatisÃƒÂ©s
+  - [ ] ImplÃƒÂ©menter des tests d'intÃƒÂ©gration entre les diffÃƒÂ©rents composants
+  - [ ] CrÃƒÂ©er des rapports de couverture de tests
+  - [ ] Configurer l'exÃƒÂ©cution automatique des tests lors des modifications
 
-### 1.1.2.3 SystÃ¨me de gestion des versions et de documentation
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 3-4 jours
-**Progression**: 0% - *Ã€ commencer*
+### 1.1.2.3 SystÃƒÂ¨me de gestion des versions et de documentation
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 3-4 jours
+**Progression**: 0% - *Ãƒâ‚¬ commencer*
 
-#### A. Mise en place d'un systÃ¨me de versionnage standardisÃ©
-- [ ] DÃ©velopper un module `ScriptVersionManager.psm1` pour la gestion des versions
-  - [ ] ImplÃ©menter un systÃ¨me de versionnage sÃ©mantique (MAJOR.MINOR.PATCH)
-  - [ ] CrÃ©er des fonctions pour incrÃ©menter automatiquement les versions
-  - [ ] Ajouter la gÃ©nÃ©ration de journaux de modifications
-  - [ ] IntÃ©grer avec Git pour les tags de version
-- [ ] CrÃ©er des outils de gestion de version
-  - [ ] DÃ©velopper un script `Update-ScriptVersion.ps1` pour la mise Ã  jour des versions
-  - [ ] ImplÃ©menter la gÃ©nÃ©ration automatique de CHANGELOG
+#### A. Mise en place d'un systÃƒÂ¨me de versionnage standardisÃƒÂ©
+- [ ] DÃƒÂ©velopper un module `ScriptVersionManager.psm1` pour la gestion des versions
+  - [ ] ImplÃƒÂ©menter un systÃƒÂ¨me de versionnage sÃƒÂ©mantique (MAJOR.MINOR.PATCH)
+  - [ ] CrÃƒÂ©er des fonctions pour incrÃƒÂ©menter automatiquement les versions
+  - [ ] Ajouter la gÃƒÂ©nÃƒÂ©ration de journaux de modifications
+  - [ ] IntÃƒÂ©grer avec Git pour les tags de version
+- [ ] CrÃƒÂ©er des outils de gestion de version
+  - [ ] DÃƒÂ©velopper un script `Update-ScriptVersion.ps1` pour la mise ÃƒÂ  jour des versions
+  - [ ] ImplÃƒÂ©menter la gÃƒÂ©nÃƒÂ©ration automatique de CHANGELOG
   - [ ] Ajouter la validation des versions
-  - [ ] IntÃ©grer avec le systÃ¨me de CI/CD
+  - [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me de CI/CD
 
-#### B. GÃ©nÃ©ration automatique de documentation
-- [ ] CrÃ©er un script `Generate-ScriptDocumentation.ps1` pour la documentation
-  - [ ] Extraire automatiquement les commentaires et mÃ©tadonnÃ©es des scripts
-  - [ ] GÃ©nÃ©rer des fichiers Markdown pour chaque script
-  - [ ] CrÃ©er un index de documentation central
+#### B. GÃƒÂ©nÃƒÂ©ration automatique de documentation
+- [ ] CrÃƒÂ©er un script `Generate-ScriptDocumentation.ps1` pour la documentation
+  - [ ] Extraire automatiquement les commentaires et mÃƒÂ©tadonnÃƒÂ©es des scripts
+  - [ ] GÃƒÂ©nÃƒÂ©rer des fichiers Markdown pour chaque script
+  - [ ] CrÃƒÂ©er un index de documentation central
   - [ ] Ajouter des exemples d'utilisation extraits des tests
-- [ ] DÃ©velopper un systÃ¨me de documentation continue
-  - [ ] ImplÃ©menter la mise Ã  jour automatique de la documentation lors des commits
-  - [ ] CrÃ©er un site de documentation avec Jekyll ou Mkprojet/documentation
-  - [ ] Ajouter la gÃ©nÃ©ration de diagrammes et de graphiques
-  - [ ] IntÃ©grer avec le systÃ¨me de CI/CD
+- [ ] DÃƒÂ©velopper un systÃƒÂ¨me de documentation continue
+  - [ ] ImplÃƒÂ©menter la mise ÃƒÂ  jour automatique de la documentation lors des commits
+  - [ ] CrÃƒÂ©er un site de documentation avec Jekyll ou Mkprojet/documentation
+  - [ ] Ajouter la gÃƒÂ©nÃƒÂ©ration de diagrammes et de graphiques
+  - [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me de CI/CD
 
-#### C. IntÃ©gration avec le systÃ¨me de roadmap
-- [ ] DÃ©velopper un script `Sync-ScriptWithRoadmap.ps1` pour l'intÃ©gration
-  - [ ] Lier les scripts aux tÃ¢ches de la roadmap
-  - [ ] Mettre Ã  jour automatiquement l'Ã©tat d'avancement
-  - [ ] GÃ©nÃ©rer des rapports de progression
-  - [ ] CrÃ©er des visualisations de l'Ã©tat du projet
-- [ ] ImplÃ©menter un tableau de bord de progression
-  - [ ] DÃ©velopper un script `Show-ProjectDashboard.ps1` pour afficher l'Ã©tat du projet
+#### C. IntÃƒÂ©gration avec le systÃƒÂ¨me de roadmap
+- [ ] DÃƒÂ©velopper un script `Sync-ScriptWithRoadmap.ps1` pour l'intÃƒÂ©gration
+  - [ ] Lier les scripts aux tÃƒÂ¢ches de la roadmap
+  - [ ] Mettre ÃƒÂ  jour automatiquement l'ÃƒÂ©tat d'avancement
+  - [ ] GÃƒÂ©nÃƒÂ©rer des rapports de progression
+  - [ ] CrÃƒÂ©er des visualisations de l'ÃƒÂ©tat du projet
+- [ ] ImplÃƒÂ©menter un tableau de bord de progression
+  - [ ] DÃƒÂ©velopper un script `Show-ProjectDashboard.ps1` pour afficher l'ÃƒÂ©tat du projet
   - [ ] Ajouter des indicateurs de progression
-  - [ ] CrÃ©er des alertes pour les tÃ¢ches en retard
-  - [ ] GÃ©nÃ©rer des rapports pÃ©riodiques
+  - [ ] CrÃƒÂ©er des alertes pour les tÃƒÂ¢ches en retard
+  - [ ] GÃƒÂ©nÃƒÂ©rer des rapports pÃƒÂ©riodiques
 
 #### D. Tests unitaires et validation
-- [ ] DÃ©velopper des tests unitaires pour le systÃ¨me de versionnage
-  - [ ] CrÃ©er un script `Test-VersionManager.ps1` pour tester le gestionnaire de versions
-  - [ ] ImplÃ©menter des tests pour le versionnage sÃ©mantique
-  - [ ] Ajouter des tests pour la gÃ©nÃ©ration de journaux de modifications
-  - [ ] CrÃ©er des tests pour l'intÃ©gration avec Git
-- [ ] DÃ©velopper des tests unitaires pour la documentation
-  - [ ] CrÃ©er un script `Test-DocumentationGenerator.ps1` pour tester la gÃ©nÃ©ration de documentation
-  - [ ] ImplÃ©menter des tests pour l'extraction des mÃ©tadonnÃ©es
-  - [ ] Ajouter des tests pour la gÃ©nÃ©ration de fichiers Markdown
-  - [ ] CrÃ©er des tests pour la gÃ©nÃ©ration d'index
-- [ ] DÃ©velopper des tests unitaires pour l'intÃ©gration avec la roadmap
-  - [ ] CrÃ©er un script `Test-RoadmapIntegration.ps1` pour tester l'intÃ©gration
-  - [ ] ImplÃ©menter des tests pour la mise Ã  jour de l'Ã©tat d'avancement
-  - [ ] Ajouter des tests pour la gÃ©nÃ©ration de rapports
-  - [ ] CrÃ©er des tests pour les visualisations
-- [ ] IntÃ©grer les tests dans le systÃ¨me TestOmnibus
-  - [ ] Ajouter les tests Ã  la suite de tests automatisÃ©s
-  - [ ] ImplÃ©menter des tests d'intÃ©gration entre les diffÃ©rents composants
-  - [ ] CrÃ©er des rapports de couverture de tests
-  - [ ] Configurer l'exÃ©cution automatique des tests lors des modifications
+- [ ] DÃƒÂ©velopper des tests unitaires pour le systÃƒÂ¨me de versionnage
+  - [ ] CrÃƒÂ©er un script `Test-VersionManager.ps1` pour tester le gestionnaire de versions
+  - [ ] ImplÃƒÂ©menter des tests pour le versionnage sÃƒÂ©mantique
+  - [ ] Ajouter des tests pour la gÃƒÂ©nÃƒÂ©ration de journaux de modifications
+  - [ ] CrÃƒÂ©er des tests pour l'intÃƒÂ©gration avec Git
+- [ ] DÃƒÂ©velopper des tests unitaires pour la documentation
+  - [ ] CrÃƒÂ©er un script `Test-DocumentationGenerator.ps1` pour tester la gÃƒÂ©nÃƒÂ©ration de documentation
+  - [ ] ImplÃƒÂ©menter des tests pour l'extraction des mÃƒÂ©tadonnÃƒÂ©es
+  - [ ] Ajouter des tests pour la gÃƒÂ©nÃƒÂ©ration de fichiers Markdown
+  - [ ] CrÃƒÂ©er des tests pour la gÃƒÂ©nÃƒÂ©ration d'index
+- [ ] DÃƒÂ©velopper des tests unitaires pour l'intÃƒÂ©gration avec la roadmap
+  - [ ] CrÃƒÂ©er un script `Test-RoadmapIntegration.ps1` pour tester l'intÃƒÂ©gration
+  - [ ] ImplÃƒÂ©menter des tests pour la mise ÃƒÂ  jour de l'ÃƒÂ©tat d'avancement
+  - [ ] Ajouter des tests pour la gÃƒÂ©nÃƒÂ©ration de rapports
+  - [ ] CrÃƒÂ©er des tests pour les visualisations
+- [ ] IntÃƒÂ©grer les tests dans le systÃƒÂ¨me TestOmnibus
+  - [ ] Ajouter les tests ÃƒÂ  la suite de tests automatisÃƒÂ©s
+  - [ ] ImplÃƒÂ©menter des tests d'intÃƒÂ©gration entre les diffÃƒÂ©rents composants
+  - [ ] CrÃƒÂ©er des rapports de couverture de tests
+  - [ ] Configurer l'exÃƒÂ©cution automatique des tests lors des modifications
 
-### 1.1.2.4 Automatisation et intÃ©gration continue
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 2-3 jours
-**Progression**: 0% - *Ã€ commencer*
+### 1.1.2.4 Automatisation et intÃƒÂ©gration continue
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 2-3 jours
+**Progression**: 0% - *Ãƒâ‚¬ commencer*
 
-#### A. DÃ©veloppement de hooks Git pour la standardisation
-- [ ] CrÃ©er un script `Install-GitHooks.ps1` pour l'installation des hooks
-  - [ ] ImplÃ©menter un hook pre-commit pour la validation des scripts
-  - [ ] Ajouter la vÃ©rification automatique du style de code
-  - [ ] CrÃ©er des tests de validation rapide
-  - [ ] Ajouter la mise Ã  jour automatique des mÃ©tadonnÃ©es
-- [ ] DÃ©velopper des hooks personnalisÃ©s
-  - [ ] CrÃ©er un hook post-commit pour la mise Ã  jour de la documentation
-  - [ ] ImplÃ©menter un hook pre-push pour les tests complets
-  - [ ] Ajouter un hook post-merge pour la synchronisation des dÃ©pendances
-  - [ ] DÃ©velopper un systÃ¨me de configuration des hooks
+#### A. DÃƒÂ©veloppement de hooks Git pour la standardisation
+- [ ] CrÃƒÂ©er un script `Install-GitHooks.ps1` pour l'installation des hooks
+  - [ ] ImplÃƒÂ©menter un hook pre-commit pour la validation des scripts
+  - [ ] Ajouter la vÃƒÂ©rification automatique du style de code
+  - [ ] CrÃƒÂ©er des tests de validation rapide
+  - [ ] Ajouter la mise ÃƒÂ  jour automatique des mÃƒÂ©tadonnÃƒÂ©es
+- [ ] DÃƒÂ©velopper des hooks personnalisÃƒÂ©s
+  - [ ] CrÃƒÂ©er un hook post-commit pour la mise ÃƒÂ  jour de la documentation
+  - [ ] ImplÃƒÂ©menter un hook pre-push pour les tests complets
+  - [ ] Ajouter un hook post-merge pour la synchronisation des dÃƒÂ©pendances
+  - [ ] DÃƒÂ©velopper un systÃƒÂ¨me de configuration des hooks
 
 #### B. Validation automatique des scripts
-- [ ] DÃ©velopper un module `ScriptValidator.psm1` pour la validation
-  - [ ] ImplÃ©menter des vÃ©rifications de syntaxe pour PowerShell et Python
-  - [ ] Ajouter des vÃ©rifications de style de code
-  - [ ] CrÃ©er des tests de sÃ©curitÃ© basiques
-  - [ ] GÃ©nÃ©rer des rapports de validation
-- [ ] CrÃ©er un pipeline de validation
-  - [ ] DÃ©velopper un script `Invoke-ValidationPipeline.ps1` pour l'exÃ©cution des validations
-  - [ ] ImplÃ©menter des niveaux de validation configurables
-  - [ ] Ajouter l'intÃ©gration avec PSScriptAnalyzer et Pylint
-  - [ ] CrÃ©er des rapports de validation dÃ©taillÃ©s
+- [ ] DÃƒÂ©velopper un module `ScriptValidator.psm1` pour la validation
+  - [ ] ImplÃƒÂ©menter des vÃƒÂ©rifications de syntaxe pour PowerShell et Python
+  - [ ] Ajouter des vÃƒÂ©rifications de style de code
+  - [ ] CrÃƒÂ©er des tests de sÃƒÂ©curitÃƒÂ© basiques
+  - [ ] GÃƒÂ©nÃƒÂ©rer des rapports de validation
+- [ ] CrÃƒÂ©er un pipeline de validation
+  - [ ] DÃƒÂ©velopper un script `Invoke-ValidationPipeline.ps1` pour l'exÃƒÂ©cution des validations
+  - [ ] ImplÃƒÂ©menter des niveaux de validation configurables
+  - [ ] Ajouter l'intÃƒÂ©gration avec PSScriptAnalyzer et Pylint
+  - [ ] CrÃƒÂ©er des rapports de validation dÃƒÂ©taillÃƒÂ©s
 
 #### C. Tests unitaires et validation
-- [ ] DÃ©velopper des tests unitaires pour les hooks Git
-  - [ ] CrÃ©er un script `Test-GitHooks.ps1` pour tester les hooks Git
-  - [ ] ImplÃ©menter des tests pour le hook pre-commit
-  - [ ] Ajouter des tests pour les hooks personnalisÃ©s
-  - [ ] CrÃ©er des tests pour le systÃ¨me de configuration des hooks
-- [ ] DÃ©velopper des tests unitaires pour la validation automatique
-  - [ ] CrÃ©er un script `Test-ScriptValidator.ps1` pour tester le validateur
-  - [ ] ImplÃ©menter des tests pour les vÃ©rifications de syntaxe
-  - [ ] Ajouter des tests pour les vÃ©rifications de style de code
-  - [ ] CrÃ©er des tests pour les tests de sÃ©curitÃ©
-- [ ] DÃ©velopper des tests unitaires pour le pipeline de validation
-  - [ ] CrÃ©er un script `Test-ValidationPipeline.ps1` pour tester le pipeline
-  - [ ] ImplÃ©menter des tests pour les niveaux de validation
-  - [ ] Ajouter des tests pour l'intÃ©gration avec PSScriptAnalyzer et Pylint
-  - [ ] CrÃ©er des tests pour les rapports de validation
-- [ ] IntÃ©grer les tests dans le systÃ¨me TestOmnibus
-  - [ ] Ajouter les tests Ã  la suite de tests automatisÃ©s
-  - [ ] ImplÃ©menter des tests d'intÃ©gration entre les diffÃ©rents composants
-  - [ ] CrÃ©er des rapports de couverture de tests
-  - [ ] Configurer l'exÃ©cution automatique des tests lors des modifications
+- [ ] DÃƒÂ©velopper des tests unitaires pour les hooks Git
+  - [ ] CrÃƒÂ©er un script `Test-GitHooks.ps1` pour tester les hooks Git
+  - [ ] ImplÃƒÂ©menter des tests pour le hook pre-commit
+  - [ ] Ajouter des tests pour les hooks personnalisÃƒÂ©s
+  - [ ] CrÃƒÂ©er des tests pour le systÃƒÂ¨me de configuration des hooks
+- [ ] DÃƒÂ©velopper des tests unitaires pour la validation automatique
+  - [ ] CrÃƒÂ©er un script `Test-ScriptValidator.ps1` pour tester le validateur
+  - [ ] ImplÃƒÂ©menter des tests pour les vÃƒÂ©rifications de syntaxe
+  - [ ] Ajouter des tests pour les vÃƒÂ©rifications de style de code
+  - [ ] CrÃƒÂ©er des tests pour les tests de sÃƒÂ©curitÃƒÂ©
+- [ ] DÃƒÂ©velopper des tests unitaires pour le pipeline de validation
+  - [ ] CrÃƒÂ©er un script `Test-ValidationPipeline.ps1` pour tester le pipeline
+  - [ ] ImplÃƒÂ©menter des tests pour les niveaux de validation
+  - [ ] Ajouter des tests pour l'intÃƒÂ©gration avec PSScriptAnalyzer et Pylint
+  - [ ] CrÃƒÂ©er des tests pour les rapports de validation
+- [ ] IntÃƒÂ©grer les tests dans le systÃƒÂ¨me TestOmnibus
+  - [ ] Ajouter les tests ÃƒÂ  la suite de tests automatisÃƒÂ©s
+  - [ ] ImplÃƒÂ©menter des tests d'intÃƒÂ©gration entre les diffÃƒÂ©rents composants
+  - [ ] CrÃƒÂ©er des rapports de couverture de tests
+  - [ ] Configurer l'exÃƒÂ©cution automatique des tests lors des modifications
 
-### 1.1.2.7 SystÃ¨me de journalisation de la roadmap
-**ComplexitÃ©**: Moyenne
-**Temps estimÃ©**: 4 jours
-**Progression**: 0% - *Ã€ commencer*
-**Date de dÃ©but**: -
-**Date d'achÃ¨vement prÃ©vue**: -
+### 1.1.2.7 SystÃƒÂ¨me de journalisation de la roadmap
+**ComplexitÃƒÂ©**: Moyenne
+**Temps estimÃƒÂ©**: 4 jours
+**Progression**: 0% - *Ãƒâ‚¬ commencer*
+**Date de dÃƒÂ©but**: -
+**Date d'achÃƒÂ¨vement prÃƒÂ©vue**: -
 
-**Objectif**: Mettre en place un systÃ¨me de journalisation de la roadmap pour faciliter son parsing automatique et archiver efficacement les parties rÃ©alisÃ©es, amÃ©liorant ainsi la traÃ§abilitÃ© et le suivi du projet.
+**Objectif**: Mettre en place un systÃƒÂ¨me de journalisation de la roadmap pour faciliter son parsing automatique et archiver efficacement les parties rÃƒÂ©alisÃƒÂ©es, amÃƒÂ©liorant ainsi la traÃƒÂ§abilitÃƒÂ© et le suivi du projet.
 
-**Fichiers Ã  implÃ©menter**:
+**Fichiers ÃƒÂ  implÃƒÂ©menter**:
 - `Roadmap/journal/index.json`
 - `Roadmap/journal/metadata.json`
 - `Roadmap/journal/status.json`
@@ -457,149 +457,150 @@
 - `development/roadmap/scripts/Send-RoadmapJournalNotification.ps1`
 - `development/scripts/development/testing/tests/Test-RoadmapJournalManager.ps1`
 
-#### A. Analyse et dÃ©finition du format de journalisation
+#### A. Analyse et dÃƒÂ©finition du format de journalisation
 - [ ] Analyser la structure actuelle de la roadmap
-  - [ ] Identifier les niveaux hiÃ©rarchiques (sections, sous-sections, tÃ¢ches, sous-tÃ¢ches)
-  - [ ] Examiner le systÃ¨me de numÃ©rotation (ex. 1.1.2, 1.1.2.1) et ses limites
-  - [ ] Recenser les mÃ©tadonnÃ©es clÃ©s (complexitÃ©, temps estimÃ©, progression, dates)
-  - [ ] DÃ©finir les statuts standardisÃ©s (`NotStarted`, `InProgress`, `Completed`, `Blocked`)
-- [ ] DÃ©finir le format JSON standardisÃ©
-  - [ ] CrÃ©er un schÃ©ma JSON pour les entrÃ©es de journal
-  - [ ] DÃ©finir les champs obligatoires (id, titre, statut, dates de crÃ©ation/modification)
-  - [ ] DÃ©finir les champs optionnels (description, mÃ©tadonnÃ©es, sous-tÃ¢ches)
-  - [ ] Ã‰tablir des rÃ¨gles pour la gÃ©nÃ©ration des identifiants uniques
+  - [ ] Identifier les niveaux hiÃƒÂ©rarchiques (sections, sous-sections, tÃƒÂ¢ches, sous-tÃƒÂ¢ches)
+  - [ ] Examiner le systÃƒÂ¨me de numÃƒÂ©rotation (ex. 1.1.2, 1.1.2.1) et ses limites
+  - [ ] Recenser les mÃƒÂ©tadonnÃƒÂ©es clÃƒÂ©s (complexitÃƒÂ©, temps estimÃƒÂ©, progression, dates)
+  - [ ] DÃƒÂ©finir les statuts standardisÃƒÂ©s (`NotStarted`, `InProgress`, `Completed`, `Blocked`)
+- [ ] DÃƒÂ©finir le format JSON standardisÃƒÂ©
+  - [ ] CrÃƒÂ©er un schÃƒÂ©ma JSON pour les entrÃƒÂ©es de journal
+  - [ ] DÃƒÂ©finir les champs obligatoires (id, titre, statut, dates de crÃƒÂ©ation/modification)
+  - [ ] DÃƒÂ©finir les champs optionnels (description, mÃƒÂ©tadonnÃƒÂ©es, sous-tÃƒÂ¢ches)
+  - [ ] Ãƒâ€°tablir des rÃƒÂ¨gles pour la gÃƒÂ©nÃƒÂ©ration des identifiants uniques
 - [ ] Valider la structure JSON
-  - [ ] CrÃ©er un schÃ©ma JSON (JSON Schema) pour la validation
-  - [ ] ImplÃ©menter des tests de validation du schÃ©ma
-  - [ ] Documenter le schÃ©ma et les rÃ¨gles de validation
+  - [ ] CrÃƒÂ©er un schÃƒÂ©ma JSON (JSON Schema) pour la validation
+  - [ ] ImplÃƒÂ©menter des tests de validation du schÃƒÂ©ma
+  - [ ] Documenter le schÃƒÂ©ma et les rÃƒÂ¨gles de validation
 
 #### B. Structure de fichiers pour la journalisation
-- [ ] CrÃ©er la structure de dossiers pour organiser les journaux
-  - [ ] CrÃ©er le dossier principal `Roadmap/journal`
-  - [ ] CrÃ©er les sous-dossiers par section (`sections/1_infrastructure`, etc.)
-  - [ ] CrÃ©er le dossier `archives` avec structure par mois (`archives/yyyy-mm`)
-  - [ ] CrÃ©er le dossier `templates` pour les modÃ¨les
-- [ ] CrÃ©er les fichiers de base pour le systÃ¨me
-  - [ ] DÃ©velopper `index.json` pour indexer toutes les entrÃ©es actives
-  - [ ] CrÃ©er `metadata.json` pour les mÃ©tadonnÃ©es globales
-  - [ ] ImplÃ©menter `status.json` pour suivre l'Ã©tat global du projet
-  - [ ] CrÃ©er `templates/entry_template.json` comme modÃ¨le d'entrÃ©e
-- [ ] DÃ©finir les rÃ¨gles de nommage et d'organisation
-  - [ ] Ã‰tablir les conventions de nommage des fichiers JSON
-  - [ ] DÃ©finir la structure des chemins pour les entrÃ©es archivÃ©es
-  - [ ] CrÃ©er un systÃ¨me de validation d'intÃ©gritÃ© pour l'index
+- [ ] CrÃƒÂ©er la structure de dossiers pour organiser les journaux
+  - [ ] CrÃƒÂ©er le dossier principal `Roadmap/journal`
+  - [ ] CrÃƒÂ©er les sous-dossiers par section (`sections/1_infrastructure`, etc.)
+  - [ ] CrÃƒÂ©er le dossier `archives` avec structure par mois (`archives/yyyy-mm`)
+  - [ ] CrÃƒÂ©er le dossier `templates` pour les modÃƒÂ¨les
+- [ ] CrÃƒÂ©er les fichiers de base pour le systÃƒÂ¨me
+  - [ ] DÃƒÂ©velopper `index.json` pour indexer toutes les entrÃƒÂ©es actives
+  - [ ] CrÃƒÂ©er `metadata.json` pour les mÃƒÂ©tadonnÃƒÂ©es globales
+  - [ ] ImplÃƒÂ©menter `status.json` pour suivre l'ÃƒÂ©tat global du projet
+  - [ ] CrÃƒÂ©er `templates/entry_template.json` comme modÃƒÂ¨le d'entrÃƒÂ©e
+- [ ] DÃƒÂ©finir les rÃƒÂ¨gles de nommage et d'organisation
+  - [ ] Ãƒâ€°tablir les conventions de nommage des fichiers JSON
+  - [ ] DÃƒÂ©finir la structure des chemins pour les entrÃƒÂ©es archivÃƒÂ©es
+  - [ ] CrÃƒÂ©er un systÃƒÂ¨me de validation d'intÃƒÂ©gritÃƒÂ© pour l'index
 
-#### C. DÃ©veloppement des scripts de gestion
-- [ ] CrÃ©er le module PowerShell `RoadmapJournalManager.psm1`
-  - [ ] DÃ©velopper la fonction `New-RoadmapJournalEntry` pour crÃ©er des entrÃ©es
-  - [ ] ImplÃ©menter `Update-RoadmapJournalEntry` pour mettre Ã  jour les entrÃ©es
-  - [ ] CrÃ©er `Move-RoadmapJournalEntryToArchive` pour l'archivage
-  - [ ] DÃ©velopper `Get-RoadmapJournalStatus` pour obtenir l'Ã©tat global
+#### C. DÃƒÂ©veloppement des scripts de gestion
+- [ ] CrÃƒÂ©er le module PowerShell `RoadmapJournalManager.psm1`
+  - [ ] DÃƒÂ©velopper la fonction `New-RoadmapJournalEntry` pour crÃƒÂ©er des entrÃƒÂ©es
+  - [ ] ImplÃƒÂ©menter `Update-RoadmapJournalEntry` pour mettre ÃƒÂ  jour les entrÃƒÂ©es
+  - [ ] CrÃƒÂ©er `Move-RoadmapJournalEntryToArchive` pour l'archivage
+  - [ ] DÃƒÂ©velopper `Get-RoadmapJournalStatus` pour obtenir l'ÃƒÂ©tat global
   - [ ] Ajouter des fonctions utilitaires (validation, recherche, etc.)
-- [ ] DÃ©velopper les scripts d'interface utilisateur
-  - [ ] CrÃ©er `Add-RoadmapJournalEntry.ps1` pour l'ajout interactif
-  - [ ] DÃ©velopper `Update-RoadmapJournalStatus.ps1` pour la mise Ã  jour des statuts
-  - [ ] ImplÃ©menter `Show-RoadmapJournalDashboard.ps1` pour le tableau de bord
-  - [ ] CrÃ©er `Export-RoadmapJournalToMarkdown.ps1` pour l'exportation
-- [ ] ImplÃ©menter la journalisation et la gestion des erreurs
-  - [ ] CrÃ©er un systÃ¨me de logs pour les opÃ©rations critiques
-  - [ ] ImplÃ©menter la gestion des exceptions avec messages clairs
-  - [ ] Ajouter des mÃ©canismes de rÃ©cupÃ©ration aprÃ¨s erreur
+- [ ] DÃƒÂ©velopper les scripts d'interface utilisateur
+  - [ ] CrÃƒÂ©er `Add-RoadmapJournalEntry.ps1` pour l'ajout interactif
+  - [ ] DÃƒÂ©velopper `Update-RoadmapJournalStatus.ps1` pour la mise ÃƒÂ  jour des statuts
+  - [ ] ImplÃƒÂ©menter `Show-RoadmapJournalDashboard.ps1` pour le tableau de bord
+  - [ ] CrÃƒÂ©er `Export-RoadmapJournalToMarkdown.ps1` pour l'exportation
+- [ ] ImplÃƒÂ©menter la journalisation et la gestion des erreurs
+  - [ ] CrÃƒÂ©er un systÃƒÂ¨me de logs pour les opÃƒÂ©rations critiques
+  - [ ] ImplÃƒÂ©menter la gestion des exceptions avec messages clairs
+  - [ ] Ajouter des mÃƒÂ©canismes de rÃƒÂ©cupÃƒÂ©ration aprÃƒÂ¨s erreur
 
 #### D. Synchronisation avec la roadmap
-- [ ] DÃ©velopper le script `Sync-RoadmapWithJournal.ps1`
-  - [ ] CrÃ©er une fonction pour extraire les tÃ¢ches du Markdown
-  - [ ] ImplÃ©menter la comparaison avec les entrÃ©es JSON existantes
-  - [ ] DÃ©velopper la mise Ã  jour bidirectionnelle (Markdown â†” JSON)
-  - [ ] Ajouter un mÃ©canisme de sauvegarde avant synchronisation
-- [ ] CrÃ©er le script `Import-ExistingRoadmapToJournal.ps1`
-  - [ ] DÃ©velopper un parser Markdown robuste (via regex ou bibliothÃ¨que)
-  - [ ] ImplÃ©menter la conversion des tÃ¢ches en entrÃ©es JSON
-  - [ ] CrÃ©er un systÃ¨me de validation des donnÃ©es importÃ©es
-  - [ ] Ajouter des rapports de migration dÃ©taillÃ©s
+- [ ] DÃƒÂ©velopper le script `Sync-RoadmapWithJournal.ps1`
+  - [ ] CrÃƒÂ©er une fonction pour extraire les tÃƒÂ¢ches du Markdown
+  - [ ] ImplÃƒÂ©menter la comparaison avec les entrÃƒÂ©es JSON existantes
+  - [ ] DÃƒÂ©velopper la mise ÃƒÂ  jour bidirectionnelle (Markdown Ã¢â€ â€ JSON)
+  - [ ] Ajouter un mÃƒÂ©canisme de sauvegarde avant synchronisation
+- [ ] CrÃƒÂ©er le script `Import-ExistingRoadmapToJournal.ps1`
+  - [ ] DÃƒÂ©velopper un parser Markdown robuste (via regex ou bibliothÃƒÂ¨que)
+  - [ ] ImplÃƒÂ©menter la conversion des tÃƒÂ¢ches en entrÃƒÂ©es JSON
+  - [ ] CrÃƒÂ©er un systÃƒÂ¨me de validation des donnÃƒÂ©es importÃƒÂ©es
+  - [ ] Ajouter des rapports de migration dÃƒÂ©taillÃƒÂ©s
 
 #### E. Outils d'analyse et reporting
-- [ ] DÃ©velopper le script `Analyze-RoadmapJournal.ps1`
-  - [ ] ImplÃ©menter le calcul des statistiques de progression
-  - [ ] CrÃ©er des fonctions pour identifier les tÃ¢ches en retard
-  - [ ] DÃ©velopper la gÃ©nÃ©ration de graphiques (via PSGraph)
-  - [ ] Ajouter des analyses de tendances et prÃ©visions
-- [ ] CrÃ©er le script `Generate-RoadmapJournalReport.ps1`
-  - [ ] ImplÃ©menter la gÃ©nÃ©ration de rapports de progression
-  - [ ] DÃ©velopper des rapports de statut dÃ©taillÃ©s
-  - [ ] CrÃ©er des rapports de prÃ©vision basÃ©s sur les tendances
-  - [ ] Ajouter l'export en diffÃ©rents formats (Markdown, HTML, PDF)
+- [ ] DÃƒÂ©velopper le script `Analyze-RoadmapJournal.ps1`
+  - [ ] ImplÃƒÂ©menter le calcul des statistiques de progression
+  - [ ] CrÃƒÂ©er des fonctions pour identifier les tÃƒÂ¢ches en retard
+  - [ ] DÃƒÂ©velopper la gÃƒÂ©nÃƒÂ©ration de graphiques (via PSGraph)
+  - [ ] Ajouter des analyses de tendances et prÃƒÂ©visions
+- [ ] CrÃƒÂ©er le script `Generate-RoadmapJournalReport.ps1`
+  - [ ] ImplÃƒÂ©menter la gÃƒÂ©nÃƒÂ©ration de rapports de progression
+  - [ ] DÃƒÂ©velopper des rapports de statut dÃƒÂ©taillÃƒÂ©s
+  - [ ] CrÃƒÂ©er des rapports de prÃƒÂ©vision basÃƒÂ©s sur les tendances
+  - [ ] Ajouter l'export en diffÃƒÂ©rents formats (Markdown, HTML, PDF)
 
-#### F. IntÃ©gration avec les systÃ¨mes existants
-- [ ] IntÃ©grer avec le systÃ¨me d'inventaire des scripts
-  - [ ] DÃ©velopper des fonctions pour lier scripts et tÃ¢ches
-  - [ ] ImplÃ©menter la mise Ã  jour automatique de l'Ã©tat d'avancement
-  - [ ] CrÃ©er des rapports de couverture (scripts â†” tÃ¢ches)
-- [ ] IntÃ©grer avec le systÃ¨me de documentation
-  - [ ] DÃ©velopper la gÃ©nÃ©ration automatique de documentation par tÃ¢che
-  - [ ] ImplÃ©menter la mise Ã  jour de la documentation via les journaux
-  - [ ] CrÃ©er un index de documentation liÃ© Ã  la roadmap
-- [ ] IntÃ©grer avec le systÃ¨me de gestion de version (Git)
-  - [ ] DÃ©velopper des hooks Git pour la mise Ã  jour des journaux
-  - [ ] ImplÃ©menter la liaison des commits aux tÃ¢ches
-  - [ ] CrÃ©er des rapports de progression basÃ©s sur l'activitÃ© Git
+#### F. IntÃƒÂ©gration avec les systÃƒÂ¨mes existants
+- [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me d'inventaire des scripts
+  - [ ] DÃƒÂ©velopper des fonctions pour lier scripts et tÃƒÂ¢ches
+  - [ ] ImplÃƒÂ©menter la mise ÃƒÂ  jour automatique de l'ÃƒÂ©tat d'avancement
+  - [ ] CrÃƒÂ©er des rapports de couverture (scripts Ã¢â€ â€ tÃƒÂ¢ches)
+- [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me de documentation
+  - [ ] DÃƒÂ©velopper la gÃƒÂ©nÃƒÂ©ration automatique de documentation par tÃƒÂ¢che
+  - [ ] ImplÃƒÂ©menter la mise ÃƒÂ  jour de la documentation via les journaux
+  - [ ] CrÃƒÂ©er un index de documentation liÃƒÂ© ÃƒÂ  la roadmap
+- [ ] IntÃƒÂ©grer avec le systÃƒÂ¨me de gestion de version (Git)
+  - [ ] DÃƒÂ©velopper des hooks Git pour la mise ÃƒÂ  jour des journaux
+  - [ ] ImplÃƒÂ©menter la liaison des commits aux tÃƒÂ¢ches
+  - [ ] CrÃƒÂ©er des rapports de progression basÃƒÂ©s sur l'activitÃƒÂ© Git
 
 #### G. Tests unitaires et documentation
-- [ ] DÃ©velopper des tests unitaires pour le module principal
-  - [ ] CrÃ©er `Test-RoadmapJournalManager.ps1` avec tests Pester
-  - [ ] ImplÃ©menter des tests pour chaque fonction du module
-  - [ ] Ajouter des tests d'intÃ©gration entre composants
+- [ ] DÃƒÂ©velopper des tests unitaires pour le module principal
+  - [ ] CrÃƒÂ©er `Test-RoadmapJournalManager.ps1` avec tests Pester
+  - [ ] ImplÃƒÂ©menter des tests pour chaque fonction du module
+  - [ ] Ajouter des tests d'intÃƒÂ©gration entre composants
   - [ ] Viser une couverture de code de 100%
-- [ ] CrÃ©er des tests pour les scripts d'interface utilisateur
-  - [ ] DÃ©velopper des tests pour les scripts d'ajout et mise Ã  jour
-  - [ ] ImplÃ©menter des tests pour le tableau de bord et l'exportation
-  - [ ] CrÃ©er des tests de bout en bout (end-to-end)
-- [ ] DÃ©velopper une documentation complÃ¨te
-  - [ ] CrÃ©er un guide d'utilisation avec exemples
+- [ ] CrÃƒÂ©er des tests pour les scripts d'interface utilisateur
+  - [ ] DÃƒÂ©velopper des tests pour les scripts d'ajout et mise ÃƒÂ  jour
+  - [ ] ImplÃƒÂ©menter des tests pour le tableau de bord et l'exportation
+  - [ ] CrÃƒÂ©er des tests de bout en bout (end-to-end)
+- [ ] DÃƒÂ©velopper une documentation complÃƒÂ¨te
+  - [ ] CrÃƒÂ©er un guide d'utilisation avec exemples
   - [ ] Documenter l'API du module RoadmapJournalManager
-  - [ ] DÃ©velopper des tutoriels pour les cas d'usage courants
-  - [ ] Documenter le format JSON et les rÃ¨gles de nommage
+  - [ ] DÃƒÂ©velopper des tutoriels pour les cas d'usage courants
+  - [ ] Documenter le format JSON et les rÃƒÂ¨gles de nommage
 
 #### H. Automatisation et notifications
-- [ ] DÃ©velopper le script `Register-RoadmapJournalWatcher.ps1`
-  - [ ] ImplÃ©menter FileSystemWatcher pour dÃ©tecter les changements
-  - [ ] CrÃ©er des gestionnaires d'Ã©vÃ©nements pour les mises Ã  jour
-  - [ ] Ajouter des mÃ©canismes de throttling pour Ã©viter les surcharges
-  - [ ] DÃ©velopper un service de surveillance en arriÃ¨re-plan
-- [ ] CrÃ©er le script `Send-RoadmapJournalNotification.ps1`
-  - [ ] ImplÃ©menter l'envoi de notifications par email
-  - [ ] DÃ©velopper l'intÃ©gration avec Teams/Slack
-  - [ ] CrÃ©er des rapports pÃ©riodiques automatiques
-  - [ ] Ajouter des alertes pour les tÃ¢ches critiques ou en retard
+- [ ] DÃƒÂ©velopper le script `Register-RoadmapJournalWatcher.ps1`
+  - [ ] ImplÃƒÂ©menter FileSystemWatcher pour dÃƒÂ©tecter les changements
+  - [ ] CrÃƒÂ©er des gestionnaires d'ÃƒÂ©vÃƒÂ©nements pour les mises ÃƒÂ  jour
+  - [ ] Ajouter des mÃƒÂ©canismes de throttling pour ÃƒÂ©viter les surcharges
+  - [ ] DÃƒÂ©velopper un service de surveillance en arriÃƒÂ¨re-plan
+- [ ] CrÃƒÂ©er le script `Send-RoadmapJournalNotification.ps1`
+  - [ ] ImplÃƒÂ©menter l'envoi de notifications par email
+  - [ ] DÃƒÂ©velopper l'intÃƒÂ©gration avec Teams/Slack
+  - [ ] CrÃƒÂ©er des rapports pÃƒÂ©riodiques automatiques
+  - [ ] Ajouter des alertes pour les tÃƒÂ¢ches critiques ou en retard
 
-### Avantages du systÃ¨me de journalisation
+### Avantages du systÃƒÂ¨me de journalisation
 
-1. **Parsing facilitÃ©** : Structure JSON standardisÃ©e permettant un parsing automatique et fiable des donnÃ©es de la roadmap.
+1. **Parsing facilitÃƒÂ©** : Structure JSON standardisÃƒÂ©e permettant un parsing automatique et fiable des donnÃƒÂ©es de la roadmap.
 
-2. **Archivage efficace** : SystÃ¨me d'archivage organisÃ© par date pour les tÃ¢ches terminÃ©es, gardant la roadmap active plus lÃ©gÃ¨re.
+2. **Archivage efficace** : SystÃƒÂ¨me d'archivage organisÃƒÂ© par date pour les tÃƒÂ¢ches terminÃƒÂ©es, gardant la roadmap active plus lÃƒÂ©gÃƒÂ¨re.
 
-3. **TraÃ§abilitÃ© amÃ©liorÃ©e** : Enregistrement horodatÃ© de chaque modification avec identification de l'auteur pour une traÃ§abilitÃ© complÃ¨te.
+3. **TraÃƒÂ§abilitÃƒÂ© amÃƒÂ©liorÃƒÂ©e** : Enregistrement horodatÃƒÂ© de chaque modification avec identification de l'auteur pour une traÃƒÂ§abilitÃƒÂ© complÃƒÂ¨te.
 
-4. **Analyse avancÃ©e** : Outils d'analyse gÃ©nÃ©rant des statistiques et visualisations pour un suivi prÃ©cis de la progression.
+4. **Analyse avancÃƒÂ©e** : Outils d'analyse gÃƒÂ©nÃƒÂ©rant des statistiques et visualisations pour un suivi prÃƒÂ©cis de la progression.
 
-5. **IntÃ©gration transparente** : Connexions avec les systÃ¨mes d'inventaire, de documentation et de gestion de version pour une cohÃ©rence globale.
+5. **IntÃƒÂ©gration transparente** : Connexions avec les systÃƒÂ¨mes d'inventaire, de documentation et de gestion de version pour une cohÃƒÂ©rence globale.
 
-6. **Automatisation robuste** : Surveillance automatique des modifications et notifications rÃ©duisant le travail manuel de maintenance.
+6. **Automatisation robuste** : Surveillance automatique des modifications et notifications rÃƒÂ©duisant le travail manuel de maintenance.
 
-7. **Reporting complet** : GÃ©nÃ©ration de rapports dÃ©taillÃ©s sur l'Ã©tat du projet avec prÃ©visions et tendances.
+7. **Reporting complet** : GÃƒÂ©nÃƒÂ©ration de rapports dÃƒÂ©taillÃƒÂ©s sur l'ÃƒÂ©tat du projet avec prÃƒÂ©visions et tendances.
 
-8. **ScalabilitÃ©** : Architecture modulaire permettant de gÃ©rer efficacement un grand nombre de tÃ¢ches et sous-tÃ¢ches.
+8. **ScalabilitÃƒÂ©** : Architecture modulaire permettant de gÃƒÂ©rer efficacement un grand nombre de tÃƒÂ¢ches et sous-tÃƒÂ¢ches.
 
-### Prochaines Ã©tapes aprÃ¨s implÃ©mentation
+### Prochaines ÃƒÂ©tapes aprÃƒÂ¨s implÃƒÂ©mentation
 
-1. **Optimisation des performances** : AmÃ©lioration des algorithmes de parsing et de synchronisation pour rÃ©duire la latence.
+1. **Optimisation des performances** : AmÃƒÂ©lioration des algorithmes de parsing et de synchronisation pour rÃƒÂ©duire la latence.
 
-2. **Extensions d'intÃ©gration** : Ajout d'intÃ©grations avec Jira, Notion, ou des outils CI/CD externes.
+2. **Extensions d'intÃƒÂ©gration** : Ajout d'intÃƒÂ©grations avec Jira, Notion, ou des outils CI/CD externes.
 
-3. **Interface graphique** : DÃ©veloppement d'une interface utilisateur WPF ou PowerShell Universal pour la gestion visuelle.
+3. **Interface graphique** : DÃƒÂ©veloppement d'une interface utilisateur WPF ou PowerShell Universal pour la gestion visuelle.
 
-4. **Visualisations avancÃ©es** : ImplÃ©mentation de diagrammes de Gantt et graphiques de dÃ©pendances interactifs.
+4. **Visualisations avancÃƒÂ©es** : ImplÃƒÂ©mentation de diagrammes de Gantt et graphiques de dÃƒÂ©pendances interactifs.
 
-5. **Intelligence artificielle** : IntÃ©gration d'algorithmes prÃ©dictifs pour anticiper les retards et optimiser la planification.
+5. **Intelligence artificielle** : IntÃƒÂ©gration d'algorithmes prÃƒÂ©dictifs pour anticiper les retards et optimiser la planification.
+
 
 

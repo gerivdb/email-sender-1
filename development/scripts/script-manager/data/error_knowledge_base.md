@@ -170,7 +170,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\log_file.log"
+    $LogFile = "scripts\\mode-manager\data\log_file.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 ```
@@ -234,3 +234,4 @@ if ($ActualResult -eq $ExpectedResult) {
 ---
 
 *DerniÃ¨re mise Ã  jour: 08/04/2025 19:45*
+

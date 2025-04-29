@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module MCPManager.
@@ -7,36 +7,36 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-20
+    Date de crÃ©ation: 2025-04-20
 #>
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\MCPManager.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (Test-Path $modulePath) {
-    Write-Host "Module MCPManager trouvé à $modulePath" -ForegroundColor Green
+    Write-Host "Module MCPManager trouvÃ© Ã  $modulePath" -ForegroundColor Green
 } else {
-    Write-Host "Module MCPManager introuvable à $modulePath" -ForegroundColor Red
+    Write-Host "Module MCPManager introuvable Ã  $modulePath" -ForegroundColor Red
     exit 1
 }
 
-# Vérifier que le module peut être importé
+# VÃ©rifier que le module peut Ãªtre importÃ©
 try {
     Import-Module $modulePath -Force
-    Write-Host "Module MCPManager importé avec succès" -ForegroundColor Green
+    Write-Host "Module MCPManager importÃ© avec succÃ¨s" -ForegroundColor Green
 } catch {
     Write-Host "Erreur lors de l'importation du module MCPManager: $_" -ForegroundColor Red
     exit 1
 }
 
-# Vérifier que les fonctions publiques sont exportées
+# VÃ©rifier que les fonctions publiques sont exportÃ©es
 $exportedFunctions = Get-Command -Module MCPManager | Select-Object -ExpandProperty Name
-Write-Host "Fonctions exportées:" -ForegroundColor Cyan
+Write-Host "Fonctions exportÃ©es:" -ForegroundColor Cyan
 $exportedFunctions | ForEach-Object { Write-Host "- $_" -ForegroundColor White }
 
-# Vérifier que les fonctions requises sont exportées
-$requiredFunctions = @("Find-MCPServers", "New-MCPConfiguration", "Start-MCPManager", "Invoke-MCPCommand")
+# VÃ©rifier que les fonctions requises sont exportÃ©es
+$requiredFunctions = @("Find-MCPServers", "New-MCPConfiguration", "mcp-manager", "Invoke-MCPCommand")
 $missingFunctions = $requiredFunctions | Where-Object { $exportedFunctions -notcontains $_ }
 
 if ($missingFunctions.Count -gt 0) {
@@ -44,18 +44,18 @@ if ($missingFunctions.Count -gt 0) {
     $missingFunctions | ForEach-Object { Write-Host "- $_" -ForegroundColor Red }
     exit 1
 } else {
-    Write-Host "Toutes les fonctions requises sont exportées" -ForegroundColor Green
+    Write-Host "Toutes les fonctions requises sont exportÃ©es" -ForegroundColor Green
 }
 
-# Créer un dossier temporaire pour les tests
+# CrÃ©er un dossier temporaire pour les tests
 $TestDrive = Join-Path -Path $env:TEMP -ChildPath "MCPManagerTests"
 if (Test-Path $TestDrive) {
     Remove-Item $TestDrive -Recurse -Force
 }
 New-Item -Path $TestDrive -ItemType Directory -Force | Out-Null
-Write-Host "Dossier temporaire créé à $TestDrive" -ForegroundColor Green
+Write-Host "Dossier temporaire crÃ©Ã© Ã  $TestDrive" -ForegroundColor Green
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $TestConfigPath = Join-Path -Path $TestDrive -ChildPath "mcp-config.json"
 
 # Tester la fonction New-MCPConfiguration
@@ -66,9 +66,9 @@ try {
     $result = New-MCPConfiguration -OutputPath $TestConfigPath -Force
 
     if ($result -eq $true -and (Test-Path $TestConfigPath)) {
-        Write-Host "Test de New-MCPConfiguration réussi" -ForegroundColor Green
+        Write-Host "Test de New-MCPConfiguration rÃ©ussi" -ForegroundColor Green
 
-        # Vérifier que le contenu est un JSON valide
+        # VÃ©rifier que le contenu est un JSON valide
         $content = Get-Content -Path $TestConfigPath -Raw
         $config = $content | ConvertFrom-Json
 
@@ -78,7 +78,7 @@ try {
             Write-Host "La configuration ne contient pas tous les serveurs attendus" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test de New-MCPConfiguration échoué" -ForegroundColor Red
+        Write-Host "Test de New-MCPConfiguration Ã©chouÃ©" -ForegroundColor Red
     }
 } catch {
     Write-Host "Erreur lors du test de New-MCPConfiguration: $_" -ForegroundColor Red
@@ -87,7 +87,8 @@ try {
 # Nettoyer
 if (Test-Path $TestDrive) {
     Remove-Item $TestDrive -Recurse -Force
-    Write-Host "Dossier temporaire supprimé" -ForegroundColor Green
+    Write-Host "Dossier temporaire supprimÃ©" -ForegroundColor Green
 }
 
-Write-Host "Tests terminés" -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s" -ForegroundColor Cyan
+

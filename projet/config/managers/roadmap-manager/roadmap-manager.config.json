@@ -1,0 +1,10 @@
+﻿{
+    "settings":  {
+                     "logPath":  "logs/roadmap-manager.log",
+                     "logLevel":  "Info"
+                 },
+    "description":  "Configuration du gestionnaire roadmap-manager",
+    "name":  "roadmap-manager",
+    "version":  "1.0.0",
+    "enabled":  true
+}

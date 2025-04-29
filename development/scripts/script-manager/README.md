@@ -42,7 +42,7 @@ Le dossier est organisé en sous-dossiers thématiques :
 Pour configurer l'environnement du script manager, exécutez :
 
 ```powershell
-.\Initialize-ManagerEnvironment.ps1 -Force
+.\script-manager.ps1 -Force
 ```
 
 ### Création d'un nouveau script
@@ -116,3 +116,4 @@ Si vous rencontrez des problèmes avec le script manager :
 2. Vérifiez que le hook pre-commit est installé : `cat .git\hooks\pre-commit`
 3. Exécutez le script d'organisation manuellement : `.\organization\Organize-ManagerScripts.ps1 -Force`
 4. Consultez les journaux pour identifier les erreurs
+

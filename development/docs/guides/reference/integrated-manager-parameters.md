@@ -1,10 +1,10 @@
-# Référence des paramètres du gestionnaire intégré
+﻿# RÃ©fÃ©rence des paramÃ¨tres du gestionnaire intÃ©grÃ©
 
-Ce document présente une référence complète des paramètres du gestionnaire intégré et des modes associés.
+Ce document prÃ©sente une rÃ©fÃ©rence complÃ¨te des paramÃ¨tres du gestionnaire intÃ©grÃ© et des modes associÃ©s.
 
-## Table des matières
+## Table des matiÃ¨res
 
-1. [Gestionnaire intégré](#gestionnaire-intégré)
+1. [Gestionnaire intÃ©grÃ©](#gestionnaire-intÃ©grÃ©)
 2. [Mode CHECK](#mode-check)
 3. [Mode GRAN](#mode-gran)
 4. [Mode ROADMAP-SYNC](#mode-roadmap-sync)
@@ -13,38 +13,38 @@ Ce document présente une référence complète des paramètres du gestionnaire 
 7. [Workflow quotidien](#workflow-quotidien)
 8. [Workflow hebdomadaire](#workflow-hebdomadaire)
 9. [Workflow mensuel](#workflow-mensuel)
-10. [Installation des tâches planifiées](#installation-des-tâches-planifiées)
+10. [Installation des tÃ¢ches planifiÃ©es](#installation-des-tÃ¢ches-planifiÃ©es)
 
-## Gestionnaire intégré
+## Gestionnaire intÃ©grÃ©
 
 Script : `development\scripts\integrated-manager.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| Mode | Le mode à exécuter (ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, ROADMAP-PLAN, ROADMAP-REPORT, ROADMAP-SYNC, TEST) | Non | - |
-| Workflow | Le workflow à exécuter | Non | - |
+| Mode | Le mode Ã  exÃ©cuter (ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, ROADMAP-PLAN, ROADMAP-REPORT, ROADMAP-SYNC, TEST) | Non | - |
+| Workflow | Le workflow Ã  exÃ©cuter | Non | - |
 | RoadmapPath | Chemin vers le fichier de roadmap | Non | Valeur de la configuration |
-| TaskIdentifier | Identifiant de la tâche à traiter | Non | - |
-| OutputPath | Chemin vers le répertoire de sortie | Non | Valeur de la configuration |
-| ReportFormat | Format des rapports à générer (HTML, JSON, CSV, Markdown, All) | Non | HTML |
+| TaskIdentifier | Identifiant de la tÃ¢che Ã  traiter | Non | - |
+| OutputPath | Chemin vers le rÃ©pertoire de sortie | Non | Valeur de la configuration |
+| ReportFormat | Format des rapports Ã  gÃ©nÃ©rer (HTML, JSON, CSV, Markdown, All) | Non | HTML |
 | TargetFormat | Format cible pour la synchronisation (Markdown, JSON, HTML, CSV) | Non | JSON |
-| DaysToForecast | Nombre de jours à prévoir dans le plan | Non | 30 |
-| Force | Indique si les modifications doivent être appliquées sans confirmation | Non | $false |
+| DaysToForecast | Nombre de jours Ã  prÃ©voir dans le plan | Non | 30 |
+| Force | Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation | Non | $false |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
 | ListModes | Affiche la liste des modes disponibles | Non | $false |
 | ListWorkflows | Affiche la liste des workflows disponibles | Non | $false |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Exécuter le mode CHECK
+# ExÃ©cuter le mode CHECK
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Exécuter le workflow RoadmapManagement
+# ExÃ©cuter le workflow RoadmapManagement
 .\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
 # Afficher la liste des modes disponibles
@@ -58,32 +58,32 @@ Script : `development\scripts\integrated-manager.ps1`
 
 Script : `development\scripts\maintenance\modes\check.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| FilePath | Chemin vers le fichier de roadmap à vérifier | Non | Valeur de la configuration |
-| TaskIdentifier | Identifiant de la tâche à vérifier | Non | - |
-| ImplementationPath | Chemin vers le répertoire d'implémentation | Non | - |
-| TestsPath | Chemin vers le répertoire de tests | Non | - |
-| UpdateRoadmap | Indique si la roadmap doit être mise à jour | Non | $true |
-| GenerateReport | Indique si un rapport doit être généré | Non | $true |
-| ReportPath | Chemin vers le répertoire de sortie pour les rapports | Non | Valeur de la configuration |
-| Force | Indique si les modifications doivent être appliquées sans confirmation | Non | $false |
+| FilePath | Chemin vers le fichier de roadmap Ã  vÃ©rifier | Non | Valeur de la configuration |
+| TaskIdentifier | Identifiant de la tÃ¢che Ã  vÃ©rifier | Non | - |
+| ImplementationPath | Chemin vers le rÃ©pertoire d'implÃ©mentation | Non | - |
+| TestsPath | Chemin vers le rÃ©pertoire de tests | Non | - |
+| UpdateRoadmap | Indique si la roadmap doit Ãªtre mise Ã  jour | Non | $true |
+| GenerateReport | Indique si un rapport doit Ãªtre gÃ©nÃ©rÃ© | Non | $true |
+| ReportPath | Chemin vers le rÃ©pertoire de sortie pour les rapports | Non | Valeur de la configuration |
+| Force | Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation | Non | $false |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Vérifier l'état d'avancement d'une tâche
+# VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che
 .\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Vérifier l'état d'avancement d'une tâche et mettre à jour la roadmap
+# VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et mettre Ã  jour la roadmap
 .\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
 
-# Vérifier l'état d'avancement d'une tâche et générer un rapport
+# VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et gÃ©nÃ©rer un rapport
 .\development\scripts\maintenance\modes\check.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -GenerateReport -ReportPath "projet\roadmaps\Reports"
 ```
 
@@ -91,29 +91,29 @@ Script : `development\scripts\maintenance\modes\check.ps1`
 
 Script : `development\scripts\maintenance\modes\gran-mode.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| FilePath | Chemin vers le fichier de roadmap à modifier | Non | Valeur de la configuration |
-| TaskIdentifier | Identifiant de la tâche à décomposer | Non | - |
-| SubTasksFile | Chemin vers un fichier contenant les sous-tâches à créer | Non | - |
-| IndentationStyle | Style d'indentation à utiliser (Spaces2, Spaces4, Tab, Auto) | Non | Auto |
-| CheckboxStyle | Style de case à cocher à utiliser (GitHub, Custom, Auto) | Non | Auto |
+| FilePath | Chemin vers le fichier de roadmap Ã  modifier | Non | Valeur de la configuration |
+| TaskIdentifier | Identifiant de la tÃ¢che Ã  dÃ©composer | Non | - |
+| SubTasksFile | Chemin vers un fichier contenant les sous-tÃ¢ches Ã  crÃ©er | Non | - |
+| IndentationStyle | Style d'indentation Ã  utiliser (Spaces2, Spaces4, Tab, Auto) | Non | Auto |
+| CheckboxStyle | Style de case Ã  cocher Ã  utiliser (GitHub, Custom, Auto) | Non | Auto |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Décomposer une tâche en sous-tâches
+# DÃ©composer une tÃ¢che en sous-tÃ¢ches
 .\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Décomposer une tâche en sous-tâches avec un fichier de sous-tâches
+# DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un fichier de sous-tÃ¢ches
 .\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -SubTasksFile "templates\subtasks.txt"
 
-# Décomposer une tâche en sous-tâches avec un style d'indentation personnalisé
+# DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un style d'indentation personnalisÃ©
 .\development\scripts\maintenance\modes\gran-mode.ps1 -FilePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -IndentationStyle "Spaces4"
 ```
 
@@ -121,19 +121,19 @@ Script : `development\scripts\maintenance\modes\gran-mode.ps1`
 
 Script : `development\scripts\maintenance\modes\roadmap-sync-mode.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| SourcePath | Chemin vers le fichier de roadmap source (peut être un tableau) | Non | Valeur de la configuration |
-| TargetPath | Chemin vers le fichier de roadmap cible (peut être un tableau) | Non | Généré automatiquement |
+| SourcePath | Chemin vers le fichier de roadmap source (peut Ãªtre un tableau) | Non | Valeur de la configuration |
+| TargetPath | Chemin vers le fichier de roadmap cible (peut Ãªtre un tableau) | Non | GÃ©nÃ©rÃ© automatiquement |
 | SourceFormat | Format du fichier source (Markdown, JSON, HTML, CSV) | Non | Markdown |
 | TargetFormat | Format du fichier cible (Markdown, JSON, HTML, CSV) | Non | JSON |
-| Force | Indique si les modifications doivent être appliquées sans confirmation | Non | $false |
-| MultiSync | Indique si plusieurs roadmaps doivent être synchronisées en une seule opération | Non | $false |
+| Force | Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation | Non | $false |
+| MultiSync | Indique si plusieurs roadmaps doivent Ãªtre synchronisÃ©es en une seule opÃ©ration | Non | $false |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
@@ -144,7 +144,7 @@ Script : `development\scripts\maintenance\modes\roadmap-sync-mode.ps1`
 # Synchroniser une roadmap Markdown vers HTML
 .\development\scripts\maintenance\modes\roadmap-sync-mode.ps1 -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetFormat "HTML"
 
-# Synchroniser plusieurs roadmaps en une seule opération
+# Synchroniser plusieurs roadmaps en une seule opÃ©ration
 $sourcePaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
@@ -156,31 +156,31 @@ $sourcePaths = @(
 
 Script : `development\scripts\maintenance\modes\roadmap-report-mode.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| RoadmapPath | Chemin vers le fichier de roadmap à analyser | Non | Valeur de la configuration |
-| OutputPath | Chemin vers le répertoire de sortie pour les rapports | Non | Valeur de la configuration |
-| ReportFormat | Format des rapports à générer (HTML, JSON, CSV, Markdown, All) | Non | HTML |
+| RoadmapPath | Chemin vers le fichier de roadmap Ã  analyser | Non | Valeur de la configuration |
+| OutputPath | Chemin vers le rÃ©pertoire de sortie pour les rapports | Non | Valeur de la configuration |
+| ReportFormat | Format des rapports Ã  gÃ©nÃ©rer (HTML, JSON, CSV, Markdown, All) | Non | HTML |
 | IncludeCharts | Indique si les rapports doivent inclure des graphiques | Non | $true |
 | IncludeTrends | Indique si les rapports doivent inclure des analyses de tendances | Non | $true |
-| IncludePredictions | Indique si les rapports doivent inclure des prévisions | Non | $true |
-| DaysToAnalyze | Nombre de jours à analyser pour les tendances et les prévisions | Non | 30 |
+| IncludePredictions | Indique si les rapports doivent inclure des prÃ©visions | Non | $true |
+| DaysToAnalyze | Nombre de jours Ã  analyser pour les tendances et les prÃ©visions | Non | 30 |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 .\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML"
 
-# Générer des rapports dans tous les formats
+# GÃ©nÃ©rer des rapports dans tous les formats
 .\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "All"
 
-# Générer un rapport sans graphiques ni prévisions
+# GÃ©nÃ©rer un rapport sans graphiques ni prÃ©visions
 .\development\scripts\maintenance\modes\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML" -IncludeCharts:$false -IncludePredictions:$false
 ```
 
@@ -188,27 +188,27 @@ Script : `development\scripts\maintenance\modes\roadmap-report-mode.ps1`
 
 Script : `development\scripts\maintenance\modes\roadmap-plan-mode.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| RoadmapPath | Chemin vers le fichier de roadmap à analyser | Non | Valeur de la configuration |
-| OutputPath | Chemin vers le fichier de sortie pour le plan | Non | Généré automatiquement |
-| DaysToForecast | Nombre de jours à prévoir dans le plan | Non | 30 |
+| RoadmapPath | Chemin vers le fichier de roadmap Ã  analyser | Non | Valeur de la configuration |
+| OutputPath | Chemin vers le fichier de sortie pour le plan | Non | GÃ©nÃ©rÃ© automatiquement |
+| DaysToForecast | Nombre de jours Ã  prÃ©voir dans le plan | Non | 30 |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Générer un plan d'action
+# GÃ©nÃ©rer un plan d'action
 .\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
-# Générer un plan d'action avec une période de prévision personnalisée
+# GÃ©nÃ©rer un plan d'action avec une pÃ©riode de prÃ©vision personnalisÃ©e
 .\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -DaysToForecast 60
 
-# Générer un plan d'action dans un fichier spécifique
+# GÃ©nÃ©rer un plan d'action dans un fichier spÃ©cifique
 .\development\scripts\maintenance\modes\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -OutputPath "projet\roadmaps\Plans\plan_action_q3_2023.md"
 ```
 
@@ -216,25 +216,25 @@ Script : `development\scripts\maintenance\modes\roadmap-plan-mode.ps1`
 
 Script : `development\scripts\workflows\workflow-quotidien.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
 | RoadmapPath | Chemin vers le fichier de roadmap principal | Non | projet\roadmaps\Roadmap\roadmap_complete_converted.md |
-| LogPath | Chemin vers le répertoire de journalisation | Non | projet\roadmaps\Logs |
+| LogPath | Chemin vers le rÃ©pertoire de journalisation | Non | projet\roadmaps\Logs |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Exécuter le workflow quotidien
+# ExÃ©cuter le workflow quotidien
 .\development\scripts\workflows\workflow-quotidien.ps1
 
-# Exécuter le workflow quotidien avec un chemin de roadmap personnalisé
+# ExÃ©cuter le workflow quotidien avec un chemin de roadmap personnalisÃ©
 .\development\scripts\workflows\workflow-quotidien.ps1 -RoadmapPath "projet\roadmaps\mes-plans\roadmap_perso.md"
 
-# Exécuter le workflow quotidien avec un répertoire de journalisation personnalisé
+# ExÃ©cuter le workflow quotidien avec un rÃ©pertoire de journalisation personnalisÃ©
 .\development\scripts\workflows\workflow-quotidien.ps1 -LogPath "projet\roadmaps\Logs\quotidien"
 ```
 
@@ -242,30 +242,30 @@ Script : `development\scripts\workflows\workflow-quotidien.ps1`
 
 Script : `development\scripts\workflows\workflow-hebdomadaire.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| RoadmapPaths | Tableau des chemins vers les fichiers de roadmap à traiter | Non | @("projet\roadmaps\Roadmap\roadmap_complete_converted.md") |
-| OutputPath | Chemin vers le répertoire de sortie pour les rapports et les plans | Non | projet\roadmaps |
-| LogPath | Chemin vers le répertoire de journalisation | Non | projet\roadmaps\Logs |
+| RoadmapPaths | Tableau des chemins vers les fichiers de roadmap Ã  traiter | Non | @("projet\roadmaps\Roadmap\roadmap_complete_converted.md") |
+| OutputPath | Chemin vers le rÃ©pertoire de sortie pour les rapports et les plans | Non | projet\roadmaps |
+| LogPath | Chemin vers le rÃ©pertoire de journalisation | Non | projet\roadmaps\Logs |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Exécuter le workflow hebdomadaire
+# ExÃ©cuter le workflow hebdomadaire
 .\development\scripts\workflows\workflow-hebdomadaire.ps1
 
-# Exécuter le workflow hebdomadaire avec plusieurs chemins de roadmap
+# ExÃ©cuter le workflow hebdomadaire avec plusieurs chemins de roadmap
 $roadmapPaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
 )
 .\development\scripts\workflows\workflow-hebdomadaire.ps1 -RoadmapPaths $roadmapPaths
 
-# Exécuter le workflow hebdomadaire avec un répertoire de sortie personnalisé
+# ExÃ©cuter le workflow hebdomadaire avec un rÃ©pertoire de sortie personnalisÃ©
 .\development\scripts\workflows\workflow-hebdomadaire.ps1 -OutputPath "projet\roadmaps\output"
 ```
 
@@ -273,59 +273,60 @@ $roadmapPaths = @(
 
 Script : `development\scripts\workflows\workflow-mensuel.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| RoadmapPaths | Tableau des chemins vers les fichiers de roadmap à traiter | Non | @("projet\roadmaps\Roadmap\roadmap_complete_converted.md") |
-| OutputPath | Chemin vers le répertoire de sortie pour les rapports et les plans | Non | projet\roadmaps |
-| LogPath | Chemin vers le répertoire de journalisation | Non | projet\roadmaps\Logs |
+| RoadmapPaths | Tableau des chemins vers les fichiers de roadmap Ã  traiter | Non | @("projet\roadmaps\Roadmap\roadmap_complete_converted.md") |
+| OutputPath | Chemin vers le rÃ©pertoire de sortie pour les rapports et les plans | Non | projet\roadmaps |
+| LogPath | Chemin vers le rÃ©pertoire de journalisation | Non | projet\roadmaps\Logs |
 | ConfigPath | Chemin vers le fichier de configuration | Non | development\config\unified-config.json |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Exécuter le workflow mensuel
+# ExÃ©cuter le workflow mensuel
 .\development\scripts\workflows\workflow-mensuel.ps1
 
-# Exécuter le workflow mensuel avec plusieurs chemins de roadmap
+# ExÃ©cuter le workflow mensuel avec plusieurs chemins de roadmap
 $roadmapPaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
 )
 .\development\scripts\workflows\workflow-mensuel.ps1 -RoadmapPaths $roadmapPaths
 
-# Exécuter le workflow mensuel avec un répertoire de sortie personnalisé
+# ExÃ©cuter le workflow mensuel avec un rÃ©pertoire de sortie personnalisÃ©
 .\development\scripts\workflows\workflow-mensuel.ps1 -OutputPath "projet\roadmaps\output"
 ```
 
-## Installation des tâches planifiées
+## Installation des tÃ¢ches planifiÃ©es
 
 Script : `development\scripts\workflows\install-scheduled-tasks.ps1`
 
-### Paramètres
+### ParamÃ¨tres
 
-| Paramètre | Description | Obligatoire | Valeur par défaut |
+| ParamÃ¨tre | Description | Obligatoire | Valeur par dÃ©faut |
 |-----------|-------------|-------------|-------------------|
-| ProjectRoot | Chemin vers la racine du projet | Non | Le répertoire parent du répertoire du script |
-| TaskPrefix | Préfixe pour les noms des tâches planifiées | Non | RoadmapManager |
-| Force | Indique si les tâches existantes doivent être remplacées | Non | $false |
-| WhatIf | Indique ce qui se passerait si la commande s'exécutait | Non | $false |
-| Verbose | Affiche des informations détaillées sur l'exécution | Non | $false |
+| ProjectRoot | Chemin vers la racine du projet | Non | Le rÃ©pertoire parent du rÃ©pertoire du script |
+| TaskPrefix | PrÃ©fixe pour les noms des tÃ¢ches planifiÃ©es | Non | roadmap-manager |
+| Force | Indique si les tÃ¢ches existantes doivent Ãªtre remplacÃ©es | Non | $false |
+| WhatIf | Indique ce qui se passerait si la commande s'exÃ©cutait | Non | $false |
+| Verbose | Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution | Non | $false |
 
 ### Exemples
 
 ```powershell
-# Installer les tâches planifiées
+# Installer les tÃ¢ches planifiÃ©es
 .\development\scripts\workflows\install-scheduled-tasks.ps1
 
-# Installer les tâches planifiées avec un préfixe personnalisé
+# Installer les tÃ¢ches planifiÃ©es avec un prÃ©fixe personnalisÃ©
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -TaskPrefix "MonProjet"
 
-# Remplacer les tâches existantes
+# Remplacer les tÃ¢ches existantes
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
 
-# Voir ce que l'installation ferait sans l'exécuter réellement
+# Voir ce que l'installation ferait sans l'exÃ©cuter rÃ©ellement
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -WhatIf
 ```
+

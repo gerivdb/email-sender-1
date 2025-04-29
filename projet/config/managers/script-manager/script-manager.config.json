@@ -1,0 +1,10 @@
+﻿{
+    "settings":  {
+                     "logPath":  "logs/script-manager.log",
+                     "logLevel":  "Info"
+                 },
+    "description":  "Configuration du gestionnaire script-manager",
+    "name":  "script-manager",
+    "version":  "1.0.0",
+    "enabled":  true
+}

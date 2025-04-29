@@ -1,5 +1,5 @@
-# Script de nettoyage des fichiers de roadmap
-# Ce script nettoie et organise les fichiers liés à la roadmap
+﻿# Script de nettoyage des fichiers de roadmap
+# Ce script nettoie et organise les fichiers liÃ©s Ã  la roadmap
 
 # Configuration de la gestion d'erreurs
 $ErrorActionPreference = 'Stop'
@@ -22,12 +22,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
 
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -35,26 +35,26 @@ function Write-Log {
 
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     } catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
     # Script principal
     # Script de nettoyage des fichiers de roadmap
-    # Ce script déplace tous les fichiers liés à la roadmap dans le sous-dossier Roadmap
+    # Ce script dÃ©place tous les fichiers liÃ©s Ã  la roadmap dans le sous-dossier Roadmap
     # et supprime les doublons
 
     # Configuration
     $roadmapFolder = "Roadmap"
     $mainFolder = "."
 
-    # Vérifier si le dossier Roadmap existe
+    # VÃ©rifier si le dossier Roadmap existe
     if (-not (Test-Path -Path $roadmapFolder)) {
         New-Item -Path $roadmapFolder -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier '$roadmapFolder' créé." -ForegroundColor Green
+        Write-Host "Dossier '$roadmapFolder' crÃ©Ã©." -ForegroundColor Green
     }
 
-    # Liste des fichiers liés à la roadmap
+    # Liste des fichiers liÃ©s Ã  la roadmap
     $roadmapFiles = @(
         "Roadmap\roadmap_perso.md",
         "RoadmapAdmin.ps1",
@@ -63,13 +63,13 @@ try {
         "StartRoadmapExecution.ps1",
         "RoadmapAnalyzer.ps1",
         "RoadmapGitUpdater.ps1",
-        "RoadmapManager.ps1",
+        "roadmap-manager.ps1",
         "OrganizeRoadmapScripts.ps1",
         "OrganizeRoadmapScriptsSimple.ps1",
         "OrganizeRoadmapScriptsBasic.ps1"
     )
 
-    # Trouver tous les fichiers liés à la roadmap dans le dossier principal
+    # Trouver tous les fichiers liÃ©s Ã  la roadmap dans le dossier principal
     $otherRoadmapFiles = Get-ChildItem -Path $mainFolder -File | Where-Object {
     ($_.Name -like "*roadmap*" -or $_.Name -like "*Roadmap*") -and
         $_.Name -ne "CleanupRoadmapFiles.ps1" -and
@@ -79,128 +79,128 @@ try {
     # Combiner les listes de fichiers
     $allRoadmapFiles = $roadmapFiles + $otherRoadmapFiles.Name | Select-Object -Unique
 
-    # Déplacer les fichiers vers le dossier Roadmap
+    # DÃ©placer les fichiers vers le dossier Roadmap
     foreach ($file in $allRoadmapFiles) {
         $sourcePath = Join-Path -Path $mainFolder -ChildPath $file
         $destinationPath = Join-Path -Path $roadmapFolder -ChildPath $file
 
         if (Test-Path -Path $sourcePath) {
-            # Vérifier si le fichier existe déjà dans le dossier Roadmap
+            # VÃ©rifier si le fichier existe dÃ©jÃ  dans le dossier Roadmap
             if (Test-Path -Path $destinationPath) {
                 # Comparer les dates de modification
                 $sourceFile = Get-Item -Path $sourcePath
                 $destinationFile = Get-Item -Path $destinationPath
 
                 if ($sourceFile.LastWriteTime -gt $destinationFile.LastWriteTime) {
-                    # Le fichier source est plus récent, le remplacer
+                    # Le fichier source est plus rÃ©cent, le remplacer
                     Move-Item -Path $sourcePath -Destination $destinationPath -Force
-                    Write-Host "Fichier '$file' remplacé dans le dossier '$roadmapFolder' (version plus récente)." -ForegroundColor Yellow
+                    Write-Host "Fichier '$file' remplacÃ© dans le dossier '$roadmapFolder' (version plus rÃ©cente)." -ForegroundColor Yellow
                 } else {
-                    # Le fichier destination est plus récent ou identique, supprimer le fichier source
+                    # Le fichier destination est plus rÃ©cent ou identique, supprimer le fichier source
                     Remove-Item -Path $sourcePath -Force
-                    Write-Host "Fichier '$file' supprimé du dossier principal (version plus ancienne ou identique)." -ForegroundColor Yellow
+                    Write-Host "Fichier '$file' supprimÃ© du dossier principal (version plus ancienne ou identique)." -ForegroundColor Yellow
                 }
             } else {
-                # Le fichier n'existe pas dans le dossier Roadmap, le déplacer
+                # Le fichier n'existe pas dans le dossier Roadmap, le dÃ©placer
                 Move-Item -Path $sourcePath -Destination $destinationPath
-                Write-Host "Fichier '$file' déplacé vers le dossier '$roadmapFolder'." -ForegroundColor Green
+                Write-Host "Fichier '$file' dÃ©placÃ© vers le dossier '$roadmapFolder'." -ForegroundColor Green
             }
         }
     }
 
-    # Créer un fichier README si nécessaire
+    # CrÃ©er un fichier README si nÃ©cessaire
     $readmePath = Join-Path -Path $roadmapFolder -ChildPath "README.md"
     if (-not (Test-Path -Path $readmePath)) {
         $readmeContent = @"
 # Roadmap - Scripts et processus
 
-Ce dossier contient tous les scripts liés à la roadmap et à son exécution automatique.
+Ce dossier contient tous les scripts liÃ©s Ã  la roadmap et Ã  son exÃ©cution automatique.
 
 ## Fichiers principaux
 
-- `"Roadmap\roadmap_perso.md"` - La roadmap elle-même
+- `"Roadmap\roadmap_perso.md"` - La roadmap elle-mÃªme
 - `RoadmapAdmin.ps1` - Script principal d'administration de la roadmap
-- `AugmentExecutor.ps1` - Script d'exécution des tâches avec Augment
-- `RestartAugment.ps1` - Script de redémarrage en cas d'échec
-- `StartRoadmapExecution.ps1` - Script de démarrage rapide
+- `AugmentExecutor.ps1` - Script d'exÃ©cution des tÃ¢ches avec Augment
+- `RestartAugment.ps1` - Script de redÃ©marrage en cas d'Ã©chec
+- `StartRoadmapExecution.ps1` - Script de dÃ©marrage rapide
 - `RoadmapAnalyzer.ps1` - Script d'analyse de la roadmap
-- `RoadmapGitUpdater.ps1` - Script de mise à jour de la roadmap en fonction des commits Git
-- `RoadmapManager.ps1` - Script de gestion de la roadmap
+- `RoadmapGitUpdater.ps1` - Script de mise Ã  jour de la roadmap en fonction des commits Git
+- `roadmap-manager.ps1` - Script de gestion de la roadmap
 
 ## Utilisation
 
-Pour accéder à toutes les fonctionnalités, exécutez :
+Pour accÃ©der Ã  toutes les fonctionnalitÃ©s, exÃ©cutez :
 
 ```powershell
-.\RoadmapManager.ps1
+.\roadmap-manager.ps1
 ```
 
-## Fonctionnalités
+## FonctionnalitÃ©s
 
-1. **Exécution automatique de la roadmap**
-   - Analyse la roadmap pour identifier les tâches à faire
-   - Exécute automatiquement les tâches avec Augment
-   - Met à jour la roadmap pour marquer les tâches comme terminées
-   - Passe automatiquement à la tâche suivante
+1. **ExÃ©cution automatique de la roadmap**
+   - Analyse la roadmap pour identifier les tÃ¢ches Ã  faire
+   - ExÃ©cute automatiquement les tÃ¢ches avec Augment
+   - Met Ã  jour la roadmap pour marquer les tÃ¢ches comme terminÃ©es
+   - Passe automatiquement Ã  la tÃ¢che suivante
 
 2. **Analyse de la roadmap**
-   - Calcule la progression globale et détaillée
-   - Génère des rapports HTML, JSON et des graphiques
-   - Visualise l'avancement des tâches
+   - Calcule la progression globale et dÃ©taillÃ©e
+   - GÃ©nÃ¨re des rapports HTML, JSON et des graphiques
+   - Visualise l'avancement des tÃ¢ches
 
-3. **Mise à jour basée sur Git**
-   - Analyse les commits Git pour identifier les tâches terminées
-   - Met à jour automatiquement la roadmap en fonction des commits
-   - Génère des rapports sur les correspondances trouvées
+3. **Mise Ã  jour basÃ©e sur Git**
+   - Analyse les commits Git pour identifier les tÃ¢ches terminÃ©es
+   - Met Ã  jour automatiquement la roadmap en fonction des commits
+   - GÃ©nÃ¨re des rapports sur les correspondances trouvÃ©es
 
-4. **Gestion des échecs**
-   - Détecte les échecs d'Augment
-   - Relance automatiquement les tâches en cas d'échec
-   - Fournit des mécanismes de récupération robustes
+4. **Gestion des Ã©checs**
+   - DÃ©tecte les Ã©checs d'Augment
+   - Relance automatiquement les tÃ¢ches en cas d'Ã©chec
+   - Fournit des mÃ©canismes de rÃ©cupÃ©ration robustes
 "@
 
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Host "Fichier README créé : $readmePath" -ForegroundColor Green
+        Write-Host "Fichier README crÃ©Ã© : $readmePath" -ForegroundColor Green
     }
 
-    # Créer un script de lancement rapide si nécessaire
+    # CrÃ©er un script de lancement rapide si nÃ©cessaire
     $startScriptPath = Join-Path -Path $roadmapFolder -ChildPath "StartRoadmap.ps1"
     if (-not (Test-Path -Path $startScriptPath)) {
         $startScriptContent = @"
 # Script de lancement rapide pour la roadmap
 # Ce script permet de lancer rapidement le gestionnaire de roadmap
 
-# Exécuter le gestionnaire de roadmap
-& ".\RoadmapManager.ps1"
+# ExÃ©cuter le gestionnaire de roadmap
+& ".\roadmap-manager.ps1"
 "@
 
         Set-Content -Path $startScriptPath -Value $startScriptContent -Encoding UTF8
-        Write-Host "Script de lancement rapide créé : $startScriptPath" -ForegroundColor Green
+        Write-Host "Script de lancement rapide crÃ©Ã© : $startScriptPath" -ForegroundColor Green
     }
 
-    # Créer un raccourci dans le dossier principal
+    # CrÃ©er un raccourci dans le dossier principal
     $shortcutPath = Join-Path -Path $mainFolder -ChildPath "StartRoadmap.ps1"
     if (-not (Test-Path -Path $shortcutPath)) {
         $shortcutContent = @"
 # Raccourci pour lancer le gestionnaire de roadmap
 # Ce script permet de lancer rapidement le gestionnaire de roadmap depuis le dossier principal
 
-# Exécuter le gestionnaire de roadmap
+# ExÃ©cuter le gestionnaire de roadmap
 & "..\D"
 "@
 
         Set-Content -Path $shortcutPath -Value $shortcutContent -Encoding UTF8
-        Write-Host "Raccourci créé dans le dossier principal : $shortcutPath" -ForegroundColor Green
+        Write-Host "Raccourci crÃ©Ã© dans le dossier principal : $shortcutPath" -ForegroundColor Green
     }
 
     # Ouvrir le dossier Roadmap
     Invoke-Item $roadmapFolder
 
-    Write-Host "Nettoyage des fichiers de roadmap terminé !" -ForegroundColor Green
-    Write-Host "Tous les fichiers liés à la roadmap ont été déplacés dans le dossier '$roadmapFolder'." -ForegroundColor Green
-    Write-Host "Pour lancer le gestionnaire de roadmap, exécutez :" -ForegroundColor Cyan
+    Write-Host "Nettoyage des fichiers de roadmap terminÃ© !" -ForegroundColor Green
+    Write-Host "Tous les fichiers liÃ©s Ã  la roadmap ont Ã©tÃ© dÃ©placÃ©s dans le dossier '$roadmapFolder'." -ForegroundColor Green
+    Write-Host "Pour lancer le gestionnaire de roadmap, exÃ©cutez :" -ForegroundColor Cyan
     Write-Host "  - Depuis le dossier principal : .\StartRoadmap.ps1" -ForegroundColor Cyan
-    Write-Host "  - Depuis le dossier Roadmap : .\RoadmapManager.ps1" -ForegroundColor Cyan
+    Write-Host "  - Depuis le dossier Roadmap : .\roadmap-manager.ps1" -ForegroundColor Cyan
 
 
 } catch {
@@ -208,5 +208,6 @@ Pour accéder à toutes les fonctionnalités, exécutez :
     exit 1
 } finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Installe un hook pre-commit pour exécuter les tests unitaires avant chaque commit.
+    Installe un hook pre-commit pour exÃ©cuter les tests unitaires avant chaque commit.
 .DESCRIPTION
-    Ce script installe un hook pre-commit Git qui exécute les tests unitaires simplifiés
-    avant chaque commit. Si les tests échouent, le commit est annulé.
+    Ce script installe un hook pre-commit Git qui exÃ©cute les tests unitaires simplifiÃ©s
+    avant chaque commit. Si les tests Ã©chouent, le commit est annulÃ©.
 .PARAMETER Force
     Force l'installation du hook sans demander de confirmation.
 .EXAMPLE
@@ -12,7 +12,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -21,7 +21,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,16 +46,16 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Git est installé
+# VÃ©rifier si Git est installÃ©
 if (-not (Get-Command -Name "git" -ErrorAction SilentlyContinue)) {
-    Write-Log "Git n'est pas installé ou n'est pas dans le PATH." -Level "ERROR"
+    Write-Log "Git n'est pas installÃ© ou n'est pas dans le PATH." -Level "ERROR"
     exit 1
 }
 
-# Vérifier si le dépôt Git existe
+# VÃ©rifier si le dÃ©pÃ´t Git existe
 $gitDir = git rev-parse --git-dir 2>$null
 if (-not $gitDir) {
-    Write-Log "Le répertoire courant n'est pas un dépôt Git." -Level "ERROR"
+    Write-Log "Le rÃ©pertoire courant n'est pas un dÃ©pÃ´t Git." -Level "ERROR"
     exit 1
 }
 
@@ -65,25 +65,25 @@ $preCommitPath = Join-Path -Path $gitDir -ChildPath "hooks/pre-commit"
 # Contenu du hook pre-commit
 $hookContent = @'
 #!/bin/sh
-# Hook pre-commit pour exécuter les tests unitaires avant chaque commit
+# Hook pre-commit pour exÃ©cuter les tests unitaires avant chaque commit
 
-# Sauvegarder les fichiers modifiés
+# Sauvegarder les fichiers modifiÃ©s
 git stash -q --keep-index
 
-# Exécuter les tests unitaires simplifiés
-echo "Exécution des tests unitaires simplifiés..."
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "development/scripts/manager/testing/Run-SimplifiedTests.ps1" -OutputPath "development/scripts/manager/testing/reports/tests"
+# ExÃ©cuter les tests unitaires simplifiÃ©s
+echo "ExÃ©cution des tests unitaires simplifiÃ©s..."
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "development/scripts/mode-manager/testing/Run-SimplifiedTests.ps1" -OutputPath "development/scripts/mode-manager/testing/reports/tests"
 
-# Récupérer le code de sortie
+# RÃ©cupÃ©rer le code de sortie
 RESULT=$?
 
-# Restaurer les fichiers modifiés
+# Restaurer les fichiers modifiÃ©s
 git stash pop -q
 
-# Si les tests ont échoué, annuler le commit
+# Si les tests ont Ã©chouÃ©, annuler le commit
 if [ $RESULT -ne 0 ]; then
-    echo "Les tests unitaires ont échoué. Le commit a été annulé."
-    echo "Consultez le rapport de test pour plus de détails: development/scripts/manager/testing/reports/tests/SimplifiedTestResults.html"
+    echo "Les tests unitaires ont Ã©chouÃ©. Le commit a Ã©tÃ© annulÃ©."
+    echo "Consultez le rapport de test pour plus de dÃ©tails: development/scripts/mode-manager/testing/reports/tests/SimplifiedTestResults.html"
     exit 1
 fi
 
@@ -91,28 +91,28 @@ fi
 exit 0
 '@
 
-# Vérifier si le hook existe déjà
+# VÃ©rifier si le hook existe dÃ©jÃ 
 $hookExists = Test-Path -Path $preCommitPath
 if ($hookExists) {
     $currentContent = Get-Content -Path $preCommitPath -Raw
-    if ($currentContent -match "Exécution des tests unitaires simplifiés") {
-        Write-Log "Le hook pre-commit pour les tests unitaires est déjà installé." -Level "INFO"
+    if ($currentContent -match "ExÃ©cution des tests unitaires simplifiÃ©s") {
+        Write-Log "Le hook pre-commit pour les tests unitaires est dÃ©jÃ  installÃ©." -Level "INFO"
         
         if (-not $Force) {
             $confirmation = Read-Host "Voulez-vous remplacer le hook existant? (O/N)"
             if ($confirmation -ne "O") {
-                Write-Log "Installation annulée." -Level "WARNING"
+                Write-Log "Installation annulÃ©e." -Level "WARNING"
                 exit 0
             }
         }
     }
     else {
-        Write-Log "Un hook pre-commit existe déjà, mais il ne contient pas le code pour exécuter les tests unitaires." -Level "WARNING"
+        Write-Log "Un hook pre-commit existe dÃ©jÃ , mais il ne contient pas le code pour exÃ©cuter les tests unitaires." -Level "WARNING"
         
         if (-not $Force) {
-            $confirmation = Read-Host "Voulez-vous ajouter le code pour exécuter les tests unitaires au hook existant? (O/N)"
+            $confirmation = Read-Host "Voulez-vous ajouter le code pour exÃ©cuter les tests unitaires au hook existant? (O/N)"
             if ($confirmation -ne "O") {
-                Write-Log "Installation annulée." -Level "WARNING"
+                Write-Log "Installation annulÃ©e." -Level "WARNING"
                 exit 0
             }
             
@@ -122,10 +122,10 @@ if ($hookExists) {
     }
 }
 
-# Créer le dossier hooks s'il n'existe pas
+# CrÃ©er le dossier hooks s'il n'existe pas
 $hooksDir = Join-Path -Path $gitDir -ChildPath "hooks"
 if (-not (Test-Path -Path $hooksDir)) {
-    if ($PSCmdlet.ShouldProcess($hooksDir, "Créer le dossier")) {
+    if ($PSCmdlet.ShouldProcess($hooksDir, "CrÃ©er le dossier")) {
         New-Item -Path $hooksDir -ItemType Directory -Force | Out-Null
     }
 }
@@ -134,14 +134,15 @@ if (-not (Test-Path -Path $hooksDir)) {
 if ($PSCmdlet.ShouldProcess($preCommitPath, "Installer le hook pre-commit")) {
     $hookContent | Out-File -FilePath $preCommitPath -Encoding utf8 -Force
     
-    # Rendre le hook exécutable (sous Linux/macOS)
+    # Rendre le hook exÃ©cutable (sous Linux/macOS)
     if ($IsLinux -or $IsMacOS) {
         chmod +x $preCommitPath
     }
     
-    Write-Log "Hook pre-commit installé avec succès." -Level "SUCCESS"
-    Write-Log "Les tests unitaires simplifiés seront exécutés avant chaque commit." -Level "INFO"
+    Write-Log "Hook pre-commit installÃ© avec succÃ¨s." -Level "SUCCESS"
+    Write-Log "Les tests unitaires simplifiÃ©s seront exÃ©cutÃ©s avant chaque commit." -Level "INFO"
 }
 else {
-    Write-Log "Installation annulée." -Level "WARNING"
+    Write-Log "Installation annulÃ©e." -Level "WARNING"
 }
+

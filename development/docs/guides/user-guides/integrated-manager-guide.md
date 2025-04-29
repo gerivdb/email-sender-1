@@ -1,8 +1,8 @@
-# Guide d'utilisation du gestionnaire intégré
+﻿# Guide d'utilisation du gestionnaire intÃ©grÃ©
 
-Ce guide présente l'utilisation du gestionnaire intégré, qui unifie les fonctionnalités du Mode Manager et du Roadmap Manager pour offrir une interface unique pour la gestion des modes opérationnels et des roadmaps.
+Ce guide prÃ©sente l'utilisation du gestionnaire intÃ©grÃ©, qui unifie les fonctionnalitÃ©s du Mode Manager et du Roadmap Manager pour offrir une interface unique pour la gestion des modes opÃ©rationnels et des roadmaps.
 
-## Table des matières
+## Table des matiÃ¨res
 
 1. [Introduction](#introduction)
 2. [Installation](#installation)
@@ -10,29 +10,29 @@ Ce guide présente l'utilisation du gestionnaire intégré, qui unifie les fonct
 4. [Utilisation des modes](#utilisation-des-modes)
 5. [Utilisation des workflows](#utilisation-des-workflows)
 6. [Automatisation](#automatisation)
-7. [Intégration avec d'autres outils](#intégration-avec-dautres-outils)
-8. [Résolution des problèmes](#résolution-des-problèmes)
-9. [Ressources supplémentaires](#ressources-supplémentaires)
+7. [IntÃ©gration avec d'autres outils](#intÃ©gration-avec-dautres-outils)
+8. [RÃ©solution des problÃ¨mes](#rÃ©solution-des-problÃ¨mes)
+9. [Ressources supplÃ©mentaires](#ressources-supplÃ©mentaires)
 
 ## Introduction
 
-Le gestionnaire intégré est un outil qui unifie les fonctionnalités du Mode Manager et du Roadmap Manager. Il permet de :
+Le gestionnaire intÃ©grÃ© est un outil qui unifie les fonctionnalitÃ©s du Mode Manager et du Roadmap Manager. Il permet de :
 
-- Exécuter les modes opérationnels (CHECK, GRAN, etc.)
-- Gérer les roadmaps (synchronisation, rapports, planification)
-- Exécuter des workflows prédéfinis
-- Automatiser les tâches récurrentes
+- ExÃ©cuter les modes opÃ©rationnels (CHECK, GRAN, etc.)
+- GÃ©rer les roadmaps (synchronisation, rapports, planification)
+- ExÃ©cuter des workflows prÃ©dÃ©finis
+- Automatiser les tÃ¢ches rÃ©currentes
 
 ## Installation
 
-### Prérequis
+### PrÃ©requis
 
-- PowerShell 5.1 ou supérieur
-- Module RoadmapParser installé
+- PowerShell 5.1 ou supÃ©rieur
+- Module RoadmapParser installÃ©
 
-### Vérification de l'installation
+### VÃ©rification de l'installation
 
-Pour vérifier que le gestionnaire intégré est correctement installé, exécutez la commande suivante :
+Pour vÃ©rifier que le gestionnaire intÃ©grÃ© est correctement installÃ©, exÃ©cutez la commande suivante :
 
 ```powershell
 .\development\scripts\integrated-manager.ps1 -ListModes
@@ -42,11 +42,11 @@ Cette commande devrait afficher la liste des modes disponibles.
 
 ## Configuration
 
-Le gestionnaire intégré utilise un fichier de configuration unifié pour stocker les paramètres des différents modes et workflows.
+Le gestionnaire intÃ©grÃ© utilise un fichier de configuration unifiÃ© pour stocker les paramÃ¨tres des diffÃ©rents modes et workflows.
 
 ### Fichier de configuration
 
-Le fichier de configuration par défaut se trouve à l'emplacement suivant :
+Le fichier de configuration par dÃ©faut se trouve Ã  l'emplacement suivant :
 
 ```
 development\config\unified-config.json
@@ -56,11 +56,11 @@ development\config\unified-config.json
 
 Le fichier de configuration est au format JSON et contient les sections suivantes :
 
-- `General` : Paramètres généraux
-- `Modes` : Configuration des modes opérationnels
+- `General` : ParamÃ¨tres gÃ©nÃ©raux
+- `Modes` : Configuration des modes opÃ©rationnels
 - `Roadmaps` : Configuration des roadmaps
 - `Workflows` : Configuration des workflows
-- `Integration` : Paramètres d'intégration
+- `Integration` : ParamÃ¨tres d'intÃ©gration
 
 ### Exemple de configuration
 
@@ -127,7 +127,7 @@ Le fichier de configuration est au format JSON et contient les sections suivante
   },
   "Workflows": {
     "Development": {
-      "Description": "Workflow de développement complet",
+      "Description": "Workflow de dÃ©veloppement complet",
       "Modes": ["GRAN", "DEV-R", "TEST", "CHECK"],
       "AutoContinue": true,
       "StopOnError": true
@@ -144,7 +144,7 @@ Le fichier de configuration est au format JSON et contient les sections suivante
 
 ### Personnalisation de la configuration
 
-Vous pouvez personnaliser la configuration en modifiant le fichier `unified-config.json` ou en spécifiant un fichier de configuration personnalisé avec le paramètre `-ConfigPath` :
+Vous pouvez personnaliser la configuration en modifiant le fichier `unified-config.json` ou en spÃ©cifiant un fichier de configuration personnalisÃ© avec le paramÃ¨tre `-ConfigPath` :
 
 ```powershell
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -ConfigPath "my-config.json"
@@ -152,46 +152,46 @@ Vous pouvez personnaliser la configuration en modifiant le fichier `unified-conf
 
 ## Utilisation des modes
 
-Le gestionnaire intégré prend en charge les modes opérationnels suivants :
+Le gestionnaire intÃ©grÃ© prend en charge les modes opÃ©rationnels suivants :
 
-### Modes opérationnels
+### Modes opÃ©rationnels
 
-- `CHECK` : Vérifie l'état d'avancement des tâches
-- `GRAN` : Décompose les tâches en sous-tâches plus granulaires
-- `DEV-R` : Implémente les tâches de la roadmap
-- `TEST` : Exécute les tests
-- `DEBUG` : Aide au débogage
+- `CHECK` : VÃ©rifie l'Ã©tat d'avancement des tÃ¢ches
+- `GRAN` : DÃ©compose les tÃ¢ches en sous-tÃ¢ches plus granulaires
+- `DEV-R` : ImplÃ©mente les tÃ¢ches de la roadmap
+- `TEST` : ExÃ©cute les tests
+- `DEBUG` : Aide au dÃ©bogage
 - `REVIEW` : Revoit le code
 - `ARCHI` : Analyse l'architecture
-- `C-BREAK` : Détecte et corrige les dépendances circulaires
+- `C-BREAK` : DÃ©tecte et corrige les dÃ©pendances circulaires
 - `OPTI` : Optimise le code
-- `PREDIC` : Prédit les performances et détecte les anomalies
+- `PREDIC` : PrÃ©dit les performances et dÃ©tecte les anomalies
 
 ### Modes de gestion de roadmap
 
-- `ROADMAP-SYNC` : Synchronise les roadmaps entre différents formats
-- `ROADMAP-REPORT` : Génère des rapports sur l'état des roadmaps
-- `ROADMAP-PLAN` : Planifie les tâches futures
+- `ROADMAP-SYNC` : Synchronise les roadmaps entre diffÃ©rents formats
+- `ROADMAP-REPORT` : GÃ©nÃ¨re des rapports sur l'Ã©tat des roadmaps
+- `ROADMAP-PLAN` : Planifie les tÃ¢ches futures
 
 ### Exemples d'utilisation des modes
 
 #### Mode CHECK
 
 ```powershell
-# Vérifier l'état d'avancement d'une tâche
+# VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Vérifier l'état d'avancement d'une tâche et mettre à jour la roadmap
+# VÃ©rifier l'Ã©tat d'avancement d'une tÃ¢che et mettre Ã  jour la roadmap
 .\development\scripts\integrated-manager.ps1 -Mode CHECK -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -UpdateRoadmap
 ```
 
 #### Mode GRAN
 
 ```powershell
-# Décomposer une tâche en sous-tâches
+# DÃ©composer une tÃ¢che en sous-tÃ¢ches
 .\development\scripts\integrated-manager.ps1 -Mode GRAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Décomposer une tâche en sous-tâches avec un fichier de sous-tâches
+# DÃ©composer une tÃ¢che en sous-tÃ¢ches avec un fichier de sous-tÃ¢ches
 .\development\scripts\integrated-manager.ps1 -Mode GRAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3" -SubTasksFile "templates\subtasks.txt"
 ```
 
@@ -201,7 +201,7 @@ Le gestionnaire intégré prend en charge les modes opérationnels suivants :
 # Synchroniser une roadmap Markdown vers JSON
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-SYNC -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetFormat "JSON"
 
-# Synchroniser plusieurs roadmaps en une seule opération
+# Synchroniser plusieurs roadmaps en une seule opÃ©ration
 $sourcePaths = @(
     "projet\roadmaps\Roadmap\roadmap_complete_converted.md",
     "projet\roadmaps\mes-plans\roadmap_perso.md"
@@ -212,32 +212,32 @@ $sourcePaths = @(
 #### Mode ROADMAP-REPORT
 
 ```powershell
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-REPORT -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "HTML"
 
-# Générer des rapports dans tous les formats
+# GÃ©nÃ©rer des rapports dans tous les formats
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-REPORT -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -ReportFormat "All"
 ```
 
 #### Mode ROADMAP-PLAN
 
 ```powershell
-# Générer un plan d'action
+# GÃ©nÃ©rer un plan d'action
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-PLAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 
-# Générer un plan d'action avec une période de prévision personnalisée
+# GÃ©nÃ©rer un plan d'action avec une pÃ©riode de prÃ©vision personnalisÃ©e
 .\development\scripts\integrated-manager.ps1 -Mode ROADMAP-PLAN -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -DaysToForecast 60
 ```
 
 ## Utilisation des workflows
 
-Les workflows permettent d'exécuter plusieurs modes en séquence.
+Les workflows permettent d'exÃ©cuter plusieurs modes en sÃ©quence.
 
-### Workflows prédéfinis
+### Workflows prÃ©dÃ©finis
 
-- `Development` : Workflow de développement complet (GRAN, DEV-R, TEST, CHECK)
+- `Development` : Workflow de dÃ©veloppement complet (GRAN, DEV-R, TEST, CHECK)
 - `Optimization` : Workflow d'optimisation (REVIEW, OPTI, TEST, CHECK)
-- `Debugging` : Workflow de débogage (DEBUG, TEST, CHECK)
+- `Debugging` : Workflow de dÃ©bogage (DEBUG, TEST, CHECK)
 - `Architecture` : Workflow d'architecture (ARCHI, C-BREAK, REVIEW)
 - `Analysis` : Workflow d'analyse (CHECK, PREDIC, REVIEW)
 - `RoadmapManagement` : Workflow de gestion de roadmap (ROADMAP-SYNC, ROADMAP-REPORT, ROADMAP-PLAN)
@@ -245,21 +245,21 @@ Les workflows permettent d'exécuter plusieurs modes en séquence.
 ### Exemples d'utilisation des workflows
 
 ```powershell
-# Exécuter le workflow de développement
+# ExÃ©cuter le workflow de dÃ©veloppement
 .\development\scripts\integrated-manager.ps1 -Workflow "Development" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TaskIdentifier "1.2.3"
 
-# Exécuter le workflow de gestion de roadmap
+# ExÃ©cuter le workflow de gestion de roadmap
 .\development\scripts\integrated-manager.ps1 -Workflow "RoadmapManagement" -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 ```
 
-### Création de workflows personnalisés
+### CrÃ©ation de workflows personnalisÃ©s
 
-Vous pouvez créer des workflows personnalisés en ajoutant une section dans le fichier de configuration :
+Vous pouvez crÃ©er des workflows personnalisÃ©s en ajoutant une section dans le fichier de configuration :
 
 ```json
 "Workflows": {
   "MyCustomWorkflow": {
-    "Description": "Mon workflow personnalisé",
+    "Description": "Mon workflow personnalisÃ©",
     "Modes": ["CHECK", "GRAN", "ROADMAP-SYNC"],
     "AutoContinue": true,
     "StopOnError": true
@@ -269,61 +269,61 @@ Vous pouvez créer des workflows personnalisés en ajoutant une section dans le 
 
 ## Automatisation
 
-Le gestionnaire intégré peut être automatisé à l'aide de scripts PowerShell et de tâches planifiées.
+Le gestionnaire intÃ©grÃ© peut Ãªtre automatisÃ© Ã  l'aide de scripts PowerShell et de tÃ¢ches planifiÃ©es.
 
 ### Scripts d'automatisation
 
 Les scripts d'automatisation suivants sont disponibles :
 
-- `workflow-quotidien.ps1` : Exécute les tâches quotidiennes de gestion de roadmap
-- `workflow-hebdomadaire.ps1` : Exécute les tâches hebdomadaires de gestion de roadmap
-- `workflow-mensuel.ps1` : Exécute les tâches mensuelles de gestion de roadmap
+- `workflow-quotidien.ps1` : ExÃ©cute les tÃ¢ches quotidiennes de gestion de roadmap
+- `workflow-hebdomadaire.ps1` : ExÃ©cute les tÃ¢ches hebdomadaires de gestion de roadmap
+- `workflow-mensuel.ps1` : ExÃ©cute les tÃ¢ches mensuelles de gestion de roadmap
 
-### Installation des tâches planifiées
+### Installation des tÃ¢ches planifiÃ©es
 
-Pour installer les tâches planifiées qui exécuteront automatiquement les workflows, utilisez le script `install-scheduled-tasks.ps1` :
+Pour installer les tÃ¢ches planifiÃ©es qui exÃ©cuteront automatiquement les workflows, utilisez le script `install-scheduled-tasks.ps1` :
 
 ```powershell
-# Installer les tâches planifiées avec les paramètres par défaut
+# Installer les tÃ¢ches planifiÃ©es avec les paramÃ¨tres par dÃ©faut
 .\development\scripts\workflows\install-scheduled-tasks.ps1
 
-# Installer les tâches planifiées avec un préfixe personnalisé
+# Installer les tÃ¢ches planifiÃ©es avec un prÃ©fixe personnalisÃ©
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -TaskPrefix "MonProjet"
 
-# Remplacer les tâches existantes
+# Remplacer les tÃ¢ches existantes
 .\development\scripts\workflows\install-scheduled-tasks.ps1 -Force
 ```
 
-### Tâches planifiées
+### TÃ¢ches planifiÃ©es
 
-Les tâches planifiées suivantes sont installées :
+Les tÃ¢ches planifiÃ©es suivantes sont installÃ©es :
 
-- `RoadmapManager-Quotidien` : Exécute le workflow quotidien tous les jours à 9h00
-- `RoadmapManager-Hebdomadaire` : Exécute le workflow hebdomadaire tous les vendredis à 16h00
-- `RoadmapManager-Mensuel` : Exécute le workflow mensuel le premier jour de chaque mois à 10h00
+- `roadmap-manager-Quotidien` : ExÃ©cute le workflow quotidien tous les jours Ã  9h00
+- `roadmap-manager-Hebdomadaire` : ExÃ©cute le workflow hebdomadaire tous les vendredis Ã  16h00
+- `roadmap-manager-Mensuel` : ExÃ©cute le workflow mensuel le premier jour de chaque mois Ã  10h00
 
-## Intégration avec d'autres outils
+## IntÃ©gration avec d'autres outils
 
-Le gestionnaire intégré peut être intégré avec d'autres outils.
+Le gestionnaire intÃ©grÃ© peut Ãªtre intÃ©grÃ© avec d'autres outils.
 
 ### Git
 
-Vous pouvez intégrer le gestionnaire intégré avec Git en ajoutant des commandes Git dans les scripts d'automatisation :
+Vous pouvez intÃ©grer le gestionnaire intÃ©grÃ© avec Git en ajoutant des commandes Git dans les scripts d'automatisation :
 
 ```powershell
-# Ajouter à la fin du workflow quotidien
+# Ajouter Ã  la fin du workflow quotidien
 git add "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
 git add "projet\roadmaps\Roadmap\roadmap_complete.json"
-git commit -m "Mise à jour quotidienne de la roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
+git commit -m "Mise Ã  jour quotidienne de la roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
 git push
 ```
 
 ### n8n
 
-Vous pouvez créer un workflow n8n qui exécute les scripts PowerShell et traite les résultats :
+Vous pouvez crÃ©er un workflow n8n qui exÃ©cute les scripts PowerShell et traite les rÃ©sultats :
 
 ```javascript
-// Exemple de nœud Execute Command dans n8n
+// Exemple de nÅ“ud Execute Command dans n8n
 {
   "parameters": {
     "command": "powershell.exe",
@@ -338,81 +338,81 @@ Vous pouvez créer un workflow n8n qui exécute les scripts PowerShell et traite
 Vous pouvez ajouter des notifications par e-mail dans les scripts d'automatisation :
 
 ```powershell
-# Ajouter à la fin du workflow hebdomadaire
+# Ajouter Ã  la fin du workflow hebdomadaire
 $emailParams = @{
     From = "roadmap@example.com"
     To = "equipe@example.com"
     Subject = "Rapport hebdomadaire de roadmap - $(Get-Date -Format 'yyyy-MM-dd')"
-    Body = "Le rapport hebdomadaire de roadmap est disponible à l'adresse suivante : $reportPath"
+    Body = "Le rapport hebdomadaire de roadmap est disponible Ã  l'adresse suivante : $reportPath"
     SmtpServer = "smtp.example.com"
 }
 Send-MailMessage @emailParams
 ```
 
-## Résolution des problèmes
+## RÃ©solution des problÃ¨mes
 
-### Problèmes courants
+### ProblÃ¨mes courants
 
-#### Le gestionnaire intégré ne trouve pas le module RoadmapParser
+#### Le gestionnaire intÃ©grÃ© ne trouve pas le module RoadmapParser
 
-**Symptôme** : Le gestionnaire intégré affiche une erreur indiquant que le module RoadmapParser est introuvable.
+**SymptÃ´me** : Le gestionnaire intÃ©grÃ© affiche une erreur indiquant que le module RoadmapParser est introuvable.
 
-**Solution** : Vérifiez que le module RoadmapParser est installé et que le chemin du module est correct dans le fichier de configuration.
+**Solution** : VÃ©rifiez que le module RoadmapParser est installÃ© et que le chemin du module est correct dans le fichier de configuration.
 
 ```powershell
-# Vérifier que le module RoadmapParser est installé
+# VÃ©rifier que le module RoadmapParser est installÃ©
 Get-Module -Name RoadmapParser -ListAvailable
 
 # Importer le module RoadmapParser
 Import-Module "development\roadmap\parser\module\RoadmapParser.psm1" -Force
 ```
 
-#### Les modes ne s'exécutent pas correctement
+#### Les modes ne s'exÃ©cutent pas correctement
 
-**Symptôme** : Les modes ne s'exécutent pas correctement ou affichent des erreurs.
+**SymptÃ´me** : Les modes ne s'exÃ©cutent pas correctement ou affichent des erreurs.
 
-**Solution** : Vérifiez que les chemins des scripts des modes sont corrects dans le fichier de configuration et que les scripts existent.
+**Solution** : VÃ©rifiez que les chemins des scripts des modes sont corrects dans le fichier de configuration et que les scripts existent.
 
 ```powershell
-# Vérifier que les scripts des modes existent
+# VÃ©rifier que les scripts des modes existent
 Test-Path -Path "development\scripts\maintenance\modes\check.ps1"
 Test-Path -Path "development\scripts\maintenance\modes\gran-mode.ps1"
 Test-Path -Path "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
 ```
 
-#### Les workflows ne s'exécutent pas correctement
+#### Les workflows ne s'exÃ©cutent pas correctement
 
-**Symptôme** : Les workflows ne s'exécutent pas correctement ou affichent des erreurs.
+**SymptÃ´me** : Les workflows ne s'exÃ©cutent pas correctement ou affichent des erreurs.
 
-**Solution** : Vérifiez que les modes spécifiés dans les workflows existent et sont correctement configurés.
+**Solution** : VÃ©rifiez que les modes spÃ©cifiÃ©s dans les workflows existent et sont correctement configurÃ©s.
 
 ```powershell
-# Vérifier que les modes spécifiés dans les workflows existent
+# VÃ©rifier que les modes spÃ©cifiÃ©s dans les workflows existent
 .\development\scripts\integrated-manager.ps1 -ListModes
 ```
 
-#### Les tâches planifiées ne s'exécutent pas
+#### Les tÃ¢ches planifiÃ©es ne s'exÃ©cutent pas
 
-**Symptôme** : Les tâches planifiées sont installées mais ne s'exécutent pas.
+**SymptÃ´me** : Les tÃ¢ches planifiÃ©es sont installÃ©es mais ne s'exÃ©cutent pas.
 
-**Solution** : Vérifiez que le service de planification des tâches est en cours d'exécution et que l'utilisateur qui exécute les tâches a les droits nécessaires.
+**Solution** : VÃ©rifiez que le service de planification des tÃ¢ches est en cours d'exÃ©cution et que l'utilisateur qui exÃ©cute les tÃ¢ches a les droits nÃ©cessaires.
 
 ```powershell
-# Vérifier l'état du service de planification des tâches
+# VÃ©rifier l'Ã©tat du service de planification des tÃ¢ches
 Get-Service -Name "Schedule"
 
-# Vérifier les tâches planifiées
-Get-ScheduledTask -TaskName "RoadmapManager-*"
+# VÃ©rifier les tÃ¢ches planifiÃ©es
+Get-ScheduledTask -TaskName "roadmap-manager-*"
 
-# Vérifier l'historique d'exécution des tâches
-Get-ScheduledTaskInfo -TaskName "RoadmapManager-Quotidien"
+# VÃ©rifier l'historique d'exÃ©cution des tÃ¢ches
+Get-ScheduledTaskInfo -TaskName "roadmap-manager-Quotidien"
 ```
 
 ### Journalisation
 
-Tous les modes et workflows génèrent des journaux détaillés qui peuvent être utilisés pour diagnostiquer les problèmes.
+Tous les modes et workflows gÃ©nÃ¨rent des journaux dÃ©taillÃ©s qui peuvent Ãªtre utilisÃ©s pour diagnostiquer les problÃ¨mes.
 
-Les journaux sont stockés dans le répertoire spécifié dans le fichier de configuration (`LogPath`) et sont nommés selon le format suivant :
+Les journaux sont stockÃ©s dans le rÃ©pertoire spÃ©cifiÃ© dans le fichier de configuration (`LogPath`) et sont nommÃ©s selon le format suivant :
 
 - `workflow-quotidien-YYYY-MM-DD.log` pour le workflow quotidien
 - `workflow-hebdomadaire-YYYY-MM-DD.log` pour le workflow hebdomadaire
@@ -423,31 +423,33 @@ Les journaux sont stockés dans le répertoire spécifié dans le fichier de con
 Get-Content -Path "projet\roadmaps\Logs\workflow-quotidien-$(Get-Date -Format 'yyyy-MM-dd').log"
 ```
 
-## Ressources supplémentaires
+## Ressources supplÃ©mentaires
 
 ### Documentation
 
-- [Documentation du gestionnaire intégré](../methodologies/integrated_manager.md)
+- [Documentation du gestionnaire intÃ©grÃ©](../methodologies/integrated_manager.md)
 - [Exemples d'utilisation des modes de roadmap](../examples/roadmap-modes-examples.md)
 - [Bonnes pratiques pour la gestion des roadmaps](../best-practices/roadmap-management.md)
-- [Workflows automatisés](../automation/roadmap-workflows.md)
+- [Workflows automatisÃ©s](../automation/roadmap-workflows.md)
 
 ### Scripts
 
-- [Gestionnaire intégré](../../../scripts/integrated-manager.ps1)
-- [Mode CHECK adapté](../../../scripts/maintenance/modes/check.ps1)
-- [Mode GRAN adapté](../../../scripts/maintenance/modes/gran-mode.ps1)
+- [Gestionnaire intÃ©grÃ©](../../../scripts/integrated-manager.ps1)
+- [Mode CHECK adaptÃ©](../../../scripts/maintenance/modes/check.ps1)
+- [Mode GRAN adaptÃ©](../../../scripts/maintenance/modes/gran-mode.ps1)
 - [Mode ROADMAP-SYNC](../../../scripts/maintenance/modes/roadmap-sync-mode.ps1)
 - [Mode ROADMAP-REPORT](../../../scripts/maintenance/modes/roadmap-report-mode.ps1)
 - [Mode ROADMAP-PLAN](../../../scripts/maintenance/modes/roadmap-plan-mode.ps1)
 - [Workflow quotidien](../../../scripts/workflows/workflow-quotidien.ps1)
 - [Workflow hebdomadaire](../../../scripts/workflows/workflow-hebdomadaire.ps1)
 - [Workflow mensuel](../../../scripts/workflows/workflow-mensuel.ps1)
-- [Installation des tâches planifiées](../../../scripts/workflows/install-scheduled-tasks.ps1)
+- [Installation des tÃ¢ches planifiÃ©es](../../../scripts/workflows/install-scheduled-tasks.ps1)
 
 ### Tests
 
-- [Tests du gestionnaire intégré](../../../scripts/manager/tests/Test-IntegratedManager.ps1)
-- [Tests des modes adaptés](../../../scripts/manager/tests/Test-IntegratedManagerModes.ps1)
-- [Tests des modes de roadmap](../../../scripts/manager/tests/Test-RoadmapModes.ps1)
-- [Tests d'intégration complète](../../../scripts/manager/tests/Test-CompleteIntegration.ps1)
+- [Tests du gestionnaire intÃ©grÃ©](../../../scripts/mode-manager/tests/Test-IntegratedManager.ps1)
+- [Tests des modes adaptÃ©s](../../../scripts/mode-manager/tests/Test-IntegratedManagerModes.ps1)
+- [Tests des modes de roadmap](../../../scripts/mode-manager/tests/Test-RoadmapModes.ps1)
+- [Tests d'intÃ©gration complÃ¨te](../../../scripts/mode-manager/tests/Test-CompleteIntegration.ps1)
+
+

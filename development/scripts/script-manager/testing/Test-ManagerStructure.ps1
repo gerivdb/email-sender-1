@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests de la structure du dossier manager.
 .DESCRIPTION
-    Ce script contient des tests pour vérifier la structure du dossier manager,
+    Ce script contient des tests pour vÃ©rifier la structure du dossier manager,
     en utilisant le framework Pester.
 .EXAMPLE
     .\Test-ManagerStructure.ps1
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -22,7 +22,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -47,19 +47,19 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 # Configuration de Pester
@@ -85,8 +85,8 @@ Describe "Tests de la structure du dossier manager" {
             Test-Path -Path "$script:managerDir/README.md" | Should -Be $true
         }
 
-        It "Le dossier Initialize-ManagerEnvironment.ps1 devrait exister" {
-            Test-Path -Path "$script:managerDir/Initialize-ManagerEnvironment.ps1" | Should -Be $true
+        It "Le dossier script-manager.ps1 devrait exister" {
+            Test-Path -Path "$script:managerDir/script-manager.ps1" | Should -Be $true
         }
 
         It "Le dossier _templates devrait exister" {
@@ -139,22 +139,22 @@ Describe "Tests de la structure du dossier manager" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Log "`nRésumé des tests:" -Level "INFO"
-Write-Log "  Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "  Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "  Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
-Write-Log "  Tests ignorés: $($testResults.SkippedCount)" -Level "WARNING"
-Write-Log "  Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "`nRÃ©sumÃ© des tests:" -Level "INFO"
+Write-Log "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "  Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
+Write-Log "  Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "WARNING"
+Write-Log "  DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "StructureTestResults.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -171,36 +171,37 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de tests de structure</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés: $($testResults.TotalCount)</p>
-        <p class="success">Tests réussis: $($testResults.PassedCount)</p>
-        <p class="error">Tests échoués: $($testResults.FailedCount)</p>
-        <p class="warning">Tests ignorés: $($testResults.SkippedCount)</p>
-        <p>Durée totale: $($testResults.Duration.TotalSeconds) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s: $($testResults.TotalCount)</p>
+        <p class="success">Tests rÃ©ussis: $($testResults.PassedCount)</p>
+        <p class="error">Tests Ã©chouÃ©s: $($testResults.FailedCount)</p>
+        <p class="warning">Tests ignorÃ©s: $($testResults.SkippedCount)</p>
+        <p>DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes</p>
     </div>
     
-    <p>Pour plus de détails, consultez le rapport XML.</p>
+    <p>Pour plus de dÃ©tails, consultez le rapport XML.</p>
 </body>
 </html>
 "@
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
 # Afficher le chemin du rapport XML
-Write-Log "Rapport XML généré: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML gÃ©nÃ©rÃ©: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 }
 else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }
+

@@ -150,7 +150,7 @@ function Test-Phase2 {
         Invoke-Expression $Command
         
         # VÃ©rifier le rapport de conformitÃ©
-        $ComplianceReportPath = "scripts\manager\data\compliance_report.json"
+        $ComplianceReportPath = "scripts\\mode-manager\data\compliance_report.json"
         if (-not (Test-Path -Path $ComplianceReportPath)) {
             Write-Log "Le rapport de conformitÃ© n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $ComplianceReportPath" -Level "ERROR"
             return $false
@@ -210,7 +210,7 @@ function Test-Phase3 {
         Invoke-Expression $Command
         
         # VÃ©rifier le rapport de duplications
-        $DuplicationReportPath = "scripts\manager\data\duplication_report.json"
+        $DuplicationReportPath = "scripts\\mode-manager\data\duplication_report.json"
         if (-not (Test-Path -Path $DuplicationReportPath)) {
             Write-Log "Le rapport de duplications n'a pas Ã©tÃ© gÃ©nÃ©rÃ©: $DuplicationReportPath" -Level "ERROR"
             return $false
@@ -249,7 +249,7 @@ function Test-Phase4 {
     Write-Log "Test de la Phase 4 : AmÃ©lioration du systÃ¨me de gestion de scripts" -Level "TITLE"
     
     # VÃ©rifier si le ScriptManager existe
-    $ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
+    $ScriptManagerPath = "scripts\\mode-manager\ScriptManager.ps1"
     if (-not (Test-Path -Path $ScriptManagerPath)) {
         Write-Log "Le ScriptManager n'existe pas: $ScriptManagerPath" -Level "ERROR"
         return $false
@@ -271,7 +271,7 @@ function Test-Phase4 {
         Invoke-Expression $Command
         
         # VÃ©rifier si le fichier d'inventaire a Ã©tÃ© gÃ©nÃ©rÃ©
-        $InventoryPath = "scripts\manager\data\inventory.json"
+        $InventoryPath = "scripts\\mode-manager\data\inventory.json"
         if (Test-Path -Path $InventoryPath) {
             $TestResults += $true
             Write-Log "Test d'inventaire rÃ©ussi" -Level "SUCCESS"
@@ -297,7 +297,7 @@ function Test-Phase4 {
         Invoke-Expression $Command
         
         # VÃ©rifier si le fichier d'analyse a Ã©tÃ© gÃ©nÃ©rÃ©
-        $AnalysisPath = "scripts\manager\data\analysis.json"
+        $AnalysisPath = "scripts\\mode-manager\data\analysis.json"
         if (Test-Path -Path $AnalysisPath) {
             $TestResults += $true
             Write-Log "Test d'analyse rÃ©ussi" -Level "SUCCESS"
@@ -323,7 +323,7 @@ function Test-Phase4 {
         Invoke-Expression $Command
         
         # VÃ©rifier si le fichier de documentation a Ã©tÃ© gÃ©nÃ©rÃ©
-        $DocumentationPath = "scripts\manager\docs\script_documentation.markdown"
+        $DocumentationPath = "scripts\\mode-manager\docs\script_documentation.markdown"
         if (Test-Path -Path $DocumentationPath) {
             $TestResults += $true
             Write-Log "Test de documentation rÃ©ussi" -Level "SUCCESS"
@@ -472,3 +472,4 @@ if (-not ($TestP1 -or $TestP2 -or $TestP3 -or $TestP4)) {
 
 # ExÃ©cuter les tests
 Start-ProjectPhasesTest -TestPhase1 $TestP1 -TestPhase2 $TestP2 -TestPhase3 $TestP3 -TestPhase4 $TestP4 -Path $Path -Verbose:$Verbose
+

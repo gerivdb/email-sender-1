@@ -1,42 +1,42 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour générer des rapports sur l'état des roadmaps (Mode ROADMAP-REPORT).
+    Script pour gÃ©nÃ©rer des rapports sur l'Ã©tat des roadmaps (Mode ROADMAP-REPORT).
 
 .DESCRIPTION
-    Ce script permet de générer des rapports détaillés sur l'état d'avancement des roadmaps.
-    Il implémente le mode ROADMAP-REPORT qui est conçu pour fournir des informations
-    sur l'état d'avancement des tâches, les tendances, les prévisions, etc.
+    Ce script permet de gÃ©nÃ©rer des rapports dÃ©taillÃ©s sur l'Ã©tat d'avancement des roadmaps.
+    Il implÃ©mente le mode ROADMAP-REPORT qui est conÃ§u pour fournir des informations
+    sur l'Ã©tat d'avancement des tÃ¢ches, les tendances, les prÃ©visions, etc.
 
 .PARAMETER RoadmapPath
-    Chemin vers le fichier de roadmap à analyser.
+    Chemin vers le fichier de roadmap Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin vers le répertoire de sortie pour les rapports. Si non spécifié, le script utilisera
+    Chemin vers le rÃ©pertoire de sortie pour les rapports. Si non spÃ©cifiÃ©, le script utilisera
     les valeurs de la configuration.
 
 .PARAMETER ReportFormat
-    Format des rapports à générer. Valeurs possibles : "HTML", "JSON", "CSV", "Markdown", "All".
-    Par défaut : "HTML".
+    Format des rapports Ã  gÃ©nÃ©rer. Valeurs possibles : "HTML", "JSON", "CSV", "Markdown", "All".
+    Par dÃ©faut : "HTML".
 
 .PARAMETER IncludeCharts
     Indique si les rapports doivent inclure des graphiques.
-    Par défaut : $true.
+    Par dÃ©faut : $true.
 
 .PARAMETER IncludeTrends
     Indique si les rapports doivent inclure des analyses de tendances.
-    Par défaut : $true.
+    Par dÃ©faut : $true.
 
 .PARAMETER IncludePredictions
-    Indique si les rapports doivent inclure des prévisions.
-    Par défaut : $true.
+    Indique si les rapports doivent inclure des prÃ©visions.
+    Par dÃ©faut : $true.
 
 .PARAMETER DaysToAnalyze
-    Nombre de jours à analyser pour les tendances et les prévisions.
-    Par défaut : 30.
+    Nombre de jours Ã  analyser pour les tendances et les prÃ©visions.
+    Par dÃ©faut : 30.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration unifiée.
-    Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration unifiÃ©e.
+    Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\roadmap-report-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -OutputPath "reports\roadmap"
@@ -47,7 +47,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -77,7 +77,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and 
        -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -87,12 +87,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -115,7 +115,7 @@ if (Test-Path -Path $configPath) {
     foreach ($path in $alternativePaths) {
         $fullPath = Join-Path -Path $projectRoot -ChildPath $path
         if (Test-Path -Path $fullPath) {
-            Write-Host "Fichier de configuration trouvé à l'emplacement : $fullPath" -ForegroundColor Green
+            Write-Host "Fichier de configuration trouvÃ© Ã  l'emplacement : $fullPath" -ForegroundColor Green
             $configPath = $fullPath
             try {
                 $config = Get-Content -Path $configPath -Raw | ConvertFrom-Json
@@ -127,19 +127,19 @@ if (Test-Path -Path $configPath) {
     }
     
     if (-not $config) {
-        Write-Error "Aucun fichier de configuration valide trouvé."
+        Write-Error "Aucun fichier de configuration valide trouvÃ©."
         exit 1
     }
 }
 
-# Utiliser les valeurs de la configuration si les paramètres ne sont pas spécifiés
+# Utiliser les valeurs de la configuration si les paramÃ¨tres ne sont pas spÃ©cifiÃ©s
 if (-not $RoadmapPath) {
     if ($config.Roadmaps.Main.Path) {
         $RoadmapPath = Join-Path -Path $projectRoot -ChildPath $config.Roadmaps.Main.Path
     } elseif ($config.General.RoadmapPath) {
         $RoadmapPath = Join-Path -Path $projectRoot -ChildPath $config.General.RoadmapPath
     } else {
-        Write-Error "Aucun chemin de roadmap spécifié et aucun chemin par défaut trouvé dans la configuration."
+        Write-Error "Aucun chemin de roadmap spÃ©cifiÃ© et aucun chemin par dÃ©faut trouvÃ© dans la configuration."
         exit 1
     }
 }
@@ -147,8 +147,8 @@ if (-not $RoadmapPath) {
 if (-not $OutputPath) {
     if ($config.Roadmaps.Main.ReportPath) {
         $OutputPath = Join-Path -Path $projectRoot -ChildPath $config.Roadmaps.Main.ReportPath
-    } elseif ($config.RoadmapManager.ReportsFolder) {
-        $OutputPath = Join-Path -Path $projectRoot -ChildPath $config.RoadmapManager.ReportsFolder
+    } elseif ($config.roadmap-manager.ReportsFolder) {
+        $OutputPath = Join-Path -Path $projectRoot -ChildPath $config.roadmap-manager.ReportsFolder
     } elseif ($config.General.ReportPath) {
         $OutputPath = Join-Path -Path $projectRoot -ChildPath $config.General.ReportPath
     } else {
@@ -165,13 +165,13 @@ if (-not [System.IO.Path]::IsPathRooted($OutputPath)) {
     $OutputPath = Join-Path -Path $projectRoot -ChildPath $OutputPath
 }
 
-# Vérifier que le fichier de roadmap existe
+# VÃ©rifier que le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
-    Write-Error "Le fichier de roadmap spécifié n'existe pas : $RoadmapPath"
+    Write-Error "Le fichier de roadmap spÃ©cifiÃ© n'existe pas : $RoadmapPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -185,15 +185,15 @@ if (Test-Path -Path $modulePath) {
     exit 1
 }
 
-# Afficher les paramètres
-Write-Host "Mode ROADMAP-REPORT - Génération de rapports sur l'état des roadmaps" -ForegroundColor Cyan
+# Afficher les paramÃ¨tres
+Write-Host "Mode ROADMAP-REPORT - GÃ©nÃ©ration de rapports sur l'Ã©tat des roadmaps" -ForegroundColor Cyan
 Write-Host "Fichier de roadmap : $RoadmapPath" -ForegroundColor Gray
-Write-Host "Répertoire de sortie : $OutputPath" -ForegroundColor Gray
+Write-Host "RÃ©pertoire de sortie : $OutputPath" -ForegroundColor Gray
 Write-Host "Format des rapports : $ReportFormat" -ForegroundColor Gray
 Write-Host "Inclure des graphiques : $IncludeCharts" -ForegroundColor Gray
 Write-Host "Inclure des analyses de tendances : $IncludeTrends" -ForegroundColor Gray
-Write-Host "Inclure des prévisions : $IncludePredictions" -ForegroundColor Gray
-Write-Host "Nombre de jours à analyser : $DaysToAnalyze" -ForegroundColor Gray
+Write-Host "Inclure des prÃ©visions : $IncludePredictions" -ForegroundColor Gray
+Write-Host "Nombre de jours Ã  analyser : $DaysToAnalyze" -ForegroundColor Gray
 Write-Host ""
 
 # Fonction pour analyser la roadmap
@@ -205,23 +205,23 @@ function Get-RoadmapAnalysis {
     # Lire le contenu du fichier de roadmap
     $roadmapContent = Get-Content -Path $RoadmapPath -Encoding UTF8 -Raw
     
-    # Analyser le contenu pour extraire les tâches
+    # Analyser le contenu pour extraire les tÃ¢ches
     $tasks = @()
     $lines = $roadmapContent -split "`n"
     $currentTask = $null
     $currentSubTasks = @()
     
     foreach ($line in $lines) {
-        # Détecter les tâches principales (lignes commençant par "## ")
+        # DÃ©tecter les tÃ¢ches principales (lignes commenÃ§ant par "## ")
         if ($line -match "^## (.+)") {
-            # Si une tâche est en cours de traitement, l'ajouter à la liste
+            # Si une tÃ¢che est en cours de traitement, l'ajouter Ã  la liste
             if ($currentTask) {
                 $currentTask.SubTasks = $currentSubTasks
                 $tasks += $currentTask
                 $currentSubTasks = @()
             }
             
-            # Créer une nouvelle tâche
+            # CrÃ©er une nouvelle tÃ¢che
             $currentTask = @{
                 Title = $matches[1].Trim()
                 Id = ""
@@ -230,7 +230,7 @@ function Get-RoadmapAnalysis {
                 SubTasks = @()
             }
         }
-        # Détecter les descriptions (lignes commençant par "### Description")
+        # DÃ©tecter les descriptions (lignes commenÃ§ant par "### Description")
         elseif ($line -match "^### Description" -and $currentTask) {
             $descriptionLines = @()
             $i = [array]::IndexOf($lines, $line) + 1
@@ -242,7 +242,7 @@ function Get-RoadmapAnalysis {
             
             $currentTask.Description = ($descriptionLines -join "`n").Trim()
         }
-        # Détecter les sous-tâches (lignes commençant par "- [ ]" ou "- [x]")
+        # DÃ©tecter les sous-tÃ¢ches (lignes commenÃ§ant par "- [ ]" ou "- [x]")
         elseif ($line -match "^- \[([ x])\] (?:\*\*([0-9.]+)\*\* )?(.+)" -and $currentTask) {
             $isChecked = $matches[1] -eq "x"
             $id = if ($matches[2]) { $matches[2] } else { "" }
@@ -258,7 +258,7 @@ function Get-RoadmapAnalysis {
         }
     }
     
-    # Ajouter la dernière tâche
+    # Ajouter la derniÃ¨re tÃ¢che
     if ($currentTask) {
         $currentTask.SubTasks = $currentSubTasks
         $tasks += $currentTask
@@ -294,7 +294,7 @@ function Get-RoadmapAnalysis {
     
     $completionPercentage = if ($totalTasks -gt 0) { [math]::Round(($completedTasks / $totalTasks) * 100, 2) } else { 0 }
     
-    # Créer l'objet d'analyse
+    # CrÃ©er l'objet d'analyse
     $analysis = @{
         RoadmapPath = $RoadmapPath
         TotalTasks = $totalTasks
@@ -308,7 +308,7 @@ function Get-RoadmapAnalysis {
     return $analysis
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-HtmlReport {
     param (
         [hashtable]$Analysis,
@@ -320,7 +320,7 @@ function New-HtmlReport {
     
     $reportPath = Join-Path -Path $OutputPath -ChildPath "roadmap-report.html"
     
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -397,24 +397,24 @@ function New-HtmlReport {
     <h1>Rapport de Roadmap</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p><strong>Fichier de roadmap :</strong> $($Analysis.RoadmapPath)</p>
         <p><strong>Date d'analyse :</strong> $($Analysis.AnalysisDate)</p>
-        <p><strong>Tâches totales :</strong> $($Analysis.TotalTasks)</p>
-        <p><strong>Tâches complétées :</strong> $($Analysis.CompletedTasks)</p>
-        <p><strong>Pourcentage de complétion :</strong> $($Analysis.CompletionPercentage)%</p>
+        <p><strong>TÃ¢ches totales :</strong> $($Analysis.TotalTasks)</p>
+        <p><strong>TÃ¢ches complÃ©tÃ©es :</strong> $($Analysis.CompletedTasks)</p>
+        <p><strong>Pourcentage de complÃ©tion :</strong> $($Analysis.CompletionPercentage)%</p>
         
         <div class="progress-bar">
             <div class="progress" style="width: $($Analysis.CompletionPercentage)%">$($Analysis.CompletionPercentage)%</div>
         </div>
     </div>
     
-    <h2>Progression par groupe de tâches</h2>
+    <h2>Progression par groupe de tÃ¢ches</h2>
     <table>
         <tr>
             <th>Groupe</th>
-            <th>Tâches totales</th>
-            <th>Tâches complétées</th>
+            <th>TÃ¢ches totales</th>
+            <th>TÃ¢ches complÃ©tÃ©es</th>
             <th>Pourcentage</th>
             <th>Progression</th>
         </tr>
@@ -439,7 +439,7 @@ function New-HtmlReport {
     $html += @"
     </table>
     
-    <h2>Détails des tâches</h2>
+    <h2>DÃ©tails des tÃ¢ches</h2>
 "@
 
     foreach ($task in $Analysis.Tasks) {
@@ -464,7 +464,7 @@ function New-HtmlReport {
 "@
 
         foreach ($subTask in $task.SubTasks) {
-            $status = if ($subTask.Status -eq "Completed") { "Complété" } else { "En cours" }
+            $status = if ($subTask.Status -eq "Completed") { "ComplÃ©tÃ©" } else { "En cours" }
             $statusColor = if ($subTask.Status -eq "Completed") { "#4CAF50" } else { "#FFC107" }
             
             $html += @"
@@ -490,7 +490,7 @@ function New-HtmlReport {
         <canvas id="progressChart"></canvas>
     </div>
     
-    <h3>Progression par groupe de tâches</h3>
+    <h3>Progression par groupe de tÃ¢ches</h3>
     <div class="chart-container">
         <canvas id="groupsChart"></canvas>
     </div>
@@ -501,7 +501,7 @@ function New-HtmlReport {
         var progressChart = new Chart(progressCtx, {
             type: 'pie',
             data: {
-                labels: ['Complété', 'En cours'],
+                labels: ['ComplÃ©tÃ©', 'En cours'],
                 datasets: [{
                     data: [$($Analysis.CompletedTasks), $($Analysis.TotalTasks - $Analysis.CompletedTasks)],
                     backgroundColor: ['#4CAF50', '#FFC107']
@@ -517,14 +517,14 @@ function New-HtmlReport {
             }
         });
         
-        // Graphique de progression par groupe de tâches
+        // Graphique de progression par groupe de tÃ¢ches
         var groupsCtx = document.getElementById('groupsChart').getContext('2d');
         var groupsChart = new Chart(groupsCtx, {
             type: 'bar',
             data: {
                 labels: [$(($Analysis.TaskGroups.GetEnumerator() | ForEach-Object { "'$($_.Key)'" }) -join ", ")],
                 datasets: [{
-                    label: 'Pourcentage de complétion',
+                    label: 'Pourcentage de complÃ©tion',
                     data: [$(($Analysis.TaskGroups.GetEnumerator() | ForEach-Object { $_.Value.Percentage }) -join ", ")],
                     backgroundColor: '#3498db'
                 }]
@@ -540,7 +540,7 @@ function New-HtmlReport {
                 },
                 title: {
                     display: true,
-                    text: 'Progression par groupe de tâches'
+                    text: 'Progression par groupe de tÃ¢ches'
                 }
             }
         });
@@ -551,16 +551,16 @@ function New-HtmlReport {
     if ($IncludeTrends) {
         $html += @"
     <h2>Analyse des tendances</h2>
-    <p>Cette section présente une analyse des tendances basée sur les données historiques des $DaysToAnalyze derniers jours.</p>
-    <p><em>Note : Cette fonctionnalité nécessite des données historiques qui ne sont pas disponibles dans cette version du rapport.</em></p>
+    <p>Cette section prÃ©sente une analyse des tendances basÃ©e sur les donnÃ©es historiques des $DaysToAnalyze derniers jours.</p>
+    <p><em>Note : Cette fonctionnalitÃ© nÃ©cessite des donnÃ©es historiques qui ne sont pas disponibles dans cette version du rapport.</em></p>
 "@
     }
 
     if ($IncludePredictions) {
         $html += @"
-    <h2>Prévisions</h2>
-    <p>Cette section présente des prévisions basées sur les tendances actuelles.</p>
-    <p><em>Note : Cette fonctionnalité nécessite des données historiques qui ne sont pas disponibles dans cette version du rapport.</em></p>
+    <h2>PrÃ©visions</h2>
+    <p>Cette section prÃ©sente des prÃ©visions basÃ©es sur les tendances actuelles.</p>
+    <p><em>Note : Cette fonctionnalitÃ© nÃ©cessite des donnÃ©es historiques qui ne sont pas disponibles dans cette version du rapport.</em></p>
 "@
     }
 
@@ -575,7 +575,7 @@ function New-HtmlReport {
     return $reportPath
 }
 
-# Fonction pour générer un rapport JSON
+# Fonction pour gÃ©nÃ©rer un rapport JSON
 function New-JsonReport {
     param (
         [hashtable]$Analysis,
@@ -593,7 +593,7 @@ function New-JsonReport {
     return $reportPath
 }
 
-# Fonction pour générer un rapport CSV
+# Fonction pour gÃ©nÃ©rer un rapport CSV
 function New-CsvReport {
     param (
         [hashtable]$Analysis,
@@ -602,7 +602,7 @@ function New-CsvReport {
     
     $reportPath = Join-Path -Path $OutputPath -ChildPath "roadmap-report.csv"
     
-    # Créer un tableau d'objets pour le CSV
+    # CrÃ©er un tableau d'objets pour le CSV
     $csvData = @()
     
     foreach ($task in $Analysis.Tasks) {
@@ -624,7 +624,7 @@ function New-CsvReport {
     return $reportPath
 }
 
-# Fonction pour générer un rapport Markdown
+# Fonction pour gÃ©nÃ©rer un rapport Markdown
 function New-MarkdownReport {
     param (
         [hashtable]$Analysis,
@@ -633,25 +633,25 @@ function New-MarkdownReport {
     
     $reportPath = Join-Path -Path $OutputPath -ChildPath "roadmap-report.md"
     
-    # Créer le contenu Markdown
+    # CrÃ©er le contenu Markdown
     $markdown = "# Rapport de Roadmap`n`n"
     
-    $markdown += "## Résumé`n`n"
+    $markdown += "## RÃ©sumÃ©`n`n"
     $markdown += "- **Fichier de roadmap :** $($Analysis.RoadmapPath)`n"
     $markdown += "- **Date d'analyse :** $($Analysis.AnalysisDate)`n"
-    $markdown += "- **Tâches totales :** $($Analysis.TotalTasks)`n"
-    $markdown += "- **Tâches complétées :** $($Analysis.CompletedTasks)`n"
-    $markdown += "- **Pourcentage de complétion :** $($Analysis.CompletionPercentage)%`n`n"
+    $markdown += "- **TÃ¢ches totales :** $($Analysis.TotalTasks)`n"
+    $markdown += "- **TÃ¢ches complÃ©tÃ©es :** $($Analysis.CompletedTasks)`n"
+    $markdown += "- **Pourcentage de complÃ©tion :** $($Analysis.CompletionPercentage)%`n`n"
     
-    $markdown += "## Progression par groupe de tâches`n`n"
-    $markdown += "| Groupe | Tâches totales | Tâches complétées | Pourcentage |`n"
+    $markdown += "## Progression par groupe de tÃ¢ches`n`n"
+    $markdown += "| Groupe | TÃ¢ches totales | TÃ¢ches complÃ©tÃ©es | Pourcentage |`n"
     $markdown += "| ------ | ------------- | ----------------- | ----------- |`n"
     
     foreach ($group in $Analysis.TaskGroups.GetEnumerator()) {
         $markdown += "| $($group.Key) | $($group.Value.Total) | $($group.Value.Completed) | $($group.Value.Percentage)% |`n"
     }
     
-    $markdown += "`n## Détails des tâches`n`n"
+    $markdown += "`n## DÃ©tails des tÃ¢ches`n`n"
     
     foreach ($task in $Analysis.Tasks) {
         $completedSubTasks = ($task.SubTasks | Where-Object { $_.Status -eq "Completed" }).Count
@@ -666,7 +666,7 @@ function New-MarkdownReport {
         $markdown += "| -- | ----- | ------ |`n"
         
         foreach ($subTask in $task.SubTasks) {
-            $status = if ($subTask.Status -eq "Completed") { "Complété" } else { "En cours" }
+            $status = if ($subTask.Status -eq "Completed") { "ComplÃ©tÃ©" } else { "En cours" }
             $markdown += "| $($subTask.Id) | $($subTask.Title) | $status |`n"
         }
         
@@ -682,38 +682,38 @@ function New-MarkdownReport {
 # Analyser la roadmap
 $analysis = Get-RoadmapAnalysis -RoadmapPath $RoadmapPath
 
-# Générer les rapports en fonction du format spécifié
+# GÃ©nÃ©rer les rapports en fonction du format spÃ©cifiÃ©
 $generatedReports = @()
 
 if ($ReportFormat -eq "HTML" -or $ReportFormat -eq "All") {
     $htmlReportPath = New-HtmlReport -Analysis $analysis -OutputPath $OutputPath -IncludeCharts $IncludeCharts -IncludeTrends $IncludeTrends -IncludePredictions $IncludePredictions
     $generatedReports += $htmlReportPath
-    Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
+    Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
 }
 
 if ($ReportFormat -eq "JSON" -or $ReportFormat -eq "All") {
     $jsonReportPath = New-JsonReport -Analysis $analysis -OutputPath $OutputPath
     $generatedReports += $jsonReportPath
-    Write-Host "Rapport JSON généré : $jsonReportPath" -ForegroundColor Green
+    Write-Host "Rapport JSON gÃ©nÃ©rÃ© : $jsonReportPath" -ForegroundColor Green
 }
 
 if ($ReportFormat -eq "CSV" -or $ReportFormat -eq "All") {
     $csvReportPath = New-CsvReport -Analysis $analysis -OutputPath $OutputPath
     $generatedReports += $csvReportPath
-    Write-Host "Rapport CSV généré : $csvReportPath" -ForegroundColor Green
+    Write-Host "Rapport CSV gÃ©nÃ©rÃ© : $csvReportPath" -ForegroundColor Green
 }
 
 if ($ReportFormat -eq "Markdown" -or $ReportFormat -eq "All") {
     $markdownReportPath = New-MarkdownReport -Analysis $analysis -OutputPath $OutputPath
     $generatedReports += $markdownReportPath
-    Write-Host "Rapport Markdown généré : $markdownReportPath" -ForegroundColor Green
+    Write-Host "Rapport Markdown gÃ©nÃ©rÃ© : $markdownReportPath" -ForegroundColor Green
 }
 
 # Afficher un message de fin
-Write-Host "`nExécution du mode ROADMAP-REPORT terminée." -ForegroundColor Cyan
-Write-Host "Rapports générés : $($generatedReports.Count)" -ForegroundColor Cyan
+Write-Host "`nExÃ©cution du mode ROADMAP-REPORT terminÃ©e." -ForegroundColor Cyan
+Write-Host "Rapports gÃ©nÃ©rÃ©s : $($generatedReports.Count)" -ForegroundColor Cyan
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     RoadmapPath = $RoadmapPath
     OutputPath = $OutputPath
@@ -721,3 +721,4 @@ return @{
     GeneratedReports = $generatedReports
     Analysis = $analysis
 }
+

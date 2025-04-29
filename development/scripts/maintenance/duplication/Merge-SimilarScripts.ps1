@@ -7,10 +7,10 @@
     rÃ©utilisables pour le code dupliquÃ© et met Ã  jour les rÃ©fÃ©rences.
 .PARAMETER InputPath
     Chemin du fichier de rapport gÃ©nÃ©rÃ© par Find-CodeDuplication.ps1.
-    Par dÃ©faut: scripts\manager\data\duplication_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\duplication_report.json
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport des fusions.
-    Par dÃ©faut: scripts\manager\data\merge_report.json
+    Par dÃ©faut: scripts\\mode-manager\data\merge_report.json
 .PARAMETER LibraryPath
     Chemin du dossier oÃ¹ seront crÃ©Ã©es les bibliothÃ¨ques de fonctions.
     Par dÃ©faut: scripts\common\lib
@@ -29,8 +29,8 @@
 #>
 
 param (
-    [string]$InputPath = "scripts\manager\data\duplication_report.json",
-    [string]$OutputPath = "scripts\manager\data\merge_report.json",
+    [string]$InputPath = "scripts\\mode-manager\data\duplication_report.json",
+    [string]$OutputPath = "scripts\\mode-manager\data\merge_report.json",
     [string]$LibraryPath = "scripts\common\lib",
     [int]$MinimumDuplicationCount = 2,
     [switch]$AutoApply,
@@ -60,7 +60,7 @@ function Write-Log {
     Write-Host $FormattedMessage -ForegroundColor $Color
     
     # Ã‰crire dans un fichier de log
-    $LogFile = "scripts\manager\data\script_merge.log"
+    $LogFile = "scripts\\mode-manager\data\script_merge.log"
     Add-Content -Path $LogFile -Value $FormattedMessage -ErrorAction SilentlyContinue
 }
 
@@ -532,3 +532,4 @@ function Start-ScriptMerge {
 
 # ExÃ©cuter la fonction principale
 Start-ScriptMerge -InputPath $InputPath -OutputPath $OutputPath -LibraryPath $LibraryPath -MinimumDuplicationCount $MinimumDuplicationCount -AutoApply:$AutoApply -ShowDetails:$ShowDetails
+

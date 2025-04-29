@@ -1,7 +1,7 @@
-# Script principal de gestion de la roadmap
-# Ce script permet d'accéder à toutes les fonctionnalités de gestion de la roadmap
+﻿# Script principal de gestion de la roadmap
+# Ce script permet d'accÃ©der Ã  toutes les fonctionnalitÃ©s de gestion de la roadmap
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [string]$RoadmapPath = "Roadmap\roadmap_perso.md",
     [switch]$Organize,
@@ -43,23 +43,23 @@ function Show-Help {
     Write-Host "Gestionnaire de roadmap" -ForegroundColor Cyan
     Write-Host "======================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "Ce script permet d'accéder à toutes les fonctionnalités de gestion de la roadmap."
+    Write-Host "Ce script permet d'accÃ©der Ã  toutes les fonctionnalitÃ©s de gestion de la roadmap."
     Write-Host ""
-    Write-Host "Paramètres :" -ForegroundColor Yellow
-    Write-Host "  -RoadmapPath    : Chemin du fichier roadmap (défaut: Roadmap\roadmap_perso.md)"
+    Write-Host "ParamÃ¨tres :" -ForegroundColor Yellow
+    Write-Host "  -RoadmapPath    : Chemin du fichier roadmap (dÃ©faut: Roadmap\roadmap_perso.md)"
     Write-Host "  -Organize       : Organiser les scripts de roadmap"
-    Write-Host "  -Execute        : Exécuter la roadmap"
-    Write-Host "  -Analyze        : Analyser la roadmap et générer des rapports"
-    Write-Host "  -GitUpdate      : Mettre à jour la roadmap en fonction des commits Git"
-    Write-Host "  -Cleanup        : Nettoyer et organiser les fichiers liés à la roadmap"
+    Write-Host "  -Execute        : ExÃ©cuter la roadmap"
+    Write-Host "  -Analyze        : Analyser la roadmap et gÃ©nÃ©rer des rapports"
+    Write-Host "  -GitUpdate      : Mettre Ã  jour la roadmap en fonction des commits Git"
+    Write-Host "  -Cleanup        : Nettoyer et organiser les fichiers liÃ©s Ã  la roadmap"
     Write-Host "  -FixScripts     : Corriger les scripts de roadmap"
     Write-Host "  -Help           : Afficher cette aide"
     Write-Host "  -Interactive    : Mode interactif (menu)"
     Write-Host ""
     Write-Host "Exemples :" -ForegroundColor Yellow
-    Write-Host "  .\RoadmapManager.ps1 -Analyze"
-    Write-Host "  .\RoadmapManager.ps1 -GitUpdate -RoadmapPath 'chemin\vers\roadmap.md'"
-    Write-Host "  .\RoadmapManager.ps1 -Interactive"
+    Write-Host "  .\roadmap-manager.ps1 -Analyze"
+    Write-Host "  .\roadmap-manager.ps1 -GitUpdate -RoadmapPath 'chemin\vers\roadmap.md'"
+    Write-Host "  .\roadmap-manager.ps1 -Interactive"
     Write-Host ""
 }
 
@@ -70,14 +70,14 @@ function Show-Menu {
     Write-Host "======================" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "1. Organiser les scripts de roadmap"
-    Write-Host "2. Exécuter la roadmap"
-    Write-Host "3. Analyser la roadmap et générer des rapports"
-    Write-Host "4. Mettre à jour la roadmap en fonction des commits Git"
-    Write-Host "5. Nettoyer et organiser les fichiers liés à la roadmap"
+    Write-Host "2. ExÃ©cuter la roadmap"
+    Write-Host "3. Analyser la roadmap et gÃ©nÃ©rer des rapports"
+    Write-Host "4. Mettre Ã  jour la roadmap en fonction des commits Git"
+    Write-Host "5. Nettoyer et organiser les fichiers liÃ©s Ã  la roadmap"
     Write-Host "6. Corriger les scripts de roadmap"
     Write-Host "7. Quitter"
     Write-Host ""
-    Write-Host "Sélectionnez une option (1-7) : " -NoNewline
+    Write-Host "SÃ©lectionnez une option (1-7) : " -NoNewline
     
     $choice = Read-Host
     
@@ -107,23 +107,23 @@ function Invoke-OrganizeScripts {
     
     try {
         & "$PSScriptRoot\OrganizeRoadmapScripts.ps1"
-        Write-Log -Message "Organisation des scripts terminée." -Level "SUCCESS"
+        Write-Log -Message "Organisation des scripts terminÃ©e." -Level "SUCCESS"
     }
     catch {
         Write-Log -Message "Erreur lors de l'organisation des scripts: $_" -Level "ERROR"
     }
 }
 
-# Fonction pour exécuter la roadmap
+# Fonction pour exÃ©cuter la roadmap
 function Invoke-ExecuteRoadmap {
-    Write-Log -Message "Exécution de la roadmap..." -Level "INFO"
+    Write-Log -Message "ExÃ©cution de la roadmap..." -Level "INFO"
     
     try {
         & "$PSScriptRoot\StartRoadmapExecution.ps1" -RoadmapPath $RoadmapPath
-        Write-Log -Message "Exécution de la roadmap terminée." -Level "SUCCESS"
+        Write-Log -Message "ExÃ©cution de la roadmap terminÃ©e." -Level "SUCCESS"
     }
     catch {
-        Write-Log -Message "Erreur lors de l'exécution de la roadmap: $_" -Level "ERROR"
+        Write-Log -Message "Erreur lors de l'exÃ©cution de la roadmap: $_" -Level "ERROR"
     }
 }
 
@@ -133,33 +133,33 @@ function Invoke-AnalyzeRoadmap {
     
     try {
         & "$PSScriptRoot\RoadmapAnalyzer.ps1" -RoadmapPath $RoadmapPath -GenerateHtml -GenerateJson -GenerateChart
-        Write-Log -Message "Analyse de la roadmap terminée." -Level "SUCCESS"
+        Write-Log -Message "Analyse de la roadmap terminÃ©e." -Level "SUCCESS"
     }
     catch {
         Write-Log -Message "Erreur lors de l'analyse de la roadmap: $_" -Level "ERROR"
     }
 }
 
-# Fonction pour mettre à jour la roadmap en fonction des commits Git
+# Fonction pour mettre Ã  jour la roadmap en fonction des commits Git
 function Invoke-GitUpdateRoadmap {
-    Write-Log -Message "Mise à jour de la roadmap en fonction des commits Git..." -Level "INFO"
+    Write-Log -Message "Mise Ã  jour de la roadmap en fonction des commits Git..." -Level "INFO"
     
     try {
         & "$PSScriptRoot\RoadmapGitUpdater.ps1" -RoadmapPath $RoadmapPath -AutoUpdate -GenerateReport
-        Write-Log -Message "Mise à jour de la roadmap terminée." -Level "SUCCESS"
+        Write-Log -Message "Mise Ã  jour de la roadmap terminÃ©e." -Level "SUCCESS"
     }
     catch {
-        Write-Log -Message "Erreur lors de la mise à jour de la roadmap: $_" -Level "ERROR"
+        Write-Log -Message "Erreur lors de la mise Ã  jour de la roadmap: $_" -Level "ERROR"
     }
 }
 
-# Fonction pour nettoyer et organiser les fichiers liés à la roadmap
+# Fonction pour nettoyer et organiser les fichiers liÃ©s Ã  la roadmap
 function Invoke-CleanupFiles {
-    Write-Log -Message "Nettoyage et organisation des fichiers liés à la roadmap..." -Level "INFO"
+    Write-Log -Message "Nettoyage et organisation des fichiers liÃ©s Ã  la roadmap..." -Level "INFO"
     
     try {
         & "$PSScriptRoot\CleanupRoadmapFiles.ps1"
-        Write-Log -Message "Nettoyage et organisation des fichiers terminés." -Level "SUCCESS"
+        Write-Log -Message "Nettoyage et organisation des fichiers terminÃ©s." -Level "SUCCESS"
     }
     catch {
         Write-Log -Message "Erreur lors du nettoyage et de l'organisation des fichiers: $_" -Level "ERROR"
@@ -171,17 +171,17 @@ function Invoke-FixScripts {
     Write-Log -Message "Correction des scripts de roadmap..." -Level "INFO"
     
     try {
-        # Vérifier l'encodage des fichiers
+        # VÃ©rifier l'encodage des fichiers
         $files = Get-ChildItem -Path $PSScriptRoot -Filter "*.ps1" | Select-Object -ExpandProperty FullName
         
         foreach ($file in $files) {
             $content = Get-Content -Path $file -Raw
             $utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $false
             [System.IO.File]::WriteAllText($file, $content, $utf8NoBomEncoding)
-            Write-Log -Message "Encodage du fichier corrigé: $file" -Level "SUCCESS"
+            Write-Log -Message "Encodage du fichier corrigÃ©: $file" -Level "SUCCESS"
         }
         
-        Write-Log -Message "Correction des scripts terminée." -Level "SUCCESS"
+        Write-Log -Message "Correction des scripts terminÃ©e." -Level "SUCCESS"
     }
     catch {
         Write-Log -Message "Erreur lors de la correction des scripts: $_" -Level "ERROR"
@@ -191,7 +191,7 @@ function Invoke-FixScripts {
 # Fonction principale
 function Main {
     try {
-        # Vérifier si l'aide est demandée
+        # VÃ©rifier si l'aide est demandÃ©e
         if ($Help) {
             Show-Help
             return
@@ -206,7 +206,7 @@ function Main {
             return
         }
         
-        # Exécuter les fonctions en fonction des paramètres
+        # ExÃ©cuter les fonctions en fonction des paramÃ¨tres
         if ($Organize) {
             Invoke-OrganizeScripts
         }
@@ -231,7 +231,7 @@ function Main {
             Invoke-FixScripts
         }
         
-        # Si aucun paramètre n'est spécifié, afficher l'aide
+        # Si aucun paramÃ¨tre n'est spÃ©cifiÃ©, afficher l'aide
         if (-not ($Organize -or $Execute -or $Analyze -or $GitUpdate -or $Cleanup -or $FixScripts -or $Help -or $Interactive)) {
             Show-Help
         }
@@ -242,5 +242,6 @@ function Main {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main
+

@@ -265,12 +265,28 @@ function Test-TaskImplementation {
     if (-not $ImplementationPath) {
         # Essayer de trouver le chemin d'implÃ©mentation en fonction du titre de la tÃ¢che
         # Cette logique peut Ãªtre adaptÃ©e en fonction de la structure du projet
-        $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)))
+
+        # Déterminer le chemin du projet de manière plus robuste
+        $scriptPath = $MyInvocation.MyCommand.Path
+        if ($null -eq $scriptPath) {
+            # Si $MyInvocation.MyCommand.Path est null, utiliser le chemin du script en cours d'exécution
+            $scriptPath = $PSScriptRoot
+            if ($null -eq $scriptPath) {
+                # Si $PSScriptRoot est également null, utiliser le répertoire courant
+                $scriptPath = (Get-Location).Path
+            }
+        }
+
+        # Remonter jusqu'à la racine du projet
+        $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
+
+        Write-Host "Chemin du projet déterminé : $projectRoot" -ForegroundColor Cyan
+
         $possiblePaths = @(
-            (Join-Path -Path $projectRoot -ChildPath "scripts\roadmap-parser\module\Functions\Public"),
-            (Join-Path -Path $projectRoot -ChildPath "scripts\roadmap-parser\module\Functions\Private"),
-            (Join-Path -Path $projectRoot -ChildPath "src\functions"),
-            (Join-Path -Path $projectRoot -ChildPath "src\modules")
+            (Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Public"),
+            (Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Private"),
+            (Join-Path -Path $projectRoot -ChildPath "development\managers\process-manager\scripts"),
+            (Join-Path -Path $projectRoot -ChildPath "development\managers\process-manager\modules")
         )
 
         foreach ($path in $possiblePaths) {
@@ -362,11 +378,27 @@ function Test-TaskTests {
     if (-not $TestsPath) {
         # Essayer de trouver le chemin des tests en fonction du titre de la tÃ¢che
         # Cette logique peut Ãªtre adaptÃ©e en fonction de la structure du projet
-        $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)))
+
+        # Déterminer le chemin du projet de manière plus robuste
+        $scriptPath = $MyInvocation.MyCommand.Path
+        if ($null -eq $scriptPath) {
+            # Si $MyInvocation.MyCommand.Path est null, utiliser le chemin du script en cours d'exécution
+            $scriptPath = $PSScriptRoot
+            if ($null -eq $scriptPath) {
+                # Si $PSScriptRoot est également null, utiliser le répertoire courant
+                $scriptPath = (Get-Location).Path
+            }
+        }
+
+        # Remonter jusqu'à la racine du projet
+        $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
+
+        Write-Host "Chemin du projet déterminé pour les tests : $projectRoot" -ForegroundColor Cyan
+
         $possiblePaths = @(
-            (Join-Path -Path $projectRoot -ChildPath "scripts\roadmap-parser\module\Tests"),
-            (Join-Path -Path $projectRoot -ChildPath "tests\unit"),
-            (Join-Path -Path $projectRoot -ChildPath "tests")
+            (Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Tests"),
+            (Join-Path -Path $projectRoot -ChildPath "development\managers\process-manager\tests"),
+            (Join-Path -Path $projectRoot -ChildPath "development\tests")
         )
 
         foreach ($path in $possiblePaths) {

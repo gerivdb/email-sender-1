@@ -1,0 +1,82 @@
+﻿{
+    "Tests":  {
+                  "CoverageThreshold":  80,
+                  "Coverage":  true,
+                  "OutputFormat":  "NUnitXml",
+                  "Framework":  "Pester",
+                  "TestsPath":  "tests"
+              },
+    "General":  {
+                    "ActiveDocumentPath":  "docs\\plans\\plan-modes-stepup.md",
+                    "DefaultEncoding":  "UTF8-BOM",
+                    "ProjectRoot":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+                    "LogPath":  "logs",
+                    "ReportPath":  "reports",
+                    "RoadmapPath":  "docs\\plans\\roadmap_complete_2.md"
+                },
+    "Workflows":  {
+                      "Development":  {
+                                          "Description":  "Workflow de dÃ©veloppement complet",
+                                          "AutoContinue":  true,
+                                          "Modes":  [
+                                                        "Gran",
+                                                        "DevR",
+                                                        "Test",
+                                                        "Check"
+                                                    ]
+                                      },
+                      "Debugging":  {
+                                        "Description":  "Workflow de dÃ©bogage",
+                                        "AutoContinue":  true,
+                                        "Modes":  [
+                                                      "Debug",
+                                                      "Test",
+                                                      "Check"
+                                                  ]
+                                    }
+                  },
+    "Modes":  {
+                  "Debug":  {
+                                "GeneratePatch":  true,
+                                "SuggestFixes":  true,
+                                "IncludeStackTrace":  true,
+                                "ErrorLog":  "logs\\error.log",
+                                "MaxStackTraceDepth":  10,
+                                "AnalyzePerformance":  true,
+                                "Enabled":  true,
+                                "ScriptPath":  "development\\roadmap\\parser\\modes\\debug\\debug-mode.ps1"
+                            },
+                  "Gran":  {
+                               "CheckboxStyle":  "GitHub",
+                               "IndentationStyle":  "Spaces",
+                               "SubTasksFile":  "templates\\subtasks.txt",
+                               "ScriptPath":  "development\\roadmap\\parser\\modes\\gran\\gran-mode.ps1",
+                               "Enabled":  true
+                           },
+                  "Manager":  {
+                                  "ScriptPath":  "development\\scripts\\manager\\mode-manager.ps1",
+                                  "Enabled":  true
+                              },
+                  "DevR":  {
+                               "UpdateRoadmap":  true,
+                               "ImplementationStyle":  "TDD",
+                               "GenerateTests":  true,
+                               "IncludeExamples":  true,
+                               "DocumentationStyle":  "XML",
+                               "ScriptPath":  "development\\roadmap\\parser\\modes\\dev-r\\dev-r-mode.ps1",
+                               "Enabled":  true
+                           },
+                  "Check":  {
+                                "DefaultActiveDocumentPath":  "docs\\plans\\plan-modes-stepup.md",
+                                "ScriptPath":  "development\\scripts\\maintenance\\modes\\check.ps1",
+                                "DefaultRoadmapFile":  "docs\\plans\\roadmap_complete_2.md",
+                                "Enabled":  true,
+                                "ReportPath":  "reports",
+                                "SimulationModeDefault":  true,
+                                "AutoUpdateRoadmap":  true,
+                                "AutoUpdateCheckboxes":  true,
+                                "GenerateReport":  true,
+                                "RequireFullTestCoverage":  true
+                            }
+              }
+}

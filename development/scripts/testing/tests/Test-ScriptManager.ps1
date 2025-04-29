@@ -10,7 +10,7 @@
 #>
 
 # VÃ©rifier si le ScriptManager existe
-$ScriptManagerPath = "scripts\manager\ScriptManager.ps1"
+$ScriptManagerPath = "scripts\\mode-manager\ScriptManager.ps1"
 if (-not (Test-Path -Path $ScriptManagerPath)) {
     Write-Host "Le ScriptManager n'existe pas: $ScriptManagerPath" -ForegroundColor Red
     exit 1
@@ -22,7 +22,7 @@ Write-Host "Le ScriptManager existe: $ScriptManagerPath" -ForegroundColor Green
 Write-Host "Test de la fonctionnalitÃ© d'inventaire..." -ForegroundColor Cyan
 try {
     & $ScriptManagerPath -Action inventory -Path "scripts\maintenance"
-    $InventoryPath = "scripts\manager\data\inventory.json"
+    $InventoryPath = "scripts\\mode-manager\data\inventory.json"
     if (Test-Path -Path $InventoryPath) {
         Write-Host "Test d'inventaire rÃ©ussi" -ForegroundColor Green
     } else {
@@ -38,7 +38,7 @@ try {
 Write-Host "Test de la fonctionnalitÃ© d'analyse..." -ForegroundColor Cyan
 try {
     & $ScriptManagerPath -Action analyze -Path "scripts\maintenance"
-    $AnalysisPath = "scripts\manager\data\analysis.json"
+    $AnalysisPath = "scripts\\mode-manager\data\analysis.json"
     if (Test-Path -Path $AnalysisPath) {
         Write-Host "Test d'analyse rÃ©ussi" -ForegroundColor Green
     } else {
@@ -54,7 +54,7 @@ try {
 Write-Host "Test de la fonctionnalitÃ© de documentation..." -ForegroundColor Cyan
 try {
     & $ScriptManagerPath -Action document -Path "scripts\maintenance" -Format Markdown
-    $DocumentationPath = "scripts\manager\docs\script_documentation.markdown"
+    $DocumentationPath = "scripts\\mode-manager\docs\script_documentation.markdown"
     if (Test-Path -Path $DocumentationPath) {
         Write-Host "Test de documentation rÃ©ussi" -ForegroundColor Green
     } else {
@@ -79,3 +79,4 @@ try {
 Write-Host ""
 Write-Host "Tous les tests ont rÃ©ussi! Le ScriptManager fonctionne correctement." -ForegroundColor Green
 exit 0
+
