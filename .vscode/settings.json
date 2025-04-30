@@ -132,5 +132,6 @@
   "augment.browser.type": "chrome",
   "augment.browser.userProfile": "gerivonderbitsh@gmail.com",
   "augment.browser.forceSingle": true,
-  "augment.browser.allowFallback": false
+  "augment.browser.allowFallback": false,
+  "cline.preferredLanguage": "French - Français"
 }

@@ -1,0 +1,78 @@
+{
+  "general": {
+    "max_input_size_kb": 5,
+    "tdd_required": true,
+    "doc_ratio_percent": 20,
+    "error_logging_level": "min",
+    "rules": {
+      "global": {
+        "methodologies": [
+          "ANALYZE",
+          "LEARN",
+          "EXPLORE",
+          "REASON",
+          "CODE",
+          "PROGRESS",
+          "ADAPT",
+          "SEGMENT"
+        ],
+        "standards": [
+          "SOLID",
+          "TDD",
+          "MEASURE",
+          "DOCUMENT",
+          "VALIDATE"
+        ],
+        "constraints": [
+          "TAILLE",
+          "OPTIMISATION",
+          "FORMAT"
+        ]
+      },
+      "workspace": {
+        "tools": [
+          "n8n",
+          "MCP personnalisés",
+          "Scripts PowerShell/CMD/Python"
+        ],
+        "configurations": [
+          ".augmentignore",
+          "unified-config.json"
+        ],
+        "practices": [
+          "hygen.js",
+          "Azure Pipelines",
+          "Structure modulaire"
+        ]
+      }
+    }
+  },
+  "tools": {
+    "n8n": {
+      "enabled": true,
+      "default_workflow_path": "workflows/main.workflow"
+    },
+    "mcp": {
+      "custom_connectors": [
+        "openrouter",
+        "notion",
+        "sql_gateway",
+        "git_ingest"
+      ]
+    },
+    "hygen": {
+      "template_dir": "development/templates"
+    }
+  },
+  "project": {
+    "structure": {
+      "src_dir": "src",
+      "test_dir": "tests",
+      "docs_dir": "documentation"
+    },
+    "ci_cd": {
+      "pipeline_type": "azure",
+      "config_file": "azure-pipelines/mode-manager-tests.yml"
+    }
+  }
+}

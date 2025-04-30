@@ -121,61 +121,59 @@ function Get-ModeConfiguration {
         try {
             $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
             return $config
-        }
-        catch {
+        } catch {
             Write-Warning "Erreur lors du chargement de la configuration : $_"
         }
-    }
-    else {
+    } else {
         Write-Warning "Fichier de configuration introuvable : $ConfigPath"
     }
 
     # Configuration par défaut
     return [PSCustomObject]@{
         General = [PSCustomObject]@{
-            RoadmapPath = "docs\plans\roadmap_complete_2.md"
+            RoadmapPath        = "docs\plans\roadmap_complete_2.md"
             ActiveDocumentPath = "docs\plans\plan-modes-stepup.md"
-            ReportPath = "reports"
+            ReportPath         = "reports"
         }
-        Modes = [PSCustomObject]@{
-            Check = [PSCustomObject]@{
-                Enabled = $true
+        Modes   = [PSCustomObject]@{
+            Check  = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\check.ps1"
             }
-            Debug = [PSCustomObject]@{
-                Enabled = $true
+            Debug  = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\roadmap\parser\modes\debug\debug-mode.ps1"
             }
-            Archi = [PSCustomObject]@{
-                Enabled = $true
+            Archi  = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\archi-mode.ps1"
             }
             CBreak = [PSCustomObject]@{
-                Enabled = $true
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\c-break-mode.ps1"
             }
-            Gran = [PSCustomObject]@{
-                Enabled = $true
-                ScriptPath = "development\roadmap\parser\modes\gran\gran-mode.ps1"
+            Gran   = [PSCustomObject]@{
+                Enabled    = $true
+                ScriptPath = "development\scripts\maintenance\modes\gran-mode.ps1"
             }
-            DevR = [PSCustomObject]@{
-                Enabled = $true
+            DevR   = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\roadmap\parser\modes\dev-r\dev-r-mode.ps1"
             }
-            Opti = [PSCustomObject]@{
-                Enabled = $true
+            Opti   = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\opti-mode.ps1"
             }
             Predic = [PSCustomObject]@{
-                Enabled = $true
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\predic-mode.ps1"
             }
             Review = [PSCustomObject]@{
-                Enabled = $true
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\review-mode.ps1"
             }
-            Test = [PSCustomObject]@{
-                Enabled = $true
+            Test   = [PSCustomObject]@{
+                Enabled    = $true
                 ScriptPath = "development\scripts\maintenance\modes\test-mode.ps1"
             }
         }
@@ -188,7 +186,7 @@ function Get-ModeScriptPath {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Mode,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config
     )
@@ -209,28 +207,28 @@ function Get-ModeScriptPath {
 
     if ($Config.Modes.$modeKey -and $Config.Modes.$modeKey.ScriptPath) {
         $scriptPath = $Config.Modes.$modeKey.ScriptPath
-        
+
         # Convertir le chemin relatif en chemin absolu si nécessaire
         if (-not [System.IO.Path]::IsPathRooted($scriptPath)) {
             $scriptPath = Join-Path -Path $projectRoot -ChildPath $scriptPath
         }
-        
+
         return $scriptPath
     }
-    
+
     # Recherche alternative si le chemin n'est pas trouvé dans la configuration
     $possiblePaths = @(
         (Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\$($Mode.ToLower())-mode.ps1"),
         (Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\modes\$($Mode.ToLower())\$($Mode.ToLower())-mode.ps1"),
         (Join-Path -Path $projectRoot -ChildPath "tools\scripts\roadmap-parser\modes\$($Mode.ToLower())\$($Mode.ToLower())-mode.ps1")
     )
-    
+
     foreach ($path in $possiblePaths) {
         if (Test-Path -Path $path) {
             return $path
         }
     }
-    
+
     throw "Script pour le mode $Mode introuvable."
 }
 
@@ -238,28 +236,28 @@ function Get-ModeScriptPath {
 function Show-AvailableModes {
     [CmdletBinding()]
     param ()
-    
+
     $modes = @{
-        "ARCHI" = "Structurer, modéliser, anticiper les dépendances"
-        "CHECK" = "Vérifier l'état d'avancement des tâches"
+        "ARCHI"   = "Structurer, modéliser, anticiper les dépendances"
+        "CHECK"   = "Vérifier l'état d'avancement des tâches"
         "C-BREAK" = "Détecter et résoudre les dépendances circulaires"
-        "DEBUG" = "Isoler, comprendre, corriger les anomalies"
-        "DEV-R" = "Implémenter ce qui est dans la roadmap"
-        "GRAN" = "Décomposer les blocs complexes"
-        "OPTI" = "Réduire complexité, taille ou temps d'exécution"
-        "PREDIC" = "Anticiper performances, détecter anomalies, analyser tendances"
-        "REVIEW" = "Vérifier lisibilité, standards, documentation"
-        "TEST" = "Maximiser couverture et fiabilité"
+        "DEBUG"   = "Isoler, comprendre, corriger les anomalies"
+        "DEV-R"   = "Implémenter ce qui est dans la roadmap"
+        "GRAN"    = "Décomposer les blocs complexes"
+        "OPTI"    = "Réduire complexité, taille ou temps d'exécution"
+        "PREDIC"  = "Anticiper performances, détecter anomalies, analyser tendances"
+        "REVIEW"  = "Vérifier lisibilité, standards, documentation"
+        "TEST"    = "Maximiser couverture et fiabilité"
     }
-    
+
     Write-Host "Modes disponibles :" -ForegroundColor Cyan
     Write-Host "===================" -ForegroundColor Cyan
-    
+
     foreach ($key in $modes.Keys | Sort-Object) {
         Write-Host "$key".PadRight(10) -ForegroundColor Yellow -NoNewline
         Write-Host " : $($modes[$key])"
     }
-    
+
     Write-Host "`nExemples d'utilisation :" -ForegroundColor Cyan
     Write-Host "======================" -ForegroundColor Cyan
     Write-Host ".\mode-manager.ps1 -Mode CHECK -FilePath `"docs\plans\plan-modes-stepup.md`" -TaskIdentifier `"1.2.3`" -Force"
@@ -272,11 +270,11 @@ function Show-ModeConfiguration {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Mode,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config
     )
-    
+
     $modeKey = switch ($Mode) {
         "ARCHI" { "Archi" }
         "CHECK" { "Check" }
@@ -290,16 +288,15 @@ function Show-ModeConfiguration {
         "TEST" { "Test" }
         default { throw "Mode non reconnu : $Mode" }
     }
-    
+
     if ($Config.Modes.$modeKey) {
         $modeConfig = $Config.Modes.$modeKey
-        
+
         Write-Host "Configuration du mode $Mode :" -ForegroundColor Cyan
         Write-Host "=============================" -ForegroundColor Cyan
-        
+
         $modeConfig | Format-List
-    }
-    else {
+    } else {
         Write-Warning "Configuration pour le mode $Mode introuvable."
     }
 }
@@ -310,66 +307,65 @@ function Invoke-Mode {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Mode,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$TaskIdentifier,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ConfigPath,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$Force,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config
     )
-    
+
     try {
         # Obtenir le chemin du script du mode
         $scriptPath = Get-ModeScriptPath -Mode $Mode -Config $Config
-        
+
         # Vérifier que le script existe
         if (-not (Test-Path -Path $scriptPath)) {
             throw "Le script pour le mode $Mode est introuvable à l'emplacement : $scriptPath"
         }
-        
+
         # Construire les paramètres pour le script
         $params = @{}
-        
+
         if ($FilePath) {
             $params["FilePath"] = $FilePath
-        }
-        elseif ($Config.General.RoadmapPath) {
+        } elseif ($Config.General.RoadmapPath) {
             $params["FilePath"] = $Config.General.RoadmapPath
-            
+
             # Convertir le chemin relatif en chemin absolu si nécessaire
             if (-not [System.IO.Path]::IsPathRooted($params["FilePath"])) {
                 $params["FilePath"] = Join-Path -Path $projectRoot -ChildPath $params["FilePath"]
             }
         }
-        
+
         if ($TaskIdentifier) {
             $params["TaskIdentifier"] = $TaskIdentifier
         }
-        
+
         if ($ConfigPath) {
             $params["ConfigPath"] = $ConfigPath
         }
-        
+
         if ($Force) {
             $params["Force"] = $true
         }
-        
+
         # Ajouter des paramètres spécifiques au mode
         switch ($Mode) {
             "CHECK" {
                 $params["CheckActiveDocument"] = $true
                 if (-not $params.ContainsKey("ActiveDocumentPath") -and $Config.General.ActiveDocumentPath) {
                     $params["ActiveDocumentPath"] = $Config.General.ActiveDocumentPath
-                    
+
                     # Convertir le chemin relatif en chemin absolu si nécessaire
                     if (-not [System.IO.Path]::IsPathRooted($params["ActiveDocumentPath"])) {
                         $params["ActiveDocumentPath"] = Join-Path -Path $projectRoot -ChildPath $params["ActiveDocumentPath"]
@@ -379,7 +375,7 @@ function Invoke-Mode {
             "GRAN" {
                 if (-not $params.ContainsKey("SubTasksFile") -and $Config.Modes.Gran.SubTasksFile) {
                     $params["SubTasksFile"] = $Config.Modes.Gran.SubTasksFile
-                    
+
                     # Convertir le chemin relatif en chemin absolu si nécessaire
                     if (-not [System.IO.Path]::IsPathRooted($params["SubTasksFile"])) {
                         $params["SubTasksFile"] = Join-Path -Path $projectRoot -ChildPath $params["SubTasksFile"]
@@ -389,44 +385,41 @@ function Invoke-Mode {
             "DEBUG" {
                 if (-not $params.ContainsKey("ErrorLog") -and $Config.Modes.Debug.ErrorLog) {
                     $params["ErrorLog"] = $Config.Modes.Debug.ErrorLog
-                    
+
                     # Convertir le chemin relatif en chemin absolu si nécessaire
                     if (-not [System.IO.Path]::IsPathRooted($params["ErrorLog"])) {
                         $params["ErrorLog"] = Join-Path -Path $projectRoot -ChildPath $params["ErrorLog"]
                     }
-                }
-                else {
+                } else {
                     $params["ErrorLog"] = Join-Path -Path $projectRoot -ChildPath "logs\error.log"
                 }
-                
+
                 if (-not $params.ContainsKey("ScriptPath") -and $Config.Modes.Debug.ScriptPath) {
                     $params["ScriptPath"] = $Config.Modes.Debug.ScriptPath
-                    
+
                     # Convertir le chemin relatif en chemin absolu si nécessaire
                     if (-not [System.IO.Path]::IsPathRooted($params["ScriptPath"])) {
                         $params["ScriptPath"] = Join-Path -Path $projectRoot -ChildPath $params["ScriptPath"]
                     }
-                }
-                else {
+                } else {
                     $params["ScriptPath"] = Join-Path -Path $projectRoot -ChildPath "scripts"
                 }
             }
         }
-        
+
         # Exécuter le script avec les paramètres
         Write-Host "Exécution du mode $Mode avec les paramètres suivants :" -ForegroundColor Cyan
         $params | Format-Table -AutoSize
-        
+
         & $scriptPath @params
-        
+
         if ($LASTEXITCODE -ne 0) {
             throw "Erreur lors de l'exécution du mode $Mode. Code de sortie : $LASTEXITCODE"
         }
-        
+
         Write-Host "Mode $Mode exécuté avec succès." -ForegroundColor Green
         return $true
-    }
-    catch {
+    } catch {
         Write-Error "Erreur lors de l'exécution du mode $Mode : $_"
         return $false
     }
@@ -438,38 +431,38 @@ function Invoke-ModeChain {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Chain,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$TaskIdentifier,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ConfigPath,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$Force,
-        
+
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config
     )
-    
+
     $modes = $Chain -split ',' | ForEach-Object { $_.Trim() }
-    
+
     Write-Host "Exécution de la chaîne de modes : $Chain" -ForegroundColor Cyan
-    
+
     foreach ($mode in $modes) {
         Write-Host "`nExécution du mode $mode..." -ForegroundColor Yellow
-        
+
         $success = Invoke-Mode -Mode $mode -FilePath $FilePath -TaskIdentifier $TaskIdentifier -ConfigPath $ConfigPath -Force:$Force -Config $Config
-        
+
         if (-not $success) {
             Write-Warning "Arrêt de la chaîne de modes suite à l'échec du mode $mode."
             return $false
         }
     }
-    
+
     Write-Host "`nChaîne de modes exécutée avec succès." -ForegroundColor Green
     return $true
 }
@@ -480,28 +473,23 @@ $config = Get-ModeConfiguration -ConfigPath $ConfigPath
 # Traiter les paramètres
 if ($ListModes) {
     Show-AvailableModes
-}
-elseif ($ShowConfig) {
+} elseif ($ShowConfig) {
     if ($Mode) {
         Show-ModeConfiguration -Mode $Mode -Config $config
-    }
-    else {
+    } else {
         Write-Host "Configuration générale :" -ForegroundColor Cyan
         Write-Host "======================" -ForegroundColor Cyan
         $config.General | Format-List
-        
+
         Write-Host "`nConfiguration des modes :" -ForegroundColor Cyan
         Write-Host "======================" -ForegroundColor Cyan
         $config.Modes | Format-List
     }
-}
-elseif ($Chain) {
+} elseif ($Chain) {
     Invoke-ModeChain -Chain $Chain -FilePath $FilePath -TaskIdentifier $TaskIdentifier -ConfigPath $ConfigPath -Force:$Force -Config $config
-}
-elseif ($Mode) {
+} elseif ($Mode) {
     Invoke-Mode -Mode $Mode -FilePath $FilePath -TaskIdentifier $TaskIdentifier -ConfigPath $ConfigPath -Force:$Force -Config $config
-}
-else {
+} else {
     Write-Host "Aucune action spécifiée. Utilisez -Mode, -Chain, -ListModes ou -ShowConfig." -ForegroundColor Yellow
     Show-AvailableModes
 }

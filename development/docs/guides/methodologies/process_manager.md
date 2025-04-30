@@ -24,12 +24,25 @@ Le gestionnaire de processus est organisé selon la structure de répertoires su
 development/managers/process-manager/
 ├── scripts/
 │   ├── process-manager.ps1           # Script principal
-│   ├── install-process-manager.ps1   # Script d'installation
+│   ├── install-modules.ps1           # Script d'installation des modules
+│   ├── integrate-modules.ps1         # Script d'intégration des modules
 │   └── ...                           # Autres scripts
 ├── modules/
-│   └── ...                           # Modules PowerShell
+│   ├── ManagerRegistrationService/   # Service d'enregistrement des gestionnaires
+│   ├── ManifestParser/               # Analyseur de manifestes
+│   ├── ValidationService/            # Service de validation
+│   ├── DependencyResolver/           # Résolveur de dépendances
+│   └── ...                           # Autres modules PowerShell
 ├── tests/
-│   ├── Test-ProcessManager.ps1       # Tests unitaires
+│   ├── Test-ProcessManager.ps1       # Tests unitaires de base
+│   ├── Test-ProcessManagerAll.ps1    # Tests complets
+│   ├── Test-ManifestParser.ps1       # Tests du module ManifestParser
+│   ├── Test-ValidationService.ps1    # Tests du module ValidationService
+│   ├── Test-DependencyResolver.ps1   # Tests du module DependencyResolver
+│   ├── Test-Integration.ps1          # Tests d'intégration
+│   ├── Test-ProcessManagerFunctionality.ps1 # Tests fonctionnels
+│   ├── Test-ProcessManagerPerformance.ps1  # Tests de performance
+│   ├── Test-ProcessManagerLoad.ps1   # Tests de charge
 │   └── ...                           # Autres tests
 └── config/
     └── ...                           # Fichiers de configuration locaux
@@ -62,6 +75,23 @@ Pour installer le gestionnaire de processus, utilisez le script d'installation :
 .\development\managers\process-manager\scripts\install-process-manager.ps1
 ```
 
+### Installation des modules améliorés
+
+Pour installer les modules améliorés (ManagerRegistrationService, ManifestParser, ValidationService, DependencyResolver), suivez ces étapes :
+
+1. Exécutez le script d'installation des modules :
+
+```powershell
+.\development\managers\process-manager\scripts\install-modules.ps1
+```
+
+2. Vérifiez l'installation des modules :
+
+```powershell
+Import-Module ProcessManager
+Get-Module ProcessManager
+```
+
 ### Installation manuelle
 
 Si vous préférez une installation manuelle, suivez ces étapes :
@@ -69,6 +99,40 @@ Si vous préférez une installation manuelle, suivez ces étapes :
 1. Copiez les fichiers du gestionnaire dans le répertoire approprié
 2. Créez le fichier de configuration dans le répertoire approprié
 3. Vérifiez que le gestionnaire fonctionne correctement
+
+### Installation manuelle des modules
+
+Si vous préférez installer les modules manuellement :
+
+1. Copiez les modules dans le répertoire des modules PowerShell :
+
+```powershell
+$modulesPath = Join-Path -Path $env:PSModulePath.Split(';')[0] -ChildPath "ProcessManager"
+New-Item -Path $modulesPath -ItemType Directory -Force
+Copy-Item -Path "development\managers\process-manager\modules\*" -Destination $modulesPath -Recurse -Force
+```
+
+2. Importez le module :
+
+```powershell
+Import-Module ProcessManager
+```
+
+### Intégration des modules
+
+Pour intégrer les modules au Process Manager existant :
+
+1. Exécutez le script d'intégration des modules :
+
+```powershell
+.\development\managers\process-manager\scripts\integrate-modules.ps1
+```
+
+2. Vérifiez l'intégration :
+
+```powershell
+.\development\managers\process-manager\scripts\process-manager.ps1 -Command List
+```
 
 ## Configuration
 
@@ -125,6 +189,83 @@ Voici un exemple de configuration :
 | LogLevel | string | Niveau de journalisation (Debug, Info, Warning, Error) | "Info" |
 | LogPath | string | Chemin vers le répertoire des journaux | "logs/process-manager" |
 | Managers | object | Configuration des gestionnaires enregistrés | {} |
+
+## Modules
+
+Le gestionnaire de processus utilise plusieurs modules pour fournir des fonctionnalités avancées :
+
+### Module ManagerRegistrationService
+
+Ce module gère l'enregistrement, la mise à jour et la suppression des gestionnaires dans le Process Manager.
+
+#### Fonctions principales
+
+- `Register-Manager` : Enregistre un gestionnaire dans le Process Manager.
+- `Unregister-Manager` : Désenregistre un gestionnaire du Process Manager.
+- `Update-Manager` : Met à jour un gestionnaire enregistré.
+- `Get-RegisteredManager` : Récupère les informations sur un gestionnaire enregistré.
+- `Find-Manager` : Recherche des gestionnaires selon des critères spécifiques.
+
+#### Exemple d'utilisation
+
+```powershell
+Import-Module ProcessManager
+Register-Manager -Name "ModeManager" -Path "development\managers\mode-manager\scripts\mode-manager.ps1" -Version "1.0.0"
+```
+
+### Module ManifestParser
+
+Ce module analyse, valide et manipule les manifestes des gestionnaires.
+
+#### Fonctions principales
+
+- `Get-ManagerManifest` : Extrait le manifeste d'un gestionnaire à partir de différentes sources.
+- `Test-ManifestValidity` : Valide un manifeste selon le schéma défini.
+- `Convert-ToManifest` : Convertit un gestionnaire en manifeste.
+
+#### Exemple d'utilisation
+
+```powershell
+Import-Module ProcessManager
+$manifest = Get-ManagerManifest -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
+Test-ManifestValidity -Manifest $manifest
+```
+
+### Module ValidationService
+
+Ce module valide les gestionnaires avant leur enregistrement dans le Process Manager.
+
+#### Fonctions principales
+
+- `Test-ManagerValidity` : Valide un gestionnaire en vérifiant sa syntaxe, ses fonctions requises et sa fonctionnalité.
+- `Test-ManagerInterface` : Vérifie si un gestionnaire implémente les fonctions requises pour une interface spécifique.
+- `Test-ManagerFunctionality` : Teste la fonctionnalité d'un gestionnaire en exécutant des commandes spécifiques.
+
+#### Exemple d'utilisation
+
+```powershell
+Import-Module ProcessManager
+Test-ManagerValidity -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
+```
+
+### Module DependencyResolver
+
+Ce module analyse, valide et résout les dépendances entre gestionnaires.
+
+#### Fonctions principales
+
+- `Get-ManagerDependencies` : Extrait les dépendances d'un gestionnaire à partir de son manifeste.
+- `Test-DependenciesAvailability` : Vérifie si les dépendances d'un gestionnaire sont disponibles et compatibles.
+- `Resolve-DependencyConflicts` : Détecte et résout les conflits de dépendances entre gestionnaires.
+- `Get-ManagerLoadOrder` : Détermine l'ordre de chargement des gestionnaires en fonction de leurs dépendances.
+
+#### Exemple d'utilisation
+
+```powershell
+Import-Module ProcessManager
+$dependencies = Get-ManagerDependencies -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
+Test-DependenciesAvailability -Dependencies $dependencies
+```
 
 ## Utilisation
 
@@ -249,17 +390,43 @@ Les niveaux de journalisation peuvent être configurés dans le fichier de confi
 
 ### Exécution des tests
 
-Pour exécuter les tests du gestionnaire de processus, utilisez la commande suivante :
+Pour exécuter tous les tests du gestionnaire de processus, utilisez la commande suivante :
 
 ```powershell
-.\development\managers\process-manager\tests\Test-ProcessManager.ps1
+.\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1
+```
+
+Pour exécuter un type de test spécifique :
+
+```powershell
+.\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1 -TestType Functional
+```
+
+Pour générer un rapport HTML des résultats des tests :
+
+```powershell
+.\development\managers\process-manager\tests\Test-ProcessManagerAll.ps1 -GenerateReport
 ```
 
 ### Types de tests disponibles
 
-- **Tests unitaires :** Testent les fonctions individuelles du gestionnaire
-- **Tests d'intégration :** Testent l'intégration avec d'autres composants
+- **Tests unitaires :** Testent les fonctions individuelles du gestionnaire et des modules
+  - `Test-ProcessManager.ps1` : Tests unitaires de base
+  - `Test-ManifestParser.ps1` : Tests du module ManifestParser
+  - `Test-ValidationService.ps1` : Tests du module ValidationService
+  - `Test-DependencyResolver.ps1` : Tests du module DependencyResolver
+
+- **Tests d'intégration :** Testent l'intégration entre les différents modules
+  - `Test-Integration.ps1` : Tests d'intégration
+
+- **Tests fonctionnels :** Testent le comportement du gestionnaire dans des scénarios réels
+  - `Test-ProcessManagerFunctionality.ps1` : Tests fonctionnels
+
 - **Tests de performance :** Évaluent les performances du gestionnaire
+  - `Test-ProcessManagerPerformance.ps1` : Tests de performance
+
+- **Tests de charge :** Évaluent la capacité du gestionnaire à gérer un grand nombre de gestionnaires et d'opérations
+  - `Test-ProcessManagerLoad.ps1` : Tests de charge
 
 ## Bonnes pratiques
 
@@ -268,6 +435,36 @@ Pour exécuter les tests du gestionnaire de processus, utilisez la commande suiv
 1. Utilisez la commande Discover pour découvrir automatiquement les gestionnaires
 2. Configurez correctement les gestionnaires avant de les utiliser
 3. Utilisez la commande List pour vérifier l'état des gestionnaires
+4. Utilisez les modules du Process Manager pour des fonctionnalités avancées
+5. Validez les gestionnaires avant de les enregistrer
+6. Vérifiez les dépendances des gestionnaires avant de les utiliser
+7. Utilisez les manifestes pour documenter les gestionnaires
+
+### Utilisation des modules
+
+#### Bonnes pratiques pour le module ManagerRegistrationService
+
+1. Utilisez `Register-Manager` avec le paramètre `-Version` pour spécifier la version du gestionnaire
+2. Utilisez `Find-Manager` pour rechercher des gestionnaires selon des critères spécifiques
+3. Utilisez `Update-Manager` pour mettre à jour un gestionnaire existant
+
+#### Bonnes pratiques pour le module ManifestParser
+
+1. Utilisez des manifestes pour documenter les gestionnaires
+2. Placez les manifestes dans le même répertoire que les scripts des gestionnaires
+3. Utilisez `Test-ManifestValidity` pour valider les manifestes avant de les utiliser
+
+#### Bonnes pratiques pour le module ValidationService
+
+1. Utilisez `Test-ManagerValidity` avant d'enregistrer un gestionnaire
+2. Utilisez `Test-ManagerInterface` pour vérifier la compatibilité avec d'autres gestionnaires
+3. Utilisez `Test-ManagerFunctionality` pour tester la fonctionnalité d'un gestionnaire
+
+#### Bonnes pratiques pour le module DependencyResolver
+
+1. Utilisez `Get-ManagerDependencies` pour extraire les dépendances d'un gestionnaire
+2. Utilisez `Test-DependenciesAvailability` pour vérifier la disponibilité des dépendances
+3. Utilisez `Get-ManagerLoadOrder` pour déterminer l'ordre de chargement des gestionnaires
 
 ### Sécurité
 
@@ -277,6 +474,7 @@ Pour exécuter les tests du gestionnaire de processus, utilisez la commande suiv
 
 ## Références
 
+- [Guide de création d'un gestionnaire](creating_manager.md)
 - [Documentation du gestionnaire intégré](integrated_manager.md)
 - [Documentation du gestionnaire de modes](mode_manager.md)
 - [Documentation du gestionnaire de roadmap](roadmap_manager.md)
@@ -287,4 +485,5 @@ Pour exécuter les tests du gestionnaire de processus, utilisez la commande suiv
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.1.0 | 2025-05-15 | Ajout des modules améliorés (ManagerRegistrationService, ManifestParser, ValidationService, DependencyResolver) |
 | 1.0.0 | 2025-05-02 | Version initiale |

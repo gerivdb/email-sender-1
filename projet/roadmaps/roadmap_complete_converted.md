@@ -72,6 +72,131 @@
   - [x] **2.1.2.2** Concevoir le processus d'enregistrement
   - [x] **2.1.2.3** DÃ©finir le stockage des mÃ©tadonnÃ©es
   - [ ] **2.1.2.4** Concevoir la gestion des dÃ©pendances
+    - [ ] **2.1.2.4.1** Analyser les besoins en gestion de dépendances
+      - [ ] **2.1.2.4.1.1** Identifier les types de dépendances à gérer (scripts, modules, gestionnaires)
+      - [ ] **2.1.2.4.1.2** Analyser les mécanismes de dépendances existants dans le projet
+        - [x] **2.1.2.4.1.2.1** Analyser les mécanismes de dépendances dans les scripts PowerShell
+          - [x] **2.1.2.4.1.2.1.1** Examiner le module DependencyAnalyzer.psm1 et ses fonctions
+          - [x] **2.1.2.4.1.2.1.2** Analyser les méthodes de détection d'imports et de dot-sourcing
+          - [x] **2.1.2.4.1.2.1.3** Évaluer les mécanismes de résolution de chemins relatifs
+          - [x] **2.1.2.4.1.2.1.4** Documenter les limitations des méthodes de détection actuelles
+        - [x] **2.1.2.4.1.2.2** Analyser les mécanismes de dépendances dans les modules PowerShell
+          - [x] **2.1.2.4.1.2.2.1** Examiner la gestion des RequiredModules dans les fichiers .psd1
+          - [x] **2.1.2.4.1.2.2.2** Analyser la fonction Test-ModuleDependencies et ses capacités
+          - [x] **2.1.2.4.1.2.2.3** Évaluer les mécanismes de vérification de disponibilité des modules
+          - [x] **2.1.2.4.1.2.2.4** Documenter les stratégies de gestion des versions de modules
+        - [ ] **2.1.2.4.1.2.3** Analyser les mécanismes de dépendances dans les gestionnaires
+          - [x] **2.1.2.4.1.2.3.1** Examiner le système d'adaptateurs du Process Manager
+          - [ ] **2.1.2.4.1.2.3.2** Analyser les méthodes d'enregistrement et de découverte des gestionnaires
+            - [ ] **2.1.2.4.1.2.3.2.1** Examiner la fonction Register-Manager du Process Manager
+              - [x] **2.1.2.4.1.2.3.2.1.1** Analyser les paramètres et la signature de la fonction
+              - [x] **2.1.2.4.1.2.3.2.1.2** Étudier le mécanisme de vérification d'existence des gestionnaires
+              - [x] **2.1.2.4.1.2.3.2.1.3** Analyser le processus de stockage des métadonnées des gestionnaires
+              - [x] **2.1.2.4.1.2.3.2.1.4** Évaluer la gestion des conflits et des doublons
+              - [x] **2.1.2.4.1.2.3.2.1.5** Documenter les limitations du mécanisme d'enregistrement actuel
+                - [x] **2.1.2.4.1.2.3.2.1.5.1** Analyser les besoins
+                - [x] **2.1.2.4.1.2.3.2.1.5.2** Concevoir l'architecture
+                - [x] **2.1.2.4.1.2.3.2.1.5.3** Implémenter le code
+                  - [x] **2.1.2.4.1.2.3.2.1.5.3.1** Créer le module ManagerRegistrationService
+                  - [x] **2.1.2.4.1.2.3.2.1.5.3.2** Implémenter le parser de manifeste
+                  - [x] **2.1.2.4.1.2.3.2.1.5.3.3** Implémenter le service de validation
+                  - [x] **2.1.2.4.1.2.3.2.1.5.3.4** Implémenter le résolveur de dépendances
+                  - [x] **2.1.2.4.1.2.3.2.1.5.3.5** Intégrer les améliorations au Process Manager
+                    - [x] **2.1.2.4.1.2.3.2.1.5.3.5.1** Créer le script d'intégration des modules
+                    - [x] **2.1.2.4.1.2.3.2.1.5.3.5.2** Modifier le Process Manager pour utiliser les nouveaux modules
+                    - [x] **2.1.2.4.1.2.3.2.1.5.3.5.3** Mettre à jour la fonction Discover-Managers
+                    - [x] **2.1.2.4.1.2.3.2.1.5.3.5.4** Créer un script d'installation des modules
+                    - [x] **2.1.2.4.1.2.3.2.1.5.3.5.5** Tester l'intégration complète
+                - [x] **2.1.2.4.1.2.3.2.1.5.4** Tester la fonctionnalitÃ©
+                - [x] **2.1.2.4.1.2.3.2.1.5.5** Documenter l'implÃ©mentation
+            - [ ] **2.1.2.4.1.2.3.2.2** Examiner la fonction Discover-Managers du Process Manager
+              - [x] **2.1.2.4.1.2.3.2.2.1** Analyser les chemins de recherche et la stratégie de découverte
+              - [x] **2.1.2.4.1.2.3.2.2.2** Étudier les conventions de nommage et de structure des dossiers
+                - [x] **2.1.2.4.1.2.3.2.2.2.1** Analyser les conventions de nommage des gestionnaires
+                - [x] **2.1.2.4.1.2.3.2.2.2.2** Examiner la structure des dossiers des gestionnaires
+                - [x] **2.1.2.4.1.2.3.2.2.2.3** Identifier les incohérences dans les conventions actuelles
+                - [x] **2.1.2.4.1.2.3.2.2.2.4** Comparer avec les bonnes pratiques PowerShell
+                - [x] **2.1.2.4.1.2.3.2.2.2.5** Documenter les recommandations pour standardiser les conventions
+              - [x] **2.1.2.4.1.2.3.2.2.3** Analyser le mécanisme de détection automatique des gestionnaires
+              - [x] **2.1.2.4.1.2.3.2.2.4** Évaluer la robustesse face aux structures de dossiers non standard
+              - [ ] **2.1.2.4.1.2.3.2.2.5** Documenter les limitations du mécanisme de découverte actuel
+                - [x] **2.1.2.4.1.2.3.2.2.5.1** Identifier les limitations techniques du mécanisme actuel
+                - [x] **2.1.2.4.1.2.3.2.2.5.2** Évaluer l'impact des limitations sur la découverte des gestionnaires
+                - [ ] **2.1.2.4.1.2.3.2.2.5.3** Proposer des solutions pour contourner les limitations
+                  - [x] **2.1.2.4.1.2.3.2.2.5.3.1** Développer des solutions techniques pour la recherche récursive
+                  - [ ] **2.1.2.4.1.2.3.2.2.5.3.2** Implémenter des méthodes de recherche basées sur les fichiers
+                    - [x] **2.1.2.4.1.2.3.2.2.5.3.2.1** Développer une fonction de recherche de fichiers de gestionnaires
+                    - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2** Créer un mécanisme d'extraction des informations des gestionnaires à partir des fichiers
+                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1** Développer une fonction d'analyse syntaxique des fichiers PowerShell
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.1** Rechercher les méthodes d'analyse syntaxique disponibles dans PowerShell
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.2** Implémenter une fonction utilisant l'AST (Abstract Syntax Tree) de PowerShell
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3** Développer des méthodes de navigation dans l'arbre syntaxique
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4** Créer des fonctions d'extraction d'éléments spécifiques (fonctions, paramètres, etc.)
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5** Tester la fonction d'analyse avec différents types de fichiers PowerShell
+                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2** Implémenter l'extraction des fonctions de gestionnaire
+                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3** Créer un mécanisme d'extraction des métadonnées des gestionnaires
+                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
+                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5** Intégrer l'extraction d'informations au Process Manager
+                    - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.3** Implémenter un système de filtrage des fichiers non pertinents
+                    - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.4** Intégrer la recherche basée sur les fichiers au Process Manager
+                    - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.5** Tester la recherche basée sur les fichiers avec différents scénarios
+                  - [ ] **2.1.2.4.1.2.3.2.2.5.3.3** Créer des adaptateurs pour les conventions de nommage alternatives
+                  - [ ] **2.1.2.4.1.2.3.2.2.5.3.4** Concevoir un système de résolution des dépendances circulaires
+                  - [ ] **2.1.2.4.1.2.3.2.2.5.3.5** Élaborer des mécanismes de gestion des conflits de noms
+                - [ ] **2.1.2.4.1.2.3.2.2.5.4** Documenter les bonnes pratiques pour la découverte des gestionnaires
+                - [ ] **2.1.2.4.1.2.3.2.2.5.5** Créer un guide de dépannage pour la découverte des gestionnaires
+            - [ ] **2.1.2.4.1.2.3.2.3** Analyser le fichier de configuration du Process Manager
+              - [ ] **2.1.2.4.1.2.3.2.3.1** Examiner la structure du fichier process-manager.config.json
+              - [ ] **2.1.2.4.1.2.3.2.3.2** Analyser le format des métadonnées des gestionnaires enregistrés
+              - [ ] **2.1.2.4.1.2.3.2.3.3** Étudier le mécanisme de persistance des enregistrements
+              - [ ] **2.1.2.4.1.2.3.2.3.4** Évaluer la sécurité et l'intégrité du fichier de configuration
+              - [ ] **2.1.2.4.1.2.3.2.3.5** Documenter les améliorations possibles du format de configuration
+            - [ ] **2.1.2.4.1.2.3.2.4** Analyser les adaptateurs des gestionnaires
+              - [ ] **2.1.2.4.1.2.3.2.4.1** Examiner la structure et le rôle des adaptateurs
+              - [ ] **2.1.2.4.1.2.3.2.4.2** Étudier le mécanisme d'intégration des adaptateurs
+              - [ ] **2.1.2.4.1.2.3.2.4.3** Analyser le processus de communication entre adaptateurs et gestionnaires
+              - [ ] **2.1.2.4.1.2.3.2.4.4** Évaluer l'extensibilité du système d'adaptateurs
+              - [ ] **2.1.2.4.1.2.3.2.4.5** Documenter les bonnes pratiques pour la création d'adaptateurs
+            - [ ] **2.1.2.4.1.2.3.2.5** Comparer avec d'autres systèmes d'enregistrement et de découverte
+              - [ ] **2.1.2.4.1.2.3.2.5.1** Analyser les systèmes d'enregistrement dans d'autres frameworks
+              - [ ] **2.1.2.4.1.2.3.2.5.2** Étudier les mécanismes de découverte automatique standards
+              - [ ] **2.1.2.4.1.2.3.2.5.3** Identifier les meilleures pratiques applicables au Process Manager
+              - [ ] **2.1.2.4.1.2.3.2.5.4** Évaluer les opportunités d'amélioration basées sur les standards
+              - [ ] **2.1.2.4.1.2.3.2.5.5** Documenter les recommandations pour l'évolution du système
+          - [ ] **2.1.2.4.1.2.3.3** Évaluer les mécanismes d'appel entre gestionnaires
+          - [ ] **2.1.2.4.1.2.3.4** Documenter les dépendances implicites entre gestionnaires
+        - [ ] **2.1.2.4.1.2.4** Analyser les mécanismes de dépendances dans la roadmap
+          - [ ] **2.1.2.4.1.2.4.1** Examiner la fonction Get-RoadmapDependencies et ses méthodes
+          - [ ] **2.1.2.4.1.2.4.2** Analyser les techniques de détection de dépendances explicites et implicites
+          - [ ] **2.1.2.4.1.2.4.3** Évaluer les mécanismes de validation et de détection de cycles
+          - [ ] **2.1.2.4.1.2.4.4** Documenter les stratégies de résolution d'ordre d'exécution
+        - [ ] **2.1.2.4.1.2.5** Analyser les mécanismes de dépendances externes
+          - [ ] **2.1.2.4.1.2.5.1** Examiner la gestion des dépendances Python (pip, requirements.txt)
+          - [ ] **2.1.2.4.1.2.5.2** Analyser la gestion des dépendances Node.js (npm, package.json)
+          - [ ] **2.1.2.4.1.2.5.3** Évaluer les mécanismes de vérification et d'installation automatique
+          - [ ] **2.1.2.4.1.2.5.4** Documenter les stratégies de mise à jour des dépendances externes
+      - [ ] **2.1.2.4.1.3** Documenter les cas d'utilisation critiques pour la gestion des dépendances
+      - [ ] **2.1.2.4.1.4** Définir les exigences de performance pour la résolution des dépendances
+    - [ ] **2.1.2.4.2** Concevoir le modèle de données pour les dépendances
+      - [ ] **2.1.2.4.2.1** Définir la structure de données pour représenter les dépendances
+      - [ ] **2.1.2.4.2.2** Concevoir les mécanismes de stockage des métadonnées de dépendances
+      - [ ] **2.1.2.4.2.3** Définir les interfaces pour l'ajout et la suppression de dépendances
+      - [ ] **2.1.2.4.2.4** Concevoir les méthodes de sérialisation/désérialisation des dépendances
+    - [ ] **2.1.2.4.3** Développer les algorithmes de détection et résolution
+      - [ ] **2.1.2.4.3.1** Concevoir l'algorithme de détection des dépendances cycliques
+      - [ ] **2.1.2.4.3.2** Développer l'algorithme de tri topologique pour l'ordre d'exécution
+      - [ ] **2.1.2.4.3.3** Concevoir les mécanismes de résolution des conflits de dépendances
+      - [ ] **2.1.2.4.3.4** Implémenter les stratégies de gestion des dépendances manquantes
+    - [ ] **2.1.2.4.4** Intégrer avec le système de métadonnées
+      - [ ] **2.1.2.4.4.1** Définir le format des métadonnées de dépendances
+      - [ ] **2.1.2.4.4.2** Concevoir les mécanismes d'extraction des métadonnées
+      - [ ] **2.1.2.4.4.3** Développer l'intégration avec le système de stockage des métadonnées
+      - [ ] **2.1.2.4.4.4** Implémenter la validation des métadonnées de dépendances
+    - [ ] **2.1.2.4.5** Concevoir les interfaces d'API
+      - [ ] **2.1.2.4.5.1** Définir les fonctions publiques pour la gestion des dépendances
+      - [ ] **2.1.2.4.5.2** Concevoir les paramètres et types de retour des fonctions
+      - [ ] **2.1.2.4.5.3** Développer la documentation des API de gestion des dépendances
+      - [ ] **2.1.2.4.5.4** Créer des exemples d'utilisation des API
 - [ ] **2.1.3** DÃ©finir les mÃ©canismes d'orchestration
   - [x] **2.1.3.1** Concevoir le flux d'exÃ©cution
   - [x] **2.1.3.2** DÃ©finir les stratÃ©gies de parallÃ©lisation
