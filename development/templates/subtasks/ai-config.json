@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "credential_name": "OPENROUTER_API_KEY",
+  "api_url": "https://openrouter.ai/api/v1/chat/completions",
+  "models": {
+    "default": "qwen/qwen3-32b:free",
+    "alternatives": [
+      "openai/gpt-3.5-turbo",
+      "anthropic/claude-3-haiku",
+      "google/gemini-pro",
+      "mistral/mistral-medium"
+    ]
+  },
+  "temperature": 0.7,
+  "max_tokens": 1000,
+  "prompt_template": "Je dois décomposer une tâche de développement en sous-tâches. Voici les informations :\n\nTâche principale : {task}\nNiveau de complexité : {complexity}\nDomaines techniques : {domains}\nNombre maximum de sous-tâches : {max_subtasks}\n\nGénère une liste de sous-tâches pertinentes pour cette tâche, en tenant compte du niveau de complexité et des domaines techniques. Chaque sous-tâche doit être concise et commencer par un verbe d'action. N'inclus pas de numéros ou de tirets au début des lignes. Limite-toi à {max_subtasks} sous-tâches maximum. Retourne uniquement la liste des sous-tâches, une par ligne."
+}

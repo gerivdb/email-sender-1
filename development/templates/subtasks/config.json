@@ -1,0 +1,76 @@
+{
+  "complexity_levels": {
+    "simple": {
+      "description": "Tâche simple, peu de risques, technologie maîtrisée",
+      "template_file": "development\\templates\\subtasks\\simple.txt",
+      "max_subtasks": 3
+    },
+    "medium": {
+      "description": "Tâche modérément complexe, quelques risques, technologie partiellement maîtrisée",
+      "template_file": "development\\templates\\subtasks\\medium.txt",
+      "max_subtasks": 5
+    },
+    "complex": {
+      "description": "Tâche complexe, risques importants, nouvelle technologie ou approche",
+      "template_file": "development\\templates\\subtasks\\complex.txt",
+      "max_subtasks": 10
+    }
+  },
+  "domain_templates": {
+    "frontend": {
+      "description": "Développement d'interfaces utilisateur et expérience utilisateur",
+      "template_file": "development\\templates\\subtasks\\domains\\frontend.txt",
+      "max_subtasks": 9
+    },
+    "backend": {
+      "description": "Développement de services, API et logique métier",
+      "template_file": "development\\templates\\subtasks\\domains\\backend.txt",
+      "max_subtasks": 10
+    },
+    "database": {
+      "description": "Conception et optimisation de bases de données",
+      "template_file": "development\\templates\\subtasks\\domains\\database.txt",
+      "max_subtasks": 9
+    },
+    "testing": {
+      "description": "Tests unitaires, d'intégration et de bout en bout",
+      "template_file": "development\\templates\\subtasks\\domains\\testing.txt",
+      "max_subtasks": 9
+    },
+    "devops": {
+      "description": "Infrastructure, déploiement et opérations",
+      "template_file": "development\\templates\\subtasks\\domains\\devops.txt",
+      "max_subtasks": 9
+    },
+    "security": {
+      "description": "Sécurité, authentification et protection des données",
+      "template_file": "development\\templates\\subtasks\\domains\\security.txt",
+      "max_subtasks": 9
+    },
+    "ai-ml": {
+      "description": "Intelligence artificielle et apprentissage automatique",
+      "template_file": "development\\templates\\subtasks\\domains\\ai-ml.txt",
+      "max_subtasks": 10
+    },
+    "documentation": {
+      "description": "Documentation technique et guides d'utilisation",
+      "template_file": "development\\templates\\subtasks\\domains\\documentation.txt",
+      "max_subtasks": 9
+    }
+  },
+  "keywords": {
+    "simple": ["simple", "basique", "facile", "mineur"],
+    "medium": ["moyen", "standard", "normal", "modéré"],
+    "complex": ["complexe", "difficile", "majeur", "critique", "avancé"],
+    "frontend": ["interface", "UI", "UX", "CSS", "HTML", "JavaScript", "responsive", "composant", "visuel"],
+    "backend": ["API", "service", "endpoint", "contrôleur", "middleware", "authentification", "autorisation"],
+    "database": ["base de données", "SQL", "NoSQL", "schéma", "migration", "requête", "index", "table"],
+    "testing": ["test", "unitaire", "intégration", "e2e", "bout en bout", "couverture", "assertion", "mock"],
+    "devops": ["CI/CD", "pipeline", "déploiement", "infrastructure", "conteneur", "Docker", "Kubernetes", "monitoring"],
+    "security": ["sécurité", "authentification", "autorisation", "chiffrement", "cryptographie", "vulnérabilité", "OWASP", "pentest", "audit"],
+    "ai-ml": ["intelligence artificielle", "IA", "machine learning", "ML", "apprentissage", "modèle", "algorithme", "données", "prédiction", "classification", "régression", "clustering", "deep learning"],
+    "documentation": ["documentation", "guide", "manuel", "tutoriel", "référence", "API doc", "javadoc", "wiki", "markdown", "readme"]
+  },
+  "default_complexity": "medium",
+  "default_domain": null
+}

@@ -1,0 +1,10 @@
+Analyser les besoins d'API
+Concevoir le modèle de données
+Implémenter les modèles et migrations
+Développer les contrôleurs et services
+Implémenter les routes et endpoints
+Ajouter la validation et gestion d'erreurs
+Implémenter l'authentification et autorisation
+Optimiser les requêtes de base de données
+Tester les endpoints API
+Documenter l'API

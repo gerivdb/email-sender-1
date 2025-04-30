@@ -1,0 +1,10 @@
+Analyser les besoins en intelligence artificielle
+Collecter et préparer les données d'entraînement
+Concevoir le modèle d'apprentissage
+Développer les algorithmes d'IA/ML
+Entraîner le modèle avec les données
+Évaluer les performances du modèle
+Optimiser les hyperparamètres
+Déployer le modèle en production
+Mettre en place le monitoring du modèle
+Documenter l'architecture et les résultats

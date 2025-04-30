@@ -1,0 +1,9 @@
+Analyser les exigences de sécurité
+Identifier les vulnérabilités potentielles
+Concevoir l'architecture de sécurité
+Implémenter les mécanismes d'authentification
+Mettre en place le chiffrement des données
+Développer les contrôles d'accès
+Effectuer des tests de pénétration
+Mettre en place la surveillance de sécurité
+Documenter les politiques et procédures de sécurité

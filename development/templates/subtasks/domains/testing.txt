@@ -1,0 +1,9 @@
+Analyser les exigences de test
+Définir les cas de test
+Implémenter les tests unitaires
+Développer les tests d'intégration
+Créer les tests de bout en bout
+Mettre en place les tests de performance
+Automatiser l'exécution des tests
+Analyser la couverture de code
+Documenter les procédures de test

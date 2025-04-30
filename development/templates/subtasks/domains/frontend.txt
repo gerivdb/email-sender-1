@@ -1,0 +1,9 @@
+Analyser les besoins d'interface utilisateur
+Créer les maquettes et wireframes
+Implémenter la structure HTML
+Développer les styles CSS
+Implémenter les interactions JavaScript
+Optimiser pour différents appareils (responsive)
+Tester sur différents navigateurs
+Optimiser les performances frontend
+Documenter les composants UI

@@ -1,0 +1,50 @@
+{
+  "complexity_multipliers": {
+    "simple": 0.5,
+    "medium": 1.0,
+    "complex": 2.0
+  },
+  "domain_multipliers": {
+    "frontend": 1.0,
+    "backend": 1.2,
+    "database": 1.1,
+    "testing": 0.9,
+    "devops": 1.3,
+    "security": 1.4,
+    "ai-ml": 1.5,
+    "documentation": 0.8
+  },
+  "base_times": {
+    "analysis": {
+      "unit": "h",
+      "value": 2
+    },
+    "design": {
+      "unit": "h",
+      "value": 3
+    },
+    "implementation": {
+      "unit": "h",
+      "value": 4
+    },
+    "testing": {
+      "unit": "h",
+      "value": 2
+    },
+    "documentation": {
+      "unit": "h",
+      "value": 1
+    },
+    "default": {
+      "unit": "h",
+      "value": 2
+    }
+  },
+  "task_keywords": {
+    "analysis": ["analyser", "analyse", "étudier", "évaluer", "comprendre", "identifier", "rechercher"],
+    "design": ["concevoir", "conception", "architecture", "modéliser", "planifier", "structurer"],
+    "implementation": ["implémenter", "développer", "coder", "programmer", "créer", "mettre en place", "intégrer"],
+    "testing": ["tester", "vérifier", "valider", "contrôler", "qualité", "test"],
+    "documentation": ["documenter", "documentation", "guide", "manuel", "référence"]
+  }
+}

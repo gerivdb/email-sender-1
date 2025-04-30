@@ -1,0 +1,10 @@
+Analyser les besoins détaillés
+Identifier les risques potentiels
+Concevoir l'architecture globale
+Concevoir les composants spécifiques
+Implémenter les interfaces
+Implémenter la logique métier
+Implémenter les tests unitaires
+Exécuter les tests d'intégration
+Optimiser les performances
+Documenter l'implémentation

@@ -1,0 +1,9 @@
+Analyser les besoins en documentation
+Définir la structure et le format des documents
+Rédiger la documentation technique
+Créer les guides d'utilisation
+Développer les exemples et tutoriels
+Intégrer les captures d'écran et diagrammes
+Mettre en place un système de versionnage
+Réviser et valider le contenu
+Publier la documentation

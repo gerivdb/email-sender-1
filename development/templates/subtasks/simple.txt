@@ -1,0 +1,3 @@
+Analyser les besoins
+Implémenter la solution
+Tester la fonctionnalité

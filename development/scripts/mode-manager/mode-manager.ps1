@@ -373,6 +373,7 @@ function Invoke-Mode {
                 }
             }
             "GRAN" {
+                # Ajouter le fichier de sous-tâches si spécifié dans la configuration
                 if (-not $params.ContainsKey("SubTasksFile") -and $Config.Modes.Gran.SubTasksFile) {
                     $params["SubTasksFile"] = $Config.Modes.Gran.SubTasksFile
 
@@ -380,6 +381,11 @@ function Invoke-Mode {
                     if (-not [System.IO.Path]::IsPathRooted($params["SubTasksFile"])) {
                         $params["SubTasksFile"] = Join-Path -Path $projectRoot -ChildPath $params["SubTasksFile"]
                     }
+                }
+
+                # Ajouter le niveau de complexité si spécifié dans la configuration
+                if (-not $params.ContainsKey("ComplexityLevel") -and $Config.Modes.Gran.ComplexityLevel) {
+                    $params["ComplexityLevel"] = $Config.Modes.Gran.ComplexityLevel
                 }
             }
             "DEBUG" {

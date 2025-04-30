@@ -61,13 +61,15 @@
     },
     "Gran": {
       "Enabled": true,
-      "ScriptPath": "development\\roadmap\\parser\\modes\\gran\\gran-mode.ps1",
+      "ScriptPath": "development\\scripts\\maintenance\\modes\\gran-mode.ps1",
       "MaxTaskSize": 5,
       "MaxComplexity": 7,
       "AutoIndent": true,
       "GenerateSubtasks": true,
       "UpdateInPlace": true,
       "SubTasksFile": "templates\\subtasks.txt",
+      "ComplexityLevel": "Auto",
+      "TemplatesPath": "development\\templates\\subtasks",
       "IndentationStyle": "Spaces",
       "CheckboxStyle": "GitHub"
     },

@@ -1,0 +1,9 @@
+Analyser les besoins de stockage
+Concevoir le schéma de base de données
+Définir les relations entre tables
+Implémenter les contraintes et index
+Créer les procédures stockées et triggers
+Optimiser les requêtes et performances
+Implémenter la stratégie de sauvegarde
+Tester les performances sous charge
+Documenter le schéma et les procédures
