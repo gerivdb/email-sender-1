@@ -130,7 +130,37 @@
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1** Développer une fonction d'analyse syntaxique des fichiers PowerShell
                         - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.1** Rechercher les méthodes d'analyse syntaxique disponibles dans PowerShell
                         - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.2** Implémenter une fonction utilisant l'AST (Abstract Syntax Tree) de PowerShell
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3** Développer des méthodes de navigation dans l'arbre syntaxique
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3** Développer des méthodes de navigation dans l'arbre syntaxique
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1** Implémenter une fonction de parcours en profondeur (DFS) de l'AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1** Créer la structure de base de la fonction avec gestion de la profondeur maximale
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.2** Implémenter la logique de parcours récursif des nœuds enfants
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.3** Ajouter des options de filtrage par type de nœud AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.4** Implémenter la gestion des erreurs et des cas limites
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.5** Optimiser les performances pour les grands arbres syntaxiques
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2** Implémenter une fonction de parcours en largeur (BFS) de l'AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.1** Créer la structure de base avec une file d'attente pour le parcours
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.2** Implémenter la logique de parcours itératif des nœuds
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.3** Ajouter des options de filtrage par niveau de profondeur
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.4** Implémenter la gestion des erreurs et des cas limites
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.5** Optimiser la gestion de la mémoire pour les grands arbres
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3** Développer des fonctions de recherche spécialisées dans l'AST
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.1** Créer une fonction de recherche par type de nœud avec prédicats personnalisables
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.2** Implémenter une fonction de recherche par nom d'élément (fonction, variable, etc.)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.3** Développer une fonction de recherche par position (ligne, colonne)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.4** Créer une fonction de recherche contextuelle (parent-enfant)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.5** Implémenter une fonction de recherche par motif (pattern matching)
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4** Implémenter des fonctions de navigation relationnelle dans l'AST
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.1** Développer une fonction pour obtenir le nœud parent d'un nœud donné
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.2** Créer une fonction pour obtenir les nœuds frères (siblings) d'un nœud
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.3** Implémenter une fonction pour obtenir le chemin complet d'un nœud depuis la racine
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.4** Développer une fonction pour naviguer entre les nœuds de même niveau
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.5** Créer une fonction pour trouver l'ancêtre commun de deux nœuds
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5** Créer des fonctions utilitaires pour la navigation dans l'AST
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.1** Implémenter une fonction pour obtenir la profondeur d'un nœud dans l'arbre
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.2** Développer une fonction pour compter les nœuds d'un certain type
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.3** Créer une fonction pour vérifier si un nœud est descendant d'un autre
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.4** Implémenter une fonction pour obtenir le niveau de complexité d'un nœud
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.5** Développer une fonction pour convertir un chemin de nœuds en représentation textuelle
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4** Créer des fonctions d'extraction d'éléments spécifiques (fonctions, paramètres, etc.)
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5** Tester la fonction d'analyse avec différents types de fichiers PowerShell
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2** Implémenter l'extraction des fonctions de gestionnaire
