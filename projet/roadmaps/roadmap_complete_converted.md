@@ -292,31 +292,31 @@
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.4** Vérifier la couverture de code des tests
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.1** Analyser les différentes formes d'instructions Import-Module dans le code existant
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.2** Identifier les patterns d'utilisation (paramètres, options, chemins relatifs/absolus)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.3** Définir les exigences de performance et de précision pour la détection
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.4** Concevoir l'architecture de la fonction de détection
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.5** Implémenter la fonction de base pour l'analyse AST des Import-Module
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.6** Développer la détection des paramètres d'Import-Module (Name, Path, etc.)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.7** Implémenter la résolution des chemins relatifs pour les modules importés
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.8** Créer la gestion des cas particuliers (imports conditionnels, dynamiques)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.9** Développer les expressions régulières pour détecter les Import-Module
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.10** Implémenter la fonction d'analyse par regex avec extraction des noms de modules
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.11** Créer la logique de filtrage des faux positifs dans les résultats regex
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.12** Développer la fonction de fusion des résultats AST et regex
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.13** Intégrer la détection dans le système de gestion des dépendances
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.14** Optimiser les performances pour les grands fichiers
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.15** Implémenter un système de cache pour les résultats d'analyse
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.16** Développer des mécanismes de parallélisation pour l'analyse de multiples fichiers
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.17** Créer des tests unitaires pour la détection des Import-Module simples
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.18** Développer des tests pour les cas complexes (paramètres multiples, chemins)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.19** Implémenter des tests de performance et d'optimisation
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.20** Valider la détection sur des scripts réels du projet
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.21** Documenter la fonction de détection et ses paramètres
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.22** Créer des exemples d'utilisation de la fonction
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.23** Documenter les limitations connues et les cas particuliers
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.24** Finaliser l'intégration avec le système de gestion des dépendances
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.1** Analyser les différentes formes d'instructions Import-Module dans le code existant
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.2** Identifier les patterns d'utilisation (paramètres, options, chemins relatifs/absolus)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.3** Définir les exigences de performance et de précision pour la détection
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.4** Concevoir l'architecture de la fonction de détection
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.5** Implémenter la fonction de base pour l'analyse AST des Import-Module
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.6** Développer la détection des paramètres d'Import-Module (Name, Path, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.7** Implémenter la résolution des chemins relatifs pour les modules importés
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.8** Créer la gestion des cas particuliers (imports conditionnels, dynamiques)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.9** Développer les expressions régulières pour détecter les Import-Module
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.10** Implémenter la fonction d'analyse par regex avec extraction des noms de modules
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.11** Créer la logique de filtrage des faux positifs dans les résultats regex
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.12** Développer la fonction de fusion des résultats AST et regex
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.13** Intégrer la détection dans le système de gestion des dépendances
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.14** Optimiser les performances pour les grands fichiers
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.15** Implémenter un système de cache pour les résultats d'analyse
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.16** Développer des mécanismes de parallélisation pour l'analyse de multiples fichiers
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.17** Créer des tests unitaires pour la détection des Import-Module simples
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.18** Développer des tests pour les cas complexes (paramètres multiples, chemins)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.19** Implémenter des tests de performance et d'optimisation
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.20** Valider la détection sur des scripts réels du projet
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.21** Documenter la fonction de détection et ses paramètres
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.22** Créer des exemples d'utilisation de la fonction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.23** Documenter les limitations connues et les cas particuliers
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.24** Finaliser l'intégration avec le système de gestion des dépendances
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2** Implémenter l'analyse des paramètres d'importation
                             - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.1** Analyser les différents types de paramètres d'importation
                             - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.2** Développer la détection des paramètres nommés (-Name, -Path, etc.)
