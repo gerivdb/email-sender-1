@@ -1,0 +1,64 @@
+# Script de test minimal pour la fonction Get-AstNodeTypeCount
+
+# Créer un script PowerShell de test très simple
+$sampleCode = @'
+function Test-Function {
+    "Hello, World!"
+}
+'@
+
+# Analyser le code avec l'AST
+$tokens = $errors = $null
+$ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
+
+# Définir une fonction simple pour compter les noeuds
+function Count-Nodes {
+    param (
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.Language.Ast]$Ast,
+        
+        [Parameter(Mandatory = $false)]
+        [string]$NodeType
+    )
+    
+    $count = 0
+    
+    # Fonction récursive pour parcourir l'AST
+    function Process-Node {
+        param (
+            [Parameter(Mandatory = $true)]
+            [System.Management.Automation.Language.Ast]$Node
+        )
+        
+        # Vérifier si le noeud correspond au type spécifié
+        if ($NodeType) {
+            $nodeTypeName = $Node.GetType().Name
+            if ($nodeTypeName -eq $NodeType -or $nodeTypeName -eq "${NodeType}Ast") {
+                $script:count++
+            }
+        }
+        else {
+            $script:count++
+        }
+        
+        # Parcourir les noeuds enfants
+        foreach ($child in $Node.FindAll({ $true }, $false)) {
+            Process-Node -Node $child
+        }
+    }
+    
+    # Compter les noeuds
+    Process-Node -Node $Ast
+    
+    return $count
+}
+
+# Tester la fonction Count-Nodes
+Write-Host "=== Test de Count-Nodes ===" -ForegroundColor Cyan
+$functionCount = Count-Nodes -Ast $ast -NodeType "FunctionDefinition"
+Write-Host "Nombre de fonctions trouvees: $functionCount" -ForegroundColor Yellow
+
+$totalCount = Count-Nodes -Ast $ast
+Write-Host "Nombre total de noeuds: $totalCount" -ForegroundColor Yellow
+
+Write-Host "Test termine avec succes!" -ForegroundColor Green

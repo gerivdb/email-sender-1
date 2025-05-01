@@ -1,0 +1,137 @@
+﻿[
+    {
+        "ScriptSize":  10818,
+        "AverageCPUUsage":  0.25,
+        "ToolName":  "AstNavigator (Get-AstFunctions)",
+        "Iterations":  2,
+        "AverageMemoryUsage":  2334720,
+        "AverageExecutionTime":  233.5,
+        "ExecutionTimes":  [
+                               437,
+                               30
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            4685824,
+                            -16384
+                        ],
+        "MinExecutionTime":  30,
+        "MaxExecutionTime":  437,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  285,
+        "Success":  true,
+        "CPUUsage":  [
+                         0.375,
+                         0.125
+                     ]
+    },
+    {
+        "ScriptSize":  10818,
+        "AverageCPUUsage":  0.34375,
+        "ToolName":  "AstNavigator (Optimize-AstExtraction)",
+        "Iterations":  2,
+        "AverageMemoryUsage":  -20480,
+        "AverageExecutionTime":  304.5,
+        "ExecutionTimes":  [
+                               561,
+                               48
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            -106496,
+                            65536
+                        ],
+        "MinExecutionTime":  48,
+        "MaxExecutionTime":  561,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  285,
+        "Success":  true,
+        "CPUUsage":  [
+                         0.578125,
+                         0.109375
+                     ]
+    },
+    {
+        "ScriptSize":  10818,
+        "AverageCPUUsage":  0.1171875,
+        "ToolName":  "AST natif (FindAll)",
+        "Iterations":  2,
+        "AverageMemoryUsage":  4096,
+        "AverageExecutionTime":  112,
+        "ExecutionTimes":  [
+                               79,
+                               145
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            8192,
+                            0
+                        ],
+        "MinExecutionTime":  79,
+        "MaxExecutionTime":  145,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  285,
+        "Success":  true,
+        "CPUUsage":  [
+                         0.125,
+                         0.109375
+                     ]
+    },
+    {
+        "ScriptSize":  10818,
+        "AverageCPUUsage":  0.078125,
+        "ToolName":  "Expressions rÃ©guliÃ¨res",
+        "Iterations":  2,
+        "AverageMemoryUsage":  430080,
+        "AverageExecutionTime":  51,
+        "ExecutionTimes":  [
+                               99,
+                               3
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            860160,
+                            0
+                        ],
+        "MinExecutionTime":  3,
+        "MaxExecutionTime":  99,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  285,
+        "Success":  true,
+        "CPUUsage":  [
+                         0.109375,
+                         0.046875
+                     ]
+    },
+    {
+        "ScriptSize":  10818,
+        "AverageCPUUsage":  1.7734375,
+        "ToolName":  "PSScriptAnalyzer",
+        "Iterations":  2,
+        "AverageMemoryUsage":  8828928,
+        "AverageExecutionTime":  2118,
+        "ExecutionTimes":  [
+                               4145,
+                               91
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            17649664,
+                            8192
+                        ],
+        "MinExecutionTime":  91,
+        "MaxExecutionTime":  4145,
+        "ResultCount":  25,
+        "ErrorMessage":  null,
+        "LineCount":  285,
+        "Success":  true,
+        "CPUUsage":  [
+                         3.390625,
+                         0.15625
+                     ]
+    }
+]

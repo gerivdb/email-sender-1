@@ -1,0 +1,117 @@
+﻿[
+    {
+        "Iterations":  2,
+        "AverageMemoryUsage":  231424,
+        "AverageExecutionTime":  146,
+        "ExecutionTimes":  [
+                               238,
+                               54
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            458752,
+                            4096
+                        ],
+        "MinExecutionTime":  54,
+        "FunctionName":  "Get-AstFunctions",
+        "MaxExecutionTime":  238,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  286,
+        "Success":  true,
+        "ScriptSize":  10818,
+        "DisplayName":  "Get-AstFunctions"
+    },
+    {
+        "Iterations":  2,
+        "AverageMemoryUsage":  161792,
+        "AverageExecutionTime":  46,
+        "ExecutionTimes":  [
+                               62,
+                               30
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            299008,
+                            24576
+                        ],
+        "MinExecutionTime":  30,
+        "FunctionName":  "Get-AstFunctions",
+        "MaxExecutionTime":  62,
+        "ResultCount":  5,
+        "ErrorMessage":  null,
+        "LineCount":  286,
+        "Success":  true,
+        "ScriptSize":  10818,
+        "DisplayName":  "Get-AstFunctions -Detailed"
+    },
+    {
+        "Iterations":  2,
+        "AverageMemoryUsage":  63488,
+        "AverageExecutionTime":  58,
+        "ExecutionTimes":  [
+                               86,
+                               30
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            126976,
+                            0
+                        ],
+        "MinExecutionTime":  30,
+        "FunctionName":  "Get-AstParameters",
+        "MaxExecutionTime":  86,
+        "ResultCount":  1,
+        "ErrorMessage":  null,
+        "LineCount":  286,
+        "Success":  true,
+        "ScriptSize":  10818,
+        "DisplayName":  "Get-AstParameters"
+    },
+    {
+        "Iterations":  2,
+        "AverageMemoryUsage":  360448,
+        "AverageExecutionTime":  135,
+        "ExecutionTimes":  [
+                               225,
+                               45
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            106496,
+                            614400
+                        ],
+        "MinExecutionTime":  45,
+        "FunctionName":  "Get-AstVariables",
+        "MaxExecutionTime":  225,
+        "ResultCount":  17,
+        "ErrorMessage":  null,
+        "LineCount":  286,
+        "Success":  true,
+        "ScriptSize":  10818,
+        "DisplayName":  "Get-AstVariables"
+    },
+    {
+        "Iterations":  2,
+        "AverageMemoryUsage":  1744896,
+        "AverageExecutionTime":  220.5,
+        "ExecutionTimes":  [
+                               371,
+                               70
+                           ],
+        "ScriptPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\ast-navigator\\Tests\\Results\\TestScript_Small.ps1",
+        "MemoryUsage":  [
+                            3874816,
+                            -385024
+                        ],
+        "MinExecutionTime":  70,
+        "FunctionName":  "Get-AstCommands",
+        "MaxExecutionTime":  371,
+        "ResultCount":  90,
+        "ErrorMessage":  null,
+        "LineCount":  286,
+        "Success":  true,
+        "ScriptSize":  10818,
+        "DisplayName":  "Get-AstCommands"
+    }
+]

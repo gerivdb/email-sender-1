@@ -143,30 +143,116 @@
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.3** Ajouter des options de filtrage par niveau de profondeur
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.4** Implémenter la gestion des erreurs et des cas limites
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.2.5** Optimiser la gestion de la mémoire pour les grands arbres
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3** Développer des fonctions de recherche spécialisées dans l'AST
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.1** Créer une fonction de recherche par type de nœud avec prédicats personnalisables
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.2** Implémenter une fonction de recherche par nom d'élément (fonction, variable, etc.)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.3** Développer une fonction de recherche par position (ligne, colonne)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.4** Créer une fonction de recherche contextuelle (parent-enfant)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.5** Implémenter une fonction de recherche par motif (pattern matching)
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4** Implémenter des fonctions de navigation relationnelle dans l'AST
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.1** Développer une fonction pour obtenir le nœud parent d'un nœud donné
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.2** Créer une fonction pour obtenir les nœuds frères (siblings) d'un nœud
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.3** Implémenter une fonction pour obtenir le chemin complet d'un nœud depuis la racine
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.4** Développer une fonction pour naviguer entre les nœuds de même niveau
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.5** Créer une fonction pour trouver l'ancêtre commun de deux nœuds
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5** Créer des fonctions utilitaires pour la navigation dans l'AST
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.1** Implémenter une fonction pour obtenir la profondeur d'un nœud dans l'arbre
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.2** Développer une fonction pour compter les nœuds d'un certain type
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.3** Créer une fonction pour vérifier si un nœud est descendant d'un autre
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.4** Implémenter une fonction pour obtenir le niveau de complexité d'un nœud
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.5** Développer une fonction pour convertir un chemin de nœuds en représentation textuelle
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4** Créer des fonctions d'extraction d'éléments spécifiques (fonctions, paramètres, etc.)
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5** Tester la fonction d'analyse avec différents types de fichiers PowerShell
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3** Développer des fonctions de recherche spécialisées dans l'AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.1** Créer une fonction de recherche par type de nœud avec prédicats personnalisables
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.2** Implémenter une fonction de recherche par nom d'élément (fonction, variable, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.3** Développer une fonction de recherche par position (ligne, colonne)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.4** Créer une fonction de recherche contextuelle (parent-enfant)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.3.5** Implémenter une fonction de recherche par motif (pattern matching)
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4** Implémenter des fonctions de navigation relationnelle dans l'AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.1** Développer une fonction pour obtenir le nœud parent d'un nœud donné
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.2** Créer une fonction pour obtenir les nœuds frères (siblings) d'un nœud
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.3** Implémenter une fonction pour obtenir le chemin complet d'un nœud depuis la racine
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.4** Développer une fonction pour naviguer entre les nœuds de même niveau
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.4.5** Créer une fonction pour trouver l'ancêtre commun de deux nœuds
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5** Créer des fonctions utilitaires pour la navigation dans l'AST
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.1** Implémenter une fonction pour obtenir la profondeur d'un nœud dans l'arbre
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.2** Développer une fonction pour compter les nœuds d'un certain type
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.3** Créer une fonction pour vérifier si un nœud est descendant d'un autre
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.4** Implémenter une fonction pour obtenir le niveau de complexité d'un nœud
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.5** Développer une fonction pour convertir un chemin de nœuds en représentation textuelle
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4** Créer des fonctions d'extraction d'éléments spécifiques (fonctions, paramètres, etc.)
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.1** Implémenter une fonction pour extraire les fonctions d'un script
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.1.1** Créer la structure de base pour identifier les nœuds FunctionDefinitionAst
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.1.2** Ajouter des options de filtrage par nom de fonction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.1.3** Implémenter l'extraction des métadonnées de fonction (paramètres, corps, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.1.4** Créer des options pour le format de sortie (simple/détaillé)
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.2** Développer une fonction pour extraire les paramètres d'un script ou d'une fonction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.2.1** Créer la structure pour identifier les blocs de paramètres (ParamBlockAst)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.2.2** Implémenter l'extraction des attributs de paramètres (type, valeur par défaut, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.2.3** Ajouter la prise en charge des paramètres de script et de fonction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.2.4** Créer des options pour filtrer les paramètres par nom ou attribut
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.3** Créer une fonction pour extraire les variables d'un script
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.3.1** Implémenter la détection des nœuds VariableExpressionAst
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.3.2** Ajouter des options pour filtrer par portée (scope) de variable
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.3.3** Créer une fonctionnalité pour détecter les assignations de variables
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.3.4** Implémenter l'exclusion des variables automatiques ($_, $PSItem, etc.)
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.4** Développer une fonction pour extraire les appels de commandes
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.4.1** Créer la structure pour identifier les nœuds CommandAst
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.4.2** Implémenter l'extraction des arguments et options de commande
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.4.3** Ajouter des options pour filtrer par nom de commande ou type
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.4.4** Créer une fonctionnalité pour analyser les pipelines de commandes
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.5** Implémenter une fonction pour extraire les structures de contrôle
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.5.1** Créer la détection des structures conditionnelles (if, switch)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.5.2** Implémenter l'extraction des boucles (foreach, while, do)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.5.3** Ajouter la prise en charge des blocs try/catch/finally
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.4.5.4** Créer des options pour analyser la complexité des structures
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5** Tester la fonction d'analyse avec différents types de fichiers PowerShell
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.1** Créer des scripts de test pour les fonctions d'extraction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.1.1** Développer des tests unitaires pour l'extraction de fonctions
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.1.2** Créer des tests pour l'extraction de paramètres
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.1.3** Implémenter des tests pour l'extraction de variables
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.1.4** Développer des tests pour l'extraction de commandes
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.2** Tester avec différents types de scripts PowerShell
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.2.1** Tester avec des scripts simples (fonctions basiques)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.2.2** Tester avec des scripts complexes (classes, DSC, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.2.3** Vérifier la compatibilité avec différentes versions de PowerShell
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3** Mesurer les performances des fonctions d'extraction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.1** Créer des benchmarks pour mesurer le temps d'exécution
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.2** Optimiser les performances pour les grands scripts
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.3** Comparer les performances avec d'autres outils d'analyse
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2** Implémenter l'extraction des fonctions de gestionnaire
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1** Développer une fonction pour identifier les gestionnaires d'événements
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.1** Créer la détection des gestionnaires Register-Event
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.2** Implémenter la détection des gestionnaires Add-Type avec événements
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.3** Ajouter la prise en charge des gestionnaires WMI
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2** Créer une fonction pour extraire les gestionnaires de workflow
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.1** Implémenter la détection des activités de workflow
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.2** Créer l'extraction des transitions de workflow
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.3** Développer l'analyse des conditions de workflow
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3** Développer une fonction pour extraire les gestionnaires d'erreurs
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.1** Implémenter la détection des blocs try/catch/finally
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.2** Créer l'extraction des gestionnaires trap
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.3** Ajouter la prise en charge des gestionnaires d'erreurs personnalisés
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3** Créer un mécanisme d'extraction des métadonnées des gestionnaires
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1** Développer l'extraction des informations de déclenchement
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.1** Implémenter l'extraction des conditions de déclenchement
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.2** Créer la détection des sources d'événements
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.3** Développer l'analyse des paramètres de déclenchement
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2** Créer l'extraction des informations d'action
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.1** Implémenter l'extraction des actions exécutées
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.2** Créer la détection des paramètres d'action
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.3** Développer l'analyse des résultats d'action
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3** Implémenter l'extraction des métadonnées de configuration
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1** Créer la détection des options de configuration
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2** Implémenter l'extraction des dépendances de configuration
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3** Développer l'analyse des contraintes de configuration
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2** Implémenter l'analyse des paramètres d'importation
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3** Développer la détection des modules requis implicites
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2** Créer la détection des dépendances de fonctions
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.1** Implémenter l'analyse des appels de fonction
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.2** Créer la détection des fonctions définies vs. appelées
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.3** Développer un graphe de dépendances de fonctions
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3** Développer la détection des dépendances de variables
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.1** Implémenter l'analyse des utilisations de variables
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.2** Créer la détection des variables définies vs. utilisées
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.3** Développer un graphe de dépendances de variables
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5** Intégrer l'extraction d'informations au Process Manager
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1** Développer l'interface d'intégration avec le Process Manager
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1.1** Créer les points d'entrée pour l'extraction d'informations
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1.2** Implémenter les méthodes de communication avec le Process Manager
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1.3** Développer les mécanismes de retour d'information
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.2** Créer les mécanismes de stockage des informations extraites
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.2.1** Implémenter la structure de données pour les informations extraites
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.2.2** Créer les méthodes de persistance des informations
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.2.3** Développer les mécanismes de mise à jour des informations
+                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.3** Implémenter les fonctionnalités d'interrogation des informations
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.3.1** Créer les méthodes de recherche dans les informations extraites
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.3.2** Implémenter les filtres de recherche avancés
+                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.3.3** Développer les mécanismes de tri et de pagination des résultats
                     - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.3** Implémenter un système de filtrage des fichiers non pertinents
                     - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.4** Intégrer la recherche basée sur les fichiers au Process Manager
                     - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.5** Tester la recherche basée sur les fichiers avec différents scénarios

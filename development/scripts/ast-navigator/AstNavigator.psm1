@@ -41,7 +41,16 @@ $FunctionsToExport = @(
     'Get-AstNodeDepth',
     'Test-AstNodeIsDescendant',
     'Get-AstNodeComplexity',
-    'ConvertTo-AstNodePath'
+    'ConvertTo-AstNodePath',
+    'Get-AstNodeTypeCount',
+    'Get-AstFunctions',
+    'Get-AstParameters',
+    'Get-AstVariables',
+    'Get-AstCommands',
+    'Get-AstControlStructures',
+    'Optimize-AstExtraction',
+    'Clear-AstExtractionCache',
+    'Get-AstExtractionCacheStatistics'
 )
 
 # Exporter uniquement les fonctions qui existent

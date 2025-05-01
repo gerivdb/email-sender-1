@@ -30,7 +30,9 @@
         'Invoke-AstTraversalDFS-Simple',
         'Invoke-AstTraversalDFS-Recursive',
         'Invoke-AstTraversalDFS-Enhanced',
+        'Invoke-AstTraversalDFS-Optimized',
         'Invoke-AstTraversalBFS',
+        'Invoke-AstTraversalBFSAdvanced',
         'Invoke-AstTraversalSafe',
         'Find-AstNode',
         'Find-AstNodeByType',
@@ -40,7 +42,16 @@
         'Get-AstNodeDepth',
         'Test-AstNodeIsDescendant',
         'Get-AstNodeComplexity',
-        'ConvertTo-AstNodePath'
+        'Get-AstNodeTypeCount',
+        'ConvertTo-AstNodePath',
+        'Get-AstFunctions',
+        'Get-AstParameters',
+        'Get-AstVariables',
+        'Get-AstCommands',
+        'Get-AstControlStructures',
+        'Optimize-AstExtraction',
+        'Clear-AstExtractionCache',
+        'Get-AstExtractionCacheStatistics'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
