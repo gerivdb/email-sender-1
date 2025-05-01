@@ -1,0 +1,115 @@
+﻿{
+    "id":  "test-workflow-custom-error-handlers",
+    "name":  "Test Workflow Custom Error Handlers",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "Function with Custom Error Handlers",
+                      "parameters":  {
+                                         "functionCode":  "// This is a JavaScript function with custom error handlers\n// Note: This is just for testing the custom error handlers detection\n\nfunction processData() {\n    try {\n        // Some code that might throw errors\n        const result = items[0].json.testValue.toUpperCase();\n\n        // Check for potential errors\n        if (!result) {\n            throw new Error(\u0027Result is empty\u0027);\n        }\n\n        return [{ json: { result: result } }];\n    } catch (error) {\n        // Custom error handler\n        console.log(\u0027Error caught:\u0027, error.message);\n\n        // Custom error object\n        const errorObj = {\n            status: \u0027error\u0027,\n            code: 500,\n            message: error.message,\n            timestamp: new Date().toISOString()\n        };\n\n        // Return error information\n        return [{ json: { error: errorObj } }];\n    }\n}\n\n// Custom error handling function\nfunction handleApiError(error) {\n    console.log(\u0027API Error:\u0027, error.message);\n    return {\n        success: false,\n        error: error.message\n    };\n}\n\n// Function that uses the custom error handler\nfunction callApi() {\n    try {\n        // Simulate API call\n        const response = makeApiCall();\n        return response;\n    } catch (e) {\n        return handleApiError(e);\n    }\n}\n\n// Error checking condition\nif (items[0].json.error) {\n    // Handle the error\n    items[0].json.errorHandled = true;\n}\n\nreturn processData();"
+                                     },
+                      "type":  "n8n-nodes-base.function",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node4",
+                      "name":  "Stop And Error",
+                      "parameters":  {
+                                         "errorType":  "Error Message",
+                                         "errorMessage":  "This is a custom error message"
+                                     },
+                      "type":  "n8n-nodes-base.stopAndError",
+                      "position":  [
+                                       700,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "position":  [
+                                       900,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Output",
+                      "id":  "node5",
+                      "type":  "n8n-nodes-base.noOp"
+                  }
+              ],
+    "settings":  {
+                     "errorWorkflow":  "error-workflow-id"
+                 },
+    "connections":  {
+                        "node3":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node4",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node4":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node5",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

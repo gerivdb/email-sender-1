@@ -1,0 +1,192 @@
+﻿{
+    "id":  "test-workflow-4",
+    "name":  "Test Workflow Try Catch",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "Try",
+                      "parameters":  {
+                                         "functionCode":  "try {\\n  // This is a try block\\n  if (items[0].json.testValue !== \u0027test\u0027) {\\n    throw new Error(\u0027Test error\u0027);\\n  }\\n  return [\\n    {\\n      json: {\\n        result: \u0027success\u0027,\\n        value: items[0].json.testValue\\n      }\\n    }\\n  ];\\n} catch (error) {\\n  // This is a catch block\\n  return [\\n    {\\n      json: {\\n        result: \u0027error\u0027,\\n        error: error.message\\n      }\\n    }\\n  ];\\n} finally {\\n  // This is a finally block\\n  console.log(\u0027Finally block executed\u0027);\\n}"
+                                     },
+                      "type":  "n8n-nodes-base.function",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node4",
+                      "name":  "If Success",
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{$json.result}}",
+                                                                               "operation":  "equal",
+                                                                               "value2":  "success"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "type":  "n8n-nodes-base.if",
+                      "position":  [
+                                       700,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node5",
+                      "name":  "Success Path",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "success",
+                                                                           "name":  "finalResult"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       900,
+                                       200
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node6",
+                      "name":  "Error Path",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "error",
+                                                                           "name":  "finalResult"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       900,
+                                       400
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node7",
+                      "name":  "Finally",
+                      "parameters":  {
+                                         "mode":  "append"
+                                     },
+                      "type":  "n8n-nodes-base.merge",
+                      "position":  [
+                                       1100,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  }
+              ],
+    "settings":  {
+
+                 },
+    "connections":  {
+                        "node6":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node7",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node4":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "node5",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ],
+                                                   [
+                                                       {
+                                                           "node":  "node6",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  },
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node3":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node4",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node5":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node7",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

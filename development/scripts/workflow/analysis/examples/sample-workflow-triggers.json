@@ -1,0 +1,217 @@
+{
+  "name": "Sample Workflow with Various Triggers",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 9,
+              "minute": 0
+            },
+            {
+              "hour": 17,
+              "minute": 0
+            }
+          ]
+        }
+      },
+      "name": "Daily Schedule",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "id": "cron-trigger-1"
+    },
+    {
+      "parameters": {
+        "path": "webhook-test",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "authentication": "basicAuth"
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "id": "webhook-trigger-1"
+    },
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 700],
+      "id": "manual-trigger-1"
+    },
+    {
+      "parameters": {
+        "mailbox": "INBOX",
+        "postProcessAction": "read",
+        "options": {
+          "criteria": "UNSEEN"
+        }
+      },
+      "name": "Email Trigger",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 1,
+      "position": [100, 900],
+      "id": "email-trigger-1"
+    },
+    {
+      "parameters": {
+        "workflowId": "12345",
+        "triggerOn": "activation"
+      },
+      "name": "Workflow Trigger",
+      "type": "n8n-nodes-base.workflowTrigger",
+      "typeVersion": 1,
+      "position": [100, 1100],
+      "id": "workflow-trigger-1"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "Workflow triggered successfully!"
+            }
+          ]
+        }
+      },
+      "name": "Set Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [400, 300],
+      "id": "set-node-1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.message}}",
+              "operation": "contains",
+              "value2": "triggered"
+            }
+          ]
+        }
+      },
+      "name": "Check Message",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "id": "if-node-1"
+    },
+    {
+      "parameters": {
+        "functionCode": "// This is a sample function\nconst message = items[0].json.message;\n\n// Try-catch block for error handling\ntry {\n  // Process the message\n  const processedMessage = `Processed: ${message}`;\n  \n  // Return the result\n  return [\n    {\n      json: {\n        processedMessage,\n        success: true\n      }\n    }\n  ];\n} catch (error) {\n  // Handle errors\n  console.error('Error processing message:', error.message);\n  \n  return [\n    {\n      json: {\n        error: error.message,\n        success: false\n      }\n    }\n  ];\n}"
+      },
+      "name": "Process Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [800, 200],
+      "id": "function-node-1"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Message processing failed",
+        "errorDescription": "The workflow could not process the message"
+      },
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [800, 400],
+      "id": "error-node-1"
+    }
+  ],
+  "connections": {
+    "cron-trigger-1": {
+      "main": [
+        [
+          {
+            "node": "set-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhook-trigger-1": {
+      "main": [
+        [
+          {
+            "node": "set-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "manual-trigger-1": {
+      "main": [
+        [
+          {
+            "node": "set-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "email-trigger-1": {
+      "main": [
+        [
+          {
+            "node": "set-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "workflow-trigger-1": {
+      "main": [
+        [
+          {
+            "node": "set-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set-node-1": {
+      "main": [
+        [
+          {
+            "node": "if-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if-node-1": {
+      "main": [
+        [
+          {
+            "node": "function-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error-node-1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "id": "sample-workflow-triggers"
+}

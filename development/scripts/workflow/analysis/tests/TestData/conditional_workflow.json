@@ -1,0 +1,220 @@
+﻿{
+    "id":  "test-workflow-2",
+    "name":  "Test Workflow Conditional",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "Condition",
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{$json.testValue}}",
+                                                                               "operation":  "equal",
+                                                                               "value2":  "test"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "type":  "n8n-nodes-base.if",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node4",
+                      "name":  "True Path",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "true",
+                                                                           "name":  "result"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       700,
+                                       200
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node5",
+                      "name":  "False Path",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "false",
+                                                                           "name":  "result"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       700,
+                                       400
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node6",
+                      "name":  "Switch",
+                      "parameters":  {
+                                         "value":  "={{$json.result}}",
+                                         "rules":  [
+                                                       {
+                                                           "output":  0,
+                                                           "operation":  "equal",
+                                                           "value":  "true"
+                                                       },
+                                                       {
+                                                           "output":  1,
+                                                           "operation":  "equal",
+                                                           "value":  "false"
+                                                       }
+                                                   ]
+                                     },
+                      "type":  "n8n-nodes-base.switch",
+                      "position":  [
+                                       900,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "position":  [
+                                       1100,
+                                       200
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Output True",
+                      "id":  "node7",
+                      "type":  "n8n-nodes-base.noOp"
+                  },
+                  {
+                      "position":  [
+                                       1100,
+                                       400
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Output False",
+                      "id":  "node8",
+                      "type":  "n8n-nodes-base.noOp"
+                  }
+              ],
+    "settings":  {
+
+                 },
+    "connections":  {
+                        "node6":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "node7",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ],
+                                                   [
+                                                       {
+                                                           "node":  "node8",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node4":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node6",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node3":  {
+                                      "main":  [
+                                                   [
+                                                       {
+                                                           "node":  "node4",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ],
+                                                   [
+                                                       {
+                                                           "node":  "node5",
+                                                           "type":  "main",
+                                                           "index":  0
+                                                       }
+                                                   ]
+                                               ]
+                                  },
+                        "node5":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node6",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

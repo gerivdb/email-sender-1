@@ -1,0 +1,199 @@
+﻿{
+    "id":  "test-workflow-3",
+    "name":  "Test Workflow Complex",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Webhook",
+                      "parameters":  {
+                                         "responseMode":  "lastNode",
+                                         "path":  "test-webhook"
+                                     },
+                      "type":  "n8n-nodes-base.webhook",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node4",
+                      "name":  "Function",
+                      "parameters":  {
+                                         "functionCode":  "return [\\n  {\\n    json: {\\n      result: items[0].json.testValue + \u0027_processed\u0027\\n    }\\n  }\\n];"
+                                     },
+                      "type":  "n8n-nodes-base.function",
+                      "position":  [
+                                       700,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node5",
+                      "name":  "Split In Batches",
+                      "parameters":  {
+                                         "batchSize":  1
+                                     },
+                      "type":  "n8n-nodes-base.splitInBatches",
+                      "position":  [
+                                       900,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node6",
+                      "name":  "HTTP Request",
+                      "parameters":  {
+                                         "url":  "https://example.com",
+                                         "method":  "GET"
+                                     },
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "position":  [
+                                       1100,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node7",
+                      "name":  "Merge",
+                      "parameters":  {
+                                         "mode":  "append"
+                                     },
+                      "type":  "n8n-nodes-base.merge",
+                      "position":  [
+                                       1300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node8",
+                      "name":  "Wait",
+                      "parameters":  {
+                                         "unit":  "seconds",
+                                         "amount":  1
+                                     },
+                      "type":  "n8n-nodes-base.wait",
+                      "position":  [
+                                       1500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node9",
+                      "name":  "Sticky Note",
+                      "parameters":  {
+                                         "content":  "This is a test workflow"
+                                     },
+                      "type":  "n8n-nodes-base.stickyNote",
+                      "position":  [
+                                       1700,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  }
+              ],
+    "settings":  {
+
+                 },
+    "connections":  {
+                        "node6":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node7",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node4":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node5",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node3":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node4",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node5":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node6",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node7":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node8",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

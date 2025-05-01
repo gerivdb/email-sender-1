@@ -48,6 +48,7 @@ $FunctionsToExport = @(
     'Get-AstVariables',
     'Get-AstCommands',
     'Get-AstControlStructures',
+    'Get-AstEventHandlers',
     'Optimize-AstExtraction',
     'Clear-AstExtractionCache',
     'Get-AstExtractionCacheStatistics'

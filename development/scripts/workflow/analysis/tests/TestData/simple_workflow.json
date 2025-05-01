@@ -1,0 +1,74 @@
+﻿{
+    "id":  "test-workflow-1",
+    "name":  "Test Workflow Simple",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "HTTP Request",
+                      "parameters":  {
+                                         "url":  "https://example.com",
+                                         "method":  "GET"
+                                     },
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  }
+              ],
+    "settings":  {
+
+                 },
+    "connections":  {
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

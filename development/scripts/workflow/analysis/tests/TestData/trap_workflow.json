@@ -1,0 +1,92 @@
+﻿{
+    "id":  "test-workflow-trap",
+    "name":  "Test Workflow Trap",
+    "nodes":  [
+                  {
+                      "position":  [
+                                       100,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Start",
+                      "id":  "node1",
+                      "type":  "n8n-nodes-base.start"
+                  },
+                  {
+                      "id":  "node2",
+                      "name":  "Set Data",
+                      "parameters":  {
+                                         "values":  {
+                                                        "string":  [
+                                                                       {
+                                                                           "value":  "test",
+                                                                           "name":  "testValue"
+                                                                       }
+                                                                   ]
+                                                    }
+                                     },
+                      "type":  "n8n-nodes-base.set",
+                      "position":  [
+                                       300,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "id":  "node3",
+                      "name":  "Function with Trap",
+                      "parameters":  {
+                                         "functionCode":  "// This is a JavaScript function with PowerShell-like trap statements\n// Note: This is just for testing the trap detection, not actual working code\n\nfunction processData() {\n    // Simple trap statement\n    trap {\n        console.log(\u0027Error caught in trap\u0027);\n        return { error: true, message: \u0027An error occurred\u0027 };\n    }\n\n    // Trap with specific exception type\n    trap [TypeError] {\n        console.log(\u0027TypeError caught in trap\u0027);\n        return { error: true, message: \u0027Type error occurred\u0027 };\n    }\n\n    // Multiple trap statements\n    trap [ReferenceError] {\n        console.log(\u0027ReferenceError caught in trap\u0027);\n        return { error: true, message: \u0027Reference error occurred\u0027 };\n    }\n\n    // Some code that might throw errors\n    const result = items[0].json.testValue.toUpperCase();\n\n    return [{ json: { result: result } }];\n}\n\nreturn processData();"
+                                     },
+                      "type":  "n8n-nodes-base.function",
+                      "position":  [
+                                       500,
+                                       300
+                                   ],
+                      "typeVersion":  1
+                  },
+                  {
+                      "position":  [
+                                       700,
+                                       300
+                                   ],
+                      "typeVersion":  1,
+                      "name":  "Output",
+                      "id":  "node4",
+                      "type":  "n8n-nodes-base.noOp"
+                  }
+              ],
+    "settings":  {
+
+                 },
+    "connections":  {
+                        "node3":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node4",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node1":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node2",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  },
+                        "node2":  {
+                                      "main":  [
+                                                   {
+                                                       "node":  "node3",
+                                                       "type":  "main",
+                                                       "index":  0
+                                                   }
+                                               ]
+                                  }
+                    },
+    "active":  false
+}

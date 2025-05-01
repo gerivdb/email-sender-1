@@ -1,0 +1,189 @@
+﻿{
+  "id": "test-workflow-triggers-actions",
+  "name": "Test Workflow Triggers and Actions",
+  "nodes": [
+    {
+      "id": "cron-trigger",
+      "name": "Cron Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 100],
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyDay",
+              "hour": 9,
+              "minute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300],
+      "parameters": {
+        "path": "test-webhook",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "authentication": "basicAuth"
+      }
+    },
+    {
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 500],
+      "parameters": {}
+    },
+    {
+      "id": "set-node",
+      "name": "Set Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [300, 300],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "Test message"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "function-node",
+      "name": "Process Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "parameters": {
+        "functionCode": "return [\n  {\n    json: {\n      processed: items[0].json.message + ' processed'\n    }\n  }\n];"
+      }
+    },
+    {
+      "id": "if-node",
+      "name": "Check Condition",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{.processed}}",
+              "operation": "contains",
+              "value2": "processed"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "http-node",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [900, 200],
+      "parameters": {
+        "url": "https://example.com",
+        "method": "GET"
+      }
+    },
+    {
+      "id": "error-node",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [900, 400],
+      "parameters": {
+        "errorMessage": "Process failed",
+        "errorDescription": "The condition was not met"
+      }
+    }
+  ],
+  "connections": {
+    "cron-trigger": {
+      "main": [
+        [
+          {
+            "node": "set-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhook-trigger": {
+      "main": [
+        [
+          {
+            "node": "set-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "manual-trigger": {
+      "main": [
+        [
+          {
+            "node": "set-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set-node": {
+      "main": [
+        [
+          {
+            "node": "function-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "function-node": {
+      "main": [
+        [
+          {
+            "node": "if-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if-node": {
+      "main": [
+        [
+          {
+            "node": "http-node",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

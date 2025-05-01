@@ -201,37 +201,134 @@
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.1** Créer des benchmarks pour mesurer le temps d'exécution
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.2** Optimiser les performances pour les grands scripts
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.1.5.3.3** Comparer les performances avec d'autres outils d'analyse
-                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2** Implémenter l'extraction des fonctions de gestionnaire
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1** Développer une fonction pour identifier les gestionnaires d'événements
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.1** Créer la détection des gestionnaires Register-Event
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.2** Implémenter la détection des gestionnaires Add-Type avec événements
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.3** Ajouter la prise en charge des gestionnaires WMI
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2** Créer une fonction pour extraire les gestionnaires de workflow
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.1** Implémenter la détection des activités de workflow
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.2** Créer l'extraction des transitions de workflow
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.3** Développer l'analyse des conditions de workflow
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3** Développer une fonction pour extraire les gestionnaires d'erreurs
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.1** Implémenter la détection des blocs try/catch/finally
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.2** Créer l'extraction des gestionnaires trap
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.3** Ajouter la prise en charge des gestionnaires d'erreurs personnalisés
+                      - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2** Implémenter l'extraction des fonctions de gestionnaire
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1** Développer une fonction pour identifier les gestionnaires d'événements
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.1** Créer la détection des gestionnaires Register-Event
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.2** Implémenter la détection des gestionnaires Add-Type avec événements
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.1.3** Ajouter la prise en charge des gestionnaires WMI
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2** Créer une fonction pour extraire les gestionnaires de workflow
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.1** Implémenter la détection des activités de workflow
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.2** Créer l'extraction des transitions de workflow
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.2.3** Développer l'analyse des conditions de workflow
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3** Développer une fonction pour extraire les gestionnaires d'erreurs
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.1** Implémenter la détection des blocs try/catch/finally
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.2** Créer l'extraction des gestionnaires trap
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.2.3.3** Ajouter la prise en charge des gestionnaires d'erreurs personnalisés
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3** Créer un mécanisme d'extraction des métadonnées des gestionnaires
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1** Développer l'extraction des informations de déclenchement
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.1** Implémenter l'extraction des conditions de déclenchement
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.2** Créer la détection des sources d'événements
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.3** Développer l'analyse des paramètres de déclenchement
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2** Créer l'extraction des informations d'action
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.1** Implémenter l'extraction des actions exécutées
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.2** Créer la détection des paramètres d'action
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.3** Développer l'analyse des résultats d'action
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3** Implémenter l'extraction des métadonnées de configuration
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1** Créer la détection des options de configuration
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2** Implémenter l'extraction des dépendances de configuration
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3** Développer l'analyse des contraintes de configuration
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1** Développer l'extraction des informations de déclenchement
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.1** Implémenter l'extraction des conditions de déclenchement
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.2** Créer la détection des sources d'événements
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.1.3** Développer l'analyse des paramètres de déclenchement
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2** Créer l'extraction des informations d'action
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.1** Implémenter l'extraction des actions exécutées
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.2** Créer la détection des paramètres d'action
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.2.3** Développer l'analyse des résultats d'action
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3** Implémenter l'extraction des métadonnées de configuration
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1** Créer la détection des options de configuration
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.1** Analyser les formats de configuration existants dans le projet
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.1.1** Identifier les différents formats de fichiers de configuration (JSON, YAML, etc.)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.1.2** Analyser la structure des fichiers de configuration existants
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.1.3** Identifier les patterns communs dans les configurations
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.1.4** Documenter les formats et structures identifiés
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.2** Concevoir l'algorithme de détection des options
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.2.1** Définir les critères de détection des options de configuration
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.2.2** Concevoir la structure de données pour représenter les options détectées
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.2.3** Élaborer l'algorithme de parcours des fichiers de configuration
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.2.4** Définir les mécanismes de gestion des cas particuliers
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3** Implémenter la fonction de détection des options
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3.1** Créer la fonction `Get-ConfigurationOptions`
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3.2** Implémenter la logique de détection pour les fichiers JSON
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3.3** Implémenter la logique de détection pour les fichiers YAML (si nécessaire)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3.4** Ajouter la gestion des erreurs et des cas limites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.3.5** Optimiser les performances de la détection
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.4** Créer les tests unitaires
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.4.1** Développer des tests pour les différents formats de configuration
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.4.2** Créer des tests pour les cas limites et les erreurs
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.4.3** Implémenter des tests de performance
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.1.4.4** Vérifier la couverture de code des tests
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2** Implémenter l'extraction des dépendances de configuration
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.1** Analyser les types de dépendances dans les configurations
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.1.1** Identifier les dépendances explicites (références directes)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.1.2** Identifier les dépendances implicites (basées sur les valeurs)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.1.3** Analyser les dépendances entre différents fichiers de configuration
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.1.4** Documenter les types de dépendances identifiés
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.2** Concevoir l'algorithme d'extraction des dépendances
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.2.1** Définir la structure de données pour représenter les dépendances
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.2.2** Concevoir l'algorithme de détection des dépendances explicites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.2.3** Élaborer l'algorithme de détection des dépendances implicites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.2.4** Définir les mécanismes de résolution des références
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3** Implémenter la fonction d'extraction des dépendances
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3.1** Créer la fonction `Get-ConfigurationDependencies`
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3.2** Implémenter la détection des dépendances explicites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3.3** Implémenter la détection des dépendances implicites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3.4** Ajouter la gestion des erreurs et des cas limites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.3.5** Optimiser les performances de l'extraction
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.4** Créer les tests unitaires
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.4.1** Développer des tests pour les différents types de dépendances
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.4.2** Créer des tests pour les cas limites et les erreurs
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.4.3** Implémenter des tests de performance
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.2.4.4** Vérifier la couverture de code des tests
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3** Développer l'analyse des contraintes de configuration
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.1** Analyser les types de contraintes dans les configurations
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.1.1** Identifier les contraintes de type (string, number, boolean, etc.)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.1.2** Identifier les contraintes de valeur (min, max, pattern, etc.)
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.1.3** Analyser les contraintes de relation entre options
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.1.4** Documenter les types de contraintes identifiés
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.2** Concevoir l'algorithme d'analyse des contraintes
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.2.1** Définir la structure de données pour représenter les contraintes
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.2.2** Concevoir l'algorithme de détection des contraintes de type
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.2.3** Élaborer l'algorithme de détection des contraintes de valeur
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.2.4** Définir les mécanismes de validation des contraintes
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3** Implémenter la fonction d'analyse des contraintes
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3.1** Créer la fonction `Get-ConfigurationConstraints`
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3.2** Implémenter la détection des contraintes de type
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3.3** Implémenter la détection des contraintes de valeur
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3.4** Ajouter la gestion des erreurs et des cas limites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.3.5** Optimiser les performances de l'analyse
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4** Créer les tests unitaires
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.1** Développer des tests pour les différents types de contraintes
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.2** Créer des tests pour les cas limites et les erreurs
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.3** Implémenter des tests de performance
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.4** Vérifier la couverture de code des tests
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.1** Analyser les différentes formes d'instructions Import-Module dans le code existant
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.2** Identifier les patterns d'utilisation (paramètres, options, chemins relatifs/absolus)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.3** Définir les exigences de performance et de précision pour la détection
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.4** Concevoir l'architecture de la fonction de détection
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.5** Implémenter la fonction de base pour l'analyse AST des Import-Module
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.6** Développer la détection des paramètres d'Import-Module (Name, Path, etc.)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.7** Implémenter la résolution des chemins relatifs pour les modules importés
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.8** Créer la gestion des cas particuliers (imports conditionnels, dynamiques)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.9** Développer les expressions régulières pour détecter les Import-Module
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.10** Implémenter la fonction d'analyse par regex avec extraction des noms de modules
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.11** Créer la logique de filtrage des faux positifs dans les résultats regex
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.12** Développer la fonction de fusion des résultats AST et regex
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.13** Intégrer la détection dans le système de gestion des dépendances
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.14** Optimiser les performances pour les grands fichiers
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.15** Implémenter un système de cache pour les résultats d'analyse
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.16** Développer des mécanismes de parallélisation pour l'analyse de multiples fichiers
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.17** Créer des tests unitaires pour la détection des Import-Module simples
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.18** Développer des tests pour les cas complexes (paramètres multiples, chemins)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.19** Implémenter des tests de performance et d'optimisation
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.20** Valider la détection sur des scripts réels du projet
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.21** Documenter la fonction de détection et ses paramètres
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.22** Créer des exemples d'utilisation de la fonction
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.23** Documenter les limitations connues et les cas particuliers
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.24** Finaliser l'intégration avec le système de gestion des dépendances
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2** Implémenter l'analyse des paramètres d'importation
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.1** Analyser les différents types de paramètres d'importation
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.2** Développer la détection des paramètres nommés (-Name, -Path, etc.)
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.3** Implémenter l'extraction des valeurs de paramètres
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.4** Créer la gestion des paramètres avec caractères spéciaux
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.5** Développer la détection des paramètres optionnels
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3** Développer la détection des modules requis implicites
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1** Analyser les modules requis implicitement dans le code
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2** Développer la détection des modules référencés sans Import-Module
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3** Implémenter la résolution des dépendances indirectes
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4** Créer la gestion des modules requis par des fonctions externes
+                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5** Intégrer la détection dans le système de gestion des dépendances
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2** Créer la détection des dépendances de fonctions
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.1** Implémenter l'analyse des appels de fonction
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.2** Créer la détection des fonctions définies vs. appelées

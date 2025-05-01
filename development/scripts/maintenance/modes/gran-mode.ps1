@@ -65,6 +65,9 @@ param (
     [string]$SubTasksFile,
 
     [Parameter(Mandatory = $false)]
+    [string]$SubTasksInput,
+
+    [Parameter(Mandatory = $false)]
     [ValidateSet("Simple", "Medium", "Complex", "Auto")]
     [string]$ComplexityLevel = "Auto",
 
@@ -221,7 +224,9 @@ Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Gray
 if ($TaskIdentifier) {
     Write-Host "Identifiant de tâche : $TaskIdentifier" -ForegroundColor Gray
 }
-if ($SubTasksFile) {
+if ($SubTasksInput) {
+    Write-Host "Sous-tâches fournies via paramètre SubTasksInput" -ForegroundColor Gray
+} elseif ($SubTasksFile) {
     Write-Host "Fichier de sous-tâches : $SubTasksFile" -ForegroundColor Gray
 } else {
     Write-Host "Niveau de complexité : $ComplexityLevel" -ForegroundColor Gray
@@ -1117,9 +1122,13 @@ function Get-CombinedDomainTemplate {
 # Charger la configuration des modèles de sous-tâches
 $templateConfig = Get-SubTasksTemplateConfig -ProjectRoot $projectRoot
 
-# Lire les sous-tâches à partir du fichier si spécifié
+# Lire les sous-tâches à partir du fichier ou du paramètre SubTasksInput
 $subTasksInput = ""
-if ($SubTasksFile) {
+if ($SubTasksInput) {
+    # Utiliser directement les sous-tâches fournies en paramètre
+    $subTasksInput = $SubTasksInput
+    Write-Host "Sous-tâches fournies via le paramètre SubTasksInput" -ForegroundColor Green
+} elseif ($SubTasksFile) {
     if (Test-Path -Path $SubTasksFile) {
         $subTasksInput = Get-Content -Path $SubTasksFile -Encoding UTF8 -Raw
         Write-Host "Sous-tâches lues depuis le fichier : $SubTasksFile" -ForegroundColor Green
@@ -1329,51 +1338,78 @@ $useTimeEstimation = $AddTimeEstimation
 
 if ($useTimeEstimation) {
     # Importer la fonction Invoke-RoadmapGranularizationWithTimeEstimation si elle n'est pas déjà disponible
-    $granularizationPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularizationWithTimeEstimation.ps1"
+    # Essayer d'abord avec le chemin relatif
+    $projectRoot = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
+
+    # Essayer d'abord le fichier corrigé
+    $granularizationPath = Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularizationWithTimeEstimation-Fixed.ps1"
     if (Test-Path -Path $granularizationPath) {
         . $granularizationPath
-
-        # Ajouter les paramètres spécifiques à l'estimation de temps
-        $params.AddTimeEstimation = $true
-
-        # Convertir le niveau de complexité si nécessaire
-        if ($ComplexityLevel -eq "Auto") {
-            $params.ComplexityLevel = "Medium" # Valeur par défaut
-        } else {
-            $params.ComplexityLevel = $ComplexityLevel
-        }
-
-        $params.Domain = $Domain
-
-        Write-Host "Utilisation de la fonction avec estimation de temps..." -ForegroundColor Yellow
-        $result = Invoke-RoadmapGranularizationWithTimeEstimation @params
+        Write-Host "Chargement de la fonction Invoke-RoadmapGranularizationWithTimeEstimation depuis $granularizationPath" -ForegroundColor Green
     } else {
-        Write-Warning "La fonction Invoke-RoadmapGranularizationWithTimeEstimation est introuvable. Utilisation de la fonction standard."
-        $useTimeEstimation = $false
-    }
-}
-
-if (-not $useTimeEstimation) {
-    # Importer la fonction Invoke-RoadmapGranularization si elle n'est pas déjà disponible
-    $granularizationPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularization.ps1"
-    if (Test-Path -Path $granularizationPath) {
-        . $granularizationPath
-    } else {
-        $granularizationPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\roadmap-parser\module\Functions\Public\Invoke-RoadmapGranularization.ps1"
+        # Essayer le fichier original
+        $granularizationPath = Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularizationWithTimeEstimation.ps1"
         if (Test-Path -Path $granularizationPath) {
             . $granularizationPath
+            Write-Host "Chargement de la fonction Invoke-RoadmapGranularizationWithTimeEstimation depuis $granularizationPath" -ForegroundColor Green
         } else {
-            Write-Error "La fonction Invoke-RoadmapGranularization est introuvable. Assurez-vous que le fichier Invoke-RoadmapGranularization.ps1 est présent dans le répertoire $granularizationPath."
-            exit 1
+            Write-Warning "La fonction Invoke-RoadmapGranularizationWithTimeEstimation est introuvable. Utilisation de la fonction standard."
+            $useTimeEstimation = $false
+        }
+
+        if ($useTimeEstimation) {
+            # Ajouter les paramètres spécifiques à l'estimation de temps
+            $params.AddTimeEstimation = $true
+
+            # Convertir le niveau de complexité si nécessaire
+            if ($ComplexityLevel -eq "Auto") {
+                $params.ComplexityLevel = "Medium" # Valeur par défaut
+            } else {
+                $params.ComplexityLevel = $ComplexityLevel
+            }
+
+            $params.Domain = $Domain
+
+            Write-Host "Utilisation de la fonction avec estimation de temps..." -ForegroundColor Yellow
+            $result = Invoke-RoadmapGranularizationWithTimeEstimation @params
         }
     }
 
-    $result = Invoke-RoadmapGranularization @params
-}
+    if (-not $useTimeEstimation) {
+        # Importer la fonction Invoke-RoadmapGranularization si elle n'est pas déjà disponible
+        # Essayer d'abord avec le chemin relatif
+        $projectRoot = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
 
-# Afficher un message de fin
-Write-Host "`nExécution du mode GRAN terminée." -ForegroundColor Cyan
-Write-Host "Le document a été modifié : $FilePath" -ForegroundColor Green
+        # Essayer d'abord le fichier corrigé
+        $granularizationPath = Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularization-Fixed.ps1"
+        if (Test-Path -Path $granularizationPath) {
+            . $granularizationPath
+            Write-Host "Chargement de la fonction Invoke-RoadmapGranularization depuis $granularizationPath" -ForegroundColor Green
+        } else {
+            # Essayer le fichier original
+            $granularizationPath = Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\module\Functions\Public\Invoke-RoadmapGranularization.ps1"
+            if (Test-Path -Path $granularizationPath) {
+                . $granularizationPath
+                Write-Host "Chargement de la fonction Invoke-RoadmapGranularization depuis $granularizationPath" -ForegroundColor Green
+            } else {
+                # Essayer d'autres chemins possibles
+                $granularizationPath = Join-Path -Path $projectRoot -ChildPath "scripts\roadmap-parser\module\Functions\Public\Invoke-RoadmapGranularization.ps1"
+                if (Test-Path -Path $granularizationPath) {
+                    . $granularizationPath
+                    Write-Host "Chargement de la fonction Invoke-RoadmapGranularization depuis $granularizationPath" -ForegroundColor Green
+                } else {
+                    Write-Error "La fonction Invoke-RoadmapGranularization est introuvable. Assurez-vous que le fichier Invoke-RoadmapGranularization.ps1 ou Invoke-RoadmapGranularization-Fixed.ps1 est présent dans le répertoire development\roadmap\parser\module\Functions\Public\"
+                    exit 1
+                }
+            }
+        }
 
-# Retourner le résultat
-return $result
+        $result = Invoke-RoadmapGranularization @params
+    }
+
+    # Afficher un message de fin
+    Write-Host "`nExécution du mode GRAN terminée." -ForegroundColor Cyan
+    Write-Host "Le document a été modifié : $FilePath" -ForegroundColor Green
+
+    # Retourner le résultat
+    return $result
