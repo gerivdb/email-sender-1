@@ -1413,3 +1413,4 @@ if ($useTimeEstimation) {
 
     # Retourner le résultat
     return $result
+}

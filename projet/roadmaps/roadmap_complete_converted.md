@@ -291,7 +291,7 @@
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.3** Implémenter des tests de performance
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.4** Vérifier la couverture de code des tests
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
                           - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.1** Analyser les différentes formes d'instructions Import-Module dans le code existant
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.2** Identifier les patterns d'utilisation (paramètres, options, chemins relatifs/absolus)
@@ -317,18 +317,92 @@
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.22** Créer des exemples d'utilisation de la fonction
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.23** Documenter les limitations connues et les cas particuliers
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.24** Finaliser l'intégration avec le système de gestion des dépendances
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2** Implémenter l'analyse des paramètres d'importation
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.1** Analyser les différents types de paramètres d'importation
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.2** Développer la détection des paramètres nommés (-Name, -Path, etc.)
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.3** Implémenter l'extraction des valeurs de paramètres
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.4** Créer la gestion des paramètres avec caractères spéciaux
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.5** Développer la détection des paramètres optionnels
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3** Développer la détection des modules requis implicites
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1** Analyser les modules requis implicitement dans le code
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2** Développer la détection des modules référencés sans Import-Module
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2** Implémenter l'analyse des paramètres d'importation
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.1** Analyser les différents types de paramètres d'importation
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.2** Développer la détection des paramètres nommés (-Name, -Path, etc.)
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.3** Implémenter l'extraction des valeurs de paramètres
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.4** Créer la gestion des paramètres avec caractères spéciaux
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.2.5** Développer la détection des paramètres optionnels
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3** Développer la détection des modules requis implicites
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1** Analyser les modules requis implicitement dans le code
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1.1** Créer une fonction pour détecter les appels de cmdlets sans import explicite
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1.2** Implémenter la détection des types .NET spécifiques à des modules
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1.3** Développer la détection des variables globales spécifiques à des modules
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1.4** Créer une base de données de correspondance entre cmdlets/types et modules
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.1.5** Implémenter un mécanisme de scoring pour évaluer la probabilité des références
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2** Développer la détection des modules référencés sans Import-Module
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1** Créer une fonction pour détecter les appels de fonctions de modules non importés
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.1** Analyser les patterns d'appels de fonctions dans PowerShell
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.2** Développer un parser pour extraire les appels de fonctions
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.3** Créer un mécanisme de détection des fonctions importées
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.4** Implémenter la comparaison entre fonctions appelées et importées
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.5** Ajouter la résolution des modules pour les fonctions non importés
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.6** Gérer les cas particuliers et les exceptions
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.1.7** Créer des tests unitaires pour la détection des appels non importés
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.2** Implémenter la détection des références à des alias de modules
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.3** Développer la détection des références à des variables de modules
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.4** Implémenter l'analyse des commentaires pour détecter les références implicites
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.5** Créer un système de validation des modules détectés
                             - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3** Implémenter la résolution des dépendances indirectes
+                              - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1** Créer une fonction pour l'analyse récursive des dépendances de modules
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.1** Concevoir l'algorithme de parcours récursif des dépendances
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.2** Implémenter la détection des dépendances directes d'un module
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.3** Développer le mécanisme de suivi des modules déjà analysés
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.4** Implémenter la limitation de profondeur de récursion
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.5** Créer la structure de données pour représenter le graphe de dépendances
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.6** Développer les fonctions d'accès et de manipulation du graphe
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.7** Implémenter la détection des dépendances circulaires
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.7.1** Rechercher les algorithmes de détection de cycles dans les graphes
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.7.2** Implémenter l'algorithme de détection de cycles
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.7.3** Développer la fonction de rapport des cycles détectés
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.7.4** Créer des tests pour la détection de cycles
+                                - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8** Créer des tests unitaires pour l'analyse récursive
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8.1** Créer des modules de test avec différentes structures de dépendances
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8.2** Développer des tests pour les dépendances simples
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8.3** Implémenter des tests pour les dépendances complexes
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8.4** Créer des tests pour les cas limites (profondeur max, etc.)
+                                  - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.8.5** Développer des tests pour la détection des cycles
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2** Implémenter la détection des dépendances via les manifestes de modules (.psd1)
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.1** Analyser la structure des fichiers manifestes PowerShell (.psd1)
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.2** Créer une fonction pour extraire les dépendances RequiredModules
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.3** Implémenter la détection des dépendances NestedModules
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.4** Ajouter la détection des dépendances RootModule/ModuleToProcess
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.5** Intégrer un système de filtrage des modules système
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.6** Développer un mécanisme de résolution des chemins de modules
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.2.7** Créer des tests unitaires pour la détection via les manifestes
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.3** Développer la détection des dépendances via l'analyse du code des modules
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.4** Implémenter un mécanisme pour éviter les boucles infinies dans la résolution
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.5** Créer un système de visualisation du graphe de dépendances
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.6** Corriger les problèmes de syntaxe dans le module complet
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.6.1** Identifier et corriger les problèmes de chaînes de caractères dans les commentaires d'aide
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.6.2** Corriger les problèmes de syntaxe dans les exemples de code
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.6.3** Vérifier et corriger les problèmes de formatage
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.7** Améliorer la détection des dépendances Import-Module dans le code
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.7.1** Améliorer l'expression régulière pour la détection des Import-Module
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.7.2** Ajouter la prise en charge des paramètres nommés (-Name)
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.7.3** Améliorer la détection des chemins relatifs et absolus
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.8** Ajouter plus de tests unitaires pour couvrir tous les cas d'utilisation
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.8.1** Créer des tests pour la détection des dépendances via les manifestes
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.8.2** Créer des tests pour la détection des dépendances via l'analyse du code
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.8.3** Créer des tests pour la détection et la résolution des cycles
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.8.4** Créer des tests pour la visualisation du graphe de dépendances
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.9** Améliorer la documentation du module
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.9.1** Ajouter des exemples d'utilisation plus détaillés
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.9.2** Documenter les cas d'utilisation avancés
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.9.3** Créer un guide de dépannage
+                                - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.9.4** Ajouter des diagrammes explicatifs
                             - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4** Créer la gestion des modules requis par des fonctions externes
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4.1** Développer une fonction pour analyser les dépendances des fonctions externes
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4.2** Implémenter la détection des appels à des fonctions externes
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4.3** Créer un mécanisme de résolution des chemins des fonctions externes
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4.4** Implémenter un système de cache pour les résultats d'analyse
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.4.5** Développer un mécanisme de rapport des dépendances externes
                             - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5** Intégrer la détection dans le système de gestion des dépendances
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5.1** Créer une fonction d'intégration qui combine toutes les méthodes de détection
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5.2** Implémenter l'intégration avec le module ModuleDependencyDetector existant
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5.3** Développer l'export des résultats dans différents formats (JSON, CSV, etc.)
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5.4** Créer une interface unifiée pour toutes les méthodes de détection
+                              - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.5.5** Implémenter des tests d'intégration pour valider le système complet
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2** Créer la détection des dépendances de fonctions
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.1** Implémenter l'analyse des appels de fonction
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.2** Créer la détection des fonctions définies vs. appelées
