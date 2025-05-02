@@ -10,8 +10,9 @@
 
 .NOTES
     Auteur: Dependency Management Team
-    Version: 1.0
+    Version: 1.1
     Date de création: 2023-06-15
+    Date de mise à jour: 2023-07-20
 #>
 
 # Variables globales pour le module
@@ -328,10 +329,20 @@ function Get-ModuleDependenciesFromManifest {
             Write-Verbose "Analyse des RequiredModules dans le manifeste: $ManifestPath"
 
             # RequiredModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
-            foreach ($requiredModule in $manifest.RequiredModules) {
+            $requiredModules = $manifest.RequiredModules
+
+            # Si RequiredModules est une chaîne unique, la convertir en tableau
+            if ($requiredModules -is [string]) {
+                $requiredModules = @($requiredModules)
+            }
+
+            foreach ($requiredModule in $requiredModules) {
                 $moduleName = $null
                 $moduleVersion = $null
+                $moduleGuid = $null
                 $modulePath = $null
+                $moduleMaxVersion = $null
+                $moduleMinVersion = $null
 
                 # Déterminer le format du module requis
                 if ($requiredModule -is [string]) {
@@ -342,17 +353,39 @@ function Get-ModuleDependenciesFromManifest {
                     if ($requiredModule.ContainsKey('ModuleName')) {
                         $moduleName = $requiredModule.ModuleName
                     }
+
+                    # Gérer les différentes façons de spécifier la version
                     if ($requiredModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $requiredModule.ModuleVersion
                     }
                     if ($requiredModule.ContainsKey('RequiredVersion')) {
                         $moduleVersion = $requiredModule.RequiredVersion
                     }
+                    if ($requiredModule.ContainsKey('MaximumVersion')) {
+                        $moduleMaxVersion = $requiredModule.MaximumVersion
+                    }
+                    if ($requiredModule.ContainsKey('MinimumVersion')) {
+                        $moduleMinVersion = $requiredModule.MinimumVersion
+                    }
+
+                    # Gérer le GUID du module
+                    if ($requiredModule.ContainsKey('GUID')) {
+                        $moduleGuid = $requiredModule.GUID
+                    }
                 } elseif ($requiredModule -is [System.Management.Automation.PSModuleInfo]) {
                     # Format objet: [PSModuleInfo]
                     $moduleName = $requiredModule.Name
                     $moduleVersion = $requiredModule.Version
+                    $moduleGuid = $requiredModule.Guid
                     $modulePath = $requiredModule.Path
+                } elseif ($requiredModule -is [array]) {
+                    # Format tableau: @('ModuleName', 'Version')
+                    if ($requiredModule.Length -ge 1) {
+                        $moduleName = $requiredModule[0]
+                        if ($requiredModule.Length -ge 2) {
+                            $moduleVersion = $requiredModule[1]
+                        }
+                    }
                 }
 
                 # Ignorer les modules système si demandé
@@ -368,11 +401,14 @@ function Get-ModuleDependenciesFromManifest {
 
                 # Ajouter la dépendance à la liste
                 [void]$dependencies.Add([PSCustomObject]@{
-                        Name    = $moduleName
-                        Version = $moduleVersion
-                        Path    = $modulePath
-                        Type    = "RequiredModule"
-                        Source  = $ManifestPath
+                        Name       = $moduleName
+                        Version    = $moduleVersion
+                        MinVersion = $moduleMinVersion
+                        MaxVersion = $moduleMaxVersion
+                        GUID       = $moduleGuid
+                        Path       = $modulePath
+                        Type       = "RequiredModule"
+                        Source     = $ManifestPath
                     })
             }
         }
@@ -382,10 +418,20 @@ function Get-ModuleDependenciesFromManifest {
             Write-Verbose "Analyse des NestedModules dans le manifeste: $ManifestPath"
 
             # NestedModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
-            foreach ($nestedModule in $manifest.NestedModules) {
+            $nestedModules = $manifest.NestedModules
+
+            # Si NestedModules est une chaîne unique, la convertir en tableau
+            if ($nestedModules -is [string]) {
+                $nestedModules = @($nestedModules)
+            }
+
+            foreach ($nestedModule in $nestedModules) {
                 $moduleName = $null
                 $moduleVersion = $null
+                $moduleGuid = $null
                 $modulePath = $null
+                $moduleMaxVersion = $null
+                $moduleMinVersion = $null
 
                 # Déterminer le format du module imbriqué
                 if ($nestedModule -is [string]) {
@@ -394,6 +440,12 @@ function Get-ModuleDependenciesFromManifest {
                         # C'est un chemin vers un fichier .psm1 ou .psd1
                         $modulePath = $nestedModule
                         $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($nestedModule)
+
+                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
+                            $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
+                            $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
+                        }
                     } else {
                         # C'est un nom de module
                         $moduleName = $nestedModule
@@ -403,14 +455,50 @@ function Get-ModuleDependenciesFromManifest {
                     if ($nestedModule.ContainsKey('ModuleName')) {
                         $moduleName = $nestedModule.ModuleName
                     }
+
+                    # Gérer les différentes façons de spécifier la version
                     if ($nestedModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $nestedModule.ModuleVersion
+                    }
+                    if ($nestedModule.ContainsKey('RequiredVersion')) {
+                        $moduleVersion = $nestedModule.RequiredVersion
+                    }
+                    if ($nestedModule.ContainsKey('MaximumVersion')) {
+                        $moduleMaxVersion = $nestedModule.MaximumVersion
+                    }
+                    if ($nestedModule.ContainsKey('MinimumVersion')) {
+                        $moduleMinVersion = $nestedModule.MinimumVersion
+                    }
+
+                    # Gérer le GUID du module
+                    if ($nestedModule.ContainsKey('GUID')) {
+                        $moduleGuid = $nestedModule.GUID
+                    }
+
+                    # Gérer le chemin du module
+                    if ($nestedModule.ContainsKey('Path')) {
+                        $modulePath = $nestedModule.Path
+
+                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
+                            $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
+                            $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
+                        }
                     }
                 } elseif ($nestedModule -is [System.Management.Automation.PSModuleInfo]) {
                     # Format objet: [PSModuleInfo]
                     $moduleName = $nestedModule.Name
                     $moduleVersion = $nestedModule.Version
+                    $moduleGuid = $nestedModule.Guid
                     $modulePath = $nestedModule.Path
+                } elseif ($nestedModule -is [array]) {
+                    # Format tableau: @('ModuleName', 'Version')
+                    if ($nestedModule.Length -ge 1) {
+                        $moduleName = $nestedModule[0]
+                        if ($nestedModule.Length -ge 2) {
+                            $moduleVersion = $nestedModule[1]
+                        }
+                    }
                 }
 
                 # Ignorer les modules système si demandé
@@ -426,11 +514,14 @@ function Get-ModuleDependenciesFromManifest {
 
                 # Ajouter la dépendance à la liste
                 [void]$dependencies.Add([PSCustomObject]@{
-                        Name    = $moduleName
-                        Version = $moduleVersion
-                        Path    = $modulePath
-                        Type    = "NestedModule"
-                        Source  = $ManifestPath
+                        Name       = $moduleName
+                        Version    = $moduleVersion
+                        MinVersion = $moduleMinVersion
+                        MaxVersion = $moduleMaxVersion
+                        GUID       = $moduleGuid
+                        Path       = $modulePath
+                        Type       = "NestedModule"
+                        Source     = $ManifestPath
                     })
             }
         }
@@ -439,28 +530,102 @@ function Get-ModuleDependenciesFromManifest {
         if (($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) -or
             ($manifest.ContainsKey('RootModule') -and $manifest.RootModule)) {
 
-            $rootModule = $manifest.ModuleToProcess ?? $manifest.RootModule
+            $rootModule = if ($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) {
+                $manifest.ModuleToProcess
+            } else {
+                $manifest.RootModule
+            }
             Write-Verbose "Analyse du RootModule dans le manifeste: $ManifestPath"
 
-            # Vérifier si le RootModule est un chemin vers un fichier .psm1
-            if ($rootModule -match '\.psm1$') {
-                $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($rootModule)
-                $modulePath = $rootModule
+            # Déterminer le type de RootModule
+            if ($rootModule -is [string]) {
+                $moduleName = $null
+                $modulePath = $null
 
-                # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
-                if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
-                    $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
-                    $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
+                # Vérifier si le RootModule est un chemin vers un fichier .psm1 ou .psd1
+                if ($rootModule -match '\.ps[md]1$') {
+                    $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($rootModule)
+                    $modulePath = $rootModule
+
+                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
+                        $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
+                        $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
+                    }
+                } else {
+                    # C'est un nom de module
+                    $moduleName = $rootModule
+
+                    # Résoudre le chemin du module si demandé
+                    if ($ResolveModulePaths) {
+                        $modulePath = Find-ModulePath -ModuleName $moduleName
+                    }
                 }
 
-                # Ajouter la dépendance à la liste
-                [void]$dependencies.Add([PSCustomObject]@{
-                        Name    = $moduleName
-                        Version = $null
-                        Path    = $modulePath
-                        Type    = "RootModule"
-                        Source  = $ManifestPath
-                    })
+                # Ignorer les modules système si demandé
+                if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
+                    Write-Verbose "Module système ignoré: $moduleName"
+                } else {
+                    # Ajouter la dépendance à la liste
+                    [void]$dependencies.Add([PSCustomObject]@{
+                            Name    = $moduleName
+                            Version = $null
+                            Path    = $modulePath
+                            Type    = "RootModule"
+                            Source  = $ManifestPath
+                        })
+                }
+            } elseif ($rootModule -is [hashtable] -or $rootModule -is [System.Collections.Specialized.OrderedDictionary]) {
+                # Format complexe: @{ModuleName='Name'; ModuleVersion='1.0.0'}
+                $moduleName = $null
+                $moduleVersion = $null
+                $moduleGuid = $null
+                $modulePath = $null
+
+                if ($rootModule.ContainsKey('ModuleName')) {
+                    $moduleName = $rootModule.ModuleName
+                }
+
+                # Gérer les différentes façons de spécifier la version
+                if ($rootModule.ContainsKey('ModuleVersion')) {
+                    $moduleVersion = $rootModule.ModuleVersion
+                }
+                if ($rootModule.ContainsKey('RequiredVersion')) {
+                    $moduleVersion = $rootModule.RequiredVersion
+                }
+
+                # Gérer le GUID du module
+                if ($rootModule.ContainsKey('GUID')) {
+                    $moduleGuid = $rootModule.GUID
+                }
+
+                # Gérer le chemin du module
+                if ($rootModule.ContainsKey('Path')) {
+                    $modulePath = $rootModule.Path
+
+                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
+                        $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
+                        $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
+                    }
+                } elseif ($ResolveModulePaths) {
+                    $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
+                }
+
+                # Ignorer les modules système si demandé
+                if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
+                    Write-Verbose "Module système ignoré: $moduleName"
+                } else {
+                    # Ajouter la dépendance à la liste
+                    [void]$dependencies.Add([PSCustomObject]@{
+                            Name    = $moduleName
+                            Version = $moduleVersion
+                            GUID    = $moduleGuid
+                            Path    = $modulePath
+                            Type    = "RootModule"
+                            Source  = $ManifestPath
+                        })
+                }
             }
         }
 
@@ -488,11 +653,15 @@ function Test-SystemModule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string]$ModuleName
+        [string]$ModuleName,
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$AdditionalSystemModules = @()
     )
 
     # Liste des modules système PowerShell
     $systemModules = @(
+        # Modules de base PowerShell
         'Microsoft.PowerShell.Archive',
         'Microsoft.PowerShell.Core',
         'Microsoft.PowerShell.Diagnostics',
@@ -507,10 +676,68 @@ function Test-SystemModule {
         'PSWorkflowUtility',
         'CimCmdlets',
         'ISE',
-        'PSReadLine'
+        'PSReadLine',
+
+        # Modules d'administration Windows
+        'ActiveDirectory',
+        'GroupPolicy',
+        'ServerManager',
+        'DnsClient',
+        'NetAdapter',
+        'NetConnection',
+        'NetSecurity',
+        'NetTCPIP',
+
+        # Modules de gestion Azure
+        'Az',
+        'Az.Accounts',
+        'Az.Compute',
+        'Az.Resources',
+        'Az.Storage',
+        'AzureRM',
+
+        # Modules de gestion AWS
+        'AWS.Tools.Common',
+        'AWSPowerShell',
+
+        # Modules de développement
+        'Pester',
+        'PSScriptAnalyzer',
+
+        # Modules d'automatisation
+        'ThreadJob',
+        'PSWorkflow',
+        'PSScheduledJob',
+
+        # Modules de sécurité
+        'PKI',
+        'CertificateDsc'
     )
 
-    return $systemModules -contains $ModuleName
+    # Ajouter les modules supplémentaires à la liste
+    if ($AdditionalSystemModules) {
+        $systemModules += $AdditionalSystemModules
+    }
+
+    # Vérifier si le module est un module système
+    $isSystemModule = $systemModules -contains $ModuleName
+
+    # Vérifier si le module est installé dans un répertoire système
+    if (-not $isSystemModule) {
+        $module = Get-Module -Name $ModuleName -ListAvailable -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($module) {
+            $modulePath = $module.Path
+            $isSystemPath = $modulePath -like "$env:SystemRoot\*" -or
+            $modulePath -like "$env:ProgramFiles\*" -or
+            $modulePath -like "$env:windir\*" -or
+            $modulePath -like "$($env:ProgramFiles)\WindowsPowerShell\Modules\*" -or
+            $modulePath -like "$($env:ProgramFiles)\PowerShell\*"
+
+            $isSystemModule = $isSystemModule -or $isSystemPath
+        }
+    }
+
+    return $isSystemModule
 }
 
 <#
@@ -536,7 +763,22 @@ function Find-ModulePath {
         [string]$ModuleName,
 
         [Parameter(Mandatory = $false)]
-        [string]$ModuleVersion
+        [string]$ModuleVersion,
+
+        [Parameter(Mandatory = $false)]
+        [string]$MinimumVersion,
+
+        [Parameter(Mandatory = $false)]
+        [string]$MaximumVersion,
+
+        [Parameter(Mandatory = $false)]
+        [string]$GUID,
+
+        [Parameter(Mandatory = $false)]
+        [string[]]$AdditionalPaths = @(),
+
+        [Parameter(Mandatory = $false)]
+        [switch]$AllVersions
     )
 
     # Rechercher le module
@@ -545,14 +787,80 @@ function Find-ModulePath {
         ErrorAction = 'SilentlyContinue'
     }
 
+    # Gérer les contraintes de version
     if ($ModuleVersion) {
         $moduleParams['RequiredVersion'] = $ModuleVersion
+    } else {
+        if ($MinimumVersion) {
+            $moduleParams['MinimumVersion'] = $MinimumVersion
+        }
+        if ($MaximumVersion) {
+            $moduleParams['MaximumVersion'] = $MaximumVersion
+        }
     }
 
-    $module = Get-Module -ListAvailable @moduleParams | Select-Object -First 1
+    # Rechercher le module dans les chemins standard
+    $modules = Get-Module -ListAvailable @moduleParams
 
-    if ($module) {
-        return $module.Path
+    # Filtrer par GUID si spécifié
+    if ($GUID) {
+        $modules = $modules | Where-Object { $_.Guid -eq $GUID }
+    }
+
+    # Rechercher le module dans les chemins supplémentaires
+    if ($AdditionalPaths) {
+        foreach ($path in $AdditionalPaths) {
+            if (Test-Path -Path $path -PathType Container) {
+                # Rechercher les fichiers .psd1 dans le chemin
+                $psd1Files = Get-ChildItem -Path $path -Filter "*.psd1" -Recurse -File
+                foreach ($psd1File in $psd1Files) {
+                    try {
+                        $manifest = Import-PowerShellDataFile -Path $psd1File.FullName -ErrorAction SilentlyContinue
+                        if ($manifest -and $manifest.ContainsKey('ModuleName') -and $manifest.ModuleName -eq $ModuleName) {
+                            # Vérifier la version si spécifiée
+                            $versionMatch = $true
+                            if ($ModuleVersion -and $manifest.ContainsKey('ModuleVersion') -and $manifest.ModuleVersion -ne $ModuleVersion) {
+                                $versionMatch = $false
+                            }
+                            if ($MinimumVersion -and $manifest.ContainsKey('ModuleVersion') -and [version]$manifest.ModuleVersion -lt [version]$MinimumVersion) {
+                                $versionMatch = $false
+                            }
+                            if ($MaximumVersion -and $manifest.ContainsKey('ModuleVersion') -and [version]$manifest.ModuleVersion -gt [version]$MaximumVersion) {
+                                $versionMatch = $false
+                            }
+                            if ($GUID -and $manifest.ContainsKey('GUID') -and $manifest.GUID -ne $GUID) {
+                                $versionMatch = $false
+                            }
+
+                            if ($versionMatch) {
+                                $moduleInfo = [PSCustomObject]@{
+                                    Name    = $ModuleName
+                                    Version = $manifest.ModuleVersion
+                                    Path    = $psd1File.FullName
+                                    GUID    = $manifest.GUID
+                                }
+                                $modules += $moduleInfo
+                            }
+                        }
+                    } catch {
+                        Write-Verbose "Erreur lors de l'analyse du fichier $($psd1File.FullName) : $_"
+                    }
+                }
+            }
+        }
+    }
+
+    # Retourner tous les modules ou seulement le premier
+    if ($AllVersions) {
+        if ($modules) {
+            return $modules | ForEach-Object { $_.Path }
+        }
+    } else {
+        if ($modules) {
+            # Trier par version et prendre le plus récent
+            $module = $modules | Sort-Object -Property Version -Descending | Select-Object -First 1
+            return $module.Path
+        }
     }
 
     return $null
@@ -638,10 +946,41 @@ function Get-ModuleDependenciesFromCode {
             }
         } else {
             # Utiliser des expressions régulières pour les versions antérieures de PowerShell
-            # Détecter les Import-Module
-            $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+([''"]?)([^''"\s]+)\1')
+            # Détecter les Import-Module avec différents formats
+            # Format 1: Import-Module ModuleName
+            # Format 2: Import-Module -Name ModuleName
+            # Format 3: Import-Module -Name "ModuleName"
+            # Format 4: Import-Module -Name 'ModuleName'
+            # Format 5: Import-Module -Path "C:\Path\To\Module.psd1"
+            $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+(?:-Name\s+)?([''"]?)([^''"\s,;]+)\1|^\s*Import-Module\s+-Name\s+([''"]?)([^''"\s,;]+)\3|^\s*Import-Module\s+-Path\s+([''"]?)([^''"\s,;]+)\5')
             foreach ($match in $importMatches) {
-                $moduleName = $match.Groups[2].Value
+                # Extraire le nom du module en fonction du format détecté
+                $moduleName = $null
+                $isPath = $false
+
+                if ($match.Groups[2].Success) {
+                    # Format 1: Import-Module ModuleName ou Format 2: Import-Module -Name ModuleName
+                    $moduleName = $match.Groups[2].Value
+                } elseif ($match.Groups[4].Success) {
+                    # Format 3/4: Import-Module -Name "ModuleName" ou Import-Module -Name 'ModuleName'
+                    $moduleName = $match.Groups[4].Value
+                } elseif ($match.Groups[6].Success) {
+                    # Format 5: Import-Module -Path "C:\Path\To\Module.psd1"
+                    $modulePath = $match.Groups[6].Value
+                    $isPath = $true
+
+                    # Extraire le nom du module à partir du chemin
+                    if ($modulePath -match '\.ps[md]1$') {
+                        $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($modulePath)
+                    } else {
+                        $moduleName = [System.IO.Path]::GetFileName($modulePath)
+                    }
+                }
+
+                # Vérifier si un nom de module a été trouvé
+                if (-not $moduleName) {
+                    continue
+                }
 
                 # Ignorer les modules système si demandé
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
@@ -650,9 +989,17 @@ function Get-ModuleDependenciesFromCode {
                 }
 
                 # Résoudre le chemin du module si demandé
-                $modulePath = $null
-                if ($ResolveModulePaths) {
-                    $modulePath = Find-ModulePath -ModuleName $moduleName
+                if (-not $isPath) {
+                    $modulePath = $null
+                    if ($ResolveModulePaths) {
+                        $modulePath = Find-ModulePath -ModuleName $moduleName
+                    }
+                } else {
+                    # Si le chemin est relatif, le résoudre par rapport au répertoire du module
+                    if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
+                        $moduleDir = [System.IO.Path]::GetDirectoryName($ModulePath)
+                        $modulePath = Join-Path -Path $moduleDir -ChildPath $modulePath
+                    }
                 }
 
                 # Ajouter la dépendance à la liste
@@ -1808,5 +2155,148 @@ function Show-ModuleDependencyGraph {
     return $visualizationPath
 }
 
+<#
+.SYNOPSIS
+    Analyse la structure d'un fichier manifeste PowerShell (.psd1).
+
+.DESCRIPTION
+    Cette fonction analyse la structure d'un fichier manifeste PowerShell (.psd1)
+    et retourne un objet contenant les informations sur le manifeste.
+
+.PARAMETER ManifestPath
+    Chemin du fichier manifeste (.psd1) à analyser.
+
+.EXAMPLE
+    $manifestInfo = Get-PowerShellManifestStructure -ManifestPath C:\Modules\MyModule\MyModule.psd1
+    Analyse la structure du manifeste du module MyModule.
+
+.OUTPUTS
+    [PSCustomObject] Informations sur la structure du manifeste.
+#>
+function Get-PowerShellManifestStructure {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ManifestPath
+    )
+
+    # Vérifier si le fichier existe
+    if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
+        $errorMsg = 'Manifest file not found: ' + $ManifestPath
+        Write-Error $errorMsg
+        return $null
+    }
+
+    # Vérifier l'extension du fichier
+    $extension = [System.IO.Path]::GetExtension($ManifestPath)
+    if ($extension -ne ".psd1") {
+        $errorMsg = 'Not a PowerShell manifest file (.psd1): ' + $ManifestPath
+        Write-Error $errorMsg
+        return $null
+    }
+
+    try {
+        # Importer le manifeste
+        $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
+
+        # Initialiser l'objet résultat
+    $result = [PSCustomObject]@{
+        Path                   = $ManifestPath
+        ModuleName             = [System.IO.Path]::GetFileNameWithoutExtension($ManifestPath)
+        ModuleVersion          = $manifest.ModuleVersion
+        GUID                   = $manifest.GUID
+        Author                 = $manifest.Author
+        CompanyName            = $manifest.CompanyName
+        Copyright              = $manifest.Copyright
+        Description            = $manifest.Description
+        PowerShellVersion      = $manifest.PowerShellVersion
+        PowerShellHostName     = $manifest.PowerShellHostName
+        PowerShellHostVersion  = $manifest.PowerShellHostVersion
+        DotNetFrameworkVersion = $manifest.DotNetFrameworkVersion
+        CLRVersion             = $manifest.CLRVersion
+        ProcessorArchitecture  = $manifest.ProcessorArchitecture
+        RequiredModules        = $manifest.RequiredModules
+        RequiredAssemblies     = $manifest.RequiredAssemblies
+        ScriptsToProcess       = $manifest.ScriptsToProcess
+        TypesToProcess         = $manifest.TypesToProcess
+        FormatsToProcess       = $manifest.FormatsToProcess
+        NestedModules          = $manifest.NestedModules
+        FunctionsToExport      = $manifest.FunctionsToExport
+        CmdletsToExport        = $manifest.CmdletsToExport
+        VariablesToExport      = $manifest.VariablesToExport
+        AliasesToExport        = $manifest.AliasesToExport
+        DscResourcesToExport   = $manifest.DscResourcesToExport
+        ModuleList             = $manifest.ModuleList
+        FileList               = $manifest.FileList
+        PrivateData            = $manifest.PrivateData
+        Tags                   = $manifest.PrivateData.PSData.Tags
+        ProjectUri             = $manifest.PrivateData.PSData.ProjectUri
+        LicenseUri             = $manifest.PrivateData.PSData.LicenseUri
+        IconUri                = $manifest.PrivateData.PSData.IconUri
+        ReleaseNotes           = $manifest.PrivateData.PSData.ReleaseNotes
+        Prerelease             = $manifest.PrivateData.PSData.Prerelease
+        HelpInfoURI            = $manifest.HelpInfoURI
+        DefaultCommandPrefix   = $manifest.DefaultCommandPrefix
+    }
+
+    # Gérer le cas où RootModule ou ModuleToProcess est défini
+    if ($manifest.ContainsKey('RootModule') -and $manifest.RootModule) {
+        $result | Add-Member -MemberType NoteProperty -Name 'RootModule' -Value $manifest.RootModule
+    } elseif ($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) {
+        $result | Add-Member -MemberType NoteProperty -Name 'RootModule' -Value $manifest.ModuleToProcess
+        $result | Add-Member -MemberType NoteProperty -Name 'ModuleToProcess' -Value $manifest.ModuleToProcess
+    }
+
+    # Analyser les dépendances RequiredModules
+    if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
+        $requiredModules = @()
+        foreach ($module in $manifest.RequiredModules) {
+            if ($module -is [string]) {
+                $requiredModules += [PSCustomObject]@{
+                    Name    = $module
+                    Version = $null
+                    GUID    = $null
+                }
+            } elseif ($module -is [hashtable] -or $module -is [System.Collections.Specialized.OrderedDictionary]) {
+                $requiredModules += [PSCustomObject]@{
+                    Name    = $module.ModuleName
+                    Version = if ($module.ModuleVersion) { $module.ModuleVersion } else { $module.RequiredVersion }
+                    GUID    = $module.GUID
+                }
+            }
+        }
+        $result.RequiredModules = $requiredModules
+    }
+
+    # Analyser les dépendances NestedModules
+    if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
+        $nestedModules = @()
+        foreach ($module in $manifest.NestedModules) {
+            if ($module -is [string]) {
+                $nestedModules += [PSCustomObject]@{
+                    Name    = if ($module -match '\.ps[md]1$') { [System.IO.Path]::GetFileNameWithoutExtension($module) } else { $module }
+                    Path    = $module
+                    Version = $null
+                    GUID    = $null
+                }
+            } elseif ($module -is [hashtable] -or $module -is [System.Collections.Specialized.OrderedDictionary]) {
+                $nestedModules += [PSCustomObject]@{
+                    Name    = $module.ModuleName
+                    Path    = $module.Path
+                    Version = if ($module.ModuleVersion) { $module.ModuleVersion } else { $module.RequiredVersion }
+                    GUID    = $module.GUID
+                }
+            }
+        }
+        $result.NestedModules = $nestedModules
+    }
+
+    return $result
+} catch {
+    Write-Error "Get-Error analyzing manifest: $_"
+    return $null
+}
+}
+
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Get-ModuleDependenciesRecursive, Get-ModuleDependenciesFromManifest, Get-ModuleDependenciesFromCode, Find-ModuleDependencyCycles, Resolve-ModuleDependencies, Export-ModuleDependencyGraph, Show-ModuleDependencyGraph
+Export-ModuleMember -Function Get-ModuleDependenciesRecursive, Get-ModuleDependenciesFromManifest, Get-ModuleDependenciesFromCode, Find-ModuleDependencyCycles, Resolve-ModuleDependencies, Export-ModuleDependencyGraph, Show-ModuleDependencyGraph, Get-PowerShellManifestStructure
