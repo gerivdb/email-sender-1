@@ -1,0 +1,128 @@
+{
+  "ScriptPath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\dependency-management\\Examples\\SampleScript.ps1",
+  "Graph": {
+    "Get-User": null,
+    "Remove-UserAccess": null,
+    "Get-UserGroups": null,
+    "Get-UserInfo": [
+      "Get-User",
+      "Get-UserGroups"
+    ]
+  },
+  "Functions": [
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Name": "Get-UserInfo",
+      "Line": 1,
+      "Column": 1,
+      "EndLine": 26,
+      "IsExported": false,
+      "Visibility": "Unknown",
+      "Parameters": []
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Name": "Get-User",
+      "Line": 28,
+      "Column": 1,
+      "EndLine": 43,
+      "IsExported": false,
+      "Visibility": "Unknown",
+      "Parameters": []
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Name": "Get-UserGroups",
+      "Line": 45,
+      "Column": 1,
+      "EndLine": 59,
+      "IsExported": false,
+      "Visibility": "Unknown",
+      "Parameters": []
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Name": "Remove-UserAccess",
+      "Line": 61,
+      "Column": 1,
+      "EndLine": 70,
+      "IsExported": false,
+      "Visibility": "Unknown",
+      "Parameters": []
+    }
+  ],
+  "Calls": [
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Write-Verbose",
+      "Line": 10,
+      "Column": 5,
+      "Parameters": "\"Récupération des informations pour l'utilisateur: $Username\""
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Get-User",
+      "Line": 12,
+      "Column": 13,
+      "Parameters": "-Identity, $Username"
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Get-UserGroups",
+      "Line": 21,
+      "Column": 19,
+      "Parameters": "-Username, $Username"
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Add-Member",
+      "Line": 22,
+      "Column": 19,
+      "Parameters": "-MemberType, NoteProperty, -Name, \"Groups\", -Value, $groups"
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Write-Verbose",
+      "Line": 34,
+      "Column": 5,
+      "Parameters": "\"Récupération de l'utilisateur: $Identity\""
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Write-Verbose",
+      "Line": 51,
+      "Column": 5,
+      "Parameters": "\"Récupération des groupes pour l'utilisateur: $Username\""
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Write-Verbose",
+      "Line": 67,
+      "Column": 5,
+      "Parameters": "\"Suppression des accès pour l'utilisateur: $Username\""
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Get-UserInfo",
+      "Line": 73,
+      "Column": 13,
+      "Parameters": "-Username, \"jdoe\", -IncludeGroups"
+    },
+    {
+      "ScriptName": "SampleScript.ps1",
+      "Type": "Command",
+      "Name": "Write-Output",
+      "Line": 74,
+      "Column": 1,
+      "Parameters": "$userInfo"
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "ScriptPath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\dependency-management\\Examples\\SampleVariableScript.ps1",
+  "Graph": {
+    "i": null,
+    "logFile": "config",
+    "config": null,
+    "result": null,
+    "item": null,
+    "endTime": null,
+    "defaultColor": "config",
+    "logMessage": "result",
+    "results": "item",
+    "processedItems": null,
+    "maxItems": "config"
+  },
+  "Variables": [
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "config",
+      "Line": 2,
+      "Column": 1,
+      "Value": "@{\n    MaxItems = 100\n    DefaultColor = \"Blue\"\n    EnableLogging = $true\n    LogPath = \"C:\\Logs\\app.log\"\n}",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "maxItems",
+      "Line": 10,
+      "Column": 1,
+      "Value": "$config.MaxItems",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "defaultColor",
+      "Line": 11,
+      "Column": 1,
+      "Value": "$config.DefaultColor",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "logFile",
+      "Line": 12,
+      "Column": 1,
+      "Value": "$config.LogPath",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "processedItems",
+      "Line": 21,
+      "Column": 5,
+      "Value": "0",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "results",
+      "Line": 22,
+      "Column": 5,
+      "Value": "@()",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "i",
+      "Line": 24,
+      "Column": 10,
+      "Value": "0",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "item",
+      "Line": 25,
+      "Column": 9,
+      "Value": "[PSCustomObject]@{\n            Id = $i\n            Name = \"Item-$i\"\n            Color = $color\n            ProcessedOn = Get-Date\n        }",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "results",
+      "Line": 32,
+      "Column": 9,
+      "Value": "$item",
+      "IsDefined": true,
+      "IsUsed": false
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "endTime",
+      "Line": 42,
+      "Column": 5,
+      "Value": "Get-Date",
+      "IsDefined": true,
+      "IsUsed": false
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "result",
+      "Line": 51,
+      "Column": 1,
+      "Value": "Process-Items -count 10",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Assignment",
+      "Name": "logMessage",
+      "Line": 56,
+      "Column": 5,
+      "Value": "\"Traitement terminé à $(Get-Date) - $($result.ProcessedCount) éléments traités\"",
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "config",
+      "Line": 10,
+      "Column": 13,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "config",
+      "Line": 11,
+      "Column": 17,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "config",
+      "Line": 12,
+      "Column": 12,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "count",
+      "Line": 17,
+      "Column": 14,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "maxItems",
+      "Line": 17,
+      "Column": 23,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "color",
+      "Line": 18,
+      "Column": 17,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "defaultColor",
+      "Line": 18,
+      "Column": 26,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 24,
+      "Column": 18,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "count",
+      "Line": 24,
+      "Column": 25,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 24,
+      "Column": 33,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 26,
+      "Column": 18,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 27,
+      "Column": 26,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "color",
+      "Line": 28,
+      "Column": 21,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "item",
+      "Line": 32,
+      "Column": 21,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "processedItems",
+      "Line": 33,
+      "Column": 9,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "showProgress",
+      "Line": 36,
+      "Column": 13,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 37,
+      "Column": 84,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "i",
+      "Line": 37,
+      "Column": 107,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "count",
+      "Line": 37,
+      "Column": 112,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "processedItems",
+      "Line": 45,
+      "Column": 26,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "results",
+      "Line": 46,
+      "Column": 17,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "result",
+      "Line": 52,
+      "Column": 44,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "config",
+      "Line": 55,
+      "Column": 5,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "result",
+      "Line": 56,
+      "Column": 57,
+      "Value": null,
+      "IsDefined": false,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "logFile",
+      "Line": 57,
+      "Column": 23,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    },
+    {
+      "ScriptName": "SampleVariableScript.ps1",
+      "Type": "Usage",
+      "Name": "logMessage",
+      "Line": 57,
+      "Column": 39,
+      "Value": null,
+      "IsDefined": true,
+      "IsUsed": true
+    }
+  ]
+}

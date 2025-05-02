@@ -1,0 +1,20 @@
+digraph VariableDependencies {
+  node [shape=box];
+  "config";
+  "defaultColor";
+  "defaultColor" -> "config";
+  "endTime";
+  "i";
+  "item";
+  "logFile";
+  "logFile" -> "config";
+  "logMessage";
+  "logMessage" -> "result";
+  "maxItems";
+  "maxItems" -> "config";
+  "processedItems";
+  "result";
+  "results";
+  "results" -> "item";
+}
+

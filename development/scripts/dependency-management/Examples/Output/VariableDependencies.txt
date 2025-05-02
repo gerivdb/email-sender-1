@@ -1,0 +1,14 @@
+Graphe de dépendances de variables pour D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-management\Examples\SampleVariableScript.ps1
+
+config dépend de: 
+defaultColor dépend de: config
+endTime dépend de: 
+i dépend de: 
+item dépend de: 
+logFile dépend de: config
+logMessage dépend de: result
+maxItems dépend de: config
+processedItems dépend de: 
+result dépend de: 
+results dépend de: item
+

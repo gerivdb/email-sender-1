@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graphe de dépendances de fonctions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .function { margin-bottom: 10px; }
+        .function-name { font-weight: bold; }
+        .dependencies { margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Graphe de dépendances de fonctions pour D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-management\Examples\SampleScript.ps1</h1>
+    <div class="graph">        <div class="function">
+            <span class="function-name">Get-User</span> dépend de:
+            <div class="dependencies">                <div>(aucune dépendance)</div>
+            </div>
+        </div>        <div class="function">
+            <span class="function-name">Get-UserGroups</span> dépend de:
+            <div class="dependencies">                <div>(aucune dépendance)</div>
+            </div>
+        </div>        <div class="function">
+            <span class="function-name">Get-UserInfo</span> dépend de:
+            <div class="dependencies">                <div>Get-User</div>
+                <div>Get-UserGroups</div>
+            </div>
+        </div>        <div class="function">
+            <span class="function-name">Remove-UserAccess</span> dépend de:
+            <div class="dependencies">                <div>(aucune dépendance)</div>
+            </div>
+        </div>    </div>
+</body>
+</html>

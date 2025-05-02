@@ -290,7 +290,7 @@
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.2** Créer des tests pour les cas limites et les erreurs
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.3** Implémenter des tests de performance
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.3.3.3.4.4** Vérifier la couverture de code des tests
-                      - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
+                      - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4** Développer un système de détection des dépendances
                         - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1** Implémenter la détection des dépendances de modules
                           - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1** Créer la détection des instructions Import-Module
                             - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.1.1** Analyser les différentes formes d'instructions Import-Module dans le code existant
@@ -343,7 +343,7 @@
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.3** Développer la détection des références à des variables de modules
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.4** Implémenter l'analyse des commentaires pour détecter les références implicites
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.2.5** Créer un système de validation des modules détectés
-                            - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3** Implémenter la résolution des dépendances indirectes
+                            - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3** Implémenter la résolution des dépendances indirectes
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1** Créer une fonction pour l'analyse récursive des dépendances de modules
                                 - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.1** Concevoir l'algorithme de parcours récursif des dépendances
                                 - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.3.1.2** Implémenter la détection des dépendances directes d'un module
@@ -427,14 +427,14 @@
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.6.3** Créer des tests pour le système de cache
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.6.4** Créer des tests pour le mécanisme de rapport
                               - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.1.3.6.5** Créer des tests pour l'interface unifiée
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2** Créer la détection des dépendances de fonctions
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.1** Implémenter l'analyse des appels de fonction
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.2** Créer la détection des fonctions définies vs. appelées
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.3** Développer un graphe de dépendances de fonctions
-                        - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3** Développer la détection des dépendances de variables
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.1** Implémenter l'analyse des utilisations de variables
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.2** Créer la détection des variables définies vs. utilisées
-                          - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.3** Développer un graphe de dépendances de variables
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2** Créer la détection des dépendances de fonctions
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.1** Implémenter l'analyse des appels de fonction
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.2** Créer la détection des fonctions définies vs. appelées
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.2.3** Développer un graphe de dépendances de fonctions
+                        - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3** Développer la détection des dépendances de variables
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.1** Implémenter l'analyse des utilisations de variables
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.2** Créer la détection des variables définies vs. utilisées
+                          - [x] **2.1.2.4.1.2.3.2.2.5.3.2.2.4.3.3** Développer un graphe de dépendances de variables
                       - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5** Intégrer l'extraction d'informations au Process Manager
                         - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1** Développer l'interface d'intégration avec le Process Manager
                           - [ ] **2.1.2.4.1.2.3.2.2.5.3.2.2.5.1.1** Créer les points d'entrée pour l'extraction d'informations

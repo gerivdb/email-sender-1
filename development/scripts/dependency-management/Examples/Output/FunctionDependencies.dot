@@ -1,0 +1,10 @@
+digraph FunctionDependencies {
+  node [shape=box];
+  "Get-User";
+  "Get-UserGroups";
+  "Get-UserInfo";
+  "Get-UserInfo" -> "Get-User";
+  "Get-UserInfo" -> "Get-UserGroups";
+  "Remove-UserAccess";
+}
+
