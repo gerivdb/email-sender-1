@@ -1,0 +1,29 @@
+{
+    "Name": "InformationExtractor",
+    "Description": "Module d'extraction d'informations pour le Process Manager",
+    "Version": "1.0.0",
+    "Author": "Process Manager Team",
+    "RequiredPowerShellVersion": "5.1",
+    "Dependencies": [
+        {
+            "Name": "ManifestParser",
+            "Required": false
+        }
+    ],
+    "Interfaces": [
+        {
+            "Name": "InformationExtraction",
+            "Methods": [
+                "Get-ManagerInformation",
+                "Get-AllManagersInformation",
+                "Get-ManagersStatistics",
+                "Get-ManagerDependencyGraph"
+            ]
+        }
+    ],
+    "Capabilities": [
+        "ExtractManagerInformation",
+        "GenerateDependencyGraph",
+        "CalculateStatistics"
+    ]
+}

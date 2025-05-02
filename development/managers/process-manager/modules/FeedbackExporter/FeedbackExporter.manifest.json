@@ -1,0 +1,30 @@
+{
+    "Name": "FeedbackExporter",
+    "Description": "Module d'exportation des messages de feedback pour le Process Manager",
+    "Version": "1.0.0",
+    "Author": "Process Manager Team",
+    "RequiredPowerShellVersion": "5.1",
+    "Dependencies": [
+        {
+            "Name": "FeedbackCollector",
+            "Required": true
+        }
+    ],
+    "Interfaces": [
+        {
+            "Name": "FeedbackExport",
+            "Methods": [
+                "Initialize-FeedbackExporter",
+                "Export-CollectedMessages",
+                "Export-ImportantMessages",
+                "Get-ExportHistory"
+            ]
+        }
+    ],
+    "Capabilities": [
+        "FeedbackExport",
+        "ReportGeneration",
+        "DataPersistence",
+        "FormatConversion"
+    ]
+}

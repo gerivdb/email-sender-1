@@ -1,0 +1,31 @@
+{
+    "Name": "ProcessManagerCommunication",
+    "Description": "Module de communication avec le Process Manager",
+    "Version": "1.0.0",
+    "Author": "Process Manager Team",
+    "RequiredPowerShellVersion": "5.1",
+    "Dependencies": [
+        {
+            "Name": "InterProcessCommunication",
+            "Required": false
+        }
+    ],
+    "Interfaces": [
+        {
+            "Name": "ProcessManagerCommunication",
+            "Methods": [
+                "Initialize-ProcessManagerCommunication",
+                "Send-ProcessManagerCommand",
+                "Close-ProcessManagerCommunication",
+                "Send-ProcessManagerNotification",
+                "Subscribe-ProcessManagerNotifications",
+                "Unsubscribe-ProcessManagerNotifications"
+            ]
+        }
+    ],
+    "Capabilities": [
+        "CommunicateWithProcessManager",
+        "SendCommands",
+        "ReceiveNotifications"
+    ]
+}

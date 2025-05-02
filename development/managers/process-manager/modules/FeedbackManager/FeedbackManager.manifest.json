@@ -1,0 +1,20 @@
+{
+    "Name": "FeedbackManager",
+    "Description": "Module de gestion des retours d'information pour le Process Manager",
+    "Version": "1.0.0",
+    "Author": "Process Manager Team",
+    "RequiredPowerShellVersion": "5.1",
+    "Dependencies": [],
+    "Interfaces": [
+        {
+            "Name": "FeedbackManagement",
+            "Methods": []
+        }
+    ],
+    "Capabilities": [
+        "FeedbackManagement",
+        "ErrorHandling",
+        "Logging",
+        "Reporting"
+    ]
+}

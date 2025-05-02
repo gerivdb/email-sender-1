@@ -1,0 +1,29 @@
+{
+    "Name": "FeedbackCollector",
+    "Description": "Module de collecte et d'agrégation des messages de feedback pour le Process Manager",
+    "Version": "1.0.0",
+    "Author": "Process Manager Team",
+    "RequiredPowerShellVersion": "5.1",
+    "Dependencies": [
+        {
+            "Name": "FeedbackManager",
+            "Required": true
+        }
+    ],
+    "Interfaces": [
+        {
+            "Name": "FeedbackCollection",
+            "Methods": [
+                "Initialize-FeedbackCollector",
+                "Add-MessageToCollection",
+                "Invoke-CollectionRotation"
+            ]
+        }
+    ],
+    "Capabilities": [
+        "FeedbackCollection",
+        "MessageAggregation",
+        "RotationManagement",
+        "PersistenceManagement"
+    ]
+}
