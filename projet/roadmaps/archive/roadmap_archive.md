@@ -2361,4 +2361,28 @@ Chaque entrée inclut :
 **Progression globale**: 0%
 **Dépendances**: Aucune
 
+    - [x] **1.3.1.3.3** Vue "prochaines étapes prioritaires"
 
+    - [x] **1.3.1.3.2** Vue "tâches récemment terminées"
+
+    - [x] **1.3.1.3.1** Vue "roadmap active" générée à la demande
+
+  - [x] **1.3.1.3** Génération de vues dynamiques
+
+    - [x] **1.3.1.2.3** Mise à jour des statuts avec historique
+
+    - [x] **1.3.1.2.2** Filtrage par statut, date, responsable, etc.
+
+    - [x] **1.3.1.2.1** Recherche sémantique des tâches par contenu
+
+  - [x] **1.3.1.2** Interface de recherche et de mise à jour
+
+    - [x] **1.3.1.1.3** Indexer par identifiant, statut, date, etc.
+
+    - [x] **1.3.1.1.2** Stocker dans une base vectorielle (Qdrant.)
+
+    - [x] **1.3.1.1.1** Convertir chaque tâche en vecteur avec ses métadonnées
+
+  - [x] **1.3.1.1** Vectorisation des tâches
+
+- [x] **1.3.1** Système RAG (Retrieval-Augmented Generation) avec vectorisation
