@@ -1,0 +1,102 @@
+# NextPriorities - Générée le 2025-05-02 21:12:34
+
+- [ ] **1.3.1** Système RAG (Retrieval-Augmented Generation) avec vectorisation
+  - [ ] **1.3.1.1** Vectorisation des tâches
+  - [ ] **1.3.1.2** Interface de recherche et de mise à jour
+  - [ ] **1.3.1.3** Génération de vues dynamiques
+- [ ] **2.1.1** DÃ©finition des opÃ©rations de mise Ã  jour
+  - [ ] **2.1.1.4** Documenter les interfaces et contrats
+- [ ] **2.1.2** Conception de l'architecture de l'updater
+  - [ ] **2.1.2.4** Concevoir la gestion des dÃ©pendances
+- [ ] **2.1.3** DÃ©finir les mÃ©canismes d'orchestration
+  - [ ] **2.1.3.4** DÃ©finir les mÃ©canismes de reprise
+- [ ] **2.2.1** DÃ©veloppement des fonctions de modification
+  - [ ] **2.2.1.1** ImplÃ©menter la fonction de changement de statut
+  - [ ] **2.2.1.2** DÃ©velopper la fonction de modification de description
+  - [ ] **2.2.1.3** CrÃ©er la fonction d'ajout/suppression de tÃ¢ches
+- [ ] **2.2.2** ImplÃ©mentation de la logique de propagation
+  - [ ] **2.2.2.1** DÃ©velopper l'algorithme de mise Ã  jour des tÃ¢ches parentes
+  - [ ] **2.2.2.2** ImplÃ©menter la gestion des dÃ©pendances entre tÃ¢ches
+  - [ ] **2.2.2.3** CrÃ©er la logique de rÃ©solution des conflits
+- [ ] **2.2.3** DÃ©veloppement des fonctions de sauvegarde
+  - [ ] **2.2.3.1** ImplÃ©menter la gÃ©nÃ©ration du markdown mis Ã  jour
+  - [ ] **2.2.3.2** DÃ©velopper le mÃ©canisme de sauvegarde incrÃ©mentale
+  - [ ] **2.2.3.3** CrÃ©er la fonction de rollback en cas d'erreur
+- [ ] **2.3.1** CrÃ©ation des tests unitaires
+  - [ ] **2.3.1.1** DÃ©velopper des tests pour les fonctions de modification
+  - [ ] **2.3.1.2** CrÃ©er des tests pour la logique de propagation
+  - [ ] **2.3.1.3** ImplÃ©menter des tests pour les fonctions de sauvegarde
+- [ ] **2.3.2** ExÃ©cution et validation des tests
+  - [ ] **2.3.2.1** ExÃ©cuter les tests unitaires
+  - [ ] **2.3.2.2** Corriger les bugs identifiÃ©s
+  - [ ] **2.3.2.3** Valider les performances sur des roadmaps de grande taille
+- [ ] **3.1.1** Ã‰tude des hooks Git disponibles
+- [ ] **3.1.2** Conception du systÃ¨me d'analyse des commits
+  - [ ] **3.1.2.4** CrÃ©er un plan d'amÃ©lioration
+- [ ] **3.2.1** DÃ©veloppement des scripts de hooks Git
+  - [ ] **3.2.1.1** ImplÃ©menter le hook post-commit pour la dÃ©tection des modifications
+  - [ ] **3.2.1.2** DÃ©velopper le hook pre-push pour la validation
+  - [ ] **3.2.1.3** CrÃ©er les scripts d'installation des hooks
+  - [ ] **3.2.1.4** CrÃ©er le gestionnaire d'adaptateurs et de convertisseurs
+  - [ ] **3.2.1.5** DÃ©velopper le gestionnaire d'assemblage de composants
+  - [ ] **3.2.1.6** CrÃ©er le gestionnaire de dÃ©coupage fonctionnel
+  - [ ] **3.2.1.7** DÃ©velopper le gestionnaire de refactoring
+  - [ ] **3.2.1.8** CrÃ©er le gestionnaire d'extensions et de plugins
+- [ ] **3.2.2** ImplÃ©mentation de l'analyseur de commits
+  - [ ] **3.2.2.1** DÃ©velopper la fonction d'extraction des identifiants de tÃ¢ches
+  - [ ] **3.2.2.2** ImplÃ©menter la logique de dÃ©tection des actions (complÃ©tÃ©, modifiÃ©, etc.)
+  - [ ] **3.2.2.3** CrÃ©er la fonction de mise Ã  jour automatique basÃ©e sur les commits
+- [ ] **3.3.1** CrÃ©ation des tests d'intÃ©gration
+  - [ ] **3.3.1.1** DÃ©velopper des tests pour les hooks Git
+  - [ ] **3.3.1.2** CrÃ©er des tests pour l'analyseur de commits
+  - [ ] **3.3.1.3** ImplÃ©menter des tests pour le workflow complet
+  - [ ] **3.3.1.4** VÃ©rifier l'enregistrement
+- [ ] **3.3.2** ExÃ©cution et validation des tests
+  - [ ] **3.3.2.1** ExÃ©cuter les tests d'intÃ©gration
+  - [ ] **3.3.2.2** Corriger les bugs identifiÃ©s
+  - [ ] **3.3.2.3** Valider le fonctionnement avec diffÃ©rents scÃ©narios Git
+  - [ ] **3.3.2.4** Tester les performances
+- [ ] **4.1.1** DÃ©finition des commandes et paramÃ¨tres
+  - [ ] **4.1.1.4** Documenter les dÃ©cisions d'architecture
+- [ ] **4.1.2** Conception de l'interface utilisateur
+  - [ ] **4.1.2.4** CrÃ©er des diagrammes d'interface
+- [ ] **4.1.3** CrÃ©er des exemples d'utilisation
+  - [ ] **4.1.3.4** CrÃ©er des tutoriels pas Ã  pas
+- [ ] **4.2.1** DÃ©veloppement des commandes principales
+  - [ ] **4.2.1.1** ImplÃ©menter la commande de mise Ã  jour de statut
+  - [ ] **4.2.1.2** DÃ©velopper la commande de recherche de tÃ¢ches
+  - [ ] **4.2.1.3** CrÃ©er la commande de gÃ©nÃ©ration de rapports
+  - [ ] **4.2.1.4** ImplÃ©menter les tests pour les adaptateurs
+- [ ] **4.2.2** ImplÃ©mentation des fonctionnalitÃ©s avancÃ©es
+  - [ ] **4.2.2.1** DÃ©velopper la mise Ã  jour en batch
+  - [ ] **4.2.2.2** ImplÃ©menter les options de filtrage
+  - [ ] **4.2.2.3** CrÃ©er les mÃ©canismes de validation interactive
+  - [ ] **4.2.2.4** CrÃ©er les tests de compatibilitÃ©
+- [ ] **4.2.3** ImplÃ©menter des tests de performance
+  - [ ] **4.2.3.1** DÃ©finir les mÃ©triques de performance
+  - [ ] **4.2.3.2** DÃ©velopper les tests de charge
+  - [ ] **4.2.3.3** CrÃ©er les tests de stress
+  - [ ] **4.2.3.4** ImplÃ©menter les tests de durÃ©e
+- [ ] **4.3.1** CrÃ©ation des tests fonctionnels
+  - [ ] **4.3.1.1** DÃ©velopper des tests pour les commandes principales
+  - [ ] **4.3.1.2** CrÃ©er des tests pour les fonctionnalitÃ©s avancÃ©es
+  - [ ] **4.3.1.3** ImplÃ©menter des tests pour les scÃ©narios d'erreur
+  - [ ] **4.3.1.4** CrÃ©er un tableau de bord de statut
+- [ ] **4.3.2** ExÃ©cution et validation des tests
+  - [ ] **4.3.2.1** ExÃ©cuter les tests fonctionnels
+  - [ ] **4.3.2.2** Corriger les bugs identifiÃ©s
+  - [ ] **4.3.2.3** Valider l'expÃ©rience utilisateur
+  - [ ] **4.3.2.4** DÃ©velopper un analyseur de tendances
+- [ ] **4.3.3** ImplÃ©menter des mÃ©canismes de rapport
+  - [ ] **4.3.3.1** CrÃ©er un gÃ©nÃ©rateur de rapports
+  - [ ] **4.3.3.2** DÃ©velopper des modÃ¨les de rapport
+  - [ ] **4.3.3.3** ImplÃ©menter l'export dans diffÃ©rents formats
+  - [ ] **4.3.3.4** CrÃ©er un systÃ¨me de distribution de rapports
+- [ ] **5.1.1** Assemblage des modules
+- [ ] **5.1.2** Configuration du systÃ¨me complet
+- [ ] **5.2.1** CrÃ©ation des tests de bout en bout
+  - [ ] **5.2.1.1** DÃ©velopper des scÃ©narios de test complets
+  - [ ] **5.2.1.2** CrÃ©er des jeux de donnÃ©es de test
+- [ ] **5.2.2** ExÃ©cution et validation des tests
+- [ ] **5.3.1** RÃ©daction de la documentation
+- [ ] **5.3.2** PrÃ©paration de la formation

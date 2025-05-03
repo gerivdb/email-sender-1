@@ -5,6 +5,20 @@ Généré le 2025-05-02 18:02:39
 
 ## Tâches actives
 
+- [x] **1.3.1** Système RAG (Retrieval-Augmented Generation) avec vectorisation
+  - [x] **1.3.1.1** Vectorisation des tâches
+    - [x] **1.3.1.1.1** Convertir chaque tâche en vecteur avec ses métadonnées
+    - [x] **1.3.1.1.2** Stocker dans une base vectorielle (Qdrant.)
+    - [x] **1.3.1.1.3** Indexer par identifiant, statut, date, etc.
+  - [x] **1.3.1.2** Interface de recherche et de mise à jour
+    - [x] **1.3.1.2.1** Recherche sémantique des tâches par contenu
+    - [x] **1.3.1.2.2** Filtrage par statut, date, responsable, etc.
+    - [x] **1.3.1.2.3** Mise à jour des statuts avec historique
+  - [x] **1.3.1.3** Génération de vues dynamiques
+    - [x] **1.3.1.3.1** Vue "roadmap active" générée à la demande
+    - [x] **1.3.1.3.2** Vue "tâches récemment terminées"
+    - [x] **1.3.1.3.3** Vue "prochaines étapes prioritaires"
+
 - [ ] **2.1.1** DÃ©finir les interfaces et les contrats
   - [ ] **2.1.1.4** Documenter les interfaces et contrats
 - [ ] **2.1.2** Concevoir le systÃ¨me de dÃ©couverte et d'enregistrement
@@ -1005,3 +1019,5 @@ Généré le 2025-05-02 18:02:39
 - [ ] **Sous-tÃ¢che 4.1**: ImplÃ©menter l'intÃ©gration avec les coffres-forts (3h)
 - [ ] **Sous-tÃ¢che 4.2**: ComplÃ©ter les tests unitaires (2h)
 - [ ] **Sous-tÃ¢che 4.3**: Documenter le module (3h)
+
+
