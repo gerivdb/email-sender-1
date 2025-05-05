@@ -408,24 +408,376 @@
       - [x] **6.3.2.2.2** Expliquer les conventions pour les noms de paramètres
       - [x] **6.3.2.2.3** Détailler les conventions pour les noms de variables internes
       - [x] **6.3.2.2.4** Documenter les préfixes et suffixes standards
-    - [ ] **6.3.2.3** Fournir un exemple d'ajout de fonctionnalité
-      - [ ] **6.3.2.3.1** Définir un cas d'utilisation pour la nouvelle fonctionnalité
-      - [ ] **6.3.2.3.2** Implémenter la fonction principale
-      - [ ] **6.3.2.3.3** Ajouter les fonctions auxiliaires nécessaires
-      - [ ] **6.3.2.3.4** Tester la nouvelle fonctionnalité
+    - [x] **6.3.2.3** Fournir un exemple d'ajout de fonctionnalité ✅
+      - [x] **6.3.2.3.1** Définir un cas d'utilisation pour la nouvelle fonctionnalité ✅
+      - [x] **6.3.2.3.2** Implémenter la fonction principale ✅
+        - [x] **6.3.2.3.2.1** Créer le fichier Merge-ExtractedInfo.ps1 dans le répertoire Public\Merge ✅
+        - [x] **6.3.2.3.2.2** Définir les paramètres et la structure de base de la fonction ✅
+        - [x] **6.3.2.3.2.3** Implémenter la validation des objets à fusionner ✅
+        - [x] **6.3.2.3.2.4** Implémenter les différentes stratégies de fusion ✅
+        - [x] **6.3.2.3.2.5** Implémenter la fusion des propriétés de base ✅
+        - [x] **6.3.2.3.2.6** Implémenter la gestion des cas spécifiques par type d'objet ✅
+      - [x] **6.3.2.3.3** Ajouter les fonctions auxiliaires nécessaires ✅
+        - [x] **6.3.2.3.3.1** Créer la fonction Test-ExtractedInfoCompatibility.ps1 ✅
+        - [x] **6.3.2.3.3.2** Créer la fonction Merge-ExtractedInfoMetadata.ps1 ✅
+        - [x] **6.3.2.3.3.3** Créer la fonction Get-MergedConfidenceScore.ps1 ✅
+      - [x] **6.3.2.3.4** Tester la nouvelle fonctionnalité ✅
+        - [x] **6.3.2.3.4.1** Créer les tests unitaires pour Merge-ExtractedInfo ✅
+        - [x] **6.3.2.3.4.2** Créer les tests unitaires pour les fonctions auxiliaires ✅
+        - [x] **6.3.2.3.4.3** Créer des tests d'intégration pour les scénarios complexes ✅
+        - [x] **6.3.2.3.4.4** Créer un script d'exemple d'utilisation ✅
+        - [x] **6.3.2.3.4.5** Documenter les résultats des tests ✅
   - [ ] **6.3.3** Documenter l'intégration avec d'autres modules
-    - [ ] **6.3.3.1** Expliquer comment utiliser le module avec d'autres modules
-      - [ ] **6.3.3.1.1** Présenter les scénarios d'intégration courants
-      - [ ] **6.3.3.1.2** Expliquer l'importation et l'exportation de données
-      - [ ] **6.3.3.1.3** Détailler la gestion des dépendances
-      - [ ] **6.3.3.1.4** Documenter les bonnes pratiques d'intégration
-    - [ ] **6.3.3.2** Documenter les points d'intégration
-      - [ ] **6.3.3.2.1** Identifier les points d'extension du module
-      - [ ] **6.3.3.2.2** Expliquer l'utilisation des événements et hooks
-      - [ ] **6.3.3.2.3** Détailler les interfaces d'intégration
-      - [ ] **6.3.3.2.4** Documenter les formats d'échange de données
+    - [x] **6.3.3.1** Expliquer comment utiliser le module avec d'autres modules ✅
+      - [x] **6.3.3.1.1** Présenter les scénarios d'intégration courants ✅
+      - [x] **6.3.3.1.2** Expliquer l'importation et l'exportation de données ✅
+      - [x] **6.3.3.1.3** Détailler la gestion des dépendances ✅
+      - [x] **6.3.3.1.4** Documenter les bonnes pratiques d'intégration ✅
+    - [x] **6.3.3.2** Documenter les points d'intégration ✅
+      - [x] **6.3.3.2.1** Identifier les points d'extension du module ✅
+      - [x] **6.3.3.2.2** Expliquer l'utilisation des événements et hooks ✅
+      - [x] **6.3.3.2.3** Détailler les interfaces d'intégration ✅
+      - [x] **6.3.3.2.4** Documenter les formats d'échange de données ✅
     - [ ] **6.3.3.3** Fournir des exemples d'intégration
-      - [ ] **6.3.3.3.1** Exemple d'intégration avec un module d'extraction web
-      - [ ] **6.3.3.3.2** Exemple d'intégration avec un système de stockage
-      - [ ] **6.3.3.3.3** Exemple d'intégration avec un pipeline de traitement
+      - [x] **6.3.3.3.1** Exemple d'intégration avec un module d'extraction web ✅
+      - [x] **6.3.3.3.2** Exemple d'intégration avec un système de stockage ✅
+      - [x] **6.3.3.3.3** Exemple d'intégration avec un pipeline de traitement ✅
       - [ ] **6.3.3.3.4** Exemple d'intégration avec un système de reporting
+        - [x] **6.3.3.3.4.1** Créer le fichier Integration-Reporting.ps1 dans le répertoire examples ✅
+          - [x] **6.3.3.3.4.1.1** Créer l'en-tête du fichier avec la documentation ✅
+            - [x] **6.3.3.3.4.1.1.1** Ajouter la directive #Requires -Version ✅
+              - [x] **6.3.3.3.4.1.1.1.1** Spécifier la version minimale de PowerShell (5.1) ✅
+              - [x] **6.3.3.3.4.1.1.1.2** Ajouter un commentaire explicatif sur la compatibilité ✅
+            - [x] **6.3.3.3.4.1.1.2** Ajouter le bloc de commentaires .SYNOPSIS ✅
+              - [x] **6.3.3.3.4.1.1.2.1** Rédiger une description courte et concise du script ✅
+              - [x] **6.3.3.3.4.1.1.2.2** Mentionner l'intégration avec le module ExtractedInfoModuleV2 ✅
+            - [x] **6.3.3.3.4.1.1.3** Ajouter le bloc de commentaires .DESCRIPTION ✅
+              - [x] **6.3.3.3.4.1.1.3.1** Décrire en détail le but du script ✅
+              - [x] **6.3.3.3.4.1.1.3.2** Expliquer les fonctionnalités principales ✅
+              - [x] **6.3.3.3.4.1.1.3.3** Mentionner les formats de rapport supportés ✅
+            - [x] **6.3.3.3.4.1.1.4** Ajouter le bloc de commentaires .NOTES ✅
+              - [x] **6.3.3.3.4.1.1.4.1** Ajouter la date de création ✅
+              - [x] **6.3.3.3.4.1.1.4.2** Ajouter l'auteur ✅
+              - [x] **6.3.3.3.4.1.1.4.3** Ajouter les informations de version ✅
+          - [x] **6.3.3.3.4.1.2** Ajouter les commentaires d'importation des modules nécessaires ✅
+            - [x] **6.3.3.3.4.1.2.1** Ajouter le commentaire pour l'importation du module ExtractedInfoModuleV2 ✅
+            - [x] **6.3.3.3.4.1.2.2** Ajouter le commentaire pour l'importation du module PSWriteHTML (optionnel) ✅
+            - [x] **6.3.3.3.4.1.2.3** Ajouter le commentaire pour l'importation du module ImportExcel (optionnel) ✅
+          - [x] **6.3.3.3.4.1.3** Définir les constantes et variables globales ✅
+            - [x] **6.3.3.3.4.1.3.1** Définir les constantes pour les types de rapport ✅
+            - [x] **6.3.3.3.4.1.3.2** Définir les constantes pour les types de section ✅
+            - [x] **6.3.3.3.4.1.3.3** Définir les constantes pour les types de graphique ✅
+            - [x] **6.3.3.3.4.1.3.4** Définir les constantes pour les formats d'exportation ✅
+        - [x] **6.3.3.3.4.2** Définir les fonctions de base pour la génération de rapports ✅
+          - [x] **6.3.3.3.4.2.1** Implémenter la fonction New-ExtractedInfoReport pour créer un rapport de base ✅
+            - [x] **6.3.3.3.4.2.1.1** Définir les paramètres de la fonction (Title, Description, Author, Date, etc.) ✅
+              - [x] **6.3.3.3.4.2.1.1.1** Définir le paramètre Title (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.1.1.2** Définir le paramètre Description (optionnel) ✅
+              - [x] **6.3.3.3.4.2.1.1.3** Définir le paramètre Author (optionnel) ✅
+              - [x] **6.3.3.3.4.2.1.1.4** Définir le paramètre Date (optionnel, valeur par défaut = date actuelle) ✅
+              - [x] **6.3.3.3.4.2.1.1.5** Définir le paramètre Type (optionnel, valeur par défaut = "Standard") ✅
+              - [x] **6.3.3.3.4.2.1.1.6** Définir le paramètre Tags (optionnel) ✅
+            - [x] **6.3.3.3.4.2.1.2** Implémenter la structure de base du rapport (en-tête, corps, pied de page) ✅
+              - [x] **6.3.3.3.4.2.1.2.1** Créer la structure de hashtable pour l'en-tête ✅
+              - [x] **6.3.3.3.4.2.1.2.2** Créer la structure de hashtable pour le corps (sections) ✅
+              - [x] **6.3.3.3.4.2.1.2.3** Créer la structure de hashtable pour le pied de page ✅
+              - [x] **6.3.3.3.4.2.1.2.4** Assembler les parties dans la structure principale du rapport ✅
+            - [x] **6.3.3.3.4.2.1.3** Ajouter la validation des paramètres ✅
+              - [x] **6.3.3.3.4.2.1.3.1** Valider que le titre n'est pas vide ✅
+              - [x] **6.3.3.3.4.2.1.3.2** Valider que le type de rapport est valide ✅
+              - [x] **6.3.3.3.4.2.1.3.3** Valider le format de la date ✅
+            - [x] **6.3.3.3.4.2.1.4** Implémenter la génération de l'identifiant unique du rapport ✅
+              - [x] **6.3.3.3.4.2.1.4.1** Générer un GUID pour l'ID du rapport ✅
+              - [x] **6.3.3.3.4.2.1.4.2** Ajouter l'ID à la structure du rapport ✅
+            - [x] **6.3.3.3.4.2.1.5** Ajouter la gestion des métadonnées du rapport ✅
+              - [x] **6.3.3.3.4.2.1.5.1** Créer la structure de hashtable pour les métadonnées ✅
+              - [x] **6.3.3.3.4.2.1.5.2** Ajouter les métadonnées de base (version, date de création, etc.) ✅
+              - [x] **6.3.3.3.4.2.1.5.3** Ajouter les métadonnées personnalisées (tags, etc.) ✅
+          - [x] **6.3.3.3.4.2.2** Implémenter la fonction Add-ExtractedInfoReportSection pour ajouter des sections au rapport ✅
+            - [x] **6.3.3.3.4.2.2.1** Définir les paramètres de la fonction (Report, Title, Content, Type, Level) ✅
+              - [x] **6.3.3.3.4.2.2.1.1** Définir le paramètre Report (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.2.1.2** Définir le paramètre Title (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.2.1.3** Définir le paramètre Content (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.2.1.4** Définir le paramètre Type (optionnel, valeur par défaut = "Text") ✅
+              - [x] **6.3.3.3.4.2.2.1.5** Définir le paramètre Level (optionnel, valeur par défaut = 1) ✅
+            - [x] **6.3.3.3.4.2.2.2** Implémenter l'ajout de sections textuelles (paragraphes, listes) ✅
+              - [x] **6.3.3.3.4.2.2.2.1** Créer la structure de hashtable pour une section textuelle ✅
+              - [x] **6.3.3.3.4.2.2.2.2** Traiter le contenu textuel (formatage, etc.) ✅
+              - [x] **6.3.3.3.4.2.2.2.3** Ajouter la section au rapport ✅
+            - [x] **6.3.3.3.4.2.2.3** Implémenter l'ajout de sections tabulaires (tableaux de données) ✅
+              - [x] **6.3.3.3.4.2.2.3.1** Créer la structure de hashtable pour une section tabulaire ✅
+              - [x] **6.3.3.3.4.2.2.3.2** Traiter les données tabulaires (formatage, etc.) ✅
+              - [x] **6.3.3.3.4.2.2.3.3** Ajouter la section au rapport ✅
+            - [x] **6.3.3.3.4.2.2.4** Ajouter la validation des paramètres ✅
+              - [x] **6.3.3.3.4.2.2.4.1** Valider que le rapport est un objet valide ✅
+              - [x] **6.3.3.3.4.2.2.4.2** Valider que le titre n'est pas vide ✅
+              - [x] **6.3.3.3.4.2.2.4.3** Valider que le contenu n'est pas vide ✅
+              - [x] **6.3.3.3.4.2.2.4.4** Valider que le type de section est valide ✅
+            - [x] **6.3.3.3.4.2.2.5** Implémenter la numérotation automatique des sections ✅
+              - [x] **6.3.3.3.4.2.2.5.1** Déterminer le numéro de section en fonction du niveau ✅
+              - [x] **6.3.3.3.4.2.2.5.2** Mettre à jour les compteurs de section dans le rapport ✅
+              - [x] **6.3.3.3.4.2.2.5.3** Ajouter le numéro au titre de la section ✅
+          - [x] **6.3.3.3.4.2.3** Implémenter la fonction Add-ExtractedInfoReportChart pour ajouter des graphiques au rapport ✅
+            - [x] **6.3.3.3.4.2.3.1** Définir les paramètres de la fonction (Report, Title, Data, ChartType, Options) ✅
+              - [x] **6.3.3.3.4.2.3.1.1** Définir le paramètre Report (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.3.1.2** Définir le paramètre Title (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.3.1.3** Définir le paramètre Data (obligatoire) ✅
+              - [x] **6.3.3.3.4.2.3.1.4** Définir le paramètre ChartType (optionnel, valeur par défaut = "Bar") ✅
+              - [x] **6.3.3.3.4.2.3.1.5** Définir le paramètre Options (optionnel) ✅
+            - [x] **6.3.3.3.4.2.3.2** Implémenter la génération de graphiques simples (barres, lignes, camemberts) ✅
+              - [x] **6.3.3.3.4.2.3.2.1** Créer la structure de hashtable pour un graphique ✅
+              - [x] **6.3.3.3.4.2.3.2.2** Implémenter le graphique en barres ✅
+              - [x] **6.3.3.3.4.2.3.2.3** Implémenter le graphique en lignes ✅
+              - [x] **6.3.3.3.4.2.3.2.4** Implémenter le graphique en camembert ✅
+            - [x] **6.3.3.3.4.2.3.3** Implémenter la génération de graphiques avancés (nuages de points, histogrammes) ✅
+              - [x] **6.3.3.3.4.2.3.3.1** Implémenter le nuage de points ✅
+              - [x] **6.3.3.3.4.2.3.3.2** Implémenter l'histogramme ✅
+              - [x] **6.3.3.3.4.2.3.3.3** Implémenter le graphique en aires ✅
+            - [x] **6.3.3.3.4.2.3.4** Ajouter la validation des paramètres ✅
+              - [x] **6.3.3.3.4.2.3.4.1** Valider que le rapport est un objet valide ✅
+              - [x] **6.3.3.3.4.2.3.4.2** Valider que le titre n'est pas vide ✅
+              - [x] **6.3.3.3.4.2.3.4.3** Valider que les données sont dans un format valide ✅
+              - [x] **6.3.3.3.4.2.3.4.4** Valider que le type de graphique est valide ✅
+            - [x] **6.3.3.3.4.2.3.5** Implémenter la personnalisation des graphiques (couleurs, légendes, axes) ✅
+              - [x] **6.3.3.3.4.2.3.5.1** Implémenter la personnalisation des couleurs ✅
+              - [x] **6.3.3.3.4.2.3.5.2** Implémenter la personnalisation des légendes ✅
+              - [x] **6.3.3.3.4.2.3.5.3** Implémenter la personnalisation des axes ✅
+              - [x] **6.3.3.3.4.2.3.5.4** Implémenter la personnalisation des étiquettes ✅
+        - [x] **6.3.3.3.4.3** Implémenter les fonctions d'exportation de rapports ✅
+          - [x] **6.3.3.3.4.3.1** Implémenter l'exportation au format HTML ✅
+            - [x] **6.3.3.3.4.3.1.1** Définir les paramètres de la fonction (Report, OutputPath, IncludeStyles, IncludeScripts) ✅
+              - [x] **6.3.3.3.4.3.1.1.1** Définir le paramètre Report (obligatoire) ✅
+              - [x] **6.3.3.3.4.3.1.1.2** Définir le paramètre OutputPath (obligatoire) ✅
+              - [x] **6.3.3.3.4.3.1.1.3** Définir le paramètre IncludeStyles (optionnel, valeur par défaut = $true) ✅
+              - [x] **6.3.3.3.4.3.1.1.4** Définir le paramètre IncludeScripts (optionnel, valeur par défaut = $true) ✅
+              - [x] **6.3.3.3.4.3.1.1.5** Définir le paramètre Theme (optionnel, valeur par défaut = "Default") ✅
+            - [x] **6.3.3.3.4.3.1.2** Implémenter la génération du HTML de base (structure, en-tête, pied de page) ✅
+              - [x] **6.3.3.3.4.3.1.2.1** Créer la structure HTML de base (doctype, html, head, body) ✅
+              - [x] **6.3.3.3.4.3.1.2.2** Générer les métadonnées HTML (title, meta) ✅
+              - [x] **6.3.3.3.4.3.1.2.3** Générer l'en-tête du document ✅
+              - [x] **6.3.3.3.4.3.1.2.4** Générer le pied de page du document ✅
+            - [x] **6.3.3.3.4.3.1.3** Implémenter le rendu des sections textuelles en HTML ✅
+              - [x] **6.3.3.3.4.3.1.3.1** Implémenter le rendu des titres de section ✅
+              - [x] **6.3.3.3.4.3.1.3.2** Implémenter le rendu des paragraphes ✅
+              - [x] **6.3.3.3.4.3.1.3.3** Implémenter le rendu des listes (à puces et numérotées) ✅
+              - [x] **6.3.3.3.4.3.1.3.4** Implémenter le rendu du texte formaté (gras, italique, etc.) ✅
+            - [x] **6.3.3.3.4.3.1.4** Implémenter le rendu des tableaux en HTML ✅
+              - [x] **6.3.3.3.4.3.1.4.1** Générer la structure de base du tableau (table, thead, tbody) ✅
+              - [x] **6.3.3.3.4.3.1.4.2** Générer les en-têtes de colonnes ✅
+              - [x] **6.3.3.3.4.3.1.4.3** Générer les lignes de données ✅
+              - [x] **6.3.3.3.4.3.1.4.4** Appliquer le formatage conditionnel aux cellules ✅
+            - [x] **6.3.3.3.4.3.1.5** Implémenter le rendu des graphiques en HTML (avec JavaScript) ✅
+              - [x] **6.3.3.3.4.3.1.5.1** Intégrer la bibliothèque Chart.js ✅
+              - [x] **6.3.3.3.4.3.1.5.2** Générer le conteneur pour le graphique ✅
+              - [x] **6.3.3.3.4.3.1.5.3** Générer le code JavaScript pour initialiser le graphique ✅
+              - [x] **6.3.3.3.4.3.1.5.4** Convertir les données du rapport en format compatible avec Chart.js ✅
+            - [x] **6.3.3.3.4.3.1.6** Ajouter des styles CSS pour améliorer l'apparence ✅
+              - [x] **6.3.3.3.4.3.1.6.1** Définir les styles de base (police, couleurs, marges) ✅
+              - [x] **6.3.3.3.4.3.1.6.2** Définir les styles pour les titres et sections ✅
+              - [x] **6.3.3.3.4.3.1.6.3** Définir les styles pour les tableaux ✅
+              - [x] **6.3.3.3.4.3.1.6.4** Définir les styles pour les graphiques ✅
+              - [x] **6.3.3.3.4.3.1.6.5** Implémenter des thèmes CSS alternatifs ✅
+            - [x] **6.3.3.3.4.3.1.7** Implémenter l'interactivité avec JavaScript ✅
+              - [x] **6.3.3.3.4.3.1.7.1** Ajouter la fonctionnalité de tri des tableaux ✅
+              - [x] **6.3.3.3.4.3.1.7.2** Ajouter la fonctionnalité de filtrage des tableaux ✅
+              - [x] **6.3.3.3.4.3.1.7.3** Ajouter l'interactivité des graphiques (info-bulles, zoom) ✅
+              - [x] **6.3.3.3.4.3.1.7.4** Ajouter la navigation dans les sections (table des matières) ✅
+          - [x] **6.3.3.3.4.3.2** Implémenter l'exportation au format PDF ✅
+            - [x] **6.3.3.3.4.3.2.1** Définir les paramètres de la fonction (Report, OutputPath, PageSize, Orientation) ✅
+              - [x] **6.3.3.3.4.3.2.1.1** Définir le paramètre Report (obligatoire) ✅
+              - [x] **6.3.3.3.4.3.2.1.2** Définir le paramètre OutputPath (obligatoire) ✅
+              - [x] **6.3.3.3.4.3.2.1.3** Définir le paramètre PageSize (optionnel, valeur par défaut = "A4") ✅
+              - [x] **6.3.3.3.4.3.2.1.4** Définir le paramètre Orientation (optionnel, valeur par défaut = "Portrait") ✅
+              - [x] **6.3.3.3.4.3.2.1.5** Définir le paramètre Margins (optionnel) ✅
+            - [x] **6.3.3.3.4.3.2.2** Implémenter la conversion HTML vers PDF ✅
+              - [x] **6.3.3.3.4.3.2.2.1** Générer le HTML intermédiaire ✅
+              - [x] **6.3.3.3.4.3.2.2.2** Intégrer une bibliothèque de conversion HTML vers PDF ✅
+              - [x] **6.3.3.3.4.3.2.2.3** Configurer les options de conversion ✅
+              - [x] **6.3.3.3.4.3.2.2.4** Exécuter la conversion et sauvegarder le fichier PDF ✅
+            - [x] **6.3.3.3.4.3.2.3** Ajouter la gestion des en-têtes et pieds de page ✅
+              - [x] **6.3.3.3.4.3.2.3.1** Définir la structure des en-têtes ✅
+              - [x] **6.3.3.3.4.3.2.3.2** Définir la structure des pieds de page ✅
+              - [x] **6.3.3.3.4.3.2.3.3** Intégrer les informations du rapport dans les en-têtes/pieds de page ✅
+            - [x] **6.3.3.3.4.3.2.4** Implémenter la pagination automatique ✅
+              - [x] **6.3.3.3.4.3.2.4.1** Ajouter les numéros de page ✅
+              - [x] **6.3.3.3.4.3.2.4.2** Ajouter le nombre total de pages ✅
+              - [x] **6.3.3.3.4.3.2.4.3** Formater les numéros de page ✅
+            - [x] **6.3.3.3.4.3.2.5** Ajouter la gestion des styles d'impression ✅
+              - [x] **6.3.3.3.4.3.2.5.1** Définir les styles spécifiques à l'impression ✅
+              - [x] **6.3.3.3.4.3.2.5.2** Optimiser les tableaux pour l'impression ✅
+              - [x] **6.3.3.3.4.3.2.5.3** Optimiser les graphiques pour l'impression ✅
+          - [x] **6.3.3.3.4.3.3** Implémenter l'exportation au format Excel ✅
+            - [x] **6.3.3.3.4.3.3.1** Définir les paramètres de la fonction (Report, OutputPath, IncludeCharts) ✅
+              - [x] **6.3.3.3.4.3.3.1.1** Définir le paramètre Report (obligatoire) ✅
+                - [x] **6.3.3.3.4.3.3.1.1.1** Ajouter l'attribut Mandatory ✅
+                - [x] **6.3.3.3.4.3.3.1.1.2** Définir la position du paramètre (Position = 0) ✅
+                - [x] **6.3.3.3.4.3.3.1.1.3** Ajouter la validation de type (hashtable) ✅
+              - [x] **6.3.3.3.4.3.3.1.2** Définir le paramètre OutputPath (obligatoire) ✅
+                - [x] **6.3.3.3.4.3.3.1.2.1** Ajouter l'attribut Mandatory ✅
+                - [x] **6.3.3.3.4.3.3.1.2.2** Définir la position du paramètre (Position = 1) ✅
+                - [x] **6.3.3.3.4.3.3.1.2.3** Ajouter la validation de type (string) ✅
+              - [x] **6.3.3.3.4.3.3.1.3** Définir le paramètre IncludeCharts (optionnel, valeur par défaut = $true) ✅
+                - [x] **6.3.3.3.4.3.3.1.3.1** Définir comme paramètre optionnel ✅
+                - [x] **6.3.3.3.4.3.3.1.3.2** Définir le type switch ✅
+                - [x] **6.3.3.3.4.3.3.1.3.3** Définir la valeur par défaut ($true) ✅
+              - [x] **6.3.3.3.4.3.3.1.4** Définir le paramètre WorksheetName (optionnel, valeur par défaut = "Rapport") ✅
+                - [x] **6.3.3.3.4.3.3.1.4.1** Définir comme paramètre optionnel ✅
+                - [x] **6.3.3.3.4.3.3.1.4.2** Définir le type string ✅
+                - [x] **6.3.3.3.4.3.3.1.4.3** Définir la valeur par défaut ("Rapport") ✅
+              - [x] **6.3.3.3.4.3.3.1.5** Définir le paramètre AutoFilter (optionnel, valeur par défaut = $true) ✅
+                - [x] **6.3.3.3.4.3.3.1.5.1** Définir comme paramètre optionnel ✅
+                - [x] **6.3.3.3.4.3.3.1.5.2** Définir le type switch ✅
+                - [x] **6.3.3.3.4.3.3.1.5.3** Définir la valeur par défaut ($true) ✅
+            - [x] **6.3.3.3.4.3.3.2** Implémenter la conversion des tableaux en feuilles Excel ✅
+              - [x] **6.3.3.3.4.3.3.2.1** Créer un nouveau classeur Excel ✅
+                - [x] **6.3.3.3.4.3.3.2.1.1** Vérifier si le module ImportExcel est disponible ✅
+                - [x] **6.3.3.3.4.3.3.2.1.2** Créer un nouveau classeur Excel avec New-ExcelPackage ✅
+                - [x] **6.3.3.3.4.3.3.2.1.3** Gérer les erreurs si le module n'est pas disponible ✅
+              - [x] **6.3.3.3.4.3.3.2.2** Créer une feuille pour les informations générales du rapport ✅
+                - [x] **6.3.3.3.4.3.3.2.2.1** Créer une feuille nommée "Informations" ✅
+                - [x] **6.3.3.3.4.3.3.2.2.2** Ajouter le titre et la description du rapport ✅
+                - [x] **6.3.3.3.4.3.3.2.2.3** Ajouter les métadonnées (auteur, date, etc.) ✅
+                - [x] **6.3.3.3.4.3.3.2.2.4** Formater la feuille d'informations ✅
+              - [x] **6.3.3.3.4.3.3.2.3** Créer une feuille pour chaque section de type Table ✅
+                - [x] **6.3.3.3.4.3.3.2.3.1** Identifier les sections de type Table dans le rapport ✅
+                - [x] **6.3.3.3.4.3.3.2.3.2** Créer une feuille pour chaque section identifiée ✅
+                - [x] **6.3.3.3.4.3.3.2.3.3** Nommer les feuilles en fonction des titres de section ✅
+                - [x] **6.3.3.3.4.3.3.2.3.4** Gérer les noms de feuilles trop longs ou invalides ✅
+              - [x] **6.3.3.3.4.3.3.2.4** Formater les en-têtes de colonnes ✅
+                - [x] **6.3.3.3.4.3.3.2.4.1** Identifier les en-têtes de colonnes pour chaque tableau ✅
+                - [x] **6.3.3.3.4.3.3.2.4.2** Appliquer un style en gras aux en-têtes ✅
+                - [x] **6.3.3.3.4.3.3.2.4.3** Appliquer une couleur de fond aux en-têtes ✅
+                - [x] **6.3.3.3.4.3.3.2.4.4** Ajuster la largeur des colonnes automatiquement ✅
+              - [x] **6.3.3.3.4.3.3.2.5** Ajouter les données des tableaux ✅
+                - [x] **6.3.3.3.4.3.3.2.5.1** Convertir les données de chaque section en format tabulaire ✅
+                - [x] **6.3.3.3.4.3.3.2.5.2** Ajouter les données à chaque feuille ✅
+                - [x] **6.3.3.3.4.3.3.2.5.3** Appliquer un format approprié selon le type de données ✅
+                - [x] **6.3.3.3.4.3.3.2.5.4** Ajouter des filtres automatiques si demandé ✅
+            - [x] **6.3.3.3.4.3.3.3** Implémenter la conversion des graphiques en graphiques Excel ✅
+              - [x] **6.3.3.3.4.3.3.3.1** Créer une feuille pour les graphiques ✅
+                - [x] **6.3.3.3.4.3.3.3.1.1** Vérifier si l'option IncludeCharts est activée ✅
+                - [x] **6.3.3.3.4.3.3.3.1.2** Créer une feuille nommée "Graphiques" ✅
+                - [x] **6.3.3.3.4.3.3.3.1.3** Ajouter un titre à la feuille de graphiques ✅
+                - [x] **6.3.3.3.4.3.3.3.1.4** Formater la feuille de graphiques ✅
+              - [x] **6.3.3.3.4.3.3.3.2** Convertir les données des graphiques au format Excel ✅
+                - [x] **6.3.3.3.4.3.3.3.2.1** Identifier les sections de type Chart dans le rapport ✅
+                - [x] **6.3.3.3.4.3.3.3.2.2** Extraire les données de chaque graphique ✅
+                - [x] **6.3.3.3.4.3.3.3.2.3** Créer des plages de données pour chaque graphique ✅
+                - [x] **6.3.3.3.4.3.3.3.2.4** Formater les données selon le type de graphique ✅
+              - [x] **6.3.3.3.4.3.3.3.3** Créer les graphiques en barres ✅
+                - [x] **6.3.3.3.4.3.3.3.3.1** Identifier les sections avec des graphiques en barres ✅
+                - [x] **6.3.3.3.4.3.3.3.3.2** Créer un graphique en barres pour chaque section ✅
+                - [x] **6.3.3.3.4.3.3.3.3.3** Configurer les options du graphique (titre, axes, etc.) ✅
+                - [x] **6.3.3.3.4.3.3.3.3.4** Positionner le graphique sur la feuille ✅
+              - [x] **6.3.3.3.4.3.3.3.4** Créer les graphiques en lignes ✅
+                - [x] **6.3.3.3.4.3.3.3.4.1** Identifier les sections avec des graphiques en lignes ✅
+                - [x] **6.3.3.3.4.3.3.3.4.2** Créer un graphique en lignes pour chaque section ✅
+                - [x] **6.3.3.3.4.3.3.3.4.3** Configurer les options du graphique (titre, axes, etc.) ✅
+                - [x] **6.3.3.3.4.3.3.3.4.4** Positionner le graphique sur la feuille ✅
+              - [x] **6.3.3.3.4.3.3.3.5** Créer les graphiques en camembert ✅
+                - [x] **6.3.3.3.4.3.3.3.5.1** Identifier les sections avec des graphiques en camembert ✅
+                - [x] **6.3.3.3.4.3.3.3.5.2** Créer un graphique en camembert pour chaque section ✅
+                - [x] **6.3.3.3.4.3.3.3.5.3** Configurer les options du graphique (titre, légende, etc.) ✅
+                - [x] **6.3.3.3.4.3.3.3.5.4** Positionner le graphique sur la feuille ✅
+            - [x] **6.3.3.3.4.3.3.4** Ajouter la mise en forme conditionnelle ✅
+              - [x] **6.3.3.3.4.3.3.4.1** Identifier les colonnes numériques pour la mise en forme ✅
+                - [x] **6.3.3.3.4.3.3.4.1.1** Parcourir toutes les feuilles de données ✅
+                - [x] **6.3.3.3.4.3.3.4.1.2** Analyser le type de données de chaque colonne ✅
+                - [x] **6.3.3.3.4.3.3.4.1.3** Identifier les colonnes contenant des valeurs numériques ✅
+                - [x] **6.3.3.3.4.3.3.4.1.4** Déterminer les plages de valeurs pour chaque colonne ✅
+              - [x] **6.3.3.3.4.3.3.4.2** Appliquer des échelles de couleurs pour les valeurs ✅
+                - [x] **6.3.3.3.4.3.3.4.2.1** Définir les règles de mise en forme conditionnelle ✅
+                - [x] **6.3.3.3.4.3.3.4.2.2** Appliquer une échelle de couleurs pour les valeurs positives ✅
+                - [x] **6.3.3.3.4.3.3.4.2.3** Appliquer une échelle de couleurs pour les valeurs négatives ✅
+                - [x] **6.3.3.3.4.3.3.4.2.4** Configurer les seuils et les couleurs ✅
+              - [x] **6.3.3.3.4.3.3.4.3** Ajouter des icônes pour les tendances ✅
+                - [x] **6.3.3.3.4.3.3.4.3.1** Identifier les colonnes représentant des tendances ✅
+                - [x] **6.3.3.3.4.3.3.4.3.2** Définir les règles pour les icônes de tendance ✅
+                - [x] **6.3.3.3.4.3.3.4.3.3** Appliquer des icônes (flèches montantes/descendantes) ✅
+                - [x] **6.3.3.3.4.3.3.4.3.4** Configurer les seuils pour les icônes ✅
+              - [x] **6.3.3.3.4.3.3.4.4** Mettre en évidence les valeurs extrêmes ✅
+                - [x] **6.3.3.3.4.3.3.4.4.1** Calculer les statistiques (min, max, moyenne, écart-type) ✅
+                - [x] **6.3.3.3.4.3.3.4.4.2** Définir les règles pour les valeurs extrêmes ✅
+                - [x] **6.3.3.3.4.3.3.4.4.3** Appliquer une mise en forme spéciale pour les valeurs extrêmes ✅
+                - [x] **6.3.3.3.4.3.3.4.4.4** Ajouter des commentaires explicatifs pour les valeurs extrêmes ✅
+            - [x] **6.3.3.3.4.3.3.5** Implémenter la création de tableaux croisés dynamiques ✅
+              - [x] **6.3.3.3.4.3.3.5.1** Créer une feuille pour les tableaux croisés dynamiques ✅
+                - [x] **6.3.3.3.4.3.3.5.1.1** Vérifier si les données sont adaptées aux tableaux croisés ✅
+                - [x] **6.3.3.3.4.3.3.5.1.2** Créer une feuille nommée "Tableaux croisés" ✅
+                - [x] **6.3.3.3.4.3.3.5.1.3** Ajouter un titre à la feuille ✅
+                - [x] **6.3.3.3.4.3.3.5.1.4** Formater la feuille pour les tableaux croisés ✅
+              - [x] **6.3.3.3.4.3.3.5.2** Identifier les données appropriées pour les tableaux croisés ✅
+                - [x] **6.3.3.3.4.3.3.5.2.1** Analyser les sections de type Table du rapport ✅
+                - [x] **6.3.3.3.4.3.3.5.2.2** Identifier les données avec des dimensions et des mesures ✅
+                - [x] **6.3.3.3.4.3.3.5.2.3** Préparer les données source pour les tableaux croisés ✅
+                - [x] **6.3.3.3.4.3.3.5.2.4** Créer des plages nommées pour les données source ✅
+              - [x] **6.3.3.3.4.3.3.5.3** Définir les champs de lignes, colonnes et valeurs ✅
+                - [x] **6.3.3.3.4.3.3.5.3.1** Identifier les champs de dimension pour les lignes ✅
+                - [x] **6.3.3.3.4.3.3.5.3.2** Identifier les champs de dimension pour les colonnes ✅
+                - [x] **6.3.3.3.4.3.3.5.3.3** Identifier les champs de mesure pour les valeurs ✅
+                - [x] **6.3.3.3.4.3.3.5.3.4** Créer le tableau croisé dynamique avec ces champs ✅
+              - [x] **6.3.3.3.4.3.3.5.4** Ajouter des graphiques croisés dynamiques ✅
+                - [x] **6.3.3.3.4.3.3.5.4.1** Créer un graphique basé sur le tableau croisé dynamique ✅
+                - [x] **6.3.3.3.4.3.3.5.4.2** Configurer le type de graphique approprié ✅
+                - [x] **6.3.3.3.4.3.3.5.4.3** Ajouter des titres et légendes au graphique ✅
+                - [x] **6.3.3.3.4.3.3.5.4.4** Positionner le graphique à côté du tableau croisé ✅
+        - [x] **6.3.3.3.4.4** Créer des exemples d'utilisation ✅
+          - [x] **6.3.3.3.4.4.1** Exemple de rapport sur une collection d'informations extraites ✅
+            - [x] **6.3.3.3.4.4.1.1** Créer une collection d'exemple avec différents types d'informations ✅
+            - [x] **6.3.3.3.4.4.1.2** Générer un rapport de base avec des sections textuelles ✅
+            - [x] **6.3.3.3.4.4.1.3** Ajouter des tableaux de données au rapport ✅
+            - [x] **6.3.3.3.4.4.1.4** Ajouter des graphiques de distribution au rapport ✅
+            - [x] **6.3.3.3.4.4.1.5** Exporter le rapport dans différents formats ✅
+          - [x] **6.3.3.3.4.4.2** Exemple de rapport de comparaison entre plusieurs collections ✅
+            - [x] **6.3.3.3.4.4.2.1** Créer plusieurs collections d'exemple avec des caractéristiques différentes ✅
+              - [x] **6.3.3.3.4.4.2.1.1** Créer une première collection avec des données textuelles ✅
+              - [x] **6.3.3.3.4.4.2.1.2** Créer une deuxième collection avec des données structurées ✅
+              - [x] **6.3.3.3.4.4.2.1.3** Créer une troisième collection avec des données mixtes ✅
+              - [x] **6.3.3.3.4.4.2.1.4** Ajouter des métadonnées spécifiques à chaque collection ✅
+            - [x] **6.3.3.3.4.4.2.2** Générer un rapport comparatif avec des tableaux de comparaison ✅
+              - [x] **6.3.3.3.4.4.2.2.1** Créer la structure du rapport comparatif ✅
+              - [x] **6.3.3.3.4.4.2.2.2** Ajouter une section d'introduction expliquant le but de la comparaison ✅
+              - [x] **6.3.3.3.4.4.2.2.3** Créer un tableau comparatif des statistiques générales ✅
+              - [x] **6.3.3.3.4.4.2.2.4** Créer un tableau comparatif des types de contenu ✅
+            - [x] **6.3.3.3.4.4.2.3** Ajouter des graphiques comparatifs (barres groupées, radar) ✅
+              - [x] **6.3.3.3.4.4.2.3.1** Créer un graphique en barres groupées pour comparer les volumes ✅
+              - [x] **6.3.3.3.4.4.2.3.2** Créer un graphique radar pour comparer les scores de confiance ✅
+              - [x] **6.3.3.3.4.4.2.3.3** Créer un graphique en camembert pour comparer les distributions ✅
+              - [x] **6.3.3.3.4.4.2.3.4** Ajouter des légendes et explications pour chaque graphique ✅
+            - [x] **6.3.3.3.4.4.2.4** Implémenter une section d'analyse des différences ✅
+              - [x] **6.3.3.3.4.4.2.4.1** Calculer les différences statistiques entre les collections ✅
+              - [x] **6.3.3.3.4.4.2.4.2** Identifier les éléments communs et uniques ✅
+              - [x] **6.3.3.3.4.4.2.4.3** Analyser les tendances et patterns ✅
+              - [x] **6.3.3.3.4.4.2.4.4** Ajouter des recommandations basées sur l'analyse ✅
+            - [x] **6.3.3.3.4.4.2.5** Exporter le rapport au format HTML interactif ✅
+              - [x] **6.3.3.3.4.4.2.5.1** Configurer les options d'exportation HTML ✅
+              - [x] **6.3.3.3.4.4.2.5.2** Ajouter des fonctionnalités interactives aux graphiques ✅
+              - [x] **6.3.3.3.4.4.2.5.3** Implémenter des filtres interactifs pour les tableaux ✅
+              - [x] **6.3.3.3.4.4.2.5.4** Ajouter une table des matières interactive ✅
+          - [x] **6.3.3.3.4.4.3** Exemple de rapport d'analyse temporelle ✅
+            - [x] **6.3.3.3.4.4.3.1** Créer une collection d'informations avec des horodatages variés ✅
+              - [x] **6.3.3.3.4.4.3.1.1** Générer des données couvrant une période de plusieurs mois ✅
+              - [x] **6.3.3.3.4.4.3.1.2** Ajouter des variations saisonnières et des tendances ✅
+              - [x] **6.3.3.3.4.4.3.1.3** Inclure des événements ponctuels et des anomalies ✅
+              - [x] **6.3.3.3.4.4.3.1.4** Structurer les données avec des horodatages précis ✅
+            - [x] **6.3.3.3.4.4.3.2** Implémenter l'analyse par période (jour, semaine, mois) ✅
+              - [x] **6.3.3.3.4.4.3.2.1** Créer des fonctions d'agrégation par période ✅
+              - [x] **6.3.3.3.4.4.3.2.2** Calculer les statistiques quotidiennes ✅
+              - [x] **6.3.3.3.4.4.3.2.3** Calculer les statistiques hebdomadaires ✅
+              - [x] **6.3.3.3.4.4.3.2.4** Calculer les statistiques mensuelles ✅
+              - [x] **6.3.3.3.4.4.3.2.5** Comparer les différentes périodes ✅
+            - [x] **6.3.3.3.4.4.3.3** Générer des graphiques de tendance temporelle ✅
+              - [x] **6.3.3.3.4.4.3.3.1** Créer un graphique en lignes pour les tendances générales ✅
+              - [x] **6.3.3.3.4.4.3.3.2** Créer un graphique en aires pour les volumes cumulés ✅
+              - [x] **6.3.3.3.4.4.3.3.3** Créer un graphique en barres pour les comparaisons périodiques ✅
+              - [x] **6.3.3.3.4.4.3.3.4** Ajouter des annotations pour les événements importants ✅
+            - [x] **6.3.3.3.4.4.3.4** Ajouter des indicateurs de progression et de régression ✅
+              - [x] **6.3.3.3.4.4.3.4.1** Calculer les taux de croissance et de décroissance ✅
+              - [x] **6.3.3.3.4.4.3.4.2** Identifier les points de changement de tendance ✅
+              - [x] **6.3.3.3.4.4.3.4.3** Calculer les moyennes mobiles et les tendances ✅
+              - [x] **6.3.3.3.4.4.3.4.4** Visualiser les indicateurs avec des flèches et des icônes ✅
+            - [x] **6.3.3.3.4.4.3.5** Exporter le rapport avec des graphiques interactifs ✅
+              - [x] **6.3.3.3.4.4.3.5.1** Configurer les options d'exportation HTML ✅
+              - [x] **6.3.3.3.4.4.3.5.2** Ajouter des contrôles de période (sélecteurs de dates) ✅
+              - [x] **6.3.3.3.4.4.3.5.3** Implémenter le zoom et le défilement sur les graphiques ✅
+              - [x] **6.3.3.3.4.4.3.5.4** Ajouter des info-bulles détaillées pour chaque point de données ✅

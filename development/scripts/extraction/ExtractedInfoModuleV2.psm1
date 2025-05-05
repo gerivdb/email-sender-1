@@ -917,6 +917,16 @@ if (Test-Path -Path $typesPath) {
     }
 }
 
+# Import additional functions from Public\Merge directory
+$mergePath = Join-Path -Path $script:ModuleRoot -ChildPath "Public\Merge"
+if (Test-Path -Path $mergePath) {
+    $mergeFiles = Get-ChildItem -Path $mergePath -Filter "*.ps1" -File
+    foreach ($file in $mergeFiles) {
+        Write-Verbose "Importing merge file: $($file.FullName)"
+        . $file.FullName
+    }
+}
+
 # Export public functions
 Export-ModuleMember -Function @(
     # Creation functions
@@ -953,5 +963,11 @@ Export-ModuleMember -Function @(
     # Validation functions
     'Test-ExtractedInfo',
     'Get-ValidationErrors',
-    'Add-ValidationRule'
+    'Add-ValidationRule',
+
+    # Merge functions
+    'Merge-ExtractedInfo',
+    'Test-ExtractedInfoCompatibility',
+    'Merge-ExtractedInfoMetadata',
+    'Get-MergedConfidenceScore'
 )
